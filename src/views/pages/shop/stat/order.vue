@@ -21,7 +21,6 @@
   </div>
 </template>
 <script>
-import PageRouteNav from '@/views/components/page-route-nav#/nav'
 import { OrderService } from './order.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'

@@ -19,7 +19,7 @@
 </template>
 <script>
 export default {
-  name: 'PageRouteNav',
+  name: 'StPageRouteNav',
   bem: {
     b: 'st-page-route-nav'
   },

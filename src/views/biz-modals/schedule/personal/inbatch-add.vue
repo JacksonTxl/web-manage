@@ -48,10 +48,10 @@
             <span>{{ info.time_type | filterDate }}</span>
           </a-col>
           <a-col :lg="22">
-            <st-time-picker
+            <schedule-time-picker
               v-model="info.timing"
               :key="info.time_type"
-            ></st-time-picker>
+            ></schedule-time-picker>
           </a-col>
         </a-row>
       </st-container>
@@ -64,8 +64,12 @@ n
 import { PersonalScheduleScheduleService } from '../../../pages/shop/product/course/schedule/personal.service#/schedule.service'
 import { PersonalScheduleCommonService } from '../../../pages/shop/product/course/schedule/personal.service#/common.service'
 import { RouteService } from '../../../../services/route.service'
+import ScheduleTimePicker from '@/views/biz-components/schedule-time-picker/schedule-time-picker'
 export default {
   name: 'AddScheduleInBatch',
+  components: {
+    ScheduleTimePicker
+  },
   serviceInject() {
     return {
       commonService: PersonalScheduleCommonService,

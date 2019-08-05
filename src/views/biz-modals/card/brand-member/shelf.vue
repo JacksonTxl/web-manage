@@ -365,10 +365,10 @@
             </a-radio>
           </a-radio-group>
         </st-form-item>
-        <st-shop-hour-picker
+        <shop-hour-picker
           v-model="timeList"
           v-if="admissionTime === 2 && moreIsShow"
-        ></st-shop-hour-picker>
+        ></shop-hour-picker>
         <p
           :class="shelves('admission-time-validata')"
           v-if="admissionTime === 2 && moreIsShow"
@@ -439,10 +439,14 @@ import { ShelfService } from './shelf.service'
 import { UserService } from '@/services/user.service'
 import { cloneDeep } from 'lodash-es'
 import { RuleConfig } from '@/constants/rule'
+import ShopHourPicker from '@/views/biz-components/shop-hour-picker/shop-hour-picker'
 export default {
   name: 'ModalCardBrandMemberShelf',
   bem: {
     shelves: 'modal-card-batch-shelves'
+  },
+  components: {
+    ShopHourPicker
   },
   serviceInject() {
     return {

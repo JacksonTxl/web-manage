@@ -19,12 +19,25 @@ export const enumFilterObject = (path: string) => {
 /**
  * 根据枚举选项数组和key值给出label值
  * @param key 索引值
- * @param options 选项
+ * @param {Array<{label:string,value:number}>} options 选项
  */
-export const statusFilter = (
+export const labelFilter = (
   key: string,
   options: { label: string; value: number }[] = []
 ) => {
   const finded = lFind(options, { value: +key }) || { label: '' }
   return finded.label
+}
+
+/**
+ * 根据给定的map选项获取值
+ * @param key 索引
+ * @param map map表
+ */
+export const mapFilter = (
+  key: string,
+  map: { [key: string]: any },
+  defaultValue: string = ''
+) => {
+  return map[key] || defaultValue
 }

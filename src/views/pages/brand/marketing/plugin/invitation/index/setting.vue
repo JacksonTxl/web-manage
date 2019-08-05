@@ -31,7 +31,7 @@
                 </st-button>
               </template>
               <template v-else>
-                <st-coupon
+                <coupon-tag
                   key="1"
                   class="mg-r8"
                   :name="inviteeCoupon.coupon_name"
@@ -61,7 +61,7 @@
                 </st-button>
               </template>
               <template v-else>
-                <st-coupon
+                <coupon-tag
                   key="2"
                   class="mg-r8"
                   :name="inviterCoupon.coupon_name"
@@ -87,7 +87,7 @@
                 <span slot="addonAfter">张</span>
               </st-input-number>
               <span class="mg-l24 mg-r8">选择券</span>
-              <st-coupon
+              <coupon-tag
                 class="mg-r8"
                 :name="inviteeCoupon.coupon_name"
                 key="3"
@@ -106,7 +106,7 @@
                 <span slot="addonAfter">张</span>
               </st-input-number>
               <span class="mg-l24 mg-r8">选择券</span>
-              <st-coupon
+              <coupon-tag
                 class="mg-r8"
                 :name="inviterCoupon.coupon_name"
                 key="3"
@@ -137,6 +137,7 @@ import { cloneDeep } from 'lodash-es'
 import { IndexService } from '../index.service'
 import StInvitationBgRadio from './components#/invitation-bg-radio'
 import MarketingAddCoupon from '@/views/biz-modals/marketing/add-coupon'
+import CouponTag from '@/views/biz-components/coupon-tag/coupon-tag'
 export default {
   name: 'PageBrandMarketingInviationSetting',
   bem: {
@@ -313,7 +314,8 @@ export default {
     this.init()
   },
   components: {
-    StInvitationBgRadio
+    StInvitationBgRadio,
+    CouponTag
   }
 }
 </script>

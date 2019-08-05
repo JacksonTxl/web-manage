@@ -1,6 +1,6 @@
 <template>
   <div
-    class="st-time-picker-item"
+    class="st-schedule-time-picker-item"
     @mousedown="onMounseDown"
     @mousemove="mouseMove"
     @mouseUp="onMouseUp"

@@ -59,12 +59,12 @@
       </a-col>
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="员工人脸">
-          <st-face-upload
+          <face-upload
             width="164px"
             height="164px"
             :list="faceList"
             placeholder="上传人脸"
-          ></st-face-upload>
+          ></face-upload>
         </st-form-item>
         <st-form-item required>
           <template slot="label">
@@ -251,7 +251,7 @@ import { AddService } from '../add.service'
 import CoachLevelSelect from '@/views/biz-components/coach-level-select'
 import ShopSelect from '@/views/biz-components/shop-select'
 import DepartmentSelect from '@/views/biz-components/department-select'
-
+import FaceUpload from '@/views/biz-components/face-upload/face-upload'
 export default {
   name: 'StaffDetailBasics',
   serviceInject() {
@@ -270,7 +270,8 @@ export default {
   components: {
     ShopSelect,
     CoachLevelSelect,
-    DepartmentSelect
+    DepartmentSelect,
+    FaceUpload
   },
   props: {
     enums: {

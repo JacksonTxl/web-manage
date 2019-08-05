@@ -33,7 +33,6 @@
     <pagination-demo id="pagination" />
     <page-route-nav-demo id="page-route-nav" />
     <textarea-demo id="textarea" />
-    <hour-picker-demo id="hour-picker" />
     <info-action-demo id="info-action" />
   </div>
 </template>

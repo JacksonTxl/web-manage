@@ -1,6 +1,6 @@
 <template>
   <div
-    class="st-time-picker"
+    class="st-schedule-time-picker"
     @mounseover="onMouseOver"
     @mousedown="onMouseDown"
   >
@@ -20,10 +20,10 @@
 </template>
 
 <script>
-import item from './time-picker-item'
+import item from './schedule-time-picker-item'
 import { cloneDeep } from 'lodash-es'
 export default {
-  name: 'StTimePicker',
+  name: 'StScheduleTimePicker',
   model: {
     prop: 'values',
     event: 'change'
