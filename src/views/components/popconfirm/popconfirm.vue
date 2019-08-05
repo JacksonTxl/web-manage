@@ -3,7 +3,7 @@ export default {
   name: 'StPopconfirm',
   render(h) {
     const props = {
-      title: '是否确认删除',
+      title: '是否确认删除?',
       okText: '确定',
       cancelText: '取消',
       ...this.$attrs
