@@ -2,7 +2,10 @@
   <st-modal :title="title" v-model="show" width="400px" :footer="null">
     <div :class="basic()">
       <p>{{ message }}</p>
-      <img :src="url" :class="activeClass" />
+      <img v-if="!isLoading" :src="url" :class="activeClass" />
+      <div v-else class="loading-state">
+        <a-spin size="large" />
+      </div>
       <div>
         <st-button
           block
@@ -22,6 +25,7 @@
 import { PosterService } from './poster.service'
 import { AppConfig } from '@/constants/config'
 import { OssService } from '@/services/oss.service'
+import { ShsService } from '@/services/shs.service'
 export default {
   name: 'BrandMarketingPoster',
   bem: {
@@ -31,12 +35,16 @@ export default {
     return {
       posterService: PosterService,
       appConfig: AppConfig,
-      oss: OssService
+      shsService: ShsService
     }
+  },
+  serviceProviders() {
+    return [ShsService]
   },
   rxState() {
     return {
       loading: this.posterService.loading$,
+      isLoading: this.shsService.loading$,
       token: this.posterService.token$,
       info: this.posterService.info$,
       qrcode: this.posterService.qrcode$
@@ -65,8 +73,17 @@ export default {
   },
   created() {
     if (this.type === 1) {
-      this.posterService.serviceInit(this.id).subscribe(() => {
-        this.uploadImage()
+      this.posterService.getPosterInfo(this.id).subscribe(() => {
+        this.shsService
+          .getShsImage({
+            qrcode_url: this.info.qrcode_url,
+            brand_logo: this.info.brand_logo,
+            brand_name: this.info.brand_name,
+            price: this.info.price
+          })
+          .subscribe(res => {
+            this.url = res
+          })
       })
     } else if (this.type === 2) {
       this.activeClass = 'qrcode'
@@ -79,6 +96,7 @@ export default {
       })
     }
   },
+
   methods: {
     downloadPoster() {
       const a = document.createElement('a')
@@ -104,34 +122,6 @@ export default {
       //   a.dispatchEvent(event); // 触发a的单击事件
       // }
       // image.src = this.url
-    },
-    uploadImage() {
-      this.oss
-        .put({
-          business: 'image',
-          isPrivate: false,
-          file: this.convertBase64UrlToBlob(this.info.qrcode_url)
-        })
-        .subscribe({
-          next: val => {
-            this.url = `${this.appConfig.SHS_API_ENV}/saas/poster?token=${
-              this.token
-            }&brand_logo=${this.info.brand_logo}&brand_name=${
-              this.info.brand_name
-            }&price=${this.info.price}&qrcode_url=${val.url}&download=1`
-          },
-          error: val => {},
-          complete: () => {}
-        })
-    },
-    convertBase64UrlToBlob(urlData) {
-      const bytes = window.atob(urlData.split(',')[1])
-      const ab = new ArrayBuffer(bytes.length)
-      const ia = new Uint8Array(ab)
-      for (let i = 0; i < bytes.length; i++) {
-        ia[i] = bytes.charCodeAt(i)
-      }
-      return new Blob([ab], { type: 'image/png' })
     }
   }
 }
