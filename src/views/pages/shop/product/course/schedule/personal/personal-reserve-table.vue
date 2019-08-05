@@ -74,7 +74,6 @@
 
 <script>
 import tableMixin from '@/mixins/table.mixin'
-import date from '../components#/date-component'
 import { PersonalScheduleReserveService } from './service#/reserve.service'
 import { columns } from '../personal-reserve-table.config'
 import { RouteService } from '@/services/route.service'

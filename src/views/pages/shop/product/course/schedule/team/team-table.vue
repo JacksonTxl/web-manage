@@ -101,7 +101,6 @@
 </template>
 
 <script>
-import date from '../components#/date-component'
 import { TeamScheduleScheduleService } from '../team/service#/schedule.service'
 import { RouteService } from '@/services/route.service'
 import ScheduleTeamAddCourseScheduleBatch from '@/views/biz-modals/schedule/team/add-course-schedule-batch'

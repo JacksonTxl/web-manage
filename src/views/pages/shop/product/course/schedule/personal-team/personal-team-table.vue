@@ -100,7 +100,6 @@
 </template>
 
 <script>
-import date from '../components#/date-component'
 import { PersonalTeamScheduleScheduleService } from '../personal-team/service#/schedule.service'
 import { RouteService } from '@/services/route.service'
 import SchedulePersonalTeamReserveInfo from '@/views/biz-modals/schedule/personal-team/reserve-info'
