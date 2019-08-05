@@ -102,10 +102,10 @@
 
 <script>
 import { cloneDeep } from 'lodash-es'
-import { TeamScheduleScheduleService } from '../../../pages/shop/product/course/schedule/team.service#/schedule.service'
-import { TeamScheduleCommonService } from '../../../pages/shop/product/course/schedule/team.service#/common.service'
-import { RouteService } from '../../../../services/route.service'
-import { TeamService } from '../../../pages/shop/product/course/schedule/team/team.service'
+import { TeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/team/service#/schedule.service'
+import { TeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/team/service#/common.service'
+import { RouteService } from '@/services/route.service'
+import { TeamService } from '@/views/pages/shop/product/course/schedule/team/team.service'
 import ScheduleTeamAddCourseScheduleBatch from '@/views/biz-modals/schedule/team/add-course-schedule-batch'
 export default {
   name: 'AddCourseSchedule',

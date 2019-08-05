@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { TeamScheduleScheduleService } from '../../../pages/shop/product/course/schedule/team.service#/schedule.service'
+import { TeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/team/service#/schedule.service'
 export default {
   name: 'CopySchedule',
   serviceInject() {

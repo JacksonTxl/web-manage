@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { PersonalScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/personal.service#/reserve.service'
+import { PersonalScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/personal/service#/reserve.service'
 import SchedulePersonalEditReserve from '@/views/biz-modals/schedule/personal/edit-reserve'
 export default {
   name: 'OrderInfo',

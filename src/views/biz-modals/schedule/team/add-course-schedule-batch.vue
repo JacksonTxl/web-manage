@@ -137,8 +137,8 @@
 </template>
 <script>
 import { cloneDeep } from 'lodash-es'
-import { TeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/team.service#/common.service'
-import { TeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/team.service#/schedule.service'
+import { TeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/team/service#/common.service'
+import { TeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/team/service#/schedule.service'
 import { MessageService } from '@/services/message.service'
 const columns = [
   {

@@ -107,10 +107,10 @@
 </template>
 
 <script>
-import { TeamScheduleCommonService } from './schedule/team.service#/common.service'
-import { PersonalScheduleCommonService } from './schedule/personal.service#/common.service'
+import { TeamScheduleCommonService } from './schedule/team/service#/common.service'
+import { PersonalScheduleCommonService } from './schedule/personal/service#/common.service'
 import { RouteService } from '../../../../../services/route.service'
-import { PersonalTeamScheduleCommonService } from './schedule/personal-team.service#/common.service'
+import { PersonalTeamScheduleCommonService } from './schedule/personal-team/service#/common.service'
 import { ScheduleService } from './schedule.service'
 import ScheduleTeamEditSchedule from '@/views/biz-modals/schedule/team/edit-schedule'
 export default {

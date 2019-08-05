@@ -36,10 +36,10 @@
 </template>
 
 <script>
-import { PersonalScheduleCommonService as CommonService } from '../../../pages/shop/product/course/schedule/personal.service#/common.service'
+import { PersonalScheduleCommonService as CommonService } from '@/views/pages/shop/product/course/schedule/personal/service#/common.service'
 import { difference, cloneDeep } from 'lodash-es'
 import { RouteService } from '@/services/route.service'
-import { PersonalScheduleReserveService as ReserveService } from '../../../pages/shop/product/course/schedule/personal.service#/reserve.service'
+import { PersonalScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/personal/service#/reserve.service'
 export default {
   name: 'EditReserve',
   serviceInject() {
