@@ -94,7 +94,7 @@ export default {
      * @example
      *  ```html
      *      <st-button @click='onSearch'></st-button>
-     * ```
+     *  ```
      */
     onSearch() {
       this.onSelectionReset()
@@ -159,6 +159,7 @@ export default {
       this.$router.push({
         query: {
           [key]: data,
+          [this.currentPageField]: 1,
           size: this.query.size
         },
         force: true
