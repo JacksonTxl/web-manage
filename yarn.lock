@@ -1593,41 +1593,6 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@fullcalendar/core@^4.1.0", "@fullcalendar/core@~4.2.0":
-  version "4.2.0"
-  resolved "https://registry.npm.taobao.org/@fullcalendar/core/download/@fullcalendar/core-4.2.0.tgz#16716d6617137e54fceeb03c72f5124c92b86e58"
-  integrity sha1-FnFtZhcTflT87rA8cvUSTJK4blg=
-
-"@fullcalendar/daygrid@^4.1.0", "@fullcalendar/daygrid@~4.2.0":
-  version "4.2.0"
-  resolved "https://registry.npm.taobao.org/@fullcalendar/daygrid/download/@fullcalendar/daygrid-4.2.0.tgz#c49a9e27baf40b5a637a5d8fffa2670f19ed636b"
-  integrity sha1-xJqeJ7r0C1pjel2P/6JnDxntY2s=
-
-"@fullcalendar/interaction@^4.1.0":
-  version "4.2.0"
-  resolved "https://registry.npm.taobao.org/@fullcalendar/interaction/download/@fullcalendar/interaction-4.2.0.tgz#312e83f575aed67c33aec69884664d436aaedef2"
-  integrity sha1-MS6D9XWu1nwzrsaYhGZNQ2qu3vI=
-
-"@fullcalendar/list@^4.1.0":
-  version "4.2.0"
-  resolved "https://registry.npm.taobao.org/@fullcalendar/list/download/@fullcalendar/list-4.2.0.tgz#8eac663750af2bd0d7e64c399ab550e049283890"
-  integrity sha1-jqxmN1CvK9DX5kw5mrVQ4EkoOJA=
-
-"@fullcalendar/timegrid@^4.1.0":
-  version "4.2.0"
-  resolved "https://registry.npm.taobao.org/@fullcalendar/timegrid/download/@fullcalendar/timegrid-4.2.0.tgz#e2372ba108f5da8e38c915366c2101b4365ff409"
-  integrity sha1-4jcroQj12o44yRU2bCEBtDZf9Ak=
-  dependencies:
-    "@fullcalendar/daygrid" "~4.2.0"
-
-"@fullcalendar/vue@^4.1.0":
-  version "4.2.2"
-  resolved "https://registry.npm.taobao.org/@fullcalendar/vue/download/@fullcalendar/vue-4.2.2.tgz#ab26e730e407019946483c4d1f2ba9f0014094a2"
-  integrity sha1-qybnMOQHAZlGSDxNHyup8AFAlKI=
-  dependencies:
-    "@fullcalendar/core" "~4.2.0"
-    fast-deep-equal "^2.0.1"
-
 "@hapi/address@2.x.x":
   version "2.0.0"
   resolved "https://registry.npm.taobao.org/@hapi/address/download/@hapi/address-2.0.0.tgz#9f05469c88cb2fd3dcd624776b54ee95c312126a"
@@ -8201,7 +8166,7 @@ joi@^11.1.1:
     isemail "3.x.x"
     topo "2.x.x"
 
-"jquery@2 - 3", jquery@^3.4.0:
+"jquery@2 - 3":
   version "3.4.1"
   resolved "https://registry.npm.taobao.org/jquery/download/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
   integrity sha1-cU8fjZ3eS9+lV2S6N+8hRjDYDvI=
