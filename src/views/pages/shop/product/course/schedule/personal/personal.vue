@@ -19,8 +19,8 @@
 
 <script>
 import Calendar from '@/views/biz-components/schedule/calendar'
-import { PersonalTeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/schedule.service'
-import { PersonalScheduleReserveService } from '../personal.service#/reserve.service'
+import { PersonalTeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/service#/schedule.service'
+import { PersonalScheduleReserveService } from '../service#/reserve.service'
 import { RouteService } from '@/services/route.service'
 import SchedulePersonalAddReserve from '@/views/biz-modals/schedule/personal/add-reserve'
 import SchedulePersonalTeamCopy from '@/views/biz-modals/schedule/personal-team/copy'

@@ -23,7 +23,7 @@
 
 <script>
 import Calendar from '@/views/biz-components/schedule/calendar'
-import { PersonalTeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/schedule.service'
+import { PersonalTeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/service#/schedule.service'
 import { RouteService } from '@/services/route.service'
 import SchedulePersonalTeamAddInBatch from '@/views/biz-modals/schedule/personal-team/add-in-batch'
 import SchedulePersonalTeamAdd from '@/views/biz-modals/schedule/personal-team/add'
