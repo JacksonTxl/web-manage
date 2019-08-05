@@ -110,10 +110,7 @@ export default {
         .put({
           business: 'image',
           isPrivate: false,
-          file: this.convertBase64UrlToBlob(this.info.qrcode_url),
-          uploadProgress: e => {
-            console.log(parseInt((e.loaded / e.total) * 100))
-          }
+          file: this.convertBase64UrlToBlob(this.info.qrcode_url)
         })
         .subscribe({
           next: val => {

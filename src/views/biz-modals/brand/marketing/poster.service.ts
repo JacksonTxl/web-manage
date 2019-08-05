@@ -12,6 +12,7 @@ export class PosterService {
   loading$ = new State({})
   qrcode$ = new State({})
   constructor(protected marketingApi: MarketingApi) {}
+  @Effect()
   getToken() {
     return this.marketingApi.getToken().pipe(
       tap((res: any) => {
