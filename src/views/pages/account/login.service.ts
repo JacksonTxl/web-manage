@@ -8,6 +8,7 @@ import { TokenService } from '@/services/token.service'
 @Injectable()
 export class LoginService {
   name$ = new State<string>('')
+  loading$ = new State({})
   constructor(
     private loginApi: LoginApi,
     private tokenService: TokenService,
