@@ -338,6 +338,7 @@ import { UserService } from '@/services/user.service'
 import { RuleConfig } from '@/constants/rule'
 import { cloneDeep } from 'lodash-es'
 import { PatternService } from '@/services/pattern.service'
+import { OPERATION_TYPES } from '@/constants/sold/operations'
 export default {
   name: 'ModalSoldCardTransfer',
   bem: {
@@ -380,6 +381,7 @@ export default {
   props: ['id', 'type'],
   data() {
     return {
+      OPERATION_TYPES,
       show: false,
       form: this.$form.createForm(this),
       // 搜索会员
@@ -402,7 +404,13 @@ export default {
   },
   created() {
     this.transferService.getTransferInfo(this.id, this.type).subscribe(res => {
-      this.transferService.getPayList(res.info.order_id).subscribe()
+      this.transferService
+        .getPayList({
+          member_id: res.info.member_id,
+          product_type: 1,
+          operation_type: OPERATION_TYPES.TRANSFORM
+        })
+        .subscribe()
       this.member_id = res.info.member_id
     })
   },

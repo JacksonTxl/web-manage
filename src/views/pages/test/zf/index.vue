@@ -14,14 +14,17 @@
     <canvas id="myCanvas" width="750" height="1334" v-show="false"></canvas>
     <st-button @click="drawImage">点击绘制</st-button>
     <st-button @click="getImage">生成图片</st-button>
+    {{ OPERATION_TYPES }}
   </st-panel>
 </template>
 <script>
 // import StRangePicker from '@/views/components/datetime-picker/range-picker'
 import StSelect from '@/views/components/select/select'
+import { OPERATION_TYPES } from '@/constants/sold/operations'
 export default {
   data() {
     return {
+      OPERATION_TYPES: OPERATION_TYPES,
       form: this.$form.createForm(this),
       list: [
         {
