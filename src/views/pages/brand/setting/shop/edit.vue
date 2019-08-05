@@ -53,7 +53,7 @@
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="门店地址" required>
-            <st-map-button
+            <map-button
               :lat="editMap.lat"
               :lng="editMap.lng"
               :address="editMap.address"
@@ -61,7 +61,7 @@
               :city="editMap.city"
               :district="editMap.district"
               @select="editMapChange"
-            ></st-map-button>
+            ></map-button>
           </st-form-item>
         </a-col>
       </a-row>
@@ -88,16 +88,16 @@
       <a-row :gutter="8">
         <a-col offset="1" :lg="23">
           <st-form-item label="服务设施">
-            <st-checkbox-facility-group v-model="shopData.service_ids">
-              <st-checkbox-facility-item
+            <checkbox-facility-group v-model="shopData.service_ids">
+              <checkbox-facility-item
                 style="margin-right:24px"
                 v-for="item in serviceList"
                 :label="item.service_name"
                 :icon="serviceIcon_icon_list[item.service_id]"
                 :key="item.service_id"
                 :value="item.service_id"
-              ></st-checkbox-facility-item>
-            </st-checkbox-facility-group>
+              ></checkbox-facility-item>
+            </checkbox-facility-group>
           </st-form-item>
         </a-col>
       </a-row>
@@ -128,9 +128,9 @@
       <a-row :gutter="8">
         <a-col offset="1" :lg="22">
           <st-form-item label="营业时间">
-            <st-shop-hour-picker
+            <shop-hour-picker
               v-model="shopData.business_time"
-            ></st-shop-hour-picker>
+            ></shop-hour-picker>
           </st-form-item>
         </a-col>
       </a-row>
@@ -156,8 +156,18 @@ import { RuleConfig } from '@/constants/rule'
 import { EditService } from './edit.service'
 import { PatternService } from '@/services/pattern.service'
 import { cloneDeep } from 'lodash-es'
+import CheckboxFacilityGroup from '@/views/biz-components/checkbox-facility/checkbox-facility-group'
+import CheckboxFacilityItem from '@/views/biz-components/checkbox-facility/checkbox-facility-item'
+import MapButton from '@/views/biz-components/map-button/map-button'
+import ShopHourPicker from '@/views/biz-components/shop-hour-picker/shop-hour-picker'
 export default {
   name: 'EditShopSetting',
+  components: {
+    CheckboxFacilityGroup,
+    CheckboxFacilityItem,
+    MapButton,
+    ShopHourPicker
+  },
   serviceInject() {
     return {
       pattern: PatternService,

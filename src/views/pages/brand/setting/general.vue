@@ -1,10 +1,9 @@
 <template>
   <div>
-    <page-route-nav title="通用设置" v-model="authTabs"></page-route-nav>
+    <st-page-route-nav title="通用设置" v-model="authTabs"></st-page-route-nav>
   </div>
 </template>
 <script>
-import PageRouteNav from '@/views/components/page-route-nav#/nav'
 import { GeneralService } from './general.service'
 export default {
   bem: {
@@ -19,9 +18,6 @@ export default {
     return {
       authTabs: this.generalService.authTabs$
     }
-  },
-  components: {
-    PageRouteNav
   }
 }
 </script>

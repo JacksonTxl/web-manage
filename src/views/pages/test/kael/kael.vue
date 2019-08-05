@@ -1,11 +1,15 @@
 <template>
   <st-panel app>
     {{ timeList }}
-    <st-shop-hour-picker v-model="timeList"></st-shop-hour-picker>
+    <shop-hour-picker v-model="timeList"></shop-hour-picker>
   </st-panel>
 </template>
 <script>
+import ShopHourPicker from '@/views/biz-components/shop-hour-picker/shop-hour-picker'
 export default {
+  components: {
+    ShopHourPicker
+  },
   data() {
     return {
       timeList: [

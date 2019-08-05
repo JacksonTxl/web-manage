@@ -34,15 +34,15 @@
             <a class="mg-l12" @click="location">查看定位</a>
           </st-info-item>
         </st-info>
-        <st-checkbox-facility-info :serviceList="serviceListComputed" />
+        <checkbox-facility-info :serviceList="serviceListComputed" />
       </div>
     </div>
     <div :class="shopInfo('time')" class="mg-t12">
       <st-t3 class="mg-b16">营业时间</st-t3>
-      <st-shop-hour-picker
+      <shop-hour-picker
         :isInfo="true"
         v-model="info.business_time"
-      ></st-shop-hour-picker>
+      ></shop-hour-picker>
     </div>
   </div>
 </template>
@@ -50,8 +50,14 @@
 import { InfoService } from './info.service'
 import { cloneDeep } from 'lodash-es'
 import ShopMapLocation from '@/views/biz-modals/shop/map-location'
+import CheckboxFacilityInfo from '@/views/biz-components/checkbox-facility/checkbox-facility-info'
+import ShopHourPicker from '@/views/biz-components/shop-hour-picker/shop-hour-picker'
 export default {
   name: 'PageBrandSettingShopInfo',
+  components: {
+    CheckboxFacilityInfo,
+    ShopHourPicker
+  },
   bem: {
     shopInfo: 'page-brand-setting-shop-info'
   },

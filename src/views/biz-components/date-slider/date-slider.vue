@@ -7,26 +7,20 @@
         :style="rangeBarStyle"
         v-if="range"
       ></div>
-      <st-slider-button
-        ref="firstButton"
-        v-model="firstValue"
-      ></st-slider-button>
-      <st-slider-button
-        ref="secondButton"
-        v-model="secondValue"
-      ></st-slider-button>
+      <slider-button ref="firstButton" v-model="firstValue"></slider-button>
+      <slider-button ref="secondButton" v-model="secondValue"></slider-button>
     </div>
   </div>
 </template>
 
 <script>
-import StSliderButton from './button'
+import SliderButton from './button'
 export default {
   name: 'StDateSlider',
   bem: {
     StDateSlider: 'st-date-slider'
   },
-  components: { StSliderButton },
+  components: { SliderButton },
   props: {
     value: {
       type: [Number, Array],

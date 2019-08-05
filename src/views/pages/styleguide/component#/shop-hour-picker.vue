@@ -2,21 +2,25 @@
   <section class="sg-section">
     <h3>st-shop-hour-picker</h3>
     {{ model }}
-    <st-shop-hour-picker
+    <shop-hour-picker
       :isInfo="false"
       v-model="model"
       @change="onChange"
-    ></st-shop-hour-picker>
-    <st-shop-hour-picker
+    ></shop-hour-picker>
+    <shop-hour-picker
       :isInfo="true"
       v-model="model"
       @change="onChange"
-    ></st-shop-hour-picker>
+    ></shop-hour-picker>
   </section>
 </template>
 
 <script>
+import ShopHourPicker from '@/views/biz-components/shop-hour-picker/shop-hour-picker'
 export default {
+  components: {
+    ShopHourPicker
+  },
   data() {
     return {
       model: [

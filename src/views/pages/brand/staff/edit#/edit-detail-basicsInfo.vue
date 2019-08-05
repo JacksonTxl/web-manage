@@ -48,12 +48,12 @@
       </a-col>
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="员工人脸">
-          <st-face-upload
+          <face-upload
             width="164px"
             height="164px"
             :list="faceList"
             placeholder="上传人脸"
-          ></st-face-upload>
+          ></face-upload>
         </st-form-item>
         <st-form-item required>
           <template slot="label">
@@ -168,6 +168,7 @@ import { RuleConfig } from '@/constants/staff/rule'
 import { EditService } from '../edit.service'
 import ShopSelect from '@/views/biz-components/shop-select'
 import DepartmentSelect from '@/views/biz-components/department-select'
+import FaceUpload from '@/views/biz-components/face-upload/face-upload'
 export default {
   name: 'EditBasicInfo',
   serviceInject() {
@@ -203,7 +204,8 @@ export default {
   },
   components: {
     ShopSelect,
-    DepartmentSelect
+    DepartmentSelect,
+    FaceUpload
   },
   mounted() {
     this.$nextTick().then(() => {

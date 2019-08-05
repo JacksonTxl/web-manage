@@ -73,12 +73,12 @@
         </a-col>
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="用户人脸">
-            <st-face-upload
+            <face-upload
               width="264px"
               height="264px"
               :list="faceList"
               placeholder="会员人脸信息"
-            ></st-face-upload>
+            ></face-upload>
           </st-form-item>
         </a-col>
       </a-row>
@@ -278,7 +278,11 @@ import { UserService } from '@/services/user.service'
 import { RegionService } from '@/services/region.service'
 import { MessageService } from '@/services/message.service'
 import { PatternService } from '@/services/pattern.service'
+import FaceUpload from '@/views/biz-components/face-upload/face-upload'
 export default {
+  components: {
+    FaceUpload
+  },
   serviceInject() {
     return {
       addService: AddService,

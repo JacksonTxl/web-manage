@@ -35,13 +35,13 @@
           </div>
           <!-- slider -->
           <div class="sliderBox">
-            <st-date-slider
+            <date-slider
               :step="step"
               :disable="isInfo"
               :rangeData="item.range"
               :tipFormatter="formatter"
               v-model="item.value"
-            ></st-date-slider>
+            ></date-slider>
           </div>
           <!-- 操作列 -->
           <div class="operation" v-if="!isInfo">
@@ -73,10 +73,14 @@
 <script>
 import { SLIDER, WEEK_NO_SELF, WEEK, TIMER } from './shop-hour-picker.config'
 import { constant, cloneDeep, difference } from 'lodash-es'
+import DateSlider from '@/views/biz-components/date-slider/date-slider'
 export default {
   name: 'StShopHourPicker',
   bem: {
     ShopHourPicker: 'st-shop-hour-picker'
+  },
+  components: {
+    DateSlider
   },
   model: {
     prop: 'value',

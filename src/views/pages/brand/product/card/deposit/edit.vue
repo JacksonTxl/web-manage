@@ -340,7 +340,7 @@
                 required
                 :help="cardBgValidatorText"
               >
-                <st-card-bg-radio
+                <card-bg-radio
                   @change="onCardBgChange"
                   v-model="cardData.bg_image"
                 />
@@ -408,6 +408,7 @@ import MemberCard from '@/views/biz-components/h5/pages/member-card'
 import H5Container from '@/views/biz-components/h5/h5-container'
 import h5mixin from '../member/period/h5mixin'
 import { MEMBER_CARD } from '@/views/biz-components/h5/pages/member-card.config'
+import CardBgRadio from '@/views/biz-components/card-bg-radio/card-bg-radio'
 export default {
   name: 'BrandDepositCardEdit',
   mixins: [h5mixin],
@@ -435,7 +436,8 @@ export default {
   components: {
     SelectShop,
     MemberCard,
-    H5Container
+    H5Container,
+    CardBgRadio
   },
   data() {
     return {

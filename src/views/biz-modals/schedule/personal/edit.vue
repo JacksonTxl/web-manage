@@ -45,7 +45,9 @@
                 <span>{{ info.schedule_time | filterDate }}</span>
               </a-col>
               <a-col :lg="22">
-                <st-time-picker v-model="info.timing"></st-time-picker>
+                <schedule-time-picker
+                  v-model="info.timing"
+                ></schedule-time-picker>
               </a-col>
             </a-row>
           </div>
@@ -58,8 +60,12 @@
 <script>
 import { PersonalScheduleScheduleService } from '../../../pages/shop/product/course/schedule/personal.service#/schedule.service'
 import { RouteService } from '@/services/route.service'
+import ScheduleTimePicker from '@/views/biz-components/schedule-time-picker/schedule-time-picker'
 export default {
   name: 'EditShchedule',
+  components: {
+    ScheduleTimePicker
+  },
   serviceInject() {
     return {
       scheduleService: PersonalScheduleScheduleService,
