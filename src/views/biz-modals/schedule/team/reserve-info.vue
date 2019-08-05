@@ -174,8 +174,8 @@
 <script>
 import { switchMap } from 'rxjs/operators'
 import { MessageService } from '@/services/message.service'
-import { TeamScheduleCommonService } from '../../../pages/shop/product/course/schedule/team.service#/common.service'
-import { TeamScheduleReserveService } from '../../../pages/shop/product/course/schedule/team.service#/reserve.service'
+import { TeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/team/service#/common.service'
+import { TeamScheduleReserveService } from '@/views/pages/shop/product/course/schedule/team/service#/reserve.service'
 import ScheduleTeamCancelCourse from '@/views/biz-modals/schedule/team/cancel-course'
 import ScheduleTeamEditSchedule from '@/views/biz-modals/schedule/team/edit-schedule'
 export default {

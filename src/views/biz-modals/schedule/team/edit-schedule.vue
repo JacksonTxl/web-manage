@@ -98,8 +98,8 @@
 import { cloneDeep } from 'lodash-es'
 
 import { TeamService } from '@/views/pages/shop/product/course/schedule/team/team.service'
-import { TeamScheduleScheduleService } from '../../../pages/shop/product/course/schedule/team.service#/schedule.service'
-import { TeamScheduleCommonService } from '../../../pages/shop/product/course/schedule/team.service#/common.service'
+import { TeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/team/service#/schedule.service'
+import { TeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/team/service#/common.service'
 export default {
   name: 'EditCourseSchedule',
   serviceInject() {

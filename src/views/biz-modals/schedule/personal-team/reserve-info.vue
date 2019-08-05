@@ -157,9 +157,9 @@
 <script>
 import { switchMap } from 'rxjs/operators'
 import { MessageService } from '@/services/message.service'
-import { PersonalTeamScheduleCommonService as CommonService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/common.service'
-import { PersonalTeamScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/reserve.service'
-import { PersonalTeamScheduleScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/schedule.service'
+import { PersonalTeamScheduleCommonService as CommonService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/common.service'
+import { PersonalTeamScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/reserve.service'
+import { PersonalTeamScheduleScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/schedule.service'
 import { RouteService } from '@/services/route.service'
 import SchedulePersonalTeamEdit from '@/views/biz-modals/schedule/personal-team/edit'
 export default {

@@ -42,7 +42,7 @@
 
 <script>
 import { MessageService } from '@/services/message.service'
-import { PersonalTeamScheduleScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/schedule.service'
+import { PersonalTeamScheduleScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/schedule.service'
 export default {
   name: 'CopySchedule',
   serviceInject() {
