@@ -5,7 +5,7 @@ import { tap, pluck } from 'rxjs/operators'
 import { State, log, Computed, Effect } from 'rx-state'
 import { Store } from '@/services/store'
 import { RouteService } from '@/services/route.service'
-import { SN_GENERATE_RULE } from '@/constants/contract/enums'
+import { SN_GENERATE_RULE } from '@/constants/setting/contract'
 
 interface EditState {
   info: any
