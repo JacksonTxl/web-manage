@@ -121,9 +121,7 @@ export default {
               this.token
             }&brand_logo=${this.info.brand_logo}&brand_name=${
               this.info.brand_name
-            }&price=${this.info.price}&qrcode_url=${val.host}/${
-              val.fileKey
-            }&download=1`
+            }&price=${this.info.price}&qrcode_url=${val.url}&download=1`
           },
           error: val => {},
           complete: () => {}

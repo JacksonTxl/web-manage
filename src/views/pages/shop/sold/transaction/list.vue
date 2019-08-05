@@ -147,8 +147,13 @@ export default {
       window.open(url)
     },
     // 查看订单
-    createdOrderViewOrder() {
-      console.log('查看订单')
+    createdOrderViewOrder(order_id) {
+      this.$router.push({
+        name: 'shop-finance-order-info-collection-details',
+        query: {
+          id: order_id
+        }
+      })
     },
     // 订单收款modal
     createdOrderPay(props) {
@@ -184,7 +189,7 @@ export default {
           this.createdOrderPrint(orderId)
           break
         case 'ViewOrder':
-          this.createdOrderViewOrder()
+          this.createdOrderViewOrder(orderId)
           break
         case 'Pay':
           this.createdOrderPay({ order_id: orderId, type: modalType }).then(

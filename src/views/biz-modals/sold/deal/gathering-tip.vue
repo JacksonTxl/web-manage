@@ -8,7 +8,7 @@
     wrapClassName="modal-sold-deal-gathering-tip"
   >
     <div :class="gatheringTip('content')">
-      <st-icon type="success" class="img" />
+      <st-icon type="success" class="img" color="#52c41a" />
       <p>{{ message }}</p>
       <st-button type="primary" @click="print">打印合同</st-button>
       <st-button @click="viewOrder">查看订单</st-button>
