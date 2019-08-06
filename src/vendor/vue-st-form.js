@@ -3,7 +3,8 @@ import {
   isString,
   isArray,
   cloneDeep,
-  isFunction
+  isFunction,
+  set
 } from 'lodash-es'
 
 export default {
@@ -47,7 +48,7 @@ export default {
                 options = arg
               }
               if (isFunction(arg)) {
-                options = arg.call(vm)
+                options = arg(vm)
               }
               const _decorators = {}
               const makeAntValidator = (fn, key) => (rule, value, callback) => {
@@ -106,7 +107,7 @@ export default {
                   })
                 }
 
-                _decorators[key] = [key, decoOpt]
+                set(_decorators, key, [key, decoOpt])
               })
 
               console.log('[vue-st-form] decorators', _decorators)

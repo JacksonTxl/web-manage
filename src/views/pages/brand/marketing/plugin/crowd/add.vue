@@ -108,6 +108,9 @@ import { AddService } from './add.service'
 import routes from '@/router/routes'
 import { MessageService } from '@/services/message.service'
 export default {
+  serviceProviders() {
+    return [AddService]
+  },
   serviceInject() {
     return {
       addService: AddService,

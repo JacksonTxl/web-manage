@@ -4,11 +4,10 @@
       @change="onChange"
       :format="format || 'YYYY-MM-DD'"
       :value="value.min ? [moment(value.min), moment(value.max)] : []"
-      style="margin-right:8px"
+      class="mg-r8"
       :allowClear="true"
       :disabledDate="disabledDate"
     />
-    <!-- <a-range-picker v-else @change="onChange" style="margin-right:8px" :allowClear="true"/> -->
     <a-radio-group @change="onChangeRadio" v-model="radioValue">
       <a-radio-button :value="7">近7天</a-radio-button>
       <a-radio-button :value="30">近30天</a-radio-button>

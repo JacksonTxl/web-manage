@@ -109,6 +109,7 @@ import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { UserService } from '@/services/user.service'
 import { FreezeService } from './freeze.service'
+import { OPERATION_TYPES } from '@/constants/sold/operations'
 export default {
   name: 'ModalSoldCardFreeze',
   serviceInject() {
@@ -131,6 +132,7 @@ export default {
   props: ['id'],
   data() {
     return {
+      OPERATION_TYPES,
       show: false,
       form: this.$form.createForm(this),
       startTime: moment(),
@@ -143,6 +145,7 @@ export default {
     this.freezeService.getFreezeInfo(this.id).subscribe(res => {
       this.freezeService
         .getMemberPaymentList({
+          operation_type: OPERATION_TYPES.FREEZE,
           member_id: res.info.member_id,
           product_type: res.info.product_type
         })

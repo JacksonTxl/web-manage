@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
-    <div style="display: flex;align-items: center;">
-      <span style="margin-right:16px">积分范围</span>
+  <div :class="bAccumulateIntegrals()">
+    <title-info v-model="titleData"></title-info>
+    <div :class="bAccumulateIntegrals('content')">
+      <span class="mg-r16">积分范围</span>
       <input-number
         v-model="value.getData.sum_scores"
         :company="'个'"
@@ -15,6 +15,9 @@
 import inputNumber from './input-number.vue'
 import titleInfo from './title-info.vue'
 export default {
+  bem: {
+    bAccumulateIntegrals: 'crowd-component-accumulate-Integrals'
+  },
   model: {
     type: 'value',
     event: 'dataChangge'

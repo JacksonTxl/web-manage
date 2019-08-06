@@ -293,6 +293,9 @@ export default {
     bCount: 'page-shop-dashboard-studio-count',
     bAdv: 'page-shop-dashboard-studio-adv'
   },
+  serviceProviders() {
+    return [StudioService]
+  },
   serviceInject() {
     return {
       studioComponentService: StudioService

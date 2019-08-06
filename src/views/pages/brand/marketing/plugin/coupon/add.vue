@@ -192,9 +192,9 @@
                   :disabled="isEditMode"
                   v-decorator="decorators.is_limit"
                 >
-                  <a-radio :value="0">不限</a-radio>
+                  <a-radio :value="1">不限</a-radio>
                   <a-form-item :class="basic('wrap-input')">
-                    <a-radio :value="1">
+                    <a-radio :value="2">
                       每人限领
                       <st-input-number
                         :disabled="isEditMode"
@@ -238,6 +238,9 @@ import SelectShop from '@/views/fragments/shop/select-shop'
 import H5Container from '@/views/biz-components/h5/h5-container'
 export default {
   name: 'BrandMarketingPluginCouponAdd',
+  serviceProviders() {
+    return [AddService]
+  },
   serviceInject() {
     return {
       addService: AddService,
@@ -392,14 +395,14 @@ export default {
     // 每人是否限领
     is_limit_validator(rule, value, values) {
       let is_limit = values.is_limit
-      if (is_limit !== 0 && is_limit !== 1) {
+      if (is_limit !== 1 && is_limit !== 2) {
         return '请选择是否限制领用'
       }
     },
     // 每人限领数量 setFieldsValue
     person_limit_validator(rule, value, values) {
       let is_limit = values.is_limit
-      if (is_limit === 1) {
+      if (is_limit === 2) {
         if (!value) {
           return '请输入每人限领数量'
         }
@@ -421,7 +424,7 @@ export default {
         coupon_name: this.info.coupon_name,
         price: +this.info.price,
         use_type: this.info.use_type,
-        full_price: this.info.full_price || '',
+        full_price: +this.info.full_price || '',
         number: this.info.number,
         valid_days: this.info.valid_days,
         is_limit: this.info.is_limit,
