@@ -3,7 +3,8 @@ import {
   isString,
   isArray,
   cloneDeep,
-  isFunction
+  isFunction,
+  set
 } from 'lodash-es'
 
 export default {
@@ -106,7 +107,7 @@ export default {
                   })
                 }
 
-                _decorators[key] = [key, decoOpt]
+                set(_decorators, key, [key, decoOpt])
               })
 
               console.log('[vue-st-form] decorators', _decorators)
