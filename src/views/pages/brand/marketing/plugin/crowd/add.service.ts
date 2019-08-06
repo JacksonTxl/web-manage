@@ -6,39 +6,15 @@ import { Store } from '@/services/store'
 import { CrowdAPI } from '@/api/v1/crowd'
 import { forkJoin } from 'rxjs'
 
-interface CrowdInfoState {
-  crowdInfo: any
-  followInfo: any
-}
 @Injectable()
-export class AddService extends Store<CrowdInfoState> {
-  state$: State<CrowdInfoState>
-  crowdInfo$: Computed<string>
-  followInfo$: Computed<string>
-  constructor(private crowdAPI: CrowdAPI, private titleService: TitleService) {
-    super()
-    this.state$ = new State({
-      crowdInfo: {},
-      followInfo: {}
-    })
-    this.crowdInfo$ = new Computed(this.state$.pipe(pluck('crowdInfo')))
-    this.followInfo$ = new Computed(this.state$.pipe(pluck('followInfo')))
-  }
-  SET_CROWD_INFO(crowdInfo: CrowdInfoState) {
-    this.state$.commit(state => {
-      state.crowdInfo = crowdInfo
-    })
-  }
-  SET_FOLLOW_INFO(followInfo: CrowdInfoState) {
-    this.state$.commit(state => {
-      state.followInfo = followInfo
-    })
-  }
+export class AddService {
+  crowdInfo$ = new State({})
+  constructor(private crowdAPI: CrowdAPI, private titleService: TitleService) {}
   // 获取列表
   getListInfo() {
     return this.crowdAPI.getCrowdBrandField().pipe(
       tap(res => {
-        this.SET_CROWD_INFO(res)
+        this.crowdInfo$.commit(() => res)
       })
     )
   }

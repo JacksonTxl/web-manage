@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
-    <div style="display: flex;align-items: center;">
-      <span style="margin-right:16px">剩余金额</span>
+  <div :class="bCardMount()">
+    <title-info v-model="titleData"></title-info>
+    <div :class="bCardMount('content')">
+      <span class="mg-r16">剩余金额</span>
       <input-number
         v-model="value.getData.deposit_remain_money"
         :company="'元'"
@@ -15,6 +15,9 @@
 import inputNumber from './input-number.vue'
 import titleInfo from './title-info.vue'
 export default {
+  bem: {
+    bCardMount: 'crowd-component-card-mount'
+  },
   model: {
     type: 'value',
     event: 'dataChangge'

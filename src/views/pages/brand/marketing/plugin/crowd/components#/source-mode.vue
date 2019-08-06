@@ -1,19 +1,22 @@
 <template>
-  <div>
-    <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
-    <span style="margin-right:16px">选择来源</span>
-    <template v-for="(tag, index) in value.getData.source_channel">
-      <a-tooltip :key="index" :title="tag.name">
-        <a-tag
-          :key="index"
-          :closable="true"
-          :afterClose="() => handleClose(tag, index)"
-        >
-          {{ tag.name }}
-        </a-tag>
-      </a-tooltip>
-    </template>
-    <a-tag style="background: #fff; borderStyle: dashed;">
+  <div :class="bSourceMode()">
+    <title-info v-model="titleData"></title-info>
+    <span class="mg-r16">选择来源</span>
+    <div v-if="value.getData.source_channel.length">
+      <template v-for="(tag, index) in value.getData.source_channel">
+        <a-tooltip :key="index" :title="tag.name">
+          <a-tag
+            :key="index"
+            :closable="true"
+            :afterClose="() => handleClose(tag, index)"
+          >
+            {{ tag.name }}
+          </a-tag>
+        </a-tooltip>
+      </template>
+    </div>
+
+    <a-tag :class="bSourceMode('tag')">
       <a-dropdown>
         <a class="ant-dropdown-link">
           <a-icon type="plus" />
@@ -33,6 +36,9 @@ import { UserService } from '@/services/user.service'
 import titleInfo from './title-info.vue'
 import { cloneDeep } from 'lodash-es'
 export default {
+  bem: {
+    bSourceMode: 'crowd-components-source-mode'
+  },
   serviceInject() {
     return {
       userService: UserService

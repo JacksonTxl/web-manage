@@ -1,16 +1,16 @@
 <template>
-  <div>
-    <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
-    <div style="display: flex;align-items: center;margin-bottom: 24px;">
-      <span style="margin-right:16px">入场次数</span>
+  <div :class="bAdmissionTimes()">
+    <title-info v-model="titleData"></title-info>
+    <div :class="bAdmissionTimes('count')" style=";">
+      <span class="mg-r16">入场次数</span>
       <input-number
         v-model="value.getData.remain_enter_times.remain_times"
         :company="'次'"
         :minMax="{ min: 0, max: 1000 }"
       ></input-number>
     </div>
-    <div style="display: flex;align-items: center;">
-      <span style="margin-right:16px">时间范围</span>
+    <div :class="bAdmissionTimes('time')" style="">
+      <span class="mg-r16">时间范围</span>
       <time-day
         v-model="value.getData.remain_enter_times.select_time"
       ></time-day>
@@ -22,6 +22,9 @@ import inputNumber from './input-number.vue'
 import timeDay from './time-day'
 import titleInfo from './title-info.vue'
 export default {
+  bem: {
+    bAdmissionTimes: 'crowd-component-admission-times'
+  },
   model: {
     type: 'value',
     event: 'dataChangge'

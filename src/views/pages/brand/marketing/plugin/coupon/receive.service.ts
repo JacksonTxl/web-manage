@@ -8,20 +8,18 @@ import { Store } from '@/services/store'
 export interface SetState {}
 
 @Injectable()
-export class ReceiveService extends Store<SetState> implements RouteGuard {
+export class ReceiveService implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
   info$ = new State({})
+  loading$ = new State({})
   auth$ = this.authService.authMap$({
     export: 'brand:activity:coupon|export'
   })
   constructor(
     private marketingApi: MarketingApi,
     private authService: AuthService
-  ) {
-    super()
-    this.state$ = new State({})
-  }
+  ) {}
   @Effect()
   getReceiveList(params: any) {
     return this.marketingApi.getReceiveList(params).pipe(

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
+    <title-info v-model="titleData"></title-info>
     <span style="margin-right:16px">选择等级</span>
     <a-checkbox-group v-model="value.getData.member_level">
       <a-checkbox
