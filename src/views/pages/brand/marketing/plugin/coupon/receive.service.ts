@@ -1,10 +1,8 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state'
-import { CouponApi, CouponListParams } from '@/api/v1/marketing/coupon'
 import { MarketingApi } from '@/api/v1/marketing/marketing'
 import { tap, pluck } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
-import { forkJoin } from 'rxjs'
 import { Store } from '@/services/store'
 
 export interface SetState {}
