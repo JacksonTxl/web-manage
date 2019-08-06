@@ -1,10 +1,10 @@
 <template>
-  <st-form :form="form" labelWidth="100px">
+  <st-form :form="form" labelWidth="100px" @submit.prevent="onSubmit">
     <a-row>
       <a-col :xs="22">
         <div>{{ shopName }}</div>
         <st-form-item v-show="false">
-          <input type="hidden" v-decorator="formRules.shopId" />
+          <input type="hidden" v-decorator="decorators.shop_id" />
         </st-form-item>
         <div v-show="!isEdit">
           <st-form-item label="放假开始时间" required class="mg-t16 mg-b0">
@@ -22,11 +22,11 @@
         </div>
         <div v-show="isEdit">
           <st-form-item v-show="false">
-            <input type="hidden" v-decorator="formRules.shopId" />
+            <input type="hidden" v-decorator="decorators.shop_id" />
           </st-form-item>
           <st-form-item label="放假开始时间" required class="mg-t16">
             <a-date-picker
-              v-decorator="formRules.startTime"
+              v-decorator="decorators.start_time"
               :showTime="{ format: appConfig.DATE_FORMAT.time }"
               :format="appConfig.DATE_FORMAT.datetime"
               placeholder="请选择放假开始时间"
@@ -37,7 +37,7 @@
           </st-form-item>
           <st-form-item label="放假结束时间" required class="mg-t16">
             <a-date-picker
-              v-decorator="formRules.endTime"
+              v-decorator="decorators.end_time"
               :showTime="{ format: appConfig.DATE_FORMAT.time }"
               :format="appConfig.DATE_FORMAT.datetime"
               placeholder="请选择放假结束时间"
@@ -46,7 +46,7 @@
             />
           </st-form-item>
           <st-form-item labelFix class="mg-b0">
-            <st-button type="primary" :loading="loading.set" @click="onSubmit">
+            <st-button type="primary" :loading="loading.set">
               确认修改放假时间
             </st-button>
           </st-form-item>
@@ -60,32 +60,8 @@ import moment from 'moment'
 import { MessageService } from '@/services/message.service'
 import { HolidayService } from '../setting-shop-holiday.service'
 import { AppConfig } from '@/constants/config'
-import { ruleOptions } from './edit-holiday.config'
-const formRules = {
-  shopId: ['shop_id'],
-  startTime: [
-    'start_time',
-    {
-      rules: [
-        {
-          required: true,
-          message: '请输入放假开始时间'
-        }
-      ]
-    }
-  ],
-  endTime: [
-    'end_time',
-    {
-      rules: [
-        {
-          required: true,
-          message: '请输入放假结束时间'
-        }
-      ]
-    }
-  ]
-}
+import { ruleOptions } from './holiday.config'
+
 export default {
   serviceInject() {
     return {
@@ -120,18 +96,12 @@ export default {
     }
   },
   data() {
-    // const form = this.$stForm.create()
-    // const decorators = form.decorators(ruleOptions())
-    // form.setFieldsValue({
-    //   shop_id: this.shopId,
-    //   start_time: moment(this.startTime),
-    //   end_time: moment(this.endTime)
-    // })
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      // form,
-      // decorators,
+      form,
+      decorators,
       show: true,
-      formRules,
       isEdit: false,
       dateFormat: 'YYYY-MM-DD HH:mm'
     }
@@ -144,19 +114,11 @@ export default {
       return moment(this.holidayTime.end).format(this.dateFormat)
     }
   },
-  created() {
-    this.form = this.$form.createForm(this)
-    // this.form = this.$stForm.create()
-    // this.decorators = this.form.decorators(ruleOptions())
-  },
   mounted() {
-    this.$nextTick(() => {
-      console.log(this.form)
-      this.form.setFieldsValue({
-        shop_id: this.shopId,
-        start_time: moment(this.startTime),
-        end_time: moment(this.endTime)
-      })
+    this.form.setFieldsValue({
+      shop_id: this.shopId,
+      start_time: moment(this.startTime),
+      end_time: moment(this.endTime)
     })
   },
   methods: {
@@ -166,16 +128,11 @@ export default {
     onDel() {
       this.holidayService.del(this.shopId).subscribe(this.onDelSuccess)
     },
-    onSubmit(e) {
-      e.preventDefault()
+    onSubmit() {
       this.form.validate().then(values => {
         const data = this.getData()
         this.holidayService.set(data).subscribe(this.onSubmitSuccess)
       })
-      // this.form.validateFields().then(() => {
-      //   const data = this.getData()
-      //   this.holidayService.set(data).subscribe(this.onSubmitSuccess)
-      // })
     },
     getData() {
       const data = this.form.getFieldsValue()

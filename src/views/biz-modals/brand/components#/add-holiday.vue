@@ -1,15 +1,15 @@
 <template>
   <div>
-    <st-form :form="form" labelWidth="100px">
+    <st-form :form="form" labelWidth="100px" @submit.prevent="onSubmit">
       <a-row>
         <a-col :xs="22">
           <div>{{ shopName }}</div>
           <st-form-item v-show="false">
-            <input type="hidden" v-decorator="decorators.shopId" />
+            <input type="hidden" v-decorator="decorators.shop_id" />
           </st-form-item>
           <st-form-item label="放假开始时间" required class="mg-t16">
             <a-date-picker
-              v-decorator="decorators.startTime"
+              v-decorator="decorators.start_time"
               :showTime="{ format: appConfig.DATE_FORMAT.time }"
               :format="appConfig.DATE_FORMAT.datetime"
               placeholder="请选择放假开始时间"
@@ -19,7 +19,7 @@
           </st-form-item>
           <st-form-item label="放假结束时间" required class="mg-t16">
             <a-date-picker
-              v-decorator="decorators.endTime"
+              v-decorator="decorators.end_time"
               :showTime="{ format: appConfig.DATE_FORMAT.time }"
               :format="appConfig.DATE_FORMAT.datetime"
               placeholder="请选择放假结束时间"
@@ -28,7 +28,7 @@
             />
           </st-form-item>
           <st-form-item labelFix class="mg-b0">
-            <st-button type="primary" :loading="loading.set" @click="onSubmit">
+            <st-button type="primary" :loading="loading.set">
               确认设置放假时间
             </st-button>
           </st-form-item>
@@ -41,34 +41,9 @@
 import { MessageService } from '@/services/message.service'
 import { HolidayService } from '../setting-shop-holiday.service'
 import { AppConfig } from '@/constants/config'
+import { ruleOptions } from './holiday.config'
 import moment from 'moment'
-import { ruleOptions } from './add-holiday.config'
 
-const formRules = {
-  shopId: ['shop_id'],
-  startTime: [
-    'start_time',
-    {
-      rules: [
-        {
-          required: true,
-          message: '请输入放假开始时间'
-        }
-      ]
-    }
-  ],
-  endTime: [
-    'end_time',
-    {
-      rules: [
-        {
-          required: true,
-          message: '请输入放假结束时间'
-        }
-      ]
-    }
-  ]
-}
 export default {
   name: 'AddHoliday',
   serviceInject() {
@@ -96,28 +71,21 @@ export default {
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
-
+    console.log('deco', decorators)
     return {
       form,
       decorators,
       show: true
-      // formRules: ruleOptions
     }
   },
-  // created() {
-  //   this.form = this.$form.createForm(this)
-  // },
   mounted() {
-    this.$nextTick(() => {
-      this.form.setFieldsValue({
-        shop_id: this.shopId
-      })
+    this.form.setFieldsValue({
+      shop_id: this.shopId
     })
   },
   methods: {
     onSubmit(e) {
-      e.preventDefault()
-      this.form.validateFields().then(() => {
+      this.form.validate().then(() => {
         const data = this.getData()
         this.holidayService.set(data).subscribe(this.onSubmitSuccess)
       })

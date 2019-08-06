@@ -1,9 +1,7 @@
 <template>
   <div>
     hello
-    <st-popconfirm @confirm="onConfirm">
-      <a>删除</a>
-    </st-popconfirm>
+    <a v-modal-link="{ name: 'test-sg' }">牛</a>
   </div>
 </template>
 
