@@ -146,7 +146,7 @@
 <script>
 import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
-import { PersonalReserveSettingService } from './setting-personal-reserve.service'
+import { PersonalReserveSettingService } from './reserve.service'
 export default {
   serviceInject() {
     return {

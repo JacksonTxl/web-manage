@@ -36,7 +36,7 @@
 </template>
 <script>
 import { MessageService } from '@/services/message.service'
-import { SettingMinaMchService } from './setting-mina-mch.service'
+import { SettingMinaMchService } from './mch.service'
 export default {
   serviceInject() {
     return {

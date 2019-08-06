@@ -133,7 +133,7 @@
 <script>
 import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
-import { CoursePriceModelSettingService } from './setting-personal-price-model.service'
+import { CoursePriceModelSettingService } from './price-model.service'
 export default {
   serviceInject() {
     return {
