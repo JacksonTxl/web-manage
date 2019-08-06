@@ -23,8 +23,7 @@ import { PersonalTeamScheduleScheduleService } from '@/views/pages/shop/product/
 import { PersonalScheduleReserveService } from './service#/reserve.service'
 import { RouteService } from '@/services/route.service'
 import SchedulePersonalAddReserve from '@/views/biz-modals/schedule/personal/add-reserve'
-import SchedulePersonalTeamCopy from '@/views/biz-modals/schedule/personal-team/copy'
-import SchedulePersonalTeamReserveInfo from '@/views/biz-modals/schedule/personal-team/reserve-info'
+import SchedulePersonalReserveInfo from '@/views/biz-modals/schedule/personal/reserve-info'
 export default {
   name: 'TeamSchedule',
   serviceInject() {
@@ -41,14 +40,10 @@ export default {
   },
   modals: {
     SchedulePersonalAddReserve,
-    SchedulePersonalTeamCopy,
-    SchedulePersonalTeamReserveInfo
+    SchedulePersonalReserveInfo
   },
   components: {
     Calendar
-  },
-  data() {
-    return {}
   },
   computed: {
     startDate() {
@@ -89,7 +84,6 @@ export default {
     },
     // 进入表格模式
     onGetTable() {
-      debugger
       this.$router.push({
         name: 'shop-product-course-schedule-personal-personal-reserve-table',
         query: this.query
