@@ -110,9 +110,6 @@ export default {
         .valueOf()
     }
   },
-  components: {
-    date
-  },
   data() {
     return {
       columns,

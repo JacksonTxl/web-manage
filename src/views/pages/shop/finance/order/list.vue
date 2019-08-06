@@ -284,7 +284,7 @@ export default {
           name = 'personal'
           break
         case 3:
-          name = 'member'
+          name = 'team'
           break
         case 4:
           name = 'package'

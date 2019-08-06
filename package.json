@@ -110,7 +110,7 @@
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
-    "*.less":[
+    "*.less": [
       "stylelint",
       "git add"
     ],

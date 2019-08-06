@@ -42,8 +42,8 @@ export class TransferService {
     return this.contractApi.getCodeNumber(id)
   }
   @Effect()
-  getPayList(id: string) {
-    return this.transactionApi.getPaymentMethodList(id).pipe(
+  getPayList(params: any) {
+    return this.transactionApi.getMemberPaymentList(params).pipe(
       tap((res: any) => {
         this.payList$.commit(() => res.list)
       })

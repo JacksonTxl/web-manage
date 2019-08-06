@@ -115,8 +115,8 @@ export default {
         { key: 'emailfind', name: '邮件找回' }
       ],
       loginTypes: [
-        { key: 'user', name: '用户密码登录' },
-        { key: 'mobile', name: '手机动态密码登录' }
+        { key: 'user', name: '用户密码登录' }
+        // { key: 'mobile', name: '手机动态密码登录' }
       ]
     }
   },
