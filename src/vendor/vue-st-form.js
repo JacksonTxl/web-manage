@@ -48,7 +48,7 @@ export default {
                 options = arg
               }
               if (isFunction(arg)) {
-                options = arg.call(vm)
+                options = arg(vm)
               }
               const _decorators = {}
               const makeAntValidator = (fn, key) => (rule, value, callback) => {

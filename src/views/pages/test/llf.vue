@@ -9,16 +9,14 @@
 </template>
 
 <script>
+import { ruleOptions } from './llf.config'
 export default {
   data() {
     const form = this.$stForm.create()
-    const decorators = form.decorators({
-      'cardData.user_name': {
-        rules: [{ required: true, message: 'ceshi' }]
-      }
-    })
-    console.log(decorators.cardData.user_name)
+    const decorators = form.decorators(ruleOptions)
+
     return {
+      a: 1,
       form,
       decorators
     }
