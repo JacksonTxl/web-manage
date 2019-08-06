@@ -124,6 +124,9 @@ export default {
   bem: {
     basic: 'brand-marketing-plugin'
   },
+  serviceProviders() {
+    return [PluginService]
+  },
   serviceInject() {
     return {
       pluginService: PluginService

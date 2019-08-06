@@ -104,7 +104,6 @@ export class StudioService implements RouteGuard {
           }
           lineData.push(chartItem)
         }
-        console.log(lineData)
         this.courseDaily$.commit(() => lineData)
       })
     )

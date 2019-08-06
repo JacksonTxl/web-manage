@@ -309,6 +309,9 @@ export default {
     bCount: 'page-shop-dashboard-club-count',
     bAdv: 'page-shop-dashboard-club-adv'
   },
+  serviceProviders() {
+    return [ClubService]
+  },
   serviceInject() {
     return {
       clubComponentService: ClubService
