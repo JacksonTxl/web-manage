@@ -55,6 +55,9 @@ export default {
   bem: {
     activity: 'brand-marketing-activity'
   },
+  serviceProviders() {
+    return [ActivityService]
+  },
   serviceInject() {
     return {
       h5WrapperService: H5WrapperService,
