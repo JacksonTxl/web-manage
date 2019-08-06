@@ -71,7 +71,6 @@ export default {
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
-    console.log('deco', decorators)
     return {
       form,
       decorators,
