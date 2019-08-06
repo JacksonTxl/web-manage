@@ -44,7 +44,7 @@
             :class="bComponent('text')"
             v-if="info.receiver_description"
           >
-            <span class="color-title">接受人员</span>
+            <span class="color-title">接收人员</span>
             <span class="mg-l24">{{ info.receiver_description }}</span>
           </div>
           <div
