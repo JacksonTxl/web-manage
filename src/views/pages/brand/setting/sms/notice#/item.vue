@@ -139,12 +139,10 @@
             </div>
             <div>
               <span class="color-title mg-r24">发送规则</span>
-              <span v-if="info.notify_time.value === 0">
-                {{ info.notify_time.name }}
-              </span>
               <span
                 v-if="
-                  info.notify_time.value > 0 && info.notify_time.value < 3600
+                  info.notify_type.value === 1 &&
+                    info.notify_sub_type.value === 4
                 "
               >
                 课程开始前
@@ -159,8 +157,12 @@
                 </a-select>
                 发送
               </span>
+
               <a-radio-group
-                v-if="info.notify_time.value > 3600"
+                v-if="
+                  info.notify_type.value === 1 &&
+                    info.notify_sub_type.value === 6
+                "
                 v-model="params.notify_time"
                 class="mg-b16"
               >
@@ -172,6 +174,9 @@
                   {{ item.label }}
                 </a-radio>
               </a-radio-group>
+              <span v-else>
+                {{ info.notify_time.name }}
+              </span>
             </div>
           </div>
           <div :class="bComponent('text')">
@@ -280,6 +285,7 @@ export default {
   },
   created() {
     this.params.order_type = this.info.order_type
+    this.params.notify_time = this.info.notify_time.value
     this.params.course_type = this.info.course_type
     this.params.receiver = this.info.receiver
     this.params.msg_preffix = this.info.msg_preffix
