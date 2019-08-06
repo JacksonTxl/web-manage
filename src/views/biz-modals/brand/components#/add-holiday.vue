@@ -5,11 +5,11 @@
         <a-col :xs="22">
           <div>{{ shopName }}</div>
           <st-form-item v-show="false">
-            <input type="hidden" v-decorator="formRules.shopId" />
+            <input type="hidden" v-decorator="decorators.shopId" />
           </st-form-item>
           <st-form-item label="放假开始时间" required class="mg-t16">
             <a-date-picker
-              v-decorator="formRules.startTime"
+              v-decorator="decorators.startTime"
               :showTime="{ format: appConfig.DATE_FORMAT.time }"
               :format="appConfig.DATE_FORMAT.datetime"
               placeholder="请选择放假开始时间"
@@ -19,7 +19,7 @@
           </st-form-item>
           <st-form-item label="放假结束时间" required class="mg-t16">
             <a-date-picker
-              v-decorator="formRules.endTime"
+              v-decorator="decorators.endTime"
               :showTime="{ format: appConfig.DATE_FORMAT.time }"
               :format="appConfig.DATE_FORMAT.datetime"
               placeholder="请选择放假结束时间"
@@ -42,6 +42,8 @@ import { MessageService } from '@/services/message.service'
 import { HolidayService } from '../setting-shop-holiday.service'
 import { AppConfig } from '@/constants/config'
 import moment from 'moment'
+import { ruleOptions } from './add-holiday.config'
+
 const formRules = {
   shopId: ['shop_id'],
   startTime: [
@@ -92,14 +94,19 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
+
     return {
-      show: true,
-      formRules
+      form,
+      decorators,
+      show: true
+      // formRules: ruleOptions
     }
   },
-  created() {
-    this.form = this.$form.createForm(this)
-  },
+  // created() {
+  //   this.form = this.$form.createForm(this)
+  // },
   mounted() {
     this.$nextTick(() => {
       this.form.setFieldsValue({

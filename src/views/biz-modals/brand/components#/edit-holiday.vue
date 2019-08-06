@@ -60,6 +60,7 @@ import moment from 'moment'
 import { MessageService } from '@/services/message.service'
 import { HolidayService } from '../setting-shop-holiday.service'
 import { AppConfig } from '@/constants/config'
+import { ruleOptions } from './edit-holiday.config'
 const formRules = {
   shopId: ['shop_id'],
   startTime: [
@@ -119,7 +120,16 @@ export default {
     }
   },
   data() {
+    // const form = this.$stForm.create()
+    // const decorators = form.decorators(ruleOptions())
+    // form.setFieldsValue({
+    //   shop_id: this.shopId,
+    //   start_time: moment(this.startTime),
+    //   end_time: moment(this.endTime)
+    // })
     return {
+      // form,
+      // decorators,
       show: true,
       formRules,
       isEdit: false,
@@ -136,9 +146,12 @@ export default {
   },
   created() {
     this.form = this.$form.createForm(this)
+    // this.form = this.$stForm.create()
+    // this.decorators = this.form.decorators(ruleOptions())
   },
   mounted() {
     this.$nextTick(() => {
+      console.log(this.form)
       this.form.setFieldsValue({
         shop_id: this.shopId,
         start_time: moment(this.startTime),
@@ -155,10 +168,14 @@ export default {
     },
     onSubmit(e) {
       e.preventDefault()
-      this.form.validateFields().then(() => {
+      this.form.validate().then(values => {
         const data = this.getData()
         this.holidayService.set(data).subscribe(this.onSubmitSuccess)
       })
+      // this.form.validateFields().then(() => {
+      //   const data = this.getData()
+      //   this.holidayService.set(data).subscribe(this.onSubmitSuccess)
+      // })
     },
     getData() {
       const data = this.form.getFieldsValue()
