@@ -127,9 +127,6 @@ export default {
       query: this.routeService.query$
     }
   },
-  components: {
-    date
-  },
   filters: {
     filterStartTime(val) {
       const weekday = moment(val)
