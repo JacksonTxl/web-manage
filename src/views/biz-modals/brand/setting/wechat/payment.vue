@@ -34,7 +34,7 @@
 </template>
 <script>
 import { MessageService } from '@/services/message.service'
-import { WechatPaymentSettingService } from './setting-wechat-payment.service'
+import { WechatPaymentSettingService } from './payment.service'
 export default {
   serviceInject() {
     return {

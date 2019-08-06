@@ -62,7 +62,7 @@
   </st-modal>
 </template>
 <script>
-import { SettingSmsPayService } from './setting-sms-pay.service'
+import { SettingSmsPayService } from './pay.service'
 
 export default {
   bem: {

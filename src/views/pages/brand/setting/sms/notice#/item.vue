@@ -185,7 +185,7 @@
 </template>
 <script>
 import { UserService } from '@/services/user.service'
-import BrandSettingSmsNotice from '@/views/biz-modals/brand/setting-sms-notice'
+import BrandSettingSmsNotice from '@/views/biz-modals/brand/setting/sms/notice'
 const componentName = 'notice-item'
 export default {
   name: 'NoticeItem',

@@ -58,7 +58,7 @@
 <script>
 import moment from 'moment'
 import { MessageService } from '@/services/message.service'
-import { HolidayService } from '../setting-shop-holiday.service'
+import { HolidayService } from '../setting/shop/holiday.service'
 import { AppConfig } from '@/constants/config'
 import { ruleOptions } from './holiday.config'
 

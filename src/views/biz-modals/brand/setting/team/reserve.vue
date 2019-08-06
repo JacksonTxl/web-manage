@@ -226,7 +226,7 @@
 <script>
 import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
-import { TeamReserveSettingService } from './setting-team-reserve.service'
+import { TeamReserveSettingService } from './reserve.service'
 export default {
   serviceInject() {
     return {

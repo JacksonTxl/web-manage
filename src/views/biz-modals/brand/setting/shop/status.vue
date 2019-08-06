@@ -34,7 +34,7 @@
 </template>
 <script>
 import { UserService } from '@/services/user.service'
-import { ShopStatusService as EditService } from './setting-shop-status.service'
+import { ShopStatusService as EditService } from './status.service'
 import { MessageService } from '@/services/message.service'
 const formRules = {
   id: ['id'],
