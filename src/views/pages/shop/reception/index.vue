@@ -984,6 +984,7 @@ export default {
         .subscribe(res => {
           this.selectMemberInfo = cloneDeep(res.info)
           this.cabinet = res.info.cabinet.id || -1
+          document.activeElement.blur() // 移除焦点元素
         })
     },
     // 离场
