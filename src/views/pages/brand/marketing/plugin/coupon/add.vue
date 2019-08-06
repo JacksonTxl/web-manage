@@ -421,7 +421,7 @@ export default {
         coupon_name: this.info.coupon_name,
         price: +this.info.price,
         use_type: this.info.use_type,
-        full_price: this.info.full_price || '',
+        full_price: +this.info.full_price || '',
         number: this.info.number,
         valid_days: this.info.valid_days,
         is_limit: this.info.is_limit,
