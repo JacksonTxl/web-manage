@@ -87,32 +87,45 @@
               <span class="mg-r24 color-title">预览内容</span>
               <span>{{ info.preview }}</span>
             </div>
-
-            <div v-if="info.course_type_description">
+            <div v-if="Object.keys(info.course_type).length > 0">
               <span class="color-title">课程类型</span>
-              <a-radio-group v-model="params.course_type" class="mg-b16 mg-l24">
-                <a-radio
-                  v-for="(item, index) in courseType"
-                  :key="index"
-                  :value="item.value"
-                >
-                  {{ item.label }}
-                </a-radio>
-              </a-radio-group>
-            </div>
-
-            <div v-if="info.receiver_description">
-              <span class="color-title">接收人员</span>
-              <a-checkbox-group v-model="params.receiver" class="mg-b16 mg-l24">
+              <span class="mg-b16 mg-l24">
                 <a-checkbox
-                  v-for="(item, index) in receiver"
-                  :key="index"
-                  :value="item.value"
+                  v-if="params.course_type.team_course"
+                  v-model="params.course_type.team_course.value"
                 >
-                  {{ item.label }}
+                  {{ params.course_type.team_course.name }}
                 </a-checkbox>
-              </a-checkbox-group>
-              <!-- <a-checkbox v-model="isShowPhone">自定义</a-checkbox> -->
+                <a-checkbox
+                  v-if="params.course_type.personal_course"
+                  v-model="params.course_type.personal_course.value"
+                >
+                  {{ params.course_type.personal_course.name }}
+                </a-checkbox>
+              </span>
+            </div>
+            <div v-if="Object.keys(info.receiver).length > 0">
+              <span class="color-title">接收人员</span>
+              <span class="mg-b16 mg-l24">
+                <a-checkbox
+                  v-if="params.receiver.coach"
+                  v-model="params.receiver.coach.value"
+                >
+                  {{ params.receiver.coach.name }}
+                </a-checkbox>
+                <a-checkbox
+                  v-if="params.receiver.member"
+                  v-model="params.receiver.member.value"
+                >
+                  {{ params.receiver.member.name }}
+                </a-checkbox>
+                <a-checkbox
+                  v-if="params.receiver.custom"
+                  v-model="params.receiver.custom.value"
+                >
+                  {{ params.receiver.custom.name }}
+                </a-checkbox>
+              </span>
               <a-input
                 style="width:44%"
                 class="mg-b16"
@@ -122,20 +135,35 @@
               />
             </div>
 
-            <div v-if="info.order_type_description">
+            <div v-if="Object.keys(info.order_type).length > 0">
+              {{ Object.keys(info.order_type).length > 0 }}
               <span class="color-title">订单类型</span>
-              <a-checkbox-group
-                v-model="params.order_type"
-                class="mg-b16 mg-l24"
-              >
+              <span class="mg-b16 mg-l24">
                 <a-checkbox
-                  v-for="(item, index) in orderType"
-                  :key="index"
-                  :value="item.value"
+                  v-if="params.order_type.advance"
+                  v-model="params.order_type.advance.value"
                 >
-                  {{ item.label }}
+                  {{ params.order_type.advance.name }}
                 </a-checkbox>
-              </a-checkbox-group>
+                <a-checkbox
+                  v-if="params.order_type.deposit"
+                  v-model="params.order_type.deposit.value"
+                >
+                  {{ params.order_type.deposit.name }}
+                </a-checkbox>
+                <a-checkbox
+                  v-if="params.order_type.product"
+                  v-model="params.order_type.product.value"
+                >
+                  {{ params.order_type.product.name }}
+                </a-checkbox>
+                <a-checkbox
+                  v-if="params.order_type.poundage"
+                  v-model="params.order_type.poundage.value"
+                >
+                  {{ params.order_type.poundage.name }}
+                </a-checkbox>
+              </span>
             </div>
             <div>
               <span class="color-title mg-r24">发送规则</span>
@@ -223,9 +251,48 @@ export default {
         msg_suffix: '',
         msg_preffix: '',
         custom_phone: '',
-        course_type: '',
-        order_type: [],
-        receiver: [],
+        course_type: {
+          team_course: {
+            value: 0,
+            name: '团课'
+          },
+          personal_course: {
+            value: 0,
+            name: '私教课'
+          }
+        },
+        order_type: {
+          advance: {
+            value: 0,
+            name: '定金'
+          },
+          deposit: {
+            value: 0,
+            name: '押金'
+          },
+          product: {
+            value: 0,
+            name: '商品'
+          },
+          poundage: {
+            value: 0,
+            name: '手续费'
+          }
+        },
+        receiver: {
+          coach: {
+            value: 0,
+            name: '教练'
+          },
+          member: {
+            value: 0,
+            name: '会员'
+          },
+          custom: {
+            value: 0,
+            name: '自定义'
+          }
+        },
         notify_time: '',
         notify_mode: {
           sms: 0,
@@ -242,30 +309,6 @@ export default {
     }
   },
   computed: {
-    courseType() {
-      let list = []
-      if (!this.settingEnums.course_type_web) return list
-      Object.entries(this.settingEnums.course_type_web.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    },
-    receiver() {
-      let list = []
-      if (!this.settingEnums.receiver_web) return list
-      Object.entries(this.settingEnums.receiver_web.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    },
-    orderType() {
-      let list = []
-      if (!this.settingEnums.order_type_web) return list
-      Object.entries(this.settingEnums.order_type_web.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    },
     notifyRule() {
       let list = []
       if (!this.settingEnums.notify_rule) return list
@@ -284,10 +327,17 @@ export default {
     }
   },
   created() {
-    this.params.order_type = this.info.order_type
+    if (Object.keys(this.info.order_type).length > 0) {
+      this.params.order_type = this.info.order_type
+    }
+    if (Object.keys(this.info.course_type).length > 0) {
+      this.params.course_type = this.info.course_type
+    }
+    if (Object.keys(this.info.receiver).length > 0) {
+      this.params.receiver = this.info.receiver
+    }
     this.params.notify_time = this.info.notify_time.value
-    this.params.course_type = this.info.course_type
-    this.params.receiver = this.info.receiver
+
     this.params.msg_preffix = this.info.msg_preffix
     this.params.msg_suffix = this.info.msg_suffix
     this.params.notify_mode = {
@@ -306,6 +356,36 @@ export default {
       this.isShowEdit = 0
     },
     save() {
+      this.params.course_type.team_course.value = this.params.course_type
+        .team_course.value
+        ? 1
+        : 0
+      this.params.course_type.personal_course.value = this.params.course_type
+        .personal_course.value
+        ? 1
+        : 0
+      this.params.order_type.advance.value = this.params.order_type.advance
+        .value
+        ? 1
+        : 0
+      this.params.order_type.deposit.value = this.params.order_type.deposit
+        .value
+        ? 1
+        : 0
+      this.params.order_type.product.value = this.params.order_type.product
+        .value
+        ? 1
+        : 0
+      this.params.order_type.poundage.value = this.params.order_type.poundage
+        .value
+        ? 1
+        : 0
+      this.params.receiver.coach.value =
+        this.params.receiver.coach && this.params.receiver.coach.value ? 1 : 0
+      this.params.receiver.member.value =
+        this.params.receiver.member && this.params.receiver.member.value ? 1 : 0
+      this.params.receiver.custom.value =
+        this.params.receiver.custom && this.params.receiver.custom.value ? 1 : 0
       const para = Object.assign({}, this.params, {
         id: this.info.id,
         custom_phone:
@@ -313,13 +393,14 @@ export default {
             ? this.params.custom_phone.split(',')
             : []
       })
-      this.$emit('editInfo', para)
+      console.log(para)
+      // this.$emit('editInfo', para)
       this.isShowEdit = 0
     }
   },
   watch: {
-    'params.receiver'(oldVal, newVal) {
-      if (oldVal.indexOf(4) > -1) {
+    'params.receiver.custom.value'(oldVal, newVal) {
+      if (oldVal) {
         this.isShowPhone = true
       } else {
         this.isShowPhone = false
