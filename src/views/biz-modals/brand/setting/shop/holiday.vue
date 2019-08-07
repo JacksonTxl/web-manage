@@ -19,8 +19,8 @@
 </template>
 <script>
 import { MessageService } from '@/services/message.service'
-import AddHoliday from '../../components#/add-holiday'
-import EditHoliday from '../../components#/edit-holiday'
+import AddHoliday from './components#/add-holiday'
+import EditHoliday from './components#/edit-holiday'
 export default {
   props: {
     shopId: {
