@@ -1,6 +1,6 @@
 <template>
   <section class="sg-section">
-    <h3>st-shop-hour-picker</h3>
+    <h3>shop-hour-picker</h3>
     {{ model }}
     <shop-hour-picker
       :isInfo="false"

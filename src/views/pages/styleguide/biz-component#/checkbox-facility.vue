@@ -1,6 +1,6 @@
 <template>
   <section class="sg-section">
-    <h3>st-checkbox-facility</h3>
+    <h3>checkbox-facility</h3>
     <checkbox-facility-group v-model="model">
       <checkbox-facility-item
         disabled
