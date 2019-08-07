@@ -114,7 +114,6 @@ import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './deposit.config'
-import StRangePicker from '@/views/components/datetime-picker/range-picker'
 import SoldCardRefund from '@/views/biz-modals/sold/card/refund'
 import SoldCardTransfer from '@/views/biz-modals/sold/card/transfer'
 export default {
