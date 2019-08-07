@@ -158,6 +158,9 @@ import { ClubService } from './club.service'
 import SidebarComponent from './components#/sidebar.component'
 export default {
   name: 'Dashboard',
+  serviceProviders() {
+    return [ClubService]
+  },
   serviceInject() {
     return {
       clubService: ClubService

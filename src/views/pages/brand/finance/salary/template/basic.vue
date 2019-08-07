@@ -88,6 +88,9 @@ export default {
     FinanceBasicTemplateEdit,
     FinanceSearchStaffListSalary
   },
+  serviceProviders() {
+    return [BasicService]
+  },
   serviceInject() {
     return {
       basicService: BasicService,

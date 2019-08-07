@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import { listColumns } from './colums'
+import { listColumns } from './list.confing.ts'
 import FinanceClassCommission from '@/views/biz-modals/finance/class-commission'
 import FinanceSaleCommission from '@/views/biz-modals/finance/sale-commission'
 export default {
