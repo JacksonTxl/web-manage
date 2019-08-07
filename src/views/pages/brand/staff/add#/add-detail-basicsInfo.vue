@@ -246,6 +246,9 @@ import { AppConfig } from '@/constants/config'
 import FaceUpload from '@/views/biz-components/face-upload/face-upload'
 export default {
   name: 'StaffDetailBasics',
+  serviceProviders() {
+    return [AddService]
+  },
   serviceInject() {
     return {
       rules: RuleConfig,
