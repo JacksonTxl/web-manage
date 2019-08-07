@@ -220,9 +220,6 @@ export default {
       auth: this.memberService.auth$
     }
   },
-  components: {
-    StRangePicker
-  },
   computed: {
     columns,
     // 会员卡类型
