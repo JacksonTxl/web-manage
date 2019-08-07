@@ -76,7 +76,7 @@
             <span>{{ text | putStatusFilter }}</span>
           </template>
           <template slot="action" slot-scope="text, record">
-            <st-table-actions>
+            <st-table-actions sytle="width: 120px">
               <a
                 @click="onEdit(record)"
                 v-if="record.auth['brand:activity:coupon|edit']"
