@@ -155,7 +155,7 @@ export default {
         : []
     },
     onClickBack() {
-      this.$emit('back', 3)
+      this.$emit('back', 1)
     },
     goNext() {
       this.form.validateFields((err, values) => {
