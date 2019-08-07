@@ -116,12 +116,17 @@ import EditCabinetArea from './cabinet#/edit-area'
 import { CabinetAreaService as AreaService } from './cabinet#/area.service'
 import CabinetList from './cabinet#/cabinet-list'
 import ShopCabinetEditPrice from '@/views/biz-modals/shop/cabinet/edit-price'
+import ShopCabinetAddLongTerm from '@/views/biz-modals/shop/cabinet/add-long-term'
+import ShopCabinetAddTemporary from '@/views/biz-modals/shop/cabinet/add-temporary'
+
 export default {
   bem: {
     b: 'page-setting-cabinet'
   },
   modals: {
-    ShopCabinetEditPrice
+    ShopCabinetEditPrice,
+    ShopCabinetAddLongTerm,
+    ShopCabinetAddTemporary
   },
   serviceInject() {
     return {
