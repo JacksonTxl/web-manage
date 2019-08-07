@@ -192,7 +192,6 @@ import { UserService } from '@/services/user.service'
 import BrandSettingPersonalPriceModel from '@/views/biz-modals/brand/setting/personal/price-model'
 import BrandSettingPersonalReserve from '@/views/biz-modals/brand/setting/personal/reserve'
 import BrandSettingTeamReserve from '@/views/biz-modals/brand/setting/team/reserve'
-import BrandSettingWechatPayment from '@/views/biz-modals/brand/setting/wechat/payment'
 import BrandSwitch from '@/views/biz-modals/brand/switch'
 export default {
   serviceInject() {
