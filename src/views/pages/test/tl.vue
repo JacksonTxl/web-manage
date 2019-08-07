@@ -67,12 +67,6 @@
         <router-link class="mg-l8" to="/brand/setting/app/pay-type">
           支付方式设置
         </router-link>
-        <a
-          class="mg-l8"
-          v-modal-link="{ name: 'brand-setting-wechat-payment' }"
-        >
-          微信支付设置
-        </a>
       </p>
       <p>
         <st-input-search v-model="query.keyword" @search="onSearch" />

@@ -30,7 +30,6 @@ export default {
       show: false
     }
   },
-  created() {},
   methods: {
     save() {},
     cancel() {}

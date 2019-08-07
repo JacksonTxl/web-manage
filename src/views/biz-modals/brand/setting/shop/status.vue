@@ -13,16 +13,19 @@
           <a-col :xs="22">
             <div>{{ shopName }}</div>
             <st-form-item v-show="false">
-              <input type="hidden" v-decorator="formRules.id" />
+              <input type="hidden" v-decorator="decorators.id" />
             </st-form-item>
             <st-form-item label="运营状态" required class="mg-t16">
-              <a-select v-decorator="formRules.shopStatus" style="width: 240px">
+              <a-select
+                v-decorator="decorators.shop_status"
+                style="width: 240px"
+              >
                 <a-select-option
                   v-for="(item, index) in shopStatusList"
                   :key="index"
-                  :value="+index"
+                  :value="+item.value"
                 >
-                  {{ item }}
+                  {{ item.label }}
                 </a-select-option>
               </a-select>
             </st-form-item>
@@ -33,35 +36,22 @@
   </st-modal>
 </template>
 <script>
-import { UserService } from '@/services/user.service'
 import { ShopStatusService as EditService } from './status.service'
 import { MessageService } from '@/services/message.service'
-const formRules = {
-  id: ['id'],
-  shopStatus: [
-    'shop_status',
-    {
-      rules: [
-        {
-          required: true,
-          message: '请选择运营状态'
-        }
-      ]
-    }
-  ]
-}
+import { ruleOptions } from './status.config'
+
 export default {
   serviceInject() {
     return {
-      userService: UserService,
       editService: EditService,
       messageService: MessageService
     }
   },
   rxState() {
     return {
-      shopEnums: this.userService.shopEnums$,
-      loading: this.editService.loading$
+      loading: this.editService.loading$,
+      shopStatusList: this.editService.shopStatusList$,
+      isValidList: this.editService.isValidList$
     }
   },
   props: {
@@ -78,39 +68,25 @@ export default {
       default: ''
     }
   },
-  computed: {
-    shopStatusList() {
-      return this.shopEnums.shop_status_switch.value || {}
-    },
-    isValidList() {
-      return this.shopEnums.is_valid.value || {}
-    }
-  },
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
       form,
       decorators,
-      show: true,
-      formRules
+      show: true
     }
   },
-  created() {
-    this.form = this.$form.createForm(this)
-  },
   mounted() {
-    this.$nextTick(() => {
-      this.form.setFieldsValue({
-        id: this.shopId,
-        shop_status: this.shopStatus
-      })
+    this.form.setFieldsValue({
+      id: this.shopId,
+      shop_status: +this.shopStatus
     })
   },
   methods: {
     onSubmit(e) {
       e.preventDefault()
-      this.form.validateFields().then(() => {
+      this.form.validate().then(values => {
         const data = this.form.getFieldsValue()
         /**
          * 修改门店运营状态为暂停营业（3），需二次确认

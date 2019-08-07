@@ -104,10 +104,6 @@ export default {
     cancel() {
       this.show = false
     },
-    // save() {
-    //   this.$emit('change', this.query)
-    //   this.show = false
-    // },
     getCurPayInfo(para, index) {
       this.curCount = index
       this.query.sms_num = para.num.value
