@@ -152,13 +152,15 @@ import { StudioService } from './studio.service'
 import SidebarComponent from './components#/sidebar.component'
 export default {
   name: 'Dashboard',
+  serviceProviders() {
+    return [StudioService]
+  },
   serviceInject() {
     return {
       studioService: StudioService
     }
   },
   rxState() {
-    console.log(this.studioService)
     return {
       top: this.studioService.top$,
       userFunnel: this.studioService.userFunnel$,

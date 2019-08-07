@@ -45,6 +45,7 @@ fs.writeFileSync(
 module.exports = {
   lintOnSave: false,
   css: {
+    sourceMap: true,
     extract: IS_PROD,
     loaderOptions: {
       less: {

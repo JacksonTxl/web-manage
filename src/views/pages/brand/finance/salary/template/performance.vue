@@ -96,6 +96,9 @@ import FinancePerformanceInfo from '@/views/biz-modals/finance/performance-info'
 import FinanceSearchStaffListPerformance from '@/views/biz-modals/finance/search-staff-list-performance'
 export default {
   mixins: [tableMixin],
+  serviceProviders() {
+    return [PerformanceService]
+  },
   serviceInject() {
     return {
       basicService: PerformanceService,
