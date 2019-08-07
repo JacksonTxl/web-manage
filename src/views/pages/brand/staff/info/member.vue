@@ -62,6 +62,9 @@ import tableMixin from '@/mixins/table.mixin'
 
 export default {
   mixins: [tableMixin],
+  serviceProviders() {
+    return [MemberService]
+  },
   serviceInject() {
     return {
       service: MemberService,

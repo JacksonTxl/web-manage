@@ -8,6 +8,7 @@ import { forkJoin } from 'rxjs'
 
 @Injectable()
 export class AddService implements RouteGuard {
+  loading$ = new State({})
   codeList$ = new State([])
   roleList$ = new State([])
   department$ = new State([])

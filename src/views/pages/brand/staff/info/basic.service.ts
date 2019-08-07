@@ -17,7 +17,6 @@ export class BasicService implements RouteGuard {
 
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     const { id } = to.meta.query
-    console.log('basic service')
     return this.getBasicInfo(id)
   }
 }

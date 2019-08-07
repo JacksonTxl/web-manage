@@ -140,6 +140,9 @@ export default {
     StaffTurnover,
     StaffUpdateStaffPosition
   },
+  serviceProviders() {
+    return [InfoService]
+  },
   serviceInject() {
     return {
       infoService: InfoService,
