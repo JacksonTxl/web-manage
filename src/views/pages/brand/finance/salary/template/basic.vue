@@ -85,6 +85,9 @@ export default {
     FinanceAddTemplate,
     FinanceBasicTemplateEdit
   },
+  serviceProviders() {
+    return [BasicService]
+  },
   serviceInject() {
     return {
       basicService: BasicService,
