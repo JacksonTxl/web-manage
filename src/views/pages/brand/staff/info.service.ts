@@ -1,9 +1,7 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { tap } from 'rxjs/operators'
 import { StaffApi } from '../../../../api/v1/staff'
-import { forkJoin } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
 
 interface SetState {

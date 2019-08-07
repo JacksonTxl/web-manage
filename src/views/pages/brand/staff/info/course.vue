@@ -42,7 +42,7 @@
           :scroll="{ x: 1000 }"
           :loading="loading.getCoursesList"
           :page="page"
-          rowKeys="id"
+          rowKey="id"
           @change="onTableChange"
         >
           <template slot="schedule_status" slot-scope="text, record">
@@ -84,6 +84,9 @@ export default {
     SchedulePersonalReserveInfo,
     SchedulePersonalTeamReserveInfo,
     ScheduleTeamReserveInfo
+  },
+  serviceProviders() {
+    return [CourseService]
   },
   serviceInject() {
     return {
