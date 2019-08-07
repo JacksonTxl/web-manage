@@ -87,7 +87,11 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: true,
       formRules
     }
