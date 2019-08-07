@@ -286,10 +286,7 @@
               <div class="autoplay-card-day" v-if="openTypeList.includes(2)">
                 <a-form-item class="page-a-form">
                   <st-input-number
-                    v-decorator="[
-                      'openDay',
-                      { rules: [{ required: true, message: '请输入天数' }] }
-                    ]"
+                    v-decorator="decorators.openDay"
                     class="autoplay-card-day-input"
                   >
                     <span slot="addonAfter">天</span>
@@ -300,13 +297,7 @@
             </span>
           </a-checkbox-group>
         </st-form-item>
-        <st-form-item
-          labelGutter="12px"
-          label="约课权益"
-          required
-          :validateStatus="courseInterestsStatus"
-          :help="courseInterestsHelpText"
-        >
+        <st-form-item labelGutter="12px" label="约课权益" required>
           <a-radio-group
             v-model="courseInterests"
             @change="onCourseInterestsChange"
@@ -314,20 +305,18 @@
           >
             <a-radio
               :style="radioStyle"
-              v-for="(item, index) in Object.keys(
-                memberCard.course_interests.value
-              )"
-              :value="+item"
+              v-for="(item, index) in course_interests"
+              :value="+item.value"
               :key="index"
             >
-              {{ memberCard.course_interests.value[item] }}
+              {{ item.label }}
             </a-radio>
           </a-radio-group>
           <a-select
             v-if="courseInterests === 3"
             mode="multiple"
             style="width: 419px;"
-            v-model="courseList"
+            v-decorator="decorators.courseList"
             placeholder="请输入课程名称搜索"
             :filterOption="false"
             @search="fetchUser"
@@ -366,8 +355,8 @@
           </a-radio-group>
         </st-form-item>
         <shop-hour-picker
-          v-model="timeList"
           v-if="admissionTime === 2 && moreIsShow"
+          v-model="timeList"
         ></shop-hour-picker>
         <p
           :class="shelves('admission-time-validata')"
@@ -440,6 +429,7 @@ import { UserService } from '@/services/user.service'
 import { cloneDeep } from 'lodash-es'
 import { RuleConfig } from '@/constants/rule'
 import ShopHourPicker from '@/views/biz-components/shop-hour-picker/shop-hour-picker'
+import { ruleOptions, shopColumns, admissionTimeList } from './shelf.config'
 export default {
   name: 'ModalCardBrandMemberShelf',
   bem: {
@@ -457,14 +447,16 @@ export default {
   },
   rxState() {
     return {
-      memberCard: this.userService.memberCardEnums$,
       courseData: this.shelfService.courseList$,
+      course_interests: this.shelfService.course_interests$,
       loading: this.shelfService.loading$,
       info: this.shelfService.info$
     }
   },
   props: ['id'],
   computed: {
+    shopColumns,
+    admissionTimeList,
     shopList() {
       let shopList = []
       if (this.info.sell_shops) {
@@ -545,9 +537,12 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: true,
-      form: this.$form.createForm(this),
       radioStyle: {
         display: 'block',
         height: '30px',
@@ -560,28 +555,6 @@ export default {
       },
       // 门店明细
       visible: false,
-      shopColumns: [
-        {
-          title: '省',
-          dataIndex: 'province_name',
-          scopedSlots: { customRender: 'province_name' }
-        },
-        {
-          title: '市',
-          dataIndex: 'city_name',
-          scopedSlots: { customRender: 'city_name' }
-        },
-        {
-          title: '区',
-          dataIndex: 'district_name',
-          scopedSlots: { customRender: 'district_name' }
-        },
-        {
-          title: '门店名称',
-          dataIndex: 'shop_name',
-          scopedSlots: { customRender: 'shop_name' }
-        }
-      ],
       // 范围价格列表
       priceList: [],
       priceHelpText: '',
@@ -592,25 +565,16 @@ export default {
       // 缓存开卡方式的最后值，阻止用户不选择
       openTypeListHistory: [3],
       // 约课权益
-      courseInterests: 1,
+      courseInterestValue: 1,
+      // courseInterests: 1,
       // 输入是否正确
       courseInterestsStatus: 'success',
       courseInterestsHelpText: '',
       // 课列表
+      courseInterests: 1,
       courseList: [],
       // 显示更多
       moreIsShow: false,
-      // 入场时间
-      admissionTimeList: [
-        {
-          value: 1,
-          label: '不限制'
-        },
-        {
-          value: 2,
-          label: '自定义'
-        }
-      ],
       admissionTime: 1,
       timeList: [],
       // 回传给后台的时间段
@@ -635,14 +599,15 @@ export default {
     },
     // 检验约课权益是否输入正确
     checkedCourseInterests() {
-      this.courseInterestsStatus =
-        this.courseInterests === 3 && !this.courseList.length
-          ? 'error'
-          : 'success'
-      this.courseInterestsHelpText =
-        this.courseInterests === 3 && !this.courseList.length
-          ? '请输入课程'
-          : ''
+      // this.courseInterestsStatus =
+      //   this.courseInterests === 3 && !this.courseList.length
+      //     ? 'error'
+      //     : 'success'
+      // this.courseInterestsHelpText =
+      //   this.courseInterests === 3 && !this.courseList.length
+      //     ? '请输入课程'
+      //     : ''
+      // this.form.validateFields(['courseInterests'])
     },
     // 检验入场时间是否输入正确
     checkedAdmission() {
@@ -664,6 +629,7 @@ export default {
       this.priceHelpText = b ? '' : '请输入价格'
     },
     onCourseInterestsChange(data) {
+      this.courseInterestValue = data.target.value
       if (data.target.value !== 3) {
         this.checkedCourseInterests()
       }
@@ -754,18 +720,11 @@ export default {
       })
     },
     onSubmit() {
-      this.form.validateFields((error, values) => {
-        this.checkedCourseInterests()
+      this.form.validate().then(values => {
         this.checkedAdmission()
-        this.checkedPrice()
-        if (
-          !error &&
-          this.admissionTimeIsOk &&
-          this.courseInterestsIsOk &&
-          this.priceIsOk
-        ) {
-          this.formatWeek()
-          this.formatSpecs()
+        this.formatWeek()
+        this.formatSpecs()
+        if (this.admissionTimeIsOk) {
           this.shelfService
             .shelfCard(
               {
@@ -774,7 +733,7 @@ export default {
                 activate_duration:
                   values.openDay === undefined ? undefined : +values.openDay,
                 course_interests: +this.courseInterests,
-                courses: this.courseList,
+                courses: values.courseList,
                 inout_type: this.admissionTime,
                 inout_time: this.inoutTime,
                 specs: this.specs,
@@ -788,6 +747,40 @@ export default {
             })
         }
       })
+      // this.form.validateFields((error, values) => {
+      //   this.checkedCourseInterests()
+      //   this.checkedAdmission()
+      //   this.checkedPrice()
+      //   if (
+      //     !error &&
+      //     this.admissionTimeIsOk &&
+      //     this.courseInterestsIsOk &&
+      //     this.priceIsOk
+      //   ) {
+      //     this.formatWeek()
+      //     this.formatSpecs()
+      //     this.shelfService
+      //       .shelfCard(
+      //         {
+      //           sell_shops: this.sell_shops,
+      //           open_type: this.openTypeList,
+      //           activate_duration:
+      //             values.openDay === undefined ? undefined : +values.openDay,
+      //           course_interests: +this.courseInterests,
+      //           courses: this.courseList,
+      //           inout_type: this.admissionTime,
+      //           inout_time: this.inoutTime,
+      //           specs: this.specs,
+      //           areas: this.selectVipAreas
+      //         },
+      //         this.id
+      //       )
+      //       .subscribe(() => {
+      //         this.show = false
+      //         this.$emit('success')
+      //       })
+      //   }
+      // })
     }
   },
   created() {
