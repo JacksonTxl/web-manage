@@ -1,6 +1,6 @@
 <template>
   <div :class="bPage()">
-    <!-- <div :class="bItem()">
+    <div :class="bItem()">
       <st-t3 class="mg-b16">通知会员信息</st-t3>
       <div :class="bItem('table')">
         <div :class="bItem('table-title')">
@@ -20,8 +20,8 @@
           <notice-item @editInfo="save" :info="item"></notice-item>
         </div>
       </div>
-    </div> -->
-    <div :class="bItem()" class="mg-t24">
+    </div>
+    <!-- <div :class="bItem()" class="mg-t24">
       <st-t3 class="mg-b16">通知门店信息</st-t3>
       <div :class="bItem('table')">
         <div :class="bItem('table-title')">
@@ -41,7 +41,7 @@
           <notice-item @editInfo="save" :info="item"></notice-item>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
