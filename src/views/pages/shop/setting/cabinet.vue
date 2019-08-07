@@ -118,6 +118,7 @@ import CabinetList from './cabinet#/cabinet-list'
 import ShopCabinetEditPrice from '@/views/biz-modals/shop/cabinet/edit-price'
 import ShopCabinetAddLongTerm from '@/views/biz-modals/shop/cabinet/add-long-term'
 import ShopCabinetAddTemporary from '@/views/biz-modals/shop/cabinet/add-temporary'
+import Draggable from 'vuedraggable'
 
 export default {
   bem: {
@@ -156,8 +157,8 @@ export default {
   components: {
     AddCabinetArea,
     EditCabinetArea,
-    CabinetList
-    // Draggable
+    CabinetList,
+    Draggable
   },
   computed: {
     type() {
