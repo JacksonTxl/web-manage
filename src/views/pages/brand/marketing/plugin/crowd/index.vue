@@ -32,7 +32,6 @@
         rowKey="id"
         :dataSource="crowdIndexInfo.info.list"
         :columns="columns"
-        @change="onChange"
         :pagination="false"
       >
         <div slot="action" slot-scope="text, record">
@@ -143,9 +142,6 @@ export default {
   methods: {
     newCrowd(data) {
       this.messageService.warning({ content: data })
-    },
-    onChange(pagination, filters, sorter) {
-      console.log('params', pagination, filters, sorter, data)
     },
     groupSMS(value) {
       console.log(value)
