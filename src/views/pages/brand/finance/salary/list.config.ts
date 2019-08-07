@@ -1,4 +1,4 @@
-export const listColumns = [
+export const columns = [
   {
     title: '结算月份',
     dataIndex: 'q'

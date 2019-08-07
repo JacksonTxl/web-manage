@@ -46,7 +46,7 @@
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange
         }"
-        :columns="listColumns"
+        :columns="columns"
         :dataSource="list"
         :scroll="{ x: 1500 }"
         :pagination="pagination"
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import { listColumns } from './list.confing.ts'
+import { columns } from './list.config.ts'
 import FinanceClassCommission from '@/views/biz-modals/finance/class-commission'
 import FinanceSaleCommission from '@/views/biz-modals/finance/sale-commission'
 export default {
@@ -88,7 +88,7 @@ export default {
   },
   data() {
     return {
-      listColumns,
+      columns,
       list: [
         {
           id: 1,
