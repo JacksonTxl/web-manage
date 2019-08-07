@@ -246,7 +246,9 @@ export default {
      * saveOrgoNext 0 保存 1 下一个
      */
     submit(data, saveOrgoNext) {
-      data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
+      if (data.entry_date) {
+        data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
+      }
       data.album_id = this.data.album_id
       data.image_avatar = this.fileList[0] || {}
       data.image_face = this.faceList[0] || {}
