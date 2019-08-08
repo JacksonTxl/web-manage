@@ -10,6 +10,7 @@
           :showTime="{ format: 'HH:mm' }"
           placeholder="请选择时间"
           format="YYYY-MM-DD HH:mm"
+          :disabled="reserved_num"
           v-decorator="[
             'start_time',
             { rules: [{ required: true, message: '请输入日期' }] }
@@ -21,6 +22,7 @@
       <st-form-item label="课程" required>
         <a-select
           placeholder="请选择课程"
+          :disabled="reserved_num"
           v-decorator="[
             'course_id',
             { rules: [{ required: true, message: '请选择课程' }] }
@@ -56,6 +58,7 @@
         <a-cascader
           placeholder="请选择场地"
           :options="courtOptions"
+          :disabled="reserved_num"
           :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
           v-decorator="['court_id']"
         />
@@ -63,6 +66,7 @@
       <st-form-item label="人数" required>
         <a-input-search
           placeholder="请输入人数"
+          :disabled="reserved_num"
           v-decorator="[
             'limit_num',
             { rules: [{ required: true, message: '请输入人数' }] }
@@ -74,6 +78,7 @@
       <st-form-item label="课时费" required>
         <a-input-search
           placeholder="请输入课时费"
+          :disabled="reserved_num"
           v-decorator="[
             'course_fee',
             { rules: [{ required: true, message: '请选择课时费' }] }
