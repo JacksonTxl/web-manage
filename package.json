@@ -1,6 +1,6 @@
 {
-  "name": "vue-antd",
-  "version": "0.1.0",
+  "name": "saas-web",
+  "version": "2.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
