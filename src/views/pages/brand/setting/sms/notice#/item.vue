@@ -356,45 +356,66 @@ export default {
       this.isShowEdit = 0
     },
     save() {
-      this.params.course_type.team_course.value = this.params.course_type
-        .team_course.value
-        ? 1
-        : 0
-      this.params.course_type.personal_course.value = this.params.course_type
-        .personal_course.value
-        ? 1
-        : 0
-      this.params.order_type.advance.value = this.params.order_type.advance
-        .value
-        ? 1
-        : 0
-      this.params.order_type.deposit.value = this.params.order_type.deposit
-        .value
-        ? 1
-        : 0
-      this.params.order_type.product.value = this.params.order_type.product
-        .value
-        ? 1
-        : 0
-      this.params.order_type.poundage.value = this.params.order_type.poundage
-        .value
-        ? 1
-        : 0
-      this.params.receiver.coach.value =
-        this.params.receiver.coach && this.params.receiver.coach.value ? 1 : 0
-      this.params.receiver.member.value =
-        this.params.receiver.member && this.params.receiver.member.value ? 1 : 0
-      this.params.receiver.custom.value =
-        this.params.receiver.custom && this.params.receiver.custom.value ? 1 : 0
+      let course_type = {
+        team_course: 0,
+        personal_course: 0
+      }
+      let order_type = {
+        advance: 0,
+        deposit: 0,
+        product: 0,
+        poundage: 0
+      }
+      let receiver = {
+        coach: 0,
+        member: 0,
+        custom: 0
+      }
+      if (this.params.course_type.team_course) {
+        course_type.team_course = this.params.course_type.team_course.value
+          ? 1
+          : 0
+      }
+      if (this.params.course_type.personal_course) {
+        course_type.personal_course = this.params.course_type.personal_course
+          .value
+          ? 1
+          : 0
+      }
+      if (this.params.order_type.advance) {
+        order_type.advance = this.params.order_type.advance.value ? 1 : 0
+      }
+      if (this.params.order_type.deposit) {
+        order_type.deposit = this.params.order_type.deposit.value ? 1 : 0
+      }
+      if (this.params.order_type.product) {
+        order_type.product = this.params.order_type.product.value ? 1 : 0
+      }
+      if (this.params.order_type.poundage) {
+        order_type.poundage = this.params.order_type.poundage.value ? 1 : 0
+      }
+
+      if (this.params.receiver.coach) {
+        receiver.coach = this.params.receiver.coach.value ? 1 : 0
+      }
+      if (this.params.receiver.member) {
+        receiver.member = this.params.receiver.member.value ? 1 : 0
+      }
+      if (this.params.receiver.custom) {
+        receiver.custom = this.params.receiver.custom.value ? 1 : 0
+      }
+
       const para = Object.assign({}, this.params, {
         id: this.info.id,
         custom_phone:
           this.params.custom_phone.length > 0
             ? this.params.custom_phone.split(',')
-            : []
+            : [],
+        order_type,
+        receiver,
+        course_type
       })
-      console.log(para)
-      // this.$emit('editInfo', para)
+      this.$emit('editInfo', para)
       this.isShowEdit = 0
     }
   },
