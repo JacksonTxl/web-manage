@@ -33,8 +33,8 @@
         <div class="shadow"></div>
         <div :class="bComponent('column')" v-show="!isShowEdit">
           <div class="width75" :class="bComponent('text')" v-if="info.preview">
-            <span class="color-title">预览内容</span>
-            <span class="mg-l24">{{ info.preview }}</span>
+            <span class="color-title mg-r24">预览内容</span>
+            <span :class="bComponent('text-right')">{{ info.preview }}</span>
           </div>
           <div :class="bComponent('text')">
             <span class="color-primary" @click="showEdit">编辑</span>
@@ -68,28 +68,29 @@
           <div class="width75" :class="bComponent('text')">
             <div class="mg-b16" v-if="info.preview">
               <span class="mg-r24 color-title">发送内容</span>
-              <a-input
-                v-if="info.notify_type.value === 1"
-                class="mg-l24"
-                :class="bComponent('column-input')"
-                v-model="params.msg_preffix"
-                placeholder="请输入"
-              ></a-input>
-              <span>{{ info.content }}</span>
-              <a-input
-                v-if="info.notify_type.value === 1"
-                :class="bComponent('column-input')"
-                v-model="params.msg_suffix"
-                placeholder="请输入"
-              ></a-input>
+              <div :class="bComponent('text-right')">
+                <a-input
+                  v-if="info.notify_type.value === 1"
+                  :class="bComponent('column-input')"
+                  v-model="params.msg_preffix"
+                  placeholder="请输入"
+                ></a-input>
+                <span>{{ info.content }}</span>
+                <a-input
+                  v-if="info.notify_type.value === 1"
+                  :class="bComponent('column-input')"
+                  v-model="params.msg_suffix"
+                  placeholder="请输入"
+                ></a-input>
+              </div>
             </div>
             <div class="mg-b16" v-if="info.preview">
               <span class="mg-r24 color-title">预览内容</span>
-              <span>{{ info.preview }}</span>
+              <span :class="bComponent('text-right')">{{ info.preview }}</span>
             </div>
             <div v-if="Object.keys(info.course_type).length > 0">
               <span class="color-title">课程类型</span>
-              <span class="mg-b16 mg-l24">
+              <span class="mg-b16 mg-l24 inlineblock">
                 <a-checkbox
                   v-if="params.course_type.team_course"
                   v-model="params.course_type.team_course.value"
@@ -106,7 +107,7 @@
             </div>
             <div v-if="Object.keys(info.receiver).length > 0">
               <span class="color-title">接收人员</span>
-              <span class="mg-b16 mg-l24">
+              <span class="mg-b16 mg-l24 inlineblock">
                 <a-checkbox
                   v-if="params.receiver.coach"
                   v-model="params.receiver.coach.value"
@@ -136,9 +137,8 @@
             </div>
 
             <div v-if="Object.keys(info.order_type).length > 0">
-              {{ Object.keys(info.order_type).length > 0 }}
               <span class="color-title">订单类型</span>
-              <span class="mg-b16 mg-l24">
+              <span class="mg-b16 mg-l24 inlineblock">
                 <a-checkbox
                   v-if="params.order_type.advance"
                   v-model="params.order_type.advance.value"
