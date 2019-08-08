@@ -1,6 +1,6 @@
 {
   "name": "saas-web",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -70,6 +70,7 @@
     "@vue/eslint-config-typescript": "^4.0.0",
     "babel-plugin-dynamic-import-node": "^2.3.0",
     "commitizen": "^3.0.5",
+    "conventional-changelog-cli": "^2.0.23",
     "cross-env": "^5.2.0",
     "cross-spawn": "^6.0.5",
     "cz-customizable": "^5.2.0",
