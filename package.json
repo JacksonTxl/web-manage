@@ -55,6 +55,8 @@
     "webpack-dev-middleware": "^3.6.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^8.1.0",
+    "@commitlint/config-conventional": "^8.1.0",
     "@types/js-cookie": "^2.2.1",
     "@types/lodash-es": "^4.17.3",
     "@types/nprogress": "^0.0.29",
@@ -107,7 +109,8 @@
     "not ie <= 8"
   ],
   "gitHooks": {
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged",
+    "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS"
   },
   "lint-staged": {
     "*.less": [
