@@ -51,12 +51,28 @@ import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
+import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
+import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
+import SoldDealSaleCabinet from '@/views/biz-modals/sold/deal/sale-cabinet'
+import SoldDealSaleCourse from '@/views/biz-modals/sold/deal/sale-course'
+import SoldDealSaleDepositCard from '@/views/biz-modals/sold/deal/sale-deposit-card'
+import SoldDealSaleMemberCard from '@/views/biz-modals/sold/deal/sale-member-card'
+import SoldDealSalePersonalCourse from '@/views/biz-modals/sold/deal/sale-personal-course'
 export default {
   name: 'PageShopSoldLease',
   mixins: [tableMixin],
   bem: {
     basic: 'page-shop-sold',
     sale: 'page-shop-sold-sale'
+  },
+  modals: {
+    SoldDealGatheringTip,
+    SoldDealGathering,
+    SoldDealSaleCabinet,
+    SoldDealSaleCourse,
+    SoldDealSaleDepositCard,
+    SoldDealSaleMemberCard,
+    SoldDealSalePersonalCourse
   },
   serviceInject() {
     return {
@@ -131,8 +147,13 @@ export default {
       window.open(url)
     },
     // 查看订单
-    createdOrderViewOrder() {
-      console.log('查看订单')
+    createdOrderViewOrder(order_id) {
+      this.$router.push({
+        name: 'shop-finance-order-info-collection-details',
+        query: {
+          id: order_id
+        }
+      })
     },
     // 订单收款modal
     createdOrderPay(props) {
@@ -168,7 +189,7 @@ export default {
           this.createdOrderPrint(orderId)
           break
         case 'ViewOrder':
-          this.createdOrderViewOrder()
+          this.createdOrderViewOrder(orderId)
           break
         case 'Pay':
           this.createdOrderPay({ order_id: orderId, type: modalType }).then(

@@ -50,7 +50,6 @@
   </div>
 </template>
 <script>
-import PageRouteNav from '@/views/components/page-route-nav#/nav'
 import { RevenueService } from './revenue.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'

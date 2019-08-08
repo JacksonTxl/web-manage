@@ -69,16 +69,16 @@
       <a-row :gutter="8">
         <a-col offset="1" :lg="23">
           <st-form-item label="服务设施" class="mg-b0">
-            <st-checkbox-facility-group v-model="serviceIds">
-              <st-checkbox-facility-item
+            <checkbox-facility-group v-model="serviceIds">
+              <checkbox-facility-item
                 style="margin-right:24px"
                 v-for="item in serviceList"
                 :label="item.service_name"
                 :icon="serviceIconIconList[item.service_id]"
                 :key="item.service_id"
                 :value="item.service_id"
-              ></st-checkbox-facility-item>
-            </st-checkbox-facility-group>
+              ></checkbox-facility-item>
+            </checkbox-facility-group>
           </st-form-item>
         </a-col>
       </a-row>
@@ -140,7 +140,7 @@
       <a-row :gutter="8">
         <a-col offset="1" :lg="22">
           <st-form-item label="营业时间">
-            <st-shop-hour-picker v-model="weekTime"></st-shop-hour-picker>
+            <shop-hour-picker v-model="weekTime"></shop-hour-picker>
           </st-form-item>
         </a-col>
       </a-row>
@@ -161,10 +161,22 @@ import { PatternService } from '@/services/pattern.service'
 import { EditService } from './edit.service'
 import { RuleConfig } from '@/constants/rule'
 import { cloneDeep } from 'lodash-es'
+import ShopMapLocation from '@/views/biz-modals/shop/map-location'
+import CheckboxFacilityGroup from '@/views/biz-components/checkbox-facility/checkbox-facility-group'
+import CheckboxFacilityItem from '@/views/biz-components/checkbox-facility/checkbox-facility-item'
+import ShopHourPicker from '@/views/biz-components/shop-hour-picker/shop-hour-picker'
 export default {
   name: 'PageShopSettingShopEdit',
+  components: {
+    CheckboxFacilityGroup,
+    CheckboxFacilityItem,
+    ShopHourPicker
+  },
   bem: {
     edit: 'page-shop-setting-shop-edit'
+  },
+  modals: {
+    ShopMapLocation
   },
   serviceInject() {
     return {

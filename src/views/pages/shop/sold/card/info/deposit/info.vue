@@ -105,10 +105,16 @@
 import { InfoService } from './info.service'
 import { RouteService } from '@/services/route.service'
 import moment from 'moment'
+import SoldCardRefund from '@/views/biz-modals/sold/card/refund'
+import SoldCardTransfer from '@/views/biz-modals/sold/card/transfer'
 export default {
   name: 'PageShopSoldCardDepositInfo',
   bem: {
     basic: 'page-shop-sold-info'
+  },
+  modals: {
+    SoldCardRefund,
+    SoldCardTransfer
   },
   serviceInject() {
     return {

@@ -26,10 +26,14 @@
 
 <script>
 import { MarketingTitleService } from './marketing-title.service'
+import BrandMarketingRuleTip from '@/views/biz-modals/brand/marketing/rule-tip'
 export default {
   name: 'MarktingPluginTitle',
   bem: {
     basic: 'markting-plugin-title'
+  },
+  modals: {
+    BrandMarketingRuleTip
   },
   serviceInject() {
     return {

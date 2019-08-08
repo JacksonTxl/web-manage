@@ -79,7 +79,13 @@
 
 <script>
 import { listColumns } from './colums'
+import FinanceClassCommission from '@/views/biz-modals/finance/class-commission'
+import FinanceSaleCommission from '@/views/biz-modals/finance/sale-commission'
 export default {
+  modals: {
+    FinanceClassCommission,
+    FinanceSaleCommission
+  },
   data() {
     return {
       listColumns,

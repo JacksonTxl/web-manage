@@ -87,10 +87,20 @@
 import { InfoService } from './info.service'
 import { RouteService } from '@/services/route.service'
 import moment from 'moment'
+import ShopFinanceCancel from '@/views/biz-modals/shop/finance/cancel'
+import ShopFinanceRefund from '@/views/biz-modals/shop/finance/refund'
+import ShopFinanceSplit from '@/views/biz-modals/shop/finance/split'
+import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
 export default {
   name: 'PageShopFinanceOrderInfo',
   bem: {
     basic: 'page-shop-finance-info'
+  },
+  modals: {
+    ShopFinanceCancel,
+    ShopFinanceRefund,
+    ShopFinanceSplit,
+    SoldDealGathering
   },
   serviceInject() {
     return {

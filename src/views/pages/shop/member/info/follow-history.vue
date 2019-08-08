@@ -81,7 +81,11 @@
 </template>
 <script>
 import { FollowHistoryService } from './follow-history.service'
+import ShopAddFollowRecords from '@/views/biz-modals/shop/add-follow-records'
 export default {
+  modals: {
+    ShopAddFollowRecords
+  },
   serviceInject() {
     return {
       aService: FollowHistoryService

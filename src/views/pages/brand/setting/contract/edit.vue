@@ -178,7 +178,10 @@ import ContractPreview from './edit#/preview.vue'
 import { EditService } from './edit.service.ts'
 import { MessageService } from '@/services/message.service'
 import { UserService } from '@/services/user.service'
+import ContractConstitution from '@/views/biz-modals/contract/constitution'
+
 const pageName = 'page-setting-contract-edit'
+
 export default {
   name: pageName,
   components: {
@@ -188,6 +191,9 @@ export default {
     bPage: pageName,
     bSider: `${pageName}-sider`,
     bMain: `${pageName}-main`
+  },
+  modals: {
+    ContractConstitution
   },
   serviceInject() {
     return {

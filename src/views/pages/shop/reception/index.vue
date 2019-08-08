@@ -128,7 +128,7 @@
             <div class="imgPlaceholder" v-if="!isSelectMember">
               <img src="~@/assets/img/reception_avatar_default.png" alt="" />
             </div>
-            <st-face-upload
+            <face-upload
               :class="reception('upload')"
               width="180px"
               height="180px"
@@ -136,7 +136,7 @@
               @change="photoChange"
               :list="photoList"
               v-else
-            ></st-face-upload>
+            ></face-upload>
           </div>
           <div :class="reception('set-info')" v-if="!isEntry">
             <div class="set-info-item">
@@ -555,10 +555,17 @@ import { cloneDeep } from 'lodash-es'
 import moment from 'moment'
 import { timer } from 'rxjs'
 import FrontSimpleArea from '@/views/biz-components/stat/front-simple-area'
+import FrontAddMember from '@/views/biz-modals/front/add-member'
+import FrontAddWorkNote from '@/views/biz-modals/front/add-work-note'
+import FaceUpload from '@/views/biz-components/face-upload/face-upload'
 export default {
   name: 'PageShopReception',
   bem: {
     reception: 'page-shop-reception'
+  },
+  modals: {
+    FrontAddMember,
+    FrontAddWorkNote
   },
   serviceProviders() {
     return [IndexService]
@@ -583,7 +590,8 @@ export default {
     }
   },
   components: {
-    FrontSimpleArea
+    FrontSimpleArea,
+    FaceUpload
   },
   data() {
     return {

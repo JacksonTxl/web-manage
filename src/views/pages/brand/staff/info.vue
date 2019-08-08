@@ -125,8 +125,21 @@
 import { InfoService } from './info.service'
 import { forEach } from 'lodash-es'
 import { RouteService } from '@/services/route.service'
-
+import StaffBindEntityCard from '@/views/biz-modals/staff/bind-entity-card'
+import StaffRePassword from '@/views/biz-modals/staff/re-password'
+import StaffReinstatement from '@/views/biz-modals/staff/reinstatement'
+import StaffSalaryAccountSetting from '@/views/biz-modals/staff/salary-account-setting'
+import StaffTurnover from '@/views/biz-modals/staff/turnover'
+import StaffUpdateStaffPosition from '@/views/biz-modals/staff/update-staff-position'
 export default {
+  modals: {
+    StaffBindEntityCard,
+    StaffRePassword,
+    StaffReinstatement,
+    StaffSalaryAccountSetting,
+    StaffTurnover,
+    StaffUpdateStaffPosition
+  },
   serviceInject() {
     return {
       infoService: InfoService,

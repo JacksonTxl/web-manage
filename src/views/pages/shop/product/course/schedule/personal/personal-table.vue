@@ -97,15 +97,21 @@
 </template>
 
 <script>
-import date from '../date#/date-component'
 import tableMixin from '@/mixins/table.mixin'
 import { PersonalTableService } from './personal-table.service'
 import { RouteService } from '@/services/route.service'
-import { PersonalScheduleScheduleService } from '../personal.service#/schedule.service'
-
+import { PersonalScheduleScheduleService } from './service#/schedule.service'
+import SchedulePersonalAdd from '@/views/biz-modals/schedule/personal/add'
+import SchedulePersonalEdit from '@/views/biz-modals/schedule/personal/edit'
+import SchedulePersonalInbatchAdd from '@/views/biz-modals/schedule/personal/inbatch-add'
 export default {
   name: 'PersonalTable',
   mixins: [tableMixin],
+  modals: {
+    SchedulePersonalAdd,
+    SchedulePersonalEdit,
+    SchedulePersonalInbatchAdd
+  },
   serviceInject() {
     return {
       tableService: PersonalTableService,
@@ -138,9 +144,6 @@ export default {
         .format('MM/DD')
         .valueOf()
     }
-  },
-  components: {
-    date
   },
   data() {
     return {

@@ -174,6 +174,9 @@ import { AllService } from './all.service'
 import { RouteService } from '@/services/route.service'
 import { columns } from './all.config.ts'
 import tableMixin from '@/mixins/table.mixin'
+import CardBrandDepositRecoverSale from '@/views/biz-modals/card/brand-deposit/recover-sale'
+import CardBrandDepositShopTable from '@/views/biz-modals/card/brand-deposit/shop-table'
+import CardBrandDepositStopSale from '@/views/biz-modals/card/brand-deposit/stop-sale'
 export default {
   mixins: [tableMixin],
   name: 'PageBrandProductDepositAll',
@@ -185,6 +188,11 @@ export default {
       routeService: RouteService,
       allService: AllService
     }
+  },
+  modals: {
+    CardBrandDepositRecoverSale,
+    CardBrandDepositShopTable,
+    CardBrandDepositStopSale
   },
   events: {
     'brand-product-card-deposit-list-all:onSingleSearch'(key, data, options) {

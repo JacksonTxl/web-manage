@@ -155,7 +155,7 @@ export default {
         : []
     },
     onClickBack() {
-      this.$emit('back', 3)
+      this.$emit('back', 1)
     },
     goNext() {
       this.form.validateFields((err, values) => {
@@ -171,7 +171,12 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          values.employment_time = values.employment_time.format('YYYY-MM-DD')
+          // 入职时间不必填 不填写不是时间对象不能格式化
+          if (values.employment_time) {
+            values.employment_time = values.employment_time.format('YYYY-MM-DD')
+          } else {
+            values.employment_time = undefined
+          }
           values.certification_name = this.coachInfoData.certification_name
           values.is_show = this.checked ? 1 : 0
           values.image_personal = this.image_personal

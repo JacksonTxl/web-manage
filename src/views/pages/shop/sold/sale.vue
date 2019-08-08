@@ -45,11 +45,25 @@
 
 <script>
 import { SaleService } from './sale.service'
+import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
+import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
+import SoldDealSaleCabinet from '@/views/biz-modals/sold/deal/sale-cabinet'
+import SoldDealSaleCourse from '@/views/biz-modals/sold/deal/sale-course'
+import SoldDealSaleDepositCard from '@/views/biz-modals/sold/deal/sale-deposit-card'
+import SoldDealSaleMemberCard from '@/views/biz-modals/sold/deal/sale-member-card'
 export default {
   name: 'PageShopSoldLease',
   bem: {
     basic: 'page-shop-sold',
     sale: 'page-shop-sold-sale'
+  },
+  modals: {
+    SoldDealGatheringTip,
+    SoldDealGathering,
+    SoldDealSaleCabinet,
+    SoldDealSaleCourse,
+    SoldDealSaleDepositCard,
+    SoldDealSaleMemberCard
   },
   serviceInject() {
     return {

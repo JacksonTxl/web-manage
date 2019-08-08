@@ -67,9 +67,17 @@ import tableMixin from '@/mixins/table.mixin'
 import { columns } from './shop.config'
 import { ShopService } from '../shop.service'
 import { RouteService } from '@/services/route.service'
+import CoursePriceSetting from '@/views/biz-modals/course/price-setting'
+import CourseSupportCourseCocahesBrand from '@/views/biz-modals/course/support-course-cocahes-brand'
+import CourseTransfromBrandCourse from '@/views/biz-modals/course/transfrom-brand-course'
 export default {
   name: 'ShopSaleListTable',
   mixins: [tableMixin],
+  modals: {
+    CoursePriceSetting,
+    CourseSupportCourseCocahesBrand,
+    CourseTransfromBrandCourse
+  },
   data() {
     return {
       columns

@@ -313,7 +313,7 @@
                 required
                 :help="cardBgValidatorText"
               >
-                <st-card-bg-radio @change="onCardBgChange" v-model="cardBg" />
+                <card-bg-radio @change="onCardBgChange" v-model="cardBg" />
               </st-form-item>
             </a-col>
           </a-row>
@@ -372,12 +372,14 @@ import MemberCard from '@/views/biz-components/h5/pages/member-card'
 import H5Container from '@/views/biz-components/h5/h5-container'
 import h5mixin from './h5mixin'
 import { MEMBER_CARD } from '@/views/biz-components/h5/pages/member-card.config'
+import CardBgRadio from '@/views/biz-components/card-bg-radio/card-bg-radio'
 export default {
   name: 'PageShopPeriodCardAdd',
   mixins: [h5mixin],
   components: {
     MemberCard,
-    H5Container
+    H5Container,
+    CardBgRadio
   },
   serviceInject() {
     return {

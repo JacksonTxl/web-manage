@@ -104,6 +104,8 @@ import tableMixin from '@/mixins/table.mixin'
 import { columns } from './brand.config'
 import { BrandService } from '../brand.service'
 import { RouteService } from '@/services/route.service'
+import CourseSupportCourseCocahesBrand from '@/views/biz-modals/course/support-course-cocahes-brand'
+import CourseSupportCourseShops from '@/views/biz-modals/course/support-course-shops'
 export default {
   name: 'ShopSaleListTable',
   mixins: [tableMixin],
@@ -111,6 +113,10 @@ export default {
     return {
       columns
     }
+  },
+  modals: {
+    CourseSupportCourseCocahesBrand,
+    CourseSupportCourseShops
   },
   serviceInject() {
     return {

@@ -201,7 +201,7 @@
 </template>
 <script>
 import { dateFilter } from '@/filters/date.filters'
-import { CONTRACT_TYPE } from '@/constants/contract/enums'
+import { CONTRACT_TYPE } from '@/constants/setting/contract'
 import moment from 'moment'
 import { UserService } from '@/services/user.service'
 export default {

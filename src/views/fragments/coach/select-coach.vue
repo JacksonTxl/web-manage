@@ -45,7 +45,7 @@
 </template>
 <script>
 import { SelectCoachService } from './select-coach.service'
-
+import CoachSelect from '@/views/biz-modals/coach/select'
 export default {
   name: 'SelectCoach',
   serviceInject() {
@@ -66,6 +66,9 @@ export default {
         return []
       }
     }
+  },
+  modals: {
+    CoachSelect
   },
   data() {
     return {

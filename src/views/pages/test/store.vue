@@ -1,15 +1,19 @@
 <template>
   <div class="pages-test-store container-basis">
-    <st-shop-hour-picker
+    <shop-hour-picker
       v-model="business_time"
       type="shop-hour-picker"
       @change="sliderCange"
-    ></st-shop-hour-picker>
+    ></shop-hour-picker>
   </div>
 </template>
 
 <script>
+import ShopHourPicker from '@/views/biz-components/shop-hour-picker/shop-hour-picker'
 export default {
+  components: {
+    ShopHourPicker
+  },
   data() {
     return {
       business_time: [

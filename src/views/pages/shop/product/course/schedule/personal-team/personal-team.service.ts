@@ -1,7 +1,7 @@
 import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
 import { forkJoin, timer } from 'rxjs'
-import { PersonalTeamScheduleScheduleService } from '../personal-team.service#/schedule.service'
-import { PersonalTeamScheduleCommonService } from '../personal-team.service#/common.service'
+import { PersonalTeamScheduleScheduleService } from './service#/schedule.service'
+import { PersonalTeamScheduleCommonService } from './service#/common.service'
 import { AuthService } from '@/services/auth.service'
 import { State, Computed } from 'rx-state'
 

@@ -91,6 +91,10 @@ export default {
   methods: {
     /**
      * 筛选搜索 使用当前的query参数，只是页数到第一页  只做路由跳转 获取数据的行为在 beforeRouteUpdate 或 beforeEach中定义
+     * @example
+     *  ```html
+     *      <st-button @click='onSearch'></st-button>
+     *  ```
      */
     onSearch() {
       this.onSelectionReset()
@@ -103,7 +107,7 @@ export default {
       })
     },
     /**
-     * 多个字段下的搜索
+     * 多个字段下的搜索 this.onMultiSearch({a:1,b:2})
      */
     onMultiSearch(searchFieldsValue = {}) {
       if (!isPlainObject(searchFieldsValue)) {
@@ -134,7 +138,7 @@ export default {
       })
     },
     /**
-     * 单个筛选项的即时搜索
+     * 单个筛选项的即时搜索 @change="onSingleSearch('card_type',$event)"
      */
     onSingleSearch(key, data) {
       this.onSelectionReset()
@@ -148,13 +152,14 @@ export default {
       })
     },
     /**
-     * 关键词的即时搜索
+     * 关键词的即时搜索 @change="onKeywordsSearch('keyword',$event)"
      */
     onKeywordsSearch(key, data) {
       this.onSelectionReset()
       this.$router.push({
         query: {
           [key]: data,
+          [this.currentPageField]: 1,
           size: this.query.size
         },
         force: true

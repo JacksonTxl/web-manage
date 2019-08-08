@@ -23,10 +23,20 @@
 
 <script>
 import Calendar from '@/views/biz-components/schedule/calendar'
-import { TeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/team.service#/schedule.service'
+import { TeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/team/service#/schedule.service'
 import { RouteService } from '@/services/route.service'
+import ScheduleTeamAddCourseScheduleBatch from '@/views/biz-modals/schedule/team/add-course-schedule-batch'
+import ScheduleTeamAddCourseSchedule from '@/views/biz-modals/schedule/team/add-course-schedule'
+import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
+import ScheduleTeamReserveInfo from '@/views/biz-modals/schedule/team/reserve-info'
 export default {
   name: 'TeamSchedule',
+  modals: {
+    ScheduleTeamAddCourseScheduleBatch,
+    ScheduleTeamAddCourseSchedule,
+    ScheduleTeamCopySchedule,
+    ScheduleTeamReserveInfo
+  },
   serviceInject() {
     return {
       teamSchduleService: TeamScheduleScheduleService,

@@ -76,7 +76,7 @@
             <span>{{ text | putStatusFilter }}</span>
           </template>
           <template slot="action" slot-scope="text, record">
-            <st-table-actions>
+            <st-table-actions sytle="width: 120px">
               <a
                 @click="onEdit(record)"
                 v-if="record.auth['brand:activity:coupon|edit']"
@@ -110,12 +110,18 @@ import { RouteService } from '@/services/route.service'
 import MarkteingPluginTitle from '../../components#/marketing-title'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
+import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
+import BrandMarketingPoster from '@/views/biz-modals/brand/marketing/poster'
 
 export default {
   name: 'PageBrandMarketingPluginCouponList',
   mixins: [tableMixin],
   bem: {
     basic: 'page-brand-plugin-coupon'
+  },
+  modals: {
+    BrandMarketingBind,
+    BrandMarketingPoster
   },
   serviceInject() {
     return {

@@ -202,10 +202,20 @@
 import { InfoService } from './info.service'
 import moment from 'moment'
 import { RouteService } from '@/services/route.service'
+import SoldCourseFreeze from '@/views/biz-modals/sold/course/freeze'
+import SoldCourseRefund from '@/views/biz-modals/sold/course/refund'
+import SoldCourseSurplus from '@/views/biz-modals/sold/course/surplus'
+import SoldCourseTransfer from '@/views/biz-modals/sold/course/transfer'
 export default {
   name: 'PageShopSoldCoursePackageInfo',
   bem: {
     basic: 'page-shop-sold-info'
+  },
+  modals: {
+    SoldCourseFreeze,
+    SoldCourseRefund,
+    SoldCourseSurplus,
+    SoldCourseTransfer
   },
   serviceInject() {
     return {
