@@ -185,7 +185,12 @@ export default {
       })
     },
     submit(data, saveOrgoNext) {
-      data.employment_time = data.employment_time.format('YYYY-MM-DD')
+      if (data.employment_time) {
+        data.employment_time = data.employment_time.format('YYYY-MM-DD')
+      } else {
+        data.employment_time = undefined
+      }
+      
       data.certification_name = this.coachInfoData.certification_name
       data.is_show = Number(data.is_show)
       data.image_personal = this.fileList
