@@ -5,15 +5,14 @@
         <st-form-item label="从业时间">
           <a-date-picker
             style="width:100%"
-            v-decorator="rules.employment_time"
+            v-decorator="decorators.employment_time"
           />
         </st-form-item>
         <st-form-item label="擅长的项目">
           <a-select
             mode="multiple"
             placeholder="请选择擅长的项目"
-            v-decorator="rules.specialty_id"
-            @change="onChangeSpecialtyId"
+            v-decorator="decorators.specialty_id"
           >
             <a-select-option
               :key="item.id"
@@ -27,7 +26,7 @@
         <st-form-item label="专业认证">
           <a-input
             placeholder="请输入专业证书名称"
-            v-decorator="rules.certification_name"
+            v-decorator="decorators.certification_name"
             style="top: 0;"
           >
             <div
@@ -57,7 +56,7 @@
           <st-textarea
             :maxlength="300"
             :rows="10"
-            v-decorator="rules.introduction"
+            v-decorator="decorators.introduction"
             placeholder="填写点什么吧"
           />
         </st-form-item>
@@ -96,13 +95,15 @@
 </template>
 
 <script>
-import { RuleConfig } from '@/constants/staff/rule'
+import { PatternService } from '@/services/pattern.service'
+import { ruleOptions } from '../staff-form.config.ts'
+import { cloneDeep } from 'lodash-es'
 
 export default {
   name: 'EditDetailCoachInfo',
   serviceInject() {
     return {
-      rules: RuleConfig
+      pattern: PatternService
     }
   },
   props: {
@@ -116,12 +117,7 @@ export default {
   },
   data() {
     const form = this.$stForm.create()
-    const decorators = form.decorators({
-      coupon_name: {
-        rules: [{ validator: this.couponNameValidator }]
-      },
-      full_price: { rules: [{ validator: this.fullPriceValidator }] }
-    })
+    const decorators = form.decorators(ruleOptions)
     return {
       form,
       decorators,
@@ -134,6 +130,7 @@ export default {
     }
   },
   mounted() {
+    cloneDeep()
     this.setData(this.data)
   },
   methods: {
@@ -224,9 +221,7 @@ export default {
           this.key = val.fileKey
           this.MessageService.success({ content: `success: ${val}` })
           this.fileList.push({
-            url: `http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/${
-              val.fileKey
-            }`
+            url: `http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/${val.fileKey}`
           })
           this.loading = false
         },
