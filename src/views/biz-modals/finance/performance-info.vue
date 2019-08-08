@@ -14,22 +14,38 @@
           </st-info-item>
           <template
             v-if="
-              infodata.performance_type.id == 1 ||
-                infodata.performance_type.id == 2
+              infodata.performance_type.id ==
+                SALAY_TEMPLATE.PERFORMANCE_TYPE_1 ||
+                infodata.performance_type.id ==
+                  SALAY_TEMPLATE.PERFORMANCE_TYPE_2
             "
           >
-            <template v-if="infodata.performance_mode.id == 1">
+            <template
+              v-if="
+                infodata.performance_mode.id ==
+                  SALAY_TEMPLATE.PERFORMANCE_MODE_1
+              "
+            >
               <st-info-item label="默认提成">
                 {{ infodata.performance_num }}%
               </st-info-item>
             </template>
-            <template v-if="infodata.performance_mode.id == 2">
+            <template
+              v-if="
+                infodata.performance_mode.id ==
+                  SALAY_TEMPLATE.PERFORMANCE_MODE_2
+              "
+            >
               <st-info-item label="默认提成">
                 {{ infodata.performance_num }}元
               </st-info-item>
             </template>
           </template>
-          <template v-if="infodata.performance_type.id == 3">
+          <template
+            v-if="
+              infodata.performance_type.id == SALAY_TEMPLATE.PERFORMANCE_TYPE_3
+            "
+          >
             <st-info-item label="默认提成">
               {{ infodata.performance_num }}元/节
             </st-info-item>
@@ -40,31 +56,67 @@
             >
               <st-form-table
                 hoverable
+                v-if="infodata.gradients"
                 :isEmpty="infodata.gradients.length === 0"
               >
                 <thead>
                   <tr>
-                    <template v-if="infodata.performance_type.id == 1">
-                      <template v-if="infodata.performance_mode.id == 1">
+                    <template
+                      v-if="
+                        infodata.performance_type.id ==
+                          SALAY_TEMPLATE.PERFORMANCE_TYPE_1
+                      "
+                    >
+                      <template
+                        v-if="
+                          infodata.performance_mode.id ==
+                            SALAY_TEMPLATE.PERFORMANCE_MODE_1
+                        "
+                      >
                         <th>月销售额（万及以上）</th>
                         <th>提成（%）</th>
                       </template>
-                      <template v-if="infodata.performance_mode.id == 2">
+                      <template
+                        v-if="
+                          infodata.performance_mode.id ==
+                            SALAY_TEMPLATE.PERFORMANCE_MODE_2
+                        "
+                      >
                         <th>月销售额（万及以上）</th>
                         <th>提成（元）</th>
                       </template>
                     </template>
-                    <template v-if="infodata.performance_type.id == 2">
-                      <template v-if="infodata.performance_mode.id == 1">
+                    <template
+                      v-if="
+                        infodata.performance_type.id ==
+                          SALAY_TEMPLATE.PERFORMANCE_TYPE_2
+                      "
+                    >
+                      <template
+                        v-if="
+                          infodata.performance_mode.id ==
+                            SALAY_TEMPLATE.PERFORMANCE_MODE_1
+                        "
+                      >
                         <th>月课时价值（万及以上）</th>
                         <th>提成（%）</th>
                       </template>
-                      <template v-if="infodata.performance_mode.id == 2">
+                      <template
+                        v-if="
+                          infodata.performance_mode.id ==
+                            SALAY_TEMPLATE.PERFORMANCE_MODE_2
+                        "
+                      >
                         <th>月课时价值（万及以上）</th>
                         <th>提成（元）</th>
                       </template>
                     </template>
-                    <template v-if="infodata.performance_type.id == 3">
+                    <template
+                      v-if="
+                        infodata.performance_type.id ==
+                          SALAY_TEMPLATE.PERFORMANCE_TYPE_3
+                      "
+                    >
                       <th>月课时数（节及以上）</th>
                       <th>课时费（元/节）</th>
                     </template>
@@ -90,17 +142,15 @@
 <script>
 import { EditTemplateService } from './edit-performance-template.service'
 import { UserService } from '@/services/user.service'
+import { SALAY_TEMPLATE } from '@/constants/brand/finance/salary-enum'
 export default {
   serviceInject() {
     return {
-      service: EditTemplateService,
-      userservice: UserService
+      service: EditTemplateService
     }
   },
   rxState() {
-    return {
-      finance: this.userservice.finance$
-    }
+    return {}
   },
   created() {
     this.service.getInfo(this.id).subscribe(res => {
@@ -109,6 +159,7 @@ export default {
   },
   data() {
     return {
+      SALAY_TEMPLATE,
       show: false,
       infodata: {
         template_name: '',
@@ -125,7 +176,9 @@ export default {
     id: Number
   },
   methods: {
-    handleSubmit() {}
+    handleSubmit() {
+      this.show = false
+    }
   }
 }
 </script>

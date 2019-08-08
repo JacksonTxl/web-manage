@@ -6,13 +6,7 @@
           <st-form-item label="模板名称" required>
             <a-input
               placeholder="请输模板名称"
-              v-decorator="[
-                'template_name',
-                {
-                  initialValue: item.template_name,
-                  rules: [{ required: true, message: '请输入模板名称' }]
-                }
-              ]"
+              v-decorator="decorators.template_name"
             />
           </st-form-item>
         </a-col>
@@ -21,13 +15,7 @@
             <st-input-number
               :float="true"
               placeholder="请输入月底薪"
-              v-decorator="[
-                'salary',
-                {
-                  initialValue: item.salary,
-                  rules: [{ required: true, message: '请输入月底薪' }]
-                }
-              ]"
+              v-decorator="decorators.salary"
             >
               <template slot="addonAfter">
                 元
@@ -43,6 +31,7 @@
 <script>
 import { EditTemplateService } from './basic-template-edit.service'
 import { MessageService } from '@/services/message.service'
+import { ruleOptions } from './add-template.config'
 export default {
   serviceInject() {
     return {
@@ -51,8 +40,11 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      form: this.$form.createForm(this),
+      form,
+      decorators,
       show: false
     }
   },
@@ -62,21 +54,20 @@ export default {
   methods: {
     handleSubmit(e) {
       e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('提交的数据', values)
-          this.service.editTemplate(this.item.id, values).subscribe(() => {
-            console.log('ok')
-            this.$emit('change')
-            this.message.success({ content: '编辑成功' })
-            this.show = false
-          })
-        }
+      this.form.validate().then(values => {
+        this.service.editTemplate(this.item.id, values).subscribe(() => {
+          this.$emit('change')
+          this.message.success({ content: '编辑成功' })
+          this.show = false
+        })
       })
     }
   },
   mounted() {
-    console.log('========', this.item)
+    this.form.setFieldsValue({
+      template_name: this.item.template_name,
+      salary: this.item.salary
+    })
   }
 }
 </script>

@@ -72,7 +72,7 @@
   </st-modal>
 </template>
 <script>
-import { columnsShops } from './support-table'
+import { columnsShops } from './support-table.config'
 import SelectShop from '@/views/fragments/shop/select-shop.vue'
 import SetPrice from '@/views/fragments/course/set-price.vue'
 import SelectCoach from '@/views/fragments/coach/select-coach.vue'

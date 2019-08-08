@@ -47,3 +47,33 @@ export const saleColumns = [
     dataIndex: 'u'
   }
 ]
+
+export const columns = (vm: any) => {
+  return [
+    {
+      title: '员工姓名',
+      dataIndex: 'staff_name',
+      key: 'staff_name'
+    },
+    {
+      title: '手机号',
+      dataIndex: 'mobile',
+      key: 'mobile'
+    },
+    {
+      title: '性别',
+      dataIndex: 'sex',
+      key: 'sex'
+    },
+    {
+      title: '工号',
+      dataIndex: 'staff_num',
+      key: 'staff_num'
+    },
+    {
+      title: '所属部门',
+      dataIndex: 'department_name',
+      key: 'department_name'
+    }
+  ]
+}
