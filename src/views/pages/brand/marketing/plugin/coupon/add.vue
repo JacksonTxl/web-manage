@@ -146,6 +146,7 @@
                     <a-radio :value="2">
                       满
                       <st-input-number
+                        :float="true"
                         :class="basic('radio-input')"
                         :disabled="isEditMode"
                         v-decorator="decorators.full_price"
