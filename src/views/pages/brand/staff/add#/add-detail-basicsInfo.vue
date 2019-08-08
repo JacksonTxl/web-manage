@@ -243,6 +243,7 @@ import ShopSelect from '@/views/biz-components/shop-select'
 import DepartmentSelect from '@/views/biz-components/department-select'
 import { RuleConfig } from '@/constants/staff/rule'
 import { AppConfig } from '@/constants/config'
+import { PatternService } from '@/services/pattern.service'
 import FaceUpload from '@/views/biz-components/face-upload/face-upload'
 export default {
   name: 'StaffDetailBasics',
@@ -265,8 +266,17 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    debugger
+    const decorators = form.decorators({
+      coupon_name: {
+        rules: [{ validator: this.couponNameValidator }]
+      },
+      full_price: { rules: [{ validator: this.fullPriceValidator }] }
+    })
     return {
-      form: this.$form.createForm(this),
+      form,
+      decorators,
       fileList: [],
       faceList: [],
       isChoosePermission: false,

@@ -115,8 +115,16 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators({
+      coupon_name: {
+        rules: [{ validator: this.couponNameValidator }]
+      },
+      full_price: { rules: [{ validator: this.fullPriceValidator }] }
+    })
     return {
-      form: this.$form.createForm(this),
+      form,
+      decorators,
       coachInfoData: {
         certification_name: []
       },
@@ -155,7 +163,7 @@ export default {
         : []
     },
     onClickBack() {
-      this.$emit('back', 3)
+      this.$emit('back', 1)
     },
     goNext() {
       this.form.validateFields((err, values) => {
