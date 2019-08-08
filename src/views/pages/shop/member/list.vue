@@ -368,9 +368,7 @@ export default {
       this.setSearchData()
     }
   },
-  components: {
-    StRangePicker
-  },
+
   methods: {
     refeshPage() {
       this.$router.push({ force: true })

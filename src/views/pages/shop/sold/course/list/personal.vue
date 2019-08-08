@@ -188,9 +188,7 @@ export default {
       }
     }
   },
-  components: {
-    StRangePicker
-  },
+
   computed: {
     columns,
     personalCourseList() {
