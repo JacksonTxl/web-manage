@@ -3,20 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "init": "yarn install",
-    "inspect": "vue-cli-service inspect > inspect.js",
-    "inspect:prod": "vue-cli-service inspect --mode production > inspect.js",
+    "serve": "vue-cli-service serve",
+    "build": "cross-env NODE_ENV=production gulp build && vue-cli-service build --report",
+    "commit": "git-cz",
     "lint": "vue-cli-service lint",
-    "less-base": "gulp less-base",
+    "ci": "npm run init && npm run build",
     "dev": "cross-env BABEL_ENV=development gulp dev",
     "dev:brand": "cross-env BABEL_ENV=development PAGE_ENV=brand gulp dev",
     "dev:shop": "cross-env BABEL_ENV=development PAGE_ENV=shop gulp dev",
     "dev:test": "cross-env LOCAL_API_ENV=test BABEL_ENV=development gulp dev",
     "dev:test:brand": "cross-env LOCAL_API_ENV=test BABEL_ENV=development PAGE_ENV=brand gulp dev",
     "dev:test:shop": "cross-env LOCAL_API_ENV=test BABEL_ENV=development PAGE_ENV=shop gulp dev",
-    "serve": "vue-cli-service serve",
-    "build": "cross-env NODE_ENV=production gulp build && vue-cli-service build --report",
-    "ci": "npm run init && npm run build",
+    "init": "yarn install",
+    "inspect": "vue-cli-service inspect > inspect.js",
+    "inspect:prod": "vue-cli-service inspect --mode production > inspect.js",
+    "less-base": "gulp less-base",
     "push:rx": "git subtree push git@gitlab.styd.cn:fe/packages/rx-state.git --prefix=rx-state master",
     "push:vsa": "git subtree push git@gitlab.styd.cn:fe/packages/vue-service-app.git --prefix=vue-service-app master"
   },
@@ -68,8 +69,10 @@
     "@vue/eslint-config-standard": "^4.0.0",
     "@vue/eslint-config-typescript": "^4.0.0",
     "babel-plugin-dynamic-import-node": "^2.3.0",
+    "commitizen": "^3.0.5",
     "cross-env": "^5.2.0",
     "cross-spawn": "^6.0.5",
+    "cz-customizable": "^5.2.0",
     "eslint": "^5.15.1",
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-prettier": "^3.1.0",
@@ -81,6 +84,7 @@
     "gulp-hash-name": "^1.0.1",
     "gulp-replace": "^1.0.0",
     "html-webpack-exclude-assets-plugin": "^0.0.7",
+    "husky": "^1.1.1",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "less-plugin-clean-css": "^1.5.1",
@@ -108,9 +112,24 @@
     "last 2 versions",
     "not ie <= 8"
   ],
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    }
+  },
   "gitHooks": {
     "pre-commit": "lint-staged",
     "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   },
   "lint-staged": {
     "*.less": [
