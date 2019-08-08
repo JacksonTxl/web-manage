@@ -194,8 +194,8 @@ export default {
   computed: {
     showMore() {
       return (
-        this.auth['shop:sold:sold_personal_course|course_num'] &&
-        this.auth['shop:sold:sold_personal_course|transfer'] &&
+        this.auth['shop:sold:sold_personal_course|course_num'] ||
+        this.auth['shop:sold:sold_personal_course|transfer'] ||
         this.auth['brand_shop:order:order|refund']
       )
     }
