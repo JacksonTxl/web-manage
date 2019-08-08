@@ -15,7 +15,7 @@
           <a-input
             placeholder="支持中英文、数字、不超过15个字"
             max="15"
-            v-decorator="rules.staff_name"
+            v-decorator="decorators.staff_name"
           />
         </st-form-item>
         <st-form-item label="手机号" required>
@@ -244,6 +244,7 @@ import DepartmentSelect from '@/views/biz-components/department-select'
 import { RuleConfig } from '@/constants/staff/rule'
 import { AppConfig } from '@/constants/config'
 import { PatternService } from '@/services/pattern.service'
+import { ruleOptions } from './add-detail-basicsInfo.ts'
 import FaceUpload from '@/views/biz-components/face-upload/face-upload'
 export default {
   name: 'StaffDetailBasics',
@@ -252,6 +253,7 @@ export default {
   },
   serviceInject() {
     return {
+      pattern: PatternService,
       rules: RuleConfig,
       appConfig: AppConfig,
       userService: UserService,
@@ -265,15 +267,9 @@ export default {
       enums: this.userService.staffEnums$
     }
   },
-  data() {
+  data(vm) {
     const form = this.$stForm.create()
-    debugger
-    const decorators = form.decorators({
-      coupon_name: {
-        rules: [{ validator: this.couponNameValidator }]
-      },
-      full_price: { rules: [{ validator: this.fullPriceValidator }] }
-    })
+    const decorators = form.decorators(ruleOptions)
     return {
       form,
       decorators,
