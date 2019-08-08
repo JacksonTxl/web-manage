@@ -84,7 +84,7 @@ export default {
   props: ['id', 'cardType', 'cardName'],
   data() {
     return {
-      form: this.$form.createForm(this),
+      form: this.$stForm.create(),
       show: false,
       // 卡tag类型
       cardTypeTag: {

@@ -298,11 +298,7 @@
           </a-checkbox-group>
         </st-form-item>
         <st-form-item labelGutter="12px" label="约课权益" required>
-          <a-radio-group
-            v-model="courseInterests"
-            @change="onCourseInterestsChange"
-            :class="shelves('course')"
-          >
+          <a-radio-group v-model="courseInterests" :class="shelves('course')">
             <a-radio
               :style="radioStyle"
               v-for="(item, index) in course_interests"
@@ -320,7 +316,6 @@
             placeholder="请输入课程名称搜索"
             :filterOption="false"
             @search="fetchUser"
-            @change="checkedCourseInterests"
             :notFoundContent="loading.getCourseList ? undefined : null"
           >
             <a-spin
@@ -425,7 +420,6 @@
 </template>
 <script>
 import { ShelfService } from './shelf.service'
-import { UserService } from '@/services/user.service'
 import { cloneDeep } from 'lodash-es'
 import { RuleConfig } from '@/constants/rule'
 import ShopHourPicker from '@/views/biz-components/shop-hour-picker/shop-hour-picker'
@@ -441,7 +435,6 @@ export default {
   serviceInject() {
     return {
       rules: RuleConfig,
-      userService: UserService,
       shelfService: ShelfService
     }
   },
@@ -565,8 +558,6 @@ export default {
       // 缓存开卡方式的最后值，阻止用户不选择
       openTypeListHistory: [3],
       // 约课权益
-      courseInterestValue: 1,
-      // courseInterests: 1,
       // 输入是否正确
       courseInterestsStatus: 'success',
       courseInterestsHelpText: '',
@@ -597,18 +588,6 @@ export default {
       let query = { course_name: search }
       this.shelfService.courseListAction$.dispatch(query)
     },
-    // 检验约课权益是否输入正确
-    checkedCourseInterests() {
-      // this.courseInterestsStatus =
-      //   this.courseInterests === 3 && !this.courseList.length
-      //     ? 'error'
-      //     : 'success'
-      // this.courseInterestsHelpText =
-      //   this.courseInterests === 3 && !this.courseList.length
-      //     ? '请输入课程'
-      //     : ''
-      // this.form.validateFields(['courseInterests'])
-    },
     // 检验入场时间是否输入正确
     checkedAdmission() {
       this.admissionTimeText =
@@ -627,12 +606,6 @@ export default {
       }
       let b = this.priceValidataArray.every(i => this.rules.number.test(i))
       this.priceHelpText = b ? '' : '请输入价格'
-    },
-    onCourseInterestsChange(data) {
-      this.courseInterestValue = data.target.value
-      if (data.target.value !== 3) {
-        this.checkedCourseInterests()
-      }
     },
     // 开卡方式change
     onOpenTypeChange(data) {

@@ -14,7 +14,7 @@
       @change="onPageChange"
       :pagination="{
         current: +page.current_page,
-        total: page.total_counts,
+        total: +page.total_counts,
         pageSize: +page.size
       }"
     />
