@@ -722,6 +722,7 @@ export default {
     onSubmit() {
       this.form.validate().then(values => {
         this.checkedAdmission()
+        // TODO: shop hour picker后续修改，不能有默认值
         this.formatWeek()
         this.formatSpecs()
         if (this.admissionTimeIsOk) {
@@ -747,40 +748,6 @@ export default {
             })
         }
       })
-      // this.form.validateFields((error, values) => {
-      //   this.checkedCourseInterests()
-      //   this.checkedAdmission()
-      //   this.checkedPrice()
-      //   if (
-      //     !error &&
-      //     this.admissionTimeIsOk &&
-      //     this.courseInterestsIsOk &&
-      //     this.priceIsOk
-      //   ) {
-      //     this.formatWeek()
-      //     this.formatSpecs()
-      //     this.shelfService
-      //       .shelfCard(
-      //         {
-      //           sell_shops: this.sell_shops,
-      //           open_type: this.openTypeList,
-      //           activate_duration:
-      //             values.openDay === undefined ? undefined : +values.openDay,
-      //           course_interests: +this.courseInterests,
-      //           courses: this.courseList,
-      //           inout_type: this.admissionTime,
-      //           inout_time: this.inoutTime,
-      //           specs: this.specs,
-      //           areas: this.selectVipAreas
-      //         },
-      //         this.id
-      //       )
-      //       .subscribe(() => {
-      //         this.show = false
-      //         this.$emit('success')
-      //       })
-      //   }
-      // })
     }
   },
   created() {
