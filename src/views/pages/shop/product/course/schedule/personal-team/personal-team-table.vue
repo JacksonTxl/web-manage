@@ -151,8 +151,8 @@ export default {
     getTable(val = {}) {
       const query = {
         ...this.query,
-        start_date: val.start_time,
-        end_date: val.end_time
+        start_date: val.start_date,
+        end_date: val.end_date
       }
       this.$router.push({ query })
     }
