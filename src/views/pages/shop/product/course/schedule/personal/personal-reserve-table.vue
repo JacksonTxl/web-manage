@@ -77,6 +77,7 @@ import tableMixin from '@/mixins/table.mixin'
 import { PersonalScheduleReserveService } from './service#/reserve.service'
 import { columns } from '../personal-reserve-table.config'
 import { RouteService } from '@/services/route.service'
+import date from '@/views/biz-components/schedule/date#/date-component.vue'
 import SchedulePersonalAddReserve from '@/views/biz-modals/schedule/personal/add-reserve'
 export default {
   name: 'PersonalReservetable',
@@ -109,6 +110,9 @@ export default {
         .format('MM/DD')
         .valueOf()
     }
+  },
+  components: {
+    date
   },
   data() {
     return {

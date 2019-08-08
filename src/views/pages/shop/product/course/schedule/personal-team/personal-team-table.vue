@@ -102,6 +102,7 @@
 <script>
 import { PersonalTeamScheduleScheduleService } from '../personal-team/service#/schedule.service'
 import { RouteService } from '@/services/route.service'
+import date from '@/views/biz-components/schedule/date#/date-component.vue'
 import SchedulePersonalTeamReserveInfo from '@/views/biz-modals/schedule/personal-team/reserve-info'
 import ScheduleTeamAddCourseScheduleBatch from '@/views/biz-modals/schedule/team/add-course-schedule-batch'
 import ScheduleTeamAddCourseSchedule from '@/views/biz-modals/schedule/team/add-course-schedule'
@@ -119,6 +120,9 @@ export default {
       scheduleService: PersonalTeamScheduleScheduleService,
       routeService: RouteService
     }
+  },
+  components: {
+    date
   },
   rxState() {
     console.log(this.scheduleService)

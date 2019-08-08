@@ -106,6 +106,7 @@ import { RouteService } from '@/services/route.service'
 import ScheduleTeamAddCourseScheduleBatch from '@/views/biz-modals/schedule/team/add-course-schedule-batch'
 import ScheduleTeamAddCourseSchedule from '@/views/biz-modals/schedule/team/add-course-schedule'
 import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
+import date from '@/views/biz-components/schedule/date#/date-component.vue'
 import ScheduleTeamReserveInfo from '@/views/biz-modals/schedule/team/reserve-info'
 export default {
   name: 'ScheduleTeamTable',
@@ -137,6 +138,9 @@ export default {
         .valueOf()
       return `${MMDD} ${weekday}`
     }
+  },
+  components: {
+    date
   },
   methods: {
     onClickSkipSchedule() {
