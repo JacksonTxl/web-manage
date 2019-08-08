@@ -8,19 +8,13 @@
     <st-form :form="form" labelWidth="66px">
       <st-form-item label="待办主题" required>
         <a-input
-          v-decorator="[
-            'subject',
-            { rules: [{ required: true, message: '请输入待办主题' }] }
-          ]"
+          v-decorator="decorators.subject"
           placeholder="请输入简要的待办主题"
         ></a-input>
       </st-form-item>
       <st-form-item label="待办内容" required>
         <st-textarea
-          v-decorator="[
-            'content',
-            { rules: [{ required: true, message: '请输入待办内容' }] }
-          ]"
+          v-decorator="decorators.content"
           placeholder="请输入具体的待办内容"
         />
       </st-form-item>
@@ -39,6 +33,7 @@
 </template>
 <script>
 import { AddWorkNoteService } from './add-work-note.service'
+import { ruleOptions } from './add-work-note.config'
 export default {
   name: 'ModalShopFrontAddWorkNote',
   bem: {
@@ -55,25 +50,21 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      show: false,
-      form: this.$form.createForm(this)
+      form,
+      decorators,
+      show: false
     }
   },
   methods: {
     onSubmit() {
-      this.form.validateFields((error, values) => {
-        if (!error) {
-          this.addWorkNoteService
-            .addWorkNote({
-              subject: values.subject,
-              content: values.content
-            })
-            .subscribe(() => {
-              this.show = false
-              this.$emit('success')
-            })
-        }
+      this.form.validate().then(values => {
+        this.addWorkNoteService.addWorkNote(values).subscribe(() => {
+          this.show = false
+          this.$emit('success')
+        })
       })
     }
   }
