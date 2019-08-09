@@ -9,7 +9,7 @@ interface ListState {
   resData: object
 }
 @Injectable()
-export class TeamService extends Store<ListState> {
+export class TeamService {
   state$: State<ListState>
   resData$: Computed<object>
   auth$ = this.authService.authMap$({
@@ -20,7 +20,6 @@ export class TeamService extends Store<ListState> {
     private reserveSettingApi: TeamReserveSettingApi,
     private authService: AuthService
   ) {
-    super()
     this.state$ = new State({
       resData: {}
     })

@@ -8,9 +8,10 @@ import { AuthService } from '@/services/auth.service'
 interface ListState {
   list: object[]
   info: object
+  loading: Object
 }
 @Injectable()
-export class UserLevelService extends Store<ListState> {
+export class UserLevelService {
   state$: State<ListState>
   list$: Computed<object[]>
   info$: Computed<object>
@@ -22,7 +23,6 @@ export class UserLevelService extends Store<ListState> {
     private settingMemberApi: SettingMemberApi,
     private authService: AuthService
   ) {
-    super()
     this.state$ = new State({
       list: [],
       info: {}
