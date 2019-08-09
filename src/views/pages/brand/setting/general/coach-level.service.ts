@@ -13,7 +13,7 @@ interface ListState {
   resData: object
 }
 @Injectable()
-export class CoachLevelService extends Store<ListState> {
+export class CoachLevelService {
   state$: State<ListState>
   resData$: Computed<object>
   auth$ = this.authService.authMap$({
@@ -24,7 +24,6 @@ export class CoachLevelService extends Store<ListState> {
     private coachLevelApi: CoachLevelApi,
     private authService: AuthService
   ) {
-    super()
     this.state$ = new State({
       resData: {}
     })

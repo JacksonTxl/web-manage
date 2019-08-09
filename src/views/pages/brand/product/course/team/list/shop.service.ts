@@ -1,6 +1,6 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { tap, pluck } from 'rxjs/operators'
-import { State, Computed, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
+import { State, Effect } from 'rx-state'
 import {
   BrandTeamCourseApi,
   GetTeamBrandCourseListInput,
@@ -11,13 +11,12 @@ import { forkJoin } from 'rxjs'
 import { MessageService } from '@/services/message.service'
 
 @Injectable()
-export class ShopService {
+export class ShopService implements RouteGuard {
   // loading
   loading$ = new State({})
   // 业务状态
   list$ = new State([])
   page$ = new State({})
-  state$: State<any>
   auth$ = this.authService.authMap$({
     transfer: 'brand_shop:product:team_course|transfer'
   })
@@ -25,9 +24,7 @@ export class ShopService {
     private shopTeamCourseApi: BrandTeamCourseApi,
     private authService: AuthService,
     private msg: MessageService
-  ) {
-    this.state$ = new State({})
-  }
+  ) {}
   @Effect()
   getList(params: GetTeamBrandCourseListInput) {
     return this.shopTeamCourseApi.getTeamCourseListInShop(params).pipe(

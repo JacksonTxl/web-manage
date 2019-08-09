@@ -6,7 +6,7 @@
           <a-input
             placeholder="课程名称"
             disabled
-            v-decorator="ruleConfig.courseName"
+            v-decorator="decorators.course_name"
           />
         </st-form-item>
       </a-col>
@@ -16,14 +16,14 @@
         <st-form-item label="上课门店" required>
           <a-radio-group
             @change="onChange"
-            v-decorator="ruleConfig.shopSetting"
+            v-decorator="decorators.shop_setting"
           >
             <a-radio
-              v-for="(item, index) in personalCourseEnums.shop_setting.value"
-              :key="+index"
-              :value="+index"
+              v-for="(item, index) in shopSetting"
+              :key="index"
+              :value="item.value"
             >
-              {{ item }}
+              {{ item.label }}
             </a-radio>
           </a-radio-group>
           <div class="page-shop-coach-container-shop mg-t8" v-if="isShow">
@@ -36,7 +36,7 @@
       <a-col :lg="22" :xs="22" :offset="1">
         <st-form-item label="上课教练">
           <div class="page-shop-coach-container-coach">
-            <input type="hidden" v-decorator="ruleConfig.coachIds" />
+            <input type="hidden" v-decorator="decorators.coach_ids" />
             <select-coach
               :shopIds="shopIds"
               :coachIds="info.coach_ids"
@@ -58,31 +58,27 @@
   </st-form>
 </template>
 <script>
-import { EditService } from '../edit.service'
+import { EditService } from '../../edit.service'
 import { MessageService } from '@/services/message.service'
 import { RouteService } from '@/services/route.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import SelectCoach from '@/views/fragments/coach/select-coach'
-import { UserService } from '@/services/user.service'
-import { RuleConfig } from '@/constants/course/rule'
-
+import { ruleOptions } from '../set-shop-coach.config'
+import { SHOP_SETTING } from '@/constants/course/personal'
 export default {
   name: 'SetShopCoach',
   serviceInject() {
     return {
       editService: EditService,
       messageService: MessageService,
-      userService: UserService,
-      routeService: RouteService,
-      ruleConfig: RuleConfig
+      routeService: RouteService
     }
   },
   rxState() {
-    const user = this.userService
     return {
       loading: this.editService.loading$,
-      personalCourseEnums: user.personalCourseEnums$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      shopSetting: this.editService.shopSetting$
     }
   },
   components: {
@@ -98,15 +94,13 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      form: this.$form.createForm(this),
+      form,
+      decorators,
       shopIds: [],
-      shopSetting: 1
-    }
-  },
-  computed: {
-    isShow() {
-      return this.shopSetting === 2
+      isShow: false
     }
   },
   mounted() {
@@ -134,7 +128,7 @@ export default {
       })
     },
     onChange(e) {
-      this.shopSetting = e.target.value
+      this.isShow = e.target.value === SHOP_SETTING.SPECIFIED_STORE
       this.shopIds = []
     },
     onSelectShopChange(shopIds) {
@@ -152,23 +146,20 @@ export default {
         shop_setting: info.shop_setting,
         coach_ids: info.coach_ids
       })
-      this.shopSetting = info.shop_setting
+      this.isShow = info.shop_setting === SHOP_SETTING.SPECIFIED_STORE
       this.shopIds = info.shop_ids
     },
     getData() {
       const data = this.form.getFieldsValue()
       data.course_id = +this.query.id
       data.shop_ids = this.shopIds
-      console.log('data', data)
       return data
     },
     shopInputCheck() {
-      console.log(this.shopIds)
-      const { shopSetting } = this
-      if (shopSetting === 1) {
-        return true
-      } else {
+      if (this.isShow) {
         return this.shopIds.length
+      } else {
+        return true
       }
     }
   }
