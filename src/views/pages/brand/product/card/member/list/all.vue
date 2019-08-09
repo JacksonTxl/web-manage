@@ -209,6 +209,7 @@ import CardBrandMemberRecoverSale from '@/views/biz-modals/card/brand-member/rec
 import CardBrandMemberShelf from '@/views/biz-modals/card/brand-member/shelf'
 import CardBrandMemberShopTable from '@/views/biz-modals/card/brand-member/shop-table'
 import CardBrandMemberStopSale from '@/views/biz-modals/card/brand-member/stop-sale'
+import { BRAND_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH } from '@/constants/events'
 import {
   ADMISSION_RANGE,
   SUPPORT_SALES,
@@ -221,7 +222,7 @@ export default {
     all: 'page-brand-product-member-list-all'
   },
   events: {
-    'brand-product-card-member-list-all:onKeywordsSearch'(key, data) {
+    [BRAND_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH](key, data) {
       this.onKeywordsSearch(key, data)
     }
   },

@@ -125,6 +125,7 @@ import { columns } from './shelves.config.ts'
 import tableMixin from '@/mixins/table.mixin'
 import CardBrandDepositShopTable from '@/views/biz-modals/card/brand-deposit/shop-table'
 import { CONSUMPTION_RANGE } from '@/constants/card/deposit'
+import { BRAND_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH } from '@/constants/events'
 export default {
   mixins: [tableMixin],
   name: 'PageBrandProductDepositShelves',
@@ -132,7 +133,7 @@ export default {
     shelves: 'page-brand-product-deposit-list-shelves'
   },
   events: {
-    'brand-product-card-deposit-list-shelves:onKeywordsSearch'(key, data) {
+    [BRAND_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH](key, data) {
       this.onKeywordsSearch(key, data)
     }
   },
