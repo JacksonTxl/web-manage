@@ -109,7 +109,10 @@
             员工职能
             <st-help-tooltip id="TBCE002" />
           </template>
-          <a-checkbox-group v-decorator="decorators.identity" @change="getIsCoach">
+          <a-checkbox-group
+            v-decorator="decorators.identity"
+            @change="getIsCoach"
+          >
             <a-checkbox
               v-for="(item, key) in enums.identity.value"
               :key="key"
@@ -174,7 +177,10 @@
           ></a-input>
         </st-form-item>
         <st-form-item label="入职时间">
-          <a-date-picker style="width:100%" v-decorator="decorators.entry_date" />
+          <a-date-picker
+            style="width:100%"
+            v-decorator="decorators.entry_date"
+          />
         </st-form-item>
         <st-form-item label="所属门店" required>
           <shop-select
