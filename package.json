@@ -101,7 +101,8 @@
     "stylelint-prettier": "^1.1.1",
     "typescript": "^3.2.1",
     "vue-template-compiler": "^2.5.21",
-    "webpack-external-vendor-plugin": "1.1.1"
+    "webpack-external-vendor-plugin": "1.1.1",
+    "yorkie": "^2.0.0"
   },
   "postcss": {
     "plugins": {
