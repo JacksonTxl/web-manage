@@ -10,20 +10,22 @@
         <a-input
           placeholder="请输入场地名称，不超过10个字"
           maxlength="10"
-          v-decorator="rules.areaName"
+          v-decorator="decorators.area_name"
         />
       </st-form-item>
       <st-form-item labelFix>
-        <a-checkbox :checked="!!info.is_vip" @change="onIsVipChange">
-          VIP区域
-        </a-checkbox>
+        <st-checkbox v-decorator="decorators.is_vip">
+          <slot>
+            VIP区域
+          </slot>
+        </st-checkbox>
       </st-form-item>
       <st-form-item label="容纳人数">
         <st-input-number
           placeholder="请输入最大容纳人数，1-999"
           :min="1"
           :max="999"
-          v-decorator="rules.containNumber"
+          v-decorator="decorators.contain_number"
         />
       </st-form-item>
     </st-form>
@@ -38,15 +40,13 @@
 <script>
 import { EditService } from './edit.service'
 import { MessageService } from '@/services/message.service'
-import { PatternService } from '@/services/pattern.service'
-import { rules } from './court.config'
+import { ruleOptions } from './court.config'
 
 export default {
   serviceInject() {
     return {
       editService: EditService,
-      messageService: MessageService,
-      pattern: PatternService
+      messageService: MessageService
     }
   },
   rxState() {
@@ -62,43 +62,36 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false
     }
   },
-  created() {
-    this.form = this.$form.createForm(this)
+  mounted() {
     this.editService.getInfo(this.id).subscribe(this.setFieldsValue)
-  },
-  computed: {
-    rules
   },
   methods: {
     setFieldsValue() {
       const info = this.info
       this.form.setFieldsValue({
+        is_vip: +info.is_vip,
         area_name: info.area_name,
         contain_number: info.contain_number
       })
     },
-    onIsVipChange(e) {
-      this.info.is_vip = !this.info.is_vip
-    },
     onSubmit(e) {
       e.preventDefault()
-      this.form.validateFields().then(() => {
-        const data = this.getData()
-        this.editService.update(data).subscribe(this.onSubmitSuccess)
+      this.form.validate().then(values => {
+        values.id = this.id
+        values.contain_number = +values.contain_number
+        this.editService.update(values).subscribe(this.onSubmitSuccess)
       })
     },
     onCancel() {
       this.show = false
-    },
-    getData() {
-      const data = this.form.getFieldsValue()
-      data.id = this.id
-      data.is_vip = +this.info.is_vip
-      return data
     },
     onSubmitSuccess() {
       this.messageService.success({

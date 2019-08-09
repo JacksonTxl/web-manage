@@ -16,7 +16,7 @@
   </st-modal>
 </template>
 <script>
-import { columnsShops } from './support-table'
+import { columnsShops } from './support-table.config'
 import { BrandService } from '../../pages/brand/product/course/personal/list/brand.service'
 export default {
   name: 'SupportCourseShops',

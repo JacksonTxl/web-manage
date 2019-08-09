@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { classColumns } from './columns'
+import { classColumns } from './columns.config'
 export default {
   data() {
     return {

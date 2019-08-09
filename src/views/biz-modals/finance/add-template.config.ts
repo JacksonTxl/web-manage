@@ -1,25 +1,24 @@
 import { PatternService } from '@/services/pattern.service'
-
 export const ruleOptions = (vm: any) => {
   const pattern = new PatternService()
   return {
-    area_name: {
+    template_name: {
       rules: [
         {
           required: true,
-          pattern: pattern.CN_EN_NUM('1-10'),
-          message: '支持输入中英文、数字,不超过10个字'
+          pattern: pattern.CN_EN_NUM_SPACE('1-15'),
+          message: '请输入模板名称'
         }
       ]
     },
-    contain_number: {
+    salary: {
       rules: [
         {
           required: true,
-          message: '请输入场地容纳人数'
+          pattern: pattern.NUM('1-6'),
+          message: '请输入月底薪'
         }
       ]
-    },
-    is_vip: {}
+    }
   }
 }

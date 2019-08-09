@@ -48,7 +48,7 @@
   </st-modal>
 </template>
 <script>
-import { columnsCoaches } from './support-table'
+import { columnsCoaches } from './support-table.config'
 import { BrandService } from '../../pages/brand/product/course/personal/list/brand.service'
 import { cloneDeep, uniqBy } from 'lodash-es'
 export default {
