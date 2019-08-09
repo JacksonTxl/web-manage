@@ -59,7 +59,7 @@
   </st-modal>
 </template>
 <script>
-import { columnsPrices } from './support-table'
+import { columnsPrices } from './support-table.config'
 import { cloneDeep, uniqWith, isEqual } from 'lodash-es'
 import { ShopService } from '../../pages/brand/product/course/personal/list/shop.service'
 export default {

@@ -12,12 +12,12 @@
         <a-row>
           <a-col :xs="22">
             <st-form-item v-show="false">
-              <input type="hidden" v-decorator="rules.id" />
+              <input type="hidden" v-decorator="decorators.id" />
             </st-form-item>
             <st-form-item label="课程类型" required>
               <a-input
                 placeholder="请输入课程类型名称"
-                v-decorator="rules.settingName"
+                v-decorator="decorators.setting_name"
                 maxlength="20"
               ></a-input>
             </st-form-item>
@@ -30,15 +30,13 @@
 <script>
 import { EditService } from './edit.service'
 import { MessageService } from '@/services/message.service'
-import { PatternService } from '@/services/pattern.service'
-import { rules } from './course-category.config'
+import { ruleOptions } from './course-category.config'
 
 export default {
   serviceInject() {
     return {
       editService: EditService,
-      messageService: MessageService,
-      pattern: PatternService
+      messageService: MessageService
     }
   },
   rxState() {
@@ -57,31 +55,25 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: true
     }
   },
-  created() {
-    this.form = this.$form.createForm(this)
-  },
-  computed: {
-    rules
-  },
   mounted() {
-    this.$nextTick(() => {
-      this.form.setFieldsValue({
-        id: this.id,
-        setting_name: this.setting_name
-      })
+    this.form.setFieldsValue({
+      id: this.id,
+      setting_name: this.setting_name
     })
   },
   methods: {
     onSubmit(e) {
       e.preventDefault()
-      this.form.validateFields().then(() => {
-        const data = this.form.getFieldsValue()
-        console.log('data', data)
-        this.editService.updateCourseCategory(data).subscribe(() => {
+      this.form.validate().then(values => {
+        this.editService.updateCourseCategory(values).subscribe(() => {
           this.messageService.success({
             content: '编辑成功'
           })

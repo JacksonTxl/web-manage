@@ -168,9 +168,7 @@ export default {
       }
     }
   },
-  components: {
-    StRangePicker
-  },
+
   mounted() {
     this.setSearchData()
   },

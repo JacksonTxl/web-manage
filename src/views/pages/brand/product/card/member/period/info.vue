@@ -34,13 +34,15 @@
               <span>{{ cardInfo.card_name }}</span>
               <span
                 :class="{
-                  'brand-card__selling': cardInfo.sell_status.id === 1,
-                  'brand-card__sellstop': cardInfo.sell_status.id === 2
+                  'brand-card__selling':
+                    cardInfo.sell_status.id === SELL_STATUS.CAN_SELL,
+                  'brand-card__sellstop':
+                    cardInfo.sell_status.id === SELL_STATUS.NO_SELL
                 }"
               >
                 {{ cardInfo.sell_status.name }}
                 <a-popover
-                  v-if="cardInfo.sell_status.id === 2"
+                  v-if="cardInfo.sell_status.id === SELL_STATUS.NO_SELL"
                   trigger="hover"
                   placement="bottomRight"
                   arrowPointAtCenter
@@ -68,7 +70,7 @@
           </p>
           <st-container
             :class="item('scroll-container')"
-            v-if="cardInfo.admission_range.id === 2"
+            v-if="cardInfo.admission_range.id === ADMISSION_RANGE.GENERAL_STORE"
           >
             <st-table
               size="middle"
@@ -87,7 +89,7 @@
             <span class="value">
               {{ cardInfo.support_sales.name
               }}{{
-                cardInfo.admission_range.id > 1
+                cardInfo.admission_range.id > ADMISSION_RANGE.ONLY_STORE
                   ? `（已上架${cardInfo.shelf_num}家门店/共${
                       cardInfo.sale_num
                     }家门店）`
@@ -97,7 +99,7 @@
           </p>
           <st-container
             :class="item('scroll-container')"
-            v-if="cardInfo.support_sales.id !== 1"
+            v-if="cardInfo.support_sales.id !== SUPPORT_SALES.ALL_STORE"
           >
             <st-table
               size="middle"
@@ -123,7 +125,7 @@
           </p>
           <st-container :class="item('scroll-container')">
             <st-table
-              v-if="cardInfo.price_setting.id === 1"
+              v-if="cardInfo.price_setting.id === PRICE_SETTING.UNIFORM_PRICE"
               size="middle"
               rowKey="id"
               :columns="price_gradient_columns.brand"
@@ -132,7 +134,7 @@
               :scroll="{ y: 230 }"
             ></st-table>
             <st-table
-              v-if="cardInfo.price_setting.id === 2"
+              v-if="cardInfo.price_setting.id === PRICE_SETTING.SHOP_PRICE"
               size="middle"
               rowKey="id"
               :columns="price_gradient_columns.shop"
@@ -172,6 +174,13 @@ import { InfoService } from './info.service'
 import MemberCard from '@/views/biz-components/h5/pages/member-card'
 import H5Container from '@/views/biz-components/h5/h5-container'
 import { MEMBER_CARD } from '@/views/biz-components/h5/pages/member-card.config'
+import {
+  ADMISSION_RANGE,
+  PRICE_SETTING,
+  SUPPORT_SALES,
+  SELL_STATUS
+} from '@/constants/card/member'
+import { shop_columns, price_gradient_columns } from './info.config'
 export default {
   name: 'BrandPeriodCardInfo',
   bem: {
@@ -180,6 +189,9 @@ export default {
   components: {
     MemberCard,
     H5Container
+  },
+  serviceProviders() {
+    return [InfoService]
   },
   serviceInject() {
     return {
@@ -193,85 +205,15 @@ export default {
   },
   data() {
     return {
+      ADMISSION_RANGE,
+      PRICE_SETTING,
+      SUPPORT_SALES,
+      SELL_STATUS,
+      MEMBER_CARD,
       // 门店表头
-      MEMBER_CARD: MEMBER_CARD,
-      shop_columns: [
-        {
-          title: '省',
-          dataIndex: 'province_name',
-          width: '22%'
-        },
-        {
-          title: '市',
-          dataIndex: 'city_name',
-          width: '22%'
-        },
-        {
-          title: '区',
-          dataIndex: 'district_name',
-          width: '22%'
-        },
-        {
-          title: '门店名称',
-          dataIndex: 'shop_name',
-          width: '34%'
-        }
-      ],
+      shop_columns,
       // 售卖定价表头
-      price_gradient_columns: {
-        brand: [
-          {
-            title: '期限',
-            scopedSlots: { customRender: 'validity_period' },
-            dataIndex: 'validity_period',
-            width: '25%'
-          },
-          {
-            title: '售价',
-            scopedSlots: { customRender: 'sale_price' },
-            dataIndex: 'sale_price',
-            width: '25%'
-          },
-          {
-            title: '允许冻结天数',
-            scopedSlots: { customRender: 'frozen_day' },
-            dataIndex: 'frozen_day',
-            width: '25%'
-          },
-          {
-            title: '赠送上限',
-            scopedSlots: { customRender: 'gift_unit' },
-            dataIndex: 'gift_unit',
-            width: '25%'
-          }
-        ],
-        shop: [
-          {
-            title: '期限',
-            scopedSlots: { customRender: 'validity_period' },
-            dataIndex: 'validity_period',
-            width: '25%'
-          },
-          {
-            title: '售价',
-            scopedSlots: { customRender: 'sale_price' },
-            dataIndex: 'sale_price',
-            width: '25%'
-          },
-          {
-            title: '允许冻结天数',
-            scopedSlots: { customRender: 'frozen_day' },
-            dataIndex: 'frozen_day',
-            width: '25%'
-          },
-          {
-            title: '赠送上限',
-            scopedSlots: { customRender: 'gift_unit' },
-            dataIndex: 'gift_unit',
-            width: '25%'
-          }
-        ]
-      }
+      price_gradient_columns
     }
   }
 }
