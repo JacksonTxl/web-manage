@@ -946,5 +946,31 @@ export const routeMapConfig = {
       start_date: { type: String, default: '' },
       end_date: { type: String, default: '' }
     }
+  },
+  'brand-setting-import'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '数据导入'
+    routeConfig.meta.tabs = [
+      'brand-setting-import-explain',
+      'brand-setting-import-staff',
+      'brand-setting-import-commodity',
+      'brand-setting-import-member',
+      'brand-setting-import-sold',
+      'brand-setting-import-pay-type'
+    ]
+  },
+  'brand-setting-import-explain'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '导入说明'
+  },
+  'brand-setting-import-staff'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '导入员工'
+  },
+  'brand-setting-import-commodity'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '导入商品'
+  },
+  'brand-setting-import-member'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '导入用户'
+  },
+  'brand-setting-import-sold'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '导入售出'
   }
 }
