@@ -6,7 +6,7 @@
           <a-input
             placeholder="课程名称"
             disabled
-            v-decorator="ruleConfig.courseName"
+            v-decorator="decorators.course_name"
           />
         </st-form-item>
         <st-form-item required>
@@ -16,14 +16,14 @@
           </template>
           <a-radio-group
             @change="onChange"
-            v-decorator="ruleConfig.shopSetting"
+            v-decorator="decorators.shop_setting"
           >
             <a-radio
-              v-for="(item, index) in teamCourseEnums.shop_setting.value"
-              :key="+index"
-              :value="+index"
+              v-for="(item, index) in shopSetting$"
+              :key="index"
+              :value="item.value"
             >
-              {{ item }}
+              {{ item.label }}
             </a-radio>
           </a-radio-group>
           <div class="page-shop-coach-container-shop mg-t8" v-if="isShow">
@@ -47,11 +47,10 @@
 import { MessageService } from '@/services/message.service'
 import { RouteService } from '@/services/route.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
-import { UserService } from '@/services/user.service'
-import { RuleConfig } from '@/constants/course/rule'
 import { SetBrandTeamCourseService } from './set-brand-team-course.service'
 import { SetShopTeamCourseService } from './set-shop-team-course.service'
-
+import { ruleOptions } from './set-shop-coach.config'
+import { SHOP_SETTING } from '@/constants/course/team'
 export default {
   name: 'SetShopCoach',
   serviceInject() {
@@ -64,18 +63,15 @@ export default {
     }
     return {
       messageService: MessageService,
-      userService: UserService,
       routeService: RouteService,
-      ruleConfig: RuleConfig,
       courseService: CourseService
     }
   },
   rxState() {
-    const user = this.userService
     return {
       loading: this.courseService.loading$,
-      teamCourseEnums: user.teamCourseEnums$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      shopSetting$: this.courseService.shopSetting$
     }
   },
   components: {
@@ -98,15 +94,18 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      form: this.$form.createForm(this),
+      form,
+      decorators,
       shopIds: [],
-      shopSetting: 1
+      shopSetting: SHOP_SETTING.ALL_STORE
     }
   },
   computed: {
     isShow() {
-      return this.shopSetting === 2
+      return this.shopSetting === SHOP_SETTING.SPECIFIED_STORE
     }
   },
   mounted() {
@@ -145,7 +144,7 @@ export default {
     },
     setFieldsValue() {
       const info = this.info
-      const shopSetting = info.shop_setting || 1
+      const shopSetting = info.shop_setting || SHOP_SETTING.ALL_STORE
       this.form.setFieldsValue({
         course_name: info.course_name,
         shop_setting: shopSetting,
@@ -164,7 +163,7 @@ export default {
     },
     shopInputCheck() {
       const { shopSetting } = this
-      if (shopSetting === 1) {
+      if (shopSetting === SHOP_SETTING.ALL_STORE) {
         return true
       } else {
         return this.shopIds.length

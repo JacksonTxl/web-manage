@@ -15,6 +15,9 @@ import { RouteService } from '@/services/route.service'
 import { ListService } from './list.service'
 export default {
   name: 'PersonalCourseList',
+  serviceProviders() {
+    return [ListService]
+  },
   serviceInject() {
     return {
       routeService: RouteService,
