@@ -58,7 +58,7 @@
         <div class="book-content-t">2018中国健身行业数据报告</div>
         <div class="font-number">¥599</div>
         <st-button ghost pill type="primary" @click="download" class="mg-t8">
-          免费下载电子版
+          立即购买
         </st-button>
       </div>
     </st-container>
