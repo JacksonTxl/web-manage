@@ -156,11 +156,11 @@ export default {
       return [{ value: -1, label: '全部状态' }, ...list]
     }
   },
-  data() {
+  data(vm) {
     return {
       couponName: '',
       couponStatus: -1,
-      columns
+      columns: columns(vm)
     }
   },
   mounted() {

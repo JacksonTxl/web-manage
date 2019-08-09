@@ -33,12 +33,12 @@ export class AddService {
   init() {
     return forkJoin(this.getListInfo())
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
     if (to.meta.query.id) {
       this.titleService.SET_TITLE('编辑人群')
     } else {
       this.titleService.SET_TITLE('新增人群')
     }
-    this.init().subscribe(() => next())
+    return this.init()
   }
 }
