@@ -3,18 +3,25 @@
     <st-table
       :rowKey="record => record.mobile"
       :columns="columns"
-      :dataSource="data"
-      :pagination="pagination"
+      :dataSource="list"
+      :page="page"
       @change="handleTableChange"
     />
   </st-modal>
 </template>
 <script>
 import { SearchStaffListService } from './search-staff-list.service'
+import { columns } from './columns.config'
 export default {
   serviceInject() {
     return {
       service: SearchStaffListService
+    }
+  },
+  rxState() {
+    return {
+      list: this.service.list$,
+      page: this.service.page$
     }
   },
   props: {
@@ -26,52 +33,19 @@ export default {
       pagination: {
         hideOnSinglePage: true
       },
-      data: [],
-      columns: [
-        {
-          title: '员工姓名',
-          dataIndex: 'staff_name',
-          key: 'staff_name'
-        },
-        {
-          title: '手机号',
-          dataIndex: 'mobile',
-          key: 'mobile'
-        },
-        {
-          title: '性别',
-          dataIndex: 'sex',
-          key: 'sex'
-        },
-        {
-          title: '工号',
-          dataIndex: 'staff_num',
-          key: 'staff_num'
-        },
-        {
-          title: '所属部门',
-          dataIndex: 'department_name',
-          key: 'department_name'
-        }
-      ]
+      list: []
     }
+  },
+  computed: {
+    columns
   },
   methods: {
     handleTableChange(e) {
-      console.log(e)
       let { current, pageSize } = e
       this.getList(current, pageSize)
     },
     getList(page = 1, size = 20) {
-      this.service
-        .getPerformanceUsedList(this.id, { page, size })
-        .subscribe(res => {
-          //   console.log('====',res)
-          this.data = res.list.list
-          this.pagination.current = res.list.page.current_page
-          this.pagination.pageSize = res.list.page.size
-          this.pagination.total = res.list.page.total_counts
-        })
+      this.service.getPerformanceUsedList(this.id, { page, size }).subscribe()
     }
   },
   mounted() {

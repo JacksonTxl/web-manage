@@ -6,18 +6,7 @@
           <st-form-item label="模板名称" required>
             <a-input
               placeholder="请输模板名称"
-              v-decorator="[
-                'template_name',
-                {
-                  rules: [
-                    {
-                      required: true,
-                      pattern: pattern.CN_EN_NUM_SPACE('1-15'),
-                      message: '请输入模板名称'
-                    }
-                  ]
-                }
-              ]"
+              v-decorator="decorators.template_name"
             />
           </st-form-item>
         </a-col>
@@ -26,18 +15,7 @@
             <st-input-number
               :float="true"
               placeholder="请输入月底薪"
-              v-decorator="[
-                'salary',
-                {
-                  rules: [
-                    {
-                      required: true,
-                      pattern: pattern.NUM('1-6'),
-                      message: '请输入月底薪'
-                    }
-                  ]
-                }
-              ]"
+              v-decorator="decorators.salary"
             >
               <template slot="addonAfter">
                 元
@@ -52,34 +30,32 @@
 <script>
 import { AddTemplateService } from './add-template.service'
 import { MessageService } from '@/services/message.service'
-import { PatternService } from '@/services/pattern.service'
+import { ruleOptions } from './add-template.config'
 export default {
   serviceInject() {
     return {
       service: AddTemplateService,
-      message: MessageService,
-      pattern: PatternService
+      message: MessageService
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      form: this.$form.createForm(this),
+      form,
+      decorators,
       show: false
     }
   },
   methods: {
     handleSubmit(e) {
       e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('提交的数据', values)
-          this.service.addTemplate(values).subscribe(() => {
-            console.log('ok')
-            this.$emit('change')
-            this.message.success({ content: '添加成功' })
-            this.show = false
-          })
-        }
+      this.form.validate().then(values => {
+        this.service.addTemplate(values).subscribe(() => {
+          this.$emit('change')
+          this.message.success({ content: '添加成功' })
+          this.show = false
+        })
       })
     }
   }

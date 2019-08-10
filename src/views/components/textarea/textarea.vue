@@ -18,6 +18,7 @@ export default {
   props: {
     value: {
       type: String,
+      // TODO: textarea初始值与st-form校验初始值冲突
       default: ''
     },
     maxlength: {

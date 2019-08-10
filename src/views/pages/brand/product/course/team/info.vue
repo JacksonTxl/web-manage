@@ -61,8 +61,7 @@
       <div :class="b('right')">
         <img
           class="image"
-          :src="image | imgFilter({ w: 280, h: 158 })"
-          alt="课程图片"
+          :src="teamCourseInfo.image.image_url | imgFilter({ w: 280, h: 158 })"
         />
       </div>
     </div>
@@ -85,13 +84,8 @@
   </div>
 </template>
 <script>
-import {
-  shopColumns,
-  coachColumns,
-  priceConfigColumns
-} from './info#table.config'
+import { shopColumns } from './info#table.config'
 import { InfoService } from './info.service'
-import { AppConfig } from '@/constants/config'
 export default {
   bem: {
     b: 'header',
@@ -101,8 +95,7 @@ export default {
   name: 'TeamCourseInfo',
   serviceInject() {
     return {
-      infoService: InfoService,
-      appConfig: AppConfig
+      infoService: InfoService
     }
   },
   rxState() {
@@ -119,19 +112,9 @@ export default {
         .join(' / ')
     }
   },
-  computed: {
-    image() {
-      return (
-        this.teamCourseInfo.image.image_key ||
-        this.appConfig.PLACEHOLDER_IMG.NODATA
-      )
-    }
-  },
   data() {
     return {
-      shopColumns,
-      coachColumns,
-      priceConfigColumns
+      shopColumns
     }
   }
 }

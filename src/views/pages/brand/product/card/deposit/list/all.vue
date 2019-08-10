@@ -6,7 +6,7 @@
       </router-link>
       <div>
         <a-select
-          style="width: 160px"
+          :class="all('search__select')"
           class="mg-r8"
           v-model="query.publish_channel"
           @change="onSingleSearch('publish_channel', $event)"
@@ -20,7 +20,7 @@
           </a-select-option>
         </a-select>
         <a-select
-          style="width: 160px"
+          :class="all('search__select')"
           v-model="query.sell_status"
           @change="onSingleSearch('sell_status', $event)"
         >
@@ -62,7 +62,7 @@
       <!-- 支持售卖门店 -->
       <template slot="support_sales" slot-scope="text, record">
         <a
-          v-if="text.id === 2"
+          v-if="text.id === SUPPORT_SALES.SPECIFIED_STORE"
           v-modal-link="{
             name: 'card-brand-deposit-shop-table',
             props: { id: record.id, type: 'Sale', title: '支持售卖门店' }
@@ -75,7 +75,7 @@
       <!-- 支持消费门店 -->
       <template slot="consumption_range" slot-scope="text, record">
         <a
-          v-if="text.id === 2"
+          v-if="text.id === CONSUMPTION_RANGE.GENERAL_STORE"
           v-modal-link="{
             name: 'card-brand-deposit-shop-table',
             props: { id: record.id, type: 'Consume', title: '支持消费门店' }
@@ -103,7 +103,9 @@
       </template>
       <!-- 售卖状态 -->
       <template slot="sell_status" slot-scope="text, record">
-        <a-badge :status="text.id === 1 ? 'success' : 'error'" />
+        <a-badge
+          :status="text.id === SELL_STATUS.CAN_SELL ? 'success' : 'error'"
+        />
         {{ text.name }}
         <a-popover
           v-if="record.stop_sale"
@@ -119,7 +121,10 @@
           <template slot="content">
             <p>{{ record.stop_sale.stop_reason }}</p>
           </template>
-          <a-icon type="exclamation-circle" v-if="text.id === 2" />
+          <a-icon
+            type="exclamation-circle"
+            v-if="text.id === SELL_STATUS.NO_SELL"
+          />
         </a-popover>
       </template>
       <!-- 操作 -->
@@ -173,15 +178,24 @@
 import { AllService } from './all.service'
 import { RouteService } from '@/services/route.service'
 import { columns } from './all.config.ts'
+import { BRAND_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH } from '@/constants/events'
 import tableMixin from '@/mixins/table.mixin'
 import CardBrandDepositRecoverSale from '@/views/biz-modals/card/brand-deposit/recover-sale'
 import CardBrandDepositShopTable from '@/views/biz-modals/card/brand-deposit/shop-table'
 import CardBrandDepositStopSale from '@/views/biz-modals/card/brand-deposit/stop-sale'
+import {
+  SUPPORT_SALES,
+  CONSUMPTION_RANGE,
+  SELL_STATUS
+} from '@/constants/card/deposit'
 export default {
   mixins: [tableMixin],
   name: 'PageBrandProductDepositAll',
   bem: {
     all: 'page-brand-product-deposit-list-all'
+  },
+  serviceProviders() {
+    return [AllService]
   },
   serviceInject() {
     return {
@@ -195,8 +209,8 @@ export default {
     CardBrandDepositStopSale
   },
   events: {
-    'brand-product-card-deposit-list-all:onSingleSearch'(key, data, options) {
-      this.onSingleSearch(key, data, options)
+    [BRAND_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH](key, data) {
+      this.onKeywordsSearch(key, data)
     }
   },
   rxState() {
@@ -208,6 +222,13 @@ export default {
       list: this.allService.list$,
       page: this.allService.page$,
       auth: this.allService.auth$
+    }
+  },
+  data() {
+    return {
+      SUPPORT_SALES,
+      CONSUMPTION_RANGE,
+      SELL_STATUS
     }
   },
   computed: {

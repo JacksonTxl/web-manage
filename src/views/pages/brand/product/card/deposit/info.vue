@@ -34,15 +34,17 @@
               <span>{{ cardInfo.card_name }}</span>
               <span
                 :class="{
-                  'brand-card__selling': cardInfo.sell_status === 1,
-                  'brand-card__sellstop': cardInfo.sell_status === 2
+                  'brand-card__selling':
+                    cardInfo.sell_status === SELL_STATUS.CAN_SELL,
+                  'brand-card__sellstop':
+                    cardInfo.sell_status === SELL_STATUS.NO_SELL
                 }"
               >
                 {{
                   cardInfo.sell_status | enumFilter('deposit_card.sell_status')
                 }}
                 <a-popover
-                  v-if="cardInfo.sell_status === 2"
+                  v-if="cardInfo.sell_status === SELL_STATUS.NO_SELL"
                   trigger="hover"
                   placement="bottomRight"
                   arrowPointAtCenter
@@ -70,7 +72,9 @@
           </p>
           <st-container
             :class="item('scroll-container')"
-            v-if="cardInfo.consumption_range.id === 2"
+            v-if="
+              cardInfo.consumption_range.id === CONSUMPTION_RANGE.GENERAL_STORE
+            "
           >
             <st-table
               size="middle"
@@ -97,7 +101,7 @@
           </p>
           <st-container
             :class="item('scroll-container')"
-            v-if="cardInfo.support_sales !== 1"
+            v-if="cardInfo.support_sales !== SUPPORT_SALES.ALL_STORE"
           >
             <st-table
               size="middle"
@@ -176,6 +180,12 @@ import { InfoService } from './info.service'
 import MemberCard from '@/views/biz-components/h5/pages/member-card'
 import H5Container from '@/views/biz-components/h5/h5-container'
 import { MEMBER_CARD } from '@/views/biz-components/h5/pages/member-card.config'
+import {
+  SELL_STATUS,
+  SUPPORT_SALES,
+  CONSUMPTION_RANGE
+} from '@/constants/card/deposit'
+import { shop_columns, price_gradient_columns } from './info.config'
 export default {
   bem: {
     item: 'brand-card'
@@ -183,6 +193,9 @@ export default {
   components: {
     MemberCard,
     H5Container
+  },
+  serviceProviders() {
+    return [InfoService]
   },
   serviceInject() {
     return {
@@ -194,69 +207,33 @@ export default {
       cardInfo: this.infoService.cardInfo$
     }
   },
+  data() {
+    return {
+      SELL_STATUS,
+      SUPPORT_SALES,
+      CONSUMPTION_RANGE,
+      MEMBER_CARD,
+      shop_columns,
+      price_gradient_columns
+    }
+  },
   computed: {
     canUseShop() {
       let text = ''
       switch (this.cardInfo.consumption_range.id) {
-        case 1:
+        case CONSUMPTION_RANGE.ONLY_STORE:
           text = this.cardInfo.consumption_range.name
           break
-        case 2:
+        case CONSUMPTION_RANGE.GENERAL_STORE:
           text = `共${this.cardInfo.can_use_shop_num}家门店`
           break
-        case 3:
+        case CONSUMPTION_RANGE.ALL_STORE:
           text = '全门店'
           break
         default:
           text = '无'
       }
       return text
-    }
-  },
-  data() {
-    return {
-      // 门店表头
-      MEMBER_CARD: MEMBER_CARD,
-      shop_columns: [
-        {
-          title: '省',
-          dataIndex: 'province_name',
-          width: '22%'
-        },
-        {
-          title: '市',
-          dataIndex: 'city_name',
-          width: '22%'
-        },
-        {
-          title: '区',
-          dataIndex: 'district_name',
-          width: '22%'
-        },
-        {
-          title: '门店名称',
-          dataIndex: 'shop_name',
-          width: '34%'
-        }
-      ],
-      // 售卖定价表头
-      price_gradient_columns: [
-        {
-          title: '储值金额',
-          scopedSlots: { customRender: 'card_price' },
-          dataIndex: 'card_price'
-        },
-        {
-          title: '售卖价格',
-          scopedSlots: { customRender: 'sell_price' },
-          dataIndex: 'sell_price'
-        },
-        {
-          title: '有效期限',
-          scopedSlots: { customRender: 'deadline' },
-          dataIndex: 'deadline'
-        }
-      ]
     }
   }
 }

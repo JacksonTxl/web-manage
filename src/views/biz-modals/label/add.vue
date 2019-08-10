@@ -7,18 +7,7 @@
             <a-input
               placeholder="请输标签名称"
               :max="10"
-              v-decorator="[
-                'tag_name',
-                {
-                  rules: [
-                    {
-                      required: true,
-                      message: '请输入标签名称，长度1~10中英文',
-                      pattern: pattern.CN_EN('1-10')
-                    }
-                  ]
-                }
-              ]"
+              v-decorator="decorators.tag_name"
             />
           </st-form-item>
         </a-col>
@@ -30,6 +19,7 @@
 import { AddLabelService } from './add.service'
 import { MessageService } from '@/services/message.service'
 import { PatternService } from '@/services/pattern.service'
+import { ruleOptions } from './label.config'
 export default {
   serviceInject() {
     return {
@@ -39,24 +29,23 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      form: this.$form.createForm(this),
+      form,
+      decorators,
       show: false
     }
   },
   methods: {
     handleSubmit(e) {
       e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('提交的数据', values)
-          this.service.addLabel(values).subscribe(() => {
-            console.log('ok')
-            this.$emit('change')
-            this.message.success({ content: '添加成功' })
-            this.show = false
-          })
-        }
+      this.form.validate().then(values => {
+        this.service.addLabel(values).subscribe(() => {
+          this.$emit('change')
+          this.message.success({ content: '添加成功' })
+          this.show = false
+        })
       })
     }
   }

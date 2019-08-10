@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { saleColumns } from './columns'
+import { saleColumns } from './columns.config'
 export default {
   data() {
     return {

@@ -84,7 +84,7 @@ export default {
   props: ['id', 'cardName'],
   data() {
     return {
-      form: this.$form.createForm(this),
+      form: this.$stForm.create(),
       show: false,
       reason: '',
       // 停售原因是否有填写

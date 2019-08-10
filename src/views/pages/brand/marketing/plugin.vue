@@ -109,7 +109,7 @@
             :key="index"
             @click="goLink(item.link)"
           >
-            <img :src="item.thumb" />
+            <img :src="item.thumb | imgFilter({ w: 280 })" />
             <p>{{ item.title }}</p>
           </li>
         </ul>
@@ -123,6 +123,9 @@ export default {
   name: 'BrandMarketingPlugin',
   bem: {
     basic: 'brand-marketing-plugin'
+  },
+  serviceProviders() {
+    return [PluginService]
   },
   serviceInject() {
     return {

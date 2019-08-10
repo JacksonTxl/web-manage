@@ -18,8 +18,6 @@
   </st-panel>
 </template>
 <script>
-// import StRangePicker from '@/views/components/datetime-picker/range-picker'
-import StSelect from '@/views/components/select/select'
 import { OPERATION_TYPES } from '@/constants/sold/operations'
 export default {
   data() {

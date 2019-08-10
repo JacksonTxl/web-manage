@@ -123,7 +123,7 @@
   </st-table>
 </template>
 <script>
-import { columns } from './staff-table.config'
+import { columns } from './staff-table.config.ts'
 import tableMixin from '@/mixins/table.mixin'
 import { RouteService } from '@/services/route.service'
 import StaffBindEntityCard from '@/views/biz-modals/staff/bind-entity-card'

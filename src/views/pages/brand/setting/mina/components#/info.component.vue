@@ -89,7 +89,7 @@ import brand from '@/assets/img/brand/setting/mina/icon_brand.png'
 import user from '@/assets/img/brand/setting/mina/icon_user.png'
 import flow from '@/assets/img/brand/setting/mina/icon_flow.png'
 import { IndexService } from '../index.service'
-import BrandSettingMinaMch from '@/views/biz-modals/brand/setting-mina-mch'
+import BrandSettingMinaMch from '@/views/biz-modals/brand/setting/mina/mch'
 export default {
   bem: {
     info: 'info-component'

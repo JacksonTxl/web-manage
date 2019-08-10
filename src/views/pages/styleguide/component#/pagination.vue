@@ -1,6 +1,6 @@
 <template>
   <section class="sg-section">
-    <h3>pagination</h3>
+    <h3>st-pagination</h3>
     <st-pagination :page="page" @change="onChange" />
   </section>
 </template>

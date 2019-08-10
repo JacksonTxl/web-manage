@@ -9,12 +9,12 @@ import {
 } from '@/api/v1/setting/sms/pay'
 interface SetState {}
 @Injectable()
-export class PayService extends Store<SetState> implements RouteGuard {
+export class PayService implements RouteGuard {
   state$: State<SetState>
   info$ = new State([])
   page$ = new State([])
+  loading$ = new State({})
   constructor(private PayApi: PayApi) {
-    super()
     this.state$ = new State({})
   }
   @Effect()

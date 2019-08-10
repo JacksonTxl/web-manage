@@ -5,12 +5,12 @@ import { Store } from '@/services/store'
 import { SmsApi, SmsListQuery } from '@/api/v1/setting/sms/sms'
 interface SetState {}
 @Injectable()
-export class ListService extends Store<SetState> {
+export class ListService {
   state$: State<SetState>
   list$ = new State([])
   page$ = new State([])
+  loading$ = new State({})
   constructor(private SmsApi: SmsApi) {
-    super()
     this.state$ = new State({})
   }
   @Effect()

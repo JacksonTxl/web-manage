@@ -3,7 +3,6 @@ export const columns = () => {
     {
       title: '储值卡名称',
       dataIndex: 'card_name',
-      width: 180,
       scopedSlots: { customRender: 'card_name' }
     },
     {
@@ -36,40 +35,35 @@ export const columns = () => {
     {
       title: '支持售卖时间',
       dataIndex: 'sell_time',
-      width: 220,
       scopedSlots: { customRender: 'sell_time' }
     },
     {
       title: '上架门店数',
       dataIndex: 'upper_shelf_num',
       align: 'right',
-      width: 110,
       scopedSlots: { customRender: 'upper_shelf_num' }
     },
     {
       title: '下架门店数',
       dataIndex: 'lower_shelf_num',
       align: 'right',
-      width: 110,
       scopedSlots: { customRender: 'lower_shelf_num' }
     },
     {
       title: '发布渠道',
       dataIndex: 'publish_channel',
-      width: 90,
       scopedSlots: { customRender: 'publish_channel' }
     },
     {
       title: '售卖状态',
       dataIndex: 'sell_status',
-      width: 120,
       scopedSlots: { customRender: 'sell_status' }
     },
     {
       title: '操作',
       dataIndex: 'action',
       fixed: 'right',
-      width: 140,
+      width: 160,
       scopedSlots: { customRender: 'action' }
     }
   ]

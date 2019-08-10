@@ -37,7 +37,7 @@
             <template v-if="item.used != 0">
               <a
                 v-modal-link="{
-                  name: 'search-staff-list-salary',
+                  name: 'finance-search-staff-list-salary',
                   props: { id: item.id }
                 }"
               >
@@ -79,11 +79,17 @@ import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import FinanceAddTemplate from '@/views/biz-modals/finance/add-template'
 import FinanceBasicTemplateEdit from '@/views/biz-modals/finance/basic-template-edit'
+import FinanceSearchStaffListSalary from '@/views/biz-modals/finance/search-staff-list-salary'
+
 export default {
   mixins: [tableMixin],
   modals: {
     FinanceAddTemplate,
-    FinanceBasicTemplateEdit
+    FinanceBasicTemplateEdit,
+    FinanceSearchStaffListSalary
+  },
+  serviceProviders() {
+    return [BasicService]
   },
   serviceInject() {
     return {

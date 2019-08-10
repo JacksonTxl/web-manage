@@ -1,11 +1,9 @@
 <template>
-  <div>
+  <div :class="bBasicData()">
     <div v-for="(item, key, index) in value" :key="index">
       <div v-if="key !== 'arrData'">
-        <st-t4 style="margin-bottom:16px">{{ item.title }}</st-t4>
-        <div
-          style="display: flex; padding-bottom:16px;   flex-direction: row;    flex-wrap: wrap;"
-        >
+        <st-t4 class="mg-b16">{{ item.title }}</st-t4>
+        <div :class="bBasicData('content')">
           <st-button
             :style="{
               width: item.width + 'px',
@@ -31,6 +29,9 @@
 <script>
 import { MessageService } from '@/services/message.service'
 export default {
+  bem: {
+    bBasicData: 'crowd-component-basic-data'
+  },
   serviceInject() {
     return {
       messageService: MessageService

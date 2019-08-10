@@ -205,6 +205,8 @@ export class UserService {
   }
   /**
    * 通过key名获取下拉选项
+   * @example
+   * getOptions$('member.card_consume_type') => Observable([{label:'次卡',value:1},{label:'期限卡',2}])
    */
   public getOptions$(
     key: string
@@ -217,6 +219,9 @@ export class UserService {
           if (!enumObj) {
             return []
           } else {
+            if (Array.isArray(enumObj.value)) {
+              return enumObj.value
+            }
             return Object.keys(enumObj.value).reduce(
               (arr, k) => arr.concat({ label: enumObj.value[k], value: +k }),
               initArr

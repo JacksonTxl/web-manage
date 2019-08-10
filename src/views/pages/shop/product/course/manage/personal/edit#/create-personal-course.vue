@@ -32,7 +32,7 @@
         <st-form-item label="训练目的" required>
           <input type="hidden" v-decorator="ruleConfig.trainAim" />
           <st-select-training-aim
-            :value="info.train_aim | formatFilter"
+            :value="info.train_aim"
             @change="onTrainingAimChange"
           />
         </st-form-item>
@@ -136,11 +136,6 @@ export default {
   components: {
     StSelectCourseCategory,
     StSelectTrainingAim
-  },
-  filters: {
-    formatFilter(arr = []) {
-      return arr.map(v => `${v}`)
-    }
   },
   props: {
     info: {

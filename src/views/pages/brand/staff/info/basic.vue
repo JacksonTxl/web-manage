@@ -222,6 +222,9 @@
 <script>
 import { BasicService } from './basic.service'
 export default {
+  serviceProviders() {
+    return [BasicService]
+  },
   serviceInject() {
     return {
       basicService: BasicService
@@ -234,9 +237,6 @@ export default {
   },
   data() {
     return {}
-  },
-  mounted() {
-    console.log('=======', this.basicInfo)
   },
   filters: {
     workStatusFilter(val) {

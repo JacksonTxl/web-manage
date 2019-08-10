@@ -6,7 +6,7 @@
           <a-input
             placeholder="支持输入4~30个字的课程名称，中文占2个字符"
             maxlength="30"
-            v-decorator="ruleConfig.courseName"
+            v-decorator="decorators.course_name"
             @change="onCourseNameChange"
           />
         </st-form-item>
@@ -15,7 +15,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程类型" required>
-          <input type="hidden" v-decorator="ruleConfig.categoryId" />
+          <input type="hidden" v-decorator="decorators.category_id" />
           <st-select-course-category
             :value="info.category_id"
             @change="onCourseTypeChange"
@@ -26,9 +26,9 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="训练目的" required>
-          <input type="hidden" v-decorator="ruleConfig.trainAim" />
+          <input type="hidden" v-decorator="decorators.train_aim" />
           <st-select-training-aim
-            :value="info.train_aim | formatFilter"
+            :value="info.train_aim"
             @change="onTrainingAimChange"
           />
         </st-form-item>
@@ -37,14 +37,14 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="强度" required>
-          <a-rate v-decorator="ruleConfig.strengthLevel" />
+          <a-rate v-decorator="decorators.strength_level" />
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="消耗卡路里">
-          <st-input-number v-decorator="ruleConfig.calories">
+          <st-input-number v-decorator="decorators.calories">
             <template slot="addonAfter">
               Kcal/节
             </template>
@@ -55,7 +55,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="时长" required>
-          <st-input-number v-decorator="ruleConfig.duration">
+          <st-input-number v-decorator="decorators.duration">
             <template slot="addonAfter">
               分钟
             </template>
@@ -70,7 +70,7 @@
             参考定价
             <st-help-tooltip id="TBCGC001" />
           </template>
-          <st-input-number v-decorator="ruleConfig.price">
+          <st-input-number v-decorator="decorators.price">
             <template slot="addonAfter">
               元/节
             </template>
@@ -86,7 +86,7 @@
               :list="fileList"
               @change="onImgChange"
             ></st-image-upload>
-            <input type="hidden" v-decorator="ruleConfig.image" />
+            <input type="hidden" v-decorator="decorators.image" />
             <div class="page-course-photo-des mg-l16">
               <div class="page-course-item">
                 <div class="page-course-item-tip">1.</div>
@@ -111,7 +111,7 @@
         <st-form-item label="课程介绍">
           <a-textarea
             type="textarea"
-            v-decorator="ruleConfig.description"
+            v-decorator="decorators.description"
             :autosize="{ minRows: 10, maxRows: 16 }"
             placeholder="填写点什么吧"
             maxlength="500"
@@ -154,11 +154,9 @@ import { MessageService } from '@/services/message.service'
 import { RouteService } from '@/services/route.service'
 import StSelectCourseCategory from '@/views/fragments/course/select-course-category'
 import StSelectTrainingAim from '@/views/fragments/course/select-training-aim'
-import { UserService } from '@/services/user.service'
-import { RuleConfig } from '@/constants/course/rule'
 import { SetBrandTeamCourseService } from './set-brand-team-course.service'
 import { SetShopTeamCourseService } from './set-shop-team-course.service'
-
+import { ruleOptions } from './set-team-course.config'
 export default {
   name: 'SetTeamCourse',
   serviceInject() {
@@ -171,14 +169,11 @@ export default {
     }
     return {
       messageService: MessageService,
-      userService: UserService,
       routeService: RouteService,
-      ruleConfig: RuleConfig,
       courseService: CourseService
     }
   },
   rxState() {
-    const user = this.userService
     return {
       loading: this.courseService.loading$,
       query: this.routeService.query$
@@ -187,11 +182,6 @@ export default {
   components: {
     StSelectCourseCategory,
     StSelectTrainingAim
-  },
-  filters: {
-    formatFilter(arr = []) {
-      return arr.map(v => `${v}`)
-    }
   },
   props: {
     from: {
@@ -206,8 +196,11 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      form: this.$form.createForm(this),
+      form,
+      decorators,
       fileList: [],
       activeBtn: 'save',
       courseId: 0

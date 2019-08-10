@@ -1,16 +1,15 @@
 import { AuthService } from '@/services/auth.service'
 import {
+  TeamScheduleScheduleApi,
   AddScheduleInput,
   UpdateScheduleInput,
   CopyScheduleInput,
   GetScheduleListQuery,
   GetScheduleTableQuery
 } from '@/api/v1/schedule/team/schedule'
-import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
+import { Injectable } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state'
-import { tap, pluck, switchMap } from 'rxjs/operators'
-import { TeamScheduleScheduleApi } from '@/api/v1/schedule/team/schedule'
-import moment from 'moment'
+import { tap, pluck } from 'rxjs/operators'
 import { MessageService } from '@/services/message.service'
 
 export interface SetState {

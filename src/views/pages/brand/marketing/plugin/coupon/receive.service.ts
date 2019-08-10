@@ -1,29 +1,25 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state'
-import { CouponApi, CouponListParams } from '@/api/v1/marketing/coupon'
 import { MarketingApi } from '@/api/v1/marketing/marketing'
 import { tap, pluck } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
-import { forkJoin } from 'rxjs'
 import { Store } from '@/services/store'
 
 export interface SetState {}
 
 @Injectable()
-export class ReceiveService extends Store<SetState> implements RouteGuard {
+export class ReceiveService implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
   info$ = new State({})
+  loading$ = new State({})
   auth$ = this.authService.authMap$({
     export: 'brand:activity:coupon|export'
   })
   constructor(
     private marketingApi: MarketingApi,
     private authService: AuthService
-  ) {
-    super()
-    this.state$ = new State({})
-  }
+  ) {}
   @Effect()
   getReceiveList(params: any) {
     return this.marketingApi.getReceiveList(params).pipe(
