@@ -158,7 +158,7 @@ export default {
     CourseSupportCourseShops
   },
   serviceProviders() {
-    return [ListService, BrandService]
+    return [BrandService]
   },
   serviceInject() {
     return {

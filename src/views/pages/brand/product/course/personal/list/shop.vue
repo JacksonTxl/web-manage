@@ -120,7 +120,7 @@ export default {
     CourseTransfromBrandCourse
   },
   serviceProviders() {
-    return [ListService, ShopService]
+    return [ShopService]
   },
   serviceInject() {
     return {

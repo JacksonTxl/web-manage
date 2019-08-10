@@ -42,13 +42,14 @@ export default {
               `[vue-service-app] serviceInject should be function return an object but got ${typeof injects}`
             )
           }
+          this._serviceInjectNames = []
           for (let name in injects) {
             if (injects[name] === undefined) {
               throw new Error(
                 `[vue-service-app] serviceInject you just inject undefined in [${name}]`
               )
             }
-
+            this._serviceInjectNames.push(name)
             this[name] = rootContainer.get(injects[name])
           }
         }
@@ -60,6 +61,11 @@ export default {
           // todo 销毁 services
           this._componentSerivceProviders.forEach(p => {
             rootContainer.destroy(p)
+          })
+        }
+        if (this._serviceInjectNames) {
+          this._serviceInjectNames.forEach(name => {
+            this[name] = null
           })
         }
       }
