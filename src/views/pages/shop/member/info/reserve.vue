@@ -252,14 +252,14 @@ export default {
       this.initPage(2, 1, 10)
       this.coursequery.keyword = e
       this.reserveService
-        .getCardInfo(this.id, this.assignObj(2))
+        .getCourseInfo(this.id, this.assignObj(2))
         .subscribe(res => {})
     },
     // 课分页
     coursePageChange(e) {
       this.initPage(2, e.current, e.pageSize)
       this.reserveService
-        .getCardInfo(this.id, this.assignObj(2))
+        .getCourseInfo(this.id, this.assignObj(2))
         .subscribe(res => {})
     }
   },
