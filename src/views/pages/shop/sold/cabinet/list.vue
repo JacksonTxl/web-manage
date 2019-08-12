@@ -198,10 +198,18 @@ export default {
     },
     // 跳转合同
     toContract(record) {
-      let url = `${window.location.origin}/extra/contract-preview?id=${
-        record.order_id
-      }`
+      let url = `${window.location.origin}/extra/contract-preview?id=${record.order_id}`
       window.open(url)
+    },
+    // 查看订单
+    createdOrderViewOrder(order_id) {
+      console.log('查看订单')
+      this.$router.push({
+        name: 'shop-finance-order-info-collection-details',
+        query: {
+          id: order_id
+        }
+      })
     },
     // 续租
     onRelet(record) {
@@ -223,11 +231,12 @@ export default {
                   needPay: true
                 },
                 on: {
-                  success: () => {
+                  success: res => {
                     this.$router.push({
                       force: true,
                       query: this.$router.query
                     })
+                    this.tipCallBack(res.orderId, 'cabinet_order', res.type)
                   }
                 }
               })
@@ -249,11 +258,16 @@ export default {
                         message: '收款成功'
                       },
                       on: {
-                        success: () => {
+                        success: res => {
                           this.$router.push({
                             force: true,
                             query: this.$router.query
                           })
+                          this.tipCallBack(
+                            result.order_id,
+                            'cabinet_order',
+                            res.type
+                          )
                         }
                       }
                     })
@@ -264,6 +278,55 @@ export default {
           }
         }
       })
+    },
+    // 订单收款modal
+    createdOrderPay(props) {
+      return new Promise((resolve, reject) => {
+        this.$modalRouter.push({
+          name: 'sold-deal-gathering',
+          props,
+          on: {
+            success: resolve
+          }
+        })
+      })
+    },
+    // 订单收款回调
+    payCallBack(orderId, modalType, callBackType) {
+      switch (callBackType) {
+        case 'cancel':
+          this.onSearch()
+          break
+        case 'pay':
+          this.createdGatheringTip({
+            message: '收款成功',
+            order_id: orderId
+          }).then(res => {
+            this.tipCallBack(orderId, modalType, res.type)
+          })
+          break
+      }
+    },
+    // 提示框回调，gathering-tip
+    tipCallBack(orderId, modalType, callBackType) {
+      switch (callBackType) {
+        case 'cancel':
+          this.$router.push({ force: true })
+          break
+        case 'Print':
+          this.toContract({ order_id: orderId })
+          break
+        case 'ViewOrder':
+          this.createdOrderViewOrder(orderId)
+          break
+        case 'Pay':
+          this.createdOrderPay({ order_id: orderId, type: modalType }).then(
+            res => {
+              this.payCallBack(orderId, modalType, res.type)
+            }
+          )
+          break
+      }
     },
     // 转让
     onTransfer(record) {
