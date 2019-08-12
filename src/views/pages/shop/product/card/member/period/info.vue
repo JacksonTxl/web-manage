@@ -66,7 +66,12 @@
           <!-- 支持入场范围 -->
           <p class="mb-8">
             <span class="label">支持入场门店：</span>
-            <span class="value">{{ cardInfo.admission_range.name }}</span>
+            <span class="value">
+              {{ cardInfo.admission_range.name
+              }}{{
+                `（已上架${cardInfo.shelf_num}家门店/共${cardInfo.sale_num}家门店）`
+              }}
+            </span>
           </p>
           <st-container
             :class="item('scroll-container')"
