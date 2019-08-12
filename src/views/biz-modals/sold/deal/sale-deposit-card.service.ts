@@ -49,8 +49,8 @@ export class SaleDepositCardService {
     )
   }
   @Effect()
-  getMember(member: string) {
-    return this.memberApi.getMemberList(member).pipe(
+  getMember(member: string, type: number) {
+    return this.transactionApi.getMemberList(member, type).pipe(
       tap((res: any) => {
         this.memberList$.commit(() => res.list)
       })

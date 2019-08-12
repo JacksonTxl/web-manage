@@ -58,7 +58,7 @@
             >
               <a-select-option
                 v-for="(item, index) in memberList"
-                :value="item.member_id"
+                :value="item.id"
                 :key="index"
               >
                 <span
@@ -480,12 +480,14 @@ export default {
         this.saleCabinetService.memberList$.commit(() => [])
         this.form.resetFields(['memberId'])
       } else {
-        this.saleCabinetService.getMember(data).subscribe(res => {
-          if (!res.list.length) {
-            this.resetAdvance()
-            this.form.resetFields(['memberId'])
-          }
-        })
+        this.saleCabinetService
+          .getMember(data, this.info.sale_range.type)
+          .subscribe(res => {
+            if (!res.list.length) {
+              this.resetAdvance()
+              this.form.resetFields(['memberId'])
+            }
+          })
       }
     },
     onMemberChange(data) {
