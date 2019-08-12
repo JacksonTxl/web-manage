@@ -375,7 +375,7 @@ export default {
           return '请填写使用条件'
         }
         if (+value <= 0) {
-          return '满减门槛不能小于0'
+          return '满减门槛应大于0'
         }
         if (couponPirce > +value) {
           return '满减门槛不能低于优惠券面额'
@@ -409,7 +409,7 @@ export default {
           return '请输入每人限领数量'
         }
         if (+value <= 0) {
-          return '每人限领数量不能小于0'
+          return '每人限领数量应大于0'
         }
       }
     },

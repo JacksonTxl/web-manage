@@ -339,7 +339,8 @@ export default {
           if (
             obj.remain_enter_times &&
             (!obj.remain_enter_times.remain_times.min ||
-              !obj.remain_enter_times.select_time.min)
+              (!obj.remain_enter_times.select_time.min &&
+                !obj.remain_enter_times.select_time.name))
           ) {
             this.messageService.error({
               content: '入场次数和时间范围必填!'
