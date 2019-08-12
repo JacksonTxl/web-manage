@@ -65,7 +65,7 @@
             >
               <a-select-option
                 v-for="(item, index) in memberList"
-                :value="item.member_id"
+                :value="item.id"
                 :key="index"
               >
                 <span
@@ -392,12 +392,14 @@ export default {
         this.saleDepositCardService.memberList$.commit(() => [])
         this.form.resetFields(['memberId'])
       } else {
-        this.saleDepositCardService.getMember(data).subscribe(res => {
-          if (!res.list.length) {
-            this.resetAdvance()
-            this.form.resetFields(['memberId'])
-          }
-        })
+        this.saleDepositCardService
+          .getMember(data, this.info.sale_range.type)
+          .subscribe(res => {
+            if (!res.list.length) {
+              this.resetAdvance()
+              this.form.resetFields(['memberId'])
+            }
+          })
       }
     },
     onMemberChange(data) {
