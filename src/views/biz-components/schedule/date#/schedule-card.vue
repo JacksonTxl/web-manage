@@ -3,7 +3,7 @@
     <section
       v-for="group in getMatrix(week)"
       :key="group.id"
-      :class="['item-group', `item-group--has-${group.length}`]"
+      :class="[bCard('item-group'), bCard(`item-group--has-${group.length}`)]"
     >
       <div
         class="con-item"
@@ -62,13 +62,14 @@ export default {
       type: Array,
       default: () => {}
     },
-    start: {
-      type: String,
-      default: ''
-    },
     week: {
       type: Number,
       default: 99
+    }
+  },
+  computed: {
+    start() {
+      return this.$route.query.start_date
     }
   },
   filters: {
