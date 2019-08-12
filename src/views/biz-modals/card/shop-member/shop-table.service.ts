@@ -16,7 +16,7 @@ export class ShopTableService {
   constructor(private cardApi: CardsApi) {}
   @Effect()
   getConsumeShopList(query: ListPageInput, id: string) {
-    return this.cardApi.getCardsMemberConsumeShop(query, id).pipe(
+    return this.cardApi.getCardsMemberSaleShop(query, id).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
@@ -25,7 +25,7 @@ export class ShopTableService {
   }
   @Effect()
   getSaleShopList(query: ListPageInput, id: string) {
-    return this.cardApi.getCardsMemberSaleShop(query, id).pipe(
+    return this.cardApi.getCardsMemberConsumeShop(query, id).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
