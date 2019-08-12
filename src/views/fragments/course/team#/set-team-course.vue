@@ -44,7 +44,12 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="消耗卡路里">
-          <st-input-number v-decorator="ruleConfig.calories">
+          <st-input-number
+            float
+            :min="0"
+            :max="99999"
+            v-decorator="ruleConfig.calories"
+          >
             <template slot="addonAfter">
               Kcal/节
             </template>
