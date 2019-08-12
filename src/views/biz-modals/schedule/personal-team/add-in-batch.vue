@@ -38,8 +38,7 @@
           v-if="record.editable"
           :showTime="{ format: 'HH:mm' }"
           format="YYYY-MM-DD HH:mm"
-          placeholder="Select Time"
-          :value="text"
+          :value="text | formatDate"
           @change="e => handleChange(e, record.key, 'start_time')"
         />
         <template v-else>
@@ -210,6 +209,11 @@ export default {
       },
       show: false,
       columns
+    }
+  },
+  filters: {
+    formatDate(val) {
+      return moment(val)
     }
   },
   methods: {
