@@ -260,8 +260,7 @@ export default {
           delete item.key
           delete item.editable
           item.start_time = moment(item.start_time)
-            .format('YYYY-MM-DD HH:mm:ss')
-            .valueOf()
+            .format('YYYY-MM-DD HH:mm')
           item.court_id = item.court_site_id[0]
           item.court_site_id = item.court_site_id[1]
           item.limit_num = +item.limit_num
