@@ -24,6 +24,16 @@ export const rules = (vm: any) => {
         ]
       }
     ],
-    isVip: ['is_vip']
+    areaType: [
+      'area_type',
+      {
+        rules: [
+          {
+            required: true,
+            message: '请选择场地属性'
+          }
+        ]
+      }
+    ]
   }
 }
