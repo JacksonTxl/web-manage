@@ -19,9 +19,6 @@ import { BRAND_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH } from '@/constants/events'
 
 export default {
   name: 'PageBrandProductDeposit',
-  serviceProviders() {
-    return [ListService]
-  },
   serviceInject() {
     return {
       routeService: RouteService,

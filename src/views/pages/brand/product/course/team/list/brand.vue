@@ -102,9 +102,6 @@ import { columns } from './brand.config'
 export default {
   name: 'TeamCourseBrand',
   mixins: [tableMixin],
-  serviceProviders() {
-    return [BrandService]
-  },
   serviceInject() {
     return {
       brandService: BrandService,

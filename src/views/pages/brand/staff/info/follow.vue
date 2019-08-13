@@ -51,9 +51,6 @@ import tableMixin from '@/mixins/table.mixin'
 
 export default {
   mixins: [tableMixin],
-  serviceProviders() {
-    return [FollowService]
-  },
   serviceInject() {
     return {
       followService: FollowService,

@@ -72,9 +72,6 @@ export default {
   modals: {
     StaffBatchImport
   },
-  serviceProviders() {
-    return [DepartmentService]
-  },
   serviceInject() {
     return {
       departmentService: DepartmentService,

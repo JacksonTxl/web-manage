@@ -165,9 +165,6 @@ export default {
   modals: {
     CardBrandMemberShopTable
   },
-  serviceProviders() {
-    return [ShelvesService]
-  },
   serviceInject() {
     return {
       routeService: RouteService,

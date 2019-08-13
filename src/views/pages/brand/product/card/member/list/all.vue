@@ -232,9 +232,6 @@ export default {
     CardBrandMemberShopTable,
     CardBrandMemberStopSale
   },
-  serviceProviders() {
-    return [AllService]
-  },
   serviceInject() {
     return {
       routeService: RouteService,

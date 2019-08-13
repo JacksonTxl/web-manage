@@ -215,9 +215,6 @@ export default {
   bem: {
     b: 'extra-contract-preview'
   },
-  serviceProviders() {
-    return [ContractPreviewService]
-  },
   serviceInject() {
     return {
       contractPreviewService: ContractPreviewService

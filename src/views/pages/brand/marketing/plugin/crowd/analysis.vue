@@ -83,9 +83,6 @@ import shop_crowd_new from '@/assets/img/shop_crowd_new.png'
 import { AnalysisService } from './analysis.service'
 export default {
   name: 'Analysis',
-  serviceProviders() {
-    return [AnalysisService]
-  },
   serviceInject() {
     return {
       analysisService: AnalysisService

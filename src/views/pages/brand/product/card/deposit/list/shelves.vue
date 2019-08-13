@@ -140,9 +140,6 @@ export default {
   modals: {
     CardBrandDepositShopTable
   },
-  serviceProviders() {
-    return [ShelvesService]
-  },
   serviceInject() {
     return {
       routeService: RouteService,

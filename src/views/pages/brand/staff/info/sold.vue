@@ -66,9 +66,6 @@ import ShopSelect from '@/views/biz-components/shop-select'
 import { RouteService } from '@/services/route.service'
 import tableMixins from '@/mixins/table.mixin'
 export default {
-  serviceProviders() {
-    return [SoldService]
-  },
   serviceInject() {
     return {
       soldservice: SoldService,

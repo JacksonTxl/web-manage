@@ -107,9 +107,6 @@ import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from '../staff-form.config.ts'
 export default {
   name: 'EditCoachInfo',
-  serviceProviders() {
-    return [EditService]
-  },
   serviceInject() {
     return {
       pattern: PatternService,
@@ -197,7 +194,7 @@ export default {
       } else {
         data.employment_time = undefined
       }
-      
+
       data.certification_name = this.coachInfoData.certification_name
       data.is_show = Number(data.is_show)
       data.image_personal = this.fileList

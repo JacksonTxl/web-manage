@@ -119,9 +119,6 @@ export default {
     CourseSupportCourseCocahesBrand,
     CourseTransfromBrandCourse
   },
-  serviceProviders() {
-    return [ShopService]
-  },
   serviceInject() {
     return {
       listService: ListService,

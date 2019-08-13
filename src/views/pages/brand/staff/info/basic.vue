@@ -222,9 +222,6 @@
 <script>
 import { BasicService } from './basic.service'
 export default {
-  serviceProviders() {
-    return [BasicService]
-  },
   serviceInject() {
     return {
       basicService: BasicService

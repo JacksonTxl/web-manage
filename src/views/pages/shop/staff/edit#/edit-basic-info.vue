@@ -182,9 +182,6 @@ import { ruleOptions } from '../staff-form.config.ts'
 import FaceUpload from '@/views/biz-components/face-upload/face-upload'
 export default {
   name: 'EditBasicInfo',
-  serviceProviders() {
-    return [EditService]
-  },
   serviceInject() {
     return {
       pattern: PatternService,

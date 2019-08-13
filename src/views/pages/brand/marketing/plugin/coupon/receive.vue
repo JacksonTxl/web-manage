@@ -81,9 +81,6 @@ export default {
   bem: {
     basic: 'page-brand-plugin-coupon'
   },
-  serviceProviders() {
-    return [ReceiveService]
-  },
   serviceInject() {
     return {
       receiveService: ReceiveService,

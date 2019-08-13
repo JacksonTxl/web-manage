@@ -85,9 +85,6 @@ export default {
     SchedulePersonalTeamReserveInfo,
     ScheduleTeamReserveInfo
   },
-  serviceProviders() {
-    return [CourseService]
-  },
   serviceInject() {
     return {
       service: CourseService,

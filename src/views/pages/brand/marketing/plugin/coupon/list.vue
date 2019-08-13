@@ -123,9 +123,6 @@ export default {
     BrandMarketingBind,
     BrandMarketingPoster
   },
-  serviceProviders() {
-    return [ListService]
-  },
   serviceInject() {
     return {
       listService: ListService,

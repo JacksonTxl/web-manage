@@ -194,9 +194,6 @@ export default {
   bem: {
     all: 'page-brand-product-deposit-list-all'
   },
-  serviceProviders() {
-    return [AllService]
-  },
   serviceInject() {
     return {
       routeService: RouteService,

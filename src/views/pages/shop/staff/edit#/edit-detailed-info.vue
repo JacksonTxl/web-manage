@@ -122,9 +122,6 @@ import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from '../staff-form.config.ts'
 export default {
   name: 'EditDetailedInfo',
-  serviceProviders() {
-    return [EditService]
-  },
   serviceInject() {
     return {
       pattern: PatternService,

@@ -118,9 +118,6 @@ import tableMixin from '@/mixins/table.mixin'
 import { columns } from './index.config'
 export default {
   mixins: [tableMixin],
-  serviceProviders() {
-    return [IndexService]
-  },
   serviceInject() {
     return {
       indexService: IndexService,

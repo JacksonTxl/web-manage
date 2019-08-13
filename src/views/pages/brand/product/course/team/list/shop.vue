@@ -105,9 +105,6 @@ import tableMixin from '@/mixins/table.mixin'
 export default {
   name: 'DDDTeamCourseList',
   mixins: [tableMixin],
-  serviceProviders() {
-    return [ShopService]
-  },
   serviceInject() {
     return {
       listService: ListService,

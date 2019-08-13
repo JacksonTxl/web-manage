@@ -240,9 +240,6 @@ import SelectShop from '@/views/fragments/shop/select-shop'
 import H5Container from '@/views/biz-components/h5/h5-container'
 export default {
   name: 'BrandMarketingPluginCouponAdd',
-  serviceProviders() {
-    return [AddService]
-  },
   serviceInject() {
     return {
       addService: AddService,

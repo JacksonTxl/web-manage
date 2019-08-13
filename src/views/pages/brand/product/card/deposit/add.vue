@@ -381,9 +381,6 @@ import { ruleOptions } from './deposit.config'
 export default {
   name: 'BrandDepositCardAdd',
   mixins: [h5mixin],
-  serviceProviders() {
-    return [AddService]
-  },
   serviceInject() {
     return {
       rules: RuleConfig,

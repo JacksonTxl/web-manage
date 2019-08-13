@@ -156,9 +156,6 @@ import { AppConfig } from '@/constants/config'
 import { TRANSFER_UNIT } from '@/constants/course/personal'
 export default {
   name: 'PersonalInfo',
-  serviceProviders() {
-    return [InfoService]
-  },
   serviceInject() {
     return {
       config: AppConfig,

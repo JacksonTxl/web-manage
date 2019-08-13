@@ -66,9 +66,6 @@ export default {
     roleView: 'page-role-view',
     roleContent: 'page-role-content'
   },
-  serviceProviders() {
-    return [RoleService]
-  },
   serviceInject() {
     return {
       roleService: RoleService

@@ -157,9 +157,6 @@ export default {
     CourseSupportCourseCocahesBrand,
     CourseSupportCourseShops
   },
-  serviceProviders() {
-    return [BrandService]
-  },
   serviceInject() {
     return {
       listService: ListService,

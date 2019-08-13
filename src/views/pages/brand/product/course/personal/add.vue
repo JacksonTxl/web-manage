@@ -43,9 +43,6 @@ export default {
     SetShopCoach, // 设置上课门店及教练
     SetSellPrice // 设置售卖价格
   },
-  serviceProviders() {
-    return [AddService]
-  },
   serviceInject() {
     return {
       addService: AddService

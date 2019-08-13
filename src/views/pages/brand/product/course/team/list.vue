@@ -15,9 +15,6 @@ import { RouteService } from '@/services/route.service'
 import { ListService } from './list.service'
 export default {
   name: 'TeamCourseList',
-  serviceProviders() {
-    return [ListService]
-  },
   serviceInject() {
     return {
       routeService: RouteService,

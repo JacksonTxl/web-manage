@@ -39,9 +39,6 @@ import { InfoService } from './info.service'
 import { listToTree } from '@/utils/list-to-tree.js'
 export default {
   name: 'RoleInfo',
-  serviceProviders() {
-    return [InfoService]
-  },
   serviceInject() {
     return {
       infoService: InfoService

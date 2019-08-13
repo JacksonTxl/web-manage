@@ -261,9 +261,6 @@ import DepartmentSelect from '@/views/biz-components/department-select'
 import FaceUpload from '@/views/biz-components/face-upload/face-upload'
 export default {
   name: 'StaffDetailBasics',
-  serviceProviders() {
-    return [AddService]
-  },
   serviceInject() {
     return {
       pattern: PatternService,

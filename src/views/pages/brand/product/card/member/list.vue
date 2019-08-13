@@ -15,12 +15,9 @@
 <script>
 import { RouteService } from '@/services/route.service'
 import { ListService } from './list.service'
-import {BRAND_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH} from '@/constants/events'
+import { BRAND_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH } from '@/constants/events'
 export default {
   name: 'PageShopProductMember',
-  serviceProviders() {
-    return [ListService]
-  },
   serviceInject() {
     return {
       routeService: RouteService,

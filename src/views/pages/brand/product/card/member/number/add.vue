@@ -653,9 +653,6 @@ import { ruleOptions } from './number.config'
 export default {
   name: 'BrandNumberCardAdd',
   mixins: [h5mixin],
-  serviceProviders() {
-    return [AddService]
-  },
   serviceInject() {
     return {
       rules: RuleConfig,

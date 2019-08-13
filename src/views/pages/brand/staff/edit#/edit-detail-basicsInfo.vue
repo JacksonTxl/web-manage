@@ -177,9 +177,6 @@ import FaceUpload from '@/views/biz-components/face-upload/face-upload'
 import { cloneDeep } from 'lodash-es';
 export default {
   name: 'EditBasicInfo',
-  serviceProviders() {
-    return [EditService]
-  },
   serviceInject() {
     return {
       rules: RuleConfig,

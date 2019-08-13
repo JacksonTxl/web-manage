@@ -47,9 +47,6 @@ import EditDetailCoachInfo from './edit#/edit-detail-coachInfo'
 import { EditService } from './edit.service'
 export default {
   name: 'EditStaff',
-  serviceProviders() {
-    return [EditService]
-  },
   serviceInject() {
     return {
       userService: UserService,

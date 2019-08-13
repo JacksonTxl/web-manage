@@ -629,9 +629,6 @@ import { ruleOptions } from './period.config'
 export default {
   name: 'BrandPeriodCardEdit',
   mixins: [h5mixin],
-  serviceProviders() {
-    return [EditService]
-  },
   serviceInject() {
     return {
       rules: RuleConfig,

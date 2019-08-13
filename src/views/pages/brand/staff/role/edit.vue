@@ -126,9 +126,6 @@ export default {
   modals: {
     RoleDepartment
   },
-  serviceProviders() {
-    return [EditService]
-  },
   serviceInject() {
     return {
       editService: EditService

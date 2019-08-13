@@ -25,9 +25,6 @@ export default {
     Steps,
     StaffDetailBasics
   },
-  serviceProviders() {
-    return [AddService]
-  },
   serviceInject() {
     return {
       addService: AddService,

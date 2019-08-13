@@ -7,9 +7,6 @@
 <script>
 import { TemplateService } from './template.service'
 export default {
-  serviceProviders() {
-    return [TemplateService]
-  },
   serviceInject() {
     return {
       templateService: TemplateService

@@ -76,9 +76,6 @@ export default {
     SkillfulAdd,
     SkillfulEdit
   },
-  serviceProviders() {
-    return [SkillfulService]
-  },
   serviceInject() {
     return {
       listService: SkillfulService,

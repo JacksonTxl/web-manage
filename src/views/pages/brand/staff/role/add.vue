@@ -105,9 +105,6 @@ export default {
   modals: {
     RoleDepartment
   },
-  serviceProviders() {
-    return [AddService]
-  },
   serviceInject() {
     return {
       roleService: RoleService,
