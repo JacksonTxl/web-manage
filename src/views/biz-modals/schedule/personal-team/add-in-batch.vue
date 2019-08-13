@@ -214,7 +214,7 @@ export default {
   },
   filters: {
     formatDate(val) {
-      return moment(val)
+      return val ? moment(val) : undefined
     }
   },
   methods: {
