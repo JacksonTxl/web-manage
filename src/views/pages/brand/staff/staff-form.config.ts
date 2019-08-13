@@ -119,6 +119,7 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
+    provinces: {},
     nature_work: {},
     entry_date: {},
     shop_id: {
