@@ -131,7 +131,10 @@
     </st-form-table>
     <div class="mg-t24 ta-r">
       <a-popconfirm
-        v-if="infoAuth['shop:schedule:personal_team_course_schedule|del']"
+        v-if="
+          infoAuth &&
+            infoAuth['shop:schedule:personal_team_course_schedule|del']
+        "
         @confirm="cancelSchedule"
         okText="确认"
         cancelText="取消"
@@ -143,7 +146,10 @@
         <st-button>取消课程</st-button>
       </a-popconfirm>
       <st-button
-        v-if="infoAuth['shop:schedule:personal_team_course_schedule|edit']"
+        v-if="
+          infoAuth &&
+            infoAuth['shop:schedule:personal_team_course_schedule|edit']
+        "
         class="mg-l8"
         type="primary"
         @click="updateSchedule"
@@ -162,6 +168,7 @@ import { PersonalTeamScheduleReserveService as ReserveService } from '@/views/pa
 import { PersonalTeamScheduleScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/schedule.service'
 import { RouteService } from '@/services/route.service'
 import SchedulePersonalTeamEdit from '@/views/biz-modals/schedule/personal-team/edit'
+import { columns } from './reserve-info.config'
 export default {
   name: 'OrderInfo',
   modals: {
@@ -186,7 +193,7 @@ export default {
       reserveInfo: this.reserveService.reserveInfo$,
       auth: this.reserveService.auth$,
       query: this.routeService.query$,
-      infoAuth: this.reserveService.infoAuth$ || {}
+      infoAuth: this.reserveService.infoAuth$
     }
   },
   props: {
@@ -199,35 +206,13 @@ export default {
       consumeId: '',
       consumeTypeId: '',
       siteNumIds: [],
-      columns: [
-        {
-          title: '会员姓名',
-          dataIndex: 'member',
-          width: '20%',
-          scopedSlots: { customRender: 'member' }
-        },
-        {
-          title: '消费方式',
-          dataIndex: 'consume_type',
-          scopedSlots: { customRender: 'consume_type' }
-        },
-        {
-          title: '签到状态',
-          dataIndex: 'is_checkin',
-          width: '20%'
-        },
-        {
-          title: '操作',
-          dataIndex: 'action',
-          scopedSlots: { customRender: 'action' }
-        }
-      ],
       dataSource: [],
       show: false,
       info: {}
     }
   },
   computed: {
+    columns,
     courseId() {
       return this.reserveInfo.course_id
     },

@@ -133,39 +133,7 @@ import { PersonalTeamScheduleCommonService as CommonService } from '@/views/page
 import { PersonalTeamScheduleScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/schedule.service'
 import { MessageService } from '@/services/message.service'
 import { RouteService } from '../../../../services/route.service'
-const columns = [
-  {
-    dataIndex: 'start_time',
-    slots: { title: 'startTimeTitle' },
-    scopedSlots: { customRender: 'start_time' }
-  },
-  {
-    dataIndex: 'course_id',
-    slots: { title: 'courseIdTitle' },
-    scopedSlots: { customRender: 'course_id' }
-  },
-  {
-    dataIndex: 'coach_id',
-    slots: { title: 'coachIdTitle' },
-    scopedSlots: { customRender: 'coach_id' }
-  },
-  {
-    dataIndex: 'limit_num',
-    slots: { title: 'limitNumTitle' },
-    scopedSlots: { customRender: 'limit_num' }
-  },
-  {
-    dataIndex: 'course_fee',
-    slots: { title: 'courseFeeTitle' },
-    scopedSlots: { customRender: 'course_fee' }
-  },
-  {
-    title: '操作',
-    dataIndex: 'operation',
-    slots: { title: 'courseFeeTitle' },
-    scopedSlots: { customRender: 'operation' }
-  }
-]
+import { columns } from './add-in-batch.config'
 export default {
   name: 'AddCourseScheduleBatch',
   serviceInject() {
@@ -208,9 +176,11 @@ export default {
         coach_id: '',
         show: {}
       },
-      show: false,
-      columns
+      show: false
     }
+  },
+  computed: {
+    columns
   },
   methods: {
     validateForm(form) {
@@ -369,8 +339,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-.editable-row-operations a {
-  margin-right: 8px;
-}
-</style>

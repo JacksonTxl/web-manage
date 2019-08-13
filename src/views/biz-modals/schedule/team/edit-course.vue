@@ -10,22 +10,13 @@
           :showTime="{ format: 'HH:mm' }"
           placeholder="请选择时间"
           format="YYYY-MM-DD HH:mm"
-          v-decorator="[
-            'start_time',
-            { rules: [{ required: true, message: '请输入日期' }] }
-          ]"
+          v-decorator="decorators.start_time"
         >
           <a-icon slot="suffixIcon" type="clock-circle" />
         </a-date-picker>
       </st-form-item>
       <st-form-item label="课程" required>
-        <a-select
-          placeholder="请选择课程"
-          v-decorator="[
-            'course_id',
-            { rules: [{ required: true, message: '请选择课程' }] }
-          ]"
-        >
+        <a-select placeholder="请选择课程" v-decorator="decorators.course_id">
           <a-select-option
             v-for="course in courseOptions"
             :key="course.id"
@@ -36,13 +27,7 @@
         </a-select>
       </st-form-item>
       <st-form-item label="教练" required>
-        <a-select
-          placeholder="请选择教练"
-          v-decorator="[
-            'coach_id',
-            { rules: [{ required: true, message: '请选择教练' }] }
-          ]"
-        >
+        <a-select placeholder="请选择教练" v-decorator="decorators.coach_id">
           <a-select-option
             v-for="coach in coachOptions"
             :key="coach.id"
@@ -57,16 +42,13 @@
           placeholder="请选择场地"
           :options="courtOptions"
           :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
-          v-decorator="['court_id']"
+          v-decorator="decorators.court_id"
         />
       </st-form-item>
       <st-form-item label="人数" required>
         <a-input-search
           placeholder="请输入人数"
-          v-decorator="[
-            'limit_num',
-            { rules: [{ required: true, message: '请输入人数' }] }
-          ]"
+          v-decorator="decorators.limit_num"
         >
           <a-button slot="enterButton">人</a-button>
         </a-input-search>
@@ -74,10 +56,7 @@
       <st-form-item label="课时费" required>
         <a-input-search
           placeholder="请输入课时费"
-          v-decorator="[
-            'course_fee',
-            { rules: [{ required: true, message: '请选择课时费' }] }
-          ]"
+          v-decorator="decorators.course_fee"
         >
           <a-button slot="enterButton">元/节</a-button>
         </a-input-search>
@@ -96,10 +75,10 @@
 
 <script>
 import { cloneDeep } from 'lodash-es'
-
 import { TeamService } from '@/views/pages/shop/product/course/schedule/team/team.service'
 import { TeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/team/service#/schedule.service'
 import { TeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/team/service#/common.service'
+import { ruleOptions } from './add-course.config'
 export default {
   name: 'EditCourseSchedule',
   serviceInject() {
@@ -119,10 +98,13 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       reserved_num: 0,
-      show: false,
-      form: {}
+      show: false
     }
   },
   props: {
@@ -132,7 +114,6 @@ export default {
     }
   },
   created() {
-    this.form = this.$form.createForm(this)
     this.initOptions().subscribe()
   },
   mounted() {
