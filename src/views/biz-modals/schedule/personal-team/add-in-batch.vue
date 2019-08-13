@@ -37,6 +37,7 @@
         <a-date-picker
           v-if="record.editable"
           :showTime="{ format: 'HH:mm' }"
+          placeholder="请选择时间"
           format="YYYY-MM-DD HH:mm"
           :value="text | formatDate"
           @change="e => handleChange(e, record.key, 'start_time')"
