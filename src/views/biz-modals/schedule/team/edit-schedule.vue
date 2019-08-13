@@ -172,7 +172,7 @@ export default {
       return this.teamService.init()
     },
     onClick() {
-      this.show = true
+      this.show = false
     },
     onSubmit() {
       this.form.validateFields((err, values) => {
