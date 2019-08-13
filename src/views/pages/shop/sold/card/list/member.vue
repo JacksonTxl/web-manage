@@ -525,7 +525,7 @@ export default {
           this.createdOrderPrint(orderId)
           break
         case 'ViewOrder':
-          this.createdOrderViewOrder()
+          this.createdOrderViewOrder(orderId)
           break
         case 'Pay':
           this.createdOrderPay({ order_id: orderId, type: modalType }).then(
@@ -544,8 +544,14 @@ export default {
       window.open(url)
     },
     // 查看订单
-    createdOrderViewOrder() {
+    createdOrderViewOrder(order_id) {
       console.log('查看订单')
+      this.$router.push({
+        name: 'shop-finance-order-info-collection-details',
+        query: {
+          id: order_id
+        }
+      })
     },
     // 续卡
     onRenewal(record) {
@@ -589,13 +595,33 @@ export default {
         },
         on: {
           success: async res => {
-            // 创建订单成功 并且到支付页面
-            let props = {
-              order_id: res.orderId,
-              type: 'member'
+            this.$router.push({ force: true, query: this.query })
+            if (res.type === 'create') {
+              // 创建订单成功
+              let props = {
+                order_id: res.orderId,
+                type: 'member',
+                message: '订单创建成功',
+                needPay: true
+              }
+              let orderSuccessRes = await this.createdGatheringTip(props)
+              this.tipCallBack(res.orderId, 'member', orderSuccessRes.type)
+            } else if (res.type === 'createPay') {
+              // 创建订单成功 并且到支付页面
+              let props = {
+                order_id: res.orderId,
+                type: 'member'
+              }
+              let payOrderRes = await this.createdOrderPay(props)
+              this.payCallBack(res.orderId, 'member', payOrderRes.type)
             }
-            let payOrderRes = await this.createdOrderPay(props)
-            this.payCallBack(res.orderId, 'member', payOrderRes.type)
+            // 创建订单成功 并且到支付页面
+            // let props = {
+            //   order_id: res.orderId,
+            //   type: 'member'
+            // }
+            // let payOrderRes = await this.createdOrderPay(props)
+            // this.payCallBack(res.orderId, 'member', payOrderRes.type)
           }
         }
       })

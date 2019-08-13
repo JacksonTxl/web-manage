@@ -1,6 +1,5 @@
 <template>
   <st-modal
-    size="small"
     v-model="show"
     @cancel="onCancel"
     wrapClassName="modal-sold-deal-sale"
@@ -148,10 +147,10 @@
                   :allowClear="false"
                   :showToday="false"
                 />
+                <span style="width:158px;">
+                  &nbsp;&nbsp;至&nbsp;&nbsp;{{ endTime }}
+                </span>
               </a-form-item>
-              <span style="width:158px;">
-                &nbsp;&nbsp;至&nbsp;&nbsp;{{ endTime }}
-              </span>
             </div>
           </st-form-item>
           <st-form-item labelGutter="12px" label="购买赠送">

@@ -73,12 +73,13 @@
             >
               编辑
             </router-link>
-            <a
+            <a-popconfirm
+              title="是否确认删除?"
+              @confirm="deleteTreeNode(record)"
               v-if="record.auth['shop:member:crowd|del']"
-              @click="deleteTreeNode(record)"
             >
-              删除
-            </a>
+              <a>删除</a>
+            </a-popconfirm>
           </st-table-actions>
           <!-- <st-more-dropdown class="tree-opreation">
             <a-menu-item v-if="record.auth['shop:member:crowd|export']" @click="addTreeNode(record)">导出</a-menu-item>

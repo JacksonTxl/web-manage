@@ -37,9 +37,9 @@
         <a-date-picker
           v-if="record.editable"
           :showTime="{ format: 'HH:mm' }"
+          placeholder="请选择时间"
           format="YYYY-MM-DD HH:mm"
-          placeholder="Select Time"
-          :value="text"
+          :value="text | formatDate"
           @change="e => handleChange(e, record.key, 'start_time')"
         />
         <template v-else>
@@ -212,6 +212,11 @@ export default {
       columns
     }
   },
+  filters: {
+    formatDate(val) {
+      return val ? moment(val) : undefined
+    }
+  },
   methods: {
     validateForm(form) {
       if (!form.start_time) {
@@ -247,7 +252,7 @@ export default {
           delete item.key
           delete item.editable
           item.start_time = moment(item.start_time)
-            .format('YYYY-MM-DD HH:mm:ss')
+            .format('YYYY-MM-DD HH:mm')
             .valueOf()
           item.limit_num = +item.limit_num
           item.course_fee = +item.course_fee
@@ -269,6 +274,7 @@ export default {
         if (column === 'start_time') {
           target[column] = value.format('YYYY-MM-DD HH:mm')
         }
+        console.log(target[column])
         this.data = newData
       }
     },

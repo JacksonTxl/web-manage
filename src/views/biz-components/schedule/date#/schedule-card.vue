@@ -60,10 +60,6 @@ export default {
       type: Array,
       default: () => {}
     },
-    start: {
-      type: String,
-      default: ''
-    },
     week: {
       type: Number,
       default: 99
@@ -80,6 +76,11 @@ export default {
       } else if (date < current) {
         return 'before'
       }
+    }
+  },
+  computed: {
+    start() {
+      return this.$route.query.start_date
     }
   },
   methods: {

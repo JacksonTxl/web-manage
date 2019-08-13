@@ -11,7 +11,7 @@
           :filterOption="false"
           @search="onSearchMember"
           @change="onChangeMember"
-          :notFoundContent="fetching ? undefined : null"
+          notFoundContent="无搜索结果"
         >
           <a-spin v-if="fetching" slot="notFoundContent" size="small" />
           <a-select-option
@@ -207,61 +207,50 @@ export default {
       const allTime = this.range(0, 60)
       for (let i = 0; i < this.timeOptions.timing.length; i++) {
         const startHour = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].start_time
-          }`
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`
         )
           .format('H')
           .valueOf()
         const endHour = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].end_time
-          }`
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`
         )
           .format('H')
           .valueOf()
         const start = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].start_time
-          }`
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`
         )
           .format('mm')
           .valueOf()
         const end = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].end_time
-          }`
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`
         )
           .format('mm')
           .valueOf()
         if (+selectedHour === startHour && +selectedHour === endHour) {
-          return difference(allTime, this.range(start, end))
+          disabledMinutes = [...disabledMinutes, ...this.range(start, end)]
         } else {
           if (+selectedHour === startHour) {
-            return difference(allTime, this.range(start, 60))
+            disabledMinutes = [...disabledMinutes, ...this.range(start, 60)]
           } else if (+selectedHour === endHour) {
-            return difference(allTime, this.range(0, end))
+            disabledMinutes = [...disabledMinutes, ...this.range(0, end)]
           } else if (+selectedHour > startHour && endHour > +selectedHour) {
-            return difference(allTime, this.range(0, 60))
+            disabledMinutes = [...disabledMinutes, ...this.range(0, 60)]
           }
         }
       }
+      return difference(allTime, disabledMinutes)
     },
     disabledHours() {
       let disabledHours = []
       const allTime = this.range(0, 24)
       for (let i = 0; i < this.timeOptions.timing.length; i++) {
         const start = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].start_time
-          }`
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`
         )
           .format('H')
           .valueOf()
         let end = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].end_time
-          }`
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`
         )
           .format('H')
           .valueOf()

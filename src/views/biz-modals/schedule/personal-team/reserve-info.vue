@@ -38,7 +38,7 @@
             {{ reserveInfo.start_date }}
           </st-info-item>
           <st-info-item label="预约人数">
-            {{ reserveInfo.reserved_num }}
+            {{ reserveInfo.reserve.length }}
           </st-info-item>
         </st-info>
       </a-col>

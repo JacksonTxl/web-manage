@@ -485,7 +485,11 @@ export default {
       this.id_card_type = +obj.id_card_type || undefined
       this.country_prefix = +obj.country_prefix || undefined
       this.id = obj.id
-      this.faceList = [obj.image_face]
+      if (obj.image_face && obj.image_face.image_id) {
+        this.faceList = [obj.image_face]
+      } else {
+        this.faceList = []
+      }
       this.source_category = +obj.register_type
     }
   },

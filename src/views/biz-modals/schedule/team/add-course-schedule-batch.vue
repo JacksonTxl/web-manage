@@ -33,7 +33,7 @@
           :showTime="{ format: 'HH:mm' }"
           format="YYYY-MM-DD HH:mm"
           placeholder="请选择时间"
-          :value="text"
+          :value="text | formatDate"
           @change="e => handleChange(e, record.key, 'start_time')"
         />
         <template v-else>
@@ -225,6 +225,11 @@ export default {
       columns
     }
   },
+  filters: {
+    formatDate(val) {
+      return val ? moment(val) : undefined
+    }
+  },
   methods: {
     validateForm(form) {
       if (!form.start_time) {
@@ -259,9 +264,7 @@ export default {
           delete item.show
           delete item.key
           delete item.editable
-          item.start_time = moment(item.start_time)
-            .format('YYYY-MM-DD HH:mm:ss')
-            .valueOf()
+          item.start_time = moment(item.start_time).format('YYYY-MM-DD HH:mm')
           item.court_id = item.court_site_id[0]
           item.court_site_id = item.court_site_id[1]
           item.limit_num = +item.limit_num

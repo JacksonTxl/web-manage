@@ -1,5 +1,5 @@
 <template>
-  <st-modal size="small" v-model="show" wrapClassName="modal-sold-deal-sale">
+  <st-modal v-model="show" wrapClassName="modal-sold-deal-sale">
     <div slot="title">
       续卡
       <st-help-tooltip id="TSMC001" placement="right" />
@@ -52,10 +52,10 @@
                   :allowClear="false"
                   :showToday="false"
                 />
+                <span style="width:158px;">
+                  &nbsp;&nbsp;至&nbsp;&nbsp;{{ endTime }}
+                </span>
               </a-form-item>
-              <span style="width:158px;">
-                &nbsp;&nbsp;至&nbsp;&nbsp;{{ endTime }}
-              </span>
             </div>
           </st-form-item>
           <st-form-item labelGutter="12px" label="购买赠送">

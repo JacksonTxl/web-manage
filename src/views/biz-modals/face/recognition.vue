@@ -50,7 +50,7 @@
             </div>
           </a-spin>
           <div :class="recognition('operation')">
-            <st-button type="primary" @click="handlerTakePhoto">
+            <st-button type="primary" @click="handlerTakePhoto" :disabled="openCameraError">
               {{ userImgSrc ? '重拍' : '拍照' }}
             </st-button>
             <!-- <div :class="recognition('tips')">
@@ -249,10 +249,12 @@ export default {
           // 有些浏览器不支持，会返回错误信息
           // 保持接口一致
           if (!getUserMedia) {
+            this.openCameraError = true
             return Promise.reject(
               new Error('getUserMedia is not implemented in this browser')
             )
           }
+          this.openCameraError = false
           // 否则，使用Promise将调用包装到旧的navigator.getUserMedia
           return new Promise(function(resolve, reject) {
             getUserMedia.call(navigator, constraints, resolve, reject)

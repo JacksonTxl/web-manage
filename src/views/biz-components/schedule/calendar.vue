@@ -6,7 +6,6 @@
       </div>
       <div :class="bToolbar('center')">
         <date-component
-          :start="start"
           @pre="oChangeDate"
           @next="oChangeDate"
           @today="oChangeDate"
@@ -71,7 +70,6 @@
             @detail="onDetail"
             :cardList="cardList"
             :week="item.week"
-            :start="start"
           ></schedule-card>
         </li>
       </ul>
@@ -195,10 +193,14 @@ export default {
       return time < 9 ? `0${time}:00` : `${time}:00`
     },
     currentDay(val) {
+      debugger
       let weekOfday = moment(val.date).format('E')
-      let date = moment(val.date)
-        .subtract(weekOfday - val.week, 'days')
-        .format('YYYY-MM-DD')
+      let date =
+        val.week === 0
+          ? val.date
+          : moment(val.date)
+              .subtract(weekOfday - val.week, 'days')
+              .format('YYYY-MM-DD')
       let current = moment().format('YYYY-MM-DD')
       return date === current ? 'active' : ''
     },
@@ -224,7 +226,11 @@ export default {
     oChangeDate(date) {
       this.start = date.start_date
       this.$router.push({ query: { ...date }, force: true })
-      this.getWeeks('week')
+      if (this.isDay) {
+        this.getWeeks()
+      } else {
+        this.getWeeks('week')
+      }
     },
     onClickGetTable() {
       this.$emit('get-table')
@@ -279,7 +285,11 @@ export default {
   },
   created() {
     this.start = this.startDate
-    this.getWeeks('week')
+    if (this.isDay) {
+      this.getWeeks()
+    } else {
+      this.getWeeks('week')
+    }
   },
   components: {
     DateComponent,
