@@ -29,7 +29,7 @@
                   编辑
                 </a-menu-item>
                 <a-menu-item
-                  v-if="auth.del && !role.can_del"
+                  v-if="auth.del && role.can_del"
                   @click="onClickDelRole(role.id)"
                 >
                   删除
