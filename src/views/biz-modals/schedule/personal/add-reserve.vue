@@ -227,17 +227,18 @@ export default {
           .format('mm')
           .valueOf()
         if (+selectedHour === startHour && +selectedHour === endHour) {
-          return difference(allTime, this.range(start, end))
+          disabledMinutes = [...disabledMinutes, ...this.range(start, end)]
         } else {
           if (+selectedHour === startHour) {
-            return difference(allTime, this.range(start, 60))
+            disabledMinutes = [...disabledMinutes, ...this.range(start, 60)]
           } else if (+selectedHour === endHour) {
-            return difference(allTime, this.range(0, end))
+            disabledMinutes = [...disabledMinutes, ...this.range(0, end)]
           } else if (+selectedHour > startHour && endHour > +selectedHour) {
-            return difference(allTime, this.range(0, 60))
+            disabledMinutes = [...disabledMinutes, ...this.range(0, 60)]
           }
         }
       }
+      return difference(allTime, disabledMinutes)
     },
     disabledHours() {
       let disabledHours = []
