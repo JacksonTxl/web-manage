@@ -44,6 +44,9 @@ export default {
       required: true
     }
   },
+  serviceProviders() {
+    return [AreaService]
+  },
   serviceInject() {
     return {
       areaService: AreaService

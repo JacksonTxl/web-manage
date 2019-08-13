@@ -5,17 +5,18 @@
         <a-date-picker
           class="full-width"
           :showTime="{ format: 'HH:mm' }"
-          :disabled="info.reserved_num"
+          :disabled="disabled"
           format="YYYY-MM-DD HH:mm"
-          v-decorator="formRules.startTime"
+          v-decorator="decorators.start_time"
         >
           <a-icon slot="suffixIcon" type="clock-circle" />
         </a-date-picker>
       </st-form-item>
       <st-form-item label="课程" required>
         <a-select
-          v-decorator="formRules.courseId"
-          :disabled="info.reserved_num"
+          v-decorator="decorators.course_id"
+          :disabled="disabled"
+          @change="onChangeGetCourseId"
         >
           <a-select-option
             v-for="course in courseOptions"
@@ -27,7 +28,7 @@
         </a-select>
       </st-form-item>
       <st-form-item label="教练" required>
-        <a-select v-decorator="formRules.coachId">
+        <a-select v-decorator="decorators.coach_id">
           <a-select-option
             v-for="coach in coachOptions"
             :key="coach.id"
@@ -38,17 +39,14 @@
         </a-select>
       </st-form-item>
       <st-form-item label="人数" required>
-        <a-input-search
-          :disabled="info.reserved_num"
-          v-decorator="formRules.limitNum"
-        >
+        <a-input-search :disabled="disabled" v-decorator="decorators.limit_num">
           <a-button slot="enterButton">人</a-button>
         </a-input-search>
       </st-form-item>
       <st-form-item label="课时费" required>
         <a-input-search
-          :disabled="info.reserved_num"
-          v-decorator="formRules.courseFee"
+          :disabled="disabled"
+          v-decorator="decorators.course_fee"
         >
           <a-button slot="enterButton">元/节</a-button>
         </a-input-search>
@@ -67,63 +65,7 @@
 import { MessageService } from '@/services/message.service'
 import { PersonalTeamScheduleScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/schedule.service'
 import { PersonalTeamScheduleCommonService as CommonService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/common.service'
-const formRules = {
-  startTime: [
-    'start_time',
-    {
-      rules: [
-        {
-          required: true,
-          message: '请选择课程开始时间'
-        }
-      ]
-    }
-  ],
-  courseId: [
-    'course_id',
-    {
-      rules: [
-        {
-          required: true,
-          message: '请选择课程'
-        }
-      ]
-    }
-  ],
-  coachId: [
-    'coach_id',
-    {
-      rules: [
-        {
-          required: true,
-          message: '请选择教练'
-        }
-      ]
-    }
-  ],
-  limitNum: [
-    'limit_num',
-    {
-      rules: [
-        {
-          required: true,
-          message: '请输入人数'
-        }
-      ]
-    }
-  ],
-  courseFee: [
-    'course_fee',
-    {
-      rules: [
-        {
-          required: true,
-          message: '请输入课时费'
-        }
-      ]
-    }
-  ]
-}
+import { ruleOptions } from './add.config'
 export default {
   name: 'AddCourseSchedule',
   serviceInject() {
@@ -137,14 +79,17 @@ export default {
     const commonService = this.commonService
     return {
       courseOptions: commonService.courseOptions$,
+      // NOTE: 现在编辑课程排期，课程和教练没有关联，等熊哥改好的，合到这边
       coachOptions: commonService.coachOptions$
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      show: false,
-      form: this.$form.createForm(this),
-      formRules
+      form,
+      decorators,
+      show: false
     }
   },
   props: {
@@ -156,6 +101,9 @@ export default {
   computed: {
     id() {
       return this.info.id
+    },
+    disabled() {
+      return !!this.info.reserved_num
     }
   },
   created() {
@@ -175,6 +123,9 @@ export default {
         ])
       })
     },
+    onChangeGetCourseId(id) {
+      this.commonService.getCourseCoachList(id).subscribe()
+    },
     setFieldsValue(info, keys) {
       const data = {}
       keys.forEach(key => {
@@ -183,12 +134,10 @@ export default {
       this.form.setFieldsValue(data)
     },
     onSubmit() {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          const data = this.dataFilter(values)
-          data.id = this.id
-          this.scheduleService.update(data).subscribe(this.onSubmitSuccess)
-        }
+      this.form.validate().then(values => {
+        const data = this.dataFilter(values)
+        data.id = this.id
+        this.scheduleService.update(data).subscribe(this.onSubmitSuccess)
       })
     },
     cancel() {

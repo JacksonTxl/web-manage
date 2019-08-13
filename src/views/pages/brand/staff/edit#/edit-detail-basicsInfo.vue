@@ -31,7 +31,7 @@
             </a-select>
             <a-input
               style="width: 80%"
-              v-decorator="decorators.moblie"
+              v-decorator="decorators.mobile"
               placeholder="请输入手机号"
             />
           </a-input-group>
@@ -174,6 +174,7 @@ import DepartmentSelect from '@/views/biz-components/department-select'
 import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from '../staff-form.config.ts'
 import FaceUpload from '@/views/biz-components/face-upload/face-upload'
+import { cloneDeep } from 'lodash-es';
 export default {
   name: 'EditBasicInfo',
   serviceProviders() {
@@ -221,7 +222,8 @@ export default {
   },
   mounted() {
     this.$nextTick().then(() => {
-      this.setData(this.data)
+      const form = cloneDeep(this.data)
+      this.setData(form)
     })
   },
   methods: {

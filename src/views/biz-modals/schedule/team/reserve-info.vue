@@ -177,12 +177,12 @@ import { MessageService } from '@/services/message.service'
 import { TeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/team/service#/common.service'
 import { TeamScheduleReserveService } from '@/views/pages/shop/product/course/schedule/team/service#/reserve.service'
 import ScheduleTeamCancelCourse from '@/views/biz-modals/schedule/team/cancel-course'
-import ScheduleTeamEditSchedule from '@/views/biz-modals/schedule/team/edit-schedule'
+import ScheduleTeamEditCourse from '@/views/biz-modals/schedule/team/edit-course'
 export default {
   name: 'ReserveInfo',
   modals: {
     ScheduleTeamCancelCourse,
-    ScheduleTeamEditSchedule
+    ScheduleTeamEditCourse
   },
   serviceInject() {
     return {
@@ -205,7 +205,6 @@ export default {
   },
   filters: {
     siteNumListFilter(val) {
-      console.log(val)
       return val
         .split(',')
         .map(item => {
@@ -301,7 +300,7 @@ export default {
     },
     onClickEditCourse() {
       this.$modalRouter.push({
-        name: 'schedule-team-edit-schedule',
+        name: 'schedule-team-edit-course',
         props: { id: this.info.id }
       })
       this.show = false

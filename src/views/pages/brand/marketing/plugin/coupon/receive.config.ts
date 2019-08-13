@@ -1,4 +1,4 @@
-export const columns = () => {
+export const columns = (vm: any) => {
   return [
     {
       title: '用户名称',
