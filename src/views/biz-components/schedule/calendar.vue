@@ -193,7 +193,6 @@ export default {
       return time < 9 ? `0${time}:00` : `${time}:00`
     },
     currentDay(val) {
-      debugger
       let weekOfday = moment(val.date).format('E')
       let date =
         val.week === 0
