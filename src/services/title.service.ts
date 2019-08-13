@@ -31,8 +31,7 @@ export class TitleService implements RouteGuard {
   SET_TITLE(title: string) {
     this.title$.commit(() => title)
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
     this.SET_TITLE(to.meta.title)
-    next()
   }
 }
