@@ -110,8 +110,6 @@ export default {
                 set(_decorators, key, [key, decoOpt])
               })
 
-              console.log('[vue-st-form] decorators', _decorators)
-
               return _decorators
             }
             return form

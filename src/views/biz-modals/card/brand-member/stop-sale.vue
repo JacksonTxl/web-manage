@@ -99,7 +99,7 @@ export default {
   },
   methods: {
     onReasonChange(data) {
-      this.reasonIsNone = data.target.value.trim() === ''
+      this.reasonIsNone = data.trim() === ''
     },
     onStop() {
       this.stopSaleService
