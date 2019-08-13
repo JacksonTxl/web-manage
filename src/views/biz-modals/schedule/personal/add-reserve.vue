@@ -11,7 +11,7 @@
           :filterOption="false"
           @search="onSearchMember"
           @change="onChangeMember"
-          :notFoundContent="fetching ? undefined : null"
+          notFoundContent="无搜索结果"
         >
           <a-spin v-if="fetching" slot="notFoundContent" size="small" />
           <a-select-option
@@ -207,30 +207,22 @@ export default {
       const allTime = this.range(0, 60)
       for (let i = 0; i < this.timeOptions.timing.length; i++) {
         const startHour = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].start_time
-          }`
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`
         )
           .format('H')
           .valueOf()
         const endHour = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].end_time
-          }`
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`
         )
           .format('H')
           .valueOf()
         const start = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].start_time
-          }`
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`
         )
           .format('mm')
           .valueOf()
         const end = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].end_time
-          }`
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`
         )
           .format('mm')
           .valueOf()
@@ -252,16 +244,12 @@ export default {
       const allTime = this.range(0, 24)
       for (let i = 0; i < this.timeOptions.timing.length; i++) {
         const start = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].start_time
-          }`
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`
         )
           .format('H')
           .valueOf()
         let end = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].end_time
-          }`
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`
         )
           .format('H')
           .valueOf()
