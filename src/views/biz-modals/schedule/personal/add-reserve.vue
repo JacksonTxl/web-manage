@@ -206,45 +206,39 @@ export default {
       let disabledMinutes = []
       const allTime = this.range(0, 60)
       for (let i = 0; i < this.timeOptions.timing.length; i++) {
+        console.log('this.timeOptions.timing[i]', this.timeOptions.timing)
         const startHour = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].start_time
-          }`
-        )
-          .format('H')
-          .valueOf()
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`
+        ).format('H')
         const endHour = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].end_time
-          }`
-        )
-          .format('H')
-          .valueOf()
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`
+        ).format('H')
         const start = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].start_time
-          }`
-        )
-          .format('mm')
-          .valueOf()
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`
+        ).format('mm')
         const end = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].end_time
-          }`
-        )
-          .format('mm')
-          .valueOf()
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`
+        ).format('mm')
+        // console.log(
+        //   '+selectedHour === startHour && +selectedHour === endHour',
+        //   i,
+        //   selectedHour,
+        //   startHour,
+        //   endHour
+        // )
         if (+selectedHour === startHour && +selectedHour === endHour) {
-          return difference(allTime, this.range(start, end))
+          disabledMinutes = difference(allTime, this.range(start, end))
         } else {
           if (+selectedHour === startHour) {
-            return difference(allTime, this.range(start, 60))
+            disabledMinutes = difference(allTime, this.range(start, 60))
           } else if (+selectedHour === endHour) {
-            return difference(allTime, this.range(0, end))
+            // console.log(difference(allTime, this.range(0, end)))
+            disabledMinutes = difference(allTime, this.range(0, end))
           } else if (+selectedHour > startHour && endHour > +selectedHour) {
-            return difference(allTime, this.range(0, 60))
+            disabledMinutes = difference(allTime, this.range(0, 60))
           }
         }
+        return disabledMinutes
       }
     },
     disabledHours() {
@@ -252,16 +246,12 @@ export default {
       const allTime = this.range(0, 24)
       for (let i = 0; i < this.timeOptions.timing.length; i++) {
         const start = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].start_time
-          }`
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`
         )
           .format('H')
           .valueOf()
         let end = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].end_time
-          }`
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`
         )
           .format('H')
           .valueOf()
