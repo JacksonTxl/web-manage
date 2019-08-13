@@ -1,5 +1,6 @@
 <template>
   <st-panel app>
+    {{ staffSpecialty }}
     <a-row :class="bstep()" class="mg-b48 mg-t48" :gutter="8">
       <a-col offset="1" :span="stepsSpan">
         <a-steps :current="currentIndex">
@@ -45,6 +46,7 @@ import EditDetailBasicsInfo from './edit#/edit-detail-basicsInfo'
 import EditDetailDetailedInfo from './edit#/edit-detail-detailedInfo'
 import EditDetailCoachInfo from './edit#/edit-detail-coachInfo'
 import { EditService } from './edit.service'
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'EditStaff',
   serviceInject() {
@@ -151,7 +153,8 @@ export default {
       this.currentIndex = this.currentIndex - step
     },
     changeStep(step) {
-      this.currentIndex = step
+      cloneDeep
+      this.currentIndex = cloneDeep(step)
     }
   }
 }

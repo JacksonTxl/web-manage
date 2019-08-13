@@ -116,6 +116,7 @@
 import { RegionService } from '@/services/region.service'
 import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from '../staff-form.config.ts'
+import { cloneDeep } from 'lodash-es'
 
 export default {
   name: 'EditDetailDetailedInfo',
@@ -149,10 +150,11 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.setData(this.data)
+      const form = cloneDeep(this.data)
+      this.setData(form)
     })
     this.region.regionApi.getRegions().subscribe(v => {
-      this.regions = v
+      this.regions = cloneDeep(v)
     })
   },
   methods: {
@@ -160,6 +162,7 @@ export default {
       this.$emit('back', 1)
     },
     setData(obj) {
+      console.log('setDate', obj)
       this.form.setFieldsValue({
         graduated_school: obj.graduated_school,
         graduation_time: obj.graduation_time

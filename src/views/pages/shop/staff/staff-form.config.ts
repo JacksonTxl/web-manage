@@ -142,6 +142,8 @@ export const ruleOptions = (vm: any) => {
     },
     education: {},
     birthday: {},
+    native_place: {},
+    children_status: {},
     marry_status: {},
     graduation_time: {},
     profession: {

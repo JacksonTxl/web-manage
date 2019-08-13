@@ -80,7 +80,7 @@
             <a-input
               style="width: 80%"
               placeholder="请输入身份证号码"
-              v-decorator="decorators.idnumber"
+              v-decorator="decorators.id_number"
             />
           </a-input-group>
         </st-form-item>
@@ -174,7 +174,7 @@ import DepartmentSelect from '@/views/biz-components/department-select'
 import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from '../staff-form.config.ts'
 import FaceUpload from '@/views/biz-components/face-upload/face-upload'
-import { cloneDeep } from 'lodash-es';
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'EditBasicInfo',
   serviceInject() {

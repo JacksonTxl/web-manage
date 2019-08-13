@@ -12,6 +12,10 @@
 <script>
 export default {
   name: 'StTextarea',
+  model: {
+    prop: 'value',
+    event: 'change'
+  },
   bem: {
     b: 'st-textarea'
   },
