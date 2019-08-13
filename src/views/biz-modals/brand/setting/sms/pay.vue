@@ -46,13 +46,13 @@
           <st-icon
             type="alipay"
             size="22px"
-            v-if="item.value === 1"
+            v-if="item.value === 2"
             color="#009FE8"
           ></st-icon>
           <st-icon
             type="wechat"
             size="22px"
-            v-if="item.value === 2"
+            v-if="item.value === 1"
             color="#46BB36"
           ></st-icon>
           <span class="mg-l16">{{ item.name }}</span>

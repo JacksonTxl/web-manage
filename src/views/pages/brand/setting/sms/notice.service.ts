@@ -6,15 +6,13 @@ import { RedirectService } from '@/services/redirect.service'
 import { NoticeApi, PutNoticeParams } from '@/api/v1/setting/sms/notice'
 interface SetState {}
 @Injectable()
-export class NoticeService extends Store<SetState> {
+export class NoticeService {
   list$ = new State([])
   authTabs$ = this.redirectService.getAuthTabs$('brand-setting-sms-notice')
   constructor(
     private NoticeApi: NoticeApi,
     private redirectService: RedirectService
-  ) {
-    super()
-  }
+  ) {}
   getNoticeList() {
     return this.NoticeApi.getNoticeList().pipe(
       tap((res: any) => {

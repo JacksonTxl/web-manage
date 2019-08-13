@@ -178,6 +178,7 @@
 import { AllService } from './all.service'
 import { RouteService } from '@/services/route.service'
 import { columns } from './all.config.ts'
+import { BRAND_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH } from '@/constants/events'
 import tableMixin from '@/mixins/table.mixin'
 import CardBrandDepositRecoverSale from '@/views/biz-modals/card/brand-deposit/recover-sale'
 import CardBrandDepositShopTable from '@/views/biz-modals/card/brand-deposit/shop-table'
@@ -208,7 +209,7 @@ export default {
     CardBrandDepositStopSale
   },
   events: {
-    'brand-product-card-deposit-list-all:onKeywordsSearch'(key, data) {
+    [BRAND_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH](key, data) {
       this.onKeywordsSearch(key, data)
     }
   },

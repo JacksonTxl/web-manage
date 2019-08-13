@@ -101,6 +101,7 @@ import tableMixin from '@/mixins/table.mixin'
 import { PersonalTableService } from './personal-table.service'
 import { RouteService } from '@/services/route.service'
 import { PersonalScheduleScheduleService } from './service#/schedule.service'
+import date from '@/views/biz-components/schedule/date#/date-component.vue'
 import SchedulePersonalAdd from '@/views/biz-modals/schedule/personal/add'
 import SchedulePersonalEdit from '@/views/biz-modals/schedule/personal/edit'
 import SchedulePersonalInbatchAdd from '@/views/biz-modals/schedule/personal/inbatch-add'
@@ -153,6 +154,9 @@ export default {
       selectedRows: [],
       diffSelectedRows: []
     }
+  },
+  components: {
+    date
   },
   methods: {
     onClickSkipSchedule() {
@@ -219,8 +223,8 @@ export default {
     getList(val = {}) {
       const query = {
         ...this.query,
-        start_date: val.start_time,
-        end_date: val.end_time
+        start_date: val.start_date,
+        end_date: val.end_date
       }
       this.$router.push({ query })
     },

@@ -41,7 +41,7 @@
 
     <!-- 这个地方按照产品需求先隐藏 -->
     <!-- 私教课程预约设置 -->
-    <section v-if="false">
+    <section>
       <a-row>
         <a-col :span="16"><st-t2>私教课程预约设置</st-t2></a-col>
         <a-col :span="8" class="ta-r">

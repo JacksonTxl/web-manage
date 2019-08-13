@@ -28,14 +28,14 @@
         </div>
       </div>
       <div class="shop-member-crowd-analysis-content">
-        <div class="shop-member-crowd-analysis-content__info">
+        <!-- <div class="shop-member-crowd-analysis-content__info">
           <st-t3>新注册用户</st-t3>
           <st-t4
             class="shop-member-crowd-analysis-title__info shop-member-crowd-analysis-content__info-h2"
           >
             近7天内，新注册的潜在用户
           </st-t4>
-        </div>
+        </div> -->
         <ul class="card-items">
           <li
             v-for="(item, index) in cardItem"

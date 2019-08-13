@@ -114,7 +114,7 @@ export class Container {
     if (provider) {
       provider.destroy()
     }
-    this._providers.delete(token)
+    this._providers.set(token, null)
     return this
   }
 }

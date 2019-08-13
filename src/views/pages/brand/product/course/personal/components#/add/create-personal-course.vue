@@ -2,15 +2,11 @@
   <st-form :form="form" class="page-create-container" labelWidth="130px">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item v-show="false">
-          <input type="hidden" v-decorator="ruleConfig.courseId" />
-        </st-form-item>
         <st-form-item label="课程名称" required>
           <a-input
             placeholder="支持输入4~30个字的课程名称"
             maxlength="30"
-            disabled
-            v-decorator="ruleConfig.courseName"
+            v-decorator="decorators.course_name"
             @change="onCourseNameChange"
           />
         </st-form-item>
@@ -19,29 +15,23 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程类型" required>
-          <input type="hidden" v-decorator="ruleConfig.categoryId" />
-          <st-select-course-category
-            :value="info.category_id"
-            @change="onCourseTypeChange"
-          />
+          <input type="hidden" v-decorator="decorators.category_id" />
+          <st-select-course-category @change="onCourseTypeChange" />
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="训练目的" required>
-          <input type="hidden" v-decorator="ruleConfig.trainAim" />
-          <st-select-training-aim
-            :value="info.train_aim | formatFilter"
-            @change="onTrainingAimChange"
-          />
+          <input type="hidden" v-decorator="decorators.train_aim" />
+          <st-select-training-aim @change="onTrainingAimChange" />
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程时长" required>
-          <st-input-number v-decorator="ruleConfig.duration">
+          <st-input-number v-decorator="decorators.duration">
             <template slot="addonAfter">
               分钟
             </template>
@@ -57,7 +47,7 @@
               :list="fileList"
               @change="onImgChange"
             ></st-image-upload>
-            <input type="hidden" v-decorator="ruleConfig.image" />
+            <input type="hidden" v-decorator="decorators.image" />
             <div class="page-course-photo-des mg-l16">
               <div class="page-course-item">
                 <div class="page-course-item-tip">1.</div>
@@ -80,8 +70,9 @@
     <a-row :gutter="8">
       <a-col :lg="22" :xs="22" :offset="1">
         <st-form-item label="课程介绍">
+          <!-- TODO: textarea初始值与st-form校验初始值冲突 -->
           <st-textarea
-            v-decorator="ruleConfig.description"
+            v-decorator="decorators.description"
             :autosize="{ minRows: 10, maxRows: 16 }"
             placeholder="填写点什么吧"
             maxlength="500"
@@ -92,11 +83,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button
-            type="primary"
-            @click="save"
-            :loading="loading.updateCourse"
-          >
+          <st-button type="primary" @click="save" :loading="loading.addCourse">
             保存，继续设置上课门店
           </st-button>
         </st-form-item>
@@ -106,72 +93,48 @@
 </template>
 
 <script>
-import { EditService } from '../edit.service'
+import { AddService } from '../../add.service'
 import { MessageService } from '@/services/message.service'
-import { RouteService } from '@/services/route.service'
 import StSelectCourseCategory from '@/views/fragments/course/select-course-category'
 import StSelectTrainingAim from '@/views/fragments/course/select-training-aim'
-import { UserService } from '@/services/user.service'
-import { RuleConfig } from '@/constants/course/rule'
-
+import { ruleOptions } from '../create-personal-course.config'
 export default {
   name: 'create-personal-course',
   serviceInject() {
     return {
-      editService: EditService,
-      messageService: MessageService,
-      userService: UserService,
-      routeService: RouteService,
-      ruleConfig: RuleConfig
+      addService: AddService,
+      messageService: MessageService
     }
   },
   rxState() {
-    const user = this.userService
     return {
-      loading: this.editService.loading$,
-      personalCourseEnums: user.personalCourseEnums$,
-      query: this.routeService.query$
+      loading: this.addService.loading$
     }
   },
   components: {
     StSelectCourseCategory,
     StSelectTrainingAim
   },
-  filters: {
-    formatFilter(arr = []) {
-      return arr.map(v => `${v}`)
-    }
-  },
-  props: {
-    info: {
-      type: Object,
-      default() {
-        return {}
-      }
-    }
-  },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      form: this.$form.createForm(this),
-      fileList: []
+      form,
+      decorators,
+      fileList: [],
+      descriptionLength: 0
     }
-  },
-  mounted() {
-    this.$nextTick(() => {
-      this.setFieldsValue()
-    })
   },
   methods: {
     save(e) {
       e.preventDefault()
       this.form.validateFields().then(() => {
-        const data = this.getData()
-        console.log('step 1 data', data)
-        this.editService.updateCourse(data).subscribe(res => {
+        const data = this.form.getFieldsValue()
+        this.addService.addCourse(data).subscribe(res => {
           this.messageService.success({
             content: '提交成功'
           })
-          this.$emit('goNext')
+          this.$emit('goNext', res.course_id)
         })
       })
     },
@@ -181,13 +144,11 @@ export default {
       })
     },
     onCourseTypeChange(category_id) {
-      console.log('change', category_id)
       this.form.setFieldsValue({
         category_id
       })
     },
     onTrainingAimChange(train_aim) {
-      console.log('change', train_aim)
       this.form.setFieldsValue({
         train_aim
       })
@@ -195,25 +156,8 @@ export default {
     onCourseNameChange(e) {
       this.$emit('onCourseNameChange', e.target.value)
     },
-    setFieldsValue() {
-      const info = this.info
-      this.form.setFieldsValue({
-        course_name: info.course_name,
-        category_id: info.category_id,
-        train_aim: info.train_aim,
-        duration: info.duration,
-        image: info.image,
-        description: info.description
-      })
-      if (info.image.image_key) {
-        this.fileList = [info.image]
-      }
-    },
-    getData() {
-      console.log('getData', this.query.id)
-      const data = this.form.getFieldsValue()
-      data.course_id = +this.query.id
-      return data
+    onDescriptionChange(e) {
+      this.descriptionLength = e.target.value.length
     }
   }
 }

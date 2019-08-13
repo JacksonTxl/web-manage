@@ -1,6 +1,6 @@
 <template>
   <st-modal
-    title="会员卡停售"
+    title="储值卡停售"
     v-model="show"
     wrapClassName="modal-card-brand-stop-sale"
     width="484px"
@@ -14,7 +14,7 @@
           type="help"
         />
         <p>
-          注：停止售卖会员卡，将自动下架在门店售卖的本储值卡；已购买本储值卡的会员仍旧享有该会员卡权益。
+          注：停止售卖储值卡，将自动下架在门店售卖的本储值卡；已购买本储值卡的会员仍旧享有该会员卡权益。
         </p>
       </div>
       <div :class="stopSale('card-name')" class="mg-b24">

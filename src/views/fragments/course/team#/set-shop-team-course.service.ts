@@ -1,16 +1,18 @@
 import { Injectable } from 'vue-service-app'
 import { Effect } from 'rx-state'
-import { Store } from '@/services/store'
 import {
   ShopTeamCourseApi,
   AddInput,
   UpdateInput
 } from '@/api/v1/course/team/shop'
+import { UserService } from '@/services/user.service'
 @Injectable()
-export class SetShopTeamCourseService extends Store<any> {
-  constructor(protected courseApi: ShopTeamCourseApi) {
-    super()
-  }
+export class SetShopTeamCourseService {
+  shopSetting$ = this.userService.getOptions$('team_course.shop_setting')
+  constructor(
+    protected courseApi: ShopTeamCourseApi,
+    private userService: UserService
+  ) {}
   private addCourse(params: AddInput) {
     return this.courseApi.add(params)
   }

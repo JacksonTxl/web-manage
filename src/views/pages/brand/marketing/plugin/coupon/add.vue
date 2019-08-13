@@ -146,6 +146,7 @@
                     <a-radio :value="2">
                       满
                       <st-input-number
+                        :float="true"
                         :class="basic('radio-input')"
                         :disabled="isEditMode"
                         v-decorator="decorators.full_price"
@@ -191,6 +192,7 @@
                 <a-radio-group
                   :disabled="isEditMode"
                   v-decorator="decorators.is_limit"
+                  @change="limitChange"
                 >
                   <a-radio :value="1">不限</a-radio>
                   <a-form-item :class="basic('wrap-input')">
@@ -308,6 +310,9 @@ export default {
     }
   },
   methods: {
+    limitChange(e) {
+      this.form.resetFields(['person_limit'])
+    },
     userTypeChange(e) {
       this.form.resetFields(['full_price'])
     },

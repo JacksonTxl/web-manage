@@ -2,7 +2,7 @@
   <div :class="event()">
     <st-form>
       <st-form-item label="推广活动数">
-        <a-radio-group @change="numberChange" v-model="number">
+        <a-radio-group v-model="number">
           <a-radio :value="1">1</a-radio>
           <a-radio :value="2">2</a-radio>
           <a-radio :value="3">3</a-radio>
@@ -11,7 +11,7 @@
       </st-form-item>
       <st-form-item label="活动展示">
         <div
-          v-for="(li, index) in list"
+          v-for="(li, index) in list[number]"
           :key="index"
           :class="['col-' + li.span, { 'clear-float': index === 2 }]"
         >
@@ -98,7 +98,12 @@ export default {
   data() {
     return {
       info: {},
-      list: [],
+      list: {
+        1: [],
+        2: [],
+        3: [],
+        4: []
+      },
       actList: [],
       selected: [],
       filelist: [],
@@ -107,12 +112,16 @@ export default {
       span: 24
     }
   },
+  created() {
+    this.initList()
+  },
   mounted() {
     if (this.eventInfo.length) {
-      this.number = this.eventInfo.length
-      this.list = cloneDeep(this.eventInfo)
+      let number = this.eventInfo.length
+      this.number = number
+      this.list[number] = cloneDeep(this.eventInfo)
       this.actList = cloneDeep(this.activityList)
-      this.list.forEach(item => {
+      this.list[number].forEach(item => {
         if (!this.actList.some(act => act.id === item.activity_id)) {
           this.actList.push({
             activity_name: item.activity_name,
@@ -130,12 +139,63 @@ export default {
     list: {
       deep: true,
       handler(newVal) {
-        this.h5WrapperService.SET_H5INFO(newVal, 3)
+        let number = this.number
+        this.h5WrapperService.SET_H5INFO(newVal[number], 3)
       }
+    },
+    number(newValue) {
+      this.h5WrapperService.SET_H5INFO(this.list[newValue], 3)
     }
   },
-  created() {},
   methods: {
+    initList() {
+      let list = {
+        1: [],
+        2: [],
+        3: [],
+        4: []
+      }
+      list[1].push({
+        image_url: '',
+        title: '',
+        link: '',
+        span: 24
+      })
+      for (let i = 0; i < 2; i++) {
+        list[2].push({
+          image_url: '',
+          title: '',
+          link: '',
+          span: 12
+        })
+      }
+      for (let i = 0; i < 3; i++) {
+        if (i === 2) {
+          list[3].push({
+            image_url: '',
+            title: '',
+            link: '',
+            span: 24
+          })
+        } else {
+          list[3].push({
+            image_url: '',
+            title: '',
+            link: '',
+            span: 12
+          })
+        }
+      }
+      for (let i = 0; i < 4; i++) {
+        list[4].push({
+          image_url: '',
+          title: '',
+          link: '',
+          span: 12
+        })
+      }
+      this.list = list
+    },
     actSelect(item, value) {
       let selected = this.actList.filter(it => it.id === value)[0]
       item.activity_type = selected.activity_type
@@ -143,8 +203,9 @@ export default {
     },
     imageUploadChange(e, index) {
       if (e.length) {
-        this.list[index].image_url = e[0].image_url
-        this.list[index].image_key = e[0].image_key
+        let number = this.number
+        this.list[number][index].image_url = e[0].image_url
+        this.list[number][index].image_key = e[0].image_key
       }
     },
     numberChange(e) {

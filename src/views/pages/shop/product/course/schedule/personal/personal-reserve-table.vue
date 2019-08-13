@@ -77,6 +77,7 @@ import tableMixin from '@/mixins/table.mixin'
 import { PersonalScheduleReserveService } from './service#/reserve.service'
 import { columns } from '../personal-reserve-table.config'
 import { RouteService } from '@/services/route.service'
+import date from '@/views/biz-components/schedule/date#/date-component.vue'
 import SchedulePersonalAddReserve from '@/views/biz-modals/schedule/personal/add-reserve'
 export default {
   name: 'PersonalReservetable',
@@ -110,6 +111,9 @@ export default {
         .valueOf()
     }
   },
+  components: {
+    date
+  },
   data() {
     return {
       columns,
@@ -140,8 +144,8 @@ export default {
     getList(val = {}) {
       const query = {
         ...this.query,
-        start_date: val.start_time,
-        end_date: val.end_time
+        start_date: val.start_date,
+        end_date: val.end_date
       }
       this.$router.push({ query })
     }

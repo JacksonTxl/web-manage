@@ -41,6 +41,7 @@
         <a-cascader
           placeholder="请选择场地"
           :options="courtOptions"
+          :disabled="reserved_num"
           :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
           v-decorator="decorators.court_id"
         />

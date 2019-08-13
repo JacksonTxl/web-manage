@@ -236,6 +236,9 @@ export default {
       }
       if (target) {
         target[column] = value
+        if (column === 'start_time') {
+          target[column] = value.format('YYYY-MM-DD HH:mm')
+        }
         this.data = newData
       }
     },

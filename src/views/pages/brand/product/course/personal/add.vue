@@ -33,14 +33,23 @@
   </st-panel>
 </template>
 <script>
-import CreatePersonalCourse from './add#/create-personal-course'
-import SetShopCoach from './add#/set-shop-coach'
-import SetSellPrice from './add#/set-sell-price'
+import CreatePersonalCourse from './components#/add/create-personal-course'
+import SetShopCoach from './components#/add/set-shop-coach'
+import SetSellPrice from './components#/add/set-sell-price'
+import { AddService } from './add.service'
 export default {
   components: {
     CreatePersonalCourse, // 创建私教课程
     SetShopCoach, // 设置上课门店及教练
     SetSellPrice // 设置售卖价格
+  },
+  serviceProviders() {
+    return [AddService]
+  },
+  serviceInject() {
+    return {
+      addService: AddService
+    }
   },
   data() {
     return {
