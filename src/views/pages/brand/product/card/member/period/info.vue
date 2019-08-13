@@ -87,11 +87,7 @@
             <span class="value">
               {{ cardInfo.support_sales.name
               }}{{
-                cardInfo.admission_range.id > 1
-                  ? `（已上架${cardInfo.shelf_num}家门店/共${
-                      cardInfo.sale_num
-                    }家门店）`
-                  : ''
+                `（已上架${cardInfo.shelf_num}家门店/共${cardInfo.sale_num}家门店）`
               }}
             </span>
           </p>
