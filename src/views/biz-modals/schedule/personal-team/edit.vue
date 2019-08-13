@@ -5,7 +5,7 @@
         <a-date-picker
           class="full-width"
           :showTime="{ format: 'HH:mm' }"
-          :disabled="info.reserved_num"
+          :disabled="!!info.reserve.length"
           format="YYYY-MM-DD HH:mm"
           v-decorator="formRules.startTime"
         >
@@ -15,7 +15,7 @@
       <st-form-item label="课程" required>
         <a-select
           v-decorator="formRules.courseId"
-          :disabled="info.reserved_num"
+          :disabled="!!info.reserve.length"
         >
           <a-select-option
             v-for="course in courseOptions"
@@ -39,7 +39,7 @@
       </st-form-item>
       <st-form-item label="人数" required>
         <a-input-search
-          :disabled="info.reserved_num"
+          :disabled="!!info.reserve.length"
           v-decorator="formRules.limitNum"
         >
           <a-button slot="enterButton">人</a-button>
@@ -47,7 +47,7 @@
       </st-form-item>
       <st-form-item label="课时费" required>
         <a-input-search
-          :disabled="info.reserved_num"
+          :disabled="!!info.reserve.length"
           v-decorator="formRules.courseFee"
         >
           <a-button slot="enterButton">元/节</a-button>
