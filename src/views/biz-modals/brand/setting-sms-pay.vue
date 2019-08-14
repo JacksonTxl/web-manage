@@ -12,25 +12,28 @@
       <img :src="imgUrl" />
     </div>
     <div v-else>
-      <div
-        class="modal-sms-pay-setting__count"
-        :class="
-          curCount === index ? 'modal-sms-pay-setting__count--active' : ''
-        "
-        v-for="(item, index) in info.price_setting"
-        :key="index"
-        @click="getCurPayInfo(item, index)"
-      >
-        <div :class="bPage('specify')">
-          <span :class="bPage('total-money')">
-            {{ item.pay_price.value }}{{ item.pay_price.name }}
-          </span>
-          <span :class="bPage('single-price')">
-            {{ info.single_price.value }}{{ info.single_price.name }}
-          </span>
+      <div :class="bPage('wrap')">
+        <div
+          class="modal-sms-pay-setting__count"
+          :class="
+            curCount === index ? 'modal-sms-pay-setting__count--active' : ''
+          "
+          v-for="(item, index) in info.price_setting"
+          :key="index"
+          @click="getCurPayInfo(item, index)"
+        >
+          <div :class="bPage('specify')">
+            <span :class="bPage('total-money')">
+              {{ item.pay_price.value }}{{ item.pay_price.name }}
+            </span>
+            <span :class="bPage('single-price')">
+              {{ info.single_price.value }}{{ info.single_price.name }}
+            </span>
+          </div>
+          <span class="total-num">{{ item.num.value }}{{ item.num.name }}</span>
         </div>
-        <span class="total-num">{{ item.num.value }}{{ item.num.name }}</span>
       </div>
+
       <div :class="bPage('payway')">
         <div
           class="mg-r8 modal-sms-pay-setting__payway-item"

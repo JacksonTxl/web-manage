@@ -306,6 +306,72 @@ export default {
       this.isShowEdit = 0
     },
     save() {
+      let course_type = {}
+      let order_type = {}
+      let receiver = {}
+      if (this.info.course_type.team_course) {
+        course_type.team_course = 0
+      }
+      if (this.info.course_type.personal_course) {
+        course_type.personal_course = 0
+      }
+
+      if (this.info.order_type.advance) {
+        order_type.advance = 0
+      }
+      if (this.info.order_type.deposit) {
+        order_type.deposit = 0
+      }
+      if (this.info.order_type.product) {
+        order_type.product = 0
+      }
+      if (this.info.order_type.poundage) {
+        order_type.poundage = 0
+      }
+
+      if (this.info.receiver.coach) {
+        receiver.coach = 0
+      }
+      if (this.info.receiver.member) {
+        receiver.member = 0
+      }
+      if (this.info.receiver.custom) {
+        receiver.custom = 0
+      }
+      if (this.info.course_type.team_course) {
+        course_type.team_course = this.params.course_type.team_course.value
+          ? 1
+          : 0
+      }
+      if (this.info.course_type.personal_course) {
+        course_type.personal_course = this.params.course_type.personal_course
+          .value
+          ? 1
+          : 0
+      }
+      if (this.info.order_type.advance) {
+        order_type.advance = this.params.order_type.advance.value ? 1 : 0
+      }
+      if (this.info.order_type.deposit) {
+        order_type.deposit = this.params.order_type.deposit.value ? 1 : 0
+      }
+      if (this.info.order_type.product) {
+        order_type.product = this.params.order_type.product.value ? 1 : 0
+      }
+      if (this.info.order_type.poundage) {
+        order_type.poundage = this.params.order_type.poundage.value ? 1 : 0
+      }
+
+      if (this.info.receiver.coach) {
+        receiver.coach = this.params.receiver.coach.value ? 1 : 0
+      }
+      if (this.info.receiver.member) {
+        receiver.member = this.params.receiver.member.value ? 1 : 0
+      }
+      if (this.info.receiver.custom) {
+        receiver.custom = this.params.receiver.custom.value ? 1 : 0
+      }
+
       const para = Object.assign({}, this.params, {
         id: this.info.id,
         custom_phone:
