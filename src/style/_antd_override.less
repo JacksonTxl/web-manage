@@ -202,3 +202,25 @@
   color: rgba(155, 172, 185, 1);
   line-height: 22px;
 }
+
+// '›'.chartCodeAt().toString(16)
+.ant-calendar-header .ant-calendar-prev-century-btn:after,
+.ant-calendar-header .ant-calendar-prev-decade-btn:after,
+.ant-calendar-header .ant-calendar-prev-year-btn:after {
+  // «
+  content: '\ab';
+}
+.ant-calendar-header .ant-calendar-prev-month-btn:after {
+  // ‹
+  content: '\2039';
+}
+.ant-calendar-header .ant-calendar-next-month-btn:after {
+  // ›
+  content: '\203a';
+}
+.ant-calendar-header .ant-calendar-next-century-btn:after,
+.ant-calendar-header .ant-calendar-next-decade-btn:after,
+.ant-calendar-header .ant-calendar-next-year-btn:after {
+  // »
+  content: '\bb';
+}
