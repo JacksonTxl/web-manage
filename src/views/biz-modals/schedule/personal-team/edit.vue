@@ -103,7 +103,7 @@ export default {
       return this.info.id
     },
     disabled() {
-      return !!this.info.reserved_num
+      return !!this.info.reserve.length
     }
   },
   created() {

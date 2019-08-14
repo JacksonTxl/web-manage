@@ -12,27 +12,16 @@ import en_US_Antd from 'ant-design-vue/lib/locale-provider/en_US'
 import zh_CN_App from '@/i18n/zh_CN'
 // @ts-ignore
 import en_US_App from '@/i18n/en_US'
-import { Store } from './store'
 
 // type reference https://vue.ant.design/docs/vue/i18n/
 type Locale = 'zh_CN' | 'en_US'
 
-interface I18NState {
-  locale: Locale
-}
-
 @Injectable()
-export class I18NService extends Store<I18NState> {
-  state$: State<I18NState>
-  locale$: Computed<Locale>
+export class I18NService {
+  locale$ = new State<Locale>(Cookie.get('language') || 'zh_CN')
   antdLocaleMessages$: Computed<{}>
   appLocaleMessages$: Computed<{}>
   constructor() {
-    super()
-    this.state$ = new State({
-      locale: Cookie.get('language') || 'zh_CN'
-    })
-    this.locale$ = new Computed(this.state$.pipe(pluck('locale')))
     this.appLocaleMessages$ = new Computed(
       this.locale$.pipe(
         map(locale => {
@@ -61,9 +50,7 @@ export class I18NService extends Store<I18NState> {
     )
   }
   setLocale(locale: Locale) {
-    this.state$.commit(state => {
-      state.locale = locale
-    })
+    this.locale$.commit(() => locale)
   }
   private getText(messages: any, index: string) {
     const text = get(messages, index) || ''

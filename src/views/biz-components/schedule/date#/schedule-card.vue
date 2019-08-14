@@ -85,6 +85,11 @@ export default {
       }
     }
   },
+  computed: {
+    start() {
+      return this.$route.query.start_date
+    }
+  },
   methods: {
     mbarClass(item) {
       const date = moment(`${item.start_date} ${item.start_time}`)

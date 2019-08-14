@@ -10,7 +10,7 @@
           :filterOption="false"
           @search="onSearchMember"
           @change="onChangeMember"
-          :notFoundContent="fetching ? undefined : null"
+          notFoundContent="无搜索结果"
         >
           <a-spin v-if="fetching" slot="notFoundContent" size="small" />
           <a-select-option
@@ -218,38 +218,47 @@ export default {
       for (let i = 0; i < this.timeOptions.timing.length; i++) {
         console.log('this.timeOptions.timing[i]', this.timeOptions.timing)
         const startHour = +moment(
-          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`
-        ).format('H')
+          `${this.timeOptions.schedule_date} ${
+            this.timeOptions.timing[i].start_time
+          }`
+        )
+          .format('H')
+          .valueOf()
         const endHour = +moment(
-          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`
-        ).format('H')
+          `${this.timeOptions.schedule_date} ${
+            this.timeOptions.timing[i].end_time
+          }`
+        )
+          .format('H')
+          .valueOf()
         const start = +moment(
-          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`
-        ).format('mm')
+          `${this.timeOptions.schedule_date} ${
+            this.timeOptions.timing[i].start_time
+          }`
+        )
+          .format('mm')
+          .valueOf()
         const end = +moment(
-          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`
-        ).format('mm')
-        // console.log(
-        //   '+selectedHour === startHour && +selectedHour === endHour',
-        //   i,
-        //   selectedHour,
-        //   startHour,
-        //   endHour
-        // )
+          `${this.timeOptions.schedule_date} ${
+            this.timeOptions.timing[i].end_time
+          }`
+        )
+          .format('mm')
+          .valueOf()
         if (+selectedHour === startHour && +selectedHour === endHour) {
-          disabledMinutes = difference(allTime, this.range(start, end))
+          disabledMinutes = [...disabledMinutes, ...this.range(start, end)]
         } else {
           if (+selectedHour === startHour) {
-            disabledMinutes = difference(allTime, this.range(start, 60))
+            disabledMinutes = [...disabledMinutes, ...this.range(start, 60)]
           } else if (+selectedHour === endHour) {
-            // console.log(difference(allTime, this.range(0, end)))
-            disabledMinutes = difference(allTime, this.range(0, end))
+            disabledMinutes = [...disabledMinutes, ...this.range(0, end)]
           } else if (+selectedHour > startHour && endHour > +selectedHour) {
-            disabledMinutes = difference(allTime, this.range(0, 60))
+            disabledMinutes = [...disabledMinutes, ...this.range(0, 60)]
           }
         }
         return disabledMinutes
       }
+      return difference(allTime, disabledMinutes)
     },
     disabledHours() {
       if (!this.timeOptions.timing) return

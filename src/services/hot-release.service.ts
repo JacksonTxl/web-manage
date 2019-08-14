@@ -43,8 +43,7 @@ export class HotReleaseService {
       )
     )
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: Function) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
     this.reloadAction$.dispatch()
-    next()
   }
 }

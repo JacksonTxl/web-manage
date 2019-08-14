@@ -21,10 +21,6 @@ export default {
     }
   },
   props: {
-    start: {
-      type: String,
-      default: moment().format('YYYY-MM-DD')
-    },
     end: {
       type: String,
       default: ''
@@ -32,16 +28,20 @@ export default {
   },
   created() {
     let weekOfday = moment(this.start).format('E')
-    this.startTime = moment(this.start)
-      .subtract(weekOfday - 1, 'days')
-      .format('YYYY-MM-DD')
+    this.startTime = this.isDay
+      ? moment(this.start).format('YYYY-MM-DD')
+      : moment(this.start)
+          .subtract(weekOfday - 1, 'days')
+          .format('YYYY-MM-DD')
   },
   watch: {
     start(n, o) {
       let weekOfday = moment(n).format('E')
-      this.startTime = moment(n)
-        .subtract(weekOfday - 1, 'days')
-        .format('YYYY-MM-DD')
+      this.startTime = this.isDay
+        ? moment(this.start).format('YYYY-MM-DD')
+        : moment(this.start)
+            .subtract(weekOfday - 1, 'days')
+            .format('YYYY-MM-DD')
     }
   },
   computed: {
@@ -49,6 +49,9 @@ export default {
       const start = this.$route.query.start_date
       const end = this.$route.query.end_date
       return start === end
+    },
+    start() {
+      return this.$route.query.start_date
     },
     endTime() {
       return this.isDay

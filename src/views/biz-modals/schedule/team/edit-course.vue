@@ -10,13 +10,18 @@
           :showTime="{ format: 'HH:mm' }"
           placeholder="请选择时间"
           format="YYYY-MM-DD HH:mm"
+          :disabled="disabled"
           v-decorator="decorators.start_time"
         >
           <a-icon slot="suffixIcon" type="clock-circle" />
         </a-date-picker>
       </st-form-item>
       <st-form-item label="课程" required>
-        <a-select placeholder="请选择课程" v-decorator="decorators.course_id">
+        <a-select
+          placeholder="请选择课程"
+          :disabled="disabled"
+          v-decorator="decorators.course_id"
+        >
           <a-select-option
             v-for="course in courseOptions"
             :key="course.id"
@@ -40,8 +45,8 @@
       <st-form-item label="场地">
         <a-cascader
           placeholder="请选择场地"
+          :disabled="!!reserved_num"
           :options="courtOptions"
-          :disabled="reserved_num"
           :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
           v-decorator="decorators.court_id"
         />
@@ -49,6 +54,7 @@
       <st-form-item label="人数" required>
         <a-input-search
           placeholder="请输入人数"
+          :disabled="disabled"
           v-decorator="decorators.limit_num"
         >
           <a-button slot="enterButton">人</a-button>
@@ -57,6 +63,7 @@
       <st-form-item label="课时费" required>
         <a-input-search
           placeholder="请输入课时费"
+          :disabled="disabled"
           v-decorator="decorators.course_fee"
         >
           <a-button slot="enterButton">元/节</a-button>
@@ -108,6 +115,11 @@ export default {
       show: false
     }
   },
+  computed: {
+    disabled() {
+      return !!this.reserved_num
+    }
+  },
   props: {
     id: {
       type: Number,
@@ -149,7 +161,7 @@ export default {
       return this.teamService.init()
     },
     onClick() {
-      this.show = true
+      this.show = false
     },
     onSubmit() {
       this.form.validateFields((err, values) => {

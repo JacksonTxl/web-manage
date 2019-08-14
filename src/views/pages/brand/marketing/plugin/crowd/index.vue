@@ -77,9 +77,7 @@
               v-if="record.auth['shop:member:crowd|del']"
               @confirm="deleteTreeNode(record)"
             >
-              <a href="javascript:;">
-                删除
-              </a>
+              <a>删除</a>
             </st-popconfirm>
           </st-table-actions>
           <!-- <st-more-dropdown class="tree-opreation">

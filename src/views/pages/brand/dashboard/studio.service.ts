@@ -128,9 +128,7 @@ export class StudioService {
       this.getEntry()
     )
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.init().subscribe(res => {
-      next()
-    })
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    return this.init()
   }
 }

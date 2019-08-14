@@ -1,28 +1,13 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
+import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { map, tap, pluck } from 'rxjs/operators'
 import { RegionApi, GetRegionInput } from '@/api/region'
 import { of } from 'rxjs'
-import { State, Computed } from 'rx-state'
-import { Store } from './store'
+import { State } from 'rx-state'
 
 @Injectable()
-export class RegionService extends Store<any> {
-  state$: State<any>
-  regionPC$: Computed<any>
-  constructor(private regionApi: RegionApi) {
-    super()
-    this.state$ = new State({
-      regionPC: []
-    })
-    this.regionPC$ = new Computed(this.state$.pipe(pluck('regionPC')))
-  }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
-    console.log('触发了么')
-    this.getRegions().subscribe(() => {
-      next()
-    })
-  }
-
+export class RegionService implements RouteGuard {
+  regionPC$ = new State([])
+  constructor(private regionApi: RegionApi) {}
   getRegionPC() {
     return this.regionApi.getRegions().pipe(
       map(data$ => {
@@ -68,5 +53,9 @@ export class RegionService extends Store<any> {
   }
   getRegionProvinces() {
     return this.regionApi.getRegionProvinces()
+  }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+    console.log('触发了么')
+    return this.getRegions()
   }
 }

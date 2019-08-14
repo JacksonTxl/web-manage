@@ -228,9 +228,7 @@ export default {
       this.weekSelects.forEach(item => {
         week[--item] = true
       })
-      week[--index] = false
       item.week = week
-      console.log('copyTo', item)
     }
   },
   filters: {

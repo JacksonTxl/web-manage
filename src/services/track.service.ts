@@ -3,7 +3,6 @@ import { AppConfig } from '@/constants/config'
 
 @Injectable()
 export class TrackService implements RouteGuard {
-  inited = false
   constructor(private appConfig: AppConfig) {}
   init() {
     // 只在生产域名下才使用百度统计
@@ -14,12 +13,8 @@ export class TrackService implements RouteGuard {
       const s = document.getElementsByTagName('script')[0]
       s.parentNode && s.parentNode.insertBefore(hm, s)
     }
-    this.inited = true
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    if (!this.inited) {
-      this.init()
-    }
-    next()
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+    this.init()
   }
 }
