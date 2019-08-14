@@ -64,7 +64,11 @@ export class UpgradeMemberService {
   }
   @Effect()
   serviceInit(id: string) {
-    return forkJoin(this.getInfo(id), this.getSaleList())
+    return forkJoin(this.getInfo(id), this.getSaleList()).pipe(
+      switchMap((res: any) => {
+        return this.getAdvanceList(res[0].info.member_id)
+      })
+    )
   }
   @Effect()
   getCardList(search?: string) {
