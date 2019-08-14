@@ -1,7 +1,7 @@
 <template>
   <div :class="bComponent()">
     <div :class="bComponent('setting')" v-if="!isShowSmsSetting">
-      <div>[短信签名]</div>
+      <div class="mg-b8">[短信签名]</div>
       <span>{{ signVal }}</span>
       <div class="ta-r">
         <span class="color-primary" @click="goSetting(1)">
