@@ -13,8 +13,16 @@
           v-decorator="rules.areaName"
         />
       </st-form-item>
-      <st-form-item labelFix>
-        <a-checkbox v-decorator="rules.isVip">VIP区域</a-checkbox>
+      <st-form-item label="场地属性" required>
+        <a-radio-group @change="onChooseRadio" v-decorator="rules.areaType">
+          <a-radio
+            v-for="(item, index) in areaType"
+            :key="index"
+            :value="item.value"
+          >
+            {{ item.label }}
+          </a-radio>
+        </a-radio-group>
       </st-form-item>
       <st-form-item label="容纳人数">
         <st-input-number
@@ -49,7 +57,8 @@ export default {
   },
   rxState() {
     return {
-      loading: this.addService.loading$
+      loading: this.addService.loading$,
+      areaType: this.addService.areaType$
     }
   },
   data() {
@@ -76,8 +85,11 @@ export default {
     },
     getData() {
       const data = this.form.getFieldsValue()
-      data.is_vip = +!!data.is_vip
+      data.area_type = this.area_type
       return data
+    },
+    onChooseRadio(e) {
+      this.area_type = e.target.value
     },
     onSubmitSuccess() {
       this.messageService.success({
