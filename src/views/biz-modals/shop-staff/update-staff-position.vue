@@ -224,7 +224,6 @@ export default {
     onSubmit(e) {
       e.preventDefault()
       this.form.validate().then(values => {
-        console.log(values)
         this.updateStaffPositionService
           .putStaffBindPosition({
             id: this.staff.id,
