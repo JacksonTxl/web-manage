@@ -1,27 +1,19 @@
 import { Container, Inject, InjectionToken, Injectable } from './di'
 import multiguard from 'vue-router-multiguard'
-import { isCtor, isFn, syncRouteGuards } from './utils'
+import { isCtor, isFn, last } from './utils'
 import ServiceRouter from './router'
 import VuePlugin from './vue-plugin'
 
-const rootContainer = new Container()
-window.getContainer = function() {
-  return rootContainer
-}
-
 class VueServiceApp {
-  static install(Vue) {
-    Vue.use(VuePlugin, rootContainer)
+  static install(Vue, container) {
+    Vue.use(VuePlugin, container)
   }
   constructor({
     base = '/',
     mode = 'history',
     routes = [],
     scrollBehavior = () => {},
-    onError = e => {
-      throw e
-    },
-    providers = []
+    container = null
   } = {}) {
     this.routerOptions = {
       base,
@@ -29,32 +21,27 @@ class VueServiceApp {
       routes,
       scrollBehavior
     }
-    this.onError = onError
+    /**
+     * @type {Container}
+     */
+    this.container = container
+    /**
+     * @type {ServiceRouter}
+     */
     this.router = null
-    this.providers = providers
+    if (!this.container) {
+      throw new Error('[vue-service-app] need container!')
+    }
     // init
-    this.initProviders()
     this.initRouter()
-
-    // router.beforeEach && router.afterEach
+    this.initProvideRouter()
+    // router.beforeEach
     this.queryOptionsHandler()
-    this.beforeRouteEnterHandler()
-    this.beforeRouteUpdateHandler()
+    this.beforeEachHandler()
     this.afterEachHandler()
   }
-  initProviders() {
-    if (this.providers && Array.isArray(this.providers)) {
-      this.providers.forEach(p => {
-        if (typeof p === 'function') {
-          rootContainer.useProvider({ provide: p, useClass: p })
-        }
-        if (typeof p === 'object') {
-          rootContainer.useProvider(p)
-        }
-      })
-    }
-  }
   initRouter() {
+    // TODO: 可以去掉 直接配置在meta中即可
     const walkRoutes = routes => {
       routes.forEach(route => {
         if (route.guards) {
@@ -71,13 +58,12 @@ class VueServiceApp {
     walkRoutes(this.routerOptions.routes)
 
     this.router = new ServiceRouter(this.routerOptions)
-    /**
-     * router Provider
-     */
-    rootContainer.useProvider({
-      provide: ServiceRouter,
-      useValue: this.router
-    })
+  }
+  /**
+   * router Provider
+   */
+  initProvideRouter() {
+    this.container.bindValue(ServiceRouter, this.router)
   }
   queryOptionsHandler() {
     this.router.beforeEach((to, from, next) => {
@@ -103,128 +89,190 @@ class VueServiceApp {
       next()
     })
   }
-  _getGuards(to) {
-    const guardCtors = to.matched.reduce(
-      (res, Comp) => res.concat(Comp.meta.guards || []),
-      []
-    )
+  /**
+   * 路由前置处理
+   */
+  beforeEachHandler() {
+    this.router.beforeEach((to, from, next) => {
+      const matched = to.matched
+      if (!matched.length) {
+        return next()
+      }
+      this._calcMiddlewaresByRoute(to, from).then(middlewares => {
+        // 不要随意使用console.log 会使对象无法回收
+        // console.log('middlewares', middlewares)
+        if (!middlewares) {
+          return next()
+        }
+        if (!middlewares.length) {
+          return next()
+        }
 
-    const GuardPromises = guardCtors
-      .filter(G => {
-        return isFn(G) || isCtor(G)
+        const mulitguardsMiddlewares = this._makeAsyncMiddlewares(middlewares)
+        return multiguard(mulitguardsMiddlewares)(to, from, next)
       })
-      .map(G => (isCtor(G) ? Promise.resolve(G) : G()))
-
-    return Promise.all(GuardPromises).then(Guards => {
-      return Guards.map(G => rootContainer.get(G))
     })
   }
-  _beforeHandler(mode, to, from, next) {
-    this._getGuards(to)
-      .then(guards => {
-        const beforeFns = []
-        guards.forEach(g => {
-          if (g.beforeEach && isFn(g.beforeEach)) {
-            const fn = g.beforeEach.bind(g)
-            fn.__ctorName = g.constructor.name
-            beforeFns.push(fn)
-          }
-          if (g[mode] && isFn(g[mode])) {
-            const fn = g[mode].bind(g)
-            fn.__ctorName = g.constructor.name
-            beforeFns.push(fn)
+  /**
+   * 路由后置处理
+   */
+  afterEachHandler() {
+    this.router.afterEach((to, from) => {
+      const matched = to.matched
+      if (!matched.length) {
+        return
+      }
+      const allGuardPromises = matched
+        .reduce(
+          (res, routeRecord) => res.concat(routeRecord.meta.guards || []),
+          []
+        )
+        .filter(G => isFn(G) || isCtor(G))
+        .map(G => (isCtor(G) ? Promise.resolve(G) : G()))
+      Promise.all(allGuardPromises).then(Guards => {
+        Guards.map(G => this.container.get(G))
+          .filter(g => g.afterEach)
+          .reduce((res, g) => res.concat([g.afterEach.bind(g)]), [])
+          .forEach(fn => {
+            fn(to, from)
+          })
+      })
+    })
+  }
+  /**
+   * @param {Array<any>} Guards 路由构造函数或 Promise<Guard>
+   * @param {string} mode beforeRouteEnter 或  beforeRouteUpdate
+   */
+  _getBeforeMiddlewaresByGuards(Guards, mode) {
+    return Guards.map(G => this.container.get(G))
+      .filter(g => g.beforeEach || g[mode])
+      .reduce((res, g) => {
+        if (g.beforeEach) {
+          res.push(g.beforeEach.bind(g))
+        }
+        if (g[mode]) {
+          res.push(g[mode].bind(g))
+        }
+        return res
+      }, [])
+  }
+  _calcMiddlewaresByRoute(to, from) {
+    const matched = to.matched
+    const toLast = last(to.matched)
+    const fromLast = last(from.matched)
+
+    const myGuardPromises = (to.meta.guards || [])
+      .filter(G => isFn(G) || isCtor(G))
+      .map(G => (isCtor(G) ? Promise.resolve(G) : G()))
+
+    const allGuardPromises = matched
+      .reduce(
+        (res, routeRecord) => res.concat(routeRecord.meta.guards || []),
+        []
+      )
+      .filter(G => isFn(G) || isCtor(G))
+      .map(G => (isCtor(G) ? Promise.resolve(G) : G()))
+
+    return Promise.all(allGuardPromises)
+      .then(preAllguards => {
+        return Promise.all(myGuardPromises).then(myGuards => {
+          return {
+            allGuards: preAllguards,
+            myGuards
           }
         })
-        return beforeFns
       })
-      .then(beforeFns => {
-        return beforeFns.map(fn => {
-          // maybe promise or subscribe,here transform to callback style
-          if (fn.length < 3) {
-            const asyncMiddleware = (to, from, next) => {
-              const p = fn(to, from)
-              if (!p) {
-                console.error(
-                  `[vue-service-app] return undefined on to [${to.name}]`,
-                  fn
-                )
-              }
-              if (p.then) {
-                p.then(res => {
-                  next(res && res.next)
-                }).catch(e => {
-                  next()
-                  this.onError(e)
-                })
-              }
-              if (p.subscribe) {
-                p.subscribe(
-                  res => {
-                    next(res && res.next)
-                  },
-                  e => {
-                    next()
-                    this.onError(e)
-                  }
-                )
-              }
-            }
-            return asyncMiddleware
+      .then(({ allGuards, myGuards }) => {
+        if (to.name === from.name) {
+          return this._getBeforeMiddlewaresByGuards(
+            allGuards,
+            'beforeRouteUpdate'
+          )
+        }
+        if (to.name !== from.name) {
+          // 父级是更新 自己是enter
+          if (
+            toLast &&
+            fromLast &&
+            toLast.parent &&
+            fromLast.parent &&
+            toLast.parent.name === fromLast.parent.name
+          ) {
+            // 所有父级执行beforeRouteUpdate
+            const parentGuards = allGuards.slice(
+              0,
+              allGuards.length - myGuards.length
+            )
+            const parentMiddlewares = this._getBeforeMiddlewaresByGuards(
+              parentGuards,
+              'beforeRouteUpdate'
+            )
+            const myMiddlewares = this._getBeforeMiddlewaresByGuards(
+              myGuards,
+              'beforeRouteEnter'
+            )
+
+            return [...parentMiddlewares, ...myMiddlewares]
           } else {
-            const middleware = (to, from, next) => {
-              const ret = fn(to, from, next)
-              if (ret && (ret.then || ret.subscribe)) {
-                throw new Error(
-                  `[vue-service-app] can not use next() and (Promise or Observable) together ->  ${
-                    fn.__ctorName
-                  } ${mode} hook`
-                )
-              }
-              return ret
-            }
-            // 添加next和流对象并存的错误逻辑
-            return middleware
+            return this._getBeforeMiddlewaresByGuards(
+              allGuards,
+              'beforeRouteEnter'
+            )
           }
-        })
-      })
-      .then(beforeMiddlewares => {
-        if (!beforeMiddlewares.length) {
-          next()
-        } else {
-          multiguard(beforeMiddlewares)(to, from, next)
         }
       })
   }
-  beforeRouteEnterHandler() {
-    this.router.beforeEach((to, from, next) => {
-      if (to.name !== from.name) {
-        this._beforeHandler('beforeRouteEnter', to, from, next)
-      } else {
-        next()
+
+  _makeAsyncMiddlewares(middlewares) {
+    return middlewares.map(fn => {
+      /**
+       * 含有next
+       */
+      if (fn.length > 2) {
+        return (to, from, next) => {
+          const ret = fn(to, from, next)
+          if (ret && (ret.then || ret.subscribe)) {
+            throw new Error(
+              `[vue-service-app] can not use next() and (Promise or Observable) together -> ${
+                fn.name
+              }`
+            )
+          }
+          return ret
+        }
       }
-    })
-  }
-  beforeRouteUpdateHandler() {
-    this.router.beforeEach((to, from, next) => {
-      if (to.name === from.name) {
-        this._beforeHandler('beforeRouteUpdate', to, from, next)
-      } else {
-        next()
+      /**
+       * Promise 或 Observable
+       */
+      return (to, from, next) => {
+        const p = fn(to, from)
+        if (!p) {
+          return next()
+        }
+        if (p.then) {
+          p.then(res => {
+            next(res && res.next)
+          }).catch(e => {
+            console.error('[vue-service-app]', e)
+            next()
+          })
+        }
+        if (p.subscribe) {
+          p.subscribe(
+            res => {
+              next(res && res.next)
+            },
+            e => {
+              console.error('[vue-service-app]', e)
+              next()
+            }
+          )
+        }
       }
-    })
-  }
-  afterEachHandler() {
-    this.router.afterEach((to, from) => {
-      this._getGuards(to).then(guards => {
-        const afterEachMiddlewares = guards
-          .filter(g => g.afterEach)
-          .map(g => g.afterEach.bind(g))
-        syncRouteGuards(afterEachMiddlewares)(to, from)
-      })
     })
   }
 }
 
-export { ServiceRouter, Inject, InjectionToken, Injectable }
+export { ServiceRouter, Inject, InjectionToken, Injectable, Container }
 
 export default VueServiceApp

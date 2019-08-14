@@ -104,7 +104,6 @@ export class StudioService implements RouteGuard {
           }
           lineData.push(chartItem)
         }
-        console.log(lineData)
         this.courseDaily$.commit(() => lineData)
       })
     )
@@ -200,7 +199,7 @@ export class StudioService implements RouteGuard {
       this.getBuyCourse({ recently_day: 7 })
     )
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.init()
   }
 }

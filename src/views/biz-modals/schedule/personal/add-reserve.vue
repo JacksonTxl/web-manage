@@ -1,12 +1,11 @@
 <template>
-  <st-modal title="添加预约" @ok="save" v-model="show">
+  <st-modal title="添加预约" @ok="save" v-model="show" size="small">
     <st-form :form="form">
       <st-form-item label="会员名称" required>
         <a-select
-          labelInValue
           showSearch
           placeholder="请输入会员名"
-          v-decorator="['member_id']"
+          v-decorator="decorators.member_id"
           style="width: 100%"
           :filterOption="false"
           @search="onSearchMember"
@@ -17,6 +16,7 @@
           <a-select-option
             v-for="member in memberOptions"
             :key="member.member_id"
+            :value="+member.member_id"
           >
             {{ member.member_name }}
           </a-select-option>
@@ -24,13 +24,14 @@
       </st-form-item>
       <st-form-item label="消费方式" required>
         <a-select
-          v-decorator="['consume_type']"
+          v-decorator="decorators.consume_type"
           @change="onChangeConsume"
           placeholder="选择消费方式"
         >
           <a-select-opt-group
             v-for="consumeType in consumeOptions"
             :key="consumeType.id"
+            :value="consumeType.id"
           >
             <span slot="label">
               <a-icon type="snippets" />
@@ -50,7 +51,7 @@
         <a-select
           placeholder="请选择课程"
           @change="onChangeCourse"
-          v-decorator="['course_id']"
+          v-decorator="decorators.course_id"
         >
           <a-select-option
             v-for="course in courseOptions"
@@ -63,7 +64,7 @@
       </st-form-item>
       <st-form-item label="上课教练" required>
         <a-select
-          v-decorator="['coach_id']"
+          v-decorator="decorators.coach_id"
           placeholder="请选择上课教练"
           @change="onChangeCourseCoach"
         >
@@ -79,14 +80,14 @@
       <st-form-item label="预约日期" required>
         <a-date-picker
           @change="onChangeDatePick"
-          v-decorator="['scheduling_id', { initialValue: undefined }]"
+          v-decorator="decorators.scheduling_id"
           :disabledDate="disabledDate"
         />
       </st-form-item>
       <st-form-item label="预约时间" required>
         <a-time-picker
           format="HH:mm"
-          v-decorator="['reserve_start_time', { initialValue: undefined }]"
+          v-decorator="decorators.reserve_start_time"
           :disabledMinutes="disabledMinutes"
           :disabledHours="disabledHours"
         />
@@ -100,6 +101,7 @@ import { PersonalScheduleCommonService as CommonService } from '@/views/pages/sh
 import { difference, cloneDeep } from 'lodash-es'
 import { PersonalScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/personal/service#/reserve.service'
 import { RouteService } from '@/services/route.service'
+import { ruleOptions } from './add-reserve.config'
 export default {
   name: 'AddReserve',
   serviceInject() {
@@ -122,11 +124,14 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false,
       value: '',
       fetching: false,
-      form: this.$form.createForm(this),
       formKeyFlag: [
         'consume_type',
         'course_id',
@@ -140,12 +145,13 @@ export default {
   methods: {
     // 获取消费方式 权重2
     onChangeConsume(val) {
+      if (!val) return
       const v = JSON.parse(val)
       this.form.setFieldsValue({
         course_id: '',
         coach_id: '',
-        scheduling_id: '',
-        reserve_start_time: ''
+        scheduling_id: undefined,
+        'reserve_start_time:': undefined
       })
       this.commonService
         .getCourseList({ id: +v.id, consume_type: +v.consume_type })
@@ -153,17 +159,17 @@ export default {
     },
     // 获取会员 权重1
     onSearchMember(val) {
-      this.fetching = false
+      this.fetching = true
       this.commonService.getOptions('getMemberList', { member: val }, () => {
-        this.fetching = true
+        this.fetching = false
       })
     },
     // 获取上课课程 权重4
     onChangeCourse(val) {
       this.form.setFieldsValue({
         coach_id: '',
-        scheduling_id: '',
-        reserve_start_time: ''
+        scheduling_id: undefined,
+        reserve_start_time: undefined
       })
       this.commonService.getCourseCoachList(val).subscribe()
     },
@@ -182,7 +188,10 @@ export default {
       this.commonService.getOptions('getTimeList', reserveDate, () => {})
     },
     onChangeCourseCoach(val) {
-      this.form.setFieldsValue({ scheduling_id: '', reserve_start_time: '' })
+      this.form.setFieldsValue({
+        scheduling_id: undefined,
+        reserve_start_time: undefined
+      })
       this.commonService.getOptions('getDateList', val, () => {})
     },
     range(start, end) {
@@ -203,26 +212,36 @@ export default {
       )
     },
     disabledMinutes(selectedHour) {
+      if (!this.timeOptions.timing) return
       let disabledMinutes = []
       const allTime = this.range(0, 60)
       for (let i = 0; i < this.timeOptions.timing.length; i++) {
+        console.log('this.timeOptions.timing[i]', this.timeOptions.timing)
         const startHour = +moment(
-          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`
+          `${this.timeOptions.schedule_date} ${
+            this.timeOptions.timing[i].start_time
+          }`
         )
           .format('H')
           .valueOf()
         const endHour = +moment(
-          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`
+          `${this.timeOptions.schedule_date} ${
+            this.timeOptions.timing[i].end_time
+          }`
         )
           .format('H')
           .valueOf()
         const start = +moment(
-          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`
+          `${this.timeOptions.schedule_date} ${
+            this.timeOptions.timing[i].start_time
+          }`
         )
           .format('mm')
           .valueOf()
         const end = +moment(
-          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`
+          `${this.timeOptions.schedule_date} ${
+            this.timeOptions.timing[i].end_time
+          }`
         )
           .format('mm')
           .valueOf()
@@ -237,10 +256,12 @@ export default {
             disabledMinutes = [...disabledMinutes, ...this.range(0, 60)]
           }
         }
+        return disabledMinutes
       }
       return difference(allTime, disabledMinutes)
     },
     disabledHours() {
+      if (!this.timeOptions.timing) return
       let disabledHours = []
       const allTime = this.range(0, 24)
       for (let i = 0; i < this.timeOptions.timing.length; i++) {
@@ -254,44 +275,40 @@ export default {
         )
           .format('H')
           .valueOf()
-        console.log(end)
         if (!end && this.timeOptions.timing[i].end_time.includes('24')) {
           end = 24
         }
         disabledHours = [...disabledHours, ...this.range(start, end)]
       }
-      return difference(allTime, disabledHours)
+      return difference(allTime, disabledHours) || null
     },
     save() {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          const consume = JSON.parse(values.consume_type)
-          let form = cloneDeep(values)
-          form.member_id = values.member_id.key
-          form.consume_type = consume.consume_type
-          form.consume_id = consume.id
-          form.reserve_start_time = values.reserve_start_time
-            .format('HH:mm')
-            .valueOf()
-          this.dateOptions.forEach(item => {
-            if (
-              item.schedule_date ===
-              values.scheduling_id.format('YYYY-MM-DD').valueOf()
-            ) {
-              form.scheduling_id = item.id
-            }
-          })
-          this.reserveService.add(form).subscribe(res => {
-            this.show = false
-            this.$router.push({ query: this.query, force: true })
-          })
-        }
+      this.form.validate().then(values => {
+        const consume = JSON.parse(values.consume_type)
+        let form = cloneDeep(values)
+        form.member_id = values.member_id
+        form.consume_type = consume.consume_type
+        form.consume_id = consume.id
+        form.reserve_start_time = values.reserve_start_time
+          .format('HH:mm')
+          .valueOf()
+        this.dateOptions.forEach(item => {
+          if (
+            item.schedule_date ===
+            values.scheduling_id.format('YYYY-MM-DD').valueOf()
+          ) {
+            form.scheduling_id = item.id
+          }
+        })
+        this.reserveService.add(form).subscribe(res => {
+          this.show = false
+          this.$router.reload()
+        })
       })
     },
     onChangeMember(val) {
-      this.value = val
       this.form.resetFields()
-      this.commonService.getOptions('getConsumeList', val.key, () => {})
+      this.commonService.getOptions('getConsumeList', val, () => {})
     }
   }
 }

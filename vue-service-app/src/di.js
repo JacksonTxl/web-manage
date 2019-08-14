@@ -1,28 +1,36 @@
-import { isFn } from './utils'
+import { isCtor } from './utils'
 const INJECTED = '__injectedTypes'
 
-export class Provider {
-  constructor(token, containerInstance) {
-    this.token = token
-    this.containerInstance = containerInstance
-    this.instance = null
+export class Container {
+  providers = new Map()
+  bindValue(token, value) {
+    this.providers.set(token, value)
   }
-  toSelf() {
-    const Cls = this.token
-    this.toClass(Cls)
-    return this
-  }
-  toClass(Cls) {
-    if (Cls[INJECTED]) {
-      this.getValue = () => {
-        if (!this.instance) {
-          const injects = Cls[INJECTED].map(token =>
-            this.containerInstance.get(token)
-          )
-          this.instance = new Cls(...injects)
-        }
-        return this.instance
+  get(token) {
+    const instance = this.providers.get(token)
+    if (instance) {
+      return instance
+    } else {
+      // 自动实例化
+      if (isCtor(token)) {
+        const newInstance = this.getInstanceFromClass(token)
+        this.providers.set(token, newInstance)
+        return newInstance
+      } else {
+        console.error('[vue-service-app] Invalid provide->', token)
       }
+    }
+  }
+  destroy(token) {
+    const instance = this.providers.get(token)
+    if (instance) {
+      this.providers.delete(token)
+    }
+  }
+  getInstanceFromClass(Cls) {
+    if (Cls[INJECTED]) {
+      const injects = Cls[INJECTED].map(childToken => this.get(childToken))
+      return new Cls(...injects)
     } else {
       if (Cls.length) {
         throw new Error(
@@ -31,91 +39,8 @@ export class Provider {
           }] has dependancy services but,but no @Injectable() or @Inject() decorate it`
         )
       }
-      this.getValue = () => {
-        if (!this.instance) {
-          this.instance = new Cls()
-        }
-        return this.instance
-      }
+      return new Cls()
     }
-    return this
-  }
-  toValue(value) {
-    this.getValue = () => value
-    return this
-  }
-  destroy() {
-    this.instance = null
-  }
-}
-export class InjectionToken {
-  constructor(name) {
-    this.name = name
-  }
-}
-export class Container {
-  _providers = new Map()
-  /**
-   * @type {Container} 父容器
-   */
-  parent = null
-  bind(provide) {
-    const provider = new Provider(provide, this)
-    this._providers.set(provide, provider)
-    return provider
-  }
-  /**
-   *
-   * @param {object} provider 供应商对象
-   * @param {provider.provide} 供应
-   * @param {provider.useClass} 使用类注入
-   * @param {provider.useValue} 使用值注入
-   */
-  useProvider({ provide, useClass, useValue } = {}) {
-    if (useClass) {
-      this.bind(provide).toClass(useClass)
-      return this
-    }
-    if (useValue) {
-      this.bind(provide).toValue(useValue)
-      return this
-    }
-  }
-  get(token) {
-    // console.log('di token', token)
-    // 从实例化的供应商map中取
-    const provider = this._providers.get(token)
-    if (!provider) {
-      // 是构造函数并且没有父容器的时候 使用lazy模式实例化该类
-      if (isFn(token)) {
-        // 默认注入
-        this.useProvider({ provide: token, useClass: token })
-        return this._providers.get(token).getValue()
-      } else {
-        console && console.error('[vue-service-app] Invalid provide->', token)
-      }
-    } else {
-      return provider.getValue()
-    }
-  }
-  new(token) {
-    if (isFn(token)) {
-      const provider = new Provider(token, this)
-      return provider.toClass(token).getValue()
-    } else {
-      console && console.error('[vue-service-app] Invalid provide->', token)
-    }
-  }
-  /**
-   * 删除已实例化的供应商
-   */
-  destroy(token) {
-    const provider = this._providers.get(token)
-    if (provider) {
-      provider.destroy()
-    }
-    this._providers.delete(token)
-    return this
   }
 }
 

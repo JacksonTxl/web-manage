@@ -37,10 +37,7 @@
             <a-form-item class="page-a-form">
               <a-date-picker
                 :disabledDate="disabledEndDate"
-                v-decorator="[
-                  'endTime',
-                  { rules: [{ required: true, message: '请选择结束售卖时间' }] }
-                ]"
+                v-decorator="decorators.endTime"
                 format="YYYY-MM-DD"
                 placeholder="结束时间"
                 :showToday="false"
@@ -67,6 +64,7 @@
 import { cloneDeep } from 'lodash-es'
 import moment from 'moment'
 import { RecoverSaleService } from './recover-sale.service'
+import { ruleOptions } from './recover-sale.config'
 export default {
   name: 'ModalCardBrandMemberRecoverSale',
   bem: {
@@ -85,8 +83,11 @@ export default {
   },
   props: ['id', 'cardType', 'cardName'],
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      form: this.$form.createForm(this),
+      form,
+      decorators,
       show: false,
       // 卡tag类型
       cardTypeTag: {
@@ -110,23 +111,21 @@ export default {
       )
     },
     onSubmit() {
-      this.form.validateFieldsAndScroll((err, values) => {
-        if (!err) {
-          this.recoverSaleService
-            .setRecoverSale(
-              {
-                start_time: `${moment(this.serviceTime * 1000).format(
-                  'YYYY-MM-DD'
-                )}`,
-                end_time: `${values.endTime.format('YYYY-MM-DD')}`
-              },
-              this.id
-            )
-            .subscribe(() => {
-              this.show = false
-              this.$emit('success')
-            })
-        }
+      this.form.validate().then(values => {
+        this.recoverSaleService
+          .setRecoverSale(
+            {
+              start_time: `${moment(this.serviceTime * 1000).format(
+                'YYYY-MM-DD'
+              )}`,
+              end_time: `${values.endTime.format('YYYY-MM-DD')}`
+            },
+            this.id
+          )
+          .subscribe(() => {
+            this.show = false
+            this.$emit('success')
+          })
       })
     }
   },

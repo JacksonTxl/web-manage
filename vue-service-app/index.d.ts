@@ -68,24 +68,19 @@ export interface RouteGuard {
   beforeRouteUpdate?(to: ServiceRoute, from: ServiceRoute, next: Function): void
   afterEach?(to: ServiceRoute, from: ServiceRoute, next: Function): void
 }
-export interface OnInit {
-  onInit?(next: Function): void
-}
 
 export class Container {
   get<T>(provide: Ctor<T>): T
   get(provide: any): any
-  useClass(Cls: any): this
-  useValue(provide: any, value: any): this
+  bindValue(token: any, value: any): this
+  destroy(token: any): void
 }
 
 interface VueServiceAppConfig {
   base?: string
+  container: Container
   routes?: ServiceRouteConfig[]
-  onInit?: Function[]
-  providers?: ServiceProvideConfig[]
   scrollBehavior?: Function
-  onError?: (e: Error) => void
 }
 
 declare module 'vue-service-app' {
@@ -114,17 +109,15 @@ declare module 'vue-service-app' {
   }
 }
 
-declare global {
-  interface Window {
-    getContainer(): Container
-  }
-}
-
 declare module 'vue/types/options' {
   interface ComponentOptions<V extends Vue> {
     /**
      * injects
      */
     serviceInject?: (this: V) => object
+    /**
+     * providers
+     */
+    serviceProviders?: (this: V) => object | Array<any>
   }
 }

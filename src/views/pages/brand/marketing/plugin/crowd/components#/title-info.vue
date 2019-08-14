@@ -1,27 +1,18 @@
 <template>
-  <div style="display: flex; ">
-    <st-t4 style="margin-right:44px;">{{ value.title }}</st-t4>
-    <span style="color:#3E4D5C">{{ value.info }}</span>
+  <div :class="bTitleInfo()" class="mg-b40">
+    <st-t4 class="mg-r40">{{ value.title }}</st-t4>
+    <span :class="bTitleInfo('span')">
+      {{ value.info }}
+    </span>
   </div>
 </template>
 <script>
 export default {
-  model: {
-    type: 'value',
-    event: 'dataChangge'
+  bem: {
+    bTitleInfo: 'crowd-components-title-info'
   },
   props: {
     value: Object
-  },
-  data() {
-    return {}
-  },
-  methods: {
-    selectionFun(item) {
-      this.value.selectionData = item
-      this.$emit('dataChangge', this.value)
-    }
-  },
-  mounted() {}
+  }
 }
 </script>

@@ -49,7 +49,7 @@ import { RouteService } from '@/services/route.service'
 
 import { NoticeService } from './notice.service'
 import { thsMember, thsShop } from './notice.config'
-import NoticeItem from './notice#/item'
+import NoticeItem from './components#/notice-item'
 const pageName = 'page-setting-sms-notice'
 
 export default {

@@ -14,19 +14,20 @@ interface EditState {
   codeDemo: string
 }
 @Injectable()
-export class EditService extends Store<EditState> implements RouteGuard {
+export class EditService implements RouteGuard {
   state$: State<EditState>
   info$: Computed<any>
   lawContent$: Computed<string>
   codeRules$: Computed<any[]>
   codeDemo$: Computed<string>
+  loading$ = new State({})
   constructor(private contractApi: ContractApi, private route: RouteService) {
-    super()
     this.state$ = new State({
       info: {},
       lawContent: '',
       codeRules: [],
-      codeDemo: ''
+      codeDemo: '',
+      loading: false
     })
     this.info$ = new Computed(this.state$.pipe(pluck('info')))
     this.lawContent$ = new Computed(this.state$.pipe(pluck('lawContent')))

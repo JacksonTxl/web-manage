@@ -173,6 +173,7 @@ import tableMixin from '@/mixins/table.mixin'
 import CardShopDepositRecoverSale from '@/views/biz-modals/card/shop-deposit/recover-sale'
 import CardShopDepositShopTable from '@/views/biz-modals/card/shop-deposit/shop-table'
 import CardShopDepositStopSale from '@/views/biz-modals/card/shop-deposit/stop-sale'
+import { SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH } from '@/constants/events'
 export default {
   mixins: [tableMixin],
   name: 'PageShopProductDepositAll',
@@ -180,8 +181,8 @@ export default {
     all: 'page-shop-product-deposit-list-all'
   },
   events: {
-    'shop-product-card-deposit-list-all:onSingleSearch'(key, data, options) {
-      this.onSingleSearch(key, data, options)
+    [SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH](key, data) {
+      this.onKeywordsSearch(key, data)
     }
   },
   modals: {

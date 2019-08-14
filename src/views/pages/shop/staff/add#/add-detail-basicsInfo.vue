@@ -15,7 +15,7 @@
           <a-input
             placeholder="支持中英文、数字、不超过15个字"
             max="15"
-            v-decorator="rules.staff_name"
+            v-decorator="decorators.staff_name"
           />
         </st-form-item>
         <st-form-item label="手机号" required>
@@ -31,13 +31,13 @@
             </a-select>
             <a-input
               style="width: 80%;"
-              v-decorator="rules.phone"
+              v-decorator="decorators.mobile"
               placeholder="请输入手机号"
             />
           </a-input-group>
         </st-form-item>
         <st-form-item label="性别" required>
-          <a-radio-group name="radioGroup" v-decorator="rules.sex">
+          <a-radio-group name="radioGroup" v-decorator="decorators.sex">
             <a-radio :value="2">
               男
               <st-icon
@@ -73,11 +73,11 @@
           </template>
           <a-input
             placeholder="支持中英文、数字,不超过10个字"
-            v-decorator="rules.nickname"
+            v-decorator="decorators.nickname"
           />
         </st-form-item>
         <st-form-item label="邮箱">
-          <a-input placeholder="请输入邮箱" v-decorator="rules.mail" />
+          <a-input placeholder="请输入邮箱" v-decorator="decorators.mail" />
         </st-form-item>
         <st-form-item label="证件">
           <a-input-group compact style="top: 0;">
@@ -91,7 +91,7 @@
             <a-input
               style="width: 80%"
               placeholder="请输入身份证号码"
-              v-decorator="rules.idnumber"
+              v-decorator="decorators.idnumber"
             />
           </a-input-group>
         </st-form-item>
@@ -111,7 +111,10 @@
             员工职能
             <st-help-tooltip id="TSCE002" />
           </template>
-          <a-checkbox-group v-decorator="rules.identity" @change="getIsCoach">
+          <a-checkbox-group
+            v-decorator="decorators.identity"
+            @change="getIsCoach"
+          >
             <a-checkbox
               v-for="(item, key) in enums.identity.value"
               :key="key"
@@ -128,11 +131,11 @@
             placeholder="请选择部门"
             style="width: 100%"
             useType="form"
-            v-decorator="rules.department_id"
+            v-decorator="decorators.department_id"
           ></department-select>
         </st-form-item>
         <st-form-item label="工作性质">
-          <a-select placeholder="请选择" v-decorator="rules.nature_work">
+          <a-select placeholder="请选择" v-decorator="decorators.nature_work">
             <template v-for="(item, key) in enums.nature_work.value">
               <a-select-option :key="key" :value="+key">
                 {{ item }}
@@ -144,7 +147,7 @@
           <a-select
             mode="multiple"
             placeholder="请选择"
-            v-decorator="rules.role_id"
+            v-decorator="decorators.role_id"
           >
             <template v-for="item in roleList">
               <a-select-option :key="item.id" :value="item.id">
@@ -162,7 +165,7 @@
             placeholder="请选择教练等级"
             style="width: 100%"
             useType="form"
-            v-decorator="rules.coach_levelRule"
+            v-decorator="decorators.coach_levelRule"
             @change="onChange"
           ></coach-level-select>
         </st-form-item>
@@ -171,11 +174,14 @@
         <st-form-item label="工号">
           <a-input
             placeholder="请输入员工工号"
-            v-decorator="rules.staff_num"
+            v-decorator="decorators.staff_num"
           ></a-input>
         </st-form-item>
         <st-form-item label="入职时间">
-          <a-date-picker style="width:100%" v-decorator="rules.entry_date" />
+          <a-date-picker
+            style="width:100%"
+            v-decorator="decorators.entry_date"
+          />
         </st-form-item>
         <st-form-item label="所属门店">
           <shop-select
@@ -200,7 +206,7 @@
         <st-form-item label="系统权限">
           <a-checkbox
             @change="permissionChange"
-            v-decorator="rules.is_permission"
+            v-decorator="decorators.is_permission"
           >
             开通系统使用权限
           </a-checkbox>
@@ -208,7 +214,7 @@
         <st-form-item label="登录账号" v-if="isChoosePermission">
           <a-input
             placeholder="6-18个字符，可使用字母、数字、下划线"
-            v-decorator="rules.account"
+            v-decorator="decorators.account"
           ></a-input>
         </st-form-item>
         <st-form-item label="登录密码" v-if="isChoosePermission">
@@ -244,19 +250,20 @@
   </st-form>
 </template>
 <script>
-import { RuleConfig } from '@/constants/staff/rule'
 import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
 import { AddService } from '../add.service'
 import CoachLevelSelect from '@/views/biz-components/coach-level-select'
 import ShopSelect from '@/views/biz-components/shop-select'
+import { PatternService } from '@/services/pattern.service'
+import { ruleOptions } from '../staff-form.config.ts'
 import DepartmentSelect from '@/views/biz-components/department-select'
 import FaceUpload from '@/views/biz-components/face-upload/face-upload'
 export default {
   name: 'StaffDetailBasics',
   serviceInject() {
     return {
-      rules: RuleConfig,
+      pattern: PatternService,
       userService: UserService,
       message: MessageService,
       addService: AddService
@@ -288,8 +295,11 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      form: this.$form.createForm(this),
+      form,
+      decorators,
       fileList: [],
       faceList: [],
       isChoosePermission: false,

@@ -112,6 +112,9 @@ import { FreezeService } from './freeze.service'
 import { OPERATION_TYPES } from '@/constants/sold/operations'
 export default {
   name: 'ModalSoldCardFreeze',
+  serviceProviders() {
+    return [FreezeService]
+  },
   serviceInject() {
     return {
       userService: UserService,

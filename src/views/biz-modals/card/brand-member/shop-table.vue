@@ -22,6 +22,7 @@
 </template>
 <script>
 import { ShopTableService } from './shop-table.service'
+import { columns } from './shop-table.config'
 export default {
   name: 'ModalBrandMemberShopTable',
   serviceInject() {
@@ -37,6 +38,7 @@ export default {
     }
   },
   computed: {
+    columns,
     stList() {
       let array = []
       this.list.forEach(o => {
@@ -49,30 +51,7 @@ export default {
   props: ['id', 'type', 'title'],
   data() {
     return {
-      show: false,
-      columns: [
-        {
-          title: '省',
-          dataIndex: 'province_name',
-          width: '22%',
-          scopedSlots: { customRender: 'province_name' }
-        },
-        {
-          title: '市',
-          width: '22%',
-          dataIndex: 'city_name'
-        },
-        {
-          title: '区',
-          width: '22%',
-          dataIndex: 'district_name'
-        },
-        {
-          title: '门店名称',
-          width: '34%',
-          dataIndex: 'shop_name'
-        }
-      ]
+      show: false
     }
   },
   created() {

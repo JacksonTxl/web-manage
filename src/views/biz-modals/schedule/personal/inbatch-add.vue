@@ -148,7 +148,6 @@ export default {
         schedule_info: this.schedule_info
       }
       this.scheduleService.addScheduleInBatch(reqdata).subscribe(() => {
-        console.log('ok')
         this.show = false
         this.$router.push({
           query: {

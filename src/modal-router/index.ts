@@ -7,5 +7,4 @@ Vue.use(VueModalRouter, {
   model: 'show',
   delay: 300
 })
-console.log(routes)
 export const modalRouter = new VueModalRouter(routes)

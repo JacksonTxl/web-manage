@@ -1,23 +1,23 @@
 <template>
-  <div style="display: inherit;">
+  <div :class="bInputNumber()">
     <st-input-number
       v-model="value.min"
       :float="true"
       :min="minMax.min"
-      style="width:130px"
+      :class="bInputNumber('input')"
     >
       <!-- @change="onChangeMin" -->
       <template slot="addonAfter">
         {{ company }}
       </template>
     </st-input-number>
-    <div style="padding:0 10px">~</div>
+    <div class="pd-x8">~</div>
     <st-input-number
       v-model="value.max"
       :float="true"
       :min="value.min ? value.min - 0 : 1"
       :max="minMax.max"
-      style="width:130px"
+      :class="bInputNumber('input')"
     >
       <template slot="addonAfter">
         {{ company }}
@@ -27,6 +27,9 @@
 </template>
 <script>
 export default {
+  bem: {
+    bInputNumber: 'crowd-component-input-number'
+  },
   model: {
     type: 'value',
     event: 'dataChangge'

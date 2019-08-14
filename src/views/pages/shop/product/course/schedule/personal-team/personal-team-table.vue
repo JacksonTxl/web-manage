@@ -7,7 +7,7 @@
       <a-row :gutter="8">
         <a-col :lg="8">
           <st-button
-            v-modal-link="{ name: 'schedule-team-add-course-schedule-batch' }"
+            v-modal-link="{ name: 'schedule-team-add-course-batch' }"
             class="mg-r8"
             type="primary"
           >
@@ -42,7 +42,7 @@
         href="javascript:;"
         slot="extra"
         class="add-schedule"
-        v-modal-link="{ name: 'schedule-team-add-course-schedule' }"
+        v-modal-link="{ name: 'schedule-team-add-course' }"
       >
         + 添加课程排期
       </span>
@@ -104,15 +104,15 @@ import { PersonalTeamScheduleScheduleService } from '../personal-team/service#/s
 import { RouteService } from '@/services/route.service'
 import date from '@/views/biz-components/schedule/date#/date-component.vue'
 import SchedulePersonalTeamReserveInfo from '@/views/biz-modals/schedule/personal-team/reserve-info'
-import ScheduleTeamAddCourseScheduleBatch from '@/views/biz-modals/schedule/team/add-course-schedule-batch'
-import ScheduleTeamAddCourseSchedule from '@/views/biz-modals/schedule/team/add-course-schedule'
+import ScheduleTeamAddCourseBatch from '@/views/biz-modals/schedule/team/add-course-batch'
+import ScheduleTeamAddCourse from '@/views/biz-modals/schedule/team/add-course'
 import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
 export default {
   name: 'SchedulePersonalTeamTable',
   modals: {
     SchedulePersonalTeamReserveInfo,
-    ScheduleTeamAddCourseScheduleBatch,
-    ScheduleTeamAddCourseSchedule,
+    ScheduleTeamAddCourseBatch,
+    ScheduleTeamAddCourse,
     ScheduleTeamCopySchedule
   },
   serviceInject() {

@@ -15,12 +15,7 @@ interface DataState {
 @Injectable()
 export class AuthService {
   auth$ = new State<Array<string>>([])
-  constructor(
-    private authApi: AuthApi,
-    private nprogress: NProgressService,
-    private router: ServiceRouter,
-    private notification: NotificationService
-  ) {
+  constructor(private authApi: AuthApi, private nprogress: NProgressService) {
     this.nprogress.SET_TEXT('用户权限数据加载中...')
   }
   getList() {
@@ -46,7 +41,7 @@ export class AuthService {
     } else {
       data = this.listAuthFilter(data, key)
     }
-    console.log('filtered data by authService: ', data)
+    // console.log('filtered data by authService: ', data)
     return data
   }
   /**

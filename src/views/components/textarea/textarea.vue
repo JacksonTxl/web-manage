@@ -17,8 +17,7 @@ export default {
   },
   props: {
     value: {
-      type: String,
-      default: ''
+      type: String
     },
     maxlength: {
       type: [String, Number],
@@ -52,14 +51,14 @@ export default {
   },
   methods: {
     init() {
-      this.content = this.value
+      this.content = this.value || ''
     },
     onChange(e) {
       const { maxlength } = this
       const content = e.target.value.substr(0, maxlength)
       this.content = content
       this.$emit('input', content)
-      this.$emit('change', e)
+      this.$emit('change', content)
     }
   }
 }

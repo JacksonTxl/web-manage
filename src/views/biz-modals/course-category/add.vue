@@ -14,7 +14,7 @@
             <st-form-item label="课程类型" required>
               <a-input
                 placeholder="请输入课程类型名称"
-                v-decorator="rules.settingName"
+                v-decorator="decorators.setting_name"
                 maxlength="20"
               ></a-input>
             </st-form-item>
@@ -27,15 +27,13 @@
 <script>
 import { AddService } from './add.service'
 import { MessageService } from '@/services/message.service'
-import { PatternService } from '@/services/pattern.service'
-import { rules } from './course-category.config'
+import { ruleOptions } from './course-category.config'
 
 export default {
   serviceInject() {
     return {
       addService: AddService,
-      messageService: MessageService,
-      pattern: PatternService
+      messageService: MessageService
     }
   },
   rxState() {
@@ -44,22 +42,19 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: true
     }
-  },
-  created() {
-    this.form = this.$form.createForm(this)
-  },
-  computed: {
-    rules
   },
   methods: {
     onSubmit(e) {
       e.preventDefault()
-      this.form.validateFields().then(() => {
-        const data = this.form.getFieldsValue()
-        this.addService.addCourseCategory(data).subscribe(() => {
+      this.form.validate().then(values => {
+        this.addService.addCourseCategory(values).subscribe(() => {
           this.messageService.success({
             content: '添加成功'
           })

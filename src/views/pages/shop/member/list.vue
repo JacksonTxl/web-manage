@@ -229,7 +229,6 @@ import { ListService } from './list.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
-import StRangePicker from '@/views/components/datetime-picker/range-picker'
 import ShopAddLable from '@/views/biz-modals/shop/add-lable'
 import ShopBindingEntityCard from '@/views/biz-modals/shop/binding-entity-card'
 import ShopDistributionCoach from '@/views/biz-modals/shop/distribution-coach'
@@ -369,9 +368,7 @@ export default {
       this.setSearchData()
     }
   },
-  components: {
-    StRangePicker
-  },
+
   methods: {
     refeshPage() {
       this.$router.push({ force: true })

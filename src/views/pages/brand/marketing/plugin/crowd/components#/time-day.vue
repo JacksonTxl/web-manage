@@ -11,10 +11,15 @@
       @change="onChange"
       :format="format || 'YYYY-MM-DD'"
       :value="value.min ? [moment(value.min), moment(value.max)] : []"
-      style="margin-left:8px"
+      class="mg-r8"
       :allowClear="true"
       :disabledDate="disabledDate"
     />
+    <a-radio-group @change="onChangeRadio" v-model="radioValue">
+      <a-radio-button :value="7">近7天</a-radio-button>
+      <a-radio-button :value="30">近30天</a-radio-button>
+      <a-radio-button :value="90">近90天</a-radio-button>
+    </a-radio-group>
   </span>
 </template>
 <script>

@@ -1,15 +1,15 @@
 <template>
   <div class="shop-member-crowd-index">
     <index
-      v-model="crowdIndexInfo.info.important_crowd"
-      v-if="crowdIndexInfo.info.important_crowd.length > 0"
+      v-model="crowdIndexInfo.important_crowd"
+      v-if="crowdIndexInfo.important_crowd.length > 0"
     ></index>
     <st-panel>
       <div slot="title">
         <router-link
           tag="a"
           :to="{ name: 'brand-marketing-plugin-crowd-add' }"
-          v-if="crowdIndexInfo.info.list.length <= 10"
+          v-if="crowdIndexList.length <= 10"
         >
           <st-button type="primary" v-if="auth.add">
             <a-icon type="plus" />
@@ -30,7 +30,7 @@
       </div>
       <st-table
         rowKey="id"
-        :dataSource="crowdIndexInfo.info.list"
+        :dataSource="crowdIndexList"
         :columns="columns"
         :pagination="false"
       >
@@ -73,13 +73,12 @@
             >
               编辑
             </router-link>
-            <a-popconfirm
-              title="是否确认删除?"
-              @confirm="deleteTreeNode(record)"
+            <st-popconfirm
               v-if="record.auth['shop:member:crowd|del']"
+              @confirm="deleteTreeNode(record)"
             >
               <a>删除</a>
-            </a-popconfirm>
+            </st-popconfirm>
           </st-table-actions>
           <!-- <st-more-dropdown class="tree-opreation">
             <a-menu-item v-if="record.auth['shop:member:crowd|export']" @click="addTreeNode(record)">导出</a-menu-item>
@@ -127,6 +126,7 @@ export default {
   rxState() {
     return {
       crowdIndexInfo: this.indexService.crowdIndexInfo$,
+      crowdIndexList: this.indexService.crowdIndexList$,
       auth: this.indexService.auth$,
       query: this.routeService.query$
     }

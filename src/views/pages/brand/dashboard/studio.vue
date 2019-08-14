@@ -158,7 +158,6 @@ export default {
     }
   },
   rxState() {
-    console.log(this.studioService)
     return {
       top: this.studioService.top$,
       userFunnel: this.studioService.userFunnel$,
