@@ -2,6 +2,8 @@ import { Injectable } from 'vue-service-app'
 import { Store } from '@/services/store'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
+import { UserService } from './../../../../services/user.service'
+
 import {
   TemporaryCabinetApi,
   UpdateInput
@@ -14,7 +16,12 @@ interface EditState {
 export class EditTemporaryService extends Store<EditState> {
   state$: State<EditState>
   resData$: Computed<Object>
-  constructor(private cabinetApi: TemporaryCabinetApi) {
+  transferUnits$ = this.userService.getOptions$('setting.cabinet.transfer_unit')
+  useStatus$ = this.userService.getOptions$('setting.cabinet.use_status')
+  constructor(
+    private cabinetApi: TemporaryCabinetApi,
+    private userService: UserService
+  ) {
     super()
     this.state$ = new State({
       resData: {}

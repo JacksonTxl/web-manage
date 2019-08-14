@@ -86,15 +86,13 @@
 <script>
 import { MessageService } from '@/services/message.service'
 import { EditLongTermService as EditService } from './edit-long-term.service'
-import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from './cabinet.config'
 
 export default {
   serviceInject() {
     return {
       messageService: MessageService,
-      editService: EditService,
-      pattern: PatternService
+      editService: EditService
     }
   },
   rxState() {
@@ -154,6 +152,9 @@ export default {
       this.form.validate().then(data => {
         data.id = this.id
         data.transfer_unit = this.transferUnit
+        if (!this.isShowReason) {
+          data.reason = ''
+        }
         this.editService.update(data).subscribe(this.onSubmitSuccess)
       })
     },

@@ -39,12 +39,6 @@
         </a-select-option>
       </a-select>
     </section>
-    <!-- <section> -->
-    <!-- <footer class="footer">
-        <a-button class="cancel" @click="show=false">取消</a-button>
-        <a-button type="danger">确认停售</a-button>
-      </footer>-->
-    <!-- </section> -->
   </st-modal>
 </template>
 <script>
@@ -108,7 +102,6 @@ export default {
     save(e) {
       let self = this
       e.preventDefault()
-
       let data = {
         id: this.memberIds,
         tag_id: self.selectLable

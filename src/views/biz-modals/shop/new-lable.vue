@@ -34,9 +34,6 @@ export default {
       inputLable: ''
     }
   },
-  created() {
-    // this.getLableList()
-  },
   methods: {
     getLableList() {
       let self = this
@@ -51,7 +48,6 @@ export default {
       e.preventDefault()
       this.getLableList()
     }
-  },
-  watch: {}
+  }
 }
 </script>

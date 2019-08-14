@@ -46,9 +46,6 @@
         </a>
       </a-col>
       <a-col :lg="24">
-        <!-- <st-time-line v-model="timeLine">
-
-        </st-time-line>-->
         <a-timeline pending="1" :reverse="reverse">
           <a-timeline-item
             v-for="(item, index) in followHistoryInfo.record_list"
@@ -123,11 +120,9 @@ export default {
       return arr[value]
     }
   },
-  created() {},
   methods: {
     onModalTest() {
-      console.log(1111)
-      this.aService.getListInfo('1').subscribe()
+      this.aService.getListInfo(this.$route.query.id).subscribe()
     }
   }
 }
