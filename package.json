@@ -101,8 +101,7 @@
     "stylelint-prettier": "^1.1.1",
     "typescript": "^3.2.1",
     "vue-template-compiler": "^2.5.21",
-    "webpack-external-vendor-plugin": "1.1.1",
-    "yorkie": "^2.0.0"
+    "webpack-external-vendor-plugin": "1.1.1"
   },
   "postcss": {
     "plugins": {
@@ -124,9 +123,11 @@
       "path": "node_modules/cz-customizable"
     }
   },
-  "gitHooks": {
-    "pre-commit": "lint-staged",
-    "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS"
+  "husky": {
+    "hooks":{
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS"
+    }
   },
   "lint-staged": {
     "*.less": [
