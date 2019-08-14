@@ -119,7 +119,6 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    provinces: {},
     nature_work: {},
     entry_date: {},
     shop_id: {
@@ -144,7 +143,10 @@ export const ruleOptions = (vm: any) => {
     education: {},
     birthday: {},
     marry_status: {},
+    children_status: {},
     graduation_time: {},
+    provinces: { initialValue: [] },
+    native_place: {},
     profession: {
       rules: [
         {

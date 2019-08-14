@@ -45,11 +45,8 @@
               <a-form-item class="page-a-form">
                 <a-date-picker
                   :disabledDate="disabledEndDate"
-                  v-decorator="[
-                    'endTime',
-                    { rules: [{ validator: end_time_validator }] }
-                  ]"
-                  @change="end_time_change"
+                  v-decorator="decorators.end_time"
+                  @change="onChangeEndTime"
                   style="width:170px"
                   :showTime="{ defaultValue: startTime, format: 'HH:mm' }"
                   format="YYYY-MM-DD HH:mm"
@@ -77,10 +74,7 @@
             labelGutter="12px"
           >
             <a-select
-              v-decorator="[
-                'payType',
-                { rules: [{ validator: pay_type_validator }] }
-              ]"
+              v-decorator="decorators.pay_method"
               placeholder="选择支付方式"
               :disabled="!(frozen_fee > 0)"
             >
@@ -105,11 +99,10 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { UserService } from '@/services/user.service'
 import { FreezeService } from './freeze.service'
-import { OPERATION_TYPES } from '@/constants/sold/operations'
+import { ruleOptions } from './freeze.config'
 export default {
   name: 'ModalSoldCardFreeze',
   serviceProviders() {
@@ -134,57 +127,29 @@ export default {
   },
   props: ['id'],
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      OPERATION_TYPES,
+      form,
+      decorators,
       show: false,
-      form: this.$form.createForm(this),
       startTime: moment(),
       endTime: null,
-      frozen_fee: null,
-      frozen_pay_type: 1
+      frozen_fee: null
     }
   },
   created() {
-    this.freezeService.getFreezeInfo(this.id).subscribe(res => {
-      this.freezeService
-        .getMemberPaymentList({
-          operation_type: OPERATION_TYPES.FREEZE,
-          member_id: res.info.member_id,
-          product_type: res.info.product_type
-        })
-        .subscribe()
-    })
+    this.freezeService.getFreezeInfo(this.id).subscribe()
   },
   methods: {
-    moment,
-    // end_time validatorFn
-    end_time_validator(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请选择冻结结束日期')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    // pay_type validatorFn
-    pay_type_validator(rule, value, callback) {
-      if (!value && this.frozen_fee > 0) {
-        // eslint-disable-next-line
-        callback('请选择支付方式')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
     // 售卖时间-end
-    end_time_change(data) {
+    onChangeEndTime(data) {
       this.endTime = cloneDeep(data)
     },
     disabledEndDate(endValue) {
       return (
         endValue.valueOf() < moment().valueOf() ||
-        endValue.valueOf() > this.moment(this.freezeInfo.end_time).valueOf()
+        endValue.valueOf() > moment(this.freezeInfo.end_time).valueOf()
       )
     },
     onFrozenChange(data) {
@@ -196,12 +161,11 @@ export default {
           this.freezeService
             .freeze(
               {
-                end_time: values.endTime.format('YYYY-MM-DD HH:mm'),
+                end_time: values.end_time.format('YYYY-MM-DD HH:mm'),
                 poundage: this.frozen_fee,
-                pay_method: values.payType
+                pay_method: values.pay_method
               },
-              this.id,
-              this.type
+              this.id
             )
             .subscribe(res => {
               this.$emit('success')
