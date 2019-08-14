@@ -1,16 +1,19 @@
 import { Injectable } from 'vue-service-app'
-import { Store } from '@/services/store'
 import {
   LongTermCabinetApi,
   AddInput
 } from '@/api/v1/setting/cabinet/long-term'
-import { Effect } from 'rx-state'
+import { Effect, State } from 'rx-state'
+import { UserService } from '@/services/user.service'
 
 @Injectable()
-export class AddLongTermService extends Store<any> {
-  constructor(private cabinetApi: LongTermCabinetApi) {
-    super()
-  }
+export class AddLongTermService {
+  loading$ = new State({})
+  transferUnits$ = this.userService.getOptions$('setting.cabinet.transfer_unit')
+  constructor(
+    private cabinetApi: LongTermCabinetApi,
+    private userService: UserService
+  ) {}
   @Effect()
   add(params: AddInput) {
     return this.cabinetApi.add(params)

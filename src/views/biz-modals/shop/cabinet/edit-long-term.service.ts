@@ -6,6 +6,7 @@ import {
   LongTermCabinetApi,
   UpdateInput
 } from '@/api/v1/setting/cabinet/long-term'
+import { UserService } from '@/services/user.service'
 
 interface EditState {
   resData: Object
@@ -14,7 +15,12 @@ interface EditState {
 export class EditLongTermService extends Store<EditState> {
   state$: State<EditState>
   resData$: Computed<Object>
-  constructor(private cabinetApi: LongTermCabinetApi) {
+  transferUnits$ = this.userService.getOptions$('setting.cabinet.transfer_unit')
+  useStatus$ = this.userService.getOptions$('setting.cabinet.use_status')
+  constructor(
+    private cabinetApi: LongTermCabinetApi,
+    private userService: UserService
+  ) {
     super()
     this.state$ = new State({
       resData: {}

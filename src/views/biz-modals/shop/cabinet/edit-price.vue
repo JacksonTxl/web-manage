@@ -11,7 +11,7 @@
       <st-form-item label="价格" required>
         <st-input-number
           placeholder="请输入售卖价格"
-          v-decorator="ruleConfig.priceNum"
+          v-decorator="decorators.price_num"
         >
           <template slot="addonAfter">
             元/天
@@ -19,16 +19,15 @@
         </st-input-number>
       </st-form-item>
       <st-form-item label="转让手续费">
-        <st-input-number placeholder="" v-decorator="ruleConfig.transferNum">
+        <st-input-number placeholder="" v-decorator="decorators.transfer_num">
           <template slot="addonAfter">
             <a-select v-model="transferUnit">
               <a-select-option
-                v-for="(item, index) in settingEnums.cabinet.transfer_unit
-                  .value"
+                v-for="(item, index) in transferUnits"
                 :key="index"
-                :value="+index"
+                :value="+item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
           </template>
@@ -43,29 +42,29 @@
 </template>
 <script>
 import { MessageService } from '@/services/message.service'
-import { UserService } from '@/services/user.service'
 import { EditPriceService as EditService } from './edit-price.service'
-import { RuleConfig } from '@/constants/setting/cabinet-rule'
+import { ruleOptions } from './cabinet.config'
 
 export default {
   serviceInject() {
     return {
       messageService: MessageService,
-      userService: UserService,
-      editService: EditService,
-      ruleConfig: RuleConfig
+      editService: EditService
     }
   },
   rxState() {
     return {
       loading: this.editService.loading$,
-      settingEnums: this.userService.settingEnums$
+      transferUnits: this.editService.transferUnits$
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false,
-      form: this.$form.createForm(this),
       transferUnit: 1
     }
   },
@@ -80,7 +79,7 @@ export default {
   methods: {
     onSubmit(e) {
       e.preventDefault()
-      this.form.validateFields().then(data => {
+      this.form.validate().then(data => {
         data.ids = this.ids
         data.transfer_unit = this.transferUnit
         this.editService.updatePrice(data).subscribe(this.onSubmitSuccess)

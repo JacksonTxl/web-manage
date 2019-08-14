@@ -59,7 +59,7 @@ import { UserService } from '@/services/user.service'
 import { EditTemporaryService as EditService } from './edit-temporary.service'
 import { RuleConfig } from '@/constants/setting/cabinet-rule'
 import { PatternService } from '@/services/pattern.service'
-import { rules } from './cabinet.config'
+import { ruleOptions } from './cabinet.config'
 
 export default {
   serviceInject() {
@@ -80,9 +80,12 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false,
-      form: this.$form.createForm(this),
       isShowReason: false
     }
   },

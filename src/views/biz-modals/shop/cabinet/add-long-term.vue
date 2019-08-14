@@ -15,13 +15,13 @@
         <a-input
           placeholder="请输入首字母"
           maxlength="1"
-          v-decorator="rules.firstLetter"
+          v-decorator="decorators.first_letter"
         />
       </st-form-item>
       <st-form-item label="起始编号" required>
         <a-input-number
           placeholder="请输入起始编号"
-          v-decorator="ruleConfig.startNum"
+          v-decorator="decorators.start_num"
           :min="1"
           :max="9999"
           :precision="0"
@@ -29,7 +29,7 @@
         />
       </st-form-item>
       <st-form-item label="柜子数量" required>
-        <st-input-number placeholder="请输入数量" v-decorator="ruleConfig.num">
+        <st-input-number placeholder="请输入数量" v-decorator="decorators.num">
           <template slot="addonAfter">
             个
           </template>
@@ -40,7 +40,7 @@
           递增方式
           <st-help-tooltip id="TSCL001" />
         </template>
-        <a-radio-group v-decorator="ruleConfig.sortType">
+        <a-radio-group v-decorator="decorators.sort_type">
           <a-radio
             v-for="(item, index) in settingEnums.cabinet.sort_type.value"
             :key="index"
@@ -54,7 +54,7 @@
         <st-input-number
           :float="true"
           placeholder="请输入售卖价格"
-          v-decorator="ruleConfig.priceNum"
+          v-decorator="decorators.price_num"
         >
           <template slot="addonAfter">
             元/天
@@ -65,17 +65,16 @@
         <st-input-number
           :float="true"
           placeholder="请输入转让手续费"
-          v-decorator="ruleConfig.transferNum"
+          v-decorator="decorators.transfer_num"
         >
           <template slot="addonAfter">
             <a-select v-model="transferUnit">
               <a-select-option
-                v-for="(item, index) in settingEnums.cabinet.transfer_unit
-                  .value"
+                v-for="(item, index) in transferUnits"
                 :key="index"
-                :value="+index"
+                :value="+item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
           </template>
@@ -86,32 +85,29 @@
 </template>
 <script>
 import { MessageService } from '@/services/message.service'
-import { UserService } from '@/services/user.service'
 import { AddLongTermService as AddService } from './add-long-term.service'
-import { RuleConfig } from '@/constants/setting/cabinet-rule'
-import { PatternService } from '@/services/pattern.service'
-import { rules } from './cabinet.config'
+import { ruleOptions } from './cabinet.config'
 
 export default {
   serviceInject() {
     return {
       messageService: MessageService,
-      userService: UserService,
-      addService: AddService,
-      ruleConfig: RuleConfig,
-      pattern: PatternService
+      addService: AddService
     }
   },
   rxState() {
     return {
       loading: this.addService.loading$,
-      settingEnums: this.userService.settingEnums$
+      transferUnits: this.addService.transferUnits$
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false,
-      form: this.$form.createForm(this),
       transferUnit: 1
     }
   },
@@ -125,14 +121,10 @@ export default {
       default: ''
     }
   },
-  computed: {
-    rules
-  },
   methods: {
     onSubmit(e) {
-      console.log(11)
       e.preventDefault()
-      this.form.validateFields().then(data => {
+      this.form.validate().then(data => {
         data.cabinet_area_id = this.id
         data.transfer_unit = this.transferUnit
         this.addService.add(data).subscribe(this.onSubmitSuccess)

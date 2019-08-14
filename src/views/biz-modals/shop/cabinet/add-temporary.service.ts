@@ -4,13 +4,17 @@ import {
   TemporaryCabinetApi,
   AddInput
 } from '@/api/v1/setting/cabinet/temporary'
-import { Effect } from 'rx-state'
+import { Effect, State } from 'rx-state'
+import { UserService } from '@/services/user.service'
 
 @Injectable()
-export class AddTemporaryService extends Store<any> {
-  constructor(private cabinetApi: TemporaryCabinetApi) {
-    super()
-  }
+export class AddTemporaryService {
+  loading$ = new State({})
+  sortTypes$ = this.userService.getOptions$('setting.cabinet.sort_type')
+  constructor(
+    private cabinetApi: TemporaryCabinetApi,
+    private userService: UserService
+  ) {}
   @Effect()
   add(params: AddInput) {
     return this.cabinetApi.add(params)

@@ -15,13 +15,13 @@
         <a-input
           placeholder="请输入首字母"
           maxlength="1"
-          v-decorator="rules.firstLetter"
+          v-decorator="decorators.first_letter"
         />
       </st-form-item>
       <st-form-item label="起始编号" required>
         <a-input-number
           placeholder="请输入起始编号"
-          v-decorator="ruleConfig.startNum"
+          v-decorator="decorators.start_num"
           :min="1"
           :max="9999"
           :precision="0"
@@ -32,7 +32,7 @@
         <st-input-number
           :float="true"
           placeholder="请输入售卖价格"
-          v-decorator="ruleConfig.priceNum"
+          v-decorator="decorators.price_num"
         >
           <template slot="addonAfter">
             元/天
@@ -43,17 +43,16 @@
         <st-input-number
           :float="true"
           placeholder="请输入转让手续费"
-          v-decorator="ruleConfig.transferNum"
+          v-decorator="decorators.transfer_num"
         >
           <template slot="addonAfter">
             <a-select v-model="transferUnit">
               <a-select-option
-                v-for="(item, index) in settingEnums.cabinet.transfer_unit
-                  .value"
+                v-for="(item, index) in transferUnits"
                 :key="index"
-                :value="+index"
+                :value="+item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
           </template>
@@ -61,21 +60,21 @@
       </st-form-item>
       <st-form-item label="可用状态" required>
         <a-radio-group
-          v-decorator="ruleConfig.useStatus"
+          v-decorator="decorators.use_status"
           @change="onUseStatusChange"
         >
           <a-radio
-            v-for="(item, index) in settingEnums.cabinet.use_status.value"
+            v-for="(item, index) in useStatus"
             :key="index"
-            :value="+index"
+            :value="+item.value"
           >
-            {{ item }}
+            {{ item.label }}
           </a-radio>
         </a-radio-group>
       </st-form-item>
-      <st-form-item v-if="isShowReason" labelFix>
+      <st-form-item labelFix>
         <st-textarea
-          v-model="info.reason"
+          v-decorator="decorators.reason"
           placeholder="请输入不可用原因，如维修中"
           maxlength="30"
           :autosize="{ minRows: 3 }"
@@ -86,19 +85,15 @@
 </template>
 <script>
 import { MessageService } from '@/services/message.service'
-import { UserService } from '@/services/user.service'
 import { EditLongTermService as EditService } from './edit-long-term.service'
-import { RuleConfig } from '@/constants/setting/cabinet-rule'
 import { PatternService } from '@/services/pattern.service'
-import { rules } from './cabinet.config'
+import { ruleOptions } from './cabinet.config'
 
 export default {
   serviceInject() {
     return {
       messageService: MessageService,
-      userService: UserService,
       editService: EditService,
-      ruleConfig: RuleConfig,
       pattern: PatternService
     }
   },
@@ -107,13 +102,17 @@ export default {
     return {
       resData: editService.resData$,
       loading: editService.loading$,
-      settingEnums: this.userService.settingEnums$
+      transferUnits: this.editService.transferUnits$,
+      useStatus: this.editService.useStatus$
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false,
-      form: this.$form.createForm(this),
       transferUnit: 0,
       isShowReason: false
     }
@@ -129,48 +128,31 @@ export default {
     }
   },
   computed: {
-    rules,
     info() {
       return this.resData.info
     }
   },
-  created() {
+  mounted() {
     this.editService.getUpdateInfo(this.id).subscribe(this.setFieldsValue)
   },
   methods: {
     setFieldsValue() {
       const { info } = this
+      this.transferUnit = info.transfer_unit
+      this.reasonHandler(info.use_status)
       this.form.setFieldsValue({
         first_letter: info.first_letter,
         start_num: info.start_num,
         price_num: info.price_num,
         transfer_num: info.transfer_num,
-        use_status: info.use_status
+        use_status: info.use_status,
+        reason: info.reason
       })
-      this.transferUnit = info.transfer_unit
-      this.reasonHandler(info.use_status)
     },
     onSubmit(e) {
       e.preventDefault()
-      this.form.validateFields().then(data => {
+      this.form.validate().then(data => {
         data.id = this.id
-        const reason = this.info.reason || ''
-        if (!reason.length) {
-          this.messageService.error({
-            content: '请输入不可用原因'
-          })
-          return
-        }
-        if (
-          this.isShowReason &&
-          !this.pattern.CN_EN_NUM_SPACE('1-30').test(reason)
-        ) {
-          this.messageService.error({
-            content: '不可用原因格式错误'
-          })
-          return
-        }
-        data.reason = reason
         data.transfer_unit = this.transferUnit
         this.editService.update(data).subscribe(this.onSubmitSuccess)
       })
