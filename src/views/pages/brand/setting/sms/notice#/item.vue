@@ -68,7 +68,7 @@
           <div class="width75" :class="bComponent('text')">
             <div class="mg-b16" v-if="info.preview">
               <span class="mg-r24 color-title">发送内容</span>
-              <div :class="bComponent('text-right')">
+              <span :class="bComponent('text-right')">
                 <a-input
                   v-if="info.notify_type.value === 1"
                   :class="bComponent('column-input')"
@@ -82,7 +82,7 @@
                   v-model="params.msg_suffix"
                   placeholder="请输入"
                 ></a-input>
-              </div>
+              </span>
             </div>
             <div class="mg-b16" v-if="info.preview">
               <span class="mg-r24 color-title">预览内容</span>
@@ -340,6 +340,7 @@ export default {
 
     this.params.msg_preffix = this.info.msg_preffix
     this.params.msg_suffix = this.info.msg_suffix
+    this.params.custom_phone = this.info.custom_phone.join(' ')
     this.params.notify_mode = {
       sms: this.info.notify_mode.sms && this.info.notify_mode.sms.value,
       app: this.info.notify_mode.app && this.info.notify_mode.app.value,
