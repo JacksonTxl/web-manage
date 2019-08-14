@@ -1,10 +1,9 @@
-import { MessageService } from './../../../services/message.service'
 import { UserService } from '@/services/user.service'
+import { MessageService } from './../../../services/message.service'
 import { CoachLevelApi } from '@/api/v1/setting/coach/level'
 import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
 
 import {
   StaffApi,
@@ -17,20 +16,20 @@ import { forkJoin } from 'rxjs'
 export class UpdateStaffPositionService {
   positionInfo$ = new State({})
   coachLevelList$ = new State([])
-  staffEnums$ = new State([])
   salaryBasic$ = new State([])
   salarySale$ = new State([])
   salaryCourse$ = new State([])
+  identityList$ = this.userService.getOptions$('staff.identity')
+  natureWork$ = this.userService.getOptions$('staff.nature_work')
   constructor(
     protected staffApi: StaffApi,
     private coachLevel: CoachLevelApi,
-    private userService: UserService,
-    private msg: MessageService
+    private msg: MessageService,
+    private userService: UserService
   ) {}
   getCoachLevel() {
     return this.coachLevel.getCoachLevelListAll().pipe(
       tap(res => {
-        console.log(res)
         this.coachLevelList$.commit(() => res.list)
       })
     )

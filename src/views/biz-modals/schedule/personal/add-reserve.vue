@@ -115,12 +115,12 @@ export default {
     const cs = this.commonService
     return {
       query: this.routeService.query$,
-      courseCoachOptions: cs.courseCoachOptions$ || [],
-      consumeOptions: cs.consumeOptions$ || [],
-      memberOptions: cs.memberOptions$ || [],
-      courseOptions: cs.courseOptions$ || [],
-      dateOptions: cs.dateOptions$ || [],
-      timeOptions: cs.timeOptions$ || []
+      courseCoachOptions: cs.courseCoachOptions$,
+      consumeOptions: cs.consumeOptions$,
+      memberOptions: cs.memberOptions$,
+      courseOptions: cs.courseOptions$,
+      dateOptions: cs.dateOptions$,
+      timeOptions: cs.timeOptions$
     }
   },
   data() {
@@ -216,7 +216,6 @@ export default {
       let disabledMinutes = []
       const allTime = this.range(0, 60)
       for (let i = 0; i < this.timeOptions.timing.length; i++) {
-        console.log('this.timeOptions.timing[i]', this.timeOptions.timing)
         const startHour = +moment(
           `${this.timeOptions.schedule_date} ${
             this.timeOptions.timing[i].start_time
@@ -266,12 +265,16 @@ export default {
       const allTime = this.range(0, 24)
       for (let i = 0; i < this.timeOptions.timing.length; i++) {
         const start = +moment(
-          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`
+          `${this.timeOptions.schedule_date} ${
+            this.timeOptions.timing[i].start_time
+          }`
         )
           .format('H')
           .valueOf()
         let end = +moment(
-          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`
+          `${this.timeOptions.schedule_date} ${
+            this.timeOptions.timing[i].end_time
+          }`
         )
           .format('H')
           .valueOf()

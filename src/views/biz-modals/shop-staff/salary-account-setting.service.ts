@@ -2,14 +2,7 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-
-import {
-  ShopStaffApi,
-  PutStaffBrandQuitInput,
-  PutStaffBindBankInput
-} from '@/api/v1/staff/staff'
-
-import { forkJoin } from 'rxjs'
+import { ShopStaffApi, PutStaffBindBankInput } from '@/api/v1/staff/staff'
 import { MessageService } from '@/services/message.service'
 
 interface SetState {

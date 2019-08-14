@@ -35,7 +35,6 @@
                 class="model-leave-store-container_same mg-b8"
               >
                 {{ item.num }}节未完成{{ item.name }}，
-                <!-- <a href="javascript:;">查看详情</a> -->
               </div>
             </template>
           </div>
