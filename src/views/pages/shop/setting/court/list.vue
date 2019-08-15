@@ -31,7 +31,7 @@
               <div :class="bItem('title-box')">
                 <st-t3 :class="bItem('title')">{{ item.area_name }}</st-t3>
                 <img
-                  v-if="item.is_vip"
+                  v-if="item.area_type === 2"
                   :class="bItem('level-img')"
                   src="~@/assets/img/icon_vip.png"
                   alt="icon_vip"
