@@ -24,7 +24,7 @@
           </a-radio>
         </a-radio-group>
       </st-form-item>
-      <st-form-item label="容纳人数">
+      <st-form-item label="容纳人数" v-if="isShowPersonNum">
         <st-input-number
           placeholder="请输入最大容纳人数，1-999"
           :min="1"
@@ -63,7 +63,8 @@ export default {
   },
   data() {
     return {
-      show: false
+      show: false,
+      isShowPersonNum: true
     }
   },
   created() {
@@ -90,6 +91,11 @@ export default {
     },
     onChooseRadio(e) {
       this.area_type = e.target.value
+      if (this.area_type === 3) {
+        this.isShowPersonNum = false
+      } else {
+        this.isShowPersonNum = true
+      }
     },
     onSubmitSuccess() {
       this.messageService.success({
