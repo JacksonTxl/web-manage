@@ -133,12 +133,13 @@ export default {
   },
   filters: {
     filterStartTime(val) {
-      const weekList = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-      const weekday = moment(val).day()
+      const weekday = moment(val)
+        .format('ddd')
+        .valueOf()
       const MMDD = moment(val)
         .format('MM-DD')
         .valueOf()
-      return `${MMDD} ${weekList[weekday]}`
+      return `${MMDD} ${weekday}`
     }
   },
   methods: {
