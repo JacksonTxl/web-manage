@@ -4,33 +4,31 @@
       class="page-team-table__title pd-x24 pd-y16 schedule-table__title"
       slot="title"
     >
-      <a-row :gutter="8">
-        <a-col :lg="8">
-          <st-button
-            v-modal-link="{ name: 'schedule-team-add-course-schedule-batch' }"
-            class="mg-r8"
-            type="primary"
-          >
-            批量排期
-          </st-button>
-          <st-button v-modal-link="{ name: 'schedule-team-copy-schedule' }">
-            复制排期
-          </st-button>
-        </a-col>
-        <a-col :lg="7" :offset="2">
-          <date
-            @today="getTable"
-            :start="query.start_date"
-            @pre="getTable"
-            @next="getTable"
-          />
-        </a-col>
-        <a-col :lg="7" class="schedule-button">
-          <st-button @click="onClickSkipSchedule">
-            <st-icon type="calendar"></st-icon>
-          </st-button>
-        </a-col>
-      </a-row>
+      <div class="title__left">
+        <st-button
+          v-modal-link="{ name: 'schedule-team-add-course-schedule-batch' }"
+          class="mg-r8"
+          type="primary"
+        >
+          批量排期
+        </st-button>
+        <st-button v-modal-link="{ name: 'schedule-team-copy-schedule' }">
+          复制排期
+        </st-button>
+      </div>
+      <div class="title__center">
+        <date
+          @today="getTable"
+          :start="query.start_date"
+          @pre="getTable"
+          @next="getTable"
+        />
+      </div>
+      <div class="title__center schedule-button">
+        <st-button @click="onClickSkipSchedule">
+          <st-icon type="calendar"></st-icon>
+        </st-button>
+      </div>
     </div>
     <template v-for="card in scheduleTable">
       <a-card
