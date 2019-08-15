@@ -145,8 +145,8 @@ export class PersonalScheduleCommonService {
    * @param query
    * 获取预约日期Options
    */
-  getDateList(id: any) {
-    return this.commonApi.getDateList(id).pipe(
+  getDateList(query: any) {
+    return this.commonApi.getDateList(query).pipe(
       tap(res => {
         this.state$.commit(state => {
           state.dateOptions = res.list

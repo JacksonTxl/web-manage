@@ -89,7 +89,7 @@ export default {
     },
     moment,
     onSubmit() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           this.surplusService
             .edit(

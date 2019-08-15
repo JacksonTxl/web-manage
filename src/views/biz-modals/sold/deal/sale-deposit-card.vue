@@ -470,7 +470,7 @@ export default {
       })
     },
     onCreateOrder() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           let reduce_amount = this.reduceAmount ? +this.reduceAmount : 0
           this.saleDepositCardService
@@ -499,7 +499,7 @@ export default {
       })
     },
     onPay() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           let reduce_amount = this.reduceAmount ? +this.reduceAmount : 0
           this.saleDepositCardService

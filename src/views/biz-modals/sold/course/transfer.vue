@@ -451,7 +451,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           let sold_type = this.isPackage
             ? this.packageTransferInfo.sold_type

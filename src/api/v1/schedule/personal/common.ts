@@ -44,8 +44,8 @@ export class PersonalCommonApi extends Api {
   /**
    * 获取预约日期
    */
-  getDateList(id: any) {
-    return this.http.get(`/v1/schedule/personal/date/${id}`)
+  getDateList(query: any) {
+    return this.http.get(`/v1/schedule/personal/date/${query.id}`, { query })
   }
   /**
    * 获取预约日期

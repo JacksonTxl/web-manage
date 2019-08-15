@@ -129,6 +129,7 @@ export default {
     return {
       form,
       decorators,
+      member_id: '',
       show: false,
       value: '',
       fetching: false,
@@ -192,7 +193,11 @@ export default {
         scheduling_id: undefined,
         reserve_start_time: undefined
       })
-      this.commonService.getOptions('getDateList', val, () => {})
+      this.commonService.getOptions(
+        'getDateList',
+        { id: val, member_id: this.member_id },
+        () => {}
+      )
     },
     range(start, end) {
       const result = []
@@ -217,30 +222,22 @@ export default {
       const allTime = this.range(0, 60)
       for (let i = 0; i < this.timeOptions.timing.length; i++) {
         const startHour = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].start_time
-          }`
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`
         )
           .format('H')
           .valueOf()
         const endHour = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].end_time
-          }`
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`
         )
           .format('H')
           .valueOf()
         const start = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].start_time
-          }`
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`
         )
           .format('mm')
           .valueOf()
         const end = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].end_time
-          }`
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`
         )
           .format('mm')
           .valueOf()
@@ -265,16 +262,12 @@ export default {
       const allTime = this.range(0, 24)
       for (let i = 0; i < this.timeOptions.timing.length; i++) {
         const start = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].start_time
-          }`
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`
         )
           .format('H')
           .valueOf()
         let end = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].end_time
-          }`
+          `${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`
         )
           .format('H')
           .valueOf()
@@ -311,6 +304,7 @@ export default {
     },
     onChangeMember(val) {
       this.form.resetFields()
+      this.member_id = val
       this.commonService.getOptions('getConsumeList', val, () => {})
     }
   }
