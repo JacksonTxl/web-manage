@@ -41,8 +41,38 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    specs: {},
-    open_type: {},
+    coach_level: {
+      rules: [{ required: true, message: '请选择教练等级' }]
+    },
+    buyNum: {
+      rules: [
+        {
+          vali: (rule: any, value: any, values: any) => {
+            let price = 0
+            if (vm.info.price_model === 1) {
+              // 教练平级
+              price = vm.personalPrice.min_sell
+            } else {
+              price = vm.minPrice
+            }
+            if (!value) {
+              return '请输入购买数量'
+            } else if (value < price) {
+              return `不能少于课程定价的最低购买节数${price}`
+            }
+          }
+        }
+      ]
+    },
+    coachId: {
+      rules: [{ required: true, message: '请选择上课教练' }]
+    },
+    gift_course_num: {
+      rules: [{ required: true, message: '请选择销售人员' }]
+    },
+    coursePrice: {
+      rules: [{ required: true, message: '请输入课程的单价' }]
+    },
     saleName: {
       rules: [{ required: true, message: '请选择销售人员' }]
     }
