@@ -36,6 +36,12 @@
                   src="~@/assets/img/icon_vip.png"
                   alt="icon_vip"
                 />
+                <img
+                  v-if="item.area_type === 3"
+                  :class="bItem('level-img')"
+                  src="~@/assets/img/icon_gate.png"
+                  alt="icon_gate"
+                />
               </div>
               <div :class="bItem('content-box')">
                 <div :class="bItem('content-item')">
