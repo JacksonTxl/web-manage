@@ -30,62 +30,54 @@
         <!-- 新账号注册 -->
         <st-form-item
           label="登录账号"
-          v-if="!hasAccountName && openJurisdiction"
+          v-show="!hasAccountName && openJurisdiction"
           required
         >
           <a-input
             placeholder="6～18个字符，可使用字母，数字，下划线"
-            v-decorator="rules.name"
+            v-decorator="decorators.name"
             autocomplete="off"
           />
         </st-form-item>
         <st-form-item
           label="登录密码"
-          v-if="!hasAccountName && openJurisdiction"
+          v-show="!hasAccountName && openJurisdiction"
           required
         >
           <a-input
-            v-decorator="[
-              'password',
-              { rules: [{ validator: validatorPassword }] }
-            ]"
+            type="password"
+            autocomplete="new_password"
+            v-decorator="decorators.password"
             placeholder="6~15个字符，区分大小写"
-            autocomplete="off"
           />
         </st-form-item>
         <st-form-item
           label="确认密码"
-          v-if="!hasAccountName && openJurisdiction"
+          v-show="!hasAccountName && openJurisdiction"
           required
         >
           <a-input
-            v-decorator="[
-              'repeat_password',
-              { rules: [{ validator: validatorPassword }] }
-            ]"
+            type="password"
+            autocomplete="new_password"
+            v-decorator="decorators.repeat_password"
             placeholder="请再次填写密码"
-            autocomplete="off"
           />
         </st-form-item>
         <!-- 登录重置密码 -->
-        <st-form-item label="登录密码" v-if="openRepassword" required>
+        <st-form-item label="登录密码" v-show="openRepassword" required>
           <a-input
-            v-decorator="[
-              'password',
-              { rules: [{ validator: validatorPassword }] }
-            ]"
+            v-decorator="decorators.password"
             placeholder="6~15个字符，区分大小写"
-            autocomplete="off"
+            type="password"
+            autocomplete="new_password"
           />
         </st-form-item>
-        <st-form-item label="确认密码" v-if="openRepassword" required>
+        <st-form-item label="确认密码" v-show="openRepassword" required>
           <a-input
-            v-decorator="[
-              'repeat_password',
-              { rules: [{ validator: validatorPassword }] }
-            ]"
+            v-decorator="decorators.repeat_password"
             placeholder="请再次填写密码"
-            autocomplete="off"
+            type="password"
+            autocomplete="new_password"
           />
         </st-form-item>
         <!-- 绑定账号 -->
@@ -115,13 +107,11 @@
 <script>
 import StaffInfo from './staff-info'
 import { RePasswordService } from './re-password.service'
-import { RuleConfig } from '@/constants/staff/rule'
-
+import { ruleOptions } from './re-password.config'
 export default {
   name: 'RePassword',
   serviceInject() {
     return {
-      rules: RuleConfig,
       rePasswordService: RePasswordService
     }
   },
@@ -141,11 +131,14 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       openJurisdiction: false,
       openRepassword: false, // 重置密码
-      show: false,
-      form: this.$form.createForm(this)
+      show: false
     }
   },
   computed: {
@@ -169,31 +162,6 @@ export default {
     this.init()
   },
   methods: {
-    validatorPassword(rule, value, callback) {
-      console.log('value', value)
-      if (value === undefined || value === '') {
-        // eslint-disable-next-line
-        callback('请输入登录密码')
-      } else if (value.length < 6 || value.length > 15) {
-        // eslint-disable-next-line
-        callback('请输入正确格式登录密码')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    validatorRePassword(rule, value, callback) {
-      if (value === undefined || value === '') {
-        // eslint-disable-next-line
-        callback('请输入登录密码')
-      } else if (value.length < 6 || value.length > 15) {
-        // eslint-disable-next-line
-        callback('请输入正确格式登录密码')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
     changePermission(e) {
       this.openJurisdiction = e.target.checked
     },
@@ -217,38 +185,41 @@ export default {
       this.openRepassword = true
     },
     onSubmit() {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('onSubmit', values)
-          const form = {
-            id: this.staff.id,
-            is_permission: +this.openJurisdiction,
-            ...values
-          }
-          console.log('hasAccountName', this.hasAccountName)
-          if (!this.hasAccountName) {
-            if (values.name && values.password && values.repeat_password) {
-              this.rePasswordService.setAccount(form).subscribe()
-            } else {
-              this.rePasswordService
-                .updatepermission(this.staff.id, {
-                  is_permission: +this.openJurisdiction
-                })
-                .subscribe()
-            }
+      this.form.validate().then(values => {
+        const form = {
+          id: this.staff.id,
+          is_permission: +this.openJurisdiction,
+          ...values
+        }
+        if (!this.hasAccountName) {
+          if (values.name && values.password && values.repeat_password) {
+            this.rePasswordService.setAccount(form).subscribe(() => {
+              this.show = false
+            })
           } else {
-            if (values.password && values.repeat_password) {
-              this.rePasswordService.rePassword(form).subscribe()
-            } else {
-              this.rePasswordService
-                .updatepermission(this.staff.id, {
-                  is_permission: +this.openJurisdiction
-                })
-                .subscribe()
-            }
+            this.rePasswordService
+              .updatepermission(this.staff.id, {
+                is_permission: +this.openJurisdiction
+              })
+              .subscribe(() => {
+                this.show = false
+              })
+          }
+        } else {
+          if (values.password && values.repeat_password) {
+            this.rePasswordService.rePassword(form).subscribe(() => {
+              this.show = false
+            })
+          } else {
+            this.rePasswordService
+              .updatepermission(this.staff.id, {
+                is_permission: +this.openJurisdiction
+              })
+              .subscribe(() => {
+                this.show = false
+              })
           }
         }
-        this.show = false
       })
     }
   }

@@ -21,21 +21,15 @@
           @submit="save"
           class="modal-bind-entity-card__form"
         >
-          <st-form-item label="实体卡号">
+          <st-form-item label="实体卡号" required>
             <a-input
               placeholder="请输入实体卡号"
-              v-decorator="[
-                'card_number',
-                { rules: [{ required: true, message: '请输入实体卡号' }] }
-              ]"
+              v-decorator="decorators.card_number"
             />
           </st-form-item>
-          <st-form-item label="物理ID">
+          <st-form-item label="物理ID" required>
             <a-input
-              v-decorator="[
-                'physical_number',
-                { rules: [{ required: true, message: '请输入物理ID' }] }
-              ]"
+              v-decorator="decorators.physical_number"
               placeholder="请将实体卡置于读卡器上"
             />
           </st-form-item>
@@ -47,6 +41,7 @@
 <script>
 import StaffInfo from './staff-info'
 import { BindEntityCardService } from './bind-entity-card.service'
+import { ruleOptions } from './bind-entity-card.config'
 export default {
   name: 'BindEntityCard',
   serviceInject() {
@@ -55,9 +50,12 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      show: false,
-      form: this.$form.createForm(this)
+      form,
+      decorators,
+      show: false
     }
   },
   props: {
@@ -72,16 +70,12 @@ export default {
   methods: {
     save(e) {
       e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          const form = { id: this.staff.id, ...values }
-          this.bindEntityCardService
-            .putStaffBindPhysical(form)
-            .subscribe(() => {
-              this.show = false
-              this.$router.push({ force: true })
-            })
-        }
+      this.form.validate().then(values => {
+        const form = { id: this.staff.id, ...values }
+        this.bindEntityCardService.putStaffBindPhysical(form).subscribe(() => {
+          this.show = false
+          this.$router.push({ force: true })
+        })
       })
     }
   }
