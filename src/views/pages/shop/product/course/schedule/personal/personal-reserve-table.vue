@@ -4,33 +4,31 @@
       class="page-personal-table__title pd-x24 pd-y16 schedule-table__title"
       slot="title"
     >
-      <a-row :gutter="8">
-        <a-col :lg="8">
-          <st-button v-if="auth.add">
-            <a
-              v-modal-link="{
-                name: 'schedule-personal-add-reserve',
-                props: { id: 1 }
-              }"
-            >
-              添加预约
-            </a>
-          </st-button>
-        </a-col>
-        <a-col :lg="7" :offset="2">
-          <date
-            @today="getList"
-            :start="query.start_date"
-            @pre="getList"
-            @next="getList"
-          />
-        </a-col>
-        <a-col :lg="7" class="schedule-button">
-          <st-button @click="onClickSkipSchedule">
-            <st-icon type="calendar"></st-icon>
-          </st-button>
-        </a-col>
-      </a-row>
+      <div class="title__left">
+        <st-button v-if="auth.add">
+          <a
+            v-modal-link="{
+              name: 'schedule-personal-add-reserve',
+              props: { id: 1 }
+            }"
+          >
+            添加预约
+          </a>
+        </st-button>
+      </div>
+      <div class="title__center">
+        <date
+          @today="getList"
+          :start="query.start_date"
+          @pre="getList"
+          @next="getList"
+        />
+      </div>
+      <div class="title__right schedule-button">
+        <st-button @click="onClickSkipSchedule">
+          <st-icon type="calendar"></st-icon>
+        </st-button>
+      </div>
     </div>
     <a-row class="mg-t8 mg-r24 mg-l24">
       <st-table
