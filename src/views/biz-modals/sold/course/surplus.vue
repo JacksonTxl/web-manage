@@ -42,17 +42,7 @@
             <td>
               <st-form-item labelWidth="0" labelGutter="0">
                 <st-input-number
-                  v-decorator="[
-                    `num-${index}`,
-                    {
-                      rules: [
-                        {
-                          required: true,
-                          message: '请输入课时'
-                        }
-                      ]
-                    }
-                  ]"
+                  v-decorator="decorators[`num-${index}`]"
                   :min="0"
                   :max="999"
                   placeholder="输入修改后的课时"
@@ -117,8 +107,11 @@ export default {
     this.getEditInfo()
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      form: this.$form.createForm(this),
+      form,
+      decorators,
       show: false,
       courseList: [],
       remarks: ''

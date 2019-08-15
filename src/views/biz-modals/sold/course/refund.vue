@@ -98,10 +98,7 @@
               :max="99999.9"
               :float="true"
               placeholder="请输入本次退款的实际金额"
-              v-decorator="[
-                'refundPrice',
-                { rules: [{ validator: refund_price_validator }] }
-              ]"
+              v-decorator="decorators.refundPrice"
             >
               <template slot="addonAfter">
                 元

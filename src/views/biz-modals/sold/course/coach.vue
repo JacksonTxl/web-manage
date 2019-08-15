@@ -16,10 +16,7 @@
         </st-info>
         <st-hr></st-hr>
         <st-form-item label="修改教练" required>
-          <a-select
-            v-decorator="['coach', { rules: [{ validator: coach_validator }] }]"
-            placeholder="选择修改教练"
-          >
+          <a-select v-decorator="decorators.coach" placeholder="选择修改教练">
             <a-select-option
               v-for="(item, index) in coachList"
               :key="index"
@@ -32,7 +29,7 @@
         <st-form-item label="备注">
           <st-textarea
             :maxlength="30"
-            v-decorator="['description']"
+            v-decorator="decorators.description"
             :autosize="{ minRows: 4, maxRows: 6 }"
           />
         </st-form-item>
@@ -50,6 +47,7 @@
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { CoachService } from './coach.service'
+import { ruleOptions } from './coach.config'
 export default {
   name: 'ModalSoldPersonalCoach',
   bem: {
@@ -84,22 +82,15 @@ export default {
     this.getCoachList()
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      form: this.$form.createForm(this),
+      form,
+      decorators,
       show: false
     }
   },
   methods: {
-    // pay_type validatorFn
-    coach_validator(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请选择修改教练')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
     getCoachList() {
       this.coachService.getCoachList().subscribe()
     },

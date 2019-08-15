@@ -42,10 +42,7 @@
               <a-form-item class="page-a-form">
                 <a-date-picker
                   :disabledDate="disabledEndDate"
-                  v-decorator="[
-                    'endTime',
-                    { rules: [{ validator: end_time_validator }] }
-                  ]"
+                  v-decorator="decorators.endTime"
                   @change="end_time_change"
                   style="width:170px"
                   :showTime="{
@@ -78,10 +75,7 @@
             labelGutter="12px"
           >
             <a-select
-              v-decorator="[
-                'payType',
-                { rules: [{ validator: pay_type_validator }] }
-              ]"
+              v-decorator="decorators.payType"
               placeholder="选择支付方式"
               :disabled="!(frozen_fee > 0)"
             >
@@ -111,8 +105,12 @@ import { cloneDeep } from 'lodash-es'
 import { UserService } from '@/services/user.service'
 import { FreezeService } from './freeze.service'
 import { OPERATION_TYPES } from '@/constants/sold/operations'
+import { ruleOptions } from './freeze.config'
 export default {
   name: 'ModalSoldCourseFreeze',
+  serviceProviders() {
+    return [FreezeService]
+  },
   serviceInject() {
     return {
       userService: UserService,
@@ -132,10 +130,13 @@ export default {
   },
   props: ['id', 'type'],
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       OPERATION_TYPES,
       show: false,
-      form: this.$form.createForm(this),
       startTime: moment(),
       endTime: null,
       frozen_fee: null,

@@ -23,7 +23,7 @@
         <st-hr marginTop="0" marginBottom="0"></st-hr>
         <st-form-item label="修改课时" required class="mg-t24">
           <st-input-number
-            v-decorator="['times', { rules: [{ validator: times_validator }] }]"
+            v-decorator="decorators.times"
             placeholder="请输入修改后的额度"
           >
             <template slot="addonAfter">
@@ -33,7 +33,7 @@
         </st-form-item>
         <st-form-item label="备注" class="mg-b0">
           <a-textarea
-            v-decorator="['description']"
+            v-decorator="decorators.description"
             :autosize="{ minRows: 4, maxRows: 6 }"
           />
         </st-form-item>
@@ -50,10 +50,14 @@
 <script>
 import { SurplusService } from './surplus-personal.service'
 import moment from 'moment'
+import { ruleOptions } from './surplus-personal.config'
 export default {
   name: 'ModalSoldCourseSurplus',
   bem: {
     surplus: 'modal-sold-course-surplus'
+  },
+  serviceProviders() {
+    return [SurplusService]
   },
   serviceInject() {
     return {
@@ -71,22 +75,15 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      form: this.$form.createForm(this),
+      form,
+      decorators,
       show: false
     }
   },
   methods: {
-    // times validatorFn
-    times_validator(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请输入修改课时')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
     moment,
     onSubmit() {
       this.form.validate((error, values) => {
