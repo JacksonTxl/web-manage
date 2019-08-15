@@ -13,7 +13,10 @@
           v-decorator="rules.areaName"
         />
       </st-form-item>
-      <st-form-item label="场地属性" required>
+      <st-form-item label="场地属性" v-if="info.area_type === 3">
+        <span>大门</span>
+      </st-form-item>
+      <st-form-item label="场地属性" required v-else>
         <a-radio-group @change="onChooseRadio" v-decorator="rules.areaType">
           <a-radio
             v-for="(item, index) in areaType"
@@ -24,7 +27,7 @@
           </a-radio>
         </a-radio-group>
       </st-form-item>
-      <st-form-item label="容纳人数">
+      <st-form-item label="容纳人数" v-if="info.area_type !== 3">
         <st-input-number
           placeholder="请输入最大容纳人数，1-999"
           :min="1"
@@ -79,6 +82,9 @@ export default {
   created() {
     this.form = this.$form.createForm(this)
     this.editService.getInfo(this.id).subscribe(this.setFieldsValue)
+    this.areaType = this.areaType.filter(({ value }) => {
+      return value !== 3
+    })
   },
   methods: {
     setFieldsValue() {
@@ -89,14 +95,10 @@ export default {
         contain_number: info.contain_number
       })
     },
-    // onIsVipChange(e) {
-    //   this.info.is_vip = !this.info.is_vip
-    // },
     onSubmit(e) {
       e.preventDefault()
       this.form.validateFields().then(values => {
         const data = this.getData()
-        console.log(data)
         this.editService.update(data).subscribe(this.onSubmitSuccess)
       })
     },
