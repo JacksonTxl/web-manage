@@ -57,7 +57,7 @@
           </div>
           <div :class="bItem('footer')">
             <router-link
-              v-if="auth.seatSet"
+              v-if="item.area_type !== 3"
               :class="bItem('action')"
               :to="`./site?id=${item.id}`"
               class="st-link-secondary"
