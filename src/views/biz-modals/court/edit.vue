@@ -13,12 +13,21 @@
           v-decorator="rules.areaName"
         />
       </st-form-item>
-      <st-form-item labelFix>
-        <a-checkbox :checked="!!info.is_vip" @change="onIsVipChange">
-          VIP区域
-        </a-checkbox>
+      <st-form-item label="场地属性" v-if="info.area_type === 3">
+        <span>大门</span>
       </st-form-item>
-      <st-form-item label="容纳人数">
+      <st-form-item label="场地属性" required v-else>
+        <a-radio-group @change="onChooseRadio" v-decorator="rules.areaType">
+          <a-radio
+            v-for="(item, index) in areaType"
+            :value="item.value"
+            :key="index"
+          >
+            {{ item.label }}
+          </a-radio>
+        </a-radio-group>
+      </st-form-item>
+      <st-form-item label="容纳人数" v-if="info.area_type !== 3">
         <st-input-number
           placeholder="请输入最大容纳人数，1-999"
           :min="1"
@@ -52,7 +61,8 @@ export default {
   rxState() {
     return {
       info: this.editService.info$,
-      loading: this.editService.loading$
+      loading: this.editService.loading$,
+      areaType: this.editService.areaType$
     }
   },
   props: {
@@ -60,6 +70,9 @@ export default {
       type: [Number, String],
       default: 0
     }
+  },
+  computed: {
+    rules
   },
   data() {
     return {
@@ -69,24 +82,22 @@ export default {
   created() {
     this.form = this.$form.createForm(this)
     this.editService.getInfo(this.id).subscribe(this.setFieldsValue)
-  },
-  computed: {
-    rules
+    this.areaType = this.areaType.filter(({ value }) => {
+      return value !== 3
+    })
   },
   methods: {
     setFieldsValue() {
       const info = this.info
       this.form.setFieldsValue({
         area_name: info.area_name,
+        area_type: info.area_type,
         contain_number: info.contain_number
       })
     },
-    onIsVipChange(e) {
-      this.info.is_vip = !this.info.is_vip
-    },
     onSubmit(e) {
       e.preventDefault()
-      this.form.validateFields().then(() => {
+      this.form.validateFields().then(values => {
         const data = this.getData()
         this.editService.update(data).subscribe(this.onSubmitSuccess)
       })
@@ -97,8 +108,11 @@ export default {
     getData() {
       const data = this.form.getFieldsValue()
       data.id = this.id
-      data.is_vip = +this.info.is_vip
+      data.area_type = this.info.area_type
       return data
+    },
+    onChooseRadio(e) {
+      this.info.area_type = e.target.value
     },
     onSubmitSuccess() {
       this.messageService.success({
