@@ -494,7 +494,7 @@ export default {
       })
     },
     onCreateOrder() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           let reduce_amount = this.reduceAmount ? +this.reduceAmount : undefined
           this.renewalMemberService
@@ -531,7 +531,7 @@ export default {
       })
     },
     onPay() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           let reduce_amount = this.reduceAmount ? +this.reduceAmount : undefined
           this.renewalMemberService

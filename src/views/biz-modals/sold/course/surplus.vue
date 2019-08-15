@@ -133,7 +133,7 @@ export default {
         })
     },
     onSubmit() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           Object.keys(values).forEach(i => {
             this.courseList[i.split('-')[1]].courseNum = +values[i]

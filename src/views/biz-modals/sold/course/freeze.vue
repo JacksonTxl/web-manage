@@ -192,7 +192,7 @@ export default {
       this.form.resetFields(['payType'])
     },
     onSubmit() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           this.freezeService
             .freeze(

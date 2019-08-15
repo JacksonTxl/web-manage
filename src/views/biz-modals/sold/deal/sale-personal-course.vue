@@ -713,7 +713,7 @@ export default {
       this.couponText = `${price}元`
     },
     onClickCourseAmount() {
-      this.form.validateFields(['buyNum'], (error, values) => {
+      this.form.validate(['buyNum'], (error, values) => {
         if (!error) {
           const params = {
             id: this.id,
@@ -787,7 +787,7 @@ export default {
         this.isAmountStateTip = '购买数量未确认，请点击确定！'
         return
       }
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           this.salePersonalCourseService
             .setTransactionOrder({
@@ -827,7 +827,7 @@ export default {
         this.isAmountStateTip = '购买数量未确认，请点击确定！'
         return
       }
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           this.salePersonalCourseService
             .setTransactionPay({

@@ -152,7 +152,7 @@ export default {
         .format('YYYY-MM-DD HH:mm')
     },
     onSubmit() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           let data = values.end_time || values.start_time
           this.setTimeService

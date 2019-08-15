@@ -651,7 +651,7 @@ export default {
       this.upgradeMemberService.priceAction$.dispatch(params)
     },
     onCreateOrder() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           this.upgradeMemberService
             .upgrade(
@@ -684,7 +684,7 @@ export default {
       })
     },
     onPay() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           this.upgradeMemberService
             .upgrade(

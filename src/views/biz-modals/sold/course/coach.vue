@@ -104,7 +104,7 @@ export default {
       this.coachService.getCoachList().subscribe()
     },
     onSubmit() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           this.coachService
             .edit(

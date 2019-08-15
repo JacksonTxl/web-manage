@@ -636,7 +636,7 @@ export default {
       })
     },
     onCreateOrder() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           this.saleMemberCardService
             .setTransactionOrder({
@@ -670,7 +670,7 @@ export default {
       })
     },
     onPay() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           this.saleMemberCardService
             .setTransactionPay({

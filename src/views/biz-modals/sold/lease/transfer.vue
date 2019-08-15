@@ -193,21 +193,21 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { TransferService } from './transfer.service'
 import { UserService } from '@/services/user.service'
-import { RuleConfig } from '@/constants/rule'
 import { cloneDeep } from 'lodash-es'
 import { PatternService } from '@/services/pattern.service'
-import { OPERATION_TYPES } from '@/constants/sold/operations'
+import { ruleOptions } from './transfer.config'
 export default {
   name: 'ModalSoldLeaseTransfer',
   bem: {
     transfer: 'modal-sold-lease-transfer'
   },
+  serviceProviders() {
+    return [TransferService]
+  },
   serviceInject() {
     return {
-      rules: RuleConfig,
       userService: UserService,
       transferService: TransferService,
       pattern: PatternService
@@ -222,35 +222,31 @@ export default {
       sold: this.userService.soldEnums$
     }
   },
-  computed: {},
   props: ['id', 'type'],
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      OPERATION_TYPES,
+      form,
+      decorators,
       show: false,
-      form: this.$form.createForm(this),
       // 搜索会员
       memberSearchText: '',
       searchMemberIsShow: true,
-      member_id: '',
       isSelectMember: false
     }
   },
   created() {
-    this.transferService.getDetail(this.id, this.type).subscribe(res => {
-      this.transferService
-        .getPayList({
-          member_id: res.info.member_id,
-          product_type: res.info.product_type,
-          operation_type: OPERATION_TYPES.TRANSFORM
-        })
-        .subscribe()
-      this.member_id = res.info.member_id
-    })
+    this.transferService.getDetail(this.id, this.type).subscribe()
+  },
+  computed: {
+    member_id() {
+      return this.info.member_id
+    }
   },
   methods: {
     onSubmit() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           this.transferService
             .setTransaction(
@@ -273,75 +269,6 @@ export default {
             })
         }
       })
-    },
-    member_id_validator(rule, value, callback) {
-      if (!value && this.searchMemberIsShow) {
-        // eslint-disable-next-line
-        callback('请选择转让会员')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    member_name_validator(rule, value, callback) {
-      if (!value && !this.searchMemberIsShow) {
-        // eslint-disable-next-line
-        callback('请输入会员姓名')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    member_mobile_validator(rule, value, callback) {
-      if (!value && !this.searchMemberIsShow) {
-        // eslint-disable-next-line
-        callback('请输入手机号')
-      } else if (value && !this.rules.mobile.test(value)) {
-        // eslint-disable-next-line
-        callback('输入的手机号格式错误，请重新输入')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    start_time_validator(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请选择有效开始日期')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    remain_price_validator(rule, value, callback) {
-      if (!value || +value === 0) {
-        // eslint-disable-next-line
-        callback('请输入剩余价值')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    contract_number(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请输入合同编号')
-      } else if (!value.match(this.pattern.EN_NUM('6-20'))) {
-        // eslint-disable-next-line
-        callback('请输入正确合同编号')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    pay_type_validator(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请选择支付方式')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
     },
     // 切换添加会员
     onAddMember() {
@@ -379,7 +306,6 @@ export default {
       }
     },
     // time
-    moment,
     disabledStartDate(startValue) {
       return (
         startValue.valueOf() <

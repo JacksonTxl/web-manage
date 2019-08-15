@@ -55,10 +55,7 @@
                   :showToday="false"
                   showTime
                   :disabledDate="disabledStartDate"
-                  v-decorator="[
-                    'end_time',
-                    { rules: [{ validator: end_time }] }
-                  ]"
+                  v-decorator="decorators.end_time"
                   @change="end_time_change"
                 />
               </a-form-item>
@@ -70,7 +67,7 @@
               :min="1"
               :max="999"
               @change="changeLeaseNum"
-              v-decorator="['lease_num', { rules: [{ validator: lease_num }] }]"
+              v-decorator="decorators.lease_num"
             >
               <template slot="addonAfter">
                 天
@@ -84,10 +81,7 @@
             </template>
             <div :class="relet('contract')">
               <a-input
-                v-decorator="[
-                  'contract_number',
-                  { rules: [{ validator: contract_number }] }
-                ]"
+                v-decorator="decorators.contract_number"
                 placeholder="请输入合同编号"
               ></a-input>
               <st-button
@@ -157,7 +151,7 @@
         <div :class="relet('remarks')">
           <st-form-item label="销售人员" required>
             <a-select
-              v-decorator="['saleName', { rules: [{ validator: sale_name }] }]"
+              v-decorator="decorators.saleName"
               placeholder="选择签单的工作人员"
             >
               <a-select-option
@@ -208,14 +202,17 @@
 import { ReletService } from './relet.service'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
-import moment from 'moment'
 import { PatternService } from '@/services/pattern.service'
+import { ruleOptions } from './relet.config'
 
 export default {
   name: 'ModalSoldLeaseRelet',
   bem: {
     relet: 'modal-sold-lease-relet',
     sale: 'modal-sold-deal-sale'
+  },
+  serviceProviders() {
+    return [ReletService]
   },
   serviceInject() {
     return {
@@ -235,9 +232,12 @@ export default {
   },
   props: ['id'],
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false,
-      form: this.$form.createForm(this),
       endTimeValue: null,
       // 定金
       advanceDropdownVisible: false,
@@ -335,45 +335,6 @@ export default {
       this.$emit('ok')
       this.show = false
     },
-    contract_number(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请输入合同编号')
-      } else if (!value.match(this.pattern.EN_NUM('6-20'))) {
-        // eslint-disable-next-line
-        callback('请输入正确合同编号')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    lease_num(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请填租赁天数')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    end_time(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请选择租赁时间')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    sale_name(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请选择销售人员')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
     // 租赁时间-end
     end_time_change(data) {
       this.form.setFieldsValue({
@@ -383,7 +344,7 @@ export default {
       this.getPrice()
     },
     onCreateOrder() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           this.reletService
             .setTransactionOrder(
@@ -413,7 +374,7 @@ export default {
       })
     },
     onPay() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           this.reletService
             .setTransactionPay(

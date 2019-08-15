@@ -39,7 +39,7 @@
       </a-row>
       <st-form :form="form" labelWidth="88px">
         <div :class="sale('sale')">
-          <st-form-item v-show="searchMemberIsShow" label="购买会员" required>
+          <st-form-item v-if="searchMemberIsShow" label="购买会员" required>
             <a-select
               showSearch
               allowClear
@@ -84,7 +84,7 @@
               <span @click="onAddMember">添加新会员？</span>
             </p>
           </st-form-item>
-          <st-form-item v-show="!searchMemberIsShow" label="会员姓名" required>
+          <st-form-item v-if="!searchMemberIsShow" label="会员姓名" required>
             <a-input
               v-decorator="[
                 'memberName',
@@ -93,7 +93,7 @@
               placeholder="请输入会员姓名"
             ></a-input>
           </st-form-item>
-          <st-form-item v-show="!searchMemberIsShow" label="手机号" required>
+          <st-form-item v-if="!searchMemberIsShow" label="手机号" required>
             <a-input
               v-decorator="[
                 'memberMobile',
@@ -286,7 +286,6 @@
 
 <script>
 import { SaleCourseService } from './sale-course.service'
-import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
 import { RuleConfig } from '@/constants/rule'
@@ -378,16 +377,6 @@ export default {
         package_id: this.id
       }
       this.saleCourseService.getCouponList(params).subscribe()
-    },
-    moment,
-    member_id_validator(rule, value, callback) {
-      if ((!value || value.length > 15) && this.searchMemberIsShow) {
-        // eslint-disable-next-line
-        callback('请选择转让会员，查询条件长度15')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
     },
     member_name_validator(rule, value, callback) {
       if (
@@ -522,7 +511,7 @@ export default {
       })
     },
     onCreateOrder() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           this.saleCourseService
             .setTransactionOrder({
@@ -551,7 +540,7 @@ export default {
       })
     },
     onPay() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           this.saleCourseService
             .setTransactionPay({

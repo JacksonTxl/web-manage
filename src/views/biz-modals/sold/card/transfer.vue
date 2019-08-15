@@ -390,7 +390,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         let sold_type = this.isDeposit
           ? this.depositTransferInfo.contract_type
           : this.isMember
