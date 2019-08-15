@@ -44,14 +44,14 @@
                 />
               </div>
               <div :class="bItem('content-box')">
-                <div :class="bItem('content-item')">
+                <div :class="bItem('content-item')" v-if="item.area_type !== 3">
                   <label :class="bItem('label')">容纳人数</label>
                   <p :class="bItem('text')">
                     {{ item.contain_number }}
                     <span :class="bItem('sub-text')">人</span>
                   </p>
                 </div>
-                <div :class="bItem('content-item')">
+                <div :class="bItem('content-item')" v-if="item.area_type !== 3">
                   <label :class="bItem('label')">座位模板</label>
                   <p :class="bItem('text')">
                     {{ item.seat_num }}
