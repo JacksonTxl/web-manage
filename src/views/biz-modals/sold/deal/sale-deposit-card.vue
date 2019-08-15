@@ -55,10 +55,7 @@
               :defaultActiveFirstOption="false"
               :showArrow="false"
               :filterOption="false"
-              v-decorator="[
-                'memberId',
-                { rules: [{ validator: member_id_validator }] }
-              ]"
+              v-decorator="decorators.memberId"
               @search="onMemberSearch"
               @change="onMemberChange"
               notFoundContent="无搜索结果"
@@ -94,19 +91,13 @@
           </st-form-item>
           <st-form-item v-show="!searchMemberIsShow" label="会员姓名" required>
             <a-input
-              v-decorator="[
-                'memberName',
-                { rules: [{ validator: member_name_validator }] }
-              ]"
+              v-decorator="decorators.memberName"
               placeholder="请输入会员姓名"
             ></a-input>
           </st-form-item>
           <st-form-item v-show="!searchMemberIsShow" label="手机号" required>
             <a-input
-              v-decorator="[
-                'memberMobile',
-                { rules: [{ validator: member_mobile_validator }] }
-              ]"
+              v-decorator="decorators.memberMobile"
               placeholder="请输入手机号"
             ></a-input>
             <p class="add-text">
@@ -127,10 +118,7 @@
             </template>
             <div :class="sale('contract')">
               <a-input
-                v-decorator="[
-                  'contractNumber',
-                  { rules: [{ validator: contract_number }] }
-                ]"
+                v-decorator="decorators.contractNumber"
                 placeholder="请输入合同编号"
               ></a-input>
               <st-button
@@ -209,7 +197,7 @@
         <div :class="sale('remarks')">
           <st-form-item label="销售人员" required>
             <a-select
-              v-decorator="['saleName', { rules: [{ validator: sale_name }] }]"
+              v-decorator="decorators.saleName"
               placeholder="选择签单的工作人员"
             >
               <a-select-option
@@ -259,8 +247,8 @@ import { SaleDepositCardService } from './sale-deposit-card.service'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
-import { RuleConfig } from '@/constants/rule'
 import { PatternService } from '@/services/pattern.service'
+import { ruleOptions } from './sale-cabinet.config'
 export default {
   name: 'ModalSoldDealSaleMemberCard',
   bem: {
@@ -271,7 +259,6 @@ export default {
   },
   serviceInject() {
     return {
-      rules: RuleConfig,
       saleDepositCardService: SaleDepositCardService,
       pattern: PatternService
     }
@@ -292,9 +279,12 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false,
-      form: this.$form.createForm(this),
       // 搜索会员
       memberSearchText: '',
       searchMemberIsShow: true,
@@ -331,60 +321,6 @@ export default {
   },
   methods: {
     moment,
-    member_id_validator(rule, value, callback) {
-      if ((!value || value.length > 15) && this.searchMemberIsShow) {
-        // eslint-disable-next-line
-        callback('请选择转让会员，查询条件长度15')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    member_name_validator(rule, value, callback) {
-      if (
-        (!value || !value.match(this.pattern.CN_EN_NUM_SPACE('1-15'))) &&
-        !this.searchMemberIsShow
-      ) {
-        // eslint-disable-next-line
-        callback('请输入会员姓名，支持格式长度1~15中英文')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    member_mobile_validator(rule, value, callback) {
-      if (!value && !this.searchMemberIsShow) {
-        // eslint-disable-next-line
-        callback('请输入手机号')
-      } else if (value && !this.rules.mobile.test(value)) {
-        // eslint-disable-next-line
-        callback('输入的手机号格式错误，请重新输入')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    contract_number(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请输入合同编号')
-      } else if (!value.match(this.pattern.EN_NUM('6-20'))) {
-        // eslint-disable-next-line
-        callback('请输入正确合同编号')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    sale_name(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请选择销售人员')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
     // 搜索会员
     onMemberSearch(data) {
       this.memberSearchText = data
