@@ -22,7 +22,7 @@ export const ruleOptions = (vm: any) => {
     remainPrice: {
       rules: [{ required: true, message: '请输入剩余价值' }]
     },
-    contract_number: {
+    contractNumber: {
       rules: [
         { required: true, message: '请输入合同编号' },
         {

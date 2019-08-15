@@ -92,10 +92,7 @@
             labelGutter="12px"
           >
             <a-input
-              v-decorator="[
-                'memberName',
-                { rules: [{ validator: member_name_validator }] }
-              ]"
+              v-decorator="decorators.memberName"
               placeholder="请输入会员姓名"
             ></a-input>
           </st-form-item>
@@ -106,10 +103,7 @@
             labelGutter="12px"
           >
             <a-input
-              v-decorator="[
-                'memberMobile',
-                { rules: [{ validator: member_mobile_validator }] }
-              ]"
+              v-decorator="decorators.memberMobile"
               placeholder="请输入手机号"
             ></a-input>
             <p class="add-text">
@@ -125,10 +119,7 @@
               :max="+info.pay_price"
               :float="true"
               placeholder="请输入剩余价值"
-              v-decorator="[
-                'remainPrice',
-                { rules: [{ validator: remain_price_validator }] }
-              ]"
+              v-decorator="decorators.remainPrice"
             >
               <template slot="addonAfter">
                 元
@@ -138,10 +129,7 @@
           <st-form-item label="合同编号" required labelGutter="12px">
             <div :class="transfer('contract')">
               <a-input
-                v-decorator="[
-                  'contractNumber',
-                  { rules: [{ validator: contract_number }] }
-                ]"
+                v-decorator="decorators.contractNumber"
                 placeholder="请输入合同编号"
               ></a-input>
               <st-button
@@ -162,10 +150,7 @@
           </st-form-item>
           <st-form-item label="支付方式" required labelGutter="12px">
             <a-select
-              v-decorator="[
-                'payType',
-                { rules: [{ validator: pay_type_validator }] }
-              ]"
+              v-decorator="decorators.payType"
               placeholder="选择支付方式"
             >
               <a-select-option
