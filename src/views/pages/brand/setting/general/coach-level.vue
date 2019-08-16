@@ -62,7 +62,7 @@
               >
                 编辑
               </a>
-              <a-popconfirm
+              <st-popconfirm
                 :title="
                   `删除后不可进行恢复，${
                     item.used_number ? '已标记的员工将删除此教练等级，' : ''
@@ -71,7 +71,7 @@
                 @confirm="onDelete(item.id)"
               >
                 <a v-if="item.auth['brand:setting:coach_level|del']">删除</a>
-              </a-popconfirm>
+              </st-popconfirm>
             </st-table-actions>
           </td>
         </tr>
