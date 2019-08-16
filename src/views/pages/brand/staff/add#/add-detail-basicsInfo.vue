@@ -89,7 +89,7 @@
             <a-input
               style="width: 80%"
               placeholder="请输入身份证号码"
-              v-decorator="decorators.idnumber"
+              v-decorator="decorators.id_number"
             />
           </a-input-group>
         </st-form-item>
@@ -192,6 +192,7 @@
         </st-form-item>
       </a-col>
     </a-row>
+    -->
 
     <a-row :gutter="8">
       <a-col :offset="1" :lg="22">
@@ -247,7 +248,6 @@ import { UserService } from '@/services/user.service'
 import { AddService } from '../add.service'
 import ShopSelect from '@/views/biz-components/shop-select'
 import DepartmentSelect from '@/views/biz-components/department-select'
-import { RuleConfig } from '@/constants/staff/rule'
 import { AppConfig } from '@/constants/config'
 import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from '../staff-form.config.ts'
@@ -257,7 +257,6 @@ export default {
   serviceInject() {
     return {
       pattern: PatternService,
-      rules: RuleConfig,
       appConfig: AppConfig,
       userService: UserService,
       addService: AddService
