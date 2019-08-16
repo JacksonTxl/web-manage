@@ -1,6 +1,5 @@
 <template>
   <st-panel app>
-    {{ staffSpecialty }}
     <a-row :class="bstep()" class="mg-b48 mg-t48" :gutter="8">
       <a-col offset="1" :span="stepsSpan">
         <a-steps :current="currentIndex">
