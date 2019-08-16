@@ -91,7 +91,7 @@
             <a-input
               style="width: 80%"
               placeholder="请输入身份证号码"
-              v-decorator="decorators.idnumber"
+              v-decorator="decorators.id_number"
             />
           </a-input-group>
         </st-form-item>
