@@ -30,7 +30,7 @@
       </a-row>
       <st-form :form="form" labelWidth="88px">
         <div :class="sale('sale')">
-          <st-form-item v-show="searchMemberIsShow" label="购买会员" required>
+          <st-form-item v-if="searchMemberIsShow" label="购买会员" required>
             <a-select
               showSearch
               allowClear
@@ -72,13 +72,13 @@
               <span @click="onAddMember">添加新会员？</span>
             </p>
           </st-form-item>
-          <st-form-item v-show="!searchMemberIsShow" label="会员姓名" required>
+          <st-form-item v-if="!searchMemberIsShow" label="会员姓名" required>
             <a-input
               v-decorator="decorators.memberName"
               placeholder="请输入会员姓名"
             ></a-input>
           </st-form-item>
-          <st-form-item v-show="!searchMemberIsShow" label="手机号" required>
+          <st-form-item v-if="!searchMemberIsShow" label="手机号" required>
             <a-input
               v-decorator="decorators.memberMobile"
               placeholder="请输入手机号"
@@ -358,7 +358,7 @@ import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
 import { PatternService } from '@/services/pattern.service'
-import { ruleOptions } from './sale-cabinet.config'
+import { ruleOptions } from './sale-personal-course.config'
 export default {
   name: 'ModalSoldDealSaleMemberCard',
   bem: {

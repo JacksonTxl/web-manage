@@ -14,7 +14,7 @@ export const ruleOptions = (vm: any) => {
       rules: [
         { required: true, message: '请输入合同编号' },
         {
-          required: pattern.EN_NUM('6-20'),
+          pattern: pattern.EN_NUM('6-20'),
           message: '输入的手机号格式错误，请重新输入'
         }
       ]

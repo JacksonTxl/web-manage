@@ -11,7 +11,9 @@
       <st-form :form="form">
         <a-row>
           <a-col :xs="22">
-            <div>{{ shopName }}</div>
+            <st-form-item label="门店名称">
+              <div>{{ shopName }}</div>
+            </st-form-item>
             <st-form-item v-show="false">
               <input type="hidden" v-decorator="decorators.id" />
             </st-form-item>

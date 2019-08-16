@@ -1,5 +1,5 @@
 <template>
-  <div :class="info()" :loading="loading.subAudit && loading.getInfo">
+  <div :class="info()">
     <div class="left">
       <st-t2>
         微信小程序（基础版）
@@ -43,7 +43,9 @@
             </st-info-item>
             <st-info-item label="微信授权">
               {{ data.is_auth | authFilter }}
-              <a :class="info('a')" :href="data.auth_url">重新授权</a>
+              <a :class="info('a')" :href="data.auth_url" target="_blank">
+                重新授权
+              </a>
             </st-info-item>
           </st-info>
         </a-col>

@@ -3,19 +3,21 @@ export const columns = () => {
     {
       title: '发送时间',
       dataIndex: 'updated_time',
-      width: 180
+      width: 160
     },
     {
       title: '状态',
-
+      width: 80,
       scopedSlots: { customRender: 'send_status' }
     },
     {
       title: '通知对象',
+      width: 90,
       scopedSlots: { customRender: 'notify_type' }
     },
     {
       title: '短信模板',
+      width: 120,
       scopedSlots: { customRender: 'notify_sub_type' }
     },
     {

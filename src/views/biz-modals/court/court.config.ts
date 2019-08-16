@@ -1,7 +1,5 @@
-import { PatternService } from '@/services/pattern.service'
-
-export const ruleOptions = (vm: any) => {
-  const pattern = new PatternService()
+export const rules = (vm: any) => {
+  const { pattern } = vm
   return {
     areaName: [
       'area_name',

@@ -27,16 +27,16 @@ export const ruleOptions = (vm: any) => {
       rules: [
         { required: true, message: '请输入手机号' },
         {
-          required: pattern.MOBILE,
+          pattern: pattern.MOBILE,
           message: '输入的手机号格式错误，请重新输入'
         }
       ]
     },
     contractNumber: {
       rules: [
-        { required: true, message: '请输入合同编号' },
+        { required: true, message: '请输入合fff同编号' },
         {
-          required: pattern.EN_NUM('6-20'),
+          pattern: pattern.EN_NUM('6-20'),
           message: '请输入正确合同编号'
         }
       ]
