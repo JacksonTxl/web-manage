@@ -6,7 +6,7 @@ import { ConstApi } from '@/api/const'
 import { MenuApi } from '@/api/v1/common/menu'
 import { StaffApi } from '@/api/v1/staff'
 import { TooltipApi } from '@/api/v1/admin/tooltip'
-import { get } from 'lodash-es'
+import { get, reduce, isPlainObject } from 'lodash-es'
 import { NProgressService } from './nprogress.service'
 import { AuthService } from './auth.service'
 import { ShopApi } from '@/api/v1/shop'
@@ -219,12 +219,20 @@ export class UserService {
           if (!enumObj) {
             return []
           } else {
-            if (Array.isArray(enumObj.value)) {
-              return enumObj.value
-            }
-            return Object.keys(enumObj.value).reduce(
-              (arr, k) => arr.concat({ label: enumObj.value[k], value: +k }),
-              initArr
+            return reduce(
+              enumObj.value,
+              (res: any[], item: any, index: string | number) => {
+                if (isPlainObject(item)) {
+                  return res.concat([item])
+                }
+                return res.concat([
+                  {
+                    label: item,
+                    value: +index
+                  }
+                ])
+              },
+              []
             )
           }
         })

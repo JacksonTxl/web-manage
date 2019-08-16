@@ -45,12 +45,18 @@
             />-->
             <st-range-picker
               :disabledDays="180"
-              :value="selectTime"
+              v-model="selectTime"
             ></st-range-picker>
           </div>
         </div>
         <div slot="button">
-          <st-button type="primary" @click="onSearchList">查询</st-button>
+          <st-button
+            type="primary"
+            @click="onSearchList"
+            :loading="loading.getSmsList"
+          >
+            查询
+          </st-button>
           <st-button class="mgl-8" @click="onSearhReset">重置</st-button>
         </div>
       </st-search-panel>

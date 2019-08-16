@@ -257,7 +257,7 @@
         <div :class="sale('remarks')">
           <st-form-item label="销售人员" required>
             <a-select
-              v-decorator="decorators.contractNumber"
+              v-decorator="decorators.saleName"
               placeholder="选择签单的工作人员"
             >
               <a-select-option

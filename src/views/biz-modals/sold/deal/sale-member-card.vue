@@ -45,7 +45,7 @@
       </a-row>
       <st-form :form="form" labelWidth="88px">
         <div :class="sale('sale')">
-          <st-form-item v-show="searchMemberIsShow" label="购买会员" required>
+          <st-form-item v-if="searchMemberIsShow" label="购买会员" required>
             <a-select
               showSearch
               allowClear
@@ -83,13 +83,13 @@
               <span @click="onAddMember">添加新会员？</span>
             </p>
           </st-form-item>
-          <st-form-item v-show="!searchMemberIsShow" label="会员姓名" required>
+          <st-form-item v-if="!searchMemberIsShow" label="会员姓名" required>
             <a-input
               v-decorator="decorators.memberName"
               placeholder="请输入会员姓名"
             ></a-input>
           </st-form-item>
-          <st-form-item v-show="!searchMemberIsShow" label="手机号" required>
+          <st-form-item v-if="!searchMemberIsShow" label="手机号" required>
             <a-input
               v-decorator="decorators.memberMobile"
               placeholder="请输入手机号"
@@ -483,60 +483,6 @@ export default {
       }
     },
     moment,
-    member_id_validator(rule, value, callback) {
-      if ((!value || value.length > 15) && this.searchMemberIsShow) {
-        // eslint-disable-next-line
-        callback('请选择转让会员，查询条件长度15')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    member_name_validator(rule, value, callback) {
-      if (
-        (!value || !value.match(this.pattern.CN_EN_NUM_SPACE('1-15'))) &&
-        !this.searchMemberIsShow
-      ) {
-        // eslint-disable-next-line
-        callback('请输入会员姓名，支持格式长度1~15中英文')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    member_mobile_validator(rule, value, callback) {
-      if (!value && !this.searchMemberIsShow) {
-        // eslint-disable-next-line
-        callback('请输入手机号')
-      } else if (value && !this.rules.mobile.test(value)) {
-        // eslint-disable-next-line
-        callback('输入的手机号格式错误，请重新输入')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    contract_number(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请输入合同编号')
-      } else if (!value.match(this.pattern.EN_NUM('6-20'))) {
-        // eslint-disable-next-line
-        callback('请输入正确合同编号')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    sale_name(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请选择销售人员')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
     // 搜索会员
     onMemberSearch(data) {
       this.memberSearchText = data
@@ -627,6 +573,7 @@ export default {
     },
     onCreateOrder() {
       this.form.validate((error, values) => {
+        debugger
         if (!error) {
           this.saleMemberCardService
             .setTransactionOrder({
