@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
-    <span style="margin-right:16px">选择标签</span>
+  <div :class="bUserLabel()">
+    <title-info v-model="titleData" class="mg-t40"></title-info>
+    <span class="mg-r16">选择标签</span>
     <template v-for="(tag, index) in tags">
       <a-tooltip :key="index" :title="tag.name">
         <a-tag
@@ -13,7 +13,7 @@
         </a-tag>
       </a-tooltip>
     </template>
-    <a-tag style="background: #fff; borderStyle: dashed;">
+    <a-tag :class="bUserLabel('tag')">
       <a-dropdown overlayClassName="affiliated-store-dropdown">
         <a class="ant-dropdown-link">
           <a-icon type="plus" />
@@ -33,6 +33,9 @@ import { UserLableService } from './user-lable.service'
 import titleInfo from './title-info.vue'
 import { cloneDeep } from 'lodash-es'
 export default {
+  bem: {
+    bUserLabel: 'crowd-components-user-label'
+  },
   serviceInject() {
     return {
       userLableService: UserLableService

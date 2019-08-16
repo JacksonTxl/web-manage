@@ -10,7 +10,7 @@
         <a-input
           placeholder="请输入场地名称，不超过10个字"
           maxlength="10"
-          v-decorator="rules.areaName"
+          v-decorator="decorators.area_name"
         />
       </st-form-item>
       <st-form-item label="场地属性" required>
@@ -29,7 +29,7 @@
           placeholder="请输入最大容纳人数，1-999"
           :min="1"
           :max="999"
-          v-decorator="rules.containNumber"
+          v-decorator="decorators.contain_number"
         />
       </st-form-item>
     </st-form>
@@ -44,15 +44,13 @@
 <script>
 import { AddService } from './add.service'
 import { MessageService } from '@/services/message.service'
-import { PatternService } from '@/services/pattern.service'
-import { rules } from './court.config'
+import { ruleOptions } from './court.config'
 
 export default {
   serviceInject() {
     return {
       addService: AddService,
-      messageService: MessageService,
-      pattern: PatternService
+      messageService: MessageService
     }
   },
   rxState() {
@@ -62,23 +60,19 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
       show: false,
       isShowPersonNum: true
     }
   },
-  created() {
-    this.form = this.$form.createForm(this)
-  },
-  computed: {
-    rules
-  },
   methods: {
     onSubmit(e) {
       e.preventDefault()
-      this.form.validateFields().then(() => {
-        const data = this.getData()
-        this.addService.add(data).subscribe(this.onSubmitSuccess)
+      this.form.validate().then(values => {
+        values.contain_number = +values.contain_number
+        this.addService.add(values).subscribe(this.onSubmitSuccess)
       })
     },
     onCancel() {

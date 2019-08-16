@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
-    <span style="margin-right:16px">选择门店</span>
+  <div :class="bAffiliatedStore()">
+    <title-info v-model="titleData"></title-info>
+    <span class="mg-r16">选择门店</span>
     <template v-for="(tag, index) in tags">
       <a-tooltip :key="index" :title="tag.name">
         <a-tag :closable="true" :afterClose="() => handleClose(tag, index)">
@@ -9,7 +9,7 @@
         </a-tag>
       </a-tooltip>
     </template>
-    <a-tag style="background: #fff; borderStyle: dashed;">
+    <a-tag :class="bAffiliatedStore('tag')">
       <a-dropdown overlayClassName="affiliated-store-dropdown">
         <a class="ant-dropdown-link">
           <a-icon type="plus" />
@@ -29,6 +29,9 @@ import { AffiliatedStoreService } from './affiliated-store.service'
 import titleInfo from './title-info.vue'
 import { cloneDeep } from 'lodash-es'
 export default {
+  bem: {
+    bAffiliatedStore: 'crowd-component-affiliated-store'
+  },
   serviceInject() {
     return {
       affiliatedStoreService: AffiliatedStoreService

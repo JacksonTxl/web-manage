@@ -1,12 +1,20 @@
-import { isPlainObject, isString, isArray, cloneDeep } from 'lodash-es'
+import {
+  isPlainObject,
+  isString,
+  isArray,
+  cloneDeep,
+  isFunction,
+  set
+} from 'lodash-es'
 
 export default {
   install(Vue) {
     Vue.mixin({
       beforeCreate() {
-        this.$stForm = {
-          create: () => {
-            const form = this.$form.createForm(this)
+        const vm = this
+        vm.$stForm = {
+          create() {
+            const form = vm.$form.createForm(vm)
 
             form.validate = function(options) {
               return new Promise((resolve, reject) => {
@@ -29,14 +37,20 @@ export default {
                 })
               })
             }
-            form.decorators = function(options) {
-              if (!isPlainObject(options)) {
+            form.decorators = function(arg) {
+              if (!isPlainObject(arg) && !isFunction(arg)) {
                 throw new Error(
-                  `[vue-st-form]#createDecorators shoud pass an object but got ${typeof options}`
+                  `[vue-st-form]#decorators() shoud pass an object or function but got ${typeof options}`
                 )
               }
+              let options
+              if (isPlainObject(arg)) {
+                options = arg
+              }
+              if (isFunction(arg)) {
+                options = arg(vm)
+              }
               const _decorators = {}
-
               const makeAntValidator = (fn, key) => (rule, value, callback) => {
                 // 添加try  catch 以抓取运行时错误
                 try {
@@ -93,10 +107,8 @@ export default {
                   })
                 }
 
-                _decorators[key] = [key, decoOpt]
+                set(_decorators, key, [key, decoOpt])
               })
-
-              console.log('[vue-st-form] decorators', _decorators)
 
               return _decorators
             }

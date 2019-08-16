@@ -1,6 +1,5 @@
 import {
   ShopStaffApi,
-  PutStaffBrandQuitInput,
   RePasswordInput,
   PermissionInput
 } from '@/api/v1/staff/staff'

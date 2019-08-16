@@ -10,10 +10,10 @@
           />
           <div class="shop-member-crowd-analysis-title__left-info">
             <st-t3 class="shop-member-crowd-analysis-title__info-title">
-              {{ analysisInfo.info.crowd_name }}
+              {{ analysisInfo.crowd_name }}
             </st-t3>
             <st-t4 class="shop-member-crowd-analysis-title__info">
-              {{ analysisInfo.info.description }}
+              {{ analysisInfo.description }}
             </st-t4>
           </div>
         </div>
@@ -23,7 +23,7 @@
             <st-help-tooltip id="TBRQ001" />
           </st-t4>
           <div class="shop-member-crowd-analysis-title__right-num">
-            {{ analysisInfo.info.num }}
+            {{ analysisInfo.num }}
           </div>
         </div>
       </div>
@@ -61,12 +61,12 @@
             <div class="shop-member-crowd-analysis-title__right-num">
               {{
                 index === 0
-                  ? analysisInfo.info.entrance_num
+                  ? analysisInfo.entrance_num
                   : index === 1
-                  ? analysisInfo.info.coupon_num
+                  ? analysisInfo.coupon_num
                   : index === 2
-                  ? analysisInfo.info.trade_num
-                  : analysisInfo.info.course_num
+                  ? analysisInfo.trade_num
+                  : analysisInfo.course_num
               }}
             </div>
           </li>
@@ -82,14 +82,15 @@ import shop_crowd_expire from '@/assets/img/shop_crowd_expire.png'
 import shop_crowd_new from '@/assets/img/shop_crowd_new.png'
 import { AnalysisService } from './analysis.service'
 export default {
+  name: 'Analysis',
   serviceInject() {
     return {
-      aService: AnalysisService
+      analysisService: AnalysisService
     }
   },
   rxState() {
     return {
-      analysisInfo: this.aService.analysisInfo$
+      analysisInfo: this.analysisService.analysisInfo$
     }
   },
   data() {
@@ -149,9 +150,6 @@ export default {
         }
       ]
     }
-  },
-
-  created() {},
-  methods: {}
+  }
 }
 </script>

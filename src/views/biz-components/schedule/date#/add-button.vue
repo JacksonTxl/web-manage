@@ -33,11 +33,8 @@ export default {
       let tempDate = moment(this.date.date)
         .subtract(weekOfday - this.date.week, 'days')
         .format('YYYY-MM-DD')
-      if (this.time < 9) {
-        tempTime = `0${this.time - 1}:00`
-      } else {
-        tempTime = `${this.time - 1}:00`
-      }
+      tempTime = `0${this.time - 1}:00`
+      tempTime = tempTime.slice(tempTime.length - 5)
       return moment(`${tempDate} ${tempTime}`)
     }
   },

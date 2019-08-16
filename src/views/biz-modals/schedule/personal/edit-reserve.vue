@@ -12,9 +12,8 @@
       </st-form-item>
       <st-form-item label="上课教练" required>
         <a-select
-          v-decorator="['coach_id']"
+          v-decorator="decorators.coach_id"
           placeholder="请选择上课教练"
-          @change="onChangeCourseCoach"
         >
           <a-select-option
             v-for="courseCoach in courseCoachOptions"
@@ -40,6 +39,7 @@ import { PersonalScheduleCommonService as CommonService } from '@/views/pages/sh
 import { difference, cloneDeep } from 'lodash-es'
 import { RouteService } from '@/services/route.service'
 import { PersonalScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/personal/service#/reserve.service'
+import { ruleOptions } from './add-reserve.config'
 export default {
   name: 'EditReserve',
   serviceInject() {
@@ -68,143 +68,39 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false,
       value: '',
       fetching: false,
-      form: this.$form.createForm(this),
       reserveDate: ''
     }
   },
   mounted() {
     this.reserveService.getUpdateInfo(this.info.id).subscribe(res => {
-      this.commonService.getCourseCoachList(res.info.course.id).subscribe()
+      this.commonService
+        .getCourseCoachList(res.info.course.id)
+        .subscribe(() => {
+          this.form.setFieldsValue({
+            coach_id: res.info.coach.id
+          })
+        })
     })
   },
   methods: {
-    onChangeConsume(val) {
-      const v = JSON.parse(val)
-      this.commonService
-        .getCourseList({ id: +v.id, consume_type: +v.consume_type })
-        .subscribe()
-    },
-    onSearchMember(val) {
-      this.fetching = false
-      this.commonService.getOptions('getMemberList', { member: val }, () => {
-        this.fetching = true
-      })
-    },
-    onChangeCourse(val) {
-      console.log(val)
-      this.commonService.getCourseCoachList(val).subscribe()
-    },
-    onChangeDatePick(val) {
-      let reserveDate = ''
-      this.dateOptions.forEach(item => {
-        val.format('YYYY-MM-DD') === item.schedule_date &&
-          (reserveDate = item.id)
-      })
-      this.commonService.getOptions('getTimeList', reserveDate, () => {})
-    },
-    onChangeCourseCoach(val) {
-      this.commonService.getOptions('getDateList', val, () => {})
-    },
-    range(start, end) {
-      const result = []
-      for (let i = start; i < end; i++) {
-        result.push(i)
-      }
-      return result
-    },
-    disabledDate(current) {
-      return (
-        current &&
-        !this.dateOptions
-          .map(item => {
-            return item.schedule_date
-          })
-          .includes(current.format('YYYY-MM-DD').valueOf())
-      )
-    },
-    disabledMinutes(selectedHour) {
-      let disabledMinutes = []
-      const allTime = this.range(0, 60)
-      for (let i = 0; i < this.timeOptions.timing.length; i++) {
-        const startHour = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].start_time
-          }`
-        )
-          .format('HH')
-          .valueOf()
-        const endHour = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].end_time
-          }`
-        )
-          .format('HH')
-          .valueOf()
-        const start = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].start_time
-          }`
-        )
-          .format('mm')
-          .valueOf()
-        const end = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].end_time
-          }`
-        )
-          .format('mm')
-          .valueOf()
-        if (selectedHour === startHour) {
-          return difference(allTime, this.range(start, 60))
-        } else if (selectedHour === endHour) {
-          return difference(allTime, this.range(0, end))
-        }
-      }
-    },
-    disabledHours() {
-      let disabledHours = []
-      const allTime = this.range(0, 24)
-      for (let i = 0; i < this.timeOptions.timing.length; i++) {
-        const start = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].start_time
-          }`
-        )
-          .format('H')
-          .valueOf()
-        const end = +moment(
-          `${this.timeOptions.schedule_date} ${
-            this.timeOptions.timing[i].end_time
-          }`
-        )
-          .format('H')
-          .valueOf()
-        disabledHours = [...disabledHours, ...this.range(start, end)]
-      }
-      return difference(allTime, disabledHours)
-    },
     save() {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          this.reserveService
-            .update({ id: this.info.id, coach_id: values.coach_id })
-            .subscribe(res => {
-              this.show = false
-              this.$router.push({ query: this.query, force: true })
-            })
-        }
+      this.form.validate().then(values => {
+        this.reserveService
+          .update({ id: this.info.id, coach_id: values.coach_id })
+          .subscribe(res => {
+            this.show = false
+            this.$router.push({ query: this.query, force: true })
+          })
       })
-    },
-    onChangeMember(val) {
-      this.value = val
-      this.commonService.getOptions('getConsumeList', val.key, () => {})
     }
   }
 }
 </script>
-
-<style lang="scss" scoped></style>

@@ -1,3 +1,4 @@
+import { UserService } from '@/services/user.service'
 import { Injectable } from 'vue-service-app'
 import { State, Effect, Action } from 'rx-state'
 import { CardsApi, CourseTeamShelfListInput } from '@/api/v1/cards'
@@ -10,7 +11,10 @@ export class ShelfService {
   loading$ = new State({})
   courseListAction$: Action<any>
   courseList$ = new State([])
-  constructor(private cardApi: CardsApi) {
+  course_interests$ = this.userService.getOptions$(
+    'member_card.course_interests'
+  )
+  constructor(private cardApi: CardsApi, private userService: UserService) {
     this.courseListAction$ = new Action(data$ => {
       return data$.pipe(
         debounceTime(200),

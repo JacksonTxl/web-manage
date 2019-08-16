@@ -40,7 +40,7 @@
           class="mg-b0"
           required
         ></st-form-item>
-        <st-form-item label=" " labelWidth="0px">
+        <st-form-item labelWidth="0px">
           <st-textarea
             :maxlength="300"
             @change="onReasonChange"
@@ -83,8 +83,9 @@ export default {
   },
   props: ['id', 'cardType', 'cardName'],
   data() {
+    const form = this.$stForm.create()
     return {
-      form: this.$form.createForm(this),
+      form,
       show: false,
       // 卡tag类型
       cardTypeTag: {
@@ -98,10 +99,9 @@ export default {
   },
   methods: {
     onReasonChange(data) {
-      this.reasonIsNone = data.target.value.trim() === ''
+      this.reasonIsNone = data.trim() === ''
     },
     onStop() {
-      console.log(1)
       this.stopSaleService
         .setStopSale(
           {

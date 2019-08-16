@@ -38,15 +38,10 @@
       <a-row :gutter="8" class="mg-t8">
         <a-col :lg="24">
           <st-form-item label="冻结日期">
-            <!-- <a-range-picker
-              format="YYYY-MM-DD"
-              @change="onChangeDatepicker"
-              v-decorator="basicInfoRuleList.to_shop"
-            /> -->
             <a-date-picker
               format="YYYY-MM-DD"
               placeholder="冻结日期"
-              v-decorator="basicInfoRuleList.end_time"
+              v-decorator="decorators.end_time"
             />
             <br />
           </st-form-item>
@@ -56,7 +51,7 @@
         <a-col :lg="24">
           <st-form-item label="有无手续费" required>
             <a-radio-group
-              v-decorator="basicInfoRuleList.moneyFlag"
+              v-decorator="decorators.is_handling_fee"
               @change="changeTransfer"
             >
               <a-radio
@@ -76,7 +71,7 @@
             <st-input-number
               :float="true"
               placeholder="请输入手续费"
-              v-decorator="basicInfoRuleList.pay_fee"
+              v-decorator="decorators.pay_fee"
             >
               <template slot="addonAfter">
                 元
@@ -91,7 +86,7 @@
           <st-form-item label="支付方式" required>
             <a-select
               :class="basic('select')"
-              v-decorator="basicInfoRuleList.pay_method"
+              v-decorator="decorators.pay_method"
               placeholder="请选择支付方式"
             >
               <a-select-option
@@ -115,7 +110,7 @@
               :defaultActiveFirstOption="false"
               :showArrow="false"
               :filterOption="false"
-              v-decorator="basicInfoRuleList.sale_id"
+              v-decorator="decorators.sale_id"
               @search="onSearch"
               notFoundContent="无搜索结果"
             >
@@ -149,20 +144,20 @@
 </template>
 <script>
 import { FrozenService } from './frozen.service'
-import { UserService } from '@/services/user.service'
+import { columns, ruleOptions } from './frozen.config'
 import moment from 'moment'
 export default {
   serviceInject() {
     return {
-      frozenService: FrozenService,
-      userService: UserService
+      frozenService: FrozenService
     }
   },
   rxState() {
     return {
       list: this.frozenService.list$,
       staffList: this.frozenService.staffList$,
-      memberEnums: this.userService.memberEnums$,
+      payMethodList: this.frozenService.payMethodList$,
+      hasTransferFeeList: this.frozenService.hasTransferFeeList$,
       loading: this.frozenService.loading$
     }
   },
@@ -176,85 +171,12 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      form: this.$form.createForm(this),
-      columns: [
-        {
-          title: '卡课',
-          dataIndex: 'name'
-        },
-        {
-          title: '剩余',
-          dataIndex: 'remain_amount',
-          scopedSlots: { customRender: 'remain_amount' }
-        },
-        {
-          title: '有效期',
-          dataIndex: 'start_end',
-          scopedSlots: { customRender: 'start_end' }
-        }
-      ],
+      form,
+      decorators,
       show: false,
-      basicInfoRuleList: {
-        id: ['id'],
-        course_id: ['course_id'],
-        poundage: ['poundage'],
-        pay_method: [
-          'pay_method',
-          {
-            rules: [
-              {
-                required: true,
-                message: '请选择支付方式'
-              }
-            ]
-          }
-        ],
-        pay_fee: [
-          'pay_fee',
-          {
-            rules: [
-              {
-                required: true,
-                message: '请输入手续费!'
-              }
-            ]
-          }
-        ],
-        end_time: [
-          'end_time',
-          {
-            rules: [
-              {
-                required: true,
-                message: '请填写冻结日期!'
-              }
-            ]
-          }
-        ],
-        moneyFlag: [
-          'is_handling_fee',
-          {
-            rules: [
-              {
-                required: true,
-                message: '请选择有无手续费'
-              }
-            ]
-          }
-        ],
-        sale_id: [
-          'sale_id',
-          {
-            rules: [
-              {
-                required: true,
-                message: '请选择收款人员'
-              }
-            ]
-          }
-        ]
-      },
       isTransferFlag: false,
       selectedRows: [],
       dateString: [],
@@ -291,26 +213,22 @@ export default {
     },
     save(e) {
       e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          if (!err) {
-            if (this.selectedRows.length <= 0) {
-              this.selectedRowsHelp = '请选择冻结的卡课'
-              return
-            } else {
-              this.selectedRowsHelp = ''
-            }
-            values.product = this.selectedRows.map(item => {
-              return {
-                product_type: item.type,
-                product_id: item.id
-              }
-            })
-            values.id = this.record.member_id
-            values.end_time = moment(values.end_time).format('YYYY-MM-DD HH:mm')
-            this.getMemberTransfer(values)
-          }
+      this.form.validate().then(values => {
+        if (this.selectedRows.length <= 0) {
+          this.selectedRowsHelp = '请选择冻结的卡课'
+          return
+        } else {
+          this.selectedRowsHelp = ''
         }
+        values.product = this.selectedRows.map(item => {
+          return {
+            product_type: item.type,
+            product_id: item.id
+          }
+        })
+        values.id = this.record.member_id
+        values.end_time = moment(values.end_time).format('YYYY-MM-DD HH:mm')
+        this.getMemberTransfer(values)
       })
     },
     onChangeDatepicker(date, dateString) {
@@ -325,6 +243,7 @@ export default {
     }
   },
   computed: {
+    columns,
     rowSelection() {
       let self = this
       const { selectedRowKeys } = this
@@ -342,25 +261,7 @@ export default {
           }
         })
       }
-    },
-    // has_transferFee
-    payMethodList() {
-      let list = []
-      if (!this.memberEnums.pay_method) return list
-      Object.entries(this.memberEnums.pay_method.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    },
-    hasTransferFeeList() {
-      let list = []
-      if (!this.memberEnums.has_transferFee) return list
-      Object.entries(this.memberEnums.has_transferFee.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
     }
-  },
-  watch: {}
+  }
 }
 </script>

@@ -5,6 +5,7 @@ import { MemberApi } from '@/api/v1/member'
 import { TransactionApi } from '@/api/v1/sold/transaction'
 import { tap } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
+import { UserService } from '@/services/user.service'
 
 interface CardsTableModelState {
   lableInfo: any
@@ -12,11 +13,13 @@ interface CardsTableModelState {
 @Injectable()
 export class MissingCaedService extends Store<CardsTableModelState> {
   paymentMethodList$ = new State({})
+  payMethodList$ = this.userService.getOptions$('member.pay_method')
   staffList$ = new State([])
   // loading$ = new State({});
   constructor(
     private memberApi: MemberApi,
-    private transactionApi: TransactionApi
+    private transactionApi: TransactionApi,
+    private userService: UserService
   ) {
     super()
   }

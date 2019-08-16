@@ -25,18 +25,18 @@
           <st-form-item label="实体卡号" required>
             <a-input
               placeholder="输入实体卡号"
-              v-decorator="basicInfoRuleList.card_num"
+              v-decorator="decorators.card_num"
             />
           </st-form-item>
           <st-form-item label="物理ID" required>
             <a-input
               placeholder="请将实体卡置于读卡器上"
-              v-decorator="basicInfoRuleList.rfid"
+              v-decorator="decorators.rfid"
             />
           </st-form-item>
           <st-form-item label="有无手续费" required>
             <a-radio-group
-              v-decorator="basicInfoRuleList.moneyFlag"
+              v-decorator="decorators.moneyFlag"
               @change="radioChangeGroup"
             >
               <a-radio value="a">有手续费</a-radio>
@@ -47,7 +47,7 @@
             <st-input-number
               :float="true"
               placeholder="请输入需要收取的手续费金额"
-              v-decorator="basicInfoRuleList.poundage"
+              v-decorator="decorators.poundage"
             >
               <template slot="addonAfter">
                 元
@@ -57,7 +57,7 @@
           <st-form-item label="支付方式" v-if="moneyFlag">
             <a-select
               :class="basic('select')"
-              v-decorator="basicInfoRuleList.pay_method"
+              v-decorator="decorators.pay_method"
               placeholder="请选择支付方式"
             >
               <a-select-option
@@ -77,7 +77,7 @@
               :defaultActiveFirstOption="false"
               :showArrow="false"
               :filterOption="false"
-              v-decorator="basicInfoRuleList.payee"
+              v-decorator="decorators.payee"
               @search="onSearch"
               notFoundContent="无搜索结果"
             >
@@ -115,7 +115,7 @@
 </template>
 <script>
 import { MissingCaedService } from './missing-card.service'
-import { UserService } from '@/services/user.service'
+import { ruleOptions } from './missing-card.config'
 export default {
   name: 'missingCard',
   bem: {
@@ -123,15 +123,14 @@ export default {
   },
   serviceInject() {
     return {
-      missingService: MissingCaedService,
-      userService: UserService
+      missingService: MissingCaedService
     }
   },
   rxState() {
     return {
       paymentMethodList: this.missingService.paymentMethodList$,
+      payMethodList: this.missingService.payMethodList$,
       staffList: this.missingService.staffList$,
-      memberEnums: this.userService.memberEnums$,
       loading: this.missingService.loading$
     }
   },
@@ -140,108 +139,17 @@ export default {
       type: Object
     }
   },
-  computed: {
-    payMethodList() {
-      let list = []
-      if (!this.memberEnums.pay_method) return list
-      Object.entries(this.memberEnums.pay_method.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    }
-  },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
       show: false,
-      form: this.$form.createForm(this),
+      form,
+      decorators,
       moneyFlag: false,
       selectPayValues: 0,
       getData: {},
-      getCard_id: '',
-      basicInfoRuleList: {
-        // 实体卡
-        rfid: [
-          'rfid',
-          {
-            rules: [
-              {
-                required: true,
-                message: '请输入正确的实体卡号',
-                pattern: /\d$/
-              }
-            ]
-          }
-        ],
-        // 物理ID
-        card_num: [
-          'card_num',
-          {
-            rules: [
-              {
-                required: true,
-                message: '请输入正确的物理ID',
-                pattern: /\d$/
-              }
-            ]
-          }
-        ],
-        moneyFlag: [
-          'moneyFlag',
-          {
-            rules: [
-              {
-                required: true,
-                message: '请选择有无手续费'
-              }
-            ]
-          }
-        ],
-        poundage: [
-          'poundage',
-          {
-            rules: [
-              {
-                required: true,
-                message: '请填写手续费',
-                pattern: /\d$/
-              }
-            ]
-          }
-        ],
-        pay_method: [
-          'pay_method',
-          {
-            rules: [
-              {
-                required: true,
-                message: '请选择支付方式'
-              }
-            ]
-          }
-        ],
-        payment: [
-          'payment',
-          {
-            rules: [
-              {
-                required: true,
-                message: '请选择收款方式'
-              }
-            ]
-          }
-        ],
-        payee: [
-          'payee',
-          {
-            rules: [
-              {
-                required: true,
-                message: '请选择收款人员'
-              }
-            ]
-          }
-        ]
-      }
+      getCard_id: ''
     }
   },
   created() {
@@ -289,16 +197,13 @@ export default {
     },
     save(e) {
       e.preventDefault()
-      this.form.validateFields((err, values) => {
+      this.form.validate().then(values => {
         values.moneyFlag = undefined
         values.id = this.record.member_id
         values.card_id = this.getData.id
-        if (!err) {
-          this.getMemberPhysicalBind(values)
-        }
+        this.getMemberPhysicalBind(values)
       })
     }
-  },
-  watch: {}
+  }
 }
 </script>

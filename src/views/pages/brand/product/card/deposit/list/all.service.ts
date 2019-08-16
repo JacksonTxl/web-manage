@@ -4,6 +4,7 @@ import { CardsApi, CardListInput } from '@/api/v1/cards'
 import { AuthService } from '@/services/auth.service'
 import { tap, map } from 'rxjs/operators'
 import { UserService } from '@/services/user.service'
+import { forkJoin } from 'rxjs'
 
 @Injectable()
 export class AllService implements RouteGuard {
@@ -43,7 +44,10 @@ export class AllService implements RouteGuard {
   deleteCard(id: string) {
     return this.cardsApi.setCardsDelete(id, 'brand', 'deposit')
   }
+  init(query: CardListInput) {
+    return forkJoin(this.getList(query))
+  }
   beforeEach(to: ServiceRoute) {
-    return this.getList(to.meta.query)
+    return this.init(to.meta.query)
   }
 }

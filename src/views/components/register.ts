@@ -26,5 +26,3 @@ ComponentsKeys.forEach(keyPath => {
 registerComponents.forEach(C => {
   Vue.component(C.name, C.component)
 })
-
-console.log('全局注册 components -> ', registerComponents)

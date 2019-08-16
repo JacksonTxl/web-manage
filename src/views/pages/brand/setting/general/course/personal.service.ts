@@ -11,7 +11,7 @@ interface ListState {
   resData: object
 }
 @Injectable()
-export class PersonalService extends Store<ListState> {
+export class PersonalService {
   state$: State<ListState>
   resData$: Computed<object>
   auth$ = this.authService.authMap$({
@@ -24,7 +24,6 @@ export class PersonalService extends Store<ListState> {
     private coursePricingApi: CoursePricingApi,
     private authService: AuthService
   ) {
-    super()
     this.state$ = new State({
       resData: {}
     })

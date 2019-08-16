@@ -6,7 +6,7 @@
       placeholder="请选择训练目的"
       @change="change"
     >
-      <a-select-option v-for="item in list" :key="`${item.id}`">
+      <a-select-option v-for="item in list" :key="item.id">
         {{ item.setting_name }}
       </a-select-option>
     </a-select>

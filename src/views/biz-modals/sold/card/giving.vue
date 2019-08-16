@@ -12,10 +12,7 @@
             <st-input-number
               :max="99999.9"
               placeholder="请输入赠送额度"
-              v-decorator="[
-                'price',
-                { rules: [{ required: true, message: '请输入赠送额度' }] }
-              ]"
+              v-decorator="decorators.gift_quota"
             >
               <span slot="addonAfter">
                 {{ type | enumFilter('sold.unit') }}
@@ -42,10 +39,14 @@
 
 <script>
 import { GivingService } from './giving.service'
+import { ruleOptions } from './giving.config'
 export default {
   name: 'ModalSoldCardGiving',
   bem: {
     giving: 'modal-sold-card-giving'
+  },
+  serviceProviders() {
+    return [GivingService]
   },
   serviceInject() {
     return {
@@ -68,15 +69,18 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false,
-      form: this.$form.createForm(this),
       description: ''
     }
   },
   methods: {
     onSubmit() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           this.givingService
             .setGive({

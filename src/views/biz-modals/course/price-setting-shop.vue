@@ -48,8 +48,7 @@
   </st-modal>
 </template>
 <script>
-import { columnsPricesShop } from './support-table'
-
+import { columnsPricesShop } from './support-table.config'
 import { cloneDeep, uniqWith, isEqual } from 'lodash-es'
 import { ListService } from '../../pages/shop/product/course/manage/personal/list.service'
 import { EditService } from '../../pages/shop/product/course/manage/personal/edit.service'

@@ -1,7 +1,6 @@
 import { Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
-
 import { StaffApi, PutStaffBrandQuitInput } from '@/api/v1/staff'
 import { MessageService } from '@/services/message.service'
 

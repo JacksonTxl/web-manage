@@ -1,5 +1,6 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect, Action } from 'rx-state'
+import { UserService } from '@/services/user.service'
+import { Injectable } from 'vue-service-app'
+import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { MemberApi } from '@/api/v1/member'
@@ -14,7 +15,9 @@ export class FrozenService extends Store<CardsTableModelState> {
   info$: Computed<string>
   list$: Computed<any>
   staffList$ = new State([])
-  constructor(private memberApi: MemberApi) {
+  payMethodList$ = this.userService.getOptions$('member.pay_method')
+  hasTransferFeeList$ = this.userService.getOptions$('member.has_transferFee')
+  constructor(private memberApi: MemberApi, private userService: UserService) {
     super()
     this.state$ = new State({
       list: [],

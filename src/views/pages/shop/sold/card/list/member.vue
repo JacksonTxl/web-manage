@@ -174,7 +174,6 @@ import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './member.config'
-import StRangePicker from '@/views/components/datetime-picker/range-picker'
 import SoldCardArea from '@/views/biz-modals/sold/card/area'
 import SoldCardFreeze from '@/views/biz-modals/sold/card/freeze'
 import SoldCardGiving from '@/views/biz-modals/sold/card/giving'
@@ -220,9 +219,6 @@ export default {
       query: this.routeService.query$,
       auth: this.memberService.auth$
     }
-  },
-  components: {
-    StRangePicker
   },
   computed: {
     columns,

@@ -567,9 +567,6 @@ export default {
     FrontAddMember,
     FrontAddWorkNote
   },
-  serviceProviders() {
-    return [IndexService]
-  },
   serviceInject() {
     return {
       indexService: IndexService

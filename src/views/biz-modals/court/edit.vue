@@ -10,7 +10,7 @@
         <a-input
           placeholder="请输入场地名称，不超过10个字"
           maxlength="10"
-          v-decorator="rules.areaName"
+          v-decorator="decorators.area_name"
         />
       </st-form-item>
       <st-form-item label="场地属性" v-if="info.area_type === 3">
@@ -32,7 +32,7 @@
           placeholder="请输入最大容纳人数，1-999"
           :min="1"
           :max="999"
-          v-decorator="rules.containNumber"
+          v-decorator="decorators.contain_number"
         />
       </st-form-item>
     </st-form>
@@ -47,15 +47,13 @@
 <script>
 import { EditService } from './edit.service'
 import { MessageService } from '@/services/message.service'
-import { PatternService } from '@/services/pattern.service'
-import { rules } from './court.config'
+import { ruleOptions } from './court.config'
 
 export default {
   serviceInject() {
     return {
       editService: EditService,
-      messageService: MessageService,
-      pattern: PatternService
+      messageService: MessageService
     }
   },
   rxState() {
@@ -75,12 +73,15 @@ export default {
     rules
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false
     }
   },
-  created() {
-    this.form = this.$form.createForm(this)
+  mounted() {
     this.editService.getInfo(this.id).subscribe(this.setFieldsValue)
     this.areaType = this.areaType.filter(({ value }) => {
       return value !== 3
@@ -90,6 +91,7 @@ export default {
     setFieldsValue() {
       const info = this.info
       this.form.setFieldsValue({
+        is_vip: +info.is_vip,
         area_name: info.area_name,
         area_type: info.area_type,
         contain_number: info.contain_number

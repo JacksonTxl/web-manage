@@ -225,11 +225,7 @@ export default {
     oChangeDate(date) {
       this.start = date.start_date
       this.$router.push({ query: { ...date }, force: true })
-      if (this.isDay) {
-        this.getWeeks()
-      } else {
-        this.getWeeks('week')
-      }
+      this.isDay ? this.getWeeks() : this.getWeeks('week')
     },
     onClickGetTable() {
       this.$emit('get-table')

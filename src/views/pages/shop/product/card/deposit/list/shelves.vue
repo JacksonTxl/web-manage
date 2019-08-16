@@ -89,6 +89,7 @@ import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './shelves.config.ts'
 import CardShopDepositShopTable from '@/views/biz-modals/card/shop-deposit/shop-table'
+import { SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH } from '@/constants/events'
 export default {
   mixins: [tableMixin],
   name: 'PageShopProductDepositShelves',
@@ -96,12 +97,8 @@ export default {
     shelves: 'page-shop-product-deposit-list-shelves'
   },
   events: {
-    'shop-product-card-deposit-list-shelves:onSingleSearch'(
-      key,
-      data,
-      options
-    ) {
-      this.onSingleSearch(key, data, options)
+    [SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH](key, data) {
+      this.onKeywordsSearch(key, data)
     }
   },
   modals: {

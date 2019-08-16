@@ -44,10 +44,7 @@
           >
             <a-date-picker
               :disabledDate="disabledEndDate"
-              v-decorator="[
-                'end_time',
-                { rules: [{ required: true, message: '请选择到期日期' }] }
-              ]"
+              v-decorator="decorators.end_time"
               style="width: 100%;"
               format="YYYY-MM-DD HH:mm"
               :showTime="{ format: 'HH:mm' }"
@@ -68,10 +65,7 @@
                 <a-date-picker
                   :disabledDate="disabledStartDate"
                   @change="onStartTimeChange"
-                  v-decorator="[
-                    'start_time',
-                    { rules: [{ required: true, message: '请选择开卡日期' }] }
-                  ]"
+                  v-decorator="decorators.start_time"
                   style="width: 188px;"
                   format="YYYY-MM-DD HH:mm"
                   :showTime="{ format: 'HH:mm' }"
@@ -102,13 +96,16 @@
   </st-modal>
 </template>
 <script>
-import moment from 'moment'
 import { SetTimeService } from './set-time.service'
 import { cloneDeep } from 'lodash-es'
+import { ruleOptions } from './set-time.config'
 export default {
   name: 'ModalSoldCardSettime',
   bem: {
     settime: 'modal-sold-card-settime'
+  },
+  serviceProviders() {
+    return [SetTimeService]
   },
   serviceInject() {
     return {
@@ -123,9 +120,12 @@ export default {
   },
   props: ['id'],
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false,
-      form: this.$form.createForm(this),
       endTime: '-',
       description: ''
     }
@@ -136,7 +136,6 @@ export default {
     }
   },
   methods: {
-    moment,
     disabledEndDate(endValue) {
       return (
         endValue.valueOf() < this.info.server_time * 1000 ||
@@ -153,7 +152,7 @@ export default {
         .format('YYYY-MM-DD HH:mm')
     },
     onSubmit() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           let data = values.end_time || values.start_time
           this.setTimeService

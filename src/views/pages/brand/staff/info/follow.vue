@@ -26,10 +26,13 @@
           :scroll="{ x: 1000 }"
           :loading="loading.getStaffFollow"
           :page="page"
-          @change="onTableChange"
         >
           <template slot="member_name" slot-scope="text, record">
-            <a href="javascript:;" class="mg-r8" @click="goMemberDetai(record)">
+            <a
+              href="javascript:;"
+              class="mg-r8"
+              @click="goMemberDetail(record)"
+            >
               {{ text }}
             </a>
           </template>

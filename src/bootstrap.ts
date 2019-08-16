@@ -1,18 +1,13 @@
 import Vue from 'vue'
 import VueServiceApp from 'vue-service-app'
 import routes from '@/router/routes'
-import { providers } from '@/providers'
-import nProgress from 'nprogress'
+import container from './container'
 
-Vue.use(VueServiceApp)
+Vue.use(VueServiceApp, container)
 
 const { router } = new VueServiceApp({
+  container,
   routes,
-  providers,
-  onError(e) {
-    nProgress.done()
-    throw e
-  },
   scrollBehavior: (to: any) => {
     if (to.name.includes('brand-stat')) {
       return

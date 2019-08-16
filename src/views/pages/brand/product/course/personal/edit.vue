@@ -23,9 +23,9 @@
   </st-panel>
 </template>
 <script>
-import CreatePersonalCourse from './edit#/create-personal-course'
-import SetShopCoach from './edit#/set-shop-coach'
-import SetSellPrice from './edit#/set-sell-price'
+import CreatePersonalCourse from './components#/edit/create-personal-course'
+import SetShopCoach from './components#/edit/set-shop-coach'
+import SetSellPrice from './components#/edit/set-sell-price'
 import { EditService } from './edit.service'
 export default {
   components: {

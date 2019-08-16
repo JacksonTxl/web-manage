@@ -15,6 +15,7 @@
 <script>
 import { RouteService } from '@/services/route.service'
 import { ListService } from './list.service'
+import { SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH } from '@/constants/events'
 export default {
   name: 'PageShopProductDeposit',
   serviceInject() {
@@ -32,10 +33,9 @@ export default {
   methods: {
     onSearchCardName() {
       this.$events.emit(
-        `${this.$route.name}:onSingleSearch`,
+        SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH,
         'card_name',
-        this.query.card_name,
-        { keyword: true }
+        this.query.card_name
       )
     }
   }

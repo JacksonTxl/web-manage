@@ -1,17 +1,8 @@
-import { UserService } from '@/services/user.service'
-import { CoachLevelApi } from '@/api/v1/setting/coach/level'
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
+import { Injectable } from 'vue-service-app'
+import { State, Computed } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-
-import {
-  StaffApi,
-  PutStaffBrandQuitInput,
-  PutStaffBrandRestartInput,
-  PutStaffBindBankInput
-} from '@/api/v1/staff'
-import { forkJoin } from 'rxjs'
+import { StaffApi, PutStaffBindBankInput } from '@/api/v1/staff'
 import { MessageService } from '@/services/message.service'
 
 interface SetState {

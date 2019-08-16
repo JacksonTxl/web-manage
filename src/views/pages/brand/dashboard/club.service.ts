@@ -130,9 +130,7 @@ export class ClubService {
       this.getEntry()
     )
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.init().subscribe(res => {
-      next()
-    })
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+    return this.init()
   }
 }

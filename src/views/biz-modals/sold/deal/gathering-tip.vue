@@ -23,12 +23,6 @@ export default {
   bem: {
     gatheringTip: 'modal-sold-deal-gathering-tip'
   },
-  serviceInject() {
-    return {}
-  },
-  rxState() {
-    return {}
-  },
   data() {
     return {
       show: false
@@ -41,7 +35,6 @@ export default {
     message: String,
     needPay: Boolean // true 需要支付按钮 false 不需要
   },
-  created() {},
   methods: {
     print() {
       this.show = false

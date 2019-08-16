@@ -53,10 +53,7 @@
               :defaultActiveFirstOption="false"
               :showArrow="false"
               :filterOption="false"
-              v-decorator="[
-                'memberId',
-                { rules: [{ validator: member_id_validator }] }
-              ]"
+              v-decorator="decorators.memberId"
               @search="onMemberSearch"
               @change="onMemberChange"
               notFoundContent="无搜索结果"
@@ -88,19 +85,13 @@
           </st-form-item>
           <st-form-item v-show="!searchMemberIsShow" label="会员姓名" required>
             <a-input
-              v-decorator="[
-                'memberName',
-                { rules: [{ validator: member_name_validator }] }
-              ]"
+              v-decorator="decorators.memberName"
               placeholder="请输入会员姓名"
             ></a-input>
           </st-form-item>
           <st-form-item v-show="!searchMemberIsShow" label="手机号" required>
             <a-input
-              v-decorator="[
-                'memberMobile',
-                { rules: [{ validator: member_mobile_validator }] }
-              ]"
+              v-decorator="decorators.memberMobile"
               placeholder="请输入手机号"
             ></a-input>
             <p class="add-text">
@@ -110,7 +101,7 @@
           <st-form-item label="规格" required>
             <a-radio-group
               @change="onChangeSpecs"
-              v-decorator="['specs', { rules: [] }]"
+              v-decorator="decorators.specs"
             >
               <a-radio
                 v-for="(item, index) in info.specs"
@@ -124,7 +115,7 @@
           <st-form-item label="开卡方式" required>
             <a-radio-group
               @change="onChangePayment"
-              v-decorator="['open_type', { rules: [] }]"
+              v-decorator="decorators.open_type"
             >
               <a-radio
                 v-for="(item, index) in info.open_type"
@@ -175,10 +166,7 @@
             </template>
             <div :class="sale('contract')">
               <a-input
-                v-decorator="[
-                  'contractNumber',
-                  { rules: [{ validator: contract_number }] }
-                ]"
+                v-decorator="decorators.contractNumber"
                 placeholder="请输入合同编号"
               ></a-input>
               <st-button
@@ -290,7 +278,7 @@
         <div :class="sale('remarks')">
           <st-form-item label="销售人员" required>
             <a-select
-              v-decorator="['saleName', { rules: [{ validator: sale_name }] }]"
+              v-decorator="decorators.saleName"
               placeholder="选择签单的工作人员"
             >
               <a-select-option
@@ -343,8 +331,8 @@ import { SaleMemberCardService } from './sale-member-card.service'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
-import { RuleConfig } from '@/constants/rule'
 import { PatternService } from '@/services/pattern.service'
+import { ruleOptions } from './sale-member-card.config'
 export default {
   name: 'ModalSoldDealSaleMemberCard',
   bem: {
@@ -356,7 +344,6 @@ export default {
   serviceInject() {
     return {
       saleMemberCardService: SaleMemberCardService,
-      rules: RuleConfig,
       pattern: PatternService
     }
   },
@@ -377,9 +364,12 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false,
-      form: this.$form.createForm(this),
       // 搜索会员
       memberSearchText: '',
       searchMemberIsShow: true,
@@ -636,7 +626,7 @@ export default {
       })
     },
     onCreateOrder() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           this.saleMemberCardService
             .setTransactionOrder({
@@ -670,7 +660,7 @@ export default {
       })
     },
     onPay() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           this.saleMemberCardService
             .setTransactionPay({

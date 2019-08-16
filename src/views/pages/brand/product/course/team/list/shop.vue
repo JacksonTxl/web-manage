@@ -18,7 +18,7 @@
             class="mg-r8"
             style="width: 160px"
             v-model="query.shop_id"
-            @change="onChange"
+            @change="onSingleSearch('shop_id', $event)"
           >
             <a-select-option
               v-for="shop in shopsOptions"
@@ -34,7 +34,7 @@
             placeholder="课程类型"
             v-model="query.category_id"
             style="width: 160px"
-            @change="onChange"
+            @change="onSingleSearch('category_id', $event)"
           >
             <a-select-option
               v-for="category in categoryList"
@@ -48,22 +48,63 @@
       </div>
     </header>
     <main class="page-shop-sale-list-shop__table mg-t8">
-      <team-table-shop
-        @check="onCheckGetCourse"
-        @delete-course="onDeleteCourse"
-      ></team-table-shop>
+      <st-table
+        class="mg-t16"
+        rowKey="id"
+        :columns="columns"
+        :dataSource="list"
+        :scroll="{ x: 1440 }"
+        :loading="loading.getList"
+        :alertSelection="{ onReset: onSelectionReset }"
+        :rowSelection="{
+          selectedRowKeys: selectedRowKeys,
+          onChange: onSelectionChange
+        }"
+        :page="page"
+        @change="onTableChange"
+      >
+        <a
+          href="javascript:;"
+          slot="course_name"
+          slot-scope="text, record"
+          @click="onClickCourseInfo(record.id)"
+        >
+          {{ text }}
+        </a>
+        <a-rate
+          slot="strength_level"
+          slot-scope="strength_level"
+          :defaultValue="strength_level"
+          disabled
+        />
+        <!-- 操作 -->
+        <div slot="action" slot-scope="text, record">
+          <st-table-actions>
+            <a
+              href="javascript:;"
+              v-if="record.auth['brand_shop:product:team_course|get']"
+              class="mg-r8"
+              @click="onClickCourseInfo(record.id)"
+            >
+              详情
+            </a>
+          </st-table-actions>
+        </div>
+      </st-table>
     </main>
   </div>
 </template>
 
 <script>
-import TeamTableShop from './shop#/shop-table'
 import { ShopService } from './shop.service'
 import { ListService } from '../list.service'
 import { RouteService } from '@/services/route.service'
 import CourseTransfromBrandTeamCourse from '@/views/biz-modals/course/transfrom-brand-team-course'
+import { columns } from './shop.config'
+import tableMixin from '@/mixins/table.mixin'
 export default {
   name: 'DDDTeamCourseList',
+  mixins: [tableMixin],
   serviceInject() {
     return {
       listService: ListService,
@@ -76,7 +117,10 @@ export default {
       shopsOptions: this.listService.shopSelectOptions$,
       categoryList: this.listService.categoryList$,
       query: this.routeService.query$,
-      auth: this.shopService.auth$
+      auth: this.shopService.auth$,
+      list: this.shopService.list$,
+      page: this.shopService.page$,
+      loading: this.shopService.loading$
     }
   },
   modals: {
@@ -84,29 +128,11 @@ export default {
   },
   data() {
     return {
-      disable: true,
-      selectedRows: [],
-      defaultShops: -1,
-      toRoute: {},
-      courseStatus: [
-        { label: '所有状态', value: -1 },
-        { label: '有效', value: '1' },
-        { label: '无效', value: '0' }
-      ]
+      columns,
+      selectedRows: []
     }
   },
-  components: {
-    TeamTableShop
-  },
   methods: {
-    onCheckGetCourse(selectedRows) {
-      this.selectedRows = selectedRows
-    },
-    onDeleteCourse(record) {
-      this.shopService.deleteCourse(record.id).subscribe(() => {
-        this.$router.push({ force: true })
-      })
-    },
     onClickTransFromBrand() {
       this.$modalRouter.push({
         name: 'course-transfrom-brand-team-course',
@@ -115,6 +141,14 @@ export default {
     },
     onChange() {
       this.$router.push({ query: { ...this.query, course_name: '' } })
+    },
+    onClickCourseInfo(id) {
+      this.$router.push({
+        name: 'brand-product-course-team-info',
+        query: {
+          courseId: id
+        }
+      })
     }
   }
 }

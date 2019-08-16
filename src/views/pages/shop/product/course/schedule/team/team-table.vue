@@ -40,7 +40,7 @@
           href="javascript:;"
           slot="extra"
           class="add-schedule"
-          v-modal-link="{ name: 'schedule-team-add-course-schedule' }"
+          v-modal-link="{ name: 'schedule-team-add-course' }"
         >
           + 添加课程排期
         </span>
@@ -101,16 +101,16 @@
 <script>
 import { TeamScheduleScheduleService } from '../team/service#/schedule.service'
 import { RouteService } from '@/services/route.service'
-import ScheduleTeamAddCourseScheduleBatch from '@/views/biz-modals/schedule/team/add-course-schedule-batch'
-import ScheduleTeamAddCourseSchedule from '@/views/biz-modals/schedule/team/add-course-schedule'
+import ScheduleTeamAddCourseBatch from '@/views/biz-modals/schedule/team/add-course-batch'
+import ScheduleTeamAddCourse from '@/views/biz-modals/schedule/team/add-course'
 import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
 import date from '@/views/biz-components/schedule/date#/date-component.vue'
 import ScheduleTeamReserveInfo from '@/views/biz-modals/schedule/team/reserve-info'
 export default {
   name: 'ScheduleTeamTable',
   modals: {
-    ScheduleTeamAddCourseScheduleBatch,
-    ScheduleTeamAddCourseSchedule,
+    ScheduleTeamAddCourseBatch,
+    ScheduleTeamAddCourse,
     ScheduleTeamCopySchedule,
     ScheduleTeamReserveInfo
   },

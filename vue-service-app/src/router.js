@@ -39,6 +39,9 @@ export default class ServiceRouter extends VueRouter {
   replace(to, onComplete, onError) {
     this._goto('replace', to, onComplete, onError)
   }
+  /**
+   * spa reload current Route and force get Data again
+   */
   reload(onComplete, onError) {
     this.replace(
       { path: location.href.replace(location.origin, ''), force: true },

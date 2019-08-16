@@ -84,7 +84,7 @@ export default {
   props: ['id', 'cardName'],
   data() {
     return {
-      form: this.$form.createForm(this),
+      form: this.$stForm.create(),
       show: false,
       reason: '',
       // 停售原因是否有填写
@@ -93,7 +93,7 @@ export default {
   },
   methods: {
     onReasonChange(data) {
-      this.reasonIsNone = data.target.value.trim() === ''
+      this.reasonIsNone = data.trim() === ''
     },
     onStop() {
       this.stopSaleService

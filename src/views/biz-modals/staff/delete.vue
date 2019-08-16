@@ -52,7 +52,6 @@ export default {
   },
   filters: {
     unitFilter(val) {
-      console.log(val)
       return val === 5 ? '个' : '节'
     }
   },

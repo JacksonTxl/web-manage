@@ -14,7 +14,7 @@
             <st-form-item label="擅长项目" required>
               <a-input
                 placeholder="请输入擅长项目"
-                v-decorator="rules.settingName"
+                v-decorator="decorators.setting_name"
                 maxlength="20"
               ></a-input>
             </st-form-item>
@@ -28,7 +28,7 @@
 import { AddService } from './add.service'
 import { MessageService } from '@/services/message.service'
 import { PatternService } from '@/services/pattern.service'
-import { rules } from './skillful.config'
+import { ruleOptions } from './skillful.config'
 
 export default {
   serviceInject() {
@@ -44,22 +44,19 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: true
     }
-  },
-  created() {
-    this.form = this.$form.createForm(this)
-  },
-  computed: {
-    rules
   },
   methods: {
     onSubmit(e) {
       e.preventDefault()
-      this.form.validateFields().then(() => {
-        const data = this.form.getFieldsValue()
-        this.addService.addSkillful(data).subscribe(() => {
+      this.form.validate().then(values => {
+        this.addService.addSkillful(values).subscribe(() => {
           this.messageService.success({
             content: '添加成功'
           })
