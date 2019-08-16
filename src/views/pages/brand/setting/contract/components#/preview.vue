@@ -41,16 +41,16 @@
               <span class="info-text">男</span>
             </div>
           </a-col>
-          <a-col :span="8" v-if="info.is_member_id_card">
-            <div class="info-item">
-              <label class="info-label">身份证：</label>
-              <span class="info-text">31010319900101000</span>
-            </div>
-          </a-col>
           <a-col :span="8" v-if="info.is_salesman_name">
             <div class="info-item">
               <label class="info-label">销售人员：</label>
               <span class="info-text">李四</span>
+            </div>
+          </a-col>
+          <a-col :span="12" v-if="info.is_member_id_card">
+            <div class="info-item">
+              <label class="info-label">身份证：</label>
+              <span class="info-text">31010319900101000</span>
             </div>
           </a-col>
           <a-col :span="24" v-if="info.is_member_address">
