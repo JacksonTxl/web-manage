@@ -363,6 +363,7 @@
 import { UpgradeMemberService } from './upgrade-member.service'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
+import { ruleOptions } from './upgrade-member.config'
 export default {
   name: 'ModalSoldUpgradeMemberCard',
   bem: {
