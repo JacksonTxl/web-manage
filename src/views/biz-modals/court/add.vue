@@ -10,7 +10,7 @@
         <a-input
           placeholder="请输入场地名称，不超过10个字"
           maxlength="10"
-          v-decorator="decorators.area_name"
+          v-decorator="rules.areaName"
         />
       </st-form-item>
       <st-form-item label="场地属性" required>
@@ -29,7 +29,7 @@
           placeholder="请输入最大容纳人数，1-999"
           :min="1"
           :max="999"
-          v-decorator="decorators.contain_number"
+          v-decorator="rules.containNumber"
         />
       </st-form-item>
     </st-form>
@@ -44,13 +44,16 @@
 <script>
 import { AddService } from './add.service'
 import { MessageService } from '@/services/message.service'
-import { ruleOptions } from './court.config'
+import { PatternService } from '@/services/pattern.service'
+import { rules } from './court.config'
+import { AREA_TYPE } from '@/constants/setting/court'
 
 export default {
   serviceInject() {
     return {
       addService: AddService,
-      messageService: MessageService
+      messageService: MessageService,
+      pattern: PatternService
     }
   },
   rxState() {
@@ -60,19 +63,24 @@ export default {
     }
   },
   data() {
-    const form = this.$stForm.create()
-    const decorators = form.decorators(ruleOptions)
     return {
       show: false,
-      isShowPersonNum: true
+      isShowPersonNum: true,
+      AREA_TYPE
     }
+  },
+  created() {
+    this.form = this.$form.createForm(this)
+  },
+  computed: {
+    rules
   },
   methods: {
     onSubmit(e) {
       e.preventDefault()
-      this.form.validate().then(values => {
-        values.contain_number = +values.contain_number
-        this.addService.add(values).subscribe(this.onSubmitSuccess)
+      this.form.validateFields().then(() => {
+        const data = this.getData()
+        this.addService.add(data).subscribe(this.onSubmitSuccess)
       })
     },
     onCancel() {
@@ -85,7 +93,7 @@ export default {
     },
     onChooseRadio(e) {
       this.area_type = e.target.value
-      if (this.area_type === 3) {
+      if (this.area_type === AREA_TYPE.GATE) {
         this.isShowPersonNum = false
       } else {
         this.isShowPersonNum = true
