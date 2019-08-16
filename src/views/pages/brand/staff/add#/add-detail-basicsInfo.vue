@@ -192,7 +192,6 @@
         </st-form-item>
       </a-col>
     </a-row>
-    -->
 
     <a-row :gutter="8">
       <a-col :offset="1" :lg="22">
