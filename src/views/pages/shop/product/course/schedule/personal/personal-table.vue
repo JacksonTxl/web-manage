@@ -17,7 +17,7 @@
         </st-button>
         <st-button>
           <a herf="javascript:;" @click="onClickDeleteInBatchSchedule">
-            批量删除dsada
+            批量删除
           </a>
         </st-button>
       </div>
