@@ -18,12 +18,12 @@ export const ruleOptions = (vm: any) => {
             if (!value) {
               return '请输入默认提成'
             }
-            if (performance_mode === 1) {
+            if (performance_mode === vm.PERFORMANCE.PERFORMANCE_MODE_1) {
               if (value > 100 || value < 0) {
                 return '请输入大于0且小于等于100的值'
               }
             }
-            if (performance_mode === 2) {
+            if (performance_mode === vm.PERFORMANCE.PERFORMANCE_MODE_2) {
               if (value > 999999) {
                 return '请输入大于0且小于等于999999的值'
               }

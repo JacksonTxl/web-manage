@@ -38,7 +38,7 @@
       >
         <template slot="staff_name" slot-scope="text, record, index">
           <a-select
-            v-if="record.edit && record.staff_type !== 1"
+            v-if="record.edit && record.staff_type !== SPLIT.STAFF_TYPE_1"
             v-model="record.staff_id"
             @change="changeSaleMan($event, record, index)"
             style="width: 150px"
@@ -74,24 +74,30 @@
         </template>
         <div slot="action" slot-scope="text, record, index">
           <st-table-actions>
-            <a v-if="record.edit === 3" @click="addSaleMan(record)">
+            <a
+              v-if="record.edit === SPLIT.EDIT_TYPE_3"
+              @click="addSaleMan(record)"
+            >
               协助售卖人
             </a>
             <a
-              v-if="record.edit && record.edit !== 3"
+              v-if="record.edit && record.edit !== SPLIT.EDIT_TYPE_3"
               @click="onSave(record, index)"
             >
               确定
             </a>
             <a v-if="!record.edit" @click="onEidt(record, index)">编辑</a>
             <a
-              v-if="record.edit === 1 || record.edit === 2"
+              v-if="
+                record.edit === SPLIT.EDIT_TYPE_1 ||
+                  record.edit === SPLIT.EDIT_TYPE_2
+              "
               @click="onCanel(record, index)"
             >
               取消
             </a>
             <a
-              v-if="!record.edit && record.staff_type !== 1"
+              v-if="!record.edit && record.staff_type !== SPLIT.STAFF_TYPE_1"
               @click="onDelete(index)"
             >
               删除
@@ -120,6 +126,7 @@ import moment from 'moment'
 import { SplitService } from './split.service'
 import { cloneDeep } from 'lodash-es'
 import { columns } from './split.config'
+import { SPLIT } from '@/constants/finance/split'
 export default {
   name: 'ModalShopFinanceOrderSplit',
   bem: {
@@ -140,6 +147,7 @@ export default {
   props: ['id'],
   data() {
     return {
+      SPLIT,
       form: this.$form.createForm(this),
       show: false,
       description: '',
@@ -153,10 +161,10 @@ export default {
   created() {
     this.splitService.serviceInit(this.id).subscribe(result => {
       const item = {
-        edit: 3, // 1 主销售编辑 2 协助销售编辑 3协助销售新增
+        edit: this.SPLIT.EDIT_TYPE_3, // 1 主销售编辑 2 协助销售编辑 3协助销售新增
         staff_id: '',
         staff_name: '',
-        staff_type: 2,
+        staff_type: this.SPLIT.STAFF_TYPE_2,
         staff_type_name: '协助销售',
         split_ratio: '',
         split_money: ''
@@ -214,10 +222,10 @@ export default {
       ).toFixed(1)
       this.info.split_items.splice(0, 1, record)
       this.info.split_items.unshift({
-        edit: 3,
+        edit: this.SPLIT.EDIT_TYPE_3,
         staff_id: '',
         staff_name: '',
-        staff_type: 2,
+        staff_type: this.SPLIT.STAFF_TYPE_2,
         staff_type_name: '协助销售',
         split_ratio: '',
         split_money: ''

@@ -36,8 +36,10 @@
         <div
           :class="shelves('price')"
           v-if="
-            (info.publish_channel === 2 && info.card_type === 1) ||
-              (info.price_setting === 1 && info.card_type === 1)
+            (info.publish_channel === SHOP_MEMBER.PUBLISH_CHANNEL_2 &&
+              info.card_type === SHOP_MEMBER.CARD_TYPE_1) ||
+              (info.price_setting === SHOP_MEMBER.PRICE_SETTING_1 &&
+                info.card_type === SHOP_MEMBER.CARD_TYPE_1)
           "
           class="mg-b0"
         >
@@ -79,8 +81,10 @@
         <div
           :class="shelves('price')"
           v-if="
-            (info.publish_channel === 2 && info.card_type === 2) ||
-              (info.price_setting === 1 && info.card_type === 2)
+            (info.publish_channel === SHOP_MEMBER.PUBLISH_CHANNEL_2 &&
+              info.card_type === SHOP_MEMBER.CARD_TYPE_2) ||
+              (info.price_setting === SHOP_MEMBER.PRICE_SETTING_1 &&
+                info.card_type === SHOP_MEMBER.CARD_TYPE_2)
           "
           class="mg-b0"
         >
@@ -121,9 +125,9 @@
             'modal-card-batch-shelves__price-error': priceHelpText !== ''
           }"
           v-if="
-            info.publish_channel === 1 &&
-              info.price_setting === 2 &&
-              info.card_type === 1
+            info.publish_channel === SHOP_MEMBER.PUBLISH_CHANNEL_1 &&
+              info.price_setting === SHOP_MEMBER.PRICE_SETTING_2 &&
+              info.card_type === SHOP_MEMBER.CARD_TYPE_1
           "
           class="modal-card-batch-shelves__price mg-b0"
         >
@@ -187,9 +191,9 @@
             'modal-card-batch-shelves__price-error': priceHelpText !== ''
           }"
           v-if="
-            info.publish_channel === 1 &&
-              info.price_setting === 2 &&
-              info.card_type === 2
+            info.publish_channel === SHOP_MEMBER.PUBLISH_CHANNEL_1 &&
+              info.price_setting === SHOP_MEMBER.PRICE_SETTING_2 &&
+              info.card_type === SHOP_MEMBER.CARD_TYPE_2
           "
           class="modal-card-batch-shelves__price mg-b0"
         >
@@ -330,11 +334,11 @@
         </st-form-item>
         <shop-hour-picker
           v-model="timeList"
-          v-if="admissionTime === 2 && moreIsShow"
+          v-if="admissionTime === SHOP_MEMBER.ADMISSION_TIME_2 && moreIsShow"
         ></shop-hour-picker>
         <p
           :class="shelves('admission-time-validata')"
-          v-if="admissionTime === 2 && moreIsShow"
+          v-if="admissionTime === SHOP_MEMBER.ADMISSION_TIME_2 && moreIsShow"
         >
           {{ admissionTimeText }}
         </p>
@@ -387,6 +391,7 @@ import { cloneDeep } from 'lodash-es'
 import { RuleConfig } from '@/constants/rule'
 import ShopHourPicker from '@/views/biz-components/shop-hour-picker/shop-hour-picker'
 import { ruleOptions, shopColumns, admissionTimeList } from './shelf.config'
+import { SHOP_MEMBER } from '@/constants/card/shop-member'
 export default {
   name: 'ModalCardShopMemberShelf',
   bem: {
@@ -456,6 +461,7 @@ export default {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
+      SHOP_MEMBER,
       form,
       decorators,
       show: false,
@@ -511,7 +517,9 @@ export default {
     // 检验入场时间是否输入正确
     checkedAdmission() {
       this.admissionTimeText =
-        this.admissionTime === 2 && this.moreIsShow && !this.timeList.length
+        this.admissionTime === this.SHOP_MEMBER.ADMISSION_TIME_2 &&
+        this.moreIsShow &&
+        !this.timeList.length
           ? '请选择入场时间'
           : ''
     },
@@ -520,7 +528,12 @@ export default {
     },
     // 检验门店自主定价价格输入是否正确
     checkedPrice() {
-      if (!(this.info.publish_channel === 1 && this.info.price_setting === 2)) {
+      if (
+        !(
+          this.info.publish_channel === this.SHOP_MEMBER.PUBLISH_CHANNEL_1 &&
+          this.info.price_setting === this.SHOP_MEMBER.PRICE_SETTING_2
+        )
+      ) {
         this.priceHelpText = ''
         return false
       }
@@ -538,7 +551,10 @@ export default {
     // 格式化价格
     formatSpecs() {
       this.specs = []
-      if (this.info.publish_channel === 1 && this.info.price_setting === 2) {
+      if (
+        this.info.publish_channel === this.SHOP_MEMBER.PUBLISH_CHANNEL_1 &&
+        this.info.price_setting === this.SHOP_MEMBER.PRICE_SETTING_2
+      ) {
         // 有价格范围
         this.priceList.forEach(i => {
           this.specs.push({

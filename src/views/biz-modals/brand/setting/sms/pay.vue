@@ -49,13 +49,13 @@
           <st-icon
             type="alipay"
             size="22px"
-            v-if="item.value === 2"
+            v-if="item.value === SMS.ALIPAY"
             color="#009FE8"
           ></st-icon>
           <st-icon
             type="wechat"
             size="22px"
-            v-if="item.value === 1"
+            v-if="item.value === SMS.WECHAT"
             color="#46BB36"
           ></st-icon>
           <span class="mg-l16">{{ item.name }}</span>
@@ -66,6 +66,7 @@
 </template>
 <script>
 import { SettingSmsPayService } from './pay.service'
+import { SMS } from '@/constants/setting/sms'
 
 export default {
   bem: {
@@ -83,6 +84,7 @@ export default {
   },
   data() {
     return {
+      SMS,
       show: false,
       curCount: 0,
       curChannel: 0,

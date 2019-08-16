@@ -48,35 +48,56 @@
           <st-form-item required>
             <template
               slot="label"
-              v-if="performance_type == 1 || performance_type == 2"
+              v-if="
+                performance_type == PERFORMANCE.PERFORMANCE_TYPE_1 ||
+                  performance_type == PERFORMANCE.PERFORMANCE_TYPE_2
+              "
             >
               默认提成
               <st-help-tooltip id="TBPT001" />
             </template>
-            <template slot="label" v-if="performance_type == 3">
+            <template
+              slot="label"
+              v-if="performance_type == PERFORMANCE.PERFORMANCE_TYPE_3"
+            >
               默认课时费
               <st-help-tooltip id="TBPT001" />
             </template>
             <st-input-number
               :float="true"
               :min="0"
-              :max="performance_mode === 1 ? 100 : 999999"
+              :max="
+                performance_mode === PERFORMANCE.PERFORMANCE_MODE_1
+                  ? 100
+                  : 999999
+              "
               placeholder="请输入默认提成"
               v-decorator="decorators.performance_num"
             >
-              <template v-if="performance_type == 1 || performance_type == 2">
-                <template v-if="performance_mode == 1">
+              <template
+                v-if="
+                  performance_type == PERFORMANCE.PERFORMANCE_TYPE_1 ||
+                    performance_type == PERFORMANCE.PERFORMANCE_TYPE_2
+                "
+              >
+                <template
+                  v-if="performance_mode == PERFORMANCE.PERFORMANCE_MODE_1"
+                >
                   <template slot="addonAfter">
                     %
                   </template>
                 </template>
-                <template v-if="performance_mode == 2">
+                <template
+                  v-if="performance_mode == PERFORMANCE.PERFORMANCE_MODE_2"
+                >
                   <template slot="addonAfter">
                     元
                   </template>
                 </template>
               </template>
-              <template v-if="performance_type == 3">
+              <template
+                v-if="performance_type == PERFORMANCE.PERFORMANCE_TYPE_3"
+              >
                 <template slot="addonAfter">
                   元/节
                 </template>
@@ -92,27 +113,49 @@
               <st-form-table hoverable>
                 <thead>
                   <tr>
-                    <template v-if="performance_type == 1">
-                      <template v-if="performance_mode == 1">
+                    <template
+                      v-if="performance_type == PERFORMANCE.PERFORMANCE_TYPE_1"
+                    >
+                      <template
+                        v-if="
+                          performance_mode == PERFORMANCE.PERFORMANCE_MODE_1
+                        "
+                      >
                         <th>月销售额（万及以上）</th>
                         <th>提成（%）</th>
                       </template>
-                      <template v-if="performance_mode == 2">
+                      <template
+                        v-if="
+                          performance_mode == PERFORMANCE.PERFORMANCE_MODE_2
+                        "
+                      >
                         <th>月销售额（万及以上）</th>
                         <th>提成（元）</th>
                       </template>
                     </template>
-                    <template v-if="performance_type == 2">
-                      <template v-if="performance_mode == 1">
+                    <template
+                      v-if="performance_type == PERFORMANCE.PERFORMANCE_TYPE_2"
+                    >
+                      <template
+                        v-if="
+                          performance_mode == PERFORMANCE.PERFORMANCE_MODE_1
+                        "
+                      >
                         <th>月课时价值（万及以上）</th>
                         <th>提成（%）</th>
                       </template>
-                      <template v-if="performance_mode == 2">
+                      <template
+                        v-if="
+                          performance_mode == PERFORMANCE.PERFORMANCE_MODE_2
+                        "
+                      >
                         <th>月课时价值（万及以上）</th>
                         <th>提成（元）</th>
                       </template>
                     </template>
-                    <template v-if="performance_type == 3">
+                    <template
+                      v-if="performance_type == PERFORMANCE.PERFORMANCE_TYPE_3"
+                    >
                       <th>月课时数（节及以上）</th>
                       <th>课时费（元/节）</th>
                     </template>
@@ -140,9 +183,7 @@
                       />
                     </td>
                     <td>
-                      <a href="javascript:;" @click="addGradients">
-                        添加梯度({{ data.length }}/5)
-                      </a>
+                      <a @click="addGradients">添加梯度({{ data.length }}/5)</a>
                     </td>
                   </tr>
 
@@ -162,26 +203,20 @@
                       </template>
                       <td>
                         <template v-if="item.isEdit">
-                          <a href="javascript:;" @click="submitEdit(index)">
+                          <a @click="submitEdit(index)">
                             提交
                           </a>
                           <a-divider type="vertical"></a-divider>
-                          <a href="javascript:;" @click="cancelEdit(index)">
+                          <a @click="cancelEdit(index)">
                             取消
                           </a>
                         </template>
                         <template v-else>
-                          <a
-                            href="javascript:;"
-                            @click="editPerformanceNum(index)"
-                          >
+                          <a @click="editPerformanceNum(index)">
                             编辑
                           </a>
                           <a-divider type="vertical"></a-divider>
-                          <a
-                            href="javascript:;"
-                            @click="deletePerformanceNum(index)"
-                          >
+                          <a @click="deletePerformanceNum(index)">
                             删除
                           </a>
                         </template>
@@ -202,6 +237,7 @@ import { MessageService } from '@/services/message.service'
 import { AddTemplateService } from './add-performance-template.service'
 import { UserService } from '@/services/user.service'
 import { ruleOptions } from './performance-template.config'
+import { PERFORMANCE } from '@/constants/finance/performance'
 export default {
   serviceInject() {
     return {
@@ -219,6 +255,7 @@ export default {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
+      PERFORMANCE,
       form,
       decorators,
       data: [],
@@ -236,9 +273,12 @@ export default {
   methods: {
     selectType(e) {
       this.performance_type = e
-      if (e === 1 || e === 2) {
+      if (
+        e === this.PERFORMANCE.PERFORMANCE_TYPE_1 ||
+        e === this.PERFORMANCE.PERFORMANCE_TYPE_2
+      ) {
         this.isChooseks = true
-      } else if (e === 3) {
+      } else if (e === this.PERFORMANCE.PERFORMANCE_TYPE_3) {
         this.isChooseks = false
       }
     },
@@ -278,7 +318,7 @@ export default {
       e.preventDefault()
       this.form.validate().then(values => {
         values.gradients = this.data
-        if (values.performance_type === 3) {
+        if (values.performance_type === this.PERFORMANCE.PERFORMANCE_TYPE_3) {
           values.performance_mode = 0
         }
         this.service.addTemplate(values).subscribe(() => {

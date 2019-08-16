@@ -57,8 +57,10 @@
         <div
           :class="shelves('price')"
           v-if="
-            (info.publish_channel === 2 && info.card_type === 1) ||
-              (info.price_setting === 1 && info.card_type === 1)
+            (info.publish_channel === BRAND_MEMBER.PUBLISH_CHANNEL_2 &&
+              info.card_type === BRAND_MEMBER.CARD_TYPE_1) ||
+              (info.price_setting === BRAND_MEMBER.PRICE_SETTING_1 &&
+                info.card_type === BRAND_MEMBER.CARD_TYPE_1)
           "
           class="mg-b0"
         >
@@ -100,8 +102,10 @@
         <div
           :class="shelves('price')"
           v-if="
-            (info.publish_channel === 2 && info.card_type === 2) ||
-              (info.price_setting === 1 && info.card_type === 2)
+            (info.publish_channel === BRAND_MEMBER.PUBLISH_CHANNEL_2 &&
+              info.card_type === BRAND_MEMBER.CARD_TYPE_2) ||
+              (info.price_setting === BRAND_MEMBER.PRICE_SETTING_1 &&
+                info.card_type === BRAND_MEMBER.CARD_TYPE_2)
           "
           class="mg-b0"
         >
@@ -142,9 +146,9 @@
             'modal-card-batch-shelves__price-error': priceHelpText !== ''
           }"
           v-if="
-            info.publish_channel === 1 &&
-              info.price_setting === 2 &&
-              info.card_type === 1
+            info.publish_channel === BRAND_MEMBER.PUBLISH_CHANNEL_1 &&
+              info.price_setting === BRAND_MEMBER.PRICE_SETTING_2 &&
+              info.card_type === BRAND_MEMBER.CARD_TYPE_1
           "
           class="modal-card-batch-shelves__price mg-b0"
         >
@@ -208,9 +212,9 @@
             'modal-card-batch-shelves__price-error': priceHelpText !== ''
           }"
           v-if="
-            info.publish_channel === 1 &&
-              info.price_setting === 2 &&
-              info.card_type === 2
+            info.publish_channel === BRAND_MEMBER.PUBLISH_CHANNEL_1 &&
+              info.price_setting === BRAND_MEMBER.PRICE_SETTING_2 &&
+              info.card_type === BRAND_MEMBER.CARD_TYPE_2
           "
           class="modal-card-batch-shelves__price mg-b0"
         >
@@ -350,12 +354,12 @@
           </a-radio-group>
         </st-form-item>
         <shop-hour-picker
-          v-if="admissionTime === 2 && moreIsShow"
+          v-if="admissionTime === BRAND_MEMBER.ADMISSION_TIME_2 && moreIsShow"
           v-model="timeList"
         ></shop-hour-picker>
         <p
           :class="shelves('admission-time-validata')"
-          v-if="admissionTime === 2 && moreIsShow"
+          v-if="admissionTime === BRAND_MEMBER.ADMISSION_TIME_2 && moreIsShow"
         >
           {{ admissionTimeText }}
         </p>
@@ -424,6 +428,7 @@ import { cloneDeep } from 'lodash-es'
 import { RuleConfig } from '@/constants/rule'
 import ShopHourPicker from '@/views/biz-components/shop-hour-picker/shop-hour-picker'
 import { ruleOptions, shopColumns, admissionTimeList } from './shelf.config'
+import { BRAND_MEMBER } from '@/constants/card/brand-member'
 export default {
   name: 'ModalCardBrandMemberShelf',
   bem: {
@@ -533,6 +538,7 @@ export default {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
+      BRAND_MEMBER,
       form,
       decorators,
       show: true,
@@ -600,7 +606,12 @@ export default {
     },
     // 检验门店自主定价价格输入是否正确
     checkedPrice() {
-      if (!(this.info.publish_channel === 1 && this.info.price_setting === 2)) {
+      if (
+        !(
+          this.info.publish_channel === this.BRAND_MEMBER.PUBLISH_CHANNEL_1 &&
+          this.info.price_setting === this.BRAND_MEMBER.PRICE_SETTING_2
+        )
+      ) {
         this.priceHelpText = ''
         return false
       }
@@ -665,7 +676,10 @@ export default {
     // 格式化价格
     formatSpecs() {
       this.specs = []
-      if (this.info.publish_channel === 1 && this.info.price_setting === 2) {
+      if (
+        this.info.publish_channel === this.BRAND_MEMBER.PUBLISH_CHANNEL_1 &&
+        this.info.price_setting === this.BRAND_MEMBER.PRICE_SETTING_2
+      ) {
         // 有价格范围
         this.priceList.forEach(i => {
           this.specs.push({

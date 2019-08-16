@@ -17,14 +17,14 @@
         <!-- 私教课程定价模式 -->
         <st-t4>私教课程定价模式</st-t4>
         <!-- 教练统一定价 -->
-        <div class="mg-t4" v-if="info.price_model === 1">
+        <div class="mg-t4" v-if="info.price_model === PERSONAL.PRICEMODEL_1">
           教练统一定价
           <span class="st-des">
             （每一个私教课程，所授课的教练的课程售出价格一致）
           </span>
         </div>
         <!-- 教练分级定价 -->
-        <div class="mg-t4" v-if="info.price_model === 2">
+        <div class="mg-t4" v-if="info.price_model === PERSONAL.PRICEMODEL_2">
           教练分级定价
           <span class="st-des">
             （每一个私教课程，按教练等级进行差异化定价）
@@ -39,20 +39,20 @@
         >
           <st-container
             class="mg-t8"
-            v-for="(item, index) of personalCourseEnums.sale_model.value"
+            v-for="(item, index) of standardPrices"
             :key="index"
           >
             <a-row class="align-items-center">
               <a-col :span="6">
-                <a-radio :value="+index">{{ item }}</a-radio>
+                <a-radio :value="+item.value">{{ item.label }}</a-radio>
               </a-col>
               <a-col :span="18" class="st-des">
-                <div v-if="+index === 1">
+                <div v-if="+index === PERSONAL.SALEMODEL_1">
                   <div>1. 设置课程最低课时费和最高课时费</div>
                   <div>2. 超过售卖价格范围时，不支持购买</div>
                   <div>3. 不支持在用户端直接购买私教课</div>
                 </div>
-                <div v-if="+index === 2">
+                <div v-if="+index === PERSONAL.SALEMODEL_2">
                   <div>1. 设置课程的固定课时费</div>
                   <div>2. 支持用户在用户端在线购买</div>
                 </div>
@@ -66,7 +66,7 @@
         <st-t4>私教课程定价设置</st-t4>
         <st-container type="2" class="bg-gray mg-t8">
           <!-- 教练谈单切换至统一标价 -->
-          <div v-if="info.sale_model === 2">
+          <div v-if="info.sale_model === PERSONAL.SALEMODEL_2">
             <div class="st-des">
               切换教练谈单至统一标价，从目前私教课程的范围定价中选择最低价或最高价设置为私教课程的标准定价
             </div>
@@ -80,17 +80,17 @@
                 @change="onStandardPriceChange"
               >
                 <a-radio
-                  v-for="(item, index) of settingEnums.standard_price.value"
+                  v-for="(item, index) of standardPrices"
                   :key="+index"
-                  :value="+index"
+                  :value="+item.value"
                 >
-                  {{ item }}
+                  {{ item.label }}
                 </a-radio>
               </a-radio-group>
             </st-form-item>
           </div>
           <!-- 统一标价切换至教练谈单 -->
-          <div v-if="info.sale_model === 1">
+          <div v-if="info.sale_model === PERSONAL.SALEMODEL_1">
             <div class="st-des">
               切换统一标价至教练谈单，需要设置私教课程的范围定价，设置后遇到小数位，则四舍五入，保留一位小数
             </div>
@@ -131,27 +131,26 @@
   </st-modal>
 </template>
 <script>
-import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
-import { CoursePriceModelSettingService } from './price-model.service'
+import { PriceModelService } from './price-model.service'
+import { PERSONAL } from '@/constants/setting/personal'
 export default {
   serviceInject() {
     return {
-      userService: UserService,
       messageService: MessageService,
-      settingService: CoursePriceModelSettingService
+      settingService: PriceModelService
     }
   },
   rxState() {
-    const user = this.userService
     return {
       loading: this.settingService.loading$,
-      personalCourseEnums: user.personalCourseEnums$,
-      settingEnums: user.settingEnums$
+      standardPrices: this.settingService.standardPrices$,
+      saleModels: this.settingService.saleModels$
     }
   },
   data() {
     return {
+      PERSONAL,
       show: false,
       form: this.$form.createForm(this),
       info: {},
