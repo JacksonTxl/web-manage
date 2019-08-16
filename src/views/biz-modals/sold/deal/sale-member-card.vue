@@ -167,7 +167,7 @@
             <div :class="sale('contract')">
               <a-input
                 v-decorator="decorators.contractNumber"
-                placeholder="请输入合同编号"
+                placeholder="请输范德萨发生入合同编号"
               ></a-input>
               <st-button
                 class="create-button"
@@ -483,60 +483,6 @@ export default {
       }
     },
     moment,
-    member_id_validator(rule, value, callback) {
-      if ((!value || value.length > 15) && this.searchMemberIsShow) {
-        // eslint-disable-next-line
-        callback('请选择转让会员，查询条件长度15')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    member_name_validator(rule, value, callback) {
-      if (
-        (!value || !value.match(this.pattern.CN_EN_NUM_SPACE('1-15'))) &&
-        !this.searchMemberIsShow
-      ) {
-        // eslint-disable-next-line
-        callback('请输入会员姓名，支持格式长度1~15中英文')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    member_mobile_validator(rule, value, callback) {
-      if (!value && !this.searchMemberIsShow) {
-        // eslint-disable-next-line
-        callback('请输入手机号')
-      } else if (value && !this.rules.mobile.test(value)) {
-        // eslint-disable-next-line
-        callback('输入的手机号格式错误，请重新输入')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    contract_number(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请输入合同编号')
-      } else if (!value.match(this.pattern.EN_NUM('6-20'))) {
-        // eslint-disable-next-line
-        callback('请输入正确合同编号')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    sale_name(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请选择销售人员')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
     // 搜索会员
     onMemberSearch(data) {
       this.memberSearchText = data
