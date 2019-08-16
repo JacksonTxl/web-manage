@@ -36,16 +36,22 @@
                   src="~@/assets/img/icon_vip.png"
                   alt="icon_vip"
                 />
+                <img
+                  v-if="item.area_type === 3"
+                  :class="bItem('level-img')"
+                  src="~@/assets/img/icon_gate.png"
+                  alt="icon_gate"
+                />
               </div>
               <div :class="bItem('content-box')">
-                <div :class="bItem('content-item')">
+                <div :class="bItem('content-item')" v-if="item.area_type !== 3">
                   <label :class="bItem('label')">容纳人数</label>
                   <p :class="bItem('text')">
                     {{ item.contain_number }}
                     <span :class="bItem('sub-text')">人</span>
                   </p>
                 </div>
-                <div :class="bItem('content-item')">
+                <div :class="bItem('content-item')" v-if="item.area_type !== 3">
                   <label :class="bItem('label')">座位模板</label>
                   <p :class="bItem('text')">
                     {{ item.seat_num }}
