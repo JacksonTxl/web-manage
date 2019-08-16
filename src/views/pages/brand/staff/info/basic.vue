@@ -136,12 +136,18 @@
           <st-info-item label="开户银行">
             {{ basicInfo.bank_name }}
           </st-info-item>
+          <st-info-item label="销售提成模版">
+            {{ basicInfo.salary_sale }}
+          </st-info-item>
         </st-info>
       </a-col>
       <a-col :lg="8">
         <st-info>
           <st-info-item label="银行卡号">
             {{ basicInfo.bank_number }}
+          </st-info-item>
+          <st-info-item label="上课提成模版">
+            {{ basicInfo.salary_class }}
           </st-info-item>
         </st-info>
       </a-col>

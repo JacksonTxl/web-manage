@@ -4,9 +4,9 @@
       <a-row :gutter="8" class="mg-t8">
         <a-col :lg="24">
           <st-form-item label="跟进记录">
-            <a-textarea
+            <st-textarea
+              :maxlength="200"
               placeholder="填写跟进方式"
-              :autosize="{ minRows: 3, maxRows: 6 }"
               v-decorator="basicInfoRuleList.follow_content"
             />
           </st-form-item>
