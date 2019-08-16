@@ -51,14 +51,14 @@
       </st-form>
     </div>
     <footer slot="footer" :class="stopSale('footer')">
-      <a-button @click="show = false">取消</a-button>
-      <a-button type="danger" :disabled="reasonIsNone" v-if="reasonIsNone">
+      <st-button @click="show = false">取消</st-button>
+      <st-button type="danger" :disabled="reasonIsNone" v-if="reasonIsNone">
         确认停售
-      </a-button>
+      </st-button>
       <a-popconfirm v-else @confirm="onStop" title="确认停售该会员卡">
-        <a-button type="danger" :loading="loading.setStopSale">
+        <st-button type="danger" :loading="loading.setStopSale">
           确认停售
-        </a-button>
+        </st-button>
       </a-popconfirm>
     </footer>
   </st-modal>

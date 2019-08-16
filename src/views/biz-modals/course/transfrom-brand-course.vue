@@ -59,14 +59,14 @@
     <template slot="footer">
       <div>
         <a href="javascript:;" @click="onClickIsEdit">{{ isEditContent }}</a>
-        <a-button key="back" @click="handleCancel">取消</a-button>
-        <a-button
+        <st-button key="back" @click="handleCancel">取消</st-button>
+        <st-button
           key="submit"
           type="primary"
           @click="upgradePersonalCourseInBrand"
         >
           确认转入
-        </a-button>
+        </st-button>
       </div>
     </template>
   </st-modal>
