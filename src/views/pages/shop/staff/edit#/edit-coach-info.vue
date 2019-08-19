@@ -146,7 +146,7 @@ export default {
       }
     },
     onClickBack() {
-      this.$emit('back', 2)
+      this.$emit('back', 1)
     },
     imageUploadChange(e) {
       this.image_personal = e
