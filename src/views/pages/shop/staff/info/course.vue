@@ -126,7 +126,7 @@ export default {
     onSearchDetail(e) {
       let course_type = e.course_type.id
       switch (course_type) {
-        case 1:
+        case 3:
           this.$modalRouter.push({
             name: 'schedule-team-reserve-info',
             props: {
@@ -139,7 +139,7 @@ export default {
             }
           })
           break
-        case 2:
+        case 1:
           this.$modalRouter.push({
             name: 'schedule-personal-reserve-info',
             props: {
@@ -152,7 +152,7 @@ export default {
             }
           })
           break
-        case 3:
+        case 2:
           this.$modalRouter.push({
             name: 'schedule-personal-team-reserve-info',
             props: {
