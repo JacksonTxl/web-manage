@@ -21,12 +21,11 @@
     page-break-before: auto;
   }
   .print {
-    padding: 0;
+    padding: 20px 0;
   }
   .print body {
     width: 100%;
     margin: 0;
-    padding: 0;
     padding: 64px 40px;
     // font-size: 9pt;
     // zoom:50%;
@@ -39,10 +38,11 @@
   h6,
   div,
   footer,
+  samp,
   img {
-    page-break-before: avoid;
-    page-break-after: avoid;
-    page-break-inside: avoid;
+    page-break-before: auto;
+    page-break-after: auto;
+    page-break-inside: auto;
   }
   table {
     page-break-before: avoid;
@@ -164,7 +164,7 @@
 //   margin: 2cm;
 // }
 
-/* Or: */
+// /* Or: */
 // @page :left {
 //   margin: 1cm;
 // }
