@@ -180,7 +180,8 @@ export default {
         val.format('YYYY-MM-DD') === item.schedule_date &&
           (reserveDate.id = item.id)
       })
-      this.commonService.getOptions('getTimeList', reserveDate, () => {})
+      const query = { ...reserveDate, member_id: this.member_id }
+      this.commonService.getOptions('getTimeList', query, () => {})
     },
     onChangeCourseCoach(val) {
       this.form.setFieldsValue({ scheduling_id: '', reserve_start_time: '' })
