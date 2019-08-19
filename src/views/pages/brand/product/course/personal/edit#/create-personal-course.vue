@@ -97,7 +97,7 @@
             @click="save"
             :loading="loading.updateCourse"
           >
-            保存，继续设置上课门店
+            保存，继续设置售卖门店
           </st-button>
         </st-form-item>
       </a-col>
