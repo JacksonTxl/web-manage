@@ -16,9 +16,9 @@
           <div v-if="auth.areaDel" :class="bItem('del')">
             <a-popconfirm @confirm="onDel(item.id)" placement="bottom">
               <template slot="title">
-                删除该场地后，该门店进行排课等功能无法选择该场地，
+                确认删除场地,
                 <br />
-                是否继续？
+                删除后无法恢复?
               </template>
               <a><st-icon type="delete" :class="bItem('del-icon')" /></a>
             </a-popconfirm>
