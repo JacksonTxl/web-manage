@@ -37,6 +37,9 @@ export const ruleOptions = (vm: any) => {
             if (value.length < 6 || value.length > 15) {
               return '请输入正确格式登录密码'
             }
+            if (value !== values.password) {
+              return '两次密码输入不一致'
+            }
           }
         }
       ]
