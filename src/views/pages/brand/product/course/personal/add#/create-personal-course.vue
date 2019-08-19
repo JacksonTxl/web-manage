@@ -83,7 +83,7 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
           <st-button type="primary" @click="save" :loading="loading.addCourse">
-            保存，继续设置上课门店
+            保存，继续设置售卖门店
           </st-button>
         </st-form-item>
       </a-col>
