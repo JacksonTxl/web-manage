@@ -12,6 +12,7 @@ interface ListState {
 export class TeamService {
   state$: State<ListState>
   resData$: Computed<object>
+  loading$ = new State({})
   auth$ = this.authService.authMap$({
     get: 'brand:setting:course_price_reserve_setting|tab',
     edit: 'brand:setting:team_course_reserve_setting|edit'
