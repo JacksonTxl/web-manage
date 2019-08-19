@@ -14,6 +14,10 @@ export class PatternService {
      */
     NUM: '^\\d{**}$',
     /**
+     * 数字可以有小数点
+     */
+    NUM_POINT: '^\\d+(.\\d+)?$',
+    /**
      * 中文、英文
      */
     CN_EN: '^[A-z\\u4e00-\\u9fa5]{**}$',
@@ -101,6 +105,13 @@ export class PatternService {
    */
   NUM(len: string = this.DEFAULT_LEN) {
     return this.createPattern('NUM', len)
+  }
+  /**
+   * 数字（小数）
+   * @param len
+   */
+  NUM_POINT(len: string = this.DEFAULT_LEN) {
+    return this.createPattern('NUM_POINT', len)
   }
   /**
    * 中文、英文、数字，不含标点符号

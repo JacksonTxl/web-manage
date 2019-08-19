@@ -15,7 +15,7 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           required: true,
-          pattern: pattern.NUM('1-6'),
+          pattern: pattern.NUM_POINT('1-6'),
           message: '请输入月底薪'
         }
       ]
