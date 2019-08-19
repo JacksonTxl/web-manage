@@ -71,6 +71,7 @@
             height="100px"
             :list="image_personal"
             :sizeLimit="2"
+            @change="onChangeGetShowImage"
             placeholder="上传照片"
             :numLimit="10"
           ></st-image-upload>
@@ -97,6 +98,7 @@
 
 <script>
 import { RuleConfig } from '@/constants/staff/rule'
+import { cloneDeep } from 'lodash-es'
 
 export default {
   name: 'EditDetailCoachInfo',
@@ -129,6 +131,9 @@ export default {
     this.setData(this.data)
   },
   methods: {
+    onChangeGetShowImage(imageFiles) {
+      this.image_personal = cloneDeep(imageFiles)
+    },
     onChangeSpecialtyId(v) {
       if (v.length > 10) {
         v.pop()

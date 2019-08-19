@@ -53,7 +53,7 @@ export default {
           key: 0
         },
         {
-          title: '设置上课门店及教练',
+          title: '设置售卖门店及教练',
           key: 1
         },
         {

@@ -15,7 +15,7 @@
             批量排期
           </a>
         </st-button>
-        <st-button>
+        <st-button :disabled="isBatchDel">
           <a herf="javascript:;" @click="onClickDeleteInBatchSchedule">
             批量删除
           </a>
@@ -121,6 +121,11 @@ export default {
       scheduleTime: this.tableService.scheduleTime$,
       scheduleColumns: this.tableService.scheduleColumns$,
       scheduleList: this.tableService.scheduleList$
+    }
+  },
+  computed: {
+    isBatchDel() {
+      return !this.selectedRowKeys.length
     }
   },
   filters: {

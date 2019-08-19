@@ -200,9 +200,6 @@ export default {
     },
     onSubmitSuccess() {
       this.show = false
-      this.messageService.success({
-        content: '修改成功'
-      })
       this.$emit('ok')
     }
   }

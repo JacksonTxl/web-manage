@@ -22,9 +22,9 @@
         <span v-else v-viewer="{ url: 'data-src' }">
           <img
             :class="b('logo')"
-            :data-src="brandInfo.image.image_key | brandLogoFilter({ w: 1000 })"
+            :data-src="brandInfo.image.image_url | brandLogoFilter({ w: 1000 })"
             :src="
-              brandInfo.image.image_key | brandLogoFilter({ w: 180, h: 180 })
+              brandInfo.image.image_url | brandLogoFilter({ w: 180, h: 180 })
             "
             alt="brand logo"
           />

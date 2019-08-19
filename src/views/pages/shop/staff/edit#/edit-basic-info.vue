@@ -222,6 +222,12 @@ export default {
     })
   },
   methods: {
+    onChangeGetAvatar(imageFiles) {
+      this.fileList = cloneDeep(imageFiles)
+    },
+    onChangeGetFace(imageFiles) {
+      this.faceList = cloneDeep(imageFiles)
+    },
     roleChange(v) {
       console.log(v)
       if (v && v.length > 10) v.pop()
