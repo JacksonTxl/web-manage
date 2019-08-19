@@ -44,10 +44,8 @@
         </div>
         <div class="page-personal-header__right">
           <img
-            :src="
-              personalCourseInfo.image.image_url | imgFilter({ w: 197, h: 136 })
-            "
-            alt=""
+            :src="image | imgFilter({ w: 197, h: 136 })"
+            alt="课程详情图片"
           />
         </div>
       </div>

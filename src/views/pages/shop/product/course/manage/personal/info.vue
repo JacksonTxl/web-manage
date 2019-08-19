@@ -51,6 +51,7 @@
           <st-container>
             <st-table
               :columns="shopColumns"
+              rowKey="shop_id"
               :dataSource="info.shops"
             ></st-table>
           </st-container>
@@ -61,7 +62,11 @@
             <span class="value">共{{ info.coaches.length }}名教练</span>
           </div>
           <st-container>
-            <st-table :columns="coachColumns" :dataSource="info.coaches">
+            <st-table
+              :columns="coachColumns"
+              rowKey="id"
+              :dataSource="info.coaches"
+            >
               <div slot="nature_work" slot-scope="nature_work">
                 {{ nature_work | enumFilter('staff.nature_work') }}
               </div>
@@ -84,6 +89,7 @@
           <st-container>
             <st-table
               :columns="priceConfigColumns"
+              rowKey="id"
               :dataSource="price_gradient"
             >
               <div slot="min_sell_price" slot-scope="min_sell_price, record">
