@@ -224,9 +224,8 @@ export default {
           this.key = val.fileKey
           this.MessageService.success({ content: `success: ${val}` })
           this.fileList.push({
-            url: `http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/${
-              val.fileKey
-            }`
+            url: `http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/
+            ${val.fileKey}`
           })
           this.loading = false
         },

@@ -247,8 +247,8 @@ export default {
                 .subscribe()
             }
           }
+          this.show = false
         }
-        this.show = false
       })
     }
   }
