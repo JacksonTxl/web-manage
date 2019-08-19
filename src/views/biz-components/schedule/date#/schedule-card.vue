@@ -27,9 +27,13 @@
               <span class="label">教练：</span>
               <span class="value">{{ item.coach_name }}</span>
             </p>
-            <p class="course__item">
+            <p v-if="item.court_name" class="course__item">
               <span class="label">场地：</span>
               <span class="value">{{ item.court_name }}</span>
+            </p>
+            <p v-if="item.member_name" class="course__item">
+              <span class="label">会员：</span>
+              <span class="value">{{ item.member_name }}</span>
             </p>
           </div>
         </div>
