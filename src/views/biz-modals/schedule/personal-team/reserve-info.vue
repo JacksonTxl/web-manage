@@ -307,6 +307,11 @@ export default {
         name: 'schedule-personal-team-edit',
         props: {
           info: this.reserveInfo
+        },
+        on: {
+          ok: () => {
+            this.$router.push({ query: this.query, force: true })
+          }
         }
       })
     },
