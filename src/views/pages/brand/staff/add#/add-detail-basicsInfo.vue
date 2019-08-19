@@ -7,6 +7,7 @@
             width="164px"
             height="164px"
             :list="fileList"
+            @change="onChangeGetAvatar"
             :sizeLimit="2"
             placeholder="上传头像"
           ></st-image-upload>
@@ -61,6 +62,7 @@
             width="164px"
             height="164px"
             :list="faceList"
+            @change="onChangeGetFace"
             placeholder="上传人脸"
           ></face-upload>
         </st-form-item>
@@ -244,6 +246,7 @@ import DepartmentSelect from '@/views/biz-components/department-select'
 import { RuleConfig } from '@/constants/staff/rule'
 import { AppConfig } from '@/constants/config'
 import FaceUpload from '@/views/biz-components/face-upload/face-upload'
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'StaffDetailBasics',
   serviceInject() {
@@ -283,6 +286,12 @@ export default {
     FaceUpload
   },
   methods: {
+    onChangeGetAvatar(imageFiles) {
+      this.fileList = cloneDeep(imageFiles)
+    },
+    onChangeGetFace(imageFiles) {
+      this.faceList = cloneDeep(imageFiles)
+    },
     getIsCoach(data) {
       console.log('watch new', data)
       this.isShowLevel = data.includes(4)
