@@ -9,5 +9,3 @@ export default {
   name: 'FindPassword'
 }
 </script>
-
-<style lang="scss" scoped></style>

@@ -7,5 +7,3 @@ export default {
   name: 'AccountRegister'
 }
 </script>
-
-<style scoped></style>
