@@ -165,7 +165,7 @@
         <a-col :span="24" v-if="info.is_law_content">
           <div class="info-item">
             <label class="info-label">合同章程：</label>
-            <pre class="info-text">{{ lawContent }}</pre>
+            <samp class="info-text">{{ lawContent }}</samp>
           </div>
         </a-col>
       </a-row>
