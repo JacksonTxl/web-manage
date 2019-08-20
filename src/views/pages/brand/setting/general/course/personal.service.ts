@@ -14,6 +14,7 @@ interface ListState {
 export class PersonalService {
   state$: State<ListState>
   resData$: Computed<object>
+  loading$ = new State({})
   auth$ = this.authService.authMap$({
     priceGet: 'brand:setting:course_price_reserve_setting|tab',
     priceEdit: 'brand:setting:personal_course_price_setting|edit',
