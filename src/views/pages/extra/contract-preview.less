@@ -2,8 +2,8 @@
   padding: 40px;
   background: #999;
   body {
-    margin: 0 auto;
-    padding: 0 32px 1cm;
+    margin: 0 auto 40px;
+    padding: 64px 40px;
     width: 21cm;
     background: #fff;
     height: initial;
@@ -18,14 +18,15 @@
     text-shadow: none !important;
     background: 0 0 !important;
     box-shadow: none !important;
+    page-break-before: auto;
   }
   .print {
-    padding: 0;
+    padding: 20px 0;
   }
   .print body {
     width: 100%;
     margin: 0;
-    padding: 0 1cm;
+    padding: 64px 40px;
     // font-size: 9pt;
     // zoom:50%;
   }
@@ -35,18 +36,26 @@
   h4,
   h5,
   h6,
+  div,
+  footer,
+  samp,
   img {
-    page-break-after: avoid;
-    page-break-inside: avoid;
+    page-break-before: auto;
+    page-break-after: auto;
+    page-break-inside: auto;
   }
   table {
+    page-break-before: avoid;
+    page-break-after: avoid;
     page-break-inside: avoid;
   }
 }
 
 .extra-contract-preview {
-  .pd-lr(8px);
-
+  // .pd-lr(8px);
+  width: 100%;
+  margin: 0;
+  float: none;
   .info-item {
     display: flex;
     .mg-b(24px);
@@ -62,11 +71,14 @@
 
   .info-text {
     flex: 1;
-    .fz(14px);
+    .fz(12px);
     // .lh(22px);
     .mg-b(8px);
     overflow: hidden;
     .c(#3e4d5c);
+    line-height: 21px;
+    word-break: break-all;
+    white-space: pre-wrap;
   }
 
   &__header {
@@ -148,3 +160,20 @@
     .mg-t(56px);
   }
 }
+// @page {
+//   margin: 2cm;
+// }
+
+// /* Or: */
+// @page :left {
+//   margin: 1cm;
+// }
+
+// @page :right {
+//   margin: 1cm;
+// }
+
+// /* The first page of a print can be manipulated as well */
+// @page :first {
+//   margin: 1cm 2cm;
+// }

@@ -16,6 +16,7 @@
         <a-select
           v-decorator="formRules.courseId"
           :disabled="!!info.reserve.length"
+          @change="onChangeGetCourseId"
         >
           <a-select-option
             v-for="course in courseOptions"
@@ -29,7 +30,7 @@
       <st-form-item label="教练" required>
         <a-select v-decorator="formRules.coachId">
           <a-select-option
-            v-for="coach in coachOptions"
+            v-for="coach in courseCoachOptions"
             :key="coach.id"
             :value="coach.id"
           >
@@ -137,7 +138,7 @@ export default {
     const commonService = this.commonService
     return {
       courseOptions: commonService.courseOptions$,
-      coachOptions: commonService.coachOptions$
+      courseCoachOptions: commonService.courseCoachOptions$
     }
   },
   data() {
@@ -160,8 +161,12 @@ export default {
   },
   created() {
     this.getUpdateInfo(this.id)
+    this.commonService.getCourseCoachList(this.info.course_id).subscribe()
   },
   methods: {
+    onChangeGetCourseId(id) {
+      this.commonService.getCourseCoachList(id).subscribe()
+    },
     getUpdateInfo(id) {
       this.scheduleService.getUpdateInfo(id).subscribe(res => {
         const info = { ...res.info }
@@ -200,9 +205,6 @@ export default {
     },
     onSubmitSuccess() {
       this.show = false
-      this.messageService.success({
-        content: '修改成功'
-      })
       this.$emit('ok')
     }
   }

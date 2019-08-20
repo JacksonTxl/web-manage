@@ -14,11 +14,23 @@
       <a-col :xl="8" :xxl="6" :xs="12" v-for="item in list" :key="item.id">
         <div :class="bItem()">
           <div v-if="auth.areaDel" :class="bItem('del')">
-            <a-popconfirm @confirm="onDel(item.id)" placement="bottom">
+            <a-popconfirm
+              @confirm="onDel(item.id)"
+              placement="bottom"
+              v-if="item.area_type === 3"
+            >
               <template slot="title">
                 删除该场地后，该门店进行排课等功能无法选择该场地，
                 <br />
                 是否继续？
+              </template>
+              <a><st-icon type="delete" :class="bItem('del-icon')" /></a>
+            </a-popconfirm>
+            <a-popconfirm @confirm="onDel(item.id)" placement="bottom" v-else>
+              <template slot="title">
+                确认删除场地,
+                <br />
+                删除后无法恢复?
               </template>
               <a><st-icon type="delete" :class="bItem('del-icon')" /></a>
             </a-popconfirm>

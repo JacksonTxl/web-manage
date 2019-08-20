@@ -69,6 +69,7 @@
             width="100px"
             height="100px"
             :list="fileList"
+            @change="onChangeGetShowImage"
             :sizeLimit="2"
             placeholder="上传照片"
             :numLimit="10"
@@ -136,13 +137,16 @@ export default {
     this.setData(this.data)
   },
   methods: {
+    onChangeGetShowImage(imageFiles) {
+      this.image_personal = cloneDeep(imageFiles)
+    },
     onChangeSpecialtyId(v) {
       if (v.length > 10) {
         v.pop()
       }
     },
     onClickBack() {
-      this.$emit('back', 2)
+      this.$emit('back', 1)
     },
     imageUploadChange(e) {
       this.image_personal = e
@@ -190,7 +194,7 @@ export default {
       } else {
         data.employment_time = undefined
       }
-      
+
       data.certification_name = this.coachInfoData.certification_name
       data.is_show = Number(data.is_show)
       data.image_personal = this.fileList

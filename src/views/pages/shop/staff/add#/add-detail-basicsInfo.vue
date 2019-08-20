@@ -7,6 +7,7 @@
             width="164px"
             height="164px"
             :list="fileList"
+            @change="onChangeGetAvatar"
             :sizeLimit="2"
             placeholder="上传头像"
           ></st-image-upload>
@@ -63,6 +64,7 @@
             width="164px"
             height="164px"
             :list="faceList"
+            @change="onChangeGetFace"
             placeholder="上传人脸"
           ></face-upload>
         </st-form-item>
@@ -252,6 +254,7 @@ import CoachLevelSelect from '@/views/biz-components/coach-level-select'
 import ShopSelect from '@/views/biz-components/shop-select'
 import DepartmentSelect from '@/views/biz-components/department-select'
 import FaceUpload from '@/views/biz-components/face-upload/face-upload'
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'StaffDetailBasics',
   serviceInject() {
@@ -310,6 +313,13 @@ export default {
     })
   },
   methods: {
+    onChangeGetAvatar(imageFiles) {
+      cloneDeep
+      this.fileList = cloneDeep(imageFiles)
+    },
+    onChangeGetFace() {
+      this.faceList = cloneDeep(imageFiles)
+    },
     validatorPassword(rule, value, callback) {
       if (value === undefined || value === '') {
         // eslint-disable-next-line

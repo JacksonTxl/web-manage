@@ -15,7 +15,7 @@
       <a-col :lg="22" :xs="22" :offset="1">
         <st-form-item required>
           <template slot="label">
-            上课门店
+            售卖门店
             <st-help-tooltip id="TBCPC001" />
           </template>
           <a-radio-group

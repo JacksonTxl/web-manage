@@ -178,6 +178,7 @@ import { TeamScheduleCommonService } from '@/views/pages/shop/product/course/sch
 import { TeamScheduleReserveService } from '@/views/pages/shop/product/course/schedule/team/service#/reserve.service'
 import ScheduleTeamCancelCourse from '@/views/biz-modals/schedule/team/cancel-course'
 import ScheduleTeamEditSchedule from '@/views/biz-modals/schedule/team/edit-schedule'
+import { RouteService } from '@/services/route.service'
 export default {
   name: 'ReserveInfo',
   modals: {
@@ -188,12 +189,14 @@ export default {
     return {
       teamScheduleCommonService: TeamScheduleCommonService,
       teamScheduleReserveService: TeamScheduleReserveService,
-      messageService: MessageService
+      messageService: MessageService,
+      routeService: RouteService
     }
   },
   rxState() {
     const common = this.teamScheduleCommonService
     return {
+      query: this.routeService.query$,
       infoAuth: this.teamScheduleReserveService.infoAuth$,
       memberOptions: common.memberOptions$,
       consumeOptions: common.consumeOptions$,
@@ -302,7 +305,12 @@ export default {
     onClickEditCourse() {
       this.$modalRouter.push({
         name: 'schedule-team-edit-schedule',
-        props: { id: this.info.id }
+        props: { id: this.info.id },
+        on: {
+          ok: () => {
+            this.$router.push({ query: this.query, force: true })
+          }
+        }
       })
       this.show = false
     },

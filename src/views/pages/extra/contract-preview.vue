@@ -1,21 +1,22 @@
 <template>
-  <div
-    :class="b()"
-    :style="{ 'padding-top': info.contract_setting.contract_marget + 'mm' }"
-  >
+  <div :class="b()">
+    <!-- :style="{ 'padding-top': info.contract_setting.contract_marget + 'mm' }" -->
     <header :class="b('header')">
       <img
-        v-if="info.contract_setting.is_brand_logo"
+        v-if="info.contract_setting && info.contract_setting.is_brand_logo"
         :class="b('brand-logo')"
         :src="info.logo_url"
         alt="brand-logo"
       />
       <h1 :class="b('title')">{{ info.contract_title }}</h1>
-      <h4 v-if="info.contract_setting.is_brand_name" :class="b('brand-name')">
+      <h4
+        v-if="info.contract_setting && info.contract_setting.is_brand_name"
+        :class="b('brand-name')"
+      >
         {{ info.brand_name }}
       </h4>
       <div
-        v-if="info.contract_setting.is_contract_number"
+        v-if="info.contract_setting && info.contract_setting.is_contract_number"
         :class="b('contract-code')"
       >
         <label class="info-label">合同编号：</label>
@@ -24,14 +25,22 @@
     </header>
     <section :class="b('basic')">
       <div :class="b('basic-list')">
-        <a-row :gutter="24">
-          <a-col :span="8" v-if="info.contract_setting.is_member_name">
+        <a-row :gutter="16">
+          <a-col
+            :span="8"
+            v-if="info.contract_setting && info.contract_setting.is_member_name"
+          >
             <div class="info-item">
               <label class="info-label">姓名：</label>
               <span class="info-text">{{ info.member_name }}</span>
             </div>
           </a-col>
-          <a-col :span="8" v-if="info.contract_setting.is_member_mobile">
+          <a-col
+            :span="8"
+            v-if="
+              info.contract_setting && info.contract_setting.is_member_mobile
+            "
+          >
             <div class="info-item">
               <label class="info-label">联系方式：</label>
               <span class="info-text">{{ info.mobile }}</span>
@@ -43,27 +52,45 @@
               <span class="info-text">ST000001</span>
             </div>
           </a-col> -->
-          <a-col :span="8" v-if="info.contract_setting.is_member_sex">
+          <a-col
+            :span="8"
+            v-if="info.contract_setting && info.contract_setting.is_member_sex"
+          >
             <div class="info-item">
               <label class="info-label">性别：</label>
               <span class="info-text">{{ info.sex }}</span>
             </div>
           </a-col>
         </a-row>
-        <a-row :gutter="24">
-          <a-col :span="8" v-if="info.contract_setting.is_member_id_card">
+        <a-row :gutter="16">
+          <a-col
+            :span="8"
+            v-if="
+              info.contract_setting && info.contract_setting.is_member_id_card
+            "
+          >
             <div class="info-item">
               <label class="info-label">身份证：</label>
               <span class="info-text">{{ info.id_card }}</span>
             </div>
           </a-col>
-          <a-col :span="16" v-if="info.contract_setting.is_salesman_name">
+          <a-col
+            :span="16"
+            v-if="
+              info.contract_setting && info.contract_setting.is_salesman_name
+            "
+          >
             <div class="info-item">
               <label class="info-label">销售人员：</label>
               <span class="info-text">{{ info.sale }}</span>
             </div>
           </a-col>
-          <a-col :span="24" v-if="info.contract_setting.is_member_address">
+          <a-col
+            :span="24"
+            v-if="
+              info.contract_setting && info.contract_setting.is_member_address
+            "
+          >
             <div class="info-item">
               <label class="info-label">家庭住址：</label>
               <span class="info-text">{{ info.living_address }}</span>
@@ -71,7 +98,10 @@
           </a-col>
         </a-row>
       </div>
-      <div v-if="info.contract_setting.is_member_pic" :class="b('avatar')">
+      <div
+        v-if="info.contract_setting && info.contract_setting.is_member_pic"
+        :class="b('avatar')"
+      >
         <img :src="info.avatar_url || avatar" alt />
       </div>
     </section>
@@ -162,16 +192,22 @@
             <span class="info-text">{{ info.valid_date }}</span>
           </div>
         </a-col>
-        <a-col :span="24" v-if="info.contract_setting.is_comment">
+        <a-col
+          :span="24"
+          v-if="info.contract_setting && info.contract_setting.is_comment"
+        >
           <div class="info-item">
             <label class="info-label">备注：</label>
             <span class="info-text">{{ info.description }}</span>
           </div>
         </a-col>
-        <a-col :span="24" v-if="info.contract_setting.is_law_content">
+        <a-col
+          :span="24"
+          v-if="info.contract_setting && info.contract_setting.is_law_content"
+        >
           <div class="info-item">
             <label class="info-label">合同章程：</label>
-            <pre class="info-text">{{ info.law_content }}</pre>
+            <samp class="info-text">{{ info.law_content }}</samp>
           </div>
         </a-col>
       </a-row>

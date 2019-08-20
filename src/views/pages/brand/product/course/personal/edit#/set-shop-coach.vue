@@ -13,7 +13,7 @@
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="22" :xs="22" :offset="1">
-        <st-form-item label="上课门店" required>
+        <st-form-item label="售卖门店" required>
           <a-radio-group
             @change="onChange"
             v-decorator="ruleConfig.shopSetting"

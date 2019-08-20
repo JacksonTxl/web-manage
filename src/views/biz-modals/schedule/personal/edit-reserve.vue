@@ -12,7 +12,7 @@
       </st-form-item>
       <st-form-item label="上课教练" required>
         <a-select
-          v-decorator="['coach_id']"
+          v-decorator="['coach_id', { initialValue: coachId }]"
           placeholder="请选择上课教练"
           @change="onChangeCourseCoach"
         >
@@ -71,6 +71,7 @@ export default {
     return {
       show: false,
       value: '',
+      coachId: '',
       fetching: false,
       form: this.$form.createForm(this),
       reserveDate: ''
@@ -78,6 +79,7 @@ export default {
   },
   mounted() {
     this.reserveService.getUpdateInfo(this.info.id).subscribe(res => {
+      this.coachId = res.info.coach.id
       this.commonService.getCourseCoachList(res.info.course.id).subscribe()
     })
   },
@@ -104,7 +106,8 @@ export default {
         val.format('YYYY-MM-DD') === item.schedule_date &&
           (reserveDate = item.id)
       })
-      this.commonService.getOptions('getTimeList', reserveDate, () => {})
+      const query = { ...reserveDate, member_id: this.member_id }
+      this.commonService.getOptions('getTimeList', query, () => {})
     },
     onChangeCourseCoach(val) {
       this.commonService.getOptions('getDateList', val, () => {})
@@ -206,5 +209,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped></style>

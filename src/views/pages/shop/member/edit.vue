@@ -381,7 +381,6 @@ export default {
       },
       options: [],
       fieldNames: { label: 'name', value: 'id', children: 'children' },
-      id_card_type: undefined,
       faceList: [],
       country_prefix: 37,
       source_category: -1
@@ -429,7 +428,7 @@ export default {
           values.city_id = values.cascader[1]
           values.district_id = values.cascader[2]
           // 身份前缀
-          values.id_card_type = this.id_card_type
+          values.id_card_type = values.id_card_type
           // 人脸信息
           values.image_face = this.faceList[0] || {}
           // 手机前缀
@@ -482,7 +481,6 @@ export default {
         country_prefix: +obj.country_prefix || undefined,
         living_address: obj.living_address
       })
-      this.id_card_type = +obj.id_card_type || undefined
       this.country_prefix = +obj.country_prefix || undefined
       this.id = obj.id
       if (obj.image_face && obj.image_face.image_id) {

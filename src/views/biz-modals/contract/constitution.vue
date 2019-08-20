@@ -10,11 +10,11 @@
     <a-textarea
       :class="bModal('textarea')"
       v-model="content"
-      :autosize="{ minRows: 20, maxRows: 100 }"
+      :autosize="{ minRows: 20 }"
       maxlength="5000"
       placeholder="请输入合同章程，支持换行，空格..."
     ></a-textarea>
-    <div class="st-des ta-r">{{ contentLength }} / 5000</div>
+    <div :class="['st-des', bModal('tip')]">{{ contentLength }} / 5000</div>
   </st-modal>
 </template>
 

@@ -168,7 +168,7 @@
           <st-form-item label="价格区间" v-if="info.sale_model === 1">
             <div>
               {{ personalPrice.min_sell_price || 0 }}元/节 ~
-              {{ personalPrice.max_sell_price }}元/节
+              {{ personalPrice.max_sell_price || 0 }}元/节
             </div>
           </st-form-item>
           <st-form-item label="到期时间">

@@ -9,7 +9,7 @@
     <st-button class="mg-r8 mg-l8" @click="onClickNext">
       <a-icon type="right" />
     </st-button>
-    <a-button @click="onClickToday">今</a-button>
+    <a-button @click="onClickToday" v-if="isCurrent">今</a-button>
   </div>
 </template>
 <script>
@@ -49,6 +49,12 @@ export default {
       const start = this.$route.query.start_date
       const end = this.$route.query.end_date
       return start === end
+    },
+    isCurrent() {
+      const start = moment(this.$route.query.start_date).valueOf()
+      const end = moment(this.$route.query.end_date).valueOf()
+      const current = moment().valueOf()
+      return current < start || end < current
     },
     start() {
       return this.$route.query.start_date

@@ -3,7 +3,6 @@
     title="上架会员卡"
     v-model="show"
     wrapClassName="modal-card-batch-shelves"
-    width="668px"
   >
     <section :class="shelves('content')">
       <div :class="shelves('info')" class="mg-b24">
@@ -256,27 +255,42 @@
             @change="onOpenTypeChange"
             :class="shelves('open-type')"
           >
-            <a-checkbox :value="3">指定日期开卡</a-checkbox>
-            <a-checkbox :value="1">购买即开卡</a-checkbox>
-            <span :class="shelves('day-input')">
-              <a-checkbox :value="2">
-                到店开卡
+            <template
+              v-for="(item, index) in Object.keys(
+                memberCard.activate_type.value
+              )"
+              :value="+item"
+            >
+              <span
+                :class="shelves('day-input')"
+                v-if="+item === 2"
+                :key="index"
+              >
+                <a-checkbox :value="+item">
+                  {{ memberCard.activate_type.value[item] }}
+                </a-checkbox>
+                <div class="autoplay-card-day" v-if="openTypeList.includes(2)">
+                  <a-form-item class="page-a-form">
+                    <st-input-number
+                      v-decorator="[
+                        'openDay',
+                        { rules: [{ required: true, message: '请输入天数' }] }
+                      ]"
+                      class="autoplay-card-day-input"
+                    >
+                      <span slot="addonAfter">天</span>
+                    </st-input-number>
+                    <span>内未开卡，则自动开卡</span>
+                  </a-form-item>
+                </div>
+              </span>
+              <a-checkbox v-else :key="index" :value="+item">
+                {{ memberCard.activate_type.value[item] }}
               </a-checkbox>
-              <div class="autoplay-card-day" v-if="openTypeList.includes(2)">
-                <a-form-item class="page-a-form">
-                  <st-input-number
-                    v-decorator="[
-                      'openDay',
-                      { rules: [{ required: true, message: '请输入天数' }] }
-                    ]"
-                    class="autoplay-card-day-input"
-                  >
-                    <span slot="addonAfter">天</span>
-                  </st-input-number>
-                  <span>内未开卡，则自动开卡</span>
-                </a-form-item>
-              </div>
-            </span>
+            </template>
+
+            <!-- <a-checkbox :value="3">指定日期开卡</a-checkbox>
+            <a-checkbox :value="1">购买即开卡</a-checkbox> -->
           </a-checkbox-group>
         </st-form-item>
         <st-form-item

@@ -8,13 +8,8 @@
             :defaultValue="-1"
             placeholder="请选择课程状态"
             @change="onSingleSearch('schedule_status', $event)"
-          >
-            <a-select-option :value="-1">全部预约状态</a-select-option>
-            <a-select-option :value="1">预约失败</a-select-option>
-            <a-select-option :value="3">候补中</a-select-option>
-            <a-select-option :value="2">预约成功</a-select-option>
-            <a-select-option :value="4">取消预约</a-select-option>
-          </a-select>
+            :options="reserveStatus"
+          ></a-select>
           <a-range-picker @change="onChooseDate" format="YYYY-MM-DD" />
         </a-col>
         <a-col :lg="2"></a-col>
@@ -89,7 +84,8 @@ export default {
       courseInfo: this.service.courseInfo$,
       loading: this.service.loading$,
       page: this.service.page$,
-      query: this.routerService.query$
+      query: this.routerService.query$,
+      reserveStatus: this.service.reserveStatus$
     }
   },
   data() {
@@ -126,7 +122,7 @@ export default {
     onSearchDetail(e) {
       let course_type = e.course_type.id
       switch (course_type) {
-        case 1:
+        case 3:
           this.$modalRouter.push({
             name: 'schedule-team-reserve-info',
             props: {
@@ -139,7 +135,7 @@ export default {
             }
           })
           break
-        case 2:
+        case 1:
           this.$modalRouter.push({
             name: 'schedule-personal-reserve-info',
             props: {
@@ -152,7 +148,7 @@ export default {
             }
           })
           break
-        case 3:
+        case 2:
           this.$modalRouter.push({
             name: 'schedule-personal-team-reserve-info',
             props: {
