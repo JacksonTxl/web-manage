@@ -8,13 +8,8 @@
             :defaultValue="-1"
             placeholder="请选择课程状态"
             @change="onSingleSearch('schedule_status', $event)"
-          >
-            <a-select-option :value="-1">全部预约状态</a-select-option>
-            <a-select-option :value="1">预约失败</a-select-option>
-            <a-select-option :value="3">候补中</a-select-option>
-            <a-select-option :value="2">预约成功</a-select-option>
-            <a-select-option :value="4">取消预约</a-select-option>
-          </a-select>
+            :options="reserveStatus"
+          ></a-select>
           <a-range-picker @change="onChooseDate" format="YYYY-MM-DD" />
         </a-col>
         <a-col :lg="2"></a-col>
@@ -89,7 +84,8 @@ export default {
       courseInfo: this.service.courseInfo$,
       loading: this.service.loading$,
       page: this.service.page$,
-      query: this.routerService.query$
+      query: this.routerService.query$,
+      reserveStatus: this.service.reserveStatus$
     }
   },
   data() {

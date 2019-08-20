@@ -37,10 +37,9 @@
         class="mg-l24 mg-r24 mg-t8"
       >
         <span
-          href="javascript:;"
           slot="extra"
           class="add-schedule"
-          v-modal-link="{ name: 'schedule-team-add-course-schedule' }"
+          @click="onAddSchedule(card.date)"
         >
           + 添加课程排期
         </span>
@@ -141,6 +140,21 @@ export default {
     date
   },
   methods: {
+    onScheduleChange() {
+      this.$router.push({ query: this.query, force: true })
+    },
+    // 添加团课排期
+    onAddSchedule(date) {
+      this.$modalRouter.push({
+        name: 'schedule-team-add-course-schedule',
+        props: { time: moment(date) },
+        on: {
+          ok: res => {
+            this.onScheduleChange()
+          }
+        }
+      })
+    },
     onClickSkipSchedule() {
       this.$router.push({
         name: 'shop-product-course-schedule-team',
