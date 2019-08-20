@@ -185,8 +185,7 @@ export default {
     },
     onChangeCourseCoach(val) {
       this.form.setFieldsValue({ scheduling_id: '', reserve_start_time: '' })
-      const query = { id: val, member_id: this.member_id }
-      this.commonService.getOptions('getDateList', query, () => {})
+      this.commonService.getOptions('getDateList', val, () => {})
     },
     range(start, end) {
       const result = []

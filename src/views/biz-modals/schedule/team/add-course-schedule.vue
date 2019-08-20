@@ -145,7 +145,6 @@ export default {
     }
   },
   created() {
-    debugger
     this.initOptions().subscribe()
   },
   methods: {
