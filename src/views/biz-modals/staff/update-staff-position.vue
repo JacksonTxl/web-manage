@@ -58,7 +58,6 @@
       </st-form-item>
       <st-form-item label="薪资模板">
         <a-select
-          class="mg-b16"
           v-decorator="decorators.basic_salary"
           placeholder="请选择底薪模版"
         >
@@ -71,8 +70,9 @@
             {{ item.name }}
           </a-select-option>
         </a-select>
+      </st-form-item>
+      <st-form-item label=" ">
         <a-select
-          class="mg-b16"
           v-decorator="decorators.sale_percentage"
           placeholder="请选择薪资模板"
         >
@@ -85,6 +85,8 @@
             {{ item.name }}
           </a-select-option>
         </a-select>
+      </st-form-item>
+      <st-form-item label=" ">
         <a-select
           v-decorator="decorators.course_percentage"
           placeholder="请选择课程模板"
