@@ -6,13 +6,25 @@
           placeholder="请选择时间"
           :showTime="{ format: 'HH:mm' }"
           format="YYYY-MM-DD HH:mm"
-          v-decorator="decorators.start_time"
+          v-decorator="[
+            'start_time',
+            {
+              rules: [{ required: true, message: '时间不能为空' }],
+              initialValue: time
+            }
+          ]"
         >
           <a-icon slot="suffixIcon" type="clock-circle" />
         </a-date-picker>
       </st-form-item>
       <st-form-item label="课程" required>
-        <a-select placeholder="请选择课程" v-decorator="decorators.course_id">
+        <a-select
+          placeholder="请选择课程"
+          v-decorator="[
+            'course_id',
+            { rules: [{ required: true, message: '请选择课程' }] }
+          ]"
+        >
           <a-select-option
             v-for="course in courseOptions"
             :key="course.id"
@@ -23,7 +35,13 @@
         </a-select>
       </st-form-item>
       <st-form-item label="教练" required>
-        <a-select placeholder="请选择教练" v-decorator="decorators.coach_id">
+        <a-select
+          placeholder="请选择教练"
+          v-decorator="[
+            'coach_id',
+            { rules: [{ required: true, message: '请选择教练' }] }
+          ]"
+        >
           <a-select-option
             v-for="coach in coachOptions"
             :key="coach.id"
@@ -38,23 +56,36 @@
           placeholder="请选择场地"
           :options="courtOptions"
           :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
-          v-decorator="decorators.court_id"
+          v-decorator="['court_id']"
         />
       </st-form-item>
       <st-form-item label="人数" required>
         <a-input-search
           placeholder="请输入人数"
-          v-decorator="decorators.limit_num"
+          v-decorator="[
+            'limit_num',
+            {
+              rules: [
+                { required: true, message: '请填写人数' },
+                {
+                  validator: validateLimitNum
+                }
+              ]
+            }
+          ]"
         >
-          <st-button slot="enterButton">人</st-button>
+          <a-button slot="enterButton">人</a-button>
         </a-input-search>
       </st-form-item>
       <st-form-item label="课时费" required>
         <a-input-search
           placeholder="请输入课时费"
-          v-decorator="decorators.course_fee"
+          v-decorator="[
+            'course_fee',
+            { rules: [{ required: true, message: '请输入课时费' }] }
+          ]"
         >
-          <st-button slot="enterButton">元/节</st-button>
+          <a-button slot="enterButton">元/节</a-button>
         </a-input-search>
       </st-form-item>
       <a-row>
@@ -75,12 +106,11 @@ import { TeamScheduleScheduleService } from '@/views/pages/shop/product/course/s
 import { TeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/team/service#/common.service'
 import { RouteService } from '@/services/route.service'
 import { TeamService } from '@/views/pages/shop/product/course/schedule/team/team.service'
-import ScheduleTeamAddCourseBatch from '@/views/biz-modals/schedule/team/add-course-batch'
-import { ruleOptions } from './add-course.config'
+import ScheduleTeamAddCourseScheduleBatch from '@/views/biz-modals/schedule/team/add-course-schedule-batch'
 export default {
   name: 'AddCourseSchedule',
   modals: {
-    ScheduleTeamAddCourseBatch
+    ScheduleTeamAddCourseScheduleBatch
   },
   serviceInject() {
     return {
@@ -101,12 +131,9 @@ export default {
     }
   },
   data() {
-    const form = this.$stForm.create()
-    const decorators = form.decorators(ruleOptions)
     return {
-      form,
-      decorators,
-      show: false
+      show: false,
+      form: this.$form.createForm(this)
     }
   },
   props: {
@@ -118,6 +145,7 @@ export default {
     }
   },
   created() {
+    debugger
     this.initOptions().subscribe()
   },
   methods: {
@@ -125,25 +153,37 @@ export default {
       return this.teamService.init()
     },
     onSubmit() {
-      this.form.validate().then(values => {
-        const form = cloneDeep(values)
-        form.start_time = form.start_time.format('YYYY-MM-DD HH:mm')
-        if (form.court_id) {
-          form.court_site_id = form.court_id[1]
-          form.court_id = form.court_id[0]
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          const form = cloneDeep(values)
+          form.start_time = form.start_time.format('YYYY-MM-DD HH:mm')
+          if (form.court_id) {
+            form.court_site_id = form.court_id[1]
+            form.court_id = form.court_id[0]
+          }
+          form.course_fee = +form.course_fee
+          form.limit_num = +form.limit_num
+          this.teamScheduleScheduleService.add(form).subscribe(() => {
+            this.$emit('ok')
+            this.show = false
+          })
         }
-        form.course_fee = +form.course_fee
-        form.limit_num = +form.limit_num
-        this.teamScheduleScheduleService.add(form).subscribe(() => {
-          this.$emit('ok')
-          this.show = false
-        })
       })
+    },
+    validateLimitNum(rule, value, callback) {
+      const form = this.form
+      if (value && value > 999) {
+        // eslint-disable-next-line
+        callback(`上课人数不能超过999个`)
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
     },
     onClick() {
       this.show = false
       this.$modalRouter.push({
-        name: 'schedule-team-add-course-batch',
+        name: 'schedule-team-add-course-schedule-batch',
         on: {
           ok: res => {
             this.onScheduleChange()
