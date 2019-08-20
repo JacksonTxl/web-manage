@@ -1,15 +1,11 @@
 import { Injectable } from 'vue-service-app'
-import { Effect } from 'rx-state'
-import { Store } from '@/services/store'
+import { Effect, State } from 'rx-state'
 import { ShopHolidayApi, SetInput } from '@/api/v1/brand/shop-holiday'
 
-interface SetState {}
-
 @Injectable()
-export class HolidayService extends Store<SetState> {
-  constructor(protected shopHolidayApi: ShopHolidayApi) {
-    super()
-  }
+export class HolidayService {
+  loading$ = new State({})
+  constructor(private shopHolidayApi: ShopHolidayApi) {}
   @Effect()
   set(params: SetInput) {
     return this.shopHolidayApi.set(params)

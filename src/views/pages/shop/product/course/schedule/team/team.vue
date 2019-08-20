@@ -128,11 +128,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.zlx {
-  width: 100px;
-  height: 100px;
-  background: #3e4;
-}
-</style>

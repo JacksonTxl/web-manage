@@ -21,7 +21,7 @@
         {{ info.key }}
       </p>
     </div>
-    <div class="tip">
+    <div class="mch-tip">
       <p class="tip-title">说明:</p>
       <p class="tip-p">
         1.
@@ -77,20 +77,3 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-.tip {
-  padding: 16px;
-  background: rgba(247, 249, 252, 1);
-  p {
-    margin-bottom: 8px;
-  }
-  .tip-title {
-    font-weight: 500;
-    line-height: 20px;
-  }
-  .tip-p {
-    font-size: 12px;
-    line-height: 20px;
-  }
-}
-</style>

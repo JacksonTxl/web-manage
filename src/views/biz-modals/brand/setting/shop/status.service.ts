@@ -1,12 +1,12 @@
 import { Injectable } from 'vue-service-app'
-import { Effect } from 'rx-state'
-import { Store } from '@/services/store'
+import { Effect, State } from 'rx-state'
 import { ShopStatusApi, UpdateInput } from '@/api/v1/shop/status'
 import { UserService } from '@/services/user.service'
 
 interface SetState {}
 @Injectable()
-export class ShopStatusService extends Store<SetState> {
+export class ShopStatusService {
+  loading$ = new State({})
   /**
    * 获取枚举值
    */
@@ -15,9 +15,7 @@ export class ShopStatusService extends Store<SetState> {
   constructor(
     private shopStatusApi: ShopStatusApi,
     private userService: UserService
-  ) {
-    super()
-  }
+  ) {}
   @Effect()
   update(params: UpdateInput) {
     return this.shopStatusApi.update(params)

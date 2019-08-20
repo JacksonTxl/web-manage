@@ -1,18 +1,13 @@
 import { Injectable } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
 import { ShopApi } from '@/api/v1/shop'
 
-interface ShopSelectState {
-  list: any
-}
 @Injectable()
-export class SelectService extends Store<ShopSelectState> {
-  state$: State<ShopSelectState>
+export class SelectService {
+  state$: State<any>
   list$: Computed<any>
   constructor(private shopApi: ShopApi) {
-    super()
     this.state$ = new State({
       list: []
     })
