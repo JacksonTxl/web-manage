@@ -19,11 +19,11 @@
               v-model="info.reserve_start"
             >
               <a-select-option
-                v-for="(item, index) in settingEnums.reserve_start.value"
+                v-for="(item, index) in reserveStarts"
                 :key="+index"
-                :value="+index"
+                :value="+item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
             <span class="mg-l8">到</span>
@@ -33,11 +33,11 @@
               v-model="info.reserve_range"
             >
               <a-select-option
-                v-for="(item, index) in settingEnums.reserve_range.value"
+                v-for="(item, index) in reserveRanges"
                 :key="+index"
-                :value="+index"
+                :value="+item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
             <span class="mg-l8">以内的私教课程，员工代预约不受此限制</span>
@@ -53,11 +53,11 @@
               v-model="info.cancel_reserve"
             >
               <a-select-option
-                v-for="(item, index) in settingEnums.cancel_reserve.value"
+                v-for="(item, index) in cancelReserves"
                 :key="+index"
-                :value="+index"
+                :value="+item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
             <span class="mg-l8">取消预约，员工代取消不受此限制</span>
@@ -101,11 +101,11 @@
               v-model="info.sign_time"
             >
               <a-select-option
-                v-for="(item, index) in settingEnums.sign_time.value"
+                v-for="(item, index) in signTimes"
                 :key="+index"
-                :value="+index"
+                :value="+item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
             <span class="mg-l8">允许签到，员工代签到不受此限制</span>
@@ -126,11 +126,11 @@
               v-model="info.auto_sign_limit"
             >
               <a-select-option
-                v-for="(item, index) in settingEnums.auto_sign_limit.value"
+                v-for="(item, index) in autoSignLimits"
                 :key="+index"
-                :value="+index"
+                :value="+item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
             <span class="mg-l8">后系统自动将课程进行签到</span>
@@ -144,22 +144,23 @@
   </st-modal>
 </template>
 <script>
-import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
 import { PersonalReserveSettingService } from './reserve.service'
 export default {
   serviceInject() {
     return {
-      userService: UserService,
       messageService: MessageService,
       settingService: PersonalReserveSettingService
     }
   },
   rxState() {
-    const user = this.userService
     return {
       loading: this.settingService.loading$,
-      settingEnums: user.settingEnums$
+      reserveStarts: this.settingService.reserveStarts$,
+      reserveRanges: this.settingService.reserveRanges$,
+      cancelReserves: this.settingService.cancelReserves$,
+      signTimes: this.settingService.signTimes$,
+      autoSignLimits: this.settingService.autoSignLimits$
     }
   },
   data() {

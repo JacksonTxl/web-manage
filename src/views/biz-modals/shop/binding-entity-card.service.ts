@@ -1,15 +1,11 @@
 import { Injectable } from 'vue-service-app'
-import { Store } from '@/services/store'
 import { MemberApi } from '@/api/v1/member'
+import { State } from 'rx-state/src'
 
-interface CardsTableModelState {
-  lableInfo: any
-}
 @Injectable()
-export class BindingEntityCardService extends Store<CardsTableModelState> {
-  constructor(private cardsApi: MemberApi) {
-    super()
-  }
+export class BindingEntityCardService {
+  loading$ = new State({})
+  constructor(private cardsApi: MemberApi) {}
   getMemberCard(id: string, params: any) {
     return this.cardsApi.getMemberCard(id, params)
   }

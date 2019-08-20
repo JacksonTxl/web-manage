@@ -1,15 +1,11 @@
 import { Injectable } from 'vue-service-app'
-import { Store } from '@/services/store'
 import { MemberApi, SaleQuery, SalesParams } from '@/api/v1/member'
+import { State } from 'rx-state/src'
 
-interface CardsTableModelState {
-  saleList: Object
-}
 @Injectable()
-export class DistributionSaleService extends Store<CardsTableModelState> {
-  constructor(private cardsApi: MemberApi) {
-    super()
-  }
+export class DistributionSaleService {
+  loading$ = new State({})
+  constructor(private cardsApi: MemberApi) {}
   getSaleList(query: SaleQuery) {
     return this.cardsApi.getSaleList(query)
   }

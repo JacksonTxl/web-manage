@@ -1,16 +1,14 @@
 import { Injectable } from 'vue-service-app'
-import { Effect } from 'rx-state'
-import { Store } from '@/services/store'
+import { Effect, State } from 'rx-state'
 import {
   TeamReserveSettingApi,
   UpdateInput
 } from '@/api/v1/setting/course/team/reserve'
 
 @Injectable()
-export class TeamReserveSettingService extends Store<any> {
-  constructor(protected reserveSettingApi: TeamReserveSettingApi) {
-    super()
-  }
+export class TeamReserveSettingService {
+  loading$ = new State({})
+  constructor(protected reserveSettingApi: TeamReserveSettingApi) {}
   getInfo() {
     return this.reserveSettingApi.getInfo()
   }

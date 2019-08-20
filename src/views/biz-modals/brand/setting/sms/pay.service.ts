@@ -1,13 +1,10 @@
 import { Injectable } from 'vue-service-app'
-import { Effect } from 'rx-state'
-import { Store } from '@/services/store'
+import { Effect, State } from 'rx-state'
 import { PayApi, PostSmsPayParams } from '@/api/v1/setting/sms/pay'
-interface SetState {}
 @Injectable()
-export class SettingSmsPayService extends Store<SetState> {
-  constructor(protected PayApi: PayApi) {
-    super()
-  }
+export class SettingSmsPayService {
+  loading$ = new State({})
+  constructor(protected PayApi: PayApi) {}
   @Effect()
   getSmsPayDetail() {
     return this.PayApi.getSmsPayDetail()

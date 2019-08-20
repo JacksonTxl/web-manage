@@ -2,23 +2,18 @@ import { UserService } from '@/services/user.service'
 import { Injectable } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
 import { MemberApi } from '@/api/v1/member'
 
-interface CardsTableModelState {
-  lableInfo: any
-  list: []
-}
 @Injectable()
-export class FrozenService extends Store<CardsTableModelState> {
-  state$: State<CardsTableModelState>
+export class FrozenService {
+  loading$ = new State({})
+  state$: State<any>
   info$: Computed<string>
   list$: Computed<any>
   staffList$ = new State([])
   payMethodList$ = this.userService.getOptions$('member.pay_method')
   hasTransferFeeList$ = this.userService.getOptions$('member.has_transferFee')
   constructor(private memberApi: MemberApi, private userService: UserService) {
-    super()
     this.state$ = new State({
       list: [],
       info: {}

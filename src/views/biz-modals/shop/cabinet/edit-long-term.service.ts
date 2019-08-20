@@ -1,5 +1,4 @@
 import { Injectable } from 'vue-service-app'
-import { Store } from '@/services/store'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import {
@@ -8,12 +7,10 @@ import {
 } from '@/api/v1/setting/cabinet/long-term'
 import { UserService } from '@/services/user.service'
 
-interface EditState {
-  resData: Object
-}
 @Injectable()
-export class EditLongTermService extends Store<EditState> {
-  state$: State<EditState>
+export class EditLongTermService {
+  loading$ = new State({})
+  state$: State<any>
   resData$: Computed<Object>
   transferUnits$ = this.userService.getOptions$('setting.cabinet.transfer_unit')
   useStatus$ = this.userService.getOptions$('setting.cabinet.use_status')
@@ -21,7 +18,6 @@ export class EditLongTermService extends Store<EditState> {
     private cabinetApi: LongTermCabinetApi,
     private userService: UserService
   ) {
-    super()
     this.state$ = new State({
       resData: {}
     })

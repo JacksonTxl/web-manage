@@ -1,19 +1,14 @@
 import { Injectable } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
 import { StaffApi, PutStaffBindBankInput } from '@/api/v1/staff'
 import { MessageService } from '@/services/message.service'
 
-interface SetState {
-  accountInfo: object
-}
 @Injectable()
-export class SalaryAccountSettingService extends Store<SetState> {
-  state$: State<SetState>
+export class SalaryAccountSettingService {
+  state$: State<any>
   accountInfo$: Computed<any>
   constructor(protected staffApi: StaffApi, private msg: MessageService) {
-    super()
     this.state$ = new State({
       accountInfo: {}
     })
