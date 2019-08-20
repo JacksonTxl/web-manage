@@ -7,6 +7,7 @@
             width="164px"
             height="164px"
             :list="fileList"
+            @change="onChangeGetAvatar"
             :sizeLimit="2"
             placeholder="上传头像"
           ></st-image-upload>
@@ -176,6 +177,7 @@ import { ListService } from '../list.service'
 import { AppConfig } from '@/constants/config'
 import { EditService } from '../edit.service'
 import FaceUpload from '@/views/biz-components/face-upload/face-upload'
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'EditBasicInfo',
   serviceInject() {
