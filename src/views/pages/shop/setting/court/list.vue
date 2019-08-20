@@ -17,7 +17,7 @@
             <a-popconfirm
               @confirm="onDel(item.id)"
               placement="bottom"
-              v-if="item.area_type === 3"
+              v-if="item.area_type !== 3"
             >
               <template slot="title">
                 删除该场地后，该门店进行排课等功能无法选择该场地，
