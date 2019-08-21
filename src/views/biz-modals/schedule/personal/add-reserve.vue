@@ -261,7 +261,6 @@ export default {
             disabledMinutes = [...disabledMinutes, ...this.range(0, 60)]
           }
         }
-        return disabledMinutes
       }
       return difference(allTime, disabledMinutes)
     },
