@@ -5,14 +5,10 @@
       slot="title"
     >
       <div class="title__left">
-        <st-button
-          v-modal-link="{ name: 'schedule-team-add-course-schedule-batch' }"
-          class="mg-r8"
-          type="primary"
-        >
+        <st-button @click="onClickScheduleInBatch" class="mg-r8" type="primary">
           批量排期
         </st-button>
-        <st-button v-modal-link="{ name: 'schedule-team-copy-schedule' }">
+        <st-button @click="onClickCopySchedule">
           复制排期
         </st-button>
       </div>
@@ -141,6 +137,31 @@ export default {
     }
   },
   methods: {
+    // 刷新页面
+    onScheduleChange() {
+      this.$router.push({ query: this.query, force: true })
+    },
+    onClickScheduleInBatch() {
+      this.$modalRouter.push({
+        name: 'schedule-personal-team-add-in-batch',
+        on: {
+          ok: res => {
+            this.onScheduleChange()
+          }
+        }
+      })
+    },
+    // 复制排期
+    onClickCopySchedule() {
+      this.$modalRouter.push({
+        name: 'schedule-personal-team-copy',
+        on: {
+          ok: res => {
+            this.onScheduleChange()
+          }
+        }
+      })
+    },
     onClickSkipSchedule() {
       this.$router.push({
         name: 'shop-product-course-schedule-personal-team',
