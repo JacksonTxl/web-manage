@@ -73,6 +73,7 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
+    coach_levelRule: {},
     country_code_id: { initialValue: 37 },
     mobile: {
       rules: [
