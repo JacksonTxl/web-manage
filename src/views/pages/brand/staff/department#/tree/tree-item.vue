@@ -38,7 +38,10 @@
         <span class="tree-name" v-else>
           {{ item.name }}( {{ item.count }} )
         </span>
-        <st-more-dropdown class="tree-opreation" v-show="!item.isEdit">
+        <st-more-dropdown
+          class="tree-opreation"
+          v-show="!item.isEdit || item.id !== 0"
+        >
           <a-menu-item v-if="auth.departmentAdd" @click="addTreeNode">
             新增
           </a-menu-item>
