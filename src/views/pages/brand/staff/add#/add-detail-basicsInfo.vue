@@ -20,20 +20,22 @@
           />
         </st-form-item>
         <st-form-item label="手机号" required>
-          <a-input-group compact style="top: 0;">
-            <a-select style="width: 20%;" v-model="country_code_id">
-              <template v-for="item in codeList">
-                <a-select-option :key="item.code_id" :value="item.code_id">
-                  +{{ item.phone_code }}
-                </a-select-option>
-              </template>
+          <a-input v-decorator="decorators.mobile" placeholder="请输入手机号">
+            <a-select
+              slot="addonBefore"
+              style="width: 100px;"
+              v-model="country_code_id"
+            >
+              <a-select-option
+                v-for="item in codeList"
+                :key="item.code_id"
+                :value="item.code_id"
+              >
+                +{{ item.phone_code }}
+              </a-select-option>
             </a-select>
-            <a-input
-              style="width: 80%"
-              v-decorator="decorators.mobile"
-              placeholder="请输入手机号"
-            />
-          </a-input-group>
+            <a-input />
+          </a-input>
         </st-form-item>
         <st-form-item label="性别" required>
           <a-radio-group name="radioGroup" v-decorator="decorators.sex">
@@ -80,20 +82,20 @@
           <a-input placeholder="请输入邮箱" v-decorator="decorators.mail" />
         </st-form-item>
         <st-form-item label="证件">
-          <a-input-group compact style="top: 0;">
-            <a-select style="width: 20%;" v-model="id_type">
-              <template v-for="(item, key) in enums.id_type.value">
-                <a-select-option :key="item" :value="+key">
-                  {{ item }}
-                </a-select-option>
-              </template>
+          <a-input
+            placeholder="请输入身份证号码"
+            v-decorator="decorators.id_number"
+          >
+            <a-select slot="addonBefore" style="width: 100px" v-model="id_type">
+              <a-select-option
+                v-for="(item, key) in enums.id_type.value"
+                :key="item"
+                :value="+key"
+              >
+                {{ item }}
+              </a-select-option>
             </a-select>
-            <a-input
-              style="width: 80%"
-              placeholder="请输入身份证号码"
-              v-decorator="decorators.id_number"
-            />
-          </a-input-group>
+          </a-input>
         </st-form-item>
       </a-col>
     </a-row>
@@ -324,12 +326,8 @@ export default {
     },
     // 继续填写跳转到编辑
     goNext(e) {
-      e.preventDefault()
-      this.form.validateFields((err, values) => {
-        console.log('validateFields', values)
-        if (!err) {
-          this.submit(values)
-        }
+      this.form.validate().then(values => {
+        this.submit(values)
       })
     },
     /**

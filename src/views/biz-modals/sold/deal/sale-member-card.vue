@@ -573,7 +573,6 @@ export default {
     },
     onCreateOrder() {
       this.form.validate((error, values) => {
-        debugger
         if (!error) {
           this.saleMemberCardService
             .setTransactionOrder({

@@ -1,5 +1,5 @@
 <template>
-  <st-form :form="form" @submit="sumbitBasicData">
+  <st-form :form="form" @submit.prevent="sumbitBasicData">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="员工头像">
@@ -20,8 +20,12 @@
           />
         </st-form-item>
         <st-form-item label="手机号" required>
-          <a-input-group compact style="top: 0;">
-            <a-select style="width: 20%;" v-model="country_code_id">
+          <a-input v-decorator="decorators.mobile" placeholder="请输入手机号">
+            <a-select
+              slot="addonBefore"
+              style="width: 100px;"
+              v-model="country_code_id"
+            >
               <a-select-option
                 v-for="item in codeList"
                 :key="item.code_id"
@@ -30,12 +34,7 @@
                 +{{ item.phone_code }}
               </a-select-option>
             </a-select>
-            <a-input
-              style="width: 80%"
-              v-decorator="decorators.mobile"
-              placeholder="请输入手机号"
-            />
-          </a-input-group>
+          </a-input>
         </st-form-item>
         <st-form-item label="性别" required>
           <a-select placeholder="请选择" v-decorator="decorators.sex">
@@ -71,20 +70,20 @@
           <a-input placeholder="请输入邮箱" v-decorator="decorators.mail" />
         </st-form-item>
         <st-form-item label="证件">
-          <a-input-group compact style="top: 0;">
-            <a-select style="width: 20%;" v-model="id_type">
-              <template v-for="(item, key) in enums.id_type.value">
-                <a-select-option :key="item" :value="+key">
-                  {{ item }}
-                </a-select-option>
-              </template>
+          <a-input
+            placeholder="请输入身份证号码"
+            v-decorator="decorators.id_number"
+          >
+            <a-select slot="addonBefore" style="width: 100px" v-model="id_type">
+              <a-select-option
+                v-for="(item, key) in enums.id_type.value"
+                :key="item"
+                :value="+key"
+              >
+                {{ item }}
+              </a-select-option>
             </a-select>
-            <a-input
-              style="width: 80%"
-              placeholder="请输入身份证号码"
-              v-decorator="decorators.id_number"
-            />
-          </a-input-group>
+          </a-input>
         </st-form-item>
       </a-col>
     </a-row>
@@ -160,7 +159,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button @click="saveAndGoNext" type="primary">
+          <st-button @click.stop="saveAndGoNext" type="primary">
             保存，继续填写
           </st-button>
         </st-form-item>
@@ -244,21 +243,13 @@ export default {
       console.log('证件选择', e)
     },
     saveAndGoNext(e) {
-      e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values)
-          this.submit(values, 1)
-        }
+      this.form.validate().then(values => {
+        this.submit(values, 1)
       })
     },
     sumbitBasicData(e) {
-      e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values)
-          this.submit(values)
-        }
+      this.form.validate().then(values => {
+        this.submit(values)
       })
     },
     /**

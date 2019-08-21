@@ -1,3 +1,4 @@
+import { State } from 'rx-state/src'
 import { Injectable } from 'vue-service-app'
 import { Effect } from 'rx-state'
 import {
@@ -8,6 +9,7 @@ import {
 import { UserService } from '@/services/user.service'
 @Injectable()
 export class SetShopTeamCourseService {
+  loading$ = new State({})
   shopSetting$ = this.userService.getOptions$('team_course.shop_setting')
   constructor(
     protected courseApi: ShopTeamCourseApi,
