@@ -572,71 +572,67 @@ export default {
       })
     },
     onCreateOrder() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          this.saleMemberCardService
-            .setTransactionOrder({
-              member_id: values.memberId,
-              member_name: values.memberName,
-              mobile: values.memberMobile,
-              product_id: this.id,
-              contract_number: values.contractNumber,
-              specs_id: values.specs.id,
-              open_card_type: values.open_type.id,
-              valid_start_time: moment(this.validStartTime).format(
-                'YYYY-MM-DD HH:mm'
-              ),
-              coupon_id: this.selectCoupon.id,
-              advance_id: this.selectAdvance,
-              gift_amount: this.gift_amount || 0,
-              reduce_amount: this.reduceAmount || 0,
-              sale_id: values.saleName,
-              description: this.description,
-              sale_range: this.info.sale_range.type,
-              order_amount: this.currentPrice
+      this.form.validate().then(values => {
+        this.saleMemberCardService
+          .setTransactionOrder({
+            member_id: values.memberId,
+            member_name: values.memberName,
+            mobile: values.memberMobile,
+            product_id: this.id,
+            contract_number: values.contractNumber,
+            specs_id: values.specs.id,
+            open_card_type: values.open_type.id,
+            valid_start_time: moment(this.validStartTime).format(
+              'YYYY-MM-DD HH:mm'
+            ),
+            coupon_id: this.selectCoupon.id,
+            advance_id: this.selectAdvance,
+            gift_amount: this.gift_amount || 0,
+            reduce_amount: this.reduceAmount || 0,
+            sale_id: values.saleName,
+            description: this.description,
+            sale_range: this.info.sale_range.type,
+            order_amount: this.currentPrice
+          })
+          .subscribe(result => {
+            this.$emit('success', {
+              type: 'create',
+              orderId: result.info.order_id
             })
-            .subscribe(result => {
-              this.$emit('success', {
-                type: 'create',
-                orderId: result.info.order_id
-              })
-              this.show = false
-            })
-        }
+            this.show = false
+          })
       })
     },
     onPay() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          this.saleMemberCardService
-            .setTransactionPay({
-              member_id: values.memberId,
-              member_name: values.memberName,
-              mobile: values.memberMobile,
-              product_id: this.id,
-              contract_number: values.contractNumber,
-              specs_id: values.specs.id,
-              open_card_type: values.open_type.id,
-              valid_start_time: moment(this.validStartTime).format(
-                'YYYY-MM-DD HH:mm'
-              ),
-              coupon_id: this.selectCoupon.id,
-              advance_id: this.selectAdvance,
-              gift_amount: this.gift_amount || 0,
-              reduce_amount: this.reduceAmount || 0,
-              sale_id: values.saleName,
-              description: this.description,
-              sale_range: this.info.sale_range.type,
-              order_amount: this.currentPrice
+      this.form.validate().then(values => {
+        this.saleMemberCardService
+          .setTransactionPay({
+            member_id: values.memberId,
+            member_name: values.memberName,
+            mobile: values.memberMobile,
+            product_id: this.id,
+            contract_number: values.contractNumber,
+            specs_id: values.specs.id,
+            open_card_type: values.open_type.id,
+            valid_start_time: moment(this.validStartTime).format(
+              'YYYY-MM-DD HH:mm'
+            ),
+            coupon_id: this.selectCoupon.id,
+            advance_id: this.selectAdvance,
+            gift_amount: this.gift_amount || 0,
+            reduce_amount: this.reduceAmount || 0,
+            sale_id: values.saleName,
+            description: this.description,
+            sale_range: this.info.sale_range.type,
+            order_amount: this.currentPrice
+          })
+          .subscribe(result => {
+            this.$emit('success', {
+              type: 'createPay',
+              orderId: result.info.order_id
             })
-            .subscribe(result => {
-              this.$emit('success', {
-                type: 'createPay',
-                orderId: result.info.order_id
-              })
-              this.show = false
-            })
-        }
+            this.show = false
+          })
       })
     }
   }

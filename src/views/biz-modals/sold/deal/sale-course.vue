@@ -273,6 +273,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import { SaleCourseService } from './sale-course.service'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
@@ -361,6 +362,7 @@ export default {
     }
   },
   methods: {
+    moment,
     fetchCouponList(member_id) {
       const params = {
         member_id: member_id,
@@ -456,61 +458,57 @@ export default {
       })
     },
     onCreateOrder() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          this.saleCourseService
-            .setTransactionOrder({
-              member_id: values.memberId,
-              member_name: values.memberName,
-              mobile: values.memberMobile,
-              package_id: this.id,
-              contract_number: values.contractNumber,
-              coupon_id: this.selectCoupon.id,
-              advance_id: this.selectAdvance,
-              advance_amount: this.validStartTime,
-              reduce_amount: this.reduceAmount || 0,
-              sale_id: values.saleName,
-              description: this.description,
-              sale_range: this.info.sale_range.type,
-              order_amount: this.currentPrice
+      this.form.validate().then(values => {
+        this.saleCourseService
+          .setTransactionOrder({
+            member_id: values.memberId,
+            member_name: values.memberName,
+            mobile: values.memberMobile,
+            package_id: this.id,
+            contract_number: values.contractNumber,
+            coupon_id: this.selectCoupon.id,
+            advance_id: this.selectAdvance,
+            advance_amount: this.validStartTime,
+            reduce_amount: this.reduceAmount || 0,
+            sale_id: values.saleName,
+            description: this.description,
+            sale_range: this.info.sale_range.type,
+            order_amount: this.currentPrice
+          })
+          .subscribe(result => {
+            this.$emit('success', {
+              type: 'create',
+              orderId: result.info.order_id
             })
-            .subscribe(result => {
-              this.$emit('success', {
-                type: 'create',
-                orderId: result.info.order_id
-              })
-              this.show = false
-            })
-        }
+            this.show = false
+          })
       })
     },
     onPay() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          this.saleCourseService
-            .setTransactionPay({
-              member_id: values.memberId,
-              member_name: values.memberName,
-              mobile: values.memberMobile,
-              package_id: this.id,
-              contract_number: values.contractNumber,
-              coupon_id: this.selectCoupon.id,
-              advance_id: this.selectAdvance,
-              advance_amount: this.advanceAmount,
-              reduce_amount: this.reduceAmount || 0,
-              sale_id: values.saleName,
-              description: this.description,
-              sale_range: this.info.sale_range.type,
-              order_amount: this.currentPrice
+      this.form.validate().then(values => {
+        this.saleCourseService
+          .setTransactionPay({
+            member_id: values.memberId,
+            member_name: values.memberName,
+            mobile: values.memberMobile,
+            package_id: this.id,
+            contract_number: values.contractNumber,
+            coupon_id: this.selectCoupon.id,
+            advance_id: this.selectAdvance,
+            advance_amount: this.advanceAmount,
+            reduce_amount: this.reduceAmount || 0,
+            sale_id: values.saleName,
+            description: this.description,
+            sale_range: this.info.sale_range.type,
+            order_amount: this.currentPrice
+          })
+          .subscribe(result => {
+            this.$emit('success', {
+              type: 'createPay',
+              orderId: result.info.order_id
             })
-            .subscribe(result => {
-              this.$emit('success', {
-                type: 'createPay',
-                orderId: result.info.order_id
-              })
-              this.show = false
-            })
-        }
+            this.show = false
+          })
       })
     }
   }

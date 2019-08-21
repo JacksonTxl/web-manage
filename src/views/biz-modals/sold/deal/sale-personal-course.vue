@@ -670,39 +670,37 @@ export default {
         this.isAmountStateTip = '购买数量未确认，请点击确定！'
         return
       }
-      this.form.validate((error, values) => {
-        if (!error) {
-          this.salePersonalCourseService
-            .setTransactionOrder({
-              member_id: values.memberId,
-              member_name: values.memberName,
-              mobile: values.memberMobile,
-              course_id: this.id,
-              contract_number: values.contractNumber,
-              buy_num: values.buyNum,
-              course_price:
-                this.info.sale_model === 2
-                  ? this.personalPrice.sell_price
-                  : values.coursePrice,
-              coupon_id: this.selectCoupon.id,
-              advance_id: this.selectAdvance,
-              reduce_amount: this.reduceAmount || 0,
-              sale_id: values.saleName,
-              description: this.description,
-              gift_course_num: values.gift_course_num || 0,
-              coach_id: values.coachId,
-              coach_level_id: values.coach_level,
-              sale_range: this.info.sale_range.type,
-              order_amount: this.priceInfo
+      this.form.validate().then(values => {
+        this.salePersonalCourseService
+          .setTransactionOrder({
+            member_id: values.memberId,
+            member_name: values.memberName,
+            mobile: values.memberMobile,
+            course_id: this.id,
+            contract_number: values.contractNumber,
+            buy_num: values.buyNum,
+            course_price:
+              this.info.sale_model === 2
+                ? this.personalPrice.sell_price
+                : values.coursePrice,
+            coupon_id: this.selectCoupon.id,
+            advance_id: this.selectAdvance,
+            reduce_amount: this.reduceAmount || 0,
+            sale_id: values.saleName,
+            description: this.description,
+            gift_course_num: values.gift_course_num || 0,
+            coach_id: values.coachId,
+            coach_level_id: values.coach_level,
+            sale_range: this.info.sale_range.type,
+            order_amount: this.priceInfo
+          })
+          .subscribe(result => {
+            this.$emit('success', {
+              type: 'create',
+              orderId: result.info.order_id
             })
-            .subscribe(result => {
-              this.$emit('success', {
-                type: 'create',
-                orderId: result.info.order_id
-              })
-              this.show = false
-            })
-        }
+            this.show = false
+          })
       })
     },
     onPay() {
@@ -710,39 +708,37 @@ export default {
         this.isAmountStateTip = '购买数量未确认，请点击确定！'
         return
       }
-      this.form.validate((error, values) => {
-        if (!error) {
-          this.salePersonalCourseService
-            .setTransactionPay({
-              member_id: values.memberId,
-              member_name: values.memberName,
-              mobile: values.memberMobile,
-              course_id: this.id,
-              contract_number: values.contractNumber,
-              buy_num: values.buyNum,
-              course_price:
-                this.info.sale_model === 2
-                  ? this.personalPrice.sell_price
-                  : values.coursePrice,
-              coupon_id: this.selectCoupon.id,
-              advance_id: this.selectAdvance,
-              reduce_amount: this.reduceAmount || 0,
-              sale_id: values.saleName,
-              description: this.description,
-              gift_course_num: values.gift_course_num || 0,
-              coach_id: values.coachId,
-              coach_level_id: values.coach_level,
-              sale_range: this.info.sale_range.type,
-              order_amount: this.priceInfo
+      this.form.validate().then(values => {
+        this.salePersonalCourseService
+          .setTransactionPay({
+            member_id: values.memberId,
+            member_name: values.memberName,
+            mobile: values.memberMobile,
+            course_id: this.id,
+            contract_number: values.contractNumber,
+            buy_num: values.buyNum,
+            course_price:
+              this.info.sale_model === 2
+                ? this.personalPrice.sell_price
+                : values.coursePrice,
+            coupon_id: this.selectCoupon.id,
+            advance_id: this.selectAdvance,
+            reduce_amount: this.reduceAmount || 0,
+            sale_id: values.saleName,
+            description: this.description,
+            gift_course_num: values.gift_course_num || 0,
+            coach_id: values.coachId,
+            coach_level_id: values.coach_level,
+            sale_range: this.info.sale_range.type,
+            order_amount: this.priceInfo
+          })
+          .subscribe(result => {
+            this.$emit('success', {
+              type: 'createPay',
+              orderId: result.info.order_id
             })
-            .subscribe(result => {
-              this.$emit('success', {
-                type: 'createPay',
-                orderId: result.info.order_id
-              })
-              this.show = false
-            })
-        }
+            this.show = false
+          })
       })
     }
   }

@@ -406,61 +406,57 @@ export default {
       })
     },
     onCreateOrder() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          let reduce_amount = this.reduceAmount ? +this.reduceAmount : 0
-          this.saleDepositCardService
-            .setTransaction({
-              member_id: +values.memberId,
-              member_name: values.memberName,
-              mobile: values.memberMobile,
-              deposit_card_id: +this.id,
-              contract_number: values.contractNumber,
-              advance_id:
-                this.selectAdvance === -1 ? undefined : this.selectAdvance,
-              reduce_amount,
-              sale_id: +values.saleName,
-              description: this.description,
-              order_amount: this.priceInfo,
-              sale_range: +this.info.sale_range.type
+      this.form.validate().then(values => {
+        let reduce_amount = this.reduceAmount ? +this.reduceAmount : 0
+        this.saleDepositCardService
+          .setTransaction({
+            member_id: +values.memberId,
+            member_name: values.memberName,
+            mobile: values.memberMobile,
+            deposit_card_id: +this.id,
+            contract_number: values.contractNumber,
+            advance_id:
+              this.selectAdvance === -1 ? undefined : this.selectAdvance,
+            reduce_amount,
+            sale_id: +values.saleName,
+            description: this.description,
+            order_amount: this.priceInfo,
+            sale_range: +this.info.sale_range.type
+          })
+          .subscribe(res => {
+            this.show = false
+            this.$emit('success', {
+              type: 'create',
+              orderId: res.info.order_id
             })
-            .subscribe(res => {
-              this.show = false
-              this.$emit('success', {
-                type: 'create',
-                orderId: res.info.order_id
-              })
-            })
-        }
+          })
       })
     },
     onPay() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          let reduce_amount = this.reduceAmount ? +this.reduceAmount : 0
-          this.saleDepositCardService
-            .setTransactionPay({
-              member_id: +values.memberId,
-              member_name: values.memberName,
-              mobile: values.memberMobile,
-              deposit_card_id: +this.id,
-              contract_number: values.contractNumber,
-              advance_id:
-                this.selectAdvance === -1 ? undefined : this.selectAdvance,
-              reduce_amount,
-              sale_id: +values.saleName,
-              description: this.description,
-              order_amount: this.priceInfo,
-              sale_range: +this.info.sale_range.type
+      this.form.validate().then(values => {
+        let reduce_amount = this.reduceAmount ? +this.reduceAmount : 0
+        this.saleDepositCardService
+          .setTransactionPay({
+            member_id: +values.memberId,
+            member_name: values.memberName,
+            mobile: values.memberMobile,
+            deposit_card_id: +this.id,
+            contract_number: values.contractNumber,
+            advance_id:
+              this.selectAdvance === -1 ? undefined : this.selectAdvance,
+            reduce_amount,
+            sale_id: +values.saleName,
+            description: this.description,
+            order_amount: this.priceInfo,
+            sale_range: +this.info.sale_range.type
+          })
+          .subscribe(res => {
+            this.show = false
+            this.$emit('success', {
+              type: 'createPay',
+              orderId: res.info.order_id
             })
-            .subscribe(res => {
-              this.show = false
-              this.$emit('success', {
-                type: 'createPay',
-                orderId: res.info.order_id
-              })
-            })
-        }
+          })
       })
     }
   }
