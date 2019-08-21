@@ -4,7 +4,7 @@
 
 <script>
 import { toKFilter } from './filters'
-import { View } from '@antv/data-set'
+import { View } from 'st-data-set'
 import { Chart } from '@antv/g2'
 import chartMixin from './mixin'
 
