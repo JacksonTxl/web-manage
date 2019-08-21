@@ -222,7 +222,7 @@
             v-decorator="decorators.account"
           ></a-input>
         </st-form-item>
-        <st-form-item label="登录密码" v-if="isChoosePermission">
+        <st-form-item required label="登录密码" v-if="isChoosePermission">
           <a-input
             placeholder="6-15个字符，区分大小写"
             v-decorator="[
@@ -231,12 +231,12 @@
             ]"
           ></a-input>
         </st-form-item>
-        <st-form-item label="确认密码" v-if="isChoosePermission">
+        <st-form-item required label="确认密码" v-if="isChoosePermission">
           <a-input
             placeholder="请再次填写密码"
             v-decorator="[
               'repeat_password',
-              { rules: [{ validator: validatorPassword }] }
+              { rules: [{ validator: validatorRePassword }] }
             ]"
           ></a-input>
         </st-form-item>
@@ -346,14 +346,17 @@ export default {
       }
     },
     validatorRePassword(rule, value, callback) {
+      const password = this.form.getFieldValue('password')
       if (value === undefined || value === '') {
         // eslint-disable-next-line
         callback('请输入登录密码')
       } else if (value.length < 6 || value.length > 15) {
         // eslint-disable-next-line
         callback('请输入正确格式登录密码')
-      } else {
+      } else if (password !== value) {
         // eslint-disable-next-line
+        callback('两次密码输入不一致')
+      } else {
         callback()
       }
     },
