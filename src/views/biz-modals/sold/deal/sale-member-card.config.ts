@@ -34,7 +34,7 @@ export const ruleOptions = (vm: any) => {
     },
     contractNumber: {
       rules: [
-        { required: true, message: '请输入合fff同编号' },
+        { required: true, message: '请输入合同编号' },
         {
           pattern: pattern.EN_NUM('6-20'),
           message: '请输入正确合同编号'

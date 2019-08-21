@@ -170,7 +170,7 @@
             placeholder="请选择教练等级"
             style="width: 100%"
             useType="form"
-            v-decorator="decorators.coach_levelRule"
+            v-decorator="decorators.coach_level_id"
             @change="onChange"
           ></coach-level-select>
         </st-form-item>
