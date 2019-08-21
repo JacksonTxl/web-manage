@@ -3,7 +3,7 @@ import { UserService } from '@/services/user.service'
 import container from '@/container'
 
 export const enumFilter = (key: string, path: string) => {
-  if (!key) return ''
+  if (key === undefined) return ''
   const user = container.get(UserService)
   const enumObj = user.enums$.snapshot()
   const value = get(enumObj, `${path}.value.${key}`)
