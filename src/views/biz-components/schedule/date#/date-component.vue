@@ -53,7 +53,7 @@ export default {
     isCurrent() {
       const start = moment(this.$route.query.start_date).valueOf()
       const end = moment(this.$route.query.end_date).valueOf()
-      const current = moment().valueOf()
+      const current = moment(moment().format('YYYY-MM-DD')).valueOf()
       return current < start || end < current
     },
     start() {
