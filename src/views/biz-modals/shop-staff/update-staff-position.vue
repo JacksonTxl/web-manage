@@ -3,31 +3,33 @@
     <staff-info :staff="staff"></staff-info>
     <st-form labelWidth="70px" :form="form">
       <st-form-item label="工作性质">
-        <a-select v-decorator="['nature_work']" placeholder="请选择工作性质">
+        <a-select
+          v-decorator="decorators.nature_work"
+          placeholder="请选择工作性质"
+        >
           <a-select-option
-            :value="item.id"
+            :value="item.value"
             v-for="item in natureWork"
-            :key="item.id"
-            :disabled="!item.id"
+            :key="item.value"
           >
-            {{ item.name }}
+            {{ item.label }}
           </a-select-option>
         </a-select>
       </st-form-item>
       <st-form-item label="员工职能" required>
         <a-select
-          v-decorator="['identity']"
+          v-decorator="decorators.identity"
           mode="multiple"
           placeholder="请选择员工职能"
           @change="onChangeIdentity"
           @deselect="onDeselectIndentity"
         >
           <a-select-option
-            :value="item.id"
+            :value="item.value"
             v-for="item in identityList"
-            :key="item.id"
+            :key="item.value"
           >
-            {{ item.name }}
+            {{ item.label }}
           </a-select-option>
         </a-select>
         <staff-modal-tips
@@ -36,21 +38,14 @@
           v-if="!canDeleteIdentity && tips.length"
         ></staff-modal-tips>
       </st-form-item>
-      <st-form-item label="教练等级" required v-if="coach_level_required">
+      <st-form-item label="教练等级" required v-show="coach_level_required">
         <a-select
-          v-decorator="[
-            'coach_level_id',
-            {
-              rule: [
-                { required: coach_level_required, message: '请选择教练等级' }
-              ]
-            }
-          ]"
+          v-decorator="decorators.coach_level_id"
           placeholder="请选择教练等级"
         >
           <a-select-option
             :value="item.id"
-            v-for="item in coachLevelList$"
+            v-for="item in coachLevelList"
             :key="item.id"
           >
             {{ item.name }}
@@ -59,8 +54,7 @@
       </st-form-item>
       <st-form-item label="薪资模板">
         <a-select
-          class="mg-b16"
-          v-decorator="['basic_salary']"
+          v-decorator="decorators.basic_salary"
           placeholder="请选择底薪模版"
         >
           <a-select-option
@@ -72,9 +66,10 @@
             {{ item.name }}
           </a-select-option>
         </a-select>
+      </st-form-item>
+      <st-form-item label=" ">
         <a-select
-          class="mg-b16"
-          v-decorator="['sale_percentage']"
+          v-decorator="decorators.sale_percentage"
           placeholder="请选择薪资模板"
         >
           <a-select-option
@@ -86,8 +81,10 @@
             {{ item.name }}
           </a-select-option>
         </a-select>
+      </st-form-item>
+      <st-form-item label=" ">
         <a-select
-          v-decorator="['course_percentage']"
+          v-decorator="decorators.course_percentage"
           placeholder="请选择课程模板"
           v-show="isSalaryCourse"
         >
@@ -106,24 +103,24 @@
 </template>
 <script>
 import { UpdateStaffPositionService } from './update-staff-position.service'
-import { UserService } from '../../../services/user.service'
 import { MessageService } from '../../../services/message.service'
 import StaffInfo from './staff-info'
 import StaffModalTips from '@/views/biz-components/staff/staff-modal-tips'
+import { ruleOptions } from './update-staff-position.config'
 
 export default {
   serviceInject() {
     return {
       updateStaffPositionService: UpdateStaffPositionService,
-      userService: UserService,
       msg: MessageService
     }
   },
   rxState() {
     return {
-      staffEnums$: this.userService.staffEnums$,
-      positionInfo$: this.updateStaffPositionService.positionInfo$,
-      coachLevelList$: this.updateStaffPositionService.coachLevelList$,
+      identityList: this.updateStaffPositionService.identityList$,
+      natureWork: this.updateStaffPositionService.natureWork$,
+      positionInfo: this.updateStaffPositionService.positionInfo$,
+      coachLevelList: this.updateStaffPositionService.coachLevelList$,
       salaryBasic: this.updateStaffPositionService.salaryBasic$,
       salarySale: this.updateStaffPositionService.salarySale$,
       salaryCourse: this.updateStaffPositionService.salaryCourse$
@@ -131,10 +128,13 @@ export default {
   },
   name: 'UpdateStaffPosition',
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false,
       isSalaryCourse: false,
-      form: this.$form.createForm(this),
       tips: [],
       operate: false,
       canDeleteIdentity: false,
@@ -169,12 +169,6 @@ export default {
     StaffModalTips
   },
   computed: {
-    identityList() {
-      return this.computedList('identity')
-    },
-    natureWork() {
-      return this.computedList('nature_work')
-    },
     identity() {
       return this.staff && this.staff.identity
     }
@@ -193,20 +187,17 @@ export default {
         identity,
         nature_work,
         sale_percentage
-      } = this.positionInfo$
-      console.log(identity)
+      } = this.positionInfo
       this.onChangeIdentity(identity)
-      this.$nextTick(() => {
-        let obj = {
-          coach_level_id,
-          sale_percentage,
-          course_percentage,
-          basic_salary,
-          identity,
-          nature_work
-        }
-        this.form.setFieldsValue(obj)
-      })
+      let obj = {
+        coach_level_id,
+        sale_percentage,
+        course_percentage,
+        basic_salary,
+        identity,
+        nature_work
+      }
+      this.form.setFieldsValue(obj)
     },
     onChangeIdentity(value) {
       this.isSalaryCourse = value.includes(3) || value.includes(4)
@@ -232,25 +223,13 @@ export default {
           }
         })
     },
-    computedList(key) {
-      let arr = []
-      let value = this.staffEnums$[key].value
-      for (let key in value) {
-        arr.push({
-          id: +key,
-          name: value[key]
-        })
-      }
-      return [{ id: 0, name: '请选择' }, ...arr]
-    },
     onSubmit(e) {
       e.preventDefault()
-      this.form.validateFields().then(() => {
-        let formData = this.form.getFieldsValue()
+      this.form.validate().then(values => {
         this.updateStaffPositionService
           .putStaffBindPosition({
             id: this.staff.id,
-            ...formData
+            ...values
           })
           .subscribe(() => {
             this.show = false

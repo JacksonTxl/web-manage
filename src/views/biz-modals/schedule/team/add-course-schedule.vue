@@ -145,6 +145,7 @@ export default {
     }
   },
   created() {
+    debugger
     this.initOptions().subscribe()
   },
   methods: {
@@ -196,5 +197,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped></style>

@@ -6,14 +6,14 @@
           class="full-width"
           :showTime="{ format: 'HH:mm' }"
           format="YYYY-MM-DD HH:mm"
-          v-decorator="formRules.startTime"
+          v-decorator="decorators.start_time"
         >
           <a-icon slot="suffixIcon" type="clock-circle" />
         </a-date-picker>
       </st-form-item>
       <st-form-item label="课程" required>
         <a-select
-          v-decorator="formRules.courseId"
+          v-decorator="decorators.course_id"
           @change="onChangeGetCourseId"
         >
           <a-select-option
@@ -26,7 +26,7 @@
         </a-select>
       </st-form-item>
       <st-form-item label="教练" required>
-        <a-select v-decorator="formRules.coachId">
+        <a-select v-decorator="decorators.coach_id">
           <a-select-option
             v-for="coach in courseCoachOptions"
             :key="coach.id"
@@ -37,13 +37,13 @@
         </a-select>
       </st-form-item>
       <st-form-item label="人数" required>
-        <a-input-search v-decorator="formRules.limitNum">
-          <a-button slot="enterButton">人</a-button>
+        <a-input-search v-decorator="decorators.limit_num">
+          <st-button slot="enterButton">人</st-button>
         </a-input-search>
       </st-form-item>
       <st-form-item label="课时费" required>
-        <a-input-search v-decorator="formRules.courseFee">
-          <a-button slot="enterButton">元/节</a-button>
+        <a-input-search v-decorator="decorators.course_fee">
+          <st-button slot="enterButton">元/节</st-button>
         </a-input-search>
       </st-form-item>
       <div class="ta-r">
@@ -61,63 +61,8 @@ import { MessageService } from '@/services/message.service'
 import { PersonalTeamScheduleScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/schedule.service'
 import { PersonalTeamScheduleCommonService as CommonService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/common.service'
 import SchedulePersonalTeamAddInBatch from '@/views/biz-modals/schedule/personal-team/add-in-batch'
-const formRules = {
-  startTime: [
-    'start_time',
-    {
-      rules: [
-        {
-          required: true,
-          message: '请选择课程开始时间'
-        }
-      ]
-    }
-  ],
-  courseId: [
-    'course_id',
-    {
-      rules: [
-        {
-          required: true,
-          message: '请选择课程'
-        }
-      ]
-    }
-  ],
-  coachId: [
-    'coach_id',
-    {
-      rules: [
-        {
-          required: true,
-          message: '请选择教练'
-        }
-      ]
-    }
-  ],
-  limitNum: [
-    'limit_num',
-    {
-      rules: [
-        {
-          required: true,
-          message: '请输入人数'
-        }
-      ]
-    }
-  ],
-  courseFee: [
-    'course_fee',
-    {
-      rules: [
-        {
-          required: true,
-          message: '请输入课时费'
-        }
-      ]
-    }
-  ]
-}
+import { ruleOptions } from './add.config'
+
 export default {
   name: 'AddCourseSchedule',
   modals: {
@@ -138,10 +83,12 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      show: false,
-      form: this.$form.createForm(this),
-      formRules
+      form,
+      decorators,
+      show: false
     }
   },
   props: {
@@ -167,13 +114,11 @@ export default {
       })
     },
     onSubmit() {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          const data = this.dataFilter(values)
-          data.course_fee = +data.course_fee
-          data.limit_num = +data.limit_num
-          this.scheduleService.add(data).subscribe(this.onSubmitSuccess)
-        }
+      this.form.validate().then(values => {
+        const data = this.dataFilter(values)
+        data.course_fee = +data.course_fee
+        data.limit_num = +data.limit_num
+        this.scheduleService.add(data).subscribe(this.onSubmitSuccess)
       })
     },
     addInBatch() {

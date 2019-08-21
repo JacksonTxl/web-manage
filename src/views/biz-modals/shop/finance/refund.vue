@@ -1,7 +1,6 @@
 <template>
   <st-modal
     title="退款"
-    size="small"
     v-model="show"
     wrapClassName="modal-shop-finance-refund"
   >
@@ -77,13 +76,11 @@
             </template>
             <a-radio-group v-model="refundReason">
               <a-radio
-                v-for="(item, index) in Object.keys(
-                  finance.refund_reason.value
-                )"
+                v-for="(item, index) in refundReasons"
                 :key="index"
-                :value="+item"
+                :value="+item.value"
               >
-                {{ finance.refund_reason.value[item] }}
+                {{ item.label }}
               </a-radio>
             </a-radio-group>
           </st-form-item>
@@ -92,10 +89,7 @@
               :max="+info.actual_price"
               :float="true"
               placeholder="请输入本次退款的实际金额"
-              v-decorator="[
-                'refundPrice',
-                { rules: [{ validator: refund_price_validator }] }
-              ]"
+              v-decorator="decorators.refundPrice"
             >
               <template slot="addonAfter">
                 元
@@ -105,13 +99,11 @@
           <st-form-item label="退款方式" class="mgb-18" required>
             <a-radio-group v-model="frozenPayType">
               <a-radio
-                v-for="(item, index) in Object.keys(
-                  finance.refund_channel.value
-                )"
+                v-for="(item, index) in refundChannels"
                 :key="index"
-                :value="+item"
+                :value="+item.value"
               >
-                {{ finance.refund_channel.value[item] }}
+                {{ item.label }}
               </a-radio>
             </a-radio-group>
           </st-form-item>
@@ -143,7 +135,7 @@
 <script>
 import moment from 'moment'
 import { RefundService } from './refund.service'
-import { UserService } from '@/services/user.service'
+import { ruleOptions } from './refund.config'
 export default {
   name: 'ModalShopFinanceOrderRefund',
   bem: {
@@ -151,25 +143,28 @@ export default {
   },
   serviceInject() {
     return {
-      userService: UserService,
       refundService: RefundService
     }
   },
   rxState() {
     return {
       info: this.refundService.info$,
-      finance: this.userService.finance$,
+      refundChannels: this.refundService.refundChannels$,
+      refundReasons: this.refundService.refundReasons$,
       loading: this.refundService.loading$
     }
   },
   props: ['id'],
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false,
       description: '',
       frozenPayType: 2,
-      refundReason: 1,
-      form: this.$form.createForm(this)
+      refundReason: 1
     }
   },
   computed: {},
@@ -179,41 +174,24 @@ export default {
   methods: {
     moment,
     onSubmit() {
-      this.form.validateFields((error, values) => {
-        if (!error) {
-          this.refundService
-            .orderRefund(
-              {
-                order_sub_id: this.info.order_sub_id,
-                refund_money: +values.refundPrice,
-                reason: +this.refundReason,
-                pay_channel: +this.frozenPayType,
-                description: this.description
-              },
-              this.id,
-              this.type
-            )
-            .subscribe(res => {
-              this.$emit('success')
-              this.show = false
-            })
-        }
+      this.form.validate().then(values => {
+        this.refundService
+          .orderRefund(
+            {
+              order_sub_id: this.info.order_sub_id,
+              refund_money: +values.refundPrice,
+              reason: +this.refundReason,
+              pay_channel: +this.frozenPayType,
+              description: this.description
+            },
+            this.id,
+            this.type
+          )
+          .subscribe(res => {
+            this.$emit('success')
+            this.show = false
+          })
       })
-    },
-    refund_price_validator(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请输入退款金额')
-      } else if (
-        value &&
-        parseInt(value, 10) > parseInt(this.info.actual_price, 10)
-      ) {
-        // eslint-disable-next-line
-        callback('退款金额不能大于实收金额')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
     }
   }
 }

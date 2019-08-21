@@ -1,6 +1,8 @@
 import { AppConfig } from '@/constants/config'
 import avatarDefault from '@/assets/img/avatar_default.png'
-import { config } from 'rxjs'
+import container from '@/container'
+
+const appConfig = container.get(AppConfig)
 /**
  * 资源类过滤器集合
  * 阿里云oss文档 https://help.aliyun.com/document_detail/44688.html?spm=a2c4g.11186623.6.1285.56ac4663mXIBaR
@@ -15,9 +17,6 @@ interface ImgFilterOptions {
   m?: string
   [propName: string]: any
 }
-
-const container = window.getContainer()
-const appConfig = container.get(AppConfig)
 
 /**
  * 图片资源过滤器

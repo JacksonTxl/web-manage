@@ -9,7 +9,7 @@
     <st-button class="mg-r8 mg-l8" @click="onClickNext">
       <a-icon type="right" />
     </st-button>
-    <a-button @click="onClickToday" v-if="isCurrent">今</a-button>
+    <st-button @click="onClickToday" v-if="isCurrent">今</st-button>
   </div>
 </template>
 <script>

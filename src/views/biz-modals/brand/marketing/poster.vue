@@ -26,6 +26,7 @@ import { PosterService } from './poster.service'
 import { AppConfig } from '@/constants/config'
 import { OssService } from '@/services/oss.service'
 import { ShsService } from '@/services/shs.service'
+import { POSTER } from '@/constants/brand/marketing'
 export default {
   name: 'BrandMarketingPoster',
   bem: {
@@ -62,6 +63,7 @@ export default {
   },
   data() {
     return {
+      POSTER,
       show: false,
       url: '',
       title: '分享海报',
@@ -72,7 +74,7 @@ export default {
     }
   },
   created() {
-    if (this.type === 1) {
+    if (this.type === this.POSTER.COUPON_TYPE) {
       this.posterService.getPosterInfo(this.id).subscribe(() => {
         this.shsService
           .getShsImage({
@@ -85,7 +87,7 @@ export default {
             this.url = res
           })
       })
-    } else if (this.type === 2) {
+    } else if (this.type === this.POSTER.QRCODE_TYPE) {
       this.activeClass = 'qrcode'
       this.title = '小程序码'
       this.message =

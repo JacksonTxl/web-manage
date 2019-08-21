@@ -43,27 +43,33 @@
               <div :class="bItem('title-box')">
                 <st-t3 :class="bItem('title')">{{ item.area_name }}</st-t3>
                 <img
-                  v-if="item.area_type === 2"
+                  v-if="item.area_type === AREA_TYPE.VIP"
                   :class="bItem('level-img')"
                   src="~@/assets/img/icon_vip.png"
                   alt="icon_vip"
                 />
                 <img
-                  v-if="item.area_type === 3"
+                  v-if="item.area_type === AREA_TYPE.GATE"
                   :class="bItem('level-img')"
                   src="~@/assets/img/icon_gate.png"
                   alt="icon_gate"
                 />
               </div>
               <div :class="bItem('content-box')">
-                <div :class="bItem('content-item')" v-if="item.area_type !== 3">
+                <div
+                  :class="bItem('content-item')"
+                  v-if="item.area_type !== AREA_TYPE.GATE"
+                >
                   <label :class="bItem('label')">容纳人数</label>
                   <p :class="bItem('text')">
                     {{ item.contain_number }}
                     <span :class="bItem('sub-text')">人</span>
                   </p>
                 </div>
-                <div :class="bItem('content-item')" v-if="item.area_type !== 3">
+                <div
+                  :class="bItem('content-item')"
+                  v-if="item.area_type !== AREA_TYPE.GATE"
+                >
                   <label :class="bItem('label')">座位模板</label>
                   <p :class="bItem('text')">
                     {{ item.seat_num }}
@@ -75,7 +81,7 @@
           </div>
           <div :class="bItem('footer')">
             <router-link
-              v-if="item.area_type !== 3"
+              v-if="item.area_type !== AREA_TYPE.GATE"
               :class="bItem('action')"
               :to="`./site?id=${item.id}`"
               class="st-link-secondary"
@@ -110,6 +116,7 @@ import { MessageService } from '@/services/message.service'
 import { ListService } from './list.service'
 import CourtAdd from '@/views/biz-modals/court/add'
 import CourtEdit from '@/views/biz-modals/court/edit'
+import { AREA_TYPE } from '@/constants/setting/court'
 export default {
   serviceInject() {
     return {
@@ -134,6 +141,11 @@ export default {
     bPage: 'page-shop-setting-court-list',
     bItem: 'court-item',
     bAdd: 'court-add'
+  },
+  data() {
+    return {
+      AREA_TYPE
+    }
   },
   methods: {
     onAddCourt() {

@@ -125,8 +125,8 @@
 import { UserLevelService } from './user-level.service'
 import { RouteService } from '@/services/route.service'
 import { MessageService } from '@/services/message.service'
-import SelectCondition from './user-level#/select-condition'
-import SelectRights from './user-level#/select-rights'
+import SelectCondition from './components#/select-condition'
+import SelectRights from './components#/select-rights'
 export default {
   bem: {
     b: 'page-user-level'

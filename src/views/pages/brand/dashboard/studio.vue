@@ -158,7 +158,6 @@ export default {
     }
   },
   rxState() {
-    console.log(this.studioService)
     return {
       top: this.studioService.top$,
       userFunnel: this.studioService.userFunnel$,
@@ -519,5 +518,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped></style>

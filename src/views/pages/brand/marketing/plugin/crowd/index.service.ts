@@ -10,44 +10,32 @@ interface CrowdIndexState {
   crowdIndexInfo: any
 }
 @Injectable()
-export class IndexService extends Store<CrowdIndexState> {
-  state$: State<CrowdIndexState>
-  crowdIndexInfo$: Computed<string>
+export class IndexService {
+  crowdIndexInfo$ = new State({})
+  crowdIndexList$ = new State([])
+  loading$ = new State({})
   auth$ = this.authService.authMap$({
     add: 'shop:member:crowd|add'
   })
-  constructor(private crowdAPI: CrowdAPI, private authService: AuthService) {
-    super()
-    this.state$ = new State({
-      crowdIndexInfo: {}
-    })
-    this.crowdIndexInfo$ = new Computed(
-      this.state$.pipe(pluck('crowdIndexInfo'))
-    )
-  }
-  SET_CROWD_INDEX_INFO(crowdIndexInfo: CrowdIndexState) {
-    this.state$.commit(state => {
-      state.crowdIndexInfo = crowdIndexInfo
-    })
-  }
+  constructor(private crowdAPI: CrowdAPI, private authService: AuthService) {}
   // 获取列表
+  @Effect()
   getListInfo() {
     return this.crowdAPI.getCrowdIndex().pipe(
       tap(res => {
-        console.log(res, '获取数据')
         res = this.authService.filter(res)
-        console.log(res)
-        this.SET_CROWD_INDEX_INFO(res)
+        this.crowdIndexInfo$.commit(() => res.info)
+        this.crowdIndexList$.commit(() => res.info.list)
       })
     )
   }
   delCrowdBrandCrowd(id: string) {
-    return this.crowdAPI.delCrowdBrandCrowd(id)
+    return this.crowdAPI.delCrowdBrandCrowd(id).pipe(tap())
   }
   init() {
     return forkJoin(this.getListInfo())
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.init().subscribe(() => next())
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    return this.init()
   }
 }

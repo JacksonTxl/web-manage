@@ -11,7 +11,7 @@
       @change="onChange"
       :format="format || 'YYYY-MM-DD'"
       :value="value.min ? [moment(value.min), moment(value.max)] : []"
-      style="margin-left: 8px"
+      class="mg-r8"
       :allowClear="true"
       :disabledDate="disabledDate"
     />

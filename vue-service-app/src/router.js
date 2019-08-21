@@ -8,7 +8,7 @@ import { isString } from './utils'
 export default class ServiceRouter extends VueRouter {
   constructor(...args) {
     super(...args)
-    this._forceCount = 0
+    this._forceCount = 1
   }
   _goto(mode, to, onComplete, onError) {
     if (isString(to)) {
@@ -39,6 +39,9 @@ export default class ServiceRouter extends VueRouter {
   replace(to, onComplete, onError) {
     this._goto('replace', to, onComplete, onError)
   }
+  /**
+   * spa reload current Route and force get Data again
+   */
   reload(onComplete, onError) {
     this.replace(
       { path: location.href.replace(location.origin, ''), force: true },

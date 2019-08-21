@@ -25,15 +25,15 @@
 import Calendar from '@/views/biz-components/schedule/calendar'
 import { TeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/team/service#/schedule.service'
 import { RouteService } from '@/services/route.service'
-import ScheduleTeamAddCourseScheduleBatch from '@/views/biz-modals/schedule/team/add-course-schedule-batch'
-import ScheduleTeamAddCourseSchedule from '@/views/biz-modals/schedule/team/add-course-schedule'
+import ScheduleTeamAddCourseBatch from '@/views/biz-modals/schedule/team/add-course-batch'
+import ScheduleTeamAddCourse from '@/views/biz-modals/schedule/team/add-course'
 import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
 import ScheduleTeamReserveInfo from '@/views/biz-modals/schedule/team/reserve-info'
 export default {
   name: 'TeamSchedule',
   modals: {
-    ScheduleTeamAddCourseScheduleBatch,
-    ScheduleTeamAddCourseSchedule,
+    ScheduleTeamAddCourseBatch,
+    ScheduleTeamAddCourse,
     ScheduleTeamCopySchedule,
     ScheduleTeamReserveInfo
   },
@@ -68,7 +68,7 @@ export default {
     onAddSchedule(date) {
       console.log(date)
       this.$modalRouter.push({
-        name: 'schedule-team-add-course-schedule',
+        name: 'schedule-team-add-course',
         props: { time: date },
         on: {
           ok: res => {
@@ -95,7 +95,7 @@ export default {
     // 批量排期
     onClickScheduleInBatch() {
       this.$modalRouter.push({
-        name: 'schedule-team-add-course-schedule-batch',
+        name: 'schedule-team-add-course-batch',
         on: {
           ok: res => {
             this.onScheduleChange()
@@ -128,11 +128,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.zlx {
-  width: 100px;
-  height: 100px;
-  background: #3e4;
-}
-</style>

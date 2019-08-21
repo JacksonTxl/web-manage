@@ -69,7 +69,7 @@
           </ul>
           <login-mobile v-show="loginType === 'mobilefind'"></login-mobile>
           <div v-show="loginType === 'emailfind'">邮件找回表单</div>
-          <a-button @click="onClickBack">返回</a-button>
+          <st-button @click="onClickBack">返回</st-button>
         </div>
         <!-- <div v-else-if="loginType==='weibo' || loginType==='qq' || loginType==='alipay' || loginType==='wechat'" class="page-login-wechat">
           <ul class="page-login-tabs mg-b24">

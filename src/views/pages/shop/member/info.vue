@@ -86,14 +86,14 @@
         <a-col :span="10">
           <div class="shop-member-info-title-pannel-right">
             <div class="pannel-right__operation">
-              <a-button
+              <st-button
                 v-if="auth['shop:member:member|edit']"
                 type="primary"
                 class="pannel-right__operation__margin"
                 @click="editMember"
               >
                 编辑资料
-              </a-button>
+              </st-button>
               <a
                 v-if="auth['shop:member:member|bind_card']"
                 class="pannel-right__operation__margin"
@@ -108,9 +108,9 @@
                   }
                 }"
               >
-                <a-button class="pannel-right__operation__margin">
+                <st-button class="pannel-right__operation__margin">
                   绑定实体卡
-                </a-button>
+                </st-button>
               </a>
               <a-dropdown>
                 <a-menu slot="overlay">
@@ -172,10 +172,10 @@
                     </a>
                   </a-menu-item>
                 </a-menu>
-                <a-button style="margin-left: 8px">
+                <st-button style="margin-left: 8px">
                   更多操作
                   <a-icon type="down" />
-                </a-button>
+                </st-button>
               </a-dropdown>
             </div>
             <div class="pannel-right__operation">

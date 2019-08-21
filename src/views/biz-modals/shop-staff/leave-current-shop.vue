@@ -7,7 +7,7 @@
     :footer="false"
   >
     <staff-info :staff="staff"></staff-info>
-    <template v-if="operate === 1">
+    <template v-if="operate === LEAVE_CURRENT_SHOP.OPERATE_TYPE">
       <a-row :gutter="8" class="mg-t16">
         <a-col :lg="24">
           <p class="model-leave-store-container_tip">
@@ -35,7 +35,6 @@
                 class="model-leave-store-container_same mg-b8"
               >
                 {{ item.num }}节未完成{{ item.name }}，
-                <!-- <a href="javascript:;">查看详情</a> -->
               </div>
             </template>
           </div>
@@ -53,7 +52,7 @@
 <script>
 import StaffInfo from './staff-info'
 import { LeaveStoreService } from './leave-current-shop.service'
-
+import { LEAVE_CURRENT_SHOP } from '@/constants/shop-staff/leave-current-shop'
 export default {
   name: 'LeaveCurrentStore',
   serviceInject() {
@@ -75,6 +74,7 @@ export default {
   },
   data() {
     return {
+      LEAVE_CURRENT_SHOP,
       show: false
     }
   },

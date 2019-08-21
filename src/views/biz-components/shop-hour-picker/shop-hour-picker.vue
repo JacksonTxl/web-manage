@@ -87,6 +87,7 @@ export default {
     event: 'ShopHourPickerChange'
   },
   props: {
+    // TODO: shop hour picker后续修改，不能有默认值
     value: {
       type: Array,
       default: () => []

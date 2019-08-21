@@ -1,7 +1,7 @@
 import { DepartmentService as DepService } from './department.service#/department.service'
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
-import { tap, switchMap } from 'rxjs/operators'
+import { tap } from 'rxjs/operators'
 import {
   StaffApi,
   Params,
@@ -15,7 +15,8 @@ import { forkJoin } from 'rxjs'
 import { MessageService } from '@/services/message.service'
 
 @Injectable()
-export class DepartmentService implements RouteGuard {
+export class DepartmentService {
+  loading$ = new State({})
   staffList$ = new State([])
   page$ = new State({})
   auth$ = this.authService.authMap$({
@@ -28,7 +29,6 @@ export class DepartmentService implements RouteGuard {
   })
   departmentList$ = new State([])
   departmentSearchList$ = new State([])
-  loading$ = new State({})
   constructor(
     private staffApi: StaffApi,
     private msg: MessageService,

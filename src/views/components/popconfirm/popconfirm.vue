@@ -6,6 +6,8 @@ export default {
       title: '是否确认删除?',
       okText: '确定',
       cancelText: '取消',
+      placement: 'topRight',
+      arrowPointAtCenter: true,
       ...this.$attrs
     }
     return h(

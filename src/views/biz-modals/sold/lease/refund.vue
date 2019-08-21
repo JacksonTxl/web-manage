@@ -89,10 +89,7 @@
               :max="+info.pay_price"
               :float="true"
               placeholder="请输入本次退款的实际金额"
-              v-decorator="[
-                'refundPrice',
-                { rules: [{ validator: refund_price_validator }] }
-              ]"
+              v-decorator="decorators.refundPrice"
             >
               <template slot="addonAfter">
                 元
@@ -134,13 +131,16 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { RefundService } from './refund.service'
 import { UserService } from '@/services/user.service'
+import { ruleOptions } from './refund.config'
 export default {
   name: 'ModalSoldLeaseRefund',
   bem: {
     refund: 'modal-sold-lease-refund'
+  },
+  serviceProviders() {
+    return [RefundService]
   },
   serviceInject() {
     return {
@@ -157,12 +157,15 @@ export default {
   },
   props: ['id'],
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false,
       description: '',
       frozenPayType: 2,
-      refundReason: 1,
-      form: this.$form.createForm(this)
+      refundReason: 1
     }
   },
   computed: {},
@@ -170,9 +173,8 @@ export default {
     this.refundService.getDetail(this.id).subscribe()
   },
   methods: {
-    moment,
     onSubmit() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           this.refundService
             .refund(
@@ -194,15 +196,6 @@ export default {
             })
         }
       })
-    },
-    refund_price_validator(rule, value, callback) {
-      if (!value || +value === 0) {
-        // eslint-disable-next-line
-        callback('请输入退款金额')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
     }
   }
 }

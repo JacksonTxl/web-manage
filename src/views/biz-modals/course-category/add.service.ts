@@ -1,14 +1,11 @@
 import { Injectable } from 'vue-service-app'
-import { Effect } from 'rx-state'
-import { Store } from '@/services/store'
+import { Effect, State } from 'rx-state'
 import { CourseApi, AddCourseCategoryInput } from '@/api/v1/setting/course'
 
-interface AddState {}
 @Injectable()
-export class AddService extends Store<AddState> {
-  constructor(protected courseApi: CourseApi) {
-    super()
-  }
+export class AddService {
+  loading$ = new State({})
+  constructor(protected courseApi: CourseApi) {}
   @Effect()
   addCourseCategory(params: AddCourseCategoryInput) {
     return this.courseApi.addCourseCategory(params)

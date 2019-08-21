@@ -1,7 +1,6 @@
 import { get, find as lFind } from 'lodash-es'
 import { UserService } from '@/services/user.service'
-
-const container = window.getContainer()
+import container from '@/container'
 
 export const enumFilter = (key: string, path: string) => {
   if (!key) return ''

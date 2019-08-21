@@ -49,7 +49,7 @@
               >
                 编辑
               </a>
-              <a-popconfirm
+              <st-popconfirm
                 v-if="item.auth['brand_shop:course:training_aim|del']"
                 :title="
                   `删除后不可进行恢复，${
@@ -59,7 +59,7 @@
                 @confirm="onDelete(item.id)"
               >
                 <a>删除</a>
-              </a-popconfirm>
+              </st-popconfirm>
             </st-table-actions>
           </td>
         </tr>

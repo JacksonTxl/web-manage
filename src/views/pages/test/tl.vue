@@ -67,12 +67,6 @@
         <router-link class="mg-l8" to="/brand/setting/app/pay-type">
           支付方式设置
         </router-link>
-        <a
-          class="mg-l8"
-          v-modal-link="{ name: 'brand-setting-wechat-payment' }"
-        >
-          微信支付设置
-        </a>
       </p>
       <p>
         <st-input-search v-model="query.keyword" @search="onSearch" />
@@ -195,10 +189,9 @@ import SwitchShop from '@/views/fragments/shop/switch'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import pic1 from '@/assets/img/avatar_default.png'
 import { UserService } from '@/services/user.service'
-import BrandSettingPersonalPriceModel from '@/views/biz-modals/brand/setting-personal-price-model'
-import BrandSettingPersonalReserve from '@/views/biz-modals/brand/setting-personal-reserve'
-import BrandSettingTeamReserve from '@/views/biz-modals/brand/setting-team-reserve'
-import BrandSettingWechatPayment from '@/views/biz-modals/brand/setting-wechat-payment'
+import BrandSettingPersonalPriceModel from '@/views/biz-modals/brand/setting/personal/price-model'
+import BrandSettingPersonalReserve from '@/views/biz-modals/brand/setting/personal/reserve'
+import BrandSettingTeamReserve from '@/views/biz-modals/brand/setting/team/reserve'
 import BrandSwitch from '@/views/biz-modals/brand/switch'
 export default {
   serviceInject() {

@@ -61,8 +61,8 @@
 </template>
 
 <script>
+// TODO: 暂时没有单个新增排期，只有批量新增，后续如果没有使用请删除
 import { MessageService } from '@/services/message.service'
-
 import { PersonalScheduleScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/personal/service#/schedule.service'
 import { PersonalScheduleCommonService } from '@/views/pages/shop/product/course/schedule/personal/service#/common.service'
 import { RouteService } from '@/services/route.service'
@@ -80,7 +80,6 @@ export default {
     }
   },
   rxState() {
-    console.log(this.commonService)
     return {
       query: this.routeService.query$,
       coachOptions: this.commonService.coachOptions$ || []

@@ -59,20 +59,20 @@
     <template slot="footer">
       <div>
         <a href="javascript:;" @click="onClickIsEdit">{{ isEditContent }}</a>
-        <a-button key="back" @click="handleCancel">取消</a-button>
-        <a-button
+        <st-button key="back" @click="handleCancel">取消</st-button>
+        <st-button
           key="submit"
           type="primary"
           @click="upgradePersonalCourseInBrand"
         >
           确认转入
-        </a-button>
+        </st-button>
       </div>
     </template>
   </st-modal>
 </template>
 <script>
-import { columnsShops } from './support-table'
+import { columnsShops } from './support-table.config'
 import SelectShop from '@/views/fragments/shop/select-shop.vue'
 import SetPrice from '@/views/fragments/course/set-price.vue'
 import SelectCoach from '@/views/fragments/coach/select-coach.vue'

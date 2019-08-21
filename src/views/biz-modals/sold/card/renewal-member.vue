@@ -40,10 +40,7 @@
               <a-form-item class="page-a-form">
                 <a-date-picker
                   :disabledDate="disabledStartDate"
-                  v-decorator="[
-                    'startTime',
-                    { rules: [{ required: true, message: '请选择开始时间' }] }
-                  ]"
+                  v-decorator="decorators.startTime"
                   @change="onStartTimeChange"
                   style="width: 188px;"
                   format="YYYY-MM-DD HH:mm"
@@ -77,10 +74,7 @@
             </template>
             <div :class="sale('contract')">
               <a-input
-                v-decorator="[
-                  'contractNumber',
-                  { rules: [{ required: true, message: '请输入合同编号' }] }
-                ]"
+                v-decorator="decorators.contractNumber"
                 placeholder="请输入合同编号"
               ></a-input>
               <st-button
@@ -211,10 +205,7 @@
         <div :class="sale('remarks')">
           <st-form-item labelGutter="12px" label="销售人员" required>
             <a-select
-              v-decorator="[
-                'saleName',
-                { rules: [{ required: true, message: '请选择销售人员' }] }
-              ]"
+              v-decorator="decorators.saleName"
               placeholder="选择签单的工作人员"
             >
               <a-select-option
@@ -263,10 +254,14 @@ import { RenewalMemberService } from './renewal-member.service'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
+import { ruleOptions } from './renewal-member.config'
 export default {
   name: 'ModalSoldRenewalMemberCard',
   bem: {
     sale: 'modal-sold-deal-sale'
+  },
+  serviceProviders() {
+    return [RenewalMemberService]
   },
   serviceInject() {
     return {
@@ -285,9 +280,12 @@ export default {
   },
   props: ['id'],
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false,
-      form: this.$form.createForm(this),
       // 规格
       selectSpecs: 1,
       // 时间
@@ -496,7 +494,7 @@ export default {
       })
     },
     onCreateOrder() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           let reduce_amount = this.reduceAmount ? +this.reduceAmount : undefined
           this.renewalMemberService
@@ -533,7 +531,7 @@ export default {
       })
     },
     onPay() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           let reduce_amount = this.reduceAmount ? +this.reduceAmount : undefined
           this.renewalMemberService

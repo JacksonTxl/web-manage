@@ -49,6 +49,7 @@ import { EditService } from './edit.service'
 import { MessageService } from '@/services/message.service'
 import { PatternService } from '@/services/pattern.service'
 import { rules } from './court.config'
+import { AREA_TYPE } from '@/constants/setting/court'
 
 export default {
   serviceInject() {
@@ -83,7 +84,7 @@ export default {
     this.form = this.$form.createForm(this)
     this.editService.getInfo(this.id).subscribe(this.setFieldsValue)
     this.areaType = this.areaType.filter(({ value }) => {
-      return value !== 3
+      return value !== AREA_TYPE.GATE
     })
   },
   methods: {

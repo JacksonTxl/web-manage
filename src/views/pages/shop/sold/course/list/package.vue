@@ -107,7 +107,6 @@ import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './package.config'
-import StRangePicker from '@/views/components/datetime-picker/range-picker'
 import SoldCourseFreeze from '@/views/biz-modals/sold/course/freeze'
 import SoldCourseRefund from '@/views/biz-modals/sold/course/refund'
 import SoldCourseSurplus from '@/views/biz-modals/sold/course/surplus'
@@ -169,9 +168,7 @@ export default {
       }
     }
   },
-  components: {
-    StRangePicker
-  },
+
   mounted() {
     this.setSearchData()
   },

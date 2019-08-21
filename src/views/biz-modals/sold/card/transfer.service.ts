@@ -1,10 +1,12 @@
 import { Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
-import { tap } from 'rxjs/operators'
+import { tap, switchMap } from 'rxjs/operators'
 import { ContractApi } from '@/api/v1/setting/contract'
 import { CardApi, TransferCardInput } from '@/api/v1/sold/cards'
 import moment from 'moment'
+import { OPERATION_TYPES } from '@/constants/sold/operations'
 import { TransactionApi, MemberListInput } from '@/api/v1/sold/transaction'
+import { of } from 'rxjs'
 
 @Injectable()
 export class TransferService {
@@ -14,6 +16,7 @@ export class TransferService {
   memberTransferInfo$ = new State({})
   timeScope$ = new State({})
   payList$ = new State([])
+  info$ = new State({})
   constructor(
     private contractApi: ContractApi,
     private transactionApi: TransactionApi,
@@ -36,9 +39,17 @@ export class TransferService {
           this.timeScope$.commit(() => {
             return moment(res.info.end_time).valueOf() - Date.now()
           })
+          this.info$.commit(() => res.info)
         } else if (type === 'deposit') {
           this.depositTransferInfo$.commit(() => res.info)
         }
+      }),
+      switchMap((res: any) => {
+        return this.getPayList({
+          member_id: res.info.member_id,
+          product_type: 1,
+          operation_type: OPERATION_TYPES.TRANSFORM
+        })
       })
     )
   }

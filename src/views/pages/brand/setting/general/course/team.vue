@@ -105,7 +105,7 @@
 import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
 import { TeamService } from './team.service'
-import BrandSettingTeamReserve from '@/views/biz-modals/brand/setting-team-reserve'
+import BrandSettingTeamReserve from '@/views/biz-modals/brand/setting/team/reserve'
 export default {
   serviceInject() {
     return {

@@ -6,33 +6,13 @@ import { GetInitInfoPut, RoleInfo, RoleApi } from '@/api/v1/staff/role'
 import { RoleService } from '../role.service'
 import { forkJoin } from 'rxjs'
 import { MessageService } from '@/services/message.service'
-interface SetState {
-  info: object
-  brandList: any[]
-  shopList: any[]
-}
 @Injectable()
-export class EditService extends Store<SetState> {
-  state$: State<SetState>
-  info$: Computed<object>
-  shopList$: Computed<object>
-  brandList$: Computed<object>
-  constructor(private roleService: RoleService, private msg: MessageService) {
-    super()
-    this.state$ = new State({
-      info: {},
-      brandList: [],
-      shopList: []
-    })
-    this.info$ = new Computed(this.state$.pipe(pluck('info')))
-    this.brandList$ = new Computed(this.state$.pipe(pluck('brandList')))
-    this.shopList$ = new Computed(this.state$.pipe(pluck('shopList')))
-  }
-  protected SET_ROLE_INFO(info: RoleInfo) {
-    this.state$.commit(state => {
-      state.info = info
-    })
-  }
+export class EditService {
+  loading$ = new State({})
+  info$ = new State({})
+  shopList$ = new State({})
+  brandList$ = new State({})
+  constructor(private roleService: RoleService, private msg: MessageService) {}
   update(params: RoleInfo) {
     return this.roleService.update(params).pipe(
       tap(res => {
@@ -43,10 +23,8 @@ export class EditService extends Store<SetState> {
   gitInitInfo(query: GetInitInfoPut) {
     return this.roleService.getInitInfo(query).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.brandList = res.brand_list
-          state.shopList = res.shop_list
-        })
+        this.brandList$.commit(() => res.brand_list)
+        this.shopList$.commit(() => res.shop_list)
       })
     )
   }
@@ -57,7 +35,7 @@ export class EditService extends Store<SetState> {
   getInfo(query: GetInitInfoPut) {
     return this.roleService.getInfo(query).pipe(
       tap(res => {
-        this.SET_ROLE_INFO(res.role)
+        this.info$.commit(() => res.role)
       })
     )
   }
@@ -65,8 +43,8 @@ export class EditService extends Store<SetState> {
     return forkJoin(this.getInfo(query), this.gitInitInfo(query))
   }
 
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
     let { roleId } = to.query as any
-    this.getInit({ role_id: roleId }).subscribe((res: any) => next())
+    return this.getInit({ role_id: roleId })
   }
 }

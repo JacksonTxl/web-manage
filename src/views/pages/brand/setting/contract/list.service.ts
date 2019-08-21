@@ -11,7 +11,7 @@ interface ListState {
 }
 
 @Injectable()
-export class ListService extends Store<ListState> implements RouteGuard {
+export class ListService implements RouteGuard {
   state$: State<ListState>
   list$: Computed<any[]>
   auth$ = this.authService.authMap$({
@@ -21,7 +21,6 @@ export class ListService extends Store<ListState> implements RouteGuard {
     private contractApi: ContractApi,
     private authService: AuthService
   ) {
-    super()
     this.state$ = new State({
       list: []
     })

@@ -1,5 +1,5 @@
 <template>
-  <a-button
+  <st-button
     class="st-checkbox-button-item"
     :class="{ select: stSelect }"
     @click="check"
@@ -7,7 +7,7 @@
   >
     {{ stLabelComputed }}
     <slot v-if="stLabelComputed === ''"></slot>
-  </a-button>
+  </st-button>
 </template>
 <script>
 export default {

@@ -12,12 +12,12 @@
         <a-row>
           <a-col :xs="22">
             <st-form-item v-show="false">
-              <input type="hidden" v-decorator="rules.id" />
+              <input type="hidden" v-decorator="decorators.id" />
             </st-form-item>
             <st-form-item label="训练目的" required>
               <a-input
                 placeholder="请输入训练目的"
-                v-decorator="rules.settingName"
+                v-decorator="decorators.setting_name"
                 maxlength="20"
               ></a-input>
             </st-form-item>
@@ -31,7 +31,7 @@
 import { EditService } from './edit.service'
 import { MessageService } from '@/services/message.service'
 import { PatternService } from '@/services/pattern.service'
-import { rules } from './training.config'
+import { ruleOptions } from './training.config'
 
 export default {
   serviceInject() {
@@ -57,31 +57,25 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: true
     }
   },
-  created() {
-    this.form = this.$form.createForm(this)
-  },
-  computed: {
-    rules
-  },
   mounted() {
-    this.$nextTick(() => {
-      this.form.setFieldsValue({
-        id: this.id,
-        setting_name: this.setting_name
-      })
+    this.form.setFieldsValue({
+      id: this.id,
+      setting_name: this.setting_name
     })
   },
   methods: {
     onSubmit(e) {
       e.preventDefault()
-      this.form.validateFields().then(() => {
-        const data = this.form.getFieldsValue()
-        console.log('data', data)
-        this.editService.updateTrainingAim(data).subscribe(() => {
+      this.form.validate().then(values => {
+        this.editService.updateTrainingAim(values).subscribe(() => {
           this.messageService.success({
             content: '编辑成功'
           })

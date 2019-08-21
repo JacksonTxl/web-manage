@@ -18,12 +18,11 @@ export const isFn = s => typeof s === 'function'
  */
 export const isString = s => typeof s === 'string'
 
-/**
- * 同步执行函数
- * @param {Array<Function>} fns 函数数组
- */
-export const syncRouteGuards = (fns = []) => (to, from) => {
-  fns.forEach(fn => {
-    fn(to, from)
-  })
+export const isArray = s => Array.isArray(s)
+
+export const last = arr => {
+  if (!arr || !arr.length) {
+    return null
+  }
+  return arr[arr.length - 1]
 }

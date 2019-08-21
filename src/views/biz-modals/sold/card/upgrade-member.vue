@@ -45,10 +45,7 @@
               :showArrow="false"
               :filterOption="false"
               @change="onSelectCardChange"
-              v-decorator="[
-                'memberCardId',
-                { rules: [{ required: true, message: '请选择会员卡' }] }
-              ]"
+              v-decorator="decorators.memberCardId"
               @search="onCardSearch"
               notFoundContent="无搜索结果"
             >
@@ -135,10 +132,7 @@
               <a-form-item class="page-a-form">
                 <a-date-picker
                   :disabledDate="disabledStartDate"
-                  v-decorator="[
-                    'startTime',
-                    { rules: [{ required: true, message: '请选择开始时间' }] }
-                  ]"
+                  v-decorator="decorators.startTime"
                   @change="onStartTimeChange"
                   style="width: 188px;"
                   format="YYYY-MM-DD HH:mm"
@@ -176,10 +170,7 @@
             </template>
             <div :class="sale('contract')">
               <a-input
-                v-decorator="[
-                  'contractNumber',
-                  { rules: [{ required: true, message: '请输入合同编号' }] }
-                ]"
+                v-decorator="decorators.contractNumber"
                 placeholder="请输入合同编号"
               ></a-input>
               <st-button
@@ -201,10 +192,7 @@
             </template>
             <st-input-number
               @change="onSurplusPriceChange"
-              v-decorator="[
-                'surplusPrice',
-                { rules: [{ required: true, message: '请输入原卡抵扣' }] }
-              ]"
+              v-decorator="decorators.surplusPrice"
               :float="true"
               :max="+info.pay_price"
               placeholder="请输入原卡可以抵扣的剩余价值金额"
@@ -328,10 +316,7 @@
         <div :class="sale('remarks')">
           <st-form-item labelGutter="12px" label="销售人员" required>
             <a-select
-              v-decorator="[
-                'saleName',
-                { rules: [{ required: true, message: '请选择销售人员' }] }
-              ]"
+              v-decorator="decorators.saleName"
               placeholder="选择签单的工作人员"
             >
               <a-select-option
@@ -377,12 +362,15 @@
 <script>
 import { UpgradeMemberService } from './upgrade-member.service'
 import { cloneDeep } from 'lodash-es'
-import moment from 'moment'
 import { timer } from 'rxjs'
+import { ruleOptions } from './upgrade-member.config'
 export default {
   name: 'ModalSoldUpgradeMemberCard',
   bem: {
     sale: 'modal-sold-deal-sale'
+  },
+  serviceProviders() {
+    return [UpgradeMemberService]
   },
   serviceInject() {
     return {
@@ -401,9 +389,12 @@ export default {
   },
   props: ['id'],
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false,
-      form: this.$form.createForm(this),
       // 会员卡列表
       cardList: [],
       cardLists: {},
@@ -490,15 +481,9 @@ export default {
     }
   },
   created() {
-    this.upgradeMemberService.serviceInit(this.id).subscribe(res => {
-      // 获取定金
-      this.upgradeMemberService
-        .getAdvanceList(res[0].info.member_id)
-        .subscribe()
-    })
+    this.upgradeMemberService.serviceInit(this.id).subscribe()
   },
   methods: {
-    moment,
     // 搜索会员卡
     onCardSearch(data) {
       if (data === '') {
@@ -667,7 +652,7 @@ export default {
       this.upgradeMemberService.priceAction$.dispatch(params)
     },
     onCreateOrder() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           this.upgradeMemberService
             .upgrade(
@@ -700,7 +685,7 @@ export default {
       })
     },
     onPay() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           this.upgradeMemberService
             .upgrade(

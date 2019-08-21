@@ -40,7 +40,7 @@
           class="mg-b0"
           required
         ></st-form-item>
-        <st-form-item label=" " labelWidth="0px">
+        <st-form-item labelWidth="0px">
           <st-textarea
             :maxlength="300"
             @change="onReasonChange"
@@ -51,14 +51,14 @@
       </st-form>
     </div>
     <footer slot="footer" :class="stopSale('footer')">
-      <a-button @click="show = false">取消</a-button>
-      <a-button type="danger" :disabled="reasonIsNone" v-if="reasonIsNone">
+      <st-button @click="show = false">取消</st-button>
+      <st-button type="danger" :disabled="reasonIsNone" v-if="reasonIsNone">
         确认停售
-      </a-button>
+      </st-button>
       <a-popconfirm v-else @confirm="onStop" title="确认停售该会员卡">
-        <a-button type="danger" :loading="loading.setStopSale">
+        <st-button type="danger" :loading="loading.setStopSale">
           确认停售
-        </a-button>
+        </st-button>
       </a-popconfirm>
     </footer>
   </st-modal>
@@ -83,8 +83,9 @@ export default {
   },
   props: ['id', 'cardType', 'cardName'],
   data() {
+    const form = this.$stForm.create()
     return {
-      form: this.$form.createForm(this),
+      form,
       show: false,
       // 卡tag类型
       cardTypeTag: {
@@ -98,10 +99,9 @@ export default {
   },
   methods: {
     onReasonChange(data) {
-      this.reasonIsNone = data.target.value.trim() === ''
+      this.reasonIsNone = data.trim() === ''
     },
     onStop() {
-      console.log(1)
       this.stopSaleService
         .setStopSale(
           {

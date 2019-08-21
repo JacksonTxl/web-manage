@@ -1,38 +1,28 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { State } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import {
   BrandTeamCourseApi,
   GetUpdateInfoInput
 } from '@/api/v1/course/team/brand'
-interface SetState {
-  info: Object
-}
 @Injectable()
-export class EditService extends Store<SetState> {
-  state$: State<SetState>
-  info$: Computed<Object>
-  constructor(private courseApi: BrandTeamCourseApi) {
-    super()
-    this.state$ = new State({
-      info: {}
-    })
-    this.info$ = new Computed(this.state$.pipe(pluck('info')))
-  }
+export class EditService implements RouteGuard {
+  info$ = new State({})
+  constructor(private courseApi: BrandTeamCourseApi) {}
   getUpdateInfo(query: GetUpdateInfoInput) {
     return this.courseApi.getUpdateInfo(query).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.info = res.info
-        })
+        this.info$.commit(() => res.info)
       })
     )
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+  init(query: GetUpdateInfoInput) {
+    return this.getUpdateInfo(query)
+  }
+  beforeRouteEnter(to: ServiceRoute) {
     const query = {
       course_id: to.meta.query.id
     }
-    return this.getUpdateInfo(query)
+    return this.init(query)
   }
 }

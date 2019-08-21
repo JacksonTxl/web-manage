@@ -5,11 +5,11 @@
         <st-form-item label="毕业院校">
           <a-input
             placeholder="支持中英文、数字,不超过100个字"
-            v-decorator="rules.graduated_school"
+            v-decorator="decorators.graduated_school"
           />
         </st-form-item>
         <st-form-item label="学历">
-          <a-select placeholder="请选择" v-decorator="rules.education">
+          <a-select placeholder="请选择" v-decorator="decorators.education">
             <a-select-option
               v-for="(item, key) in enums.education.value"
               :value="+key"
@@ -20,10 +20,10 @@
           </a-select>
         </st-form-item>
         <st-form-item label="生日">
-          <a-date-picker style="width:100%" v-decorator="rules.birthday" />
+          <a-date-picker style="width:100%" v-decorator="decorators.birthday" />
         </st-form-item>
         <st-form-item label="婚姻状况">
-          <a-select placeholder="请选择" v-decorator="rules.marry_status">
+          <a-select placeholder="请选择" v-decorator="decorators.marry_status">
             <a-select-option
               v-for="(item, key) in enums.marry_status.value"
               :value="+key"
@@ -38,20 +38,26 @@
         <st-form-item label="毕业时间">
           <a-date-picker
             style="width:100%"
-            v-decorator="rules.graduation_time"
+            v-decorator="decorators.graduation_time"
           />
         </st-form-item>
         <st-form-item label="专业">
           <a-input
             placeholder="请输入专业名称"
-            v-decorator="rules.profession"
+            v-decorator="decorators.profession"
           />
         </st-form-item>
         <st-form-item label="籍贯">
-          <a-input placeholder="请输入籍贯" v-decorator="rules.native_place" />
+          <a-input
+            placeholder="请输入籍贯"
+            v-decorator="decorators.native_place"
+          />
         </st-form-item>
         <st-form-item label="子女状态">
-          <a-select placeholder="请选择" v-decorator="rules.children_status">
+          <a-select
+            placeholder="请选择"
+            v-decorator="decorators.children_status"
+          >
             <a-select-option
               v-for="(item, key) in enums.children_status.value"
               :value="+key"
@@ -70,18 +76,21 @@
           <a-cascader
             :options="regions"
             :fieldNames="fieldNames"
-            v-decorator="rules.provinces"
+            v-decorator="decorators.provinces"
             changeOnSelect
             placeholder="请填写家庭住址"
           />
         </st-form-item>
         <st-form-item label="详细住址">
-          <a-input placeholder="填写点什么吧" v-decorator="rules.address" />
+          <a-input
+            placeholder="填写点什么吧"
+            v-decorator="decorators.address"
+          />
         </st-form-item>
         <st-form-item label="备注">
           <st-textarea
             :maxlength="300"
-            v-decorator="rules.description"
+            v-decorator="decorators.description"
             placeholder="填写点什么吧"
           />
         </st-form-item>
@@ -105,13 +114,15 @@
 
 <script>
 import { RegionService } from '@/services/region.service'
-import { RuleConfig } from '@/constants/staff/rule'
+import { PatternService } from '@/services/pattern.service'
+import { ruleOptions } from '../staff-form.config.ts'
+import { cloneDeep } from 'lodash-es'
 
 export default {
   name: 'EditDetailDetailedInfo',
   serviceInject() {
     return {
-      rules: RuleConfig,
+      pattern: PatternService,
       region: RegionService
     }
   },
@@ -128,18 +139,22 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      form: this.$form.createForm(this),
+      form,
+      decorators,
       regions: [],
       fieldNames: { label: 'name', value: 'id', children: 'children' }
     }
   },
   mounted() {
     this.$nextTick(() => {
-      this.setData(this.data)
+      const form = cloneDeep(this.data)
+      this.setData(form)
     })
     this.region.regionApi.getRegions().subscribe(v => {
-      this.regions = v
+      this.regions = cloneDeep(v)
     })
   },
   methods: {
@@ -147,6 +162,7 @@ export default {
       this.$emit('back', 1)
     },
     setData(obj) {
+      console.log('setDate', obj)
       this.form.setFieldsValue({
         graduated_school: obj.graduated_school,
         graduation_time: obj.graduation_time
@@ -187,7 +203,6 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('values')
           let obj = this.filterProvinces(values.provinces)
           let newData = Object.assign(values, obj)
           newData.birthday &&

@@ -46,6 +46,7 @@ import { AddService } from './add.service'
 import { MessageService } from '@/services/message.service'
 import { PatternService } from '@/services/pattern.service'
 import { rules } from './court.config'
+import { AREA_TYPE } from '@/constants/setting/court'
 
 export default {
   serviceInject() {
@@ -64,7 +65,8 @@ export default {
   data() {
     return {
       show: false,
-      isShowPersonNum: true
+      isShowPersonNum: true,
+      AREA_TYPE
     }
   },
   created() {
@@ -91,7 +93,7 @@ export default {
     },
     onChooseRadio(e) {
       this.area_type = e.target.value
-      if (this.area_type === 3) {
+      if (this.area_type === AREA_TYPE.GATE) {
         this.isShowPersonNum = false
       } else {
         this.isShowPersonNum = true

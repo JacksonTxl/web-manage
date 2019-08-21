@@ -1,20 +1,14 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect, Action } from 'rx-state'
+import { Injectable } from 'vue-service-app'
+import { State, Computed } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
 import { MemberApi } from '@/api/v1/member'
 
-interface CardsTableModelState {
-  lableInfo: any
-  list: []
-}
 @Injectable()
-export class TransferShopService extends Store<CardsTableModelState> {
-  state$: State<CardsTableModelState>
+export class TransferShopService {
+  state$: State<any>
   info$: Computed<string>
   list$: Computed<any>
   constructor(private memberApi: MemberApi) {
-    super()
     this.state$ = new State({
       info: {},
       list: []

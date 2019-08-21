@@ -4,7 +4,6 @@ import { CoachLevelApi } from '@/api/v1/setting/coach/level'
 import { Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
-
 import { StaffApi, PutStaffBindPositionInput } from '@/api/v1/staff'
 import { forkJoin } from 'rxjs'
 
@@ -15,6 +14,8 @@ export class UpdateStaffPositionService {
   salaryBasic$ = new State({})
   salarySale$ = new State({})
   salaryCourse$ = new State({})
+  identityList$ = this.userService.getOptions$('staff.identity')
+  natureWork$ = this.userService.getOptions$('staff.nature_work')
   constructor(
     protected staffApi: StaffApi,
     private coachLevel: CoachLevelApi,

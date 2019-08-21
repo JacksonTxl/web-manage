@@ -34,10 +34,7 @@
           <st-form-item label="退款原因" class="mgb-18" required>
             <a-input
               placeholder="请输入冲销流水原因"
-              v-decorator="[
-                'reason',
-                { rules: [{ validator: reason_validator }] }
-              ]"
+              v-decorator="decorators.reason"
             />
           </st-form-item>
           <st-form-item label="流水金额" required>
@@ -45,10 +42,7 @@
               :max="+info.pay_price"
               :float="true"
               placeholder="请输入新流水金额"
-              v-decorator="[
-                'price',
-                { rules: [{ validator: price_validator }] }
-              ]"
+              v-decorator="decorators.price"
             >
               <template slot="addonAfter">
                 元
@@ -58,20 +52,17 @@
           <st-form-item label="支付方式" class="mgb-18" required>
             <a-radio-group v-model="payChannel">
               <a-radio
-                v-for="(item, index) in Object.keys(finance.pay_channel.value)"
+                v-for="(item, index) in payChannels"
                 :key="index"
-                :value="+item"
+                :value="+item.value"
               >
-                {{ finance.pay_channel.value[item] }}
+                {{ item.label }}
               </a-radio>
             </a-radio-group>
           </st-form-item>
           <st-form-item label="收款时间" class="mg-b0" required>
             <a-date-picker
-              v-decorator="[
-                'flow_time',
-                { rules: [{ validator: flow_time_validator }] }
-              ]"
+              v-decorator="decorators.flow_time"
               format="YYYY-MM-DD HH:mm"
               placeholder="请选择收款时间"
               :showToday="false"
@@ -92,7 +83,7 @@
 <script>
 import moment from 'moment'
 import { FlowService } from './flow.service'
-import { UserService } from '@/services/user.service'
+import { ruleOptions } from './flow.config'
 export default {
   name: 'ModalShopFinanceFlow',
   bem: {
@@ -100,24 +91,26 @@ export default {
   },
   serviceInject() {
     return {
-      userService: UserService,
       flowService: FlowService
     }
   },
   rxState() {
     return {
       info: this.flowService.info$,
-      finance: this.userService.finance$,
+      payChannels: this.flowService.payChannels$,
       loading: this.flowService.loading$
     }
   },
   props: ['id'],
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false,
       description: '',
-      payChannel: 2,
-      form: this.$form.createForm(this)
+      payChannel: 2
     }
   },
   computed: {},
@@ -127,50 +120,20 @@ export default {
   methods: {
     moment,
     onSubmit() {
-      this.form.validateFields((error, values) => {
-        if (!error) {
-          this.flowService
-            .orderFlow({
-              flow_id: this.info.flow_id,
-              reason: values.reason,
-              price: +values.price,
-              pay_channel: +this.payChannel,
-              flow_time: moment(values.flow_time).format('YYYY-MM-DD HH:mm')
-            })
-            .subscribe(res => {
-              this.$emit('success')
-              this.show = false
-            })
-        }
+      this.form.validate().then(values => {
+        this.flowService
+          .orderFlow({
+            flow_id: this.info.flow_id,
+            reason: values.reason,
+            price: +values.price,
+            pay_channel: +this.payChannel,
+            flow_time: moment(values.flow_time).format('YYYY-MM-DD HH:mm')
+          })
+          .subscribe(res => {
+            this.$emit('success')
+            this.show = false
+          })
       })
-    },
-    reason_validator(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请输入冲销原因')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    price_validator(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请输入新流水金额')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    // start_time validatorFn
-    flow_time_validator(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请选择开始售卖时间')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
     }
   }
 }

@@ -1,13 +1,13 @@
 import {
   ServiceRoute,
-  Inject,
   Injectable,
   ServiceRouter,
-  Dictionary
+  Dictionary,
+  RouteGuard
 } from 'vue-service-app'
 import { AuthService } from './auth.service'
 import { State, Computed } from 'rx-state/src'
-import { map, pluck, first } from 'rxjs/operators'
+import { map } from 'rxjs/operators'
 import { NotificationService } from './notification.service'
 import { NProgressService } from './nprogress.service'
 
@@ -46,7 +46,7 @@ interface RedirectConfig {
  * 负责应用跳转 包含tab等
  */
 @Injectable()
-export class RedirectService {
+export class RedirectService implements RouteGuard {
   authedTabMap$ = new State<Dictionary<any>>({})
   constructor(
     private authService: AuthService,
@@ -123,7 +123,7 @@ export class RedirectService {
       next()
     }
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     const hasTabsRoutes = to.matched.filter(r => r.meta.tabs)
     if (!hasTabsRoutes.length) {
       return next()

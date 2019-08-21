@@ -349,7 +349,7 @@ export default {
     },
     // shop_name validatorFn
     shop_name_validator(rule, value, callback) {
-      if (value === undefined) {
+      if (value === undefined || !value) {
         // eslint-disable-next-line
         callback('请填写门店名称')
       } else if (value && !this.rules.shop_name.test(value)) {

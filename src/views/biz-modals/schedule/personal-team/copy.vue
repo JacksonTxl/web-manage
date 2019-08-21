@@ -128,7 +128,6 @@ export default {
         apply_start_time: this.applyStartDate.format('YYYY-MM-DD'),
         apply_end_time: this.applyEndDate.format('YYYY-MM-DD')
       }
-
       this.scheduleService.copy(form).subscribe(this.onCopyScheduleSuccess)
     },
     onCopyScheduleSuccess() {

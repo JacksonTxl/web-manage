@@ -9,13 +9,13 @@
         <st-form-item label="实体卡号" required>
           <a-input
             placeholder="输入实体卡号"
-            v-decorator="basicInfoRuleList.card_num"
+            v-decorator="decorators.card_num"
           />
         </st-form-item>
         <st-form-item label="物理ID" required>
           <a-input
             placeholder="请将实体卡置于读卡器上"
-            v-decorator="basicInfoRuleList.rfid"
+            v-decorator="decorators.rfid"
           />
         </st-form-item>
       </st-form>
@@ -25,6 +25,7 @@
 </template>
 <script>
 import { BindingEntityCardService } from './binding-entity-card.service'
+import { ruleOptions } from './binding-entity-card.config'
 export default {
   serviceInject() {
     return {
@@ -38,47 +39,19 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      show: false,
-      form: this.$form.createForm(this),
-      basicInfoRuleList: {
-        // 实体卡
-        rfid: [
-          'rfid',
-          {
-            rules: [
-              {
-                required: true,
-                message: '请输入正确的实体卡号',
-                pattern: /\d$/
-              }
-            ]
-          }
-        ],
-        // 物理ID
-        card_num: [
-          'card_num',
-          {
-            rules: [
-              {
-                required: true,
-                message: '请输入正确的物理ID',
-                pattern: /\d$/
-              }
-            ]
-          }
-        ]
-      }
+      form,
+      decorators,
+      show: false
     }
   },
-  created() {},
   methods: {
     save(e) {
       e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          this.getLableList(values)
-        }
+      this.form.validate().then(values => {
+        this.getLableList(values)
       })
     },
     getLableList(data) {
@@ -89,7 +62,6 @@ export default {
         }
       )
     }
-  },
-  watch: {}
+  }
 }
 </script>

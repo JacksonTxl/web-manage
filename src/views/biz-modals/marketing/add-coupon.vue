@@ -31,7 +31,9 @@
         >
           <!-- 可用门店 -->
           <template slot="is_shop_range" slot-scope="text, record">
-            {{ text === 1 ? '全门店' : `${record.shop_num}家` }}
+            {{
+              text === COUPON.IS_SHOP_RANGE ? '全门店' : `${record.shop_num}家`
+            }}
           </template>
           <!-- 面额 -->
           <template slot="price" slot-scope="text">
@@ -39,7 +41,11 @@
           </template>
           <!-- 门槛 -->
           <template slot="use_type" slot-scope="text, record">
-            {{ text === 1 ? `无门槛` : `满${record.full_price}元使用` }}
+            {{
+              text === COUPON.USE_TYPE
+                ? `无门槛`
+                : `满${record.full_price}元使用`
+            }}
           </template>
         </st-table>
       </div>
@@ -58,7 +64,9 @@
 </template>
 <script>
 import { AddCouponService } from './add-coupon.service'
+import { columns } from './add-coupon.config'
 import { cloneDeep } from 'lodash-es'
+import { COUPON } from '@/constants/marketing/coupon'
 export default {
   name: 'ModalMarketingAddCoupon',
   bem: {
@@ -82,37 +90,14 @@ export default {
   },
   data() {
     return {
+      COUPON,
       show: false,
-      columns: [
-        {
-          title: '优惠券名称',
-          dataIndex: 'coupon_name',
-          scopedSlots: { customRender: 'coupon_name' }
-        },
-        {
-          title: '可用门店',
-          dataIndex: 'is_shop_range',
-          scopedSlots: { customRender: 'is_shop_range' }
-        },
-        {
-          title: '面额',
-          dataIndex: 'price',
-          scopedSlots: { customRender: 'price' }
-        },
-        {
-          title: '门槛',
-          dataIndex: 'use_type',
-          scopedSlots: { customRender: 'use_type' }
-        },
-        {
-          title: '剩余数量',
-          dataIndex: 'margin',
-          scopedSlots: { customRender: 'margin' }
-        }
-      ],
       selectedRowKeys: [],
       selectedRows: []
     }
+  },
+  computed: {
+    columns
   },
   mounted() {
     this.getList({ coupon_name: '' })
