@@ -39,7 +39,7 @@
         >
           <st-container
             class="mg-t8"
-            v-for="(item, index) of standardPrices"
+            v-for="(item, index) of saleModels"
             :key="index"
           >
             <a-row class="align-items-center">
@@ -47,12 +47,12 @@
                 <a-radio :value="+item.value">{{ item.label }}</a-radio>
               </a-col>
               <a-col :span="18" class="st-des">
-                <div v-if="+index === PERSONAL.SALEMODEL_1">
+                <div v-if="+item.value === PERSONAL.SALEMODEL_1">
                   <div>1. 设置课程最低课时费和最高课时费</div>
                   <div>2. 超过售卖价格范围时，不支持购买</div>
                   <div>3. 不支持在用户端直接购买私教课</div>
                 </div>
-                <div v-if="+index === PERSONAL.SALEMODEL_2">
+                <div v-if="+item.value === PERSONAL.SALEMODEL_2">
                   <div>1. 设置课程的固定课时费</div>
                   <div>2. 支持用户在用户端在线购买</div>
                 </div>

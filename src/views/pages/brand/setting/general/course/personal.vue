@@ -149,7 +149,6 @@ export default {
       })
     },
     onEditPricingSetting() {
-      console.log('edit')
       const isChanged = this.pricingInfo.is_changed
       const that = this
       const msg = this.pricingInfo.changed_desc
