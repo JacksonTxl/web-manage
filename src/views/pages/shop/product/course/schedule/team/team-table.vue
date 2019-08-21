@@ -6,7 +6,7 @@
     >
       <div class="title__left">
         <st-button
-          v-modal-link="{ name: 'schedule-team-add-course-schedule-batch' }"
+          v-modal-link="{ name: 'schedule-team-add-course-batch' }"
           class="mg-r8"
           type="primary"
         >
