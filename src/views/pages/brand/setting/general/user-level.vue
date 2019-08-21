@@ -53,7 +53,7 @@
             </div>
             <select-condition
               v-if="isEdit && info.condition"
-              v-model="info.condition.list"
+              v-model="info.condition"
               @change="onConditionChange"
             />
             <ul v-else>
@@ -74,7 +74,7 @@
             </div>
             <select-rights
               v-if="isEdit && info.rights"
-              v-model="info.rights.list"
+              v-model="info.rights"
               @change="onRightsChange"
             />
             <ul v-else>
