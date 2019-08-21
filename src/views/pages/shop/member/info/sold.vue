@@ -8,7 +8,7 @@
           rowKey="id"
           :columns="classrecord"
           :dataSource="soldListInfo"
-          @change="onTableChange"
+          @change="reservePageChange"
           :page="soldPage"
         >
           <div slot="reserve_type" slot-scope="text, record">
@@ -99,7 +99,7 @@
           :columns="admission"
           rowKey="id"
           :dataSource="entranceList"
-          @change="onTableChange"
+          @change="entrancePageChange"
           :page="entrancePage"
         ></st-table>
       </a-col>
@@ -162,7 +162,7 @@ export default {
     }
   },
   created() {
-    let self = this
+    // let self = this
     // this.soldService.init(self.$route.query.id, self.form).subscribe()
   },
   methods: {
@@ -209,13 +209,28 @@ export default {
     },
     handleChange(value) {
       console.log(`selected ${value}`)
+    },
+    // 上课记录分页
+    reservePageChange(e) {
+      this.form.size = e.pageSize
+      this.form.page = e.current
+    },
+    // 入场记录分页
+    entrancePageChange(e) {
+      this.soldService
+        .getMemberEntrance(this.$route.query.id, {
+          size: e.pageSize,
+          page: e.current
+        })
+        .subscribe()
     }
   },
   watch: {
     form: {
       handler() {
-        let self = this
-        this.soldService.init(self.$route.query.id, self.form).subscribe()
+        this.soldService
+          .getMemberReserve(this.$route.query.id, this.form)
+          .subscribe()
       },
       deep: true
     }

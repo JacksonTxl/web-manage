@@ -22,8 +22,8 @@ export class SoldService implements RouteGuard {
       })
     )
   }
-  getMemberEntrance(id: string) {
-    return this.memberApi.getMemberEntrance(id).pipe(
+  getMemberEntrance(id: string, params: any) {
+    return this.memberApi.getMemberEntrance(id, params).pipe(
       tap(res => {
         res = this.authService.filter(res)
         this.entranceList$.commit(() => res.list)
@@ -40,7 +40,7 @@ export class SoldService implements RouteGuard {
   init(id: string, params: any) {
     return forkJoin(
       this.getMemberReserve(id, params),
-      this.getMemberEntrance(id)
+      this.getMemberEntrance(id, { size: 20, page: 1 })
     )
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {

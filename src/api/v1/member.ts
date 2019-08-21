@@ -281,8 +281,8 @@ export class MemberApi extends Api {
   /*
    *员工详情—预约上课出入场记录
    */
-  getMemberEntrance(id: string) {
-    return this.http.get(`/v1/member/entrance/${id}`)
+  getMemberEntrance(id: string, query: any) {
+    return this.http.get(`/v1/member/entrance/${id}`, { query })
   }
   /**
    * 卡消费
