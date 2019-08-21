@@ -52,10 +52,6 @@
           <div class="course-info">
             <div class="course-name">{{ info.course_name }}</div>
             <div class="address">
-              <div class="mg-r24">
-                <span class="label">场地：</span>
-                <span class="value">{{ info.court_name }}</span>
-              </div>
               <div>
                 <span class="label">教练：</span>
                 <span class="value">{{ info.coach_name }}</span>
@@ -71,9 +67,9 @@
               <span class="label">预约：</span>
               <span class="value">{{ info.reserved_num }}人</span>
             </div>
-            <div>
+            <div v-if="info.can_reserve_num">
               <span class="label">可约：</span>
-              <span class="value">{{ info.reserve_max }}人</span>
+              <span class="value">{{ info.can_reserve_num }}人</span>
             </div>
           </div>
         </a-col>

@@ -103,6 +103,7 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
+    coach_levelRule: {},
     image_avatar: {},
     image_face: {},
     identity: {

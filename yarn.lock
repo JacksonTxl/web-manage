@@ -34,10 +34,10 @@
   dependencies:
     "@antv/util" "~1.3.1"
 
-"@antv/component@~0.3.2":
-  version "0.3.3"
-  resolved "https://registry.npm.taobao.org/@antv/component/download/@antv/component-0.3.3.tgz#c1a7f547fe6e0a4878838f5a4eebb8b598651fce"
-  integrity sha1-waf1R/5uCkh4g49aTuu4tZhlH84=
+"@antv/component@~0.3.3":
+  version "0.3.4"
+  resolved "https://registry.npm.taobao.org/@antv/component/download/@antv/component-0.3.4.tgz#94f605c4c74514816aebc42cf110e11b63508ccc"
+  integrity sha1-lPYFxMdFFIFq68Qs8RDhG2NQjMw=
   dependencies:
     "@antv/attr" "~0.1.2"
     "@antv/g" "~3.3.5"
@@ -50,21 +50,6 @@
   integrity sha1-SKgK420HVS+WZX5/gJUifGPwwKk=
   dependencies:
     "@antv/util" "~1.3.1"
-
-"@antv/g2@^3.5.3":
-  version "3.5.7"
-  resolved "https://registry.npm.taobao.org/@antv/g2/download/@antv/g2-3.5.7.tgz?cache=0&sync_timestamp=1560848328167&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40antv%2Fg2%2Fdownload%2F%40antv%2Fg2-3.5.7.tgz#b562a696546d3ec1baeff820f6be00521004fe94"
-  integrity sha1-tWKmllRtPsG67/gg9r4AUhAE/pQ=
-  dependencies:
-    "@antv/adjust" "~0.1.0"
-    "@antv/attr" "~0.1.2"
-    "@antv/component" "~0.3.2"
-    "@antv/coord" "~0.1.0"
-    "@antv/g" "~3.3.6"
-    "@antv/scale" "~0.1.1"
-    "@antv/util" "~1.3.1"
-    venn.js "~0.2.20"
-    wolfy87-eventemitter "~5.1.0"
 
 "@antv/g@~3.3.5", "@antv/g@~3.3.6":
   version "3.3.6"
@@ -13448,6 +13433,21 @@ st-data-set@0.10.2-alpha2:
     regression "~2.0.0"
     simple-statistics "~6.1.0"
     topojson-client "~3.0.0"
+    wolfy87-eventemitter "~5.1.0"
+
+st-g2@3.5.8-alpha.1:
+  version "3.5.8-alpha.1"
+  resolved "https://registry.npmjs.org/st-g2/-/st-g2-3.5.8-alpha.1.tgz#57004d2a3d8aa6d373aa06003738d8d63a437ddf"
+  integrity sha512-M1nZB3yDJ1sJo97Aw/ccMYEy4OyPxOrBVywwVxtjoL0rLmt7cpW3aqtI1MgC02lDnVTCmJHyHCKBl9CZSvW2hw==
+  dependencies:
+    "@antv/adjust" "~0.1.0"
+    "@antv/attr" "~0.1.2"
+    "@antv/component" "~0.3.3"
+    "@antv/coord" "~0.1.0"
+    "@antv/g" "~3.3.6"
+    "@antv/scale" "~0.1.1"
+    "@antv/util" "~1.3.1"
+    venn.js "~0.2.20"
     wolfy87-eventemitter "~5.1.0"
 
 stable@^0.1.8:

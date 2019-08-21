@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@abraham/reflection": "^0.5.1",
-    "@antv/g2": "^3.5.3",
+    "st-g2": "3.5.8-alpha.1",
     "@types/js-cookie": "^2.2.1",
     "@types/lodash-es": "^4.17.3",
     "@types/nprogress": "^0.0.29",

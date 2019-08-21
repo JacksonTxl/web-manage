@@ -154,7 +154,7 @@ module.exports = {
     config.resolve.alias.set('rx-state', path.join(__dirname, '/rx-state'))
 
     config.module.noParse(
-      content => /@antv\/g2/.test(content) || /@antv\/data-set/.test(content)
+      content => /st-g2/.test(content) || /st-data-set/.test(content)
     )
     return config
   }
