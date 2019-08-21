@@ -7073,23 +7073,6 @@ fsevents@^1.2.7:
     nan "^2.12.1"
     node-pre-gyp "^0.12.0"
 
-fullcalendar-scheduler@^1.9.4:
-  version "1.9.4"
-  resolved "https://registry.npm.taobao.org/fullcalendar-scheduler/download/fullcalendar-scheduler-1.9.4.tgz#15acc98aa0f2b80330b1e93cc768343404827b92"
-  integrity sha1-FazJiqDyuAMwsek8x2g0NASCe5I=
-  dependencies:
-    fullcalendar "~3.9.0"
-    jquery "2 - 3"
-    moment "^2.20.1"
-
-fullcalendar@~3.9.0:
-  version "3.9.0"
-  resolved "https://registry.npm.taobao.org/fullcalendar/download/fullcalendar-3.9.0.tgz#b608a9989f3416f0b1d526c6bdfeeaf2ac79eda5"
-  integrity sha1-tgipmJ80FvCx1SbGvf7q8qx57aU=
-  dependencies:
-    jquery "2 - 3"
-    moment "^2.20.1"
-
 function-bind@^1.0.2, function-bind@^1.1.1, function-bind@~1.1.1:
   version "1.1.1"
   resolved "https://registry.npm.taobao.org/function-bind/download/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
@@ -8800,11 +8783,6 @@ joi@^11.1.1:
     isemail "3.x.x"
     topo "2.x.x"
 
-"jquery@2 - 3":
-  version "3.4.1"
-  resolved "https://registry.npm.taobao.org/jquery/download/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
-  integrity sha1-cU8fjZ3eS9+lV2S6N+8hRjDYDvI=
-
 js-base64@^2.1.9:
   version "2.5.1"
   resolved "https://registry.npm.taobao.org/js-base64/download/js-base64-2.5.1.tgz#1efa39ef2c5f7980bb1784ade4a8af2de3291121"
@@ -10160,7 +10138,7 @@ modify-values@^1.0.0:
   resolved "https://registry.npm.taobao.org/modify-values/download/modify-values-1.0.1.tgz#b3939fa605546474e3e3e3c63d64bd43b4ee6022"
   integrity sha1-s5OfpgVUZHTj4+PGPWS9Q7TuYCI=
 
-moment@^2.20.1, moment@^2.21.0:
+moment@^2.21.0:
   version "2.24.0"
   resolved "https://registry.npm.taobao.org/moment/download/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha1-DQVdU/UFKqZTyfbraLtdEr9cK1s=

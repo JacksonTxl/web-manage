@@ -85,11 +85,11 @@
             </template>
             <a-radio-group v-model="refundReason">
               <a-radio
-                v-for="(item, index) in Object.keys(sold.refund_reason.value)"
+                v-for="(item, index) in refundReasons"
                 :key="index"
-                :value="+item"
+                :value="+item.value"
               >
-                {{ sold.refund_reason.value[item] }}
+                {{ item.label }}
               </a-radio>
             </a-radio-group>
           </st-form-item>
@@ -108,13 +108,11 @@
           <st-form-item label="退款方式" class="mgb-18" required>
             <a-radio-group v-model="frozenPayType">
               <a-radio
-                v-for="(item, index) in Object.keys(
-                  sold.refund_channel_saas.value
-                )"
+                v-for="(item, index) in refundChannelSaas"
                 :key="index"
-                :value="+item"
+                :value="+item.value"
               >
-                {{ sold.refund_channel_saas.value[item] }}
+                {{ item.label }}
               </a-radio>
             </a-radio-group>
           </st-form-item>
@@ -142,7 +140,7 @@
 <script>
 import moment from 'moment'
 import { RefundService } from './refund.service'
-import { UserService } from '@/services/user.service'
+import { ruleOptions } from './refund.config'
 export default {
   name: 'ModalSoldCourseRefund',
   bem: {
@@ -150,25 +148,28 @@ export default {
   },
   serviceInject() {
     return {
-      userService: UserService,
       refundService: RefundService
     }
   },
   rxState() {
     return {
       packageInfo: this.refundService.packageInfo$,
-      sold: this.userService.soldEnums$,
+      refundChannelSaas: this.refundService.refundChannelSaas$,
+      refundReasons: this.refundService.refundReasons$,
       loading: this.refundService.loading$
     }
   },
   props: ['id', 'type'],
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false,
-      refundReason: 1,
-      frozenPayType: 1,
-      description: '',
-      form: this.$form.createForm(this)
+      refundReason: this.refundReasons[0].value,
+      frozenPayType: this.refundChannelSaas[0].value,
+      description: ''
     }
   },
   created() {
@@ -177,24 +178,22 @@ export default {
   methods: {
     moment,
     onSubmit() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          this.refundService
-            .refund(
-              {
-                refund_reason: +this.refundReason,
-                refund_price: +values.refundPrice,
-                refund_channel: +this.frozenPayType,
-                description: this.description
-              },
-              this.id,
-              this.type
-            )
-            .subscribe(res => {
-              this.$emit('success')
-              this.show = false
-            })
-        }
+      this.form.validate().then(values => {
+        this.refundService
+          .refund(
+            {
+              refund_reason: +this.refundReason,
+              refund_price: +values.refundPrice,
+              refund_channel: +this.frozenPayType,
+              description: this.description
+            },
+            this.id,
+            this.type
+          )
+          .subscribe(res => {
+            this.$emit('success')
+            this.show = false
+          })
       })
     },
     refund_price_validator(rule, value, callback) {
