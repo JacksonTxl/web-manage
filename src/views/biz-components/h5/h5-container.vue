@@ -8,7 +8,11 @@
         <br />
         不支持实时预览
         <br />
-        <st-button :class="h5('content-deny-button')" type="primary">
+        <st-button
+          :class="h5('content-deny-button')"
+          type="primary"
+          @click="gotoAuth"
+        >
           去配置
         </st-button>
       </div>
@@ -46,6 +50,11 @@ export default {
     getInfo() {
       this.H5ContainerService.getInfo().subscribe(res => {
         this.isAuth = res.is_auth
+      })
+    },
+    gotoAuth() {
+      this.$router.push({
+        name: 'brand-setting-mina-index'
       })
     }
   }
