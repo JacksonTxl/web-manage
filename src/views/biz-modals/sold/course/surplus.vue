@@ -42,7 +42,7 @@
             <td>
               <st-form-item labelWidth="0" labelGutter="0">
                 <st-input-number
-                  v-decorator="decorators[`num-${index}`]"
+                  v-decorator="decorators[`num-${item.id}`]"
                   :min="0"
                   :max="999"
                   placeholder="输入修改后的课时"
@@ -74,7 +74,6 @@
 <script>
 import { cloneDeep } from 'lodash-es'
 import { SurplusService } from './surplus.service'
-import { ruleOptions } from './surplus.config'
 export default {
   name: 'ModalSoldPackageSurplus',
   bem: {
@@ -109,13 +108,27 @@ export default {
   },
   data() {
     const form = this.$stForm.create()
-    const decorators = form.decorators(ruleOptions)
     return {
       form,
-      decorators,
       show: false,
       courseList: [],
       remarks: ''
+    }
+  },
+  computed: {
+    decorators() {
+      const ruleOptions = {}
+      this.courseList.forEach(item => {
+        ruleOptions[`num-${item.id}`] = {
+          rules: [
+            {
+              required: true,
+              message: '请输入课时'
+            }
+          ]
+        }
+      })
+      return this.form.decorators(ruleOptions)
     }
   },
   methods: {

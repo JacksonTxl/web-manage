@@ -10,6 +10,7 @@ import { UserService } from '@/services/user.service'
 export class AddLongTermService {
   loading$ = new State({})
   transferUnits$ = this.userService.getOptions$('setting.cabinet.transfer_unit')
+  sortType$ = this.userService.getOptions$('setting.cabinet.sort_type')
   constructor(
     private cabinetApi: LongTermCabinetApi,
     private userService: UserService
