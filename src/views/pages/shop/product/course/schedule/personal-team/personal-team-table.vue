@@ -98,16 +98,16 @@ import { PersonalTeamScheduleScheduleService } from '../personal-team/service#/s
 import { RouteService } from '@/services/route.service'
 import date from '@/views/biz-components/schedule/date#/date-component.vue'
 import SchedulePersonalTeamReserveInfo from '@/views/biz-modals/schedule/personal-team/reserve-info'
-import ScheduleTeamAddCourseBatch from '@/views/biz-modals/schedule/team/add-course-batch'
-import ScheduleTeamAddCourse from '@/views/biz-modals/schedule/team/add-course'
-import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
+import SchedulePersonalTeamAddInBatch from '@/views/biz-modals/schedule/personal-team/add-in-batch'
+import SchedulePersonalTeamAdd from '@/views/biz-modals/schedule/personal-team/add'
+import SchedulePersonalTeamCopy from '@/views/biz-modals/schedule/personal-team/copy'
 export default {
   name: 'SchedulePersonalTeamTable',
   modals: {
     SchedulePersonalTeamReserveInfo,
-    ScheduleTeamAddCourseBatch,
-    ScheduleTeamAddCourse,
-    ScheduleTeamCopySchedule
+    SchedulePersonalTeamAddInBatch,
+    SchedulePersonalTeamAdd,
+    SchedulePersonalTeamCopy
   },
   serviceInject() {
     return {
