@@ -1,20 +1,14 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { SettingMemberApi, UpdateInput } from '@/api/v1/setting/member'
 import { AuthService } from '@/services/auth.service'
 
-interface ListState {
-  list: object[]
-  info: object
-  loading: Object
-}
 @Injectable()
 export class UserLevelService {
-  state$: State<ListState>
-  list$: Computed<object[]>
-  info$: Computed<object>
+  list$ = new State<object[]>([])
+  info$ = new State<object>({})
+  loading$ = new State({})
   auth$ = this.authService.authMap$({
     get: 'brand:setting:member_level|get',
     edit: 'brand:setting:member_level|edit'
@@ -22,29 +16,18 @@ export class UserLevelService {
   constructor(
     private settingMemberApi: SettingMemberApi,
     private authService: AuthService
-  ) {
-    this.state$ = new State({
-      list: [],
-      info: {}
-    })
-    this.list$ = new Computed(this.state$.pipe(pluck('list')))
-    this.info$ = new Computed(this.state$.pipe(pluck('info')))
-  }
+  ) {}
   getList() {
     return this.settingMemberApi.getList().pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.list = res.list
-        })
+        this.list$.commit(() => res.list)
       })
     )
   }
   getInfo() {
     return this.settingMemberApi.getInfo().pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.info = this.dataFilter(res.info)
-        })
+        this.info$.commit(() => res.info)
       })
     )
   }
