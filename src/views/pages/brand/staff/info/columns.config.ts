@@ -102,13 +102,13 @@ export const soldColums = () => {
     {
       title: '商品名称',
       dataIndex: 'product_name',
-      key: 'product_name'
+      key: 'product_name',
+      scopedSlots: { customRender: 'product_name' }
     },
     {
       title: '商品类型',
       dataIndex: 'product_type_name',
-      key: 'product_type_name',
-      scopedSlots: { customRender: 'product_type_name' }
+      key: 'product_type_name'
     },
     {
       title: '订单状态',
