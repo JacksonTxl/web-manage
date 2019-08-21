@@ -155,7 +155,7 @@
       <st-form :form="form" labelWidth="88px">
         <div :class="transfer('transfer')">
           <st-form-item
-            v-show="searchMemberIsShow"
+            v-if="searchMemberIsShow"
             label="转让会员"
             required
             labelGutter="12px"
@@ -217,7 +217,7 @@
             </p>
           </st-form-item>
           <st-form-item
-            v-show="!searchMemberIsShow"
+            v-if="!searchMemberIsShow"
             label="会员姓名"
             required
             labelGutter="12px"
@@ -228,7 +228,7 @@
             ></a-input>
           </st-form-item>
           <st-form-item
-            v-show="!searchMemberIsShow"
+            v-if="!searchMemberIsShow"
             label="手机号"
             required
             labelGutter="12px"
