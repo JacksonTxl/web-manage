@@ -74,6 +74,7 @@
 <script>
 import { cloneDeep } from 'lodash-es'
 import { SurplusService } from './surplus.service'
+import { ruleOptions } from './surplus.config'
 export default {
   name: 'ModalSoldPackageSurplus',
   bem: {
@@ -126,29 +127,27 @@ export default {
         })
     },
     onSubmit() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          Object.keys(values).forEach(i => {
-            this.courseList[i.split('-')[1]].courseNum = +values[i]
+      this.form.validate().then(values => {
+        Object.keys(values).forEach(i => {
+          this.courseList[i.split('-')[1]].courseNum = +values[i]
+        })
+        let courseInfo = []
+        this.courseList.forEach(i => {
+          courseInfo.push({
+            id: i.id,
+            product_type: i.product_type,
+            course_num_remain: i.courseNum
           })
-          let courseInfo = []
-          this.courseList.forEach(i => {
-            courseInfo.push({
-              id: i.id,
-              product_type: i.product_type,
-              course_num_remain: i.courseNum
-            })
+        })
+        this.surplusService
+          .edit(
+            { course_info: courseInfo, description: this.remarks },
+            this.courseData.id
+          )
+          .subscribe(res => {
+            this.$emit('success')
+            this.show = false
           })
-          this.surplusService
-            .edit(
-              { course_info: courseInfo, description: this.remarks },
-              this.courseData.id
-            )
-            .subscribe(res => {
-              this.$emit('success')
-              this.show = false
-            })
-        }
       })
     }
   }
