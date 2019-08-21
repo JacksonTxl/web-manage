@@ -281,28 +281,22 @@
             @change="onOpenTypeChange"
             :class="shelves('open-type')"
           >
-            <!-- TODO: 开卡方式-->
             <template
-              v-for="(item, index) in Object.keys(
-                memberCard.activate_type.value
-              )"
-              :value="+item"
+              v-for="(item, index) in activateTypes"
+              :value="+item.value"
             >
               <span
                 :class="shelves('day-input')"
-                v-if="+item === 2"
+                v-if="+item.value === 2"
                 :key="index"
               >
-                <a-checkbox :value="+item">
-                  {{ memberCard.activate_type.value[item] }}
+                <a-checkbox :value="+item.value">
+                  {{ item.label }}
                 </a-checkbox>
                 <div class="autoplay-card-day" v-if="openTypeList.includes(2)">
                   <a-form-item class="page-a-form">
                     <st-input-number
-                      v-decorator="[
-                        'openDay',
-                        { rules: [{ required: true, message: '请输入天数' }] }
-                      ]"
+                      v-decorator="decorators.openDay"
                       class="autoplay-card-day-input"
                     >
                       <span slot="addonAfter">天</span>
@@ -311,8 +305,8 @@
                   </a-form-item>
                 </div>
               </span>
-              <a-checkbox v-else :key="index" :value="+item">
-                {{ memberCard.activate_type.value[item] }}
+              <a-checkbox v-else :key="index" :value="+item.value">
+                {{ item.label }}
               </a-checkbox>
             </template>
           </a-checkbox-group>
@@ -463,6 +457,7 @@ export default {
     return {
       courseData: this.shelfService.courseList$,
       course_interests: this.shelfService.course_interests$,
+      activateTypes: this.shelfService.activateTypes$,
       loading: this.shelfService.loading$,
       info: this.shelfService.info$
     }

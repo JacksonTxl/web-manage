@@ -259,28 +259,22 @@
             @change="onOpenTypeChange"
             :class="shelves('open-type')"
           >
-            <!-- TODO: 开卡方式 -->
             <template
-              v-for="(item, index) in Object.keys(
-                memberCard.activate_type.value
-              )"
-              :value="+item"
+              v-for="(item, index) in activateTypes"
+              :value="+item.value"
             >
               <span
                 :class="shelves('day-input')"
-                v-if="+item === 2"
+                v-if="+item.value === 2"
                 :key="index"
               >
-                <a-checkbox :value="+item">
-                  {{ memberCard.activate_type.value[item] }}
+                <a-checkbox :value="+item.value">
+                  {{ item.label }}
                 </a-checkbox>
                 <div class="autoplay-card-day" v-if="openTypeList.includes(2)">
                   <a-form-item class="page-a-form">
                     <st-input-number
-                      v-decorator="[
-                        'openDay',
-                        { rules: [{ required: true, message: '请输入天数' }] }
-                      ]"
+                      v-decorator="decorators.openDay"
                       class="autoplay-card-day-input"
                     >
                       <span slot="addonAfter">天</span>
@@ -289,13 +283,10 @@
                   </a-form-item>
                 </div>
               </span>
-              <a-checkbox v-else :key="index" :value="+item">
-                {{ memberCard.activate_type.value[item] }}
+              <a-checkbox v-else :key="index" :value="+item.value">
+                {{ item.label }}
               </a-checkbox>
             </template>
-
-            <!-- <a-checkbox :value="3">指定日期开卡</a-checkbox>
-            <a-checkbox :value="1">购买即开卡</a-checkbox> -->
           </a-checkbox-group>
         </st-form-item>
         <st-form-item labelGutter="12px" label="约课权益" required>
@@ -428,6 +419,7 @@ export default {
   rxState() {
     return {
       course_interests: this.shelfService.course_interests$,
+      activateTypes: this.shelfService.activateTypes$,
       shopName: this.userService.shop$,
       courseData: this.shelfService.courseList$,
       loading: this.shelfService.loading$,

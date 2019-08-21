@@ -14,6 +14,7 @@ export class ShelfService {
   course_interests$ = this.userService.getOptions$(
     'member_card.course_interests'
   )
+  activateTypes$ = this.userService.getOptions$('member_card.activate_type')
   constructor(private cardApi: CardsApi, private userService: UserService) {
     this.courseListAction$ = new Action(data$ => {
       return data$.pipe(
