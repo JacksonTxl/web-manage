@@ -1,6 +1,10 @@
 <template>
   <span>
-    <a-radio-group @change="onChangeRadio" v-model="radioValue">
+    <a-radio-group
+      @change="onChangeRadio"
+      v-model="radioValue"
+      style="margin-right: 8px"
+    >
       <a-radio-button :value="7">近7天</a-radio-button>
       <a-radio-button :value="30">近30天</a-radio-button>
       <a-radio-button :value="90">近90天</a-radio-button>
@@ -34,7 +38,7 @@ export default {
   },
   data() {
     return {
-      radioValue: '',
+      radioValue: 7,
       radioText: ''
     }
   },
