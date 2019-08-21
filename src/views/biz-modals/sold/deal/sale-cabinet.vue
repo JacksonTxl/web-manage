@@ -1,7 +1,6 @@
 <template>
   <st-modal
     title="交易签单"
-    size="small"
     v-model="show"
     @cancel="onCancel"
     wrapClassName="modal-sold-deal-sale"
@@ -84,7 +83,7 @@
           </st-form-item>
           <st-form-item
             labelGutter="12px"
-            v-show="!searchMemberIsShow"
+            v-if="!searchMemberIsShow"
             label="会员姓名"
             required
           >
@@ -95,7 +94,7 @@
           </st-form-item>
           <st-form-item
             labelGutter="12px"
-            v-show="!searchMemberIsShow"
+            v-if="!searchMemberIsShow"
             label="手机号"
             required
           >
@@ -146,7 +145,7 @@
                   :disabled="disabledCalendar"
                   v-decorator="decorators.endTimePicker"
                   @change="endTimeChange"
-                  style="width:170px"
+                  style="width: 100%;"
                   :showTime="{ defaultValue: startTime, format: 'HH:mm' }"
                   format="YYYY-MM-DD HH:mm"
                   placeholder="结束时间"
@@ -548,67 +547,63 @@ export default {
       })
     },
     onCreateOrder() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          let reduce_amount = this.reduceAmount ? +this.reduceAmount : 0
-          this.saleCabinetService
-            .setTransaction({
-              cabinet_id: +this.cabinetId,
-              start_time: `${this.startTime.format('YYYY-MM-DD HH:mm')}`,
-              end_time: `${values.endTimePicker.format('YYYY-MM-DD HH:mm')}`,
-              lease_days: +this.days,
-              contract_number: values.contractNumber,
-              advance_id:
-                this.selectAdvance === -1 ? undefined : this.selectAdvance,
-              reduce_amount,
-              order_amount: `${this.orderAmount.split('元')[0]}`,
-              member_id: +values.memberId,
-              member_name: values.memberName,
-              mobile: values.memberMobile,
-              sale_id: +values.saleName,
-              description: this.description,
-              sale_range: +this.info.sale_range.type
+      this.form.validate().then(values => {
+        let reduce_amount = this.reduceAmount ? +this.reduceAmount : 0
+        this.saleCabinetService
+          .setTransaction({
+            cabinet_id: +this.cabinetId,
+            start_time: `${this.startTime.format('YYYY-MM-DD HH:mm')}`,
+            end_time: `${values.endTimePicker.format('YYYY-MM-DD HH:mm')}`,
+            lease_days: +this.days,
+            contract_number: values.contractNumber,
+            advance_id:
+              this.selectAdvance === -1 ? undefined : this.selectAdvance,
+            reduce_amount,
+            order_amount: `${this.orderAmount.split('元')[0]}`,
+            member_id: +values.memberId,
+            member_name: values.memberName,
+            mobile: values.memberMobile,
+            sale_id: +values.saleName,
+            description: this.description,
+            sale_range: +this.info.sale_range.type
+          })
+          .subscribe(res => {
+            this.show = false
+            this.$emit('success', {
+              type: 'create',
+              orderId: res.info.order_id
             })
-            .subscribe(res => {
-              this.show = false
-              this.$emit('success', {
-                type: 'create',
-                orderId: res.info.order_id
-              })
-            })
-        }
+          })
       })
     },
     onPay() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          let reduce_amount = this.reduceAmount ? +this.reduceAmount : 0
-          this.saleCabinetService
-            .setTransactionPay({
-              cabinet_id: +this.cabinetId,
-              start_time: `${this.startTime.format('YYYY-MM-DD HH:mm')}`,
-              end_time: `${values.endTimePicker.format('YYYY-MM-DD HH:mm')}`,
-              lease_days: +this.days,
-              contract_number: values.contractNumber,
-              advance_id:
-                this.selectAdvance === -1 ? undefined : this.selectAdvance,
-              reduce_amount,
-              order_amount: `${this.orderAmount.split('元')[0]}`,
-              member_id: +values.memberId,
-              member_name: values.memberName,
-              mobile: values.memberMobile,
-              sale_id: +values.saleName,
-              description: this.description,
-              sale_range: +this.info.sale_range.type
+      this.form.validate().then(values => {
+        let reduce_amount = this.reduceAmount ? +this.reduceAmount : 0
+        this.saleCabinetService
+          .setTransactionPay({
+            cabinet_id: +this.cabinetId,
+            start_time: `${this.startTime.format('YYYY-MM-DD HH:mm')}`,
+            end_time: `${values.endTimePicker.format('YYYY-MM-DD HH:mm')}`,
+            lease_days: +this.days,
+            contract_number: values.contractNumber,
+            advance_id:
+              this.selectAdvance === -1 ? undefined : this.selectAdvance,
+            reduce_amount,
+            order_amount: `${this.orderAmount.split('元')[0]}`,
+            member_id: +values.memberId,
+            member_name: values.memberName,
+            mobile: values.memberMobile,
+            sale_id: +values.saleName,
+            description: this.description,
+            sale_range: +this.info.sale_range.type
+          })
+          .subscribe(res => {
+            this.show = false
+            this.$emit('success', {
+              type: 'createPay',
+              orderId: res.info.order_id
             })
-            .subscribe(res => {
-              this.show = false
-              this.$emit('success', {
-                type: 'createPay',
-                orderId: res.info.order_id
-              })
-            })
-        }
+          })
       })
     }
   }
