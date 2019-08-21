@@ -42,7 +42,7 @@
             <td>
               <st-form-item labelWidth="0" labelGutter="0">
                 <st-input-number
-                  v-decorator="decorators[`num-${item.id}`]"
+                  v-decorator="decorators[calcDecoId(item)]"
                   :min="0"
                   :max="999"
                   placeholder="输入修改后的课时"
@@ -74,6 +74,7 @@
 <script>
 import { cloneDeep } from 'lodash-es'
 import { SurplusService } from './surplus.service'
+import { find as lodashFind, set } from 'lodash-es'
 export default {
   name: 'ModalSoldPackageSurplus',
   bem: {
@@ -119,7 +120,8 @@ export default {
     decorators() {
       const ruleOptions = {}
       this.courseList.forEach(item => {
-        ruleOptions[`num-${item.id}`] = {
+        const decoId = this.calcDecoId(item)
+        ruleOptions[decoId] = {
           rules: [
             {
               required: true,
@@ -132,6 +134,12 @@ export default {
     }
   },
   methods: {
+    /**
+     * 计算decoratod中的id值 用于表单验证 发送是取值
+     */
+    calcDecoId(item) {
+      return `${item.product_type}-${item.id}`
+    },
     getEditInfo() {
       this.surplusService
         .getPackageEditInfo(this.courseData.id)
@@ -141,17 +149,15 @@ export default {
     },
     onSubmit() {
       this.form.validate().then(values => {
-        Object.keys(values).forEach(i => {
-          this.courseList[i.split('-')[1]].courseNum = +values[i]
-        })
-        let courseInfo = []
-        this.courseList.forEach(i => {
-          courseInfo.push({
+        let courseInfo = this.courseList.map(item => {
+          const decoId = this.calcDecoId(item)
+          return {
             id: i.id,
             product_type: i.product_type,
-            course_num_remain: i.courseNum
-          })
+            course_num_remain: +values[decoId]
+          }
         })
+
         this.surplusService
           .edit(
             { course_info: courseInfo, description: this.remarks },
