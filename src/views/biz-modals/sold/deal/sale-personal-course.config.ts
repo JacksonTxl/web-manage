@@ -47,7 +47,7 @@ export const ruleOptions = (vm: any) => {
     buyNum: {
       rules: [
         {
-          vali: (rule: any, value: any, values: any) => {
+          validator: (rule: any, value: any, values: any) => {
             let price = 0
             if (vm.info.price_model === 1) {
               // 教练平级

@@ -598,36 +598,34 @@ export default {
       this.couponText = `${price}元`
     },
     onClickCourseAmount() {
-      this.form.validate(['buyNum'], (error, values) => {
-        if (!error) {
-          const params = {
-            id: this.id,
-            buy_num: this.form.getFieldValue('buyNum'),
-            coach_level_id: this.form.getFieldValue('coach_level') || 0 // 默认0 为没有等级，否则分级
-          }
-          this.salePersonalCourseService
-            .getPersonalPriceInfo(params)
-            .subscribe(result => {
-              this.isAmountDisabled = true
-              this.validEndTime = this.info.effective_unit * params.buy_num || 0
-              // 调用优惠券列表
-              this.fetchCouponList()
-              // 调用获取商品原价
-              if (
-                this.info.sale_model === 1 &&
-                !this.form.getFieldValue('coursePrice') &&
-                this.form.getFieldValue('coursePrice') !== 0
-              ) {
-                return
-              }
-              this.getOrderPrice()
-              this.getPrice(
-                this.selectCoupon,
-                this.selectAdvance,
-                +this.reduceAmount
-              )
-            })
+      this.form.validate(['buyNum']).then(() => {
+        const params = {
+          id: this.id,
+          buy_num: this.form.getFieldValue('buyNum'),
+          coach_level_id: this.form.getFieldValue('coach_level') || 0 // 默认0 为没有等级，否则分级
         }
+        this.salePersonalCourseService
+          .getPersonalPriceInfo(params)
+          .subscribe(result => {
+            this.isAmountDisabled = true
+            this.validEndTime = this.info.effective_unit * params.buy_num || 0
+            // 调用优惠券列表
+            this.fetchCouponList()
+            // 调用获取商品原价
+            if (
+              this.info.sale_model === 1 &&
+              !this.form.getFieldValue('coursePrice') &&
+              this.form.getFieldValue('coursePrice') !== 0
+            ) {
+              return
+            }
+            this.getOrderPrice()
+            this.getPrice(
+              this.selectCoupon,
+              this.selectAdvance,
+              +this.reduceAmount
+            )
+          })
       })
     },
     // 计算实付金额
