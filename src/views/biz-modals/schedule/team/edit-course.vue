@@ -57,7 +57,7 @@
           :disabled="disabled"
           v-decorator="decorators.limit_num"
         >
-          <st-button slot="enterButton">人</st-button>
+          <a-button slot="enterButton">人</a-button>
         </a-input-search>
       </st-form-item>
       <st-form-item label="课时费" required>
@@ -66,7 +66,7 @@
           :disabled="disabled"
           v-decorator="decorators.course_fee"
         >
-          <st-button slot="enterButton">元/节</st-button>
+          <a-button slot="enterButton">元/节</a-button>
         </a-input-search>
       </st-form-item>
       <a-row>
