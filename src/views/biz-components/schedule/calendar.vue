@@ -86,7 +86,7 @@
               <span class="date-text">{{ item | dateString }}</span>
               <div class="date-button">
                 <span class="mg-r8">{{ item | dateString }}</span>
-                <a href="javascript:;" @click="onClickGetDay(item)">查看日期</a>
+                <a href="javascript:;" @click="onClickGetDay(item)">查看日</a>
               </div>
             </li>
             <schedule-unit
@@ -136,6 +136,7 @@ import AddButton from './date#/add-button'
 import ScheduleUnit from './date#/schedule-unit'
 import ScheduleCard from './date#/schedule-card'
 import moment from 'moment'
+import { cloneDeep } from 'lodash-es'
 
 export default {
   name: 'ScheduleCalendar',
@@ -147,6 +148,7 @@ export default {
   data() {
     return {
       start: moment().format('YYYY-MM-DD'),
+      currentWeek: '',
       weeks: []
     }
   },
@@ -249,12 +251,12 @@ export default {
     },
     onClickGetCurrent() {
       let current = moment().format('YYYY-MM-DD')
-      this.weeks = this.weeks.filter(item => {
-        let weekOfday = moment(item.date).format('E')
-        let date = moment(item.date)
-          .subtract(weekOfday - item.week, 'days')
-          .format('YYYY-MM-DD')
-        return date === current
+      this.getWeeks()
+      this.$router.push({
+        query: {
+          start_date: current,
+          end_date: current
+        }
       })
     },
     getWeeks(val) {
@@ -272,6 +274,7 @@ export default {
     },
 
     onClickGetWeek() {
+      this.$router.push({ query: { ...this.currentWeek }, force: true })
       this.getWeeks('week')
     },
     onChangeGetDate(date) {
@@ -279,6 +282,7 @@ export default {
     }
   },
   created() {
+    this.currentWeek = cloneDeep(this.$route.query)
     this.start = this.startDate
     if (this.isDay) {
       this.getWeeks()
