@@ -10,7 +10,7 @@ export class CourseService implements RouteGuard {
   page$ = new State({})
   loading$ = new State({})
   reserveStatus$ = this.userService
-    .getOptions$('reserve.reserve_status')
+    .getOptions$('schedule.schedule_status')
     .pipe(
       map(options => [{ value: -1, label: '全部课程状态' }].concat(options))
     )
