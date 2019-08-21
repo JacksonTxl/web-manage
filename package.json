@@ -23,7 +23,6 @@
   },
   "dependencies": {
     "@abraham/reflection": "^0.5.1",
-    "@antv/data-set": "^0.10.2",
     "@antv/g2": "^3.5.3",
     "@types/js-cookie": "^2.2.1",
     "@types/lodash-es": "^4.17.3",
@@ -33,7 +32,6 @@
     "core-js": "^2.6.5",
     "countup.js": "^2.0.4",
     "cropperjs": "^1.5.1",
-    "fullcalendar-scheduler": "^1.9.4",
     "gulp-less": "^4.0.1",
     "immer": "^2.1.5",
     "js-cookie": "^2.2.0",
@@ -43,6 +41,7 @@
     "qs": "^6.6.0",
     "rgb-hex": "^2.1.0",
     "rxjs": "^6.4.0",
+    "st-data-set": "0.10.2-alpha2",
     "styd-less-base": "1.0.6",
     "v-viewer": "^1.4.0",
     "vue": "^2.6.6",
@@ -124,7 +123,7 @@
     }
   },
   "husky": {
-    "hooks":{
+    "hooks": {
       "pre-commit": "lint-staged",
       "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS"
     }

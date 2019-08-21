@@ -6,7 +6,7 @@
 
 <script>
 import { Chart } from '@antv/g2'
-import { View } from '@antv/data-set'
+import { View } from 'st-data-set'
 import chartMixin from './mixin'
 import { toKFilter } from './filters'
 export default {

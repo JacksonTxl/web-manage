@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import { View } from '@antv/data-set'
+import { View } from 'st-data-set'
 import { Chart } from '@antv/g2'
 import { toKFilter } from './filters'
 import chartMixin from './mixin'
