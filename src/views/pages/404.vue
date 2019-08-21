@@ -8,7 +8,7 @@
         height="270px"
         alt="404"
       />
-      <p class="page-404__text">您查找的页面已经离开地球</p>
+      <p class="page-404__text">您查找的页面已经离开地球了</p>
       <p>
         <router-link :to="to">返回首页</router-link>
       </p>
