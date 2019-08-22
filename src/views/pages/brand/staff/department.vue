@@ -154,18 +154,21 @@ export default {
     },
     // 查询部门后点击列表某项
     handleDepartmentSearchChange(e) {
+      console.log(e)
       if (!e) this.treeList = this.departmentList
       else this.treeList = this.deepSearchDepartment(this.departmentList, e)
     },
     // 查询部门后点击列表某项查找到对应列表
     deepSearchDepartment(departments, id) {
-      let result = null
-      if (!departments || !Array.isArray(departments)) return
+      let result = []
+      if (!departments || !Array.isArray(departments)) return result
       for (let x = 0; x < departments.length; x++) {
         let department = departments[x]
+        if (result && result.length) {
+          break
+        }
         if (department.id === id) {
           result = [department]
-          break
         } else if (department.children && department.children.length) {
           result = this.deepSearchDepartment(department.children, id)
         }
