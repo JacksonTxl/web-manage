@@ -8,6 +8,7 @@
             maxlength="30"
             v-decorator="decorators.course_name"
             @change="onCourseNameChange"
+            :disabled="query.id"
           />
         </st-form-item>
       </a-col>
