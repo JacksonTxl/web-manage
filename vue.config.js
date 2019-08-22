@@ -88,7 +88,11 @@ module.exports = {
         'vue-router': 'window.VueRouter',
         moment: 'window.moment',
         'ant-design-vue': 'window.antd',
-        immer: 'window.immer'
+        immer: 'window.immer',
+        rxjs: 'window.rxjs',
+        'rxjs/operators': 'window.rxjs.operators',
+        'rxjs/ajax': 'window.rxjs.ajax',
+        'lodash-es': 'window._'
       })
       .plugin('external-vendor')
       .use(WebpackExternalVendorPlugin, [
@@ -105,7 +109,11 @@ module.exports = {
               IS_DEV
                 ? 'ant-design-vue/dist/antd.js'
                 : 'ant-design-vue/dist/antd.min.js',
-              'immer/dist/immer.umd.js'
+              'immer/dist/immer.umd.js',
+              IS_DEV
+                ? 'rxjs/bundles/rxjs.umd.js'
+                : 'rxjs/bundles/rxjs.umd.min.js',
+              IS_DEV ? 'lodash/lodash.js' : 'lodash/lodash.min.js'
             ],
             base: ['./antd.css']
           }

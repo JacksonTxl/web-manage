@@ -4,7 +4,7 @@
       tinymce
       <a href="http://tinymce.ax-z.cn/">中文文档</a>
     </h3>
-    <!-- 更多时间列表请查看editor#.vue -->
+    <!-- 更多事件列表请查看editor#.vue -->
     <st-editor @paste="onPaste" v-model="content"></st-editor>
     {{ content }}
   </section>

@@ -6,8 +6,11 @@ export const enumFilter = (key: string, path: string) => {
   if (key === undefined) return ''
   const user = container.get(UserService)
   const enumObj = user.enums$.snapshot()
-  const value = get(enumObj, `${path}.value.${key}`)
-  return value || console.error(`【enumFilter】is not found [${path}.${key}] `)
+  const pathValue = get(enumObj, `${path}`)
+  if (!pathValue) {
+    return console.error(`【enumFilter】is not found [${path}]`)
+  }
+  return get(enumObj, `${path}.value.${key}`)
 }
 
 /**

@@ -2,7 +2,7 @@
   <div :class="sidebar()">
     <div :class="sidebar('shadow')">
       <a
-        href="https://mp.weixin.qq.com/s/bvAniLXAEuswEfehHVJ7bw"
+        href="https://mp.weixin.qq.com/s/LHPD08fe4RdEztp9V0IZXg"
         target="_blank"
       >
         <img width="280px" height="186px" :src="pic" alt="" />
