@@ -42,11 +42,11 @@
         </template>
         <a-radio-group v-decorator="decorators.sort_type">
           <a-radio
-            v-for="(item, index) in settingEnums.cabinet.sort_type.value"
-            :key="index"
-            :value="index"
+            v-for="item in sortType"
+            :key="item.value"
+            :value="item.value"
           >
-            {{ item }}
+            {{ item.label }}
           </a-radio>
         </a-radio-group>
       </st-form-item>
@@ -98,7 +98,8 @@ export default {
   rxState() {
     return {
       loading: this.addService.loading$,
-      transferUnits: this.addService.transferUnits$
+      transferUnits: this.addService.transferUnits$,
+      sortType: this.addService.sortType$
     }
   },
   data() {
