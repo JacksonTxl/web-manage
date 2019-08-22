@@ -98,7 +98,7 @@ export default {
     onClickToday() {
       let weekOfday = moment().format('E') // 计算今天是这周第几天
       this.startTime = this.isDay
-        ? moment(this.$route.query.start_date).format('YYYY-MM-DD')
+        ? moment().format('YYYY-MM-DD')
         : moment()
             .subtract(weekOfday - 1, 'days')
             .format('YYYY-MM-DD') // 周一日期
