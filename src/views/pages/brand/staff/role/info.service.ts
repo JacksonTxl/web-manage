@@ -15,28 +15,28 @@ export class InfoService {
   gitInitInfo(query: GetInitInfoPut, select_ids: any) {
     return this.roleService.getInitInfo(query).pipe(
       tap(res => {
-        this.brandList$.commit(state => {
-          return res.brand_list
-            .filter((item: any) => {
-              return select_ids.includes(item.id)
-            })
-            .map((item: any) => {
-              item.title = item.name
-              item.key = item.id
-              return item
-            })
-          this.shopList$.commit(() => {
-            return res.shop_list
-              .filter((item: any) => {
-                return select_ids.includes(item.id)
-              })
-              .map((item: any) => {
-                item.title = item.name
-                item.key = item.id
-                return item
-              })
+        const resBrandList = res.brand_list
+          .filter((item: any) => {
+            return select_ids.includes(item.id)
           })
-        })
+          .map((item: any) => {
+            item.title = item.name
+            item.key = item.id
+            return item
+          })
+
+        const resShopList = res.shop_list
+          .filter((item: any) => {
+            return select_ids.includes(item.id)
+          })
+          .map((item: any) => {
+            item.title = item.name
+            item.key = item.id
+            return item
+          })
+
+        this.brandList$.commit(() => resBrandList)
+        this.shopList$.commit(() => resShopList)
       })
     )
   }
