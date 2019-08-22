@@ -656,6 +656,9 @@ export default {
       let special_amount = this.personalPrice.sell_price
       if (this.info.sale_model === 1) {
         special_amount = this.form.getFieldValue('coursePrice')
+        if (!special_amount) {
+          return
+        }
       }
       this.salePersonalCourseService.orderAmountPriceAction$.dispatch({
         product_id: this.id,
