@@ -60,7 +60,7 @@ export class PersonalTeamScheduleScheduleService {
    */
   @Effect()
   getTable(query: any) {
-    return this.scheduleApi.getTable(query).pipe(
+    return this.scheduleApi.getTable({ size: 999, ...query }).pipe(
       tap(res => {
         this.state$.commit(state => {
           state.scheduleTable = []

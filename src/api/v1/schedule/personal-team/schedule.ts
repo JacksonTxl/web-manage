@@ -82,6 +82,7 @@ export class PersonalTeamScheduleScheduleApi extends Api {
  * 获取私教小团课排期列表
  */
 export interface GetScheduleListQuery {
+  size?: number
   /**
    * 教练id
    */
