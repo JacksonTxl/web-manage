@@ -130,7 +130,7 @@ export default {
   methods: {
     save(e) {
       e.preventDefault()
-      this.form.validateFields().then(() => {
+      this.form.validate().then(() => {
         const data = this.form.getFieldsValue()
         data.course_id = this.courseId
         this.addService.setShop(data).subscribe(() => {

@@ -122,7 +122,7 @@ export default {
         })
         return
       }
-      this.form.validateFields().then(() => {
+      this.form.validate().then(() => {
         const data = this.getData()
         this.courseService.setShop(data).subscribe(this.onSaveSuccess)
       })

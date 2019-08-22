@@ -19,7 +19,7 @@
       @goNext="goNext"
       @onCourseNameChange="onCourseNameChange"
     />
-    <set-shop-coach v-show="currentIndex === 1" :info="info" @goNext="goNext" />
+    <set-shop-coach v-show="currentIndex === 1" :info="info" />
   </st-panel>
 </template>
 <script>

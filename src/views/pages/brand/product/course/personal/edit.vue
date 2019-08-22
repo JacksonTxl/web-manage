@@ -19,7 +19,7 @@
       @goNext="goNext"
     />
     <set-shop-coach v-show="currentIndex === 1" :info="info" @goNext="goNext" />
-    <set-sell-price v-show="currentIndex === 2" :info="info" @goNext="goNext" />
+    <set-sell-price v-show="currentIndex === 2" :info="info" />
   </st-panel>
 </template>
 <script>

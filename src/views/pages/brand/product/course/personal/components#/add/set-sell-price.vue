@@ -190,7 +190,7 @@ export default {
     save(e) {
       e.preventDefault()
       const data = this.getData()
-      this.form.validateFields().then(() => {
+      this.form.validate().then(() => {
         if (!this.inputCheck()) {
           return
         }
