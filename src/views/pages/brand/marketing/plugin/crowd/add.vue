@@ -52,7 +52,11 @@
               class="shop-member-crowd-add__right-condition-box-delete"
               @click="deleteIcon(selectData, item)"
             >
-              <st-icon type="delete" class="shop-member-crowd-add__icon" />
+              <st-icon
+                type="delete"
+                class="shop-member-crowd-add__icon"
+                color="#ff5e41"
+              />
             </div>
             <component
               v-bind:is="item | componentFun"
