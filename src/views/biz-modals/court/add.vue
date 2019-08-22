@@ -10,11 +10,14 @@
         <a-input
           placeholder="请输入场地名称，不超过10个字"
           maxlength="10"
-          v-decorator="rules.areaName"
+          v-decorator="decorators.area_name"
         />
       </st-form-item>
       <st-form-item label="场地属性" required>
-        <a-radio-group @change="onChooseRadio" v-decorator="rules.areaType">
+        <a-radio-group
+          @change="onChooseRadio"
+          v-decorator="decorators.area_type"
+        >
           <a-radio
             v-for="(item, index) in areaType"
             :key="index"
@@ -29,7 +32,7 @@
           placeholder="请输入最大容纳人数，1-999"
           :min="1"
           :max="999"
-          v-decorator="rules.containNumber"
+          v-decorator="decorators.contain_number"
         />
       </st-form-item>
     </st-form>
@@ -45,7 +48,7 @@
 import { AddService } from './add.service'
 import { MessageService } from '@/services/message.service'
 import { PatternService } from '@/services/pattern.service'
-import { rules } from './court.config'
+import { ruleOptions } from './court.config'
 import { AREA_TYPE } from '@/constants/setting/court'
 
 export default {
@@ -63,22 +66,19 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false,
       isShowPersonNum: true,
       AREA_TYPE
     }
   },
-  created() {
-    this.form = this.$form.createForm(this)
-  },
-  computed: {
-    rules
-  },
   methods: {
-    onSubmit(e) {
-      e.preventDefault()
-      this.form.validateFields().then(() => {
+    onSubmit() {
+      this.form.validate().then(() => {
         const data = this.getData()
         this.addService.add(data).subscribe(this.onSubmitSuccess)
       })

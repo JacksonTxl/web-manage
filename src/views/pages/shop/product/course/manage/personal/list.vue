@@ -78,7 +78,7 @@ export default {
     },
     onDeleteCourse(id) {
       this.listService.deleteCourse(id).subscribe(() => {
-        this.$router.push({ force: true })
+        this.$router.reload()
       })
     },
     addPersonalCourse() {

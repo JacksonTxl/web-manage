@@ -74,7 +74,7 @@ export default {
         const form = { id: this.staff.id, ...values }
         this.bindCardService.putStaffBindPhysical(form).subscribe(() => {
           this.show = false
-          this.$router.push({ force: true })
+          this.$router.reload()
         })
       })
     }

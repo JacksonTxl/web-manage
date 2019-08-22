@@ -77,7 +77,7 @@ export default {
           .putStaffBindBank({ id: this.staff.id, ...values })
           .subscribe(res => {
             this.show = false
-            this.$router.push({ force: true })
+            this.$router.reload()
           })
       })
     }

@@ -50,7 +50,7 @@ export default {
         })
         .subscribe(res => {
           this.show = false
-          this.$router.push({ force: true })
+          this.$router.reload()
         })
     },
     onPriceGradientChange(val) {

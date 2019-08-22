@@ -371,7 +371,7 @@ export default {
 
   methods: {
     refeshPage() {
-      this.$router.push({ force: true })
+      this.$router.reload()
     },
     sourceRegisters() {
       this.listService.getMemberSourceRegisters().subscribe(status => {

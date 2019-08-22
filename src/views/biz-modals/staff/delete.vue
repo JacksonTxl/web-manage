@@ -68,7 +68,7 @@ export default {
         this.deleteService
           .deleteStaffBrandInfo(this.staff.id + '')
           .subscribe(res => {
-            this.$router.push({ force: true })
+            this.$router.reload()
           })
       }
       this.show = false

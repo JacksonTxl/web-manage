@@ -313,7 +313,7 @@ export default {
     tipCallBack(orderId, modalType, callBackType) {
       switch (callBackType) {
         case 'cancel':
-          this.$router.push({ force: true })
+          this.$router.reload()
           break
         case 'Print':
           this.toContract({ order_id: orderId })
@@ -339,7 +339,7 @@ export default {
         },
         on: {
           success: result => {
-            this.$router.push({ force: true, query: this.$router.query })
+            this.$router.reload()
           }
         }
       })
@@ -353,7 +353,7 @@ export default {
         },
         on: {
           success: result => {
-            this.$router.push({ force: true, query: this.$router.query })
+            this.$router.reload()
           }
         }
       })

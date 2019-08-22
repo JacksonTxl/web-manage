@@ -105,8 +105,7 @@ export default {
   props: ['id'],
   data() {
     return {
-      show: false,
-      form: this.$form.createForm(this)
+      show: false
     }
   },
   computed: {},
@@ -116,13 +115,9 @@ export default {
   methods: {
     moment,
     onSubmit() {
-      this.form.validateFields((error, values) => {
-        if (!error) {
-          this.cancelService.orderCancel(this.info.order_id).subscribe(res => {
-            this.$emit('success')
-            this.show = false
-          })
-        }
+      this.cancelService.orderCancel(this.info.order_id).subscribe(res => {
+        this.$emit('success')
+        this.show = false
       })
     }
   }

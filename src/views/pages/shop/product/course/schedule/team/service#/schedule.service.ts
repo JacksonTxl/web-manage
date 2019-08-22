@@ -80,7 +80,7 @@ export class TeamScheduleScheduleService {
    * 获取团体课排期表格
    */
   getTable(query: GetScheduleTableQuery) {
-    return this.scheduleApi.getTable(query).pipe(
+    return this.scheduleApi.getTable({ size: 999, ...query }).pipe(
       tap(res => {
         res = this.authService.filter(res)
         this.state$.commit(state => {

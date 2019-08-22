@@ -53,7 +53,7 @@ export default {
           restart_time: this.restartTime
         })
         .subscribe(res => {
-          this.$router.push({ force: true })
+          this.$router.reload()
         })
       this.show = false
     }

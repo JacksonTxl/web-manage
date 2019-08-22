@@ -28,7 +28,6 @@
       v-show="currentIndex === 2"
       :courseName="courseName"
       :courseId="courseId"
-      @goNext="goNext"
     />
   </st-panel>
 </template>

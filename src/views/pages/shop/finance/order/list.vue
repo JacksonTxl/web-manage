@@ -216,7 +216,7 @@ export default {
         on: {
           success: result => {
             console.log('取消订单!')
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -231,7 +231,7 @@ export default {
         on: {
           success: result => {
             console.log('转让成功!')
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -246,7 +246,7 @@ export default {
         on: {
           success: result => {
             console.log('退款成功!')
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -261,7 +261,7 @@ export default {
         on: {
           success: result => {
             console.log('业绩拆分成功!')
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
