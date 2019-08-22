@@ -8,8 +8,8 @@ Vue.use(VueServiceApp, container)
 const { router } = new VueServiceApp({
   container,
   routes,
-  scrollBehavior: (to: any) => {
-    if (to.name.includes('brand-stat')) {
+  scrollBehavior: (to: any, from: any) => {
+    if (to.name === from.name) {
       return
     }
     return {
