@@ -182,8 +182,8 @@ export default {
       this.$router.push({
         query: {
           id: this.query.id,
-          start_time_first: moment(e[0]).format('YYYY-MM-DD'),
-          start_time_last: moment(e[1]).format('YYYY-MM-DD')
+          start_time: moment(e[0]).format('YYYY-MM-DD'),
+          end_time: moment(e[1]).format('YYYY-MM-DD')
         },
         force: true
       })

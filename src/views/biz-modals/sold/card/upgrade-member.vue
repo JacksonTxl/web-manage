@@ -364,6 +364,7 @@ import { UpgradeMemberService } from './upgrade-member.service'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
 import { ruleOptions } from './upgrade-member.config'
+import moment from 'moment'
 export default {
   name: 'ModalSoldUpgradeMemberCard',
   bem: {
@@ -484,6 +485,7 @@ export default {
     this.upgradeMemberService.serviceInit(this.id).subscribe()
   },
   methods: {
+    moment,
     // 搜索会员卡
     onCardSearch(data) {
       if (data === '') {

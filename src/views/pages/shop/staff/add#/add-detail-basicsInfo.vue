@@ -225,6 +225,7 @@
         <st-form-item required label="登录密码" v-if="isChoosePermission">
           <a-input
             placeholder="6-15个字符，区分大小写"
+            type="password"
             v-decorator="[
               'password',
               { rules: [{ validator: validatorPassword }] }
@@ -234,6 +235,7 @@
         <st-form-item required label="确认密码" v-if="isChoosePermission">
           <a-input
             placeholder="请再次填写密码"
+            type="password"
             v-decorator="[
               'repeat_password',
               { rules: [{ validator: validatorRePassword }] }
