@@ -152,8 +152,8 @@ export default {
         let courseInfo = this.courseList.map(item => {
           const decoId = this.calcDecoId(item)
           return {
-            id: i.id,
-            product_type: i.product_type,
+            id: item.id,
+            product_type: item.product_type,
             course_num_remain: +values[decoId]
           }
         })
