@@ -38,15 +38,14 @@
         <span class="tree-name" v-else>
           {{ item.name }}( {{ item.count }} )
         </span>
-        <st-more-dropdown
-          class="tree-opreation"
-          v-show="!item.isEdit || item.id !== 0"
-        >
+        <st-more-dropdown class="tree-opreation" v-show="!item.isEdi">
           <a-menu-item v-if="auth.departmentAdd" @click="addTreeNode">
             新增
           </a-menu-item>
-          <a-menu-item @click="editTreeNode">编辑</a-menu-item>
-          <a-menu-item @click="deleteDepartment(item)" v-if="item.id">
+          <a-menu-item v-if="item.id !== 0" @click="editTreeNode">
+            编辑
+          </a-menu-item>
+          <a-menu-item v-if="item.id !== 0" @click="deleteDepartment(item)">
             删除
           </a-menu-item>
         </st-more-dropdown>
