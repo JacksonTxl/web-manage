@@ -30,11 +30,11 @@
               {{ text }}
             </a>
           </template>
-          <template slot="member_name" slot-scope="text, record">
+          <!-- <template slot="member_name" slot-scope="text, record">
             <a href="javascript:;" class="mg-r8" @click="goMemberDetai(record)">
               {{ text }}
-            </a>
-          </template>
+            </a> 品牌下没有用户选项 不允许跳转
+          </template> -->
           <template slot="course_status" slot-scope="text, record">
             <span
               v-if="record.course_status === '有效'"
