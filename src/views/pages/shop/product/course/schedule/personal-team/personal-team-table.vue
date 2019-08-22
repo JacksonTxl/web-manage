@@ -36,7 +36,7 @@
         href="javascript:;"
         slot="extra"
         class="add-schedule"
-        v-modal-link="{ name: 'schedule-team-add-course' }"
+        v-modal-link="{ name: 'schedule-personal-team-add' }"
       >
         + 添加课程排期
       </span>
