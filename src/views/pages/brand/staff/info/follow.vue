@@ -25,6 +25,7 @@
           :dataSource="followList"
           :scroll="{ x: 1000 }"
           :loading="loading.getStaffFollow"
+          @change="onTableChange"
           :page="page"
         >
           <template slot="member_name" slot-scope="text, record">
