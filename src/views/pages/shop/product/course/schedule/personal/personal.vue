@@ -9,7 +9,12 @@
       :startDate="startDate"
     >
       <div slot="toolbar-left">
-        <st-button type="primary" class="mg-r24" @click="onClickSettingSchdule">
+        <st-button
+          v-if="!isDay"
+          type="primary"
+          class="mg-r24"
+          @click="onClickSettingSchdule"
+        >
           管理私教排期
         </st-button>
       </div>
@@ -48,12 +53,14 @@ export default {
   computed: {
     startDate() {
       return this.$route.query.start_date || moment().format('YYYY-MM-DD')
+    },
+    isDay() {
+      const start = this.query.start_date
+      const end = this.query.end_date
+      return start === end
     }
   },
   methods: {
-    onMouseLeave() {
-      console.log('onMouseLeave')
-    },
     onAddReserve(date) {
       this.$modalRouter.push({
         name: 'schedule-personal-add-reserve',
