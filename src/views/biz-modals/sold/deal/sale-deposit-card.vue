@@ -47,7 +47,7 @@
       </a-row>
       <st-form :form="form" labelWidth="88px">
         <div :class="sale('sale')">
-          <st-form-item v-show="searchMemberIsShow" label="购买会员" required>
+          <st-form-item v-if="searchMemberIsShow" label="购买会员" required>
             <a-select
               showSearch
               allowClear

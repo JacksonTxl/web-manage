@@ -36,7 +36,7 @@
         <div :class="sale('sale')">
           <st-form-item
             labelGutter="12px"
-            v-show="searchMemberIsShow"
+            v-if="searchMemberIsShow"
             label="购买会员"
             required
           >
