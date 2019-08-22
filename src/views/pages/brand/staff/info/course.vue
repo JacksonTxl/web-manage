@@ -96,7 +96,8 @@ export default {
       query: this.routeService.query$,
       courseInfo: this.service.courseInfo$,
       loading: this.service.loading$,
-      page: this.service.page$
+      page: this.service.page$,
+      reserveStatus: this.service.reserveStatus$
     }
   },
   data() {
