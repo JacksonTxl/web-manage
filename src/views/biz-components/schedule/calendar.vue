@@ -86,7 +86,7 @@
               <span class="date-text">{{ item | dateString }}</span>
               <div class="date-button">
                 <span class="mg-r8">{{ item | dateString }}</span>
-                <a href="javascript:;" @click="onClickGetDay(item)">查看日期</a>
+                <a href="javascript:;" @click="onClickGetDay(item)">查看详情</a>
               </div>
             </li>
             <schedule-unit
