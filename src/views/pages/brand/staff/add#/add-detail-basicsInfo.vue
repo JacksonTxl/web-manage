@@ -222,12 +222,14 @@
         <st-form-item label="登录密码" v-if="isChoosePermission" required>
           <a-input
             placeholder="6-15个字符，区分大小写"
+            type="password"
             v-decorator="decorators.password"
           ></a-input>
         </st-form-item>
         <st-form-item label="确认密码" v-if="isChoosePermission" required>
           <a-input
             placeholder="请再次填写密码"
+            type="password"
             v-decorator="decorators.repeat_password"
           ></a-input>
         </st-form-item>
