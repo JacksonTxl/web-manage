@@ -73,14 +73,11 @@ export default {
       this.$router.push({
         query: {
           id: this.$route.query.id,
-          size: e.size,
-          page: e.current_page
+          size: e.pageSize,
+          current_page: e.current
         }
       })
     }
-  },
-  mounted() {
-    console.log(this.$route.query.id)
   }
 }
 </script>

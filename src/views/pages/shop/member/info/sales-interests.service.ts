@@ -1,7 +1,7 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State } from 'rx-state'
 import { tap } from 'rxjs/operators'
-import { MemberApi, CouponQuery } from '@/api/v1/member'
+import { MemberApi } from '@/api/v1/member'
 
 @Injectable()
 export class SalesInterestsService implements RouteGuard {
@@ -10,7 +10,7 @@ export class SalesInterestsService implements RouteGuard {
   page$ = new State({})
   constructor(private cardsApi: MemberApi) {}
 
-  getCouponInfo(id: string, query: CouponQuery) {
+  getCouponInfo(id: string, query: any) {
     return this.cardsApi.getCouponList(id, query).pipe(
       tap(res => {
         console.log(res, '卡获取数据')
@@ -20,16 +20,8 @@ export class SalesInterestsService implements RouteGuard {
       })
     )
   }
-  beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute) {
-    console.log('==', to)
-    console.log('==', from)
-    let { id, page, size } = to.meta.query
-    return this.getCouponInfo(id, { page, size })
-  }
-
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    console.log('route enter', to.meta)
-    const { id } = to.meta.query
-    return this.getCouponInfo(id, {})
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    let { id, current_page, size } = to.meta.query
+    return this.getCouponInfo(id, { current_page, size })
   }
 }
