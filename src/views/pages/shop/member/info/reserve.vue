@@ -2,8 +2,8 @@
   <div>
     <st-t4>卡项</st-t4>
     <a-row :gutter="24" class="mg-t16">
-      <a-col :lg="24" class="mg-b16">
-        <a-col :lg="9">
+      <a-col :lg="24" class="mg-b16 reserve-min-width">
+        <a-col :lg="15">
           <a-date-picker
             style="width: 224px;"
             format="YYYY-MM-DD"
@@ -25,7 +25,6 @@
             </a-select-option>
           </a-select>
         </a-col>
-        <a-col :lg="6"></a-col>
         <a-col :lg="9">
           <st-input-search
             v-model="cardquery.keyword"
@@ -69,8 +68,8 @@
 
     <st-t4>课程</st-t4>
     <a-row :gutter="24" class="mg-t16">
-      <a-col :lg="24" class="mg-b16">
-        <a-col :lg="9">
+      <a-col :lg="24" class="mg-b16 reserve-min-width">
+        <a-col :lg="15">
           <a-date-picker
             style="width: 224px;"
             placeholder="购买日期"
@@ -92,7 +91,6 @@
             </a-select-option>
           </a-select>
         </a-col>
-        <a-col :lg="6"></a-col>
         <a-col :lg="9">
           <st-input-search
             placeholder="请输入课程名称"
@@ -144,7 +142,7 @@ export default {
     return {
       cardquery: {
         start_time: '',
-        card_type: 1,
+        card_type: 2,
         keyword: ''
       },
       coursequery: {
