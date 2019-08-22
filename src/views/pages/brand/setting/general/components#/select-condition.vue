@@ -1,11 +1,7 @@
 <template>
   <a-popover placement="bottomRight" trigger="click" class="slider-copy-bottom">
     <template slot="content">
-      <a-checkbox-group
-        class="slider-copy"
-        v-model="checked"
-        @change="onChange"
-      >
+      <a-checkbox-group class="slider-copy" v-model="checked">
         <div v-for="(item, index) in value" :key="index">
           <a-checkbox :value="item.id">
             {{ item.condition_name }}
@@ -38,11 +34,13 @@ export default {
   watch: {
     value(val) {
       this.setChecked()
+    },
+    checked(val) {
+      this.$emit('change', val)
     }
   },
   created() {
     this.setChecked()
-    this.onChange(this.checked)
   },
   methods: {
     setChecked() {
@@ -54,9 +52,6 @@ export default {
         }
       })
       this.checked = checked
-    },
-    onChange(val) {
-      this.$emit('change', val)
     }
   }
 }

@@ -186,18 +186,7 @@ export default {
       return this.list[2]
     }
   },
-  created() {
-    this.initChecked()
-  },
   methods: {
-    initChecked() {
-      if (!this.isEdit) {
-        return
-      }
-      const { info } = this
-      this.condition = info.condition.checked
-      this.rights = info.rights.checked
-    },
     onEdit() {
       this.$router.push({
         query: {

@@ -1,5 +1,5 @@
 <template>
-  <a-checkbox-group v-model="checked" @change="onChange">
+  <a-checkbox-group v-model="checked">
     <a-checkbox v-for="(item, index) in value" :key="index" :value="item.id">
       {{ item.rights_name }}
     </a-checkbox>
@@ -21,14 +21,16 @@ export default {
       checked: []
     }
   },
+  created() {
+    this.setChecked()
+  },
   watch: {
     value(val) {
       this.setChecked()
+    },
+    checked(val) {
+      this.$emit('change', val)
     }
-  },
-  created() {
-    this.setChecked()
-    this.onChange(this.checked)
   },
   methods: {
     setChecked() {
@@ -40,9 +42,6 @@ export default {
         }
       })
       this.checked = checked
-    },
-    onChange(val) {
-      this.$emit('change', val)
     }
   }
 }
