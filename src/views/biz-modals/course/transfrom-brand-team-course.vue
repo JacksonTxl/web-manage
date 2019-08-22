@@ -79,7 +79,7 @@ export default {
       }
       this.shopService.putCourseTeamIntoBrand(form).subscribe(res => {
         this.show = false
-        this.$router.push({ force: true })
+        this.$router.reload()
       })
     }
   }

@@ -217,7 +217,7 @@ export default {
         },
         on: {
           success() {
-            that.$router.push({ force: true, query: that.query })
+            that.$router.reload()
           }
         }
       })
@@ -233,9 +233,8 @@ export default {
         },
         on: {
           success: () => {
-            console.log(3)
             setTimeout(() => {
-              this.$router.push({ force: true, query: { ...this.query } })
+              this.$router.reload()
             }, 100)
           }
         }
@@ -252,7 +251,7 @@ export default {
             .unFreeze(record.id)
             .toPromise()
             .then(() => {
-              this.$router.push({ force: true, query: this.query })
+              this.$router.reload()
             })
         }
       })
@@ -268,7 +267,7 @@ export default {
         },
         on: {
           success() {
-            that.$router.push({ force: true, query: that.query })
+            that.$router.reload()
           }
         }
       })
@@ -291,7 +290,7 @@ export default {
         },
         on: {
           success() {
-            that.$router.push({ force: true, query: that.query })
+            that.$router.reload()
           }
         }
       })

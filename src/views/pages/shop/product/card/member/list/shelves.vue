@@ -156,7 +156,7 @@ export default {
             .setCardShelfDown(record.id)
             .toPromise()
             .then(() => {
-              this.$router.push({ force: true, query: this.query })
+              this.$router.reload()
             })
         }
       })

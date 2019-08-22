@@ -87,7 +87,7 @@ export default {
         this.turnoverService
           .putStaffBrandQuit({ id: this.staff.id, quit_time: this.dateString })
           .subscribe(res => {
-            this.$router.push({ force: true })
+            this.$router.reload()
           })
       }
     }

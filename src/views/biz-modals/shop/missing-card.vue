@@ -185,7 +185,7 @@ export default {
         .getMemberPhysicalBind(this.record.member_id, data)
         .subscribe(state => {
           this.show = false
-          this.$router.push({ force: true, query: this.$router.query })
+          this.$router.reload()
         })
     },
     radioChangeGroup(value) {

@@ -164,21 +164,18 @@ export default {
       this.show = false
     },
     onSubmit() {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          const form = cloneDeep(values)
-          form.start_time = form.start_time.format('YYYY-MM-DD HH:mm')
-          form.court_site_id = form.court_id[1]
-          form.court_id = form.court_id[0]
-          form.course_fee = +form.course_fee
-          form.limit_num = +form.limit_num
-          this.teamScheduleScheduleService
-            .update({ id: this.id, ...form })
-            .subscribe(() => {
-              this.$emit('ok')
-              this.show = false
-            })
-        }
+      this.form.validate().then(values => {
+        values.start_time = values.start_time.format('YYYY-MM-DD HH:mm')
+        values.court_site_id = values.court_id[1]
+        values.court_id = values.court_id[0]
+        values.course_fee = +values.course_fee
+        values.limit_num = +values.limit_num
+        this.teamScheduleScheduleService
+          .update({ id: this.id, ...values })
+          .subscribe(() => {
+            this.$emit('ok')
+            this.show = false
+          })
       })
     }
   }

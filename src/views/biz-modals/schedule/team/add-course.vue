@@ -129,11 +129,11 @@ export default {
         const form = cloneDeep(values)
         form.start_time = form.start_time.format('YYYY-MM-DD HH:mm')
         if (form.court_id) {
-          form.court_site_id = form.court_id[1]
-          form.court_id = form.court_id[0]
+          form.court_site_id = +form.court_id[1]
+          form.court_id = +form.court_id[0]
         }
-        form.course_fee = +form.course_fee
-        form.limit_num = +form.limit_num
+        form.course_fee = form.course_fee
+        form.limit_num = form.limit_num
         this.teamScheduleScheduleService.add(form).subscribe(() => {
           this.$emit('ok')
           this.show = false

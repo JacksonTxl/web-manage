@@ -127,7 +127,7 @@ export default {
   methods: {
     onDeleteCourse(record) {
       this.brandService.deleteCourse(record.id).subscribe(() => {
-        this.$router.push({ force: true })
+        this.$router.reload()
       })
     },
     addPersonalCourse() {

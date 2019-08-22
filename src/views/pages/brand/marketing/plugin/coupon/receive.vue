@@ -188,7 +188,7 @@ export default {
     // 停止优惠券模板
     onStop(record) {
       this.listService.stopMarketingCoupon(record.id).subscribe(res => {
-        this.$router.push({ force: true })
+        this.$router.reload()
       })
     },
     // 新增优惠券活动

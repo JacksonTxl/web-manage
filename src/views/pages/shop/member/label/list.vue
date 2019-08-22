@@ -99,7 +99,7 @@ export default {
         onOk: () => {
           this.listService.deleteLabel(e.id).subscribe(() => {
             this.messageService.success({ content: '删除成功' })
-            this.$router.push({ force: true })
+            this.$router.reload()
           })
         },
         onCancel() {

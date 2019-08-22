@@ -15,6 +15,24 @@ export default {
         vm.$stForm = {
           create() {
             const form = vm.$form.createForm(vm)
+            const oriValidateFields = form.validateFields.bind(form)
+            const oriValidateFieldsAndScroll = form.validateFieldsAndScroll.bind(
+              form
+            )
+
+            form.validateFields = function(...args) {
+              console.error(
+                '[vue-st-form] validateFields() deperated,use validate() instead'
+              )
+              return oriValidateFields(...args)
+            }
+
+            form.validateFieldsAndScroll = function(...args) {
+              console.error(
+                '[vue-st-form] oriValidateFieldsAndScroll() deperated,use validate() instead'
+              )
+              return oriValidateFieldsAndScroll(...args)
+            }
 
             form.validate = function(options) {
               return new Promise((resolve, reject) => {
@@ -24,7 +42,8 @@ export default {
                     alignWithTop: false
                   }
                 }
-                form.validateFieldsAndScroll(options, (errs, values) => {
+                console.log(oriValidateFieldsAndScroll)
+                oriValidateFields(options, (errs, values) => {
                   try {
                     if (errs) {
                       reject(errs)

@@ -354,7 +354,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true })
+            this.$router.reload()
           }
         }
       })
@@ -370,7 +370,7 @@ export default {
             .unFreeze(record.id)
             .toPromise()
             .then(() => {
-              this.$router.push({ force: true, query: this.query })
+              this.$router.reload()
             })
         }
       })
@@ -385,7 +385,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -407,7 +407,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -421,7 +421,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -435,7 +435,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -449,7 +449,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
             this.onClear()
           }
         }
@@ -465,7 +465,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
             this.onClear()
           }
         }
@@ -515,7 +515,7 @@ export default {
     async tipCallBack(orderId, modalType, callBackType) {
       switch (callBackType) {
         case 'cancel':
-          this.$router.push({ force: true })
+          this.$router.reload()
           break
         case 'Print':
           this.createdOrderPrint(orderId)
@@ -558,7 +558,7 @@ export default {
         },
         on: {
           success: async res => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
             if (res.type === 'create') {
               // 创建订单成功
               let props = {
@@ -591,7 +591,7 @@ export default {
         },
         on: {
           success: async res => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
             if (res.type === 'create') {
               // 创建订单成功
               let props = {
