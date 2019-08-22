@@ -50,7 +50,11 @@
             </div>
           </a-spin>
           <div :class="recognition('operation')">
-            <st-button type="primary" @click="handlerTakePhoto" :disabled="openCameraError">
+            <st-button
+              type="primary"
+              @click="handlerTakePhoto"
+              :disabled="openCameraError"
+            >
               {{ userImgSrc ? '重拍' : '拍照' }}
             </st-button>
             <!-- <div :class="recognition('tips')">
@@ -116,7 +120,6 @@ export default {
   },
   watch: {
     fileList(newList) {
-      console.log('fileList', newList)
       this.list = this.fileList
       if (this.list.length) this.userImgSrc = this.list[0][this.imageUrl]
     },
@@ -152,7 +155,6 @@ export default {
       } else {
         this.openCameraError = true
         this.userImgSrc = ''
-        // this.messageService.error({ content: `Error Not Support use getUserMedia` })
       }
     })
   },
@@ -175,7 +177,6 @@ export default {
             next: val => {
               this.confirmLoading = false
               // 图片上传后,对返回参数进行操作
-              console.log('imageQualityTest', val)
               this.imageQualityTest(val)
             },
             error: val => {
@@ -199,7 +200,6 @@ export default {
           image_key: image.fileKey
         })
         .subscribe(res => {
-          console.log('imageQualityTest', res)
           let isScan = res.is_scan
           if (isScan) {
             let imageId = this.list.length && this.list[0][this.imageId]

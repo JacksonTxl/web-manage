@@ -42,7 +42,7 @@
           @change="onTableChange"
           :page="page"
         >
-          <template slot="product_type_name" slot-scope="text, record">
+          <template slot="product_name" slot-scope="text, record">
             <a
               href="javascript:;"
               class="mg-r8"

@@ -1,5 +1,5 @@
 <template>
-  <st-form :form="form" @submit="sumbitBasicData">
+  <st-form :form="form" @submit.prevent="sumbitBasicData">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="员工头像">
@@ -16,12 +16,16 @@
           <a-input
             placeholder="支持中英文、数字、不超过15个字"
             max="15"
-            v-decorator="rules.staff_name"
+            v-decorator="decorators.staff_name"
           />
         </st-form-item>
         <st-form-item label="手机号" required>
-          <a-input-group compact style="top: 0;">
-            <a-select style="width: 20%;" v-model="country_code_id">
+          <a-input v-decorator="decorators.mobile" placeholder="请输入手机号">
+            <a-select
+              slot="addonBefore"
+              style="width: 100px;"
+              v-model="country_code_id"
+            >
               <a-select-option
                 v-for="item in codeList"
                 :key="item.code_id"
@@ -30,15 +34,10 @@
                 +{{ item.phone_code }}
               </a-select-option>
             </a-select>
-            <a-input
-              style="width: 80%"
-              v-decorator="rules.phone"
-              placeholder="请输入手机号"
-            />
-          </a-input-group>
+          </a-input>
         </st-form-item>
         <st-form-item label="性别" required>
-          <a-select placeholder="请选择" v-decorator="rules.sex">
+          <a-select placeholder="请选择" v-decorator="decorators.sex">
             <template v-for="(item, key) in enums.sex.value">
               <a-select-option :key="item" :value="+key">
                 {{ item }}
@@ -64,27 +63,27 @@
           </template>
           <a-input
             placeholder="支持中英文、数字,不超过10个字"
-            v-decorator="rules.nickname"
+            v-decorator="decorators.nickname"
           />
         </st-form-item>
         <st-form-item label="邮箱">
-          <a-input placeholder="请输入邮箱" v-decorator="rules.mail" />
+          <a-input placeholder="请输入邮箱" v-decorator="decorators.mail" />
         </st-form-item>
         <st-form-item label="证件">
-          <a-input-group compact style="top: 0;">
-            <a-select style="width: 20%;" v-model="id_type">
-              <template v-for="(item, key) in enums.id_type.value">
-                <a-select-option :key="item" :value="+key">
-                  {{ item }}
-                </a-select-option>
-              </template>
+          <a-input
+            placeholder="请输入身份证号码"
+            v-decorator="decorators.id_number"
+          >
+            <a-select slot="addonBefore" style="width: 100px" v-model="id_type">
+              <a-select-option
+                v-for="(item, key) in enums.id_type.value"
+                :key="item"
+                :value="+key"
+              >
+                {{ item }}
+              </a-select-option>
             </a-select>
-            <a-input
-              style="width: 80%"
-              placeholder="请输入身份证号码"
-              v-decorator="rules.idnumber"
-            />
-          </a-input-group>
+          </a-input>
         </st-form-item>
       </a-col>
     </a-row>
@@ -102,11 +101,11 @@
             placeholder="请选择部门"
             style="width: 100%"
             useType="form"
-            v-decorator="rules.department_id"
+            v-decorator="decorators.department_id"
           ></department-select>
         </st-form-item>
         <st-form-item label="工作性质">
-          <a-select placeholder="请选择" v-decorator="rules.nature_work">
+          <a-select placeholder="请选择" v-decorator="decorators.nature_work">
             <template v-for="(item, key) in enums.nature_work.value">
               <a-select-option :key="key" :value="+key">
                 {{ item }}
@@ -118,7 +117,7 @@
           <a-select
             mode="multiple"
             placeholder="请选择"
-            v-decorator="rules.role_id"
+            v-decorator="decorators.role_id"
             @change="roleChange"
           >
             <template v-for="item in roleList">
@@ -133,18 +132,21 @@
         <st-form-item label="工号">
           <a-input
             placeholder="请输入员工工号"
-            v-decorator="rules.staff_num"
+            v-decorator="decorators.staff_num"
           ></a-input>
         </st-form-item>
         <st-form-item label="入职时间">
-          <a-date-picker style="width:100%" v-decorator="rules.entry_date" />
+          <a-date-picker
+            style="width:100%"
+            v-decorator="decorators.entry_date"
+          />
         </st-form-item>
         <st-form-item label="所属门店">
           <shop-select
             mode="multiple"
             useType="form"
             placeholder="请选择门店"
-            v-decorator="rules.shop_id"
+            v-decorator="decorators.shop_id"
           />
         </st-form-item>
       </a-col>
@@ -157,7 +159,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button @click="saveAndGoNext" type="primary">
+          <st-button @click.stop="saveAndGoNext" type="primary">
             保存，继续填写
           </st-button>
         </st-form-item>
@@ -170,6 +172,8 @@ import { RuleConfig } from '@/constants/staff/rule'
 import { EditService } from '../edit.service'
 import ShopSelect from '@/views/biz-components/shop-select'
 import DepartmentSelect from '@/views/biz-components/department-select'
+import { PatternService } from '@/services/pattern.service'
+import { ruleOptions } from '../staff-form.config.ts'
 import FaceUpload from '@/views/biz-components/face-upload/face-upload'
 import { cloneDeep } from 'lodash-es'
 export default {
@@ -177,6 +181,7 @@ export default {
   serviceInject() {
     return {
       rules: RuleConfig,
+      pattern: PatternService,
       editService: EditService
     }
   },
@@ -195,8 +200,11 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      form: this.$form.createForm(this),
+      form,
+      decorators,
       fileList: [],
       faceList: [],
       countryList: [],
@@ -212,7 +220,8 @@ export default {
   },
   mounted() {
     this.$nextTick().then(() => {
-      this.setData(this.data)
+      const form = cloneDeep(this.data)
+      this.setData(form)
     })
   },
   methods: {
@@ -234,21 +243,13 @@ export default {
       console.log('证件选择', e)
     },
     saveAndGoNext(e) {
-      e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values)
-          this.submit(values, 1)
-        }
+      this.form.validate().then(values => {
+        this.submit(values, 1)
       })
     },
     sumbitBasicData(e) {
-      e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values)
-          this.submit(values)
-        }
+      this.form.validate().then(values => {
+        this.submit(values)
       })
     },
     /**

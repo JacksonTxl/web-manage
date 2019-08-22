@@ -10,14 +10,17 @@
         <a-input
           placeholder="请输入场地名称，不超过10个字"
           maxlength="10"
-          v-decorator="rules.areaName"
+          v-decorator="decorators.area_name"
         />
       </st-form-item>
       <st-form-item label="场地属性" v-if="info.area_type === 3">
         <span>大门</span>
       </st-form-item>
       <st-form-item label="场地属性" required v-else>
-        <a-radio-group @change="onChooseRadio" v-decorator="rules.areaType">
+        <a-radio-group
+          @change="onChooseRadio"
+          v-decorator="decorators.area_type"
+        >
           <a-radio
             v-for="(item, index) in areaType"
             :value="item.value"
@@ -32,7 +35,7 @@
           placeholder="请输入最大容纳人数，1-999"
           :min="1"
           :max="999"
-          v-decorator="rules.containNumber"
+          v-decorator="decorators.contain_number"
         />
       </st-form-item>
     </st-form>
@@ -48,7 +51,8 @@
 import { EditService } from './edit.service'
 import { MessageService } from '@/services/message.service'
 import { PatternService } from '@/services/pattern.service'
-import { rules } from './court.config'
+import { ruleOptions } from './court.config'
+import { AREA_TYPE } from '@/constants/setting/court'
 
 export default {
   serviceInject() {
@@ -71,19 +75,19 @@ export default {
       default: 0
     }
   },
-  computed: {
-    rules
-  },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false
     }
   },
   created() {
-    this.form = this.$form.createForm(this)
     this.editService.getInfo(this.id).subscribe(this.setFieldsValue)
     this.areaType = this.areaType.filter(({ value }) => {
-      return value !== 3
+      return value !== AREA_TYPE.GATE
     })
   },
   methods: {
@@ -95,9 +99,8 @@ export default {
         contain_number: info.contain_number
       })
     },
-    onSubmit(e) {
-      e.preventDefault()
-      this.form.validateFields().then(values => {
+    onSubmit() {
+      this.form.validate().then(values => {
         const data = this.getData()
         this.editService.update(data).subscribe(this.onSubmitSuccess)
       })

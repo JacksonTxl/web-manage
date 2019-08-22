@@ -45,10 +45,10 @@
               退款
             </a-menu-item>
           </a-menu>
-          <a-button>
+          <st-button>
             更多操作
             <a-icon type="down" />
-          </a-button>
+          </st-button>
         </a-dropdown>
       </div>
       <a-row :gutter="24">
@@ -396,7 +396,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -427,7 +427,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -443,7 +443,7 @@ export default {
             .unFreeze(this.infoService.id)
             .toPromise()
             .then(() => {
-              this.$router.push({ force: true, query: this.query })
+              this.$router.reload()
             })
         }
       })
@@ -458,7 +458,7 @@ export default {
         },
         on: {
           success() {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -472,7 +472,7 @@ export default {
         },
         on: {
           success() {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })

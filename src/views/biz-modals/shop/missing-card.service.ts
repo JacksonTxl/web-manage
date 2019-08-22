@@ -1,25 +1,22 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect, Action } from 'rx-state'
-import { Store } from '@/services/store'
+import { Injectable } from 'vue-service-app'
+import { State, Effect } from 'rx-state'
 import { MemberApi } from '@/api/v1/member'
 import { TransactionApi } from '@/api/v1/sold/transaction'
 import { tap } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
+import { UserService } from '@/services/user.service'
 
-interface CardsTableModelState {
-  lableInfo: any
-}
 @Injectable()
-export class MissingCaedService extends Store<CardsTableModelState> {
+export class MissingCaedService {
+  loading$ = new State({})
   paymentMethodList$ = new State({})
+  payMethodList$ = this.userService.getOptions$('member.pay_method')
   staffList$ = new State([])
-  // loading$ = new State({});
   constructor(
     private memberApi: MemberApi,
-    private transactionApi: TransactionApi
-  ) {
-    super()
-  }
+    private transactionApi: TransactionApi,
+    private userService: UserService
+  ) {}
   @Effect()
   getMemberList(key_word: string) {
     return this.memberApi.getSearchMemberList({ key_word }).pipe(

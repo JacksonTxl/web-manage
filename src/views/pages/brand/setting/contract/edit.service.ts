@@ -3,30 +3,24 @@ import { ContractApi, ContractInput } from '@/api/v1/setting/contract'
 import { forkJoin } from 'rxjs'
 import { tap, pluck } from 'rxjs/operators'
 import { State, log, Computed, Effect } from 'rx-state'
-import { Store } from '@/services/store'
 import { RouteService } from '@/services/route.service'
 import { SN_GENERATE_RULE } from '@/constants/setting/contract'
 
-interface EditState {
-  info: any
-  lawContent: string
-  codeRules: any[]
-  codeDemo: string
-}
 @Injectable()
-export class EditService extends Store<EditState> implements RouteGuard {
-  state$: State<EditState>
+export class EditService implements RouteGuard {
+  state$: State<any>
   info$: Computed<any>
   lawContent$: Computed<string>
   codeRules$: Computed<any[]>
   codeDemo$: Computed<string>
+  loading$ = new State({})
   constructor(private contractApi: ContractApi, private route: RouteService) {
-    super()
     this.state$ = new State({
       info: {},
       lawContent: '',
       codeRules: [],
-      codeDemo: ''
+      codeDemo: '',
+      loading: false
     })
     this.info$ = new Computed(this.state$.pipe(pluck('info')))
     this.lawContent$ = new Computed(this.state$.pipe(pluck('lawContent')))

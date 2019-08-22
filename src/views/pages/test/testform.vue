@@ -34,9 +34,9 @@
       </a-select>
     </a-form-item>
     <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-      <a-button type="primary" html-type="submit">
+      <st-button type="primary" html-type="submit">
         Submit
-      </a-button>
+      </st-button>
     </a-form-item>
   </a-form>
 </template>

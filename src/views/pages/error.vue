@@ -6,6 +6,9 @@
       type="error"
       :description="message"
     ></a-alert>
+    <div class="mg-t16">
+      <a href="/">返回首页</a>
+    </div>
   </st-panel>
 </template>
 

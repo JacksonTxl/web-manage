@@ -63,10 +63,10 @@
               修改入场vip区域
             </a-menu-item>
           </a-menu>
-          <a-button>
+          <st-button>
             更多操作
             <a-icon type="down" />
-          </a-button>
+          </st-button>
         </a-dropdown>
       </div>
       <a-row :gutter="24">
@@ -323,7 +323,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -339,7 +339,7 @@ export default {
             .unFreeze(this.infoService.id)
             .toPromise()
             .then(() => {
-              this.$router.push({ force: true, query: this.query })
+              this.$router.reload()
             })
         }
       })
@@ -353,7 +353,7 @@ export default {
         },
         on: {
           success: async res => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
             if (res.type === 'create') {
               // 创建订单成功
               let props = {
@@ -386,7 +386,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -401,7 +401,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -416,7 +416,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -430,7 +430,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -444,7 +444,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })

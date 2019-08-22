@@ -32,10 +32,10 @@
           修改教练
         </st-button>
         <a-dropdown v-if="showMore">
-          <a-button>
+          <st-button>
             更多操作
             <a-icon type="down" />
-          </a-button>
+          </st-button>
           <a-menu slot="overlay">
             <a-menu-item
               v-if="auth['shop:sold:sold_personal_course|course_num']"
@@ -211,7 +211,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -242,7 +242,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -258,7 +258,7 @@ export default {
             .unFreeze(this.infoService.id)
             .toPromise()
             .then(() => {
-              this.$router.push({ force: true, query: this.query })
+              this.$router.reload()
             })
         }
       })
@@ -273,7 +273,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -288,7 +288,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -302,7 +302,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })

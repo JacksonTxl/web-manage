@@ -18,9 +18,8 @@ export class NProgressService {
     this.text$.commit(() => text)
     // console.log('[nprogress]', text)
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: Function) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
     nProgress.start()
-    next()
   }
   afterEach(to: ServiceRoute, from: ServiceRoute) {
     nProgress.done()

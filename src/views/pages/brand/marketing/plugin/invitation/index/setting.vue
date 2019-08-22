@@ -243,7 +243,7 @@ export default {
                 this.$router.push({
                   path: '/brand/marketing/plugin/invitation/index/data'
                 })
-                // this.$router.push({ force: true, query: this.query })
+                // this.$router.reload()
               })
           }
         })

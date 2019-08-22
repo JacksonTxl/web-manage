@@ -1,12 +1,8 @@
 import { Injectable } from 'vue-service-app'
-
 import { StaffApi, PutStaffBindPhysicalInput } from '@/api/v1/staff'
 import { MessageService } from '@/services/message.service'
 import { tap } from 'rxjs/operators'
 
-/**
- *
- */
 @Injectable()
 export class BindEntityCardService {
   constructor(private staffApi: StaffApi, private msg: MessageService) {}

@@ -174,7 +174,6 @@ import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './member.config'
-import StRangePicker from '@/views/components/datetime-picker/range-picker'
 import SoldCardArea from '@/views/biz-modals/sold/card/area'
 import SoldCardFreeze from '@/views/biz-modals/sold/card/freeze'
 import SoldCardGiving from '@/views/biz-modals/sold/card/giving'
@@ -220,9 +219,6 @@ export default {
       query: this.routeService.query$,
       auth: this.memberService.auth$
     }
-  },
-  components: {
-    StRangePicker
   },
   computed: {
     columns,
@@ -358,7 +354,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true })
+            this.$router.reload()
           }
         }
       })
@@ -374,7 +370,7 @@ export default {
             .unFreeze(record.id)
             .toPromise()
             .then(() => {
-              this.$router.push({ force: true, query: this.query })
+              this.$router.reload()
             })
         }
       })
@@ -389,7 +385,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -411,7 +407,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -425,7 +421,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -439,7 +435,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -453,7 +449,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
             this.onClear()
           }
         }
@@ -469,7 +465,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
             this.onClear()
           }
         }
@@ -519,7 +515,7 @@ export default {
     async tipCallBack(orderId, modalType, callBackType) {
       switch (callBackType) {
         case 'cancel':
-          this.$router.push({ force: true })
+          this.$router.reload()
           break
         case 'Print':
           this.createdOrderPrint(orderId)
@@ -562,7 +558,7 @@ export default {
         },
         on: {
           success: async res => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
             if (res.type === 'create') {
               // 创建订单成功
               let props = {
@@ -595,7 +591,7 @@ export default {
         },
         on: {
           success: async res => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
             if (res.type === 'create') {
               // 创建订单成功
               let props = {

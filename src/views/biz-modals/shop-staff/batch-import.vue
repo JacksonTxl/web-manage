@@ -53,7 +53,6 @@ export default {
     },
     save(e) {
       e.preventDefault()
-      console.log('department_id', this.keys)
       this.batchImportService
         .transferBrand({
           ids: this.ids,
@@ -82,7 +81,6 @@ export default {
         this.departmentOptions = json2AntDesignTreeData(res.department, {
           keyName: 'id'
         })
-        console.log(this.departmentOptions)
       })
     }
   }

@@ -17,10 +17,10 @@
       <a-col :span="8">
         <a-row>
           <a-upload :beforeUpload="beforeUpload" :showUploadList="false">
-            <a-button>
+            <st-button>
               <a-icon type="upload" />
               Select File
-            </a-button>
+            </st-button>
           </a-upload>
         </a-row>
         <a-row class="mg-t16">
@@ -36,7 +36,7 @@
           </a-col>
         </a-row>
         <a-row class="mg-t16">
-          <a-button @click="crop">裁剪</a-button>
+          <st-button @click="crop">裁剪</st-button>
         </a-row>
       </a-col>
     </a-row>

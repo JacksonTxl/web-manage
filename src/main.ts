@@ -1,4 +1,3 @@
-// import './offline'
 import '@abraham/reflection'
 import { router } from './bootstrap'
 import Vue from 'vue'

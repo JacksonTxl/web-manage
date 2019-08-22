@@ -100,9 +100,9 @@ export default {
   methods: {
     goCourseDetai(e) {
       console.log('跳转到课程详情', e)
-      let course_type = e.course_type
+      let course_type = e.course_type.id
       let course_id = e.course_id
-      if (course_type === 1 || course_type === 2) {
+      if (course_type === 3) {
         this.$router.push({
           name: 'shop-product-course-manage-team-info',
           query: {

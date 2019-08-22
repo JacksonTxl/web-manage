@@ -1,7 +1,6 @@
 <template>
   <st-modal
     title="交易签单"
-    size="small"
     v-model="show"
     @cancel="onCancel"
     wrapClassName="modal-sold-deal-sale"
@@ -48,10 +47,7 @@
               :defaultActiveFirstOption="false"
               :showArrow="false"
               :filterOption="false"
-              v-decorator="[
-                'memberId',
-                { rules: [{ validator: member_id_validator }] }
-              ]"
+              v-decorator="decorators.memberId"
               @search="onMemberSearch"
               @change="onMemberChange"
               notFoundContent="无搜索结果"
@@ -87,29 +83,23 @@
           </st-form-item>
           <st-form-item
             labelGutter="12px"
-            v-show="!searchMemberIsShow"
+            v-if="!searchMemberIsShow"
             label="会员姓名"
             required
           >
             <a-input
-              v-decorator="[
-                'memberName',
-                { rules: [{ validator: member_name_validator }] }
-              ]"
+              v-decorator="decorators.memberName"
               placeholder="请输入会员姓名"
             ></a-input>
           </st-form-item>
           <st-form-item
             labelGutter="12px"
-            v-show="!searchMemberIsShow"
+            v-if="!searchMemberIsShow"
             label="手机号"
             required
           >
             <a-input
-              v-decorator="[
-                'memberMobile',
-                { rules: [{ validator: member_mobile_validator }] }
-              ]"
+              v-decorator="decorators.memberMobile"
               placeholder="请输入手机号"
             ></a-input>
             <p class="add-text">
@@ -123,10 +113,7 @@
             required
           >
             <a-cascader
-              v-decorator="[
-                'cabinet',
-                { rules: [{ validator: cabinet_validator }] }
-              ]"
+              v-decorator="decorators.cabinet"
               @change="onCabinetChange"
               :allowClear="false"
               :fieldNames="cabinetFieldNames"
@@ -156,12 +143,9 @@
                 <a-date-picker
                   :allowClear="false"
                   :disabled="disabledCalendar"
-                  v-decorator="[
-                    'endTimePicker',
-                    { rules: [{ validator: endtime_picker_validator }] }
-                  ]"
+                  v-decorator="decorators.endTimePicker"
                   @change="endTimeChange"
-                  style="width:170px"
+                  style="width: 100%;"
                   :showTime="{ defaultValue: startTime, format: 'HH:mm' }"
                   format="YYYY-MM-DD HH:mm"
                   placeholder="结束时间"
@@ -174,10 +158,7 @@
             <st-input-number
               :disabledDate="disabledCalendar"
               @change="onEndTimeInputChange"
-              v-decorator="[
-                'endTimeInput',
-                { rules: [{ validator: endtime_input_validator }] }
-              ]"
+              v-decorator="decorators.endTimeInput"
               :max="999999"
             >
               <template slot="addonAfter">
@@ -192,10 +173,7 @@
             </template>
             <div :class="sale('contract')">
               <a-input
-                v-decorator="[
-                  'contractNumber',
-                  { rules: [{ validator: contract_number }] }
-                ]"
+                v-decorator="decorators.contractNumber"
                 placeholder="请输入合同编号"
               ></a-input>
               <st-button
@@ -278,7 +256,7 @@
         <div :class="sale('remarks')">
           <st-form-item label="销售人员" required>
             <a-select
-              v-decorator="['saleName', { rules: [{ validator: sale_name }] }]"
+              v-decorator="decorators.saleName"
               placeholder="选择签单的工作人员"
             >
               <a-select-option
@@ -325,11 +303,10 @@
 
 <script>
 import { SaleCabinetService } from './sale-cabinet.service'
-import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
-import { RuleConfig } from '@/constants/rule'
 import { PatternService } from '@/services/pattern.service'
+import { ruleOptions } from './sale-cabinet.config'
 export default {
   name: 'ModalSoldDealSaleCabinet',
   bem: {
@@ -341,7 +318,6 @@ export default {
   serviceInject() {
     return {
       saleCabinetService: SaleCabinetService,
-      rules: RuleConfig,
       pattern: PatternService
     }
   },
@@ -367,9 +343,12 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false,
-      form: this.$form.createForm(this),
       // 搜索会员
       memberSearchText: '',
       searchMemberIsShow: true,
@@ -440,39 +419,6 @@ export default {
     }
   },
   methods: {
-    member_id_validator(rule, value, callback) {
-      if ((!value || value.length > 15) && this.searchMemberIsShow) {
-        // eslint-disable-next-line
-        callback('请选择转让会员，查询条件长度15')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    member_name_validator(rule, value, callback) {
-      if (
-        (!value || !value.match(this.pattern.CN_EN_NUM_SPACE('1-15'))) &&
-        !this.searchMemberIsShow
-      ) {
-        // eslint-disable-next-line
-        callback('请输入会员姓名，支持格式长度1~15中英文')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    member_mobile_validator(rule, value, callback) {
-      if (!value && !this.searchMemberIsShow) {
-        // eslint-disable-next-line
-        callback('请输入手机号')
-      } else if (value && !this.rules.mobile.test(value)) {
-        // eslint-disable-next-line
-        callback('输入的手机号格式错误，请重新输入')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
     // 搜索会员
     onMemberSearch(data) {
       this.memberSearchText = data
@@ -516,18 +462,6 @@ export default {
       this.searchMemberIsShow = true
       this.form.resetFields(['memberId', 'memberName', 'memberMobile'])
     },
-    // 租赁柜
-    cabinet_validator(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请选择租赁柜号')
-        this.disabledCalendar = true
-      } else {
-        // eslint-disable-next-line
-        callback()
-        this.disabledCalendar = false
-      }
-    },
     onCabinetChange(data) {
       this.cabinetId = data[1]
       this.saleCabinetService.getInfo(data[1]).subscribe()
@@ -541,25 +475,6 @@ export default {
             .add(999, 'd')
             .valueOf()
       )
-    },
-    // end_time validatorFn
-    endtime_picker_validator(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请选择租赁时间')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    endtime_input_validator(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请输入租赁天数')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
     },
     // 租赁时间-end
     endTimeChange(data) {
@@ -583,19 +498,6 @@ export default {
         this.form.resetFields(['endTimePicker'])
       }
     },
-    // 合同
-    contract_number(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请输入合同编号')
-      } else if (!value.match(this.pattern.EN_NUM('6-20'))) {
-        // eslint-disable-next-line
-        callback('请输入正确合同编号')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
     onCodeNumber() {
       this.saleCabinetService
         .getCodeNumber(this.info.contract_type)
@@ -604,16 +506,6 @@ export default {
             contractNumber: res.info.code
           })
         })
-    },
-    moment,
-    sale_name(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请选择销售人员')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
     },
     onSelectAdvance() {
       timer(200).subscribe(() => {
@@ -655,67 +547,63 @@ export default {
       })
     },
     onCreateOrder() {
-      this.form.validateFields((error, values) => {
-        if (!error) {
-          let reduce_amount = this.reduceAmount ? +this.reduceAmount : 0
-          this.saleCabinetService
-            .setTransaction({
-              cabinet_id: +this.cabinetId,
-              start_time: `${this.startTime.format('YYYY-MM-DD HH:mm')}`,
-              end_time: `${values.endTimePicker.format('YYYY-MM-DD HH:mm')}`,
-              lease_days: +this.days,
-              contract_number: values.contractNumber,
-              advance_id:
-                this.selectAdvance === -1 ? undefined : this.selectAdvance,
-              reduce_amount,
-              order_amount: `${this.orderAmount.split('元')[0]}`,
-              member_id: +values.memberId,
-              member_name: values.memberName,
-              mobile: values.memberMobile,
-              sale_id: +values.saleName,
-              description: this.description,
-              sale_range: +this.info.sale_range.type
+      this.form.validate().then(values => {
+        let reduce_amount = this.reduceAmount ? +this.reduceAmount : 0
+        this.saleCabinetService
+          .setTransaction({
+            cabinet_id: +this.cabinetId,
+            start_time: `${this.startTime.format('YYYY-MM-DD HH:mm')}`,
+            end_time: `${values.endTimePicker.format('YYYY-MM-DD HH:mm')}`,
+            lease_days: +this.days,
+            contract_number: values.contractNumber,
+            advance_id:
+              this.selectAdvance === -1 ? undefined : this.selectAdvance,
+            reduce_amount,
+            order_amount: `${this.orderAmount.split('元')[0]}`,
+            member_id: +values.memberId,
+            member_name: values.memberName,
+            mobile: values.memberMobile,
+            sale_id: +values.saleName,
+            description: this.description,
+            sale_range: +this.info.sale_range.type
+          })
+          .subscribe(res => {
+            this.show = false
+            this.$emit('success', {
+              type: 'create',
+              orderId: res.info.order_id
             })
-            .subscribe(res => {
-              this.show = false
-              this.$emit('success', {
-                type: 'create',
-                orderId: res.info.order_id
-              })
-            })
-        }
+          })
       })
     },
     onPay() {
-      this.form.validateFields((error, values) => {
-        if (!error) {
-          let reduce_amount = this.reduceAmount ? +this.reduceAmount : 0
-          this.saleCabinetService
-            .setTransactionPay({
-              cabinet_id: +this.cabinetId,
-              start_time: `${this.startTime.format('YYYY-MM-DD HH:mm')}`,
-              end_time: `${values.endTimePicker.format('YYYY-MM-DD HH:mm')}`,
-              lease_days: +this.days,
-              contract_number: values.contractNumber,
-              advance_id:
-                this.selectAdvance === -1 ? undefined : this.selectAdvance,
-              reduce_amount,
-              order_amount: `${this.orderAmount.split('元')[0]}`,
-              member_id: +values.memberId,
-              member_name: values.memberName,
-              mobile: values.memberMobile,
-              sale_id: +values.saleName,
-              description: this.description,
-              sale_range: +this.info.sale_range.type
+      this.form.validate().then(values => {
+        let reduce_amount = this.reduceAmount ? +this.reduceAmount : 0
+        this.saleCabinetService
+          .setTransactionPay({
+            cabinet_id: +this.cabinetId,
+            start_time: `${this.startTime.format('YYYY-MM-DD HH:mm')}`,
+            end_time: `${values.endTimePicker.format('YYYY-MM-DD HH:mm')}`,
+            lease_days: +this.days,
+            contract_number: values.contractNumber,
+            advance_id:
+              this.selectAdvance === -1 ? undefined : this.selectAdvance,
+            reduce_amount,
+            order_amount: `${this.orderAmount.split('元')[0]}`,
+            member_id: +values.memberId,
+            member_name: values.memberName,
+            mobile: values.memberMobile,
+            sale_id: +values.saleName,
+            description: this.description,
+            sale_range: +this.info.sale_range.type
+          })
+          .subscribe(res => {
+            this.show = false
+            this.$emit('success', {
+              type: 'createPay',
+              orderId: res.info.order_id
             })
-            .subscribe(res => {
-              this.show = false
-              this.$emit('success', {
-                type: 'createPay',
-                orderId: res.info.order_id
-              })
-            })
-        }
+          })
       })
     }
   }

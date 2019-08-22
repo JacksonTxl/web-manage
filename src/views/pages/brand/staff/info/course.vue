@@ -19,13 +19,8 @@
             :defaultValue="-1"
             placeholder="请选择预约状态"
             @change="onSingleSearch('schedule_status', $event)"
-          >
-            <a-select-option :value="-1">全部预约状态</a-select-option>
-            <a-select-option :value="1">预约失败</a-select-option>
-            <a-select-option :value="3">候补中</a-select-option>
-            <a-select-option :value="2">预约成功</a-select-option>
-            <a-select-option :value="4">取消预约</a-select-option>
-          </a-select>
+            :options="reserveStatus"
+          ></a-select>
         </a-col>
         <a-col :lg="2"></a-col>
         <a-col :lg="6">
@@ -42,7 +37,7 @@
           :scroll="{ x: 1000 }"
           :loading="loading.getCoursesList"
           :page="page"
-          rowKeys="id"
+          rowKey="id"
           @change="onTableChange"
         >
           <template slot="schedule_status" slot-scope="text, record">
@@ -96,7 +91,8 @@ export default {
       query: this.routeService.query$,
       courseInfo: this.service.courseInfo$,
       loading: this.service.loading$,
-      page: this.service.page$
+      page: this.service.page$,
+      reserveStatus: this.service.reserveStatus$
     }
   },
   data() {
@@ -185,7 +181,7 @@ export default {
       console.log(e)
       this.$router.push({
         query: {
-          id: this.id,
+          id: this.query.id,
           start_time_first: moment(e[0]).format('YYYY-MM-DD'),
           start_time_last: moment(e[1]).format('YYYY-MM-DD')
         },

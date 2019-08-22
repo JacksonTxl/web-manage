@@ -5,19 +5,10 @@ import {
   SetAvailableInput,
   CoursePersonalSupportInput
 } from '@/api/v1/course/personal/brand'
-import { forkJoin, pipe } from 'rxjs'
-import { tap, pluck } from 'rxjs/operators'
-import { State, Computed, Effect } from 'rx-state'
-import { Store } from '@/services/store'
-import { CourseApi } from '@/api/v1/setting/course'
-import { ShopApi } from '@/api/v1/shop'
+import { forkJoin } from 'rxjs'
+import { tap } from 'rxjs/operators'
+import { State, Effect } from 'rx-state'
 import { AuthService } from '@/services/auth.service'
-
-export interface SetState {
-  personalCourseList: any[]
-  supportShopList: any[]
-  supportCoachList: any[]
-}
 @Injectable()
 export class BrandService implements RouteGuard {
   // loading
@@ -25,47 +16,20 @@ export class BrandService implements RouteGuard {
   // 业务状态
   list$ = new State([])
   page$ = new State({})
-  state$: State<SetState>
-  personalCourseList$: Computed<any>
-  supportShopList$: Computed<any>
-  supportCoachList$: Computed<any>
+  supportShopList$ = new State([])
+  supportCoachList$ = new State([])
   auth$ = this.authService.authMap$({
     add: 'brand_shop:product:personal_course|add'
   })
   constructor(
     private personalApi: BrandPersonalCourseApi,
-    private courseApi: CourseApi,
-    private shopApi: ShopApi,
     private authService: AuthService
-  ) {
-    this.state$ = new State({
-      supportShopList: [],
-      supportCoachList: []
-    })
-    this.personalCourseList$ = new Computed(
-      this.state$.pipe(pluck('personalCourseList'))
-    )
-    this.supportShopList$ = new Computed(
-      this.state$.pipe(pluck('supportCourseList'))
-    )
-    this.supportCoachList$ = new Computed(
-      this.state$.pipe(pluck('supportCoachList'))
-    )
-  }
-  SET_PERSONAL_COURSE_LIST(data: any) {
-    this.state$.commit(state => {
-      state.personalCourseList = data.list
-    })
-  }
+  ) {}
   SET_SUPPORT_COACH_LIST(data: any) {
-    this.state$.commit(state => {
-      state.supportCoachList = data.list
-    })
+    this.supportCoachList$.commit(() => data.list)
   }
   SET_SUPPORT_SHOP_LIST(data: any) {
-    this.state$.commit(state => {
-      state.supportShopList = data.list
-    })
+    this.supportShopList$.commit(() => data.list)
   }
 
   setAvailable(params: SetAvailableInput) {
@@ -101,7 +65,7 @@ export class BrandService implements RouteGuard {
   init(query: any) {
     return forkJoin(this.getList(query))
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+  beforeEach(to: ServiceRoute) {
     return this.init({ ...to.query })
   }
 }

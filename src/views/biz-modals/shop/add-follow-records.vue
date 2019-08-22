@@ -7,7 +7,7 @@
             <st-textarea
               :maxlength="200"
               placeholder="填写跟进方式"
-              v-decorator="basicInfoRuleList.follow_content"
+              v-decorator="decorators.follow_content"
             />
           </st-form-item>
         </a-col>
@@ -17,7 +17,7 @@
           <st-form-item label="跟进方式">
             <a-select
               placeholder="请选择跟进方式"
-              v-decorator="basicInfoRuleList.follow_way"
+              v-decorator="decorators.follow_way"
             >
               <a-select-option :value="1">电话</a-select-option>
               <a-select-option :value="2">微信</a-select-option>
@@ -32,7 +32,7 @@
           <st-form-item label="跟进状态">
             <a-select
               placeholder="请选择跟进状态"
-              v-decorator="basicInfoRuleList.follow_status"
+              v-decorator="decorators.follow_status"
             >
               <a-select-option :value="1">已电话</a-select-option>
               <a-select-option :value="2">已邀约</a-select-option>
@@ -48,10 +48,9 @@
         <a-col :lg="24">
           <st-form-item label="下次跟进时间">
             <a-date-picker
-              @change="onChange"
               style="width:100%"
               placeholder="请选择下次跟进时间"
-              v-decorator="basicInfoRuleList.follow_next_time"
+              v-decorator="decorators.follow_next_time"
             />
           </st-form-item>
         </a-col>
@@ -60,8 +59,9 @@
   </st-modal>
 </template>
 <script>
+// TODO: 枚举值要从后端获取，等代码合并后修改
 import { AddFollowRecordsService } from './add-follow-records.service'
-
+import { ruleOptions } from './add-follow-records.config'
 export default {
   serviceInject() {
     return {
@@ -69,47 +69,20 @@ export default {
     }
   },
   name: 'addFollowRecords',
-  props: {
-    // record: {
-    //   type: Object,
-    //   default:{}
-    // }
-  },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      form: this.$form.createForm(this),
-      show: false,
-      basicInfoRuleList: {
-        follow_way: ['follow_way'],
-        follow_status: ['follow_status'],
-        follow_next_time: ['follow_next_time'],
-        follow_content: [
-          'follow_content',
-          {
-            rules: [
-              {
-                required: true,
-                message: '请填写跟进内容'
-              }
-            ]
-          }
-        ]
-      },
-      follow_next_time: undefined
+      form,
+      decorators,
+      show: false
     }
   },
-  created() {
-    // this.getMemberBuy()
-  },
   methods: {
-    onChange(date, dateString) {
-      this.follow_next_time = dateString
-    },
     getMemberFollowHistory(data) {
       let self = this
       self.Service.getMemberFollowHistory(self.$route.query.id, data).subscribe(
         state => {
-          console.log(state.info)
           self.getData = state.info
           self.show = false
           self.$emit('done', true)
@@ -119,17 +92,9 @@ export default {
 
     save(e) {
       e.preventDefault()
-      let self = this
-      this.form.validateFields((err, values) => {
-        values.follow_next_time = this.follow_next_time
-        console.log(err, values)
-        if (!err) {
-          self.getMemberFollowHistory(values)
-        }
+      this.form.validate().then(values => {
+        this.getMemberFollowHistory(values)
       })
-    },
-    onccccChange(date, dateString) {
-      console.log(date, dateString)
     }
   },
 

@@ -1,31 +1,16 @@
-import { State, Computed } from 'rx-state'
-import { TeamApi } from './../../../../../../api/v1/course/team'
-import { GetTeamBrandCourseListInput } from '@/api/v1/course/team'
+import { State } from 'rx-state'
 import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
-import { tap, pluck } from 'rxjs/operators'
+import { tap } from 'rxjs/operators'
 import {
   BrandPersonalCourseApi,
   GetPersonalBrandInfoInput
 } from '@/api/v1/course/personal/brand'
-export interface PersonalCourseInfo {
-  personalCourseInfo: any
-}
 @Injectable()
 export class InfoService implements RouteGuard {
-  state$: State<PersonalCourseInfo>
-  personalCourseInfo$: Computed<any>
-  constructor(private brandPersonalCourseApi: BrandPersonalCourseApi) {
-    this.state$ = new State({
-      personalCourseInfo: {}
-    })
-    this.personalCourseInfo$ = new Computed(
-      this.state$.pipe(pluck('personalCourseInfo'))
-    )
-  }
+  personalCourseInfo$ = new State({})
+  constructor(private brandPersonalCourseApi: BrandPersonalCourseApi) {}
   SET_TEAM_COURSE_INFO(data: any) {
-    this.state$.commit(state => {
-      state.personalCourseInfo = data.info
-    })
+    this.personalCourseInfo$.commit(() => data.info)
   }
   getPersonalBrandInfo(query: GetPersonalBrandInfoInput) {
     return this.brandPersonalCourseApi.getPersonalBrandInfo(query).pipe(
@@ -34,8 +19,11 @@ export class InfoService implements RouteGuard {
       })
     )
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+  init(query: GetPersonalBrandInfoInput) {
+    return this.getPersonalBrandInfo(query)
+  }
+  beforeRouteEnter(to: ServiceRoute) {
     const course_id = to.query.id as string
-    this.getPersonalBrandInfo({ course_id }).subscribe(() => next())
+    return this.init({ course_id })
   }
 }

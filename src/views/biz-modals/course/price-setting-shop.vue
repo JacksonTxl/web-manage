@@ -11,7 +11,7 @@
       v-if="initDataSource.length"
     >
       <a-select
-        v-if="priceModel === 2"
+        v-if="priceModel === PRICE_SETTING_SHOP.PRICE_MODEL_2"
         showSearch
         :defaultValue="defaultValue"
         :filterOption="filterOption"
@@ -48,12 +48,12 @@
   </st-modal>
 </template>
 <script>
-import { columnsPricesShop } from './support-table'
-
+import { columnsPricesShop } from './support-table.config'
 import { cloneDeep, uniqWith, isEqual } from 'lodash-es'
 import { ListService } from '../../pages/shop/product/course/manage/personal/list.service'
 import { EditService } from '../../pages/shop/product/course/manage/personal/edit.service'
 import CoursePriceSettingShopUpdate from '@/views/biz-modals/course/price-setting-shop-update'
+import { PRICE_SETTING_SHOP } from '@/constants/course/price-setting-shop'
 export default {
   name: 'CoursePriceShop',
   serviceInject() {
@@ -72,6 +72,7 @@ export default {
   },
   data() {
     return {
+      PRICE_SETTING_SHOP,
       prices: [],
       shops: [],
       coachLevel: [],
@@ -95,8 +96,10 @@ export default {
       const columns = columnsPricesShop
       return columns.filter(item => {
         return !(
-          (this.priceSetting === 1 && item.dataIndex === 'shop_name') ||
-          (this.priceModel === 1 && item.dataIndex === 'level')
+          (this.priceSetting === this.PRICE_SETTING_SHOP.PRICE_SETTING_1 &&
+            item.dataIndex === 'shop_name') ||
+          (this.priceModel === this.PRICE_SETTING_SHOP.PRICE_MODEL_1 &&
+            item.dataIndex === 'level')
         )
       })
     }
@@ -120,7 +123,7 @@ export default {
       this.priceSetting = state.price_setting
       this.priceModel = state.price_model
       const prices = state.prices
-      if (this.priceModel === 2) {
+      if (this.priceModel === this.PRICE_SETTING_SHOP.PRICE_MODEL_2) {
         this.coachLevel = [
           { id: -1, name: '所有教练等级' },
           ...uniqWith(

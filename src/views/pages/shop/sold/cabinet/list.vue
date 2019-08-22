@@ -98,7 +98,6 @@ import { ListService } from './list.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
-import StRangePicker from '@/views/components/datetime-picker/range-picker'
 import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
 import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
 import SoldLeaseRefund from '@/views/biz-modals/sold/lease/refund'
@@ -314,7 +313,7 @@ export default {
     tipCallBack(orderId, modalType, callBackType) {
       switch (callBackType) {
         case 'cancel':
-          this.$router.push({ force: true })
+          this.$router.reload()
           break
         case 'Print':
           this.toContract({ order_id: orderId })
@@ -340,7 +339,7 @@ export default {
         },
         on: {
           success: result => {
-            this.$router.push({ force: true, query: this.$router.query })
+            this.$router.reload()
           }
         }
       })
@@ -354,7 +353,7 @@ export default {
         },
         on: {
           success: result => {
-            this.$router.push({ force: true, query: this.$router.query })
+            this.$router.reload()
           }
         }
       })

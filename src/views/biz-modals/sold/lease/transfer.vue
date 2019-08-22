@@ -35,7 +35,7 @@
       <st-form :form="form" labelWidth="88px">
         <div :class="transfer('transfer')">
           <st-form-item
-            v-show="searchMemberIsShow"
+            v-if="searchMemberIsShow"
             label="转让会员"
             required
             labelGutter="12px"
@@ -47,10 +47,7 @@
               :defaultActiveFirstOption="false"
               :showArrow="false"
               :filterOption="false"
-              v-decorator="[
-                'memberId',
-                { rules: [{ validator: member_id_validator }] }
-              ]"
+              v-decorator="decorators.memberId"
               @search="onMemberSearch"
               @select="selectMember"
               notFoundContent="无搜索结果"
@@ -86,30 +83,24 @@
             </p>
           </st-form-item>
           <st-form-item
-            v-show="!searchMemberIsShow"
+            v-if="!searchMemberIsShow"
             label="会员姓名"
             required
             labelGutter="12px"
           >
             <a-input
-              v-decorator="[
-                'memberName',
-                { rules: [{ validator: member_name_validator }] }
-              ]"
+              v-decorator="decorators.memberName"
               placeholder="请输入会员姓名"
             ></a-input>
           </st-form-item>
           <st-form-item
-            v-show="!searchMemberIsShow"
+            v-if="!searchMemberIsShow"
             label="手机号"
             required
             labelGutter="12px"
           >
             <a-input
-              v-decorator="[
-                'memberMobile',
-                { rules: [{ validator: member_mobile_validator }] }
-              ]"
+              v-decorator="decorators.memberMobile"
               placeholder="请输入手机号"
             ></a-input>
             <p class="add-text">
@@ -125,10 +116,7 @@
               :max="+info.pay_price"
               :float="true"
               placeholder="请输入剩余价值"
-              v-decorator="[
-                'remainPrice',
-                { rules: [{ validator: remain_price_validator }] }
-              ]"
+              v-decorator="decorators.remainPrice"
             >
               <template slot="addonAfter">
                 元
@@ -138,10 +126,7 @@
           <st-form-item label="合同编号" required labelGutter="12px">
             <div :class="transfer('contract')">
               <a-input
-                v-decorator="[
-                  'contractNumber',
-                  { rules: [{ validator: contract_number }] }
-                ]"
+                v-decorator="decorators.contractNumber"
                 placeholder="请输入合同编号"
               ></a-input>
               <st-button
@@ -162,10 +147,7 @@
           </st-form-item>
           <st-form-item label="支付方式" required labelGutter="12px">
             <a-select
-              v-decorator="[
-                'payType',
-                { rules: [{ validator: pay_type_validator }] }
-              ]"
+              v-decorator="decorators.payType"
               placeholder="选择支付方式"
             >
               <a-select-option
@@ -193,21 +175,21 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { TransferService } from './transfer.service'
 import { UserService } from '@/services/user.service'
-import { RuleConfig } from '@/constants/rule'
 import { cloneDeep } from 'lodash-es'
 import { PatternService } from '@/services/pattern.service'
-import { OPERATION_TYPES } from '@/constants/sold/operations'
+import { ruleOptions } from './transfer.config'
 export default {
   name: 'ModalSoldLeaseTransfer',
   bem: {
     transfer: 'modal-sold-lease-transfer'
   },
+  serviceProviders() {
+    return [TransferService]
+  },
   serviceInject() {
     return {
-      rules: RuleConfig,
       userService: UserService,
       transferService: TransferService,
       pattern: PatternService
@@ -222,35 +204,31 @@ export default {
       sold: this.userService.soldEnums$
     }
   },
-  computed: {},
   props: ['id', 'type'],
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      OPERATION_TYPES,
+      form,
+      decorators,
       show: false,
-      form: this.$form.createForm(this),
       // 搜索会员
       memberSearchText: '',
       searchMemberIsShow: true,
-      member_id: '',
       isSelectMember: false
     }
   },
   created() {
-    this.transferService.getDetail(this.id, this.type).subscribe(res => {
-      this.transferService
-        .getPayList({
-          member_id: res.info.member_id,
-          product_type: res.info.product_type,
-          operation_type: OPERATION_TYPES.TRANSFORM
-        })
-        .subscribe()
-      this.member_id = res.info.member_id
-    })
+    this.transferService.getDetail(this.id, this.type).subscribe()
+  },
+  computed: {
+    member_id() {
+      return this.info.member_id
+    }
   },
   methods: {
     onSubmit() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           this.transferService
             .setTransaction(
@@ -273,75 +251,6 @@ export default {
             })
         }
       })
-    },
-    member_id_validator(rule, value, callback) {
-      if (!value && this.searchMemberIsShow) {
-        // eslint-disable-next-line
-        callback('请选择转让会员')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    member_name_validator(rule, value, callback) {
-      if (!value && !this.searchMemberIsShow) {
-        // eslint-disable-next-line
-        callback('请输入会员姓名')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    member_mobile_validator(rule, value, callback) {
-      if (!value && !this.searchMemberIsShow) {
-        // eslint-disable-next-line
-        callback('请输入手机号')
-      } else if (value && !this.rules.mobile.test(value)) {
-        // eslint-disable-next-line
-        callback('输入的手机号格式错误，请重新输入')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    start_time_validator(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请选择有效开始日期')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    remain_price_validator(rule, value, callback) {
-      if (!value || +value === 0) {
-        // eslint-disable-next-line
-        callback('请输入剩余价值')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    contract_number(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请输入合同编号')
-      } else if (!value.match(this.pattern.EN_NUM('6-20'))) {
-        // eslint-disable-next-line
-        callback('请输入正确合同编号')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    pay_type_validator(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请选择支付方式')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
     },
     // 切换添加会员
     onAddMember() {
@@ -379,7 +288,6 @@ export default {
       }
     },
     // time
-    moment,
     disabledStartDate(startValue) {
       return (
         startValue.valueOf() <

@@ -1,9 +1,9 @@
 import { Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
-import { tap } from 'rxjs/operators'
+import { tap, switchMap } from 'rxjs/operators'
 import { ContractApi } from '@/api/v1/setting/contract'
 import { CabinetApi } from '@/api/v1/sold/cabinet'
-import moment from 'moment'
+import { OPERATION_TYPES } from '@/constants/sold/operations'
 import { TransactionApi, MemberListInput } from '@/api/v1/sold/transaction'
 
 @Injectable()
@@ -30,6 +30,13 @@ export class TransferService {
     return this.cabinetApi.getDetail(id, 'transfer').pipe(
       tap((res: any) => {
         this.info$.commit(() => res.info)
+      }),
+      switchMap((res: any) => {
+        return this.getPayList({
+          member_id: res.info.member_id,
+          product_type: res.info.product_type,
+          operation_type: OPERATION_TYPES.TRANSFORM
+        })
       })
     )
   }

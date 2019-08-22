@@ -52,7 +52,6 @@ export default {
   },
   filters: {
     unitFilter(val) {
-      console.log(val)
       return val === 5 ? '个' : '节'
     }
   },
@@ -69,7 +68,7 @@ export default {
         this.deleteService
           .deleteStaffBrandInfo(this.staff.id + '')
           .subscribe(res => {
-            this.$router.push({ force: true })
+            this.$router.reload()
           })
       }
       this.show = false

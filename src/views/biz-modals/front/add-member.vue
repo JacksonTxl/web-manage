@@ -8,16 +8,13 @@
     <st-form :form="form" labelWidth="66px">
       <st-form-item label="用户姓名" required>
         <a-input
-          v-decorator="[
-            'name',
-            { rules: [{ required: true, message: '请输入用户姓名' }] }
-          ]"
+          v-decorator="decorators.name"
           placeholder="请输入用户姓名"
         ></a-input>
       </st-form-item>
       <st-form-item label="手机号" required>
         <a-input
-          v-decorator="['mobile', { rules: [{ validator: mobile_validator }] }]"
+          v-decorator="decorators.mobile"
           placeholder="请输入手机号"
         ></a-input>
       </st-form-item>
@@ -33,6 +30,7 @@
 <script>
 import { AddMemberService } from './add-member.service'
 import { RuleConfig } from '@/constants/rule'
+import { ruleOptions } from './add-member.config'
 export default {
   name: 'ModalShopFrontAddMember',
   bem: {
@@ -50,40 +48,29 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      show: false,
-      form: this.$form.createForm(this)
+      form,
+      decorators,
+      show: false
     }
   },
   methods: {
-    mobile_validator(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-                callback('请输入手机号')
-      } else if (value && !this.rules.mobile.test(value)) {
-        // eslint-disable-next-line
-                callback('输入的手机号格式错误，请重新输入')
-      } else {
-        // eslint-disable-next-line
-                callback()
-      }
-    },
     onSubmit() {
-      this.form.validateFields((error, values) => {
-        if (!error) {
-          this.addMemberService
-            .addMember({
-              member_name: values.name,
-              mobile: values.mobile
+      this.form.validate().then(values => {
+        this.addMemberService
+          .addMember({
+            member_name: values.name,
+            mobile: values.mobile
+          })
+          .subscribe(res => {
+            this.show = false
+            this.$emit('success', {
+              id: res.info.member_id,
+              name: values.name
             })
-            .subscribe(res => {
-              this.show = false
-              this.$emit('success', {
-                id: res.info.member_id,
-                name: values.name
-              })
-            })
-        }
+          })
       })
     }
   }

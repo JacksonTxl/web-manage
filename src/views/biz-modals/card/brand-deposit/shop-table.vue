@@ -12,18 +12,17 @@
       :columns="columns"
       :scroll="{ y: 230 }"
       @change="onPageChange"
-      :pagination="{
-        current: page.current_page,
-        total: page.total_counts,
-        pageSize: page.size
-      }"
+      :pagination="page"
     />
   </st-modal>
 </template>
 <script>
 import { ShopTableService } from './shop-table.service'
+import { columns } from './shop-table.config.ts'
+import tableMixin from '@/mixins/table.mixin'
 export default {
   name: 'ModalBrandDepositShopTable',
+  mixins: [tableMixin],
   serviceInject() {
     return {
       shopTableService: ShopTableService
@@ -44,35 +43,13 @@ export default {
         array.push({ ...o, key })
       })
       return array
-    }
+    },
+    columns
   },
   props: ['id', 'type', 'title'],
   data() {
     return {
-      show: false,
-      columns: [
-        {
-          title: '省',
-          dataIndex: 'province_name',
-          width: '22%',
-          scopedSlots: { customRender: 'province_name' }
-        },
-        {
-          title: '市',
-          width: '22%',
-          dataIndex: 'city_name'
-        },
-        {
-          title: '区',
-          width: '22%',
-          dataIndex: 'district_name'
-        },
-        {
-          title: '门店名称',
-          width: '34%',
-          dataIndex: 'shop_name'
-        }
-      ]
+      show: false
     }
   },
   created() {

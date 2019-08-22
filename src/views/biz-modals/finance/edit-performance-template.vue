@@ -11,35 +11,21 @@
           <st-form-item label="模板名称" required>
             <a-input
               placeholder="请输模板名称"
-              v-decorator="[
-                'template_name',
-                {
-                  initialValue: this.infodata.template_name,
-                  rules: [
-                    { required: true, message: '请输入模板名称', max: 15 }
-                  ]
-                }
-              ]"
+              v-decorator="decorators.template_name"
             />
           </st-form-item>
         </a-col>
         <a-col :lg="24">
           <st-form-item label="业绩类型" required>
             <a-select
-              v-decorator="[
-                'performance_type',
-                {
-                  initialValue: this.infodata.performance_type.id,
-                  rules: [{ required: true, message: '请选择业绩类型' }]
-                }
-              ]"
+              v-decorator="decorators.performance_type"
               placeholder="请选择"
               @change="selectType"
               disabled
             >
-              <template v-for="(item, key) in finance.performance_type.value">
-                <a-select-option :key="key" :value="+key">
-                  {{ item }}
+              <template v-for="(item, key) in performanceTypes">
+                <a-select-option :key="key" :value="+item.value">
+                  {{ item.label }}
                 </a-select-option>
               </template>
             </a-select>
@@ -49,16 +35,12 @@
           <st-form-item label="提成模式" required>
             <a-radio-group
               @change="onChooseRadio"
-              v-decorator="[
-                'performance_mode',
-                {
-                  initialValue: this.infodata.performance_mode.id,
-                  rules: [{ required: true, message: '请选择提成模式' }]
-                }
-              ]"
+              v-decorator="decorators.performance_mode"
             >
-              <template v-for="(item, key) in finance.performance_mode.value">
-                <a-radio :key="item" :value="+key">{{ item }}</a-radio>
+              <template v-for="(item, key) in performanceModes">
+                <a-radio :key="key" :value="+item.value">
+                  {{ item.label }}
+                </a-radio>
               </template>
             </a-radio-group>
           </st-form-item>
@@ -68,29 +50,38 @@
             <st-input-number
               :float="true"
               :min="0"
-              :max="performance_mode === 1 ? 100 : 999999"
+              :max="
+                performance_mode === PERFORMANCE.PERFORMANCE_MODE_1
+                  ? 100
+                  : 999999
+              "
               placeholder="请输入默认提成"
-              v-decorator="[
-                'performance_num',
-                {
-                  initialValue: this.infodata.performance_num,
-                  rules: [{ validator: performanceValidate }]
-                }
-              ]"
+              v-decorator="decorators.performance_num"
             >
-              <template v-if="performance_type == 1 || performance_type == 2">
-                <template v-if="performance_mode == 1">
+              <template
+                v-if="
+                  performance_type == PERFORMANCE.PERFORMANCE_TYPE_1 ||
+                    performance_type == PERFORMANCE.PERFORMANCE_TYPE_2
+                "
+              >
+                <template
+                  v-if="performance_mode == PERFORMANCE.PERFORMANCE_MODE_1"
+                >
                   <template slot="addonAfter">
                     %
                   </template>
                 </template>
-                <template v-if="performance_mode == 2">
+                <template
+                  v-if="performance_mode == PERFORMANCE.PERFORMANCE_MODE_2"
+                >
                   <template slot="addonAfter">
                     元
                   </template>
                 </template>
               </template>
-              <template v-if="performance_type == 3">
+              <template
+                v-if="performance_type == PERFORMANCE.PERFORMANCE_TYPE_3"
+              >
                 <template slot="addonAfter">
                   元/节
                 </template>
@@ -106,27 +97,49 @@
               <st-form-table hoverable :isEmpty="false">
                 <thead>
                   <tr>
-                    <template v-if="performance_type == 1">
-                      <template v-if="performance_mode == 1">
+                    <template
+                      v-if="performance_type == PERFORMANCE.PERFORMANCE_TYPE_1"
+                    >
+                      <template
+                        v-if="
+                          performance_mode == PERFORMANCE.PERFORMANCE_MODE_1
+                        "
+                      >
                         <th>月销售额（万及以上）</th>
                         <th>提成（%）</th>
                       </template>
-                      <template v-if="performance_mode == 2">
+                      <template
+                        v-if="
+                          performance_mode == PERFORMANCE.PERFORMANCE_MODE_2
+                        "
+                      >
                         <th>月销售额（万及以上）</th>
                         <th>提成（元）</th>
                       </template>
                     </template>
-                    <template v-if="performance_type == 2">
-                      <template v-if="performance_mode == 1">
+                    <template
+                      v-if="performance_type == PERFORMANCE.PERFORMANCE_TYPE_2"
+                    >
+                      <template
+                        v-if="
+                          performance_mode == PERFORMANCE.PERFORMANCE_MODE_1
+                        "
+                      >
                         <th>月课时价值（万及以上）</th>
                         <th>提成（%）</th>
                       </template>
-                      <template v-if="performance_mode == 2">
+                      <template
+                        v-if="
+                          performance_mode == PERFORMANCE.PERFORMANCE_MODE_2
+                        "
+                      >
                         <th>月课时价值（万及以上）</th>
                         <th>提成（元）</th>
                       </template>
                     </template>
-                    <template v-if="performance_type == 3">
+                    <template
+                      v-if="performance_type == PERFORMANCE.PERFORMANCE_TYPE_3"
+                    >
                       <th>月课时数（节及以上）</th>
                       <th>课时费（元/节）</th>
                     </template>
@@ -154,9 +167,7 @@
                       />
                     </td>
                     <td>
-                      <a href="javascript:;" @click="addGradients">
-                        添加梯度({{ data.length }}/5)
-                      </a>
+                      <a @click="addGradients">添加梯度({{ data.length }}/5)</a>
                     </td>
                   </tr>
 
@@ -176,26 +187,20 @@
                       </template>
                       <td>
                         <template v-if="item.isEdit">
-                          <a href="javascript:;" @click="submitEdit(index)">
+                          <a @click="submitEdit(index)">
                             提交
                           </a>
                           <a-divider type="vertical"></a-divider>
-                          <a href="javascript:;" @click="cancelEdit(index)">
+                          <a @click="cancelEdit(index)">
                             取消
                           </a>
                         </template>
                         <template v-else>
-                          <a
-                            href="javascript:;"
-                            @click="editPerformanceNum(index)"
-                          >
+                          <a @click="editPerformanceNum(index)">
                             编辑
                           </a>
                           <a-divider type="vertical"></a-divider>
-                          <a
-                            href="javascript:;"
-                            @click="deletePerformanceNum(index)"
-                          >
+                          <a @click="deletePerformanceNum(index)">
                             删除
                           </a>
                         </template>
@@ -214,29 +219,34 @@
 <script>
 import { MessageService } from '@/services/message.service'
 import { EditTemplateService } from './edit-performance-template.service'
-import { UserService } from '@/services/user.service'
 import { forEach } from 'lodash-es'
+import { ruleOptions } from './performance-template.config'
+import { PERFORMANCE } from '@/constants/finance/performance'
 export default {
   serviceInject() {
     return {
       service: EditTemplateService,
-      message: MessageService,
-      userservice: UserService
+      message: MessageService
     }
   },
   rxState() {
     return {
-      finance: this.userservice.finance$
+      performanceModes: this.service.performanceModes$,
+      performanceTypes: this.service.performanceTypes$
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      PERFORMANCE,
+      form,
+      decorators,
       data: [],
       gradients: {
         range_min: '',
         royalty_num: ''
       },
-      form: this.$form.createForm(this),
       show: false,
       choose: 1, // 1 百分比 0 金额
       isChooseks: true, // 是否选中课时
@@ -247,9 +257,10 @@ export default {
   },
   watch: {
     performance_type: function(newValue, oldValue) {
-      console.log('新', newValue)
-      console.log('旧', oldValue)
-      if (newValue === 1 || newValue === 2) {
+      if (
+        newValue === PERFORMANCE.PERFORMANCE_TYPE_1 ||
+        newValue === PERFORMANCE.PERFORMANCE_TYPE_2
+      ) {
         this.isChooseks = true
       } else if (newValue === 3) {
         this.isChooseks = false
@@ -259,7 +270,7 @@ export default {
   props: {
     id: Number
   },
-  created() {
+  mounted() {
     this.service.getInfo(this.id).subscribe(res => {
       this.infodata = res.info
       res.info.gradients.forEach(item => {
@@ -268,37 +279,23 @@ export default {
       })
       this.performance_type = res.info.performance_type.id
       this.performance_mode = res.info.performance_mode.id
+      this.form.setFieldsValue({
+        template_name: this.infodata.template_name,
+        performance_type: this.infodata.performance_type.id,
+        performance_mode: this.infodata.performance_mode.id,
+        performance_num: this.infodata.performance_num
+      })
     })
   },
   methods: {
-    performanceValidate(rule, value, callback) {
-      let performance_mode = this.form.getFieldValue('performance_mode')
-      console.log('performance_mode', performance_mode)
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请输入默认提成')
-      }
-      if (performance_mode === 1) {
-        if (value > 100 || value < 0) {
-          // eslint-disable-next-line
-          callback('请输入大于0且小于等于100的值')
-        }
-      }
-      if (performance_mode === 2) {
-        if (value > 999999) {
-          // eslint-disable-next-line
-          callback('请输入大于0且小于等于999999的值')
-        }
-      }
-      // eslint-disable-next-line
-      callback()
-    },
     selectType(e) {
-      console.log(e)
       this.performance_type = e
-      if (e === 1 || e === 2) {
+      if (
+        e === PERFORMANCE.PERFORMANCE_TYPE_1 ||
+        e === PERFORMANCE.PERFORMANCE_TYPE_2
+      ) {
         this.isChooseks = true
-      } else if (e === 3) {
+      } else if (e === PERFORMANCE.PERFORMANCE_TYPE_3) {
         this.isChooseks = false
       }
     },
@@ -313,17 +310,13 @@ export default {
       this.data[e].isEdit = false
     },
     editPerformanceNum(e) {
-      //   console.log('编辑', e)
-      console.log(this.data[e])
       this.data[e].isEdit = true
     },
     deletePerformanceNum(e) {
-      //   console.log('删除提成', e)
       this.data.splice(e, 1)
     },
     addGradients(e) {
       // 加校验
-      //   console.log('添加提成', this.gradients)
       let { range_min, royalty_num } = this.gradients
       if (!range_min || !royalty_num) {
         this.message.warning({ content: '请填写完整' })
@@ -340,24 +333,19 @@ export default {
     },
     handleSubmit(e) {
       e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          values.gradients = this.data
-          if (values.performance_type === 3) {
-            values.performance_mode = 0
-          }
-          this.service.editTemplate(this.id, values).subscribe(() => {
-            console.log('ok')
-
-            this.$emit('change')
-            this.message.success({ content: '编辑成功' })
-            this.show = false
-          })
+      this.form.validate().then(values => {
+        values.gradients = this.data
+        if (values.performance_type === 3) {
+          values.performance_mode = 0
         }
+        this.service.editTemplate(this.id, values).subscribe(() => {
+          this.$emit('change')
+          this.message.success({ content: '编辑成功' })
+          this.show = false
+        })
       })
     },
     onChooseRadio(e) {
-      console.log(e)
       this.performance_mode = e.target.value
       this.data = []
     }

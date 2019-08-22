@@ -28,7 +28,7 @@
   </st-modal>
 </template>
 <script>
-import { columnsShops } from './support-table'
+import { columnsShops } from './support-table.config'
 import SelectShop from '@/views/fragments/shop/select-shop.vue'
 import { ShopService } from '../../pages/brand/product/course/team/list/shop.service'
 
@@ -79,7 +79,7 @@ export default {
       }
       this.shopService.putCourseTeamIntoBrand(form).subscribe(res => {
         this.show = false
-        this.$router.push({ force: true })
+        this.$router.reload()
       })
     }
   }

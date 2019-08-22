@@ -1,14 +1,16 @@
 import { get, find as lFind } from 'lodash-es'
 import { UserService } from '@/services/user.service'
-
-const container = window.getContainer()
+import container from '@/container'
 
 export const enumFilter = (key: string, path: string) => {
-  if (!key) return ''
+  if (key === undefined) return ''
   const user = container.get(UserService)
   const enumObj = user.enums$.snapshot()
-  const value = get(enumObj, `${path}.value.${key}`)
-  return value || console.error(`【enumFilter】is not found [${path}.${key}] `)
+  const pathValue = get(enumObj, `${path}`)
+  if (!pathValue) {
+    return console.error(`【enumFilter】is not found [${path}]`)
+  }
+  return get(enumObj, `${path}.value.${key}`)
 }
 
 /**

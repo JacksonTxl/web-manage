@@ -107,7 +107,7 @@ export default {
             .toPromise()
             .then(() => {
               this.onSelectionReset()
-              this.$router.push({ force: true, query: this.query })
+              this.$router.reload()
             })
         }
       })
@@ -129,7 +129,7 @@ export default {
             .toPromise()
             .then(() => {
               this.onSelectionReset()
-              this.$router.push({ force: true, query: this.query })
+              this.$router.reload()
             })
         }
       })

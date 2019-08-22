@@ -21,7 +21,6 @@ export class MemberService implements RouteGuard {
   }
 
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    console.log('member service', to.meta.query)
     const { id, page, size, keyword, shop_id } = to.meta.query
     return this.getStaffServiceCourses(id, {
       page,

@@ -88,10 +88,7 @@
             <st-input-number
               :float="true"
               :max="info.remain_amount | dealMaxNumber"
-              v-decorator="[
-                'price',
-                { rules: [{ required: true, message: '请输入支付金额!' }] }
-              ]"
+              v-decorator="decorators.price"
             >
               <template slot="addonAfter">
                 元
@@ -101,10 +98,7 @@
           <st-form-item label="支付方式" class="mgb-18" required>
             <a-radio-group
               @change="selectPay"
-              v-decorator="[
-                'payment_method',
-                { rules: [{ required: true, message: '请选择支付方式!' }] }
-              ]"
+              v-decorator="decorators.payment_method"
             >
               <a-radio
                 :value="item"
@@ -123,10 +117,7 @@
           >
             <a-select
               placeholder="请选择储值卡"
-              v-decorator="[
-                'deposit_card_id',
-                { rules: [{ required: true, message: '请选择储值卡!' }] }
-              ]"
+              v-decorator="decorators.deposit_card_id"
             >
               <a-select-option
                 :value="item.id"
@@ -154,6 +145,7 @@
 
 <script>
 import { GatheringService } from './gathering.service'
+import { ruleOptions } from './gathering.config'
 export default {
   name: 'ModalSoldDealGathering',
   bem: {
@@ -175,10 +167,13 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false,
-      selectPayValues: 0,
-      form: this.$form.createForm(this)
+      selectPayValues: 0
     }
   },
   // 订单id，签单类型
@@ -207,7 +202,7 @@ export default {
     },
     onSubmit(e) {
       e.preventDefault()
-      this.form.validateFields().then(values => {
+      this.form.validate().then(values => {
         values.order_id = this.order_id
         values.payment_type = values.payment_method.payment_type
         delete values.payment_method

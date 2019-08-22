@@ -35,8 +35,10 @@
         <div
           :class="shelves('price')"
           v-if="
-            (info.publish_channel === 2 && info.card_type === 1) ||
-              (info.price_setting === 1 && info.card_type === 1)
+            (info.publish_channel === SHOP_MEMBER.PUBLISH_CHANNEL_2 &&
+              info.card_type === SHOP_MEMBER.CARD_TYPE_1) ||
+              (info.price_setting === SHOP_MEMBER.PRICE_SETTING_1 &&
+                info.card_type === SHOP_MEMBER.CARD_TYPE_1)
           "
           class="mg-b0"
         >
@@ -78,8 +80,10 @@
         <div
           :class="shelves('price')"
           v-if="
-            (info.publish_channel === 2 && info.card_type === 2) ||
-              (info.price_setting === 1 && info.card_type === 2)
+            (info.publish_channel === SHOP_MEMBER.PUBLISH_CHANNEL_2 &&
+              info.card_type === SHOP_MEMBER.CARD_TYPE_2) ||
+              (info.price_setting === SHOP_MEMBER.PRICE_SETTING_1 &&
+                info.card_type === SHOP_MEMBER.CARD_TYPE_2)
           "
           class="mg-b0"
         >
@@ -120,9 +124,9 @@
             'modal-card-batch-shelves__price-error': priceHelpText !== ''
           }"
           v-if="
-            info.publish_channel === 1 &&
-              info.price_setting === 2 &&
-              info.card_type === 1
+            info.publish_channel === SHOP_MEMBER.PUBLISH_CHANNEL_1 &&
+              info.price_setting === SHOP_MEMBER.PRICE_SETTING_2 &&
+              info.card_type === SHOP_MEMBER.CARD_TYPE_1
           "
           class="modal-card-batch-shelves__price mg-b0"
         >
@@ -186,9 +190,9 @@
             'modal-card-batch-shelves__price-error': priceHelpText !== ''
           }"
           v-if="
-            info.publish_channel === 1 &&
-              info.price_setting === 2 &&
-              info.card_type === 2
+            info.publish_channel === SHOP_MEMBER.PUBLISH_CHANNEL_1 &&
+              info.price_setting === SHOP_MEMBER.PRICE_SETTING_2 &&
+              info.card_type === SHOP_MEMBER.CARD_TYPE_2
           "
           class="modal-card-batch-shelves__price mg-b0"
         >
@@ -256,26 +260,21 @@
             :class="shelves('open-type')"
           >
             <template
-              v-for="(item, index) in Object.keys(
-                memberCard.activate_type.value
-              )"
-              :value="+item"
+              v-for="(item, index) in activateTypes"
+              :value="+item.value"
             >
               <span
                 :class="shelves('day-input')"
-                v-if="+item === 2"
+                v-if="+item.value === 2"
                 :key="index"
               >
-                <a-checkbox :value="+item">
-                  {{ memberCard.activate_type.value[item] }}
+                <a-checkbox :value="+item.value">
+                  {{ item.label }}
                 </a-checkbox>
                 <div class="autoplay-card-day" v-if="openTypeList.includes(2)">
                   <a-form-item class="page-a-form">
                     <st-input-number
-                      v-decorator="[
-                        'openDay',
-                        { rules: [{ required: true, message: '请输入天数' }] }
-                      ]"
+                      v-decorator="decorators.openDay"
                       class="autoplay-card-day-input"
                     >
                       <span slot="addonAfter">天</span>
@@ -284,47 +283,31 @@
                   </a-form-item>
                 </div>
               </span>
-              <a-checkbox v-else :key="index" :value="+item">
-                {{ memberCard.activate_type.value[item] }}
+              <a-checkbox v-else :key="index" :value="+item.value">
+                {{ item.label }}
               </a-checkbox>
             </template>
-
-            <!-- <a-checkbox :value="3">指定日期开卡</a-checkbox>
-            <a-checkbox :value="1">购买即开卡</a-checkbox> -->
           </a-checkbox-group>
         </st-form-item>
-        <st-form-item
-          labelGutter="12px"
-          label="约课权益"
-          required
-          :validateStatus="courseInterestsStatus"
-          :help="courseInterestsHelpText"
-        >
-          <a-radio-group
-            v-model="courseInterests"
-            @change="onCourseInterestsChange"
-            :class="shelves('course')"
-          >
+        <st-form-item labelGutter="12px" label="约课权益" required>
+          <a-radio-group v-model="courseInterests" :class="shelves('course')">
             <a-radio
               :style="radioStyle"
-              v-for="(item, index) in Object.keys(
-                memberCard.course_interests.value
-              )"
-              :value="+item"
+              v-for="(item, index) in course_interests"
+              :value="+item.value"
               :key="index"
             >
-              {{ memberCard.course_interests.value[item] }}
+              {{ item.label }}
             </a-radio>
           </a-radio-group>
           <a-select
             v-if="courseInterests === 3"
             mode="multiple"
             style="width: 419px;"
-            v-model="courseList"
+            v-decorator="decorators.courseList"
             placeholder="请输入课程名称搜索"
             :filterOption="false"
             @search="fetchUser"
-            @change="checkedCourseInterests"
             :notFoundContent="loading.getCourseList ? undefined : null"
           >
             <a-spin
@@ -360,11 +343,11 @@
         </st-form-item>
         <shop-hour-picker
           v-model="timeList"
-          v-if="admissionTime === 2 && moreIsShow"
+          v-if="admissionTime === SHOP_MEMBER.ADMISSION_TIME_2 && moreIsShow"
         ></shop-hour-picker>
         <p
           :class="shelves('admission-time-validata')"
-          v-if="admissionTime === 2 && moreIsShow"
+          v-if="admissionTime === SHOP_MEMBER.ADMISSION_TIME_2 && moreIsShow"
         >
           {{ admissionTimeText }}
         </p>
@@ -416,6 +399,8 @@ import { UserService } from '@/services/user.service'
 import { cloneDeep } from 'lodash-es'
 import { RuleConfig } from '@/constants/rule'
 import ShopHourPicker from '@/views/biz-components/shop-hour-picker/shop-hour-picker'
+import { ruleOptions, shopColumns, admissionTimeList } from './shelf.config'
+import { SHOP_MEMBER } from '@/constants/card/shop-member'
 export default {
   name: 'ModalCardShopMemberShelf',
   bem: {
@@ -433,7 +418,8 @@ export default {
   },
   rxState() {
     return {
-      memberCard: this.userService.memberCardEnums$,
+      course_interests: this.shelfService.course_interests$,
+      activateTypes: this.shelfService.activateTypes$,
       shopName: this.userService.shop$,
       courseData: this.shelfService.courseList$,
       loading: this.shelfService.loading$,
@@ -442,6 +428,8 @@ export default {
   },
   props: ['id'],
   computed: {
+    shopColumns,
+    admissionTimeList,
     admissionTimeIsOk() {
       return this.admissionTimeText === ''
     },
@@ -480,9 +468,13 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      SHOP_MEMBER,
+      form,
+      decorators,
       show: false,
-      form: this.$form.createForm(this),
       radioStyle: {
         display: 'block',
         height: '30px',
@@ -495,28 +487,6 @@ export default {
       },
       // 门店明细
       visible: false,
-      shopColumns: [
-        {
-          title: '省',
-          dataIndex: 'province_name',
-          scopedSlots: { customRender: 'province_name' }
-        },
-        {
-          title: '市',
-          dataIndex: 'city_name',
-          scopedSlots: { customRender: 'city_name' }
-        },
-        {
-          title: '区',
-          dataIndex: 'district_name',
-          scopedSlots: { customRender: 'district_name' }
-        },
-        {
-          title: '门店名称',
-          dataIndex: 'shop_name',
-          scopedSlots: { customRender: 'shop_name' }
-        }
-      ],
       // 范围价格列表
       priceList: [],
       priceHelpText: '',
@@ -535,17 +505,6 @@ export default {
       courseList: [],
       // 显示更多
       moreIsShow: false,
-      // 入场时间
-      admissionTimeList: [
-        {
-          value: 1,
-          label: '不限制'
-        },
-        {
-          value: 2,
-          label: '自定义'
-        }
-      ],
       admissionTime: 1,
       timeList: [],
       // 回传给后台的时间段
@@ -565,21 +524,12 @@ export default {
       let query = { course_name: search }
       this.shelfService.courseListAction$.dispatch(query)
     },
-    // 检验约课权益是否输入正确
-    checkedCourseInterests() {
-      this.courseInterestsStatus =
-        this.courseInterests === 3 && !this.courseList.length
-          ? 'error'
-          : 'success'
-      this.courseInterestsHelpText =
-        this.courseInterests === 3 && !this.courseList.length
-          ? '请输入课程'
-          : ''
-    },
     // 检验入场时间是否输入正确
     checkedAdmission() {
       this.admissionTimeText =
-        this.admissionTime === 2 && this.moreIsShow && !this.timeList.length
+        this.admissionTime === this.SHOP_MEMBER.ADMISSION_TIME_2 &&
+        this.moreIsShow &&
+        !this.timeList.length
           ? '请选择入场时间'
           : ''
     },
@@ -588,17 +538,17 @@ export default {
     },
     // 检验门店自主定价价格输入是否正确
     checkedPrice() {
-      if (!(this.info.publish_channel === 1 && this.info.price_setting === 2)) {
+      if (
+        !(
+          this.info.publish_channel === this.SHOP_MEMBER.PUBLISH_CHANNEL_1 &&
+          this.info.price_setting === this.SHOP_MEMBER.PRICE_SETTING_2
+        )
+      ) {
         this.priceHelpText = ''
         return false
       }
       let b = this.priceValidataArray.every(i => this.rules.number.test(i))
       this.priceHelpText = b ? '' : '请输入价格'
-    },
-    onCourseInterestsChange(data) {
-      if (data.target.value !== 3) {
-        this.checkedCourseInterests()
-      }
     },
     // 开卡方式change
     onOpenTypeChange(data) {
@@ -611,7 +561,10 @@ export default {
     // 格式化价格
     formatSpecs() {
       this.specs = []
-      if (this.info.publish_channel === 1 && this.info.price_setting === 2) {
+      if (
+        this.info.publish_channel === this.SHOP_MEMBER.PUBLISH_CHANNEL_1 &&
+        this.info.price_setting === this.SHOP_MEMBER.PRICE_SETTING_2
+      ) {
         // 有价格范围
         this.priceList.forEach(i => {
           this.specs.push({
@@ -646,13 +599,12 @@ export default {
       })
     },
     onSubmit() {
-      this.form.validateFields((error, values) => {
-        this.checkedCourseInterests()
+      this.form.validate().then(values => {
         this.checkedAdmission()
-        this.checkedPrice()
-        if (!error && this.admissionTimeIsOk && this.courseInterestsIsOk) {
-          this.formatSpecs()
-          this.formatWeek()
+        // TODO: shop hour picker后续修改，不能有默认值
+        this.formatWeek()
+        this.formatSpecs()
+        if (this.admissionTimeIsOk) {
           this.shelfService
             .shelfCard(
               {
@@ -661,7 +613,7 @@ export default {
                 activate_duration:
                   values.openDay === undefined ? undefined : +values.openDay,
                 course_interests: +this.courseInterests,
-                courses: this.courseList,
+                courses: values.courseList,
                 inout_type: this.admissionTime,
                 inout_time: this.inoutTime,
                 specs: this.specs

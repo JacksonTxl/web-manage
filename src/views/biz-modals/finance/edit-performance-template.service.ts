@@ -1,37 +1,18 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
+import { Injectable } from 'vue-service-app'
 import { FinanceApi, AddPerformanceParams } from '@/api/v1/finance'
-import { Store } from '@/services/store'
-import { State, Computed, log } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-
-interface UserState {
-  info: object
-}
+import { UserService } from './../../../services/user.service'
 
 @Injectable()
 export class EditTemplateService {
-  // state$: State<UserState>
-  // info$: Computed<object>
-  constructor(private MemberApi: FinanceApi) {
-    // super()
-    // this.state$ = new State({
-    // info: {}
-    // })
-    // this.info$ = new Computed(this.state$.pipe(pluck('info')))
-  }
+  performanceModes$ = this.userService.getOptions$('finance.performance_mode')
+  performanceTypes$ = this.userService.getOptions$('finance.performance_type')
+  constructor(
+    private MemberApi: FinanceApi,
+    private userService: UserService
+  ) {}
   editTemplate(id: any, params: AddPerformanceParams) {
     return this.MemberApi.editPerformance(id, params)
   }
-  // getInfo(id: any){
-  //   return this.MemberApi.getPerformanceInfo(id).pipe(
-  //     tap(res => {
-  //       this.state$.commit(state => {
-  //         state.info = res.info
-  //       })
-  //     })
-  //   )
-  // }
-
   getInfo(id: any) {
     return this.MemberApi.getPerformanceInfo(id)
   }

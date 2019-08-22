@@ -1,6 +1,10 @@
 <template>
   <span>
-    <a-radio-group @change="onChangeRadio" v-model="radioValue">
+    <a-radio-group
+      @change="onChangeRadio"
+      v-model="radioValue"
+      style="margin-right: 8px"
+    >
       <a-radio-button :value="7">近7天</a-radio-button>
       <a-radio-button :value="30">近30天</a-radio-button>
       <a-radio-button :value="90">近90天</a-radio-button>
@@ -11,7 +15,7 @@
       @change="onChange"
       :format="format || 'YYYY-MM-DD'"
       :value="value.min ? [moment(value.min), moment(value.max)] : []"
-      style="margin-left:8px"
+      class="mg-r8"
       :allowClear="true"
       :disabledDate="disabledDate"
     />
@@ -34,8 +38,8 @@ export default {
   },
   data() {
     return {
-      radioValue: '',
-      radioText: ''
+      radioValue: 7,
+      radioText: '近7天'
     }
   },
   created() {

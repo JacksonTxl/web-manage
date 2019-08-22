@@ -8,7 +8,7 @@
   >
     <div class="modal-support-course-shops__search mg-b24">
       <a-select
-        v-if="priceSetting === 2"
+        v-if="priceSetting === PRICE_SETTING_SHOP.PRICE_SETTING_2"
         showSearch
         :defaultValue="defaultValue"
         :filterOption="filterOption"
@@ -22,7 +22,7 @@
         </a-select-option>
       </a-select>
       <a-select
-        v-if="priceModel === 2"
+        v-if="priceModel === PRICE_SETTING_SHOP.PRICE_MODEL_2"
         showSearch
         :defaultValue="defaultValue"
         :filterOption="filterOption"
@@ -59,9 +59,10 @@
   </st-modal>
 </template>
 <script>
-import { columnsPrices } from './support-table'
+import { columnsPrices } from './support-table.config'
 import { cloneDeep, uniqWith, isEqual } from 'lodash-es'
 import { ShopService } from '../../pages/brand/product/course/personal/list/shop.service'
+import { PRICE_SETTING_SHOP } from '@/constants/course/price-setting-shop'
 export default {
   name: 'CoursePrice',
   serviceInject() {
@@ -76,6 +77,7 @@ export default {
   },
   data() {
     return {
+      PRICE_SETTING_SHOP,
       prices: [],
       shops: [],
       coachLevel: [],
@@ -98,8 +100,10 @@ export default {
       const columns = columnsPrices
       return columns.filter(item => {
         return !(
-          (this.priceSetting === 1 && item.dataIndex === 'shop_name') ||
-          (this.priceModel === 1 && item.dataIndex === 'coach_level_name')
+          (this.priceSetting === this.PRICE_SETTING_SHOP.PRICE_SETTING_1 &&
+            item.dataIndex === 'shop_name') ||
+          (this.priceModel === this.PRICE_SETTING_SHOP.PRICE_MODEL_1 &&
+            item.dataIndex === 'coach_level_name')
         )
       })
     }
@@ -122,21 +126,21 @@ export default {
     initOptions(state) {
       this.priceSetting = state.price_setting
       this.priceModel = state.price_model
-      if (this.priceModel === 2) {
+      if (this.priceModel === this.PRICE_SETTING_SHOP.PRICE_MODEL_2) {
         this.coachLevel = [
           { id: -1, name: '所有教练等级' },
           ...uniqWith(
             this.dataSource.map(item => {
               return {
                 id: item.coach_level_id,
-                name: item.level || '没名字'
+                name: item.level
               }
             }),
             isEqual
           )
         ]
       }
-      if (this.priceSetting === 2) {
+      if (this.priceSetting === this.PRICE_SETTING_SHOP.PRICE_SETTING_2) {
         this.shops = [
           { id: -1, name: '所有门店' },
           ...uniqWith(

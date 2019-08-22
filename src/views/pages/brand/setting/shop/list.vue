@@ -157,8 +157,8 @@ import { columns } from './list.config.ts'
 import { dateFilter } from '@/filters/date.filters'
 import tableMixin from '@/mixins/table.mixin'
 import { AppConfig } from '@/constants/config'
-import BrandSettingShopHoliday from '@/views/biz-modals/brand/setting-shop-holiday'
-import BrandSettingShopStatus from '@/views/biz-modals/brand/setting-shop-status'
+import BrandSettingShopHoliday from '@/views/biz-modals/brand/setting/shop/holiday'
+import BrandSettingShopStatus from '@/views/biz-modals/brand/setting/shop/status'
 export default {
   mixins: [tableMixin],
   name: 'PageBrandSettingShopList',

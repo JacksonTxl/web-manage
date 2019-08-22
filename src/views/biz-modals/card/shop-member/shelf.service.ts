@@ -3,6 +3,7 @@ import { State, Effect, Action } from 'rx-state'
 import { CardsApi, CourseTeamShelfListInput } from '@/api/v1/cards'
 import { tap, debounceTime, switchMap, catchError } from 'rxjs/operators'
 import { EMPTY } from 'rxjs'
+import { UserService } from '@/services/user.service'
 
 @Injectable()
 export class ShelfService {
@@ -10,7 +11,11 @@ export class ShelfService {
   loading$ = new State({})
   courseListAction$: Action<any>
   courseList$ = new State([])
-  constructor(private cardApi: CardsApi) {
+  course_interests$ = this.userService.getOptions$(
+    'member_card.course_interests'
+  )
+  activateTypes$ = this.userService.getOptions$('member_card.activate_type')
+  constructor(private cardApi: CardsApi, private userService: UserService) {
     this.courseListAction$ = new Action(data$ => {
       return data$.pipe(
         debounceTime(200),

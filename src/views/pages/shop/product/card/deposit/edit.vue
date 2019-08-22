@@ -348,7 +348,8 @@ import { cloneDeep, remove } from 'lodash-es'
 import { EditService } from './edit.service'
 import MemberCard from '@/views/biz-components/h5/pages/member-card'
 import H5Container from '@/views/biz-components/h5/h5-container'
-import h5mixin from '@/views/pages/brand/product/card/member/period/h5mixin'
+// TODO: 临时h5mixin文件，本文件重构后重新引用brand下的mixin
+import h5mixin from './h5mixin'
 import { MEMBER_CARD } from '@/views/biz-components/h5/pages/member-card.config'
 import CardBgRadio from '@/views/biz-components/card-bg-radio/card-bg-radio'
 export default {

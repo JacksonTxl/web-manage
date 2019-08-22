@@ -9,9 +9,10 @@ interface ListState {
   resData: object
 }
 @Injectable()
-export class TeamService extends Store<ListState> {
+export class TeamService {
   state$: State<ListState>
   resData$: Computed<object>
+  loading$ = new State({})
   auth$ = this.authService.authMap$({
     get: 'brand:setting:course_price_reserve_setting|tab',
     edit: 'brand:setting:team_course_reserve_setting|edit'
@@ -20,7 +21,6 @@ export class TeamService extends Store<ListState> {
     private reserveSettingApi: TeamReserveSettingApi,
     private authService: AuthService
   ) {
-    super()
     this.state$ = new State({
       resData: {}
     })

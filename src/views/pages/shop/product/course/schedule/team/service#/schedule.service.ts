@@ -1,16 +1,15 @@
 import { AuthService } from '@/services/auth.service'
 import {
+  TeamScheduleScheduleApi,
   AddScheduleInput,
   UpdateScheduleInput,
   CopyScheduleInput,
   GetScheduleListQuery,
   GetScheduleTableQuery
 } from '@/api/v1/schedule/team/schedule'
-import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
+import { Injectable } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state'
-import { tap, pluck, switchMap } from 'rxjs/operators'
-import { TeamScheduleScheduleApi } from '@/api/v1/schedule/team/schedule'
-import moment from 'moment'
+import { tap, pluck } from 'rxjs/operators'
 import { MessageService } from '@/services/message.service'
 
 export interface SetState {
@@ -81,7 +80,7 @@ export class TeamScheduleScheduleService {
    * 获取团体课排期表格
    */
   getTable(query: GetScheduleTableQuery) {
-    return this.scheduleApi.getTable(query).pipe(
+    return this.scheduleApi.getTable({ size: 999, ...query }).pipe(
       tap(res => {
         res = this.authService.filter(res)
         this.state$.commit(state => {

@@ -21,11 +21,7 @@
               </span>
               <span class="value">{{ personalCourseInfo.duration }}分钟</span>
             </div>
-            <div class="course-detail-item__right">
-              <!-- <span class="label">
-                <st-icon type="price" size="16px" class="mg-r8" color="rgb(255,169,45)"></st-icon>参考定价:</span>
-                <span class="value">{{personalCourseInfo.price}}元/节</span> -->
-            </div>
+            <div class="course-detail-item__right"></div>
           </div>
           <div class="course-detail-item__content mg-b16">
             {{ personalCourseInfo.description }}
@@ -110,7 +106,9 @@
               </div>
               <div slot="transfer_num" slot-scope="transfer_num, record">
                 {{ record.transfer_num }}
-                {{ record.transfer_unit === 1 ? '%' : '元' }}
+                {{
+                  record.transfer_unit === TRANSFER_UNIT.PERCENT ? '%' : '元'
+                }}
               </div>
             </st-table>
           </st-container>
@@ -153,6 +151,7 @@ import {
 } from './info#table.config'
 import { InfoService } from './info.service'
 import { AppConfig } from '@/constants/config'
+import { TRANSFER_UNIT } from '@/constants/course/personal'
 export default {
   name: 'PersonalInfo',
   serviceInject() {
@@ -187,7 +186,8 @@ export default {
     return {
       shopColumns,
       coachColumns,
-      priceConfigColumns
+      priceConfigColumns,
+      TRANSFER_UNIT
     }
   }
 }

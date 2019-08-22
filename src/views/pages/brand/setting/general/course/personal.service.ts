@@ -1,19 +1,16 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
 import { PersonReserveSettingApi } from '@/api/v1/setting/course/personal/reserve'
 import { CoursePricingApi } from '@/api/v1/setting/course/pricing'
 import { AuthService } from '@/services/auth.service'
 import { forkJoin } from 'rxjs'
 
-interface ListState {
-  resData: object
-}
 @Injectable()
-export class PersonalService extends Store<ListState> {
-  state$: State<ListState>
+export class PersonalService {
+  state$: State<any>
   resData$: Computed<object>
+  loading$ = new State({})
   auth$ = this.authService.authMap$({
     priceGet: 'brand:setting:course_price_reserve_setting|tab',
     priceEdit: 'brand:setting:personal_course_price_setting|edit',
@@ -24,7 +21,6 @@ export class PersonalService extends Store<ListState> {
     private coursePricingApi: CoursePricingApi,
     private authService: AuthService
   ) {
-    super()
     this.state$ = new State({
       resData: {}
     })

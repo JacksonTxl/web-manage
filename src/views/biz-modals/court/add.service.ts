@@ -1,15 +1,13 @@
 import { Injectable } from 'vue-service-app'
-import { Effect } from 'rx-state'
-import { Store } from '@/services/store'
+import { Effect, State } from 'rx-state'
 import { CourtApi, SetInput } from '@/api/v1/shop/area'
 import { UserService } from '@/services/user.service'
 
 @Injectable()
-export class AddService extends Store<any> {
-  areaType$ = this.userService.getOptions$('shop.area_type').pipe()
-  constructor(protected courtApi: CourtApi, private userService: UserService) {
-    super()
-  }
+export class AddService {
+  loading$ = new State({})
+  areaType$ = this.userService.getOptions$('shop.area_type')
+  constructor(protected courtApi: CourtApi, private userService: UserService) {}
 
   @Effect()
   add(params: SetInput) {

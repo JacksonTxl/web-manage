@@ -112,7 +112,7 @@ import { PersonalScheduleCommonService } from './schedule/personal/service#/comm
 import { RouteService } from '../../../../../services/route.service'
 import { PersonalTeamScheduleCommonService } from './schedule/personal-team/service#/common.service'
 import { ScheduleService } from './schedule.service'
-import ScheduleTeamEditSchedule from '@/views/biz-modals/schedule/team/edit-schedule'
+import ScheduleTeamEditSchedule from '@/views/biz-modals/schedule/team/edit-course'
 export default {
   name: 'CourseSchedule',
   modals: {
@@ -171,7 +171,7 @@ export default {
       this.$router.push({ query: this.query })
     },
     onClickEdit() {
-      this.$modalRouter.push({ name: 'schedule-team-edit-schedule' })
+      this.$modalRouter.push({ name: 'schedule-team-edit-course' })
     }
   }
 }

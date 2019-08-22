@@ -111,8 +111,8 @@
 import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
 import { PersonalService } from './personal.service'
-import BrandSettingPersonalPriceModel from '@/views/biz-modals/brand/setting-personal-price-model'
-import BrandSettingPersonalReserve from '@/views/biz-modals/brand/setting-personal-reserve'
+import BrandSettingPersonalPriceModel from '@/views/biz-modals/brand/setting/personal/price-model'
+import BrandSettingPersonalReserve from '@/views/biz-modals/brand/setting/personal/reserve'
 export default {
   serviceInject() {
     return {
@@ -149,7 +149,6 @@ export default {
       })
     },
     onEditPricingSetting() {
-      console.log('edit')
       const isChanged = this.pricingInfo.is_changed
       const that = this
       const msg = this.pricingInfo.changed_desc

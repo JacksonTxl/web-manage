@@ -9,7 +9,7 @@
     <st-button class="mg-r8 mg-l8" @click="onClickNext">
       <a-icon type="right" />
     </st-button>
-    <a-button @click="onClickToday" v-if="isCurrent">今</a-button>
+    <st-button @click="onClickToday" v-if="isCurrent">今</st-button>
   </div>
 </template>
 <script>
@@ -53,7 +53,7 @@ export default {
     isCurrent() {
       const start = moment(this.$route.query.start_date).valueOf()
       const end = moment(this.$route.query.end_date).valueOf()
-      const current = moment().valueOf()
+      const current = moment(moment().format('YYYY-MM-DD')).valueOf()
       return current < start || end < current
     },
     start() {
@@ -98,7 +98,7 @@ export default {
     onClickToday() {
       let weekOfday = moment().format('E') // 计算今天是这周第几天
       this.startTime = this.isDay
-        ? moment(this.$route.query.start_date).format('YYYY-MM-DD')
+        ? moment().format('YYYY-MM-DD')
         : moment()
             .subtract(weekOfday - 1, 'days')
             .format('YYYY-MM-DD') // 周一日期

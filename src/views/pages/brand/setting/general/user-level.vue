@@ -53,7 +53,7 @@
             </div>
             <select-condition
               v-if="isEdit && info.condition"
-              v-model="info.condition.list"
+              v-model="info.condition"
               @change="onConditionChange"
             />
             <ul v-else>
@@ -74,7 +74,7 @@
             </div>
             <select-rights
               v-if="isEdit && info.rights"
-              v-model="info.rights.list"
+              v-model="info.rights"
               @change="onRightsChange"
             />
             <ul v-else>
@@ -125,8 +125,8 @@
 import { UserLevelService } from './user-level.service'
 import { RouteService } from '@/services/route.service'
 import { MessageService } from '@/services/message.service'
-import SelectCondition from './user-level#/select-condition'
-import SelectRights from './user-level#/select-rights'
+import SelectCondition from './components#/select-condition'
+import SelectRights from './components#/select-rights'
 export default {
   bem: {
     b: 'page-user-level'
@@ -186,18 +186,7 @@ export default {
       return this.list[2]
     }
   },
-  created() {
-    this.initChecked()
-  },
   methods: {
-    initChecked() {
-      if (!this.isEdit) {
-        return
-      }
-      const { info } = this
-      this.condition = info.condition.checked
-      this.rights = info.rights.checked
-    },
     onEdit() {
       this.$router.push({
         query: {

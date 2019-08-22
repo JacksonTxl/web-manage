@@ -1,15 +1,14 @@
 import { Injectable } from 'vue-service-app'
-import { Store } from '@/services/store'
 import { LabelApi, EditParams } from '@/api/v1/label'
+import { State } from 'rx-state/src'
 
 interface CardsTableModelState {
   lableInfo: any
 }
 @Injectable()
-export class EditLabelService extends Store<CardsTableModelState> {
-  constructor(private MemberApi: LabelApi) {
-    super()
-  }
+export class EditLabelService {
+  loading$ = new State({})
+  constructor(private MemberApi: LabelApi) {}
   editLabel(id: number, params: EditParams) {
     return this.MemberApi.editLabel(id, params)
   }

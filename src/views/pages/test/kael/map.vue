@@ -3,7 +3,7 @@
     <div class="kael-map">
       <div>
         <input id="keyword" type="textbox" value="酒店" />
-        <a-button type="primary" @click="searchKeyword">搜索1111</a-button>
+        <st-button type="primary" @click="searchKeyword">搜索</st-button>
       </div>
       <div style="width:603px;height:300px" id="container"></div>
       <div style="width: 500px; height: 180px" id="infoDiv"></div>

@@ -1,28 +1,14 @@
-import { UserService } from '@/services/user.service'
-import { CoachLevelApi } from '@/api/v1/setting/coach/level'
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
+import { Injectable } from 'vue-service-app'
+import { State, Computed } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
-
-import {
-  StaffApi,
-  PutStaffBrandQuitInput,
-  PutStaffBrandRestartInput,
-  PutStaffBindBankInput
-} from '@/api/v1/staff'
-import { forkJoin } from 'rxjs'
+import { StaffApi, PutStaffBindBankInput } from '@/api/v1/staff'
 import { MessageService } from '@/services/message.service'
 
-interface SetState {
-  accountInfo: object
-}
 @Injectable()
-export class SalaryAccountSettingService extends Store<SetState> {
-  state$: State<SetState>
+export class SalaryAccountSettingService {
+  state$: State<any>
   accountInfo$: Computed<any>
   constructor(protected staffApi: StaffApi, private msg: MessageService) {
-    super()
     this.state$ = new State({
       accountInfo: {}
     })

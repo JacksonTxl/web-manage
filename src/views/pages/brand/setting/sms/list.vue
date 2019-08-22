@@ -45,12 +45,18 @@
             />-->
             <st-range-picker
               :disabledDays="180"
-              :value="selectTime"
+              v-model="selectTime"
             ></st-range-picker>
           </div>
         </div>
         <div slot="button">
-          <st-button type="primary" @click="onSearchList">查询</st-button>
+          <st-button
+            type="primary"
+            @click="onSearchList"
+            :loading="loading.getSmsList"
+          >
+            查询
+          </st-button>
           <st-button class="mgl-8" @click="onSearhReset">重置</st-button>
         </div>
       </st-search-panel>
@@ -94,38 +100,26 @@ export default {
   serviceInject() {
     return {
       routeService: RouteService,
-      listService: ListService,
-      userService: UserService
+      listService: ListService
     }
   },
   rxState() {
-    const user = this.userService
     return {
       query: this.routeService.query$,
       loading: this.listService.loading$,
       page: this.listService.page$,
       list: this.listService.list$,
-      settingEnums: user.settingEnums$
+      notifyType: this.listService.notifyType$,
+      sendStatus: this.listService.sendStatus$
     }
   },
   computed: {
-    columns,
-    notifyType() {
-      let list = [{ value: -1, label: '全部' }]
-      if (!this.settingEnums.notify_type) return list
-      Object.entries(this.settingEnums.notify_type.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    },
-    sendStatus() {
-      let list = [{ value: -1, label: '全部' }]
-      if (!this.settingEnums.send_status) return list
-      Object.entries(this.settingEnums.send_status.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    }
+    columns
+  },
+  created() {
+    let list = [{ value: -1, label: '全部' }]
+    this.notifyType = list.concat(this.notifyType)
+    this.sendStatus = list.concat(this.sendStatus)
   },
   mounted() {
     this.setSearchData()
@@ -162,7 +156,6 @@ export default {
       end_date: null
     }
   },
-  created() {},
   methods: {
     onSearchList() {
       this.query.start_time = this.selectTime.startTime.value

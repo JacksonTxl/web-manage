@@ -123,7 +123,6 @@ import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './personal.config'
-import StRangePicker from '@/views/components/datetime-picker/range-picker'
 import SoldCourseCoach from '@/views/biz-modals/sold/course/coach'
 import SoldCourseFreeze from '@/views/biz-modals/sold/course/freeze'
 import SoldCourseRefund from '@/views/biz-modals/sold/course/refund'
@@ -189,9 +188,7 @@ export default {
       }
     }
   },
-  components: {
-    StRangePicker
-  },
+
   computed: {
     columns,
     personalCourseList() {
@@ -247,7 +244,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -263,7 +260,7 @@ export default {
             .unFreeze(record.id)
             .toPromise()
             .then(() => {
-              this.$router.push({ force: true, query: this.query })
+              this.$router.reload()
             })
         }
       })
@@ -277,7 +274,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -291,7 +288,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -306,7 +303,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })
@@ -328,7 +325,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.reload()
           }
         }
       })

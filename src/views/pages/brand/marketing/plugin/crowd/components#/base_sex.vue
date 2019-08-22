@@ -1,7 +1,7 @@
 <template>
   <div>
-    <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
-    <span style="margin-right:16px">选择性别</span>
+    <title-info v-model="titleData"></title-info>
+    <span class="mg-r16">选择性别</span>
     <a-radio-group
       name="radioGroup"
       v-model="value.getData.base_sex"

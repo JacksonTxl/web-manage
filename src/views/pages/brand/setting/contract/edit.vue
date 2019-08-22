@@ -174,7 +174,7 @@
 </template>
 
 <script>
-import ContractPreview from './edit#/preview.vue'
+import ContractPreview from './components#/preview.vue'
 import { EditService } from './edit.service.ts'
 import { MessageService } from '@/services/message.service'
 import { UserService } from '@/services/user.service'

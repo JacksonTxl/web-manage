@@ -30,7 +30,7 @@
       </a-row>
       <st-form :form="form" labelWidth="88px">
         <div :class="sale('sale')">
-          <st-form-item v-show="searchMemberIsShow" label="购买会员" required>
+          <st-form-item v-if="searchMemberIsShow" label="购买会员" required>
             <a-select
               showSearch
               allowClear
@@ -38,10 +38,7 @@
               :defaultActiveFirstOption="false"
               :showArrow="false"
               :filterOption="false"
-              v-decorator="[
-                'memberId',
-                { rules: [{ validator: member_id_validator }] }
-              ]"
+              v-decorator="decorators.memberId"
               @search="onMemberSearch"
               @change="onMemberChange"
               notFoundContent="无搜索结果"
@@ -75,21 +72,15 @@
               <span @click="onAddMember">添加新会员？</span>
             </p>
           </st-form-item>
-          <st-form-item v-show="!searchMemberIsShow" label="会员姓名" required>
+          <st-form-item v-if="!searchMemberIsShow" label="会员姓名" required>
             <a-input
-              v-decorator="[
-                'memberName',
-                { rules: [{ validator: member_name_validator }] }
-              ]"
+              v-decorator="decorators.memberName"
               placeholder="请输入会员姓名"
             ></a-input>
           </st-form-item>
-          <st-form-item v-show="!searchMemberIsShow" label="手机号" required>
+          <st-form-item v-if="!searchMemberIsShow" label="手机号" required>
             <a-input
-              v-decorator="[
-                'memberMobile',
-                { rules: [{ validator: member_mobile_validator }] }
-              ]"
+              v-decorator="decorators.memberMobile"
               placeholder="请输入手机号"
             ></a-input>
             <p class="add-text">
@@ -98,10 +89,7 @@
           </st-form-item>
           <st-form-item label="规格" required v-if="info.price_model === 2">
             <a-radio-group
-              v-decorator="[
-                'coach_level',
-                { rules: [{ validator: coach_level }] }
-              ]"
+              v-decorator="decorators.coach_level"
               @change="changeSpeics"
             >
               <a-radio
@@ -122,7 +110,7 @@
               <a-input-number
                 class="input-number"
                 :max="9999"
-                v-decorator="['buyNum', { rules: [{ validator: buy_num }] }]"
+                v-decorator="decorators.buyNum"
                 placeholder="请输入购买数量"
                 :disabled="isAmountDisabled"
               ></a-input-number>
@@ -147,10 +135,7 @@
             <st-input-number
               :min="+personalPrice.min_sell_price || 0"
               :max="+personalPrice.max_sell_price || 0"
-              v-decorator="[
-                'coursePrice',
-                { rules: [{ validator: course_price }] }
-              ]"
+              v-decorator="decorators.coursePrice"
               :float="true"
               placeholder="请输入课程的价格"
               @blur="
@@ -187,10 +172,7 @@
             </template>
             <div :class="sale('contract')">
               <a-input
-                v-decorator="[
-                  'contractNumber',
-                  { rules: [{ validator: contract_number }] }
-                ]"
+                v-decorator="decorators.contractNumber"
                 placeholder="请输入合同编号"
               ></a-input>
               <st-button
@@ -204,7 +186,7 @@
           </st-form-item>
           <st-form-item label="上课教练" required>
             <a-select
-              v-decorator="['coachId', { rules: [{ validator: coach_id }] }]"
+              v-decorator="decorators.coachId"
               placeholder="选择上课的教练"
             >
               <a-select-option
@@ -218,7 +200,7 @@
           </st-form-item>
           <st-form-item label="购买赠送">
             <st-input-number
-              v-decorator="['gift_course_num', { rules: [] }]"
+              v-decorator="decorators.gift_course_num"
               placeholder="请输入赠送的上课节数"
             ></st-input-number>
           </st-form-item>
@@ -322,7 +304,7 @@
         <div :class="sale('remarks')">
           <st-form-item label="销售人员" required>
             <a-select
-              v-decorator="['saleName', { rules: [{ validator: sale_name }] }]"
+              v-decorator="decorators.saleName"
               placeholder="选择签单的工作人员"
             >
               <a-select-option
@@ -375,8 +357,8 @@ import { SalePersonalCourseService } from './sale-personal-course.service'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
-import { RuleConfig } from '@/constants/rule'
 import { PatternService } from '@/services/pattern.service'
+import { ruleOptions } from './sale-personal-course.config'
 export default {
   name: 'ModalSoldDealSaleMemberCard',
   bem: {
@@ -388,7 +370,6 @@ export default {
   serviceInject() {
     return {
       salePersonalCourseService: SalePersonalCourseService,
-      rules: RuleConfig,
       pattern: PatternService
     }
   },
@@ -412,9 +393,12 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false,
-      form: this.$form.createForm(this),
       // 搜索会员
       memberSearchText: '',
       searchMemberIsShow: true,
@@ -538,105 +522,6 @@ export default {
       // }
     },
     moment,
-    member_id_validator(rule, value, callback) {
-      if ((!value || value.length > 15) && this.searchMemberIsShow) {
-        // eslint-disable-next-line
-        callback('请选择转让会员，查询条件长度15')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    member_name_validator(rule, value, callback) {
-      if (
-        (!value || !value.match(this.pattern.CN_EN_NUM_SPACE('1-15'))) &&
-        !this.searchMemberIsShow
-      ) {
-        // eslint-disable-next-line
-        callback('请输入会员姓名，支持格式长度1~15中英文')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    member_mobile_validator(rule, value, callback) {
-      if (!value && !this.searchMemberIsShow) {
-        // eslint-disable-next-line
-        callback('请输入手机号')
-      } else if (value && !this.rules.mobile.test(value)) {
-        // eslint-disable-next-line
-        callback('输入的手机号格式错误，请重新输入')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    contract_number(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请输入合同编号')
-      } else if (!value.match(this.pattern.EN_NUM('6-20'))) {
-        // eslint-disable-next-line
-        callback('请输入正确合同编号')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    buy_num(rule, value, callback) {
-      let price = 0
-      if (this.info.price_model === 1) {
-        // 教练平级
-        price = this.personalPrice.min_sell
-      } else {
-        price = this.minPrice
-      }
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请输入购买数量')
-      } else if (value < price) {
-        // eslint-disable-next-line
-        callback(`不能少于课程定价的最低购买节数${price}`)
-      } else {
-        callback()
-      }
-    },
-    course_price(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请输入课程的单价')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    coach_id(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请选择上课教练')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    coach_level(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请选择教练等级')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    sale_name(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请选择销售人员')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
     // 搜索会员
     onMemberSearch(data) {
       this.memberSearchText = data
@@ -713,36 +598,34 @@ export default {
       this.couponText = `${price}元`
     },
     onClickCourseAmount() {
-      this.form.validateFields(['buyNum'], (error, values) => {
-        if (!error) {
-          const params = {
-            id: this.id,
-            buy_num: this.form.getFieldValue('buyNum'),
-            coach_level_id: this.form.getFieldValue('coach_level') || 0 // 默认0 为没有等级，否则分级
-          }
-          this.salePersonalCourseService
-            .getPersonalPriceInfo(params)
-            .subscribe(result => {
-              this.isAmountDisabled = true
-              this.validEndTime = this.info.effective_unit * params.buy_num || 0
-              // 调用优惠券列表
-              this.fetchCouponList()
-              // 调用获取商品原价
-              if (
-                this.info.sale_model === 1 &&
-                !this.form.getFieldValue('coursePrice') &&
-                this.form.getFieldValue('coursePrice') !== 0
-              ) {
-                return
-              }
-              this.getOrderPrice()
-              this.getPrice(
-                this.selectCoupon,
-                this.selectAdvance,
-                +this.reduceAmount
-              )
-            })
+      this.form.validate(['buyNum']).then(() => {
+        const params = {
+          id: this.id,
+          buy_num: this.form.getFieldValue('buyNum'),
+          coach_level_id: this.form.getFieldValue('coach_level') || 0 // 默认0 为没有等级，否则分级
         }
+        this.salePersonalCourseService
+          .getPersonalPriceInfo(params)
+          .subscribe(result => {
+            this.isAmountDisabled = true
+            this.validEndTime = this.info.effective_unit * params.buy_num || 0
+            // 调用优惠券列表
+            this.fetchCouponList()
+            // 调用获取商品原价
+            if (
+              this.info.sale_model === 1 &&
+              !this.form.getFieldValue('coursePrice') &&
+              this.form.getFieldValue('coursePrice') !== 0
+            ) {
+              return
+            }
+            this.getOrderPrice()
+            this.getPrice(
+              this.selectCoupon,
+              this.selectAdvance,
+              +this.reduceAmount
+            )
+          })
       })
     },
     // 计算实付金额
@@ -773,6 +656,9 @@ export default {
       let special_amount = this.personalPrice.sell_price
       if (this.info.sale_model === 1) {
         special_amount = this.form.getFieldValue('coursePrice')
+        if (!special_amount) {
+          return
+        }
       }
       this.salePersonalCourseService.orderAmountPriceAction$.dispatch({
         product_id: this.id,
@@ -787,39 +673,37 @@ export default {
         this.isAmountStateTip = '购买数量未确认，请点击确定！'
         return
       }
-      this.form.validateFields((error, values) => {
-        if (!error) {
-          this.salePersonalCourseService
-            .setTransactionOrder({
-              member_id: values.memberId,
-              member_name: values.memberName,
-              mobile: values.memberMobile,
-              course_id: this.id,
-              contract_number: values.contractNumber,
-              buy_num: values.buyNum,
-              course_price:
-                this.info.sale_model === 2
-                  ? this.personalPrice.sell_price
-                  : values.coursePrice,
-              coupon_id: this.selectCoupon.id,
-              advance_id: this.selectAdvance,
-              reduce_amount: this.reduceAmount || 0,
-              sale_id: values.saleName,
-              description: this.description,
-              gift_course_num: values.gift_course_num || 0,
-              coach_id: values.coachId,
-              coach_level_id: values.coach_level,
-              sale_range: this.info.sale_range.type,
-              order_amount: this.priceInfo
+      this.form.validate().then(values => {
+        this.salePersonalCourseService
+          .setTransactionOrder({
+            member_id: values.memberId,
+            member_name: values.memberName,
+            mobile: values.memberMobile,
+            course_id: this.id,
+            contract_number: values.contractNumber,
+            buy_num: values.buyNum,
+            course_price:
+              this.info.sale_model === 2
+                ? this.personalPrice.sell_price
+                : values.coursePrice,
+            coupon_id: this.selectCoupon.id,
+            advance_id: this.selectAdvance,
+            reduce_amount: this.reduceAmount || 0,
+            sale_id: values.saleName,
+            description: this.description,
+            gift_course_num: values.gift_course_num || 0,
+            coach_id: values.coachId,
+            coach_level_id: values.coach_level,
+            sale_range: this.info.sale_range.type,
+            order_amount: this.priceInfo
+          })
+          .subscribe(result => {
+            this.$emit('success', {
+              type: 'create',
+              orderId: result.info.order_id
             })
-            .subscribe(result => {
-              this.$emit('success', {
-                type: 'create',
-                orderId: result.info.order_id
-              })
-              this.show = false
-            })
-        }
+            this.show = false
+          })
       })
     },
     onPay() {
@@ -827,39 +711,37 @@ export default {
         this.isAmountStateTip = '购买数量未确认，请点击确定！'
         return
       }
-      this.form.validateFields((error, values) => {
-        if (!error) {
-          this.salePersonalCourseService
-            .setTransactionPay({
-              member_id: values.memberId,
-              member_name: values.memberName,
-              mobile: values.memberMobile,
-              course_id: this.id,
-              contract_number: values.contractNumber,
-              buy_num: values.buyNum,
-              course_price:
-                this.info.sale_model === 2
-                  ? this.personalPrice.sell_price
-                  : values.coursePrice,
-              coupon_id: this.selectCoupon.id,
-              advance_id: this.selectAdvance,
-              reduce_amount: this.reduceAmount || 0,
-              sale_id: values.saleName,
-              description: this.description,
-              gift_course_num: values.gift_course_num || 0,
-              coach_id: values.coachId,
-              coach_level_id: values.coach_level,
-              sale_range: this.info.sale_range.type,
-              order_amount: this.priceInfo
+      this.form.validate().then(values => {
+        this.salePersonalCourseService
+          .setTransactionPay({
+            member_id: values.memberId,
+            member_name: values.memberName,
+            mobile: values.memberMobile,
+            course_id: this.id,
+            contract_number: values.contractNumber,
+            buy_num: values.buyNum,
+            course_price:
+              this.info.sale_model === 2
+                ? this.personalPrice.sell_price
+                : values.coursePrice,
+            coupon_id: this.selectCoupon.id,
+            advance_id: this.selectAdvance,
+            reduce_amount: this.reduceAmount || 0,
+            sale_id: values.saleName,
+            description: this.description,
+            gift_course_num: values.gift_course_num || 0,
+            coach_id: values.coachId,
+            coach_level_id: values.coach_level,
+            sale_range: this.info.sale_range.type,
+            order_amount: this.priceInfo
+          })
+          .subscribe(result => {
+            this.$emit('success', {
+              type: 'createPay',
+              orderId: result.info.order_id
             })
-            .subscribe(result => {
-              this.$emit('success', {
-                type: 'createPay',
-                orderId: result.info.order_id
-              })
-              this.show = false
-            })
-        }
+            this.show = false
+          })
       })
     }
   }

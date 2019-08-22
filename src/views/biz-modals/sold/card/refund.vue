@@ -163,10 +163,7 @@
               :max="+refundInfo.pay_price"
               :float="true"
               placeholder="请输入本次退款的实际金额"
-              v-decorator="[
-                'refundPrice',
-                { rules: [{ validator: refund_price_validator }] }
-              ]"
+              v-decorator="decorators.refund_price"
             >
               <template slot="addonAfter">
                 元
@@ -208,13 +205,16 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { RefundService } from './refund.service'
 import { UserService } from '@/services/user.service'
+import { ruleOptions } from './refund.config'
 export default {
   name: 'ModalSoldCardRefund',
   bem: {
     refund: 'modal-sold-card-refund'
+  },
+  serviceProviders() {
+    return [RefundService]
   },
   serviceInject() {
     return {
@@ -231,12 +231,15 @@ export default {
   },
   props: ['id', 'type'],
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       show: false,
       refundReason: 1,
       frozenPayType: 2,
-      description: '',
-      form: this.$form.createForm(this)
+      description: ''
     }
   },
   computed: {
@@ -251,14 +254,13 @@ export default {
     this.refundService.getRefundInfo(this.id, this.type).subscribe()
   },
   methods: {
-    moment,
     onSubmit() {
-      this.form.validateFields((error, values) => {
+      this.form.validate((error, values) => {
         if (!error) {
           this.refundService
             .refund(
               {
-                refund_price: +values.refundPrice,
+                refund_price: +values.refund_price,
                 refund_reason: +this.refundReason,
                 refund_channel: +this.frozenPayType,
                 description: this.description
@@ -272,15 +274,6 @@ export default {
             })
         }
       })
-    },
-    refund_price_validator(rule, value, callback) {
-      if (!value || +value === 0) {
-        // eslint-disable-next-line
-        callback('请输入退款金额')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
     }
   }
 }

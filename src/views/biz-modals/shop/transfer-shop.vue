@@ -38,7 +38,7 @@
       <st-form-item label="转店至" style="margin-top:20px">
         <a-select
           placeholder="请选择门店"
-          v-decorator="basicInfoRuleList.to_shop"
+          v-decorator="decorators.to_shop"
           @change="shopId"
         >
           <a-select-option
@@ -56,7 +56,7 @@
             <st-input-number
               :float="true"
               placeholder="请输入转让手续费"
-              v-decorator="basicInfoRuleList.poundage"
+              v-decorator="decorators.poundage"
             >
               <template slot="addonAfter">
                 元
@@ -70,7 +70,7 @@
           <st-form-item label="手续费归属">
             <a-select
               placeholder="请选择手续费归属"
-              v-decorator="basicInfoRuleList.attribution"
+              v-decorator="decorators.attribution"
             >
               <a-select-option
                 v-for="item in getTransferShop.list"
@@ -102,6 +102,7 @@
 </template>
 <script>
 import { TransferShopService } from './transfer-shop.service'
+import { columns, ruleOptions } from './transfer-shop.config'
 export default {
   serviceInject() {
     return {
@@ -122,44 +123,15 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      form: this.$form.createForm(this),
-      columns: [
-        {
-          title: '卡课',
-          dataIndex: 'name'
-        },
-        {
-          title: '剩余',
-          dataIndex: 'remain_amount',
-          scopedSlots: { customRender: 'remain_amount' }
-        },
-        {
-          title: '有效期',
-          dataIndex: 'start_end',
-          scopedSlots: { customRender: 'start_end' }
-        }
-      ],
+      form,
+      decorators,
       getDataList: [],
       getData: [],
       getTransferShop: [],
       show: false,
-      basicInfoRuleList: {
-        poundage: ['poundage'],
-        attribution: ['attribution'],
-        course_id: ['course_id'],
-        to_shop: [
-          'to_shop',
-          {
-            rules: [
-              {
-                required: true,
-                message: '请填写收款方式'
-              }
-            ]
-          }
-        ]
-      },
       selectedRows: [],
       selectedRowsHelp: ''
     }
@@ -187,24 +159,23 @@ export default {
       })
     },
     save(e) {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          if (this.selectedRows.length <= 0) {
-            this.selectedRowsHelp = '请选择冻结的卡课'
-            return
-          } else {
-            this.selectedRowsHelp = ''
-          }
-          values.course_id = this.selectedRows.map(item => {
-            return item.id
-          })
-          values.id = this.record.member_id
-          this.getMemberTransfer(values)
+      this.form.validate().then(values => {
+        if (this.selectedRows.length <= 0) {
+          this.selectedRowsHelp = '请选择冻结的卡课'
+          return
+        } else {
+          this.selectedRowsHelp = ''
         }
+        values.course_id = this.selectedRows.map(item => {
+          return item.id
+        })
+        values.id = this.record.member_id
+        this.getMemberTransfer(values)
       })
     }
   },
   computed: {
+    columns,
     rowSelection() {
       let self = this
       const { selectedRowKeys } = this

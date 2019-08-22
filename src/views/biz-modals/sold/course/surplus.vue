@@ -42,17 +42,7 @@
             <td>
               <st-form-item labelWidth="0" labelGutter="0">
                 <st-input-number
-                  v-decorator="[
-                    `num-${index}`,
-                    {
-                      rules: [
-                        {
-                          required: true,
-                          message: '请输入课时'
-                        }
-                      ]
-                    }
-                  ]"
+                  v-decorator="decorators[calcDecoId(item)]"
                   :min="0"
                   :max="999"
                   placeholder="输入修改后的课时"
@@ -84,6 +74,7 @@
 <script>
 import { cloneDeep } from 'lodash-es'
 import { SurplusService } from './surplus.service'
+import { find as lodashFind, set } from 'lodash-es'
 export default {
   name: 'ModalSoldPackageSurplus',
   bem: {
@@ -117,14 +108,38 @@ export default {
     this.getEditInfo()
   },
   data() {
+    const form = this.$stForm.create()
     return {
-      form: this.$form.createForm(this),
+      form,
       show: false,
       courseList: [],
       remarks: ''
     }
   },
+  computed: {
+    decorators() {
+      const ruleOptions = {}
+      this.courseList.forEach(item => {
+        const decoId = this.calcDecoId(item)
+        ruleOptions[decoId] = {
+          rules: [
+            {
+              required: true,
+              message: '请输入课时'
+            }
+          ]
+        }
+      })
+      return this.form.decorators(ruleOptions)
+    }
+  },
   methods: {
+    /**
+     * 计算decoratod中的id值 用于表单验证 发送是取值
+     */
+    calcDecoId(item) {
+      return `${item.product_type}-${item.id}`
+    },
     getEditInfo() {
       this.surplusService
         .getPackageEditInfo(this.courseData.id)
@@ -133,29 +148,25 @@ export default {
         })
     },
     onSubmit() {
-      this.form.validateFields((error, values) => {
-        if (!error) {
-          Object.keys(values).forEach(i => {
-            this.courseList[i.split('-')[1]].courseNum = +values[i]
+      this.form.validate().then(values => {
+        let courseInfo = this.courseList.map(item => {
+          const decoId = this.calcDecoId(item)
+          return {
+            id: item.id,
+            product_type: item.product_type,
+            course_num_remain: +values[decoId]
+          }
+        })
+
+        this.surplusService
+          .edit(
+            { course_info: courseInfo, description: this.remarks },
+            this.courseData.id
+          )
+          .subscribe(res => {
+            this.$emit('success')
+            this.show = false
           })
-          let courseInfo = []
-          this.courseList.forEach(i => {
-            courseInfo.push({
-              id: i.id,
-              product_type: i.product_type,
-              course_num_remain: i.courseNum
-            })
-          })
-          this.surplusService
-            .edit(
-              { course_info: courseInfo, description: this.remarks },
-              this.courseData.id
-            )
-            .subscribe(res => {
-              this.$emit('success')
-              this.show = false
-            })
-        }
       })
     }
   }

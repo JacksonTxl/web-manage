@@ -208,6 +208,7 @@ import CardShopMemberRecoverSale from '@/views/biz-modals/card/shop-member/recov
 import CardShopMemberShelf from '@/views/biz-modals/card/shop-member/shelf'
 import CardShopMemberShopTable from '@/views/biz-modals/card/shop-member/shop-table'
 import CardShopMemberStopSale from '@/views/biz-modals/card/shop-member/stop-sale'
+import { SHOP_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH } from '@/constants/events'
 export default {
   mixins: [tableMixin],
   name: 'PageShopProductMemberAll',
@@ -215,8 +216,8 @@ export default {
     all: 'page-shop-product-member-list-all'
   },
   events: {
-    'shop-product-card-member-list-all:onSingleSearch'(key, data, options) {
-      this.onSingleSearch(key, data, options)
+    [SHOP_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH](key, data) {
+      this.onKeywordsSearch(key, data)
     }
   },
   modals: {
@@ -318,7 +319,7 @@ export default {
             .deleteCard(record.id)
             .toPromise()
             .then(() => {
-              this.$router.push({ force: true, query: this.query })
+              this.$router.reload()
             })
         }
       })

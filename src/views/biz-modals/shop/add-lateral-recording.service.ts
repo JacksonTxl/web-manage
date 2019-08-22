@@ -1,17 +1,11 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect, Action } from 'rx-state'
-import { pluck } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { Injectable } from 'vue-service-app'
+import { State } from 'rx-state'
 import { MemberApi } from '@/api/v1/member'
 
-interface CardsTableModelState {
-  lableInfo: any
-}
 @Injectable()
-export class AddLateralRecordingService extends Store<CardsTableModelState> {
-  constructor(private MemberApi: MemberApi) {
-    super()
-  }
+export class AddLateralRecordingService {
+  loading$ = new State({})
+  constructor(private MemberApi: MemberApi) {}
   getAddMemberPhysical(data: any) {
     return this.MemberApi.getAddMemberPhysical(data)
   }

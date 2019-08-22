@@ -104,8 +104,9 @@ export default {
     },
     goMemberDetai(e) {
       console.log('跳转到用户详情', e)
+      let member_id = e.member_id
       this.$router.push({
-        name: 'brand-staff-info-basic',
+        name: 'shop-member-info-basic',
         query: {
           id: e.member_id
         }

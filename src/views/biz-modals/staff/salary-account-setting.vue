@@ -5,36 +5,18 @@
       <st-form-item label="姓名" required>
         <a-input
           placeholder="请输入姓名"
-          v-decorator="[
-            'account_name',
-            {
-              rules: [{ required: true, message: '请输入姓名' }],
-              initialValue: accountInfo.account_name
-            }
-          ]"
+          v-decorator="decorators.account_name"
         />
       </st-form-item>
       <st-form-item label="银行卡号" required>
         <a-input
-          v-decorator="[
-            'card_number',
-            {
-              rules: [{ required: true, message: '请输入姓名' }],
-              initialValue: accountInfo.card_number
-            }
-          ]"
+          v-decorator="decorators.card_number"
           placeholder="请输入银行卡号"
         />
       </st-form-item>
       <st-form-item class="mg-b0" label="开户银行" required>
         <a-input
-          v-decorator="[
-            'bank_name',
-            {
-              rules: [{ required: true, message: '请输入开户银行' }],
-              initialValue: accountInfo.bank_name
-            }
-          ]"
+          v-decorator="decorators.bank_name"
           placeholder="请输入开户银行"
           class="mg-b8"
         />
@@ -45,6 +27,7 @@
 <script>
 import StaffInfo from './staff-info'
 import { SalaryAccountSettingService } from './salary-account-setting.service'
+import { ruleOptions } from './salary-account-setting.config'
 export default {
   name: 'SalaryAccountSetting',
   serviceInject() {
@@ -58,9 +41,12 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
       show: false,
-      form: this.$form.createForm(this)
+      form,
+      decorators
     }
   },
   props: {
@@ -74,18 +60,24 @@ export default {
   },
   methods: {
     getBankInfo() {
-      this.salaryAccountSettingService.getBankInfo(this.staff.id).subscribe()
+      this.salaryAccountSettingService
+        .getBankInfo(this.staff.id)
+        .subscribe(res => {
+          this.form.setFieldsValue({
+            account_name: res.bank.account_name,
+            card_number: res.bank.card_number,
+            bank_name: res.bank.bank_name
+          })
+        })
     },
     onSubmit() {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          this.salaryAccountSettingService
-            .putStaffBindBank({ id: this.staff.id, ...values })
-            .subscribe(res => {
-              this.show = false
-              this.$router.push({ force: true })
-            })
-        }
+      this.form.validate().then(values => {
+        this.salaryAccountSettingService
+          .putStaffBindBank({ id: this.staff.id, ...values })
+          .subscribe(res => {
+            this.show = false
+            this.$router.reload()
+          })
       })
     }
   },

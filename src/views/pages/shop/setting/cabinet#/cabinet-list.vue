@@ -70,6 +70,8 @@
 </template>
 <script>
 import { CabinetListService as CabinetService } from './cabinet-list.service'
+import ShopCabinetEditLongTerm from '@/views/biz-modals/shop/cabinet/edit-long-term'
+import ShopCabinetEditTemporary from '@/views/biz-modals/shop/cabinet/edit-temporary'
 export default {
   bem: {
     b: 'st-setting-cabinet'
@@ -85,6 +87,10 @@ export default {
       resData: cabinetService.resData$,
       auth: cabinetService.auth$
     }
+  },
+  modals: {
+    ShopCabinetEditLongTerm,
+    ShopCabinetEditTemporary
   },
   props: {
     isOperationInBatch: {

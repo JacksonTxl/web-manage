@@ -45,6 +45,7 @@ fs.writeFileSync(
 module.exports = {
   lintOnSave: false,
   css: {
+    sourceMap: true,
     extract: IS_PROD,
     loaderOptions: {
       less: {
@@ -87,7 +88,11 @@ module.exports = {
         'vue-router': 'window.VueRouter',
         moment: 'window.moment',
         'ant-design-vue': 'window.antd',
-        immer: 'window.immer'
+        immer: 'window.immer',
+        rxjs: 'window.rxjs',
+        'rxjs/operators': 'window.rxjs.operators',
+        'rxjs/ajax': 'window.rxjs.ajax',
+        'lodash-es': 'window._'
       })
       .plugin('external-vendor')
       .use(WebpackExternalVendorPlugin, [
@@ -104,7 +109,11 @@ module.exports = {
               IS_DEV
                 ? 'ant-design-vue/dist/antd.js'
                 : 'ant-design-vue/dist/antd.min.js',
-              'immer/dist/immer.umd.js'
+              'immer/dist/immer.umd.js',
+              IS_DEV
+                ? 'rxjs/bundles/rxjs.umd.js'
+                : 'rxjs/bundles/rxjs.umd.min.js',
+              IS_DEV ? 'lodash/lodash.js' : 'lodash/lodash.min.js'
             ],
             base: ['./antd.css']
           }
@@ -153,7 +162,7 @@ module.exports = {
     config.resolve.alias.set('rx-state', path.join(__dirname, '/rx-state'))
 
     config.module.noParse(
-      content => /@antv\/g2/.test(content) || /@antv\/data-set/.test(content)
+      content => /st-g2/.test(content) || /st-data-set/.test(content)
     )
     return config
   }

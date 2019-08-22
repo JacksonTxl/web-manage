@@ -153,11 +153,11 @@ export default {
       return [{ value: -1, label: '全部状态' }, ...list]
     }
   },
-  data() {
+  data(vm) {
     return {
       couponName: '',
       couponStatus: -1,
-      columns
+      columns: columns(vm)
     }
   },
   mounted() {
@@ -220,7 +220,7 @@ export default {
           '结束后当用户进入投放该优惠券的活动时，将无法领取该优惠券。确认要结束？',
         onOk() {
           that.listService.stopMarketingCoupon(record.id).subscribe(res => {
-            that.$router.push({ force: true })
+            that.$router.reload()
           })
         },
         onCancel() {}

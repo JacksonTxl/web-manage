@@ -62,14 +62,14 @@
               >
                 编辑
               </a>
-              <a-popconfirm
+              <st-popconfirm
                 v-if="item.class_price === 0"
                 :title="`删除后不可进行恢复,确定删除此教练等级？`"
                 @confirm="onDelete(item.id)"
               >
                 <a v-if="item.auth['brand:setting:coach_level|del']">删除</a>
-              </a-popconfirm>
-              <a-popconfirm v-else @confirm="onDelete(item.id)">
+              </st-popconfirm>
+              <st-popconfirm v-else @confirm="onDelete(item.id)">
                 <div slot="title">
                   {{ `删除教练等级${item.setting_name}` }}
                   <div class="color-danger">
@@ -82,7 +82,7 @@
                   </div>
                 </div>
                 <a v-if="item.auth['brand:setting:coach_level|del']">删除</a>
-              </a-popconfirm>
+              </st-popconfirm>
             </st-table-actions>
           </td>
         </tr>

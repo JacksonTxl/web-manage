@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import { Chart } from '@antv/g2'
-import { View } from '@antv/data-set'
+import { Chart } from 'st-g2'
+import { View } from 'st-data-set'
 import chartMixin from './mixin'
 
 export default {

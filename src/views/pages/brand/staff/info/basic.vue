@@ -241,9 +241,6 @@ export default {
   data() {
     return {}
   },
-  mounted() {
-    console.log('=======', this.basicInfo)
-  },
   filters: {
     workStatusFilter(val) {
       let ret = ''

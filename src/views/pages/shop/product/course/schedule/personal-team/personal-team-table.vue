@@ -5,14 +5,10 @@
       slot="title"
     >
       <div class="title__left">
-        <st-button
-          v-modal-link="{ name: 'schedule-team-add-course-schedule-batch' }"
-          class="mg-r8"
-          type="primary"
-        >
+        <st-button @click="onClickScheduleInBatch" class="mg-r8" type="primary">
           批量排期
         </st-button>
-        <st-button v-modal-link="{ name: 'schedule-team-copy-schedule' }">
+        <st-button @click="onClickCopySchedule">
           复制排期
         </st-button>
       </div>
@@ -40,7 +36,7 @@
         href="javascript:;"
         slot="extra"
         class="add-schedule"
-        v-modal-link="{ name: 'schedule-team-add-course-schedule' }"
+        @click="onClickAdd"
       >
         + 添加课程排期
       </span>
@@ -56,10 +52,6 @@
           <div class="course-info">
             <div class="course-name">{{ info.course_name }}</div>
             <div class="address">
-              <div class="mg-r24">
-                <span class="label">场地：</span>
-                <span class="value">{{ info.court_name }}</span>
-              </div>
               <div>
                 <span class="label">教练：</span>
                 <span class="value">{{ info.coach_name }}</span>
@@ -75,9 +67,9 @@
               <span class="label">预约：</span>
               <span class="value">{{ info.reserved_num }}人</span>
             </div>
-            <div>
+            <div v-if="info.can_reserve_num">
               <span class="label">可约：</span>
-              <span class="value">{{ info.reserve_max }}人</span>
+              <span class="value">{{ info.can_reserve_num }}人</span>
             </div>
           </div>
         </a-col>
@@ -102,16 +94,16 @@ import { PersonalTeamScheduleScheduleService } from '../personal-team/service#/s
 import { RouteService } from '@/services/route.service'
 import date from '@/views/biz-components/schedule/date#/date-component.vue'
 import SchedulePersonalTeamReserveInfo from '@/views/biz-modals/schedule/personal-team/reserve-info'
-import ScheduleTeamAddCourseScheduleBatch from '@/views/biz-modals/schedule/team/add-course-schedule-batch'
-import ScheduleTeamAddCourseSchedule from '@/views/biz-modals/schedule/team/add-course-schedule'
-import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
+import SchedulePersonalTeamAddInBatch from '@/views/biz-modals/schedule/personal-team/add-in-batch'
+import SchedulePersonalTeamAdd from '@/views/biz-modals/schedule/personal-team/add'
+import SchedulePersonalTeamCopy from '@/views/biz-modals/schedule/personal-team/copy'
 export default {
   name: 'SchedulePersonalTeamTable',
   modals: {
     SchedulePersonalTeamReserveInfo,
-    ScheduleTeamAddCourseScheduleBatch,
-    ScheduleTeamAddCourseSchedule,
-    ScheduleTeamCopySchedule
+    SchedulePersonalTeamAddInBatch,
+    SchedulePersonalTeamAdd,
+    SchedulePersonalTeamCopy
   },
   serviceInject() {
     return {
@@ -141,6 +133,41 @@ export default {
     }
   },
   methods: {
+    // 刷新页面
+    onScheduleChange() {
+      this.$router.push({ query: this.query, force: true })
+    },
+    onClickAdd() {
+      this.$modalRouter.push({
+        name: 'schedule-personal-team-add',
+        on: {
+          ok: res => {
+            this.onScheduleChange()
+          }
+        }
+      })
+    },
+    onClickScheduleInBatch() {
+      this.$modalRouter.push({
+        name: 'schedule-personal-team-add-in-batch',
+        on: {
+          ok: res => {
+            this.onScheduleChange()
+          }
+        }
+      })
+    },
+    // 复制排期
+    onClickCopySchedule() {
+      this.$modalRouter.push({
+        name: 'schedule-personal-team-copy',
+        on: {
+          ok: res => {
+            this.onScheduleChange()
+          }
+        }
+      })
+    },
     onClickSkipSchedule() {
       this.$router.push({
         name: 'shop-product-course-schedule-personal-team',

@@ -3,13 +3,13 @@
     <div class="shop-member-crowd-add__box">
       <div class="shop-member-crowd-add__left">
         <st-t2>人群定义维度</st-t2>
-        <div style="padding-top:24px;coler:#9BACB9">
+        <div class="shop-member-crowd-add__tip">
           单个人群最多可添加5个条件
         </div>
         <basic-data v-model="selectData" :flag="flag"></basic-data>
       </div>
       <div class="shop-member-crowd-add__right">
-        <st-t2 style="margin-bottom: 24px;">
+        <st-t2 class="mg-b24">
           {{ $route.query.id ? '编辑人群' : '新增人群' }}
         </st-t2>
         <st-form
@@ -54,7 +54,8 @@
             >
               <st-icon
                 type="delete"
-                style="color:rgb(255, 94, 65);cursor: pointer"
+                class="shop-member-crowd-add__icon"
+                color="#ff5e41"
               />
             </div>
             <component
@@ -63,12 +64,14 @@
             ></component>
           </div>
         </template>
-        <div style="padding-top:32px;display: flex;justify-content: center;">
-          <st-button style="margin-right:16px;width:102px">取消</st-button>
+        <div class="shop-member-crowd-add__button-group">
+          <st-button class="shop-member-crowd-add__button-cancel">
+            取消
+          </st-button>
           <st-button
             v-if="selectData.arrData.length"
             type="primary"
-            style="margin-right:16px;width:102px"
+            class="mg-l16 shop-member-crowd-add__button-save"
             @click="conserve"
           >
             保存
@@ -77,7 +80,7 @@
             v-else
             disabled
             type="primary"
-            style="margin-right:16px;width:102px"
+            class="mg-l16 shop-member-crowd-add__button-save"
           >
             保存
           </st-button>

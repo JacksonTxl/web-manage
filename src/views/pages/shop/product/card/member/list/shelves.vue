@@ -106,6 +106,7 @@ import { RouteService } from '@/services/route.service'
 import { columns, CARD_TYPE } from './shelves.config.ts'
 import tableMixin from '@/mixins/table.mixin'
 import CardShopMemberShopTable from '@/views/biz-modals/card/shop-member/shop-table'
+import { SHOP_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH } from '@/constants/events'
 export default {
   mixins: [tableMixin],
   name: 'PageShopProductMemberShelves',
@@ -113,8 +114,8 @@ export default {
     shelves: 'page-shop-product-member-list-shelves'
   },
   events: {
-    'shop-product-card-member-list-shelves:onSingleSearch'(key, data, options) {
-      this.onSingleSearch(key, data, options)
+    [SHOP_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH](key, data) {
+      this.onKeywordsSearch(key, data)
     }
   },
   modals: {
@@ -155,7 +156,7 @@ export default {
             .setCardShelfDown(record.id)
             .toPromise()
             .then(() => {
-              this.$router.push({ force: true, query: this.query })
+              this.$router.reload()
             })
         }
       })
