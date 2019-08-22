@@ -36,7 +36,7 @@
         href="javascript:;"
         slot="extra"
         class="add-schedule"
-        v-modal-link="{ name: 'schedule-personal-team-add' }"
+        @click="onClickAdd"
       >
         + 添加课程排期
       </span>
@@ -136,6 +136,16 @@ export default {
     // 刷新页面
     onScheduleChange() {
       this.$router.push({ query: this.query, force: true })
+    },
+    onClickAdd() {
+      this.$modalRouter.push({
+        name: 'schedule-personal-team-add',
+        on: {
+          ok: res => {
+            this.onScheduleChange()
+          }
+        }
+      })
     },
     onClickScheduleInBatch() {
       this.$modalRouter.push({

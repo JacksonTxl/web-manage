@@ -431,13 +431,13 @@ export default {
             start_time: moment(start * 1000),
             end_time: moment(end * 1000)
           })
-          this.form.validateFields(['start_time', 'end_time'])
+          this.form.validate(['start_time', 'end_time'])
         })
       }
     },
     onOnsale() {
       this.form
-        .validateFields(['start_time', 'end_time'])
+        .validate(['start_time', 'end_time'])
         .then(res => {
           this.listService
             .onsalePackage({
