@@ -61,8 +61,8 @@ export const ruleOptions = (vm: any) => {
           message: '请输入用户名'
         },
         {
-          pattern: pattern.CN_EN_NUM('6-15'),
-          message: '请输入6~15个字符'
+          pattern: pattern.CN_EN_NUM('1-15'),
+          message: '请输入1-15个字符'
         }
       ]
     },
