@@ -14,8 +14,7 @@ import VueEvents from '@/vendor/vue-events'
 // @ts-ignore
 import VueStyleguide from '@/vendor/vue-styleguide'
 
-// @ts-ignore
-import VueStForm from '@/vendor/vue-st-form'
+import VueStForm from 'vue-st-form'
 
 import ICountUp from 'vue-countup-v2'
 // @ts-ignore
@@ -34,6 +33,7 @@ Vue.use(Antd)
 Vue.use(Viewer)
 Vue.use(VueBemHelper)
 Vue.use(VueEvents)
+// @ts-ignore
 Vue.use(VueStForm)
 Vue.use(VueStyleguide)
 
