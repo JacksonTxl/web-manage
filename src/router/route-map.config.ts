@@ -901,7 +901,12 @@ export const routeMapConfig = {
   },
   'shop-stat'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '数据统计'
-    routeConfig.meta.tabs = ['shop-stat-revenue', 'shop-stat-order']
+    routeConfig.meta.tabs = [
+      'shop-stat-revenue',
+      'shop-stat-order',
+      'shop-stat-course',
+      'shop-stat-cashier'
+    ]
   },
   'shop-stat-revenue'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '营收报表'
@@ -915,6 +920,24 @@ export const routeMapConfig = {
   },
   'shop-stat-order'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '订单报表'
+    routeConfig.queryOptions = {
+      day: { type: Number },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-stat-course'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '上课报表'
+    routeConfig.queryOptions = {
+      day: { type: Number },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' }
+    }
+  },
+  'shop-stat-cashier'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '收银报表'
     routeConfig.queryOptions = {
       day: { type: Number },
       current_page: { type: Number, default: 1 },
