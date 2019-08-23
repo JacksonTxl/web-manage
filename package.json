@@ -5,7 +5,6 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "cross-env NODE_ENV=production gulp build && vue-cli-service build --report",
-    "commit": "git-cz",
     "lint": "vue-cli-service lint",
     "ci": "npm run init && npm run build",
     "dev": "cross-env BABEL_ENV=development gulp dev",
@@ -68,7 +67,6 @@
     "@vue/eslint-config-standard": "^4.0.0",
     "@vue/eslint-config-typescript": "^4.0.0",
     "babel-plugin-dynamic-import-node": "^2.3.0",
-    "commitizen": "^3.0.5",
     "conventional-changelog-cli": "^2.0.23",
     "cross-env": "^5.2.0",
     "cross-spawn": "^6.0.5",
