@@ -96,7 +96,7 @@
                   | enumFilter('deposit_card.support_sales')
               }}
             </span>
-            <span>(已上架{{ cardInfo.can_use_shop_num }}家门店</span>
+            <span>(已上架{{ cardInfo.on_line_shop_num }}家门店</span>
             <span>/共{{ cardInfo.total_shop_num }}家门店)</span>
           </p>
           <st-container

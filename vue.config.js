@@ -82,6 +82,20 @@ module.exports = {
     // 去除prefetch
     config.plugins.delete('prefetch')
 
+    // 默认4096
+    config.module
+      .rule('images')
+      .use('url-loader')
+      .loader('url-loader')
+      .tap(options => Object.assign(options, { limit: 10240 }))
+
+    // 默认未开启
+    config.module
+      .rule('svg')
+      .use('file-loader')
+      .loader('url-loader')
+      .tap(options => Object.assign(options, { limit: 10240 }))
+
     config
       .externals({
         vue: 'window.Vue',
