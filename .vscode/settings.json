@@ -4,8 +4,7 @@
     "javascript",
     "javascriptreact",
     "vue",
-    "typescript",
-    "json"
+    "typescript"
   ],
   "eslint.alwaysShowStatus": true,
   "editor.quickSuggestions": {
