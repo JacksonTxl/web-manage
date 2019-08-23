@@ -10,6 +10,10 @@ export default {
       arrowPointAtCenter: true,
       ...this.$attrs
     }
+    // slot title生效
+    if (this.$slots.title) {
+      props.title = undefined
+    }
     return h(
       'a-popconfirm',
       {
