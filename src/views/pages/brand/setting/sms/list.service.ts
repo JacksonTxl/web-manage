@@ -11,7 +11,7 @@ export class ListService {
   list$ = new State([])
   page$ = new State([])
   loading$ = new State({})
-  notifyType$ = this.userService.getOptions$('setting.notify_type').pipe()
+  notifyType$ = this.userService.getOptions$('setting.notify_type')
   sendStatus$ = this.userService.getOptions$('setting.send_status')
 
   constructor(private SmsApi: SmsApi, private userService: UserService) {

@@ -293,6 +293,19 @@ export const routeMapConfig = {
   'shop-finance-order-info-commodity-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '商品信息'
   },
+  // 门店设置通行设置
+  'shop-setting-hardware'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '硬件设置'
+    routeConfig.queryOptions = {}
+    routeConfig.meta.tabs = ['shop-setting-hardware-entry-list']
+  },
+  'shop-setting-hardware-entry-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '通行设置'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
   'brand-product-course-personal-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增私教课'
     routeConfig.meta.parentId = 'brand-product-course-personal-list-brand'

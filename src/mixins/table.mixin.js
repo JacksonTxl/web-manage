@@ -50,7 +50,8 @@ const ROUTE_NAMES_USE_PAGE = [
   'shop-staff-info-member',
   'shop-staff-info-course',
   'shop-staff-info-sold',
-  'shop-staff-list'
+  'shop-staff-list',
+  'shop-setting-hardware-entry-list'
 ]
 
 export default {
