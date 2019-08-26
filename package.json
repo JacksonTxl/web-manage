@@ -50,7 +50,7 @@
     "vue-modal-router": "0.4.0",
     "vue-router": "^3.0.2",
     "vue-router-multiguard": "^1.0.3",
-    "vue-st-form": "^0.0.1",
+    "vue-st-form": "0.0.4",
     "vuedraggable": "^2.19.2"
   },
   "devDependencies": {
