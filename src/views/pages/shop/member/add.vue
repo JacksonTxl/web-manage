@@ -55,6 +55,7 @@
                   v-for="(item, index) in memberEnums.online.value"
                   :key="index"
                   :value="+index"
+                  :disabled="+index | isOnlineDisabled"
                 >
                   {{ item }}
                 </a-select-option>
@@ -377,6 +378,11 @@ export default {
       faceList: [],
       country_prefix: 37,
       source_category: -1
+    }
+  },
+  filters: {
+    isOnlineDisabled(val) {
+      return [1, 2, 3].includes(val)
     }
   },
   methods: {
