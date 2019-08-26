@@ -38,7 +38,7 @@
             {{ reserveInfo.start_date }}
           </st-info-item>
           <st-info-item label="预约人数">
-            {{ reserveInfo.reserve.length }}
+            <!-- {{ reserveInfo.reserve.length }} -->
           </st-info-item>
         </st-info>
       </a-col>
@@ -64,7 +64,10 @@
               @change="onChange"
               :notFoundContent="null"
             >
-              <a-select-option v-for="member in memberOptions" :key="member.id">
+              <a-select-option
+                v-for="member in memberOptions"
+                :key="member.member_id"
+              >
                 {{ member.member_name }}
               </a-select-option>
             </a-select>
@@ -170,7 +173,7 @@ import { RouteService } from '@/services/route.service'
 import SchedulePersonalTeamEdit from '@/views/biz-modals/schedule/personal-team/edit'
 import { columns } from './reserve-info.config'
 export default {
-  name: 'OrderInfo',
+  name: 'ReserveInfo',
   modals: {
     SchedulePersonalTeamEdit
   },
