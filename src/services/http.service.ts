@@ -54,14 +54,6 @@ export class HttpService {
     private nprogress: NProgressService
   ) {}
   get(url: string, options: RequestOptions = {}): Observable<any> {
-    const routeQuery = qs.parse(location.search.slice(1))
-    options.query = options.query || {}
-    // 增加应用的query
-    options.query = {
-      app_brand_id: routeQuery.app_brand_id,
-      app_shop_id: routeQuery.app_shop_id,
-      ...options.query
-    }
     let requestUrl = this.makeRequestUrl(url, options)
     const get$ = ajax
       .get(requestUrl, this.appHeaders)

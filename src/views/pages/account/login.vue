@@ -152,9 +152,8 @@ export default {
       params.nvc_val = getNVCVal()
       this.loginService.loginAccount(params).subscribe(res => {
         this.noCaptchaService.resetNVC()
-        this.userService.SET_FIRST_INITED(false)
         if (res.have_phone) {
-          this.$router.push('/')
+          location.href = '/'
         } else {
           /** TODO: 绑定手机需求*/
           this.$router.push('/')

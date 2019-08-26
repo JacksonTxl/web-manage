@@ -20,14 +20,7 @@ export class SwitchService {
     return this.switchApi.switchShop(params).pipe(
       tap(res => {
         this.tokenService.SET_TOKEN(res.token)
-        this.userService.SET_FIRST_INITED(false)
-        this.router.push({
-          name: 'index',
-          query: {
-            app_brand_id: this.router.currentRoute.query.app_brand_id,
-            app_shop_id: params.shop_id
-          }
-        })
+        location.href = '/'
       })
     )
   }
@@ -36,14 +29,7 @@ export class SwitchService {
     return this.switchApi.switchBackToBrand().pipe(
       tap(res => {
         this.tokenService.SET_TOKEN(res.token)
-        this.userService.SET_FIRST_INITED(false)
-        this.router.push({
-          name: 'index',
-          query: {
-            app_brand_id: this.router.currentRoute.query.app_brand_id,
-            app_shop_id: 0
-          }
-        })
+        location.href = '/'
       })
     )
   }
