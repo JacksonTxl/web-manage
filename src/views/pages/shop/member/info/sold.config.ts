@@ -15,7 +15,8 @@ export const classrecord = () => {
     },
     {
       title: '上课教练',
-      dataIndex: 'coach_name'
+      dataIndex: 'coach_name',
+      scopedSlots: { customRender: 'coach_name' }
     },
     {
       title: '预约人数',
