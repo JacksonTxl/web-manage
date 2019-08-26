@@ -111,6 +111,9 @@
             <span v-if="record.course_status.id === 2" class="frozen"></span>
             {{ record.course_status.name }}
           </span>
+          <span slot="coach_name" slot-scope="text">
+            {{ cardquery.course_type === 1 ? text : '--' }}
+          </span>
         </st-table>
       </a-col>
     </a-row>
@@ -123,6 +126,7 @@ import { cardItem, course, leaseArk } from './reserve.config'
 import { UserService } from '@/services/user.service'
 
 export default {
+  name: 'InfoReserve',
   serviceInject() {
     return {
       reserveService: ReserveService,
