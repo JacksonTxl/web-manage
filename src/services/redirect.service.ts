@@ -10,6 +10,7 @@ import { State, Computed } from 'rx-state/src'
 import { map } from 'rxjs/operators'
 import { NotificationService } from './notification.service'
 import { NProgressService } from './nprogress.service'
+import { UserService } from './user.service'
 
 interface RedirectConfig {
   /**
@@ -52,7 +53,8 @@ export class RedirectService implements RouteGuard {
     private authService: AuthService,
     private router: ServiceRouter,
     private notification: NotificationService,
-    private nprogress: NProgressService
+    private nprogress: NProgressService,
+    private userService: UserService
   ) {}
   getAuthTabs$(routeName: string) {
     return new Computed(
@@ -84,7 +86,10 @@ export class RedirectService implements RouteGuard {
     } = redirectConfig
     const resolveRoute = this.router.resolve({
       name: redirectRouteName,
-      query: redirectRouteQuery
+      query: {
+        ...to.meta.query,
+        ...redirectRouteQuery
+      }
     })
     // 跳转路径为空
     if (!redirectRouteName) {

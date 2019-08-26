@@ -4,7 +4,6 @@ import { tap, switchMap } from 'rxjs/operators'
 import { SwitchApi, SwitchShopInput } from '@/api/v1/account/switch'
 import { TokenService } from '@/services/token.service'
 import { UserService } from '@/services/user.service'
-import { forkJoin } from 'rxjs'
 
 @Injectable()
 export class SwitchService {
@@ -19,24 +18,32 @@ export class SwitchService {
   @Effect()
   switchShop(params: SwitchShopInput) {
     return this.switchApi.switchShop(params).pipe(
-      switchMap(res => {
+      tap(res => {
         this.tokenService.SET_TOKEN(res.token)
-        return this.userService.reloadDataWhenAfterSwitchShop()
-      }),
-      tap(() => {
-        this.router.push('/')
+        this.userService.SET_FIRST_INITED(false)
+        this.router.push({
+          name: 'index',
+          query: {
+            app_brand_id: this.router.currentRoute.query.app_brand_id,
+            app_shop_id: params.shop_id
+          }
+        })
       })
     )
   }
   @Effect()
   switchBackToBrand() {
     return this.switchApi.switchBackToBrand().pipe(
-      switchMap(res => {
+      tap(res => {
         this.tokenService.SET_TOKEN(res.token)
-        return this.userService.reloadDataWhenAfterSwitchShop()
-      }),
-      tap(() => {
-        this.router.push('/')
+        this.userService.SET_FIRST_INITED(false)
+        this.router.push({
+          name: 'index',
+          query: {
+            app_brand_id: this.router.currentRoute.query.app_brand_id,
+            app_shop_id: 0
+          }
+        })
       })
     )
   }

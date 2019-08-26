@@ -30,6 +30,7 @@ class VueServiceApp {
      * @type {ServiceRouter}
      */
     this.router = null
+
     if (!this.container) {
       throw new Error('[vue-service-app] need container!')
     }
@@ -68,7 +69,6 @@ class VueServiceApp {
   }
   queryOptionsHandler() {
     this.router.beforeEach((to, from, next) => {
-      console.log('beforeEach query')
       next.query = next.query || {}
       if (to.query._f) {
         delete to.query['_f']
@@ -102,7 +102,6 @@ class VueServiceApp {
       }
       this._calcMiddlewaresByRoute(to, from).then(middlewares => {
         // 不要随意使用console.log 会使对象无法回收
-        // console.log('middlewares', middlewares)
         if (!middlewares) {
           return next()
         }

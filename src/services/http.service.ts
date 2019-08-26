@@ -54,6 +54,14 @@ export class HttpService {
     private nprogress: NProgressService
   ) {}
   get(url: string, options: RequestOptions = {}): Observable<any> {
+    const routeQuery = qs.parse(location.search.slice(1))
+    options.query = options.query || {}
+    // 增加应用的query
+    options.query = {
+      app_brand_id: routeQuery.app_brand_id,
+      app_shop_id: routeQuery.app_shop_id,
+      ...options.query
+    }
     let requestUrl = this.makeRequestUrl(url, options)
     const get$ = ajax
       .get(requestUrl, this.appHeaders)
@@ -65,10 +73,17 @@ export class HttpService {
      * 1.缓存里没有的时候重新获取
      * 2.非浏览器的前进后退点击 重新获取
      */
-    if (!this.cacheContainer.get(requestUrl) || !this.router.isHistoryBF) {
-      this.cacheContainer.set(requestUrl, get$.pipe(shareReplay(1)))
+
+    const cacheKey = requestUrl
+
+    if (this.cacheContainer.get(cacheKey) && this.router.isHistoryBF) {
+      console.log('hit cache', cacheKey)
+      return this.cacheContainer.get(cacheKey) as Observable<any>
     }
-    return this.cacheContainer.get(requestUrl) as Observable<any>
+
+    const cacheReplay$ = get$.pipe(shareReplay(1))
+    this.cacheContainer.set(cacheKey, cacheReplay$)
+    return cacheReplay$
   }
   /**
    * @param url 请求url

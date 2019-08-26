@@ -1,6 +1,6 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
-import { tap, pluck, map } from 'rxjs/operators'
+import { tap, pluck, map, switchMap } from 'rxjs/operators'
 import { forkJoin, of } from 'rxjs'
 import { ConstApi } from '@/api/const'
 import { MenuApi } from '@/api/v1/common/menu'
@@ -10,6 +10,7 @@ import { get, reduce, isPlainObject } from 'lodash-es'
 import { NProgressService } from './nprogress.service'
 import { AuthService } from './auth.service'
 import { ShopApi } from '@/api/v1/shop'
+import Cookie from 'js-cookie'
 
 interface User {
   id?: string
@@ -121,7 +122,14 @@ export class UserService {
     private nprogress: NProgressService,
     private shopApi: ShopApi,
     private authService: AuthService
-  ) {}
+  ) {
+    this.brand$.subscribe(brand => {
+      Cookie.set('app_brand_id', brand.id || '')
+    })
+    this.shop$.subscribe(shop => {
+      Cookie.set('app_shop_id', shop.id || '')
+    })
+  }
   SET_USER(user: User) {
     this.user$.commit(() => user)
   }
@@ -140,11 +148,11 @@ export class UserService {
   SET_INVALID_TOOLTIP(tooltip: any) {
     this.invalidTooltips$.commit(() => tooltip)
   }
-  SET_FIRST_INITED(inited: boolean) {
-    this.firstInited$.commit(() => inited)
-  }
   SET_SHOP_LIST(list: object[]) {
     this.shopList$.commit(() => list)
+  }
+  SET_FIRST_INITED(inited: boolean) {
+    this.firstInited$.commit(() => inited)
   }
   private getUser() {
     return this.staffApi.getGlobalStaffInfo().pipe(
@@ -255,17 +263,22 @@ export class UserService {
   }
   private init() {
     if (!this.firstInited$.snapshot()) {
-      return forkJoin(
-        this.getUser(),
-        this.getMenuData(),
-        this.getEnums(),
-        this.getInvalidTooltips(),
-        this.getShopList()
-      ).pipe(
-        tap(() => {
-          this.SET_FIRST_INITED(true)
-        })
-      )
+      return this.getUser()
+        .pipe(
+          switchMap(() =>
+            forkJoin(
+              this.getMenuData(),
+              this.getEnums(),
+              this.getInvalidTooltips(),
+              this.getShopList()
+            )
+          )
+        )
+        .pipe(
+          tap(() => {
+            this.SET_FIRST_INITED(true)
+          })
+        )
     } else {
       return of({})
     }
