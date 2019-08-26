@@ -3,6 +3,7 @@ import multiguard from 'vue-router-multiguard'
 import { isCtor, isFn, last } from './utils'
 import ServiceRouter from './router'
 import VuePlugin from './vue-plugin'
+import HistoryBF from './bf'
 
 class VueServiceApp {
   static install(Vue, container) {
@@ -57,7 +58,7 @@ class VueServiceApp {
     }
     walkRoutes(this.routerOptions.routes)
 
-    this.router = new ServiceRouter(this.routerOptions)
+    this.router = new ServiceRouter(this.routerOptions, new HistoryBF())
   }
   /**
    * router Provider
@@ -67,6 +68,7 @@ class VueServiceApp {
   }
   queryOptionsHandler() {
     this.router.beforeEach((to, from, next) => {
+      console.log('beforeEach query')
       next.query = next.query || {}
       if (to.query._f) {
         delete to.query['_f']

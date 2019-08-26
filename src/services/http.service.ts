@@ -1,8 +1,8 @@
+import qs from 'qs'
 import { Observable, throwError } from 'rxjs'
 import { ajax, AjaxError } from 'rxjs/ajax'
-import { catchError, pluck, timeout, tap } from 'rxjs/operators'
+import { catchError, pluck, timeout, tap, shareReplay } from 'rxjs/operators'
 import { StResponse } from '@/types/app'
-import qs from 'qs'
 import { Injectable, ServiceRouter } from 'vue-service-app'
 import { I18NService } from './i18n.service'
 import { TokenService } from './token.service'
@@ -44,6 +44,7 @@ interface RequestOptions {
 
 @Injectable()
 export class HttpService {
+  private cacheContainer = new Map()
   constructor(
     private i18n: I18NService,
     private tokenService: TokenService,
@@ -52,7 +53,7 @@ export class HttpService {
     private appConfig: AppConfig,
     private nprogress: NProgressService
   ) {}
-  get(url: string, options: RequestOptions = {}) {
+  get(url: string, options: RequestOptions = {}): Observable<any> {
     let requestUrl = this.makeRequestUrl(url, options)
     const get$ = ajax
       .get(requestUrl, this.appHeaders)
@@ -60,7 +61,14 @@ export class HttpService {
       .pipe(this.ajaxErrorHandler(options))
       .pipe(this.ajaxResponseHandler.bind(this))
       .pipe(pluck('response', 'data'))
-    return get$
+    /**
+     * 1.缓存里没有的时候重新获取
+     * 2.非浏览器的前进后退点击 重新获取
+     */
+    if (!this.cacheContainer.get(requestUrl) || !this.router.isHistoryBF) {
+      this.cacheContainer.set(requestUrl, get$.pipe(shareReplay(1)))
+    }
+    return this.cacheContainer.get(requestUrl) as Observable<any>
   }
   /**
    * @param url 请求url
