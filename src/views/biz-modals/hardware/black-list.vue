@@ -17,7 +17,11 @@
       <template slot="maxTagPlaceholder">
         <div>已选择{{ num }}个</div>
       </template>
-      <a-select-option v-for="(item, index) in searchList" :key="index">
+      <a-select-option
+        v-for="item in searchList"
+        :key="item.user_id"
+        :value="+item.user_id"
+      >
         ({{ item.user_type }}) &nbsp;&nbsp;{{ item.user_name }}&nbsp;{{
           item.mobile
         }}
@@ -28,6 +32,7 @@
       :columns="columns"
       :dataSource="blackList"
       :page="page"
+      rowKey="user_id"
       @change="onChange"
     >
       <div slot="action" slot-scope="text, record">
