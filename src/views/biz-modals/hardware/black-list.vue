@@ -43,10 +43,8 @@
 <script>
 import { columns } from './black-list.config'
 import { BlackService } from './black-list.service'
-import tableMixin from '@/mixins/table.mixin'
 
 export default {
-  mixins: [tableMixin],
   serviceInject() {
     return {
       blackService: BlackService
