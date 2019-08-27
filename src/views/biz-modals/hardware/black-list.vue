@@ -87,6 +87,7 @@ export default {
       })
     },
     joinPerson(para) {
+      this.blackList = []
       para.map(id => {
         this.searchList.map(searchItem => {
           if (searchItem.user_id === id) {
