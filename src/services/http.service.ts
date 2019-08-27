@@ -9,6 +9,8 @@ import { TokenService } from './token.service'
 import { AppConfig } from '@/constants/config'
 import { NotificationService } from './notification.service'
 import { NProgressService } from './nprogress.service'
+// @ts-ignore
+import VueModalRouter from 'vue-modal-router'
 
 interface MockOptions {
   status?: number
@@ -51,7 +53,8 @@ export class HttpService {
     private router: ServiceRouter,
     private notification: NotificationService,
     private appConfig: AppConfig,
-    private nprogress: NProgressService
+    private nprogress: NProgressService,
+    private modalRouter: VueModalRouter
   ) {}
   get(url: string, options: RequestOptions = {}): Observable<any> {
     let requestUrl = this.makeRequestUrl(url, options)
@@ -62,13 +65,17 @@ export class HttpService {
       .pipe(this.ajaxResponseHandler.bind(this))
       .pipe(pluck('response', 'data'))
     /**
-     * 1.缓存里没有的时候重新获取
-     * 2.非浏览器的前进后退点击 重新获取
+     * 1. 缓存里没有的时候重新获取
+     * 2. 非浏览器的前进后退点击 重新获取
+     * 3. 模态窗打开的情况下 不激活http缓存
      */
 
     const cacheKey = requestUrl
-
-    if (this.cacheContainer.get(cacheKey) && this.router.isHistoryBF) {
+    if (
+      this.cacheContainer.get(cacheKey) &&
+      this.router.isHistoryBF &&
+      !this.modalRouter.isOpening
+    ) {
       console.log('hit cache', cacheKey)
       return this.cacheContainer.get(cacheKey) as Observable<any>
     }
