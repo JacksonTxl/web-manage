@@ -208,9 +208,6 @@ export class UserService {
       })
     )
   }
-  public reloadDataWhenAfterSwitchShop() {
-    return forkJoin([this.getMenuData(), this.getUser()])
-  }
   /**
    * 通过key名获取下拉选项
    * @example
@@ -263,17 +260,13 @@ export class UserService {
   }
   private init() {
     if (!this.firstInited$.snapshot()) {
-      return this.getUser()
-        .pipe(
-          switchMap(() =>
-            forkJoin(
-              this.getMenuData(),
-              this.getEnums(),
-              this.getInvalidTooltips(),
-              this.getShopList()
-            )
-          )
-        )
+      return forkJoin(
+        this.getUser(),
+        this.getMenuData(),
+        this.getEnums(),
+        this.getInvalidTooltips()
+      )
+        .pipe(switchMap(() => this.getShopList()))
         .pipe(
           tap(() => {
             this.SET_FIRST_INITED(true)
