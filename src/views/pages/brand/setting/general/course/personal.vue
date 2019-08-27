@@ -70,7 +70,7 @@
       </div>
       <st-hr></st-hr>
       <!-- 取消预约 -->
-      <st-t4>私教课程定价设置</st-t4>
+      <st-t4>取消预约设置</st-t4>
       <div class="st-des">
         允许用户在私教课程开始前{{
           reserveInfo.cancel_reserve | enumFilter('setting.cancel_reserve')
