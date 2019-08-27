@@ -91,6 +91,7 @@ export class RedirectService implements RouteGuard {
         ...redirectRouteQuery
       }
     })
+    console.log(redirectRouteName)
     // 跳转路径为空
     if (!redirectRouteName) {
       this.nprogress.done()

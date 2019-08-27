@@ -48,8 +48,8 @@
                 shopStatus: info.shop_status,
                 isHoliday: info.has_holiday_setting,
                 holidayTime: {
-                  start: info.holiday_start_time,
-                  end: info.holiday_end_time
+                  start: (info.holiday_start_time || 0) * 1000,
+                  end: (info.holiday_end_time || 0) * 1000
                 }
               },
               on: {
@@ -57,7 +57,7 @@
               }
             }"
           >
-            {{ info.has_holiday_setting ? '管理门店放假' : '设置放假' }}
+            {{ info.has_holiday_setting === 1 ? '管理门店放假' : '设置放假' }}
           </st-button>
         </div>
       </div>
