@@ -12252,10 +12252,10 @@ vue-router@^3.0.2:
   resolved "https://registry.npm.taobao.org/vue-router/download/vue-router-3.0.7.tgz?cache=0&sync_timestamp=1562164292099&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-router%2Fdownload%2Fvue-router-3.0.7.tgz#b36ca107b4acb8ff5bc4ff824584059c23fcb87b"
   integrity sha1-s2yhB7SsuP9bxP+CRYQFnCP8uHs=
 
-vue-st-form@0.0.4:
-  version "0.0.4"
-  resolved "https://registry.npm.taobao.org/vue-st-form/download/vue-st-form-0.0.4.tgz#f394427cfec3571dfa842e695f764fc6a19542cb"
-  integrity sha1-85RCfP7DVx36hC5pX3ZPxqGVQss=
+vue-st-form@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.npm.taobao.org/vue-st-form/download/vue-st-form-0.0.5.tgz#ce8008572a3d2521f44ba22a3fbd0b4374cffc19"
+  integrity sha1-zoAIVyo9JSH0S6IqP70LQ3TP/Bk=
 
 vue-style-loader@^4.1.0:
   version "4.1.2"
