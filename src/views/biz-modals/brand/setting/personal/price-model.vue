@@ -122,7 +122,7 @@
               </st-input-number>
             </st-form-item>
             <div class="mg-t8 color-danger">
-              最高价 = 私教课程当前定价+（私教课程当前定价*设置的上调百分比)
+              最高价 = 私教课程当前定价+（私教课程当前定价*设置的上调百分比）
             </div>
           </div>
         </st-container>
