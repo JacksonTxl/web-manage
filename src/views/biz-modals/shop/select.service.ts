@@ -1,10 +1,11 @@
 import { Injectable } from 'vue-service-app'
-import { State, Computed } from 'rx-state'
+import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { ShopApi } from '@/api/v1/shop'
 
 @Injectable()
 export class SelectService {
+  loading$ = new State({})
   state$: State<any>
   list$: Computed<any>
   constructor(private shopApi: ShopApi) {
@@ -13,6 +14,7 @@ export class SelectService {
     })
     this.list$ = new Computed(this.state$.pipe(pluck('list')))
   }
+  @Effect()
   getShopListTree() {
     return this.shopApi.getShopListTree().pipe(
       tap(res => {

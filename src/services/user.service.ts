@@ -122,14 +122,7 @@ export class UserService {
     private nprogress: NProgressService,
     private shopApi: ShopApi,
     private authService: AuthService
-  ) {
-    this.brand$.subscribe(brand => {
-      Cookie.set('app_brand_id', brand.id || '')
-    })
-    this.shop$.subscribe(shop => {
-      Cookie.set('app_shop_id', shop.id || '')
-    })
-  }
+  ) {}
   SET_USER(user: User) {
     this.user$.commit(() => user)
   }

@@ -4,21 +4,20 @@
     :footer="null"
     class="modal-brand-switch"
     v-model="show"
+    :loading="loading.getShopListTree"
   >
-    <div>
-      <st-container>
-        <a-tree
-          checkable
-          v-model="checkedKeys"
-          :treeData="treeData"
-          @check="onCheck"
-        />
-      </st-container>
-      <p class="color-text-light mg-t8">已选择{{ checedNum }}家场馆</p>
-      <p class="ta-r">
-        <st-button type="primary" @click="confirm">确定</st-button>
-      </p>
-    </div>
+    <st-container>
+      <a-tree
+        checkable
+        v-model="checkedKeys"
+        :treeData="treeData"
+        @check="onCheck"
+      />
+    </st-container>
+    <p class="color-text-light mg-t8">已选择{{ checedNum }}家场馆</p>
+    <p class="ta-r">
+      <st-button type="primary" @click="confirm">确定</st-button>
+    </p>
   </st-modal>
 </template>
 <script>
@@ -32,6 +31,11 @@ export default {
   serviceInject() {
     return {
       selectService: SelectService
+    }
+  },
+  rxState() {
+    return {
+      loading: this.selectService.loading$
     }
   },
   data() {
