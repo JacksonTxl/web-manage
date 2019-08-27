@@ -6,7 +6,7 @@
       </router-link>
       <div>
         <a-select
-          style="width: 160px"
+          :class="all('search__select')"
           class="mg-r8"
           v-model="query.card_type"
           @change="onSingleSearch('card_type', $event)"
@@ -20,7 +20,7 @@
           </a-select-option>
         </a-select>
         <a-select
-          style="width: 160px"
+          :class="all('search__select')"
           class="mg-r8"
           v-model="query.publish_channel"
           @change="onSingleSearch('publish_channel', $event)"
@@ -34,7 +34,7 @@
           </a-select-option>
         </a-select>
         <a-select
-          style="width: 160px"
+          :class="all('search__select')"
           class="mg-r8"
           v-model="query.shelf_status"
           @change="onSingleSearch('shelf_status', $event)"
@@ -86,7 +86,7 @@
       <!-- 支持入场门店 -->
       <template slot="admission_range" slot-scope="text, record">
         <a
-          v-if="text.id === 2"
+          v-if="text.id === ADMISSION_RANGE.GENERAL_STORE"
           v-modal-link="{
             name: 'card-shop-member-shop-table',
             props: { id: record.id, type: 'Sale', title: '支持入场门店' }
@@ -99,7 +99,10 @@
       <!-- 支持售卖门店 -->
       <template slot="support_sales" slot-scope="text, record">
         <a
-          v-if="text.id === 2 && record.publish_channel.id !== 2"
+          v-if="
+            text.id === SUPPORT_SALES.SPECIFIED_STORE &&
+              record.publish_channel.id !== PUBLISH_CHANNEL.SHOP
+          "
           v-modal-link="{
             name: 'card-shop-member-shop-table',
             props: { id: record.id, type: 'Consume', title: '支持售卖门店' }
@@ -131,7 +134,9 @@
       </template>
       <!-- 售卖状态 -->
       <template slot="sell_status" slot-scope="text, record">
-        <a-badge :status="text.id === 1 ? 'success' : 'error'" />
+        <a-badge
+          :status="text.id === SELL_STATUS.CAN_SELL ? 'success' : 'error'"
+        />
         {{ text.name }}
         <a-popover
           v-if="record.stop_sale"
@@ -147,7 +152,10 @@
           <template slot="content">
             <p>{{ record.stop_sale.stop_reason }}</p>
           </template>
-          <a-icon type="exclamation-circle" v-if="text.id === 2" />
+          <a-icon
+            type="exclamation-circle"
+            v-if="text.id === SELL_STATUS.NO_SELL"
+          />
         </a-popover>
       </template>
       <!-- 操作 -->
@@ -209,6 +217,12 @@ import CardShopMemberShelf from '@/views/biz-modals/card/shop-member/shelf'
 import CardShopMemberShopTable from '@/views/biz-modals/card/shop-member/shop-table'
 import CardShopMemberStopSale from '@/views/biz-modals/card/shop-member/stop-sale'
 import { SHOP_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH } from '@/constants/events'
+import {
+  ADMISSION_RANGE,
+  SUPPORT_SALES,
+  SELL_STATUS,
+  PUBLISH_CHANNEL
+} from '@/constants/card/member'
 export default {
   mixins: [tableMixin],
   name: 'PageShopProductMemberAll',
@@ -225,6 +239,9 @@ export default {
     CardShopMemberShelf,
     CardShopMemberShopTable,
     CardShopMemberStopSale
+  },
+  serviceProviders() {
+    return [AllService]
   },
   serviceInject() {
     return {
@@ -250,7 +267,11 @@ export default {
   },
   data() {
     return {
-      CARD_TYPE
+      CARD_TYPE,
+      ADMISSION_RANGE,
+      SUPPORT_SALES,
+      SELL_STATUS,
+      PUBLISH_CHANNEL
     }
   },
   methods: {

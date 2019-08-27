@@ -6,7 +6,7 @@
       </st-button>
       <div>
         <a-select
-          style="width: 160px"
+          :class="all('search__select')"
           class="mg-r8"
           v-model="query.publish_channel"
           @change="onSingleSearch('publish_channel', $event)"
@@ -20,7 +20,7 @@
           </a-select-option>
         </a-select>
         <a-select
-          style="width: 160px"
+          :class="all('search__select')"
           v-model="query.sell_status"
           @change="onSingleSearch('sell_status', $event)"
         >
@@ -62,7 +62,7 @@
       <!-- 支持售卖门店 -->
       <template slot="support_sales" slot-scope="text, record">
         <a
-          v-if="text.id === 2"
+          v-if="text.id === SUPPORT_SALES.SPECIFIED_STORE"
           v-modal-link="{
             name: 'card-shop-deposit-shop-table',
             props: { id: record.id, type: 'Sale', title: '支持售卖门店' }
@@ -75,7 +75,7 @@
       <!-- 支持消费门店 -->
       <template slot="consumption_range" slot-scope="text, record">
         <a
-          v-if="text.id === 2"
+          v-if="text.id === CONSUMPTION_RANGE.GENERAL_STORE"
           v-modal-link="{
             name: 'card-shop-deposit-shop-table',
             props: { id: record.id, type: 'Consume', title: '支持消费门店' }
@@ -99,7 +99,9 @@
       </template>
       <!-- 售卖状态 -->
       <template slot="sell_status" slot-scope="text, record">
-        <a-badge :status="text.id === 1 ? 'success' : 'error'" />
+        <a-badge
+          :status="text.id === SELL_STATUS.CAN_SELL ? 'success' : 'error'"
+        />
         {{ text.name }}
         <a-popover
           v-if="record.stop_sale"
@@ -115,7 +117,10 @@
           <template slot="content">
             <p>{{ record.stop_sale.stop_reason }}</p>
           </template>
-          <a-icon type="exclamation-circle" v-if="text.id === 2" />
+          <a-icon
+            type="exclamation-circle"
+            v-if="text.id === SELL_STATUS.NO_SELL"
+          />
         </a-popover>
       </template>
       <!-- 操作 -->
@@ -174,6 +179,11 @@ import CardShopDepositRecoverSale from '@/views/biz-modals/card/shop-deposit/rec
 import CardShopDepositShopTable from '@/views/biz-modals/card/shop-deposit/shop-table'
 import CardShopDepositStopSale from '@/views/biz-modals/card/shop-deposit/stop-sale'
 import { SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH } from '@/constants/events'
+import {
+  SUPPORT_SALES,
+  CONSUMPTION_RANGE,
+  SELL_STATUS
+} from '@/constants/card/deposit'
 export default {
   mixins: [tableMixin],
   name: 'PageShopProductDepositAll',
@@ -190,6 +200,9 @@ export default {
     CardShopDepositShopTable,
     CardShopDepositStopSale
   },
+  serviceProviders() {
+    return [AllService]
+  },
   serviceInject() {
     return {
       routeService: RouteService,
@@ -205,6 +218,13 @@ export default {
       sellStatus: this.allService.sellStatus$,
       query: this.routeService.query$,
       auth: this.allService.auth$
+    }
+  },
+  data() {
+    return {
+      SUPPORT_SALES,
+      CONSUMPTION_RANGE,
+      SELL_STATUS
     }
   },
   computed: {

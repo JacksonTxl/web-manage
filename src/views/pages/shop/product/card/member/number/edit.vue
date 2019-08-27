@@ -224,14 +224,7 @@
                   <a-date-picker
                     :disabled="startTimeIsDisabled"
                     :disabledDate="disabledStartDate"
-                    v-decorator="[
-                      'start_time',
-                      {
-                        rules: [
-                          { required: true, message: '请选择开始售卖时间' }
-                        ]
-                      }
-                    ]"
+                    v-decorator="decorators.start_time"
                     format="YYYY-MM-DD"
                     placeholder="开始时间"
                     :showToday="false"
@@ -243,14 +236,7 @@
                 <a-form-item class="page-a-form">
                   <a-date-picker
                     :disabledDate="disabledEndDate"
-                    v-decorator="[
-                      'end_time',
-                      {
-                        rules: [
-                          { required: true, message: '请选择结束售卖时间' }
-                        ]
-                      }
-                    ]"
+                    v-decorator="decorators.end_time"
                     format="YYYY-MM-DD"
                     placeholder="结束时间"
                     :showToday="false"
@@ -274,13 +260,9 @@
                     支持转让
                   </a-checkbox>
                   <st-input-number
-                    style="width:200px"
-                    v-decorator="[
-                      'transferNum',
-                      { rules: [{ validator: transfer_validator }] }
-                    ]"
-                    class="page-input-group"
-                    :float="transferUnit === 2"
+                    v-decorator="decorators.transferNum"
+                    class="page-input-group page-content-card-num-input"
+                    :float="transferUnit === UNIT.RMB"
                     @change="transfter_change"
                     :disabled="!is_transfer"
                     :min="transferMin"
@@ -292,23 +274,14 @@
                       :disabled="!is_transfer"
                     >
                       <a-select-option
-                        v-for="item in Object.entries(member_card.unit.value)"
-                        :key="+item[0]"
-                        :value="+item[0]"
+                        v-for="item in unit"
+                        :key="item.value"
+                        :value="item.value"
                       >
-                        {{ item[1] }}
+                        {{ item.label }}
                       </a-select-option>
                     </a-select>
                   </st-input-number>
-                  <!-- <a-input-group compact class="page-input-group">
-                    <a-input-number
-                    v-decorator="['transferNum',{rules:[{validator:transfer_validator}]}]"
-                    @change="transfter_change"
-                    :disabled="!is_transfer"/>
-                    <a-select v-model="transferUnit" defaultValue="2" :disabled="!is_transfer">
-                      <a-select-option v-for="item in Object.entries(member_card.unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
-                    </a-select>
-                  </a-input-group> -->
                 </div>
               </st-form-item>
             </a-col>
@@ -320,11 +293,11 @@
                 label="售卖方式"
                 required
               >
-                <a-checkbox-group v-model="sellType">
+                <a-checkbox-group v-model="sell_type">
                   <a-checkbox
                     v-for="item in sellTypeList"
                     :key="item.value"
-                    :disabled="item.value === 2"
+                    :disabled="item.value === SELL_TYPE.OFFLINE"
                     :value="item.value"
                   >
                     {{ item.label }}
@@ -401,6 +374,8 @@ import H5Container from '@/views/biz-components/h5/h5-container'
 import h5mixin from '../period/h5mixin'
 import { MEMBER_CARD } from '@/views/biz-components/h5/pages/member-card.config'
 import CardBgRadio from '@/views/biz-components/card-bg-radio/card-bg-radio'
+import { SELL_TYPE, UNIT, CARD_TYPE } from '@/constants/card/member'
+import { ruleOptions } from './number.config'
 export default {
   name: 'PageShopNumberCardAdd',
   mixins: [h5mixin],
@@ -409,29 +384,42 @@ export default {
     H5Container,
     CardBgRadio
   },
+  serviceProviders() {
+    return [EditService]
+  },
   serviceInject() {
     return {
       rules: RuleConfig,
-      editService: EditService,
+      addService: EditService,
       userService: UserService
     }
   },
   rxState() {
     return {
-      loading: this.editService.loading$,
-      cardInfo: this.editService.cardInfo$,
+      loading: this.addService.loading$,
+      cardInfo: this.addService.cardInfo$,
       shopName: this.userService.shop$,
-      member_card: this.userService.memberCardEnums$
+      cardBgList: this.addService.cardBgList$,
+      admissionRange: this.addService.admissionRange$,
+      priceSetting: this.addService.priceSetting$,
+      supportSales: this.addService.supportSales$,
+      unit: this.addService.unit$,
+      sellType: this.addService.sellType$
     }
   },
   bem: {
     b: 'st-help-popover'
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
+      SELL_TYPE,
+      UNIT,
       cardType: MEMBER_CARD.NUMBER_CARD,
-      MEMBER_CARD: MEMBER_CARD,
-      form: this.$form.createForm(this),
+      MEMBER_CARD,
       // 结束时间面板是否显示
       endOpen: false,
       // 价格梯度
@@ -462,16 +450,16 @@ export default {
       // 是否支持转让
       is_transfer: false,
       // 转让单位
-      transferUnit: 2,
+      transferUnit: UNIT.RMB,
       transfer_unit_is_first: true,
       // 转让手续费
       transferNum: 0,
       // 售卖方式
-      sellType: [2],
+      sell_type: [SELL_TYPE.OFFLINE],
       // 卡背景
       cardBg: {
         image_id: 0,
-        image_key: this.member_card.card_bg_list.value[0].image_key,
+        image_key: this.cardBgList[0].image_key,
         image_url: '',
         index: 1
       },
@@ -525,7 +513,7 @@ export default {
       this.transferUnit = this.cardInfo.transfer_unit
       this.transferNum = this.cardInfo.transfer_num
       // 售卖方式
-      this.sellType = this.cardInfo.sell_type
+      this.sell_type = this.cardInfo.sell_type
       // 卡背景
       this.cardBg = cloneDeep(this.cardInfo.card_bg)
       // 卡介绍
@@ -553,17 +541,17 @@ export default {
               validity_times: +i.validity_times
             })
           })
-          this.editService
+          this.addService
             .editCard({
               id: this.cardInfo.card_id,
-              card_type: 1,
+              card_type: CARD_TYPE.NUMBER,
               card_name: values.card_name,
               start_time: `${this.start_time.format('YYYY-MM-DD')}`,
               end_time: `${this.end_time.format('YYYY-MM-DD')}`,
               is_transfer: +this.is_transfer,
               unit,
               num,
-              sell_type: this.sellType,
+              sell_type: this.sell_type,
               card_introduction: this.cardIntroduction,
               card_contents: this.cardContents,
               card_bg: this.cardBg,
@@ -577,19 +565,6 @@ export default {
             })
         }
       })
-    },
-    // card_name validatorFn
-    card_name_validator(rule, value, callback) {
-      if (value === undefined || value === '') {
-        // eslint-disable-next-line
-        callback('请填写次卡名称')
-      } else if (value && !this.rules.card_name.test(value)) {
-        // eslint-disable-next-line
-        callback('输入的次卡名称格式错误，请重新输入')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
     },
     // 价格梯度
     brandPriceSettingHandleChange({ value, key, col, prop }) {
@@ -691,20 +666,6 @@ export default {
       // 重置转让费用的校验
       this.form.resetFields(['transferNum'])
     },
-    // transfer validatorFn
-    transfer_validator(rule, value, callback) {
-      if (!this.is_transfer) {
-        // eslint-disable-next-line
-        callback()
-      }
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请输入转让费用')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
     transfter_change(data) {
       this.transferNum = data
     },
@@ -767,18 +728,16 @@ export default {
     },
     // 售卖方式
     sellTypeList() {
-      let sell_type = cloneDeep(
-        Object.entries(this.member_card.sell_type.value)
-      )
+      let sell_type = cloneDeep(this.sellType)
       let arr = []
       sell_type.forEach(i => {
         arr.push({
-          value: +i[0],
-          label: i[1]
+          value: i.value,
+          label: i.label
         })
       })
       if (!this.appConfig) {
-        remove(arr, i => i.value === 1)
+        remove(arr, i => i.value === SELL_TYPE.CLIENT)
       }
       return arr
     },
@@ -788,12 +747,11 @@ export default {
     },
     // 转让设置的min
     transferMin() {
-      // return this.cardData.transfer_unit === 1 ? 1 : 0.1
       return 0
     },
     // 转让设置的max
     transferMax() {
-      return this.transferUnit === 1 ? 100 : 999999.9
+      return this.transferUnit === UNIT.PERCENT ? 100 : 999999.9
     }
   }
 }
