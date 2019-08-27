@@ -52,11 +52,11 @@
           <st-form-item label="支付方式" class="mgb-18" required>
             <a-radio-group v-model="payChannel">
               <a-radio
-                v-for="(item, index) in payChannels"
+                v-for="(item, index) in paymentMethodList"
                 :key="index"
-                :value="+item.value"
+                :value="+item.payment_type"
               >
-                {{ item.label }}
+                {{ item.payment_type_name }}
               </a-radio>
             </a-radio-group>
           </st-form-item>
@@ -97,11 +97,11 @@ export default {
   rxState() {
     return {
       info: this.flowService.info$,
-      payChannels: this.flowService.payChannels$,
+      paymentMethodList: this.flowService.paymentMethodList$,
       loading: this.flowService.loading$
     }
   },
-  props: ['id'],
+  props: ['id', 'order_id'],
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
@@ -115,7 +115,7 @@ export default {
   },
   computed: {},
   created() {
-    this.flowService.getDetail(this.id).subscribe()
+    this.flowService.init(this.id, this.order_id).subscribe()
   },
   methods: {
     moment,
