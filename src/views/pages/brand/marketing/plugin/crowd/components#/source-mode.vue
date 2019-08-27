@@ -65,7 +65,8 @@ export default {
         title: '来源方式',
         info: '选择来源方式为以下范围的用户'
       },
-      sourceOptions: []
+      sourceOptions: [],
+      tags: []
     }
   },
   created() {

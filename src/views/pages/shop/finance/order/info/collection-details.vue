@@ -99,7 +99,8 @@ export default {
       this.$modalRouter.push({
         name: 'shop-finance-flow',
         props: {
-          id: record.flow_id
+          id: record.flow_id,
+          order_id: this.query.id
         },
         on: {
           success: result => {

@@ -30,7 +30,7 @@ export default {
     return {
       titleData: {
         title: '可用优惠券',
-        info: '可用积分在以下范围内的用户'
+        info: '可用优惠券在以下范围内的用户'
       },
       inputnumber2: '',
       inputnumber1: ''

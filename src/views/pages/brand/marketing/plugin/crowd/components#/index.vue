@@ -63,7 +63,7 @@
               class="shop-member-crowd-index-box__btn-rq"
               @click="exportFunc(value[0].id)"
             >
-              导出
+              定向运营
             </span>
           </a-tooltip>
         </div>
@@ -130,7 +130,7 @@
               class="shop-member-crowd-index-box__btn-rq"
               @click="exportFunc(value[1].id)"
             >
-              导出
+              定向运营
             </span>
           </a-tooltip>
         </div>
@@ -197,7 +197,7 @@
               class="shop-member-crowd-index-box__btn-rq"
               @click="exportFunc(value[2].id)"
             >
-              导出
+              定向运营
             </span>
           </a-tooltip>
         </div>

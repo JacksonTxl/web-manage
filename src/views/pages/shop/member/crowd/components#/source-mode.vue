@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="bSourceMode()">
     <title-info v-model="titleData"></title-info>
     <span style="margin-right:16px">选择来源</span>
     <template v-for="(tag, index) in tags">
@@ -13,7 +13,10 @@
         </a-tag>
       </a-tooltip>
     </template>
-    <a-tag style="background: #fff; borderStyle: dashed;">
+    <a-tag
+      style="background: #fff; borderStyle: dashed;"
+      :class="bSourceMode('tag')"
+    >
       <a-dropdown>
         <a class="ant-dropdown-link">
           <a-icon type="plus" />
@@ -33,6 +36,9 @@ import { UserService } from '@/services/user.service'
 import titleInfo from './title-info.vue'
 import { cloneDeep } from 'lodash-es'
 export default {
+  bem: {
+    bSourceMode: 'crowd-components-source-mode'
+  },
   serviceInject() {
     return {
       userService: UserService
