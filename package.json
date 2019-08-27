@@ -47,7 +47,7 @@
     "vue": "^2.6.6",
     "vue-awesome-swiper": "^3.1.3",
     "vue-countup-v2": "^3.0.1",
-    "vue-modal-router": "0.4.0",
+    "vue-modal-router": "0.4.1",
     "vue-router": "^3.0.2",
     "vue-router-multiguard": "^1.0.3",
     "vue-st-form": "0.0.5",

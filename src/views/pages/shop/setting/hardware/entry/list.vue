@@ -68,7 +68,7 @@
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
             <a
-              v-if="auth.scanAreaInfo"
+              v-if="record.auth['shop:setting:hardware|area_info']"
               v-modal-link="{
                 name: 'hardware-area',
                 props: {
@@ -80,7 +80,7 @@
               详情
             </a>
             <a
-              v-if="auth.areaSet"
+              v-if="record.auth['shop:setting:hardware|area_set']"
               v-modal-link="{
                 name: 'hardware-area',
                 props: {
@@ -144,6 +144,7 @@ export default {
     }
   },
   created() {
+    console.log(this.auth)
     this.getGlobalInfo()
   },
   computed: {
