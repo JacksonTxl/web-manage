@@ -6,7 +6,7 @@
         <div :class="bPage('global-item')">
           <div :class="bPage('global-item-title')">
             入场凭证优先级
-            <div class="ta-r">(默认)</div>
+            <div class="ta-r" style="color:#9BACB9">(默认)</div>
           </div>
           <div :class="bPage('global-item-content')">
             <st-table

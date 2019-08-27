@@ -131,18 +131,21 @@ export default {
       list: [],
       whiteList: [],
       peopleType: '',
+      white_list: [],
       type: '' // area类型
     }
   },
   created() {
-    this.getSingleAreaList()
-    this.getAreaInfo()
+    this.getWhiteList(1)
   },
-  mounted() {},
+  mounted() {
+    this.getSingleAreaList()
+  },
   methods: {
     getSingleAreaList() {
       this.areaService.getSingleAreaList().subscribe(res => {
         this.list = res.list
+        this.getAreaInfo()
       })
     },
     getWhiteList(val) {
@@ -183,15 +186,6 @@ export default {
     getAreaInfo() {
       this.areaService.getAreaInfo(this.id).subscribe(res => {
         this.info = res.info
-        this.form.setFieldsValue({
-          area_id: this.info.area_id,
-          people_type: this.info.people_type,
-          leave_limit:
-            this.info.leave_limit === LEAVE_LIMIT.TRUE ? true : false,
-          course_time: this.info.course_time,
-          checkin: this.info.checkin === CHECKIN.TRUE ? true : false,
-          white_list: this.info.white_list
-        })
         this.list.forEach(item => {
           if (item.area_id === this.info.area_id) {
             this.type = item.area_type
@@ -201,6 +195,16 @@ export default {
           if (item.value === this.info.people_type) {
             this.peopleType = item.value
           }
+        })
+        this.white_list = this.info.white_list
+        this.form.setFieldsValue({
+          area_id: +this.info.area_id,
+          people_type: +this.info.people_type,
+          leave_limit:
+            this.info.leave_limit === LEAVE_LIMIT.TRUE ? true : false,
+          course_time: this.info.course_time,
+          checkin: this.info.checkin === CHECKIN.TRUE ? true : false,
+          white_list: this.info.white_list
         })
       })
     }
