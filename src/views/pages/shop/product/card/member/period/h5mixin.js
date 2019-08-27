@@ -13,8 +13,8 @@ export default {
         admission_shop_list: [],
         card_bg: {
           image_id: 0,
-          image_key: this.member_card.card_bg_list.value[0].image_key,
-          image_url: this.member_card.card_bg_list.value[0].image_url,
+          image_key: this.cardBgList[0].image_key,
+          image_url: this.cardBgList[0].image_url,
           index: 1
         },
         card_contents: '',
@@ -105,8 +105,10 @@ export default {
     },
     syncConsumer(checkValue) {
       console.log(checkValue)
-      let consumerEnum = this.deposit_card.consumer_type.value
-      this.h5CardInfo.consumerList = checkValue.map(item => consumerEnum[item])
+      let consumerEnum = this.consumerType
+      this.h5CardInfo.consumerList = checkValue.map(
+        item => consumerEnum[--item].label
+      )
     }
   }
 }

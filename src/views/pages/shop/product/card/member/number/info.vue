@@ -31,13 +31,15 @@
               <span>{{ cardInfo.card_name }}</span>
               <span
                 :class="{
-                  'shop-card__selling': cardInfo.sell_status.id === 1,
-                  'shop-card__sellstop': cardInfo.sell_status.id === 2
+                  'shop-card__selling':
+                    cardInfo.sell_status.id === SELL_STATUS.CAN_SELL,
+                  'shop-card__sellstop':
+                    cardInfo.sell_status.id === SELL_STATUS.NO_SELL
                 }"
               >
                 {{ cardInfo.sell_status.name }}
                 <a-popover
-                  v-if="cardInfo.sell_status.id === 2"
+                  v-if="cardInfo.sell_status.id === SELL_STATUS.NO_SELL"
                   trigger="hover"
                   placement="bottomRight"
                   arrowPointAtCenter
@@ -70,7 +72,7 @@
           </p>
           <st-container
             :class="item('scroll-container')"
-            v-if="cardInfo.admission_range.id === 2"
+            v-if="cardInfo.admission_range.id === ADMISSION_RANGE.GENERAL_STORE"
           >
             <st-table
               size="middle"
@@ -89,13 +91,15 @@
             <span class="value">
               {{ cardInfo.support_sales.name
               }}{{
-                `（已上架${cardInfo.shelf_num}家门店/共${cardInfo.sale_num}家门店）`
+                `（已上架${cardInfo.shelf_num}家门店/共${
+                  cardInfo.sale_num
+                }家门店）`
               }}
             </span>
           </p>
           <st-container
             :class="item('scroll-container')"
-            v-if="cardInfo.support_sales.id !== 1"
+            v-if="cardInfo.support_sales.id !== SUPPORT_SALES.ALL_STORE"
           >
             <st-table
               size="middle"
@@ -162,7 +166,7 @@
               >
                 {{ item | enumFilter('member_card.activate_type')
                 }}{{
-                  item === 2
+                  item === ACTIVATE_TYPE.ARRIVE
                     ? `(${cardInfo.automatic_num}天内未开卡，则自动开卡)`
                     : ''
                 }}&nbsp;&nbsp;
@@ -174,7 +178,12 @@
           <!-- 约课权益 -->
           <p class="mb-8">
             <span class="label">约课权益：</span>
-            <span v-if="cardInfo.shelf_status === 3" class="value">无</span>
+            <span
+              v-if="cardInfo.shelf_status === SHELF_STATUS.NOT_ON"
+              class="value"
+            >
+              无
+            </span>
             <span v-else>
               {{
                 cardInfo.course_interests
@@ -185,7 +194,8 @@
           <st-container
             :class="item('scroll-container')"
             v-if="
-              cardInfo.course_interests === 3 && cardInfo.shelf_status !== 3
+              cardInfo.course_interests === COURSE_INTERESTS.APPOINT &&
+                cardInfo.shelf_status !== SHELF_STATUS.NOT_ON
             "
           >
             <st-table
@@ -202,7 +212,12 @@
           <!-- 入场时段 -->
           <p class="mb-8">
             <span class="label">入场时段：</span>
-            <span v-if="cardInfo.shelf_status === 3" class="value">无</span>
+            <span
+              v-if="cardInfo.shelf_status === SHELF_STATUS.NOT_ON"
+              class="value"
+            >
+              无
+            </span>
             <template v-else>
               <span class="value">
                 {{
@@ -212,7 +227,10 @@
             </template>
           </p>
           <st-container
-            v-if="cardInfo.inout_type === 2 && cardInfo.shelf_status !== 3"
+            v-if="
+              cardInfo.inout_type === INOUT_TYPE.CUSTOM &&
+                cardInfo.shelf_status !== SHELF_STATUS.NOT_ON
+            "
           >
             <a-list
               :grid="{ gutter: 16, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 3 }"
@@ -238,7 +256,10 @@
           <p class="mb-8">
             <span class="label">VIP场地通行：</span>
             <span
-              v-if="cardInfo.shelf_status === 3 || !cardInfo.areas.length"
+              v-if="
+                cardInfo.shelf_status === SHELF_STATUS.NOT_ON ||
+                  !cardInfo.areas.length
+              "
               class="value"
             >
               无
@@ -284,6 +305,22 @@ import { InfoService } from './info.service'
 import MemberCard from '@/views/biz-components/h5/pages/member-card'
 import H5Container from '@/views/biz-components/h5/h5-container'
 import { MEMBER_CARD } from '@/views/biz-components/h5/pages/member-card.config'
+import {
+  ADMISSION_RANGE,
+  PRICE_SETTING,
+  SUPPORT_SALES,
+  SELL_STATUS,
+  ACTIVATE_TYPE,
+  SHELF_STATUS,
+  COURSE_INTERESTS,
+  INOUT_TYPE
+} from '@/constants/card/member'
+import {
+  weekList,
+  shop_columns,
+  price_gradient_columns,
+  courses_columns
+} from './info.config'
 export default {
   name: 'PageShopPeriodCardInfo',
   bem: {
@@ -292,6 +329,9 @@ export default {
   components: {
     MemberCard,
     H5Container
+  },
+  serviceProviders() {
+    return [InfoService]
   },
   serviceInject() {
     return {
@@ -306,85 +346,22 @@ export default {
   data() {
     return {
       // week
-      MEMBER_CARD: MEMBER_CARD,
-      weekList: ['', '周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+      ACTIVATE_TYPE,
+      SHELF_STATUS,
+      INOUT_TYPE,
+      COURSE_INTERESTS,
+      ADMISSION_RANGE,
+      PRICE_SETTING,
+      SUPPORT_SALES,
+      SELL_STATUS,
+      MEMBER_CARD,
+      weekList,
       // 门店表头
-      shop_columns: [
-        {
-          title: '省',
-          dataIndex: 'province_name',
-          width: '22%'
-        },
-        {
-          title: '市',
-          dataIndex: 'city_name',
-          width: '22%'
-        },
-        {
-          title: '区',
-          dataIndex: 'district_name',
-          width: '22%'
-        },
-        {
-          title: '门店名称',
-          dataIndex: 'shop_name',
-          width: '34%'
-        }
-      ],
+      shop_columns,
       // 售卖定价表头
-      price_gradient_columns: [
-        {
-          title: '入场次数',
-          scopedSlots: { customRender: 'validity_times' },
-          width: '20%',
-          dataIndex: 'validity_times'
-        },
-        {
-          title: '售价',
-          scopedSlots: { customRender: 'sale_price' },
-          width: '20%',
-          dataIndex: 'sale_price'
-        },
-        {
-          title: '有效期',
-          scopedSlots: { customRender: 'validity_period' },
-          width: '20%',
-          dataIndex: 'validity_period'
-        },
-        {
-          title: '允许冻结天数',
-          scopedSlots: { customRender: 'frozen_day' },
-          width: '20%',
-          dataIndex: 'frozen_day'
-        },
-        {
-          title: '赠送上限',
-          scopedSlots: { customRender: 'gift_unit' },
-          width: '20%',
-          dataIndex: 'gift_unit'
-        }
-      ],
+      price_gradient_columns,
       // 约课权益表头
-      courses_columns: [
-        {
-          title: '课程类别',
-          scopedSlots: { customRender: 'course_type' },
-          dataIndex: 'course_type',
-          width: '33%'
-        },
-        {
-          title: '课程类型',
-          scopedSlots: { customRender: 'category' },
-          dataIndex: 'category',
-          width: '33%'
-        },
-        {
-          title: '课程名称',
-          scopedSlots: { customRender: 'course_name' },
-          dataIndex: 'course_name',
-          width: '34%'
-        }
-      ]
+      courses_columns
     }
   }
 }
