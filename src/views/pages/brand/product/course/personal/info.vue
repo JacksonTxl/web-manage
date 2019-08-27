@@ -99,7 +99,12 @@
               :dataSource="prices"
             >
               <div slot="min_sell_price" slot-scope="min_sell_price, record">
-                {{ record.min_sell_price }} ~ {{ record.max_sell_price }}
+                <span v-if="record.min_sell_price !== '0.0'">
+                  {{ record.min_sell_price }} ~ {{ record.max_sell_price }}
+                </span>
+                <span v-else>
+                  {{ record.sell_price }}
+                </span>
               </div>
               <div slot="min_sell" slot-scope="min_sell, record">
                 {{ record.min_sale }} ~ {{ record.max_sale }}
