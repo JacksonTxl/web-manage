@@ -44,7 +44,11 @@
           v-decorator="decorators.white_list"
           placeholder="搜索指定员工"
         >
-          <a-select-option v-for="(item, index) in whiteList" :key="index">
+          <a-select-option
+            v-for="(item, index) in whiteList"
+            :key="index"
+            :value="item.staff_id"
+          >
             {{ item.staff_name }}
           </a-select-option>
         </a-select>

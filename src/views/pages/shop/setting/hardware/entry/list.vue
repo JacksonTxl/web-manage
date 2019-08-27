@@ -43,6 +43,7 @@
         <div :class="bPage('global-item-content')">
           <span>共{{ info.black_people }}人</span>
           <a
+            v-if="auth.globalBlackSet"
             v-modal-link="{
               name: 'hardware-blacklist'
             }"
