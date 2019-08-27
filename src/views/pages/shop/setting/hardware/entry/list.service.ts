@@ -16,11 +16,11 @@ export class ListService {
   page$ = new State([])
   loading$ = new State({})
   auth$ = this.authService.authMap$({
-    scanGlobalInfo: 'shop:setting:hardware:global_info',
-    scanAreaInfo: 'shop:setting:hardware:area_info',
-    globalSet: 'shop:setting:hardware:global_set',
-    globalBlackSet: 'shop:setting:hardware:global_black_set',
-    areaSet: 'shop:setting:hardware:area_set'
+    scanGlobalInfo: 'shop:setting:hardware|global_info',
+    scanAreaInfo: 'shop:setting:hardware|area_info',
+    globalSet: 'shop:setting:hardware|global_set',
+    globalBlackSet: 'shop:setting:hardware|global_black_set',
+    areaSet: 'shop:setting:hardware|area_set'
   })
   rule$ = this.userService.getOptions$('setting.entrance.times_card_rules')
   constructor(
