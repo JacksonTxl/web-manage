@@ -8,3 +8,11 @@ Vue.use(VueModalRouter, {
   delay: 300
 })
 export const modalRouter = new VueModalRouter(routes)
+
+modalRouter
+  .beforeEachOpen(() => {
+    modalRouter.isOpening = true
+  })
+  .afterEachClosed(() => {
+    modalRouter.isOpening = false
+  })
