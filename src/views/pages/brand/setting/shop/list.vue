@@ -67,7 +67,7 @@
       <!-- 运营状态 -->
       <template slot="shop_status" slot-scope="text, record">
         {{ record.shop_status | enumFilter('shop.shop_status') }}
-        <st-help-popover v-if="record.holiday_start_time" title="放假时间">
+        <st-help-popover v-if="record.has_holiday_setting" title="放假时间">
           <div slot="content">
             {{
               record.holiday_start_time
