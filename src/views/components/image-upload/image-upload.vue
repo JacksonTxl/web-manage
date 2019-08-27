@@ -273,6 +273,7 @@ export default {
         })
         .subscribe({
           next: val => {
+            console.log(val)
             if (this.maskOptions) {
               this.drawMaskImage(val.url).then(resSrc => {
                 this.fileList.push({

@@ -765,6 +765,9 @@ export default {
       }
     }
   },
+  created() {
+    this.indexService.resetEntranceOptionList()
+  },
   mounted() {
     this.init()
   },

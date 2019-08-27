@@ -181,7 +181,7 @@ export default {
   },
   mounted() {
     this.updateStaffPositionService.init(this.staff.id).subscribe(res => {
-      const {
+      let {
         basic_salary,
         coach_level_id,
         course_percentage,
@@ -189,7 +189,9 @@ export default {
         nature_work,
         sale_percentage
       } = this.positionInfo
-
+      if (!nature_work) {
+        nature_work = undefined
+      }
       this.onChangeIdentity(identity)
       let obj = {
         coach_level_id,

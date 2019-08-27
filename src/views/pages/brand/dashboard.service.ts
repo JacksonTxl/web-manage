@@ -14,10 +14,6 @@ export class DashboardService implements RouteGuard {
       redirectRouteName: `brand-dashboard-${
         this.userService.brand$.snapshot().version
       }`,
-      redirectRouteQuery: {
-        brand_id: this.userService.brand$.snapshot().id,
-        shop_id: this.userService.shop$.snapshot().id
-      },
       from,
       to,
       next

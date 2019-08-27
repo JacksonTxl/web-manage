@@ -60,6 +60,7 @@
                   v-for="(item, index) in memberEnums.online.value"
                   :key="index"
                   :value="+index"
+                  :disabled="+index | isOnlineDisabled"
                 >
                   {{ item }}
                 </a-select-option>
@@ -306,6 +307,11 @@ export default {
       countryInfo: this.editService.countryInfo$,
       nations: this.editService.nations$,
       countryList: this.editService.countryList$
+    }
+  },
+  filters: {
+    isOnlineDisabled(val) {
+      return [1, 2, 3].includes(val)
     }
   },
   data() {

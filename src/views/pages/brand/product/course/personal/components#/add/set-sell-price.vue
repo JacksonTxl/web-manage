@@ -217,10 +217,11 @@ export default {
           return
         }
       }
-      if (!this.gradientService.check(this.priceGradient)) {
-        return false
-      }
-      return true
+      const priceSetting = this.form.getFieldsValue('price_setting')
+      return !(
+        priceSetting !== PRICE_SETTING.SHOP_PRICE &&
+        !this.gradientService.check(this.priceGradient)
+      )
     },
     getData() {
       const data = this.form.getFieldsValue()
