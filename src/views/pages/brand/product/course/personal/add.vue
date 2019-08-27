@@ -71,10 +71,11 @@ export default {
   methods: {
     goNext(courseId) {
       if (courseId) {
+        console.log(courseId)
         this.courseId = courseId
       }
       if (this.currentIndex < 2) {
-        this.currentIndex = this.currentIndex + 1
+        this.currentIndex++
       }
     },
     changeStep(step) {

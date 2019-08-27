@@ -130,10 +130,9 @@ export default {
   methods: {
     save(e) {
       e.preventDefault()
-      this.form.validate().then(() => {
-        const data = this.form.getFieldsValue()
-        data.course_id = this.courseId
-        this.addService.setShop(data).subscribe(() => {
+      this.form.validate().then(values => {
+        values.course_id = this.courseId
+        this.addService.setShop(values).subscribe(() => {
           this.messageService.success({
             content: '提交成功'
           })
@@ -170,11 +169,6 @@ export default {
         description: info.description
       })
       this.fileList = [this.info.image]
-    },
-    getData() {
-      const data = this.form.getFieldsValue()
-      data.course_id = +this.query.id
-      return data
     }
   }
 }

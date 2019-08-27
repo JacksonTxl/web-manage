@@ -8,7 +8,9 @@
     <slot name="title" slot="title"></slot>
     <slot name="prepend"></slot>
     <div class="st-modal__body">
-      <slot></slot>
+      <a-spin :spinning="loading">
+        <slot></slot>
+      </a-spin>
     </div>
     <slot name="footer" slot="footer"></slot>
   </a-modal>
@@ -32,6 +34,10 @@ export default {
     },
     wrapClassName: {
       type: String
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

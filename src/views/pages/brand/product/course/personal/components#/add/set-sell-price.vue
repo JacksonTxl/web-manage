@@ -217,11 +217,17 @@ export default {
           return
         }
       }
-      const priceSetting = this.form.getFieldsValue('price_setting')
-      return !(
-        priceSetting !== PRICE_SETTING.SHOP_PRICE &&
-        !this.gradientService.check(this.priceGradient)
-      )
+      const priceSetting = this.form.getFieldValue('price_setting')
+
+      /**
+       * 自主定价直接过校验
+       */
+      if (priceSetting === PRICE_SETTING.SHOP_PRICE) {
+        return true
+      }
+      if (priceSetting === PRICE_SETTING.UNIFORM_PRICE) {
+        return this.gradientService.check(this.priceGradient)
+      }
     },
     getData() {
       const data = this.form.getFieldsValue()
