@@ -905,7 +905,7 @@ export const routeMapConfig = {
       'shop-stat-revenue',
       'shop-stat-order',
       'shop-stat-course',
-      'shop-stat-cashier'
+      'shop-stat-finance'
     ]
   },
   'shop-stat-revenue'(routeConfig: RouteConfig) {
@@ -929,19 +929,21 @@ export const routeMapConfig = {
   'shop-stat-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '上课报表'
     routeConfig.queryOptions = {
-      day: { type: Number },
+      recently_day: { type: Number },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       start_date: { type: String, default: '' },
       end_date: { type: String, default: '' }
     }
   },
-  'shop-stat-cashier'(routeConfig: RouteConfig) {
+  'shop-stat-finance'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '收银报表'
     routeConfig.queryOptions = {
-      day: { type: Number },
+      recently_day: { type: Number, default: 7 },
       current_page: { type: Number, default: 1 },
-      size: { type: Number, default: 20 }
+      size: { type: Number, default: 20 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' }
     }
   },
   'brand-stat'(routeConfig: RouteConfig) {

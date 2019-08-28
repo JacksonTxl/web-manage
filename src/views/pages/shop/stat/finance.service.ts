@@ -7,7 +7,7 @@ import { RedirectService } from '@/services/redirect.service'
 import { StatApi, OrderShopListQuery } from '@/api/v1/stat/shop'
 interface SetState {}
 @Injectable()
-export class CashierService extends Store<SetState> implements RouteGuard {
+export class FinanceService extends Store<SetState> implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
   // loading$ = new State({})
@@ -20,8 +20,8 @@ export class CashierService extends Store<SetState> implements RouteGuard {
     this.state$ = new State({})
   }
   @Effect()
-  getOrderShopList(query: OrderShopListQuery) {
-    return this.StatApi.getOrderShopList(query).pipe(
+  getFinanceShopList(query: OrderShopListQuery) {
+    return this.StatApi.getFinanceShopList(query).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
@@ -30,6 +30,6 @@ export class CashierService extends Store<SetState> implements RouteGuard {
   }
 
   beforeEach(to: ServiceRoute, form: ServiceRoute) {
-    return this.getOrderShopList(to.meta.query)
+    return this.getFinanceShopList(to.meta.query)
   }
 }

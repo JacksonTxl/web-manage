@@ -20,28 +20,28 @@
   </div>
 </template>
 <script>
-import { CashierService } from './cashier.service'
+import { FinanceService } from './finance.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
-import { columns } from './cashier.config.ts'
+import { columns } from './finance.config.ts'
 export default {
   mixins: [tableMixin],
   bem: {
-    bPage: 'page-shop-stat-cashier',
+    bPage: 'page-shop-stat-finance',
     bHeard: 'heard'
   },
   serviceInject() {
     return {
       routeService: RouteService,
-      cashierService: CashierService
+      financeService: FinanceService
     }
   },
   rxState() {
     return {
       query: this.routeService.query$,
-      loading: this.cashierService.loading$,
-      list: this.cashierService.list$,
-      page: this.cashierService.page$
+      loading: this.financeService.loading$,
+      list: this.financeService.list$,
+      page: this.financeService.page$
     }
   },
   data() {

@@ -7,39 +7,39 @@ export const columns = () => {
     },
     {
       title: '收入流水总额(元)',
-      dataIndex: 'member_card_avg'
+      dataIndex: 'total_amount'
     },
     {
       title: '线上微信(元)',
-      dataIndex: 'member_card_num'
+      dataIndex: 'online_wechat_amount'
     },
     {
       title: '线下微信(元)',
-      dataIndex: 'personal_course_avg'
+      dataIndex: 'offline_wechat_amount'
     },
     {
       title: '线下支付宝(元)',
-      dataIndex: 'personal_course_num'
+      dataIndex: 'offline_ailipay_amount'
     },
     {
       title: '线下POS(元)',
-      dataIndex: 'team_course_avg'
+      dataIndex: 'offline_pos_amount'
     },
     {
       title: '现金(元)',
-      dataIndex: 'team_course_num'
+      dataIndex: 'cash_amount'
     },
     {
       title: '银行转账(元)',
-      dataIndex: 'deposit_card_avg'
+      dataIndex: 'bank_transfer_amount'
     },
     {
       title: '内部结转(元)',
-      dataIndex: 'deposit_card_num'
+      dataIndex: 'internal_amount'
     },
     {
       title: '其它(元)',
-      dataIndex: 'package_course_avg'
+      dataIndex: 'other_amount'
     }
   ]
 }
