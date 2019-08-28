@@ -76,6 +76,9 @@
           @change="onTableChange"
           rowKey="area_id"
         >
+          <div slot="leave_limit" slot-scope="text, record">
+            {{ record.leave_limit || '-' }}
+          </div>
           <div slot="action" slot-scope="text, record">
             <st-table-actions>
               <a

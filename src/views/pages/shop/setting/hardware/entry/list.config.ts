@@ -18,7 +18,7 @@ export const columns = (vm: any) => {
     // },
     {
       title: '离场限制',
-      dataIndex: 'leave_limit'
+      scopedSlots: { customRender: 'leave_limit' }
     },
     // {
     //   title: '是否记录入离场',
