@@ -1,8 +1,7 @@
 export const allColumns = () => {
   return [
     {
-      title: '日期',
-      width: '150px',
+      title: '课程名称',
       dataIndex: 'stat_date'
     },
     {
