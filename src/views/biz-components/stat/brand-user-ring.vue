@@ -87,9 +87,9 @@ export default {
           const initRow = this.data[0]
           return (
             `<div class='guide'>` +
-            `<div class='guide-title'><span class='guide-value'>${initRow.value.toFixed(
-              1
-            )}</span><span class='guide-unit'>人</span></div>` +
+            `<div class='guide-title'><span class='guide-value'>${
+              initRow.value
+            }</span><span class='guide-unit'>人</span></div>` +
             `<div class='guide-name'>${initRow.name}</div>` +
             `</div>`
           )
