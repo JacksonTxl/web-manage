@@ -1,30 +1,43 @@
 <template>
   <st-modal
-    title="上课节数（私）"
-    size="small"
+    wrapClassName="modal-stat-personal-course"
+    title="上课节数(私)"
+    :footer="null"
     v-model="show"
-    wrapClassName="modal-shop-stat-personal-course"
-  ></st-modal>
+  >
+    <st-container>
+      <st-table
+        :columns="columns"
+        :rowKey="record => record.id"
+        :page="false"
+        :dataSource="consumeList"
+      ></st-table>
+    </st-container>
+  </st-modal>
 </template>
-
 <script>
+import { columns } from './personal-course.config'
+import { PersonalCourseService } from './personal-course.service'
 export default {
-  name: 'PersonalCourse',
+  name: 'PersonalConsume',
   serviceInject() {
-    return {}
-  },
-  rxState() {
-    return {}
-  },
-  props: ['id'],
-  data() {
     return {
-      show: false
+      personalConsumeService: PersonalConsumeService
     }
   },
-  computed: {},
-  methods: {
-    onSubmit() {}
-  }
+  data() {
+    return {
+      show: false,
+      consumeList: []
+    }
+  },
+  computed: {
+    columns
+  },
+  props: {
+    id: Number
+  },
+  methods: {},
+  mounted() {}
 }
 </script>

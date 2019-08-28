@@ -46,8 +46,8 @@ export class CourseService extends Store<SetState> implements RouteGuard {
       })
     )
   }
-  getCoachList(query: any) {
-    return this.StatApi.getCoachList(query).pipe(
+  getCoachList() {
+    return this.StatApi.getCoachList().pipe(
       tap((res: any) => {
         this.coachList$.commit(() => res.list)
       })
@@ -56,7 +56,7 @@ export class CourseService extends Store<SetState> implements RouteGuard {
   init(query: any) {
     return query.showTable === 'all'
       ? forkJoin(this.getCourseList(query))
-      : forkJoin(this.getCourseCoachShopList(query))
+      : forkJoin(this.getCourseCoachShopList(query), this.getCoachList())
   }
   beforeEach(to: ServiceRoute, form: ServiceRoute) {
     return this.init(to.meta.query)

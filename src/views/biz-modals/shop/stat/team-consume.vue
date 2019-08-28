@@ -1,33 +1,41 @@
 <template>
   <st-modal
-    title="消课价值（团）"
-    size="small"
+    wrapClassName="modal-stat-team-consume"
+    title="消费价值(团)"
+    :footer="null"
     v-model="show"
-    wrapClassName="modal-shop-stat-team-consume"
-  ></st-modal>
+  >
+    <st-container>
+      <st-table
+        :columns="columns"
+        :rowKey="record => record.id"
+        :page="false"
+        :dataSource="consumeList"
+      ></st-table>
+    </st-container>
+  </st-modal>
 </template>
-
 <script>
+import { columns } from './team-consume.config'
+import { TeamConsumeService } from './team-consume.service'
 export default {
-  name: 'ModalShopFinanceOrderCancel',
-  bem: {
-    basic: 'modal-shop-finance-order-cancel'
-  },
+  name: 'TeamConsume',
   serviceInject() {
-    return {}
-  },
-  rxState() {
-    return {}
-  },
-  props: ['id'],
-  data() {
     return {
-      show: false
+      teamConsumeService: TeamConsumeService
     }
   },
-  computed: {},
-  methods: {
-    onSubmit() {}
+  data() {
+    return {
+      show: false,
+      consumeList: []
+    }
+  },
+  computed: {
+    columns
+  },
+  props: {
+    id: Number
   }
 }
 </script>

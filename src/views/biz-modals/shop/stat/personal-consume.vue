@@ -1,33 +1,43 @@
 <template>
   <st-modal
-    title="消课价值（私）"
-    size="small"
+    wrapClassName="modal-stat-personal-consume"
+    title="消课价值(私)"
+    :footer="null"
     v-model="show"
-    wrapClassName="modal-shop-stat-personal-consume"
-  ></st-modal>
+  >
+    <st-container>
+      <st-table
+        :columns="columns"
+        :rowKey="record => record.id"
+        :page="false"
+        :dataSource="consumeList"
+      ></st-table>
+    </st-container>
+  </st-modal>
 </template>
-
 <script>
+import { columns } from './personal-consume.config'
+import { PersonalConsumeService } from './personal-consume.service'
 export default {
-  name: 'ModalShopFinanceOrderCancel',
-  bem: {
-    basic: 'modal-shop-finance-order-cancel'
-  },
+  name: 'PersonalConsume',
   serviceInject() {
-    return {}
-  },
-  rxState() {
-    return {}
-  },
-  props: ['id'],
-  data() {
     return {
-      show: false
+      personalConsumeService: PersonalConsumeService
     }
   },
-  computed: {},
-  methods: {
-    onSubmit() {}
-  }
+  data() {
+    return {
+      show: false,
+      consumeList: []
+    }
+  },
+  computed: {
+    columns
+  },
+  props: {
+    id: Number
+  },
+  methods: {},
+  mounted() {}
 }
 </script>

@@ -66,30 +66,38 @@
         slot="personal_course_num"
         @click="getPersonalCourse(record.id)"
         slot-scope="text, record"
+        v-if="text !== 0"
       >
         {{ text }}
       </a>
+      <span v-else>{{ text }}</span>
       <a
         slot="personal_consume_amount"
         @click="getPersonalConsume(record.id)"
         slot-scope="text, record"
+        v-if="text !== '0.0'"
       >
         {{ text }}
       </a>
+      <span v-else>{{ text }}</span>
       <a
         slot="team_course_num"
         slot-scope="text, record"
         @click="getTeamCourse(record.id)"
+        v-if="text !== 0"
       >
         {{ text }}
       </a>
+      <span v-else>{{ text }}</span>
       <a
         slot="team_consume_amount"
         slot-scope="text, record"
         @click="getTeamConsume(record.id)"
+        v-if="text !== '0.0'"
       >
         {{ text }}
       </a>
+      <span v-else>{{ text }}</span>
     </st-table>
   </div>
 </template>

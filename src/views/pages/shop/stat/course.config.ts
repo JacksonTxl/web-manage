@@ -20,8 +20,8 @@ export const allColumns = () => {
     },
     {
       title: '私教消课价值（元)',
-      dataIndex: 'personal_consume_amount',
-      scopedSlots: { customRender: 'personal_consume_amount' }
+      dataIndex: 'personal_checkin_amount',
+      scopedSlots: { customRender: 'personal_checkin_amount' }
     },
     {
       title: '上课节数（团）',

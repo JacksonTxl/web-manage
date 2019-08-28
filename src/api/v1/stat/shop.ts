@@ -16,11 +16,11 @@ export class StatApi {
   getDepartmentList() {
     return this.http.get('/v1/stat/course/shop/department')
   }
-  getCoachList(query: any) {
-    return this.http.get('/v1/stat/course/shop/department/coach', { query })
+  getCoachList() {
+    return this.http.get('/v1/stat/course/shop/department/coach')
   }
   getCourseCoachShopList(query: CourseShopListQuery) {
-    return this.http.get('/v1/stat/course/shop/coach')
+    return this.http.get('/v1/stat/course/shop/coach', { query })
   }
   getRevenueShopToday(query: RevenueShopTodayQuery) {
     return this.http.get('/v1/stat/revenue/shop/today', { query })
