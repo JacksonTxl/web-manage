@@ -967,8 +967,7 @@ export const routeMapConfig = {
       'brand-setting-import-staff',
       'brand-setting-import-commodity',
       'brand-setting-import-member',
-      'brand-setting-import-sold',
-      'brand-setting-import-pay-type'
+      'brand-setting-import-sold'
     ]
   },
   'brand-setting-import-explain'(routeConfig: RouteConfig) {
