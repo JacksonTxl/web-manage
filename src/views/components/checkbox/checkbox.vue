@@ -1,5 +1,5 @@
 <template>
-  <a-checkbox :checked="checked" @change="onChange">
+  <a-checkbox :checked="checked" @change="onChange" v-bind="$attrs">
     <slot></slot>
   </a-checkbox>
 </template>
