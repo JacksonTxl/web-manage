@@ -8,6 +8,7 @@ import { View } from 'st-data-set'
 import chartMixin from './mixin'
 import Vue from 'vue'
 import StHelpTooltip from '@/views/components/help-tooltip/help-tooltip'
+import { decimalFilter } from './filters'
 
 export default {
   mixins: [chartMixin],
@@ -87,7 +88,7 @@ export default {
       this.chart.guide().html({
         position: ['50%', '50%'],
         html: () => {
-          const sum = this.sum
+          let sum = decimalFilter(this.sum)
           return (
             `<div class='guide'>` +
             `<div class='guide-title'><span class='guide-value'>${sum}</span><span class='guide-unit'>${

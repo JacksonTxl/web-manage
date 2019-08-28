@@ -32,10 +32,7 @@ export class TokenService implements RouteGuard {
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
     this.nprogressService.SET_TEXT('用户凭证获取完毕')
     if (!this.token$.snapshot()) {
-      this.router.push({
-        name: 'account-login',
-        force: true
-      })
+      location.href = '/account/login'
       next(false)
     } else {
       next()

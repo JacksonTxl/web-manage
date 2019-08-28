@@ -22,7 +22,7 @@
         :key="item.user_id"
         :value="+item.user_id"
       >
-        ({{ item.user_type }}) &nbsp;&nbsp;{{ item.user_name }}&nbsp;{{
+        ({{ item.user_cate }}) &nbsp;&nbsp;{{ item.user_name }}&nbsp;{{
           item.mobile
         }}
       </a-select-option>
@@ -83,7 +83,7 @@ export default {
   methods: {
     onSearchKeyWords(val) {
       this.blackService.onSearchKeyWords(val).subscribe(res => {
-        this.searchList = res.info
+        this.searchList = res.list
       })
     },
     joinPerson(para) {

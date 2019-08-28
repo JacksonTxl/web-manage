@@ -120,8 +120,7 @@ export class UserService {
     private staffApi: StaffApi,
     private tooltipApi: TooltipApi,
     private nprogress: NProgressService,
-    private shopApi: ShopApi,
-    private authService: AuthService
+    private shopApi: ShopApi
   ) {}
   SET_USER(user: User) {
     this.user$.commit(() => user)

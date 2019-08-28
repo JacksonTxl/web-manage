@@ -149,15 +149,10 @@ export default {
       this.loginType = 'user'
     },
     onLogin(params) {
-      params.nvc_val = getNVCVal()
+      params.nvc_val = window.getNVCVal()
       this.loginService.loginAccount(params).subscribe(res => {
         this.noCaptchaService.resetNVC()
-        if (res.have_phone) {
-          location.href = '/'
-        } else {
-          /** TODO: 绑定手机需求*/
-          this.$router.push('/')
-        }
+        location.href = '/'
       }, this.loginErrorHandler)
     },
     loginErrorHandler(err) {

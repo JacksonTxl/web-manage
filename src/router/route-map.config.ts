@@ -31,18 +31,6 @@ interface StaffEdit extends ServiceRouteConfig {
   currentIndex?: number
 }
 export const routeMapConfig = {
-  '404'(routeConfig: RouteConfig) {
-    routeConfig.meta.layout = 'blank'
-    routeConfig.meta.title = '页面未找到'
-  },
-  'account-login'(routeConfig: RouteConfig) {
-    routeConfig.meta.layout = 'login'
-    routeConfig.meta.title = '登录'
-  },
-  'account-agreement'(routeConfig: RouteConfig) {
-    routeConfig.meta.layout = 'blank'
-    routeConfig.meta.title = '三体云动服务协议'
-  },
   styleguide(routeConfig: RouteConfig) {
     routeConfig.redirect = { name: 'styleguide-component' }
   },
@@ -103,15 +91,6 @@ export const routeMapConfig = {
     routeConfig.queryOptions = {
       category_id: { type: Number, default: -1 },
       course_name: { type: String, default: '' }
-    }
-  },
-  'test-llf-mine'(routeConfig: RouteConfig) {
-    routeConfig.queryOptions = {
-      courseName: { type: String, default: '-1' },
-      b: { type: Number, default: 2 },
-      c: { type: String, default: '3' },
-      page: { type: Number, default: 1 },
-      size: { type: Number, default: 20 }
     }
   },
   'shop-product-course-manage-package-list'(routeConfig: RouteConfig) {

@@ -25,11 +25,7 @@ const routes: any[] = [
     path: '/shop/reception/cabinet',
     redirect: '/shop/reception/cabinet/temporary'
   },
-  ...pageRoutes,
-  {
-    path: '*',
-    redirect: '404'
-  }
+  ...pageRoutes
 ]
 
 const prependGuards = (route: ServiceRouteConfig, guards: any[]) => {
@@ -49,13 +45,7 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
     }
 
     // guards 配置
-    if (
-      route.name === 'account-login' ||
-      route.name === 'account-agreement' ||
-      route.name === '404' ||
-      route.name.startsWith('test') ||
-      route.name.startsWith('styleguide')
-    ) {
+    if (route.name.startsWith('test') || route.name.startsWith('styleguide')) {
       prependGuards(route, [
         NProgressService,
         HotReleaseService,
