@@ -202,7 +202,7 @@ export class HttpService {
                 key: 'ajaxError',
                 content: serverResponse.msg
               })
-              this.router.push({ name: 'account-login' })
+              location.href = '/account/login'
               break
             case 403:
               this.notification.warn({

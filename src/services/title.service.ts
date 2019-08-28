@@ -1,4 +1,3 @@
-import { I18NService } from './i18n.service'
 import { ServiceRoute, Injectable, RouteGuard } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { UserService } from './user.service'

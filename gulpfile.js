@@ -56,7 +56,10 @@ gulp.task('less-base', () => {
 })
 
 gulp.task('less-views', () => {
-  const lessFiles = globby.sync('./src/views/**/*.less')
+  const lessFiles = globby.sync([
+    './src/views/**/*.less',
+    './src/_modules/**/*.less'
+  ])
   const basePath = Path.resolve('./src')
 
   const importList = lessFiles.map(lessPath => {
@@ -72,7 +75,7 @@ gulp.task('less-views', () => {
 
 gulp.task('less-views:watch', () => {
   gulp
-    .watch('./src/views/**/*.less')
+    .watch(['./src/views/**/*.less', './src/_modules/**/*.less'])
     .on('add', () => {
       gulp.series(['less-views'])()
     })
