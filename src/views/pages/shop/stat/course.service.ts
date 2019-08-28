@@ -31,7 +31,7 @@ export class CourseService extends Store<SetState> implements RouteGuard {
     )
   }
   @Effect()
-  getCourseCoachShopList(query: OrderShopListQuery) {
+  getCourseCoachShopList(query: any) {
     return this.StatApi.getCourseCoachShopList(query).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
@@ -49,16 +49,14 @@ export class CourseService extends Store<SetState> implements RouteGuard {
   getCoachList(query: any) {
     return this.StatApi.getCoachList(query).pipe(
       tap((res: any) => {
-        debugger
         this.coachList$.commit(() => res.list)
       })
     )
   }
   init(query: any) {
-    forkJoin
     return query.showTable === 'all'
-      ? forkJoin(this.getCourseList(query), this.getDepartmentList())
-      : forkJoin(this.getCourseCoachShopList(query), this.getDepartmentList())
+      ? forkJoin(this.getCourseList(query))
+      : forkJoin(this.getCourseCoachShopList(query))
   }
   beforeEach(to: ServiceRoute, form: ServiceRoute) {
     return this.init(to.meta.query)

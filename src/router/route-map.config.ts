@@ -929,7 +929,8 @@ export const routeMapConfig = {
   'shop-stat-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '上课报表'
     routeConfig.queryOptions = {
-      recently_day: { type: Number },
+      showTable: { type: String, default: 'all' },
+      recently_day: { type: Number, default: 7 },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       start_date: { type: String, default: '' },

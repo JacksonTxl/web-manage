@@ -3,7 +3,7 @@
     title="消课价值（私）"
     size="small"
     v-model="show"
-    wrapClassName="modal-shop-finance-cancel"
+    wrapClassName="modal-shop-stat-personal-consume"
   ></st-modal>
 </template>
 

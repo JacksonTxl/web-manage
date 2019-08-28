@@ -14,13 +14,13 @@ export class StatApi {
     return this.http.get('/v1/stat/course/shop', { query })
   }
   getDepartmentList() {
-    return this.http.get('/v1/stat/course/department/shop')
+    return this.http.get('/v1/stat/course/shop/department')
   }
   getCoachList(query: any) {
-    return this.http.get('/v1/stat/course/department/coach/shop', { query })
+    return this.http.get('/v1/stat/course/shop/department/coach', { query })
   }
   getCourseCoachShopList(query: CourseShopListQuery) {
-    return this.http.get('/v1/stat/course/coach/shop', { query })
+    return this.http.get('/v1/stat/course/shop/coach')
   }
   getRevenueShopToday(query: RevenueShopTodayQuery) {
     return this.http.get('/v1/stat/revenue/shop/today', { query })
@@ -30,20 +30,22 @@ export class StatApi {
   }
 
   getPersonalCourse(query: PersonalCourseQuery) {
-    return this.http.get('v1/stat/course/personal/course/amount/shop', {
+    return this.http.get('v1/stat/course/shop/personal/course/amount', {
       query
     })
   }
   getPersonalConsume(query: PersonalConsumeQuery) {
-    return this.http.get('v1/stat/course/personal/checkin/amount/shop', {
+    return this.http.get('v1/stat/course/shop/personal/checkin/amount', {
       query
     })
   }
   getTeamCourse(query: TeamCourseQuery) {
-    return this.http.get('v1/stat/course/team/course/shop', { query })
+    return this.http.get('v1/stat/course/shop/team/course', { query })
   }
   getTeamConsume(query: TeamConsumeQuery) {
-    return this.http.get('v1/stat/course/team/checkin/amount/shop', { query })
+    return this.http.get('v1/stat/course/shop/team/checkin/amount', {
+      query
+    })
   }
 }
 export interface PersonalCourseQuery {

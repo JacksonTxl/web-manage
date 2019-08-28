@@ -140,6 +140,9 @@ export default {
       return this.showTable === 'all' ? allColumns() : courseColumns()
     }
   },
+  created() {
+    this.showTable = this.$route.query.showTable
+  },
   methods: {
     getPersonalCourse(id) {
       this.$modalRouter.push({ name: 'shop-stat-personal-course' })
