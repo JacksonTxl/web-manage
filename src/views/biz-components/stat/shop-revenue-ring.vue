@@ -87,7 +87,7 @@ export default {
       this.chart.guide().html({
         position: ['50%', '50%'],
         html: () => {
-          const sum = this.sum
+          const sum = this.sum.toFixed(1)
           return (
             `<div class='guide'>` +
             `<div class='guide-title'><span class='guide-value'>${sum}</span><span class='guide-unit'>${
