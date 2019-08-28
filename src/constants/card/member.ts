@@ -108,3 +108,59 @@ export enum UNIT {
    */
   RMB = 2
 }
+
+export enum ACTIVATE_TYPE {
+  /**
+   * 即时开卡
+   */
+  IMMEDIATE = 1,
+  /**
+   * 到店开卡
+   */
+  ARRIVE = 2,
+  /**
+   * 指定日期开卡
+   */
+  APPOINT = 3
+}
+
+export enum SHELF_STATUS {
+  /**
+   * 已下架
+   */
+  OFF = 1,
+  /**
+   * 已上架
+   */
+  ON = 2,
+  /**
+   * 未上架
+   */
+  NOT_ON = 3
+}
+
+export enum COURSE_INTERESTS {
+  /**
+   * 无
+   */
+  NULL = 1,
+  /**
+   * 全部团体课程
+   */
+  ALL = 2,
+  /**
+   * 指定团体课程
+   */
+  APPOINT = 3
+}
+
+export enum INOUT_TYPE {
+  /**
+   * 不限制
+   */
+  NO_LIMIT = 1,
+  /**
+   * 自定义
+   */
+  CUSTOM = 2
+}

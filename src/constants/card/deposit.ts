@@ -75,3 +75,14 @@ export enum TRANSFER_UNIT {
    */
   RMB = 2
 }
+
+export enum IS_TRANSFER {
+  /**
+   * 不允许
+   */
+  NOT_ALLOW = 0,
+  /**
+   * 允许
+   */
+  ALLOW = 1
+}

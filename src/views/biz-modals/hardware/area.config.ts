@@ -30,6 +30,7 @@ export const ruleOptions = (vm: any) => {
       initialValue: 0
     },
     white_list: {
+      initialValue: vm.white_list,
       rules: [
         {
           required: true,

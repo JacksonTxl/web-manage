@@ -13,9 +13,10 @@ export class InfoService implements RouteGuard {
       })
     )
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: () => {}) {
-    this.getCardInfo(to.meta.query.id).subscribe(() => {
-      next()
-    })
+  init(id: string) {
+    return this.getCardInfo(id)
+  }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+    return this.init(to.meta.query.id)
   }
 }

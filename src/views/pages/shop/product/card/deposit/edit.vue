@@ -35,11 +35,8 @@
                   :float="true"
                   :min="1"
                   :max="9999999.9"
-                  v-decorator="[
-                    'cardData.card_price',
-                    { rules: [{ validator: card_price_validator }] }
-                  ]"
-                  style="width: 360px"
+                  v-decorator="decorators.cardData.card_price"
+                  class="page-content-card-input"
                   placeholder="请输入储值金额"
                   @change="syncDepositPrice"
                 >
@@ -55,11 +52,8 @@
                   :float="true"
                   :min="0"
                   :max="9999999.9"
-                  v-decorator="[
-                    'cardData.sell_price',
-                    { rules: [{ validator: sell_price_validator }] }
-                  ]"
-                  style="width: 360px"
+                  v-decorator="decorators.cardData.sell_price"
+                  class="page-content-card-input"
                   placeholder="请输入售卖价格"
                 >
                   <span slot="addonAfter">元</span>
@@ -73,27 +67,22 @@
                 <st-input-number
                   :min="1"
                   :max="99999"
-                  v-decorator="[
-                    'cardData.num',
-                    { rules: [{ validator: num_validator }] }
-                  ]"
-                  style="width: 360px"
+                  v-decorator="decorators.cardData.num"
+                  class="page-content-card-input"
                   placeholder="请输入期限"
                   @change="syncDeadlineNum"
                 >
                   <a-select
                     v-model="cardData.unit"
                     slot="addonAfter"
-                    style="width: 50px"
+                    class="page-content-card-small-select"
                   >
                     <a-select-option
-                      v-for="(item, index) in Object.entries(
-                        deposit_card.unit.value
-                      )"
-                      :value="+item[0]"
+                      v-for="(item, index) in unit"
+                      :value="item.value"
                       :key="index"
                     >
-                      {{ item[1] }}
+                      {{ item.label }}
                     </a-select-option>
                   </a-select>
                 </st-input-number>
@@ -104,20 +93,15 @@
             <a-col :lg="22">
               <st-form-item label="支持消费类目" required>
                 <a-checkbox-group
-                  v-decorator="[
-                    'cardData.card_consumer_id',
-                    { rules: [{ validator: card_consumer_validator }] }
-                  ]"
+                  v-decorator="decorators.cardData.card_consumer_id"
                   @change="syncConsumer"
                 >
                   <a-checkbox
-                    v-for="item in Object.entries(
-                      deposit_card.consumer_type.value
-                    )"
-                    :key="+item[0]"
-                    :value="+item[0]"
+                    v-for="item in consumerType"
+                    :key="item.value"
+                    :value="item.value"
                   >
-                    {{ item[1] }}
+                    {{ item.label }}
                   </a-checkbox>
                 </a-checkbox-group>
               </st-form-item>
@@ -166,14 +150,7 @@
                   <a-date-picker
                     :disabled="startTimeIsDisabled"
                     :disabledDate="disabledStartDate"
-                    v-decorator="[
-                      'start_time',
-                      {
-                        rules: [
-                          { required: true, message: '请选择开始售卖时间' }
-                        ]
-                      }
-                    ]"
+                    v-decorator="decorators.start_time"
                     format="YYYY-MM-DD"
                     placeholder="开始时间"
                     :showToday="false"
@@ -185,14 +162,7 @@
                 <a-form-item class="page-a-form">
                   <a-date-picker
                     :disabledDate="disabledEndDate"
-                    v-decorator="[
-                      'end_time',
-                      {
-                        rules: [
-                          { required: true, message: '请选择结束售卖时间' }
-                        ]
-                      }
-                    ]"
+                    v-decorator="decorators.end_time"
                     format="YYYY-MM-DD"
                     placeholder="结束时间"
                     :showToday="false"
@@ -216,13 +186,9 @@
                     支持转让
                   </a-checkbox>
                   <st-input-number
-                    style="width:200px"
-                    v-decorator="[
-                      'cardData.transfer_num',
-                      { rules: [{ validator: transfer_validator }] }
-                    ]"
-                    class="page-input-group"
-                    :float="cardData.transfer_unit === 2"
+                    class="page-content-card-num-input page-input-group"
+                    v-decorator="decorators.cardData.transfer_num"
+                    :float="cardData.transfer_unit === TRANSFER_UNIT.RMB"
                     @change="transfter_change"
                     :disabled="!cardData._is_transfer"
                     :min="transferMin"
@@ -234,25 +200,14 @@
                       :disabled="!cardData._is_transfer"
                     >
                       <a-select-option
-                        v-for="item in Object.entries(
-                          deposit_card.transfer_unit.value
-                        )"
-                        :key="+item[0]"
-                        :value="+item[0]"
+                        v-for="item in transferUnit"
+                        :key="item.value"
+                        :value="item.value"
                       >
-                        {{ item[1] }}
+                        {{ item.label }}
                       </a-select-option>
                     </a-select>
                   </st-input-number>
-                  <!-- <a-input-group compact class="page-input-group">
-                    <a-input-number
-                    v-decorator="['cardData.transfer_num',{rules:[{validator:transfer_validator}]}]"
-                    @change="transfter_change"
-                    :disabled="!cardData._is_transfer"/>
-                    <a-select v-model="cardData.transfer_unit" defaultValue="2" :disabled="!cardData._is_transfer">
-                      <a-select-option v-for="item in Object.entries(deposit_card.transfer_unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
-                    </a-select>
-                  </a-input-group> -->
                 </div>
               </st-form-item>
             </a-col>
@@ -268,7 +223,7 @@
                   <a-checkbox
                     v-for="item in sell_type_list"
                     :key="item.value"
-                    :disabled="item.value === 2"
+                    :disabled="item.value === SELL_TYPE.OFFLINE"
                     :value="item.value"
                   >
                     {{ item.label }}
@@ -348,10 +303,16 @@ import { cloneDeep, remove } from 'lodash-es'
 import { EditService } from './edit.service'
 import MemberCard from '@/views/biz-components/h5/pages/member-card'
 import H5Container from '@/views/biz-components/h5/h5-container'
-// TODO: 临时h5mixin文件，本文件重构后重新引用brand下的mixin
-import h5mixin from './h5mixin'
+import h5mixin from '@/views/pages/brand/product/card/member/period/h5mixin'
 import { MEMBER_CARD } from '@/views/biz-components/h5/pages/member-card.config'
 import CardBgRadio from '@/views/biz-components/card-bg-radio/card-bg-radio'
+import {
+  IS_TRANSFER,
+  UNIT,
+  SELL_TYPE,
+  TRANSFER_UNIT
+} from '@/constants/card/deposit'
+import { ruleOptions } from './deposit.config'
 export default {
   name: 'PageShopDepositCardEdit',
   mixins: [h5mixin],
@@ -359,6 +320,9 @@ export default {
     MemberCard,
     H5Container,
     CardBgRadio
+  },
+  serviceProviders() {
+    return [EditService]
   },
   serviceInject() {
     return {
@@ -373,18 +337,30 @@ export default {
       addLoading: this.addService.loading$,
       shopName: this.userService.shop$,
       cardInfo: this.addService.cardInfo$,
-      member_card: this.userService.memberCardEnums$,
-      deposit_card: user.depositCardEnums$
+      cardBgList: this.addService.cardBgList$,
+      unit: this.addService.unit$,
+      consumerType: this.addService.consumerType$,
+      consumptionRange: this.addService.consumptionRange$,
+      transferUnit: this.addService.transferUnit$,
+      supportSales: this.addService.supportSales$,
+      sellType: this.addService.sellType$
     }
   },
   bem: {
     b: 'st-help-popover'
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
       // cardData
+      form,
+      decorators,
+      UNIT: UNIT,
+      SELL_TYPE,
+      TRANSFER_UNIT,
       cardType: MEMBER_CARD.DEPOSIT_CARD,
-      MEMBER_CARD: MEMBER_CARD,
+      MEMBER_CARD,
       cardData: {
         // 卡id
         card_id: null,
@@ -397,7 +373,7 @@ export default {
         // 期限
         num: null,
         // 期限单位
-        unit: 1,
+        unit: UNIT.DAY,
         // 消费类目
         card_consumer_id: [],
         // 支持售卖时间
@@ -408,7 +384,7 @@ export default {
         // 卡背景
         bg_image: {
           image_id: 0,
-          image_key: this.member_card.card_bg_list.value[0].image_key,
+          image_key: this.cardBgList[0].image_key,
           image_url: '',
           index: 1
         },
@@ -420,13 +396,13 @@ export default {
         description: '',
         // 是否支持转让
         _is_transfer: false,
-        is_transfer: 0,
+        is_transfer: IS_TRANSFER.NOT_ALLOW,
         // 转让单位
-        transfer_unit: 2,
+        transfer_unit: TRANSFER_UNIT.RMB,
         // 转让手续费
         transfer_num: undefined,
         // 售卖方式
-        card_sell_type: [2]
+        card_sell_type: [SELL_TYPE.OFFLINE]
       },
       // 卡背景的help文本
       cardBgValidatorText: '',
@@ -434,7 +410,6 @@ export default {
       // 售卖时间
       start_time: null,
       end_time: null,
-      form: this.$form.createForm(this),
       // 是否禁止选择开始时间,如果卡状态是可售卖，则需要禁止修改开始时间
       startTimeIsDisabled: false
     }
@@ -516,70 +491,6 @@ export default {
           })
         }
       })
-    },
-    // card_price validatorFn
-    card_price_validator(rule, value, callback) {
-      if (value === undefined || value === '') {
-        // eslint-disable-next-line
-        callback('请填写储值金额')
-      } else if (value && !this.rules.number.test(value)) {
-        // eslint-disable-next-line
-        callback('输入的储值金额格式错误，请重新输入')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    // sell_price validatorFn
-    sell_price_validator(rule, value, callback) {
-      if (value === undefined || value === '') {
-        // eslint-disable-next-line
-        callback('请填写售卖价格')
-      } else if (value && !this.rules.number.test(value)) {
-        // eslint-disable-next-line
-        callback('输入的售卖价格格式错误，请重新输入')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    // num validatorFn
-    num_validator(rule, value, callback) {
-      if (value === undefined || value === '') {
-        // eslint-disable-next-line
-        callback('请填写期限')
-      } else if (value && !this.rules.number.test(value)) {
-        // eslint-disable-next-line
-        callback('输入的期限格式错误，请重新输入')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    // card_consumer_id validatorFn
-    card_consumer_validator(rule, value, callback) {
-      if (value === undefined || value === '' || value.length === 0) {
-        // eslint-disable-next-line
-        callback('请选择支持消费类目')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    // transfer validatorFn
-    transfer_validator(rule, value, callback) {
-      if (!this.cardData._is_transfer) {
-        // eslint-disable-next-line
-        callback()
-      } else {
-        if (!value) {
-          // eslint-disable-next-line
-          callback('请输入转让费用')
-        } else {
-          // eslint-disable-next-line
-          callback()
-        }
-      }
     },
     // 售卖时间-start
     start_time_change(data) {
@@ -688,18 +599,16 @@ export default {
   computed: {
     // 售卖方式
     sell_type_list() {
-      let sell_type = cloneDeep(
-        Object.entries(this.deposit_card.sell_type.value)
-      )
+      let sell_type = cloneDeep(this.sellType)
       let arr = []
       sell_type.forEach(i => {
         arr.push({
-          value: +i[0],
-          label: i[1]
+          value: i.value,
+          label: i.label
         })
       })
       if (!this.cardData.appConfig) {
-        remove(arr, i => i.value === 1)
+        remove(arr, i => i.value === SELL_TYPE.CLIENT)
       }
       return arr
     },
@@ -709,12 +618,13 @@ export default {
     },
     // 转让设置的min
     transferMin() {
-      // return this.cardData.transfer_unit === 1 ? 1 : 0.1
       return 0
     },
     // 转让设置的max
     transferMax() {
-      return this.cardData.transfer_unit === 1 ? 100 : 999999.9
+      return this.cardData.transfer_unit === TRANSFER_UNIT.PERCENT
+        ? 100
+        : 999999.9
     }
   }
 }
