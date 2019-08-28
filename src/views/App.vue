@@ -41,8 +41,7 @@ export default {
   rxState() {
     const { layout$, query$ } = this.route
     return {
-      antdLocaleMessages: this.i18n.antdLocaleMessages$,
-      layout: layout$
+      antdLocaleMessages: this.i18n.antdLocaleMessages$
     }
   },
   data() {
@@ -58,7 +57,7 @@ export default {
   },
   computed: {
     layoutComponent() {
-      return layoutMap[this.layout || 'loading']
+      return layoutMap[this.$route.meta.layout || 'loading']
     },
     gitStyle() {
       return {

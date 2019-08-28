@@ -46,6 +46,9 @@ class VueServiceApp {
     // TODO: 可以去掉 直接配置在meta中即可
     const walkRoutes = routes => {
       routes.forEach(route => {
+        if (!route.meta) {
+          route.meta = {}
+        }
         if (route.guards) {
           route.meta.guards = route.guards
         }

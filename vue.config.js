@@ -43,6 +43,20 @@ fs.writeFileSync(
 )
 
 module.exports = {
+  pages: {
+    app: {
+      entry: 'src/_modules/app/index.ts',
+      template: 'src/_modules/app/index.html',
+      filename: 'index.html',
+      chunks: ['chunk-vendors', 'runtime~app', 'app']
+    },
+    account: {
+      entry: 'src/_modules/account/index.ts',
+      template: 'src/_modules/account/index.html',
+      filename: 'account/index.html',
+      chunks: ['chunk-vendors', 'runtime~account', 'account']
+    }
+  },
   lintOnSave: false,
   css: {
     sourceMap: true,

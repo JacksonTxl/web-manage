@@ -146,7 +146,6 @@ import DefaultSiderMenu from './default#sider-menu'
 import SwitchShop from '@/views/fragments/shop/switch'
 import routes from '@/router/routes'
 import { find } from 'lodash-es'
-import { LoginService } from '../pages/account/login.service'
 import { UserService } from '@/services/user.service'
 import { TokenService } from '@/services/token.service'
 import { TitleService } from '@/services/title.service'
@@ -155,7 +154,6 @@ import { TitleService } from '@/services/title.service'
 export default {
   serviceInject() {
     return {
-      loginService: LoginService,
       userService: UserService,
       tokenService: TokenService,
       titleService: TitleService
@@ -192,10 +190,7 @@ export default {
     },
     onClickLogout() {
       this.tokenService.REMOVE_TOKEN()
-      this.$router.push({
-        name: 'account-login',
-        force: true
-      })
+      location.href = '/account/login'
     },
     getParentBreadCrumb() {
       const parentId = this.$route.meta.parentId
