@@ -29,6 +29,7 @@
               v-modal-link="{
                 name: 'hardware-rule',
                 props: {
+                  type: info.charge_type,
                   value: info.charge_value
                 },
                 on: {
