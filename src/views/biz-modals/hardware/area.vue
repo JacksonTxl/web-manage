@@ -130,7 +130,7 @@ export default {
       info: {},
       list: [],
       whiteList: [],
-      peopleType: '',
+      peopleType: 3,
       white_list: [],
       type: '' // area类型
     }
