@@ -50,7 +50,10 @@
             <a
               v-if="auth.globalBlackSet"
               v-modal-link="{
-                name: 'hardware-blacklist'
+                name: 'hardware-blacklist',
+                on: {
+                  success: getGlobalInfo
+                }
               }"
             >
               设置
