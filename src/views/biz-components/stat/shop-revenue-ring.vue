@@ -8,6 +8,7 @@ import { View } from 'st-data-set'
 import chartMixin from './mixin'
 import Vue from 'vue'
 import StHelpTooltip from '@/views/components/help-tooltip/help-tooltip'
+import { decimalFilter } from './filters'
 
 export default {
   mixins: [chartMixin],
