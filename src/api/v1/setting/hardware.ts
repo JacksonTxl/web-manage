@@ -5,9 +5,11 @@ export class HareWareApi extends Api {
   getGlobalInfo() {
     return this.http.get('/v1/setting/hardware/global')
   }
-  //全局详情
-  getStaffList(mobile: any) {
-    return this.http.get(`/v1/setting/hardware/area/staff/options/${mobile}`)
+  //
+  getStaffList(query: any) {
+    return this.http.get(
+      '/v1/setting/hardware/area/staff/options?keyword=' + query
+    )
   }
   // 区域列表
   getAreaList(query: GetAreaListQuery) {
@@ -35,7 +37,9 @@ export class HareWareApi extends Api {
   }
   // 白名单列表
   getWhiteList(query: GetWhiteListQuery) {
-    return this.http.get('/v1/setting/hardware/area/staff/options/' + query)
+    return this.http.get(
+      '/v1/setting/hardware/area/staff/options?keyword=' + query
+    )
   }
   //区域设置
   putAreaSettingParams(params: PutAreaSettingParams) {

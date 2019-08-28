@@ -171,6 +171,9 @@ export default {
       })
     },
     putAreaSetting(e) {
+      if (!this.isEdit) {
+        this.show = false
+      }
       e.preventDefault()
       this.form.validate().then(values => {
         values.checkin = values.checkin ? 1 : 0
