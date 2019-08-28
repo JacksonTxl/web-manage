@@ -22,12 +22,15 @@
             次卡扣费规则
           </div>
           <div :class="bPage('global-item-content')">
-            {{ info.charge_type === PAY_RULE.HOUR ? info.charge_type : ''
+            {{ info.charge_type === PAY_RULE.HOUR ? info.charge_value : ''
             }}{{ info.charge_type_text }}
             <a
               v-if="auth.globalSet"
               v-modal-link="{
                 name: 'hardware-rule',
+                props: {
+                  value: info.charge_value
+                },
                 on: {
                   success: getGlobalInfo
                 }
@@ -84,6 +87,7 @@
                 详情
               </a>
               <a
+                v-if="record.auth['shop:setting:hardware|area_set']"
                 v-modal-link="{
                   name: 'hardware-area',
                   props: {

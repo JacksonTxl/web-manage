@@ -47,6 +47,9 @@ export default {
     isEdit: {
       type: Boolean,
       default: false
+    },
+    value: {
+      type: Number
     }
   },
   data() {
@@ -61,7 +64,9 @@ export default {
       PAY_RULE
     }
   },
-  created() {},
+  created() {
+    this.charge_value = this.value
+  },
   computed: {},
   methods: {
     postGlobalSetting() {
