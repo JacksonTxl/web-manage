@@ -14,10 +14,6 @@ export const columns = () => {
       dataIndex: 'personal_reserved_num'
     },
     {
-      title: '教练级别',
-      dataIndex: 'personal_checkin_num'
-    },
-    {
       title: '预约人数',
       dataIndex: 'personal_consume_amount',
       scopedSlots: { customRender: 'personal_consume_amount' }

@@ -3,6 +3,7 @@ export const allColumns = () => {
     {
       title: '日期',
       width: '150px',
+      fixed: 'left',
       dataIndex: 'stat_date'
     },
     {
@@ -42,8 +43,8 @@ export const allColumns = () => {
     },
     {
       title: '团课消课价值（元）',
-      dataIndex: 'team_consume_amount',
-      scopedSlots: { customRender: 'team_consume_amount' }
+      dataIndex: 'team_checkin_amount',
+      scopedSlots: { customRender: 'team_checkin_amount' }
     }
   ]
 }
@@ -52,14 +53,17 @@ export const courseColumns = () => {
     {
       title: '日期',
       width: '150px',
+      fixed: 'left',
       dataIndex: 'stat_date'
     },
     {
       title: '教练姓名',
+      fixed: 'left',
       dataIndex: 'coach_name'
     },
     {
       title: '所属部门',
+      fixed: 'left',
       dataIndex: 'department_name'
     },
     {

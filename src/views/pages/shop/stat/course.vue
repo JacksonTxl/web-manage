@@ -89,15 +89,12 @@
         {{ text }}
       </a>
       <span v-else>{{ text }}</span>
-      <a
-        slot="team_consume_amount"
-        slot-scope="text, record"
-        @click="getTeamConsume(record.id)"
-        v-if="text !== '0.0'"
-      >
-        {{ text }}
-      </a>
-      <span v-else>{{ text }}</span>
+      <template slot="team_consume_amount" slot-scope="text, record">
+        <a v-if="text !== '0.0'" @click="getTeamConsume(record.id)">
+          {{ text }}
+        </a>
+        <span v-else>{{ text }}</span>
+      </template>
     </st-table>
   </div>
 </template>
@@ -149,7 +146,7 @@ export default {
     }
   },
   created() {
-    this.showTable = this.$route.query.showTable
+    this.showTable = this.query.showTable
   },
   methods: {
     getPersonalCourse(id) {
