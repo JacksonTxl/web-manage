@@ -25,13 +25,11 @@ export default {
      * 等于3个的时候使用最小宽度
      */
     const useMax = usefulSlotNodes.length === MAX
-    console.log(useMax)
     if (usefulSlotNodes.length <= MAX) {
       outerSlotNodes = usefulSlotNodes.splice(0, MAX)
     } else {
       outerSlotNodes = usefulSlotNodes.splice(0, 2)
     }
-    console.log(usefulSlotNodes)
     const outerActions = intercept(
       outerSlotNodes,
       h('a-divider', {
