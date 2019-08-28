@@ -132,7 +132,7 @@ export default {
       whiteList: [],
       peopleType: 3,
       white_list: [],
-      type: '' // area类型
+      type: 3 // area类型
     }
   },
   created() {
