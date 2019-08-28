@@ -6,6 +6,7 @@
 import { Chart } from 'st-g2'
 import { View } from 'st-data-set'
 import chartMixin from './mixin'
+import { decimalFilter } from './filters'
 
 export default {
   mixins: [chartMixin],
@@ -85,14 +86,11 @@ export default {
         position: ['50%', '50%'],
         html: () => {
           let initRow = this.data[0]
-          if (initRow.value > 0) {
-            initRow.value = initRow.value.toFixed(1)
-          }
           return (
             `<div class='guide'>` +
-            `<div class='guide-title'><span class='guide-value'>${
+            `<div class='guide-title'><span class='guide-value'>${decimalFilter(
               initRow.value
-            }</span><span class='guide-unit'>人</span></div>` +
+            )}</span><span class='guide-unit'>人</span></div>` +
             `<div class='guide-name'>${initRow.name}</div>` +
             `</div>`
           )

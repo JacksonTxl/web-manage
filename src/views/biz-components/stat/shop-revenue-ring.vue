@@ -87,10 +87,7 @@ export default {
       this.chart.guide().html({
         position: ['50%', '50%'],
         html: () => {
-          let sum = this.sum
-          if (sum > 0) {
-            sum = sum.toFixed(1)
-          }
+          let sum = decimalFilter(this.sum)
           return (
             `<div class='guide'>` +
             `<div class='guide-title'><span class='guide-value'>${sum}</span><span class='guide-unit'>${
