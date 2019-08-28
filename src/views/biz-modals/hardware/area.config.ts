@@ -19,15 +19,10 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     leave_limit: {
-      rules: [
-        {
-          required: true,
-          message: '请选择人员范围'
-        }
-      ]
+      initialValue: vm.leave_limit
     },
     checkin: {
-      initialValue: 0
+      initialValue: vm.checkin
     },
     white_list: {
       initialValue: vm.white_list,

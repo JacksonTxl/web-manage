@@ -54,10 +54,10 @@
         </a-select>
       </st-form-item>
       <st-form-item label="离场限制" v-if="type === ENTRY.GATE">
-        <a-checkbox
+        <st-checkbox
           v-decorator="decorators.leave_limit"
           :disabled="!isEdit"
-        ></a-checkbox>
+        ></st-checkbox>
         未归还的临时储物柜，不允许离场
       </st-form-item>
       <st-form-item label="约课入场限制" required>
@@ -72,10 +72,10 @@
         分钟可入场
       </st-form-item>
       <st-form-item label="入场签课">
-        <a-checkbox
+        <st-checkbox
           v-decorator="decorators.checkin"
           :disabled="!isEdit"
-        ></a-checkbox>
+        ></st-checkbox>
         当预约课程与场地排期课程一致，在用户入场同时，
         在可签到时间内自动为用户完成此课程签到
       </st-form-item>
@@ -132,7 +132,7 @@ export default {
       whiteList: [],
       peopleType: 3,
       white_list: [],
-      type: '' // area类型
+      type: 3 // area类型
     }
   },
   created() {
@@ -196,14 +196,12 @@ export default {
             this.peopleType = item.value
           }
         })
-        this.white_list = this.info.white_list
         this.form.setFieldsValue({
           area_id: +this.info.area_id,
           people_type: +this.info.people_type,
-          leave_limit:
-            this.info.leave_limit === LEAVE_LIMIT.TRUE ? true : false,
+          leave_limit: this.info.leave_limit === LEAVE_LIMIT.TRUE ? 1 : 0,
           course_time: this.info.course_time,
-          checkin: this.info.checkin === CHECKIN.TRUE ? true : false,
+          checkin: this.info.checkin === CHECKIN.TRUE ? 1 : 0,
           white_list: this.info.white_list
         })
       })
