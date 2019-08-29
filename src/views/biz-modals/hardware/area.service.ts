@@ -1,5 +1,5 @@
 import { Injectable } from 'vue-service-app'
-import { State } from 'rx-state/src'
+import { State, Effect } from 'rx-state'
 import { UserService } from '@/services/user.service'
 import {
   HareWareApi,
@@ -18,6 +18,7 @@ export class AreaService {
     private HareWareApi: HareWareApi,
     private userService: UserService
   ) {}
+  @Effect()
   getSingleAreaList() {
     return this.HareWareApi.getSingleAreaList()
   }

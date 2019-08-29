@@ -4,6 +4,7 @@
     v-model="show"
     @ok="putAreaSetting"
     size="small"
+    :loading="loading.getSingleAreaList"
   >
     <st-form :form="form" labelWidth="100px">
       <st-form-item label="区域">
@@ -94,6 +95,9 @@ import {
 
 export default {
   name: 'Area',
+  serviceProviders() {
+    return [AreaService]
+  },
   serviceInject() {
     return {
       areaService: AreaService
@@ -101,7 +105,8 @@ export default {
   },
   rxState() {
     return {
-      rule: this.areaService.rule$
+      rule: this.areaService.rule$,
+      loading: this.areaService.loading$
     }
   },
   bem: {
@@ -164,6 +169,7 @@ export default {
       })
     },
     getCurPeopleType(e) {
+      console.log(e.target.value)
       this.rule.forEach(item => {
         if (item.value === e.target.value) {
           this.peopleType = item.value
@@ -176,6 +182,7 @@ export default {
       }
       e.preventDefault()
       this.form.validate().then(values => {
+        console.log(values)
         values.checkin = values.checkin ? 1 : 0
         values.leave_limit = values.leave_limit
           ? LEAVE_LIMIT.TRUE
