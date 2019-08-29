@@ -4,8 +4,6 @@
     class="modal-price-model-setting"
     v-model="show"
     :bodyStyle="{ padding: 0 }"
-    @ok="save"
-    @cancel="cancel"
     :confirmLoading="loading.update"
   >
     <a-alert
@@ -128,6 +126,21 @@
         </st-container>
       </st-container>
     </st-form>
+    <footer slot="footer">
+      <st-button @click="show = false">取消</st-button>
+      <a-popconfirm
+        v-model="isShowConfirm"
+        @confirm="save"
+        placement="topRight"
+      >
+        <template slot="title">
+          <p>此操作将影响所有私教课程的定价，无法撤回，确认是否修改</p>
+        </template>
+        <st-button type="primary" @click="showConfirm">
+          确认
+        </st-button>
+      </a-popconfirm>
+    </footer>
   </st-modal>
 </template>
 <script>
@@ -154,7 +167,8 @@ export default {
       show: false,
       form: this.$form.createForm(this),
       info: {},
-      isShowPriceSet: false
+      isShowPriceSet: false,
+      isShowConfirm: false
     }
   },
   created() {
@@ -163,6 +177,9 @@ export default {
     })
   },
   methods: {
+    showConfirm() {
+      this.isShowConfirm = true
+    },
     onSaleModelChange(e) {
       const saleModel = e.target.value
       this.info.sale_model = saleModel
