@@ -101,6 +101,7 @@
   </div>
 </template>
 <script>
+import { MessageService } from '@/services/message.service'
 import { ShelvesService } from './shelves.service'
 import { RouteService } from '@/services/route.service'
 import { columns, CARD_TYPE } from './shelves.config.ts'
@@ -127,6 +128,7 @@ export default {
   },
   serviceInject() {
     return {
+      messageService: MessageService,
       routeService: RouteService,
       shelvesService: ShelvesService
     }
@@ -161,6 +163,9 @@ export default {
             .setCardShelfDown(record.id)
             .toPromise()
             .then(() => {
+              this.messageService.success({
+                content: '下架成功'
+              })
               this.$router.reload()
             })
         }
