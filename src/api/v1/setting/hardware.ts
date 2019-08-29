@@ -27,7 +27,7 @@ export class HareWareApi extends Api {
   }
   // 模糊搜索
   onSearchKeyWords(query: GetBlackListSelectQuery) {
-    return this.http.get('/v1/setting/hardware/global/options/' + query)
+    return this.http.get('/v1/setting/hardware/global/options?keyword=' + query)
   }
   // 黑名单设置
   postBlackListSetting(params: PostBlackListParams) {
