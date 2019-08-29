@@ -10,7 +10,7 @@ export const columns = (vm: any) => {
     },
     {
       title: '类型',
-      dataIndex: 'user_type'
+      dataIndex: 'user_cate'
     },
     {
       title: '操作',
