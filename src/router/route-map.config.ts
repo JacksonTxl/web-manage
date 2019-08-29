@@ -946,7 +946,8 @@ export const routeMapConfig = {
       'brand-setting-import-staff',
       'brand-setting-import-commodity',
       'brand-setting-import-member',
-      'brand-setting-import-sold'
+      'brand-setting-import-sold',
+      'brand-setting-import-record'
     ]
   },
   'brand-setting-import-explain'(routeConfig: RouteConfig) {
@@ -963,5 +964,12 @@ export const routeMapConfig = {
   },
   'brand-setting-import-sold'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '导入售出'
+  },
+  'brand-setting-import-record'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '导入记录'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
   }
 }

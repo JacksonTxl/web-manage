@@ -7,7 +7,7 @@
           {{ todayInfo.time }}
         </span>
         <span @click="refresh">
-          <st-icon type="switch"></st-icon>
+          <st-icon type="refresh"></st-icon>
         </span>
       </div>
       <a-row :class="bPage('income-row')">
