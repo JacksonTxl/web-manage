@@ -8,11 +8,14 @@ import {
   GetAreaInfoQuery
 } from '@/api/v1/setting/hardware'
 import { tap } from 'rxjs/operators'
+import { forkJoin } from 'rxjs'
+
 @Injectable()
 export class AreaService {
   loading$ = new State({})
   rule$ = this.userService.getOptions$('setting.entrance.entry_limit')
   info$ = new State({})
+  list$ = new State({})
   whiteList$ = new State([])
   constructor(
     private HareWareApi: HareWareApi,
@@ -20,35 +23,14 @@ export class AreaService {
   ) {}
   @Effect()
   getSingleAreaList() {
-    return this.HareWareApi.getSingleAreaList()
-  }
-  getStaffList(query: string) {
-    return this.HareWareApi.getStaffList(query).pipe(
+    return this.HareWareApi.getSingleAreaList().pipe(
       tap(res => {
-        this.whiteList$.commit(() =>
-          res.list.map((item: any) => {
-            return {
-              value: item.staff_id,
-              label: `${item.mobile} ${item.staff_name}`
-            }
-          })
-        )
+        this.list$.commit(() => res.list)
       })
     )
   }
   getWhiteList(query: GetWhiteListQuery) {
-    return this.HareWareApi.getWhiteList(query).pipe(
-      tap(res => {
-        this.whiteList$.commit(() =>
-          res.list.map((item: any) => {
-            return {
-              value: item.staff_id,
-              label: `${item.mobile} ${item.staff_name}`
-            }
-          })
-        )
-      })
-    )
+    return this.HareWareApi.getWhiteList(query)
   }
   putAreaSetting(params: PutAreaSettingParams) {
     return this.HareWareApi.putAreaSettingParams(params)
@@ -58,6 +40,13 @@ export class AreaService {
       tap(res => {
         this.info$.commit(() => res.info)
       })
+    )
+  }
+  @Effect()
+  init(GetAreaInfoQuery: any) {
+    return forkJoin(
+      this.getSingleAreaList(),
+      this.getAreaInfo(GetAreaInfoQuery)
     )
   }
 }

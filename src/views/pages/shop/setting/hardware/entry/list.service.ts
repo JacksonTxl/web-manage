@@ -4,6 +4,7 @@ import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { UserService } from '@/services/user.service'
 import { AuthService } from '@/services/auth.service'
+import { forkJoin } from 'rxjs'
 
 import {
   HareWareApi,
@@ -13,6 +14,7 @@ import {
 @Injectable()
 export class ListService {
   list$ = new State([])
+  info$ = new State({})
   page$ = new State([])
   loading$ = new State({})
   auth$ = this.authService.authMap$({
@@ -39,9 +41,16 @@ export class ListService {
     )
   }
   getGlobalInfo() {
-    return this.HareWareApi.getGlobalInfo()
+    return this.HareWareApi.getGlobalInfo().pipe(
+      tap((res: any) => {
+        this.info$.commit(() => res.info)
+      })
+    )
+  }
+  init(GetAreaListQuery: object) {
+    return forkJoin(this.getGlobalInfo(), this.getAreaList(GetAreaListQuery))
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    return this.getAreaList(to.meta.query)
+    return this.init(to.meta.query)
   }
 }

@@ -76,11 +76,18 @@ export default {
       searchList: []
     }
   },
-  created() {},
+  created() {
+    this.getBlackList()
+  },
   computed: {
     columns
   },
   methods: {
+    getBlackList() {
+      return this.blackService.getBlackList().subscribe(res => {
+        this.blackList = res.list
+      })
+    },
     onSearchKeyWords(val) {
       this.blackService.onSearchKeyWords(val).subscribe(res => {
         this.searchList = res.list

@@ -4,7 +4,7 @@
     v-model="show"
     @ok="putAreaSetting"
     size="small"
-    :loading="loading.getSingleAreaList"
+    :loading="loading.init"
   >
     <st-form :form="form" labelWidth="100px">
       <st-form-item label="区域">
@@ -106,7 +106,10 @@ export default {
   rxState() {
     return {
       rule: this.areaService.rule$,
-      loading: this.areaService.loading$
+      list: this.areaService.list$,
+      info: this.areaService.info$,
+      loading: this.areaService.loading$,
+      whiteList: this.areaService.whiteList$
     }
   },
   bem: {
@@ -132,34 +135,38 @@ export default {
       ENTRY,
       CHECKIN,
       PEOPLE_TYPE,
-      info: {},
-      list: [],
       whiteList: [],
-      peopleType: 3,
+      peopleType: PEOPLE_TYPE.ONLY,
       white_list: [],
-      type: 3 // area类型
+      type: ENTRY.GATE // area类型
     }
   },
   created() {
-    this.getWhiteList(1)
-  },
-  mounted() {
-    this.getSingleAreaList()
+    this.init()
   },
   methods: {
-    getSingleAreaList() {
-      this.areaService.getSingleAreaList().subscribe(res => {
-        this.list = res.list
-        this.getAreaInfo()
-      })
-    },
     getWhiteList(val) {
       this.areaService.getWhiteList(val).subscribe(res => {
         this.whiteList = res.list
       })
     },
-    getStaffList(val) {
-      this.areaService.getStaffList(val).subscribe()
+    init() {
+      return this.areaService.init(this.id).subscribe(() => {
+        this.form.setFieldsValue({
+          area_id: this.info.area_id,
+          people_type: this.info.people_type,
+          leave_limit: this.info.leave_limit === LEAVE_LIMIT.TRUE ? 1 : 0,
+          course_time: this.info.course_time,
+          checkin: this.info.checkin,
+          white_list: this.info.white_list
+        })
+        this.peopleType = this.info.people_type
+        this.list.forEach(item => {
+          if (item.area_id === this.info.area_id) {
+            this.type = item.area_type
+          }
+        })
+      })
     },
     getCurAreaType(para) {
       this.list.forEach(item => {
@@ -169,12 +176,7 @@ export default {
       })
     },
     getCurPeopleType(e) {
-      console.log(e.target.value)
-      this.rule.forEach(item => {
-        if (item.value === e.target.value) {
-          this.peopleType = item.value
-        }
-      })
+      this.peopleType = e.target.value
     },
     putAreaSetting(e) {
       if (!this.isEdit) {
@@ -182,37 +184,12 @@ export default {
       }
       e.preventDefault()
       this.form.validate().then(values => {
-        console.log(values)
-        values.checkin = values.checkin ? 1 : 0
         values.leave_limit = values.leave_limit
           ? LEAVE_LIMIT.TRUE
           : LEAVE_LIMIT.FALSE
         this.areaService.putAreaSetting(values).subscribe(() => {
           this.$emit('success')
           this.show = false
-        })
-      })
-    },
-    getAreaInfo() {
-      this.areaService.getAreaInfo(this.id).subscribe(res => {
-        this.info = res.info
-        this.list.forEach(item => {
-          if (item.area_id === this.info.area_id) {
-            this.type = item.area_type
-          }
-        })
-        this.rule.forEach(item => {
-          if (item.value === this.info.people_type) {
-            this.peopleType = item.value
-          }
-        })
-        this.form.setFieldsValue({
-          area_id: +this.info.area_id,
-          people_type: +this.info.people_type,
-          leave_limit: this.info.leave_limit === LEAVE_LIMIT.TRUE ? 1 : 0,
-          course_time: this.info.course_time,
-          checkin: this.info.checkin === CHECKIN.TRUE ? 1 : 0,
-          white_list: this.info.white_list
         })
       })
     }

@@ -33,7 +33,7 @@
                   value: info.charge_value
                 },
                 on: {
-                  success: getGlobalInfo
+                  success: getAreaList
                 }
               }"
             >
@@ -52,7 +52,7 @@
               v-modal-link="{
                 name: 'hardware-blacklist',
                 on: {
-                  success: getGlobalInfo
+                  success: getAreaList
                 }
               }"
             >
@@ -140,7 +140,8 @@ export default {
       query: this.routeService.query$,
       auth: this.listService.auth$,
       loading: this.listService.loading$,
-      rule: this.listService.rule$
+      rule: this.listService.rule$,
+      info: this.listService.info$
     }
   },
   bem: {
@@ -153,24 +154,15 @@ export default {
   },
   data() {
     return {
-      info: {},
       ruleOptions: '',
       PAY_RULE
     }
-  },
-  created() {
-    this.getGlobalInfo()
   },
   computed: {
     columns,
     ruleColumns
   },
   methods: {
-    getGlobalInfo() {
-      return this.listService.getGlobalInfo().subscribe(res => {
-        this.info = res.info
-      })
-    },
     // 编辑modal之后的刷新
     getAreaList() {
       this.$router.reload()
