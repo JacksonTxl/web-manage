@@ -30,7 +30,7 @@ export class StatApi {
   }
 
   getPersonalCourse(query: PersonalCourseQuery) {
-    return this.http.get('v1/stat/course/shop/personal/course/amount', {
+    return this.http.get('v1/stat/course/shop/personal/course', {
       query
     })
   }

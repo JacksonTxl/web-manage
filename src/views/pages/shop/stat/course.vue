@@ -42,7 +42,7 @@
           >
             <a-select-option
               :value="coach.id"
-              v-for="coach in coachList"
+              v-for="coach in coachListFilter"
               :key="coach.id"
             >
               {{ coach.name }}
@@ -137,12 +137,19 @@ export default {
   },
   data() {
     return {
-      showTable: 'all'
+      showTable: 'all',
+      departmentId: -1
     }
   },
   computed: {
     columns() {
       return this.showTable === 'all' ? allColumns() : courseColumns()
+    },
+    coachListFilter() {
+      if (this.departmentId === -1) return this.coachList
+      return this.coachList.filter(item => {
+        return this.departmentId === item.department_id
+      })
     }
   },
   created() {
@@ -162,8 +169,7 @@ export default {
       this.$modalRouter.push({ name: 'shop-stat-team-consume' })
     },
     onChangeCoach(value) {
-      console.log(`selected ${value}`)
-      this.$router.push({ query: { ...query, coach_id: value } })
+      this.onMultiSearch({ coach_id: value })
     },
     onBlurCoach() {
       console.log('blur')
@@ -179,12 +185,8 @@ export default {
       )
     },
     onChangeDepartment(value) {
-      const query = {
-        department_id: value
-      }
-      this.courseService.getCoachList(query).subscribe(() => {
-        this.$router.push({ query: { ...query, department_id: value } })
-      })
+      this.departmentId = value
+      this.onMultiSearch({ department_id: value })
     },
     onBlurDepartment() {
       console.log('blur')
@@ -204,7 +206,7 @@ export default {
     },
     handleSizeChange(val) {
       this.showTable = val.target.value
-      this.$router.push({ query: { ...this.query, showTable: this.showTable } })
+      this.$router.push({ query: { showTable: this.showTable, force: true } })
     }
   }
 }

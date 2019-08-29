@@ -22,7 +22,12 @@ export default {
   name: 'PersonalConsume',
   serviceInject() {
     return {
-      personalConsumeService: PersonalConsumeService
+      personalCourseService: PersonalCourseService
+    }
+  },
+  rxState() {
+    return {
+      courseList: this.personalCourseService.courseList$
     }
   },
   data() {
@@ -38,6 +43,8 @@ export default {
     id: Number
   },
   methods: {},
-  mounted() {}
+  mounted() {
+    this.personalCourseService.getCourseList().subscribe()
+  }
 }
 </script>

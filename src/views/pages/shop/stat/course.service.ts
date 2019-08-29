@@ -1,6 +1,6 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
-import { tap } from 'rxjs/operators'
+import { tap, first } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { RedirectService } from '@/services/redirect.service'
 import { StatApi, OrderShopListQuery } from '@/api/v1/stat/shop'
@@ -49,7 +49,12 @@ export class CourseService extends Store<SetState> implements RouteGuard {
   getCoachList() {
     return this.StatApi.getCoachList().pipe(
       tap((res: any) => {
-        this.coachList$.commit(() => res.list)
+        this.coachList$.commit(() => {
+          return [{ id: -1, name: '全部教练' }, ...res.info.coach_list]
+        })
+        this.departmentList$.commit(() => {
+          return [{ id: -1, name: '全部部门' }, ...res.info.department_list]
+        })
       })
     )
   }

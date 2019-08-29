@@ -1,18 +1,19 @@
+import { StatApi } from '@/api/v1/stat/shop'
 import { Injectable } from 'vue-service-app'
 import { Effect, State } from 'rx-state'
-import { CourseApi } from '@/api/v1/setting/course'
-import { PackageApi, GetCourseInput } from '@/api/v1/course/package'
+import { tap } from 'rxjs/operators'
 
 @Injectable()
 export class PersonalCourseService {
-  courseTypeList$ = new State({})
+  courseList$ = new State({})
   loading$ = new State({})
-  constructor(private courseApi: CourseApi, private packageApi: PackageApi) {}
+  constructor(private statApi: StatApi) {}
   @Effect()
-  getCourseList(params: GetCourseInput) {
-    return this.packageApi.getCourseList(params)
-  }
-  getCourseTypeList() {
-    return this.courseApi.getCourseCategoryList({})
+  getCourseList(params: any) {
+    return this.statApi.getPersonalCourse(params).pipe(
+      tap((res: any) => {
+        this.courseList$.commit(() => res.list)
+      })
+    )
   }
 }

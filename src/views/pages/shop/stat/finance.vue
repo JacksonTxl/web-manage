@@ -6,6 +6,7 @@
       </div>
       <div :class="bHeard('right')">
         <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
+        {{ page }}
       </div>
     </section>
     <st-table
