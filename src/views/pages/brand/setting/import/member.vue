@@ -5,7 +5,9 @@
       <st-t2>
         导入用户
       </st-t2>
-      <label>门店会员（潜在会员、正式会员、流失会员）</label>
+      <label :class="bHeader('desc')">
+        门店会员（潜在会员、正式会员、流失会员）
+      </label>
     </a-row>
     <div :class="[bTable(), ' bottom-line']">
       <a-radio-group v-model="user" :class="bTable('right')">
