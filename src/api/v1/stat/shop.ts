@@ -28,7 +28,16 @@ export class StatApi {
   getOrderShopList(query: OrderShopListQuery) {
     return this.http.get('/v1/stat/order/shop', { query })
   }
-
+  /**
+   *
+   * @param query {course_type: } 死角sijao
+   */
+  getCourseModalCoachAndCourseList(query: any) {
+    return this.http.get('/v1/stat/course/shop/course/coach', { query })
+  }
+  getCheckinModalCoachAndCourseList(query: any) {
+    return this.http.get('/v1/stat/course/shop/course/checkin/coach', { query })
+  }
   getPersonalCourse(query: PersonalCourseQuery) {
     return this.http.get('/v1/stat/course/shop/personal/course', {
       query

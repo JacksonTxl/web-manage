@@ -59,11 +59,13 @@ export const courseColumns = () => {
     {
       title: '教练姓名',
       fixed: 'left',
+      width: '150px',
       dataIndex: 'coach_name'
     },
     {
       title: '所属部门',
       fixed: 'left',
+      width: '150px',
       dataIndex: 'department_name'
     },
     {

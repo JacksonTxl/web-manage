@@ -64,7 +64,7 @@
     >
       <a
         slot="personal_course_num"
-        @click="getPersonalCourse(record.id)"
+        @click="getPersonalCourse(record)"
         slot-scope="text, record"
         v-if="text !== 0"
       >
@@ -73,7 +73,7 @@
       <span v-else>{{ text }}</span>
       <a
         slot="personal_consume_amount"
-        @click="getPersonalConsume(record.id)"
+        @click="getPersonalConsume(record)"
         slot-scope="text, record"
         v-if="text !== '0.0'"
       >
@@ -83,14 +83,14 @@
       <a
         slot="team_course_num"
         slot-scope="text, record"
-        @click="getTeamCourse(record.id)"
+        @click="getTeamCourse(record)"
         v-if="text !== 0"
       >
         {{ text }}
       </a>
       <span v-else>{{ text }}</span>
       <template slot="team_consume_amount" slot-scope="text, record">
-        <a v-if="text !== '0.0'" @click="getTeamConsume(record.id)">
+        <a v-if="text !== '0.0'" @click="getTeamConsume(record)">
           {{ text }}
         </a>
         <span v-else>{{ text }}</span>
@@ -156,8 +156,14 @@ export default {
     this.showTable = this.query.showTable
   },
   methods: {
-    getPersonalCourse(id) {
-      this.$modalRouter.push({ name: 'shop-stat-personal-course' })
+    getPersonalCourse(record) {
+      const { stat_date } = record
+      this.$modalRouter.push({
+        name: 'shop-stat-personal-course',
+        props: {
+          stat_date
+        }
+      })
     },
     getPersonalConsume() {
       this.$modalRouter.push({ name: 'shop-stat-personal-consume' })

@@ -7,7 +7,7 @@
   >
     <div class="search mg-b8">
       <div class="search__left"></div>
-      <div class="search_right">
+      <div class="search__right">
         <a-select></a-select>
         <a-select
           class="mg-l8"
