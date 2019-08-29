@@ -181,7 +181,7 @@ export default {
         id: '',
         course_id
       }
-      this.form.setFieldsValue({ reserve_start_time: '' })
+      this.form.setFieldsValue({ reserve_start_time: undefined })
       this.dateOptions.forEach(item => {
         val.format('YYYY-MM-DD') === item.schedule_date &&
           (reserveDate.id = item.id)

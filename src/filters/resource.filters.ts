@@ -1,4 +1,5 @@
 import { AppConfig } from '@/constants/config'
+import { isSupportWebp } from '@/utils/support.ts'
 import avatarDefault from '@/assets/img/avatar_default.png'
 import container from '@/container'
 
@@ -48,7 +49,9 @@ export const imgFilter = (key: string, opts?: ImgFilterOptions): string => {
   for (let i in configs) {
     processConfigStr += `,${i}_${configs[i]}`
   }
-  return `${key}?x-oss-process=image/resize${processConfigStr}`
+  return `${key}?x-oss-process=image/resize${processConfigStr}${
+    isSupportWebp() ? '/quality,q_99/format,webp' : ''
+  }`
 }
 
 /**

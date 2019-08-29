@@ -54,6 +54,7 @@
             >
               <st-icon
                 type="delete"
+                class="shop-member-crowd-add__icon"
                 style="color:rgb(255, 94, 65);cursor: pointer"
               />
             </div>

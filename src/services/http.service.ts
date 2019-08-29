@@ -1,14 +1,16 @@
+import qs from 'qs'
 import { Observable, throwError } from 'rxjs'
 import { ajax, AjaxError } from 'rxjs/ajax'
-import { catchError, pluck, timeout, tap } from 'rxjs/operators'
+import { catchError, pluck, timeout, tap, shareReplay } from 'rxjs/operators'
 import { StResponse } from '@/types/app'
-import qs from 'qs'
 import { Injectable, ServiceRouter } from 'vue-service-app'
 import { I18NService } from './i18n.service'
 import { TokenService } from './token.service'
 import { AppConfig } from '@/constants/config'
 import { NotificationService } from './notification.service'
 import { NProgressService } from './nprogress.service'
+// @ts-ignore
+import VueModalRouter from 'vue-modal-router'
 
 interface MockOptions {
   status?: number
@@ -44,15 +46,17 @@ interface RequestOptions {
 
 @Injectable()
 export class HttpService {
+  private cacheContainer = new Map()
   constructor(
     private i18n: I18NService,
     private tokenService: TokenService,
     private router: ServiceRouter,
     private notification: NotificationService,
     private appConfig: AppConfig,
-    private nprogress: NProgressService
+    private nprogress: NProgressService,
+    private modalRouter: VueModalRouter
   ) {}
-  get(url: string, options: RequestOptions = {}) {
+  get(url: string, options: RequestOptions = {}): Observable<any> {
     let requestUrl = this.makeRequestUrl(url, options)
     const get$ = ajax
       .get(requestUrl, this.appHeaders)
@@ -60,7 +64,25 @@ export class HttpService {
       .pipe(this.ajaxErrorHandler(options))
       .pipe(this.ajaxResponseHandler.bind(this))
       .pipe(pluck('response', 'data'))
-    return get$
+    /**
+     * 1. 缓存里没有的时候重新获取
+     * 2. 非浏览器的前进后退点击 重新获取
+     * 3. 模态窗打开的情况下 不激活http缓存
+     */
+
+    const cacheKey = requestUrl
+    if (
+      this.cacheContainer.get(cacheKey) &&
+      this.router.isHistoryBF &&
+      !this.modalRouter.isOpening
+    ) {
+      console.log('hit cache', cacheKey)
+      return this.cacheContainer.get(cacheKey) as Observable<any>
+    }
+
+    const cacheReplay$ = get$.pipe(shareReplay(1))
+    this.cacheContainer.set(cacheKey, cacheReplay$)
+    return cacheReplay$
   }
   /**
    * @param url 请求url
@@ -180,7 +202,7 @@ export class HttpService {
                 key: 'ajaxError',
                 content: serverResponse.msg
               })
-              this.router.push({ name: 'account-login' })
+              location.href = '/account/login'
               break
             case 403:
               this.notification.warn({

@@ -74,7 +74,8 @@ export const course = () => {
     {
       title: '上课教练',
       dataIndex: 'coach_name',
-      key: 'coach_name'
+      key: 'coach_name',
+      scopedSlots: { customRender: 'coach_name' }
     },
     {
       title: '购买额度',

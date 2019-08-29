@@ -43,6 +43,20 @@ fs.writeFileSync(
 )
 
 module.exports = {
+  pages: {
+    app: {
+      entry: 'src/_modules/app/index.ts',
+      template: 'src/_modules/app/index.html',
+      filename: 'index.html',
+      chunks: ['chunk-vendors', 'chunk-common', 'runtime~app', 'app']
+    },
+    account: {
+      entry: 'src/_modules/account/index.ts',
+      template: 'src/_modules/account/index.html',
+      filename: 'account/index.html',
+      chunks: ['chunk-vendors', 'chunk-common', 'runtime~account', 'account']
+    }
+  },
   lintOnSave: false,
   css: {
     sourceMap: true,
@@ -78,9 +92,27 @@ module.exports = {
   // webpack-chain docs see https://www.npmjs.com/package/webpack-chain
   chainWebpack: config => {
     // 去除preload
-    config.plugins.delete('preload')
+    config.plugins.delete('preload-app')
     // 去除prefetch
-    config.plugins.delete('prefetch')
+    config.plugins.delete('prefetch-app')
+    // 去除preload
+    config.plugins.delete('preload-account')
+    // 去除prefetch
+    config.plugins.delete('prefetch-account')
+
+    // 默认4096
+    config.module
+      .rule('images')
+      .use('url-loader')
+      .loader('url-loader')
+      .tap(options => Object.assign(options, { limit: 10240 }))
+
+    // 默认未开启
+    config.module
+      .rule('svg')
+      .use('file-loader')
+      .loader('url-loader')
+      .tap(options => Object.assign(options, { limit: 10240 }))
 
     config
       .externals({

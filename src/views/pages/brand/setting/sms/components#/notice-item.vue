@@ -29,7 +29,13 @@
       <div :class="bComponent('text')" v-if="info.notify_type.value === 2">
         <st-switch @change="save" v-model="params.notify_mode.app"></st-switch>
       </div>
-      <div v-show="params.notify_mode.sms">
+      <div
+        v-show="
+          params.notify_mode.sms ||
+            params.notify_mode.app ||
+            params.notify_mode.mini_programs
+        "
+      >
         <div class="shadow"></div>
         <div :class="bComponent('column')" v-show="!isShowEdit">
           <div class="width75" :class="bComponent('text')" v-if="info.preview">

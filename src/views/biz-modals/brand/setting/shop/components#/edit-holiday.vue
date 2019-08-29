@@ -1,5 +1,5 @@
 <template>
-  <st-form :form="form" labelWidth="100px" @submit.prevent="onSubmit">
+  <st-form :form="form" labelWidth="100px">
     <a-row>
       <a-col :xs="22">
         <div>{{ shopName }}</div>
@@ -46,7 +46,7 @@
             />
           </st-form-item>
           <st-form-item labelFix class="mg-b0">
-            <st-button type="primary" :loading="loading.set">
+            <st-button type="primary" :loading="loading.set" @click="onSubmit">
               确认修改放假时间
             </st-button>
           </st-form-item>

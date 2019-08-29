@@ -10,20 +10,8 @@
       />
       <p class="page-404__text">您查找的页面已经离开地球</p>
       <p>
-        <router-link :to="to">返回首页</router-link>
+        <a href="/">返回首页</a>
       </p>
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  computed: {
-    to() {
-      return {
-        path: '/'
-      }
-    }
-  }
-}
-</script>

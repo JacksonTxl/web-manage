@@ -45,13 +45,13 @@ build:pull-image
 # @example :: make rsync to=saas-dev
 rsync:
 	ssh $(to) -t "mkdir -p $(CONTENT_PATH)/$(NAME)"
-	rsync -auz --exclude=.git $(PWD)/ $(to):$(CONTENT_PATH)/$(NAME)
+	rsync -auz --delete --exclude=.git $(PWD)/ $(to):$(CONTENT_PATH)/$(NAME)
 
 # 同步文件到分支目录
 # @example :: make rsync to=app-dev2
 rsync-branch:
 	ssh $(to) -t "mkdir -p $(CONTENT_PATH)/$(NAME)_branches/$(GIT_BRANCH_ENV)"
-	rsync -auz --exclude=.git $(PWD)/ $(to):$(CONTENT_PATH)/$(NAME)_branches/$(GIT_BRANCH_ENV)
+	rsync -auz --delete --exclude=.git $(PWD)/ $(to):$(CONTENT_PATH)/$(NAME)_branches/$(GIT_BRANCH_ENV)
 
 # 切换软连接
 # @params {to} 推送服务器主机名

@@ -2,6 +2,7 @@ import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State } from 'rx-state'
 import { CardsApi } from '@/api/v1/cards'
 import { tap } from 'rxjs/operators'
+import { forkJoin } from 'rxjs'
 @Injectable()
 export class InfoService implements RouteGuard {
   cardInfo$ = new State({})
@@ -13,9 +14,10 @@ export class InfoService implements RouteGuard {
       })
     )
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: () => {}) {
-    this.getCardInfo(to.meta.query.id).subscribe(() => {
-      next()
-    })
+  init(id: string) {
+    return forkJoin([this.getCardInfo(id)])
+  }
+  beforeRouteEnter(to: ServiceRoute) {
+    return this.init(to.meta.query.id)
   }
 }

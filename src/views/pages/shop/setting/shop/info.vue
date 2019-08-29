@@ -39,7 +39,26 @@
           <st-button type="primary" @click="onEdit" class="mg-r8">
             编辑
           </st-button>
-          <st-button>设置放假</st-button>
+          <st-button
+            v-modal-link="{
+              name: 'brand-setting-shop-holiday',
+              props: {
+                shopId: info.id,
+                shopName: info.shop_name,
+                shopStatus: info.shop_status,
+                isHoliday: info.has_holiday_setting,
+                holidayTime: {
+                  start: (info.holiday_start_time || 0) * 1000,
+                  end: (info.holiday_end_time || 0) * 1000
+                }
+              },
+              on: {
+                change: onSetChange
+              }
+            }"
+          >
+            {{ info.has_holiday_setting === 1 ? '管理门店放假' : '设置放假' }}
+          </st-button>
         </div>
       </div>
     </div>
@@ -58,6 +77,7 @@ import { cloneDeep } from 'lodash-es'
 import ShopMapLocation from '@/views/biz-modals/shop/map-location'
 import CheckboxFacilityInfo from '@/views/biz-components/checkbox-facility/checkbox-facility-info'
 import ShopHourPicker from '@/views/biz-components/shop-hour-picker/shop-hour-picker'
+import BrandSettingShopHoliday from '@/views/biz-modals/brand/setting/shop/holiday'
 export default {
   name: 'PageShopSettingShopInfo',
   bem: {
@@ -68,7 +88,8 @@ export default {
     ShopHourPicker
   },
   modals: {
-    ShopMapLocation
+    ShopMapLocation,
+    BrandSettingShopHoliday
   },
   serviceInject() {
     return {
@@ -122,7 +143,9 @@ export default {
       this.$router.push({ path: '/shop/setting/shop/edit' })
     },
     // 设置放假
-    onSet() {}
+    onSetChange() {
+      this.$router.reload()
+    }
   }
 }
 </script>

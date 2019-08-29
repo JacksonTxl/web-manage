@@ -1,6 +1,6 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
-import { tap, pluck, map } from 'rxjs/operators'
+import { tap, pluck, map, switchMap } from 'rxjs/operators'
 import { forkJoin, of } from 'rxjs'
 import { ConstApi } from '@/api/const'
 import { MenuApi } from '@/api/v1/common/menu'
@@ -10,6 +10,7 @@ import { get, reduce, isPlainObject } from 'lodash-es'
 import { NProgressService } from './nprogress.service'
 import { AuthService } from './auth.service'
 import { ShopApi } from '@/api/v1/shop'
+import Cookie from 'js-cookie'
 
 interface User {
   id?: string
@@ -119,8 +120,7 @@ export class UserService {
     private staffApi: StaffApi,
     private tooltipApi: TooltipApi,
     private nprogress: NProgressService,
-    private shopApi: ShopApi,
-    private authService: AuthService
+    private shopApi: ShopApi
   ) {}
   SET_USER(user: User) {
     this.user$.commit(() => user)
@@ -140,11 +140,11 @@ export class UserService {
   SET_INVALID_TOOLTIP(tooltip: any) {
     this.invalidTooltips$.commit(() => tooltip)
   }
-  SET_FIRST_INITED(inited: boolean) {
-    this.firstInited$.commit(() => inited)
-  }
   SET_SHOP_LIST(list: object[]) {
     this.shopList$.commit(() => list)
+  }
+  SET_FIRST_INITED(inited: boolean) {
+    this.firstInited$.commit(() => inited)
   }
   private getUser() {
     return this.staffApi.getGlobalStaffInfo().pipe(
@@ -199,9 +199,6 @@ export class UserService {
         this.SET_SHOP_LIST(res.list)
       })
     )
-  }
-  public reloadDataWhenAfterSwitchShop() {
-    return forkJoin([this.getMenuData(), this.getUser()])
   }
   /**
    * 通过key名获取下拉选项
@@ -259,13 +256,14 @@ export class UserService {
         this.getUser(),
         this.getMenuData(),
         this.getEnums(),
-        this.getInvalidTooltips(),
-        this.getShopList()
-      ).pipe(
-        tap(() => {
-          this.SET_FIRST_INITED(true)
-        })
+        this.getInvalidTooltips()
       )
+        .pipe(switchMap(() => this.getShopList()))
+        .pipe(
+          tap(() => {
+            this.SET_FIRST_INITED(true)
+          })
+        )
     } else {
       return of({})
     }

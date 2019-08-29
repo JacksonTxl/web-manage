@@ -12,14 +12,24 @@ const intercept = (arr, insert) => {
   return _res
 }
 
+const MAX = 3
+
 export default {
   name: 'StTableActions',
   render(h) {
     const usefulSlotNodes = this.$slots.default
       ? this.$slots.default.filter(item => item.tag)
       : []
-    const outerSlotNodes = usefulSlotNodes.splice(0, 2)
-
+    let outerSlotNodes = []
+    /**
+     * 等于3个的时候使用最小宽度
+     */
+    const useMax = usefulSlotNodes.length === MAX
+    if (usefulSlotNodes.length <= MAX) {
+      outerSlotNodes = usefulSlotNodes.splice(0, MAX)
+    } else {
+      outerSlotNodes = usefulSlotNodes.splice(0, 2)
+    }
     const outerActions = intercept(
       outerSlotNodes,
       h('a-divider', {
@@ -30,7 +40,7 @@ export default {
 
     const innerActions = usefulSlotNodes
 
-    const popover = h(
+    const popoverVnode = h(
       'a-popover',
       {
         props: {
@@ -52,9 +62,15 @@ export default {
 
     const childnodes = outerActions
     if (innerActions.length > 0) {
-      childnodes.push(popover)
+      childnodes.push(popoverVnode)
     }
-    const result = h('div', { class: 'st-table-actions' }, childnodes)
+    const result = h(
+      'div',
+      {
+        class: `st-table-actions ${useMax ? 'st-table-actions--use-max' : ''}`
+      },
+      childnodes
+    )
 
     return result
   }

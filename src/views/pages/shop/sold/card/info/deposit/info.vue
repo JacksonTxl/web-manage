@@ -65,7 +65,7 @@
                 info.transfer_unit | enumFilter('package_course.transfer_unit')
               }}
             </st-info-item>
-            <st-info-item label="消费场馆">
+            <!-- <st-info-item label="消费场馆">
               <template v-if="+info.shop_range === 1">
                 {{ info.shop_name }}
               </template>
@@ -77,6 +77,25 @@
               <template v-if="+info.shop_range === 3">
                 {{ info.shop_range | enumFilter('sold.admission_range') }}
               </template>
+            </st-info-item> -->
+            <st-info-item label="消费场馆">
+              <template v-if="info.shop_range.id < 2">
+                {{ info.shop_range.shop_name }}
+              </template>
+              <a-popover :title="info.shop_range.shop_name" v-else>
+                <template slot="content">
+                  <st-table
+                    :columns="admissionColumns"
+                    :dataSource="info.shop_range.shops"
+                    :pagination="false"
+                    key="id"
+                    :class="basic('popover-content')"
+                  ></st-table>
+                </template>
+                <a type="primary">
+                  {{ info.shop_range.id | enumFilter('sold.admission_range') }}
+                </a>
+              </a-popover>
             </st-info-item>
             <st-info-item label="消费类目">
               <span v-for="(item, index) in info.consumer_type" :key="index">
@@ -128,6 +147,18 @@ export default {
       query: this.routeService.query$,
       loading: this.infoService.loading$,
       auth: this.infoService.auth$
+    }
+  },
+  computed: {
+    // 门店范围
+    admissionColumns() {
+      const list = [
+        { title: '省', dataIndex: 'province_name', key: 'province_name' },
+        { title: '市', dataIndex: 'city_name', key: 'city_name' },
+        { title: '区', dataIndex: 'district_name', key: 'district_name' },
+        { title: '门店名称', dataIndex: 'shop_name', key: 'shop_name' }
+      ]
+      return list
     }
   },
   methods: {

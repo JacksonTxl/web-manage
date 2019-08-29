@@ -96,6 +96,7 @@ declare module 'vue-service-app' {
       onAbort?: (err: Error) => void
     ): void
     reload(): void
+    isHistoryBF: boolean
   }
   export class InjectionToken {
     constructor(desc: string)

@@ -217,10 +217,17 @@ export default {
           return
         }
       }
-      if (!this.gradientService.check(this.priceGradient)) {
-        return false
+      const priceSetting = this.form.getFieldValue('price_setting')
+
+      /**
+       * 自主定价直接过校验
+       */
+      if (priceSetting === PRICE_SETTING.SHOP_PRICE) {
+        return true
       }
-      return true
+      if (priceSetting === PRICE_SETTING.UNIFORM_PRICE) {
+        return this.gradientService.check(this.priceGradient)
+      }
     },
     getData() {
       const data = this.form.getFieldsValue()

@@ -13,26 +13,21 @@ export class GradientService {
     })
   }
   check(gradient: any[] = []) {
-    let ret = true
     const brand = this.userService.brand$.snapshot()
     /**
      * priceModel 1、教练统一定价 2、教练分级定价
      */
     const { priceModel } = brand
     const isLevelModel = priceModel === 2
-    for (let i = 0; i < gradient.length; i++) {
-      const record = gradient[i]
-      /**
-       * 教练分级定价模式下，需要校验教练等级
-       */
-      if (isLevelModel) {
-        if (record.level_id <= 0) {
-          this.errorTip('请选择教练等级')
-          ret = false
-          break
-        }
-      }
+
+    const isNotSelectCoachLevel = gradient.find(record => record.level_id <= 0)
+    /**
+     * 教练分级定价模式下，需要校验教练等级
+     */
+    if (isLevelModel && isNotSelectCoachLevel) {
+      this.errorTip('请选择教练等级')
+      return false
     }
-    return ret
+    return true
   }
 }

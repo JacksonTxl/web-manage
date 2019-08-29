@@ -3,6 +3,7 @@ import multiguard from 'vue-router-multiguard'
 import { isCtor, isFn, last } from './utils'
 import ServiceRouter from './router'
 import VuePlugin from './vue-plugin'
+import HistoryBF from './bf'
 
 class VueServiceApp {
   static install(Vue, container) {
@@ -29,6 +30,7 @@ class VueServiceApp {
      * @type {ServiceRouter}
      */
     this.router = null
+
     if (!this.container) {
       throw new Error('[vue-service-app] need container!')
     }
@@ -44,6 +46,9 @@ class VueServiceApp {
     // TODO: 可以去掉 直接配置在meta中即可
     const walkRoutes = routes => {
       routes.forEach(route => {
+        if (!route.meta) {
+          route.meta = {}
+        }
         if (route.guards) {
           route.meta.guards = route.guards
         }
@@ -57,7 +62,7 @@ class VueServiceApp {
     }
     walkRoutes(this.routerOptions.routes)
 
-    this.router = new ServiceRouter(this.routerOptions)
+    this.router = new ServiceRouter(this.routerOptions, new HistoryBF())
   }
   /**
    * router Provider
@@ -100,7 +105,6 @@ class VueServiceApp {
       }
       this._calcMiddlewaresByRoute(to, from).then(middlewares => {
         // 不要随意使用console.log 会使对象无法回收
-        // console.log('middlewares', middlewares)
         if (!middlewares) {
           return next()
         }

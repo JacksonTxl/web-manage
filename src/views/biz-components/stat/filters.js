@@ -33,3 +33,12 @@ export const thousandsFilter = (v, fixed = 1) => {
     .replace(/\B(?=(?:\d{3})+\b)/g, ',')
   return result
 }
+
+/**
+ * 小数点保留1位
+ */
+export const decimalFilter = (v, fixed = 1) => {
+  if (!v) return 0
+  const result = Number(v).toFixed(fixed)
+  return result
+}

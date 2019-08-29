@@ -24,7 +24,7 @@ export default {
     return {
       titleData: {
         title: '入会时间',
-        info: '选择自然日内，注册的用户'
+        info: '选择自然日内，成为正式会员的用户'
       },
       radioValue: ''
     }

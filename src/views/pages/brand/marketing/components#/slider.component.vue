@@ -38,7 +38,7 @@
                 v-for="(act, i) in actList"
                 :key="i"
                 :value="act.id"
-                :disabled="filterActList(act.id)"
+                :disabled="filterActList(act.id) || act.isover"
               >
                 {{ act.activity_name }}
               </a-select-option>
@@ -76,7 +76,7 @@
                   v-for="(act, i) in actList"
                   :key="i"
                   :value="act.id"
-                  :disabled="filterActList(act.id)"
+                  :disabled="filterActList(act.id) || act.isover"
                 >
                   {{ act.activity_name }}
                 </a-select-option>
@@ -111,7 +111,7 @@ export default {
   rxState() {
     return {
       sliderInfo: this.h5WrapperService.sliderInfo$,
-      actList: this.activityService.actList$
+      activityList: this.activityService.actList$
     }
   },
   data() {
@@ -120,11 +120,13 @@ export default {
       list: [],
       selected: [],
       filelist: [],
+      actList: [],
       activity_id: '',
       addItem: {
         image_url: '',
         activity_id: '',
         activity_type: '',
+        activity_name: '',
         is_default: 0,
         is_over: 0
       },
@@ -134,6 +136,17 @@ export default {
   },
   mounted() {
     this.list = cloneDeep(this.sliderInfo)
+    this.actList = cloneDeep(this.activityList)
+    this.list.forEach(item => {
+      if (!this.actList.some(act => act.id === item.activity_id)) {
+        this.actList.push({
+          activity_name: item.activity_name,
+          activity_type: item.activity_type,
+          id: item.activity_id,
+          isover: true
+        })
+      }
+    })
   },
   watch: {
     list: {
@@ -158,6 +171,7 @@ export default {
         this.list.push(addItem)
         this.addItem.activity_id = ''
         this.addItem.activity_type = ''
+        this.addItem.activity_name = ''
       }
     },
     delSlider(index) {
@@ -166,11 +180,13 @@ export default {
     actSelect(item, value) {
       let selected = this.actList.filter(it => it.id === value)[0]
       item.activity_type = selected.activity_type
+      item.activity_name = selected.activity_name
       item.is_over = 0
     },
     addSelect(value) {
       let selected = this.actList.filter(it => it.id === value)[0]
       this.addItem.activity_type = selected.activity_type
+      this.addItem.activity_name = selected.activity_name
     }
   }
 }

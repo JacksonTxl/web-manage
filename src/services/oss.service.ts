@@ -3,6 +3,7 @@ import { Subject } from 'rxjs'
 import { ajax } from 'rxjs/ajax'
 import { mergeMap, map } from 'rxjs/operators'
 import { Api } from '@/api/api'
+import { findLast } from 'lodash-es'
 
 const typeSuffix = {
   'image/png': '.png'
@@ -74,6 +75,7 @@ export class OssService extends Api {
         })
         let resData = {
           fileKey,
+          host: res.host,
           url: isPrivate ? URL.createObjectURL(file) : res.host + '/' + fileKey
         }
         return put$.pipe(map(val => resData))
@@ -88,11 +90,18 @@ export class OssService extends Api {
       }
     })
   }
-  private getKey(file: File): string {
-    const suffix = '.' + file.type.split('/')[1]
 
+  private getFileSuffix(file: File): string {
+    if (file.name) {
+      const lastDotIndex = file.name.lastIndexOf('.')
+      return file.name.slice(lastDotIndex)
+    } else {
+      return '.' + file.type.split('/')[1]
+    }
+  }
+  private getKey(file: File): string {
+    const suffix = this.getFileSuffix(file)
     let fileName = ''
-    // 去除特殊字符
     if (file.name) {
       fileName = file.name.replace(/[?\s%<>&#\\:]/g, '').replace(suffix, '')
     }

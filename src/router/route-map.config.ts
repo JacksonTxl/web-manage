@@ -31,18 +31,6 @@ interface StaffEdit extends ServiceRouteConfig {
   currentIndex?: number
 }
 export const routeMapConfig = {
-  '404'(routeConfig: RouteConfig) {
-    routeConfig.meta.layout = 'blank'
-    routeConfig.meta.title = '页面未找到'
-  },
-  'account-login'(routeConfig: RouteConfig) {
-    routeConfig.meta.layout = 'login'
-    routeConfig.meta.title = '登录'
-  },
-  'account-agreement'(routeConfig: RouteConfig) {
-    routeConfig.meta.layout = 'blank'
-    routeConfig.meta.title = '三体云动服务协议'
-  },
   styleguide(routeConfig: RouteConfig) {
     routeConfig.redirect = { name: 'styleguide-component' }
   },
@@ -103,15 +91,6 @@ export const routeMapConfig = {
     routeConfig.queryOptions = {
       category_id: { type: Number, default: -1 },
       course_name: { type: String, default: '' }
-    }
-  },
-  'test-llf-mine'(routeConfig: RouteConfig) {
-    routeConfig.queryOptions = {
-      courseName: { type: String, default: '-1' },
-      b: { type: Number, default: 2 },
-      c: { type: String, default: '3' },
-      page: { type: Number, default: 1 },
-      size: { type: Number, default: 20 }
     }
   },
   'shop-product-course-manage-package-list'(routeConfig: RouteConfig) {
@@ -292,6 +271,19 @@ export const routeMapConfig = {
   },
   'shop-finance-order-info-commodity-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '商品信息'
+  },
+  // 门店设置通行设置
+  'shop-setting-hardware'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '硬件设置'
+    routeConfig.queryOptions = {}
+    routeConfig.meta.tabs = ['shop-setting-hardware-entry-list']
+  },
+  'shop-setting-hardware-entry-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '通行设置'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
   },
   'brand-product-course-personal-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增私教课'
@@ -954,8 +946,7 @@ export const routeMapConfig = {
       'brand-setting-import-staff',
       'brand-setting-import-commodity',
       'brand-setting-import-member',
-      'brand-setting-import-sold',
-      'brand-setting-import-pay-type'
+      'brand-setting-import-sold'
     ]
   },
   'brand-setting-import-explain'(routeConfig: RouteConfig) {

@@ -2,7 +2,7 @@
   <div :class="shelves()">
     <div :class="shelves('search')">
       <a-select
-        style="width: 160px"
+        :class="shelves('search__select')"
         v-model="query.publish_channel"
         @change="onSingleSearch('publish_channel', $event)"
       >
@@ -43,7 +43,7 @@
       <!-- 支持消费门店 -->
       <template slot="consumption_range" slot-scope="text, record">
         <a
-          v-if="text.id === 2"
+          v-if="text.id === CONSUMPTION_RANGE.GENERAL_STORE"
           v-modal-link="{
             name: 'card-shop-deposit-shop-table',
             props: { id: record.id, type: 'Consume', title: '支持消费门店' }
@@ -84,12 +84,14 @@
   </div>
 </template>
 <script>
+import { MessageService } from '@/services/message.service'
 import { ShelvesService } from './shelves.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './shelves.config.ts'
 import CardShopDepositShopTable from '@/views/biz-modals/card/shop-deposit/shop-table'
 import { SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH } from '@/constants/events'
+import { CONSUMPTION_RANGE } from '@/constants/card/deposit'
 export default {
   mixins: [tableMixin],
   name: 'PageShopProductDepositShelves',
@@ -104,8 +106,12 @@ export default {
   modals: {
     CardShopDepositShopTable
   },
+  serviceProviders() {
+    return [ShelvesService]
+  },
   serviceInject() {
     return {
+      messageService: MessageService,
       routeService: RouteService,
       shelvesService: ShelvesService
     }
@@ -117,6 +123,11 @@ export default {
       list: this.shelvesService.list$,
       page: this.shelvesService.page$,
       query: this.routeService.query$
+    }
+  },
+  data() {
+    return {
+      CONSUMPTION_RANGE
     }
   },
   computed: {
@@ -133,6 +144,9 @@ export default {
             .setCardShelfDown(record.id)
             .toPromise()
             .then(() => {
+              this.messageService.success({
+                content: '下架成功'
+              })
               this.$router.reload()
             })
         }
