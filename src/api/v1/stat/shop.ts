@@ -30,20 +30,20 @@ export class StatApi {
   }
 
   getPersonalCourse(query: PersonalCourseQuery) {
-    return this.http.get('v1/stat/course/shop/personal/course', {
+    return this.http.get('/v1/stat/course/shop/personal/course', {
       query
     })
   }
   getPersonalConsume(query: PersonalConsumeQuery) {
-    return this.http.get('v1/stat/course/shop/personal/checkin/amount', {
+    return this.http.get('/v1/stat/course/shop/personal/checkin/amount', {
       query
     })
   }
   getTeamCourse(query: TeamCourseQuery) {
-    return this.http.get('v1/stat/course/shop/team/course', { query })
+    return this.http.get('/v1/stat/course/shop/team/course', { query })
   }
   getTeamConsume(query: TeamConsumeQuery) {
-    return this.http.get('v1/stat/course/shop/team/checkin/amount', {
+    return this.http.get('/v1/stat/course/shop/team/checkin/amount', {
       query
     })
   }
