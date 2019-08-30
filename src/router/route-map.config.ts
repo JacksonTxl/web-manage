@@ -963,5 +963,20 @@ export const routeMapConfig = {
   },
   'brand-setting-import-sold'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '导入售出'
+  },
+  'brand-marketing-plugin-lottery-index'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '活动列表'
+  },
+  'brand-marketing-plugin-lottery-add'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '新增'
+  },
+  'brand-marketing-plugin-lottery-edit'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '编辑'
+  },
+  'brand-marketing-plugin-lottery-checkin'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '核销'
+  },
+  'brand-marketing-plugin-lottery-success'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '成功'
   }
 }
