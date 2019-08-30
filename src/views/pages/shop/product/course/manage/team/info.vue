@@ -61,7 +61,7 @@
       <div :class="b('right')">
         <img
           class="image"
-          :src="image | imgFilter({ w: 280, h: 158 })"
+          :src="image | imgFilter({ w: 280, h: 158, type: 'course' })"
           alt="课程图片"
         />
       </div>
