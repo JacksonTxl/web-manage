@@ -44,7 +44,7 @@ export class StatApi {
     })
   }
   getPersonalConsume(query: PersonalConsumeQuery) {
-    return this.http.get('/v1/stat/course/shop/personal/checkin/amount', {
+    return this.http.get('/v1/stat/course/shop/personal/course/checkin', {
       query
     })
   }

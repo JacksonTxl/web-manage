@@ -73,7 +73,7 @@
       </a>
       <span v-else>{{ text }}</span>
       <a
-        slot="personal_consume_amount"
+        slot="personal_checkin_amount"
         @click="getPersonalConsume(record)"
         slot-scope="text, record"
       >

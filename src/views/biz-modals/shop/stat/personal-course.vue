@@ -13,6 +13,7 @@
           placeholder="请选择课程类型"
           style="width: 120px"
           v-model="course_type"
+          @change="onChangeCourseType"
           :options="courseTypeList"
         ></a-select>
         <a-select
@@ -124,6 +125,13 @@ export default {
     }
   },
   methods: {
+    onChangeCourseType(val) {
+      this.course_id = -1
+      this.coach_id = -1
+      this.personalCourseService
+        .getCourseModalCoachAndCourseList({ course_type: val })
+        .subscribe()
+    },
     filterOption(input, option) {
       return (
         option.componentOptions.children[0].text

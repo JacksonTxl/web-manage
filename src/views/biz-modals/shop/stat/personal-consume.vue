@@ -40,7 +40,6 @@
           optionFilterProp="children"
           style="width: 200px"
           v-model="coach_id"
-          @change="onChangeCoach"
           :filterOption="filterOption"
         >
           <a-select-option
@@ -58,7 +57,6 @@
       :rowKey="record => record.id"
       :page="page$"
       :loading="loading$.getConsumeList"
-      @change="onTableChange"
       :showSizeChanger="false"
       :dataSource="consumeList$"
     ></st-table>
@@ -67,24 +65,24 @@
 <script>
 import { columns } from './personal-course.config'
 import tableMixin from '@/mixins/table.mixin'
-import { PersonalCourseService } from './personal-course.service'
+import { PersonalConsumeService } from './personal-consume.service'
 export default {
   name: 'PersonalConsume',
   mixins: [tableMixin],
   serviceInject() {
     return {
-      personalCourseService: PersonalCourseService
+      personalConsumeService: PersonalConsumeService
     }
   },
   rxState() {
     const {
-      courseList$,
+      consumeList$,
       page$,
       loading$,
       modalCoachList$,
       modalCourseList$,
       courseTypeList$
-    } = this.personalCourseService
+    } = this.personalConsumeService
     return {
       modalCoachList$,
       modalCourseList$,
@@ -122,11 +120,18 @@ export default {
   },
   watch: {
     query(newVal, oldVal) {
-      this.personalCourseService.getConsumeList(newVal).subscribe()
+      this.personalConsumeService.getConsumeList(newVal).subscribe()
     }
   },
   methods: {
-    filterOptionCoach(input, option) {
+    onChangeCourseType(val) {
+      this.course_id = -1
+      this.coach_id = -1
+      this.personalConsumeService
+        .getCheckinModalCoachAndCourseList({ course_type: val })
+        .subscribe()
+    },
+    filterOption(input, option) {
       return (
         option.componentOptions.children[0].text
           .toLowerCase()
@@ -135,7 +140,7 @@ export default {
     }
   },
   mounted() {
-    this.personalCourseService
+    this.personalConsumeService
       .init({ course_type: 1 }, { stat_date: this.stat_date, course_type: 1 })
       .subscribe()
   }
