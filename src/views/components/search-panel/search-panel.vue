@@ -19,7 +19,7 @@
       <div :class="panel('search-button')">
         <slot name="button">
           <st-button type="primary" @click="onSearch">查询</st-button>
-          <st-button class="mgl-8" @click="onReset">重置</st-button>
+          <st-button class="mg-l8" @click="onReset">重置</st-button>
         </slot>
       </div>
     </div>

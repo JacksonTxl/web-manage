@@ -2,19 +2,28 @@
   &__label {
     display: inline-block;
     width: 116px;
-    .text {
-      display: inline-block;
-      padding: 8px 12px;
-      border-radius: 4px;
+  }
+  &__label-text {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.3s;
+    .bg(transparent);
+    &:hover {
+      .c(@primary-color);
     }
   }
   .ant-radio-wrapper-checked {
-    .text {
+    .st-search-radio__label-text {
       .bg(@dropdown-hover-bg-color);
       .c(@primary-color);
     }
   }
+
   .ant-radio {
     display: none;
+  }
+  .mgl-8 {
+    .mg-l(8px);
   }
 }
