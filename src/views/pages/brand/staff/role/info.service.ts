@@ -1,10 +1,9 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap, switchMap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { State, Effect } from 'rx-state'
+import { pluck, tap, switchMap, catchError } from 'rxjs/operators'
 import { GetInitInfoPut, RoleInfo, RoleApi } from '@/api/v1/staff/role'
 import { RoleService } from '../role.service'
-import { forkJoin } from 'rxjs'
+import { EMPTY } from 'rxjs'
 @Injectable()
 export class InfoService {
   loading$ = new State({})
@@ -50,7 +49,9 @@ export class InfoService {
         this.info$.commit(() => res.role)
       }),
       switchMap(res => {
-        return this.gitInitInfo(query, res.role.select_ids)
+        return this.gitInitInfo(query, res.role.select_ids).pipe(
+          catchError(() => EMPTY)
+        )
       })
     )
   }
