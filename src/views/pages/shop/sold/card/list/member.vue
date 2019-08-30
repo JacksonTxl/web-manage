@@ -2,23 +2,23 @@
   <div :class="basic()">
     <st-search-panel>
       <div :class="basic('select')" class="mgt-24">
-        <span style="width:90px;">会员卡类型：</span>
+        <span :class="basic('select-text')">会员卡类型：</span>
         <st-search-radio v-model="query.card_type" :list="cardTypeList" />
       </div>
       <div :class="basic('select')">
-        <span style="width:90px;">会员卡状态：</span>
+        <span :class="basic('select-text')">会员卡状态：</span>
         <st-search-radio
           v-model="query.card_status"
           :list="cardSaleStatusList"
         />
       </div>
       <div :class="basic('select')">
-        <span style="width:90px;">开卡状态：</span>
+        <span :class="basic('select-text')">开卡状态：</span>
         <st-search-radio v-model="query.is_open" :list="cardOpenStatusList" />
       </div>
       <div slot="more">
         <div :class="basic('select')">
-          <span style="width:90px;">开卡时间：</span>
+          <span :class="basic('select-text')">开卡时间：</span>
           <st-range-picker
             :disabledDays="180"
             :value="selectTime"
@@ -170,7 +170,6 @@
 import moment from 'moment'
 import { cloneDeep, filter } from 'lodash-es'
 import { MemberService } from './member.service'
-import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './member.config'
@@ -204,7 +203,6 @@ export default {
   },
   serviceInject() {
     return {
-      userService: UserService,
       routeService: RouteService,
       memberService: MemberService
     }
@@ -214,8 +212,9 @@ export default {
       loading: this.memberService.loading$,
       list: this.memberService.list$,
       page: this.memberService.page$,
-      package_course: this.userService.packageCourseEnums$,
-      sold: this.userService.soldEnums$,
+      cardTypes: this.memberService.cardTypes$,
+      cardStatus: this.memberService.cardStatus$,
+      isOpens: this.memberService.isOpens$,
       query: this.routeService.query$,
       auth: this.memberService.auth$
     }
@@ -225,28 +224,22 @@ export default {
     // 会员卡类型
     cardTypeList() {
       let list = [{ value: -1, label: '全部' }]
-      if (!this.sold.card_type) return list
-      Object.entries(this.sold.card_type.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
+      if (!this.cardTypes) return list
+      list = list.concat(this.cardTypes)
       return list
     },
     // 售卡状态
     cardSaleStatusList() {
       let list = [{ value: -1, label: '全部' }]
-      if (!this.sold.card_status) return list
-      Object.entries(this.sold.card_status.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
+      if (!this.cardStatus) return list
+      list = list.concat(this.cardStatus)
       return list
     },
     // 开卡状态
     cardOpenStatusList() {
       let list = [{ value: -1, label: '全部' }]
-      if (!this.sold.is_open) return list
-      Object.entries(this.sold.is_open.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
+      if (!this.isOpens) return list
+      list = list.concat(this.isOpens)
       return list
     },
     // 列表选择的卡是否一致
