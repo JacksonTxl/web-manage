@@ -1,0 +1,31 @@
+@import '~ant-design-vue/lib/style/color/colorPalette';
+@import '~styd-less-base/main-atom.less';
+
+// 变量声明
+@import '~@/style/_vars.less';
+// 全局重置样式
+@import '~@/style/_reset.less';
+
+// 辅助工具类
+@import '~@/style/_helpers.less';
+
+// 全局样式
+@import '~@/style/_global.less';
+
+.page-404 {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  .bg(white);
+  .ta-c;
+  &__img {
+    display: block;
+  }
+  &__text {
+    .mg-t(24px);
+    .c(#7f93a3);
+    .fz(18px);
+    .lh(26px);
+  }
+}

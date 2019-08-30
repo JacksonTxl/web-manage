@@ -12,6 +12,7 @@ import { AuthService } from './auth.service'
 import { ShopApi } from '@/api/v1/shop'
 import Cookie from 'js-cookie'
 import { then } from '@/operators'
+import { NotificationService } from './notification.service'
 
 interface User {
   id?: string
@@ -61,7 +62,7 @@ export class UserService {
   brand$ = new State<Brand>({})
   shop$ = new State<Shop>({})
   shopList$ = new State<any[]>([])
-  menuData$ = new State({
+  menuData$ = new State<any>({
     favorite: [],
     menus: [],
     first_url: ''
@@ -121,7 +122,8 @@ export class UserService {
     private staffApi: StaffApi,
     private tooltipApi: TooltipApi,
     private nprogress: NProgressService,
-    private shopApi: ShopApi
+    private shopApi: ShopApi,
+    private notification: NotificationService
   ) {}
   SET_USER(user: User) {
     this.user$.commit(() => user)
@@ -273,6 +275,17 @@ export class UserService {
     return this.init().pipe(
       tap(() => {
         this.nprogress.SET_TEXT('用户信息数据获取完毕')
+      }),
+      map(() => {
+        const menus = this.menuData$.snapshot().menus
+        if (!menus || !menus.length) {
+          console.log('菜单未配置')
+          return {
+            next: {
+              name: 'welcome'
+            }
+          }
+        }
       })
     )
   }
