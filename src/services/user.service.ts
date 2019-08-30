@@ -11,6 +11,7 @@ import { NProgressService } from './nprogress.service'
 import { AuthService } from './auth.service'
 import { ShopApi } from '@/api/v1/shop'
 import Cookie from 'js-cookie'
+import { then } from '@/operators'
 
 interface User {
   id?: string
@@ -257,13 +258,12 @@ export class UserService {
         this.getMenuData(),
         this.getEnums(),
         this.getInvalidTooltips()
+      ).pipe(
+        then(() => this.getShopList()),
+        then(() => {
+          this.SET_FIRST_INITED(true)
+        })
       )
-        .pipe(switchMap(() => this.getShopList()))
-        .pipe(
-          tap(() => {
-            this.SET_FIRST_INITED(true)
-          })
-        )
     } else {
       return of({})
     }
