@@ -5,7 +5,7 @@
         v-model="query.search"
         @search="onSearchCourseName"
         placeholder="请输入卡名、会员姓名或手机号查找"
-        style="width: 290px;"
+        :class="b('search')"
       />
     </div>
     <router-view></router-view>
@@ -16,6 +16,9 @@ import { RouteService } from '@/services/route.service'
 import { ListService } from './list.service'
 export default {
   name: 'PageShopSoldCourse',
+  bem: {
+    b: 'page-shop-sold'
+  },
   serviceInject() {
     return {
       routeService: RouteService,

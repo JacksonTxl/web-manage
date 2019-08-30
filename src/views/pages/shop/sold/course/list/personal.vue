@@ -2,14 +2,14 @@
   <div :class="basic()">
     <st-search-panel>
       <div :class="basic('select')">
-        <span style="width:90px;">课程状态：</span>
+        <span :class="basic('select-text')">课程状态：</span>
         <st-search-radio
           v-model="query.course_status"
           :list="personalCourseList"
         />
       </div>
       <div :class="basic('select')">
-        <span style="width:90px;">购买时间：</span>
+        <span :class="basic('select-text')">购买时间：</span>
         <st-range-picker
           :disabledDays="180"
           :value="selectTime"
@@ -119,7 +119,6 @@
 import moment from 'moment'
 import { cloneDeep, filter } from 'lodash-es'
 import { PersonalService } from './personal.service'
-import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './personal.config'
@@ -143,7 +142,6 @@ export default {
   },
   serviceInject() {
     return {
-      userService: UserService,
       routeService: RouteService,
       personalService: PersonalService
     }
@@ -153,10 +151,9 @@ export default {
       loading: this.personalService.loading$,
       list: this.personalService.list$,
       page: this.personalService.page$,
-      package_course: this.userService.packageCourseEnums$,
+      courseStatus: this.personalService.courseStatus$,
       query: this.routeService.query$,
-      auth: this.personalService.auth$,
-      soldEnums: this.userService.soldEnums$
+      auth: this.personalService.auth$
     }
   },
   data() {
@@ -193,10 +190,8 @@ export default {
     columns,
     personalCourseList() {
       let list = [{ value: -1, label: '全部' }]
-      if (!this.soldEnums.course_status) return list
-      Object.entries(this.soldEnums.course_status.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
+      if (!this.courseStatus) return list
+      list = list.concat(this.courseStatus)
       return list
     }
   },
