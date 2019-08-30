@@ -3,6 +3,7 @@ import { State } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { CourseApi, GetCourseListInput } from '@/api/v1/sold/course'
 import { AuthService } from '@/services/auth.service'
+import { UserService } from '@/services/user.service'
 
 @Injectable()
 export class PackageService implements RouteGuard {
@@ -12,7 +13,12 @@ export class PackageService implements RouteGuard {
   auth$ = this.authService.authMap$({
     export: 'shop:sold:sold_package_course|export'
   })
-  constructor(private courseApi: CourseApi, private authService: AuthService) {}
+  courseStatus$ = this.userService.getOptions$('sold.course_status')
+  constructor(
+    private courseApi: CourseApi,
+    private authService: AuthService,
+    private userService: UserService
+  ) {}
   getList(params: GetCourseListInput) {
     return this.courseApi.getCourseList(params, 'package').pipe(
       tap((res: any) => {

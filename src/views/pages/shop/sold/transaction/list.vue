@@ -19,7 +19,7 @@
         v-model="query.product_name"
         @search="onSearch"
         placeholder="请输入商品名查找"
-        style="width: 290px;"
+        :class="basic('search')"
       />
     </div>
     <div :class="basic('content')">
@@ -47,7 +47,6 @@
 
 <script>
 import { ListService } from './list.service'
-import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
@@ -77,7 +76,6 @@ export default {
   serviceInject() {
     return {
       listService: ListService,
-      userService: UserService,
       routeService: RouteService
     }
   },
@@ -87,7 +85,7 @@ export default {
       page: this.listService.page$,
       loading: this.listService.loading$,
       query: this.routeService.query$,
-      transaction: this.userService.transactionEnums$,
+      productTypes: this.listService.productTypes$,
       auth: this.listService.auth$
     }
   },
@@ -95,10 +93,8 @@ export default {
     columns,
     productType() {
       let list = []
-      if (!this.transaction.product_type) return list
-      Object.entries(this.transaction.product_type.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
+      if (!this.productTypes) return list
+      list = list.concat(this.productTypes)
       return list
     }
   },
@@ -114,10 +110,6 @@ export default {
         query: { ...this.query, page: data.current, size: data.pageSize },
         force: true
       })
-    },
-    // 详情
-    onDetail(record) {
-      console.log(record)
     },
     // 签单
     onTransaction(record) {
