@@ -60,7 +60,7 @@ module.exports = {
       entry: 'src/_modules/404/index.ts',
       template: 'src/_modules/404/index.html',
       filename: '404/index.html',
-      chunks: ['chunk-common', 'runtime~404', '404']
+      chunks: ['chunk-vendors', 'chunk-common', 'runtime~404', '404']
     }
   },
   lintOnSave: false,
