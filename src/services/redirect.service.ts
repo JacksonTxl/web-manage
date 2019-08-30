@@ -91,16 +91,12 @@ export class RedirectService implements RouteGuard {
         ...redirectRouteQuery
       }
     })
-    console.log(redirectRouteName)
+
     // 跳转路径为空
     if (!redirectRouteName) {
       this.nprogress.done()
       return next({
-        name: 'error',
-        query: {
-          name: 'WRONG_REDIRECT_ROUTE_NAME',
-          message: `页面不存在 ${JSON.stringify(redirectRouteName)}`
-        }
+        name: 'welcome'
       })
     }
     // 目标路由为父亲路由时才跳转
@@ -117,12 +113,12 @@ export class RedirectService implements RouteGuard {
         }
       } else {
         this.nprogress.done()
+        this.notification.error({
+          title: 'WRONG_REDIRECT_ROUTE_NAME',
+          content: `页面不存在 ${JSON.stringify(redirectRouteName)}`
+        })
         next({
-          name: 'error',
-          query: {
-            name: 'REDIRECT_MATCH_ZERO',
-            message: `未找到匹配路由 ${JSON.stringify(redirectRouteName)}`
-          }
+          name: 'welcome'
         })
       }
     } else {
@@ -176,12 +172,12 @@ export class RedirectService implements RouteGuard {
     const myAuthedTabs = this.authedTabMap$.snapshot()[to.name]
 
     if (!myAuthedTabs.length) {
+      this.notification.error({
+        title: 'NO_TAB_CAN_REDIRECT',
+        content: `该路由下没有tab可跳转 ${to.name}`
+      })
       return next({
-        name: 'error',
-        query: {
-          name: 'NO_TAB_CAN_REDIRECT',
-          content: `路由下没有tab可跳转 ${to.name}`
-        }
+        name: 'welcome'
       })
     }
 

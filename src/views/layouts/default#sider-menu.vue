@@ -207,9 +207,16 @@ export default {
       this.selectedKeys = selectedKey ? [selectedKey] : []
     },
     onClickMenuItem(menu) {
-      this.$router.push({
+      const { resolved } = this.$router.resolve({
         name: menu.url
       })
+      if (!resolved.matched.length) {
+        location.href = '/404'
+      } else {
+        this.$router.push({
+          name: menu.url
+        })
+      }
     },
     addFavorite(id, subMenu) {
       this.userService.addFavorite(id).subscribe(() => {

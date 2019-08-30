@@ -55,6 +55,12 @@ module.exports = {
       template: 'src/_modules/account/index.html',
       filename: 'account/index.html',
       chunks: ['chunk-vendors', 'chunk-common', 'runtime~account', 'account']
+    },
+    404: {
+      entry: 'src/_modules/404/index.ts',
+      template: 'src/_modules/404/index.html',
+      filename: '404/index.html',
+      chunks: ['runtime~404', '404']
     }
   },
   lintOnSave: false,
