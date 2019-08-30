@@ -1,0 +1,19 @@
+.st-switch {
+  min-width: 40px;
+  background-color: fade(@primary-color, 10);
+  height: 8px;
+  &.ant-switch-checked {
+    background-color: @primary-color;
+  }
+  &.ant-switch-loading-icon,
+  &.ant-switch:after {
+    box-shadow: 0 0 4px 0 fade(black, 25);
+    top: -6px;
+    left: -1px;
+    margin-left: auto;
+  }
+  &.ant-switch-checked:after {
+    box-shadow: 0 0 4px 0 fade(@primary-color, 50);
+    left: 105%;
+  }
+}

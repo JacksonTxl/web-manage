@@ -2,7 +2,7 @@
   <div :class="inviation()">
     <st-form :form="form" labelWidth="94px">
       <st-form-item label="功能开关" required>
-        <a-switch v-model="openStatus" @change="onOpenStatusChange" />
+        <st-switch v-model="openStatus" @change="onOpenStatusChange" />
         <span class="mg-l12 mg-r12">{{ openStatus ? '已' : '未' }}开启</span>
         <span v-if="!openStatus">
           （一旦开启，将会在用户端展示，如需关闭，请谨慎操作。）
@@ -165,13 +165,13 @@ export default {
       settingInfoHistory: null,
       form: this.$form.createForm(this),
       // 活动状态
-      openStatus: false,
+      openStatus: 1,
       // 邀请人
-      inviteeCoupon: null,
+      inviteeCoupon: {},
       inviteeHelpText: '',
       inviteeCouponNum: undefined,
       // 被邀请人
-      inviterCoupon: null,
+      inviterCoupon: {},
       inviterHelpText: '',
       inviterCouponNum: undefined,
       // 邀请海报
@@ -204,7 +204,7 @@ export default {
       this.settingInfoHistory = cloneDeep(this.settingInfo)
       this.inviteeHelpText = ''
       this.inviterHelpText = ''
-      this.openStatus = this.settingInfo.activity_status === 1
+      this.openStatus = this.settingInfo.activity_status === 1 ? 1 : 0
       if (this.settingInfo.invitee_coupon_id) {
         // 开启过，需要回显
         this.inviteeCoupon = {
@@ -231,7 +231,7 @@ export default {
           title: '提示',
           content: `一旦关闭，全部推广功能将失效，请谨慎操作。`,
           onCancel: () => {
-            this.openStatus = true
+            this.openStatus = 1
           },
           onOk: () => {
             let params = { ...this.settingInfoHistory, activity_status: 2 }

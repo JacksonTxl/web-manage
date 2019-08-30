@@ -14,9 +14,9 @@
             </span>
             <span v-else>未配置</span>
           </template>
-          <a-switch
+          <st-switch
             v-if="auth.edit && index !== 0"
-            :checked="!!info[item.key].is_enable"
+            v-model="info[item.key].is_enable"
             @change="onSwitchChange(item.key)"
           />
         </a-col>
@@ -99,15 +99,13 @@ export default {
       this.payTypeService
         .update({
           id,
-          is_enable: +!is_enable,
+          is_enable,
           payment_type
         })
         .subscribe(this.onListChange)
     },
     onListChange() {
-      this.$router.push({
-        force: true
-      })
+      this.$router.reload()
     }
   }
 }

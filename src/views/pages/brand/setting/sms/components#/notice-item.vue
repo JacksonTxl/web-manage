@@ -97,41 +97,41 @@
             <div v-if="Object.keys(info.course_type).length > 0">
               <span class="color-title">课程类型</span>
               <span class="mg-b16 mg-l24 inlineblock">
-                <a-checkbox
+                <st-checkbox
                   v-if="params.course_type.team_course"
                   v-model="params.course_type.team_course.value"
                 >
                   {{ params.course_type.team_course.name }}
-                </a-checkbox>
-                <a-checkbox
+                </st-checkbox>
+                <st-checkbox
                   v-if="params.course_type.personal_course"
                   v-model="params.course_type.personal_course.value"
                 >
                   {{ params.course_type.personal_course.name }}
-                </a-checkbox>
+                </st-checkbox>
               </span>
             </div>
             <div v-if="Object.keys(info.receiver).length > 0">
               <span class="color-title">接收人员</span>
               <span class="mg-b16 mg-l24 inlineblock">
-                <a-checkbox
+                <st-checkbox
                   v-if="params.receiver.coach"
                   v-model="params.receiver.coach.value"
                 >
                   {{ params.receiver.coach.name }}
-                </a-checkbox>
-                <a-checkbox
+                </st-checkbox>
+                <st-checkbox
                   v-if="params.receiver.member"
                   v-model="params.receiver.member.value"
                 >
                   {{ params.receiver.member.name }}
-                </a-checkbox>
-                <a-checkbox
+                </st-checkbox>
+                <st-checkbox
                   v-if="params.receiver.custom"
                   v-model="params.receiver.custom.value"
                 >
                   {{ params.receiver.custom.name }}
-                </a-checkbox>
+                </st-checkbox>
               </span>
               <a-input
                 style="width:44%"
@@ -145,30 +145,30 @@
             <div v-if="Object.keys(info.order_type).length > 0">
               <span class="color-title">订单类型</span>
               <span class="mg-b16 mg-l24 inlineblock">
-                <a-checkbox
+                <st-checkbox
                   v-if="params.order_type.advance"
                   v-model="params.order_type.advance.value"
                 >
                   {{ params.order_type.advance.name }}
-                </a-checkbox>
-                <a-checkbox
+                </st-checkbox>
+                <st-checkbox
                   v-if="params.order_type.deposit"
                   v-model="params.order_type.deposit.value"
                 >
                   {{ params.order_type.deposit.name }}
-                </a-checkbox>
-                <a-checkbox
+                </st-checkbox>
+                <st-checkbox
                   v-if="params.order_type.product"
                   v-model="params.order_type.product.value"
                 >
                   {{ params.order_type.product.name }}
-                </a-checkbox>
-                <a-checkbox
+                </st-checkbox>
+                <st-checkbox
                   v-if="params.order_type.poundage"
                   v-model="params.order_type.poundage.value"
                 >
                   {{ params.order_type.poundage.name }}
-                </a-checkbox>
+                </st-checkbox>
               </span>
             </div>
             <div>
