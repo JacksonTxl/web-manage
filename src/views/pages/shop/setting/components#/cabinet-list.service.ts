@@ -6,12 +6,9 @@ import { TemporaryCabinetApi } from '@/api/v1/setting/cabinet/temporary'
 import { LongTermCabinetApi } from '@/api/v1/setting/cabinet/long-term'
 import { AuthService } from '@/services/auth.service'
 
-interface SetState {
-  resData: {}
-}
 @Injectable()
-export class CabinetListService extends Store<SetState> {
-  state$: State<SetState>
+export class CabinetListService {
+  state$: State<any>
   resData$: Computed<object>
   auth$ = this.authService.authMap$({
     edit: 'shop:cabinet:cabinet|edit'
@@ -21,7 +18,6 @@ export class CabinetListService extends Store<SetState> {
     private longTermCabinetApi: LongTermCabinetApi,
     private authService: AuthService
   ) {
-    super()
     this.state$ = new State({
       resData: {}
     })

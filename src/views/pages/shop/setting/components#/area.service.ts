@@ -1,6 +1,5 @@
 import { Injectable } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
-import { Store } from '@/services/store'
 import { tap, pluck } from 'rxjs/operators'
 import {
   CabinetAreaApi,
@@ -9,15 +8,12 @@ import {
   SortInput
 } from '@/api/v1/setting/cabinet/area'
 
-interface SetState {
-  list: object[]
-}
 @Injectable()
-export class CabinetAreaService extends Store<SetState> {
-  state$: State<SetState>
+export class CabinetAreaService {
+  loading$ = new State({})
+  state$: State<any>
   list$: Computed<object[]>
   constructor(private areaApi: CabinetAreaApi) {
-    super()
     this.state$ = new State({
       list: []
     })

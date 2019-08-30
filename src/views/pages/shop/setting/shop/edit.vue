@@ -15,13 +15,7 @@
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="门店电话" required>
             <a-input
-              v-decorator="[
-                'shopPhone',
-                {
-                  validateTrigger: 'blur',
-                  rules: [{ validator: shopPhoneValidator }]
-                }
-              ]"
+              v-decorator="decorators.shopPhone"
               placeholder="请输入门店电话"
             >
               <div
@@ -50,17 +44,7 @@
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="邮箱">
             <a-input
-              v-decorator="[
-                'email',
-                {
-                  rules: [
-                    {
-                      type: 'email',
-                      message: '输入的邮箱格式错误，请重新输入!'
-                    }
-                  ]
-                }
-              ]"
+              v-decorator="decorators.email"
               placeholder="请输入门店邮箱"
             />
           </st-form-item>
@@ -165,6 +149,7 @@ import ShopMapLocation from '@/views/biz-modals/shop/map-location'
 import CheckboxFacilityGroup from '@/views/biz-components/checkbox-facility/checkbox-facility-group'
 import CheckboxFacilityItem from '@/views/biz-components/checkbox-facility/checkbox-facility-item'
 import ShopHourPicker from '@/views/biz-components/shop-hour-picker/shop-hour-picker'
+import { ruleOptions } from './edit.config'
 export default {
   name: 'PageShopSettingShopEdit',
   components: {
@@ -193,8 +178,11 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      form: this.$form.createForm(this),
+      form,
+      decorators,
       flagList: [
         '',
         'shop-trial',
@@ -261,6 +249,7 @@ export default {
     },
     // 添加电话
     onValidtorPhone() {
+      this.phoneValidtorType = 1
       if (this.form.getFieldValue('shopPhone') && !this.phoneAddDisabled) {
         // input框里有值才添加
         this.form.validateFields(['shopPhone'], { force: true }).then(res => {
@@ -273,30 +262,6 @@ export default {
     // 移除电话
     onRemovePhone(index) {
       this.shopPhones.splice(index, 1)
-    },
-    // shop_phone validatorFn
-    shopPhoneValidator(rule, value, callback) {
-      if (this.phoneValidtorType) {
-        if (
-          value !== undefined &&
-          value !== '' &&
-          !this.pattern.TEL.test(value)
-        ) {
-          // eslint-disable-next-line
-          callback('输入的门店电话格式错误，请重新输入')
-        } else {
-          // eslint-disable-next-line
-          callback()
-        }
-      } else {
-        if (!this.shopPhones.length) {
-          // eslint-disable-next-line
-          callback('请填写门店电话')
-        } else {
-          // eslint-disable-next-line
-          callback()
-        }
-      }
     },
     // 图片
     fileChange(data) {
@@ -325,21 +290,19 @@ export default {
       // 确认为提交表单校验
       this.phoneValidtorType = 0
       this.form.resetFields(['shopPhone'])
-      this.form.validateFieldsAndScroll((err, values) => {
+      this.form.validate().then(values => {
         this.phoneValidtorType = 1
-        if (!err) {
-          this.editService
-            .edit({
-              shop_phones: this.shopPhones,
-              service_ids: this.serviceIds,
-              business_time: this.weekTime,
-              email: values.email,
-              shop_images: this.imgList
-            })
-            .subscribe(() => {
-              this.$router.push({ path: '/shop/setting/shop/info' })
-            })
-        }
+        this.editService
+          .edit({
+            shop_phones: this.shopPhones,
+            service_ids: this.serviceIds,
+            business_time: this.weekTime,
+            email: values.email,
+            shop_images: this.imgList
+          })
+          .subscribe(() => {
+            this.$router.push({ path: '/shop/setting/shop/info' })
+          })
       })
     }
   }
