@@ -93,7 +93,7 @@ export default {
         file_save_type: this.IMPORT.FILE_SAVE_TYPE,
         file_source: this.fileList[0].file_key,
         input_type: this.type,
-        shopId: this.shopId || undefined
+        shop_id: this.shopId || undefined
       }
       this.importService.uploadFile(params).subscribe(res => {
         this.show = false
