@@ -1,7 +1,15 @@
 .st-input-search {
   .ant-input {
-    border-radius: 10000px;
+    border-radius: 100px;
     background-color: rgba(234, 238, 244, 1);
     border: 0;
+    padding: 4px 16px;
+    &::placeholder {
+      color: @text-light;
+    }
+  }
+  .ant-input-suffix {
+    right: 16px;
+    color: @text-light;
   }
 }
