@@ -1,43 +1,143 @@
 <template>
   <st-modal
-    wrapClassName="modal-stat-personal-consume"
+    wrapClassName="modal-stat-personal-course"
     title="消课价值(私)"
     :footer="null"
     v-model="show"
   >
-    <st-container>
-      <st-table
-        :columns="columns"
-        :rowKey="record => record.id"
-        :page="false"
-        :dataSource="consumeList"
-      ></st-table>
-    </st-container>
+    <div class="search mg-b8">
+      <div class="search__left"></div>
+      <div class="search__right">
+        <a-select
+          class="mg-l8"
+          placeholder="请选择课程类型"
+          style="width: 120px"
+          v-model="course_type"
+          @change="onChangeCourseType"
+          :options="courseTypeList"
+        ></a-select>
+        <a-select
+          class="mg-l8"
+          showSearch
+          placeholder="请选择课程"
+          optionFilterProp="children"
+          style="width: 200px"
+          v-model="course_id"
+          :filterOption="filterOption"
+        >
+          <a-select-option
+            :value="course.id"
+            v-for="course in modalCourseList$"
+            :key="course.id"
+          >
+            {{ course.name }}
+          </a-select-option>
+        </a-select>
+        <a-select
+          class="mg-l8"
+          showSearch
+          placeholder="请选择教练"
+          optionFilterProp="children"
+          style="width: 200px"
+          v-model="coach_id"
+          @change="onChangeCoach"
+          :filterOption="filterOption"
+        >
+          <a-select-option
+            :value="course.id"
+            v-for="course in modalCoachList$"
+            :key="course.id"
+          >
+            {{ course.name }}
+          </a-select-option>
+        </a-select>
+      </div>
+    </div>
+    <st-table
+      :columns="columns"
+      :rowKey="record => record.id"
+      :page="page$"
+      :loading="loading$.getConsumeList"
+      @change="onTableChange"
+      :showSizeChanger="false"
+      :dataSource="consumeList$"
+    ></st-table>
   </st-modal>
 </template>
 <script>
-import { columns } from './personal-consume.config'
-import { PersonalConsumeService } from './personal-consume.service'
+import { columns } from './personal-course.config'
+import tableMixin from '@/mixins/table.mixin'
+import { PersonalCourseService } from './personal-course.service'
 export default {
   name: 'PersonalConsume',
+  mixins: [tableMixin],
   serviceInject() {
     return {
-      personalConsumeService: PersonalConsumeService
+      personalCourseService: PersonalCourseService
+    }
+  },
+  rxState() {
+    const {
+      courseList$,
+      page$,
+      loading$,
+      modalCoachList$,
+      modalCourseList$,
+      courseTypeList$
+    } = this.personalCourseService
+    return {
+      modalCoachList$,
+      modalCourseList$,
+      courseTypeList$,
+      consumeList$,
+      page$,
+      loading$
     }
   },
   data() {
     return {
       show: false,
-      consumeList: []
+      consumeList: [],
+      course_type: 1,
+      coach_id: -1,
+      course_id: -1
     }
   },
   computed: {
-    columns
+    columns,
+    query() {
+      return {
+        stat_date: this.stat_date,
+        course_type: this.course_type,
+        coach_id: this.coach_id,
+        course_id: this.course_id
+      }
+    },
+    courseTypeList() {
+      return this.courseTypeList$.filter(item => item.value !== 3)
+    }
   },
   props: {
-    id: Number
+    stat_date: String
   },
-  methods: {},
-  mounted() {}
+  watch: {
+    query(newVal, oldVal) {
+      this.personalCourseService.getConsumeList(newVal).subscribe()
+    }
+  },
+  methods: {
+    filterOptionCoach(input, option) {
+      return (
+        option.componentOptions.children[0].text
+          .toLowerCase()
+          .indexOf(input.toLowerCase()) >= 0
+      )
+    }
+  },
+  mounted() {
+    this.personalCourseService
+      .init({ course_type: 1 }, { stat_date: this.stat_date, course_type: 1 })
+      .subscribe()
+  }
 }
 </script>

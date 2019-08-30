@@ -12,17 +12,17 @@
         <div v-if="showTable === 'coach'">
           <a-select
             class="mg-r8"
-            showSearch
             placeholder="请选择部门"
             optionFilterProp="children"
             style="width: 200px"
             @focus="onFocusDepartment"
             @blur="onBlurDepartment"
             @change="onChangeDepartment"
+            v-model="query.department_id"
             :filterOption="filterOptionDepartment"
           >
             <a-select-option
-              :value="department.id"
+              :value="+department.id"
               v-for="department in departmentList"
               :key="department.id"
             >
@@ -38,10 +38,11 @@
             @focus="onFocusCoach"
             @blur="onBlurCoach"
             @change="onChangeCoach"
+            v-model="query.coach_id"
             :filterOption="filterOptionCoach"
           >
             <a-select-option
-              :value="coach.id"
+              :value="+coach.id"
               v-for="coach in coachListFilter"
               :key="coach.id"
             >
@@ -57,7 +58,7 @@
       :page="page"
       :scroll="{ x: 1800 }"
       @change="onTableChange"
-      :loading="loading.getOrderShopList"
+      :loading="loading.getCourseCoachShopList"
       :columns="columns"
       :dataSource="list"
       rowKey="id"
@@ -75,11 +76,9 @@
         slot="personal_consume_amount"
         @click="getPersonalConsume(record)"
         slot-scope="text, record"
-        v-if="text !== '0.0'"
       >
         {{ text }}
       </a>
-      <span v-else>{{ text }}</span>
       <a
         slot="team_course_num"
         slot-scope="text, record"
@@ -89,12 +88,13 @@
         {{ text }}
       </a>
       <span v-else>{{ text }}</span>
-      <template slot="team_consume_amount" slot-scope="text, record">
-        <a v-if="text !== '0.0'" @click="getTeamConsume(record)">
-          {{ text }}
-        </a>
-        <span v-else>{{ text }}</span>
-      </template>
+      <a
+        slot="team_checkin_amount"
+        slot-scope="text, record"
+        @click="getTeamConsume(record)"
+      >
+        {{ text }}
+      </a>
     </st-table>
   </div>
 </template>
@@ -165,14 +165,32 @@ export default {
         }
       })
     },
-    getPersonalConsume() {
-      this.$modalRouter.push({ name: 'shop-stat-personal-consume' })
+    getPersonalConsume(record) {
+      const { stat_date } = record
+      this.$modalRouter.push({
+        name: 'shop-stat-personal-consume',
+        props: {
+          stat_date
+        }
+      })
     },
-    getTeamCourse() {
-      this.$modalRouter.push({ name: 'shop-stat-team-course' })
+    getTeamCourse(record) {
+      const { stat_date } = record
+      this.$modalRouter.push({
+        name: 'shop-stat-team-course',
+        props: {
+          stat_date
+        }
+      })
     },
-    getTeamConsume() {
-      this.$modalRouter.push({ name: 'shop-stat-team-consume' })
+    getTeamConsume(record) {
+      const { stat_date } = record
+      this.$modalRouter.push({
+        name: 'shop-stat-team-consume',
+        props: {
+          stat_date
+        }
+      })
     },
     onChangeCoach(value) {
       this.onMultiSearch({ coach_id: value })
@@ -212,7 +230,12 @@ export default {
     },
     handleSizeChange(val) {
       this.showTable = val.target.value
-      this.$router.push({ query: { showTable: this.showTable, force: true } })
+      let query = { showTable: this.showTable, force: true }
+      if (this.showTable === 'coach') {
+        query.department_id = -1
+        query.coach_id = -1
+      }
+      this.$router.push({ query })
     }
   }
 }

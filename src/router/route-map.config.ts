@@ -934,7 +934,9 @@ export const routeMapConfig = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       start_date: { type: String, default: '' },
-      end_date: { type: String, default: '' }
+      end_date: { type: String, default: '' },
+      department_id: { type: Number, default: -1 },
+      coach_id: { type: Number, default: -1 }
     }
   },
   'shop-stat-finance'(routeConfig: RouteConfig) {

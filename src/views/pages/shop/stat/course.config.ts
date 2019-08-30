@@ -105,8 +105,8 @@ export const courseColumns = () => {
     },
     {
       title: '团课消课价值（元）',
-      dataIndex: 'team_consume_amount',
-      scopedSlots: { customRender: 'team_consume_amount' }
+      dataIndex: 'team_checkin_amount',
+      scopedSlots: { customRender: 'team_checkin_amount' }
     }
   ]
 }

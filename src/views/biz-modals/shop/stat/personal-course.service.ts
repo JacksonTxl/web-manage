@@ -1,3 +1,4 @@
+import { UserService } from '@/services/user.service'
 import { StatApi } from '@/api/v1/stat/shop'
 import { Injectable } from 'vue-service-app'
 import { Effect, State } from 'rx-state'
@@ -11,7 +12,8 @@ export class PersonalCourseService {
   modalCoachList$ = new State([])
   loading$ = new State({})
   page$ = new State({})
-  constructor(private statApi: StatApi) {}
+  courseTypeList$ = this.userService.getOptions$('reserve.reserve_type')
+  constructor(private statApi: StatApi, private userService: UserService) {}
   @Effect()
   getCourseList(params: any) {
     return this.statApi.getPersonalCourse(params).pipe(
@@ -24,8 +26,14 @@ export class PersonalCourseService {
   getCourseModalCoachAndCourseList(query: any) {
     return this.statApi.getCourseModalCoachAndCourseList(query).pipe(
       tap(res => {
-        this.modalCoachList$.commit(() => res.info.coach_list)
-        this.modalCourseList$.commit(() => res.info.course_list)
+        this.modalCoachList$.commit(() => [
+          { id: -1, name: '全部教练' },
+          ...res.info.coach_list
+        ])
+        this.modalCourseList$.commit(() => [
+          { id: -1, name: '全部课程' },
+          ...res.info.course_list
+        ])
       })
     )
   }

@@ -52,7 +52,7 @@ export class StatApi {
     return this.http.get('/v1/stat/course/shop/team/course', { query })
   }
   getTeamConsume(query: TeamConsumeQuery) {
-    return this.http.get('/v1/stat/course/shop/team/checkin/amount', {
+    return this.http.get('/v1/stat/course/shop/team/course/checkin', {
       query
     })
   }

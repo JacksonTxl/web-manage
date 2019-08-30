@@ -1,18 +1,46 @@
+import { UserService } from '@/services/user.service'
+import { StatApi } from '@/api/v1/stat/shop'
 import { Injectable } from 'vue-service-app'
 import { Effect, State } from 'rx-state'
-import { CourseApi } from '@/api/v1/setting/course'
-import { PackageApi, GetCourseInput } from '@/api/v1/course/package'
+import { tap } from 'rxjs/operators'
+import { forkJoin } from 'rxjs'
 
 @Injectable()
 export class TeamConsumeService {
-  courseTypeList$ = new State({})
+  consumeList$ = new State([])
+  modalCourseList$ = new State([])
+  modalCoachList$ = new State([])
   loading$ = new State({})
-  constructor(private courseApi: CourseApi, private packageApi: PackageApi) {}
+  page$ = new State({})
+  courseTypeList$ = this.userService.getOptions$('reserve.reserve_type')
+  constructor(private statApi: StatApi, private userService: UserService) {}
   @Effect()
-  getCourseList(params: GetCourseInput) {
-    return this.packageApi.getCourseList(params)
+  getConsumeList(params: any) {
+    return this.statApi.getTeamConsume(params).pipe(
+      tap((res: any) => {
+        this.consumeList$.commit(() => res.list)
+        this.page$.commit(() => res.page)
+      })
+    )
   }
-  getCourseTypeList() {
-    return this.courseApi.getCourseCategoryList({})
+  getCheckinModalCoachAndCourseList(query: any) {
+    return this.statApi.getCheckinModalCoachAndCourseList(query).pipe(
+      tap(res => {
+        this.modalCoachList$.commit(() => [
+          { id: -1, name: '全部教练' },
+          ...res.info.coach_list
+        ])
+        this.modalCourseList$.commit(() => [
+          { id: -1, name: '全部课程' },
+          ...res.info.course_list
+        ])
+      })
+    )
+  }
+  init(querySelect: any, queryTable: any) {
+    return forkJoin(
+      this.getCheckinModalCoachAndCourseList(querySelect),
+      this.getConsumeList(queryTable)
+    )
   }
 }

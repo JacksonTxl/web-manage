@@ -30,7 +30,7 @@ export const columns = () => {
     },
     {
       title: '消费价值（元）',
-      dataIndex: 'consume_amount'
+      dataIndex: 'team_checkin_amount'
     }
   ]
 }
