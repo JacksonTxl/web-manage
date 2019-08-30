@@ -20,8 +20,8 @@ export const allColumns = () => {
       dataIndex: 'personal_checkin_num'
     },
     {
-      title: '私教消课价值（元)',
       dataIndex: 'personal_checkin_amount',
+      slots: { title: 'personalTitle' },
       scopedSlots: { customRender: 'personal_checkin_amount' }
     },
     {
@@ -42,8 +42,8 @@ export const allColumns = () => {
       dataIndex: 'team_checkin_num'
     },
     {
-      title: '团课消课价值（元）',
       dataIndex: 'team_checkin_amount',
+      slots: { title: 'teamTitle' },
       scopedSlots: { customRender: 'team_checkin_amount' }
     }
   ]
@@ -82,8 +82,8 @@ export const courseColumns = () => {
       dataIndex: 'personal_checkin_num'
     },
     {
-      title: '私教消课价值（元)',
       dataIndex: 'personal_consume_amount',
+      slots: { title: 'personalTitle' },
       scopedSlots: { customRender: 'personal_consume_amount' }
     },
     {
@@ -104,8 +104,8 @@ export const courseColumns = () => {
       dataIndex: 'team_checkin_num'
     },
     {
-      title: '团课消课价值（元）',
       dataIndex: 'team_checkin_amount',
+      slots: { title: 'teamTitle' },
       scopedSlots: { customRender: 'team_checkin_amount' }
     }
   ]

@@ -15,11 +15,9 @@
             placeholder="请选择部门"
             optionFilterProp="children"
             style="width: 200px"
-            @focus="onFocusDepartment"
-            @blur="onBlurDepartment"
             @change="onChangeDepartment"
             v-model="query.department_id"
-            :filterOption="filterOptionDepartment"
+            :filterOption="filterOption"
           >
             <a-select-option
               :value="+department.id"
@@ -35,11 +33,9 @@
             optionFilterProp="children"
             class="mg-r8"
             style="width: 200px"
-            @focus="onFocusCoach"
-            @blur="onBlurCoach"
             @change="onChangeCoach"
             v-model="query.coach_id"
-            :filterOption="filterOptionCoach"
+            :filterOption="filterOption"
           >
             <a-select-option
               :value="+coach.id"
@@ -95,6 +91,14 @@
       >
         {{ text }}
       </a>
+      <span slot="personalTitle">
+        私教消课价值（元)
+        <st-help-tooltip id="TSCR001" />
+      </span>
+      <span slot="teamTitle">
+        团课消课价值（元）
+        <st-help-tooltip id="TSCR002" />
+      </span>
     </st-table>
   </div>
 </template>
@@ -137,8 +141,7 @@ export default {
   },
   data() {
     return {
-      showTable: 'all',
-      departmentId: -1
+      showTable: 'all'
     }
   },
   computed: {
@@ -146,10 +149,13 @@ export default {
       return this.showTable === 'all' ? allColumns() : courseColumns()
     },
     coachListFilter() {
-      if (this.departmentId === -1) return this.coachList
-      return this.coachList.filter(item => {
-        return this.departmentId === item.department_id
-      })
+      if (this.query.department_id === -1) return this.coachList
+      return [
+        { id: -1, name: '全部教练' },
+        ...this.coachList.filter(item => {
+          return this.query.department_id === item.department_id
+        })
+      ]
     }
   },
   created() {
@@ -195,30 +201,10 @@ export default {
     onChangeCoach(value) {
       this.onMultiSearch({ coach_id: value })
     },
-    onBlurCoach() {
-      console.log('blur')
-    },
-    onFocusCoach() {
-      console.log('focus')
-    },
-    filterOptionCoach(input, option) {
-      return (
-        option.componentOptions.children[0].text
-          .toLowerCase()
-          .indexOf(input.toLowerCase()) >= 0
-      )
-    },
     onChangeDepartment(value) {
-      this.departmentId = value
-      this.onMultiSearch({ department_id: value })
+      this.onMultiSearch({ department_id: value, coach_id: -1 })
     },
-    onBlurDepartment() {
-      console.log('blur')
-    },
-    onFocusDepartment() {
-      console.log('focus')
-    },
-    filterOptionDepartment(input, option) {
+    filterOption(input, option) {
       return (
         option.componentOptions.children[0].text
           .toLowerCase()
