@@ -3,18 +3,15 @@
     <st-search-panel>
       <div :class="basic('select')" class="mgt-24">
         <span :class="basic('select-text')">会员卡类型：</span>
-        <st-search-radio v-model="query.card_type" :list="cardTypeList" />
+        <st-search-radio v-model="query.card_type" :list="cardTypes" />
       </div>
       <div :class="basic('select')">
         <span :class="basic('select-text')">会员卡状态：</span>
-        <st-search-radio
-          v-model="query.card_status"
-          :list="cardSaleStatusList"
-        />
+        <st-search-radio v-model="query.card_status" :list="cardStatus" />
       </div>
       <div :class="basic('select')">
         <span :class="basic('select-text')">开卡状态：</span>
-        <st-search-radio v-model="query.is_open" :list="cardOpenStatusList" />
+        <st-search-radio v-model="query.is_open" :list="isOpens" />
       </div>
       <div slot="more">
         <div :class="basic('select')">
@@ -221,27 +218,6 @@ export default {
   },
   computed: {
     columns,
-    // 会员卡类型
-    cardTypeList() {
-      let list = [{ value: -1, label: '全部' }]
-      if (!this.cardTypes) return list
-      list = list.concat(this.cardTypes)
-      return list
-    },
-    // 售卡状态
-    cardSaleStatusList() {
-      let list = [{ value: -1, label: '全部' }]
-      if (!this.cardStatus) return list
-      list = list.concat(this.cardStatus)
-      return list
-    },
-    // 开卡状态
-    cardOpenStatusList() {
-      let list = [{ value: -1, label: '全部' }]
-      if (!this.isOpens) return list
-      list = list.concat(this.isOpens)
-      return list
-    },
     // 列表选择的卡是否一致
     isUnifyCard() {
       return (

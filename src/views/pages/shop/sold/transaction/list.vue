@@ -8,7 +8,7 @@
         style="width: 160px"
       >
         <a-select-option
-          v-for="(item, index) in productType"
+          v-for="(item, index) in productTypes"
           :key="index"
           :value="item.value"
         >
@@ -90,13 +90,7 @@ export default {
     }
   },
   computed: {
-    columns,
-    productType() {
-      let list = []
-      if (!this.productTypes) return list
-      list = list.concat(this.productTypes)
-      return list
-    }
+    columns
   },
   data() {
     return {}

@@ -3,7 +3,7 @@
     <st-search-panel>
       <div :class="basic('select')">
         <span :class="basic('select-text')">储值卡状态：</span>
-        <st-search-radio v-model="query.is_valid" :list="cardSaleStatusList" />
+        <st-search-radio v-model="query.is_valid" :list="isValids" />
       </div>
       <div :class="basic('select')">
         <span :class="basic('select-text')">购买时间：</span>
@@ -122,14 +122,7 @@ export default {
     }
   },
   computed: {
-    columns,
-    // 售卡状态
-    cardSaleStatusList() {
-      let list = [{ value: -1, label: '全部' }]
-      if (!this.isValids) return list
-      list = list.concat(this.isValids)
-      return list
-    }
+    columns
   },
   data() {
     return {

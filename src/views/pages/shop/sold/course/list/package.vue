@@ -3,10 +3,7 @@
     <st-search-panel>
       <div :class="basic('select')">
         <span :class="basic('select-text')">课程状态：</span>
-        <st-search-radio
-          v-model="query.course_status"
-          :list="personalCourseList"
-        />
+        <st-search-radio v-model="query.course_status" :list="courseStatus" />
       </div>
       <div :class="basic('select')">
         <span :class="basic('select-text')">购买时间：</span>
@@ -175,13 +172,7 @@ export default {
     }
   },
   computed: {
-    columns,
-    personalCourseList() {
-      let list = [{ value: -1, label: '全部' }]
-      if (!this.courseStatus) return list
-      list = list.concat(this.courseStatus)
-      return list
-    }
+    columns
   },
   methods: {
     // 清空列表选择
