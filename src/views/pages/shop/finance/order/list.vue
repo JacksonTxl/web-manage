@@ -139,6 +139,11 @@ export default {
   mounted() {
     this.setSearchData()
   },
+  watch: {
+    query() {
+      this.setSearchData()
+    }
+  },
   data() {
     return {
       keyword: '',
