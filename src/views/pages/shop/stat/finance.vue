@@ -28,7 +28,7 @@ export default {
   mixins: [tableMixin],
   bem: {
     bPage: 'page-shop-stat-finance',
-    bHeard: 'heard'
+    bHeard: 'header'
   },
   serviceInject() {
     return {

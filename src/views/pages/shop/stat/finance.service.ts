@@ -1,24 +1,19 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
-import { AuthService } from '@/services/auth.service'
+import { Injectable, ServiceRoute } from 'vue-service-app'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { RedirectService } from '@/services/redirect.service'
 import { StatApi, OrderShopListQuery } from '@/api/v1/stat/shop'
 interface SetState {}
 @Injectable()
-export class FinanceService extends Store<SetState> implements RouteGuard {
+export class FinanceService {
   list$ = new State([])
   page$ = new State({})
-  // loading$ = new State({})
-  authTabs$ = this.redirectService.getAuthTabs$('shop-stat-revenue')
+  loading$ = new State({})
+  authTabs$ = this.redirectService.getAuthTabs$('shop-stat-finance')
   constructor(
     private StatApi: StatApi,
     private redirectService: RedirectService
-  ) {
-    super()
-    this.state$ = new State({})
-  }
+  ) {}
   @Effect()
   getFinanceShopList(query: OrderShopListQuery) {
     return this.StatApi.getFinanceShopList(query).pipe(

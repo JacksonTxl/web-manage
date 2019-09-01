@@ -15,6 +15,7 @@
           optionFilterProp="children"
           style="width: 200px"
           v-model="course_id"
+          @change="getCourseList"
           :filterOption="filterOption"
         >
           <a-select-option
@@ -32,6 +33,7 @@
           optionFilterProp="children"
           style="width: 200px"
           v-model="coach_id"
+          @change="getCourseList"
           :filterOption="filterOption"
         >
           <a-select-option
@@ -56,12 +58,11 @@
   </st-modal>
 </template>
 <script>
-import tableMixin from '@/mixins/table.mixin'
 import { columns } from './team-course.config'
 import { TeamCourseService } from './team-course.service'
+import { COURSE_TYPE } from '@/constants/stat/course'
 export default {
   name: 'TeamCourse',
-  mixins: [tableMixin],
   serviceInject() {
     return {
       teamCourseService: TeamCourseService
@@ -83,11 +84,14 @@ export default {
       loading$
     }
   },
+  props: {
+    stat_date: String
+  },
   data() {
     return {
       show: false,
       consumeList: [],
-      course_type: 1,
+      course_type: COURSE_TYPE.TEAM,
       coach_id: -1,
       course_id: -1
     }
@@ -103,15 +107,10 @@ export default {
       }
     }
   },
-  props: {
-    stat_date: String
-  },
-  watch: {
-    query(newVal, oldVal) {
-      this.teamCourseService.getCourseList(newVal).subscribe()
-    }
-  },
   methods: {
+    getCourseList() {
+      this.teamCourseService.getCourseList(this.query).subscribe()
+    },
     filterOption(input, option) {
       return (
         option.componentOptions.children[0].text
@@ -122,7 +121,7 @@ export default {
   },
   mounted() {
     this.teamCourseService
-      .init({ course_type: 3 }, { stat_date: this.stat_date })
+      .init({ course_type: COURSE_TYPE.TEAM }, { stat_date: this.stat_date })
       .subscribe()
   }
 }

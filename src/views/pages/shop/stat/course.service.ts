@@ -7,20 +7,17 @@ import { StatApi, OrderShopListQuery } from '@/api/v1/stat/shop'
 import { forkJoin } from 'rxjs'
 interface SetState {}
 @Injectable()
-export class CourseService extends Store<SetState> implements RouteGuard {
+export class CourseService {
   list$ = new State([])
   departmentList$ = new State([])
   coachList$ = new State([])
   page$ = new State({})
-  // loading$ = new State({})
-  authTabs$ = this.redirectService.getAuthTabs$('shop-stat-revenue')
+  loading$ = new State({})
+  authTabs$ = this.redirectService.getAuthTabs$('shop-stat-course')
   constructor(
     private StatApi: StatApi,
     private redirectService: RedirectService
-  ) {
-    super()
-    this.state$ = new State({})
-  }
+  ) {}
   @Effect()
   getCourseList(query: OrderShopListQuery) {
     return this.StatApi.getCourseList(query).pipe(
@@ -58,6 +55,7 @@ export class CourseService extends Store<SetState> implements RouteGuard {
       })
     )
   }
+  @Effect()
   init(query: any) {
     return query.showTable === 'all'
       ? forkJoin(this.getCourseList(query))

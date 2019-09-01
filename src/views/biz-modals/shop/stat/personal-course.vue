@@ -23,6 +23,7 @@
           optionFilterProp="children"
           style="width: 200px"
           v-model="course_id"
+          @change="getCourseList"
           :filterOption="filterOption"
         >
           <a-select-option
@@ -39,6 +40,7 @@
           placeholder="请选择教练"
           optionFilterProp="children"
           style="width: 200px"
+          @change="getCourseList"
           v-model="coach_id"
           :filterOption="filterOption"
         >
@@ -57,19 +59,17 @@
       :rowKey="record => record.id"
       :page="page$"
       :loading="loading$.getCourseList"
-      @change="onTableChange"
       :showSizeChanger="false"
       :dataSource="courseList$"
     ></st-table>
   </st-modal>
 </template>
 <script>
-import tableMixin from '@/mixins/table.mixin'
 import { columns } from './personal-course.config'
 import { PersonalCourseService } from './personal-course.service'
+import { COURSE_TYPE } from '@/constants/stat/course'
 export default {
   name: 'PersonalConsume',
-  mixins: [tableMixin],
   serviceInject() {
     return {
       personalCourseService: PersonalCourseService
@@ -93,11 +93,14 @@ export default {
       loading$
     }
   },
+  props: {
+    stat_date: String
+  },
   data() {
     return {
       show: false,
       consumeList: [],
-      course_type: 1,
+      course_type: COURSE_TYPE.PERSONAL,
       coach_id: -1,
       course_id: -1
     }
@@ -113,24 +116,26 @@ export default {
       }
     },
     courseTypeList() {
-      return this.courseTypeList$.filter(item => item.value !== 3)
-    }
-  },
-  props: {
-    stat_date: String
-  },
-  watch: {
-    query(newVal, oldVal) {
-      this.personalCourseService.getCourseList(newVal).subscribe()
+      return this.courseTypeList$.filter(
+        item => item.value !== COURSE_TYPE.TEAM
+      )
     }
   },
   methods: {
+    onChange() {
+      this.personalCourseService.getCourseList(this.query).subscribe()
+    },
+    init() {
+      const course_type = this.course_type
+      this.personalCourseService
+        .init({ course_type }, { stat_date: this.stat_date, course_type })
+        .subscribe()
+    },
     onChangeCourseType(val) {
       this.course_id = -1
       this.coach_id = -1
-      this.personalCourseService
-        .getCourseModalCoachAndCourseList({ course_type: val })
-        .subscribe()
+      this.course_type = val
+      this.init()
     },
     filterOption(input, option) {
       return (
@@ -141,9 +146,7 @@ export default {
     }
   },
   mounted() {
-    this.personalCourseService
-      .init({ course_type: 1 }, { stat_date: this.stat_date, course_type: 1 })
-      .subscribe()
+    this.init()
   }
 }
 </script>

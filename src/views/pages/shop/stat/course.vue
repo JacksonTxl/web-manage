@@ -115,7 +115,7 @@ export default {
   mixins: [tableMixin],
   bem: {
     bPage: 'page-shop-stat-course',
-    bHeard: 'heard'
+    bHeard: 'header'
   },
   modals: {
     ShopStatPersonalCourse,
@@ -216,12 +216,12 @@ export default {
     },
     handleSizeChange(val) {
       this.showTable = val.target.value
-      let query = { showTable: this.showTable, force: true }
+      let query = { showTable: this.showTable }
       if (this.showTable === 'coach') {
         query.department_id = -1
         query.coach_id = -1
       }
-      this.$router.push({ query })
+      this.$router.push({ query, force: true })
     }
   }
 }

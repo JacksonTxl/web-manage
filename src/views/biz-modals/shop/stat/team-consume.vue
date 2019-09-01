@@ -15,6 +15,7 @@
           placeholder="请选择课程"
           optionFilterProp="children"
           style="width: 200px"
+          @change="getConsumeList"
           v-model="course_id"
           :filterOption="filterOption"
         >
@@ -33,14 +34,15 @@
           optionFilterProp="children"
           style="width: 200px"
           v-model="coach_id"
+          @change="getConsumeList"
           :filterOption="filterOption"
         >
           <a-select-option
-            :value="course.id"
-            v-for="course in modalCoachList$"
-            :key="course.id"
+            :value="coach.id"
+            v-for="coach in modalCoachList$"
+            :key="coach.id"
           >
-            {{ course.name }}
+            {{ coach.name }}
           </a-select-option>
         </a-select>
       </div>
@@ -50,7 +52,6 @@
       :rowKey="record => record.id"
       :page="page$"
       :loading="loading$.getConsumeList"
-      @change="onTableChange"
       :showSizeChanger="false"
       :dataSource="consumeList$"
     ></st-table>
@@ -59,10 +60,9 @@
 <script>
 import { columns } from './team-consume.config'
 import { TeamConsumeService } from './team-consume.service'
-import tableMixin from '@/mixins/table.mixin'
+import { COURSE_TYPE } from '@/constants/stat/course'
 export default {
   name: 'TeamConsume',
-  mixins: [tableMixin],
   serviceInject() {
     return {
       teamConsumeService: TeamConsumeService
@@ -84,11 +84,14 @@ export default {
       loading$
     }
   },
+  props: {
+    stat_date: String
+  },
   data() {
     return {
       show: false,
       consumeList: [],
-      course_type: 1,
+      course_type: COURSE_TYPE.TEAM,
       coach_id: -1,
       course_id: -1
     }
@@ -103,15 +106,10 @@ export default {
       }
     }
   },
-  props: {
-    stat_date: String
-  },
-  watch: {
-    query(newVal, oldVal) {
-      this.teamConsumeService.getConsumeList(newVal).subscribe()
-    }
-  },
   methods: {
+    getConsumeList() {
+      this.teamConsumeService.getConsumeList(this.query).subscribe()
+    },
     filterOption(input, option) {
       return (
         option.componentOptions.children[0].text
@@ -122,7 +120,7 @@ export default {
   },
   mounted() {
     this.teamConsumeService
-      .init({ course_type: 3 }, { stat_date: this.stat_date })
+      .init({ course_type: COURSE_TYPE.TEAM }, { stat_date: this.stat_date })
       .subscribe()
   }
 }
