@@ -83,7 +83,7 @@ export default {
       progress: 0,
       isPrivate: true,
       fileList: [],
-      fileType: 'xlsx'
+      fileType: 'xlsx, csv'
     }
   },
   created() {},

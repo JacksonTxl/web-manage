@@ -106,7 +106,7 @@ export class OssService extends Api {
     if (file.name) {
       fileName = file.name.replace(/[?\s%<>&#\\:]/g, '').replace(suffix, '')
     }
-    if (suffix === '.xlsx' || suffix === '.xls') {
+    if (suffix === '.xlsx' || suffix === '.xls' || suffix === '.csv') {
       return `import__${fileName}___${Math.random()
         .toString(16)
         .slice(3)}___${suffix}`

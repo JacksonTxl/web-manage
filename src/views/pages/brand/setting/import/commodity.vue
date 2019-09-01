@@ -53,7 +53,7 @@
             >
               设置
             </router-link>
-            <st-help-tooltip id="TSGC001" />
+            <st-help-tooltip id="ISS001" />
           </label>
         </div>
       </div>
