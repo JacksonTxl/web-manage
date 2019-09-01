@@ -3,19 +3,13 @@ import { State, Effect, Computed } from 'rx-state'
 import { OrderApi } from '@/api/v1/finance/order'
 import { tap, pluck } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
-import { Store } from '@/services/store'
-
-export interface SetState {
-  list: any[]
-}
 
 @Injectable()
-export class CollectionDetailsService extends Store<SetState>
-  implements RouteGuard {
+export class CollectionDetailsService implements RouteGuard {
+  loading$ = new State({})
   list$: Computed<any>
-  // auth$: Computed<object>
+  state$: State<any>
   constructor(private orderApi: OrderApi, private authService: AuthService) {
-    super()
     this.state$ = new State({
       list: [],
       auth: {}
@@ -30,13 +24,10 @@ export class CollectionDetailsService extends Store<SetState>
         this.state$.commit(state => {
           state.list = res.list
         })
-        // this.list$.commit(() => res.list)
       })
     )
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: () => {}) {
-    this.getList(to.meta.query.id).subscribe(() => {
-      next()
-    })
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    return this.getList(to.meta.query.id)
   }
 }

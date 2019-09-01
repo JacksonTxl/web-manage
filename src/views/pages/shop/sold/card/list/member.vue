@@ -198,6 +198,9 @@ export default {
     SoldDealGatheringTip,
     SoldDealGathering
   },
+  serviceProviders() {
+    return [MemberService]
+  },
   serviceInject() {
     return {
       routeService: RouteService,

@@ -85,8 +85,6 @@
 </template>
 <script>
 import { InfoService } from './info.service'
-import { RouteService } from '@/services/route.service'
-import moment from 'moment'
 import ShopFinanceCancel from '@/views/biz-modals/shop/finance/cancel'
 import ShopFinanceRefund from '@/views/biz-modals/shop/finance/refund'
 import ShopFinanceSplit from '@/views/biz-modals/shop/finance/split'
@@ -104,16 +102,13 @@ export default {
   },
   serviceInject() {
     return {
-      infoService: InfoService,
-      routeService: RouteService
+      infoService: InfoService
     }
   },
   rxState() {
     return {
       info: this.infoService.info$,
       tabs: this.infoService.tabs$,
-      query: this.routeService.query$,
-      loading: this.infoService.loading$,
       auth: this.infoService.auth$
     }
   },

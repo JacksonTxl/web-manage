@@ -893,7 +893,12 @@ export const routeMapConfig = {
   },
   'shop-stat'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '数据统计'
-    routeConfig.meta.tabs = ['shop-stat-revenue', 'shop-stat-order']
+    routeConfig.meta.tabs = [
+      'shop-stat-revenue',
+      'shop-stat-order',
+      'shop-stat-course',
+      'shop-stat-finance'
+    ]
   },
   'shop-stat-revenue'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '营收报表'
@@ -911,6 +916,29 @@ export const routeMapConfig = {
       day: { type: Number },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
+    }
+  },
+  'shop-stat-course'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '上课报表'
+    routeConfig.queryOptions = {
+      showTable: { type: String, default: 'all' },
+      recently_day: { type: Number, default: 7 },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' },
+      department_id: { type: Number, default: -1 },
+      coach_id: { type: Number, default: -1 }
+    }
+  },
+  'shop-stat-finance'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '收银报表'
+    routeConfig.queryOptions = {
+      recently_day: { type: Number, default: 7 },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' }
     }
   },
   'brand-stat'(routeConfig: RouteConfig) {

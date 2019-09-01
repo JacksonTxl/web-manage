@@ -34,9 +34,7 @@
   </section>
 </template>
 <script>
-import moment from 'moment'
 import { RefundInfoService } from './refund-info.service'
-import { RouteService } from '@/services/route.service'
 export default {
   name: 'PageShopFinanceOrderInfoRefundInfo',
   bem: {
@@ -44,27 +42,17 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       refundInfoService: RefundInfoService
     }
   },
   rxState() {
     return {
-      info: this.refundInfoService.info$,
-      loading: this.refundInfoService.loading$,
-      query: this.routeService.query$
+      info: this.refundInfoService.info$
     }
   },
   data() {
     return {}
   },
-  methods: {
-    moment,
-    onPageChange(data) {
-      this.$router.push({
-        query: { ...this.query, page: data.current, size: data.pageSize }
-      })
-    }
-  }
+  methods: {}
 }
 </script>

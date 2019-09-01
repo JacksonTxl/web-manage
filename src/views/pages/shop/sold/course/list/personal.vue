@@ -137,6 +137,9 @@ export default {
     SoldCourseSurplusPersonal,
     SoldCourseTransfer
   },
+  serviceProviders() {
+    return [PersonalService]
+  },
   serviceInject() {
     return {
       routeService: RouteService,

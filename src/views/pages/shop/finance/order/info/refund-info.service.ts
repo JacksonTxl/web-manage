@@ -16,9 +16,7 @@ export class RefundInfoService implements RouteGuard {
       })
     )
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: () => {}) {
-    this.getInfo(to.meta.query.id).subscribe(() => {
-      next()
-    })
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    return this.getInfo(to.meta.query.id)
   }
 }
