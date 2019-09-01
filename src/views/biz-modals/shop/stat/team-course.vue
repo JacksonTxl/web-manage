@@ -49,7 +49,7 @@
     <st-table
       :columns="columns"
       :rowKey="record => record.id"
-      :page="page$"
+      :page="page"
       :loading="loading$.getCourseList"
       @change="onTableChange"
       :showSizeChanger="false"
@@ -93,17 +93,25 @@ export default {
       consumeList: [],
       course_type: COURSE_TYPE.TEAM,
       coach_id: -1,
-      course_id: -1
+      course_id: -1,
+      current_page: 1,
+      size: 999
     }
   },
   computed: {
     columns,
+    page() {
+      const { current_page, total_counts } = this.page$
+      return { current_page, total_counts }
+    },
     query() {
       return {
         stat_date: this.stat_date,
         course_type: this.course_type,
         coach_id: this.coach_id,
-        course_id: this.course_id
+        course_id: this.course_id,
+        current_page: this.current_page,
+        size: this.size
       }
     }
   },
@@ -121,7 +129,7 @@ export default {
   },
   mounted() {
     this.teamCourseService
-      .init({ course_type: COURSE_TYPE.TEAM }, { stat_date: this.stat_date })
+      .init({ course_type: COURSE_TYPE.TEAM }, { ...this.query })
       .subscribe()
   }
 }

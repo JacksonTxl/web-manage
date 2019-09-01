@@ -57,7 +57,7 @@
     <st-table
       :columns="columns"
       :rowKey="record => record.id"
-      :page="page$"
+      :page="page"
       :loading="loading$.getConsumeList"
       :showSizeChanger="false"
       :dataSource="consumeList$"
@@ -107,12 +107,18 @@ export default {
   },
   computed: {
     columns,
+    page() {
+      const { current_page, total_counts } = this.page$
+      return { current_page, total_counts }
+    },
     query() {
       return {
         stat_date: this.stat_date,
         course_type: this.course_type,
         coach_id: this.coach_id,
-        course_id: this.course_id
+        course_id: this.course_id,
+        current_page: 1,
+        size: 999
       }
     },
     courseTypeList() {
@@ -134,7 +140,7 @@ export default {
     init() {
       const course_type = this.course_type
       this.personalConsumeService
-        .init({ course_type }, { stat_date: this.stat_date, course_type })
+        .init({ course_type }, { ...this.query })
         .subscribe()
     },
     filterOption(input, option) {
