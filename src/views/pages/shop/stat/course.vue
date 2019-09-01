@@ -54,7 +54,7 @@
       :page="page"
       :scroll="{ x: 1800 }"
       @change="onTableChange"
-      :loading="loading.getCourseCoachShopList"
+      :loading="loading.init"
       :columns="columns"
       :dataSource="list"
       rowKey="id"
