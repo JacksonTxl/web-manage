@@ -1,3 +1,4 @@
+import { UserService } from '@/services/user.service'
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state'
 import { OrderApi, OrderParams } from '@/api/v1/finance/order'
@@ -13,7 +14,22 @@ export class ListService implements RouteGuard {
   })
   loading$ = new State({})
 
-  constructor(private orderApi: OrderApi, private authService: AuthService) {}
+  orderStatus$ = this.userService.getOptions$('finance.order_status').pipe(
+    tap(list => {
+      list.unshift({ value: -1, label: '全部' })
+    })
+  )
+  payStatus$ = this.userService.getOptions$('finance.pay_status').pipe(
+    tap(list => {
+      list.unshift({ value: -1, label: '全部' })
+    })
+  )
+
+  constructor(
+    private orderApi: OrderApi,
+    private authService: AuthService,
+    private userService: UserService
+  ) {}
 
   init(params: OrderParams) {
     return this.getList(params)

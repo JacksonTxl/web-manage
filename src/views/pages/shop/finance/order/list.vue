@@ -5,38 +5,27 @@
         placeholder="请输入会员姓名或手机号查找"
         v-model="query.keyword"
         @search="onSingleSearch('keyword', $event, true)"
-        style="width: 290px;"
+        :class="basic('serach')"
       />
     </div>
     <st-search-panel>
       <div :class="basic('select')">
-        <span style="width:90px;">订单状态：</span>
-        <st-search-radio v-model="query.status" :list="orderStatusList" />
+        <span :class="basic('select-text')">订单状态：</span>
+        <st-search-radio v-model="query.status" :list="orderStatus" />
       </div>
       <div :class="basic('select')">
-        <span style="width:90px;">支付状态：</span>
-        <st-search-radio v-model="query.type" :list="payStatusList" />
+        <span :class="basic('select-text')">支付状态：</span>
+        <st-search-radio v-model="query.type" :list="payStatus" />
       </div>
       <div :class="basic('select')">
-        <span style="width:90px;">创建时间：</span>
-        <a-date-picker
-          format="YYYY-MM-DD"
-          placeholder="开始日期"
-          :showToday="false"
-          v-model="start_date"
-          @change="startdatePickerChange"
-        />
-        &nbsp;~&nbsp;
-        <a-date-picker
-          format="YYYY-MM-DD"
-          placeholder="结束日期"
-          :showToday="false"
-          v-model="end_date"
-          @change="enddatePickerChange"
-        />
+        <span :class="basic('select-text')">创建时间：</span>
+        <st-range-picker
+          :disabledDays="180"
+          :value="selectTime"
+        ></st-range-picker>
       </div>
       <div slot="button">
-        <st-button type="primary" @click="onSearch">查询</st-button>
+        <st-button type="primary" @click="onSearchNative">查询</st-button>
         <st-button class="mgl-8" @click="onSearhReset">重置</st-button>
       </div>
     </st-search-panel>
@@ -101,9 +90,7 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { cloneDeep, filter } from 'lodash-es'
-import { UserService } from '@/services/user.service'
 import { ListService } from './list.service'
 import { RouteService } from '@/services/route.service'
 import { columns } from './list.config'
@@ -126,41 +113,31 @@ export default {
     SoldDealGathering,
     SoldLeaseTransfer
   },
+  serviceProviders() {
+    return [ListService]
+  },
   serviceInject() {
     return {
-      userService: UserService,
       listService: ListService,
       routeService: RouteService
     }
   },
   rxState() {
     return {
-      finance: this.userService.finance$,
       loading: this.listService.loading$,
       page: this.listService.page$,
       query: this.routeService.query$,
       list: this.listService.list$,
+      orderStatus: this.listService.orderStatus$,
+      payStatus: this.listService.payStatus$,
       auth: this.listService.auth$
     }
   },
   computed: {
-    columns,
-    orderStatusList() {
-      let list = [{ value: -1, label: '全部' }]
-      if (!this.finance.order_status) return list
-      Object.entries(this.finance.order_status.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    },
-    payStatusList() {
-      let list = [{ value: -1, label: '全部' }]
-      if (!this.finance.pay_status) return list
-      Object.entries(this.finance.pay_status.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    }
+    columns
+  },
+  mounted() {
+    this.setSearchData()
   },
   data() {
     return {
@@ -168,15 +145,47 @@ export default {
       status: -1,
       type: -1,
       start_date: null,
-      end_date: null
+      end_date: null,
+      selectTime: {
+        startTime: {
+          showTime: false,
+          disabledBegin: null,
+          placeholder: '开始日期',
+          disabled: false,
+          value: null,
+          format: 'YYYY-MM-DD',
+          change: $event => {}
+        },
+        endTime: {
+          showTime: false,
+          placeholder: '结束日期',
+          disabled: false,
+          value: null,
+          format: 'YYYY-MM-DD',
+          change: $event => {}
+        }
+      }
     }
   },
   methods: {
-    startdatePickerChange(date, dateString) {
-      this.query.start_date = dateString
+    // 查询
+    onSearchNative() {
+      this.query.start_date = this.selectTime.startTime.value
+        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')}`
+        : ''
+      this.query.end_date = this.selectTime.endTime.value
+        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')}`
+        : ''
+      this.onSearch()
     },
-    enddatePickerChange(date, dateString) {
-      this.query.end_date = dateString
+    // 设置searchData
+    setSearchData() {
+      this.selectTime.startTime.value = this.query.start_date
+        ? moment(this.query.start_date)
+        : null
+      this.selectTime.endTime.value = this.query.end_date
+        ? moment(this.query.end_date)
+        : null
     },
     // 收款
     onGathering(record) {
