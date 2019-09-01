@@ -1,4 +1,4 @@
-import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
+import { Injectable, RouteGuard } from 'vue-service-app'
 import { State, Effect, Action } from 'rx-state'
 import {
   FrontApi,
