@@ -247,12 +247,11 @@
       &-list {
         position: relative;
         display: flex;
-        justify-content: space-between;
         flex-wrap: wrap;
         align-content: flex-start;
         height: 372px;
         > li {
-          width: 48%;
+          width: calc((100% - 12px) / 2);
           height: 116px;
           padding: 16px;
           .bg(@white);
