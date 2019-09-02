@@ -35,7 +35,7 @@
         </st-button>
       </div>
     </div>
-    <a-row class="mg-t8 mg-r24 mg-l24">
+    <a-row class="mg-t32 mg-r24 mg-l24">
       <st-table
         :columns="scheduleColumns"
         rowKey="staff_id"

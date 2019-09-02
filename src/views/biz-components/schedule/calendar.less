@@ -16,6 +16,7 @@
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 1;
   }
   &__content {
     padding: 0 16px;
@@ -82,9 +83,9 @@
       position: relative;
       flex: 1;
       .date {
-        height: 40px;
+        height: 42px;
         text-align: center;
-        .lh(40px);
+        .lh(42px);
         font-size: 12px;
         font-weight: 500;
         color: rgba(37, 42, 46, 1);
@@ -102,6 +103,7 @@
         }
         .date-text {
           display: block;
+          padding-top: 8px;
         }
       }
       .date:hover {
@@ -158,7 +160,7 @@
         position: relative;
         .time {
           position: absolute;
-          top: 0;
+          top: -12px;
           left: -56px;
           color: #9bacb9;
         }
