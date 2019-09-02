@@ -1,6 +1,6 @@
 <template>
   <div :class="course()">
-    <st-form>
+    <st-form labelWidth="56px">
       <div :class="course('bdbox')" v-for="(li, index) in list" :key="index">
         <st-t3 class="mg-y32" v-if="li.course_type === 1">推荐私教课</st-t3>
         <st-t3 class="mg-y32" v-if="li.course_type === 2">推荐团体课</st-t3>
