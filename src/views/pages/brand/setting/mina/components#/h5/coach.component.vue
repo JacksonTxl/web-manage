@@ -50,7 +50,7 @@
                 }
               }"
             >
-              <div :class="action('addbox')" class="color-text">
+              <div class="color-text">
                 + 添加教练
               </div>
             </a>
