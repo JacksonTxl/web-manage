@@ -172,4 +172,21 @@
       }
     }
   }
+  .last {
+    .item__extra {
+      left: -114%;
+      &:before {
+        left: auto;
+        right: 0;
+      }
+    }
+    .item__extra.after {
+      &:after {
+        border-right: 0;
+        border-left: 8px solid #3aa0ff;
+        left: auto;
+        right: -8px;
+      }
+    }
+  }
 }

@@ -77,7 +77,7 @@
       <ul :class="bContent('day-group')" v-else>
         <li
           class="day"
-          :class="item | currentDay"
+          :class="[item | currentDay, index === 6 ? 'last' : '']"
           v-for="(item, index) in weeks"
           :key="item.week"
         >
