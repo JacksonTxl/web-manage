@@ -8,16 +8,14 @@ import { State } from 'rx-state'
 export class CheckinService implements RouteGuard {
   list$ = new State({})
   constructor(private lotteryApi: LotteryApi) {}
-  getList() {
-    // return this.lotteryApi.getList().pipe(
-    //   tap(res => {
-    //     this.list$.commit(() => res)
-    //   })
-    // )
+  checkin(query: string) {
+    return this.lotteryApi.checkin(query).pipe(
+      tap(res => {
+        this.list$.commit(() => res)
+      })
+    )
   }
-  init() {
-    return forkJoin(this.getList())
-  }
+  init() {}
   beforeRouteEnter() {
     return this.init()
   }

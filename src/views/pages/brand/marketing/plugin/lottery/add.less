@@ -1,2 +1,120 @@
 .brand-marketing-plugin-lottery-add {
+  &__content {
+    display: flex;
+    padding-right: 24px;
+    background: #fff;
+  }
+  &__h5 {
+    width: 368px;
+    height: 780px;
+    background: rgba(247, 249, 252, 1);
+  }
+  &__lottery {
+    width: 100%;
+    padding-top: 72px;
+    height: 100%;
+    position: relative;
+    &-banner {
+      width: 100%;
+    }
+    &-scroll {
+      .bg-scroll {
+        position: relative;
+        background: url('~@/assets/img/brand/marketing/lottery/bg.png') center
+          top no-repeat;
+        background-size: 100%;
+        width: 100%;
+        overflow: hidden;
+        text-align: center;
+      }
+
+      .lkq-name {
+        margin: 0 auto;
+        color: #fff;
+      }
+
+      .anim {
+        transition: all 0.5s linear;
+      }
+    }
+    &-turntable {
+      position: absolute;
+      bottom: 160px;
+      width: 546px;
+      height: 546px;
+      left: 50%;
+      margin-left: -273px;
+      border: 1px solid red;
+
+      .img {
+        width: 140px;
+        height: 140px;
+      }
+      .start-btn {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -30px;
+        margin-top: -30px;
+        width: 140px;
+        height: 140px;
+      }
+      .run-item-0 {
+      }
+
+      .run-item-1 {
+        display: block;
+        margin: 0 0 0 140px;
+      }
+
+      .run-item-2 {
+        display: block;
+        margin: 0 0 0 280px;
+      }
+
+      .run-item-3 {
+        display: block;
+        margin: 140px 0 0 280px;
+      }
+
+      .run-item-4 {
+        display: block;
+        margin: 280px 0 0 280px;
+      }
+
+      .run-item-5 {
+        display: block;
+        margin: 280px 0 0 140px;
+      }
+
+      .run-item-6 {
+        display: block;
+        margin: 280px 0 0 0;
+      }
+
+      .run-item-7 {
+        display: block;
+        margin: 140px 0 0 0;
+      }
+    }
+  }
+  &__form {
+    flex: 1;
+  }
+
+  @keyframes btn-animation {
+    0% {
+      transform: scale(1);
+    }
+
+    100% {
+      transform: scale(0.85);
+    }
+  }
+
+  .notice-img {
+    position: absolute;
+    top: 0.12rem;
+    left: 0.55rem;
+  }
 }

@@ -5,7 +5,7 @@
         <st-input-search
           placeholder="可输入姓名、手机号、卡号"
           style="width: 300px;"
-          @search="onSearch"
+          @search="checkin"
         />
       </div>
       <div :class="bPage('shadow')"></div>
@@ -73,7 +73,9 @@ export default {
     }
   },
   methods: {
-    onSearch() {}
+    checkin() {
+      return this.checkinService.checkin()
+    }
   }
 }
 </script>
