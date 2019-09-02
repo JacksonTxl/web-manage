@@ -186,6 +186,16 @@ module.exports = {
       return definitions
     })
     config.optimization.runtimeChunk(true)
+    config.optimization.splitChunks({
+      cacheGroups: {
+        vendors: {
+          name: 'chunk-vendors',
+          minChunks: 10,
+          priority: -10,
+          chunks: 'initial'
+        }
+      }
+    })
     // config.plugins.delete('progress')
     config.resolve.alias.set(
       'vue-service-app',
