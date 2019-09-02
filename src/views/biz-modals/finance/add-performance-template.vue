@@ -177,7 +177,11 @@
                       <st-input-number
                         :float="true"
                         :min="0"
-                        :max="100"
+                        :max="
+                          performance_mode == PERFORMANCE.PERFORMANCE_MODE_1
+                            ? 100
+                            : 999999
+                        "
                         placeholder="请输入提成"
                         v-model="gradients.royalty_num"
                       />
