@@ -1,7 +1,7 @@
 <template>
   <st-modal title="工资账户设置" @ok="onSubmit" size="small" v-model="show">
     <staff-info :staff="staff"></staff-info>
-    <st-form :form="form" labelWidth="96px">
+    <st-form :form="form" labelWidth="70px">
       <st-form-item label="姓名" required>
         <a-input
           placeholder="请输入姓名"
