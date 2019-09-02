@@ -39,11 +39,11 @@ export const allColumns = () => {
     },
     {
       title: '可约人数（团）',
-      dataIndex: 'team_can_reserved_num'
+      dataIndex: 'team_can_reserve_num'
     },
     {
       title: '预约人数（团）',
-      dataIndex: 'team_reserve_num'
+      dataIndex: 'team_reserved_num'
     },
     {
       title: '签到人数（团）',
@@ -109,11 +109,11 @@ export const courseColumns = () => {
     },
     {
       title: '可约人数（团）',
-      dataIndex: 'team_can_reserved_num'
+      dataIndex: 'team_can_reserve_num'
     },
     {
       title: '预约人数（团）',
-      dataIndex: 'team_reserve_num'
+      dataIndex: 'team_reserved_num'
     },
     {
       title: '签到人数（团）',
