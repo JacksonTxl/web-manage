@@ -12,6 +12,10 @@ export const allColumns = () => {
       scopedSlots: { customRender: 'personal_course_num' }
     },
     {
+      title: '上课教练数（私）',
+      dataIndex: 'personal_coach_num'
+    },
+    {
       title: '预约人数（私)',
       dataIndex: 'personal_reserved_num'
     },
@@ -28,6 +32,10 @@ export const allColumns = () => {
       title: '上课节数（团）',
       dataIndex: 'team_course_num',
       scopedSlots: { customRender: 'team_course_num' }
+    },
+    {
+      title: '上课教练数（团）',
+      dataIndex: 'team_coach_num'
     },
     {
       title: '可约人数（团）',
@@ -74,6 +82,10 @@ export const courseColumns = () => {
       scopedSlots: { customRender: 'personal_course_num' }
     },
     {
+      title: '上课教练数（私）',
+      dataIndex: 'personal_coach_num'
+    },
+    {
       title: '预约人数（私)',
       dataIndex: 'personal_reserved_num'
     },
@@ -90,6 +102,10 @@ export const courseColumns = () => {
       title: '上课节数（团）',
       dataIndex: 'team_course_num',
       scopedSlots: { customRender: 'team_course_num' }
+    },
+    {
+      title: '上课教练数（团）',
+      dataIndex: 'team_coach_num'
     },
     {
       title: '可约人数（团）',
