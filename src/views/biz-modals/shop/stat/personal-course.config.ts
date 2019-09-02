@@ -14,7 +14,7 @@ export const columns = () => {
     },
     {
       title: '教练级别',
-      dataIndex: 'coach_level'
+      dataIndex: 'coach_level_name'
     },
     {
       title: '预约人数',

@@ -59,9 +59,10 @@ export default {
     },
     getShopList() {
       this.staffApi.getShopList().subscribe(res => {
-        const defaultOption =
-          this.useType === 'form' ? {} : { id: -1, shop_name: ' 全部' }
-        this.shopOptions = [defaultOption, ...res.shops]
+        this.shopOptions =
+          this.useType === 'form'
+            ? res.shops
+            : [{ id: -1, shop_name: ' 全部' }, ...res.shops]
       })
       console.log('getShopList', this.value)
     }

@@ -65,7 +65,7 @@
   </st-modal>
 </template>
 <script>
-import { columns } from './personal-course.config'
+import { columns } from './personal-consume.config'
 import { PersonalConsumeService } from './personal-consume.service'
 import { COURSE_TYPE } from '@/constants/stat/course'
 export default {

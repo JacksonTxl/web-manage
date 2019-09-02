@@ -80,7 +80,7 @@
               v-if="record.auth['brand_shop:order:order|split']"
               @click="onSplit(record)"
             >
-              业务拆分
+              业绩拆分
             </a>
           </st-table-actions>
         </div>

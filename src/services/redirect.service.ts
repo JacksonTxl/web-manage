@@ -95,9 +95,11 @@ export class RedirectService implements RouteGuard {
     // 跳转路径为空
     if (!redirectRouteName) {
       this.nprogress.done()
-      return next({
-        name: 'welcome'
-      })
+      // return next({
+      //   name: 'welcome'
+      // })
+      // 找不到redirectRouteName时跳转next()
+      // return next()
     }
     // 目标路由为父亲路由时才跳转
     if (to.name === locateRouteName) {

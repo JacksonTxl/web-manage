@@ -185,7 +185,6 @@ module.exports = {
       })
       return definitions
     })
-    config.optimization.runtimeChunk(true)
     // config.plugins.delete('progress')
     config.resolve.alias.set(
       'vue-service-app',
