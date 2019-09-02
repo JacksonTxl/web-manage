@@ -1,6 +1,6 @@
 <template>
   <div :class="action()">
-    <st-form>
+    <st-form labelWidth="56px">
       <st-form-item label="模块名称">
         <a-input
           placeholder="请输入模块名称"
@@ -8,7 +8,7 @@
           maxlength="10"
         />
       </st-form-item>
-      <st-form-item label="展示教练">
+      <st-form-item label="展示教练" :class="action('no-bottom-gap')">
         <draggable
           :component-data="{ props: { gutter: 12 } }"
           v-model="list"
@@ -96,7 +96,6 @@ export default {
     }
   },
   mounted() {
-    // this.info = cloneDeep(this.coach)
     this.info = Object.assign({}, this.coach)
     this.list = cloneDeep(this.coachInfo)
   },
