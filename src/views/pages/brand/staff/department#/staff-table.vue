@@ -90,7 +90,7 @@
         </a>
         <a
           v-if="record.auth['brand_shop:staff:staff|del']"
-          @click="onClickDelete"
+          @click="onClickDelete(record)"
         >
           删除
         </a>
@@ -196,7 +196,7 @@ export default {
     }
   },
   methods: {
-    onClickDelete() {
+    onClickDelete(record) {
       this.$modalRouter.push({ name: 'staff-delete', props: { staff: record } })
     },
     staffLeave(record) {
