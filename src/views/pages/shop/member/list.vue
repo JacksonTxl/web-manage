@@ -131,7 +131,7 @@
         :dataSource="list"
       >
         <div slot="image_face" slot-scope="text, record">
-          <span class="st-preview-item" v-viewer>
+          <span class="st-preview-item st-preview-item--cover" v-viewer>
             <img
               v-if="record.image_face"
               :class="basic('image-face')"
