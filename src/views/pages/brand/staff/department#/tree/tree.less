@@ -53,6 +53,12 @@
     color: rgba(0, 0, 0, 0.85);
     line-height: 17px;
   }
+  .tree-name.first {
+    .fz(14px);
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.85);
+    line-height: 17px;
+  }
   .tree-opreation {
     position: absolute;
     top: 8px;
@@ -65,12 +71,16 @@
   .tree-switch {
     .s(16px, 16px);
     .mg-r(8px);
-    .lh(16px);
-    font-size: 18px;
+    .lh(18px);
     .ta-c;
     display: block;
-    background: rgba(0, 0, 0, 0.05);
-    color: rgba(0, 0, 0, 0.25);
+    background: #e6e9ef;
+    color: #9bacb9;
+    font-weight: 500;
+    .st-icon {
+      vertical-align: -0.1em;
+      transform: scale(0.72);
+    }
     &__empty {
       .s(16px, 16px);
       display: block;
