@@ -1,3 +1,4 @@
+import { notification } from 'ant-design-vue'
 /**
  * 使用es5语法 尽量减少polyfill加快请求发出
  */
@@ -34,7 +35,7 @@ var preloadData = {
           if (xhr.status === 200) {
             resolve(json.data)
           } else {
-            reject(xhr)
+            reject(json)
           }
         } catch (e) {
           reject(e)
@@ -81,6 +82,11 @@ var preloadData = {
         if (e && e.status) {
           if (e.status === 401) {
             location.href = '/account/login'
+          } else {
+            notification.error({
+              message: e.status,
+              description: e.message
+            })
           }
         }
       })
