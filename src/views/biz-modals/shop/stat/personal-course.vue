@@ -37,6 +37,7 @@
         <a-select
           class="mg-l8"
           showSearch
+          v-if="showTable === 'all'"
           placeholder="请选择教练"
           optionFilterProp="children"
           style="width: 200px"
@@ -111,6 +112,9 @@ export default {
     page() {
       const { current_page, total_counts } = this.page$
       return { current_page, total_counts }
+    },
+    showTable() {
+      return this.$route.query.showTable || 'all'
     },
     query() {
       return {
