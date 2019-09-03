@@ -1,8 +1,13 @@
 import { Api } from '../../api'
 export interface GetPrizedListQuery {
-  coupon_status: number
-  coupon_name: number
-  specs_id: number
+  activity_id: string
+  draw_status: number
+  prize_type: number
+  prize_status: number
+  start_time: string
+  end_time: string
+  page: number
+  size: number
 }
 export interface AddParams {
   wheel_bg: number
@@ -13,6 +18,7 @@ export interface AddParams {
 }
 
 export class LotteryApi extends Api {
+  // 奖品列表
   getPrizedList(query: GetPrizedListQuery) {
     return this.http.get(`/v1/plugin/wheel/prized`, {
       query

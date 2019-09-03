@@ -4,7 +4,7 @@
       <st-table
         :page="page"
         @change="onTableChange"
-        :loading="loading.getUserList"
+        :loading="loading.getPrizedList"
         :columns="columns"
         :dataSource="list"
         rowKey="id"
@@ -13,8 +13,8 @@
   </st-panel>
 </template>
 <script>
-import { PrizeService } from './user.service'
-import { columns } from './user.config.ts'
+import { PrizeService } from './prize.service'
+import { columns } from './prize.config.ts'
 import tableMixin from '@/mixins/table.mixin'
 
 export default {

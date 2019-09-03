@@ -967,6 +967,32 @@ export const routeMapConfig = {
   'brand-marketing-plugin-lottery-index'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '活动列表'
   },
+  'brand-marketing-plugin-lottery-info-prize'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '奖品列表'
+    routeConfig.queryOptions = {
+      activity_id: { type: String, default: '1' },
+      draw_status: { type: Number },
+      prize_type: { type: Number },
+      prize_status: { type: Number },
+      start_time: { type: String },
+      end_time: { type: String },
+      page: { type: String },
+      size: { type: String }
+    }
+  },
+  'brand-marketing-plugin-lottery-info-user'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '数据列表'
+    routeConfig.queryOptions = {
+      activity_id: { type: String },
+      draw_status: { type: Number },
+      prize_type: { type: Number },
+      prize_status: { type: Number },
+      start_time: { type: String },
+      end_time: { type: String },
+      page: { type: String },
+      size: { type: String }
+    }
+  },
   'brand-marketing-plugin-lottery-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增'
   },
