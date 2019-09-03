@@ -48,7 +48,7 @@ export const imgFilter = (key: string, opts?: ImgFilterOptions): string => {
   if (/x-oss-process/.test(key) || /blob/.test(key)) {
     return key
   }
-  if (/^image\//.test(key)) {
+  if (!/^https?/.test(key)) {
     key = appConfig.HOST_IMAGE + '/' + key
   }
   const configs: ImgFilterOptions = {
