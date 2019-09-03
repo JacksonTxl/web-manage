@@ -24,9 +24,21 @@ export class LotteryApi extends Api {
       query
     })
   }
+  // 活动列表
+  getActivityList() {
+    return this.http.get('/v1/plugin/wheel')
+  }
+  // 用户列表
+  getUserList() {
+    return this.http.get('/v1/plugin/member')
+  }
+  //核销列表
+  getCheckinList() {
+    return this.http.get('/v1/plugin/code')
+  }
   // 核销
   checkin(prize_code: string) {
-    return this.http.get('/v1/plugin/wheel/checkin', {
+    return this.http.post('/v1/plugin/wheel/checkin', {
       query: { prize_code }
     })
   }
@@ -54,12 +66,8 @@ export class LotteryApi extends Api {
       query: { activity_id, member_id }
     })
   }
-  // 活动列表
-  getActivityList() {
-    return this.http.get('/v1/plugin/wheel')
-  }
-  // 用户列表
-  getUserList() {
-    return this.http.get('/v1/plugin/member')
+  // 获取列表头部信息
+  getHeaderInfo(id: number) {
+    return this.http.get('/v1/plugin/wheel/' + id)
   }
 }

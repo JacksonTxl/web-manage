@@ -4,7 +4,7 @@
       <div :class="bPage('h5')">
         <h5-container>
           <template v-slot:title>
-            我的优惠券
+            幸运大转盘
           </template>
           <div :class="bPage('lottery')">
             <img
@@ -39,7 +39,7 @@
         </h5-container>
       </div>
       <div :class="bPage('form')">
-        <a-row class="mg-b48" :gutter="8">
+        <a-row class="mg-b24" :gutter="8">
           <a-col offset="1">
             <Steps
               :value="currentIndex"
@@ -48,61 +48,94 @@
             />
           </a-col>
         </a-row>
-        <st-form :form="form" labelGutter="0" v-show="currentIndex == 0">
-          <st-form-item label="活动名称" labelWidth="84px" required>
-            <a-input placeholder="请输入活动名称"></a-input>
-          </st-form-item>
-          <st-form-item label="活动标题" labelWidth="84px" required>
-            <a-input placeholder="请输入活动标题"></a-input>
-          </st-form-item>
-          <st-form-item label="活动时间" labelWidth="84px" required>
-            <a-date-picker placeholder="请输入活动时间"></a-date-picker>
-          </st-form-item>
-          <st-form-item label="活动说明" labelWidth="84px" required>
-            <a-textarea placeholder="请输入活动标题"></a-textarea>
-          </st-form-item>
-          <st-form-item label="活动轮播获奖信息说明" labelWidth="84px">
-            <a-radio-group>
-              <a-radio></a-radio>
-            </a-radio-group>
-          </st-form-item>
-          <st-form-item label="分享设置" labelWidth="84px">
-            <a-radio-group>
-              <a-radio></a-radio>
-            </a-radio-group>
-          </st-form-item>
-          <st-button type="primary">下一步</st-button>
-        </st-form>
+        <div style="padding:24px;">
+          <st-form :form="form" labelGutter="0" v-show="currentIndex == 0">
+            <st-form-item label="活动名称" labelWidth="84px" required>
+              <a-input
+                placeholder="请输入活动名称"
+                v-decorator="decorators.activity_name"
+              ></a-input>
+            </st-form-item>
+            <st-form-item label="活动标题" labelWidth="84px" required>
+              <a-input
+                placeholder="请输入活动标题"
+                v-decorator="decorators.share_title"
+              ></a-input>
+            </st-form-item>
+            <st-form-item label="活动时间" labelWidth="84px" required>
+              <a-date-picker
+                placeholder="请输入活动时间"
+                v-decorator="decorators.share_title"
+              ></a-date-picker>
+            </st-form-item>
+            <st-form-item label="活动说明" labelWidth="84px" required>
+              <a-textarea placeholder="请输入活动标题"></a-textarea>
+            </st-form-item>
+            <st-form-item label="活动轮播获奖信息说明" labelWidth="84px">
+              <a-radio-group v-decorator="decorators.wheel_turn_around">
+                <a-radio
+                  v-for="(item, index) in wheelTurnAround"
+                  :key="index"
+                  :value="item.value"
+                >
+                  {{ item.label }}
+                </a-radio>
+              </a-radio-group>
+            </st-form-item>
+            <st-form-item label="分享设置" labelWidth="84px">
+              <a-radio-group v-decorator="decorators.wheel_share_default">
+                <a-radio
+                  v-for="(item, index) in wheelDefault"
+                  :key="index"
+                  :value="item.value"
+                >
+                  {{ item.label }}
+                </a-radio>
+              </a-radio-group>
+            </st-form-item>
+            <st-form-item label="" labelWidth="84px">
+              <st-button type="primary" @click="next(1)">下一步</st-button>
+            </st-form-item>
+          </st-form>
 
-        <st-form
-          :form="form"
-          labelGutter="0"
-          class="mg-t48"
-          v-show="currentIndex == 1"
-        >
-          <st-form-item label="参与用户" labelWidth="84px" required>
-            <a-select></a-select>
-          </st-form-item>
-          <st-form-item label="抽奖条件" labelWidth="84px" required>
-            <a-radio-group>
-              <a-radio></a-radio>
-            </a-radio-group>
-          </st-form-item>
-          <st-form-item label=" 抽奖机会" labelWidth="84px" required>
-            <a-radio-group>
-              <a-radio></a-radio>
-            </a-radio-group>
-          </st-form-item>
-          <st-form-item label=" 中奖次数" labelWidth="84px">
-            <a-radio-group>
-              <a-radio></a-radio>
-            </a-radio-group>
-          </st-form-item>
-          <st-button type="primary">下一步</st-button>
-        </st-form>
-        <st-form v-show="currentIndex == 2">
-          <st-t3>奖品设置</st-t3>
-          <!-- <st-form-table>
+          <st-form :form="form" labelGutter="0" v-show="currentIndex == 1">
+            <st-form-item label="参与用户" labelWidth="84px" required>
+              <a-select></a-select>
+            </st-form-item>
+            <st-form-item label="抽奖条件" labelWidth="84px" required>
+              <a-radio-group v-decorator="decorators.draw_condition">
+                <a-radio
+                  v-for="(item, index) in drawCondition"
+                  :key="index"
+                  :value="item.value"
+                >
+                  {{ item.label }}
+                </a-radio>
+              </a-radio-group>
+            </st-form-item>
+            <st-form-item label=" 抽奖机会" labelWidth="84px" required>
+              <a-radio-group v-decorator="decorators.draw_times_type">
+                <a-radio
+                  v-for="(item, index) in drawTimesType"
+                  :key="index"
+                  :value="item.value"
+                >
+                  {{ item.label }}
+                </a-radio>
+              </a-radio-group>
+            </st-form-item>
+            <st-form-item label=" 中奖次数" labelWidth="84px">
+              每人最多可中奖
+              <st-input-number style="width: 100px;"></st-input-number>
+              次
+            </st-form-item>
+            <st-form-item label="" labelWidth="84px">
+              <st-button type="primary" @click="next(2)">下一步</st-button>
+            </st-form-item>
+          </st-form>
+          <st-form v-show="currentIndex == 2">
+            <st-t3 class="mg-b24">奖品设置</st-t3>
+            <st-form-table>
               <thead>
                 <tr>
                   <template v-for="(item, index) in columsTitlelist">
@@ -148,9 +181,6 @@
                     <td>
                       <st-table-actions>
                         <a
-                          v-if="
-                            item.auth['brand_shop:salary:basic_template|edit']
-                          "
                           v-modal-link="{
                             name: 'finance-basic-template-edit',
                             props: { item: item },
@@ -159,13 +189,7 @@
                         >
                           编辑
                         </a>
-                        <a
-                          href="javascript:;"
-                          v-if="
-                            item.auth['brand_shop:salary:basic_template|del']
-                          "
-                          @click="onDelete(item.id)"
-                        >
+                        <a href="javascript:;" @click="onDelete(item.id)">
                           删除
                         </a>
                       </st-table-actions>
@@ -173,18 +197,21 @@
                   </tr>
                 </template>
               </tbody>
-            </st-form-table> -->
-          <st-t3>未中奖设置</st-t3>
-          <st-form-item label="名称" labelWidth="84px">
-            <a-input placeholder="请输入活动名称"></a-input>
-          </st-form-item>
-          <st-form-item label=" 图片" labelWidth="84px">
-            <a-radio-group>
-              <a-radio></a-radio>
-            </a-radio-group>
-          </st-form-item>
-          <st-button type="primary">完成</st-button>
-        </st-form>
+            </st-form-table>
+            <st-t3 class="mg-b24 mg-t32">未中奖设置</st-t3>
+            <st-form-item label="名称">
+              <a-input placeholder="请输入活动名称"></a-input>
+            </st-form-item>
+            <st-form-item label=" 图片">
+              <a-radio-group>
+                <a-radio></a-radio>
+              </a-radio-group>
+            </st-form-item>
+            <st-form-item label="" labelWidth="84px">
+              <st-button type="primary">完成</st-button>
+            </st-form-item>
+          </st-form>
+        </div>
       </div>
     </div>
   </div>
@@ -193,12 +220,17 @@
 import { AddService } from './add.service'
 import H5Container from '@/views/biz-components/h5/h5-container'
 import Steps from '../../../staff/add#/st-steps'
+import { ruleOptions } from './form.config.ts'
+import { PatternService } from '@/services/pattern.service'
 
 export default {
   name: 'PluginLotteryAdd',
-  data() {
+  data(vm) {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      form: this.$form.createForm(this),
+      form,
+      decorators,
       columsTitlelist: [
         '奖品名称',
         '奖品类型',
@@ -285,23 +317,41 @@ export default {
   },
   serviceInject() {
     return {
-      addService: AddService
+      addService: AddService,
+      pattern: PatternService
     }
   },
   rxState() {
-    return {}
+    return {
+      drawCondition: this.addService.drawCondition$,
+      drawTimesType: this.addService.drawTimesType$,
+      invitePoster: this.addService.invitePoster$,
+      wheelDefault: this.addService.wheelDefault$,
+      wheelTurnAround: this.addService.wheelTurnAround$
+    }
   },
   components: {
     H5Container,
     Steps
   },
+  created() {
+    console.log(this.decorators)
+  },
   mounted() {
     let scrollTimer = setInterval(this.scroll, 2000)
   },
   methods: {
-    getCurIndex(e) {
-      this.currentIndex = e.index.target.textContent - 1
+    next(para) {
+      this.form.validate().then(() => {
+        console.log(validate)
+      })
+      // this.currentIndex = para
     },
+    getCurIndex(e) {
+      let index = e.index.target.textContent - 1
+      this.currentIndex = index >= 0 ? index : 0
+    },
+    refresh() {},
     // 抽奖
     handleStart() {
       if (this.isRuningLucky) {

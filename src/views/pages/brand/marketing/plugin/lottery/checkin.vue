@@ -1,16 +1,33 @@
 <template>
   <div :class="bPage()">
+    <div :class="bPage('header')">
+      <a-input-search
+        style="width:722px"
+        placeholder="输入需要核销的兑换码"
+        @search="getCheckinList"
+        enterButton="搜索"
+      />
+    </div>
+    <div :class="bPage('shadow')"></div>
     <st-panel app>
-      <div :class="bPage('header')">
-        <st-input-search
-          placeholder="可输入姓名、手机号、卡号"
-          style="width: 300px;"
-          @search="checkin"
-        />
+      <div v-if="list.length > 0">
+        <st-table
+          :class="bPage('table')"
+          :page="false"
+          :loading="loading.getCheckinList"
+          :columns="columns"
+          :dataSource="list"
+          rowKey="id"
+        ></st-table>
+        <div :class="bPage('checkin-btn')">
+          <st-button type="primary" class="text-center mg-t24" @click="checkin">
+            核销
+          </st-button>
+        </div>
       </div>
-      <div :class="bPage('shadow')"></div>
-      <div :class="bPage('content')">
+      <div :class="bPage('content')" v-else>
         <img
+          :class="bPage('content-img')"
           src="~@/assets/img/brand/marketing/lottery/checkin.png"
           alt="checkin"
         />
@@ -20,8 +37,10 @@
               1
             </div>
             <div :class="bPage('step-text')">
-              <st-t2>搜索卡劵</st-t2>
-              <div>核销员输入由客户提供的奖品券号</div>
+              <st-t4>搜索卡劵</st-t4>
+              <div :class="bPage('step-light')">
+                核销员输入由客户提供的奖品券号
+              </div>
             </div>
           </div>
           <div :class="bPage('step-item')">
@@ -29,8 +48,10 @@
               2
             </div>
             <div :class="bPage('step-text')">
-              <st-t2>搜索卡劵</st-t2>
-              <div>核销员输入由客户提供的奖品券号</div>
+              <st-t4>搜索卡劵</st-t4>
+              <div :class="bPage('step-light')">
+                核销员输入由客户提供的奖品券号
+              </div>
             </div>
           </div>
           <div :class="bPage('step-item')">
@@ -38,26 +59,26 @@
               3
             </div>
             <div :class="bPage('step-text')">
-              <st-t2>搜索卡劵</st-t2>
-              <div>核销员输入由客户提供的奖品券号</div>
+              <st-t4>搜索卡劵</st-t4>
+              <div :class="bPage('step-light')">
+                核销员输入由客户提供的奖品券号
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div :class="bPage('content')">
-        <st-table></st-table>
-        <st-button type="primary">核销</st-button>
       </div>
     </st-panel>
   </div>
 </template>
 <script>
 import { CheckinService } from './checkin.service'
-
+import { columns } from './checkin.config'
 export default {
   name: 'PluginLotteryCheckin',
   data() {
-    return {}
+    return {
+      list: []
+    }
   },
   bem: {
     bPage: 'brand-marketing-plugin-lottery-checkin'
@@ -69,12 +90,19 @@ export default {
   },
   rxState() {
     return {
-      list: this.checkinService.list$
+      list: this.checkinService.list$,
+      loading: this.checkinService.loading$
     }
   },
+  computed: { columns },
   methods: {
+    getCheckinList() {
+      return this.checkinService.getCheckinList().subscribe(res => {
+        this.list = res.list
+      })
+    },
     checkin() {
-      return this.checkinService.checkin()
+      return this.checkinService.checkin().subscribe(res => {})
     }
   }
 }

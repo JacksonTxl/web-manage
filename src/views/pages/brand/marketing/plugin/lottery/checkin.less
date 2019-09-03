@@ -1,4 +1,6 @@
 .brand-marketing-plugin-lottery-checkin {
+  background: #fff;
+  text-align: center;
   &__header {
     .w(100%);
     .h(120px);
@@ -11,8 +13,20 @@
     background: rgba(255, 255, 255, 0.05);
     box-shadow: 0px 1px 10px 1px rgba(0, 0, 0, 0.05);
   }
-  &__content {
+  &__table {
+    width: 944px;
+    display: inline-block;
+    border: 1px solid #cdd4df;
+  }
+  &__checkin-btn {
     text-align: center;
+  }
+  &__content {
+    &-img {
+      position: relative;
+      bottom: -24px;
+      margin-left: -180px;
+    }
   }
   &__step {
     display: inline-block;
@@ -25,12 +39,17 @@
       width: 32px;
       height: 32px;
       .mg-r(8px);
+      .mg-t(6px);
       line-height: 32px;
       border: 1px solid rgba(63, 102, 246, 1);
       border-radius: 50%;
       text-align: center;
     }
-    &-text {
+    &-light {
+      font-size: 12px;
+      color: rgba(62, 77, 92, 1);
+      line-height: 20px;
+      margin-top: 4px;
     }
   }
 }

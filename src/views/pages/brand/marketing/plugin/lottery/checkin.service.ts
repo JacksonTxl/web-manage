@@ -2,18 +2,19 @@ import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { LotteryApi } from '@/api/v1/marketing/lottery'
 import { forkJoin } from 'rxjs'
 import { tap } from 'rxjs/operators'
-import { State } from 'rx-state'
+import { State, Effect } from 'rx-state'
 
 @Injectable()
 export class CheckinService implements RouteGuard {
   list$ = new State({})
+  loading$ = new State({})
   constructor(private lotteryApi: LotteryApi) {}
+  @Effect()
+  getCheckinList(query: string) {
+    return this.lotteryApi.getCheckinList(query)
+  }
   checkin(query: string) {
-    return this.lotteryApi.checkin(query).pipe(
-      tap(res => {
-        this.list$.commit(() => res)
-      })
-    )
+    return this.lotteryApi.checkin(query)
   }
   init() {}
   beforeRouteEnter() {
