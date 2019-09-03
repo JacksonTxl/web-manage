@@ -32,7 +32,7 @@
           @click="onSplit"
           type="primary"
         >
-          业务拆分
+          业绩拆分
         </st-button>
       </div>
       <a-row :gutter="24">

@@ -6,7 +6,7 @@
           <div class="shop-member-info-title-pannel-left">
             <div class="shop-member-info-title-pannel__img">
               <div
-                class="img-box  st-preview-item"
+                class="img-box  st-preview-item st-preview-item--cover"
                 v-viewer="{ url: 'data-src' }"
               >
                 <img

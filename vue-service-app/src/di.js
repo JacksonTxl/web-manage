@@ -8,7 +8,7 @@ export class Container {
   }
   get(token) {
     const instance = this.providers.get(token)
-    if (instance) {
+    if (this.providers.has(token)) {
       return instance
     } else {
       // 自动实例化

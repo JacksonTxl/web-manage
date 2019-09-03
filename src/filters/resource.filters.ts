@@ -19,7 +19,7 @@ interface ImgFilterOptions {
   /**
    *  图片类型 会决定默认占位图
    */
-  type?: 'course' | 'card' | 'avatar'
+  type?: 'course' | 'avatar'
   [propName: string]: any
 }
 
@@ -28,13 +28,27 @@ interface ImgFilterOptions {
  */
 export const imgFilter = (key: string, opts?: ImgFilterOptions): string => {
   if (!key) {
-    return defaultPlaceholderImage
+    if (!opts) {
+      key = appConfig.PLACEHOLDER_IMG.PICTURE
+    } else {
+      switch (opts.type) {
+        case 'avatar':
+          key = appConfig.PLACEHOLDER_IMG.AVATAR
+          break
+        case 'course':
+          key = appConfig.PLACEHOLDER_IMG.PICTURE
+          break
+        default:
+          key = appConfig.PLACEHOLDER_IMG.PICTURE
+          break
+      }
+    }
   }
 
   if (/x-oss-process/.test(key) || /blob/.test(key)) {
     return key
   }
-  if (/^image\//.test(key)) {
+  if (!/^https?/.test(key)) {
     key = appConfig.HOST_IMAGE + '/' + key
   }
   const configs: ImgFilterOptions = {

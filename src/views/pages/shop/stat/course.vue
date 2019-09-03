@@ -110,7 +110,7 @@ import ShopStatPersonalCourse from '@/views/biz-modals/shop/stat/personal-course
 import ShopStatPersonalConsume from '@/views/biz-modals/shop/stat/personal-consume'
 import ShopStatTeamCourse from '@/views/biz-modals/shop/stat/team-course'
 import ShopStatTeamConsume from '@/views/biz-modals/shop/stat/team-consume'
-import { allColumns, courseColumns } from './course.config.ts'
+import { allColumns, coachColumns } from './course.config.ts'
 export default {
   mixins: [tableMixin],
   bem: {
@@ -146,7 +146,7 @@ export default {
   },
   computed: {
     columns() {
-      return this.showTable === 'all' ? allColumns() : courseColumns()
+      return this.showTable === 'all' ? allColumns() : coachColumns()
     },
     coachListFilter() {
       if (this.query.department_id === -1) return this.coachList

@@ -65,8 +65,8 @@
             <img
               class="via"
               :src="
-                (li.head_img.image_url || config.PLACEHOLDER_IMG.AVATAR)
-                  | imgFilter({ w: 206, h: 206 })
+                li.head_img.image_url
+                  | imgFilter({ w: 206, h: 206, type: 'avatar' })
               "
             />
             <img class="call" :src="callcoach" />

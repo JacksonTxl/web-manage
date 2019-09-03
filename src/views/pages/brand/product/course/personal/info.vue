@@ -40,7 +40,7 @@
         </div>
         <div class="page-personal-header__right">
           <img
-            :src="image | imgFilter({ w: 197, h: 136 })"
+            :src="image | imgFilter({ w: 197, h: 136, type: 'course' })"
             alt="课程详情图片"
           />
         </div>
@@ -181,10 +181,7 @@ export default {
       return arr
     },
     image() {
-      return (
-        this.personalCourseInfo.image.image_key ||
-        this.config.PLACEHOLDER_IMG.NODATA
-      )
+      return this.personalCourseInfo.image.image_key
     }
   },
   data() {

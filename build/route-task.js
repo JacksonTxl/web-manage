@@ -68,7 +68,9 @@ const getPageService = services => {
     let asExportedService = _.camelCase(
       `--${parsed.entry_dash.replace('.', '-')}--`
     )
-    const chunkName = parsed.dir_dash ? parsed.dir_dash : parsed.entry
+    const chunkName = parsed.dir_dash
+      ? parsed.dir_dash
+      : parsed.entry.replace('.service', '')
 
     exportedService =
       exportedService[0].toUpperCase() + exportedService.slice(1)

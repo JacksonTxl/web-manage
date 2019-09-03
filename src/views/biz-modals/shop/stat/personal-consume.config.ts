@@ -27,10 +27,13 @@ export const columns = () => {
     {
       title: '消费方式',
       dataIndex: 'amount_type'
-    },
-    {
-      title: '消费价值（元）',
-      dataIndex: 'team_checkin_amount'
     }
+    /**
+     * TODO: 后端来不及修改先隐藏
+     */
+    // {
+    //   title: '消课价值（元）',
+    //   dataIndex: 'consume_amount'
+    // }
   ]
 }

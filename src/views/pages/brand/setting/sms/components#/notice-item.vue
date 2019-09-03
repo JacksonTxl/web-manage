@@ -13,7 +13,7 @@
           v-model="params.notify_mode.mini_programs"
         ></st-switch>
         <span
-          class="color-primary mg-l12"
+          class="color-primary mg-l12 cursor-pointer"
           v-show="params.notify_mode.mini_programs"
           type="primary"
           v-modal-link="{
@@ -43,7 +43,9 @@
             <span :class="bComponent('text-right')">{{ info.preview }}</span>
           </div>
           <div :class="bComponent('text')">
-            <span class="color-primary" @click="showEdit">编辑</span>
+            <span class="color-primary cursor-pointer" @click="showEdit">
+              编辑
+            </span>
           </div>
           <div
             class="width75"
