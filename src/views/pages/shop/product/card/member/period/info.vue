@@ -90,6 +90,7 @@
           <!-- 售卖门店 -->
           <p class="mb-8">
             <span class="label">售卖门店：</span>
+            <!-- <span class="value">{{ cardInfo.shop_name }}</span> -->
             <span class="value">
               {{ cardInfo.support_sales.name
               }}{{
