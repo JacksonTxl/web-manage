@@ -68,13 +68,14 @@
             </span>
           </a-menu-item>
         </a-sub-menu>
-        <a-menu-item v-else :key="menu.id">
-          <router-link
-            :to="{ name: menu.url }"
-            :class="{
-              'ant-menu-item-selected': menu.id === currentSiderMenu.id
-            }"
-          >
+        <a-menu-item
+          v-else
+          :class="{
+            'st-menu-item-selected': menu.id === currentSiderMenu.id
+          }"
+          :key="menu.id"
+        >
+          <router-link :to="{ name: menu.url }">
             <st-icon :type="menu.icon" />
             <span>{{ menu.name }}</span>
           </router-link>
@@ -137,8 +138,21 @@ export default {
   },
   created() {
     this.init()
+    // this.$nextTick().then(() => {
+    //   document.querySelectorAll('.ant-menu-submenu-title').forEach(item =>
+    //     item.addEventListener('click', () => {
+    //       console.log('ddss')
+    //       document.querySelectorAll('.ant-menu-item.st-menu-item-selected').forEach(ele => {
+    //         ele.setAttribute('class', '.ant-menu-item')
+    //       })
+    //     })
+    //   )
+    // })
   },
   methods: {
+    onClickSubMenu() {
+      console.log('subMenu')
+    },
     init() {
       this.setOpenKeys()
     },

@@ -12,7 +12,7 @@ export class PersonalCourseService {
   modalCoachList$ = new State([])
   loading$ = new State({})
   page$ = new State({})
-  courseTypeList$ = this.userService.getOptions$('reserve.reserve_type')
+  courseTypeList$ = this.userService.getOptions$('stat.personal_course_type')
   constructor(private statApi: StatApi, private userService: UserService) {}
   @Effect()
   getCourseList(params: any) {
