@@ -41,6 +41,7 @@
             <a-date-picker
               format="YYYY-MM-DD"
               placeholder="冻结日期"
+              :disabledDate="disabledDate"
               v-decorator="decorators.end_time"
             />
             <br />
@@ -187,6 +188,12 @@ export default {
     this.getMemberBuy()
   },
   methods: {
+    disabledDate(current) {
+      // Can not select days before today and today
+      return (
+        current && current.format('YYYY-MM-DD') < moment().format('YYYY-MM-DD')
+      )
+    },
     moment,
     // 搜索员工
     onSearch(data) {
