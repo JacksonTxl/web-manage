@@ -113,10 +113,7 @@ export default {
   },
   computed: {
     image() {
-      return (
-        this.teamCourseInfo.image.image_key ||
-        this.appConfig.PLACEHOLDER_IMG.NODATA
-      )
+      return this.teamCourseInfo.image.image_key
     }
   },
   filters: {

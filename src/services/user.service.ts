@@ -1,18 +1,13 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
+import { Injectable, ServiceRoute, Inject } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
-import { tap, pluck, map, switchMap } from 'rxjs/operators'
-import { forkJoin, of } from 'rxjs'
+import { tap, pluck, map } from 'rxjs/operators'
 import { ConstApi } from '@/api/const'
 import { MenuApi } from '@/api/v1/common/menu'
 import { StaffApi } from '@/api/v1/staff'
 import { TooltipApi } from '@/api/v1/admin/tooltip'
 import { get, reduce, isPlainObject } from 'lodash-es'
 import { NProgressService } from './nprogress.service'
-import { AuthService } from './auth.service'
 import { ShopApi } from '@/api/v1/shop'
-import Cookie from 'js-cookie'
-import { then } from '@/operators'
-import { NotificationService } from './notification.service'
 
 interface User {
   id?: string
@@ -56,8 +51,6 @@ interface ModuleEnums {
  */
 @Injectable()
 export class UserService {
-  firstInited$ = new State(false)
-
   user$ = new State<User>({})
   brand$ = new State<Brand>({})
   shop$ = new State<Shop>({})
@@ -123,16 +116,45 @@ export class UserService {
     private tooltipApi: TooltipApi,
     private nprogress: NProgressService,
     private shopApi: ShopApi,
-    private notification: NotificationService
-  ) {}
-  SET_USER(user: User) {
-    this.user$.commit(() => user)
+    @Inject('APP_DATA') private appData: any
+  ) {
+    if (appData) {
+      this.SET_BRAND(appData.staff)
+      this.SET_SHOP(appData.staff)
+      this.SET_USER(appData.staff)
+      this.SET_ENUMS(appData.enum)
+      this.SET_MENU_DATA(appData.menu)
+      this.SET_INVALID_TOOLTIP(appData.tooltip)
+      this.SET_SHOP_LIST(appData.shop)
+    }
   }
-  SET_BRAND(brand: Brand = {}) {
-    this.brand$.commit(() => brand)
+  SET_USER(staff: any) {
+    const info = staff.info
+    this.user$.commit(user => {
+      user.id = info.staff_id
+      user.name = info.staff_name
+      user.avatar = info.staff_avatar
+      user.mobile = info.mobile
+    })
   }
-  SET_SHOP(shop: Shop = {}) {
-    this.shop$.commit(() => shop)
+  SET_BRAND(staff: any) {
+    const info = staff.info
+    this.brand$.commit(brand => {
+      brand.id = info.brand_id
+      brand.name = info.brand_name
+      brand.logo = info.brand_logo
+      brand.priceModel = info.price_model
+      brand.saleModel = info.sale_model
+      brand.version = info.brand_version
+    })
+  }
+  SET_SHOP(staff: any) {
+    const info = staff.info
+    this.shop$.commit(shop => {
+      shop.id = info.shop_id
+      shop.name = info.shop_name
+      shop.logo = info.shop_logo
+    })
   }
   SET_ENUMS(enums: any) {
     this.enums$.commit(() => enums)
@@ -140,38 +162,18 @@ export class UserService {
   SET_MENU_DATA(menuData: any) {
     this.menuData$.commit(() => menuData)
   }
-  SET_INVALID_TOOLTIP(tooltip: any) {
-    this.invalidTooltips$.commit(() => tooltip)
+  SET_INVALID_TOOLTIP(res: any) {
+    this.invalidTooltips$.commit(() => res.list)
   }
-  SET_SHOP_LIST(list: object[]) {
-    this.shopList$.commit(() => list)
-  }
-  SET_FIRST_INITED(inited: boolean) {
-    this.firstInited$.commit(() => inited)
+  SET_SHOP_LIST(res: any) {
+    this.shopList$.commit(() => res.list)
   }
   private getUser() {
     return this.staffApi.getGlobalStaffInfo().pipe(
       tap((res: any) => {
-        const { info } = res
-        this.SET_BRAND({
-          id: info.brand_id,
-          name: info.brand_name,
-          logo: info.brand_logo,
-          priceModel: info.price_model,
-          saleModel: info.sale_model,
-          version: info.brand_version
-        })
-        this.SET_USER({
-          id: info.staff_id,
-          name: info.staff_name,
-          avatar: info.staff_avatar,
-          mobile: info.mobile
-        })
-        this.SET_SHOP({
-          id: info.shop_id,
-          name: info.shop_name,
-          logo: info.shop_logo
-        })
+        this.SET_BRAND(res)
+        this.SET_USER(res)
+        this.SET_SHOP(res)
       })
     )
   }
@@ -192,17 +194,18 @@ export class UserService {
   private getInvalidTooltips() {
     return this.tooltipApi.getInvalid().pipe(
       tap((res: any) => {
-        this.SET_INVALID_TOOLTIP(res.list)
+        this.SET_INVALID_TOOLTIP(res)
       })
     )
   }
   private getShopList() {
     return this.shopApi.getShopList().pipe(
       tap(res => {
-        this.SET_SHOP_LIST(res.list)
+        this.SET_SHOP_LIST(res)
       })
     )
   }
+
   /**
    * 通过key名获取下拉选项
    * @example
@@ -253,40 +256,16 @@ export class UserService {
   public delFavorite(id: number) {
     return this.menuApi.delFavorite(id)
   }
-  private init() {
-    if (!this.firstInited$.snapshot()) {
-      return forkJoin(
-        this.getUser(),
-        this.getMenuData(),
-        this.getEnums(),
-        this.getInvalidTooltips()
-      ).pipe(
-        then(() => this.getShopList()),
-        then(() => {
-          this.SET_FIRST_INITED(true)
-        })
-      )
-    } else {
-      return of({})
-    }
-  }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.nprogress.SET_TEXT('用户数据加载中...')
-    return this.init().pipe(
-      tap(() => {
-        this.nprogress.SET_TEXT('用户信息数据获取完毕')
-      }),
-      map(() => {
-        const menus = this.menuData$.snapshot().menus
-        if (!menus || !menus.length) {
-          console.log('菜单未配置')
-          return {
-            next: {
-              name: 'welcome'
-            }
-          }
-        }
+    const menus = this.menuData$.snapshot().menus
+    if (!menus || !menus.length) {
+      console.log('菜单未配置')
+      return next({
+        name: 'welcome'
       })
-    )
+    }
+    return next()
   }
 }

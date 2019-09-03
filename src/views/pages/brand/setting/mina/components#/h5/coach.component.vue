@@ -26,8 +26,8 @@
             </div>
             <img
               :src="
-                (li.head_img.image_url || config.PLACEHOLDER_IMG.AVATAR)
-                  | imgFilter({ w: 160, h: 160 })
+                li.head_img.image_url
+                  | imgFilter({ w: 160, h: 160, type: 'avatar' })
               "
             />
             <div
