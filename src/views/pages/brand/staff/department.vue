@@ -143,7 +143,6 @@ export default {
       this.$router.push({ query: this.query, force: true })
     },
     selectedRow(ids) {
-      console.log('selectedRow', ids)
       this.ids = ids
     },
     // 查询
