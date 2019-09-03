@@ -1,6 +1,6 @@
 <template>
   <st-modal
-    title="业务拆分"
+    title="业绩拆分"
     size="small"
     width="800px"
     v-model="show"
