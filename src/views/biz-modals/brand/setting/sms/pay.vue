@@ -30,13 +30,15 @@
               {{ info.single_price.value }}{{ info.single_price.name }}
             </span>
           </div>
-          <span class="total-num">{{ item.num.value }}{{ item.num.name }}</span>
+          <span :class="bPage('total-num')">
+            {{ item.num.value }}{{ item.num.name }}
+          </span>
         </div>
       </div>
 
       <div :class="bPage('payway')">
         <div
-          class="mg-r8 modal-sms-pay-setting__payway-item"
+          class="modal-sms-pay-setting__payway-item"
           :class="
             curChannel === index
               ? 'modal-sms-pay-setting__payway-item--active'
