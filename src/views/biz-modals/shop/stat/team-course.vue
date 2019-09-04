@@ -5,11 +5,9 @@
     :footer="null"
     v-model="show"
   >
-    <div class="search mg-b8">
-      <div class="search__left"></div>
-      <div class="search__right">
+    <div class="search mg-b16">
+      <div class="search__left">
         <a-select
-          class="mg-l8"
           showSearch
           placeholder="请选择课程"
           optionFilterProp="children"
@@ -46,6 +44,7 @@
           </a-select-option>
         </a-select>
       </div>
+      <div class="search__right"></div>
     </div>
     <st-table
       :columns="columns"

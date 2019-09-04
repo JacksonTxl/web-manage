@@ -5,11 +5,10 @@
     :footer="null"
     v-model="show"
   >
-    <div class="search mg-b8">
+    <div class="search mg-b16">
       <div class="search__left"></div>
       <div class="search__right">
         <a-select
-          class="mg-l8"
           placeholder="请选择课程类型"
           style="width: 120px"
           v-model="course_type"
