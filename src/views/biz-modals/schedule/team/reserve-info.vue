@@ -3,7 +3,7 @@
     class="modal-reserved"
     title="预约详情"
     @ok="save"
-    width="848px"
+    width="878px"
     v-model="show"
   >
     <a-row :gutter="24" class="modal-reserved-info">
