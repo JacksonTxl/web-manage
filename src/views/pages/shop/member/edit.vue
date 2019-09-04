@@ -453,13 +453,13 @@ export default {
     setEditInfo(obj) {
       const cascader = []
       if (obj.province_id) {
-        cascader.push(cascader)
+        cascader.push(obj.province_id)
       }
       if (obj.city_id) {
-        cascader.push(cascader)
+        cascader.push(obj.city_id)
       }
       if (obj.district_id) {
-        cascader.push(cascader)
+        cascader.push(obj.district_id)
       }
       this.form.setFieldsValue({
         member_name: obj.member_name,
