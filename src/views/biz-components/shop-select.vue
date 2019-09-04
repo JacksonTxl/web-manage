@@ -62,7 +62,7 @@ export default {
         this.shopOptions =
           this.useType === 'form'
             ? res.shops
-            : [{ id: -1, shop_name: ' 全部' }, ...res.shops]
+            : [{ id: -1, shop_name: '全部门店' }, ...res.shops]
       })
       console.log('getShopList', this.value)
     }

@@ -54,24 +54,18 @@
           placeholder="请选择员工职能"
           v-model="query.identity"
           @change="onSingleSearch('identity', $event)"
-        >
-          <a-select-option
-            v-for="(item, index) in staffEnums.identity.value"
-            :key="index"
-            :value="+index"
-          >
-            {{ item }}
-          </a-select-option>
-        </a-select>
+          :options="identityList"
+        ></a-select>
         <a-select
           class="mg-r8"
           :defaultValue="-1"
           placeholder="请选择员工状态"
           v-model="query.work_status"
           @change="onSingleSearch('work_status', $event)"
+          :options="workStatusList"
         >
           <a-select-option
-            v-for="(item, index) in staffEnums.work_status.value"
+            v-for="(item, index) in identityList"
             :key="index"
             :value="+index"
           >
@@ -271,7 +265,8 @@ export default {
       page: this.service.page$,
       loading: this.service.loading$,
       department: this.service.department$,
-      staffEnums: this.service.staffEnums$,
+      identityList$: this.service.identityList$,
+      workStatusList$: this.service.workStatusList$,
       auth: this.service.auth$
     }
   },
@@ -284,7 +279,13 @@ export default {
     }
   },
   computed: {
-    columns
+    columns,
+    identityList() {
+      return [{ value: '-1', label: '全部员工职能' }, ...this.identityList$]
+    },
+    workStatusList() {
+      return [{ value: '-1', label: '全部员工状态' }, ...this.workStatusList$]
+    }
   },
   methods: {
     changeStaffPosition(id) {

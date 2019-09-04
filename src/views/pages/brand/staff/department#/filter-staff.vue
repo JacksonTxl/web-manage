@@ -52,7 +52,10 @@ export default {
   },
   computed: {
     workStatus() {
-      return [{ id: -1, name: '全部' }, ...this.computedList('work_status')]
+      return [
+        { id: -1, name: '全部员工状态' },
+        ...this.computedList('work_status')
+      ]
     }
   },
   data() {
