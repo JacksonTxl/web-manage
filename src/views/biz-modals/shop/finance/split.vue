@@ -61,7 +61,7 @@
             :min="0"
             :max="100"
             v-model="record.split_ratio"
-            :float="true"
+            :float="false"
             placeholder="请输入占比"
             style="width:150px"
           >
