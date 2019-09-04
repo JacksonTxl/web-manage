@@ -11,7 +11,8 @@ export class ListService implements RouteGuard {
   staffList$ = new State([])
   page$ = new State({})
   department$ = new State({})
-  staffEnums$ = this.userService.staffEnums$
+  identityList$ = this.userService.getOptions$('staff.identity')
+  workStatusList$ = this.userService.getOptions$('staff.work_status')
   loading$ = new State({})
   auth$ = this.authService.authMap$({
     join: 'brand_shop:staff:staff|join',
@@ -37,7 +38,10 @@ export class ListService implements RouteGuard {
   getStaffDepartment() {
     return this.staffApi.getStaffDepartmentList().pipe(
       tap(res => {
-        this.department$.commit(() => res.department)
+        this.department$.commit(() => [
+          { id: '-1', name: '全部部门' },
+          ...res.department
+        ])
       })
     )
   }

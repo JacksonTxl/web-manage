@@ -18,26 +18,26 @@
           <div class="shop-member-crowd-index-box__num">
             <div class="shop-member-crowd-index-box__num-item">
               <div class="shop-member-crowd-index-box__number">
-                {{ value[0].crowd_total_num }}
+                {{ value[0].crowd_total_num.value }}
               </div>
               <div class="shop-member-crowd-index-box__num-describe">
-                人群总数
+                {{ value[0].crowd_total_num.name }}
               </div>
             </div>
             <div class="shop-member-crowd-index-box__num-item-middel">
               <div class="shop-member-crowd-index-box__number">
-                {{ value[0].yesterday_admission }}
+                {{ value[0].yesterday_admission.value }}
               </div>
               <div class="shop-member-crowd-index-box__num-describe">
-                昨日入场
+                {{ value[0].yesterday_admission.name }}
               </div>
             </div>
             <div class="shop-member-crowd-index-box__num-item">
               <div class="shop-member-crowd-index-box__number">
-                {{ value[0].yesterday_deal_numb }}
+                {{ value[0].yesterday_deal_numb.value }}
               </div>
               <div class="shop-member-crowd-index-box__num-describe">
-                昨日交易
+                {{ value[0].yesterday_deal_numb.name }}
               </div>
             </div>
           </div>
@@ -85,26 +85,26 @@
           <div class="shop-member-crowd-index-box__num">
             <div class="shop-member-crowd-index-box__num-item">
               <div class="shop-member-crowd-index-box__number">
-                {{ value[1].crowd_total_num }}
+                {{ value[1].crowd_total_num.value }}
               </div>
               <div class="shop-member-crowd-index-box__num-describe">
-                人群总数
+                {{ value[1].crowd_total_num.name }}
               </div>
             </div>
             <div class="shop-member-crowd-index-box__num-item-middel">
               <div class="shop-member-crowd-index-box__number">
-                {{ value[1].yesterday_admission }}
+                {{ value[1].yesterday_admission.value }}
               </div>
               <div class="shop-member-crowd-index-box__num-describe">
-                昨日入场
+                {{ value[1].yesterday_admission.name }}
               </div>
             </div>
             <div class="shop-member-crowd-index-box__num-item">
               <div class="shop-member-crowd-index-box__number">
-                {{ value[1].yesterday_deal_numb }}
+                {{ value[1].yesterday_deal_numb.value }}
               </div>
               <div class="shop-member-crowd-index-box__num-describe">
-                昨日交易
+                {{ value[1].yesterday_deal_numb.name }}
               </div>
             </div>
           </div>
@@ -152,26 +152,26 @@
           <div class="shop-member-crowd-index-box__num">
             <div class="shop-member-crowd-index-box__num-item">
               <div class="shop-member-crowd-index-box__number">
-                {{ value[2].crowd_total_num }}
+                {{ value[2].crowd_total_num.value }}
               </div>
               <div class="shop-member-crowd-index-box__num-describe">
-                人群总数
+                {{ value[2].crowd_total_num.name }}
               </div>
             </div>
             <div class="shop-member-crowd-index-box__num-item-middel">
               <div class="shop-member-crowd-index-box__number">
-                {{ value[2].yesterday_admission }}
+                {{ value[2].yesterday_admission.value }}
               </div>
               <div class="shop-member-crowd-index-box__num-describe">
-                昨日入场
+                {{ value[2].yesterday_admission.name }}
               </div>
             </div>
             <div class="shop-member-crowd-index-box__num-item">
               <div class="shop-member-crowd-index-box__number">
-                {{ value[2].yesterday_deal_numb }}
+                {{ value[2].yesterday_deal_numb.value }}
               </div>
               <div class="shop-member-crowd-index-box__num-describe">
-                昨日交易
+                {{ value[2].yesterday_deal_numb.name }}
               </div>
             </div>
           </div>

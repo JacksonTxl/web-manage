@@ -5,11 +5,9 @@
     :footer="null"
     v-model="show"
   >
-    <div class="search mg-b8">
-      <div class="search__left"></div>
-      <div class="search__right">
+    <div class="search mg-b16">
+      <div class="search__left">
         <a-select
-          class="mg-l8"
           showSearch
           placeholder="请选择课程"
           optionFilterProp="children"
@@ -30,6 +28,7 @@
           class="mg-l8"
           showSearch
           placeholder="请选择教练"
+          v-if="showTable === 'all'"
           optionFilterProp="children"
           style="width: 200px"
           v-model="coach_id"
@@ -45,6 +44,7 @@
           </a-select-option>
         </a-select>
       </div>
+      <div class="search__right"></div>
     </div>
     <st-table
       :columns="columns"
@@ -103,6 +103,9 @@ export default {
     page() {
       const { current_page, total_counts } = this.page$
       return { current_page, total_counts }
+    },
+    showTable() {
+      return this.$route.query.showTable || 'all'
     },
     query() {
       return {

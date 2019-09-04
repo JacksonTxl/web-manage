@@ -1,7 +1,6 @@
 <template>
   <st-modal
     title="业绩拆分"
-    size="small"
     width="800px"
     v-model="show"
     wrapClassName="modal-shop-finance-split"
@@ -62,7 +61,7 @@
             :min="0"
             :max="100"
             v-model="record.split_ratio"
-            :float="true"
+            :float="false"
             placeholder="请输入占比"
             style="width:150px"
           >
@@ -195,12 +194,12 @@ export default {
         return false
       }
       let percent = 0
-      this.info.split_items.forEach(element => {
-        percent = percent + parseInt(element.split_ratio || 0, 10)
-        if (element.staff_id === record.staff_id) {
+      for (let i = 1; i < this.info.split_items.length; i++) {
+        percent += parseInt(this.info.split_items[i].split_ratio || 0, 10)
+        if (this.info.split_items[i].staff_id === record.staff_id) {
           return false
         }
-      })
+      }
       percent += parseInt(record.split_ratio, 10)
       if (percent > 100) {
         return false
@@ -215,6 +214,7 @@ export default {
       ) {
         return
       }
+
       delete record.edit
       record.split_money = (
         (+record.split_ratio / 100) *
@@ -238,6 +238,8 @@ export default {
         +this.info.actual_price
       ).toFixed(1)
       this.info.split_items.splice(index, 1, record)
+      this.info.split_items[0].staff_id = ''
+      this.info.split_items[0].split_ratio = ''
     },
     onEidt(record, index) {
       record.meta = cloneDeep(record)

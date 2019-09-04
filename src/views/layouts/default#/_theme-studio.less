@@ -5,18 +5,29 @@
       .c(@themeAMenuColor);
       .ant-menu-submenu-open {
         .ant-menu-submenu-title {
-          .bg(rgba(24, 144, 255, 0.1));
+          .bg(#edf6ff);
         }
       }
       .ant-menu-submenu-selected {
         .ant-menu-submenu-title {
+          .bg(#e5f2ff);
           .c(@title);
         }
       }
+      .st-menu-item-selected {
+        background: #e5f2ff;
+        border-radius: 100px 0 0 100px;
+      }
       .ant-menu-item {
+        &:active {
+          .bg(#edf6ff);
+          border-radius: 100px 0 0 100px;
+        }
         a:hover,
         &:hover {
           color: @primary-color !important;
+          .bg(#edf6ff);
+          border-radius: 100px 0 0 100px;
         }
       }
       .ant-menu-item-selected {
@@ -25,7 +36,12 @@
       .ant-menu-submenu-title {
         .c(@text);
         &:hover {
-          .bg(rgba(24, 144, 255, 0.1));
+          .bg(#edf6ff);
+          border-radius: 100px 0 0 100px;
+        }
+        &:active {
+          .bg(#edf6ff);
+          border-radius: 100px 0 0 100px;
         }
       }
       &__logo {
