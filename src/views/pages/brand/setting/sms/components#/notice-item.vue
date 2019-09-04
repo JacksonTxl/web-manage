@@ -4,10 +4,14 @@
     <div :class="bComponent('content')">
       <div :class="bComponent('text')">{{ info.notify_time.name }}</div>
       <div :class="bComponent('text')">{{ info.notify_type.name }}</div>
-      <div :class="bComponent('text')">
+      <div :class="bComponent('text')" style="padding-left:0">
         <st-switch @change="save" v-model="params.notify_mode.sms"></st-switch>
       </div>
-      <div :class="bComponent('text')" v-if="info.notify_type.value === 1">
+      <div
+        :class="bComponent('text')"
+        style="padding-left:0"
+        v-if="info.notify_type.value === 1"
+      >
         <st-switch
           @change="save"
           v-model="params.notify_mode.mini_programs"
@@ -26,7 +30,11 @@
           预览
         </span>
       </div>
-      <div :class="bComponent('text')" v-if="info.notify_type.value === 2">
+      <div
+        :class="bComponent('text')"
+        style="padding-left:0"
+        v-if="info.notify_type.value === 2"
+      >
         <st-switch @change="save" v-model="params.notify_mode.app"></st-switch>
       </div>
       <div
@@ -47,7 +55,7 @@
             <span class="color-title mg-r8">预览内容:</span>
             <span :class="bComponent('text-right')">{{ info.preview }}</span>
           </div>
-          <div :class="bComponent('text')" style="padding-top:0">
+          <div :class="bComponent('text')" style="padding-top:0;padding-left:0">
             <span class="color-primary cursor-pointer" @click="showEdit">
               编辑
             </span>
@@ -220,7 +228,7 @@
               </span>
             </div>
           </div>
-          <div :class="bComponent('text')">
+          <div :class="bComponent('text')" style="padding-left:0">
             <span class="color-primary mg-r12" @click="cancel">取消</span>
             <span class="color-primary" @click="save">保存</span>
           </div>
