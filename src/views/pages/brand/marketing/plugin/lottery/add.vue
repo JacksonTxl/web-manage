@@ -63,13 +63,16 @@
               ></a-input>
             </st-form-item>
             <st-form-item label="活动时间" labelWidth="84px" required>
-              <a-date-picker
+              <a-range-picker
                 placeholder="请输入活动时间"
                 v-decorator="decorators.share_title"
-              ></a-date-picker>
+              ></a-range-picker>
             </st-form-item>
             <st-form-item label="活动说明" labelWidth="84px" required>
-              <a-textarea placeholder="请输入活动标题"></a-textarea>
+              <a-textarea
+                placeholder="请输入活动说明"
+                v-decorator="decorators.activity_description"
+              ></a-textarea>
             </st-form-item>
             <st-form-item label="活动轮播获奖信息说明" labelWidth="84px">
               <a-radio-group v-decorator="decorators.wheel_turn_around">

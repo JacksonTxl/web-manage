@@ -17,11 +17,7 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           required: true,
-          message: '请输入登录账户'
-        },
-        {
-          pattern: pattern.CN_EN_NUM('1-15'),
-          message: '请输入6~15个字符'
+          message: '请输入时间'
         }
       ]
     },
@@ -29,28 +25,15 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           required: true,
-          message: '请输入登录密码'
-        },
-        {
-          pattern: pattern.CN_EN_NUM('6-15'),
-          message: '请输入6~15个字符'
+          message: '请输入时间'
         }
       ]
     },
     activity_description: {
       rules: [
         {
-          validator: (field: any, value: any, values: any) => {
-            if (!value) {
-              return '请输入登录密码'
-            }
-            if (value.length < 6 || value.length > 15) {
-              return '请输入正确格式登录密码'
-            }
-            if (value !== values.password) {
-              return '两次密码输入不一致'
-            }
-          }
+          required: true,
+          message: '请输入活动描述'
         }
       ]
     },
@@ -58,11 +41,7 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           required: true,
-          message: '请输入用户名'
-        },
-        {
-          pattern: pattern.CN_EN_NUM('1-15'),
-          message: '请输入1-15个字符'
+          message: '请选择轮播获奖'
         }
       ]
     },
@@ -70,16 +49,23 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           required: true,
-          message: '请填写昵称'
-        },
-        {
-          pattern: pattern.CN_EN_NUM('1-10'),
-          message: '请输入1-10个字，中英文及数字'
+          message: '请选择分享设置'
         }
       ]
     },
-    share_title: {},
-    share_bg: { initialValue: 37 },
+    share_title: {
+      rules: [
+        {
+          required: true,
+          message: '请输入活动标题'
+        },
+        {
+          pattern: pattern.CN_EN_NUM('1-15'),
+          message: '请输入1~15d个字符'
+        }
+      ]
+    },
+    share_bg: {},
 
     join_crowd_all: {
       rules: [
@@ -93,7 +79,7 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           required: true,
-          message: '请填写昵称'
+          message: '请选择用户'
         }
       ]
     },
@@ -101,7 +87,7 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           required: true,
-          message: '请填写昵称'
+          message: '请选择抽奖条件'
         }
       ]
     },
@@ -109,35 +95,19 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           required: true,
-          message: '请填写昵称'
+          message: '请选择抽奖机会'
         }
       ]
     },
-    per_times: {
-      rules: [
-        {
-          required: true,
-          message: '请填写昵称'
-        }
-      ]
-    },
+    per_times: {},
     total_times: {
       rules: [
         {
           required: true,
-          message: '请填写昵称'
+          message: '请填写每日抽奖次数'
         }
       ]
     },
-    prize_times: {
-      rules: [
-        {
-          required: true,
-          message: '请填写昵称'
-        }
-      ]
-    },
-
     prize_name: {
       rules: [
         {
