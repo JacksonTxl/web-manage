@@ -2,19 +2,23 @@
   <div :class="bPage()">
     <MarkteingPluginTitle :type="3" />
     <st-panel app>
-      <a-row :gutter="24" class="mg-b16">
-        <a-col :span="2">
+      <div :class="bPage('action')" class="mg-b24">
+        <div>
           <router-link to="./add">
-            <a-button type="primary">新建活动</a-button>
+            <a-button type="primary" class="mg-r16">新建活动</a-button>
           </router-link>
-        </a-col>
-        <a-col :span="2">
           <router-link to="./checkin">
             <a-button>核销兑换码</a-button>
           </router-link>
-        </a-col>
-        <a-col :span="4" :offset="10">
-          <a-select placeholder="活动状态" style="width:100%">
+        </div>
+        <div style="text-align:right">
+          <a-select
+            placeholder="活动状态"
+            v-model="query.activity_status"
+            class="mg-r24"
+            @change="onSingleSearch('activity_status', $event)"
+            style="width:100px;display:inline-block;"
+          >
             <a-select-option
               v-for="(item, index) of status"
               :key="index"
@@ -23,11 +27,15 @@
               {{ item.label }}
             </a-select-option>
           </a-select>
-        </a-col>
-        <a-col :span="6">
-          <a-input-search placeholder="请输入活动名称"></a-input-search>
-        </a-col>
-      </a-row>
+          <a-input-search
+            style="display:inline-block;width:300px;"
+            v-model="query.keyword"
+            @search="onKeywordsSearch('keyword', $event)"
+            placeholder="请输入活动名称"
+          ></a-input-search>
+        </div>
+      </div>
+
       <st-table
         :page="page"
         @change="onTableChange"
@@ -37,18 +45,33 @@
         rowKey="id"
       >
         <span slot="join_num" slot-scope="record">
-          <router-link to="./info/user">
+          <router-link
+            :to="{
+              name: 'brand-marketing-plugin-lottery-info-user',
+              query: { id: record.id }
+            }"
+          >
             {{ record.activity_join_num }}
           </router-link>
         </span>
         <span slot="prize_num" slot-scope="record">
-          <router-link to="./info/user">
+          <router-link
+            :to="{
+              name: 'brand-marketing-plugin-lottery-info-user',
+              query: { id: record.id }
+            }"
+          >
             {{ record.activity_prize_num }}
           </router-link>
         </span>
-        <div slot="action" slot-scope="record">
+        <div slot="action" slot-scope="text, record">
           <st-table-actions>
-            <router-link to="./info/prize">
+            <router-link
+              :to="{
+                name: 'brand-marketing-plugin-lottery-info-prize',
+                query: { id: record.id }
+              }"
+            >
               数据
             </router-link>
             <a @click="onGeneralize(record)">
@@ -71,6 +94,7 @@ import { IndexService } from './index.service'
 import MarkteingPluginTitle from '../../components#/marketing-title'
 import { columns } from './index.config.ts'
 import tableMixin from '@/mixins/table.mixin'
+import { RouteService } from '@/services/route.service'
 
 export default {
   name: 'PluginLotteryIndex',
@@ -83,7 +107,8 @@ export default {
   },
   serviceInject() {
     return {
-      indexService: IndexService
+      indexService: IndexService,
+      routeService: RouteService
     }
   },
   rxState() {
@@ -91,7 +116,8 @@ export default {
       list: this.indexService.list$,
       page: this.indexService.page$,
       loading: this.indexService.loading$,
-      status: this.indexService.status$
+      status: this.indexService.status$,
+      query: this.routeService.query$
     }
   },
   components: {

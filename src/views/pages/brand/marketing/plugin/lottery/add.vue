@@ -12,7 +12,7 @@
               src="~@/assets/img/brand/marketing/lottery/bg.png"
             />
             <div :class="bPage('lottery-scroll')">
-              <ul class="bg-scroll">
+              <!-- <ul class="bg-scroll">
                 <img
                   src="~@/assets/img/brand/marketing/lottery/start.png"
                   alt
@@ -24,16 +24,27 @@
                   ref="rollLi"
                   :class="{ anim: animate && i == 0 }"
                 ></li>
-              </ul>
+              </ul> -->
             </div>
             <div :class="bPage('lottery-turntable')">
-              <img
-                class="img"
-                src="~@/assets/img/brand/marketing/lottery/start.png"
-                :class="['run-item-' + current]"
-              />
-              <!-- <img src="~@/assets/img/brand/marketing/lottery/start.png" alt /> -->
-              <span @click="handleStart" class="start-btn"></span>
+              <span>{{ preview.title }}</span>
+              <!-- <img src="~@/assets/img/brand/marketing/lottery/start.png" alt class="popup" /> -->
+              <!-- <span @click="handleStart" class="start-btn"></span> -->
+            </div>
+            <div :class="bPage('lottery-footer')">
+              <div :class="bPage('lottery-title')">活动规则</div>
+              <div class="mg-b24">
+                <span>活动时间:</span>
+                <span>{{ preview.startTime }}-{{ preview.endTime }}</span>
+              </div>
+              <div class="mg-b24">
+                <span>抽奖规则:</span>
+                <span>每人每天有{{ preview.perTimes }}次机会</span>
+              </div>
+              <div class="mg-b24">
+                <span>活动说明:</span>
+                <span>{{ preview.description }}</span>
+              </div>
             </div>
           </div>
         </h5-container>
@@ -53,29 +64,33 @@
             <st-form-item label="活动名称" labelWidth="84px" required>
               <a-input
                 placeholder="请输入活动名称"
-                v-decorator="decorators.activity_name"
+                v-decorator="decorators.activity_base.activity_name"
               ></a-input>
             </st-form-item>
             <st-form-item label="活动标题" labelWidth="84px" required>
               <a-input
+                @change="getTitle"
                 placeholder="请输入活动标题"
-                v-decorator="decorators.share_title"
+                v-decorator="decorators.activity_base.share_title"
               ></a-input>
             </st-form-item>
             <st-form-item label="活动时间" labelWidth="84px" required>
               <a-range-picker
                 placeholder="请输入活动时间"
-                v-decorator="decorators.share_title"
+                @change="onDateChange"
               ></a-range-picker>
             </st-form-item>
             <st-form-item label="活动说明" labelWidth="84px" required>
               <a-textarea
+                @change="getDescription"
                 placeholder="请输入活动说明"
-                v-decorator="decorators.activity_description"
+                v-decorator="decorators.activity_base.activity_description"
               ></a-textarea>
             </st-form-item>
             <st-form-item label="活动轮播获奖信息说明" labelWidth="84px">
-              <a-radio-group v-decorator="decorators.wheel_turn_around">
+              <a-radio-group
+                v-decorator="decorators.activity_base.wheel_turn_around"
+              >
                 <a-radio
                   v-for="(item, index) in wheelTurnAround"
                   :key="index"
@@ -86,7 +101,9 @@
               </a-radio-group>
             </st-form-item>
             <st-form-item label="分享设置" labelWidth="84px">
-              <a-radio-group v-decorator="decorators.wheel_share_default">
+              <a-radio-group
+                v-decorator="decorators.activity_base.wheel_share_default"
+              >
                 <a-radio
                   v-for="(item, index) in wheelDefault"
                   :key="index"
@@ -103,10 +120,23 @@
 
           <st-form :form="form" labelGutter="0" v-show="currentIndex == 1">
             <st-form-item label="参与用户" labelWidth="84px" required>
-              <a-select></a-select>
+              <a-select
+                placeholder="请选择参与用户"
+                v-decorator="decorators.activity_rule.crowd_id"
+              >
+                <a-select-option
+                  v-for="(item, index) in crowd"
+                  :key="index"
+                  :value="item.value"
+                >
+                  {{ item.label }}
+                </a-select-option>
+              </a-select>
             </st-form-item>
             <st-form-item label="抽奖条件" labelWidth="84px" required>
-              <a-radio-group v-decorator="decorators.draw_condition">
+              <a-radio-group
+                v-decorator="decorators.activity_rule.draw_condition"
+              >
                 <a-radio
                   v-for="(item, index) in drawCondition"
                   :key="index"
@@ -117,7 +147,9 @@
               </a-radio-group>
             </st-form-item>
             <st-form-item label=" 抽奖机会" labelWidth="84px" required>
-              <a-radio-group v-decorator="decorators.draw_times_type">
+              <a-radio-group
+                v-decorator="decorators.activity_rule.draw_times_type"
+              >
                 <a-radio
                   v-for="(item, index) in drawTimesType"
                   :key="index"
@@ -129,7 +161,11 @@
             </st-form-item>
             <st-form-item label=" 中奖次数" labelWidth="84px">
               每人最多可中奖
-              <st-input-number style="width: 100px;"></st-input-number>
+              <st-input-number
+                @change="getPerTimes"
+                style="width: 100px;"
+                v-decorator="decorators.activity_rule.per_times"
+              ></st-input-number>
               次
             </st-form-item>
             <st-form-item label="" labelWidth="84px">
@@ -153,46 +189,42 @@
                       type="dashed"
                       block
                       v-modal-link="{
-                        name: 'finance-add-template',
-                        on: { change: refresh }
+                        name: 'brand-marketing-plugin-add-prize',
+                        on: { change: getPrizeInfo }
                       }"
                     >
-                      新增底薪模板
+                      添加奖品
                     </st-button>
                   </td>
                 </tr>
-                <template v-for="item in list">
+                <template v-for="item in prizeList">
                   <tr :key="item.id">
-                    <td>{{ item.template_name }}</td>
-                    <td>{{ item.salary }}</td>
+                    <td>{{ item.prize_name }}</td>
+                    <td>{{ item.prize_type }}</td>
                     <td>
-                      <template v-if="item.used == 0">
-                        <span>{{ item.used }}</span>
-                      </template>
-                      <template v-if="item.used != 0">
-                        <a
-                          v-modal-link="{
-                            name: 'finance-search-staff-list-salary',
-                            props: { id: item.id }
-                          }"
-                        >
-                          {{ item.used }}
-                        </a>
-                      </template>
+                      <!-- {{ item.support_shop_ids.length }} -->
                     </td>
-                    <td>{{ item.created_time }}</td>
+                    <td>
+                      {{ item.number }}
+                    </td>
+                    <td>{{ item.rate }}</td>
                     <td>
                       <st-table-actions>
                         <a
                           v-modal-link="{
-                            name: 'finance-basic-template-edit',
-                            props: { item: item },
-                            on: { change: refresh }
+                            name: 'brand-marketing-plugin-add-prize',
+                            props: {
+                              info: item
+                            },
+                            on: { change: getPrizeInfo }
                           }"
                         >
                           编辑
                         </a>
-                        <a href="javascript:;" @click="onDelete(item.id)">
+                        <a
+                          href="javascript:;"
+                          @click="onDelete(item.prize_name)"
+                        >
                           删除
                         </a>
                       </st-table-actions>
@@ -203,15 +235,24 @@
             </st-form-table>
             <st-t3 class="mg-b24 mg-t32">未中奖设置</st-t3>
             <st-form-item label="名称">
-              <a-input placeholder="请输入活动名称"></a-input>
+              <a-input
+                placeholder="请输入奖品名称"
+                v-decorator="decorators.activity_lucky.lucky_name"
+              ></a-input>
             </st-form-item>
             <st-form-item label=" 图片">
-              <a-radio-group>
-                <a-radio></a-radio>
+              <a-radio-group v-decorator="decorators.activity_lucky.lucky_name">
+                <a-radio
+                  v-for="(item, index) in imgType"
+                  :key="index"
+                  :value="item.value"
+                >
+                  {{ item.label }}
+                </a-radio>
               </a-radio-group>
             </st-form-item>
             <st-form-item label="" labelWidth="84px">
-              <st-button type="primary">完成</st-button>
+              <st-button type="primary" @click="onSubmit">完成</st-button>
             </st-form-item>
           </st-form>
         </div>
@@ -225,6 +266,7 @@ import H5Container from '@/views/biz-components/h5/h5-container'
 import Steps from '../../../staff/add#/st-steps'
 import { ruleOptions } from './form.config.ts'
 import { PatternService } from '@/services/pattern.service'
+import BrandMarketingPluginAddPrize from '@/views/biz-modals/brand/marketing/plugin/add-prize'
 
 export default {
   name: 'PluginLotteryAdd',
@@ -243,60 +285,14 @@ export default {
         '操作'
       ],
       animate: false,
-      initSpeed: 200, // 初始速度
-      speed: null, // 变化速度
-      diff: 20, // 速度变化的值，值越大，变化地越快
-      award: {}, // 抽中的奖品
-      awards: [
-        // 奖品列表
-        {
-          id: 1,
-          name: '潘多拉音箱'
-        },
-        {
-          id: 2,
-          name: '小酷M1耳机'
-        },
-        {
-          id: 3,
-          name: '酷狗VIP会员'
-        },
-        {
-          id: 4,
-          name: '8元话费'
-        },
-        {
-          id: 5,
-          name: '12元话费'
-        },
-        {
-          id: 6,
-          name: '谢谢参与'
-        },
-        {
-          id: 7,
-          name: '4元话费'
-        },
-        {
-          id: 8,
-          name: '谢谢参与'
-        }
-      ],
-      time: 0, // 记录开始抽奖的时间
-      current: 0, // 当前转动的位置
-      isRuningLucky: false, // 是否正在抽奖
-      list: [
-        // 中奖号码
-        {
-          phone: '186****2336抽中0元话费'
-        },
-        {
-          phone: '166****2336抽中1元话费'
-        },
-        {
-          phone: '156****2336抽中2元话费'
-        }
-      ],
+      preview: {
+        title: '',
+        startTime: '',
+        endTime: '',
+        perTimes: 0,
+        description: ''
+      },
+      prizeList: [],
       stepArr: [
         {
           title: '基础信息',
@@ -330,104 +326,81 @@ export default {
       drawTimesType: this.addService.drawTimesType$,
       invitePoster: this.addService.invitePoster$,
       wheelDefault: this.addService.wheelDefault$,
-      wheelTurnAround: this.addService.wheelTurnAround$
+      wheelTurnAround: this.addService.wheelTurnAround$,
+      crowd: this.addService.crowd$,
+      imgType: this.addService.imgType$
     }
+  },
+  modals: {
+    BrandMarketingPluginAddPrize
   },
   components: {
     H5Container,
     Steps
   },
-  created() {
-    console.log(this.decorators)
-  },
+  created() {},
   mounted() {
     let scrollTimer = setInterval(this.scroll, 2000)
   },
   methods: {
     next(para) {
-      this.form.validate().then(() => {
-        console.log(validate)
-      })
-      // this.currentIndex = para
+      if (para === 1) {
+        this.form
+          .validate([
+            'activity_base.activity_name',
+            'activity_base.activity_description',
+            'activity_base.wheel_turn_around',
+            'activity_base.wheel_share_default',
+            'activity_base.share_title'
+          ])
+          .then(() => {
+            this.currentIndex = para
+          })
+      }
+      if (para === 2) {
+        this.form
+          .validate([
+            'activity_rule.crowd_id',
+            'activity_rule.draw_condition',
+            'activity_rule.draw_times_type'
+          ])
+          .then(() => {
+            this.currentIndex = para
+          })
+      }
     },
     getCurIndex(e) {
       let index = e.index.target.textContent - 1
       this.currentIndex = index >= 0 ? index : 0
     },
+    onSubmit() {
+      this.form.validate().then(value => {
+        value.activity_base.start_time = this.preview.startTime
+        value.activity_base.end_time = this.preview.endTime
+        this.addService.add(value).subscribe(res => {})
+      })
+    },
+    getTitle(e) {
+      this.preview.title = e.target.value
+    },
+    getPerTimes(e) {
+      this.preview.perTimes = e.target.value
+    },
+    getDescription(e) {
+      this.preview.description = e.target.value
+    },
     refresh() {},
-    // 抽奖
-    handleStart() {
-      if (this.isRuningLucky) {
-        return this.message.success({ content: '抽奖中' })
-      }
-      if (isNaN(Number(this.initSpeed))) {
-        return false
-      }
-      this.speed = this.initSpeed
-      // 开始抽奖
-      this.isRuningLucky = true
-      this.time = Date.now()
-      this.drawAward()
-      Toast('开始抽奖')
+    onDateChange(data, str) {
+      this.preview.startTime = str[0]
+      this.preview.endTime = str[1]
     },
-    drawAward() {
-      // 请求接口，模拟一个抽奖数据(假设请求时间为2s)
-      setTimeout(() => {
-        this.award = {
-          id: '4'
-        }
-        console.log('返回的抽奖结果是', this.award)
-      }, 2000)
-      this.move()
+    getPrizeInfo(val) {
+      this.prizeList.push(val)
     },
-    move() {
-      let timer = setTimeout(() => {
-        this.current++
-        if (this.current > 7) {
-          this.current = 0
-        }
-        // 若抽中的奖品id存在，则开始减速转动
-        if (this.award.id && (Date.now() - this.time) / 1000 > 2) {
-          console.log('奖品出来了')
-          this.speed += this.diff // 转动减速
-
-          // 若转动时间超过4秒，并且奖品id等于小格子的奖品id，则停下来
-          if (
-            (Date.now() - this.time) / 1000 > 4 &&
-            this.award.id == this.awards[this.current].id
-          ) {
-            clearTimeout(timer)
-            setTimeout(() => {
-              this.isRuningLucky = false
-              this.message.success({ content: '编辑成功' })
-
-              // 这里写停下来要执行的操作（弹出奖品框）
-              Toast(
-                '您抽中的奖品是' +
-                  this.awards[this.current].name +
-                  ',奖品id是' +
-                  this.awards[this.current].id
-              )
-            }, 400)
-            return
-          }
-          // 若抽中的奖品不存在，则加速转动
-        } else {
-          if (this.speed >= 50) {
-            this.speed -= this.diff // 转动加速
-          }
-        }
-        this.move()
-      }, this.speed)
-    },
-    // 中奖名单滚动
-    scroll() {
-      this.animate = true
-      let timer = setTimeout(() => {
-        this.list.push(this.list[0])
-        this.list.shift()
-        this.animate = false
-      }, 500)
+    onDelete(para) {
+      this.prizeList = this.prizeList.filter(item => {
+        return item.prize_name !== para
+      })
     }
   }
 }

@@ -1,14 +1,16 @@
 import { Api } from '../../api'
 export interface GetPrizedListQuery {
   activity_id: string
-  draw_status: number
-  prize_type: number
-  prize_status: number
-  start_time: string
-  end_time: string
-  page: number
+  current_page: number
   size: number
 }
+export interface GetActivityListQuery {
+  activity_status: number
+  keyword: string
+  current_page: number
+  size: number
+}
+
 export interface AddParams {
   wheel_bg: number
   activity_base: object
@@ -25,8 +27,8 @@ export class LotteryApi extends Api {
     })
   }
   // 活动列表
-  getActivityList() {
-    return this.http.get('/v1/plugin/wheel')
+  getActivityList(query: GetActivityListQuery) {
+    return this.http.get('/v1/plugin/wheel', { query })
   }
   // 用户列表
   getUserList() {
@@ -44,13 +46,13 @@ export class LotteryApi extends Api {
   }
   // 添加大转盘
   add(params: AddParams) {
-    return this.http.get('/v1/plugin/wheel/add', {
+    return this.http.post('/v1/plugin/wheel/add', {
       params
     })
   }
   // 编辑大转盘
   edit(params: AddParams) {
-    return this.http.get('/v1/plugin/wheel/edit', {
+    return this.http.post('/v1/plugin/wheel/edit', {
       params
     })
   }

@@ -1,7 +1,7 @@
 export const ruleOptions = (vm: any) => {
   const pattern = vm.pattern
   return {
-    activity_name: {
+    'activity_base.activity_name': {
       rules: [
         {
           required: true,
@@ -13,23 +13,7 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    start_time: {
-      rules: [
-        {
-          required: true,
-          message: '请输入时间'
-        }
-      ]
-    },
-    end_time: {
-      rules: [
-        {
-          required: true,
-          message: '请输入时间'
-        }
-      ]
-    },
-    activity_description: {
+    'activity_base.activity_description': {
       rules: [
         {
           required: true,
@@ -37,7 +21,7 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    wheel_turn_around: {
+    'activity_base.wheel_turn_around': {
       rules: [
         {
           required: true,
@@ -45,7 +29,7 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    wheel_share_default: {
+    'activity_base.wheel_share_default': {
       rules: [
         {
           required: true,
@@ -53,7 +37,7 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    share_title: {
+    'activity_base.share_title': {
       rules: [
         {
           required: true,
@@ -65,7 +49,7 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    share_bg: {},
+    'activity_base.share_bg': {},
 
     join_crowd_all: {
       rules: [
@@ -75,7 +59,7 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    crowd_id: {
+    'activity_rule.crowd_id': {
       rules: [
         {
           required: true,
@@ -83,7 +67,7 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    draw_condition: {
+    'activity_rule.draw_condition': {
       rules: [
         {
           required: true,
@@ -91,7 +75,7 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    draw_times_type: {
+    'activity_rule.draw_times_type': {
       rules: [
         {
           required: true,
@@ -99,8 +83,8 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    per_times: {},
-    total_times: {
+    'activity_rule.per_times': {},
+    'activity_rule.total_times': {
       rules: [
         {
           required: true,
@@ -108,11 +92,27 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    prize_name: {
+    'activity_prizes.prize_name': {
       rules: [
         {
           required: true,
-          message: '请填写昵称'
+          message: '请填写奖品名称'
+        }
+      ]
+    },
+    'activity_lucky.lucky_name': {
+      rules: [
+        {
+          required: true,
+          message: '请填写未中奖奖品名称'
+        }
+      ]
+    },
+    'activity_lucky.lucky_image': {
+      rules: [
+        {
+          required: true,
+          message: '请填写未中奖奖品地址'
         }
       ]
     },
