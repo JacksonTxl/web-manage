@@ -9,10 +9,15 @@
     </div>
     <div>
       请选择需要导入的门店:
-      <a-select placeholder="请选择门店" class="select" v-model="shopId">
+      <a-select
+        placeholder="请选择门店"
+        class="select"
+        v-model="shopId"
+        :allowClear="true"
+      >
         <a-select-option
           v-for="(item, index) in shopList"
-          :value="item.shop_id"
+          :value="+item.shop_id"
           :key="index"
         >
           {{ item.shop_name }}
@@ -89,6 +94,7 @@ import { ImportService } from '../import.service'
 import BrandSettingImport from '@/views/biz-modals/brand/setting/import.vue'
 import { UserService } from '@/services/user.service'
 import ImportTip from './components#/import-tip'
+import { MessageService } from '@/services/message.service'
 
 export default {
   bem: {
@@ -101,6 +107,7 @@ export default {
   serviceInject() {
     return {
       importService: ImportService,
+      messageService: MessageService,
       userService: UserService
     }
   },
@@ -116,7 +123,7 @@ export default {
     return {
       IMPORT,
       selectedValue: IMPORT.SOLD_MEMBER_CARD,
-      shopId: this.shopList[0].shop_id || 1
+      shopId: undefined
     }
   },
   methods: {
@@ -128,6 +135,12 @@ export default {
         })
     },
     uploadFile() {
+      if (!this.shopId) {
+        this.messageService.error({
+          content: '请选择门店'
+        })
+        return
+      }
       this.$modalRouter.push({
         name: 'brand-setting-import',
         props: {
