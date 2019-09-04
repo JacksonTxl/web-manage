@@ -30,6 +30,7 @@
           class="mg-l8"
           showSearch
           placeholder="请选择教练"
+          v-if="showTable === 'all'"
           optionFilterProp="children"
           style="width: 200px"
           v-model="coach_id"
@@ -103,6 +104,9 @@ export default {
     page() {
       const { current_page, total_counts } = this.page$
       return { current_page, total_counts }
+    },
+    showTable() {
+      return this.$route.query.showTable || 'all'
     },
     query() {
       return {
