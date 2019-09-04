@@ -72,7 +72,6 @@ Object.defineProperty(Vue.prototype, '$message', {
 interface BootstrapConfig {
   AppComponent: any
   routes: any[]
-  data?: any
 }
 
 export default function bootstrap(bootstrapConfig: BootstrapConfig) {
@@ -84,8 +83,6 @@ export default function bootstrap(bootstrapConfig: BootstrapConfig) {
       }
     }
   ])
-
-  container.bindValue('APP_DATA', bootstrapConfig.data)
 
   const { router } = new VueServiceApp({
     container,

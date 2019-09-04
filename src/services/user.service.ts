@@ -1,6 +1,6 @@
 import { Injectable, ServiceRoute, Inject } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
-import { tap, pluck, map } from 'rxjs/operators'
+import { tap, pluck, map, switchMap } from 'rxjs/operators'
 import { ConstApi } from '@/api/const'
 import { MenuApi } from '@/api/v1/common/menu'
 import { StaffApi } from '@/api/v1/staff'
@@ -8,6 +8,8 @@ import { TooltipApi } from '@/api/v1/admin/tooltip'
 import { get, reduce, isPlainObject } from 'lodash-es'
 import { NProgressService } from './nprogress.service'
 import { ShopApi } from '@/api/v1/shop'
+import { forkJoin, of } from 'rxjs'
+import { then } from '@/operators'
 
 interface User {
   id?: string
@@ -51,6 +53,8 @@ interface ModuleEnums {
  */
 @Injectable()
 export class UserService {
+  firstInited$ = new State(false)
+
   user$ = new State<User>({})
   brand$ = new State<Brand>({})
   shop$ = new State<Shop>({})
@@ -115,19 +119,8 @@ export class UserService {
     private staffApi: StaffApi,
     private tooltipApi: TooltipApi,
     private nprogress: NProgressService,
-    private shopApi: ShopApi,
-    @Inject('APP_DATA') private appData: any
-  ) {
-    if (appData) {
-      this.SET_BRAND(appData.staff)
-      this.SET_SHOP(appData.staff)
-      this.SET_USER(appData.staff)
-      this.SET_ENUMS(appData.enum)
-      this.SET_MENU_DATA(appData.menu)
-      this.SET_INVALID_TOOLTIP(appData.tooltip)
-      this.SET_SHOP_LIST(appData.shop)
-    }
-  }
+    private shopApi: ShopApi
+  ) {}
   SET_USER(staff: any) {
     const info = staff.info
     this.user$.commit(user => {
@@ -256,16 +249,29 @@ export class UserService {
   public delFavorite(id: number) {
     return this.menuApi.delFavorite(id)
   }
-
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.nprogress.SET_TEXT('用户数据加载中...')
-    const menus = this.menuData$.snapshot().menus
-    if (!menus || !menus.length) {
-      console.log('菜单未配置')
-      return next({
-        name: 'welcome'
-      })
+  private init() {
+    if (!this.firstInited$.snapshot()) {
+      return forkJoin(
+        this.getUser(),
+        this.getMenuData(),
+        this.getEnums(),
+        this.getInvalidTooltips(),
+        this.getShopList()
+      ).pipe(
+        then(() => {
+          this.firstInited$.commit(() => true)
+        })
+      )
+    } else {
+      return of({})
     }
-    return next()
+  }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+    this.nprogress.SET_TEXT('用户数据加载中...')
+    return this.init().pipe(
+      then(() => {
+        this.nprogress.SET_TEXT('用户信息数据获取完毕')
+      })
+    )
   }
 }

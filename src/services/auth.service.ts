@@ -20,14 +20,7 @@ interface DataState {
 @Injectable()
 export class AuthService {
   auth$ = new State<Array<string>>([])
-  constructor(
-    private authApi: AuthApi,
-    private nprogress: NProgressService,
-    @Inject('APP_DATA') private appData: any
-  ) {
-    this.nprogress.SET_TEXT('用户权限数据加载中...')
-    this.SET_AUTH(get(appData, 'auth.auth', []))
-  }
+  constructor(private authApi: AuthApi, private nprogress: NProgressService) {}
   SET_AUTH(auth: any[]) {
     this.auth$.commit(() => auth)
   }
@@ -117,5 +110,19 @@ export class AuthService {
   }
   tabCan(s: string) {
     return 1
+  }
+  init() {
+    if (!this.auth$.snapshot().length) {
+      return forkJoin([this.getList()]).pipe(
+        tap(() => {
+          this.nprogress.SET_TEXT('用户权限数据获取完成')
+        })
+      )
+    } else {
+      return of([])
+    }
+  }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+    return this.init()
   }
 }

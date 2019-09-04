@@ -95,11 +95,12 @@ export class RedirectService implements RouteGuard {
     // 跳转路径为空
     if (!redirectRouteName) {
       this.nprogress.done()
-      // return next({
-      //   name: 'welcome'
-      // })
+      this.notification.error({
+        title: 'REDIRECT_ROUTE_EMPTY',
+        content: '跳转路由为空'
+      })
       // 找不到redirectRouteName时跳转next()
-      // return next()
+      return next()
     }
     // 目标路由为父亲路由时才跳转
     if (to.name === locateRouteName) {
@@ -117,7 +118,7 @@ export class RedirectService implements RouteGuard {
         this.nprogress.done()
         this.notification.error({
           title: 'WRONG_REDIRECT_ROUTE_NAME',
-          content: `页面不存在 ${JSON.stringify(redirectRouteName)}`
+          content: `路由不存在 ${JSON.stringify(redirectRouteName)}`
         })
         next({
           name: 'welcome'

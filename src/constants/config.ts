@@ -12,10 +12,10 @@ export class AppConfig {
    */
   HTTP_TIMEOUT = 20000
   /**
-   * easy mock 路径
-   * @see https://www.easy-mock.com/project/5c77a2c8df6f65489b3c3308
+   * 本地mock
+   * 见 mock 文件下app.js
    */
-  API_BASE_MOCK = 'https://mock.styd.cn/mock/5ca41bca1b15c5002090e2e4/v1'
+  API_BASE_MOCK = '/_mock_api'
   /**
    * 图片基础路径
    */
