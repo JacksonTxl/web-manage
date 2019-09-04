@@ -19,6 +19,10 @@
         border-radius: 100px 0 0 100px;
       }
       .ant-menu-item {
+        &:active {
+          .bg(#edf6ff);
+          border-radius: 100px 0 0 100px;
+        }
         a:hover,
         &:hover {
           color: @primary-color !important;
@@ -30,7 +34,12 @@
       .ant-menu-submenu-title {
         .c(@text);
         &:hover {
-          .bg(rgba(24, 144, 255, 0.1));
+          .bg(#edf6ff);
+          border-radius: 100px 0 0 100px;
+        }
+        &:active {
+          .bg(#edf6ff);
+          border-radius: 100px 0 0 100px;
         }
       }
       &__logo {
