@@ -87,7 +87,10 @@ export class DepartmentService {
       })
       .pipe(
         tap(res => {
-          this.departmentSearchList$.commit(() => res.department)
+          this.departmentSearchList$.commit(() => [
+            { id: '-1', name: '全部部门' },
+            ...res.department
+          ])
         })
       )
   }
