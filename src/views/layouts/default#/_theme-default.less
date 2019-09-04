@@ -98,6 +98,11 @@
         }
         &:hover {
           .bg(#22274b);
+          border-radius: 100px 0 0 100px;
+        }
+        &:active {
+          .bg(#22274b);
+          border-radius: 100px 0 0 100px;
         }
       }
       .ant-menu-submenu-arrow {
@@ -110,12 +115,18 @@
       align-items: center;
       padding-left: 16px !important;
       cursor: default;
+      &:active {
+        .bg(#22274b);
+        border-radius: 100px 0 0 100px;
+      }
       &.sub {
         .fz(12px);
       }
       a:hover,
       &:hover {
         color: @white !important;
+        .bg(#22274b);
+        border-radius: 100px 0 0 100px;
         .layout-default-sider__menu-star {
           opacity: 1;
           transition: all 0.5s;
