@@ -468,7 +468,8 @@ export default {
       this.$modalRouter.push({
         name: 'sold-course-refund',
         props: {
-          id: this.infoService.id
+          id: this.infoService.id,
+          type: 'package'
         },
         on: {
           success() {
