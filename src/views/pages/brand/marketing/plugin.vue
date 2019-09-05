@@ -12,24 +12,14 @@
                 注册人数
                 <img src="~@/assets/img/brand/marketing/register.svg" />
               </p>
-              <ICountUp
-                class="font-number"
-                :endVal="+info.num.register_num"
-                v-if="info.num.register_num"
-              />
-              <span v-else>--</span>
+              <span class="font-number">{{ info.num.register_num }}</span>
             </li>
             <li>
               <p>
                 交易人数
                 <img src="~@/assets/img/brand/marketing/deals.svg" />
               </p>
-              <ICountUp
-                class="font-number"
-                :endVal="+info.num.trade_num"
-                v-if="info.num.trade_num"
-              />
-              <span v-else>--</span>
+              <span class="font-number">{{ info.num.trade_num }}</span>
             </li>
             <li>
               <p>
