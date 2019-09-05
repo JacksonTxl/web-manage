@@ -64,6 +64,7 @@ export class UserService {
     menus: [],
     first_url: ''
   })
+  isShop$ = new Computed(this.shop$.pipe(map(shop => !!shop.id)))
   menus$ = new Computed<any[]>(this.menuData$.pipe(pluck('menus')))
   firstMenuUrl$ = new Computed<string>(this.menuData$.pipe(pluck('first_url')))
   favoriteMenu$ = new Computed(this.menuData$.pipe(pluck('favorite')))
