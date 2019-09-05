@@ -6,16 +6,17 @@
     @ok="postBlackListSetting"
   >
     <a-select
+      v-model="blackKeys"
       mode="multiple"
       placeholder="手机号搜索"
       style="width: 100%"
       @search="onSearchKeyWords"
+      @change="joinPerson"
       :maxTagCount="0"
       class="mg-b24"
-      @change="joinPerson"
     >
       <template slot="maxTagPlaceholder">
-        <div>已选择{{ num }}个</div>
+        <div>已选择{{ blackList.length || 0 }}个</div>
       </template>
       <a-select-option
         v-for="item in searchList"
@@ -71,8 +72,8 @@ export default {
       show: false,
       list: [],
       blackList: [],
-      page: {},
-      num: 0,
+      page: {}, // 前端分页
+      blackKeys: [],
       searchList: []
     }
   },
@@ -86,6 +87,9 @@ export default {
     getBlackList() {
       return this.blackService.getBlackList().subscribe(res => {
         this.blackList = res.list
+        this.blackKeys = this.blackList.map(({ user_id }) => {
+          return user_id
+        })
       })
     },
     onSearchKeyWords(val) {
@@ -95,16 +99,18 @@ export default {
     },
     joinPerson(para) {
       this.blackList = []
-      para.map(id => {
+      this.blackKeys.map(id => {
         this.searchList.map(searchItem => {
           if (searchItem.user_id === id) {
             this.blackList.push(searchItem)
-            this.num = this.blackList.length
           }
         })
       })
     },
     deletePerson(para) {
+      this.blackKeys = this.blackKeys.filter(id => {
+        return id !== para.user_id
+      })
       this.blackList = this.blackList.filter(({ user_id }) => {
         return user_id !== para.user_id
       })

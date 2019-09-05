@@ -77,7 +77,7 @@
       <ul :class="bContent('day-group')" v-else>
         <li
           class="day"
-          :class="item | currentDay"
+          :class="[currentDay(item), index === 6 ? 'last' : '']"
           v-for="(item, index) in weeks"
           :key="item.week"
         >
@@ -194,17 +194,6 @@ export default {
       const time = val - 1
       return time < 9 ? `0${time}:00` : `${time}:00`
     },
-    currentDay(val) {
-      let weekOfday = moment(val.date).format('E')
-      let date =
-        val.week === 0
-          ? val.date
-          : moment(val.date)
-              .subtract(weekOfday - val.week, 'days')
-              .format('YYYY-MM-DD')
-      let current = moment().format('YYYY-MM-DD')
-      return date === current ? 'active' : ''
-    },
     dateString(val) {
       let weekOfday = moment(val.date).format('E')
       let week = !val.week
@@ -223,6 +212,17 @@ export default {
   methods: {
     onClickAdd() {
       this.$emit('add')
+    },
+    currentDay(val) {
+      let weekOfday = moment(val.date).format('E')
+      let date =
+        val.week === 0
+          ? val.date
+          : moment(val.date)
+              .subtract(weekOfday - val.week, 'days')
+              .format('YYYY-MM-DD')
+      let current = moment().format('YYYY-MM-DD')
+      return date === current ? 'active' : ''
     },
     oChangeDate(date) {
       this.start = date.start_date

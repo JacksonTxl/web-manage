@@ -12,7 +12,10 @@
           @click.stop="toggle"
           v-if="isFolder && level !== 0"
         >
-          {{ isOpen ? '-' : '+' }}
+          <st-icon
+            size="10px"
+            :type="isOpen ? 'minus' : 'close-tree'"
+          ></st-icon>
         </span>
         <span
           class="tree-switch__empty"
@@ -35,7 +38,7 @@
             <st-icon type="close" />
           </span>
         </div>
-        <span class="tree-name" v-else>
+        <span class="tree-name" :class="[item.id === 0 ? 'first' : '']" v-else>
           {{ item.name }}( {{ item.count }} )
         </span>
         <st-more-dropdown class="tree-opreation" v-show="!item.isEdi">

@@ -18,7 +18,7 @@ export default {
   props: {
     color: {
       type: String,
-      default: 'rgba(0,0,0,.15)'
+      default: '#CDD4DF' //需要的颜色
     }
   }
 }

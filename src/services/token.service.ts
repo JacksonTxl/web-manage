@@ -7,8 +7,6 @@ import {
 } from 'vue-service-app'
 import { AppConfig } from '@/constants/config'
 import { State, Computed } from 'rx-state'
-import { pluck } from 'rxjs/operators'
-import { Store } from './store'
 import { NProgressService } from './nprogress.service'
 
 @Injectable()

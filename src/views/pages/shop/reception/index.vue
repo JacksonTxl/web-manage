@@ -43,7 +43,7 @@
         <div
           :class="reception('operation-item')"
           @click="onShortcut(item.id)"
-          :disabled="!item.auth || item.version > 1"
+          :disabled="!item.auth || item.version > RECEPTION.VERSION_1"
           :key="index"
         >
           <p>
@@ -210,7 +210,7 @@
                 <span class="set-info-value">
                   {{ selectMemberInfo.coach.name || '无' }}
                   <a @click="isEditCoach = true" v-if="auth.bindCoach">
-                    <st-icon type="anticon:edit"></st-icon>
+                    <st-icon type="edit"></st-icon>
                     &nbsp;编辑
                   </a>
                 </span>
@@ -283,7 +283,7 @@
                 <span class="set-info-value">
                   {{ selectMemberInfo.seller.name || '无' }}
                   <a @click="isEditSeller = true" v-if="auth.bindSalesman">
-                    <st-icon type="anticon:edit"></st-icon>
+                    <st-icon type="edit"></st-icon>
                     &nbsp;编辑
                   </a>
                 </span>
@@ -558,6 +558,8 @@ import FrontSimpleArea from '@/views/biz-components/stat/front-simple-area'
 import FrontAddMember from '@/views/biz-modals/front/add-member'
 import FrontAddWorkNote from '@/views/biz-modals/front/add-work-note'
 import FaceUpload from '@/views/biz-components/face-upload/face-upload'
+import { summaryList, shortcutList } from './index.config'
+import { RECEPTION } from '@/constants/reception/reception'
 export default {
   name: 'PageShopReception',
   bem: {
@@ -592,96 +594,7 @@ export default {
   },
   data() {
     return {
-      // 头部统计信息
-      summaryList: [
-        {
-          label: '今日订单',
-          type: 'today_order',
-          unit: '单',
-          color: '#3A6FED',
-          version: 1
-        },
-        {
-          label: '今日预约',
-          type: 'today_reserve',
-          unit: '条',
-          color: '#2C8DD2',
-          version: 2
-        },
-        {
-          label: '今日团课',
-          type: 'today_team_course',
-          unit: '节',
-          color: '#1EA9B9',
-          version: 1
-        },
-        {
-          label: '今日收银',
-          type: 'today_revenue',
-          unit: '元',
-          color: '#11C5A1',
-          version: 2
-        },
-        {
-          label: '今日入场',
-          type: 'today_entry',
-          unit: '人',
-          color: '#01E882',
-          version: 1
-        }
-      ],
-      // 快捷操作
-      shortcutList: [
-        {
-          id: 'orderPage',
-          icon: 'reception-create',
-          label: '销售开单',
-          auth: true,
-          version: 1
-        },
-        {
-          id: 'reservePage',
-          icon: 'reception-order',
-          label: '预约管理',
-          auth: true,
-          version: 2
-        },
-        {
-          id: 'checkInPage',
-          icon: 'reception-customer',
-          label: '入场管理',
-          auth: true,
-          version: 1
-        },
-        {
-          id: 'temporaryPage',
-          icon: 'reception-advance',
-          label: '定金押金',
-          auth: true,
-          version: 2
-        },
-        {
-          id: 'schedulePage',
-          icon: 'reception-course',
-          label: '课程预约',
-          auth: true,
-          version: 1
-        },
-        {
-          id: 'cabinetPage',
-          icon: 'reception-cabinet',
-          label: '储物柜',
-          auth: true,
-          version: 2
-        },
-        {
-          id: 'addVisit',
-          icon: 'reception-record',
-          label: '预约到访',
-          auth: true,
-          version: 2
-        }
-      ],
+      RECEPTION,
       // 根据权限处理后的快捷操作列表
       filterShortcutList: [],
       // 搜索会员的关键字
@@ -717,6 +630,8 @@ export default {
   },
   computed: {
     // 会员列表是否未搜索到
+    summaryList,
+    shortcutList,
     isSearchNone() {
       return this.memberSearchText !== '' && !this.memberList.length
     },
@@ -800,7 +715,7 @@ export default {
         i => this.auth[i.id] && i.version === 1
       )
       falseArray = this.shortcutList.filter(
-        i => !this.auth[i.id] || i.version > 1
+        i => !this.auth[i.id] || i.version > this.RECEPTION.VERSION_1
       )
       this.filterShortcutList = cloneDeep([...trueArray, ...falseArray])
     },

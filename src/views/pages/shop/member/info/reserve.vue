@@ -146,7 +146,7 @@ export default {
     return {
       cardquery: {
         start_time: '',
-        card_type: 2,
+        card_type: 1,
         keyword: ''
       },
       coursequery: {

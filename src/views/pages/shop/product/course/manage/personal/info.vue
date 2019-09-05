@@ -34,8 +34,8 @@
         </div>
         <div class="page-personal-header__right" v-viewer="{ url: 'data-src' }">
           <img
-            :src="image | imgFilter({ w: 560, h: 320 })"
-            :data-src="image | imgFilter({ w: 1000 })"
+            :src="image | imgFilter({ w: 560, h: 320, type: 'course' })"
+            :data-src="image | imgFilter({ w: 1000, type: 'course' })"
             :alt="info.course_name"
           />
         </div>
@@ -147,7 +147,7 @@ export default {
       return arr
     },
     image() {
-      return this.info.image.image_key || this.appConfig.PLACEHOLDER_IMG.NODATA
+      return this.info.image.image_key
     }
   },
   data() {

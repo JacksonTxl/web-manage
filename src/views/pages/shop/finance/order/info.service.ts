@@ -2,22 +2,16 @@ import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state'
 import { OrderApi } from '@/api/v1/finance/order'
 import { tap, pluck } from 'rxjs/operators'
-import { Store } from '@/services/store'
 import { AuthService } from '@/services/auth.service'
 
-export interface SetState {
-  info: any
-  auth: object
-}
-
 @Injectable()
-export class InfoService extends Store<SetState> implements RouteGuard {
+export class InfoService implements RouteGuard {
   info$: Computed<any>
   id = ''
   tabs$ = new State([])
   auth$: Computed<object>
+  state$: State<any>
   constructor(private orderApi: OrderApi, private authService: AuthService) {
-    super()
     this.state$ = new State({
       auth: {}
     })

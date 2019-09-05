@@ -17,6 +17,7 @@
     "inspect": "vue-cli-service inspect > inspect.js",
     "inspect:prod": "vue-cli-service inspect --mode production > inspect.js",
     "less-base": "gulp less-base",
+    "mock": "nodemon ./mock/mock.js -w mock/mock.js",
     "push:rx": "git subtree push git@gitlab.styd.cn:fe/packages/rx-state.git --prefix=rx-state master",
     "push:vsa": "git subtree push git@gitlab.styd.cn:fe/packages/vue-service-app.git --prefix=vue-service-app master"
   },
@@ -74,6 +75,7 @@
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-vue": "^5.2.2",
+    "express": "^4.17.1",
     "git-rev-sync": "^1.12.0",
     "globby": "^9.1.0",
     "gulp": "^4.0.0",

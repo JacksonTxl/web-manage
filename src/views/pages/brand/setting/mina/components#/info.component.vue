@@ -29,7 +29,10 @@
             <st-info-item label="微信认证" v-else>未认证</st-info-item>
             <st-info-item label="发布状态">
               {{ data.mina_info.send_status | sendstatusFilter }}
-              <a :class="info('a')" @click="submitAudit">
+              <a
+                :class="[info('a'), loading.subAudit ? info('a-disabled') : '']"
+                @click="submitAudit"
+              >
                 {{ data.mina_info.send_status | authBtnFilter }}
               </a>
             </st-info-item>
@@ -162,8 +165,8 @@ export default {
       })
     },
     submitAudit() {
+      if (this.loading.subAudit) return
       this.indexService.subAudit().subscribe(res => {
-        console.log(res)
         this.indexService.getInfo().subscribe()
       })
     }

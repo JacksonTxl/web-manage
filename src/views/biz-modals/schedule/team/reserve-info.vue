@@ -3,7 +3,7 @@
     class="modal-reserved"
     title="预约详情"
     @ok="save"
-    width="848px"
+    width="878px"
     v-model="show"
   >
     <a-row :gutter="24" class="modal-reserved-info">
@@ -32,127 +32,132 @@
         </st-info>
       </a-col>
     </a-row>
-    <st-form-table hoverable>
-      <thead>
-        <tr>
-          <th v-for="col in columns" :key="col.dataIndex">
-            {{ col.title }}
-            <st-help-tooltip
-              v-if="col.dataIndex == 'site_num_list'"
-              id="TSGC002"
-            />
-          </th>
-        </tr>
-      </thead>
-      <tbody v-if="isAdd">
-        <tr>
-          <td class="st-form-table__add">
-            <a-select
-              slot="member"
-              showSearch
-              placeholder="搜索会员名"
-              style="width: 120px"
-              :defaultActiveFirstOption="false"
-              :showArrow="false"
-              :filterOption="false"
-              @search="onSearch"
-              @change="onChange"
-              :notFoundContent="null"
-            >
-              <a-select-option v-for="member in memberOptions" :key="member.id">
-                {{ member.member_name }}
-              </a-select-option>
-            </a-select>
-          </td>
-          <td>
-            <a-select
-              slot="consume_type"
-              placeholder="请选择消费方式"
-              style="width: 120px"
-              v-model="showConsumeType"
-              @change="onChangeConsumeType"
-            >
-              <a-select-opt-group
-                v-for="consumeType in consumeOptions"
-                :key="consumeType.id"
+    <st-container>
+      <st-form-table hoverable>
+        <thead>
+          <tr>
+            <th v-for="col in columns" :key="col.dataIndex">
+              {{ col.title }}
+              <st-help-tooltip
+                v-if="col.dataIndex == 'site_num_list'"
+                id="TSGC002"
+              />
+            </th>
+          </tr>
+        </thead>
+        <tbody v-if="isAdd">
+          <tr>
+            <td class="st-form-table__add">
+              <a-select
+                slot="member"
+                showSearch
+                placeholder="搜索会员名"
+                style="width: 120px"
+                :defaultActiveFirstOption="false"
+                :showArrow="false"
+                :filterOption="false"
+                @search="onSearch"
+                @change="onChange"
+                :notFoundContent="null"
               >
-                <span slot="label">
-                  <a-icon type="snippets" />
-                  {{ consumeType.name }}
-                </span>
                 <a-select-option
-                  v-for="consume in consumeType.children"
-                  :value="JSON.stringify(consume)"
-                  :key="consume.id"
+                  v-for="member in memberOptions"
+                  :key="member.id"
                 >
-                  {{ consume.name }}
+                  {{ member.member_name }}
                 </a-select-option>
-              </a-select-opt-group>
-            </a-select>
-          </td>
-          <td>
-            <a-select
-              slot="site_num_list"
-              mode="multiple"
-              placeholder="请选择座位"
-              style="width: 120px"
-              v-model="showSite"
-              :maxTagCount="3"
-              @change="onChangeSiteNumList"
-            >
-              <a-select-option
-                v-for="siteNum in unUsedSeatOptions"
-                :key="siteNum.id"
+              </a-select>
+            </td>
+            <td>
+              <a-select
+                slot="consume_type"
+                placeholder="请选择消费方式"
+                style="width: 120px"
+                v-model="showConsumeType"
+                @change="onChangeConsumeType"
               >
-                {{ siteNum.name }}
-              </a-select-option>
-            </a-select>
-          </td>
-          <td>
-            <span slot="current_reservation_num">
-              {{ currentReservationNum }}人
-            </span>
-          </td>
-          <td>未签到</td>
-          <td>
-            <a
-              href="javascript:;"
-              @click="onClickReserve"
-              v-if="infoAuth['shop:reserve:team_course_reserve|add']"
-            >
-              添加预约
-            </a>
-          </td>
-        </tr>
-        <tr v-for="(item, index) in list" :key="index">
-          <td>{{ item.member }}</td>
-          <td>{{ item.consume_name }}</td>
-          <td>{{ item.site_num_list | siteNumListFilter }}</td>
-          <td>{{ item.current_reservation_num }}人</td>
-          <td>{{ item.is_checkin_name }}</td>
-          <td>
-            <div>
+                <a-select-opt-group
+                  v-for="consumeType in consumeOptions"
+                  :key="consumeType.id"
+                >
+                  <span slot="label">
+                    <a-icon type="snippets" />
+                    {{ consumeType.name }}
+                  </span>
+                  <a-select-option
+                    v-for="consume in consumeType.children"
+                    :value="JSON.stringify(consume)"
+                    :key="consume.id"
+                  >
+                    {{ consume.name }}
+                  </a-select-option>
+                </a-select-opt-group>
+              </a-select>
+            </td>
+            <td>
+              <a-select
+                slot="site_num_list"
+                mode="multiple"
+                placeholder="请选择座位"
+                style="width: 120px"
+                v-model="showSite"
+                :maxTagCount="3"
+                @change="onChangeSiteNumList"
+              >
+                <a-select-option
+                  v-for="siteNum in unUsedSeatOptions"
+                  :key="siteNum.id"
+                >
+                  {{ siteNum.name }}
+                </a-select-option>
+              </a-select>
+            </td>
+            <td>
+              <span slot="current_reservation_num">
+                {{ currentReservationNum }}人
+              </span>
+            </td>
+            <td>未签到</td>
+            <td>
               <a
-                class="mg-r8"
                 href="javascript:;"
-                @click="onClickCancel(item.reserve_id)"
-                v-if="item.auth['shop:reserve:team_course_reserve|del']"
+                @click="onClickReserve"
+                v-if="infoAuth['shop:reserve:team_course_reserve|add']"
               >
-                取消预约
+                添加预约
               </a>
-              <a
-                href="javascript:;"
-                v-if="item.auth['shop:reserve:team_course_reserve|checkin']"
-                @click="onClickCheckIn(item.reserve_id)"
-              >
-                签到消费
-              </a>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </st-form-table>
-    <div slot="footer" class="mg-t24 ta-r">
+            </td>
+          </tr>
+          <tr v-for="(item, index) in list" :key="index">
+            <td>{{ item.member }}</td>
+            <td>{{ item.consume_name }}</td>
+            <td>{{ item.site_num_list | siteNumListFilter }}</td>
+            <td>{{ item.current_reservation_num }}人</td>
+            <td>{{ item.is_checkin_name }}</td>
+            <td>
+              <div>
+                <a
+                  class="mg-r8"
+                  href="javascript:;"
+                  @click="onClickCancel(item.reserve_id)"
+                  v-if="item.auth['shop:reserve:team_course_reserve|del']"
+                >
+                  取消预约
+                </a>
+                <a
+                  href="javascript:;"
+                  v-if="item.auth['shop:reserve:team_course_reserve|checkin']"
+                  @click="onClickCheckIn(item.reserve_id)"
+                >
+                  签到消费
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </st-form-table>
+    </st-container>
+    <div slot="footer" class="ta-r">
       <st-button
         @click="onClickCancelCourse"
         v-if="infoAuth['shop:schedule:team_course_schedule|del']"
@@ -351,17 +356,11 @@ export default {
         })
         return
       }
-      this.unUsedSeatOptions.forEach(item => {
-        if (val.includes(item.id)) {
-          let value = item.name
-          if (item.name === '无座位') value = -1
-          this.siteNumIds.length < 3 && this.siteNumIds.push(value)
-          tempArr = this.siteNumIds.filter(item => item === -1)
-        }
-        const arr = Array.from(new Set(this.siteNumIds)).filter(
-          item => item !== -1
-        )
-        this.siteNumIds = [...arr, ...tempArr]
+      const unSeatArr = this.unUsedSeatOptions
+        .map(item => (item.name === '无座位' ? item.id : -1))
+        .filter(item => item !== -1)
+      this.siteNumIds = val.map(item => {
+        return unSeatArr.includes(item) ? -1 : item
       })
       this.currentReservationNum = this.showSite.length
     },

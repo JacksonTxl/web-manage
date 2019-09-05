@@ -59,7 +59,7 @@ export class RePasswordService {
     return this.staffApi.updatepermission(id, params).pipe(
       tap(res => {
         this.msg.success({
-          content: '修改密码成功'
+          content: '修改账号权限成功'
         })
       })
     )

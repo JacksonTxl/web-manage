@@ -89,9 +89,8 @@
           设置薪资账户
         </a>
         <a
-          href="javascript: void(0)"
           v-if="record.auth['brand_shop:staff:staff|del']"
-          v-modal-link="{ name: 'staff-delete', props: { staff: record } }"
+          @click="onClickDelete(record)"
         >
           删除
         </a>
@@ -197,6 +196,9 @@ export default {
     }
   },
   methods: {
+    onClickDelete(record) {
+      this.$modalRouter.push({ name: 'staff-delete', props: { staff: record } })
+    },
     staffLeave(record) {
       this.$modalRouter.push({
         name: 'staff-turnover',

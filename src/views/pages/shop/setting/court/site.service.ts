@@ -1,18 +1,14 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
 import { AreaSeatApi, AddInput, UpdateInput } from '@/api/v1/shop/area_seat'
 
-interface ResState {
-  resData: object
-}
 @Injectable()
-export class SiteService extends Store<ResState> {
-  state$: State<ResState>
+export class SiteService {
+  loading$ = new State({})
+  state$: State<any>
   resData$: Computed<object>
   constructor(private areaSeatApi: AreaSeatApi) {
-    super()
     this.state$ = new State({
       resData: {}
     })

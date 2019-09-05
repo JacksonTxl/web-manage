@@ -9,10 +9,14 @@
       width: 150px;
     }
     &__form-item {
+      .ant-form-item-control-wrapper {
+        overflow: visible;
+      }
       &--switch {
         .mg-b(20px);
         .ant-switch {
-          .fl-r;
+          float: right;
+          margin-top: 12px;
         }
       }
       &--radio {

@@ -54,6 +54,7 @@ export default {
 
       this.chart.axis('name', {
         label: {
+          offsetY: 2,
           textStyle: {
             fontSize: 12,
             fill: '#9BACB9'

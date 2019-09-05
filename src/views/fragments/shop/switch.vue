@@ -41,7 +41,7 @@
           <st-no-data text="空空如也~" v-else />
         </a-spin>
       </section>
-      <section>
+      <section v-if="isShop">
         <a
           class="drawer-switch-shop__to-brand st-link-secondary"
           @click="switchBackToBrand"
@@ -75,7 +75,8 @@ export default {
     return {
       shopList: shopList$,
       loading: loading$,
-      shop: this.userService.shop$
+      shop: this.userService.shop$,
+      isShop: this.userService.isShop$
     }
   },
   data() {

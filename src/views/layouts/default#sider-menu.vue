@@ -68,13 +68,15 @@
             </span>
           </a-menu-item>
         </a-sub-menu>
-        <a-menu-item v-else :key="menu.id">
-          <router-link
-            :to="{ name: menu.url }"
-            :class="{
-              'ant-menu-item-selected': menu.id === currentSiderMenu.id
-            }"
-          >
+        <a-menu-item
+          v-else
+          :class="{
+            'st-menu-item-selected': menu.id === currentSiderMenu.id
+          }"
+          class="ant-menu-item__only-one"
+          :key="menu.id"
+        >
+          <router-link :to="{ name: menu.url }">
             <st-icon :type="menu.icon" />
             <span>{{ menu.name }}</span>
           </router-link>
@@ -137,8 +139,21 @@ export default {
   },
   created() {
     this.init()
+    // this.$nextTick().then(() => {
+    //   document.querySelectorAll('.ant-menu-submenu-title').forEach(item =>
+    //     item.addEventListener('click', () => {
+    //       console.log('ddss')
+    //       document.querySelectorAll('.ant-menu-item.st-menu-item-selected').forEach(ele => {
+    //         ele.setAttribute('class', '.ant-menu-item')
+    //       })
+    //     })
+    //   )
+    // })
   },
   methods: {
+    onClickSubMenu() {
+      console.log('subMenu')
+    },
     init() {
       this.setOpenKeys()
     },
@@ -207,9 +222,16 @@ export default {
       this.selectedKeys = selectedKey ? [selectedKey] : []
     },
     onClickMenuItem(menu) {
-      this.$router.push({
+      const { resolved } = this.$router.resolve({
         name: menu.url
       })
+      if (!resolved.matched.length) {
+        location.href = '/404'
+      } else {
+        this.$router.push({
+          name: menu.url
+        })
+      }
     },
     addFavorite(id, subMenu) {
       this.userService.addFavorite(id).subscribe(() => {
