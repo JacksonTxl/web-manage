@@ -7,6 +7,7 @@
             幸运大转盘
           </template>
           <div :class="bPage('lottery')">
+            <div :class="bPage('swiper')"></div>
             <img
               :class="bPage('lottery-banner')"
               src="~@/assets/img/brand/marketing/lottery/bg.png"
@@ -63,7 +64,7 @@
               <a-input
                 @change="getTitle"
                 placeholder="请输入活动标题"
-                v-decorator="decorators.activity_base.share_title"
+                v-decorator="decorators.activity_base.activity_sub_name"
               ></a-input>
             </st-form-item>
             <st-form-item label="活动时间" labelWidth="84px" required>
@@ -104,6 +105,18 @@
                   {{ item.label }}
                 </a-radio>
               </a-radio-group>
+              <st-image-upload
+                width="164px"
+                height="164px"
+                :list="fileShareList"
+                @change="onShareChangeGetAvatar"
+                :sizeLimit="2"
+                placeholder="上传头像"
+              ></st-image-upload>
+              <a-input
+                placeholder="分享标题"
+                v-decorator="decorators.activity_base.share_title"
+              ></a-input>
             </st-form-item>
             <st-form-item label="" labelWidth="84px">
               <st-button type="primary" @click="next(1)">下一步</st-button>
@@ -112,6 +125,17 @@
 
           <st-form :form="form" labelGutter="0" v-show="currentIndex == 1">
             <st-form-item label="参与用户" labelWidth="84px" required>
+              <a-radio-group
+                v-decorator="decorators.activity_rule.join_crowd_all"
+              >
+                <a-radio
+                  v-for="(item, index) in crowd"
+                  :key="index"
+                  :value="item.value"
+                >
+                  {{ item.label }}
+                </a-radio>
+              </a-radio-group>
               <a-select
                 placeholder="请选择参与用户"
                 v-decorator="decorators.activity_rule.crowd_id"
@@ -150,13 +174,21 @@
                   {{ item.label }}
                 </a-radio>
               </a-radio-group>
-            </st-form-item>
-            <st-form-item label=" 中奖次数" labelWidth="84px">
-              每人最多可中奖
+
+              每人总共有
               <st-input-number
                 @change="getPerTimes"
                 style="width: 100px;"
                 v-decorator="decorators.activity_rule.per_times"
+              ></st-input-number>
+              次
+            </st-form-item>
+            <st-form-item label=" 中奖次数" labelWidth="84px">
+              每人最多可中奖
+              <st-input-number
+                @change="getTotalTimes"
+                style="width: 100px;"
+                v-decorator="decorators.activity_rule.total_times"
               ></st-input-number>
               次
             </st-form-item>
@@ -228,12 +260,13 @@
             <st-t3 class="mg-b24 mg-t32">未中奖设置</st-t3>
             <st-form-item label="名称">
               <a-input
-                placeholder="请输入奖品名称"
+                @change="getName"
+                placeholder="请输入未奖品名称"
                 v-decorator="decorators.activity_lucky.lucky_name"
               ></a-input>
             </st-form-item>
             <st-form-item label=" 图片">
-              <a-radio-group>
+              <a-radio-group v-model="notPrizeImgType">
                 <a-radio
                   v-for="(item, index) in imgType"
                   :key="index"
@@ -295,6 +328,7 @@ export default {
         description: ''
       },
       fileList: [],
+      fileShareList: [],
       prizeList: [],
       stepArr: [
         {
@@ -310,7 +344,15 @@ export default {
           key: 3
         }
       ],
-      currentIndex: 0
+      currentIndex: 0,
+      notPrizeImgType: 1,
+      notPrize: {
+        prize_name: '',
+        image: {
+          image_url:
+            'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/dev/image/10000/2019-09-05/分组3___f12c6b9b10bb___.png'
+        }
+      }
     }
   },
   bem: {
@@ -368,7 +410,8 @@ export default {
           .validate([
             'activity_rule.crowd_id',
             'activity_rule.draw_condition',
-            'activity_rule.draw_times_type'
+            'activity_rule.draw_times_type',
+            'activity_rule.total_times'
           ])
           .then(() => {
             this.currentIndex = para
@@ -382,10 +425,14 @@ export default {
     onChangeGetAvatar(imageFiles) {
       this.fileList = cloneDeep(imageFiles)
     },
+    onShareChangeGetAvatar(imageFiles) {
+      this.fileShareList = cloneDeep(imageFiles)
+    },
     onSubmit() {
       this.form.validate().then(value => {
         value.activity_base.start_time = this.preview.startTime
         value.activity_base.end_time = this.preview.endTime
+        value.activity_base.share_bg = this.fileShareList[0]
         value.activity_prizes = this.prizeList
         // value.activity_lucky.lucky_image = this.fileList[0]
         this.addService.add(value).subscribe(res => {})
@@ -394,9 +441,17 @@ export default {
     getTitle(e) {
       this.preview.title = e.target.value
     },
+    getName(e) {
+      this.notPrize.prize_name = e.target.value
+      this.prizeList =
+        this.tempList.length > 0
+          ? this.tempList.length.concat(this.notPrize)
+          : this.notPrize
+    },
     getPerTimes(e) {
       this.preview.perTimes = e.target.value
     },
+    getTotalTimes() {},
     getDescription(e) {
       this.preview.description = e.target.value
     },
@@ -407,8 +462,7 @@ export default {
     },
     getPrizeInfo(val) {
       this.prizeList.push(val)
-      if (this.prizeList.length >= 3) {
-      }
+      this.tempList = this.prizeList
     },
     onDelete(para) {
       this.prizeList = this.prizeList.filter(item => {

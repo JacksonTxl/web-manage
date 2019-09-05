@@ -23,7 +23,7 @@
         <div :class="bPage('checkin-btn')">
           <st-button
             type="primary"
-            :disabled="list.code_status !== 1"
+            :disabled="list.code_status === 1"
             class="text-center mg-t24"
             @click="checkin"
           >
@@ -109,7 +109,9 @@ export default {
       })
     },
     checkin() {
-      return this.checkinService.checkin(this.keyword).subscribe(res => {})
+      return this.checkinService.checkin(this.keyword).subscribe(res => {
+        this.getCheckinList()
+      })
     }
   }
 }

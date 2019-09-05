@@ -30,7 +30,7 @@ export const columns = () => {
     },
     {
       title: '兑换码状态',
-      dataIndex: 'code_status'
+      dataIndex: 'code_status_name'
     }
   ]
 }

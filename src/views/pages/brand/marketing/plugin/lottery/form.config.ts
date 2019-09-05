@@ -22,6 +22,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     'activity_base.wheel_turn_around': {
+      initialValue: 1,
       rules: [
         {
           required: true,
@@ -30,6 +31,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     'activity_base.wheel_share_default': {
+      initialValue: 1,
       rules: [
         {
           required: true,
@@ -37,7 +39,7 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    'activity_base.share_title': {
+    'activity_base.activity_sub_name': {
       rules: [
         {
           required: true,
@@ -50,6 +52,16 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     'activity_base.share_bg': {},
+    'activity_base.share_title': {},
+    'activity_rule.join_crowd_all': {
+      initialValue: 1,
+      rules: [
+        {
+          required: true,
+          message: '请选择用户'
+        }
+      ]
+    },
     'activity_rule.crowd_id': {
       rules: [
         {
@@ -59,6 +71,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     'activity_rule.draw_condition': {
+      initialValue: 1,
       rules: [
         {
           required: true,
@@ -67,6 +80,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     'activity_rule.draw_times_type': {
+      initialValue: 1,
       rules: [
         {
           required: true,
@@ -74,36 +88,25 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    'activity_rule.per_times': {},
+    'activity_rule.per_times': {
+      // rules: [
+      //   {
+      //     required: true,
+      //     message: '请填写每日抽奖次数'
+      //   }
+      // ]
+    },
     'activity_rule.total_times': {
       rules: [
         {
-          required: true,
-          message: '请填写每日抽奖次数'
-        }
-      ]
-    },
-    'activity_prizes.prize_name': {
-      rules: [
-        {
-          required: true,
-          message: '请填写奖品名称'
+          message: '请填写每日总次数'
         }
       ]
     },
     'activity_lucky.lucky_name': {
       rules: [
         {
-          required: true,
           message: '请填写未中奖奖品名称'
-        }
-      ]
-    },
-    'activity_lucky.lucky_image': {
-      rules: [
-        {
-          required: true,
-          message: '请填写未中奖奖品地址'
         }
       ]
     }

@@ -14,6 +14,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     prize_type: {
+      initialValue: 1,
       rules: [
         {
           required: true,
@@ -38,6 +39,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     is_shop_range: {
+      initialValue: 1,
       rules: [
         {
           required: true,
