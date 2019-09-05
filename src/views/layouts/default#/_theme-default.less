@@ -74,6 +74,7 @@
         .ant-menu-submenu-title {
           // .c(@white);
           .bg(#191e41);
+          border-radius: 100px 0 0 100px;
           &:before {
             .h(22px);
           }
@@ -109,24 +110,25 @@
         display: none;
       }
     }
-
+    .ant-menu-item__only-one {
+      border-radius: 100px 0 0 100px;
+      &:active,
+      &:hover {
+        .bg(#22274b);
+        border-radius: 100px 0 0 100px;
+      }
+    }
     .ant-menu-item {
       display: flex;
       align-items: center;
       padding-left: 16px !important;
       cursor: default;
-      &:active {
-        .bg(#22274b);
-        border-radius: 100px 0 0 100px;
-      }
       &.sub {
         .fz(12px);
       }
       a:hover,
       &:hover {
         color: @white !important;
-        .bg(#22274b);
-        border-radius: 100px 0 0 100px;
         .layout-default-sider__menu-star {
           opacity: 1;
           transition: all 0.5s;
