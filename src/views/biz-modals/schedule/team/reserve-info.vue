@@ -8,6 +8,7 @@
   >
     <a-row :gutter="24" class="modal-reserved-info">
       <a-col :lg="8">
+        {{ unUsedSeatOptions }}
         <st-info>
           <st-info-item label="上课教练">{{ info.coach_name }}</st-info-item>
           <st-info-item label="上课时间">{{ info.start_time }}</st-info-item>
@@ -356,17 +357,11 @@ export default {
         })
         return
       }
-      this.unUsedSeatOptions.forEach(item => {
-        if (val.includes(item.id)) {
-          let value = item.name
-          if (item.name === '无座位') value = -1
-          this.siteNumIds.length < 3 && this.siteNumIds.push(value)
-          tempArr = this.siteNumIds.filter(item => item === -1)
-        }
-        const arr = Array.from(new Set(this.siteNumIds)).filter(
-          item => item !== -1
-        )
-        this.siteNumIds = [...arr, ...tempArr]
+      const unSeatArr = this.unUsedSeatOptions
+        .map(item => (item.name === '无座位' ? item.id : -1))
+        .filter(item => item !== -1)
+      this.siteNumIds = val.map(item => {
+        return unSeatArr.includes(item) ? -1 : item
       })
       this.currentReservationNum = this.showSite.length
     },
