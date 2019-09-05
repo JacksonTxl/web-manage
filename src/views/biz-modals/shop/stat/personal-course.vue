@@ -94,11 +94,15 @@ export default {
     }
   },
   props: {
-    stat_date: String
+    record: {
+      type: Object,
+      default: () => {}
+    }
   },
   data() {
     return {
       show: false,
+      stat_date: '',
       consumeList: [],
       course_type: COURSE_TYPE.PERSONAL,
       coach_id: -1,
@@ -117,20 +121,14 @@ export default {
       return this.$route.query.showTable || 'all'
     },
     query() {
-      let query = cloneDeep({
+      return {
         stat_date: this.stat_date,
         course_type: this.course_type,
         coach_id: this.coach_id,
         course_id: this.course_id,
         current_page: this.current_page,
         size: this.size
-      })
-      debugger
-      // 当教练上课报表则不需要coach_id
-      if (this.showTable === 'coach') {
-        delete query.coach_id
       }
-      return query
     },
     courseTypeList() {
       return this.courseTypeList$.filter(
@@ -144,6 +142,8 @@ export default {
     },
     init() {
       const course_type = this.course_type
+      this.coach_id = this.record.coach_id || -1
+      this.stat_date = this.record.stat_date
       this.personalCourseService
         .init({ course_type }, { ...this.query })
         .subscribe()

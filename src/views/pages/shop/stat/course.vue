@@ -163,38 +163,34 @@ export default {
   },
   methods: {
     getPersonalCourse(record) {
-      const { stat_date } = record
       this.$modalRouter.push({
         name: 'shop-stat-personal-course',
         props: {
-          stat_date
+          record
         }
       })
     },
     getPersonalConsume(record) {
-      const { stat_date } = record
       this.$modalRouter.push({
         name: 'shop-stat-personal-consume',
         props: {
-          stat_date
+          record
         }
       })
     },
     getTeamCourse(record) {
-      const { stat_date } = record
       this.$modalRouter.push({
         name: 'shop-stat-team-course',
         props: {
-          stat_date
+          record
         }
       })
     },
     getTeamConsume(record) {
-      const { stat_date } = record
       this.$modalRouter.push({
         name: 'shop-stat-team-consume',
         props: {
-          stat_date
+          record
         }
       })
     },

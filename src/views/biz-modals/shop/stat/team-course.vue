@@ -85,12 +85,16 @@ export default {
     }
   },
   props: {
-    stat_date: String
+    record: {
+      type: Object,
+      default: () => {}
+    }
   },
   data() {
     return {
       show: false,
       consumeList: [],
+      stat_date: '',
       course_type: COURSE_TYPE.TEAM,
       coach_id: -1,
       course_id: -1,
@@ -131,6 +135,8 @@ export default {
     }
   },
   mounted() {
+    this.coach_id = this.record.coach_id || -1
+    this.stat_date = this.record.stat_date
     this.teamCourseService
       .init({ course_type: COURSE_TYPE.TEAM }, { ...this.query })
       .subscribe()
