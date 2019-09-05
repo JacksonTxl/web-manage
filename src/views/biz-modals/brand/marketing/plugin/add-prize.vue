@@ -52,6 +52,14 @@
               {{ item.label }}
             </a-radio>
           </a-radio-group>
+          <st-image-upload
+            width="164px"
+            height="164px"
+            :list="fileList"
+            @change="onChangeGetAvatar"
+            :sizeLimit="2"
+            placeholder="上传图片"
+          ></st-image-upload>
         </st-form-item>
       </st-form>
     </div>
@@ -61,6 +69,7 @@
 import { AddPrizeService } from './add-prize.service'
 import { ruleOptions } from './add-prize.config.ts'
 import { PatternService } from '@/services/pattern.service'
+import { cloneDeep } from 'lodash-es'
 
 export default {
   name: 'BrandMarketingPoster',
@@ -92,7 +101,8 @@ export default {
     return {
       form,
       decorators,
-      show: false
+      show: false,
+      fileList: []
     }
   },
   mounted() {
@@ -109,8 +119,14 @@ export default {
     })
   },
   methods: {
+    onChangeGetAvatar(imageFiles) {
+      this.fileList = cloneDeep(imageFiles)
+      console.log(this.fileList[0])
+    },
     onSubmit() {
       this.form.validate().then(value => {
+        value.image = this.fileList[0]
+        console.log(value)
         this.$emit('change', value)
         this.show = false
       })

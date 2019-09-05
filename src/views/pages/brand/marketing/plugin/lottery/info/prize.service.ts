@@ -11,18 +11,18 @@ export class PrizeService implements RouteGuard {
   loading$ = new State({})
   constructor(private lotteryApi: LotteryApi) {}
   @Effect()
-  getPrizedList(id: string) {
-    return this.lotteryApi.getPrizedList(id).pipe(
+  getPrizedList(query: any) {
+    return this.lotteryApi.getPrizedList(query).pipe(
       tap(res => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })
     )
   }
-  init(id: string) {
-    return forkJoin(this.getPrizedList(id))
+  init(query: any) {
+    return forkJoin(this.getPrizedList(query))
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    return this.init(to.meta.query.id)
+    return this.init(to.meta.query)
   }
 }

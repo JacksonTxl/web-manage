@@ -31,8 +31,8 @@ export class LotteryApi extends Api {
     return this.http.get('/v1/plugin/wheel', { query })
   }
   // 用户列表
-  getUserList() {
-    return this.http.get('/v1/plugin/member')
+  getUserList(query: GetPrizedListQuery) {
+    return this.http.get('/v1/plugin/member', { query })
   }
   //核销列表
   getCheckinList() {
@@ -56,6 +56,12 @@ export class LotteryApi extends Api {
       params
     })
   }
+  // 编辑回显
+  editVIew(activity_id: string) {
+    return this.http.get('/v1/plugin/wheel/edit_view', {
+      query: { activity_id }
+    })
+  }
   // 详情
   info(activity_id: string) {
     return this.http.get('/v1/plugin/wheel/edit', {
@@ -69,7 +75,11 @@ export class LotteryApi extends Api {
     })
   }
   // 获取列表头部信息
-  getHeaderInfo(id: number) {
-    return this.http.get('/v1/plugin/wheel/' + id)
+  getHeaderInfo(id: string) {
+    return this.http.put('/v1/plugin/wheel/info?id=' + id)
+  }
+  // 结束活动
+  stopActivity(id: string) {
+    return this.http.put('/v1/plugin/wheel/end?id=' + id)
   }
 }

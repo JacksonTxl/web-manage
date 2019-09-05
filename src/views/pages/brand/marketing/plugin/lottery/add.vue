@@ -11,25 +11,17 @@
               :class="bPage('lottery-banner')"
               src="~@/assets/img/brand/marketing/lottery/bg.png"
             />
-            <div :class="bPage('lottery-scroll')">
-              <!-- <ul class="bg-scroll">
-                <img
-                  src="~@/assets/img/brand/marketing/lottery/start.png"
-                  alt
-                  class="notice-img"
-                />
-                <li
-                  v-for="(item, i) in list"
-                  :key="i"
-                  ref="rollLi"
-                  :class="{ anim: animate && i == 0 }"
-                ></li>
-              </ul> -->
-            </div>
+            <span>{{ preview.title }}</span>
             <div :class="bPage('lottery-turntable')">
-              <span>{{ preview.title }}</span>
-              <!-- <img src="~@/assets/img/brand/marketing/lottery/start.png" alt class="popup" /> -->
-              <!-- <span @click="handleStart" class="start-btn"></span> -->
+              <div
+                class="img-wrap"
+                :class="'run - item-' + index"
+                v-for="(item, index) in prizeList"
+                :key="index"
+              >
+                <img class="img" :src="item.image.image_url" alt="" />
+                {{ item.prize_name }}
+              </div>
             </div>
             <div :class="bPage('lottery-footer')">
               <div :class="bPage('lottery-title')">活动规则</div>
@@ -241,7 +233,7 @@
               ></a-input>
             </st-form-item>
             <st-form-item label=" 图片">
-              <a-radio-group v-decorator="decorators.activity_lucky.lucky_name">
+              <a-radio-group>
                 <a-radio
                   v-for="(item, index) in imgType"
                   :key="index"
@@ -250,6 +242,14 @@
                   {{ item.label }}
                 </a-radio>
               </a-radio-group>
+              <st-image-upload
+                width="164px"
+                height="164px"
+                :list="fileList"
+                @change="onChangeGetAvatar"
+                :sizeLimit="2"
+                placeholder="上传头像"
+              ></st-image-upload>
             </st-form-item>
             <st-form-item label="" labelWidth="84px">
               <st-button type="primary" @click="onSubmit">完成</st-button>
@@ -267,6 +267,8 @@ import Steps from '../../../staff/add#/st-steps'
 import { ruleOptions } from './form.config.ts'
 import { PatternService } from '@/services/pattern.service'
 import BrandMarketingPluginAddPrize from '@/views/biz-modals/brand/marketing/plugin/add-prize'
+import { RouteService } from '@/services/route.service'
+import { cloneDeep } from 'lodash-es'
 
 export default {
   name: 'PluginLotteryAdd',
@@ -292,6 +294,7 @@ export default {
         perTimes: 0,
         description: ''
       },
+      fileList: [],
       prizeList: [],
       stepArr: [
         {
@@ -308,7 +311,6 @@ export default {
         }
       ],
       currentIndex: 0
-      // stepsSpan: 12
     }
   },
   bem: {
@@ -317,11 +319,13 @@ export default {
   serviceInject() {
     return {
       addService: AddService,
-      pattern: PatternService
+      pattern: PatternService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
+      query: this.routeService.query$,
       drawCondition: this.addService.drawCondition$,
       drawTimesType: this.addService.drawTimesType$,
       invitePoster: this.addService.invitePoster$,
@@ -338,10 +342,12 @@ export default {
     H5Container,
     Steps
   },
-  created() {},
-  mounted() {
-    let scrollTimer = setInterval(this.scroll, 2000)
+  created() {
+    if (this.query.activity_id) {
+      this.editVIew(this.query.activity_id)
+    }
   },
+  mounted() {},
   methods: {
     next(para) {
       if (para === 1) {
@@ -373,10 +379,15 @@ export default {
       let index = e.index.target.textContent - 1
       this.currentIndex = index >= 0 ? index : 0
     },
+    onChangeGetAvatar(imageFiles) {
+      this.fileList = cloneDeep(imageFiles)
+    },
     onSubmit() {
       this.form.validate().then(value => {
         value.activity_base.start_time = this.preview.startTime
         value.activity_base.end_time = this.preview.endTime
+        value.activity_prizes = this.prizeList
+        // value.activity_lucky.lucky_image = this.fileList[0]
         this.addService.add(value).subscribe(res => {})
       })
     },
@@ -396,11 +407,16 @@ export default {
     },
     getPrizeInfo(val) {
       this.prizeList.push(val)
+      if (this.prizeList.length >= 3) {
+      }
     },
     onDelete(para) {
       this.prizeList = this.prizeList.filter(item => {
         return item.prize_name !== para
       })
+    },
+    editVIew(id) {
+      return this.addService.editVIew(id).subscribe(res => {})
     }
   }
 }

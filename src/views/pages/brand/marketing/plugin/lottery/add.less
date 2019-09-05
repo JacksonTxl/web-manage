@@ -31,26 +31,6 @@
       line-height: 40px;
       text-align: center;
     }
-    &-scroll {
-      .bg-scroll {
-        position: relative;
-        background: url('~@/assets/img/brand/marketing/lottery/bg.png') center
-          top no-repeat;
-        background-size: 100%;
-        width: 100%;
-        overflow: hidden;
-        text-align: center;
-      }
-
-      .lkq-name {
-        margin: 0 auto;
-        color: #fff;
-      }
-
-      .anim {
-        transition: all 0.5s linear;
-      }
-    }
     &-turntable {
       position: absolute;
       bottom: 558px;
@@ -60,9 +40,16 @@
       margin-left: -273px;
       border: 1px solid red;
 
-      .img {
+      .img-wrap {
         width: 174px;
         height: 174px;
+        padding: 10px 20px;
+        text-align: center;
+        img {
+          display: block;
+          max-width: 136px;
+          max-height: 136px;
+        }
       }
       .start-btn {
         position: absolute;
@@ -72,13 +59,6 @@
         margin-top: -87px;
         width: 174px;
         height: 174px;
-      }
-      .popup {
-        // width: 75%;
-        // position: absolute;
-        // top: 100px;
-        // left: 50px;
-        // z-index: 100;
       }
       .run-item-0 {
       }
@@ -90,7 +70,7 @@
 
       .run-item-2 {
         display: block;
-        margin: 0 0 0 348px;
+        margin: 10px 0 0 348px;
       }
 
       .run-item-3 {

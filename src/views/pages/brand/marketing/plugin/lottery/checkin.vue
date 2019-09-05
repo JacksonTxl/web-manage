@@ -4,6 +4,7 @@
       <a-input-search
         style="width:722px"
         placeholder="输入需要核销的兑换码"
+        v-model="keyword"
         @search="getCheckinList"
         enterButton="搜索"
       />
@@ -20,7 +21,12 @@
           rowKey="id"
         ></st-table>
         <div :class="bPage('checkin-btn')">
-          <st-button type="primary" class="text-center mg-t24" @click="checkin">
+          <st-button
+            type="primary"
+            :disabled="list.code_status !== 1"
+            class="text-center mg-t24"
+            @click="checkin"
+          >
             核销
           </st-button>
         </div>
@@ -77,7 +83,8 @@ export default {
   name: 'PluginLotteryCheckin',
   data() {
     return {
-      list: []
+      list: [],
+      keyword: ''
     }
   },
   bem: {
@@ -97,12 +104,12 @@ export default {
   computed: { columns },
   methods: {
     getCheckinList() {
-      return this.checkinService.getCheckinList().subscribe(res => {
+      return this.checkinService.getCheckinList(this.keyword).subscribe(res => {
         this.list = res.list
       })
     },
     checkin() {
-      return this.checkinService.checkin().subscribe(res => {})
+      return this.checkinService.checkin(this.keyword).subscribe(res => {})
     }
   }
 }

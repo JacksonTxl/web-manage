@@ -10,15 +10,15 @@ export class HeaderService implements RouteGuard {
   loading$ = new State({})
   constructor(private lotteryApi: LotteryApi) {}
   @Effect()
-  getHeaderInfo(query: number) {
+  getHeaderInfo(query: string) {
     return this.lotteryApi.getHeaderInfo(query).pipe(
-      tap(res => {
+      tap((res: any) => {
         this.info$.commit(() => res.info)
       })
     )
   }
-  init(GetPrizedListQuery: any) {
-    return forkJoin(this.getHeaderInfo(GetPrizedListQuery))
+  init(id: string) {
+    return forkJoin(this.getHeaderInfo(id))
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     return this.init(to.meta.query)

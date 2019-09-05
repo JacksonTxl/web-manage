@@ -11,18 +11,18 @@ export class UserService implements RouteGuard {
   loading$ = new State({})
   constructor(private lotteryApi: LotteryApi) {}
   @Effect()
-  getUserList() {
-    return this.lotteryApi.getUserList().pipe(
-      tap(res => {
+  getUserList(query: any) {
+    return this.lotteryApi.getUserList(query).pipe(
+      tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })
     )
   }
-  init() {
-    return forkJoin(this.getUserList())
+  init(query: any) {
+    return forkJoin(this.getUserList(query))
   }
-  beforeRouteEnter() {
-    return this.init()
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+    return this.init(to.meta.query)
   }
 }

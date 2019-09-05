@@ -48,7 +48,7 @@
           <router-link
             :to="{
               name: 'brand-marketing-plugin-lottery-info-user',
-              query: { id: record.id }
+              query: { activity_id: record.id }
             }"
           >
             {{ record.activity_join_num }}
@@ -58,7 +58,7 @@
           <router-link
             :to="{
               name: 'brand-marketing-plugin-lottery-info-user',
-              query: { id: record.id }
+              query: { activity_id: record.id }
             }"
           >
             {{ record.activity_prize_num }}
@@ -77,9 +77,14 @@
             <a @click="onGeneralize(record)">
               推广
             </a>
-            <a>
+            <router-link
+              :to="{
+                name: 'brand-marketing-plugin-lottery-add',
+                query: { activity_id: record.id }
+              }"
+            >
               编辑
-            </a>
+            </router-link>
             <a @click="onStop(record)">
               结束
             </a>
@@ -164,11 +169,10 @@ export default {
         content:
           '结束后当用户进入投放该优惠券的活动时，将无法领取该优惠券。确认要结束？',
         onOk() {
-          that.listService.stopMarketingCoupon(record.id).subscribe(res => {
+          that.indexService.stopActivity(record.id).subscribe(res => {
             that.$router.reload()
           })
-        },
-        onCancel() {}
+        }
       })
     }
   }

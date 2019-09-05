@@ -10,7 +10,7 @@ export const columns = () => {
     },
     {
       title: '参与用户',
-      dataIndex: 'card_type'
+      dataIndex: 'crowd_name'
     },
     {
       title: '参与人数',

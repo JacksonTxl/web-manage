@@ -50,15 +50,6 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     'activity_base.share_bg': {},
-
-    join_crowd_all: {
-      rules: [
-        {
-          required: true,
-          message: '请填写昵称'
-        }
-      ]
-    },
     'activity_rule.crowd_id': {
       rules: [
         {
@@ -113,70 +104,6 @@ export const ruleOptions = (vm: any) => {
         {
           required: true,
           message: '请填写未中奖奖品地址'
-        }
-      ]
-    },
-    prize_type: {
-      rules: [
-        {
-          required: true,
-          message: '请填写昵称'
-        }
-      ]
-    },
-    coupon_id: {
-      rules: [
-        {
-          required: true,
-          message: '请填写昵称'
-        }
-      ]
-    },
-    prize_id: {
-      rules: [
-        {
-          required: true,
-          message: '请填写昵称'
-        }
-      ]
-    },
-    is_shop_range: {
-      rules: [
-        {
-          required: true,
-          message: '请填写昵称'
-        }
-      ]
-    },
-    support_shop_ids: {
-      rules: [
-        {
-          required: true,
-          message: '请填写昵称'
-        }
-      ]
-    },
-    valid_days: {
-      rules: [
-        {
-          required: true,
-          message: '请填写昵称'
-        }
-      ]
-    },
-    number: {
-      rules: [
-        {
-          required: true,
-          message: '请填写昵称'
-        }
-      ]
-    },
-    image: {
-      rules: [
-        {
-          required: true,
-          message: '请填写昵称'
         }
       ]
     }

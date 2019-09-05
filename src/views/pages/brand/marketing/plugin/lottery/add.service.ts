@@ -22,8 +22,10 @@ export class AddService implements RouteGuard {
   add(params: addParams) {
     return this.lotteryApi.add(params)
   }
-  init() {}
-  beforeRouteEnter() {
-    return this.init()
+  editVIew(id: string) {
+    return this.lotteryApi.editVIew(id)
+  }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+    // return this.editVIew(to.meta.query.activity_id)
   }
 }

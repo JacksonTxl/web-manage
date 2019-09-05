@@ -24,6 +24,9 @@ export class IndexService implements RouteGuard {
       })
     )
   }
+  stopActivity(id: string) {
+    return this.lotteryApi.stopActivity(id)
+  }
   init(GetActivityListQuery: any) {
     return forkJoin(this.getActivityList(GetActivityListQuery))
   }
