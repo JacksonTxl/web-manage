@@ -12,9 +12,6 @@ import { NProgressService } from './nprogress.service'
 // @ts-ignore
 import VueModalRouter from 'vue-modal-router'
 
-interface MockOptions {
-  status?: number
-}
 interface Query {
   [key: string]: any
 }
@@ -22,10 +19,6 @@ interface Params {
   [key: string]: any
 }
 interface RequestOptions {
-  /**
-   * mock参数
-   */
-  mock?: MockOptions
   /**
    * get 请求query参数
    */
@@ -131,17 +124,8 @@ export class HttpService {
     return delete$
   }
   private makeRequestUrl(url: string, options: RequestOptions = {}) {
-    let requestUrl = ''
-    const { mock, query } = options
-    if (mock) {
-      if (mock.status && mock.status !== 200) {
-        requestUrl = this.appConfig.API_BASE_MOCK + '/' + mock.status
-      } else {
-        requestUrl = this.appConfig.API_BASE_MOCK + url
-      }
-    } else {
-      requestUrl = this.appConfig.API_BASE + url
-    }
+    let requestUrl = this.appConfig.API_BASE + url
+    const { query } = options
     if (query && Object.keys(query)) {
       requestUrl = requestUrl + '?' + qs.stringify(query)
     }

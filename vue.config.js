@@ -78,6 +78,9 @@ module.exports = {
   devServer: {
     disableHostCheck: true,
     watchContentBase: true,
+    before(app) {
+      console.log(app)
+    },
     proxy: {
       '/_api': {
         target: localApiEnvHostTarget,

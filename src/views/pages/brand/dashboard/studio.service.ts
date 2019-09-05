@@ -1,8 +1,9 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State } from 'rx-state/src'
-import { tap } from 'rxjs/operators'
+import { tap, catchError } from 'rxjs/operators'
 import { StatApi, RecentQuery } from '@/api/v1/stat/brand'
-import { forkJoin } from 'rxjs'
+import { forkJoin, of } from 'rxjs'
+import { anyAll } from '@/operators/any-all'
 
 @Injectable()
 export class StudioService {
@@ -120,7 +121,7 @@ export class StudioService {
     )
   }
   init() {
-    return forkJoin(
+    return anyAll(
       this.getTop(),
       this.getAvg(),
       this.getUserAll({ recently_day: 7 }),
