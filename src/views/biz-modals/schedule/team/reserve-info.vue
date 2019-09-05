@@ -362,7 +362,7 @@ export default {
       this.siteNumIds = val.map(item => {
         let value
         this.unUsedSeatOptions.forEach(ele => {
-          if (item === ele.id) {
+          if (item === ele.id && ele.name !== '无座位') {
             value = ele.name
           }
         })
