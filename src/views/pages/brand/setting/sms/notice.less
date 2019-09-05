@@ -8,16 +8,20 @@
 
       &-th {
         display: inline-block;
-        .w(20%);
+        width: 20%;
         .fz(14px);
         .ta-l;
         .c(#5e6a7f);
-        padding: 16px 0 16px 24px;
+        padding: 16px 0 16px 36px;
       }
 
       &-th:first-child {
-        .w(150px);
+        .w(180px);
         padding-left: 24px;
+        box-sizing: border-box;
+      }
+      &-th:last-child {
+        margin-left: 12px;
         box-sizing: border-box;
       }
 
