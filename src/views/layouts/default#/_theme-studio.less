@@ -6,11 +6,13 @@
       .ant-menu-submenu-open {
         .ant-menu-submenu-title {
           .bg(#edf6ff);
+          border-radius: 100px 0 0 100px;
         }
       }
       .ant-menu-submenu-selected {
         .ant-menu-submenu-title {
           .bg(#e5f2ff);
+          border-radius: 100px 0 0 100px;
           .c(@title);
         }
       }
@@ -18,16 +20,18 @@
         background: #e5f2ff;
         border-radius: 100px 0 0 100px;
       }
-      .ant-menu-item {
-        &:active {
+      .ant-menu-item__only-one {
+        border-radius: 100px 0 0 100px;
+        &:active,
+        &:hover {
           .bg(#edf6ff);
           border-radius: 100px 0 0 100px;
         }
+      }
+      .ant-menu-item {
         a:hover,
         &:hover {
           color: @primary-color !important;
-          .bg(#edf6ff);
-          border-radius: 100px 0 0 100px;
         }
       }
       .ant-menu-item-selected {

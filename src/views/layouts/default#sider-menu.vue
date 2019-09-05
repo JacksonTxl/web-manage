@@ -73,6 +73,7 @@
           :class="{
             'st-menu-item-selected': menu.id === currentSiderMenu.id
           }"
+          class="ant-menu-item__only-one"
           :key="menu.id"
         >
           <router-link :to="{ name: menu.url }">

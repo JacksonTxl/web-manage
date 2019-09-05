@@ -10,7 +10,7 @@ export class AppConfig {
   /**
    * global ajax request timeout
    */
-  HTTP_TIMEOUT = 20000
+  HTTP_TIMEOUT = 10000
   /**
    * 本地mock
    * 见 mock 文件下app.js
