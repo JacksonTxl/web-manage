@@ -59,7 +59,6 @@
       :rowKey="record => record.id"
       :page="page"
       @change="onChangePage"
-      :scroll="{ y: 500 }"
       :loading="loading$.getCourseList"
       :dataSource="courseList$"
     ></st-table>
@@ -140,7 +139,7 @@ export default {
       this.personalCourseService.getCourseList(this.query).subscribe()
     },
     onChangePage(pagination) {
-      this.page.current_page = page.current
+      this.page.current_page = pagination.current
     },
     init() {
       const course_type = this.course_type

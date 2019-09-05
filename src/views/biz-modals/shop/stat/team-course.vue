@@ -51,7 +51,7 @@
       :rowKey="record => record.id"
       :page="page"
       :loading="loading$.getCourseList"
-      @change="onTableChange"
+      @change="onChangePage"
       :showSizeChanger="false"
       :dataSource="courseList$"
     ></st-table>
@@ -99,15 +99,12 @@ export default {
       coach_id: -1,
       course_id: -1,
       current_page: 1,
-      size: 999
+      size: 999,
+      page: {}
     }
   },
   computed: {
     columns,
-    page() {
-      const { current_page, total_counts } = this.page$
-      return { current_page, total_counts }
-    },
     showTable() {
       return this.$route.query.showTable || 'all'
     },
@@ -126,6 +123,9 @@ export default {
     getCourseList() {
       this.teamCourseService.getCourseList(this.query).subscribe()
     },
+    onChangePage(pagination) {
+      this.page.current_page = pagination.current
+    },
     filterOption(input, option) {
       return (
         option.componentOptions.children[0].text
@@ -137,6 +137,8 @@ export default {
   mounted() {
     this.coach_id = this.record.coach_id || -1
     this.stat_date = this.record.stat_date
+    let { current_page, total_counts } = this.page$
+    this.page = { current_page, total_counts }
     this.teamCourseService
       .init({ course_type: COURSE_TYPE.TEAM }, { ...this.query })
       .subscribe()
