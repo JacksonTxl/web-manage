@@ -16,7 +16,6 @@ export class RouteService implements RouteGuard {
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     this.query$.commit(() => to.meta.query)
-    this.nProgressService.SET_TEXT('页面数据加载中...')
   }
   /**
    * 等待前置的所有守卫执行完再执行layout赋值

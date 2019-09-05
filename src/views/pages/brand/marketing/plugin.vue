@@ -26,8 +26,8 @@
               </p>
               <ICountUp
                 class="font-number"
-                :endVal="+info.num.people_num"
-                v-if="info.num.people_num"
+                :endVal="+info.num.trade_num"
+                v-if="info.num.trade_num"
               />
               <span v-else>--</span>
             </li>
@@ -51,9 +51,9 @@
               </p>
               <ICountUp
                 class="font-number"
-                :endVal="+info.num.spend_amount"
+                :endVal="+info.num.expend_amount"
                 :options="{ prefix: '<b>￥</b>' }"
-                v-if="info.num.spend_amount"
+                v-if="info.num.expend_amount"
               />
               <span v-else>--</span>
             </li>

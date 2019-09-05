@@ -960,7 +960,6 @@ export default {
             this.packageData.personal_unit_price = +this.packageData
               .personal_unit_price
           }
-          console.log(this.packageData)
           this.editPackageService
             .editPackage(this.packageData)
             .subscribe(res => {
@@ -1050,6 +1049,14 @@ export default {
                 that.personalCoachListHistory.push(i.coachGradeList)
               })
               that.personalCourseList = cloneDeep(data.list)
+              that.personalCourseList.forEach(item => {
+                if (item.coachGradeList && item.coachGradeList.length > 0) {
+                  item.coachGradeList = item.coachGradeList.map(i => {
+                    return i.id || i
+                  })
+                }
+              })
+              console.log(that.personalCourseList)
             }
           }
         })

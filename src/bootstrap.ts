@@ -22,7 +22,6 @@ import VueServiceApp from 'vue-service-app'
 import container from './container'
 
 // 默认样式加载
-import './style/index'
 import './views/components/register'
 import './filters/register'
 
@@ -78,17 +77,9 @@ interface BootstrapConfig {
 export default function bootstrap(bootstrapConfig: BootstrapConfig) {
   const routes = bootstrapConfig.routes.concat([
     {
-      name: '404',
-      path: '/404',
-      component: require('@/views/404.vue').default,
-      meta: {
-        layout: 'blank'
-      }
-    },
-    {
       path: '*',
-      redirect: {
-        name: '404'
+      beforeEnter() {
+        location.href = '/404'
       }
     }
   ])

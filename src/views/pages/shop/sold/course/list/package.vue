@@ -2,14 +2,11 @@
   <div :class="basic()">
     <st-search-panel>
       <div :class="basic('select')">
-        <span style="width:90px;">课程状态：</span>
-        <st-search-radio
-          v-model="query.course_status"
-          :list="personalCourseList"
-        />
+        <span :class="basic('select-text')">课程状态：</span>
+        <st-search-radio v-model="query.course_status" :list="courseStatus" />
       </div>
       <div :class="basic('select')">
-        <span style="width:90px;">购买时间：</span>
+        <span :class="basic('select-text')">购买时间：</span>
         <st-range-picker
           :disabledDays="180"
           :value="selectTime"
@@ -103,7 +100,6 @@
 import moment from 'moment'
 import { cloneDeep, filter } from 'lodash-es'
 import { PackageService } from './package.service'
-import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './package.config'
@@ -123,9 +119,11 @@ export default {
     SoldCourseSurplus,
     SoldCourseTransfer
   },
+  serviceProviders() {
+    return [PackageService]
+  },
   serviceInject() {
     return {
-      userService: UserService,
       routeService: RouteService,
       packageService: PackageService
     }
@@ -134,10 +132,9 @@ export default {
     return {
       list: this.packageService.list$,
       page: this.packageService.page$,
-      package_course: this.userService.packageCourseEnums$,
+      courseStatus: this.packageService.courseStatus$,
       query: this.routeService.query$,
-      auth: this.packageService.auth$,
-      soldEnums: this.userService.soldEnums$
+      auth: this.packageService.auth$
     }
   },
   data() {
@@ -178,15 +175,7 @@ export default {
     }
   },
   computed: {
-    columns,
-    personalCourseList() {
-      let list = [{ value: -1, label: '全部' }]
-      if (!this.soldEnums.course_status) return list
-      Object.entries(this.soldEnums.course_status.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    }
+    columns
   },
   methods: {
     // 清空列表选择

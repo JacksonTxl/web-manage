@@ -1,4 +1,9 @@
-import { Injectable, ServiceRoute, ServiceRouter } from 'vue-service-app'
+import {
+  Injectable,
+  ServiceRoute,
+  ServiceRouter,
+  Inject
+} from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { tap, map } from 'rxjs/operators'
 import { AuthApi } from '@/api/v1/common/auth'
@@ -15,13 +20,14 @@ interface DataState {
 @Injectable()
 export class AuthService {
   auth$ = new State<Array<string>>([])
-  constructor(private authApi: AuthApi, private nprogress: NProgressService) {
-    this.nprogress.SET_TEXT('用户权限数据加载中...')
+  constructor(private authApi: AuthApi, private nprogress: NProgressService) {}
+  SET_AUTH(auth: any[]) {
+    this.auth$.commit(() => auth)
   }
   getList() {
     return this.authApi.getList().pipe(
       tap((res: any) => {
-        this.auth$.commit(() => res.auth || [])
+        this.SET_AUTH(get(res, 'auth', []))
       })
     )
   }

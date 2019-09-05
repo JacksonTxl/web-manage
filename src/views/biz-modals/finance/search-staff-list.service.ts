@@ -14,8 +14,8 @@ export class SearchStaffListService {
   getSalaryUsedList(id: any, query: SalaryBasicQuery) {
     return this.financeApi.getSearchStaffListSalary(id, query).pipe(
       tap((res: any) => {
-        this.salaryUsedList$.commit(() => res.list.list)
-        this.salaryUsedPage$.commit(() => res.list.page)
+        this.salaryUsedList$.commit(() => res.list)
+        this.salaryUsedPage$.commit(() => res.page)
       })
     )
   }

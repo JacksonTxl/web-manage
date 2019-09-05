@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="b()">
     <st-page-route-nav title="数据导入" v-model="authTabs"></st-page-route-nav>
   </div>
 </template>
@@ -7,7 +7,7 @@
 import { ImportService } from './import.service'
 export default {
   bem: {
-    b: 'page-setting'
+    b: 'page-setting-import'
   },
   serviceInject() {
     return {

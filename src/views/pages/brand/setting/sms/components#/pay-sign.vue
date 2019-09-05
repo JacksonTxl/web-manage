@@ -3,7 +3,7 @@
     <div :class="bComponent('setting')" v-if="!isShowSmsSetting">
       <div class="mg-b8">[短信签名]</div>
       <span>{{ signVal }}</span>
-      <div class="ta-r">
+      <div class="ta-r mg-t16">
         <span class="color-primary" @click="goSetting(1)">
           去设置
         </span>

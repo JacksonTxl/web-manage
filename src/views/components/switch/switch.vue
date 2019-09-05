@@ -1,7 +1,16 @@
+<template>
+  <a-switch class="st-switch" v-model="model" v-bind="$attrs">
+    <slot></slot>
+  </a-switch>
+</template>
+
 <script>
-import { merge } from 'lodash-es'
 export default {
   name: 'StSwitch',
+  model: {
+    prop: 'value',
+    event: 'change'
+  },
   props: {
     value: {
       type: Number,
@@ -9,36 +18,14 @@ export default {
     }
   },
   computed: {
-    checked: {
+    model: {
       get() {
         return !!this.value
+      },
+      set(newVal) {
+        this.$emit('change', newVal ? 1 : 0)
       }
     }
-  },
-  render(h) {
-    const props = merge(
-      {
-        checked: this.checked
-      },
-      this.$attrs
-    )
-    const listeners = merge(this.$listeners, {
-      change: newChecked => {
-        const newVal = newChecked ? 1 : 0
-        this.$emit('input', newVal)
-        this.$emit('change', newVal)
-      }
-    })
-    return h(
-      'a-switch',
-      {
-        props,
-        on: listeners,
-        scopedSlots: this.$scopedSlots,
-        slot: this.$slots
-      },
-      this.$slots
-    )
   }
 }
 </script>

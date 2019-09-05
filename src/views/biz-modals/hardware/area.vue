@@ -142,6 +142,7 @@ export default {
     }
   },
   created() {
+    this.getWhiteList('')
     this.init()
   },
   methods: {

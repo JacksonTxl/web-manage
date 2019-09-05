@@ -5,16 +5,16 @@
         placeholder="请输入租赁柜名、会员姓名或手机号查找"
         v-model="query.search"
         @search="onSearchNative"
-        style="width: 290px;"
+        :class="basic('search')"
       />
     </div>
     <st-search-panel>
       <div :class="basic('select')">
-        <span style="width:90px;">租赁状态：</span>
+        <span :class="basic('select-text')">租赁状态：</span>
         <st-search-radio v-model="query.lease_status" :list="leaseList" />
       </div>
       <div :class="basic('select')">
-        <span style="width:90px;">起租时间：</span>
+        <span :class="basic('select-text')">起租时间：</span>
         <st-range-picker
           :disabledDays="180"
           :value="selectTime"

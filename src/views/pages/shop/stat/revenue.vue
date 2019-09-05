@@ -7,7 +7,7 @@
           {{ todayInfo.time }}
         </span>
         <span @click="refresh">
-          <st-icon type="switch"></st-icon>
+          <st-icon type="refresh"></st-icon>
         </span>
       </div>
       <a-row :class="bPage('income-row')">
@@ -37,14 +37,14 @@
         <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
       </span>
     </div>
+    <!-- :alertSelection="{ onReset: onSelectionReset }" -->
+    <!-- :rowSelection="{ selectedRowKeys, onChange: onSelectionChange }" -->
     <st-table
       :page="page"
       @change="onTableChange"
       :loading="loading.getRevenueShopList"
       :columns="columns"
       :dataSource="list"
-      :alertSelection="{ onReset: onSelectionReset }"
-      :rowSelection="{ selectedRowKeys, onChange: onSelectionChange }"
       rowKey="id"
     ></st-table>
   </div>
@@ -74,7 +74,6 @@ export default {
       list: this.revenueService.list$,
       page: this.revenueService.page$,
       todayInfo: this.revenueService.todayInfo$
-      // auth: this.revenueService.auth$
     }
   },
   data() {
@@ -96,11 +95,9 @@ export default {
   },
   components: { swiper, swiperSlide },
   created() {
-    console.log(this.todayInfo)
     this.getRevenueShopToday()
   },
   methods: {
-    getList() {},
     recentChange(searchFieldsValue) {
       this.onMultiSearch(searchFieldsValue)
     },

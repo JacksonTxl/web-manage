@@ -16,6 +16,7 @@
         <td colspan="5" class="st-form-table__add">
           <st-button
             type="dashed"
+            icon="add"
             block
             v-modal-link="{
               name: 'finance-add-template',

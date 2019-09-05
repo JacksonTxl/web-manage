@@ -355,7 +355,7 @@ export default {
         callback('请填写门店名称')
       } else if (value && !this.rules.shop_name.test(value)) {
         // eslint-disable-next-line
-        callback('输入的门店名称格式错误，请重新输入')
+        callback('支持中英文、数字,不超过20个字')
       } else {
         // eslint-disable-next-line
         callback()

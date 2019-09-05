@@ -78,7 +78,6 @@ export default {
     },
     // 查看详情
     onDetail(info) {
-      console.log(info)
       this.$modalRouter.push({
         name: 'schedule-personal-team-reserve-info',
         props: {

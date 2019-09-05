@@ -117,14 +117,7 @@
           <!-- 售卖门店 -->
           <p class="mb-8">
             <span class="label">售卖门店：</span>
-            <span class="value">
-              {{
-                cardInfo.support_sales
-                  | enumFilter('deposit_card.support_sales')
-              }}
-            </span>
-            <span>(已上架{{ cardInfo.can_use_shop_num }}家门店</span>
-            <span>/共{{ cardInfo.total_shop_num }}家门店)</span>
+            <span class="value">{{ cardInfo.shop_name }}</span>
           </p>
           <st-container
             :class="item('scroll-container')"

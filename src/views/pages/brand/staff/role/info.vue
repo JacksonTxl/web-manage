@@ -21,7 +21,12 @@
           <div class="jurisdiction">
             <st-container class="brand-list">
               <p>品牌权限</p>
-              <a-tree showLine class="role-tree" :treeData="brands"></a-tree>
+              <a-tree showLine class="role-tree" :treeData="brands">
+                <template slot="title" slot-scope="{ selected }">
+                  <a-icon :type="selected ? 'frown' : 'frown-o'" />
+                  {{ title }}
+                </template>
+              </a-tree>
             </st-container>
             <st-container class="shop-list">
               <p>门店权限</p>

@@ -30,7 +30,7 @@
         <!-- 新账号注册 -->
         <st-form-item
           label="登录账号"
-          v-show="!hasAccountName && openJurisdiction"
+          v-if="!hasAccountName && openJurisdiction"
           required
         >
           <a-input
@@ -41,7 +41,7 @@
         </st-form-item>
         <st-form-item
           label="登录密码"
-          v-show="!hasAccountName && openJurisdiction"
+          v-if="!hasAccountName && openJurisdiction"
           required
         >
           <a-input
@@ -53,7 +53,7 @@
         </st-form-item>
         <st-form-item
           label="确认密码"
-          v-show="!hasAccountName && openJurisdiction"
+          v-if="!hasAccountName && openJurisdiction"
           required
         >
           <a-input
@@ -64,7 +64,7 @@
           />
         </st-form-item>
         <!-- 登录重置密码 -->
-        <st-form-item label="登录密码" v-show="openRepassword" required>
+        <st-form-item label="登录密码" v-if="openRepassword" required>
           <a-input
             v-decorator="decorators.password"
             placeholder="6~15个字符，区分大小写"
@@ -72,7 +72,7 @@
             autocomplete="new_password"
           />
         </st-form-item>
-        <st-form-item label="确认密码" v-show="openRepassword" required>
+        <st-form-item label="确认密码" v-if="openRepassword" required>
           <a-input
             v-decorator="decorators.repeat_password"
             placeholder="请再次填写密码"
@@ -178,7 +178,7 @@ export default {
             name: res.account_name
           })
         }
-        this.form.setFieldsValue(form)
+        this.openRepassword && this.form.setFieldsValue(form)
       })
     },
     onClickRePassword() {

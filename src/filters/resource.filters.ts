@@ -1,6 +1,6 @@
 import { AppConfig } from '@/constants/config'
 import { isSupportWebp } from '@/utils/support.ts'
-import avatarDefault from '@/assets/img/avatar_default.png'
+import defaultPlaceholderImage from '@/assets/img/placeholder.png'
 import container from '@/container'
 
 const appConfig = container.get(AppConfig)
@@ -16,6 +16,10 @@ interface ImgFilterOptions {
    * 裁切模式 lfit|mfit|fill|pad|fixed
    */
   m?: string
+  /**
+   *  图片类型 会决定默认占位图
+   */
+  type?: 'course' | 'avatar'
   [propName: string]: any
 }
 
@@ -23,10 +27,28 @@ interface ImgFilterOptions {
  * 图片资源过滤器
  */
 export const imgFilter = (key: string, opts?: ImgFilterOptions): string => {
+  if (!key) {
+    if (!opts) {
+      key = appConfig.PLACEHOLDER_IMG.PICTURE
+    } else {
+      switch (opts.type) {
+        case 'avatar':
+          key = appConfig.PLACEHOLDER_IMG.AVATAR
+          break
+        case 'course':
+          key = appConfig.PLACEHOLDER_IMG.PICTURE
+          break
+        default:
+          key = appConfig.PLACEHOLDER_IMG.PICTURE
+          break
+      }
+    }
+  }
+
   if (/x-oss-process/.test(key) || /blob/.test(key)) {
     return key
   }
-  if (/^image\//.test(key)) {
+  if (!/^https?/.test(key)) {
     key = appConfig.HOST_IMAGE + '/' + key
   }
   const configs: ImgFilterOptions = {
@@ -49,38 +71,8 @@ export const imgFilter = (key: string, opts?: ImgFilterOptions): string => {
   for (let i in configs) {
     processConfigStr += `,${i}_${configs[i]}`
   }
-  return `${key}?x-oss-process=image/resize${processConfigStr}${
+  const ossUrl = `${key}?x-oss-process=image/resize${processConfigStr}${
     isSupportWebp() ? '/quality,q_99/format,webp' : ''
   }`
-}
-
-/**
- * 头像类过滤器
- */
-export function avatarFilter(key: string, options: ImgFilterOptions): string {
-  return imgFilter(key, options) || avatarDefault
-}
-
-/**
- * 门店图过滤器
- */
-export function shopImgFilter(key: string, options: ImgFilterOptions): string {
-  return imgFilter(key, options) || avatarDefault
-}
-
-/**
- * 品牌logo过滤器
- */
-export function brandLogoFilter(
-  key: string,
-  options: ImgFilterOptions
-): string {
-  return imgFilter(key, options) || avatarDefault
-}
-
-/**
- * 卡片图片过滤器
- */
-export function cardImgFilter(key: string, options: ImgFilterOptions): string {
-  return imgFilter(key, options) || avatarDefault
+  return ossUrl
 }

@@ -88,14 +88,7 @@
           <!-- 售卖门店 -->
           <p class="mb-8">
             <span class="label">售卖门店：</span>
-            <span class="value">
-              {{ cardInfo.support_sales.name
-              }}{{
-                `（已上架${cardInfo.shelf_num}家门店/共${
-                  cardInfo.sale_num
-                }家门店）`
-              }}
-            </span>
+            <span class="value">{{ cardInfo.shop_name }}</span>
           </p>
           <st-container
             :class="item('scroll-container')"

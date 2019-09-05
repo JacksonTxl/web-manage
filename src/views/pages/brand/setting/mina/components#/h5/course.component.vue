@@ -1,10 +1,10 @@
 <template>
   <div :class="course()">
-    <st-form>
+    <st-form labelWidth="56px">
       <div :class="course('bdbox')" v-for="(li, index) in list" :key="index">
-        <st-t3 class="mg-y32" v-if="li.course_type === 1">推荐私教课</st-t3>
-        <st-t3 class="mg-y32" v-if="li.course_type === 2">推荐团体课</st-t3>
-        <st-t3 class="mg-y32" v-if="li.course_type === 3">推荐课程包</st-t3>
+        <st-t3 class="mg-y20" v-if="li.course_type === 1">推荐私教课</st-t3>
+        <st-t3 class="mg-y20" v-if="li.course_type === 2">推荐团体课</st-t3>
+        <st-t3 class="mg-y20" v-if="li.course_type === 3">推荐课程包</st-t3>
         <st-form-item label="模块名称">
           <a-input
             placeholder="请输入模块名称"

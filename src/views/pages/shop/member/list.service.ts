@@ -1,7 +1,6 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { State, Computed, Effect, Action } from 'rx-state'
+import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
 import { MemberApi } from '@/api/v1/member'
 import { AuthService } from '@/services/auth.service'
 

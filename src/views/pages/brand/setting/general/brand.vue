@@ -22,10 +22,8 @@
         <span v-else v-viewer="{ url: 'data-src' }">
           <img
             :class="b('logo')"
-            :data-src="brandInfo.image.image_url | brandLogoFilter({ w: 1000 })"
-            :src="
-              brandInfo.image.image_url | brandLogoFilter({ w: 180, h: 180 })
-            "
+            :data-src="brandInfo.image.image_url | imgFilter({ w: 1000 })"
+            :src="brandInfo.image.image_url | imgFilter({ w: 180, h: 180 })"
             alt="brand logo"
           />
         </span>
@@ -107,7 +105,6 @@ import { BrandService } from './brand.service'
 import { RouteService } from '@/services/route.service'
 import { MessageService } from '@/services/message.service'
 import { UserService } from '@/services/user.service'
-import { brandLogoFilter } from '@/filters/resource.filters'
 import { PatternService } from '@/services/pattern.service'
 export default {
   bem: {

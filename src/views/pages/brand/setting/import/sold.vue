@@ -1,164 +1,159 @@
 <template>
   <st-panel app>
-    <a-row :class="b('tip')">
-      <st-icon type="attention" color="#FF5E41" :class="b('tip-icon')" />
-      时间仅支持一份数据的导入，请您在非工作繁忙时间16:00~19:00导入。
-    </a-row>
-    <a-row :class="[b('row'), b('row-tip')]">
+    <import-tip></import-tip>
+    <div :class="bHeader()">
       <st-t2>
         导入售出
       </st-t2>
-      <label>售出的卡、课记录</label>
-    </a-row>
-    <a-row>
+      <label :class="bHeader('desc')">售出的卡、课记录</label>
+    </div>
+    <div>
       请选择需要导入的门店:
-      <a-select placeholder="请选择门店"></a-select>
-    </a-row>
-    <p :class="b('tip-msg')">
+      <a-select
+        placeholder="请选择门店"
+        class="select"
+        v-model="shopId"
+        :allowClear="true"
+      >
+        <a-select-option
+          v-for="(item, index) in shopList"
+          :value="+item.shop_id"
+          :key="index"
+        >
+          {{ item.shop_name }}
+        </a-select-option>
+      </a-select>
+    </div>
+    <p class="page-tip">
       请选择一项需要导入的内容，下载对应模板
     </p>
-    <section>
-      <a-row :class="b('table-row')">
-        <div :class="[bTable('title'), bTable('row-2')]">会员卡</div>
-        <div :class="bTable('content-2')">
-          <div>
-            <a-radio>会员卡</a-radio>
+    <a-radio-group v-model="selectedValue">
+      <div :class="bTable()">
+        <div :class="bTable('left')">会员卡</div>
+        <div :class="bTable('right')">
+          <div :class="bTable('content')">
+            <a-radio :value="IMPORT.SOLD_MEMBER_CARD">会员卡</a-radio>
             <label :class="bTable('desc')">
               包含期卡和次卡——默认不限制入场时间
             </label>
           </div>
-          <div>
-            <a-radio>会员卡入场时间</a-radio>
+          <div :class="bTable('content')">
+            <a-radio :value="IMPORT.SOLD_MEMBER_CARD_ENTER_TIME">
+              <span>会员卡入场时间</span>
+            </a-radio>
             <label :class="bTable('desc')">
               售出的会员卡限制入场时间，请批量导入入场时间
             </label>
           </div>
         </div>
-      </a-row>
-      <a-row :class="b('table-row')">
-        <div :class="[bTable('title'), bTable('row-1')]">储值卡</div>
-        <div :class="bTable('content-1')">
-          <a-radio>储值卡(全部售出信息)</a-radio>
-        </div>
-      </a-row>
-      <a-row :class="b('table-row')">
-        <div :class="[bTable('title'), bTable('row-1')]">私教课</div>
-        <div :class="bTable('content-1')">
-          <a-radio>私教课</a-radio>
-        </div>
-      </a-row>
-      <a-row :class="[b('table-row'), bTable('bottom-line')]">
-        <div :class="[bTable('title'), bTable('row-1')]">租赁柜</div>
-        <div :class="bTable('content-1')">
-          <a-radio>租赁柜</a-radio>
+      </div>
+      <a-row :class="bTable()">
+        <div :class="bTable('left')">储值卡</div>
+        <div :class="bTable('content')">
+          <a-radio :value="IMPORT.SOLD_DEPOSIT">储值卡</a-radio>
           <label :class="bTable('desc')">
-            导入前请预先
-            <a>设置</a>
-            柜子所在区域和柜号
+            全部售出信息
           </label>
         </div>
       </a-row>
-    </section>
-    <a-row :class="b('footer')">
-      <st-button type="primary" :class="b('download')">下载模板</st-button>
-      <st-button>上传文件</st-button>
-    </a-row>
+      <a-row :class="bTable()">
+        <div :class="bTable('left')">私教课</div>
+        <div :class="bTable('content')">
+          <a-radio :value="IMPORT.SOLD_PERSONAL_COURSE">私教课</a-radio>
+        </div>
+      </a-row>
+      <a-row :class="[bTable(), ' bottom-line']">
+        <div :class="bTable('left')">租赁柜</div>
+        <div :class="bTable('content')">
+          <a-radio :value="IMPORT.SOLD_LEASE">租赁柜</a-radio>
+          <label :class="bTable('desc')">
+            导入前请预先设置柜子所在区域和柜号
+            <!-- TODO: 现在不支持跳转 -->
+            <!-- <router-link
+              :to="{
+                path: `/shop/setting/cabinet?id=${shopId}`
+              }"
+            >
+              设置{{ shopId }}
+            </router-link> -->
+          </label>
+        </div>
+      </a-row>
+    </a-radio-group>
+    <div class="page-footer">
+      <st-button type="primary" class="download" @click="fetchDownloadFileInfo">
+        下载模板
+      </st-button>
+      <st-button @click="uploadFile">上传文件</st-button>
+    </div>
   </st-panel>
 </template>
 <script>
-import { SoldService } from './sold.service'
-import { RouteService } from '@/services/route.service'
-import { MessageService } from '@/services/message.service'
+import { IMPORT } from '@/constants/setting/import'
+import { ImportService } from '../import.service'
+import BrandSettingImport from '@/views/biz-modals/brand/setting/import.vue'
 import { UserService } from '@/services/user.service'
-import { brandLogoFilter } from '@/filters/resource.filters'
-import { PatternService } from '@/services/pattern.service'
+import ImportTip from './components#/import-tip'
+import { MessageService } from '@/services/message.service'
+
 export default {
   bem: {
-    b: 'page-setting-sold',
-    bTable: 'page-setting-sold__table-row'
+    bHeader: 'page-header',
+    bTable: 'page-table-row'
+  },
+  modals: {
+    BrandSettingImport
   },
   serviceInject() {
     return {
-      soldService: SoldService,
-      routeService: RouteService,
+      importService: ImportService,
       messageService: MessageService,
-      userService: UserService,
-      pattern: PatternService
+      userService: UserService
     }
   },
   rxState() {
-    const user = this.userService
     return {
-      brandInfo: this.soldService.brandInfo$,
-      systemInfo: this.soldService.systemInfo$,
-      query: this.routeService.query$,
-      settingEnums: user.settingEnums$,
-      loading: this.soldService.loading$
+      shopList: this.userService.shopList$
     }
+  },
+  components: {
+    ImportTip
   },
   data() {
     return {
-      imageList: []
+      IMPORT,
+      selectedValue: IMPORT.SOLD_MEMBER_CARD,
+      shopId: undefined
     }
-  },
-  computed: {
-    isEdit() {
-      return this.query.type === 'edit'
-    }
-  },
-  created() {
-    this.imageList = [this.brandInfo.image]
   },
   methods: {
-    onEdit() {
-      this.$router.push({
-        query: {
-          type: 'edit'
-        }
-      })
+    fetchDownloadFileInfo() {
+      this.importService
+        .fetchDownloadFileInfo(this.selectedValue)
+        .subscribe(res => {
+          window.open(res.url)
+        })
     },
-    onSave() {
-      if (!this.inputCheck()) {
+    uploadFile() {
+      if (!this.shopId) {
+        this.messageService.error({
+          content: '请选择门店'
+        })
         return
       }
-      const info = this.brandInfo
-      const params = {
-        brand_name: info.brand_name,
-        album_id: info.album_id,
-        image: this.imageList[0],
-        description: info.description
-      }
-      this.soldService.update(params).subscribe(() => {
-        this.messageService.success({
-          content: '保存成功'
-        })
-        this.$router.push({
-          force: true
-        })
-        this.userService.getUser().subscribe()
-      })
-    },
-    onCancel() {
-      this.$router.push({
-        query: {}
-      })
-    },
-    onImgChange(list) {
-      this.imageList = list
-    },
-    inputCheck() {
-      const info = this.brandInfo
-      const brandName = info.brand_name
-      const { pattern } = this
-      if (!pattern.CN_EN_NUM_SPACE('1-20').test(brandName)) {
-        this.tip('品牌名称支持20字以内的中英文和数字')
-        return false
-      }
-      return true
-    },
-    tip(msg) {
-      this.messageService.error({
-        content: msg
+      this.$modalRouter.push({
+        name: 'brand-setting-import',
+        props: {
+          type: this.selectedValue,
+          shopId: this.shopId
+        },
+        on: {
+          success: () => {
+            this.$router.push({
+              path: '/brand/setting/import/record'
+            })
+          }
+        }
       })
     }
   }

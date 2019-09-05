@@ -45,7 +45,11 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
     }
 
     // guards 配置
-    if (route.name.startsWith('test') || route.name.startsWith('styleguide')) {
+    if (
+      route.name.startsWith('test') ||
+      route.name.startsWith('styleguide') ||
+      route.name.startsWith('welcome')
+    ) {
       prependGuards(route, [
         NProgressService,
         HotReleaseService,

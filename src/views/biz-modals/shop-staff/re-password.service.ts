@@ -21,7 +21,7 @@ export class RePasswordService {
   getRePassword(id: string) {
     return this.staffApi.getRePassword(id).pipe(
       tap(res => {
-        this.rePasswordInfo$.commit(() => res.info)
+        this.rePasswordInfo$.commit(() => res.account)
       })
     )
   }

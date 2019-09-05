@@ -165,9 +165,7 @@
   </section>
 </template>
 <script>
-import moment from 'moment'
 import { CommodityInfoService } from './commodity-info.service'
-import { RouteService } from '@/services/route.service'
 export default {
   name: 'PageShopFinanceOrderInfoCommodityInfo',
   bem: {
@@ -175,23 +173,18 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       commodityInfoService: CommodityInfoService
     }
   },
   rxState() {
     return {
       info: this.commodityInfoService.info$,
-      product_type: this.commodityInfoService.product_type$,
-      loading: this.commodityInfoService.loading$,
-      query: this.routeService.query$
+      product_type: this.commodityInfoService.product_type$
     }
   },
   data() {
     return {}
   },
-  methods: {
-    moment
-  }
+  methods: {}
 }
 </script>

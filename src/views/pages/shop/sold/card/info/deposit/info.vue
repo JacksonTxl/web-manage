@@ -65,19 +65,6 @@
                 info.transfer_unit | enumFilter('package_course.transfer_unit')
               }}
             </st-info-item>
-            <!-- <st-info-item label="消费场馆">
-              <template v-if="+info.shop_range === 1">
-                {{ info.shop_name }}
-              </template>
-              <template v-if="+info.shop_range === 2">
-                <a @click="onShowShops">
-                  {{ info.shop_range | enumFilter('sold.admission_range') }}
-                </a>
-              </template>
-              <template v-if="+info.shop_range === 3">
-                {{ info.shop_range | enumFilter('sold.admission_range') }}
-              </template>
-            </st-info-item> -->
             <st-info-item label="消费场馆">
               <template v-if="info.shop_range.id < 2">
                 {{ info.shop_range.shop_name }}
@@ -126,6 +113,7 @@ import { RouteService } from '@/services/route.service'
 import moment from 'moment'
 import SoldCardRefund from '@/views/biz-modals/sold/card/refund'
 import SoldCardTransfer from '@/views/biz-modals/sold/card/transfer'
+import { admissionColumns } from '../info.config'
 export default {
   name: 'PageShopSoldCardDepositInfo',
   bem: {
@@ -151,21 +139,10 @@ export default {
   },
   computed: {
     // 门店范围
-    admissionColumns() {
-      const list = [
-        { title: '省', dataIndex: 'province_name', key: 'province_name' },
-        { title: '市', dataIndex: 'city_name', key: 'city_name' },
-        { title: '区', dataIndex: 'district_name', key: 'district_name' },
-        { title: '门店名称', dataIndex: 'shop_name', key: 'shop_name' }
-      ]
-      return list
-    }
+    admissionColumns
   },
   methods: {
     moment,
-    onShowShops() {
-      console.log('多店')
-    },
     // 跳转合同
     toContract() {
       let record = this.info

@@ -1,21 +1,9 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
-import { AuthService } from '@/services/auth.service'
 import { RedirectService } from '@/services/redirect.service'
-interface SetState {}
 @Injectable()
-export class StatService extends Store<SetState> implements RouteGuard {
-  state$: State<SetState>
+export class StatService implements RouteGuard {
   authTabs$ = this.redirectService.getAuthTabs$('shop-stat')
-  constructor(
-    private authService: AuthService,
-    private redirectService: RedirectService
-  ) {
-    super()
-    this.state$ = new State({})
-  }
+  constructor(private redirectService: RedirectService) {}
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     next()
   }

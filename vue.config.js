@@ -85,6 +85,13 @@ module.exports = {
         pathRewrite: {
           '^/_api/': '/'
         }
+      },
+      '/_mock_api': {
+        target: 'http://localhost:8059',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/_mock_api/': '/'
+        }
       }
     },
     port: 8060
@@ -185,7 +192,6 @@ module.exports = {
       })
       return definitions
     })
-    config.optimization.runtimeChunk(true)
     // config.plugins.delete('progress')
     config.resolve.alias.set(
       'vue-service-app',

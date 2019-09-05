@@ -1,5 +1,4 @@
-import { Injectable, RouteGuard } from 'vue-service-app'
-import { State } from 'rx-state'
+import { Injectable } from 'vue-service-app'
 import { RedirectService } from '@/services/redirect.service'
 @Injectable()
 export class ListService {

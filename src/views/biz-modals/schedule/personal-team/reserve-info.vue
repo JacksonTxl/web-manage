@@ -38,100 +38,105 @@
             {{ reserveInfo.start_date }}
           </st-info-item>
           <st-info-item label="预约人数">
-            <!-- {{ reserveInfo.reserve.length }} -->
+            {{ reserveInfo.reserve.length }}
           </st-info-item>
         </st-info>
       </a-col>
     </a-row>
-    <st-form-table hoverable>
-      <thead>
-        <tr>
-          <th v-for="col in columns" :key="col.dataIndex">{{ col.title }}</th>
-        </tr>
-      </thead>
-      <tbody v-if="!loading.add">
-        <tr>
-          <td class="st-form-table__add">
-            <a-select
-              slot="member"
-              showSearch
-              placeholder="搜索会员名"
-              style="width: 120px"
-              :defaultActiveFirstOption="false"
-              :showArrow="false"
-              :filterOption="false"
-              @search="onSearch"
-              @change="onChange"
-              :notFoundContent="null"
-            >
-              <a-select-option
-                v-for="member in memberOptions"
-                :key="member.member_id"
+    <st-container>
+      <st-form-table hoverable>
+        <thead>
+          <tr>
+            <th v-for="col in columns" :key="col.dataIndex">{{ col.title }}</th>
+          </tr>
+        </thead>
+        <tbody v-if="!loading.add">
+          <tr>
+            <td class="st-form-table__add">
+              <a-select
+                slot="member"
+                showSearch
+                placeholder="搜索会员名"
+                style="width: 120px"
+                :defaultActiveFirstOption="false"
+                :showArrow="false"
+                :filterOption="false"
+                @search="onSearch"
+                @change="onChange"
+                :notFoundContent="null"
               >
-                {{ member.member_name }}
-              </a-select-option>
-            </a-select>
-          </td>
-          <td>
-            <a-select
-              slot="consume_type"
-              placeholder="选择消费方式"
-              style="width: 120px"
-              @change="onChangeConsumeType"
-            >
-              <a-select-opt-group
-                v-for="consumeType in consumeOptions"
-                :key="consumeType.id"
-              >
-                <span slot="label">
-                  <a-icon type="snippets" />
-                  {{ consumeType.name }}
-                </span>
                 <a-select-option
-                  v-for="consume in consumeType.children"
-                  :value="JSON.stringify(consume)"
-                  :key="consume.id"
+                  v-for="member in memberOptions"
+                  :key="member.member_id"
                 >
-                  {{ consume.name }}
+                  {{ member.member_name }}
                 </a-select-option>
-              </a-select-opt-group>
-            </a-select>
-          </td>
-          <td>未签到</td>
-          <td>
-            <a href="javascript:;" @click="addReserve">添加预约</a>
-          </td>
-        </tr>
-        <tr v-for="(item, index) in reserveList" :key="index">
-          <td>{{ item.member }}</td>
-          <td>{{ item.consume_name }}</td>
-          <td>{{ item.is_checkin_name }}</td>
-          <td>
-            <div>
-              <a
-                class="mg-r8"
-                href="javascript:;"
-                @click="cancelReserve(item.id)"
-                v-if="
-                  item.auth['shop:reserve:personal_team_course_reserve|checkin']
-                "
+              </a-select>
+            </td>
+            <td>
+              <a-select
+                slot="consume_type"
+                placeholder="选择消费方式"
+                style="width: 120px"
+                @change="onChangeConsumeType"
               >
-                取消预约
-              </a>
-              <a
-                href="javascript:;"
-                @click="check(item.id)"
-                v-if="
-                  item.auth['shop:reserve:personal_team_course_reserve|del']
-                "
-              >
-                签到消费
-              </a>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </st-form-table>
+                <a-select-opt-group
+                  v-for="consumeType in consumeOptions"
+                  :key="consumeType.id"
+                >
+                  <span slot="label">
+                    <a-icon type="snippets" />
+                    {{ consumeType.name }}
+                  </span>
+                  <a-select-option
+                    v-for="consume in consumeType.children"
+                    :value="JSON.stringify(consume)"
+                    :key="consume.id"
+                  >
+                    {{ consume.name }}
+                  </a-select-option>
+                </a-select-opt-group>
+              </a-select>
+            </td>
+            <td>未签到</td>
+            <td>
+              <a href="javascript:;" @click="addReserve">添加预约</a>
+            </td>
+          </tr>
+          <tr v-for="(item, index) in reserveList" :key="index">
+            <td>{{ item.member }}</td>
+            <td>{{ item.consume_name }}</td>
+            <td>{{ item.is_checkin_name }}</td>
+            <td>
+              <div>
+                <a
+                  class="mg-r8"
+                  href="javascript:;"
+                  @click="cancelReserve(item.id)"
+                  v-if="
+                    item.auth[
+                      'shop:reserve:personal_team_course_reserve|checkin'
+                    ]
+                  "
+                >
+                  取消预约
+                </a>
+                <a
+                  href="javascript:;"
+                  @click="check(item.id)"
+                  v-if="
+                    item.auth['shop:reserve:personal_team_course_reserve|del']
+                  "
+                >
+                  签到消费
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </st-form-table>
+    </st-container>
+
     <div class="mg-t24 ta-r">
       <a-popconfirm
         v-if="

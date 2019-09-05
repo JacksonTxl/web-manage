@@ -1,4 +1,5 @@
 import { Api } from '@/api/api'
+import { map } from 'rxjs/operators'
 const url = '/v1/common/menu'
 
 export class MenuApi extends Api {

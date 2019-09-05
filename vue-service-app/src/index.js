@@ -255,7 +255,11 @@ class VueServiceApp {
         }
         if (p.then) {
           p.then(res => {
-            next(res && res.next)
+            if (res && res.next) {
+              next(res.next)
+            } else {
+              next()
+            }
           }).catch(e => {
             console.error('[vue-service-app]', e)
             next()
@@ -264,7 +268,11 @@ class VueServiceApp {
         if (p.subscribe) {
           p.subscribe(
             res => {
-              next(res && res.next)
+              if (res && res.next) {
+                next(res.next)
+              } else {
+                next()
+              }
             },
             e => {
               console.error('[vue-service-app]', e)
