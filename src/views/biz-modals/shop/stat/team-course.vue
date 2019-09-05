@@ -124,6 +124,7 @@ export default {
       this.teamCourseService.getCourseList(this.query).subscribe()
     },
     onChangePage(pagination) {
+      this.page.size = pagination.pageSize
       this.page.current_page = pagination.current
     },
     filterOption(input, option) {
