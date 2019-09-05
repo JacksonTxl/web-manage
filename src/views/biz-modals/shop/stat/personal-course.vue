@@ -67,6 +67,7 @@
 import { columns } from './personal-course.config'
 import { PersonalCourseService } from './personal-course.service'
 import { COURSE_TYPE } from '@/constants/stat/course'
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'PersonalConsume',
   serviceInject() {
@@ -116,14 +117,20 @@ export default {
       return this.$route.query.showTable || 'all'
     },
     query() {
-      return {
+      let query = cloneDeep({
         stat_date: this.stat_date,
         course_type: this.course_type,
         coach_id: this.coach_id,
         course_id: this.course_id,
         current_page: this.current_page,
         size: this.size
+      })
+      debugger
+      // 当教练上课报表则不需要coach_id
+      if (this.showTable === 'coach') {
+        delete query.coach_id
       }
+      return query
     },
     courseTypeList() {
       return this.courseTypeList$.filter(
