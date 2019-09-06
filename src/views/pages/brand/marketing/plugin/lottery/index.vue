@@ -100,6 +100,7 @@ import MarkteingPluginTitle from '../../components#/marketing-title'
 import { columns } from './index.config.ts'
 import tableMixin from '@/mixins/table.mixin'
 import { RouteService } from '@/services/route.service'
+import BrandMarketingPluginPoster from '@/views/biz-modals/brand/marketing/plugin/poster'
 
 export default {
   name: 'PluginLotteryIndex',
@@ -131,6 +132,9 @@ export default {
   computed: {
     columns
   },
+  modals: {
+    BrandMarketingPluginPoster
+  },
   methods: {
     onGeneralize(record) {
       // let is_auth = record.is_auth
@@ -138,7 +142,7 @@ export default {
       if (true) {
         // 分享海报
         this.$modalRouter.push({
-          name: 'brand-marketing-poster',
+          name: 'brand-marketing-plugin-poster',
           props: {
             id: String(record.id),
             type: 1

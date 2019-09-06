@@ -20,7 +20,7 @@
             />
             <a
               v-modal-link="{
-                name: 'brand-marketing-poster',
+                name: 'brand-marketing-plugin-poster',
                 props: {
                   type: 1
                 },
@@ -47,7 +47,7 @@
             />
             <a
               v-modal-link="{
-                name: 'brand-marketing-poster',
+                name: 'brand-marketing-plugin-poster',
                 props: {
                   type: 2
                 },
@@ -77,7 +77,7 @@
 </template>
 <script>
 // import { SuccessService } from './add.service'
-import BrandMarketingPoster from '@/views/biz-modals/brand/marketing/poster'
+import BrandMarketingPluginPoster from '@/views/biz-modals/brand/marketing/plugin/poster'
 
 export default {
   name: 'PluginLotteryAdd',
@@ -88,7 +88,7 @@ export default {
     bPage: 'brand-marketing-plugin-lottery-success'
   },
   modals: {
-    BrandMarketingPoster
+    BrandMarketingPluginPoster
   },
   serviceInject() {
     return {

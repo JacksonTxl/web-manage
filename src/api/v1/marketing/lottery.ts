@@ -82,7 +82,24 @@ export class LotteryApi extends Api {
   stopActivity(id: string) {
     return this.http.put('/v1/plugin/wheel/end?id=' + id)
   }
+  // 优惠卷列表
   getCouponList() {
     return this.http.get('/v1/plugin/wheel/coupon')
+  }
+  // 轮播的获奖信息
+  getPrizeInfoList() {
+    return this.http.get('/v1/plugin/wheel/prize_info')
+  }
+  /**
+   * 获取优惠券海报信息
+   */
+  getPosterInfo(id: number) {
+    return this.http.get(`/v1/plugin/wheel/poster?id=` + id)
+  }
+  /**
+   * 获取优惠券小程序码
+   */
+  getQrcode() {
+    return this.http.get(`/v1/plugin/wheel/qrcode`)
   }
 }

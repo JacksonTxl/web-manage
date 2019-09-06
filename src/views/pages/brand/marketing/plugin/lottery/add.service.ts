@@ -1,5 +1,5 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { LotteryApi, addParams } from '@/api/v1/marketing/lottery'
+import { LotteryApi, AddParams } from '@/api/v1/marketing/lottery'
 import { forkJoin } from 'rxjs'
 import { tap } from 'rxjs/operators'
 import { State } from 'rx-state'
@@ -7,7 +7,7 @@ import { UserService } from '@/services/user.service'
 
 @Injectable()
 export class AddService implements RouteGuard {
-  list$ = new State({})
+  prizeInfoList$ = new State({})
   drawCondition$ = this.userService.getOptions$('plugin.draw_condition')
   drawTimesType$ = this.userService.getOptions$('plugin.draw_times_type')
   invitePoster$ = this.userService.getOptions$('plugin.invite_poster')
@@ -20,13 +20,20 @@ export class AddService implements RouteGuard {
     private lotteryApi: LotteryApi,
     private userService: UserService
   ) {}
-  add(params: addParams) {
+  add(params: AddParams) {
     return this.lotteryApi.add(params)
   }
   editVIew(id: string) {
     return this.lotteryApi.editVIew(id)
   }
+  getPrizeInfoList() {
+    return this.lotteryApi.getPrizeInfoList().pipe(
+      tap(res => {
+        this.prizeInfoList$.commit(() => res.list)
+      })
+    )
+  }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    // return this.editVIew(to.meta.query.activity_id)
+    return this.getPrizeInfoList()
   }
 }

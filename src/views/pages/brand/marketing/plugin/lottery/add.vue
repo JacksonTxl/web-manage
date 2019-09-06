@@ -7,7 +7,16 @@
             幸运大转盘
           </template>
           <div :class="bPage('lottery')">
-            <div :class="bPage('swiper')"></div>
+            <div :class="bPage('swiper')" v-if="isStopSwiper === 1">
+              <swiper :options="sliderOptions" style="width:100%;">
+                <swiper-slide
+                  v-for="(item, index) in prizeInfoList"
+                  :key="index"
+                >
+                  <span :class="bPage('swiper-text')">{{ item }}</span>
+                </swiper-slide>
+              </swiper>
+            </div>
             <img
               :class="bPage('lottery-banner')"
               src="~@/assets/img/brand/marketing/lottery/bg.png"
@@ -85,6 +94,7 @@
             </st-form-item>
             <st-form-item label="活动轮播获奖信息说明" labelWidth="84px">
               <a-radio-group
+                @change="stopSwiper"
                 v-decorator="decorators.activity_base.wheel_turn_around"
               >
                 <a-radio
@@ -201,7 +211,6 @@
               <span v-else>
                 每人总共有
                 <a-input
-                  @change="getPerTimes"
                   style="width: 100px;"
                   placeholder="请输入"
                   v-decorator="decorators.activity_rule.total_times"
@@ -330,7 +339,8 @@ import { PatternService } from '@/services/pattern.service'
 import BrandMarketingPluginAddPrize from '@/views/biz-modals/brand/marketing/plugin/add-prize'
 import { RouteService } from '@/services/route.service'
 import { cloneDeep } from 'lodash-es'
-
+import 'swiper/dist/css/swiper.css'
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
 export default {
   name: 'PluginLotteryAdd',
   data(vm) {
@@ -361,6 +371,7 @@ export default {
       timesType: 1,
       crowdType: 1,
       shareType: 1,
+      isStopSwiper: 1,
       stepArr: [
         {
           title: '基础信息',
@@ -389,6 +400,16 @@ export default {
           image_url:
             'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/dev/image/10000/2019-09-05/分组3___f12c6b9b10bb___.png'
         }
+      },
+      sliderOptions: {
+        autoplay: {
+          delay: 3000,
+          disableOnInteraction: false
+        }
+      },
+      swiperOption: {
+        spaceBetween: 6,
+        slidesPerView: 1.05
       }
     }
   },
@@ -412,7 +433,8 @@ export default {
       wheelTurnAround: this.addService.wheelTurnAround$,
       joinCrowdAll: this.addService.joinCrowdAll$,
       crowd: this.addService.crowd$,
-      imgType: this.addService.imgType$
+      imgType: this.addService.imgType$,
+      prizeInfoList: this.addService.prizeInfoList$
     }
   },
   modals: {
@@ -420,7 +442,9 @@ export default {
   },
   components: {
     H5Container,
-    Steps
+    Steps,
+    swiper,
+    swiperSlide
   },
   created() {
     if (this.query.activity_id) {
@@ -476,7 +500,7 @@ export default {
         value.activity_lucky.lucky =
           this.notPrizeImgType === 2 ? this.fileList[0] : this.defaultImg
         this.addService.add(value).subscribe(res => {
-          this.$router.push('./index')
+          this.$router.push('./success')
         })
       })
     },
@@ -508,6 +532,10 @@ export default {
     // 分享类型
     getCurShareType(e) {
       this.shareType = e.target.value
+    },
+    // 轮播开关
+    stopSwiper(e) {
+      this.isStopSwiper = e.target.value
     },
     refresh() {},
     onDateChange(data, str) {
