@@ -12531,10 +12531,10 @@ webpack-external-vendor-plugin@1.1.1:
     webpack-bricks "0.6.0"
     webpack-merge "^4.1.1"
 
-webpack-hot-release@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.npm.taobao.org/webpack-hot-release/download/webpack-hot-release-0.0.1.tgz#ecd540ba07543e177116f4255f88b616dbec63eb"
-  integrity sha1-7NVAugdUPhdxFvQlX4i2FtvsY+s=
+webpack-hot-release@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.npm.taobao.org/webpack-hot-release/download/webpack-hot-release-0.0.2.tgz#d198068c6e47e7f18af2fb40b75f24f5bb1ccc9d"
+  integrity sha1-0ZgGjG5H5/GK8vtAt18k9bsczJ0=
   dependencies:
     chalk "^2.4.2"
 
