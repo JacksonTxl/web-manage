@@ -3,14 +3,15 @@
     <div
       slot="actions"
       v-if="
-        routeName === 'shop-product-course-schedule-team' ||
-          routeName === 'shop-product-course-schedule-team-table'
+        routeName === 'shop-product-course-schedule-team-team' ||
+          routeName === 'shop-product-course-schedule-team-team-table'
       "
     >
       <a-select
         v-model="query.course_id"
         placeholder="请选择课程"
         @change="onChange"
+        style="width: 120px"
         class="page-schedule__select mg-r8"
       >
         <a-select-option :value="-1">全部</a-select-option>
@@ -26,6 +27,7 @@
         v-model="query.court_id"
         placeholder="请选择场地"
         @change="onChange"
+        style="width: 120px"
         class="page-schedule__select mg-r8"
       >
         <a-select-option :value="-1">全部</a-select-option>
@@ -41,6 +43,7 @@
         class="page-schedule__select"
         placeholder="请选择教练"
         @change="onChange"
+        style="width: 120px"
         v-model="query.coach_id"
       >
         <a-select-option :value="-1">全部</a-select-option>
@@ -65,6 +68,7 @@
         class="page-schedule__select"
         placeholder="请选择教练"
         @change="onChange"
+        style="width: 120px"
         v-model="query.coach_id"
       >
         <a-select-option :value="-1">全部</a-select-option>
@@ -81,15 +85,16 @@
       slot="actions"
       v-if="
         routeName ===
-          'shop-product-course-schedule-personal-team--personal-team' ||
+          'shop-product-course-schedule-personal-team-personal-team' ||
           routeName ===
-            'shop-product-course-schedule--personal-team-personal-team-table'
+            'shop-product-course-schedule-personal-team-personal-team-table'
       "
     >
       <a-select
         class="page-schedule__select"
         placeholder="请选择教练"
         @change="onChange"
+        style="width: 120px"
         v-model="query.coach_id"
       >
         <a-select-option :value="-1">全部</a-select-option>
