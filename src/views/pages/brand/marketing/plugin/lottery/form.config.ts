@@ -65,7 +65,6 @@ export const ruleOptions = (vm: any) => {
     'activity_rule.crowd_id': {
       rules: [
         {
-          required: true,
           message: '请选择用户'
         }
       ]
@@ -89,14 +88,21 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     'activity_rule.per_times': {
-      // rules: [
-      //   {
-      //     required: true,
-      //     message: '请填写每日抽奖次数'
-      //   }
-      // ]
+      rules: [
+        {
+          required: true,
+          message: '请填写每日抽奖次数'
+        }
+      ]
     },
     'activity_rule.total_times': {
+      rules: [
+        {
+          message: '请填写每日总次数'
+        }
+      ]
+    },
+    'activity_rule.prize_times': {
       rules: [
         {
           message: '请填写每日总次数'
@@ -106,6 +112,7 @@ export const ruleOptions = (vm: any) => {
     'activity_lucky.lucky_name': {
       rules: [
         {
+          required: true,
           message: '请填写未中奖奖品名称'
         }
       ]

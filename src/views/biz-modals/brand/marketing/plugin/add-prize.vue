@@ -1,68 +1,85 @@
 <template>
   <st-modal title="奖品设置" v-model="show" @ok="onSubmit">
-    <div :class="basic()">
-      <st-form :form="form" labelGutter="0">
-        <st-form-item label="奖品名称" labelWidth="84px" required>
-          <a-input
-            placeholder="请输入奖品名称"
-            v-decorator="decorators.prize_name"
-          ></a-input>
-        </st-form-item>
-        <st-form-item label="奖品类型" labelWidth="84px" required>
-          <a-radio-group v-decorator="decorators.prize_type">
-            <a-radio
-              v-for="(item, index) in prizeType"
+    <st-form :form="form" labelGutter="0">
+      <st-form-item label="奖品名称" labelWidth="84px" required>
+        <a-input
+          placeholder="请输入奖品名称"
+          v-decorator="decorators.prize_name"
+        ></a-input>
+      </st-form-item>
+      <st-form-item label="奖品类型" labelWidth="84px" required>
+        <a-radio-group
+          v-decorator="decorators.prize_type"
+          @change="getCurPrizeType"
+        >
+          <a-radio
+            v-for="(item, index) in prizeType"
+            :key="index"
+            :value="item.value"
+          >
+            {{ item.label }}
+          </a-radio>
+        </a-radio-group>
+        <span>
+          <a-select
+            v-if="curPrizeType === 1"
+            style="width:100px;"
+            placeholder="请选择优惠卷"
+            v-decorator="decorators.coupon_id"
+          >
+            <a-select-option
+              v-for="(item, index) in couponList"
               :key="index"
-              :value="item.value"
+              :value="item.id"
             >
-              {{ item.label }}
-            </a-radio>
-          </a-radio-group>
-        </st-form-item>
-        <st-form-item label="售卖门店" labelWidth="84px" required>
-          <a-radio-group v-decorator="decorators.support_shop_ids">
-            <a-radio
-              v-for="item in shops"
-              :key="item.value"
-              :value="item.value"
-            >
-              {{ item.label }}
-            </a-radio>
-          </a-radio-group>
-        </st-form-item>
-        <st-form-item label="奖品数量" labelWidth="84px" required>
-          <a-input
-            placeholder="请输入奖品数量"
-            v-decorator="decorators.number"
-          ></a-input>
-        </st-form-item>
-        <st-form-item label="中奖概率" labelWidth="84px" required>
-          <a-input
-            placeholder="请输入中奖概率"
-            v-decorator="decorators.rate"
-          ></a-input>
-        </st-form-item>
-        <st-form-item label="奖品图片" labelWidth="84px">
-          <a-radio-group v-decorator="decorators.image">
-            <a-radio
-              v-for="(item, index) in imgType"
-              :key="index"
-              :value="item.value"
-            >
-              {{ item.label }}
-            </a-radio>
-          </a-radio-group>
-          <st-image-upload
-            width="164px"
-            height="164px"
-            :list="fileList"
-            @change="onChangeGetAvatar"
-            :sizeLimit="2"
-            placeholder="上传图片"
-          ></st-image-upload>
-        </st-form-item>
-      </st-form>
-    </div>
+              {{ item.name }}
+            </a-select-option>
+          </a-select>
+        </span>
+      </st-form-item>
+      <st-form-item label="售卖门店" labelWidth="84px" required>
+        <a-radio-group v-decorator="decorators.is_shop_range">
+          <a-radio v-for="item in shops" :key="item.value" :value="item.value">
+            {{ item.label }}
+          </a-radio>
+        </a-radio-group>
+      </st-form-item>
+      <st-form-item label="奖品数量" labelWidth="84px" required>
+        <a-input
+          placeholder="请输入奖品数量"
+          v-decorator="decorators.number"
+        ></a-input>
+      </st-form-item>
+      <st-form-item label="中奖概率" labelWidth="84px" required>
+        <a-input
+          placeholder="请输入中奖概率"
+          v-decorator="decorators.rate"
+        ></a-input>
+      </st-form-item>
+      <st-form-item label="奖品图片" labelWidth="84px">
+        <a-radio-group
+          v-decorator="decorators.image_default"
+          @change="getCurImgType"
+        >
+          <a-radio
+            v-for="(item, index) in imgType"
+            :key="index"
+            :value="item.value"
+          >
+            {{ item.label }}
+          </a-radio>
+        </a-radio-group>
+        <st-image-upload
+          v-if="curImgType === 2"
+          width="164px"
+          height="164px"
+          :list="fileList"
+          @change="onChangeGetAvatar"
+          :sizeLimit="2"
+          placeholder="上传图片"
+        ></st-image-upload>
+      </st-form-item>
+    </st-form>
   </st-modal>
 </template>
 <script>
@@ -102,31 +119,53 @@ export default {
       form,
       decorators,
       show: false,
-      fileList: []
+      fileList: [],
+      couponList: [],
+      curPrizeType: 1,
+      curImgType: 1,
+      defaultImg: {
+        image_url:
+          'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/img-lottery-prize-defalut-1x.png',
+        image_key: 'image/default/img-lottery-prize-defalut-1x.png'
+      }
     }
   },
   mounted() {
-    this.form.setFieldsValue({
-      prize_name: this.info.prize_name,
-      prize_type: this.info.prize_type,
-      coupon_id: this.info.coupon_id,
-      prize_id: this.info.prize_id,
-      is_shop_range: this.info.is_shop_range,
-      support_shop_ids: this.info.support_shop_ids,
-      rate: this.info.rate,
-      number: this.info.number,
-      image: this.info.image
-    })
+    if (Object.keys(this.info).length > 0) {
+      this.form.setFieldsValue({
+        prize_name: this.info.prize_name,
+        prize_type: this.info.prize_type,
+        coupon_id: this.info.coupon_id,
+        prize_id: this.info.prize_id,
+        is_shop_range: this.info.is_shop_range,
+        support_shop_ids: this.info.support_shop_ids,
+        rate: this.info.rate,
+        number: this.info.number,
+        image: this.info.image
+      })
+    }
+  },
+  created() {
+    this.getCouponList()
   },
   methods: {
+    getCouponList() {
+      return this.addPrizeService.getCouponList().subscribe(res => {
+        this.couponList = res.list
+      })
+    },
     onChangeGetAvatar(imageFiles) {
       this.fileList = cloneDeep(imageFiles)
-      console.log(this.fileList[0])
+    },
+    getCurPrizeType(e) {
+      this.curPrizeType = e.target.value
+    },
+    getCurImgType(e) {
+      this.curImgType = e.target.value
     },
     onSubmit() {
       this.form.validate().then(value => {
-        value.image = this.fileList[0]
-        console.log(value)
+        value.prize = this.curImgType === 2 ? this.fileList[0] : this.defaultImg
         this.$emit('change', value)
         this.show = false
       })

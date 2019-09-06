@@ -76,10 +76,13 @@ export class LotteryApi extends Api {
   }
   // 获取列表头部信息
   getHeaderInfo(id: string) {
-    return this.http.put('/v1/plugin/wheel/info?id=' + id)
+    return this.http.get('/v1/plugin/wheel/info?id=' + id)
   }
   // 结束活动
   stopActivity(id: string) {
     return this.http.put('/v1/plugin/wheel/end?id=' + id)
+  }
+  getCouponList() {
+    return this.http.get('/v1/plugin/wheel/coupon')
   }
 }

@@ -13,14 +13,9 @@ export class HeaderService implements RouteGuard {
   getHeaderInfo(query: string) {
     return this.lotteryApi.getHeaderInfo(query).pipe(
       tap((res: any) => {
-        this.info$.commit(() => res.info)
+        this.info$.commit(() => res)
       })
     )
   }
-  init(id: string) {
-    return forkJoin(this.getHeaderInfo(id))
-  }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    return this.init(to.meta.query)
-  }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {}
 }

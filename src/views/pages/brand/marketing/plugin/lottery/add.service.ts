@@ -13,7 +13,8 @@ export class AddService implements RouteGuard {
   invitePoster$ = this.userService.getOptions$('plugin.invite_poster')
   wheelDefault$ = this.userService.getOptions$('plugin.wheel_default')
   wheelTurnAround$ = this.userService.getOptions$('plugin.wheel_turn_around')
-  crowd$ = this.userService.getOptions$('shop_member.member_level')
+  joinCrowdAll$ = this.userService.getOptions$('plugin.join_crowd_all')
+  crowd$ = this.userService.getOptions$('plugin.crowd')
   imgType$ = this.userService.getOptions$('plugin.img_type')
   constructor(
     private lotteryApi: LotteryApi,

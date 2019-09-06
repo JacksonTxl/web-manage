@@ -18,22 +18,14 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           required: true,
-          message: '请填写昵称'
+          message: '请选择类型'
         }
       ]
     },
-    coupon_id: {
-      rules: [
-        {
-          required: true,
-          message: '请填写昵称'
-        }
-      ]
-    },
+    coupon_id: {},
     prize_id: {
       rules: [
         {
-          required: true,
           message: '请填写昵称'
         }
       ]
@@ -43,15 +35,24 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           required: true,
-          message: '请填写昵称'
+          message: '请选择门店类型'
         }
       ]
     },
     support_shop_ids: {
       rules: [
         {
+          // required: true,
+          message: '请门店id'
+        }
+      ]
+    },
+    image_default: {
+      initialValue: 1,
+      rules: [
+        {
           required: true,
-          message: '请填写昵称'
+          message: '请选择图片'
         }
       ]
     },
@@ -71,6 +72,14 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    image: {}
+    prize: {
+      initialValue: 1,
+      rules: [
+        {
+          required: true,
+          message: '请选择图片'
+        }
+      ]
+    }
   }
 }
