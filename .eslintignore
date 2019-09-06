@@ -1,5 +1,6 @@
 *.d.ts
 public/**/*.js
+mock/**/*
 /src/assets/iconfont/font.js
 auto-generated-routes.ts
 /src/services/no-captcha.service.ts
