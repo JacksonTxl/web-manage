@@ -3,14 +3,12 @@ import { LoginService } from '@/_modules/account/views/pages/account/login.servi
 import Agreement from '@/_modules/account/views/pages/account/agreement.vue'
 
 import { NProgressService } from '@/services/nprogress.service'
-import { HotReleaseService } from '@/services/hot-release.service'
 import { TrackService } from '@/services/track.service'
 import { TitleService } from '@/services/title.service'
 import { RouteService } from '@/services/route.service'
 
 const accountGuards = [
   NProgressService,
-  HotReleaseService,
   TrackService,
   TitleService,
   RouteService

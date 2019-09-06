@@ -1,7 +1,6 @@
 import { ServiceRouteConfig } from 'vue-service-app'
 import { TokenService } from '@/services/token.service'
 import { NProgressService } from '@/services/nprogress.service'
-import { HotReleaseService } from '@/services/hot-release.service'
 import { UserService } from '@/services/user.service'
 import { TitleService } from '@/services/title.service'
 import { RouteService } from '@/services/route.service'
@@ -52,7 +51,6 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
     ) {
       prependGuards(route, [
         NProgressService,
-        HotReleaseService,
         TrackService,
         TitleService,
         RouteService
@@ -60,7 +58,6 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
     } else if (route.path.startsWith('/') && !route.redirect) {
       const appGuards: any[] = [
         NProgressService,
-        HotReleaseService,
         TrackService,
         TokenService,
         UserService,

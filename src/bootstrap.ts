@@ -1,5 +1,6 @@
+import './hot-release'
 import '@abraham/reflection'
-import Vue, { VueConstructor } from 'vue'
+import Vue from 'vue'
 import Antd from 'ant-design-vue'
 
 import { modalRouter } from './modal-router/index'

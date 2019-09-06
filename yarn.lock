@@ -12531,6 +12531,13 @@ webpack-external-vendor-plugin@1.1.1:
     webpack-bricks "0.6.0"
     webpack-merge "^4.1.1"
 
+webpack-hot-release@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.npm.taobao.org/webpack-hot-release/download/webpack-hot-release-0.0.1.tgz#ecd540ba07543e177116f4255f88b616dbec63eb"
+  integrity sha1-7NVAugdUPhdxFvQlX4i2FtvsY+s=
+  dependencies:
+    chalk "^2.4.2"
+
 webpack-log@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npm.taobao.org/webpack-log/download/webpack-log-2.0.0.tgz#5b7928e0637593f119d32f6227c1e0ac31e1b47f"

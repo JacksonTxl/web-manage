@@ -35,6 +35,9 @@ const mockerApis = {
   /**
    * mock start
    */
+  // 'GET /_api/v1/admin/invalid/tooltip'(req, res) {
+  //   res.status(500).json({})
+  // }
 }
 
 module.exports = mockWrapper(mockerApis)
