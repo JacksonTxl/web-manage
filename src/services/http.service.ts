@@ -206,7 +206,7 @@ export class HttpService {
               this.notification.error({
                 title: this.i18n.t('app.http.500'),
                 key: 'ajaxError',
-                content: err.message
+                content: serverResponse.msg || err.message
               })
               break
             default:

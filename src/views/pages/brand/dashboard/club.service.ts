@@ -3,6 +3,7 @@ import { State } from 'rx-state/src'
 import { tap } from 'rxjs/operators'
 import { StatApi, RecentQuery } from '@/api/v1/stat/brand'
 import { forkJoin } from 'rxjs'
+import { anyAll } from '@/operators'
 
 @Injectable()
 export class ClubService {
@@ -122,7 +123,7 @@ export class ClubService {
     )
   }
   init() {
-    return forkJoin(
+    return anyAll(
       this.getTop(),
       this.getAvg(),
       this.getUserAll({ recently_day: 7 }),

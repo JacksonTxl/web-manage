@@ -2,9 +2,11 @@ const path = require('path')
 const fs = require('fs')
 const webpack = require('webpack')
 const moment = require('moment')
+const Path = require('path')
 const IgnoreNotFoundExportPlugin = require('./build/ignore-not-found-plugin')
 const HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin')
 const LessPluginFunction = require('less-plugin-functions')
+const mockerApi = require('mocker-api')
 
 const resolve = dir => path.resolve(__dirname, dir)
 const git = require('git-rev-sync')
@@ -78,9 +80,6 @@ module.exports = {
   devServer: {
     disableHostCheck: true,
     watchContentBase: true,
-    before(app) {
-      console.log(app)
-    },
     proxy: {
       '/_api': {
         target: localApiEnvHostTarget,
@@ -88,14 +87,10 @@ module.exports = {
         pathRewrite: {
           '^/_api/': '/'
         }
-      },
-      '/_mock_api': {
-        target: 'http://localhost:8059',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/_mock_api/': '/'
-        }
       }
+    },
+    before(app) {
+      mockerApi(app, Path.resolve('./mock/index.js'))
     },
     port: 8060
   },

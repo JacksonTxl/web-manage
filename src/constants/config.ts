@@ -10,7 +10,7 @@ export class AppConfig {
   /**
    * global ajax request timeout
    */
-  HTTP_TIMEOUT = 10000
+  HTTP_TIMEOUT = 6000
   /**
    * 图片基础路径
    */

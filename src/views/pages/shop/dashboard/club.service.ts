@@ -7,6 +7,7 @@ import {
   RevenueParams
 } from '@/api/v1/stat/overview/shop'
 import { forkJoin } from 'rxjs'
+import { anyAll } from '@/operators'
 
 @Injectable()
 export class ClubService implements RouteGuard {
@@ -190,7 +191,7 @@ export class ClubService implements RouteGuard {
     )
   }
   init() {
-    return forkJoin(
+    return anyAll(
       this.getTop({ version: 'club' }),
       this.getRevenue({ recently_day: 7 }),
       this.getCourse({ recently_day: 7 }),

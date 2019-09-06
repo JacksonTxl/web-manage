@@ -92,6 +92,8 @@
     "less-plugin-npm-import": "^2.1.0",
     "lint-staged": "^8.1.5",
     "lodash-es": "^4.17.11",
+    "mocker-api": "^1.9.0",
+    "mockjs": "^1.0.1-beta3",
     "parallelshell": "^3.0.2",
     "rxjs": "^6.4.0",
     "stylelint": "^10.1.0",
