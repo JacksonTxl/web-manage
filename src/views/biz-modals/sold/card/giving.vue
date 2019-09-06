@@ -85,7 +85,7 @@ export default {
           this.givingService
             .setGive({
               sold_card_ids: this.id,
-              gift_quota: +values.price,
+              gift_quota: +values.gift_quota,
               description: this.description
             })
             .subscribe(res => {
