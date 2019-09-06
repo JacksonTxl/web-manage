@@ -27,7 +27,9 @@ export class StatApi {
    * 用户分析
    */
   getUser(version: Version, query: RecentQuery) {
-    return this.http.get(`/v1/stat/${version.version}/user`, { query })
+    return this.http.get(`/v1/stat/${version.version}/user`, {
+      query
+    })
   }
   /**
    * 客单价
@@ -61,5 +63,5 @@ export interface RecentQuery {
   end_date?: string
 }
 export interface Version {
-  version: string
+  version: 'studio' | 'club'
 }
