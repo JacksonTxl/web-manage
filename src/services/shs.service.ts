@@ -41,7 +41,7 @@ export class ShsService {
   /**
    * 处理图片并且将图片上传
    */
-  getShsImage(params: UploadImageParams) {
+  getShsImage(params: UploadImageParams, shsUrl = '/saas/poster') {
     return this.getToken().pipe(
       switchMap(() => {
         return this.ossService.put({
@@ -51,11 +51,23 @@ export class ShsService {
         })
       }),
       switchMap((val: any) => {
+        // const imageUrl = `${
+        //   this.appConfig.SHS_API_ENV
+        // }/saas/poster?token=${this.token$.snapshot()}&brand_logo=${
+        //   params.brand_logo
+        // }&brand_name=${params.brand_name}&price=${params.price}&qrcode_url=${
+        //   val.url
+        // }&download=1`
+
+        // 处理params根据传进来的params进行参数拼接
+        let str = ''
+        delete params.qrcode_url
+        Object.entries(params).forEach(value => {
+          str = `${str}&${value[0]}=${value[1]}`
+        })
         const imageUrl = `${
           this.appConfig.SHS_API_ENV
-        }/saas/poster?token=${this.token$.snapshot()}&brand_logo=${
-          params.brand_logo
-        }&brand_name=${params.brand_name}&price=${params.price}&qrcode_url=${
+        }${shsUrl}?token=${this.token$.snapshot()}${str}&qrcode_url=${
           val.url
         }&download=1`
         return this.loadImage(imageUrl)
