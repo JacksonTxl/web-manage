@@ -40,8 +40,9 @@
       <st-form-item label="指定员工" v-if="peopleType === PEOPLE_TYPE.ONLY">
         <a-select
           mode="multiple"
+          showSearch
+          :filterOption="false"
           @search="getWhiteList"
-          notFoundContent="无搜索结果"
           v-decorator="decorators.white_list"
           placeholder="搜索指定员工"
         >
@@ -135,7 +136,6 @@ export default {
       ENTRY,
       CHECKIN,
       PEOPLE_TYPE,
-      whiteList: [],
       peopleType: PEOPLE_TYPE.ONLY,
       white_list: [],
       type: ENTRY.GATE // area类型
@@ -147,9 +147,7 @@ export default {
   },
   methods: {
     getWhiteList(val) {
-      this.areaService.getWhiteList(val).subscribe(res => {
-        this.whiteList = res.list
-      })
+      this.areaService.getWhiteList(val).subscribe()
     },
     init() {
       return this.areaService.init(this.id).subscribe(() => {
