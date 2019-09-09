@@ -20,7 +20,7 @@
               {{ selectedNorm.valid_time }}天
             </st-info-item>
             <st-info-item label="赠送上限">
-              {{ selectedNorm.gift_max }}天
+              {{ selectedNorm.gift_max_name }}
             </st-info-item>
             <st-info-item label="约课权益">
               {{ info.course_interests }}
