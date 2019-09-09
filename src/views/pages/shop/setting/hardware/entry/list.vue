@@ -48,6 +48,7 @@
           <div :class="bPage('global-item-content')">
             <span>共{{ info.black_people }}人</span>
             <a
+              v-if="auth.globalBlackSet"
               v-modal-link="{
                 name: 'hardware-blacklist',
                 on: {
@@ -62,7 +63,6 @@
       </div>
     </st-panel>
     <div :class="bPage('divider')"></div>
-
     <st-panel app :class="bPage()">
       <div :class="bPage('area')">
         <st-t2>单区域通行配置</st-t2>
