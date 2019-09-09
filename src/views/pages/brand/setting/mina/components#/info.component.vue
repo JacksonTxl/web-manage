@@ -95,6 +95,7 @@ import user from '@/assets/img/brand/setting/mina/icon_user.png'
 import flow from '@/assets/img/brand/setting/mina/icon_flow.png'
 import { IndexService } from '../index.service'
 import BrandSettingMinaMch from '@/views/biz-modals/brand/setting/mina/mch'
+import { MessageService } from '@/services/message.service'
 export default {
   bem: {
     info: 'info-component'
@@ -107,7 +108,8 @@ export default {
   },
   serviceInject() {
     return {
-      indexService: IndexService
+      indexService: IndexService,
+      messageService: MessageService
     }
   },
   rxState() {
@@ -167,7 +169,11 @@ export default {
     submitAudit() {
       if (this.loading.subAudit) return
       this.indexService.subAudit().subscribe(res => {
-        this.indexService.getInfo().subscribe()
+        this.indexService.getInfo().subscribe(result => {
+          this.messageService.success({
+            content: '提交成功!'
+          })
+        })
       })
     }
   }
