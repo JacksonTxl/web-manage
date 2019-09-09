@@ -47,15 +47,15 @@
             <div :class="bPage('lottery-footer')">
               <div :class="bPage('lottery-title')">活动规则</div>
               <div class="mg-b24">
-                <span>活动时间:</span>
+                <span class="mg-r8">活动时间:</span>
                 <span>{{ preview.startTime }}-{{ preview.endTime }}</span>
               </div>
               <div class="mg-b24">
-                <span>抽奖规则:</span>
+                <span class="mg-r8">抽奖规则:</span>
                 <span>每人每天有{{ preview.perTimes }}次机会</span>
               </div>
               <div class="mg-b24">
-                <span>活动说明:</span>
+                <span class="mg-r8">活动说明:</span>
                 <span>{{ preview.description }}</span>
               </div>
             </div>
@@ -74,34 +74,40 @@
         </a-row>
         <div style="padding:24px;">
           <st-form :form="form" labelGutter="0" v-show="currentIndex == 0">
-            <st-form-item label="活动名称" labelWidth="84px" required>
+            <st-form-item label="活动名称" labelWidth="124px" required>
               <a-input
+                :disabled="info.activity_status === 2"
                 placeholder="请输入活动名称"
                 v-decorator="decorators.activity_base.activity_name"
               ></a-input>
             </st-form-item>
-            <st-form-item label="活动标题" labelWidth="84px" required>
+            <st-form-item label="活动标题" labelWidth="124px" required>
               <a-input
+                :disabled="info.activity_status === 2"
                 @change="getTitle"
                 placeholder="请输入活动标题"
                 v-decorator="decorators.activity_base.activity_sub_name"
               ></a-input>
             </st-form-item>
-            <st-form-item label="活动时间" labelWidth="84px" required>
+            <st-form-item label="活动时间" labelWidth="124px" required>
               <a-range-picker
+                :disabled="info.activity_status === 2"
+                format="YYYY-MM-DD HH:mm"
                 v-model="dateRangeVal"
                 @change="onDateChange"
               ></a-range-picker>
             </st-form-item>
-            <st-form-item label="活动说明" labelWidth="84px" required>
+            <st-form-item label="活动说明" labelWidth="124px" required>
               <a-textarea
                 @change="getDescription"
+                :disabled="info.activity_status === 2"
                 placeholder="请输入活动说明"
                 v-decorator="decorators.activity_base.activity_description"
               ></a-textarea>
             </st-form-item>
-            <st-form-item label="活动轮播获奖信息说明" labelWidth="84px">
+            <st-form-item label="活动轮播获奖信息说明" labelWidth="124px">
               <a-radio-group
+                :disabled="info.activity_status === 2"
                 @change="stopSwiper"
                 v-decorator="decorators.activity_base.wheel_turn_around"
               >
@@ -114,9 +120,10 @@
                 </a-radio>
               </a-radio-group>
             </st-form-item>
-            <st-form-item label="分享设置" labelWidth="84px">
+            <st-form-item label="分享设置" labelWidth="124px">
               <a-radio-group
                 @change="getCurShareType"
+                :disabled="info.activity_status === 2"
                 v-decorator="decorators.activity_base.wheel_share_default"
               >
                 <a-radio
@@ -128,7 +135,7 @@
                 </a-radio>
               </a-radio-group>
               <div v-if="shareType === 2">
-                <st-form-item label="选择图片" labelWidth="84px">
+                <st-form-item label="选择图片" labelWidth="124px">
                   <st-image-upload
                     width="164px"
                     height="164px"
@@ -138,7 +145,7 @@
                     placeholder="上传头像"
                   ></st-image-upload>
                 </st-form-item>
-                <st-form-item label="分享标题" labelWidth="84px">
+                <st-form-item label="分享标题" labelWidth="124px">
                   <a-input
                     placeholder="分享标题"
                     v-decorator="decorators.activity_base.share_title"
@@ -146,13 +153,13 @@
                 </st-form-item>
               </div>
             </st-form-item>
-            <st-form-item label="" labelWidth="84px">
+            <st-form-item label="" labelWidth="124px">
               <st-button type="primary" @click="next(1)">下一步</st-button>
             </st-form-item>
           </st-form>
 
           <st-form :form="form" labelGutter="0" v-show="currentIndex == 1">
-            <st-form-item label="参与用户" labelWidth="84px" required>
+            <st-form-item label="参与用户" labelWidth="124px" required>
               <a-radio-group
                 @change="getCurCrowdType"
                 v-decorator="decorators.activity_rule.join_crowd_all"
@@ -180,7 +187,7 @@
                 </a-select-option>
               </a-select>
             </st-form-item>
-            <st-form-item label="抽奖条件" labelWidth="84px" required>
+            <st-form-item label="抽奖条件" labelWidth="124px" required>
               <a-radio-group
                 v-decorator="decorators.activity_rule.draw_condition"
               >
@@ -193,7 +200,7 @@
                 </a-radio>
               </a-radio-group>
             </st-form-item>
-            <st-form-item label=" 抽奖机会" labelWidth="84px" required>
+            <st-form-item label=" 抽奖机会" labelWidth="124px" required>
               <a-radio-group
                 @change="getCurTimesType"
                 v-decorator="decorators.activity_rule.draw_times_type"
@@ -206,27 +213,33 @@
                   {{ item.label }}
                 </a-radio>
               </a-radio-group>
-              <span v-if="timesType === 1">
+              <div v-if="timesType === 1">
                 每人每天有
-                <a-input
+                <a-input-number
+                  :min="1"
+                  :max="9999"
+                  :precision="1"
                   @change="getPerTimes"
                   style="width: 100px;"
                   placeholder="请输入"
                   v-decorator="decorators.activity_rule.per_times"
-                ></a-input>
+                ></a-input-number>
                 次
-              </span>
-              <span v-else>
+              </div>
+              <div v-else>
                 每人总共有
-                <a-input
+                <a-input-number
+                  :min="1"
+                  :max="9999"
+                  :precision="1"
                   style="width: 100px;"
                   placeholder="请输入"
                   v-decorator="decorators.activity_rule.total_times"
-                ></a-input>
+                ></a-input-number>
                 次
-              </span>
+              </div>
             </st-form-item>
-            <st-form-item label=" 中奖次数" labelWidth="84px">
+            <st-form-item label=" 中奖次数" labelWidth="124px">
               每人最多可中奖
               <a-input
                 @change="getTotalTimes"
@@ -236,7 +249,7 @@
               ></a-input>
               次
             </st-form-item>
-            <st-form-item label="" labelWidth="84px">
+            <st-form-item label="" labelWidth="124px">
               <st-button type="primary" @click="next(2)">下一步</st-button>
             </st-form-item>
           </st-form>
@@ -330,7 +343,7 @@
                 placeholder="上传头像"
               ></st-image-upload>
             </st-form-item>
-            <st-form-item label="" labelWidth="84px">
+            <st-form-item label="" labelWidth="124px">
               <st-button type="primary" @click="onSubmit">完成</st-button>
             </st-form-item>
           </st-form>
@@ -366,7 +379,7 @@ export default {
         '中奖概率',
         '操作'
       ],
-      animate: false,
+      info: {},
       preview: {
         title: '',
         startTime: '',
@@ -495,6 +508,7 @@ export default {
     },
     onChangeGetAvatar(imageFiles) {
       this.fileList = cloneDeep(imageFiles)
+      this.notPrize.prize = cloneDeep(imageFiles)
     },
     onShareChangeGetAvatar(imageFiles) {
       this.fileShareList = cloneDeep(imageFiles)
@@ -524,7 +538,7 @@ export default {
       //     : this.notPrize
     },
     getPerTimes(e) {
-      this.preview.perTimes = e.target.value
+      this.preview.perTimes = e
     },
     getTotalTimes() {},
     getDescription(e) {

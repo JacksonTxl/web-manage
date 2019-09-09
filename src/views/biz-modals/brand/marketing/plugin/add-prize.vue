@@ -38,23 +38,36 @@
         </span>
       </st-form-item>
       <st-form-item label="售卖门店" labelWidth="84px" required>
-        <a-radio-group v-decorator="decorators.is_shop_range">
+        <a-radio-group
+          v-decorator="decorators.is_shop_range"
+          @change="getCurShopType"
+        >
           <a-radio v-for="item in shops" :key="item.value" :value="item.value">
             {{ item.label }}
           </a-radio>
         </a-radio-group>
+        <select-shop
+          v-if="curShopType === 2"
+          @change="onChangeShopSetting"
+        ></select-shop>
       </st-form-item>
       <st-form-item label="奖品数量" labelWidth="84px" required>
-        <a-input
+        <a-input-number
+          :min="1"
+          :max="9999"
+          addonAfter="个"
           placeholder="请输入奖品数量"
           v-decorator="decorators.number"
-        ></a-input>
+        ></a-input-number>
       </st-form-item>
       <st-form-item label="中奖概率" labelWidth="84px" required>
-        <a-input
+        <a-input-number
+          :min="0"
+          :max="100"
+          addonAfter="%"
           placeholder="请输入中奖概率"
           v-decorator="decorators.rate"
-        ></a-input>
+        ></a-input-number>
       </st-form-item>
       <st-form-item label="奖品图片" labelWidth="84px">
         <a-radio-group
@@ -87,6 +100,7 @@ import { AddPrizeService } from './add-prize.service'
 import { ruleOptions } from './add-prize.config.ts'
 import { PatternService } from '@/services/pattern.service'
 import { cloneDeep } from 'lodash-es'
+import SelectShop from '@/views/fragments/shop/select-shop.vue'
 
 export default {
   name: 'BrandMarketingPoster',
@@ -123,6 +137,8 @@ export default {
       couponList: [],
       curPrizeType: 1,
       curImgType: 1,
+      shop_ids: [],
+      curShopType: 1,
       defaultImg: {
         image_url:
           'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/img-lottery-prize-defalut-1x.png',
@@ -148,7 +164,11 @@ export default {
   created() {
     this.getCouponList()
   },
+  components: { SelectShop },
   methods: {
+    onChangeShopSetting(val) {
+      this.shop_ids = val
+    },
     getCouponList() {
       return this.addPrizeService.getCouponList().subscribe(res => {
         this.couponList = res.list
@@ -160,12 +180,16 @@ export default {
     getCurPrizeType(e) {
       this.curPrizeType = e.target.value
     },
+    getCurShopType(e) {
+      this.curShopType = e.target.value
+    },
     getCurImgType(e) {
       this.curImgType = e.target.value
     },
     onSubmit() {
       this.form.validate().then(value => {
         value.prize = this.curImgType === 2 ? this.fileList[0] : this.defaultImg
+        value.support_shop_ids = this.shop_ids
         this.$emit('change', value)
         this.show = false
       })

@@ -77,10 +77,13 @@ export default {
     if (this.type === this.POSTER.COUPON_TYPE) {
       this.posterService.getPosterInfo(this.id).subscribe(() => {
         this.shsService
-          .getShsLotteryImage({
-            qrcode_url: this.info.qrcode_url,
-            sub_name: this.info.sub_name
-          })
+          .getShsImage(
+            {
+              qrcode_url: this.info.qrcode_url,
+              sub_name: this.info.sub_name
+            },
+            '/saas/lottery_poster'
+          )
           .subscribe(res => {
             this.url = res
           })

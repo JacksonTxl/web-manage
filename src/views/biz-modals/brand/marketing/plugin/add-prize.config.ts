@@ -5,11 +5,11 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           required: true,
-          message: '请输入活动名称'
+          message: '请输入奖品名称'
         },
         {
-          pattern: pattern.CN_EN_NUM('1-15'),
-          message: '请输入1~15d个字符'
+          pattern: pattern.CN_EN_NUM('1-10'),
+          message: '请输入1~15个字符'
         }
       ]
     },
@@ -68,7 +68,7 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           required: true,
-          message: '请填写昵称'
+          message: '请填写数量'
         }
       ]
     },
