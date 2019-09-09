@@ -16,6 +16,12 @@ interface UploadImageParams {
   // 商品价钱
   price: number
 }
+interface UploadLotteryImageParams {
+  // base64图片地址
+  qrcode_url: string
+  // 商品logo
+  sub_name: string
+}
 /**
  * shs相关服务
  */
@@ -56,7 +62,25 @@ export class ShsService {
       })
     )
   }
-
+  getShsLotteryImage(params: UploadLotteryImageParams) {
+    return this.getToken().pipe(
+      switchMap(() => {
+        return this.ossService.put({
+          business: 'image',
+          isPrivate: false,
+          file: this.convertBase64UrlToBlob(params.qrcode_url)
+        })
+      }),
+      switchMap((val: any) => {
+        const imageUrl = `${
+          this.appConfig.SHS_API_ENV
+        }/saas/lottery_poster?token=${this.token$.snapshot()}&sub_name=${
+          params.sub_name
+        }&qrcode_url=${val.qrcode_url}&download=1`
+        return this.loadImage(imageUrl)
+      })
+    )
+  }
   loadImage(url: string) {
     this.loading$.commit(() => true)
     return new Observable(observer => {

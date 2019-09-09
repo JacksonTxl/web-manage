@@ -21,7 +21,11 @@
               :class="bPage('lottery-banner')"
               src="~@/assets/img/brand/marketing/lottery/bg.png"
             />
-            <span>{{ preview.title }}</span>
+            <img
+              :class="bPage('lottery-title-bg')"
+              src="~@/assets/img/brand/marketing/lottery/title_bg.png"
+            />
+            <span :class="bPage('lottery-subtitle')">{{ preview.title }}</span>
             <div
               :class="bPage('lottery-turntable')"
               v-if="prizeList.length > 0"
@@ -34,6 +38,10 @@
               >
                 <img class="img" :src="item.prize.image_url" alt="" />
                 {{ item.prize_name }}
+              </div>
+              <div v-if="notPrize.prize_name" class="img-wrap run-item-7">
+                <img class="img" :src="notPrize.prize.image_url" alt="" />
+                {{ notPrize.prize_name }}
               </div>
             </div>
             <div :class="bPage('lottery-footer')">
@@ -248,6 +256,7 @@
                     <st-button
                       type="dashed"
                       block
+                      v-if="prizeList.length < 7"
                       v-modal-link="{
                         name: 'brand-marketing-plugin-add-prize',
                         on: { change: getPrizeInfo }
@@ -565,6 +574,12 @@ export default {
           moment(res.activity_base.end_time)
         ]
         this.prizeList = res.activity_prizes
+        this.preview.startTime = res.activity_base.start_time
+        this.preview.endTime = res.activity_base.end_time
+        this.preview.perTimes = res.activity_rule.per_times
+        this.preview.description = res.activity_base.activity_description
+        this.preview.title = res.activity_base.activity_sub_name
+        this.notPrize.prize_name = res.activity_lucky.lucky_name
       })
     }
   }

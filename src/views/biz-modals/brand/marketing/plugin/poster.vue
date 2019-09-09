@@ -77,11 +77,9 @@ export default {
     if (this.type === this.POSTER.COUPON_TYPE) {
       this.posterService.getPosterInfo(this.id).subscribe(() => {
         this.shsService
-          .getShsImage({
+          .getShsLotteryImage({
             qrcode_url: this.info.qrcode_url,
-            brand_logo: this.info.brand_logo,
-            brand_name: this.info.brand_name,
-            price: this.info.price
+            sub_name: this.info.sub_name
           })
           .subscribe(res => {
             this.url = res

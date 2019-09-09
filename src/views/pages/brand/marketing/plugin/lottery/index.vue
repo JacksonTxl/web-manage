@@ -80,7 +80,7 @@
             <router-link
               :to="{
                 name: 'brand-marketing-plugin-lottery-add',
-                query: { activity_id: '92xE3ropL9' }
+                query: { activity_id: record.id }
               }"
             >
               编辑
