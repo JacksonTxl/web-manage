@@ -7,7 +7,10 @@
             幸运大转盘
           </template>
           <div :class="bPage('lottery')">
-            <div :class="bPage('swiper')" v-if="isStopSwiper === 1">
+            <div
+              :class="bPage('swiper')"
+              v-if="isStopSwiper === STOP_SWIPER.DEFAULT"
+            >
               <swiper :options="sliderOptions" style="width:100%;">
                 <swiper-slide
                   v-for="(item, index) in prizeInfoList"
@@ -76,14 +79,14 @@
           <st-form :form="form" labelGutter="0" v-show="currentIndex == 0">
             <st-form-item label="活动名称" labelWidth="124px" required>
               <a-input
-                :disabled="info.activity_status === 2"
+                :disabled="ACTIVITY_STATUS.DISABLED"
                 placeholder="请输入活动名称"
                 v-decorator="decorators.activity_base.activity_name"
               ></a-input>
             </st-form-item>
             <st-form-item label="活动标题" labelWidth="124px" required>
               <a-input
-                :disabled="info.activity_status === 2"
+                :disabled="ACTIVITY_STATUS.DISABLED"
                 @change="getTitle"
                 placeholder="请输入活动标题"
                 v-decorator="decorators.activity_base.activity_sub_name"
@@ -91,7 +94,7 @@
             </st-form-item>
             <st-form-item label="活动时间" labelWidth="124px" required>
               <a-range-picker
-                :disabled="info.activity_status === 2"
+                :disabled="ACTIVITY_STATUS.DISABLED"
                 format="YYYY-MM-DD HH:mm"
                 v-model="dateRangeVal"
                 @change="onDateChange"
@@ -100,14 +103,14 @@
             <st-form-item label="活动说明" labelWidth="124px" required>
               <a-textarea
                 @change="getDescription"
-                :disabled="info.activity_status === 2"
+                :disabled="ACTIVITY_STATUS.DISABLED"
                 placeholder="请输入活动说明"
                 v-decorator="decorators.activity_base.activity_description"
               ></a-textarea>
             </st-form-item>
             <st-form-item label="活动轮播获奖信息说明" labelWidth="124px">
               <a-radio-group
-                :disabled="info.activity_status === 2"
+                :disabled="ACTIVITY_STATUS.DISABLED"
                 @change="stopSwiper"
                 v-decorator="decorators.activity_base.wheel_turn_around"
               >
@@ -123,7 +126,7 @@
             <st-form-item label="分享设置" labelWidth="124px">
               <a-radio-group
                 @change="getCurShareType"
-                :disabled="info.activity_status === 2"
+                :disabled="ACTIVITY_STATUS.DISABLED"
                 v-decorator="decorators.activity_base.wheel_share_default"
               >
                 <a-radio
@@ -174,7 +177,7 @@
               </a-radio-group>
 
               <a-select
-                v-show="crowdType === 2"
+                v-show="crowdType === CROWD_TYPE.CUSTOM"
                 placeholder="请选择参与用户"
                 v-decorator="decorators.activity_rule.crowd_id"
               >
@@ -279,7 +282,7 @@
                     </st-button>
                   </td>
                 </tr>
-                <template v-for="item in prizeList">
+                <template v-for="(item, index) in prizeList">
                   <tr :key="item.id">
                     <td>{{ item.prize_name }}</td>
                     <td>{{ item.prize_type }}</td>
@@ -303,10 +306,7 @@
                         >
                           编辑
                         </a>
-                        <a
-                          href="javascript:;"
-                          @click="onDelete(item.prize_name)"
-                        >
+                        <a href="javascript:;" @click="onDelete(index)">
                           删除
                         </a>
                       </st-table-actions>
@@ -334,7 +334,7 @@
                 </a-radio>
               </a-radio-group>
               <st-image-upload
-                v-if="notPrizeImgType === 2"
+                v-if="notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM"
                 width="164px"
                 height="164px"
                 :list="fileList"
@@ -363,6 +363,15 @@ import { RouteService } from '@/services/route.service'
 import { cloneDeep } from 'lodash-es'
 import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import {
+  TIMES_TYPE,
+  CROWD_TYPE,
+  SHARE_TYPE,
+  STOP_SWIPER,
+  ACTIVITY_STATUS,
+  NOT_PRIZE_IMG_TYPE
+} from '@/constants/marketing/lottery'
+
 export default {
   name: 'PluginLotteryAdd',
   data(vm) {
@@ -371,6 +380,12 @@ export default {
     return {
       form,
       decorators,
+      TIMES_TYPE,
+      CROWD_TYPE,
+      SHARE_TYPE,
+      STOP_SWIPER,
+      ACTIVITY_STATUS,
+      NOT_PRIZE_IMG_TYPE,
       columsTitlelist: [
         '奖品名称',
         '奖品类型',
@@ -390,10 +405,10 @@ export default {
       fileList: [],
       fileShareList: [],
       prizeList: [],
-      timesType: 1,
-      crowdType: 1,
-      shareType: 1,
-      isStopSwiper: 1,
+      timesType: TIMES_TYPE.DEFAULT,
+      crowdType: CROWD_TYPE.DEFAULT,
+      shareType: SHARE_TYPE.DEFAULT,
+      isStopSwiper: STOP_SWIPER.DEFAULT,
       stepArr: [
         {
           title: '基础信息',
@@ -409,7 +424,7 @@ export default {
         }
       ],
       currentIndex: 0,
-      notPrizeImgType: 1,
+      notPrizeImgType: NOT_PRIZE_IMG_TYPE.DEFAULT,
       dateRangeVal: [],
       defaultImg: {
         image_url:
@@ -518,10 +533,14 @@ export default {
         value.activity_base.start_time = this.preview.startTime
         value.activity_base.end_time = this.preview.endTime
         value.activity_base.share_bg =
-          this.shareType === 2 ? this.fileShareList[0] : this.defaultImg
+          this.shareType === SHARE_TYPE.CUSTOM
+            ? this.fileShareList[0]
+            : this.defaultImg
         value.activity_prizes = this.prizeList
         value.activity_lucky.lucky =
-          this.notPrizeImgType === 2 ? this.fileList[0] : this.defaultImg
+          this.notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM
+            ? this.fileList[0]
+            : this.defaultImg
         this.addService.add(value).subscribe(res => {
           this.$router.push('./success')
         })
@@ -532,15 +551,10 @@ export default {
     },
     getName(e) {
       this.notPrize.prize_name = e.target.value
-      // this.prizeList =
-      //   this.tempList.length > 0
-      //     ? this.tempList.length.concat(this.notPrize)
-      //     : this.notPrize
     },
     getPerTimes(e) {
       this.preview.perTimes = e
     },
-    getTotalTimes() {},
     getDescription(e) {
       this.preview.description = e.target.value
     },
@@ -560,7 +574,6 @@ export default {
     stopSwiper(e) {
       this.isStopSwiper = e.target.value
     },
-    refresh() {},
     onDateChange(data, str) {
       this.preview.startTime = str[0]
       this.preview.endTime = str[1]
@@ -570,8 +583,8 @@ export default {
       this.tempList = this.prizeList
     },
     onDelete(para) {
-      this.prizeList = this.prizeList.filter(item => {
-        return item.prize_name !== para
+      this.prizeList = this.prizeList.filter((item, index) => {
+        return index !== para
       })
     },
     editVIew(id) {
