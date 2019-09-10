@@ -14,8 +14,7 @@ export default {
       }
     },
     pagination: {
-      type: null,
-      default: false
+      type: null
     },
     dataSource: {
       type: Array,
@@ -52,6 +51,9 @@ export default {
     },
     tablePagination: {
       get() {
+        if (this.pagination === false || this.page === false) {
+          return false
+        }
         let _p = merge(
           {
             current: this.current,
