@@ -1,5 +1,5 @@
 <template>
-  <div :class="rowcont()">
+  <div :class="[rowcont(), className]">
     <st-t4>
       {{ title }}
       <span v-if="subTitle">{{ subTitle }}</span>
@@ -12,7 +12,8 @@ export default {
   name: 'RowContainerComponent',
   props: {
     title: String,
-    subTitle: String
+    subTitle: String,
+    className: String
   },
   bem: {
     rowcont: 'row-container-component'

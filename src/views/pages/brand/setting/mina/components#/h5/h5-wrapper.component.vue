@@ -13,6 +13,7 @@
             <row-container-component
               title="教练风采"
               subTitle="最多添加100个教练"
+              className="row-container-component-coach"
             >
               <coach-component v-if="coachLoaded"></coach-component>
             </row-container-component>
