@@ -109,9 +109,9 @@
               <span class="mg-r8 color-title">预览内容</span>
               <span :class="bComponent('text-right')">{{ info.preview }}</span>
             </div>
-            <div v-if="Object.keys(info.course_type).length > 0">
+            <div class="mg-b16" v-if="Object.keys(info.course_type).length > 0">
               <span class="color-title">课程类型</span>
-              <span class="mg-b16 mg-l16 inlineblock">
+              <span class="mg-l16 inlineblock">
                 <st-checkbox
                   v-if="params.course_type.team_course"
                   v-model="params.course_type.team_course.value"
@@ -126,9 +126,9 @@
                 </st-checkbox>
               </span>
             </div>
-            <div v-if="Object.keys(info.receiver).length > 0">
+            <div class="mg-b16" v-if="Object.keys(info.receiver).length > 0">
               <span class="color-title">接收人员</span>
-              <span class="mg-b16 mg-l16 inlineblock">
+              <span class=" mg-l16 inlineblock">
                 <st-checkbox
                   v-if="params.receiver.coach"
                   v-model="params.receiver.coach.value"
@@ -150,16 +150,15 @@
               </span>
               <a-input
                 style="width:44%"
-                class="mg-b16"
                 v-show="isShowPhone"
                 v-model="params.custom_phone"
                 placeholder="请输入手机号码，多个用逗号分隔"
               />
             </div>
 
-            <div v-if="Object.keys(info.order_type).length > 0">
+            <div class="mg-b16" v-if="Object.keys(info.order_type).length > 0">
               <span class="color-title">订单类型</span>
-              <span class="mg-b16 mg-l16 inlineblock">
+              <span class="mg-l16 inlineblock">
                 <st-checkbox
                   v-if="params.order_type.advance"
                   v-model="params.order_type.advance.value"
@@ -186,8 +185,8 @@
                 </st-checkbox>
               </span>
             </div>
-            <div class="mg-t16">
-              <span class="color-title mg-r16">发送规则</span>
+            <div>
+              <span class="color-title mg-r8">发送规则</span>
               <span
                 v-if="
                   info.notify_type.value === 1 &&
