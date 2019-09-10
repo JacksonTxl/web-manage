@@ -35,8 +35,8 @@ export class LotteryApi extends Api {
     return this.http.get('/v1/plugin/member', { query })
   }
   //核销列表
-  getCheckinList() {
-    return this.http.get('/v1/plugin/code')
+  getCheckinList(id: string) {
+    return this.http.get('/v1/plugin/code?id=' + id)
   }
   // 核销
   checkin(prize_code: string) {
