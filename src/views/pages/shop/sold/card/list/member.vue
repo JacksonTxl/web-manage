@@ -1,7 +1,7 @@
 <template>
   <div :class="basic()">
     <st-search-panel>
-      <div :class="basic('select')" class="mgt-24">
+      <div :class="basic('select')" class="mg-t24">
         <span :class="basic('select-text')">会员卡类型：</span>
         <st-search-radio v-model="query.card_type" :list="cardTypes" />
       </div>
@@ -30,16 +30,16 @@
         >
           查询
         </st-button>
-        <st-button class="mgl-8" @click="onSearhReset">重置</st-button>
+        <st-button class="mg-l8" @click="onSearhReset">重置</st-button>
       </div>
     </st-search-panel>
     <div :class="basic('content')">
       <div :class="basic('content-batch')" class="mg-b16">
         <!-- NOTE: 导出 -->
-        <!-- <st-button type="primary" class="mgr-8" v-if="auth.export">批量导出</st-button> -->
+        <!-- <st-button type="primary" class="mg-r8" v-if="auth.export">批量导出</st-button> -->
         <st-button
           type="primary"
-          class="mgr-8"
+          class="mg-r8"
           v-if="auth.gift"
           :disabled="selectedRowKeys.length < 1 || diffSelectedRows.length > 0"
           @click="onGiving"
@@ -48,7 +48,7 @@
         </st-button>
         <st-button
           type="primary"
-          class="mgr-8"
+          class="mg-r8"
           v-if="auth.vipRegion"
           :disabled="selectedRowKeys.length < 1 || diffSelectedRows.length > 0"
           @click="onAreas"

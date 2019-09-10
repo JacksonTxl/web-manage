@@ -51,7 +51,8 @@
               }"
             >
               <div class="color-text">
-                + 添加教练
+                <st-icon type="add"></st-icon>
+                添加教练
               </div>
             </a>
           </div>

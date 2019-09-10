@@ -24,7 +24,7 @@
       </div>
       <div slot="button">
         <st-button type="primary">查询</st-button>
-        <st-button class="mgl-8">重置</st-button>
+        <st-button class="mg-l8">重置</st-button>
       </div>
     </st-search-panel>
   </div>

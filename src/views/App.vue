@@ -3,9 +3,6 @@
     <div id="app">
       <component :is="layoutComponent"></component>
       <modal-router-view></modal-router-view>
-      <div class="git is-git" @click="getCommitHead" :style="gitStyle">
-        <span class="git__content">{{ tip }}</span>
-      </div>
       <!-- 本地开发下 -->
       <div v-if="appConfig.IS_DEV" class="app-env">
         <span>
@@ -44,25 +41,9 @@ export default {
       antdLocaleMessages: this.i18n.antdLocaleMessages$
     }
   },
-  data() {
-    return {
-      count: 0,
-      tip: `${this.appConfig.GIT_COMMIT}`
-    }
-  },
-  methods: {
-    getCommitHead() {
-      this.count++
-    }
-  },
   computed: {
     layoutComponent() {
       return layoutMap[this.$route.meta.layout || 'loading']
-    },
-    gitStyle() {
-      return {
-        opacity: this.count > 2 ? 1 : 0
-      }
     }
   }
 }

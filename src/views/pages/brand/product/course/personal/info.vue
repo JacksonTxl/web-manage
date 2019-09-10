@@ -60,6 +60,7 @@
               rowKey="shop_id"
               :columns="shopColumns"
               :dataSource="personalCourseInfo.shops"
+              page-mode="client"
             ></st-table>
           </st-container>
         </div>
@@ -74,6 +75,7 @@
             <st-table
               rowKey="id"
               :columns="coachColumns"
+              page-mode="client"
               :dataSource="personalCourseInfo.coaches"
             >
               <div slot="nature_work" slot-scope="nature_work">
@@ -97,6 +99,7 @@
               rowKey="id"
               :columns="priceConfigColumns"
               :dataSource="prices"
+              page-mode="client"
             >
               <div slot="min_sell_price" slot-scope="min_sell_price, record">
                 <span v-if="record.min_sell_price !== '0.0'">

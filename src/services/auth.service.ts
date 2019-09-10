@@ -11,6 +11,7 @@ import { of, forkJoin, pipe } from 'rxjs'
 import { get, set, forEach } from 'lodash-es'
 import { NProgressService } from './nprogress.service'
 import { NotificationService } from './notification.service'
+import { anyAll } from '@/operators'
 
 interface DataState {
   list?: any[]
@@ -113,7 +114,7 @@ export class AuthService {
   }
   init() {
     if (!this.auth$.snapshot().length) {
-      return forkJoin([this.getList()]).pipe(
+      return anyAll(this.getList()).pipe(
         tap(() => {
           this.nprogress.SET_TEXT('用户权限数据获取完成')
         })

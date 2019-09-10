@@ -31,11 +31,15 @@
     >
       <a-spin :spinning="isLoading" :tip="progress + '%'">
         <slot>
-          <a-icon
+          <st-icon
+            type="plus-circle"
+            style="font-size: 32px;color: #9BACB9;"
+          ></st-icon>
+          <!-- <a-icon
             type="plus-circle"
             theme="filled"
             :style="{ fontSize: '36px', color: '#9BACB9' }"
-          />
+          /> -->
           <div class="st-image-upload__placeholder">{{ placeholder }}</div>
         </slot>
       </a-spin>

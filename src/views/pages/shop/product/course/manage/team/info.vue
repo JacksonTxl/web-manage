@@ -79,6 +79,7 @@
             rowKey="shop_id"
             :dataSource="teamCourseInfo.support_shop_list"
             :columns="shopColumns"
+            page-mode="client"
           ></st-table>
         </st-container>
       </div>

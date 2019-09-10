@@ -1,0 +1,235 @@
+{
+  "code": 0,
+  "msg": "success",
+  "data": {
+    "menus": [
+      {
+        "id": 134080725911601,
+        "name": "首页",
+        "url": "brand-dashboard-studio",
+        "parent_id": 0,
+        "children": [],
+        "menu_type": 1,
+        "icon": "home",
+        "origin_id": 2
+      },
+      {
+        "id": 134080725911602,
+        "name": "营销中心",
+        "url": "",
+        "parent_id": 0,
+        "children": [
+          {
+            "id": 134080725911603,
+            "name": "营销插件",
+            "url": "brand-marketing-plugin",
+            "parent_id": 134080725911602,
+            "children": [],
+            "menu_type": 1,
+            "icon": "",
+            "origin_id": 4
+          },
+          {
+            "id": 134080725911604,
+            "name": "活动广告",
+            "url": "brand-marketing-activity",
+            "parent_id": 134080725911602,
+            "children": [],
+            "menu_type": 1,
+            "icon": "",
+            "origin_id": 5
+          }
+        ],
+        "menu_type": 1,
+        "icon": "marketing",
+        "origin_id": 3
+      },
+      {
+        "id": 134080725911605,
+        "name": "数据统计",
+        "url": "brand-stat",
+        "parent_id": 0,
+        "children": [],
+        "menu_type": 1,
+        "icon": "stat",
+        "origin_id": 6
+      },
+      {
+        "id": 134080725911606,
+        "name": "经营类目",
+        "url": "",
+        "parent_id": 0,
+        "children": [
+          {
+            "id": 134080725911607,
+            "name": "会籍卡",
+            "url": "brand-product-card-member",
+            "parent_id": 134080725911606,
+            "children": [],
+            "menu_type": 1,
+            "icon": "",
+            "origin_id": 8
+          },
+          {
+            "id": 134080725911608,
+            "name": "储值卡",
+            "url": "brand-product-card-deposit",
+            "parent_id": 134080725911606,
+            "children": [],
+            "menu_type": 1,
+            "icon": "",
+            "origin_id": 9
+          },
+          {
+            "id": 134080725911609,
+            "name": "私教课",
+            "url": "brand-product-course-personal",
+            "parent_id": 134080725911606,
+            "children": [],
+            "menu_type": 1,
+            "icon": "",
+            "origin_id": 10
+          },
+          {
+            "id": 134080725911610,
+            "name": "团体课",
+            "url": "brand-product-course-team",
+            "parent_id": 134080725911606,
+            "children": [],
+            "menu_type": 1,
+            "icon": "",
+            "origin_id": 11
+          }
+        ],
+        "menu_type": 1,
+        "icon": "product",
+        "origin_id": 7
+      },
+      {
+        "id": 134080725911611,
+        "name": "组织架构",
+        "url": "",
+        "parent_id": 0,
+        "children": [
+          {
+            "id": 134080725911612,
+            "name": "员工管理",
+            "url": "brand-staff-department",
+            "parent_id": 134080725911611,
+            "children": [],
+            "menu_type": 1,
+            "icon": "",
+            "origin_id": 13
+          },
+          {
+            "id": 134080725911613,
+            "name": "角色权限",
+            "url": "brand-staff-role",
+            "parent_id": 134080725911611,
+            "children": [],
+            "menu_type": 1,
+            "icon": "",
+            "origin_id": 14
+          }
+        ],
+        "menu_type": 1,
+        "icon": "department",
+        "origin_id": 12
+      },
+      {
+        "id": 134080725911614,
+        "name": "财务资金",
+        "url": "",
+        "parent_id": 0,
+        "children": [
+          {
+            "id": 134080725911617,
+            "name": "薪资模板",
+            "url": "brand-finance-salary-template",
+            "parent_id": 134080725911614,
+            "children": [],
+            "menu_type": 1,
+            "icon": "",
+            "origin_id": 18
+          }
+        ],
+        "menu_type": 1,
+        "icon": "finance",
+        "origin_id": 15
+      },
+      {
+        "id": 134080725911618,
+        "name": "系统设置",
+        "url": "",
+        "parent_id": 0,
+        "children": [
+          {
+            "id": 134080725911619,
+            "name": "通用设置",
+            "url": "brand-setting-general",
+            "parent_id": 134080725911618,
+            "children": [],
+            "menu_type": 1,
+            "icon": "",
+            "origin_id": 20
+          },
+          {
+            "id": 134080725911620,
+            "name": "门店设置",
+            "url": "brand-setting-shop",
+            "parent_id": 134080725911618,
+            "children": [],
+            "menu_type": 1,
+            "icon": "",
+            "origin_id": 21
+          },
+          {
+            "id": 134080725911621,
+            "name": "用户端设置",
+            "url": "brand-setting-mina-index",
+            "parent_id": 134080725911618,
+            "children": [],
+            "menu_type": 1,
+            "icon": "",
+            "origin_id": 22
+          },
+          {
+            "id": 134080725911622,
+            "name": "合同设置",
+            "url": "brand-setting-contract",
+            "parent_id": 134080725911618,
+            "children": [],
+            "menu_type": 1,
+            "icon": "",
+            "origin_id": 23
+          },
+          {
+            "id": 134080725911623,
+            "name": "应用设置",
+            "url": "brand-setting-app",
+            "parent_id": 134080725911618,
+            "children": [],
+            "menu_type": 1,
+            "icon": "",
+            "origin_id": 24
+          },
+          {
+            "id": 134080725911624,
+            "name": "消息通知设置",
+            "url": "brand-setting-sms",
+            "parent_id": 134080725911618,
+            "children": [],
+            "menu_type": 1,
+            "icon": "",
+            "origin_id": 25
+          }
+        ],
+        "menu_type": 1,
+        "icon": "setting",
+        "origin_id": 19
+      }
+    ],
+    "favorite": [],
+    "first_url": "brand-dashboard-studio"
+  }
+}

@@ -30,7 +30,11 @@ export class AreaService {
     )
   }
   getWhiteList(query: GetWhiteListQuery) {
-    return this.HareWareApi.getWhiteList(query)
+    return this.HareWareApi.getWhiteList(query).pipe(
+      tap(res => {
+        this.whiteList$.commit(() => res.list)
+      })
+    )
   }
   putAreaSetting(params: PutAreaSettingParams) {
     return this.HareWareApi.putAreaSettingParams(params)

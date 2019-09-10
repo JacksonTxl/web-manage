@@ -10,12 +10,7 @@ export class AppConfig {
   /**
    * global ajax request timeout
    */
-  HTTP_TIMEOUT = 10000
-  /**
-   * 本地mock
-   * 见 mock 文件下app.js
-   */
-  API_BASE_MOCK = '/_mock_api'
+  HTTP_TIMEOUT = 6000
   /**
    * 图片基础路径
    */

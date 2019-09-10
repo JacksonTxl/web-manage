@@ -53,6 +53,7 @@
               :columns="shopColumns"
               rowKey="shop_id"
               :dataSource="info.shops"
+              page-mode="client"
             ></st-table>
           </st-container>
         </div>
@@ -91,6 +92,7 @@
               :columns="priceConfigColumns"
               rowKey="id"
               :dataSource="price_gradient"
+              page-mode="client"
             >
               <div slot="min_sell_price" slot-scope="min_sell_price, record">
                 <span v-if="record.min_sell_price !== '0.0'">

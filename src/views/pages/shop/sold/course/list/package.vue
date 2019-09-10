@@ -14,7 +14,7 @@
       </div>
       <div slot="button">
         <st-button type="primary" @click="onSearchNative">查询</st-button>
-        <st-button class="mgl-8" @click="onSearhReset">重置</st-button>
+        <st-button class="mg-l8" @click="onSearhReset">重置</st-button>
       </div>
     </st-search-panel>
     <div :class="basic('content')">

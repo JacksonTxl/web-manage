@@ -3,6 +3,7 @@
     wrapClassName="modal-stat-team-course"
     title="上课节数(团)"
     :footer="null"
+    width="960px"
     v-model="show"
   >
     <div class="search mg-b16">
@@ -49,11 +50,9 @@
     <st-table
       :columns="columns"
       :rowKey="record => record.id"
-      :page="page"
       :loading="loading$.getCourseList"
-      @change="onChangePage"
-      :showSizeChanger="false"
       :dataSource="courseList$"
+      page-mode="client"
     ></st-table>
   </st-modal>
 </template>
@@ -99,8 +98,7 @@ export default {
       coach_id: -1,
       course_id: -1,
       current_page: 1,
-      size: 999,
-      page: {}
+      size: 999
     }
   },
   computed: {
@@ -123,10 +121,6 @@ export default {
     getCourseList() {
       this.teamCourseService.getCourseList(this.query).subscribe()
     },
-    onChangePage(pagination) {
-      this.page.size = pagination.pageSize
-      this.page.current_page = pagination.current
-    },
     filterOption(input, option) {
       return (
         option.componentOptions.children[0].text
@@ -138,8 +132,7 @@ export default {
   mounted() {
     this.coach_id = this.record.coach_id || -1
     this.stat_date = this.record.stat_date
-    let { current_page, total_counts } = this.page$
-    this.page = { current_page, total_counts }
+
     this.teamCourseService
       .init({ course_type: COURSE_TYPE.TEAM }, { ...this.query })
       .subscribe()

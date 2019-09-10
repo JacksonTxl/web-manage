@@ -63,7 +63,6 @@
       </div>
     </st-panel>
     <div :class="bPage('divider')"></div>
-
     <st-panel app :class="bPage()">
       <div :class="bPage('area')">
         <st-t2>单区域通行配置</st-t2>

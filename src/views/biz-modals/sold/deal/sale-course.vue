@@ -124,7 +124,7 @@
               </st-button>
             </div>
           </st-form-item>
-          <st-form-item class="mgb-12" label="商品价格">
+          <st-form-item class="mg-b12" label="商品价格">
             {{ info.sell_price }}元
           </st-form-item>
           <st-form-item :class="sale('discounts')" label="优惠券">
@@ -237,10 +237,10 @@
             </a-select>
           </st-form-item>
           <st-form-item label="备注" class="mg-b0">
-            <a-textarea
+            <st-textarea
               v-model="description"
               :autosize="{ minRows: 4, maxRows: 6 }"
-              :maxlength="30"
+              :maxlength="200"
             />
           </st-form-item>
         </div>

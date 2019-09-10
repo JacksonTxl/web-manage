@@ -60,6 +60,11 @@ export default {
             fill: '#9BACB9'
           }
         },
+        line: {
+          stroke: '#f3f3f4', // 坐标轴线的颜色
+          // strokeOpacity: {number}, // 坐标轴线的透明度，数值范围为 0 - 1
+          lineWidth: 0.5 // 设置坐标轴线的粗细
+        },
         tickLine: {
           lineWidth: 0,
           length: 0

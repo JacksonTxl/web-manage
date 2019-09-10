@@ -8,8 +8,8 @@ import { TooltipApi } from '@/api/v1/admin/tooltip'
 import { get, reduce, isPlainObject } from 'lodash-es'
 import { NProgressService } from './nprogress.service'
 import { ShopApi } from '@/api/v1/shop'
-import { forkJoin, of } from 'rxjs'
-import { then } from '@/operators'
+import { of, forkJoin } from 'rxjs'
+import { then, anyAll } from '@/operators'
 
 interface User {
   id?: string

@@ -7,7 +7,7 @@
   >
     <div :class="refund('content')">
       <a-row :class="refund('info')">
-        <a-col :span="13" class="mgb-36">
+        <a-col :span="13" class="mg-b36">
           <st-info>
             <st-info-item label="订单号">
               {{ packageInfo.order_id }}
@@ -21,7 +21,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="11" class="mgb-36">
+        <a-col :span="11" class="mg-b36">
           <st-info>
             <st-info-item label="下单人">
               {{ packageInfo.operator_name }}
@@ -31,7 +31,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="13" class="mgb-36">
+        <a-col :span="13" class="mg-b36">
           <st-info>
             <st-info-item label="场馆">
               {{ packageInfo.shop_name }}
@@ -41,7 +41,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="11" class="mgb-36">
+        <a-col :span="11" class="mg-b36">
           <st-info>
             <st-info-item label="用户">
               {{ packageInfo.member_name }} {{ packageInfo.member_mobile }}
@@ -50,7 +50,7 @@
           </st-info>
         </a-col>
 
-        <a-col :span="13" class="mgb-24">
+        <a-col :span="13" class="mg-b24">
           <st-info>
             <st-info-item label="订单总额">
               {{ packageInfo.total_price }}元
@@ -58,7 +58,7 @@
             <st-info-item class="mg-b0" label="结转金额">无</st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="11" class="mgb-24">
+        <a-col :span="11" class="mg-b24">
           <st-info>
             <st-info-item label="应收金额">
               {{ packageInfo.receivable_price }}元
@@ -68,7 +68,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="24" class="mgb-36">
+        <a-col :span="24" class="mg-b36">
           <st-info>
             <st-info-item class="mg-b0" label="备注">
               {{ packageInfo.description || '无' }}
@@ -78,7 +78,7 @@
       </a-row>
       <st-form :form="form" labelWidth="88px">
         <div :class="refund('refund')">
-          <st-form-item class="mgb-18" required>
+          <st-form-item class="mg-b16" required>
             <template slot="label">
               退款原因
               <st-help-tooltip id="TSMC005" />
@@ -105,7 +105,7 @@
               </template>
             </st-input-number>
           </st-form-item>
-          <st-form-item label="退款方式" class="mgb-18" required>
+          <st-form-item label="退款方式" class="mg-b16" required>
             <a-radio-group v-model="frozenPayType">
               <a-radio
                 v-for="(item, index) in refundChannelSaas"

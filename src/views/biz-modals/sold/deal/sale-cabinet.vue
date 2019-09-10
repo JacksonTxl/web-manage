@@ -185,7 +185,7 @@
               </st-button>
             </div>
           </st-form-item>
-          <st-form-item labelGutter="12px" class="mgb-12" label="租赁费用">
+          <st-form-item labelGutter="12px" class="mg-b12" label="租赁费用">
             {{ orderAmountPrice }}
           </st-form-item>
           <st-form-item
@@ -269,10 +269,10 @@
             </a-select>
           </st-form-item>
           <st-form-item label="备注" class="mg-b0">
-            <a-textarea
+            <st-textarea
               v-model="description"
               :autosize="{ minRows: 4, maxRows: 6 }"
-              :maxlength="30"
+              :maxlength="200"
             />
           </st-form-item>
         </div>

@@ -6,7 +6,7 @@ import {
   Version,
   RevenueParams
 } from '@/api/v1/stat/overview/shop'
-import { forkJoin } from 'rxjs'
+import { anyAll } from '@/operators'
 
 @Injectable()
 export class StudioService implements RouteGuard {
@@ -14,7 +14,8 @@ export class StudioService implements RouteGuard {
     revenue_amount: {},
     course_checkin_num: {},
     passenger_flow: {},
-    be_member_num: {}
+    be_member_num: {},
+    buy_personal_course_num: {}
   })
   revenueDaily$ = new State([])
   revenueSummary$ = new State([])
@@ -30,6 +31,7 @@ export class StudioService implements RouteGuard {
   getTop(query: Version) {
     return this.overviewApi.getTop(query).pipe(
       tap(res => {
+        console.log('top', res)
         this.top$.commit(() => res.info)
       })
     )
@@ -190,7 +192,7 @@ export class StudioService implements RouteGuard {
     )
   }
   init() {
-    return forkJoin(
+    return anyAll(
       this.getTop({ version: 'studio' }),
       this.getRevenue({ recently_day: 7 }),
       this.getCourse({ recently_day: 7 }),

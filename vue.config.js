@@ -2,23 +2,20 @@ const path = require('path')
 const fs = require('fs')
 const webpack = require('webpack')
 const moment = require('moment')
+const Path = require('path')
 const IgnoreNotFoundExportPlugin = require('./build/ignore-not-found-plugin')
 const HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin')
 const LessPluginFunction = require('less-plugin-functions')
+const mockerApi = require('mocker-api')
+const WebpackHotRelease = require('webpack-hot-release/plugin')
+const WebpackExternalVendorPlugin = require('webpack-external-vendor-plugin')
 
 const resolve = dir => path.resolve(__dirname, dir)
-const git = require('git-rev-sync')
-const WebpackExternalVendorPlugin = require('webpack-external-vendor-plugin')
 
 const env = {
   NODE_ENV: process.env.NODE_ENV || 'development',
   LOCAL_API_ENV: process.env.LOCAL_API_ENV || 'dev',
-  PAGE_ENV: process.env.PAGE_ENV || '',
-  GIT_COMMIT: git.short(),
-  GIT_MESSAGE: git.message(),
-  GIT_DATE: moment(git.date()).utc(true),
-  // Jenkins的GIT_BRANCH 变量 或者用 git查询出的分支 （Jenkins构建时只有临时分支）
-  GIT_BRANCH: process.env.GIT_BRANCH || git.branch()
+  PAGE_ENV: process.env.PAGE_ENV || ''
 }
 
 const IS_DEV = env.NODE_ENV !== 'production'
@@ -28,19 +25,6 @@ const localApiEnvHostTarget = {
   dev: 'https://api-saas-dev.styd.cn',
   test: 'https://api-saas-test.styd.cn'
 }[env.LOCAL_API_ENV]
-
-const relaseInfo = {
-  mode: env.NODE_ENV,
-  git_commit: env.GIT_COMMIT,
-  git_commit_long: git.long(),
-  git_message: env.GIT_MESSAGE,
-  git_branch: env.GIT_BRANCH,
-  git_date: env.GIT_DATE
-}
-fs.writeFileSync(
-  resolve('./public/release.json'),
-  JSON.stringify(relaseInfo, null, 2)
-)
 
 module.exports = {
   pages: {
@@ -85,14 +69,10 @@ module.exports = {
         pathRewrite: {
           '^/_api/': '/'
         }
-      },
-      '/_mock_api': {
-        target: 'http://localhost:8059',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/_mock_api/': '/'
-        }
       }
+    },
+    before(app) {
+      mockerApi(app, Path.resolve('./mock/index.js'))
     },
     port: 8060
   },
@@ -133,6 +113,9 @@ module.exports = {
         'rxjs/ajax': 'window.rxjs.ajax',
         'lodash-es': 'window._'
       })
+      .plugin('hot-release')
+      .use(WebpackHotRelease)
+      .end()
       .plugin('external-vendor')
       .use(WebpackExternalVendorPlugin, [
         {
@@ -182,12 +165,7 @@ module.exports = {
           BASE_URL: JSON.stringify('/'),
           NODE_ENV: JSON.stringify(env.NODE_ENV),
           LOCAL_API_ENV: JSON.stringify(env.LOCAL_API_ENV),
-          PAGE_ENV: JSON.stringify(env.PAGE_ENV),
-
-          GIT_COMMIT: JSON.stringify(env.GIT_COMMIT),
-          GIT_BRANCH: JSON.stringify(env.GIT_BRANCH),
-          GIT_MESSAGE: JSON.stringify(env.GIT_MESSAGE),
-          GIT_DATE: JSON.stringify(env.GIT_DATE)
+          PAGE_ENV: JSON.stringify(env.PAGE_ENV)
         }
       })
       return definitions
