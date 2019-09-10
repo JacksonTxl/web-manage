@@ -8,7 +8,7 @@
   >
     <div :class="gathering('content')">
       <a-row :class="gathering('info')">
-        <a-col :span="13" class="mgb-36">
+        <a-col :span="13" class="mg-b36">
           <st-info>
             <st-info-item label="订单号">{{ info.order_id }}</st-info-item>
             <st-info-item class="mg-b0" label="下单时间">
@@ -16,7 +16,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="11" class="mgb-36">
+        <a-col :span="11" class="mg-b36">
           <st-info>
             <st-info-item label="下单人">{{ info.operate_name }}</st-info-item>
             <st-info-item class="mg-b0" label="销售">
@@ -24,7 +24,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="13" class="mgb-36">
+        <a-col :span="13" class="mg-b36">
           <st-info>
             <st-info-item label="场馆">{{ info.shop_name }}</st-info-item>
             <st-info-item label="用户">
@@ -35,7 +35,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="11" class="mgb-36">
+        <a-col :span="11" class="mg-b36">
           <st-info>
             <st-info-item label="定金抵扣">
               {{ info.advance_amount }}
@@ -45,7 +45,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="13" class="mgb-24">
+        <a-col :span="13" class="mg-b24">
           <st-info>
             <st-info-item label="订单总额">
               {{ info.order_amount }}
@@ -55,7 +55,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="11" class="mgb-24">
+        <a-col :span="11" class="mg-b24">
           <st-info>
             <st-info-item label="减免金额">
               {{ info.reduce_amount }}
@@ -65,7 +65,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="24" class="mgb-36">
+        <a-col :span="24" class="mg-b36">
           <st-info>
             <st-info-item class="mg-b0" label="备注">
               {{ info.description }}
@@ -78,13 +78,13 @@
           <st-form-item
             labelWidth="120px"
             label="已收金额/未收金额"
-            class="mgb-18"
+            class="mg-b16"
           >
             <span class="total">
               {{ info.payed_amount }}/{{ info.remain_amount }}
             </span>
           </st-form-item>
-          <st-form-item class="mgb-18" label="支付金额" required>
+          <st-form-item class="mg-b16" label="支付金额" required>
             <st-input-number
               :float="true"
               :max="info.remain_amount | dealMaxNumber"
@@ -95,7 +95,7 @@
               </template>
             </st-input-number>
           </st-form-item>
-          <st-form-item label="支付方式" class="mgb-18" required>
+          <st-form-item label="支付方式" class="mg-b16" required>
             <a-radio-group
               @change="selectPay"
               v-decorator="decorators.payment_method"
@@ -111,7 +111,7 @@
           </st-form-item>
           <st-form-item
             label="储值卡"
-            class="mgb-18"
+            class="mg-b16"
             v-if="selectPayValues.payment_type === 0"
             required
           >

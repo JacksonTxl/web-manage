@@ -30,8 +30,8 @@
     </st-panel>
     <st-panel class="mg-t16">
       <st-info>
-        <st-info-item label="上课范围" class="mgb-8"></st-info-item>
-        <div :class="info('course')" class="mgb-24">
+        <st-info-item label="上课范围" class="mg-b8"></st-info-item>
+        <div :class="info('course')" class="mg-b24">
           <st-form-table>
             <colgroup>
               <col style="width:5%;" />
@@ -183,26 +183,26 @@
             </tbody>
           </st-form-table>
         </div>
-        <st-info-item label="有效时间" class="mgb-24">
+        <st-info-item label="有效时间" class="mg-b24">
           购买后{{ packageInfo.valid_time
           }}{{
             packageInfo.valid_time_unit
               | enumFilter('package_course.valid_time_unit')
           }}有效
         </st-info-item>
-        <st-info-item label="允许冻结天数" class="mgb-24">
+        <st-info-item label="允许冻结天数" class="mg-b24">
           {{ packageInfo.frozen_days }}天
         </st-info-item>
-        <st-info-item label="转让设置" class="mgb-24">
+        <st-info-item label="转让设置" class="mg-b24">
           {{ transferText }}
         </st-info-item>
-        <st-info-item label="售卖方式" class="mgb-24">
+        <st-info-item label="售卖方式" class="mg-b24">
           <span v-for="(item, index) in packageInfo.sale_mode" :key="index">
             <i v-if="index > 0">/</i>
             {{ item | enumFilter('package_course.sale_mode') }}
           </span>
         </st-info-item>
-        <st-info-item label="备注" class="mgb-8"></st-info-item>
+        <st-info-item label="备注" class="mg-b8"></st-info-item>
         <p :class="basic('remarks')">{{ packageInfo.remarks || '无' }}</p>
       </st-info>
     </st-panel>

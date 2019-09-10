@@ -16,7 +16,7 @@
             <st-info-item label="有效期">
               {{ freezeInfo.start_time }} 至 {{ freezeInfo.end_time }}
             </st-info-item>
-            <st-info-item class="mgb-24" label="剩余冻结时长">
+            <st-info-item class="mg-b24" label="剩余冻结时长">
               {{ freezeInfo.frozen_time_remain }}
             </st-info-item>
           </st-info>

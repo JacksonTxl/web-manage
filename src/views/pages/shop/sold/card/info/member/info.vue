@@ -5,21 +5,21 @@
         <st-button
           v-if="auth['shop:sold:sold_member_card|export_contract']"
           type="primary"
-          class="mgr-8"
+          class="mg-r8"
           @click="toContract"
         >
           查看合同
         </st-button>
         <st-button
           v-if="auth['shop:sold:sold_member_card|frozen']"
-          class="mgr-8"
+          class="mg-r8"
           @click="onFreeze"
         >
           冻结
         </st-button>
         <st-button
           v-if="auth['shop:sold:sold_member_card|renew']"
-          class="mgr-8"
+          class="mg-r8"
           @click="onRenewal"
         >
           续卡
@@ -159,7 +159,7 @@
         </a-col>
       </a-row>
     </st-panel>
-    <!-- <st-panel initial class="mgt-12" v-if="false"
+    <!-- <st-panel initial class="mg-t12" v-if="false"
       :tabs="[
         { label: '消费记录', route: { name: 'shop-sold-card-info-member-info-consumption-record', query: {id:infoService.id}  } },
         { label: '操作日志', route: { name: 'shop-sold-card-info-member-info-operation-record', query: {id:infoService.id}  } },
