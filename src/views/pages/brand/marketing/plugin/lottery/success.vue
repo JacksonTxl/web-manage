@@ -22,11 +22,11 @@
               v-modal-link="{
                 name: 'brand-marketing-plugin-poster',
                 props: {
-                  type: 1
+                  type: 1,
+                  id: query.id
                 },
                 on: { done: onModalTest }
               }"
-              @click="addLable"
             >
               分享海报
             </a>
@@ -49,11 +49,11 @@
               v-modal-link="{
                 name: 'brand-marketing-plugin-poster',
                 props: {
-                  type: 2
+                  type: 2,
+                  id: query.id
                 },
                 on: { done: onModalTest }
               }"
-              @click="addLable"
             >
               小程序码
             </a>
@@ -78,6 +78,7 @@
 <script>
 // import { SuccessService } from './add.service'
 import BrandMarketingPluginPoster from '@/views/biz-modals/brand/marketing/plugin/poster'
+import { RouteService } from '@/services/route.service'
 
 export default {
   name: 'PluginLotteryAdd',
@@ -92,12 +93,13 @@ export default {
   },
   serviceInject() {
     return {
-      // successService: SuccessService
+      // successService: SuccessService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
-      list: this.AddService.list$
+      query: this.routeService.query$
     }
   },
   methods: {

@@ -99,7 +99,7 @@ export class LotteryApi extends Api {
   /**
    * 获取优惠券小程序码
    */
-  getQrcode() {
-    return this.http.get(`/v1/plugin/wheel/qrcode`)
+  getQrcode(id: number) {
+    return this.http.get(`/v1/plugin/wheel/qrcode?id=` + id)
   }
 }

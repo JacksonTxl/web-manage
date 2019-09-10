@@ -62,7 +62,7 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           required: true,
-          message: '请选择用户'
+          message: '请选择用户类型'
         }
       ]
     },
@@ -92,6 +92,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     'activity_rule.per_times': {
+      initialValue: 1,
       rules: [
         {
           required: true,
@@ -100,19 +101,14 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     'activity_rule.total_times': {
+      initialValue: 1,
       rules: [
         {
           message: '请填写每日总次数'
         }
       ]
     },
-    'activity_rule.prize_times': {
-      rules: [
-        {
-          message: '请填写每日总次数'
-        }
-      ]
-    },
+    'activity_rule.prize_times': {},
     'activity_lucky.lucky_name': {
       rules: [
         {

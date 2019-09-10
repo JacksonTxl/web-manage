@@ -17,8 +17,8 @@ export class PosterService {
       })
     )
   }
-  getQrcode() {
-    return this.lotteryApi.getQrcode().pipe(
+  getQrcode(id: number) {
+    return this.lotteryApi.getQrcode(id).pipe(
       tap((res: any) => {
         this.qrcode$.commit(() => res.qrcode)
       })

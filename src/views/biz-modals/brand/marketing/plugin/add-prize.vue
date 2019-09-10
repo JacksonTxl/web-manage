@@ -147,7 +147,7 @@ export default {
     }
   },
   mounted() {
-    if (Object.keys(this.info).length > 0) {
+    if (this.info) {
       this.form.setFieldsValue({
         prize_name: this.info.prize_name,
         prize_type: this.info.prize_type,
@@ -157,7 +157,8 @@ export default {
         support_shop_ids: this.info.support_shop_ids,
         rate: this.info.rate,
         number: this.info.number,
-        image: this.info.image
+        image: this.info.image,
+        image_default: this.info.image_default
       })
     }
   },

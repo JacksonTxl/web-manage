@@ -79,14 +79,14 @@
           <st-form :form="form" labelGutter="0" v-show="currentIndex == 0">
             <st-form-item label="活动名称" labelWidth="124px" required>
               <a-input
-                :disabled="ACTIVITY_STATUS.DISABLED"
+                :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
                 placeholder="请输入活动名称"
                 v-decorator="decorators.activity_base.activity_name"
               ></a-input>
             </st-form-item>
             <st-form-item label="活动标题" labelWidth="124px" required>
               <a-input
-                :disabled="ACTIVITY_STATUS.DISABLED"
+                :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
                 @change="getTitle"
                 placeholder="请输入活动标题"
                 v-decorator="decorators.activity_base.activity_sub_name"
@@ -94,7 +94,7 @@
             </st-form-item>
             <st-form-item label="活动时间" labelWidth="124px" required>
               <a-range-picker
-                :disabled="ACTIVITY_STATUS.DISABLED"
+                :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
                 format="YYYY-MM-DD HH:mm"
                 v-model="dateRangeVal"
                 @change="onDateChange"
@@ -103,14 +103,14 @@
             <st-form-item label="活动说明" labelWidth="124px" required>
               <a-textarea
                 @change="getDescription"
-                :disabled="ACTIVITY_STATUS.DISABLED"
+                :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
                 placeholder="请输入活动说明"
                 v-decorator="decorators.activity_base.activity_description"
               ></a-textarea>
             </st-form-item>
             <st-form-item label="活动轮播获奖信息说明" labelWidth="124px">
               <a-radio-group
-                :disabled="ACTIVITY_STATUS.DISABLED"
+                :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
                 @change="stopSwiper"
                 v-decorator="decorators.activity_base.wheel_turn_around"
               >
@@ -126,7 +126,7 @@
             <st-form-item label="分享设置" labelWidth="124px">
               <a-radio-group
                 @change="getCurShareType"
-                :disabled="ACTIVITY_STATUS.DISABLED"
+                :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
                 v-decorator="decorators.activity_base.wheel_share_default"
               >
                 <a-radio
@@ -177,7 +177,7 @@
               </a-radio-group>
 
               <a-select
-                v-show="crowdType === CROWD_TYPE.CUSTOM"
+                v-if="crowdType === CROWD_TYPE.CUSTOM"
                 placeholder="请选择参与用户"
                 v-decorator="decorators.activity_rule.crowd_id"
               >
@@ -221,7 +221,6 @@
                 <a-input-number
                   :min="1"
                   :max="9999"
-                  :precision="1"
                   @change="getPerTimes"
                   style="width: 100px;"
                   placeholder="请输入"
@@ -234,7 +233,6 @@
                 <a-input-number
                   :min="1"
                   :max="9999"
-                  :precision="1"
                   style="width: 100px;"
                   placeholder="请输入"
                   v-decorator="decorators.activity_rule.total_times"
@@ -244,12 +242,13 @@
             </st-form-item>
             <st-form-item label=" 中奖次数" labelWidth="124px">
               每人最多可中奖
-              <a-input
-                @change="getTotalTimes"
+              <a-input-number
+                :min="1"
+                :max="9999"
                 style="width: 100px;"
                 placeholder="请输入"
                 v-decorator="decorators.activity_rule.prize_times"
-              ></a-input>
+              ></a-input-number>
               次
             </st-form-item>
             <st-form-item label="" labelWidth="124px">
@@ -285,9 +284,9 @@
                 <template v-for="(item, index) in prizeList">
                   <tr :key="item.id">
                     <td>{{ item.prize_name }}</td>
-                    <td>{{ item.prize_type }}</td>
+                    <td>{{ item.prize_type === 1 ? '优惠卷' : '兑换码' }}</td>
                     <td>
-                      <!-- {{ item.support_shop_ids.length }} -->
+                      {{ item.support_shop_ids.length || 0 }}
                     </td>
                     <td>
                       {{ item.number }}
@@ -389,7 +388,7 @@ export default {
       columsTitlelist: [
         '奖品名称',
         '奖品类型',
-        '可用门店',
+        '可用门店（家）',
         '奖品数量（个）',
         '中奖概率',
         '操作'
@@ -542,7 +541,7 @@ export default {
             ? this.fileList[0]
             : this.defaultImg
         this.addService.add(value).subscribe(res => {
-          this.$router.push('./success')
+          this.$router.push('./success?id=' + res.id)
         })
       })
     },
@@ -579,8 +578,14 @@ export default {
       this.preview.endTime = str[1]
     },
     getPrizeInfo(val) {
+      this.prizeList.map((item, index) => {
+        if (item.prize_name === val.prize_name) {
+          console.log(this.prizeList)
+          this.prizeList[index] = val
+          console.log(this.prizeList)
+        }
+      })
       this.prizeList.push(val)
-      this.tempList = this.prizeList
     },
     onDelete(para) {
       this.prizeList = this.prizeList.filter((item, index) => {

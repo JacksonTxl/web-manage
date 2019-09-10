@@ -52,7 +52,7 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           required: true,
-          message: '请选择图片'
+          message: '请选择图片类型'
         }
       ]
     },
