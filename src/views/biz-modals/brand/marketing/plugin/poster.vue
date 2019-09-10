@@ -95,6 +95,7 @@ export default {
         '将小程序码贴在宣城刊物、店内等任何地方，用户用手机扫一扫后，即可参与活动转化下单。'
       this.button = '下载小程序码'
       this.posterService.getQrcode(this.id).subscribe(res => {
+        this.isLoading = false
         this.url = res.qrcode
       })
     }
