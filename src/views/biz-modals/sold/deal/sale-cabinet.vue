@@ -185,7 +185,7 @@
               </st-button>
             </div>
           </st-form-item>
-          <st-form-item labelGutter="12px" class="mgb-12" label="租赁费用">
+          <st-form-item labelGutter="12px" class="mg-b12" label="租赁费用">
             {{ orderAmountPrice }}
           </st-form-item>
           <st-form-item

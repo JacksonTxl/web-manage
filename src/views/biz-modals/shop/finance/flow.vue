@@ -7,7 +7,7 @@
   >
     <div :class="basic('content')">
       <a-row :class="basic('info')">
-        <a-col :span="13" class="mgb-36">
+        <a-col :span="13" class="mg-b36">
           <st-info>
             <st-info-item label="被冲流水号">{{ info.flow_id }}</st-info-item>
             <st-info-item label="操作人">{{ info.operator_name }}</st-info-item>
@@ -17,13 +17,13 @@
             <st-info-item label="收款时间">{{ info.flow_time }}</st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="11" class="mgb-36">
+        <a-col :span="11" class="mg-b36">
           <st-info>
             <st-info-item label="金额">{{ info.amount }}</st-info-item>
             <st-info-item label="支付方式">{{ info.pay_type }}</st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="24" class="mgb-36">
+        <a-col :span="24" class="mg-b36">
           <st-info>
             <st-info-item label="备注">{{ info.remark || '' }}</st-info-item>
           </st-info>
@@ -31,7 +31,7 @@
       </a-row>
       <st-form :form="form" labelWidth="72px">
         <div :class="basic('flow')">
-          <st-form-item label="退款原因" class="mgb-18" required>
+          <st-form-item label="退款原因" class="mg-b16" required>
             <a-input
               placeholder="请输入冲销流水原因"
               v-decorator="decorators.reason"
@@ -49,7 +49,7 @@
               </template>
             </st-input-number>
           </st-form-item>
-          <st-form-item label="支付方式" class="mgb-18" required>
+          <st-form-item label="支付方式" class="mg-b16" required>
             <a-radio-group v-model="payChannel">
               <a-radio
                 v-for="(item, index) in paymentMethodList"

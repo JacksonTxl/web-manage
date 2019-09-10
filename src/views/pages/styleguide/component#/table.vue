@@ -1,13 +1,18 @@
 <template>
   <section class="sg-section">
     <h3>st-table</h3>
-    <p>
+    <dl>
       使用与
       <a href="https://vue.ant.design/components/table-cn/">a-table</a>
       相同的api，只是增加了默认无数据的占位图，以及默认应用的分页条数,分页器样式已包含
-      添加了alertSelection属性 以支持 ·已选中几项· 清空的功能 新增[page]属性
-      参数为后端的page对象 直接使用即可
-    </p>
+      添加了alertSelection属性 以支持 ·已选中几项· 清空的功能
+      <dt>
+        后端分页
+      </dt>
+      <dd>
+        新增[page]属性 参数为后端的page对象 直接使用即可
+      </dd>
+    </dl>
     <st-table :dataSource="[]" :columns="columns"></st-table>
     <st-table
       class="mg-t24"
@@ -31,6 +36,20 @@
         </st-table-actions>
       </div>
     </st-table>
+
+    <dl>
+      <dt>
+        前端分页
+      </dt>
+      <dd>
+        前端分页时不需要传pagination或page，声明page-mode="client"即可，不过表格的dataSource需要传入全量的
+      </dd>
+      <st-table
+        :dataSource="tableData"
+        :columns="columns"
+        page-mode="client"
+      ></st-table>
+    </dl>
   </section>
 </template>
 <script>

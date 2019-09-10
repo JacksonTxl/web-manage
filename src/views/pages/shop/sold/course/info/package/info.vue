@@ -4,7 +4,7 @@
       <div slot="actions">
         <st-button
           v-if="auth['shop:sold:sold_package_course|export_contract']"
-          class="mgr-8"
+          class="mg-r8"
           type="primary"
           @click="toContract"
         >
@@ -12,14 +12,14 @@
         </st-button>
         <st-button
           v-if="auth['shop:sold:sold_package_course|frozen']"
-          class="mgr-8"
+          class="mg-r8"
           @click="onFreeze"
         >
           冻结
         </st-button>
         <st-button
           v-if="auth['shop:sold:sold_package_course|unfrozen']"
-          class="mgr-8"
+          class="mg-r8"
           @click="onUnfreeze"
         >
           取消冻结
@@ -175,7 +175,7 @@
     </st-panel>
     <st-panel
       initial
-      class="mgt-12"
+      class="mg-t12"
       v-if="false"
       :tabs="[
         {

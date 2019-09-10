@@ -165,7 +165,7 @@
                 <span class="set-info-value">
                   {{ selectMemberInfo.seller.name || '无' }}
                   <a @click="isEditSeller = true" v-if="auth.bindSalesman">
-                    <st-icon type="anticon:edit"></st-icon>
+                    <st-icon type="edit"></st-icon>
                     &nbsp;编辑
                   </a>
                 </span>
@@ -324,7 +324,7 @@
                 <span class="set-info-value">
                   {{ selectMemberInfo.coach.name || '无' }}
                   <a @click="isEditCoach = true" v-if="auth.bindCoach">
-                    <st-icon type="anticon:edit"></st-icon>
+                    <st-icon type="edit"></st-icon>
                     &nbsp;编辑
                   </a>
                 </span>
@@ -365,7 +365,7 @@
                 <span class="set-info-value">
                   {{ selectMemberInfo.cabinet.name || '无' }}
                   <a @click="isEditCabinet = true">
-                    <st-icon type="anticon:edit"></st-icon>
+                    <st-icon type="edit"></st-icon>
                     &nbsp;编辑
                   </a>
                 </span>

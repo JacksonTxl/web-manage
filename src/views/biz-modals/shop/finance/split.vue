@@ -7,14 +7,14 @@
   >
     <div :class="basic('content')">
       <a-row :class="basic('info')">
-        <a-col :span="12" class="mgb-36">
+        <a-col :span="12" class="mg-b36">
           <st-info>
             <st-info-item label="订单号">{{ info.order_id }}</st-info-item>
             <st-info-item label="下单人">{{ info.operator_name }}</st-info-item>
             <st-info-item label="销售">{{ info.staff_name }}</st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="12" class="mgb-36">
+        <a-col :span="12" class="mg-b36">
           <st-info>
             <st-info-item label="下单时间">
               {{ info.created_time }}

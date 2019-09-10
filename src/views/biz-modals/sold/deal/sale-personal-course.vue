@@ -204,7 +204,7 @@
               placeholder="请输入赠送的上课节数"
             ></st-input-number>
           </st-form-item>
-          <st-form-item class="mgb-12" label="商品价格">
+          <st-form-item class="mg-b12" label="商品价格">
             {{ orderAmountPrice }}元
           </st-form-item>
           <st-form-item :class="sale('discounts')" label="优惠券">

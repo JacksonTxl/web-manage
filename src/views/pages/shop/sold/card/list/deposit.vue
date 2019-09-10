@@ -20,13 +20,13 @@
         >
           查询
         </st-button>
-        <st-button class="mgl-8" @click="onSearhReset">重置</st-button>
+        <st-button class="mg-l8" @click="onSearhReset">重置</st-button>
       </div>
     </st-search-panel>
     <div :class="basic('content')">
       <div :class="basic('content-batch')" class="mg-b16">
         <!-- NOTE: 导出 -->
-        <!-- <st-button type="primary" class="mgr-8" v-if="auth.export">批量导出</st-button> -->
+        <!-- <st-button type="primary" class="mg-r8" v-if="auth.export">批量导出</st-button> -->
       </div>
       <div :class="basic('table')">
         <!--
