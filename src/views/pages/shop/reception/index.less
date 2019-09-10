@@ -329,7 +329,7 @@
       flex-wrap: wrap;
       align-content: flex-start;
       > li {
-        width: 48%;
+        width: calc((100% - 12px) / 2);
         height: 116px;
         padding: 16px;
         .bg(@white);
@@ -387,6 +387,7 @@
           .finish-status {
             width: 60px;
             height: 20px;
+            font-weight: 400;
             .lh(20px);
             .fz(12px);
             text-align: right;
