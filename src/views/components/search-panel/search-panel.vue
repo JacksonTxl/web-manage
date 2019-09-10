@@ -11,9 +11,14 @@
           v-if="$slots.more"
           @click="showMore = !showMore"
           href="javascript:void(0)"
+          class="more"
         >
           {{ showMore ? '收起' : '展开' }}&nbsp;&nbsp;
-          <st-icon class="icon-12" type="down-small" />
+          <st-icon
+            class="icon-12"
+            :class="{ close: showMore }"
+            type="down-small"
+          />
         </a>
       </div>
       <div :class="panel('search-button')">
