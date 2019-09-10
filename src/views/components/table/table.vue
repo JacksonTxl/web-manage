@@ -4,8 +4,7 @@ export default {
   name: 'StTable',
   props: {
     page: {
-      type: null,
-      default: () => ({})
+      type: null
     },
     alertSelection: {
       type: Object,
@@ -72,17 +71,16 @@ export default {
             'size'
           ])
         )
-        if (!this.page) {
-          _p = false
-        }
-        if (this.page.size) {
-          _p.pageSize = +this.page.size || 20
-        }
-        if (this.page.current_page) {
-          _p.current = +this.page.current_page || 1
-        }
-        if (this.page.total_counts) {
-          _p.total = +this.page.total_counts || 0
+        if (this.page) {
+          if (this.page.size) {
+            _p.pageSize = +this.page.size || 20
+          }
+          if (this.page.current_page) {
+            _p.current = +this.page.current_page || 1
+          }
+          if (this.page.total_counts) {
+            _p.total = +this.page.total_counts || 0
+          }
         }
         return _p
       }
