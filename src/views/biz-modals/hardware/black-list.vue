@@ -63,6 +63,7 @@ export default {
     return {
       loading: this.blackService.loading$,
       blackList: this.blackService.blackList$,
+      blackKeys: this.blackService.blackKeys$,
       searchList: this.blackService.searchList$
     }
   },
@@ -76,8 +77,7 @@ export default {
     return {
       show: false,
       list: [],
-      page: {}, // 前端分页
-      blackKeys: []
+      page: {} // 前端分页
     }
   },
   created() {
