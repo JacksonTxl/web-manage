@@ -30,7 +30,7 @@
         </st-button>
       </div>
     </div>
-    <a-row class="mg-t8 mg-r24 mg-l24">
+    <a-row class="mg-t24 mg-r24 mg-l24">
       <st-table
         :columns="columns"
         rowKey="id"
