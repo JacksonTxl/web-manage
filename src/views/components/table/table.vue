@@ -1,5 +1,5 @@
 <script>
-import { merge } from 'lodash-es'
+import { merge, omit, map } from 'lodash-es'
 export default {
   name: 'StTable',
   props: {
@@ -12,47 +12,104 @@ export default {
       default: () => {
         return {}
       }
+    },
+    pagination: {
+      type: null,
+      default: false
+    },
+    dataSource: {
+      type: Array,
+      required: true,
+      default: () => []
+    },
+    /**
+     * client | server 分页模式
+     */
+    pageMode: {
+      type: String,
+      default: 'server'
+    }
+  },
+  watch: {
+    dataSource() {
+      if (this.pageMode === 'client') {
+        this.current = 1
+      }
+    }
+  },
+  data() {
+    return {
+      pageSize: 20,
+      total: 0,
+      current: 1
+    }
+  },
+  computed: {
+    locale() {
+      return {
+        emptyText: <st-no-data />
+      }
+    },
+    tablePagination: {
+      get() {
+        let _p = merge(
+          {
+            current: this.current,
+            pageSize: this.pageSize,
+            total: this.total,
+            showTotal: function(total, range) {
+              return `共${total}条`
+            },
+            showSizeChanger: true
+          },
+          // 去除无用的pagination属性
+          omit(this.pagination, [
+            'total_counts',
+            'total_pages',
+            'current_page',
+            'size'
+          ])
+        )
+        if (!this.page) {
+          _p = false
+        }
+        if (this.page.size) {
+          _p.pageSize = +this.page.size || 20
+        }
+        if (this.page.current_page) {
+          _p.current = +this.page.current_page || 1
+        }
+        if (this.page.total_counts) {
+          _p.total = +this.page.total_counts || 0
+        }
+        return _p
+      }
     }
   },
   methods: {
     onCLick() {
       this.alertSelection.onReset()
+    },
+    onChange(pagination, ...rest) {
+      if (this.pageMode === 'client') {
+        this.current = pagination.current
+        this.total = pagination.total
+        this.pageSize = pagination.pageSize
+      }
+      this.$emit('change', pagination, ...rest)
+    },
+    renderChildren() {
+      return map(this.$slots, (vnode, slot) => (
+        <template slot={slot}>{vnode}</template>
+      ))
     }
   },
   render(h) {
-    const props = merge(
-      {
-        pagination: {
-          pageSize: 20,
-          current: 1,
-          total: 0,
-          showTotal: function(total, range) {
-            return `共${total}条`
-          },
-          showSizeChanger: true
-        },
-        locale: {
-          emptyText: <st-no-data />
-        }
-      },
-      this.$attrs
-    )
-    const page = this.page
-    if (!page) {
-      props.pagination = false
-    }
-    if (page.size) {
-      props.pagination.pageSize = +page.size || 20
-    }
-    if (page.current_page) {
-      props.pagination.current = +page.current_page || 1
-    }
-    if (page.total_counts) {
-      props.pagination.total = +page.total_counts || 0
-    }
-    const renderChildren = []
-    for (let k in this.$slots) {
-      renderChildren.push(h('template', { slot: k }, this.$slots[k]))
+    const props = {
+      pagination: this.tablePagination,
+      locale: this.locale,
+      dataSource: this.dataSource,
+      ...this.$attrs
     }
     const ce = this.alertSelection.onReset
       ? h('div', { class: 'st-table-wapper' }, [
@@ -87,11 +144,13 @@ export default {
             {
               class: 'st-table',
               props,
-              on: this.$listeners,
+              on: {
+                change: this.onChange
+              },
               scopedSlots: this.$scopedSlots,
               slot: this.$slots
             },
-            renderChildren
+            this.renderChildren()
           )
         ])
       : h(
@@ -99,11 +158,13 @@ export default {
           {
             class: 'st-table',
             props,
-            on: this.$listeners,
+            on: {
+              change: this.onChange
+            },
             scopedSlots: this.$scopedSlots,
             slot: this.$slots
           },
-          renderChildren
+          this.renderChildren()
         )
     return ce
   }

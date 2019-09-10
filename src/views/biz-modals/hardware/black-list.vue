@@ -7,10 +7,13 @@
   >
     <a-select
       v-model="blackKeys"
+      showSearch
       mode="multiple"
       placeholder="手机号搜索"
       style="width: 100%"
+      :defaultActiveFirstOption="false"
       @search="onSearchKeyWords"
+      :filterOption="false"
       @change="joinPerson"
       :maxTagCount="0"
       class="mg-b24"
@@ -58,7 +61,9 @@ export default {
   },
   rxState() {
     return {
-      loading: this.blackService.loading$
+      loading: this.blackService.loading$,
+      blackList: this.blackService.blackList$,
+      searchList: this.blackService.searchList$
     }
   },
   bem: {
@@ -71,10 +76,8 @@ export default {
     return {
       show: false,
       list: [],
-      blackList: [],
       page: {}, // 前端分页
-      blackKeys: [],
-      searchList: []
+      blackKeys: []
     }
   },
   created() {
@@ -85,17 +88,10 @@ export default {
   },
   methods: {
     getBlackList() {
-      return this.blackService.getBlackList().subscribe(res => {
-        this.blackList = res.list
-        this.blackKeys = this.blackList.map(({ user_id }) => {
-          return user_id
-        })
-      })
+      return this.blackService.getBlackList().subscribe()
     },
     onSearchKeyWords(val) {
-      this.blackService.onSearchKeyWords(val).subscribe(res => {
-        this.searchList = res.list
-      })
+      this.blackService.onSearchKeyWords(val).subscribe()
     },
     joinPerson(para) {
       this.blackList = []

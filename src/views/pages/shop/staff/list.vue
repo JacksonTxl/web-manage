@@ -89,7 +89,7 @@
         <st-input-search
           placeholder="搜索员工"
           v-model="query.keyword"
-          @search="onSingleSearch('keyword', $event)"
+          @search="onKeywordsSearch('keyword', $event)"
         />
       </a-col>
     </a-row>

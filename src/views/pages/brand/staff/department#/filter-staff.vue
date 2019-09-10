@@ -3,14 +3,14 @@
     <shop-select
       class="filter-staff__item mg-r8"
       v-model="query.shop_id"
-      @change="onChange"
+      @change="onSingleSearch('shop_id', $event)"
     ></shop-select>
     <a-select
       class="filter-staff__item mg-r8"
       allowClear
       placeholder="全部员工状态"
       v-model="query.work_status"
-      @change="onChange"
+      @change="onSingleSearch('work_status', $event)"
     >
       <a-select-option
         v-for="status in workStatus"
@@ -25,16 +25,18 @@
       placeholder="搜索员工"
       round="round"
       v-model="query.keyword"
-      @search="onChange"
+      @search="onKeywordsSearch('keyword', $event)"
     ></st-input-search>
   </div>
 </template>
 <script>
 import { RouteService } from '../../../../../services/route.service'
 import { UserService } from '../../../../../services/user.service'
+import tableMixin from '@/mixins/table.mixin'
 import ShopSelect from '@/views/biz-components/shop-select'
 export default {
   name: 'FilterStaff',
+  mixins: [tableMixin],
   serviceInject() {
     return {
       routeService: RouteService,
