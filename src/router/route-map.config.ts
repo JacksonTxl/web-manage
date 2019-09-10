@@ -611,6 +611,9 @@ export const routeMapConfig = {
   'shop-reception-index'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '前台'
   },
+  'shop-reception-cabinet'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '储物柜使用'
+  },
   'shop-member-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '用户列表'
     routeConfig.queryOptions = {
