@@ -42,6 +42,7 @@
           mode="multiple"
           showSearch
           :filterOption="false"
+          :defaultActiveFirstOption="false"
           @search="getWhiteList"
           v-decorator="decorators.white_list"
           placeholder="搜索指定员工"
