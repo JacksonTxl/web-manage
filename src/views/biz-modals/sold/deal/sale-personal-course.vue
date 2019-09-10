@@ -317,10 +317,10 @@
             </a-select>
           </st-form-item>
           <st-form-item label="备注" class="mg-b0">
-            <a-textarea
+            <st-textarea
               v-model="description"
               :autosize="{ minRows: 4, maxRows: 6 }"
-              :maxlength="30"
+              :maxlength="200"
             />
           </st-form-item>
         </div>
