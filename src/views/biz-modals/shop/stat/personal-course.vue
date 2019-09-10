@@ -3,6 +3,7 @@
     wrapClassName="modal-stat-personal-course"
     title="上课节数(私)"
     :footer="null"
+    width="960px"
     v-model="show"
   >
     <div class="search mg-b16">
@@ -57,10 +58,9 @@
     <st-table
       :columns="columns"
       :rowKey="record => record.id"
-      :page="page"
-      @change="onChangePage"
       :loading="loading$.getCourseList"
       :dataSource="courseList$"
+      page-mode="client"
     ></st-table>
   </st-modal>
 </template>
@@ -138,16 +138,10 @@ export default {
     getCourseList() {
       this.personalCourseService.getCourseList(this.query).subscribe()
     },
-    onChangePage(pagination) {
-      this.page.size = pagination.pageSize
-      this.page.current_page = pagination.current
-    },
     init() {
       const course_type = this.course_type
       this.coach_id = this.record.coach_id || -1
       this.stat_date = this.record.stat_date
-      let { current_page, total_counts } = this.page$
-      this.page = { current_page, total_counts }
       this.personalCourseService
         .init({ course_type }, { ...this.query })
         .subscribe()
