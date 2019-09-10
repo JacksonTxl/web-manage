@@ -7,7 +7,7 @@
   >
     <div :class="basic('content')">
       <a-row :class="basic('info')">
-        <a-col :span="13" class="mgb-36">
+        <a-col :span="13" class="mg-b36">
           <st-info>
             <st-info-item label="订单号">{{ info.order_id }}</st-info-item>
             <st-info-item class="mg-b0" label="下单时间">
@@ -15,7 +15,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="11" class="mgb-36">
+        <a-col :span="11" class="mg-b36">
           <st-info>
             <st-info-item label="下单人">{{ info.operator_name }}</st-info-item>
             <st-info-item class="mg-b0" label="销售">
@@ -23,7 +23,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="13" class="mgb-36">
+        <a-col :span="13" class="mg-b36">
           <st-info>
             <st-info-item label="订单类型" v-if="info.order_type">
               {{ info.order_type | enumFilter('finance.order_type') }}
@@ -34,7 +34,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="11" class="mgb-36">
+        <a-col :span="11" class="mg-b36">
           <st-info>
             <st-info-item label="场馆">{{ info.shop_name }}</st-info-item>
             <st-info-item class="mg-b0" label="用户">
@@ -42,7 +42,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="13" class="mgb-36">
+        <a-col :span="13" class="mg-b36">
           <st-info>
             <st-info-item label="购买">{{ info.product_name }}</st-info-item>
             <st-info-item label="订单总额">
@@ -54,13 +54,13 @@
           </st-info>
         </a-col>
 
-        <a-col :span="11" class="mgb-36">
+        <a-col :span="11" class="mg-b36">
           <st-info>
             <st-info-item label="赠送">{{ info.gift_amount }}</st-info-item>
             <st-info-item label="应收金额">{{ info.pay_price }}元</st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="24" class="mgb-36">
+        <a-col :span="24" class="mg-b36">
           <st-info>
             <st-info-item label="备注">
               {{ info.description || '' }}

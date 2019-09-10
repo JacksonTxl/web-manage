@@ -10,7 +10,8 @@ Vue.use(VueModalRouter, {
 export const modalRouter = new VueModalRouter(routes)
 
 modalRouter
-  .beforeEachOpen(() => {
+  .beforeEachOpen((to: any) => {
+    console.log(to)
     modalRouter.isOpening = true
   })
   .afterEachClosed(() => {

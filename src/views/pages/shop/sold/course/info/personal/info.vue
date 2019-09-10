@@ -4,7 +4,7 @@
       <div slot="actions">
         <st-button
           v-if="auth['shop:sold:sold_personal_course|export_contract']"
-          class="mgr-8"
+          class="mg-r8"
           type="primary"
           @click="toContract"
         >
@@ -12,21 +12,21 @@
         </st-button>
         <st-button
           v-if="auth['shop:sold:sold_personal_course|frozen']"
-          class="mgr-8"
+          class="mg-r8"
           @click="onFreeze"
         >
           冻结
         </st-button>
         <st-button
           v-if="auth['shop:sold:sold_personal_course|unfrozen']"
-          class="mgr-8"
+          class="mg-r8"
           @click="onUnfreeze"
         >
           取消冻结
         </st-button>
         <st-button
           v-if="auth['shop:sold:sold_personal_course|change_coach']"
-          class="mgr-8"
+          class="mg-r8"
           @click="onEditCoach"
         >
           修改教练
@@ -134,7 +134,7 @@
     </st-panel>
     <st-panel
       initial
-      class="mgt-12"
+      class="mg-t12"
       v-if="false"
       :tabs="[
         {
