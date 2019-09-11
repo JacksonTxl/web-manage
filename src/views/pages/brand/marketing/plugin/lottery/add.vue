@@ -40,7 +40,7 @@
                 :key="index"
               >
                 <img class="img" :src="item.prize.image_url" alt="" />
-                {{ item.prize_name }}
+                <span class="text">{{ item.prize_name }}</span>
               </div>
               <div v-if="notPrize.prize_name" class="img-wrap run-item-7">
                 <img class="img" :src="notPrize.prize.image_url" alt="" />

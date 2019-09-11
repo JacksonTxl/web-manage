@@ -1,5 +1,5 @@
 <template>
-  <st-modal title="奖品设置" v-model="show" @ok="onSubmit">
+  <st-modal title="奖品设置" v-model="show" @ok="onSubmit" size="small">
     <st-form :form="form" labelGutter="0">
       <st-form-item label="奖品名称" labelWidth="84px" required>
         <a-input
@@ -55,7 +55,7 @@
         <a-input-number
           :min="1"
           :max="9999"
-          style="width:200px"
+          style="width:100%"
           addonAfter="个"
           placeholder="请输入奖品数量"
           v-decorator="decorators.number"
@@ -65,7 +65,7 @@
         <a-input-number
           :min="0"
           :max="100"
-          style="width:200px"
+          style="width:100%"
           addonAfter="%"
           placeholder="请输入中奖概率"
           v-decorator="decorators.rate"
