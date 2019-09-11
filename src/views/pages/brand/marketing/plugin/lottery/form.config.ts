@@ -100,14 +100,7 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    'activity_rule.total_times': {
-      initialValue: 1,
-      rules: [
-        {
-          message: '请填写每日总次数'
-        }
-      ]
-    },
+    'activity_rule.total_times': {},
     'activity_rule.prize_times': {},
     'activity_lucky.lucky_name': {
       rules: [
