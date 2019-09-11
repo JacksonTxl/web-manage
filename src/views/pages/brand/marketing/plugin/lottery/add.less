@@ -77,12 +77,13 @@
       .img-wrap {
         width: 174px;
         height: 174px;
-        padding: 10px 20px;
+        padding: 24px 20px;
+        max-height: 174px;
         text-align: center;
         img {
-          display: block;
-          width: 100%;
-          height: 126px;
+          display: inline-block;
+          .mg-b(24px);
+          max-width: 74px;
         }
         .text {
           font-size: 28px;
@@ -92,38 +93,45 @@
       }
 
       .run-item-1 {
-        display: block;
-        margin: -174px 0 0 174px;
+        position: absolute;
+        left: 174px;
+        top: 0;
       }
 
       .run-item-2 {
-        display: block;
-        margin: -174px 0 0 362px;
+        position: absolute;
+        left: 360px;
+        top: 0;
       }
 
       .run-item-3 {
-        display: block;
-        margin: 11px 0 0 364px;
+        position: absolute;
+        top: 174px;
+        left: 360px;
       }
 
       .run-item-4 {
-        display: block;
-        margin: 0px 0 0 348px;
+        position: absolute;
+        top: 360px;
+        left: 360px;
       }
 
       .run-item-5 {
-        display: block;
-        margin: -174px 0 0 174px;
+        position: absolute;
+        top: 360px;
+        left: 174px;
       }
 
       .run-item-6 {
-        display: block;
-        margin: -174px 0 0 0;
+        position: absolute;
+        top: 360px;
+        left: 174px;
       }
 
       .run-item-7 {
-        display: block;
-        margin: 0 0 0 0;
+        position: absolute;
+        top: 174px;
+        left: 0;
       }
     }
   }

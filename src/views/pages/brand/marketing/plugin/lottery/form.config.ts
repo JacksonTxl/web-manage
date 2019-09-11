@@ -17,11 +17,7 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           required: true,
-          message: '请输入活动描述'
-        },
-        {
-          pattern: pattern.CN_EN_NUM('1-200'),
-          message: '请输入1~200个字符'
+          message: '请输入活动说明'
         }
       ]
     },

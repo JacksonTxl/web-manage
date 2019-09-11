@@ -72,6 +72,9 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
+    valid_days: {
+      initialValue: 3
+    },
     prize: {
       initialValue: 1,
       rules: [

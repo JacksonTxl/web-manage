@@ -20,10 +20,9 @@
             {{ item.label }}
           </a-radio>
         </a-radio-group>
-        <span>
+        <div>
           <a-select
             v-if="curPrizeType === 1"
-            style="width:100px;"
             placeholder="请选择优惠卷"
             v-decorator="decorators.coupon_id"
           >
@@ -35,7 +34,16 @@
               {{ item.name }}
             </a-select-option>
           </a-select>
-        </span>
+          <span v-else>
+            获得当日起
+            <a-input
+              placeholder="输入天数"
+              style="width:100px;"
+              v-decorator="decorators.valid_days"
+            />
+            天内有效
+          </span>
+        </div>
       </st-form-item>
       <st-form-item
         label="售卖门店"
@@ -57,24 +65,26 @@
         ></select-shop>
       </st-form-item>
       <st-form-item label="奖品数量" labelWidth="84px" required>
-        <a-input-number
+        <st-input-number
           :min="1"
           :max="9999"
           style="width:100%"
-          addonAfter="个"
           placeholder="请输入奖品数量"
           v-decorator="decorators.number"
-        ></a-input-number>
+        >
+          <span slot="addonAfter">个</span>
+        </st-input-number>
       </st-form-item>
       <st-form-item label="中奖概率" labelWidth="84px" required>
-        <a-input-number
+        <st-input-number
           :min="0"
           :max="100"
           style="width:100%"
-          addonAfter="%"
           placeholder="请输入中奖概率"
           v-decorator="decorators.rate"
-        ></a-input-number>
+        >
+          <span slot="addonAfter">%</span>
+        </st-input-number>
       </st-form-item>
       <st-form-item label="奖品图片" labelWidth="84px">
         <a-radio-group

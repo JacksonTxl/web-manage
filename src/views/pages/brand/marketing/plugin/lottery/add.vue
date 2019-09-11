@@ -33,19 +33,29 @@
               :class="bPage('lottery-turntable')"
               v-if="prizeList.length > 0"
             >
-              <div
-                class="img-wrap"
-                :class="'run-item-' + index"
-                v-for="(item, index) in prizeList"
-                :key="index"
-              >
-                <img class="img" :src="item.prize.image_url" alt="" />
-                <span class="text">{{ item.prize_name }}</span>
+              <div style="position:relative">
+                <div
+                  class="img-wrap"
+                  :class="'run-item-' + index"
+                  v-for="(item, index) in prizeList"
+                  :key="index"
+                >
+                  <div class="img">
+                    <img
+                      class="img"
+                      :src="item.prize.image_url"
+                      alt="奖品图片"
+                    />
+                  </div>
+                  <div class="text">{{ item.prize_name }}</div>
+                </div>
               </div>
 
               <div v-if="notPrize.prize_name" class="img-wrap run-item-7">
-                <img class="img" :src="notPrize.prize.image_url" alt="" />
-                <span class="text">{{ notPrize.prize_name }}</span>
+                <div class="img">
+                  <img :src="notPrize.prize.image_url" alt="奖品图片" />
+                </div>
+                <div class="text">{{ notPrize.prize_name }}</div>
               </div>
             </div>
             <div :class="bPage('lottery-footer')">
@@ -104,6 +114,7 @@
             </st-form-item>
             <st-form-item label="活动说明" labelWidth="124px" required>
               <a-textarea
+                :maxlength="500"
                 @change="getDescription"
                 :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
                 placeholder="请输入活动说明"
@@ -361,7 +372,7 @@
 <script>
 import { AddService } from './add.service'
 import H5Container from '@/views/biz-components/h5/h5-container'
-import Steps from '../../../staff/add#/st-steps'
+import Steps from './components#/step'
 import { ruleOptions } from './form.config.ts'
 import { PatternService } from '@/services/pattern.service'
 import BrandMarketingPluginAddPrize from '@/views/biz-modals/brand/marketing/plugin/add-prize'
@@ -492,12 +503,16 @@ export default {
     if (this.query.activity_id) {
       this.editVIew(this.query.activity_id)
     }
+    this.notPrize.prize = this.lucky[0]
   },
   mounted() {},
   methods: {
     next(para) {
       if (para.index) {
-        para = para.index.target.textContent - 1
+        para = para.index - 1
+      }
+      if (para === 0) {
+        this.currentIndex = 0
       }
       if (para === 1) {
         this.form
