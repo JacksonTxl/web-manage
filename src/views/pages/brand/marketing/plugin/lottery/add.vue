@@ -509,6 +509,12 @@ export default {
       if (para === 2) {
         this.form
           .validate([
+            'activity_base.activity_name',
+            'activity_base.activity_description',
+            'activity_base.wheel_turn_around',
+            'activity_base.wheel_share_default',
+            'activity_base.share_title',
+            'activity_base.activity_sub_name',
             'activity_rule.join_crowd_all',
             'activity_rule.draw_condition',
             'activity_rule.draw_times_type'
