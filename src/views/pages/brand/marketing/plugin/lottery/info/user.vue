@@ -1,25 +1,19 @@
 <template>
-  <div>
-    <st-panel app class="mg-b24">
-      <Header :id="query.id" />
-    </st-panel>
-    <st-panel app>
-      <st-table
-        :page="page"
-        @change="onTableChange"
-        :loading="loading.getUserList"
-        :columns="columns"
-        :dataSource="list"
-        rowKey="id"
-      ></st-table>
-    </st-panel>
-  </div>
+  <st-panel app>
+    <st-table
+      :page="page"
+      @change="onTableChange"
+      :loading="loading.getUserList"
+      :columns="columns"
+      :dataSource="list"
+      rowKey="id"
+    ></st-table>
+  </st-panel>
 </template>
 <script>
 import { UserService } from './user.service'
 import { columns } from './user.config.ts'
 import tableMixin from '@/mixins/table.mixin'
-import Header from './components#/header'
 import { RouteService } from '@/services/route.service'
 
 export default {
@@ -42,7 +36,6 @@ export default {
       loading: this.userService.loading$
     }
   },
-  components: { Header },
   computed: {
     columns
   }

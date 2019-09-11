@@ -1,19 +1,16 @@
 <template>
-  <st-panel app>
-    <st-table
-      :page="page"
-      @change="onTableChange"
-      :loading="loading.getPrizedList"
-      :columns="columns"
-      :dataSource="list"
-      rowKey="id"
-    ></st-table>
-  </st-panel>
+  <div>
+    <st-panel app class="mg-b24">
+      <Header :id="query.id" />
+    </st-panel>
+    <router-view></router-view>
+  </div>
 </template>
 <script>
-import { PrizeService } from './prize.service'
-import { columns } from './prize.config.ts'
+import { PrizeService } from './info/prize.service'
+import { columns } from './info/prize.config.ts'
 import tableMixin from '@/mixins/table.mixin'
+import Header from './info/components#/header'
 import { RouteService } from '@/services/route.service'
 
 export default {
@@ -36,7 +33,9 @@ export default {
       loading: this.prizeService.loading$
     }
   },
-  components: {},
+  components: {
+    Header
+  },
   computed: {
     columns
   }
