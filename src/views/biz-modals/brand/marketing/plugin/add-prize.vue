@@ -37,7 +37,12 @@
           </a-select>
         </span>
       </st-form-item>
-      <st-form-item label="售卖门店" labelWidth="84px" required>
+      <st-form-item
+        label="售卖门店"
+        labelWidth="84px"
+        v-if="curPrizeType === 2"
+        required
+      >
         <a-radio-group
           v-decorator="decorators.is_shop_range"
           @change="getCurShopType"

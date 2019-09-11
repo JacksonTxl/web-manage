@@ -7,7 +7,7 @@
   </div>
 </template>
 <script>
-import { PrizeService } from './info/prize.service'
+import { InfoService } from './info.service'
 import { columns } from './info/prize.config.ts'
 import tableMixin from '@/mixins/table.mixin'
 import Header from './info/components#/header'
@@ -21,16 +21,16 @@ export default {
   },
   serviceInject() {
     return {
-      prizeService: PrizeService,
+      infoService: InfoService,
       routeService: RouteService
     }
   },
   rxState() {
     return {
       query: this.routeService.query$,
-      list: this.prizeService.list$,
-      page: this.prizeService.page$,
-      loading: this.prizeService.loading$
+      list: this.infoService.list$,
+      page: this.infoService.page$,
+      loading: this.infoService.loading$
     }
   },
   components: {
