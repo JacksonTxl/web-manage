@@ -103,7 +103,7 @@ import { ruleOptions } from './add-prize.config.ts'
 import { PatternService } from '@/services/pattern.service'
 import { cloneDeep } from 'lodash-es'
 import SelectShop from '@/views/fragments/shop/select-shop.vue'
-
+import { IMG_TYPE, SHOP_TYPE, PRIZE_TYPE } from '@/constants/marketing/lottery'
 export default {
   name: 'BrandMarketingPoster',
   bem: {
@@ -134,13 +134,16 @@ export default {
     return {
       form,
       decorators,
+      IMG_TYPE,
+      PRIZE_TYPE,
+      SHOP_TYPE,
       show: false,
       fileList: [],
       couponList: [],
-      curPrizeType: 2,
-      curImgType: 1,
+      curPrizeType: PRIZE_TYPE.CUSTOM,
+      curImgType: IMG_TYPE.DEFAULT,
       shop_ids: [],
-      curShopType: 1,
+      curShopType: SHOP_TYPE.DEFAULT,
       defaultImg: {
         image_url:
           'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/img-lottery-prize-defalut-1x.png',
@@ -191,7 +194,10 @@ export default {
     },
     onSubmit() {
       this.form.validate().then(value => {
-        value.prize = this.curImgType === 2 ? this.fileList[0] : this.defaultImg
+        value.prize =
+          this.curImgType === this.IMG_TYPE.CUSTOM
+            ? this.fileList[0]
+            : this.defaultImg
         value.support_shop_ids = this.shop_ids
         this.$emit('change', value)
         this.show = false

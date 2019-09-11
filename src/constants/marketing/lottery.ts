@@ -19,3 +19,15 @@ export enum NOT_PRIZE_IMG_TYPE {
   DEFAULT = 1,
   CUSTOM = 2
 }
+export enum IMG_TYPE {
+  DEFAULT = 1,
+  CUSTOM = 2
+}
+export enum SHOP_TYPE {
+  DEFAULT = 1,
+  CUSTOM = 2
+}
+export enum PRIZE_TYPE {
+  DEFAULT = 1,
+  CUSTOM = 2
+}
