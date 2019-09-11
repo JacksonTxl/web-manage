@@ -17,24 +17,7 @@
         >
           <div :class="b('nav-item-content')">
             <span>{{ item.area_name }}({{ item.cabinet_num }})</span>
-            <st-more-dropdown class="nav-opreation">
-              <a-menu-item v-if="auth.areaEdit" @click="editArea(item.id)">
-                编辑
-              </a-menu-item>
-              <a-menu-item
-                v-if="auth.areaDel"
-                @click="delArea(item.id, item.cabinet_num)"
-              >
-                删除
-              </a-menu-item>
-            </st-more-dropdown>
           </div>
-          <edit-cabinet-area
-            v-if="item.id === editId"
-            :id="item.id"
-            :name="item.area_name"
-            @change="onAreaListChange"
-          />
         </div>
       </draggable>
     </div>
@@ -55,43 +38,16 @@
           ></a-tab-pane>
         </a-tabs>
         <div class="page-setting-cabinet-tab__actions">
-          <st-button @click="changeOperationMode">
-            {{ isOperationInBatch ? '完成' : '批量管理' }}
+          <st-button v-if="isOperationInBatch" @click="changeOperationMode">
+            完成
           </st-button>
-          <span v-if="checked.length && isOperationInBatch">
-            <st-button
-              v-if="type === 'long-term' && auth.batchPrice"
-              icon="edit"
-              class="mg-l8"
-              v-modal-link="{
-                name: 'shop-cabinet-edit-price',
-                props: {
-                  ids: this.checked
-                },
-                on: {
-                  change: onCabinetListChange
-                }
-              }"
-            >
-              改价
-            </st-button>
-            <st-button
-              v-if="auth.batchDel"
-              icon="delete"
-              class="mg-l8 color-danger"
-              @click="onDelCabinet"
-              :loading="loading.del"
-            >
-              删除
-            </st-button>
-          </span>
           <st-button
             v-if="auth.batchAdd"
             type="primary"
             class="mg-l8"
-            @click="openBatchAdd"
+            @click="changeOperationMode"
           >
-            批量添加储物柜
+            {{ isOperationInBatch ? '清柜' : '批量清柜' }}
           </st-button>
         </div>
       </div>
@@ -109,9 +65,8 @@
 import { MessageService } from '@/services/message.service'
 import { RouteService } from '@/services/route.service'
 import { CabinetService } from './cabinet.service'
-import EditCabinetArea from '../setting/components#/edit-area'
 import { CabinetAreaService as AreaService } from '../setting/components#/area.service'
-import CabinetList from '../setting/components#/cabinet-list'
+import CabinetList from './components#/cabinet-list'
 import ShopCabinetEditPrice from '@/views/biz-modals/shop/cabinet/edit-price'
 import ShopCabinetAddLongTerm from '@/views/biz-modals/shop/cabinet/add-long-term'
 import ShopCabinetAddTemporary from '@/views/biz-modals/shop/cabinet/add-temporary'
@@ -152,7 +107,6 @@ export default {
     }
   },
   components: {
-    EditCabinetArea,
     CabinetList,
     Draggable
   },

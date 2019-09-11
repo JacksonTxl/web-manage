@@ -20,10 +20,6 @@ const routes: any[] = [
     path: '/brand/product/card/deposit-card/shop-sale-list',
     redirect: '/brand/product/card/deposit-card/shop-sale-list/brand'
   },
-  {
-    path: '/shop/reception/cabinet',
-    redirect: '/shop/reception/cabinet/temporary'
-  },
   ...pageRoutes
 ]
 
