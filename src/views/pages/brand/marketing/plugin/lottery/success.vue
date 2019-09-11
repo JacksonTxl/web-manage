@@ -100,6 +100,8 @@ export default {
       query: this.routeService.query$
     }
   },
-  methods: {}
+  methods: {
+    onModalTest() {}
+  }
 }
 </script>

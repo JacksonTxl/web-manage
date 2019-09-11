@@ -536,12 +536,12 @@ export default {
         value.activity_base.share_bg =
           this.shareType === SHARE_TYPE.CUSTOM
             ? this.fileShareList[0]
-            : this.share
+            : this.share[0]
         value.activity_prizes = this.prizeList
         value.activity_lucky.lucky =
           this.notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM
             ? this.fileList[0]
-            : this.prize
+            : this.prize[0]
         this.addService.add(value).subscribe(res => {
           this.$router.push('./success?id=' + res.id)
         })
