@@ -88,7 +88,7 @@ export default {
     }
   },
   bem: {
-    bPage: 'brand-marketing-plugin-lottery-checkin'
+    bPage: 'page-brand-marketing-plugin-lottery-checkin'
   },
   serviceInject() {
     return {

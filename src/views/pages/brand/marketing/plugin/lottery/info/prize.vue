@@ -4,16 +4,14 @@
       <Header :id="query.id" />
     </st-panel>
     <st-panel app>
-      <div :class="bPage()">
-        <st-table
-          :page="page"
-          @change="onTableChange"
-          :loading="loading.getPrizedList"
-          :columns="columns"
-          :dataSource="list"
-          rowKey="id"
-        ></st-table>
-      </div>
+      <st-table
+        :page="page"
+        @change="onTableChange"
+        :loading="loading.getPrizedList"
+        :columns="columns"
+        :dataSource="list"
+        rowKey="id"
+      ></st-table>
     </st-panel>
   </div>
 </template>
@@ -29,9 +27,6 @@ export default {
   mixins: [tableMixin],
   data() {
     return {}
-  },
-  bem: {
-    bPage: 'brand-marketing-plugin-lottery-info-prize'
   },
   serviceInject() {
     return {

@@ -452,7 +452,7 @@ export default {
     }
   },
   bem: {
-    bPage: 'brand-marketing-plugin-lottery-add'
+    bPage: 'page-brand-marketing-plugin-lottery-add'
   },
   serviceInject() {
     return {

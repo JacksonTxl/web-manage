@@ -109,7 +109,7 @@ export default {
     return {}
   },
   bem: {
-    bPage: 'brand-marketing-plugin-lottery-index'
+    bPage: 'page-brand-marketing-plugin-lottery-index'
   },
   serviceInject() {
     return {

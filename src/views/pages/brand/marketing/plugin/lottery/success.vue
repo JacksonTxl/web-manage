@@ -76,7 +76,6 @@
   </div>
 </template>
 <script>
-// import { SuccessService } from './add.service'
 import BrandMarketingPluginPoster from '@/views/biz-modals/brand/marketing/plugin/poster'
 import { RouteService } from '@/services/route.service'
 
@@ -86,14 +85,13 @@ export default {
     return {}
   },
   bem: {
-    bPage: 'brand-marketing-plugin-lottery-success'
+    bPage: 'page-brand-marketing-plugin-lottery-success'
   },
   modals: {
     BrandMarketingPluginPoster
   },
   serviceInject() {
     return {
-      // successService: SuccessService,
       routeService: RouteService
     }
   },
@@ -102,8 +100,6 @@ export default {
       query: this.routeService.query$
     }
   },
-  methods: {
-    onModalTest() {}
-  }
+  methods: {}
 }
 </script>
