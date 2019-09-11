@@ -23,8 +23,7 @@ export default {
   },
   props: {
     id: {
-      type: Number,
-      default: 1
+      type: String
     }
   },
   bem: {
@@ -41,6 +40,7 @@ export default {
     }
   },
   created() {
+    console.log(this.id)
     this.headerService.getHeaderInfo(this.id).subscribe()
   },
   components: {},

@@ -92,7 +92,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     'activity_rule.per_times': {
-      initialValue: 1,
+      initialValue: 0,
       rules: [
         {
           required: true,

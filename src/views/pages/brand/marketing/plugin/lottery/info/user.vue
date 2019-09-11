@@ -1,7 +1,7 @@
 <template>
   <div>
     <st-panel app class="mg-b24">
-      <Header />
+      <Header :id="query.id" />
     </st-panel>
     <st-panel app>
       <st-table
@@ -20,6 +20,7 @@ import { UserService } from './user.service'
 import { columns } from './user.config.ts'
 import tableMixin from '@/mixins/table.mixin'
 import Header from './components#/header'
+import { RouteService } from '@/services/route.service'
 
 export default {
   name: 'PluginLotteryInfoUser',
@@ -29,11 +30,13 @@ export default {
   },
   serviceInject() {
     return {
-      userService: UserService
+      userService: UserService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
+      query: this.routeService.query$,
       list: this.userService.list$,
       page: this.userService.page$,
       loading: this.userService.loading$

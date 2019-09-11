@@ -284,7 +284,7 @@
                 <template v-for="(item, index) in prizeList">
                   <tr :key="item.id">
                     <td>{{ item.prize_name }}</td>
-                    <td>{{ item.prize_type === 1 ? '优惠卷' : '兑换码' }}</td>
+                    <td>{{ item.prize_type === 1 ? '优惠券' : '兑换码' }}</td>
                     <td>
                       {{
                         item.support_shop_ids ? item.support_shop_ids.length : 0
