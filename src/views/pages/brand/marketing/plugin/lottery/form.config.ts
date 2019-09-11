@@ -109,6 +109,9 @@ export const ruleOptions = (vm: any) => {
           message: '请填写未中奖奖品名称'
         }
       ]
+    },
+    'activity_lucky.image_default': {
+      initialValue: 1
     }
   }
 }

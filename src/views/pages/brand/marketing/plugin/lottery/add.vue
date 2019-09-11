@@ -325,7 +325,10 @@
               ></a-input>
             </st-form-item>
             <st-form-item label=" 图片" required>
-              <a-radio-group v-model="notPrizeImgType">
+              <a-radio-group
+                v-decorator="decorators.activity_lucky.image_default"
+                @change="getNotImgType"
+              >
                 <a-radio
                   v-for="(item, index) in imgType"
                   :key="index"
@@ -578,6 +581,9 @@ export default {
     onDateChange(data, str) {
       this.preview.startTime = str[0]
       this.preview.endTime = str[1]
+    },
+    getNotImgType(e) {
+      this.notPrizeImgType = e.target.value
     },
     getPrizeInfo(val) {
       this.prizeList = this.prizeList.map((item, index) => {
