@@ -42,6 +42,7 @@
                 <img class="img" :src="item.prize.image_url" alt="" />
                 <span class="text">{{ item.prize_name }}</span>
               </div>
+
               <div v-if="notPrize.prize_name" class="img-wrap run-item-7">
                 <img class="img" :src="notPrize.prize.image_url" alt="" />
                 <span class="text">{{ notPrize.prize_name }}</span>
@@ -51,7 +52,7 @@
               <div :class="bPage('lottery-title')">活动规则</div>
               <div class="mg-b24">
                 <span class="mg-r8">活动时间:</span>
-                <span>{{ preview.startTime }}-{{ preview.endTime }}</span>
+                <span>{{ preview.startTime }}--{{ preview.endTime }}</span>
               </div>
               <div class="mg-b24">
                 <span class="mg-r8">抽奖规则:</span>
@@ -96,6 +97,7 @@
                 :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
                 :disabledDate="disabledDate"
                 format="YYYY-MM-DD HH:mm"
+                :showTime="true"
                 v-model="dateRangeVal"
                 @change="onDateChange"
               ></a-range-picker>
@@ -528,10 +530,6 @@ export default {
             this.currentIndex = para
           })
       }
-    },
-    getCurIndex(e) {
-      let index = e.index.target.textContent - 1
-      this.currentIndex = index >= 0 ? index : 0
     },
     onChangeGetAvatar(imageFiles) {
       this.fileList = cloneDeep(imageFiles)
