@@ -54,9 +54,9 @@
               2
             </div>
             <div :class="bPage('step-text')">
-              <st-t4>搜索卡劵</st-t4>
+              <st-t4>校验</st-t4>
               <div :class="bPage('step-light')">
-                核销员输入由客户提供的奖品券号
+                检查券信息是否对应有效
               </div>
             </div>
           </div>
@@ -65,9 +65,9 @@
               3
             </div>
             <div :class="bPage('step-text')">
-              <st-t4>搜索卡劵</st-t4>
+              <st-t4>完成使用</st-t4>
               <div :class="bPage('step-light')">
-                核销员输入由客户提供的奖品券号
+                校验无误后向客户进行减免或赠送礼品，并核销卡券
               </div>
             </div>
           </div>

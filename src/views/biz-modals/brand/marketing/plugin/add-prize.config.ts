@@ -14,7 +14,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     prize_type: {
-      initialValue: 1,
+      initialValue: 2,
       rules: [
         {
           required: true,

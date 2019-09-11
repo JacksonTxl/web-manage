@@ -55,6 +55,7 @@
         <a-input-number
           :min="1"
           :max="9999"
+          style="width:200px"
           addonAfter="个"
           placeholder="请输入奖品数量"
           v-decorator="decorators.number"
@@ -64,6 +65,7 @@
         <a-input-number
           :min="0"
           :max="100"
+          style="width:200px"
           addonAfter="%"
           placeholder="请输入中奖概率"
           v-decorator="decorators.rate"
@@ -135,7 +137,7 @@ export default {
       show: false,
       fileList: [],
       couponList: [],
-      curPrizeType: 1,
+      curPrizeType: 2,
       curImgType: 1,
       shop_ids: [],
       curShopType: 1,

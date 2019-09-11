@@ -44,7 +44,7 @@
               </div>
               <div v-if="notPrize.prize_name" class="img-wrap run-item-7">
                 <img class="img" :src="notPrize.prize.image_url" alt="" />
-                {{ notPrize.prize_name }}
+                <span class="text">{{ notPrize.prize_name }}</span>
               </div>
             </div>
             <div :class="bPage('lottery-footer')">
@@ -68,11 +68,7 @@
       <div :class="bPage('form')">
         <a-row class="mg-b24" :gutter="8">
           <a-col offset="1">
-            <Steps
-              :value="currentIndex"
-              @skip="getCurIndex"
-              :stepArr="stepArr"
-            />
+            <Steps :value="currentIndex" @skip="next" :stepArr="stepArr" />
           </a-col>
         </a-row>
         <div style="padding:24px;">
@@ -430,11 +426,6 @@ export default {
       currentIndex: 0,
       notPrizeImgType: NOT_PRIZE_IMG_TYPE.DEFAULT,
       dateRangeVal: [],
-      defaultImg: {
-        image_url:
-          'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/img-lottery-prize-defalut-1x.png',
-        image_key: 'image/default/img-lottery-prize-defalut-1x.png'
-      },
       notPrize: {
         prize_name: '',
         prize: {
@@ -475,7 +466,10 @@ export default {
       joinCrowdAll: this.addService.joinCrowdAll$,
       crowd: this.addService.crowd$,
       imgType: this.addService.imgType$,
-      prizeInfoList: this.addService.prizeInfoList$
+      prizeInfoList: this.addService.prizeInfoList$,
+      lucky: this.addService.lucky$,
+      prize: this.addService.prize$,
+      share: this.addService.share$
     }
   },
   modals: {
@@ -495,6 +489,9 @@ export default {
   mounted() {},
   methods: {
     next(para) {
+      if (para.index) {
+        para = para.index.target.textContent - 1
+      }
       if (para === 1) {
         this.form
           .validate([
@@ -539,12 +536,12 @@ export default {
         value.activity_base.share_bg =
           this.shareType === SHARE_TYPE.CUSTOM
             ? this.fileShareList[0]
-            : this.defaultImg
+            : this.share
         value.activity_prizes = this.prizeList
         value.activity_lucky.lucky =
           this.notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM
             ? this.fileList[0]
-            : this.defaultImg
+            : this.prize
         this.addService.add(value).subscribe(res => {
           this.$router.push('./success?id=' + res.id)
         })
@@ -588,10 +585,7 @@ export default {
     getPrizeInfo(val) {
       this.prizeList = this.prizeList.map((item, index) => {
         if (item.prize_name === val.prize_name) {
-          console.log(this.prizeList)
-          this.prizeList[index] = val
           item = val
-          console.log(this.prizeList)
         }
         return item
       })

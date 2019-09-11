@@ -16,6 +16,9 @@ export class AddService implements RouteGuard {
   joinCrowdAll$ = this.userService.getOptions$('plugin.join_crowd_all')
   crowd$ = this.userService.getOptions$('plugin.crowd')
   imgType$ = this.userService.getOptions$('plugin.img_type')
+  lucky$ = this.userService.getOptions$('plugin.wheel.lucky')
+  prize$ = this.userService.getOptions$('plugin.wheel.prize')
+  share$ = this.userService.getOptions$('plugin.wheel.share')
   constructor(
     private lotteryApi: LotteryApi,
     private userService: UserService
