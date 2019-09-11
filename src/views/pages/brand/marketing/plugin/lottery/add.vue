@@ -345,8 +345,8 @@
                 height="164px"
                 :list="fileList"
                 @change="onChangeGetAvatar"
-                :sizeLimit="2"
-                placeholder="上传头像"
+                :sizeLimit="1"
+                placeholder="上传图片"
               ></st-image-upload>
             </st-form-item>
             <st-form-item label="" labelWidth="124px">
@@ -533,7 +533,7 @@ export default {
     },
     onChangeGetAvatar(imageFiles) {
       this.fileList = cloneDeep(imageFiles)
-      this.notPrize.prize = cloneDeep(imageFiles)
+      this.notPrize.prize = this.fileList[0]
     },
     onShareChangeGetAvatar(imageFiles) {
       this.fileShareList = cloneDeep(imageFiles)
