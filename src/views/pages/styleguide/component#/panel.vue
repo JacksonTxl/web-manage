@@ -113,7 +113,7 @@
         </div>
         <div slot="button">
           <st-button type="primary">查询1</st-button>
-          <st-button class="mgl-8">重置1</st-button>
+          <st-button class="mg-l8">重置1</st-button>
         </div>
       </st-search-panel>
     </section>

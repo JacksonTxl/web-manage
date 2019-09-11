@@ -12,7 +12,7 @@
       :columns="columns"
       :scroll="{ y: 230 }"
       @change="onPageChange"
-      :pagination="page"
+      :page="page"
     />
   </st-modal>
 </template>

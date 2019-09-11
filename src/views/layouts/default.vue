@@ -83,13 +83,13 @@
       <div class="layout-default-body__personal">
         <!-- <a-badge dot>
           <st-icon type="home" class="layout-default-body__icon"/>
-        </a-badge> -->
-        <!-- <a-dropdown :trigger="['click']" placement="bottomRight">
+        </a-badge>
+        <a-dropdown :trigger="['click']" placement="bottomRight">
           <div class="layout-default-body__top-item">
             <st-icon type="square" class="layout-default-body__icon"/>
           </div>
           <div slot="overlay" class="layout-default-body__fast-entry">
-            <fast-entry/>
+            <fast-entry />
           </div>
         </a-dropdown> -->
         <a-dropdown :trigger="['click']" placement="bottomRight">
@@ -133,6 +133,7 @@
     <main class="layout-default-body">
       <article class="layout-default-body__content">
         <router-view></router-view>
+        <!-- <default-skeleton></default-skeleton> -->
       </article>
       <footer class="layout-default-body__footer">
         Copyright &#169; 2019 三体云智能科技有限公司
@@ -142,7 +143,8 @@
   </div>
 </template>
 <script>
-import DefaultSiderMenu from './default#sider-menu'
+import DefaultSiderMenu from './default#/sider-menu.vue'
+import DefaultSkeleton from './default#/skeleton.vue'
 import SwitchShop from '@/views/fragments/shop/switch'
 import routes from '@/router/routes'
 import { find } from 'lodash-es'
@@ -152,6 +154,15 @@ import { TitleService } from '@/services/title.service'
 // import FastEntry from './entry#/fast-entry'
 
 export default {
+  components: {
+    DefaultSiderMenu,
+    SwitchShop
+    // DefaultSkeleton
+    /**
+     * 快速入口 九宫格
+     */
+    // FastEntry
+  },
   serviceInject() {
     return {
       userService: UserService,
@@ -252,11 +263,6 @@ export default {
        */
       this.isShowSwitchShop = false
     }
-  },
-  components: {
-    DefaultSiderMenu,
-    SwitchShop
-    // FastEntry
   }
 }
 </script>

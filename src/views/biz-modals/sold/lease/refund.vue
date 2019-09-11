@@ -7,7 +7,7 @@
   >
     <div :class="refund('content')">
       <a-row :class="refund('info')">
-        <a-col :span="13" class="mgb-36">
+        <a-col :span="13" class="mg-b36">
           <st-info>
             <st-info-item label="订单号">{{ info.order_id }}</st-info-item>
             <st-info-item class="mg-b0" label="下单时间">
@@ -15,7 +15,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="11" class="mgb-36">
+        <a-col :span="11" class="mg-b36">
           <st-info>
             <st-info-item label="下单人">{{ info.operator_name }}</st-info-item>
             <st-info-item class="mg-b0" label="销售">
@@ -23,7 +23,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="13" class="mgb-36">
+        <a-col :span="13" class="mg-b36">
           <st-info>
             <st-info-item label="订单类型" v-if="info.order_type">
               {{ info.order_type | enumFilter('sold.order_type') }}
@@ -33,7 +33,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="11" class="mgb-36">
+        <a-col :span="11" class="mg-b36">
           <st-info>
             <st-info-item label="场馆">{{ info.shop_name }}</st-info-item>
             <st-info-item class="mg-b0" label="用户">
@@ -41,7 +41,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="13" class="mgb-36">
+        <a-col :span="13" class="mg-b36">
           <st-info>
             <st-info-item label="购买">{{ info.product_name }}</st-info-item>
             <st-info-item label="订单总额">
@@ -51,7 +51,7 @@
           </st-info>
         </a-col>
 
-        <a-col :span="11" class="mgb-36">
+        <a-col :span="11" class="mg-b36">
           <st-info>
             <st-info-item label="赠送">{{ info.gift_amount }}</st-info-item>
             <st-info-item label="应收金额">
@@ -59,7 +59,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="24" class="mgb-36">
+        <a-col :span="24" class="mg-b36">
           <st-info>
             <st-info-item label="备注">
               {{ info.description || '' }}
@@ -69,7 +69,7 @@
       </a-row>
       <st-form :form="form" labelWidth="88px">
         <div :class="refund('refund')">
-          <st-form-item class="mgb-18" required>
+          <st-form-item class="mg-b16" required>
             <template slot="label">
               退款原因
               <st-help-tooltip id="TSMC005" />
@@ -96,7 +96,7 @@
               </template>
             </st-input-number>
           </st-form-item>
-          <st-form-item label="退款方式" class="mgb-18" required>
+          <st-form-item label="退款方式" class="mg-b16" required>
             <a-radio-group v-model="frozenPayType">
               <a-radio
                 v-for="(item, index) in Object.keys(

@@ -58,6 +58,23 @@
       <h4>helpers 辅助类</h4>
       <st-container type="1">
         <p>
+          <span>
+            .mg-l8
+          </span>
+          <span>
+            .mg-l12
+          </span>
+          <span>
+            .mg-l16
+          </span>
+          <span>
+            .mg-l24
+          </span>
+          <span>
+            .mg-l32
+          </span>
+        </p>
+        <p>
           <span>.ta-l (text-align: left)</span>
           <span class="mg-l16">.ta-c (text-align: center)</span>
           <span class="mg-l16">.ta-r (text-align: right)</span>

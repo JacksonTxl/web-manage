@@ -16,20 +16,26 @@
         <div class="schedule-card__bar" :class="item | barClass"></div>
 
         <div :class="bCard('content')">
-          <span class="time">{{ item.start_time }}-{{ item.end_time }}</span>
+          <span class="time">
+            <st-icon type="timer"></st-icon>
+            {{ item.start_time }}-{{ item.end_time }}
+          </span>
           <st-t3 class="course__name">{{ item.course_name }}</st-t3>
           <p class="course__coach">教练：{{ item.coach_name }}</p>
         </div>
 
         <div class="item__extra" :class="item | barClass">
           <div :class="bCard('content')">
-            <span class="time">{{ item.start_time }}-{{ item.end_time }}</span>
-            <st-t3 class="course__name">{{ item.course_name }}</st-t3>
-            <p class="course__item">
+            <div class="mg-b8 time">
+              <st-icon type="timer"></st-icon>
+              {{ item.start_time }}-{{ item.end_time }}
+            </div>
+            <st-t3 class="mg-b8 course__name">{{ item.course_name }}</st-t3>
+            <p class="mg-b8 course__item">
               <span class="label">教练：</span>
               <span class="value">{{ item.coach_name }}</span>
             </p>
-            <p v-if="item.court_name" class="course__item">
+            <p v-if="item.court_name" class="mg-b8 course__item">
               <span class="label">场地：</span>
               <span class="value">{{ item.court_name }}</span>
             </p>

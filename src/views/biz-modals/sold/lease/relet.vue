@@ -16,7 +16,7 @@
             <st-info-item label="商品类型">
               {{ info.product_type }}
             </st-info-item>
-            <st-info-item class="mgb-24" label="租赁计费">
+            <st-info-item class="mg-b24" label="租赁计费">
               {{ info.price }}
             </st-info-item>
           </st-info>
@@ -27,7 +27,7 @@
               {{ info.sale_range.name }}
             </st-info-item>
             <st-info-item label="允许转让">{{ info.is_transfer }}</st-info-item>
-            <st-info-item class="mgb-24" label="转让手续费">
+            <st-info-item class="mg-b24" label="转让手续费">
               {{ info.transfer }}
             </st-info-item>
           </st-info>
@@ -35,7 +35,7 @@
       </a-row>
       <st-form labelWidth="88px" :form="form">
         <div :class="relet('relet')">
-          <st-form-item label="租赁会员" class="mgb-18">
+          <st-form-item label="租赁会员" class="mg-b16">
             {{ info.member_name }}
           </st-form-item>
           <st-form-item label="租赁柜号" required>
@@ -74,7 +74,7 @@
               </template>
             </st-input-number>
           </st-form-item>
-          <st-form-item class="mgb-18" required>
+          <st-form-item class="mg-b16" required>
             <template slot="label">
               合同编号
               <st-help-tooltip id="TSSD001" />
@@ -93,7 +93,7 @@
               </st-button>
             </div>
           </st-form-item>
-          <st-form-item class="mgb-18" label="租赁费用">
+          <st-form-item class="mg-b16" label="租赁费用">
             {{ orderAmountPrice }}元
           </st-form-item>
           <st-form-item :class="sale('discounts')" label="定金抵扣">
@@ -137,7 +137,7 @@
               </div>
             </div>
           </st-form-item>
-          <st-form-item label="减免金额" class="mgb-18">
+          <st-form-item label="减免金额" class="mg-b16">
             <st-input-number placeholder="请输入金额" v-model="reduceAmount">
               <template slot="addonAfter">
                 元
