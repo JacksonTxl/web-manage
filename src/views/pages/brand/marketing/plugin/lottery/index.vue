@@ -5,10 +5,10 @@
       <div :class="bPage('action')" class="mg-b24">
         <div>
           <router-link to="./add">
-            <a-button type="primary" class="mg-r16">新建活动</a-button>
+            <st-button type="primary" class="mg-r16">+新建活动</st-button>
           </router-link>
           <router-link to="./checkin">
-            <a-button>核销兑换码</a-button>
+            <st-button>核销兑换码</st-button>
           </router-link>
         </div>
         <div style="text-align:right">

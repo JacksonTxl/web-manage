@@ -20,8 +20,8 @@ export const ruleOptions = (vm: any) => {
           message: '请输入活动描述'
         },
         {
-          pattern: pattern.CN_EN_NUM('1-15'),
-          message: '请输入1~15个字符'
+          pattern: pattern.CN_EN_NUM('1-200'),
+          message: '请输入1~200个字符'
         }
       ]
     },
@@ -92,15 +92,11 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     'activity_rule.per_times': {
-      initialValue: 0,
-      rules: [
-        {
-          required: true,
-          message: '请填写每日抽奖次数'
-        }
-      ]
+      initialValue: 0
     },
-    'activity_rule.total_times': {},
+    'activity_rule.total_times': {
+      initialValue: 0
+    },
     'activity_rule.prize_times': {},
     'activity_lucky.lucky_name': {
       initialValue: '未中奖',

@@ -55,7 +55,10 @@
               </div>
               <div class="mg-b24">
                 <span class="mg-r8">抽奖规则:</span>
-                <span>每人每天有{{ preview.perTimes }}次机会</span>
+                <span v-if="timesType === 1">
+                  每人每天有{{ preview.perTimes }}次机会
+                </span>
+                <span v-else>每人总共有{{ preview.totalTimes }}次机会</span>
               </div>
               <div class="mg-b24">
                 <span class="mg-r8">活动说明:</span>
@@ -91,6 +94,7 @@
             <st-form-item label="活动时间" labelWidth="124px" required>
               <a-range-picker
                 :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
+                :disabledDate="disabledDate"
                 format="YYYY-MM-DD HH:mm"
                 v-model="dateRangeVal"
                 @change="onDateChange"
@@ -400,6 +404,7 @@ export default {
         startTime: '',
         endTime: '',
         perTimes: 0,
+        totalTimes: 0,
         description: ''
       },
       fileList: [],
@@ -562,6 +567,9 @@ export default {
     getPerTimes(e) {
       this.preview.perTimes = e
     },
+    getTotalTimes(e) {
+      this.preview.totalTimes = e
+    },
     getDescription(e) {
       this.preview.description = e.target.value
     },
@@ -596,6 +604,11 @@ export default {
         return item
       })
       this.prizeList.push(val)
+    },
+    disabledDate(current) {
+      return (
+        current && current.format('YYYY-MM-DD') < moment().format('YYYY-MM-DD')
+      )
     },
     onDelete(para) {
       this.prizeList = this.prizeList.filter((item, index) => {
