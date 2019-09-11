@@ -22,7 +22,7 @@ export class UserService implements RouteGuard {
   init(query: any) {
     return forkJoin(this.getUserList(query))
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.init(to.meta.query)
   }
 }

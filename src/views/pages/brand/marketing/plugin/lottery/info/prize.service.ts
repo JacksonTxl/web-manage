@@ -22,7 +22,7 @@ export class PrizeService implements RouteGuard {
   init(query: any) {
     return forkJoin(this.getPrizedList(query))
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.init(to.meta.query)
   }
 }

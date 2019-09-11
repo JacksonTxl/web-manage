@@ -104,9 +104,7 @@ export default {
   computed: { columns },
   methods: {
     getCheckinList() {
-      return this.checkinService.getCheckinList(this.keyword).subscribe(res => {
-        this.list = res.list
-      })
+      return this.checkinService.getCheckinList(this.keyword).subscribe()
     },
     checkin() {
       return this.checkinService.checkin(this.keyword).subscribe(res => {

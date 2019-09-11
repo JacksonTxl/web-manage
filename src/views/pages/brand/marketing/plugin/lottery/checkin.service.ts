@@ -11,13 +11,17 @@ export class CheckinService implements RouteGuard {
   constructor(private lotteryApi: LotteryApi) {}
   @Effect()
   getCheckinList(query: string) {
-    return this.lotteryApi.getCheckinList(query)
+    return this.lotteryApi.getCheckinList(query).pipe(
+      tap(res => {
+        this.list$.commit(() => res.list)
+      })
+    )
   }
   checkin(query: string) {
     return this.lotteryApi.checkin(query)
   }
   init() {}
-  beforeRouteEnter() {
+  beforeEach() {
     return this.init()
   }
 }

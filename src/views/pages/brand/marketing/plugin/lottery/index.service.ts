@@ -30,7 +30,7 @@ export class IndexService implements RouteGuard {
   init(GetActivityListQuery: any) {
     return forkJoin(this.getActivityList(GetActivityListQuery))
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.init(to.meta.query)
   }
 }

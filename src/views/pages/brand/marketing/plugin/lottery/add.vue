@@ -580,12 +580,14 @@ export default {
       this.preview.endTime = str[1]
     },
     getPrizeInfo(val) {
-      this.prizeList.map((item, index) => {
+      this.prizeList = this.prizeList.map((item, index) => {
         if (item.prize_name === val.prize_name) {
           console.log(this.prizeList)
           this.prizeList[index] = val
+          item = val
           console.log(this.prizeList)
         }
+        return item
       })
       this.prizeList.push(val)
     },
