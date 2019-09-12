@@ -29,11 +29,8 @@
               src="~@/assets/img/brand/marketing/lottery/title_bg.png"
             />
             <span :class="bPage('lottery-subtitle')">{{ preview.title }}</span>
-            <div
-              :class="bPage('lottery-turntable')"
-              v-if="prizeList.length > 0"
-            >
-              <div style="position:relative">
+            <div :class="bPage('lottery-turntable')">
+              <div style="position:relative" v-if="prizeList.length > 0">
                 <div
                   class="img-wrap"
                   :class="'run-item-' + index"
@@ -50,7 +47,6 @@
                   <div class="text">{{ item.prize_name }}</div>
                 </div>
               </div>
-
               <div v-if="notPrize.prize_name" class="img-wrap run-item-7">
                 <div class="img">
                   <img :src="notPrize.prize.image_url" alt="奖品图片" />
@@ -86,15 +82,20 @@
           </a-col>
         </a-row>
         <div style="padding:24px;">
-          <st-form :form="form" labelGutter="0" v-show="currentIndex == 0">
-            <st-form-item label="活动名称" labelWidth="124px" required>
+          <st-form
+            :form="form"
+            labelGutter="0"
+            v-show="currentIndex == 0"
+            labelWidth="124px"
+          >
+            <st-form-item label="活动名称" required>
               <a-input
                 :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
                 placeholder="请输入活动名称"
                 v-decorator="decorators.activity_base.activity_name"
               ></a-input>
             </st-form-item>
-            <st-form-item label="活动标题" labelWidth="124px" required>
+            <st-form-item label="活动标题" required>
               <a-input
                 :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
                 @change="getTitle"
@@ -102,7 +103,7 @@
                 v-decorator="decorators.activity_base.activity_sub_name"
               ></a-input>
             </st-form-item>
-            <st-form-item label="活动时间" labelWidth="124px" required>
+            <st-form-item label="活动时间" required>
               <a-range-picker
                 :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
                 :disabledDate="disabledDate"
@@ -115,7 +116,7 @@
                 @change="onDateChange"
               ></a-range-picker>
             </st-form-item>
-            <st-form-item label="活动说明" labelWidth="124px" required>
+            <st-form-item label="活动说明" required>
               <a-textarea
                 :maxlength="500"
                 @change="getDescription"
@@ -124,7 +125,7 @@
                 v-decorator="decorators.activity_base.activity_description"
               ></a-textarea>
             </st-form-item>
-            <st-form-item label="活动轮播获奖信息说明" labelWidth="124px">
+            <st-form-item label="活动轮播获奖信息说明">
               <a-radio-group
                 :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
                 @change="stopSwiper"
@@ -139,7 +140,7 @@
                 </a-radio>
               </a-radio-group>
             </st-form-item>
-            <st-form-item label="分享设置" labelWidth="124px">
+            <st-form-item label="分享设置">
               <a-radio-group
                 @change="getCurShareType"
                 :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
@@ -154,7 +155,7 @@
                 </a-radio>
               </a-radio-group>
               <div v-if="shareType === 2">
-                <st-form-item label="选择图片" labelWidth="124px">
+                <st-form-item label="选择图片">
                   <st-image-upload
                     width="164px"
                     height="164px"
@@ -164,7 +165,7 @@
                     placeholder="上传头像"
                   ></st-image-upload>
                 </st-form-item>
-                <st-form-item label="分享标题" labelWidth="124px">
+                <st-form-item label="分享标题">
                   <a-input
                     placeholder="分享标题"
                     v-decorator="decorators.activity_base.share_title"
@@ -172,13 +173,18 @@
                 </st-form-item>
               </div>
             </st-form-item>
-            <st-form-item label="" labelWidth="124px">
+            <st-form-item labelFix>
               <st-button type="primary" @click="next(1)">下一步</st-button>
             </st-form-item>
           </st-form>
 
-          <st-form :form="form" labelGutter="0" v-show="currentIndex == 1">
-            <st-form-item label="参与用户" labelWidth="124px" required>
+          <st-form
+            :form="form"
+            labelGutter="0"
+            v-show="currentIndex == 1"
+            labelWidth="124px"
+          >
+            <st-form-item label="参与用户" required>
               <a-radio-group
                 @change="getCurCrowdType"
                 v-decorator="decorators.activity_rule.join_crowd_all"
@@ -206,7 +212,7 @@
                 </a-select-option>
               </a-select>
             </st-form-item>
-            <st-form-item label="抽奖条件" labelWidth="124px" required>
+            <st-form-item label="抽奖条件" required>
               <a-radio-group
                 v-decorator="decorators.activity_rule.draw_condition"
               >
@@ -219,7 +225,7 @@
                 </a-radio>
               </a-radio-group>
             </st-form-item>
-            <st-form-item label=" 抽奖机会" labelWidth="124px" required>
+            <st-form-item label=" 抽奖机会" required>
               <a-radio-group
                 @change="getCurTimesType"
                 v-decorator="decorators.activity_rule.draw_times_type"
@@ -256,7 +262,7 @@
                 次
               </div>
             </st-form-item>
-            <st-form-item label=" 中奖次数" labelWidth="124px">
+            <st-form-item label=" 中奖次数">
               每人最多可中奖
               <a-input-number
                 :min="1"
@@ -267,7 +273,7 @@
               ></a-input-number>
               次
             </st-form-item>
-            <st-form-item label="" labelWidth="124px">
+            <st-form-item labelFix>
               <st-button type="primary" @click="next(2)">下一步</st-button>
             </st-form-item>
           </st-form>
@@ -363,7 +369,7 @@
                 placeholder="上传图片"
               ></st-image-upload>
             </st-form-item>
-            <st-form-item label="" labelWidth="124px">
+            <st-form-item labelFix>
               <st-button type="primary" @click="onSubmit">完成</st-button>
             </st-form-item>
           </st-form>
@@ -448,7 +454,7 @@ export default {
       notPrizeImgType: NOT_PRIZE_IMG_TYPE.DEFAULT,
       dateRangeVal: [],
       notPrize: {
-        prize_name: '',
+        prize_name: '未中奖',
         prize: {
           image_url:
             'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/dev/image/10000/2019-09-05/分组3___f12c6b9b10bb___.png'
