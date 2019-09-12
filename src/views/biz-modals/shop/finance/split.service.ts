@@ -3,7 +3,6 @@ import { State, Effect } from 'rx-state'
 import { OrderApi, SplitParams } from '@/api/v1/finance/order'
 import { tap } from 'rxjs/operators'
 import { anyAll } from '@/operators'
-
 @Injectable()
 export class SplitService {
   info$ = new State({})
