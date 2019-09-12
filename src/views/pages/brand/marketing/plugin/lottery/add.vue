@@ -106,8 +106,11 @@
               <a-range-picker
                 :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
                 :disabledDate="disabledDate"
+                :showTime="{
+                  hideDisabledOptions: true,
+                  defaultValue: defaultValue
+                }"
                 format="YYYY-MM-DD HH:mm"
-                :showTime="true"
                 v-model="dateRangeVal"
                 @change="onDateChange"
               ></a-range-picker>
@@ -460,7 +463,8 @@ export default {
       swiperOption: {
         spaceBetween: 6,
         slidesPerView: 1.05
-      }
+      },
+      defaultValue: [moment().format('HH:mm'), moment('11:59', 'HH:mm')]
     }
   },
   bem: {
