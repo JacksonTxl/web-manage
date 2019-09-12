@@ -1,6 +1,6 @@
 <template>
   <section :class="basic()">
-    <st-panel title="储值卡详情">
+    <st-panel app title="储值卡详情">
       <div slot="actions">
         <st-button
           v-if="auth['shop:sold:sold_deposit_card|export_contract']"
@@ -91,7 +91,7 @@
         </a-col>
       </a-row>
     </st-panel>
-    <st-panel
+    <!-- <st-panel
       initial
       class="mgt-12"
       :tabs="[
@@ -105,7 +105,7 @@
       ]"
     >
       <router-view></router-view>
-    </st-panel>
+    </st-panel> -->
   </section>
 </template>
 <script>

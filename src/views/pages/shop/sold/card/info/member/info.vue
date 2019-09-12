@@ -159,7 +159,7 @@
         </a-col>
       </a-row>
     </st-panel>
-    <!-- <st-panel
+    <st-panel
       initial
       class="mg-t16"
       :tabs="[
@@ -173,7 +173,7 @@
       ]"
     >
       <router-view></router-view>
-    </st-panel> -->
+    </st-panel>
   </section>
 </template>
 <script>
