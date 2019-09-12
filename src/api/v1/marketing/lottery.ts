@@ -52,7 +52,7 @@ export class LotteryApi extends Api {
   }
   // 编辑大转盘
   edit(params: AddParams) {
-    return this.http.post('/v1/plugin/wheel/edit', {
+    return this.http.put('/v1/plugin/wheel/edit', {
       params
     })
   }

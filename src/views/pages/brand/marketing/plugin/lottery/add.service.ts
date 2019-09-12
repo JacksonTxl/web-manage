@@ -26,6 +26,9 @@ export class AddService implements RouteGuard {
   add(params: AddParams) {
     return this.lotteryApi.add(params)
   }
+  edit(params: AddParams) {
+    return this.lotteryApi.edit(params)
+  }
   editVIew(id: string) {
     return this.lotteryApi.editVIew(id)
   }

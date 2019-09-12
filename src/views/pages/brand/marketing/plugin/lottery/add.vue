@@ -576,9 +576,15 @@ export default {
           this.notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM
             ? this.fileList[0]
             : this.prize[0]
-        this.addService.add(value).subscribe(res => {
-          this.$router.push('./success?id=' + res.id)
-        })
+        if (this.query.activity_id) {
+          this.addService.edit(value).subscribe(res => {
+            this.$router.push('./success?id=' + res.id)
+          })
+        } else {
+          this.addService.add(value).subscribe(res => {
+            this.$router.push('./success?id=' + res.id)
+          })
+        }
       })
     },
     getTitle(e) {
