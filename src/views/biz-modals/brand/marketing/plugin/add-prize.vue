@@ -184,6 +184,10 @@ export default {
   },
   created() {
     this.getCouponList()
+    if (this.info) {
+      this.curImgType = this.info.image_default
+      this.fileList[0] = this.info.prize
+    }
   },
   components: { SelectShop },
   methods: {

@@ -658,6 +658,12 @@ export default {
         this.preview.description = res.activity_base.activity_description
         this.preview.title = res.activity_base.activity_sub_name
         this.notPrize.prize_name = res.activity_lucky.lucky_name
+        this.shareType = res.activity_base.wheel_share_default
+        this.timesType = res.activity_rule.draw_times_type
+        this.isStopSwiper = res.activity_base.wheel_turn_around
+        this.notPrizeImgType = res.activity_lucky.image_default
+        this.fileList[0] = res.activity_lucky.lucky
+        this.fileShareList[0] = res.activity_base.share_bg
       })
     }
   }
