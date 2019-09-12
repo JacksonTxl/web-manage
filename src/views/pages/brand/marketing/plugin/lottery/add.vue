@@ -162,7 +162,7 @@
                     :list="fileShareList"
                     @change="onShareChangeGetAvatar"
                     :sizeLimit="2"
-                    placeholder="上传头像"
+                    placeholder="上传图片"
                   ></st-image-upload>
                 </st-form-item>
                 <st-form-item label="分享标题">

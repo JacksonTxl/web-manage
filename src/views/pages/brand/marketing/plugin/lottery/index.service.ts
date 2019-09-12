@@ -10,7 +10,7 @@ export class IndexService implements RouteGuard {
   list$ = new State({})
   page$ = new State({})
   loading$ = new State({})
-  status$ = this.userService.getOptions$('coupon.coupon_status')
+  status$ = this.userService.getOptions$('plugin.activity_status')
   constructor(
     private lotteryApi: LotteryApi,
     private userService: UserService
