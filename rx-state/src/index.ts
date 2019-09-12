@@ -1,4 +1,4 @@
-import { Subject, Observable, BehaviorSubject } from 'rxjs'
+import { Subject, Observable, BehaviorSubject, combineLatest } from 'rxjs'
 import produce from 'immer'
 
 import {
@@ -129,4 +129,11 @@ export class Computed<T> extends ObservableWithSnapshot<T> {
     }
     return computed$
   }
+}
+
+export const computed = (
+  fn: Function,
+  ...states: Observable<any>[]
+): Computed<any> => {
+  return new Computed(combineLatest(...states, fn))
 }
