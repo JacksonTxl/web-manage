@@ -160,6 +160,7 @@ export default {
       const map = {
         1: 'brand-marketing-plugin-coupon-list',
         2: 'brand-marketing-plugin-invitation-index-data',
+        3: 'brand-marketing-plugin-lottery-index',
         4: 'brand-marketing-plugin-crowd-index'
       }
       if (map.hasOwnProperty(type)) {

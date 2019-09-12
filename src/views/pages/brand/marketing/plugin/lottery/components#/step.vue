@@ -4,7 +4,7 @@
       v-for="item in stepArr"
       :title="item.title"
       :key="item.key"
-      @click="skip"
+      @click="skip(item.key)"
     />
   </a-steps>
 </template>

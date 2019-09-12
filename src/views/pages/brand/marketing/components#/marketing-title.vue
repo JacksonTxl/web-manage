@@ -47,7 +47,7 @@ export default {
     }
   },
   props: {
-    // 1 优惠券 2 邀请有礼
+    // 1 优惠券 2 邀请有礼 3大转盘
     type: {
       type: Number,
       default: 1
