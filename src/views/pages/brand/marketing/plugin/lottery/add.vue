@@ -577,6 +577,7 @@ export default {
             ? this.fileList[0]
             : this.prize[0]
         if (this.query.activity_id) {
+          value.activity_id = this.query.activity_id
           this.addService.edit(value).subscribe(res => {
             this.$router.push('./success?id=' + res.id)
           })
