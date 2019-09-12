@@ -6,7 +6,8 @@ export const columns = () => {
     },
     {
       title: '活动时间',
-      dataIndex: 'activity_end_time'
+      // dataIndex: 'activity_start_time'
+      scopedSlots: { customRender: 'time' }
     },
     {
       title: '参与用户',

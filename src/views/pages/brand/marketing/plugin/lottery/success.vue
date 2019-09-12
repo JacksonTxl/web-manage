@@ -37,7 +37,9 @@
               src="~@/assets/img/brand/marketing/lottery/ad.png"
               alt="success"
             />
-            <span>设置活动广告</span>
+            <router-link to="/brand/marketing/activity">
+              设置活动广告
+            </router-link>
           </span>
           <span :class="bPage('content-action-item')">
             <img

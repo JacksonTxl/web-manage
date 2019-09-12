@@ -54,6 +54,9 @@
             {{ record.activity_join_num }}
           </router-link>
         </span>
+        <span slot="time" slot-scope="record">
+          {{ record.activity_start_time }}~{{ record.activity_end_time }}
+        </span>
         <span slot="prize_num" slot-scope="record">
           <router-link
             :to="{
