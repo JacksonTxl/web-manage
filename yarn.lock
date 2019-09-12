@@ -12553,6 +12553,16 @@ webpack-merge@^4.1.1, webpack-merge@^4.2.1:
   dependencies:
     lodash "^4.17.5"
 
+webpack-mocker-api@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.npm.taobao.org/webpack-mocker-api/download/webpack-mocker-api-0.0.2.tgz#2b93e0843c3f4192c4bc889bcfd2ce5d1e3ed70f"
+  integrity sha1-K5PghDw/QZLEvIibz9LOXR4+1w8=
+  dependencies:
+    chalk "^2.4.2"
+    lodash "^4.17.15"
+    mocker-api "^1.9.0"
+    mockjs "^1.0.1-beta3"
+
 webpack-sources@^1.1.0, webpack-sources@^1.3.0:
   version "1.3.0"
   resolved "https://registry.npm.taobao.org/webpack-sources/download/webpack-sources-1.3.0.tgz#2a28dcb9f1f45fe960d8f1493252b5ee6530fa85"

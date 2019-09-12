@@ -2,7 +2,7 @@ import { Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { OrderApi, SplitParams } from '@/api/v1/finance/order'
 import { tap } from 'rxjs/operators'
-import { forkJoin } from 'rxjs'
+import { anyAll } from '@/operators'
 
 @Injectable()
 export class SplitService {
@@ -31,6 +31,6 @@ export class SplitService {
 
   @Effect()
   serviceInit(id: string) {
-    return forkJoin(this.getDetail(id), this.getSaleList())
+    return anyAll(this.getDetail(id), this.getSaleList())
   }
 }
