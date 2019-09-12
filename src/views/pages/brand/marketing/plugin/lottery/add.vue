@@ -464,7 +464,7 @@ export default {
         spaceBetween: 6,
         slidesPerView: 1.05
       },
-      defaultValue: [moment('00:00', 'HH:mm'), moment('11:59', 'HH:mm')]
+      defaultValue: [moment().format('HH:mm'), moment('11:59', 'HH:mm')]
     }
   },
   bem: {
