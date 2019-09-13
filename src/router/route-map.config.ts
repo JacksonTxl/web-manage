@@ -1002,5 +1002,47 @@ export const routeMapConfig = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
+  },
+  'brand-marketing-plugin-lottery-index'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '活动列表'
+    routeConfig.queryOptions = {
+      activity_status: { type: Number },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      keyword: { type: String }
+    }
+  },
+  'brand-marketing-plugin-lottery-info-prize'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '奖品列表'
+    routeConfig.queryOptions = {
+      activity_id: { type: String },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'brand-marketing-plugin-lottery-info-user'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '数据列表'
+    routeConfig.queryOptions = {
+      activity_id: { type: String },
+      draw_status: { type: Number },
+      prize_type: { type: Number },
+      prize_status: { type: Number },
+      start_time: { type: String },
+      end_time: { type: String },
+      page: { type: String },
+      size: { type: String }
+    }
+  },
+  'brand-marketing-plugin-lottery-add'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '新增'
+  },
+  'brand-marketing-plugin-lottery-edit'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '编辑'
+  },
+  'brand-marketing-plugin-lottery-checkin'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '核销'
+  },
+  'brand-marketing-plugin-lottery-success'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '成功'
   }
 }

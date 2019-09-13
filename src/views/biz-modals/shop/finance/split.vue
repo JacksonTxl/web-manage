@@ -3,6 +3,7 @@
     title="业绩拆分"
     width="800px"
     v-model="show"
+    :loading="loading.serviceInit"
     wrapClassName="modal-shop-finance-split"
   >
     <div :class="basic('content')">
@@ -32,23 +33,22 @@
         rowKey="staff_id"
         :pagination="false"
         :columns="columns"
-        :scroll="{ x: 752 }"
         :dataSource="info.split_items"
       >
         <template slot="staff_name" slot-scope="text, record, index">
           <a-select
             v-if="record.edit && record.staff_type !== SPLIT.STAFF_TYPE_1"
             v-model="record.staff_id"
-            @change="changeSaleMan($event, record, index)"
             style="width: 150px"
             placeholder="选择销售人员"
           >
             <a-select-option
-              v-for="(item, index) in saleList"
-              :key="index"
-              :value="item.id"
+              v-for="(saler, salerIndex) in saleList"
+              @click="changeSaleMan(saler, index)"
+              :key="salerIndex"
+              :value="saler.id"
             >
-              {{ item.staff_name }}
+              {{ saler.staff_name }}
             </a-select-option>
           </a-select>
           <template v-else>
@@ -172,22 +172,9 @@ export default {
     })
   },
   methods: {
-    getSaleManById(id) {
-      return this.saleList.filter(element => {
-        return element.id === id
-      })[0]
-    },
-    changeSaleMan(event, record, index) {
-      const arr = this.info.split_items.filter(element => {
-        return element.staff_id === event
-      })
-      if (arr.length > 0) {
-        return
-      }
-      this.info.split_items[index].staff_id = event
-      this.info.split_items[index].staff_name = this.getSaleManById(
-        event
-      ).staff_name
+    changeSaleMan(saler, index) {
+      this.info.split_items[index].staff_id = saler.staff_id
+      this.info.split_items[index].staff_name = saler.staff_name
     },
     validSaleMan(record) {
       if (!this.info.split_items || this.info.split_items.length >= 7) {
@@ -221,7 +208,7 @@ export default {
         +this.info.actual_price
       ).toFixed(1)
       this.info.split_items.splice(0, 1, record)
-      this.info.split_items.unshift({
+      const newRecord = {
         edit: this.SPLIT.EDIT_TYPE_3,
         staff_id: '',
         staff_name: '',
@@ -229,7 +216,8 @@ export default {
         staff_type_name: '协助销售',
         split_ratio: '',
         split_money: ''
-      })
+      }
+      this.info.split_items.unshift(newRecord)
     },
     onSave(record, index) {
       delete record.edit

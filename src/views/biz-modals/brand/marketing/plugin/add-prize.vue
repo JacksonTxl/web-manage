@@ -1,5 +1,5 @@
 <template>
-  <st-modal title="奖品设置" v-model="show" @ok="onSubmit">
+  <st-modal title="奖品设置" v-model="show" @ok="onSubmit" size="small">
     <st-form :form="form" labelGutter="0">
       <st-form-item label="奖品名称" labelWidth="84px" required>
         <a-input
@@ -20,10 +20,9 @@
             {{ item.label }}
           </a-radio>
         </a-radio-group>
-        <span>
+        <div>
           <a-select
             v-if="curPrizeType === 1"
-            style="width:100px;"
             placeholder="请选择优惠卷"
             v-decorator="decorators.coupon_id"
           >
@@ -35,9 +34,23 @@
               {{ item.name }}
             </a-select-option>
           </a-select>
-        </span>
+          <span v-else>
+            获得当日起
+            <a-input
+              placeholder="输入天数"
+              style="width:100px;"
+              v-decorator="decorators.valid_days"
+            />
+            天内有效
+          </span>
+        </div>
       </st-form-item>
-      <st-form-item label="售卖门店" labelWidth="84px" required>
+      <st-form-item
+        label="售卖门店"
+        labelWidth="84px"
+        v-if="curPrizeType === 2"
+        required
+      >
         <a-radio-group
           v-decorator="decorators.is_shop_range"
           @change="getCurShopType"
@@ -52,22 +65,26 @@
         ></select-shop>
       </st-form-item>
       <st-form-item label="奖品数量" labelWidth="84px" required>
-        <a-input-number
+        <st-input-number
           :min="1"
           :max="9999"
-          addonAfter="个"
+          style="width:100%"
           placeholder="请输入奖品数量"
           v-decorator="decorators.number"
-        ></a-input-number>
+        >
+          <span slot="addonAfter">个</span>
+        </st-input-number>
       </st-form-item>
       <st-form-item label="中奖概率" labelWidth="84px" required>
-        <a-input-number
+        <st-input-number
           :min="0"
           :max="100"
-          addonAfter="%"
+          style="width:100%"
           placeholder="请输入中奖概率"
           v-decorator="decorators.rate"
-        ></a-input-number>
+        >
+          <span slot="addonAfter">%</span>
+        </st-input-number>
       </st-form-item>
       <st-form-item label="奖品图片" labelWidth="84px">
         <a-radio-group
@@ -101,7 +118,7 @@ import { ruleOptions } from './add-prize.config.ts'
 import { PatternService } from '@/services/pattern.service'
 import { cloneDeep } from 'lodash-es'
 import SelectShop from '@/views/fragments/shop/select-shop.vue'
-
+import { IMG_TYPE, SHOP_TYPE, PRIZE_TYPE } from '@/constants/marketing/lottery'
 export default {
   name: 'BrandMarketingPoster',
   bem: {
@@ -132,13 +149,16 @@ export default {
     return {
       form,
       decorators,
+      IMG_TYPE,
+      PRIZE_TYPE,
+      SHOP_TYPE,
       show: false,
       fileList: [],
       couponList: [],
-      curPrizeType: 1,
-      curImgType: 1,
+      curPrizeType: PRIZE_TYPE.CUSTOM,
+      curImgType: IMG_TYPE.DEFAULT,
       shop_ids: [],
-      curShopType: 1,
+      curShopType: SHOP_TYPE.DEFAULT,
       defaultImg: {
         image_url:
           'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/img-lottery-prize-defalut-1x.png',
@@ -164,6 +184,10 @@ export default {
   },
   created() {
     this.getCouponList()
+    if (this.info) {
+      this.curImgType = this.info.image_default
+      this.fileList[0] = this.info.prize
+    }
   },
   components: { SelectShop },
   methods: {
@@ -189,7 +213,10 @@ export default {
     },
     onSubmit() {
       this.form.validate().then(value => {
-        value.prize = this.curImgType === 2 ? this.fileList[0] : this.defaultImg
+        value.prize =
+          this.curImgType === this.IMG_TYPE.CUSTOM
+            ? this.fileList[0]
+            : this.defaultImg
         value.support_shop_ids = this.shop_ids
         this.$emit('change', value)
         this.show = false

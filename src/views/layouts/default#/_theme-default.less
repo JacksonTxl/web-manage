@@ -28,6 +28,8 @@
     .pd(0 16px);
     .fz(14px);
   }
+
+  // layout-defualt-sider
   &-sider {
     position: fixed;
     .pd-t(26px);
@@ -130,6 +132,8 @@
       cursor: default;
       &.sub {
         .fz(12px);
+        line-height: 32px;
+        height: 32px;
       }
       a:hover,
       &:hover {
@@ -230,6 +234,7 @@
     }
     &__menu-item {
       display: flex;
+      line-height: 20px;
     }
     &__menu-title {
       flex: 1;
@@ -254,6 +259,8 @@
       transition: all 0.2s;
     }
   }
+
+  // layout-default-body
   &-body {
     position: absolute;
     min-width: 1000px;

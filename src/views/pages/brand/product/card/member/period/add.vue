@@ -19,7 +19,7 @@
         </h5-container>
       </div>
       <div class="page-content">
-        <st-form :form="form" labelWidth="117px">
+        <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8" class="page-content-card-line__row">
             <a-col :lg="22">
               <st-form-item
@@ -37,6 +37,7 @@
               </st-form-item>
             </a-col>
           </a-row>
+          <st-hr></st-hr>
           <a-row :gutter="8">
             <a-col :lg="23">
               <st-form-item
@@ -77,7 +78,7 @@
             </a-col>
           </a-row>
           <a-row :gutter="8">
-            <a-col :lg="23">
+            <a-col :span="24">
               <st-form-item
                 class="page-content-card-price-setting mt-4"
                 required
@@ -114,18 +115,18 @@
                 >
                   <st-form-table>
                     <colgroup>
-                      <col style="width:23%;" />
-                      <col style="width:23%;" />
-                      <col style="width:23%;" />
-                      <col style="width:23%;" />
-                      <col style="width:8%;" />
+                      <col style="width:30%;" />
+                      <col />
+                      <col />
+                      <col />
+                      <col style="width:60px;" />
                     </colgroup>
                     <thead>
                       <tr>
                         <th>期限</th>
-                        <th>售价</th>
-                        <th class="white-nowrap">允许冻结天数</th>
-                        <th>赠送上限</th>
+                        <th>售价/元</th>
+                        <th class="white-nowrap">允许冻结/天</th>
+                        <th class="white-nowrap">赠送上限/天</th>
                         <th>操作</th>
                       </tr>
                     </thead>
@@ -153,6 +154,7 @@
                             :min="1"
                             :max="99999"
                             :value="item.time.num"
+                            placeholder="期限"
                             @change="
                               e =>
                                 brandPriceSettingHandleChange({
@@ -192,6 +194,7 @@
                             :min="0"
                             :value="item.rally_price"
                             :max="999999.9"
+                            placeholder="售价"
                             @change="
                               e =>
                                 brandPriceSettingHandleChange({
@@ -200,15 +203,14 @@
                                   col: 'rally_price'
                                 })
                             "
-                          >
-                            <span slot="addonAfter">元</span>
-                          </st-input-number>
+                          ></st-input-number>
                         </td>
                         <td>
                           <st-input-number
                             :min="1"
                             :max="99999"
                             :value="item.frozen_day"
+                            placeholder="冻结天数"
                             @change="
                               e =>
                                 brandPriceSettingHandleChange({
@@ -217,15 +219,14 @@
                                   col: 'frozen_day'
                                 })
                             "
-                          >
-                            <span slot="addonAfter">天</span>
-                          </st-input-number>
+                          ></st-input-number>
                         </td>
                         <td>
                           <st-input-number
                             :min="1"
                             :max="99999"
                             :value="item.gift_unit"
+                            placeholder="赠送上限"
                             @change="
                               e =>
                                 brandPriceSettingHandleChange({
@@ -234,9 +235,7 @@
                                   col: 'gift_unit'
                                 })
                             "
-                          >
-                            <span slot="addonAfter">天</span>
-                          </st-input-number>
+                          ></st-input-number>
                         </td>
                         <td>
                           <a @click="brand_price_delete(index)">删除</a>
@@ -257,18 +256,18 @@
                 >
                   <st-form-table>
                     <colgroup>
-                      <col style="width:18%;" />
-                      <col style="width:36%;" />
-                      <col style="width:18%;" />
-                      <col style="width:18%;" />
-                      <col style="width:10%;" />
+                      <col style="width:28%;" />
+                      <col style="width:30%;" />
+                      <col />
+                      <col />
+                      <col style="width:60px;" />
                     </colgroup>
                     <thead>
                       <tr>
                         <th>期限</th>
-                        <th>售价范围</th>
-                        <th class="white-nowrap">允许冻结天数</th>
-                        <th>赠送上限</th>
+                        <th>售价范围/元</th>
+                        <th class="white-nowrap">允许冻结/天</th>
+                        <th class="white-nowrap">赠送上限/天</th>
                         <th>操作</th>
                       </tr>
                     </thead>
@@ -293,10 +292,10 @@
                       >
                         <td>
                           <st-input-number
-                            class="page-content-table-input"
                             :min="1"
                             :max="99999"
                             :value="item.time.num"
+                            placeholder="期限"
                             @change="
                               e =>
                                 shopPriceSettingHandleChange({
@@ -332,8 +331,9 @@
                         </td>
                         <td>
                           <st-input-number
-                            style="width:40%"
+                            style="width:45%"
                             :float="true"
+                            placeholder="售价下限"
                             :value="item.rally_price.min_price"
                             :min="0"
                             :max="999999.9"
@@ -346,12 +346,11 @@
                                   prop: 'min_price'
                                 })
                             "
-                          >
-                            <span slot="addonAfter">元</span>
-                          </st-input-number>
-                          &nbsp; ~ &nbsp;
+                          ></st-input-number>
+                          ~
                           <st-input-number
-                            style="width:40%"
+                            style="width:45%"
+                            placeholder="售价上限"
                             :float="true"
                             :min="0"
                             :value="item.rally_price.max_price"
@@ -365,14 +364,13 @@
                                   prop: 'max_price'
                                 })
                             "
-                          >
-                            <span slot="addonAfter">元</span>
-                          </st-input-number>
+                          ></st-input-number>
                         </td>
                         <td>
                           <st-input-number
                             :min="1"
                             :max="99999"
+                            placeholder="冻结天数"
                             :value="item.frozen_day"
                             @change="
                               e =>
@@ -382,15 +380,14 @@
                                   col: 'frozen_day'
                                 })
                             "
-                          >
-                            <span slot="addonAfter">天</span>
-                          </st-input-number>
+                          ></st-input-number>
                         </td>
                         <td>
                           <st-input-number
                             :min="1"
                             :max="99999"
                             :value="item.gift_unit"
+                            placeholder="赠送上限"
                             @change="
                               e =>
                                 shopPriceSettingHandleChange({
@@ -399,9 +396,7 @@
                                   col: 'gift_unit'
                                 })
                             "
-                          >
-                            <span slot="addonAfter">天</span>
-                          </st-input-number>
+                          ></st-input-number>
                         </td>
                         <td>
                           <a @click="shop_price_delete(index)">删除</a>
