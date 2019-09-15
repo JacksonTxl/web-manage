@@ -9,7 +9,7 @@ export const ruleOptions = (vm: any) => {
         },
         {
           pattern: pattern.CN_EN_NUM('1-10'),
-          message: '请输入1~15个字符'
+          message: '请输入1~10个字符'
         }
       ]
     },
@@ -73,7 +73,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     valid_days: {
-      initialValue: 3
+      initialValue: 1
     },
     prize: {
       initialValue: 1,
