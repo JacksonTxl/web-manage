@@ -9,7 +9,7 @@
         placeholder="请输入姓名或手机号查找"
       ></st-input-search>
     </div>
-    <st-search-panel style="margin: -114px -48px 24px -48px">
+    <st-search-panel style="margin: -112px -48px 24px -48px">
       <div :class="bSelect()">
         <span :class="bSelect('label')">通知对象:</span>
         <st-search-radio

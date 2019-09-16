@@ -375,6 +375,7 @@
                   @change="onChangeGetAvatar"
                   placeholder="上传图片"
                 ></st-image-upload>
+                <div>请上传jbg、png格式的图片</div>
               </div>
 
               <img

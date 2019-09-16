@@ -102,14 +102,17 @@
             {{ item.label }}
           </a-radio>
         </a-radio-group>
-        <st-image-upload
-          v-if="curImgType === 2"
-          class="default-img"
-          :list="fileList"
-          @change="onChangeGetAvatar"
-          :sizeLimit="2"
-          placeholder="上传图片"
-        ></st-image-upload>
+        <div v-if="curImgType === 2">
+          <st-image-upload
+            class="default-img"
+            :list="fileList"
+            @change="onChangeGetAvatar"
+            :sizeLimit="2"
+            placeholder="上传图片"
+          ></st-image-upload>
+          <div>请上传jbg、png格式的图片</div>
+        </div>
+
         <img
           class="default-img"
           v-else
@@ -127,6 +130,7 @@ import { PatternService } from '@/services/pattern.service'
 import { cloneDeep } from 'lodash-es'
 import SelectShop from '@/views/fragments/shop/select-shop.vue'
 import { IMG_TYPE, SHOP_TYPE, PRIZE_TYPE } from '@/constants/marketing/lottery'
+import { MessageService } from '@/services/message.service'
 export default {
   name: 'BrandMarketingPoster',
   bem: {
@@ -135,7 +139,8 @@ export default {
   serviceInject() {
     return {
       addPrizeService: AddPrizeService,
-      pattern: PatternService
+      pattern: PatternService,
+      messageService: MessageService
     }
   },
 
@@ -222,12 +227,27 @@ export default {
       this.curImgType = e.target.value
     },
     onSubmit() {
+      if (
+        this.curPrizeType === this.PRIZE_TYPE.CUSTOM &&
+        this.shopIds.length === 0
+      ) {
+        this.messageService.warning({
+          content: '请选择门店'
+        })
+        return
+      }
       this.form.validate().then(value => {
         value.prize =
           this.curImgType === this.IMG_TYPE.CUSTOM
             ? this.fileList[0]
             : this.prize[0]
         value.support_shop_ids = this.shopIds
+        if (this.curPrizeType === this.PRIZE_TYPE.DEFAULT && !value.coupon_id) {
+          this.messageService.warning({
+            content: '请选择优惠卷'
+          })
+          return
+        }
         this.$emit('change', value)
         this.show = false
       })
