@@ -2,7 +2,7 @@
   <div :class="basic()">
     <div :class="basic('left')">
       <p :class="basic('title')">{{ info.plugin_name }}</p>
-      <p :class="basic('content')">{{ info.introduction }}</p>
+      <p :class="basic('content')" v-html="info.introduction"></p>
       <p :class="basic('footer')">
         <label @click="ruleDetail">规则说明</label>
         <!-- <label @click="openTeach">使用教程</label>

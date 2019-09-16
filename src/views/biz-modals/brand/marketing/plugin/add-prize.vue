@@ -75,7 +75,7 @@
       </st-form-item>
       <st-form-item label="中奖概率" required>
         <st-input-number
-          :min="0"
+          :min="0.01"
           :max="100"
           placeholder="请输入中奖概率"
           v-decorator="decorators.rate"
