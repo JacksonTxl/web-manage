@@ -12,7 +12,7 @@ export class UsersService implements RouteGuard {
   loading$ = new State({})
   prizeStatus$ = this.userService.getOptions$('plugin.prize_status')
   prizeType$ = this.userService.getOptions$('plugin.prize_type')
-  presentStatus$ = this.userService.getOptions$('plugin.prize_status')
+  presentStatus$ = this.userService.getOptions$('plugin.present_status')
   constructor(
     private lotteryApi: LotteryApi,
     private userService: UserService

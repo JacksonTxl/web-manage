@@ -159,9 +159,9 @@
                   <st-image-upload
                     :list="fileShareList"
                     @change="onShareChangeGetAvatar"
-                    :sizeLimit="1"
                     placeholder="上传图片"
                   ></st-image-upload>
+                  <div>请上传jbg、png格式的图片</div>
                 </st-form-item>
                 <st-form-item label="分享标题">
                   <a-input
@@ -373,7 +373,6 @@
                   height="164px"
                   :list="fileList"
                   @change="onChangeGetAvatar"
-                  :sizeLimit="1"
                   placeholder="上传图片"
                 ></st-image-upload>
               </div>
