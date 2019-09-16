@@ -81,6 +81,7 @@
         </a-row>
         <div style="padding:24px;">
           <st-form
+            style="width:500px"
             :form="form"
             labelGutter="0"
             v-show="currentIndex == 0"
@@ -182,6 +183,7 @@
           </st-form>
 
           <st-form
+            style="width:500px"
             :form="form"
             labelGutter="0"
             v-show="currentIndex == 1"
@@ -280,7 +282,7 @@
               <st-button type="primary" @click="next(2)">下一步</st-button>
             </st-form-item>
           </st-form>
-          <st-form :form="form" v-show="currentIndex == 2">
+          <st-form style="width:500px" :form="form" v-show="currentIndex == 2">
             <st-t3 class="mg-b24">奖品设置</st-t3>
             <st-form-table>
               <thead>

@@ -1031,7 +1031,7 @@ export const routeMapConfig = {
     }
   },
   'brand-marketing-plugin-lottery-add'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '新增'
+    routeConfig.meta.title = '新增活动'
   },
   'brand-marketing-plugin-lottery-edit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑'

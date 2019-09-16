@@ -31,7 +31,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     is_shop_range: {
-      initialValue: 1,
+      initialValue: 2,
       rules: [
         {
           required: true,

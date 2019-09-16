@@ -165,7 +165,7 @@ export default {
       curPrizeType: PRIZE_TYPE.CUSTOM,
       curImgType: IMG_TYPE.DEFAULT,
       shop_ids: [],
-      curShopType: SHOP_TYPE.DEFAULT
+      curShopType: SHOP_TYPE.CUSTOM
     }
   },
   mounted() {
