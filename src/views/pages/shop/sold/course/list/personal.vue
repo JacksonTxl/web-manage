@@ -65,6 +65,12 @@
               >
                 修改剩余课时
               </a>
+              <a @click="onActivated(record)">
+                重新激活
+              </a>
+              <a @click="onLease(record)">
+                延长有效期
+              </a>
               <a
                 v-if="record.auth['shop:sold:sold_personal_course|frozen']"
                 @click="onFreeze(record)"
@@ -274,6 +280,36 @@ export default {
         name: 'sold-course-surplus-personal',
         props: {
           courseData: record
+        },
+        on: {
+          success: () => {
+            this.$router.reload()
+          }
+        }
+      })
+    },
+    // 重新激活
+    onActivated(record) {
+      this.$modalRouter.push({
+        name: 'sold-course-transfer',
+        props: {
+          type: 'personal',
+          id: record.id
+        },
+        on: {
+          success: () => {
+            this.$router.reload()
+          }
+        }
+      })
+    },
+    // 延长有效期
+    onLease(record) {
+      this.$modalRouter.push({
+        name: 'sold-course-transfer',
+        props: {
+          type: 'personal',
+          id: record.id
         },
         on: {
           success: () => {

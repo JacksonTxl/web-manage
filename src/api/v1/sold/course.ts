@@ -73,8 +73,32 @@ export class CourseApi extends Api {
   /**
    * 冻结售出课程包/私教课
    */
+  setActivatedCourse(params: any) {
+    return this.http.get(`/v1/sold/course/personal/activated/${params.id}`, {
+      params
+    })
+  }
+  /**
+   * 冻结售出课程包/私教课
+   */
+  setLeaseCourse(params: any) {
+    return this.http.put(`/v1/sold/course/personal/lease/${params.id}`, {
+      params
+    })
+  }
+  /**
+   * 售出私教课重新激活/延长结束时间详情页
+   */
+  getLeaseAndactivatedCourseInfo(id: string) {
+    return this.http.get(`/v1/sold/course/personal/activated/${id}`)
+  }
+  /**
+   * 冻结售出课程包/私教课
+   */
   freezeCourse(params: FreezeCoursePackageInput, id: string, type: string) {
-    return this.http.put(`/v1/sold/course/${type}/frozen/${id}`, { params })
+    return this.http.put(`/v1/sold/course/${type}/frozen/${id}`, {
+      params
+    })
   }
   /**
    * 取消冻结售出课程包/私教课
@@ -96,7 +120,9 @@ export class CourseApi extends Api {
     id: string,
     type: string
   ) {
-    return this.http.put(`/v1/sold/course/${type}/transfer/${id}`, { params })
+    return this.http.put(`/v1/sold/course/${type}/transfer/${id}`, {
+      params
+    })
   }
   /**
    * 售出 课程包/私教课 退款回显
@@ -108,7 +134,9 @@ export class CourseApi extends Api {
    * 售出 课程包/私教课 退款
    */
   editCourseRefund(params: RefundCourseInput, id: string, type: string) {
-    return this.http.put(`/v1/sold/course/${type}/refund/${id}`, { params })
+    return this.http.put(`/v1/sold/course/${type}/refund/${id}`, {
+      params
+    })
   }
   /**
    * 售出 课程包/私教课 详情
@@ -132,12 +160,16 @@ export class CourseApi extends Api {
    * 售出私教修改教练
    */
   editCoursePersonalCoach(params: EditCoursePersonalCoachInput, id: string) {
-    return this.http.put(`/v1/sold/course/personal/coach/${id}`, { params })
+    return this.http.put(`/v1/sold/course/personal/coach/${id}`, {
+      params
+    })
   }
   /**
    * 售出私教修改课时
    */
   editCoursePersonalRemain(params: EditCoursePersonalRemainInput, id: string) {
-    return this.http.put(`/v1/sold/course/personal/remain/${id}`, { params })
+    return this.http.put(`/v1/sold/course/personal/remain/${id}`, {
+      params
+    })
   }
 }

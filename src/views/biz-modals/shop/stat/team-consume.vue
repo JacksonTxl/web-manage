@@ -85,7 +85,7 @@ export default {
     }
   },
   props: {
-    stat_date: String
+    record: String
   },
   data() {
     return {
@@ -100,6 +100,9 @@ export default {
   },
   computed: {
     columns,
+    stat_date() {
+      return this.record.stat_date
+    },
     page() {
       const { current_page, total_counts } = this.page$
       return { current_page, total_counts }
