@@ -25,7 +25,7 @@ export class InfoService implements RouteGuard {
   unFreeze(id: string) {
     return this.cardApi.unFreezeCard(id, 'member')
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+  beforeRouteEnter(to: ServiceRoute) {
     this.id = to.meta.query.id
     return this.getInfo(to.meta.query.id)
   }
