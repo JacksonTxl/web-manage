@@ -1026,8 +1026,8 @@ export const routeMapConfig = {
       prize_status: { type: Number },
       start_time: { type: String },
       end_time: { type: String },
-      current_page: { type: String },
-      size: { type: String }
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
     }
   },
   'brand-marketing-plugin-lottery-add'(routeConfig: RouteConfig) {
