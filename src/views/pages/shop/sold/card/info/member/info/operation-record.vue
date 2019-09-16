@@ -11,11 +11,11 @@
       <template slot="operate_object" slot-scope="text">
         <span v-if="text.length === 0">--</span>
         <div v-else>
-          <a-popover title="操作人">
+          <a-popover title="操作对象">
             <template slot="content">
               <p v-html="tableText(text)"></p>
             </template>
-            <span class="pop__text">{{ text[0] }}...</span>
+            <a class="pop__text">{{ text[0] }}...</a>
           </a-popover>
         </div>
       </template>
@@ -26,7 +26,7 @@
             <template slot="content">
               <p v-html="tableText(text)"></p>
             </template>
-            <span class="pop__text">{{ text[0] }}...</span>
+            <a class="pop__text">{{ text[0] }}...</a>
           </a-popover>
         </div>
       </template>
@@ -37,7 +37,7 @@
             <template slot="content">
               <p v-html="tableText(text)"></p>
             </template>
-            <span class="pop__text">{{ text[0] }}...</span>
+            <a class="pop__text">{{ text[0] }}...</a>
           </a-popover>
         </div>
       </template>
