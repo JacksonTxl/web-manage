@@ -75,22 +75,15 @@
         </st-input-number>
       </st-form-item>
       <st-form-item label="中奖概率" required>
-        <!-- <a-input-number
-          :min="0.01"
+        <st-input-number
+          :min="0"
           :max="100"
-          :decimalSeparator="2"
+          :float="true"
           placeholder="请输入中奖概率"
           v-decorator="decorators.rate"
         >
           <span slot="addonAfter">%</span>
-        </a-input-number> -->
-        <a-input
-          type="number"
-          :decimalSeparator="2"
-          :min="0.01"
-          :max="100"
-          addonAfter="%"
-        ></a-input>
+        </st-input-number>
       </st-form-item>
       <st-form-item label="奖品图片">
         <a-radio-group
