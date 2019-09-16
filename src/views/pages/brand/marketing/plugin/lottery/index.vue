@@ -8,7 +8,7 @@
             <st-button type="primary" class="mg-r16">+新建活动</st-button>
           </router-link>
           <router-link to="./checkin">
-            <st-button>核销兑换码</st-button>
+            <st-button type="default">核销兑换码</st-button>
           </router-link>
         </div>
         <div style="text-align:right">
@@ -47,7 +47,7 @@
         <span slot="join_num" slot-scope="record">
           <router-link
             :to="{
-              name: 'brand-marketing-plugin-lottery-info-user',
+              name: 'brand-marketing-plugin-lottery-info-users',
               query: { id: record.id }
             }"
           >
@@ -60,7 +60,7 @@
         <span slot="prize_num" slot-scope="record">
           <router-link
             :to="{
-              name: 'brand-marketing-plugin-lottery-info-user',
+              name: 'brand-marketing-plugin-lottery-info-users',
               query: { id: record.id }
             }"
           >

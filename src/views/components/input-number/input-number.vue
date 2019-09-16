@@ -104,6 +104,15 @@ export default {
             this.number = this.min > this.number ? this.min : this.number
             this.number = this.max < this.number ? this.max : this.number
           }
+          if (!this.doubleFloat) {
+            this.number = parseInt(+e.target.value, 10)
+            this.number = this.min > this.number ? this.min : this.number
+            this.number = this.max < this.number ? this.max : this.number
+          } else {
+            this.number = (parseInt(+e.target.value * 100, 10) / 100).toFixed(2)
+            this.number = this.min > this.number ? this.min : this.number
+            this.number = this.max < this.number ? this.max : this.number
+          }
           this.number += ''
           this.triggerChange()
           this.$emit('blur', `${this.number}`)

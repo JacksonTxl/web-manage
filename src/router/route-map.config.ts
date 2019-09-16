@@ -1017,16 +1017,16 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
-  'brand-marketing-plugin-lottery-info-user'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '数据列表'
+  'brand-marketing-plugin-lottery-info-users'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '用户数据列表'
     routeConfig.queryOptions = {
       activity_id: { type: String },
-      draw_status: { type: Number },
+      present_status: { type: Number },
       prize_type: { type: Number },
       prize_status: { type: Number },
       start_time: { type: String },
       end_time: { type: String },
-      page: { type: String },
+      current_page: { type: String },
       size: { type: String }
     }
   },
