@@ -189,8 +189,15 @@ export default {
       let that = this
       this.$confirm({
         title: '提示',
+        okText:
+          record.activity_status === this.ACTIVITY_STATUS.ISHOLDING
+            ? '取消'
+            : '结束',
+        cancelText: '我再想想',
         content:
-          '结束后当用户进入投放该优惠券的活动时，将无法领取该优惠券。确认要结束？',
+          record.activity_status === this.ACTIVITY_STATUS.ISHOLDING
+            ? '确认取消该活动'
+            : '确认要结束',
         onOk() {
           that.indexService.stopActivity(record.id).subscribe(res => {
             that.$router.reload()

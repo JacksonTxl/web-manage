@@ -1,6 +1,7 @@
 <template>
   <a-steps :current="value">
     <a-step
+      class="cursor-pointer"
       v-for="item in stepArr"
       :title="item.title"
       :key="item.key"

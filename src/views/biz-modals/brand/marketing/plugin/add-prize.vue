@@ -59,6 +59,7 @@
           </a-radio>
         </a-radio-group>
         <select-shop
+          :shopIds="shopIds"
           v-if="curShopType === 2"
           @change="onChangeShopSetting"
         ></select-shop>
@@ -160,11 +161,11 @@ export default {
       PRIZE_TYPE,
       SHOP_TYPE,
       show: false,
+      shopIds: [],
       fileList: [],
       couponList: [],
       curPrizeType: PRIZE_TYPE.CUSTOM,
       curImgType: IMG_TYPE.DEFAULT,
-      shop_ids: [],
       curShopType: SHOP_TYPE.CUSTOM
     }
   },
@@ -189,12 +190,13 @@ export default {
     if (this.info) {
       this.curImgType = this.info.image_default
       this.fileList[0] = this.info.prize
+      this.shopIds = this.info.support_shop_ids
     }
   },
   components: { SelectShop },
   methods: {
     onChangeShopSetting(val) {
-      this.shop_ids = val
+      this.shopIds = val
     },
     getCouponList() {
       return this.addPrizeService.getCouponList().subscribe(res => {
@@ -219,7 +221,7 @@ export default {
           this.curImgType === this.IMG_TYPE.CUSTOM
             ? this.fileList[0]
             : this.prize[0]
-        value.support_shop_ids = this.shop_ids
+        value.support_shop_ids = this.shopIds
         this.$emit('change', value)
         this.show = false
       })

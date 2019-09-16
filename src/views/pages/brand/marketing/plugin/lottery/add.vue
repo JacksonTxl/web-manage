@@ -329,7 +329,8 @@
                           v-modal-link="{
                             name: 'brand-marketing-plugin-add-prize',
                             props: {
-                              info: item
+                              info: item,
+                              id: query.activity_id
                             },
                             on: { change: getPrizeInfo }
                           }"
@@ -646,7 +647,6 @@ export default {
       } else {
         this.prizeList.push(val)
       }
-      console.log(this.prizeList)
     },
     getCurPrizeIndex(index) {
       this.curPrizeIndex = index

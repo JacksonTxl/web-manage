@@ -18,7 +18,14 @@ export interface AddParams {
   activity_prizes: object
   activity_lucky: object
 }
-
+export interface EditParams {
+  wheel_bg: number
+  activity_base: object
+  activity_rule: object
+  activity_prizes: object
+  activity_lucky: object
+  activity_id: string
+}
 export class LotteryApi extends Api {
   // 奖品列表
   getPrizedList(query: GetPrizedListQuery) {
@@ -51,10 +58,13 @@ export class LotteryApi extends Api {
     })
   }
   // 编辑大转盘
-  edit(params: AddParams) {
-    return this.http.put('/v1/plugin/wheel/edit', {
-      params
-    })
+  edit(params: EditParams) {
+    return this.http.put(
+      '/v1/plugin/wheel/edit?activity_id=' + params.activity_id,
+      {
+        params
+      }
+    )
   }
   // 编辑回显
   editVIew(activity_id: string) {
