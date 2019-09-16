@@ -1,6 +1,6 @@
 <template>
   <section :class="basic()">
-    <st-panel title="储值卡详情">
+    <st-panel app title="储值卡详情">
       <div slot="actions">
         <st-button
           v-if="auth['shop:sold:sold_deposit_card|export_contract']"
@@ -97,14 +97,6 @@
         </a-col>
       </a-row>
     </st-panel>
-    <!-- <st-panel initial class="mg-t12"
-      :tabs="[
-        { label: '消费记录', route: { name: 'shop-sold-card-info-deposit-info-consumption-record', query: {id:infoService.cardId} } },
-        { label: '操作日志', route: { name: 'shop-sold-card-info-deposit-info-operation-record', query: {id:infoService.cardId} } },
-      ]"
-    >
-    <router-view></router-view>
-  </st-panel> -->
   </section>
 </template>
 <script>

@@ -11,11 +11,7 @@
       @change="onPageChange"
       rowKey="id"
       :dataSource="list"
-    >
-      <template slot="consume_time" slot-scope="text">
-        {{ moment(text * 1000).format('YYYY-MM-DD HH:mm') }}
-      </template>
-    </st-table>
+    ></st-table>
   </section>
 </template>
 <script>
@@ -74,7 +70,6 @@ export default {
     }
   },
   methods: {
-    moment,
     onPageChange(data) {
       this.$router.push({
         query: { ...this.query, page: data.current, size: data.pageSize }
