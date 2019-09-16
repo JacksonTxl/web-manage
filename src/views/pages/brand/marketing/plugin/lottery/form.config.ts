@@ -100,6 +100,10 @@ export const ruleOptions = (vm: any) => {
         {
           required: true,
           message: '请填写未中奖奖品名称'
+        },
+        {
+          pattern: pattern.CN_EN_NUM('1-10'),
+          message: '请输入1~10个字符'
         }
       ]
     },

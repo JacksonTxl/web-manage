@@ -367,15 +367,17 @@
                   {{ item.label }}
                 </a-radio>
               </a-radio-group>
-              <st-image-upload
-                v-if="notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM"
-                width="164px"
-                height="164px"
-                :list="fileList"
-                @change="onChangeGetAvatar"
-                :sizeLimit="1"
-                placeholder="上传图片"
-              ></st-image-upload>
+              <div v-if="notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM">
+                <st-image-upload
+                  width="164px"
+                  height="164px"
+                  :list="fileList"
+                  @change="onChangeGetAvatar"
+                  :sizeLimit="1"
+                  placeholder="上传图片"
+                ></st-image-upload>
+              </div>
+
               <img
                 class="default-img"
                 v-else
@@ -573,6 +575,7 @@ export default {
     },
     onChangeGetAvatar(imageFiles) {
       this.fileList = cloneDeep(imageFiles)
+      console.log(this.fileList)
       this.notPrize.prize = this.fileList[0]
     },
     onShareChangeGetAvatar(imageFiles) {
@@ -685,8 +688,11 @@ export default {
         this.timesType = res.activity_rule.draw_times_type
         this.isStopSwiper = res.activity_base.wheel_turn_around
         this.notPrizeImgType = res.activity_lucky.image_default
-        this.fileList[0] = res.activity_lucky.lucky
+        res.activity_lucky.lucky &&
+          (this.fileList[0] = res.activity_lucky.lucky)
         this.fileShareList[0] = res.activity_base.share_bg
+        this.share[0] = res.activity_base.share_bg
+        this.prize[0] = res.activity_lucky.lucky_image
       })
     }
   }
