@@ -23,7 +23,7 @@
         </a-radio-group>
         <div>
           <a-select
-            v-if="curPrizeType === 1"
+            v-if="curPrizeType === PRIZE_TYPE.DEFAULT"
             placeholder="请选择优惠卷"
             v-decorator="decorators.coupon_id"
           >
@@ -49,7 +49,11 @@
           </span>
         </div>
       </st-form-item>
-      <st-form-item label="兑换门店" v-if="curPrizeType === 2" required>
+      <st-form-item
+        label="兑换门店"
+        v-if="curPrizeType === PRIZE_TYPE.CUSTOM"
+        required
+      >
         <a-radio-group
           v-decorator="decorators.is_shop_range"
           @change="getCurShopType"
@@ -190,6 +194,7 @@ export default {
     this.getCouponList()
     if (this.info) {
       this.curImgType = this.info.image_default
+      this.curPrizeType = this.info.prize_type
       this.fileList[0] = this.info.prize
       this.shopIds = this.info.support_shop_ids
     }
