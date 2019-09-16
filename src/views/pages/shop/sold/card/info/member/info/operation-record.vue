@@ -1,5 +1,5 @@
 <template>
-  <section class="pd-24">
+  <section class="page-member-info-log pd-x24 pd-y24">
     <st-table
       :page="page"
       :columns="columns"
@@ -8,36 +8,36 @@
       @change="onTableChange"
       :dataSource="list"
     >
-      <template slot="operate_object" slot-scope="text">
+      <template slot="operate_object" slot-scope="text, record">
         <span v-if="text.length === 0">--</span>
         <div v-else>
           <a-popover title="操作对象">
             <template slot="content">
-              <p v-html="tableText(text)"></p>
+              <pre>{{ record.object }}</pre>
             </template>
-            <a class="pop__text">{{ text[0] }}...</a>
+            <a class="pop__text">{{ text }}</a>
           </a-popover>
         </div>
       </template>
-      <template slot="before_operate" slot-scope="text">
+      <template slot="before_operate" slot-scope="text, record">
         <span v-if="text.length === 0">--</span>
         <div v-else>
           <a-popover title="操作前">
             <template slot="content">
-              <p v-html="tableText(text)"></p>
+              <pre>{{ record.before }}</pre>
             </template>
-            <a class="pop__text">{{ text[0] }}...</a>
+            <a class="pop__text">{{ text }}</a>
           </a-popover>
         </div>
       </template>
-      <template slot="after_operate" slot-scope="text">
+      <template slot="after_operate" slot-scope="text, record">
         <span v-if="text.length === 0">--</span>
         <div v-else>
           <a-popover title="操作后">
             <template slot="content">
-              <p v-html="tableText(text)"></p>
+              <pre>{{ record.after }}</pre>
             </template>
-            <a class="pop__text">{{ text[0] }}...</a>
+            <a class="pop__text">{{ text }}</a>
           </a-popover>
         </div>
       </template>

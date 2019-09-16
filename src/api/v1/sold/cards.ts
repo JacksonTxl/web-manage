@@ -125,7 +125,6 @@ export class CardApi extends Api {
    * 售出 会员卡/储值卡 详情操作日志
    */
   getCardsOperationInfo(query: any, type: string) {
-    debugger
     return this.http.get(`/v1/sold/cards/${type}/operation/log/${query.id}`, {
       query
     })
