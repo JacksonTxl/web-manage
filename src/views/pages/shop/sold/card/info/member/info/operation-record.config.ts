@@ -14,7 +14,7 @@ export const columns = () => [
   {
     title: '操作对象',
     dataIndex: 'operate_object',
-    width: '180px',
+    width: '120px',
     scopedSlots: { customRender: 'operate_object' }
   },
   {

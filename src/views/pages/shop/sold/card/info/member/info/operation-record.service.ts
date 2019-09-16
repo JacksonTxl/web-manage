@@ -20,7 +20,7 @@ export class OperationRecordService implements RouteGuard {
               item.after_operate.length === 0
                 ? '--'
                 : item.after_operate.join('\r\n')
-            item.brfore =
+            item.before =
               item.before_operate.length === 0
                 ? '--'
                 : item.before_operate.join('\r\n')

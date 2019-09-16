@@ -9,18 +9,18 @@
       :dataSource="list"
     >
       <template slot="operate_object" slot-scope="text, record">
-        <span v-if="text.length === 0">--</span>
+        <span v-if="text.length === 0">{{ record.object }}</span>
         <div v-else>
           <a-popover title="操作对象">
             <template slot="content">
               <pre>{{ record.object }}</pre>
             </template>
-            <a class="pop__text">{{ text }}</a>
+            <a class="pop-object__text">{{ text }}</a>
           </a-popover>
         </div>
       </template>
       <template slot="before_operate" slot-scope="text, record">
-        <span v-if="text.length === 0">--</span>
+        <span v-if="text.length === 0">{{ record.before }}</span>
         <div v-else>
           <a-popover title="操作前">
             <template slot="content">
@@ -31,7 +31,7 @@
         </div>
       </template>
       <template slot="after_operate" slot-scope="text, record">
-        <span v-if="text.length === 0">--</span>
+        <span v-if="text.length === 0">{{ record.after }}</span>
         <div v-else>
           <a-popover title="操作后">
             <template slot="content">
