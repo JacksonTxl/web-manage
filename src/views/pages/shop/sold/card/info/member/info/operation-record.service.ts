@@ -11,8 +11,8 @@ export class OperationRecordService implements RouteGuard {
   loading$ = new State({})
   constructor(private cardApi: CardApi) {}
   @Effect()
-  getList(id: string, type: string) {
-    return this.cardApi.getCardsOperationInfo(id, type).pipe(
+  getList(query: any, type: string) {
+    return this.cardApi.getCardsOperationInfo(query, type).pipe(
       tap((res: any) => {
         this.list$.commit(() =>
           res.list.map((item: any) => {
@@ -27,6 +27,6 @@ export class OperationRecordService implements RouteGuard {
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    return this.getList(to.meta.query.id, 'member')
+    return this.getList(to.meta.query, 'member')
   }
 }
