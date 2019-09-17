@@ -5,7 +5,7 @@ import { State } from 'rx-state/src'
 
 import { tap } from 'rxjs/operators'
 
-@Injectable
+@Injectable()
 export class LeaseService {
   info$ = new State({})
   constructor(private courseApi: CourseApi, private msg: MessageService) {}
