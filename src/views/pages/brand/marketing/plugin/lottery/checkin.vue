@@ -23,8 +23,8 @@
           ></st-table>
           <div :class="bPage('checkin-btn')">
             <st-button
+              :disabled="list[0] ? list[0].code_status === 1 : false"
               type="primary"
-              :disabled="list[0].code_status === 1"
               class="text-center mg-t24"
               @click="checkin"
             >
@@ -85,7 +85,6 @@ export default {
   name: 'PluginLotteryCheckin',
   data() {
     return {
-      list: [],
       keyword: '',
       isShowTable: false
     }
