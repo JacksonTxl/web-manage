@@ -81,6 +81,8 @@
 <script>
 import { CheckinService } from './checkin.service'
 import { columns } from './checkin.config'
+import { MessageService } from '@/services/message.service'
+
 export default {
   name: 'PluginLotteryCheckin',
   data() {
@@ -94,7 +96,8 @@ export default {
   },
   serviceInject() {
     return {
-      checkinService: CheckinService
+      checkinService: CheckinService,
+      message: MessageService
     }
   },
   rxState() {
@@ -112,6 +115,7 @@ export default {
     },
     checkin() {
       return this.checkinService.checkin(this.keyword).subscribe(res => {
+        this.message.success({ content: '核销成功' })
         this.getCheckinList()
       })
     }

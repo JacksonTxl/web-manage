@@ -598,14 +598,15 @@ export default {
       this.form.validate().then(value => {
         value.activity_base.start_time = this.preview.startTime
         value.activity_base.end_time = this.preview.endTime
+        // 选择自定义却不传图片
         value.activity_base.share_bg =
           this.shareType === SHARE_TYPE.CUSTOM
-            ? this.fileShareList[0]
+            ? this.fileShareList[0] || this.share[0]
             : this.share[0]
         value.activity_prizes = this.prizeList
         value.activity_lucky.lucky =
           this.notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM
-            ? this.fileList[0]
+            ? this.fileList[0] || this.prize[0]
             : this.prize[0]
         if (this.query.activity_id) {
           value.activity_id = this.query.activity_id
