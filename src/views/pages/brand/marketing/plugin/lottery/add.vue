@@ -303,6 +303,7 @@
                 <tr>
                   <td colspan="6" class="st-form-table__add">
                     <st-button
+                      :disabled="query.activity_id && query.status === 1"
                       @click="getCurPrizeIndex(-1)"
                       type="dashed"
                       block
@@ -332,6 +333,7 @@
                     <td>
                       <st-table-actions>
                         <a
+                          :disabled="query.activity_id && query.status === 1"
                           @click="getCurPrizeIndex(index)"
                           v-modal-link="{
                             name: 'brand-marketing-plugin-add-prize',
@@ -345,7 +347,11 @@
                         >
                           编辑
                         </a>
-                        <a href="javascript:;" @click="onDelete(index)">
+                        <a
+                          :disabled="query.activity_id && query.status === 1"
+                          href="javascript:;"
+                          @click="onDelete(index)"
+                        >
                           删除
                         </a>
                       </st-table-actions>
