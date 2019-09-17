@@ -1,66 +1,51 @@
 <template>
-  <div :class="bPage()">
-    <div slot="title">
+  <st-panel app :class="bPage()">
+    <div slot="title" style="position:relative">
       <st-input-search
+        :class="bPage('input')"
         @search="onSingleSearch('search', query.search, { keyword: true })"
         v-model="query.search"
         class="mg-b24"
-        style="width: 290px;"
         placeholder="请输入姓名或手机号查找"
       ></st-input-search>
     </div>
-    <div slot="prepend" class="mg-b24">
-      <st-search-panel>
-        <div :class="bSelect()">
-          <span :class="bSelect('label')">通知对象:</span>
-          <st-search-radio
-            :class="bSelect('val')"
-            v-model="query.notify_type"
-            :list="notifyType"
-          />
+    <st-search-panel style="margin: -112px -48px 24px -48px">
+      <div :class="bSelect()">
+        <span :class="bSelect('label')">通知对象:</span>
+        <st-search-radio
+          :class="bSelect('val')"
+          v-model="query.notify_type"
+          :list="notifyType"
+        />
+      </div>
+      <div :class="bSelect()">
+        <span :class="bSelect('label')">发送状态：</span>
+        <st-search-radio
+          :class="bSelect('val')"
+          v-model="query.send_status"
+          :list="sendStatus"
+        />
+      </div>
+      <div :class="bSelect()">
+        <span :class="bSelect('label')">发送时间：</span>
+        <div :class="bSelect('val')">
+          <st-range-picker
+            :disabledDays="180"
+            v-model="selectTime"
+          ></st-range-picker>
         </div>
-        <div :class="bSelect()">
-          <span :class="bSelect('label')">发送状态：</span>
-          <st-search-radio
-            :class="bSelect('val')"
-            v-model="query.send_status"
-            :list="sendStatus"
-          />
-        </div>
-        <div :class="bSelect()">
-          <span :class="bSelect('label')">发送时间：</span>
-          <div :class="bSelect('val')">
-            <!-- <a-date-picker
-              format="YYYY-MM-DD"
-              placeholder="开始日期"
-              :showToday="false"
-              v-model="start_date"
-              @change="startdatePickerChange"
-            />&nbsp;~&nbsp;
-            <a-date-picker
-              format="YYYY-MM-DD"
-              placeholder="结束日期"
-              :showToday="false"
-              @change="enddatePickerChange"
-            />-->
-            <st-range-picker
-              :disabledDays="180"
-              v-model="selectTime"
-            ></st-range-picker>
-          </div>
-        </div>
-        <div slot="button">
-          <st-button
-            type="primary"
-            @click="onSearchList"
-            :loading="loading.getSmsList"
-          >
-            查询
-          </st-button>
-          <st-button class="mg-l8" @click="onSearhReset">重置</st-button>
-        </div>
-      </st-search-panel>
-    </div>
+      </div>
+      <div slot="button">
+        <st-button
+          type="primary"
+          @click="onSearchList"
+          :loading="loading.getSmsList"
+        >
+          查询
+        </st-button>
+        <st-button class="mg-l8" @click="onSearhReset">重置</st-button>
+      </div>
+    </st-search-panel>
 
     <st-table
       :page="page"
@@ -69,6 +54,7 @@
       :columns="columns"
       :dataSource="list"
       rowKey="id"
+      :class="bPage('table')"
     >
       <template slot="send_status" slot-scope="text, record">
         {{ record.send_status.name }}
@@ -80,7 +66,7 @@
         {{ record.notify_sub_type.name }}
       </template>
     </st-table>
-  </div>
+  </st-panel>
 </template>
 <script>
 import { RouteService } from '@/services/route.service'

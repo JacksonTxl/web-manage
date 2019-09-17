@@ -1,13 +1,14 @@
 <template>
-  <st-modal title="奖品设置" v-model="show" @ok="onSubmit">
-    <st-form :form="form" labelGutter="0">
-      <st-form-item label="奖品名称" labelWidth="84px" required>
+  <st-modal title="奖品设置" v-model="show" @ok="onSubmit" size="small">
+    <st-form :form="form" labelGutter="0" labelWidth="84px">
+      <st-form-item label="奖品名称" required>
         <a-input
           placeholder="请输入奖品名称"
+          :disabled="id && status === 1"
           v-decorator="decorators.prize_name"
         ></a-input>
       </st-form-item>
-      <st-form-item label="奖品类型" labelWidth="84px" required>
+      <st-form-item label="奖品类型" required>
         <a-radio-group
           v-decorator="decorators.prize_type"
           @change="getCurPrizeType"
@@ -20,10 +21,10 @@
             {{ item.label }}
           </a-radio>
         </a-radio-group>
-        <span>
+        <div>
           <a-select
-            v-if="curPrizeType === 1"
-            style="width:100px;"
+            class="mg-t8"
+            v-if="curPrizeType === PRIZE_TYPE.DEFAULT"
             placeholder="请选择优惠卷"
             v-decorator="decorators.coupon_id"
           >
@@ -35,9 +36,27 @@
               {{ item.name }}
             </a-select-option>
           </a-select>
-        </span>
+          <span v-else>
+            获得当日起
+            <a-input-number
+              :min="1"
+              :max="999"
+              :step="1"
+              :precision="0"
+              class="width100px"
+              placeholder="输入天数"
+              v-decorator="decorators.valid_days"
+            ></a-input-number>
+
+            天内有效
+          </span>
+        </div>
       </st-form-item>
-      <st-form-item label="售卖门店" labelWidth="84px" required>
+      <st-form-item
+        label="兑换门店"
+        v-if="curPrizeType === PRIZE_TYPE.CUSTOM"
+        required
+      >
         <a-radio-group
           v-decorator="decorators.is_shop_range"
           @change="getCurShopType"
@@ -47,29 +66,35 @@
           </a-radio>
         </a-radio-group>
         <select-shop
+          :shopIds="shopIds"
           v-if="curShopType === 2"
           @change="onChangeShopSetting"
         ></select-shop>
       </st-form-item>
-      <st-form-item label="奖品数量" labelWidth="84px" required>
-        <a-input-number
+      <st-form-item label="奖品数量" required>
+        <st-input-number
           :min="1"
-          :max="9999"
-          addonAfter="个"
+          :max="99999"
+          :step="1"
+          :precision="0"
           placeholder="请输入奖品数量"
           v-decorator="decorators.number"
-        ></a-input-number>
+        >
+          <span slot="addonAfter">个</span>
+        </st-input-number>
       </st-form-item>
-      <st-form-item label="中奖概率" labelWidth="84px" required>
-        <a-input-number
+      <st-form-item label="中奖概率" required>
+        <st-input-number
           :min="0"
           :max="100"
-          addonAfter="%"
+          :float="true"
           placeholder="请输入中奖概率"
           v-decorator="decorators.rate"
-        ></a-input-number>
+        >
+          <span slot="addonAfter">%</span>
+        </st-input-number>
       </st-form-item>
-      <st-form-item label="奖品图片" labelWidth="84px">
+      <st-form-item label="奖品图片">
         <a-radio-group
           v-decorator="decorators.image_default"
           @change="getCurImgType"
@@ -82,15 +107,19 @@
             {{ item.label }}
           </a-radio>
         </a-radio-group>
-        <st-image-upload
-          v-if="curImgType === 2"
-          width="164px"
-          height="164px"
-          :list="fileList"
-          @change="onChangeGetAvatar"
-          :sizeLimit="2"
-          placeholder="上传图片"
-        ></st-image-upload>
+        <div v-if="curImgType === 2">
+          <st-image-upload
+            :list="fileList"
+            class="default-img"
+            @change="onChangeGetAvatar"
+            :sizeLimit="2"
+            placeholder="上传图片"
+          ></st-image-upload>
+          <div>请上传jbg、png格式的图片</div>
+        </div>
+        <div v-else>
+          <img :src="prize[0].image_url" alt="默认图片" class="default-img" />
+        </div>
       </st-form-item>
     </st-form>
   </st-modal>
@@ -101,7 +130,8 @@ import { ruleOptions } from './add-prize.config.ts'
 import { PatternService } from '@/services/pattern.service'
 import { cloneDeep } from 'lodash-es'
 import SelectShop from '@/views/fragments/shop/select-shop.vue'
-
+import { IMG_TYPE, SHOP_TYPE, PRIZE_TYPE } from '@/constants/marketing/lottery'
+import { MessageService } from '@/services/message.service'
 export default {
   name: 'BrandMarketingPoster',
   bem: {
@@ -110,7 +140,8 @@ export default {
   serviceInject() {
     return {
       addPrizeService: AddPrizeService,
-      pattern: PatternService
+      pattern: PatternService,
+      messageService: MessageService
     }
   },
 
@@ -118,12 +149,19 @@ export default {
     return {
       shops: this.addPrizeService.shops$,
       prizeType: this.addPrizeService.prizeType$,
-      imgType: this.addPrizeService.imgType$
+      imgType: this.addPrizeService.imgType$,
+      prize: this.addPrizeService.prize$
     }
   },
   props: {
     info: {
       type: Object
+    },
+    id: {
+      type: String
+    },
+    status: {
+      type: Number
     }
   },
   data(vm) {
@@ -132,18 +170,16 @@ export default {
     return {
       form,
       decorators,
+      IMG_TYPE,
+      PRIZE_TYPE,
+      SHOP_TYPE,
       show: false,
+      shopIds: [],
       fileList: [],
       couponList: [],
-      curPrizeType: 1,
-      curImgType: 1,
-      shop_ids: [],
-      curShopType: 1,
-      defaultImg: {
-        image_url:
-          'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/img-lottery-prize-defalut-1x.png',
-        image_key: 'image/default/img-lottery-prize-defalut-1x.png'
-      }
+      curPrizeType: PRIZE_TYPE.CUSTOM,
+      curImgType: IMG_TYPE.DEFAULT,
+      curShopType: SHOP_TYPE.CUSTOM
     }
   },
   mounted() {
@@ -153,6 +189,7 @@ export default {
         prize_type: this.info.prize_type,
         coupon_id: this.info.coupon_id,
         prize_id: this.info.prize_id,
+        activity_prize_id: this.info.activity_prize_id,
         is_shop_range: this.info.is_shop_range,
         support_shop_ids: this.info.support_shop_ids,
         rate: this.info.rate,
@@ -164,11 +201,17 @@ export default {
   },
   created() {
     this.getCouponList()
+    if (this.info) {
+      this.curImgType = this.info.image_default
+      this.curPrizeType = this.info.prize_type
+      this.fileList[0] = this.info.prize
+      this.shopIds = this.info.support_shop_ids
+    }
   },
   components: { SelectShop },
   methods: {
     onChangeShopSetting(val) {
-      this.shop_ids = val
+      this.shopIds = val
     },
     getCouponList() {
       return this.addPrizeService.getCouponList().subscribe(res => {
@@ -188,9 +231,29 @@ export default {
       this.curImgType = e.target.value
     },
     onSubmit() {
+      if (
+        this.curPrizeType === this.PRIZE_TYPE.CUSTOM &&
+        this.shopIds.length === 0
+      ) {
+        this.messageService.warning({
+          content: '请选择门店'
+        })
+        return
+      }
       this.form.validate().then(value => {
-        value.prize = this.curImgType === 2 ? this.fileList[0] : this.defaultImg
-        value.support_shop_ids = this.shop_ids
+        value.prize =
+          this.curImgType === this.IMG_TYPE.CUSTOM
+            ? this.fileList[0] || this.prize[0]
+            : this.prize[0]
+        value.support_shop_ids = this.shopIds
+        value.prize_id = this.info ? this.info.prize_id : 0
+        value.activity_prize_id = this.info ? this.info.activity_prize_id : 0
+        if (this.curPrizeType === this.PRIZE_TYPE.DEFAULT && !value.coupon_id) {
+          this.messageService.warning({
+            content: '请选择优惠卷'
+          })
+          return
+        }
         this.$emit('change', value)
         this.show = false
       })

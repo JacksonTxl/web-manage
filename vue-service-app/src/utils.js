@@ -1,8 +1,14 @@
 /**
  * maybe it's an Ctor
  */
-export const isCtor = s =>
-  s.toString().indexOf('this') > -1 || s.toString().indexOf('class') === 0
+export const isCtor = s => {
+  if (!s) {
+    return false
+  }
+  return (
+    s.toString().indexOf('this') > -1 || s.toString().indexOf('class') === 0
+  )
+}
 
 /**
  * 是否对象

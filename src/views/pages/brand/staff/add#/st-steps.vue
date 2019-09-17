@@ -1,10 +1,10 @@
 <template>
   <a-steps :current="value">
     <a-step
-      v-for="(item, index) in stepArr"
+      v-for="item in stepArr"
       :title="item.title"
       :key="item.key"
-      @click="skip(index)"
+      @click="skip"
     />
   </a-steps>
 </template>

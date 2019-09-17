@@ -169,6 +169,7 @@ export class HttpService {
           const serverResponse: StResponse = err.response
           this.notification.close('ajaxError')
           this.nprogress.SET_TEXT(`${err.message}`)
+          const errMsg = (serverResponse && serverResponse.msg) || err.message
           switch (err.status) {
             case 400:
               if (ignoreCodes.includes(serverResponse.code)) {
@@ -177,14 +178,15 @@ export class HttpService {
               this.notification.warn({
                 title: this.i18n.t('app.http.400'),
                 key: 'ajaxError',
-                content: serverResponse.msg
+                content: errMsg
               })
               break
             case 401:
+              console.log('is401')
               this.notification.warn({
                 title: this.i18n.t('app.http.401'),
                 key: 'ajaxError',
-                content: serverResponse.msg
+                content: errMsg
               })
               location.href = '/account/login'
               break
@@ -192,28 +194,28 @@ export class HttpService {
               this.notification.warn({
                 title: this.i18n.t('app.http.403'),
                 key: 'ajaxError',
-                content: serverResponse.msg
+                content: errMsg
               })
               break
             case 404:
               this.notification.error({
                 title: this.i18n.t('app.http.404'),
                 key: 'ajaxError',
-                content: err.message
+                content: errMsg
               })
               break
             case 500:
               this.notification.error({
                 title: this.i18n.t('app.http.500'),
                 key: 'ajaxError',
-                content: serverResponse.msg || err.message
+                content: errMsg
               })
               break
             default:
               this.notification.error({
                 title: this.i18n.t('app.http.other'),
                 key: 'ajaxError',
-                content: err.message
+                content: errMsg
               })
               break
           }

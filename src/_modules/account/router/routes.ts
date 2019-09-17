@@ -19,7 +19,8 @@ export default [
     name: 'account-login',
     path: '/account/login',
     component: Login,
-    guards: [...accountGuards, LoginService],
+    guards: accountGuards,
+    controller: LoginService,
     meta: {
       title: '登录'
     }
@@ -27,7 +28,7 @@ export default [
   {
     name: 'account-agreement',
     path: '/account/agreement',
-    guards: [...accountGuards],
+    guards: accountGuards,
     component: Agreement,
     meta: {
       title: '三体云服务协议'

@@ -12,19 +12,19 @@
       <st-t3 :class="b('title')">热门营销插件</st-t3>
       <plug-in
         title="优惠券"
-        sub="优惠抵扣购课费用"
+        sub="扫码领券，拉新转化"
         :img="coupon"
         href="/brand/marketing/plugin/coupon/list"
       ></plug-in>
       <plug-in
         title="邀请有礼"
-        sub="有偿激励员工推广"
+        sub="客户自发传播，社交裂变"
         :img="invite"
         href="/brand/marketing/plugin/invitation/index/data"
       ></plug-in>
       <plug-in
         title="幸运大转盘"
-        sub="有偿激励员工推广"
+        sub="百分比抽奖，回馈新老客户必备福利"
         :img="slyder"
       ></plug-in>
     </st-container>

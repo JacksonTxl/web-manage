@@ -1,8 +1,21 @@
 .st-more-dropdown {
+  position: relative;
   &__menu {
     min-width: 136px;
     .ant-dropdown-menu-item {
       .pd-lr(24px);
     }
+  }
+  /**
+  * 增加可交互区域
+  */
+  &:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transform: scaleX(1.5);
   }
 }

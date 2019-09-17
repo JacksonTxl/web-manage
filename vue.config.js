@@ -6,7 +6,7 @@ const Path = require('path')
 const IgnoreNotFoundExportPlugin = require('./build/ignore-not-found-plugin')
 const HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin')
 const LessPluginFunction = require('less-plugin-functions')
-const mockerApi = require('mocker-api')
+const { mockerApi } = require('webpack-mocker-api')
 const WebpackHotRelease = require('webpack-hot-release/plugin')
 const WebpackExternalVendorPlugin = require('webpack-external-vendor-plugin')
 

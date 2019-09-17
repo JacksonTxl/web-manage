@@ -946,7 +946,7 @@ export const routeMapConfig = {
     routeConfig.meta.tabs = ['brand-stat-revenue', 'brand-stat-order']
   },
   'brand-stat-revenue'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '营收统计'
+    routeConfig.meta.title = '营收'
     routeConfig.queryOptions = {
       shop_id: { type: Number, default: 0 },
       current_page: { type: Number, default: 1 },
@@ -957,7 +957,7 @@ export const routeMapConfig = {
     }
   },
   'brand-stat-order'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '订单统计'
+    routeConfig.meta.title = '订单'
     routeConfig.queryOptions = {
       shop: { type: Number, default: 0 },
       current_page: { type: Number, default: 1 },
@@ -999,5 +999,47 @@ export const routeMapConfig = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
+  },
+  'brand-marketing-plugin-lottery-index'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '幸运大转盘'
+    routeConfig.queryOptions = {
+      activity_status: { type: Number },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      keyword: { type: String }
+    }
+  },
+  'brand-marketing-plugin-lottery-info-prize'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '奖品列表'
+    routeConfig.queryOptions = {
+      activity_id: { type: String },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'brand-marketing-plugin-lottery-info-users'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '用户数据列表'
+    routeConfig.queryOptions = {
+      activity_id: { type: String },
+      present_status: { type: Number },
+      prize_type: { type: Number },
+      prize_status: { type: Number },
+      start_time: { type: String },
+      end_time: { type: String },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'brand-marketing-plugin-lottery-add'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '新增活动'
+  },
+  'brand-marketing-plugin-lottery-edit'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '编辑'
+  },
+  'brand-marketing-plugin-lottery-checkin'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '核销'
+  },
+  'brand-marketing-plugin-lottery-success'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '成功'
   }
 }

@@ -1,15 +1,16 @@
 import { Injectable, ServiceRoute, Inject } from 'vue-service-app'
-import { State, Computed } from 'rx-state'
+import { State, Computed, computed } from 'rx-state'
 import { tap, pluck, map, switchMap } from 'rxjs/operators'
 import { ConstApi } from '@/api/const'
 import { MenuApi } from '@/api/v1/common/menu'
 import { StaffApi } from '@/api/v1/staff'
 import { TooltipApi } from '@/api/v1/admin/tooltip'
-import { get, reduce, isPlainObject } from 'lodash-es'
+import { get, reduce, isPlainObject, mapValues } from 'lodash-es'
 import { NProgressService } from './nprogress.service'
 import { ShopApi } from '@/api/v1/shop'
-import { of, forkJoin } from 'rxjs'
+import { of } from 'rxjs'
 import { then, anyAll } from '@/operators'
+import { Dictionary } from 'lodash'
 
 interface User {
   id?: string
@@ -199,6 +200,28 @@ export class UserService {
       })
     )
   }
+  private getOptions(enums: any, key: string) {
+    const enumObj = get(enums, key)
+    if (!enumObj) {
+      return []
+    } else {
+      return reduce(
+        enumObj.value,
+        (res: any[], item: any, index: string | number) => {
+          if (isPlainObject(item)) {
+            return res.concat([item])
+          }
+          return res.concat([
+            {
+              label: item,
+              value: +index
+            }
+          ])
+        },
+        []
+      )
+    }
+  }
 
   /**
    * 通过key名获取下拉选项
@@ -208,33 +231,18 @@ export class UserService {
   public getOptions$(
     key: string
   ): Computed<{ label: string; value: number }[]> {
-    return new Computed(
-      this.enums$.pipe(
-        map(enums => {
-          const enumObj = get(enums, key)
-          const initArr: { label: string; value: number }[] = []
-          if (!enumObj) {
-            return []
-          } else {
-            return reduce(
-              enumObj.value,
-              (res: any[], item: any, index: string | number) => {
-                if (isPlainObject(item)) {
-                  return res.concat([item])
-                }
-                return res.concat([
-                  {
-                    label: item,
-                    value: +index
-                  }
-                ])
-              },
-              []
-            )
-          }
-        })
-      )
-    )
+    return computed((enums: any) => {
+      return this.getOptions(enums, key)
+    }, this.enums$)
+  }
+  /**
+   * 通过对象获取一组枚举值
+   * @param map
+   */
+  public getOptionsMap$(map: Dictionary<string>) {
+    return computed((enums: any) => {
+      return mapValues(map, enumKey => this.getOptions(enums, enumKey))
+    }, this.enums$)
   }
   /**
    * 添加到常用菜单
@@ -252,7 +260,7 @@ export class UserService {
   }
   private init() {
     if (!this.firstInited$.snapshot()) {
-      return forkJoin(
+      return anyAll(
         this.getUser(),
         this.getMenuData(),
         this.getEnums(),
