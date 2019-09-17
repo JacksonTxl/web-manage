@@ -48,7 +48,7 @@
           <router-link
             :to="{
               name: 'brand-marketing-plugin-lottery-info-users',
-              query: { activity_id: record.id }
+              query: { id: record.id }
             }"
           >
             {{ record.activity_join_num }}
@@ -61,7 +61,7 @@
           <router-link
             :to="{
               name: 'brand-marketing-plugin-lottery-info-users',
-              query: { activity_id: record.id, prize_status: 1 }
+              query: { id: record.id, prize_status: 1 }
             }"
           >
             {{ record.activity_prize_num }}

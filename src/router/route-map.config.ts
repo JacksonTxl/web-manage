@@ -1020,7 +1020,7 @@ export const routeMapConfig = {
   'brand-marketing-plugin-lottery-info-users'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '用户数据列表'
     routeConfig.queryOptions = {
-      activity_id: { type: String },
+      id: { type: String },
       present_status: { type: Number },
       prize_type: { type: Number },
       prize_status: { type: Number },
