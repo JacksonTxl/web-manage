@@ -88,7 +88,10 @@
               v-if="record.activity_status !== ACTIVITY_STATUS.ISSTOPED"
               :to="{
                 name: 'brand-marketing-plugin-lottery-add',
-                query: { activity_id: record.id }
+                query: {
+                  activity_id: record.id,
+                  status: record.activity_status
+                }
               }"
             >
               编辑

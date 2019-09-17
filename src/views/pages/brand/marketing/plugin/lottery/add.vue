@@ -153,7 +153,6 @@
                   {{ item.label }}
                 </a-radio>
               </a-radio-group>
-
               <div v-if="shareType === 2">
                 <st-form-item label="选择图片" labelWidth="64px">
                   <st-image-upload
@@ -330,7 +329,8 @@
                             name: 'brand-marketing-plugin-add-prize',
                             props: {
                               info: item,
-                              id: query.activity_id
+                              id: query.activity_id,
+                              status: query.status
                             },
                             on: { change: getPrizeInfo }
                           }"
@@ -581,7 +581,6 @@ export default {
       this.fileShareList = cloneDeep(imageFiles)
     },
     onSubmit() {
-      console.log(this.prizeList)
       this.form.validate().then(value => {
         value.activity_base.start_time = this.preview.startTime
         value.activity_base.end_time = this.preview.endTime
@@ -645,7 +644,6 @@ export default {
       this.notPrizeImgType = e.target.value
     },
     getPrizeInfo(val) {
-      console.log(val)
       if (this.curPrizeIndex > -1) {
         this.prizeList.splice(this.curPrizeIndex, 1, val)
       } else {

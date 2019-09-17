@@ -4,7 +4,7 @@
       <st-form-item label="奖品名称" required>
         <a-input
           placeholder="请输入奖品名称"
-          :disabled="id"
+          :disabled="id && status === 1"
           v-decorator="decorators.prize_name"
         ></a-input>
       </st-form-item>
@@ -158,6 +158,9 @@ export default {
     },
     id: {
       type: String
+    },
+    status: {
+      type: Number
     }
   },
   data(vm) {
