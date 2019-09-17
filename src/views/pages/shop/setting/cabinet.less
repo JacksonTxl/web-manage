@@ -27,14 +27,20 @@
   &__nav-item {
     .fz(12px);
     .c(@title);
-    .h(48px);
-    .lh(48px);
+    .lh(17px);
     .cur-p;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    padding: 4px 20px;
+    height: 36px;
+    margin-bottom: 1px;
+    position: relative;
     &:hover {
-      background: #edf6ff;
+      background: #f0f6ff;
     }
     &.current {
-      background: #e5f2ff;
+      background: #f0f6ff;
       color: #252a2e;
       .nav-opreation .st-icon {
         &:hover {
@@ -42,11 +48,14 @@
         }
       }
     }
+    .st-more-dropdown {
+      position: absolute;
+      right: 12px;
+    }
   }
   &__nav-item-content {
     display: flex;
     justify-content: space-between;
-    .pd(0 16px 0 20px);
     .fz(12px);
   }
   &__nav-add {

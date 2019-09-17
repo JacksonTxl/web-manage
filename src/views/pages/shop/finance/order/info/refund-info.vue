@@ -26,7 +26,9 @@
             <st-info-item label="退款金额">
               {{ info.refund.refund_price }}
             </st-info-item>
-            <st-info-item label="备注">{{ info.description }}</st-info-item>
+            <st-info-item label="备注">
+              {{ info.refund.description }}
+            </st-info-item>
           </st-info>
         </a-col>
       </a-row>

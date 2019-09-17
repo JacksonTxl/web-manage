@@ -8,7 +8,7 @@
             <st-button type="primary" class="mg-r16">+新建活动</st-button>
           </router-link>
           <router-link to="./checkin">
-            <st-button>核销兑换码</st-button>
+            <st-button type="default">核销兑换码</st-button>
           </router-link>
         </div>
         <div style="text-align:right">
@@ -47,7 +47,7 @@
         <span slot="join_num" slot-scope="record">
           <router-link
             :to="{
-              name: 'brand-marketing-plugin-lottery-info-user',
+              name: 'brand-marketing-plugin-lottery-info-users',
               query: { id: record.id }
             }"
           >
@@ -60,7 +60,7 @@
         <span slot="prize_num" slot-scope="record">
           <router-link
             :to="{
-              name: 'brand-marketing-plugin-lottery-info-user',
+              name: 'brand-marketing-plugin-lottery-info-users',
               query: { id: record.id }
             }"
           >
@@ -88,7 +88,10 @@
               v-if="record.activity_status !== ACTIVITY_STATUS.ISSTOPED"
               :to="{
                 name: 'brand-marketing-plugin-lottery-add',
-                query: { activity_id: record.id }
+                query: {
+                  activity_id: record.id,
+                  status: record.activity_status
+                }
               }"
             >
               编辑
@@ -96,7 +99,7 @@
             <a @click="onStop(record)">
               {{
                 record.activity_status === ACTIVITY_STATUS.ISSTOPED
-                  ? '已结束'
+                  ? '数据'
                   : record.activity_status === ACTIVITY_STATUS.DISABLED
                   ? '结束'
                   : '取消'
@@ -184,6 +187,12 @@ export default {
     // 停止优惠券模板
     onStop(record) {
       if (record.activity_status === this.ACTIVITY_STATUS.ISSTOPED) {
+        this.$router.push({
+          path: '/brand/marketing/plugin/lottery/info/prize',
+          query: {
+            id: record.id
+          }
+        })
         return
       }
       let that = this

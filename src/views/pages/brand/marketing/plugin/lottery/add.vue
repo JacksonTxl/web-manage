@@ -153,17 +153,18 @@
                   {{ item.label }}
                 </a-radio>
               </a-radio-group>
-
               <div v-if="shareType === 2">
-                <st-form-item label="选择图片">
+                <st-form-item label="选择图片" labelWidth="64px">
                   <st-image-upload
+                    width="96px"
+                    height="96px"
                     :list="fileShareList"
                     @change="onShareChangeGetAvatar"
-                    :sizeLimit="1"
                     placeholder="上传图片"
                   ></st-image-upload>
+                  <div>请上传jbg、png格式的图片</div>
                 </st-form-item>
-                <st-form-item label="分享标题">
+                <st-form-item label="分享标题" labelWidth="64px">
                   <a-input
                     placeholder="分享标题"
                     v-decorator="decorators.activity_base.share_title"
@@ -248,6 +249,8 @@
                 <a-input-number
                   :min="1"
                   :max="999"
+                  :step="1"
+                  :precision="0"
                   @change="getPerTimes"
                   style="width: 100px;"
                   placeholder="请输入"
@@ -260,6 +263,8 @@
                 <a-input-number
                   :min="1"
                   :max="999"
+                  :step="1"
+                  :precision="0"
                   style="width: 100px;"
                   placeholder="请输入"
                   v-decorator="decorators.activity_rule.total_times"
@@ -272,6 +277,8 @@
               <a-input-number
                 :min="1"
                 :max="999"
+                :step="1"
+                :precision="0"
                 style="width: 100px;"
                 placeholder="请输入"
                 v-decorator="decorators.activity_rule.prize_times"
@@ -296,6 +303,7 @@
                 <tr>
                   <td colspan="6" class="st-form-table__add">
                     <st-button
+                      :disabled="query.activity_id && query.status === 1"
                       @click="getCurPrizeIndex(-1)"
                       type="dashed"
                       block
@@ -325,19 +333,25 @@
                     <td>
                       <st-table-actions>
                         <a
+                          :disabled="query.activity_id && query.status === 1"
                           @click="getCurPrizeIndex(index)"
                           v-modal-link="{
                             name: 'brand-marketing-plugin-add-prize',
                             props: {
                               info: item,
-                              id: query.activity_id
+                              id: query.activity_id,
+                              status: query.status
                             },
                             on: { change: getPrizeInfo }
                           }"
                         >
                           编辑
                         </a>
-                        <a href="javascript:;" @click="onDelete(index)">
+                        <a
+                          :disabled="query.activity_id && query.status === 1"
+                          href="javascript:;"
+                          @click="onDelete(index)"
+                        >
                           删除
                         </a>
                       </st-table-actions>
@@ -369,13 +383,13 @@
               </a-radio-group>
               <div v-if="notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM">
                 <st-image-upload
-                  width="164px"
-                  height="164px"
+                  width="96px"
+                  height="96px"
                   :list="fileList"
                   @change="onChangeGetAvatar"
-                  :sizeLimit="1"
                   placeholder="上传图片"
                 ></st-image-upload>
+                <div>请上传jbg、png格式的图片</div>
               </div>
 
               <img
@@ -527,10 +541,10 @@ export default {
     swiperSlide
   },
   created() {
+    this.notPrize.prize = this.lucky[0]
     if (this.query.activity_id) {
       this.editVIew(this.query.activity_id)
     }
-    this.notPrize.prize = this.lucky[0]
   },
   mounted() {},
   methods: {
@@ -575,7 +589,6 @@ export default {
     },
     onChangeGetAvatar(imageFiles) {
       this.fileList = cloneDeep(imageFiles)
-      console.log(this.fileList)
       this.notPrize.prize = this.fileList[0]
     },
     onShareChangeGetAvatar(imageFiles) {
@@ -692,7 +705,7 @@ export default {
           (this.fileList[0] = res.activity_lucky.lucky)
         this.fileShareList[0] = res.activity_base.share_bg
         this.share[0] = res.activity_base.share_bg
-        this.prize[0] = res.activity_lucky.lucky_image
+        this.prize[0] = res.activity_lucky.lucky
       })
     }
   }

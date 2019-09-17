@@ -24,7 +24,7 @@
           <div :class="bPage('checkin-btn')">
             <st-button
               type="primary"
-              :disabled="list.code_status === 1"
+              :disabled="list[0].code_status === 1"
               class="text-center mg-t24"
               @click="checkin"
             >
