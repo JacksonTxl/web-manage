@@ -124,8 +124,10 @@ export class CardApi extends Api {
   /**
    * 售出 会员卡/储值卡 详情操作日志
    */
-  getCardsOperationInfo(id: string, type: string) {
-    return this.http.get(`/v1/sold/cards/${type}/operation/log/${id}`)
+  getCardsOperationInfo(query: any, type: string) {
+    return this.http.get(`/v1/sold/cards/${type}/operation/log/${query.id}`, {
+      query
+    })
   }
   /**
    * 售出 会员卡 设置有效日期回显
