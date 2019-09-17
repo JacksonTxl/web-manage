@@ -152,7 +152,6 @@ export default {
         },
         on: {
           success: result => {
-            console.log('业绩拆分成功!')
             this.$router.reload()
           }
         }
