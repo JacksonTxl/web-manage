@@ -15,12 +15,13 @@
           ></st-recent-radio-group>
         </a-col>
       </a-row>
-      <a-row style="margin-top: 34px;">
+      <a-row class="mg-t32">
         <brand-stat-order-facet-bar
           :data="chartData"
         ></brand-stat-order-facet-bar>
       </a-row>
     </div>
+    <st-hr />
     <div :class="b('section')">
       <a-row class="mg-b16">
         <a-col :span="4" :class="b('title')">

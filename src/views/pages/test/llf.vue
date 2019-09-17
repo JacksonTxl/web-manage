@@ -1,42 +1,31 @@
 <template>
-  <div>
-    <st-form :form="form">
-      {{ loading.init }}
-      <router-link :to="{ query: { id: 1 } }">go 1</router-link>
-      <router-link :to="{ query: { id: 2 } }">go 2</router-link>
-      <st-form-item>
-        <a-input v-decorator="decorators.cardData.user_name"></a-input>
-      </st-form-item>
-    </st-form>
-  </div>
+  <transition name="fade">
+    <div v-if="loading">
+      this is view component
+    </div>
+    <component-llf v-else>
+      haha
+    </component-llf>
+  </transition>
 </template>
 
 <script>
 import { ruleOptions } from './llf.config'
 import { LlfService } from './llf.service'
+import ComponentLlf from './llf#component'
 export default {
   data() {
-    const form = this.$stForm.create()
-    const decorators = form.decorators(ruleOptions)
-
     return {
-      a: 1,
-      form,
-      decorators
+      loading: true
     }
   },
-  serviceInject() {
-    return {
-      llf: LlfService
-    }
+  components: {
+    ComponentLlf
   },
-  rxState() {
-    return {
-      loading: this.llf.loading$
-    }
-  },
-  methods: {
-    onConfirm() {}
+  beforeCreate() {
+    setTimeout(() => {
+      this.loading = false
+    }, 1000)
   }
 }
 </script>
