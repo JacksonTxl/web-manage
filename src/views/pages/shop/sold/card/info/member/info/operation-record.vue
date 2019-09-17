@@ -68,13 +68,6 @@ export default {
   },
   computed: {
     columns
-  },
-  methods: {
-    tableText(val) {
-      console.log('val', val.join('<br/>'))
-      if (val.length === 0) return ''
-      return val.join('<br/>')
-    }
   }
 }
 </script>

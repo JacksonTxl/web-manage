@@ -159,6 +159,21 @@
         </a-col>
       </a-row>
     </st-panel>
+    <st-panel
+      initial
+      class="mg-t16"
+      :tabs="[
+        {
+          label: '操作日志',
+          route: {
+            name: 'shop-sold-card-info-member-info-operation-record',
+            query: { id: infoService.id }
+          }
+        }
+      ]"
+    >
+      <router-view></router-view>
+    </st-panel>
   </section>
 </template>
 <script>
