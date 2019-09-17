@@ -90,7 +90,7 @@ export class CourseApi extends Api {
    * 售出私教课重新激活/延长结束时间详情页
    */
   getLeaseAndactivatedCourseInfo(id: string) {
-    return this.http.get(`/v1/sold/course/personal/activated/${id}`)
+    return this.http.get(`/v1/sold/course/personal/lease/${id}`)
   }
   /**
    * 冻结售出课程包/私教课

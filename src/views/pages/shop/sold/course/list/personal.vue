@@ -130,6 +130,8 @@ import SoldCourseFreeze from '@/views/biz-modals/sold/course/freeze'
 import SoldCourseRefund from '@/views/biz-modals/sold/course/refund'
 import SoldCourseSurplusPersonal from '@/views/biz-modals/sold/course/surplus-personal'
 import SoldCourseTransfer from '@/views/biz-modals/sold/course/transfer'
+import SoldCourseLease from '@/views/biz-modals/sold/course/lease'
+import SoldCourseActivated from '@/views/biz-modals/sold/course/activated'
 export default {
   name: 'PageShopSoldCoursePersonalList',
   mixins: [tableMixin],
@@ -141,7 +143,9 @@ export default {
     SoldCourseFreeze,
     SoldCourseRefund,
     SoldCourseSurplusPersonal,
-    SoldCourseTransfer
+    SoldCourseTransfer,
+    SoldCourseLease,
+    SoldCourseActivated
   },
   serviceProviders() {
     return [PersonalService]
@@ -291,7 +295,7 @@ export default {
     // 重新激活
     onActivated(record) {
       this.$modalRouter.push({
-        name: 'sold-course-transfer',
+        name: 'sold-course-activated',
         props: {
           type: 'personal',
           id: record.id
@@ -306,7 +310,7 @@ export default {
     // 延长有效期
     onLease(record) {
       this.$modalRouter.push({
-        name: 'sold-course-transfer',
+        name: 'sold-course-lease',
         props: {
           type: 'personal',
           id: record.id
