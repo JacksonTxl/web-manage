@@ -61,7 +61,7 @@
           <router-link
             :to="{
               name: 'brand-marketing-plugin-lottery-info-users',
-              query: { id: record.id }
+              query: { id: record.id, prize_status: 1 }
             }"
           >
             {{ record.activity_prize_num }}
