@@ -1,4 +1,4 @@
-import { isPlainObject } from 'lodash-es'
+import { isPlainObject, pick } from 'lodash-es'
 
 // 使用page作为当前页查询参数的路由放这里
 const ROUTE_NAMES_USE_PAGE = [
@@ -153,13 +153,18 @@ export default {
       })
     },
     /**
-     * 关键词的即时搜索 @change="onKeywordsSearch('keyword',$event)"
+     * 关键词的即时搜索
+     * @example 关键词搜索 去除其它query 页面至第一页，保留分页器
+     *   `@change="onKeywordsSearch('keyword',$event)"`
+     * @example 关键词搜索 保留id字段
+     *   `@change="onKeywordsSearch('keyword',$event,['id'])"`
      */
-    onKeywordsSearch(key, data) {
+    onKeywordsSearch(key, data, keepFields = []) {
       this.onSelectionReset()
       this.$router.push({
         query: {
           [key]: data,
+          ...pick(this.query, keepFields),
           [this.currentPageField]: 1,
           size: this.query.size
         },

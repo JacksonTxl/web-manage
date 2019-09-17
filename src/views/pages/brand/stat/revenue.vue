@@ -15,7 +15,7 @@
           ></st-recent-radio-group>
         </a-col>
       </a-row>
-      <div style="margin-top: 38px;display: flex">
+      <div class="mg-t36" style="display: flex">
         <brand-statistics-revenue-line
           :data="dataLine"
           style="width: calc(100% - 365px);height: 285px;"
@@ -26,6 +26,7 @@
         ></brand-statistics-revenue-ring>
       </div>
     </div>
+    <st-hr></st-hr>
     <div :class="b('section')">
       <a-row>
         <a-col :span="4" :class="b('title')">
@@ -60,6 +61,7 @@
         </div>
       </a-row>
     </div>
+    <st-hr />
     <div :class="b('section')">
       <a-row class="mg-b16">
         <a-col :span="4" :class="b('title')">

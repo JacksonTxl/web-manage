@@ -41,6 +41,8 @@ class VueServiceApp {
     this.queryOptionsHandler()
     this.beforeEachHandler()
     this.afterEachHandler()
+
+    console.log('[vue-service-app]', this)
   }
   initRouter() {
     // TODO: 可以去掉 直接配置在meta中即可
@@ -50,8 +52,9 @@ class VueServiceApp {
           route.meta = {}
         }
         if (route.guards) {
-          route.meta.guards = route.guards
+          route.meta.guards = route.guards || []
         }
+        route.meta.controller = route.controller
         if (route.queryOptions) {
           route.meta.queryOptions = route.queryOptions
         }
@@ -128,7 +131,10 @@ class VueServiceApp {
       }
       const allGuardPromises = matched
         .reduce(
-          (res, routeRecord) => res.concat(routeRecord.meta.guards || []),
+          (res, routeRecord) =>
+            res
+              .concat(routeRecord.meta.guards || [])
+              .concat([routeRecord.meta.controller]),
           []
         )
         .filter(G => isFn(G) || isCtor(G))
@@ -151,9 +157,11 @@ class VueServiceApp {
     return Guards.map(G => this.container.get(G))
       .filter(g => g.beforeEach || g[mode])
       .reduce((res, g) => {
+        // 加入beforeEach钩子
         if (g.beforeEach) {
           res.push(g.beforeEach.bind(g))
         }
+        // 加入beforeRouteEnter 或 beforeRouteUpdate 钩子
         if (g[mode]) {
           res.push(g[mode].bind(g))
         }
@@ -165,15 +173,21 @@ class VueServiceApp {
     const toLast = last(to.matched)
     const fromLast = last(from.matched)
 
-    const myGuardPromises = (to.meta.guards || [])
+    // 该路由自己的守卫controller
+    const myGuardPromises = [to.meta.controller]
       .filter(G => isFn(G) || isCtor(G))
       .map(G => (isCtor(G) ? Promise.resolve(G) : G()))
 
+    // 包含所有父级路由下的守卫
     const allGuardPromises = matched
       .reduce(
-        (res, routeRecord) => res.concat(routeRecord.meta.guards || []),
+        (res, routeRecord) =>
+          res
+            .concat(routeRecord.meta.guards || [])
+            .concat([routeRecord.meta.controller]),
         []
       )
+      // 保留import() 和 构造函数
       .filter(G => isFn(G) || isCtor(G))
       .map(G => (isCtor(G) ? Promise.resolve(G) : G()))
 
@@ -187,6 +201,7 @@ class VueServiceApp {
         })
       })
       .then(({ allGuards, myGuards }) => {
+        // 同name -> 路由更新
         if (to.name === from.name) {
           return this._getBeforeMiddlewaresByGuards(
             allGuards,

@@ -946,7 +946,7 @@ export const routeMapConfig = {
     routeConfig.meta.tabs = ['brand-stat-revenue', 'brand-stat-order']
   },
   'brand-stat-revenue'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '营收统计'
+    routeConfig.meta.title = '营收'
     routeConfig.queryOptions = {
       shop_id: { type: Number, default: 0 },
       current_page: { type: Number, default: 1 },
@@ -957,7 +957,7 @@ export const routeMapConfig = {
     }
   },
   'brand-stat-order'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '订单统计'
+    routeConfig.meta.title = '订单'
     routeConfig.queryOptions = {
       shop: { type: Number, default: 0 },
       current_page: { type: Number, default: 1 },
