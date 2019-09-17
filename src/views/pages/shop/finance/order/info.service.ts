@@ -96,7 +96,7 @@ export class InfoService implements RouteGuard {
     const routeName = to.name
     this.id = to.meta.query.id
     if (routeName === 'shop-finance-order-info-collection-details') {
-      this.getInfo(to.meta.query.id).subscribe(res => {
+      this.getInfo(this.id).subscribe(res => {
         next()
       })
     } else {
