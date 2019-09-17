@@ -38,7 +38,7 @@ export class LotteryApi extends Api {
     return this.http.get('/v1/plugin/wheel', { query })
   }
   // 用户列表
-  getUserList(query: GetPrizedListQuery) {
+  getUserList(query: any) {
     return this.http.get('/v1/plugin/member', { query })
   }
   //核销列表

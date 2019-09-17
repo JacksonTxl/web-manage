@@ -1,7 +1,7 @@
 <template>
   <div>
     <st-panel app class="mg-b24">
-      <Header :id="query.id" />
+      <Header :activity_id="query.activity_id" />
     </st-panel>
     <router-view></router-view>
   </div>

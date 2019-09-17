@@ -23,6 +23,7 @@
         </a-radio-group>
         <div>
           <a-select
+            @select="getCurCouponShops"
             class="mg-t8"
             v-if="curPrizeType === PRIZE_TYPE.DEFAULT"
             placeholder="请选择优惠卷"
@@ -175,6 +176,7 @@ export default {
       SHOP_TYPE,
       show: false,
       shopIds: [],
+      shopNum: 0,
       fileList: [],
       couponList: [],
       curPrizeType: PRIZE_TYPE.CUSTOM,
@@ -210,6 +212,14 @@ export default {
   },
   components: { SelectShop },
   methods: {
+    getCurCouponShops(e) {
+      this.couponList.filter(item => {
+        if (item.id === e) {
+          this.shopNum = item.shop_num
+          console.log(this.shopIds)
+        }
+      })
+    },
     onChangeShopSetting(val) {
       this.shopIds = val
     },
@@ -246,6 +256,7 @@ export default {
             ? this.fileList[0] || this.prize[0]
             : this.prize[0]
         value.support_shop_ids = this.shopIds
+        value.shop_num = this.shopNum
         value.prize_id = this.info ? this.info.prize_id : 0
         value.activity_prize_id = this.info ? this.info.activity_prize_id : 0
         if (this.curPrizeType === this.PRIZE_TYPE.DEFAULT && !value.coupon_id) {
@@ -254,6 +265,7 @@ export default {
           })
           return
         }
+        console.log(value)
         this.$emit('change', value)
         this.show = false
       })

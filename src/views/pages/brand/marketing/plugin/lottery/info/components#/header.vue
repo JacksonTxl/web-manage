@@ -22,7 +22,7 @@ export default {
     return {}
   },
   props: {
-    id: {
+    activity_id: {
       type: String
     }
   },
@@ -40,8 +40,7 @@ export default {
     }
   },
   created() {
-    console.log(this.id)
-    this.headerService.getHeaderInfo(this.id).subscribe()
+    this.headerService.getHeaderInfo(this.activity_id).subscribe()
   },
   components: {},
   computed: {}
