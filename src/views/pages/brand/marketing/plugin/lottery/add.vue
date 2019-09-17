@@ -324,7 +324,7 @@
                     <td>
                       {{
                         item.prize_type === 1
-                          ? item.shop_num
+                          ? item.shop_num || item.support_shop_ids.length
                           : item.support_shop_ids.length
                       }}
                     </td>
