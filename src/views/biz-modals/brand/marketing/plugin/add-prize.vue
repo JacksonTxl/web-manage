@@ -41,6 +41,8 @@
             <a-input-number
               :min="1"
               :max="999"
+              :step="1"
+              :precision="0"
               class="width100px"
               placeholder="输入天数"
               v-decorator="decorators.valid_days"
@@ -73,6 +75,8 @@
         <st-input-number
           :min="1"
           :max="99999"
+          :step="1"
+          :precision="0"
           placeholder="请输入奖品数量"
           v-decorator="decorators.number"
         >
@@ -239,7 +243,7 @@ export default {
       this.form.validate().then(value => {
         value.prize =
           this.curImgType === this.IMG_TYPE.CUSTOM
-            ? this.fileList[0]
+            ? this.fileList[0] || this.prize[0]
             : this.prize[0]
         value.support_shop_ids = this.shopIds
         value.prize_id = this.info ? this.info.prize_id : 0

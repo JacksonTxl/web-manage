@@ -249,6 +249,8 @@
                 <a-input-number
                   :min="1"
                   :max="999"
+                  :step="1"
+                  :precision="0"
                   @change="getPerTimes"
                   style="width: 100px;"
                   placeholder="请输入"
@@ -261,6 +263,8 @@
                 <a-input-number
                   :min="1"
                   :max="999"
+                  :step="1"
+                  :precision="0"
                   style="width: 100px;"
                   placeholder="请输入"
                   v-decorator="decorators.activity_rule.total_times"
@@ -273,6 +277,8 @@
               <a-input-number
                 :min="1"
                 :max="999"
+                :step="1"
+                :precision="0"
                 style="width: 100px;"
                 placeholder="请输入"
                 v-decorator="decorators.activity_rule.prize_times"
