@@ -23,13 +23,8 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     coupon_id: {},
-    prize_id: {
-      rules: [
-        {
-          message: '请填写昵称'
-        }
-      ]
-    },
+    prize_id: {},
+    activity_prize_id: {},
     is_shop_range: {
       initialValue: 2,
       rules: [

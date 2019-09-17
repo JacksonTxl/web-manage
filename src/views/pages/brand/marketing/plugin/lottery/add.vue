@@ -155,7 +155,7 @@
               </a-radio-group>
 
               <div v-if="shareType === 2">
-                <st-form-item label="选择图片">
+                <st-form-item label="选择图片" labelWidth="64px">
                   <st-image-upload
                     :list="fileShareList"
                     @change="onShareChangeGetAvatar"
@@ -163,7 +163,7 @@
                   ></st-image-upload>
                   <div>请上传jbg、png格式的图片</div>
                 </st-form-item>
-                <st-form-item label="分享标题">
+                <st-form-item label="分享标题" labelWidth="64px">
                   <a-input
                     placeholder="分享标题"
                     v-decorator="decorators.activity_base.share_title"
@@ -575,13 +575,13 @@ export default {
     },
     onChangeGetAvatar(imageFiles) {
       this.fileList = cloneDeep(imageFiles)
-      console.log(this.fileList)
       this.notPrize.prize = this.fileList[0]
     },
     onShareChangeGetAvatar(imageFiles) {
       this.fileShareList = cloneDeep(imageFiles)
     },
     onSubmit() {
+      console.log(this.prizeList)
       this.form.validate().then(value => {
         value.activity_base.start_time = this.preview.startTime
         value.activity_base.end_time = this.preview.endTime
@@ -645,6 +645,7 @@ export default {
       this.notPrizeImgType = e.target.value
     },
     getPrizeInfo(val) {
+      console.log(val)
       if (this.curPrizeIndex > -1) {
         this.prizeList.splice(this.curPrizeIndex, 1, val)
       } else {
