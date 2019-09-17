@@ -527,10 +527,10 @@ export default {
     swiperSlide
   },
   created() {
+    this.notPrize.prize = this.lucky[0]
     if (this.query.activity_id) {
       this.editVIew(this.query.activity_id)
     }
-    this.notPrize.prize = this.lucky[0]
   },
   mounted() {},
   methods: {
@@ -691,7 +691,7 @@ export default {
           (this.fileList[0] = res.activity_lucky.lucky)
         this.fileShareList[0] = res.activity_base.share_bg
         this.share[0] = res.activity_base.share_bg
-        this.prize[0] = res.activity_lucky.lucky_image
+        this.prize[0] = res.activity_lucky.lucky
       })
     }
   }
