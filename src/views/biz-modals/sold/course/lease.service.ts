@@ -11,7 +11,7 @@ export class LeaseService {
   constructor(private courseApi: CourseApi, private msg: MessageService) {}
   getLeaseAndactivatedCourseInfo(id: string) {
     return this.courseApi.getLeaseAndactivatedCourseInfo(id).pipe(
-      tap(res => {
+      tap((res: any) => {
         this.info$.commit(() => res.info)
       })
     )

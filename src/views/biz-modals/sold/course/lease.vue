@@ -13,7 +13,7 @@
               {{ info$.course_name }}
             </st-info-item>
             <st-info-item label="剩余课时">
-              {{ info$.reset_end_time }}
+              {{ info$.remain_course_num }}
             </st-info-item>
             <st-info-item label="购买课时">
               {{ info$.course_name }}
@@ -42,15 +42,21 @@
         </a-col>
       </a-row>
       <st-hr marginTop="0" marginBottom="0" />
-      <st-form :form="form" labelWidth="88px">
-        <div :class="transfer('transfer')">
-          <st-form-item label="到期时间" required>
-            <a-time-picker></a-time-picker>
-          </st-form-item>
-          <st-form-item label="备注">
-            <st-textarea></st-textarea>
-          </st-form-item>
-        </div>
+      <st-form :form="form" class="mg-t24">
+        <st-form-item label="到期时间" required>
+          <a-date-picker
+            format="YYYY-MM-DD HH:mm:ss"
+            :disabledDate="disabledDate"
+            v-decorator="decorators.end_time"
+            :showTime="{ defaultValue: moment('00:00:00', 'HH:mm:ss') }"
+          />
+        </st-form-item>
+        <st-form-item label="备注">
+          <st-textarea
+            :maxlength="200"
+            v-decorator="decorators.description"
+          ></st-textarea>
+        </st-form-item>
       </st-form>
     </div>
     <template slot="footer">
@@ -62,18 +68,20 @@
 </template>
 
 <script>
-import { ActivatedService } from './lease.service'
+import { LeaseService } from './lease.service'
+import { ruleOptions } from './lease.config'
+import moment from 'moment'
 export default {
   name: 'ModalSoldCourseActivated',
   bem: {
-    transfer: 'modal-sold-course-Activated'
+    transfer: 'modal-sold-course-activated'
   },
   serviceProviders() {
-    return [ActivatedService]
+    return [LeaseService]
   },
   serviceInject() {
     return {
-      service: ActivatedService
+      service: LeaseService
     }
   },
   rxState() {
@@ -83,23 +91,49 @@ export default {
     }
   },
   props: {
-    id: String
+    id: Number
   },
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
+      moment,
       form,
-      decorators
+      decorators,
+      show: false
     }
   },
   methods: {
+    range(start, end) {
+      const result = []
+      for (let i = start; i < end; i++) {
+        result.push(i)
+      }
+      return result
+    },
+    disabledDate(current) {
+      // Can not select days before today and today
+      return current && current < moment(this.info$.reset_end_time).endOf('day')
+    },
     init() {
-      this.service.getLeaseAndactivatedCourseInfo(this.id).subscribe()
+      this.service.getLeaseAndactivatedCourseInfo(this.id).subscribe(res => {
+        this.form.setFieldsValue({
+          end_time: moment(res.info.reset_end_time),
+          description: res.info.description
+        })
+      })
     },
     onSubmit() {
-      this.form.validate().then(res => {
-        console.log('fff')
+      this.form.validate().then(values => {
+        this.service
+          .setLeaseCourse({
+            id: this.id,
+            ...values
+          })
+          .subscribe(res => {
+            this.show = false
+            this.$router.reload()
+          })
       })
     }
   },

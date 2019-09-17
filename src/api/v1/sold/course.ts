@@ -74,7 +74,7 @@ export class CourseApi extends Api {
    * 冻结售出课程包/私教课
    */
   setActivatedCourse(params: any) {
-    return this.http.get(`/v1/sold/course/personal/activated/${params.id}`, {
+    return this.http.put(`/v1/sold/course/personal/activated/${params.id}`, {
       params
     })
   }

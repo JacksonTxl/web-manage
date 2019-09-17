@@ -65,10 +65,16 @@
               >
                 修改剩余课时
               </a>
-              <a @click="onActivated(record)">
+              <a
+                v-if="record.auth['shop:sold:sold_personal_course|reactive']"
+                @click="onActivated(record)"
+              >
                 重新激活
               </a>
-              <a @click="onLease(record)">
+              <a
+                v-if="record.auth['shop:sold:sold_personal_course|expire']"
+                @click="onLease(record)"
+              >
                 延长有效期
               </a>
               <a
