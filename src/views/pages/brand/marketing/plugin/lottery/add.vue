@@ -153,9 +153,8 @@
                   {{ item.label }}
                 </a-radio>
               </a-radio-group>
-
               <div v-if="shareType === 2">
-                <st-form-item label="选择图片">
+                <st-form-item label="选择图片" labelWidth="64px">
                   <st-image-upload
                     :list="fileShareList"
                     @change="onShareChangeGetAvatar"
@@ -163,7 +162,7 @@
                   ></st-image-upload>
                   <div>请上传jbg、png格式的图片</div>
                 </st-form-item>
-                <st-form-item label="分享标题">
+                <st-form-item label="分享标题" labelWidth="64px">
                   <a-input
                     placeholder="分享标题"
                     v-decorator="decorators.activity_base.share_title"
@@ -330,7 +329,8 @@
                             name: 'brand-marketing-plugin-add-prize',
                             props: {
                               info: item,
-                              id: query.activity_id
+                              id: query.activity_id,
+                              status: query.status
                             },
                             on: { change: getPrizeInfo }
                           }"
@@ -527,10 +527,10 @@ export default {
     swiperSlide
   },
   created() {
+    this.notPrize.prize = this.lucky[0]
     if (this.query.activity_id) {
       this.editVIew(this.query.activity_id)
     }
-    this.notPrize.prize = this.lucky[0]
   },
   mounted() {},
   methods: {
@@ -575,7 +575,6 @@ export default {
     },
     onChangeGetAvatar(imageFiles) {
       this.fileList = cloneDeep(imageFiles)
-      console.log(this.fileList)
       this.notPrize.prize = this.fileList[0]
     },
     onShareChangeGetAvatar(imageFiles) {
@@ -692,7 +691,7 @@ export default {
           (this.fileList[0] = res.activity_lucky.lucky)
         this.fileShareList[0] = res.activity_base.share_bg
         this.share[0] = res.activity_base.share_bg
-        this.prize[0] = res.activity_lucky.lucky_image
+        this.prize[0] = res.activity_lucky.lucky
       })
     }
   }

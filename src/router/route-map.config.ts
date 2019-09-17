@@ -1001,7 +1001,7 @@ export const routeMapConfig = {
     }
   },
   'brand-marketing-plugin-lottery-index'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '活动列表'
+    routeConfig.meta.title = '幸运大转盘'
     routeConfig.queryOptions = {
       activity_status: { type: Number },
       current_page: { type: Number, default: 1 },

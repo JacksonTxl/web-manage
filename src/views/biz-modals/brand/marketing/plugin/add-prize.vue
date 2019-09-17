@@ -4,7 +4,7 @@
       <st-form-item label="奖品名称" required>
         <a-input
           placeholder="请输入奖品名称"
-          :disabled="id"
+          :disabled="id && status === 1"
           v-decorator="decorators.prize_name"
         ></a-input>
       </st-form-item>
@@ -158,6 +158,9 @@ export default {
     },
     id: {
       type: String
+    },
+    status: {
+      type: Number
     }
   },
   data(vm) {
@@ -185,6 +188,7 @@ export default {
         prize_type: this.info.prize_type,
         coupon_id: this.info.coupon_id,
         prize_id: this.info.prize_id,
+        activity_prize_id: this.info.activity_prize_id,
         is_shop_range: this.info.is_shop_range,
         support_shop_ids: this.info.support_shop_ids,
         rate: this.info.rate,
@@ -241,6 +245,8 @@ export default {
             ? this.fileList[0]
             : this.prize[0]
         value.support_shop_ids = this.shopIds
+        value.prize_id = this.info ? this.info.prize_id : 0
+        value.activity_prize_id = this.info ? this.info.activity_prize_id : 0
         if (this.curPrizeType === this.PRIZE_TYPE.DEFAULT && !value.coupon_id) {
           this.messageService.warning({
             content: '请选择优惠卷'
