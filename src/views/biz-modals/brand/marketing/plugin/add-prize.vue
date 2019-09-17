@@ -23,6 +23,7 @@
         </a-radio-group>
         <div>
           <a-select
+            class="mg-t8"
             v-if="curPrizeType === PRIZE_TYPE.DEFAULT"
             placeholder="请选择优惠卷"
             v-decorator="decorators.coupon_id"
@@ -104,21 +105,17 @@
         </a-radio-group>
         <div v-if="curImgType === 2">
           <st-image-upload
-            class="default-img"
             :list="fileList"
+            class="default-img"
             @change="onChangeGetAvatar"
             :sizeLimit="2"
             placeholder="上传图片"
           ></st-image-upload>
           <div>请上传jbg、png格式的图片</div>
         </div>
-
-        <img
-          class="default-img"
-          v-else
-          :src="prize[0].image_url"
-          alt="默认图片"
-        />
+        <div v-else>
+          <img :src="prize[0].image_url" alt="默认图片" class="default-img" />
+        </div>
       </st-form-item>
     </st-form>
   </st-modal>

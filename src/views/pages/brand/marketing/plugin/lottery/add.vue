@@ -156,6 +156,8 @@
               <div v-if="shareType === 2">
                 <st-form-item label="选择图片" labelWidth="64px">
                   <st-image-upload
+                    width="96px"
+                    height="96px"
                     :list="fileShareList"
                     @change="onShareChangeGetAvatar"
                     placeholder="上传图片"
@@ -369,8 +371,8 @@
               </a-radio-group>
               <div v-if="notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM">
                 <st-image-upload
-                  width="164px"
-                  height="164px"
+                  width="96px"
+                  height="96px"
                   :list="fileList"
                   @change="onChangeGetAvatar"
                   placeholder="上传图片"
