@@ -52,7 +52,7 @@
       <st-input-search
         style="display:inline-block;width:300px;float:right"
         v-model="query.keyword"
-        @search="onKeywordsSearch('keyword', $event)"
+        @search="onSearch"
         placeholder="可输入姓名、手机号、奖品名称"
       ></st-input-search>
     </div>

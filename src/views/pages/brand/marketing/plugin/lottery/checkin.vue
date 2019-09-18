@@ -23,8 +23,8 @@
           ></st-table>
           <div :class="bPage('checkin-btn')">
             <st-button
+              :disabled="list[0] ? list[0].code_status === 1 : false"
               type="primary"
-              :disabled="list.code_status === 1"
               class="text-center mg-t24"
               @click="checkin"
             >
@@ -81,11 +81,12 @@
 <script>
 import { CheckinService } from './checkin.service'
 import { columns } from './checkin.config'
+import { MessageService } from '@/services/message.service'
+
 export default {
   name: 'PluginLotteryCheckin',
   data() {
     return {
-      list: [],
       keyword: '',
       isShowTable: false
     }
@@ -95,7 +96,8 @@ export default {
   },
   serviceInject() {
     return {
-      checkinService: CheckinService
+      checkinService: CheckinService,
+      message: MessageService
     }
   },
   rxState() {
@@ -107,12 +109,17 @@ export default {
   computed: { columns },
   methods: {
     getCheckinList() {
+      if (!this.keyword) {
+        this.message.warning({ content: '请输入核销码' })
+        return
+      }
       return this.checkinService.getCheckinList(this.keyword).subscribe(res => {
         this.isShowTable = true
       })
     },
     checkin() {
       return this.checkinService.checkin(this.keyword).subscribe(res => {
+        this.message.success({ content: '核销成功' })
         this.getCheckinList()
       })
     }

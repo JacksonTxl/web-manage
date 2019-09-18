@@ -153,16 +153,20 @@
                   {{ item.label }}
                 </a-radio>
               </a-radio-group>
-              <div v-if="shareType === 2">
-                <st-form-item label="选择图片" labelWidth="64px">
+              <div v-if="shareType === 2" :class="bPage('share-upload')">
+                <st-form-item label="选择图片" labelWidth="60px">
                   <st-image-upload
+                    width="96px"
+                    height="96px"
                     :list="fileShareList"
                     @change="onShareChangeGetAvatar"
                     placeholder="上传图片"
                   ></st-image-upload>
-                  <div>请上传jbg、png格式的图片</div>
+                  <span :class="bPage('share-upload-text')">
+                    请上传jbg、png格式的图片
+                  </span>
                 </st-form-item>
-                <st-form-item label="分享标题" labelWidth="64px">
+                <st-form-item label="分享标题" labelWidth="60px">
                   <a-input
                     placeholder="分享标题"
                     v-decorator="decorators.activity_base.share_title"
@@ -247,6 +251,8 @@
                 <a-input-number
                   :min="1"
                   :max="999"
+                  :step="1"
+                  :precision="0"
                   @change="getPerTimes"
                   style="width: 100px;"
                   placeholder="请输入"
@@ -259,6 +265,8 @@
                 <a-input-number
                   :min="1"
                   :max="999"
+                  :step="1"
+                  :precision="0"
                   style="width: 100px;"
                   placeholder="请输入"
                   v-decorator="decorators.activity_rule.total_times"
@@ -271,6 +279,8 @@
               <a-input-number
                 :min="1"
                 :max="999"
+                :step="1"
+                :precision="0"
                 style="width: 100px;"
                 placeholder="请输入"
                 v-decorator="decorators.activity_rule.prize_times"
@@ -295,6 +305,7 @@
                 <tr>
                   <td colspan="6" class="st-form-table__add">
                     <st-button
+                      :disabled="query.activity_id && query.status === 1"
                       @click="getCurPrizeIndex(-1)"
                       type="dashed"
                       block
@@ -314,7 +325,9 @@
                     <td>{{ item.prize_type === 1 ? '优惠券' : '兑换码' }}</td>
                     <td>
                       {{
-                        item.support_shop_ids ? item.support_shop_ids.length : 0
+                        item.prize_type === 1
+                          ? item.shop_num || item.support_shop_ids.length
+                          : item.support_shop_ids.length
                       }}
                     </td>
                     <td>
@@ -324,6 +337,7 @@
                     <td>
                       <st-table-actions>
                         <a
+                          :disabled="query.activity_id && query.status === 1"
                           @click="getCurPrizeIndex(index)"
                           v-modal-link="{
                             name: 'brand-marketing-plugin-add-prize',
@@ -337,7 +351,11 @@
                         >
                           编辑
                         </a>
-                        <a href="javascript:;" @click="onDelete(index)">
+                        <a
+                          :disabled="query.activity_id && query.status === 1"
+                          href="javascript:;"
+                          @click="onDelete(index)"
+                        >
                           删除
                         </a>
                       </st-table-actions>
@@ -367,15 +385,20 @@
                   {{ item.label }}
                 </a-radio>
               </a-radio-group>
-              <div v-if="notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM">
+              <div
+                v-if="notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM"
+                :class="bPage('lucky-upload')"
+              >
                 <st-image-upload
-                  width="164px"
-                  height="164px"
+                  width="96px"
+                  height="96px"
                   :list="fileList"
                   @change="onChangeGetAvatar"
                   placeholder="上传图片"
                 ></st-image-upload>
-                <div>请上传jbg、png格式的图片</div>
+                <span :class="bPage('lucky-upload-text')">
+                  请上传jbg、png格式的图片
+                </span>
               </div>
 
               <img
@@ -526,13 +549,12 @@ export default {
     swiper,
     swiperSlide
   },
-  created() {
+  mounted() {
     this.notPrize.prize = this.lucky[0]
     if (this.query.activity_id) {
       this.editVIew(this.query.activity_id)
     }
   },
-  mounted() {},
   methods: {
     next(para) {
       if (para.index) {
@@ -584,14 +606,15 @@ export default {
       this.form.validate().then(value => {
         value.activity_base.start_time = this.preview.startTime
         value.activity_base.end_time = this.preview.endTime
+        // 选择自定义却不传图片
         value.activity_base.share_bg =
           this.shareType === SHARE_TYPE.CUSTOM
-            ? this.fileShareList[0]
+            ? this.fileShareList[0] || this.share[0]
             : this.share[0]
         value.activity_prizes = this.prizeList
         value.activity_lucky.lucky =
           this.notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM
-            ? this.fileList[0]
+            ? this.fileList[0] || this.prize[0]
             : this.prize[0]
         if (this.query.activity_id) {
           value.activity_id = this.query.activity_id

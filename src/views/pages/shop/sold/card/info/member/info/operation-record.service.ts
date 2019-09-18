@@ -11,14 +11,26 @@ export class OperationRecordService implements RouteGuard {
   loading$ = new State({})
   constructor(private cardApi: CardApi) {}
   @Effect()
-  getList(id: string, type: string) {
-    return this.cardApi.getCardsOperationInfo(id, type).pipe(
+  getList(query: any, type: string) {
+    return this.cardApi.getCardsOperationInfo(query, type).pipe(
       tap((res: any) => {
         this.list$.commit(() =>
           res.list.map((item: any) => {
-            item.operation_time = moment(item.operation_time).format(
-              'YYYY-MM-DD HH:mm'
-            )
+            item.after =
+              item.after_operate.length === 0
+                ? '--'
+                : item.after_operate.join('\r\n')
+            item.before =
+              item.before_operate.length === 0
+                ? '--'
+                : item.before_operate.join('\r\n')
+            item.object =
+              item.operate_object.length === 0
+                ? '--'
+                : item.operate_object.join('\r\n')
+            item.operate_object = item.operate_object.join('')
+            item.before_operate = item.before_operate.join('')
+            item.after_operate = item.after_operate.join('')
             return item
           })
         )
@@ -27,6 +39,6 @@ export class OperationRecordService implements RouteGuard {
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    return this.getList(to.meta.query.id, 'member')
+    return this.getList(to.meta.query, 'member')
   }
 }

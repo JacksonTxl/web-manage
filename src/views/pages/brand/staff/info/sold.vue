@@ -23,6 +23,7 @@
           <a-range-picker
             class="mg-l8"
             @change="onChooseDate"
+            :disabledDate="disabledDate"
             format="YYYY-MM-DD"
           />
         </a-col>
@@ -40,6 +41,7 @@
           :scroll="{ x: 1300 }"
           :loading="loading.getStaffSoldInfo"
           @change="onTableChange"
+          rowkey="id"
           :page="page"
         >
           <template slot="product_name" slot-scope="text, record">
@@ -96,6 +98,19 @@ export default {
     this.id = this.$route.meta.query.id
   },
   methods: {
+    range(start, end) {
+      const result = []
+      for (let i = start; i < end; i++) {
+        result.push(i)
+      }
+      return result
+    },
+
+    disabledDate(current) {
+      return (
+        current && current.format('YYYY-MM-DD') < moment().format('YYYY-MM-DD')
+      )
+    },
     canJump(e) {
       let arr = [1, 2, 3, 5]
       let product_type = e.product_type
