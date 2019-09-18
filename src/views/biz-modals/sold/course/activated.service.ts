@@ -6,6 +6,7 @@ import { tap } from 'rxjs/operators'
 
 @Injectable()
 export class ActivatedService {
+  loading$ = new State({})
   info$ = new State({})
   constructor(private courseApi: CourseApi, private msg: MessageService) {}
   getLeaseAndactivatedCourseInfo(id: string) {

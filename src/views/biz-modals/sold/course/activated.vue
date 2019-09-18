@@ -16,7 +16,7 @@
               {{ info$.remain_course_num }}
             </st-info-item>
             <st-info-item label="购买课时">
-              {{ info$.course_name }}
+              {{ info$.buy_course_num }}
             </st-info-item>
             <st-info-item label="到期日期">{{ info$.end_time }}</st-info-item>
             <st-info-item label="实付金额">
@@ -36,7 +36,7 @@
               {{ info$.order_id }}
             </st-info-item>
             <st-info-item label="订单状态">
-              {{ info$.order_status | enumFilter('sold.course_status') }}
+              {{ info$.order_status | enumFilter('sold.order_status') }}
             </st-info-item>
           </st-info>
         </a-col>
@@ -123,8 +123,7 @@ export default {
     init() {
       this.service.getLeaseAndactivatedCourseInfo(this.id).subscribe(res => {
         this.form.setFieldsValue({
-          end_time: moment(res.info.reset_end_time),
-          description: res.info.description
+          end_time: moment(res.info.reset_end_time)
         })
       })
     },

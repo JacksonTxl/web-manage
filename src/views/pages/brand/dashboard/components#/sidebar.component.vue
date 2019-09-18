@@ -8,7 +8,7 @@
         <img width="280px" height="186px" :src="pic" alt="" />
       </a>
     </div>
-    <st-container class="bg-white mg-t16 pluginbox" type="2">
+    <st-container class="bg-white mg-t12 pluginbox" type="2">
       <st-t3 :class="b('title')">热门营销插件</st-t3>
       <plug-in
         title="优惠券"
@@ -28,7 +28,7 @@
         :img="slyder"
       ></plug-in>
     </st-container>
-    <st-container class="book bg-white mg-t16" type="2">
+    <st-container class="book bg-white mg-t12" type="2">
       <div class="book-img">
         <img :src="book" alt="" />
       </div>
@@ -41,7 +41,7 @@
         </st-button>
       </div>
     </st-container>
-    <st-container class="book bg-white mg-t16" type="2">
+    <st-container class="book bg-white mg-t12" type="2">
       <plug-in
         title="多功能人脸识别一体机"
         sub="AI技术加持，玩转大数据"
@@ -49,7 +49,7 @@
         href="https://www.styd.cn/default/product_iot_face"
       ></plug-in>
     </st-container>
-    <st-container class="link bg-white mg-t16" type="2">
+    <st-container class="link bg-white mg-t12" type="2">
       <st-t3 class="link__phone font-number">400-962-8988</st-t3>
       <div class="link__time">服务时间：09:00 - 18:00</div>
       <st-hr></st-hr>
