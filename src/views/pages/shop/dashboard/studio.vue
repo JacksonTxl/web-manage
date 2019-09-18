@@ -117,7 +117,7 @@
             <st-t3 style="margin-bottom:40px;">营收结构</st-t3>
             <shop-revenue-ring
               v-if="revenueSummary.length"
-              :sum="revenueSum ? revenueSum : '--'"
+              :sum="revenueSum ? revenueSum : 0"
               :data="revenueSummary"
             ></shop-revenue-ring>
             <img v-else :class="b('entry-pie-img')" :src="pieImg" />

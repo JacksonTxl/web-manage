@@ -223,7 +223,7 @@ export default {
       this.shopIds = val
     },
     getCouponList() {
-      let coupon_id = this.info.coupon_id || 0
+      let coupon_id = this.info ? this.info.coupon_id : 0
       return this.addPrizeService.getCouponList(coupon_id).subscribe(res => {
         this.couponList = res.list
       })

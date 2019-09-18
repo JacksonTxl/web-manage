@@ -1,3 +1,4 @@
+import { forkJoin } from 'rxjs'
 import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
 import { PersonalScheduleCommonService as CommonService } from './service#/common.service'
 import { PersonalScheduleReserveService } from './service#/reserve.service'
@@ -18,8 +19,13 @@ export class PersonalReserveTableService implements RouteGuard {
   ) {
     this.state$ = new State({})
   }
-
+  initOptions() {
+    return forkJoin(this.commonService.getCoachListInBatch())
+  }
   beforeEach(to: ServiceRoute, form: ServiceRoute) {
-    return this.reserveService.getList(to.query)
+    return forkJoin(this.initOptions(), this.reserveService.getList(to.query))
+  }
+  beforeRouteEnter(to: ServiceRoute, form: ServiceRoute) {
+    return this.initOptions()
   }
 }

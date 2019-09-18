@@ -542,13 +542,12 @@ export default {
     swiper,
     swiperSlide
   },
-  created() {
+  mounted() {
     this.notPrize.prize = this.lucky[0]
     if (this.query.activity_id) {
       this.editVIew(this.query.activity_id)
     }
   },
-  mounted() {},
   methods: {
     next(para) {
       if (para.index) {
@@ -666,7 +665,6 @@ export default {
       } else {
         this.prizeList.push(val)
       }
-      console.log(this.prizeList)
     },
     getCurPrizeIndex(index) {
       this.curPrizeIndex = index
