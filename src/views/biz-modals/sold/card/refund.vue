@@ -1,10 +1,5 @@
 <template>
-  <st-modal
-    title="退款"
-    size="small"
-    v-model="show"
-    wrapClassName="modal-sold-card-refund"
-  >
+  <st-modal title="退款" v-model="show" wrapClassName="modal-sold-card-refund">
     <div :class="refund('content')">
       <a-row :class="refund('info')" v-if="isDeposit">
         <a-col :span="13" class="mg-b36">
