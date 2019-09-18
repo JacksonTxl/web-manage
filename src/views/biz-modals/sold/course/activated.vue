@@ -36,7 +36,7 @@
               {{ info$.order_id }}
             </st-info-item>
             <st-info-item label="订单状态">
-              {{ info$.order_status | enumFilter('sold.course_status') }}
+              {{ info$.order_status | enumFilter('sold.order_status') }}
             </st-info-item>
           </st-info>
         </a-col>
