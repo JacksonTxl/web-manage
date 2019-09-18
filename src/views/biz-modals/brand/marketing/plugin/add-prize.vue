@@ -216,7 +216,6 @@ export default {
       this.couponList.filter(item => {
         if (item.id === e) {
           this.shopNum = item.shop_num
-          console.log(this.shopIds)
         }
       })
     },
@@ -224,7 +223,8 @@ export default {
       this.shopIds = val
     },
     getCouponList() {
-      return this.addPrizeService.getCouponList().subscribe(res => {
+      let coupon_id = this.info.coupon_id || 0
+      return this.addPrizeService.getCouponList(coupon_id).subscribe(res => {
         this.couponList = res.list
       })
     },
@@ -265,7 +265,6 @@ export default {
           })
           return
         }
-        console.log(value)
         this.$emit('change', value)
         this.show = false
       })
