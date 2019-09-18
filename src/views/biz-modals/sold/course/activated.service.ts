@@ -1,6 +1,6 @@
 import { MessageService } from '@/services/message.service'
 import { CourseApi } from '@/api/v1/sold/course'
-import { State } from 'rx-state/src'
+import { State, Effect } from 'rx-state/src'
 import { Injectable } from 'vue-service-app'
 import { tap } from 'rxjs/operators'
 
@@ -15,6 +15,7 @@ export class ActivatedService {
       })
     )
   }
+  @Effect()
   setActivatedCourse(params: any) {
     return this.courseApi.setActivatedCourse(params).pipe(
       tap(res => {

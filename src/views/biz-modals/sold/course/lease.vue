@@ -60,7 +60,11 @@
       </st-form>
     </div>
     <template slot="footer">
-      <st-button @click="onSubmit" type="primary">
+      <st-button
+        @click="onSubmit"
+        :loading="loading$.setLeaseCourse"
+        type="primary"
+      >
         确认提交
       </st-button>
     </template>
@@ -85,9 +89,10 @@ export default {
     }
   },
   rxState() {
-    const { info$ } = this.service
+    const { info$, loading$ } = this.service
     return {
-      info$
+      info$,
+      loading$
     }
   },
   props: {
