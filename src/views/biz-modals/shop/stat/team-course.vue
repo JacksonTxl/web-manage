@@ -127,15 +127,18 @@ export default {
           .toLowerCase()
           .indexOf(input.toLowerCase()) >= 0
       )
+    },
+    init() {
+      this.coach_id = this.record.coach_id || -1
+      this.stat_date = this.record.stat_date
+
+      this.teamCourseService
+        .init({ course_type: COURSE_TYPE.TEAM }, { ...this.query })
+        .subscribe()
     }
   },
   mounted() {
-    this.coach_id = this.record.coach_id || -1
-    this.stat_date = this.record.stat_date
-
-    this.teamCourseService
-      .init({ course_type: COURSE_TYPE.TEAM }, { ...this.query })
-      .subscribe()
+    this.init()
   }
 }
 </script>
