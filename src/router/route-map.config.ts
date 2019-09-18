@@ -79,13 +79,32 @@ export const routeMapConfig = {
       course_name: { type: String, default: '' }
     }
   },
-  // 'shop-product-course-schedule-team'(routeConfig: RouteConfig) {
-  //   routeConfig.queryOptions = {
-  //     course_id: { type: Number, default: -1 },
-  //     curt_id: { type: Number, default: -1 },
-  //     course_name: { type: String, default: '' }
-  //   }
-  // },
+  'shop-product-course-schedule-team-team'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      course_id: { type: Number, default: -1 },
+      court_id: { type: Number, default: -1 },
+      coach_id: { type: Number, default: -1 }
+    }
+  },
+  'shop-product-course-schedule-team-team-table'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      course_id: { type: Number, default: -1 },
+      court_id: { type: Number, default: -1 },
+      coach_id: { type: Number, default: -1 }
+    }
+  },
+  'shop-product-course-schedule-personal-personal'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      coach_id: { type: Number, default: -1 }
+    }
+  },
+  'shop-product-course-schedule-personal-personal-reserve-table'(
+    routeConfig: RouteConfig
+  ) {
+    routeConfig.queryOptions = {
+      coach_id: { type: Number, default: -1 }
+    }
+  },
   'brand-product-course-team-list-brand'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '品牌团体课程库'
     routeConfig.queryOptions = {
@@ -684,7 +703,7 @@ export const routeMapConfig = {
     //   name: 'shop-product-course-schedule-personal-personal'
     // }
   },
-  'shop-product-course-schedule-personal-calendar'(routeConfig: RouteConfig) {
+  'shop-product-course-schedule-personal-personal'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教1v1排期'
   },
   'shop-product-course-schedule-personal-table'(routeConfig: RouteConfig) {
