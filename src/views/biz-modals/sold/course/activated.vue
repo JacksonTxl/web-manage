@@ -131,8 +131,8 @@ export default {
             ...values
           })
           .subscribe(res => {
+            this.$emit('success')
             this.show = false
-            this.$router.reload()
           })
       })
     }
