@@ -1041,5 +1041,20 @@ export const routeMapConfig = {
   },
   'brand-marketing-plugin-lottery-success'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '成功'
+  },
+  'shop-finance-gathering'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '暂收款管理'
+    routeConfig.meta.tabs = ['shop-finance-gathering-earnest']
+  },
+  'shop-finance-gathering-earnest'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '定金管理'
+    routeConfig.queryOptions = {
+      keyword: { type: String, default: '' },
+      use_status: { type: Number, default: -1 },
+      start_time: { type: String, default: '' },
+      end_time: { type: String, default: '' },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
   }
 }
