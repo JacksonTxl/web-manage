@@ -62,7 +62,11 @@
       </st-form>
     </div>
     <template slot="footer">
-      <st-button @click="onSubmit" type="primary">
+      <st-button
+        @click="onSubmit"
+        :loading="loading$.setActivatedCourse"
+        type="primary"
+      >
         确认提交
       </st-button>
     </template>
@@ -87,9 +91,10 @@ export default {
     }
   },
   rxState() {
-    const { info$ } = this.service
+    const { info$, loading$ } = this.service
     return {
-      info$
+      info$,
+      loading$
     }
   },
   props: ['id', 'type'],
@@ -131,8 +136,8 @@ export default {
             ...values
           })
           .subscribe(res => {
+            this.$emit('success')
             this.show = false
-            this.$router.reload()
           })
       })
     }
