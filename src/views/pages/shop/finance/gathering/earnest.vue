@@ -62,14 +62,16 @@
           <div slot="action" slot-scope="text, record">
             <st-table-actions>
               <a
-                v-if="record.auth['shop:sold:sold_member_card|export_contract']"
+                v-if="
+                  record.auth['shop:temporary_payment:bargin|export_contract']
+                "
                 @click="toContract(record)"
               >
                 查看合同
               </a>
               <a
-                v-if="record.auth['shop:sold:sold_member_card|vip_region']"
-                @click="onArea(record)"
+                v-if="record.auth['shop:temporary_payment:bargin|order']"
+                @click="onDeal(record)"
               >
                 定金签单
               </a>
@@ -93,10 +95,10 @@ import { EarnestService } from './earnest.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './earnest.config'
-import ShopFinanceGatheringEarnestRefund from '@/views/biz-modals/shop/finance/gathering/earnest/refund'
 import ShopFinanceGatheringEarnestAdd from '@/views/biz-modals/shop/finance/gathering/earnest/add'
 import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
 import ShopFinanceRefund from '@/views/biz-modals/shop/finance/refund'
+import ShopFinanceGatheringEarnestDeal from '@/views/biz-modals/shop/finance/gathering/earnest/deal'
 export default {
   name: 'PageShopFinanceGatheringEarnest',
   mixins: [tableMixin],
@@ -104,8 +106,8 @@ export default {
     b: 'page-shop-sold'
   },
   modals: {
-    ShopFinanceGatheringEarnestRefund,
     ShopFinanceGatheringEarnestAdd,
+    ShopFinanceGatheringEarnestDeal,
     SoldDealGatheringTip,
     ShopFinanceRefund
   },
@@ -209,6 +211,20 @@ export default {
         record.order_id
       }`
       window.open(url)
+    },
+    // 退款
+    onDeal(record) {
+      this.$modalRouter.push({
+        name: 'shop-finance-gathering-earnest-deal',
+        props: {
+          id: record.order_id
+        },
+        on: {
+          success: () => {
+            this.$router.reload()
+          }
+        }
+      })
     },
     // 订单收款modal
     createdOrderPay(props) {

@@ -33,4 +33,10 @@ export class GatheringApi extends Api {
   addEarnest(params: AddEarnestParams) {
     return this.http.post(`/v1/order/transaction/advance`, { params })
   }
+  /**
+   * 获取定金详情
+   */
+  getEarnestInfo(id: number) {
+    return this.http.get(`/v1/order/transaction/advance/${id}`)
+  }
 }
