@@ -30,7 +30,7 @@
         <st-button
           type="primary"
           class="mg-r8"
-          v-if="auth.gift"
+          v-if="auth.add"
           @click="addEarnest"
         >
           添加定金
@@ -316,15 +316,10 @@ export default {
               order_id: res.orderId,
               type: 'member'
             }
-            // let payOrderRes = await this.createdOrderPay(props)
             this.payCallBack(res.orderId, res.type, 'pay')
           }
         }
       })
-    },
-    onClear() {
-      this.selectedRowKeys = []
-      this.selectedRows = []
     }
   }
 }

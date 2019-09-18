@@ -1,7 +1,7 @@
 <template>
   <st-modal title="定金签单" v-model="show" @cancel="onCancel" size="small">
     <div :class="sale('content')">
-      <a-row :class="sale('info')">
+      <a-row :class="[sale('info'), 'mg-b24']">
         <a-col :span="13">
           <st-info>
             <st-info-item label="定金金额">

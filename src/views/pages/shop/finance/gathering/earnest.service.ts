@@ -11,9 +11,7 @@ export class EarnestService implements RouteGuard {
   page$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({
-    export: 'shop:sold:sold_member_card|export',
-    gift: 'shop:sold:sold_member_card|gift',
-    vipRegion: 'shop:sold:sold_member_card|vip_region'
+    add: 'shop:product:product|order'
   })
   useStatus$ = this.userService.getOptions$('advance_fee.use_status').pipe(
     tap(list => {
@@ -35,10 +33,6 @@ export class EarnestService implements RouteGuard {
       })
     )
   }
-  // @Effect()
-  // unFreeze(id: string) {
-  //   return this.cardApi.unFreezeCard(id, 'member')
-  // }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.getList(to.meta.query)
   }
