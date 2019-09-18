@@ -2,7 +2,7 @@
   <st-modal
     wrapClassName="modal-stat-team-course"
     title="消课价值(团)"
-    width="878px"
+    width="960px"
     :footer="null"
     v-model="show"
   >

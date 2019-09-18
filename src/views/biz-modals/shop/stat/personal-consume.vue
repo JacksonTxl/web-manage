@@ -2,6 +2,7 @@
   <st-modal
     wrapClassName="modal-stat-personal-course"
     title="消课价值(私)"
+    width="960px"
     :footer="null"
     v-model="show"
   >
