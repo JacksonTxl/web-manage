@@ -1,6 +1,6 @@
 <template>
   <section :class="reception()">
-    <div :class="reception('form-block')" class="mg-b24">
+    <div :class="reception('form-block')" class="mg-b12">
       <div
         :class="reception('form-block-item')"
         v-for="(item, index) in summaryList"
@@ -38,7 +38,7 @@
         </div>
       </div>
     </div>
-    <div :class="reception('operation-list')" class="mg-b24">
+    <div :class="reception('operation-list')" class="mg-b12">
       <template v-for="(item, index) in filterShortcutList">
         <div
           :class="reception('operation-item')"

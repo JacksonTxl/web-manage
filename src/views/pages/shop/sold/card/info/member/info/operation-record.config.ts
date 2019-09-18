@@ -1,7 +1,7 @@
 export const columns = () => [
   {
     title: '操作时间',
-    dataIndex: 'operation_time'
+    dataIndex: 'operate_time'
   },
   {
     title: '操作来源',
@@ -14,16 +14,19 @@ export const columns = () => [
   {
     title: '操作对象',
     dataIndex: 'operate_object',
+    width: '120px',
     scopedSlots: { customRender: 'operate_object' }
   },
   {
     title: '操作前',
     dataIndex: 'before_operate',
+    width: '180px',
     scopedSlots: { customRender: 'before_operate' }
   },
   {
     title: '操作后',
     dataIndex: 'after_operate',
+    width: '180px',
     scopedSlots: { customRender: 'after_operate' }
   },
   {

@@ -22,7 +22,7 @@ export const columns = () => {
     },
     {
       title: '兑换码',
-      dataIndex: 'prize_check_num'
+      dataIndex: 'code'
     },
     {
       title: '可用门店',
