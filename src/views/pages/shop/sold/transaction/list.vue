@@ -97,13 +97,7 @@ export default {
   },
   methods: {
     getList() {
-      this.$router.push({ query: this.query, force: true })
-    },
-    onPageChange(data) {
-      this.$router.push({
-        query: { ...this.query, page: data.current, size: data.pageSize },
-        force: true
-      })
+      this.$router.reload()
     },
     // 签单
     onTransaction(record) {
@@ -213,7 +207,6 @@ export default {
           needPay: true
         }
         let orderSuccessRes = await this.createdGatheringTip(props)
-        console.log(orderSuccessRes)
         this.tipCallBack(result.orderId, type, orderSuccessRes.type)
       } else if (result.type === 'createPay') {
         // 创建订单成功 并且到支付页面
@@ -296,19 +289,6 @@ export default {
           }
         }
       })
-    },
-
-    onAdvance() {
-      this.listService
-        .addAdvance({
-          member_id: 20554589995205,
-          sale_id: 29338200768663,
-          pay_price: `${Date.now() % 10}`,
-          pay_channel: 1,
-          contract_number: 'C62',
-          description: '11'
-        })
-        .subscribe()
     }
   }
 }

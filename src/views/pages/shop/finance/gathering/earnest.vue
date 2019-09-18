@@ -95,6 +95,12 @@ import { EarnestService } from './earnest.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './earnest.config'
+import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
+import SoldDealSaleCabinet from '@/views/biz-modals/sold/deal/sale-cabinet'
+import SoldDealSaleCourse from '@/views/biz-modals/sold/deal/sale-course'
+import SoldDealSaleDepositCard from '@/views/biz-modals/sold/deal/sale-deposit-card'
+import SoldDealSaleMemberCard from '@/views/biz-modals/sold/deal/sale-member-card'
+import SoldDealSalePersonalCourse from '@/views/biz-modals/sold/deal/sale-personal-course'
 import ShopFinanceGatheringEarnestAdd from '@/views/biz-modals/shop/finance/gathering/earnest/add'
 import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
 import ShopFinanceRefund from '@/views/biz-modals/shop/finance/refund'
@@ -106,6 +112,12 @@ export default {
     b: 'page-shop-sold'
   },
   modals: {
+    SoldDealGathering,
+    SoldDealSaleCabinet,
+    SoldDealSaleCourse,
+    SoldDealSaleDepositCard,
+    SoldDealSaleMemberCard,
+    SoldDealSalePersonalCourse,
     ShopFinanceGatheringEarnestAdd,
     ShopFinanceGatheringEarnestDeal,
     SoldDealGatheringTip,
@@ -220,8 +232,8 @@ export default {
           id: record.order_id
         },
         on: {
-          success: () => {
-            this.$router.reload()
+          success: res => {
+            this.onTransaction(res)
           }
         }
       })
@@ -286,6 +298,145 @@ export default {
           )
           break
       }
+    },
+    // 签单
+    onTransaction(record) {
+      switch (record.product_type) {
+        case 1:
+          this.onMember(record)
+          break
+        case 2:
+          this.onDeposit(record)
+          break
+        case 3:
+          this.onPersonalCourse(record)
+          break
+        case 5:
+          this.onPackage(record)
+          break
+        case 6:
+          this.onCabinet(record)
+          break
+      }
+    },
+    // 签单成功回调
+    async saleCallBack(result, type) {
+      if (result.type === 'create') {
+        // 创建订单成功
+        let props = {
+          order_id: result.orderId,
+          type,
+          message: '订单创建成功',
+          needPay: true
+        }
+        let orderSuccessRes = await this.createdGatheringTip(props)
+        this.tipCallBack(result.orderId, type, orderSuccessRes.type)
+      } else if (result.type === 'createPay') {
+        // 创建订单成功 并且到支付页面
+        let props = {
+          order_id: result.orderId,
+          type
+        }
+        let payOrderRes = await this.createdOrderPay(props)
+        this.payCallBack(result.orderId, type, payOrderRes.type)
+      }
+    },
+    // 会员卡签单
+    onMember(record) {
+      this.$modalRouter.push({
+        name: 'sold-deal-sale-member-card',
+        props: {
+          id: `${record.id}`,
+          memberInfo: {
+            member_id: record.member_id,
+            member_name: record.member_name,
+            member_mobile: record.member_mobile
+          }
+        },
+        on: {
+          success: result => {
+            this.saleCallBack(result, 'member')
+          }
+        }
+      })
+    },
+    // 储值卡签单
+    onDeposit(record) {
+      this.$modalRouter.push({
+        name: 'sold-deal-sale-deposit-card',
+        props: {
+          id: `${record.id}`,
+          memberInfo: {
+            member_id: record.member_id,
+            member_name: record.member_name,
+            member_mobile: record.member_mobile
+          }
+        },
+        on: {
+          success: result => {
+            this.saleCallBack(result, 'deposit')
+          }
+        }
+      })
+    },
+    // 储物柜签单
+    onCabinet(record) {
+      this.$modalRouter.push({
+        name: 'sold-deal-sale-cabinet',
+        props: {
+          // 默认传0，因为没有选择具体的柜子
+          id: '0',
+          areaId: `${record.id}`,
+          memberInfo: {
+            member_id: record.member_id,
+            member_name: record.member_name,
+            member_mobile: record.member_mobile
+          }
+        },
+        on: {
+          success: result => {
+            this.saleCallBack(result, 'cabinet_order')
+          }
+        }
+      })
+    },
+    // 课程包签单
+    onPackage(record) {
+      this.$modalRouter.push({
+        name: 'sold-deal-sale-course',
+        props: {
+          id: `${record.id}`,
+          memberInfo: {
+            member_id: record.member_id,
+            member_name: record.member_name,
+            member_mobile: record.member_mobile
+          }
+        },
+        on: {
+          success: result => {
+            this.saleCallBack(result, 'package')
+          }
+        }
+      })
+    },
+    // 私教课签单
+    onPersonalCourse(record) {
+      this.$modalRouter.push({
+        name: 'sold-deal-sale-personal-course',
+        props: {
+          id: `${record.id}`,
+          memberInfo: {
+            member_id: record.member_id,
+            member_name: record.member_name,
+            member_mobile: record.member_mobile
+          }
+        },
+        on: {
+          success: result => {
+            this.saleCallBack(result, 'personal')
+          }
+        }
+      })
     },
     // 打印合同
     createdOrderPrint(order_id) {

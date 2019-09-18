@@ -3,7 +3,7 @@ export const ruleOptions = (vm: any) => {
     product_type: {
       rules: [{ required: true, message: '请输入租赁天数' }]
     },
-    product: {
+    product_name: {
       rules: [
         {
           validator: (fileds: any, value: any, values: any) => {

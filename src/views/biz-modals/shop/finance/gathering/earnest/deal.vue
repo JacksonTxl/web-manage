@@ -5,28 +5,28 @@
         <a-col :span="13">
           <st-info>
             <st-info-item label="定金金额">
-              {{ info.product_name }}
+              {{ info.price }}
             </st-info-item>
             <st-info-item label="收款时间">
-              {{ info.product_type }}
+              {{ info.pay_time }}
             </st-info-item>
             <st-info-item label="销售人员">
-              {{ info.price }}
+              {{ info.sale_name }}
             </st-info-item>
             <st-info-item class="mg-b24" label="收款人员">
-              {{ info.price }}
+              {{ info.operator_name }}
             </st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
           <st-info>
-            <st-info-item label="会员姓名" v-if="info.sale_range">
-              {{ info.sale_range.name }}
+            <st-info-item label="会员姓名">
+              {{ info.member_name }}
             </st-info-item>
-            <st-info-item label="手机号">{{ info.is_transfer }}</st-info-item>
-            <st-info-item label="订单号">{{ info.is_transfer }}</st-info-item>
+            <st-info-item label="手机号">{{ info.member_mobile }}</st-info-item>
+            <st-info-item label="订单号">{{ info.order_id }}</st-info-item>
             <st-info-item class="mg-b24" label="订单状态">
-              {{ info.transfer }}
+              {{ info.order_status }}
             </st-info-item>
           </st-info>
         </a-col>
@@ -43,10 +43,10 @@
           >
             <a-select-option
               v-for="(item, index) in productTypes"
-              :value="item.id"
+              :value="item.value"
               :key="index"
             >
-              {{ item.member_name }}
+              {{ item.label }}
             </a-select-option>
           </a-select>
         </st-form-item>
@@ -58,7 +58,7 @@
             :defaultActiveFirstOption="false"
             :showArrow="false"
             :filterOption="false"
-            v-decorator="decorators.memberId"
+            v-decorator="decorators.product_name"
             @search="onProductSearch"
             notFoundContent="无搜索结果"
           >
@@ -69,13 +69,13 @@
             >
               <span
                 v-html="
-                  `${item.member_name} ${item.mobile}`.replace(
+                  `${item.product_name}`.replace(
                     new RegExp(memberSearchText, 'g'),
                     `\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`
                   )
                 "
               >
-                {{ item.member_name }} {{ item.mobile }}
+                {{ item.product_name }}
               </span>
             </a-select-option>
           </a-select>
@@ -142,11 +142,15 @@ export default {
       this.memberSearchText = data
       if (data === '') {
         this.dealService.list$.commit(() => [])
-        this.form.resetFields(['member_id'])
+        this.form.resetFields(['product_name'])
       } else {
-        this.dealService.getList(data).subscribe(res => {
+        const params = {
+          product_type: this.form.getFieldValue('product_type'),
+          product_name: data
+        }
+        this.dealService.getList(params).subscribe(res => {
           if (!res.list.length) {
-            this.form.resetFields(['member_id'])
+            this.form.resetFields(['product_name'])
           }
         })
       }
@@ -157,6 +161,12 @@ export default {
     onNext() {
       this.form.validate().then(values => {
         // 到签单页面
+        const obj = Object.assign(this.info, {
+          id: values.product_name,
+          product_type: values.product_type
+        })
+        this.$emit('success', obj)
+        this.show = false
       })
     }
   }
