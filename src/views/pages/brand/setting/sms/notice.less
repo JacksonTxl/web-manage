@@ -8,25 +8,34 @@
 
       &-th {
         display: inline-block;
-        width: 20%;
         .fz(14px);
         .ta-l;
         .c(#5e6a7f);
-        padding: 16px 0 16px 36px;
+        padding: 16px 0 16px 0;
       }
-
       &-th:first-child {
         .w(180px);
         padding-left: 24px;
-        box-sizing: border-box;
       }
-      &-th:last-child {
-        margin-left: 12px;
-        box-sizing: border-box;
-      }
-
       &-tr {
         border-bottom: 1px solid @divider;
+      }
+      .th-wrap {
+        width: calc(~'100% - 190px');
+        display: inline-block;
+        .th {
+          display: inline-block;
+          width: 25%;
+          padding-left: 34px;
+        }
+        .th:nth-child(3) {
+          padding-left: 10px;
+          box-sizing: border-box;
+        }
+        .th:nth-child(4) {
+          padding-left: 10px;
+          box-sizing: border-box;
+        }
       }
     }
   }

@@ -46,16 +46,11 @@
       >
         <div class="shadow"></div>
         <div :class="bComponent('column')" v-show="!isShowEdit">
-          <div
-            class="width75"
-            :class="bComponent('text')"
-            style="padding-top:0"
-            v-if="info.preview"
-          >
+          <div class="width75" :class="bComponent('text')" v-if="info.preview">
             <span class="color-title mg-r8">预览内容:</span>
             <span :class="bComponent('text-right')">{{ info.preview }}</span>
           </div>
-          <div :class="bComponent('text')" style="padding-top:0;padding-left:0">
+          <div :class="bComponent('text')" style="padding-left:0">
             <span class="color-primary cursor-pointer" @click="showEdit">
               编辑
             </span>
@@ -232,6 +227,7 @@
             <span class="color-primary" @click="save">保存</span>
           </div>
         </div>
+        <div class="shadow-bottom"></div>
       </div>
     </div>
   </div>
