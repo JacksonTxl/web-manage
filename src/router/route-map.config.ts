@@ -701,18 +701,12 @@ export const routeMapConfig = {
   },
   'shop-product-course-schedule-personal'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教1v1排期'
-    routeConfig.redirect = {
-      name: 'shop-product-course-schedule-personal-personal'
-    }
   },
   'shop-product-course-schedule-personal-table'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教1v1排期'
   },
   'shop-product-course-schedule-personal-team'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教小团课排期'
-    // routeConfig.redirect = {
-    //   name: 'shop-product-course-schedule-personal-team-personal-team'
-    // }
   },
   'shop-product-course-schedule-personal-team-personal-team-table'(
     routeConfig: RouteConfig
