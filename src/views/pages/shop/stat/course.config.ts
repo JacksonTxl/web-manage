@@ -90,9 +90,9 @@ export const coachColumns = () => {
       dataIndex: 'personal_checkin_num'
     },
     {
-      dataIndex: 'personal_consume_amount',
+      dataIndex: 'personal_checkin_amount',
       slots: { title: 'personalTitle' },
-      scopedSlots: { customRender: 'personal_consume_amount' }
+      scopedSlots: { customRender: 'personal_checkin_amount' }
     },
     {
       title: '上课节数（团）',
