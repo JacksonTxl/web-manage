@@ -116,13 +116,18 @@
           <img class="page-staff-table-name__img mg-r8" :src="record.avatar" />
           <span class="name">{{ text }}</span>
         </div>
-        <template slot="shop" slot-scope="text, record">
+        <st-overflow-text
+          title="所在门店"
+          max-width="200px"
+          slot="shop"
+          slot-scope="text, record"
+        >
           <template v-for="item in record.shop">
             <span :key="item.id" class="mg-r8" v-if="item">
               {{ item.name }}
             </span>
           </template>
-        </template>
+        </st-overflow-text>
         <template slot="identity" slot-scope="text, record">
           <template v-for="item in record.identity">
             <span :key="item.id" class="mg-r8">{{ item.name }}</span>

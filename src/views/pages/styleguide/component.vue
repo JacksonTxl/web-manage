@@ -52,6 +52,7 @@ export default {
         { id: 'tag', title: '标签' },
         { id: 'search-panel', title: '查询面板' },
         { id: 'no-data', title: '默认占位图' },
+        { id: 'overflow-text', title: '超限内容容器' },
         { id: 'initials-tag', title: '首字母标签' },
         { id: 'region-cascader', title: '城市选择' },
         { id: 'container', title: '容器' },

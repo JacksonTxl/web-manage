@@ -4,7 +4,7 @@
       <sidebar-component></sidebar-component>
     </div>
     <div :class="b('content')" :span="18">
-      <a-row :gutter="16" :class="bCount()">
+      <a-row :gutter="12" :class="bCount()">
         <a-col :span="6" :class="bCount('item')">
           <div :class="bCount('box')">
             <count-card
@@ -84,7 +84,7 @@
           </div>
         </a-col>
       </a-row>
-      <a-row :class="b('linebox')" class="mg-t16 bg-white">
+      <a-row :class="b('linebox')" class="mg-t12 bg-white">
         <a-col :span="24">
           <dashboard-tabs @change="onChangeTabs">
             <template v-slot:userTitle>
@@ -121,7 +121,7 @@
           </dashboard-tabs>
         </a-col>
       </a-row>
-      <a-row :gutter="16" class="mg-t16">
+      <a-row :gutter="12" class="mg-t12">
         <a-col :span="12">
           <st-container class="bg-white" type="2">
             <st-t3 style="margin-bottom:20px">客单价</st-t3>

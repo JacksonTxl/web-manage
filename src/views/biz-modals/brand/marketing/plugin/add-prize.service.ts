@@ -15,7 +15,7 @@ export class AddPrizeService {
     private userService: UserService,
     private lotteryApi: LotteryApi
   ) {}
-  getCouponList(id: number) {
+  getCouponList(id: string) {
     return this.lotteryApi.getCouponList(id)
   }
 }
