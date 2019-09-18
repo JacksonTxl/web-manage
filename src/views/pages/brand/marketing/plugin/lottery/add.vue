@@ -153,8 +153,8 @@
                   {{ item.label }}
                 </a-radio>
               </a-radio-group>
-              <div v-if="shareType === 2">
-                <st-form-item label="选择图片" labelWidth="64px">
+              <div v-if="shareType === 2" :class="bPage('share-upload')">
+                <st-form-item label="选择图片" labelWidth="60px">
                   <st-image-upload
                     width="96px"
                     height="96px"
@@ -162,9 +162,11 @@
                     @change="onShareChangeGetAvatar"
                     placeholder="上传图片"
                   ></st-image-upload>
-                  <div>请上传jbg、png格式的图片</div>
+                  <span :class="bPage('share-upload-text')">
+                    请上传jbg、png格式的图片
+                  </span>
                 </st-form-item>
-                <st-form-item label="分享标题" labelWidth="64px">
+                <st-form-item label="分享标题" labelWidth="60px">
                   <a-input
                     placeholder="分享标题"
                     v-decorator="decorators.activity_base.share_title"
@@ -383,7 +385,10 @@
                   {{ item.label }}
                 </a-radio>
               </a-radio-group>
-              <div v-if="notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM">
+              <div
+                v-if="notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM"
+                :class="bPage('lucky-upload')"
+              >
                 <st-image-upload
                   width="96px"
                   height="96px"
@@ -391,7 +396,9 @@
                   @change="onChangeGetAvatar"
                   placeholder="上传图片"
                 ></st-image-upload>
-                <div>请上传jbg、png格式的图片</div>
+                <span :class="bPage('lucky-upload-text')">
+                  请上传jbg、png格式的图片
+                </span>
               </div>
 
               <img

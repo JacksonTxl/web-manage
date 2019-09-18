@@ -108,15 +108,16 @@
             {{ item.label }}
           </a-radio>
         </a-radio-group>
-        <div v-if="curImgType === 2">
+        <div v-if="curImgType === 2" class="prize-upload">
           <st-image-upload
             :list="fileList"
-            class="default-img"
+            width="96px"
+            height="96px"
             @change="onChangeGetAvatar"
             :sizeLimit="2"
             placeholder="上传图片"
           ></st-image-upload>
-          <div>请上传jbg、png格式的图片</div>
+          <div class="prize-upload-text">请上传jbg、png格式的图片</div>
         </div>
         <div v-else>
           <img :src="prize[0].image_url" alt="默认图片" class="default-img" />
