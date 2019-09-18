@@ -151,7 +151,6 @@ export default {
       const course_type = this.course_type
       this.coach_id = this.record.coach_id || -1
       this.stat_date = this.record.stat_date
-      debugger
       this.personalConsumeService
         .init({ course_type }, { ...this.query })
         .subscribe()
