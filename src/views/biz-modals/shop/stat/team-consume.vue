@@ -50,10 +50,9 @@
     <st-table
       :columns="columns"
       :rowKey="record => record.id"
-      :page="page"
       :loading="loading$.getConsumeList"
-      :showSizeChanger="false"
       :dataSource="consumeList$"
+      page-mode="client"
     ></st-table>
   </st-modal>
 </template>
@@ -93,6 +92,7 @@ export default {
   data() {
     return {
       show: false,
+      stat_date: '',
       consumeList: [],
       course_type: COURSE_TYPE.TEAM,
       coach_id: -1,
@@ -103,9 +103,6 @@ export default {
   },
   computed: {
     columns,
-    stat_date() {
-      return this.record.stat_date
-    },
     showTable() {
       return this.$route.query.showTable || 'all'
     },

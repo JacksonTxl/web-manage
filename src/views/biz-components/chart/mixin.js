@@ -1,4 +1,4 @@
-import G2 from 'st-g2'
+import G2 from '@antv/g2'
 import { ChartConfig } from './config'
 export default {
   serviceInject() {

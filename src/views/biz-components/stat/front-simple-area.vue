@@ -4,7 +4,7 @@
 
 <script>
 import chartMixin from './mixin'
-import { Chart } from 'st-g2'
+import { Chart } from '@antv/g2'
 import { View } from 'st-data-set'
 export default {
   mixins: [chartMixin],

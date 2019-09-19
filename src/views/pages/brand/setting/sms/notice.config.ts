@@ -19,9 +19,9 @@ export const thsMember = () => {
 }
 export const thsShop = () => {
   return [
-    {
-      title: '模板标题'
-    },
+    // {
+    //   title: '模板标题'
+    // },
     {
       title: '发送规则'
     },
