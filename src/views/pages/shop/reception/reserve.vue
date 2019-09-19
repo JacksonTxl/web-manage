@@ -1,29 +1,29 @@
 <template>
-  <div class="shop-member-list">
-    <st-panel>
-      <div slot="title">
-        <st-input-search
-          placeholder="输入用户姓名、手机号"
-          v-model="query.keyword"
-          @search="onKeywordsSearch('keyword', $event)"
-          style="width: 290px;"
-        />
-      </div>
-      <div slot="prepend">
-        <st-search-panel>
-          <!-- <div :class="basic('select')">
-            <span style="width:90px;">用户级别：</span>
-            <st-search-radio v-model="query.member_level" :list="memberLevel" />
-          </div>
-          <div :class="basic('select')">
-            <span style="width:90px;">来源方式：</span>
-            <st-search-radio
-              :class="basic('select-radio')"
-              v-model="query.register_way"
-              :list="sourceList"
-            />
-          </div>
-          <div :class="basic('select')">
+  <st-panel :class="bPage()">
+    <div slot="title">
+      <st-input-search
+        placeholder="输入用户姓名、手机号"
+        v-model="query.keyword"
+        @search="onKeywordsSearch('keyword', $event)"
+        style="width: 290px;"
+      />
+    </div>
+    <div slot="prepend">
+      <st-search-panel :class="bSearch()">
+        <div :class="bSearch('radio')" class="mg-t24 search-item">
+          <span class="label">预约类型:</span>
+          <st-search-radio
+            class="value"
+            v-model="query.reserve_type"
+            @change="onSingleSearch('reserve_type', $event)"
+            :list="reserveType$"
+          />
+        </div>
+        <div :class="bSearch('range-picker')" class="mg-t24 search-item">
+          <span class="label">预约时间：</span>
+          <st-range-picker class="value"></st-range-picker>
+        </div>
+        <!-- <div :class="basic('select')">
             <span style="width:90px;">注册时间：</span>
             <st-range-picker
               :disabledDays="180"
@@ -53,23 +53,35 @@
             </st-button>
             <st-button class="mg-l8" @click="onSearhReset">重置</st-button>
           </div> -->
-        </st-search-panel>
+      </st-search-panel>
+    </div>
+    <div class="mg-t24 mg-b16">
+      <st-button type="primary" class="shop-member-list-button" icon="add">
+        到访预约
+      </st-button>
+    </div>
+    <st-table
+      :columns="columns"
+      :scroll="{ x: 1400 }"
+      rowKey="id"
+      :page="page$"
+      @change="onTableChange"
+      :dataSource="list$"
+    >
+      <span slot="reserve_type" slot-scope="text">{{ text.name }}</span>
+      <span slot="reserve_status" slot-scope="text">{{ text.name }}</span>
+      <div slot="action" slot-scope="text, record">
+        <st-table-actions v-if="record.reserve_type.id === 1">
+          <a>取消</a>
+          <a>签到</a>
+        </st-table-actions>
+        <st-table-actions v-if="record.reserve_type.id === 2">
+          <a>取消</a>
+          <a>预约到访</a>
+        </st-table-actions>
       </div>
-      <div class="mg-t24 mg-b16">
-        <st-button type="primary" class="shop-member-list-button" icon="add">
-          添加用户
-        </st-button>
-      </div>
-      <st-table
-        :columns="columns"
-        :scroll="{ x: 1400 }"
-        rowKey="member_id"
-        :page="page$"
-        @change="onTableChange"
-        :dataSource="list$"
-      ></st-table>
-    </st-panel>
-  </div>
+    </st-table>
+  </st-panel>
 </template>
 <script>
 // import moment from 'moment'
@@ -78,8 +90,8 @@
 // import { ListService } from './list.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
-import { VisitingService } from './visiting.service'
-import { columns } from './visiting.config.ts'
+import { ReserveService } from './reserve.service'
+import { columns } from './reserve.config.ts'
 // import { columns } from './list.config'
 // import ShopAddLable from '@/views/biz-modals/shop/add-lable'
 // import ShopBindingEntityCard from '@/views/biz-modals/shop/binding-entity-card'
@@ -88,25 +100,26 @@ import { columns } from './visiting.config.ts'
 // import ShopFrozen from '@/views/biz-modals/shop/frozen'
 // import ShopMissingCard from '@/views/biz-modals/shop/missing-card'
 export default {
-  name: 'Visiting',
+  name: 'ReceptionReserve',
   mixins: [tableMixin],
   bem: {
-    bPage: 'page-shop-reception-visiting',
-    basic: 'psg'
+    bPage: 'page-shop-reception-reserve',
+    bSearch: 'search'
   },
   serviceInject() {
     return {
       routeService: RouteService,
-      service: VisitingService
+      service: ReserveService
     }
   },
   rxState() {
-    const { loading$, page$, list$ } = this.service
+    const { loading$, page$, list$, reserveType$ } = this.service
     return {
       query: this.routeService.query$,
       loading$,
       page$,
-      list$
+      list$,
+      reserveType$
     }
   },
   data() {

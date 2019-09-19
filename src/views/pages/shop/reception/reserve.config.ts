@@ -2,9 +2,8 @@ export const columns = () => {
   return [
     {
       title: '预约时间',
-      dataIndex: 'start_time',
-      align: 'right',
-      scopedSlots: { customRender: 'start_time' }
+      dataIndex: 'reserve_time',
+      scopedSlots: { customRender: 'reserve_time' }
     },
     {
       title: '预约人',

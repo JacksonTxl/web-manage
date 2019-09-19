@@ -769,7 +769,7 @@ export default {
           this.$router.push({ path: '/shop/product/course/schedule/team' })
           break
         case 'reservePage':
-          this.$router.push({ path: '/shop/reception/visiting' })
+          this.$router.push({ path: '/shop/reception/reserve' })
           break
       }
     },
