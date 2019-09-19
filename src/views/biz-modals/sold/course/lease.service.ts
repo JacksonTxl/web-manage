@@ -10,8 +10,8 @@ export class LeaseService {
   loading$ = new State({})
   info$ = new State({})
   constructor(private courseApi: CourseApi, private msg: MessageService) {}
-  getLeaseAndactivatedCourseInfo(id: string) {
-    return this.courseApi.getLeaseAndactivatedCourseInfo(id).pipe(
+  getLeaseCourseInfo(id: string) {
+    return this.courseApi.getLeaseCourseInfo(id).pipe(
       tap((res: any) => {
         this.info$.commit(() => res.info)
       })

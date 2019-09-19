@@ -77,7 +77,7 @@
   </div>
 </template>
 <script>
-import G2 from 'st-g2'
+import G2 from '@antv/g2'
 import { UserExperienceService } from './user-experience.service'
 import ShopAddLateralRecording from '@/views/biz-modals/shop/add-lateral-recording'
 const defaultOptions = {
