@@ -51,7 +51,7 @@ export const shortcutList = () => {
       icon: 'reception-order',
       label: '预约管理',
       auth: true,
-      version: 2
+      version: 1
     },
     {
       id: 'checkInPage',
