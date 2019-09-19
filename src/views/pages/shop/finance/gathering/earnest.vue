@@ -460,7 +460,7 @@ export default {
         name: 'shop-finance-gathering-earnest-add',
         props: {},
         on: {
-          success: async res => {
+          success: res => {
             this.$router.reload()
             // 收款定金成功
             let props = {
