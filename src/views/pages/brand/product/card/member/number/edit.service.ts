@@ -15,10 +15,11 @@ export class EditService implements RouteGuard {
   supportSales$ = this.userService.getOptions$('member_card.support_sales')
   unit$ = this.userService.getOptions$('member_card.unit')
   sellType$ = this.userService.getOptions$('member_card.sell_type')
-  isShelfCard$ = computed(
+  // 是否上架的卡
+  isShelfCard$ = computed<boolean>(
     (card: any) => {
-      if (!card.shelf_num) return false
-      return card.shelf_num > 0
+      if (!card.shelf_shop_num) return false
+      return card.shelf_shop_num > 0
     },
     [this.cardInfo$]
   )

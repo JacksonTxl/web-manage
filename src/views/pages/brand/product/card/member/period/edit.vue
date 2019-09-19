@@ -19,7 +19,7 @@
         </h5-container>
       </div>
       <div class="page-content">
-        <form-banner :shelf-number="cardData.shelf_num"></form-banner>
+        <form-banner :shelf-number="cardInfo.shelf_shop_num"></form-banner>
         <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8" class="page-content-card-line__row">
             <a-col :lg="22">
@@ -38,6 +38,7 @@
                 required
               >
                 <a-radio-group
+                  :disabled="isShelfCard"
                   @change="admission_range"
                   v-decorator="decorators.cardData.admission_range"
                 >
@@ -101,18 +102,18 @@
                 >
                   <st-form-table>
                     <colgroup>
-                      <col style="width:23%;" />
-                      <col style="width:23%;" />
-                      <col style="width:23%;" />
-                      <col style="width:23%;" />
-                      <col style="width:8%;" />
+                      <col style="width:30%;" />
+                      <col />
+                      <col />
+                      <col />
+                      <col style="width:60px;" />
                     </colgroup>
                     <thead>
                       <tr>
                         <th>期限</th>
-                        <th>售价</th>
-                        <th class="white-nowrap">允许冻结天数</th>
-                        <th>赠送上限</th>
+                        <th>售价/元</th>
+                        <th class="white-nowrap">允许冻结/天</th>
+                        <th>赠送上限/天</th>
                         <th>操作</th>
                       </tr>
                     </thead>
@@ -140,6 +141,7 @@
                             :min="1"
                             :max="99999"
                             :value="item.time.num"
+                            :disabled="isShelfCard"
                             @change="
                               e =>
                                 brandPriceSettingHandleChange({
@@ -179,6 +181,7 @@
                             :min="0"
                             :max="999999.9"
                             :value="item.rally_price"
+                            :disabled="isShelfCard"
                             @change="
                               e =>
                                 brandPriceSettingHandleChange({
@@ -187,14 +190,13 @@
                                   col: 'rally_price'
                                 })
                             "
-                          >
-                            <span slot="addonAfter">元</span>
-                          </st-input-number>
+                          ></st-input-number>
                         </td>
                         <td>
                           <st-input-number
                             :min="1"
                             :max="99999"
+                            :disabled="isShelfCard"
                             :value="item.frozen_day"
                             @change="
                               e =>
@@ -204,15 +206,14 @@
                                   col: 'frozen_day'
                                 })
                             "
-                          >
-                            <span slot="addonAfter">天</span>
-                          </st-input-number>
+                          ></st-input-number>
                         </td>
                         <td>
                           <st-input-number
                             :min="1"
                             :max="99999"
                             :value="item.gift_unit"
+                            :disabled="isShelfCard"
                             @change="
                               e =>
                                 brandPriceSettingHandleChange({
@@ -221,9 +222,7 @@
                                   col: 'gift_unit'
                                 })
                             "
-                          >
-                            <span slot="addonAfter">天</span>
-                          </st-input-number>
+                          ></st-input-number>
                         </td>
                         <td>
                           <a @click="brand_price_delete(index)">删除</a>
@@ -408,6 +407,7 @@
                 required
               >
                 <a-radio-group
+                  :disabled="isShelfCard"
                   @change="support_range"
                   v-decorator="decorators.cardData.support_sales"
                 >
@@ -635,20 +635,21 @@ export default {
   serviceInject() {
     return {
       rules: RuleConfig,
-      addService: EditService,
+      editService: EditService,
       userService: UserService
     }
   },
   rxState() {
     return {
-      addLoading: this.addService.loading$,
-      cardInfo: this.addService.cardInfo$,
-      cardBgList: this.addService.cardBgList$,
-      admissionRange: this.addService.admissionRange$,
-      priceSetting: this.addService.priceSetting$,
-      supportSales: this.addService.supportSales$,
-      unit: this.addService.unit$,
-      sellType: this.addService.sellType$
+      addLoading: this.editService.loading$,
+      cardInfo: this.editService.cardInfo$,
+      cardBgList: this.editService.cardBgList$,
+      admissionRange: this.editService.admissionRange$,
+      priceSetting: this.editService.priceSetting$,
+      supportSales: this.editService.supportSales$,
+      unit: this.editService.unit$,
+      sellType: this.editService.sellType$,
+      isShelfCard: this.editService.isShelfCard$
     }
   },
   bem: {
@@ -695,7 +696,7 @@ export default {
         // 支持售卖门店
         sell_shop_list: [],
         // 上架门店数量
-        shelf_num: 0,
+        shelf_shop_num: 0,
         // 支持售卖时间
         start_time: '',
         end_time: '',
@@ -903,7 +904,7 @@ export default {
           this.cardData.num = this.cardData._is_transfer
             ? +values.cardData.num
             : undefined
-          this.addService.editCard(this.cardData).subscribe(res => {
+          this.editService.editCard(this.cardData).subscribe(res => {
             this.$router.push({
               name: 'brand-product-card-member-list-all'
             })

@@ -19,7 +19,7 @@
         </h5-container>
       </div>
       <div class="page-content">
-        <form-banner :shelf-number="cardData.shelf_num"></form-banner>
+        <form-banner :shelf-number="cardInfo.shelf_shop_num"></form-banner>
         <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8" class="page-content-card-line__row">
             <a-col :lg="22">
@@ -673,20 +673,21 @@ export default {
   serviceInject() {
     return {
       rules: RuleConfig,
-      addService: EditService,
+      editService: EditService,
       userService: UserService
     }
   },
   rxState() {
     return {
-      addLoading: this.addService.loading$,
-      cardInfo: this.addService.cardInfo$,
-      cardBgList: this.addService.cardBgList$,
-      admissionRange: this.addService.admissionRange$,
-      priceSetting: this.addService.priceSetting$,
-      supportSales: this.addService.supportSales$,
-      unit: this.addService.unit$,
-      sellType: this.addService.sellType$
+      addLoading: this.editService.loading$,
+      cardInfo: this.editService.cardInfo$,
+      cardBgList: this.editService.cardBgList$,
+      admissionRange: this.editService.admissionRange$,
+      priceSetting: this.editService.priceSetting$,
+      supportSales: this.editService.supportSales$,
+      unit: this.editService.unit$,
+      sellType: this.editService.sellType$,
+      isShelfCard: this.editService.isShelfCard$
     }
   },
   bem: {
@@ -946,7 +947,7 @@ export default {
           this.cardData.num = this.cardData._is_transfer
             ? +values.cardData.num
             : undefined
-          this.addService.editCard(this.cardData).subscribe(res => {
+          this.editService.editCard(this.cardData).subscribe(res => {
             this.$router.push({
               name: 'brand-product-card-member-list-all'
             })
