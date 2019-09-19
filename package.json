@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@abraham/reflection": "^0.5.1",
+    "@antv/g2": "^3.5.8-beta.3",
     "@types/js-cookie": "^2.2.1",
     "@types/lodash-es": "^4.17.3",
     "@types/nprogress": "^0.0.29",
@@ -42,7 +43,6 @@
     "rgb-hex": "^2.1.0",
     "rxjs": "^6.4.0",
     "st-data-set": "0.10.2-alpha2",
-    "st-g2": "3.5.8-alpha.1",
     "styd-less-base": "1.0.6",
     "v-viewer": "^1.4.0",
     "vue": "^2.6.6",
