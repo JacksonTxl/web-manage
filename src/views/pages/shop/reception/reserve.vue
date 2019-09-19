@@ -15,44 +15,29 @@
           <st-search-radio
             class="value"
             v-model="query.reserve_type"
-            @change="onSingleSearch('reserve_type', $event)"
             :list="reserveType$"
           />
         </div>
         <div :class="bSearch('range-picker')" class="mg-t24 search-item">
           <span class="label">预约时间：</span>
-          <st-range-picker class="value"></st-range-picker>
+          <st-range-picker
+            :disabledDays="180"
+            @change="onChangeRangeTime"
+            :value="selectTime"
+            class="value"
+          ></st-range-picker>
         </div>
-        <!-- <div :class="basic('select')">
-            <span style="width:90px;">注册时间：</span>
-            <st-range-picker
-              :disabledDays="180"
-              :value="selectTime"
-            ></st-range-picker>
-          </div>
-          <div slot="more">
-            <div :class="basic('select')">
-              <span style="width:90px;">入会时间：</span>
-              <st-range-picker
-                :disabledDays="180"
-                :value="selectMemberTime"
-              ></st-range-picker>
-            </div>
-            <div :class="basic('select')">
-              <span style="width:90px;">员工跟进：</span>
-              <st-search-radio v-model="query.is_follow" :list="isFollow" />
-            </div>
-          </div>
-          <div slot="button">
-            <st-button
-              type="primary"
-              @click="onSearchNative"
-              :loading="loading.getListInfo"
-            >
-              查询
-            </st-button>
-            <st-button class="mg-l8" @click="onSearhReset">重置</st-button>
-          </div> -->
+
+        <div slot="button">
+          <st-button
+            type="primary"
+            @click="onSearchNative"
+            :loading="loading$.getList"
+          >
+            查询
+          </st-button>
+          <st-button class="mg-l8" @click="onSearhReset">重置</st-button>
+        </div>
       </st-search-panel>
     </div>
     <div class="mg-t24 mg-b16">
@@ -92,13 +77,6 @@ import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { ReserveService } from './reserve.service'
 import { columns } from './reserve.config.ts'
-// import { columns } from './list.config'
-// import ShopAddLable from '@/views/biz-modals/shop/add-lable'
-// import ShopBindingEntityCard from '@/views/biz-modals/shop/binding-entity-card'
-// import ShopDistributionCoach from '@/views/biz-modals/shop/distribution-coach'
-// import ShopDistributionSale from '@/views/biz-modals/shop/distribution-sale'
-// import ShopFrozen from '@/views/biz-modals/shop/frozen'
-// import ShopMissingCard from '@/views/biz-modals/shop/missing-card'
 export default {
   name: 'ReceptionReserve',
   mixins: [tableMixin],
@@ -123,10 +101,46 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      selectTime: {
+        startTime: {
+          showTime: false,
+          disabledBegin: null,
+          placeholder: '开始日期',
+          disabled: false,
+          value: null,
+          format: 'YYYY-MM-DD',
+          change: $event => {}
+        },
+        endTime: {
+          showTime: false,
+          placeholder: '结束日期',
+          disabled: false,
+          value: null,
+          format: 'YYYY-MM-DD',
+          change: $event => {}
+        }
+      }
+    }
   },
   computed: {
     columns
+  },
+  methods: {
+    onChangeRangeTime(value) {
+      console.log(value)
+    },
+    onSearchNative() {
+      debugger
+      const start_time = `${this.selectTime.startTime.value.format(
+        'YYYY-MM-DD'
+      )} 00:00`
+      const end_time = `${this.selectTime.endTime.value.format(
+        'YYYY-MM-DD'
+      )} 23:59`
+      this.$router.push({ query: { ...this.query, start_time, end_time } })
+    },
+    onSearhReset() {}
   }
 }
 </script>
