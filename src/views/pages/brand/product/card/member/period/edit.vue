@@ -19,6 +19,7 @@
         </h5-container>
       </div>
       <div class="page-content">
+        <form-banner :shelf-number="cardData.shelf_num"></form-banner>
         <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8" class="page-content-card-line__row">
             <a-col :lg="22">
@@ -28,6 +29,7 @@
               </p>
             </a-col>
           </a-row>
+          <st-hr />
           <a-row :gutter="8">
             <a-col :lg="23">
               <st-form-item
@@ -617,6 +619,7 @@ import H5Container from '@/views/biz-components/h5/h5-container'
 import h5mixin from './h5mixin'
 import { MEMBER_CARD } from '@/views/biz-components/h5/pages/member-card.config'
 import CardBgRadio from '@/views/biz-components/card-bg-radio/card-bg-radio'
+import FormBanner from '@/views/pages/brand/product/card/components#/form-banner.vue'
 import {
   ADMISSION_RANGE,
   SELL_TYPE,
@@ -655,7 +658,8 @@ export default {
     SelectShop,
     MemberCard,
     H5Container,
-    CardBgRadio
+    CardBgRadio,
+    FormBanner
   },
   data() {
     const form = this.$stForm.create()
@@ -690,6 +694,8 @@ export default {
         support_sales: SUPPORT_SALES.ALL_STORE,
         // 支持售卖门店
         sell_shop_list: [],
+        // 上架门店数量
+        shelf_num: 0,
         // 支持售卖时间
         start_time: '',
         end_time: '',
