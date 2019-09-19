@@ -8,7 +8,7 @@
             <st-button type="primary" class="mg-r16">+新建活动</st-button>
           </router-link>
           <router-link to="./checkin">
-            <st-button>核销兑换码</st-button>
+            <st-button type="default">核销兑换码</st-button>
           </router-link>
         </div>
         <div style="text-align:right">
@@ -47,7 +47,7 @@
         <span slot="join_num" slot-scope="record">
           <router-link
             :to="{
-              name: 'brand-marketing-plugin-lottery-info-user',
+              name: 'brand-marketing-plugin-lottery-info-users',
               query: { id: record.id }
             }"
           >
@@ -60,8 +60,8 @@
         <span slot="prize_num" slot-scope="record">
           <router-link
             :to="{
-              name: 'brand-marketing-plugin-lottery-info-user',
-              query: { id: record.id }
+              name: 'brand-marketing-plugin-lottery-info-users',
+              query: { id: record.id, prize_status: 1 }
             }"
           >
             {{ record.activity_prize_num }}
@@ -70,6 +70,7 @@
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
             <router-link
+              v-if="record.activity_status !== ACTIVITY_STATUS.ISSTOPED"
               :to="{
                 name: 'brand-marketing-plugin-lottery-info-prize',
                 query: { id: record.id }
@@ -77,19 +78,32 @@
             >
               数据
             </router-link>
-            <a @click="onGeneralize(record)">
+            <a
+              v-if="record.activity_status !== ACTIVITY_STATUS.ISSTOPED"
+              @click="onGeneralize(record)"
+            >
               推广
             </a>
             <router-link
+              v-if="record.activity_status !== ACTIVITY_STATUS.ISSTOPED"
               :to="{
                 name: 'brand-marketing-plugin-lottery-add',
-                query: { activity_id: record.id }
+                query: {
+                  activity_id: record.id,
+                  status: record.activity_status
+                }
               }"
             >
               编辑
             </router-link>
             <a @click="onStop(record)">
-              结束
+              {{
+                record.activity_status === ACTIVITY_STATUS.ISSTOPED
+                  ? '数据'
+                  : record.activity_status === ACTIVITY_STATUS.DISABLED
+                  ? '结束'
+                  : '取消'
+              }}
             </a>
           </st-table-actions>
         </div>
@@ -104,12 +118,14 @@ import { columns } from './index.config.ts'
 import tableMixin from '@/mixins/table.mixin'
 import { RouteService } from '@/services/route.service'
 import BrandMarketingPluginPoster from '@/views/biz-modals/brand/marketing/plugin/poster'
-
+import { ACTIVITY_STATUS } from '@/constants/marketing/lottery'
 export default {
   name: 'PluginLotteryIndex',
   mixins: [tableMixin],
   data() {
-    return {}
+    return {
+      ACTIVITY_STATUS
+    }
   },
   bem: {
     bPage: 'page-brand-marketing-plugin-lottery-index'
@@ -170,11 +186,27 @@ export default {
     },
     // 停止优惠券模板
     onStop(record) {
+      if (record.activity_status === this.ACTIVITY_STATUS.ISSTOPED) {
+        this.$router.push({
+          path: '/brand/marketing/plugin/lottery/info/prize',
+          query: {
+            id: record.id
+          }
+        })
+        return
+      }
       let that = this
       this.$confirm({
         title: '提示',
+        okText:
+          record.activity_status === this.ACTIVITY_STATUS.ISHOLDING
+            ? '取消'
+            : '结束',
+        cancelText: '我再想想',
         content:
-          '结束后当用户进入投放该优惠券的活动时，将无法领取该优惠券。确认要结束？',
+          record.activity_status === this.ACTIVITY_STATUS.ISHOLDING
+            ? '确认取消该活动'
+            : '确认要结束',
         onOk() {
           that.indexService.stopActivity(record.id).subscribe(res => {
             that.$router.reload()

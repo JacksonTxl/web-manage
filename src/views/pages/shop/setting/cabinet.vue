@@ -1,7 +1,7 @@
 <template>
   <div :class="b()">
     <div :class="b('nav')">
-      <st-t4 class="mg-l16 mg-b16">
+      <st-t4 class="mg-l20 mg-b16">
         区域
         <span class="st-des">（支持拖拽排序）</span>
       </st-t4>

@@ -40,7 +40,6 @@ export default {
     }
   },
   created() {
-    console.log(this.id)
     this.headerService.getHeaderInfo(this.id).subscribe()
   },
   components: {},

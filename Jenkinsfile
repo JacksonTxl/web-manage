@@ -36,6 +36,14 @@ pipeline {
         echo "https://saas.test.styd.cn"
       }
     }
+    stage('to=prod') {
+      when {
+        expression { BRANCH_NAME ==~ /(master).*/}
+      }
+      steps {
+        sh 'make rsync to=saas-nginx-m'
+      }
+    }
   }
   post {
     always {

@@ -23,14 +23,11 @@ export const allColumns = () => {
       title: '签到人数（私）',
       dataIndex: 'personal_checkin_num'
     },
-    /**
-     * TODO: 后端来不及修改先隐藏
-     */
-    // {
-    //   dataIndex: 'personal_checkin_amount',
-    //   slots: { title: 'personalTitle' },
-    //   scopedSlots: { customRender: 'personal_checkin_amount' }
-    // },
+    {
+      dataIndex: 'personal_checkin_amount',
+      slots: { title: 'personalTitle' },
+      scopedSlots: { customRender: 'personal_checkin_amount' }
+    },
     {
       title: '上课节数（团）',
       dataIndex: 'team_course_num',
@@ -51,15 +48,12 @@ export const allColumns = () => {
     {
       title: '签到人数（团）',
       dataIndex: 'team_checkin_num'
+    },
+    {
+      dataIndex: 'team_checkin_amount',
+      slots: { title: 'teamTitle' },
+      scopedSlots: { customRender: 'team_checkin_amount' }
     }
-    /**
-     * TODO: 后端来不及修改先隐藏
-     */
-    // {
-    //   dataIndex: 'team_checkin_amount',
-    //   slots: { title: 'teamTitle' },
-    //   scopedSlots: { customRender: 'team_checkin_amount' }
-    // }
   ]
 }
 export const coachColumns = () => {
@@ -95,14 +89,11 @@ export const coachColumns = () => {
       title: '签到人数（私）',
       dataIndex: 'personal_checkin_num'
     },
-    /**
-     * TODO: 后端来不及修改先隐藏
-     */
-    // {
-    //   dataIndex: 'personal_consume_amount',
-    //   slots: { title: 'personalTitle' },
-    //   scopedSlots: { customRender: 'personal_consume_amount' }
-    // },
+    {
+      dataIndex: 'personal_checkin_amount',
+      slots: { title: 'personalTitle' },
+      scopedSlots: { customRender: 'personal_checkin_amount' }
+    },
     {
       title: '上课节数（团）',
       dataIndex: 'team_course_num',
@@ -119,14 +110,11 @@ export const coachColumns = () => {
     {
       title: '签到人数（团）',
       dataIndex: 'team_checkin_num'
+    },
+    {
+      dataIndex: 'team_checkin_amount',
+      slots: { title: 'teamTitle' },
+      scopedSlots: { customRender: 'team_checkin_amount' }
     }
-    /**
-     * TODO: 后端来不及修改先隐藏
-     */
-    // {
-    //   dataIndex: 'team_checkin_amount',
-    //   slots: { title: 'teamTitle' },
-    //   scopedSlots: { customRender: 'team_checkin_amount' }
-    // }
   ]
 }

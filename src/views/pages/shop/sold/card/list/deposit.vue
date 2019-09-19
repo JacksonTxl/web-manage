@@ -205,7 +205,7 @@ export default {
     // 详情
     onDetail(record) {
       this.$router.push({
-        path: `/shop/sold/card/info/deposit/info/consumption-record`,
+        name: `shop-sold-card-info-deposit-info-operation-record`,
         query: { id: record.id }
       })
     },

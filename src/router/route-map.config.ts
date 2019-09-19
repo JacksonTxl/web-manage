@@ -79,13 +79,34 @@ export const routeMapConfig = {
       course_name: { type: String, default: '' }
     }
   },
-  // 'shop-product-course-schedule-team'(routeConfig: RouteConfig) {
-  //   routeConfig.queryOptions = {
-  //     course_id: { type: Number, default: -1 },
-  //     curt_id: { type: Number, default: -1 },
-  //     course_name: { type: String, default: '' }
-  //   }
-  // },
+  'shop-product-course-schedule-team-team'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      course_id: { type: Number, default: -1 },
+      court_id: { type: Number, default: -1 },
+      coach_id: { type: Number, default: -1 }
+    }
+  },
+  'shop-product-course-schedule-team-team-table'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      course_id: { type: Number, default: -1 },
+      court_id: { type: Number, default: -1 },
+      coach_id: { type: Number, default: -1 }
+    }
+  },
+  'shop-product-course-schedule-personal-personal'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '私教1v1排期'
+    routeConfig.queryOptions = {
+      coach_id: { type: Number, default: -1 }
+    }
+  },
+  'shop-product-course-schedule-personal-personal-reserve-table'(
+    routeConfig: RouteConfig
+  ) {
+    routeConfig.meta.title = '私教1v1排期'
+    routeConfig.queryOptions = {
+      coach_id: { type: Number, default: -1 }
+    }
+  },
   'brand-product-course-team-list-brand'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '品牌团体课程库'
     routeConfig.queryOptions = {
@@ -683,24 +704,28 @@ export const routeMapConfig = {
   },
   'shop-product-course-schedule-personal'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教1v1排期'
-    // routeConfig.redirect = {
-    //   name: 'shop-product-course-schedule-personal-personal'
-    // }
-  },
-  'shop-product-course-schedule-personal-calendar'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '私教1v1排期'
   },
   'shop-product-course-schedule-personal-table'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教1v1排期'
   },
   'shop-product-course-schedule-personal-team'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教小团课排期'
-    // routeConfig.redirect = {
-    //   name: 'shop-product-course-schedule-personal-team-personal-team'
-    // }
   },
-  'shop-product-course-schedule-personal-team-table'(routeConfig: RouteConfig) {
+  'shop-product-course-schedule-personal-team-personal-team-table'(
+    routeConfig: RouteConfig
+  ) {
     routeConfig.meta.title = '私教小团课排期'
+    routeConfig.queryOptions = {
+      coach_id: { type: Number, default: -1 }
+    }
+  },
+  'shop-product-course-schedule-personal-team-personal-team'(
+    routeConfig: RouteConfig
+  ) {
+    routeConfig.meta.title = '私教小团课排期'
+    routeConfig.queryOptions = {
+      coach_id: { type: Number, default: -1 }
+    }
   },
   'shop-product-course-manage-team-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '团体课'
@@ -949,7 +974,7 @@ export const routeMapConfig = {
     routeConfig.meta.tabs = ['brand-stat-revenue', 'brand-stat-order']
   },
   'brand-stat-revenue'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '营收统计'
+    routeConfig.meta.title = '营收'
     routeConfig.queryOptions = {
       shop_id: { type: Number, default: 0 },
       current_page: { type: Number, default: 1 },
@@ -960,7 +985,7 @@ export const routeMapConfig = {
     }
   },
   'brand-stat-order'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '订单统计'
+    routeConfig.meta.title = '订单'
     routeConfig.queryOptions = {
       shop: { type: Number, default: 0 },
       current_page: { type: Number, default: 1 },
@@ -1004,7 +1029,7 @@ export const routeMapConfig = {
     }
   },
   'brand-marketing-plugin-lottery-index'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '活动列表'
+    routeConfig.meta.title = '幸运大转盘'
     routeConfig.queryOptions = {
       activity_status: { type: Number },
       current_page: { type: Number, default: 1 },
@@ -1020,21 +1045,21 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
-  'brand-marketing-plugin-lottery-info-user'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '数据列表'
+  'brand-marketing-plugin-lottery-info-users'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '用户数据列表'
     routeConfig.queryOptions = {
-      activity_id: { type: String },
-      draw_status: { type: Number },
+      id: { type: String },
+      present_status: { type: Number },
       prize_type: { type: Number },
       prize_status: { type: Number },
       start_time: { type: String },
       end_time: { type: String },
-      page: { type: String },
-      size: { type: String }
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
     }
   },
   'brand-marketing-plugin-lottery-add'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '新增'
+    routeConfig.meta.title = '新增活动'
   },
   'brand-marketing-plugin-lottery-edit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑'

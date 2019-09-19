@@ -1,54 +1,57 @@
 <template>
-  <section class="pd-24">
+  <section class="page-member-info-log pd-x24 pd-y24">
     <st-table
-      :pagination="{
-        current: query.page,
-        total: page.total_counts,
-        pageSize: query.size
-      }"
+      :page="page"
       :columns="columns"
       :loading="loading.getList"
-      @change="onPageChange"
-      rowKey="key"
-      :dataSource="stList"
+      rowKey="id"
+      @change="onTableChange"
+      :dataSource="list"
     >
-      <template slot="operation_time" slot-scope="text">
-        {{ moment(text * 1000).format('YYYY-MM-DD HH:mm') }}
+      <template slot="operate_object" slot-scope="text, record">
+        <span v-if="text.length === 0">{{ record.object }}</span>
+        <div v-else>
+          <a-popover title="操作对象">
+            <template slot="content">
+              <pre>{{ record.object }}</pre>
+            </template>
+            <a class="pop-object__text">{{ text }}</a>
+          </a-popover>
+        </div>
+      </template>
+      <template slot="before_operate" slot-scope="text, record">
+        <span v-if="text.length === 0">{{ record.before }}</span>
+        <div v-else>
+          <a-popover title="操作前">
+            <template slot="content">
+              <pre>{{ record.before }}</pre>
+            </template>
+            <a class="pop__text">{{ text }}</a>
+          </a-popover>
+        </div>
+      </template>
+      <template slot="after_operate" slot-scope="text, record">
+        <span v-if="text.length === 0">{{ record.after }}</span>
+        <div v-else>
+          <a-popover title="操作后">
+            <template slot="content">
+              <pre>{{ record.after }}</pre>
+            </template>
+            <a class="pop__text">{{ text }}</a>
+          </a-popover>
+        </div>
       </template>
     </st-table>
   </section>
 </template>
 <script>
-import moment from 'moment'
 import { OperationRecordService } from './operation-record.service'
 import { RouteService } from '@/services/route.service'
-const columns = [
-  {
-    title: '操作时间',
-    dataIndex: 'operation_time',
-    scopedSlots: { customRender: 'operation_time' }
-  },
-  {
-    title: '操作内容',
-    dataIndex: 'operation_content',
-    scopedSlots: { customRender: 'operation_content' }
-  },
-  {
-    title: '操作人',
-    dataIndex: 'operator',
-    scopedSlots: { customRender: 'operator' }
-  },
-  {
-    title: '备注',
-    dataIndex: 'description',
-    scopedSlots: { customRender: 'description' }
-  }
-]
+import { columns } from './operation-record.config'
+import tableMixin from '@/mixins/table.mixin'
 export default {
   name: 'PageShopSoldCardMemberInfoOperation',
-  bem: {
-    basic: 'page-shop-sold'
-  },
+  mixins: [tableMixin],
   serviceInject() {
     return {
       routeService: RouteService,
@@ -64,27 +67,7 @@ export default {
     }
   },
   computed: {
-    stList() {
-      let array = []
-      this.list.forEach(i => {
-        let key = parseInt(Math.random() * 999999).toString()
-        array.push({ ...i, key: key })
-      })
-      return array
-    }
-  },
-  data() {
-    return {
-      columns
-    }
-  },
-  methods: {
-    moment,
-    onPageChange(data) {
-      this.$router.push({
-        query: { ...this.query, page: data.current, size: data.pageSize }
-      })
-    }
+    columns
   }
 }
 </script>

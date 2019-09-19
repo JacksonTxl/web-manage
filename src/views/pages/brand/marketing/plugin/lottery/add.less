@@ -1,12 +1,14 @@
 .page-brand-marketing-plugin-lottery-add {
+  height: 980px;
   &__content {
+    height: 100%;
     display: flex;
     padding-right: 24px;
     background: #fff;
   }
   &__h5 {
     width: 368px;
-    height: 780px;
+    height: 100%;
     background: rgba(247, 249, 252, 1);
   }
   &__swiper {
@@ -57,6 +59,10 @@
       color: #fff;
       .fz(24px);
       line-height: 36px;
+      span {
+        display: inline-block;
+        word-break: break-all;
+      }
     }
     &-title {
       .mg-b(16px);
@@ -78,15 +84,15 @@
         width: 174px;
         height: 174px;
         padding: 24px 20px;
-        max-height: 174px;
         text-align: center;
-        img {
+        .img {
           display: inline-block;
-          .mg-b(24px);
+          .mg-b(12px);
           max-width: 74px;
+          max-height: 74px;
         }
         .text {
-          font-size: 28px;
+          font-size: 22px;
         }
       }
       .run-item-0 {
@@ -125,7 +131,7 @@
       .run-item-6 {
         position: absolute;
         top: 360px;
-        left: 174px;
+        left: 0px;
       }
 
       .run-item-7 {
@@ -138,5 +144,75 @@
   &__form {
     flex: 1;
     padding-top: 56px;
+    .default-img {
+      display: block;
+      width: 96px;
+      max-height: 96px;
+    }
+    &-img {
+      width: 58px;
+      background: rgba(255, 255, 255, 1);
+      border: 1px solid rgba(205, 212, 223, 1);
+    }
+  }
+  &__share-upload {
+    width: 3582x;
+    height: 224px;
+    padding: 20px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(205, 212, 223, 1);
+    border-radius: 4px;
+    &::before {
+      content: '';
+      position: absolute;
+      left: 84px;
+      top: 16px;
+      border: 4px solid transparent;
+      border-bottom-color: #cdd4df;
+    }
+    &::after {
+      content: '';
+      position: absolute;
+      left: 84px;
+      top: 17px;
+      border: 4px solid transparent;
+      border-bottom-color: #fff;
+    }
+    &-text {
+      display: block;
+      font-size: 12px;
+      .c(#9bacb9);
+    }
+  }
+  &__lucky-upload {
+    width: 180px;
+    height: 161px;
+    padding: 14px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(205, 212, 223, 1);
+    text-align: center;
+    &::before {
+      content: '';
+      position: absolute;
+      left: 84px;
+      top: 18px;
+      border: 4px solid transparent;
+      border-bottom-color: #cdd4df;
+    }
+    &::after {
+      content: '';
+      position: absolute;
+      left: 84px;
+      top: 19px;
+      border: 4px solid transparent;
+      border-bottom-color: #fff;
+    }
+    &-text {
+      display: block;
+      margin-top: 12px;
+      font-size: 12px;
+      .c(#9bacb9);
+    }
   }
 }

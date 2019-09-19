@@ -23,7 +23,7 @@ export default {
     },
     sum: {
       type: [Number, String],
-      default: () => ''
+      default: () => 0
     },
     height: {
       type: Number,

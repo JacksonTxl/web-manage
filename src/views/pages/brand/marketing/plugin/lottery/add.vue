@@ -11,7 +11,7 @@
               :class="bPage('swiper')"
               v-if="isStopSwiper === STOP_SWIPER.DEFAULT"
             >
-              <swiper :options="sliderOptions" style="width:100%;">
+              <swiper :options="sliderOptions">
                 <swiper-slide
                   v-for="(item, index) in prizeInfoList"
                   :key="index"
@@ -37,19 +37,17 @@
                   v-for="(item, index) in prizeList"
                   :key="index"
                 >
-                  <div class="img">
-                    <img
-                      class="img"
-                      :src="item.prize.image_url"
-                      alt="奖品图片"
-                    />
-                  </div>
+                  <img class="img" :src="item.prize.image_url" alt="奖品图片" />
                   <div class="text">{{ item.prize_name }}</div>
                 </div>
               </div>
               <div v-if="notPrize.prize_name" class="img-wrap run-item-7">
                 <div class="img">
-                  <img :src="notPrize.prize.image_url" alt="奖品图片" />
+                  <img
+                    style="width:100%"
+                    :src="notPrize.prize ? notPrize.prize.image_url : ''"
+                    alt="奖品图片"
+                  />
                 </div>
                 <div class="text">{{ notPrize.prize_name }}</div>
               </div>
@@ -83,6 +81,7 @@
         </a-row>
         <div style="padding:24px;">
           <st-form
+            style="width:500px"
             :form="form"
             labelGutter="0"
             v-show="currentIndex == 0"
@@ -116,14 +115,14 @@
                 @change="onDateChange"
               ></a-range-picker>
             </st-form-item>
-            <st-form-item label="活动说明" required>
-              <a-textarea
+            <st-form-item label="活动说明">
+              <st-textarea
                 :maxlength="500"
                 @change="getDescription"
                 :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
                 placeholder="请输入活动说明"
                 v-decorator="decorators.activity_base.activity_description"
-              ></a-textarea>
+              ></st-textarea>
             </st-form-item>
             <st-form-item label="活动轮播获奖信息说明">
               <a-radio-group
@@ -154,24 +153,32 @@
                   {{ item.label }}
                 </a-radio>
               </a-radio-group>
-              <div v-if="shareType === 2">
-                <st-form-item label="选择图片">
+              <div v-if="shareType === 2" :class="bPage('share-upload')">
+                <st-form-item label="选择图片" labelWidth="60px">
                   <st-image-upload
-                    width="164px"
-                    height="164px"
+                    width="96px"
+                    height="96px"
                     :list="fileShareList"
                     @change="onShareChangeGetAvatar"
-                    :sizeLimit="2"
                     placeholder="上传图片"
                   ></st-image-upload>
+                  <span :class="bPage('share-upload-text')">
+                    请上传jbg、png格式的图片
+                  </span>
                 </st-form-item>
-                <st-form-item label="分享标题">
+                <st-form-item label="分享标题" labelWidth="60px">
                   <a-input
                     placeholder="分享标题"
                     v-decorator="decorators.activity_base.share_title"
                   ></a-input>
                 </st-form-item>
               </div>
+              <img
+                class="default-img"
+                v-else
+                :src="share[0].image_url"
+                alt="默认图片"
+              />
             </st-form-item>
             <st-form-item labelFix>
               <st-button type="primary" @click="next(1)">下一步</st-button>
@@ -179,6 +186,7 @@
           </st-form>
 
           <st-form
+            style="width:500px"
             :form="form"
             labelGutter="0"
             v-show="currentIndex == 1"
@@ -242,7 +250,9 @@
                 每人每天有
                 <a-input-number
                   :min="1"
-                  :max="9999"
+                  :max="999"
+                  :step="1"
+                  :precision="0"
                   @change="getPerTimes"
                   style="width: 100px;"
                   placeholder="请输入"
@@ -254,7 +264,9 @@
                 每人总共有
                 <a-input-number
                   :min="1"
-                  :max="9999"
+                  :max="999"
+                  :step="1"
+                  :precision="0"
                   style="width: 100px;"
                   placeholder="请输入"
                   v-decorator="decorators.activity_rule.total_times"
@@ -266,7 +278,9 @@
               每人最多可中奖
               <a-input-number
                 :min="1"
-                :max="9999"
+                :max="999"
+                :step="1"
+                :precision="0"
                 style="width: 100px;"
                 placeholder="请输入"
                 v-decorator="decorators.activity_rule.prize_times"
@@ -277,7 +291,7 @@
               <st-button type="primary" @click="next(2)">下一步</st-button>
             </st-form-item>
           </st-form>
-          <st-form :form="form" v-show="currentIndex == 2">
+          <st-form style="width:500px" :form="form" v-show="currentIndex == 2">
             <st-t3 class="mg-b24">奖品设置</st-t3>
             <st-form-table>
               <thead>
@@ -291,6 +305,8 @@
                 <tr>
                   <td colspan="6" class="st-form-table__add">
                     <st-button
+                      :disabled="query.activity_id && query.status === 1"
+                      @click="getCurPrizeIndex(-1)"
                       type="dashed"
                       block
                       v-if="prizeList.length < 7"
@@ -309,7 +325,9 @@
                     <td>{{ item.prize_type === 1 ? '优惠券' : '兑换码' }}</td>
                     <td>
                       {{
-                        item.support_shop_ids ? item.support_shop_ids.length : 0
+                        item.prize_type === 1
+                          ? item.shop_num || item.support_shop_ids.length
+                          : item.support_shop_ids.length
                       }}
                     </td>
                     <td>
@@ -319,17 +337,25 @@
                     <td>
                       <st-table-actions>
                         <a
+                          :disabled="query.activity_id && query.status === 1"
+                          @click="getCurPrizeIndex(index)"
                           v-modal-link="{
                             name: 'brand-marketing-plugin-add-prize',
                             props: {
-                              info: item
+                              info: item,
+                              id: query.activity_id,
+                              status: query.status
                             },
                             on: { change: getPrizeInfo }
                           }"
                         >
                           编辑
                         </a>
-                        <a href="javascript:;" @click="onDelete(index)">
+                        <a
+                          :disabled="query.activity_id && query.status === 1"
+                          href="javascript:;"
+                          @click="onDelete(index)"
+                        >
                           删除
                         </a>
                       </st-table-actions>
@@ -359,15 +385,28 @@
                   {{ item.label }}
                 </a-radio>
               </a-radio-group>
-              <st-image-upload
+              <div
                 v-if="notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM"
-                width="164px"
-                height="164px"
-                :list="fileList"
-                @change="onChangeGetAvatar"
-                :sizeLimit="1"
-                placeholder="上传图片"
-              ></st-image-upload>
+                :class="bPage('lucky-upload')"
+              >
+                <st-image-upload
+                  width="96px"
+                  height="96px"
+                  :list="fileList"
+                  @change="onChangeGetAvatar"
+                  placeholder="上传图片"
+                ></st-image-upload>
+                <span :class="bPage('lucky-upload-text')">
+                  请上传jbg、png格式的图片
+                </span>
+              </div>
+
+              <img
+                class="default-img"
+                v-else
+                :src="lucky[0].image_url"
+                alt="默认图片"
+              />
             </st-form-item>
             <st-form-item labelFix>
               <st-button type="primary" @click="onSubmit">完成</st-button>
@@ -451,6 +490,7 @@ export default {
         }
       ],
       currentIndex: 0,
+      curPrizeIndex: -1,
       notPrizeImgType: NOT_PRIZE_IMG_TYPE.DEFAULT,
       dateRangeVal: [],
       notPrize: {
@@ -509,13 +549,12 @@ export default {
     swiper,
     swiperSlide
   },
-  created() {
+  mounted() {
+    this.notPrize.prize = this.lucky[0]
     if (this.query.activity_id) {
       this.editVIew(this.query.activity_id)
     }
-    this.notPrize.prize = this.lucky[0]
   },
-  mounted() {},
   methods: {
     next(para) {
       if (para.index) {
@@ -567,14 +606,15 @@ export default {
       this.form.validate().then(value => {
         value.activity_base.start_time = this.preview.startTime
         value.activity_base.end_time = this.preview.endTime
+        // 选择自定义却不传图片
         value.activity_base.share_bg =
           this.shareType === SHARE_TYPE.CUSTOM
-            ? this.fileShareList[0]
+            ? this.fileShareList[0] || this.share[0]
             : this.share[0]
         value.activity_prizes = this.prizeList
         value.activity_lucky.lucky =
           this.notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM
-            ? this.fileList[0]
+            ? this.fileList[0] || this.prize[0]
             : this.prize[0]
         if (this.query.activity_id) {
           value.activity_id = this.query.activity_id
@@ -594,14 +634,14 @@ export default {
     getName(e) {
       this.notPrize.prize_name = e.target.value
     },
-    getPerTimes(e) {
-      this.preview.perTimes = e
+    getPerTimes(val) {
+      this.preview.perTimes = val
     },
-    getTotalTimes(e) {
-      this.preview.totalTimes = e
+    getTotalTimes(val) {
+      this.preview.totalTimes = val
     },
-    getDescription(e) {
-      this.preview.description = e.target.value
+    getDescription(val) {
+      this.preview.description = val
     },
     // 抽奖次数类型
     getCurTimesType(e) {
@@ -627,13 +667,14 @@ export default {
       this.notPrizeImgType = e.target.value
     },
     getPrizeInfo(val) {
-      this.prizeList = this.prizeList.map((item, index) => {
-        if (item.prize_name === val.prize_name) {
-          item = val
-        }
-        return item
-      })
-      this.prizeList.push(val)
+      if (this.curPrizeIndex > -1) {
+        this.prizeList.splice(this.curPrizeIndex, 1, val)
+      } else {
+        this.prizeList.push(val)
+      }
+    },
+    getCurPrizeIndex(index) {
+      this.curPrizeIndex = index
     },
     disabledDate(current) {
       return (
@@ -669,8 +710,11 @@ export default {
         this.timesType = res.activity_rule.draw_times_type
         this.isStopSwiper = res.activity_base.wheel_turn_around
         this.notPrizeImgType = res.activity_lucky.image_default
-        this.fileList[0] = res.activity_lucky.lucky
+        res.activity_lucky.lucky &&
+          (this.fileList[0] = res.activity_lucky.lucky)
         this.fileShareList[0] = res.activity_base.share_bg
+        this.share[0] = res.activity_base.share_bg
+        this.prize[0] = res.activity_lucky.lucky
       })
     }
   }

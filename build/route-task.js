@@ -118,7 +118,7 @@ const createRoute = () => {
       name: parsed.entry_dash,
       parent: hasParent ? parsed.dir_dash : '',
       path: hasParent ? parsed.name : '/' + parsed.entry,
-      guards: routeService ? [routeService] : [],
+      controller: routeService ? routeService : false,
       component,
       chunkName
     }

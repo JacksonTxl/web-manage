@@ -9,7 +9,7 @@ export const ruleOptions = (vm: any) => {
         },
         {
           pattern: pattern.CN_EN_NUM('1-10'),
-          message: '请输入1~15个字符'
+          message: '请输入1~10个字符'
         }
       ]
     },
@@ -23,15 +23,10 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     coupon_id: {},
-    prize_id: {
-      rules: [
-        {
-          message: '请填写昵称'
-        }
-      ]
-    },
+    prize_id: {},
+    activity_prize_id: {},
     is_shop_range: {
-      initialValue: 1,
+      initialValue: 2,
       rules: [
         {
           required: true,
@@ -73,7 +68,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     valid_days: {
-      initialValue: 3
+      initialValue: 1
     },
     prize: {
       initialValue: 1,
