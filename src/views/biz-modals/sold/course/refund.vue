@@ -165,7 +165,10 @@ export default {
     return {
       form,
       decorators,
-      show: false
+      show: false,
+      refundReason: this.refundReasons[0].value,
+      frozenPayType: this.refundChannelSaas[0].value,
+      description: ''
     }
   },
   created() {

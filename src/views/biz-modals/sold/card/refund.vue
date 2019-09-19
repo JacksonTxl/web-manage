@@ -221,6 +221,8 @@ export default {
     return {
       refundInfo: this.refundService.refundInfo$,
       sold: this.userService.soldEnums$,
+      refundReasons: this.refundService.refundReasons$,
+      refundChannelSaas: this.refundService.refundChannelSaas$,
       loading: this.refundService.loading$
     }
   },
@@ -232,8 +234,8 @@ export default {
       form,
       decorators,
       show: false,
-      refundReason: 1,
-      frozenPayType: 2,
+      refundReason: this.refundReasons[0].value,
+      frozenPayType: this.refundChannelSaas[0].value,
       description: ''
     }
   },
