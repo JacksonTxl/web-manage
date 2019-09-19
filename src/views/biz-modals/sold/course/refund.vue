@@ -1,7 +1,6 @@
 <template>
   <st-modal
     title="退款"
-    size="small"
     v-model="show"
     wrapClassName="modal-sold-course-refund"
   >
@@ -166,7 +165,10 @@ export default {
     return {
       form,
       decorators,
-      show: false
+      show: false,
+      refundReason: this.refundReasons[0].value,
+      frozenPayType: this.refundChannelSaas[0].value,
+      description: ''
     }
   },
   created() {
