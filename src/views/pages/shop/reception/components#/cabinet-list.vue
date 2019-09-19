@@ -27,6 +27,13 @@
             @mouseleave="mouseEventHander('leave', item.id)"
           >
             <div :class="b('item-num')">{{ item.serial_num }}</div>
+            <div class="smart-cabinet-logo">
+              <st-icon
+                class="smart-cabinet-logo__img"
+                type="cabinet-logo"
+                color="#3F66F6"
+              ></st-icon>
+            </div>
             <div :class="b('item-normal')" v-if="false">
               <div :class="b('item-status')">空闲</div>
               <div :class="b('item-price')">¥{{ item.price_num || 0 }}/天</div>
@@ -62,29 +69,6 @@
             <div :class="b('action')" v-if="isOperationInBatch">
               <a-checkbox :value="item.id" />
             </div>
-            <!-- <div :class="b('action')">
-              <a-checkbox v-if="isOperationInBatch" :value="item.id" />
-              <a
-                v-else
-                v-modal-link="{
-                  name: `shop-cabinet-edit-${type}`,
-                  props: {
-                    id: item.id,
-                    areaName
-                  },
-                  on: {
-                    change
-                  }
-                }"
-              >
-                <span
-                  v-if="editFlag === `enter-${item.id}` && auth.edit"
-                  :class="b('item-edit')"
-                >
-                  远程开柜
-                </span>
-              </a>
-            </div> -->
           </div>
         </div>
       </a-checkbox-group>
@@ -99,6 +83,7 @@ import { CabinetListService as CabinetService } from './cabinet-list.service'
 import ShopCabinetEditLongTerm from '@/views/biz-modals/shop/cabinet/edit-long-term'
 import ShopCabinetEditTemporary from '@/views/biz-modals/shop/cabinet/edit-temporary'
 import ShopCabinetOpen from '@/views/biz-modals/shop/cabinet/open'
+import { CABINET } from '@/constants/reception/cabinet'
 export default {
   bem: {
     b: 'shop-reception-cabinet',
@@ -155,6 +140,7 @@ export default {
   },
   data() {
     return {
+      CABINET,
       checkedList: [],
       indeterminate: false,
       checkAll: false,

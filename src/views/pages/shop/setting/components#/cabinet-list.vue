@@ -31,6 +31,13 @@
               @mouseenter="mouseEventHander('enter', item.id)"
               @mouseleave="mouseEventHander('leave', item.id)"
             >
+              <div class="smart-cabinet-logo" v-if="item.is_smart">
+                <st-icon
+                  class="smart-cabinet-logo__img"
+                  type="cabinet-logo"
+                  color="#3F66F6"
+                ></st-icon>
+              </div>
               <div :class="b('item-num')">{{ item.serial_num }}</div>
               <div v-if="item.price_num" :class="b('item-price')">
                 ¥{{ item.price_num }}/天

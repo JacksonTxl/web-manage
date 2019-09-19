@@ -42,7 +42,7 @@ export class CabinetService implements RouteGuard {
       this.areaService.getList()
     )
   }
-  beforeRouteEnter(to: ServiceRoute, form: ServiceRoute) {
+  beforeEach(to: ServiceRoute, form: ServiceRoute) {
     return this.init(to.meta.query)
   }
 }

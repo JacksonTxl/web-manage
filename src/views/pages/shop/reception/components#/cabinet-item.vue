@@ -1,24 +1,36 @@
-// TODO: 下个版本来做，预留文件
 <template>
-  <div :class="`${b()} ${b()}--${value.status}`">
-    <div :class="`${b('num')} ${b('num')}--${value.status}`">
-      {{ value.num }}
+  <div>
+    <div :class="b('num')">{{ item.serial_num }}</div>
+    <div :class="b('normal')" v-if="false">
+      <div :class="b('status')">空闲</div>
+      <div :class="b('price')">¥{{ item.price_num || 0 }}/天</div>
     </div>
-    <div v-if="!unavailable">
-      <div :class="b('name')">{{ value.name }}</div>
-      <div :class="b('date')" class="mg-t8">{{ value.date }}</div>
-      <div :class="b('time')">{{ value.time }}</div>
+    <div :class="bItemUsing()" v-if="true">
+      <p :class="bItemUsing('title')">胡超</p>
+      <p :class="bItemUsing('time')">到期时间</p>
+      <p :class="bItemUsing('time')">2019/03/06 00:00</p>
     </div>
-    <div v-else>
-      <div :class="b('des')">柜门损坏</div>
+    <p v-if="false" :class="b('item-broken-text')">胡超</p>
+    <div
+      :class="bItemUsing('action')"
+      v-if="editFlag === `enter-${item.id}` && auth.edit && !isOperationInBatch"
+    >
+      <a
+        v-modal-link="{
+          name: `shop-cabinet-open`,
+          props: {
+            id: 0
+          },
+          on: {
+            change
+          }
+        }"
+      >
+        <span>远程开柜</span>
+      </a>
     </div>
-    <div :class="`${b('status')} ${b('status')}--${value.status}`">
-      <st-tag v-if="available" type="cabinet-available" />
-      <st-tag v-if="inuse" type="cabinet-inuse" />
-      <span v-if="unavailable">不可用</span>
-    </div>
-    <div v-if="!unavailable" :class="b('price')">
-      {{ value.price }}
+    <div :class="b('action')" v-if="isOperationInBatch">
+      <a-checkbox :value="item.id" />
     </div>
   </div>
 </template>
@@ -26,7 +38,7 @@
 export default {
   name: 'CabinetItem',
   bem: {
-    b: 'st-cabinet-item'
+    b: 'shop-reception-cabinet-item'
   },
   props: {
     value: {
