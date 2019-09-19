@@ -23,6 +23,7 @@
         </a-radio-group>
         <div>
           <a-select
+            @select="getCurCouponShops"
             class="mg-t8"
             v-if="curPrizeType === PRIZE_TYPE.DEFAULT"
             placeholder="请选择优惠卷"
@@ -107,15 +108,16 @@
             {{ item.label }}
           </a-radio>
         </a-radio-group>
-        <div v-if="curImgType === 2">
+        <div v-if="curImgType === 2" class="prize-upload">
           <st-image-upload
             :list="fileList"
-            class="default-img"
+            width="96px"
+            height="96px"
             @change="onChangeGetAvatar"
             :sizeLimit="2"
             placeholder="上传图片"
           ></st-image-upload>
-          <div>请上传jbg、png格式的图片</div>
+          <div class="prize-upload-text">请上传jbg、png格式的图片</div>
         </div>
         <div v-else>
           <img :src="prize[0].image_url" alt="默认图片" class="default-img" />
@@ -175,6 +177,7 @@ export default {
       SHOP_TYPE,
       show: false,
       shopIds: [],
+      shopNum: 0,
       fileList: [],
       couponList: [],
       curPrizeType: PRIZE_TYPE.CUSTOM,
@@ -210,11 +213,19 @@ export default {
   },
   components: { SelectShop },
   methods: {
+    getCurCouponShops(e) {
+      this.couponList.filter(item => {
+        if (item.id === e) {
+          this.shopNum = item.shop_num
+        }
+      })
+    },
     onChangeShopSetting(val) {
       this.shopIds = val
     },
     getCouponList() {
-      return this.addPrizeService.getCouponList().subscribe(res => {
+      let coupon_id = this.info ? this.info.coupon_id : 0
+      return this.addPrizeService.getCouponList(coupon_id).subscribe(res => {
         this.couponList = res.list
       })
     },
@@ -246,6 +257,7 @@ export default {
             ? this.fileList[0] || this.prize[0]
             : this.prize[0]
         value.support_shop_ids = this.shopIds
+        value.shop_num = this.shopNum
         value.prize_id = this.info ? this.info.prize_id : 0
         value.activity_prize_id = this.info ? this.info.activity_prize_id : 0
         if (this.curPrizeType === this.PRIZE_TYPE.DEFAULT && !value.coupon_id) {

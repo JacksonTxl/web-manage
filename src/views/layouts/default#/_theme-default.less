@@ -45,6 +45,12 @@
     .ant-menu {
       .c(inherit);
     }
+    .ant-menu-inline .ant-menu-item:not(:last-child),
+    .ant-menu-vertical-left .ant-menu-item:not(:last-child),
+    .ant-menu-vertical-right .ant-menu-item:not(:last-child),
+    .ant-menu-vertical .ant-menu-item:not(:last-child) {
+      margin-bottom: 4px;
+    }
     .ant-menu-inline {
       .bd-n;
       .bg(inherit);
@@ -276,7 +282,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      .pd-lr(24px);
+      .pd-lr(16px);
       .bg(#f0f2f5);
       left: 200px;
       right: 0;

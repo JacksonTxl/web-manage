@@ -2,14 +2,13 @@
   <st-modal
     wrapClassName="modal-stat-personal-course"
     title="消课价值(私)"
+    width="960px"
     :footer="null"
     v-model="show"
   >
     <div class="search mg-b8">
-      <div class="search__left"></div>
-      <div class="search__right">
+      <div class="search__left">
         <a-select
-          class="mg-l8"
           placeholder="请选择课程类型"
           style="width: 120px"
           v-model="course_type"
@@ -40,6 +39,7 @@
           placeholder="请选择教练"
           optionFilterProp="children"
           style="width: 200px"
+          v-if="showTable === 'all'"
           v-model="coach_id"
           @change="getConsumeList"
           :filterOption="filterOption"
@@ -53,14 +53,14 @@
           </a-select-option>
         </a-select>
       </div>
+      <div class="search__right"></div>
     </div>
     <st-table
       :columns="columns"
       :rowKey="record => record.id"
-      :page="page"
       :loading="loading$.getConsumeList"
-      :showSizeChanger="false"
       :dataSource="consumeList$"
+      page-mode="client"
     ></st-table>
   </st-modal>
 </template>
@@ -94,10 +94,14 @@ export default {
     }
   },
   props: {
-    stat_date: String
+    record: {
+      type: Object,
+      default: () => {}
+    }
   },
   data() {
     return {
+      stat_date: '',
       show: false,
       consumeList: [],
       course_type: COURSE_TYPE.PERSONAL,
@@ -107,6 +111,9 @@ export default {
   },
   computed: {
     columns,
+    showTable() {
+      return this.$route.query.showTable || 'all'
+    },
     page() {
       const { current_page, total_counts } = this.page$
       return { current_page, total_counts }
@@ -139,6 +146,8 @@ export default {
     },
     init() {
       const course_type = this.course_type
+      this.coach_id = this.record.coach_id || -1
+      this.stat_date = this.record.stat_date
       this.personalConsumeService
         .init({ course_type }, { ...this.query })
         .subscribe()

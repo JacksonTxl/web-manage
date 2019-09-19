@@ -109,6 +109,10 @@ export default {
   computed: { columns },
   methods: {
     getCheckinList() {
+      if (!this.keyword) {
+        this.message.warning({ content: '请输入核销码' })
+        return
+      }
       return this.checkinService.getCheckinList(this.keyword).subscribe(res => {
         this.isShowTable = true
       })

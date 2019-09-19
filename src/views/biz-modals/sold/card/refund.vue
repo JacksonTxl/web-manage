@@ -1,10 +1,5 @@
 <template>
-  <st-modal
-    title="退款"
-    size="small"
-    v-model="show"
-    wrapClassName="modal-sold-card-refund"
-  >
+  <st-modal title="退款" v-model="show" wrapClassName="modal-sold-card-refund">
     <div :class="refund('content')">
       <a-row :class="refund('info')" v-if="isDeposit">
         <a-col :span="13" class="mg-b36">
@@ -226,6 +221,8 @@ export default {
     return {
       refundInfo: this.refundService.refundInfo$,
       sold: this.userService.soldEnums$,
+      refundReasons: this.refundService.refundReasons$,
+      refundChannelSaas: this.refundService.refundChannelSaas$,
       loading: this.refundService.loading$
     }
   },
@@ -237,8 +234,8 @@ export default {
       form,
       decorators,
       show: false,
-      refundReason: 1,
-      frozenPayType: 2,
+      refundReason: this.refundReasons[0].value,
+      frozenPayType: this.refundChannelSaas[0].value,
       description: ''
     }
   },

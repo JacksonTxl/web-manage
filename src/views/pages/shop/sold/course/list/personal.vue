@@ -66,6 +66,18 @@
                 修改剩余课时
               </a>
               <a
+                v-if="record.auth['shop:sold:sold_personal_course|reactive']"
+                @click="onActivated(record)"
+              >
+                重新激活
+              </a>
+              <a
+                v-if="record.auth['shop:sold:sold_personal_course|expire']"
+                @click="onLease(record)"
+              >
+                延长有效期
+              </a>
+              <a
                 v-if="record.auth['shop:sold:sold_personal_course|frozen']"
                 @click="onFreeze(record)"
               >
@@ -124,6 +136,8 @@ import SoldCourseFreeze from '@/views/biz-modals/sold/course/freeze'
 import SoldCourseRefund from '@/views/biz-modals/sold/course/refund'
 import SoldCourseSurplusPersonal from '@/views/biz-modals/sold/course/surplus-personal'
 import SoldCourseTransfer from '@/views/biz-modals/sold/course/transfer'
+import SoldCourseLease from '@/views/biz-modals/sold/course/lease'
+import SoldCourseActivated from '@/views/biz-modals/sold/course/activated'
 export default {
   name: 'PageShopSoldCoursePersonalList',
   mixins: [tableMixin],
@@ -135,7 +149,9 @@ export default {
     SoldCourseFreeze,
     SoldCourseRefund,
     SoldCourseSurplusPersonal,
-    SoldCourseTransfer
+    SoldCourseTransfer,
+    SoldCourseLease,
+    SoldCourseActivated
   },
   serviceProviders() {
     return [PersonalService]
@@ -274,6 +290,36 @@ export default {
         name: 'sold-course-surplus-personal',
         props: {
           courseData: record
+        },
+        on: {
+          success: () => {
+            this.$router.reload()
+          }
+        }
+      })
+    },
+    // 重新激活
+    onActivated(record) {
+      this.$modalRouter.push({
+        name: 'sold-course-activated',
+        props: {
+          type: 'personal',
+          id: record.id
+        },
+        on: {
+          success: () => {
+            this.$router.reload()
+          }
+        }
+      })
+    },
+    // 延长有效期
+    onLease(record) {
+      this.$modalRouter.push({
+        name: 'sold-course-lease',
+        props: {
+          type: 'personal',
+          id: record.id
         },
         on: {
           success: () => {

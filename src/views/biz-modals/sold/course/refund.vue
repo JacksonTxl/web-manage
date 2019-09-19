@@ -1,7 +1,6 @@
 <template>
   <st-modal
     title="退款"
-    size="small"
     v-model="show"
     wrapClassName="modal-sold-course-refund"
   >

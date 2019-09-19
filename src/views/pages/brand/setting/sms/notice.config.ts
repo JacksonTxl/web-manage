@@ -1,8 +1,8 @@
 export const thsMember = () => {
   return [
-    {
-      title: '模板标题'
-    },
+    // {
+    //   title: '模板标题'
+    // },
     {
       title: '发送规则'
     },

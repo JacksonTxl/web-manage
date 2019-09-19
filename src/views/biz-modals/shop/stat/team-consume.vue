@@ -2,15 +2,13 @@
   <st-modal
     wrapClassName="modal-stat-team-course"
     title="消课价值(团)"
-    width="878px"
+    width="960px"
     :footer="null"
     v-model="show"
   >
     <div class="search mg-b8">
-      <div class="search__left"></div>
-      <div class="search__right">
+      <div class="search__left">
         <a-select
-          class="mg-l8"
           showSearch
           placeholder="请选择课程"
           optionFilterProp="children"
@@ -33,6 +31,7 @@
           placeholder="请选择教练"
           optionFilterProp="children"
           style="width: 200px"
+          v-if="showTable === 'all'"
           v-model="coach_id"
           @change="getConsumeList"
           :filterOption="filterOption"
@@ -46,14 +45,14 @@
           </a-select-option>
         </a-select>
       </div>
+      <div class="search__right"></div>
     </div>
     <st-table
       :columns="columns"
       :rowKey="record => record.id"
-      :page="page"
       :loading="loading$.getConsumeList"
-      :showSizeChanger="false"
       :dataSource="consumeList$"
+      page-mode="client"
     ></st-table>
   </st-modal>
 </template>
@@ -85,11 +84,15 @@ export default {
     }
   },
   props: {
-    stat_date: String
+    record: {
+      type: Object,
+      default: () => {}
+    }
   },
   data() {
     return {
       show: false,
+      stat_date: '',
       consumeList: [],
       course_type: COURSE_TYPE.TEAM,
       coach_id: -1,
@@ -100,6 +103,9 @@ export default {
   },
   computed: {
     columns,
+    showTable() {
+      return this.$route.query.showTable || 'all'
+    },
     page() {
       const { current_page, total_counts } = this.page$
       return { current_page, total_counts }
@@ -124,12 +130,17 @@ export default {
           .toLowerCase()
           .indexOf(input.toLowerCase()) >= 0
       )
+    },
+    init() {
+      this.coach_id = this.record.coach_id || -1
+      this.stat_date = this.record.stat_date
+      this.teamConsumeService
+        .init({ course_type: COURSE_TYPE.TEAM }, { ...this.query })
+        .subscribe()
     }
   },
   mounted() {
-    this.teamConsumeService
-      .init({ course_type: COURSE_TYPE.TEAM }, { ...this.query })
-      .subscribe()
+    this.init()
   }
 }
 </script>
