@@ -1,4 +1,4 @@
-import { forkJoin } from 'rxjs'
+import { anyAll } from '@/operators'
 import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
 import { Effect, State } from 'rx-state/src'
 import { CabinetAreaService as AreaService } from '../setting/components#/area.service'
@@ -37,12 +37,12 @@ export class CabinetService implements RouteGuard {
     return this.areaService.sort({ list })
   }
   init(query: any) {
-    return forkJoin(
+    return anyAll(
       this.cabinetListService.getList(query.type, query.id),
       this.areaService.getList()
     )
   }
-  beforeEach(to: ServiceRoute, form: ServiceRoute) {
+  beforeRouteEnter(to: ServiceRoute, form: ServiceRoute) {
     return this.init(to.meta.query)
   }
 }
