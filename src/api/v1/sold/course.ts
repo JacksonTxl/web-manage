@@ -87,9 +87,15 @@ export class CourseApi extends Api {
     })
   }
   /**
-   * 售出私教课重新激活/延长结束时间详情页
+   * 售出私教课重新激活详情页
    */
-  getLeaseAndactivatedCourseInfo(id: string) {
+  getActivatedCourseInfo(id: string) {
+    return this.http.get(`/v1/sold/course/personal/activated/${id}`)
+  }
+  /**
+   * 售出私教课延长结束时间详情页
+   */
+  getLeaseCourseInfo(id: string) {
     return this.http.get(`/v1/sold/course/personal/lease/${id}`)
   }
   /**
