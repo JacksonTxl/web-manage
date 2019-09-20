@@ -16,7 +16,11 @@
           }"
         >
           <div :class="b('nav-item-content')">
-            <span>{{ item.area_name }}({{ item.cabinet_num }})</span>
+            <span>
+              {{ item.area_name }}({{ item.free_cabinet_count }}/{{
+                item.cabinet_num
+              }})
+            </span>
           </div>
         </div>
       </draggable>
