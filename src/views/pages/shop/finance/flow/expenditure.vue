@@ -4,10 +4,13 @@
       <st-search-panel :class="bSearch()">
         <div :class="bSearch('radio')" class="mg-t24 search-item">
           <span class="label">收银方式:</span>
-          <st-search-radio
-            class="value"
-            v-model="query.pay_channel"
-            :list="payType$"
+          <a-checkbox @change="onCheckAllChange" :checked="checkAll">
+            全部
+          </a-checkbox>
+          <a-checkbox-group
+            @change="onChangePayType"
+            v-model="checkedList"
+            :options="payType$"
           />
         </div>
         <div :class="bSearch('range-picker')" class="mg-t24 search-item">
@@ -85,6 +88,9 @@ export default {
   },
   data() {
     return {
+      checkedList: [],
+      indeterminate: false,
+      checkAll: false,
       selectTime: {
         startTime: {
           showTime: false,
@@ -110,6 +116,20 @@ export default {
     columns
   },
   methods: {
+    onChangePayType(checkedList) {
+      this.indeterminate =
+        !!checkedList.length && checkedList.length < this.payType$.length
+      this.checkAll = checkedList.length === this.payType$.length
+    },
+    onCheckAllChange(e) {
+      Object.assign(this, {
+        checkedList: e.target.checked
+          ? this.payType$.map(item => item.value)
+          : [],
+        indeterminate: false,
+        checkAll: e.target.checked
+      })
+    },
     onSearchNative() {
       const start_time = this.selectTime.startTime.value
         ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00`
@@ -117,6 +137,7 @@ export default {
       const end_time = this.selectTime.endTime.value
         ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59`
         : ''
+      this.query.pay_channel = this.checkedList
       this.$router.push({ query: { ...this.query, start_time, end_time } })
     },
     onSearhReset() {}

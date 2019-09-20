@@ -4,10 +4,13 @@
       <st-search-panel :class="bSearch()">
         <div :class="bSearch('radio')" class="mg-t24 search-item">
           <span class="label">收银方式:</span>
-          <st-search-radio
-            class="value"
-            v-model="query.pay_channel"
-            :list="payType$"
+          <a-checkbox @change="onCheckAllChange" :checked="checkAll">
+            全部
+          </a-checkbox>
+          <a-checkbox-group
+            @change="onChangePayType"
+            v-model="checkedList"
+            :options="payType$"
           />
         </div>
         <div :class="bSearch('amount')" class="mg-t24 search-item">
@@ -52,6 +55,11 @@
       :dataSource="list$"
     >
       <span slot="flow_type" slot-scope="text">{{ text.name }}</span>
+      <div slot="action" slot-scope="text, record">
+        <st-table-actions>
+          <a @click="onClickFlowChargeAgainst(record)">流水冲销</a>
+        </st-table-actions>
+      </div>
     </st-table>
   </st-panel>
 </template>
@@ -60,12 +68,17 @@ import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { IncomeService } from './income.service'
 import { columns } from './income.config.ts'
+import ShopFinanceFlow from '@/views/biz-modals/shop/finance/flow'
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'FinanceFlowIncome',
   mixins: [tableMixin],
   bem: {
     bPage: 'page-shop-flow-income',
     bSearch: 'search'
+  },
+  modals: {
+    ShopFinanceFlow
   },
   serviceInject() {
     return {
@@ -85,6 +98,9 @@ export default {
   },
   data() {
     return {
+      checkedList: [],
+      indeterminate: false,
+      checkAll: false,
       selectTime: {
         startTime: {
           showTime: false,
@@ -110,6 +126,35 @@ export default {
     columns
   },
   methods: {
+    onChangePayType(checkedList) {
+      this.indeterminate =
+        !!checkedList.length && checkedList.length < this.payType$.length
+      this.checkAll = checkedList.length === this.payType$.length
+    },
+    onCheckAllChange(e) {
+      Object.assign(this, {
+        checkedList: e.target.checked
+          ? this.payType$.map(item => item.value)
+          : [],
+        indeterminate: false,
+        checkAll: e.target.checked
+      })
+    },
+    onClickFlowChargeAgainst(record) {
+      console.log(record)
+      this.$modalRouter.push({
+        name: 'shop-finance-flow',
+        props: {
+          id: record.flow_id,
+          order_id: record.order_id
+        },
+        on: {
+          success: result => {
+            this.$router.reload()
+          }
+        }
+      })
+    },
     onSearchNative() {
       const start_time = this.selectTime.startTime.value
         ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00`
@@ -117,6 +162,7 @@ export default {
       const end_time = this.selectTime.endTime.value
         ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59`
         : ''
+      this.query.pay_channel = this.checkedList
       this.$router.push({ query: { ...this.query, start_time, end_time } })
     },
     onSearhReset() {}

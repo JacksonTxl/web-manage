@@ -941,7 +941,6 @@ export const routeMapConfig = {
       end_amount: { type: Number },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
-      pay_channel: { type: Number, default: -1 },
       start_time: { type: String, default: '' },
       end_time: { type: String, default: '' }
     }
@@ -955,8 +954,7 @@ export const routeMapConfig = {
       end_time: { type: String, default: '' },
       start_amount: { type: Number },
       end_amount: { type: Number },
-      size: { type: Number, default: 20 },
-      pay_channel: { type: Number, default: -1 }
+      size: { type: Number, default: 20 }
     }
   },
   'shop-stat-revenue'(routeConfig: RouteConfig) {

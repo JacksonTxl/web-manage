@@ -7,8 +7,8 @@ export const columns = () => {
     },
     {
       title: '预约人',
-      dataIndex: 'member_name',
-      scopedSlots: { customRender: 'member_name' }
+      dataIndex: 'member',
+      scopedSlots: { customRender: 'member' }
     },
     {
       title: '手机号',
