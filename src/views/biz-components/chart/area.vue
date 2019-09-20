@@ -2,7 +2,7 @@
   <div :id="id"></div>
 </template>
 <script>
-import G2 from 'st-g2'
+import G2 from '@antv/g2'
 const defaultOptions = {
   /**
    * 指定图表的高度，单位为 'px

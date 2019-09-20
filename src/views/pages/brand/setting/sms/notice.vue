@@ -24,12 +24,11 @@
       <st-t3 class="mg-b16">通知门店信息</st-t3>
       <div :class="bItem('table')">
         <div :class="bItem('table-title')">
-          <div
-            :class="bItem('table-th')"
-            v-for="(item, index) in thsShop"
-            :key="index"
-          >
-            {{ item.title }}
+          <div :class="bItem('table-th')">模板标题</div>
+          <div class="th-wrap">
+            <div class="th" v-for="(item, index) in thsShop" :key="index">
+              {{ item.title }}
+            </div>
           </div>
         </div>
         <div

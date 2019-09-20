@@ -121,7 +121,7 @@ export default {
       return current && current < moment(this.info$.end_time).endOf('day')
     },
     init() {
-      this.service.getLeaseAndactivatedCourseInfo(this.id).subscribe(res => {
+      this.service.getActivatedCourseInfo(this.id).subscribe(res => {
         this.form.setFieldsValue({
           end_time: moment(res.info.reset_end_time)
         })
