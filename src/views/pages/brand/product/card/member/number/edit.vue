@@ -124,7 +124,8 @@
                       <tr>
                         <td colspan="6" class="pd-y0 pd-x0">
                           <st-button
-                            :disabled="rallyPriceList.length > 3 || isShelfCard"
+                            v-if="!isShelfCard"
+                            :disabled="rallyPriceList.length > 3"
                             type="dashed"
                             icon="add"
                             class="page-price-setting-set__add"
@@ -191,6 +192,7 @@
                             <a-select
                               slot="addonAfter"
                               :value="item.time.unit"
+                              :disabled="isShelfCard"
                               @change="
                                 e =>
                                   brandPriceSettingHandleChange({
@@ -664,7 +666,7 @@ import H5Container from '@/views/biz-components/h5/h5-container'
 import h5mixin from '../period/h5mixin'
 import { MEMBER_CARD } from '@/views/biz-components/h5/pages/member-card.config'
 import CardBgRadio from '@/views/biz-components/card-bg-radio/card-bg-radio'
-import FormBanner from '@/views/pages/brand/product/card/components#/form-banner.vue'
+import FormBanner from '@/views/biz-components/card/form-banner.vue'
 import {
   ADMISSION_RANGE,
   SELL_TYPE,
@@ -741,7 +743,7 @@ export default {
         // 支持售卖门店
         sell_shop_list: [],
         // 上架门店数量
-        shelf_num: 0,
+        shelf_shop_num: 0,
 
         // 支持售卖时间
         start_time: '',

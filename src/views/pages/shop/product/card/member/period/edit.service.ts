@@ -17,7 +17,7 @@ export class EditService implements RouteGuard {
   isShelfCard$ = computed<boolean>(
     (card: any) => {
       if (!card.shelf_shop_num) return false
-      return card.shelf_shop_num.length > 0
+      return card.shelf_shop_num > 0
     },
     [this.cardInfo$]
   )

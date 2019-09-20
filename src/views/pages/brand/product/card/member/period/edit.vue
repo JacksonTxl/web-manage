@@ -155,6 +155,7 @@
                           >
                             <a-select
                               slot="addonAfter"
+                              :disabled="isShelfCard"
                               :value="item.time.unit"
                               @change="
                                 e =>
@@ -631,7 +632,7 @@ import H5Container from '@/views/biz-components/h5/h5-container'
 import h5mixin from './h5mixin'
 import { MEMBER_CARD } from '@/views/biz-components/h5/pages/member-card.config'
 import CardBgRadio from '@/views/biz-components/card-bg-radio/card-bg-radio'
-import FormBanner from '@/views/pages/brand/product/card/components#/form-banner.vue'
+import FormBanner from '@/views/biz-components/card/form-banner.vue'
 import {
   ADMISSION_RANGE,
   SELL_TYPE,

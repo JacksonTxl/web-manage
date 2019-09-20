@@ -16,8 +16,9 @@ export class EditService implements RouteGuard {
   sellType$ = this.userService.getOptions$('member_card.sell_type')
   isShelfCard$ = computed<boolean>(
     (card: any) => {
+      console.log(card)
       if (!card.shelf_shop_num) return false
-      return card.shelf_shop_num.length > 0
+      return card.shelf_shop_num > 0
     },
     [this.cardInfo$]
   )

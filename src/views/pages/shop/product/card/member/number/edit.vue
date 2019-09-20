@@ -15,6 +15,7 @@
         </h5-container>
       </div>
       <div class="page-content">
+        <form-banner :shelf-number="cardInfo.shelf_shop_num"></form-banner>
         <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8" class="page-content-card-line__row">
             <a-col :lg="22">
@@ -375,6 +376,7 @@ import H5Container from '@/views/biz-components/h5/h5-container'
 import h5mixin from '../period/h5mixin'
 import { MEMBER_CARD } from '@/views/biz-components/h5/pages/member-card.config'
 import CardBgRadio from '@/views/biz-components/card-bg-radio/card-bg-radio'
+import FormBanner from '@/views/biz-components/card/form-banner.vue'
 import { SELL_TYPE, UNIT, CARD_TYPE } from '@/constants/card/member'
 import { ruleOptions } from './number.config'
 export default {
@@ -383,7 +385,8 @@ export default {
   components: {
     MemberCard,
     H5Container,
-    CardBgRadio
+    CardBgRadio,
+    FormBanner
   },
   serviceProviders() {
     return [EditService]

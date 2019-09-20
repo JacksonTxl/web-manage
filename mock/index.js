@@ -34,7 +34,7 @@ const mockerApis = {
   /**
    * mock start
    */
-  'GET /_api/v1/cards/member/brand/back/81717675753546': mockJson
+  'GET /_api/v1/cards/member/shop/back/181184018055236': mockJson
 }
 
 module.exports = wrapper(mockerApis)
