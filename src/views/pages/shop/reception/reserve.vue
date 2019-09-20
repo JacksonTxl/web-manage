@@ -45,6 +45,7 @@
         @click="onAddReverse"
         type="primary"
         class="shop-member-list-button"
+        v-show="query.reserve_type === 2"
         icon="add"
       >
         到访预约
