@@ -60,6 +60,7 @@
                     设置支持此会员卡出入场馆范围
                   </p>
                   <select-shop
+                    :disabled="isShelfCard"
                     :shopIds="cardData.admission_shop_list"
                     @change="admission_range_change"
                   ></select-shop>
@@ -121,7 +122,7 @@
                       <tr>
                         <td colspan="5" class="pd-y0 pd-x0">
                           <st-button
-                            :disabled="rallyPriceList.length > 3"
+                            :disabled="rallyPriceList.length > 3 || isShelfCard"
                             type="dashed"
                             icon="add"
                             class="page-price-setting-set__add"
@@ -225,7 +226,12 @@
                           ></st-input-number>
                         </td>
                         <td>
-                          <a @click="brand_price_delete(index)">删除</a>
+                          <a
+                            v-if="!isShelfCard"
+                            @click="brand_price_delete(index)"
+                          >
+                            删除
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -243,11 +249,11 @@
                 >
                   <st-form-table>
                     <colgroup>
-                      <col style="width:18%;" />
-                      <col style="width:36%;" />
-                      <col style="width:18%;" />
-                      <col style="width:18%;" />
-                      <col style="width:10%;" />
+                      <col />
+                      <col />
+                      <col />
+                      <col />
+                      <col style="width:60px;" />
                     </colgroup>
                     <thead>
                       <tr>
@@ -262,7 +268,7 @@
                       <tr>
                         <td colspan="5" class="pd-y0 pd-x0">
                           <st-button
-                            :disabled="shopPriceList.length > 3"
+                            :disabled="shopPriceList.length > 3 || isShelfCard"
                             type="dashed"
                             icon="add"
                             class="page-price-setting-set__add"
@@ -390,7 +396,12 @@
                           </st-input-number>
                         </td>
                         <td>
-                          <a @click="shop_price_delete(index)">删除</a>
+                          <a
+                            v-if="!isShelfCard"
+                            @click="shop_price_delete(index)"
+                          >
+                            删除
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -433,6 +444,7 @@
                     设置支持此会员卡售卖场馆范围
                   </p>
                   <select-shop
+                    :disabled="isShelfCard"
                     :shopIds="cardData.sell_shop_list"
                     @change="sales_shop_change"
                   ></select-shop>

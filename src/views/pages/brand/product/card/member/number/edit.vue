@@ -38,6 +38,7 @@
                 required
               >
                 <a-radio-group
+                  :disabled="isShelfCard"
                   @change="admission_range"
                   v-decorator="decorators.cardData.admission_range"
                 >
@@ -75,6 +76,7 @@
                 :help="priceValidatorText"
               >
                 <a-radio-group
+                  :disabled="isShelfCard"
                   @change="price_range"
                   v-show="
                     cardData.admission_range === ADMISSION_RANGE.ONLY_STORE
@@ -101,20 +103,20 @@
                 >
                   <st-form-table>
                     <colgroup>
-                      <col style="width:18%;" />
-                      <col style="width:18%;" />
-                      <col style="width:18%;" />
-                      <col style="width:18%;" />
-                      <col style="width:18%;" />
-                      <col style="width:10%;" />
+                      <col />
+                      <col />
+                      <col style="width:28%;" />
+                      <col />
+                      <col />
+                      <col style="width:60px;" />
                     </colgroup>
                     <thead>
                       <tr>
-                        <th>入场次数</th>
-                        <th>售价</th>
+                        <th>入场次数/次</th>
+                        <th>售价/元</th>
                         <th>有效期</th>
-                        <th class="white-nowrap">允许冻结天数</th>
-                        <th>赠送上限</th>
+                        <th class="white-nowrap">允许冻结/天</th>
+                        <th>赠送上限/天</th>
                         <th>操作</th>
                       </tr>
                     </thead>
@@ -122,7 +124,7 @@
                       <tr>
                         <td colspan="6" class="pd-y0 pd-x0">
                           <st-button
-                            :disabled="rallyPriceList.length > 3"
+                            :disabled="rallyPriceList.length > 3 || isShelfCard"
                             type="dashed"
                             icon="add"
                             class="page-price-setting-set__add"
@@ -139,6 +141,7 @@
                       >
                         <td>
                           <st-input-number
+                            :disabled="isShelfCard"
                             :min="1"
                             :max="99999"
                             :value="item.validity_times"
@@ -150,12 +153,11 @@
                                   col: 'validity_times'
                                 })
                             "
-                          >
-                            <span slot="addonAfter">次</span>
-                          </st-input-number>
+                          ></st-input-number>
                         </td>
                         <td>
                           <st-input-number
+                            :disabled="isShelfCard"
                             :float="true"
                             :min="0"
                             :max="999999.9"
@@ -168,15 +170,14 @@
                                   col: 'rally_price'
                                 })
                             "
-                          >
-                            <span slot="addonAfter">元</span>
-                          </st-input-number>
+                          ></st-input-number>
                         </td>
                         <td>
                           <st-input-number
                             :min="1"
                             :max="99999"
                             :value="item.time.num"
+                            :disabled="isShelfCard"
                             @change="
                               e =>
                                 brandPriceSettingHandleChange({
@@ -215,6 +216,7 @@
                             :min="1"
                             :max="99999"
                             :value="item.frozen_day"
+                            :disabled="isShelfCard"
                             @change="
                               e =>
                                 brandPriceSettingHandleChange({
@@ -223,15 +225,14 @@
                                   col: 'frozen_day'
                                 })
                             "
-                          >
-                            <span slot="addonAfter">天</span>
-                          </st-input-number>
+                          ></st-input-number>
                         </td>
                         <td>
                           <st-input-number
                             :min="1"
                             :max="99999"
                             :value="item.gift_unit"
+                            :disabled="isShelfCard"
                             @change="
                               e =>
                                 brandPriceSettingHandleChange({
@@ -240,12 +241,15 @@
                                   col: 'gift_unit'
                                 })
                             "
-                          >
-                            <span slot="addonAfter">次</span>
-                          </st-input-number>
+                          ></st-input-number>
                         </td>
                         <td>
-                          <a @click="brand_price_delete(index)">删除</a>
+                          <a
+                            v-if="!isShelfCard"
+                            @click="brand_price_delete(index)"
+                          >
+                            删除
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -263,20 +267,20 @@
                 >
                   <st-form-table>
                     <colgroup>
-                      <col style="width:15%;" />
-                      <col style="width:30%;" />
-                      <col style="width:15%;" />
-                      <col style="width:15%;" />
-                      <col style="width:15%;" />
-                      <col style="width:10%;" />
+                      <col />
+                      <col />
+                      <col />
+                      <col />
+                      <col />
+                      <col style="width:60px;" />
                     </colgroup>
                     <thead>
                       <tr>
-                        <th>入场次数</th>
-                        <th>售价范围</th>
+                        <th>入场次数/次</th>
+                        <th>售价范围/元</th>
                         <th>有效期</th>
-                        <th class="white-nowrap">允许冻结天数</th>
-                        <th>赠送上限</th>
+                        <th class="white-nowrap">允许冻结/天</th>
+                        <th>赠送上限/天</th>
                         <th>操作</th>
                       </tr>
                     </thead>
@@ -284,7 +288,7 @@
                       <tr>
                         <td colspan="6" class="pd-y0 pd-x0">
                           <st-button
-                            :disabled="shopPriceList.length > 3"
+                            :disabled="shopPriceList.length > 3 || isShelfCard"
                             type="dashed"
                             icon="add"
                             class="page-price-setting-set__add"
@@ -301,6 +305,7 @@
                       >
                         <td>
                           <st-input-number
+                            :disabled="isShelfCard"
                             :min="1"
                             :max="99999"
                             :value="item.validity_times"
@@ -312,9 +317,7 @@
                                   col: 'validity_times'
                                 })
                             "
-                          >
-                            <span slot="addonAfter">次</span>
-                          </st-input-number>
+                          ></st-input-number>
                         </td>
                         <td>
                           <st-input-number
@@ -322,6 +325,7 @@
                             :float="true"
                             :min="0"
                             :max="999999.9"
+                            :disabled="isShelfCard"
                             :value="item.rally_price.min_price"
                             @change="
                               e =>
@@ -332,13 +336,12 @@
                                   prop: 'min_price'
                                 })
                             "
-                          >
-                            <span slot="addonAfter">元</span>
-                          </st-input-number>
-                          &nbsp; ~ &nbsp;
+                          ></st-input-number>
+                          ~
                           <st-input-number
                             style="width:40%"
                             :float="true"
+                            :disabled="isShelfCard"
                             :min="0"
                             :max="999999.9"
                             :value="item.rally_price.max_price"
@@ -351,9 +354,7 @@
                                   prop: 'max_price'
                                 })
                             "
-                          >
-                            <span slot="addonAfter">元</span>
-                          </st-input-number>
+                          ></st-input-number>
                         </td>
                         <td>
                           <st-input-number
@@ -361,6 +362,7 @@
                             :min="1"
                             :max="99999"
                             :value="item.time.num"
+                            :disabled="isShelfCard"
                             @change="
                               e =>
                                 shopPriceSettingHandleChange({
@@ -398,6 +400,7 @@
                           <st-input-number
                             :min="1"
                             :max="99999"
+                            :disabled="isShelfCard"
                             :value="item.frozen_day"
                             @change="
                               e =>
@@ -407,15 +410,14 @@
                                   col: 'frozen_day'
                                 })
                             "
-                          >
-                            <span slot="addonAfter">天</span>
-                          </st-input-number>
+                          ></st-input-number>
                         </td>
                         <td>
                           <st-input-number
                             :min="1"
                             :max="99999"
                             :value="item.gift_unit"
+                            :disabled="isShelfCard"
                             @change="
                               e =>
                                 shopPriceSettingHandleChange({
@@ -424,12 +426,15 @@
                                   col: 'gift_unit'
                                 })
                             "
-                          >
-                            <span slot="addonAfter">次</span>
-                          </st-input-number>
+                          ></st-input-number>
                         </td>
                         <td>
-                          <a @click="shop_price_delete(index)">删除</a>
+                          <a
+                            v-if="!isShelfCard"
+                            @click="shop_price_delete(index)"
+                          >
+                            删除
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -446,6 +451,7 @@
                 required
               >
                 <a-radio-group
+                  :disabled="isShelfCard"
                   @change="support_range"
                   v-decorator="decorators.cardData.support_sales"
                 >
@@ -471,6 +477,7 @@
                     设置支持此会员卡售卖场馆范围
                   </p>
                   <select-shop
+                    :disabled="isShelfCard"
                     :shopIds="cardData.sell_shop_list"
                     @change="sales_shop_change"
                   ></select-shop>

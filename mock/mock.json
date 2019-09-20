@@ -1,0 +1,50 @@
+{
+  "code": 0,
+  "msg": "success",
+  "data": {
+    "info": {
+      "card_id": 81717675753546,
+      "brand_id": 1,
+      "shop_id": 0,
+      "card_type": 1,
+      "card_name": "测试价格为0元",
+      "admission_range": 1,
+      "price_setting": 1,
+      "support_sales": 2,
+      "total_shop_num": 4,
+      "shelf_shop_num": 20,
+      "start_time": 1562169600,
+      "end_time": 1564243199,
+      "sell_status": 2,
+      "is_transfer": 0,
+      "transfer_unit": 1,
+      "transfer_num": "",
+      "sell_type": [2],
+      "card_introduction": "",
+      "card_contents": "",
+      "card_bg": {
+        "image_key": "image/default/bg-card-selection-1.png",
+        "image_url": "https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-card-selection-1.png",
+        "index": 1,
+        "image_id": 101741400490012
+      },
+      "publish_channel": 1,
+      "admission_shop_list": [],
+      "sell_shop_list": [12, 15, 19, 11814532808767],
+      "price_gradient": [
+        {
+          "id": 101741400490013,
+          "unit": 2,
+          "num": 12,
+          "rally_price": "12.0",
+          "min_price": "0.0",
+          "max_price": "0.0",
+          "frozen_day": 12,
+          "gift_unit": 12,
+          "validity_times": 12
+        }
+      ],
+      "stop_sale_reason": "支持售卖时间到期"
+    }
+  }
+}

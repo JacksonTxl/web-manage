@@ -48,20 +48,20 @@
                 >
                   <st-form-table>
                     <colgroup>
-                      <col style="width:18%;" />
-                      <col style="width:18%;" />
-                      <col style="width:18%;" />
-                      <col style="width:18%;" />
-                      <col style="width:18%;" />
-                      <col style="width:10%;" />
+                      <col />
+                      <col />
+                      <col />
+                      <col />
+                      <col />
+                      <col style="width:60px;" />
                     </colgroup>
                     <thead>
                       <tr>
-                        <th>入场次数</th>
-                        <th>售价</th>
+                        <th>入场次数/次</th>
+                        <th>售价/元</th>
                         <th>有效期</th>
-                        <th class="white-nowrap">允许冻结天数</th>
-                        <th>赠送上限</th>
+                        <th class="white-nowrap">允许冻结/天</th>
+                        <th>赠送上限/次</th>
                         <th>操作</th>
                       </tr>
                     </thead>
@@ -69,6 +69,7 @@
                       <tr>
                         <td colspan="6" class="pd-y0 pd-x0">
                           <st-button
+                            v-if="!isShelfCard"
                             :disabled="rallyPriceList.length > 3"
                             type="dashed"
                             icon="add"
@@ -88,6 +89,7 @@
                           <st-input-number
                             :min="1"
                             :max="99999"
+                            :disabled="isShelfCard"
                             :value="item.validity_times"
                             @change="
                               e =>
@@ -97,12 +99,11 @@
                                   col: 'validity_times'
                                 })
                             "
-                          >
-                            <span slot="addonAfter">次</span>
-                          </st-input-number>
+                          ></st-input-number>
                         </td>
                         <td>
                           <st-input-number
+                            :disabled="isShelfCard"
                             :float="true"
                             :min="0"
                             :max="999999.9"
@@ -115,14 +116,13 @@
                                   col: 'rally_price'
                                 })
                             "
-                          >
-                            <span slot="addonAfter">元</span>
-                          </st-input-number>
+                          ></st-input-number>
                         </td>
                         <td>
                           <st-input-number
                             :min="1"
                             :max="99999"
+                            :disabled="isShelfCard"
                             :value="item.time.num"
                             @change="
                               e =>
@@ -136,6 +136,7 @@
                           >
                             <a-select
                               slot="addonAfter"
+                              :disabled="isShelfCard"
                               :value="item.time.unit"
                               @change="
                                 e =>
@@ -161,6 +162,7 @@
                           <st-input-number
                             :min="1"
                             :max="99999"
+                            :disabled="isShelfCard"
                             :value="item.frozen_day"
                             @change="
                               e =>
@@ -170,14 +172,13 @@
                                   col: 'frozen_day'
                                 })
                             "
-                          >
-                            <span slot="addonAfter">天</span>
-                          </st-input-number>
+                          ></st-input-number>
                         </td>
                         <td>
                           <st-input-number
                             :min="1"
                             :max="99999"
+                            :disabled="isShelfCard"
                             :value="item.gift_unit"
                             @change="
                               e =>
@@ -187,12 +188,12 @@
                                   col: 'gift_unit'
                                 })
                             "
-                          >
-                            <span slot="addonAfter">次</span>
-                          </st-input-number>
+                          ></st-input-number>
                         </td>
                         <td>
-                          <a @click="price_delete(index)">删除</a>
+                          <a v-if="!isShelfCard" @click="price_delete(index)">
+                            删除
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -390,21 +391,22 @@ export default {
   serviceInject() {
     return {
       rules: RuleConfig,
-      addService: EditService,
+      editService: EditService,
       userService: UserService
     }
   },
   rxState() {
     return {
-      loading: this.addService.loading$,
-      cardInfo: this.addService.cardInfo$,
+      loading: this.editService.loading$,
+      cardInfo: this.editService.cardInfo$,
       shopName: this.userService.shop$,
-      cardBgList: this.addService.cardBgList$,
-      admissionRange: this.addService.admissionRange$,
-      priceSetting: this.addService.priceSetting$,
-      supportSales: this.addService.supportSales$,
-      unit: this.addService.unit$,
-      sellType: this.addService.sellType$
+      cardBgList: this.editService.cardBgList$,
+      admissionRange: this.editService.admissionRange$,
+      priceSetting: this.editService.priceSetting$,
+      supportSales: this.editService.supportSales$,
+      unit: this.editService.unit$,
+      sellType: this.editService.sellType$,
+      isShelfCard: this.editService.isShelfCard$
     }
   },
   bem: {
@@ -541,7 +543,7 @@ export default {
               validity_times: +i.validity_times
             })
           })
-          this.addService
+          this.editService
             .editCard({
               id: this.cardInfo.card_id,
               card_type: CARD_TYPE.NUMBER,

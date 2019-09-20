@@ -1,4 +1,5 @@
 const { wrapper, mock } = require('webpack-mocker-api')
+const mockJson = require('./mock.json')
 
 const mockerApis = {
   /**
@@ -33,25 +34,7 @@ const mockerApis = {
   /**
    * mock start
    */
-  'GET /_api/v1/stat/course/shop/team/course'(req, res) {
-    res.json(
-      mock({
-        data: {
-          'list|20-200': [
-            {
-              'id|+1': 1,
-              coach_level_name: '@name',
-              coach_name: '@name',
-              course_name: '@name',
-              course_time: '2019-09-03 00:00:00',
-              reserved_num: 3,
-              checkin_num: 6
-            }
-          ]
-        }
-      })
-    )
-  }
+  'GET /_api/v1/cards/member/brand/back/81717675753546': mockJson
 }
 
 module.exports = wrapper(mockerApis)
