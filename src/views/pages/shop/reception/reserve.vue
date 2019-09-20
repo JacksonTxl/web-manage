@@ -41,7 +41,12 @@
       </st-search-panel>
     </div>
     <div class="mg-t24 mg-b16">
-      <st-button type="primary" class="shop-member-list-button" icon="add">
+      <st-button
+        @click="onAddReverse"
+        type="primary"
+        class="shop-member-list-button"
+        icon="add"
+      >
         到访预约
       </st-button>
     </div>
@@ -50,6 +55,7 @@
       :scroll="{ x: 1400 }"
       rowKey="id"
       :page="page$"
+      :loading="loading$.getList"
       @change="onTableChange"
       :dataSource="list$"
     >
@@ -76,10 +82,14 @@
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { ReserveService } from './reserve.service'
+import FrontAddReverve from '@/views/biz-modals/front/add-reverve'
 import { columns } from './reserve.config.ts'
 export default {
   name: 'ReceptionReserve',
   mixins: [tableMixin],
+  modals: {
+    FrontAddReverve
+  },
   bem: {
     bPage: 'page-shop-reception-reserve',
     bSearch: 'search'
@@ -127,6 +137,16 @@ export default {
     columns
   },
   methods: {
+    onAddReverse() {
+      this.$modalRouter.push({
+        name: 'front-add-reverve',
+        on: {
+          done: () => {
+            console.log('ok')
+          }
+        }
+      })
+    },
     onChangeRangeTime(value) {
       console.log(value)
     },
