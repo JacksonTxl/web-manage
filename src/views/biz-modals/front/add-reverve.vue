@@ -7,9 +7,12 @@
     :confirmLoading="loading$.addReverse"
   >
     <st-form :form="form">
-      <st-form-item label="预约用户" required>
-        <a-input></a-input>
-      </st-form-item>
+      <form-member-search
+        label="预约用户"
+        :form="form"
+        :decorators="decorators"
+        type="transaction"
+      ></form-member-search>
       <st-form-item label="预约时间" required>
         <a-date-picker
           v-decorator="decorators.reserve_date"
@@ -33,6 +36,7 @@
 import moment from 'moment'
 import { AddReverveService } from './add-reverve.service'
 import { ruleOptions } from './add-reserve.config'
+import FormMemberSearch from '@/views/biz-components/member-search/member-search'
 export default {
   serviceProviders() {
     return [AddReverveService]
@@ -47,6 +51,9 @@ export default {
     return {
       loading$
     }
+  },
+  components: {
+    FormMemberSearch
   },
   data() {
     const form = this.$stForm.create()
