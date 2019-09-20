@@ -94,7 +94,7 @@
           </st-form-item>
           <st-form-item label="退款金额" required>
             <st-input-number
-              :max="99999.9"
+              :max="Number(packageInfo.total_price)"
               :float="true"
               placeholder="请输入本次退款的实际金额"
               v-decorator="decorators.refundPrice"
