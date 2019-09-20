@@ -11,6 +11,7 @@
         label="预约用户"
         :form="form"
         :decorators="decorators"
+        :fields="{ member_id: 'reserve_id' }"
         type="transaction"
       ></form-member-search>
       <st-form-item label="预约时间" required>
