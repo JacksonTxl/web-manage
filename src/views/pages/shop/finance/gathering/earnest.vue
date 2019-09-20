@@ -86,10 +86,7 @@
         </st-table>
       </div>
     </div>
-    <sold-transaction
-      :value="soldDealInfo"
-      :earnestValue="earnestInfo"
-    ></sold-transaction>
+    <sold-transaction ref="soldTransaction"></sold-transaction>
   </div>
 </template>
 <script>
@@ -103,6 +100,7 @@ import ShopFinanceRefund from '@/views/biz-modals/shop/finance/refund'
 import ShopFinanceGatheringEarnestAdd from '@/views/biz-modals/shop/finance/gathering/earnest/add'
 import ShopFinanceGatheringEarnestDeal from '@/views/biz-modals/shop/finance/gathering/earnest/deal'
 import SoldTransaction from '@/views/biz-components/sold/transaction'
+import { OssService } from '@/services/oss.service'
 export default {
   name: 'PageShopFinanceGatheringEarnest',
   mixins: [tableMixin],
@@ -120,7 +118,8 @@ export default {
   serviceInject() {
     return {
       routeService: RouteService,
-      earnestService: EarnestService
+      earnestService: EarnestService,
+      ossService: OssService
     }
   },
   rxState() {
@@ -218,7 +217,7 @@ export default {
       let url = `${window.location.origin}/extra/contract-preview?id=${
         record.order_id
       }`
-      window.open(url)
+      this.ossService.openNewTab(url)
     },
     // 定金签单
     onDeal(record) {
@@ -229,7 +228,14 @@ export default {
         },
         on: {
           success: res => {
-            this.soldDealInfo = res
+            // this.soldDealInfo = res
+            this.$refs.soldTransaction.onTransaction(
+              res.id,
+              res.product_type,
+              res.member_id,
+              res.member_name,
+              res.member_mobile
+            )
           }
         }
       })
@@ -242,12 +248,9 @@ export default {
         on: {
           success: res => {
             this.$router.reload()
-            // 收款定金成功
-            let props = {
-              order_id: res.orderId,
-              type: 'member'
-            }
-            this.earnestInfo = res
+            // this.payCallBack(newVal.orderId, newVal.type, 'pay')
+            this.$refs.soldTransaction.payCallBack(res.orderId, res.type, 'pay')
+            // this.earnestInfo = res
           }
         }
       })

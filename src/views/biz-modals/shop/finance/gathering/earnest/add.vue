@@ -151,11 +151,10 @@
 
 <script>
 import { AddService } from './add.service'
-import moment from 'moment'
-import { cloneDeep } from 'lodash-es'
-import { timer } from 'rxjs'
 import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from './add.config'
+import { CODE_NUMBER } from '@/constants/sold/transaction'
+
 export default {
   name: 'ModalSoldDealSaleMemberCard',
   bem: {
@@ -183,6 +182,7 @@ export default {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
+      CODE_NUMBER,
       form,
       decorators,
       show: false,
@@ -223,7 +223,7 @@ export default {
       this.form.resetFields(['member_id', 'member_name', 'member_mobile'])
     },
     onCodeNumber() {
-      this.addService.getCodeNumber(6).subscribe(res => {
+      this.addService.getCodeNumber(this.CODE_NUMBER.EARNEST).subscribe(res => {
         this.form.setFieldsValue({
           contract_number: res.info.code
         })

@@ -4,7 +4,7 @@ import { State, Effect } from 'rx-state'
 import { TransactionApi } from '@/api/v1/sold/transaction'
 import { tap } from 'rxjs/operators'
 import { ContractApi } from '@/api/v1/setting/contract'
-import { forkJoin } from 'rxjs'
+import { anyAll } from '@/operators'
 
 @Injectable()
 export class AddService {
@@ -50,7 +50,7 @@ export class AddService {
   }
   @Effect()
   serviceInit() {
-    return forkJoin(this.getPaymentMethodList(), this.getSaleList())
+    return anyAll(this.getPaymentMethodList(), this.getSaleList())
   }
   @Effect()
   addEarnest(params: AddEarnestParams) {
