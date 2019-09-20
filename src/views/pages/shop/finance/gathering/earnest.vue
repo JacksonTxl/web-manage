@@ -228,7 +228,6 @@ export default {
         },
         on: {
           success: res => {
-            // this.soldDealInfo = res
             this.$refs.soldTransaction.onTransaction(
               res.id,
               res.product_type,
@@ -248,9 +247,7 @@ export default {
         on: {
           success: res => {
             this.$router.reload()
-            // this.payCallBack(newVal.orderId, newVal.type, 'pay')
             this.$refs.soldTransaction.payCallBack(res.orderId, res.type, 'pay')
-            // this.earnestInfo = res
           }
         }
       })

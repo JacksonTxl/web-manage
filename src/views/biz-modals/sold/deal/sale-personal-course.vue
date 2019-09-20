@@ -545,6 +545,7 @@ export default {
                 this.form.setFieldsValue({
                   memberId: this.memberInfo.member_id
                 })
+                this.onMemberChange(this.memberInfo.member_id)
               }
             }
           })

@@ -386,15 +386,14 @@ export default {
         this.saleCourseService
           .getMember(data, this.info.sale_range.type)
           .subscribe(res => {
-            console.log(res)
             if (!res.list.length) {
               this.form.resetFields(['memberId'])
             } else {
               if (this.memberInfo) {
-                console.log(this.memberInfo)
                 this.form.setFieldsValue({
                   memberId: this.memberInfo.member_id
                 })
+                this.onMemberChange(this.memberInfo.member_id)
               }
             }
           })
