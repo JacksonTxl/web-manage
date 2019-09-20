@@ -269,7 +269,8 @@
                       <tr>
                         <td colspan="5" class="pd-y0 pd-x0">
                           <st-button
-                            :disabled="shopPriceList.length > 3 || isShelfCard"
+                            v-if="!isShelfCard"
+                            :disabled="shopPriceList.length > 3"
                             type="dashed"
                             icon="add"
                             class="page-price-setting-set__add"
