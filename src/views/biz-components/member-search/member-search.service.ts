@@ -9,15 +9,14 @@ export class MemberSearchService {
   memberList$ = new State([])
   loading$ = new State({})
   type$ = new State('')
-
-  constructor(private transactionApi: TransactionApi) {
-    this.getMemberAction$ = new Action(action$ =>
-      action$.pipe(
-        debounceTime(500),
-        switchMap(searchText => this.getMemberRequest(searchText))
-      )
+  getMemberAction$ = new Action<string>(action$ =>
+    action$.pipe(
+      debounceTime(500),
+      switchMap(searchText => this.getMemberRequest(searchText))
     )
-  }
+  )
+
+  constructor(private transactionApi: TransactionApi) {}
   SET_TYPE(type: string) {
     this.type$.commit(() => type)
   }

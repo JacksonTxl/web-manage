@@ -1,6 +1,6 @@
 <template>
   <div>
-    <st-form-item v-if="searchMemberIsShow" label="预定会员" required>
+    <st-form-item v-if="searchMemberIsShow" :label="label" required>
       <a-select
         style="width:100%"
         showSearch
@@ -66,6 +66,10 @@ export default {
     id: {
       type: String
     },
+    label: {
+      type: String,
+      default: '预定会员'
+    },
     /**
      * 会员查询类型 transaction |
      */
@@ -86,6 +90,10 @@ export default {
     decorators: {
       type: Object,
       required: true
+    },
+    fields: {
+      type: Object,
+      default: () => ({})
     }
   },
   serviceInject() {
@@ -100,19 +108,31 @@ export default {
       loading$
     }
   },
-  created() {
-    this.memberSearchService.SET_TYPE(this.type)
-    this.memberSearchService.getMemberAction$.subscribe(list => {
-      this.$emit('change:list', list)
-      if (!list.length) {
-        this.form.resetFields(['member_id'])
-      }
-    })
-  },
   data() {
     return {
       memberSearchText: '',
       searchMemberIsShow: true
+    }
+  },
+  computed: {
+    usedFields() {
+      return merge(
+        {
+          member_id: 'member_id',
+          mobile: 'mobile',
+          member_name: 'member_name'
+        },
+        this.fields
+      )
+    },
+    memberId() {
+      return this.usedFields.member_id
+    },
+    memberMobile() {
+      return this.usedFields.mobile
+    },
+    memberName() {
+      return this.usedFields.member_name
     }
   },
   methods: {
@@ -122,7 +142,7 @@ export default {
       this.$emit('change', data)
       if (data === '') {
         this.memberSearchService.RESET_LIST()
-        this.form.resetFields(['member_id'])
+        this.form.resetFields([this.memberId])
         this.$emit('change:list', [])
       } else {
         this.memberSearchService.getMember(data)
@@ -134,8 +154,17 @@ export default {
     },
     onCancelMember() {
       this.searchMemberIsShow = true
-      this.form.resetFields(['member_id', 'member_name', 'member_mobile'])
+      this.form.resetFields([this.memberId, this.memberName, this.memberMobile])
     }
+  },
+  created() {
+    this.memberSearchService.SET_TYPE(this.type)
+    this.memberSearchService.getMemberAction$.subscribe(list => {
+      this.$emit('change:list', list)
+      if (!list.length) {
+        this.form.resetFields([this.memberId])
+      }
+    })
   }
 }
 </script>
