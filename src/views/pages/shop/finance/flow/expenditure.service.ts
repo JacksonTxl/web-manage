@@ -30,6 +30,13 @@ export class ExpenditureService implements RouteGuard {
   init(query: any) {
     return forkJoin([this.getList(query)])
   }
+  beforeRouteEnter(to: ServiceRoute) {
+    this.userService.getOptions$('finance.pay_channel').pipe(
+      tap((list: any) => {
+        list = [{ value: -1, label: '全部' }, ...list]
+      })
+    )
+  }
   beforeEach(to: ServiceRoute) {
     return this.init(to.meta.query)
   }

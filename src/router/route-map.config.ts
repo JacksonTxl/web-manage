@@ -935,9 +935,29 @@ export const routeMapConfig = {
   },
   'shop-finance-flow-expenditure'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '支出流水'
+    routeConfig.queryOptions = {
+      search_number: { type: Number },
+      start_amount: { type: Number },
+      end_amount: { type: Number },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      pay_channel: { type: Number, default: -1 },
+      start_time: { type: String, default: '' },
+      end_time: { type: String, default: '' }
+    }
   },
   'shop-finance-flow-income'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '收入流水'
+    routeConfig.queryOptions = {
+      search_number: { type: Number },
+      current_page: { type: Number, default: 1 },
+      start_time: { type: String, default: '' },
+      end_time: { type: String, default: '' },
+      start_amount: { type: Number },
+      end_amount: { type: Number },
+      size: { type: Number, default: 20 },
+      pay_channel: { type: Number, default: -1 }
+    }
   },
   'shop-stat-revenue'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '营收报表'

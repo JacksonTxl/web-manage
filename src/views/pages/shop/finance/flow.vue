@@ -1,10 +1,10 @@
 <template>
   <st-panel app :tabs="authTabs">
-    <div slot="title">
+    <div slot="actions">
       <st-input-search
-        placeholder="输入用户姓名、手机号"
-        v-model="query.keyword"
-        @search="onKeywordsSearch('keyword', $event)"
+        placeholder="请输入流水号或订单号查找"
+        v-model="query.search_number"
+        @search="onKeywordsSearch('search_number', $event)"
         style="width: 290px;"
       />
     </div>

@@ -131,13 +131,12 @@ export default {
       console.log(value)
     },
     onSearchNative() {
-      debugger
-      const start_time = `${this.selectTime.startTime.value.format(
-        'YYYY-MM-DD'
-      )} 00:00`
-      const end_time = `${this.selectTime.endTime.value.format(
-        'YYYY-MM-DD'
-      )} 23:59`
+      const start_time = this.selectTime.startTime.value
+        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00`
+        : ''
+      const end_time = this.selectTime.endTime.value
+        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59`
+        : ''
       this.$router.push({ query: { ...this.query, start_time, end_time } })
     },
     onSearhReset() {}

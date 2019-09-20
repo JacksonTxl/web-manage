@@ -2,7 +2,8 @@ export const columns = () => {
   return [
     {
       title: '流水号',
-      dataIndex: 'flow_id'
+      dataIndex: 'flow_id',
+      fixed: 'left'
     },
     {
       title: '金额（元）',
@@ -34,13 +35,6 @@ export const columns = () => {
       title: '备注',
       dataIndex: 'remark',
       scopedSlots: { customRender: 'remark' }
-    },
-    {
-      title: '操作',
-      dataIndex: 'action',
-      fixed: 'right',
-      width: 140,
-      scopedSlots: { customRender: 'action' }
     }
   ]
 }

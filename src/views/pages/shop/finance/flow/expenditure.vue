@@ -12,9 +12,15 @@
         </div>
         <div :class="bSearch('range-picker')" class="mg-t24 search-item">
           <div class="label">流水金额：</div>
-          <st-input-number></st-input-number>
+          <st-input-number
+            class="amount__input mg-r8"
+            v-model="query.start_amount"
+          ></st-input-number>
           至
-          <st-input-number></st-input-number>
+          <st-input-number
+            class="amount__input mg-l8"
+            v-model="query.end_amount"
+          ></st-input-number>
         </div>
         <div :class="bSearch('range-picker')" class="mg-t24 search-item">
           <span class="label">预约时间：</span>
@@ -46,7 +52,6 @@
       :dataSource="list$"
     >
       <span slot="flow_type" slot-scope="text">{{ text.name }}</span>
-      <div slot="action"></div>
     </st-table>
   </st-panel>
 </template>
@@ -106,8 +111,12 @@ export default {
   },
   methods: {
     onSearchNative() {
-      const start_time = this.selectTime.start_time.format('YYYY-MM-DD')
-      const end_time = this.selectTime.end_time.format('YYYY-MM-DD')
+      const start_time = this.selectTime.startTime.value
+        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00`
+        : ''
+      const end_time = this.selectTime.endTime.value
+        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59`
+        : ''
       this.$router.push({ query: { ...this.query, start_time, end_time } })
     },
     onSearhReset() {}
