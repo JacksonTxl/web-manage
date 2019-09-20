@@ -108,7 +108,7 @@ export default {
   },
   watch: {
     value(val, oldVal) {
-      console.log('value is updating', this.dragging, val, oldVal)
+      // console.log('value is updating', this.dragging, val, oldVal)
       if (
         this.dragging ||
         (Array.isArray(val) &&
@@ -132,19 +132,19 @@ export default {
       this.$emit('input', [this.minValue, this.maxValue])
     },
     min() {
-      consol.log('min change')
+      // consol.log('min change')
       this.setValues()
     },
     max() {
-      consol.log('max change')
+      // consol.log('max change')
       this.setValues()
     },
     rangeFirst() {
-      consol.log('rangeFirst change')
+      // consol.log('rangeFirst change')
       if (this.range) this.setValues()
     },
     rangeSecond() {
-      consol.log('rangeSecond change')
+      // consol.log('rangeSecond change')
       if (this.range) this.setValues()
     }
   },
@@ -208,7 +208,7 @@ export default {
       this.$refs[button].setPosition(percent)
     },
     onSliderClick(event) {
-      console.log(this.dragging)
+      // console.log(this.dragging)
       if (this.disable || this.dragging) return
       this.resetSize()
       console.log(this.$refs.slider)
