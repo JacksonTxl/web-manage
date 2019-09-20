@@ -10,12 +10,11 @@ import SoldDealSaleDepositCard from '@/views/biz-modals/sold/deal/sale-deposit-c
 import SoldDealSaleMemberCard from '@/views/biz-modals/sold/deal/sale-member-card'
 import SoldDealSalePersonalCourse from '@/views/biz-modals/sold/deal/sale-personal-course'
 import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
+import { PRODUCT_TYPE } from '@/constants/sold/transaction'
+import { OssService } from '@/services/oss.service'
 export default {
   name: 'SoldTransaction',
-  props: {
-    value: [Object, String],
-    earnestValue: [Object, String]
-  },
+  props: {},
   modals: {
     SoldDealGathering,
     SoldDealSaleCabinet,
@@ -25,18 +24,14 @@ export default {
     SoldDealSalePersonalCourse,
     SoldDealGatheringTip
   },
-  watch: {
-    value: {
-      deep: true,
-      handler: function(newVal) {
-        this.onTransaction(newVal)
-      }
-    },
-    earnestValue: {
-      deep: true,
-      handler: function(newVal) {
-        this.payCallBack(newVal.orderId, newVal.type, 'pay')
-      }
+  serviceInject() {
+    return {
+      ossService: OssService
+    }
+  },
+  data() {
+    return {
+      PRODUCT_TYPE
     }
   },
   methods: {
@@ -101,22 +96,42 @@ export default {
           break
       }
     },
-    // 签单
-    onTransaction(record) {
+    /**
+     * 交易签单，签单操作
+     * @params order_id 订单id
+     * @params product_type 签单类型
+     * @params member_id 会员id
+     * @params member_name 会员姓名
+     * @params member_mobile 会员手机号
+     */
+    onTransaction(
+      order_id,
+      product_type,
+      member_id,
+      member_name,
+      member_mobile
+    ) {
+      const record = {
+        id: order_id,
+        product_type,
+        member_id,
+        member_name,
+        member_mobile
+      }
       switch (record.product_type) {
-        case 1:
+        case this.PRODUCT_TYPE.MEMBER_CARD:
           this.onMember(record)
           break
-        case 2:
+        case this.PRODUCT_TYPE.DEPOSIT_CARD:
           this.onDeposit(record)
           break
-        case 3:
+        case this.PRODUCT_TYPE.PERSONAL_COURSE:
           this.onPersonalCourse(record)
           break
-        case 5:
+        case this.PRODUCT_TYPE.PACKAGE:
           this.onPackage(record)
           break
-        case 6:
+        case this.PRODUCT_TYPE.CABINET:
           this.onCabinet(record)
           break
       }
@@ -245,7 +260,7 @@ export default {
       let url = `${
         window.location.origin
       }/extra/contract-preview?id=${order_id}`
-      window.open(url)
+      this.ossService.openNewTab(url)
     },
     // 查看订单
     createdOrderViewOrder(order_id) {
@@ -253,24 +268,6 @@ export default {
         name: 'shop-finance-order-info-collection-details',
         query: {
           id: order_id
-        }
-      })
-    },
-    // 添加定金
-    addEarnest() {
-      this.$modalRouter.push({
-        name: 'shop-finance-gathering-earnest-add',
-        props: {},
-        on: {
-          success: res => {
-            this.$router.reload()
-            // 收款定金成功
-            let props = {
-              order_id: res.orderId,
-              type: 'member'
-            }
-            this.payCallBack(res.orderId, res.type, 'pay')
-          }
         }
       })
     }

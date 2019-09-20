@@ -1,6 +1,6 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
-import { tap } from 'rxjs/operators'
+import { map, tap } from 'rxjs/operators'
 import { GatheringApi, EarnestParams } from '@/api/v1/finance/gathering'
 import { AuthService } from '@/services/auth.service'
 import { UserService } from '@/services/user.service'
@@ -14,8 +14,9 @@ export class EarnestService implements RouteGuard {
     add: 'shop:product:product|order'
   })
   useStatus$ = this.userService.getOptions$('advance_fee.use_status').pipe(
-    tap(list => {
-      list.unshift({ value: -1, label: '全部' })
+    map(list => {
+      list.unshift()
+      return [{ value: -1, label: '全部' }].concat(list)
     })
   )
   constructor(

@@ -4,7 +4,7 @@ import { State, Effect, Action } from 'rx-state'
 import { TransactionApi, TransactionListInput } from '@/api/v1/sold/transaction'
 import { GatheringApi } from '@/api/v1/finance/gathering'
 import { tap } from 'rxjs/operators'
-import { forkJoin } from 'rxjs'
+import { anyAll } from '@/operators'
 
 @Injectable()
 export class DealService {
@@ -29,7 +29,7 @@ export class DealService {
   // 获取初始数据
   @Effect()
   init(id: number) {
-    return forkJoin(this.getInfo(id))
+    return anyAll(this.getInfo(id))
   }
 
   // 获取产品列表
