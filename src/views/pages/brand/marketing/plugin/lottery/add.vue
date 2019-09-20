@@ -291,7 +291,11 @@
               <st-button type="primary" @click="next(2)">下一步</st-button>
             </st-form-item>
           </st-form>
-          <st-form style="width:500px" :form="form" v-show="currentIndex == 2">
+          <st-form
+            style="width:500px;padding-left:24px;"
+            :form="form"
+            v-show="currentIndex == 2"
+          >
             <st-t3 class="mg-b24">奖品设置</st-t3>
             <st-form-table>
               <thead>
