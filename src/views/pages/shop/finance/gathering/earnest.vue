@@ -203,7 +203,8 @@ export default {
       this.$modalRouter.push({
         name: 'shop-finance-refund',
         props: {
-          id: record.order_id
+          id: record.order_id,
+          goodsInvalid: true
         },
         on: {
           success: () => {
