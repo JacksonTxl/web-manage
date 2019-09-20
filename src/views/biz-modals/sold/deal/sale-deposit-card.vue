@@ -276,6 +276,9 @@ export default {
     id: {
       type: String,
       required: true
+    },
+    memberInfo: {
+      type: Object
     }
   },
   data() {
@@ -311,6 +314,9 @@ export default {
   },
   created() {
     this.saleDepositCardService.serviceInit(this.id).subscribe(res => {
+      if (this.memberInfo) {
+        this.onMemberSearch(this.memberInfo.member_name)
+      }
       this.getPrice(this.selectAdvance, +this.reduceAmount)
     })
   },
@@ -334,6 +340,12 @@ export default {
             if (!res.list.length) {
               this.resetAdvance()
               this.form.resetFields(['memberId'])
+            } else {
+              if (this.memberInfo) {
+                this.form.setFieldsValue({
+                  memberId: this.memberInfo.member_id
+                })
+              }
             }
           })
       }
