@@ -292,7 +292,7 @@
             </st-form-item>
           </st-form>
           <st-form
-            style="width:500px;padding-left:24px;"
+            style="width:500px;padding-left:62px;"
             :form="form"
             v-show="currentIndex == 2"
           >
