@@ -390,6 +390,9 @@ export default {
     id: {
       type: String,
       required: true
+    },
+    memberInfo: {
+      type: Object
     }
   },
   data() {
@@ -455,6 +458,9 @@ export default {
           level = this.info.coach_level[0].id
         }
         this.salePersonalCourseService.getCoachList(level, this.id).subscribe()
+        if (this.memberInfo) {
+          this.onMemberSearch(this.memberInfo.member_name)
+        }
       })
     })
   },
@@ -534,6 +540,13 @@ export default {
           .subscribe(res => {
             if (!res.list.length) {
               this.form.resetFields(['memberId'])
+            } else {
+              if (this.memberInfo) {
+                this.form.setFieldsValue({
+                  memberId: this.memberInfo.member_id
+                })
+                this.onMemberChange(this.memberInfo.member_id)
+              }
             }
           })
       }

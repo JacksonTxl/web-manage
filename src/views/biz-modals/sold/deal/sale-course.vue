@@ -307,6 +307,9 @@ export default {
     id: {
       type: String,
       required: true
+    },
+    memberInfo: {
+      type: Object
     }
   },
   data() {
@@ -336,6 +339,9 @@ export default {
   },
   created() {
     this.saleCourseService.serviceInit(this.id).subscribe(result => {
+      if (this.memberInfo) {
+        this.onMemberSearch(this.memberInfo.member_name)
+      }
       this.getPrice()
     })
   },
@@ -382,6 +388,13 @@ export default {
           .subscribe(res => {
             if (!res.list.length) {
               this.form.resetFields(['memberId'])
+            } else {
+              if (this.memberInfo) {
+                this.form.setFieldsValue({
+                  memberId: this.memberInfo.member_id
+                })
+                this.onMemberChange(this.memberInfo.member_id)
+              }
             }
           })
       }

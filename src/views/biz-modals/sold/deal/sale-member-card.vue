@@ -361,6 +361,16 @@ export default {
     id: {
       type: String,
       required: true
+    },
+    memberInfo: {
+      type: Object
+      // default: () => {
+      //   return {
+      //     member_id: 150224987822545,
+      //     member_name: '张飞123222',
+      //     member_mobile: 19134752085
+      //   }
+      // }
     }
   },
   data() {
@@ -409,6 +419,9 @@ export default {
       this.validEndTime = moment()
         .add(this.selectedNorm.valid_time, 'days')
         .format('YYYY-MM-DD HH:mm')
+      if (this.memberInfo) {
+        this.onMemberSearch(this.memberInfo.member_name)
+      }
       this.fetchCouponList()
       this.getPrice()
     })
@@ -495,6 +508,13 @@ export default {
           .subscribe(res => {
             if (!res.list.length) {
               this.form.resetFields(['memberId'])
+            } else {
+              if (this.memberInfo) {
+                this.form.setFieldsValue({
+                  memberId: this.memberInfo.member_id
+                })
+                this.onMemberChange(this.memberInfo.member_id)
+              }
             }
           })
       }

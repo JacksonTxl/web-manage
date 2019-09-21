@@ -2,7 +2,8 @@ import { Injectable } from 'vue-service-app'
 import { TransactionApi } from '@/api/v1/sold/transaction'
 import { Effect, State, Action, Computed } from 'rx-state'
 import { then } from '@/operators'
-import { debounceTime, switchMap } from 'rxjs/operators'
+import { debounceTime, switchMap, catchError } from 'rxjs/operators'
+import { EMPTY } from 'rxjs'
 
 @Injectable()
 export class MemberSearchService {
@@ -12,7 +13,9 @@ export class MemberSearchService {
   getMemberAction$ = new Action<string>(action$ =>
     action$.pipe(
       debounceTime(500),
-      switchMap(searchText => this.getMemberRequest(searchText))
+      switchMap(searchText =>
+        this.getMemberRequest(searchText).pipe(catchError(() => EMPTY))
+      )
     )
   )
 

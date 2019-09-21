@@ -5,6 +5,7 @@
         style="width:100%"
         showSearch
         allowClear
+        v-decorator="decorators[memberId]"
         :placeholder="placeholder"
         :defaultActiveFirstOption="false"
         :filterOption="false"
@@ -37,13 +38,13 @@
     </st-form-item>
     <st-form-item v-if="!searchMemberIsShow" label="会员姓名" required>
       <a-input
-        v-decorator="decorators.member_name"
+        v-decorator="decorators[memberName]"
         placeholder="请输入会员姓名"
       ></a-input>
     </st-form-item>
     <st-form-item v-if="!searchMemberIsShow" label="手机号" required>
       <a-input
-        v-decorator="decorators.mobile"
+        v-decorator="decorators[memberMobile]"
         placeholder="请输入手机号"
       ></a-input>
       <p class="mg-b0">
@@ -55,6 +56,7 @@
 
 <script>
 import { MemberSearchService } from './member-search.service'
+import { merge } from 'lodash-es'
 export default {
   model: {
     event: 'change'

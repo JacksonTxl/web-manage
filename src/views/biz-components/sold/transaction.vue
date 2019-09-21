@@ -1,140 +1,40 @@
 <template>
-  <st-panel app initial :class="basic()">
-    <div slot="title" :class="sale('search')">
-      <a-select
-        :class="sale('select')"
-        v-model="query.product_type"
-        @change="onSearch"
-        style="width: 160px"
-      >
-        <a-select-option
-          v-for="(item, index) in productTypes"
-          :key="index"
-          :value="item.value"
-        >
-          {{ item.label }}
-        </a-select-option>
-      </a-select>
-      <st-input-search
-        v-model="query.product_name"
-        @search="onSearch"
-        placeholder="请输入商品名查找"
-        :class="basic('search')"
-      />
-    </div>
-    <div :class="basic('content')">
-      <st-table
-        :page="page"
-        rowKey="id"
-        :columns="columns"
-        @change="onTableChange"
-        :dataSource="list"
-      >
-        <div slot="action" slot-scope="text, record">
-          <st-table-actions>
-            <a
-              v-if="record.auth['shop:product:product|order']"
-              @click="onTransaction(record)"
-            >
-              签单
-            </a>
-          </st-table-actions>
-        </div>
-      </st-table>
-    </div>
-  </st-panel>
+  <div></div>
 </template>
 
 <script>
-import { ListService } from './list.service'
-import { RouteService } from '@/services/route.service'
-import tableMixin from '@/mixins/table.mixin'
-import { columns } from './list.config'
-import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
 import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
 import SoldDealSaleCabinet from '@/views/biz-modals/sold/deal/sale-cabinet'
 import SoldDealSaleCourse from '@/views/biz-modals/sold/deal/sale-course'
 import SoldDealSaleDepositCard from '@/views/biz-modals/sold/deal/sale-deposit-card'
 import SoldDealSaleMemberCard from '@/views/biz-modals/sold/deal/sale-member-card'
 import SoldDealSalePersonalCourse from '@/views/biz-modals/sold/deal/sale-personal-course'
+import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
+import { PRODUCT_TYPE } from '@/constants/sold/transaction'
+import { OssService } from '@/services/oss.service'
 export default {
-  name: 'PageShopSoldLease',
-  mixins: [tableMixin],
-  bem: {
-    basic: 'page-shop-sold',
-    sale: 'page-shop-sold-sale'
-  },
+  name: 'SoldTransaction',
+  props: {},
   modals: {
-    SoldDealGatheringTip,
     SoldDealGathering,
     SoldDealSaleCabinet,
     SoldDealSaleCourse,
     SoldDealSaleDepositCard,
     SoldDealSaleMemberCard,
-    SoldDealSalePersonalCourse
+    SoldDealSalePersonalCourse,
+    SoldDealGatheringTip
   },
   serviceInject() {
     return {
-      listService: ListService,
-      routeService: RouteService
+      ossService: OssService
     }
-  },
-  rxState() {
-    return {
-      list: this.listService.list$,
-      page: this.listService.page$,
-      loading: this.listService.loading$,
-      query: this.routeService.query$,
-      productTypes: this.listService.productTypes$,
-      auth: this.listService.auth$
-    }
-  },
-  computed: {
-    columns
   },
   data() {
-    return {}
+    return {
+      PRODUCT_TYPE
+    }
   },
   methods: {
-    getList() {
-      this.$router.reload()
-    },
-    // 签单
-    onTransaction(record) {
-      switch (this.query.product_type) {
-        case 1:
-          this.onMember(record)
-          break
-        case 2:
-          this.onDeposit(record)
-          break
-        case 3:
-          this.onPersonalCourse(record)
-          break
-        case 5:
-          this.onPackage(record)
-          break
-        case 6:
-          this.onCabinet(record)
-          break
-      }
-    },
-    // 打印合同
-    createdOrderPrint(order_id) {
-      let url = `${
-        window.location.origin
-      }/extra/contract-preview?id=${order_id}`
-      window.open(url)
-    },
-    // 查看订单
-    createdOrderViewOrder(order_id) {
-      this.$router.push({
-        name: 'shop-finance-order-info-collection-details',
-        query: {
-          id: order_id
-        }
-      })
-    },
     // 订单收款modal
     createdOrderPay(props) {
       return new Promise((resolve, reject) => {
@@ -146,6 +46,22 @@ export default {
           }
         })
       })
+    },
+    // 订单收款回调
+    async payCallBack(orderId, modalType, callBackType) {
+      switch (callBackType) {
+        case 'cancel':
+          this.onSearch()
+          break
+        case 'pay':
+          this.createdGatheringTip({
+            message: '收款成功',
+            order_id: orderId
+          }).then(res => {
+            this.tipCallBack(orderId, modalType, res.type)
+          })
+          break
+      }
     },
     // 创建成功，提示框modal
     createdGatheringTip(props) {
@@ -163,7 +79,7 @@ export default {
     async tipCallBack(orderId, modalType, callBackType) {
       switch (callBackType) {
         case 'cancel':
-          this.getList()
+          this.$router.reload()
           break
         case 'Print':
           this.createdOrderPrint(orderId)
@@ -180,19 +96,43 @@ export default {
           break
       }
     },
-    // 订单收款回调
-    async payCallBack(orderId, modalType, callBackType) {
-      switch (callBackType) {
-        case 'cancel':
-          this.getList()
+    /**
+     * 交易签单，签单操作
+     * @params order_id 订单id
+     * @params product_type 签单类型
+     * @params member_id 会员id
+     * @params member_name 会员姓名
+     * @params member_mobile 会员手机号
+     */
+    onTransaction(
+      order_id,
+      product_type,
+      member_id,
+      member_name,
+      member_mobile
+    ) {
+      const record = {
+        id: order_id,
+        product_type,
+        member_id,
+        member_name,
+        member_mobile
+      }
+      switch (record.product_type) {
+        case this.PRODUCT_TYPE.MEMBER_CARD:
+          this.onMember(record)
           break
-        case 'pay':
-          this.createdGatheringTip({
-            message: '收款成功',
-            order_id: orderId
-          }).then(res => {
-            this.tipCallBack(orderId, modalType, res.type)
-          })
+        case this.PRODUCT_TYPE.DEPOSIT_CARD:
+          this.onDeposit(record)
+          break
+        case this.PRODUCT_TYPE.PERSONAL_COURSE:
+          this.onPersonalCourse(record)
+          break
+        case this.PRODUCT_TYPE.PACKAGE:
+          this.onPackage(record)
+          break
+        case this.PRODUCT_TYPE.CABINET:
+          this.onCabinet(record)
           break
       }
     },
@@ -223,7 +163,12 @@ export default {
       this.$modalRouter.push({
         name: 'sold-deal-sale-member-card',
         props: {
-          id: `${record.id}`
+          id: `${record.id}`,
+          memberInfo: {
+            member_id: record.member_id,
+            member_name: record.member_name,
+            member_mobile: record.member_mobile
+          }
         },
         on: {
           success: result => {
@@ -237,7 +182,12 @@ export default {
       this.$modalRouter.push({
         name: 'sold-deal-sale-deposit-card',
         props: {
-          id: `${record.id}`
+          id: `${record.id}`,
+          memberInfo: {
+            member_id: record.member_id,
+            member_name: record.member_name,
+            member_mobile: record.member_mobile
+          }
         },
         on: {
           success: result => {
@@ -253,7 +203,12 @@ export default {
         props: {
           // 默认传0，因为没有选择具体的柜子
           id: '0',
-          areaId: `${record.id}`
+          areaId: `${record.id}`,
+          memberInfo: {
+            member_id: record.member_id,
+            member_name: record.member_name,
+            member_mobile: record.member_mobile
+          }
         },
         on: {
           success: result => {
@@ -267,7 +222,12 @@ export default {
       this.$modalRouter.push({
         name: 'sold-deal-sale-course',
         props: {
-          id: `${record.id}`
+          id: `${record.id}`,
+          memberInfo: {
+            member_id: record.member_id,
+            member_name: record.member_name,
+            member_mobile: record.member_mobile
+          }
         },
         on: {
           success: result => {
@@ -281,12 +241,33 @@ export default {
       this.$modalRouter.push({
         name: 'sold-deal-sale-personal-course',
         props: {
-          id: `${record.id}`
+          id: `${record.id}`,
+          memberInfo: {
+            member_id: record.member_id,
+            member_name: record.member_name,
+            member_mobile: record.member_mobile
+          }
         },
         on: {
           success: result => {
             this.saleCallBack(result, 'personal')
           }
+        }
+      })
+    },
+    // 打印合同
+    createdOrderPrint(order_id) {
+      let url = `${
+        window.location.origin
+      }/extra/contract-preview?id=${order_id}`
+      this.ossService.openNewTab(url)
+    },
+    // 查看订单
+    createdOrderViewOrder(order_id) {
+      this.$router.push({
+        name: 'shop-finance-order-info-collection-details',
+        query: {
+          id: order_id
         }
       })
     }
