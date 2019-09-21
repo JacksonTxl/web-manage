@@ -76,13 +76,9 @@
           ></st-image-upload>
         </st-form-item>
         <st-form-item label="对外展示">
-          <a-checkbox
-            v-decorator="decorators.is_show"
-            :checked="checked"
-            @change="checkShow"
-          >
+          <st-checkbox v-decorator="decorators.is_show">
             展示在会员端
-          </a-checkbox>
+          </st-checkbox>
         </st-form-item>
       </a-col>
     </a-row>
@@ -167,10 +163,11 @@ export default {
           ? moment(obj.employment_time)
           : undefined,
         introduction: obj.introduction,
-        specialty_id: obj.specialty_id
+        specialty_id: obj.specialty_id,
+        is_show: obj.is_show
       })
       this.fileList = obj.image_personal
-      obj.is_show ? (this.checked = true) : (this.checked = false)
+      // obj.is_show ? (this.checked = true) : (this.checked = false)
       this.coachInfoData.certification_name = obj.certification_name
         ? obj.certification_name
         : []
