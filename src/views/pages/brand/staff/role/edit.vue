@@ -26,7 +26,7 @@
           <a-radio :value="2">所在部门及子部门</a-radio>
           <a-radio :value="4">全部门</a-radio>
           <a-radio :value="3">跨部门</a-radio>
-          {{ departmentName }}
+          {{ departmentInfo }}
         </a-radio-group>
       </st-form-item>
       <st-form-item label="功能权限">
@@ -135,6 +135,7 @@ export default {
     return {
       loading: this.editService.loading$,
       info: this.editService.info$,
+      departmentInfo: this.editService.departmentInfo$,
       brandList: this.editService.brandList$,
       shopList: this.editService.shopList$
     }
@@ -212,11 +213,14 @@ export default {
           name: 'role-department',
           on: {
             success(result) {
-              that.departmentName = result.lable.join(',')
+              that.departmentInfo = result.lable.join(',')
+              // that.departmentName = result.lable.join(',')
               that.department_ids = result.value
             }
           }
         })
+      } else {
+        this.departmentInfo = ''
       }
     },
     getSelectIds(selectIds, count) {

@@ -59,6 +59,19 @@ export default {
   },
   computed: {
     dataGrant() {
+      let departmentInfo = ''
+      if (this.info.data_grant === 3) {
+        this.info.departments.forEach(element => {
+          if (departmentInfo) {
+            departmentInfo = departmentInfo + ',' + element.department_name
+          } else {
+            departmentInfo += element.department_name
+          }
+        })
+        return (
+          this.dataGrantList[this.info.data_grant - 1] + `(${departmentInfo})`
+        )
+      }
       return this.dataGrantList[this.info.data_grant - 1]
     },
     brands() {

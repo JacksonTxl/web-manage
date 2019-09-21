@@ -1,15 +1,15 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
-import { GetInitInfoPut, RoleInfo, RoleApi } from '@/api/v1/staff/role'
+import { anyAll } from '@/operators'
+import { Injectable, ServiceRoute } from 'vue-service-app'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
+import { GetInitInfoPut, RoleInfo } from '@/api/v1/staff/role'
 import { RoleService } from '../role.service'
-import { forkJoin } from 'rxjs'
 import { MessageService } from '@/services/message.service'
 @Injectable()
 export class EditService {
   loading$ = new State({})
   info$ = new State({})
+  departmentInfo$ = new State({})
   shopList$ = new State({})
   brandList$ = new State({})
   constructor(private roleService: RoleService, private msg: MessageService) {}
@@ -36,11 +36,24 @@ export class EditService {
     return this.roleService.getInfo(query).pipe(
       tap(res => {
         this.info$.commit(() => res.role)
+        this.departmentInfo$.commit(() => {
+          let departmentInfo = ''
+          if (res.role.data_grant === 3) {
+            res.role.departments.forEach((element: any) => {
+              if (departmentInfo) {
+                departmentInfo = departmentInfo + ',' + element.department_name
+              } else {
+                departmentInfo += element.department_name
+              }
+            })
+          }
+          return departmentInfo
+        })
       })
     )
   }
   getInit(query: GetInitInfoPut) {
-    return forkJoin(this.getInfo(query), this.gitInitInfo(query))
+    return anyAll(this.getInfo(query), this.gitInitInfo(query))
   }
 
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
