@@ -17,10 +17,19 @@
           <div class="label">流水金额：</div>
           <st-input-number
             class="amount__input mg-r8"
+            :min="1"
+            :max="99999"
+            :step="1"
+            :precision="0"
+            float
             v-model="query.start_amount"
           ></st-input-number>
           至
           <st-input-number
+            :min="1"
+            :max="99999"
+            :precision="0"
+            float
             class="amount__input mg-l8"
             v-model="query.end_amount"
           ></st-input-number>
@@ -42,7 +51,7 @@
           >
             查询
           </st-button>
-          <st-button class="mg-l8" @click="onSearhReset">重置</st-button>
+          <st-button class="mg-l8" @click="onReset">重置</st-button>
         </div>
       </st-search-panel>
     </div>
@@ -140,7 +149,12 @@ export default {
       this.query.pay_channel = this.checkedList
       this.$router.push({ query: { ...this.query, start_time, end_time } })
     },
-    onSearhReset() {}
+    onReset() {
+      this.checkedList = []
+      this.selectTime.startTime.value = ''
+      this.selectTime.endTime.value = ''
+      this.onSearhReset()
+    }
   }
 }
 </script>

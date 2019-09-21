@@ -1,3 +1,4 @@
+import { AddReserveCreateInput } from './../../../api/v1/front/reserve'
 import { anyAll } from './../../../operators/any-all'
 import { ReserveApi, AddReserveInput } from '@/api/v1/front/reserve'
 import { State, Effect } from 'rx-state'
@@ -14,6 +15,13 @@ export class AddReserveService {
   @Effect()
   addReserve(params: AddReserveInput) {
     return this.reserveApi.addReserve(params).pipe(
+      tap(res => {
+        this.msg.success({ content: '添加到访成功' })
+      })
+    )
+  }
+  addReserveCreate(params: AddReserveCreateInput) {
+    return this.reserveApi.addReserveCreate(params).pipe(
       tap(res => {
         this.msg.success({ content: '添加到访成功' })
       })

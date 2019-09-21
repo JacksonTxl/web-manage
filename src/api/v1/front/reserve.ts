@@ -26,6 +26,12 @@ export class ReserveApi extends Api {
     return this.http.post('/v1/front/reserve/add', { params })
   }
   /**
+   * 注册会员 并 添加到访预约
+   */
+  addReserveCreate(params: AddReserveCreateInput) {
+    return this.http.post('/v1/front/reserve/create', { params })
+  }
+  /**
    * 取消到访预约 v1/front/reserve/cancel
    */
   cancelVisitReserve(id: number) {
@@ -58,6 +64,13 @@ export interface GetListInput {
 
 export interface AddReserveInput {
   reserve_id: number
+  reserve_date: string
+  reserve_time: string
+  receptionist_id: number
+}
+export interface AddReserveCreateInput {
+  member_name: string
+  mobile: string
   reserve_date: string
   reserve_time: string
   receptionist_id: number

@@ -937,8 +937,8 @@ export const routeMapConfig = {
     routeConfig.meta.title = '支出流水'
     routeConfig.queryOptions = {
       search_number: { type: Number },
-      start_amount: { type: Number },
-      end_amount: { type: Number },
+      start_amount: { type: String },
+      end_amount: { type: String },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       start_time: { type: String, default: '' },
@@ -952,8 +952,8 @@ export const routeMapConfig = {
       current_page: { type: Number, default: 1 },
       start_time: { type: String, default: '' },
       end_time: { type: String, default: '' },
-      start_amount: { type: Number },
-      end_amount: { type: Number },
+      start_amount: { type: String },
+      end_amount: { type: String },
       size: { type: Number, default: 20 }
     }
   },

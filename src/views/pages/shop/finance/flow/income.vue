@@ -17,10 +17,19 @@
           <div class="label">流水金额：</div>
           <st-input-number
             class="amount__input mg-r8"
+            :min="1"
+            :max="99999"
+            :step="1"
+            :precision="0"
+            float
             v-model="query.start_amount"
           ></st-input-number>
           至
           <st-input-number
+            :min="1"
+            :max="99999"
+            :precision="0"
+            float
             class="amount__input mg-l8"
             v-model="query.end_amount"
           ></st-input-number>
@@ -165,7 +174,9 @@ export default {
       this.query.pay_channel = this.checkedList
       this.$router.push({ query: { ...this.query, start_time, end_time } })
     },
-    onSearhReset() {}
+    onSearhReset() {
+      this.onSearhReset()
+    }
   }
 }
 </script>

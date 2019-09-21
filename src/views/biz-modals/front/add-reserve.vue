@@ -40,6 +40,7 @@ import { AddReserveService } from './add-reserve.service'
 import { ruleOptions } from './add-reserve.config'
 import FormMemberSearch from '@/views/biz-components/member-search/member-search'
 import { cloneDeep } from 'lodash-es'
+import { PatternService } from '@/services/pattern.service'
 export default {
   name: 'FrontAddReserve',
   serviceProviders() {
@@ -47,7 +48,8 @@ export default {
   },
   serviceInject() {
     return {
-      addReserveService: AddReserveService
+      addReserveService: AddReserveService,
+      pattern: PatternService
     }
   },
   rxState() {
@@ -79,12 +81,17 @@ export default {
           current > moment().add(1, 'month'))
       )
     },
+    addSubmit(form) {
+      return form.mobile
+        ? this.addReserveService.addReserveCreate(form)
+        : this.addReserveService.addReserve(form)
+    },
     onSubmit() {
       this.form.validate().then(values => {
         let form = cloneDeep(values)
         form.reserve_date = moment(form.reserve_date).format('YYYY-MM-DD')
         form.reserve_time = moment(form.reserve_date).format('HH:mm')
-        this.addReserveService.addReserve(form).subscribe(res => {
+        this.addSubmit(form).subscribe(res => {
           this.show = false
           this.$emit('success')
         })
