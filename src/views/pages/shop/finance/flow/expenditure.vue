@@ -151,8 +151,8 @@ export default {
     },
     onReset() {
       this.checkedList = []
-      this.selectTime.startTime.value = ''
-      this.selectTime.endTime.value = ''
+      this.selectTime.startTime.value = null
+      this.selectTime.endTime.value = null
       this.onSearhReset()
     }
   }

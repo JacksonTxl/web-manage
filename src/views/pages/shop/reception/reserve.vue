@@ -36,7 +36,7 @@
           >
             查询
           </st-button>
-          <st-button class="mg-l8" @click="onSearhReset">重置</st-button>
+          <st-button class="mg-l8" @click="onReset">重置</st-button>
         </div>
       </st-search-panel>
     </div>
@@ -223,7 +223,11 @@ export default {
         : ''
       this.$router.push({ query: { ...this.query, start_time, end_time } })
     },
-    onSearhReset() {}
+    onReset() {
+      this.selectTime.startTime.value = null
+      this.selectTime.endTime.value = null
+      this.onSearhReset()
+    }
   }
 }
 </script>

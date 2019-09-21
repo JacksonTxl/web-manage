@@ -1,60 +1,58 @@
 <template>
-  <st-panel :class="bPage()">
-    <div slot="prepend">
-      <st-search-panel :class="bSearch()">
-        <div :class="bSearch('radio')" class="mg-t24 search-item">
-          <span class="label">收银方式:</span>
-          <a-checkbox @change="onCheckAllChange" :checked="checkAll">
-            全部
-          </a-checkbox>
-          <a-checkbox-group
-            @change="onChangePayType"
-            v-model="checkedList"
-            :options="payType$"
-          />
-        </div>
-        <div :class="bSearch('amount')" class="mg-t24 search-item">
-          <div class="label">流水金额：</div>
-          <st-input-number
-            class="amount__input mg-r8"
-            :min="1"
-            :max="99999"
-            :step="1"
-            :precision="0"
-            float
-            v-model="query.start_amount"
-          ></st-input-number>
-          至
-          <st-input-number
-            :min="1"
-            :max="99999"
-            :precision="0"
-            float
-            class="amount__input mg-l8"
-            v-model="query.end_amount"
-          ></st-input-number>
-        </div>
-        <div :class="bSearch('range-picker')" class="mg-t24 search-item">
-          <span class="label">预约时间：</span>
-          <st-range-picker
-            :disabledDays="180"
-            :value="selectTime"
-            class="value"
-          ></st-range-picker>
-        </div>
+  <div :class="bPage()">
+    <st-search-panel :class="bSearch()">
+      <div :class="bSearch('radio')" class="mg-t24 search-item">
+        <span class="label">收银方式:</span>
+        <a-checkbox @change="onCheckAllChange" :checked="checkAll">
+          全部
+        </a-checkbox>
+        <a-checkbox-group
+          @change="onChangePayType"
+          v-model="checkedList"
+          :options="payType$"
+        />
+      </div>
+      <div :class="bSearch('amount')" class="mg-t24 search-item">
+        <div class="label">流水金额：</div>
+        <st-input-number
+          class="amount__input mg-r8"
+          :min="1"
+          :max="99999"
+          :step="1"
+          :precision="0"
+          float
+          v-model="query.start_amount"
+        ></st-input-number>
+        至
+        <st-input-number
+          :min="1"
+          :max="99999"
+          :precision="0"
+          float
+          class="amount__input mg-l8"
+          v-model="query.end_amount"
+        ></st-input-number>
+      </div>
+      <div :class="bSearch('range-picker')" class="mg-t24 search-item">
+        <span class="label">预约时间：</span>
+        <st-range-picker
+          :disabledDays="180"
+          :value="selectTime"
+          class="value"
+        ></st-range-picker>
+      </div>
 
-        <div slot="button">
-          <st-button
-            type="primary"
-            @click="onSearchNative"
-            :loading="loading$.getList"
-          >
-            查询
-          </st-button>
-          <st-button class="mg-l8" @click="onSearhReset">重置</st-button>
-        </div>
-      </st-search-panel>
-    </div>
+      <div slot="button">
+        <st-button
+          type="primary"
+          @click="onSearchNative"
+          :loading="loading$.getList"
+        >
+          查询
+        </st-button>
+        <st-button class="mg-l8" @click="onReset">重置</st-button>
+      </div>
+    </st-search-panel>
     <st-table
       :columns="columns"
       :scroll="{ x: 1400 }"
@@ -70,7 +68,7 @@
         </st-table-actions>
       </div>
     </st-table>
-  </st-panel>
+  </div>
 </template>
 <script>
 import { RouteService } from '@/services/route.service'
@@ -174,7 +172,10 @@ export default {
       this.query.pay_channel = this.checkedList
       this.$router.push({ query: { ...this.query, start_time, end_time } })
     },
-    onSearhReset() {
+    onReset() {
+      this.checkedList = []
+      this.selectTime.startTime.value = null
+      this.selectTime.endTime.value = null
       this.onSearhReset()
     }
   }
