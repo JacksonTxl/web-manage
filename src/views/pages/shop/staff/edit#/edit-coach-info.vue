@@ -151,9 +151,6 @@ export default {
     imageUploadChange(e) {
       this.image_personal = e
     },
-    checkShow(e) {
-      this.checked = e.target.checked
-    },
     onChooseSpecialty(e) {
       console.log(e)
     },
@@ -167,7 +164,6 @@ export default {
         is_show: obj.is_show
       })
       this.fileList = obj.image_personal
-      // obj.is_show ? (this.checked = true) : (this.checked = false)
       this.coachInfoData.certification_name = obj.certification_name
         ? obj.certification_name
         : []
