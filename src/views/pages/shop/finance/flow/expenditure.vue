@@ -155,7 +155,7 @@ export default {
         ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59`
         : ''
       this.query.pay_channel = this.checkedList
-      this.$router.push({ query: { ...this.query, start_time, end_time } })
+      this.$router.push({ query: { ...this.query, start_date, end_date } })
     },
     onReset() {
       this.checkedList = []
