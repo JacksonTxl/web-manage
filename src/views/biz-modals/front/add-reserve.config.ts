@@ -23,7 +23,13 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     member_name: {
-      rules: [{ required: true, message: '会员名称必填' }]
+      rules: [
+        { required: true, message: '会员名称必填' },
+        {
+          pattern: pattern.CN_EN_NUM_SPACE('1-15'),
+          message: '请输入会员姓名，支持格式长度1~15中英文'
+        }
+      ]
     }
   }
 }
