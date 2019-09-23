@@ -25,7 +25,6 @@
 <script>
 import { MessageService } from '@/services/message.service'
 import { EditStatusService } from './edit-status.service'
-// import { ruleOptions } from './open.config'
 import { CABINET } from '@/constants/reception/cabinet'
 
 export default {
@@ -42,12 +41,8 @@ export default {
     }
   },
   data() {
-    // const form = this.$stForm.create()
-    // const decorators = form.decorators(ruleOptions)
     return {
       CABINET,
-      // form,
-      // decorators,
       show: false,
       cabinet_business_type: this.useStatus
     }
@@ -61,9 +56,6 @@ export default {
       type: [Number],
       default: 1
     }
-  },
-  mounted() {
-    // this.cabinet_business_type = this.useStatus
   },
   methods: {
     onSubmit() {
