@@ -21,7 +21,7 @@
         <div :class="bSearch('range-picker')" class="mg-t24 search-item">
           <span class="label">预约时间：</span>
           <st-range-picker
-            :disabledDays="180"
+            :disabledDays="60"
             @change="onChangeRangeTime"
             :value="selectTime"
             class="value"
