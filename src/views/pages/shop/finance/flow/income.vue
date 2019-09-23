@@ -177,10 +177,10 @@ export default {
     },
     onSearchNative() {
       const start_date = this.selectTime.startTime.value
-        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00`
+        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')}`
         : ''
       const end_date = this.selectTime.endTime.value
-        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59`
+        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')}`
         : ''
       this.query.pay_channel = this.checkedList
       this.$router.push({ query: { ...this.query, start_date, end_date } })
