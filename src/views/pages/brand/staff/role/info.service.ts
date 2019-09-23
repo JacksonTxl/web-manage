@@ -1,3 +1,4 @@
+import { UserService } from '@/services/user.service'
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { pluck, tap, switchMap, catchError } from 'rxjs/operators'
@@ -10,7 +11,11 @@ export class InfoService {
   info$ = new State({})
   shopList$ = new State({})
   brandList$ = new State({})
-  constructor(private roleService: RoleService) {}
+  dataGrant$ = this.userService.getOptions$('data_grant.data_grant')
+  constructor(
+    private roleService: RoleService,
+    private userService: UserService
+  ) {}
   gitInitInfo(query: GetInitInfoPut, select_ids: any) {
     return this.roleService.getInitInfo(query).pipe(
       tap(res => {

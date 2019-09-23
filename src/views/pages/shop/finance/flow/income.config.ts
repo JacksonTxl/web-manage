@@ -6,7 +6,8 @@ export const columns = () => {
     },
     {
       title: '金额（元）',
-      dataIndex: 'price'
+      dataIndex: 'price',
+      sorter: true
     },
     {
       title: '收银方式',
@@ -19,7 +20,8 @@ export const columns = () => {
     },
     {
       title: '创建时间',
-      dataIndex: 'flow_time'
+      dataIndex: 'flow_time',
+      sorter: true
     },
     {
       title: '操作人',
@@ -34,6 +36,13 @@ export const columns = () => {
       title: '备注',
       dataIndex: 'remark',
       scopedSlots: { customRender: 'remark' }
+    },
+    {
+      title: '操作',
+      dataIndex: 'action',
+      fixed: 'right',
+      width: 140,
+      scopedSlots: { customRender: 'action' }
     }
   ]
 }

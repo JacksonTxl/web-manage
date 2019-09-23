@@ -4,7 +4,7 @@
     title="添加到访预约"
     v-model="show"
     @ok="onSubmit"
-    :confirmLoading="loading$.addReverse"
+    :confirmLoading="loading$.addReserve"
   >
     <st-form :form="form">
       <form-member-search
@@ -20,14 +20,15 @@
           placeholder="预约日期"
           allowClear
           :disabledDate="disabledDate"
-          :showTime="{ format: 'HH:mm', minuteStep: 5 }"
+          :showTime="{ defaultValue: moment('00:00:00', 'HH:mm:ss') }"
           format="YYYY-MM-DD HH:mm"
         ></a-date-picker>
       </st-form-item>
       <st-form-item label="接待人员">
-        <a-select v-decorator="decorators.receptionist_id">
-          <a-select-option label="33" value="123">123</a-select-option>
-        </a-select>
+        <a-select
+          v-decorator="decorators.receptionist_id"
+          :options="staffList$"
+        ></a-select>
       </st-form-item>
     </st-form>
   </st-modal>
@@ -35,22 +36,28 @@
 
 <script>
 import moment from 'moment'
-import { AddReverveService } from './add-reverve.service'
+import { AddReserveService } from './add-reserve.service'
 import { ruleOptions } from './add-reserve.config'
 import FormMemberSearch from '@/views/biz-components/member-search/member-search'
+import { cloneDeep } from 'lodash-es'
+import { PatternService } from '@/services/pattern.service'
 export default {
+  name: 'FrontAddReserve',
   serviceProviders() {
-    return [AddReverveService]
+    return [AddReserveService]
   },
   serviceInject() {
     return {
-      addReverveService: AddReverveService
+      addReserveService: AddReserveService,
+      pattern: PatternService
     }
   },
   rxState() {
-    const { loading$ } = this.addReverveService
+    const { loading$, memberList$, staffList$ } = this.addReserveService
     return {
-      loading$
+      loading$,
+      memberList$,
+      staffList$
     }
   },
   components: {
@@ -66,6 +73,7 @@ export default {
     }
   },
   methods: {
+    moment,
     disabledDate(current) {
       return (
         current &&
@@ -73,12 +81,25 @@ export default {
           current > moment().add(1, 'month'))
       )
     },
+    addSubmit(form) {
+      return form.mobile
+        ? this.addReserveService.addReserveCreate(form)
+        : this.addReserveService.addReserve(form)
+    },
     onSubmit() {
       this.form.validate().then(values => {
-        console.log(values)
-        // this.addReverveService.addReverse().subscribe()
+        let form = cloneDeep(values)
+        form.reserve_date = moment(form.reserve_date).format('YYYY-MM-DD')
+        form.reserve_time = moment(form.reserve_date).format('HH:mm')
+        this.addSubmit(form).subscribe(res => {
+          this.show = false
+          this.$emit('success')
+        })
       })
     }
+  },
+  created() {
+    this.addReserveService.getStaffList().subscribe()
   }
 }
 </script>

@@ -49,17 +49,21 @@ export default {
       loading: this.infoService.loading$,
       info: this.infoService.info$,
       brandList: this.infoService.brandList$,
-      shopList: this.infoService.shopList$
-    }
-  },
-  data() {
-    return {
-      dataGrantList: ['仅自己', '部门及子部门', '跨部门', '全部门']
+      shopList: this.infoService.shopList$,
+      dataGrantList: this.infoService.dataGrant$
     }
   },
   computed: {
     dataGrant() {
-      return this.dataGrantList[this.info.data_grant - 1]
+      const dataGrant = this.dataGrantList[this.info.data_grant - 1].label
+      const departmentInfo = this.info.departments
+        .map(element => {
+          return element.department_name
+        })
+        .join(',')
+      return this.info.data_grant === 3
+        ? `${dataGrant}  (${departmentInfo})`
+        : dataGrant
     },
     brands() {
       return listToTree(this.brandList)
