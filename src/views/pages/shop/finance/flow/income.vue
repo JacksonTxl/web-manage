@@ -16,7 +16,7 @@
         <div class="label">流水金额：</div>
         <st-input-number
           class="amount__input mg-r8"
-          :min="1"
+          :min="0"
           :max="99999"
           :step="1"
           :precision="0"
@@ -25,7 +25,7 @@
         ></st-input-number>
         至
         <st-input-number
-          :min="1"
+          :min="0"
           :max="99999"
           :precision="0"
           float
@@ -34,7 +34,7 @@
         ></st-input-number>
       </div>
       <div :class="bSearch('range-picker')" class="mg-t24 search-item">
-        <span class="label">预约时间：</span>
+        <span class="label">创建时间：</span>
         <st-range-picker
           :disabledDays="180"
           :value="selectTime"
