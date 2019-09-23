@@ -4,20 +4,32 @@
       <st-search-panel :class="bSearch()">
         <div :class="bSearch('radio')" class="mg-t24 search-item">
           <span class="label">收银方式:</span>
-          <st-search-radio
-            class="value"
-            v-model="query.pay_channel"
-            :list="payType$"
+          <a-checkbox @change="onCheckAllChange" :checked="checkAll">
+            全部
+          </a-checkbox>
+          <a-checkbox-group
+            @change="onChangePayType"
+            v-model="checkedList"
+            :options="payType$"
           />
         </div>
         <div :class="bSearch('range-picker')" class="mg-t24 search-item">
           <div class="label">流水金额：</div>
           <st-input-number
             class="amount__input mg-r8"
+            :min="1"
+            :max="99999"
+            :step="1"
+            :precision="0"
+            float
             v-model="query.start_amount"
           ></st-input-number>
           至
           <st-input-number
+            :min="1"
+            :max="99999"
+            :precision="0"
+            float
             class="amount__input mg-l8"
             v-model="query.end_amount"
           ></st-input-number>
@@ -39,7 +51,7 @@
           >
             查询
           </st-button>
-          <st-button class="mg-l8" @click="onSearhReset">重置</st-button>
+          <st-button class="mg-l8" @click="onReset">重置</st-button>
         </div>
       </st-search-panel>
     </div>
@@ -52,6 +64,14 @@
       :dataSource="list$"
     >
       <span slot="flow_type" slot-scope="text">{{ text.name }}</span>
+      <st-overflow-text
+        title="备注"
+        maxWidth="200px"
+        slot="remark"
+        slot-scope="text"
+      >
+        {{ text }}
+      </st-overflow-text>
     </st-table>
   </st-panel>
 </template>
@@ -85,6 +105,9 @@ export default {
   },
   data() {
     return {
+      checkedList: [],
+      indeterminate: false,
+      checkAll: false,
       selectTime: {
         startTime: {
           showTime: false,
@@ -110,16 +133,36 @@ export default {
     columns
   },
   methods: {
+    onChangePayType(checkedList) {
+      this.indeterminate =
+        !!checkedList.length && checkedList.length < this.payType$.length
+      this.checkAll = checkedList.length === this.payType$.length
+    },
+    onCheckAllChange(e) {
+      Object.assign(this, {
+        checkedList: e.target.checked
+          ? this.payType$.map(item => item.value)
+          : [],
+        indeterminate: false,
+        checkAll: e.target.checked
+      })
+    },
     onSearchNative() {
-      const start_time = this.selectTime.startTime.value
+      const start_date = this.selectTime.startTime.value
         ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00`
         : ''
-      const end_time = this.selectTime.endTime.value
+      const end_date = this.selectTime.endTime.value
         ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59`
         : ''
+      this.query.pay_channel = this.checkedList
       this.$router.push({ query: { ...this.query, start_time, end_time } })
     },
-    onSearhReset() {}
+    onReset() {
+      this.checkedList = []
+      this.selectTime.startTime.value = null
+      this.selectTime.endTime.value = null
+      this.onSearhReset()
+    }
   }
 }
 </script>

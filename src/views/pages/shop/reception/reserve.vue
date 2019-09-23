@@ -36,7 +36,7 @@
           >
             查询
           </st-button>
-          <st-button class="mg-l8" @click="onSearhReset">重置</st-button>
+          <st-button class="mg-l8" @click="onReset">重置</st-button>
         </div>
       </st-search-panel>
     </div>
@@ -60,35 +60,64 @@
       :dataSource="list$"
     >
       <span slot="reserve_type" slot-scope="text">{{ text.name }}</span>
+      <span slot="member" slot-scope="text">{{ text.name }}</span>
       <span slot="reserve_status" slot-scope="text">{{ text.name }}</span>
+      <!-- TODO: 暂时前端控制 -->
       <div slot="action" slot-scope="text, record">
-        <st-table-actions v-if="record.reserve_type.id === 1">
-          <a>取消</a>
-          <a>签到</a>
+        <st-table-actions v-if="record.reserve_type.id === RESERVE_TYPE.COURSE">
+          <a
+            v-if="
+              record.reserve_status.id === COURSE_STATUS.RESERVED ||
+                record.reserve_status.id === COURSE_STATUS.RESERVEING
+            "
+            @click="onClickCancel(record)"
+          >
+            取消
+          </a>
+          <a
+            v-if="
+              record.reserve_status.id === COURSE_STATUS.RESERVED ||
+                record.reserve_status.id === COURSE_STATUS.RESERVEING
+            "
+            @click="onClickCourseSign(record)"
+          >
+            签到
+          </a>
         </st-table-actions>
-        <st-table-actions v-if="record.reserve_type.id === 2">
-          <a>取消</a>
-          <a>预约到访</a>
+        <st-table-actions v-if="record.reserve_type.id === RESERVE_TYPE.VISIT">
+          <a
+            v-if="record.reserve_status.id === VISIT_STATUS.RESERVED"
+            @click="onClickCancelVisitReserve(record)"
+          >
+            取消
+          </a>
+          <a
+            v-if="record.reserve_status.id === VISIT_STATUS.RESERVED"
+            @click="onClickconfirmVisitReserve(record)"
+          >
+            确认到访
+          </a>
         </st-table-actions>
       </div>
     </st-table>
   </st-panel>
 </template>
 <script>
-// import moment from 'moment'
-// import { cloneDeep, filter } from 'lodash-es'
-// import { UserService } from '@/services/user.service'
-// import { ListService } from './list.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { ReserveService } from './reserve.service'
-import FrontAddReverve from '@/views/biz-modals/front/add-reverve'
+import FrontAddReserve from '@/views/biz-modals/front/add-reserve'
 import { columns } from './reserve.config.ts'
+import {
+  VISIT_STATUS,
+  COURSE_STATUS,
+  RESERVE_TYPE
+} from '@/constants/front/reserve'
 export default {
   name: 'ReceptionReserve',
   mixins: [tableMixin],
   modals: {
-    FrontAddReverve
+    FrontAddReserve
   },
   bem: {
     bPage: 'page-shop-reception-reserve',
@@ -112,6 +141,9 @@ export default {
   },
   data() {
     return {
+      VISIT_STATUS,
+      COURSE_STATUS,
+      RESERVE_TYPE,
       selectTime: {
         startTime: {
           showTime: false,
@@ -139,16 +171,48 @@ export default {
   methods: {
     onAddReverse() {
       this.$modalRouter.push({
-        name: 'front-add-reverve',
+        name: 'front-add-reserve',
         on: {
-          done: () => {
-            console.log('ok')
+          success: () => {
+            this.$router.reload()
           }
         }
       })
     },
     onChangeRangeTime(value) {
       console.log(value)
+    },
+    onClickCancelVisitReserve(record) {
+      this.service.cancelVisitReserve(record.id).subscribe(res => {
+        this.$router.reload()
+      })
+    },
+    onClickconfirmVisitReserve(record) {
+      this.service.confirmVisitReserve(record.id).subscribe(res => {
+        this.$router.reload()
+      })
+    },
+    getCourseForm(record) {
+      const { id, sub_reserve_type, member } = record
+      return {
+        id: member.id,
+        reserve_type: sub_reserve_type.id,
+        reserve_id: id
+      }
+    },
+    onClickCancel(record) {
+      this.service
+        .cancelCourseReserve(this.getCourseForm(record))
+        .subscribe(res => {
+          this.$router.reload()
+        })
+    },
+    onClickCourseSign(record) {
+      this.service
+        .confirmCourseReserve(this.getCourseForm(record))
+        .subscribe(res => {
+          this.$router.reload()
+        })
     },
     onSearchNative() {
       const start_time = this.selectTime.startTime.value
@@ -159,7 +223,11 @@ export default {
         : ''
       this.$router.push({ query: { ...this.query, start_time, end_time } })
     },
-    onSearhReset() {}
+    onReset() {
+      this.selectTime.startTime.value = null
+      this.selectTime.endTime.value = null
+      this.onSearhReset()
+    }
   }
 }
 </script>

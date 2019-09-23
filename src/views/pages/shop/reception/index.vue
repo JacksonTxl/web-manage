@@ -560,6 +560,7 @@ import FrontAddWorkNote from '@/views/biz-modals/front/add-work-note'
 import FaceUpload from '@/views/biz-components/face-upload/face-upload'
 import { summaryList, shortcutList } from './index.config'
 import { RECEPTION } from '@/constants/reception/reception'
+import FrontAddReserve from '@/views/biz-modals/front/add-reserve'
 export default {
   name: 'PageShopReception',
   bem: {
@@ -567,7 +568,8 @@ export default {
   },
   modals: {
     FrontAddMember,
-    FrontAddWorkNote
+    FrontAddWorkNote,
+    FrontAddReserve
   },
   serviceInject() {
     return {
@@ -754,6 +756,16 @@ export default {
             path: '/shop/reception/entrance'
           })
           break
+        case 'today_reserve':
+          this.$router.push({
+            path: '/shop/reception/reserve'
+          })
+          break
+        case 'today_revenue':
+          this.$router.push({
+            path: '/shop/finance/flow'
+          })
+          break
       }
     },
     // 快捷操作
@@ -770,6 +782,16 @@ export default {
           break
         case 'reservePage':
           this.$router.push({ path: '/shop/reception/reserve' })
+          break
+        case 'addVisit':
+          this.$modalRouter.push({
+            name: 'front-add-reserve',
+            on: {
+              success: () => {
+                this.$router.reload()
+              }
+            }
+          })
           break
       }
     },

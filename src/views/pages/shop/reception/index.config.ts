@@ -12,7 +12,7 @@ export const summaryList = () => {
       type: 'today_reserve',
       unit: '条',
       color: '#2C8DD2',
-      version: 2
+      version: 1
     },
     {
       label: '今日团课',
@@ -26,7 +26,7 @@ export const summaryList = () => {
       type: 'today_revenue',
       unit: '元',
       color: '#11C5A1',
-      version: 2
+      version: 1
     },
     {
       label: '今日入场',
@@ -86,7 +86,7 @@ export const shortcutList = () => {
       icon: 'reception-record',
       label: '预约到访',
       auth: true,
-      version: 2
+      version: 1
     }
   ]
 }
