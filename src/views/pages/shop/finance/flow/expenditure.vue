@@ -64,6 +64,14 @@
       :dataSource="list$"
     >
       <span slot="flow_type" slot-scope="text">{{ text.name }}</span>
+      <st-overflow-text
+        title="备注"
+        maxWidth="200px"
+        slot="remark"
+        slot-scope="text"
+      >
+        {{ text }}
+      </st-overflow-text>
     </st-table>
   </st-panel>
 </template>
@@ -140,10 +148,10 @@ export default {
       })
     },
     onSearchNative() {
-      const start_time = this.selectTime.startTime.value
+      const start_date = this.selectTime.startTime.value
         ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00`
         : ''
-      const end_time = this.selectTime.endTime.value
+      const end_date = this.selectTime.endTime.value
         ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59`
         : ''
       this.query.pay_channel = this.checkedList
