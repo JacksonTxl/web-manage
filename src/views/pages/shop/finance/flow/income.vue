@@ -61,6 +61,9 @@
       @change="onTableChange"
       :dataSource="list$"
     >
+      <span slot="price" :class="{ price__red: +text < 0 }" slot-scope="text">
+        {{ text }}
+      </span>
       <span slot="flow_type" slot-scope="text">{{ text.name }}</span>
       <st-overflow-text
         title="备注"
@@ -70,12 +73,10 @@
       >
         {{ text }}
       </st-overflow-text>
+
       <div slot="action" slot-scope="text, record">
         <st-table-actions>
-          <a
-            v-if="record.auth['brand_shop:flow:income|reverse']"
-            @click="onClickFlowChargeAgainst(record)"
-          >
+          <a @click="onClickFlowChargeAgainst(record)">
             流水冲销
           </a>
         </st-table-actions>
