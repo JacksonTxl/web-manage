@@ -929,8 +929,8 @@ export const routeMapConfig = {
   'shop-finance-flow'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '收支流水'
     routeConfig.meta.tabs = [
-      'shop-finance-flow-expenditure',
-      'shop-finance-flow-income'
+      'shop-finance-flow-income',
+      'shop-finance-flow-expenditure'
     ]
   },
   'shop-finance-flow-expenditure'(routeConfig: RouteConfig) {

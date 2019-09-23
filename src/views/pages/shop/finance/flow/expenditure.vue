@@ -35,7 +35,7 @@
           ></st-input-number>
         </div>
         <div :class="bSearch('range-picker')" class="mg-t24 search-item">
-          <span class="label">预约时间：</span>
+          <span class="label">创建时间：</span>
           <st-range-picker
             :disabledDays="180"
             :value="selectTime"
