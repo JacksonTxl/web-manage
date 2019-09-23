@@ -20,6 +20,27 @@ export class CabinetApi extends Api {
   getList() {
     return this.http.get(url)
   }
+  /**
+   * 远程开柜
+   * @param params
+   */
+  openCabinet(id: number, params: any) {
+    return this.http.post(`/v1/front/cabinet/${id}/unlock`, { params })
+  }
+  /**
+   * 批量清柜
+   * @param params.cabinet_ids 储物柜
+   */
+  clearCabinet(params: any) {
+    return this.http.post(`/v1/front/cabinet/clear`, { params })
+  }
+  /**
+   * 编辑柜子状态
+   * @param params.cabinet_business_type
+   */
+  editCabinetStatus(id: number, params: any) {
+    return this.http.put(`/v1/front/cabinet/${id}/business_type`, { params })
+  }
 }
 
 export interface DelInput {

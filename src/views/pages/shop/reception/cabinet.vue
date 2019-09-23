@@ -17,9 +17,9 @@
         >
           <div :class="b('nav-item-content')">
             <span>
-              {{ item.area_name }}({{ item.free_cabinet_count }}/{{
-                item.cabinet_num
-              }})
+              {{ item.area_name }}(
+              <label class="using-text">{{ item.free_cabinet_count }}</label>
+              /{{ item.cabinet_num }})
             </span>
           </div>
         </div>
@@ -46,12 +46,21 @@
             完成
           </st-button>
           <st-button
-            v-if="auth.batchAdd"
+            v-if="isOperationInBatch"
+            type="primary"
+            class="mg-l8"
+            @click="clearCabinet"
+            :loading="loading.clearCabinet"
+          >
+            清柜
+          </st-button>
+          <st-button
+            v-if="!isOperationInBatch && !cabinetType"
             type="primary"
             class="mg-l8"
             @click="changeOperationMode"
           >
-            {{ isOperationInBatch ? '清柜' : '批量清柜' }}
+            批量清柜
           </st-button>
         </div>
       </div>
@@ -69,12 +78,14 @@
 import { MessageService } from '@/services/message.service'
 import { RouteService } from '@/services/route.service'
 import { CabinetService } from './cabinet.service'
+import { CabinetListService } from './components#/cabinet-list.service'
 import { CabinetAreaService as AreaService } from '../setting/components#/area.service'
 import CabinetList from './components#/cabinet-list'
 import ShopCabinetEditPrice from '@/views/biz-modals/shop/cabinet/edit-price'
 import ShopCabinetAddLongTerm from '@/views/biz-modals/shop/cabinet/add-long-term'
 import ShopCabinetAddTemporary from '@/views/biz-modals/shop/cabinet/add-temporary'
 import Draggable from 'vuedraggable'
+import { CABINET } from '@/constants/reception/cabinet'
 
 export default {
   bem: {
@@ -90,12 +101,14 @@ export default {
       messageService: MessageService,
       routeService: RouteService,
       cabinetService: CabinetService,
+      cabinetListService: CabinetListService,
       areaService: AreaService
     }
   },
   rxState() {
     return {
       list: this.areaService.list$,
+      cabinetList: this.cabinetListService.list$,
       query: this.routeService.query$,
       auth: this.cabinetService.auth$,
       loading: this.cabinetService.loading$
@@ -103,6 +116,7 @@ export default {
   },
   data() {
     return {
+      CABINET,
       isActive: '',
       editId: 0,
       isShowAddAreaBtn: false,
@@ -134,6 +148,9 @@ export default {
     },
     areaName() {
       return this.currentArea.area_name
+    },
+    cabinetType() {
+      return this.query.type === 'long-term'
     }
   },
   created() {
@@ -244,6 +261,47 @@ export default {
           change: this.onCabinetListChange
         }
       })
+    },
+    clearCabinet() {
+      if (this.checked.length <= 0) {
+        this.messageService.error({
+          content: '请选择储物柜'
+        })
+        return
+      }
+      this.$confirm({
+        title: `当前选中柜子中共有${this.getUsingCabinetNum()}个柜子在使用中，请问确认进行清柜操作？`,
+        onOk: () => {
+          this.cabinetService
+            .clearCabinet({
+              cabinet_ids: this.checked
+            })
+            .subscribe(res => {
+              this.messageService.success({
+                content: '批量清柜成功!'
+              })
+            })
+          this.changeOperationMode()
+          this.$router.reload()
+        },
+        onCancel() {}
+      })
+    },
+    getUsingCabinetNum() {
+      let num = 0
+      const map = new Map()
+      this.cabinetList.map(item => {
+        map.set(item.id, item)
+      })
+      this.checked.map(item => {
+        if (
+          map.get(item).cabinet_business_type ===
+          this.CABINET.CABINET_BUSINESS_TYPE_USING
+        ) {
+          num++
+        }
+      })
+      return num
     }
   }
 }

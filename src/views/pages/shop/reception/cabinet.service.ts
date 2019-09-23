@@ -36,6 +36,10 @@ export class CabinetService implements RouteGuard {
     })
     return this.areaService.sort({ list })
   }
+  @Effect()
+  clearCabinet(params: any) {
+    return this.cabinetApi.clearCabinet(params)
+  }
   init(query: any) {
     return anyAll(
       this.cabinetListService.getList(query.type, query.id),
@@ -44,5 +48,8 @@ export class CabinetService implements RouteGuard {
   }
   beforeRouteEnter(to: ServiceRoute, form: ServiceRoute) {
     return this.init(to.meta.query)
+  }
+  beforeRouteUpdate(to: ServiceRoute, form: ServiceRoute) {
+    return this.cabinetListService.getList(to.meta.query.type, to.meta.query.id)
   }
 }
