@@ -133,7 +133,6 @@
       </a-row>
     </st-panel>
     <st-panel
-      initial
       class="mg-t12"
       :tabs="[
         {
