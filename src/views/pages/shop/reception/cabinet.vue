@@ -81,9 +81,6 @@ import { CabinetService } from './cabinet.service'
 import { CabinetListService } from './components#/cabinet-list.service'
 import { CabinetAreaService as AreaService } from '../setting/components#/area.service'
 import CabinetList from './components#/cabinet-list'
-import ShopCabinetEditPrice from '@/views/biz-modals/shop/cabinet/edit-price'
-import ShopCabinetAddLongTerm from '@/views/biz-modals/shop/cabinet/add-long-term'
-import ShopCabinetAddTemporary from '@/views/biz-modals/shop/cabinet/add-temporary'
 import Draggable from 'vuedraggable'
 import { CABINET } from '@/constants/reception/cabinet'
 
@@ -91,11 +88,7 @@ export default {
   bem: {
     b: 'page-setting-cabinet'
   },
-  modals: {
-    ShopCabinetEditPrice,
-    ShopCabinetAddLongTerm,
-    ShopCabinetAddTemporary
-  },
+  modals: {},
   serviceInject() {
     return {
       messageService: MessageService,
@@ -163,28 +156,6 @@ export default {
       const id = (list[0] && list[0].id) || 0
       this.queryHandler({ id })
     },
-    addArea() {
-      this.isShowAddAreaBtn = true
-    },
-    editArea(id) {
-      this.editId = id
-    },
-    delArea(id, num) {
-      if (num > 0) {
-        this.$error({
-          title: '当前区域内有配置储值柜，无法删除',
-          okText: '知道了'
-        })
-        return
-      }
-      this.areaService.del(id).subscribe(this.onDelAreaSuccess)
-    },
-    onDelAreaSuccess() {
-      this.messageService.success({
-        content: '删除成功'
-      })
-      this.onAreaListChange()
-    },
     onAreaListChange(type) {
       this.editId = 0
       this.isShowAddAreaBtn = false
@@ -223,44 +194,8 @@ export default {
     onCabinetSelectChange(checked) {
       this.checked = checked
     },
-    onDelCabinet() {
-      this.cabinetService
-        .del({
-          ids: this.checked
-        })
-        .subscribe(this.onDelCabinetSuccess)
-    },
-    onDelCabinetSuccess() {
-      this.messageService.success({
-        content: '删除成功'
-      })
-      this.checked = []
-      this.isOperationInBatch = false
-      this.onCabinetListChange()
-    },
     changeOperationMode() {
       this.isOperationInBatch = !this.isOperationInBatch
-    },
-    openBatchAdd() {
-      const { id } = this.query
-      const { type, areaName } = this
-      if (!+id) {
-        this.messageService.error({
-          content: '请先添加区域'
-        })
-        return
-      }
-      this.$modalRouter.push({
-        name: `shop-cabinet-add-${type}`,
-        props: {
-          id,
-          type,
-          areaName
-        },
-        on: {
-          change: this.onCabinetListChange
-        }
-      })
     },
     clearCabinet() {
       if (this.checked.length <= 0) {
