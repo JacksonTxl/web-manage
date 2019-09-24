@@ -19,11 +19,11 @@
               v-model="info.reserve_start"
             >
               <a-select-option
-                v-for="(item, index) in settingEnums.reserve_start.value"
+                v-for="(item, index) in reserve_start"
                 :key="+index"
-                :value="+index"
+                :value="item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
             <span class="mg-l8">到</span>
@@ -33,11 +33,11 @@
               v-model="info.reserve_range"
             >
               <a-select-option
-                v-for="(item, index) in settingEnums.reserve_range.value"
+                v-for="(item, index) in reserve_range"
                 :key="+index"
-                :value="+index"
+                :value="item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
             <span class="mg-l8">以内的团体系课程，员工代预约不受此限制</span>
@@ -53,11 +53,11 @@
               v-model="info.cancel_reserve"
             >
               <a-select-option
-                v-for="(item, index) in settingEnums.cancel_reserve.value"
+                v-for="(item, index) in cancel_reserve"
                 :key="+index"
-                :value="+index"
+                :value="item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
             <span class="mg-l8">取消预约，员工代取消不受此限制</span>
@@ -94,11 +94,11 @@
               v-model="info.reserve_upper_limit.limit_num"
             >
               <a-select-option
-                v-for="(item, index) in settingEnums.limit_num.value"
+                v-for="(item, index) in limit_num"
                 :key="+index"
-                :value="+index"
+                :value="item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
             <a-checkbox
@@ -148,11 +148,11 @@
               v-model="info.sign_time"
             >
               <a-select-option
-                v-for="(item, index) in settingEnums.sign_time.value"
+                v-for="(item, index) in sign_time"
                 :key="+index"
-                :value="+index"
+                :value="item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
             <span class="mg-l8">允许签到</span>
@@ -173,11 +173,11 @@
               v-model="info.auto_sign_limit"
             >
               <a-select-option
-                v-for="(item, index) in settingEnums.auto_sign_limit.value"
+                v-for="(item, index) in auto_sign_limit"
                 :key="+index"
-                :value="+index"
+                :value="item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
             <span class="mg-l8">后系统自动将课程进行签到</span>
@@ -229,32 +229,32 @@
               开课前
             </a-checkbox>
             <a-select
+              :disabled="select_flag.open_condition_flag"
               class="mg-l8"
               style="width: 130px"
               v-model="info.team_open_condition.limit_time"
             >
               <a-select-option
-                v-for="(item, index) in settingEnums.open_condition_limit_time
-                  .value"
+                v-for="(item, index) in open_condition_limit_time"
                 :key="+index"
-                :value="+index"
+                :value="item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
             <span class="mg-l8">预约人数不足</span>
             <a-select
+              :disabled="select_flag.open_condition_flag"
               class="mg-l8"
               style="width: 84px"
               v-model="info.team_open_condition.limit_num"
             >
               <a-select-option
-                v-for="(item, index) in settingEnums.open_condition_limit_num
-                  .value"
+                v-for="(item, index) in open_condition_limit_num"
                 :key="+index"
-                :value="+index"
+                :value="item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
             <span class="mg-l8">系统将自动取消课程及预约</span>
@@ -265,34 +265,45 @@
   </st-modal>
 </template>
 <script>
-import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
-import { TeamReserveSettingService } from './reserve.service'
+import { ReserveService } from './reserve.service'
+const OPEN_CONDITION_FLAG = 1
 export default {
   serviceInject() {
     return {
-      userService: UserService,
       messageService: MessageService,
-      settingService: TeamReserveSettingService
+      reserveService: ReserveService
     }
   },
   rxState() {
-    const user = this.userService
     return {
-      loading: this.settingService.loading$,
-      settingEnums: user.settingEnums$
+      loading: this.reserveService.loading$,
+      open_condition_limit_num: this.reserveService.open_condition_limit_num$,
+      open_condition_limit_time: this.reserveService.open_condition_limit_time$,
+      auto_sign_limit: this.reserveService.auto_sign_limit$,
+      sign_time: this.reserveService.sign_time$,
+      limit_num: this.reserveService.limit_num$,
+      cancel_reserve: this.reserveService.cancel_reserve$,
+      reserve_range: this.reserveService.reserve_range$,
+      reserve_start: this.reserveService.reserve_start$
     }
   },
   data() {
     return {
       show: false,
       form: this.$form.createForm(this),
-      info: {}
+      info: {},
+      select_flag: {
+        open_condition_flag: false
+      }
     }
   },
   created() {
-    this.settingService.getInfo().subscribe(res => {
+    this.reserveService.getInfo().subscribe(res => {
       this.info = res.info
+      this.info.team_is_open_condition === OPEN_CONDITION_FLAG
+        ? (this.select_flag.open_condition_flag = false)
+        : (this.select_flag.open_condition_flag = true)
     })
   },
   methods: {
@@ -303,12 +314,17 @@ export default {
       } else {
         this.info[index] = +!this.info[index]
       }
+      if (index === 'team_is_open_condition') {
+        this.info.team_is_open_condition === OPEN_CONDITION_FLAG
+          ? (this.select_flag.open_condition_flag = false)
+          : (this.select_flag.open_condition_flag = true)
+      }
     },
     cancel() {
       this.show = false
     },
     save() {
-      this.settingService.update({ ...this.info }).subscribe(() => {
+      this.reserveService.update({ ...this.info }).subscribe(() => {
         this.messageService.success({
           content: '提交成功'
         })
