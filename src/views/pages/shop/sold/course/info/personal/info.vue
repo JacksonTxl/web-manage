@@ -136,13 +136,6 @@
       class="mg-t12"
       :tabs="[
         {
-          label: '消费记录',
-          route: {
-            name: 'shop-sold-course-info-personal-info-consumption-record',
-            query: { id: infoService.id }
-          }
-        },
-        {
           label: '操作日志',
           route: {
             name: 'shop-sold-course-info-personal-info-operation-record',
@@ -151,6 +144,14 @@
         }
       ]"
     >
+      <!-- TODO：暂不开放，预留代码 -->
+      <!-- {
+          label: '消费记录',
+          route: {
+            name: 'shop-sold-course-info-personal-info-consumption-record',
+            query: { id: infoService.id }
+          }
+        }, -->
       <router-view></router-view>
     </st-panel>
   </section>
