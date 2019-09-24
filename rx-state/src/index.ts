@@ -131,9 +131,9 @@ export class Computed<T> extends ObservableWithSnapshot<T> {
   }
 }
 
-export const computed = (
+export function computed<T>(
   fn: Function,
-  ...states: Observable<any>[]
-): Computed<any> => {
+  states: Observable<any>[]
+): Computed<T> {
   return new Computed(combineLatest(...states, fn))
 }

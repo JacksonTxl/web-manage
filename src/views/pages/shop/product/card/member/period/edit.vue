@@ -15,6 +15,7 @@
         </h5-container>
       </div>
       <div class="page-content">
+        <form-banner :shelf-number="cardInfo.shelf_shop_num"></form-banner>
         <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8" class="page-content-card-line__row">
             <a-col :lg="22">
@@ -57,6 +58,7 @@
                       <st-input-number
                         :min="1"
                         :max="99999"
+                        :disabled="isShelfCard"
                         :value="text.num"
                         @change="
                           e =>
@@ -71,6 +73,7 @@
                         <a-select
                           slot="addonAfter"
                           :value="text.unit"
+                          :disabled="isShelfCard"
                           @change="
                             e =>
                               brandPriceSettingHandleChange({
@@ -97,6 +100,7 @@
                       slot-scope="text, record, index"
                     >
                       <st-input-number
+                        :disabled="isShelfCard"
                         :float="true"
                         :min="0"
                         :max="999999.9"
@@ -109,9 +113,7 @@
                               col: 'rally_price'
                             })
                         "
-                      >
-                        <span slot="addonAfter">元</span>
-                      </st-input-number>
+                      ></st-input-number>
                     </template>
                     <template
                       slot="frozen_day"
@@ -121,6 +123,7 @@
                         :min="1"
                         :max="99999"
                         :value="text"
+                        :disabled="isShelfCard"
                         @change="
                           e =>
                             brandPriceSettingHandleChange({
@@ -129,14 +132,13 @@
                               col: 'frozen_day'
                             })
                         "
-                      >
-                        <span slot="addonAfter">天</span>
-                      </st-input-number>
+                      ></st-input-number>
                     </template>
                     <template slot="gift_unit" slot-scope="text, record, index">
                       <st-input-number
                         :min="1"
                         :max="99999"
+                        :disabled="isShelfCard"
                         :value="text"
                         @change="
                           e =>
@@ -146,20 +148,23 @@
                               col: 'gift_unit'
                             })
                         "
-                      >
-                        <span slot="addonAfter">天</span>
-                      </st-input-number>
+                      ></st-input-number>
                     </template>
-                    <a
+                    <st-table-actions
                       slot="operation"
                       slot-scope="text, record, index"
-                      href="javascript:;"
-                      @click="brand_price_delete(index)"
                     >
-                      删除
-                    </a>
+                      <a
+                        v-if="!isShelfCard"
+                        href="javascript:;"
+                        @click="brand_price_delete(index)"
+                      >
+                        删除
+                      </a>
+                    </st-table-actions>
                   </st-table>
                   <st-button
+                    v-if="!isShelfCard"
                     :disabled="rallyPriceList.length > 3"
                     type="dashed"
                     icon="add"
@@ -346,15 +351,18 @@ import H5Container from '@/views/biz-components/h5/h5-container'
 import h5mixin from './h5mixin'
 import { MEMBER_CARD } from '@/views/biz-components/h5/pages/member-card.config'
 import CardBgRadio from '@/views/biz-components/card-bg-radio/card-bg-radio'
+import FormBanner from '@/views/biz-components/card/form-banner'
 import { SELL_TYPE, UNIT, CARD_TYPE } from '@/constants/card/member'
 import { ruleOptions } from './period.config'
+
 export default {
   name: 'PageShopPeriodCardAdd',
   mixins: [h5mixin],
   components: {
     MemberCard,
     H5Container,
-    CardBgRadio
+    CardBgRadio,
+    FormBanner
   },
   serviceProviders() {
     return [EditService]
@@ -362,21 +370,22 @@ export default {
   serviceInject() {
     return {
       rules: RuleConfig,
-      addService: EditService,
+      editService: EditService,
       userService: UserService
     }
   },
   rxState() {
     return {
-      cardInfo: this.addService.cardInfo$,
-      loading: this.addService.loading$,
+      cardInfo: this.editService.cardInfo$,
+      loading: this.editService.loading$,
       shopName: this.userService.shop$,
-      cardBgList: this.addService.cardBgList$,
-      admissionRange: this.addService.admissionRange$,
-      priceSetting: this.addService.priceSetting$,
-      supportSales: this.addService.supportSales$,
-      unit: this.addService.unit$,
-      sellType: this.addService.sellType$
+      cardBgList: this.editService.cardBgList$,
+      admissionRange: this.editService.admissionRange$,
+      priceSetting: this.editService.priceSetting$,
+      supportSales: this.editService.supportSales$,
+      unit: this.editService.unit$,
+      sellType: this.editService.sellType$,
+      isShelfCard: this.editService.isShelfCard$
     }
   },
   bem: {
@@ -401,24 +410,24 @@ export default {
           dataIndex: 'time'
         },
         {
-          title: '售价',
+          title: '售价/元',
           scopedSlots: { customRender: 'rally_price' },
           dataIndex: 'rally_price'
         },
         {
-          title: '允许冻结天数',
+          title: '允许冻结/天',
           scopedSlots: { customRender: 'frozen_day' },
           dataIndex: 'frozen_day'
         },
         {
-          title: '赠送上限',
+          title: '赠送上限/天',
           scopedSlots: { customRender: 'gift_unit' },
           dataIndex: 'gift_unit'
         },
         {
           title: '操作',
           dataIndex: 'operation',
-          width: '10%',
+          width: '60px',
           scopedSlots: { customRender: 'operation' }
         }
       ],
@@ -539,7 +548,7 @@ export default {
               gift_unit: i.gift_unit
             })
           })
-          this.addService
+          this.editService
             .editCard({
               id: this.cardInfo.card_id,
               card_type: CARD_TYPE.PERIOD,
