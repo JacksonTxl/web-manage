@@ -61,6 +61,7 @@ export default {
           return element.department_name
         })
         .join(',')
+      // 当选择是跨部门时加上相关部门
       return this.info.data_grant === 3
         ? `${dataGrant}  (${departmentInfo})`
         : dataGrant

@@ -936,7 +936,7 @@ export const routeMapConfig = {
   'shop-finance-flow-expenditure'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '支出流水'
     routeConfig.queryOptions = {
-      search_number: { type: Number },
+      search_number: { type: String },
       start_amount: { type: String },
       end_amount: { type: String },
       current_page: { type: Number, default: 1 },
@@ -948,7 +948,7 @@ export const routeMapConfig = {
   'shop-finance-flow-income'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '收入流水'
     routeConfig.queryOptions = {
-      search_number: { type: Number },
+      search_number: { type: String },
       current_page: { type: Number, default: 1 },
       start_date: { type: String, default: '' },
       end_date: { type: String, default: '' },
@@ -1119,8 +1119,8 @@ export const routeMapConfig = {
     routeConfig.queryOptions = {
       keyword: { type: String, default: '' },
       use_status: { type: Number, default: -1 },
-      start_time: { type: String, default: '' },
-      end_time: { type: String, default: '' },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }

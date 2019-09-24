@@ -10,7 +10,7 @@
         <div :class="giving('giving')">
           <st-form-item label="赠送额度" required>
             <st-input-number
-              :max="99999.9"
+              :max="99999"
               placeholder="请输入赠送额度"
               v-decorator="decorators.gift_quota"
             >
