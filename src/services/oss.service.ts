@@ -126,4 +126,14 @@ export class OssService extends Api {
     a.download = filename
     a.click()
   }
+  /**
+   * 打开新的tab标签页
+   * @param url 打开的url
+   */
+  openNewTab(url: string) {
+    const a = document.createElement('a')
+    a.href = url
+    a.target = '_blank'
+    a.click()
+  }
 }

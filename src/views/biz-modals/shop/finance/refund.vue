@@ -74,9 +74,9 @@
               退款原因
               <st-help-tooltip id="TSMC005" />
             </template>
-            <a-radio-group v-model="refundReason">
+            <a-radio-group v-model="getRefundReason">
               <a-radio
-                v-for="(item, index) in refundReasons"
+                v-for="(item, index) in refundReasonsChange"
                 :key="index"
                 :value="+item.value"
               >
@@ -154,7 +154,7 @@ export default {
       loading: this.refundService.loading$
     }
   },
-  props: ['id'],
+  props: ['id', 'goodsInvalid'],
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
@@ -164,10 +164,31 @@ export default {
       show: false,
       description: '',
       frozenPayType: 2,
-      refundReason: 1
+      refundReason: 1,
+      updateReasonFlag: false
     }
   },
-  computed: {},
+  computed: {
+    refundReasonsChange() {
+      let arr = this.refundReasons
+      if (this.goodsInvalid) {
+        arr.shift()
+      }
+      return arr
+    },
+    getRefundReason: {
+      get: function() {
+        if (!this.updateReasonFlag) {
+          return this.refundReasonsChange[0].value
+        }
+        return this.refundReason
+      },
+      set: function(value) {
+        this.updateReasonFlag = true
+        this.refundReason = value
+      }
+    }
+  },
   created() {
     this.refundService.getDetail(this.id).subscribe()
   },

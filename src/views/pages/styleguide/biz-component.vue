@@ -36,7 +36,8 @@ export default {
       return [
         { id: 'checkbox-facility', title: '标题' },
         { id: 'coupon-tag', title: '优惠券' },
-        { id: 'shop-hour-picker', title: '门店时间选择' }
+        { id: 'shop-hour-picker', title: '门店时间选择' },
+        { id: 'member-search', title: '会员搜索' }
       ]
     }
   }

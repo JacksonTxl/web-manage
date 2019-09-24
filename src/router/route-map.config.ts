@@ -1,3 +1,4 @@
+import { findLast } from 'lodash-es'
 import { ServiceRouteConfig } from 'vue-service-app'
 
 interface RouteConfig extends ServiceRouteConfig {
@@ -925,6 +926,37 @@ export const routeMapConfig = {
       'shop-stat-finance'
     ]
   },
+  'shop-finance-flow'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '收支流水'
+    routeConfig.meta.tabs = [
+      'shop-finance-flow-income',
+      'shop-finance-flow-expenditure'
+    ]
+  },
+  'shop-finance-flow-expenditure'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '支出流水'
+    routeConfig.queryOptions = {
+      search_number: { type: String },
+      start_amount: { type: String },
+      end_amount: { type: String },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' }
+    }
+  },
+  'shop-finance-flow-income'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '收入流水'
+    routeConfig.queryOptions = {
+      search_number: { type: String },
+      current_page: { type: Number, default: 1 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' },
+      start_amount: { type: String },
+      end_amount: { type: String },
+      size: { type: Number, default: 20 }
+    }
+  },
   'shop-stat-revenue'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '营收报表'
     routeConfig.queryOptions = {
@@ -1066,5 +1098,31 @@ export const routeMapConfig = {
   },
   'brand-marketing-plugin-lottery-success'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '成功'
+  },
+  'shop-finance-gathering'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '暂收款管理'
+    routeConfig.meta.tabs = ['shop-finance-gathering-earnest']
+  },
+  'shop-reception-reserve'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '预约管理'
+    routeConfig.queryOptions = {
+      keyword: { type: String, default: '' },
+      reserve_type: { type: Number, default: -1 },
+      start_time: { type: String, default: '' },
+      end_time: { type: String, default: '' },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-finance-gathering-earnest'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '定金管理'
+    routeConfig.queryOptions = {
+      keyword: { type: String, default: '' },
+      use_status: { type: Number, default: -1 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
   }
 }

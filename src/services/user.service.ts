@@ -231,18 +231,24 @@ export class UserService {
   public getOptions$(
     key: string
   ): Computed<{ label: string; value: number }[]> {
-    return computed((enums: any) => {
-      return this.getOptions(enums, key)
-    }, this.enums$)
+    return computed(
+      (enums: any) => {
+        return this.getOptions(enums, key)
+      },
+      [this.enums$]
+    )
   }
   /**
    * 通过对象获取一组枚举值
    * @param map
    */
   public getOptionsMap$(map: Dictionary<string>) {
-    return computed((enums: any) => {
-      return mapValues(map, enumKey => this.getOptions(enums, enumKey))
-    }, this.enums$)
+    return computed(
+      (enums: any) => {
+        return mapValues(map, enumKey => this.getOptions(enums, enumKey))
+      },
+      [this.enums$]
+    )
   }
   /**
    * 添加到常用菜单

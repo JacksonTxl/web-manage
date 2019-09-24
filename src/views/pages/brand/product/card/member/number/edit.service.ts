@@ -1,7 +1,7 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
-import { Effect, State } from 'rx-state'
+import { Effect, State, computed } from 'rx-state'
 import { CardsApi, CardsInput } from '@/api/v1/cards'
-import { tap, pluck } from 'rxjs/operators'
+import { tap, pluck, map } from 'rxjs/operators'
 import { ShopApi, GetShopBasicInput } from '@/api/v1/shop'
 import { UserService } from '@/services/user.service'
 import { forkJoin } from 'rxjs'
@@ -15,6 +15,15 @@ export class EditService implements RouteGuard {
   supportSales$ = this.userService.getOptions$('member_card.support_sales')
   unit$ = this.userService.getOptions$('member_card.unit')
   sellType$ = this.userService.getOptions$('member_card.sell_type')
+  // 是否上架的卡
+  isShelfCard$ = computed<boolean>(
+    (card: any) => {
+      if (!card.shelf_shop_num) return false
+      return card.shelf_shop_num > 0
+    },
+    [this.cardInfo$]
+  )
+
   constructor(
     private cardsApi: CardsApi,
     private shopApi: ShopApi,

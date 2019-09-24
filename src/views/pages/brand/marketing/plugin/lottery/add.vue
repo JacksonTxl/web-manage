@@ -291,7 +291,11 @@
               <st-button type="primary" @click="next(2)">下一步</st-button>
             </st-form-item>
           </st-form>
-          <st-form style="width:500px" :form="form" v-show="currentIndex == 2">
+          <st-form
+            style="width:500px;padding-left:62px;"
+            :form="form"
+            v-show="currentIndex == 2"
+          >
             <st-t3 class="mg-b24">奖品设置</st-t3>
             <st-form-table>
               <thead>
@@ -330,10 +334,26 @@
                           : item.support_shop_ids.length
                       }}
                     </td>
-                    <td>
-                      {{ item.number }}
+                    <td @click="editTableIndexNum(index)">
+                      <st-input-number
+                        :min="1"
+                        :max="99999"
+                        :step="1"
+                        :precision="0"
+                        :value="item.number"
+                        :index="index"
+                        @change="editTableNum"
+                      ></st-input-number>
                     </td>
-                    <td>{{ item.rate }}</td>
+                    <td @click="editTableIndexRate(index)">
+                      <st-input-number
+                        :min="0"
+                        :max="100"
+                        :float="true"
+                        :value="item.rate"
+                        @change="editTableRate"
+                      ></st-input-number>
+                    </td>
                     <td>
                       <st-table-actions>
                         <a
@@ -456,10 +476,11 @@ export default {
         '奖品类型',
         '可用门店（家）',
         '奖品数量（个）',
-        '中奖概率',
+        '中奖概率 (%)',
         '操作'
       ],
       info: {},
+      tableIndex: 0,
       preview: {
         title: '',
         startTime: '',
@@ -685,6 +706,18 @@ export default {
       this.prizeList = this.prizeList.filter((item, index) => {
         return index !== para
       })
+    },
+    editTableIndexNum(index) {
+      this.tableIndex = index
+    },
+    editTableNum(val) {
+      this.prizeList[this.tableIndex].number = val
+    },
+    editTableIndexRate(index) {
+      this.tableIndex = index
+    },
+    editTableRate(val) {
+      this.prizeList[this.tableIndex].rate = val
     },
     editVIew(id) {
       return this.addService.editVIew(id).subscribe(res => {

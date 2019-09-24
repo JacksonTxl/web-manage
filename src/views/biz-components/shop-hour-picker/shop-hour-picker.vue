@@ -127,7 +127,7 @@ export default {
   watch: {
     slider: {
       handler(n, o) {
-        console.log('slider 变化', n, o)
+        // console.log('slider 变化', n, o)
         let value = this.slider.filter(item => item.show)
         value = value.map(item => {
           return {
@@ -143,7 +143,7 @@ export default {
     },
     weekSelects(n, o) {
       if (this.isInit) return
-      console.log('weekSelects', n, o)
+      // console.log('weekSelects', n, o)
       if (n.length === o.length) return
       n.length > o.length ? this.addSlider(n, o) : this.removeSlider(n, o)
     }
@@ -156,14 +156,14 @@ export default {
   methods: {
     // 获取日期选择数组
     init() {
-      console.log('init', this.value)
+      // console.log('init', this.value)
       this.weekSelects = this.value.map(item => item.week_day)
       if (this.weekSelects.length) this.getSliderInfoList()
       else this.isInit = false
     },
     // 获取的数据对格式进行处理
     getSliderInfoList() {
-      console.log('获取的数据对格式进行处理 => value', this.value)
+      // console.log('获取的数据对格式进行处理 => value', this.value)
       this.value.map(item => {
         let week_day = cloneDeep(item.week_day)
         let index = --week_day
@@ -173,15 +173,15 @@ export default {
         ]
         this.slider[index].show = true
         this.slider[index].range = cloneDeep(item.range)
-        console.log('sliderByweekDay end', this.slider[index].value)
+        // console.log('sliderByweekDay end', this.slider[index].value)
       })
       this.isInit = false
-      console.log('根据value值,设置slider => slider', this.slider)
+      // console.log('根据value值,设置slider => slider', this.slider)
     },
     // 添加slider
     addSlider(n, o) {
       const index = difference(n, o)
-      console.log('addSlider', index)
+      // console.log('addSlider', index)
       index.forEach(i => {
         let endIndex = --i
         if (this.slider[endIndex].show) return
@@ -243,7 +243,7 @@ export default {
   beforeDestory() {
     this.weekSelects = []
     this.init = true
-    console.log('beforeDestory')
+    // console.log('beforeDestory')
   }
 }
 </script>
