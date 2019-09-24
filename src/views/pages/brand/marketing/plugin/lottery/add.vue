@@ -337,7 +337,7 @@
                           : item.support_shop_ids.length
                       }}
                     </td>
-                    <td @click="editTableIndexNum(index)">
+                    <td>
                       <st-input-number
                         :min="1"
                         :max="99999"
@@ -345,16 +345,16 @@
                         :precision="0"
                         :value="item.number"
                         :index="index"
-                        @change="editTableNum"
+                        @change="editTableNum($event, index)"
                       ></st-input-number>
                     </td>
-                    <td @click="editTableIndexRate(index)">
+                    <td>
                       <st-input-number
                         :min="0"
                         :max="100"
                         :float="true"
                         :value="item.rate"
-                        @change="editTableRate"
+                        @change="editTableRate($event, index)"
                       ></st-input-number>
                     </td>
                     <td>
@@ -483,7 +483,6 @@ export default {
         '操作'
       ],
       info: {},
-      tableIndex: 0,
       preview: {
         title: '',
         startTime: '',
@@ -710,26 +709,20 @@ export default {
         return index !== para
       })
     },
-    editTableIndexNum(index) {
-      this.tableIndex = index
+    editTableNum(val, index) {
+      this.prizeList[index].number = val
     },
-    editTableNum(val) {
-      this.prizeList[this.tableIndex].number = val
-    },
-    editTableIndexRate(index) {
-      this.tableIndex = index
-    },
-    editTableRate(val) {
-      this.prizeList[this.tableIndex].rate = val
+    editTableRate(val, index) {
+      this.prizeList[index].rate = val
     },
     editVIew(id) {
       return this.addService.editVIew(id).subscribe(res => {
         this.info = res
         this.form.setFieldsValue({
-          activity_base: this.info.activity_base,
-          activity_lucky: this.info.activity_lucky,
-          activity_prizes: this.info.activity_prizes,
-          activity_rule: this.info.activity_rule
+          activity_base: res.activity_base,
+          activity_lucky: res.activity_lucky,
+          activity_prizes: res.activity_prizes,
+          activity_rule: res.activity_rule
         })
         this.dateRangeVal = [
           moment(res.activity_base.start_time),
@@ -739,6 +732,7 @@ export default {
         this.preview.startTime = res.activity_base.start_time
         this.preview.endTime = res.activity_base.end_time
         this.preview.perTimes = res.activity_rule.per_times
+        this.preview.totalTimes = res.activity_rule.total_times
         this.preview.description = res.activity_base.activity_description
         this.preview.title = res.activity_base.activity_sub_name
         this.notPrize.prize_name = res.activity_lucky.lucky_name

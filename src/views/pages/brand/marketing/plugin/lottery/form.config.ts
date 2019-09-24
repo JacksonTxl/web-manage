@@ -87,12 +87,8 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    'activity_rule.per_times': {
-      initialValue: 0
-    },
-    'activity_rule.total_times': {
-      initialValue: 0
-    },
+    'activity_rule.per_times': {},
+    'activity_rule.total_times': {},
     'activity_rule.prize_times': {},
     'activity_lucky.lucky_name': {
       initialValue: '未中奖',
