@@ -36,6 +36,7 @@ export default {
   computed: {
     demos() {
       return [
+        { id: 'alert', title: '提示' },
         { id: 'title', title: '标题' },
         { id: 'button', title: '按钮' },
         { id: 'switch', title: '开关' },

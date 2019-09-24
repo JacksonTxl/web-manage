@@ -39,19 +39,19 @@ export const price_gradient_columns = [
     width: '25%'
   },
   {
-    title: '售价',
+    title: '售价/元',
     scopedSlots: { customRender: 'sale_price' },
     dataIndex: 'sale_price',
     width: '25%'
   },
   {
-    title: '允许冻结天数',
+    title: '允许冻结/天',
     scopedSlots: { customRender: 'frozen_day' },
     dataIndex: 'frozen_day',
     width: '25%'
   },
   {
-    title: '赠送上限',
+    title: '赠送上限/天',
     scopedSlots: { customRender: 'gift_unit' },
     dataIndex: 'gift_unit',
     width: '25%'
