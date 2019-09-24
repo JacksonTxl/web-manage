@@ -7,7 +7,7 @@
         pageSize: query.size
       }"
       :columns="columns"
-      @change="onPageChange"
+      @change="onTableChange"
       :loading="loading.getList"
       :dataSource="list"
       rowKey="id"
@@ -53,8 +53,10 @@ import moment from 'moment'
 import { OperationRecordService } from './operation-record.service'
 import { RouteService } from '@/services/route.service'
 import { columns } from './operation-record.config'
+import tableMixin from '@/mixins/table.mixin'
 export default {
   name: 'PageShopSoldCoursePersonalInfoOperation',
+  mixins: [tableMixin],
   bem: {
     basic: 'page-shop-sold'
   },
@@ -76,12 +78,7 @@ export default {
     columns
   },
   methods: {
-    moment,
-    onPageChange(data) {
-      this.$router.push({
-        query: { ...this.query, page: data.current, size: data.pageSize }
-      })
-    }
+    moment
   }
 }
 </script>

@@ -219,6 +219,47 @@
             </span>
           </div>
         </st-form-item>
+        <!-- 开课条件 -->
+        <st-form-item label="开课条件" v-if="info.team_open_condition">
+          <div>
+            <a-checkbox
+              :checked="!!info.team_is_open_condition"
+              @change="onCheckboxChange('team_is_open_condition')"
+            >
+              开课前
+            </a-checkbox>
+            <a-select
+              class="mg-l8"
+              style="width: 130px"
+              v-model="info.team_open_condition.limit_time"
+            >
+              <a-select-option
+                v-for="(item, index) in settingEnums.open_condition_limit_time
+                  .value"
+                :key="+index"
+                :value="+index"
+              >
+                {{ item }}
+              </a-select-option>
+            </a-select>
+            <span class="mg-l8">预约人数不足</span>
+            <a-select
+              class="mg-l8"
+              style="width: 84px"
+              v-model="info.team_open_condition.limit_num"
+            >
+              <a-select-option
+                v-for="(item, index) in settingEnums.open_condition_limit_num
+                  .value"
+                :key="+index"
+                :value="+index"
+              >
+                {{ item }}
+              </a-select-option>
+            </a-select>
+            <span class="mg-l8">系统将自动取消课程及预约</span>
+          </div>
+        </st-form-item>
       </st-form>
     </div>
   </st-modal>
