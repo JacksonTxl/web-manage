@@ -1119,8 +1119,8 @@ export const routeMapConfig = {
     routeConfig.queryOptions = {
       keyword: { type: String, default: '' },
       use_status: { type: Number, default: -1 },
-      start_time: { type: String, default: '' },
-      end_time: { type: String, default: '' },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
