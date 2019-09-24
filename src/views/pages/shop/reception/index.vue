@@ -768,6 +768,9 @@ export default {
         case 'schedulePage':
           this.$router.push({ path: '/shop/product/course/schedule/team' })
           break
+        case 'cabinetPage':
+          this.$router.push({ path: '/shop/reception/cabinet' })
+          break
       }
     },
     // 搜索会员

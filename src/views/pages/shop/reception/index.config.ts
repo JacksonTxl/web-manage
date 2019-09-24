@@ -79,7 +79,7 @@ export const shortcutList = () => {
       icon: 'reception-cabinet',
       label: '储物柜',
       auth: true,
-      version: 2
+      version: 1
     },
     {
       id: 'addVisit',
