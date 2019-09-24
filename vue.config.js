@@ -94,6 +94,10 @@ module.exports = {
       .loader('url-loader')
       .tap(options => Object.assign(options, { limit: 10240 }))
 
+    config.when(IS_PROD, config => {
+      config.toConfig().optimization.minimizer[0].options.terserOptions.compress.drop_console = true
+    })
+
     // 默认未开启
     config.module
       .rule('svg')

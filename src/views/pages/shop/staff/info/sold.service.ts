@@ -1,3 +1,4 @@
+import { UserService } from '@/services/user.service'
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
@@ -8,7 +9,11 @@ export class SoldService implements RouteGuard {
   page$ = new State({})
   soldInfo$ = new State([])
   loading$ = new State({})
-  constructor(private staffApi: ShopStaffApi) {}
+  orderStatus$ = this.userService.getOptions$('sold.order_status')
+  constructor(
+    private staffApi: ShopStaffApi,
+    private userService: UserService
+  ) {}
 
   @Effect()
   getStaffSoldInfo(id: string, query: GetStaffSoldInput) {
@@ -21,9 +26,7 @@ export class SoldService implements RouteGuard {
   }
 
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    console.log('sold service', to.meta.query)
     const { id } = to.meta.query
-    console.log('sold service')
     return this.getStaffSoldInfo(id, to.meta.query)
   }
 }

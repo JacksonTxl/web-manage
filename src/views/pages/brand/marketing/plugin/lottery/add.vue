@@ -233,7 +233,7 @@
                 </a-radio>
               </a-radio-group>
             </st-form-item>
-            <st-form-item label=" 抽奖机会" required>
+            <st-form-item label="抽奖机会" required>
               <a-radio-group
                 @change="getCurTimesType"
                 v-decorator="decorators.activity_rule.draw_times_type"
@@ -246,33 +246,36 @@
                   {{ item.label }}
                 </a-radio>
               </a-radio-group>
-              <div v-if="timesType === 1">
-                每人每天有
-                <a-input-number
-                  :min="1"
-                  :max="999"
-                  :step="1"
-                  :precision="0"
-                  @change="getPerTimes"
-                  style="width: 100px;"
-                  placeholder="请输入"
-                  v-decorator="decorators.activity_rule.per_times"
-                ></a-input-number>
-                次
-              </div>
-              <div v-else>
-                每人总共有
-                <a-input-number
-                  :min="1"
-                  :max="999"
-                  :step="1"
-                  :precision="0"
-                  style="width: 100px;"
-                  placeholder="请输入"
-                  v-decorator="decorators.activity_rule.total_times"
-                ></a-input-number>
-                次
-              </div>
+              <template>
+                <a-form-item v-show="timesType === 1">
+                  每人每天有
+                  <a-input-number
+                    :min="1"
+                    :max="999"
+                    :step="1"
+                    :precision="0"
+                    style="width: 100px;"
+                    placeholder="请输入"
+                    v-decorator="decorators.activity_rule.per_times"
+                  ></a-input-number>
+                  次
+                </a-form-item>
+              </template>
+              <template>
+                <a-form-item v-show="timesType === 2">
+                  每人总共有
+                  <a-input-number
+                    :min="1"
+                    :max="999"
+                    :step="1"
+                    :precision="0"
+                    style="width: 100px;"
+                    placeholder="请输入"
+                    v-decorator="decorators.activity_rule.total_times"
+                  ></a-input-number>
+                  次
+                </a-form-item>
+              </template>
             </st-form-item>
             <st-form-item label=" 中奖次数">
               每人最多可中奖

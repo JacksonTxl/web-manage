@@ -16,7 +16,7 @@
         <div class="label">流水金额：</div>
         <st-input-number
           class="amount__input mg-r8"
-          :min="1"
+          :min="0"
           :max="99999"
           :step="1"
           :precision="0"
@@ -25,7 +25,7 @@
         ></st-input-number>
         至
         <st-input-number
-          :min="1"
+          :min="0"
           :max="99999"
           :precision="0"
           float
@@ -34,7 +34,7 @@
         ></st-input-number>
       </div>
       <div :class="bSearch('range-picker')" class="mg-t24 search-item">
-        <span class="label">预约时间：</span>
+        <span class="label">创建时间：</span>
         <st-range-picker
           :disabledDays="180"
           :value="selectTime"
@@ -61,6 +61,9 @@
       @change="onTableChange"
       :dataSource="list$"
     >
+      <span slot="price" :class="{ price__red: +text < 0 }" slot-scope="text">
+        {{ text }}
+      </span>
       <span slot="flow_type" slot-scope="text">{{ text.name }}</span>
       <st-overflow-text
         title="备注"
@@ -70,6 +73,7 @@
       >
         {{ text }}
       </st-overflow-text>
+
       <div slot="action" slot-scope="text, record">
         <st-table-actions>
           <a

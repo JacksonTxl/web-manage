@@ -65,4 +65,12 @@ export interface UpdateInput {
    * 爽约惩罚设置
    */
   miss_punishment: object
+  /**
+   * 团课是否支持开课条件限制：1支持 0不支持
+   */
+  team_is_open_condition: number
+  /**
+   * 团课开课条件设置
+   */
+  team_open_condition: object
 }

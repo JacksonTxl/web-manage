@@ -35,7 +35,7 @@
           ></st-input-number>
         </div>
         <div :class="bSearch('range-picker')" class="mg-t24 search-item">
-          <span class="label">预约时间：</span>
+          <span class="label">创建时间：</span>
           <st-range-picker
             :disabledDays="180"
             :value="selectTime"
@@ -63,6 +63,9 @@
       @change="onTableChange"
       :dataSource="list$"
     >
+      <span slot="price" :class="{ price__red: +text < 0 }" slot-scope="text">
+        {{ text }}
+      </span>
       <span slot="flow_type" slot-scope="text">{{ text.name }}</span>
       <st-overflow-text
         title="备注"

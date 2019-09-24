@@ -179,21 +179,21 @@ export default {
   methods: {
     // 查询
     onSearchNative() {
-      this.query.start_time = this.selectTime.startTime.value
+      this.query.start_date = this.selectTime.startTime.value
         ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00:00`
         : ''
-      this.query.end_time = this.selectTime.endTime.value
+      this.query.end_date = this.selectTime.endTime.value
         ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59:59`
         : ''
       this.onSearch()
     },
     // 设置searchData
     setSearchData() {
-      this.selectTime.startTime.value = this.query.start_time
-        ? cloneDeep(moment(this.query.start_time))
+      this.selectTime.startTime.value = this.query.start_date
+        ? cloneDeep(moment(this.query.start_date))
         : null
-      this.selectTime.endTime.value = this.query.end_time
-        ? cloneDeep(moment(this.query.end_time))
+      this.selectTime.endTime.value = this.query.end_date
+        ? cloneDeep(moment(this.query.end_date))
         : null
     },
     // moment

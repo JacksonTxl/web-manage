@@ -21,7 +21,7 @@
         <div :class="bSearch('range-picker')" class="mg-t24 search-item">
           <span class="label">预约时间：</span>
           <st-range-picker
-            :disabledDays="180"
+            :disabledDays="60"
             @change="onChangeRangeTime"
             :value="selectTime"
             class="value"
@@ -66,19 +66,13 @@
       <div slot="action" slot-scope="text, record">
         <st-table-actions v-if="record.reserve_type.id === RESERVE_TYPE.COURSE">
           <a
-            v-if="
-              record.reserve_status.id === COURSE_STATUS.RESERVED ||
-                record.reserve_status.id === COURSE_STATUS.RESERVEING
-            "
+            v-if="record.auth['shop:reserve:visit_reserve|del']"
             @click="onClickCancel(record)"
           >
             取消
           </a>
           <a
-            v-if="
-              record.reserve_status.id === COURSE_STATUS.RESERVED ||
-                record.reserve_status.id === COURSE_STATUS.RESERVEING
-            "
+            v-if="record.auth['shop:reserve:visit_reserve|checkin']"
             @click="onClickCourseSign(record)"
           >
             签到
@@ -86,13 +80,13 @@
         </st-table-actions>
         <st-table-actions v-if="record.reserve_type.id === RESERVE_TYPE.VISIT">
           <a
-            v-if="record.reserve_status.id === VISIT_STATUS.RESERVED"
+            v-if="record.auth['shop:reserve:visit_reserve|del']"
             @click="onClickCancelVisitReserve(record)"
           >
             取消
           </a>
           <a
-            v-if="record.reserve_status.id === VISIT_STATUS.RESERVED"
+            v-if="record.auth['shop:reserve:visit_reserve|checkin']"
             @click="onClickconfirmVisitReserve(record)"
           >
             确认到访

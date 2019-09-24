@@ -159,8 +159,10 @@ export class CourseApi extends Api {
   /**
    * 售出 课程包/私教课 详情操作日志
    */
-  getCourseOperationInfo(id: string, type: string) {
-    return this.http.get(`/v1/sold/course/${type}/operation/log/${id}`)
+  getCourseOperationInfo(query: any, type: string) {
+    return this.http.get(`/v1/sold/course/${type}/operation/log/${query.id}`, {
+      query
+    })
   }
   /**
    * 售出私教修改教练

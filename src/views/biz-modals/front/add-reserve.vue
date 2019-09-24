@@ -20,7 +20,7 @@
           placeholder="预约日期"
           allowClear
           :disabledDate="disabledDate"
-          :showTime="{ defaultValue: moment('00:00:00', 'HH:mm:ss') }"
+          :showTime="{ format: 'HH:mm' }"
           format="YYYY-MM-DD HH:mm"
         ></a-date-picker>
       </st-form-item>
@@ -89,8 +89,8 @@ export default {
     onSubmit() {
       this.form.validate().then(values => {
         let form = cloneDeep(values)
-        form.reserve_date = moment(form.reserve_date).format('YYYY-MM-DD')
-        form.reserve_time = moment(form.reserve_date).format('HH:mm')
+        form.reserve_date = moment(values.reserve_date).format('YYYY-MM-DD')
+        form.reserve_time = moment(values.reserve_date).format('HH:mm')
         this.addSubmit(form).subscribe(res => {
           this.show = false
           this.$emit('success')
