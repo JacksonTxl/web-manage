@@ -102,7 +102,6 @@
         <st-form-item label="部门">
           <department-select
             placeholder="请选择部门"
-            style="width: 100%"
             useType="form"
             v-decorator="decorators.department_id"
           ></department-select>
