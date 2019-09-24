@@ -1,5 +1,5 @@
 <template>
-  <st-panel app :tabs="authTabs">
+  <st-panel :class="bPage()" app :tabs="authTabs">
     <div slot="actions">
       <st-input-search
         placeholder="请输入流水号或订单号查找"
@@ -19,6 +19,9 @@ import { RouteService } from '../../../../services/route.service'
 export default {
   name: 'FinanceFlow',
   mixins: [tableMixin],
+  bem: {
+    bPage: 'page-finance-flow'
+  },
   serviceInject() {
     return {
       flowService: FlowService,

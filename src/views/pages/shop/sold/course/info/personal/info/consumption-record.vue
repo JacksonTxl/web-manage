@@ -1,5 +1,5 @@
 <template>
-  <section class="pd-24">
+  <section>
     <st-table
       :pagination="{
         current: query.page,

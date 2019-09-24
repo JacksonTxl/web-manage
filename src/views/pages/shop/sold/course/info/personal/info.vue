@@ -133,9 +133,7 @@
       </a-row>
     </st-panel>
     <st-panel
-      initial
       class="mg-t12"
-      v-if="false"
       :tabs="[
         {
           label: '消费记录',
