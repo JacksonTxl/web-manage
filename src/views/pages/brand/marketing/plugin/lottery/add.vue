@@ -732,6 +732,7 @@ export default {
         this.preview.startTime = res.activity_base.start_time
         this.preview.endTime = res.activity_base.end_time
         this.preview.perTimes = res.activity_rule.per_times
+        this.preview.totalTimes = res.activity_rule.total_times
         this.preview.description = res.activity_base.activity_description
         this.preview.title = res.activity_base.activity_sub_name
         this.notPrize.prize_name = res.activity_lucky.lucky_name
