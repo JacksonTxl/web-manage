@@ -176,7 +176,7 @@
               <img
                 class="default-img"
                 v-else
-                :src="share[0].image_url"
+                :src="fileShareList[0].image_url"
                 alt="默认图片"
               />
             </st-form-item>
@@ -421,7 +421,7 @@
               <img
                 class="default-img"
                 v-else
-                :src="lucky[0].image_url"
+                :src="fileList[0].image_url"
                 alt="默认图片"
               />
             </st-form-item>
