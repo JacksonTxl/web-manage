@@ -24,7 +24,7 @@ export class InfoService {
     )
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    let { id } = to.query as any
+    let { id } = to.meta.query
     return this.getInfo(id)
   }
 }

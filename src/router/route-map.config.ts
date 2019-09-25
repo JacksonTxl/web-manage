@@ -1,5 +1,6 @@
 import { findLast } from 'lodash-es'
 import { ServiceRouteConfig } from 'vue-service-app'
+import moment from 'moment'
 
 interface RouteConfig extends ServiceRouteConfig {
   meta: {
@@ -1114,8 +1115,14 @@ export const routeMapConfig = {
     routeConfig.queryOptions = {
       keyword: { type: String, default: '' },
       reserve_type: { type: Number, default: -1 },
-      start_time: { type: String, default: '' },
-      end_time: { type: String, default: '' },
+      start_time: {
+        type: String,
+        default: `${moment().format('YYYY-MM-DD')} 00:00`
+      },
+      end_time: {
+        type: String,
+        default: `${moment().format('YYYY-MM-DD')} 23:59`
+      },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
