@@ -176,7 +176,7 @@
               <img
                 class="default-img"
                 v-else
-                :src="fileShareList[0].image_url"
+                :src="share[0].image_url"
                 alt="默认图片"
               />
             </st-form-item>
@@ -421,7 +421,7 @@
               <img
                 class="default-img"
                 v-else
-                :src="fileList[0].image_url"
+                :src="lucky[0].image_url"
                 alt="默认图片"
               />
             </st-form-item>
@@ -619,6 +619,7 @@ export default {
     onChangeGetAvatar(imageFiles) {
       this.fileList = cloneDeep(imageFiles)
       this.notPrize.prize = this.fileList[0]
+      console.log(this.notPrize.prize)
     },
     onShareChangeGetAvatar(imageFiles) {
       this.fileShareList = cloneDeep(imageFiles)
@@ -743,6 +744,7 @@ export default {
         this.fileShareList[0] = res.activity_base.share_bg
         this.share[0] = res.activity_base.share_bg
         this.prize[0] = res.activity_lucky.lucky
+        console.log(this.fileList[0])
       })
     }
   }
