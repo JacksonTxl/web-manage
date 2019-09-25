@@ -100,6 +100,7 @@ import ShopFinanceRefund from '@/views/biz-modals/shop/finance/refund'
 import ShopFinanceSplit from '@/views/biz-modals/shop/finance/split'
 import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
 import SoldLeaseTransfer from '@/views/biz-modals/sold/lease/transfer'
+import { ORDER_PRODUCT_TYPE } from '@/constants/finance/order'
 export default {
   name: 'PageShopFinanceOrder',
   bem: {
@@ -146,6 +147,7 @@ export default {
   },
   data() {
     return {
+      ORDER_PRODUCT_TYPE,
       keyword: '',
       status: -1,
       type: -1,
@@ -252,11 +254,13 @@ export default {
     },
     // 退款
     onRefund(record) {
+      const props = { id: record.id }
+      if (record.product_type === this.ORDER_PRODUCT_TYPE.EARNEST) {
+        props.goodsInvalid = true
+      }
       this.$modalRouter.push({
         name: 'shop-finance-refund',
-        props: {
-          id: record.id
-        },
+        props,
         on: {
           success: result => {
             console.log('退款成功!')

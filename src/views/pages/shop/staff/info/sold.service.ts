@@ -1,15 +1,20 @@
 import { UserService } from '@/services/user.service'
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
-import { tap } from 'rxjs/operators'
+import { tap, map } from 'rxjs/operators'
 import { ShopStaffApi, GetStaffSoldInput } from '@/api/v1/staff/staff'
+import { cloneDeep } from 'lodash-es'
 
 @Injectable()
 export class SoldService implements RouteGuard {
   page$ = new State({})
   soldInfo$ = new State([])
   loading$ = new State({})
-  orderStatus$ = this.userService.getOptions$('sold.order_status')
+  orderStatus$ = this.userService.getOptions$('sold.order_status').pipe(
+    map(list => {
+      return [{ label: '全部订单状态', value: -1 }, ...cloneDeep(list)]
+    })
+  )
   constructor(
     private staffApi: ShopStaffApi,
     private userService: UserService

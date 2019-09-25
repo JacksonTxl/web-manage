@@ -498,7 +498,14 @@ export default {
     }
   },
   mounted() {
-    this.options = JSON.parse(window.localStorage.getItem('regionTree'))
+    const regions = window.localStorage.getItem('regionTree')
+    if (!regions) {
+      this.regionService.getRegions().subscribe(() => {
+        this.options = JSON.parse(window.localStorage.getItem('regionTree'))
+      })
+    } else {
+      this.options = JSON.parse(window.localStorage.getItem('regionTree'))
+    }
     this.editService.serviceInit(this.$route.query.id).subscribe(res => {
       setTimeout(() => {
         this.setEditInfo(this.info)

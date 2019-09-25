@@ -9,17 +9,13 @@
             @change="onSingleSearch('shop_id', $event)"
           ></shop-select>
           <a-select
-            style="width: 160px;margin-left:12px"
+            style="width: 160px;"
             :defaultValue="-1"
             placeholder="请选择订单状态"
+            :options="orderStatus"
+            v-model="query.order_status"
             @change="onSingleSearch('order_status', $event)"
-          >
-            <a-select-option :value="-1">全部订单状态</a-select-option>
-            <a-select-option :value="1">未完成</a-select-option>
-            <a-select-option :value="2">已完成</a-select-option>
-            <a-select-option :value="3">已取消</a-select-option>
-            <a-select-option :value="4">已退款</a-select-option>
-          </a-select>
+          ></a-select>
           <a-range-picker
             class="mg-l8"
             @change="onChooseDate"

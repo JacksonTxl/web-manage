@@ -540,6 +540,9 @@ export const routeMapConfig = {
   },
   'brand-staff-info-sold'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
+    routeConfig.queryOptions = {
+      order_status: { type: Number, default: -1 }
+    }
   },
   'brand-staff-edit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工编辑'
@@ -796,6 +799,9 @@ export const routeMapConfig = {
   },
   'shop-staff-info-sold'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
+    routeConfig.queryOptions = {
+      order_status: { type: Number, default: -1 }
+    }
   },
   'shop-staff-info-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
