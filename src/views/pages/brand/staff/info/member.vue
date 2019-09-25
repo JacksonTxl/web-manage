@@ -111,28 +111,6 @@ export default {
           id: e.member_id
         }
       })
-    },
-    searchCourse(e) {
-      this.$router.push({
-        query: {
-          id: this.id,
-          keyword: e
-        },
-        force: true
-      })
-    },
-    onChange() {
-      this.$router.push({ query: this.query })
-    },
-    pageChange(page) {
-      this.$router.push({
-        query: {
-          id: this.id,
-          page: page.current_page,
-          size: page.size
-        },
-        force: true
-      })
     }
   }
 }
