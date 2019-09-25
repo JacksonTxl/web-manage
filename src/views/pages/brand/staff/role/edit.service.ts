@@ -1,10 +1,12 @@
+import { UserService } from '@/services/user.service'
 import { anyAll } from '@/operators'
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
-import { tap } from 'rxjs/operators'
+import { map, tap } from 'rxjs/operators'
 import { GetInitInfoPut, RoleInfo } from '@/api/v1/staff/role'
 import { RoleService } from '../role.service'
 import { MessageService } from '@/services/message.service'
+import { cloneDeep } from 'lodash-es'
 @Injectable()
 export class EditService {
   loading$ = new State({})
@@ -12,7 +14,20 @@ export class EditService {
   departmentInfo$ = new State({})
   shopList$ = new State({})
   brandList$ = new State({})
-  constructor(private roleService: RoleService, private msg: MessageService) {}
+  dataGrant$ = this.userService.getOptions$('data_grant.data_grant').pipe(
+    map(list => {
+      let arr = cloneDeep(list)
+      const index2Value = arr[2]
+      arr[2] = arr[3]
+      arr[3] = index2Value
+      return arr
+    })
+  )
+  constructor(
+    private roleService: RoleService,
+    private msg: MessageService,
+    private userService: UserService
+  ) {}
   update(params: RoleInfo) {
     return this.roleService.update(params).pipe(
       tap(res => {

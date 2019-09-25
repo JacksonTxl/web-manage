@@ -65,30 +65,18 @@
       <!-- TODO: 暂时前端控制 -->
       <div slot="action" slot-scope="text, record">
         <st-table-actions v-if="record.reserve_type.id === RESERVE_TYPE.COURSE">
-          <a
-            v-if="record.auth['shop:reserve:visit_reserve|del']"
-            @click="onClickCancel(record)"
-          >
+          <a v-if="record.cancel" @click="onClickCancel(record)">
             取消
           </a>
-          <a
-            v-if="record.auth['shop:reserve:visit_reserve|checkin']"
-            @click="onClickCourseSign(record)"
-          >
+          <a v-if="record.checkin" @click="onClickCourseSign(record)">
             签到
           </a>
         </st-table-actions>
         <st-table-actions v-if="record.reserve_type.id === RESERVE_TYPE.VISIT">
-          <a
-            v-if="record.auth['shop:reserve:visit_reserve|del']"
-            @click="onClickCancelVisitReserve(record)"
-          >
+          <a v-if="record.cancel" @click="onClickCancelVisitReserve(record)">
             取消
           </a>
-          <a
-            v-if="record.auth['shop:reserve:visit_reserve|checkin']"
-            @click="onClickconfirmVisitReserve(record)"
-          >
+          <a v-if="record.checkin" @click="onClickconfirmVisitReserve(record)">
             确认到访
           </a>
         </st-table-actions>
