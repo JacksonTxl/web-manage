@@ -12,7 +12,7 @@ export const columns = () => {
       sorter: true
     },
     {
-      title: '收银方式',
+      title: '支付方式',
       dataIndex: 'pay_channel'
     },
     {

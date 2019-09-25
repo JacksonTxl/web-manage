@@ -89,6 +89,7 @@ import ShopFinanceCancel from '@/views/biz-modals/shop/finance/cancel'
 import ShopFinanceRefund from '@/views/biz-modals/shop/finance/refund'
 import ShopFinanceSplit from '@/views/biz-modals/shop/finance/split'
 import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
+import { ORDER_PRODUCT_TYPE } from '@/constants/finance/order'
 export default {
   name: 'PageShopFinanceOrderInfo',
   bem: {
@@ -112,6 +113,11 @@ export default {
       auth: this.infoService.auth$
     }
   },
+  data() {
+    return {
+      ORDER_PRODUCT_TYPE
+    }
+  },
   computed: {},
   methods: {
     // 订单收款modal
@@ -131,11 +137,13 @@ export default {
     },
     // 退款
     onRefund() {
+      const props = { id: this.infoService.id }
+      if (this.info.product_type === this.ORDER_PRODUCT_TYPE.EARNEST) {
+        props.goodsInvalid = true
+      }
       this.$modalRouter.push({
         name: 'shop-finance-refund',
-        props: {
-          id: this.infoService.id
-        },
+        props,
         on: {
           success: () => {
             this.$router.reload()

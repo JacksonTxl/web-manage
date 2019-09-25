@@ -201,7 +201,7 @@ export default {
             {
               order_sub_id: this.info.order_sub_id,
               refund_money: +values.refundPrice,
-              reason: +this.refundReason,
+              reason: this.getRefundReason,
               pay_channel: +this.frozenPayType,
               description: this.description
             },
