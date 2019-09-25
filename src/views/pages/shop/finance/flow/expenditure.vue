@@ -3,7 +3,7 @@
     <div slot="prepend">
       <st-search-panel :class="bSearch()">
         <div :class="bSearch('radio')" class="mg-t24 search-item">
-          <span class="label">收银方式:</span>
+          <span class="label">支付方式:</span>
           <a-checkbox @change="onCheckAllChange" :checked="checkAll">
             全部
           </a-checkbox>
