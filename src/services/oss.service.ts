@@ -3,7 +3,6 @@ import { Subject } from 'rxjs'
 import { ajax } from 'rxjs/ajax'
 import { mergeMap, map } from 'rxjs/operators'
 import { Api } from '@/api/api'
-import { findLast } from 'lodash-es'
 
 const typeSuffix = {
   'image/png': '.png'
@@ -131,9 +130,10 @@ export class OssService extends Api {
    * @param url 打开的url
    */
   openNewTab(url: string) {
-    const a = document.createElement('a')
-    a.href = url
-    a.target = '_blank'
-    a.click()
+    // const a = document.createElement('a')
+    // a.href = url
+    // a.target = '_blank'
+    // a.click()
+    window.open(url)
   }
 }
