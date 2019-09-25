@@ -385,12 +385,14 @@
             <st-form-item label="名称" required>
               <a-input
                 @change="getName"
+                :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
                 placeholder="请输入未奖品名称"
                 v-decorator="decorators.activity_lucky.lucky_name"
               ></a-input>
             </st-form-item>
             <st-form-item label=" 图片" required>
               <a-radio-group
+                :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
                 v-decorator="decorators.activity_lucky.image_default"
                 @change="getNotImgType"
               >
