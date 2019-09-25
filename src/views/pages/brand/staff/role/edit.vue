@@ -21,13 +21,9 @@
           name="radioGroup"
           @change="onChangeDataRegion"
           v-decorator="['data_grant', { initialValue: info.data_grant }]"
-        >
-          <a-radio :value="1">仅本人</a-radio>
-          <a-radio :value="2">所在部门及子部门</a-radio>
-          <a-radio :value="4">全部门</a-radio>
-          <a-radio :value="3">跨部门</a-radio>
-          {{ departmentInfo }}
-        </a-radio-group>
+          :options="dataGrant"
+        ></a-radio-group>
+        <span v-if="departmentInfo">({{ departmentInfo }})</span>
       </st-form-item>
       <st-form-item label="功能权限">
         <div class="jurisdiction">
@@ -137,7 +133,8 @@ export default {
       info: this.editService.info$,
       departmentInfo: this.editService.departmentInfo$,
       brandList: this.editService.brandList$,
-      shopList: this.editService.shopList$
+      shopList: this.editService.shopList$,
+      dataGrant: this.editService.dataGrant$
     }
   },
   data() {
@@ -146,7 +143,6 @@ export default {
       searchValue: '',
       autoExpandParent: true,
       expandedKeysShop: [],
-      departmentName: '',
       searchShopValue: '',
       autoExpandParentShop: true,
       form: this.$form.createForm(this),
@@ -213,14 +209,20 @@ export default {
           name: 'role-department',
           on: {
             success(result) {
-              that.departmentInfo = result.lable.join(',')
+              that.departmentInfo = result.label.join(',')
               // that.departmentName = result.lable.join(',')
               that.department_ids = result.value
+              if (that.department_ids.length === 0) {
+                that.form.setFieldsValue({
+                  data_grant: undefined
+                })
+              }
             }
           }
         })
       } else {
-        this.departmentInfo = ''
+        that.departmentInfo = ''
+        that.department_ids = []
       }
     },
     getSelectIds(selectIds, count) {

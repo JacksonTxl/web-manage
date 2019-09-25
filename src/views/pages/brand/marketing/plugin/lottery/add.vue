@@ -295,7 +295,7 @@
             </st-form-item>
           </st-form>
           <st-form
-            style="width:500px;padding-left:62px;"
+            style="width:756px;padding-left:62px;"
             :form="form"
             v-show="currentIndex == 2"
           >
@@ -338,7 +338,11 @@
                       }}
                     </td>
                     <td>
+                      <span v-show="isShowEditTable !== index">
+                        {{ item.number }}
+                      </span>
                       <st-input-number
+                        v-show="isShowEditTable === index"
                         :min="1"
                         :max="99999"
                         :step="1"
@@ -349,7 +353,11 @@
                       ></st-input-number>
                     </td>
                     <td>
+                      <span v-show="isShowEditTable !== index">
+                        {{ item.rate }}
+                      </span>
                       <st-input-number
+                        v-show="isShowEditTable === index"
                         :min="0"
                         :max="100"
                         :float="true"
@@ -359,21 +367,7 @@
                     </td>
                     <td>
                       <st-table-actions>
-                        <a
-                          :disabled="query.activity_id && query.status === 1"
-                          @click="getCurPrizeIndex(index)"
-                          v-modal-link="{
-                            name: 'brand-marketing-plugin-add-prize',
-                            props: {
-                              info: item,
-                              id: query.activity_id,
-                              status: query.status
-                            },
-                            on: { change: getPrizeInfo }
-                          }"
-                        >
-                          编辑
-                        </a>
+                        <a @click="showEditTable(index)">编辑</a>
                         <a
                           :disabled="query.activity_id && query.status === 1"
                           href="javascript:;"
@@ -533,7 +527,8 @@ export default {
         spaceBetween: 6,
         slidesPerView: 1.05
       },
-      defaultValue: [moment().format('HH:mm'), moment('11:59', 'HH:mm')]
+      defaultValue: [moment().format('HH:mm'), moment('11:59', 'HH:mm')],
+      isShowEditTable: -1
     }
   },
   bem: {
@@ -579,6 +574,9 @@ export default {
     }
   },
   methods: {
+    showEditTable(index) {
+      this.isShowEditTable = index
+    },
     next(para) {
       if (para.index) {
         para = para.index - 1

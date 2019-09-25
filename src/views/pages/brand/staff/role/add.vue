@@ -12,15 +12,12 @@
       </st-form-item>
       <st-form-item label="数据权限">
         <a-radio-group
-          @change="onChangeDataRegion"
           name="radioGroup"
+          @change="onChangeDataRegion"
           v-decorator="['data_grant']"
-        >
-          <a-radio :value="1">仅本人</a-radio>
-          <a-radio :value="2">所在部门及子部门</a-radio>
-          <a-radio :value="4">全部门</a-radio>
-          <a-radio :value="3">跨部门 {{ departmentName }}</a-radio>
-        </a-radio-group>
+          :options="dataGrant"
+        ></a-radio-group>
+        <span v-if="departmentName">({{ departmentName }})</span>
       </st-form-item>
       <st-form-item label="功能权限">
         <div class="role-list">
@@ -114,7 +111,8 @@ export default {
   rxState() {
     return {
       brandList: this.addService.brandList$,
-      shopList: this.addService.shopList$
+      shopList: this.addService.shopList$,
+      dataGrant: this.addService.dataGrant$
     }
   },
   data() {
@@ -180,10 +178,6 @@ export default {
     },
     onChangeDataRegion(val) {
       const that = this
-      if (val.target.value) {
-        that.departmentName = ''
-        that.department_ids = []
-      }
       if (val.target.value === 3) {
         this.$modalRouter.push({
           name: 'role-department',
@@ -199,6 +193,9 @@ export default {
             }
           }
         })
+      } else {
+        that.departmentName = ''
+        that.department_ids = []
       }
     },
     getSelectIds(selectIds, count) {
