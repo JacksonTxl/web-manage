@@ -12,6 +12,14 @@ export class AppConfig {
    */
   HTTP_TIMEOUT = 6000
   /**
+   * Get请求缓存白名单
+   */
+  API_BF_HISTORY_CACHE_WHITE_LIST = [
+    '/v1/front/entrance/member/',
+    '/v1/front/entrance/options/',
+    '/v1/front/cabinet/options/'
+  ]
+  /**
    * 图片基础路径
    */
   get HOST_IMAGE() {

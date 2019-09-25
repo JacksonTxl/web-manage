@@ -180,13 +180,22 @@ export default {
     },
     onChangeDataRegion(val) {
       const that = this
+      if (val.target.value) {
+        that.departmentName = ''
+        that.department_ids = []
+      }
       if (val.target.value === 3) {
         this.$modalRouter.push({
           name: 'role-department',
           on: {
             success(result) {
-              that.departmentName = result.lable.join(',')
+              that.departmentName = result.label.join(',')
               that.department_ids = result.value
+              if (that.department_ids.length === 0) {
+                that.form.setFieldsValue({
+                  data_grant: undefined
+                })
+              }
             }
           }
         })

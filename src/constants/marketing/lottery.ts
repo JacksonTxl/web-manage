@@ -1,4 +1,4 @@
-export enum TIMES_TYPE {
+export const enum TIMES_TYPE {
   DEFAULT = 1
 }
 export enum CROWD_TYPE {
