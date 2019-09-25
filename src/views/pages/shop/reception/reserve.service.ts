@@ -17,6 +17,7 @@ export class ReserveService implements RouteGuard {
       return [{ value: -1, label: '全部' }, ...cloneDeep(list)]
     })
   )
+  // courseCancel$ = new
 
   constructor(
     private userService: UserService,
@@ -28,10 +29,25 @@ export class ReserveService implements RouteGuard {
   getList(params: GetListInput) {
     return this.api.getList(params).pipe(
       tap((res: any) => {
-        this.list$.commit(() => res.list)
+        this.list$.commit(() => this.mapList(res.list, res.auth_map))
         this.page$.commit(() => res.page)
       })
     )
+  }
+  private mapList(list: any, authMap: any) {
+    return list.map((item: any) => {
+      for (let key in item.auth) {
+        if (item.auth[key] === 1) {
+          if (authMap.cancel.includes(key)) {
+            item.cancel = 1
+          }
+          if (authMap.checkin.includes(key) || authMap.visit.includes(key)) {
+            item.checkin = 1
+          }
+        }
+      }
+      return item
+    })
   }
   confirmVisitReserve(id: number) {
     return this.api.confirmVisitReserve(id).pipe(
