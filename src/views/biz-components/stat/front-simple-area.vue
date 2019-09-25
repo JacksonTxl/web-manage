@@ -52,7 +52,7 @@ export default {
         forceFit: true,
         height: this.height,
         renderer: 'svg',
-        padding: [0, 0, 0, 0]
+        padding: [0, 0, 1, 0]
       })
 
       this.chart.source(this.dv, {
