@@ -39,7 +39,7 @@
         </st-form-item>
         <st-form-item label="性别" required>
           <a-radio-group name="radioGroup" v-decorator="decorators.sex">
-            <a-radio :value="2">
+            <a-radio :value="SEX.FEMALE">
               男
               <st-icon
                 class="sex__male"
@@ -47,7 +47,7 @@
                 type="male"
               ></st-icon>
             </a-radio>
-            <a-radio :value="1">
+            <a-radio :value="SEX.MALE">
               女
               <st-icon
                 calss="sex__female"
@@ -254,6 +254,7 @@ import { AddService } from '../add.service'
 import ShopSelect from '@/views/biz-components/shop-select'
 import DepartmentSelect from '@/views/biz-components/department-select'
 import { AppConfig } from '@/constants/config'
+import { IDENTITY, SEX } from '@/constants/staff/info'
 import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from '../staff-form.config.ts'
 import FaceUpload from '@/views/biz-components/face-upload/face-upload'
@@ -281,6 +282,7 @@ export default {
     return {
       form,
       decorators,
+      SEX,
       fileList: [],
       faceList: [],
       isChoosePermission: false,
@@ -308,7 +310,7 @@ export default {
     },
     getIsCoach(data) {
       console.log('watch new', data)
-      this.isShowLevel = data.includes(4)
+      this.isShowLevel = data.includes(IDENTITY.PARSONAL_COACH)
 
       if (!this.isShowLevel) {
         this.$emit('deletStep')
@@ -349,7 +351,10 @@ export default {
             id: res.staff_id,
             currentIndex: 1,
             isShowCoach:
-              data.identity.includes(3) || data.identity.includes(4) ? 1 : 0
+              data.identity.includes(IDENTITY.TEAM_COACH) ||
+              data.identity.includes(IDENTITY.PARSONAL_COACH)
+                ? 1
+                : 0
           }
         })
       })
