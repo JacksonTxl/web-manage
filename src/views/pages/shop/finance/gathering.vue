@@ -2,7 +2,7 @@
   <st-panel app initial :tabs="authTabs">
     <div slot="actions">
       <st-input-search
-        v-model="query.search"
+        v-model="query.keyword"
         @search="onSearchCardName"
         placeholder="请输入会员姓名或手机号查找"
         :class="b('search')"
@@ -33,7 +33,9 @@ export default {
   },
   methods: {
     onSearchCardName() {
-      this.$router.push({ query: { ...this.query, search: this.query.search } })
+      this.$router.push({
+        query: { ...this.query, keyword: this.query.keyword }
+      })
     }
   }
 }
