@@ -20,6 +20,7 @@
           placeholder="预约日期"
           allowClear
           :disabledDate="disabledDate"
+          :disabledTime="disabledDateTime"
           :showTime="{ format: 'HH:mm' }"
           format="YYYY-MM-DD HH:mm"
         ></a-date-picker>
@@ -74,12 +75,34 @@ export default {
   },
   methods: {
     moment,
+    range(start, end) {
+      const result = []
+      for (let i = start; i < end; i++) {
+        result.push(i)
+      }
+      return result
+    },
     disabledDate(current) {
       return (
         current &&
         (current < moment().add(-1, 'day') ||
           current > moment().add(1, 'month'))
       )
+    },
+    disabledDateTime(current) {
+      const currentHour = current.format('H')
+      const currentMin = current.format('m')
+      if (
+        current.format('YYYY-MM-DD') ===
+        moment()
+          .add(1, 'month')
+          .format('YYYY-MM-DD')
+      ) {
+        return {
+          disabledHours: () => this.range(0, 24).splice(currentHour, 24),
+          disabledMinutes: () => this.range(currentMin, 60)
+        }
+      }
     },
     addSubmit(form) {
       return form.mobile

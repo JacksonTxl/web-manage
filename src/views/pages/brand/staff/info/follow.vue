@@ -71,7 +71,6 @@ export default {
   },
   data() {
     return {
-      list: [],
       id: ''
     }
   },
@@ -106,5 +105,3 @@ export default {
   }
 }
 </script>
-
-<style></style>

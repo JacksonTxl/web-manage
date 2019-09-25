@@ -62,7 +62,6 @@
       <span slot="reserve_type" slot-scope="text">{{ text.name }}</span>
       <span slot="member" slot-scope="text">{{ text.name }}</span>
       <span slot="reserve_status" slot-scope="text">{{ text.name }}</span>
-      <!-- TODO: 暂时前端控制 -->
       <div slot="action" slot-scope="text, record">
         <st-table-actions v-if="record.reserve_type.id === RESERVE_TYPE.COURSE">
           <a v-if="record.cancel" @click="onClickCancel(record)">
@@ -132,7 +131,7 @@ export default {
           disabledBegin: null,
           placeholder: '开始日期',
           disabled: false,
-          value: null,
+          value: moment(),
           format: 'YYYY-MM-DD',
           change: $event => {}
         },
@@ -140,7 +139,7 @@ export default {
           showTime: false,
           placeholder: '结束日期',
           disabled: false,
-          value: null,
+          value: moment(),
           format: 'YYYY-MM-DD',
           change: $event => {}
         }
