@@ -3,7 +3,7 @@
     <div :class="bPage()">
       <div :class="bPage('header')">
         <a-input-search
-          style="width:722px"
+          style="width:722px;"
           placeholder="输入需要核销的兑换码"
           v-model="keyword"
           @search="getCheckinList"
