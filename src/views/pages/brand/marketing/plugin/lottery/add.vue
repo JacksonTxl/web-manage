@@ -385,12 +385,14 @@
             <st-form-item label="名称" required>
               <a-input
                 @change="getName"
+                :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
                 placeholder="请输入未奖品名称"
                 v-decorator="decorators.activity_lucky.lucky_name"
               ></a-input>
             </st-form-item>
             <st-form-item label=" 图片" required>
               <a-radio-group
+                :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
                 v-decorator="decorators.activity_lucky.image_default"
                 @change="getNotImgType"
               >
@@ -513,8 +515,7 @@ export default {
       notPrize: {
         prize_name: '未中奖',
         prize: {
-          image_url:
-            'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/dev/image/10000/2019-09-05/分组3___f12c6b9b10bb___.png'
+          image_url: ''
         }
       },
       sliderOptions: {
@@ -568,7 +569,7 @@ export default {
     swiperSlide
   },
   mounted() {
-    this.notPrize.prize = this.lucky[0]
+    // this.notPrize.prize = this.lucky[0]
     if (this.query.activity_id) {
       this.editVIew(this.query.activity_id)
     }
@@ -619,7 +620,6 @@ export default {
     onChangeGetAvatar(imageFiles) {
       this.fileList = cloneDeep(imageFiles)
       this.notPrize.prize = this.fileList[0]
-      console.log(this.notPrize.prize)
     },
     onShareChangeGetAvatar(imageFiles) {
       this.fileShareList = cloneDeep(imageFiles)
@@ -735,6 +735,7 @@ export default {
         this.preview.description = res.activity_base.activity_description
         this.preview.title = res.activity_base.activity_sub_name
         this.notPrize.prize_name = res.activity_lucky.lucky_name
+        this.notPrize.prize = res.activity_lucky.lucky
         this.shareType = res.activity_base.wheel_share_default
         this.timesType = res.activity_rule.draw_times_type
         this.isStopSwiper = res.activity_base.wheel_turn_around
@@ -744,7 +745,6 @@ export default {
         this.fileShareList[0] = res.activity_base.share_bg
         this.share[0] = res.activity_base.share_bg
         this.prize[0] = res.activity_lucky.lucky
-        console.log(this.fileList[0])
       })
     }
   }
