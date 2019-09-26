@@ -53,9 +53,13 @@ export default {
       })
     },
     gotoAuth() {
-      this.$router.push({
+      // this.$router.push({
+      //   name: 'brand-setting-mina-index'
+      // })
+      const { href } = this.$router.resolve({
         name: 'brand-setting-mina-index'
       })
+      window.open(href, '_blank')
     }
   }
 }
