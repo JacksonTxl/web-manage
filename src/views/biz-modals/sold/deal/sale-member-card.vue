@@ -242,6 +242,9 @@
                     slot="overlay"
                   >
                     <a-menu>
+                      <a-menu-item @click="onSelectAdvance">
+                        <a-radio :value="undefined">不使用</a-radio>
+                      </a-menu-item>
                       <a-menu-item
                         @click="onSelectAdvance"
                         :key="index"
@@ -361,6 +364,16 @@ export default {
     id: {
       type: String,
       required: true
+    },
+    memberInfo: {
+      type: Object
+      // default: () => {
+      //   return {
+      //     member_id: 150224987822545,
+      //     member_name: '张飞123222',
+      //     member_mobile: 19134752085
+      //   }
+      // }
     }
   },
   data() {
@@ -409,6 +422,9 @@ export default {
       this.validEndTime = moment()
         .add(this.selectedNorm.valid_time, 'days')
         .format('YYYY-MM-DD HH:mm')
+      if (this.memberInfo) {
+        this.onMemberSearch(this.memberInfo.member_name)
+      }
       this.fetchCouponList()
       this.getPrice()
     })
@@ -495,6 +511,13 @@ export default {
           .subscribe(res => {
             if (!res.list.length) {
               this.form.resetFields(['memberId'])
+            } else {
+              if (this.memberInfo) {
+                this.form.setFieldsValue({
+                  memberId: this.memberInfo.member_id
+                })
+                this.onMemberChange(this.memberInfo.member_id)
+              }
             }
           })
       }
@@ -547,6 +570,11 @@ export default {
       this.resetAdvance()
     },
     onSelectAdvanceChange(data) {
+      if (!data.target.value) {
+        this.advanceAmount = 0
+        this.advanceText = `未选择定金`
+        return
+      }
       let price = this.advanceList.filter(o => o.id === data.target.value)[0]
         .price
       this.advanceAmount = price

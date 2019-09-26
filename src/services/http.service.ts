@@ -1,3 +1,4 @@
+import { forEach } from 'lodash-es'
 import qs from 'qs'
 import { Observable, throwError } from 'rxjs'
 import { ajax, AjaxError } from 'rxjs/ajax'
@@ -61,13 +62,21 @@ export class HttpService {
      * 1. 缓存里没有的时候重新获取
      * 2. 非浏览器的前进后退点击 重新获取
      * 3. 模态窗打开的情况下 不激活http缓存
+     * 4. 浏览器后退的页面指定api不缓存
      */
 
     const cacheKey = requestUrl
+    let apiCanUseCache = !this.appConfig.API_BF_HISTORY_CACHE_WHITE_LIST.find(
+      (item: string) => {
+        console.log('not cache', requestUrl)
+        return requestUrl.search(item) > -1
+      }
+    )
     if (
       this.cacheContainer.get(cacheKey) &&
       this.router.isHistoryBF &&
-      !this.modalRouter.isOpening
+      !this.modalRouter.isOpening &&
+      apiCanUseCache
     ) {
       console.log('hit cache', cacheKey)
       return this.cacheContainer.get(cacheKey) as Observable<any>
@@ -134,8 +143,8 @@ export class HttpService {
   get appHeaders() {
     return {
       token: this.tokenService.token$.snapshot(),
-      'app-id': '11111',
-      'app-version': '11111'
+      'app-id': this.appConfig.API_APP_ID,
+      'app-version': this.appConfig.GIT_COMMIT
     }
   }
   get appHeadersWithContentType() {

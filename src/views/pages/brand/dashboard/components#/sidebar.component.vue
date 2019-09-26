@@ -24,7 +24,7 @@
       ></plug-in>
       <plug-in
         title="幸运大转盘"
-        sub="百分比抽奖，回馈新老客户必备福利"
+        sub="回馈新老客户必备福利"
         :img="slyder"
       ></plug-in>
     </st-container>

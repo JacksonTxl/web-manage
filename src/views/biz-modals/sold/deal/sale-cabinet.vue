@@ -218,7 +218,7 @@
                   >
                     <a-menu>
                       <a-menu-item @click="onSelectAdvance">
-                        <a-radio :value="-1">不使用</a-radio>
+                        <a-radio :value="undefined">不使用</a-radio>
                       </a-menu-item>
                       <a-menu-item
                         @click="onSelectAdvance"
@@ -340,6 +340,9 @@ export default {
     areaId: {
       type: String,
       required: true
+    },
+    memberInfo: {
+      type: Object
     }
   },
   data() {
@@ -378,6 +381,9 @@ export default {
     this.saleCabinetService.currentPrice$.commit(() => 0)
     this.saleCabinetService.init(this.id, this.areaId).subscribe(res => {
       this.startTime = cloneDeep(moment(res[0].info.start_time))
+      if (this.memberInfo) {
+        this.onMemberSearch(this.memberInfo.member_name)
+      }
     })
   },
   computed: {
@@ -432,6 +438,13 @@ export default {
             if (!res.list.length) {
               this.resetAdvance()
               this.form.resetFields(['memberId'])
+            } else {
+              if (this.memberInfo) {
+                this.form.setFieldsValue({
+                  memberId: this.memberInfo.member_id
+                })
+                this.onMemberChange(this.memberInfo.member_id)
+              }
             }
           })
       }
@@ -517,9 +530,10 @@ export default {
       this.resetAdvance()
     },
     onSelectAdvanceChange(data) {
-      if (data.target.value === -1) {
-        this.advanceAmount = ''
-        this.advanceText = '未选择定金'
+      if (!data.target.value) {
+        this.advanceAmount = 0
+        this.advanceText = `未选择定金`
+        return
       }
       let price = this.advanceList.filter(o => o.id === data.target.value)[0]
         .price

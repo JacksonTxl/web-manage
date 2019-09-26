@@ -12,6 +12,18 @@ export class AppConfig {
    */
   HTTP_TIMEOUT = 6000
   /**
+   * 请求后端的app_id字段
+   */
+  API_APP_ID = '10000'
+  /**
+   * Get请求缓存白名单
+   */
+  API_BF_HISTORY_CACHE_WHITE_LIST = [
+    '/v1/front/entrance/member/',
+    '/v1/front/entrance/options/',
+    '/v1/front/cabinet/options/'
+  ]
+  /**
    * 图片基础路径
    */
   get HOST_IMAGE() {

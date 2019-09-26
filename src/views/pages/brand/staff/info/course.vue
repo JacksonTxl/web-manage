@@ -73,6 +73,7 @@ import tableMixin from '@/mixins/table.mixin'
 import SchedulePersonalReserveInfo from '@/views/biz-modals/schedule/personal/reserve-info'
 import SchedulePersonalTeamReserveInfo from '@/views/biz-modals/schedule/personal-team/reserve-info'
 import ScheduleTeamReserveInfo from '@/views/biz-modals/schedule/team/reserve-info'
+import { COURSE_TYPE } from '@/constants/staff/info'
 export default {
   mixins: [tableMixin],
   modals: {
@@ -97,7 +98,8 @@ export default {
   },
   data() {
     return {
-      id: ''
+      id: '',
+      COURSE_TYPE
     }
   },
   computed: {
@@ -106,21 +108,21 @@ export default {
   components: {
     ShopSelect
   },
-  created() {
-    console.log(this.page)
-  },
   methods: {
     goCourseDetai(e) {
       let course_type = e.course_type.id
       let course_id = e.course_id
-      if (course_type === 1 || course_type === 2) {
+      if (
+        course_type === this.COURSE_TYPE.PERSONAL ||
+        course_type === this.COURSE_TYPE.PERSONAL_TEAM
+      ) {
         this.$router.push({
           name: 'brand-product-course-personal-info',
           query: {
             id: course_id
           }
         })
-      } else {
+      } else if (course_type === this.COURSE_TYPE.TEAM) {
         this.$router.push({
           name: 'brand-product-course-team-info',
           query: {
@@ -178,7 +180,6 @@ export default {
     },
     // 日期选择
     onChooseDate(e) {
-      console.log(e)
       this.$router.push({
         query: {
           id: this.query.id,

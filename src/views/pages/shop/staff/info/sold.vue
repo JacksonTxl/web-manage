@@ -7,15 +7,10 @@
             style="width: 160px;"
             :defaultValue="-1"
             placeholder="请选择订单状态"
+            :options="orderStatus"
+            v-model="query.order_status"
             @change="onSingleSearch('order_status', $event)"
-          >
-            <a-select-option :value="-1">全部订单状态</a-select-option>
-            <a-select-option :value="1">未完成</a-select-option>
-            <a-select-option :value="2">已完成</a-select-option>
-            <a-select-option :value="3">已取消</a-select-option>
-            <a-select-option :value="4">已退款</a-select-option>
-            <a-select-option :value="5">处理中</a-select-option>
-          </a-select>
+          ></a-select>
           <a-range-picker
             class="mg-l8"
             @change="onChooseDate"
@@ -81,7 +76,8 @@ export default {
       soldInfo: this.soldService.soldInfo$,
       loading: this.soldService.loading$,
       page: this.soldService.page$,
-      query: this.routerService.query$
+      query: this.routerService.query$,
+      orderStatus: this.soldService.orderStatus$
     }
   },
   data() {
@@ -91,9 +87,7 @@ export default {
   },
   computed: { soldColums },
   mounted() {
-    console.log('loading', this.loading)
     this.id = this.$route.meta.query.id
-    console.log('soldInfo', this.soldInfo)
   },
   methods: {
     range(start, end) {
@@ -126,7 +120,6 @@ export default {
     },
     // 商品名称+规格名：点击跳转至商品详情页
     goCommodityDetai(e) {
-      console.log('跳转到商品详情页', e)
       let product_type = e.product_type
       let product_id = e.product_id
       let routeMap = {
@@ -168,27 +161,7 @@ export default {
       }
       this.$router.push(routeMap[product_type])
     },
-    onChooseStatus(e) {
-      this.$router.push({
-        query: {
-          id: this.id,
-          order_status: e
-        },
-        force: true
-      })
-    },
-    // 选择门店
-    onChooseShop(e) {
-      this.$router.push({
-        query: {
-          id: this.id,
-          shop_id: id
-        },
-        force: true
-      })
-    },
     onChooseDate(e) {
-      console.log('选择到的日期', e)
       this.$router.push({
         query: {
           id: this.id,
@@ -197,91 +170,6 @@ export default {
         },
         force: true
       })
-    },
-    // 搜索
-    searchCourse(e) {
-      this.$router.push({
-        query: {
-          id: this.id,
-          keyword: e
-        },
-        force: true
-      })
-    }
-  },
-  filters: {
-    orderStatusFilter(status) {
-      console.log(status, typeof status)
-      let ret = ''
-      switch (status) {
-        case 1:
-          ret = '未完成'
-          break
-        case 2:
-          ret = '已完成'
-          break
-        case 3:
-          ret = '已取消'
-          break
-        case 4:
-          ret = '已退款'
-          break
-        case 5:
-          ret = '部分退款'
-          break
-      }
-      return ret
-    },
-    payStatusFilter(status) {
-      let ret = ''
-      switch (status) {
-        case 1:
-          ret = '待支付'
-          break
-        case 2:
-          ret = '部分付款'
-          break
-        case 3:
-          ret = '付款完成'
-          break
-      }
-      return ret
-    },
-    productTypeFilter(status) {
-      let ret = ''
-      switch (status) {
-        case 1:
-          ret = '会员卡'
-          break
-        case 2:
-          ret = '私教课'
-          break
-        case 3:
-          ret = '团体课'
-          break
-        case 4:
-          ret = '课程包'
-          break
-        case 5:
-          ret = '储值卡'
-          break
-        case 6:
-          ret = '小班课'
-          break
-        case 7:
-          ret = '手续费'
-          break
-        case 8:
-          ret = '定金'
-          break
-        case 9:
-          ret = '押金'
-          break
-        case 10:
-          ret = '储物柜'
-          break
-      }
-      return ret
     }
   }
 }

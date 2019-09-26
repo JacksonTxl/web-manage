@@ -1,0 +1,50 @@
+{
+  "code": 0,
+  "msg": "success",
+  "data": {
+    "info": {
+      "card_id": 181184018055236,
+      "brand_id": 1,
+      "shop_id": 1,
+      "card_type": 1,
+      "card_name": "VIP区域测试",
+      "admission_range": 1,
+      "price_setting": 2,
+      "support_sales": 2,
+      "total_shop_num": 1,
+      "shelf_shop_num": 20,
+      "start_time": 1567440000,
+      "end_time": 1568131199,
+      "sell_status": 2,
+      "is_transfer": 0,
+      "transfer_unit": 1,
+      "transfer_num": "",
+      "sell_type": [2],
+      "card_introduction": "VIP区域测试",
+      "card_contents": "",
+      "card_bg": {
+        "image_key": "image/default/bg-card-selection-2.png",
+        "image_url": "https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-card-selection-2.png",
+        "index": 2,
+        "image_id": 181184018055235
+      },
+      "publish_channel": 2,
+      "admission_shop_list": [],
+      "sell_shop_list": [1],
+      "price_gradient": [
+        {
+          "id": 181184018055239,
+          "unit": 2,
+          "num": 1,
+          "rally_price": "1.0",
+          "min_price": "0.0",
+          "max_price": "0.0",
+          "frozen_day": 1,
+          "gift_unit": 11,
+          "validity_times": 1
+        }
+      ],
+      "stop_sale_reason": "支持售卖时间到期"
+    }
+  }
+}

@@ -53,7 +53,6 @@ export class EditService implements RouteGuard {
   getNormalList() {
     return this.roleApi.getNormalList().pipe(
       tap(res => {
-        console.log('getNormalList', res)
         this.roleList$.commit(() => res.roles)
       })
     )
@@ -77,7 +76,6 @@ export class EditService implements RouteGuard {
   }
 
   init(id: string) {
-    console.log('init')
     return forkJoin(
       this.getStaffSpecialty(),
       this.getStaffDepartment(),
