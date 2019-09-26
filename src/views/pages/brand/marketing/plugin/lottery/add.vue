@@ -747,6 +747,7 @@ export default {
         this.isStopSwiper = res.activity_base.wheel_turn_around
         this.notPrizeImgType = res.activity_lucky.image_default
         this.shareTitle = res.activity_base.share_title
+        this.share[0].image_id = res.activity_base.share_bg.image_id
         res.activity_lucky.lucky &&
           (this.fileList[0] = res.activity_lucky.lucky)
         this.fileShareList[0] = res.activity_base.share_bg
