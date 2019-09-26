@@ -34,13 +34,17 @@ export class ReserveService implements RouteGuard {
       })
     )
   }
+  /**
+   * TODO: 聚合权限判断 私教课，私教小团课， 团课权限判断
+   */
   private mapList(list: any, authMap: any) {
     return list.map((item: any) => {
       for (let key in item.auth) {
         if (item.auth[key] === 1) {
-          item.cancel = authMap.cancel.includes(key)
-          item.checkin =
-            authMap.checkin.includes(key) || authMap.visit.includes(key)
+          key.includes('del') && (item.cancel = authMap.cancel.includes(key))
+          key.includes('checkin') &&
+            (item.checkin =
+              authMap.checkin.includes(key) || authMap.visit.includes(key))
         }
       }
       return item
