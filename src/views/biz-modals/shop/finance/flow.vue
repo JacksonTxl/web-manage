@@ -7,25 +7,24 @@
   >
     <div :class="basic('content')">
       <a-row :class="basic('info')">
-        <a-col :span="13" class="mg-b36">
+        <a-col :span="13">
           <st-info>
             <st-info-item label="被冲流水号">{{ info.flow_id }}</st-info-item>
             <st-info-item label="操作人">{{ info.operator_name }}</st-info-item>
-            <st-info-item label="是否定金">
-              {{ info.is_advance_fee }}
-            </st-info-item>
             <st-info-item label="收款时间">{{ info.flow_time }}</st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="11" class="mg-b36">
+        <a-col :span="11">
           <st-info>
             <st-info-item label="金额">{{ info.amount }}</st-info-item>
             <st-info-item label="支付方式">{{ info.pay_type }}</st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="24" class="mg-b36">
+        <a-col :span="24">
           <st-info>
-            <st-info-item label="备注">{{ info.remark || '' }}</st-info-item>
+            <st-info-item label="备注">
+              {{ info.remark || '' }}
+            </st-info-item>
           </st-info>
         </a-col>
       </a-row>
