@@ -167,7 +167,7 @@
                     placeholder="上传图片"
                   ></st-image-upload>
                   <span :class="bPage('share-upload-text')">
-                    请上传jbg、png格式的图片
+                    请上传jpg、png格式的图片
                   </span>
                 </st-form-item>
                 <st-form-item label="分享标题" labelWidth="60px">
@@ -304,7 +304,9 @@
             v-show="currentIndex == 2"
           >
             <st-t3 class="mg-b24">奖品设置</st-t3>
-            <st-form-table>
+            <st-form-table
+              style="border:1px solid rgba(205,212,223,1);padding:12px;"
+            >
               <thead>
                 <tr>
                   <template v-for="(item, index) in columsTitlelist">
@@ -420,7 +422,7 @@
                   placeholder="上传图片"
                 ></st-image-upload>
                 <span :class="bPage('lucky-upload-text')">
-                  请上传jbg、png格式的图片
+                  请上传jpg、png格式的图片
                 </span>
               </div>
 
@@ -431,7 +433,7 @@
                 alt="默认图片"
               />
             </st-form-item>
-            <st-form-item labelFix>
+            <st-form-item labelFix style="margin-left:-43px;">
               <st-button type="primary" @click="onSubmit">完成</st-button>
             </st-form-item>
           </st-form>
@@ -749,7 +751,6 @@ export default {
         res.activity_lucky.lucky &&
           (this.fileList[0] = res.activity_lucky.lucky)
         this.fileShareList[0] = res.activity_base.share_bg
-        // this.share[0] = res.activity_base.share_bg
         this.prize[0] = res.activity_lucky.lucky
         if (this.notPrizeImgType === this.NOT_PRIZE_IMG_TYPE.CUSTOM) {
           this.notPrize.prize = res.activity_lucky.lucky
