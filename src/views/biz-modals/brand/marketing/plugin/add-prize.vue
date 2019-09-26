@@ -117,7 +117,7 @@
             :sizeLimit="2"
             placeholder="上传图片"
           ></st-image-upload>
-          <div class="prize-upload-text">请上传jbg、png格式的图片</div>
+          <div class="prize-upload-text">请上传jpg、png格式的图片</div>
         </div>
         <div v-else>
           <img :src="prize[0].image_url" alt="默认图片" class="default-img" />
