@@ -8,8 +8,11 @@ export const ruleOptions = (vm: any) => {
           message: '请输入活动名称'
         },
         {
-          pattern: pattern.CN_EN_NUM('1-15'),
-          message: '请输入1~15个字符'
+          validator: (field: any, value: any, values: any) => {
+            if (value.length > 15) {
+              return '请输入1-15个字符'
+            }
+          }
         }
       ]
     },
@@ -46,8 +49,11 @@ export const ruleOptions = (vm: any) => {
           message: '请输入活动标题'
         },
         {
-          pattern: pattern.CN_EN_NUM('1-15'),
-          message: '请输入1~15个字符'
+          validator: (field: any, value: any, values: any) => {
+            if (value.length > 15) {
+              return '请输入1-15个字符'
+            }
+          }
         }
       ]
     },

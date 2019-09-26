@@ -45,7 +45,11 @@
                 <div class="img">
                   <img
                     style="width:100%"
-                    :src="notPrize.prize ? notPrize.prize.image_url : ''"
+                    :src="
+                      notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM
+                        ? notPrize.prize.image_url
+                        : lucky[0].image_url
+                    "
                     alt="奖品图片"
                   />
                 </div>
@@ -75,9 +79,7 @@
       </div>
       <div :class="bPage('form')">
         <a-row class="mg-b24" :gutter="8">
-          <a-col offset="1">
-            <Steps :value="currentIndex" @skip="next" :stepArr="stepArr" />
-          </a-col>
+          <Steps :value="currentIndex" @skip="next" :stepArr="stepArr" />
         </a-row>
         <div style="padding:24px;">
           <st-form
@@ -117,6 +119,7 @@
             </st-form-item>
             <st-form-item label="活动说明">
               <st-textarea
+                :rows="4"
                 :maxlength="500"
                 @change="getDescription"
                 :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
@@ -163,13 +166,13 @@
                     placeholder="上传图片"
                   ></st-image-upload>
                   <span :class="bPage('share-upload-text')">
-                    请上传jbg、png格式的图片
+                    请上传jpg、png格式的图片
                   </span>
                 </st-form-item>
                 <st-form-item label="分享标题" labelWidth="60px">
                   <a-input
                     placeholder="分享标题"
-                    v-decorator="decorators.activity_base.share_title"
+                    v-model="shareTitle"
                   ></a-input>
                 </st-form-item>
               </div>
@@ -300,7 +303,9 @@
             v-show="currentIndex == 2"
           >
             <st-t3 class="mg-b24">奖品设置</st-t3>
-            <st-form-table>
+            <st-form-table
+              style="border:1px solid rgba(205,212,223,1);padding:12px;"
+            >
               <thead>
                 <tr>
                   <template v-for="(item, index) in columsTitlelist">
@@ -382,7 +387,7 @@
               </tbody>
             </st-form-table>
             <st-t3 class="mg-b24 mg-t32">未中奖设置</st-t3>
-            <st-form-item label="名称" required>
+            <st-form-item label="名称" labelWidth="40px" required>
               <a-input
                 @change="getName"
                 :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
@@ -390,7 +395,7 @@
                 v-decorator="decorators.activity_lucky.lucky_name"
               ></a-input>
             </st-form-item>
-            <st-form-item label=" 图片" required>
+            <st-form-item label=" 图片" labelWidth="43px" required>
               <a-radio-group
                 :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
                 v-decorator="decorators.activity_lucky.image_default"
@@ -416,7 +421,7 @@
                   placeholder="上传图片"
                 ></st-image-upload>
                 <span :class="bPage('lucky-upload-text')">
-                  请上传jbg、png格式的图片
+                  请上传jpg、png格式的图片
                 </span>
               </div>
 
@@ -427,7 +432,7 @@
                 alt="默认图片"
               />
             </st-form-item>
-            <st-form-item labelFix>
+            <st-form-item labelFix style="margin-left:-43px;">
               <st-button type="primary" @click="onSubmit">完成</st-button>
             </st-form-item>
           </st-form>
@@ -487,6 +492,7 @@ export default {
         totalTimes: 0,
         description: ''
       },
+      shareTitle: '',
       fileList: [],
       fileShareList: [],
       prizeList: [],
@@ -628,6 +634,7 @@ export default {
       this.form.validate().then(value => {
         value.activity_base.start_time = this.preview.startTime
         value.activity_base.end_time = this.preview.endTime
+        value.activity_base.share_title = this.shareTitle
         // 选择自定义却不传图片
         value.activity_base.share_bg =
           this.shareType === SHARE_TYPE.CUSTOM
@@ -735,16 +742,21 @@ export default {
         this.preview.description = res.activity_base.activity_description
         this.preview.title = res.activity_base.activity_sub_name
         this.notPrize.prize_name = res.activity_lucky.lucky_name
-        this.notPrize.prize = res.activity_lucky.lucky
         this.shareType = res.activity_base.wheel_share_default
         this.timesType = res.activity_rule.draw_times_type
         this.isStopSwiper = res.activity_base.wheel_turn_around
         this.notPrizeImgType = res.activity_lucky.image_default
+        this.shareTitle = res.activity_base.share_title
+        this.share[0].image_id = res.activity_base.share_bg.image_id
         res.activity_lucky.lucky &&
           (this.fileList[0] = res.activity_lucky.lucky)
         this.fileShareList[0] = res.activity_base.share_bg
-        this.share[0] = res.activity_base.share_bg
         this.prize[0] = res.activity_lucky.lucky
+        if (this.notPrizeImgType === this.NOT_PRIZE_IMG_TYPE.CUSTOM) {
+          this.notPrize.prize = res.activity_lucky.lucky
+        } else {
+          this.notPrize.prize = this.lucky[0]
+        }
       })
     }
   }

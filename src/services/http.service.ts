@@ -143,8 +143,8 @@ export class HttpService {
   get appHeaders() {
     return {
       token: this.tokenService.token$.snapshot(),
-      'app-id': '11111',
-      'app-version': '11111'
+      'app-id': this.appConfig.API_APP_ID,
+      'app-version': this.appConfig.GIT_COMMIT
     }
   }
   get appHeadersWithContentType() {
