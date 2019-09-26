@@ -83,6 +83,13 @@
                 <p>{{ item.plugin_text }}</p>
               </div>
             </li>
+            <li @click="goToPlugin(5)">
+              <img src="~@/assets/img/brand/marketing/slyder.svg" />
+              <div>
+                <p>活动报名</p>
+                <p>报名活动卡片</p>
+              </div>
+            </li>
           </ul>
         </section>
       </div>
@@ -161,7 +168,8 @@ export default {
         1: 'brand-marketing-plugin-coupon-list',
         2: 'brand-marketing-plugin-invitation-index-data',
         3: 'brand-marketing-plugin-lottery-index',
-        4: 'brand-marketing-plugin-crowd-index'
+        4: 'brand-marketing-plugin-crowd-index',
+        5: 'brand-marketing-plugin-activity-registration-list'
       }
       if (map.hasOwnProperty(type)) {
         this.$router.push({
