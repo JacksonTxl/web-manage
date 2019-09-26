@@ -22,7 +22,7 @@
         ></st-table>
         <div :class="bPage('checkin-btn')">
           <st-button
-            :disabled="list[0] ? list[0].code_status === 1 : false"
+            :disabled="list[0] ? list[0].code_status !== 0 : false"
             type="primary"
             class="text-center mg-t24"
             @click="checkin"
