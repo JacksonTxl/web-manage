@@ -79,9 +79,7 @@
       </div>
       <div :class="bPage('form')">
         <a-row class="mg-b24" :gutter="8">
-          <a-col offset="1">
-            <Steps :value="currentIndex" @skip="next" :stepArr="stepArr" />
-          </a-col>
+          <Steps :value="currentIndex" @skip="next" :stepArr="stepArr" />
         </a-row>
         <div style="padding:24px;">
           <st-form
@@ -121,6 +119,7 @@
             </st-form-item>
             <st-form-item label="活动说明">
               <st-textarea
+                :rows="4"
                 :maxlength="500"
                 @change="getDescription"
                 :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
