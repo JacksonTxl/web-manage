@@ -1,6 +1,6 @@
 <template>
   <div class="date-container">
-    <st-button class="" @click="onClickPre">
+    <st-button @click="onClickPre">
       <a-icon type="left" />
     </st-button>
 
