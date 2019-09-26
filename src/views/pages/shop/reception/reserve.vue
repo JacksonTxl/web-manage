@@ -203,7 +203,7 @@ export default {
         ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59`
         : ''
       this.query.start_time = start_time
-      this.query.end_tiem = end_time
+      this.query.end_time = end_time
       this.onSearch()
     },
     onReset() {
