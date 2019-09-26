@@ -5,7 +5,9 @@
       <div :class="bPage('action')" class="mg-b24">
         <div>
           <router-link to="./add">
-            <st-button type="primary" class="mg-r16">+新建活动</st-button>
+            <st-button type="primary" class="mg-r16">
+              + &nbsp;新建活动
+            </st-button>
           </router-link>
           <router-link to="./checkin">
             <st-button type="default">核销兑换码</st-button>
@@ -15,7 +17,7 @@
           <a-select
             placeholder="活动状态"
             v-model="query.activity_status"
-            class="mg-r24"
+            class="mg-r16"
             @change="onSingleSearch('activity_status', $event)"
             style="width:100px;display:inline-block;"
           >
@@ -27,12 +29,12 @@
               {{ item.label }}
             </a-select-option>
           </a-select>
-          <a-input-search
+          <st-input-search
             style="display:inline-block;width:300px;"
             v-model="query.keyword"
             @search="onKeywordsSearch('keyword', $event)"
             placeholder="请输入活动名称"
-          ></a-input-search>
+          ></st-input-search>
         </div>
       </div>
 
