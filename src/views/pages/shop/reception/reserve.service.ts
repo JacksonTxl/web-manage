@@ -38,12 +38,9 @@ export class ReserveService implements RouteGuard {
     return list.map((item: any) => {
       for (let key in item.auth) {
         if (item.auth[key] === 1) {
-          if (authMap.cancel.includes(key)) {
-            item.cancel = 1
-          }
-          if (authMap.checkin.includes(key) || authMap.visit.includes(key)) {
-            item.checkin = 1
-          }
+          item.cancel = authMap.cancel.includes(key)
+          item.checkin =
+            authMap.checkin.includes(key) || authMap.visit.includes(key)
         }
       }
       return item
