@@ -187,6 +187,7 @@ export default {
         ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')}`
         : ''
       this.query.pay_channel = this.checkedList
+      this.query.current_page = 1
       this.$router.push({ query: { ...this.query, start_date, end_date } })
     },
     onReset() {
