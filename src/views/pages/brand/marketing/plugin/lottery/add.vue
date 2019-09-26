@@ -127,7 +127,7 @@
                 v-decorator="decorators.activity_base.activity_description"
               ></st-textarea>
             </st-form-item>
-            <st-form-item label="活动轮播获奖信息说明">
+            <st-form-item label="轮播获奖">
               <a-radio-group
                 :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
                 @change="stopSwiper"
@@ -442,6 +442,7 @@
   </div>
 </template>
 <script>
+import { MessageService } from '@/services/message.service'
 import { AddService } from './add.service'
 import H5Container from '@/views/biz-components/h5/h5-container'
 import Steps from './components#/step'
@@ -545,7 +546,8 @@ export default {
     return {
       addService: AddService,
       pattern: PatternService,
-      routeService: RouteService
+      routeService: RouteService,
+      messageService: MessageService
     }
   },
   rxState() {
@@ -644,7 +646,19 @@ export default {
         value.activity_lucky.lucky =
           this.notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM
             ? this.fileList[0] || this.prize[0]
-            : this.prize[0]
+            : this.lucky[0]
+        if (this.timesType === 1 && !value.activity_rule.per_times) {
+          this.messageService.warning({
+            content: '请填写抽奖次数'
+          })
+          return
+        }
+        if (this.timesType === 2 && !value.activity_rule.total_times) {
+          this.messageService.warning({
+            content: '请填写抽奖次数'
+          })
+          return
+        }
         if (this.query.activity_id) {
           value.activity_id = this.query.activity_id
           this.addService.edit(value).subscribe(res => {

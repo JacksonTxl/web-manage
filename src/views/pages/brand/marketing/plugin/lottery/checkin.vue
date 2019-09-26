@@ -22,6 +22,7 @@
         ></st-table>
         <div :class="bPage('checkin-btn')">
           <st-button
+            v-if="list.length > 0"
             :disabled="list[0] ? list[0].code_status !== 0 : false"
             type="primary"
             class="text-center mg-t24"
@@ -38,7 +39,30 @@
           alt="checkin"
         />
         <div :class="bPage('step')">
-          <div :class="bPage('step-item')">
+          <a-steps direction="vertical" :current="4">
+            <a-step
+              title="搜索卡劵"
+              description="核销员输入由客户提供的奖品券号"
+            >
+              <div slot="icon" :class="bPage('step-circle')">
+                <span>1</span>
+              </div>
+            </a-step>
+            <a-step title=" 校验" description="检查券信息是否对应有效">
+              <div slot="icon" :class="bPage('step-circle')">
+                2
+              </div>
+            </a-step>
+            <a-step
+              title="完成使用"
+              description="校验无误后向客户进行减免或赠送礼品，并核销卡券"
+            >
+              <div slot="icon" :class="bPage('step-circle')">
+                3
+              </div>
+            </a-step>
+          </a-steps>
+          <!-- <div :class="bPage('step-item')">
             <div :class="bPage('step-circle')">
               1
             </div>
@@ -70,7 +94,7 @@
                 校验无误后向客户进行减免或赠送礼品，并核销卡券
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </st-panel>
