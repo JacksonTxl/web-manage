@@ -28,7 +28,7 @@
             </div>
             <div class="staff-info-shops">
               <span class="mg-r4">所在部门：{{ info.department }}</span>
-              /
+              <span class="line">|</span>
               <span class="mg-l4">所在门店: {{ info.shop_num }}家门店</span>
             </div>
           </div>
