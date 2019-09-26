@@ -22,6 +22,7 @@
         ></st-table>
         <div :class="bPage('checkin-btn')">
           <st-button
+            v-if="list.length > 0"
             :disabled="list[0] ? list[0].code_status !== 0 : false"
             type="primary"
             class="text-center mg-t24"
