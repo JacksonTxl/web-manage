@@ -127,7 +127,7 @@
                 v-decorator="decorators.activity_base.activity_description"
               ></st-textarea>
             </st-form-item>
-            <st-form-item label="活动轮播获奖信息说明">
+            <st-form-item label="轮播获奖">
               <a-radio-group
                 :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
                 @change="stopSwiper"
