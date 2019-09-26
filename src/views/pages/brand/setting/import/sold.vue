@@ -62,6 +62,15 @@
           <a-radio :value="IMPORT.SOLD_PERSONAL_COURSE">私教课</a-radio>
         </div>
       </a-row>
+      <a-row :class="bTable()">
+        <div :class="bTable('left')">课程包</div>
+        <div :class="bTable('content')">
+          <a-radio :value="IMPORT.SOLD_PACKAGE">限定范围课程包</a-radio>
+          <label :class="bTable('desc')">
+            导入前请确认课程包已经在导入门店设置完成
+          </label>
+        </div>
+      </a-row>
       <a-row :class="[bTable(), ' bottom-line']">
         <div :class="bTable('left')">租赁柜</div>
         <div :class="bTable('content')">
