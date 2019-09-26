@@ -10,7 +10,7 @@ import { tap, pluck } from 'rxjs/operators'
 import { ShopApi, GetShopBasicInput } from '@/api/v1/shop'
 
 @Injectable()
-export class AddService implements RouteGuard {
+export class CheckinService implements RouteGuard {
   loading$ = new State({})
   info$ = new State({})
 

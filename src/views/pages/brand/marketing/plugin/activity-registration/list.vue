@@ -4,10 +4,19 @@
     <st-panel>
       <div slot="title" :class="bSearch()">
         <div :class="bSearch('button-group')">
-          <st-button icon="add" type="primary">
+          <st-button
+            @click="onClickRouterPush({ pathName: 'addActivity' })"
+            icon="add"
+            type="primary"
+          >
             新增活动
           </st-button>
-          <st-button class="mg-l16" icon="add" type="primary">
+          <st-button
+            @click="onClickRouterPush({ pathName: 'checkinActivity' })"
+            class="mg-l16"
+            icon="add"
+            type="primary"
+          >
             签到验票
           </st-button>
         </div>
@@ -35,7 +44,7 @@
       >
         <template slot="action" slot-scope="text, record">
           <st-table-actions>
-            <a @click="onEdit(record)">
+            <a @click="onEdit({ record, pathName: 'editActivity' })">
               编辑
             </a>
             <a @click="onGeneralize(record)">
@@ -72,6 +81,15 @@ export default {
     bPage: 'page-plugin-activity-registration',
     bSearch: 'search'
   },
+  data() {
+    return {
+      redirectPath: {
+        addActivity: 'brand-marketing-plugin-activity-registration-add',
+        editActivity: 'brand-marketing-plugin-activity-registration-edit',
+        checkinActivity: 'brand-marketing-plugin-activity-registration-checkin'
+      }
+    }
+  },
   serviceInject() {
     return {
       service: ListService,
@@ -88,6 +106,11 @@ export default {
   },
   computed: {
     columns
+  },
+  methods: {
+    onClickRouterPush({ record, pathName }) {
+      this.$router.push({ name: this.redirectPath[pathName] })
+    }
   }
 }
 </script>

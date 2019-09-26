@@ -19,7 +19,7 @@
 <script>
 import H5Container from '@/views/biz-components/h5/h5-container'
 export default {
-  name: 'AddActivity',
+  name: 'EditActivity',
   bem: {
     bPage: 'page-plugin-form-activity'
   },
