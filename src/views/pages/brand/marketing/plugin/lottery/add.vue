@@ -644,7 +644,7 @@ export default {
         value.activity_lucky.lucky =
           this.notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM
             ? this.fileList[0] || this.prize[0]
-            : this.prize[0]
+            : this.lucky[0]
         if (this.query.activity_id) {
           value.activity_id = this.query.activity_id
           this.addService.edit(value).subscribe(res => {
