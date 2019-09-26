@@ -582,7 +582,6 @@
                   <a-checkbox
                     v-for="item in sell_type_list"
                     :key="item.value"
-                    :disabled="item.value === SELL_TYPE.OFFLINE"
                     :value="item.value"
                   >
                     {{ item.label }}
