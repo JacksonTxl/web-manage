@@ -46,29 +46,31 @@
                 </span>
               </div>
             </st-image-upload>
-            <st-form-item labelWidth="46px" label="标题">
-              <a-input
-                placeholder="选填"
-                v-model="li.module_name"
-                maxlength="20"
-              ></a-input>
-            </st-form-item>
-            <st-form-item labelWidth="46px" label="链接">
-              <a-select
-                placeholder="请输入链接的活动"
-                @select="actSelect(li, $event)"
-                v-model="li.activity_id"
-              >
-                <a-select-option
-                  v-for="(act, i) in actList"
-                  :disabled="act.isover"
-                  :key="i"
-                  :value="act.id"
+            <div class="st-form-item-wrapper">
+              <st-form-item labelWidth="46px" label="标题">
+                <a-input
+                  placeholder="选填"
+                  v-model="li.module_name"
+                  maxlength="20"
+                ></a-input>
+              </st-form-item>
+              <st-form-item labelWidth="46px" label="链接">
+                <a-select
+                  placeholder="请输入链接的活动"
+                  @select="actSelect(li, $event)"
+                  v-model="li.activity_id"
                 >
-                  {{ act.activity_name }}
-                </a-select-option>
-              </a-select>
-            </st-form-item>
+                  <a-select-option
+                    v-for="(act, i) in actList"
+                    :disabled="act.isover"
+                    :key="i"
+                    :value="act.id"
+                  >
+                    {{ act.activity_name }}
+                  </a-select-option>
+                </a-select>
+              </st-form-item>
+            </div>
           </div>
         </div>
       </st-form-item>
