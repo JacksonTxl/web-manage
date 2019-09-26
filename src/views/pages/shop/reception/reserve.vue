@@ -205,8 +205,8 @@ export default {
       this.$router.push({ query: { ...this.query, start_time, end_time } })
     },
     onReset() {
-      this.selectTime.startTime.value = null
-      this.selectTime.endTime.value = null
+      this.selectTime.startTime.value = `${moment().format('YYYY-MM-DD')} 00:00`
+      this.selectTime.endTime.value = `${moment().format('YYYY-MM-DD')} 23:59`
       this.onSearhReset()
     }
   }
