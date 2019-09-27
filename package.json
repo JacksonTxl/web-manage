@@ -118,11 +118,6 @@
       "@commitlint/config-conventional"
     ]
   },
-  "config": {
-    "commitizen": {
-      "path": "node_modules/cz-customizable"
-    }
-  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
