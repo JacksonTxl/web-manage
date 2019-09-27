@@ -1,46 +1,40 @@
 <template>
-  <div>
-    <a-row class="mg-t16">
-      <a-col :lg="24">
-        <a-col :lg="16">
-          <shop-select
-            style="width: 160px"
-            class="mg-r8"
-            v-model="query.shop_id"
-            @change="onSingleSearch('shop_id', $event)"
-          />
-          <a-range-picker @change="onChooseDate" format="YYYY-MM-DD" />
-        </a-col>
-        <a-col :lg="2"></a-col>
-        <a-col :lg="6">
-          <st-input-search
-            placeholder="请输入用户姓名进行查询"
-            @search="onSingleSearch('member_name', $event)"
-          />
-        </a-col>
+  <a-row>
+    <a-col :lg="24">
+      <a-col :lg="16">
+        <shop-select
+          style="width: 160px"
+          class="mg-r8"
+          v-model="query.shop_id"
+          @change="onSingleSearch('shop_id', $event)"
+        />
+        <a-range-picker @change="onChooseDate" format="YYYY-MM-DD" />
       </a-col>
-      <a-col :lg="24" class="mg-t16">
-        <st-table
-          :columns="followColumns"
-          :dataSource="followList"
-          :scroll="{ x: 1000 }"
-          :loading="loading.getStaffFollow"
-          @change="onTableChange"
-          :page="page"
-        >
-          <template slot="member_name" slot-scope="text, record">
-            <a
-              href="javascript:;"
-              class="mg-r8"
-              @click="goMemberDetail(record)"
-            >
-              {{ text }}
-            </a>
-          </template>
-        </st-table>
+      <a-col :lg="2"></a-col>
+      <a-col :lg="6">
+        <st-input-search
+          placeholder="请输入用户姓名进行查询"
+          @search="onSingleSearch('member_name', $event)"
+        />
       </a-col>
-    </a-row>
-  </div>
+    </a-col>
+    <a-col :lg="24" class="mg-t16">
+      <st-table
+        :columns="followColumns"
+        :dataSource="followList"
+        :scroll="{ x: 1000 }"
+        :loading="loading.getStaffFollow"
+        @change="onTableChange"
+        :page="page"
+      >
+        <template slot="member_name" slot-scope="text, record">
+          <a href="javascript:;" class="mg-r8" @click="goMemberDetail(record)">
+            {{ text }}
+          </a>
+        </template>
+      </st-table>
+    </a-col>
+  </a-row>
 </template>
 
 <script>

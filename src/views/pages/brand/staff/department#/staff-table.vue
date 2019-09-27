@@ -14,7 +14,6 @@
     <div slot="action" slot-scope="text, record">
       <st-table-actions>
         <a
-          href="javascript: void(0)"
           v-if="record.auth['brand_shop:staff:staff|get']"
           @click="staffInfo(record)"
         >
@@ -97,7 +96,9 @@
       </st-table-actions>
     </div>
     <div slot="work_status" slot-scope="work_status">
-      <a-badge :status="work_status.id == 1 ? 'success' : 'error'" />
+      <a-badge
+        :status="work_status.id == WORK_STATUS.WORKING ? 'success' : 'error'"
+      />
       {{ work_status.name }}
     </div>
     <div slot="shop" slot-scope="shop">
@@ -133,6 +134,7 @@ import StaffSalaryAccountSetting from '@/views/biz-modals/staff/salary-account-s
 import StaffShopWithStaff from '@/views/biz-modals/staff/shop-with-staff'
 import StaffTurnover from '@/views/biz-modals/staff/turnover'
 import StaffUpdateStaffPosition from '@/views/biz-modals/staff/update-staff-position'
+import { WORK_STATUS } from '@/constants/staff/info'
 export default {
   mixins: [tableMixin],
   modals: {
@@ -172,7 +174,8 @@ export default {
     }
   },
   computed: {
-    columns
+    columns,
+    WORK_STATUS
   },
   watch: {
     selectedRowKeys: {
@@ -225,27 +228,6 @@ export default {
     },
     editStaff(staffId) {
       this.$emit('edit-staff', staffId)
-    },
-    onClickSettingSalary(id) {
-      console.log('onClickSettingSalary')
-    },
-    onClickUpdateStaffPosition() {
-      console.log('onClickUpdateStaffPosition')
-    },
-    onClickTurnover() {
-      console.log('onClickTurnover')
-    },
-    onChange(val) {
-      this.$router.push({
-        query: {
-          page: val.current,
-          size: val.pageSize || 20,
-          ...this.$router.query
-        }
-      })
-    },
-    onCLickReinstatement() {
-      console.log('onCLickReinstatement')
     }
   }
 }

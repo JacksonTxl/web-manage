@@ -9,6 +9,7 @@
             @change="onSingleSearch('shop_id', $event)"
           ></shop-select>
           <a-select
+            class="mg-l8"
             style="width: 160px;"
             :defaultValue="-1"
             placeholder="请选择订单状态"
@@ -72,6 +73,7 @@ export default {
   },
   rxState() {
     return {
+      orderStatus: this.soldservice.orderStatus$,
       soldInfo: this.soldservice.soldInfo$,
       page: this.soldservice.page$,
       loading: this.soldservice.loading$,

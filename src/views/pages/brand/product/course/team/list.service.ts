@@ -23,12 +23,12 @@ export class ListService implements RouteGuard {
       map(res => {
         const list = res.list
         return [
-          { id: -1, setting_name: '所有课程类型' },
+          { id: -1, setting_name: '全部课程类型' },
           ...list.map((item: any) => {
             const { id, setting_name } = item
             return {
-              id,
-              setting_name
+              label: id,
+              value: setting_name
             }
           })
         ]
@@ -41,8 +41,10 @@ export class ListService implements RouteGuard {
   getShopList() {
     return this.shopApi.getShopListForSelect().pipe(
       map(res => {
-        const list = res.shops
-        return [{ id: -1, shop_name: '所有门店' }, ...list]
+        const list = res.shops.map((item: any) => {
+          return { label: item.shop_name, value: item.id }
+        })
+        return [{ label: '全部门店', value: -1 }, ...list]
       }),
       tap(state => {
         this.shopSelectOptions$.commit(() => state)

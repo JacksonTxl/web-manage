@@ -19,31 +19,17 @@
             style="width: 160px"
             v-model="query.shop_id"
             @change="onSingleSearch('shop_id', $event)"
-          >
-            <a-select-option
-              v-for="shop in shopsOptions"
-              :key="shop.id"
-              :value="shop.id"
-            >
-              {{ shop.shop_name }}
-            </a-select-option>
-          </a-select>
+            :options="shopsOptions"
+          />
           <a-select
             class="mg-r8"
             :defaultValue="-1"
             placeholder="课程类型"
             v-model="query.category_id"
             style="width: 160px"
+            :options="categoryList"
             @change="onSingleSearch('category_id', $event)"
-          >
-            <a-select-option
-              v-for="category in categoryList"
-              :key="category.id"
-              :value="category.id"
-            >
-              {{ category.setting_name }}
-            </a-select-option>
-          </a-select>
+          />
         </div>
       </div>
     </header>
@@ -97,7 +83,6 @@
 
 <script>
 import { ShopService } from './shop.service'
-import { ListService } from '../list.service'
 import { RouteService } from '@/services/route.service'
 import CourseTransfromBrandTeamCourse from '@/views/biz-modals/course/transfrom-brand-team-course'
 import { columns } from './shop.config'
@@ -107,15 +92,14 @@ export default {
   mixins: [tableMixin],
   serviceInject() {
     return {
-      listService: ListService,
       shopService: ShopService,
       routeService: RouteService
     }
   },
   rxState() {
     return {
-      shopsOptions: this.listService.shopSelectOptions$,
-      categoryList: this.listService.categoryList$,
+      shopsOptions: this.shopService.shopsOptions$,
+      categoryList: this.shopService.categoryList$,
       query: this.routeService.query$,
       auth: this.shopService.auth$,
       list: this.shopService.list$,
