@@ -107,6 +107,10 @@
       .ant-menu-submenu-title {
         .c(rgba(@defaultMenuColor));
         padding-left: 16px !important;
+        padding-right: 24px !important;
+        .layout-default-sider__menu-arrow {
+          margin-right: 0;
+        }
         &:before {
           .d-n;
         }
@@ -221,6 +225,7 @@
         .pd-l(2px);
         display: flex;
         align-items: center;
+        .cur-p;
         &--active {
           .c(#fff);
           &::before {
@@ -248,6 +253,7 @@
     }
     &__menu-star {
       opacity: 0;
+      .mg-l(8px);
       .cur-p;
       color: #a5b5c0 !important;
       &.active {

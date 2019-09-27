@@ -193,10 +193,7 @@ export default {
           ok: res => {
             this.updateData()
             this.$refs.staffTable.selectedRowKeys = []
-            this.$router.push({
-              query: this.query,
-              force: true
-            })
+            this.$router.reload()
           }
         }
       })

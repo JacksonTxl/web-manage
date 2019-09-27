@@ -1,5 +1,5 @@
 <template>
-  <st-panel app initial :class="basic()">
+  <st-panel app :class="basic()">
     <div slot="title">
       <st-input-search
         placeholder="请输入会员姓名或手机号查找"
@@ -8,7 +8,7 @@
         :class="basic('serach')"
       />
     </div>
-    <st-search-panel>
+    <st-search-panel slot="prepend">
       <div :class="basic('select')">
         <span :class="basic('select-text')">订单状态：</span>
         <st-search-radio v-model="query.status" :list="orderStatus" />
@@ -31,7 +31,7 @@
     </st-search-panel>
 
     <div :class="basic('content')">
-      <div :class="basic('content-batch')" class="mg-b16">
+      <div :class="basic('content-batch')">
         <!-- NOTE: 导出 -->
         <!-- <st-button type="primary" v-if="auth.export" :disabled="isSelectedDisabled">批量导出</st-button> -->
       </div>

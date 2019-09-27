@@ -11,7 +11,11 @@ export class BasicService implements RouteGuard {
 
   private formatInfo(commonInfo: any) {
     for (let key in commonInfo) {
-      if (commonInfo[key] && Array.isArray(commonInfo[key])) {
+      if (
+        commonInfo[key] &&
+        Array.isArray(commonInfo[key]) &&
+        key !== 'image_personal'
+      ) {
         commonInfo[key] =
           commonInfo[key].length > 0 ? commonInfo[key].join('/') : '--'
       }
