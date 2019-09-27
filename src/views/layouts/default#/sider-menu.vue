@@ -26,7 +26,11 @@
       mode="inline"
     >
       <template v-for="menu in menus">
-        <a-sub-menu v-if="isHasSubmenu(menu)" :key="menu.id">
+        <a-sub-menu
+          v-if="isHasSubmenu(menu)"
+          :key="menu.id"
+          class="layout-default-sider__submenu"
+        >
           <span slot="title">
             <st-icon :type="menu.icon" />
             <span>{{ menu.name }}</span>
