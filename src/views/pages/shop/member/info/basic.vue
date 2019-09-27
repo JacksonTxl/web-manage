@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container-basis">
     <st-t4>基本资料</st-t4>
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="8">

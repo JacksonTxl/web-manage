@@ -52,7 +52,7 @@ export default {
         forceFit: true,
         height: this.height,
         renderer: 'svg',
-        padding: [0, 0, 0, 0]
+        padding: [0, 0, 1, 0]
       })
 
       this.chart.source(this.dv, {
@@ -61,7 +61,8 @@ export default {
         },
         value: {
           min: 0,
-          tickCount: 2
+          tickCount: 2,
+          range: [0, 0.95]
         }
       })
       this.chart.axis('value', {
@@ -70,10 +71,13 @@ export default {
         grid: {
           lineStyle: {
             stroke: '#E6E9EF',
-            lineWidth: 2,
+            lineWidth: 1,
             lineDash: [0, 0]
-          }
-        }
+          },
+          hideLastLine: true
+        },
+        tickLine: null,
+        line: null
       })
       this.chart.axis('name', false)
       this.chart.tooltip({
