@@ -3,11 +3,14 @@
     <a-row>
       <a-col :lg="24">
         <a-col :lg="18">
-          <shop-select
+          <a-select
             style="width: 160px"
+            placeholder="请选择门店"
             v-model="query.shop_id"
+            :defaultValue="-1"
+            :options="shopOptions"
             @change="onSingleSearch('shop_id', $event)"
-          ></shop-select>
+          ></a-select>
           <a-select
             class="mg-l8"
             style="width: 160px;"
@@ -61,7 +64,6 @@
 <script>
 import { soldColums } from './columns.config'
 import { SoldService } from './sold.service'
-import ShopSelect from '@/views/biz-components/shop-select'
 import { RouteService } from '@/services/route.service'
 import tableMixins from '@/mixins/table.mixin'
 export default {
@@ -73,6 +75,7 @@ export default {
   },
   rxState() {
     return {
+      shopOptions: this.soldservice.shopOptions$,
       orderStatus: this.soldservice.orderStatus$,
       soldInfo: this.soldservice.soldInfo$,
       page: this.soldservice.page$,
@@ -88,9 +91,6 @@ export default {
   },
   computed: {
     soldColums
-  },
-  components: {
-    ShopSelect
   },
   mounted() {
     this.id = this.$route.meta.query.id
