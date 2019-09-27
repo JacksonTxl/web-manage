@@ -473,7 +473,7 @@ export default {
     onChangePayment(event) {
       this.selectedPayment = event.target.value
       if (this.selectedPayment.id !== 2) {
-        this.validStartTime = moment().format('YYYY-MM-DD HH:mm')
+        this.validStartTime = moment()
         this.validEndTime = moment()
           .add(this.selectedNorm.valid_time, 'days')
           .format('YYYY-MM-DD HH:mm')
