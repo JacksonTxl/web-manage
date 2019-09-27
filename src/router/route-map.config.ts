@@ -529,15 +529,27 @@ export const routeMapConfig = {
   },
   'brand-staff-info-basic'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: -1 }
+    }
   },
   'brand-staff-info-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: -1 }
+    }
   },
   'brand-staff-info-follow'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: -1 }
+    }
   },
   'brand-staff-info-member'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: -1 }
+    }
   },
   'brand-staff-info-sold'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
@@ -795,9 +807,15 @@ export const routeMapConfig = {
   'shop-staff-info-basic'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
     routeConfig.meta.parentId = 'shop-staff-list'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: -1 }
+    }
   },
   'shop-staff-info-follow'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: -1 }
+    }
   },
   'shop-staff-info-sold'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
@@ -807,9 +825,15 @@ export const routeMapConfig = {
   },
   'shop-staff-info-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: -1 }
+    }
   },
   'shop-staff-info-member'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: -1 }
+    }
   },
   'shop-staff-edit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑员工'

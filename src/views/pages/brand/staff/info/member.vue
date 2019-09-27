@@ -6,6 +6,7 @@
           <shop-select
             style="width: 160px"
             v-model="query.shop_id"
+            :defaultValue="-1"
             @change="onSingleSearch('shop_id', $event)"
           ></shop-select>
         </a-col>

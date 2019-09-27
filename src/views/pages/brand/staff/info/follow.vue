@@ -5,6 +5,7 @@
         <shop-select
           style="width: 160px"
           class="mg-r8"
+          :defaultValue="-1"
           v-model="query.shop_id"
           @change="onSingleSearch('shop_id', $event)"
         />

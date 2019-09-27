@@ -17,7 +17,7 @@ export class BasicService implements RouteGuard {
         key !== 'image_personal'
       ) {
         commonInfo[key] =
-          commonInfo[key].length > 0 ? commonInfo[key].join('/') : '--'
+          commonInfo[key].length > 0 ? commonInfo[key].join(' / ') : '--'
       }
       !commonInfo[key] && (commonInfo[key] = '--')
     }
