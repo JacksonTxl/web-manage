@@ -202,11 +202,13 @@ export default {
       const end_time = this.selectTime.endTime.value
         ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59`
         : ''
-      this.$router.push({ query: { ...this.query, start_time, end_time } })
+      this.query.start_time = start_time
+      this.query.end_time = end_time
+      this.onSearch()
     },
     onReset() {
-      this.selectTime.startTime.value = null
-      this.selectTime.endTime.value = null
+      this.selectTime.startTime.value = moment()
+      this.selectTime.endTime.value = moment()
       this.onSearhReset()
     }
   }

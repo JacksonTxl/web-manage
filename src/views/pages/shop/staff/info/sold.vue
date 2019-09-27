@@ -100,7 +100,7 @@ export default {
 
     disabledDate(current) {
       return (
-        current && current.format('YYYY-MM-DD') < moment().format('YYYY-MM-DD')
+        current && current.format('YYYY-MM-DD') > moment().format('YYYY-MM-DD')
       )
     },
     canJump(e) {

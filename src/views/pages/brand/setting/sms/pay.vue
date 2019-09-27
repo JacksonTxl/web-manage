@@ -7,6 +7,7 @@
           <span :class="bCount('num')">{{ info.sms_total }}</span>
           <st-button
             type="primary"
+            :class="bCount('btn')"
             v-modal-link="{
               name: 'brand-setting-sms-pay'
             }"

@@ -18,16 +18,9 @@
             v-model="query.category_id"
             class="mg-r16"
             style="width: 160px"
+            :options="categoryList"
             @change="onSingleSearch('category_id', $event)"
-          >
-            <a-select-option
-              v-for="category in categoryList"
-              :key="category.id"
-              :value="category.id"
-            >
-              {{ category.setting_name }}
-            </a-select-option>
-          </a-select>
+          />
         </div>
       </div>
     </header>

@@ -112,10 +112,10 @@ export default {
     onSearch() {
       let params = {
         start_time: this.queryParams.date[0]
-          ? moment(this.queryParams.date[0]).format('YYYY-MM-DD HH:mm')
+          ? moment(this.queryParams.date[0]).format('YYYY-MM-DD')
           : '',
         end_time: this.queryParams.date[1]
-          ? moment(this.queryParams.date[1]).format('YYYY-MM-DD HH:mm')
+          ? moment(this.queryParams.date[1]).format('YYYY-MM-DD')
           : ''
       }
       this.$router.push({ query: { ...this.query, ...params } })

@@ -2,7 +2,7 @@
   <div :class="bPage()">
     <MarkteingPluginTitle :type="3" />
     <st-panel app>
-      <div :class="bPage('action')" class="mg-b24">
+      <div :class="bPage('action')" class="mg-b16">
         <div>
           <router-link to="./add">
             <st-button type="primary" class="mg-r16">

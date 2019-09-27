@@ -5,7 +5,6 @@
         placeholder="请输入流水号或订单号查找"
         v-model="query.search_number"
         @search="onKeywordsSearch('search_number', $event)"
-        style="width: 290px;"
       />
     </div>
     <router-view></router-view>
