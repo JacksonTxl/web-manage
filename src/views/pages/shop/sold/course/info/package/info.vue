@@ -175,15 +175,7 @@
     </st-panel>
     <st-panel
       class="mg-t12"
-      v-if="false"
       :tabs="[
-        {
-          label: '消费记录',
-          route: {
-            name: 'shop-sold-course-info-package-info-consumption-record',
-            query: { id: infoService.id }
-          }
-        },
         {
           label: '操作日志',
           route: {
@@ -193,6 +185,14 @@
         }
       ]"
     >
+      <!-- TODO: 消费记录尚未实现 -->
+      <!-- {
+          label: '消费记录',
+          route: {
+            name: 'shop-sold-course-info-package-info-consumption-record',
+            query: { id: infoService.id }
+          }
+        }, -->
       <router-view></router-view>
     </st-panel>
   </section>

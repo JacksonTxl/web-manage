@@ -2,7 +2,6 @@ import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { CardApi } from '@/api/v1/sold/cards'
-import moment from 'moment'
 
 @Injectable()
 export class OperationRecordService implements RouteGuard {

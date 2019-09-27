@@ -9,7 +9,7 @@ export class InfoService implements RouteGuard {
   info$ = new State({})
   loading$ = new State({})
   auth$ = new State({})
-  cardId = ''
+  id = ''
   constructor(private cardApi: CardApi, private authService: AuthService) {}
   getInfo(id: string, type: string) {
     return this.cardApi.getCardInfo(id, type).pipe(
@@ -21,7 +21,7 @@ export class InfoService implements RouteGuard {
     )
   }
   beforeRouteEnter(to: ServiceRoute) {
-    this.cardId = to.meta.query.id
+    this.id = to.meta.query.id
     return this.getInfo(to.meta.query.id, 'deposit')
   }
 }

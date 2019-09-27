@@ -23,10 +23,8 @@ export class InfoService implements RouteGuard {
   unFreeze(id: string) {
     return this.courseApi.unFreezeCourse(id, 'package')
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: () => {}) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
     this.id = to.meta.query.id
-    this.getPackageInfo(to.meta.query.id, 'package').subscribe(() => {
-      next()
-    })
+    return this.getPackageInfo(to.meta.query.id, 'package')
   }
 }
