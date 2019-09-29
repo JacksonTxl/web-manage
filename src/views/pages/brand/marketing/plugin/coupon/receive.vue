@@ -37,7 +37,7 @@
           v-model="queryParams.keyword"
           @search="onSearch"
           placeholder="请输入手机号、姓名"
-          style="width: 290px;margin-left: 16px"
+          style="margin-left: 16px"
         />
       </div>
       <div :class="basic('content')">

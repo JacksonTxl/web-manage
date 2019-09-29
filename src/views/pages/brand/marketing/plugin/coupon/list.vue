@@ -28,7 +28,6 @@
           v-model="couponName"
           @search="onSingleSearch('coupon_name', $event)"
           placeholder="请输入优惠券名称"
-          style="width: 290px;"
         />
       </div>
       <div :class="basic('content')">

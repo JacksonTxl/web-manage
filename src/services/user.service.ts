@@ -229,11 +229,18 @@ export class UserService {
    * getOptions$('member.card_consume_type') => Observable([{label:'次卡',value:1},{label:'期限卡',2}])
    */
   public getOptions$(
-    key: string
+    key: string,
+    options: {
+      addAll?: boolean
+    } = {}
   ): Computed<{ label: string; value: number }[]> {
     return computed(
       (enums: any) => {
-        return this.getOptions(enums, key)
+        let opts = this.getOptions(enums, key)
+        if (options.addAll) {
+          opts = [{ value: -1, label: '全部' }].concat(opts)
+        }
+        return opts
       },
       [this.enums$]
     )

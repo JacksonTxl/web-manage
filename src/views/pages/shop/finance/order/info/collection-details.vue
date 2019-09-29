@@ -29,9 +29,6 @@ import ShopFinanceFlow from '@/views/biz-modals/shop/finance/flow'
 import { columns } from './collection-details.config'
 export default {
   name: 'PageShopFinanceOrderInfoCollectionDetails',
-  bem: {
-    basic: 'page-shop-finance'
-  },
   modals: {
     ShopFinanceFlow
   },

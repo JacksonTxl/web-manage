@@ -51,7 +51,7 @@
         </a-select>
         <st-input-search
           placeholder="请输入课程名称"
-          style="width: 290px;float: right;"
+          style="float: right;"
           @search="courseName1"
         />
       </a-col>

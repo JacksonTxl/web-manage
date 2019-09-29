@@ -12,7 +12,6 @@
       <st-input-search
         v-model="query.tag_name"
         placeholder="请输入标签名"
-        style="width: 290px;"
         @search="onSearch"
       />
     </div>

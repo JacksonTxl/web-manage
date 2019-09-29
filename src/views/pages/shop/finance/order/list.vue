@@ -1,37 +1,33 @@
 <template>
-  <st-panel app :class="basic()">
+  <st-panel app>
     <div slot="title">
       <st-input-search
         placeholder="请输入会员姓名或手机号查找"
         v-model="query.keyword"
         @search="onSingleSearch('keyword', $event, true)"
-        :class="basic('serach')"
       />
     </div>
     <st-search-panel slot="prepend">
-      <div :class="basic('select')">
-        <span :class="basic('select-text')">订单状态：</span>
+      <st-search-panel-item label="订单状态：">
         <st-search-radio v-model="query.status" :list="orderStatus" />
-      </div>
-      <div :class="basic('select')">
-        <span :class="basic('select-text')">支付状态：</span>
+      </st-search-panel-item>
+      <st-search-panel-item label="支付状态：">
         <st-search-radio v-model="query.type" :list="payStatus" />
-      </div>
-      <div :class="basic('select')">
-        <span :class="basic('select-text')">创建时间：</span>
+      </st-search-panel-item>
+      <st-search-panel-item label="创建时间：">
         <st-range-picker
           :disabledDays="180"
           :value="selectTime"
         ></st-range-picker>
-      </div>
+      </st-search-panel-item>
       <div slot="button">
         <st-button type="primary" @click="onSearchNative">查询</st-button>
         <st-button class="mg-l8" @click="onSearhReset">重置</st-button>
       </div>
     </st-search-panel>
 
-    <div :class="basic('content')">
-      <div :class="basic('content-batch')">
+    <div>
+      <div>
         <!-- NOTE: 导出 -->
         <!-- <st-button type="primary" v-if="auth.export" :disabled="isSelectedDisabled">批量导出</st-button> -->
       </div>
@@ -103,9 +99,6 @@ import SoldLeaseTransfer from '@/views/biz-modals/sold/lease/transfer'
 import { ORDER_PRODUCT_TYPE } from '@/constants/finance/order'
 export default {
   name: 'PageShopFinanceOrder',
-  bem: {
-    basic: 'page-shop-finance'
-  },
   mixins: [tableMixin],
   modals: {
     ShopFinanceCancel,

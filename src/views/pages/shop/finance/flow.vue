@@ -1,5 +1,5 @@
 <template>
-  <st-panel :class="bPage()" app :tabs="authTabs">
+  <st-panel :class="bPage()" app initial :tabs="authTabs">
     <div slot="actions">
       <st-input-search
         placeholder="请输入流水号或订单号查找"

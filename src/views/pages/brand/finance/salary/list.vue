@@ -3,7 +3,6 @@
     <div slot="title">
       <st-input-search
         placeholder="可输入姓名、手机号、卡号"
-        style="width: 300px;"
         @search="onSearch"
       />
     </div>

@@ -1,17 +1,15 @@
 <template>
   <div :class="b()">
     <st-search-panel>
-      <div :class="b('select')">
-        <span :class="b('select-text')">定金状态：</span>
+      <st-search-panel-item label="定金状态：">
         <st-search-radio v-model="query.use_status" :list="useStatus" />
-      </div>
-      <div :class="b('select')">
-        <span :class="b('select-text')">查询日期：</span>
+      </st-search-panel-item>
+      <st-search-panel-item label="查询日期：">
         <st-range-picker
           :disabledDays="180"
           :value="selectTime"
         ></st-range-picker>
-      </div>
+      </st-search-panel-item>
       <div slot="button">
         <st-button
           type="primary"

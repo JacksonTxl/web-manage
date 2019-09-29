@@ -39,9 +39,6 @@
 import { RefundInfoService } from './refund-info.service'
 export default {
   name: 'PageShopFinanceOrderInfoRefundInfo',
-  bem: {
-    basic: 'page-shop-finance'
-  },
   serviceInject() {
     return {
       refundInfoService: RefundInfoService

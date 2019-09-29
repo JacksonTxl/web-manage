@@ -50,7 +50,7 @@
         class="mg-r24"
       />
       <st-input-search
-        style="display:inline-block;width:300px;float:right"
+        style="display:inline-block;float:right"
         v-model="query.keyword"
         @search="onSearch"
         placeholder="可输入姓名、手机号、奖品名称"

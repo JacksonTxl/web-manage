@@ -1,5 +1,10 @@
 <template>
-  <a-input-search class="st-input-search" v-bind="$attrs" v-on="$listeners">
+  <a-input-search
+    class="st-input-search"
+    :style="{ width }"
+    v-bind="$attrs"
+    v-on="$listeners"
+  >
     <slot></slot>
   </a-input-search>
 </template>
@@ -10,6 +15,12 @@ export default {
   model: {
     prop: 'value',
     event: 'change.value'
+  },
+  props: {
+    width: {
+      type: String,
+      default: '290px'
+    }
   }
 }
 </script>
