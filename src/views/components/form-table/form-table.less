@@ -6,12 +6,13 @@
   border-radius: 4px 4px 0 0;
   text-align: left;
   .c(@text);
-  thead > tr > th,
-  tbody > tr > td {
-    border-bottom: 1px solid #e8e8e8;
-  }
+
   thead > tr > th {
-    padding: 16px 12px;
+    padding: 12px 8px;
+  }
+  thead > tr > th:first-child,
+  tbody > tr > td:first-child {
+    padding-left: 16px;
   }
   tbody > tr > td {
     padding: 8px;
@@ -26,13 +27,13 @@
   }
   &--striped {
     tbody > tr:nth-child(even) {
-      background: rgba(0, 0, 0, 0.01);
+      background: #fafafa;
     }
   }
   &--hoverable.st-form-table--hoverable {
     transition: all 0.3s;
     tbody > tr:hover {
-      .bg(#e6f7ff);
+      .bg(#f0f6ff);
     }
   }
   &__add {

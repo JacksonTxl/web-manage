@@ -2,16 +2,24 @@
   .ant-table-thead > tr > th {
     .bg(@table-bg-color-thead-second);
     .c(rgba(94, 106, 127, 1));
-    .pd(16px 12px);
-    border-bottom: 1px solid rgba(230, 233, 239, 0.5);
+    .pd(12px 8px);
+    border-bottom: none;
     .ant-table-column-sorter {
       top: 47%;
     }
+    &:first-child {
+      padding-left: 16px;
+    }
   }
+
   .ant-table-tbody > tr > td {
-    border-bottom: 1px solid rgba(230, 233, 239, 0.5);
-    padding: 8px 12px;
+    border-bottom: none;
+    padding: 8px;
+    &:first-child {
+      padding-left: 16px;
+    }
   }
+
   .ant-table-row {
     &:nth-child(even) {
       .bg(@table-bg-color-row-2);
