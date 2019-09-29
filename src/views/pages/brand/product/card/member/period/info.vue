@@ -73,7 +73,6 @@
             v-if="cardInfo.admission_range.id === ADMISSION_RANGE.GENERAL_STORE"
           >
             <st-table
-              size="middle"
               rowKey="shop_id"
               :columns="shop_columns"
               :dataSource="cardInfo.admission_shop_list"
@@ -100,7 +99,6 @@
             v-if="cardInfo.support_sales.id !== SUPPORT_SALES.ALL_STORE"
           >
             <st-table
-              size="middle"
               rowKey="shop_id"
               :columns="shop_columns"
               :dataSource="cardInfo.sell_shop_list"
@@ -124,7 +122,6 @@
           <st-container :class="item('scroll-container')">
             <st-table
               v-if="cardInfo.price_setting.id === PRICE_SETTING.UNIFORM_PRICE"
-              size="middle"
               rowKey="id"
               :columns="price_gradient_columns.brand"
               :dataSource="cardInfo.price_gradient"
@@ -133,7 +130,6 @@
             ></st-table>
             <st-table
               v-if="cardInfo.price_setting.id === PRICE_SETTING.SHOP_PRICE"
-              size="middle"
               rowKey="id"
               :columns="price_gradient_columns.shop"
               :dataSource="cardInfo.price_gradient"
