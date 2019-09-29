@@ -4,13 +4,23 @@
     @change="onTableChange"
     :loading="loading.getBasicInfo"
   >
+    <colgroup>
+      <col />
+      <col />
+      <col />
+      <col />
+      <col />
+    </colgroup>
     <thead>
       <tr>
         <template v-for="(item, index) in columsTitlelist">
-          <th :key="index">{{ item }}</th>
+          <th :key="index" :style="{ 'text-align': item.align }">
+            {{ item.title }}
+          </th>
         </template>
       </tr>
     </thead>
+
     <tbody>
       <tr v-if="auth.add">
         <td colspan="5" class="st-form-table__add">
@@ -30,8 +40,8 @@
       <template v-for="item in list">
         <tr :key="item.id">
           <td>{{ item.template_name }}</td>
-          <td>{{ item.salary }}</td>
-          <td>
+          <td :align="columsTitlelist[1].align">{{ item.salary }}</td>
+          <td :align="columsTitlelist[2].align">
             <template v-if="item.used == 0">
               <span>{{ item.used }}</span>
             </template>
@@ -109,11 +119,23 @@ export default {
   data() {
     return {
       columsTitlelist: [
-        '模板名称',
-        '月底薪(元)',
-        '应用员工',
-        '创建时间',
-        '操作'
+        {
+          title: '模板名称'
+        },
+        {
+          title: '月底薪(元)',
+          align: 'right'
+        },
+        {
+          title: '应用员工',
+          align: 'right'
+        },
+        {
+          title: '创建时间'
+        },
+        {
+          title: '操作'
+        }
       ]
     }
   },
