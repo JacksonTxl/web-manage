@@ -266,17 +266,17 @@
           </st-form-item>
           <st-form-item
             label="手续费"
-            class="global-form-item-text"
             labelGutter="12px"
             v-if="isDeposit"
+            type="text"
           >
             {{ depositTransferInfo.poundage }}元
           </st-form-item>
           <st-form-item
             label="手续费"
-            class="global-form-item-text"
             labelGutter="12px"
             v-if="isMember"
+            type="text"
           >
             {{ memberTransferInfo.poundage }}元
           </st-form-item>

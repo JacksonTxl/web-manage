@@ -1,7 +1,7 @@
 <template>
   <a-form-item
     v-bind="$attrs"
-    class="st-form-item"
+    :class="['st-form-item', `st-form-item--type-${type}`]"
     :label="labelFix ? ' ' : $attrs.label"
     v-on="$listeners"
   >
@@ -35,6 +35,11 @@ export default {
     labelGutter: {
       type: String,
       default: ''
+    },
+    // 类型 控制样式 type|input
+    type: {
+      type: String,
+      default: 'input'
     }
   },
   computed: {
