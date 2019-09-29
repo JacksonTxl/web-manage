@@ -129,6 +129,7 @@
                   </a-radio>
                 </a-radio-group>
                 <select-shop
+                  style="border:1px solid #CDD4DF;padding:8px 12px;"
                   v-if="showShopRange == '2'"
                   @change="onSelectShop"
                   :shopIds="shopIds"
@@ -168,7 +169,7 @@
                     张
                   </template>
                 </st-input-number>
-                <label :class="basic('tip')">保存后只可增加不可减少</label>
+                <span :class="basic('tip')">保存后只可增加不可减少</span>
               </st-form-item>
               <st-form-item label="使用有效期" required>
                 领券当日起
