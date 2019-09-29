@@ -117,13 +117,7 @@ export default {
       }
     }
   },
-  created() {
-    this.initOptions().subscribe()
-  },
   methods: {
-    initOptions() {
-      return this.teamService.init()
-    },
     onSubmit() {
       this.form.validate().then(values => {
         const form = cloneDeep(values)
