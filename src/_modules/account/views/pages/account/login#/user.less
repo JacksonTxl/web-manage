@@ -1,6 +1,13 @@
 .page-login-user {
   // .w(336px);
   margin-left: -24px;
+  .login-user-wrapper {
+    display: flex;
+    justify-content: space-between;
+    .user-agreement {
+      cursor: pointer;
+    }
+  }
   &__pass {
     margin-bottom: 9px;
     .ant-form-item-children label {
@@ -14,6 +21,7 @@
     }
   }
   &__login-button {
+    // background: @bg-gray;
     > span {
       .fz(14px);
       font-weight: 500;

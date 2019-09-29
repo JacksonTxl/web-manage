@@ -46,6 +46,7 @@
             @findps="onFindPassword"
             @third="onThird"
             @login="onLogin"
+            @changeAgree="onChangeAgree"
             v-if="loginType === 'user'"
           ></login-user>
           <login-mobile v-if="loginType === 'mobile'"></login-mobile>
@@ -154,6 +155,10 @@ export default {
         this.noCaptchaService.resetNVC()
         location.href = '/'
       }, this.loginErrorHandler)
+    },
+    onChangeAgree(params) {
+      console.log('获取参数')
+      console.log(params)
     },
     loginErrorHandler(err) {
       const code = err.response.code
