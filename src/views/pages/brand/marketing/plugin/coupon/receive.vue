@@ -18,7 +18,7 @@
             @change="onSearch"
             style="width: 160px"
           >
-            <a-select-option :value="-1">优惠券状态</a-select-option>
+            <a-select-option :value="-1">全部状态</a-select-option>
             <a-select-option :value="1">未使用</a-select-option>
             <a-select-option :value="2">已使用</a-select-option>
             <a-select-option :value="3">已过期</a-select-option>
@@ -27,7 +27,7 @@
               :key="index"
               :value="item.value">{{item.label}}</a-select-option> -->
           </a-select>
-          <span class="mg-r8" style="font-weight: normal">领券时间</span>
+          <span class="mg-r8 mg-l16" style="font-weight: normal">领券时间</span>
           <a-range-picker
             @change="onChangeDatePicker"
             v-model="queryParams.date"
