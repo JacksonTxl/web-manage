@@ -124,7 +124,7 @@
           <span class="st-preview-item st-preview-item--cover" v-viewer>
             <img
               v-if="record.image_face"
-              :class="basic('image-face')"
+              class="st-image-face"
               :src="record.image_face.url"
               :data-src="record.image_face.url"
             />
