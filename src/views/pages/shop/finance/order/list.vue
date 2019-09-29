@@ -2,7 +2,7 @@
   <st-panel app>
     <div slot="title">
       <st-input-search
-        placeholder="请输入会员姓名或手机号查找"
+        placeholder="请输入订单编号、会员姓名或手机号查找"
         v-model="query.keyword"
         @search="onSingleSearch('keyword', $event, true)"
       />
