@@ -55,7 +55,6 @@ export class RegionService implements RouteGuard {
     return this.regionApi.getRegionProvinces()
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    console.log('触发了么')
     return this.getRegions()
   }
 }

@@ -164,7 +164,7 @@ export default {
         name: 'sold-card-refund',
         props: {
           type: 'deposit',
-          id: this.infoService.cardId
+          id: this.infoService.id
         },
         on: {
           success: () => {
@@ -178,7 +178,7 @@ export default {
       this.$modalRouter.push({
         name: 'sold-card-transfer',
         props: {
-          id: this.infoService.cardId,
+          id: this.infoService.id,
           type: 'deposit'
         },
         on: {
