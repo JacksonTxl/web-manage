@@ -2,10 +2,10 @@
   <st-panel app initial :class="basic()">
     <div slot="title">
       <st-input-search
-        placeholder="请输入会员姓名或手机号查找"
+        placeholder="请输入订单编号、会员姓名或手机号查找"
         v-model="query.keyword"
         @search="onSingleSearch('keyword', $event, true)"
-        :class="basic('serach')"
+        :class="basic('search')"
       />
     </div>
     <st-search-panel>
