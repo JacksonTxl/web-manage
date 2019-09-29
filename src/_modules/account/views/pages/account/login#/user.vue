@@ -8,7 +8,7 @@
           v-decorator="rules.name"
         />
       </st-form-item>
-      <st-form-item>
+      <st-form-item class="mg-b12">
         <a-input
           size="large"
           type="password"
@@ -19,7 +19,7 @@
       <st-form-item class="mg-b0">
         <no-captcha></no-captcha>
       </st-form-item>
-      <st-form-item :class="loginUser('pass')" class="mg-b16">
+      <st-form-item :class="loginUser('pass')" class="mg-b12">
         <div class="login-user-wrapper">
           <div class="login-user-left">
             <a-checkbox
@@ -29,7 +29,9 @@
               我已阅读并同意
             </a-checkbox>
             <a class="user-agreement" @click="clickAgreement">
-              用户注册协议
+              《
+              <span class="user-agreement-text">用户注册协议</span>
+              》
             </a>
           </div>
           <!-- <span :class="loginUser('pass-content')">   @click="onOpenAgreement"
@@ -139,7 +141,6 @@ export default {
     onCheckboxChange() {
       this.defaultAgreeFlag = !this.defaultAgreeFlag
       this.stButtonSubmitDisabled = !this.stButtonSubmitDisabled
-      //this.$emit('changeAgree', this.defaultAgreeFlag)
     },
     onClickFindPassword() {
       this.$emit('findps')
