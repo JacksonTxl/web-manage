@@ -44,19 +44,19 @@
       >
         <template slot="action" slot-scope="text, record">
           <st-table-actions>
-            <a @click="onEdit({ record, pathName: 'editActivity' })">
+            <a @click="onClickEdit({ record, pathName: 'editActivity' })">
               编辑
             </a>
-            <a @click="onGeneralize(record)">
+            <a @click="onCLickGeneralize(record)">
               推广
             </a>
-            <a @click="onEdit(record)">
+            <a @click="onClickNameList({ record, pathName: 'editActivity' })">
               名单
             </a>
-            <a @click="onGeneralize(record)">
+            <a @click="onClickCopy(record)">
               复制
             </a>
-            <a @click="onStop(record)">
+            <a @click="onClickStop(record)">
               结束
             </a>
           </st-table-actions>
@@ -110,7 +110,12 @@ export default {
   methods: {
     onClickRouterPush({ record, pathName }) {
       this.$router.push({ name: this.redirectPath[pathName] })
-    }
+    },
+    onClickEdit({ record, pathName }) {},
+    onCLickGeneralize({ record, pathName }) {},
+    onClickNameList({ record, pathName }) {},
+    onClickStop({ record, pathName }) {},
+    onClickCopy({ record, pathName }) {}
   }
 }
 </script>
