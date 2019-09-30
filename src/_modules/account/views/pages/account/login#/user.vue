@@ -33,7 +33,9 @@
               @click="clickAgreement"
             >
               《
-              <span class="user-agreement-text">用户注册协议</span>
+              <span :class="loginUser('wrapper-agreement-text')">
+                用户注册协议
+              </span>
               》
             </a>
           </div>
@@ -68,7 +70,7 @@
 import { LoginService } from '../login.service'
 import { rules } from './user.config'
 import NoCaptcha from './no-captcha'
-import AccountAgreementUser from '@/views/biz-modals/account/agreement/user'
+import AccountAgreement from '@/views/biz-modals/account/agreement'
 
 export default {
   bem: {
@@ -98,7 +100,7 @@ export default {
     }
   },
   modals: {
-    AccountAgreementUser
+    AccountAgreement
   },
   computed: {
     rules,
@@ -109,7 +111,7 @@ export default {
   methods: {
     clickAgreement() {
       this.$modalRouter.push({
-        name: 'account-agreement-user',
+        name: 'account-agreement',
         props: {},
         on: {}
       })

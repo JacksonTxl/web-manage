@@ -1,5 +1,5 @@
 <template>
-  <st-panel>
+  <st-panel app>
     <router-view></router-view>
   </st-panel>
 </template>
