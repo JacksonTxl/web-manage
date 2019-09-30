@@ -32,7 +32,7 @@
               :class="loginUser('wrapper-user-agreement')"
               @click="clickAgreement"
             >
-              《 用户注册协议 》
+              《 用户服务协议 》
             </a>
           </div>
           <!-- <span :class="loginUser('pass-content')">   @click="onOpenAgreement"
