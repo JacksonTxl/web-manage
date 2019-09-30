@@ -32,11 +32,7 @@
               :class="loginUser('wrapper-user-agreement')"
               @click="clickAgreement"
             >
-              《
-              <span :class="loginUser('wrapper-agreement-text')">
-                用户注册协议
-              </span>
-              》
+              《 用户注册协议 》
             </a>
           </div>
           <!-- <span :class="loginUser('pass-content')">   @click="onOpenAgreement"
@@ -95,8 +91,7 @@ export default {
       form: this.$form.createForm(this),
       thirdLogins: ['alipay', 'wechat', 'weibo', 'qq'],
       trunPage: false,
-      defaultAgreeFlag: true,
-      stButtonSubmitDisabled: false
+      defaultAgreeFlag: true
     }
   },
   modals: {
@@ -105,7 +100,7 @@ export default {
   computed: {
     rules,
     changeSubmitDisabled() {
-      return this.stButtonSubmitDisabled
+      return !this.defaultAgreeFlag
     }
   },
   methods: {
@@ -148,7 +143,6 @@ export default {
     },
     onCheckboxChange() {
       this.defaultAgreeFlag = !this.defaultAgreeFlag
-      this.stButtonSubmitDisabled = !this.stButtonSubmitDisabled
     },
     onClickFindPassword() {
       this.$emit('findps')

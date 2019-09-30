@@ -1,6 +1,6 @@
 <template>
   <st-modal
-    title="三体云顶服务协议"
+    title="三体云动服务协议"
     class="modal-account-agreement"
     v-model="show"
   >
