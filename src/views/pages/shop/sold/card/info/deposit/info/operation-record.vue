@@ -1,5 +1,5 @@
 <template>
-  <section class="page-member-info-log pd-x24 pd-y24">
+  <section class="st-sold-log-table">
     <st-table
       :page="page"
       :columns="columns"

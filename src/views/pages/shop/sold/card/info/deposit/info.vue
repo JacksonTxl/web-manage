@@ -97,19 +97,7 @@
         </a-col>
       </a-row>
     </st-panel>
-    <st-panel
-      initial
-      class="mg-t16"
-      :tabs="[
-        {
-          label: '操作日志',
-          route: {
-            name: 'shop-sold-card-info-deposit-info-operation-record',
-            query: { id: infoService.id }
-          }
-        }
-      ]"
-    >
+    <st-panel initial class="mg-t16" :tabs="authTabs">
       <router-view></router-view>
     </st-panel>
   </section>
@@ -141,6 +129,7 @@ export default {
       info: this.infoService.info$,
       query: this.routeService.query$,
       loading: this.infoService.loading$,
+      authTabs: this.infoService.authTabs$,
       auth: this.infoService.auth$
     }
   },
