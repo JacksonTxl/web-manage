@@ -287,7 +287,7 @@ export default {
     // 详情
     onDetail(record) {
       this.$router.push({
-        path: `/shop/sold/course/info/package/info/consumption-record`,
+        path: `/shop/sold/course/info/package/info/operation-record`,
         query: { id: record.id }
       })
     },
