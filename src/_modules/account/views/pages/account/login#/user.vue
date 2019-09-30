@@ -20,15 +20,18 @@
         <no-captcha></no-captcha>
       </st-form-item>
       <st-form-item :class="loginUser('pass')" class="mg-b12">
-        <div class="login-user-wrapper">
-          <div class="login-user-left">
+        <div :class="loginUser('wrapper')">
+          <div :class="loginUser('wrapper-left')">
             <a-checkbox
               :checked="defaultAgreeFlag"
               @change="onCheckboxChange('is_change_Agreen')"
             >
               我已阅读并同意
             </a-checkbox>
-            <a class="user-agreement" @click="clickAgreement">
+            <a
+              :class="loginUser('wrapper-user-agreement')"
+              @click="clickAgreement"
+            >
               《
               <span class="user-agreement-text">用户注册协议</span>
               》
@@ -43,7 +46,7 @@
         <st-button
           :class="loginUser('login-button')"
           :loading="loading.loginAccount"
-          :disabled="stButtonSubmitDisabled"
+          :disabled="changeSubmitDisabled"
           pill
           block
           size="large"
@@ -98,7 +101,10 @@ export default {
     AccountAgreementUser
   },
   computed: {
-    rules
+    rules,
+    changeSubmitDisabled() {
+      return this.stButtonSubmitDisabled
+    }
   },
   methods: {
     clickAgreement() {
