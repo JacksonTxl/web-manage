@@ -174,8 +174,7 @@ export default {
     }
   },
   computed: {
-    columns,
-    WORK_STATUS
+    columns
   },
   watch: {
     selectedRowKeys: {
@@ -196,6 +195,11 @@ export default {
           return item.name
         })
         .join(',')
+    }
+  },
+  data() {
+    return {
+      WORK_STATUS
     }
   },
   methods: {
