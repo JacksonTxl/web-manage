@@ -1,18 +1,24 @@
 <template>
-  <st-modal title="绑定实体卡" @ok="save" v-model="show" size="small">
+  <st-modal
+    title="绑定实体卡"
+    @ok="save"
+    v-model="show"
+    size="small"
+    class="shop-binding-card"
+  >
     <section>
       <st-form :form="form" @submit="save" labelWidth="55px">
         <st-info>
           <st-info-item label="姓名">{{ record.member_name }}</st-info-item>
           <st-info-item label="手机号">{{ record.mobile }}</st-info-item>
         </st-info>
-        <st-form-item label="实体卡号" required>
+        <st-form-item label="实体卡号" required :class="b('label')">
           <a-input
             placeholder="输入实体卡号"
             v-decorator="decorators.card_num"
           />
         </st-form-item>
-        <st-form-item label="物理ID" required>
+        <st-form-item label="物理ID" required :class="b('label')">
           <a-input
             placeholder="请将实体卡置于读卡器上"
             v-decorator="decorators.rfid"
@@ -33,6 +39,9 @@ export default {
     }
   },
   name: 'bindingEntityCard',
+  bem: {
+    b: 'shop-binding-card'
+  },
   props: {
     record: {
       type: Object

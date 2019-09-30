@@ -1,8 +1,8 @@
 <template>
   <div :class="event()">
     <st-form>
-      <st-form-item label="推广活动数">
-        <a-radio-group v-model="number">
+      <st-form-item label="推广活动数" :class="event('activity-wrapper')">
+        <a-radio-group v-model="number" :class="event('activity-number')">
           <a-radio :value="1">1</a-radio>
           <a-radio :value="2">2</a-radio>
           <a-radio :value="3">3</a-radio>
