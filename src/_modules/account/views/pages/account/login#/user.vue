@@ -8,7 +8,7 @@
           v-decorator="rules.name"
         />
       </st-form-item>
-      <st-form-item>
+      <st-form-item class="mg-b12">
         <a-input
           size="large"
           type="password"
@@ -19,15 +19,32 @@
       <st-form-item class="mg-b0">
         <no-captcha></no-captcha>
       </st-form-item>
-      <!-- <st-form-item  :class="loginUser('pass')" class="mg-b16">
-        <div :class="loginUser('pass-content')">
-          <a href="javascript:;" @click="onClickFindPassword">忘记密码</a>
+      <st-form-item :class="loginUser('pass')" class="mg-b12">
+        <div :class="loginUser('wrapper')">
+          <div :class="loginUser('wrapper-left')">
+            <a-checkbox
+              :checked="defaultAgreeFlag"
+              @change="onCheckboxChange('is_change_Agreen')"
+            >
+              我已阅读并同意
+            </a-checkbox>
+            <a
+              :class="loginUser('wrapper-user-agreement')"
+              @click="clickAgreement"
+            >
+              《 用户注册协议 》
+            </a>
+          </div>
+          <!-- <span :class="loginUser('pass-content')">   @click="onOpenAgreement"
+            <a href="javascript:;" @click="onClickFindPassword">忘记密码</a>
+          </span> -->
         </div>
-      </st-form-item> -->
+      </st-form-item>
       <st-form-item class="mg-b32">
         <st-button
           :class="loginUser('login-button')"
           :loading="loading.loginAccount"
+          :disabled="changeSubmitDisabled"
           pill
           block
           size="large"
@@ -49,6 +66,7 @@
 import { LoginService } from '../login.service'
 import { rules } from './user.config'
 import NoCaptcha from './no-captcha'
+import AccountAgreement from '@/views/biz-modals/account/agreement'
 
 export default {
   bem: {
@@ -72,13 +90,27 @@ export default {
     return {
       form: this.$form.createForm(this),
       thirdLogins: ['alipay', 'wechat', 'weibo', 'qq'],
-      trunPage: false
+      trunPage: false,
+      defaultAgreeFlag: true
     }
   },
+  modals: {
+    AccountAgreement
+  },
   computed: {
-    rules
+    rules,
+    changeSubmitDisabled() {
+      return !this.defaultAgreeFlag
+    }
   },
   methods: {
+    clickAgreement() {
+      this.$modalRouter.push({
+        name: 'account-agreement',
+        props: {},
+        on: {}
+      })
+    },
     login() {
       this.form.validateFields((err, values) => {
         if (!err) {
@@ -102,7 +134,15 @@ export default {
       //   (res) => {
       //     this.noCaptchaService.callCaptcha(res.code)
       //   }
-      // )
+      // )  account/login
+    },
+    onChange() {
+      this.$router.push({
+        force: true
+      })
+    },
+    onCheckboxChange() {
+      this.defaultAgreeFlag = !this.defaultAgreeFlag
     },
     onClickFindPassword() {
       this.$emit('findps')
