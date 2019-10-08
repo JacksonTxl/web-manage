@@ -21,6 +21,7 @@ import Viewer from 'v-viewer'
 import VueServiceApp from 'vue-service-app'
 
 import container from './container'
+import i18n from '@/i18n'
 
 // 默认样式加载
 import './views/components/register'
@@ -84,7 +85,6 @@ export default function bootstrap(bootstrapConfig: BootstrapConfig) {
       }
     }
   ])
-
   const { router } = new VueServiceApp({
     container,
     routes,
@@ -100,6 +100,7 @@ export default function bootstrap(bootstrapConfig: BootstrapConfig) {
   new Vue({
     el: '#app',
     router,
+    i18n,
     // @ts-ignore
     modalRouter,
     render: h => h(bootstrapConfig.AppComponent)
