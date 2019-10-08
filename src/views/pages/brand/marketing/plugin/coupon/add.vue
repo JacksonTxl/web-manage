@@ -280,9 +280,9 @@ export default {
       // 优惠类型
       couponType: '1',
       // 优惠范围
-      showProductRange: '1',
+      showProductRange: '2',
       // 门店范围
-      showShopRange: '1',
+      showShopRange: '2',
       // 满足金额
       fullPrice: '',
       // 是否共享
