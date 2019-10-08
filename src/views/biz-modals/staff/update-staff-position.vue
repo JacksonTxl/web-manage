@@ -112,6 +112,7 @@ import { MessageService } from '../../../services/message.service'
 import StaffInfo from './staff-info'
 import StaffModalTips from '@/views/biz-components/staff/staff-modal-tips'
 import { ruleOptions } from './update-staff-position.config'
+import { cloneDeep } from 'lodash-es'
 
 export default {
   serviceInject() {
@@ -232,10 +233,15 @@ export default {
     onSubmit(e) {
       e.preventDefault()
       this.form.validate().then(values => {
+        let form = cloneDeep(values)
+        // 如果选择职位从私人教练到其他职位时，将教练等级值置为 undefined
+        if (!this.coach_level_required) {
+          form.coach_level_id = undefined
+        }
         this.updateStaffPositionService
           .putStaffBindPosition({
             id: this.staff.id,
-            ...values
+            ...form
           })
           .subscribe(() => {
             this.show = false
