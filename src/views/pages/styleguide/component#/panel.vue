@@ -53,7 +53,7 @@
         ]"
       >
         <div slot="actions">
-          <a-input-search placeholder="私教课名称"></a-input-search>
+          <st-input-search placeholder="私教课名称"></st-input-search>
         </div>
         <router-view></router-view>
       </st-panel>
