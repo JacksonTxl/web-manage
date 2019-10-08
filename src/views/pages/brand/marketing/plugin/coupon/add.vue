@@ -199,11 +199,12 @@
                   <a-form-item :class="basic('wrap-input')">
                     <a-radio :value="2">
                       每人限领
-                      <st-input-number
+                      <a-input-number
+                        @focus="checkThisLimitRadio"
                         :disabled="isEditMode"
                         :class="basic('radio-input')"
                         v-decorator="decorators.person_limit"
-                      ></st-input-number>
+                      ></a-input-number>
                       次
                     </a-radio>
                   </a-form-item>
@@ -413,6 +414,9 @@ export default {
           return '每人限领数量应大于0'
         }
       }
+    },
+    checkThisLimitRadio() {
+      this.form.setFieldsValue({ is_limit: 2 })
     },
     setFieldsValue() {
       this.couponType = this.info.coupon_type.id + ''
