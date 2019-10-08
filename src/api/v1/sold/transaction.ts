@@ -49,10 +49,15 @@ export class TransactionApi extends Api {
   /**
    * 获取签单的支付列表
    * @param order_id 订单id
+   * @param product_type 商品类型
    */
-  getPaymentMethodList(order_id: number | string) {
+  getPaymentMethodList(order_id: number | string, is_reversed?: boolean) {
+    const query: any = { order_id }
+    if (is_reversed) {
+      query.is_reversed = is_reversed
+    }
     return this.http.get(`/v1/order/transaction/payment/method`, {
-      query: { order_id }
+      query
     })
   }
   /**
