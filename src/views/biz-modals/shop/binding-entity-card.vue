@@ -4,7 +4,7 @@
     @ok="save"
     v-model="show"
     size="small"
-    class="shop-binding-card"
+    wrapClassName="shop-binding-card"
   >
     <section>
       <st-form :form="form" @submit="save">
