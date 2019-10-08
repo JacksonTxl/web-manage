@@ -29,6 +29,7 @@ import './filters/register'
 
 // @ts-ignore
 import Scrollbar from '@/vendor/vue-scrollbar'
+import { UserService } from './services/user.service'
 
 Vue.use(VueServiceApp, container)
 Vue.use(Scrollbar)
@@ -97,6 +98,9 @@ export default function bootstrap(bootstrapConfig: BootstrapConfig) {
       }
     }
   })
+  Vue.prototype.$c = function(key: string) {
+    return container.get(UserService).c(key)
+  }
   new Vue({
     el: '#app',
     router,

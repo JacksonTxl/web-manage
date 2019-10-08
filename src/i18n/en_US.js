@@ -3,7 +3,7 @@ export default {
   // app 作用域的文字
   http: {
     400: 'Bad Request',
-    404: 'Servie Not Found',
+    404: 'Service Not Found',
     401: 'Unauthorized',
     403: 'Frobidden',
     500: 'Internal Server Error',

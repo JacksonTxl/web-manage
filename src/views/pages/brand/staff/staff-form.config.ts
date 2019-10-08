@@ -1,5 +1,6 @@
 export const ruleOptions = (vm: any) => {
   const pattern = vm.pattern
+  const coach = vm.$c('coach')
   return {
     name: {
       rules: [
@@ -136,7 +137,7 @@ export const ruleOptions = (vm: any) => {
     album_id: {},
     is_permission: { initialValue: 0 },
     coach_level_id: {
-      rules: [{ required: true, message: '请选择教练等级' }]
+      rules: [{ required: true, message: `请选择${coach}等级` }]
     },
     graduated_school: {
       rules: [
