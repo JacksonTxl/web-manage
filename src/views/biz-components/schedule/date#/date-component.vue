@@ -1,15 +1,17 @@
 <template>
   <div class="date-container">
-    <st-button @click="onClickPre">
+    <st-button @click="onClickPre" class="team-btn">
       <a-icon type="left" />
     </st-button>
 
     <span class="text-content">{{ rangeTime }}</span>
 
-    <st-button class="mg-r8" @click="onClickNext">
+    <st-button class="mg-r8 team-btn" @click="onClickNext">
       <a-icon type="right" />
     </st-button>
-    <st-button @click="onClickToday" v-if="isCurrent">今</st-button>
+    <st-button @click="onClickToday" v-if="isCurrent" class="today team-btn">
+      今
+    </st-button>
   </div>
 </template>
 <script>
