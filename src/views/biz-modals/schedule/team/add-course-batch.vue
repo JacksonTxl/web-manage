@@ -3,7 +3,7 @@
     wrapClassName="modal-schedule-team-add-course-batch"
     title="批量新增课程排期"
     @ok="onOkSaveForm"
-    width="1366px"
+    width="1220px"
     v-model="show"
   >
     <st-table :columns="columns" :page="false" :dataSource="data" bordered>
