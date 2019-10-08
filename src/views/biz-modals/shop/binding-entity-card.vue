@@ -7,18 +7,18 @@
     class="shop-binding-card"
   >
     <section>
-      <st-form :form="form" @submit="save" labelWidth="55px">
+      <st-form :form="form" @submit="save">
         <st-info>
           <st-info-item label="姓名">{{ record.member_name }}</st-info-item>
           <st-info-item label="手机号">{{ record.mobile }}</st-info-item>
         </st-info>
-        <st-form-item label="实体卡号" required :class="b('label')">
+        <st-form-item label="实体卡号" required>
           <a-input
             placeholder="输入实体卡号"
             v-decorator="decorators.card_num"
           />
         </st-form-item>
-        <st-form-item label="物理ID" required :class="b('label')">
+        <st-form-item label="物理ID" required>
           <a-input
             placeholder="请将实体卡置于读卡器上"
             v-decorator="decorators.rfid"
