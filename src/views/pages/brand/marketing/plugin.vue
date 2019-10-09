@@ -55,36 +55,22 @@
           <label>营销玩法</label>
           <label>拉新、促进成单</label>
         </header>
-        <section>
-          <ul>
-            <li
-              v-for="(item, index) in info.marketing"
-              :key="index"
-              @click="goToPlugin(item.plugin_type)"
-            >
-              <img
-                v-if="item.plugin_type === '4'"
-                src="~@/assets/img/brand/marketing/people.svg"
-              />
-              <img
-                v-if="item.plugin_type === '1'"
-                src="~@/assets/img/brand/marketing/coupon.svg"
-              />
-              <img
-                v-if="item.plugin_type === '2'"
-                src="~@/assets/img/brand/marketing/invite.svg"
-              />
-              <img
-                v-if="item.plugin_type === '3'"
-                src="~@/assets/img/brand/marketing/slyder.svg"
-              />
-              <div>
-                <p>{{ item.plugin_name }}</p>
-                <p>{{ item.plugin_text }}</p>
+        <a-row :gutter="16">
+          <a-col
+            :lg="6"
+            v-for="(item, index) in pluginList"
+            :key="index"
+            @click="goToPlugin(item.route)"
+          >
+            <div :class="card()">
+              <img :class="card('img')" :src="item.img" />
+              <div :class="card('content')">
+                <st-t3 :class="card('title')">{{ item.plugin_name }}</st-t3>
+                <p :class="card('desc')">{{ item.plugin_text }}</p>
               </div>
-            </li>
-          </ul>
-        </section>
+            </div>
+          </a-col>
+        </a-row>
       </div>
     </div>
     <div :class="basic('right')">
@@ -112,7 +98,8 @@ import { PluginService } from './plugin.service'
 export default {
   name: 'BrandMarketingPlugin',
   bem: {
-    basic: 'brand-marketing-plugin'
+    basic: 'brand-marketing-plugin',
+    card: 'marketing-card'
   },
   serviceInject() {
     return {
@@ -121,16 +108,10 @@ export default {
   },
   rxState() {
     return {
-      info: this.pluginService.info$
+      info: this.pluginService.info$,
+      pluginList: this.pluginService.pluginList$
     }
   },
-  created() {
-    this.getInfo()
-  },
-  data() {
-    return {}
-  },
-  components: {},
   methods: {
     goLink(url) {
       window.open(url)
@@ -138,36 +119,8 @@ export default {
     getInfo() {
       this.pluginService.getInfo().subscribe()
     },
-    // filterTypeImg(value) {
-    //   let typeName='people';
-    //   switch(value) {
-    //     case 0:
-    //       typeName = 'people';
-    //       break;
-    //     case 1:
-    //       typeName = 'coupon';
-    //       break;
-    //     case 2:
-    //       typeName = 'invite';
-    //       break;
-    //     case 3:
-    //       typeName = 'slyder';
-    //       break;
-    //   }
-    //   return expand;
-    // }
-    goToPlugin(type) {
-      const map = {
-        1: 'brand-marketing-plugin-coupon-list',
-        2: 'brand-marketing-plugin-invitation-index-data',
-        3: 'brand-marketing-plugin-lottery-index',
-        4: 'brand-marketing-plugin-crowd-index'
-      }
-      if (map.hasOwnProperty(type)) {
-        this.$router.push({
-          name: map[type]
-        })
-      }
+    goToPlugin(route) {
+      this.$route.push({ name: route })
     }
   }
 }
