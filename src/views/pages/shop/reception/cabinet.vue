@@ -82,7 +82,7 @@ import { CabinetListService } from './components#/cabinet-list.service'
 import { CabinetAreaService as AreaService } from '../setting/components#/area.service'
 import CabinetList from './components#/cabinet-list'
 import Draggable from 'vuedraggable'
-import { CABINET } from '@/constants/reception/cabinet'
+import { CABINET, CABINET_BUSINESS_TYPE } from '@/constants/reception/cabinet'
 
 export default {
   bem: {
@@ -110,6 +110,7 @@ export default {
   data() {
     return {
       CABINET,
+      CABINET_BUSINESS_TYPE,
       isActive: '',
       editId: 0,
       isShowAddAreaBtn: false,
@@ -154,7 +155,12 @@ export default {
       const list = this.list
       const queryId = this.query.id
       const id = (list[0] && list[0].id) || 0
-      this.queryHandler({ id })
+      this.$router.push({
+        query: {
+          ...this.query,
+          id
+        }
+      })
     },
     onAreaListChange(type) {
       this.editId = 0
@@ -169,20 +175,25 @@ export default {
       })
     },
     onAreaChange(id) {
-      this.queryHandler({ id })
+      this.$router.push({
+        query: {
+          ...this.query,
+          id
+        }
+      })
     },
     onAreaSortChange(e) {
       this.cabinetService.sort(this.list).subscribe()
     },
     onCabinetTabChange(key) {
-      this.queryHandler({ type: key })
+      this.$router.push({
+        query: {
+          ...this.query,
+          type: key
+        }
+      })
       this.checked = []
       this.isOperationInBatch = false
-    },
-    queryHandler(query) {
-      this.$router.push({
-        query: Object.assign({ ...this.query }, query)
-      })
     },
     onCabinetListChange() {
       this.$router.push({
@@ -215,9 +226,9 @@ export default {
               this.messageService.success({
                 content: '批量清柜成功!'
               })
+              this.changeOperationMode()
+              this.$router.reload()
             })
-          this.changeOperationMode()
-          this.$router.reload()
         },
         onCancel() {}
       })
@@ -231,7 +242,7 @@ export default {
       this.checked.map(item => {
         if (
           map.get(item).cabinet_business_type ===
-          this.CABINET.CABINET_BUSINESS_TYPE_USING
+          this.CABINET_BUSINESS_TYPE.USING
         ) {
           num++
         }

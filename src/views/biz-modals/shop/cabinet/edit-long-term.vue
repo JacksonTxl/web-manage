@@ -58,28 +58,6 @@
           </template>
         </st-input-number>
       </st-form-item>
-      <!-- <st-form-item label="可用状态" required>
-        <a-radio-group
-          v-decorator="decorators.use_status"
-          @change="onUseStatusChange"
-        >
-          <a-radio
-            v-for="(item, index) in useStatus"
-            :key="index"
-            :value="+item.value"
-          >
-            {{ item.label }}
-          </a-radio>
-        </a-radio-group>
-      </st-form-item>
-      <st-form-item labelFix>
-        <st-textarea
-          v-decorator="decorators.reason"
-          placeholder="请输入不可用原因，如维修中"
-          maxlength="30"
-          :autosize="{ minRows: 3 }"
-        />
-      </st-form-item> -->
     </st-form>
   </st-modal>
 </template>

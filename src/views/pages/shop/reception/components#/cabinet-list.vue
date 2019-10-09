@@ -38,7 +38,7 @@
               :class="b('item-normal')"
               v-if="
                 cabinetUsingItem(item).cabinet_business_type ===
-                  CABINET.CABINET_BUSINESS_TYPE_AVAILABLE
+                  CABINET_BUSINESS_TYPE.AVAILABLE
               "
             >
               <div :class="b('item-status')">空闲</div>
@@ -50,7 +50,7 @@
               :class="bItemUsing()"
               v-if="
                 cabinetUsingItem(item).cabinet_business_type ===
-                  CABINET.CABINET_BUSINESS_TYPE_USING
+                  CABINET_BUSINESS_TYPE.USING
               "
             >
               <p :class="bItemUsing('title')">{{ item.user_name }}</p>
@@ -64,7 +64,7 @@
             <p
               v-if="
                 cabinetUsingItem(item).cabinet_business_type ===
-                  CABINET.CABINET_BUSINESS_TYPE_BROKEN
+                  CABINET_BUSINESS_TYPE.BROKEN
               "
               :class="b('item-broken-text')"
             >
@@ -73,7 +73,7 @@
             <p
               v-if="
                 cabinetUsingItem(item).cabinet_business_type ===
-                  CABINET.CABINET_BUSINESS_TYPE_REPAIR
+                  CABINET_BUSINESS_TYPE.REPAIR
               "
               :class="b('item-repair-text')"
             >
@@ -84,7 +84,7 @@
               v-if="
                 item.is_smart &&
                   cabinetUsingItem(item).cabinet_business_type ===
-                    CABINET.CABINET_BUSINESS_TYPE_USING &&
+                    CABINET_BUSINESS_TYPE.USING &&
                   editFlag === `enter-${item.id}` &&
                   auth.edit &&
                   !isOperationInBatch
@@ -98,7 +98,7 @@
               :class="bItemUsing('action')"
               v-if="
                 cabinetUsingItem(item).cabinet_business_type !==
-                  CABINET.CABINET_BUSINESS_TYPE_USING &&
+                  CABINET_BUSINESS_TYPE.USING &&
                   editFlag === `enter-${item.id}` &&
                   auth.edit &&
                   !isOperationInBatch
@@ -126,7 +126,7 @@ import ShopCabinetEditLongTerm from '@/views/biz-modals/shop/cabinet/edit-long-t
 import ShopCabinetEditTemporary from '@/views/biz-modals/shop/cabinet/edit-temporary'
 import ShopCabinetOpen from '@/views/biz-modals/shop/cabinet/open'
 import ShopCabinetEditStatus from '@/views/biz-modals/shop/cabinet/edit-status'
-import { CABINET } from '@/constants/reception/cabinet'
+import { CABINET, CABINET_BUSINESS_TYPE } from '@/constants/reception/cabinet'
 import { RouteService } from '@/services/route.service'
 export default {
   bem: {
@@ -191,6 +191,7 @@ export default {
   data() {
     return {
       CABINET,
+      CABINET_BUSINESS_TYPE,
       checkedList: [],
       indeterminate: false,
       checkAll: false,
@@ -207,19 +208,19 @@ export default {
     cabinetClass(item) {
       let cabinet = ''
       switch (this.cabinetUsingItem(item).cabinet_business_type) {
-        case this.CABINET.CABINET_BUSINESS_TYPE_AVAILABLE:
+        case this.CABINET_BUSINESS_TYPE.AVAILABLE:
           cabinet = ''
           break
-        case this.CABINET.CABINET_BUSINESS_TYPE_USING:
+        case this.CABINET_BUSINESS_TYPE.USING:
           cabinet = 'shop-reception-cabinet__item-normal-using'
           if (item.is_smart) {
             cabinet = 'shop-reception-cabinet__item-using'
           }
           break
-        case this.CABINET.CABINET_BUSINESS_TYPE_BROKEN:
+        case this.CABINET_BUSINESS_TYPE.BROKEN:
           cabinet = 'shop-reception-cabinet__item-broken'
           break
-        case this.CABINET.CABINET_BUSINESS_TYPE_REPAIR:
+        case this.CABINET_BUSINESS_TYPE.REPAIR:
           cabinet = 'shop-reception-cabinet__item-repair'
           break
       }
