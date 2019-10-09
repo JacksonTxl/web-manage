@@ -1,52 +1,7 @@
 .brand-marketing-plugin {
   display: flex;
-  &__left {
+  &__main {
     flex: 1;
-  }
-  &__right {
-    width: 240px;
-    box-shadow: 0px 1px 10px 1px rgba(0, 0, 0, 0.05);
-    margin-left: 16px;
-    background: rgba(255, 255, 255, 1);
-    padding: 16px;
-    > header > label {
-      &:first-child {
-        width: 64px;
-        height: 24px;
-        font-size: 16px;
-        font-weight: 500;
-        line-height: 24px;
-      }
-      &:last-child {
-        height: 22px;
-        color: rgba(155, 172, 185, 1);
-        line-height: 22px;
-        margin-left: 8px;
-      }
-    }
-    > section > ul > li {
-      width: 208px;
-      background: rgba(255, 255, 255, 1);
-      border-radius: 2px;
-      border: 1px solid rgba(255, 255, 255, 0);
-      margin-top: 16px;
-      box-shadow: 0px 1px 10px 1px rgba(0, 0, 0, 0.05);
-      > img {
-        width: 208px;
-        border-top-left-radius: 2px;
-        border-top-right-radius: 2px;
-        margin-left: -1px;
-      }
-      > p {
-        line-height: 22px;
-        padding: 8px 16px;
-        margin: 0;
-      }
-      &:hover {
-        border: 1px solid rgba(63, 102, 246, 0.45);
-        cursor: pointer;
-      }
-    }
   }
 
   &__effect {
@@ -95,61 +50,102 @@
       }
     }
   }
+}
 
-  &__play {
-    margin-top: 12px;
-    background: rgba(255, 255, 255, 1);
-    box-shadow: 0px 1px 10px 1px rgba(0, 0, 0, 0.05);
-    padding: 24px 0 0;
-    .h(654px); // 设计说要调整高度 bugID:1003777
-    > header {
-      .pd(0 24px);
-      > label {
-        &:first-child {
-          width: 72px;
-          height: 26px;
-          font-size: 18px;
-          font-weight: 500;
-          color: rgba(37, 42, 46, 1);
-          line-height: 26px;
-        }
-        &:last-child {
-          width: 100px;
-          height: 22px;
-          font-size: 14px;
-          font-weight: 400;
-          color: rgba(155, 172, 185, 1);
-          line-height: 22px;
-          margin-left: 8px;
-        }
-      }
-    }
+.brand-marketing-section {
+  margin-top: 12px;
+  background: @white;
+  box-shadow: 0px 1px 10px 1px rgba(0, 0, 0, 0.05);
+  padding: 24px 24px 16px 24px;
+  &--play {
+    height: 754px;
   }
-  .marketing-card {
+
+  &__hd {
     display: flex;
-    height: 78px;
-    .bg(#fff);
-    box-shadow: 0 1px 10px 1px rgba(0, 0, 0, 0.05);
+  }
+  &__title {
+  }
+  &__label {
+    .mg-l(8px);
+    .c(@text-light);
+    .fz(14px);
+    .lh(22px);
+  }
+  &__bd {
+    .mg-t(8px);
+  }
+}
+
+.brand-marketing-card {
+  display: flex;
+  height: 78px;
+  .bg(#fff);
+  box-shadow: 0 1px 10px 1px rgba(0, 0, 0, 0.05);
+  border-radius: 2px;
+  border: 1px solid #f8f8f8;
+  .mg-tb(8px);
+  .pd(16px);
+  .cur-p;
+  &:hover {
+    border-color: rgba(63, 102, 246, 0.45);
+  }
+  &__img {
+    .mg-r(16px);
+  }
+  &__content {
+    flex: 1;
+  }
+  &__title {
+    .mg-b(4px);
+  }
+  &__desc {
+    .c(@text-light);
+    .lh(20px);
+    .fz(12px);
+    .tov-e;
+  }
+}
+
+.brand-marketing-sider {
+  width: 240px;
+  margin-left: 16px;
+  box-shadow: 0px 1px 10px 1px rgba(0, 0, 0, 0.05);
+  background: @white;
+  padding: 16px;
+  &__hd {
+  }
+  &__title {
+  }
+  &__label {
+    .c(@text-light);
+    .mg-l(8px);
+    .lh(22px);
+  }
+  &__bd {
+  }
+
+  &__list > li {
+    width: 208px;
+    background: @white;
     border-radius: 2px;
-    border: 1px solid @border-color;
-    .pd(16px);
-    .cur-p;
+    border: 1px solid @white;
+    margin-top: 16px;
+    box-shadow: 0px 1px 10px 1px rgba(0, 0, 0, 0.05);
+    > img {
+      width: 208px;
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
+      margin-left: -1px;
+    }
+    > p {
+      line-height: 22px;
+      padding: 8px 16px;
+      margin: 0;
+    }
     &:hover {
-      border-color: @primary-color;
-    }
-    &__img {
-      .mg-r(16px);
-    }
-    &__content {
-      flex: 1;
-    }
-    &__title {
-      .mg-b(4px);
-    }
-    &__desc {
-      .c(@text-color);
-      .lh(20px);
-      .fz(12px);
+      border: 1px solid rgba(63, 102, 246, 0.45);
+      cursor: pointer;
     }
   }
 }

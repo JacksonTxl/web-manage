@@ -1,6 +1,6 @@
 <template>
   <div :class="basic()">
-    <div :class="basic('left')">
+    <div :class="basic('main')">
       <div :class="basic('effect')">
         <header>
           营销效果
@@ -50,36 +50,42 @@
           </ul>
         </section>
       </div>
-      <div :class="basic('play')">
-        <header>
-          <label>营销玩法</label>
-          <label>拉新、促进成单</label>
-        </header>
-        <a-row :gutter="16">
-          <a-col
-            :lg="6"
-            v-for="(item, index) in pluginList"
-            :key="index"
-            @click="goToPlugin(item.route)"
-          >
-            <div :class="card()">
-              <img :class="card('img')" :src="item.img" />
-              <div :class="card('content')">
-                <st-t3 :class="card('title')">{{ item.plugin_name }}</st-t3>
-                <p :class="card('desc')">{{ item.plugin_text }}</p>
+
+      <section :class="section()" class="brand-marketing-section--play">
+        <div :class="section('hd')">
+          <st-t2 :class="section('title')">营销玩法</st-t2>
+          <label :class="section('label')">拉新、促进成单</label>
+        </div>
+        <div :class="section('bd')">
+          <a-row :gutter="16">
+            <a-col
+              :xxl="6"
+              :xl="8"
+              :xs="12"
+              v-for="(item, index) in pluginList"
+              :key="index"
+              @click="goToPlugin(item.route)"
+            >
+              <div :class="card()">
+                <img :class="card('img')" :src="item.img" />
+                <div :class="card('content')">
+                  <st-t3 :class="card('title')">{{ item.plugin_name }}</st-t3>
+                  <p :class="card('desc')">{{ item.plugin_text }}</p>
+                </div>
               </div>
-            </div>
-          </a-col>
-        </a-row>
-      </div>
+            </a-col>
+          </a-row>
+        </div>
+      </section>
     </div>
-    <div :class="basic('right')">
+
+    <section :class="sider()">
       <header>
-        <label>运营玩法</label>
-        <label>案例分享</label>
+        <st-t3 :class="sider('title')">运营玩法</st-t3>
+        <label :class="sider('label')">案例分享</label>
       </header>
-      <section>
-        <ul>
+      <div :class="sider('bd')">
+        <ul :class="sider('list')">
           <li
             v-for="(item, index) in info.operation"
             :key="index"
@@ -89,8 +95,8 @@
             <p>{{ item.title }}</p>
           </li>
         </ul>
-      </section>
-    </div>
+      </div>
+    </section>
   </div>
 </template>
 <script>
@@ -99,7 +105,9 @@ export default {
   name: 'BrandMarketingPlugin',
   bem: {
     basic: 'brand-marketing-plugin',
-    card: 'marketing-card'
+    sider: 'brand-marketing-sider',
+    section: 'brand-marketing-section',
+    card: 'brand-marketing-card'
   },
   serviceInject() {
     return {
