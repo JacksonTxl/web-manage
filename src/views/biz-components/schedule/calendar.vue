@@ -36,10 +36,6 @@
             <span class="current-time-text">{{ currentTime }}</span>
           </div>
           <ul class="time-group daily-time-group">
-            <!-- <li class="date">
-              <span class="date-text-day">{{ item | dateString }}</span>
-            </li> -->
-
             <schedule-unit
               :class="{
                 'first-unit': index === 0,
