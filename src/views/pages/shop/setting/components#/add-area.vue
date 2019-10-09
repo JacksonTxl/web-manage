@@ -3,7 +3,7 @@
     <a-input
       :class="b('input')"
       v-model="areaName"
-      placeholder="输入区域名称，不超过15个字"
+      placeholder="输入名称，不超过15个字"
     />
     <span :class="b('action')">
       <a @click="onSumbit" :loading="loading.add">保存</a>

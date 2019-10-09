@@ -11,6 +11,7 @@
       <section class="mg-l24 mg-r24 drawer-switch-shop__header">
         <st-input-search
           placeholder="搜索门店"
+          width="100%"
           v-model="keyword"
           @search="onSearch"
           @change="onChange"

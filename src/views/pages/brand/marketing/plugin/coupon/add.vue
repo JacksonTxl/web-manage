@@ -88,6 +88,7 @@
                 v-if="couponEnums.is_product_range"
               >
                 <a-radio-group
+                  v-if="couponEnums.is_product_range.value.length > 1"
                   v-model="showProductRange"
                   :disabled="isEditMode"
                 >
@@ -119,7 +120,11 @@
                 </a-select>
               </st-form-item>
               <st-form-item label="可用门店" required>
-                <a-radio-group v-model="showShopRange" :disabled="isEditMode">
+                <a-radio-group
+                  v-model="showShopRange"
+                  :disabled="isEditMode"
+                  v-if="couponEnums.is_shop_range.value.length > 1"
+                >
                   <a-radio
                     v-for="(item, index) in couponEnums.is_shop_range.value"
                     :value="index"
@@ -129,7 +134,7 @@
                   </a-radio>
                 </a-radio-group>
                 <select-shop
-                  style="border:1px solid #CDD4DF;padding:8px 12px;"
+                  style="border:1px solid #CDD4DF;padding:8px 12px;border-radius:4px"
                   v-if="showShopRange == '2'"
                   @change="onSelectShop"
                   :shopIds="shopIds"

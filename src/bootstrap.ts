@@ -21,6 +21,7 @@ import Viewer from 'v-viewer'
 import VueServiceApp from 'vue-service-app'
 
 import container from './container'
+import i18n from '@/i18n'
 
 // 默认样式加载
 import './views/components/register'
@@ -28,6 +29,7 @@ import './filters/register'
 
 // @ts-ignore
 import Scrollbar from '@/vendor/vue-scrollbar'
+import { UserService } from './services/user.service'
 
 Vue.use(VueServiceApp, container)
 Vue.use(Scrollbar)
@@ -84,7 +86,6 @@ export default function bootstrap(bootstrapConfig: BootstrapConfig) {
       }
     }
   ])
-
   const { router } = new VueServiceApp({
     container,
     routes,
@@ -97,9 +98,13 @@ export default function bootstrap(bootstrapConfig: BootstrapConfig) {
       }
     }
   })
+  Vue.prototype.$c = function(key: string) {
+    return container.get(UserService).c(key)
+  }
   new Vue({
     el: '#app',
     router,
+    i18n,
     // @ts-ignore
     modalRouter,
     render: h => h(bootstrapConfig.AppComponent)
