@@ -1,6 +1,6 @@
 <template>
   <div class="shop-member-crowd-analysis">
-    <st-panel>
+    <st-panel app>
       <div class="shop-member-crowd-analysis-title">
         <div class="shop-member-crowd-analysis-title__left">
           <img
