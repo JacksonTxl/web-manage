@@ -128,7 +128,7 @@ export default {
       this.pluginService.getInfo().subscribe()
     },
     goToPlugin(route) {
-      this.$route.push({ name: route })
+      this.$router.push({ name: route })
     }
   }
 }
