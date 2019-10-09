@@ -21,7 +21,7 @@ export const columns = () => {
       scopedSlots: { customRender: 'flow_type' }
     },
     {
-      title: '创建时间',
+      title: '退款时间',
       dataIndex: 'flow_time',
       sorter: true
     },
