@@ -156,7 +156,7 @@ export default {
       start: moment().format('YYYY-MM-DD'),
       currentWeek: '',
       weeks: [],
-      btnFocusFlag: ''
+      btnFocusFlag: 'week'
     }
   },
   props: {
