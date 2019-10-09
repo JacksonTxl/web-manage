@@ -126,7 +126,6 @@
   }
 
   &__list > li {
-    width: 208px;
     background: @white;
     border-radius: 2px;
     border: 1px solid @white;
@@ -145,7 +144,8 @@
     }
     &:hover {
       border: 1px solid rgba(63, 102, 246, 0.45);
-      cursor: pointer;
+      .cur-p;
+      transition: all 0.3s;
     }
   }
 }
