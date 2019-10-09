@@ -40,8 +40,8 @@
       </st-form-item>
       <st-form-item
         label="教练等级"
-        :required="coach_level_required"
-        v-show="coach_level_required"
+        :required="!canDeleteIdentity || coach_level_required"
+        v-show="!canDeleteIdentity || coach_level_required"
       >
         <a-select
           v-decorator="decorators.coach_level_id"
