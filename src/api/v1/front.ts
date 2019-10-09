@@ -80,6 +80,12 @@ export class FrontApi extends Api {
     return this.http.delete(`/v1/front/entrance/leave/${id}`)
   }
   /**
+   * 离场之前判断柜子是否是智能柜
+   */
+  getCabinetInfo(id: string) {
+    return this.http.get(`/v1/front/cabinet/member/${id}/temporary`)
+  }
+  /**
    * 批量离场
    */
   setEntranceLeaveBatch(params: SetEntranceLeaveBatchInput) {

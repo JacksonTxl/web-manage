@@ -180,6 +180,14 @@ export default {
     },
     areaName() {
       return this.currentArea.area_name
+    },
+    listMap() {
+      const list = this.resData.list
+      const map = new Map()
+      list.map(item => {
+        map.set(item.id, item)
+      })
+      return map
     }
   },
   created() {
@@ -266,11 +274,7 @@ export default {
       this.checked = checked
     },
     onDelCabinet() {
-      const flagText = this.cabinetService.validSelectedData(
-        this.resData.list,
-        this.checked,
-        this.query.type
-      )
+      const flagText = this.validSelectedData()
       if (flagText === 'smart') {
         this.$error({
           title: '当前选中柜子有智能储物柜，若需删除，请联系三体工作人员',
@@ -328,6 +332,22 @@ export default {
           change: this.onCabinetListChange
         }
       })
+    },
+    validSelectedData() {
+      const type = this.query.type
+      for (let i = 0; i < this.checked.length; i++) {
+        const temp = this.listMap.get(this.checked[i])
+        if (temp.is_smart) {
+          return 'smart'
+        }
+        if (type === 'long-term' && temp.sale_status > 0) {
+          return 'using'
+        }
+        if (type === 'temporary' && temp.cabinet_business_type === 2) {
+          return 'using'
+        }
+      }
+      return 'none'
     }
   }
 }

@@ -37,23 +37,29 @@
       .shop-reception-cabinet__item-repair-text {
         bottom: 33px;
       }
+      .shop-reception-cabinet-item--using__action {
+        display: block;
+      }
     }
-    &-normal-using {
+    &--normal-using {
       border-color: @warning-color;
     }
-    &-using {
+    &--using {
       border-color: @warning-color;
       &:hover {
         .shop-reception-cabinet-item-using__title {
           margin-bottom: 17px;
         }
+        .shop-reception-cabinet-item--using__action {
+          display: block;
+        }
       }
     }
-    &-broken {
+    &--broken {
       border-color: @broken-color;
       background: rgba(226, 226, 226, 1);
     }
-    &-repair {
+    &--repair {
       border-color: @warning-color;
       background: rgba(237, 237, 237, 1);
     }
@@ -104,14 +110,16 @@
     bottom: 16px;
     color: rgba(0, 0, 0, 0.25);
     margin: 0;
+    transition: all 0.4s ease-in-out 0;
   }
   &__item-repair-text {
     position: absolute;
     bottom: 16px;
     color: #ccac77;
     margin: 0;
+    transition: all 0.4s ease-in-out 0;
   }
-  .shop-reception-cabinet-item-using {
+  .shop-reception-cabinet-item--using {
     font-size: 12px;
     &__title {
       color: #5e6a7f;
@@ -123,6 +131,8 @@
       margin: 4px 0 0 0;
     }
     &__action {
+      cursor: pointer;
+      display: none;
       width: 113px;
       background: rgba(235, 239, 255, 1);
       text-align: center;

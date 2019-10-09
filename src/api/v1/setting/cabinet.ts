@@ -1,25 +1,74 @@
-import { Api } from '@/api/api'
-const url = '/v1/setting/cabinet'
-export class CabinetApi extends Api {
-  add(params: AddInput) {
-    return this.http.post(url, { params })
+import { LongTermCabinetApi } from './cabinet/long-term'
+import { TemporaryCabinetApi } from './cabinet/temporary'
+import { HttpService } from '@/services/http.service'
+import { AppConfig } from '@/constants/config'
+import { Injectable } from 'vue-service-app'
+@Injectable()
+export class CabinetApi {
+  constructor(
+    private longTermCabinetApi: LongTermCabinetApi,
+    private temporaryCabinetApi: TemporaryCabinetApi,
+    private http: HttpService,
+    private appConfig: AppConfig
+  ) {}
+  /**
+   * 新增储物柜
+   * @param params
+   */
+  add(params: AddInput, type: string) {
+    if (type === 'long-term') {
+      return this.longTermCabinetApi.add(params)
+    }
+    return this.temporaryCabinetApi.add(params)
   }
+  /**
+   * 删除储物柜
+   * @param id
+   */
+  del(id: number, type: string) {
+    if (type === 'long-term') {
+      return this.longTermCabinetApi.del(id)
+    }
+    return this.temporaryCabinetApi.del(id)
+  }
+  /**
+   * 获取储物柜列表
+   */
+  getList(id: number, type: string) {
+    if (type === 'long-term') {
+      return this.longTermCabinetApi.getList(id)
+    }
+    return this.temporaryCabinetApi.getList(id)
+  }
+  /**
+   * 储物柜编辑回显
+   * @param id
+   */
+  getUpdateInfo(id: number, type: string) {
+    if (type === 'long-term') {
+      return this.longTermCabinetApi.getUpdateInfo(id)
+    }
+    return this.temporaryCabinetApi.getUpdateInfo(id)
+  }
+  /**
+   * 编辑储物柜
+   * @param params
+   */
+  update(params: UpdateInput, type: string) {
+    if (type === 'long-term') {
+      return this.longTermCabinetApi.update(params)
+    }
+    return this.temporaryCabinetApi.update(params)
+  }
+
   /**
    * 单个/批量删除储物柜
    * @param params
    */
-  del(params: DelInput) {
-    return this.http.put(url, { params })
+  deleteCabinet(params: DelInput) {
+    return this.http.put(`/v1/setting/cabinet`, { params })
   }
-  getUpdateInfo(id: number) {
-    return this.http.get(`${url}/${id}`)
-  }
-  update(params: UpdateInput) {
-    return this.http.put(`${url}/${params.id}`, { params })
-  }
-  getList() {
-    return this.http.get(url)
-  }
+
   /**
    * 远程开柜
    * @param params

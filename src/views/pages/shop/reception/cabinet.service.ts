@@ -25,7 +25,7 @@ export class CabinetService implements RouteGuard {
   ) {}
   @Effect()
   del(params: DelInput) {
-    return this.cabinetApi.del(params)
+    return this.cabinetApi.deleteCabinet(params)
   }
   sort(list: any[]) {
     list = list.map((item, index) => {

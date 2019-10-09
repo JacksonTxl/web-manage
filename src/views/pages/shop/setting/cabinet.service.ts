@@ -32,7 +32,7 @@ export class CabinetService implements RouteGuard {
   }
   @Effect()
   del(params: DelInput) {
-    return this.cabinetApi.del(params)
+    return this.cabinetApi.deleteCabinet(params)
   }
   sort(list: any[]) {
     list = list.map((item, index) => {
@@ -42,24 +42,6 @@ export class CabinetService implements RouteGuard {
       }
     })
     return this.areaService.sort({ list })
-  }
-  validSelectedData(list: [], checkList: [], type: string) {
-    const map = new Map()
-    list.map((item: any) => {
-      map.set(item.id, item)
-    })
-    for (let i = 0; i < checkList.length; i++) {
-      const temp = map.get(checkList[i])
-      if (temp.is_smart) {
-        return 'smart'
-      }
-      if (type === 'long-term' && temp.sale_status > 0) {
-        return 'using'
-      } else if (temp.cabinet_business_type === 2) {
-        return 'using'
-      }
-    }
-    return 'none'
   }
   beforeRouteEnter(to: ServiceRoute, form: ServiceRoute, next: any) {
     const id = to.meta.query.id

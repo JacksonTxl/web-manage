@@ -42,7 +42,7 @@
               "
             >
               <div :class="b('item-status')">空闲</div>
-              <div :class="b('item-price')" v-if="cabinetType">
+              <div :class="b('item-price')" v-if="isCabinetType">
                 ¥{{ item.price_num || 0 }}/天
               </div>
             </div>
@@ -54,10 +54,10 @@
               "
             >
               <p :class="bItemUsing('title')">{{ item.user_name }}</p>
-              <p :class="bItemUsing('time')" v-if="cabinetType">
+              <p :class="bItemUsing('time')" v-if="isCabinetType">
                 到期时间
               </p>
-              <p :class="bItemUsing('time')" v-if="cabinetType">
+              <p :class="bItemUsing('time')" v-if="isCabinetType">
                 {{ item.end_time }}
               </p>
             </div>
@@ -81,30 +81,19 @@
             </p>
             <div
               :class="bItemUsing('action')"
-              v-if="
-                item.is_smart &&
-                  cabinetUsingItem(item).cabinet_business_type ===
-                    CABINET_BUSINESS_TYPE.USING &&
-                  editFlag === `enter-${item.id}` &&
-                  auth.edit &&
-                  !isOperationInBatch
-              "
+              v-if="cabinetItemAction(item) === 'smart-cabinet'"
+              @click="openCabinetModal(item)"
             >
-              <a @click="openCabinetModal(item)">
+              <a>
                 远程开柜
               </a>
             </div>
             <div
               :class="bItemUsing('action')"
-              v-if="
-                cabinetUsingItem(item).cabinet_business_type !==
-                  CABINET_BUSINESS_TYPE.USING &&
-                  editFlag === `enter-${item.id}` &&
-                  auth.edit &&
-                  !isOperationInBatch
-              "
+              v-if="cabinetItemAction(item) === 'cabinet-edit'"
+              @click="editCabinetModal(item)"
             >
-              <a @click="editCabinetModal(item)">
+              <a>
                 编辑
               </a>
             </div>
@@ -131,8 +120,8 @@ import { RouteService } from '@/services/route.service'
 export default {
   bem: {
     b: 'shop-reception-cabinet',
-    bItemUsing: 'shop-reception-cabinet-item-using',
-    bItemBroken: 'shop-reception-cabinet-item-broken'
+    bItemUsing: 'shop-reception-cabinet-item--using',
+    bItemBroken: 'shop-reception-cabinet-item--broken'
   },
   serviceInject() {
     return {
@@ -184,7 +173,7 @@ export default {
       })
       return ret
     },
-    cabinetType() {
+    isCabinetType() {
       return this.query.type === 'long-term'
     }
   },
@@ -199,8 +188,27 @@ export default {
     }
   },
   methods: {
+    cabinetItemAction(item) {
+      if (
+        item.is_smart && // 是否是智能柜
+        this.cabinetUsingItem(item).cabinet_business_type ===
+          this.CABINET_BUSINESS_TYPE.USING && // 是否是使用状态
+        this.auth.edit && // 是否有编辑权限
+        !this.isOperationInBatch // 是否是批量编辑状态
+      ) {
+        return 'smart-cabinet'
+      }
+      if (
+        this.cabinetUsingItem(item).cabinet_business_type !==
+          this.CABINET_BUSINESS_TYPE.USING && // 是否是使用状态
+        this.auth.edit && // 是否有编辑权限
+        !this.isOperationInBatch // 是否是批量编辑状态
+      ) {
+        return 'cabinet-edit'
+      }
+    },
     cabinetUsingItem(item) {
-      if (this.cabinetType && item.sale_status === 1) {
+      if (this.isCabinetType && item.sale_status === 1) {
         item.cabinet_business_type = 2
       }
       return item
@@ -212,16 +220,16 @@ export default {
           cabinet = ''
           break
         case this.CABINET_BUSINESS_TYPE.USING:
-          cabinet = 'shop-reception-cabinet__item-normal-using'
+          cabinet = 'shop-reception-cabinet__item--normal-using'
           if (item.is_smart) {
-            cabinet = 'shop-reception-cabinet__item-using'
+            cabinet = 'shop-reception-cabinet__item--using'
           }
           break
         case this.CABINET_BUSINESS_TYPE.BROKEN:
-          cabinet = 'shop-reception-cabinet__item-broken'
+          cabinet = 'shop-reception-cabinet__item--broken'
           break
         case this.CABINET_BUSINESS_TYPE.REPAIR:
-          cabinet = 'shop-reception-cabinet__item-repair'
+          cabinet = 'shop-reception-cabinet__item--repair'
           break
       }
       return cabinet

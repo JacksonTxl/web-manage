@@ -176,6 +176,11 @@ export class IndexService implements RouteGuard {
   editEntranceCabinet(params: EditEntranceCabinetInput) {
     return this.frontApi.editEntranceCabinet(params)
   }
+  // 离场之前获取柜子信息进行判断是否是智能柜
+  @Effect()
+  getCabinetInfo(id: string) {
+    return this.frontApi.getCabinetInfo(id)
+  }
   // 离场
   @Effect()
   setEntranceLeave(id: string) {

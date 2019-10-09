@@ -83,7 +83,7 @@ import { CabinetAreaService as AreaService } from '../setting/components#/area.s
 import CabinetList from './components#/cabinet-list'
 import Draggable from 'vuedraggable'
 import { CABINET, CABINET_BUSINESS_TYPE } from '@/constants/reception/cabinet'
-
+import { find } from 'lodash-es'
 export default {
   bem: {
     b: 'page-setting-cabinet'
@@ -153,7 +153,6 @@ export default {
   methods: {
     initQueryId() {
       const list = this.list
-      const queryId = this.query.id
       const id = (list[0] && list[0].id) || 0
       this.$router.push({
         query: {
@@ -234,20 +233,13 @@ export default {
       })
     },
     getUsingCabinetNum() {
-      let num = 0
-      const map = new Map()
-      this.cabinetList.map(item => {
-        map.set(item.id, item)
-      })
-      this.checked.map(item => {
-        if (
-          map.get(item).cabinet_business_type ===
-          this.CABINET_BUSINESS_TYPE.USING
-        ) {
-          num++
-        }
-      })
-      return num
+      const checkedCabinets = this.checked.map(id =>
+        find(this.cabinetList, { id })
+      )
+      const checkedUsingCabinets = checkedCabinets.filter(
+        item => item.cabinet_business_type === this.CABINET_BUSINESS_TYPE.USING
+      )
+      return checkedUsingCabinets.length
     }
   }
 }
