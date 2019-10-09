@@ -5,6 +5,13 @@
   justify-content: center;
   height: 100%;
   background: #f8f8f8;
+  .page-login-logo {
+    position: absolute;
+    top: 23px;
+    left: 47px;
+    height: 33px;
+    width: 120px;
+  }
   .page-login-ch-en {
     position: absolute;
     height: 72px;
@@ -21,7 +28,7 @@
     }
   }
   .page-login {
-    .s(960px, 516px);
+    .s(1000px, 550px);
     .bg(#fff);
     box-shadow: 0px 0px 20px 0px rgba(196, 193, 219, 0.2);
     border-radius: 4px;
@@ -45,15 +52,8 @@
   }
   .lf {
     position: relative;
-    .w(420px);
+    .w(491px);
     .h(100%);
-    > footer {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      text-align: center;
-    }
     &-help {
       list-style-type: none;
       display: flex;
@@ -79,9 +79,8 @@
       position: absolute;
       top: 0;
       right: 0;
-      .s(420px, 516px);
-      background: url(https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/bg-login-%402x.png)
-        top center no-repeat;
+      .s(491px, 550px);
+      background: url('~@/assets/img/login-bg.png') top center no-repeat;
       background-size: cover;
     }
   }
@@ -102,6 +101,22 @@
   }
   .st-icon {
     color: #fff;
+  }
+  .page-login-footer {
+    position: absolute;
+    bottom: 23px;
+    &__text {
+      margin-bottom: 9px;
+      text-align: center;
+      color: #3e4d5c;
+      .fz(14px);
+      font-weight: 400;
+      .lh(20px);
+    }
+    &__copyright {
+      .fz(12px);
+      color: #9bacb9;
+    }
   }
 }
 @keyframes mymove {

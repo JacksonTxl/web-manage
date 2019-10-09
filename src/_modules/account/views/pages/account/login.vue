@@ -1,12 +1,18 @@
 <template>
   <div class="page-login-wapper">
+    <img src="" alt="三体云动" class="page-login-logo" />
     <div class="page-login-ch-en">
       <!-- <span class="mg-r24 active">中文</span>
       <span class="mg-r24">English</span> -->
     </div>
     <div class="page-login">
       <!-- 密码/二维码 -->
-      <!-- <i class="page-switch-login-type cursor-pointer" :class="{'qrcode-login':this.loginType==='qrcode'}" @click="switchLoginType" v-if="switchLoginTypeIsShow"></i> -->
+      <!-- <i
+        class="page-switch-login-type cursor-pointer"
+        :class="{ 'qrcode-login': this.loginType === 'qrcode' }"
+        @click="switchLoginType"
+        v-if="switchLoginTypeIsShow"
+      ></i> -->
       <i
         class="page-switch-login-type cursor-pointer"
         :class="{ 'qrcode-login': this.loginType === 'qrcode' }"
@@ -14,16 +20,6 @@
       ></i>
       <section class="lf">
         <div class="lf-bg"></div>
-        <footer>
-          <!-- <ul class="lf-help mg-b8">
-            <li class="item"><a href="">帮助</a></li>
-            <li class="item"><a href="">隐私</a></li>
-            <li class="item"><a href="">条款</a></li>
-          </ul> -->
-          <p class="lf-copyright">
-            版权所有&nbsp;©&nbsp;三体云动&nbsp;三体云智能科技有限公司
-          </p>
-        </footer>
       </section>
       <section class="rt">
         <div
@@ -79,6 +75,14 @@
         </div> -->
       </section>
     </div>
+    <div class="page-login-footer">
+      <p class="page-login-footer__text">
+        三体云动&nbsp;·&nbsp;用智能让生意更简单
+      </p>
+      <p class="page-login-footer__text page-login-footer__copyright">
+        copyright&nbsp;©&nbsp;2015-2019&nbsp;三体云智能科技有限公司
+      </p>
+    </div>
   </div>
 </template>
 
@@ -115,8 +119,8 @@ export default {
         { key: 'emailfind', name: '邮件找回' }
       ],
       loginTypes: [
-        { key: 'user', name: '用户密码登录' }
-        // { key: 'mobile', name: '手机动态密码登录' }
+        { key: 'user', name: '用户密码登录' },
+        { key: 'mobile', name: '手机动态密码登录' }
       ]
     }
   },

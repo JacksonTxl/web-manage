@@ -29,9 +29,9 @@
       <st-form-item class="mg-b0">
         <no-captcha></no-captcha>
       </st-form-item>
-      <!-- <st-form-item class="mg-b0">
-        <no-captcha id="no-captcha-2"/>
-      </st-form-item> -->
+      <st-form-item class="mg-b0">
+        <no-captcha id="no-captcha-2" />
+      </st-form-item>
       <st-form-item :class="mobile('captcha')">
         <a-input
           size="large"
@@ -43,11 +43,14 @@
           {{ buttonText }}
         </span>
       </st-form-item>
-      <!-- <st-form-item :class="mobile('pass')" class="mg-b16">
+      <st-form-item :class="mobile('pass')" class="mg-b16">
         <div :class="mobile('pass-content')">
-          <a-checkbox>我已阅读并同意<a href="./agreement" target="_blank">《用户注册协议》</a></a-checkbox>
+          <a-checkbox>
+            我已阅读并同意
+            <a href="./agreement" target="_blank">《用户注册协议》</a>
+          </a-checkbox>
         </div>
-      </st-form-item> -->
+      </st-form-item>
       <st-form-item class="mg-b0">
         <st-button
           :class="mobile('login-button')"
