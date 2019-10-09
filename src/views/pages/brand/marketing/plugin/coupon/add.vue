@@ -134,7 +134,7 @@
                   </a-radio>
                 </a-radio-group>
                 <select-shop
-                  style="border:1px solid #CDD4DF;padding:8px 12px;"
+                  style="border:1px solid #CDD4DF;padding:8px 12px;border-radius:4px"
                   v-if="showShopRange == '2'"
                   @change="onSelectShop"
                   :shopIds="shopIds"
