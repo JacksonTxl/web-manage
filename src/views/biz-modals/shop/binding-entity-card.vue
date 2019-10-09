@@ -7,7 +7,7 @@
     wrapClassName="shop-binding-card"
   >
     <section>
-      <st-form :form="form" @submit="save">
+      <st-form :form="form" @submit="save" labelWidth="67px">
         <st-info>
           <st-info-item label="姓名">{{ record.member_name }}</st-info-item>
           <st-info-item label="手机号">{{ record.mobile }}</st-info-item>
