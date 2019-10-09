@@ -18,9 +18,15 @@
         @change="onChange"
         class="full-width"
       >
-        <div :class="b()">
+        <div :class="[b()]">
           <div
-            :class="[b('item'), cabinetClass(item)]"
+            :class="[
+              b('item'),
+              cabinetClass(item),
+              isOperationInBatch
+                ? 'shop-reception-cabinet-forbidden-hover__item'
+                : ''
+            ]"
             v-for="(item, index) in list"
             :key="index"
             @mouseenter="mouseEventHander('enter', item.id)"
