@@ -2,7 +2,11 @@
   <a-row>
     <a-col :lg="24">
       <a-col :lg="18">
-        <a-range-picker @change="onChooseDate" format="YYYY-MM-DD" />
+        <a-range-picker
+          @change="onChooseDate"
+          :disabledDate="disabledDate"
+          format="YYYY-MM-DD"
+        />
       </a-col>
       <a-col :lg="6">
         <st-input-search
@@ -62,6 +66,19 @@ export default {
     this.id = this.$route.meta.query.id
   },
   methods: {
+    range(start, end) {
+      const result = []
+      for (let i = start; i < end; i++) {
+        result.push(i)
+      }
+      return result
+    },
+
+    disabledDate(current) {
+      return (
+        current && current.format('YYYY-MM-DD') > moment().format('YYYY-MM-DD')
+      )
+    },
     goMemberDetai(e) {
       console.log('跳转到用户详情', e)
       this.$router.push({
