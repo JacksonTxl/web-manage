@@ -199,7 +199,7 @@ export default {
   filters: {
     timeStr(val) {
       const time = val - 1
-      return time < 9 ? `0${time}:00` : `${time}:00`
+      return time <= 9 ? `0${time}:00` : `${time}:00`
     },
     dateString(val) {
       let weekOfday = moment(val.date).format('E')

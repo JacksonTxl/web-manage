@@ -19,7 +19,7 @@ export class OperationRecordService implements RouteGuard {
       })
     )
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+  beforeEach(to: ServiceRoute) {
     return this.getList(to.meta.query, 'member')
   }
 }

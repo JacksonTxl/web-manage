@@ -38,7 +38,11 @@
           v-if="!canDeleteIdentity && tips.length"
         ></staff-modal-tips>
       </st-form-item>
-      <st-form-item label="教练等级" required v-show="coach_level_required">
+      <st-form-item
+        label="教练等级"
+        :required="!canDeleteIdentity || coach_level_required"
+        v-show="!canDeleteIdentity || coach_level_required"
+      >
         <a-select
           v-decorator="decorators.coach_level_id"
           placeholder="请选择教练等级"
@@ -229,6 +233,11 @@ export default {
     onSubmit(e) {
       e.preventDefault()
       this.form.validate().then(values => {
+        let form = cloneDeep(values)
+        // 如果选择职位从私人教练到其他职位时，将教练等级值置为 undefined
+        if (!this.coach_level_required && this.canDeleteIdentity) {
+          form.coach_level_id = undefined
+        }
         this.updateStaffPositionService
           .putStaffBindPosition({
             id: this.staff.id,

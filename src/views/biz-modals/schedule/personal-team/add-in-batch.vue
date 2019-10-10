@@ -3,7 +3,7 @@
     wrapClassName="modal-schedule-team-add-course-batch"
     title="批量新增课程排期"
     @ok="onOkSaveForm"
-    width="1220px"
+    width="1150px"
     v-model="show"
   >
     <st-table
@@ -105,6 +105,7 @@
             @change="
               e => handleChange(e.target.value, record.key, 'course_fee')
             "
+            maxlength="6"
           >
             <span slot="suffix">元/节</span>
           </a-input>

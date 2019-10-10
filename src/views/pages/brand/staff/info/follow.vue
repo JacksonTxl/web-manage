@@ -9,7 +9,11 @@
           v-model="query.shop_id"
           @change="onSingleSearch('shop_id', $event)"
         />
-        <a-range-picker @change="onChooseDate" format="YYYY-MM-DD" />
+        <a-range-picker
+          @change="onChooseDate"
+          :disabledDate="disabledDate"
+          format="YYYY-MM-DD"
+        />
       </a-col>
       <a-col :lg="2"></a-col>
       <a-col :lg="6">
@@ -77,6 +81,19 @@ export default {
     // this.pagination.total = this.followList.page.total_counts
   },
   methods: {
+    range(start, end) {
+      const result = []
+      for (let i = start; i < end; i++) {
+        result.push(i)
+      }
+      return result
+    },
+
+    disabledDate(current) {
+      return (
+        current && current.format('YYYY-MM-DD') > moment().format('YYYY-MM-DD')
+      )
+    },
     goMemberDetail(e) {
       console.log('跳转到用户详情', e)
       let member_id = e.member_id

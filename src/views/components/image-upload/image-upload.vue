@@ -187,8 +187,7 @@ export default {
         maskUrl:
           'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-invitation-4.png'
       },
-      uploadShowFlag: false,
-      stopMouseEvent: true
+      uploadShowFlag: false
     }
   },
   computed: {
@@ -317,7 +316,6 @@ export default {
         })
     },
     onDel(index) {
-      this.stopMouseEvent = true
       const { fileList } = this
       const deletedFile = fileList.splice(index, 1)
       this.fileList = fileList
@@ -390,14 +388,10 @@ export default {
       })
     },
     onMouseenterShowBtn() {
-      if (!this.stopMouseEvent) {
-        this.uploadShowFlag = true
-      }
+      this.uploadShowFlag = true
     },
     onMouseenterHideBtn() {
-      if (!this.stopMouseEvent) {
-        this.uploadShowFlag = false
-      }
+      this.uploadShowFlag = false
     }
   }
 }
