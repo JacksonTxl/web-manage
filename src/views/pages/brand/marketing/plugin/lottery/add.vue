@@ -46,7 +46,7 @@
                   <img
                     style="width: 110px;
                     margin-left: -10px;
-                    margin-top: -6px;"
+                    "
                     :src="
                       notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM
                         ? notPrize.prize.image_url
