@@ -22,7 +22,7 @@
           <div
             :class="[
               b('item'),
-              cabinetClass(item),
+              item.cabinetClass,
               isOperationInBatch
                 ? 'shop-reception-cabinet-forbidden-hover__item'
                 : ''
@@ -218,27 +218,6 @@ export default {
         item.cabinet_business_type = 2
       }
       return item
-    },
-    cabinetClass(item) {
-      let cabinet = ''
-      switch (this.cabinetUsingItem(item).cabinet_business_type) {
-        case this.CABINET_BUSINESS_TYPE.AVAILABLE:
-          cabinet = ''
-          break
-        case this.CABINET_BUSINESS_TYPE.USING:
-          cabinet = 'shop-reception-cabinet__item--normal-using'
-          if (item.is_smart) {
-            cabinet = 'shop-reception-cabinet__item--using'
-          }
-          break
-        case this.CABINET_BUSINESS_TYPE.BROKEN:
-          cabinet = 'shop-reception-cabinet__item--broken'
-          break
-        case this.CABINET_BUSINESS_TYPE.REPAIR:
-          cabinet = 'shop-reception-cabinet__item--repair'
-          break
-      }
-      return cabinet
     },
     openCabinetModal(item) {
       this.$modalRouter.push({
