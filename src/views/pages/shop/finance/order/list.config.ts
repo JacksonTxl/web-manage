@@ -33,7 +33,6 @@ export const columns = () => {
     {
       title: '手机号',
       dataIndex: 'member_mobile',
-      align: 'right',
       scopedSlots: { customRender: 'member_mobile' }
     },
     {

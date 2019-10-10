@@ -37,12 +37,12 @@
         </a-select>
       </st-form-item>
       <st-form-item label="人数" required>
-        <a-input-search v-decorator="decorators.limit_num">
+        <a-input-search v-decorator="decorators.limit_num" type="number">
           <a-button slot="enterButton">人</a-button>
         </a-input-search>
       </st-form-item>
       <st-form-item label="课时费" required>
-        <a-input-search v-decorator="decorators.course_fee">
+        <a-input-search v-decorator="decorators.course_fee" type="number">
           <a-button slot="enterButton">元/节</a-button>
         </a-input-search>
       </st-form-item>

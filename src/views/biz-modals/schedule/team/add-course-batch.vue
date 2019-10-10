@@ -1,9 +1,9 @@
 <template>
   <st-modal
-    class="modal-reserved"
+    wrapClassName="modal-schedule-team-add-course-batch"
     title="批量新增课程排期"
     @ok="onOkSaveForm"
-    width="1366px"
+    width="1220px"
     v-model="show"
   >
     <st-table :columns="columns" :page="false" :dataSource="data" bordered>
@@ -108,7 +108,7 @@
         <div>
           <a-input
             v-if="record.editable"
-            style="margin: -5px 0;width:80px;"
+            style="margin: -5px 0;width:110px;"
             :value="text"
             @change="
               e => handleChange(e.target.value, record.key, 'course_fee')
@@ -143,6 +143,9 @@ import { MessageService } from '@/services/message.service'
 import { columns } from './add-course-batch.config'
 export default {
   name: 'AddCourseScheduleBatch',
+  bem: {
+    b: 'modal-schedule-team-add-course-batch'
+  },
   serviceInject() {
     return {
       teamScheduleCommonService: TeamScheduleCommonService,
