@@ -142,7 +142,7 @@ export default {
       isSalaryCourse: false,
       tips: [],
       operate: false,
-      canDeleteIdentity: false,
+      canDeleteIdentity: true,
       coach_level_required: false
     }
   },
