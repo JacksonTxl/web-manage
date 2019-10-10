@@ -6,7 +6,8 @@
           size="large"
           :class="mobile('phone-input')"
           placeholder="请输入手机号码"
-          v-decorator="rules.phone"
+          v-decorator="decorators.phone"
+          @change="onChangePhone"
         />
         <a-dropdown :class="mobile('phone-dropdown')">
           <span class="cursor-pointer">
@@ -37,7 +38,7 @@
           size="large"
           :class="mobile('captcha-input')"
           placeholder="请输入验证码"
-          v-decorator="rules.captcha"
+          v-decorator="decorators.captcha"
         />
         <span :class="mobile('captcha-button')" @click="onClickCaptcha">
           {{ buttonText }}
@@ -47,7 +48,7 @@
         <div :class="mobile('pass-content')">
           <a-checkbox>
             我已阅读并同意
-            <a href="./agreement" target="_blank">《用户服务协议》</a>
+            <a @click="clickAgreement">《用户服务协议》</a>
           </a-checkbox>
         </div>
       </st-form-item>
@@ -72,10 +73,11 @@
 
 <script>
 import { LoginService } from '../login.service'
-import { rules } from './mobile.config'
 import { PatternService } from '@/services/pattern.service'
 import { NoCaptchaService } from '@/services/no-captcha.service'
 import NoCaptcha from './no-captcha'
+import AccountAgreement from '@/views/biz-modals/account/agreement'
+import { ruleOptions } from './mobile.config'
 
 export default {
   name: 'LoginMobile',
@@ -98,9 +100,15 @@ export default {
       default: () => {}
     }
   },
+  modals: {
+    AccountAgreement
+  },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      form: this.$form.createForm(this),
+      form,
+      decorators,
       time: 60,
       captcha: '',
       isClick: false,
@@ -109,12 +117,32 @@ export default {
     }
   },
   computed: {
-    rules,
     buttonText() {
       return this.isClick ? `${this.time}s后获取验证码` : `获取验证码`
     }
   },
   methods: {
+    clickAgreement() {
+      this.$modalRouter.push({
+        name: 'account-agreement',
+        props: {},
+        on: {}
+      })
+    },
+    onChangePhone(event) {
+      console.log(event)
+      this.form.validateFields(['phone'], (err, values) => {
+        console.log(err)
+        if (!err) {
+          const { phone } = values
+          const params = {
+            phone,
+            country_code_id: 86
+          }
+          this.validPhoneIsBind(params)
+        }
+      })
+    },
     onClickCaptcha() {
       if (this.isClick) {
         return
@@ -128,6 +156,11 @@ export default {
           }
           this.getCaptcha(params)
         }
+      })
+    },
+    validPhoneIsBind(params) {
+      this.loginService.checkPhoneIsBind(params).subscribe(res => {
+        console.log(res)
       })
     },
     getCaptcha(params) {

@@ -24,6 +24,13 @@ export class LoginApi extends Api {
   getCaptcha(params: LoginPhoneInput) {
     return this.http.post('/login/captcha/phone', { params })
   }
+  /**
+   * 校验手机是否已经绑定账户
+   * @param params
+   */
+  checkPhoneIsBind(params: any) {
+    return this.http.post('/login/phone/check', { params })
+  }
 }
 
 export interface LoginAccountInput {

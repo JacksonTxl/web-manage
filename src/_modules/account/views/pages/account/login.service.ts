@@ -41,4 +41,7 @@ export class LoginService {
   getCaptcha(params: any) {
     return this.loginApi.getCaptcha(params)
   }
+  checkPhoneIsBind(params: any) {
+    return this.loginApi.checkPhoneIsBind(params)
+  }
 }
