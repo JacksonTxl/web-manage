@@ -47,7 +47,7 @@
         <div :class="mobile('pass-content')">
           <a-checkbox>
             我已阅读并同意
-            <a href="./agreement" target="_blank">《用户注册协议》</a>
+            <a href="./agreement" target="_blank">《用户服务协议》</a>
           </a-checkbox>
         </div>
       </st-form-item>

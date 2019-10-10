@@ -27,13 +27,13 @@
               @change="onCheckboxChange('is_change_Agreen')"
             >
               我已阅读并同意
+              <a
+                :class="loginUser('wrapper-user-agreement')"
+                @click="clickAgreement"
+              >
+                《 用户服务协议 》
+              </a>
             </a-checkbox>
-            <a
-              :class="loginUser('wrapper-user-agreement')"
-              @click="clickAgreement"
-            >
-              《 用户服务协议 》
-            </a>
           </div>
           <!-- <span :class="loginUser('pass-content')">   @click="onOpenAgreement"
             <a href="javascript:;" @click="onClickFindPassword">忘记密码</a>
