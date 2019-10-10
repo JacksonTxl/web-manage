@@ -154,7 +154,7 @@ export default {
     initQueryId() {
       const list = this.list
       const id = (list[0] && list[0].id) || 0
-      this.$router.push({
+      this.$router.replace({
         query: {
           ...this.query,
           id
