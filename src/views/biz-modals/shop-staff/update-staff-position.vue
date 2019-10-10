@@ -111,6 +111,7 @@ import { MessageService } from '../../../services/message.service'
 import StaffInfo from './staff-info'
 import StaffModalTips from '@/views/biz-components/staff/staff-modal-tips'
 import { ruleOptions } from './update-staff-position.config'
+import { cloneDeep } from 'lodash-es'
 
 export default {
   serviceInject() {
