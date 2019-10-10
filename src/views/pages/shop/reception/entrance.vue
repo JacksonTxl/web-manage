@@ -28,7 +28,7 @@
       </div>
     </div>
     <st-table
-      :scroll="{ x: 1440 }"
+      :scroll="{ x: 800 }"
       :page="page"
       :alertSelection="{ onReset: onSelectionReset }"
       @change="onTableChange"
@@ -58,7 +58,7 @@
       <!-- 操作 -->
       <div slot="action" slot-scope="text, record">
         <st-table-actions>
-          <a @click="onLeave(record)" v-if="auth.checkout">离场</a>
+          <a @click="onLeaveConfirm(record)" v-if="auth.checkout">离场</a>
         </st-table-actions>
       </div>
     </st-table>
@@ -96,6 +96,21 @@ export default {
     columns
   },
   methods: {
+    // 离场之前的确认
+    onLeaveConfirm(record) {
+      this.entranceService.getCabinetInfo(record.member_id).subscribe(res => {
+        if (res.info.is_smart) {
+          this.$error({
+            title: `当前会员有储物柜「${res.info.cabinet_area_name}」「${
+              res.info.serial_num
+            }」尚未归还，请先归还！`,
+            okText: '知道了'
+          })
+        } else {
+          this.onLeave(record)
+        }
+      })
+    },
     // 离场
     onLeave(record) {
       this.$confirm({
