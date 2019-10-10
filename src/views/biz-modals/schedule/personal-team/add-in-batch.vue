@@ -1,9 +1,9 @@
 <template>
   <st-modal
-    class="modal-reserved"
+    wrapClassName="modal-schedule-team-add-course-batch"
     title="批量新增课程排期"
     @ok="onOkSaveForm"
-    width="1366px"
+    width="1220px"
     v-model="show"
   >
     <st-table
@@ -100,7 +100,7 @@
         <div>
           <a-input
             v-if="record.editable"
-            style="margin: -5px 0;width:100px;"
+            style="margin: -5px 0;width:110px;"
             :value="text"
             @change="
               e => handleChange(e.target.value, record.key, 'course_fee')

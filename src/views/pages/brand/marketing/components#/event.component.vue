@@ -1,7 +1,7 @@
 <template>
   <div :class="event()">
-    <st-form>
-      <st-form-item label="推广活动数">
+    <st-form labelWidth="71px">
+      <st-form-item label="推广活动数" :class="event('activity-wrapper')">
         <a-radio-group v-model="number">
           <a-radio :value="1">1</a-radio>
           <a-radio :value="2">2</a-radio>
@@ -9,7 +9,7 @@
           <a-radio :value="4">4</a-radio>
         </a-radio-group>
       </st-form-item>
-      <st-form-item label="活动展示">
+      <st-form-item label="活动展示" :class="event('activity-show-title')">
         <div
           v-for="(li, index) in list[number]"
           :key="index"
