@@ -1,14 +1,7 @@
 <template>
   <st-mina-panel :class="bPage()">
     <div slot="view" :class="bPage('left')">
-      <h5-container>
-        <template v-slot:title>
-          活动报名
-        </template>
-        <div>
-          {{ stepInfo.name }}
-        </div>
-      </h5-container>
+      <h5-view :stepInfo="stepInfo"></h5-view>
     </div>
     <div slot="form" :class="bPage('right')">
       <a-steps :current="currentStep" size="small">
@@ -38,17 +31,17 @@
   </st-mina-panel>
 </template>
 <script>
-import H5Container from '@/views/biz-components/h5/h5-container'
 import Step1Form from './components#/step1-form'
 import Step2Form from './components#/step2-form'
 import Step3Form from './components#/step3-form'
+import H5View from './components#/h5-view'
 export default {
   name: 'AddActivity',
   bem: {
     bPage: 'page-plugin-form-activity'
   },
   components: {
-    H5Container,
+    H5View,
     Step1Form,
     Step3Form,
     Step2Form
