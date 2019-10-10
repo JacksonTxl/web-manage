@@ -3,7 +3,7 @@
     <div slot="view" :class="bPage('left')">
       <h5-container>
         <template v-slot:title>
-          我的优惠券
+          活动报名
         </template>
         <div>
           {{ stepInfo.name }}
