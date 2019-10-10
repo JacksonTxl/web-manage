@@ -70,6 +70,7 @@
             placeholder="检索姓名或手机号查找用户"
             :defaultActiveFirstOption="false"
             :filterOption="false"
+            @popupScroll="scroll"
             @select="onMemberSelect"
             @search="onMemberSearch"
           >
@@ -89,6 +90,20 @@
               >
                 {{ item.member_name }} {{ item.mobile }}
               </span>
+            </a-select-option>
+            <a-select-option
+              :key="new Date() + Math.random()"
+              :class="reception('member-search-tip')"
+              v-if="!isSearchNone && page.current_page < page.total_pages"
+            >
+              下滑展示更多
+            </a-select-option>
+            <a-select-option
+              :class="reception('member-search-tip')"
+              :key="new Date() + Math.random()"
+              v-if="!isSearchNone && page.current_page >= page.total_pages"
+            >
+              已经到底啦
             </a-select-option>
           </a-select>
           <st-button
@@ -585,6 +600,7 @@ export default {
       coachList: this.indexService.coachList$,
       sellerList: this.indexService.sellerList$,
       memberList: this.indexService.memberList$,
+      page: this.indexService.page$,
       workNoteList: this.indexService.workNoteList$,
       workNoteDoneList: this.indexService.workNoteDoneList$,
       loading: this.indexService.loading$
@@ -796,12 +812,14 @@ export default {
       }
     },
     // 搜索会员
-    onMemberSearch(data) {
+    onMemberSearch(data, current_page, size) {
       this.memberSearchText = data.trim()
       if (data.trim() !== '') {
         this.lastMemberSearchText = data.trim()
         this.indexService.memberListAction$.dispatch({
-          keyword: data
+          keyword: data,
+          current_page: current_page || this.page.current_page,
+          size: size || this.page.size
         })
       }
     },
@@ -992,6 +1010,16 @@ export default {
             })
         }
       })
+    },
+    scroll(e) {
+      const { target } = e
+      if (target.scrollTop + target.offsetHeight === target.scrollHeight) {
+        if (this.page.current_page < this.page.total_pages) {
+          this.page.current_page = this.page.current_page + 1
+          this.onMemberSearch(this.memberSearchText, this.page.current_page) // 调用api方法
+        }
+      }
+      console.log(this.memberList.length)
     }
   }
 }
