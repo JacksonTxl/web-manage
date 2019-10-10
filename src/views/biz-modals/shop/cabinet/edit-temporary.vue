@@ -28,7 +28,7 @@
           class="full-width"
         />
       </st-form-item>
-      <st-form-item label="可用状态" required>
+      <!-- <st-form-item label="可用状态" required>
         <a-radio-group
           v-decorator="decorators.use_status"
           @change="onUseStatusChange"
@@ -49,7 +49,7 @@
           maxlength="30"
           :autosize="{ minRows: 3 }"
         />
-      </st-form-item>
+      </st-form-item> -->
     </st-form>
   </st-modal>
 </template>
