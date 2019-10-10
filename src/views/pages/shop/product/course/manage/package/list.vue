@@ -436,7 +436,7 @@ export default {
     },
     onOnsale() {
       this.form
-        .validate(['start_time', 'end_time'])
+        .validateFields(['start_time', 'end_time'])
         .then(res => {
           this.listService
             .onsalePackage({

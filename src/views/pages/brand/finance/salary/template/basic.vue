@@ -127,8 +127,7 @@ export default {
           align: 'right'
         },
         {
-          title: '应用员工',
-          align: 'right'
+          title: '应用员工'
         },
         {
           title: '创建时间'
