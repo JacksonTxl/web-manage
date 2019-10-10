@@ -14,8 +14,18 @@
       <div :class="bToolbar('right')">
         <slot name="toolbar-right"></slot>
         <a-button-group>
-          <st-button @click="onClickGetWeek">周</st-button>
-          <st-button @click="onClickGetCurrent">日</st-button>
+          <st-button
+            @click="onClickGetWeek"
+            :class="{ btnFocus: 'week' === btnFocusFlag }"
+          >
+            周
+          </st-button>
+          <st-button
+            @click="onClickGetCurrent"
+            :class="{ btnFocus: 'day' === btnFocusFlag }"
+          >
+            日
+          </st-button>
         </a-button-group>
         <st-button @click="onClickGetTable" class="mg-l32">
           <st-icon type="list"></st-icon>
@@ -35,11 +45,7 @@
           <div class="current-bar" :style="itemStyle">
             <span class="current-time-text">{{ currentTime }}</span>
           </div>
-          <ul class="time-group">
-            <li class="date">
-              <span class="date-text-day">{{ item | dateString }}</span>
-            </li>
-
+          <ul class="time-group daily-time-group">
             <schedule-unit
               :class="{
                 'first-unit': index === 0,
@@ -149,7 +155,8 @@ export default {
     return {
       start: moment().format('YYYY-MM-DD'),
       currentWeek: '',
-      weeks: []
+      weeks: [],
+      btnFocusFlag: 'week'
     }
   },
   props: {
@@ -250,6 +257,7 @@ export default {
       this.$emit('detail', info)
     },
     onClickGetCurrent() {
+      this.btnFocusFlag = 'day'
       let current = moment().format('YYYY-MM-DD')
       this.getWeeks()
       this.$router.push({
@@ -274,6 +282,7 @@ export default {
     },
 
     onClickGetWeek() {
+      this.btnFocusFlag = 'week'
       this.$router.push({ query: { ...this.currentWeek }, force: true })
       this.getWeeks('week')
     },
