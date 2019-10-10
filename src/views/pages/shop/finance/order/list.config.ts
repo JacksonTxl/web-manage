@@ -72,8 +72,8 @@ export const columns = () => {
     },
     {
       title: '支付时间',
-      dataIndex: 'pay_finished_time',
-      scopedSlots: { customRender: 'pay_finished_time' }
+      dataIndex: 'pay_last_time',
+      scopedSlots: { customRender: 'pay_last_time' }
     },
     {
       title: '销售',

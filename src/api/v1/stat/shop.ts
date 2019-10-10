@@ -52,6 +52,9 @@ export class StatApi {
       query
     })
   }
+  getSellList(query: CourseShopListQuery) {
+    return this.http.get('/v1/stat/sale/summary', { query })
+  }
 }
 export interface PersonalCourseQuery {
   current_page?: number
