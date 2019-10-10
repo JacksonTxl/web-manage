@@ -1,5 +1,6 @@
 const { wrapper, mock } = require('webpack-mocker-api')
 const mockJson = require('./mock.json')
+const checkinTableJson = require('./checkin-table.json')
 
 const mockerApis = {
   /**
@@ -9,6 +10,14 @@ const mockerApis = {
     data: {
       auth: ['123']
     }
+  },
+  'GET /_api/v1/plugin/sign_up/23677/roster'(req, res) {
+    console.log(req)
+    res.status(200).json(checkinTableJson)
+  },
+  'GET /_api/v1/plugin/sign_up/search'(req, res) {
+    console.log(req)
+    res.status(200).json(checkinTableJson)
   },
   'GET /_api/v1/plugin/sign_up': {
     data: {

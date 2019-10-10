@@ -1,6 +1,5 @@
 <template>
-  <ul>
-    daskjhdjsa
+  <ul class="steps-line">
     <slot></slot>
   </ul>
 </template>

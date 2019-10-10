@@ -105,6 +105,6 @@ export class SignUpApi extends Api {
    * 【签到验票】票号，手机号，用户姓名搜索
    */
   getSignUpSignList(query: any) {
-    return this.http.get(`v1/plugin/sign_up/search`, query)
+    return this.http.get(`/v1/plugin/sign_up/search`, query)
   }
 }
