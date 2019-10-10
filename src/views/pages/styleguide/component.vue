@@ -46,6 +46,7 @@ export default {
         { id: 'input-search', title: '搜索框' },
         { id: 'checkbox-button', title: '复选按钮组' },
         { id: 'recent-radio-group', title: '报表raido组' },
+        { id: 'btn-actions', title: '按钮操作组' },
         { id: 'range-picker', title: '时间范围选择' },
         { id: 'more-dropdown', title: '更多' },
         { id: 'modal', title: '模态窗' },

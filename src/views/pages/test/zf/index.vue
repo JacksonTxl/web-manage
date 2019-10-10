@@ -15,11 +15,19 @@
     <st-button @click="drawImage">点击绘制</st-button>
     <st-button @click="getImage">生成图片</st-button>
     {{ OPERATION_TYPES }}
+    <p>
+      <a v-modal-link="{ name: 'shop-cabinet-open' }">open</a>
+    </p>
   </st-panel>
 </template>
 <script>
 import { OPERATION_TYPES } from '@/constants/sold/operations'
+import ShopCabinetOpen from '@/views/biz-modals/shop/cabinet/open'
+
 export default {
+  modals: {
+    ShopCabinetOpen
+  },
   data() {
     return {
       OPERATION_TYPES: OPERATION_TYPES,

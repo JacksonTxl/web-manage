@@ -2,61 +2,40 @@
   <section :class="basic()">
     <st-panel title="私教课详情">
       <div slot="actions">
-        <st-button
-          v-if="auth['shop:sold:sold_personal_course|export_contract']"
-          class="mg-r8"
-          type="primary"
-          @click="toContract"
-        >
-          查看合同
-        </st-button>
-        <st-button
-          v-if="auth['shop:sold:sold_personal_course|frozen']"
-          class="mg-r8"
-          @click="onFreeze"
-        >
-          冻结
-        </st-button>
-        <st-button
-          v-if="auth['shop:sold:sold_personal_course|unfrozen']"
-          class="mg-r8"
-          @click="onUnfreeze"
-        >
-          取消冻结
-        </st-button>
-        <st-button
-          v-if="auth['shop:sold:sold_personal_course|change_coach']"
-          class="mg-r8"
-          @click="onEditCoach"
-        >
-          修改教练
-        </st-button>
-        <a-dropdown v-if="showMore">
-          <st-button>
-            更多操作
-            <a-icon type="down" />
-          </st-button>
-          <a-menu slot="overlay">
-            <a-menu-item
-              v-if="auth['shop:sold:sold_personal_course|course_num']"
-              @click="onSurplus"
-            >
-              修改剩余课时
-            </a-menu-item>
-            <a-menu-item
-              v-if="auth['shop:sold:sold_personal_course|transfer']"
-              @click="onTransfer"
-            >
-              转让
-            </a-menu-item>
-            <a-menu-item
-              v-if="auth['brand_shop:order:order|refund']"
-              @click="onRefund"
-            >
-              退款
-            </a-menu-item>
-          </a-menu>
-        </a-dropdown>
+        <st-btn-actions
+          :options="[
+            {
+              if: auth['shop:sold:sold_personal_course|export_contract'],
+              text: '查看合同',
+              click: toContract
+            },
+            {
+              if: auth['shop:sold:sold_personal_course|frozen'],
+              text: '冻结',
+              click: onFreeze
+            },
+            {
+              if: auth['shop:sold:sold_personal_course|unfrozen'],
+              text: '取消冻结',
+              click: onUnfreeze
+            },
+            {
+              if: auth['shop:sold:sold_personal_course|change_coach'],
+              text: '修改教练',
+              click: onEditCoach
+            },
+            {
+              if: auth['shop:sold:sold_personal_course|course_num'],
+              text: '修改剩余课时',
+              click: onTransfer
+            },
+            {
+              if: auth['brand_shop:order:order|refund'],
+              text: '退款',
+              click: onRefund
+            }
+          ]"
+        ></st-btn-actions>
       </div>
       <a-row :gutter="24">
         <a-col :span="9">
