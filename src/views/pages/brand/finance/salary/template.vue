@@ -1,5 +1,5 @@
 <template>
-  <st-panel :tabs="authTabs">
+  <st-panel :tabs="authTabs" app>
     <div slot="actions"></div>
     <router-view></router-view>
   </st-panel>
