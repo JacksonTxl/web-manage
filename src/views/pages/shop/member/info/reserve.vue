@@ -112,7 +112,7 @@
             {{ record.course_status.name }}
           </span>
           <span slot="coach_name" slot-scope="text">
-            {{ text }}
+            {{ coursequery.course_type === 1 ? text : '--' }}
           </span>
         </st-table>
       </a-col>
