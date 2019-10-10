@@ -1,6 +1,6 @@
 <template>
-  <div class="pages-brand-staff-info-member-container">
-    <a-row class="mg-t16">
+  <div class="pages-shop-staff-info-member-container">
+    <a-row>
       <a-col :lg="24">
         <a-col :lg="6">
           <st-input-search

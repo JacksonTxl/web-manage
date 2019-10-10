@@ -3,6 +3,7 @@ import { State } from 'rx-state'
 import { CourseApi } from '@/api/v1/sold/course'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
+import { RedirectService } from '@/services/redirect.service'
 
 @Injectable()
 export class InfoService implements RouteGuard {
@@ -10,7 +11,14 @@ export class InfoService implements RouteGuard {
   id = ''
   loading$ = new State({})
   auth$ = new State({})
-  constructor(private courseApi: CourseApi, private authService: AuthService) {}
+  authTabs$ = this.redirectService.getAuthTabs$(
+    'shop-sold-course-info-personal-info'
+  )
+  constructor(
+    private courseApi: CourseApi,
+    private authService: AuthService,
+    private redirectService: RedirectService
+  ) {}
   getPackageInfo(id: string, type: string) {
     return this.courseApi.getCourseInfo(id, type).pipe(
       tap((res: any) => {

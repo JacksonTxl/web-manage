@@ -1,6 +1,78 @@
-@import '_preview-item.less';
-@import '_link.less';
-@import '_icon.less';
-@import '_form.less';
-@import '_text.less';
 @import '_no-captcha.less';
+@import '_sold-operation.less';
+
+// 组件样式 需要.st命名空间
+
+// 人脸头像
+.st-image-face {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+// 表单input单位宽度设置
+.st-form-item-unit {
+  .w(50px);
+}
+
+// 认证图标
+.st-icon-certified {
+  display: inline-block;
+  vertical-align: middle;
+  .s(18px, 18px);
+  .bg(url('~@/assets/img/brand_badge.png') center center no-repeat);
+  background-size: 100%;
+}
+
+// 副link
+.st-link-secondary {
+  .c(@text);
+  &:hover {
+    .c(@link-color);
+  }
+}
+
+// 预览图
+.st-preview-item {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  img {
+    transition: all 0.5s;
+    &:hover {
+      cursor: pointer;
+      transform: scale(1.25);
+    }
+  }
+  &--cover {
+    img {
+      object-fit: cover;
+    }
+  }
+}
+
+// 说明文字
+.st-des {
+  .fz(12px);
+  .c(#9bacb9);
+  .fw-n;
+}
+
+// tooltip 重置样式
+.st-light-tooltip {
+  .ant-tooltip-content {
+    .ant-tooltip-arrow {
+      border-top-color: @white;
+    }
+    .ant-tooltip-inner {
+      background-color: @white;
+      .c(@text);
+    }
+  }
+}
+
+.ant-select-dropdown {
+  .global-highlight-color {
+    .c(@link-color);
+  }
+}

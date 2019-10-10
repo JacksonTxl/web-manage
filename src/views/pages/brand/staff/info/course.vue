@@ -1,67 +1,66 @@
 <template>
-  <div>
-    <a-row class="mg-t16">
-      <a-col :lg="24">
-        <a-col :lg="16">
-          <shop-select
-            class="mg-r8"
-            style="width: 160px"
-            v-model="query.shop_id"
-            @change="onSingleSearch('shop_id', $event)"
-          ></shop-select>
-          <a-range-picker
-            class="mg-r8"
-            @change="onChooseDate"
-            format="YYYY-MM-DD"
-          />
-          <a-select
-            style="width: 160px;"
-            :defaultValue="-1"
-            placeholder="请选择预约状态"
-            @change="onSingleSearch('schedule_status', $event)"
-            :options="reserveStatus"
-          ></a-select>
-        </a-col>
-        <a-col :lg="2"></a-col>
-        <a-col :lg="6">
-          <st-input-search
-            placeholder="请输入课程名称"
-            @search="onSingleSearch('course_name', $event)"
-          />
-        </a-col>
+  <a-row>
+    <a-col :lg="24">
+      <a-col :lg="16">
+        <shop-select
+          class="mg-r8"
+          style="width: 160px"
+          :defaultValue="-1"
+          v-model="query.shop_id"
+          @change="onSingleSearch('shop_id', $event)"
+        ></shop-select>
+        <a-range-picker
+          class="mg-r8"
+          @change="onChooseDate"
+          format="YYYY-MM-DD"
+        />
+        <a-select
+          style="width: 160px;"
+          :defaultValue="-1"
+          placeholder="请选择预约状态"
+          @change="onSingleSearch('schedule_status', $event)"
+          :options="reserveStatus"
+        ></a-select>
       </a-col>
-      <a-col :lg="24" class="mg-t16">
-        <st-table
-          :columns="courseColums"
-          :dataSource="courseInfo"
-          :scroll="{ x: 1000 }"
-          :loading="loading.getCoursesList"
-          :page="page"
-          rowKey="id"
-          @change="onTableChange"
-        >
-          <template slot="schedule_status" slot-scope="text, record">
-            <!-- 课程状态 -->
-            {{ record.schedule_status.name }}
-          </template>
-          <template slot="course_type" slot-scope="text, record">
-            <!-- 课程类型 -->
-            {{ record.course_type.name }}
-          </template>
-          <template slot="course_name" slot-scope="text, record">
-            <a href="javascript:;" class="mg-r8" @click="goCourseDetai(record)">
-              {{ text }}
-            </a>
-          </template>
-          <!-- <template slot="action" slot-scope="text, record">
+      <a-col :lg="2"></a-col>
+      <a-col :lg="6">
+        <st-input-search
+          placeholder="请输入课程名称"
+          @search="onSingleSearch('course_name', $event)"
+        />
+      </a-col>
+    </a-col>
+    <a-col :lg="24" class="mg-t16">
+      <st-table
+        :columns="courseColums"
+        :dataSource="courseInfo"
+        :scroll="{ x: 1000 }"
+        :loading="loading.getCoursesList"
+        :page="page"
+        rowKey="id"
+        @change="onTableChange"
+      >
+        <template slot="schedule_status" slot-scope="text, record">
+          <!-- 课程状态 -->
+          {{ record.schedule_status.name }}
+        </template>
+        <template slot="course_type" slot-scope="text, record">
+          <!-- 课程类型 -->
+          {{ record.course_type.name }}
+        </template>
+        <template slot="course_name" slot-scope="text, record">
+          <a href="javascript:;" class="mg-r8" @click="goCourseDetai(record)">
+            {{ text }}
+          </a>
+        </template>
+        <!-- <template slot="action" slot-scope="text, record">
             <st-table-actions>
               <a href="javascript:;" class="mg-r8" @click="onSearchDetail(record)">详情</a>
             </st-table-actions>
           </template> -->
-        </st-table>
-      </a-col>
-    </a-row>
-  </div>
+      </st-table>
+    </a-col>
+  </a-row>
 </template>
 
 <script>

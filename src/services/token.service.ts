@@ -1,19 +1,13 @@
 import Cookie from 'js-cookie'
-import {
-  RouteGuard,
-  Injectable,
-  ServiceRouter,
-  ServiceRoute
-} from 'vue-service-app'
+import { RouteGuard, Injectable } from 'vue-service-app'
 import { AppConfig } from '@/constants/config'
-import { State, Computed } from 'rx-state'
+import { State } from 'rx-state'
 import { NProgressService } from './nprogress.service'
 
 @Injectable()
 export class TokenService implements RouteGuard {
   token$ = new State<string>(Cookie.get(this.appConfig.TOKEN_NAME) || '')
   constructor(
-    private router: ServiceRouter,
     private appConfig: AppConfig,
     private nprogressService: NProgressService
   ) {
@@ -27,13 +21,10 @@ export class TokenService implements RouteGuard {
   REMOVE_TOKEN() {
     this.token$.commit(() => '')
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
+  beforeRouteEnter() {
     this.nprogressService.SET_TEXT('用户凭证获取完毕')
     if (!this.token$.snapshot()) {
       location.href = '/account/login'
-      next(false)
-    } else {
-      next()
     }
   }
 }

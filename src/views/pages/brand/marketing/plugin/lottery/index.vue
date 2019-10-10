@@ -30,7 +30,7 @@
             </a-select-option>
           </a-select>
           <st-input-search
-            style="display:inline-block;width:300px;"
+            style="display:inline-block;"
             v-model="query.keyword"
             @search="onKeywordsSearch('keyword', $event)"
             placeholder="请输入活动名称"

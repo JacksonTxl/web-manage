@@ -138,11 +138,7 @@
               </st-button>
             </div>
           </st-form-item>
-          <st-form-item
-            label="手续费"
-            class="global-form-item-text"
-            labelGutter="12px"
-          >
+          <st-form-item label="手续费" labelGutter="12px" type="text">
             {{ info.transfer }}
           </st-form-item>
           <st-form-item label="支付方式" required labelGutter="12px">

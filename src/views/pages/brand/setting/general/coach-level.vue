@@ -1,14 +1,14 @@
 <template>
   <st-panel app v-if="auth.get">
-    <st-t2>教练等级</st-t2>
+    <st-t2>{{ $c('coach') }}等级</st-t2>
     <div class="mg-t24 st-des">
       已添加{{ resData.total }}个，支持添加{{ resData.max }}个
     </div>
     <st-form-table class="mg-t8">
       <thead>
         <tr>
-          <th>教练等级</th>
-          <th>关联教练数</th>
+          <th>{{ $c('coach') }}等级</th>
+          <th>关联{{ $c('coach') }}数</th>
           <th>关联薪资模板数</th>
           <th v-if="isShowPricingNum">关联课程定价数</th>
           <th>创建人</th>

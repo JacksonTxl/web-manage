@@ -1,5 +1,5 @@
 <template>
-  <st-panel v-if="auth.get">
+  <st-panel app v-if="auth.get">
     <div :class="b()">
       <st-t2>用户等级设置</st-t2>
       <a-row :gutter="12" class="mg-t24 ta-c">

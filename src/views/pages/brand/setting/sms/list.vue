@@ -1,40 +1,25 @@
 <template>
-  <st-panel app :class="bPage()">
-    <div slot="title" style="position:relative">
-      <st-input-search
-        :class="bPage('input')"
-        @search="onSingleSearch('search', query.search, { keyword: true })"
-        v-model="query.search"
-        class="mg-b24"
-        placeholder="请输入姓名或手机号查找"
-      ></st-input-search>
-    </div>
-    <st-search-panel style="margin: -112px -48px 24px -48px">
-      <div :class="bSelect()">
-        <span :class="bSelect('label')">通知对象:</span>
-        <st-search-radio
-          :class="bSelect('val')"
-          v-model="query.notify_type"
-          :list="notifyType"
-        />
-      </div>
-      <div :class="bSelect()">
-        <span :class="bSelect('label')">发送状态：</span>
-        <st-search-radio
-          :class="bSelect('val')"
-          v-model="query.send_status"
-          :list="sendStatus"
-        />
-      </div>
-      <div :class="bSelect()">
-        <span :class="bSelect('label')">发送时间：</span>
-        <div :class="bSelect('val')">
-          <st-range-picker
-            :disabledDays="180"
-            v-model="selectTime"
-          ></st-range-picker>
-        </div>
-      </div>
+  <div :class="bPage()">
+    <st-input-search
+      :class="bPage('input-search')"
+      @search="onSingleSearch('search', query.search, { keyword: true })"
+      v-model="query.search"
+      placeholder="请输入姓名或手机号查找"
+    ></st-input-search>
+    <st-search-panel>
+      <st-search-panel-item label="通知对象：">
+        <st-search-radio v-model="query.notify_type" :list="notifyType" />
+      </st-search-panel-item>
+      <st-search-panel-item label="发送状态：">
+        <st-search-radio v-model="query.send_status" :list="sendStatus" />
+      </st-search-panel-item>
+      <st-search-panel-item label="发送时间：">
+        <st-range-picker
+          :disabledDays="180"
+          v-model="selectTime"
+        ></st-range-picker>
+      </st-search-panel-item>
+
       <div slot="button">
         <st-button
           type="primary"
@@ -47,26 +32,28 @@
       </div>
     </st-search-panel>
 
-    <st-table
-      :page="page"
-      :loading="loading.getSmsList"
-      @change="onTableChange"
-      :columns="columns"
-      :dataSource="list"
-      rowKey="id"
-      :class="bPage('table')"
-    >
-      <template slot="send_status" slot-scope="text, record">
-        {{ record.send_status.name }}
-      </template>
-      <template slot="notify_type" slot-scope="text, record">
-        {{ record.notify_type.name }}
-      </template>
-      <template slot="notify_sub_type" slot-scope="text, record">
-        {{ record.notify_sub_type.name }}
-      </template>
-    </st-table>
-  </st-panel>
+    <div class="pd-24">
+      <st-table
+        :page="page"
+        :loading="loading.getSmsList"
+        @change="onTableChange"
+        :columns="columns"
+        :dataSource="list"
+        rowKey="id"
+        :class="bPage('table')"
+      >
+        <template slot="send_status" slot-scope="text, record">
+          {{ record.send_status.name }}
+        </template>
+        <template slot="notify_type" slot-scope="text, record">
+          {{ record.notify_type.name }}
+        </template>
+        <template slot="notify_sub_type" slot-scope="text, record">
+          {{ record.notify_sub_type.name }}
+        </template>
+      </st-table>
+    </div>
+  </div>
 </template>
 <script>
 import { RouteService } from '@/services/route.service'

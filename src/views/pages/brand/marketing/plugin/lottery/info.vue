@@ -1,6 +1,6 @@
 <template>
   <div>
-    <st-panel app class="mg-b24">
+    <st-panel app class="mg-b12">
       <Header :id="query.id" />
     </st-panel>
     <router-view></router-view>

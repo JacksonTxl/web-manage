@@ -10,7 +10,7 @@
             <count-card
               title="今日营收额(元)"
               :count="this.revenue.num"
-              :footer="{ label: '近7天日均营收额:', value: this.revenue.avg }"
+              :footer="{ label: '近7天日均营收额：', value: this.revenue.avg }"
               :trend="{
                 isUp: this.revenue.ratio >= 0,
                 rate: this.revenue.ratio + this.revenue.ratio_mark
@@ -30,7 +30,7 @@
             <count-card
               title="今日订单数(单)"
               :count="this.order.num"
-              :footer="{ label: '近7天日均订单数:', value: this.order.avg }"
+              :footer="{ label: '近7天日均订单数：', value: this.order.avg }"
               :trend="{
                 isUp: this.order.ratio >= 0,
                 rate: this.order.ratio + this.order.ratio_mark
@@ -52,7 +52,7 @@
             <count-card
               title="今日客流量(人)"
               :count="this.visit.num"
-              :footer="{ label: '近7天日均客流量:', value: this.visit.avg }"
+              :footer="{ label: '近7天日均客流量：', value: this.visit.avg }"
             >
               <template slot="title">
                 <st-help-tooltip id="TBSDA004"></st-help-tooltip>
@@ -70,7 +70,7 @@
             <count-card
               title="用户数(人)"
               :count="this.user.num"
-              :footer="{ label: '近7天日转化会员率:', value: this.user.ratio }"
+              :footer="{ label: '近7天日转化会员率：', value: this.user.ratio }"
             >
               <template slot="title">
                 <st-help-tooltip id="TBSDA003"></st-help-tooltip>

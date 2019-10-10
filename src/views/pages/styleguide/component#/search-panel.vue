@@ -1,26 +1,27 @@
 <template>
   <div>
     <st-search-panel>
-      <div>
-        <span>通知对象:</span>
+      <st-search-panel-item label="通知对象：">
         <st-search-radio v-model="query.m1" :list="list1" />
-      </div>
-      <div>
-        <span>发送状态：</span>
+      </st-search-panel-item>
+      <st-search-panel-item label="发送状态：">
         <st-search-radio v-model="query.m2" :list="list2" />
-      </div>
-      <div>
-        <span>发送时间：</span>
+      </st-search-panel-item>
+      <st-search-panel-item label="发送时间：">
         <st-range-picker
           :disabledDays="180"
           :value="selectTime"
         ></st-range-picker>
-      </div>
+      </st-search-panel-item>
+
+      <st-search-panel-item label="复选框">
+        <a-checkbox-group :options="list1"></a-checkbox-group>
+      </st-search-panel-item>
+
       <div slot="more">
-        <div>
-          <span>发送状态：</span>
+        <st-search-panel-item label="发送状态：">
           <st-search-radio v-model="query.m3" :list="list3" />
-        </div>
+        </st-search-panel-item>
       </div>
       <div slot="button">
         <st-button type="primary">查询</st-button>
@@ -39,7 +40,18 @@ export default {
         m2: 2,
         m3: 2
       },
-      list1: [{ label: '普通券', value: 1 }, { label: '优惠券', value: 2 }],
+      list1: [
+        { label: '普通券', value: 1 },
+        { label: '优惠券', value: 2 },
+        { label: '优惠券3', value: 3 },
+        { label: '优惠券4', value: 4 },
+        { label: '优惠券5', value: 5 },
+        { label: '优惠券6', value: 6 },
+        { label: '优惠券7', value: 7 },
+        { label: '优惠券', value: 8 },
+        { label: '优惠券', value: 8 },
+        { label: '优惠券9', value: 9 }
+      ],
       list2: [{ label: '普通券', value: 1 }, { label: '优惠券', value: 2 }],
       list3: [{ label: '普通券', value: 1 }, { label: '优惠券', value: 2 }]
     }

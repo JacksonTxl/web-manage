@@ -197,6 +197,12 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
+  'shop-sold-course-info-package-info'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '课程包详情'
+    routeConfig.meta.tabs = [
+      'shop-sold-course-info-package-info-operation-record'
+    ]
+  },
   'shop-sold-course-info-package-info-consumption-record'(
     routeConfig: RouteConfig
   ) {
@@ -209,11 +215,18 @@ export const routeMapConfig = {
   'shop-sold-course-info-package-info-operation-record'(
     routeConfig: RouteConfig
   ) {
-    routeConfig.meta.title = '课程包详情'
+    routeConfig.meta.title = '操作日志'
+    routeConfig.meta.parentId = 'shop-sold-course-info-package-info'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
+  },
+  'shop-sold-course-info-personal-info'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '私教课详情'
+    routeConfig.meta.tabs = [
+      'shop-sold-course-info-personal-info-operation-record'
+    ]
   },
   'shop-sold-course-info-personal-info-consumption-record'(
     routeConfig: RouteConfig
@@ -227,11 +240,18 @@ export const routeMapConfig = {
   'shop-sold-course-info-personal-info-operation-record'(
     routeConfig: RouteConfig
   ) {
-    routeConfig.meta.title = '私教课详情'
+    routeConfig.meta.title = '操作日志'
+    routeConfig.meta.parentId = 'shop-sold-course-info-personal-info'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
+  },
+  'shop-sold-card-info-deposit-info'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '储值卡详情'
+    routeConfig.meta.tabs = [
+      'shop-sold-card-info-deposit-info-operation-record'
+    ]
   },
   'shop-sold-card-info-deposit-info-consumption-record'(
     routeConfig: RouteConfig
@@ -245,11 +265,16 @@ export const routeMapConfig = {
   'shop-sold-card-info-deposit-info-operation-record'(
     routeConfig: RouteConfig
   ) {
-    routeConfig.meta.title = '储值卡详情'
+    routeConfig.meta.title = '操作日志'
+    routeConfig.meta.parentId = 'shop-sold-card-info-deposit-info'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
+  },
+  'shop-sold-card-info-member-info'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '会员卡详情'
+    routeConfig.meta.tabs = ['shop-sold-card-info-member-info-operation-record']
   },
   'shop-sold-card-info-member-info-consumption-record'(
     routeConfig: RouteConfig
@@ -261,7 +286,8 @@ export const routeMapConfig = {
     }
   },
   'shop-sold-card-info-member-info-operation-record'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '会籍卡详情'
+    routeConfig.meta.title = '操作日志'
+    routeConfig.meta.parentId = 'shop-sold-card-info-member-info'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
@@ -529,20 +555,33 @@ export const routeMapConfig = {
   },
   'brand-staff-info-basic'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: -1 }
+    }
   },
   'brand-staff-info-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: -1 }
+    }
   },
   'brand-staff-info-follow'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: -1 }
+    }
   },
   'brand-staff-info-member'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: -1 }
+    }
   },
   'brand-staff-info-sold'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
     routeConfig.queryOptions = {
-      order_status: { type: Number, default: -1 }
+      order_status: { type: Number, default: -1 },
+      shop_id: { type: Number, default: -1 }
     }
   },
   'brand-staff-edit'(routeConfig: RouteConfig) {
@@ -794,9 +833,15 @@ export const routeMapConfig = {
   'shop-staff-info-basic'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
     routeConfig.meta.parentId = 'shop-staff-list'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: -1 }
+    }
   },
   'shop-staff-info-follow'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: -1 }
+    }
   },
   'shop-staff-info-sold'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
@@ -806,9 +851,15 @@ export const routeMapConfig = {
   },
   'shop-staff-info-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: -1 }
+    }
   },
   'shop-staff-info-member'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: -1 }
+    }
   },
   'shop-staff-edit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑员工'

@@ -1,5 +1,5 @@
 <template>
-  <section class="page-personal-info-log">
+  <section class="st-sold-log-table">
     <st-table
       :pagination="{
         current: query.page,

@@ -88,6 +88,7 @@
                 v-if="couponEnums.is_product_range"
               >
                 <a-radio-group
+                  v-if="couponEnums.is_product_range.value.length > 1"
                   v-model="showProductRange"
                   :disabled="isEditMode"
                 >
@@ -119,7 +120,11 @@
                 </a-select>
               </st-form-item>
               <st-form-item label="可用门店" required>
-                <a-radio-group v-model="showShopRange" :disabled="isEditMode">
+                <a-radio-group
+                  v-model="showShopRange"
+                  :disabled="isEditMode"
+                  v-if="couponEnums.is_shop_range.value.length > 1"
+                >
                   <a-radio
                     v-for="(item, index) in couponEnums.is_shop_range.value"
                     :value="index"
@@ -129,6 +134,7 @@
                   </a-radio>
                 </a-radio-group>
                 <select-shop
+                  style="border:1px solid #CDD4DF;padding:8px 12px;border-radius:4px"
                   v-if="showShopRange == '2'"
                   @change="onSelectShop"
                   :shopIds="shopIds"
@@ -168,7 +174,7 @@
                     张
                   </template>
                 </st-input-number>
-                <label :class="basic('tip')">保存后只可增加不可减少</label>
+                <span :class="basic('tip')">保存后只可增加不可减少</span>
               </st-form-item>
               <st-form-item label="使用有效期" required>
                 领券当日起
@@ -198,11 +204,12 @@
                   <a-form-item :class="basic('wrap-input')">
                     <a-radio :value="2">
                       每人限领
-                      <st-input-number
+                      <a-input-number
+                        @focus="checkThisLimitRadio"
                         :disabled="isEditMode"
                         :class="basic('radio-input')"
                         v-decorator="decorators.person_limit"
-                      ></st-input-number>
+                      ></a-input-number>
                       次
                     </a-radio>
                   </a-form-item>
@@ -279,9 +286,9 @@ export default {
       // 优惠类型
       couponType: '1',
       // 优惠范围
-      showProductRange: '1',
+      showProductRange: '2',
       // 门店范围
-      showShopRange: '1',
+      showShopRange: '2',
       // 满足金额
       fullPrice: '',
       // 是否共享
@@ -412,6 +419,9 @@ export default {
           return '每人限领数量应大于0'
         }
       }
+    },
+    checkThisLimitRadio() {
+      this.form.setFieldsValue({ is_limit: 2 })
     },
     setFieldsValue() {
       this.couponType = this.info.coupon_type.id + ''

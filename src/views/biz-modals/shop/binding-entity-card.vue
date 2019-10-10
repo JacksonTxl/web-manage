@@ -1,7 +1,13 @@
 <template>
-  <st-modal title="绑定实体卡" @ok="save" v-model="show" size="small">
+  <st-modal
+    title="绑定实体卡"
+    @ok="save"
+    v-model="show"
+    size="small"
+    wrapClassName="shop-binding-card"
+  >
     <section>
-      <st-form :form="form" @submit="save" labelWidth="55px">
+      <st-form :form="form" @submit="save" labelWidth="67px">
         <st-info>
           <st-info-item label="姓名">{{ record.member_name }}</st-info-item>
           <st-info-item label="手机号">{{ record.mobile }}</st-info-item>
@@ -33,6 +39,9 @@ export default {
     }
   },
   name: 'bindingEntityCard',
+  bem: {
+    b: 'shop-binding-card'
+  },
   props: {
     record: {
       type: Object

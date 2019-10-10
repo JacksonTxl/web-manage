@@ -83,7 +83,6 @@
             "
           >
             <st-table
-              size="middle"
               rowKey="shop_id"
               :columns="shop_columns"
               :dataSource="cardInfo.can_use_shop"
@@ -124,7 +123,6 @@
             v-if="cardInfo.support_sales !== SUPPORT_SALES.ALL_STORE"
           >
             <st-table
-              size="middle"
               rowKey="shop_id"
               :columns="shop_columns"
               :dataSource="cardInfo.support_shop"
@@ -154,7 +152,6 @@
           </p>
           <st-container>
             <st-table
-              size="middle"
               rowKey="card_price"
               :columns="price_gradient_columns"
               :dataSource="[cardInfo.price]"

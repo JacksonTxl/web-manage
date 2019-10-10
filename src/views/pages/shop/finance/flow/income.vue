@@ -1,8 +1,7 @@
 <template>
   <div :class="bPage()">
     <st-search-panel :class="bSearch()">
-      <div :class="bSearch('radio')" class="mg-t24 search-item">
-        <span class="label">收银方式:</span>
+      <st-search-panel-item label="收银方式：">
         <a-checkbox @change="onCheckAllChange" :checked="checkAll">
           全部
         </a-checkbox>
@@ -11,9 +10,8 @@
           v-model="checkedList"
           :options="payType$"
         />
-      </div>
-      <div :class="bSearch('amount')" class="mg-t24 search-item">
-        <div class="label">流水金额：</div>
+      </st-search-panel-item>
+      <st-search-panel-item label="流水金额：">
         <st-input-number
           class="amount__input mg-r8"
           :min="0"
@@ -32,15 +30,14 @@
           class="amount__input mg-l8"
           v-model="query.end_amount"
         ></st-input-number>
-      </div>
-      <div :class="bSearch('range-picker')" class="mg-t24 search-item">
-        <span class="label">创建时间：</span>
+      </st-search-panel-item>
+      <st-search-panel-item label="创建时间：">
         <st-range-picker
           :disabledDays="180"
           :value="selectTime"
           class="value"
         ></st-range-picker>
-      </div>
+      </st-search-panel-item>
 
       <div slot="button">
         <st-button

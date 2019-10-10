@@ -24,10 +24,7 @@
     <section class="mg-t16 sg-app-content">
       <st-panel>
         <div slot="title">
-          <st-input-search
-            placeholder="可输入姓名、手机号、卡号"
-            style="width: 290px;"
-          />
+          <st-input-search placeholder="可输入姓名、手机号、卡号" />
         </div>
         <div slot="actions">
           <st-button type="primary">操作</st-button>
@@ -56,7 +53,7 @@
         ]"
       >
         <div slot="actions">
-          <a-input-search placeholder="私教课名称"></a-input-search>
+          <st-input-search placeholder="私教课名称"></st-input-search>
         </div>
         <router-view></router-view>
       </st-panel>

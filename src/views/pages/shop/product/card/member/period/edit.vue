@@ -48,7 +48,6 @@
                   }"
                 >
                   <st-table
-                    size="middle"
                     :columns="priceColumns"
                     :dataSource="rallyPriceList"
                     rowKey="key"

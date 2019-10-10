@@ -97,6 +97,9 @@
         </a-col>
       </a-row>
     </st-panel>
+    <st-panel initial class="mg-t16" :tabs="authTabs">
+      <router-view></router-view>
+    </st-panel>
   </section>
 </template>
 <script>
@@ -126,6 +129,7 @@ export default {
       info: this.infoService.info$,
       query: this.routeService.query$,
       loading: this.infoService.loading$,
+      authTabs: this.infoService.authTabs$,
       auth: this.infoService.auth$
     }
   },
@@ -149,7 +153,7 @@ export default {
         name: 'sold-card-refund',
         props: {
           type: 'deposit',
-          id: this.infoService.cardId
+          id: this.infoService.id
         },
         on: {
           success: () => {
@@ -163,7 +167,7 @@ export default {
       this.$modalRouter.push({
         name: 'sold-card-transfer',
         props: {
-          id: this.infoService.cardId,
+          id: this.infoService.id,
           type: 'deposit'
         },
         on: {

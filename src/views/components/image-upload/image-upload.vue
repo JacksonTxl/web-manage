@@ -1,5 +1,10 @@
 <template>
-  <div class="st-image-upload" v-viewer="{ url: 'data-src' }">
+  <div
+    class="st-image-upload"
+    v-viewer="{ url: 'data-src' }"
+    @mouseenter.stop="onMouseenterShowBtn"
+    @mouseleave.stop="onMouseenterHideBtn"
+  >
     <div
       class="st-image-upload__item st-preview-item"
       v-for="(item, index) in fileList"
@@ -14,7 +19,7 @@
         :style="sizeStyle"
       />
       <slot name="item-extra" :item="item" :index="index"></slot>
-      <div class="st-image-upload__actions">
+      <div class="st-image-upload__actions" v-show="uploadShowFlag">
         <slot name="actions" :item="item" :index="index">
           <span class="action" @click="onDel(index)">重新上传</span>
         </slot>
@@ -181,7 +186,9 @@ export default {
         height: 1334,
         maskUrl:
           'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-invitation-4.png'
-      }
+      },
+      uploadShowFlag: false,
+      stopMouseEvent: true
     }
   },
   computed: {
@@ -304,10 +311,13 @@ export default {
           },
           complete: () => {
             this.isLoading = false
+            this.stopMouseEvent = false
+            this.uploadShowFlag = false
           }
         })
     },
     onDel(index) {
+      this.stopMouseEvent = true
       const { fileList } = this
       const deletedFile = fileList.splice(index, 1)
       this.fileList = fileList
@@ -378,6 +388,16 @@ export default {
           })
         })
       })
+    },
+    onMouseenterShowBtn() {
+      if (!this.stopMouseEvent) {
+        this.uploadShowFlag = true
+      }
+    },
+    onMouseenterHideBtn() {
+      if (!this.stopMouseEvent) {
+        this.uploadShowFlag = false
+      }
     }
   }
 }

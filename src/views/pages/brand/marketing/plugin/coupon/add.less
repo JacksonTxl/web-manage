@@ -1,4 +1,5 @@
 .brand-marketing-coupon-add {
+  height: 100%;
   .ant-spin-nested-loading,
   .ant-spin-container,
   .st-panel__body {
@@ -6,11 +7,11 @@
   }
   .st-panel__body {
     display: flex;
+    margin-left: -2px;
   }
   &__left {
     .w(350px);
-    .h(100%);
-    min-height: 644px;
+    height: 100%;
     .bg(#f7f9fc);
     .st-h5-container {
       position: fixed;
@@ -71,7 +72,9 @@
     margin: 0 8px;
   }
   &__tip {
+    display: inline-block;
     margin-left: 8px;
+    vertical-align: -3px;
     color: rgba(155, 172, 185, 1);
     line-height: 22px;
   }

@@ -3,7 +3,6 @@ import multiguard from 'vue-router-multiguard'
 import { isCtor, isFn, last } from './utils'
 import ServiceRouter from './router'
 import VuePlugin from './vue-plugin'
-import HistoryBF from './bf'
 
 class VueServiceApp {
   static install(Vue, container) {
@@ -38,7 +37,6 @@ class VueServiceApp {
     this.initRouter()
     this.initProvideRouter()
     // router.beforeEach
-    this.queryOptionsHandler()
     this.beforeEachHandler()
     this.afterEachHandler()
 
@@ -65,37 +63,13 @@ class VueServiceApp {
     }
     walkRoutes(this.routerOptions.routes)
 
-    this.router = new ServiceRouter(this.routerOptions, new HistoryBF())
+    this.router = new ServiceRouter(this.routerOptions)
   }
   /**
    * router Provider
    */
   initProvideRouter() {
     this.container.bindValue(ServiceRouter, this.router)
-  }
-  queryOptionsHandler() {
-    this.router.beforeEach((to, from, next) => {
-      next.query = next.query || {}
-      if (to.query._f) {
-        delete to.query['_f']
-      }
-      const queryOptions = to.meta.queryOptions
-      const formatedQuery = Object.assign({}, to.query)
-      if (queryOptions) {
-        for (let queryName in queryOptions) {
-          const query = queryOptions[queryName]
-          const queryType = query.type
-          const queryDefaultValue = query.default
-          if (queryName in to.query && formatedQuery[queryName] !== undefined) {
-            formatedQuery[queryName] = queryType(to.query[queryName])
-          } else {
-            formatedQuery[queryName] = queryDefaultValue
-          }
-        }
-      }
-      to.meta.query = formatedQuery
-      next()
-    })
   }
   /**
    * 路由前置处理
@@ -277,7 +251,7 @@ class VueServiceApp {
             }
           }).catch(e => {
             console.error('[vue-service-app]', e)
-            next()
+            next(new Error(e))
           })
         }
         if (p.subscribe) {

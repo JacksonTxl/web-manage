@@ -173,26 +173,15 @@
         </a-col>
       </a-row>
     </st-panel>
-    <st-panel
-      class="mg-t12"
-      v-if="false"
-      :tabs="[
-        {
+    <st-panel class="mg-t12" :tabs="authTabs">
+      <!-- TODO: 消费记录尚未实现 -->
+      <!-- {
           label: '消费记录',
           route: {
             name: 'shop-sold-course-info-package-info-consumption-record',
             query: { id: infoService.id }
           }
-        },
-        {
-          label: '操作日志',
-          route: {
-            name: 'shop-sold-course-info-package-info-operation-record',
-            query: { id: infoService.id }
-          }
-        }
-      ]"
-    >
+        }, -->
       <router-view></router-view>
     </st-panel>
   </section>
@@ -226,6 +215,7 @@ export default {
     return {
       packageInfo: this.infoService.packageInfo$,
       query: this.routeService.query$,
+      authTabs: this.infoService.authTabs$,
       auth: this.infoService.auth$
     }
   },

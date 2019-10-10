@@ -23,7 +23,7 @@ export class FlowService {
   }
   @Effect()
   getPaymentMethodList(order_id: number) {
-    return this.transactionApi.getPaymentMethodList(order_id).pipe(
+    return this.transactionApi.getPaymentMethodList(order_id, true).pipe(
       tap((res: any) => {
         this.paymentMethodList$.commit(() => res.list)
       })

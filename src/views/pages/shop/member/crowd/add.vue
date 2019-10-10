@@ -3,7 +3,7 @@
     <div class="shop-member-crowd-add__box">
       <div class="shop-member-crowd-add__left">
         <st-t2>人群定义维度</st-t2>
-        <div style="padding-top:24px;coler:#9BACB9">
+        <div style="padding-bottom:24px;padding-top:4px;coler:#9BACB9">
           单个人群最多可添加5个条件
         </div>
         <basic-data v-model="selectData" :flag="flag"></basic-data>

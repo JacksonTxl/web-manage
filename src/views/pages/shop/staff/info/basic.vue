@@ -6,11 +6,7 @@
         <st-info>
           <st-info-item label="员工邮箱">{{ basicInfo.mail }}</st-info-item>
           <st-info-item label="系统角色">
-            <template v-for="(item, index) in basicInfo.role">
-              <span :key="index">
-                {{ item }} {{ index == basicInfo.role.length - 1 ? '' : '/' }}
-              </span>
-            </template>
+            {{ basicInfo.role }}
           </st-info-item>
         </st-info>
       </a-col>
@@ -20,24 +16,14 @@
             {{ basicInfo.id_type }} {{ basicInfo.id_number }}
           </st-info-item>
           <st-info-item label="所在门店">
-            <template v-for="(item, index) in basicInfo.shop_name">
-              <span :key="index">
-                {{ item }}
-                {{ index == basicInfo.shop_name.length - 1 ? '' : '/' }}
-              </span>
-            </template>
+            {{ basicInfo.shop_name }}
           </st-info-item>
         </st-info>
       </a-col>
       <a-col :lg="8">
         <st-info>
           <st-info-item label="员工职能">
-            <template v-for="(item, index) in basicInfo.identity">
-              <span :key="index">
-                {{ item }}
-                {{ index == basicInfo.identity.length - 1 ? '' : '/' }}
-              </span>
-            </template>
+            {{ basicInfo.identity }}
           </st-info-item>
         </st-info>
       </a-col>
@@ -96,9 +82,12 @@
       <a-col :lg="8">
         <st-info>
           <st-info-item label="在职状态">
-            {{ basicInfo.work_status | workStatusFilter }}
+            {{ basicInfo.work_status | enumFilter('staff.work_status') }}
           </st-info-item>
-          <st-info-item label="入职时间" v-if="basicInfo.work_status === 1">
+          <st-info-item
+            label="入职时间"
+            v-if="basicInfo.work_status === WORK_STATUS.WORKING"
+          >
             {{ basicInfo.entry_date }}
           </st-info-item>
         </st-info>
@@ -108,7 +97,10 @@
           <st-info-item label="工作性质">
             {{ basicInfo.nature_work }}
           </st-info-item>
-          <st-info-item label="离职时间" v-if="basicInfo.work_status === 2">
+          <st-info-item
+            label="离职时间"
+            v-if="basicInfo.work_status === WORK_STATUS.DEPARTURE"
+          >
             {{ basicInfo.leave_date }}
           </st-info-item>
         </st-info>
@@ -126,12 +118,18 @@
           <st-info-item label="银行账户名称">
             {{ basicInfo.bank_account_name }}
           </st-info-item>
+          <st-info-item label="薪资模板">
+            {{ basicInfo.salary_basic }}
+          </st-info-item>
         </st-info>
       </a-col>
       <a-col :lg="8">
         <st-info>
           <st-info-item label="开户银行">
             {{ basicInfo.bank_name }}
+          </st-info-item>
+          <st-info-item label="销售提成模版">
+            {{ basicInfo.salary_sale }}
           </st-info-item>
         </st-info>
       </a-col>
@@ -140,27 +138,7 @@
           <st-info-item label="银行卡号">
             {{ basicInfo.bank_number }}
           </st-info-item>
-        </st-info>
-      </a-col>
-    </a-row>
-    <a-row :gutter="24">
-      <a-col :lg="8">
-        <st-info>
-          <st-info-item label="底薪模板">
-            {{ basicInfo.salary_basic }}
-          </st-info-item>
-        </st-info>
-      </a-col>
-      <a-col :lg="8">
-        <st-info>
-          <st-info-item label="销售提成模板">
-            {{ basicInfo.salary_sale }}
-          </st-info-item>
-        </st-info>
-      </a-col>
-      <a-col :lg="8">
-        <st-info>
-          <st-info-item label="上课提成模板">
+          <st-info-item label="上课提成模版">
             {{ basicInfo.salary_class }}
           </st-info-item>
         </st-info>
@@ -183,26 +161,14 @@
       <a-col :lg="8">
         <st-info>
           <st-info-item label="擅长项目">
-            <template v-for="(item, index) in basicInfo.specialty_name">
-              <span :key="index">
-                {{ item }}
-                {{ index == basicInfo.specialty_name.length - 1 ? '' : '/' }}
-              </span>
-            </template>
+            {{ basicInfo.specialty_name }}
           </st-info-item>
         </st-info>
       </a-col>
       <a-col :lg="8">
         <st-info>
           <st-info-item label="专业认证">
-            <template v-for="(item, index) in basicInfo.certification_name">
-              <span :key="index">
-                {{ item }}
-                {{
-                  index == basicInfo.certification_name.length - 1 ? '' : '/'
-                }}
-              </span>
-            </template>
+            {{ basicInfo.certification_name }}
           </st-info-item>
         </st-info>
       </a-col>
@@ -221,8 +187,8 @@
         <st-info>
           <st-info-item label="员工风采">
             <div class="st-preview-item" v-viewer="{ url: 'data-src' }">
-              <template v-for="item in basicInfo.image_personal">
-                <img class="staff-style-item mg-r8" :src="item" :key="item" />
+              <template v-for="(item, index) in basicInfo.image_personal">
+                <img class="staff-style-item mg-r8" :src="item" :key="index" />
               </template>
             </div>
           </st-info-item>
@@ -241,6 +207,7 @@
 
 <script>
 import { BasicService } from './basic.service'
+import { WORK_STATUS } from '@/constants/staff/info'
 export default {
   serviceInject() {
     return {
@@ -253,29 +220,9 @@ export default {
     }
   },
   data() {
-    return {}
-  },
-  created() {
-    console.log('=======', this.basicInfo)
-  },
-  filters: {
-    workStatusFilter(val) {
-      let ret = ''
-      switch (val) {
-        case 0:
-          ret = '未填写'
-          break
-        case 1:
-          ret = '在职'
-          break
-        case 2:
-          ret = '离职'
-          break
-      }
-      return ret
+    return {
+      WORK_STATUS
     }
   }
 }
 </script>
-
-<style></style>

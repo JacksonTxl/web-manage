@@ -1,11 +1,14 @@
-@panel-pd-lr: unit(24, px);
+@panel-pd: unit(24, px);
 
 .st-panel {
   .bg(@white);
-
+  .ant-tabs-tab {
+    margin-right: 64px !important;
+    padding: 12px 0px !important;
+  }
   &__header {
     .h(64px);
-    .pd-lr(@panel-pd-lr);
+    .pd-lr(@panel-pd);
     .pos-r;
     border-bottom: 1px solid @divider;
     display: flex;
@@ -20,10 +23,19 @@
   }
   &__actions {
     text-align: right;
+    &--tabs {
+      .pos-a;
+      .h(64px);
+      top: 0;
+      right: 0;
+      padding-right: @panel-pd;
+      display: flex;
+      align-items: center;
+    }
   }
   &__body {
     .pd-tb(24px);
-    .pd-lr(@panel-pd-lr);
+    .pd-lr(@panel-pd);
   }
   &--app {
     min-height: 100%;
@@ -39,11 +51,7 @@
     }
     .ant-tabs-bar {
       .mg-b(0);
-      .pd-lr(@panel-pd-lr);
-    }
-    // tabs actions区域头部居中
-    .ant-tabs-extra-content {
-      line-height: initial;
+      .pd-lr(@panel-pd);
     }
   }
   &--initial {

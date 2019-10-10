@@ -9,3 +9,5 @@ import { AppConfig } from '@/constants/config'
 export class Api {
   constructor(protected http: HttpService, protected appConfig: AppConfig) {}
 }
+
+console.log(Api)

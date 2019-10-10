@@ -107,6 +107,10 @@
       .ant-menu-submenu-title {
         .c(rgba(@defaultMenuColor));
         padding-left: 16px !important;
+        padding-right: 24px !important;
+        .layout-default-sider__menu-arrow {
+          margin-right: 0;
+        }
         &:before {
           .d-n;
         }
@@ -148,6 +152,10 @@
           opacity: 1;
           transition: all 0.5s;
         }
+      }
+      svg {
+        width: 12px;
+        height: 12px;
       }
     }
     &__favorite-title {
@@ -221,6 +229,7 @@
         .pd-l(2px);
         display: flex;
         align-items: center;
+        .cur-p;
         &--active {
           .c(#fff);
           &::before {
@@ -244,6 +253,7 @@
     }
     &__menu-title {
       flex: 1;
+      margin-left: 3px;
       .cur-p;
     }
     &__menu-star {
@@ -257,7 +267,7 @@
     &__menu-arrow {
       .d-n;
       .pos-a;
-      right: 24px;
+      right: 14px;
       color: #a4b3bf !important;
       top: 50%;
       margin-top: -5px;

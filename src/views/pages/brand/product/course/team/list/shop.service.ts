@@ -1,3 +1,4 @@
+import { ListService } from './../list.service'
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { tap } from 'rxjs/operators'
 import { State, Effect } from 'rx-state'
@@ -20,9 +21,12 @@ export class ShopService implements RouteGuard {
   auth$ = this.authService.authMap$({
     transfer: 'brand_shop:product:team_course|transfer'
   })
+  shopsOptions$ = this.listService.shopSelectOptions$
+  categoryList$ = this.listService.categoryList$
   constructor(
     private shopTeamCourseApi: BrandTeamCourseApi,
     private authService: AuthService,
+    private listService: ListService,
     private msg: MessageService
   ) {}
   @Effect()

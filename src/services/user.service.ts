@@ -65,6 +65,9 @@ export class UserService {
     menus: [],
     first_url: ''
   })
+  config$ = new State({
+    coach: '教练'
+  })
   isShop$ = new Computed(this.shop$.pipe(map(shop => !!shop.id)))
   menus$ = new Computed<any[]>(this.menuData$.pipe(pluck('menus')))
   firstMenuUrl$ = new Computed<string>(this.menuData$.pipe(pluck('first_url')))
@@ -229,11 +232,18 @@ export class UserService {
    * getOptions$('member.card_consume_type') => Observable([{label:'次卡',value:1},{label:'期限卡',2}])
    */
   public getOptions$(
-    key: string
+    key: string,
+    options: {
+      addAll?: boolean
+    } = {}
   ): Computed<{ label: string; value: number }[]> {
     return computed(
       (enums: any) => {
-        return this.getOptions(enums, key)
+        let opts = this.getOptions(enums, key)
+        if (options.addAll) {
+          opts = [{ value: -1, label: '全部' }].concat(opts)
+        }
+        return opts
       },
       [this.enums$]
     )
@@ -264,6 +274,9 @@ export class UserService {
   public delFavorite(id: number) {
     return this.menuApi.delFavorite(id)
   }
+  public c(key: string): string {
+    return get(this.config$.snapshot(), key, key)
+  }
   private init() {
     if (!this.firstInited$.snapshot()) {
       return anyAll(
@@ -281,7 +294,7 @@ export class UserService {
       return of({})
     }
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+  beforeRouteEnter() {
     this.nprogress.SET_TEXT('用户数据加载中...')
     return this.init().pipe(
       then(() => {

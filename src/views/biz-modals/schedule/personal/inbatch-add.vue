@@ -1,5 +1,10 @@
 <template>
-  <st-modal title="批量排期" @ok="save" v-model="show">
+  <st-modal
+    title="批量排期"
+    @ok="save"
+    v-model="show"
+    wrapClassName="modal-schedule-inbatch-add"
+  >
     <st-form>
       <st-form-item required>
         <template slot="label">
@@ -11,7 +16,7 @@
           :disabledDate="disabledDate"
         ></a-range-picker>
       </st-form-item>
-      <st-form-item labelWidth="42px" label="教练：" required>
+      <st-form-item labelWidth="88px" label="教练：" required>
         <a-select placeholder="请选择教练" v-model="coachId">
           <a-select-option
             v-for="coach in coachOptions"

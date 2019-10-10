@@ -6,42 +6,32 @@
           placeholder="输入用户姓名、手机号"
           v-model="query.keyword"
           @search="onKeywordsSearch('keyword', $event)"
-          style="width: 290px;"
         />
       </div>
       <div slot="prepend">
         <st-search-panel>
-          <div :class="basic('select')">
-            <span style="width:90px;">用户级别：</span>
+          <st-search-panel-item label="用户级别：">
             <st-search-radio v-model="query.member_level" :list="memberLevel" />
-          </div>
-          <div :class="basic('select')">
-            <span style="width:90px;">来源方式：</span>
-            <st-search-radio
-              :class="basic('select-radio')"
-              v-model="query.register_way"
-              :list="sourceList"
-            />
-          </div>
-          <div :class="basic('select')">
-            <span style="width:90px;">注册时间：</span>
+          </st-search-panel-item>
+          <st-search-panel-item label="来源方式：">
+            <st-search-radio v-model="query.register_way" :list="sourceList" />
+          </st-search-panel-item>
+          <st-search-panel-item label="注册时间：">
             <st-range-picker
               :disabledDays="180"
               :value="selectTime"
             ></st-range-picker>
-          </div>
+          </st-search-panel-item>
           <div slot="more">
-            <div :class="basic('select')">
-              <span style="width:90px;">入会时间：</span>
+            <st-search-panel-item label="入会时间：">
               <st-range-picker
                 :disabledDays="180"
                 :value="selectMemberTime"
               ></st-range-picker>
-            </div>
-            <div :class="basic('select')">
-              <span style="width:90px;">员工跟进：</span>
+            </st-search-panel-item>
+            <st-search-panel-item label="员工跟进：">
               <st-search-radio v-model="query.is_follow" :list="isFollow" />
-            </div>
+            </st-search-panel-item>
           </div>
           <div slot="button">
             <st-button
@@ -134,7 +124,7 @@
           <span class="st-preview-item st-preview-item--cover" v-viewer>
             <img
               v-if="record.image_face"
-              :class="basic('image-face')"
+              class="st-image-face"
               :src="record.image_face.url"
               :data-src="record.image_face.url"
             />
@@ -238,9 +228,6 @@ import ShopMissingCard from '@/views/biz-modals/shop/missing-card'
 export default {
   name: 'memberList',
   mixins: [tableMixin],
-  bem: {
-    basic: 'page-shop-finance'
-  },
   modals: {
     ShopAddLable,
     ShopBindingEntityCard,

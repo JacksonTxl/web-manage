@@ -1,11 +1,15 @@
 .st-search-radio {
+  span.ant-radio + * {
+    padding-left: 0;
+  }
   &__label {
     display: inline-block;
-    width: 116px;
+    width: 112px;
   }
   &__label-text {
     display: inline-block;
-    padding: 8px 12px;
+    line-height: 20px;
+    padding: 6px 12px;
     border-radius: 4px;
     transition: all 0.3s;
     .bg(transparent);

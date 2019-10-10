@@ -26,7 +26,11 @@
       mode="inline"
     >
       <template v-for="menu in menus">
-        <a-sub-menu v-if="isHasSubmenu(menu)" :key="menu.id">
+        <a-sub-menu
+          v-if="isHasSubmenu(menu)"
+          :key="menu.id"
+          class="layout-default-sider__submenu"
+        >
           <span slot="title">
             <st-icon :type="menu.icon" />
             <span>{{ menu.name }}</span>
@@ -171,12 +175,10 @@ export default {
       }
     },
     findCurrentSiderMenu() {
-      const { menus } = this
       let currentSiderMenu
-      menus.forEach(menu => {
+      this.menus.forEach(menu => {
         const matchRule = this.getMatchRule(menu)
-        const pageName = this.getPageName()
-        if (matchRule.test(pageName)) {
+        if (matchRule.test(this.$route.name)) {
           currentSiderMenu = menu
         }
       })
@@ -186,12 +188,13 @@ export default {
       const { icon } = menu
       let rule
       /**
-       * 对一些特殊的icon做处理，比如dashboard用的是home
+       * 对一些特殊的icon做处理，比如dashboard用的是home 图标与路由的映射关系
        */
       const rulesMap = {
         home: /dashboard/,
         setting: /brand-setting|shop-setting/,
         sold: /shop-sold/,
+        finance: /shop-finance/,
         course: /shop-product-course/,
         card: /shop-product-card/,
         department: /brand-staff/,
@@ -207,7 +210,7 @@ export default {
     findSelectedKey() {
       let selectedKey
       ;(this.currentSiderMenu.children || []).forEach(item => {
-        if (item.url && this.getPageName().indexOf(item.url) !== -1) {
+        if (item.url && this.$route.name.indexOf(item.url) !== -1) {
           selectedKey = item.id
         }
       })
@@ -262,9 +265,6 @@ export default {
     },
     isfavorite(id) {
       return find(this.favorite, { id })
-    },
-    getPageName() {
-      return this.$route.name
     }
   }
 }

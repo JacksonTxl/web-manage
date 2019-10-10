@@ -13,9 +13,12 @@
       v-if="tabs || title || $slots.actions || $slots.title"
       class="st-panel__header"
     >
-      <st-route-tabs v-if="tabs" @change="onChange" :options="tabs">
-        <slot name="actions" slot="actions"></slot>
-      </st-route-tabs>
+      <template v-if="tabs">
+        <st-route-tabs @change="onChange" :options="tabs"></st-route-tabs>
+        <div class="st-panel__actions st-panel__actions--tabs">
+          <slot name="actions"></slot>
+        </div>
+      </template>
       <template v-else>
         <div class="st-panel__title">
           <slot name="title">{{ title }}</slot>

@@ -5,7 +5,6 @@
         @search="onSingleSearch('course_name', $event, true)"
         v-model="query.course_name"
         placeholder="课程包名称"
-        style="width: 290px;"
       />
     </div>
     <div :class="listClass('operation')">

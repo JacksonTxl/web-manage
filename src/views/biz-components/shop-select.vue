@@ -4,6 +4,7 @@
     allowClear
     :placeholder="placeholder || '全部门店'"
     :value="value"
+    :defaultValue="defaultValue"
     :disabled="disabled"
     @change="onChange"
   >
@@ -48,6 +49,7 @@ export default {
     value: {
       type: [Number, String, Array]
     },
+    defaultValue: Number,
     disabled: {
       type: Boolean,
       default: false

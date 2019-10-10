@@ -5,28 +5,25 @@
         placeholder="输入用户姓名、手机号"
         v-model="query.keyword"
         @search="onKeywordsSearch('keyword', $event)"
-        style="width: 290px;"
       />
     </div>
     <div slot="prepend">
-      <st-search-panel :class="bSearch()">
-        <div :class="bSearch('radio')" class="mg-t24 search-item">
-          <span class="label">预约类型:</span>
+      <st-search-panel>
+        <st-search-panel-item label="预约类型：">
           <st-search-radio
             class="value"
             v-model="query.reserve_type"
             :list="reserveType$"
           />
-        </div>
-        <div :class="bSearch('range-picker')" class="mg-t24 search-item">
-          <span class="label">预约时间：</span>
+        </st-search-panel-item>
+        <st-search-panel-item label="预约时间：">
           <st-range-picker
             :disabledDays="60"
             @change="onChangeRangeTime"
             :value="selectTime"
             class="value"
           ></st-range-picker>
-        </div>
+        </st-search-panel-item>
 
         <div slot="button">
           <st-button

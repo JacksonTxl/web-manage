@@ -5,7 +5,6 @@
         v-model="query.course_name"
         @search="onChange"
         placeholder="私教课名称"
-        style="width:292px"
       ></st-input-search>
     </div>
     <header>

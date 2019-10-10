@@ -1,5 +1,13 @@
 .brand-marketing-activity {
   .activity-event-component {
+    &__activity-wrapper {
+      .ant-form-item-label {
+        margin-right: 23px;
+      }
+      .ant-form-item-control-wrapper {
+        padding-left: 0;
+      }
+    }
     @h: 162px;
     .ant-col-4 {
       .pd-tb(6px);
@@ -20,7 +28,6 @@
     &__box {
       .ta-c();
       margin-bottom: 20px;
-      border: 1px solid #e6e9ef;
       &:hover {
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.09);
         transition: all 0.3s;
@@ -29,9 +36,15 @@
         .h(@h);
         .w(100%);
       }
+      .st-form-item-wrapper {
+        border-left: 1px solid #e6e9ef;
+        border-right: 1px solid #e6e9ef;
+        border-bottom: 1px solid #e6e9ef;
+      }
       .st-form-item {
-        .mg-tb(12px);
+        .mg-b(12px);
         .pd-r(16px);
+        padding-top: 12px;
       }
       .ant-spin-container {
         .ta-c();

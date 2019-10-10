@@ -14,16 +14,13 @@ export class ListService implements RouteGuard {
   })
   loading$ = new State({})
 
-  orderStatus$ = this.userService.getOptions$('finance.order_status').pipe(
-    tap(list => {
-      list.unshift({ value: -1, label: '全部' })
-    })
-  )
-  payStatus$ = this.userService.getOptions$('finance.pay_status').pipe(
-    tap(list => {
-      list.unshift({ value: -1, label: '全部' })
-    })
-  )
+  orderStatus$ = this.userService.getOptions$('finance.order_status', {
+    addAll: true
+  })
+
+  payStatus$ = this.userService.getOptions$('finance.pay_status', {
+    addAll: true
+  })
 
   constructor(
     private orderApi: OrderApi,

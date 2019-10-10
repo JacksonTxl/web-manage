@@ -1,5 +1,5 @@
 <template>
-  <section class="page-member-info-log pd-x24 pd-y24">
+  <section class="st-sold-log-table">
     <st-table
       :page="page"
       :columns="columns"
@@ -52,6 +52,9 @@ import tableMixin from '@/mixins/table.mixin'
 export default {
   name: 'PageShopSoldCardMemberInfoOperation',
   mixins: [tableMixin],
+  serviceProviders() {
+    return [OperationRecordService]
+  },
   serviceInject() {
     return {
       routeService: RouteService,

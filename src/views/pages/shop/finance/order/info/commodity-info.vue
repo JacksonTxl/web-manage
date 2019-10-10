@@ -168,9 +168,6 @@
 import { CommodityInfoService } from './commodity-info.service'
 export default {
   name: 'PageShopFinanceOrderInfoCommodityInfo',
-  bem: {
-    basic: 'page-shop-finance'
-  },
   serviceInject() {
     return {
       commodityInfoService: CommodityInfoService

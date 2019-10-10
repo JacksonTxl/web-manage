@@ -20,7 +20,7 @@ export default {
   props: {
     hoverable: {
       type: Boolean,
-      default: false
+      default: true
     },
     striped: {
       type: Boolean,

@@ -45,6 +45,7 @@
         <a-input-search
           placeholder="请输入人数"
           v-decorator="decorators.limit_num"
+          type="number"
         >
           <a-button slot="enterButton">人</a-button>
         </a-input-search>
@@ -53,6 +54,7 @@
         <a-input-search
           placeholder="请输入课时费"
           v-decorator="decorators.course_fee"
+          type="number"
         >
           <a-button slot="enterButton">元/节</a-button>
         </a-input-search>
@@ -117,13 +119,7 @@ export default {
       }
     }
   },
-  created() {
-    this.initOptions().subscribe()
-  },
   methods: {
-    initOptions() {
-      return this.teamService.init()
-    },
     onSubmit() {
       this.form.validate().then(values => {
         const form = cloneDeep(values)

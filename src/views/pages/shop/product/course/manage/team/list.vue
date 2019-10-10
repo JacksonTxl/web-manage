@@ -5,7 +5,6 @@
         placeholder="团课名称"
         v-model="course_name"
         @search="onSearchCourseName"
-        style="width: 280px"
       />
     </div>
     <a-row>

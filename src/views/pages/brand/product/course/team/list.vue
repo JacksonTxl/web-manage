@@ -4,7 +4,7 @@
       <st-input-search
         placeholder="输入团体课名称"
         v-model="query.course_name"
-        @search="onSearchCourseName"
+        @search="onKeywordsSearch('course_name', $event)"
       ></st-input-search>
     </div>
     <router-view></router-view>
@@ -13,8 +13,10 @@
 <script>
 import { RouteService } from '@/services/route.service'
 import { ListService } from './list.service'
+import tableMixin from '@/mixins/table.mixin'
 export default {
   name: 'TeamCourseList',
+  mixins: [tableMixin],
   serviceInject() {
     return {
       routeService: RouteService,
@@ -25,11 +27,6 @@ export default {
     return {
       query: this.routeService.query$,
       authTabs: this.listService.authTabs$
-    }
-  },
-  methods: {
-    onSearchCourseName(val) {
-      this.$router.push({ query: this.query })
     }
   }
 }
