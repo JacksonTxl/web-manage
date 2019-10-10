@@ -103,7 +103,7 @@
           <st-button
             type="danger"
             :loading="loading.setEntranceLeave"
-            @click="onLeave"
+            @click="onLeaveConfirm"
             v-else
             :disabled="!isSelectMember || !auth.checkout"
           >
@@ -792,6 +792,8 @@ export default {
               }
             }
           })
+        case 'cabinetPage':
+          this.$router.push({ path: '/shop/reception/cabinet' })
           break
       }
     },
@@ -934,6 +936,21 @@ export default {
           this.cabinet = res.info.cabinet.id || -1
           document.activeElement.blur() // 移除焦点元素
         })
+    },
+    // 离场之前的确认
+    onLeaveConfirm() {
+      this.indexService.getCabinetInfo(this.memberId).subscribe(res => {
+        if (res.info.is_smart) {
+          this.$error({
+            title: `当前会员有储物柜「${res.info.cabinet_area_name}」「${
+              res.info.serial_num
+            }」尚未归还，请先归还！`,
+            okText: '知道了'
+          })
+        } else {
+          this.onLeave()
+        }
+      })
     },
     // 离场
     onLeave() {

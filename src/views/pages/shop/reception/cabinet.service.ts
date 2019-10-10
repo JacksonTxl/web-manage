@@ -1,9 +1,10 @@
+import { anyAll } from '@/operators'
 import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
 import { Effect, State } from 'rx-state/src'
-import { CabinetAreaService as AreaService } from './components#/area.service'
+import { CabinetAreaService as AreaService } from '../setting/components#/area.service'
 import { CabinetApi, DelInput } from '@/api/v1/setting/cabinet'
-import { CabinetListService } from './components#/cabinet-list.service'
 import { AuthService } from '@/services/auth.service'
+import { CabinetListService } from './components#/cabinet-list.service'
 
 @Injectable()
 export class CabinetService implements RouteGuard {
@@ -18,18 +19,10 @@ export class CabinetService implements RouteGuard {
   })
   constructor(
     private areaService: AreaService,
-    private cabinetListService: CabinetListService,
     private cabinetApi: CabinetApi,
-    private authService: AuthService
+    private authService: AuthService,
+    private cabinetListService: CabinetListService
   ) {}
-  protected init(to: ServiceRoute, next: any) {
-    const query = to.meta.query
-    const type = query.type
-    const id = query.id || 0
-    this.cabinetListService.getList(type, id).subscribe(next, () => {
-      next(false)
-    })
-  }
   @Effect()
   del(params: DelInput) {
     return this.cabinetApi.deleteCabinet(params)
@@ -43,17 +36,20 @@ export class CabinetService implements RouteGuard {
     })
     return this.areaService.sort({ list })
   }
-  beforeRouteEnter(to: ServiceRoute, form: ServiceRoute, next: any) {
-    const id = to.meta.query.id
-    this.areaService.getList().subscribe(() => {
-      if (id) {
-        this.init(to, next)
-      } else {
-        next()
-      }
-    })
+  @Effect()
+  clearCabinet(params: any) {
+    return this.cabinetApi.clearCabinet(params)
   }
-  beforeRouteUpdate(to: ServiceRoute, form: ServiceRoute, next: any) {
-    this.init(to, next)
+  init(query: any) {
+    return anyAll(
+      this.cabinetListService.getList(query.type, query.id),
+      this.areaService.getList()
+    )
+  }
+  beforeRouteEnter(to: ServiceRoute, form: ServiceRoute) {
+    return this.init(to.meta.query)
+  }
+  beforeRouteUpdate(to: ServiceRoute, form: ServiceRoute) {
+    return this.cabinetListService.getList(to.meta.query.type, to.meta.query.id)
   }
 }
