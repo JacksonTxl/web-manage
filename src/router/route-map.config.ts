@@ -823,8 +823,6 @@ export const routeMapConfig = {
   },
   'shop-product-card-deposit-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '储值卡详情'
-    routeConfig.meta.parentId = 'shop-product-card-deposit-info'
-    routeConfig.meta.tabs = ['shop-product-card-deposit-info-operation-record']
   },
   'shop-product-card-deposit-edit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑储值卡'

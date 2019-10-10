@@ -77,7 +77,19 @@ const mockerApis = {
   /**
    * mock start
    */
-  'GET /_api/v1/cards/member/shop/back/181184018055236': mockJson
+  'GET /_api/v1/cards/member/shop/back/181184018055236': mockJson,
+  // 'GET /_api/v1/sold/cards/member/operation/log/214171799584958'(req,res) {
+  //   res.status(500).json({
+  //     code: 0,
+  //     data: {},
+  //     msg: '系统繁忙'
+  //   })
+  // },
+  // 'GET /_api/v1/common/menu'(req,res){
+  //   res.status(500).json({
+
+  //   })
+  // }
 }
 
 module.exports = wrapper(mockerApis)

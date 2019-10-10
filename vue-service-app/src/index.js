@@ -251,7 +251,7 @@ class VueServiceApp {
             }
           }).catch(e => {
             console.error('[vue-service-app]', e)
-            next()
+            next(new Error(e))
           })
         }
         if (p.subscribe) {
