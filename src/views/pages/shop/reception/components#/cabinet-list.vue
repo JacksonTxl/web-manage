@@ -29,8 +29,6 @@
             ]"
             v-for="(item, index) in list"
             :key="index"
-            @mouseenter="mouseEventHander('enter', item.id)"
-            @mouseleave="mouseEventHander('leave', item.id)"
           >
             <div :class="b('item-num')">{{ item.serial_num }}</div>
             <div class="smart-cabinet-logo" v-if="item.is_smart">
@@ -189,8 +187,7 @@ export default {
       CABINET_BUSINESS_TYPE,
       checkedList: [],
       indeterminate: false,
-      checkAll: false,
-      editFlag: ''
+      checkAll: false
     }
   },
   methods: {
@@ -263,9 +260,6 @@ export default {
         checkAll: e.target.checked
       })
       this.$emit('selectChange', this.checkedList)
-    },
-    mouseEventHander(type, id) {
-      this.editFlag = `${type}-${id}`
     },
     change() {
       this.$emit('change')
