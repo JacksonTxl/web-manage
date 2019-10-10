@@ -44,7 +44,7 @@
               <div v-if="notPrize.prize_name" class="img-wrap run-item-7">
                 <div class="img">
                   <img
-                    style="width:100%"
+                    style="position:relative;bottom:12px"
                     :src="
                       notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM
                         ? notPrize.prize.image_url
