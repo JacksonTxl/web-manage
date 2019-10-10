@@ -68,7 +68,6 @@ export class HttpService {
     const cacheKey = requestUrl
     let apiCanUseCache = !this.appConfig.API_BF_HISTORY_CACHE_WHITE_LIST.find(
       (item: string) => {
-        console.log('not cache', requestUrl)
         return requestUrl.search(item) > -1
       }
     )
