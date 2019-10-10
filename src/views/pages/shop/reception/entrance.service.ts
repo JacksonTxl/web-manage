@@ -36,6 +36,11 @@ export class EntranceService implements RouteGuard {
       })
     )
   }
+  // 离场之前获取柜子信息进行判断是否是智能柜
+  @Effect()
+  getCabinetInfo(id: string) {
+    return this.frontApi.getCabinetInfo(id)
+  }
   // 单个离场
   setEntranceLeave(id: string) {
     return this.frontApi.setEntranceLeave(id)

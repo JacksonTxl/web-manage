@@ -21,10 +21,7 @@
               <a-menu-item v-if="auth.areaEdit" @click="editArea(item.id)">
                 编辑
               </a-menu-item>
-              <a-menu-item
-                v-if="auth.areaDel"
-                @click="delArea(item.id, item.cabinet_num)"
-              >
+              <a-menu-item v-if="auth.areaDel" @click="delArea(item)">
                 删除
               </a-menu-item>
             </st-more-dropdown>
@@ -119,6 +116,7 @@ import ShopCabinetEditPrice from '@/views/biz-modals/shop/cabinet/edit-price'
 import ShopCabinetAddLongTerm from '@/views/biz-modals/shop/cabinet/add-long-term'
 import ShopCabinetAddTemporary from '@/views/biz-modals/shop/cabinet/add-temporary'
 import Draggable from 'vuedraggable'
+import { CabinetListService } from './components#/cabinet-list.service'
 
 export default {
   bem: {
@@ -134,6 +132,7 @@ export default {
       messageService: MessageService,
       routeService: RouteService,
       cabinetService: CabinetService,
+      cabinetListService: CabinetListService,
       areaService: AreaService
     }
   },
@@ -142,7 +141,8 @@ export default {
       list: this.areaService.list$,
       query: this.routeService.query$,
       auth: this.cabinetService.auth$,
-      loading: this.cabinetService.loading$
+      loading: this.cabinetService.loading$,
+      resData: this.cabinetListService.resData$
     }
   },
   data() {
@@ -180,6 +180,14 @@ export default {
     },
     areaName() {
       return this.currentArea.area_name
+    },
+    listMap() {
+      const list = this.resData.list
+      const map = new Map()
+      list.map(item => {
+        map.set(item.id, item)
+      })
+      return map
     }
   },
   created() {
@@ -198,15 +206,28 @@ export default {
     editArea(id) {
       this.editId = id
     },
-    delArea(id, num) {
-      if (num > 0) {
+    delArea(item) {
+      if (item.bind_device > 0) {
+        this.$error({
+          title: '当前区域内有配置智能储物柜，若需删除，请联系三体工作人员',
+          okText: '知道了'
+        })
+        return
+      }
+      if (item.cabinet_num > 0) {
         this.$error({
           title: '当前区域内有配置储值柜，无法删除',
           okText: '知道了'
         })
         return
       }
-      this.areaService.del(id).subscribe(this.onDelAreaSuccess)
+      this.$confirm({
+        title: '请问是否确认删除该区域？',
+        onOk: () => {
+          this.areaService.del(item.id).subscribe(this.onDelAreaSuccess)
+        },
+        onCancel() {}
+      })
     },
     onDelAreaSuccess() {
       this.messageService.success({
@@ -253,11 +274,32 @@ export default {
       this.checked = checked
     },
     onDelCabinet() {
-      this.cabinetService
-        .del({
-          ids: this.checked
+      const flagText = this.validSelectedData()
+      if (flagText === 'smart') {
+        this.$error({
+          title: '当前选中柜子有智能储物柜，若需删除，请联系三体工作人员',
+          okText: '知道了'
         })
-        .subscribe(this.onDelCabinetSuccess)
+        return
+      }
+      if (flagText === 'using') {
+        this.$error({
+          title: '选择的储物柜正在使用中，无法删除',
+          okText: '知道了'
+        })
+        return
+      }
+      this.$confirm({
+        title: '确认删除选择的储物柜？',
+        onOk: () => {
+          this.cabinetService
+            .del({
+              ids: this.checked
+            })
+            .subscribe(this.onDelCabinetSuccess)
+        },
+        onCancel() {}
+      })
     },
     onDelCabinetSuccess() {
       this.messageService.success({
@@ -290,6 +332,22 @@ export default {
           change: this.onCabinetListChange
         }
       })
+    },
+    validSelectedData() {
+      const type = this.query.type
+      for (let i = 0; i < this.checked.length; i++) {
+        const temp = this.listMap.get(this.checked[i])
+        if (temp.is_smart) {
+          return 'smart'
+        }
+        if (type === 'long-term' && temp.sale_status > 0) {
+          return 'using'
+        }
+        if (type === 'temporary' && temp.cabinet_business_type === 2) {
+          return 'using'
+        }
+      }
+      return 'none'
     }
   }
 }
