@@ -60,6 +60,10 @@
       <template slot="shop_phones" slot-scope="text">
         {{ text }}
       </template>
+      <!-- 省市区 -->
+      <template slot="province_info" slot-scope="text">
+        {{ text }}
+      </template>
       <!-- 详细地址 -->
       <template slot="address" slot-scope="text">
         {{ text }}

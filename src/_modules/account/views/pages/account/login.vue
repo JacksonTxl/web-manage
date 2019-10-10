@@ -152,6 +152,7 @@ export default {
       params.nvc_val = window.getNVCVal()
       this.loginService.loginAccount(params).subscribe(res => {
         this.noCaptchaService.resetNVC()
+        localStorage.clear()
         location.href = '/'
       }, this.loginErrorHandler)
     },
