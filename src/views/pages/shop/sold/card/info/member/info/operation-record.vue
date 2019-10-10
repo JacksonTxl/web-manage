@@ -52,6 +52,9 @@ import tableMixin from '@/mixins/table.mixin'
 export default {
   name: 'PageShopSoldCardMemberInfoOperation',
   mixins: [tableMixin],
+  serviceProviders() {
+    return [OperationRecordService]
+  },
   serviceInject() {
     return {
       routeService: RouteService,
