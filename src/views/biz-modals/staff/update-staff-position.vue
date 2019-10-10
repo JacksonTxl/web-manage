@@ -235,7 +235,7 @@ export default {
       this.form.validate().then(values => {
         let form = cloneDeep(values)
         // 如果选择职位从私人教练到其他职位时，将教练等级值置为 undefined
-        if (!this.coach_level_required && this.canDeleteIdentity) {
+        if (!this.coach_level_required) {
           form.coach_level_id = undefined
         }
         this.updateStaffPositionService
