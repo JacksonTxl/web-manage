@@ -32,7 +32,7 @@
       <st-form-item class="mg-b0">
         <no-captcha id="no-captcha-2" />
       </st-form-item>
-      <st-form-item :class="mobile('captcha')">
+      <st-form-item :class="mobile('captcha')" class="mg-b12">
         <a-input
           size="large"
           :class="mobile('captcha-input')"

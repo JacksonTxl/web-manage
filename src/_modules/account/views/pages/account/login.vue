@@ -1,6 +1,6 @@
 <template>
   <div class="page-login-wapper">
-    <img src="" alt="三体云动" class="page-login-logo" />
+    <img src="~@/assets/img/logo.png" alt="三体云动" class="page-login-logo" />
     <div class="page-login-ch-en">
       <!-- <span class="mg-r24 active">中文</span>
       <span class="mg-r24">English</span> -->
