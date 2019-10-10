@@ -1,4 +1,11 @@
 .steps-line {
   &-item {
+    &:last-child {
+      .steps-line-item__index {
+        &:before {
+          height: 0;
+        }
+      }
+    }
   }
 }

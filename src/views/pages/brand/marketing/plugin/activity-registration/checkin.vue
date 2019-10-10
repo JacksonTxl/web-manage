@@ -19,17 +19,39 @@
       />
     </a-steps>
     <st-steps-line>
-      <steps-line-item
+      <st-steps-line-item
         v-for="item in steps"
-        :index="item.index"
+        :step="item.index"
         :key="item.index"
         :title="item.title"
         :description="item.description"
-      ></steps-line-item>
+      ></st-steps-line-item>
     </st-steps-line>
   </st-panel>
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      steps: [
+        {
+          index: 1,
+          title: '签到验票',
+          description: '点击签到，签到后状态更新为已签到'
+        },
+        {
+          index: 2,
+          title: '签到验票',
+          description: '点击签到，签到后状态更新为已签到'
+        },
+        {
+          index: 3,
+          title: '签到验票',
+          description: '点击签到，签到后状态更新为已签到'
+        }
+      ]
+    }
+  }
+}
 </script>

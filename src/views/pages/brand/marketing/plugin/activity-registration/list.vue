@@ -1,7 +1,35 @@
 <template>
   <div :class="bPage()">
-    <header class="mg-b16" style="height: 300px;background: #fff"></header>
-    <st-panel>
+    <header :class="bPage('header')" class="mg-b16">
+      <div class="header">
+        <div class="header__left">
+          <st-t3 class="header__title">活动报名</st-t3>
+          <p class="header__content">
+            提供多种优惠券发放方式。
+            <br />
+            包括进店有礼、支付有礼等。
+          </p>
+          <ul class="header__link">
+            <li class="mg-r16"><a>规则说明</a></li>
+            <li class="mg-r16"><a>使用教程</a></li>
+            <li class="mg-r16"><a>活动案例</a></li>
+          </ul>
+        </div>
+        <div class="header__right">
+          <div
+            class="st-preview-item mg-r24"
+            v-for="(item, index) in plugin_image"
+            :key="index"
+          >
+            <img
+              :src="item | imgFilter({ w: 80, h: 142 })"
+              :data-src="item | imgFilter({ w: 1000 })"
+            />
+          </div>
+        </div>
+      </div>
+    </header>
+    <st-panel :class="bPage('content')">
       <div slot="title" :class="bSearch()">
         <div :class="bSearch('button-group')">
           <st-button
@@ -14,8 +42,6 @@
           <st-button
             @click="onClickRouterPush({ pathName: 'checkinActivity' })"
             class="mg-l16"
-            icon="add"
-            type="primary"
           >
             签到验票
           </st-button>
@@ -83,6 +109,12 @@ export default {
   },
   data() {
     return {
+      plugin_image: [
+        'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/img-lottery-preview-1.png',
+        'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/img-lottery-preview-2.png',
+        'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/img-lottery-preview-2.png',
+        'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/img-lottery-preview-3.png'
+      ],
       redirectPath: {
         addActivity: 'brand-marketing-plugin-activity-registration-add',
         editActivity: 'brand-marketing-plugin-activity-registration-edit',
@@ -111,7 +143,9 @@ export default {
     onClickRouterPush({ record, pathName }) {
       this.$router.push({ name: this.redirectPath[pathName] })
     },
-    onClickEdit({ record, pathName }) {},
+    onClickEdit({ record, pathName }) {
+      this.$router.push({ name: this.redirectPath[pathName] })
+    },
     onCLickGeneralize({ record, pathName }) {},
     onClickNameList({ record, pathName }) {},
     onClickStop({ record, pathName }) {},
