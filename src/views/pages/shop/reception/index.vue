@@ -92,6 +92,7 @@
               </span>
             </a-select-option>
             <a-select-option
+              disabled
               :key="new Date() + Math.random()"
               :class="reception('member-search-tip')"
               v-if="!isSearchNone && page.current_page < page.total_pages"
@@ -99,6 +100,7 @@
               下滑展示更多
             </a-select-option>
             <a-select-option
+              disabled
               :class="reception('member-search-tip')"
               :key="new Date() + Math.random()"
               v-if="!isSearchNone && page.current_page >= page.total_pages"
@@ -1013,13 +1015,12 @@ export default {
     },
     scroll(e) {
       const { target } = e
-      if (target.scrollTop + target.offsetHeight === target.scrollHeight) {
+      if (target.scrollTop + target.offsetHeight >= target.scrollHeight - 1) {
         if (this.page.current_page < this.page.total_pages) {
           this.page.current_page = this.page.current_page + 1
           this.onMemberSearch(this.memberSearchText, this.page.current_page) // 调用api方法
         }
       }
-      console.log(this.memberList.length)
     }
   }
 }
