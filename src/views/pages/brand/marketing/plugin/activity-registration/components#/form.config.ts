@@ -13,27 +13,11 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    address: {
+    date: {
       rules: [
         {
           required: true,
-          message: '请输入活动地点'
-        },
-        {
-          pattern: pattern.CN_EN_NUM('6-15'),
-          message: '请输入6~15d个字符'
-        }
-      ]
-    },
-    count: {
-      rules: [
-        {
-          required: true,
-          message: '请输入活动地点'
-        },
-        {
-          pattern: pattern.CN_EN_NUM('6-15'),
-          message: '请输入6~15d个字符'
+          message: '请输入活动时间'
         }
       ]
     },

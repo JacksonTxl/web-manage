@@ -1,29 +1,11 @@
 <template>
-  <st-form :form="form">
-    <st-form-item label="活动标题" required>
-      <a-input v-decorator="decorators.name"></a-input>
-    </st-form-item>
-    <st-form-item label="活动时间" required>
-      <a-input v-decorator="decorators.count"></a-input>
-    </st-form-item>
-    <st-form-item label="活动地点" required>
-      <a-input v-decorator="decorators.address"></a-input>
-    </st-form-item>
-    <!-- <st-form-item label="活动海报" required>
-      <a-input></a-input>
-    </st-form-item>
-    <st-form-item label="活动人数" required>
-      <a-input></a-input>
-    </st-form-item>
-    <st-form-item label="活动详情" required>
-      <a-input></a-input>
-    </st-form-item> -->
-  </st-form>
+  <add-ticket></add-ticket>
 </template>
 
 <script>
 import { ruleOptions } from './form.config'
 import { PatternService } from '@/services/pattern.service'
+import AddTicket from './add-ticket'
 export default {
   name: 'Step2Form',
   serviceInject() {
@@ -44,6 +26,9 @@ export default {
       formInfo: {},
       decorators
     }
+  },
+  components: {
+    AddTicket
   }
 }
 </script>

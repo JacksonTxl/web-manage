@@ -6,7 +6,7 @@
       </template>
       <div :class="bComponent('content')">
         <div :class="bComponent('content-img')">
-          <img src="" alt="" />
+          <img class="image" :src="stepInfo.imageUrl" alt="活动海报" />
         </div>
         <div :class="bComponent('content-info')">
           <st-t2 class="title">{{ stepInfo.name }}</st-t2>
@@ -28,36 +28,23 @@
         <div :class="bComponent('content-sub-info')">
           <div class="time">
             <st-icon type="timer" class="mg-r16"></st-icon>
-            <span>2019.06.22 19:30-21:30</span>
+            <span>{{ stepInfo.date | formatActivityDate }}</span>
           </div>
           <div class="address">
-            <div class="address__info">
-              <st-icon type="location" class="mg-r16"></st-icon>
-              <span>上海市闵行区漕河泾门店</span>
-            </div>
+            <st-icon type="location" class="mg-r16"></st-icon>
+            <span>{{ stepInfo.address }}</span>
             <div class="address__map"></div>
           </div>
         </div>
         <div :class="bComponent('content-activity-detail')">
           <st-t2 class="title">活动详情</st-t2>
-          <div class="content-box">
-            <p></p>
-            打造迷人身线，拥抱健康身材。 测量您的身体成分，了解现有身体状况。
-            <p></p>
-            根据您的身体状况，量身定制科学减脂计划。
-            <p></p>
-            1对1授课，帮您高效减脂，改善体态，重建良好身体机能。
-            <p></p>
-            根据您的运动计划，制定不同周期饮食参考，监督每日饮食。
-            <p></p>
-            注：2月26日前购买的消费者仍按原有套餐内容接待。
-            <p></p>
-            漕河泾店营业时间为8：00-22：00； 漕溪路店营业时间为10：00-22：00。
-          </div>
+          <div class="content-box" v-html="stepInfo.content"></div>
         </div>
         <div :class="bComponent('footer')">
           <st-icon size="44px" type="edit"></st-icon>
-          <st-button class="footer__button" type="primary">立即报名</st-button>
+          <st-button pill class="footer__button" type="primary">
+            立即报名
+          </st-button>
         </div>
       </div>
     </h5-container>
@@ -74,11 +61,25 @@ export default {
   components: {
     H5Container
   },
+  filters: {
+    formatActivityDate(dateArr = []) {
+      if (!dateArr.length) return ''
+      const startDate = dateArr[0].format('YYYY-MM-DD')
+      const endDate = dateArr[1].format('YYYY-MM-DD')
+      const startTime = dateArr[0].format('HH:mm')
+      const endTime = dateArr[1].format('HH:mm')
+      return startDate === endDate
+        ? `${startDate} ${startTime} - ${endTime}`
+        : `${startDate} ${startTime} - ${endDate} ${endTime}`
+    }
+  },
   props: {
     stepInfo: {
       type: Object,
       default: () => {
-        return {}
+        return {
+          content: ''
+        }
       }
     }
   }

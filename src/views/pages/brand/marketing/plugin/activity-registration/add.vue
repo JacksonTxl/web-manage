@@ -12,17 +12,14 @@
           :title="info.title"
         />
       </a-steps>
-      <st-t3>1</st-t3>
       <step1-form
         v-if="currentStep === 0"
         @change="onChangeStep1Form"
       ></step1-form>
-      <st-t3>2</st-t3>
       <step2-form
         v-if="currentStep === 1"
         @change="onChangeStep2Form"
       ></step2-form>
-      <st-t3>3</st-t3>
       <step3-form
         v-if="currentStep === 2"
         @change="onChangeStep2Form"
@@ -51,8 +48,8 @@ export default {
       stepInfo: {},
       steps: [
         { title: '活动信息' },
-        { title: '活动信息' },
-        { title: '活动信息' }
+        { title: '票种信息' },
+        { title: '报名信息' }
       ],
       currentStep: 0
     }

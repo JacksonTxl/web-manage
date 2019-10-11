@@ -4,6 +4,9 @@
     &-img {
       .s(750px, 422px);
       .bg(#222);
+      .image {
+        .s(100%, 100%);
+      }
     }
     &-info {
       .pd(28px 40px 40px);
@@ -43,11 +46,12 @@
       }
       .address {
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         align-items: center;
         .mg-t(60px);
         &__map {
           .s(64px, 64px);
+          flex: none;
           border-radius: 100%;
           background: #e43;
         }
