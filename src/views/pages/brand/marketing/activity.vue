@@ -1,6 +1,10 @@
 <template>
   <st-mina-panel :class="activity()" initial>
-    <h5-component slot="preview" id="h5"></h5-component>
+    <h5-component
+      slot="preview"
+      id="h5"
+      :class="{ fixed: isFixed }"
+    ></h5-component>
 
     <a-tabs defaultActiveKey="1" class="st-tabs">
       <a-tab-pane tab="活动轮播图" key="1">
