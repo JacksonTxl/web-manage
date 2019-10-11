@@ -65,7 +65,7 @@ export const shortcutList = () => {
       icon: 'reception-advance',
       label: '定金押金',
       auth: true,
-      version: 2
+      version: 1
     },
     {
       id: 'schedulePage',

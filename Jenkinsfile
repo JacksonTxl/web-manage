@@ -19,6 +19,9 @@ pipeline {
       }
     }
     stage('to=dev') {
+      when {
+        expression { BRANCH_NAME ==~ /(feat|fix|dev|test).*/}
+      }
       steps {
         sh 'make rsync to=saas-dev'
         sh 'make release to=saas-dev'
@@ -28,6 +31,9 @@ pipeline {
       }
     }
     stage('to=test') {
+      when {
+        expression { BRANCH_NAME ==~ /(feat|fix|dev|test).*/}
+      }
       steps {
         sh 'make rsync to=saas-test'
         sh 'make release to=saas-test'

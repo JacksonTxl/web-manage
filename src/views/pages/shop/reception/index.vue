@@ -792,8 +792,12 @@ export default {
               }
             }
           })
+          break
         case 'cabinetPage':
           this.$router.push({ path: '/shop/reception/cabinet' })
+          break
+        case 'temporaryPage':
+          this.$router.push({ path: '/shop/finance/gathering/earnest' })
           break
       }
     },
