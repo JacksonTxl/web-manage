@@ -3,7 +3,7 @@
     wrapClassName="modal-schedule-team-add-course-batch"
     title="批量新增课程排期"
     @ok="onOkSaveForm"
-    width="1150px"
+    width="1030px"
     v-model="show"
   >
     <st-table
@@ -14,24 +14,19 @@
       bordered
     >
       <span slot="startTimeTitle" class="modal-table-title">
-        <i class="color-danger mg-r8">*</i>
-        日期
+        <i class="color-danger mg-r8">*</i>日期
       </span>
       <span slot="courseIdTitle" class="modal-table-title">
-        <i class="color-danger mg-r8">*</i>
-        课程
+        <i class="color-danger mg-r8">*</i>课程
       </span>
       <span slot="coachIdTitle" class="modal-table-title">
-        <i class="color-danger mg-r8">*</i>
-        上课教练
+        <i class="color-danger mg-r8">*</i>上课教练
       </span>
       <span slot="limitNumTitle" class="modal-table-title">
-        <i class="color-danger mg-r8">*</i>
-        人数
+        <i class="color-danger mg-r8">*</i>人数
       </span>
       <span slot="courseFeeTitle" class="modal-table-title">
-        <i class="color-danger mg-r8">*</i>
-        课时费
+        <i class="color-danger mg-r8">*</i>课时费
       </span>
       <template slot="start_time" slot-scope="text, record">
         <a-date-picker
