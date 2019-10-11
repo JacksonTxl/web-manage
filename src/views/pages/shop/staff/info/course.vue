@@ -1,24 +1,21 @@
 <template>
   <a-row>
-    <a-col :lg="24">
-      <a-col :lg="16">
-        <a-select
-          style="width: 160px;margin-right:12px"
-          :defaultValue="-1"
-          placeholder="请选择课程状态"
-          @change="onSingleSearch('schedule_status', $event)"
-          :options="reserveStatus"
-        ></a-select>
-        <a-range-picker @change="onChooseDate" format="YYYY-MM-DD" />
-      </a-col>
-      <a-col :lg="2"></a-col>
-      <a-col :lg="6">
-        <st-input-search
-          placeholder="请输入课程名称"
-          @search="onSingleSearch('course_name', $event)"
-        />
-      </a-col>
-    </a-col>
+    <a-select
+      style="width: 160px;"
+      class="mg-r12"
+      :defaultValue="-1"
+      placeholder="请选择课程状态"
+      @change="onSingleSearch('schedule_status', $event)"
+      :options="reserveStatus"
+    ></a-select>
+    <a-range-picker @change="onChooseDate" format="YYYY-MM-DD" />
+
+    <st-input-search
+      style="float:right"
+      placeholder="请输入课程名称"
+      @search="onSingleSearch('course_name', $event)"
+    />
+
     <a-col :lg="24" class="mg-t16">
       <st-table
         :columns="courseColums"
