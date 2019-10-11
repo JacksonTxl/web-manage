@@ -79,7 +79,10 @@
               <a @click="onAddUser">添加新用户？</a>
             </span>
             <span slot="notFoundContent" v-else>无数据</span>
-            <a-select-option v-for="item in memberList" :key="item.id">
+            <a-select-option
+              v-for="item in memberList"
+              :key="item.id + Math.random()"
+            >
               <span
                 v-html="
                   `${item.member_name} ${item.mobile}`.replace(
@@ -645,7 +648,11 @@ export default {
       photoList: [],
       // 待办animate动画index
       animateIndex: 9999999999,
-      stCabinetList: []
+      stCabinetList: [],
+      page: {
+        current_page: 1,
+        size: 10
+      }
     }
   },
   computed: {
@@ -1016,10 +1023,8 @@ export default {
     scroll(e) {
       const { target } = e
       if (
-        Math.floor(target.scrollTop) + target.offsetHeight ==
-          target.scrollHeight - 1 ||
-        Math.floor(target.scrollTop) + target.offsetHeight ==
-          target.scrollHeight
+        Math.floor(target.scrollTop) + target.clientHeight >
+        target.scrollHeight - 20
       ) {
         if (this.page.current_page < this.page.total_pages) {
           this.page.current_page = this.page.current_page + 1
