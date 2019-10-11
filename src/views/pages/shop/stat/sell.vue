@@ -16,13 +16,13 @@
             optionFilterProp="children"
             style="width: 200px"
             @change="onChangeDepartment"
-            v-model="query.department_id"
+            v-model="query.department"
             :filterOption="filterOption"
           >
             <a-select-option
               :value="+department.id"
               v-for="department in departmentList"
-              :key="department.id"
+              :key="department"
             >
               {{ department.name }}
             </a-select-option>
@@ -33,16 +33,16 @@
             optionFilterProp="children"
             class="mg-r8"
             style="width: 200px"
-            @change="onChangeCoach"
-            v-model="query.coach_id"
+            @change="onChangeStaff"
+            v-model="query.id"
             :filterOption="filterOption"
           >
             <a-select-option
-              :value="+coach.id"
-              v-for="coach in coachListFilter"
-              :key="coach.id"
+              :value="+staff.id"
+              v-for="staff in staffListFilter"
+              :key="staff.id"
             >
-              {{ coach.name }}
+              {{ staff.name }}
             </a-select-option>
           </a-select>
         </div>
@@ -67,7 +67,7 @@
       >
         {{ text }}
       </a>
-      <span v-else>{{ text }}</span>
+      <!-- <span v-else>{{ text }}</span>
       <a
         slot="personal_checkin_amount"
         @click="getPersonalConsume(record)"
@@ -98,45 +98,39 @@
       <span slot="teamTitle">
         团课消课价值（元）
         <st-help-tooltip id="TSCR002" />
-      </span>
+      </span> -->
     </st-table>
   </div>
 </template>
 <script>
-import { CourseService } from './course.service'
+import { SellService } from './sell.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
-import ShopStatPersonalCourse from '@/views/biz-modals/shop/stat/personal-course'
-import ShopStatPersonalConsume from '@/views/biz-modals/shop/stat/personal-consume'
-import ShopStatTeamCourse from '@/views/biz-modals/shop/stat/team-course'
-import ShopStatTeamConsume from '@/views/biz-modals/shop/stat/team-consume'
-import { allColumns, staffColumns } from './course.config.ts'
+//import ShopStatPersonalCourse from '@/views/biz-modals/shop/stat/personal-course'
+import { allColumns, staffColumns } from './sell.config.ts'
 export default {
   mixins: [tableMixin],
   bem: {
-    bPage: 'page-shop-stat-course',
+    bPage: 'page-shop-stat-sell',
     bHeard: 'header'
   },
   modals: {
-    ShopStatPersonalCourse,
-    ShopStatPersonalConsume,
-    ShopStatTeamCourse,
-    ShopStatTeamConsume
+    // ShopStatPersonalCourse
   },
   serviceInject() {
     return {
       routeService: RouteService,
-      courseService: CourseService
+      sellService: SellService
     }
   },
   rxState() {
     return {
       query: this.routeService.query$,
-      loading: this.courseService.loading$,
-      list: this.courseService.list$,
-      departmentList: this.courseService.departmentList$,
-      coachList: this.courseService.coachList$,
-      page: this.courseService.page$
+      loading: this.sellService.loading$,
+      list: this.sellService.list$,
+      departmentList: this.sellService.departmentList$,
+      staffList: this.sellService.staffList$,
+      page: this.sellService.page$
     }
   },
   data() {
@@ -148,58 +142,40 @@ export default {
     columns() {
       return this.showTable === 'all' ? allColumns() : staffColumns()
     },
+    // 改变员的时候使用该方法 ： 如果选全部员工，则执行第一句
     staffListFilter() {
-      if (this.query.department_id === -1) return this.staffList
+      if (this.query.department === 1) return this.staffList
       return [
         { id: -1, name: '所有销售' },
         ...this.staffList.filter(item => {
-          return this.query.department_id === item.department_id
+          return this.query.department === item.department
         })
       ]
     }
   },
   created() {
     this.showTable = this.query.showTable
+    console.log(this.departmentList);
+    console.log();
   },
   methods: {
-    getPersonalCourse(record) {
-      this.$modalRouter.push({
-        name: 'shop-stat-personal-course',
-        props: {
-          record
-        }
-      })
-    },
-    getPersonalConsume(record) {
-      this.$modalRouter.push({
-        name: 'shop-stat-personal-consume',
-        props: {
-          record
-        }
-      })
-    },
-    getTeamCourse(record) {
-      this.$modalRouter.push({
-        name: 'shop-stat-team-course',
-        props: {
-          record
-        }
-      })
-    },
-    getTeamConsume(record) {
-      this.$modalRouter.push({
-        name: 'shop-stat-team-consume',
-        props: {
-          record
-        }
-      })
-    },
-    onChangeCoach(value) {
-      this.onMultiSearch({ coach_id: value })
+    // getPersonalCourse(record) {
+    //   this.$modalRouter.push({
+    //     name: 'shop-stat-personal-course',
+    //     props: {
+    //       record
+    //     }
+    //   })
+    // },
+    onChangeStaff(value) {
+      console.log('选择员工');
+      console.log(value);
+      this.onMultiSearch({ staff: value })
     },
     onChangeDepartment(value) {
-      this.onMultiSearch({ department_id: value, coach_id: -1 })
+      this.onMultiSearch({ department: value, staff: -1 })
     },
+    // 格式化
     filterOption(input, option) {
       return (
         option.componentOptions.children[0].text
@@ -214,8 +190,8 @@ export default {
       this.showTable = val.target.value
       let query = { showTable: this.showTable }
       if (this.showTable === 'staff') {
-        query.department_id = -1
-        query.staff_id = -1
+        query.department = -1
+        query.staff = -1
       }
       this.$router.push({ query, force: true })
     }
