@@ -2,7 +2,6 @@
   <st-modal
     wrapClassName="modal-stat-team-course"
     title="上课节数(团)"
-    :footer="null"
     width="960px"
     v-model="show"
   >
@@ -54,6 +53,11 @@
       :dataSource="courseList$"
       page-mode="client"
     ></st-table>
+    <div slot="footer">
+      <st-export-button type="team/course" :query="query">
+        全部导出
+      </st-export-button>
+    </div>
   </st-modal>
 </template>
 <script>

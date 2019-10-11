@@ -2,11 +2,26 @@
   <div :class="bPage()">
     <section class="mg-b16" :class="bHeard()">
       <div :class="bHeard('left')">
-        <!-- TODO: <st-button type="primary" class="shop-member-list-button">批量导出</st-button> -->
         <a-radio-group :value="showTable" @change="handleSizeChange">
           <a-radio-button value="all">汇总</a-radio-button>
           <a-radio-button value="coach">教练</a-radio-button>
         </a-radio-group>
+        <st-export-button
+          v-if="showTable === 'all'"
+          class="mg-l8"
+          type="course/shop"
+          :query="query"
+        >
+          批量导出
+        </st-export-button>
+        <st-export-button
+          v-if="showTable === 'coach'"
+          class="mg-l8"
+          type="shop/coach"
+          :query="query"
+        >
+          批量导出
+        </st-export-button>
       </div>
       <div :class="bHeard('right')">
         <div v-if="showTable === 'coach'">

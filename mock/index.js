@@ -78,18 +78,12 @@ const mockerApis = {
    * mock start
    */
   'GET /_api/v1/cards/member/shop/back/181184018055236': mockJson,
-  // 'GET /_api/v1/sold/cards/member/operation/log/214171799584958'(req,res) {
-  //   res.status(500).json({
-  //     code: 0,
-  //     data: {},
-  //     msg: '系统繁忙'
-  //   })
-  // },
-  // 'GET /_api/v1/common/menu'(req,res){
-  //   res.status(500).json({
 
-  //   })
-  // }
+  'GET /_api/v1/excel/download/237261979975729': {
+    data: {
+      down_url: 'https://saas.test.styd.cn/img/pic.545c7ed0.jpg'
+    }
+  }
 }
 
 module.exports = wrapper(mockerApis)
