@@ -26,6 +26,10 @@
             </a-menu-item>
           </a-menu> -->
         </a-dropdown>
+        <p v-if="!isBind" :class="mobile('phone-tip')">
+          当前手机号未绑定账户，
+          <a @click="goBind">去绑定</a>
+        </p>
       </st-form-item>
       <st-form-item class="mg-b0">
         <no-captcha></no-captcha>
@@ -113,7 +117,8 @@ export default {
       captcha: '',
       isClick: false,
       thirdLogins: ['alipay', 'wechat', 'weibo', 'qq'],
-      timer: ''
+      timer: '',
+      isBind: true
     }
   },
   computed: {
@@ -130,18 +135,13 @@ export default {
       })
     },
     onChangePhone(event) {
-      console.log(event)
-      this.form.validateFields(['phone'], (err, values) => {
-        console.log(err)
-        if (!err) {
-          const { phone } = values
-          const params = {
-            phone,
-            country_code_id: 86
-          }
-          this.validPhoneIsBind(params)
-        }
-      })
+      const phone = event.target.value
+      if (this.pattern.MOBILE.test(phone)) {
+        this.validPhoneIsBind({ phone })
+      }
+    },
+    goBind() {
+      this.$emit('bind')
     },
     onClickCaptcha() {
       if (this.isClick) {
@@ -160,7 +160,10 @@ export default {
     },
     validPhoneIsBind(params) {
       this.loginService.checkPhoneIsBind(params).subscribe(res => {
-        console.log(res)
+        this.isBind = false
+        if (res.status) {
+          this.isBind = true
+        }
       })
     },
     getCaptcha(params) {
@@ -200,7 +203,6 @@ export default {
               this.$router.push('/')
             } else {
               // 去绑定手机
-              // 这是什么操作？？？
               this.$router.push('/')
             }
           })

@@ -1,68 +1,48 @@
 <template>
-  <div class="bind">
-    <div>
-      <label>绑定登录手机号</label>
-      <p>用于登录、密码找回和验证身份，保护您的账号安全</p>
+  <div :class="b()">
+    <div :class="b('head')">
+      <label :class="b('head-title')">绑定登录手机号</label>
+      <p :class="b('head-desc')">
+        用于登录、密码找回和验证身份，保护您的账号安全
+      </p>
     </div>
-    <st-form :form="form" @submit.prevent="login" :class="loginUser('form')">
+    <st-form :form="form" @submit.prevent="login" :class="b('form')">
       <st-form-item>
         <a-input
           size="large"
           placeholder="用户名、邮箱"
-          v-decorator="rules.name"
+          v-decorator="decorators.name"
         />
       </st-form-item>
-      <st-form-item class="mg-b12">
+      <st-form-item>
         <a-input
           size="large"
           type="password"
           placeholder="密码"
-          v-decorator="rules.password"
+          v-decorator="decorators.password"
         />
       </st-form-item>
-      <st-form-item :class="mobile('phone')">
-        <a-input
-          size="large"
-          :class="mobile('phone-input')"
+      <st-form-item>
+        <input-phone
+          v-decorator="decorators.phone"
           placeholder="请输入手机号码"
-          v-decorator="rules.phone"
-        />
-        <a-dropdown :class="mobile('phone-dropdown')">
-          <span class="cursor-pointer">
-            +86
-            <a-icon type="down" />
-          </span>
-          <!-- <a-menu slot="overlay">
-            <a-menu-item>
-              <a href="javascript:;">+86</a>
-            </a-menu-item>
-            <a-menu-item>
-              <a href="javascript:;">+86</a>
-            </a-menu-item>
-            <a-menu-item>
-              <a href="javascript:;">+86</a>
-            </a-menu-item>
-          </a-menu> -->
-        </a-dropdown>
+        ></input-phone>
       </st-form-item>
-      <st-form-item :class="mobile('captcha')" class="mg-b12">
-        <a-input
-          size="large"
-          :class="mobile('captcha-input')"
+      <st-form-item class="mg-b12">
+        <input-phone-code
+          v-decorator="decorators.captcha"
+          @click="onClickCaptcha"
           placeholder="请输入验证码"
-          v-decorator="rules.captcha"
-        />
-        <span :class="mobile('captcha-button')" @click="onClickCaptcha">
-          {{ buttonText }}
-        </span>
+          :isCountTime="isCountTime"
+        ></input-phone-code>
       </st-form-item>
       <!-- 无痕验证 -->
-      <st-form-item class="mg-b0">
+      <st-form-item class="mg-b12">
         <no-captcha></no-captcha>
       </st-form-item>
       <st-form-item class="mg-b32">
         <st-button
-          :class="loginUser('login-button')"
+          :class="b('login-button')"
           :loading="loading.loginAccount"
           :disabled="changeSubmitDisabled"
           pill
@@ -80,21 +60,26 @@
 
 <script>
 import { LoginService } from '../login.service'
-import { rules } from './user.config'
+import { ruleOptions } from './login.config'
 import NoCaptcha from './no-captcha'
-import AccountAgreement from '@/views/biz-modals/account/agreement'
+import { PatternService } from '@/services/pattern.service'
+import InputPhone from '@/views/biz-components/input-phone/input-phone'
+import InputPhoneCode from '@/views/biz-components/input-phone-code/input-phone-code'
 
 export default {
+  name: 'LoginUserBind',
   bem: {
     b: 'page-login-bind'
   },
-  name: 'LoginUser',
   components: {
-    NoCaptcha
+    NoCaptcha,
+    InputPhone,
+    InputPhoneCode
   },
   serviceInject() {
     return {
-      loginService: LoginService
+      loginService: LoginService,
+      pattern: PatternService
     }
   },
   rxState() {
@@ -103,50 +88,35 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      form: this.$form.createForm(this),
-      thirdLogins: ['alipay', 'wechat', 'weibo', 'qq'],
-      trunPage: false,
-      defaultAgreeFlag: true
-    }
-  },
-  modals: {
-    AccountAgreement
-  },
-  computed: {
-    rules,
-    changeSubmitDisabled() {
-      return !this.defaultAgreeFlag
+      form,
+      decorators,
+      isCountTime: false,
+      isClick: false
     }
   },
   methods: {
-    clickAgreement() {
-      this.$modalRouter.push({
-        name: 'account-agreement',
-        props: {},
-        on: {}
-      })
-    },
-    login() {
-      this.form.validateFields((err, values) => {
+    onClickCaptcha() {
+      if (this.isClick) {
+        return
+      }
+      this.form.validateFields(['phone'], (err, values) => {
         if (!err) {
-          this.$emit('login', values)
+          const { phone } = values
+          const params = {
+            phone,
+            country_code_id: 86
+          }
+          this.getCaptcha(params)
         }
       })
     },
-    onChange() {
-      this.$router.push({
-        force: true
+    getCaptcha(params) {
+      this.loginService.getCaptcha(params).subscribe(res => {
+        this.isCountTime = true
       })
-    },
-    onCheckboxChange() {
-      this.defaultAgreeFlag = !this.defaultAgreeFlag
-    },
-    onClickFindPassword() {
-      this.$emit('findps')
-    },
-    onClickThirdChange(key) {
-      this.$emit('third', key)
     }
   }
 }

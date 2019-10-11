@@ -44,7 +44,14 @@
             @login="onLogin"
             v-if="loginType === 'user'"
           ></login-user>
-          <login-mobile v-if="loginType === 'mobile'"></login-mobile>
+          <login-mobile
+            v-if="loginType === 'mobile'"
+            @bind="onBind"
+          ></login-mobile>
+        </div>
+
+        <div v-if="loginType === 'bind'">
+          <login-bind></login-bind>
         </div>
 
         <div
@@ -92,6 +99,7 @@ import { AuthService } from '@/services/auth.service'
 import { LoginService } from './login.service'
 import mobile from './login#/mobile'
 import user from './login#/user'
+import bind from './login#/bind'
 import { NoCaptchaService } from '@/services/no-captcha.service'
 import { throwError } from 'rxjs'
 
@@ -126,6 +134,7 @@ export default {
   },
   components: {
     LoginMobile: mobile,
+    LoginBind: bind,
     LoginUser: user
   },
   rxState() {
@@ -170,6 +179,9 @@ export default {
     // 切换登录方式
     switchLoginType() {
       this.loginType = this.loginType === 'qrcode' ? 'user' : 'qrcode'
+    },
+    onBind() {
+      this.loginType = 'bind'
     }
   }
 }
