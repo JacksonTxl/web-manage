@@ -1,241 +1,238 @@
 <template>
-  <st-panel app :class="basic()" initial>
-    <div :class="basic('left')">
-      <h5-container>
-        <template v-slot:title>
-          我的优惠券
-        </template>
-        <div :class="basic('left-coupon')">
-          <div :class="basic('left-coupon-top')">
-            <div :class="basic('left-coupon-top-left')">
-              <span :class="basic('left-coupon-top-left-number')">
-                {{ form.getFieldValue('price') }}
-              </span>
-              元
-              <br />
-              {{ form.getFieldValue('use_type') === 1 ? '无门槛使用' : '' }}
-              {{
-                form.getFieldValue('use_type') === 2
-                  ? `满${form.getFieldValue('full_price') || ''}元使用`
-                  : ''
-              }}
-            </div>
-            <div :class="basic('left-coupon-top-right')">
-              有效期：{{ getValidDay(form.getFieldValue('valid_days')) }}
-              <br />
-              可用类目：{{ getRange().join('、') }}
-            </div>
+  <st-mina-panel>
+    <h5-container slot="preview" fixed>
+      <template v-slot:title>
+        我的优惠券
+      </template>
+      <div :class="basic('left-coupon')">
+        <div :class="basic('left-coupon-top')">
+          <div :class="basic('left-coupon-top-left')">
+            <span :class="basic('left-coupon-top-left-number')">
+              {{ form.getFieldValue('price') }}
+            </span>
+            元
+            <br />
+            {{ form.getFieldValue('use_type') === 1 ? '无门槛使用' : '' }}
+            {{
+              form.getFieldValue('use_type') === 2
+                ? `满${form.getFieldValue('full_price') || ''}元使用`
+                : ''
+            }}
           </div>
-          <div :class="basic('left-coupon-bottom')">
-            可用门店：{{ shopNames }}
+          <div :class="basic('left-coupon-top-right')">
+            有效期：{{ getValidDay(form.getFieldValue('valid_days')) }}
+            <br />
+            可用类目：{{ getRange().join('、') }}
           </div>
         </div>
-      </h5-container>
-    </div>
-    <div :class="basic('body')">
-      <div>
-        <st-form :form="form" labelWidth="118px">
-          <a-row :gutter="8">
-            <a-col :lg="24">
-              <st-form-item required v-if="couponEnums.coupon_type">
-                <template slot="label">
-                  优惠券类型
-                  <st-help-tooltip id="TBYHQ001" />
-                </template>
-                <a-radio-group v-model="couponType" :disabled="isEditMode">
-                  <a-radio-button
-                    v-for="(item, index) in couponEnums.coupon_type.value"
-                    :value="index"
-                    :key="index"
-                  >
-                    {{ item }}
-                  </a-radio-button>
-                </a-radio-group>
-              </st-form-item>
-              <st-form-item label="优惠券名称" required>
-                <a-input
-                  :disabled="isEditMode"
-                  v-decorator="decorators.coupon_name"
-                  maxlength="10"
-                  placeholder="请输入优惠券名称"
-                  :class="basic('input')"
-                ></a-input>
-              </st-form-item>
-              <st-form-item label="面额" required>
-                <st-input-number
-                  :float="true"
-                  :min="1"
-                  :max="9999.9"
-                  :disabled="isEditMode"
-                  style="top:0;"
-                  placeholder="请输入面额"
-                  :class="basic('input')"
-                  v-decorator="decorators.price"
-                >
-                  <template slot="addonAfter">
-                    元
-                  </template>
-                </st-input-number>
-              </st-form-item>
-            </a-col>
-          </a-row>
-          <a-divider :class="basic('line')"></a-divider>
-          <a-row :gutter="8">
-            <a-col :lg="23">
-              <st-form-item
-                label="优惠范围"
-                required
-                v-if="couponEnums.is_product_range"
-              >
-                <a-radio-group
-                  v-if="couponEnums.is_product_range.value.length > 1"
-                  v-model="showProductRange"
-                  :disabled="isEditMode"
-                >
-                  <a-radio
-                    v-for="(item, index) in couponEnums.is_product_range.value"
-                    :value="index"
-                    :key="index"
-                  >
-                    {{ item }}
-                  </a-radio>
-                </a-radio-group>
-                <a-select
-                  :disabled="isEditMode"
-                  v-if="showProductRange == '2' && couponEnums.product_range"
-                  :defaultValue="rangeIds"
-                  style="width: 360px"
-                  @change="changeProductRange"
-                  mode="multiple"
-                  placeholder="请选择类目"
-                  :class="basic('select')"
-                >
-                  <a-select-option
-                    v-for="(item, index) in couponEnums.product_range['value']"
-                    :key="index"
-                    :value="index"
-                  >
-                    {{ item }}
-                  </a-select-option>
-                </a-select>
-              </st-form-item>
-              <st-form-item label="可用门店" required>
-                <a-radio-group
-                  v-model="showShopRange"
-                  :disabled="isEditMode"
-                  v-if="couponEnums.is_shop_range.value.length > 1"
-                >
-                  <a-radio
-                    v-for="(item, index) in couponEnums.is_shop_range.value"
-                    :value="index"
-                    :key="index"
-                  >
-                    {{ item }}
-                  </a-radio>
-                </a-radio-group>
-                <select-shop
-                  style="border:1px solid #CDD4DF;padding:8px 12px;border-radius:4px"
-                  v-if="showShopRange == '2'"
-                  @change="onSelectShop"
-                  :shopIds="shopIds"
-                  :disabled="isEditMode"
-                ></select-shop>
-              </st-form-item>
-              <st-form-item label="使用条件" required>
-                <a-radio-group
-                  :disabled="isEditMode"
-                  v-decorator="decorators.use_type"
-                  @change="userTypeChange"
-                >
-                  <a-radio :value="1">无门槛使用</a-radio>
-                  <a-form-item :class="basic('wrap-input')">
-                    <a-radio :value="2">
-                      满
-                      <st-input-number
-                        :float="true"
-                        :class="basic('radio-input')"
-                        :disabled="isEditMode"
-                        v-decorator="decorators.full_price"
-                      ></st-input-number>
-                      元使用
-                    </a-radio>
-                  </a-form-item>
-                </a-radio-group>
-              </st-form-item>
-              <st-form-item label="发放数量" required>
-                <st-input-number
-                  :class="basic('input')"
-                  style="top:0;"
-                  placeholder="请输入数量"
-                  :min="isEditMode ? +info.number : 0"
-                  v-decorator="decorators.number"
-                >
-                  <template slot="addonAfter">
-                    张
-                  </template>
-                </st-input-number>
-                <span :class="basic('tip')">保存后只可增加不可减少</span>
-              </st-form-item>
-              <st-form-item label="使用有效期" required>
-                领券当日起
-                <st-input-number
-                  :disabled="isEditMode"
-                  :class="basic('radio-input')"
-                  v-decorator="decorators.valid_days"
-                ></st-input-number>
-                天内有效
-              </st-form-item>
-              <st-form-item>
-                <template slot="label">
-                  优惠共享
-                  <st-help-tooltip id="TBYHQ002" />
-                </template>
-                <a-checkbox v-model="isShare" :disabled="isEditMode">
-                  不可与其它优惠同享
-                </a-checkbox>
-              </st-form-item>
-              <st-form-item label="每人限领" required v-if="couponType === '1'">
-                <a-radio-group
-                  :disabled="isEditMode"
-                  v-decorator="decorators.is_limit"
-                  @change="limitChange"
-                >
-                  <a-radio :value="1">不限</a-radio>
-                  <a-form-item :class="basic('wrap-input')">
-                    <a-radio :value="2">
-                      每人限领
-                      <a-input-number
-                        @focus="checkThisLimitRadio"
-                        :disabled="isEditMode"
-                        :class="basic('radio-input')"
-                        v-decorator="decorators.person_limit"
-                      ></a-input-number>
-                      次
-                    </a-radio>
-                  </a-form-item>
-                </a-radio-group>
-              </st-form-item>
-            </a-col>
-          </a-row>
-          <a-row :gutter="8">
-            <a-col :lg="20">
-              <st-form-item class="page-content-card-submit" label=" ">
-                <st-button
-                  :loading="
-                    loading.addMarketingCoupon || loading.editMarketingCoupon
-                  "
-                  type="primary"
-                  @click="onSubmit"
-                >
-                  保 存
-                </st-button>
-              </st-form-item>
-            </a-col>
-          </a-row>
-        </st-form>
+        <div :class="basic('left-coupon-bottom')">
+          可用门店：{{ shopNames }}
+        </div>
       </div>
+    </h5-container>
+
+    <div>
+      <st-form :form="form" labelWidth="118px">
+        <a-row :gutter="8">
+          <a-col :lg="24">
+            <st-form-item required v-if="couponEnums.coupon_type">
+              <template slot="label">
+                优惠券类型
+                <st-help-tooltip id="TBYHQ001" />
+              </template>
+              <a-radio-group v-model="couponType" :disabled="isEditMode">
+                <a-radio-button
+                  v-for="(item, index) in couponEnums.coupon_type.value"
+                  :value="index"
+                  :key="index"
+                >
+                  {{ item }}
+                </a-radio-button>
+              </a-radio-group>
+            </st-form-item>
+            <st-form-item label="优惠券名称" required>
+              <a-input
+                :disabled="isEditMode"
+                v-decorator="decorators.coupon_name"
+                maxlength="10"
+                placeholder="请输入优惠券名称"
+                :class="basic('input')"
+              ></a-input>
+            </st-form-item>
+            <st-form-item label="面额" required>
+              <st-input-number
+                :float="true"
+                :min="1"
+                :max="9999.9"
+                :disabled="isEditMode"
+                style="top:0;"
+                placeholder="请输入面额"
+                :class="basic('input')"
+                v-decorator="decorators.price"
+              >
+                <template slot="addonAfter">
+                  元
+                </template>
+              </st-input-number>
+            </st-form-item>
+          </a-col>
+        </a-row>
+        <a-divider :class="basic('line')"></a-divider>
+        <a-row :gutter="8">
+          <a-col :lg="23">
+            <st-form-item
+              label="优惠范围"
+              required
+              v-if="couponEnums.is_product_range"
+            >
+              <a-radio-group
+                v-if="couponEnums.is_product_range.value.length > 1"
+                v-model="showProductRange"
+                :disabled="isEditMode"
+              >
+                <a-radio
+                  v-for="(item, index) in couponEnums.is_product_range.value"
+                  :value="index"
+                  :key="index"
+                >
+                  {{ item }}
+                </a-radio>
+              </a-radio-group>
+              <a-select
+                :disabled="isEditMode"
+                v-if="showProductRange == '2' && couponEnums.product_range"
+                :defaultValue="rangeIds"
+                style="width: 360px"
+                @change="changeProductRange"
+                mode="multiple"
+                placeholder="请选择类目"
+                :class="basic('select')"
+              >
+                <a-select-option
+                  v-for="(item, index) in couponEnums.product_range['value']"
+                  :key="index"
+                  :value="index"
+                >
+                  {{ item }}
+                </a-select-option>
+              </a-select>
+            </st-form-item>
+            <st-form-item label="可用门店" required>
+              <a-radio-group
+                v-model="showShopRange"
+                :disabled="isEditMode"
+                v-if="couponEnums.is_shop_range.value.length > 1"
+              >
+                <a-radio
+                  v-for="(item, index) in couponEnums.is_shop_range.value"
+                  :value="index"
+                  :key="index"
+                >
+                  {{ item }}
+                </a-radio>
+              </a-radio-group>
+              <select-shop
+                style="border:1px solid #CDD4DF;padding:8px 12px;border-radius:4px"
+                v-if="showShopRange == '2'"
+                @change="onSelectShop"
+                :shopIds="shopIds"
+                :disabled="isEditMode"
+              ></select-shop>
+            </st-form-item>
+            <st-form-item label="使用条件" required>
+              <a-radio-group
+                :disabled="isEditMode"
+                v-decorator="decorators.use_type"
+                @change="userTypeChange"
+              >
+                <a-radio :value="1">无门槛使用</a-radio>
+                <a-form-item :class="basic('wrap-input')">
+                  <a-radio :value="2">
+                    满
+                    <st-input-number
+                      :float="true"
+                      :class="basic('radio-input')"
+                      :disabled="isEditMode"
+                      v-decorator="decorators.full_price"
+                    ></st-input-number>
+                    元使用
+                  </a-radio>
+                </a-form-item>
+              </a-radio-group>
+            </st-form-item>
+            <st-form-item label="发放数量" required>
+              <st-input-number
+                :class="basic('input')"
+                style="top:0;"
+                placeholder="请输入数量"
+                :min="isEditMode ? +info.number : 0"
+                v-decorator="decorators.number"
+              >
+                <template slot="addonAfter">
+                  张
+                </template>
+              </st-input-number>
+              <span :class="basic('tip')">保存后只可增加不可减少</span>
+            </st-form-item>
+            <st-form-item label="使用有效期" required>
+              领券当日起
+              <st-input-number
+                :disabled="isEditMode"
+                :class="basic('radio-input')"
+                v-decorator="decorators.valid_days"
+              ></st-input-number>
+              天内有效
+            </st-form-item>
+            <st-form-item>
+              <template slot="label">
+                优惠共享
+                <st-help-tooltip id="TBYHQ002" />
+              </template>
+              <a-checkbox v-model="isShare" :disabled="isEditMode">
+                不可与其它优惠同享
+              </a-checkbox>
+            </st-form-item>
+            <st-form-item label="每人限领" required v-if="couponType === '1'">
+              <a-radio-group
+                :disabled="isEditMode"
+                v-decorator="decorators.is_limit"
+                @change="limitChange"
+              >
+                <a-radio :value="1">不限</a-radio>
+                <a-form-item :class="basic('wrap-input')">
+                  <a-radio :value="2">
+                    每人限领
+                    <a-input-number
+                      @focus="checkThisLimitRadio"
+                      :disabled="isEditMode"
+                      :class="basic('radio-input')"
+                      v-decorator="decorators.person_limit"
+                    ></a-input-number>
+                    次
+                  </a-radio>
+                </a-form-item>
+              </a-radio-group>
+            </st-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="8">
+          <a-col :lg="20">
+            <st-form-item class="page-content-card-submit" label=" ">
+              <st-button
+                :loading="
+                  loading.addMarketingCoupon || loading.editMarketingCoupon
+                "
+                type="primary"
+                @click="onSubmit"
+              >
+                保 存
+              </st-button>
+            </st-form-item>
+          </a-col>
+        </a-row>
+      </st-form>
     </div>
-  </st-panel>
+  </st-mina-panel>
 </template>
 <script>
 import { UserService } from '@/services/user.service'

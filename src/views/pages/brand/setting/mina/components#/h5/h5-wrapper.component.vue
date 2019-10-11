@@ -1,33 +1,29 @@
 <template>
-  <div :class="h5wpr()">
-    <div :class="h5wpr('flexbox')">
-      <div :class="h5wpr('left')">
-        <h5-component id="h5" :class="{ fixed: isFixed }"></h5-component>
-      </div>
-      <div :class="h5wpr('right')">
-        <a-tabs defaultActiveKey="1">
-          <a-tab-pane tab="主页" key="1" class="mg-t8">
-            <row-container-component title="功能入口">
-              <action-component v-if="actionLoaded"></action-component>
-            </row-container-component>
-            <row-container-component
-              title="教练风采"
-              subTitle="最多添加100个教练"
-              className="row-container-component-coach"
-            >
-              <coach-component v-if="coachLoaded"></coach-component>
-            </row-container-component>
-            <row-container-component title="推荐课程">
-              <course-component v-if="courseLoaded"></course-component>
-            </row-container-component>
-          </a-tab-pane>
-          <a-tab-pane tab="底部导航" key="2" forceRender class="mg-t8">
-            <nav-component v-if="menuLoaded"></nav-component>
-          </a-tab-pane>
-        </a-tabs>
-      </div>
+  <st-mina-panel :class="h5wpr()" initial>
+    <h5-component slot="preview" id="h5"></h5-component>
+    <div :class="h5wpr('right')">
+      <a-tabs defaultActiveKey="1" class="st-tabs">
+        <a-tab-pane tab="主页" key="1" class="mg-t8">
+          <row-container-component title="功能入口">
+            <action-component v-if="actionLoaded"></action-component>
+          </row-container-component>
+          <row-container-component
+            title="教练风采"
+            subTitle="最多添加100个教练"
+            className="row-container-component-coach"
+          >
+            <coach-component v-if="coachLoaded"></coach-component>
+          </row-container-component>
+          <row-container-component title="推荐课程">
+            <course-component v-if="courseLoaded"></course-component>
+          </row-container-component>
+        </a-tab-pane>
+        <a-tab-pane tab="底部导航" key="2" forceRender class="mg-t8">
+          <nav-component v-if="menuLoaded"></nav-component>
+        </a-tab-pane>
+      </a-tabs>
     </div>
-    <div :class="h5wpr('btn-group')">
+    <div slot="actions">
       <st-button
         type="primary"
         :loading="loading.saveAll"
@@ -37,7 +33,7 @@
       </st-button>
       <!-- <st-button type="primary" :loading="loading.saveAll" @click="saveConfirm(2)">提交</st-button> -->
     </div>
-  </div>
+  </st-mina-panel>
 </template>
 <script>
 import { H5WrapperService } from './h5-wrapper.service'

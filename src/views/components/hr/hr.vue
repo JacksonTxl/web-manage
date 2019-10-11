@@ -12,13 +12,13 @@ export default {
     marginTop: {
       type: String,
       default() {
-        return '32px'
+        return '24px'
       }
     },
     marginBottom: {
       type: String,
       default() {
-        return '32px'
+        return '24px'
       }
     }
   }

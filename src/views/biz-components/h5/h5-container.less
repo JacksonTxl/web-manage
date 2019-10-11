@@ -1,17 +1,38 @@
+@phone-width: 372;
+@phone-height: 645;
+
+@scale: @phone-width / 960;
 .st-h5-container {
-  .pos-r();
-  .bd-r(20px);
-  overflow: hidden;
-  margin: 0 auto;
-  padding: 36px 41px 65px 38px;
-  background-image: url('~@/assets/img/brand/setting/mina/phone.png');
-  background-repeat: no-repeat;
-  transform: scale(0.368);
-  transform-origin: left top;
-  background-size: 100%;
-  width: 960px;
-  padding-top: 100px;
-  height: 1636px;
+  max-width: unit(@phone-width, px);
+  max-height: unit(@phone-height, px);
+  &--fixed {
+    position: fixed;
+  }
+  &__main {
+    .bd-r(20px);
+    overflow: hidden;
+    padding: 100px 41px 65px 38px;
+    background-image: url('~@/assets/img/brand/setting/mina/phone.png');
+    background-repeat: no-repeat;
+    transform: scale(@scale);
+    transform-origin: left top;
+    background-size: 100%;
+    width: 960px;
+    height: 1636px;
+    perspective: 1px;
+  }
+
+  &__nav {
+    .w(750px);
+    .h(120px);
+    background-image: url('~@/assets/img/h5_nav.png');
+    background-size: 100%;
+    .ta-c();
+    .lh(170px);
+    font-weight: bold;
+    .fz(37px);
+    margin: 0 auto;
+  }
   &__content {
     margin: 0 auto;
     width: 750px;
@@ -19,6 +40,7 @@
     overflow-y: auto;
     .bg(#fafafa);
     border-radius: 0 0 60px 60px;
+    font-size: 24px;
     &::-webkit-scrollbar {
       .s(0, 0);
     }
@@ -30,16 +52,5 @@
         .mg-t(24px);
       }
     }
-  }
-  &__nav {
-    .w(750px);
-    .h(120px);
-    background-image: url('~@/assets/img/h5_nav.png');
-    background-size: 100%;
-    .ta-c();
-    .lh(170px);
-    font-weight: bold;
-    .fz(37px);
-    margin: 0 auto;
   }
 }

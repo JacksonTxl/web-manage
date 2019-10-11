@@ -6,7 +6,7 @@
   >
     <div class="page-brand-basic-card-body">
       <div class="page-preview">
-        <h5-container>
+        <h5-container fixed>
           <template v-slot:title>
             购卡
           </template>
