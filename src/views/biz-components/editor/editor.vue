@@ -101,8 +101,33 @@ export default {
         window.tinyMCE.init({
           selector: '.' + this.editorId,
           language: 'zh_CN',
+          // 右键菜单
+          contextmenu: ['paste'],
+          // 隐藏右下角技术支持
+          branding: false,
+          // 隐藏底栏的元素路径
+          elementpath: false,
           menubar: false,
+          body_class: 'st-editor',
+          plugins: ['link', 'image'],
+          toolbar:
+            'undo redo | styleselect bold italic forecolor backcolor | bullist numlist | alignleft aligncenter alignright  | image link',
           language_url: this.appConfig.BASE_URL + 'tinymce/5.0.3/zh_CN.js',
+          images_upload_handler(blobInfo, succCb, failCb) {
+            const file = blobInfo.blob()
+
+            failCb('未实现')
+            // ossService
+            //   .put(file, {
+            //     serviceType: OA
+            //   })
+            //   .then(res => {
+            //     succCb(res.url)
+            //   })
+            //   .catch(err => {
+            //     failCb(err.message)
+            //   })
+          },
           setup(editor) {
             editor.on('change keyup undo redo', value => {
               const currentContent = editor.getContent()
@@ -115,6 +140,9 @@ export default {
                 })
               }
             })
+          },
+          init_instance_callback(editor) {
+            ctx.$emit('ready', editor)
           }
         })
       })
