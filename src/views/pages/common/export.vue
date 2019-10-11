@@ -20,7 +20,9 @@
       </template>
       <template slot="action" slot-scope="record">
         <st-table-actions>
-          <a v-if="record.fail_reason" @click="onOpenFailReason">上传失败</a>
+          <a v-if="record.fail_reason" @click="onOpenFailReason(record)">
+            查看原因
+          </a>
           <a v-else @click="onDownload(record)">
             下载
           </a>
@@ -35,8 +37,12 @@ import { ExportService } from './export.service'
 import { RouteService } from '@/services/route.service'
 import { columns } from './export.config'
 import tableMixin from '@/mixins/table.mixin'
+import ExportFail from '@/views/biz-modals/common/export-fail'
 export default {
   mixins: [tableMixin],
+  modals: {
+    ExportFail
+  },
   serviceInject() {
     return {
       exportService: ExportService,
@@ -63,12 +69,19 @@ export default {
   },
   methods: {
     onOpenFailReason(item) {
-      console.log(item)
+      this.$modalRouter.push({
+        name: 'export-fail',
+        props: {
+          reason: item.fail_reason
+        }
+      })
     },
     onDownload(item) {
       this.currentItem = item
       this.exportService.getDownloadUrl(item.id).subscribe(res => {
-        window.open(res.down_url)
+        if (res.down_url) {
+          window.open(res.down_url)
+        }
       })
     }
   }
