@@ -21,7 +21,7 @@
           @submit="save"
           class="modal-bind-entity-card__form"
         >
-          <st-form-item label="实体卡">
+          <st-form-item label="实体卡号">
             <a-input
               placeholder="请输入实体卡号"
               v-decorator="decorators.card_number"

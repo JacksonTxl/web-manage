@@ -53,7 +53,7 @@
     "vue-router": "^3.0.2",
     "vue-router-multiguard": "^1.0.3",
     "vue-router-plus": "^0.0.1",
-    "vue-st-form": "0.0.5",
+    "vue-st-form": "0.0.6",
     "vuedraggable": "^2.19.2"
   },
   "devDependencies": {
