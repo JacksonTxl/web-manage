@@ -1015,7 +1015,12 @@ export default {
     },
     scroll(e) {
       const { target } = e
-      if (target.scrollTop + target.offsetHeight >= target.scrollHeight - 1) {
+      if (
+        Math.floor(target.scrollTop) + target.offsetHeight ==
+          target.scrollHeight - 1 ||
+        Math.floor(target.scrollTop) + target.offsetHeight ==
+          target.scrollHeight
+      ) {
         if (this.page.current_page < this.page.total_pages) {
           this.page.current_page = this.page.current_page + 1
           this.onMemberSearch(this.memberSearchText, this.page.current_page) // 调用api方法
