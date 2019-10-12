@@ -1055,8 +1055,8 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 },
       start_date: { type: String, default: '' },
       end_date: { type: String, default: '' },
-      department: { type: Number, default: -1 },
-      staff: { type: Number, default: -1 }
+      department_id: { type: Number, default: -1 },
+      staff_id: { type: Number, default: -1 }
     }
   },
   'shop-stat-finance'(routeConfig: RouteConfig) {

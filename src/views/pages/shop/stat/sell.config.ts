@@ -7,21 +7,22 @@ export const allColumns = () => {
       dataIndex: 'stat_date'
     },
     {
-      title: '新入会成单数',
-      dataIndex: 'new_member_num',
-      scopedSlots: { customRender: 'new_member_num' }
+      dataIndex: 'member_card_num',
+      slots: { title: 'memberTitle' },
+      scopedSlots: { customRender: 'member_card_num' }
     },
     {
-      title: '新入会金额（元）',
+      title: '会员卡购买金额（元）',
       dataIndex: 'new_member_amount'
     },
     {
-      title: '续会成单数',
-      dataIndex: 'renewal_member_num'
+      dataIndex: 'deposit_card_num',
+      slots: { title: 'memberTitle' },
+      scopedSlots: { customRender: 'deposit_card_num' }
     },
     {
-      title: '续会金额（元）',
-      dataIndex: 'renewal_member_amount'
+      title: '储值卡购买金额（元）',
+      dataIndex: 'deposit_card_amount'
     },
     {
       title: '私教购买节数',
@@ -84,8 +85,8 @@ export const staffColumns = () => {
     },
     {
       title: '新入会成单数',
-      dataIndex: 'new_member_num',
-      scopedSlots: { customRender: 'new_member_num' }
+      dataIndex: 'member_card_num',
+      scopedSlots: { customRender: 'member_card_num' }
     },
     {
       title: '新入会金额（元）',
@@ -93,11 +94,11 @@ export const staffColumns = () => {
     },
     {
       title: '续会成单数',
-      dataIndex: 'renewal_member_num'
+      dataIndex: 'deposit_card_num'
     },
     {
       title: '续会金额（元）',
-      dataIndex: 'renewal_member_amount'
+      dataIndex: 'deposit_card_amount'
     },
     {
       title: '私教购买节数',

@@ -48,11 +48,11 @@ export class SellService {
     )
   }
   // 筛选部门和员工
-  getCoachList() {
-    return this.StatApi.getCoachList().pipe(
+  getStallList() {
+    return this.StatApi.getStallList().pipe(
       tap((res: any) => {
         this.staffList$.commit(() => {
-          return [{ id: -1, name: '所有销售' }, ...res.info.coach_list]
+          return [{ id: -1, name: '所有销售' }, ...res.info.staff_list]
         })
         this.departmentList$.commit(() => {
           return [{ id: -1, name: '全部部门' }, ...res.info.department_list]
@@ -70,10 +70,10 @@ export class SellService {
   }
   @Effect()
   init(query: any) {
-    console.log(query);
+    //console.log(query);
     return query.showTable === 'all'
       ? forkJoin(this.getsellList(query))
-      : forkJoin(this.getSellStaffList(query), this.getCoachList())
+      : forkJoin(this.getSellStaffList(query), this.getStallList())
   }
   beforeEach(to: ServiceRoute, form: ServiceRoute) {
     return this.init(to.meta.query)

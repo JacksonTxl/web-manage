@@ -16,13 +16,13 @@
             optionFilterProp="children"
             style="width: 200px"
             @change="onChangeDepartment"
-            v-model="query.department"
+            v-model="query.department_id"
             :filterOption="filterOption"
           >
             <a-select-option
               :value="+department.id"
               v-for="department in departmentList"
-              :key="department"
+              :key="department.id"
             >
               {{ department.name }}
             </a-select-option>
@@ -34,7 +34,7 @@
             class="mg-r8"
             style="width: 200px"
             @change="onChangeStaff"
-            v-model="query.id"
+            v-model="query.staff_id"
             :filterOption="filterOption"
           >
             <a-select-option
@@ -59,14 +59,13 @@
       :dataSource="list"
       rowKey="id"
     >
-      <a
-        slot="personal_course_num"
-        @click="getPersonalCourse(record)"
-        slot-scope="text, record"
+      <span
+        slot="member_card_num"
+        slot-scope="text"
         v-if="text !== 0"
       >
         {{ text }}
-      </a>
+      </span>
       <!-- <span v-else>{{ text }}</span>
       <a
         slot="personal_checkin_amount"
@@ -84,21 +83,15 @@
         {{ text }}
       </a>
       <span v-else>{{ text }}</span>
-      <a
-        slot="team_checkin_amount"
-        slot-scope="text, record"
-        @click="getTeamConsume(record)"
-      >
-        {{ text }}
-      </a>
-      <span slot="personalTitle">
-        私教消课价值（元)
-        <st-help-tooltip id="TSCR001" />
+       -->
+      <span slot="memberTitle">
+        会员卡成单数（元)
+        <st-help-tooltip id="TSSR001" />
       </span>
       <span slot="teamTitle">
         团课消课价值（元）
         <st-help-tooltip id="TSCR002" />
-      </span> -->
+      </span>
     </st-table>
   </div>
 </template>
@@ -144,19 +137,20 @@ export default {
     },
     // 改变员的时候使用该方法 ： 如果选全部员工，则执行第一句
     staffListFilter() {
-      if (this.query.department === 1) return this.staffList
+      if (this.query.department_id === -1) return this.staffList
       return [
         { id: -1, name: '所有销售' },
         ...this.staffList.filter(item => {
-          return this.query.department === item.department
+          return this.query.department_id === item.department_id
         })
       ]
     }
   },
   created() {
     this.showTable = this.query.showTable
-    console.log(this.departmentList);
-    console.log();
+    //console.log(this.departmentList);
+    //console.log(this.staffList);
+    console.log(this.list);
   },
   methods: {
     // getPersonalCourse(record) {
@@ -170,10 +164,10 @@ export default {
     onChangeStaff(value) {
       console.log('选择员工');
       console.log(value);
-      this.onMultiSearch({ staff: value })
+      this.onMultiSearch({ staff_id: value })
     },
     onChangeDepartment(value) {
-      this.onMultiSearch({ department: value, staff: -1 })
+      this.onMultiSearch({ department_id: value, staff_id: -1 })
     },
     // 格式化
     filterOption(input, option) {
@@ -190,8 +184,8 @@ export default {
       this.showTable = val.target.value
       let query = { showTable: this.showTable }
       if (this.showTable === 'staff') {
-        query.department = -1
-        query.staff = -1
+        query.department_id = -1
+        query.staff_id = -1
       }
       this.$router.push({ query, force: true })
     }
