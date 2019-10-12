@@ -1,6 +1,10 @@
 <template>
   <st-mina-panel :class="h5wpr()" initial>
-    <h5-component slot="preview" id="h5"></h5-component>
+    <h5-component
+      slot="preview"
+      id="h5"
+      :class="{ fixed: isFixed }"
+    ></h5-component>
     <div :class="h5wpr('right')">
       <a-tabs defaultActiveKey="1" class="st-tabs">
         <a-tab-pane tab="主页" key="1" class="mg-t8">
