@@ -66,31 +66,85 @@
       >
         {{ text }}
       </span>
-      <!-- <span v-else>{{ text }}</span>
-      <a
-        slot="personal_checkin_amount"
-        @click="getPersonalConsume(record)"
-        slot-scope="text, record"
+      <span v-else>{{ text }}</span>
+      <span
+        slot="deposit_card_num"
+        slot-scope="text"
+        v-if="text !== 0"
       >
         {{ text }}
-      </a>
-      <a
+      </span>
+      <span v-else>{{ text }}</span>
+      <span
+        slot="deposit_card_num"
+        slot-scope="text"
+        v-if="text !== 0"
+      >
+        {{ text }}
+      </span>
+      <span v-else>{{ text }}</span>
+
+      <span
         slot="team_course_num"
+        slot-scope="text"
+        v-if="text !== 0"
+      >
+        {{ text }}
+      </span>
+      <span v-else>{{ text }}</span>
+
+      <span
+        slot="total_course_num"
+        slot-scope="text"
+        v-if="text !== 0"
+      >
+        {{ text }}
+      </span>
+      <span v-else>{{ text }}</span>
+
+      <span
+        slot="other_amount"
+        slot-scope="text"
+        v-if="text !== 0"
+      >
+        {{ text }}
+      </span>
+      <span v-else>{{ text }}</span>
+
+      <a
+        slot="performance_amount"
+        @click="getSellTotalAmount(record)"
         slot-scope="text, record"
-        @click="getTeamCourse(record)"
         v-if="text !== 0"
       >
         {{ text }}
       </a>
       <span v-else>{{ text }}</span>
-       -->
+
+
       <span slot="memberTitle">
-        会员卡成单数（元)
+        会员卡成单数
         <st-help-tooltip id="TSSR001" />
       </span>
+      <span slot="depositTitle">
+        储值卡成单数
+      <st-help-tooltip id="TSCR002" />
+      </span>
       <span slot="teamTitle">
-        团课消课价值（元）
-        <st-help-tooltip id="TSCR002" />
+        团课购买节数
+        <st-help-tooltip id="TSSR003" />
+      </span>
+      <span slot="totalTitle">
+        总购课节数
+        <st-help-tooltip id="TSSR004" />
+      </span>
+      <span slot="otherTitle">
+        其它销售金额（元）
+        <st-help-tooltip id="TSSR005" />
+      </span>
+      <span slot="performanceTitle">
+        总销售业绩（元）
+        <st-help-tooltip id="TSSR006" />
       </span>
     </st-table>
   </div>
@@ -99,7 +153,7 @@
 import { SellService } from './sell.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
-//import ShopStatPersonalCourse from '@/views/biz-modals/shop/stat/personal-course'
+import ShopStatSellAmount from '@/views/biz-modals/shop/stat/sell-amount'
 import { allColumns, staffColumns } from './sell.config.ts'
 export default {
   mixins: [tableMixin],
@@ -108,7 +162,7 @@ export default {
     bHeard: 'header'
   },
   modals: {
-    // ShopStatPersonalCourse
+    ShopStatSellAmount
   },
   serviceInject() {
     return {
@@ -150,20 +204,20 @@ export default {
     this.showTable = this.query.showTable
     //console.log(this.departmentList);
     //console.log(this.staffList);
-    console.log(this.list);
+    //console.log(this.list);
   },
   methods: {
-    // getPersonalCourse(record) {
-    //   this.$modalRouter.push({
-    //     name: 'shop-stat-personal-course',
-    //     props: {
-    //       record
-    //     }
-    //   })
-    // },
+    getSellTotalAmount(record) {
+      console.log('传递当前列表字段');
+      console.log(record);
+      this.$modalRouter.push({
+        name: 'shop-stat-sell-amount',
+        props: {
+          record
+        }
+      })
+    },
     onChangeStaff(value) {
-      console.log('选择员工');
-      console.log(value);
       this.onMultiSearch({ staff_id: value })
     },
     onChangeDepartment(value) {

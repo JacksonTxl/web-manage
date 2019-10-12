@@ -55,6 +55,11 @@ export class StatApi {
       query
     })
   }
+  getSellAmount(query: any) {
+    return this.http.get('/v1/stat/sale', {
+      query
+    })
+  }
   getSellList(query: OrderShopListQuery) {
     return this.http.get('/v1/stat/sale/summary', { query })
   }

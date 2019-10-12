@@ -13,11 +13,11 @@ export const allColumns = () => {
     },
     {
       title: '会员卡购买金额（元）',
-      dataIndex: 'new_member_amount'
+      dataIndex: 'member_card_amount'
     },
     {
       dataIndex: 'deposit_card_num',
-      slots: { title: 'memberTitle' },
+      slots: { title: 'depositTitle' },
       scopedSlots: { customRender: 'deposit_card_num' }
     },
     {
@@ -34,8 +34,9 @@ export const allColumns = () => {
       dataIndex: 'personal_course_amount'
     },
     {
-      title: '团课购买节数',
-      dataIndex: 'team_course_num'
+      dataIndex: 'team_course_num',
+      slots: { title: 'teamTitle' },
+      scopedSlots: { customRender: 'team_course_num' }
     },
     {
       title: '团课购买金额（元）',
@@ -50,16 +51,19 @@ export const allColumns = () => {
       dataIndex: 'package_course_amount'
     },
     {
-      title: '总购课节数',
-      dataIndex: 'total_course_num'
+      dataIndex: 'total_course_num',
+      slots: { title: 'totalTitle' },
+      scopedSlots: { customRender: 'total_course_num' }
     },
     {
-      title: '其它销售金额（元）',
-      dataIndex: 'other_amount'
+      dataIndex: 'other_amount',
+      slots: { title: 'otherTitle' },
+      scopedSlots: { customRender: 'other_amount' }
     },
     {
-      title: '总销售业绩（元）',
-      dataIndex: 'performance_amount'
+      dataIndex: 'performance_amount',
+      slots: { title: 'performanceTitle' },
+      scopedSlots: { customRender: 'performance_amount' }
     },
   ]
 }
@@ -84,20 +88,21 @@ export const staffColumns = () => {
       dataIndex: 'department_name'
     },
     {
-      title: '新入会成单数',
       dataIndex: 'member_card_num',
+      slots: { title: 'memberTitle' },
       scopedSlots: { customRender: 'member_card_num' }
     },
     {
-      title: '新入会金额（元）',
-      dataIndex: 'new_member_amount'
+      title: '会员卡购买金额（元）',
+      dataIndex: 'member_card_amount'
     },
     {
-      title: '续会成单数',
-      dataIndex: 'deposit_card_num'
+      dataIndex: 'deposit_card_num',
+      slots: { title: 'depositTitle' },
+      scopedSlots: { customRender: 'deposit_card_num' }
     },
     {
-      title: '续会金额（元）',
+      title: '储值卡购买金额（元）',
       dataIndex: 'deposit_card_amount'
     },
     {
@@ -109,8 +114,9 @@ export const staffColumns = () => {
       dataIndex: 'personal_course_amount'
     },
     {
-      title: '团课购买节数',
-      dataIndex: 'team_course_num'
+      dataIndex: 'team_course_num',
+      slots: { title: 'teamTitle' },
+      scopedSlots: { customRender: 'team_course_num' }
     },
     {
       title: '团课购买金额（元）',
@@ -125,16 +131,19 @@ export const staffColumns = () => {
       dataIndex: 'package_course_amount'
     },
     {
-      title: '总购课节数',
-      dataIndex: 'total_course_num'
+      dataIndex: 'total_course_num',
+      slots: { title: 'totalTitle' },
+      scopedSlots: { customRender: 'total_course_num' }
     },
     {
-      title: '其它销售金额（元）',
-      dataIndex: 'other_amount'
+      dataIndex: 'other_amount',
+      slots: { title: 'otherTitle' },
+      scopedSlots: { customRender: 'other_amount' }
     },
     {
-      title: '总销售业绩（元）',
-      dataIndex: 'performance_amount'
-    }
+      dataIndex: 'performance_amount',
+      slots: { title: 'performanceTitle' },
+      scopedSlots: { customRender: 'performance_amount' }
+    },
   ]
 }

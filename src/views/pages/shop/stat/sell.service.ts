@@ -33,7 +33,7 @@ export class SellService {
   getSellStaffList(query: SellStaffListQuery) {
     return this.StatApi.getSellStaffList(query).pipe(
       tap((res: any) => {
-        console.log(res);
+        //console.log(res);
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })
