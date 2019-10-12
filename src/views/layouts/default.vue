@@ -134,10 +134,10 @@
       <article class="layout-default-body__content">
         <router-view></router-view>
         <!-- <default-skeleton></default-skeleton> -->
+        <footer class="layout-default-body__footer">
+          Copyright &#169; 2019 三体云智能科技有限公司
+        </footer>
       </article>
-      <footer class="layout-default-body__footer">
-        Copyright &#169; 2019 三体云智能科技有限公司
-      </footer>
     </main>
     <switch-shop v-model="isShowSwitchShop"></switch-shop>
   </div>

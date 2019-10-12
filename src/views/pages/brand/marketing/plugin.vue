@@ -61,7 +61,7 @@
             <a-col
               :xxl="6"
               :xl="8"
-              :xs="12"
+              :span="12"
               v-for="(item, index) in pluginList"
               :key="index"
               @click="goToPlugin(item.route)"

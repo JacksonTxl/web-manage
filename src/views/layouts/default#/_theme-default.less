@@ -283,7 +283,7 @@
     left: 200px;
     right: 0;
     top: 64px;
-    bottom: 0;
+    bottom: 16px;
     display: flex;
     flex-direction: column;
     padding: 0 16px;
@@ -395,6 +395,7 @@
     &__content {
       flex: 1;
       z-index: 1;
+      position: relative;
       &::after {
         content: '';
         position: fixed;
@@ -407,6 +408,11 @@
       }
     }
     &__footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      transform: translateY(100%);
       text-align: center;
       .fz(12px);
       .c(rgba(0, 0, 0, 0.45));

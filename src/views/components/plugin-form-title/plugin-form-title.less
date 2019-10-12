@@ -1,0 +1,18 @@
+.st-plugin-form-title {
+  font-weight: 500;
+  .c(@title);
+  .fz(16px);
+  .lh(22px);
+  &__sub-title {
+    .mg-l(8px);
+    .fz(12px);
+    .c(@text-light);
+  }
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 12px;
+    .bg(@text-light);
+  }
+}

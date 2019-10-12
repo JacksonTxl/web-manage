@@ -1,447 +1,433 @@
 <template>
-  <div :class="bPage()">
-    <div :class="bPage('content')">
-      <div :class="bPage('h5')">
-        <h5-container>
-          <template v-slot:title>
-            幸运大转盘
-          </template>
-          <div :class="bPage('lottery')">
+  <st-mina-panel>
+    <h5-container fixed slot="preview">
+      <template v-slot:title>
+        幸运大转盘
+      </template>
+      <div :class="bPage('lottery')">
+        <div
+          :class="bPage('swiper')"
+          v-if="isStopSwiper === STOP_SWIPER.DEFAULT"
+        >
+          <swiper :options="sliderOptions">
+            <swiper-slide v-for="(item, index) in prizeInfoList" :key="index">
+              <span :class="bPage('swiper-text')">{{ item }}</span>
+            </swiper-slide>
+          </swiper>
+        </div>
+        <img
+          :class="bPage('lottery-banner')"
+          src="~@/assets/img/brand/marketing/lottery/bg.png"
+        />
+        <img
+          :class="bPage('lottery-title-bg')"
+          src="~@/assets/img/brand/marketing/lottery/title_bg.png"
+        />
+        <span :class="bPage('lottery-subtitle')">{{ preview.title }}</span>
+        <div :class="bPage('lottery-turntable')">
+          <div style="position:relative" v-if="prizeList.length > 0">
             <div
-              :class="bPage('swiper')"
-              v-if="isStopSwiper === STOP_SWIPER.DEFAULT"
+              class="img-wrap"
+              :class="'run-item-' + index"
+              v-for="(item, index) in prizeList"
+              :key="index"
             >
-              <swiper :options="sliderOptions">
-                <swiper-slide
-                  v-for="(item, index) in prizeInfoList"
-                  :key="index"
-                >
-                  <span :class="bPage('swiper-text')">{{ item }}</span>
-                </swiper-slide>
-              </swiper>
-            </div>
-            <img
-              :class="bPage('lottery-banner')"
-              src="~@/assets/img/brand/marketing/lottery/bg.png"
-            />
-            <img
-              :class="bPage('lottery-title-bg')"
-              src="~@/assets/img/brand/marketing/lottery/title_bg.png"
-            />
-            <span :class="bPage('lottery-subtitle')">{{ preview.title }}</span>
-            <div :class="bPage('lottery-turntable')">
-              <div style="position:relative" v-if="prizeList.length > 0">
-                <div
-                  class="img-wrap"
-                  :class="'run-item-' + index"
-                  v-for="(item, index) in prizeList"
-                  :key="index"
-                >
-                  <img class="img" :src="item.prize.image_url" alt="奖品图片" />
-                  <div class="text">{{ item.prize_name }}</div>
-                </div>
-              </div>
-              <div v-if="notPrize.prize_name" class="img-wrap run-item-7">
-                <div class="img">
-                  <img
-                    style="width: 110px;
-                    margin-left: -10px;
-                    "
-                    :src="
-                      notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM
-                        ? notPrize.prize.image_url
-                        : lucky[0].image_url
-                    "
-                    alt="奖品图片"
-                  />
-                </div>
-                <div class="text">{{ notPrize.prize_name }}</div>
-              </div>
-            </div>
-            <div :class="bPage('lottery-footer')">
-              <div :class="bPage('lottery-title')">活动规则</div>
-              <div class="mg-b24">
-                <span class="mg-r8">活动时间:</span>
-                <span>{{ preview.startTime }}--{{ preview.endTime }}</span>
-              </div>
-              <div class="mg-b24">
-                <span class="mg-r8">抽奖规则:</span>
-                <span v-if="timesType === 1">
-                  每人每天有{{ preview.perTimes }}次机会
-                </span>
-                <span v-else>每人总共有{{ preview.totalTimes }}次机会</span>
-              </div>
-              <div class="mg-b24">
-                <span class="mg-r8">活动说明:</span>
-                <span>{{ preview.description }}</span>
-              </div>
+              <img class="img" :src="item.prize.image_url" alt="奖品图片" />
+              <div class="text">{{ item.prize_name }}</div>
             </div>
           </div>
-        </h5-container>
-      </div>
-      <div :class="bPage('form')">
-        <a-row class="mg-b24" :gutter="8">
-          <Steps :value="currentIndex" @skip="next" :stepArr="stepArr" />
-        </a-row>
-        <div style="padding:24px;">
-          <st-form
-            style="width:500px"
-            :form="form"
-            labelGutter="0"
-            v-show="currentIndex == 0"
-            labelWidth="124px"
-          >
-            <st-form-item label="活动名称" required>
-              <a-input
-                :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
-                placeholder="请输入活动名称"
-                v-decorator="decorators.activity_base.activity_name"
-              ></a-input>
-            </st-form-item>
-            <st-form-item label="活动标题" required>
-              <a-input
-                :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
-                @change="getTitle"
-                placeholder="请输入活动标题"
-                v-decorator="decorators.activity_base.activity_sub_name"
-              ></a-input>
-            </st-form-item>
-            <st-form-item label="活动时间" required>
-              <a-range-picker
-                :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
-                :disabledDate="disabledDate"
-                :showTime="{
-                  hideDisabledOptions: true,
-                  defaultValue: defaultValue
-                }"
-                format="YYYY-MM-DD HH:mm"
-                v-model="dateRangeVal"
-                @change="onDateChange"
-              ></a-range-picker>
-            </st-form-item>
-            <st-form-item label="活动说明">
-              <st-textarea
-                :rows="4"
-                :maxlength="500"
-                @change="getDescription"
-                :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
-                placeholder="请输入活动说明"
-                v-decorator="decorators.activity_base.activity_description"
-              ></st-textarea>
-            </st-form-item>
-            <st-form-item label="轮播获奖">
-              <a-radio-group
-                :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
-                @change="stopSwiper"
-                v-decorator="decorators.activity_base.wheel_turn_around"
-              >
-                <a-radio
-                  v-for="(item, index) in wheelTurnAround"
-                  :key="index"
-                  :value="item.value"
-                >
-                  {{ item.label }}
-                </a-radio>
-              </a-radio-group>
-            </st-form-item>
-            <st-form-item label="分享设置">
-              <a-radio-group
-                @change="getCurShareType"
-                :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
-                v-decorator="decorators.activity_base.wheel_share_default"
-              >
-                <a-radio
-                  v-for="(item, index) in wheelDefault"
-                  :key="index"
-                  :value="item.value"
-                >
-                  {{ item.label }}
-                </a-radio>
-              </a-radio-group>
-              <div v-if="shareType === 2" :class="bPage('share-upload')">
-                <st-form-item label="选择图片" labelWidth="60px">
-                  <st-image-upload
-                    width="96px"
-                    height="96px"
-                    :list="fileShareList"
-                    @change="onShareChangeGetAvatar"
-                    placeholder="上传图片"
-                  ></st-image-upload>
-                  <span :class="bPage('share-upload-text')">
-                    请上传jpg、png格式的图片
-                  </span>
-                </st-form-item>
-                <st-form-item label="分享标题" labelWidth="60px">
-                  <a-input
-                    placeholder="分享标题"
-                    v-model="shareTitle"
-                  ></a-input>
-                </st-form-item>
-              </div>
+          <div v-if="notPrize.prize_name" class="img-wrap run-item-7">
+            <div class="img">
               <img
-                class="default-img"
-                v-else
-                :src="share[0].image_url"
-                alt="默认图片"
+                style="width: 100%;"
+                :src="
+                  notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM
+                    ? notPrize.prize.image_url
+                    : lucky[0].image_url
+                "
+                alt="奖品图片"
               />
-            </st-form-item>
-            <st-form-item labelFix>
-              <st-button type="primary" @click="next(1)">下一步</st-button>
-            </st-form-item>
-          </st-form>
-
-          <st-form
-            style="width:500px"
-            :form="form"
-            labelGutter="0"
-            v-show="currentIndex == 1"
-            labelWidth="124px"
-          >
-            <st-form-item label="参与用户" required>
-              <a-radio-group
-                @change="getCurCrowdType"
-                v-decorator="decorators.activity_rule.join_crowd_all"
-              >
-                <a-radio
-                  v-for="(item, index) in joinCrowdAll"
-                  :key="index"
-                  :value="item.value"
-                >
-                  {{ item.label }}
-                </a-radio>
-              </a-radio-group>
-
-              <a-select
-                v-if="crowdType === CROWD_TYPE.CUSTOM"
-                placeholder="请选择参与用户"
-                v-decorator="decorators.activity_rule.crowd_id"
-              >
-                <a-select-option
-                  v-for="(item, index) in crowd"
-                  :key="index"
-                  :value="item.value"
-                >
-                  {{ item.label }}
-                </a-select-option>
-              </a-select>
-            </st-form-item>
-            <st-form-item label="抽奖条件" required>
-              <a-radio-group
-                v-decorator="decorators.activity_rule.draw_condition"
-              >
-                <a-radio
-                  v-for="(item, index) in drawCondition"
-                  :key="index"
-                  :value="item.value"
-                >
-                  {{ item.label }}
-                </a-radio>
-              </a-radio-group>
-            </st-form-item>
-            <st-form-item label="抽奖机会" required>
-              <a-radio-group
-                @change="getCurTimesType"
-                v-decorator="decorators.activity_rule.draw_times_type"
-              >
-                <a-radio
-                  v-for="(item, index) in drawTimesType"
-                  :key="index"
-                  :value="item.value"
-                >
-                  {{ item.label }}
-                </a-radio>
-              </a-radio-group>
-              <template>
-                <a-form-item v-show="timesType === 1">
-                  每人每天有
-                  <a-input-number
-                    :min="1"
-                    :max="999"
-                    :step="1"
-                    :precision="0"
-                    style="width: 100px;"
-                    placeholder="请输入"
-                    v-decorator="decorators.activity_rule.per_times"
-                  ></a-input-number>
-                  次
-                </a-form-item>
-              </template>
-              <template>
-                <a-form-item v-show="timesType === 2">
-                  每人总共有
-                  <a-input-number
-                    :min="1"
-                    :max="999"
-                    :step="1"
-                    :precision="0"
-                    style="width: 100px;"
-                    placeholder="请输入"
-                    v-decorator="decorators.activity_rule.total_times"
-                  ></a-input-number>
-                  次
-                </a-form-item>
-              </template>
-            </st-form-item>
-            <st-form-item label=" 中奖次数">
-              每人最多可中奖
-              <a-input-number
-                :min="1"
-                :max="999"
-                :step="1"
-                :precision="0"
-                style="width: 100px;"
-                placeholder="请输入"
-                v-decorator="decorators.activity_rule.prize_times"
-              ></a-input-number>
-              次
-            </st-form-item>
-            <st-form-item labelFix>
-              <st-button type="primary" @click="next(2)">下一步</st-button>
-            </st-form-item>
-          </st-form>
-          <st-form
-            style="width:756px;padding-left:62px;"
-            :form="form"
-            v-show="currentIndex == 2"
-          >
-            <st-t3 class="mg-b24">奖品设置</st-t3>
-            <st-form-table
-              style="border:1px solid rgba(205,212,223,1);padding:12px;"
+            </div>
+            <div class="text">{{ notPrize.prize_name }}</div>
+          </div>
+        </div>
+        <div :class="bPage('lottery-footer')">
+          <div :class="bPage('lottery-title')">活动规则</div>
+          <div class="mg-b24">
+            <span class="mg-r8">活动时间:</span>
+            <span>{{ preview.startTime }}--{{ preview.endTime }}</span>
+          </div>
+          <div class="mg-b24">
+            <span class="mg-r8">抽奖规则:</span>
+            <span v-if="timesType === 1">
+              每人每天有{{ preview.perTimes }}次机会
+            </span>
+            <span v-else>每人总共有{{ preview.totalTimes }}次机会</span>
+          </div>
+          <div class="mg-b24">
+            <span class="mg-r8">活动说明:</span>
+            <span>{{ preview.description }}</span>
+          </div>
+        </div>
+      </div>
+    </h5-container>
+    <div :class="bPage('form')">
+      <Steps :value="currentIndex" @skip="next" :stepArr="stepArr" />
+      <div style="padding:24px;">
+        <st-form
+          style="width:500px"
+          :form="form"
+          labelGutter="0"
+          v-show="currentIndex == 0"
+          labelWidth="124px"
+        >
+          <st-form-item label="活动名称" required>
+            <a-input
+              :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
+              placeholder="请输入活动名称"
+              v-decorator="decorators.activity_base.activity_name"
+            ></a-input>
+          </st-form-item>
+          <st-form-item label="活动标题" required>
+            <a-input
+              :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
+              @change="getTitle"
+              placeholder="请输入活动标题"
+              v-decorator="decorators.activity_base.activity_sub_name"
+            ></a-input>
+          </st-form-item>
+          <st-form-item label="活动时间" required>
+            <a-range-picker
+              :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
+              :disabledDate="disabledDate"
+              :showTime="{
+                hideDisabledOptions: true,
+                defaultValue: defaultValue
+              }"
+              format="YYYY-MM-DD HH:mm"
+              v-model="dateRangeVal"
+              @change="onDateChange"
+            ></a-range-picker>
+          </st-form-item>
+          <st-form-item label="活动说明">
+            <st-textarea
+              :rows="4"
+              :maxlength="500"
+              @change="getDescription"
+              :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
+              placeholder="请输入活动说明"
+              v-decorator="decorators.activity_base.activity_description"
+            ></st-textarea>
+          </st-form-item>
+          <st-form-item label="轮播获奖">
+            <a-radio-group
+              :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
+              @change="stopSwiper"
+              v-decorator="decorators.activity_base.wheel_turn_around"
             >
-              <thead>
-                <tr>
-                  <template v-for="(item, index) in columsTitlelist">
-                    <th :key="index">{{ item }}</th>
-                  </template>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td colspan="6" class="st-form-table__add">
-                    <st-button
-                      :disabled="query.activity_id && query.status === 1"
-                      @click="getCurPrizeIndex(-1)"
-                      type="dashed"
-                      block
-                      v-if="prizeList.length < 7"
-                      v-modal-link="{
-                        name: 'brand-marketing-plugin-add-prize',
-                        on: { change: getPrizeInfo }
-                      }"
-                    >
-                      添加奖品
-                    </st-button>
-                  </td>
-                </tr>
-                <template v-for="(item, index) in prizeList">
-                  <tr :key="item.id">
-                    <td>{{ item.prize_name }}</td>
-                    <td>{{ item.prize_type === 1 ? '优惠券' : '兑换码' }}</td>
-                    <td>
-                      {{
-                        item.prize_type === 1
-                          ? item.shop_num || item.support_shop_ids.length
-                          : item.support_shop_ids.length
-                      }}
-                    </td>
-                    <td>
-                      <span v-show="isShowEditTable !== index">
-                        {{ item.number }}
-                      </span>
-                      <st-input-number
-                        v-show="isShowEditTable === index"
-                        :min="1"
-                        :max="99999"
-                        :step="1"
-                        :precision="0"
-                        :value="item.number"
-                        :index="index"
-                        @change="editTableNum($event, index)"
-                      ></st-input-number>
-                    </td>
-                    <td>
-                      <span v-show="isShowEditTable !== index">
-                        {{ item.rate }}
-                      </span>
-                      <st-input-number
-                        v-show="isShowEditTable === index"
-                        :min="0"
-                        :max="100"
-                        :float="true"
-                        :value="item.rate"
-                        @change="editTableRate($event, index)"
-                      ></st-input-number>
-                    </td>
-                    <td>
-                      <st-table-actions>
-                        <a @click="showEditTable(index)">编辑</a>
-                        <a
-                          :disabled="query.activity_id && query.status === 1"
-                          href="javascript:;"
-                          @click="onDelete(index)"
-                        >
-                          删除
-                        </a>
-                      </st-table-actions>
-                    </td>
-                  </tr>
-                </template>
-              </tbody>
-            </st-form-table>
-            <st-t3 class="mg-b24 mg-t32">未中奖设置</st-t3>
-            <st-form-item label="名称" labelWidth="40px" required>
-              <a-input
-                @change="getName"
-                :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
-                placeholder="请输入未奖品名称"
-                v-decorator="decorators.activity_lucky.lucky_name"
-              ></a-input>
-            </st-form-item>
-            <st-form-item label=" 图片" labelWidth="43px" required>
-              <a-radio-group
-                :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
-                v-decorator="decorators.activity_lucky.image_default"
-                @change="getNotImgType"
+              <a-radio
+                v-for="(item, index) in wheelTurnAround"
+                :key="index"
+                :value="item.value"
               >
-                <a-radio
-                  v-for="(item, index) in imgType"
-                  :key="index"
-                  :value="item.value"
-                >
-                  {{ item.label }}
-                </a-radio>
-              </a-radio-group>
-              <div
-                v-if="notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM"
-                :class="bPage('lucky-upload')"
+                {{ item.label }}
+              </a-radio>
+            </a-radio-group>
+          </st-form-item>
+          <st-form-item label="分享设置">
+            <a-radio-group
+              @change="getCurShareType"
+              :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
+              v-decorator="decorators.activity_base.wheel_share_default"
+            >
+              <a-radio
+                v-for="(item, index) in wheelDefault"
+                :key="index"
+                :value="item.value"
               >
+                {{ item.label }}
+              </a-radio>
+            </a-radio-group>
+            <div v-if="shareType === 2" :class="bPage('share-upload')">
+              <st-form-item label="选择图片" labelWidth="60px">
                 <st-image-upload
                   width="96px"
                   height="96px"
-                  :list="fileList"
-                  @change="onChangeGetAvatar"
+                  :list="fileShareList"
+                  @change="onShareChangeGetAvatar"
                   placeholder="上传图片"
                 ></st-image-upload>
-                <span :class="bPage('lucky-upload-text')">
+                <span :class="bPage('share-upload-text')">
                   请上传jpg、png格式的图片
                 </span>
-              </div>
+              </st-form-item>
+              <st-form-item label="分享标题" labelWidth="60px">
+                <a-input placeholder="分享标题" v-model="shareTitle"></a-input>
+              </st-form-item>
+            </div>
+            <img
+              class="default-img"
+              v-else
+              :src="share[0].image_url"
+              alt="默认图片"
+            />
+          </st-form-item>
+          <st-form-item labelFix>
+            <st-button type="primary" @click="next(1)">下一步</st-button>
+          </st-form-item>
+        </st-form>
 
-              <img
-                class="default-img"
-                v-else
-                :src="lucky[0].image_url"
-                alt="默认图片"
-              />
-            </st-form-item>
-            <st-form-item labelFix style="margin-left:-43px;">
-              <st-button type="primary" @click="onSubmit">完成</st-button>
-            </st-form-item>
-          </st-form>
-        </div>
+        <st-form
+          style="width:500px"
+          :form="form"
+          labelGutter="0"
+          v-show="currentIndex == 1"
+          labelWidth="124px"
+        >
+          <st-form-item label="参与用户" required>
+            <a-radio-group
+              @change="getCurCrowdType"
+              v-decorator="decorators.activity_rule.join_crowd_all"
+            >
+              <a-radio
+                v-for="(item, index) in joinCrowdAll"
+                :key="index"
+                :value="item.value"
+              >
+                {{ item.label }}
+              </a-radio>
+            </a-radio-group>
+
+            <a-select
+              v-if="crowdType === CROWD_TYPE.CUSTOM"
+              placeholder="请选择参与用户"
+              v-decorator="decorators.activity_rule.crowd_id"
+            >
+              <a-select-option
+                v-for="(item, index) in crowd"
+                :key="index"
+                :value="item.value"
+              >
+                {{ item.label }}
+              </a-select-option>
+            </a-select>
+          </st-form-item>
+          <st-form-item label="抽奖条件" required>
+            <a-radio-group
+              v-decorator="decorators.activity_rule.draw_condition"
+            >
+              <a-radio
+                v-for="(item, index) in drawCondition"
+                :key="index"
+                :value="item.value"
+              >
+                {{ item.label }}
+              </a-radio>
+            </a-radio-group>
+          </st-form-item>
+          <st-form-item label="抽奖机会" required>
+            <a-radio-group
+              @change="getCurTimesType"
+              v-decorator="decorators.activity_rule.draw_times_type"
+            >
+              <a-radio
+                v-for="(item, index) in drawTimesType"
+                :key="index"
+                :value="item.value"
+              >
+                {{ item.label }}
+              </a-radio>
+            </a-radio-group>
+            <template>
+              <a-form-item v-show="timesType === 1">
+                每人每天有
+                <a-input-number
+                  :min="1"
+                  :max="999"
+                  :step="1"
+                  :precision="0"
+                  style="width: 100px;"
+                  placeholder="请输入"
+                  v-decorator="decorators.activity_rule.per_times"
+                ></a-input-number>
+                次
+              </a-form-item>
+            </template>
+            <template>
+              <a-form-item v-show="timesType === 2">
+                每人总共有
+                <a-input-number
+                  :min="1"
+                  :max="999"
+                  :step="1"
+                  :precision="0"
+                  style="width: 100px;"
+                  placeholder="请输入"
+                  v-decorator="decorators.activity_rule.total_times"
+                ></a-input-number>
+                次
+              </a-form-item>
+            </template>
+          </st-form-item>
+          <st-form-item label=" 中奖次数">
+            每人最多可中奖
+            <a-input-number
+              :min="1"
+              :max="999"
+              :step="1"
+              :precision="0"
+              style="width: 100px;"
+              placeholder="请输入"
+              v-decorator="decorators.activity_rule.prize_times"
+            ></a-input-number>
+            次
+          </st-form-item>
+          <st-form-item labelFix>
+            <st-button type="primary" @click="next(2)">下一步</st-button>
+          </st-form-item>
+        </st-form>
+        <st-form
+          style="width:756px;padding-left:62px;"
+          :form="form"
+          v-show="currentIndex == 2"
+        >
+          <st-t3 class="mg-b24">奖品设置</st-t3>
+          <st-form-table
+            style="border:1px solid rgba(205,212,223,1);padding:12px;"
+          >
+            <thead>
+              <tr>
+                <template v-for="(item, index) in columsTitlelist">
+                  <th :key="index">{{ item }}</th>
+                </template>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="6" class="st-form-table__add">
+                  <st-button
+                    :disabled="query.activity_id && query.status === 1"
+                    @click="getCurPrizeIndex(-1)"
+                    type="dashed"
+                    block
+                    v-if="prizeList.length < 7"
+                    v-modal-link="{
+                      name: 'brand-marketing-plugin-add-prize',
+                      on: { change: getPrizeInfo }
+                    }"
+                  >
+                    添加奖品
+                  </st-button>
+                </td>
+              </tr>
+              <template v-for="(item, index) in prizeList">
+                <tr :key="item.id">
+                  <td>{{ item.prize_name }}</td>
+                  <td>{{ item.prize_type === 1 ? '优惠券' : '兑换码' }}</td>
+                  <td>
+                    {{
+                      item.prize_type === 1
+                        ? item.shop_num || item.support_shop_ids.length
+                        : item.support_shop_ids.length
+                    }}
+                  </td>
+                  <td>
+                    <span v-show="isShowEditTable !== index">
+                      {{ item.number }}
+                    </span>
+                    <st-input-number
+                      v-show="isShowEditTable === index"
+                      :min="1"
+                      :max="99999"
+                      :step="1"
+                      :precision="0"
+                      :value="item.number"
+                      :index="index"
+                      @change="editTableNum($event, index)"
+                    ></st-input-number>
+                  </td>
+                  <td>
+                    <span v-show="isShowEditTable !== index">
+                      {{ item.rate }}
+                    </span>
+                    <st-input-number
+                      v-show="isShowEditTable === index"
+                      :min="0"
+                      :max="100"
+                      :float="true"
+                      :value="item.rate"
+                      @change="editTableRate($event, index)"
+                    ></st-input-number>
+                  </td>
+                  <td>
+                    <st-table-actions>
+                      <a @click="showEditTable(index)">编辑</a>
+                      <a
+                        :disabled="query.activity_id && query.status === 1"
+                        href="javascript:;"
+                        @click="onDelete(index)"
+                      >
+                        删除
+                      </a>
+                    </st-table-actions>
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+          </st-form-table>
+          <st-t3 class="mg-b24 mg-t32">未中奖设置</st-t3>
+          <st-form-item label="名称" labelWidth="40px" required>
+            <a-input
+              @change="getName"
+              :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
+              placeholder="请输入未奖品名称"
+              v-decorator="decorators.activity_lucky.lucky_name"
+            ></a-input>
+          </st-form-item>
+          <st-form-item label=" 图片" labelWidth="43px" required>
+            <a-radio-group
+              :disabled="info.activity_status === ACTIVITY_STATUS.DISABLED"
+              v-decorator="decorators.activity_lucky.image_default"
+              @change="getNotImgType"
+            >
+              <a-radio
+                v-for="(item, index) in imgType"
+                :key="index"
+                :value="item.value"
+              >
+                {{ item.label }}
+              </a-radio>
+            </a-radio-group>
+            <div
+              v-if="notPrizeImgType === NOT_PRIZE_IMG_TYPE.CUSTOM"
+              :class="bPage('lucky-upload')"
+            >
+              <st-image-upload
+                width="96px"
+                height="96px"
+                :list="fileList"
+                @change="onChangeGetAvatar"
+                placeholder="上传图片"
+              ></st-image-upload>
+              <span :class="bPage('lucky-upload-text')">
+                请上传jpg、png格式的图片
+              </span>
+            </div>
+
+            <img
+              class="default-img"
+              v-else
+              :src="lucky[0].image_url"
+              alt="默认图片"
+            />
+          </st-form-item>
+          <st-form-item labelFix style="margin-left:-43px;">
+            <st-button type="primary" @click="onSubmit">完成</st-button>
+          </st-form-item>
+        </st-form>
       </div>
     </div>
-  </div>
+  </st-mina-panel>
 </template>
 <script>
 import { MessageService } from '@/services/message.service'
