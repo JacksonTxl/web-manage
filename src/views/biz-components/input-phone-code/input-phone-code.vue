@@ -40,6 +40,7 @@ export default {
       }
     },
     isCountTime(newVal) {
+      this.isClick = newVal
       if (newVal) {
         this.setTimer()
       }
@@ -66,7 +67,7 @@ export default {
       this.$emit('input', value)
     },
     onClick(params) {
-      if (this.isCountTime) return
+      if (this.isClick) return
       this.$emit('click')
     },
     setTimer() {
@@ -74,7 +75,7 @@ export default {
       this.timer = setInterval(() => {
         if (this.time <= 1) {
           this.isClick = false
-          this.isCountTime = false
+          this.$emit('endCount')
           this.time = 60
           clearInterval(this.timer)
         }

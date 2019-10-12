@@ -5,7 +5,7 @@
         <a-input
           size="large"
           placeholder="用户名、邮箱登录"
-          v-decorator="rules.name"
+          v-decorator="decorators.name"
         />
       </st-form-item>
       <st-form-item class="mg-b12">
@@ -13,7 +13,7 @@
           size="large"
           type="password"
           placeholder="密码"
-          v-decorator="rules.password"
+          v-decorator="decorators.password"
         />
       </st-form-item>
       <st-form-item class="mg-b0">
@@ -22,10 +22,7 @@
       <st-form-item :class="loginUser('pass')" class="mg-b12">
         <div :class="loginUser('wrapper')">
           <div :class="loginUser('wrapper-left')">
-            <a-checkbox
-              :checked="defaultAgreeFlag"
-              @change="onCheckboxChange('is_change_Agreen')"
-            >
+            <a-checkbox v-decorator="decorators.isAgree">
               我已阅读并同意
               <a
                 :class="loginUser('wrapper-user-agreement')"
@@ -44,7 +41,6 @@
         <st-button
           :class="loginUser('login-button')"
           :loading="loading.loginAccount"
-          :disabled="changeSubmitDisabled"
           pill
           block
           size="large"
@@ -64,9 +60,10 @@
 
 <script>
 import { LoginService } from '../login.service'
-import { rules } from './user.config'
 import NoCaptcha from './no-captcha'
 import AccountAgreement from '@/views/biz-modals/account/agreement'
+import { ruleOptions } from './login.config'
+import { PatternService } from '@/services/pattern.service'
 
 export default {
   bem: {
@@ -78,7 +75,8 @@ export default {
   },
   serviceInject() {
     return {
-      loginService: LoginService
+      loginService: LoginService,
+      pattern: PatternService
     }
   },
   rxState() {
@@ -87,22 +85,19 @@ export default {
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      form: this.$form.createForm(this),
+      form,
+      decorators,
       thirdLogins: ['alipay', 'wechat', 'weibo', 'qq'],
-      trunPage: false,
-      defaultAgreeFlag: true
+      trunPage: false
     }
   },
   modals: {
     AccountAgreement
   },
-  computed: {
-    rules,
-    changeSubmitDisabled() {
-      return !this.defaultAgreeFlag
-    }
-  },
+  computed: {},
   methods: {
     clickAgreement() {
       this.$modalRouter.push({
@@ -112,37 +107,9 @@ export default {
       })
     },
     login() {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          this.$emit('login', values)
-        }
+      this.form.validate().then(values => {
+        this.$emit('login', values)
       })
-      // return
-      // const params = {
-      //   nvc_val: getNVCVal()
-      // }
-      // console.log('nvc_val', params.nvc_val)
-      // // getNC()
-      // this.loginService.traceCode(params).subscribe(
-      //   res => {
-      //     this.form.validateFields((err, values) => {
-      //       if (!err) {
-      //         this.$emit('login', values)
-      //       }
-      //     })
-      //   },
-      //   (res) => {
-      //     this.noCaptchaService.callCaptcha(res.code)
-      //   }
-      // )  account/login
-    },
-    onChange() {
-      this.$router.push({
-        force: true
-      })
-    },
-    onCheckboxChange() {
-      this.defaultAgreeFlag = !this.defaultAgreeFlag
     },
     onClickFindPassword() {
       this.$emit('findps')

@@ -48,45 +48,51 @@ export default {
         return ''
       }
     },
-    value: {
-      type: [String, Number]
-    },
     disabled: {
       type: Boolean,
       default() {
         return false
       }
-    }
+    },
+    countryDetail: Object
   },
   watch: {
-    value: {
+    countryDetail: {
       deep: true,
-      handler(newVal, oldVal) {
-        this.init(newVal)
+      handler(newVal) {
+        if (newVal && newVal.phone_code) {
+          this.countryId = newVal.code_id
+          this.countryName = newVal.phone_code
+          this.onClickItem({
+            code_id: this.countryId,
+            phone_code: this.countryName
+          })
+        }
       }
     }
   },
-  created() {
+  mounted() {
     this.inputPhoneService.getCountryCodes().subscribe()
-    // this.init(this.value)
+    if (this.countryDetail && this.countryDetail.phone_code) {
+      this.countryId = this.countryDetail.code_id
+      this.countryName = this.countryDetail.phone_code
+    }
+    this.onClickItem({ code_id: this.countryId, phone_code: this.countryName })
   },
   data() {
     return {
-      number: '',
       countryName: 86,
       countryId: 37
     }
   },
   methods: {
-    init(data) {
-      this.number = data
-    },
     onChange(value) {
       this.$emit('change', value)
       this.$emit('input', value)
     },
     onClickItem(event) {
       this.countryName = event.phone_code
+      this.$emit('select', event)
     }
   }
 }

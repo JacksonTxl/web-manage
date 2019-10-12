@@ -14,9 +14,14 @@
         v-if="switchLoginTypeIsShow"
       ></i> -->
       <i
-        class="page-switch-login-type cursor-pointer"
-        :class="{ 'qrcode-login': this.loginType === 'qrcode' }"
+        class="cursor-pointer"
+        :class="{
+          'qrcode-login': this.loginType === 'qrcode',
+          'page-switch-login-type': this.loginType !== 'bind',
+          'page-switch-bind': this.loginType === 'bind'
+        }"
         v-if="switchLoginTypeIsShow"
+        @click="bindBackLogin"
       ></i>
       <section class="lf">
         <div class="lf-bg"></div>
@@ -51,7 +56,7 @@
         </div>
 
         <div v-if="loginType === 'bind'">
-          <login-bind></login-bind>
+          <login-bind :value="countryInfo" @click="onClickBind"></login-bind>
         </div>
 
         <div
@@ -129,7 +134,8 @@ export default {
       loginTypes: [
         { key: 'user', name: '用户密码登录' },
         { key: 'mobile', name: '手机动态密码登录' }
-      ]
+      ],
+      countryInfo: {}
     }
   },
   components: {
@@ -144,7 +150,7 @@ export default {
   },
   computed: {
     switchLoginTypeIsShow() {
-      let types = ['user', 'mobile', 'qrcode']
+      let types = ['user', 'mobile', 'qrcode', 'bind']
       return types.includes(this.loginType)
     }
   },
@@ -160,6 +166,11 @@ export default {
     },
     onClickBack() {
       this.loginType = 'user'
+    },
+    bindBackLogin() {
+      if (this.loginType === 'bind') {
+        this.loginType = 'mobile'
+      }
     },
     onLogin(params) {
       params.nvc_val = window.getNVCVal()
@@ -180,8 +191,15 @@ export default {
     switchLoginType() {
       this.loginType = this.loginType === 'qrcode' ? 'user' : 'qrcode'
     },
-    onBind() {
+    onBind(event) {
       this.loginType = 'bind'
+      this.countryInfo = event
+    },
+    onClickBind(params) {
+      this.loginService.bindPhoneForAccount(params).subscribe(res => {
+        this.countryInfo = {}
+        location.href = '/'
+      })
     }
   }
 }

@@ -31,6 +31,13 @@ export class LoginApi extends Api {
   checkPhoneIsBind(params: any) {
     return this.http.post('/login/phone/check', { params })
   }
+  /**
+   * 账号绑定用户
+   * @param params
+   */
+  bindPhoneForAccount(params: any) {
+    return this.http.post('/login/phone/bind', { params })
+  }
 }
 
 export interface LoginAccountInput {

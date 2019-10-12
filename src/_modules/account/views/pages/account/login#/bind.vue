@@ -6,7 +6,7 @@
         用于登录、密码找回和验证身份，保护您的账号安全
       </p>
     </div>
-    <st-form :form="form" @submit.prevent="login" :class="b('form')">
+    <st-form :form="form" @submit.prevent="onBind" :class="b('form')">
       <st-form-item>
         <a-input
           size="large"
@@ -26,25 +26,27 @@
         <input-phone
           v-decorator="decorators.phone"
           placeholder="请输入手机号码"
+          @select="onSelectCountry"
+          :countryDetail="countryInfo"
         ></input-phone>
       </st-form-item>
-      <st-form-item class="mg-b12">
+      <!-- 无痕验证 -->
+      <st-form-item class="mg-b0">
+        <no-captcha id="bind-phone-code"></no-captcha>
+      </st-form-item>
+      <st-form-item>
         <input-phone-code
           v-decorator="decorators.captcha"
           @click="onClickCaptcha"
           placeholder="请输入验证码"
           :isCountTime="isCountTime"
+          @endCount="endCount"
         ></input-phone-code>
-      </st-form-item>
-      <!-- 无痕验证 -->
-      <st-form-item class="mg-b12">
-        <no-captcha></no-captcha>
       </st-form-item>
       <st-form-item class="mg-b32">
         <st-button
           :class="b('login-button')"
           :loading="loading.loginAccount"
-          :disabled="changeSubmitDisabled"
           pill
           block
           size="large"
@@ -63,8 +65,10 @@ import { LoginService } from '../login.service'
 import { ruleOptions } from './login.config'
 import NoCaptcha from './no-captcha'
 import { PatternService } from '@/services/pattern.service'
+import { NoCaptchaService } from '@/services/no-captcha.service'
 import InputPhone from '@/views/biz-components/input-phone/input-phone'
 import InputPhoneCode from '@/views/biz-components/input-phone-code/input-phone-code'
+import { cloneDeep } from 'lodash-es'
 
 export default {
   name: 'LoginUserBind',
@@ -79,13 +83,24 @@ export default {
   serviceInject() {
     return {
       loginService: LoginService,
-      pattern: PatternService
+      pattern: PatternService,
+      noCaptchaService: NoCaptchaService
     }
   },
   rxState() {
     return {
       loading: this.loginService.loading$
     }
+  },
+  props: {
+    value: Object
+  },
+  mounted() {
+    console.log(this.value)
+    this.countryInfo = this.value
+    this.form.setFieldsValue({
+      phone: this.countryInfo.phone
+    })
   },
   data() {
     const form = this.$stForm.create()
@@ -94,28 +109,53 @@ export default {
       form,
       decorators,
       isCountTime: false,
-      isClick: false
+      countryInfo: {}
     }
   },
   methods: {
     onClickCaptcha() {
-      if (this.isClick) {
-        return
-      }
       this.form.validateFields(['phone'], (err, values) => {
         if (!err) {
           const { phone } = values
           const params = {
             phone,
-            country_code_id: 86
+            is_bind: 2,
+            country_code_id: this.countryInfo.code_id
           }
           this.getCaptcha(params)
         }
       })
     },
     getCaptcha(params) {
+      params.nvc_val = window.getNVCVal()
       this.loginService.getCaptcha(params).subscribe(res => {
+        this.noCaptchaService.resetNVC()
         this.isCountTime = true
+      }, this.errorHandler)
+    },
+    errorHandler(err) {
+      const code = err.response.code
+      if (this.noCaptchaService.testIsNeedCallCaptcha(code)) {
+        this.noCaptchaService.callCaptcha(code)
+        return
+      }
+      this.noCaptchaService.resetNVC()
+    },
+    endCount() {
+      this.isCountTime = false
+    },
+    onSelectCountry(event) {
+      this.countryInfo = event
+    },
+    onBind() {
+      this.form.validate().then(values => {
+        const params = cloneDeep(values)
+        params.account = values.name
+        params.pwd = values.password
+        params.country_code_id = this.countryInfo.code_id
+        delete params.name
+        delete params.password
+        this.$emit('click', params)
       })
     }
   }

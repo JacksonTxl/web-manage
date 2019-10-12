@@ -25,9 +25,7 @@ export class LoginService {
   loginPhone(params: LoginPhoneInput) {
     return this.loginApi.loginPhone(params).pipe(
       tap(res => {
-        this.msg.success({
-          content: '登录成功'
-        })
+        this.tokenService.SET_TOKEN(res.token)
       })
     )
   }
@@ -43,5 +41,12 @@ export class LoginService {
   }
   checkPhoneIsBind(params: any) {
     return this.loginApi.checkPhoneIsBind(params)
+  }
+  bindPhoneForAccount(params: any) {
+    return this.loginApi.bindPhoneForAccount(params).pipe(
+      tap(res => {
+        this.tokenService.SET_TOKEN(res.token)
+      })
+    )
   }
 }

@@ -33,6 +33,23 @@ export const ruleOptions = (vm: any) => {
           message: '请输入验证码'
         }
       ]
+    },
+    isAgree: {
+      initialValue: true,
+      valuePropName: 'checked',
+      rules: [
+        {
+          required: true,
+          message: '请确认勾选用户协议'
+        },
+        {
+          validator: (field: any, value: any, values: any) => {
+            if (!value) {
+              return '请确认勾选用户协议'
+            }
+          }
+        }
+      ]
     }
   }
 }
