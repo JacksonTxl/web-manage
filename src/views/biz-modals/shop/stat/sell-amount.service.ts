@@ -1,6 +1,6 @@
+import { Injectable } from 'vue-service-app'
 import { UserService } from '@/services/user.service'
 import { StatApi } from '@/api/v1/stat/shop'
-import { Injectable } from 'vue-service-app'
 import { Effect, State } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
@@ -16,6 +16,8 @@ export class SellAmountService {
   constructor(private statApi: StatApi, private userService: UserService) {}
   @Effect()
   getSellAmountList(params: any) {
+    console.log('执行次数');
+    console.log(params);
     return this.statApi.getSellAmount(params).pipe(
       tap((res: any) => {
         this.amountList$.commit(() => res.list)
@@ -37,6 +39,7 @@ export class SellAmountService {
     )
   }
   init(query: any) {
+    console.log('弹窗server请求参数');
     console.log(query);
     return forkJoin(
       this.getStallList(query),

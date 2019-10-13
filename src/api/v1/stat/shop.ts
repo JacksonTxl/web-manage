@@ -66,9 +66,6 @@ export class StatApi {
   getSellStaffList(query: SellStaffListQuery) {
     return this.http.get('/v1/stat/sale/staff', { query })
   }
-  getAllSellAchievementList(query: AllSellAchievementListQuery) {
-    return this.http.get('/v1/stat/sale', { query })
-  }
 }
 
 export interface PersonalCourseQuery {

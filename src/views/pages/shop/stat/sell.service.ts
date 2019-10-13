@@ -31,6 +31,7 @@ export class SellService {
   @Effect()
   // 销售员工  --  包含了部门相关信息
   getSellStaffList(query: SellStaffListQuery) {
+    console.log('执行次数');
     return this.StatApi.getSellStaffList(query).pipe(
       tap((res: any) => {
         //console.log(res);
@@ -57,14 +58,6 @@ export class SellService {
         this.departmentList$.commit(() => {
           return [{ id: -1, name: '全部部门' }, ...res.info.department_list]
         })
-      })
-    )
-  }
-  // 总业绩
-  getAllSellAchievementList(query: AllSellAchievementListQuery) {
-    return this.StatApi.getAllSellAchievementList(query).pipe(
-      tap((res: any) => {
-        this.departmentList$.commit(() => res.list)
       })
     )
   }

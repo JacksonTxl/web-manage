@@ -13,7 +13,7 @@
           placeholder="请选择部门"
           optionFilterProp="children"
           style="width: 200px"
-          @change="onChangeDepartment"
+          @change="getAmountList"
           v-model="department_id"
           :filterOption="filterOption"
         >
@@ -33,7 +33,7 @@
           style="width: 200px"
           v-if="showTable === 'all'"
           v-model="staff_id"
-          @change="onChangeStaff"
+          @change="getAmountList"
           :filterOption="filterOption"
         >
           <a-select-option
@@ -126,12 +126,6 @@ export default {
     getAmountList() {
       this.sellAmountervice.getSellAmountList(this.query).subscribe()
     },
-    onChangeStaff(value) {
-      this.onMultiSearch({ staff_id: value })
-    },
-    onChangeDepartment(value) {
-      this.onMultiSearch({ department_id: value, staff_id: -1 })
-    },
     filterOption(input, option) {
       return (
         option.componentOptions.children[0].text
@@ -142,6 +136,8 @@ export default {
     init() {
       this.staff_id = this.record.staff_id || -1
       this.stat_date = this.record.stat_date
+      console.log('获取传参===============弹框发起请求');
+      console.log(this.query)
       this.sellAmountervice
         .init({ ...this.query })
         .subscribe()
@@ -149,7 +145,7 @@ export default {
   },
   mounted() {
     this.init()
-    console.log('获取传参===============');
+    console.log('获取传参===============获取所有列表');
     console.log(this.amountList);
     //console.log(this.record);
     console.log(this.modalStaffList$);
