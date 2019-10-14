@@ -39,7 +39,6 @@ export default {
   },
   methods: {
     onExport() {
-      console.log(this.type, this.query)
       this.exportButtonService.export(this.type, this.query).subscribe()
     }
   }

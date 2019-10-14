@@ -15,7 +15,9 @@ export class ExportButtonService {
   export(path: string, query: any) {
     return this.excelApi.export(path, query).pipe(
       then(() => {
-        this.messageService.success('提交导出任务成功')
+        this.messageService.success({
+          content: '提交成功'
+        })
       })
     )
   }
