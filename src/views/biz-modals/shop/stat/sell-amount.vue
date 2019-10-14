@@ -14,7 +14,7 @@
           optionFilterProp="children"
           style="width: 200px"
           @change="getAmountList"
-          v-model="department_id"
+          v-model="pageParams.department_id"
           :filterOption="filterOption"
         >
           <a-select-option
@@ -32,7 +32,7 @@
           optionFilterProp="children"
           style="width: 200px"
           v-if="showTable === 'all'"
-          v-model="staff_id"
+          v-model="pageParams.staff_id"
           @change="getAmountList"
           :filterOption="filterOption"
         >
@@ -48,7 +48,7 @@
       <div class="search__right"></div>
     </div>
     <st-table
-      :scroll="{ y: 500 }"
+      :scroll="{ y: 345 }"
       :page="page"
       :columns="columns"
       :loading="loading.getSellAmountList"
@@ -105,12 +105,14 @@ export default {
   data() {
     return {
       show: false,
-      stat_date: '',
-      amountList: [],
-      staff_id: -1,
-      department_id: -1,
-      current_page: 1,
-      size: 20
+      pageParams: {
+        stat_date: '',
+        amountList: [],
+        staff_id: -1,
+        department_id: -1,
+        current_page: 1,
+        size: 20
+      }
     }
   },
   computed: {
@@ -120,18 +122,18 @@ export default {
     },
     query() {
       return {
-        stat_date: this.stat_date,
-        staff_id: this.staff_id,
-        department_id: this.department_id,
-        current_page: this.current_page,
-        size: this.size
+        stat_date: this.pageParams.stat_date,
+        staff_id: this.pageParams.staff_id,
+        department_id: this.pageParams.department_id,
+        current_page: this.pageParams.current_page,
+        size: this.pageParams.size
       }
     }
   },
   methods: {
     getAmountList(evt) {
       if (evt.pageSize) {
-        this.size = evt.pageSize
+        this.pageParams.size = evt.pageSize
       }
       this.sellAmountervice.getSellAmountList(this.query).subscribe()
     },
@@ -143,8 +145,8 @@ export default {
       )
     },
     init() {
-      this.staff_id = this.record.staff_id || -1
-      this.stat_date = this.record.stat_date
+      this.pageParams.staff_id = this.record.staff_id || -1
+      this.pageParams.stat_date = this.record.stat_date
       this.sellAmountervice.init({ ...this.query }).subscribe()
     }
   },
