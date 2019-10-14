@@ -66,7 +66,6 @@ export class IndexService implements RouteGuard {
   ) {
     this.memberListAction$ = new Action(data$ => {
       return data$.pipe(
-        debounceTime(200),
         switchMap((query: GetMemberListInput) =>
           this.getMemberList(query).pipe(catchError(() => EMPTY))
         ),

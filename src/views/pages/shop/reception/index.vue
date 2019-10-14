@@ -1025,7 +1025,7 @@ export default {
         }
       })
     },
-    scroll(e) {
+    scroll: debounce(function(e) {
       const { target } = e
       if (
         Math.floor(target.scrollTop) + target.clientHeight >
@@ -1036,7 +1036,7 @@ export default {
           this.onMemberSearch(this.memberSearchText)
         }
       }
-    }
+    }, 200)
   }
 }
 </script>
