@@ -1,48 +1,142 @@
 <template>
-  <st-form :form="form">
-    <st-form-item label="活动标题" required>
-      <a-input v-decorator="decorators.name"></a-input>
-    </st-form-item>
-    <st-form-item label="活动时间" required>
-      <a-input v-decorator="decorators.count"></a-input>
-    </st-form-item>
-    <st-form-item label="活动地点" required>
-      <a-input v-decorator="decorators.address"></a-input>
-    </st-form-item>
-    <!-- <st-form-item label="活动海报" required>
-      <a-input></a-input>
-    </st-form-item>
-    <st-form-item label="活动人数" required>
-      <a-input></a-input>
-    </st-form-item>
-    <st-form-item label="活动详情" required>
-      <a-input></a-input>
-    </st-form-item> -->
-  </st-form>
+  <div>
+    <div>
+      <span>您是否需要收集参与者的必要信息</span>
+      <st-switch></st-switch>
+    </div>
+    <st-form-table>
+      <thead>
+        <tr>
+          <th>报名项标题</th>
+          <th>是否必填</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-if="!disabled">
+          <td :colspan="colspanNum" class="st-form-table__add">
+            <st-button
+              type="dashed"
+              icon="add"
+              block
+              v-modal-link="{
+                name: 'marketing-add-signup',
+                props: {
+                  checked: checkedShopIds
+                },
+                on: {
+                  submit: getTableItem
+                }
+              }"
+            >
+              添加
+            </st-button>
+          </td>
+        </tr>
+        <template v-if="dataSource.length">
+          <tr v-for="(item, index) in dataSource" :key="index">
+            <td>{{ item.extra_name }}</td>
+            <td>{{ item.extra_require === 1 ? '必填' : '选填' }}</td>
+            <td v-if="!disabled">
+              <a @click="delShopTableRecord(item.shop_id)">
+                删除
+              </a>
+            </td>
+          </tr>
+        </template>
+        <template v-else>
+          <tr>
+            <td :colspan="colspanNum">
+              <st-no-data />
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </st-form-table>
+  </div>
 </template>
-
 <script>
-import { ruleOptions } from './form.config'
-import { PatternService } from '@/services/pattern.service'
+// import { SelectShopService } from './select-shop.service'
+import MarketingAddSignup from '@/views/biz-modals/marketing/add-signup'
 export default {
   name: 'Step3Form',
-  serviceInject() {
-    return {
-      pattern: PatternService
+  modals: {
+    MarketingAddSignup
+  },
+  // serviceInject() {
+  //   return {
+  //     selectService: SelectShopService
+  //   }
+  // },
+  // rxState() {
+  //   return {
+  //     loading: this.selectService.loading$
+  //   }
+  // },
+  props: {
+    shopIds: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
-    const that = this
-    const form = this.$stForm.create({
-      onValuesChange(props, values) {
-        that.$emit('change', that.form.getFieldsValue())
-      }
-    })
-    const decorators = form.decorators(ruleOptions)
     return {
-      form,
-      formInfo: {},
-      decorators
+      checkedShopIds: [],
+      dataSource: [],
+      list: []
+    }
+  },
+  created() {
+    this.checkedShopIds = this.shopIds
+    this.getShops(this.shopIds)
+  },
+  computed: {
+    colspanNum() {
+      return this.disabled ? 4 : 5
+    }
+  },
+  methods: {
+    getTableItem(item) {
+      this.dataSource.push(item)
+    },
+    onSelectShopComplete(shopIds) {
+      this.getShops(shopIds)
+      this.checkedShopIds = shopIds
+      this.$emit('change', shopIds)
+    },
+    getShops(shopIds = []) {
+      if (!shopIds.length) {
+        return
+      }
+      this.selectService
+        .getShopBasic({
+          shop_ids: shopIds
+        })
+        .subscribe(res => {
+          this.list = res.shops
+        })
+    },
+    delShopTableRecord(shopId) {
+      const { list, checkedShopIds } = this
+      list.forEach((item, index) => {
+        if (item.shop_id === shopId) {
+          list.splice(index, 1)
+        }
+      })
+      checkedShopIds.forEach((item, index) => {
+        if (item === +shopId) {
+          checkedShopIds.splice(index, 1)
+        }
+      })
+      this.list = list
+      this.checkedShopIds = checkedShopIds
+      this.$emit('change', checkedShopIds)
     }
   }
 }

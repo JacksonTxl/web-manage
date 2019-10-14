@@ -34,7 +34,7 @@
         ></step2-form>
         <step3-form
           v-if="currentStep === 2"
-          @change="onChangeStep2Form"
+          @change="onChangeStep3Form"
         ></step3-form>
       </div>
     </div>
@@ -77,6 +77,8 @@ export default {
     onChangeStep1Form(formObj) {
       this.step1Info = formObj
     },
+    onChangeStep2Form() {},
+    onChangeStep3Form() {},
     onClickStep(idx) {
       this.currentStep = idx
     }

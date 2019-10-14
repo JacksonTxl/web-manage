@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{ dataSource }}
     <st-form-table>
       <thead>
         <tr>
@@ -23,7 +24,7 @@
                   checked: checkedShopIds
                 },
                 on: {
-                  change: onSelectShopComplete
+                  submit: getTableItem
                 }
               }"
             >
@@ -31,12 +32,12 @@
             </st-button>
           </td>
         </tr>
-        <template v-if="list.length">
-          <tr v-for="(item, index) in list" :key="index">
-            <td>{{ item.province }}</td>
-            <td>{{ item.city }}</td>
-            <td>{{ item.district }}</td>
-            <td>{{ item.shop_name }}</td>
+        <template v-if="dataSource.length">
+          <tr v-for="(item, index) in dataSource" :key="index">
+            <td>{{ item.ticket_name }}</td>
+            <td>{{ item.ticket_price }}</td>
+            <td>{{ item.ticket_total_num }}</td>
+            <td>{{ item.crowd_name }}</td>
             <td v-if="!disabled">
               <a @click="delShopTableRecord(item.shop_id)">
                 删除
@@ -59,7 +60,7 @@
 // import { SelectShopService } from './select-shop.service'
 import MarketingAddTicket from '@/views/biz-modals/marketing/add-ticket'
 export default {
-  name: 'SelectShop',
+  name: 'ComponentsAddTicket',
   modals: {
     MarketingAddTicket
   },
@@ -88,6 +89,7 @@ export default {
   data() {
     return {
       checkedShopIds: [],
+      dataSource: [],
       list: []
     }
   },
@@ -101,6 +103,10 @@ export default {
     }
   },
   methods: {
+    getTableItem(item) {
+      debugger
+      this.dataSource.push(item)
+    },
     onSelectShopComplete(shopIds) {
       this.getShops(shopIds)
       this.checkedShopIds = shopIds
