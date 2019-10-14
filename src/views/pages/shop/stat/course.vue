@@ -12,7 +12,7 @@
           type="course/shop"
           :query="query"
         >
-          批量导出
+          全部导出
         </st-export-button>
         <st-export-button
           v-if="showTable === 'coach'"
