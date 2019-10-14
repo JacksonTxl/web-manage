@@ -15,7 +15,7 @@ export const allColumns = () => {
     {
       title: '会员卡购买金额（元）',
       dataIndex: 'member_card_amount',
-      align: 'right',
+      align: 'right'
     },
     {
       dataIndex: 'deposit_card_num',
@@ -37,7 +37,7 @@ export const allColumns = () => {
     {
       title: '私教购买金额（元）',
       dataIndex: 'personal_course_amount',
-      align: 'right',
+      align: 'right'
     },
     {
       dataIndex: 'team_course_num',
@@ -48,17 +48,17 @@ export const allColumns = () => {
     {
       title: '团课购买金额（元）',
       dataIndex: 'team_course_amount',
-      align: 'right',
+      align: 'right'
     },
     {
       title: '课程包购买节数',
       dataIndex: 'package_course_num',
-      align: 'right',
+      align: 'right'
     },
     {
       title: '课程包购买金额（元）',
       dataIndex: 'package_course_amount',
-      align: 'right',
+      align: 'right'
     },
     {
       dataIndex: 'total_course_num',
@@ -77,7 +77,7 @@ export const allColumns = () => {
       align: 'right',
       slots: { title: 'performanceTitle' },
       scopedSlots: { customRender: 'performance_amount' }
-    },
+    }
   ]
 }
 export const staffColumns = () => {
@@ -109,7 +109,7 @@ export const staffColumns = () => {
     {
       title: '会员卡购买金额（元）',
       dataIndex: 'member_card_amount',
-      align: 'right',
+      align: 'right'
     },
     {
       dataIndex: 'deposit_card_num',
@@ -120,17 +120,17 @@ export const staffColumns = () => {
     {
       title: '储值卡购买金额（元）',
       dataIndex: 'deposit_card_amount',
-      align: 'right',
+      align: 'right'
     },
     {
       title: '私教购买节数',
       dataIndex: 'personal_course_num',
-      align: 'right',
+      align: 'right'
     },
     {
       title: '私教购买金额（元）',
       dataIndex: 'personal_course_amount',
-      align: 'right',
+      align: 'right'
     },
     {
       dataIndex: 'team_course_num',
@@ -141,17 +141,17 @@ export const staffColumns = () => {
     {
       title: '团课购买金额（元）',
       dataIndex: 'team_course_amount',
-      align: 'right',
+      align: 'right'
     },
     {
       title: '课程包购买节数',
       dataIndex: 'package_course_num',
-      align: 'right',
+      align: 'right'
     },
     {
       title: '课程包购买金额（元）',
       dataIndex: 'package_course_amount',
-      align: 'right',
+      align: 'right'
     },
     {
       dataIndex: 'total_course_num',
@@ -170,6 +170,6 @@ export const staffColumns = () => {
       align: 'right',
       slots: { title: 'performanceTitle' },
       scopedSlots: { customRender: 'performance_amount' }
-    },
+    }
   ]
 }

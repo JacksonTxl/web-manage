@@ -2,7 +2,7 @@
   <st-modal
     wrapClassName="modal-stat-sell-amount"
     title="总销售业绩"
-    width="960px"
+    width="1150px"
     :footer="null"
     v-model="show"
   >
@@ -19,7 +19,7 @@
         >
           <a-select-option
             :value="department.id"
-            v-for="department in modalDepartmentList$"
+            v-for="department in modalDepartmentList"
             :key="department.id"
           >
             {{ department.name }}
@@ -38,7 +38,7 @@
         >
           <a-select-option
             :value="staff.id"
-            v-for="staff in modalStaffList$"
+            v-for="staff in modalStaffList"
             :key="staff.id"
           >
             {{ staff.name }}
@@ -48,17 +48,15 @@
       <div class="search__right"></div>
     </div>
     <st-table
+      :scroll="{ y: 500 }"
+      :page="page"
       :columns="columns"
-      :rowKey="record => record.id"
-      :loading="loading$.getAmountList"
-      :dataSource="amountList$"
-      page-mode="client"
+      :loading="loading.getSellAmountList"
+      @change="getAmountList"
+      rowKey="id"
+      :dataSource="amountList"
     >
-      <span
-        slot="sale_price"
-        slot-scope="text"
-        v-if="text !== 0"
-      >
+      <span slot="sale_price" slot-scope="text" v-if="text !== 0">
         {{ text }}
       </span>
       <span v-else>{{ text }}</span>
@@ -83,7 +81,7 @@ export default {
     }
   },
   rxState() {
-    const {
+    let {
       amountList$,
       page$,
       loading$,
@@ -91,11 +89,11 @@ export default {
       modalStaffList$
     } = this.sellAmountervice
     return {
-      amountList$,
-      page$,
-      loading$,
-      modalDepartmentList$,
-      modalStaffList$
+      page: page$,
+      amountList: amountList$,
+      loading: loading$,
+      modalDepartmentList: modalDepartmentList$,
+      modalStaffList: modalStaffList$
     }
   },
   props: {
@@ -112,17 +110,13 @@ export default {
       staff_id: -1,
       department_id: -1,
       current_page: 1,
-      size: 999
+      size: 20
     }
   },
   computed: {
     columns,
     showTable() {
       return this.$route.query.showTable || 'all'
-    },
-    page() {
-      const { current_page, total_counts } = this.page$
-      return { current_page, total_counts }
     },
     query() {
       return {
@@ -135,7 +129,10 @@ export default {
     }
   },
   methods: {
-    getAmountList() {
+    getAmountList(evt) {
+      if (evt.pageSize) {
+        this.size = evt.pageSize
+      }
       this.sellAmountervice.getSellAmountList(this.query).subscribe()
     },
     filterOption(input, option) {
@@ -148,9 +145,7 @@ export default {
     init() {
       this.staff_id = this.record.staff_id || -1
       this.stat_date = this.record.stat_date
-      this.sellAmountervice
-        .init({ ...this.query })
-        .subscribe()
+      this.sellAmountervice.init({ ...this.query }).subscribe()
     }
   },
   mounted() {

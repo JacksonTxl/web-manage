@@ -52,58 +52,34 @@
     </section>
     <st-table
       :page="page"
-      :scroll="{ x: 1900 }"
+      :scroll="{ x: 2250 }"
       @change="onTableChange"
       :loading="loading.init"
       :columns="columns"
       :dataSource="list"
       rowKey="id"
     >
-      <span
-        slot="member_card_num"
-        slot-scope="text"
-        v-if="text !== 0"
-      >
+      <span slot="member_card_num" slot-scope="text" v-if="text !== 0">
         {{ text }}
       </span>
       <span v-else>{{ text }}</span>
-      <span
-        slot="deposit_card_num"
-        slot-scope="text"
-        v-if="text !== 0"
-      >
+      <span slot="deposit_card_num" slot-scope="text" v-if="text !== 0">
         {{ text }}
       </span>
       <span v-else>{{ text }}</span>
-      <span
-        slot="deposit_card_num"
-        slot-scope="text"
-        v-if="text !== 0"
-      >
+      <span slot="deposit_card_num" slot-scope="text" v-if="text !== 0">
         {{ text }}
       </span>
       <span v-else>{{ text }}</span>
-      <span
-        slot="team_course_num"
-        slot-scope="text"
-        v-if="text !== 0"
-      >
+      <span slot="team_course_num" slot-scope="text" v-if="text !== 0">
         {{ text }}
       </span>
       <span v-else>{{ text }}</span>
-      <span
-        slot="total_course_num"
-        slot-scope="text"
-        v-if="text !== 0"
-      >
+      <span slot="total_course_num" slot-scope="text" v-if="text !== 0">
         {{ text }}
       </span>
       <span v-else>{{ text }}</span>
-      <span
-        slot="other_amount"
-        slot-scope="text"
-        v-if="text !== 0"
-      >
+      <span slot="other_amount" slot-scope="text" v-if="text !== 0">
         {{ text }}
       </span>
       <span v-else>{{ text }}</span>
@@ -122,7 +98,7 @@
       </span>
       <span slot="depositTitle">
         储值卡成单数
-      <st-help-tooltip id="TSCR002" />
+        <st-help-tooltip id="TSCR002" />
       </span>
       <span slot="teamTitle">
         团课购买节数

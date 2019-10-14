@@ -3,7 +3,11 @@ import { State, Computed, Effect } from 'rx-state'
 import { tap, first } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { RedirectService } from '@/services/redirect.service'
-import { StatApi, OrderShopListQuery, SellStaffListQuery } from '@/api/v1/stat/shop'
+import {
+  StatApi,
+  OrderShopListQuery,
+  SellStaffListQuery
+} from '@/api/v1/stat/shop'
 import { forkJoin } from 'rxjs'
 interface SetState {}
 @Injectable()
