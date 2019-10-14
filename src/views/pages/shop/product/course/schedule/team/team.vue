@@ -72,6 +72,7 @@ export default {
         props: { time: date },
         on: {
           ok: res => {
+            console.log('ok')
             this.onScheduleChange()
           }
         }
