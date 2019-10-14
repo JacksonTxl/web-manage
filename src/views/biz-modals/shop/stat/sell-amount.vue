@@ -59,7 +59,6 @@
       <span slot="sale_price" slot-scope="text">
         {{ text }}
       </span>
-      s
       <span slot="saleTitle">
         业绩金额
         <st-help-tooltip id="TSSR007" />
