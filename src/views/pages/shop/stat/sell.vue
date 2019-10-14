@@ -59,30 +59,24 @@
       :dataSource="list"
       rowKey="id"
     >
-      <span slot="member_card_num" slot-scope="text" v-if="text !== 0">
+      <span slot="member_card_num" slot-scope="text">
         {{ text }}
       </span>
-      <span v-else>{{ text }}</span>
-      <span slot="deposit_card_num" slot-scope="text" v-if="text !== 0">
+      <span slot="deposit_card_num" slot-scope="text">
         {{ text }}
       </span>
-      <span v-else>{{ text }}</span>
-      <span slot="deposit_card_num" slot-scope="text" v-if="text !== 0">
+      <span slot="deposit_card_num" slot-scope="text">
         {{ text }}
       </span>
-      <span v-else>{{ text }}</span>
-      <span slot="team_course_num" slot-scope="text" v-if="text !== 0">
+      <span slot="team_course_num" slot-scope="text">
         {{ text }}
       </span>
-      <span v-else>{{ text }}</span>
-      <span slot="total_course_num" slot-scope="text" v-if="text !== 0">
+      <span slot="total_course_num" slot-scope="text">
         {{ text }}
       </span>
-      <span v-else>{{ text }}</span>
-      <span slot="other_amount" slot-scope="text" v-if="text !== 0">
+      <span slot="other_amount" slot-scope="text">
         {{ text }}
       </span>
-      <span v-else>{{ text }}</span>
       <a
         slot="performance_amount"
         @click="getSellTotalAmount(record)"
