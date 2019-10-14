@@ -62,7 +62,7 @@
       page-mode="client"
     ></st-table>
     <div slot="footer">
-      <st-export-button type="personal/course" :query="query">
+      <st-export-button type="shop/personal/course" :query="query">
         全部导出
       </st-export-button>
     </div>

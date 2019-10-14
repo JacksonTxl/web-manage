@@ -63,7 +63,7 @@
     ></st-table>
 
     <div slot="footer">
-      <st-export-button type="personal/course/checkin" :query="query">
+      <st-export-button type="shop/personal/course/checkin" :query="query">
         全部导出
       </st-export-button>
     </div>
