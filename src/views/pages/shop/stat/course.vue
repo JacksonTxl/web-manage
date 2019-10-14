@@ -20,7 +20,7 @@
           type="shop/coach"
           :query="query"
         >
-          批量导出
+          全部导出
         </st-export-button>
       </div>
       <div :class="bHeard('right')">
