@@ -97,7 +97,7 @@
               :class="reception('member-search-tip')"
               v-if="!isSearchNone && page.current_page < page.total_pages"
             >
-              下滑展示更多
+              <a-spin size="small"></a-spin>
             </a-select-option>
             <a-select-option
               disabled
