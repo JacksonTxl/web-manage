@@ -6,20 +6,20 @@
           营销效果
         </header>
         <section>
-          <ul v-if="info.num">
+          <ul v-if="num">
             <li>
               <p>
                 注册人数
                 <img src="~@/assets/img/brand/marketing/register.svg" />
               </p>
-              <span class="font-number">{{ info.num.register_num }}</span>
+              <span class="font-number">{{ num.register_num }}</span>
             </li>
             <li>
               <p>
                 交易人数
                 <img src="~@/assets/img/brand/marketing/deals.svg" />
               </p>
-              <span class="font-number">{{ info.num.trade_num }}</span>
+              <span class="font-number">{{ num.trade_num }}</span>
             </li>
             <li>
               <p>
@@ -28,9 +28,9 @@
               </p>
               <ICountUp
                 class="font-number"
-                :endVal="+info.num.order_amount"
+                :endVal="+num.order_amount"
                 :options="{ prefix: '<b>￥</b>' }"
-                v-if="info.num.order_amount"
+                v-if="num.order_amount"
               />
               <span v-else>--</span>
             </li>
@@ -41,9 +41,9 @@
               </p>
               <ICountUp
                 class="font-number"
-                :endVal="+info.num.expend_amount"
+                :endVal="+num.expend_amount"
                 :options="{ prefix: '<b>￥</b>' }"
-                v-if="info.num.expend_amount"
+                v-if="num.expend_amount"
               />
               <span v-else>--</span>
             </li>
@@ -64,10 +64,16 @@
               :span="12"
               v-for="(item, index) in pluginList"
               :key="index"
-              @click="goToPlugin(item.route)"
+              @click="goToPlugin(item.redirect_url)"
             >
               <div :class="card()">
-                <img :class="card('img')" :src="item.img" />
+                <img
+                  :class="card('img')"
+                  :src="
+                    `https://styd-frontend.oss-cn-shanghai.aliyuncs.com/` +
+                      item.icon
+                  "
+                />
                 <div :class="card('content')">
                   <st-t3 :class="card('title')">{{ item.plugin_name }}</st-t3>
                   <p :class="card('desc')">{{ item.plugin_text }}</p>
@@ -87,7 +93,7 @@
       <div :class="sider('bd')">
         <ul :class="sider('list')">
           <li
-            v-for="(item, index) in info.operation"
+            v-for="(item, index) in operation"
             :key="index"
             @click="goLink(item.link)"
           >
@@ -117,6 +123,8 @@ export default {
   rxState() {
     return {
       info: this.pluginService.info$,
+      operation: this.pluginService.operation$,
+      num: this.pluginService.num$,
       pluginList: this.pluginService.pluginList$
     }
   },
