@@ -1,6 +1,6 @@
 <template>
   <div :class="bPage()">
-    <MarkteingPluginTitle :type="3" />
+    <MarkteingPluginTitle />
     <st-panel app>
       <div :class="bPage('action')" class="mg-b16">
         <div>
