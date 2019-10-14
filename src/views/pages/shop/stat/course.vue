@@ -163,7 +163,6 @@ export default {
   },
   methods: {
     getPersonalCourse(record) {
-      console.log(record);
       this.$modalRouter.push({
         name: 'shop-stat-personal-course',
         props: {
