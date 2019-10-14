@@ -3,7 +3,7 @@ import { State, Computed, Effect } from 'rx-state'
 import { tap, first } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { RedirectService } from '@/services/redirect.service'
-import { StatApi, OrderShopListQuery, SellStaffListQuery, AllSellAchievementListQuery } from '@/api/v1/stat/shop'
+import { StatApi, OrderShopListQuery, SellStaffListQuery } from '@/api/v1/stat/shop'
 import { forkJoin } from 'rxjs'
 interface SetState {}
 @Injectable()
@@ -29,10 +29,8 @@ export class SellService {
   }
   @Effect()
   getSellStaffList(query: SellStaffListQuery) {
-    console.log('执行次数');
     return this.StatApi.getSellStaffList(query).pipe(
       tap((res: any) => {
-        //console.log(res);
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })

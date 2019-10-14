@@ -14,14 +14,17 @@ export const columns = () => {
     },
     {
       title: '订单总价',
+      align: 'right',
       dataIndex: 'total_price'
     },
     {
       title: '实收金额',
-      dataIndex: 'actual_price'
+      dataIndex: 'actual_price',
+      align: 'right',
     },
     {
       dataIndex: 'sale_price',
+      align: 'right',
       slots: { title: 'saleTitle' },
       scopedSlots: { customRender: 'sale_price' }
     },

@@ -106,17 +106,10 @@ export interface SellStaffListQuery {
   page?: number
   size?: number
   day?: number
+  staff_id?: number
+  department_id?: number
   start_date: string
   end_date: string
   current_page: number
-  staff: number
-  department: number
-}
-export interface AllSellAchievementListQuery {
-  department?: number
-  staff?: number
-  stat_date?: number
-  current_page: number
-  size: number
 }
 export interface RevenueShopTodayQuery {}
