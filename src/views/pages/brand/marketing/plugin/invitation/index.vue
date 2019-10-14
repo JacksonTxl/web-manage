@@ -1,6 +1,6 @@
 <template>
   <div :class="inviation()">
-    <MarkteingPluginTitle :type="2" />
+    <MarkteingPluginTitle />
     <st-panel
       :tabs="[
         {

@@ -64,7 +64,7 @@
               :span="12"
               v-for="(item, index) in pluginList"
               :key="index"
-              @click="goToPlugin(item.redirect_url)"
+              @click="goToPlugin(item.redirect_url, item.plugin_type)"
             >
               <div :class="card()">
                 <img
@@ -135,8 +135,8 @@ export default {
     getInfo() {
       this.pluginService.getInfo().subscribe()
     },
-    goToPlugin(route) {
-      this.$router.push({ name: route })
+    goToPlugin(route, type) {
+      this.$router.push({ name: route, query: { type: type } })
     }
   }
 }
