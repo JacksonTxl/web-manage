@@ -17,7 +17,7 @@
         {{ status.name }}
       </template>
       <template slot="operate_type" slot-scope="type">
-        {{ type.name }}
+        {{ type }}
       </template>
       <template slot="action" slot-scope="record">
         <st-table-actions>
