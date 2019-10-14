@@ -92,6 +92,9 @@
             <fast-entry />
           </div>
         </a-dropdown> -->
+        <router-link :to="{ name: 'common-export' }">
+          <st-icon type="download" class="layout-default-body__icon"></st-icon>
+        </router-link>
         <a-dropdown :trigger="['click']" placement="bottomRight">
           <div class="layout-default-body__avatar">
             <img

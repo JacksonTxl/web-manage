@@ -36,6 +36,9 @@ export const routeMapConfig = {
   styleguide(routeConfig: RouteConfig) {
     routeConfig.redirect = { name: 'styleguide-component' }
   },
+  'common-export'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '导出记录'
+  },
   'brand-product-course-personal-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教课'
     routeConfig.meta.tabs = [

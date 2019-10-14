@@ -3,7 +3,6 @@
     wrapClassName="modal-stat-personal-course"
     title="消课价值(私)"
     width="960px"
-    :footer="null"
     v-model="show"
   >
     <div class="search mg-b8">
@@ -62,6 +61,12 @@
       :dataSource="consumeList$"
       page-mode="client"
     ></st-table>
+
+    <div slot="footer">
+      <st-export-button type="shop/personal/course/checkin" :query="query">
+        全部导出
+      </st-export-button>
+    </div>
   </st-modal>
 </template>
 <script>
