@@ -20,8 +20,6 @@ export class SellAmountService {
   getSellAmountList(params: any) {
     return this.statApi.getSellAmount(params).pipe(
       tap((res: any) => {
-        console.log('查看返回page')
-        console.log(res.page)
         this.amountList$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })
