@@ -79,10 +79,7 @@
               <a @click="onAddUser">添加新用户？</a>
             </span>
             <span slot="notFoundContent" v-else>无数据</span>
-            <a-select-option
-              v-for="item in memberList"
-              :key="item.id + Math.random()"
-            >
+            <a-select-option v-for="item in memberList" :key="item.id">
               <span
                 v-html="
                   `${item.member_name} ${item.mobile}`.replace(
@@ -571,7 +568,7 @@
 </template>
 <script>
 import { IndexService } from './index.service'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep, debounce } from 'lodash-es'
 import moment from 'moment'
 import { timer } from 'rxjs'
 import FrontSimpleArea from '@/views/biz-components/stat/front-simple-area'
@@ -581,6 +578,7 @@ import FaceUpload from '@/views/biz-components/face-upload/face-upload'
 import { summaryList, shortcutList } from './index.config'
 import { RECEPTION } from '@/constants/reception/reception'
 import FrontAddReserve from '@/views/biz-modals/front/add-reserve'
+
 export default {
   name: 'PageShopReception',
   bem: {
@@ -605,6 +603,7 @@ export default {
       coachList: this.indexService.coachList$,
       sellerList: this.indexService.sellerList$,
       memberList: this.indexService.memberList$,
+      hasNext: this.indexService.hasNext$,
       page: this.indexService.page$,
       workNoteList: this.indexService.workNoteList$,
       workNoteDoneList: this.indexService.workNoteDoneList$,
@@ -821,14 +820,20 @@ export default {
       }
     },
     // 搜索会员
-    onMemberSearch(data, current_page, size) {
+    onMemberSearch(data) {
+      if (!this.hasNext && this.memberSearchText === data.trim()) {
+        return
+      }
+      if (this.memberSearchText !== data.trim()) {
+        this.page.current_page = 1
+      }
       this.memberSearchText = data.trim()
       if (data.trim() !== '') {
         this.lastMemberSearchText = data.trim()
         this.indexService.memberListAction$.dispatch({
           keyword: data,
-          current_page: current_page || this.page.current_page,
-          size: size || this.page.size
+          current_page: this.page.current_page,
+          size: this.page.size
         })
       }
     },
@@ -1026,9 +1031,9 @@ export default {
         Math.floor(target.scrollTop) + target.clientHeight >
         target.scrollHeight - 20
       ) {
-        if (this.page.current_page < this.page.total_pages) {
-          this.page.current_page = this.page.current_page + 1
-          this.onMemberSearch(this.memberSearchText, this.page.current_page) // 调用api方法
+        if (this.hasNext) {
+          this.page.current_page++
+          this.onMemberSearch(this.memberSearchText)
         }
       }
     }

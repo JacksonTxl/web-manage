@@ -20,6 +20,7 @@ export class IndexService implements RouteGuard {
   workNoteDoneList$ = new State([])
   memberListAction$: Action<any>
   memberList$ = new State([])
+  hasNext$ = new State({})
   page$ = new State([])
   current_page$ = new State([])
   summaryInfo$ = new State({})
@@ -71,9 +72,15 @@ export class IndexService implements RouteGuard {
         ),
         tap(res => {
           this.page$.commit(() => res.page)
-          this.memberList$.commit((preList: any) =>
-            res.page.current_page > 0 ? preList.concat(res.list) : preList
-          )
+          this.hasNext$.commit(() => {
+            return res.page.current_page < res.page.total_pages
+          })
+          this.memberList$.commit((preList: any) => {
+            if (res.page.current_page === 1) {
+              preList = []
+            }
+            return preList.concat(res.list)
+          })
         })
       )
     })
