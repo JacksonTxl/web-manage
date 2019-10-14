@@ -133,6 +133,44 @@
           <st-form-item class="mg-b12" label="商品价格">
             {{ info.sell_price }}元
           </st-form-item>
+          <st-form-item :class="sale('discounts')" label="优惠券">
+            <div>
+              <div :class="sale('discounts-total')">
+                <span>{{ couponText }}</span>
+                <a-dropdown
+                  v-model="couponDropdownVisible"
+                  :disabled="couponList.length === 0"
+                  :class="sale({ disabled: couponList.length === 0 })"
+                  placement="bottomRight"
+                  :getPopupContainer="trigger => trigger.parentNode"
+                  :trigger="['click']"
+                >
+                  <div :class="sale('discounts-promotion')">
+                    <span>{{ couponList.length }}张可用优惠券</span>
+                    <a-icon type="right" />
+                  </div>
+                  <a-radio-group
+                    v-model="selectCoupon"
+                    @change="onSelectCouponChange"
+                    :class="sale('dropdown')"
+                    slot="overlay"
+                  >
+                    <a-menu>
+                      <a-menu-item
+                        @click="onSelectCoupon"
+                        :key="index"
+                        v-for="(item, index) in couponList"
+                      >
+                        <a-radio :value="item">
+                          {{ item.name }}{{ item.price }}
+                        </a-radio>
+                      </a-menu-item>
+                    </a-menu>
+                  </a-radio-group>
+                </a-dropdown>
+              </div>
+            </div>
+          </st-form-item>
           <st-form-item :class="sale('discounts')" label="定金抵扣">
             <div>
               <div :class="sale('discounts-total')">
@@ -269,6 +307,7 @@ export default {
       memberList: this.saleDepositCardService.memberList$,
       priceInfo: this.saleDepositCardService.priceInfo$,
       info: this.saleDepositCardService.info$,
+      couponList: this.saleDepositCardService.couponList$,
       saleList: this.saleDepositCardService.saleList$
     }
   },
@@ -298,7 +337,12 @@ export default {
       advanceAmount: '',
       selectAdvance: '',
       reduceAmount: null,
-      description: ''
+      description: '',
+      // 优惠券
+      selectCoupon: '',
+      couponText: '未选择优惠券',
+      couponAmount: '',
+      couponDropdownVisible: false
     }
   },
   watch: {
@@ -318,6 +362,7 @@ export default {
         this.onMemberSearch(this.memberInfo.member_name)
       }
       this.getPrice(this.selectAdvance, +this.reduceAmount)
+      this.fetchCouponList()
     })
   },
   computed: {
@@ -351,6 +396,13 @@ export default {
           })
       }
     },
+    fetchCouponList(memberId) {
+      const params = {
+        member_id: memberId || this.form.getFieldValue('memberId'),
+        card_id: this.info.product_id
+      }
+      this.saleDepositCardService.getCouponList(params).subscribe()
+    },
     onMemberChange(data) {
       if (!data) {
         this.resetAdvance()
@@ -358,12 +410,19 @@ export default {
         this.saleDepositCardService.getAdvanceList(data).subscribe(res => {
           this.advanceList = cloneDeep(res.list)
         })
+        this.fetchCouponList(data)
       }
     },
     onSelectAdvance() {
       timer(200).subscribe(() => {
         this.advanceDropdownVisible = false
       })
+    },
+    onSelectCouponChange(event) {
+      let price = this.couponList.filter(o => o.id === event.target.value.id)[0]
+        .price
+      this.couponAmount = price
+      this.couponText = `${price}元`
     },
     // 重置定金选择
     resetAdvance() {
