@@ -19,7 +19,7 @@ export class StatApi {
   getCoachList() {
     return this.http.get('/v1/stat/course/shop/department/coach')
   }
-  getStallList() {
+  getDepartmentStaffList() {
     return this.http.get('/v1/stat/sale/department/staff')
   }
   getCourseCoachShopList(query: CourseShopListQuery) {

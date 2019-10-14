@@ -23,8 +23,8 @@ export class SellAmountService {
       })
     )
   }
-  getStallList(params: any) {
-    return this.statApi.getStallList().pipe(
+  getDepartmentStaffList(params: any) {
+    return this.statApi.getDepartmentStaffList().pipe(
       tap((res: any) => {
         this.modalStaffList$.commit(() => {
           return [{ id: -1, name: '所有销售' }, ...res.info.staff_list]
@@ -37,7 +37,7 @@ export class SellAmountService {
   }
   init(query: any) {
     return forkJoin(
-      this.getStallList(query),
+      this.getDepartmentStaffList(query),
       this.getSellAmountList(query)
     )
   }

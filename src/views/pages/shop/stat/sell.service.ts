@@ -43,8 +43,8 @@ export class SellService {
       })
     )
   }
-  getStallList() {
-    return this.StatApi.getStallList().pipe(
+  getDepartmentStaffList() {
+    return this.StatApi.getDepartmentStaffList().pipe(
       tap((res: any) => {
         this.staffList$.commit(() => {
           return [{ id: -1, name: '所有销售' }, ...res.info.staff_list]
@@ -59,7 +59,7 @@ export class SellService {
   init(query: any) {
     return query.showTable === 'all'
       ? forkJoin(this.getsellList(query))
-      : forkJoin(this.getSellStaffList(query), this.getStallList())
+      : forkJoin(this.getSellStaffList(query), this.getDepartmentStaffList())
   }
   beforeEach(to: ServiceRoute, form: ServiceRoute) {
     return this.init(to.meta.query)
