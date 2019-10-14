@@ -1,6 +1,6 @@
 <template>
   <st-modal v-model="show" title="导出失败原因">
-    <st-alert>{{ reason }}</st-alert>
+    {{ reason }}
   </st-modal>
 </template>
 

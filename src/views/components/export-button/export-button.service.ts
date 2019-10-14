@@ -12,8 +12,8 @@ export class ExportButtonService {
     private messageService: MessageService
   ) {}
   @Effect()
-  export(path: string, query: any) {
-    return this.excelApi.export(path, query).pipe(
+  export(path: string, params: any) {
+    return this.excelApi.export(path, params).pipe(
       then(() => {
         this.messageService.success({
           content: '提交成功'

@@ -6,13 +6,14 @@
       :columns="columns"
       :dataSource="list$"
       :loading="loading$.getLogList"
+      :page="page$"
     >
       <template slot="export_source" slot-scope="source">
         {{ source }}
       </template>
       <template slot="operate_status" slot-scope="status">
-        <!-- <a-badge v-if="status.id === 1" status="success"></a-badge>
-        <a-badge v-if="status.id === 3" status="error"></a-badge> -->
+        <a-badge v-if="status.id === STATUS.SUCCESS" status="success"></a-badge>
+        <a-badge v-if="status.id === STATUS.FAIL" status="error"></a-badge>
         {{ status.name }}
       </template>
       <template slot="operate_type" slot-scope="type">
@@ -38,6 +39,7 @@ import { RouteService } from '@/services/route.service'
 import { columns } from './export.config'
 import tableMixin from '@/mixins/table.mixin'
 import ExportFail from '@/views/biz-modals/common/export-fail'
+import { STATUS } from '@/constants/common/export'
 export default {
   mixins: [tableMixin],
   modals: {
@@ -61,6 +63,7 @@ export default {
   },
   data() {
     return {
+      STATUS,
       currentItem: {}
     }
   },

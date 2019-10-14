@@ -6,7 +6,7 @@ export class ExcelApi extends Api {
   getDownloadUrl(id: number) {
     return this.http.get(`/v1/excel/download/${id}`)
   }
-  export(type: string, query: any) {
-    return this.http.put(`/v1/excel/${type}`, { query })
+  export(type: string, params: any) {
+    return this.http.put(`/v1/excel/${type}`, { params })
   }
 }
