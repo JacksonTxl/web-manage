@@ -6,7 +6,7 @@
     <div :class="b('main')">
       <slot></slot>
     </div>
-    <div v-if="$slots.actions" :class="b('actions')">
+    <div v-if="$slots.actions" :class="b('actions', { fixed: isActionFixed })">
       <slot name="actions"></slot>
     </div>
   </div>
@@ -25,16 +25,24 @@ export default {
   bem: {
     b: 'st-mina-panel'
   },
+  data() {
+    return {
+      isActionFixed: true
+    }
+  },
   mounted() {
-    const footer = document.querySelector('.layout-default-body__footer')
-    // window.addEventListener('scroll', () => {
-    //   const rect = footer.getBoundingClientRect()
-    //   if (rect.top < window.innerHeight) {
-    //     console.log('enter')
-    //   } else {
-    //     console.log('out')
-    //   }
-    // })
+    const footerEl = document.querySelector('.layout-default-body__footer')
+    if (footerEl)
+      window.addEventListener('scroll', () => {
+        const rect = footerEl.getBoundingClientRect()
+
+        // 视窗内
+        if (rect.top < window.innerHeight) {
+          this.isActionFixed = false
+        } else {
+          this.isActionFixed = true
+        }
+      })
   }
 }
 </script>
