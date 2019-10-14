@@ -52,7 +52,7 @@
     </section>
     <st-table
       :page="page"
-      :scroll="{ x: 1800 }"
+      :scroll="{ x: 1900 }"
       @change="onTableChange"
       :loading="loading.init"
       :columns="columns"
@@ -83,7 +83,6 @@
         {{ text }}
       </span>
       <span v-else>{{ text }}</span>
-
       <span
         slot="team_course_num"
         slot-scope="text"
@@ -92,7 +91,6 @@
         {{ text }}
       </span>
       <span v-else>{{ text }}</span>
-
       <span
         slot="total_course_num"
         slot-scope="text"
@@ -101,7 +99,6 @@
         {{ text }}
       </span>
       <span v-else>{{ text }}</span>
-
       <span
         slot="other_amount"
         slot-scope="text"
@@ -110,7 +107,6 @@
         {{ text }}
       </span>
       <span v-else>{{ text }}</span>
-
       <a
         slot="performance_amount"
         @click="getSellTotalAmount(record)"
@@ -120,8 +116,6 @@
         {{ text }}
       </a>
       <span v-else>{{ text }}</span>
-
-
       <span slot="memberTitle">
         会员卡成单数
         <st-help-tooltip id="TSSR001" />
@@ -189,7 +183,6 @@ export default {
     columns() {
       return this.showTable === 'all' ? allColumns() : staffColumns()
     },
-    // 改变员的时候使用该方法 ： 如果选全部员工，则执行第一句
     staffListFilter() {
       if (this.query.department_id === -1) return this.staffList
       return [
@@ -202,14 +195,9 @@ export default {
   },
   created() {
     this.showTable = this.query.showTable
-    //console.log(this.departmentList);
-    //console.log(this.staffList);
-    //console.log(this.list);
   },
   methods: {
     getSellTotalAmount(record) {
-      console.log('传递当前列表字段');
-      console.log(record);
       this.$modalRouter.push({
         name: 'shop-stat-sell-amount',
         props: {
@@ -223,7 +211,6 @@ export default {
     onChangeDepartment(value) {
       this.onMultiSearch({ department_id: value, staff_id: -1 })
     },
-    // 格式化
     filterOption(input, option) {
       return (
         option.componentOptions.children[0].text

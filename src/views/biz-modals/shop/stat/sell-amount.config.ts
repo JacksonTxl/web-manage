@@ -21,8 +21,9 @@ export const columns = () => {
       dataIndex: 'actual_price'
     },
     {
-      title: '业绩金额',
-      dataIndex: 'sale_price'
+      dataIndex: 'sale_price',
+      slots: { title: 'saleTitle' },
+      scopedSlots: { customRender: 'sale_price' }
     },
     {
       title: '销售姓名',

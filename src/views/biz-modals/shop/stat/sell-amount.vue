@@ -53,7 +53,20 @@
       :loading="loading$.getAmountList"
       :dataSource="amountList$"
       page-mode="client"
-    ></st-table>
+    >
+      <span
+        slot="sale_price"
+        slot-scope="text"
+        v-if="text !== 0"
+      >
+        {{ text }}
+      </span>
+      <span v-else>{{ text }}</span>
+      <span slot="saleTitle">
+        业绩金额
+        <st-help-tooltip id="TSSR007" />
+      </span>
+    </st-table>
   </st-modal>
 </template>
 <script>
@@ -96,7 +109,6 @@ export default {
       show: false,
       stat_date: '',
       amountList: [],
-      // course_type: COURSE_TYPE.TEAM,
       staff_id: -1,
       department_id: -1,
       current_page: 1,
@@ -136,8 +148,6 @@ export default {
     init() {
       this.staff_id = this.record.staff_id || -1
       this.stat_date = this.record.stat_date
-      console.log('获取传参===============弹框发起请求');
-      console.log(this.query)
       this.sellAmountervice
         .init({ ...this.query })
         .subscribe()
@@ -145,11 +155,6 @@ export default {
   },
   mounted() {
     this.init()
-    console.log('获取传参===============获取所有列表');
-    console.log(this.amountList);
-    //console.log(this.record);
-    console.log(this.modalStaffList$);
-    console.log(this.modalDepartmentList$);
   }
 }
 </script>

@@ -16,8 +16,6 @@ export class SellAmountService {
   constructor(private statApi: StatApi, private userService: UserService) {}
   @Effect()
   getSellAmountList(params: any) {
-    console.log('执行次数');
-    console.log(params);
     return this.statApi.getSellAmount(params).pipe(
       tap((res: any) => {
         this.amountList$.commit(() => res.list)
@@ -25,7 +23,6 @@ export class SellAmountService {
       })
     )
   }
-  // 筛选部门和员工
   getStallList(params: any) {
     return this.statApi.getStallList().pipe(
       tap((res: any) => {
@@ -39,8 +36,6 @@ export class SellAmountService {
     )
   }
   init(query: any) {
-    console.log('弹窗server请求参数');
-    console.log(query);
     return forkJoin(
       this.getStallList(query),
       this.getSellAmountList(query)

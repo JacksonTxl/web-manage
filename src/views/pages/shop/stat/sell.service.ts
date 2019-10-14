@@ -19,7 +19,6 @@ export class SellService {
     private redirectService: RedirectService
   ) {}
   @Effect()
-  // 销售汇总
   getsellList(query: OrderShopListQuery) {
     return this.StatApi.getSellList(query).pipe(
       tap((res: any) => {
@@ -29,7 +28,6 @@ export class SellService {
     )
   }
   @Effect()
-  // 销售员工  --  包含了部门相关信息
   getSellStaffList(query: SellStaffListQuery) {
     console.log('执行次数');
     return this.StatApi.getSellStaffList(query).pipe(
@@ -40,7 +38,6 @@ export class SellService {
       })
     )
   }
-  // 获取部门
   getDepartmentList() {
     return this.StatApi.getDepartmentList().pipe(
       tap((res: any) => {
@@ -48,7 +45,6 @@ export class SellService {
       })
     )
   }
-  // 筛选部门和员工
   getStallList() {
     return this.StatApi.getStallList().pipe(
       tap((res: any) => {
@@ -63,7 +59,6 @@ export class SellService {
   }
   @Effect()
   init(query: any) {
-    //console.log(query);
     return query.showTable === 'all'
       ? forkJoin(this.getsellList(query))
       : forkJoin(this.getSellStaffList(query), this.getStallList())
