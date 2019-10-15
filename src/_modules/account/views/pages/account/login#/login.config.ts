@@ -26,6 +26,13 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
+    country_phone: {
+      initialValue: {
+        code_id: 37,
+        phone_code: 86,
+        phone: ''
+      }
+    },
     captcha: {
       rules: [
         {

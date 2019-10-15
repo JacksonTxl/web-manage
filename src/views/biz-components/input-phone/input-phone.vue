@@ -5,10 +5,11 @@
       :class="b('input')"
       :placeholder="placeholder"
       @change="onChange"
+      :value="value.phone"
     />
     <a-dropdown :class="b('dropdown')">
       <span class="cursor-pointer">
-        +{{ countryName }}
+        +{{ value.phone_code }}
         <a-icon type="down" />
       </span>
       <a-menu slot="overlay">
@@ -54,45 +55,32 @@ export default {
         return false
       }
     },
-    countryDetail: Object
-  },
-  watch: {
-    countryDetail: {
-      deep: true,
-      handler(newVal) {
-        if (newVal && newVal.phone_code) {
-          this.countryId = newVal.code_id
-          this.countryName = newVal.phone_code
-          this.onClickItem({
-            code_id: this.countryId,
-            phone_code: this.countryName
-          })
-        }
-      }
+    value: {
+      type: Object
+      // default: () => ({
+      //   code_id: 37,
+      //   phone_code: 86,
+      //   phone: ''
+      // })
     }
   },
   mounted() {
     this.inputPhoneService.getCountryCodes().subscribe()
-    if (this.countryDetail && this.countryDetail.phone_code) {
-      this.countryId = this.countryDetail.code_id
-      this.countryName = this.countryDetail.phone_code
-    }
-    this.onClickItem({ code_id: this.countryId, phone_code: this.countryName })
-  },
-  data() {
-    return {
-      countryName: 86,
-      countryId: 37
-    }
   },
   methods: {
-    onChange(value) {
-      this.$emit('change', value)
-      this.$emit('input', value)
+    onChange(event) {
+      this.$emit('change', {
+        phone: event.target.value,
+        code_id: this.value.code_id,
+        phone_code: this.value.phone_code
+      })
     },
     onClickItem(event) {
-      this.countryName = event.phone_code
-      this.$emit('select', event)
+      this.$emit('change', {
+        phone: this.value.phone,
+        phone_code: event.phone_code,
+        code_id: event.code_id
+      })
     }
   }
 }

@@ -24,10 +24,8 @@
       </st-form-item>
       <st-form-item>
         <input-phone
-          v-decorator="decorators.phone"
+          v-decorator="decorators.country_phone"
           placeholder="请输入手机号码"
-          @select="onSelectCountry"
-          :countryDetail="countryInfo"
         ></input-phone>
       </st-form-item>
       <!-- 无痕验证 -->
@@ -96,10 +94,8 @@ export default {
     value: Object
   },
   mounted() {
-    console.log(this.value)
-    this.countryInfo = this.value
     this.form.setFieldsValue({
-      phone: this.countryInfo.phone
+      country_phone: this.value.country_phone
     })
   },
   data() {
@@ -114,13 +110,13 @@ export default {
   },
   methods: {
     onClickCaptcha() {
-      this.form.validateFields(['phone'], (err, values) => {
+      this.form.validateFields(['country_phone'], (err, values) => {
         if (!err) {
-          const { phone } = values
+          const { country_phone } = values
           const params = {
-            phone,
-            is_bind: 2,
-            country_code_id: this.countryInfo.code_id
+            phone: country_phone.phone,
+            country_code_id: country_phone.code_id,
+            is_bind: 2
           }
           this.getCaptcha(params)
         }
@@ -150,9 +146,12 @@ export default {
     onBind() {
       this.form.validate().then(values => {
         const params = cloneDeep(values)
+        const country_phone = values.country_phone
         params.account = values.name
+        params.phone = country_phone.phone
         params.pwd = values.password
-        params.country_code_id = this.countryInfo.code_id
+        params.country_code_id = country_phone.code_id
+        delete params.country_phone
         delete params.name
         delete params.password
         this.$emit('click', params)

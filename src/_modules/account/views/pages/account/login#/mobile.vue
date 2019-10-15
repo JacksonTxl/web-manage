@@ -3,9 +3,8 @@
     <st-form :form="form" @submit.prevent="login" :class="mobile('form')">
       <st-form-item :class="mobile('phone')">
         <input-phone
-          v-decorator="decorators.phone"
+          v-decorator="decorators.country_phone"
           placeholder="请输入手机号码"
-          @select="onSelectCountry"
           @change="onChangePhone"
         ></input-phone>
         <p v-if="!isBind" :class="mobile('phone-tip')">
@@ -103,12 +102,13 @@ export default {
   computed: {},
   methods: {
     onClickCaptcha() {
-      this.form.validateFields(['phone'], (err, values) => {
+      if (!this.isBind) return
+      this.form.validateFields(['country_phone'], (err, values) => {
         if (!err) {
-          const { phone } = values
+          const { country_phone } = values
           const params = {
-            phone,
-            country_code_id: this.countryInfo.code_id
+            phone: country_phone.phone,
+            country_code_id: country_phone.code_id
           }
           this.getCaptcha(params)
         }
@@ -122,7 +122,7 @@ export default {
       })
     },
     onChangePhone(event) {
-      const phone = event.target.value
+      const phone = event.phone
       if (this.pattern.MOBILE.test(phone)) {
         this.validPhoneIsBind({ phone })
       } else {
@@ -130,7 +130,7 @@ export default {
       }
     },
     goBind() {
-      this.countryInfo.phone = this.form.getFieldValue('phone')
+      this.countryInfo.country_phone = this.form.getFieldValue('country_phone')
       this.$emit('bind', this.countryInfo)
     },
     validPhoneIsBind(params) {
