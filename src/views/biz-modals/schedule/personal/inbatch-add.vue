@@ -34,14 +34,17 @@
           <a-col :lg="3">
             <span class="time-header__label mg-l8">时间段</span>
           </a-col>
-          <a-col :lg="21">
+          <a-col :lg="21" class="time-heade-wrapper">
             <a-col class="time-header__value" :lg="6">00:00</a-col>
             <a-col class="time-header__value" :lg="6">06:00</a-col>
             <a-col class="time-header__value" :lg="6">12:00</a-col>
-            <a-col :lg="6" class="time-header__value last">
+            <a-col class="time-header__value" :lg="6">18:00</a-col>
+            <a-col class="time-header__value" :lg="6">24:00</a-col>
+
+            <!-- <a-col :lg="6" class="time-header__value last">
               <span>18:00</span>
               <span class="mg-r8">24:00</span>
-            </a-col>
+            </a-col> -->
           </a-col>
         </a-row>
         <a-row
