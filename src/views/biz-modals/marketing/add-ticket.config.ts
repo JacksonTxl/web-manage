@@ -1,23 +1,15 @@
 export const ruleOptions = (vm: any) => {
   const pattern = vm.pattern
   return {
-    name: {
+    ticket_name: {
       rules: [
         {
           required: true,
           message: '请输入活动标题'
         },
         {
-          pattern: pattern.CN_EN_NUM('6-15'),
-          message: '请输入6~15d个字符'
-        }
-      ]
-    },
-    ticket_type: {
-      rules: [
-        {
-          required: true,
-          message: '请输入活动标题'
+          pattern: pattern.CN_EN_NUM('1-15'),
+          message: '请输入6~10个字符'
         }
       ]
     },
@@ -25,46 +17,40 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           required: true,
-          message: '请输入活动时间'
+          message: '请输入价格'
         }
       ]
     },
-    account: {
+    ticket_total_num: {
       rules: [
         {
           required: true,
-          message: '请输入登录账户'
-        },
-        {
-          pattern: pattern.CN_EN_NUM('6-15'),
-          message: '请输入6~15个字符'
+          message: '请输入活动标题'
         }
       ]
     },
-    password: {
+    crowd_id: {
       rules: [
         {
           required: true,
-          message: '请输入登录密码'
-        },
-        {
-          pattern: pattern.CN_EN_NUM('6-15'),
-          message: '请输入6~15个字符'
+          message: '请选择购买用户'
         }
       ]
     },
-    repeat_password: {
+    buy_limit_min: {
+      rules: [
+        {
+          required: true,
+          message: '请输入最少份数'
+        }
+      ]
+    },
+    buy_limit_max: {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
             if (!value) {
-              return '请输入登录密码'
-            }
-            if (value.length < 6 || value.length > 15) {
-              return '请输入正确格式登录密码'
-            }
-            if (value !== values.password) {
-              return '两次密码输入不一致'
+              return '购买最大分数'
             }
           }
         }

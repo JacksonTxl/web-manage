@@ -1,7 +1,7 @@
 export const ruleOptions = (vm: any) => {
   const pattern = vm.pattern
   return {
-    name: {
+    activity_name: {
       rules: [
         {
           required: true,
@@ -9,7 +9,7 @@ export const ruleOptions = (vm: any) => {
         },
         {
           pattern: pattern.CN_EN_NUM('6-15'),
-          message: '请输入6~15d个字符'
+          message: '请输入1~15d个字符'
         }
       ]
     },
@@ -21,15 +21,11 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    account: {
+    member_limit_status: {
       rules: [
         {
           required: true,
           message: '请输入登录账户'
-        },
-        {
-          pattern: pattern.CN_EN_NUM('6-15'),
-          message: '请输入6~15个字符'
         }
       ]
     },

@@ -1,6 +1,6 @@
 <template>
   <st-mina-panel :class="bPage()">
-    <div slot="view" :class="bPage('left')">
+    <div slot="preview">
       <activity-h5-view
         v-if="currentStep === 0"
         :stepInfo="step1Info"
@@ -14,29 +14,28 @@
         :stepInfo="step3Info"
       ></signup-h5-view>
     </div>
-    <div slot="form" :class="bPage('right')">
-      <a-steps :current="currentStep" size="small">
-        <a-step
-          v-for="(info, idx) in steps"
-          @click="onClickStep(idx)"
-          :key="idx"
-          :title="info.title"
-        />
-      </a-steps>
-      <div :class="bPage('form')">
-        <step1-form
-          v-if="currentStep === 0"
-          @change="onChangeStep1Form"
-        ></step1-form>
-        <step2-form
-          v-if="currentStep === 1"
-          @change="onChangeStep2Form"
-        ></step2-form>
-        <step3-form
-          v-if="currentStep === 2"
-          @change="onChangeStep3Form"
-        ></step3-form>
-      </div>
+    <a-steps :current="currentStep" size="small">
+      <a-step
+        v-for="(info, idx) in steps"
+        @click="onClickStep(idx)"
+        :key="idx"
+        :title="info.title"
+      />
+    </a-steps>
+    <div :class="bPage('form')">
+      <step1-form
+        v-if="currentStep === 0"
+        @step-submit="onSubmitGetStep1Form"
+        @change="onChangeStep1Form"
+      ></step1-form>
+      <step2-form
+        v-if="currentStep === 1"
+        @change="onChangeStep2Form"
+      ></step2-form>
+      <step3-form
+        v-if="currentStep === 2"
+        @change="onChangeStep3Form"
+      ></step3-form>
     </div>
   </st-mina-panel>
 </template>
@@ -79,6 +78,12 @@ export default {
     },
     onChangeStep2Form() {},
     onChangeStep3Form() {},
+    onSubmitGetStep1Form(form1) {
+      console.log(form1)
+      this.currentStep = 1
+    },
+    // onSubmitGetStep1Form(form1) {},
+    // onSubmitGetStep1Form(form1) {},
     onClickStep(idx) {
       this.currentStep = idx
     }

@@ -1,6 +1,6 @@
 <template>
   <div :class="bComponent()">
-    <h5-container>
+    <h5-container fixed>
       <template v-slot:title>
         活动报名
       </template>

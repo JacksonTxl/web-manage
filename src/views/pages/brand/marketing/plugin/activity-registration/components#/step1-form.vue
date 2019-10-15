@@ -3,7 +3,10 @@
     <a-col :lg="14">
       <st-form :form="form">
         <st-form-item label="活动标题" required>
-          <a-input v-decorator="decorators.name"></a-input>
+          <a-input
+            placeholder="请输入活动标题"
+            v-decorator="decorators.activity_name"
+          ></a-input>
         </st-form-item>
         <st-form-item label="活动时间" required>
           <a-range-picker
@@ -36,13 +39,18 @@
           </span>
         </st-form-item>
         <st-form-item label="活动人数" required>
-          <a-input
+          <st-input-number
             placeholder="若不限制活动人数，请填写0"
             v-decorator="decorators.member_limit_status"
-          ></a-input>
+          ></st-input-number>
         </st-form-item>
         <st-form-item label="活动详情" required>
           <st-editor v-model="content"></st-editor>
+        </st-form-item>
+        <st-form-item labelFix>
+          <st-button type="primary" @click="onSubmit">
+            下一步
+          </st-button>
         </st-form-item>
       </st-form>
     </a-col>
@@ -56,6 +64,7 @@ import { PatternService } from '@/services/pattern.service'
 import MapButton from '@/views/biz-components/map-button/map-button'
 import StEditor from '@/views/biz-components/editor/editor'
 import moment from 'moment'
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'Step1Form',
   serviceInject() {
@@ -67,7 +76,6 @@ export default {
     const that = this
     const form = this.$stForm.create({
       onValuesChange(props, values) {
-        console.log(values)
         that.$nextTick().then(() => {
           that.formInfo = { ...that.formInfo, ...that.form.getFieldsValue() }
           that.$emit('change', that.formInfo)
@@ -106,6 +114,30 @@ export default {
       this.$set(this.formInfo, 'address', address.address)
       this.$emit('change', this.formInfo)
       this.address = address
+    },
+    onSubmit() {
+      console.log('onSubmit')
+      this.form.validate().then(values => {
+        debugger
+        let { activity_name, member_limit_status } = values
+        const start_time = values.date[0].format('YYYY-MM-DD HH:mm')
+        const end_time = values.date[1].format('YYYY-MM-DD HH:mm')
+        const { address, province, city, district, lat, lng } = this.address
+        const form = {
+          address,
+          province,
+          city,
+          district,
+          lat,
+          lng,
+          end_time,
+          start_time,
+          activity_name,
+          member_limit_status: +member_limit_status,
+          rule_settings: this.content
+        }
+        this.$emit('step-submit', form)
+      })
     }
   }
 }

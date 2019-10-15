@@ -1,60 +1,57 @@
 <template>
-  <div>
-    {{ dataSource }}
-    <st-form-table>
-      <thead>
-        <tr>
-          <th>票种名称</th>
-          <th>价格（元）</th>
-          <th>张数</th>
-          <th>购买用户</th>
-          <th v-if="!disabled">操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-if="!disabled">
-          <td :colspan="colspanNum" class="st-form-table__add">
-            <st-button
-              type="dashed"
-              icon="add"
-              block
-              v-modal-link="{
-                name: 'marketing-add-ticket',
-                props: {
-                  checked: checkedShopIds
-                },
-                on: {
-                  submit: getTableItem
-                }
-              }"
-            >
-              添加票种
-            </st-button>
+  <st-form-table>
+    <thead>
+      <tr>
+        <th>票种名称</th>
+        <th>价格（元）</th>
+        <th>张数</th>
+        <th>购买用户</th>
+        <th v-if="!disabled">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-if="!disabled">
+        <td :colspan="colspanNum" class="st-form-table__add">
+          <st-button
+            type="dashed"
+            icon="add"
+            block
+            v-modal-link="{
+              name: 'marketing-add-ticket',
+              props: {
+                checked: checkedShopIds
+              },
+              on: {
+                submit: getTableItem
+              }
+            }"
+          >
+            添加票种
+          </st-button>
+        </td>
+      </tr>
+      <template v-if="dataSource.length">
+        <tr v-for="(item, index) in dataSource" :key="index">
+          <td>{{ item.ticket_name }}</td>
+          <td>{{ item.ticket_price }}</td>
+          <td>{{ item.ticket_total_num }}</td>
+          <td>{{ item.crowd_name }}</td>
+          <td v-if="!disabled">
+            <a @click="delShopTableRecord(item.shop_id)">
+              删除
+            </a>
           </td>
         </tr>
-        <template v-if="dataSource.length">
-          <tr v-for="(item, index) in dataSource" :key="index">
-            <td>{{ item.ticket_name }}</td>
-            <td>{{ item.ticket_price }}</td>
-            <td>{{ item.ticket_total_num }}</td>
-            <td>{{ item.crowd_name }}</td>
-            <td v-if="!disabled">
-              <a @click="delShopTableRecord(item.shop_id)">
-                删除
-              </a>
-            </td>
-          </tr>
-        </template>
-        <template v-else>
-          <tr>
-            <td :colspan="colspanNum">
-              <st-no-data />
-            </td>
-          </tr>
-        </template>
-      </tbody>
-    </st-form-table>
-  </div>
+      </template>
+      <template v-else>
+        <tr>
+          <td :colspan="colspanNum">
+            <st-no-data />
+          </td>
+        </tr>
+      </template>
+    </tbody>
+  </st-form-table>
 </template>
 <script>
 // import { SelectShopService } from './select-shop.service'

@@ -13,7 +13,7 @@
           </a-radio-group>
         </st-form-item>
         <st-form-item label="票种名称" required>
-          <a-input v-decorator="decorators.name"></a-input>
+          <a-input v-decorator="decorators.ticket_name"></a-input>
         </st-form-item>
         <st-form-item v-show="ticketType === 1" label="价格" required>
           <a-input-number
@@ -27,23 +27,23 @@
         <st-form-item label="票数" required>
           <a-input-number
             min="1"
-            v-decorator="decorators.name"
+            v-decorator="decorators.ticket_total_num"
           ></a-input-number>
         </st-form-item>
         <st-form-item label="购买用户" required>
-          <a-select></a-select>
+          <a-select v-decorator="decorators.crowd_id" :options="[]"></a-select>
         </st-form-item>
         <st-form-item label="购买限制" required>
           <span>单次购买，最少</span>
           <a-input-number
             min="0"
-            v-decorator="decorators.name"
+            v-decorator="decorators.buy_limit_min"
           ></a-input-number>
           <span>份，</span>
           <span>最多</span>
           <a-input-number
             min="0"
-            v-decorator="decorators.name"
+            v-decorator="decorators.buy_limit_max"
           ></a-input-number>
           <span>份</span>
         </st-form-item>
@@ -60,22 +60,34 @@
           <div v-if="isBulk === 1" class="popover">
             <div class="arrow"></div>
             <span>单次购买超过</span>
-            <a-input-number class="input" min="0"></a-input-number>
+            <a-input-number
+              v-decorator="decorators.group_buy_min"
+              class="input"
+              min="0"
+            ></a-input-number>
             <span>张</span>
             <span>每张原价减</span>
-            <a-input-number class="input" min="0"></a-input-number>
+            <a-input-number
+              v-decorator="decorators.reduce_price"
+              class="input"
+              min="0"
+            ></a-input-number>
             <span>元</span>
           </div>
         </st-form-item>
         <st-form-item label="售卖时间">
-          <a-radio-group :style="radioStyle" :defaultValue="1">
+          <a-radio-group
+            :style="radioStyle"
+            v-decorator="decorators.buy_time_limit"
+            :defaultValue="1"
+          >
             <a-radio :value="1">指定时间</a-radio>
-            <a-range-picker></a-range-picker>
+            <a-range-picker v-decorator="decorators.buy_time"></a-range-picker>
             <a-radio :value="2">活动结束前均可售卖</a-radio>
           </a-radio-group>
         </st-form-item>
         <st-form-item label="备注说明">
-          <st-textarea></st-textarea>
+          <st-textarea v-decorator="decorators.ticket_remark"></st-textarea>
         </st-form-item>
       </st-form>
     </div>
