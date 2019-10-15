@@ -13,7 +13,7 @@
           placeholder="请选择部门"
           optionFilterProp="children"
           style="width: 200px"
-          @change="getAmountList"
+          @change="getAmountList($event, 'changeDepartment')"
           v-model="pageParams.department_id"
           :filterOption="filterOption"
         >
@@ -130,9 +130,13 @@ export default {
     }
   },
   methods: {
-    getAmountList(evt) {
+    getAmountList(evt, changeType) {
       if (evt.pageSize) {
         this.pageParams.size = evt.pageSize
+        this.pageParams.current_page = evt.current
+      }
+      if (changeType === 'changeDepartment') {
+        this.pageParams.staff_id = -1
       }
       this.sellAmountervice.getSellAmountList(this.query).subscribe()
     },
