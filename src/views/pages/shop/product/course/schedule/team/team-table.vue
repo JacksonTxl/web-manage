@@ -25,7 +25,13 @@
         />
       </div>
       <div class="title__center schedule-button">
-        <st-button @click="onClickSkipSchedule">
+        <st-button
+          @click="onClickSkipSchedule"
+          class="mg-l32 list-btn jump-btn"
+        >
+          <st-icon type="list"></st-icon>
+        </st-button>
+        <st-button class="calendar-btn jump-btn btnFocus">
           <st-icon type="calendar"></st-icon>
         </st-button>
       </div>

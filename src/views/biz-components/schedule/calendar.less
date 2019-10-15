@@ -21,6 +21,9 @@
   .toolbar__left {
     width: 210px;
   }
+  .toolbar__right {
+    width: 220px;
+  }
   &__content {
     padding: 0 16px;
     background: #fff;
@@ -194,7 +197,8 @@
     }
   }
   .toolbar__right {
-    .ant-btn {
+    .ant-btn,
+    .jump-btn {
       color: rgba(155, 172, 185, 1);
       font-weight: 400;
     }
@@ -204,6 +208,15 @@
       color: rgba(37, 42, 46, 1);
       font-size: 14px;
       font-weight: 600;
+    }
+    .list-btn {
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+    }
+    .calendar-btn {
+      border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
+      margin-left: -1px;
     }
   }
 }

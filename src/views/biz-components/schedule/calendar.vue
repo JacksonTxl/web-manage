@@ -27,8 +27,11 @@
             日
           </st-button>
         </a-button-group>
-        <st-button @click="onClickGetTable" class="mg-l32">
+        <st-button class="mg-l32 list-btn jump-btn btnFocus">
           <st-icon type="list"></st-icon>
+        </st-button>
+        <st-button @click="onClickGetTable" class="calendar-btn jump-btn">
+          <st-icon type="calendar"></st-icon>
         </st-button>
       </div>
     </div>
