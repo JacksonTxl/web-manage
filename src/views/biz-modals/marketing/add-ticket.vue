@@ -17,7 +17,7 @@
         </st-form-item>
         <st-form-item v-show="ticketType === 1" label="价格" required>
           <a-input-number
-            min="0"
+            :min="0"
             v-decorator="decorators.ticket_price"
           ></a-input-number>
         </st-form-item>
@@ -26,23 +26,26 @@
         </st-form-item>
         <st-form-item label="票数" required>
           <a-input-number
-            min="1"
+            :min="1"
             v-decorator="decorators.ticket_total_num"
           ></a-input-number>
         </st-form-item>
         <st-form-item label="购买用户" required>
-          <a-select v-decorator="decorators.crowd_id" :options="[]"></a-select>
+          <a-select
+            v-decorator="decorators.crowd_id"
+            :options="crowdIdOptions"
+          ></a-select>
         </st-form-item>
         <st-form-item label="购买限制" required>
           <span>单次购买，最少</span>
           <a-input-number
-            min="0"
+            :min="0"
             v-decorator="decorators.buy_limit_min"
           ></a-input-number>
           <span>份，</span>
           <span>最多</span>
           <a-input-number
-            min="0"
+            :min="0"
             v-decorator="decorators.buy_limit_max"
           ></a-input-number>
           <span>份</span>
@@ -63,14 +66,14 @@
             <a-input-number
               v-decorator="decorators.group_buy_min"
               class="input"
-              min="0"
+              :min="0"
             ></a-input-number>
             <span>张</span>
             <span>每张原价减</span>
             <a-input-number
               v-decorator="decorators.reduce_price"
               class="input"
-              min="0"
+              :min="0"
             ></a-input-number>
             <span>元</span>
           </div>
@@ -79,7 +82,6 @@
           <a-radio-group
             :style="radioStyle"
             v-decorator="decorators.buy_time_limit"
-            :defaultValue="1"
           >
             <a-radio :value="1">指定时间</a-radio>
             <a-range-picker v-decorator="decorators.buy_time"></a-range-picker>
@@ -121,6 +123,8 @@ export default {
       show: false,
       ticketType: 1,
       isBulk: 1,
+      // TODO: 用户人群暂未开启，前端静态填写 为全部用户 id 为 0
+      crowdIdOptions: [{ label: '全部用户', value: 0 }],
       radioStyle: {
         display: 'block'
       }
@@ -137,16 +141,78 @@ export default {
       return this.ticketType === 2
     }
   },
+  mounted() {
+    this.form.setFieldsValue({ crowd_id: 0 })
+  },
   methods: {
-    onSubmit() {
-      this.show = false
-      const obj = {
-        ticket_name: '早鸟票',
-        ticket_price: 80,
-        ticket_total_num: 80,
-        crowd_name: 'vip'
+    getCrowdName(crowdId) {
+      let crowdName = ''
+      this.crowdIdOptions.forEach(item => {
+        crowdName = item.value === crowdId ? item.label : ''
+      })
+      return crowdName
+    },
+    formatData(values) {
+      const {
+        ticket_name,
+        ticket_price,
+        crowd_id,
+        ticket_total_num,
+        buy_limit_min,
+        buy_limit_max,
+        group_buy_min,
+        reduce_price,
+        buy_time_limit,
+        buy_time,
+        ticket_remark
+      } = values
+      const buy_start_time = buy_time[0].format('YYYY-MM-DD HH:mm')
+      const buy_end_time = buy_time[1].format('YYYY-MM-DD HH:mm')
+      const form = {
+        ticket_name,
+        ticket_price,
+        crowd_id,
+        ticket_total_num,
+        buy_limit_min,
+        buy_limit_max,
+        is_group_buy: this.isBulk,
+        group_buy_min,
+        reduce_price,
+        buy_time_limit,
+        buy_start_time,
+        buy_end_time,
+        ticket_remark
       }
-      this.$emit('submit', obj)
+      console.log(form)
+      return form
+    },
+    getShowData(values) {
+      const {
+        ticket_name,
+        ticket_price,
+        crowd_id,
+        ticket_total_num,
+        group_buy_min,
+        reduce_price
+      } = values
+      const crowd_name = this.getCrowdName(crowd_id)
+      return {
+        ticket_name,
+        ticket_price,
+        ticket_total_num,
+        crowd_name,
+        group_buy_min,
+        reduce_price
+      }
+    },
+    onSubmit() {
+      this.form.validate().then(values => {
+        this.show = false
+        // 返回表格显示数据
+        this.$emit('show', this.getShowData(values))
+        // 提交给后台字段
+        this.$emit('submit', this.formatData(values))
+      })
     },
     onChangeGetTicketType(e) {
       this.ticketType = e.target.value

@@ -1,10 +1,10 @@
 <template>
-  <div>
-    <div>
-      <span>您是否需要收集参与者的必要信息</span>
-      <st-switch></st-switch>
+  <div :class="pComponents()">
+    <div :class="pComponents('switch')">
+      <span class="mg-r24">您是否需要收集参与者的必要信息</span>
+      <st-switch v-model="isStep3"></st-switch>
     </div>
-    <st-form-table>
+    <st-form-table class="mg-t24" v-if="isStep3">
       <thead>
         <tr>
           <th>报名项标题</th>
@@ -53,6 +53,14 @@
         </template>
       </tbody>
     </st-form-table>
+    <div :class="pComponents('button-group')">
+      <st-button class="mg-r8">
+        存草稿
+      </st-button>
+      <st-button type="primary">
+        发布
+      </st-button>
+    </div>
   </div>
 </template>
 <script>
@@ -60,6 +68,9 @@
 import MarketingAddSignup from '@/views/biz-modals/marketing/add-signup'
 export default {
   name: 'Step3Form',
+  bem: {
+    pComponents: 'step-form-signup'
+  },
   modals: {
     MarketingAddSignup
   },
@@ -89,6 +100,7 @@ export default {
     return {
       checkedShopIds: [],
       dataSource: [],
+      isStep3: false,
       list: []
     }
   },

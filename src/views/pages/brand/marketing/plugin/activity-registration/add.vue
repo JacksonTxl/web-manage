@@ -30,6 +30,7 @@
       ></step1-form>
       <step2-form
         v-if="currentStep === 1"
+        @step-submit="onSubmitGetStep2Form"
         @change="onChangeStep2Form"
       ></step2-form>
       <step3-form
@@ -62,7 +63,7 @@ export default {
   data() {
     return {
       step1Info: {},
-      step2Info: {},
+      step2Info: [],
       step3Info: {},
       steps: [
         { title: '活动信息' },
@@ -76,13 +77,19 @@ export default {
     onChangeStep1Form(formObj) {
       this.step1Info = formObj
     },
-    onChangeStep2Form() {},
+    onChangeStep2Form(ticketShowList) {
+      console.log(ticketShowList)
+      this.step2Info.push(ticketShowList)
+    },
     onChangeStep3Form() {},
-    onSubmitGetStep1Form(form1) {
-      console.log(form1)
+    onSubmitGetStep1Form(form) {
+      console.log(form)
       this.currentStep = 1
     },
-    // onSubmitGetStep1Form(form1) {},
+    onSubmitGetStep2Form(form) {
+      console.log(form)
+      this.currentStep = 2
+    },
     // onSubmitGetStep1Form(form1) {},
     onClickStep(idx) {
       this.currentStep = idx

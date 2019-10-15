@@ -5,9 +5,9 @@
         选择票种
       </template>
       <div :class="bComponent('content')">
-        <div :class="bItem()">
+        <div :class="bItem()" v-for="(ticket, index) in stepInfo" :key="index">
           <st-t3 :class="bItem('title')">
-            早鸟票早鸟票早鸟票早鸟票早鸟票
+            {{ ticket.ticket_name }}
           </st-t3>
           <div :class="bItem('price-info')">
             <span class="discount-price">
@@ -46,25 +46,15 @@ export default {
   components: {
     H5Container
   },
-  filters: {
-    formatActivityDate(dateArr = []) {
-      if (!dateArr.length) return ''
-      const startDate = dateArr[0].format('YYYY-MM-DD')
-      const endDate = dateArr[1].format('YYYY-MM-DD')
-      const startTime = dateArr[0].format('HH:mm')
-      const endTime = dateArr[1].format('HH:mm')
-      return startDate === endDate
-        ? `${startDate} ${startTime} - ${endTime}`
-        : `${startDate} ${startTime} - ${endDate} ${endTime}`
-    }
-  },
   props: {
     stepInfo: {
-      type: Object,
+      type: Array,
       default: () => {
-        return {
-          content: ''
-        }
+        return [
+          {
+            ticket_name: '票种名'
+          }
+        ]
       }
     }
   }
