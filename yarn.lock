@@ -12309,6 +12309,11 @@ vue-countup-v2@^3.0.1:
   dependencies:
     lodash-es latest
 
+vue-di-view@0.0.3:
+  version "0.0.3"
+  resolved "https://registry.npm.taobao.org/vue-di-view/download/vue-di-view-0.0.3.tgz?cache=0&sync_timestamp=1571125489401&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-di-view%2Fdownload%2Fvue-di-view-0.0.3.tgz#395dd0d28726c73763e50f6d7383eed15794ca77"
+  integrity sha1-OV3Q0ocmxzdj5Q9tc4Pu0VeUync=
+
 vue-eslint-parser@^2.0.3:
   version "2.0.3"
   resolved "https://registry.npm.taobao.org/vue-eslint-parser/download/vue-eslint-parser-2.0.3.tgz#c268c96c6d94cfe3d938a5f7593959b0ca3360d1"
