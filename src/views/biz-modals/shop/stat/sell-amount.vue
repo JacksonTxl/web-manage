@@ -5,6 +5,7 @@
     width="1150px"
     :footer="null"
     v-model="show"
+    :loading="loading.init"
   >
     <div class="search mg-b8">
       <div class="search__left">
