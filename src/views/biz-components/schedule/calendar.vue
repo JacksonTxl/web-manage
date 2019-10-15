@@ -27,12 +27,14 @@
             日
           </st-button>
         </a-button-group>
-        <st-button class="mg-l32 list-btn jump-btn btnFocus">
-          <st-icon type="list"></st-icon>
-        </st-button>
-        <st-button @click="onClickGetTable" class="calendar-btn jump-btn">
-          <st-icon type="calendar"></st-icon>
-        </st-button>
+        <a-button-group>
+          <st-button class="mg-l32 list-btn jump-btn btnFocus">
+            <st-icon type="list"></st-icon>
+          </st-button>
+          <st-button @click="onClickGetTable" class="calendar-btn jump-btn">
+            <st-icon type="calendar"></st-icon>
+          </st-button>
+        </a-button-group>
       </div>
     </div>
     <div :class="bSchedule('content')">
