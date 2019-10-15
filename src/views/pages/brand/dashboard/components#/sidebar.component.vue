@@ -8,24 +8,37 @@
         <img width="280px" height="186px" :src="pic" alt="" />
       </a>
     </div>
-    <st-container class="bg-white mg-t12 pluginbox" type="2">
-      <st-t3 :class="b('title')">热门营销插件</st-t3>
+    <st-container type="2" class="pluginbox bg-white mg-t12">
+      <st-t3 :class="b('title')">
+        三体AIoT
+        <!-- <a target="_blank" href="https://www.styd.cn/default/product_iot">
+          查看更多
+          <a-icon theme="filled" type="right-circle" />
+        </a> -->
+      </st-t3>
       <plug-in
-        title="优惠券"
-        sub="扫码领券，拉新转化"
-        :img="coupon"
-        href="/brand/marketing/plugin/coupon/list"
+        title="多功能人脸识别一体机"
+        sub="AI技术加持，玩转大数据"
+        :img="ai1"
+        href="https://www.styd.cn/default/product_iot_face"
       ></plug-in>
       <plug-in
-        title="邀请有礼"
-        sub="客户自发传播，社交裂变"
-        :img="invite"
-        href="/brand/marketing/plugin/invitation/index/data"
+        title="智慧前台"
+        sub="您的健身房前台贴心管家"
+        :img="ai2"
+        href="https://www.styd.cn/default/product_iot_front_desk"
       ></plug-in>
       <plug-in
-        title="幸运大转盘"
-        sub="回馈新老客户必备福利"
-        :img="slyder"
+        title="智能门禁"
+        sub="无论扫码还是刷卡，so easy"
+        :img="ai3"
+        href="https://www.styd.cn/default/product_iot_door_guard"
+      ></plug-in>
+      <plug-in
+        title="智能闸机"
+        sub="请亮出你的身份"
+        :img="ai4"
+        href="https://www.styd.cn/default/product_iot_gate"
       ></plug-in>
     </st-container>
     <st-container class="book bg-white mg-t12" type="2">
@@ -40,14 +53,6 @@
           立即购买
         </st-button>
       </div>
-    </st-container>
-    <st-container class="book bg-white mg-t12" type="2">
-      <plug-in
-        title="多功能人脸识别一体机"
-        sub="AI技术加持，玩转大数据"
-        :img="ai"
-        href="https://www.styd.cn/default/product_iot_face"
-      ></plug-in>
     </st-container>
     <st-container class="link bg-white mg-t12" type="2">
       <st-t3 class="link__phone font-number">400-962-8988</st-t3>
@@ -72,6 +77,11 @@ import invite from '@/assets/img/brand/dashboard/invite.png'
 import slyder from '@/assets/img/brand/dashboard/slyder.png'
 import ai from '@/assets/img/brand/dashboard/ai.png'
 import qrcode from '@/assets/img/shop/dashboard/qrcode.png'
+import ai1 from '@/assets/img/shop/dashboard/ai1.png'
+import ai2 from '@/assets/img/shop/dashboard/ai2.png'
+import ai3 from '@/assets/img/shop/dashboard/ai3.png'
+import ai4 from '@/assets/img/shop/dashboard/ai4.png'
+
 export default {
   name: 'SidebarComponent',
   bem: {
@@ -86,6 +96,10 @@ export default {
       invite: invite,
       slyder: slyder,
       ai: ai,
+      ai1,
+      ai2,
+      ai3,
+      ai4,
       qrcode: qrcode
     }
   },
