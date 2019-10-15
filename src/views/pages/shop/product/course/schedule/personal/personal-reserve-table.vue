@@ -25,15 +25,21 @@
         />
       </div>
       <div class="title__right schedule-button">
-        <st-button
-          @click="onClickSkipSchedule"
-          class="mg-l32 list-btn jump-btn"
+        <a-radio-group
+          :value="pageBtnFocusState"
+          @change="handleSizeChange($event, 'page')"
         >
-          <st-icon type="list"></st-icon>
-        </st-button>
-        <st-button class="calendar-btn jump-btn btnFocus">
-          <st-icon type="calendar"></st-icon>
-        </st-button>
+          <a-radio-button
+            value="list"
+            @click="onClickSkipSchedule"
+            class="mg-l32"
+          >
+            <st-icon type="list"></st-icon>
+          </a-radio-button>
+          <a-radio-button value="calendar">
+            <st-icon type="calendar"></st-icon>
+          </a-radio-button>
+        </a-radio-group>
       </div>
     </div>
     <a-row class="mg-t24 mg-r24 mg-l24">
@@ -122,13 +128,17 @@ export default {
     return {
       columns,
       page: {},
-      currentTime: ''
+      currentTime: '',
+      pageBtnFocusState: 'calendar'
     }
   },
   mounted() {
     this.currentTime = this.$route.query.start_date
   },
   methods: {
+    handleSizeChange(evt, type) {
+      this.pageBtnFocusState = evt.target.value
+    },
     onClickReserve(id) {
       this.reserveService.del(id).subscribe(() => {
         this.$router.reload()
