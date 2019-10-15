@@ -1,5 +1,13 @@
 <template>
   <div :class="all()">
+    <di-child :name="BRAND_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH">
+      <st-input-search
+        v-model="query.card_name"
+        @search="onKeywordsSearch('card_name', $event)"
+        placeholder="请输入会员卡名称查找"
+        maxlength="50"
+      />
+    </di-child>
     <div :class="all('search')">
       <router-link v-if="auth.add" to="../add-select">
         <st-button type="primary" icon="add">新增会员卡</st-button>
@@ -221,11 +229,6 @@ export default {
   bem: {
     all: 'page-brand-product-member-list-all'
   },
-  events: {
-    [BRAND_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH](key, data) {
-      this.onKeywordsSearch(key, data)
-    }
-  },
   modals: {
     CardBrandMemberRecoverSale,
     CardBrandMemberShelf,
@@ -252,6 +255,7 @@ export default {
   },
   data() {
     return {
+      BRAND_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH,
       CARD_TYPE,
       ADMISSION_RANGE,
       SUPPORT_SALES,
