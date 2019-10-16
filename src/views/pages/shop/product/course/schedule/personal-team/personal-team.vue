@@ -10,7 +10,7 @@
       <div slot="toolbar-left">
         <st-button
           type="primary"
-          class="mg-r24"
+          class="mg-r12"
           @click="onClickScheduleInBatch"
         >
           批量排期

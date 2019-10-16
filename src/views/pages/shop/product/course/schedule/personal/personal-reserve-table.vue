@@ -30,14 +30,14 @@
           @change="handleSizeChange($event, 'page')"
         >
           <a-radio-button
-            value="list"
-            @click="onClickSkipSchedule"
+            value="calendar"
             class="mg-l32"
+            @click="onClickSkipSchedule"
           >
-            <st-icon type="list"></st-icon>
-          </a-radio-button>
-          <a-radio-button value="calendar">
             <st-icon type="calendar"></st-icon>
+          </a-radio-button>
+          <a-radio-button value="list">
+            <st-icon type="list"></st-icon>
           </a-radio-button>
         </a-radio-group>
       </div>
@@ -129,7 +129,7 @@ export default {
       columns,
       page: {},
       currentTime: '',
-      pageBtnFocusState: 'calendar'
+      pageBtnFocusState: 'list'
     }
   },
   mounted() {
