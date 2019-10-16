@@ -36,8 +36,9 @@
       >
         <div slot="shop_name1" slot-scope="text, record">
           <st-table-actions>
-            <!-- NOTE: 导出 -->
-            <!-- <a v-if="record.auth['shop:member:crowd|export']" @click="addTreeNode(record)">导出</a> -->
+            <a v-exportExcel="{ type: 'crowd/' + record.id, para: record }">
+              导出
+            </a>
             <a href="#">
               <router-link
                 v-if="record.auth['shop:member:crowd|edit']"

@@ -55,16 +55,34 @@
             人群分析
           </router-link>
           <a-tooltip>
-            <template slot="title">
-              功能暂未开放
-            </template>
-            <span
-              v-if="auth.export"
-              class="shop-member-crowd-index-box__btn-rq"
-              @click="exportFunc(value[0].id)"
-            >
-              定向运营
-            </span>
+            <a-dropdown placement="bottomRight">
+              <span
+                class="shop-member-crowd-index-box__btn-rq ant-dropdown-link"
+              >
+                定向运营
+              </span>
+              <a-menu slot="overlay">
+                <a-menu-item style="width:130px">
+                  <a v-exportExcel="{ type: 'crowd/' + value[0].id }">导出</a>
+                </a-menu-item>
+                <a-menu-item style="width:130px">
+                  <a
+                    href="javascript:;"
+                    @click="newCrowd('功能正在开发中，敬请期待')"
+                  >
+                    群发短信
+                  </a>
+                </a-menu-item>
+                <a-menu-item style="width:130px">
+                  <a
+                    href="javascript:;"
+                    @click="newCrowd('功能正在开发中，敬请期待')"
+                  >
+                    群发优惠
+                  </a>
+                </a-menu-item>
+              </a-menu>
+            </a-dropdown>
           </a-tooltip>
         </div>
       </div>
@@ -122,16 +140,34 @@
             人群分析
           </router-link>
           <a-tooltip>
-            <template slot="title">
-              功能暂未开放
-            </template>
-            <span
-              v-if="auth.export"
-              class="shop-member-crowd-index-box__btn-rq"
-              @click="exportFunc(value[1].id)"
-            >
-              定向运营
-            </span>
+            <a-dropdown placement="bottomRight">
+              <span
+                class="shop-member-crowd-index-box__btn-rq ant-dropdown-link"
+              >
+                定向运营
+              </span>
+              <a-menu slot="overlay">
+                <a-menu-item style="width:130px">
+                  <a v-exportExcel="{ type: 'crowd/' + value[1].id }">导出</a>
+                </a-menu-item>
+                <a-menu-item style="width:130px">
+                  <a
+                    href="javascript:;"
+                    @click="newCrowd('功能正在开发中，敬请期待')"
+                  >
+                    群发短信
+                  </a>
+                </a-menu-item>
+                <a-menu-item style="width:130px">
+                  <a
+                    href="javascript:;"
+                    @click="newCrowd('功能正在开发中，敬请期待')"
+                  >
+                    群发优惠
+                  </a>
+                </a-menu-item>
+              </a-menu>
+            </a-dropdown>
           </a-tooltip>
         </div>
       </div>
@@ -189,16 +225,34 @@
             人群分析
           </router-link>
           <a-tooltip>
-            <template slot="title">
-              功能暂未开放
-            </template>
-            <span
-              v-if="auth.export"
-              class="shop-member-crowd-index-box__btn-rq"
-              @click="exportFunc(value[2].id)"
-            >
-              定向运营
-            </span>
+            <a-dropdown placement="bottomRight">
+              <span
+                class="shop-member-crowd-index-box__btn-rq ant-dropdown-link"
+              >
+                定向运营
+              </span>
+              <a-menu slot="overlay">
+                <a-menu-item style="width:130px">
+                  <a v-exportExcel="{ type: 'crowd/' + value[2].id }">导出</a>
+                </a-menu-item>
+                <a-menu-item style="width:130px">
+                  <a
+                    href="javascript:;"
+                    @click="newCrowd('功能正在开发中，敬请期待')"
+                  >
+                    群发短信
+                  </a>
+                </a-menu-item>
+                <a-menu-item style="width:130px">
+                  <a
+                    href="javascript:;"
+                    @click="newCrowd('功能正在开发中，敬请期待')"
+                  >
+                    群发优惠
+                  </a>
+                </a-menu-item>
+              </a-menu>
+            </a-dropdown>
           </a-tooltip>
         </div>
       </div>

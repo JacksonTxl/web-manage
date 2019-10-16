@@ -55,13 +55,12 @@
             人群分析
           </router-link>
           <a-tooltip>
-            <template slot="title">
+            <!-- <template slot="title">
               功能暂未开放
-            </template>
+            </template> -->
             <span
-              v-if="auth.export"
+              v-exportExcel="{ type: 'crowd/' + value[0].id }"
               class="shop-member-crowd-index-box__btn-rq"
-              @click="exportFunc(value[0].id)"
             >
               导出
             </span>
@@ -122,11 +121,11 @@
             人群分析
           </router-link>
           <a-tooltip>
-            <template slot="title">
+            <!-- <template slot="title">
               功能暂未开放
-            </template>
+            </template> -->
             <span
-              v-if="auth.export"
+              v-exportExcel="{ type: 'crowd/' + value[1].id }"
               class="shop-member-crowd-index-box__btn-rq"
               @click="exportFunc(value[1].id)"
             >
@@ -189,11 +188,11 @@
             人群分析
           </router-link>
           <a-tooltip>
-            <template slot="title">
+            <!-- <template slot="title">
               功能暂未开放
-            </template>
+            </template> -->
             <span
-              v-if="auth.export"
+              v-exportExcel="{ type: 'crowd/' + value[2].id }"
               class="shop-member-crowd-index-box__btn-rq"
               @click="exportFunc(value[2].id)"
             >

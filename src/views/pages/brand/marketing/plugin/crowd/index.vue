@@ -39,10 +39,13 @@
             <a-dropdown placement="bottomRight">
               <a class="ant-dropdown-link" href="#">定向运营</a>
               <a-menu slot="overlay">
-                <!-- NOTE: 导出 -->
-                <!-- <a-menu-item style="width:130px">
-                <a href="javascript:;">导出</a>
-              </a-menu-item> -->
+                <a-menu-item style="width:130px">
+                  <a
+                    v-exportExcel="{ type: 'crowd/' + record.id, para: record }"
+                  >
+                    导出
+                  </a>
+                </a-menu-item>
                 <a-menu-item style="width:130px">
                   <a
                     href="javascript:;"
@@ -61,8 +64,6 @@
                 </a-menu-item>
               </a-menu>
             </a-dropdown>
-            <!-- NOTE: 导出 -->
-            <!-- <a v-if="record.auth['shop:member:crowd|export']" @click="addTreeNode(record)">导出</a> -->
             <router-link
               v-if="record.auth['shop:member:crowd|edit']"
               tag="a"
