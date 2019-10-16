@@ -44,6 +44,7 @@
     "rxjs": "^6.4.0",
     "st-data-set": "0.10.2-alpha2",
     "styd-less-base": "1.0.6",
+    "uuid": "^3.3.3",
     "v-viewer": "^1.4.0",
     "vue": "^2.6.6",
     "vue-awesome-swiper": "^3.1.3",

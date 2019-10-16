@@ -48,14 +48,15 @@
         </div>
         <div :class="bSearch('input-group')">
           <a-select
-            placeholder="请选择优惠券状态"
-            @change="onSingleSearch('coupon_status', $event)"
+            placeholder="请选择活动报名状态"
+            @change="onSingleSearch('activity_status', $event)"
             class="mg-r16"
             style="width: 160px"
+            :options="activityStatus$"
           ></a-select>
           <st-input-search
-            @search="onSingleSearch('coupon_name', $event)"
-            placeholder="请输入优惠券名称"
+            @search="onSingleSearch('activity_name', $event)"
+            placeholder="请输入活动报名标题"
             style="width: 290px;"
           />
         </div>
@@ -76,7 +77,7 @@
             <a @click="onCLickGeneralize(record)">
               推广
             </a>
-            <a @click="onClickNameList({ record, pathName: 'editActivity' })">
+            <a @click="onClickNameList({ record, pathName: 'rosterActivity' })">
               名单
             </a>
             <a @click="onClickCopy(record)">
@@ -101,7 +102,7 @@ import { RouteService } from '@/services/route.service'
 
 // modal
 export default {
-  name: 'acti',
+  name: 'ActivityList',
   mixins: [tableMixin],
   bem: {
     bPage: 'page-plugin-activity-registration',
@@ -118,7 +119,8 @@ export default {
       redirectPath: {
         addActivity: 'brand-marketing-plugin-activity-registration-add',
         editActivity: 'brand-marketing-plugin-activity-registration-edit',
-        checkinActivity: 'brand-marketing-plugin-activity-registration-checkin'
+        checkinActivity: 'brand-marketing-plugin-activity-registration-checkin',
+        rosterActivity: 'brand-marketing-plugin-activity-registration-roster'
       }
     }
   },
@@ -129,9 +131,10 @@ export default {
     }
   },
   rxState() {
-    const { page$, list$ } = this.service
+    const { page$, list$, activityStatus$ } = this.service
     return {
       query: this.routeService.query$,
+      activityStatus$,
       page$,
       list$
     }
@@ -147,7 +150,12 @@ export default {
       this.$router.push({ name: this.redirectPath[pathName] })
     },
     onCLickGeneralize({ record, pathName }) {},
-    onClickNameList({ record, pathName }) {},
+    onClickNameList({ record, pathName }) {
+      this.$router.push({
+        name: this.redirectPath[pathName],
+        query: { id: record.id }
+      })
+    },
     onClickStop({ record, pathName }) {},
     onClickCopy({ record, pathName }) {}
   }

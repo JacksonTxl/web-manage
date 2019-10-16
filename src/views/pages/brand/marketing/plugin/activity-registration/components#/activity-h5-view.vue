@@ -9,7 +9,7 @@
           <img class="image" :src="stepInfo.imageUrl" alt="活动海报" />
         </div>
         <div :class="bComponent('content-info')">
-          <st-t2 class="title">{{ stepInfo.name }}</st-t2>
+          <st-t2 class="title">{{ stepInfo.activity_name }}</st-t2>
           <div class="content">
             <div class="price-info">
               <span class="price">¥4000</span>

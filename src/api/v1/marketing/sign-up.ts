@@ -96,6 +96,13 @@ export class SignUpApi extends Api {
     })
   }
   /**
+   * 获取某个活动信息
+   * @param id
+   */
+  getActivityInfo(activity_id: number) {
+    return this.http.get(`/v1/plugin/sign_up/${activity_id}`)
+  }
+  /**
    * 票种签到
    */
   updateSIgnUpChecked(id: number) {
@@ -106,5 +113,11 @@ export class SignUpApi extends Api {
    */
   getSignUpSignList(query: any) {
     return this.http.get(`/v1/plugin/sign_up/search`, query)
+  }
+  /**
+   * 【签到验票】票号，手机号，用户姓名搜索
+   */
+  getSignUpDefaultExtInfo() {
+    return this.http.get(`/v1/plugin/sign_up/get_default_ext_info`)
   }
 }

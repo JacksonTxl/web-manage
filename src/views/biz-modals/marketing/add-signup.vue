@@ -9,14 +9,20 @@
           ></a-input>
         </st-form-item>
         <st-form-item label="报名类型">
-          <a-radio-group v-decorator="decorators.extra_type">
+          <a-radio-group
+            @change="onChangeExtraType"
+            v-decorator="decorators.extra_type"
+          >
             <a-radio :value="1">单行文本</a-radio>
             <a-radio :value="2">多行文本</a-radio>
             <a-radio :value="3">单选</a-radio>
             <a-radio :value="4">多选</a-radio>
           </a-radio-group>
         </st-form-item>
-        <st-form-item label="报名选项">
+        <st-form-item
+          v-if="extraType === 3 || extraType === 4"
+          label="报名选项"
+        >
           <a-input-group compact>
             <a-input
               v-model="option"
@@ -45,6 +51,8 @@
 <script>
 import { ruleOptions } from './add-signup.config'
 import { PatternService } from '@/services/pattern.service'
+import { MessageService } from '../../../services/message.service'
+const uuidv1 = require('uuid/v1')
 export default {
   name: 'ModalAddTicket',
   bem: {
@@ -52,7 +60,8 @@ export default {
   },
   serviceInject() {
     return {
-      pattern: PatternService
+      pattern: PatternService,
+      msg: MessageService
     }
   },
   data() {
@@ -63,23 +72,19 @@ export default {
       decorators,
       show: false,
       ticketType: 1,
-      isBulk: 1,
       option: '',
-      extra_info: [],
-      radioStyle: {
-        display: 'block'
-      }
+      extraType: 1,
+      extra_info: []
     }
   },
   props: {
     modalTitle: {
       type: String,
       default: '票种信息设置'
-    }
-  },
-  computed: {
-    freeTicket() {
-      return this.ticketType === 2
+    },
+    signUpList: {
+      type: Array,
+      default: () => []
     }
   },
   methods: {
@@ -88,23 +93,32 @@ export default {
         this.extra_info.push(this.option)
       }
     },
+    onChangeExtraType(e) {
+      this.extraType = e.target.value
+    },
+    isUniq(name) {
+      let bool = false
+      this.signUpList.forEach(item => {
+        bool = item.extra_name === name
+      })
+      return bool
+    },
     onSubmit() {
       this.form.validate().then(values => {
+        if (this.isUniq(values.extra_name)) {
+          this.msg.error({ content: '标题名重复请重新填写' })
+          return
+        }
         this.show = false
         const obj = {
           extra_name: values.extra_name,
           extra_require: values.extra_require,
           extra_info: this.extra_info,
+          extra_key: uuidv1(values),
           ...values
         }
         this.$emit('submit', obj)
       })
-    },
-    onChangeGetTicketType(e) {
-      this.ticketType = e.target.value
-      if (this.freeTicket) {
-        this.form.setFieldsValue({ ticket_price: 0 })
-      }
     }
   }
 }

@@ -19,6 +19,8 @@
         <st-form-item label="活动地点" required>
           <map-button
             addText="设置活动地点"
+            :lat="address.lat"
+            :lng="address.lng"
             :province="address.province"
             :city="address.city"
             :district="address.district"
@@ -48,9 +50,11 @@
           <st-editor v-model="content"></st-editor>
         </st-form-item>
         <st-form-item labelFix>
-          <st-button type="primary" @click="onSubmit">
-            下一步
-          </st-button>
+          <di-child name="step">
+            <st-button type="primary" @click="onSubmit">
+              下一步
+            </st-button>
+          </di-child>
         </st-form-item>
       </st-form>
     </a-col>
@@ -116,9 +120,7 @@ export default {
       this.address = address
     },
     onSubmit() {
-      console.log('onSubmit')
       this.form.validate().then(values => {
-        debugger
         let { activity_name, member_limit_status } = values
         const start_time = values.date[0].format('YYYY-MM-DD HH:mm')
         const end_time = values.date[1].format('YYYY-MM-DD HH:mm')
@@ -134,7 +136,8 @@ export default {
           start_time,
           activity_name,
           member_limit_status: +member_limit_status,
-          rule_settings: this.content
+          description: this.content,
+          image: this.fileShareList[0]
         }
         this.$emit('step-submit', form)
       })

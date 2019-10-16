@@ -24,19 +24,22 @@
     </a-steps>
     <div :class="bPage('form')">
       <step1-form
-        v-if="currentStep === 0"
+        v-show="currentStep === 0"
         @step-submit="onSubmitGetStep1Form"
         @change="onChangeStep1Form"
       ></step1-form>
       <step2-form
-        v-if="currentStep === 1"
+        v-show="currentStep === 1"
         @step-submit="onSubmitGetStep2Form"
         @change="onChangeStep2Form"
       ></step2-form>
       <step3-form
-        v-if="currentStep === 2"
+        v-show="currentStep === 2"
         @change="onChangeStep3Form"
       ></step3-form>
+    </div>
+    <div slot="actions">
+      <di-view name="step"></di-view>
     </div>
   </st-mina-panel>
 </template>
@@ -64,7 +67,7 @@ export default {
     return {
       step1Info: {},
       step2Info: [],
-      step3Info: {},
+      step3Info: [],
       steps: [
         { title: '活动信息' },
         { title: '票种信息' },
@@ -77,11 +80,12 @@ export default {
     onChangeStep1Form(formObj) {
       this.step1Info = formObj
     },
-    onChangeStep2Form(ticketShowList) {
-      console.log(ticketShowList)
-      this.step2Info.push(ticketShowList)
+    onChangeStep2Form(ticket) {
+      this.step2Info.push(ticket)
     },
-    onChangeStep3Form() {},
+    onChangeStep3Form(signUpList) {
+      this.step3Info = [...signUpList]
+    },
     onSubmitGetStep1Form(form) {
       console.log(form)
       this.currentStep = 1

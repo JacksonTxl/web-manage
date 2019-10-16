@@ -53,9 +53,11 @@
         </template>
       </tbody>
     </st-form-table>
-    <st-button @click="onClickAddTicketComplete">
-      下一步
-    </st-button>
+    <di-child name="step">
+      <st-button @click="onClickAddTicketComplete">
+        下一步
+      </st-button>
+    </di-child>
   </div>
 </template>
 <script>

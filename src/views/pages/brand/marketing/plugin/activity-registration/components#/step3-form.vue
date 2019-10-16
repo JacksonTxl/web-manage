@@ -2,7 +2,7 @@
   <div :class="pComponents()">
     <div :class="pComponents('switch')">
       <span class="mg-r24">您是否需要收集参与者的必要信息</span>
-      <st-switch v-model="isStep3"></st-switch>
+      <st-switch v-model="isStep3" @change="onChangeIsShow"></st-switch>
     </div>
     <st-form-table class="mg-t24" v-if="isStep3">
       <thead>
@@ -22,7 +22,7 @@
               v-modal-link="{
                 name: 'marketing-add-signup',
                 props: {
-                  checked: checkedShopIds
+                  signUpList: dataSource
                 },
                 on: {
                   submit: getTableItem
@@ -53,18 +53,20 @@
         </template>
       </tbody>
     </st-form-table>
-    <div :class="pComponents('button-group')">
-      <st-button class="mg-r8">
-        存草稿
-      </st-button>
-      <st-button type="primary">
-        发布
-      </st-button>
-    </div>
+    <di-child name="step">
+      <div :class="pComponents('button-group')">
+        <st-button class="mg-r8">
+          存草稿
+        </st-button>
+        <st-button type="primary">
+          发布
+        </st-button>
+      </div>
+    </di-child>
   </div>
 </template>
 <script>
-// import { SelectShopService } from './select-shop.service'
+import { Step3FormService } from './step3-form.service'
 import MarketingAddSignup from '@/views/biz-modals/marketing/add-signup'
 export default {
   name: 'Step3Form',
@@ -74,16 +76,17 @@ export default {
   modals: {
     MarketingAddSignup
   },
-  // serviceInject() {
-  //   return {
-  //     selectService: SelectShopService
-  //   }
-  // },
-  // rxState() {
-  //   return {
-  //     loading: this.selectService.loading$
-  //   }
-  // },
+  serviceInject() {
+    return {
+      service: Step3FormService
+    }
+  },
+  rxState() {
+    const { defaultExtInfo$ } = this.service
+    return {
+      defaultExtInfo$
+    }
+  },
   props: {
     shopIds: {
       type: Array,
@@ -99,56 +102,30 @@ export default {
   data() {
     return {
       checkedShopIds: [],
-      dataSource: [],
-      isStep3: false,
+      addDataSource: [],
+      isStep3: 0,
       list: []
     }
   },
   created() {
-    this.checkedShopIds = this.shopIds
-    this.getShops(this.shopIds)
+    this.service.getDefaultExtInfo().subscribe()
   },
   computed: {
     colspanNum() {
       return this.disabled ? 4 : 5
+    },
+    dataSource() {
+      return [...this.defaultExtInfo$, ...this.addDataSource]
     }
   },
   methods: {
     getTableItem(item) {
-      this.dataSource.push(item)
+      this.addDataSource.push(item)
+      this.$emit('change', this.dataSource)
     },
-    onSelectShopComplete(shopIds) {
-      this.getShops(shopIds)
-      this.checkedShopIds = shopIds
-      this.$emit('change', shopIds)
-    },
-    getShops(shopIds = []) {
-      if (!shopIds.length) {
-        return
-      }
-      this.selectService
-        .getShopBasic({
-          shop_ids: shopIds
-        })
-        .subscribe(res => {
-          this.list = res.shops
-        })
-    },
-    delShopTableRecord(shopId) {
-      const { list, checkedShopIds } = this
-      list.forEach((item, index) => {
-        if (item.shop_id === shopId) {
-          list.splice(index, 1)
-        }
-      })
-      checkedShopIds.forEach((item, index) => {
-        if (item === +shopId) {
-          checkedShopIds.splice(index, 1)
-        }
-      })
-      this.list = list
-      this.checkedShopIds = checkedShopIds
-      this.$emit('change', checkedShopIds)
+    onChangeIsShow() {
+      const data = this.isStep3 ? this.dataSource : []
+      this.$emit('change', data)
     }
   }
 }

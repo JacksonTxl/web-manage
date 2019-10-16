@@ -39,24 +39,24 @@
           </div>
         </div>
         <ul :class="bComponent('info')">
-          <li class="item">
+          <li class="item" v-for="(signUp, index) in stepInfo" :key="index">
             <span class="label">
-              姓名
-              <span class="tip">（必填）</span>
+              {{ signUp.extra_name }}
+              <span class="tip" v-if="signUp.extra_require === 1">
+                (必填)
+              </span>
             </span>
-            <a href="" class="action">请编辑</a>
-          </li>
-          <li class="item">
-            <span class="label">
-              单行填写
-            </span>
-            <a href="" class="action">请编辑</a>
-          </li>
-          <li class="item">
-            <span class="label">
-              单选项
-            </span>
-            <a href="" class="action">请选择</a>
+            <a
+              v-if="
+                signUp.extra_type === 'text' || signUp.extra_type === 'texteara'
+              "
+              class="action"
+            >
+              请编辑
+            </a>
+            <a v-else class="action">
+              请选择
+            </a>
           </li>
         </ul>
         <div :class="bComponent('footer')">
@@ -70,6 +70,7 @@
 </template>
 
 <script>
+import { Step3FormService } from './step3-form.service'
 import H5Container from '@/views/biz-components/h5/h5-container'
 export default {
   name: 'SignUpH5View',
@@ -79,25 +80,11 @@ export default {
   components: {
     H5Container
   },
-  filters: {
-    formatActivityDate(dateArr = []) {
-      if (!dateArr.length) return ''
-      const startDate = dateArr[0].format('YYYY-MM-DD')
-      const endDate = dateArr[1].format('YYYY-MM-DD')
-      const startTime = dateArr[0].format('HH:mm')
-      const endTime = dateArr[1].format('HH:mm')
-      return startDate === endDate
-        ? `${startDate} ${startTime} - ${endTime}`
-        : `${startDate} ${startTime} - ${endDate} ${endTime}`
-    }
-  },
   props: {
     stepInfo: {
-      type: Object,
+      type: Array,
       default: () => {
-        return {
-          content: ''
-        }
+        return []
       }
     }
   }

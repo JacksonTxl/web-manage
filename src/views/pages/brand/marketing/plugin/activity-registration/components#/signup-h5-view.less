@@ -7,6 +7,9 @@
     .activity-title {
       .fz(32px);
       .mg-b(24px);
+      .st-title {
+        .lh(45px);
+      }
     }
     .activity-box {
       .time,
@@ -27,29 +30,13 @@
     }
   }
   &__activity-info {
-    background: #fff;
     .pd(24px);
+    .s(670px, 282px);
     .activity-title {
       .pd-b(22px);
       border-bottom: 1px solid #000;
     }
-    position: relative;
-    &:before,
-    &:after {
-      content: '';
-      .s(48px, 48px);
-      display: block;
-      position: absolute;
-      top: 41px;
-      border-radius: 100%;
-      background: #819cff;
-    }
-    &:before {
-      left: -24px;
-    }
-    &:after {
-      right: -24px;
-    }
+    background-image: url('~@/assets/img/sign-up-card.png');
   }
   &__tip {
     background: #fff;

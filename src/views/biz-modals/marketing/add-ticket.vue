@@ -166,8 +166,12 @@ export default {
         buy_time,
         ticket_remark
       } = values
-      const buy_start_time = buy_time[0].format('YYYY-MM-DD HH:mm')
-      const buy_end_time = buy_time[1].format('YYYY-MM-DD HH:mm')
+      const buy_start_time = ''
+      const buy_end_time = ''
+      if (buy_time_limit === 2) {
+        const buy_start_time = buy_time[0].format('YYYY-MM-DD HH:mm')
+        const buy_end_time = buy_time[1].format('YYYY-MM-DD HH:mm')
+      }
       const form = {
         ticket_name,
         ticket_price,
