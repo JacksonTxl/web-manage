@@ -7,7 +7,7 @@
       <div class="title__left">
         <st-button
           v-modal-link="{ name: 'schedule-team-add-course-batch' }"
-          class="mg-r8"
+          class="mg-r12"
           type="primary"
         >
           批量排期
@@ -24,19 +24,15 @@
           @next="getTable"
         />
       </div>
-      <div class="title__center schedule-button">
+      <div class="title__right schedule-button">
         <a-radio-group
           :value="pageBtnFocusState"
           @change="handleSizeChange($event, 'page')"
         >
-          <a-radio-button
-            value="list"
-            @click="onClickSkipSchedule"
-            class="mg-l32"
-          >
+          <a-radio-button value="list" class="mg-l32">
             <st-icon type="list"></st-icon>
           </a-radio-button>
-          <a-radio-button value="calendar">
+          <a-radio-button value="calendar" @click="onClickSkipSchedule">
             <st-icon type="calendar"></st-icon>
           </a-radio-button>
         </a-radio-group>
@@ -139,7 +135,7 @@ export default {
   },
   data() {
     return {
-      pageBtnFocusState: 'calendar'
+      pageBtnFocusState: 'list'
     }
   },
   filters: {

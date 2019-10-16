@@ -28,10 +28,10 @@
           :value="pageBtnFocusState"
           @change="handleSizeChange($event, 'page')"
         >
-          <a-radio-button value="list" class="mg-l32">
+          <a-radio-button value="list" class="mg-l32" @click="onClickGetTable">
             <st-icon type="list"></st-icon>
           </a-radio-button>
-          <a-radio-button value="calendar" @click="onClickGetTable">
+          <a-radio-button value="calendar">
             <st-icon type="calendar"></st-icon>
           </a-radio-button>
         </a-radio-group>
@@ -162,7 +162,7 @@ export default {
       currentWeek: '',
       weeks: [],
       dataBtnFocusState: 'week',
-      pageBtnFocusState: 'list'
+      pageBtnFocusState: 'calendar'
     }
   },
   props: {
