@@ -1,0 +1,6 @@
+export enum TYPE {
+  COUPON = 100001,
+  INVITE = 100002,
+  CROWD = 100003,
+  LOTTERY = 100004
+}
