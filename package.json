@@ -55,7 +55,8 @@
     "vue-router-multiguard": "^1.0.3",
     "vue-router-plus": "^0.0.1",
     "vue-st-form": "0.0.6",
-    "vuedraggable": "^2.19.2"
+    "vuedraggable": "^2.19.2",
+    "webpack": "^4.41.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.1.0",
