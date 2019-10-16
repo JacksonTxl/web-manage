@@ -39,7 +39,7 @@
         >
           <a-select-option
             :value="staff.id"
-            v-for="staff in modalStaffList"
+            v-for="staff in staffListFilter"
             :key="staff.id"
           >
             {{ staff.name }}
@@ -128,6 +128,15 @@ export default {
         current_page: this.pageParams.current_page,
         size: this.pageParams.size
       }
+    },
+    staffListFilter() {
+      if (this.query.department_id === -1) return this.modalStaffList
+      return [
+        { id: -1, name: '所有销售' },
+        ...this.modalStaffList.filter(item => {
+          return this.query.department_id === item.department_id
+        })
+      ]
     }
   },
   methods: {
@@ -138,6 +147,7 @@ export default {
       }
       if (changeType === 'changeDepartment') {
         this.pageParams.staff_id = -1
+        this.sellAmountervice.getDepartmentStaffList(this.query).subscribe()
       }
       this.sellAmountervice.getSellAmountList(this.query).subscribe()
     },
