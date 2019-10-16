@@ -5,14 +5,18 @@
       slot="title"
     >
       <div class="title__left">
-        <st-button @click="onClickScheduleInBatch" class="mg-r8" type="primary">
+        <st-button
+          @click="onClickScheduleInBatch"
+          class="mg-r12"
+          type="primary"
+        >
           批量排期
         </st-button>
         <st-button @click="onClickCopySchedule">
           复制排期
         </st-button>
       </div>
-      <div class="title__left">
+      <div class="title__center">
         <date
           @today="getTable"
           :start="query.start_date"
@@ -20,19 +24,15 @@
           @next="getTable"
         />
       </div>
-      <div class="title__left schedule-button">
+      <div class="title__right schedule-button">
         <a-radio-group
           :value="pageBtnFocusState"
           @change="handleSizeChange($event, 'page')"
         >
-          <a-radio-button
-            value="list"
-            @click="onClickSkipSchedule"
-            class="mg-l32"
-          >
+          <a-radio-button value="list" class="mg-l32">
             <st-icon type="list"></st-icon>
           </a-radio-button>
-          <a-radio-button value="calendar">
+          <a-radio-button value="calendar" @click="onClickSkipSchedule">
             <st-icon type="calendar"></st-icon>
           </a-radio-button>
         </a-radio-group>
@@ -125,7 +125,7 @@ export default {
   },
   data() {
     return {
-      pageBtnFocusState: 'calendar'
+      pageBtnFocusState: 'list'
     }
   },
   components: {
