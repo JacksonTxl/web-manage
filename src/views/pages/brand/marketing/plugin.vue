@@ -135,8 +135,8 @@ export default {
     getInfo() {
       this.pluginService.getInfo().subscribe()
     },
-    goToPlugin(route, type) {
-      this.$router.push({ name: route, query: { type: type } })
+    goToPlugin(route) {
+      this.$router.push({ name: route })
     }
   }
 }
