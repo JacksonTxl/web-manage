@@ -20,11 +20,11 @@
           </div>
           <div class="jurisdiction">
             <st-container class="brand-list">
-              <p>品牌权限</p>
+              <p class="brand-list-title">品牌权限</p>
               <a-tree showLine class="role-tree" :treeData="brands"></a-tree>
             </st-container>
             <st-container class="shop-list">
-              <p>门店权限</p>
+              <p class="brand-list-title">门店权限</p>
               <a-tree class="role-tree" showLine :treeData="shops"></a-tree>
             </st-container>
           </div>
