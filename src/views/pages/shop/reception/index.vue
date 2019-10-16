@@ -70,6 +70,7 @@
             placeholder="检索姓名或手机号查找用户"
             :defaultActiveFirstOption="false"
             :filterOption="false"
+            @popupScroll="scroll"
             @select="onMemberSelect"
             @search="onMemberSearch"
           >
@@ -89,6 +90,22 @@
               >
                 {{ item.member_name }} {{ item.mobile }}
               </span>
+            </a-select-option>
+            <a-select-option
+              disabled
+              :key="new Date() + Math.random()"
+              :class="reception('member-search-tip')"
+              v-if="!isSearchNone && page.current_page < page.total_pages"
+            >
+              <a-spin size="small"></a-spin>
+            </a-select-option>
+            <a-select-option
+              disabled
+              :class="reception('member-search-tip')"
+              :key="new Date() + Math.random()"
+              v-if="!isSearchNone && page.current_page >= page.total_pages"
+            >
+              已经到底啦
             </a-select-option>
           </a-select>
           <st-button
@@ -551,7 +568,7 @@
 </template>
 <script>
 import { IndexService } from './index.service'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep, debounce } from 'lodash-es'
 import moment from 'moment'
 import { timer } from 'rxjs'
 import FrontSimpleArea from '@/views/biz-components/stat/front-simple-area'
@@ -561,6 +578,7 @@ import FaceUpload from '@/views/biz-components/face-upload/face-upload'
 import { summaryList, shortcutList } from './index.config'
 import { RECEPTION } from '@/constants/reception/reception'
 import FrontAddReserve from '@/views/biz-modals/front/add-reserve'
+
 export default {
   name: 'PageShopReception',
   bem: {
@@ -585,6 +603,8 @@ export default {
       coachList: this.indexService.coachList$,
       sellerList: this.indexService.sellerList$,
       memberList: this.indexService.memberList$,
+      hasNext: this.indexService.hasNext$,
+      page: this.indexService.page$,
       workNoteList: this.indexService.workNoteList$,
       workNoteDoneList: this.indexService.workNoteDoneList$,
       loading: this.indexService.loading$
@@ -627,7 +647,11 @@ export default {
       photoList: [],
       // 待办animate动画index
       animateIndex: 9999999999,
-      stCabinetList: []
+      stCabinetList: [],
+      page: {
+        current_page: 1,
+        size: 10
+      }
     }
   },
   computed: {
@@ -803,11 +827,19 @@ export default {
     },
     // 搜索会员
     onMemberSearch(data) {
+      if (!this.hasNext && this.memberSearchText === data.trim()) {
+        return
+      }
+      if (this.memberSearchText !== data.trim()) {
+        this.page.current_page = 1
+      }
       this.memberSearchText = data.trim()
       if (data.trim() !== '') {
         this.lastMemberSearchText = data.trim()
         this.indexService.memberListAction$.dispatch({
-          keyword: data
+          keyword: data,
+          current_page: this.page.current_page,
+          size: this.page.size
         })
       }
     },
@@ -1013,7 +1045,19 @@ export default {
             })
         }
       })
-    }
+    },
+    scroll: debounce(function(e) {
+      const { target } = e
+      if (
+        Math.floor(target.scrollTop) + target.clientHeight >
+        target.scrollHeight - 20
+      ) {
+        if (this.hasNext) {
+          this.page.current_page++
+          this.onMemberSearch(this.memberSearchText)
+        }
+      }
+    }, 200)
   }
 }
 </script>

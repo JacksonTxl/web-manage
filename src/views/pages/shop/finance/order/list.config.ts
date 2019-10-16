@@ -71,6 +71,11 @@ export const columns = () => {
       scopedSlots: { customRender: 'created_time' }
     },
     {
+      title: '支付时间',
+      dataIndex: 'pay_last_time',
+      scopedSlots: { customRender: 'pay_last_time' }
+    },
+    {
       title: '销售',
       dataIndex: 'staff_name',
       scopedSlots: { customRender: 'staff_name' }

@@ -19,6 +19,9 @@ export class StatApi {
   getCoachList() {
     return this.http.get('/v1/stat/course/shop/department/coach')
   }
+  getDepartmentStaffList() {
+    return this.http.get('/v1/stat/sale/department/staff')
+  }
   getCourseCoachShopList(query: CourseShopListQuery) {
     return this.http.get('/v1/stat/course/shop/coach', { query })
   }
@@ -52,7 +55,19 @@ export class StatApi {
       query
     })
   }
+  getSellAmount(query: any) {
+    return this.http.get('/v1/stat/sale', {
+      query
+    })
+  }
+  getSellList(query: OrderShopListQuery) {
+    return this.http.get('/v1/stat/sale/summary', { query })
+  }
+  getSellStaffList(query: SellStaffListQuery) {
+    return this.http.get('/v1/stat/sale/staff', { query })
+  }
 }
+
 export interface PersonalCourseQuery {
   current_page?: number
 }
@@ -86,5 +101,15 @@ export interface OrderShopListQuery {
   day?: number
   start_date: string
   end_date: string
+}
+export interface SellStaffListQuery {
+  page?: number
+  size?: number
+  day?: number
+  staff_id?: number
+  department_id?: number
+  start_date: string
+  end_date: string
+  current_page: number
 }
 export interface RevenueShopTodayQuery {}

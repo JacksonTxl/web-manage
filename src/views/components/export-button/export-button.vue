@@ -39,7 +39,12 @@ export default {
   },
   methods: {
     onExport() {
-      this.exportButtonService.export(this.type, this.query).subscribe()
+      this.$confirm({
+        title: '是否确认导出?',
+        onOk: () => {
+          this.exportButtonService.export(this.type, this.query).subscribe()
+        }
+      })
     }
   }
 }

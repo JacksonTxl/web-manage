@@ -25,9 +25,21 @@
         />
       </div>
       <div class="title__center schedule-button">
-        <st-button @click="onClickSkipSchedule">
-          <st-icon type="calendar"></st-icon>
-        </st-button>
+        <a-radio-group
+          :value="pageBtnFocusState"
+          @change="handleSizeChange($event, 'page')"
+        >
+          <a-radio-button
+            value="list"
+            @click="onClickSkipSchedule"
+            class="mg-l32"
+          >
+            <st-icon type="list"></st-icon>
+          </a-radio-button>
+          <a-radio-button value="calendar">
+            <st-icon type="calendar"></st-icon>
+          </a-radio-button>
+        </a-radio-group>
       </div>
     </div>
     <template v-for="card in scheduleTable">
@@ -125,6 +137,11 @@ export default {
       query: this.routeService.query$
     }
   },
+  data() {
+    return {
+      pageBtnFocusState: 'calendar'
+    }
+  },
   filters: {
     filterStartTime(val) {
       const weekday = moment(val)
@@ -140,6 +157,9 @@ export default {
     date
   },
   methods: {
+    handleSizeChange(evt, type) {
+      this.pageBtnFocusState = evt.target.value
+    },
     onScheduleChange() {
       this.$router.push({ query: this.query, force: true })
     },

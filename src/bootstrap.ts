@@ -19,6 +19,7 @@ import ICountUp from 'vue-countup-v2'
 // @ts-ignore
 import Viewer from 'v-viewer'
 import VueServiceApp from 'vue-service-app'
+import VueDiView from 'vue-di-view'
 
 import container from './container'
 import i18n from '@/i18n'
@@ -38,6 +39,8 @@ Vue.use(Antd)
 Vue.use(Viewer)
 Vue.use(VueBemHelper)
 Vue.use(VueEvents)
+// @ts-ignore
+Vue.use(VueDiView)
 // @ts-ignore
 Vue.use(VueStForm)
 Vue.use(VueStyleguide)
