@@ -13,7 +13,8 @@
       </div>
     </header>
     <section>
-      <find-account></find-account>
+      <find-account @next="onNext" v-if="!showStep"></find-account>
+      <find-account-step v-else :bindInfo="info"></find-account-step>
     </section>
     <footer :class="b('footer')">
       <p :class="b('footer-copyright')">
@@ -24,12 +25,9 @@
 </template>
 
 <script>
-import { UserService } from '@/services/user.service'
-import { AuthService } from '@/services/auth.service'
 import { FindService } from './find.service'
 import FindAccount from './find#/account'
-import user from './login#/user'
-import bind from './login#/bind'
+import FindAccountStep from './find#/step'
 import { NoCaptchaService } from '@/services/no-captcha.service'
 import { throwError } from 'rxjs'
 
@@ -41,16 +39,18 @@ export default {
   serviceInject() {
     return {
       findService: FindService,
-      userService: UserService,
-      authService: AuthService,
       noCaptchaService: NoCaptchaService
     }
   },
   data() {
-    return {}
+    return {
+      showStep: false,
+      info: {}
+    }
   },
   components: {
-    FindAccount
+    FindAccount,
+    FindAccountStep
   },
   rxState() {
     return {
@@ -61,10 +61,12 @@ export default {
   methods: {
     onNext(params) {
       params.nvc_val = window.getNVCVal()
-      this.findService.loginAccount(params).subscribe(res => {
+      this.findService.checkAccount(params).subscribe(res => {
         this.noCaptchaService.resetNVC()
-        location.href = '/'
-      }, this.loginErrorHandler)
+        this.info = res
+        this.info.account = params.account
+        this.showStep = true
+      }, this.errorHandler)
     },
     errorHandler(err) {
       const code = err.response.code

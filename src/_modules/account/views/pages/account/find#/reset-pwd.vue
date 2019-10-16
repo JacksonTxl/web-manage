@@ -1,29 +1,33 @@
 <template>
   <div :class="b()">
-    <p :class="b('tip')">请输入您的账户名</p>
     <st-form :form="form" @submit.prevent="next" :class="b('form')">
+      <st-form-item>
+        <input-pwd-strength
+          v-decorator="decorators.pwd"
+          placeholder="请输入新密码"
+          :validStatus="validStatus"
+          :strength="strength"
+        ></input-pwd-strength>
+      </st-form-item>
       <st-form-item>
         <a-input
           size="large"
-          placeholder="请输入您要找回密码的账户名"
-          v-decorator="decorators.account"
+          type="password"
+          placeholder="请再输入一次新密码"
+          v-decorator="decorators.repeat_pwd"
         />
-      </st-form-item>
-      <st-form-item class="mg-b0">
-        <no-captcha></no-captcha>
       </st-form-item>
       <st-form-item :class="b('button-wrap')">
         <st-button
           :class="b('button')"
-          :loading="loading.checkAccount"
+          :loading="loading.repairPwd"
           pill
           block
           size="large"
           type="primary"
           html-type="submit"
-          :disabled="!btnFlag"
         >
-          下一步
+          确认
         </st-button>
       </st-form-item>
     </st-form>
@@ -32,28 +36,28 @@
 
 <script>
 import { FindService } from '../find.service'
-import NoCaptcha from '../login#/no-captcha'
 import { ruleOptions } from './find.config'
 import { PatternService } from '@/services/pattern.service'
+import InputPwdStrength from '@/views/biz-components/input-pwd-strength/input-pwd-strength'
 
 export default {
-  name: 'FindAccount',
   bem: {
-    b: 'page-find-account'
+    b: 'page-find-account-reset-pwd'
   },
+  name: 'FindAccountResetPwd',
   serviceInject() {
     return {
       findService: FindService,
       pattern: PatternService
     }
   },
-  components: {
-    NoCaptcha
-  },
   rxState() {
     return {
       loading: this.findService.loading$
     }
+  },
+  components: {
+    InputPwdStrength
   },
   data() {
     const form = this.$stForm.create()
@@ -61,13 +65,14 @@ export default {
     return {
       form,
       decorators,
-      btnFlag: false
+      validStatus: 0,
+      strength: ''
     }
   },
   methods: {
     next() {
       this.form.validate().then(values => {
-        this.$emit('next', values)
+        this.$emit('reset', values)
       })
     }
   }

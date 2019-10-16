@@ -91,11 +91,21 @@ export default {
     }
   },
   props: {
-    value: Object
+    value: {
+      type: Object
+    }
   },
   mounted() {
+    let params = {
+      code_id: 37,
+      phone_code: 86,
+      phone: ''
+    }
+    if (this.value && this.value.country_phone) {
+      params = this.value.country_phone
+    }
     this.form.setFieldsValue({
-      country_phone: this.value.country_phone
+      country_phone: params
     })
   },
   data() {

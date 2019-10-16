@@ -2,51 +2,26 @@ import { MessageService } from '@/services/message.service'
 import { Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
-import { LoginApi, LoginAccountInput, LoginPhoneInput } from '@/api/login'
-import { TokenService } from '@/services/token.service'
+import { FindApi } from '@/api/find'
 
 @Injectable()
 export class FindService {
-  name$ = new State<string>('')
   loading$ = new State({})
-  constructor(
-    private loginApi: LoginApi,
-    private tokenService: TokenService,
-    private msg: MessageService
-  ) {}
+  constructor(private findApi: FindApi, private msg: MessageService) {}
   @Effect()
-  loginAccount(data: LoginAccountInput) {
-    return this.loginApi.loginAccount(data).pipe(
-      tap(res => {
-        this.tokenService.SET_TOKEN(res.token)
-      })
-    )
+  checkAccount(params: any) {
+    return this.findApi.checkAccount(params)
   }
-  loginPhone(params: LoginPhoneInput) {
-    return this.loginApi.loginPhone(params).pipe(
-      tap(res => {
-        this.tokenService.SET_TOKEN(res.token)
-      })
-    )
+  @Effect()
+  sendCaptcha(params: any) {
+    return this.findApi.sendCaptcha(params)
   }
-  logout() {
-    return this.loginApi.logout().pipe(
-      tap(res => {
-        this.msg.success({ content: '注销成功' })
-      })
-    )
+  @Effect()
+  checkCaptcha(params: any) {
+    return this.findApi.checkCaptcha(params)
   }
-  getCaptcha(params: any) {
-    return this.loginApi.getCaptcha(params)
-  }
-  checkPhoneIsBind(params: any) {
-    return this.loginApi.checkPhoneIsBind(params)
-  }
-  bindPhoneForAccount(params: any) {
-    return this.loginApi.bindPhoneForAccount(params).pipe(
-      tap(res => {
-        this.tokenService.SET_TOKEN(res.token)
-      })
-    )
+  @Effect()
+  repairPwd(params: any) {
+    return this.findApi.repairPwd(params)
   }
 }

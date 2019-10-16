@@ -145,7 +145,13 @@ export default {
   },
   rxState() {
     return {
+      isBind: this.loginService.isBind$,
       loading: this.loginService.loading$
+    }
+  },
+  mounted() {
+    if (this.isBind) {
+      this.loginType = 'bind'
     }
   },
   computed: {

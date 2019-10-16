@@ -1,13 +1,14 @@
 import { MessageService } from '@/services/message.service'
-import { Injectable } from 'vue-service-app'
+import { Injectable, RouteGuard } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { LoginApi, LoginAccountInput, LoginPhoneInput } from '@/api/login'
 import { TokenService } from '@/services/token.service'
 
 @Injectable()
-export class LoginService {
+export class LoginService implements RouteGuard {
   name$ = new State<string>('')
+  isBind$ = new State('')
   loading$ = new State({})
   constructor(
     private loginApi: LoginApi,
@@ -48,5 +49,11 @@ export class LoginService {
         this.tokenService.SET_TOKEN(res.token)
       })
     )
+  }
+  beforeRouteEnter(to: any, from: any, next: any) {
+    if (to.meta.query.isBind) {
+      this.isBind$.commit(() => to.meta.query.isBind)
+    }
+    next()
   }
 }

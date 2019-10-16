@@ -78,12 +78,6 @@ export default {
     InputPhone,
     InputPhoneCode
   },
-  props: {
-    loading: {
-      type: Object,
-      default: () => {}
-    }
-  },
   modals: {
     AccountAgreement
   },

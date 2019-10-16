@@ -1,5 +1,4 @@
 import { Api } from './api'
-import { of } from 'rxjs'
 
 export class LoginApi extends Api {
   /**

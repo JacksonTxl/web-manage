@@ -1,0 +1,38 @@
+.input-pwd-strength {
+  position: relative;
+  &__popover {
+    line-height: 20px;
+    padding-left: 16px;
+  }
+  &__popover--success {
+    background: url('~@/assets/img/components/tip-success.png') no-repeat;
+    background-position-y: center;
+  }
+  &__popover--error {
+    background: url('~@/assets/img/components/tip-error.png') no-repeat;
+    background-position-y: center;
+  }
+  &__pwd {
+    display: flex;
+    text-align: center;
+    line-height: 16px;
+    color: #ffff;
+    margin-top: 8px;
+    &-item {
+      flex: 1;
+      background: #cdd4df;
+      margin-right: 6px;
+      transition: all 0.4s ease-in-out 0;
+      cursor: pointer;
+    }
+    &-item--weak {
+      background: #ff5e41;
+    }
+    &-item--middle {
+      background: #f5a623;
+    }
+    &-item--strong {
+      background: #3dd49f;
+    }
+  }
+}
