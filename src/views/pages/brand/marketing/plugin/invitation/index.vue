@@ -1,6 +1,6 @@
 <template>
   <div :class="inviation()">
-    <MarkteingPluginTitle />
+    <MarkteingPluginTitle :type="TYPE.INVITE" />
     <st-panel
       :tabs="[
         {
@@ -20,6 +20,7 @@
 <script>
 import MarkteingPluginTitle from '../../components#/marketing-title'
 import { IndexService } from './index.service'
+import { TYPE } from '@/constants/marketing/plugin'
 export default {
   name: 'PageBrandMarketingInviation',
   bem: {
@@ -33,6 +34,11 @@ export default {
   rxState() {
     return {
       authTabs: this.indexService.authTabs$
+    }
+  },
+  data() {
+    return {
+      TYPE
     }
   },
   components: {

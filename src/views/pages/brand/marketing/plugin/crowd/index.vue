@@ -114,6 +114,7 @@ import { MessageService } from '@/services/message.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './index.config'
+
 export default {
   mixins: [tableMixin],
   serviceInject() {
