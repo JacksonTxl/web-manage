@@ -417,9 +417,10 @@ export default {
     save(e) {
       e.preventDefault()
       this.form.validateFields((err, values) => {
-        values.province_id = values.cascader[0]
-        values.city_id = values.cascader[1]
-        values.district_id = values.cascader[2]
+        const cascader = values.cascader || []
+        values.province_id = cascader[0]
+        values.city_id = cascader[1]
+        values.district_id = cascader[2]
         // 手机前缀
         values.country_prefix = this.country_prefix
         values.image_face = this.faceList[0] || {}
