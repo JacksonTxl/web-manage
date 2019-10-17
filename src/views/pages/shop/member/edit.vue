@@ -251,7 +251,6 @@
               :options="options"
               v-decorator="rules.cascader"
               :fieldNames="fieldNames"
-              @change="onChange"
               placeholder="请选择省/市/区/县"
             />
           </st-form-item>
@@ -415,7 +414,6 @@ export default {
     onChangCategory(event) {
       this.source_category = event
     },
-    onChange(e) {},
     chooseType(e) {
       let { tip1, tip2 } = {
         tip1: '请输入身份证号码',
