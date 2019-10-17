@@ -132,7 +132,6 @@ export class PatternService {
    */
   UC_LC_EN(len: string = this.DEFAULT_LEN) {
     return this.createPattern('UC_LC_EN', len)
-    // return /(?=.*[\d])(?=.*[A-z])^[\dA-Za-z]{6,15}$/
   }
   /**
    * 英文大小写，数字每样至少有一个
@@ -140,7 +139,6 @@ export class PatternService {
    */
   UL_EN_NUM(len: string = this.DEFAULT_LEN) {
     return this.createPattern('UL_EN_NUM', len)
-    // return /(?=.*[\d])(?=.*[a-z])(?=.*[A-Z])^[\dA-Za-z]{6,15}$/
   }
   /**
    * 中文、英文
