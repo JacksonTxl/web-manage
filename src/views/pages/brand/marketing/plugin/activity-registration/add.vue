@@ -109,7 +109,6 @@ export default {
     },
     // 发布活动
     onReleaseActivity(form) {
-      this.$modalRouter.push({ name: 'marketing-release-activity-success' })
       this.stepForm.is_draft = 0
       this.$set(this.stepForm, 'rule_settings', JSON.stringify(form))
       // 发布
