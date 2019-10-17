@@ -152,9 +152,11 @@ export default {
     },
     login() {
       this.form.validate().then(params => {
-        params.country_code_id = this.countryInfo.code_id
+        const { country_phone } = params
+        params.country_code_id = country_phone.code_id
+        params.phone = country_phone.phone
+        delete params.country_phone
         this.loginService.loginPhone(params).subscribe(res => {
-          // this.userService.SET_FIRST_INITED(false)
           location.href = '/'
         })
       })

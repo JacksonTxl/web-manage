@@ -7,7 +7,8 @@ export class FindApi extends Api {
    * @param params.nvc_val 无痕验证参数
    */
   checkAccount(params: any) {
-    return this.http.post('/login/check-account', { params })
+    const ignoreCodes = [60154, 60155]
+    return this.http.post('/login/check-account', { params, ignoreCodes })
   }
   /**
    * 根据账户获取验证码

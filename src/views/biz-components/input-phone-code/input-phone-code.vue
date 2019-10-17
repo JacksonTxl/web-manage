@@ -6,10 +6,10 @@
       :placeholder="placeholder"
       @change="onChange"
     />
-    <span v-if="isClick" :class="b('button')" @click="onClick">
-      {{ buttonText }}
-    </span>
-    <span v-else>
+    <span
+      :class="[b('button'), isClick ? b('button--disabled') : '']"
+      @click="onClick"
+    >
       {{ buttonText }}
     </span>
   </div>
