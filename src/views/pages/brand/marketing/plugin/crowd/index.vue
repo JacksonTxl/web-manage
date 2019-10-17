@@ -42,7 +42,10 @@
                 <a-menu-item style="width:130px">
                   <a
                     v-if="record.auth['shop:member:crowd|export']"
-                    v-exportExcel="{ type: 'crowd/' + record.id, para: record }"
+                    v-exportExcel="{
+                      type: 'crowd/' + record.id,
+                      query: record
+                    }"
                   >
                     导出
                   </a>

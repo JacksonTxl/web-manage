@@ -10,7 +10,7 @@ Vue.directive('exportExcel', {
       Modal.confirm({
         title: '是否确认导出?',
         onOk: function() {
-          exportService.export(val.value.type, val.value.para).subscribe()
+          exportService.export(val.value.type, val.value.query).subscribe()
         }
       })
     }
