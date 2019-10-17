@@ -1,6 +1,6 @@
 <template>
   <div>
-    <MarkteingPluginTitle :type="1" />
+    <MarkteingPluginTitle :type="TYPE.COUPON" />
     <st-panel app initial :class="basic()">
       <div slot="title" :class="basic('search')">
         <div :class="basic('add')">
@@ -109,6 +109,7 @@ import { RouteService } from '@/services/route.service'
 import MarkteingPluginTitle from '../../components#/marketing-title'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
+import { TYPE } from '@/constants/marketing/plugin'
 import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
 import BrandMarketingPoster from '@/views/biz-modals/brand/marketing/poster'
 
@@ -154,6 +155,7 @@ export default {
   },
   data(vm) {
     return {
+      TYPE,
       couponName: '',
       couponStatus: -1,
       columns: columns(vm)

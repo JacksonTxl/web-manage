@@ -27,6 +27,7 @@
 <script>
 import { MarketingTitleService } from './marketing-title.service'
 import BrandMarketingRuleTip from '@/views/biz-modals/brand/marketing/rule-tip'
+
 export default {
   name: 'MarktingPluginTitle',
   bem: {
@@ -40,17 +41,19 @@ export default {
       marketingTitleService: MarketingTitleService
     }
   },
+  props: {
+    /**
+     * 插件类型 coupon|invite|crowd|lottery 用于请求插件介绍信息
+     */
+    type: {
+      type: Number,
+      required: true
+    }
+  },
   rxState() {
     return {
       loading: this.marketingTitleService.loading$,
       info: this.marketingTitleService.info$
-    }
-  },
-  props: {
-    // 1 优惠券 2 邀请有礼 3大转盘
-    type: {
-      type: Number,
-      default: 1
     }
   },
   created() {

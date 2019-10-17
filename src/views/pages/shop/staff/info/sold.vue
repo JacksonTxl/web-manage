@@ -1,30 +1,25 @@
 <template>
   <div>
     <a-row>
-      <a-col :lg="24">
-        <a-col :lg="18">
-          <a-select
-            style="width: 160px;"
-            :defaultValue="-1"
-            placeholder="请选择订单状态"
-            :options="orderStatus"
-            v-model="query.order_status"
-            @change="onSingleSearch('order_status', $event)"
-          ></a-select>
-          <a-range-picker
-            class="mg-l8"
-            @change="onChooseDate"
-            :disabledDate="disabledDate"
-            format="YYYY-MM-DD"
-          />
-        </a-col>
-        <a-col :lg="6">
-          <st-input-search
-            placeholder="请输入姓名、手机号进行查询"
-            @search="onSingleSearch('keyword', $event)"
-          />
-        </a-col>
-      </a-col>
+      <a-select
+        style="width: 160px;"
+        :defaultValue="-1"
+        placeholder="请选择订单状态"
+        :options="orderStatus"
+        v-model="query.order_status"
+        @change="onSingleSearch('order_status', $event)"
+      ></a-select>
+      <a-range-picker
+        class="mg-l8"
+        @change="onChooseDate"
+        :disabledDate="disabledDate"
+        format="YYYY-MM-DD"
+      />
+      <st-input-search
+        style="float:right"
+        placeholder="请输入姓名、手机号进行查询"
+        @search="onSingleSearch('keyword', $event)"
+      />
       <a-col :lg="24" class="mg-t16">
         <st-table
           :columns="soldColums"

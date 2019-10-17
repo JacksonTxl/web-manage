@@ -5,7 +5,7 @@
       属性和a-input-search一致，只是变更了样式
     </p>
     <div>
-      <st-input-search @search="onSearch" />
+      <st-input-search placeholder="请输入关键词" @search="onSearch" />
     </div>
   </section>
 </template>

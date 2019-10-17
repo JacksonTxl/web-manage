@@ -42,7 +42,13 @@ export class MarketingApi extends Api {
    * 获取营销插件详情
    */
   getMarktingInfo() {
-    return this.http.get(`/v1/plugin/index`)
+    return this.http.get(`/v1/plugin/index_marketing`)
+  }
+  getMarktingOperationInfo() {
+    return this.http.get(`/v1/plugin/index_operation`)
+  }
+  getMarktingNumInfo() {
+    return this.http.get(`/v1/plugin/index_num`)
   }
   /**
    * 创建优惠券模板

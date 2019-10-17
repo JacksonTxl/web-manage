@@ -1,4 +1,5 @@
 import { UserService } from '@/services/user.service'
+import { AuthService } from '@/services/auth.service'
 import { StatApi } from '@/api/v1/stat/shop'
 import { Injectable } from 'vue-service-app'
 import { Effect, State } from 'rx-state'
@@ -12,8 +13,15 @@ export class TeamConsumeService {
   modalCoachList$ = new State([])
   loading$ = new State({})
   page$ = new State({})
+  auth$ = this.authService.authMap$({
+    export: 'shop:stat:class_reports|export_team_price'
+  })
   courseTypeList$ = this.userService.getOptions$('reserve.reserve_type')
-  constructor(private statApi: StatApi, private userService: UserService) {}
+  constructor(
+    private statApi: StatApi,
+    private userService: UserService,
+    private authService: AuthService
+  ) {}
   @Effect()
   getConsumeList(params: any) {
     return this.statApi.getTeamConsume(params).pipe(

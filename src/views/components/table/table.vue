@@ -20,6 +20,10 @@ export default {
       required: true,
       default: () => []
     },
+    scroll: {
+      type: Object,
+      default: () => ({})
+    },
     /**
      * client | server 分页模式
      */
@@ -109,6 +113,7 @@ export default {
       pagination: this.tablePagination,
       locale: this.locale,
       dataSource: this.dataSource,
+      scroll: this.dataSource.length > 1 ? this.scroll : {},
       ...this.$attrs
     }
     const ce = this.alertSelection.onReset

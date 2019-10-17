@@ -5,14 +5,18 @@
       slot="title"
     >
       <div class="title__left">
-        <st-button @click="onClickScheduleInBatch" class="mg-r8" type="primary">
+        <st-button
+          @click="onClickScheduleInBatch"
+          class="mg-r12"
+          type="primary"
+        >
           批量排期
         </st-button>
         <st-button @click="onClickCopySchedule">
           复制排期
         </st-button>
       </div>
-      <div class="title__left">
+      <div class="title__center">
         <date
           @today="getTable"
           :start="query.start_date"
@@ -20,10 +24,22 @@
           @next="getTable"
         />
       </div>
-      <div class="title__left schedule-button">
-        <st-button @click="onClickSkipSchedule">
-          <st-icon type="calendar"></st-icon>
-        </st-button>
+      <div class="title__right schedule-button">
+        <a-radio-group
+          :value="pageBtnFocusState"
+          @change="handleSizeChange($event, 'page')"
+        >
+          <a-radio-button
+            value="calendar"
+            class="mg-l32"
+            @click="onClickSkipSchedule"
+          >
+            <st-icon type="calendar"></st-icon>
+          </a-radio-button>
+          <a-radio-button value="list">
+            <st-icon type="list"></st-icon>
+          </a-radio-button>
+        </a-radio-group>
       </div>
     </div>
     <a-card
@@ -111,6 +127,11 @@ export default {
       routeService: RouteService
     }
   },
+  data() {
+    return {
+      pageBtnFocusState: 'list'
+    }
+  },
   components: {
     date
   },
@@ -133,6 +154,9 @@ export default {
     }
   },
   methods: {
+    handleSizeChange(evt, type) {
+      this.pageBtnFocusState = evt.target.value
+    },
     // 刷新页面
     onScheduleChange() {
       this.$router.push({ query: this.query, force: true })

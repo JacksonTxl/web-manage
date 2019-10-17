@@ -16,18 +16,18 @@
       </a-row>
       <a-row>
         <st-form
-          labelWidth="88px"
           :form="form"
           @submit="save"
+          labelWidth="68px"
           class="modal-bind-entity-card__form"
         >
-          <st-form-item label="实体卡号" required>
+          <st-form-item label="实体卡号：" required>
             <a-input
               placeholder="请输入实体卡号"
               v-decorator="decorators.card_number"
             />
           </st-form-item>
-          <st-form-item label="物理ID" required>
+          <st-form-item label="物理ID：" required class="mg-b0">
             <a-input
               v-decorator="decorators.physical_number"
               placeholder="请将实体卡置于读卡器上"

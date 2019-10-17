@@ -1,7 +1,9 @@
 <template>
-  <div :class="b()">
-    <st-page-route-nav title="数据导入" v-model="authTabs"></st-page-route-nav>
-  </div>
+  <st-page-route-nav
+    :class="b()"
+    title="数据导入"
+    v-model="authTabs"
+  ></st-page-route-nav>
 </template>
 <script>
 import { ImportService } from './import.service'

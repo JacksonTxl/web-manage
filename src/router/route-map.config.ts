@@ -36,6 +36,9 @@ export const routeMapConfig = {
   styleguide(routeConfig: RouteConfig) {
     routeConfig.redirect = { name: 'styleguide-component' }
   },
+  'common-export'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '导出记录'
+  },
   'brand-product-course-personal-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教课'
     routeConfig.meta.tabs = [
@@ -1047,6 +1050,19 @@ export const routeMapConfig = {
       end_date: { type: String, default: '' },
       department_id: { type: Number, default: -1 },
       coach_id: { type: Number, default: -1 }
+    }
+  },
+  'shop-stat-sell'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '销售报表'
+    routeConfig.queryOptions = {
+      showTable: { type: String, default: 'all' },
+      recently_day: { type: Number, default: 7 },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' },
+      department_id: { type: Number, default: -1 },
+      staff_id: { type: Number, default: -1 }
     }
   },
   'shop-stat-finance'(routeConfig: RouteConfig) {

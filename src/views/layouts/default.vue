@@ -92,6 +92,12 @@
             <fast-entry />
           </div>
         </a-dropdown> -->
+        <router-link
+          :to="{ name: 'common-export' }"
+          class="layout-default-body__header-link"
+        >
+          <st-icon type="export"></st-icon>
+        </router-link>
         <a-dropdown :trigger="['click']" placement="bottomRight">
           <div class="layout-default-body__avatar">
             <img
@@ -134,10 +140,10 @@
       <article class="layout-default-body__content">
         <router-view></router-view>
         <!-- <default-skeleton></default-skeleton> -->
+        <footer class="layout-default-body__footer">
+          Copyright &#169; 2019 三体云智能科技有限公司
+        </footer>
       </article>
-      <footer class="layout-default-body__footer">
-        Copyright &#169; 2019 三体云智能科技有限公司
-      </footer>
     </main>
     <switch-shop v-model="isShowSwitchShop"></switch-shop>
   </div>

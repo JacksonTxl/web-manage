@@ -2,7 +2,8 @@ import { Injectable } from 'vue-service-app'
 import { State, Effect, Action } from 'rx-state'
 import {
   TransactionApi,
-  TransactionPriceInput
+  TransactionPriceInput,
+  MemberCouponParams
 } from '@/api/v1/sold/transaction'
 import { tap, switchMap, catchError, debounceTime } from 'rxjs/operators'
 import { ContractApi } from '@/api/v1/setting/contract'
@@ -17,6 +18,7 @@ export class SaleDepositCardService {
   info$ = new State({})
   memberList$ = new State([])
   saleList$ = new State({})
+  couponList$ = new State({})
   constructor(
     private contractApi: ContractApi,
     private memberApi: ShopPersonalCourseApi,
@@ -53,6 +55,13 @@ export class SaleDepositCardService {
     return this.transactionApi.getMemberList(member, type).pipe(
       tap((res: any) => {
         this.memberList$.commit(() => res.list)
+      })
+    )
+  }
+  getCouponList(params: MemberCouponParams) {
+    return this.transactionApi.getTransactionCouponList(params, 'deposit').pipe(
+      tap((res: any) => {
+        this.couponList$.commit(() => res.list)
       })
     )
   }

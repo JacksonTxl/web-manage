@@ -10,6 +10,16 @@
               click: toContract
             },
             {
+              if: auth['shop:sold:sold_personal_course|reactive'],
+              text: '重新激活',
+              click: onActivated
+            },
+            {
+              if: auth['shop:sold:sold_personal_course|expire'],
+              text: '延长有效期',
+              click: onActivated
+            },
+            {
               if: auth['shop:sold:sold_personal_course|frozen'],
               text: '冻结',
               click: onFreeze
@@ -133,6 +143,9 @@ import SoldCourseFreeze from '@/views/biz-modals/sold/course/freeze'
 import SoldCourseRefund from '@/views/biz-modals/sold/course/refund'
 import SoldCourseSurplusPersonal from '@/views/biz-modals/sold/course/surplus-personal'
 import SoldCourseTransfer from '@/views/biz-modals/sold/course/transfer'
+import SoldCourseActivated from '@/views/biz-modals/sold/course/activated'
+import SoldCourseLease from '@/views/biz-modals/sold/course/lease'
+
 export default {
   name: 'PageShopSoldCoursePersonalInfo',
   bem: {
@@ -143,7 +156,9 @@ export default {
     SoldCourseFreeze,
     SoldCourseRefund,
     SoldCourseSurplusPersonal,
-    SoldCourseTransfer
+    SoldCourseTransfer,
+    SoldCourseActivated,
+    SoldCourseLease
   },
   serviceInject() {
     return {
@@ -267,6 +282,36 @@ export default {
         name: 'sold-course-coach',
         props: {
           record: this.personalInfo
+        },
+        on: {
+          success: () => {
+            this.$router.reload()
+          }
+        }
+      })
+    },
+    // 重新激活
+    onActivated() {
+      this.$modalRouter.push({
+        name: 'sold-course-activated',
+        props: {
+          type: 'personal',
+          id: this.personalInfo.id
+        },
+        on: {
+          success: () => {
+            this.$router.reload()
+          }
+        }
+      })
+    },
+    // 延长有效期
+    onLease(record) {
+      this.$modalRouter.push({
+        name: 'sold-course-lease',
+        props: {
+          type: 'personal',
+          id: this.personalInfo.id
         },
         on: {
           success: () => {

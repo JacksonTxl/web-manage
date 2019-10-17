@@ -78,7 +78,6 @@
 }
 
 .brand-marketing-card {
-  display: flex;
   height: 78px;
   .bg(#fff);
   box-shadow: 0 1px 10px 1px rgba(0, 0, 0, 0.05);
@@ -93,9 +92,10 @@
   &__img {
     .mg-r(16px);
     .w(44px);
+    float: left;
   }
   &__content {
-    flex: 1;
+    margin-left: 44px;
   }
   &__title {
     .mg-b(4px);

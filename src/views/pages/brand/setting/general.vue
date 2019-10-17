@@ -1,7 +1,5 @@
 <template>
-  <div class="st-page-general">
-    <st-page-route-nav title="通用设置" v-model="authTabs"></st-page-route-nav>
-  </div>
+  <st-page-route-nav title="通用设置" v-model="authTabs"></st-page-route-nav>
 </template>
 <script>
 import { GeneralService } from './general.service'

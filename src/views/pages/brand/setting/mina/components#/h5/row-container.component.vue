@@ -1,9 +1,9 @@
 <template>
   <div :class="[rowcont(), className]">
-    <st-t4>
+    <st-plugin-form-title>
       {{ title }}
-      <span v-if="subTitle">{{ subTitle }}</span>
-    </st-t4>
+      <span slot="sub-title">{{ subTitle }}</span>
+    </st-plugin-form-title>
     <slot></slot>
   </div>
 </template>

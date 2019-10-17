@@ -9,7 +9,7 @@ export const ruleOptions = (vm: any) => {
         },
         {
           validator: (field: any, value: any, values: any) => {
-            if (value.length > 15) {
+            if (value && value.length > 15) {
               return '请输入1-15个字符'
             }
           }
@@ -50,7 +50,7 @@ export const ruleOptions = (vm: any) => {
         },
         {
           validator: (field: any, value: any, values: any) => {
-            if (value.length > 15) {
+            if (value && value.length > 15) {
               return '请输入1-15个字符'
             }
           }
