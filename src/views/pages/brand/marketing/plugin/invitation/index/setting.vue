@@ -120,6 +120,7 @@
         </st-form-item>
         <st-form-item>
           <st-button
+            :class="inviation('seve')"
             type="primary"
             :loading="loading.edit || loading.add"
             @click="onSubmit"
