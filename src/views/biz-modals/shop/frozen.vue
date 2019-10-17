@@ -1,5 +1,11 @@
 <template>
-  <st-modal title="冻结" :footer="null" v-model="show" size="small">
+  <st-modal
+    title="冻结"
+    :footer="null"
+    v-model="show"
+    size="small"
+    wrapClassName="modal-shop-frozen"
+  >
     <st-form :form="form" labelWidth="80px">
       <a-row :gutter="8">
         <a-col :lg="24">
@@ -35,7 +41,7 @@
           </st-form-item>
         </a-col>
       </a-row>
-      <a-row :gutter="8" class="mg-t8">
+      <a-row :gutter="8" class="mg-t24">
         <a-col :lg="24">
           <st-form-item label="冻结日期">
             <a-date-picker
@@ -48,7 +54,7 @@
           </st-form-item>
         </a-col>
       </a-row>
-      <a-row :gutter="8" class="mg-t8">
+      <a-row :gutter="8">
         <a-col :lg="24">
           <st-form-item label="有无手续费" required>
             <a-radio-group
@@ -127,7 +133,7 @@
           </st-form-item>
         </a-col>
       </a-row> -->
-      <a-row :gutter="8" class="mg-t8">
+      <a-row :gutter="8">
         <a-col :lg="24">
           <st-form-item class="mg-l24" style="text-align:right;" labelOffset>
             <st-button
@@ -148,6 +154,9 @@ import { FrozenService } from './frozen.service'
 import { columns, ruleOptions } from './frozen.config'
 import moment from 'moment'
 export default {
+  bem: {
+    frozen: 'modal-shop-frozen'
+  },
   serviceInject() {
     return {
       frozenService: FrozenService
