@@ -72,12 +72,12 @@
             >
               退款
             </a>
-            <a
+            <!-- <a
               v-if="record.auth['brand_shop:order:order|split']"
               @click="onSplit(record)"
             >
               业绩拆分
-            </a>
+            </a> -->
           </st-table-actions>
         </div>
       </st-table>

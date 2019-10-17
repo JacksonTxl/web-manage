@@ -26,14 +26,14 @@
         >
           取消
         </st-button>
-        <st-button
+        <!-- <st-button
           class="mg-r8"
           v-if="auth['brand_shop:order:order|split']"
           @click="onSplit"
           type="primary"
         >
           业绩拆分
-        </st-button>
+        </st-button> -->
       </div>
       <a-row :gutter="24">
         <a-col :span="9">
