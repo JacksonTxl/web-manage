@@ -14,6 +14,7 @@
           placeholder="请选择部门"
           optionFilterProp="children"
           style="width: 200px"
+          v-if="showTable === 'all'"
           @change="getAmountList($event, 'changeDepartment')"
           v-model="pageParams.department_id"
           :filterOption="filterOption"
