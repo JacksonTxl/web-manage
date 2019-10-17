@@ -1,5 +1,5 @@
 <template>
-  <st-panel class="page-shop-label-container">
+  <st-panel app class="page-shop-label-container">
     <div slot="title">
       <st-button type="primary" v-if="auth.add">
         <a v-modal-link="{ name: 'label-add', on: { change: onSearhReset } }">
