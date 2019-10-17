@@ -1,5 +1,12 @@
 <template>
   <div :class="all()">
+    <st-input-search
+      v-model="query.card_name"
+      v-di-view="{ name: SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH }"
+      @search="onKeywordsSearch('card_name', $event)"
+      placeholder="请输入会员卡名称查找"
+      maxlength="50"
+    />
     <div :class="all('search')">
       <st-button v-if="auth.add" type="primary" @click="onAddCard" icon="add">
         新增储值卡
@@ -190,11 +197,6 @@ export default {
   bem: {
     all: 'page-shop-product-deposit-list-all'
   },
-  events: {
-    [SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH](key, data) {
-      this.onKeywordsSearch(key, data)
-    }
-  },
   modals: {
     CardShopDepositRecoverSale,
     CardShopDepositShopTable,
@@ -224,7 +226,8 @@ export default {
     return {
       SUPPORT_SALES,
       CONSUMPTION_RANGE,
-      SELL_STATUS
+      SELL_STATUS,
+      SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH
     }
   },
   computed: {

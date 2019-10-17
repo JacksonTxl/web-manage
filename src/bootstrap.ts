@@ -9,8 +9,6 @@ import VueBemHelper from '@/vendor/vue-bem-helper'
 // @ts-ignore
 import VueRxState from '@/vendor/vue-rx-state'
 // @ts-ignore
-import VueEvents from '@/vendor/vue-events'
-// @ts-ignore
 import VueStyleguide from '@/vendor/vue-styleguide'
 
 import VueStForm from 'vue-st-form'
@@ -38,7 +36,6 @@ Vue.use(VueRxState)
 Vue.use(Antd)
 Vue.use(Viewer)
 Vue.use(VueBemHelper)
-Vue.use(VueEvents)
 // @ts-ignore
 Vue.use(VueDiView)
 // @ts-ignore

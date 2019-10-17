@@ -1,5 +1,12 @@
 <template>
   <div :class="all()">
+    <st-input-search
+      v-model="query.card_name"
+      v-di-view="{ name: SHOP_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH }"
+      @search="onKeywordsSearch('card_name', $event)"
+      placeholder="请输入会员卡名称查找"
+      maxlength="50"
+    />
     <div :class="all('search')">
       <router-link v-if="auth.add" to="../add-select">
         <st-button type="primary" icon="add">新增会员卡</st-button>
@@ -229,11 +236,6 @@ export default {
   bem: {
     all: 'page-shop-product-member-list-all'
   },
-  events: {
-    [SHOP_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH](key, data) {
-      this.onKeywordsSearch(key, data)
-    }
-  },
   modals: {
     CardShopMemberRecoverSale,
     CardShopMemberShelf,
@@ -271,7 +273,8 @@ export default {
       ADMISSION_RANGE,
       SUPPORT_SALES,
       SELL_STATUS,
-      PUBLISH_CHANNEL
+      PUBLISH_CHANNEL,
+      SHOP_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH
     }
   },
   methods: {

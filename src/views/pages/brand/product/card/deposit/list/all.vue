@@ -1,5 +1,12 @@
 <template>
   <div :class="all()">
+    <st-input-search
+      v-model="query.card_name"
+      v-di-view="{ name: BRAND_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH }"
+      @search="onKeywordsSearch('card_name', $event)"
+      placeholder="请输入储值卡名称搜索"
+      maxlength="50"
+    />
     <div :class="all('search')">
       <router-link v-if="auth.add" to="../add">
         <st-button type="primary" icon="add">新增储值卡</st-button>
@@ -205,11 +212,6 @@ export default {
     CardBrandDepositShopTable,
     CardBrandDepositStopSale
   },
-  events: {
-    [BRAND_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH](key, data) {
-      this.onKeywordsSearch(key, data)
-    }
-  },
   rxState() {
     return {
       query: this.routeService.query$,
@@ -225,7 +227,8 @@ export default {
     return {
       SUPPORT_SALES,
       CONSUMPTION_RANGE,
-      SELL_STATUS
+      SELL_STATUS,
+      BRAND_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH
     }
   },
   computed: {
