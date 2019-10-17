@@ -228,7 +228,8 @@ export const routeMapConfig = {
   'shop-sold-course-info-personal-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教课详情'
     routeConfig.meta.tabs = [
-      'shop-sold-course-info-personal-info-operation-record'
+      'shop-sold-course-info-personal-info-operation-record',
+      'shop-sold-course-info-personal-info-usage-log'
     ]
   },
   'shop-sold-course-info-personal-info-consumption-record'(
@@ -244,6 +245,14 @@ export const routeMapConfig = {
     routeConfig: RouteConfig
   ) {
     routeConfig.meta.title = '操作日志'
+    routeConfig.meta.parentId = 'shop-sold-course-info-personal-info'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-sold-course-info-personal-info-usage-log'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '使用记录'
     routeConfig.meta.parentId = 'shop-sold-course-info-personal-info'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
@@ -277,7 +286,10 @@ export const routeMapConfig = {
   },
   'shop-sold-card-info-member-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '会员卡详情'
-    routeConfig.meta.tabs = ['shop-sold-card-info-member-info-operation-record']
+    routeConfig.meta.tabs = [
+      'shop-sold-card-info-member-info-operation-record',
+      'shop-sold-card-info-member-info-usage-log'
+    ]
   },
   'shop-sold-card-info-member-info-consumption-record'(
     routeConfig: RouteConfig
@@ -290,6 +302,14 @@ export const routeMapConfig = {
   },
   'shop-sold-card-info-member-info-operation-record'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '操作日志'
+    routeConfig.meta.parentId = 'shop-sold-card-info-member-info'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-sold-card-info-member-info-usage-log'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '使用记录'
     routeConfig.meta.parentId = 'shop-sold-card-info-member-info'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
