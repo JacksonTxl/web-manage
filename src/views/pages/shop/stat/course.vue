@@ -7,7 +7,8 @@
           <a-radio-button value="coach">教练</a-radio-button>
         </a-radio-group>
         <st-export-button
-          v-if="showTable === 'all'"
+          v-if="auth.export_all"
+          v-show="showTable === 'all'"
           class="mg-l8"
           type="course/shop"
           :query="query"
@@ -15,7 +16,8 @@
           全部导出
         </st-export-button>
         <st-export-button
-          v-if="showTable === 'coach'"
+          v-if="auth.export_coach"
+          v-show="showTable === 'coach'"
           class="mg-l8"
           type="shop/coach"
           :query="query"
@@ -151,7 +153,8 @@ export default {
       list: this.courseService.list$,
       departmentList: this.courseService.departmentList$,
       coachList: this.courseService.coachList$,
-      page: this.courseService.page$
+      page: this.courseService.page$,
+      auth: this.courseService.auth$
     }
   },
   data() {

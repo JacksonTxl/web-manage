@@ -54,7 +54,11 @@
       page-mode="client"
     ></st-table>
     <div slot="footer">
-      <st-export-button type="shop/team/course/checkin" :query="query">
+      <st-export-button
+        v-if="auth$.export"
+        type="shop/team/course/checkin"
+        :query="query"
+      >
         全部导出
       </st-export-button>
     </div>
@@ -77,14 +81,16 @@ export default {
       page$,
       loading$,
       modalCoachList$,
-      modalCourseList$
+      modalCourseList$,
+      auth$
     } = this.teamConsumeService
     return {
       modalCoachList$,
       modalCourseList$,
       consumeList$,
       page$,
-      loading$
+      loading$,
+      auth$
     }
   },
   props: {

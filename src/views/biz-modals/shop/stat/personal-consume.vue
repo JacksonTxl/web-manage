@@ -63,7 +63,11 @@
     ></st-table>
 
     <div slot="footer">
-      <st-export-button type="shop/personal/course/checkin" :query="query">
+      <st-export-button
+        v-if="auth$.export"
+        type="shop/personal/course/checkin"
+        :query="query"
+      >
         全部导出
       </st-export-button>
     </div>
@@ -87,7 +91,8 @@ export default {
       loading$,
       modalCoachList$,
       modalCourseList$,
-      courseTypeList$
+      courseTypeList$,
+      auth$
     } = this.personalConsumeService
     return {
       modalCoachList$,
@@ -95,7 +100,8 @@ export default {
       courseTypeList$,
       consumeList$,
       page$,
-      loading$
+      loading$,
+      auth$
     }
   },
   props: {
