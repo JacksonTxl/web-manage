@@ -1,4 +1,3 @@
-const ModuleDependencyWarning = require('webpack/lib/ModuleDependencyWarning')
 const webpack = require('webpack')
 
 module.exports = class IgnoreNotFoundExportPlugin {
@@ -8,16 +7,14 @@ module.exports = class IgnoreNotFoundExportPlugin {
    */
   apply(compiler) {
     // 修复webpack下的接口引入报错问题
-    const reg = /export '(\\w+Input)' \((imported|reexported) as '.*'\)? was not found in '(.*)'/
+    const reg = /export '(\w+)' was not found in/
 
     compiler.hooks.done.tap('IgnoreNotFoundExportPlugin', stats => {
       stats.compilation.warnings = stats.compilation.warnings.filter(warn => {
-        if (!(warn instanceof ModuleDependencyWarning) || !warn.message) {
-          return true
-        }
         if (reg.test(warn.message)) {
           return false
         }
+        return true
       })
     })
   }
