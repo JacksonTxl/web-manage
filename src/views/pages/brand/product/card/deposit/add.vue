@@ -198,7 +198,7 @@
           <a-row :gutter="8">
             <a-col :lg="20">
               <st-form-item class="page-content-card-time mg-b0" required>
-                <span slot="label">
+                <span slot="label" class="label">
                   支持售卖时间
                   <a-popover
                     trigger="hover"
@@ -208,10 +208,11 @@
                     <div slot="content">
                       设置此会员卡可售卖的时间范围
                     </div>
-                    <a-icon
+                    <st-help-tooltip
+                      id="TBCGC001"
                       class="page-content-card-time__icon"
                       type="info-circle"
-                    ></a-icon>
+                    ></st-help-tooltip>
                   </a-popover>
                 </span>
                 <a-form-item class="page-a-form">
