@@ -112,9 +112,7 @@ export default {
       })
     },
     onClickFindPassword() {
-      this.$router.push({
-        path: '/account/find'
-      })
+      window.open('/account/find', 'blank')
     },
     onClickThirdChange(key) {
       this.$emit('third', key)
