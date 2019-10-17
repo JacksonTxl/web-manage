@@ -1,5 +1,5 @@
 <template>
-  <st-panel app>
+  <st-panel app class="shop-member-edit">
     <st-form :form="form" @submit="save" class="page-add-container">
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
@@ -13,9 +13,9 @@
             />
           </st-form-item>
           <st-form-item label="手机号" required>
-            <a-input-group compact>
+            <a-input-group compact style="display:flex; top:0">
               <a-select
-                style="width:30%"
+                style="width:90px"
                 v-model="country_prefix"
                 v-if="countryList"
                 placeholder="请选择"
@@ -29,7 +29,7 @@
                 </a-select-option>
               </a-select>
               <a-input
-                style="width:70%"
+                :class="edit('phone-input')"
                 placeholder="请输入手机号"
                 v-decorator="rules.mobile"
               />
@@ -287,6 +287,9 @@ import { MessageService } from '@/services/message.service'
 import { PatternService } from '@/services/pattern.service'
 import FaceUpload from '@/views/biz-components/face-upload/face-upload'
 export default {
+  bem: {
+    edit: 'shop-member-edit'
+  },
   components: {
     FaceUpload
   },
