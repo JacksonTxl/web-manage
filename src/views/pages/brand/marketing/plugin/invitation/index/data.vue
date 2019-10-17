@@ -65,14 +65,15 @@
           <a-radio-button :value="1">邀请用户</a-radio-button>
         </a-radio-group>
       </div>
-      <st-table
-        v-if="!tableType"
-        :alertSelection="{ onReset: onClear }"
+      <!-- TODO: 预留，缺失导出功能 -->
+      <!-- :alertSelection="{ onReset: onClear }"
         :rowSelection="{
           selectedRowKeys: selectedRowKeys,
           fixed: true,
           onChange: onSelectChange
-        }"
+        }" -->
+      <st-table
+        v-if="!tableType"
         @change="onReportPageChange"
         :columns="columnsActivity"
         :dataSource="stReportList"
@@ -85,12 +86,6 @@
       />
       <st-table
         v-if="tableType"
-        :alertSelection="{ onReset: onClear }"
-        :rowSelection="{
-          selectedRowKeys: selectedRowKeys,
-          fixed: true,
-          onChange: onSelectChange
-        }"
         @change="onInviteePageChange"
         :columns="columnsUser"
         :dataSource="stInviteeList"
