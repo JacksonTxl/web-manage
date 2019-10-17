@@ -45,27 +45,27 @@
   </section>
 </template>
 <script>
-import { OperationRecordService } from './operation-record.service'
+import { UsageLogService } from './usage-log.service'
 import { RouteService } from '@/services/route.service'
-import { columns } from './operation-record.config'
+import { columns } from './usage-log.config'
 import tableMixin from '@/mixins/table.mixin'
 export default {
   name: 'PageShopSoldCardMemberInfoOperation',
   mixins: [tableMixin],
   serviceProviders() {
-    return [OperationRecordService]
+    return [UsageLogService]
   },
   serviceInject() {
     return {
       routeService: RouteService,
-      operationRecordService: OperationRecordService
+      usageLogService: UsageLogService
     }
   },
   rxState() {
     return {
-      page: this.operationRecordService.page$,
-      list: this.operationRecordService.list$,
-      loading: this.operationRecordService.loading$,
+      page: this.usageLogService.page$,
+      list: this.usageLogService.list$,
+      loading: this.usageLogService.loading$,
       query: this.routeService.query$
     }
   },

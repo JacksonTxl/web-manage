@@ -165,6 +165,14 @@ export class CourseApi extends Api {
     })
   }
   /**
+   * 售出 课程包/私教课 详情使用记录
+   */
+  getCardsUsageLog(query: any, type: string) {
+    return this.http.get(`/v1/sold/course/${type}/usage/log/${query.id}`, {
+      query
+    })
+  }
+  /**
    * 售出私教修改教练
    */
   editCoursePersonalCoach(params: EditCoursePersonalCoachInput, id: string) {

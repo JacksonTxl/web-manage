@@ -5,16 +5,16 @@ import { CardApi } from '@/api/v1/sold/cards'
 import { SoldService } from '@/services/sold.service'
 
 @Injectable()
-export class OperationRecordService implements RouteGuard {
+export class UsageLogService implements RouteGuard {
   list$ = new State({})
   page$ = new State({})
   loading$ = new State({})
   constructor(private cardApi: CardApi, private soldService: SoldService) {}
   @Effect()
   getList(query: any, type: string) {
-    return this.cardApi.getCardsOperationInfo(query, type).pipe(
+    return this.cardApi.getCardsUsageLog(query, type).pipe(
       tap((res: any) => {
-        this.list$.commit(() => this.soldService.dealData(res.list))
+        this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })
     )

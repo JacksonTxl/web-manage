@@ -159,7 +159,7 @@
         </a-col>
       </a-row>
     </st-panel>
-    <st-panel initial class="mg-t16" :tabs="authTabs">
+    <st-panel class="mg-t16" :tabs="pageAuthTabs">
       <router-view></router-view>
     </st-panel>
   </section>
@@ -205,7 +205,7 @@ export default {
       info: this.infoService.info$,
       query: this.routeService.query$,
       loading: this.infoService.loading$,
-      authTabs: this.infoService.authTabs$,
+      pageAuthTabs: this.infoService.pageAuthTabs$,
       auth: this.infoService.auth$
     }
   },
