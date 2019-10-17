@@ -36,7 +36,10 @@
       >
         <div slot="shop_name1" slot-scope="text, record">
           <st-table-actions>
-            <a v-exportExcel="{ type: 'crowd/' + record.id, para: record }">
+            <a
+              v-if="record.auth['shop:member:crowd|export']"
+              v-exportExcel="{ type: 'crowd/' + record.id, para: record }"
+            >
               导出
             </a>
             <a href="#">

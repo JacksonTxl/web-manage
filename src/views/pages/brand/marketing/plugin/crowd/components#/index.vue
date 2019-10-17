@@ -63,7 +63,12 @@
               </span>
               <a-menu slot="overlay">
                 <a-menu-item style="width:130px">
-                  <a v-exportExcel="{ type: 'crowd/' + value[0].id }">导出</a>
+                  <a
+                    v-if="auth.export"
+                    v-exportExcel="{ type: 'crowd/' + value[0].id }"
+                  >
+                    导出
+                  </a>
                 </a-menu-item>
                 <a-menu-item style="width:130px">
                   <a
@@ -148,7 +153,12 @@
               </span>
               <a-menu slot="overlay">
                 <a-menu-item style="width:130px">
-                  <a v-exportExcel="{ type: 'crowd/' + value[1].id }">导出</a>
+                  <a
+                    v-if="auth.export"
+                    v-exportExcel="{ type: 'crowd/' + value[1].id }"
+                  >
+                    导出
+                  </a>
                 </a-menu-item>
                 <a-menu-item style="width:130px">
                   <a
@@ -233,7 +243,12 @@
               </span>
               <a-menu slot="overlay">
                 <a-menu-item style="width:130px">
-                  <a v-exportExcel="{ type: 'crowd/' + value[2].id }">导出</a>
+                  <a
+                    v-if="auth.export"
+                    v-exportExcel="{ type: 'crowd/' + value[2].id }"
+                  >
+                    导出
+                  </a>
                 </a-menu-item>
                 <a-menu-item style="width:130px">
                   <a

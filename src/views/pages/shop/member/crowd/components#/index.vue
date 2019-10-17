@@ -59,6 +59,7 @@
               功能暂未开放
             </template> -->
             <span
+              v-if="auth.export"
               v-exportExcel="{ type: 'crowd/' + value[0].id }"
               class="shop-member-crowd-index-box__btn-rq"
             >
@@ -125,6 +126,7 @@
               功能暂未开放
             </template> -->
             <span
+              v-if="auth.export"
               v-exportExcel="{ type: 'crowd/' + value[1].id }"
               class="shop-member-crowd-index-box__btn-rq"
               @click="exportFunc(value[1].id)"
@@ -192,6 +194,7 @@
               功能暂未开放
             </template> -->
             <span
+              v-if="auth.export"
               v-exportExcel="{ type: 'crowd/' + value[2].id }"
               class="shop-member-crowd-index-box__btn-rq"
               @click="exportFunc(value[2].id)"
