@@ -2,121 +2,111 @@
   <div>
     <st-t4>卡项</st-t4>
     <a-row :gutter="24" class="mg-t16">
-      <a-col :lg="24" class="mg-b16 reserve-min-width">
-        <a-col :lg="15">
-          <a-date-picker
-            style="width: 224px;"
-            format="YYYY-MM-DD"
-            placeholder="开卡日期"
-            @change="onChooseDate"
-          />
-          <a-select
-            style="width: 160px;margin-left:12px"
-            placeholder="请选择"
-            v-model="cardquery.card_type"
-            @change="onChooseCardType"
-          >
-            <a-select-option
-              v-for="(item, index) in cardConsumeList"
-              :value="item.value"
-              :key="index"
-            >
-              {{ item.label }}
-            </a-select-option>
-          </a-select>
-        </a-col>
-        <a-col :lg="9">
-          <st-input-search
-            v-model="cardquery.keyword"
-            placeholder="请输入会员卡名称"
-            @search="searchMemberCard"
-          />
-        </a-col>
-      </a-col>
-      <a-col :lg="24">
-        <st-table
-          rowKey=""
-          :columns="cardItem"
-          :dataSource="cardsListInfo"
-          :scroll="{ x: 1750 }"
-          @change="cardPageChange"
-          :page="cardPage"
+      <a-col :span="15">
+        <a-date-picker
+          style="width: 224px;"
+          format="YYYY-MM-DD"
+          placeholder="开卡日期"
+          @change="onChooseDate"
+        />
+        <a-select
+          style="width: 160px;margin-left:12px"
+          placeholder="请选择"
+          v-model="cardquery.card_type"
+          @change="onChooseCardType"
         >
-          <span slot="card_status" slot-scope="text, record">
-            <span v-if="record.card_status.id === 1" class="effective"></span>
-            <span v-if="record.card_status.id === 2" class="invalid"></span>
-            <span v-if="record.card_status.id === 3" class="frozen"></span>
-            {{ record.card_status.name }}
-          </span>
-          <!-- <span slot="use_shop_name" slot-scope="text,record">
+          <a-select-option
+            v-for="(item, index) in cardConsumeList"
+            :value="item.value"
+            :key="index"
+          >
+            {{ item.label }}
+          </a-select-option>
+        </a-select>
+      </a-col>
+      <a-col :span="9" class="ta-r">
+        <st-input-search
+          v-model="cardquery.keyword"
+          placeholder="请输入会员卡名称"
+          @search="searchMemberCard"
+        />
+      </a-col>
+    </a-row>
+    <st-table
+      class="mg-t16"
+      rowKey=""
+      :columns="cardItem"
+      :dataSource="cardsListInfo"
+      :scroll="{ x: 1750 }"
+      @change="cardPageChange"
+      :page="cardPage"
+    >
+      <span slot="card_status" slot-scope="text, record">
+        <span v-if="record.card_status.id === 1" class="effective"></span>
+        <span v-if="record.card_status.id === 2" class="invalid"></span>
+        <span v-if="record.card_status.id === 3" class="frozen"></span>
+        {{ record.card_status.name }}
+      </span>
+      <!-- <span slot="use_shop_name" slot-scope="text,record">
             {{ record.use_shop_name.join(',') }}
           </span> -->
-          <span slot="init_amount" slot-scope="text, record">
-            {{ record.init_amount.number }}{{ record.init_amount.type }}
-          </span>
-          <span slot="remain_amount" slot-scope="text, record">
-            {{ record.remain_amount.number }}{{ record.remain_amount.type }}
-          </span>
-        </st-table>
-      </a-col>
-    </a-row>
-    <a-row :gutter="8">
-      <a-col :lg="24">
-        <st-hr></st-hr>
-      </a-col>
-    </a-row>
+      <span slot="init_amount" slot-scope="text, record">
+        {{ record.init_amount.number }}{{ record.init_amount.type }}
+      </span>
+      <span slot="remain_amount" slot-scope="text, record">
+        {{ record.remain_amount.number }}{{ record.remain_amount.type }}
+      </span>
+    </st-table>
+    <st-hr></st-hr>
 
     <st-t4>课程</st-t4>
     <a-row :gutter="24" class="mg-t16">
-      <a-col :lg="24" class="mg-b16 reserve-min-width">
-        <a-col :lg="15">
-          <a-date-picker
-            style="width: 224px;"
-            placeholder="购买日期"
-            format="YYYY-MM-DD"
-            @change="onChooseDateCourse"
-          />
-          <a-select
-            style="width: 160px;margin-left:12px"
-            v-model="coursequery.course_type"
-            placeholder="请选择"
-            @change="onChooseCourseType"
-          >
-            <a-select-option
-              v-for="(item, index) in courseConsumeList"
-              :value="item.value"
-              :key="index"
-            >
-              {{ item.label }}
-            </a-select-option>
-          </a-select>
-        </a-col>
-        <a-col :lg="9">
-          <st-input-search
-            placeholder="请输入课程名称"
-            @search="searchCourseName"
-          />
-        </a-col>
-      </a-col>
-      <a-col :lg="24">
-        <st-table
-          :columns="course"
-          :dataSource="courseListInfo"
-          :page="coursePage"
-          @change="coursePageChange"
+      <a-col :span="15">
+        <a-date-picker
+          style="width: 224px;"
+          placeholder="购买日期"
+          format="YYYY-MM-DD"
+          @change="onChooseDateCourse"
+        />
+        <a-select
+          style="width: 160px;margin-left:12px"
+          v-model="coursequery.course_type"
+          placeholder="请选择"
+          @change="onChooseCourseType"
         >
-          <span slot="course_status" slot-scope="text, record">
-            <span v-if="record.course_status.id === 1" class="effective"></span>
-            <span v-if="record.course_status.id === 3" class="invalid"></span>
-            <span v-if="record.course_status.id === 2" class="frozen"></span>
-            {{ record.course_status.name }}
-          </span>
-          <span slot="coach_name" slot-scope="text">
-            {{ coursequery.course_type === 1 ? text : '--' }}
-          </span>
-        </st-table>
+          <a-select-option
+            v-for="(item, index) in courseConsumeList"
+            :value="item.value"
+            :key="index"
+          >
+            {{ item.label }}
+          </a-select-option>
+        </a-select>
+      </a-col>
+      <a-col :span="9" class="ta-r">
+        <st-input-search
+          placeholder="请输入课程名称"
+          @search="searchCourseName"
+        />
       </a-col>
     </a-row>
+    <st-table
+      class="mg-t16"
+      :columns="course"
+      :dataSource="courseListInfo"
+      :page="coursePage"
+      @change="coursePageChange"
+    >
+      <span slot="course_status" slot-scope="text, record">
+        <span v-if="record.course_status.id === 1" class="effective"></span>
+        <span v-if="record.course_status.id === 3" class="invalid"></span>
+        <span v-if="record.course_status.id === 2" class="frozen"></span>
+        {{ record.course_status.name }}
+      </span>
+      <span slot="coach_name" slot-scope="text">
+        {{ coursequery.course_type === 1 ? text : '--' }}
+      </span>
+    </st-table>
   </div>
 </template>
 

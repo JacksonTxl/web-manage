@@ -1,6 +1,6 @@
 <template>
   <!-- auth.get && false -->
-  <st-panel v-if="auth.get && info">
+  <st-panel app v-if="auth.get && info">
     <st-t2>配置支付方式</st-t2>
     <div class="mg-t24" v-for="item in info.list" :key="item.id">
       <a-row class="align-items-center">

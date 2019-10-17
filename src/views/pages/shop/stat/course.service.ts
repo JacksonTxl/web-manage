@@ -5,6 +5,7 @@ import { Store } from '@/services/store'
 import { RedirectService } from '@/services/redirect.service'
 import { StatApi, OrderShopListQuery } from '@/api/v1/stat/shop'
 import { forkJoin } from 'rxjs'
+import { AuthService } from '@/services/auth.service'
 interface SetState {}
 @Injectable()
 export class CourseService {
@@ -13,10 +14,15 @@ export class CourseService {
   coachList$ = new State([])
   page$ = new State({})
   loading$ = new State({})
+  auth$ = this.authService.authMap$({
+    export_all: 'shop:stat:class_reports|list_summary',
+    export_coach: 'shop:stat:class_reports|list_coach'
+  })
   authTabs$ = this.redirectService.getAuthTabs$('shop-stat-course')
   constructor(
     private StatApi: StatApi,
-    private redirectService: RedirectService
+    private redirectService: RedirectService,
+    private authService: AuthService
   ) {}
   @Effect()
   getCourseList(query: OrderShopListQuery) {

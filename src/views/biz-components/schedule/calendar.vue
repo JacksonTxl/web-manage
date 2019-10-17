@@ -13,23 +13,28 @@
       </div>
       <div :class="bToolbar('right')">
         <slot name="toolbar-right"></slot>
-        <a-button-group>
-          <st-button
-            @click="onClickGetWeek"
-            :class="{ btnFocus: 'week' === btnFocusFlag }"
-          >
+        <a-radio-group
+          :value="dataBtnFocusState"
+          @change="handleSizeChange($event, 'date')"
+        >
+          <a-radio-button value="week" @click="onClickGetWeek">
             周
-          </st-button>
-          <st-button
-            @click="onClickGetCurrent"
-            :class="{ btnFocus: 'day' === btnFocusFlag }"
-          >
+          </a-radio-button>
+          <a-radio-button value="day" @click="onClickGetCurrent">
             日
-          </st-button>
-        </a-button-group>
-        <st-button @click="onClickGetTable" class="mg-l32">
-          <st-icon type="list"></st-icon>
-        </st-button>
+          </a-radio-button>
+        </a-radio-group>
+        <a-radio-group
+          :value="pageBtnFocusState"
+          @change="handleSizeChange($event, 'page')"
+        >
+          <a-radio-button value="calendar" class="mg-l32">
+            <st-icon type="calendar"></st-icon>
+          </a-radio-button>
+          <a-radio-button value="list" @click="onClickGetTable">
+            <st-icon type="list"></st-icon>
+          </a-radio-button>
+        </a-radio-group>
       </div>
     </div>
     <div :class="bSchedule('content')">
@@ -156,7 +161,8 @@ export default {
       start: moment().format('YYYY-MM-DD'),
       currentWeek: '',
       weeks: [],
-      btnFocusFlag: 'week'
+      dataBtnFocusState: 'week',
+      pageBtnFocusState: 'calendar'
     }
   },
   props: {
@@ -217,6 +223,13 @@ export default {
     }
   },
   methods: {
+    handleSizeChange(evt, type) {
+      if (type === 'date') {
+        this.dataBtnFocusState = evt.target.value
+      } else {
+        this.pageBtnFocusState = evt.target.value
+      }
+    },
     onClickAdd() {
       this.$emit('add')
     },
@@ -257,7 +270,6 @@ export default {
       this.$emit('detail', info)
     },
     onClickGetCurrent() {
-      this.btnFocusFlag = 'day'
       let current = moment().format('YYYY-MM-DD')
       this.getWeeks()
       this.$router.push({
@@ -282,7 +294,6 @@ export default {
     },
 
     onClickGetWeek() {
-      this.btnFocusFlag = 'week'
       this.$router.push({ query: { ...this.currentWeek }, force: true })
       this.getWeeks('week')
     },

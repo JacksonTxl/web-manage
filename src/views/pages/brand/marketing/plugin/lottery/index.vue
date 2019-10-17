@@ -1,6 +1,6 @@
 <template>
   <div :class="bPage()">
-    <MarkteingPluginTitle :type="3" />
+    <MarkteingPluginTitle :type="TYPE.LOTTERY" />
     <st-panel app>
       <div :class="bPage('action')" class="mg-b16">
         <div>
@@ -121,12 +121,14 @@ import tableMixin from '@/mixins/table.mixin'
 import { RouteService } from '@/services/route.service'
 import BrandMarketingPluginPoster from '@/views/biz-modals/brand/marketing/plugin/poster'
 import { ACTIVITY_STATUS } from '@/constants/marketing/lottery'
+import { TYPE } from '@/constants/marketing/plugin'
 export default {
   name: 'PluginLotteryIndex',
   mixins: [tableMixin],
   data() {
     return {
-      ACTIVITY_STATUS
+      ACTIVITY_STATUS,
+      TYPE
     }
   },
   bem: {

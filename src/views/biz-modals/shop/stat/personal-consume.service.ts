@@ -4,6 +4,7 @@ import { StatApi } from '@/api/v1/stat/shop'
 import { Injectable } from 'vue-service-app'
 import { Effect, State } from 'rx-state'
 import { tap } from 'rxjs/operators'
+import { AuthService } from '@/services/auth.service'
 @Injectable()
 export class PersonalConsumeService {
   consumeList$ = new State([])
@@ -11,8 +12,15 @@ export class PersonalConsumeService {
   modalCoachList$ = new State([])
   loading$ = new State({})
   page$ = new State({})
+  auth$ = this.authService.authMap$({
+    export: 'shop:stat:class_reports|export_personal_price'
+  })
   courseTypeList$ = this.userService.getOptions$('stat.personal_course_type')
-  constructor(private statApi: StatApi, private userService: UserService) {}
+  constructor(
+    private statApi: StatApi,
+    private userService: UserService,
+    private authService: AuthService
+  ) {}
   @Effect()
   getConsumeList(params: any) {
     return this.statApi.getPersonalConsume(params).pipe(

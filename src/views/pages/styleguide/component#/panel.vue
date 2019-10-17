@@ -42,7 +42,7 @@
       </st-panel>
     </section>
     <section class="mg-t16 sg-app-content" style="height:400px">
-      <st-panel app title="标题">这是一个全高的面板</st-panel>
+      <st-panel app title="标题">这是一个全高的面板 [app]</st-panel>
     </section>
     <p class="mg-t16">包含tabs的panel面板</p>
     <section class="sg-app-content mg-t16">

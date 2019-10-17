@@ -573,7 +573,7 @@ export default {
             advance_id:
               this.selectAdvance === -1 ? undefined : this.selectAdvance,
             reduce_amount,
-            order_amount: `${this.orderAmount.split('元')[0]}`,
+            order_amount: this.currentPrice,
             member_id: +values.memberId,
             member_name: values.memberName,
             mobile: values.memberMobile,
@@ -603,7 +603,7 @@ export default {
             advance_id:
               this.selectAdvance === -1 ? undefined : this.selectAdvance,
             reduce_amount,
-            order_amount: `${this.orderAmount.split('元')[0]}`,
+            order_amount: this.currentPrice,
             member_id: +values.memberId,
             member_name: values.memberName,
             mobile: values.memberMobile,

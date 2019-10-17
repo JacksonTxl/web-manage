@@ -245,7 +245,6 @@
               :options="options"
               v-decorator="rules.cascader"
               :fieldNames="fieldNames"
-              @change="onChange"
               placeholder="请选择省/市/区/县"
             />
           </st-form-item>
@@ -408,7 +407,6 @@ export default {
     onChangCategory(event) {
       this.source_category = event
     },
-    onChange(e) {},
     chooseType(e) {
       let { tip1, tip2 } = {
         tip1: '请输入身份证号码',
@@ -418,16 +416,20 @@ export default {
     },
     save(e) {
       e.preventDefault()
-      this.form.validateFields().then(res => {
-        const cascader = res.cascader || []
+      this.form.validateFields((err, values) => {
+        const cascader = values.cascader || []
+        values.province_id = cascader[0]
+        values.city_id = cascader[1]
+        values.district_id = cascader[2]
         // 手机前缀
-        res.country_prefix = this.country_prefix
-        res.image_face = this.faceList[0] || {}
-        res.height = res.height || undefined
-        res.weight = res.weight || undefined
-        delete res.cascader
-        delete res.md
-        this.addService.addUser(res).subscribe(() => {
+        values.country_prefix = this.country_prefix
+        values.image_face = this.faceList[0] || {}
+        values.height = values.height || undefined
+        values.weight = values.weight || undefined
+
+        delete values.cascader
+        delete values.md
+        this.addService.addUser(values).subscribe(() => {
           this.messageService.success({ content: '添加成功' })
           this.$router.push({ name: 'shop-member-list', force: true })
         })

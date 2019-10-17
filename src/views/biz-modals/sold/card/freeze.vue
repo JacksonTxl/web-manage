@@ -147,10 +147,7 @@ export default {
       this.endTime = cloneDeep(data)
     },
     disabledEndDate(endValue) {
-      return (
-        endValue.valueOf() < moment().valueOf() ||
-        endValue.valueOf() > moment(this.freezeInfo.end_time).valueOf()
-      )
+      return endValue.valueOf() < moment().valueOf()
     },
     onFrozenChange(data) {
       this.form.resetFields(['payType'])

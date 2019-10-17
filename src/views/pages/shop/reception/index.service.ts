@@ -9,7 +9,7 @@ import {
   EditCoachInput
 } from '@/api/v1/front'
 import { MemberApi, EditFaceParams } from '@/api/v1/member'
-import { tap, debounceTime, switchMap, catchError } from 'rxjs/operators'
+import { tap, debounceTime, switchMap, catchError, map } from 'rxjs/operators'
 import { forkJoin, EMPTY } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
 
@@ -20,6 +20,9 @@ export class IndexService implements RouteGuard {
   workNoteDoneList$ = new State([])
   memberListAction$: Action<any>
   memberList$ = new State([])
+  hasNext$ = new State({})
+  page$ = new State([])
+  current_page$ = new State([])
   summaryInfo$ = new State({})
   sellerList$ = new State([])
   coachList$ = new State([])
@@ -63,12 +66,20 @@ export class IndexService implements RouteGuard {
   ) {
     this.memberListAction$ = new Action(data$ => {
       return data$.pipe(
-        debounceTime(200),
         switchMap((query: GetMemberListInput) =>
           this.getMemberList(query).pipe(catchError(() => EMPTY))
         ),
         tap(res => {
-          this.memberList$.commit(() => res.list)
+          this.page$.commit(() => res.page)
+          this.hasNext$.commit(() => {
+            return res.page.current_page < res.page.total_pages
+          })
+          this.memberList$.commit((preList: any) => {
+            if (res.page.current_page === 1) {
+              preList = []
+            }
+            return preList.concat(res.list)
+          })
         })
       )
     })

@@ -3,7 +3,6 @@
     wrapClassName="modal-stat-personal-course"
     title="消课价值(私)"
     width="960px"
-    :footer="null"
     v-model="show"
   >
     <div class="search mg-b8">
@@ -62,6 +61,16 @@
       :dataSource="consumeList$"
       page-mode="client"
     ></st-table>
+
+    <div slot="footer">
+      <st-export-button
+        v-if="auth$.export"
+        type="shop/personal/course/checkin"
+        :query="query"
+      >
+        全部导出
+      </st-export-button>
+    </div>
   </st-modal>
 </template>
 <script>
@@ -82,7 +91,8 @@ export default {
       loading$,
       modalCoachList$,
       modalCourseList$,
-      courseTypeList$
+      courseTypeList$,
+      auth$
     } = this.personalConsumeService
     return {
       modalCoachList$,
@@ -90,7 +100,8 @@ export default {
       courseTypeList$,
       consumeList$,
       page$,
-      loading$
+      loading$,
+      auth$
     }
   },
   props: {
