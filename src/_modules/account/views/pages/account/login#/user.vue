@@ -32,9 +32,9 @@
               </a>
             </a-checkbox>
           </div>
-          <!-- <span :class="loginUser('pass-content')">   @click="onOpenAgreement"
-            <a href="javascript:;" @click="onClickFindPassword">忘记密码</a>
-          </span> -->
+          <span :class="loginUser('pass-content')">
+            <a @click="onClickFindPassword">忘记密码</a>
+          </span>
         </div>
       </st-form-item>
       <st-form-item class="mg-b32">
@@ -112,7 +112,9 @@ export default {
       })
     },
     onClickFindPassword() {
-      this.$emit('findps')
+      this.$router.push({
+        path: '/account/find'
+      })
     },
     onClickThirdChange(key) {
       this.$emit('third', key)

@@ -5,9 +5,10 @@
         v-for="item in stepArr"
         :key="item.key"
         :title="item.title"
-        @click="changeStep(item.key)"
         class="cursor-pointer"
       />
+      <!-- NOTE: 不支持切换步骤 -->
+      <!-- @click="changeStep(item.key)" -->
     </a-steps>
     <valid-id
       v-if="currentIndex === 0"
@@ -66,7 +67,7 @@ export default {
       form,
       decorators,
       stepArr,
-      currentIndex: 2
+      currentIndex: 0
     }
   },
   components: {

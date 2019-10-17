@@ -6,13 +6,13 @@
       }}找回密码，为确实是您本人操作，请完成以下身份验证：
     </p>
     <div v-if="bindInfo.is_bind === IS_BIND.NO_BIND">
+      <p :class="b('update-text')">如需修改密码，请联系管理员</p>
       <p class="mg-b8">
         您当前暂未绑定手机号码,
         <a @click="goBind">
           去绑定
         </a>
       </p>
-      <p>请联系管理员修改密码</p>
     </div>
     <div :class="b('bind-info')" v-if="bindInfo.is_bind === IS_BIND.BIND">
       <p class="mg-b8">当前绑定手机号：{{ bindInfo.phone }}</p>
