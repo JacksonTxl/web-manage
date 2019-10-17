@@ -78,7 +78,11 @@ export const ruleOptions = (vm: any) => {
             if (!value) {
               return '请输入密码'
             }
-            if (value.length < 6 || value.length > 15) {
+            if (
+              value.length < 6 ||
+              value.length > 15 ||
+              !pattern.EN_NUM().test(value)
+            ) {
               vm.validStatus = 0
               vm.strength = ''
             }

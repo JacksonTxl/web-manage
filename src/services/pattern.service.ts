@@ -22,12 +22,12 @@ export class PatternService {
      * /(?=.*[\d])(?=.*[a-z])(?=.*[A-Z])^[\dA-Za-z]{6,15}$/
      */
     // @ts-ignore
-    UC_LC_EN: '(?=.*[d])(?=.*[A-z])^[dA-z]{**}$',
+    UC_LC_EN: '(?=.*[\\d])(?=.*[A-z])^[\\dA-Za-z]{**}$',
     /**
      * 英文、数字 至少有一个 英文不区分大小写
      */
     // @ts-ignore
-    UL_EN_NUM: '(?=.*[d])(?=.*[a-z])(?=.*[A-Z])^[dA-Za-z]{**}$',
+    UL_EN_NUM: '(?=.*[\\d])(?=.*[a-z])(?=.*[A-Z])^[\\dA-Za-z]{**}$',
     /**
      * 数字
      */
@@ -131,16 +131,16 @@ export class PatternService {
    * @param len
    */
   UC_LC_EN(len: string = this.DEFAULT_LEN) {
-    // return this.createPattern('UC_LC_EN', len)
-    return /(?=.*[\d])(?=.*[A-z])^[\dA-Za-z]{6,15}$/
+    return this.createPattern('UC_LC_EN', len)
+    // return /(?=.*[\d])(?=.*[A-z])^[\dA-Za-z]{6,15}$/
   }
   /**
    * 英文大小写，数字每样至少有一个
    * @param len
    */
   UL_EN_NUM(len: string = this.DEFAULT_LEN) {
-    // return this.createPattern('UL_EN_NUM', len)
-    return /(?=.*[\d])(?=.*[a-z])(?=.*[A-Z])^[\dA-Za-z]{6,15}$/
+    return this.createPattern('UL_EN_NUM', len)
+    // return /(?=.*[\d])(?=.*[a-z])(?=.*[A-Z])^[\dA-Za-z]{6,15}$/
   }
   /**
    * 中文、英文
