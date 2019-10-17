@@ -4,6 +4,7 @@ import { Injectable } from 'vue-service-app'
 import { Effect, State } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
+import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class TeamCourseService {
@@ -13,7 +14,14 @@ export class TeamCourseService {
   loading$ = new State({})
   page$ = new State({})
   courseTypeList$ = this.userService.getOptions$('reserve.reserve_type')
-  constructor(private statApi: StatApi, private userService: UserService) {}
+  auth$ = this.authService.authMap$({
+    export: 'shop:stat:class_reports|export_team_number'
+  })
+  constructor(
+    private statApi: StatApi,
+    private userService: UserService,
+    private authService: AuthService
+  ) {}
   @Effect()
   getCourseList(params: any) {
     return this.statApi.getTeamCourse(params).pipe(
