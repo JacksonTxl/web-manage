@@ -43,7 +43,7 @@
         <st-form-item label="活动人数" required>
           <st-input-number
             placeholder="若不限制活动人数，请填写0"
-            v-decorator="decorators.member_limit_status"
+            v-decorator="decorators.member_limit_num"
           ></st-input-number>
         </st-form-item>
         <st-form-item label="活动详情" required>
@@ -121,9 +121,10 @@ export default {
     },
     onSubmit() {
       this.form.validate().then(values => {
-        let { activity_name, member_limit_status } = values
+        let { activity_name, member_limit_num } = values
         const start_time = values.date[0].format('YYYY-MM-DD HH:mm')
         const end_time = values.date[1].format('YYYY-MM-DD HH:mm')
+        const image = this.file
         const { address, province, city, district, lat, lng } = this.address
         const form = {
           address,
@@ -135,7 +136,7 @@ export default {
           end_time,
           start_time,
           activity_name,
-          member_limit_status: +member_limit_status,
+          member_limit_num: +member_limit_num,
           description: this.content,
           image: this.fileShareList[0]
         }

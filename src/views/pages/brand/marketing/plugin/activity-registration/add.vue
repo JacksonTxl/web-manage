@@ -35,6 +35,8 @@
       ></step2-form>
       <step3-form
         v-show="currentStep === 2"
+        @release="onReleaseActivity"
+        @save-draft="onSaveDraftActivity"
         @change="onChangeStep3Form"
       ></step3-form>
     </div>
@@ -50,10 +52,20 @@ import Step3Form from './components#/step3-form'
 import ActivityH5View from './components#/activity-h5-view'
 import TicketH5View from './components#/ticket-h5-view'
 import SignupH5View from './components#/signup-h5-view'
+import { AddService } from './add.service'
+import MarketingReleaseActivitySuccess from '@/views/biz-modals/marketing/release-activity-success'
 export default {
   name: 'AddActivity',
   bem: {
     bPage: 'page-plugin-form-activity'
+  },
+  modals: {
+    MarketingReleaseActivitySuccess
+  },
+  serviceInject() {
+    return {
+      service: AddService
+    }
   },
   components: {
     ActivityH5View,
@@ -68,6 +80,7 @@ export default {
       step1Info: {},
       step2Info: [],
       step3Info: [],
+      stepForm: {},
       steps: [
         { title: '活动信息' },
         { title: '票种信息' },
@@ -87,14 +100,29 @@ export default {
       this.step3Info = [...signUpList]
     },
     onSubmitGetStep1Form(form) {
-      console.log(form)
       this.currentStep = 1
+      this.stepForm = form
     },
     onSubmitGetStep2Form(form) {
-      console.log(form)
       this.currentStep = 2
+      this.$set(this.stepForm, 'tickets', form)
     },
-    // onSubmitGetStep1Form(form1) {},
+    // 发布活动
+    onReleaseActivity(form) {
+      this.$modalRouter.push({ name: 'marketing-release-activity-success' })
+      this.stepForm.is_draft = 0
+      this.$set(this.stepForm, 'rule_settings', JSON.stringify(form))
+      // 发布
+      this.service.releaseActivity(this.stepForm).subscribe(res => {
+        this.$modalRouter.push({ name: 'marketing-release-activity-success' })
+      })
+    },
+    // 存草稿
+    onSaveDraftActivity(form) {
+      this.stepForm.is_draft = 1
+      this.$set(this.stepForm, 'rule_settings', JSON.stringify(form))
+      this.service.releaseActivity(this.stepForm).subscribe()
+    },
     onClickStep(idx) {
       this.currentStep = idx
     }

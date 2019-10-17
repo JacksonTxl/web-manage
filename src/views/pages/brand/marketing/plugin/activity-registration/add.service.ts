@@ -8,33 +8,26 @@ import {
 import { TitleService } from '@/services/title.service'
 import { tap, pluck } from 'rxjs/operators'
 import { ShopApi, GetShopBasicInput } from '@/api/v1/shop'
+import { SignUpApi, SignUpInfo } from '@/api/v1/marketing/sign-up'
+import { MessageService } from '@/services/message.service'
 
 @Injectable()
 export class AddService implements RouteGuard {
   loading$ = new State({})
   info$ = new State({})
 
-  constructor(
-    private marketingApi: MarketingApi,
-    private titleService: TitleService,
-    private shopApi: ShopApi
-  ) {}
-
-  // 新增营销优惠券
-  @Effect()
-  addMarketingCoupon(params: AddMarketingCouponParams) {
-    return this.marketingApi.addMarketingCoupon(params)
+  constructor(private api: SignUpApi, private msg: MessageService) {}
+  releaseActivity(params: SignUpInfo) {
+    return this.api.addSignUp(params).pipe(
+      tap(res => {
+        this.msg.success({ content: '发布活动成功！' })
+      })
+    )
   }
-  // 编辑营销优惠券
-  @Effect()
-  editMarketingCoupon(params: EditMarketingCouponParams) {
-    return this.marketingApi.editMarketingCoupon(params)
-  }
-  // 获取优惠券详情
-  getInfo(id: number) {
-    return this.marketingApi.getInfo(id).pipe(
-      tap((res: any) => {
-        this.info$.commit(() => res.info)
+  saveDraftActivity(params: SignUpInfo) {
+    return this.api.addSignUp(params).pipe(
+      tap(res => {
+        this.msg.success({ content: '存草稿成功！' })
       })
     )
   }

@@ -12,7 +12,7 @@
           <st-t2 class="title">{{ stepInfo.activity_name }}</st-t2>
           <div class="content">
             <div class="price-info">
-              <span class="price">¥4000</span>
+              <span class="price">¥--</span>
               <span class="subfix">起</span>
             </div>
             <div class="hot-info">

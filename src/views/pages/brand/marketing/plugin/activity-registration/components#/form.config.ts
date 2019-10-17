@@ -21,11 +21,11 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    member_limit_status: {
+    member_limit_num: {
       rules: [
         {
           required: true,
-          message: '请输入登录账户'
+          message: '请输入活动限制人数'
         }
       ]
     },

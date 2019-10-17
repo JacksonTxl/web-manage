@@ -1,34 +1,6 @@
 <template>
   <div :class="bPage()">
-    <header :class="bPage('header')" class="mg-b16">
-      <div class="header">
-        <div class="header__left">
-          <st-t3 class="header__title">活动报名</st-t3>
-          <p class="header__content">
-            提供多种优惠券发放方式。
-            <br />
-            包括进店有礼、支付有礼等。
-          </p>
-          <ul class="header__link">
-            <li class="mg-r16"><a>规则说明</a></li>
-            <li class="mg-r16"><a>使用教程</a></li>
-            <li class="mg-r16"><a>活动案例</a></li>
-          </ul>
-        </div>
-        <div class="header__right">
-          <div
-            class="st-preview-item mg-r24"
-            v-for="(item, index) in plugin_image"
-            :key="index"
-          >
-            <img
-              :src="item | imgFilter({ w: 80, h: 142 })"
-              :data-src="item | imgFilter({ w: 1000 })"
-            />
-          </div>
-        </div>
-      </div>
-    </header>
+    <markteing-plugin-title :type="TYPE.ACTIVITY" />
     <st-panel :class="bPage('content')">
       <div slot="title" :class="bSearch()">
         <div :class="bSearch('button-group')">
@@ -97,19 +69,26 @@
 // table
 import tableMixin from '@/mixins/table.mixin'
 import { ListService } from './list.service'
+import MarkteingPluginTitle from '../../components#/marketing-title'
 import { columns } from './list.config'
+import { TYPE } from '@/constants/marketing/plugin'
 import { RouteService } from '@/services/route.service'
+import MarketingPromotionActivity from '@/views/biz-modals/marketing/promotion-activity'
 
 // modal
 export default {
   name: 'ActivityList',
   mixins: [tableMixin],
+  modals: {
+    MarketingPromotionActivity
+  },
   bem: {
     bPage: 'page-plugin-activity-registration',
     bSearch: 'search'
   },
   data() {
     return {
+      TYPE,
       plugin_image: [
         'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/img-lottery-preview-1.png',
         'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/img-lottery-preview-2.png',
@@ -139,6 +118,9 @@ export default {
       list$
     }
   },
+  components: {
+    MarkteingPluginTitle
+  },
   computed: {
     columns
   },
@@ -149,14 +131,20 @@ export default {
     onClickEdit({ record, pathName }) {
       this.$router.push({ name: this.redirectPath[pathName] })
     },
-    onCLickGeneralize({ record, pathName }) {},
+    onCLickGeneralize({ record, pathName }) {
+      this.$modalRouter.push({ name: 'marketing-promotion-activity' })
+    },
     onClickNameList({ record, pathName }) {
       this.$router.push({
         name: this.redirectPath[pathName],
         query: { id: record.id }
       })
     },
-    onClickStop({ record, pathName }) {},
+    onClickStop(record) {
+      this.service.cancelSignUp(record.id).subscribe(res => {
+        this.$router.reload()
+      })
+    },
     onClickCopy({ record, pathName }) {}
   }
 }

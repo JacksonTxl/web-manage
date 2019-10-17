@@ -37,6 +37,13 @@ export const columns = (vm: any) => {
     },
     {
       title: '报名信息',
+      dataIndex: 'sign_up',
+      width: 140,
+      fixed: 'right',
+      scopedSlots: { customRender: 'sign_up' }
+    },
+    {
+      title: '操作',
       dataIndex: 'action',
       width: 140,
       fixed: 'right',

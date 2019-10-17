@@ -13,10 +13,10 @@
             @change="onChangeExtraType"
             v-decorator="decorators.extra_type"
           >
-            <a-radio :value="1">单行文本</a-radio>
-            <a-radio :value="2">多行文本</a-radio>
-            <a-radio :value="3">单选</a-radio>
-            <a-radio :value="4">多选</a-radio>
+            <a-radio :value="0">单行文本</a-radio>
+            <a-radio :value="1">多行文本</a-radio>
+            <a-radio :value="2">单选</a-radio>
+            <a-radio :value="3">多选</a-radio>
           </a-radio-group>
         </st-form-item>
         <st-form-item
@@ -68,6 +68,7 @@ export default {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
+      extraTypeList: ['text', 'textarea', 'radio', 'checkbox'],
       form,
       decorators,
       show: false,
@@ -82,6 +83,7 @@ export default {
       type: String,
       default: '票种信息设置'
     },
+    extra_sort: Number,
     signUpList: {
       type: Array,
       default: () => []
@@ -113,10 +115,13 @@ export default {
         const obj = {
           extra_name: values.extra_name,
           extra_require: values.extra_require,
+          extra_default_value: '',
+          extra_sort: this.extra_sort,
           extra_info: this.extra_info,
-          extra_key: uuidv1(values),
-          ...values
+          extra_type: this.extraTypeList[values.extra_type],
+          extra_key: uuidv1(values)
         }
+        this.$emit('show', obj)
         this.$emit('submit', obj)
       })
     }

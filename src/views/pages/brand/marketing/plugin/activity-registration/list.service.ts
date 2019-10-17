@@ -5,6 +5,7 @@ import { MarketingApi } from '@/api/v1/marketing/marketing'
 import { tap } from 'rxjs/operators'
 import { SignUpApi, GetSignUpList } from '@/api/v1/marketing/sign-up'
 import { UserService } from '@/services/user.service'
+import { MessageService } from '@/services/message.service'
 
 @Injectable()
 export class ListService implements RouteGuard {
@@ -17,6 +18,7 @@ export class ListService implements RouteGuard {
   constructor(
     private signUpApi: SignUpApi,
     private marketingApi: MarketingApi,
+    private msg: MessageService,
     private userService: UserService
   ) {}
   @Effect()
@@ -35,8 +37,15 @@ export class ListService implements RouteGuard {
       })
     )
   }
+  cancelSignUp(id: number) {
+    return this.signUpApi.cancelSignUp(id).pipe(
+      tap(res => {
+        this.msg.success({ content: '结束活动成功' })
+      })
+    )
+  }
   init(params: GetSignUpList) {
-    return anyAll(this.getList(params), this.getIntroductionInfo())
+    return anyAll(this.getIntroductionInfo())
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     return this.init(to.meta.query)

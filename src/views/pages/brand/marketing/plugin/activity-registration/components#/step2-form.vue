@@ -23,7 +23,8 @@
                   checked: checkedShopIds
                 },
                 on: {
-                  submit: getTableItem
+                  show: getTableItem,
+                  submit: getFormItem
                 }
               }"
             >
@@ -64,7 +65,7 @@
 // import { SelectShopService } from './select-shop.service'
 import MarketingAddTicket from '@/views/biz-modals/marketing/add-ticket'
 export default {
-  name: 'ComponentsAddTicket',
+  name: 'Step2Form',
   modals: {
     MarketingAddTicket
   },
@@ -116,7 +117,7 @@ export default {
       this.formDataList.push(form)
     },
     onClickAddTicketComplete() {
-      this.$emit('step-submit', { formDataList: this.formDataList })
+      this.$emit('step-submit', this.formDataList)
     },
     onSelectShopComplete(shopIds) {
       this.getShops(shopIds)

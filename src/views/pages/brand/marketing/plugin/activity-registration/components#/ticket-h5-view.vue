@@ -11,18 +11,16 @@
           </st-t3>
           <div :class="bItem('price-info')">
             <span class="discount-price">
-              ¥200
+              ¥{{ ticket.ticket_price - ticket.reduce_price }}
             </span>
-            <span class="original-price">/¥250</span>
+            <span class="original-price">/¥{{ ticket.ticket_price }}</span>
             <span class="discount-terms">超过3张，每张减¥50</span>
           </div>
           <div :class="bItem('date')">
             售票时间：2019.06.22 19:30-2019.06.30 21:30
           </div>
           <div :class="bItem('remark')">
-            备注说明：是哪个底色从 2015 年 4 月起，Ant Design
-            在蚂蚁金服中后台产品线迅速推广，对接多条业务线，覆盖系统 800
-            个以上。定位于中台业务的 Ant Design 兼顾专业和非专业的设计人员
+            备注说明：{{ ticket.ticket_remark }}
           </div>
         </div>
         <div :class="bComponent('footer')">

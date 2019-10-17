@@ -1,6 +1,5 @@
 <template>
   <div :class="bPage()">
-    {{ activityInfo$ }}
     <div :class="bPage('info')">
       <st-t3 class="title">{{ activityInfo$.activity_name }}</st-t3>
       <div class="time mg-t24">
@@ -11,7 +10,7 @@
       </div>
       <div class="address mg-t8">
         <span class="label">活动地点：</span>
-        <span class="value">{{ activityInfo$.activity_address }}</span>
+        <span class="value">{{ activityInfo$.address }}</span>
       </div>
     </div>
     <st-panel class="mg-t24">
@@ -35,7 +34,7 @@
         <div :class="bSearch('input-group')">
           <st-input-search
             @search="onSingleSearch('activity_name', $event)"
-            placeholder="请输入优惠券名称"
+            placeholder="请输入姓名、手机号"
             style="width: 290px;"
           />
         </div>
@@ -68,7 +67,8 @@ export default {
   },
   serviceInject() {
     return {
-      service: RosterService
+      service: RosterService,
+      routeService: RouteService
     }
   },
   rxState() {
@@ -77,7 +77,7 @@ export default {
       page$,
       loading$,
       ticketStatus$,
-      activityInfo,
+      activityInfo$,
       ticketTypeOptions$
     } = this.service
     return {
@@ -86,7 +86,8 @@ export default {
       loading$,
       ticketStatus$,
       activityInfo$,
-      ticketTypeOptions$
+      ticketTypeOptions$,
+      query: this.routeService.query$
     }
   },
   computed: {

@@ -85,7 +85,7 @@
           >
             <a-radio :value="1">指定时间</a-radio>
             <a-range-picker v-decorator="decorators.buy_time"></a-range-picker>
-            <a-radio :value="2">活动结束前均可售卖</a-radio>
+            <a-radio :value="0">活动结束前均可售卖</a-radio>
           </a-radio-group>
         </st-form-item>
         <st-form-item label="备注说明">
@@ -166,11 +166,11 @@ export default {
         buy_time,
         ticket_remark
       } = values
-      const buy_start_time = ''
-      const buy_end_time = ''
-      if (buy_time_limit === 2) {
-        const buy_start_time = buy_time[0].format('YYYY-MM-DD HH:mm')
-        const buy_end_time = buy_time[1].format('YYYY-MM-DD HH:mm')
+      let buy_start_time = ''
+      let buy_end_time = ''
+      if (buy_time_limit === 1) {
+        buy_start_time = buy_time[0].format('YYYY-MM-DD HH:mm')
+        buy_end_time = buy_time[1].format('YYYY-MM-DD HH:mm')
       }
       const form = {
         ticket_name,

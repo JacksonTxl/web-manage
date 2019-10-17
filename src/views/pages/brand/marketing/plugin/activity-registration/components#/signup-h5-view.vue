@@ -35,7 +35,7 @@
             </span>
           </div>
           <div :class="bComponent('tip-phone')">
-            您已绑定手机号码 18801726654
+            您已绑定手机号码 ***********
           </div>
         </div>
         <ul :class="bComponent('info')">

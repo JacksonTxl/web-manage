@@ -30,7 +30,7 @@ export interface SignUpInfo {
   ticket: TicketInfo[]
   member_limit_status: number
   member_limit_num: number
-  rule_settings: string
+  rule_settings: any
 }
 /**
  * 列表查询条件
@@ -60,7 +60,7 @@ export class SignUpApi extends Api {
   /**
    * 添加活动报名
    */
-  AddSignUp(params: SignUpInfo) {
+  addSignUp(params: SignUpInfo) {
     return this.http.post('/v1/plugin/sign_up', { params })
   }
   /**
