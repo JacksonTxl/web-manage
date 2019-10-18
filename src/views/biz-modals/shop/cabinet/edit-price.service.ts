@@ -6,7 +6,7 @@ import { CabinetPriceApi, UpdateInput } from '@/api/v1/setting/cabinet/price'
 @Injectable()
 export class EditPriceService {
   loading$ = new State({})
-  transferUnits$ = this.userService.getOptions$('setting.cabinet.transfer_unit')
+  transferUnits$ = this.userService.getOptions$('cabinet.transfer_unit')
   constructor(
     private cabinetPriceApi: CabinetPriceApi,
     private userService: UserService

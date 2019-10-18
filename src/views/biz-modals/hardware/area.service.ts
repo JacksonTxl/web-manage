@@ -13,7 +13,7 @@ import { forkJoin } from 'rxjs'
 @Injectable()
 export class AreaService {
   loading$ = new State({})
-  rule$ = this.userService.getOptions$('setting.entrance.entry_limit')
+  rule$ = this.userService.getOptions$('entrance.entry_limit')
   info$ = new State({})
   list$ = new State({})
   whiteList$ = new State([])
