@@ -93,7 +93,25 @@ export default {
       isBind: true
     }
   },
-  computed: {},
+  props: {
+    value: {
+      type: Object
+    }
+  },
+  mounted() {
+    let params = {
+      code_id: 37,
+      phone_code: 86,
+      phone: ''
+    }
+    if (this.value && this.value.country_phone) {
+      params = this.value.country_phone
+      this.form.setFieldsValue({
+        country_phone: params
+      })
+      this.onChangePhone(params)
+    }
+  },
   methods: {
     onClickCaptcha() {
       if (!this.isBind) return

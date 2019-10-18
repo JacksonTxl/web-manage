@@ -40,7 +40,19 @@ export const ruleOptions = (vm: any) => {
         code_id: 37,
         phone_code: 86,
         phone: ''
-      }
+      },
+      rules: [
+        {
+          validator: (field: any, value: any, values: any) => {
+            if (!value || !value.phone) {
+              return '请输入手机号'
+            }
+            if (!pattern.MOBILE.test(value.phone)) {
+              return '请输入正确的手机号'
+            }
+          }
+        }
+      ]
     },
     captcha: {
       rules: [

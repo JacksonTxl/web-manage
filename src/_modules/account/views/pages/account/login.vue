@@ -52,6 +52,7 @@
           <login-mobile
             v-if="loginType === 'mobile'"
             @bind="onBind"
+            :value="countryInfo"
           ></login-mobile>
         </div>
 
