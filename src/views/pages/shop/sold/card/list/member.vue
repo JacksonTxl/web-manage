@@ -2,11 +2,11 @@
   <div :class="basic()">
     <st-search-panel>
       <div :class="basic('select')" class="mg-t24">
-        <span :class="basic('select-text')">会员卡类型：</span>
+        <span :class="basic('select-text')">{{ $c('member_card') }}类型：</span>
         <st-search-radio v-model="query.card_type" :list="cardTypes" />
       </div>
       <div :class="basic('select')">
-        <span :class="basic('select-text')">会员卡状态：</span>
+        <span :class="basic('select-text')">{{ $c('member_card') }}状态：</span>
         <st-search-radio v-model="query.card_status" :list="cardStatus" />
       </div>
       <div :class="basic('select')">

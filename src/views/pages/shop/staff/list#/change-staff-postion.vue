@@ -40,7 +40,7 @@
           </template>
         </a-select>
       </st-form-item>
-      <st-form-item label="教练等级">
+      <st-form-item :label="`${$c('coach')}等级`">
         <a-input placeholder="支持中英文、数字,不超过10个字" />
       </st-form-item>
       <st-form-item label="薪资模板">

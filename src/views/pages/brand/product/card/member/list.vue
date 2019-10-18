@@ -4,7 +4,7 @@
       <st-input-search
         v-model="query.card_name"
         @search="onSearchCardName"
-        placeholder="请输入会员卡名称查找"
+        :placeholder="`请输入${$c('member_card')}名称查找`"
         maxlength="50"
       />
     </div>

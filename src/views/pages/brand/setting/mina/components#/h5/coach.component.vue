@@ -8,7 +8,10 @@
           maxlength="10"
         />
       </st-form-item>
-      <st-form-item label="展示教练" :class="action('no-bottom-gap')">
+      <st-form-item
+        :label="`展示${$c('coach')}`"
+        :class="action('no-bottom-gap')"
+      >
         <draggable
           :component-data="{ props: { gutter: 12 } }"
           v-model="list"
@@ -52,7 +55,7 @@
             >
               <div class="color-text">
                 <st-icon type="add"></st-icon>
-                添加教练
+                添加{{ $c('coach') }}
               </div>
             </a>
           </div>

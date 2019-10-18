@@ -62,10 +62,10 @@
           </a-select-option>
         </a-select>
       </st-form-item>
-      <st-form-item label="上课教练" required>
+      <st-form-item :label="`上课${$c('coach')}`" required>
         <a-select
           v-decorator="decorators.coach_id"
-          placeholder="请选择上课教练"
+          :placeholder="`请选择上课${$c('coach')}`"
           @change="onChangeCourseCoach"
         >
           <a-select-option

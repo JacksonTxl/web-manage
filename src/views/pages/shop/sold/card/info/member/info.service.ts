@@ -4,7 +4,6 @@ import { CardApi } from '@/api/v1/sold/cards'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
 import { RedirectService } from '@/services/redirect.service'
-
 @Injectable()
 export class InfoService implements RouteGuard {
   info$ = new State({})

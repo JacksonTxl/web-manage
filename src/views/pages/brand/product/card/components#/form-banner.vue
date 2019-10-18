@@ -1,8 +1,8 @@
 <template>
   <st-alert class="form-banner" v-if="isShelf">
-    {{
-      shelfNumber
-    }}家门店售卖中，若需修改会员卡全部信息，请先统一下架该卡后进行编辑
+    {{ shelfNumber }}家门店售卖中，若需修改{{
+      $c('member_card')
+    }}全部信息，请先统一下架该卡后进行编辑
   </st-alert>
 </template>
 

@@ -45,22 +45,24 @@ export default {
   },
   data() {
     return {
-      currentIndex: 0,
-      stepArr: [
-        {
-          title: '编辑私教课',
-          key: 0
-        },
-        {
-          title: '设置售卖门店及教练',
-          key: 1
-        },
-        {
-          title: '设置售卖价格',
-          key: 2
-        }
-      ]
+      currentIndex: 0
     }
+  },
+  computed: {
+    stepArr: vm => [
+      {
+        title: '编辑私教课',
+        key: 0
+      },
+      {
+        title: `设置售卖门店及${vm.$c('coach')}`,
+        key: 1
+      },
+      {
+        title: '设置售卖价格',
+        key: 2
+      }
+    ]
   },
   methods: {
     goNext() {

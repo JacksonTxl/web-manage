@@ -29,20 +29,22 @@
     </p>
     <a-radio-group v-model="selectedValue">
       <div :class="bTable()">
-        <div :class="bTable('left')">会员卡</div>
+        <div :class="bTable('left')">{{ $c('member_card') }}</div>
         <div :class="bTable('right')">
           <div :class="bTable('content')">
-            <a-radio :value="IMPORT.SOLD_MEMBER_CARD">会员卡</a-radio>
+            <a-radio :value="IMPORT.SOLD_MEMBER_CARD">
+              {{ $c('member_card') }}
+            </a-radio>
             <label :class="bTable('desc')">
               包含期卡和次卡——默认不限制入场时间
             </label>
           </div>
           <div :class="bTable('content')">
             <a-radio :value="IMPORT.SOLD_MEMBER_CARD_ENTER_TIME">
-              <span>会员卡入场时间</span>
+              <span>{{ $c('member_card') }}入场时间</span>
             </a-radio>
             <label :class="bTable('desc')">
-              售出的会员卡限制入场时间，请批量导入入场时间
+              售出的{{ $c('member_card') }}限制入场时间，请批量导入入场时间
             </label>
           </div>
         </div>

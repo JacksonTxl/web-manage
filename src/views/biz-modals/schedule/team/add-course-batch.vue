@@ -8,19 +8,24 @@
   >
     <st-table :columns="columns" :page="false" :dataSource="data" bordered>
       <span slot="startTimeTitle" class="modal-table-title">
-        <i class="color-danger mg-r8">*</i>日期
+        <i class="color-danger mg-r8">*</i>
+        日期
       </span>
       <span slot="courseIdTitle" class="modal-table-title">
-        <i class="color-danger mg-r8">*</i>课程
+        <i class="color-danger mg-r8">*</i>
+        课程
       </span>
       <span slot="coachIdTitle" class="modal-table-title">
-        <i class="color-danger mg-r8">*</i>上课教练
+        <i class="color-danger mg-r8">*</i>
+        上课{{ $c('coach') }}
       </span>
       <span slot="limitNumTitle" class="modal-table-title">
-        <i class="color-danger mg-r8">*</i>人数
+        <i class="color-danger mg-r8">*</i>
+        人数
       </span>
       <span slot="courseFeeTitle" class="modal-table-title">
-        <i class="color-danger mg-r8">*</i>课时费
+        <i class="color-danger mg-r8">*</i>
+        课时费
       </span>
       <template slot="start_time" slot-scope="text, record">
         <a-date-picker
@@ -56,7 +61,7 @@
       <template slot="coach_id" slot-scope="text, record">
         <a-select
           v-if="record.editable"
-          placeholder="请选择教练"
+          :placeholder="`请选择${$c('coach')}`"
           :value="text"
           style="width: 120px"
           @change="e => handleChange(e, record.key, 'coach_id')"
@@ -206,7 +211,7 @@ export default {
         return false
       }
       if (!form.coach_id) {
-        this.msg.error({ content: '请选择课程教练' })
+        this.msg.error({ content: `请选择课程${this.$c('coach')}` })
         return false
       }
       if (!form.limit_num) {

@@ -22,11 +22,15 @@ export default {
   },
   data() {
     return {
-      titleData: {
-        title: '会员卡即将到期',
-        info: '选择自然日内，会员卡即将到期的用户'
-      },
       radioValue: ''
+    }
+  },
+  computed: {
+    titleData: vm => {
+      return {
+        title: `${vm.$c('member_card')}即将到期`,
+        info: `选择自然日内，${vm.$c('member_card')}即将到期的用户`
+      }
     }
   },
   methods: {

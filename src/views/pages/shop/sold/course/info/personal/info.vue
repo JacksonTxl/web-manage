@@ -31,7 +31,7 @@
             },
             {
               if: auth['shop:sold:sold_personal_course|change_coach'],
-              text: '修改教练',
+              text: `修改${$c('coach')}`,
               click: onEditCoach
             },
             {
@@ -73,10 +73,10 @@
             <st-info-item label="手机号">
               {{ personalInfo.mobile }}
             </st-info-item>
-            <st-info-item label="上课教练">
+            <st-info-item :label="`上课${$c('coach')}`">
               {{ personalInfo.coach_name }}
             </st-info-item>
-            <st-info-item label="教练等级">
+            <st-info-item :label="`${$c('coach')}等级`">
               {{ personalInfo.coach_level }}
             </st-info-item>
             <st-info-item label="订单号">

@@ -126,10 +126,8 @@ export default {
     CourseSupportCourseCoaches,
     CourseSupportCourseShops
   },
-  data() {
-    return {
-      columns
-    }
+  computed: {
+    columns
   },
   serviceInject() {
     return {

@@ -27,7 +27,7 @@
         <a-select
           class="mg-l8"
           showSearch
-          placeholder="请选择教练"
+          :placeholder="`请选择${$c('coach')}`"
           v-if="showTable === 'all'"
           optionFilterProp="children"
           style="width: 200px"

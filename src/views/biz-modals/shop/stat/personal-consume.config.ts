@@ -1,4 +1,4 @@
-export const columns = () => {
+export const columns = (vm: any) => {
   return [
     {
       title: '课程名称',
@@ -9,11 +9,11 @@ export const columns = () => {
       dataIndex: 'course_time'
     },
     {
-      title: '教练姓名',
+      title: `${vm.$c('coach')}姓名`,
       dataIndex: 'coach_name'
     },
     {
-      title: '教练级别',
+      title: `${vm.$c('coach')}级别`,
       dataIndex: 'coach_level'
     },
     {

@@ -20,13 +20,13 @@ export const shopColumns = [
     width: '30%'
   }
 ]
-export const coachColumns = [
+export const coachColumns = vm => [
   {
-    title: '教练',
+    title: vm.$c('coach'),
     dataIndex: 'nickname'
   },
   {
-    title: '教练等级',
+    title: `${vm.$c('coach')}等级`,
     dataIndex: 'level_name'
   },
   {

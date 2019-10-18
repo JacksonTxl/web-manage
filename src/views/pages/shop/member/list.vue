@@ -82,7 +82,7 @@
                   }
                 }"
               >
-                分配教练
+                分配{{ $c('coach') }}
               </label>
             </div>
             <div v-if="auth.bindSalesman" class="shop-member-list-button-div">
@@ -158,7 +158,7 @@
               v-if="record.auth['shop:member:member|bind_coach']"
               @click="onDistributionCoach(record)"
             >
-              分配教练
+              分配{{ $c('coach') }}
             </a>
             <a
               v-if="record.auth['shop:member:member|bind_salesman']"
@@ -401,7 +401,7 @@ export default {
       if (record.follow_coach) {
         this.$confirm({
           title: '提示信息',
-          content: '该用户已存在跟进教练，是否确认替换？',
+          content: `该用户已存在跟进${this.$c('coach')}，是否确认替换？`,
           onOk: () => {
             this.$modalRouter.push({
               name: 'shop-distribution-coach',

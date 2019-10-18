@@ -23,7 +23,7 @@
                 工号：{{ info.staff_num }}
               </span>
               <span v-if="info.coach_level">
-                教练等级：{{ info.coach_level }}
+                {{ $c('coach') }}等级：{{ info.coach_level }}
               </span>
             </div>
             <div class="staff-info-shops">

@@ -46,22 +46,24 @@ export default {
     return {
       currentIndex: 0,
       courseId: 0,
-      courseName: '',
-      stepArr: [
-        {
-          title: '创建私教课',
-          key: 0
-        },
-        {
-          title: '设置上课教练',
-          key: 1
-        },
-        {
-          title: '设置售卖价格',
-          key: 2
-        }
-      ]
+      courseName: ''
     }
+  },
+  computed: {
+    stepArr: vm => [
+      {
+        title: '创建私教课',
+        key: 0
+      },
+      {
+        title: `设置上课${vm.$c('coach')}`,
+        key: 1
+      },
+      {
+        title: '设置售卖价格',
+        key: 2
+      }
+    ]
   },
   methods: {
     goNext(courseId) {

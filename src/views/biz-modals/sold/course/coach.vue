@@ -1,6 +1,6 @@
 <template>
   <st-modal
-    title="修改教练"
+    :title="`修改${$c('coach')}`"
     size="small"
     v-model="show"
     wrapClassName="modal-sold-package-coach"
@@ -9,14 +9,19 @@
       <div :class="coach('content')">
         <st-info :class="coach('info')">
           <st-info-item label="课程名称">{{ record.course_name }}</st-info-item>
-          <st-info-item label="上课教练">{{ record.coach_name }}</st-info-item>
+          <st-info-item :label="`上课${$c('coach')}`">
+            {{ record.coach_name }}
+          </st-info-item>
           <st-info-item label="有效期">
             {{ record.buy_time }} 至 {{ record.end_time }}
           </st-info-item>
         </st-info>
         <st-hr></st-hr>
-        <st-form-item label="修改教练" required>
-          <a-select v-decorator="decorators.coach" placeholder="选择修改教练">
+        <st-form-item :label="`修改${$c('coach')}`" required>
+          <a-select
+            v-decorator="decorators.coach"
+            :placeholder="`选择修改${$c('coach')}`"
+          >
             <a-select-option
               v-for="(item, index) in coachList"
               :key="index"

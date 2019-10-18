@@ -1,11 +1,11 @@
-export const columns = () => [
+export const columns = (vm: any) => [
   { title: '日期', dataIndex: 'stat_date' },
   {
     title: '总营收额(元)',
     dataIndex: 'total_amount'
   },
   {
-    title: '会员卡营收(元)',
+    title: `${vm.$c('member_card')}营收(元)`,
     dataIndex: 'member_card_amount'
     // scopedSlots: { customRender: 'image_face' }
   },

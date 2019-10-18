@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import { columns } from './list.config.ts'
+import { columns, list } from './list.config.ts'
 import FinanceClassCommission from '@/views/biz-modals/finance/class-commission'
 import FinanceSaleCommission from '@/views/biz-modals/finance/sale-commission'
 export default {
@@ -88,24 +88,12 @@ export default {
   data() {
     return {
       columns,
-      list: [
-        {
-          id: 1,
-          q: '201901',
-          w: '1号',
-          e: '超人',
-          r: '私教教练、销售',
-          t: '部门1',
-          y: '上海体验店',
-          u: '11923',
-          i: '12332',
-          o: '12323',
-          p: '1233'
-        }
-      ],
       selectedRowKeys: [],
       pagination: {}
     }
+  },
+  computed: {
+    list
   },
   methods: {
     onSearch(e) {

@@ -27,7 +27,7 @@
       <a-col :span="9" class="ta-r">
         <st-input-search
           v-model="cardquery.keyword"
-          placeholder="请输入会员卡名称"
+          :placeholder="`请输入${$c('member_card')}名称`"
           @search="searchMemberCard"
         />
       </a-col>

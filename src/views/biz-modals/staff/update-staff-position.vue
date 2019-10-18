@@ -39,13 +39,13 @@
         ></staff-modal-tips>
       </st-form-item>
       <st-form-item
-        label="教练等级"
+        :label="`${$c('coach')}等级`"
         :required="!canDeleteIdentity || coach_level_required"
         v-show="!canDeleteIdentity || coach_level_required"
       >
         <a-select
           v-decorator="decorators.coach_level_id"
-          placeholder="请选择教练等级"
+          :placeholder="`请选择${$c('coach')}等级`"
         >
           <a-select-option
             :value="+item.id"

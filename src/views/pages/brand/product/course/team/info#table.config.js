@@ -18,16 +18,17 @@ export const shopColumns = [
     dataIndex: 'shop_name'
   }
 ]
-export const coachColumns = [
+// TODO: 搜索coachColumns
+export const coachColumns = vm => [
   {
-    title: '教练',
+    title: vm.$c('coach'),
     dataIndex: 'name',
     sorter: true,
     width: '20%',
     scopedSlots: { customRender: 'name' }
   },
   {
-    title: '教练等级',
+    title: `${vm.$c('coach')}等级`,
     dataIndex: 'gender',
     filters: [
       { text: 'Male', value: 'male' },

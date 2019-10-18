@@ -7,7 +7,7 @@
           <st-info-item label="来源类别">
             {{ followInfo.info.register_type }}
           </st-info-item>
-          <st-info-item label="跟进教练">
+          <st-info-item :label="`跟进${$c('coach')}`">
             {{ followInfo.info.follow_coach_name }}
           </st-info-item>
         </st-info>

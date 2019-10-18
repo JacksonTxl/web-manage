@@ -4,7 +4,7 @@
       <div :class="bHeard('left')">
         <a-radio-group :value="showTable" @change="handleSizeChange">
           <a-radio-button value="all">汇总</a-radio-button>
-          <a-radio-button value="coach">教练</a-radio-button>
+          <a-radio-button value="coach">{{ $c('coach') }}</a-radio-button>
         </a-radio-group>
         <st-export-button
           v-if="showTable === 'all'"
@@ -44,7 +44,7 @@
           </a-select>
           <a-select
             showSearch
-            placeholder="请选择教练"
+            :placeholder="`请选择${$c('coach')}`"
             optionFilterProp="children"
             class="mg-r8"
             style="width: 200px"
@@ -160,13 +160,13 @@ export default {
     }
   },
   computed: {
-    columns() {
-      return this.showTable === 'all' ? allColumns() : coachColumns()
+    columns(vm) {
+      return this.showTable === 'all' ? allColumns(vm) : coachColumns(vm)
     },
-    coachListFilter() {
+    coachListFilter(vm) {
       if (this.query.department_id === -1) return this.coachList
       return [
-        { id: -1, name: '全部教练' },
+        { id: -1, name: `全部${vm.$c('coach')}` },
         ...this.coachList.filter(item => {
           return this.query.department_id === item.department_id
         })

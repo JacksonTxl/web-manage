@@ -114,10 +114,12 @@ export default {
   },
   data() {
     return {
-      columns,
       page: {},
       currentTime: ''
     }
+  },
+  computed: {
+    columns
   },
   mounted() {
     this.currentTime = this.$route.query.start_date

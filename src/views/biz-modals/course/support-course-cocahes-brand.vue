@@ -1,7 +1,7 @@
 <template>
   <st-modal
     class="modal-support-course-shops"
-    :title="course.course_name + ' 查看授课教练'"
+    :title="course.course_name + ' 查看授课' + $c('coach')"
     :footer="null"
     v-model="show"
   >
@@ -28,7 +28,7 @@
         <a-col :lg="8">
           <st-input-search
             @search="onSearchKeyWords"
-            placeholder="通过教练昵称查询"
+            :placeholder="`通过${$c('coach')}昵称查询`"
           ></st-input-search>
         </a-col>
       </a-row>
@@ -60,7 +60,6 @@ export default {
   },
   data() {
     return {
-      columnsCoaches,
       coachLevel: -1,
       show: false,
       courseStatus: [
@@ -68,7 +67,7 @@ export default {
         { label: '有效', value: 1 },
         { label: '无效', value: 0 }
       ],
-      coachLevelOptions: [{ id: -1, name: '所有教练等级' }],
+      coachLevelOptions: [{ id: -1, name: `所有${this.$c('coach')}等级` }],
       supportCoachList: [],
       supportCoachTable: []
     }
@@ -78,6 +77,9 @@ export default {
       type: Object,
       default: () => {}
     }
+  },
+  computed: {
+    columnsCoaches
   },
   methods: {
     onChange(val) {

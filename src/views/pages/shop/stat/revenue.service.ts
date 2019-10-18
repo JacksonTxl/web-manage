@@ -3,6 +3,7 @@ import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { RedirectService } from '@/services/redirect.service'
 import { StatApi, RevenueShopListQuery } from '@/api/v1/stat/shop'
+import { UserService } from '@/services/user.service'
 @Injectable()
 export class RevenueService implements RouteGuard {
   list$ = new State([])
@@ -12,7 +13,8 @@ export class RevenueService implements RouteGuard {
   authTabs$ = this.redirectService.getAuthTabs$('shop-stat-revenue')
   constructor(
     private StatApi: StatApi,
-    private redirectService: RedirectService
+    private redirectService: RedirectService,
+    private userService: UserService
   ) {}
   @Effect()
   getRevenueShopList(query: RevenueShopListQuery) {
@@ -33,7 +35,7 @@ export class RevenueService implements RouteGuard {
             value: data.total_amount || 0
           },
           {
-            label: '会员卡营收(元)',
+            label: `${this.userService.c('member_card')}营收(元)`,
             value: data.member_card_amount || 0
           },
           {

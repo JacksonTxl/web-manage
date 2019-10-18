@@ -118,7 +118,9 @@
                     key="1"
                     v-if="auth['shop:member:member|bind_coach']"
                   >
-                    <a @click="onDistributionCoach">更改跟进教练</a>
+                    <a @click="onDistributionCoach">
+                      更改跟进{{ $c('coach') }}
+                    </a>
                   </a-menu-item>
                   <a-menu-item
                     key="2"
@@ -186,7 +188,7 @@
                 <span class="pannel-right__num__margin">/</span>
                 <span>张</span>
                 <p>
-                  有效会员卡
+                  有效{{ $c('member_card') }}
                   <st-help-tooltip id="TSXQ001" />
                 </p>
               </div>
@@ -357,7 +359,7 @@ export default {
       if (this.info.follow_coach_id && this.info.follow_coach_id > 0) {
         this.$confirm({
           title: '提示信息',
-          content: '该用户已存在跟进教练，是否确认替换？',
+          content: `该用户已存在跟进${this.$c('coach')}，是否确认替换？`,
           onOk: () => {
             this.$modalRouter.push({
               name: 'shop-distribution-coach',

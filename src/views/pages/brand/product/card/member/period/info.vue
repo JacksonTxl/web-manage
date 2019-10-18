@@ -148,7 +148,7 @@
         <div :class="item('card_introduction')" class="mb-24">
           <!-- 会员卡说明 -->
           <p class="mb-8">
-            <span class="label">会员卡说明：</span>
+            <span class="label">{{ $c('member_card') }}说明：</span>
           </p>
           <st-container>{{ cardInfo.card_introduction }}</st-container>
         </div>

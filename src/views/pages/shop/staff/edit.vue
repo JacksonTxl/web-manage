@@ -76,24 +76,24 @@ export default {
   data() {
     return {
       stepsSpan: 18,
-      currentIndex: 0,
-      stepArr: [
-        {
-          title: '基础信息',
-          key: 0
-        },
-        {
-          title: '详细信息',
-          key: 1
-        },
-        {
-          title: '教练信息',
-          key: 2
-        }
-      ]
+      currentIndex: 0
     }
   },
   computed: {
+    stepArr: vm => [
+      {
+        title: '基础信息',
+        key: 0
+      },
+      {
+        title: '详细信息',
+        key: 1
+      },
+      {
+        title: `${vm.$c('coach')}信息`,
+        key: 2
+      }
+    ],
     isShowCoach() {
       if (this.staffInfo.identity.length === 0) return false
       return (

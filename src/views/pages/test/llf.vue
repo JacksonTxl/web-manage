@@ -10,10 +10,8 @@
     </st-plugin-form-title>
     <st-hr></st-hr>
     <st-plugin-form-title>
-      教练风采
-      <span slot="desc">
-        最多添加100个教练
-      </span>
+      {{ $c('coach') }}风采
+      <span slot="desc">最多添加100个{{ $c('coach') }}</span>
     </st-plugin-form-title>
 
     <template slot="actions">

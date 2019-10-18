@@ -27,7 +27,7 @@ export class TeamConsumeService {
     return this.statApi.getCheckinModalCoachAndCourseList(query).pipe(
       tap(res => {
         this.modalCoachList$.commit(() => [
-          { id: -1, name: '全部教练' },
+          { id: -1, name: `全部${this.userService.c('coach')}` },
           ...res.info.coach_list
         ])
         this.modalCourseList$.commit(() => [

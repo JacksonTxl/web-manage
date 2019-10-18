@@ -1,6 +1,6 @@
 <template>
   <st-modal
-    title="会员卡停售"
+    :title="`${$c('member_card')}停售`"
     v-model="show"
     wrapClassName="modal-card-brand-stop-sale"
     width="484px"
@@ -14,7 +14,11 @@
           type="help"
         />
         <p>
-          注：停止售卖会员卡，将自动下架在门店售卖的本会员卡；已购买本会员卡的会员仍旧享有该会员卡权益。
+          注：停止售卖{{ $c('member_card') }}，将自动下架在门店售卖的本{{
+            $c('member_card')
+          }}；已购买本{{ $c('member_card') }}的会员仍旧享有该{{
+            $c('member_card')
+          }}权益。
         </p>
       </div>
       <div :class="stopSale('card-name')" class="mg-b24">
@@ -55,7 +59,11 @@
       <st-button type="danger" :disabled="reasonIsNone" v-if="reasonIsNone">
         确认停售
       </st-button>
-      <a-popconfirm v-else @confirm="onStop" title="确认停售该会员卡">
+      <a-popconfirm
+        v-else
+        @confirm="onStop"
+        :title="`确认停售该${$c('member_card')}`"
+      >
         <st-button type="danger" :loading="loading.setStopSale">
           确认停售
         </st-button>
