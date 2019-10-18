@@ -430,9 +430,16 @@ export default {
           values.birthday = values.birthday
             ? values.birthday.format('YYYY-MM-DD')
             : ''
-          values.province_id = values.cascader[0]
-          values.city_id = values.cascader[1]
-          values.district_id = values.cascader[2]
+
+          if (values.cascader && values.cascader.length > 0) {
+            const cascader_name = this.getDistrictInfo(values.cascader)
+            values.province_id = values.cascader[0]
+            values.province_name = cascader_name.province_name
+            values.city_id = values.cascader[1]
+            values.city_name = cascader_name.city_name
+            values.district_id = values.cascader[2]
+            values.district_name = cascader_name.district_name
+          }
           // 身份前缀
           values.id_card_type = values.id_card_type
           // 人脸信息
@@ -449,6 +456,16 @@ export default {
           this.$router.go(-1)
         })
       })
+    },
+    getDistrictInfo(cascader = []) {
+      const province = this.options.filter(item => item.id === cascader[0])
+      const city = province[0].children.filter(item => item.id === cascader[1])
+      const district = city[0].children.filter(item => item.id === cascader[2])
+      return {
+        province_name: province[0].name,
+        city_name: city[0].name,
+        district_name: district[0].name
+      }
     },
     setEditInfo(obj) {
       const cascader = []
@@ -483,7 +500,7 @@ export default {
         email: obj.email,
         mobile: obj.mobile,
         wechat: obj.wechat,
-        cascader: cascader,
+        cascader: cascader.length > 0 ? cascader : undefined,
         country_prefix: +obj.country_prefix || undefined,
         living_address: obj.living_address
       })

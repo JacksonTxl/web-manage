@@ -418,20 +418,39 @@ export default {
     },
     save(e) {
       e.preventDefault()
-      this.form.validateFields().then(res => {
-        const cascader = res.cascader || []
+      this.form.validateFields().then(values => {
+        const cascader = values.cascader || []
+        if (values.cascader && values.cascader.length > 0) {
+          const cascader_name = this.getDistrictInfo(values.cascader)
+          values.province_id = values.cascader[0]
+          values.province_name = cascader_name.province_name
+          values.city_id = values.cascader[1]
+          values.city_name = cascader_name.city_name
+          values.district_id = values.cascader[2]
+          values.district_name = cascader_name.district_name
+        }
         // 手机前缀
-        res.country_prefix = this.country_prefix
-        res.image_face = this.faceList[0] || {}
-        res.height = res.height || undefined
-        res.weight = res.weight || undefined
-        delete res.cascader
-        delete res.md
-        this.addService.addUser(res).subscribe(() => {
+        values.country_prefix = this.country_prefix
+        values.image_face = this.faceList[0] || {}
+        values.height = values.height || undefined
+        values.weight = values.weight || undefined
+        delete values.cascader
+        delete values.md
+        this.addService.addUser(values).subscribe(() => {
           this.messageService.success({ content: '添加成功' })
           this.$router.push({ name: 'shop-member-list', force: true })
         })
       })
+    },
+    getDistrictInfo(cascader = []) {
+      const province = this.options.filter(item => item.id === cascader[0])
+      const city = province[0].children.filter(item => item.id === cascader[1])
+      const district = city[0].children.filter(item => item.id === cascader[2])
+      return {
+        province_name: province[0].name,
+        city_name: city[0].name,
+        district_name: district[0].name
+      }
     }
   },
   mounted() {
