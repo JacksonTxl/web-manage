@@ -5,11 +5,13 @@ export const columns = () => [
   },
   {
     title: '使用详情',
-    dataIndex: 'usage_type'
+    dataIndex: 'usage_type',
+    scopedSlots: { customRender: 'usage_type' }
   },
   {
     title: '变更额度(次)',
-    dataIndex: 'amount_change'
+    dataIndex: 'amount_change',
+    scopedSlots: { customRender: 'amount_change' }
   },
   {
     title: '剩余额度(次)',

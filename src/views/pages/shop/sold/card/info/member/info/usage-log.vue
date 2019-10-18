@@ -9,15 +9,17 @@
       :dataSource="list"
     >
       <template slot="usage_type" slot-scope="text, record">
-        <span>
-          {{
-            record.usage_type === USAGE_TYPES.ENTRANCE
-              ? '入场'
-              : record.usage_type === USAGE_TYPES.ORDER
-              ? '预约团体课'
-              : '取消预约团体课'
-          }}
+        <span v-if="record.usage_type === USAGE_TYPES.ENTRANCE">
+          预约团体课
         </span>
+        <span v-if="record.usage_type === USAGE_TYPES.ORDER">预约团体课</span>
+        <span v-if="record.usage_type === USAGE_TYPES.CANCEL">
+          取消预约团体课
+        </span>
+        <div>
+          <span>课程名称:</span>
+          <span>{{ record.course_name }}</span>
+        </div>
         <div>
           <span>课程名称:</span>
           <span>{{ record.course_name }}</span>

@@ -1,5 +1,9 @@
 export const enum USAGE_TYPES {
   ENTRANCE = 1,
   ORDER = 2,
-  CANCEL = 3
+  CANCEL = 3,
+  PERSONAL = 4,
+  CANCEL_PERSONAL = 5,
+  PERSONAL_TEAM = 6,
+  CANCEL_PERSONAL_TEAM = 7
 }
