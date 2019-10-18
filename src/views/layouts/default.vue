@@ -98,6 +98,15 @@
         >
           <st-icon type="export"></st-icon>
         </router-link>
+        <!-- 九宫格 -->
+        <div
+          class="sudoku-icon"
+          @mouseenter.stop="onMouseenterOpenSudoku"
+          @mouseleave.stop="onMouseenterCloseSudoku"
+        >
+          九宫格
+        </div>
+        <fast-entry v-show="sudokuOpenFlag"></fast-entry>
         <a-dropdown :trigger="['click']" placement="bottomRight">
           <div class="layout-default-body__avatar">
             <img
@@ -157,17 +166,17 @@ import { find } from 'lodash-es'
 import { UserService } from '@/services/user.service'
 import { TokenService } from '@/services/token.service'
 import { TitleService } from '@/services/title.service'
-// import FastEntry from './entry#/fast-entry'
+import FastEntry from './entry#/fast-entry.vue'
 
 export default {
   components: {
     DefaultSiderMenu,
-    SwitchShop
+    SwitchShop,
     // DefaultSkeleton
     /**
      * 快速入口 九宫格
      */
-    // FastEntry
+    FastEntry
   },
   serviceInject() {
     return {
@@ -188,7 +197,8 @@ export default {
   data() {
     return {
       isShowSwitchShop: false,
-      menuObj: {}
+      menuObj: {},
+      sudokuOpenFlag: true
     }
   },
   computed: {
@@ -268,6 +278,12 @@ export default {
        * 切换路由时关闭切换门店 drawer
        */
       this.isShowSwitchShop = false
+    },
+    onMouseenterOpenSudoku() {
+      this.sudokuOpenFlag = true
+    },
+    onMouseenterCloseSudoku() {
+      this.sudokuOpenFlag = false
     }
   }
 }
