@@ -20,6 +20,7 @@ export class LoginService implements RouteGuard {
     return this.loginApi.loginAccount(data).pipe(
       tap(res => {
         this.tokenService.SET_TOKEN(res.token)
+        localStorage.clear()
       })
     )
   }
@@ -27,6 +28,7 @@ export class LoginService implements RouteGuard {
     return this.loginApi.loginPhone(params).pipe(
       tap(res => {
         this.tokenService.SET_TOKEN(res.token)
+        localStorage.clear()
       })
     )
   }
@@ -47,6 +49,7 @@ export class LoginService implements RouteGuard {
     return this.loginApi.bindPhoneForAccount(params).pipe(
       tap(res => {
         this.tokenService.SET_TOKEN(res.token)
+        localStorage.clear()
       })
     )
   }
