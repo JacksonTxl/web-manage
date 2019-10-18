@@ -18,15 +18,22 @@
     <p>
       <a v-modal-link="{ name: 'shop-cabinet-open' }">open</a>
     </p>
+    <st-button @click="onClickUdesk">点击进入udesk页面</st-button>
   </st-panel>
 </template>
 <script>
 import { OPERATION_TYPES } from '@/constants/sold/operations'
 import ShopCabinetOpen from '@/views/biz-modals/shop/cabinet/open'
+import { UdeskService } from '@/services/udesk.service'
 
 export default {
   modals: {
     ShopCabinetOpen
+  },
+  serviceInject() {
+    return {
+      udeskService: UdeskService
+    }
   },
   data() {
     return {
@@ -79,6 +86,9 @@ export default {
         const objectURL = URL.createObjectURL(blob)
         console.log(objectURL)
       })
+    },
+    onClickUdesk() {
+      this.udeskService.showUdesk(true)
     }
   },
   components: {

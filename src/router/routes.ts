@@ -10,6 +10,7 @@ import { routeMapConfig } from './route-map.config'
 
 import pageRoutes from './auto-generated-routes'
 import { TrackService } from '@/services/track.service'
+import { UdeskService } from '@/services/udesk.service'
 
 const routes: any[] = [
   {
@@ -59,6 +60,7 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
         UserService,
         TitleService,
         AuthService,
+        UdeskService,
         RedirectService,
         RouteService
       ]
