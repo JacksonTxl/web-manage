@@ -40,15 +40,16 @@
         </template>
       </tbody>
     </st-form-table>
-    <div v-di-view="{ name: 'step' }">
-      <div :class="pComponents('button-group')">
-        <st-button class="mg-r8">
-          存草稿
-        </st-button>
-        <st-button @click="onClickRelease" type="primary">
-          发布
-        </st-button>
-      </div>
+    <div
+      v-di-view="{ name: 'step', show }"
+      :class="pComponents('button-group')"
+    >
+      <st-button class="mg-r8">
+        存草稿
+      </st-button>
+      <st-button @click="onClickRelease" type="primary">
+        发布
+      </st-button>
     </div>
   </div>
 </template>

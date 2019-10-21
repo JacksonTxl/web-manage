@@ -50,7 +50,7 @@
           <st-editor v-model="content"></st-editor>
         </st-form-item>
       </st-form>
-      <div v-di-view="{ name: 'step' }">
+      <div v-di-view="{ name: 'step', show }">
         <st-button type="primary" @click="onSubmit">
           下一步
         </st-button>
