@@ -1,6 +1,6 @@
 <template>
   <div :class="b()">
-    <a-popover trigger="focus" placement="rightTop">
+    <a-popover trigger="focus" placement="rightTop" :visible="show">
       <template slot="content">
         <div :class="[b('popover'), validStatusLength]">
           6~15位字符
@@ -14,7 +14,10 @@
         type="password"
         :class="b('input')"
         :placeholder="placeholder"
+        :maxLength="15"
         @change="onChange"
+        @focus="onFocus"
+        v-bind="$attrs"
       />
     </a-popover>
     <div :class="b('pwd')">
@@ -29,6 +32,11 @@ export default {
   name: 'InputPwdStrength',
   bem: {
     b: 'input-pwd-strength'
+  },
+  data() {
+    return {
+      show: false
+    }
   },
   props: {
     placeholder: {
@@ -69,18 +77,14 @@ export default {
     },
     strengthClassWeak() {
       let cla = ''
-      if (
-        this.strength === 'weak' ||
-        this.strength === 'middle' ||
-        this.strength === 'strong'
-      ) {
+      if (this.strength === 'weak') {
         cla = `input-pwd-strength__pwd-item--weak`
       }
       return cla
     },
     strengthClassMiddle() {
       let cla = ''
-      if (this.strength === 'middle' || this.strength === 'strong') {
+      if (this.strength === 'middle') {
         cla = `input-pwd-strength__pwd-item--middle`
       }
       return cla
@@ -96,6 +100,9 @@ export default {
   methods: {
     onChange(event) {
       this.$emit('change', event.target.value)
+    },
+    onFocus(event) {
+      this.show = true
     }
   }
 }

@@ -1,8 +1,8 @@
 <template>
   <div :class="b()">
-    <div :class="b('head')">
-      <label :class="b('head-title')">绑定登录手机号</label>
-      <p :class="b('head-desc')">
+    <div :class="bHead()">
+      <label :class="bHead('title')">绑定登录手机号</label>
+      <p :class="bHead('desc')">
         用于登录、密码找回和验证身份，保护您的账号安全
       </p>
     </div>
@@ -71,7 +71,8 @@ import { cloneDeep } from 'lodash-es'
 export default {
   name: 'LoginUserBind',
   bem: {
-    b: 'page-login-bind'
+    b: 'page-login-bind',
+    bHead: 'head'
   },
   components: {
     NoCaptcha,
@@ -120,16 +121,14 @@ export default {
   },
   methods: {
     onClickCaptcha() {
-      this.form.validateFields(['country_phone'], (err, values) => {
-        if (!err) {
-          const { country_phone } = values
-          const params = {
-            phone: country_phone.phone,
-            country_code_id: country_phone.code_id,
-            is_bind: 2
-          }
-          this.getCaptcha(params)
+      this.form.validate(['country_phone']).then(values => {
+        const { country_phone } = values
+        const params = {
+          phone: country_phone.phone,
+          country_code_id: country_phone.code_id,
+          is_bind: 2
         }
+        this.getCaptcha(params)
       })
     },
     getCaptcha(params) {

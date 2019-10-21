@@ -3,6 +3,7 @@
     <st-form :form="form" @submit.prevent="next" :class="b('form')">
       <st-form-item>
         <input-pwd-strength
+          max-length="15"
           v-decorator="decorators.pwd"
           placeholder="请输入新密码"
           :validStatus="validStatus"
