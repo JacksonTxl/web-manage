@@ -109,12 +109,12 @@ export default {
       this.form.setFieldsValue({
         country_phone: params
       })
-      this.onChangePhone(params)
+      // this.onChangePhone(params)
     }
   },
   methods: {
     onClickCaptcha() {
-      if (!this.isBind) return
+      // if (!this.isBind) return
       this.form.validateFields(['country_phone'], (err, values) => {
         if (!err) {
           const { country_phone } = values
@@ -134,25 +134,26 @@ export default {
       })
     },
     onChangePhone(event) {
-      const phone = event.phone
-      if (this.pattern.MOBILE.test(phone)) {
-        this.validPhoneIsBind({ phone })
-      } else {
-        this.isBind = true
-      }
+      this.isBind = true
+      // const phone = event.phone
+      // if (this.pattern.MOBILE.test(phone)) {
+      //   this.validPhoneIsBind({ phone })
+      // } else {
+      //   this.isBind = true
+      // }
     },
     goBind() {
       this.countryInfo.country_phone = this.form.getFieldValue('country_phone')
       this.$emit('bind', this.countryInfo)
     },
-    validPhoneIsBind(params) {
-      this.loginService.checkPhoneIsBind(params).subscribe(res => {
-        this.isBind = false
-        if (res.status) {
-          this.isBind = true
-        }
-      })
-    },
+    // validPhoneIsBind(params) {
+    //   this.loginService.checkPhoneIsBind(params).subscribe(res => {
+    //     this.isBind = false
+    //     if (res.status) {
+    //       this.isBind = true
+    //     }
+    //   })
+    // },
     getCaptcha(params) {
       params.nvc_val = getNVCVal()
       this.loginService.getCaptcha(params).subscribe(res => {
@@ -162,6 +163,11 @@ export default {
     },
     loginErrorHandler(err) {
       const code = err.response.code
+      if (code === 60052) {
+        // 手机号未注册
+        this.isBind = false
+        return
+      }
       if (this.noCaptchaService.testIsNeedCallCaptcha(code)) {
         this.noCaptchaService.callCaptcha(code)
         return

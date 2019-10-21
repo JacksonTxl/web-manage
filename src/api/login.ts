@@ -21,7 +21,7 @@ export class LoginApi extends Api {
    * 手机登录API
    */
   getCaptcha(params: LoginPhoneInput) {
-    const ignoreCodes = [60154, 60155]
+    const ignoreCodes = [60154, 60155, 60052]
     return this.http.post('/login/captcha/phone', { params, ignoreCodes })
   }
   /**
