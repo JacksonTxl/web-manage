@@ -56,8 +56,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.info)
-    if (this.info.tmpl_id) {
+    if (this.info) {
       this.form.setFieldsValue({
         title: this.info.title,
         content: this.info.content
