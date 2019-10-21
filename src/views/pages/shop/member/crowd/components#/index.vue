@@ -129,7 +129,6 @@
               v-if="auth.export"
               v-export-excel="{ type: 'crowd/' + value[1].id }"
               class="shop-member-crowd-index-box__btn-rq"
-              @click="exportFunc(value[1].id)"
             >
               导出
             </span>
@@ -197,7 +196,6 @@
               v-if="auth.export"
               v-export-excel="{ type: 'crowd/' + value[2].id }"
               class="shop-member-crowd-index-box__btn-rq"
-              @click="exportFunc(value[2].id)"
             >
               导出
             </span>
