@@ -1,6 +1,5 @@
 <template>
-  <section id="more-dropdown" class="sg-section">
-    <h3>st-more-dropdown</h3>
+  <div>
     <st-more-dropdown class="mg-l64">
       <a-menu-item>转让</a-menu-item>
       <a-menu-item>出售</a-menu-item>
@@ -11,5 +10,5 @@
       <a-menu-item>2</a-menu-item>
       <a-menu-item>3</a-menu-item>
     </st-more-dropdown>
-  </section>
+  </div>
 </template>

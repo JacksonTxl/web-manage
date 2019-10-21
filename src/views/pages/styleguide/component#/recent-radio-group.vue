@@ -1,11 +1,10 @@
 <template>
-  <section class="sg-section">
-    <h3>st-recent-radio-group</h3>
+  <div>
     <p>报表筛选时常用</p>
     <div>
       <st-recent-radio-group @change="onChange"></st-recent-radio-group>
     </div>
-  </section>
+  </div>
 </template>
 <script>
 export default {

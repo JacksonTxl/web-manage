@@ -1,6 +1,5 @@
 <template>
-  <section class="sg-section">
-    <h3>st-modal</h3>
+  <div>
     <a
       href="javascript: void(0)"
       v-modal-link="{ name: 'test-tl', props: { name: 'lucy', age: 18 } }"
@@ -36,7 +35,7 @@
       小号模态窗 width: 484px
     </st-modal>
     <a class="mg-l8" v-modal-link="{ name: 'test-sg' }">数据独立modal</a>
-  </section>
+  </div>
 </template>
 <script>
 export default {

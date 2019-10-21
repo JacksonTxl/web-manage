@@ -1,6 +1,5 @@
 <template>
-  <section class="sg-section">
-    <h4>st-panel</h4>
+  <div>
     <!-- st-panel start -->
     <section class="mg-t16 sg-app-content">
       <st-panel title="只有一个标题">
@@ -115,7 +114,7 @@
       </st-search-panel>
     </section>
     <!-- st-panel end -->
-  </section>
+  </div>
 </template>
 <script>
 export default {

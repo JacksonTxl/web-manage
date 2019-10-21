@@ -1,6 +1,5 @@
 <template>
-  <div class="sg-section">
-    <h4>st-table-actions</h4>
+  <div>
     <st-table-actions>
       <a>详情</a>
       <a>上架</a>

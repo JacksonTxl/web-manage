@@ -1,6 +1,5 @@
 <template>
-  <section class="sg-section">
-    <h3>st-input-number</h3>
+  <div>
     <h5>
       此input只能输入12位。仅支持addonAfter插槽（不支持属性形式）。同时为了允许输入'\.',所以返回值为string类型。此input组件适用输入date
       price表单。
@@ -55,7 +54,7 @@
         </a-form>
       </st-panel>
     </section>
-  </section>
+  </div>
 </template>
 <script>
 export default {

@@ -1,14 +1,12 @@
 <template>
-  <section class="sg-section">
-    <h3>
-      st-icon
-      <a
-        target="blank"
-        href="https://www.iconfont.cn/manage/index?spm=a313x.7781069.1998910419.11&manage_type=myprojects&projectId=1106512&keyword="
-      >
-        iconfont 链接
-      </a>
-    </h3>
+  <div>
+    <a
+      target="blank"
+      href="https://www.iconfont.cn/manage/index?spm=a313x.7781069.1998910419.11&manage_type=myprojects&projectId=1106512&keyword="
+    >
+      iconfont 链接
+    </a>
+
     <st-container type="1">
       <li>
         <st-icon type="wechat"></st-icon>
@@ -32,5 +30,5 @@
         <st-button icon="wechat" type="primary">按钮中使用[icon]图标</st-button>
       </li>
     </st-container>
-  </section>
+  </div>
 </template>
