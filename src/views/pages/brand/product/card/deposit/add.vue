@@ -209,7 +209,6 @@
                       设置此会员卡可售卖的时间范围
                     </div>
                     <st-help-tooltip
-                      id="TBCGC001"
                       class="page-content-card-time__icon"
                       type="info-circle"
                     ></st-help-tooltip>
