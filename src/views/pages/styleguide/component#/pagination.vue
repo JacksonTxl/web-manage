@@ -1,8 +1,7 @@
 <template>
-  <section class="sg-section">
-    <h3>st-pagination</h3>
+  <div>
     <st-pagination :page="page" @change="onChange" />
-  </section>
+  </div>
 </template>
 <script>
 export default {

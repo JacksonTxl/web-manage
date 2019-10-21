@@ -1,6 +1,5 @@
 <template>
-  <section class="sg-section">
-    <h3>st-info</h3>
+  <div>
     <p>信息展示 默认使用两栏宽度 40 *2 +8 =88px作为label宽度</p>
     <section class="sg-app-content">
       <st-panel>
@@ -81,5 +80,5 @@
         </a-row>
       </st-panel>
     </section>
-  </section>
+  </div>
 </template>
