@@ -12,7 +12,7 @@ export class OperationRecordService implements RouteGuard {
   getList(query: any, type: string) {
     return this.courseApi.getCourseOperationInfo(query, type).pipe(
       tap((res: any) => {
-        this.list$.commit(() => this.soldService.dealData(res.list))
+        this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })
     )
