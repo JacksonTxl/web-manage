@@ -6,22 +6,22 @@
           <a-radio-button value="all">汇总</a-radio-button>
           <a-radio-button value="coach">教练</a-radio-button>
         </a-radio-group>
-        <st-export-button
+        <st-button
           v-if="showTable === 'all'"
           class="mg-l8"
-          type="course/shop"
-          :query="query"
+          type="primary"
+          v-export-excel="{ type: '', query: query }"
         >
           全部导出
-        </st-export-button>
-        <st-export-button
+        </st-button>
+        <st-button
+          type="primary"
           v-if="showTable === 'coach'"
           class="mg-l8"
-          type="shop/coach"
-          :query="query"
+          v-export-excel="{ type: 'shop/coach', query: query }"
         >
           全部导出
-        </st-export-button>
+        </st-button>
       </div>
       <div :class="bHeard('right')">
         <div v-if="showTable === 'coach'">

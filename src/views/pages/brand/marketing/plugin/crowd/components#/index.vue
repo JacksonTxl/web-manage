@@ -65,7 +65,7 @@
                 <a-menu-item style="width:130px">
                   <a
                     v-if="auth.export"
-                    v-exportExcel="{
+                    v-export-excel="{
                       type: 'crowd/' + value[0].id
                     }"
                   >
@@ -157,7 +157,7 @@
                 <a-menu-item style="width:130px">
                   <a
                     v-if="auth.export"
-                    v-exportExcel="{
+                    v-export-excel="{
                       type: 'crowd/' + value[1].id
                     }"
                   >
@@ -249,7 +249,7 @@
                 <a-menu-item style="width:130px">
                   <a
                     v-if="auth.export"
-                    v-exportExcel="{
+                    v-export-excel="{
                       type: 'crowd/' + value[2].id
                     }"
                   >

@@ -63,9 +63,12 @@
     ></st-table>
 
     <div slot="footer">
-      <st-export-button type="shop/personal/course/checkin" :query="query">
+      <st-button
+        type="primary"
+        v-export-excel="{ type: 'shop/personal/course/checkin', query: query }"
+      >
         全部导出
-      </st-export-button>
+      </st-button>
     </div>
   </st-modal>
 </template>

@@ -42,7 +42,7 @@
                 <a-menu-item style="width:130px">
                   <a
                     v-if="record.auth['shop:member:crowd|export']"
-                    v-exportExcel="{
+                    v-export-excel="{
                       type: 'crowd/' + record.id,
                       query: record
                     }"

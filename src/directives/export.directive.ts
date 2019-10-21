@@ -3,9 +3,12 @@ import { ExportService } from '@/services/export.service'
 import Vue from 'vue'
 import { Modal } from 'ant-design-vue'
 
-Vue.directive('exportExcel', {
+Vue.directive('export-excel', {
   bind: function(el, val, vnode) {
     const exportService = container.get(ExportService)
+    if (!val.value.type) {
+      return
+    }
     el.onclick = function() {
       Modal.confirm({
         title: '是否确认导出?',

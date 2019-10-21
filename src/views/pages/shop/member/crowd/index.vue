@@ -38,7 +38,7 @@
           <st-table-actions>
             <a
               v-if="record.auth['shop:member:crowd|export']"
-              v-exportExcel="{ type: 'crowd/' + record.id, query: record }"
+              v-export-excel="{ type: 'crowd/' + record.id, query: record }"
             >
               导出
             </a>
