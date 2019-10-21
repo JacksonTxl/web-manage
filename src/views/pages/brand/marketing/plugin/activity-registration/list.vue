@@ -80,14 +80,14 @@ import MarkteingPluginTitle from '../../components#/marketing-title'
 import { columns } from './list.config'
 import { TYPE } from '@/constants/marketing/plugin'
 import { RouteService } from '@/services/route.service'
-import MarketingPromotionActivity from '@/views/biz-modals/marketing/promotion-activity'
+import MarketingSharePoster from '@/views/biz-modals/marketing/share-poster'
 
 // modal
 export default {
   name: 'ActivityList',
   mixins: [tableMixin],
   modals: {
-    MarketingPromotionActivity
+    MarketingSharePoster
   },
   bem: {
     bPage: 'page-plugin-activity-registration',
@@ -140,7 +140,7 @@ export default {
       this.$router.push({ name: this.redirectPath[pathName] })
     },
     onCLickGeneralize({ record, pathName }) {
-      this.$modalRouter.push({ name: 'marketing-promotion-activity' })
+      this.$modalRouter.push({ name: 'marketing-share-poster' })
     },
     onClickNameList({ record, pathName }) {
       this.$router.push({

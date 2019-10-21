@@ -40,7 +40,7 @@
         </template>
       </tbody>
     </st-form-table>
-    <div v-di-view="{ name: 'step', show }">
+    <div v-di-view="{ name: 'step' }">
       <div :class="pComponents('button-group')">
         <st-button class="mg-r8">
           存草稿

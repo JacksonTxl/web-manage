@@ -54,7 +54,7 @@
         </template>
       </tbody>
     </st-form-table>
-    <div v-di-view="{ name: 'step', show }">
+    <div v-di-view="{ name: 'step' }">
       <st-button @click="onClickAddTicketComplete">
         下一步
       </st-button>
