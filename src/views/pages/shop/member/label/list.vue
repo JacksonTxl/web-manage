@@ -2,12 +2,12 @@
   <st-panel app class="page-shop-label-container">
     <div slot="title">
       <st-button type="primary" v-if="auth.add" icon="add">
-        <a
+        <span
           v-modal-link="{ name: 'label-add', on: { change: onSearhReset } }"
-          class="add-label-btn mg-l4"
+          class="add-label-btn mg-l8"
         >
           添加标签
-        </a>
+        </span>
       </st-button>
     </div>
     <div slot="actions">
