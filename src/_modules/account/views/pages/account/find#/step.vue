@@ -80,13 +80,14 @@ export default {
     },
     onNext(params) {
       this.findService.checkCaptcha(params).subscribe(res => {
-        this.currentIndex = 2
+        this.currentIndex = 1
+        this.$emit('step', 1)
       })
     },
     onReset(params) {
       params.account = this.bindInfo.account
       this.findService.repairPwd(params).subscribe(res => {
-        this.currentIndex = 3
+        this.currentIndex = 2
       })
     },
     goLogin() {

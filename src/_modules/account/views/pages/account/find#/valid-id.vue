@@ -106,9 +106,10 @@ export default {
       this.isCountTime = false
     },
     next() {
-      const params = this.form.getFieldsValue()
-      params.account = this.bindInfo.account
-      this.$emit('next', params)
+      this.form.validate().then(values => {
+        values.account = this.bindInfo.account
+        this.$emit('next', values)
+      })
     },
     goBind() {
       this.$router.push({

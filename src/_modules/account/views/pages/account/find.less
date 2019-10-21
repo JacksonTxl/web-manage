@@ -21,7 +21,7 @@
     font-weight: 500;
     color: rgba(37, 42, 46, 1);
   }
-  &__footer {
+  .footer {
     position: absolute;
     width: 100%;
     bottom: 0;
@@ -29,11 +29,35 @@
     background: url('~@/assets/img/find-footer.png') repeat-x;
     height: 266px;
     background-position-y: 133px;
-    &--active {
+    &__active {
       box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
     }
-    &-copyright {
+    &__msg {
+      width: 350px;
+      margin: auto;
+      font-size: 12px;
+      text-align: left;
+    }
+    &__title {
+      font-size: 14px;
+      line-height: 22px;
+      margin-top: 36px;
+      margin-bottom: 16px;
+    }
+    &__item {
+      line-height: 16px;
+      height: 16px;
+      margin-bottom: 12px;
+    }
+    &__item-img {
+      margin-right: 4px;
+      margin-top: -1px;
+    }
+    &__copyright {
       margin-top: 225px;
+    }
+    &__copyright--active {
+      margin-top: 50px;
     }
   }
 }

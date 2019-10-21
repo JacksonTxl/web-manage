@@ -14,10 +14,49 @@
     </header>
     <section>
       <find-account @next="onNext" v-if="!showStep"></find-account>
-      <find-account-step v-else :bindInfo="info"></find-account-step>
+      <find-account-step
+        v-else
+        :bindInfo="info"
+        @step="onStep"
+      ></find-account-step>
     </section>
-    <footer :class="b('footer')">
-      <p :class="b('footer-copyright')">
+    <footer :class="[bFooter(), isBindAccount ? bFooter('active') : '']">
+      <dl :class="bFooter('msg')" v-if="isBindAccount">
+        <dt :class="bFooter('title')">没收到短信验证码？</dt>
+        <dd :class="bFooter('item')">
+          <img
+            :class="bFooter('item-img')"
+            src="~@/assets/img/find-pwd/msg-tip-1.png"
+          />
+          网络通讯异常可能会造成短信丢失，请重新获取或稍后再试。
+        </dd>
+        <dd :class="bFooter('item')">
+          <img
+            :class="bFooter('item-img')"
+            src="~@/assets/img/find-pwd/msg-tip-2.png"
+          />
+          请核实手机是否已欠费停机，或者屏蔽了系统短信。
+        </dd>
+        <dd :class="bFooter('item')">
+          <img
+            :class="bFooter('item-img')"
+            src="~@/assets/img/find-pwd/msg-tip-3.png"
+          />
+          如果手机已丢失或停用， 请选择其他验证方式。
+        </dd>
+        <dd :class="bFooter('item')">
+          <img
+            :class="bFooter('item-img')"
+            src="~@/assets/img/find-pwd/msg-tip-4.png"
+          />
+          您也可以尝试将SIM卡移动到另一部手机，然后重试。
+        </dd>
+      </dl>
+      <p
+        :class="
+          isBindAccount ? bFooter('copyright--active') : bFooter('copyright')
+        "
+      >
         Copyright&nbsp;©&nbsp;2015-2019&nbsp;三体云智能科技有限公司
       </p>
     </footer>
@@ -30,11 +69,13 @@ import FindAccount from './find#/account'
 import FindAccountStep from './find#/step'
 import { NoCaptchaService } from '@/services/no-captcha.service'
 import { throwError } from 'rxjs'
+import { IS_BIND } from '@/constants/account'
 
 export default {
   name: 'Login',
   bem: {
-    b: 'page-account-find'
+    b: 'page-account-find',
+    bFooter: 'footer'
   },
   serviceInject() {
     return {
@@ -44,7 +85,9 @@ export default {
   },
   data() {
     return {
+      IS_BIND,
       showStep: false,
+      currentIndex: 0,
       info: {}
     }
   },
@@ -57,7 +100,11 @@ export default {
       loading: this.findService.loading$
     }
   },
-  computed: {},
+  computed: {
+    isBindAccount() {
+      return this.info.is_bind === this.IS_BIND.BIND && this.currentIndex === 0
+    }
+  },
   methods: {
     onNext(params) {
       params.nvc_val = window.getNVCVal()
@@ -75,6 +122,9 @@ export default {
         return
       }
       this.noCaptchaService.resetNVC()
+    },
+    onStep(event) {
+      this.currentIndex = event
     }
   }
 }
