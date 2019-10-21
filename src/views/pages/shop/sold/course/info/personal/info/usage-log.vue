@@ -2,7 +2,7 @@
   <section class="st-sold-log-table">
     <st-table
       :pagination="{
-        current: query.page,
+        current: query.current_page,
         total: page.total_counts,
         pageSize: query.size
       }"
