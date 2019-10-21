@@ -17,7 +17,7 @@
         @search="onSearch"
       />
     </div>
-    <a-row :gutter="8" class="mg-t8">
+    <a-row :gutter="8">
       <st-table
         :columns="columns"
         :dataSource="list"
