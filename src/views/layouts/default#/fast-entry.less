@@ -1,15 +1,22 @@
 .layout-fast-entry {
-  .pd(36px);
+  position: absolute;
+  top: 49px;
+  right: 16px;
+  padding: 39px 40px 32px 40px;
   .w(320px);
   .bg(@white);
   box-sizing: border-box;
-  border-radius: 4px 4px 0 0;
+  box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-wrap: wrap;
-  box-shadow: 0 4px 12px 0 rgba(190, 151, 151, 0.15);
+  z-index: 10;
+
   &__item {
-    .s(60px, 72px);
-    .mg(24px 0 0 34px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .s(60px, 74px);
+    .mg(24px 0 0 30px);
     .ta-c;
     .fz(12px);
     .c(@title);
@@ -24,6 +31,6 @@
     }
   }
   &__item-icon {
-    .s(44px, 44px);
+    // .s(44px, 44px);
   }
 }

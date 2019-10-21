@@ -166,7 +166,7 @@ import { find } from 'lodash-es'
 import { UserService } from '@/services/user.service'
 import { TokenService } from '@/services/token.service'
 import { TitleService } from '@/services/title.service'
-import FastEntry from './entry#/fast-entry.vue'
+import FastEntry from './default#/fast-entry.vue'
 
 export default {
   components: {
