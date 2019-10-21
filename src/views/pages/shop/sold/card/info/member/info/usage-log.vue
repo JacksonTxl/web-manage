@@ -8,28 +8,11 @@
       @change="onTableChange"
       :dataSource="list"
     >
-      <template slot="usage_type" slot-scope="text, record">
-        <span v-if="record.usage_type === USAGE_TYPES.ENTRANCE">
-          入场
+      <template slot="usage_detail" slot-scope="text, record">
+        <span v-for="(item, index) in record.usage_detail" :key="index">
+          {{ item }}
+          <br />
         </span>
-        <span v-if="record.usage_type === USAGE_TYPES.ORDER">预约团体课</span>
-        <span v-if="record.usage_type === USAGE_TYPES.CANCEL">
-          取消预约团体课
-        </span>
-        <div v-if="record.usage_type !== USAGE_TYPES.ENTRANCE">
-          <span>课程名称:</span>
-          <span>{{ record.course_name }}</span>
-        </div>
-        <div v-if="record.usage_type !== USAGE_TYPES.ENTRANCE">
-          <span>上课时间:</span>
-          <span>
-            {{ record.course_start_time }}-- {{ record.course_end_time }}
-          </span>
-        </div>
-        <div v-if="record.usage_type !== USAGE_TYPES.ENTRANCE">
-          <span>上课教练:</span>
-          <span>{{ record.coach_name }}</span>
-        </div>
       </template>
       <template slot="amount_change" slot-scope="text, record">
         <span :style="{ color: record.amount_change < 0 ? 'red' : 'green' }">

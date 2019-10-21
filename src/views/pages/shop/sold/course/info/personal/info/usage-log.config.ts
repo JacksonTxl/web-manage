@@ -5,8 +5,8 @@ export const columns = () => [
   },
   {
     title: '使用详情',
-    dataIndex: 'usage_type',
-    scopedSlots: { customRender: 'usage_type' }
+    dataIndex: 'usage_detail',
+    scopedSlots: { customRender: 'usage_detail' }
   },
   {
     title: '变更额度(次)',

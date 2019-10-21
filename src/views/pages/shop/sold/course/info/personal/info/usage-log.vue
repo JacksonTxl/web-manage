@@ -12,33 +12,11 @@
       :dataSource="list"
       rowKey="id"
     >
-      <template slot="usage_type" slot-scope="text, record">
-        <span v-if="record.usage_type === USAGE_TYPES.PERSONAL">
-          预约私教课
+      <template slot="usage_detail" slot-scope="text, record">
+        <span v-for="(item, index) in record.usage_detail" :key="index">
+          {{ item }}
+          <br />
         </span>
-        <span v-if="record.usage_type === USAGE_TYPES.CANCEL_PERSONAL">
-          取消预约私教课
-        </span>
-        <span v-if="record.usage_type === USAGE_TYPES.PERSONAL_TEAM">
-          预约小团课
-        </span>
-        <span v-if="record.usage_type === USAGE_TYPES.CANCEL_PERSONAL_TEAM">
-          取消预约私教小团课
-        </span>
-        <div>
-          <span>课程名称:</span>
-          <span>{{ record.course_name }}</span>
-        </div>
-        <div>
-          <span>上课时间:</span>
-          <span>
-            {{ record.course_start_time }}-- {{ record.course_end_time }}
-          </span>
-        </div>
-        <div>
-          <span>上课教练:</span>
-          <span>{{ record.coach_name }}</span>
-        </div>
       </template>
       <template slot="amount_change" slot-scope="text, record">
         <span :style="{ color: record.amount_change < 0 ? 'red' : 'green' }">
