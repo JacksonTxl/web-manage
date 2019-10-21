@@ -62,7 +62,7 @@
                 定向运营
               </span>
               <a-menu slot="overlay">
-                <a-menu-item style="width:130px">
+                <a-menu-item style="width:100%">
                   <a
                     v-if="auth.export"
                     v-export-excel="{
@@ -72,7 +72,7 @@
                     导出
                   </a>
                 </a-menu-item>
-                <a-menu-item style="width:130px">
+                <a-menu-item style="width:100%">
                   <a
                     href="javascript:;"
                     @click="newCrowd('功能正在开发中，敬请期待')"
@@ -80,7 +80,7 @@
                     群发短信
                   </a>
                 </a-menu-item>
-                <a-menu-item style="width:130px">
+                <a-menu-item style="width:100%">
                   <a
                     href="javascript:;"
                     @click="newCrowd('功能正在开发中，敬请期待')"
@@ -154,7 +154,7 @@
                 定向运营
               </span>
               <a-menu slot="overlay">
-                <a-menu-item style="width:130px">
+                <a-menu-item style="width:100%">
                   <a
                     v-if="auth.export"
                     v-export-excel="{
@@ -164,7 +164,7 @@
                     导出
                   </a>
                 </a-menu-item>
-                <a-menu-item style="width:130px">
+                <a-menu-item style="width:100%">
                   <a
                     href="javascript:;"
                     @click="newCrowd('功能正在开发中，敬请期待')"
@@ -172,7 +172,7 @@
                     群发短信
                   </a>
                 </a-menu-item>
-                <a-menu-item style="width:130px">
+                <a-menu-item style="width:100%">
                   <a
                     href="javascript:;"
                     @click="newCrowd('功能正在开发中，敬请期待')"
@@ -246,7 +246,7 @@
                 定向运营
               </span>
               <a-menu slot="overlay">
-                <a-menu-item style="width:130px">
+                <a-menu-item style="width:100%">
                   <a
                     v-if="auth.export"
                     v-export-excel="{
@@ -256,7 +256,7 @@
                     导出
                   </a>
                 </a-menu-item>
-                <a-menu-item style="width:130px">
+                <a-menu-item style="width:100%">
                   <a
                     href="javascript:;"
                     @click="newCrowd('功能正在开发中，敬请期待')"
@@ -264,7 +264,7 @@
                     群发短信
                   </a>
                 </a-menu-item>
-                <a-menu-item style="width:130px">
+                <a-menu-item style="width:100%">
                   <a
                     href="javascript:;"
                     @click="newCrowd('功能正在开发中，敬请期待')"
