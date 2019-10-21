@@ -31,7 +31,6 @@ import moment from 'moment'
 import { UsageLogService } from './usage-log.service'
 import { RouteService } from '@/services/route.service'
 import { columns } from './usage-log.config'
-import { USAGE_TYPES } from '@/constants/sold/usage'
 import tableMixin from '@/mixins/table.mixin'
 export default {
   name: 'PageShopSoldCoursePersonalInfoUsage',
@@ -54,9 +53,7 @@ export default {
     }
   },
   data() {
-    return {
-      USAGE_TYPES
-    }
+    return {}
   },
   computed: {
     columns
