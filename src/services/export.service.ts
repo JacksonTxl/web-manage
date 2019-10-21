@@ -5,7 +5,7 @@ import { then } from '@/operators'
 import { MessageService } from '@/services/message.service'
 
 @Injectable()
-export class ExportButtonService {
+export class ExportService {
   loading$ = new State({})
   constructor(
     private excelApi: ExcelApi,
