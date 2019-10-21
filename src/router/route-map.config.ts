@@ -255,7 +255,7 @@ export const routeMapConfig = {
     routeConfig.meta.title = '使用记录'
     routeConfig.meta.parentId = 'shop-sold-course-info-personal-info'
     routeConfig.queryOptions = {
-      page: { type: Number, default: 1 },
+      current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
   },
@@ -314,7 +314,7 @@ export const routeMapConfig = {
     routeConfig.meta.parentId = 'shop-sold-card-info-member-info'
     routeConfig.queryOptions = {
       id: { type: Number },
-      page: { type: Number, default: 1 },
+      current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
   },
