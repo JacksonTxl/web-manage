@@ -1,5 +1,4 @@
 import { Api } from './api'
-import { of } from 'rxjs'
 
 export class LoginApi extends Api {
   /**
@@ -22,7 +21,22 @@ export class LoginApi extends Api {
    * 手机登录API
    */
   getCaptcha(params: LoginPhoneInput) {
-    return this.http.post('/login/captcha/phone', { params })
+    const ignoreCodes = [60154, 60155, 60052]
+    return this.http.post('/login/captcha/phone', { params, ignoreCodes })
+  }
+  /**
+   * 校验手机是否已经绑定账户
+   * @param params
+   */
+  checkPhoneIsBind(params: any) {
+    return this.http.post('/login/phone/check', { params })
+  }
+  /**
+   * 账号绑定用户
+   * @param params
+   */
+  bindPhoneForAccount(params: any) {
+    return this.http.post('/login/phone/bind', { params })
   }
 }
 
