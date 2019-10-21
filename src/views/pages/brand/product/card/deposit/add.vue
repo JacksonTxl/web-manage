@@ -198,7 +198,7 @@
           <a-row :gutter="8">
             <a-col :lg="20">
               <st-form-item class="page-content-card-time mg-b0" required>
-                <span slot="label" class="label">
+                <span slot="label">
                   支持售卖时间
                   <a-popover
                     trigger="hover"
