@@ -69,11 +69,21 @@ import MapButton from '@/views/biz-components/map-button/map-button'
 import StEditor from '@/views/biz-components/editor/editor'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
+import { CopyService } from '../copy.service'
+import { EditService } from '../edit.service'
 export default {
   name: 'Step1Form',
   serviceInject() {
     return {
+      copyService: CopyService,
+      editService: EditService,
       pattern: PatternService
+    }
+  },
+  rxState() {
+    const { defaultForm$ } = this.copyService
+    return {
+      defaultForm$
     }
   },
   data() {
@@ -92,9 +102,23 @@ export default {
       formInfo: {},
       decorators,
       fileShareList: [],
-      address: '',
+      address: {},
       content: ''
     }
+  },
+  props: {
+    isCopy: {
+      type: Boolean,
+      default: false
+    },
+    isUpdate: {
+      type: Boolean,
+      default: false
+    }
+  },
+  created() {
+    if (!this.isCopy && !this.isUpdate) return
+    this.initForm()
   },
   components: {
     MapButton,
@@ -102,13 +126,45 @@ export default {
   },
   watch: {
     content(newValue, oldValue) {
-      console.log(newValue)
       this.$set(this.formInfo, 'content', newValue)
       this.$emit('change', this.formInfo)
     }
   },
   methods: {
     moment,
+    initForm() {
+      this.$nextTick().then(() => {
+        const date = [
+          moment(this.defaultForm$.start_time),
+          moment(this.defaultForm$.end_time)
+        ]
+        this.content = this.defaultForm$.description
+        this.fileShareList.push(this.defaultForm$.image)
+        const {
+          address,
+          lat,
+          lng,
+          district,
+          province,
+          city
+        } = this.defaultForm$
+        this.address = {
+          address,
+          lat,
+          lng,
+          district,
+          province,
+          city
+        }
+        this.$set(this.formInfo, 'address', address)
+        this.$emit('change', this.formInfo)
+        this.form.setFieldsValue({
+          activity_name: this.defaultForm$.activity_name,
+          date,
+          member_limit_num: this.defaultForm$.member_limit_num
+        })
+      })
+    },
     onShareChangeGetImage(imageFiles) {
       this.$set(this.formInfo, 'imageUrl', imageFiles[0].image_url)
       this.$emit('change', this.formInfo)

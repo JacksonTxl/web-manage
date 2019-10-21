@@ -11,7 +11,7 @@
           </st-t3>
           <div :class="bItem('price-info')">
             <span class="discount-price">
-              ¥{{ ticket.ticket_price - ticket.reduce_price }}
+              ¥{{ +ticket.ticket_price - +ticket.reduce_price }}
             </span>
             <span class="original-price">/¥{{ ticket.ticket_price }}</span>
             <span class="discount-terms">超过3张，每张减¥50</span>
@@ -23,6 +23,7 @@
             备注说明：{{ ticket.ticket_remark }}
           </div>
         </div>
+        <div class="contnet-mgt120"></div>
         <div :class="bComponent('footer')">
           <st-button pill class="footer__button" type="primary">
             下一步

@@ -1,13 +1,15 @@
 <template>
-  <activity-form></activity-form>
+  <div>
+    <page-add :isUpdate="true"></page-add>
+  </div>
 </template>
 
 <script>
-import ActivityForm from './add'
+import PageAdd from './add'
 export default {
-  name: 'ActivityEdit',
+  name: 'EditActivity',
   components: {
-    ActivityForm
+    PageAdd
   }
 }
 </script>

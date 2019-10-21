@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-if="!disabled">
+        <tr>
           <td :colspan="colspanNum" class="st-form-table__add">
             <st-button type="dashed" icon="add" @click="onCLickOpenmodal" block>
               添加
@@ -24,7 +24,7 @@
           <tr v-for="(item, index) in dataSource" :key="index">
             <td>{{ item.extra_name }}</td>
             <td>{{ item.extra_require === 1 ? '必填' : '选填' }}</td>
-            <td v-if="!disabled">
+            <td>
               <a @click="delExtraItemRecord(item.extra_key)">
                 删除
               </a>
@@ -55,6 +55,7 @@
 <script>
 import { Step3FormService } from './step3-form.service'
 import MarketingAddSignup from '@/views/biz-modals/marketing/add-signup'
+import { CopyService } from '../copy.service'
 export default {
   name: 'Step3Form',
   bem: {
@@ -65,25 +66,16 @@ export default {
   },
   serviceInject() {
     return {
-      service: Step3FormService
+      service: Step3FormService,
+      copyService: CopyService
     }
   },
   rxState() {
     const { defaultExtInfo$ } = this.service
+    const { defaultForm$ } = this.copyService
     return {
-      defaultExtInfo$
-    }
-  },
-  props: {
-    shopIds: {
-      type: Array,
-      default() {
-        return []
-      }
-    },
-    disabled: {
-      type: Boolean,
-      default: false
+      defaultExtInfo$,
+      defaultForm$
     }
   },
   data() {
@@ -96,18 +88,54 @@ export default {
       list: []
     }
   },
+  props: {
+    isCopy: {
+      type: Boolean,
+      default: false
+    },
+    isUpdate: {
+      type: Boolean,
+      default: false
+    }
+  },
   created() {
     this.service.getDefaultExtInfo().subscribe()
+    if (!this.isCopy && !this.isUpdate) return
+    this.initForm()
   },
   computed: {
     colspanNum() {
-      return this.disabled ? 4 : 5
+      return 5
     },
     dataSource() {
-      return [...this.defaultExtInfo$, ...this.addDataSource]
+      let isDefault = false
+      this.addDataSource.forEach(item => {
+        if (item.extra_key === 'username') {
+          isDefault = true
+        }
+      })
+      if (isDefault) {
+        return [...this.addDataSource]
+      } else {
+        return [...this.defaultExtInfo$, ...this.addDataSource]
+      }
     }
   },
   methods: {
+    initForm() {
+      this.$nextTick().then(() => {
+        this.isStep3 = this.defaultForm$.rule_settings.join_ext_info.extra_type
+        this.$set(
+          this,
+          'addDataSource',
+          this.defaultForm$.rule_settings.join_ext_info.extra_data
+        )
+        this.formData = [
+          ...this.defaultForm$.rule_settings.join_ext_info.extra_data
+        ]
+        this.$emit('change', this.dataSource)
+      })
+    },
     onCLickOpenmodal() {
       this.extraSort++
       this.$modalRouter.push({

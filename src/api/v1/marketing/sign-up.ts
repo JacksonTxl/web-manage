@@ -67,7 +67,7 @@ export class SignUpApi extends Api {
    * 编辑回显
    */
   getSignUpEditInfo(id: number) {
-    return this.http.get(`/v1/plugin/sign_up/${id}`)
+    return this.http.get(`/v1/plugin/sign_up/activity/${id}`)
   }
   /**
    * 编辑活动信息
@@ -112,7 +112,7 @@ export class SignUpApi extends Api {
    * 【签到验票】票号，手机号，用户姓名搜索
    */
   getSignUpSignList(query: any) {
-    return this.http.get(`/v1/plugin/sign_up/search`, query)
+    return this.http.get(`/v1/plugin/sign_up/search`, { query })
   }
   /**
    * 【签到验票】票号，手机号，用户姓名搜索

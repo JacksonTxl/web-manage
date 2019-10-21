@@ -25,16 +25,22 @@
     <div :class="bPage('form')">
       <step1-form
         v-show="currentStep === 0"
+        :isCopy="isCopy"
+        :isUpdate="isUpdate"
         @step-submit="onSubmitGetStep1Form"
         @change="onChangeStep1Form"
       ></step1-form>
       <step2-form
         v-show="currentStep === 1"
+        :isCopy="isCopy"
+        :isUpdate="isUpdate"
         @step-submit="onSubmitGetStep2Form"
         @change="onChangeStep2Form"
       ></step2-form>
       <step3-form
         v-show="currentStep === 2"
+        :isCopy="isCopy"
+        :isUpdate="isUpdate"
         @release="onReleaseActivity"
         @save-draft="onSaveDraftActivity"
         @change="onChangeStep3Form"
@@ -53,14 +59,10 @@ import ActivityH5View from './components#/activity-h5-view'
 import TicketH5View from './components#/ticket-h5-view'
 import SignupH5View from './components#/signup-h5-view'
 import { AddService } from './add.service'
-import MarketingReleaseActivitySuccess from '@/views/biz-modals/marketing/release-activity-success'
 export default {
   name: 'AddActivity',
   bem: {
     bPage: 'page-plugin-form-activity'
-  },
-  modals: {
-    MarketingReleaseActivitySuccess
   },
   serviceInject() {
     return {
@@ -89,12 +91,22 @@ export default {
       currentStep: 0
     }
   },
+  props: {
+    isCopy: {
+      type: Boolean,
+      default: false
+    },
+    isUpdate: {
+      type: Boolean,
+      default: false
+    }
+  },
   methods: {
     onChangeStep1Form(formObj) {
       this.step1Info = formObj
     },
-    onChangeStep2Form(ticket) {
-      this.step2Info.push(ticket)
+    onChangeStep2Form(ticketList) {
+      this.step2Info = [...ticketList]
     },
     onChangeStep3Form(signUpList) {
       this.step3Info = [...signUpList]
@@ -112,9 +124,7 @@ export default {
       this.stepForm.is_draft = 0
       this.$set(this.stepForm, 'rule_settings', JSON.stringify(form))
       // 发布
-      this.service.releaseActivity(this.stepForm).subscribe(res => {
-        this.$modalRouter.push({ name: 'marketing-release-activity-success' })
-      })
+      this.service.releaseActivity(this.stepForm).subscribe()
     },
     // 存草稿
     onSaveDraftActivity(form) {

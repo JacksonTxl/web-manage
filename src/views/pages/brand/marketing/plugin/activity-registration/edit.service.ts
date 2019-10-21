@@ -1,32 +1,27 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
-import { CouponApi, CouponListParams } from '@/api/v1/marketing/coupon'
-import { MarketingApi } from '@/api/v1/marketing/marketing'
-import { tap } from 'rxjs/operators'
+import {
+  MarketingApi,
+  AddMarketingCouponParams,
+  EditMarketingCouponParams
+} from '@/api/v1/marketing/marketing'
+import { tap, pluck } from 'rxjs/operators'
+import { SignUpApi, SignUpInfo } from '@/api/v1/marketing/sign-up'
 
 @Injectable()
 export class EditService implements RouteGuard {
-  list$ = new State([])
-  page$ = new State({})
+  defaultForm$ = new State({})
   loading$ = new State({})
-  constructor(
-    private marketingApi: MarketingApi,
-    private couponApi: CouponApi
-  ) {}
-  @Effect()
-  getList(params: CouponListParams) {
-    return this.couponApi.getList(params).pipe(
-      tap((res: any) => {
-        this.list$.commit(() => res.list)
-        this.page$.commit(() => res.page)
+
+  constructor(private api: SignUpApi) {}
+  getDefaultForm(id: number) {
+    return this.api.getSignUpEditInfo(id).pipe(
+      tap(res => {
+        this.defaultForm$.commit(() => res.info)
       })
     )
   }
-
-  stopMarketingCoupon(id: number) {
-    return this.marketingApi.stopMarketingCoupon(id).pipe(tap((res: any) => {}))
-  }
-  beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    return this.getList(to.meta.query)
+  beforeRouteEnter(to: ServiceRoute) {
+    return this.getDefaultForm(to.meta.query.id)
   }
 }

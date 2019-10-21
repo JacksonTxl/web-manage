@@ -14,6 +14,7 @@ import { MessageService } from '@/services/message.service'
 @Injectable()
 export class AddService implements RouteGuard {
   loading$ = new State({})
+  defaultForm$ = new State({})
   info$ = new State({})
 
   constructor(private api: SignUpApi, private msg: MessageService) {}
@@ -30,9 +31,5 @@ export class AddService implements RouteGuard {
         this.msg.success({ content: '存草稿成功！' })
       })
     )
-  }
-  beforeEach() {}
-  getShopBasic(params: GetShopBasicInput) {
-    return this.shopApi.getShopBasic(params).pipe(pluck('shops'))
   }
 }

@@ -58,7 +58,7 @@
         >
           <a-radio-group v-model="isBulk" :defaultValue="1">
             <a-radio :value="1">开启</a-radio>
-            <a-radio :value="2">关闭</a-radio>
+            <a-radio :value="0">关闭</a-radio>
           </a-radio-group>
           <div v-if="isBulk === 1" class="popover">
             <div class="arrow"></div>
@@ -134,6 +134,10 @@ export default {
     modalTitle: {
       type: String,
       default: '票种信息设置'
+    },
+    formData: {
+      type: Object,
+      default: () => {}
     }
   },
   computed: {

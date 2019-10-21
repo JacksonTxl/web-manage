@@ -52,11 +52,18 @@
             <a @click="onClickNameList({ record, pathName: 'rosterActivity' })">
               名单
             </a>
-            <a @click="onClickCopy(record)">
+            <a @click="onClickCopy({ record, pathName: 'copyActivity' })">
               复制
             </a>
-            <a @click="onClickStop(record)">
-              结束
+            <a>
+              <st-popconfirm
+                title="确认取消该活动吗?"
+                @confirm="onClickStop(record)"
+                okText="是的"
+                cancelText="再想想"
+              >
+                取消
+              </st-popconfirm>
             </a>
           </st-table-actions>
         </template>
@@ -99,6 +106,7 @@ export default {
         addActivity: 'brand-marketing-plugin-activity-registration-add',
         editActivity: 'brand-marketing-plugin-activity-registration-edit',
         checkinActivity: 'brand-marketing-plugin-activity-registration-checkin',
+        copyActivity: 'brand-marketing-plugin-activity-registration-copy',
         rosterActivity: 'brand-marketing-plugin-activity-registration-roster'
       }
     }
@@ -145,7 +153,12 @@ export default {
         this.$router.reload()
       })
     },
-    onClickCopy({ record, pathName }) {}
+    onClickCopy({ record, pathName }) {
+      this.$router.push({
+        name: this.redirectPath[pathName],
+        query: { id: record.id }
+      })
+    }
   }
 }
 </script>
