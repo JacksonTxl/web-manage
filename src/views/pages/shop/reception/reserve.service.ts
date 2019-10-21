@@ -35,7 +35,7 @@ export class ReserveService implements RouteGuard {
     )
   }
   /**
-   * TODO: 聚合权限判断 私教课，私教小团课， 团课权限判断
+   * TODO: 聚合权限判断 私教课，私教小团课， 团课权限判断，最好后端优化
    */
   private mapList(list: any, authMap: any) {
     return list.map((item: any) => {
