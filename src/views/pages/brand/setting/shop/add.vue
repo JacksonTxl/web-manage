@@ -300,8 +300,11 @@ export default {
     addMapChange(data) {
       this.addMap = cloneDeep(data)
       this.shopData.province_id = data.province.id
+      this.shopData.province_name = data.province.name
       this.shopData.city_id = data.city.id
+      this.shopData.city_name = data.city.name
       this.shopData.district_id = data.district.id
+      this.shopData.district_name = data.district.name
       this.shopData.address = data.address
       this.shopData.lat = data.lat
       this.shopData.lng = data.lng

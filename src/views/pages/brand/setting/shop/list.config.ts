@@ -11,6 +11,11 @@ export const columns = () => {
       scopedSlots: { customRender: 'shop_phones' }
     },
     {
+      title: '省市区',
+      dataIndex: 'province_info',
+      scopedSlots: { customRender: 'province_info' }
+    },
+    {
       title: '详细地址',
       dataIndex: 'address',
       scopedSlots: { customRender: 'address' }

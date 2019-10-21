@@ -320,8 +320,11 @@ export default {
         if (!err && this.shopCoverImageIsOk) {
           this.shopData.shop_name = values.shop_name
           this.shopData.province_id = this.editMap.province.id
+          this.shopData.province_name = this.editMap.province.name
           this.shopData.city_id = this.editMap.city.id
+          this.shopData.city_name = this.editMap.city.name
           this.shopData.district_id = this.editMap.district.id
+          this.shopData.district_name = this.editMap.district.name
           this.shopData.address = this.editMap.address
           this.shopData.lat = this.editMap.lat
           this.shopData.lng = this.editMap.lng
