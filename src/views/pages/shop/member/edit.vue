@@ -13,8 +13,9 @@
             />
           </st-form-item>
           <st-form-item label="手机号" required>
-            <a-input-group compact style="display:flex; top:0">
+            <a-input v-decorator="rules.mobile" placeholder="请输入手机号">
               <a-select
+                slot="addonBefore"
                 style="width:90px"
                 v-model="country_prefix"
                 v-if="countryList"
@@ -28,12 +29,12 @@
                   +{{ code.phone_code }}
                 </a-select-option>
               </a-select>
-              <a-input
+              <!-- <a-input
                 :class="edit('phone-input')"
                 placeholder="请输入手机号"
                 v-decorator="rules.mobile"
-              />
-            </a-input-group>
+              /> -->
+            </a-input>
           </st-form-item>
           <st-form-item label="来源类别">
             <a-select
