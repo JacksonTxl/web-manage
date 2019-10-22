@@ -89,12 +89,12 @@ declare module 'vue-service-app' {
       location: string | MyLocation,
       onComplete?: Function,
       onAbort?: (err: Error) => void
-    ): void
+    ): Promise<VueRoute>
     replace(
       location: string | MyLocation,
       onComplete?: Function,
       onAbort?: (err: Error) => void
-    ): void
+    ): Promise<VueRoute>
     reload(): void
     isHistoryBF: boolean
   }
