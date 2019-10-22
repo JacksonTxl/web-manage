@@ -1,13 +1,13 @@
 <template>
   <st-panel app class="page-shop-label-container">
     <div slot="title">
-      <st-button type="primary" v-if="auth.add" icon="add">
-        <span
-          v-modal-link="{ name: 'label-add', on: { change: onSearhReset } }"
-          class="add-label-btn mg-l8"
-        >
-          添加标签
-        </span>
+      <st-button
+        type="primary"
+        v-if="auth.add"
+        icon="add"
+        v-modal-link="{ name: 'label-add', on: { change: onSearhReset } }"
+      >
+        添加标签
       </st-button>
     </div>
     <div slot="actions">
