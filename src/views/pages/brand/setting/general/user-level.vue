@@ -214,9 +214,7 @@ export default {
       })
     },
     onCancel() {
-      this.$router.push({
-        query: {}
-      })
+      this.$router.reload()
     },
     onConditionChange(val) {
       this.condition = val
