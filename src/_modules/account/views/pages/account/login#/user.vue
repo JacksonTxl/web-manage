@@ -112,6 +112,8 @@ export default {
       })
     },
     onClickFindPassword() {
+      const data = this.form.getFieldsValue()
+      localStorage.setItem('UserAccountForFind', data.name)
       window.open('/account/find', 'blank')
     },
     onClickThirdChange(key) {
