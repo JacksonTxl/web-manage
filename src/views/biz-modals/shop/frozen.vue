@@ -23,10 +23,9 @@
           style="padding-left:12px;padding-right:12px;"
         >
           <st-form-item :help="selectedRowsHelp" required>
-            <a-table
+            <st-table
               :rowSelection="rowSelection"
               :pagination="false"
-              size="middle"
               :columns="columns"
               :dataSource="list"
               rowKey="id"
@@ -37,7 +36,7 @@
               <span slot="start_end" slot-scope="text, record">
                 {{ record.start_time }} ~ {{ record.end_time }}
               </span>
-            </a-table>
+            </st-table>
           </st-form-item>
         </a-col>
       </a-row>
