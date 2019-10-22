@@ -117,6 +117,7 @@
         <st-button type="primary" @click="onSave" :loading="loading.update">
           保存
         </st-button>
+        <st-button class="mg-l8" @click="onCancel">取消</st-button>
       </div>
     </div>
   </st-panel>
@@ -211,6 +212,9 @@ export default {
           force: true
         })
       })
+    },
+    onCancel() {
+      this.$router.reload()
     },
     onConditionChange(val) {
       this.condition = val
