@@ -30,7 +30,11 @@
               :dataSource="list"
               rowKey="id"
             >
-              <span slot="remain_amount" slot-scope="text, record">
+              <span
+                slot="remain_amount"
+                style="width: 60px"
+                slot-scope="text, record"
+              >
                 {{ record.remain_amount }} {{ record.unit }}
               </span>
               <span slot="start_end" slot-scope="text, record">
