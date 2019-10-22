@@ -95,6 +95,9 @@ export const ruleOptions = (vm: any) => {
               vm.validStatus = 0
               vm.strength = ''
             }
+            if (value.length >= 6 && value.length <= 15) {
+              vm.validStatus = 1
+            }
             if (pattern.EN_NUM().test(value)) {
               vm.validStatus = 2
             }

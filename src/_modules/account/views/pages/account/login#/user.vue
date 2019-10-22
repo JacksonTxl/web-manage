@@ -84,6 +84,12 @@ export default {
       loading: this.loginService.loading$
     }
   },
+  mounted() {
+    const name = localStorage.getItem('UserAccountForFind') || ''
+    this.form.setFieldsValue({
+      name
+    })
+  },
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
