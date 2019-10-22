@@ -47,7 +47,27 @@
           @change="onTableChange"
           :scroll="{ x: 1500 }"
           :dataSource="list$"
-        ></st-table>
+        >
+          <span slot="ticket_status" slot-scope="text">{{ text.name }}</span>
+          <div slot="registration_info" slot-scope="text">
+            <span v-if="text === '--'">{{ text }}</span>
+            <a v-else @click="onClickShowInfo(text)">查看详情</a>
+          </div>
+          <template slot="action" slot-scope="text, record">
+            <st-table-actions>
+              <a v-if="record.ticket_status.id === 1">
+                <st-popconfirm
+                  title="签到后将视为已使用，您确定要将其核销签到吗？?"
+                  @confirm="onConfirmSignIn(record)"
+                  okText="确认"
+                  cancelText="取消"
+                >
+                  签到
+                </st-popconfirm>
+              </a>
+            </st-table-actions>
+          </template>
+        </st-table>
       </div>
     </st-panel>
   </div>
@@ -58,12 +78,16 @@ import tableMixin from '@/mixins/table.mixin'
 import { columns } from './roster.config'
 import { RouteService } from '@/services/route.service'
 import { RosterService } from './roster.service'
+import MarketingActivitySignUpInfo from '@/views/biz-modals/marketing/activity-signup-info'
 export default {
   name: 'RosterList',
   mixins: [tableMixin],
   bem: {
     bPage: 'marketing-plugin-activity-roster',
     bSearch: 'roster-search'
+  },
+  modals: {
+    MarketingActivitySignUpInfo
   },
   serviceInject() {
     return {
@@ -92,6 +116,21 @@ export default {
   },
   computed: {
     columns
+  },
+  methods: {
+    onClickShowInfo(record) {
+      this.$modalRouter.push({
+        name: 'marketing-activity-sign-up-info',
+        props: {
+          signUpInfo: record
+        }
+      })
+    },
+    onConfirmSignIn(record) {
+      this.service.updateSIgnUpChecked(record.id).subscribe(res => {
+        this.$router.reload()
+      })
+    }
   }
 }
 </script>

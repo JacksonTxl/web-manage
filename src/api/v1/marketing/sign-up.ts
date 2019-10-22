@@ -72,8 +72,8 @@ export class SignUpApi extends Api {
   /**
    * 编辑活动信息
    */
-  updateSignUpInfo(query: SignUpInfo) {
-    return this.http.put(`/v1/plugin/sign_up`, { query })
+  updateSignUpInfo(params: SignUpInfo) {
+    return this.http.put(`/v1/plugin/sign_up`, { params })
   }
   /**
    * 获取活动列表
@@ -105,7 +105,7 @@ export class SignUpApi extends Api {
   /**
    * 票种签到
    */
-  updateSIgnUpChecked(id: number) {
+  updateSignUpChecked(id: number) {
     return this.http.put(`/v1/plugin/sign_up/sign/${id}`)
   }
   /**
@@ -119,5 +119,13 @@ export class SignUpApi extends Api {
    */
   getSignUpDefaultExtInfo() {
     return this.http.get(`/v1/plugin/sign_up/get_default_ext_info`)
+  }
+  /**
+   *  获取推广海报信息
+   */
+  getSharePosterInfo(activity_id: number) {
+    return this.http.get(`/v1/plugin/sign_up/qrcode`, {
+      query: { activity_id }
+    })
   }
 }

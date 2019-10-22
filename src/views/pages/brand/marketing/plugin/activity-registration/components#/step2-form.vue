@@ -39,7 +39,7 @@
             <td>{{ item.ticket_total_num }}</td>
             <td>{{ item.crowd_name }}</td>
             <td>
-              <a @click="delShopTableRecord(item.shop_id)">
+              <a @click="delTicketItemRecord(item.ticket_id)">
                 删除
               </a>
             </td>
@@ -55,8 +55,11 @@
       </tbody>
     </st-form-table>
     <div v-di-view="{ name: 'step', show }">
-      <st-button @click="onClickAddTicketComplete">
-        下一步
+      <st-button @click="onClickBack">
+        上一步
+      </st-button>
+      <st-button type="primary" @click="onClickAddTicketComplete">
+        下一步2
       </st-button>
     </div>
   </div>
@@ -114,12 +117,25 @@ export default {
     initForm() {
       this.$nextTick().then(() => {
         this.dataSource = this.defaultForm$.ticket_list
+        this.formDataList = this.defaultForm$.ticket_list
         this.$emit('change', this.dataSource)
       })
+    },
+    onClickBack() {
+      this.$emit('back', 0)
     },
     getTableItem(item) {
       this.dataSource.push(item)
       this.$emit('change', this.dataSource)
+    },
+    delTicketItemRecord(ticketId) {
+      this.dataSource = this.dataSource.filter(
+        item => item.ticket_id !== ticketId
+      )
+      this.formDataList = this.formDataList.filter(
+        item => item.ticket_id !== ticketId
+      )
+      this.$emit('change', this.addDataSource)
     },
     getFormItem(form) {
       this.formDataList.push(form)

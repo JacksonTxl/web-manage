@@ -12535,10 +12535,10 @@ vue-countup-v2@^3.0.1:
   dependencies:
     lodash-es latest
 
-vue-di-view@0.1.2:
-  version "0.1.2"
-  resolved "https://registry.npm.taobao.org/vue-di-view/download/vue-di-view-0.1.2.tgz#23d19e397b77278f86ac42136621958f7021b92a"
-  integrity sha1-I9GeOXt3J4+GrEITZiGVj3AhuSo=
+vue-di-view@0.1.1:
+  version "0.1.1"
+  resolved "https://registry.npm.taobao.org/vue-di-view/download/vue-di-view-0.1.1.tgz#5612d1634f1213b7447ef7d518c437bb45baa908"
+  integrity sha1-VhLRY08SE7dEfvfVGMQ3u0W6qQg=
 
 vue-eslint-parser@^2.0.3:
   version "2.0.3"
@@ -12796,10 +12796,10 @@ webpack-merge@^4.1.1, webpack-merge@^4.2.1:
   dependencies:
     lodash "^4.17.5"
 
-webpack-mocker-api@0.0.2:
-  version "0.0.2"
-  resolved "https://registry.npm.taobao.org/webpack-mocker-api/download/webpack-mocker-api-0.0.2.tgz#2b93e0843c3f4192c4bc889bcfd2ce5d1e3ed70f"
-  integrity sha1-K5PghDw/QZLEvIibz9LOXR4+1w8=
+webpack-mocker-api@0.0.3:
+  version "0.0.3"
+  resolved "https://registry.npm.taobao.org/webpack-mocker-api/download/webpack-mocker-api-0.0.3.tgz#26ff06c4d2f9459658b82d67fdf884df33a43733"
+  integrity sha1-Jv8GxNL5RZZYuC1n/fiE3zOkNzM=
   dependencies:
     chalk "^2.4.2"
     lodash "^4.17.15"

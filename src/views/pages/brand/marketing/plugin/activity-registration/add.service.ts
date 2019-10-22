@@ -18,10 +18,24 @@ export class AddService implements RouteGuard {
   info$ = new State({})
 
   constructor(private api: SignUpApi, private msg: MessageService) {}
-  releaseActivity(params: SignUpInfo) {
+  addActivity(params: SignUpInfo) {
     return this.api.addSignUp(params).pipe(
       tap(res => {
         this.msg.success({ content: '发布活动成功！' })
+      })
+    )
+  }
+  updateActivity(params: any) {
+    return this.api.updateSignUpInfo(params).pipe(
+      tap(res => {
+        this.msg.success({ content: '编辑活动成功！' })
+      })
+    )
+  }
+  copyActivity(params: any) {
+    return this.api.addSignUp(params).pipe(
+      tap(res => {
+        this.msg.success({ content: '复制活动成功！' })
       })
     )
   }

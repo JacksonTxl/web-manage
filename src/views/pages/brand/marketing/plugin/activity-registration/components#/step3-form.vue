@@ -44,6 +44,9 @@
       v-di-view="{ name: 'step', show }"
       :class="pComponents('button-group')"
     >
+      <st-button class="mg-r8" @click="onClickBack">
+        上一步
+      </st-button>
       <st-button class="mg-r8">
         存草稿
       </st-button>
@@ -111,6 +114,10 @@ export default {
     colspanNum() {
       return 5
     },
+    // 如果是编辑的时候，需要活动id
+    activity_id() {
+      return this.defaultForm$.activity_id
+    },
     dataSource() {
       let isDefault = false
       this.addDataSource.forEach(item => {
@@ -128,20 +135,22 @@ export default {
   methods: {
     initForm() {
       this.$nextTick().then(() => {
+        const extraData = this.defaultForm$.rule_settings.join_ext_info
+          .extra_data
         this.isStep3 = this.defaultForm$.rule_settings.join_ext_info.extra_type
-        this.$set(
-          this,
-          'addDataSource',
-          this.defaultForm$.rule_settings.join_ext_info.extra_data
-        )
-        this.formData = [
-          ...this.defaultForm$.rule_settings.join_ext_info.extra_data
-        ]
+        this.$set(this, 'addDataSource', extraData)
+        this.formData = [...extraData]
+        console.log(extraData, extraData.map(item => item.extra_sort))
+        // this.extraSort = Math.max(...extraData.map(item => +item.extra_sort))
         this.$emit('change', this.dataSource)
       })
     },
+    onClickBack() {
+      this.$emit('back', 1)
+    },
     onCLickOpenmodal() {
-      this.extraSort++
+      this.extraSort =
+        Math.max(...this.dataSource.map(item => item.extra_sort)) + 1
       this.$modalRouter.push({
         name: 'marketing-add-signup',
         props: {
@@ -161,13 +170,25 @@ export default {
       this.formData.push(item)
     },
     getStepForm() {
+      let isDefault = false
+      let extra_data = []
+      this.formData.forEach(item => {
+        if (item.extra_key === 'username') {
+          isDefault = true
+        }
+      })
+      if (isDefault) {
+        extra_data = [...(this.isStep3 ? this.formData : [])]
+      } else {
+        extra_data = [
+          ...this.defaultExtInfo$,
+          ...(this.isStep3 ? this.formData : [])
+        ]
+      }
       return {
         join_ext_info: {
           extra_type: this.isStep3,
-          extra_data: [
-            ...this.defaultExtInfo$,
-            ...(this.isStep3 ? this.formData : [])
-          ]
+          extra_data
         }
       }
     },

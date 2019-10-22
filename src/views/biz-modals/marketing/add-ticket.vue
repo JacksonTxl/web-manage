@@ -201,15 +201,28 @@ export default {
         crowd_id,
         ticket_total_num,
         group_buy_min,
-        reduce_price
+        reduce_price,
+        buy_time_limit,
+        ticket_remark,
+        buy_time
       } = values
       const crowd_name = this.getCrowdName(crowd_id)
+      let buy_start_time = ''
+      let buy_end_time = ''
+      debugger
+      if (buy_time_limit === 1) {
+        buy_start_time = buy_time[0].format('YYYY-MM-DD HH:mm')
+        buy_end_time = buy_time[1].format('YYYY-MM-DD HH:mm')
+      }
       return {
         ticket_name,
         ticket_price,
         ticket_total_num,
         crowd_name,
         group_buy_min,
+        ticket_remark,
+        buy_start_time,
+        buy_end_time,
         reduce_price
       }
     },

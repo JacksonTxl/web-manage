@@ -52,7 +52,7 @@
       </st-form>
       <div v-di-view="{ name: 'step', show }">
         <st-button type="primary" @click="onSubmit">
-          下一步
+          下一步1
         </st-button>
       </div>
     </a-col>
@@ -142,6 +142,7 @@ export default {
         ]
         this.content = this.defaultForm$.description
         this.fileShareList.push(this.defaultForm$.image)
+        this.$set(this.formInfo, 'imageUrl', this.defaultForm$.image.image_url)
         const {
           address,
           lat,
@@ -184,7 +185,11 @@ export default {
         const end_time = values.date[1].format('YYYY-MM-DD HH:mm')
         const image = this.file
         const { address, province, city, district, lat, lng } = this.address
+        const activity_id = this.isUpdate
+          ? this.defaultForm$.activity_id
+          : undefined
         const form = {
+          activity_id,
           address,
           province,
           city,

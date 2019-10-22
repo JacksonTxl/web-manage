@@ -16,24 +16,38 @@
               <span class="subfix">起</span>
             </div>
             <div class="hot-info">
-              <span class="view">
-                190
-              </span>
-              <span class="share">
-                108
-              </span>
+              <div class="view mg-r48">
+                <st-icon size="32px" type="scan"></st-icon>
+                <span class="mg-l16">190</span>
+              </div>
+              <div class="share">
+                <st-icon size="32px" type="share-link"></st-icon>
+                <span class="mg-l16">108</span>
+              </div>
             </div>
           </div>
         </div>
         <div :class="bComponent('content-sub-info')">
           <div class="time">
-            <st-icon type="timer" class="mg-r16"></st-icon>
+            <st-icon size="32px" type="clock" class="mg-r16"></st-icon>
             <span>{{ stepInfo.date | formatActivityDate }}</span>
           </div>
           <div class="address">
-            <st-icon type="location" class="mg-r16"></st-icon>
-            <span>{{ stepInfo.address }}</span>
-            <div class="address__map"></div>
+            <div>
+              <st-icon
+                size="32px"
+                type="location-mina"
+                class="mg-r16"
+              ></st-icon>
+              <span>{{ stepInfo.address }}</span>
+            </div>
+
+            <div class="address__map">
+              <img
+                src="~@/assets/img/brand/marketing/activity/icon-location.png"
+                alt=""
+              />
+            </div>
           </div>
         </div>
         <div :class="bComponent('content-activity-detail')">
@@ -41,7 +55,7 @@
           <div class="content-box" v-html="stepInfo.content"></div>
         </div>
         <div :class="bComponent('footer')">
-          <st-icon size="44px" type="edit"></st-icon>
+          <st-icon size="44px" type="share"></st-icon>
           <st-button pill class="footer__button" type="primary">
             立即报名
           </st-button>

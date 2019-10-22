@@ -33,6 +33,12 @@
         }
         .hot-info {
           .fz(20px);
+          display: flex;
+          .view,
+          .share {
+            display: flex;
+            justify-content: center;
+          }
         }
       }
     }
@@ -46,14 +52,13 @@
       }
       .address {
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
         align-items: center;
         .mg-t(60px);
         &__map {
           .s(64px, 64px);
           flex: none;
           border-radius: 100%;
-          background: #e43;
         }
       }
     }

@@ -3,6 +3,7 @@ import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { SignUpApi, GetSignUpList } from '@/api/v1/marketing/sign-up'
 import { UserService } from '@/services/user.service'
+import { MessageService } from '@/services/message.service'
 
 @Injectable()
 export class RosterService implements RouteGuard {
@@ -11,9 +12,15 @@ export class RosterService implements RouteGuard {
   loading$ = new State({})
   activityInfo$ = new State({})
   ticketTypeOptions$ = new State({})
-  ticketStatus$ = this.userService.getOptions$('plugin.ticket_status')
+  ticketStatus$ = this.userService.getOptions$('plugin.ticket_status', {
+    addAll: true
+  })
   PLUGIN_TYPE_ACTIVITY = 4
-  constructor(private signUpApi: SignUpApi, private userService: UserService) {}
+  constructor(
+    private signUpApi: SignUpApi,
+    private userService: UserService,
+    private msg: MessageService
+  ) {}
   @Effect()
   getList(params: any) {
     return this.signUpApi.getSignUpRoster(params).pipe(
@@ -37,6 +44,13 @@ export class RosterService implements RouteGuard {
           })
           return [...list, ...resList]
         })
+      })
+    )
+  }
+  updateSIgnUpChecked(id: number) {
+    return this.signUpApi.updateSignUpChecked(id).pipe(
+      tap(res => {
+        this.msg.success({ content: '票种签到成功' })
       })
     )
   }

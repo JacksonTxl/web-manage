@@ -41,6 +41,9 @@
         :scroll="{ x: 1500 }"
         :dataSource="list$"
       >
+        <div slot="activity_status" slot-scope="text">
+          {{ text.name }}
+        </div>
         <template slot="action" slot-scope="text, record">
           <st-table-actions>
             <a @click="onClickEdit({ record, pathName: 'editActivity' })">
@@ -137,10 +140,18 @@ export default {
       this.$router.push({ name: this.redirectPath[pathName] })
     },
     onClickEdit({ record, pathName }) {
-      this.$router.push({ name: this.redirectPath[pathName] })
+      this.$router.push({
+        name: this.redirectPath[pathName],
+        query: { id: record.id }
+      })
     },
     onCLickGeneralize({ record, pathName }) {
-      this.$modalRouter.push({ name: 'marketing-share-poster' })
+      this.$modalRouter.push({
+        name: 'marketing-share-poster',
+        props: {
+          activity_id: record.id
+        }
+      })
     },
     onClickNameList({ record, pathName }) {
       this.$router.push({

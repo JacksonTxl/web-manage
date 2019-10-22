@@ -14,10 +14,12 @@
               ¥{{ +ticket.ticket_price - +ticket.reduce_price }}
             </span>
             <span class="original-price">/¥{{ ticket.ticket_price }}</span>
-            <span class="discount-terms">超过3张，每张减¥50</span>
+            <span class="discount-terms">
+              超过{{ ticket.group_buy_min }}张，每张减¥{{ ticket.reduce_price }}
+            </span>
           </div>
           <div :class="bItem('date')">
-            售票时间：2019.06.22 19:30-2019.06.30 21:30
+            售票时间：{{ ticket.buy_start_time }} - {{ ticket.buy_end_time }}
           </div>
           <div :class="bItem('remark')">
             备注说明：{{ ticket.ticket_remark }}
@@ -25,6 +27,10 @@
         </div>
         <div class="contnet-mgt120"></div>
         <div :class="bComponent('footer')">
+          <div class="footer__count">
+            <span>$2000</span>
+            <i>优惠减¥500</i>
+          </div>
           <st-button pill class="footer__button" type="primary">
             下一步
           </st-button>

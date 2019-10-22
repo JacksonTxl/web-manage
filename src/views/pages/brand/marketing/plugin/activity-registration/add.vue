@@ -15,12 +15,7 @@
       ></signup-h5-view>
     </div>
     <a-steps :current="currentStep" size="small">
-      <a-step
-        v-for="(info, idx) in steps"
-        @click="onClickStep(idx)"
-        :key="idx"
-        :title="info.title"
-      />
+      <a-step v-for="(info, idx) in steps" :key="idx" :title="info.title" />
     </a-steps>
     <div :class="bPage('form')">
       <step1-form
@@ -35,6 +30,7 @@
         v-show="currentStep === 1"
         :show="currentStep === 1"
         :isCopy="isCopy"
+        @back="onBack"
         :isUpdate="isUpdate"
         @step-submit="onSubmitGetStep2Form"
         @change="onChangeStep2Form"
@@ -44,6 +40,7 @@
         :show="currentStep === 2"
         :isCopy="isCopy"
         :isUpdate="isUpdate"
+        @back="onBack"
         @release="onReleaseActivity"
         @save-draft="onSaveDraftActivity"
         @change="onChangeStep3Form"
@@ -105,6 +102,9 @@ export default {
     }
   },
   methods: {
+    onBack(step) {
+      this.currentStep = step
+    },
     onChangeStep1Form(formObj) {
       this.step1Info = formObj
     },
@@ -127,7 +127,13 @@ export default {
       this.stepForm.is_draft = 0
       this.$set(this.stepForm, 'rule_settings', JSON.stringify(form))
       // 发布
-      this.service.releaseActivity(this.stepForm).subscribe()
+      if (this.isUpdate) {
+        this.service.updateActivity(this.stepForm).subscribe()
+      } else if (this.isCopy) {
+        this.service.copyActivity(this.stepForm).subscribe()
+      } else {
+        this.service.addActivity(this.stepForm).subscribe()
+      }
     },
     // 存草稿
     onSaveDraftActivity(form) {
