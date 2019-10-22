@@ -11,8 +11,7 @@
           :to="{ name: 'shop-member-crowd-add' }"
           v-if="crowdIndexInfo.info.list.length <= 10"
         >
-          <st-button type="primary" v-if="auth.add">
-            <a-icon type="plus" />
+          <st-button type="primary" v-if="auth.add" icon="add">
             新建人群
           </st-button>
         </router-link>
@@ -36,8 +35,12 @@
       >
         <div slot="shop_name1" slot-scope="text, record">
           <st-table-actions>
-            <!-- NOTE: 导出 -->
-            <!-- <a v-if="record.auth['shop:member:crowd|export']" @click="addTreeNode(record)">导出</a> -->
+            <a
+              v-if="record.auth['shop:member:crowd|export']"
+              v-export-excel="{ type: 'crowd/' + record.id, query: record }"
+            >
+              导出
+            </a>
             <a href="#">
               <router-link
                 v-if="record.auth['shop:member:crowd|edit']"

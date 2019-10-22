@@ -9,6 +9,7 @@ const LessPluginFunction = require('less-plugin-functions')
 const { mockerApi } = require('webpack-mocker-api')
 const WebpackHotRelease = require('webpack-hot-release/plugin')
 const WebpackExternalVendorPlugin = require('webpack-external-vendor-plugin')
+const openInEditor = require('express-open-in-editor')
 
 const resolve = dir => path.resolve(__dirname, dir)
 
@@ -73,6 +74,12 @@ module.exports = {
     },
     before(app) {
       mockerApi(app, Path.resolve('./mock/index.js'))
+      app.use(
+        '/_editor',
+        openInEditor({
+          editor: 'code'
+        })
+      )
     },
     port: 8060
   },

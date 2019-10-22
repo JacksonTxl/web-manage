@@ -24,7 +24,7 @@
       </div>
     </st-search-panel>
     <div :class="basic('content')">
-      <div :class="basic('content-batch')" class="mg-b16">
+      <div :class="basic('content-batch')">
         <!-- NOTE: 导出 -->
         <!-- <st-button v-if="auth.export" type="primary">批量导出</st-button> -->
       </div>
@@ -220,7 +220,7 @@ export default {
         ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00:00`
         : ''
       this.query.end_time = this.selectTime.endTime.value
-        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 00:00:00`
+        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59:59`
         : ''
       this.onSearch()
     },

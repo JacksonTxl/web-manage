@@ -1,6 +1,5 @@
 <template>
-  <section class="sg-section">
-    <h3>st-tag</h3>
+  <div>
     <st-tag type="coach-personal" />
     <st-tag type="coach-team" />
     <st-tag type="role-staff" />
@@ -14,5 +13,5 @@
     <st-tag type="deposit-card" />
     <st-tag type="cabinet-available" />
     <st-tag type="cabinet-inuse" />
-  </section>
+  </div>
 </template>

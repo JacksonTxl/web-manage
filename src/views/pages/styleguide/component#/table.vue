@@ -1,6 +1,5 @@
 <template>
-  <section class="sg-section">
-    <h3>st-table</h3>
+  <div>
     <dl>
       使用与
       <a href="https://vue.ant.design/components/table-cn/">a-table</a>
@@ -50,7 +49,7 @@
         page-mode="client"
       ></st-table>
     </dl>
-  </section>
+  </div>
 </template>
 <script>
 import tableMixin from '@/mixins/table.mixin'

@@ -144,7 +144,7 @@
           </div>
           <div class="title mg-b8">
             <span class="label">单节售卖:</span>
-            <span class="value">{{ prices.single_price }}</span>
+            <span class="value">{{ personalCourseInfo.single_price }}</span>
           </div>
         </div>
       </div>

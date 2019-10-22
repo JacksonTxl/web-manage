@@ -54,13 +54,13 @@
       page-mode="client"
     ></st-table>
     <div slot="footer">
-      <st-export-button
+      <st-button
+        type="primary"
         v-if="auth$.export"
-        type="shop/team/course/checkin"
-        :query="query"
+        v-export-excel="{ type: 'shop/team/course/checkin', query: query }"
       >
         全部导出
-      </st-export-button>
+      </st-button>
     </div>
   </st-modal>
 </template>

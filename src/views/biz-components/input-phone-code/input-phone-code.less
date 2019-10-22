@@ -1,0 +1,21 @@
+.input-phone-code {
+  position: relative;
+  &__input {
+    padding-right: 98px;
+  }
+  &__button {
+    position: absolute;
+    .fz(14px);
+    .lh(24px);
+    .c(@primary-color);
+    cursor: pointer;
+    top: 50%;
+    padding: 0 14px;
+    transform: translateY(-50%);
+    right: 0;
+  }
+  &__button--disabled {
+    color: #3e4d5c;
+    cursor: default;
+  }
+}

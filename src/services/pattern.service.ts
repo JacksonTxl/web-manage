@@ -10,6 +10,25 @@ export class PatternService {
      */
     EN: '^[A-z]{**}$',
     /**
+     * 大写英文
+     */
+    UC_EN: '^[A-Z]{**}$',
+    /**
+     * 小写英文
+     */
+    LC_EN: '^[a-z]{**}$',
+    /**
+     * 英文 数字 二者至少有一位
+     * /(?=.*[\d])(?=.*[a-z])(?=.*[A-Z])^[\dA-Za-z]{6,15}$/
+     */
+    // @ts-ignore
+    UC_LC_EN: '(?=.*[\\d])(?=.*[A-z])^[\\dA-Za-z]{**}$',
+    /**
+     * 英文、数字 至少有一个 英文不区分大小写
+     */
+    // @ts-ignore
+    UL_EN_NUM: '(?=.*[\\d])(?=.*[a-z])(?=.*[A-Z])^[\\dA-Za-z]{**}$',
+    /**
      * 数字
      */
     NUM: '^\\d{**}$',
@@ -29,6 +48,7 @@ export class PatternService {
      * 英文、数字
      */
     EN_NUM: '^[A-z0-9]{**}$',
+
     /**
      * 中文、英文、数字、空格
      */
@@ -91,6 +111,34 @@ export class PatternService {
    */
   EN(len: string = this.DEFAULT_LEN) {
     return this.createPattern('EN', len)
+  }
+  /**
+   * 纯大写英文
+   * @param len
+   */
+  UC_EN(len: string = this.DEFAULT_LEN) {
+    return this.createPattern('UC_EN', len)
+  }
+  /**
+   * 纯小写英文
+   * @param len
+   */
+  LC_EN(len: string = this.DEFAULT_LEN) {
+    return this.createPattern('LC_EN', len)
+  }
+  /**
+   * 大小写至少包含一个的英文 + 数字
+   * @param len
+   */
+  UC_LC_EN(len: string = this.DEFAULT_LEN) {
+    return this.createPattern('UC_LC_EN', len)
+  }
+  /**
+   * 英文大小写，数字每样至少有一个
+   * @param len
+   */
+  UL_EN_NUM(len: string = this.DEFAULT_LEN) {
+    return this.createPattern('UL_EN_NUM', len)
   }
   /**
    * 中文、英文

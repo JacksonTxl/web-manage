@@ -1,6 +1,5 @@
 <template>
-  <section class="sg-section">
-    <h3>st-overflow-text</h3>
+  <div>
     <p>可能超限的内容容器</p>
     <div>
       <!-- 指定最大宽度 -->
@@ -18,5 +17,5 @@
         这是一大段文本 这是一大段文本 这是一大段文本
       </st-overflow-text>
     </div>
-  </section>
+  </div>
 </template>
