@@ -11,8 +11,7 @@
           :to="{ name: 'shop-member-crowd-add' }"
           v-if="crowdIndexInfo.info.list.length <= 10"
         >
-          <st-button type="primary" v-if="auth.add">
-            <a-icon type="plus" />
+          <st-button type="primary" v-if="auth.add" icon="add">
             新建人群
           </st-button>
         </router-link>

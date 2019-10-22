@@ -23,7 +23,9 @@
       </div>
       <div :class="panel('search-button')">
         <slot name="button">
-          <st-button type="primary" @click="onSearch">查询</st-button>
+          <st-button :loading="searchLoading" type="primary" @click="onSearch">
+            查询
+          </st-button>
           <st-button class="mg-l8" @click="onReset">重置</st-button>
         </slot>
       </div>
@@ -35,6 +37,12 @@ export default {
   name: 'StSearchPanel',
   bem: {
     panel: 'st-search-panel'
+  },
+  props: {
+    searchLoading: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
