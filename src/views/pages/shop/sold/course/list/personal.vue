@@ -1,30 +1,18 @@
 <template>
   <div :class="basic()">
-    <st-search-panel>
-      <div :class="basic('select')">
-        <span :class="basic('select-text')">课程状态：</span>
+    <st-search-panel @search="onSearchNative" @reset="onSearhReset">
+      <st-search-panel-item label="课程状态：">
         <st-search-radio v-model="query.course_status" :list="courseStatus" />
-      </div>
-      <div :class="basic('select')">
-        <span :class="basic('select-text')">购买时间：</span>
+      </st-search-panel-item>
+      <st-search-panel-item label="购买时间：">
         <st-range-picker
           :disabledDays="180"
           :value="selectTime"
         ></st-range-picker>
-      </div>
-      <div slot="button">
-        <st-button
-          type="primary"
-          @click="onSearchNative"
-          :loading="loading.getList"
-        >
-          查询
-        </st-button>
-        <st-button class="mg-l8" @click="onSearhReset">重置</st-button>
-      </div>
+      </st-search-panel-item>
     </st-search-panel>
     <div :class="basic('content')">
-      <div :class="basic('content-batch')" class="mg-b16">
+      <div :class="basic('content-batch')">
         <!-- NOTE: 导出 -->
         <!-- <st-button v-if="auth.export" type="primary">批量导出</st-button> -->
       </div>
@@ -36,6 +24,7 @@
         -->
         <st-table
           :page="page"
+          :loading="loading.getList"
           rowKey="id"
           :scroll="{ x: 1800 }"
           :columns="columns"

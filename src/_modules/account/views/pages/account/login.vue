@@ -90,7 +90,7 @@
     </div>
     <div class="page-login-footer">
       <p class="page-login-footer__text">
-        三体云动&nbsp;·&nbsp;用智能让生意更简单
+        三体云智能&nbsp;·&nbsp;用智能让世界更健康
       </p>
       <p class="page-login-footer__text page-login-footer__copyright">
         copyright&nbsp;©&nbsp;2015-2019&nbsp;三体云智能科技有限公司

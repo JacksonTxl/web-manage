@@ -1,5 +1,6 @@
 <template>
   <st-panel app initial :tabs="authTabs">
+    <di-view slot="actions" name="SHOP_SOLD_CARD_LIST_ACTIONS"></di-view>
     <div slot="actions">
       <st-input-search
         v-model="query.search"
