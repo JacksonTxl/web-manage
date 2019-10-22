@@ -27,7 +27,7 @@
         ></a-textarea>
         <a-radio-group
           v-decorator="decorators.send_value"
-          v-if="curUser === USER_TYPES.CROWD"
+          v-show="curUser === USER_TYPES.CROWD"
         >
           <a-radio-button
             v-for="(item, index) in crowdList"
@@ -52,7 +52,7 @@
           </a-radio>
         </a-radio-group>
         <a-date-picker
-          v-if="curTime === SEND_TYPES.ONTIME"
+          v-show="curTime === SEND_TYPES.ONTIME"
           :disabledDate="disabledStartDate"
           placeholder="请选择时间"
           format="YYYY-MM-DD HH:mm"
@@ -83,7 +83,7 @@
         ></a-input>
         <a-select
           class="mg-b8"
-          v-if="curTem === TMPL_TYPES.CUSTOM"
+          v-show="curTem === TMPL_TYPES.CUSTOM"
           placeholder="请选择模版"
           @change="getCurTemContent"
           v-decorator="decorators.tmpl_id"
@@ -152,12 +152,13 @@ export default {
       curTime: SEND_TYPES.NOW,
       temContent: '',
       tel: '',
-      info: {}
+      info: {},
+      time: ''
     }
   },
   created() {
     this.getCrowdList()
-    this.getTemplateList()
+    this.getTemplateOptionList()
   },
   mounted() {
     // 编辑
@@ -168,10 +169,10 @@ export default {
   methods: {
     cancel() {},
     getCrowdList() {
-      return this.groupService.getCrowdList().subscribe(res => {})
+      return this.groupService.getCrowdList().subscribe()
     },
     getTemplateOptionList() {
-      return this.groupService.getTemplateOptionList().subscribe(res => {})
+      return this.groupService.getTemplateOptionList().subscribe()
     },
     getCurPrizUserType(e) {
       this.curUser = e.target.value
@@ -190,21 +191,23 @@ export default {
       })
     },
     getEditInfo(id) {
-      const that = this
       return this.groupService.getEditInfo(id).subscribe(res => {
         this.form.setFieldsValue({
           user_type: res.info.user_type,
           send_value: res.info.send_value,
           send_type: res.info.send_type,
-          send_time: res.info.send_time,
+          send_time: moment(res.info.send_time),
           title: res.info.title,
           content: res.info.content,
           tmpl_id: res.info.tmpl_id
         })
+        this.curUser = res.info.user_type
+        this.curTime = res.info.send_type
         if (res.info.user_type === this.USER_TYPES.USER) {
           this.tel = res.info.send_value
         }
         if (res.info.tmpl_id) {
+          this.getCurTemContent(res.info.tmpl_id)
           this.curTem = this.TMPL_TYPES.CUSTOM
         }
       })
