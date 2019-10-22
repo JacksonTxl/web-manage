@@ -21,6 +21,8 @@ export class UdeskService implements RouteGuard {
     )
   }
   creatUdesk(customer: any) {
+    customer.c_name = customer.user_name + '_' + customer.brand_name
+    customer.c_cf_品牌名称 = customer.brand_name
     // @ts-ignore
     ;(function(a: any, h, c: any, b, f, g: any) {
       a['UdeskApiObject'] = f
