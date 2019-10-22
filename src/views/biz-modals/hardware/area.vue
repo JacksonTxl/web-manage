@@ -22,7 +22,7 @@
           </a-select-option>
         </a-select>
       </st-form-item>
-      <st-form-item label="出入人员范围" required class="page-a-form">
+      <st-form-item label="进入人员范围" required class="page-a-form">
         <a-radio-group
           @change="getCurPeopleType"
           v-decorator="decorators.people_type"
