@@ -8,7 +8,7 @@ export class PatternService {
     /**
      * 英文
      */
-    EN: '^[A-z]{**}$',
+    EN: '^[A-Za-z]{**}$',
     /**
      * 大写英文
      */
@@ -39,21 +39,21 @@ export class PatternService {
     /**
      * 中文、英文
      */
-    CN_EN: '^[A-z\\u4e00-\\u9fa5]{**}$',
+    CN_EN: '^[A-Za-z\\u4e00-\\u9fa5]{**}$',
     /**
      * 中文、英文、数字，不含标点符号
      */
-    CN_EN_NUM: '^[A-z0-9\\u4e00-\\u9fa5]{**}$',
+    CN_EN_NUM: '^[A-Za-z0-9\\u4e00-\\u9fa5]{**}$',
     /**
      * 英文、数字
      */
-    EN_NUM: '^[A-z0-9]{**}$',
+    EN_NUM: '^[A-Za-z0-9]{**}$',
 
     /**
      * 中文、英文、数字、空格
      */
     CN_EN_NUM_SPACE:
-      '^[A-z0-9\\u4e00-\\u9fa5]{1,2}$|^[A-z0-9\\u4e00-\\u9fa5][A-z0-9\\u4e00-\\u9fa5\\s]{**}[A-z0-9\\u4e00-\\u9fa5]$',
+      '^[A-Za-z0-9\\u4e00-\\u9fa5]{1,2}$|^[A-Za-z0-9\\u4e00-\\u9fa5][A-Za-z0-9\\u4e00-\\u9fa5\\s]{**}[A-Za-z0-9\\u4e00-\\u9fa5]$',
     /**
      * 包含手机号和座机号
      */
