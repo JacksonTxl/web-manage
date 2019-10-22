@@ -55,6 +55,15 @@ export default {
       loading: this.findService.loading$
     }
   },
+  mounted() {
+    const account = localStorage.getItem('UserAccountForFind') || ''
+    this.form.setFieldsValue({
+      account
+    })
+    if (account) {
+      this.next()
+    }
+  },
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)

@@ -91,6 +91,7 @@ export default {
       })
     },
     goLogin() {
+      localStorage.setItem('UserAccountForFind', this.bindInfo.account)
       this.$router.push({
         path: '/account/login'
       })
