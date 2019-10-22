@@ -10,7 +10,7 @@ import { tap, pluck } from 'rxjs/operators'
 import { SignUpApi, SignUpInfo } from '@/api/v1/marketing/sign-up'
 
 @Injectable()
-export class EditService implements RouteGuard {
+export class EditService {
   constructor(private copyService: CopyService) {}
   beforeRouteEnter(to: ServiceRoute) {
     return this.copyService.getDefaultForm(to.meta.query.id)

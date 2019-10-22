@@ -52,7 +52,7 @@
       </st-form>
       <div v-di-view="{ name: 'step', show }">
         <st-button type="primary" @click="onSubmit">
-          下一步1
+          下一步
         </st-button>
       </div>
     </a-col>

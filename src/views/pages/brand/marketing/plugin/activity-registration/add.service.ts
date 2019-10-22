@@ -1,18 +1,11 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
-import {
-  MarketingApi,
-  AddMarketingCouponParams,
-  EditMarketingCouponParams
-} from '@/api/v1/marketing/marketing'
-import { TitleService } from '@/services/title.service'
 import { tap, pluck } from 'rxjs/operators'
-import { ShopApi, GetShopBasicInput } from '@/api/v1/shop'
 import { SignUpApi, SignUpInfo } from '@/api/v1/marketing/sign-up'
 import { MessageService } from '@/services/message.service'
 
 @Injectable()
-export class AddService implements RouteGuard {
+export class AddService {
   loading$ = new State({})
   defaultForm$ = new State({})
   info$ = new State({})

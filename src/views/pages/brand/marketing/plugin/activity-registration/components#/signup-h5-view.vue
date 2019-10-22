@@ -60,7 +60,7 @@
           </li>
         </ul>
         <div :class="bComponent('footer')">
-          <st-button pill class="footer__button" type="primary">
+          <st-button disabled block pill type="primary" size="large">
             下一步
           </st-button>
         </div>

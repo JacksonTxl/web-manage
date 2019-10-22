@@ -20,7 +20,7 @@
           </a-radio-group>
         </st-form-item>
         <st-form-item
-          v-if="extraType === 3 || extraType === 4"
+          v-if="extraType === 2 || extraType === 3"
           label="报名选项"
         >
           <a-input-group compact>
@@ -31,6 +31,15 @@
             />
             <st-button @click="onCLickGetOption">添加</st-button>
           </a-input-group>
+          <st-button
+            size="small"
+            :key="index"
+            class="mg-r8"
+            v-for="(item, index) in extra_info"
+          >
+            {{ item }}
+            <span class="mg-l16" @click="onCLickDelOption(item)">x</span>
+          </st-button>
         </st-form-item>
         <st-form-item label="是否必填">
           <a-radio-group v-decorator="decorators.extra_require">
@@ -90,9 +99,15 @@ export default {
     }
   },
   methods: {
+    onCLickDelOption(value) {
+      this.extra_info = this.extra_info.filter(item => item !== value)
+    },
     onCLickGetOption() {
       if (!this.extra_info.includes(this.option)) {
         this.extra_info.push(this.option)
+        this.option = ''
+      } else {
+        this.msg.success({ content: '选项重复,请重新填写' })
       }
     },
     onChangeExtraType(e) {

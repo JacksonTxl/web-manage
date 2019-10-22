@@ -124,6 +124,15 @@ export class SignUpApi extends Api {
    *  获取推广海报信息
    */
   getSharePosterInfo(activity_id: number) {
+    return this.http.get(`/v1/plugin/sign_up/promotion`, {
+      query: { activity_id }
+    })
+  }
+  /**
+   * 获取二维码
+   *
+   */
+  getQrCode(activity_id: number) {
     return this.http.get(`/v1/plugin/sign_up/qrcode`, {
       query: { activity_id }
     })

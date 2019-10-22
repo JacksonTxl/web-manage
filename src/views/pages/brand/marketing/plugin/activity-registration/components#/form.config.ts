@@ -8,7 +8,7 @@ export const ruleOptions = (vm: any) => {
           message: '请输入活动标题'
         },
         {
-          pattern: pattern.CN_EN_NUM('6-15'),
+          pattern: pattern.CN_EN_NUM('1-15'),
           message: '请输入1~15d个字符'
         }
       ]

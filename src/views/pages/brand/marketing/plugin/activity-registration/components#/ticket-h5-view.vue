@@ -28,8 +28,8 @@
         <div class="contnet-mgt120"></div>
         <div :class="bComponent('footer')">
           <div class="footer__count">
-            <span>$2000</span>
-            <i>优惠减¥500</i>
+            <span class="price">$2000</span>
+            <i class="reduce">优惠减¥500</i>
           </div>
           <st-button pill class="footer__button" type="primary">
             下一步

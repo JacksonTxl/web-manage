@@ -20,7 +20,30 @@
           :loading="loading$.getList"
           :dataSource="list$"
           :page="page$"
-        ></st-table>
+        >
+          <span
+            class="status"
+            :class="bPage(`main-status-${text.id}`)"
+            slot="ticket_status"
+            slot-scope="text"
+          >
+            {{ text.name }}
+          </span>
+          <template slot="action" slot-scope="text, record">
+            <st-table-actions>
+              <a v-if="record.ticket_status.id === 1">
+                <st-popconfirm
+                  title="签到后将视为已使用，您确定要将其核销签到吗？?"
+                  @confirm="onConfirmSignIn(record)"
+                  okText="确认"
+                  cancelText="取消"
+                >
+                  签到
+                </st-popconfirm>
+              </a>
+            </st-table-actions>
+          </template>
+        </st-table>
       </st-container>
       <checkin-guide v-else />
     </main>
@@ -61,6 +84,13 @@ export default {
     columns,
     isSearch() {
       return !!this.query.keyword
+    }
+  },
+  methods: {
+    onConfirmSignIn(record) {
+      this.service.updateSignUpChecked(record.id).subscribe(res => {
+        this.$router.reload()
+      })
     }
   }
 }

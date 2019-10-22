@@ -48,7 +48,14 @@
           :scroll="{ x: 1500 }"
           :dataSource="list$"
         >
-          <span slot="ticket_status" slot-scope="text">{{ text.name }}</span>
+          <span
+            class="status"
+            :class="bPage(`list-status-${text.id}`)"
+            slot="ticket_status"
+            slot-scope="text"
+          >
+            {{ text.name }}
+          </span>
           <div slot="registration_info" slot-scope="text">
             <span v-if="text === '--'">{{ text }}</span>
             <a v-else @click="onClickShowInfo(text)">查看详情</a>
@@ -127,7 +134,7 @@ export default {
       })
     },
     onConfirmSignIn(record) {
-      this.service.updateSIgnUpChecked(record.id).subscribe(res => {
+      this.service.updateSignUpChecked(record.id).subscribe(res => {
         this.$router.reload()
       })
     }

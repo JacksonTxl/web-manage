@@ -14,9 +14,9 @@
 <script>
 import { SharePosterService } from './share-poster.service'
 export default {
-  name: 'ModalSharePoster',
+  name: 'ModalQrCode',
   bem: {
-    bModal: 'modal-marketing-share-poster'
+    bModal: 'modal-marketing-qr-code'
   },
   props: {
     activity_id: Number
@@ -37,7 +37,7 @@ export default {
     }
   },
   created() {
-    this.service.getSharePosterInfo(this.activity_id).subscribe()
+    this.service.getQrCode(this.activity_id).subscribe()
   }
 }
 </script>

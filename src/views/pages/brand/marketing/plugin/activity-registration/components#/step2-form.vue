@@ -58,8 +58,12 @@
       <st-button @click="onClickBack">
         上一步
       </st-button>
-      <st-button type="primary" @click="onClickAddTicketComplete">
-        下一步2
+      <st-button
+        class="mg-l16"
+        type="primary"
+        @click="onClickAddTicketComplete"
+      >
+        下一步
       </st-button>
     </div>
   </div>

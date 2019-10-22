@@ -2,8 +2,8 @@ export const columns = (vm: any) => {
   return [
     {
       title: '票号',
-      dataIndex: 'ticket_sn',
-      scopedSlots: { customRender: 'ticket_sn' }
+      dataIndex: 'id',
+      scopedSlots: { customRender: 'id' }
     },
     {
       title: '用户姓名',
@@ -12,8 +12,8 @@ export const columns = (vm: any) => {
     },
     {
       title: '用户手机号',
-      dataIndex: 'member_phone',
-      scopedSlots: { customRender: 'member_phone' }
+      dataIndex: 'member_mobile',
+      scopedSlots: { customRender: 'member_mobile' }
     },
     {
       title: '活动标题',
@@ -29,6 +29,11 @@ export const columns = (vm: any) => {
       title: '价格(元)',
       dataIndex: 'ticket_price',
       scopedSlots: { customRender: 'ticket_price' }
+    },
+    {
+      title: '状态',
+      dataIndex: 'ticket_status',
+      scopedSlots: { customRender: 'ticket_status' }
     },
     {
       title: '操作',

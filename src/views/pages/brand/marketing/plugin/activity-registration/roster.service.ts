@@ -47,7 +47,7 @@ export class RosterService implements RouteGuard {
       })
     )
   }
-  updateSIgnUpChecked(id: number) {
+  updateSignUpChecked(id: number) {
     return this.signUpApi.updateSignUpChecked(id).pipe(
       tap(res => {
         this.msg.success({ content: '票种签到成功' })

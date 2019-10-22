@@ -13,5 +13,31 @@
     justify-content: space-between;
   }
   &__list {
+    .status {
+      display: flex;
+      align-items: center;
+      &:before {
+        content: '';
+        display: block;
+        .s(6px, 6px);
+        border-radius: 100%;
+        .mg-r(8px);
+      }
+    }
+    &-status-1 {
+      &:before {
+        .bg(@error-color);
+      }
+    }
+    &-status-2 {
+      &:before {
+        .bg(@success-color);
+      }
+    }
+    &-status-3 {
+      &:before {
+        .bg(@border-color);
+      }
+    }
   }
 }

@@ -46,19 +46,28 @@
         </div>
         <template slot="action" slot-scope="text, record">
           <st-table-actions>
-            <a @click="onClickEdit({ record, pathName: 'editActivity' })">
+            <a
+              v-if="record.auth.isEdit"
+              @click="onClickEdit({ record, pathName: 'editActivity' })"
+            >
               编辑
             </a>
-            <a @click="onCLickGeneralize(record)">
+            <a v-if="record.auth.isAdv" @click="onCLickGeneralize(record)">
               推广
             </a>
-            <a @click="onClickNameList({ record, pathName: 'rosterActivity' })">
+            <a
+              v-if="record.auth.isName"
+              @click="onClickNameList({ record, pathName: 'rosterActivity' })"
+            >
               名单
             </a>
-            <a @click="onClickCopy({ record, pathName: 'copyActivity' })">
+            <a
+              v-if="record.auth.isCopy"
+              @click="onClickCopy({ record, pathName: 'copyActivity' })"
+            >
               复制
             </a>
-            <a>
+            <a v-if="record.auth.isCancel">
               <st-popconfirm
                 title="确认取消该活动吗?"
                 @confirm="onClickStop(record)"
@@ -145,7 +154,7 @@ export default {
         query: { id: record.id }
       })
     },
-    onCLickGeneralize({ record, pathName }) {
+    onCLickGeneralize(record) {
       this.$modalRouter.push({
         name: 'marketing-share-poster',
         props: {
