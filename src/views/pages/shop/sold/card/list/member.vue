@@ -1,10 +1,6 @@
 <template>
   <div :class="basic()">
-    <st-search-panel
-      @search="onSearchNative"
-      @reset="onSearhReset"
-      :searchLoading="loading.getList"
-    >
+    <st-search-panel @search="onSearchNative" @reset="onSearhReset">
       <st-search-panel-item label="会员卡类型：">
         <st-search-radio v-model="query.card_type" :list="cardTypes" />
       </st-search-panel-item>
@@ -50,6 +46,7 @@
       <div :class="basic('table')">
         <st-table
           :page="page"
+          :loading="loading.getList"
           :alertSelection="{ onReset: onClear }"
           :rowSelection="{
             selectedRowKeys: selectedRowKeys,

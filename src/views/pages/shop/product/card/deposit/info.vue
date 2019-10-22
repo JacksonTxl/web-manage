@@ -19,7 +19,7 @@
         </h5-container>
       </div>
       <div class="page-content">
-        <div :class="item('card_name')" class="mb-24">
+        <div :class="item('card_name')" class="mg-b24">
           <!-- 卡名称 -->
           <div class="st-preview-item" v-viewer="{ url: 'data-src' }">
             <img
@@ -70,9 +70,9 @@
             </p>
           </div>
         </div>
-        <div :class="item('admission_range')" class="mb-24">
+        <div :class="item('admission_range')" class="mg-b24">
           <!-- 支持入场范围 -->
-          <p class="mb-8">
+          <p class="mg-b8">
             <span class="label">支持消费门店：</span>
             <span class="value">{{ canUseShop }}</span>
           </p>
@@ -91,9 +91,9 @@
             />
           </st-container>
         </div>
-        <div class="mb-24">
+        <div class="mg-b24">
           <!-- 支持消费类目 -->
-          <p class="mb-8">
+          <p class="mg-b8">
             <span class="label">支持消费类目：</span>
             <span
               v-if="!cardInfo.consumer_type || !cardInfo.consumer_type.length"
@@ -112,9 +112,9 @@
             </template>
           </p>
         </div>
-        <div :class="item('support_sales')" class="mb-24">
+        <div :class="item('support_sales')" class="mg-b24">
           <!-- 售卖门店 -->
-          <p class="mb-8">
+          <p class="mg-b8">
             <span class="label">售卖门店：</span>
             <span class="value">{{ cardInfo.shop_name }}</span>
           </p>
@@ -131,9 +131,9 @@
             />
           </st-container>
         </div>
-        <div class="mb-24">
+        <div class="mg-b24">
           <!-- 售卖方式 -->
-          <p class="mb-8">
+          <p class="mg-b8">
             <span class="label">售卖方式：</span>
             <span
               class="value"
@@ -145,9 +145,9 @@
             </span>
           </p>
         </div>
-        <div :class="item('price_gradient')" class="mb-24">
+        <div :class="item('price_gradient')" class="mg-b24">
           <!-- 售卖定价 -->
-          <p class="mb-8">
+          <p class="mg-b8">
             <span class="label">售卖定价：</span>
           </p>
           <st-container>
@@ -170,9 +170,9 @@
             </st-table>
           </st-container>
         </div>
-        <div :class="item('transfer')" class="mb-24">
+        <div :class="item('transfer')" class="mg-b24">
           <!-- 转让设置 -->
-          <p class="mb-8">
+          <p class="mg-b8">
             <span class="label">转让设置：</span>
             <span class="value" v-if="cardInfo.is_transfer">
               支持转让，收费交易金额{{ cardInfo.transfer_fee.number
@@ -184,16 +184,16 @@
             <span class="value" v-if="!cardInfo.is_transfer">不支持转让</span>
           </p>
         </div>
-        <div :class="item('card_introduction')" class="mb-24">
+        <div :class="item('card_introduction')" class="mg-b24">
           <!-- 会员卡说明 -->
-          <p class="mb-8">
+          <p class="mg-b8">
             <span class="label">储值卡说明：</span>
           </p>
           <st-container>{{ cardInfo.card_contents || '无' }}</st-container>
         </div>
-        <div :class="item('card_contents')" class="mb-24">
+        <div :class="item('card_contents')" class="mg-b24">
           <!-- 备注 -->
-          <p class="mb-8">
+          <p class="mg-b8">
             <span class="label">备注：</span>
           </p>
           <st-container>{{ cardInfo.description || '无' }}</st-container>

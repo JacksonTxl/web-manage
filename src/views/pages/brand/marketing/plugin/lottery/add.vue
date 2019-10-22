@@ -71,6 +71,18 @@
         </div>
       </div>
     </h5-container>
+    <div slot="actions">
+      <st-button v-show="currentIndex === 0" type="primary" @click="next(1)">
+        下一步
+      </st-button>
+      <st-button v-show="currentIndex === 1" type="primary" @click="next(2)">
+        下一步
+      </st-button>
+      <st-button v-show="currentIndex === 2" type="primary" @click="onSubmit">
+        完成
+      </st-button>
+    </div>
+
     <div :class="bPage('form')">
       <Steps :value="currentIndex" @skip="next" :stepArr="stepArr" />
       <div style="padding:24px;">
@@ -171,9 +183,6 @@
               :src="share[0].image_url"
               alt="默认图片"
             />
-          </st-form-item>
-          <st-form-item labelFix>
-            <st-button type="primary" @click="next(1)">下一步</st-button>
           </st-form-item>
         </st-form>
 
@@ -282,10 +291,8 @@
             ></a-input-number>
             次
           </st-form-item>
-          <st-form-item labelFix>
-            <st-button type="primary" @click="next(2)">下一步</st-button>
-          </st-form-item>
         </st-form>
+
         <st-form
           style="width:756px;padding-left:62px;"
           :form="form"
@@ -420,9 +427,6 @@
               :src="lucky[0].image_url"
               alt="默认图片"
             />
-          </st-form-item>
-          <st-form-item labelFix style="margin-left:-43px;">
-            <st-button type="primary" @click="onSubmit">完成</st-button>
           </st-form-item>
         </st-form>
       </div>

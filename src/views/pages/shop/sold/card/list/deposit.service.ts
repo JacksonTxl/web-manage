@@ -13,11 +13,9 @@ export class DepositService implements RouteGuard {
   auth$ = this.authService.authMap$({
     export: 'shop:sold:sold_deposit_card|export'
   })
-  isValids$ = this.userService.getOptions$('sold.is_valid').pipe(
-    tap(list => {
-      list.unshift({ value: -1, label: '全部' })
-    })
-  )
+  isValids$ = this.userService.getOptions$('sold.is_valid', {
+    addAll: true
+  })
   constructor(
     private cardApi: CardApi,
     private authService: AuthService,

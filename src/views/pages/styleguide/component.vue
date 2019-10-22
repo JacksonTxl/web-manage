@@ -50,7 +50,6 @@ export default {
   computed: {
     demos() {
       return [
-        { id: 'alert', title: '提示' },
         { id: 'title', title: '标题' },
         { id: 'button', title: '按钮' },
         { id: 'switch', title: '开关' },
@@ -58,6 +57,9 @@ export default {
         { id: 'hr', title: '分割线' },
         { id: 'input-number', title: '数字输入' },
         { id: 'input-search', title: '搜索框' },
+        { id: 'panel', title: '应用面板' },
+        { id: 'search-panel', title: '查询面板' },
+        { id: 'alert', title: '提示' },
         { id: 'checkbox-button', title: '复选按钮组' },
         { id: 'recent-radio-group', title: '报表raido组' },
         { id: 'btn-actions', title: '按钮操作组' },
@@ -66,13 +68,12 @@ export default {
         { id: 'modal', title: '模态窗' },
         { id: 'help-popover', title: '帮助气泡' },
         { id: 'tag', title: '标签' },
-        { id: 'search-panel', title: '查询面板' },
+        { id: 'plugin-form-title', title: '插件标题' },
         { id: 'no-data', title: '默认占位图' },
         { id: 'overflow-text', title: '超限内容容器' },
         { id: 'initials-tag', title: '首字母标签' },
         { id: 'region-cascader', title: '城市选择' },
         { id: 'container', title: '容器' },
-        { id: 'panel', title: '应用面板' },
         { id: 'info', title: '信息展示' },
         { id: 'info-action', title: '信息操作' },
         { id: 'popconfirm', title: '删除确认' },
