@@ -118,9 +118,8 @@
           <!-- <st-card-bg-radio v-model="banner"/> -->
           <st-invitation-bg-radio v-model="invite_poster" />
         </st-form-item>
-        <st-form-item>
+        <st-form-item labelWidth="158px" label-fix>
           <st-button
-            :class="inviation('seve')"
             type="primary"
             :loading="loading.edit || loading.add"
             @click="onSubmit"
