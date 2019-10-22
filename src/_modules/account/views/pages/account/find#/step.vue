@@ -67,7 +67,7 @@ export default {
       form,
       decorators,
       stepArr,
-      currentIndex: 1
+      currentIndex: 0
     }
   },
   components: {
