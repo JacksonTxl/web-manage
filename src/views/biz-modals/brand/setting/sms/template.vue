@@ -66,15 +66,28 @@ export default {
   methods: {
     save() {
       this.form.validate((error, values) => {
-        return this.templateService
-          .addTemplate({ ...values })
-          .subscribe(res => {
-            this.messageService.success({
-              content: '添加成功'
+        if (this.info) {
+          values.tmpl_id = this.info.tmpl_id
+          return this.templateService
+            .editTemplate({ ...values })
+            .subscribe(res => {
+              this.messageService.success({
+                content: '编辑成功'
+              })
+              this.$emit('success')
+              this.show = false
             })
-            this.$emit('success')
-            this.show = false
-          })
+        } else {
+          return this.templateService
+            .addTemplate({ ...values })
+            .subscribe(res => {
+              this.messageService.success({
+                content: '添加成功'
+              })
+              this.$emit('success')
+              this.show = false
+            })
+        }
       })
     },
     cancel() {}

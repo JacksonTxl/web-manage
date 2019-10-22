@@ -45,8 +45,8 @@ export class GroupService {
   onReset(id: any) {
     return this.GroupApi.onReset(id).pipe()
   }
-  onDelete(id: any) {
-    return this.GroupApi.onDelete(id).pipe()
+  onDelete(query: any) {
+    return this.GroupApi.onDelete(query).pipe()
   }
   init(query: any) {
     return forkJoin(this.getTemplateList(query), this.getGroupList(query))

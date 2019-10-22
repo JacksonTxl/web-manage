@@ -963,7 +963,6 @@ export const routeMapConfig = {
   'brand-setting-sms-group'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '群发短信'
     routeConfig.queryOptions = {
-      search: { type: String, default: '' },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }

@@ -6,7 +6,8 @@ export const recordColumns = () => {
     },
     {
       title: '发送内容',
-      dataIndex: 'content'
+      dataIndex: 'content',
+      scopedSlots: { customRender: 'content' }
     },
     {
       title: '接受人',
@@ -18,7 +19,8 @@ export const recordColumns = () => {
     },
     {
       title: '发送状态',
-      dataIndex: 'send_status_text'
+      dataIndex: 'send_status_text',
+      scopedSlots: { customRender: 'send_status_text' }
     },
     {
       title: '操作人',

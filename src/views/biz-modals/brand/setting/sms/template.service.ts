@@ -9,4 +9,7 @@ export class TemplateService {
   addTemplate(query: any) {
     return this.GroupApi.addTemplate(query).pipe()
   }
+  editTemplate(query: any) {
+    return this.GroupApi.editTemplate(query).pipe()
+  }
 }

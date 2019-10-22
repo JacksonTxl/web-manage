@@ -1,96 +1,112 @@
 <template>
   <div :class="bPage()">
-    <div class="pd-24">
-      <div class="mg-b24">
-        <st-button
-          type="primary"
-          class="mg-r12"
-          v-modal-link="{
-            name: 'brand-setting-sms-group'
-          }"
+    <div class="mg-b24">
+      <st-button
+        type="primary"
+        class="mg-r12"
+        v-modal-link="{
+          name: 'brand-setting-sms-group'
+        }"
+      >
+        群发消息
+      </st-button>
+      <st-button
+        v-modal-link="{
+          name: 'brand-setting-sms-template',
+          on: { success: refresh }
+        }"
+      >
+        新建短信模版
+      </st-button>
+      <a-radio-group
+        :value="isShowList"
+        @change="handleTableChange"
+        class="fl-r"
+      >
+        <a-radio-button :value="1">发送记录</a-radio-button>
+        <a-radio-button :value="0">短信模版</a-radio-button>
+      </a-radio-group>
+    </div>
+    <st-table
+      v-if="isShowList"
+      :page="groupPage"
+      :loading="loading.getGroupList"
+      @change="onTableChange"
+      :columns="recordColumns"
+      :dataSource="groupList"
+      rowKey="group_id"
+      :class="bPage('table')"
+    >
+      <div slot="action" slot-scope="text, record">
+        <st-table-actions
+          v-if="record.send_status === 0 || record.send_status === 1"
         >
-          群发消息
-        </st-button>
-        <st-button
-          v-modal-link="{
-            name: 'brand-setting-sms-template',
-            on: { success: refresh }
-          }"
-        >
-          新建短信模版
-        </st-button>
-        <a-radio-group
-          :value="isShowList"
-          @change="handleTableChange"
-          class="fl-r"
-        >
-          <a-radio-button :value="1">发送记录</a-radio-button>
-          <a-radio-button :value="0">短信模版</a-radio-button>
-        </a-radio-group>
+          <st-popconfirm title="确定撤销吗" @confirm="onReset(record.group_id)">
+            <a>撤销</a>
+          </st-popconfirm>
+          <a
+            v-modal-link="{
+              name: 'brand-setting-sms-group',
+              props: { id: record.group_id },
+              on: { success: refresh }
+            }"
+          >
+            编辑
+          </a>
+        </st-table-actions>
       </div>
-      <st-table
-        v-if="isShowList"
-        :page="groupPage"
-        :loading="loading.getGroupList"
-        @change="onTableChange"
-        :columns="recordColumns"
-        :dataSource="groupList"
-        rowKey="group_id"
-        :class="bPage('table')"
-      >
-        <div slot="action" slot-scope="text, record">
-          <st-table-actions>
-            <st-popconfirm
-              title="确定撤销吗"
-              @confirm="onReset(record.group_id)"
-            >
-              <a>撤销</a>
-            </st-popconfirm>
-            <a
-              v-modal-link="{
-                name: 'brand-setting-sms-group',
-                on: { success: refresh }
-              }"
-            >
-              编辑
-            </a>
-          </st-table-actions>
-        </div>
-      </st-table>
-      <st-table
-        v-else
-        :page="templatePage"
-        :loading="loading.getTemplateList"
-        @change="onTableChange"
-        :columns="templateColumns"
-        :dataSource="templateList"
-        rowKey="tmpl_id"
-        :class="bPage('table')"
-      >
-        <div slot="action" slot-scope="text, record">
-          <st-table-actions>
-            <a
-              v-modal-link="{
-                name: 'brand-setting-sms-template',
-                on: { success: refresh },
-                props: { info: record }
-              }"
-            >
-              编辑
-            </a>
-            <st-popconfirm
-              title="
+      <div slot="send_status_text" slot-scope="text, record">
+        <span
+          class="page-setting-sms-group__status"
+          :class="bPage('status-') + record.send_status"
+        ></span>
+        <span>{{ record.send_status_text }}</span>
+      </div>
+      <div slot="content" slot-scope="text, record">
+        <a-tooltip
+          placement="topLeft"
+          overlayClassName="page-setting-sms-group-tooltip"
+        >
+          <template slot="title">
+            <span>{{ record.content }}</span>
+          </template>
+          {{ record.content }}
+        </a-tooltip>
+      </div>
+    </st-table>
+    <st-table
+      v-else
+      :page="templatePage"
+      :loading="loading.getTemplateList"
+      @change="onTableChange"
+      :columns="templateColumns"
+      :dataSource="templateList"
+      rowKey="tmpl_id"
+      :class="bPage('table')"
+    >
+      <div slot="action" slot-scope="text, record">
+        <st-table-actions>
+          <a
+            v-modal-link="{
+              name: 'brand-setting-sms-template',
+              on: { success: refresh },
+              props: { info: record }
+            }"
+          >
+            编辑
+          </a>
+          <st-popconfirm
+            title="
                   确定删除吗
                 "
-              @confirm="onDelete(record.tmpl_id)"
-            >
-              <a>删除</a>
-            </st-popconfirm>
-            <a>发送</a>
-          </st-table-actions>
-        </div>
-      </st-table>
-    </div>
+            @confirm="onDelete(record.tmpl_id)"
+          >
+            <a>删除</a>
+          </st-popconfirm>
+          <a>发送</a>
+        </st-table-actions>
+      </div>
+    </st-table>
   </div>
 </template>
 <script>
@@ -102,13 +118,12 @@ import BrandSettingSmsGroup from '@/views/biz-modals/brand/setting/sms/group'
 import BrandSettingSmsTemplate from '@/views/biz-modals/brand/setting/sms/template'
 
 import tableMixin from '@/mixins/table.mixin'
-const pageName = 'page-setting-sms-list'
+const pageName = 'page-setting-sms-group'
 
 export default {
   mixins: [tableMixin],
   bem: {
-    bPage: pageName,
-    bSelect: `${pageName}-select`
+    bPage: pageName
   },
   serviceInject() {
     return {

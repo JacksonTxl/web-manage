@@ -7,14 +7,32 @@ export class GroupApi extends Api {
   getTemplateList(query: GroupTemplateQuery) {
     return this.http.get('/v1/setting/sms/template', { query })
   }
-  onReset(id: string) {
-    return this.http.delete('/v1/setting/sms/group/cancel?group_id=' + id)
+  getTemplateOptionList(query: GroupTemplateQuery) {
+    return this.http.get('/v1/setting/sms/template/options', { query })
   }
-  onDelete(id: string) {
-    return this.http.delete('/v1/setting/sms/template?tmpl_id=' + id)
+  onReset(id: any) {
+    return this.http.delete('/v1/setting/sms/group/cancel/' + id)
   }
-  addTemplate(query: any) {
-    return this.http.delete('/v1/setting/sms/template', { query })
+  onDelete(id: any) {
+    return this.http.delete('/v1/setting/sms/template/' + id)
+  }
+  addTemplate(params: any) {
+    return this.http.post('/v1/setting/sms/template', { params })
+  }
+  editTemplate(params: any) {
+    return this.http.put('/v1/setting/sms/template', { params })
+  }
+  getCrowdList(query: any) {
+    return this.http.get('/v1/setting/sms/group/crowd', { query })
+  }
+  addGroup(params: any) {
+    return this.http.post('/v1/setting/sms/group', { params })
+  }
+  editGroup(params: any) {
+    return this.http.put('/v1/setting/sms/group', { params })
+  }
+  getEditInfo(query: any) {
+    return this.http.get('/v1/setting/sms/group/info/' + query)
   }
 }
 export interface GroupListQuery {
