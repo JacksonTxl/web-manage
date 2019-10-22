@@ -138,7 +138,11 @@
       </a-row> -->
       <a-row :gutter="8">
         <a-col :lg="24">
-          <st-form-item class="mg-l24" style="text-align:right;" labelOffset>
+          <st-form-item
+            class="mg-l24"
+            style="text-align:right; margin-bottom:0"
+            labelOffset
+          >
             <st-button
               type="primary"
               @click="save"
