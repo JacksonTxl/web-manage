@@ -15,17 +15,17 @@ export class MemberService implements RouteGuard {
     gift: 'shop:sold:sold_member_card|gift',
     vipRegion: 'shop:sold:sold_member_card|vip_region'
   })
-  cardTypes$ = this.userService.getOptions$('sold.card_type').pipe(
+  cardTypes$ = this.userService.getOptions$('sold_common.card_type').pipe(
     tap(list => {
       list.unshift({ value: -1, label: '全部' })
     })
   )
-  cardStatus$ = this.userService.getOptions$('sold.card_status').pipe(
+  cardStatus$ = this.userService.getOptions$('sold_common.card_status').pipe(
     tap(list => {
       list.unshift({ value: -1, label: '全部' })
     })
   )
-  isOpens$ = this.userService.getOptions$('sold.is_open').pipe(
+  isOpens$ = this.userService.getOptions$('sold_common.is_open').pipe(
     tap(list => {
       list.unshift({ value: -1, label: '全部' })
     })

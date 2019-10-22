@@ -11,10 +11,8 @@ export class AddService implements RouteGuard {
   drawCondition$ = this.userService.getOptions$('plugin.draw_condition')
   drawTimesType$ = this.userService.getOptions$('plugin.draw_times_type')
   invitePoster$ = this.userService.getOptions$('plugin.invite_poster')
-  wheelDefault$ = this.userService.getOptions$('plugin_wheel.wheel_default')
-  wheelTurnAround$ = this.userService.getOptions$(
-    'plugin_wheel.wheel_turn_around'
-  )
+  wheelDefault$ = this.userService.getOptions$('plugin_wheel.default')
+  wheelTurnAround$ = this.userService.getOptions$('plugin_wheel.turn_around')
   joinCrowdAll$ = this.userService.getOptions$('plugin.join_crowd_all')
   crowd$ = this.userService.getOptions$('plugin.crowd')
   imgType$ = this.userService.getOptions$('plugin.img_type')
