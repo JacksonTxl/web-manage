@@ -2,11 +2,16 @@
   <st-modal :title="title" v-model="show" width="400px" :footer="null">
     <div :class="basic()">
       <p>{{ message }}</p>
-      <img v-if="!isLoading" :src="url" :class="activeClass" />
+      <img
+        v-if="!isLoading"
+        :src="url"
+        :class="activeClass"
+        style="width:100%"
+      />
       <div v-else class="loading-state">
         <a-spin size="large" />
       </div>
-      <div>
+      <div class="mg-t24">
         <st-button
           block
           pill
