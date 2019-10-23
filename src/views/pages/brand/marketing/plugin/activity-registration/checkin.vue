@@ -16,7 +16,6 @@
           :columns="columns"
           rowKey="id"
           @change="onTableChange"
-          :scroll="{ x: 1500 }"
           :loading="loading$.getList"
           :dataSource="list$"
           :page="page$"
@@ -33,7 +32,7 @@
             <st-table-actions>
               <a v-if="record.ticket_status.id === 1">
                 <st-popconfirm
-                  title="签到后将视为已使用，您确定要将其核销签到吗？?"
+                  title="签到后将视为已使用，您确定要将其核销签到吗？"
                   @confirm="onConfirmSignIn(record)"
                   okText="确认"
                   cancelText="取消"
