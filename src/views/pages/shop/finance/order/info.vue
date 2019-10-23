@@ -3,7 +3,6 @@
     <st-panel title="订单详情">
       <div slot="actions">
         <st-button
-          class="mg-r8"
           v-if="auth['brand_shop:order:order|refund']"
           @click="onRefund"
           type="primary"
