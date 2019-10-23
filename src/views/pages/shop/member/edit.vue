@@ -272,7 +272,7 @@
       <a-row :gutter="8">
         <a-col :offset="1">
           <st-form-item labelWidth="88px" label-fix>
-            <st-button type="primary" ghost html-type="submit">保存</st-button>
+            <st-button type="primary" html-type="submit">保存</st-button>
           </st-form-item>
         </a-col>
       </a-row>
