@@ -314,7 +314,7 @@ export default {
     onDetail(record) {
       this.$router.push({
         path: `/shop/sold/card/info/member/info/operation-record`,
-        query: { id: record.id }
+        query: { id: record.id, card_type: record.card_type }
       })
     },
     // 冻结

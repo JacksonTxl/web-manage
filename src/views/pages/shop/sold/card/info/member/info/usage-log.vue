@@ -2,11 +2,11 @@
   <section class="st-sold-log-table">
     <st-table
       :page="page"
-      :columns="columns"
       :loading="loading.getList"
       rowKey="id"
       @change="onTableChange"
       :dataSource="list"
+      :columns="query.card_type === 1 ? columns : Daycolumns"
     >
       <template slot="usage_detail" slot-scope="text, record">
         <span v-for="(item, index) in record.usage_detail" :key="index">
@@ -25,7 +25,7 @@
 <script>
 import { UsageLogService } from './usage-log.service'
 import { RouteService } from '@/services/route.service'
-import { columns } from './usage-log.config'
+import { columns, Daycolumns } from './usage-log.config'
 
 import tableMixin from '@/mixins/table.mixin'
 export default {
@@ -51,8 +51,10 @@ export default {
   data() {
     return {}
   },
+  created() {},
   computed: {
-    columns
+    columns,
+    Daycolumns
   }
 }
 </script>
