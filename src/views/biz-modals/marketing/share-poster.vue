@@ -1,7 +1,6 @@
 <template>
   <st-modal :title="title" v-model="show" width="400px" :footer="null">
     <div :class="basic()">
-      {{ brand }}{{ info }}
       <p>{{ message }}</p>
       <img v-if="!isLoading" :src="url" :class="activeClass" />
       <div v-else class="loading-state">
@@ -97,9 +96,9 @@ export default {
             this.shsService
               .getShsImage(
                 {
-                  qrcode_url: this.info.qrcode_url || 'dsafadsfasfasfas',
-                  brand_name: this.brand.brand_name,
-                  brand_logo: this.brand.brand_logo,
+                  qrcode_url: this.info.qrcode,
+                  brand_name: this.brand.name,
+                  brand_logo: this.brand.logo,
                   activity_img: this.info.image.image_url,
                   activity_title: this.info.activity_name,
                   activity_date,
@@ -108,7 +107,9 @@ export default {
                 '/saas/activity'
               )
               .subscribe(res => {
+                console.log(res)
                 this.url = res
+                this.isLoading = false
               })
           }
         })
