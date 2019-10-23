@@ -48,6 +48,10 @@ export class ListService implements RouteGuard {
               auth.isEdit = 0
               auth.isAdv = 0
               auth.isCancel = 0
+            } else if (item.activity_status.id === 5) {
+              auth.isEdit = 0
+              auth.isAdv = 0
+              auth.isCancel = 1
             }
             item.auth = auth
             return item
