@@ -6,7 +6,7 @@
       v-model="query.search"
       placeholder="请输入姓名或手机号查找"
     ></st-input-search>
-    <st-search-panel>
+    <st-search-panel @search="onSearchList" @reset="onSearhReset">
       <st-search-panel-item label="通知对象：">
         <st-search-radio v-model="query.notify_type" :list="notifyType" />
       </st-search-panel-item>
@@ -19,17 +19,6 @@
           v-model="selectTime"
         ></st-range-picker>
       </st-search-panel-item>
-
-      <div slot="button">
-        <st-button
-          type="primary"
-          @click="onSearchList"
-          :loading="loading.getSmsList"
-        >
-          查询
-        </st-button>
-        <st-button class="mg-l8" @click="onSearhReset">重置</st-button>
-      </div>
     </st-search-panel>
 
     <div class="pd-24">

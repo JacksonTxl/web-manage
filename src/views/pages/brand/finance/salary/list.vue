@@ -1,5 +1,5 @@
 <template>
-  <st-panel>
+  <st-panel app>
     <div slot="title">
       <st-input-search
         placeholder="可输入姓名、手机号、卡号"
