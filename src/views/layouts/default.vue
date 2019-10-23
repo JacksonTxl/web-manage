@@ -99,10 +99,10 @@
           <st-icon type="export"></st-icon>
         </router-link>
         <!-- 九宫格 -->
-        <div class="sudoku-icon" @mouseenter.stop="onMouseenterOpenSudoku">
+        <div class="sudoku-icon" @click.stop="onOpenSudoku">
           九宫格
         </div>
-        <fast-entry v-show="sudokuOpenFlag"></fast-entry>
+        <fast-entry v-show="sudokuOpenFlag" @goToPage="onGoToPage"></fast-entry>
         <a-dropdown :trigger="['click']" placement="bottomRight">
           <div class="layout-default-body__avatar">
             <img
@@ -275,12 +275,15 @@ export default {
        */
       this.isShowSwitchShop = false
     },
-    onMouseenterOpenSudoku() {
+    onOpenSudoku() {
       this.sudokuOpenFlag = true
-    }
+    },
     // onMouseenterCloseSudoku() {
     //   this.sudokuOpenFlag = false
     // }
+    onGoToPage() {
+      this.sudokuOpenFlag = false
+    }
   }
 }
 </script>

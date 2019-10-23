@@ -11,7 +11,8 @@ import icon9 from '@/assets/img/fast-entry/9.png'
 export const entries = [
   {
     icon: icon1,
-    text: '帮助中心'
+    text: '帮助中心',
+    openProgram: 'help'
   },
   {
     icon: icon2,

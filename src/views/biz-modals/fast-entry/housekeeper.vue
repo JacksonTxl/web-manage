@@ -1,43 +1,45 @@
 <template>
   <st-modal
     title="三体云管家"
-    class="modal-account-agreement"
+    class="modal-fast-entry-housekeeper"
     v-model="show"
     footer=""
+    width="320px"
   >
     <div>
-      <ul :class="b('list')">
-        云管家
-      </ul>
+      <div :class="b('wrapper')">
+        <img :class="b('code-img')" :src="pic" alt="扫描二维码" />
+        <p :class="b('tips')" class="mg-t16">
+          扫描二维码
+          <br />
+          下载三体云管家App
+        </p>
+      </div>
     </div>
   </st-modal>
 </template>
 <script>
-import { MessageService } from '@/services/message.service'
+import codeImg from '@/assets/img/fast-entry/code.png'
 export default {
-  name: 'AccountAgreement',
+  name: 'FastEntryHousekeeper',
   bem: {
-    b: 'modal-account-agreement'
+    b: 'modal-fast-entry-housekeeper'
   },
   serviceInject() {
-    return {
-      messageService: MessageService
-    }
+    return {}
   },
   rxState() {
     return {}
   },
   data() {
     return {
-      show: false
+      show: false,
+      pic: codeImg
     }
   },
   created() {},
   methods: {
     cancel() {
-      this.show = false
-    },
-    onClickCloseAgreement() {
       this.show = false
     }
   }

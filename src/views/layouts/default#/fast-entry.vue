@@ -34,6 +34,9 @@ export default {
   },
   methods: {
     goToPage(item) {
+      if (item.openProgram !== 'help') {
+        this.$emit('goToPage')
+      }
       if (item.url) {
         window.open(item.url)
         return
@@ -57,4 +60,8 @@ export default {
     }
   }
 }
+// 做法问题备注：如何关系快速入口
+// 如何把按钮置灰
+// 是否要改置灰后的基本手型
+// 入口的svg icon
 </script>
