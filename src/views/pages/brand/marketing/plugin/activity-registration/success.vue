@@ -67,12 +67,14 @@ export default {
     },
     onClickSharePoster() {
       this.$modalRouter.push({
-        name: 'marketing-share-poster'
+        name: 'marketing-share-poster',
+        type: 1
       })
     },
     onClickMinaQrcode() {
       this.$modalRouter.push({
-        name: 'marketing-activity-qrcode'
+        name: 'marketing-activity-qrcode',
+        type: 2
       })
     }
   }

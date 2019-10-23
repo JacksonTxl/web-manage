@@ -58,7 +58,14 @@ export const ruleOptions = (vm: any) => {
     },
     group_buy_min: {},
     reduce_price: {},
-    buy_time_limit: {},
+    buy_time_limit: {
+      rules: [
+        {
+          required: true,
+          message: '请选择时间'
+        }
+      ]
+    },
     buy_time: {},
     ticket_remark: {}
   }
