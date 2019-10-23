@@ -1,43 +1,146 @@
 <template>
-  <st-modal title="分享海报" :footer="null" width="500px" v-model="show">
-    <div :class="bModal()">
-      <p>
-        复制或下载二维码，推广至微信朋友圈、微博等，或打印活动海报，张贴至门店，吸引顾客参与活动。
-      </p>
-      <div>{{ info }}</div>
-      <st-button icon="download" type="primary" pill>
-        下载海报
-      </st-button>
+  <st-modal :title="title" v-model="show" width="400px" :footer="null">
+    <div :class="basic()">
+      {{ brand }}{{ info }}
+      <p>{{ message }}</p>
+      <img v-if="!isLoading" :src="url" :class="activeClass" />
+      <div v-else class="loading-state">
+        <a-spin size="large" />
+      </div>
+      <div>
+        <st-button
+          block
+          pill
+          type="primary"
+          icon="download"
+          size="large"
+          @click="downloadPoster"
+        >
+          {{ button }}
+        </st-button>
+      </div>
     </div>
   </st-modal>
 </template>
 <script>
 import { SharePosterService } from './share-poster.service'
+import { AppConfig } from '@/constants/config'
+import { OssService } from '@/services/oss.service'
+import { ShsService } from '@/services/shs.service'
+import { POSTER } from '@/constants/brand/marketing'
+import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
+
 export default {
-  name: 'ModalSharePoster',
+  name: 'BrandMarketingActivityPoster',
   bem: {
-    bModal: 'modal-marketing-share-poster'
+    basic: 'brand-marketing-activity-poster'
   },
-  props: {
-    activity_id: Number
+  modals: {
+    BrandMarketingBind
   },
   serviceInject() {
     return {
-      service: SharePosterService
+      sharePosterService: SharePosterService,
+      appConfig: AppConfig,
+      shsService: ShsService
     }
+  },
+  serviceProviders() {
+    return [ShsService]
   },
   rxState() {
     return {
-      info: this.service.info$
+      loading: this.sharePosterService.loading$,
+      isLoading: this.shsService.loading$,
+      info: this.sharePosterService.info$,
+      brand: this.sharePosterService.brand$,
+      qrcode: this.sharePosterService.qrcode$
+    }
+  },
+  props: {
+    type: {
+      type: Number,
+      default: 1
+    },
+    activity_id: {
+      type: Number,
+      default: 0
     }
   },
   data() {
     return {
-      show: false
+      POSTER,
+      show: false,
+      url: '',
+      title: '分享海报',
+      message:
+        '将小程序码贴在宣传刊物、店内等任何地方，用户用手机扫一扫后，即可参与活动、转化下单',
+      button: '下载海报',
+      activeClass: 'poster'
     }
   },
   created() {
-    this.service.getSharePosterInfo(this.activity_id).subscribe()
+    if (this.type === this.POSTER.COUPON_TYPE) {
+      debugger
+      this.sharePosterService
+        .getSharePosterInfo(this.activity_id)
+        .subscribe(res => {
+          if (res.is_auth) {
+            // this.show = false
+            // this.$modalRouter.push({
+            //   name: 'brand-marketing-bind'
+            // })
+            // return
+          } else {
+            const activity_date = `${this.info.start_time} - ${
+              this.info.end_time
+            }`
+            this.shsService
+              .getShsImage(
+                {
+                  qrcode_url: this.info.qrcode_url || 'dsafadsfasfasfas',
+                  brand_name: this.brand.brand_name,
+                  brand_logo: this.brand.brand_logo,
+                  activity_img: this.info.image.image_url,
+                  activity_title: this.info.activity_name,
+                  activity_date,
+                  activity_address: this.info.address
+                },
+                '/saas/activity'
+              )
+              .subscribe(res => {
+                this.url = res
+              })
+          }
+        })
+    } else if (this.type === this.POSTER.QRCODE_TYPE) {
+      this.activeClass = 'qrcode'
+      this.title = '小程序码'
+      this.message =
+        '将小程序码贴在宣城刊物、店内等任何地方，用户用手机扫一扫后，即可参与活动转化下单。'
+      this.button = '下载小程序码'
+      this.sharePosterService.getQrcode(this.activity_id).subscribe(res => {
+        if (!res.is_auth) {
+          // this.show = false
+          // this.$modalRouter.push({
+          //   name: 'brand-marketing-bind'
+          // })
+        } else {
+          this.isLoading = false
+          this.url = res.qrcode
+        }
+      })
+    }
+  },
+
+  methods: {
+    downloadPoster() {
+      const a = document.createElement('a')
+      a.href = this.url
+      a.target = '_blank'
+      a.download = 'poster.png'
+      a.click()
+    }
   }
 }
 </script>
