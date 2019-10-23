@@ -1,5 +1,5 @@
 <template>
-  <st-modal title="奖品设置" v-model="show" @ok="onSubmit" size="small">
+  <st-modal title="奖品设置" v-model="show" @ok="onSubmit">
     <st-form :form="form" labelGutter="0" labelWidth="84px">
       <st-form-item label="奖品名称" required>
         <a-input

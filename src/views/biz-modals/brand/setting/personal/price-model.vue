@@ -7,11 +7,12 @@
     :confirmLoading="loading.update"
   >
     <a-alert
+      slot="prepend"
       message="此操作将影响所有私教课程的定价，无法撤回，请谨慎操作"
       banner
     />
     <st-form>
-      <st-container type="2">
+      <div>
         <!-- 私教课程定价模式 -->
         <st-t4>私教课程定价模式</st-t4>
         <!-- 教练统一定价 -->
@@ -58,9 +59,9 @@
             </a-row>
           </st-container>
         </a-radio-group>
-      </st-container>
+      </div>
       <!-- 私教课程定价设置 -->
-      <st-container type="2" v-if="isShowPriceSet">
+      <div v-if="isShowPriceSet">
         <st-t4>私教课程定价设置</st-t4>
         <st-container type="2" class="bg-gray mg-t8">
           <!-- 教练谈单切换至统一标价 -->
@@ -124,7 +125,7 @@
             </div>
           </div>
         </st-container>
-      </st-container>
+      </div>
     </st-form>
     <footer slot="footer">
       <st-button @click="show = false">取消</st-button>
