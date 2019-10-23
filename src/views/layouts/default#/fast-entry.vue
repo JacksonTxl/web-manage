@@ -39,19 +39,21 @@ export default {
         return
       }
       if (item.openProgram === 'miniProgram') {
+        this.$modalRouter.push({
+          name: 'fast-entry-mini-program',
+          props: {},
+          on: {}
+        })
         return
       }
       if (item.openProgram === 'housekeeper') {
+        this.$modalRouter.push({
+          name: 'fast-entry-housekeeper',
+          props: {},
+          on: {}
+        })
         return
       }
-    },
-    // 打开模态框
-    clickAgreement() {
-      this.$modalRouter.push({
-        name: 'account-agreement',
-        props: {},
-        on: {}
-      })
     }
   }
 }

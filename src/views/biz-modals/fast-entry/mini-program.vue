@@ -1,13 +1,15 @@
 <template>
-  <st-modal title="微信支付配置" class="modal-account-agreement" v-model="show">
+  <st-modal
+    title="微信支付配置"
+    class="modal-account-agreement"
+    v-model="show"
+    footer=""
+  >
     <div>
       <ul :class="b('list')">
         小程序
       </ul>
     </div>
-    <footer slot="footer">
-      <st-button type="primary" @click="onClickCloseAgreement">确定</st-button>
-    </footer>
   </st-modal>
 </template>
 <script>
