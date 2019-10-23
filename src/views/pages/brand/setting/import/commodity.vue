@@ -17,7 +17,7 @@
           <div :class="bTable('content')">
             <a-radio :value="IMPORT.MEMBER_CARD_BASIC">基础信息</a-radio>
             <label :class="bTable('desc')">
-              包含卡名称、卡类型等基础信息
+              仅导入会员卡基础信息，不导入价格，默认会员卡支持单店入场，全门店售卖
             </label>
           </div>
           <div :class="bTable('content')">
@@ -33,7 +33,7 @@
         <div :class="bTable('content')">
           <a-radio :value="IMPORT.DEPOSIT">储值卡信息</a-radio>
           <label :class="bTable('desc')">
-            包含储值卡所有信息
+            默认储值卡卡支持单店消费，全门店售卖
           </label>
         </div>
       </div>
@@ -92,13 +92,13 @@
               <span>支持消费的门店</span>
             </a-radio>
             <label :class="bTable('desc')">
-              部分卡和课程仅支持部分门店入场上课，导入支持消费的门店列表
+              若会员卡、储值卡支持多店消费，或者团体课支持上课门店为多店，请导入卡课支持消费的门店
             </label>
           </div>
           <div :class="bTable('content')">
             <a-radio :value="IMPORT.SUPPORT_SOLD_SHOP">支持售卖的门店</a-radio>
             <label :class="bTable('desc')">
-              部分卡仅在部分门店可售，导入支持卡售卖的门店列表
+              若会员卡、储值卡不支持全门店售卖，或者私教课不支持全门店售卖，请导入卡课支持售卖的门店
             </label>
           </div>
         </div>

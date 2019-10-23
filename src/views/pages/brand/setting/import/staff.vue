@@ -34,7 +34,8 @@
         </router-link>
         设置教练等级（若不需要导入教练等级，可忽略）
       </p>
-      <p :class="bRow('content')">
+      <!-- NOTE: 预留 -->
+      <!-- <p :class="bRow('content')">
         3）
         <router-link
           :to="{
@@ -45,7 +46,7 @@
           设置
         </router-link>
         员工薪资模板（若不需要导入薪资模板，可忽略）
-      </p>
+      </p> -->
     </div>
     <div class="page-footer">
       <st-button type="primary" class="download" @click="fetchDownloadFileInfo">
