@@ -19,7 +19,7 @@ export class InfoService implements RouteGuard {
   pageAuthTabs$ = new Computed(
     combineLatest(this.authTabs$, this.routeService.query$, (authTabs, query) =>
       authTabs.map((tab: any) => {
-        tab.route.query = { id: query.id }
+        tab.route.query = { id: query.id, card_type: query.card_type }
         return tab
       })
     )
