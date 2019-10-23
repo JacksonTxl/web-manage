@@ -1,5 +1,5 @@
 <template>
-  <st-modal :title="modalTitle" width="500px" v-model="show">
+  <st-modal :title="modalTitle" v-model="show">
     <div class="modal-marketing-add-ticket">
       <st-form :form="form" labelWidth="66px">
         <st-form-item label="票种类型" required>
