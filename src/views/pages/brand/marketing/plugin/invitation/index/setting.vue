@@ -118,7 +118,7 @@
           <!-- <st-card-bg-radio v-model="banner"/> -->
           <st-invitation-bg-radio v-model="invite_poster" />
         </st-form-item>
-        <st-form-item labelWidth="158px" label-fix>
+        <st-form-item label-fix>
           <st-button
             type="primary"
             :loading="loading.edit || loading.add"
