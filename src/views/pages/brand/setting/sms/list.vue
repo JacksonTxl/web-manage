@@ -8,10 +8,10 @@
     ></st-input-search>
     <st-search-panel @search="onSearchList" @reset="onSearhReset">
       <st-search-panel-item label="通知对象：">
-        <st-search-radio v-model="query.notify_type" :list="notifyType" />
+        <st-search-radio v-model="query.notify_type" :options="notifyType" />
       </st-search-panel-item>
       <st-search-panel-item label="发送状态：">
-        <st-search-radio v-model="query.send_status" :list="sendStatus" />
+        <st-search-radio v-model="query.send_status" :options="sendStatus" />
       </st-search-panel-item>
       <st-search-panel-item label="发送时间：">
         <st-range-picker

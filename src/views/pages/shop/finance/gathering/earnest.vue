@@ -2,7 +2,7 @@
   <div :class="b()">
     <st-search-panel @search="onSearchNative" @reset="onSearhReset">
       <st-search-panel-item label="定金状态：">
-        <st-search-radio v-model="query.use_status" :list="useStatus" />
+        <st-search-radio v-model="query.use_status" :options="useStatus" />
       </st-search-panel-item>
       <st-search-panel-item label="查询日期：">
         <st-range-picker

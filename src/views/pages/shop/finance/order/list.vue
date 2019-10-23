@@ -9,10 +9,10 @@
     </div>
     <st-search-panel slot="prepend">
       <st-search-panel-item label="订单状态：">
-        <st-search-radio v-model="query.status" :list="orderStatus" />
+        <st-search-radio v-model="query.status" :options="orderStatus" />
       </st-search-panel-item>
       <st-search-panel-item label="支付状态：">
-        <st-search-radio v-model="query.type" :list="payStatus" />
+        <st-search-radio v-model="query.type" :options="payStatus" />
       </st-search-panel-item>
       <st-search-panel-item label="创建时间：">
         <st-range-picker

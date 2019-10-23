@@ -2,13 +2,13 @@
   <div :class="basic()">
     <st-search-panel @search="onSearchNative" @reset="onSearhReset">
       <st-search-panel-item label="会员卡类型：">
-        <st-search-radio v-model="query.card_type" :list="cardTypes" />
+        <st-search-radio v-model="query.card_type" :options="cardTypes" />
       </st-search-panel-item>
       <st-search-panel-item label="会员卡状态：">
-        <st-search-radio v-model="query.card_status" :list="cardStatus" />
+        <st-search-radio v-model="query.card_status" :options="cardStatus" />
       </st-search-panel-item>
       <st-search-panel-item label="开卡状态：">
-        <st-search-radio v-model="query.is_open" :list="isOpens" />
+        <st-search-radio v-model="query.is_open" :options="isOpens" />
       </st-search-panel-item>
 
       <div slot="more">

@@ -2,7 +2,10 @@
   <div :class="basic()">
     <st-search-panel @search="onSearchNative" @reset="onSearhReset">
       <st-search-panel-item label="课程状态：">
-        <st-search-radio v-model="query.course_status" :list="courseStatus" />
+        <st-search-radio
+          v-model="query.course_status"
+          :options="courseStatus"
+        />
       </st-search-panel-item>
       <st-search-panel-item label="购买时间：">
         <st-range-picker

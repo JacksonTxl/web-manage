@@ -2,7 +2,7 @@
   <div :class="basic()">
     <st-search-panel @search="onSearchNative" @reset="onSearhReset">
       <st-search-panel-item label="储值卡状态：">
-        <st-search-radio v-model="query.is_valid" :list="isValids" />
+        <st-search-radio v-model="query.is_valid" :options="isValids" />
       </st-search-panel-item>
       <st-search-panel-item label="购买时间：">
         <st-range-picker

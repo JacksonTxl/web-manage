@@ -9,7 +9,7 @@
     />
     <st-search-panel @search="onSearchNative" @reset="onSearhReset">
       <st-search-panel-item label="租赁状态：">
-        <st-search-radio v-model="query.lease_status" :list="leaseList" />
+        <st-search-radio v-model="query.lease_status" :options="leaseList" />
       </st-search-panel-item>
       <st-search-panel-item label="起租时间：">
         <st-range-picker

@@ -10,10 +10,13 @@
     <div slot="prepend">
       <st-search-panel @search="onSearchNative" @reset="onSearhReset">
         <st-search-panel-item label="用户级别：">
-          <st-search-radio v-model="query.member_level" :list="memberLevel" />
+          <st-search-radio
+            v-model="query.member_level"
+            :options="memberLevel"
+          />
         </st-search-panel-item>
         <st-search-panel-item label="来源方式：">
-          <st-search-radio v-model="query.register_way" :list="sourceList" />
+          <st-search-radio v-model="query.register_way" :options="sourceList" />
         </st-search-panel-item>
         <st-search-panel-item label="注册时间：">
           <st-range-picker
@@ -29,7 +32,7 @@
             ></st-range-picker>
           </st-search-panel-item>
           <st-search-panel-item label="员工跟进：">
-            <st-search-radio v-model="query.is_follow" :list="isFollow" />
+            <st-search-radio v-model="query.is_follow" :options="isFollow" />
           </st-search-panel-item>
         </div>
       </st-search-panel>

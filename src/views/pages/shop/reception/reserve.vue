@@ -13,7 +13,7 @@
           <st-search-radio
             class="value"
             v-model="query.reserve_type"
-            :list="reserveType$"
+            :options="reserveType$"
           />
         </st-search-panel-item>
         <st-search-panel-item label="预约时间：">
