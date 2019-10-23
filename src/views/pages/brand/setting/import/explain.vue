@@ -36,7 +36,7 @@
             导入员工
           </st-button>
         </div>
-        <p>员工基础信息，若员工数量较少，建议手动添加，无需导入。</p>
+        <p>若员工数量较少，建议手动添加，无需导入。</p>
       </div>
       <div :class="b('item-content')" class="mg-b16">
         <div class="item">
@@ -49,7 +49,7 @@
             导入商品
           </st-button>
         </div>
-        <p>售卖的卡课，若卡课数量较少，建议手动添加，无需导入。</p>
+        <p>若卡课数量较少，建议手动添加，无需导入。</p>
       </div>
 
       <div :class="b('item')">
