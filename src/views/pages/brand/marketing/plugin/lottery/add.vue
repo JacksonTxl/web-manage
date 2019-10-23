@@ -737,8 +737,8 @@ export default {
           activity_rule: res.activity_rule
         })
         this.dateRangeVal = [
-          moment(res.activity_base.start_time),
-          moment(res.activity_base.end_time)
+          moment(res.activity_base.start_time.trim()),
+          moment(res.activity_base.end_time.trim())
         ]
         this.prizeList = res.activity_prizes
         this.preview.startTime = res.activity_base.start_time
