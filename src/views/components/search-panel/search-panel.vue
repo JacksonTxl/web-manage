@@ -4,7 +4,7 @@
     <div class="st-search-panel__more" v-if="showMore">
       <slot name="more"></slot>
     </div>
-    <st-hr marginTop="24px" marginBottom="0"></st-hr>
+    <st-hr style="margin:24px 0 0 0;"></st-hr>
     <div :class="panel('button')">
       <div :class="panel('more-button')">
         <a

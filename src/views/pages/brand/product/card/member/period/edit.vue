@@ -28,17 +28,14 @@
       </st-button>
     </div>
 
-    <div>
+    <div class="page-content">
       <st-form :form="form" labelWidth="118px">
-        <a-row :gutter="8" class="page-content-card-line__row">
-          <a-col :lg="22">
-            <p class="page-content-card__card__name">
-              <st-tag type="period-card" />
-              <span>{{ cardInfo.card_name }}</span>
-            </p>
-          </a-col>
-        </a-row>
-        <st-hr />
+        <p class="page-content-card__card__name">
+          <st-tag type="period-card" />
+          <span>{{ cardInfo.card_name }}</span>
+        </p>
+
+        <st-hr style="margin:32px 0;" />
         <a-row :gutter="8">
           <a-col :lg="23">
             <st-form-item

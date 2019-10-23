@@ -120,7 +120,7 @@
           </st-info>
         </a-col>
       </a-row>
-      <st-hr marginTop="0" marginBottom="0" />
+      <st-hr style="margin:0" />
       <st-form :form="form" labelWidth="88px" enctype="multipart/form-data">
         <div :class="transfer('transfer')">
           <st-form-item

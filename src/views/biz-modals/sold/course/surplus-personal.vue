@@ -20,7 +20,7 @@
             {{ moment(courseData.end_time * 1000).format('YYYY-MM-DD HH:mm') }}
           </st-info-item>
         </st-info>
-        <st-hr marginTop="0" marginBottom="0"></st-hr>
+        <st-hr style="margin:0"></st-hr>
         <st-form-item label="修改课时" required class="mg-t24">
           <st-input-number
             v-decorator="decorators.times"

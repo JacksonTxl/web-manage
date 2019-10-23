@@ -23,26 +23,22 @@
       </st-button>
     </div>
 
-    <div>
+    <div class="page-content">
       <st-form :form="form" labelWidth="118px">
-        <a-row :gutter="8">
-          <a-col :lg="22">
-            <st-form-item
-              class="page-content-card-line"
-              label="期限卡名称"
-              required
-            >
-              <a-input
-                v-decorator="decorators.cardData.card_name"
-                maxlength="30"
-                class="page-content-card-input"
-                placeholder="请输入期限卡名称"
-                @change="syncName"
-              ></a-input>
-            </st-form-item>
-          </a-col>
-        </a-row>
-        <st-hr></st-hr>
+        <st-form-item
+          class="page-content-card-line"
+          label="期限卡名称"
+          required
+        >
+          <a-input
+            v-decorator="decorators.cardData.card_name"
+            maxlength="30"
+            class="page-content-card-input"
+            placeholder="请输入期限卡名称"
+            @change="syncName"
+          ></a-input>
+        </st-form-item>
+        <st-hr style="margin:32px 0;"></st-hr>
         <a-row :gutter="8">
           <a-col :lg="23">
             <st-form-item

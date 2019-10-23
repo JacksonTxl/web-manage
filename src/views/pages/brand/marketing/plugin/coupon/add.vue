@@ -31,6 +31,16 @@
       </div>
     </h5-container>
 
+    <div slot="actions">
+      <st-button
+        :loading="loading.addMarketingCoupon || loading.editMarketingCoupon"
+        type="primary"
+        @click="onSubmit"
+      >
+        保 存
+      </st-button>
+    </div>
+
     <div>
       <st-form :form="form" labelWidth="118px">
         <a-row :gutter="8">
@@ -212,21 +222,6 @@
                   </a-radio>
                 </a-form-item>
               </a-radio-group>
-            </st-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="8">
-          <a-col :lg="20">
-            <st-form-item class="page-content-card-submit" label=" ">
-              <st-button
-                :loading="
-                  loading.addMarketingCoupon || loading.editMarketingCoupon
-                "
-                type="primary"
-                @click="onSubmit"
-              >
-                保 存
-              </st-button>
             </st-form-item>
           </a-col>
         </a-row>

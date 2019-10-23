@@ -1,6 +1,6 @@
 <template>
   <st-mina-panel>
-    <h5-container fixed slot="preview">
+    <h5-container slot="preview" fixed>
       <template v-slot:title>
         幸运大转盘
       </template>
