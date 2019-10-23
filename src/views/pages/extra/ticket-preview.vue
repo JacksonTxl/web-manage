@@ -33,7 +33,8 @@
         <span class="mg-b8">消费类型:</span>
         <span>{{ info.consume_type }}</span>
       </div>
-      <div>
+      <div :class="b('section-item')">
+        <!-- <span class="mg-b8">剩余课时/总课时:</span> -->
         <span class="mg-b8">剩余额度/总额度:</span>
         <span>{{ info.amount_num }}</span>
       </div>
@@ -49,13 +50,13 @@
       </div>
     </div>
     <div :class="b('section')">
-      <span>会员签字:</span>
+      <div class="mg-t24">会员签字:</div>
     </div>
     <div :class="b('section')">
-      <span>会员签字:</span>
+      <div class="mg-t24">教练签字:</div>
     </div>
     <div :class="b('section')">
-      <span>会员签字:</span>
+      <div class="mg-t24">前台签字:</div>
     </div>
   </div>
 </template>
