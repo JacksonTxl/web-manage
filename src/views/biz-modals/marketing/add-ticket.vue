@@ -191,7 +191,6 @@ export default {
         buy_end_time,
         ticket_remark
       }
-      console.log(form)
       return form
     },
     getShowData(values) {
@@ -209,7 +208,6 @@ export default {
       const crowd_name = this.getCrowdName(crowd_id)
       let buy_start_time = ''
       let buy_end_time = ''
-      debugger
       if (buy_time_limit === 1) {
         buy_start_time = buy_time[0].format('YYYY-MM-DD HH:mm')
         buy_end_time = buy_time[1].format('YYYY-MM-DD HH:mm')

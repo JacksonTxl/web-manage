@@ -81,7 +81,6 @@ export default {
   },
   created() {
     if (this.type === this.POSTER.COUPON_TYPE) {
-      debugger
       this.sharePosterService
         .getSharePosterInfo(this.activity_id)
         .subscribe(res => {
