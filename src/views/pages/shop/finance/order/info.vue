@@ -78,7 +78,12 @@
         </a-col>
       </a-row>
     </st-panel>
-    <st-panel initial class="mg-t12" :tabs="tabs">
+    <st-panel
+      initial
+      class="mg-t12"
+      :class="basic('panel-bottom')"
+      :tabs="tabs"
+    >
       <router-view></router-view>
     </st-panel>
   </section>

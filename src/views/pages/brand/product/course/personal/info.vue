@@ -102,7 +102,7 @@
               page-mode="client"
             >
               <div slot="min_sell_price" slot-scope="min_sell_price, record">
-                <span v-if="record.min_sell_price !== '0.0'">
+                <span v-if="saleModel">
                   {{ record.min_sell_price }} ~ {{ record.max_sell_price }}
                 </span>
                 <span v-else>
@@ -185,6 +185,9 @@ export default {
     },
     image() {
       return this.personalCourseInfo.image.image_key
+    },
+    saleModel() {
+      return this.personalCourseInfo.sale_model === 1 // 教练谈单
     }
   },
   data() {

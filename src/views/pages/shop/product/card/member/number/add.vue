@@ -1,366 +1,353 @@
 <template>
-  <st-panel app class="page-shop-basic-card page-shop-add-number-card" initial>
-    <div class="page-shop-basic-card-body">
-      <div class="page-preview">
-        <h5-container>
-          <template v-slot:title>
-            购卡
-          </template>
-          <template v-slot:default>
-            <member-card
-              :data="h5CardInfo"
-              :cardType="MEMBER_CARD.NUMBER_CARD"
-            ></member-card>
-          </template>
-        </h5-container>
-      </div>
-      <div class="page-content">
-        <st-form :form="form" labelWidth="118px">
-          <a-row :gutter="8" class="page-content-card-line__row">
-            <a-col :lg="22">
-              <st-form-item
-                class="page-content-card-line"
-                label="次卡名称"
-                required
+  <st-mina-panel class="page-shop-basic-card page-shop-add-number-card">
+    <h5-container slot="preview" fixed>
+      <template v-slot:title>
+        购卡
+      </template>
+      <template v-slot:default>
+        <member-card
+          :data="h5CardInfo"
+          :cardType="MEMBER_CARD.NUMBER_CARD"
+        ></member-card>
+      </template>
+    </h5-container>
+
+    <div slot="actions">
+      <st-button
+        :loading="addLoading.addCard"
+        type="primary"
+        @click="onHandleSubmit"
+      >
+        保 存
+      </st-button>
+    </div>
+
+    <div class="page-content">
+      <st-form :form="form" labelWidth="118px">
+        <st-form-item class="page-content-card-line" label="次卡名称" required>
+          <a-input
+            v-decorator="decorators.card_name"
+            maxlength="30"
+            class="page-content-card-input"
+            placeholder="请输入次卡名称"
+            @change="syncName"
+          ></a-input>
+        </st-form-item>
+        <st-hr class="mg-y32" />
+        <a-row :gutter="8">
+          <a-col :lg="23">
+            <st-form-item class="mg-b16" label="支持入场门店">
+              {{ shopName.name }}
+            </st-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="8">
+          <a-col :lg="23">
+            <st-form-item
+              class="page-content-card-price-setting"
+              label="价格设置"
+              required
+              :help="rallyPriceValidText"
+            >
+              <div
+                class="page-price-setting-set"
+                :class="{
+                  'page-price-setting-set-error':
+                    priceValidateStatus === 'error'
+                }"
               >
-                <a-input
-                  v-decorator="decorators.card_name"
-                  maxlength="30"
-                  class="page-content-card-input"
-                  placeholder="请输入次卡名称"
-                  @change="syncName"
-                ></a-input>
-              </st-form-item>
-            </a-col>
-          </a-row>
-          <a-row :gutter="8">
-            <a-col :lg="23">
-              <st-form-item class="mg-b16" label="支持入场门店">
-                {{ shopName.name }}
-              </st-form-item>
-            </a-col>
-          </a-row>
-          <a-row :gutter="8">
-            <a-col :lg="23">
-              <st-form-item
-                class="page-content-card-price-setting"
-                label="价格设置"
-                required
-                :help="rallyPriceValidText"
-              >
-                <div
-                  class="page-price-setting-set"
-                  :class="{
-                    'page-price-setting-set-error':
-                      priceValidateStatus === 'error'
-                  }"
-                >
-                  <st-form-table>
-                    <colgroup>
-                      <col style="width:18%;" />
-                      <col style="width:18%;" />
-                      <col style="width:18%;" />
-                      <col style="width:18%;" />
-                      <col style="width:18%;" />
-                      <col style="width:10%;" />
-                    </colgroup>
-                    <thead>
-                      <tr>
-                        <th>入场次数</th>
-                        <th>售价</th>
-                        <th>有效期</th>
-                        <th class="white-nowrap">允许冻结天数</th>
-                        <th>赠送上限</th>
-                        <th>操作</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td colspan="6" class="pd-y0 pd-x0">
-                          <st-button
-                            :disabled="rallyPriceList.length > 3"
-                            type="dashed"
-                            icon="add"
-                            class="page-price-setting-set__add"
-                            block
-                            @click="price_add"
-                          >
-                            添加定价规格（{{ rallyPriceList.length }}/4）
-                          </st-button>
-                        </td>
-                      </tr>
-                      <tr
-                        v-for="(item, index) in rallyPriceList"
-                        :key="`${index}brand`"
-                      >
-                        <td>
-                          <st-input-number
-                            :min="1"
-                            :max="99999"
-                            @change="
-                              e =>
-                                brandPriceSettingHandleChange({
-                                  value: e,
-                                  key: index,
-                                  col: 'validity_times'
-                                })
-                            "
-                          >
-                            <span slot="addonAfter">次</span>
-                          </st-input-number>
-                        </td>
-                        <td>
-                          <st-input-number
-                            :float="true"
-                            :min="0"
-                            :max="999999.9"
-                            @change="
-                              e =>
-                                brandPriceSettingHandleChange({
-                                  value: e,
-                                  key: index,
-                                  col: 'rally_price'
-                                })
-                            "
-                          >
-                            <span slot="addonAfter">元</span>
-                          </st-input-number>
-                        </td>
-                        <td>
-                          <st-input-number
-                            :min="1"
-                            :max="99999"
-                            :value="item.time.num"
+                <st-form-table>
+                  <colgroup>
+                    <col style="width:18%;" />
+                    <col style="width:18%;" />
+                    <col style="width:18%;" />
+                    <col style="width:18%;" />
+                    <col style="width:18%;" />
+                    <col style="width:10%;" />
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th>入场次数</th>
+                      <th>售价</th>
+                      <th>有效期</th>
+                      <th class="white-nowrap">允许冻结天数</th>
+                      <th>赠送上限</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td colspan="6" class="pd-y0 pd-x0">
+                        <st-button
+                          :disabled="rallyPriceList.length > 3"
+                          type="dashed"
+                          icon="add"
+                          class="page-price-setting-set__add"
+                          block
+                          @click="price_add"
+                        >
+                          添加定价规格（{{ rallyPriceList.length }}/4）
+                        </st-button>
+                      </td>
+                    </tr>
+                    <tr
+                      v-for="(item, index) in rallyPriceList"
+                      :key="`${index}brand`"
+                    >
+                      <td>
+                        <st-input-number
+                          :min="1"
+                          :max="99999"
+                          @change="
+                            e =>
+                              brandPriceSettingHandleChange({
+                                value: e,
+                                key: index,
+                                col: 'validity_times'
+                              })
+                          "
+                        >
+                          <span slot="addonAfter">次</span>
+                        </st-input-number>
+                      </td>
+                      <td>
+                        <st-input-number
+                          :float="true"
+                          :min="0"
+                          :max="999999.9"
+                          @change="
+                            e =>
+                              brandPriceSettingHandleChange({
+                                value: e,
+                                key: index,
+                                col: 'rally_price'
+                              })
+                          "
+                        >
+                          <span slot="addonAfter">元</span>
+                        </st-input-number>
+                      </td>
+                      <td>
+                        <st-input-number
+                          :min="1"
+                          :max="99999"
+                          :value="item.time.num"
+                          @change="
+                            e =>
+                              brandPriceSettingHandleChange({
+                                value: e,
+                                key: index,
+                                col: 'time',
+                                prop: 'num'
+                              })
+                          "
+                        >
+                          <a-select
+                            slot="addonAfter"
+                            :value="item.time.unit"
                             @change="
                               e =>
                                 brandPriceSettingHandleChange({
                                   value: e,
                                   key: index,
                                   col: 'time',
-                                  prop: 'num'
+                                  prop: 'unit'
                                 })
                             "
                           >
-                            <a-select
-                              slot="addonAfter"
-                              :value="item.time.unit"
-                              @change="
-                                e =>
-                                  brandPriceSettingHandleChange({
-                                    value: e,
-                                    key: index,
-                                    col: 'time',
-                                    prop: 'unit'
-                                  })
-                              "
+                            <a-select-option
+                              v-for="(item, index) in unit_list"
+                              :value="item.value"
+                              :key="index"
                             >
-                              <a-select-option
-                                v-for="(item, index) in unit_list"
-                                :value="item.value"
-                                :key="index"
-                              >
-                                {{ item.label }}
-                              </a-select-option>
-                            </a-select>
-                          </st-input-number>
-                        </td>
-                        <td>
-                          <st-input-number
-                            :min="1"
-                            :max="99999"
-                            @change="
-                              e =>
-                                brandPriceSettingHandleChange({
-                                  value: e,
-                                  key: index,
-                                  col: 'frozen_day'
-                                })
-                            "
-                          >
-                            <span slot="addonAfter">天</span>
-                          </st-input-number>
-                        </td>
-                        <td>
-                          <st-input-number
-                            :min="1"
-                            :max="99999"
-                            @change="
-                              e =>
-                                brandPriceSettingHandleChange({
-                                  value: e,
-                                  key: index,
-                                  col: 'gift_unit'
-                                })
-                            "
-                          >
-                            <span slot="addonAfter">次</span>
-                          </st-input-number>
-                        </td>
-                        <td>
-                          <a @click="price_delete(index)">删除</a>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </st-form-table>
-                </div>
-              </st-form-item>
-            </a-col>
-          </a-row>
-          <a-row :gutter="8">
-            <a-col :lg="20">
-              <st-form-item class="page-content-card-time" required>
-                <span slot="label">
-                  支持售卖时间
-                  <a-popover
-                    trigger="hover"
-                    placement="bottomRight"
-                    arrowPointAtCenter
-                  >
-                    <div slot="content">
-                      设置此会员卡可售卖的时间范围
-                    </div>
-                    <a-icon
-                      class="page-content-card-time__icon"
-                      type="info-circle"
-                    ></a-icon>
-                  </a-popover>
-                </span>
-                <a-form-item class="page-a-form">
-                  <a-date-picker
-                    :disabledDate="disabledStartDate"
-                    v-decorator="decorators.start_time"
-                    format="YYYY-MM-DD"
-                    placeholder="开始时间"
-                    :showToday="false"
-                    @openChange="handleStartOpenChange"
-                    @change="start_time_change"
-                  />
-                </a-form-item>
-                &nbsp;~&nbsp;
-                <a-form-item class="page-a-form">
-                  <a-date-picker
-                    :disabledDate="disabledEndDate"
-                    v-decorator="decorators.end_time"
-                    format="YYYY-MM-DD"
-                    placeholder="结束时间"
-                    :showToday="false"
-                    :open="endOpen"
-                    @openChange="handleEndOpenChange"
-                    @change="end_time_change"
-                  />
-                </a-form-item>
-              </st-form-item>
-            </a-col>
-          </a-row>
-          <a-row :gutter="8">
-            <a-col :lg="20">
-              <st-form-item class="page-content-card-transfer" label="转让设置">
-                <div class="page-content-card-transfer-body">
-                  <a-checkbox class="page-checkbox" @change="transfer">
-                    支持转让
-                  </a-checkbox>
-                  <st-input-number
-                    v-decorator="decorators.transferNum"
-                    class="page-input-group page-content-card-num-input"
-                    :float="transferUnit === UNIT.RMB"
-                    @change="transfter_change"
-                    :disabled="!is_transfer"
-                    :min="transferMin"
-                    :max="transferMax"
-                  >
-                    <a-select
-                      slot="addonAfter"
-                      v-model="transferUnit"
-                      :disabled="!is_transfer"
-                    >
-                      <a-select-option
-                        v-for="item in unit"
-                        :key="item.value"
-                        :value="item.value"
-                      >
-                        {{ item.label }}
-                      </a-select-option>
-                    </a-select>
-                  </st-input-number>
-                </div>
-              </st-form-item>
-            </a-col>
-          </a-row>
-          <a-row :gutter="8">
-            <a-col :lg="20">
-              <st-form-item
-                class="page-content-card-sell-type"
-                label="售卖方式"
-                required
-              >
-                <a-checkbox-group v-model="sell_type">
-                  <a-checkbox
-                    v-for="item in sellTypeList"
-                    :key="item.value"
-                    :value="item.value"
-                  >
-                    {{ item.label }}
-                  </a-checkbox>
-                </a-checkbox-group>
-              </st-form-item>
-            </a-col>
-          </a-row>
-          <a-row :gutter="8">
-            <a-col :lg="20">
-              <st-form-item
-                class="page-content-card-bg"
-                label="卡背景"
-                required
-                :help="cardBgValidatorText"
-              >
-                <card-bg-radio @change="onCardBgChange" v-model="cardBg" />
-              </st-form-item>
-            </a-col>
-          </a-row>
-          <a-row :gutter="8">
-            <a-col :lg="22">
-              <st-form-item
-                class="page-content-card-introduction "
-                label="会员卡介绍"
-              >
-                <st-textarea
-                  v-model="cardIntroduction"
-                  maxlength="500"
-                  class="page-content-card-textarea"
-                  placeholder="请输入"
-                />
-              </st-form-item>
-            </a-col>
-          </a-row>
-          <a-row :gutter="8">
-            <a-col :lg="22">
-              <st-form-item class="page-content-card-contents " label="备注">
-                <st-textarea
-                  v-model="cardContents"
-                  maxlength="500"
-                  class="page-content-card-textarea"
-                  placeholder="请输入"
-                />
-              </st-form-item>
-            </a-col>
-          </a-row>
-          <a-row :gutter="8">
-            <a-col :lg="20">
-              <st-form-item class="page-content-card-submit" label=" ">
-                <st-button
-                  :loading="addLoading.addCard"
-                  type="primary"
-                  @click="onHandleSubmit"
+                              {{ item.label }}
+                            </a-select-option>
+                          </a-select>
+                        </st-input-number>
+                      </td>
+                      <td>
+                        <st-input-number
+                          :min="1"
+                          :max="99999"
+                          @change="
+                            e =>
+                              brandPriceSettingHandleChange({
+                                value: e,
+                                key: index,
+                                col: 'frozen_day'
+                              })
+                          "
+                        >
+                          <span slot="addonAfter">天</span>
+                        </st-input-number>
+                      </td>
+                      <td>
+                        <st-input-number
+                          :min="1"
+                          :max="99999"
+                          @change="
+                            e =>
+                              brandPriceSettingHandleChange({
+                                value: e,
+                                key: index,
+                                col: 'gift_unit'
+                              })
+                          "
+                        >
+                          <span slot="addonAfter">次</span>
+                        </st-input-number>
+                      </td>
+                      <td>
+                        <a @click="price_delete(index)">删除</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </st-form-table>
+              </div>
+            </st-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="8">
+          <a-col :lg="20">
+            <st-form-item class="page-content-card-time" required>
+              <span slot="label">
+                支持售卖时间
+                <a-popover
+                  trigger="hover"
+                  placement="bottomRight"
+                  arrowPointAtCenter
                 >
-                  保 存
-                </st-button>
-              </st-form-item>
-            </a-col>
-          </a-row>
-        </st-form>
-      </div>
+                  <div slot="content">
+                    设置此会员卡可售卖的时间范围
+                  </div>
+                  <a-icon
+                    class="page-content-card-time__icon"
+                    type="info-circle"
+                  ></a-icon>
+                </a-popover>
+              </span>
+              <a-form-item class="page-a-form">
+                <a-date-picker
+                  :disabledDate="disabledStartDate"
+                  v-decorator="decorators.start_time"
+                  format="YYYY-MM-DD"
+                  placeholder="开始时间"
+                  :showToday="false"
+                  @openChange="handleStartOpenChange"
+                  @change="start_time_change"
+                />
+              </a-form-item>
+              &nbsp;~&nbsp;
+              <a-form-item class="page-a-form">
+                <a-date-picker
+                  :disabledDate="disabledEndDate"
+                  v-decorator="decorators.end_time"
+                  format="YYYY-MM-DD"
+                  placeholder="结束时间"
+                  :showToday="false"
+                  :open="endOpen"
+                  @openChange="handleEndOpenChange"
+                  @change="end_time_change"
+                />
+              </a-form-item>
+            </st-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="8">
+          <a-col :lg="20">
+            <st-form-item class="page-content-card-transfer" label="转让设置">
+              <div class="page-content-card-transfer-body">
+                <a-checkbox class="page-checkbox" @change="transfer">
+                  支持转让
+                </a-checkbox>
+                <st-input-number
+                  v-decorator="decorators.transferNum"
+                  class="page-input-group page-content-card-num-input"
+                  :float="transferUnit === UNIT.RMB"
+                  @change="transfter_change"
+                  :disabled="!is_transfer"
+                  :min="transferMin"
+                  :max="transferMax"
+                >
+                  <a-select
+                    slot="addonAfter"
+                    v-model="transferUnit"
+                    :disabled="!is_transfer"
+                  >
+                    <a-select-option
+                      v-for="item in unit"
+                      :key="item.value"
+                      :value="item.value"
+                    >
+                      {{ item.label }}
+                    </a-select-option>
+                  </a-select>
+                </st-input-number>
+              </div>
+            </st-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="8">
+          <a-col :lg="20">
+            <st-form-item
+              class="page-content-card-sell-type"
+              label="售卖方式"
+              required
+            >
+              <a-checkbox-group v-model="sell_type">
+                <a-checkbox
+                  v-for="item in sellTypeList"
+                  :key="item.value"
+                  :value="item.value"
+                >
+                  {{ item.label }}
+                </a-checkbox>
+              </a-checkbox-group>
+            </st-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="8">
+          <a-col :lg="20">
+            <st-form-item
+              class="page-content-card-bg"
+              label="卡背景"
+              required
+              :help="cardBgValidatorText"
+            >
+              <card-bg-radio @change="onCardBgChange" v-model="cardBg" />
+            </st-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="8">
+          <a-col :lg="22">
+            <st-form-item
+              class="page-content-card-introduction "
+              label="会员卡介绍"
+            >
+              <st-textarea
+                v-model="cardIntroduction"
+                maxlength="500"
+                class="page-content-card-textarea"
+                placeholder="请输入"
+              />
+            </st-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="8">
+          <a-col :lg="22">
+            <st-form-item class="page-content-card-contents " label="备注">
+              <st-textarea
+                v-model="cardContents"
+                maxlength="500"
+                class="page-content-card-textarea"
+                placeholder="请输入"
+              />
+            </st-form-item>
+          </a-col>
+        </a-row>
+      </st-form>
     </div>
-  </st-panel>
+  </st-mina-panel>
 </template>
 <script>
 import { UserService } from '@/services/user.service'

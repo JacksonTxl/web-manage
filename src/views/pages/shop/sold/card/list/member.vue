@@ -1,36 +1,23 @@
 <template>
   <div :class="basic()">
-    <st-search-panel>
-      <div :class="basic('select')" class="mg-t24">
-        <span :class="basic('select-text')">会员卡类型：</span>
+    <st-search-panel @search="onSearchNative" @reset="onSearhReset">
+      <st-search-panel-item label="会员卡类型：">
         <st-search-radio v-model="query.card_type" :list="cardTypes" />
-      </div>
-      <div :class="basic('select')">
-        <span :class="basic('select-text')">会员卡状态：</span>
+      </st-search-panel-item>
+      <st-search-panel-item label="会员卡状态：">
         <st-search-radio v-model="query.card_status" :list="cardStatus" />
-      </div>
-      <div :class="basic('select')">
-        <span :class="basic('select-text')">开卡状态：</span>
+      </st-search-panel-item>
+      <st-search-panel-item label="开卡状态：">
         <st-search-radio v-model="query.is_open" :list="isOpens" />
-      </div>
+      </st-search-panel-item>
+
       <div slot="more">
-        <div :class="basic('select')">
-          <span :class="basic('select-text')">开卡时间：</span>
+        <st-search-panel-item label="开卡时间：">
           <st-range-picker
             :disabledDays="180"
             :value="selectTime"
           ></st-range-picker>
-        </div>
-      </div>
-      <div slot="button">
-        <st-button
-          type="primary"
-          @click="onSearchNative"
-          :loading="loading.getList"
-        >
-          查询
-        </st-button>
-        <st-button class="mg-l8" @click="onSearhReset">重置</st-button>
+        </st-search-panel-item>
       </div>
     </st-search-panel>
     <div :class="basic('content')">
@@ -59,6 +46,7 @@
       <div :class="basic('table')">
         <st-table
           :page="page"
+          :loading="loading.getList"
           :alertSelection="{ onReset: onClear }"
           :rowSelection="{
             selectedRowKeys: selectedRowKeys,
@@ -284,7 +272,7 @@ export default {
         ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00:00`
         : ''
       this.query.end_time = this.selectTime.endTime.value
-        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 00:00:00`
+        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59:59`
         : ''
       this.onSearch()
     },

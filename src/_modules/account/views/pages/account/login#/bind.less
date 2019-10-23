@@ -1,0 +1,64 @@
+.page-login-bind {
+  margin-top: -60px;
+  .head {
+    &__title {
+      height: 22px;
+      font-size: 16px;
+      font-weight: 500;
+      color: rgba(37, 42, 46, 1);
+      line-height: 22px;
+    }
+    &__desc {
+      height: 20px;
+      color: rgba(155, 172, 185, 1);
+      line-height: 20px;
+      margin: 8px 0 24px 0;
+    }
+  }
+  &__captcha {
+    position: relative;
+    &-input {
+      padding-right: 98px;
+    }
+    &-button {
+      position: absolute;
+      .fz(14px);
+      .lh(24px);
+      .c(@primary-color);
+      cursor: pointer;
+      top: 50%;
+      padding: 0 14px;
+      transform: translateY(-50%);
+      right: 0;
+    }
+  }
+  &__button {
+    font-size: 12px;
+  }
+  &__pass {
+    margin-bottom: 9px;
+    .ant-form-item-children label {
+      .fz(12px);
+    }
+    .fz(12px);
+    &-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      line-height: 17px;
+      font-size: 12px;
+      height: 17px;
+    }
+  }
+  &__login-button {
+    border-radius: 20px;
+    > span {
+      .fz(14px);
+      font-weight: 500;
+      .lh(20px);
+    }
+  }
+  .ant-input-lg {
+    .fz(14px);
+  }
+}

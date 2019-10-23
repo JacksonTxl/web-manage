@@ -1,35 +1,22 @@
 <template>
   <st-panel app initial :class="basic()">
-    <div slot="title">
-      <st-input-search
-        placeholder="请输入租赁柜名、会员姓名或手机号查找"
-        v-model="query.search"
-        @search="onSearchNative"
-        :class="basic('search')"
-      />
-    </div>
-    <st-search-panel>
-      <div :class="basic('select')">
-        <span :class="basic('select-text')">租赁状态：</span>
+    <st-input-search
+      slot="title"
+      placeholder="请输入租赁柜名、会员姓名或手机号查找"
+      v-model="query.search"
+      @search="onKeywordsSearch('search', $event)"
+      :class="basic('search')"
+    />
+    <st-search-panel @search="onSearchNative" @reset="onSearhReset">
+      <st-search-panel-item label="租赁状态：">
         <st-search-radio v-model="query.lease_status" :list="leaseList" />
-      </div>
-      <div :class="basic('select')">
-        <span :class="basic('select-text')">起租时间：</span>
+      </st-search-panel-item>
+      <st-search-panel-item label="起租时间：">
         <st-range-picker
           :disabledDays="180"
           :value="selectTime"
         ></st-range-picker>
-      </div>
-      <div slot="button">
-        <st-button
-          type="primary"
-          @click="onSearchNative"
-          :loading="loading.getList"
-        >
-          查询
-        </st-button>
-        <st-button class="mg-l8" @click="onSearhReset">重置</st-button>
-      </div>
+      </st-search-panel-item>
     </st-search-panel>
 
     <div :class="basic('content')">
@@ -39,6 +26,7 @@
       </div>
       <st-table
         :page="page"
+        :loading="loading.getList"
         :scroll="{ x: 1600 }"
         rowKey="sold_cabinet_id"
         :columns="columns"
@@ -182,7 +170,7 @@ export default {
         ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00:00`
         : ''
       this.query.end_time = this.selectTime.endTime.value
-        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 00:00:00`
+        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59:59`
         : ''
       this.onSearch()
     },

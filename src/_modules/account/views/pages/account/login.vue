@@ -1,29 +1,30 @@
 <template>
   <div class="page-login-wapper">
+    <img src="~@/assets/img/logo.png" alt="三体云动" class="page-login-logo" />
     <div class="page-login-ch-en">
       <!-- <span class="mg-r24 active">中文</span>
       <span class="mg-r24">English</span> -->
     </div>
     <div class="page-login">
       <!-- 密码/二维码 -->
-      <!-- <i class="page-switch-login-type cursor-pointer" :class="{'qrcode-login':this.loginType==='qrcode'}" @click="switchLoginType" v-if="switchLoginTypeIsShow"></i> -->
-      <i
+      <!-- <i
         class="page-switch-login-type cursor-pointer"
         :class="{ 'qrcode-login': this.loginType === 'qrcode' }"
+        @click="switchLoginType"
         v-if="switchLoginTypeIsShow"
+      ></i> -->
+      <i
+        class="cursor-pointer"
+        :class="{
+          'qrcode-login': this.loginType === 'qrcode',
+          'page-switch-login-type': this.loginType !== 'bind',
+          'page-switch-bind': this.loginType === 'bind'
+        }"
+        v-if="switchLoginTypeIsShow"
+        @click="bindBackLogin"
       ></i>
       <section class="lf">
         <div class="lf-bg"></div>
-        <footer>
-          <!-- <ul class="lf-help mg-b8">
-            <li class="item"><a href="">帮助</a></li>
-            <li class="item"><a href="">隐私</a></li>
-            <li class="item"><a href="">条款</a></li>
-          </ul> -->
-          <p class="lf-copyright">
-            版权所有&nbsp;©&nbsp;三体云动&nbsp;三体云智能科技有限公司
-          </p>
-        </footer>
       </section>
       <section class="rt">
         <div
@@ -48,7 +49,15 @@
             @login="onLogin"
             v-if="loginType === 'user'"
           ></login-user>
-          <login-mobile v-if="loginType === 'mobile'"></login-mobile>
+          <login-mobile
+            v-if="loginType === 'mobile'"
+            @bind="onBind"
+            :value="countryInfo"
+          ></login-mobile>
+        </div>
+
+        <div v-if="loginType === 'bind'">
+          <login-bind :value="countryInfo" @click="onClickBind"></login-bind>
         </div>
 
         <div
@@ -79,6 +88,14 @@
         </div> -->
       </section>
     </div>
+    <div class="page-login-footer">
+      <p class="page-login-footer__text">
+        三体云智能&nbsp;·&nbsp;用智能让世界更健康
+      </p>
+      <p class="page-login-footer__text page-login-footer__copyright">
+        copyright&nbsp;©&nbsp;2015-2019&nbsp;三体云智能科技有限公司
+      </p>
+    </div>
   </div>
 </template>
 
@@ -88,6 +105,7 @@ import { AuthService } from '@/services/auth.service'
 import { LoginService } from './login.service'
 import mobile from './login#/mobile'
 import user from './login#/user'
+import bind from './login#/bind'
 import { NoCaptchaService } from '@/services/no-captcha.service'
 import { throwError } from 'rxjs'
 
@@ -115,23 +133,31 @@ export default {
         { key: 'emailfind', name: '邮件找回' }
       ],
       loginTypes: [
-        { key: 'user', name: '用户密码登录' }
-        // { key: 'mobile', name: '手机动态密码登录' }
-      ]
+        { key: 'user', name: '用户密码登录' },
+        { key: 'mobile', name: '手机动态密码登录' }
+      ],
+      countryInfo: {}
     }
   },
   components: {
     LoginMobile: mobile,
+    LoginBind: bind,
     LoginUser: user
   },
   rxState() {
     return {
+      isBind: this.loginService.isBind$,
       loading: this.loginService.loading$
+    }
+  },
+  mounted() {
+    if (this.isBind) {
+      this.loginType = 'bind'
     }
   },
   computed: {
     switchLoginTypeIsShow() {
-      let types = ['user', 'mobile', 'qrcode']
+      let types = ['user', 'mobile', 'qrcode', 'bind']
       return types.includes(this.loginType)
     }
   },
@@ -147,6 +173,11 @@ export default {
     },
     onClickBack() {
       this.loginType = 'user'
+    },
+    bindBackLogin() {
+      if (this.loginType === 'bind') {
+        this.loginType = 'mobile'
+      }
     },
     onLogin(params) {
       params.nvc_val = window.getNVCVal()
@@ -167,6 +198,16 @@ export default {
     // 切换登录方式
     switchLoginType() {
       this.loginType = this.loginType === 'qrcode' ? 'user' : 'qrcode'
+    },
+    onBind(event) {
+      this.loginType = 'bind'
+      this.countryInfo = event
+    },
+    onClickBind(params) {
+      this.loginService.bindPhoneForAccount(params).subscribe(res => {
+        this.countryInfo = {}
+        location.href = '/'
+      })
     }
   }
 }

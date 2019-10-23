@@ -4,7 +4,7 @@
     <div class="st-search-panel__more" v-if="showMore">
       <slot name="more"></slot>
     </div>
-    <st-hr marginTop="24px" marginBottom="0"></st-hr>
+    <st-hr style="margin:24px 0 0 0;"></st-hr>
     <div :class="panel('button')">
       <div :class="panel('more-button')">
         <a
@@ -23,7 +23,9 @@
       </div>
       <div :class="panel('search-button')">
         <slot name="button">
-          <st-button type="primary" @click="onSearch">查询</st-button>
+          <st-button :loading="searchLoading" type="primary" @click="onSearch">
+            查询
+          </st-button>
           <st-button class="mg-l8" @click="onReset">重置</st-button>
         </slot>
       </div>
@@ -35,6 +37,12 @@ export default {
   name: 'StSearchPanel',
   bem: {
     panel: 'st-search-panel'
+  },
+  props: {
+    searchLoading: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {

@@ -1,30 +1,18 @@
 <template>
   <div :class="basic()">
-    <st-search-panel>
-      <div :class="basic('select')">
-        <span :class="basic('select-text')">储值卡状态：</span>
+    <st-search-panel @search="onSearchNative" @reset="onSearhReset">
+      <st-search-panel-item label="储值卡状态：">
         <st-search-radio v-model="query.is_valid" :list="isValids" />
-      </div>
-      <div :class="basic('select')">
-        <span :class="basic('select-text')">购买时间：</span>
+      </st-search-panel-item>
+      <st-search-panel-item label="购买时间：">
         <st-range-picker
           :disabledDays="180"
           :value="selectTime"
         ></st-range-picker>
-      </div>
-      <div slot="button">
-        <st-button
-          type="primary"
-          @click="onSearchNative"
-          :loading="loading.getList"
-        >
-          查询
-        </st-button>
-        <st-button class="mg-l8" @click="onSearhReset">重置</st-button>
-      </div>
+      </st-search-panel-item>
     </st-search-panel>
     <div :class="basic('content')">
-      <div :class="basic('content-batch')" class="mg-b16">
+      <div :class="basic('content-batch')">
         <!-- NOTE: 导出 -->
         <!-- <st-button type="primary" class="mg-r8" v-if="auth.export">批量导出</st-button> -->
       </div>
@@ -38,6 +26,7 @@
           :page="page"
           rowKey="id"
           @change="onTableChange"
+          :loading="loading.getList"
           :columns="columns"
           :dataSource="list"
           :scroll="{ x: 1800 }"
@@ -215,7 +204,7 @@ export default {
         ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00:00`
         : ''
       this.query.end_time = this.selectTime.endTime.value
-        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 00:00:00`
+        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59:59`
         : ''
       this.onSearch()
     },

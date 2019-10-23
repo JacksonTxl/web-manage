@@ -2,52 +2,36 @@
   <div :class="mobile()">
     <st-form :form="form" @submit.prevent="login" :class="mobile('form')">
       <st-form-item :class="mobile('phone')">
-        <a-input
-          size="large"
-          :class="mobile('phone-input')"
+        <input-phone
+          v-decorator="decorators.country_phone"
           placeholder="请输入手机号码"
-          v-decorator="rules.phone"
-        />
-        <a-dropdown :class="mobile('phone-dropdown')">
-          <span class="cursor-pointer">
-            +86
-            <a-icon type="down" />
-          </span>
-          <!-- <a-menu slot="overlay">
-            <a-menu-item>
-              <a href="javascript:;">+86</a>
-            </a-menu-item>
-            <a-menu-item>
-              <a href="javascript:;">+86</a>
-            </a-menu-item>
-            <a-menu-item>
-              <a href="javascript:;">+86</a>
-            </a-menu-item>
-          </a-menu> -->
-        </a-dropdown>
+          @change="onChangePhone"
+        ></input-phone>
+        <p v-if="!isBind" :class="mobile('phone-tip')">
+          当前手机号未绑定账户，
+          <a @click="goBind">去绑定</a>
+        </p>
       </st-form-item>
       <st-form-item class="mg-b0">
-        <no-captcha></no-captcha>
+        <no-captcha id="phone-login"></no-captcha>
       </st-form-item>
-      <!-- <st-form-item class="mg-b0">
-        <no-captcha id="no-captcha-2"/>
-      </st-form-item> -->
-      <st-form-item :class="mobile('captcha')">
-        <a-input
-          size="large"
-          :class="mobile('captcha-input')"
+      <st-form-item :class="mobile('captcha')" class="mg-b12">
+        <input-phone-code
+          v-decorator="decorators.captcha"
+          @click="onClickCaptcha"
           placeholder="请输入验证码"
-          v-decorator="rules.captcha"
-        />
-        <span :class="mobile('captcha-button')" @click="onClickCaptcha">
-          {{ buttonText }}
-        </span>
+          :isCountTime="isCountTime"
+          @endCount="endCount"
+        ></input-phone-code>
       </st-form-item>
-      <!-- <st-form-item :class="mobile('pass')" class="mg-b16">
+      <st-form-item :class="mobile('pass')" class="mg-b16">
         <div :class="mobile('pass-content')">
-          <a-checkbox>我已阅读并同意<a href="./agreement" target="_blank">《用户注册协议》</a></a-checkbox>
+          <a-checkbox v-decorator="decorators.isAgree">
+            我已阅读并同意
+            <a @click="clickAgreement">《用户服务协议》</a>
+          </a-checkbox>
         </div>
-      </st-form-item> -->
+      </st-form-item>
       <st-form-item class="mg-b0">
         <st-button
           :class="mobile('login-button')"
@@ -69,10 +53,13 @@
 
 <script>
 import { LoginService } from '../login.service'
-import { rules } from './mobile.config'
 import { PatternService } from '@/services/pattern.service'
 import { NoCaptchaService } from '@/services/no-captcha.service'
 import NoCaptcha from './no-captcha'
+import AccountAgreement from '@/views/biz-modals/account/agreement'
+import { ruleOptions } from './login.config'
+import InputPhone from '@/views/biz-components/input-phone/input-phone'
+import InputPhoneCode from '@/views/biz-components/input-phone-code/input-phone-code'
 
 export default {
   name: 'LoginMobile',
@@ -87,93 +74,123 @@ export default {
     mobile: 'page-login-mobile'
   },
   components: {
-    NoCaptcha
+    NoCaptcha,
+    InputPhone,
+    InputPhoneCode
   },
-  props: {
-    loading: {
-      type: Object,
-      default: () => {}
-    }
+  modals: {
+    AccountAgreement
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      form: this.$form.createForm(this),
-      time: 60,
-      captcha: '',
-      isClick: false,
+      form,
+      decorators,
+      isCountTime: false,
+      countryInfo: {},
       thirdLogins: ['alipay', 'wechat', 'weibo', 'qq'],
-      timer: ''
+      isBind: true
     }
   },
-  computed: {
-    rules,
-    buttonText() {
-      return this.isClick ? `${this.time}s后获取验证码` : `获取验证码`
+  props: {
+    value: {
+      type: Object
+    }
+  },
+  mounted() {
+    let params = {
+      code_id: 37,
+      phone_code: 86,
+      phone: ''
+    }
+    if (this.value && this.value.country_phone) {
+      params = this.value.country_phone
+      this.form.setFieldsValue({
+        country_phone: params
+      })
+      // this.onChangePhone(params)
     }
   },
   methods: {
     onClickCaptcha() {
-      if (this.isClick) {
-        return
-      }
-      this.form.validateFields(['phone'], (err, values) => {
+      // if (!this.isBind) return
+      this.form.validateFields(['country_phone'], (err, values) => {
         if (!err) {
-          const { phone } = values
+          const { country_phone } = values
           const params = {
-            phone,
-            country_code_id: 86
+            phone: country_phone.phone,
+            country_code_id: country_phone.code_id
           }
           this.getCaptcha(params)
         }
       })
     },
+    clickAgreement() {
+      this.$modalRouter.push({
+        name: 'account-agreement',
+        props: {},
+        on: {}
+      })
+    },
+    onChangePhone(event) {
+      this.isBind = true
+      // const phone = event.phone
+      // if (this.pattern.MOBILE.test(phone)) {
+      //   this.validPhoneIsBind({ phone })
+      // } else {
+      //   this.isBind = true
+      // }
+    },
+    goBind() {
+      this.countryInfo.country_phone = this.form.getFieldValue('country_phone')
+      this.$emit('bind', this.countryInfo)
+    },
+    // validPhoneIsBind(params) {
+    //   this.loginService.checkPhoneIsBind(params).subscribe(res => {
+    //     this.isBind = false
+    //     if (res.status) {
+    //       this.isBind = true
+    //     }
+    //   })
+    // },
     getCaptcha(params) {
       params.nvc_val = getNVCVal()
       this.loginService.getCaptcha(params).subscribe(res => {
-        this.isClick = true
-        this.setTimer()
+        this.noCaptchaService.resetNVC()
+        this.isCountTime = true
       }, this.loginErrorHandler)
     },
     loginErrorHandler(err) {
       const code = err.response.code
+      if (code === 60052) {
+        // 手机号未注册
+        this.isBind = false
+        return
+      }
       if (this.noCaptchaService.testIsNeedCallCaptcha(code)) {
         this.noCaptchaService.callCaptcha(code)
         return
       }
       this.noCaptchaService.resetNVC()
     },
-    setTimer() {
-      clearInterval(this.timer)
-      this.timer = setInterval(() => {
-        if (this.time <= 1) {
-          this.isClick = false
-          this.time = 60
-          clearInterval(this.timer)
-        }
-        this.time = --this.time
-      }, 1000)
-    },
     login() {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          const params = values
-          params.country_code_id = 86
-          this.loginService.loginPhone(params).subscribe(res => {
-            this.userService.SET_FIRST_INITED(false)
-            if (res.have_phone) {
-              this.$router.push('/')
-            } else {
-              // 去绑定手机
-              // 这是什么操作？？？
-              this.$router.push('/')
-            }
-          })
-        }
+      this.form.validate().then(params => {
+        const { country_phone } = params
+        params.country_code_id = country_phone.code_id
+        params.phone = country_phone.phone
+        delete params.country_phone
+        this.loginService.loginPhone(params).subscribe(res => {
+          location.href = '/'
+        })
       })
+    },
+    endCount() {
+      this.isCountTime = false
+    },
+    onSelectCountry(event) {
+      this.countryInfo = event
     }
-  },
-  mounted() {
-    this.loginService.getCaptcha({})
   }
 }
 </script>
