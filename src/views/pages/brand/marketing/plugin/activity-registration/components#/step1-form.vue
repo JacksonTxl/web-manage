@@ -44,7 +44,7 @@
       ></st-input-number>
     </st-form-item>
     <st-form-item label="活动详情" required>
-      <st-editor v-model="content"></st-editor>
+      <a-textarea v-model="content"></a-textarea>
     </st-form-item>
     <st-form-item label="" label-fix>
       <st-button type="primary" @click="onSubmit">
@@ -63,7 +63,6 @@
 import { ruleOptions } from './form.config'
 import { PatternService } from '@/services/pattern.service'
 import MapButton from '@/views/biz-components/map-button/map-button'
-import StEditor from '@/views/biz-components/editor/editor'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { CopyService } from '../copy.service'
@@ -125,8 +124,7 @@ export default {
     this.initForm()
   },
   components: {
-    MapButton,
-    StEditor
+    MapButton
   },
   watch: {
     content(newValue, oldValue) {
