@@ -52,7 +52,7 @@ export default {
         props: {},
         on: {}
       })
-    },
+    }
   }
 }
 </script>
