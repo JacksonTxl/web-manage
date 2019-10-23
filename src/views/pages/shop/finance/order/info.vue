@@ -19,7 +19,6 @@
           收款
         </st-button>
         <st-button
-          class="mg-r8"
           v-if="auth['brand_shop:order:order|cancel']"
           @click="onCancel"
           type="primary"
