@@ -38,6 +38,7 @@ export const templateColumns = () => {
   return [
     {
       title: '模版名称',
+      width: 140,
       dataIndex: 'title'
     },
     {

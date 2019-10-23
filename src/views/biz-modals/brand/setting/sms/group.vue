@@ -25,18 +25,27 @@
           v-model="tel"
           placeholder="输入手机号,每行一个"
         ></a-textarea>
-        <a-radio-group
-          v-decorator="decorators.send_value"
-          v-show="curUser === USER_TYPES.CROWD"
+        <div
+          style="background: #F7F9FC;padding: 12px;"
+          v-if="curUser === USER_TYPES.CROWD"
         >
-          <a-radio-button
-            v-for="(item, index) in crowdList"
-            :key="index"
-            :value="item.crowd_id"
-          >
-            {{ item.crowd_name }}
-          </a-radio-button>
-        </a-radio-group>
+          <a-radio-group v-decorator="decorators.send_value">
+            <a-radio-button
+              class="mg-r8 mg-b8"
+              v-for="(item, index) in crowdList"
+              :key="index"
+              :value="item.crowd_id"
+            >
+              {{ item.crowd_name }}
+            </a-radio-button>
+          </a-radio-group>
+          <span>
+            不满足?
+            <a @click="goCrowd">
+              去添加人群>
+            </a>
+          </span>
+        </div>
       </st-form-item>
       <st-form-item labelWidth="70px" label="发送时间">
         <a-radio-group
@@ -211,6 +220,10 @@ export default {
           this.curTem = this.TMPL_TYPES.CUSTOM
         }
       })
+    },
+    goCrowd() {
+      this.$router.push('/brand/marketing/plugin/crowd/index?type=100003"')
+      this.show = false
     },
     disabledStartDate(current) {
       return current && current < moment()

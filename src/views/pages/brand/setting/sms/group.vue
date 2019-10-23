@@ -39,9 +39,7 @@
       :class="bPage('table')"
     >
       <div slot="action" slot-scope="text, record">
-        <st-table-actions
-          v-if="record.send_status === 0 || record.send_status === 1"
-        >
+        <st-table-actions v-if="record.send_status === 0">
           <st-popconfirm title="确定撤销吗" @confirm="onReset(record.group_id)">
             <a>撤销</a>
           </st-popconfirm>
