@@ -34,7 +34,7 @@
         placeholder="上传图片"
       ></st-image-upload>
       <span :class="b('img-tip')">
-        请上传jbg、png格式的图片{{ fileShareList }}
+        请上传jbg、png格式的图片
       </span>
     </st-form-item>
     <st-form-item label="活动人数" required>
