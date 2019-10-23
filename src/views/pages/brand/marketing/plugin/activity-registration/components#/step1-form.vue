@@ -1,7 +1,5 @@
 <template>
-  <!-- <a-row> -->
-  <!-- <a-col style="min-width: 800px"> -->
-  <st-form :form="form" style="min-width: 800px">
+  <st-form :form="form" :class="b('step-form')">
     <st-form-item label="活动标题" required>
       <a-input
         placeholder="请输入活动标题"
@@ -35,8 +33,8 @@
         @change="onShareChangeGetImage"
         placeholder="上传图片"
       ></st-image-upload>
-      <span>
-        请上传jbg、png格式的图片
+      <span :class="b('img-tip')">
+        请上传jbg、png格式的图片{{ fileShareList }}
       </span>
     </st-form-item>
     <st-form-item label="活动人数" required>
@@ -59,8 +57,6 @@
           下一步
         </st-button>
       </div> -->
-  <!-- </a-col> -->
-  <!-- </a-row> -->
 </template>
 
 <script>
@@ -74,6 +70,9 @@ import { CopyService } from '../copy.service'
 import { EditService } from '../edit.service'
 export default {
   name: 'Step1Form',
+  bem: {
+    b: 'page-plugin-form-activity'
+  },
   serviceInject() {
     return {
       copyService: CopyService,
