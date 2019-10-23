@@ -71,6 +71,7 @@
 import moment from 'moment'
 import { TicketPreviewService } from './print.service'
 import avatar from '@/assets/img/avatar_default_contract.png'
+import { cloneDeep } from 'lodash-es'
 export default {
   bem: {
     b: 'reception-print'
@@ -104,11 +105,10 @@ export default {
       let bdhtml = window.document.body.innerHTML
       let jubuData = document.getElementById('print').innerHTML
       //把获取的 局部div内容赋给body标签, 相当于重置了 body里的内容
-      window.document.body.innerHTML = jubuData
+      window.document.body.innerHTML = cloneDeep(jubuData)
       //调用打印功能
       window.print()
       window.document.body.innerHTML = bdhtml //重新给页面内容赋值；
-      return false
     },
     handleCancel() {}
   }

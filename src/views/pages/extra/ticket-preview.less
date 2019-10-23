@@ -1,18 +1,3 @@
-.print {
-  padding: 40px;
-  background: #999;
-  body {
-    margin: 0 auto 40px;
-    padding: 64px 40px;
-    width: 21cm;
-    background: #fff;
-    height: initial;
-    min-width: initial;
-    min-height: 29.5cm;
-    box-sizing: border-box;
-    box-shadow: 0 0 1in -10px rgba(0, 0, 0, 0.5);
-  }
-}
 @media print {
   * {
     text-shadow: none !important;
@@ -20,15 +5,14 @@
     box-shadow: none !important;
     page-break-before: auto;
   }
-  .print {
-    padding: 20px 0;
+  .ticket-print {
+    padding: 0;
   }
-  .print body {
+  .ticket-print body {
     width: 100%;
     margin: 0;
-    padding: 64px 40px;
-    // font-size: 9pt;
-    // zoom:50%;
+    padding: 20px;
+    font-size: 9pt;
   }
   h1,
   h2,
@@ -49,131 +33,22 @@
     page-break-after: avoid;
     page-break-inside: avoid;
   }
+
+  @page {
+    margin: 2cm;
+  }
 }
 
 .extra-ticket-preview {
-  // .pd-lr(8px);
-  width: 100%;
-  margin: 0;
-  float: none;
-  .info-item {
-    display: flex;
-    .mg-b(24px);
-  }
-
-  .info-label {
-    float: left;
-    .fz(14px);
-    // .lh(22px);
-    .mg-b(8px);
-    .c(#252a2e);
-  }
-
-  .info-text {
-    flex: 1;
-    .fz(12px);
-    // .lh(22px);
-    .mg-b(8px);
-    overflow: hidden;
-    .c(#3e4d5c);
-    line-height: 21px;
-    word-break: break-all;
-    white-space: pre-wrap;
-  }
-
-  &__header {
-    .pos-r;
-    .pd-t(31px);
-  }
-
-  &__brand-logo {
-    .pos-a;
-    left: 0;
-    top: 0;
-    .s(48px, 48px);
-    .bd-r(4px);
-  }
-
-  &__title {
-    .fz(24px);
-    // .lh(32px);
-    .mg-b(8px);
-    .ta-c;
-  }
-
-  &__brand-name {
-    .fz(16px);
-    // .lh(24px);
-    .mg-b(8px);
-    .ta-c;
-    font-weight: 400;
-    .c(rgba(0, 0, 0, 0.45));
-  }
-
-  &__contract-code {
-    .pos-a;
-    right: 0;
-    top: 8px;
-    .fz(14px);
-    // .lh(22px);
-    .mg-b(8px);
-  }
-
-  &__basic {
-    .mg-t(32px);
-    display: flex;
-    justify-content: space-between;
-  }
-
-  &__basic-list {
-    flex: 1;
-  }
-
-  &__basic-list-item {
-    .w(33.33%);
-  }
-
-  &__avatar {
-    flex: 0 0 90px;
-    .w(90px);
-    .h(120px);
-    .mg-t(-6px);
-    img {
-      .s(100%, 100%);
+  padding: 20px;
+  width: 300px;
+  background: #fff;
+  &__section {
+    padding: 8px;
+    border-bottom: 1px dotted #231815;
+    &-item {
+      display: flex;
+      justify-content: space-between;
     }
-  }
-  &__product {
-    .st-form-table {
-      border-top: 1px solid #e8e8e8;
-      border-left: 1px solid #e8e8e8;
-    }
-    .st-form-table thead > tr > th,
-    .st-form-table tbody > tr > td {
-      border-right: 1px solid #e8e8e8;
-    }
-  }
-  &__advanced {
-    .mg-t(24px);
-  }
-
-  &__footer {
-    .mg-t(56px);
   }
 }
-// @page {
-//   margin: 2cm;
-// }
-
-// /* Or: */
-// @page :left {
-//   margin: 1cm;
-// }
-
-// @page :right {
-//   margin: 1cm;
-// }
-
-// /* The first page of a print can be manipulated as well */
-// @page :first {
-//   margin: 1cm 2cm;
-// }

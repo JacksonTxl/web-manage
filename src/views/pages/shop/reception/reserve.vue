@@ -71,12 +71,7 @@
         <st-table-actions
           v-if="record.reserve_status.id === 1 && record.reserve_type.id === 1"
         >
-          <a
-            v-modal-link="{
-              name: 'reception-print',
-              props: { id: record.id }
-            }"
-          >
+          <a @click="onPrint(record.id)">
             打印小票
           </a>
         </st-table-actions>
@@ -224,9 +219,9 @@ export default {
       this.onSearhReset()
     },
     onPrint(id) {
-      // let record = this.info
-      // let url = `${window.location.origin}/extra/ticket-preview?id=${id}`
-      // window.open(url)
+      let record = this.info
+      let url = `${window.location.origin}/extra/ticket-preview?id=${id}`
+      window.open(url, 'height=100, width=400')
     }
   }
 }

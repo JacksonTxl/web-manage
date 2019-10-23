@@ -936,6 +936,10 @@ export const routeMapConfig = {
     routeConfig.meta.title = '合同预览'
     routeConfig.meta.layout = 'blank'
   },
+  'extra-ticket-preview'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '小票预览'
+    routeConfig.meta.layout = 'blank'
+  },
   'brand-marketing-activity'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '活动广告'
   },
