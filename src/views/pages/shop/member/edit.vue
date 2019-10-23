@@ -16,7 +16,7 @@
             <a-input v-decorator="rules.mobile" placeholder="请输入手机号">
               <a-select
                 slot="addonBefore"
-                style="width:90px"
+                style="width:76px"
                 v-model="country_prefix"
                 v-if="countryList"
                 placeholder="请选择"
@@ -271,7 +271,7 @@
       </a-row>
       <a-row :gutter="8">
         <a-col :offset="2">
-          <st-form-item class="mg-l24" labelOffset>
+          <st-form-item class="mg-l49" labelOffset>
             <st-button type="primary" ghost html-type="submit">保存</st-button>
           </st-form-item>
         </a-col>
