@@ -22,6 +22,7 @@
             class="mg-r16"
             style="width: 160px"
             :options="ticketStatus$"
+            :value="-1"
           ></a-select>
           <a-select
             placeholder="请选择票种"
@@ -29,6 +30,7 @@
             class="mg-r16"
             style="width: 160px"
             :options="ticketTypeOptions$"
+            :value="-1"
           ></a-select>
         </div>
         <div :class="bSearch('input-group')">
@@ -57,14 +59,14 @@
             {{ text.name }}
           </span>
           <div slot="registration_info" slot-scope="text">
-            <span v-if="text === '--'">{{ text }}</span>
+            <span v-if="text === '--'"></span>
             <a v-else @click="onClickShowInfo(text)">查看详情</a>
           </div>
           <template slot="action" slot-scope="text, record">
             <st-table-actions>
               <a v-if="record.ticket_status.id === 1">
                 <st-popconfirm
-                  title="签到后将视为已使用，您确定要将其核销签到吗？?"
+                  title="签到后将视为已使用，您确定要将其核销签到吗？"
                   @confirm="onConfirmSignIn(record)"
                   okText="确认"
                   cancelText="取消"

@@ -1,5 +1,5 @@
 <template>
-  <st-modal title="分享海报" :footer="null" width="500px" v-model="show">
+  <st-modal title="报名信息" :footer="null" width="500px" v-model="show">
     <div :class="bModal()">
       <st-info>
         <st-info-item
