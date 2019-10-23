@@ -33,7 +33,7 @@
           </st-info>
         </a-col>
       </a-row>
-      <st-hr style="margin:0" />
+      <st-hr class="mg-0" />
       <st-form :form="form" labelWidth="68px">
         <div :class="settime('settime')">
           <st-form-item

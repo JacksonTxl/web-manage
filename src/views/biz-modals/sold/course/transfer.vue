@@ -151,7 +151,7 @@
           </tr>
         </tbody>
       </st-form-table>
-      <st-hr style="margin:0" />
+      <st-hr class="mg-0" />
       <st-form :form="form" labelWidth="88px">
         <div :class="transfer('transfer')">
           <st-form-item

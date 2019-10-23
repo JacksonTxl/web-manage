@@ -41,7 +41,7 @@
           </st-info>
         </a-col>
       </a-row>
-      <st-hr style="margin:0" />
+      <st-hr class="mg-0" />
       <st-form :form="form" class="mg-t24">
         <st-form-item label="到期时间" required>
           <a-date-picker

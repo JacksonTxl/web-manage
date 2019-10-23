@@ -33,7 +33,7 @@
           <st-tag type="number-card" />
           <span>{{ cardInfo.card_name }}</span>
         </p>
-        <st-hr style="margin:32px 0;" />
+        <st-hr class="mg-y32" />
         <a-row :gutter="8">
           <a-col :lg="23">
             <st-form-item

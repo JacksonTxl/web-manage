@@ -38,7 +38,7 @@
             @change="syncName"
           ></a-input>
         </st-form-item>
-        <st-hr style="margin:32px 0;"></st-hr>
+        <st-hr class="mg-y32"></st-hr>
         <a-row :gutter="8">
           <a-col :lg="23">
             <st-form-item
