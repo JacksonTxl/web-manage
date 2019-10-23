@@ -19,16 +19,18 @@ export const entries = [
   },
   {
     icon: icon3,
-    text: '三体云管家'
+    text: '三体云管家',
+    openProgram: 'housekeeper'
   },
   {
     icon: icon4,
-    text: '智能硬件'
+    text: '智能硬件',
+    url: 'https://www.styd.cn/default/product_iot'
   },
   {
     icon: icon5,
     text: '小程序',
-    url: 'https://www.styd.cn/default/product_iot'
+    openProgram: 'miniProgram'
   },
   {
     icon: icon6,
@@ -36,14 +38,17 @@ export const entries = [
   },
   {
     icon: icon7,
-    text: '智库'
+    text: '智库',
+    url: 'https://blog.styd.cn/'
   },
   {
     icon: icon8,
-    text: '数据中心'
+    text: '数据中心',
+    url: 'https://www.styd.cn/default/data_report'
   },
   {
     icon: icon9,
-    text: '行业白皮书'
+    text: '行业白皮书',
+    url: 'https://www.styd.cn/default/white_paper'
   }
 ]

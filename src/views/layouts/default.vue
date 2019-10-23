@@ -99,11 +99,7 @@
           <st-icon type="export"></st-icon>
         </router-link>
         <!-- 九宫格 -->
-        <div
-          class="sudoku-icon"
-          @mouseenter.stop="onMouseenterOpenSudoku"
-          @mouseleave.stop="onMouseenterCloseSudoku"
-        >
+        <div class="sudoku-icon" @mouseenter.stop="onMouseenterOpenSudoku">
           九宫格
         </div>
         <fast-entry v-show="sudokuOpenFlag"></fast-entry>
@@ -198,7 +194,7 @@ export default {
     return {
       isShowSwitchShop: false,
       menuObj: {},
-      sudokuOpenFlag: true
+      sudokuOpenFlag: false
     }
   },
   computed: {
@@ -281,10 +277,10 @@ export default {
     },
     onMouseenterOpenSudoku() {
       this.sudokuOpenFlag = true
-    },
-    onMouseenterCloseSudoku() {
-      this.sudokuOpenFlag = false
     }
+    // onMouseenterCloseSudoku() {
+    //   this.sudokuOpenFlag = false
+    // }
   }
 }
 </script>

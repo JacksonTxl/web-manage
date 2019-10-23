@@ -4,7 +4,7 @@
       v-for="(item, index) in entries"
       :key="index"
       :class="b('item')"
-      @click="goToPage(item.url)"
+      @click="goToPage(item)"
     >
       <div>
         <img :src="item.icon" :alt="item.text" :class="b('item-icon')" />
@@ -16,6 +16,8 @@
 
 <script>
 import { entries } from './fast-entry.config'
+import FastEntryMiniProgram from '@/views/biz-modals/fast-entry/mini-program'
+import FastEntryHousekeeper from '@/views/biz-modals/fast-entry/housekeeper'
 export default {
   name: 'FastEntry',
   bem: {
@@ -26,8 +28,31 @@ export default {
       entries
     }
   },
+  modals: {
+    FastEntryMiniProgram,
+    FastEntryHousekeeper
+  },
   methods: {
-    goToPage(url) {}
+    goToPage(item) {
+      if (item.url) {
+        window.open(item.url)
+        return
+      }
+      if (item.openProgram === 'miniProgram') {
+        return
+      }
+      if (item.openProgram === 'housekeeper') {
+        return
+      }
+    },
+    // 打开模态框
+    clickAgreement() {
+      this.$modalRouter.push({
+        name: 'account-agreement',
+        props: {},
+        on: {}
+      })
+    },
   }
 }
 </script>
