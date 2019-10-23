@@ -134,6 +134,9 @@ export default {
       } else {
         this.service.addActivity(this.stepForm).subscribe()
       }
+      this.$router.push({
+        path: '/brand/marketing/plugin/activity-registration/success'
+      })
     },
     // 存草稿
     onSaveDraftActivity(form) {

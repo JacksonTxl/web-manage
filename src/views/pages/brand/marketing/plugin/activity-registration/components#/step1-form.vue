@@ -1,63 +1,66 @@
 <template>
-  <a-row>
-    <a-col :lg="14">
-      <st-form :form="form">
-        <st-form-item label="活动标题" required>
-          <a-input
-            placeholder="请输入活动标题"
-            v-decorator="decorators.activity_name"
-          ></a-input>
-        </st-form-item>
-        <st-form-item label="活动时间" required>
-          <a-range-picker
-            v-decorator="decorators.date"
-            :showTime="{ format: 'HH:mm' }"
-            format="YYYY-MM-DD HH:mm"
-            style="width: 100%"
-          />
-        </st-form-item>
-        <st-form-item label="活动地点" required>
-          <map-button
-            addText="设置活动地点"
-            :lat="address.lat"
-            :lng="address.lng"
-            :province="address.province"
-            :city="address.city"
-            :district="address.district"
-            :address="address.address"
-            @select="onSelectGetAddress"
-          ></map-button>
-        </st-form-item>
-        <st-form-item label="活动海报" required>
-          <st-image-upload
-            width="96px"
-            height="96px"
-            :list="fileShareList"
-            @change="onShareChangeGetImage"
-            placeholder="上传图片"
-          ></st-image-upload>
-          <span>
-            请上传jbg、png格式的图片
-          </span>
-        </st-form-item>
-        <st-form-item label="活动人数" required>
-          <st-input-number
-            placeholder="若不限制活动人数，请填写0"
-            v-decorator="decorators.member_limit_num"
-          ></st-input-number>
-        </st-form-item>
-        <st-form-item label="活动详情" required>
-          <st-editor v-model="content"></st-editor>
-        </st-form-item>
-      </st-form>
-      <div v-di-view="{ name: 'step', show }">
+  <!-- <a-row> -->
+  <!-- <a-col style="min-width: 800px"> -->
+  <st-form :form="form" style="min-width: 800px">
+    <st-form-item label="活动标题" required>
+      <a-input
+        placeholder="请输入活动标题"
+        v-decorator="decorators.activity_name"
+      ></a-input>
+    </st-form-item>
+    <st-form-item label="活动时间" required>
+      <a-range-picker
+        v-decorator="decorators.date"
+        :showTime="{ format: 'HH:mm' }"
+        format="YYYY-MM-DD HH:mm"
+      />
+    </st-form-item>
+    <st-form-item label="活动地点" required>
+      <map-button
+        addText="设置活动地点"
+        :lat="address.lat"
+        :lng="address.lng"
+        :province="address.province"
+        :city="address.city"
+        :district="address.district"
+        :address="address.address"
+        @select="onSelectGetAddress"
+      ></map-button>
+    </st-form-item>
+    <st-form-item label="活动海报" required>
+      <st-image-upload
+        width="96px"
+        height="96px"
+        :list="fileShareList"
+        @change="onShareChangeGetImage"
+        placeholder="上传图片"
+      ></st-image-upload>
+      <span>
+        请上传jbg、png格式的图片
+      </span>
+    </st-form-item>
+    <st-form-item label="活动人数" required>
+      <st-input-number
+        placeholder="若不限制活动人数，请填写0"
+        v-decorator="decorators.member_limit_num"
+      ></st-input-number>
+    </st-form-item>
+    <st-form-item label="活动详情" required>
+      <st-editor v-model="content"></st-editor>
+    </st-form-item>
+    <st-form-item label="" label-fix>
+      <st-button type="primary" @click="onSubmit">
+        下一步
+      </st-button>
+    </st-form-item>
+  </st-form>
+  <!-- <div v-di-view="{ name: 'step', show }">
         <st-button type="primary" @click="onSubmit">
           下一步
         </st-button>
-      </div>
-    </a-col>
-    <a-col :lg="10"></a-col>
-  </a-row>
+      </div> -->
+  <!-- </a-col> -->
+  <!-- </a-row> -->
 </template>
 
 <script>

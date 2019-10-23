@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100%">
     <st-form-table>
       <thead>
         <tr>
