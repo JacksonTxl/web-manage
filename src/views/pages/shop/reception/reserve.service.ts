@@ -78,6 +78,13 @@ export class ReserveService implements RouteGuard {
       })
     )
   }
+  // onPrint(params: any) {
+  //   return this.api.onPrint(params).pipe(
+  //     tap(res => {
+  //       this.msg.success({ content: '打印成功' })
+  //     })
+  //   )
+  // }
   init(query: any) {
     return forkJoin([this.getList(query)])
   }

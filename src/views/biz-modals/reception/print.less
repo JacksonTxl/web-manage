@@ -1,0 +1,68 @@
+@media print {
+  * {
+    text-shadow: none !important;
+    background: 0 0 !important;
+    box-shadow: none !important;
+    page-break-before: auto;
+  }
+  .print {
+    padding: 20px 0;
+  }
+  .reception-print {
+    background: red;
+    width: 300px;
+    margin: 0;
+    padding: 64px 40px;
+    // font-size: 9pt;
+    // zoom:50%;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  div,
+  footer,
+  samp,
+  img {
+    page-break-before: auto;
+    page-break-after: auto;
+    page-break-inside: auto;
+  }
+  table {
+    page-break-before: avoid;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+  @page {
+    margin: 2cm;
+  }
+
+  /* Or: */
+  @page :left {
+    margin: 1cm;
+  }
+
+  @page :right {
+    margin: 1cm;
+  }
+
+  /* The first page of a print can be manipulated as well */
+  @page :first {
+    margin: 1cm 2cm;
+  }
+}
+
+.reception-print {
+  width: 320px;
+  background: #fff;
+  &__section {
+    padding: 8px;
+    border-bottom: 1px dotted #231815;
+    &-item {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
