@@ -7,7 +7,6 @@
     <st-panel>
       <div slot="title">
         <router-link
-          tag="a"
           :to="{ name: 'shop-member-crowd-add' }"
           v-if="crowdIndexInfo.info.list.length <= 10"
         >
@@ -33,7 +32,14 @@
         @change="onChange"
         :page="false"
       >
-        <div slot="shop_name1" slot-scope="text, record">
+        <st-overflow-text
+          slot="description"
+          slot-scope="text"
+          max-width="300px"
+        >
+          {{ text }}
+        </st-overflow-text>
+        <div slot="actions" slot-scope="text, record">
           <st-table-actions>
             <a
               v-if="record.auth['shop:member:crowd|export']"
@@ -41,18 +47,15 @@
             >
               导出
             </a>
-            <a href="#">
-              <router-link
-                v-if="record.auth['shop:member:crowd|edit']"
-                tag="a"
-                :to="{
-                  name: 'shop-member-crowd-add',
-                  query: { id: record.id }
-                }"
-              >
-                编辑
-              </router-link>
-            </a>
+            <router-link
+              v-if="record.auth['shop:member:crowd|edit']"
+              :to="{
+                name: 'shop-member-crowd-add',
+                query: { id: record.id }
+              }"
+            >
+              编辑
+            </router-link>
             <a
               v-if="record.auth['shop:member:crowd|del']"
               @click="deleteTreeNode(record)"
@@ -60,21 +63,6 @@
               删除
             </a>
           </st-table-actions>
-        </div>
-        <div
-          slot="description"
-          slot-scope="text"
-          style="width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"
-        >
-          <a-tooltip
-            placement="topLeft"
-            overlayClassName="shop-member-crowd-index-tooltip"
-          >
-            <template slot="title">
-              <span>{{ text }}</span>
-            </template>
-            {{ text }}
-          </a-tooltip>
         </div>
       </st-table>
     </st-panel>
