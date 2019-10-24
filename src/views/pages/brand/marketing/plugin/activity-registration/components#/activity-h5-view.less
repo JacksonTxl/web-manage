@@ -1,0 +1,97 @@
+.component-activity-h5-view {
+  .bg(#fafafa);
+  &__content {
+    &-img {
+      .s(750px, 422px);
+      .bg(#222);
+      .image {
+        .s(100%, 100%);
+        object-fit: contain;
+      }
+    }
+    &-info {
+      .pd(28px 40px 40px);
+      .bg(#fff);
+      .mg-b(20px);
+      .title {
+        font-size: 32px;
+      }
+      .content {
+        .mg-t(16px);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .price-info {
+          .price {
+            .c(#ff505a);
+            font-size: 40px;
+          }
+          .subfix {
+            .mg-l(8px);
+            .c(#999999);
+            font-size: 28px;
+          }
+        }
+        .hot-info {
+          .fz(20px);
+          display: flex;
+          .view,
+          .share {
+            display: flex;
+            justify-content: center;
+          }
+        }
+      }
+    }
+    &-sub-info {
+      .bg(#fff);
+      .pd(30px 40px);
+      .mg-b(20px);
+      font-size: 28px;
+      .time {
+        .mg-t(30px);
+      }
+      .address {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .mg-t(60px);
+        &__map {
+          .s(64px, 64px);
+          flex: none;
+          border-radius: 100%;
+        }
+      }
+    }
+    &-activity-detail {
+      .pd(30px 40px);
+      background: #fff;
+      .title {
+        .fz(28px);
+      }
+      .content-box {
+        .fz(24px);
+      }
+    }
+  }
+  &__footer {
+    .pd(16px 40px);
+    position: fixed;
+    bottom: 78px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    box-shadow: 0px -2px 8px 0px rgba(0, 0, 0, 0.1);
+    height: 120px;
+    width: 750px;
+    border-radius: 0 0 44px 44px;
+    .st-icon {
+      .fz(44px);
+    }
+    .st-button {
+      .s(320px, 88px);
+      .fz(32px);
+    }
+  }
+}

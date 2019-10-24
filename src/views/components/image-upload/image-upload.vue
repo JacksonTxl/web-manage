@@ -5,6 +5,9 @@
       v-for="(item, index) in fileList"
       :key="index"
     >
+      <!-- NOTE:先去除这个功能 -->
+      <!-- @mouseenter="uploadShowFlag = true" -->
+      <!-- @mouseleave="uploadShowFlag = false" -->
       <img
         class="st-image-upload__item-img"
         :src="
