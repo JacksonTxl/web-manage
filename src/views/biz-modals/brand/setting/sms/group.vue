@@ -244,6 +244,13 @@ export default {
             return
           }
           values.send_value = this.tel
+        } else {
+          if (!values.send_value) {
+            this.messageService.warn({
+              content: '请选择人群'
+            })
+            return
+          }
         }
         if (this.curTem === this.TMPL_TYPES.PERSONAL) {
           if (!values.title) {
