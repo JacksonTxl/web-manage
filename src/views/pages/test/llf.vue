@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import H5Container from '@/views/biz-components/h5/h5-container.vue'
 export default {
   components: {
     H5Container

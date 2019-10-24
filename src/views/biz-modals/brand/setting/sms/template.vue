@@ -11,7 +11,7 @@
         <a-input v-decorator="decorators.title" placeholder="请输入模版名称" />
       </st-form-item>
       <st-form-item labelWidth="70px" label="短信内容">
-        <a-textarea
+        <st-textarea
           v-decorator="decorators.content"
           maxlength="280"
           :autosize="{ minRows: 4, maxRows: 6 }"
