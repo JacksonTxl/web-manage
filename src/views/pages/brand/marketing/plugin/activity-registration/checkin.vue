@@ -21,12 +21,25 @@
           :page="page$"
         >
           <span
-            class="status"
             :class="bPage(`main-status-${text.id}`)"
             slot="ticket_status"
             slot-scope="text"
           >
-            <st-status-text :status="text.id">{{ text.name }}</st-status-text>
+            <st-status-text v-if="text.id === 1" :status="{ error: 1 }">
+              {{ text.name }}
+            </st-status-text>
+            <st-status-text v-if="text.id === 2" :status="{ success: 1 }">
+              {{ text.name }}
+            </st-status-text>
+            <st-status-text v-if="text.id === 5" :status="{ warning: 1 }">
+              {{ text.name }}
+            </st-status-text>
+            <st-status-text v-if="text.id === 4" :status="{ info: 1 }">
+              {{ text.name }}
+            </st-status-text>
+            <st-status-text v-if="text.id === 3" :status="{ normal: 1 }">
+              {{ text.name }}
+            </st-status-text>
           </span>
           <template slot="action" slot-scope="text, record">
             <st-table-actions>

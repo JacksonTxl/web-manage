@@ -1,7 +1,7 @@
 export const columns = (vm: any) => {
   return [
     {
-      title: '活动名称',
+      title: '活动标题',
       dataIndex: 'activity_name',
       scopedSlots: { customRender: 'activity_name' }
     },
@@ -16,7 +16,7 @@ export const columns = (vm: any) => {
       scopedSlots: { customRender: 'end_time' }
     },
     {
-      title: '票种数量',
+      title: '包含票种',
       dataIndex: 'ticket_type_num',
       scopedSlots: { customRender: 'ticket_type_num' }
     },
@@ -25,13 +25,13 @@ export const columns = (vm: any) => {
       dataIndex: 'publish_time',
       scopedSlots: { customRender: 'publish_time' }
     },
+    // {
+    //   title: '活动总人数',
+    //   dataIndex: 'total_people',
+    //   scopedSlots: { customRender: 'total_people' }
+    // },
     {
-      title: '活动总人数',
-      dataIndex: 'total_people',
-      scopedSlots: { customRender: 'total_people' }
-    },
-    {
-      title: '活动已报名人数',
+      title: '已报名人数',
       dataIndex: 'join_people',
       scopedSlots: { customRender: 'join_people' }
     },

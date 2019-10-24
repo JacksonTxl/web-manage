@@ -13,7 +13,7 @@
         <span class="value">{{ activityInfo$.address }}</span>
       </div>
     </div>
-    <st-panel class="mg-t24">
+    <st-panel class="mg-t24" app>
       <div :class="bPage('search')">
         <div :class="bSearch('select-group')">
           <a-select
@@ -22,7 +22,6 @@
             class="mg-r16"
             style="width: 160px"
             :options="ticketStatus$"
-            :value="-1"
           ></a-select>
           <a-select
             placeholder="请选择票种"
@@ -30,7 +29,6 @@
             class="mg-r16"
             style="width: 160px"
             :options="ticketTypeOptions$"
-            :value="-1"
           ></a-select>
         </div>
         <div :class="bSearch('input-group')">

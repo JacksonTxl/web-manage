@@ -42,9 +42,38 @@
         :scroll="{ x: 1500 }"
         :dataSource="list$"
       >
-        <div slot="activity_status" slot-scope="text">
-          {{ text.name }}
-        </div>
+        <span slot="activity_status" slot-scope="text, record">
+          <st-status-text
+            v-if="record.activity_status.id === 1"
+            :status="{ success: 1 }"
+          >
+            {{ record.activity_status.name }}
+          </st-status-text>
+          <st-status-text
+            v-if="record.activity_status.id === 2"
+            :status="{ success: 1 }"
+          >
+            {{ record.activity_status.name }}
+          </st-status-text>
+          <st-status-text
+            v-if="record.activity_status.id === 5"
+            :status="{ normal: 1 }"
+          >
+            {{ record.activity_status.name }}
+          </st-status-text>
+          <st-status-text
+            v-if="record.activity_status.id === 4"
+            :status="{ normal: 1 }"
+          >
+            {{ record.activity_status.name }}
+          </st-status-text>
+          <st-status-text
+            v-if="record.activity_status.id === 3"
+            :status="{ error: 1 }"
+          >
+            {{ record.activity_status.name }}
+          </st-status-text>
+        </span>
         <template slot="action" slot-scope="text, record">
           <st-table-actions>
             <a
