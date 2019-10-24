@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash-es'
 import { Injectable } from 'vue-service-app'
 
 /**
@@ -6,6 +7,7 @@ import { Injectable } from 'vue-service-app'
 @Injectable()
 export class SoldService {
   dealData(arr: []) {
+    arr = cloneDeep(arr)
     arr.map((item: any) => {
       item.after =
         item.after_operate.length === 0 ? '--' : item.after_operate.join('\r\n')
