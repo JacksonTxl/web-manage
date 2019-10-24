@@ -34,16 +34,27 @@
         <span>{{ info.consume_type }}</span>
       </div>
       <div :class="b('section-item')">
-        <span class="mg-b8" v-if="info.ticket_type.code === 1">
+        <span
+          class="mg-b8"
+          v-if="info.ticket_type.code === TICKET_TYPE.PERSONAL"
+        >
           剩余课时/总课时:
         </span>
-        <span class="mg-b8" v-if="info.ticket_type.code === 2">
+        <span
+          class="mg-b8"
+          v-if="info.ticket_type.code === TICKET_TYPE.DESOPOSIT"
+        >
           剩余额度/总额度:
         </span>
-        <span v-if="info.ticket_type.code !== 3">{{ info.amount_num }}</span>
+        <span v-if="info.ticket_type.code !== TICKET_TYPE.WECHAT">
+          {{ info.amount_num }}
+        </span>
       </div>
     </div>
-    <div :class="b('section')" v-if="info.ticket_type.code === 3">
+    <div
+      :class="b('section')"
+      v-if="info.ticket_type.code !== TICKET_TYPE.WECHAT"
+    >
       <div :class="b('section-item')">
         <span class="mg-b8">合同号:</span>
         <span>{{ info.contract_number }}</span>
@@ -66,10 +77,10 @@
 </template>
 <script>
 import { dateFilter } from '@/filters/date.filters'
-import { CONTRACT_TYPE } from '@/constants/setting/contract'
 import moment from 'moment'
 import { TicketPreviewService } from './ticket-preview.service'
 import avatar from '@/assets/img/avatar_default_contract.png'
+import { TICKET_TYPE } from '@/constants/front/reserve'
 export default {
   bem: {
     b: 'extra-ticket-preview'
@@ -87,8 +98,7 @@ export default {
   filters: { dateFilter },
   data() {
     return {
-      CONTRACT_TYPE,
-      today: moment(),
+      TICKET_TYPE,
       avatar: avatar
     }
   },

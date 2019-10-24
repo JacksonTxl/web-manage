@@ -15,3 +15,8 @@ export const enum RESERVE_TYPE {
   COURSE = 1,
   VISIT = 2
 }
+export const enum TICKET_TYPE {
+  PERSONAL = 1,
+  DESOPOSIT = 2,
+  WECHAT = 3
+}
