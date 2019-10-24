@@ -1,6 +1,5 @@
 <template>
-  <section class="sg-section">
-    <h3>st-form-table</h3>
+  <div>
     <p>纯样式table 适用于表单场景的表格和内联编辑的场景</p>
     <p>
       [hoverable] 添加鼠标hover样式 [loading] 加载状态
@@ -75,7 +74,7 @@
       </thead>
       <tbody></tbody>
     </st-form-table>
-  </section>
+  </div>
 </template>
 <script>
 export default {

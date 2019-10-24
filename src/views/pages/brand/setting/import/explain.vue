@@ -25,26 +25,33 @@
       </p>
     </a-row>
     <st-container type="2" class="bg-gray">
-      <div :class="b('item')">
-        <st-t3 class="title">导入员工</st-t3>
-        <label class="desc">员工基础信息</label>
-        <st-button
-          type="primary"
-          @click="goRouter('/brand/setting/import/staff')"
-        >
-          导入员工
-        </st-button>
+      <div :class="b('item-content')" class="mg-b16">
+        <div class="item">
+          <st-t3 class="title">导入员工</st-t3>
+          <label class="desc">员工基础信息</label>
+          <st-button
+            type="primary"
+            @click="goRouter('/brand/setting/import/staff')"
+          >
+            导入员工
+          </st-button>
+        </div>
+        <p>若员工数量较少，建议手动添加，无需导入。</p>
       </div>
-      <div :class="b('item')">
-        <st-t3 class="title">导入商品</st-t3>
-        <label class="desc">卡、课都属于商品</label>
-        <st-button
-          type="primary"
-          @click="goRouter('/brand/setting/import/commodity')"
-        >
-          导入商品
-        </st-button>
+      <div :class="b('item-content')" class="mg-b16">
+        <div class="item">
+          <st-t3 class="title">导入商品</st-t3>
+          <label class="desc">卡、课都属于商品</label>
+          <st-button
+            type="primary"
+            @click="goRouter('/brand/setting/import/commodity')"
+          >
+            导入商品
+          </st-button>
+        </div>
+        <p>若卡课数量较少，建议手动添加，无需导入。</p>
       </div>
+
       <div :class="b('item')">
         <st-t3 class="title">导入用户</st-t3>
         <label class="desc">
@@ -69,10 +76,11 @@
           </st-button>
         </div>
         <p>
-          售出会影响门店财务等相关统计，请在确认导入数据无误的情况下，进行导入。
-          <!-- 售出会影响门店财务等相关统计，目前仅支持门店状态为“创建中”时进行数据导入。
+          1.请在完成员工、商品、用户的添加后导入售出，否则售出若关联到对应的用户、卡课、将无法成功导入。
           <br />
-          请在确认售出导入数据无误的情况下，更改店铺状态，一旦更改无法恢复，其他状态下，均不支持售出导入。 -->
+          2.导入售出后，若您售卖出新的卡课，请在交易签单中完成售卖，不要通过导入功能进行数据补充，否则会导致数据错乱。
+          <br />
+          3.售出会影响门店财务等相关统计，请在确认导入数据无误的情况下进行数据导入。
         </p>
       </div>
     </st-container>

@@ -121,7 +121,7 @@
         </a-col>
       </a-row>
     </st-panel>
-    <st-panel class="mg-t12" :tabs="authTabs">
+    <st-panel class="mg-t12" :tabs="pageAuthTabs">
       <!-- TODO：暂不开放，预留代码 -->
       <!-- {
           label: '消费记录',
@@ -170,7 +170,7 @@ export default {
     return {
       personalInfo: this.infoService.personalInfo$,
       query: this.routeService.query$,
-      authTabs: this.infoService.authTabs$,
+      pageAuthTabs: this.infoService.pageAuthTabs$,
       auth: this.infoService.auth$
     }
   },

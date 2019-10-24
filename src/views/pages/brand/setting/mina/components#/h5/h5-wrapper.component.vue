@@ -6,8 +6,8 @@
       :class="{ fixed: isFixed }"
     ></h5-component>
     <div :class="h5wpr('right')">
-      <a-tabs defaultActiveKey="1" class="st-tabs">
-        <a-tab-pane tab="主页" key="1" class="mg-t8">
+      <st-tabs defaultActiveKey="1" class="st-tabs">
+        <st-tab-pane tab="主页" key="1">
           <row-container-component title="功能入口">
             <action-component v-if="actionLoaded"></action-component>
           </row-container-component>
@@ -21,11 +21,11 @@
           <row-container-component title="推荐课程">
             <course-component v-if="courseLoaded"></course-component>
           </row-container-component>
-        </a-tab-pane>
-        <a-tab-pane tab="底部导航" key="2" forceRender class="mg-t8">
+        </st-tab-pane>
+        <st-tab-pane tab="底部导航" key="2" forceRender class="mg-t8">
           <nav-component v-if="menuLoaded"></nav-component>
-        </a-tab-pane>
-      </a-tabs>
+        </st-tab-pane>
+      </st-tabs>
     </div>
     <div slot="actions">
       <st-button

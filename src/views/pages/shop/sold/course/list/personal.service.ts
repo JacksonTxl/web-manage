@@ -13,11 +13,9 @@ export class PersonalService implements RouteGuard {
   auth$ = this.authService.authMap$({
     export: 'shop:sold:sold_personal_course|export'
   })
-  courseStatus$ = this.userService.getOptions$('sold.course_status').pipe(
-    tap(list => {
-      list.unshift({ value: -1, label: '全部' })
-    })
-  )
+  courseStatus$ = this.userService.getOptions$('sold.course_status', {
+    addAll: true
+  })
   constructor(
     private courseApi: CourseApi,
     private authService: AuthService,

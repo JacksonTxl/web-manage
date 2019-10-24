@@ -4,7 +4,7 @@
   min-height: 700px;
   display: flex;
   &--initial {
-    .st-mina-panel__main {
+    .st-mina-panel__content {
       padding: 0;
     }
   }
@@ -15,7 +15,9 @@
   &__main {
     flex: 1;
     .bg(@white);
-    .pd(56px 24px);
+  }
+  &__content {
+    padding: 24px 24px 56px 24px;
   }
   &__actions {
     position: absolute;

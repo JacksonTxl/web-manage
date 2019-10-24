@@ -1,13 +1,12 @@
 <template>
   <div :class="shelves()">
-    <di-child :name="BRAND_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH">
-      <st-input-search
-        v-model="query.card_name"
-        @search="onKeywordsSearch('card_name', $event)"
-        placeholder="请输入会员卡名称查找"
-        maxlength="50"
-      />
-    </di-child>
+    <st-input-search
+      v-model="query.card_name"
+      v-di-view="{ name: BRAND_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH }"
+      @search="onKeywordsSearch('card_name', $event)"
+      placeholder="请输入会员卡名称查找"
+      maxlength="50"
+    />
     <div :class="shelves('search')" class="mg-b16">
       <div>
         <a-select

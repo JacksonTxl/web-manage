@@ -1,6 +1,5 @@
 <template>
-  <section class="sg-section">
-    <h4>st-button</h4>
+  <div>
     <div>
       <!-- button -->
       <st-button pill size="small">默认24px</st-button>
@@ -69,5 +68,5 @@
         </st-button>
       </div>
     </div>
-  </section>
+  </div>
 </template>

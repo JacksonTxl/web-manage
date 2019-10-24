@@ -1,6 +1,5 @@
 <template>
-  <section class="sg-section">
-    <h3>st-region-cascader</h3>
+  <div>
     <p>默认下使用全局城市tree作为选项 默认使用 {id,name,children作为字段}</p>
     <div>
       <st-region-cascader
@@ -25,7 +24,7 @@
       v-model="model3"
     ></st-region-cascader>
     自定义 {{ model3 }}
-  </section>
+  </div>
 </template>
 
 <script>

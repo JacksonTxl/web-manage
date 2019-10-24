@@ -21,8 +21,7 @@ export const columns = () => [
   {
     title: '操作',
     width: '160px',
-    dataIndex: 'shop_name1',
     fixed: 'right',
-    scopedSlots: { customRender: 'shop_name1' }
+    scopedSlots: { customRender: 'actions' }
   }
 ]

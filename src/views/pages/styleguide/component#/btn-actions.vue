@@ -1,6 +1,5 @@
 <template>
-  <div class="sg-section">
-    <h4>st-btn-actions</h4>
+  <div>
     <p>
       多个按钮级别操作项和权限相关时，多余三个直接展示按钮组
       多余三个展示dropdown里面是操作项

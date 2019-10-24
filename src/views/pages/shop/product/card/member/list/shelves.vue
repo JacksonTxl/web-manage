@@ -1,5 +1,12 @@
 <template>
   <div :class="shelves()">
+    <st-input-search
+      v-model="query.card_name"
+      v-di-view="{ name: SHOP_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH }"
+      @search="onKeywordsSearch('card_name', $event)"
+      placeholder="请输入会员卡名称查找"
+      maxlength="50"
+    />
     <div :class="shelves('search')">
       <a-select
         :class="shelves('search__select')"
@@ -115,11 +122,6 @@ export default {
   bem: {
     shelves: 'page-shop-product-member-list-shelves'
   },
-  events: {
-    [SHOP_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH](key, data) {
-      this.onKeywordsSearch(key, data)
-    }
-  },
   modals: {
     CardShopMemberShopTable
   },
@@ -149,7 +151,8 @@ export default {
   data() {
     return {
       CARD_TYPE,
-      ADMISSION_RANGE
+      ADMISSION_RANGE,
+      SHOP_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH
     }
   },
   methods: {

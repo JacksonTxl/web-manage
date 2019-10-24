@@ -1,11 +1,11 @@
 <template>
   <div>
-    <st-search-panel>
+    <st-search-panel @search="onSearch" @reset="onReset">
       <st-search-panel-item label="通知对象：">
-        <st-search-radio v-model="query.m1" :list="list1" />
+        <st-search-radio v-model="query.m1" :options="list1" />
       </st-search-panel-item>
       <st-search-panel-item label="发送状态：">
-        <st-search-radio v-model="query.m2" :list="list2" />
+        <st-search-radio v-model="query.m2" :options="list2" />
       </st-search-panel-item>
       <st-search-panel-item label="发送时间：">
         <st-range-picker
@@ -20,12 +20,8 @@
 
       <div slot="more">
         <st-search-panel-item label="发送状态：">
-          <st-search-radio v-model="query.m3" :list="list3" />
+          <st-search-radio v-model="query.m3" :options="list3" />
         </st-search-panel-item>
-      </div>
-      <div slot="button">
-        <st-button type="primary">查询</st-button>
-        <st-button class="mg-l8">重置</st-button>
       </div>
     </st-search-panel>
   </div>
@@ -54,6 +50,14 @@ export default {
       ],
       list2: [{ label: '普通券', value: 1 }, { label: '优惠券', value: 2 }],
       list3: [{ label: '普通券', value: 1 }, { label: '优惠券', value: 2 }]
+    }
+  },
+  methods: {
+    onSearch() {
+      console.log('search')
+    },
+    onReset() {
+      console.log('reset')
     }
   }
 }

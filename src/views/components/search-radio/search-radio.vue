@@ -1,7 +1,11 @@
 <template>
   <div :class="radio()">
     <a-radio-group :value="radioChecked" @change="onChange">
-      <a-radio v-for="(item, index) in list" :key="index" :value="item.value">
+      <a-radio
+        v-for="(item, index) in options"
+        :key="index"
+        :value="item.value"
+      >
         <span :class="radio('label')">
           <span :class="radio('label-text')">{{ item.label }}</span>
         </span>
@@ -39,7 +43,7 @@ export default {
     }
   },
   props: {
-    list: {
+    options: {
       type: Array,
       required: true
     },

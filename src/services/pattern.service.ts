@@ -8,7 +8,26 @@ export class PatternService {
     /**
      * 英文
      */
-    EN: '^[A-z]{**}$',
+    EN: '^[A-Za-z]{**}$',
+    /**
+     * 大写英文
+     */
+    UC_EN: '^[A-Z]{**}$',
+    /**
+     * 小写英文
+     */
+    LC_EN: '^[a-z]{**}$',
+    /**
+     * 英文 数字 二者至少有一位
+     * /(?=.*[\d])(?=.*[a-z])(?=.*[A-Z])^[\dA-Za-z]{6,15}$/
+     */
+    // @ts-ignore
+    UC_LC_EN: '(?=.*[\\d])(?=.*[A-z])^[\\dA-Za-z]{**}$',
+    /**
+     * 英文、数字 至少有一个 英文不区分大小写
+     */
+    // @ts-ignore
+    UL_EN_NUM: '(?=.*[\\d])(?=.*[a-z])(?=.*[A-Z])^[\\dA-Za-z]{**}$',
     /**
      * 数字
      */
@@ -20,20 +39,21 @@ export class PatternService {
     /**
      * 中文、英文
      */
-    CN_EN: '^[A-z\\u4e00-\\u9fa5]{**}$',
+    CN_EN: '^[A-Za-z\\u4e00-\\u9fa5]{**}$',
     /**
      * 中文、英文、数字，不含标点符号
      */
-    CN_EN_NUM: '^[A-z0-9\\u4e00-\\u9fa5]{**}$',
+    CN_EN_NUM: '^[A-Za-z0-9\\u4e00-\\u9fa5]{**}$',
     /**
      * 英文、数字
      */
-    EN_NUM: '^[A-z0-9]{**}$',
+    EN_NUM: '^[A-Za-z0-9]{**}$',
+
     /**
      * 中文、英文、数字、空格
      */
     CN_EN_NUM_SPACE:
-      '^[A-z0-9\\u4e00-\\u9fa5]{1,2}$|^[A-z0-9\\u4e00-\\u9fa5][A-z0-9\\u4e00-\\u9fa5\\s]{**}[A-z0-9\\u4e00-\\u9fa5]$',
+      '^[A-Za-z0-9\\u4e00-\\u9fa5]{1,2}$|^[A-Za-z0-9\\u4e00-\\u9fa5][A-Za-z0-9\\u4e00-\\u9fa5\\s]{**}[A-Za-z0-9\\u4e00-\\u9fa5]$',
     /**
      * 包含手机号和座机号
      */
@@ -91,6 +111,34 @@ export class PatternService {
    */
   EN(len: string = this.DEFAULT_LEN) {
     return this.createPattern('EN', len)
+  }
+  /**
+   * 纯大写英文
+   * @param len
+   */
+  UC_EN(len: string = this.DEFAULT_LEN) {
+    return this.createPattern('UC_EN', len)
+  }
+  /**
+   * 纯小写英文
+   * @param len
+   */
+  LC_EN(len: string = this.DEFAULT_LEN) {
+    return this.createPattern('LC_EN', len)
+  }
+  /**
+   * 大小写至少包含一个的英文 + 数字
+   * @param len
+   */
+  UC_LC_EN(len: string = this.DEFAULT_LEN) {
+    return this.createPattern('UC_LC_EN', len)
+  }
+  /**
+   * 英文大小写，数字每样至少有一个
+   * @param len
+   */
+  UL_EN_NUM(len: string = this.DEFAULT_LEN) {
+    return this.createPattern('UL_EN_NUM', len)
   }
   /**
    * 中文、英文

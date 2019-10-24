@@ -130,6 +130,14 @@ export class CardApi extends Api {
     })
   }
   /**
+   * 售出 会员卡/储值卡 详情使用记录
+   */
+  getCardsUsageLog(query: any, type: string) {
+    return this.http.get(`/v1/sold/cards/${type}/usage/log/${query.id}`, {
+      query
+    })
+  }
+  /**
    * 售出 会员卡 设置有效日期回显
    */
   getCardSettimeInfo(id: string) {

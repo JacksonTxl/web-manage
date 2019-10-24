@@ -18,6 +18,12 @@
     <p>
       <a v-modal-link="{ name: 'shop-cabinet-open' }">open</a>
     </p>
+    <st-image
+      class="test-st-img"
+      height="200px"
+      width="100px"
+      src="https://p0.meituan.net/wedding/8a39c77e00edc7d2f81c74881db1783b273993.jpg%40800w_600h_0e_1l%7Cwatermark%3D1%26%26r%3D1%26p%3D9%26x%3D2%26y%3D2%26relative%3D1%26o%3D20"
+    ></st-image>
   </st-panel>
 </template>
 <script>

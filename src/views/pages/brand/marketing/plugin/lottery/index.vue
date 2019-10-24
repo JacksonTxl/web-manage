@@ -5,8 +5,8 @@
       <div :class="bPage('action')" class="mg-b16">
         <div>
           <router-link to="./add">
-            <st-button type="primary" class="mg-r16">
-              + &nbsp;新建活动
+            <st-button type="primary" icon="add" class="mg-r16">
+              新建活动
             </st-button>
           </router-link>
           <router-link to="./checkin">

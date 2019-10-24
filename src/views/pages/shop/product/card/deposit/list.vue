@@ -1,13 +1,6 @@
 <template>
   <st-panel app :tabs="authTabs">
-    <div slot="actions">
-      <st-input-search
-        v-model="query.card_name"
-        @search="onSearchCardName"
-        placeholder="请输入储值卡名称搜索"
-        maxlength="50"
-      />
-    </div>
+    <di-view slot="actions" :name="SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH" />
     <router-view></router-view>
   </st-panel>
 </template>
@@ -30,13 +23,9 @@ export default {
       authTabs: this.listService.authTabs$
     }
   },
-  methods: {
-    onSearchCardName() {
-      this.$events.emit(
-        SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH,
-        'card_name',
-        this.query.card_name
-      )
+  data() {
+    return {
+      SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH
     }
   }
 }

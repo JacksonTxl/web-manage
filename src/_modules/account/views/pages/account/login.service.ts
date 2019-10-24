@@ -1,13 +1,14 @@
 import { MessageService } from '@/services/message.service'
-import { Injectable } from 'vue-service-app'
+import { Injectable, RouteGuard } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { LoginApi, LoginAccountInput, LoginPhoneInput } from '@/api/login'
 import { TokenService } from '@/services/token.service'
 
 @Injectable()
-export class LoginService {
+export class LoginService implements RouteGuard {
   name$ = new State<string>('')
+  isBind$ = new State('')
   loading$ = new State({})
   constructor(
     private loginApi: LoginApi,
@@ -19,15 +20,15 @@ export class LoginService {
     return this.loginApi.loginAccount(data).pipe(
       tap(res => {
         this.tokenService.SET_TOKEN(res.token)
+        localStorage.clear()
       })
     )
   }
   loginPhone(params: LoginPhoneInput) {
     return this.loginApi.loginPhone(params).pipe(
       tap(res => {
-        this.msg.success({
-          content: '登录成功'
-        })
+        this.tokenService.SET_TOKEN(res.token)
+        localStorage.clear()
       })
     )
   }
@@ -40,5 +41,22 @@ export class LoginService {
   }
   getCaptcha(params: any) {
     return this.loginApi.getCaptcha(params)
+  }
+  checkPhoneIsBind(params: any) {
+    return this.loginApi.checkPhoneIsBind(params)
+  }
+  bindPhoneForAccount(params: any) {
+    return this.loginApi.bindPhoneForAccount(params).pipe(
+      tap(res => {
+        this.tokenService.SET_TOKEN(res.token)
+        localStorage.clear()
+      })
+    )
+  }
+  beforeRouteEnter(to: any, from: any, next: any) {
+    if (to.meta.query.isBind) {
+      this.isBind$.commit(() => to.meta.query.isBind)
+    }
+    next()
   }
 }

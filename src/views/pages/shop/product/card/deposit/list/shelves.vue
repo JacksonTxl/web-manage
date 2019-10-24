@@ -1,5 +1,12 @@
 <template>
   <div :class="shelves()">
+    <st-input-search
+      v-model="query.card_name"
+      v-di-view="{ name: SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH }"
+      @search="onKeywordsSearch('card_name', $event)"
+      placeholder="请输入会员卡名称查找"
+      maxlength="50"
+    />
     <div :class="shelves('search')">
       <a-select
         :class="shelves('search__select')"
@@ -98,11 +105,6 @@ export default {
   bem: {
     shelves: 'page-shop-product-deposit-list-shelves'
   },
-  events: {
-    [SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH](key, data) {
-      this.onKeywordsSearch(key, data)
-    }
-  },
   modals: {
     CardShopDepositShopTable
   },
@@ -127,7 +129,8 @@ export default {
   },
   data() {
     return {
-      CONSUMPTION_RANGE
+      CONSUMPTION_RANGE,
+      SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH
     }
   },
   computed: {

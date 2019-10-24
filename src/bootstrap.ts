@@ -9,8 +9,6 @@ import VueBemHelper from '@/vendor/vue-bem-helper'
 // @ts-ignore
 import VueRxState from '@/vendor/vue-rx-state'
 // @ts-ignore
-import VueEvents from '@/vendor/vue-events'
-// @ts-ignore
 import VueStyleguide from '@/vendor/vue-styleguide'
 
 import VueStForm from 'vue-st-form'
@@ -27,6 +25,7 @@ import i18n from '@/i18n'
 // 默认样式加载
 import './views/components/register'
 import './filters/register'
+import './directives/register'
 
 // @ts-ignore
 import Scrollbar from '@/vendor/vue-scrollbar'
@@ -38,7 +37,6 @@ Vue.use(VueRxState)
 Vue.use(Antd)
 Vue.use(Viewer)
 Vue.use(VueBemHelper)
-Vue.use(VueEvents)
 // @ts-ignore
 Vue.use(VueDiView)
 // @ts-ignore

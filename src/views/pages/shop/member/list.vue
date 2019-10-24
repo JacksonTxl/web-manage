@@ -1,215 +1,207 @@
 <template>
-  <div class="shop-member-list">
-    <st-panel>
-      <div slot="title">
-        <st-input-search
-          placeholder="输入用户姓名、手机号"
-          v-model="query.keyword"
-          @search="onKeywordsSearch('keyword', $event)"
-        />
-      </div>
-      <div slot="prepend">
-        <st-search-panel>
-          <st-search-panel-item label="用户级别：">
-            <st-search-radio v-model="query.member_level" :list="memberLevel" />
-          </st-search-panel-item>
-          <st-search-panel-item label="来源方式：">
-            <st-search-radio v-model="query.register_way" :list="sourceList" />
-          </st-search-panel-item>
-          <st-search-panel-item label="注册时间：">
+  <st-panel app class="shop-member-list">
+    <div slot="title">
+      <st-input-search
+        placeholder="输入用户姓名、手机号"
+        v-model="query.keyword"
+        @search="onKeywordsSearch('keyword', $event)"
+      />
+    </div>
+    <div slot="prepend">
+      <st-search-panel @search="onSearchNative" @reset="onSearhReset">
+        <st-search-panel-item label="用户级别：">
+          <st-search-radio
+            v-model="query.member_level"
+            :options="memberLevel"
+          />
+        </st-search-panel-item>
+        <st-search-panel-item label="来源方式：">
+          <st-search-radio v-model="query.register_way" :options="sourceList" />
+        </st-search-panel-item>
+        <st-search-panel-item label="注册时间：">
+          <st-range-picker
+            :disabledDays="180"
+            :value="selectTime"
+          ></st-range-picker>
+        </st-search-panel-item>
+        <div slot="more">
+          <st-search-panel-item label="入会时间：">
             <st-range-picker
               :disabledDays="180"
-              :value="selectTime"
+              :value="selectMemberTime"
             ></st-range-picker>
           </st-search-panel-item>
-          <div slot="more">
-            <st-search-panel-item label="入会时间：">
-              <st-range-picker
-                :disabledDays="180"
-                :value="selectMemberTime"
-              ></st-range-picker>
-            </st-search-panel-item>
-            <st-search-panel-item label="员工跟进：">
-              <st-search-radio v-model="query.is_follow" :list="isFollow" />
-            </st-search-panel-item>
-          </div>
-          <div slot="button">
-            <st-button
-              type="primary"
-              @click="onSearchNative"
-              :loading="loading.getListInfo"
-            >
-              查询
-            </st-button>
-            <st-button class="mg-l8" @click="onSearhReset">重置</st-button>
-          </div>
-        </st-search-panel>
-      </div>
-      <div class="mg-t24 mg-b16">
-        <st-button
-          type="primary"
-          @click="addUser()"
-          class="shop-member-list-button"
-          v-if="auth.add"
-          icon="add"
-        >
-          添加用户
-        </st-button>
-        <!-- NOTE: 导入 -->
-        <!-- <st-button class="shop-member-list-button" v-if="auth.import">导入用户</st-button> -->
-        <st-button
-          v-if="auth.tag"
-          class="shop-member-list-button"
-          :disabled="!selectedRows.length"
-          v-modal-link="{
-            name: 'shop-add-lable',
-            props: {
-              memberIds: selectedRowKeys
-            }
-          }"
-        >
-          加标签
-        </st-button>
-        <a-popover placement="bottom">
-          <template slot="content">
-            <div v-if="auth.bindCoach" class="shop-member-list-button-div">
-              <label
-                class="shop-member-list-button-label"
-                v-modal-link="{
-                  name: 'shop-distribution-coach',
-                  props: {
-                    memberIds: selectedRowKeys
-                  }
-                }"
-              >
-                分配教练
-              </label>
-            </div>
-            <div v-if="auth.bindSalesman" class="shop-member-list-button-div">
-              <label
-                class="shop-member-list-button-label"
-                v-modal-link="{
-                  name: 'shop-distribution-sale',
-                  props: {
-                    memberIds: selectedRowKeys
-                  }
-                }"
-              >
-                分配销售
-              </label>
-            </div>
-          </template>
-          <st-button
-            v-if="auth.bindCoach && auth.bindSalesman"
-            class="shop-member-list-button"
-            :disabled="selectedRows.length > 0 ? false : true"
-          >
-            分配员工
-          </st-button>
-        </a-popover>
-        <!-- NOTE: 导出 -->
-        <!-- <st-button v-if="auth.export" :disabled='isSelectedDisabled' class="shop-member-list-button">批量导出</st-button> -->
-      </div>
-      <st-table
-        :columns="columns"
-        :scroll="{ x: 1400 }"
-        :alertSelection="{ onReset: onSelectionReset }"
-        :rowSelection="{ selectedRowKeys, onChange: onSelectionChange }"
-        rowKey="member_id"
-        :page="page"
-        @change="onTableChange"
-        :dataSource="list"
-      >
-        <div slot="image_face" slot-scope="text, record">
-          <span class="st-preview-item st-preview-item--cover" v-viewer>
-            <img
-              v-if="record.image_face"
-              class="st-image-face"
-              :src="record.image_face.url"
-              :data-src="record.image_face.url"
-            />
-          </span>
+          <st-search-panel-item label="员工跟进：">
+            <st-search-radio v-model="query.is_follow" :options="isFollow" />
+          </st-search-panel-item>
         </div>
-        <div slot="member_name" slot-scope="text, record">
+      </st-search-panel>
+    </div>
+    <div class="mg-t24 mg-b16">
+      <st-button
+        type="primary"
+        @click="addUser()"
+        class="shop-member-list-button"
+        v-if="auth.add"
+        icon="add"
+      >
+        添加用户
+      </st-button>
+      <!-- NOTE: 导入 -->
+      <!-- <st-button class="shop-member-list-button" v-if="auth.import">导入用户</st-button> -->
+      <st-button
+        v-if="auth.tag"
+        class="shop-member-list-button"
+        :disabled="!selectedRows.length"
+        v-modal-link="{
+          name: 'shop-add-lable',
+          props: {
+            memberIds: selectedRowKeys
+          }
+        }"
+      >
+        加标签
+      </st-button>
+      <a-popover placement="bottom">
+        <template slot="content">
+          <div v-if="auth.bindCoach" class="shop-member-list-button-div">
+            <label
+              class="shop-member-list-button-label"
+              v-modal-link="{
+                name: 'shop-distribution-coach',
+                props: {
+                  memberIds: selectedRowKeys
+                }
+              }"
+            >
+              分配教练
+            </label>
+          </div>
+          <div v-if="auth.bindSalesman" class="shop-member-list-button-div">
+            <label
+              class="shop-member-list-button-label"
+              v-modal-link="{
+                name: 'shop-distribution-sale',
+                props: {
+                  memberIds: selectedRowKeys
+                }
+              }"
+            >
+              分配销售
+            </label>
+          </div>
+        </template>
+        <st-button
+          v-if="auth.bindCoach && auth.bindSalesman"
+          class="shop-member-list-button"
+          :disabled="selectedRows.length > 0 ? false : true"
+        >
+          分配员工
+        </st-button>
+      </a-popover>
+      <!-- NOTE: 导出 -->
+      <!-- <st-button v-if="auth.export" :disabled='isSelectedDisabled' class="shop-member-list-button">批量导出</st-button> -->
+    </div>
+    <st-table
+      :columns="columns"
+      :loading="loading.getListInfo"
+      :scroll="{ x: 1400 }"
+      :alertSelection="{ onReset: onSelectionReset }"
+      :rowSelection="{ selectedRowKeys, onChange: onSelectionChange }"
+      rowKey="member_id"
+      :page="page"
+      @change="onTableChange"
+      :dataSource="list"
+    >
+      <div slot="image_face" slot-scope="text, record">
+        <span class="st-preview-item st-preview-item--cover" v-viewer>
+          <img
+            v-if="record.image_face"
+            class="st-image-face"
+            :src="record.image_face.url"
+            :data-src="record.image_face.url"
+          />
+        </span>
+      </div>
+      <div slot="member_name" slot-scope="text, record">
+        <a
+          href="javascript:;"
+          v-if="record.auth['shop:member:member|get']"
+          @click="infoFunc(record)"
+        >
+          {{ text }}
+        </a>
+        <span v-else>{{ text }}</span>
+      </div>
+      <div slot="action" slot-scope="text, record">
+        <st-table-actions>
           <a
-            href="javascript:;"
             v-if="record.auth['shop:member:member|get']"
             @click="infoFunc(record)"
           >
-            {{ text }}
+            详情
           </a>
-          <span v-else>{{ text }}</span>
-        </div>
-        <div slot="action" slot-scope="text, record">
-          <st-table-actions>
-            <a
-              v-if="record.auth['shop:member:member|get']"
-              @click="infoFunc(record)"
-            >
-              详情
-            </a>
-            <a
-              v-if="record.auth['shop:member:member|edit']"
-              @click="edit(record)"
-            >
-              编辑
-            </a>
-            <a
-              v-if="record.auth['shop:member:member|bind_coach']"
-              @click="onDistributionCoach(record)"
-            >
-              分配教练
-            </a>
-            <a
-              v-if="record.auth['shop:member:member|bind_salesman']"
-              @click="onDistributionSale(record)"
-            >
-              分配销售
-            </a>
-            <a
-              v-if="record.auth['shop:member:member|bind_card']"
-              v-modal-link="{
-                name: 'shop-binding-entity-card',
-                props: { record },
-                on: {
-                  success: refeshPage
-                }
-              }"
-            >
-              绑实体卡
-            </a>
-            <a
-              v-if="record.auth['shop:member:member|rebind_card']"
-              v-modal-link="{ name: 'shop-missing-card', props: { record } }"
-            >
-              重绑实体卡
-            </a>
-            <!-- <a v-if="record.auth['shop:member:member|transfer']" v-modal-link="{ name: 'shop-transfer-shop', props:{record}, on: {
+          <a
+            v-if="record.auth['shop:member:member|edit']"
+            @click="edit(record)"
+          >
+            编辑
+          </a>
+          <a
+            v-if="record.auth['shop:member:member|bind_coach']"
+            @click="onDistributionCoach(record)"
+          >
+            分配教练
+          </a>
+          <a
+            v-if="record.auth['shop:member:member|bind_salesman']"
+            @click="onDistributionSale(record)"
+          >
+            分配销售
+          </a>
+          <a
+            v-if="record.auth['shop:member:member|bind_card']"
+            v-modal-link="{
+              name: 'shop-binding-entity-card',
+              props: { record },
+              on: {
+                success: refeshPage
+              }
+            }"
+          >
+            绑实体卡
+          </a>
+          <a
+            v-if="record.auth['shop:member:member|rebind_card']"
+            v-modal-link="{ name: 'shop-missing-card', props: { record } }"
+          >
+            重绑实体卡
+          </a>
+          <!-- <a v-if="record.auth['shop:member:member|transfer']" v-modal-link="{ name: 'shop-transfer-shop', props:{record}, on: {
                  success: refeshPage
                } }">转店</a> -->
-            <a
-              v-if="record.auth['shop:member:member|frozen']"
-              v-modal-link="{
-                name: 'shop-frozen',
-                props: { record },
-                on: {
-                  success: refeshPage
-                }
-              }"
-            >
-              冻结用户
-            </a>
-            <a
-              v-if="record.auth['shop:member:member|unbind_wechat']"
-              @click="onRemoveBind(record)"
-            >
-              解除微信绑定
-            </a>
-          </st-table-actions>
-        </div>
-      </st-table>
-    </st-panel>
-  </div>
+          <a
+            v-if="record.auth['shop:member:member|frozen']"
+            v-modal-link="{
+              name: 'shop-frozen',
+              props: { record },
+              on: {
+                success: refeshPage
+              }
+            }"
+          >
+            冻结用户
+          </a>
+          <a
+            v-if="record.auth['shop:member:member|unbind_wechat']"
+            @click="onRemoveBind(record)"
+          >
+            解除微信绑定
+          </a>
+        </st-table-actions>
+      </div>
+    </st-table>
+  </st-panel>
 </template>
 <script>
 import moment from 'moment'

@@ -1,6 +1,5 @@
 <template>
-  <section class="sg-section">
-    <h3>st-range-picker</h3>
+  <div>
     <p>时间范围选择</p>
     <div>
       <st-range-picker
@@ -8,7 +7,7 @@
         :value="selectTime"
       ></st-range-picker>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
