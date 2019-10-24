@@ -28,7 +28,7 @@ export class CheckinService implements RouteGuard {
     )
   }
   beforeEach(to: ServiceRoute) {
-    if (!to.meta.query.keyword) return
-    return this.getList(to.meta.query)
+    // if (!to.meta.query.keyword) return
+    // return this.getList(to.meta.query)
   }
 }

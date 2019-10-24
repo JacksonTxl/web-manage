@@ -3,7 +3,8 @@
     <header :class="bPage('header')">
       <a-input-search
         placeholder="输入票号，用户姓名，手机号进行搜索"
-        @search="onSingleSearch('keyword', $event)"
+        v-model="keyword"
+        @search="getList"
       >
         <a-button type="primary" slot="enterButton">
           搜索
@@ -18,7 +19,7 @@
           @change="onTableChange"
           :loading="loading$.getList"
           :dataSource="list$"
-          :page="page$"
+          :pagination="page$"
         >
           <span
             :class="bPage(`main-status-${text.id}`)"
@@ -94,16 +95,35 @@ export default {
     }
   },
   computed: {
-    columns,
-    isSearch() {
-      return !!this.query.keyword
+    columns
+  },
+  data() {
+    return {
+      keyword: '',
+      isSearch: false
     }
   },
   methods: {
+    getList() {
+      if (!this.keyword) {
+        this.message.warning({ content: '请输入内容' })
+        return
+      }
+      return this.service.getList({ keyword: this.keyword }).subscribe(res => {
+        this.isSearch = true
+      })
+    },
     onConfirmSignIn(record) {
       this.service.updateSignUpChecked(record.id).subscribe(res => {
+        this.keyword = ''
         this.$router.reload()
       })
+    },
+    onTableChange(pagination, filters, sorter) {
+      const pager = { ...this.pagination }
+      pager.current = pagination.current
+      pager.pageSize = pagination.pageSize
+      this.page$ = pager
     }
   }
 }
