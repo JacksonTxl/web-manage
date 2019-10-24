@@ -2,7 +2,7 @@
   <st-panel app initial :class="basic()">
     <st-input-search
       slot="title"
-      placeholder="请输入租赁柜名、会员姓名或手机号查找"
+      placeholder="请输入租赁柜号、合同编号、会员姓名或手机号查找"
       v-model="query.search"
       @search="onKeywordsSearch('search', $event)"
       :class="basic('search')"

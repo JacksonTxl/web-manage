@@ -4,8 +4,9 @@
       <st-input-search
         v-model="query.search"
         @search="onSearchCourseName"
-        placeholder="请输入卡名、会员姓名或手机号查找"
+        :placeholder="placeholder"
         :class="b('search')"
+        :style="width"
       />
     </div>
     <router-view></router-view>
@@ -28,9 +29,26 @@ export default {
   rxState() {
     return {
       query: this.routeService.query$,
-      authTabs: this.listService.authTabs$
+      authTabs: this.listService.authTabs$,
+      routerName: this.listService.routerName$
     }
   },
+  data() {
+    return {
+      placeholder: '请输入私教课名、合同编号、会员姓名或手机号查找',
+      width: '350px'
+    }
+  },
+  watch: {
+    routerName(newVal) {
+      if (newVal === 'shop-sold-course-list-personal') {
+        this.placeholder = '请输入私教课名、合同编号、会员姓名或手机号查找'
+      } else if (newVal === 'shop-sold-course-list-package') {
+        this.placeholder = '请输入课程包名、合同编号、会员姓名或手机号查找'
+      }
+    }
+  },
+  created() {},
   methods: {
     onSearchCourseName(val) {
       this.$router.push({ query: { ...this.query, search: this.query.search } })
