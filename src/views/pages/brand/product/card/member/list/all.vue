@@ -9,7 +9,9 @@
     />
     <div :class="all('search')">
       <router-link v-if="auth.add" to="../add-select">
-        <st-button type="primary" icon="add">新增会员卡</st-button>
+        <st-button type="primary" icon="add">
+          新增{{ $c('member_card') }}
+        </st-button>
       </router-link>
       <div>
         <a-select
@@ -333,7 +335,7 @@ export default {
     onDelete(record) {
       this.$confirm({
         title: '确认要删除',
-        content: `确认删除${record.card_name}会员卡？`,
+        content: `确认删除${record.card_name}${this.$c('member_card')}？`,
         onOk: () => {
           return this.allService
             .deleteCard(record.id)

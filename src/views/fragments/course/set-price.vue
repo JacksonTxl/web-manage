@@ -9,7 +9,7 @@
         class="mg-t8"
         @click="addRecord"
       >
-        添加教练等级定价
+        添加{{ $c('coach') }}等级定价
       </st-button>
     </div>
     <st-container
@@ -28,7 +28,11 @@
       </a>
       <st-form labelWidth="70px" class="mg-t8">
         <!-- 选择教练等级 如果定价方式为教练分级定价时，显示选择教练-->
-        <st-form-item label="教练等级" required v-if="priceModel === 2">
+        <st-form-item
+          :label="`${$c('coach')}等级`"
+          required
+          v-if="priceModel === 2"
+        >
           <select-coach-level
             :value="priceGradientRecord.level_id"
             @change="val => onLevelChange(val, key)"

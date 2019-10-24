@@ -3,7 +3,12 @@ export const ruleOptions = (vm: any) => {
     nature_work: {},
     identity: {},
     coach_level_id: {
-      rules: [{ required: vm.coach_level_required, message: '请选择教练等级' }]
+      rules: [
+        {
+          required: vm.coach_level_required,
+          message: `请选择${vm.$c('coach')}等级`
+        }
+      ]
     },
     basic_salary: {},
     sale_percentage: {},

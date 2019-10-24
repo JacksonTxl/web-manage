@@ -13,7 +13,7 @@ export const ruleOptions = (vm: any) => {
       rules: [{ required: true, message: '请选择销售人员' }]
     },
     memberCardId: {
-      rules: [{ required: true, message: '请选择会员卡' }]
+      rules: [{ required: true, message: `请选择${vm.$c('member_card')}` }]
     }
   }
 }

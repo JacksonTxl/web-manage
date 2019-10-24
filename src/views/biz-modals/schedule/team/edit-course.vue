@@ -31,8 +31,11 @@
           </a-select-option>
         </a-select>
       </st-form-item>
-      <st-form-item label="教练" required>
-        <a-select placeholder="请选择教练" v-decorator="decorators.coach_id">
+      <st-form-item :label="$c('coach')" required>
+        <a-select
+          :placeholder="`请选择${$c('coach')}`"
+          v-decorator="decorators.coach_id"
+        >
           <a-select-option
             v-for="coach in coachOptions"
             :key="coach.id"

@@ -1,6 +1,6 @@
 <template>
   <st-modal
-    title="选择教练"
+    :title="`选择${$c('coach')}`"
     :footer="null"
     class="modal-brand-switch"
     v-model="show"
@@ -9,7 +9,7 @@
       <a-select
         mode="multiple"
         style="width: 100%"
-        placeholder="请输入教练昵称、姓名、手机号进行查询"
+        :placeholder="`请输入${$c('coach')}昵称、姓名、手机号进行查询`"
         :value="coachIds"
         @change="onChange"
         @search="onSearch"
@@ -25,7 +25,9 @@
           {{ item.nickname }}
         </a-select-option>
       </a-select>
-      <p class="color-text-light mg-t8">已选择{{ coachIds.length }}个教练</p>
+      <p class="color-text-light mg-t8">
+        已选择{{ coachIds.length }}个{{ $c('coach') }}
+      </p>
       <p class="ta-r">
         <st-button @click="onCancelSelect">取消</st-button>
         <st-button type="primary" class="mg-l8" @click="onConfirmSelect">

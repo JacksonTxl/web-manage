@@ -7,8 +7,8 @@
     v-model="show"
   >
     <st-form :form="form">
-      <st-form-item labelWidth="42px" label="教练：" required>
-        <a-select placeholder="请选择教练" v-model="coachId">
+      <st-form-item labelWidth="42px" :label="`${$c('coach')}：`" required>
+        <a-select :placeholder="`请选择${$c('coach')}`" v-model="coachId">
           <a-select-option
             v-for="coach in coachOptions"
             :key="coach.id"
@@ -126,7 +126,7 @@ export default {
       if (this.coachId) {
         this.scheduleService.copy({ id: this.coachId }).subscribe()
       } else {
-        this.messageService.error({ content: '请选择教练' })
+        this.messageService.error({ content: `请选择${this.$c('coach')}` })
       }
     },
     save() {

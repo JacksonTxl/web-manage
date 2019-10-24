@@ -7,16 +7,18 @@
           <a-col :span="14">
             <st-form :form="form">
               <st-t3 class="mg-y32">基础设置</st-t3>
-              <st-form-item label="会员卡类型">
-                <a-select placeholder="请输入会员卡类型">
+              <st-form-item :label="`${$c('member_card')}类型`">
+                <a-select :placeholder="`请输入${$c('member_card')}类型`">
                   <a-select-option value="1">1</a-select-option>
                   <a-select-option value="2">2</a-select-option>
                   <a-select-option value="3">3</a-select-option>
                 </a-select>
               </st-form-item>
 
-              <st-form-item label="会员卡名称">
-                <a-input placeholder="请输入会员卡名称"></a-input>
+              <st-form-item :label="`${$c('member_card')}名称`">
+                <a-input
+                  :placeholder="`请输入${$c('member_card')}名称`"
+                ></a-input>
               </st-form-item>
 
               <st-t3 class="mg-y32">售卖设置</st-t3>

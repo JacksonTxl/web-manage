@@ -30,8 +30,8 @@
           <select-shop @change="onChangeShopSetting"></select-shop>
         </st-container>
       </st-form-item>
-      <st-form-item label="支持上课教练" required>
-        <span>(设置此课程支持上课教练)</span>
+      <st-form-item :label="`支持上课${$c('coach')}`" required>
+        <span>(设置此课程支持上课{{ $c('coach') }})</span>
       </st-form-item>
       <st-form-item
         class="modal-transfer-brand-course__form-item-emtry"

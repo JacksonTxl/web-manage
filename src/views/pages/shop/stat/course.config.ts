@@ -1,4 +1,4 @@
-export const allColumns = () => {
+export const allColumns = (vm: any) => {
   return [
     {
       title: '日期',
@@ -12,7 +12,7 @@ export const allColumns = () => {
       scopedSlots: { customRender: 'personal_course_num' }
     },
     {
-      title: '上课教练数（私）',
+      title: `上课${vm.$c('coach')}数（私）`,
       dataIndex: 'personal_coach_num'
     },
     {
@@ -34,7 +34,7 @@ export const allColumns = () => {
       scopedSlots: { customRender: 'team_course_num' }
     },
     {
-      title: '上课教练数（团）',
+      title: `上课${vm.$c('coach')}数（团）`,
       dataIndex: 'team_coach_num'
     },
     {
@@ -56,7 +56,7 @@ export const allColumns = () => {
     }
   ]
 }
-export const coachColumns = () => {
+export const coachColumns = (vm: any) => {
   return [
     {
       title: '日期',
@@ -65,7 +65,7 @@ export const coachColumns = () => {
       dataIndex: 'stat_date'
     },
     {
-      title: '教练姓名',
+      title: `${vm.$c('coach')}姓名`,
       fixed: 'left',
       width: '150px',
       dataIndex: 'coach_name'

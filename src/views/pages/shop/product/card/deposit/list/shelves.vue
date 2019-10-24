@@ -140,7 +140,7 @@ export default {
     // 下架
     onShelfDown(record) {
       this.$confirm({
-        title: '下架会员卡',
+        title: `下架${this.$c('member_card')}`,
         content: `确定下架${record.card_name}储值卡吗？`,
         onOk: () => {
           return this.shelvesService

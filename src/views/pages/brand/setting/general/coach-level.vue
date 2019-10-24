@@ -33,7 +33,7 @@
                 block
                 :disabled="resData.total >= resData.max"
               >
-                添加教练等级
+                添加{{ $c('coach') }}等级
               </st-button>
             </a>
           </td>
@@ -68,14 +68,14 @@
               >
                 <div slot="title">
                   <div v-if="item.class_price === 0">
-                    删除后不可进行恢复,确定删除此教练等级？
+                    删除后不可进行恢复,确定删除此{{ $c('coach') }}等级？
                   </div>
                   <div>
-                    删除教练等级{{ item.setting_name }}
+                    删除{{ $c('coach') }}等级{{ item.setting_name }}
                     <div class="color-danger">
                       当前有
                       {{ item.class_price }}
-                      条私教课程定价使用了此教练等级,将同时删除
+                      条私教课程定价使用了此{{ $c('coach') }}等级,将同时删除
                       {{ item.class_price }} 条课程定价,请谨慎操作？
                     </div>
                   </div>

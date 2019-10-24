@@ -1,4 +1,4 @@
-export const columns = () => [
+export const columns = (vm: any) => [
   {
     title: '人脸',
     dataIndex: 'image_face',
@@ -16,7 +16,7 @@ export const columns = () => [
     scopedSlots: { customRender: 'member_level' }
   },
   { title: '跟进销售', dataIndex: 'follow_salesman' },
-  { title: '跟进教练', dataIndex: 'follow_coach' },
+  { title: `跟进${vm.$c('coach')}`, dataIndex: 'follow_coach' },
   { title: '注册时间', dataIndex: 'register_time' },
   { title: '成为会员时间', dataIndex: 'be_member_time' },
   { title: '累计消费(元)', align: 'right', dataIndex: 'sum_consumption' },

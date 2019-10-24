@@ -163,11 +163,11 @@
         </st-form-item>
         <st-form-item v-if="isShowLevel" required>
           <template slot="label">
-            教练等级
+            {{ $c('coach') }}等级
             <st-help-tooltip id="TSCE003" />
           </template>
           <coach-level-select
-            placeholder="请选择教练等级"
+            :placeholder="`请选择${$c('coach')}等级`"
             style="width: 100%"
             useType="form"
             v-decorator="decorators.coach_level_id"

@@ -149,7 +149,7 @@
         <st-hr></st-hr>
       </a-col>
     </a-row>
-    <st-t4>教练风采</st-t4>
+    <st-t4>{{ $c('coach') }}风采</st-t4>
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="8">
         <st-info>

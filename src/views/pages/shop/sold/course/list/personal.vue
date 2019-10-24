@@ -87,7 +87,7 @@
                 "
                 @click="onEditCoach(record)"
               >
-                修改教练
+                修改{{ $c('coach') }}
               </a>
               <a
                 v-if="record.auth['shop:sold:sold_personal_course|transfer']"

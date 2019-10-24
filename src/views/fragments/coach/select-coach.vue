@@ -3,8 +3,8 @@
     <st-form-table>
       <thead>
         <tr>
-          <th>教练</th>
-          <th>教练等级</th>
+          <th>{{ $c('coach') }}</th>
+          <th>{{ $c('coach') }}等级</th>
           <th>工作性质</th>
           <th>操作</th>
         </tr>
@@ -27,7 +27,7 @@
                 }
               }"
             >
-              添加教练
+              添加{{ $c('coach') }}
             </st-button>
           </td>
         </tr>

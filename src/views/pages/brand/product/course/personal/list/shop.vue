@@ -137,10 +137,8 @@ export default {
       loading: this.shopService.loading$
     }
   },
-  data() {
-    return {
-      columns
-    }
+  computed: {
+    columns
   }
 }
 </script>

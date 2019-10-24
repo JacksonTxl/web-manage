@@ -113,6 +113,7 @@ export default {
     }
   },
   computed: {
+    coachColumns,
     image() {
       return this.teamCourseInfo.image.image_key
     }
@@ -129,7 +130,6 @@ export default {
   data() {
     return {
       shopColumns,
-      coachColumns,
       priceConfigColumns
     }
   }

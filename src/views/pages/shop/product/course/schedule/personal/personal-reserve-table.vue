@@ -126,11 +126,13 @@ export default {
   },
   data() {
     return {
-      columns,
       page: {},
       currentTime: '',
       pageBtnFocusState: 'list'
     }
+  },
+  computed: {
+    columns
   },
   mounted() {
     this.currentTime = this.$route.query.start_date

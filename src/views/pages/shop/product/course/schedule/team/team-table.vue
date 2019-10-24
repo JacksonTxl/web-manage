@@ -72,7 +72,7 @@
                   <span class="value">{{ info.court_name }}</span>
                 </div>
                 <div>
-                  <span class="label">教练：</span>
+                  <span class="label">{{ $c('coach') }}：</span>
                   <span class="value">{{ info.coach_name }}</span>
                 </div>
               </div>

@@ -293,7 +293,7 @@ export default {
     onDelete(record) {
       this.$confirm({
         title: '确认要删除',
-        content: `确认删除${record.card_name}会员卡？`,
+        content: `确认删除${record.card_name}${this.$c('member_card')}？`,
         onOk: () => {
           return this.allService
             .deleteCard(record.id)

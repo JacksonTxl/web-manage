@@ -12,7 +12,7 @@
     </p>
     <a-radio-group v-model="selectedValue">
       <div :class="bTable()">
-        <div :class="bTable('left')">会员卡</div>
+        <div :class="bTable('left')">{{ $c('member_card') }}</div>
         <div :class="bTable('right')">
           <div :class="bTable('content')">
             <a-radio :value="IMPORT.MEMBER_CARD_BASIC">基础信息</a-radio>
@@ -23,7 +23,7 @@
           <div :class="bTable('content')">
             <a-radio :value="IMPORT.MEMBER_CARD_PRICE">价格信息</a-radio>
             <label :class="bTable('desc')">
-              会员卡的价格信息，请在录入卡基础信息后进行导入
+              {{ $c('member_card') }}的价格信息，请在录入卡基础信息后进行导入
             </label>
           </div>
         </div>

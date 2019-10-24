@@ -8,7 +8,7 @@ import {
 } from '@/api/v1/stat/order'
 import { forkJoin } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
-
+import { UserService } from '@/services/user.service'
 @Injectable()
 export class OrderService {
   chartData$ = new State<object[]>([])
@@ -19,7 +19,11 @@ export class OrderService {
   auth$ = this.authService.authMap$({
     export: 'brand_shop:stat:order_reports|batch_export'
   })
-  constructor(private orderApi: OrderApi, private authService: AuthService) {}
+  constructor(
+    private orderApi: OrderApi,
+    private authService: AuthService,
+    private userService: UserService
+  ) {}
   // 获取营收统计图信息
   getChart(query: OrderChartParams) {
     return this.orderApi.getChart(query).pipe(
@@ -48,7 +52,7 @@ export class OrderService {
             客单价: data.personal_course.avg
           },
           {
-            group: '会员卡',
+            group: this.userService.c('member_card'),
             成单数量: data.member_card.num,
             客单价: data.member_card.avg
           }

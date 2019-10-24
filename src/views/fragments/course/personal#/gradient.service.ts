@@ -25,7 +25,7 @@ export class GradientService {
      * 教练分级定价模式下，需要校验教练等级
      */
     if (isLevelModel && isNotSelectCoachLevel) {
-      this.errorTip('请选择教练等级')
+      this.errorTip(`请选择${this.userService.c('coach')}等级`)
       return false
     }
     return true

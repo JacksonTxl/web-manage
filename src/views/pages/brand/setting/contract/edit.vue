@@ -97,7 +97,7 @@
             <st-switch v-model="info.is_member_mobile"></st-switch>
           </st-form-item>
           <st-form-item
-            label="会员卡号"
+            :label="`${$c('member_card')}号`"
             :class="bSider('form-item', { switch: true })"
           >
             <st-switch v-model="info.is_member_card"></st-switch>

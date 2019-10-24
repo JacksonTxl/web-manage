@@ -34,7 +34,7 @@
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="22" :xs="22" :offset="1">
-        <st-form-item label="上课教练">
+        <st-form-item :label="`上课${$c('coach')}`">
           <div class="page-shop-coach-container-coach">
             <input type="hidden" v-decorator="decorators.coach_ids" />
             <select-coach

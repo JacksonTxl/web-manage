@@ -5,7 +5,7 @@
     width="60%"
     v-model="show"
     @ok="onSubmit"
-    title="会员卡合同章程设置"
+    :title="`${$c('member_card')}合同章程设置`"
   >
     <a-textarea
       :class="bModal('textarea')"
