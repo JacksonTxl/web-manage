@@ -63,23 +63,23 @@
             <a-radio :value="1">开启</a-radio>
             <a-radio :value="0">关闭</a-radio>
           </a-radio-group>
-          <div v-if="isBulk === 1" class="popover">
+          <st-pop-container v-if="isBulk === 1">
             <div class="arrow"></div>
             <span>单次购买超过</span>
             <a-input-number
               v-decorator="decorators.group_buy_min"
-              class="input mg-l4 "
+              class="input mg-l4"
               :min="0"
             ></a-input-number>
             <span>张</span>
             <span class="mg-l4">每张原价减</span>
             <a-input-number
               v-decorator="decorators.reduce_price"
-              class="input mg-l4 "
+              class="input mg-l4"
               :min="0"
             ></a-input-number>
             <span>元</span>
-          </div>
+          </st-pop-container>
         </st-form-item>
         <st-form-item label="售卖时间">
           <a-radio-group

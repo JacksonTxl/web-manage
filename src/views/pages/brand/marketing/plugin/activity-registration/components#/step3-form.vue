@@ -25,7 +25,10 @@
             <td>{{ item.extra_name }}</td>
             <td>{{ item.extra_require === 1 ? '必填' : '选填' }}</td>
             <td>
-              <a @click="delExtraItemRecord(item.extra_key)">
+              <a
+                v-if="item.extra_sort !== 0 && item.extra_sort !== 1"
+                @click="delExtraItemRecord(item.extra_key)"
+              >
                 删除
               </a>
             </td>

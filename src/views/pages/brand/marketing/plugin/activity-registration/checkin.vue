@@ -26,7 +26,7 @@
             slot="ticket_status"
             slot-scope="text"
           >
-            {{ text.name }}
+            <st-status-text :status="text.id">{{ text.name }}</st-status-text>
           </span>
           <template slot="action" slot-scope="text, record">
             <st-table-actions>
