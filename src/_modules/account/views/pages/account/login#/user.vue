@@ -4,7 +4,7 @@
       <st-form-item>
         <a-input
           size="large"
-          placeholder="用户名、邮箱登录"
+          placeholder="用户名"
           v-decorator="decorators.name"
         />
       </st-form-item>

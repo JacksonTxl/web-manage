@@ -5,7 +5,7 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           required: true,
-          message: '请输入用户名或登录邮箱'
+          message: '请输入用户名'
         }
       ]
     },
