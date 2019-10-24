@@ -82,12 +82,14 @@
           v-decorator="decorators.content"
           placeholder="请输入【签名】"
         ></a-textarea>
-        <div v-if="curTem === TMPL_TYPES.PERSONAL">
-          <a-checkbox v-decorator="decorators.is_save">
+        <div :class="bModal('save')" v-if="curTem === TMPL_TYPES.PERSONAL">
+          <a-checkbox
+            v-decorator="decorators.is_save"
+            :class="bModal('save-btn')"
+          >
             存为模板
           </a-checkbox>
           <a-input
-            style="width:80%"
             v-decorator="decorators.title"
             placeholder="请输入模版标题"
           ></a-input>
@@ -259,15 +261,21 @@ export default {
             })
             return
           }
-        }
-        if (this.curTem === this.TMPL_TYPES.PERSONAL) {
           if (!values.content) {
             this.messageService.warn({
               content: '请输入模板内容'
             })
             return
           }
+        } else {
+          if (!values.tmpl_id) {
+            this.messageService.warn({
+              content: '请选择模板'
+            })
+            return
+          }
         }
+
         if (this.id) {
           values.group_id = this.id
           return this.groupService.editGroup({ ...values }).subscribe(res => {

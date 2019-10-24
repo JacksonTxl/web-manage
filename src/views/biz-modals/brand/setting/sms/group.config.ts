@@ -38,13 +38,6 @@ export const ruleOptions = (vm: any) => {
     title: {},
     content: {},
     is_save: {},
-    tmpl_id: {
-      rules: [
-        {
-          required: true,
-          message: '请选择模版'
-        }
-      ]
-    }
+    tmpl_id: {}
   }
 }
