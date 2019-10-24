@@ -304,8 +304,6 @@ export default {
           },
           complete: () => {
             this.isLoading = false
-            this.stopMouseEvent = false
-            this.uploadShowFlag = false
           }
         })
     },

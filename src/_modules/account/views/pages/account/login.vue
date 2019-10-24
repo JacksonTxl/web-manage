@@ -132,10 +132,8 @@ export default {
         { key: 'mobilefind', name: '手机找回' },
         { key: 'emailfind', name: '邮件找回' }
       ],
-      loginTypes: [
-        { key: 'user', name: '用户密码登录' },
-        { key: 'mobile', name: '手机动态密码登录' }
-      ],
+      loginTypes: [{ key: 'user', name: '用户密码登录' }],
+      // { key: 'mobile', name: '手机动态密码登录' }
       countryInfo: {}
     }
   },

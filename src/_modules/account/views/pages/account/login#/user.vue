@@ -4,7 +4,7 @@
       <st-form-item>
         <a-input
           size="large"
-          placeholder="用户名、邮箱登录"
+          placeholder="用户名"
           v-decorator="decorators.name"
         />
       </st-form-item>
@@ -32,9 +32,9 @@
               </a>
             </a-checkbox>
           </div>
-          <span :class="loginUser('pass-content')">
+          <!-- <span :class="loginUser('pass-content')">
             <a @click="onClickFindPassword">忘记密码</a>
-          </span>
+          </span> -->
         </div>
       </st-form-item>
       <st-form-item class="mg-b32">
