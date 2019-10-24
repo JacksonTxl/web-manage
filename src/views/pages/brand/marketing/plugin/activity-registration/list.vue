@@ -36,6 +36,7 @@
       <st-table
         :page="page$"
         rowKey="id"
+        :loading="loading$.getList"
         :columns="columns"
         @change="onTableChange"
         :scroll="{ x: 1500 }"
@@ -108,12 +109,7 @@ export default {
   data() {
     return {
       TYPE,
-      plugin_image: [
-        'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/img-lottery-preview-1.png',
-        'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/img-lottery-preview-2.png',
-        'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/img-lottery-preview-2.png',
-        'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/img-lottery-preview-3.png'
-      ],
+      plugin_image: [],
       redirectPath: {
         addActivity: 'brand-marketing-plugin-activity-registration-add',
         editActivity: 'brand-marketing-plugin-activity-registration-edit',
@@ -130,12 +126,13 @@ export default {
     }
   },
   rxState() {
-    const { page$, list$, activityStatus$ } = this.service
+    const { page$, list$, activityStatus$, loading$ } = this.service
     return {
       query: this.routeService.query$,
       activityStatus$,
       page$,
-      list$
+      list$,
+      loading$
     }
   },
   components: {

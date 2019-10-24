@@ -76,6 +76,9 @@ export default {
   modals: {
     MarketingAddTicket
   },
+  bem: {
+    b: 'step-form-signup'
+  },
   serviceInject() {
     return {
       copyService: CopyService
@@ -92,7 +95,7 @@ export default {
       type: Boolean,
       default: false
     },
-    isUpdate: {
+    isEdit: {
       type: Boolean,
       default: false
     },
@@ -101,7 +104,7 @@ export default {
     }
   },
   created() {
-    if (!this.isCopy && !this.isUpdate) return
+    if (!this.isCopy && !this.isEdit) return
     this.initForm()
   },
   data() {

@@ -1,5 +1,5 @@
 <template>
-  <st-modal :title="modalTitle" v-model="show">
+  <st-modal :title="modalTitle" v-model="show" size="small">
     <div class="modal-marketing-add-ticket">
       <st-form :form="form" labelWidth="66px">
         <st-form-item label="票种类型" required>
@@ -13,7 +13,10 @@
           </a-radio-group>
         </st-form-item>
         <st-form-item label="票种名称" required>
-          <a-input v-decorator="decorators.ticket_name"></a-input>
+          <a-input
+            v-decorator="decorators.ticket_name"
+            placeholder="请输入票种名称"
+          ></a-input>
         </st-form-item>
         <st-form-item v-show="ticketType === 1" label="价格" required>
           <a-input-number
@@ -30,7 +33,7 @@
             v-decorator="decorators.ticket_total_num"
           ></a-input-number>
         </st-form-item>
-        <st-form-item label="购买用户" required>
+        <st-form-item label="购买用户" required style="width:200px">
           <a-select
             v-decorator="decorators.crowd_id"
             :options="crowdIdOptions"
@@ -65,14 +68,14 @@
             <span>单次购买超过</span>
             <a-input-number
               v-decorator="decorators.group_buy_min"
-              class="input"
+              class="input mg-l4 "
               :min="0"
             ></a-input-number>
             <span>张</span>
-            <span>每张原价减</span>
+            <span class="mg-l4">每张原价减</span>
             <a-input-number
               v-decorator="decorators.reduce_price"
-              class="input"
+              class="input mg-l4 "
               :min="0"
             ></a-input-number>
             <span>元</span>
@@ -81,15 +84,22 @@
         <st-form-item label="售卖时间">
           <a-radio-group
             :style="radioStyle"
+            @change="getCurSaleTimeType"
             v-decorator="decorators.buy_time_limit"
           >
             <a-radio :value="1">指定时间</a-radio>
-            <a-range-picker v-decorator="decorators.buy_time"></a-range-picker>
             <a-radio :value="0">活动结束前均可售卖</a-radio>
+            <a-range-picker
+              v-if="isShowSaleDatePicker"
+              v-decorator="decorators.buy_time"
+            ></a-range-picker>
           </a-radio-group>
         </st-form-item>
         <st-form-item label="备注说明">
-          <st-textarea v-decorator="decorators.ticket_remark"></st-textarea>
+          <st-textarea
+            v-decorator="decorators.ticket_remark"
+            placeholder="请输入备注说明"
+          ></st-textarea>
         </st-form-item>
       </st-form>
     </div>
@@ -127,7 +137,8 @@ export default {
       crowdIdOptions: [{ label: '全部用户', value: 0 }],
       radioStyle: {
         display: 'block'
-      }
+      },
+      isShowSaleDatePicker: true
     }
   },
   props: {
@@ -238,6 +249,9 @@ export default {
       if (this.freeTicket) {
         this.form.setFieldsValue({ ticket_price: 0 })
       }
+    },
+    getCurSaleTimeType(e) {
+      this.isShowSaleDatePicker = e.target.value
     }
   }
 }

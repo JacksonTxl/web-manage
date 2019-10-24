@@ -97,7 +97,7 @@ export default {
       type: Boolean,
       default: false
     },
-    isUpdate: {
+    isEdit: {
       type: Boolean,
       default: false
     },
@@ -107,7 +107,7 @@ export default {
   },
   created() {
     this.service.getDefaultExtInfo().subscribe()
-    if (!this.isCopy && !this.isUpdate) return
+    if (!this.isCopy && !this.isEdit) return
     this.initForm()
   },
   computed: {

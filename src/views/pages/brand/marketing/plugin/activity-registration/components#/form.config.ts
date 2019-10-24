@@ -9,7 +9,7 @@ export const ruleOptions = (vm: any) => {
         },
         {
           pattern: pattern.CN_EN_NUM('1-15'),
-          message: '请输入1~15d个字符'
+          message: '请输入1~15个字符'
         }
       ]
     },

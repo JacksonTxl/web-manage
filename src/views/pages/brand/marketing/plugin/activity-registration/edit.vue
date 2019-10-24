@@ -1,5 +1,5 @@
 <template>
-  <page-add :isUpdate="true"></page-add>
+  <page-add :isEdit="true"></page-add>
 </template>
 
 <script>

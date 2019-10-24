@@ -22,7 +22,7 @@
         v-show="currentStep === 0"
         :show="currentStep === 0"
         :isCopy="isCopy"
-        :isUpdate="isUpdate"
+        :isEdit="isEdit"
         @step-submit="onSubmitGetStep1Form"
         @change="onChangeStep1Form"
       ></step1-form>
@@ -31,7 +31,7 @@
         :show="currentStep === 1"
         :isCopy="isCopy"
         @back="onBack"
-        :isUpdate="isUpdate"
+        :isEdit="isEdit"
         @step-submit="onSubmitGetStep2Form"
         @change="onChangeStep2Form"
       ></step2-form>
@@ -39,7 +39,7 @@
         v-show="currentStep === 2"
         :show="currentStep === 2"
         :isCopy="isCopy"
-        :isUpdate="isUpdate"
+        :isEdit="isEdit"
         @back="onBack"
         @release="onReleaseActivity"
         @save-draft="onSaveDraftActivity"
@@ -96,7 +96,7 @@ export default {
       type: Boolean,
       default: false
     },
-    isUpdate: {
+    isEdit: {
       type: Boolean,
       default: false
     }
@@ -127,7 +127,7 @@ export default {
       this.stepForm.is_draft = 0
       this.$set(this.stepForm, 'rule_settings', JSON.stringify(form))
       // 发布
-      if (this.isUpdate) {
+      if (this.isEdit) {
         this.service.updateActivity(this.stepForm).subscribe()
       } else if (this.isCopy) {
         this.service.copyActivity(this.stepForm).subscribe()

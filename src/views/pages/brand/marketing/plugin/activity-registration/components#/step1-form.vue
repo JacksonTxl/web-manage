@@ -9,6 +9,7 @@
     <st-form-item label="活动时间" required>
       <a-range-picker
         v-decorator="decorators.date"
+        :disabledDate="disabledDate"
         :showTime="{ format: 'HH:mm' }"
         format="YYYY-MM-DD HH:mm"
       />
@@ -71,7 +72,7 @@ import { EditService } from '../edit.service'
 export default {
   name: 'Step1Form',
   bem: {
-    b: 'page-plugin-form-activity'
+    b: 'step-form-signup'
   },
   serviceInject() {
     return {
@@ -111,7 +112,7 @@ export default {
       type: Boolean,
       default: false
     },
-    isUpdate: {
+    isEdit: {
       type: Boolean,
       default: false
     },
@@ -121,7 +122,7 @@ export default {
     }
   },
   created() {
-    if (!this.isCopy && !this.isUpdate) return
+    if (!this.isCopy && !this.isEdit) return
     this.initForm()
   },
   components: {
@@ -180,6 +181,9 @@ export default {
       this.$emit('change', this.formInfo)
       this.address = address
     },
+    disabledDate(current) {
+      return current && current < moment()
+    },
     onSubmit() {
       this.form.validate().then(values => {
         let { activity_name, member_limit_num } = values
@@ -187,7 +191,7 @@ export default {
         const end_time = values.date[1].format('YYYY-MM-DD HH:mm')
         const image = this.file
         const { address, province, city, district, lat, lng } = this.address
-        const activity_id = this.isUpdate
+        const activity_id = this.isEdit
           ? this.defaultForm$.activity_id
           : undefined
         const form = {
