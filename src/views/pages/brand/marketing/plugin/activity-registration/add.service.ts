@@ -14,7 +14,7 @@ export class AddService {
   addActivity(params: SignUpInfo) {
     return this.api.addSignUp(params).pipe(
       tap(res => {
-        this.msg.success({ content: '发布活动成功！' })
+        // this.msg.success({ content: '发布活动成功！' })
       })
     )
   }

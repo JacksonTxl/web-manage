@@ -47,17 +47,17 @@
     <st-form-item label="活动详情" required>
       <st-editor v-model="content"></st-editor>
     </st-form-item>
-    <st-form-item label="" label-fix>
+    <!-- <st-form-item label="" label-fix>
       <st-button type="primary" @click="onSubmit">
         下一步
       </st-button>
-    </st-form-item>
+    </st-form-item> -->
+    <div v-di-view="{ name: 'step', show }">
+      <st-button type="primary" @click="onSubmit">
+        下一步
+      </st-button>
+    </div>
   </st-form>
-  <!-- <div v-di-view="{ name: 'step', show }">
-        <st-button type="primary" @click="onSubmit">
-          下一步
-        </st-button>
-      </div> -->
 </template>
 
 <script>

@@ -19,19 +19,27 @@
           ></a-input>
         </st-form-item>
         <st-form-item v-show="ticketType === 1" label="价格" required>
-          <a-input-number
+          <st-input-number
+            class="input"
+            :float="true"
             :min="0"
             v-decorator="decorators.ticket_price"
-          ></a-input-number>
+          ></st-input-number>
+          <span class="mg-l4">元</span>
         </st-form-item>
         <st-form-item v-show="ticketType === 2" label="价格" required>
           <span>免费</span>
         </st-form-item>
         <st-form-item label="票数" required>
           <a-input-number
+            class="input"
             :min="1"
+            :max="99999"
+            :step="1"
+            :precision="0"
             v-decorator="decorators.ticket_total_num"
           ></a-input-number>
+          <span class="mg-l4">张</span>
         </st-form-item>
         <st-form-item label="购买用户" required style="width:200px">
           <a-select
@@ -42,13 +50,21 @@
         <st-form-item label="购买限制" required>
           <span>单次购买，最少</span>
           <a-input-number
+            class="input mg-l4 mg-r4"
             :min="0"
+            :max="99999"
+            :step="1"
+            :precision="0"
             v-decorator="decorators.buy_limit_min"
           ></a-input-number>
           <span>份，</span>
           <span>最多</span>
           <a-input-number
+            class="input mg-l4 mg-r4"
             :min="0"
+            :max="99999"
+            :step="1"
+            :precision="0"
             v-decorator="decorators.buy_limit_max"
           ></a-input-number>
           <span>份</span>
@@ -68,16 +84,20 @@
             <span>单次购买超过</span>
             <a-input-number
               v-decorator="decorators.group_buy_min"
-              class="input mg-l4"
+              class="input mg-l4 mg-r4"
+              :max="99999"
+              :step="1"
+              :precision="0"
               :min="0"
             ></a-input-number>
             <span>张</span>
             <span class="mg-l4">每张原价减</span>
-            <a-input-number
+            <st-input-number
               v-decorator="decorators.reduce_price"
-              class="input mg-l4"
+              class="input mg-l4 mg-r4"
+              :float="true"
               :min="0"
-            ></a-input-number>
+            ></st-input-number>
             <span>元</span>
           </st-pop-container>
         </st-form-item>
@@ -90,6 +110,8 @@
             <a-radio :value="1">指定时间</a-radio>
             <a-radio :value="0">活动结束前均可售卖</a-radio>
             <a-range-picker
+              :disabledDate="disabledDate"
+              class="mg-t8"
               v-if="isShowSaleDatePicker"
               v-decorator="decorators.buy_time"
             ></a-range-picker>
@@ -97,6 +119,8 @@
         </st-form-item>
         <st-form-item label="备注说明">
           <st-textarea
+            :maxlength="200"
+            :autosize="{ minRows: 2, maxRows: 6 }"
             v-decorator="decorators.ticket_remark"
             placeholder="请输入备注说明"
           ></st-textarea>
@@ -114,6 +138,8 @@
 <script>
 import { ruleOptions } from './add-ticket.config'
 import { PatternService } from '@/services/pattern.service'
+import { MessageService } from '@/services/message.service'
+
 export default {
   name: 'ModalAddTicket',
   bem: {
@@ -121,7 +147,8 @@ export default {
   },
   serviceInject() {
     return {
-      pattern: PatternService
+      pattern: PatternService,
+      messageService: MessageService
     }
   },
   data() {
@@ -183,7 +210,7 @@ export default {
       } = values
       let buy_start_time = ''
       let buy_end_time = ''
-      if (buy_time_limit === 1) {
+      if (buy_time_limit === 1 && buy_time) {
         buy_start_time = buy_time[0].format('YYYY-MM-DD HH:mm')
         buy_end_time = buy_time[1].format('YYYY-MM-DD HH:mm')
       }
@@ -237,6 +264,12 @@ export default {
     },
     onSubmit() {
       this.form.validate().then(values => {
+        if (values.buy_time_limit === 1 && !values.buy_time) {
+          this.messageService.success({
+            content: '请选择时间'
+          })
+          return
+        }
         this.show = false
         // 返回表格显示数据
         this.$emit('show', this.getShowData(values))
@@ -252,6 +285,11 @@ export default {
     },
     getCurSaleTimeType(e) {
       this.isShowSaleDatePicker = e.target.value
+    },
+    disabledDate(current) {
+      return (
+        current && current.format('YYYY-MM-DD') < moment().format('YYYY-MM-DD')
+      )
     }
   }
 }

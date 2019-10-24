@@ -128,15 +128,24 @@ export default {
       this.$set(this.stepForm, 'rule_settings', JSON.stringify(form))
       // 发布
       if (this.isEdit) {
-        this.service.updateActivity(this.stepForm).subscribe()
+        this.service.updateActivity(this.stepForm).subscribe(res => {
+          this.$router.push({
+            path: '/brand/marketing/plugin/activity-registration/success'
+          })
+        })
       } else if (this.isCopy) {
-        this.service.copyActivity(this.stepForm).subscribe()
+        this.service.copyActivity(this.stepForm).subscribe(res => {
+          this.$router.push({
+            path: '/brand/marketing/plugin/activity-registration/success'
+          })
+        })
       } else {
-        this.service.addActivity(this.stepForm).subscribe()
+        this.service.addActivity(this.stepForm).subscribe(res => {
+          this.$router.push({
+            path: '/brand/marketing/plugin/activity-registration/success'
+          })
+        })
       }
-      this.$router.push({
-        path: '/brand/marketing/plugin/activity-registration/success'
-      })
     },
     // 存草稿
     onSaveDraftActivity(form) {
