@@ -37,6 +37,7 @@ export const ruleOptions = (vm: any) => {
     },
     title: {},
     content: {},
+    is_save: {},
     tmpl_id: {
       rules: [
         {

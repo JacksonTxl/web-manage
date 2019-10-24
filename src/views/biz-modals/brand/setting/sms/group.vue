@@ -83,12 +83,12 @@
           placeholder="请输入【签名】"
         ></a-textarea>
         <div v-if="curTem === TMPL_TYPES.PERSONAL">
-          <a-checkbox v-decorator="decorators.title">
+          <a-checkbox v-decorator="decorators.is_save">
             存为模板
           </a-checkbox>
           <a-input
             style="width:80%"
-            v-decorator="decorators.is_save"
+            v-decorator="decorators.title"
             placeholder="请输入模版标题"
           ></a-input>
         </div>
