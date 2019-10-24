@@ -4,7 +4,7 @@
       v-model="query.card_name"
       v-di-view="{ name: BRAND_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH }"
       @search="onKeywordsSearch('card_name', $event)"
-      placeholder="请输入会员卡名称查找"
+      :placeholder="`请输入${$c('member_card')}名称查找`"
       maxlength="50"
     />
     <div :class="shelves('search')" class="mg-b16">
