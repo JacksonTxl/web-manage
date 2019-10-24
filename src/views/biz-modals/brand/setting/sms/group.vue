@@ -25,10 +25,7 @@
           v-model="tel"
           placeholder="输入手机号,每行一个"
         ></a-textarea>
-        <div
-          style="background: #F7F9FC;padding: 12px;"
-          v-if="curUser === USER_TYPES.CROWD"
-        >
+        <div :class="bModal('scroll')" v-if="curUser === USER_TYPES.CROWD">
           <a-radio-group v-decorator="decorators.send_value">
             <a-radio-button
               class="mg-r8 mg-b8"
@@ -85,11 +82,16 @@
           v-decorator="decorators.content"
           placeholder="请输入【签名】"
         ></a-textarea>
-        <a-input
-          v-if="curTem === TMPL_TYPES.PERSONAL"
-          v-decorator="decorators.title"
-          placeholder="请输入模版标题"
-        ></a-input>
+        <div v-if="curTem === TMPL_TYPES.PERSONAL">
+          <a-checkbox v-decorator="decorators.title">
+            存为模板
+          </a-checkbox>
+          <a-input
+            style="width:80%"
+            v-decorator="decorators.is_save"
+            placeholder="请输入模版标题"
+          ></a-input>
+        </div>
         <a-select
           style="width:200px"
           class="mg-b8"
@@ -235,6 +237,12 @@ export default {
           values.send_time = values.send_time.format('YYYY-MM-DD HH:mm')
         }
         if (this.curUser === this.USER_TYPES.USER) {
+          if (!this.tel) {
+            this.messageService.warn({
+              content: '请输入手机号'
+            })
+            return
+          }
           values.send_value = this.tel
         }
         if (this.curTem === this.TMPL_TYPES.PERSONAL) {
