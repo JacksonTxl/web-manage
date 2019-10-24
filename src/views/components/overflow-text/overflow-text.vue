@@ -2,6 +2,7 @@
   <a-popover
     :title="title"
     class="st-overflow-text"
+    placement="topLeft"
     overlayClassName="st-overflow-text__overlay"
     :style="{ maxWidth }"
   >

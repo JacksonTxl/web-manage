@@ -7,7 +7,6 @@
     <st-panel>
       <div slot="title">
         <router-link
-          tag="a"
           :to="{ name: 'brand-marketing-plugin-crowd-add' }"
           v-if="crowdIndexList.length <= 10"
         >
@@ -30,47 +29,48 @@
       </div>
       <st-table
         rowKey="id"
+        :loading="loading.getListInfo"
         :dataSource="crowdIndexList"
         :columns="columns"
         :pagination="false"
       >
+        <st-overflow-text slot="description" slot-scope="text">
+          {{ text }}
+        </st-overflow-text>
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
-            <a-dropdown placement="bottomRight">
-              <a class="ant-dropdown-link" href="#">定向运营</a>
-              <a-menu slot="overlay">
-                <a-menu-item style="width:130px">
-                  <a
-                    v-if="record.auth['shop:member:crowd|export']"
-                    v-export-excel="{
-                      type: 'crowd/' + record.id,
-                      query: record
-                    }"
-                  >
-                    导出
-                  </a>
-                </a-menu-item>
-                <a-menu-item style="width:130px">
-                  <a
-                    href="javascript:;"
-                    @click="newCrowd('功能正在开发中，敬请期待')"
-                  >
-                    群发短信
-                  </a>
-                </a-menu-item>
-                <a-menu-item style="width:130px">
-                  <a
-                    href="javascript:;"
-                    @click="newCrowd('功能正在开发中，敬请期待')"
-                  >
-                    群发优惠
-                  </a>
-                </a-menu-item>
-              </a-menu>
-            </a-dropdown>
+            <st-more-dropdown>
+              <span slot="title">定向运营</span>
+              <a-menu-item style="width:130px">
+                <a
+                  v-if="record.auth['shop:member:crowd|export']"
+                  v-export-excel="{
+                    type: 'crowd/' + record.id,
+                    query: record
+                  }"
+                >
+                  导出
+                </a>
+              </a-menu-item>
+              <a-menu-item style="width:130px">
+                <a
+                  href="javascript:;"
+                  @click="newCrowd('功能正在开发中，敬请期待')"
+                >
+                  群发短信
+                </a>
+              </a-menu-item>
+              <a-menu-item style="width:130px">
+                <a
+                  href="javascript:;"
+                  @click="newCrowd('功能正在开发中，敬请期待')"
+                >
+                  群发优惠
+                </a>
+              </a-menu-item>
+            </st-more-dropdown>
             <router-link
               v-if="record.auth['shop:member:crowd|edit']"
-              tag="a"
               :to="{
                 name: 'brand-marketing-plugin-crowd-add',
                 query: { id: record.id }
@@ -85,28 +85,6 @@
               <a>删除</a>
             </st-popconfirm>
           </st-table-actions>
-          <!-- <st-more-dropdown class="tree-opreation">
-            <a-menu-item v-if="record.auth['shop:member:crowd|export']" @click="addTreeNode(record)">导出</a-menu-item>
-            <a-menu-item>
-              <router-link v-if="record.auth['shop:member:crowd|edit']" tag="a" :to=" { name: 'brand-markting-plugin-crowd-add',query:{id:record.id}}">编辑</router-link>
-            </a-menu-item>
-            <a-menu-item v-if="record.auth['shop:member:crowd|del']" @click="deleteTreeNode(record)">删除</a-menu-item>
-          </st-more-dropdown> -->
-        </div>
-        <div
-          slot="description"
-          slot-scope="text"
-          style="width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"
-        >
-          <a-tooltip
-            placement="topLeft"
-            overlayClassName="shop-member-crowd-index-tooltip"
-          >
-            <template slot="title">
-              <span>{{ text }}</span>
-            </template>
-            {{ text }}
-          </a-tooltip>
         </div>
       </st-table>
     </st-panel>
@@ -131,6 +109,7 @@ export default {
   },
   rxState() {
     return {
+      loading: this.indexService.loading$,
       crowdIndexInfo: this.indexService.crowdIndexInfo$,
       crowdIndexList: this.indexService.crowdIndexList$,
       auth: this.indexService.auth$,

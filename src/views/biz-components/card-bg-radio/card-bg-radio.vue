@@ -31,8 +31,7 @@
           <p>
             <span>1.</span>
             <span>
-              图片格式必须为：png,bmp,jpeg,jpg,gif,建议使用png格
-              式图片，以保存最佳效果
+              图片格式必须为：png,bmp,jpeg,jpg,建议使用png格式图片，以保存最佳效果
             </span>
           </p>
           <p>
