@@ -91,6 +91,7 @@
           placeholder="请输入模版标题"
         ></a-input>
         <a-select
+          style="width:200px"
           class="mg-b8"
           v-show="curTem === TMPL_TYPES.CUSTOM"
           placeholder="请选择模版"

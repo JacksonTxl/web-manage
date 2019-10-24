@@ -170,13 +170,7 @@ export default {
     },
     handleTableChange(e) {
       this.isShowList = e.target.value
-      if (this.isShowList === 1) {
-        this.$router.push({ query: { ...this.query, current_page: 1 } })
-        this.getGroupList()
-      } else {
-        this.$router.push({ query: { ...this.query, current_page: 1 } })
-        this.getTemplateList()
-      }
+      this.$router.push({ query: { ...this.query, current_page: 1 } })
     },
     getTemplateList() {
       return this.groupService.getTemplateList().subscribe()
