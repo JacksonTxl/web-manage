@@ -34,12 +34,16 @@
         <span>{{ info.consume_type }}</span>
       </div>
       <div :class="b('section-item')">
-        <!-- <span class="mg-b8">剩余课时/总课时:</span> -->
-        <span class="mg-b8">剩余额度/总额度:</span>
-        <span>{{ info.amount_num }}</span>
+        <span class="mg-b8" v-if="info.ticket_type.code === 1">
+          剩余课时/总课时:
+        </span>
+        <span class="mg-b8" v-if="info.ticket_type.code === 2">
+          剩余额度/总额度:
+        </span>
+        <span v-if="info.ticket_type.code !== 3">{{ info.amount_num }}</span>
       </div>
     </div>
-    <div :class="b('section')">
+    <div :class="b('section')" v-if="info.ticket_type.code === 3">
       <div :class="b('section-item')">
         <span class="mg-b8">合同号:</span>
         <span>{{ info.contract_number }}</span>
