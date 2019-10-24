@@ -1,5 +1,5 @@
 <template>
-  <st-panel :class="bPage()">
+  <st-panel app :class="bPage()">
     <div slot="title">
       <st-input-search
         placeholder="输入用户姓名、手机号"
@@ -8,12 +8,12 @@
       />
     </div>
     <div slot="prepend">
-      <st-search-panel>
+      <st-search-panel @search="onSearchNative" @reset="onReset">
         <st-search-panel-item label="预约类型：">
           <st-search-radio
             class="value"
             v-model="query.reserve_type"
-            :list="reserveType$"
+            :options="reserveType$"
           />
         </st-search-panel-item>
         <st-search-panel-item label="预约时间：">
@@ -24,20 +24,9 @@
             class="value"
           ></st-range-picker>
         </st-search-panel-item>
-
-        <div slot="button">
-          <st-button
-            type="primary"
-            @click="onSearchNative"
-            :loading="loading$.getList"
-          >
-            查询
-          </st-button>
-          <st-button class="mg-l8" @click="onReset">重置</st-button>
-        </div>
       </st-search-panel>
     </div>
-    <div class="mg-t24 mg-b16">
+    <div>
       <st-button
         @click="onAddReverse"
         type="primary"
@@ -48,6 +37,7 @@
       </st-button>
     </div>
     <st-table
+      class="mg-t16"
       :columns="columns"
       :scroll="{ x: 1400 }"
       rowKey="id"

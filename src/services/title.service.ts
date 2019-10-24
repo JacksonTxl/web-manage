@@ -10,7 +10,7 @@ export class TitleService implements RouteGuard {
       if (brand.name || shop.name) {
         return `${title ? title + ' - ' : ''}${shop.name} ${brand.name}`
       }
-      return `${title ? title + ' - ' : ''}三体云动`
+      return `${title ? title + ' - ' : ''}三体云动Pro`
     },
     [this.title$, this.userService.brand$, this.userService.shop$]
   )

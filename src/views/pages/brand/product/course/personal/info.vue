@@ -89,8 +89,8 @@
             <span class="label">售价设置:</span>
             <span class="value">
               {{
-                personalCourseInfo.price_setting
-                  | enumFilter('personal_course.price_setting')
+                personalCourseInfo.price_model
+                  | enumFilter('personal_course.price_model')
               }}
             </span>
           </div>
@@ -102,7 +102,7 @@
               page-mode="client"
             >
               <div slot="min_sell_price" slot-scope="min_sell_price, record">
-                <span v-if="record.min_sell_price !== '0.0'">
+                <span v-if="saleModel">
                   {{ record.min_sell_price }} ~ {{ record.max_sell_price }}
                 </span>
                 <span v-else>
@@ -120,7 +120,7 @@
               </div>
             </st-table>
           </st-container>
-          <div class="title mg-b8">
+          <div class="title mg-t16">
             <span class="label">售卖方式:</span>
             <span class="value">
               {{
@@ -129,11 +129,11 @@
               }}
             </span>
           </div>
-          <div class="title mg-b8">
+          <div class="title mg-t8">
             <span class="label">单节有效期:</span>
             <span class="value">{{ personalCourseInfo.effective_unit }}</span>
           </div>
-          <div class="title mg-b8">
+          <div class="title mg-t8">
             <span class="label">定价权限:</span>
             <span class="value">
               {{
@@ -142,9 +142,9 @@
               }}
             </span>
           </div>
-          <div class="title mg-b8">
+          <div class="title mg-t8">
             <span class="label">单节售卖:</span>
-            <span class="value">{{ prices.single_price }}</span>
+            <span class="value">{{ personalCourseInfo.single_price }}</span>
           </div>
         </div>
       </div>
@@ -185,6 +185,9 @@ export default {
     },
     image() {
       return this.personalCourseInfo.image.image_key
+    },
+    saleModel() {
+      return this.personalCourseInfo.sale_model === 1 // 教练谈单
     }
   },
   data() {

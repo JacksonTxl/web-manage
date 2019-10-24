@@ -3,7 +3,6 @@
     <st-panel title="订单详情">
       <div slot="actions">
         <st-button
-          class="mg-r8"
           v-if="auth['brand_shop:order:order|refund']"
           @click="onRefund"
           type="primary"
@@ -19,7 +18,6 @@
           收款
         </st-button>
         <st-button
-          class="mg-r8"
           v-if="auth['brand_shop:order:order|cancel']"
           @click="onCancel"
           type="primary"
@@ -78,7 +76,12 @@
         </a-col>
       </a-row>
     </st-panel>
-    <st-panel initial class="mg-t12" :tabs="tabs">
+    <st-panel
+      initial
+      class="mg-t12"
+      :class="basic('panel-bottom')"
+      :tabs="tabs"
+    >
       <router-view></router-view>
     </st-panel>
   </section>

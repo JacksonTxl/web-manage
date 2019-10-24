@@ -1,0 +1,65 @@
+.page-account-find {
+  background: #ffffff;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  &__header {
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.05);
+    display: flex;
+    height: 80px;
+    line-height: 80px;
+  }
+  &__header-logo {
+    height: 33px;
+    width: 120px;
+    margin: 23px 26px 0 47px;
+  }
+  &__header-text {
+    font-size: 20px;
+    font-weight: 500;
+    color: rgba(37, 42, 46, 1);
+  }
+  .footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    text-align: center;
+    background: url('~@/assets/img/find-footer.png') repeat-x;
+    height: 125px;
+    background-position-y: 0;
+    &__active {
+      box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
+      height: 266px;
+      background-position-y: 133px;
+    }
+    &__msg {
+      width: 350px;
+      margin: auto;
+      font-size: 12px;
+      text-align: left;
+    }
+    &__title {
+      font-size: 14px;
+      line-height: 22px;
+      margin-top: 36px;
+      margin-bottom: 16px;
+    }
+    &__item {
+      line-height: 16px;
+      height: 16px;
+      margin-bottom: 12px;
+    }
+    &__item-img {
+      margin-right: 4px;
+      margin-top: -1px;
+    }
+    &__copyright {
+      margin-top: 84px;
+    }
+    &__copyright--active {
+      margin-top: 50px;
+    }
+  }
+}

@@ -1,0 +1,39 @@
+.st-status-text {
+  display: flex;
+  align-items: center;
+  &__dot {
+    .s(6px, 6px);
+    border-radius: 50%;
+    .mg-r(8px);
+  }
+  &--none {
+    .st-status-text__dot {
+      display: none;
+    }
+  }
+  &--success {
+    .st-status-text__dot {
+      .bg(#3dd49f);
+    }
+  }
+  &--warning {
+    .st-status-text__dot {
+      .bg(@warning-color);
+    }
+  }
+  &--info {
+    .st-status-text__dot {
+      .bg(@info-color);
+    }
+  }
+  &--normal {
+    .st-status-text__dot {
+      .bg(rgba(black, 0.25));
+    }
+  }
+  &--error {
+    .st-status-text__dot {
+      .bg(@error-color);
+    }
+  }
+}

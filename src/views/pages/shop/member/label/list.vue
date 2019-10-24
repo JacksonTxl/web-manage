@@ -1,11 +1,13 @@
 <template>
-  <st-panel class="page-shop-label-container">
+  <st-panel app class="page-shop-label-container">
     <div slot="title">
-      <st-button type="primary" v-if="auth.add">
-        <a v-modal-link="{ name: 'label-add', on: { change: onSearhReset } }">
-          <a-icon type="plus" class="mg-r8" />
-          添加标签
-        </a>
+      <st-button
+        type="primary"
+        v-if="auth.add"
+        icon="add"
+        v-modal-link="{ name: 'label-add', on: { change: onSearhReset } }"
+      >
+        添加标签
       </st-button>
     </div>
     <div slot="actions">
@@ -15,7 +17,7 @@
         @search="onSearch"
       />
     </div>
-    <a-row :gutter="8" class="mg-t8">
+    <a-row :gutter="8">
       <st-table
         :columns="columns"
         :dataSource="list"

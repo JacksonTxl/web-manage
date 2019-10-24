@@ -9,4 +9,7 @@ export class ExcelApi extends Api {
   export(type: string, params: any) {
     return this.http.put(`/v1/excel/${type}`, { params })
   }
+  exportCrowd(type: string, params: any) {
+    return this.http.put(`/v1/excel/crowd/${type}`, { params })
+  }
 }

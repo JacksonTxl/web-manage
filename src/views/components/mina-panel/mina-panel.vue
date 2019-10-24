@@ -4,7 +4,10 @@
       <slot name="preview"></slot>
     </div>
     <div :class="b('main')">
-      <slot></slot>
+      <slot name="prepend"></slot>
+      <div :class="b('content')">
+        <slot></slot>
+      </div>
     </div>
     <div v-if="$slots.actions" :class="b('actions', { fixed: isActionFixed })">
       <slot name="actions"></slot>

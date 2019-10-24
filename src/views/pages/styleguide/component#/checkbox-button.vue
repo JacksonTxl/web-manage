@@ -1,6 +1,5 @@
 <template>
-  <section class="sg-section">
-    <h3>st-checkbox-button</h3>
+  <div>
     <st-checkbox-button-group v-model="model">
       <st-checkbox-button-item disabled value="1">周一</st-checkbox-button-item>
       <st-checkbox-button-item value="2">周二</st-checkbox-button-item>
@@ -11,7 +10,7 @@
       <st-checkbox-button-item value="7">周日</st-checkbox-button-item>
     </st-checkbox-button-group>
     {{ model }}
-  </section>
+  </div>
 </template>
 
 <script>

@@ -416,17 +416,22 @@ export default {
     },
     save(e) {
       e.preventDefault()
-      this.form.validateFields((err, values) => {
+      this.form.validateFields().then(values => {
         const cascader = values.cascader || []
-        values.province_id = cascader[0]
-        values.city_id = cascader[1]
-        values.district_id = cascader[2]
+        if (values.cascader && values.cascader.length > 0) {
+          const cascader_name = this.getDistrictInfo(values.cascader)
+          values.province_id = values.cascader[0]
+          values.province_name = cascader_name.province_name
+          values.city_id = values.cascader[1]
+          values.city_name = cascader_name.city_name
+          values.district_id = values.cascader[2]
+          values.district_name = cascader_name.district_name
+        }
         // 手机前缀
         values.country_prefix = this.country_prefix
         values.image_face = this.faceList[0] || {}
         values.height = values.height || undefined
         values.weight = values.weight || undefined
-
         delete values.cascader
         delete values.md
         this.addService.addUser(values).subscribe(() => {
@@ -434,6 +439,16 @@ export default {
           this.$router.push({ name: 'shop-member-list', force: true })
         })
       })
+    },
+    getDistrictInfo(cascader = []) {
+      const province = this.options.filter(item => item.id === cascader[0])
+      const city = province[0].children.filter(item => item.id === cascader[1])
+      const district = city[0].children.filter(item => item.id === cascader[2])
+      return {
+        province_name: province[0].name,
+        city_name: city[0].name,
+        district_name: district[0].name
+      }
     }
   },
   mounted() {

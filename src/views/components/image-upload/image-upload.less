@@ -22,8 +22,10 @@
   &__placeholder {
     .mg-t(12px);
   }
+
   &__actions {
     position: absolute;
+    opacity: 0;
     width: 100%;
     height: 32px;
     left: 0;
@@ -31,6 +33,12 @@
     background: rgba(0, 0, 0, 0.45);
     text-align: center;
     padding: 0 6px;
+    transition: all 0.3s;
+  }
+  &:hover {
+    .st-image-upload__actions {
+      opacity: 1;
+    }
   }
   .action {
     font-size: 12px;

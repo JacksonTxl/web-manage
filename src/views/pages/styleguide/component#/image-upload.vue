@@ -1,6 +1,5 @@
 <template>
-  <section class="sg-section">
-    <h3>st-image-upload</h3>
+  <div>
     <p>
       [list] 只用于回显 获取变化请使用@change事件 [sizeLimit] 自定义图片大小m
       [numLimit] 最多啊上传图片数量 [placeholder] 自定义文字
@@ -56,7 +55,7 @@
       @change="onImageChange"
     ></st-image-upload>
     {{ list7 }}
-  </section>
+  </div>
 </template>
 
 <script>

@@ -1,8 +1,7 @@
 <template>
-  <section class="sg-section">
-    <h3>st-page-route-nav</h3>
+  <div>
     <st-page-route-nav title="应用设置" v-model="navs"></st-page-route-nav>
-  </section>
+  </div>
 </template>
 <script>
 export default {

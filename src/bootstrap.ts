@@ -25,6 +25,7 @@ import i18n from '@/i18n'
 // 默认样式加载
 import './views/components/register'
 import './filters/register'
+import './directives/register'
 
 // @ts-ignore
 import Scrollbar from '@/vendor/vue-scrollbar'

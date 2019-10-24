@@ -1,5 +1,5 @@
 <template>
-  <st-panel app initial :class="basic()">
+  <st-panel app :class="basic()">
     <div slot="title" :class="sale('search')">
       <a-select
         :class="sale('select')"
@@ -22,26 +22,26 @@
         :class="basic('search')"
       />
     </div>
-    <div :class="basic('content')">
-      <st-table
-        :page="page"
-        rowKey="id"
-        :columns="columns"
-        @change="onTableChange"
-        :dataSource="list"
-      >
-        <div slot="action" slot-scope="text, record">
-          <st-table-actions>
-            <a
-              v-if="record.auth['shop:product:product|order']"
-              @click="onTransaction(record)"
-            >
-              签单
-            </a>
-          </st-table-actions>
-        </div>
-      </st-table>
-    </div>
+
+    <st-table
+      :page="page"
+      rowKey="id"
+      :loading="loading.getList"
+      :columns="columns"
+      @change="onTableChange"
+      :dataSource="list"
+    >
+      <div slot="action" slot-scope="text, record">
+        <st-table-actions>
+          <a
+            v-if="record.auth['shop:product:product|order']"
+            @click="onTransaction(record)"
+          >
+            签单
+          </a>
+        </st-table-actions>
+      </div>
+    </st-table>
   </st-panel>
 </template>
 

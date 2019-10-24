@@ -1,7 +1,5 @@
 <template>
-  <section class="sg-section">
-    <h3>st-form</h3>
-
+  <div>
     <section class="sg-app-content">
       <st-panel initial class="pd-x24">
         <a-row :gutter="8">
@@ -197,7 +195,7 @@
         </st-form>
       </st-panel>
     </section>
-  </section>
+  </div>
 </template>
 
 <script>

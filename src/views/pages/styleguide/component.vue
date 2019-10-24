@@ -17,12 +17,19 @@
         </a-anchor>
       </div>
       <div class="sg__main">
-        <component
+        <section
+          class="sg-section"
           v-for="demo in demos"
           :key="demo.id"
           :id="demo.id"
-          :is="'demo-' + demo.id"
-        ></component>
+        >
+          <h3>
+            st-{{ demo.id }} {{ demo.title }}
+            <a @click="onShowCode(demo)">查看代码</a>
+          </h3>
+
+          <component :is="'demo-' + demo.id"></component>
+        </section>
       </div>
     </div>
   </div>
@@ -33,10 +40,16 @@ import demoComponents from './component#/index'
 console.log(demoComponents)
 export default {
   components: demoComponents,
+  methods: {
+    onShowCode(demo) {
+      fetch(
+        `/_editor?file=src/views/pages/styleguide/component%23/${demo.id}.vue`
+      )
+    }
+  },
   computed: {
     demos() {
       return [
-        { id: 'alert', title: '提示' },
         { id: 'title', title: '标题' },
         { id: 'button', title: '按钮' },
         { id: 'switch', title: '开关' },
@@ -44,21 +57,26 @@ export default {
         { id: 'hr', title: '分割线' },
         { id: 'input-number', title: '数字输入' },
         { id: 'input-search', title: '搜索框' },
+        { id: 'panel', title: '应用面板' },
+        { id: 'search-panel', title: '查询面板' },
+        { id: 'alert', title: '提示' },
         { id: 'checkbox-button', title: '复选按钮组' },
         { id: 'recent-radio-group', title: '报表raido组' },
         { id: 'btn-actions', title: '按钮操作组' },
+        { id: 'image-upload', title: '图片上传' },
         { id: 'range-picker', title: '时间范围选择' },
         { id: 'more-dropdown', title: '更多' },
         { id: 'modal', title: '模态窗' },
         { id: 'help-popover', title: '帮助气泡' },
         { id: 'tag', title: '标签' },
-        { id: 'search-panel', title: '查询面板' },
+        { id: 'status-text', title: '状态文本' },
+        { id: 'pop-container', title: '带小三角容器' },
+        { id: 'plugin-form-title', title: '插件标题' },
         { id: 'no-data', title: '默认占位图' },
         { id: 'overflow-text', title: '超限内容容器' },
         { id: 'initials-tag', title: '首字母标签' },
         { id: 'region-cascader', title: '城市选择' },
         { id: 'container', title: '容器' },
-        { id: 'panel', title: '应用面板' },
         { id: 'info', title: '信息展示' },
         { id: 'info-action', title: '信息操作' },
         { id: 'popconfirm', title: '删除确认' },

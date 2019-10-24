@@ -1,8 +1,8 @@
 <template>
   <div :class="b()">
-    <st-search-panel>
+    <st-search-panel @search="onSearchNative" @reset="onSearhReset">
       <st-search-panel-item label="定金状态：">
-        <st-search-radio v-model="query.use_status" :list="useStatus" />
+        <st-search-radio v-model="query.use_status" :options="useStatus" />
       </st-search-panel-item>
       <st-search-panel-item label="查询日期：">
         <st-range-picker
@@ -10,16 +10,6 @@
           :value="selectTime"
         ></st-range-picker>
       </st-search-panel-item>
-      <div slot="button">
-        <st-button
-          type="primary"
-          @click="onSearchNative"
-          :loading="loading.getList"
-        >
-          查询
-        </st-button>
-        <st-button class="mg-l8" @click="onSearhReset">重置</st-button>
-      </div>
     </st-search-panel>
     <div :class="b('content')">
       <div :class="b('content-batch')" class="mg-b16">

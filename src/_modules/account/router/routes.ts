@@ -1,5 +1,7 @@
 import Login from '@/_modules/account/views/pages/account/login.vue'
 import { LoginService } from '@/_modules/account/views/pages/account/login.service'
+import Find from '@/_modules/account/views/pages/account/find.vue'
+import { FindService } from '@/_modules/account/views/pages/account/find.service'
 
 import { NProgressService } from '@/services/nprogress.service'
 import { TrackService } from '@/services/track.service'
@@ -22,6 +24,16 @@ export default [
     controller: LoginService,
     meta: {
       title: '登录'
+    }
+  },
+  {
+    name: 'account-find',
+    path: '/account/find',
+    component: Find,
+    guards: accountGuards,
+    controller: FindService,
+    meta: {
+      title: '找回密码'
     }
   }
 ]
