@@ -21,7 +21,8 @@ export const entries = [
   {
     icon: icon2,
     text: 'Udesk',
-    disabled: false
+    disabled: false,
+    openProgram: 'Udesk'
   },
   {
     icon: icon3,
@@ -45,7 +46,8 @@ export const entries = [
   {
     icon: icon6,
     text: '导出中心',
-    disabled: false
+    disabled: false,
+    openProgram: 'export'
   },
   {
     icon: icon7,

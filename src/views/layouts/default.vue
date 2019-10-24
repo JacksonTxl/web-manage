@@ -176,6 +176,7 @@ import { TitleService } from '@/services/title.service'
 import { entries } from './default#/fast-entry.config'
 import FastEntryMiniProgram from '@/views/biz-modals/fast-entry/mini-program'
 import FastEntryHousekeeper from '@/views/biz-modals/fast-entry/housekeeper'
+// import { UdeskService } from '@/services/udesk.service'
 
 export default {
   components: {
@@ -192,6 +193,7 @@ export default {
       userService: UserService,
       tokenService: TokenService,
       titleService: TitleService
+      // udeskService: UdeskService
     }
   },
   rxState() {
@@ -323,6 +325,14 @@ export default {
           on: {}
         })
         return
+      }
+      if (item.openProgram === 'export') {
+        this.$router.push({
+          path: '/common/export'
+        })
+      }
+      if (item.openProgram === 'Udesk') {
+        // this.udeskService.open()
       }
     }
   }
