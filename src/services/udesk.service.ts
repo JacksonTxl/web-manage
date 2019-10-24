@@ -3,6 +3,7 @@ import { State } from 'rx-state'
 import { Injectable, ServiceRoute, Inject, RouteGuard } from 'vue-service-app'
 import { HttpService } from './http.service'
 import { tap } from 'rxjs/operators'
+import { AppConfig } from '@/constants/config'
 
 /**
  * udesk 接入信息
@@ -10,7 +11,7 @@ import { tap } from 'rxjs/operators'
 @Injectable()
 export class UdeskService implements RouteGuard {
   info$ = new State({})
-  constructor(private http: HttpService) {}
+  constructor(private http: HttpService, private appConfig: AppConfig) {}
 
   getUdeskCustomerInfo() {
     return this.http.get('/udesk').pipe(
@@ -21,6 +22,7 @@ export class UdeskService implements RouteGuard {
     )
   }
   creatUdesk(customer: any) {
+    const config: any = this.appConfig.UDESK_CONFIG
     customer.c_name = customer.user_name + '_' + customer.brand_name
     customer.c_cf_品牌名称 = customer.brand_name
     // @ts-ignore
@@ -37,17 +39,11 @@ export class UdeskService implements RouteGuard {
       g.src = b
       c = h.getElementsByTagName(c)[0]
       c.parentNode.insertBefore(g, c)
-    })(
-      window,
-      document,
-      'script',
-      'https://assets-cli.udesk.cn/im_client/js/udeskApi.js',
-      'ud'
-    )
+    })(window, document, 'script', `${config.config_link}`, 'ud')
     // @ts-ignore
     ud({
-      code: '2h23f6f4',
-      link: 'https://styd.udesk.cn/im_client/?web_plugin_id=66175',
+      code: `${config.code}`,
+      link: `${config.link}`,
       customer
     })
   }
