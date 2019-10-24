@@ -1229,5 +1229,14 @@ export const routeMapConfig = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
+  },
+  'brand-marketing-plugin-activity-registration-roster'(
+    routeConfig: RouteConfig
+  ) {
+    routeConfig.meta.title = '名单列表'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
   }
 }

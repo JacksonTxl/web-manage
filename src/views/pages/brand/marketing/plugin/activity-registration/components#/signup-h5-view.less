@@ -1,0 +1,97 @@
+.component-signup-h5-view {
+  background: #fff;
+  &__header {
+    .s(750px, 362px);
+    .pd(40px);
+    background-image: url('~@/assets/img/signup.png');
+    .activity-title {
+      .fz(32px);
+      .mg-b(24px);
+      .st-title {
+        .lh(45px);
+      }
+    }
+    .activity-box {
+      .time,
+      .address {
+        .c(#84849e);
+        .fz(22px);
+        .lh(31px);
+      }
+      .address {
+        .mg-b(40px);
+      }
+      .count {
+        .fz(22px);
+        display: flex;
+        justify-content: space-between;
+        .c(#222);
+      }
+    }
+  }
+  &__activity-info {
+    .pd(24px);
+    .s(670px, 282px);
+    .activity-title {
+      .pd-b(22px);
+      border-bottom: 1px solid #000;
+    }
+    background-image: url('~@/assets/img/sign-up-card.png');
+  }
+  &__tip {
+    background: #fff;
+    border-bottom: 1px solid #efefef;
+    &-title {
+      display: flex;
+      justify-content: space-between;
+      .pd(32px 40px);
+      .title {
+        font-size: 28px;
+      }
+      .sub-title {
+        .fz(22px);
+      }
+    }
+    &-phone {
+      .fz(22px);
+      .pd(16px 40px);
+    }
+  }
+  &__info {
+    background: #fff;
+    .mg-b(120px);
+    .item {
+      .pd(40px);
+      font-size: 24px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: #efefef;
+      .label {
+        .tip {
+          .fz(22px);
+          .c(#ff505a);
+        }
+      }
+    }
+  }
+  &__footer {
+    .pd(16px 40px);
+    position: fixed;
+    bottom: 78px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    box-shadow: 0px -2px 8px 0px rgba(0, 0, 0, 0.1);
+    height: 120px;
+    width: 750px;
+    border-radius: 0 0 44px 44px;
+    .st-icon {
+      .fz(44px);
+    }
+    .st-button {
+      .s(320px, 88px);
+      .fz(32px);
+    }
+  }
+}

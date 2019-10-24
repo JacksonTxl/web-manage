@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import { debounce } from 'lodash-es'
 export default {
   name: 'StMinaPanel',
   props: {

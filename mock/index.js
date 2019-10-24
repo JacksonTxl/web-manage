@@ -1,5 +1,6 @@
 const { wrapper, mock } = require('webpack-mocker-api')
 const mockJson = require('./mock.json')
+const checkinTableJson = require('./checkin-table.json')
 
 const mockerApis = {
   /**
@@ -10,6 +11,47 @@ const mockerApis = {
       auth: ['123']
     }
   },
+  // 'GET /_api/v1/plugin/sign_up/23677/roster'(req, res) {
+  //   console.log(req)
+  //   res.status(200).json(checkinTableJson)
+  // },
+  // 'GET /_api/v1/plugin/sign_up/search'(req, res) {
+  //   console.log(req)
+  //   res.status(200).json(checkinTableJson)
+  // },
+  // 'GET /_api/v1/plugin/sign_up': {
+  //   data: {
+  //     list: [
+  //       {
+  //         id: 202136932122859,
+  //         activity_name: 'helinhantest',
+  //         start_time: '2019-09-17 13:57',
+  //         end_time: '2019-09-17 13:57',
+  //         publish_time: '2019-09-17 13:57',
+  //         activity_status: {
+  //           id: 1,
+  //           name: '开启'
+  //         },
+  //         ticket_info: [
+  //           {
+  //             id: 202136932122860,
+  //             name: '免费票'
+  //           }
+  //         ],
+  //         total_people: 100,
+  //         join_people: 0,
+  //         ticket_type_num: 1,
+  //         auth: []
+  //       }
+  //     ],
+  //     page: {
+  //       total_counts: 1,
+  //       total_pages: 1,
+  //       current_page: 1,
+  //       size: 10
+  //     }
+  //   }
+  // },
   /**
    * 使用express语法
    */

@@ -1,0 +1,70 @@
+.component-ticket-h5-view {
+  .bg(#fff);
+  &__content {
+    .pd(40px 0);
+  }
+  .ticket-item {
+    background: #f4f5f6;
+    border: 1px solid #ddd;
+    .mg(24px 40px);
+    .pd(46px 40px 40px 40px);
+    &__title {
+      .fz(28px);
+    }
+    &__price-info {
+      .pd(24px 0);
+      .discount-price {
+        .fz(28px);
+        .c(#ff505a);
+      }
+      .original-price,
+      .discount-terms {
+        .mg-l(16px);
+        .fz(24px);
+        .c(#84849e);
+      }
+    }
+    &__date,
+    &__remark {
+      .c(#84849e);
+      .fz(22px);
+      line-height: 32px;
+    }
+    .contnet-mgt120 {
+      .mg-t(120px);
+    }
+  }
+  &__footer {
+    .pd(16px 40px);
+    position: fixed;
+    bottom: 78px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    box-shadow: 0px -2px 8px 0px rgba(0, 0, 0, 0.1);
+    height: 120px;
+    width: 750px;
+    border-radius: 0 0 44px 44px;
+    .st-icon {
+      .fz(44px);
+    }
+    .st-button {
+      .s(320px, 88px);
+      .fz(32px);
+    }
+    .footer__count {
+      .price,
+      .reduce {
+        .fz(40px);
+        .c(#ff505a);
+        .lh(47px);
+      }
+      .reduce {
+        .mg-l(8px);
+        .fz(20px);
+        .lh(28px);
+      }
+    }
+  }
+}

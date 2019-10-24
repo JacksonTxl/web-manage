@@ -6,7 +6,6 @@
     </st-pop-container>
   </st-panel>
 </template>
-
 <script>
 export default {
   data() {
