@@ -132,5 +132,9 @@ export class AppConfig {
     link: 'https://styd.udesk.cn/im_client/?web_plugin_id=66175',
     config_link: 'https://assets-cli.udesk.cn/im_client/js/udeskApi.js'
   }
-  UDESK_CONFIG_PROD = {}
+  UDESK_CONFIG_PROD = {
+    code: '2h23f6f4',
+    link: 'https://styd.udesk.cn/im_client/?web_plugin_id=101681',
+    config_link: 'https://assets-cli.udesk.cn/im_client/js/udeskApi.js'
+  }
 }
