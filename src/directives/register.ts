@@ -1,17 +1,6 @@
 import Vue from 'vue'
-import { parse } from '@/utils/webpack-key-path'
+import exportExcel from './export-excel.directive'
+import minaShare from './mina-share.directive'
 
-const DirectiveContext = require.context('./', true, /\.directives\.ts$/)
-const DirectiveKeys = DirectiveContext.keys()
-
-DirectiveKeys.forEach(keyPath => {
-  const file = DirectiveContext(keyPath)
-  const directives = file.default || file
-  const parsed = parse(keyPath)
-  if (/(#)/.test(parsed.name)) {
-    return
-  }
-  Object.keys(directives).forEach(name => {
-    Vue.directive(name, directives[name])
-  })
-})
+Vue.directive('export-excel', exportExcel)
+Vue.directive('mina-share', minaShare)

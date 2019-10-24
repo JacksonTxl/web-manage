@@ -1,13 +1,13 @@
 <template>
-  <div>
-    <st-status-text :status="{ success: 1 }">
-      123456
-    </st-status-text>
-  </div>
+  <st-panel>
+    <st-pop-container offset="20px">
+      单次购买
+      <a-input placeholder="placeholder" style="width:200px;"></a-input>
+    </st-pop-container>
+  </st-panel>
 </template>
 
 <script>
-import H5Container from '@/views/biz-components/h5/h5-container.vue'
 export default {
   data() {
     return {
