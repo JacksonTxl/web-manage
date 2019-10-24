@@ -3,7 +3,7 @@
     title="三体云管家"
     class="modal-fast-entry-housekeeper"
     v-model="show"
-    footer=""
+    :footer="null"
     width="320px"
   >
     <div>

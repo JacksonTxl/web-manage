@@ -81,28 +81,39 @@
         </a-breadcrumb>
       </div>
       <div class="layout-default-body__personal">
-        <!-- <a-badge dot>
-          <st-icon type="home" class="layout-default-body__icon"/>
-        </a-badge>
-        <a-dropdown :trigger="['click']" placement="bottomRight">
-          <div class="layout-default-body__top-item">
-            <st-icon type="square" class="layout-default-body__icon"/>
-          </div>
-          <div slot="overlay" class="layout-default-body__fast-entry">
-            <fast-entry />
-          </div>
-        </a-dropdown> -->
         <router-link
           :to="{ name: 'common-export' }"
           class="layout-default-body__header-link"
         >
           <st-icon type="export"></st-icon>
         </router-link>
+
         <!-- 九宫格 -->
-        <div class="sudoku-icon" @click.stop="onOpenSudoku">
-          九宫格
-        </div>
-        <fast-entry v-show="sudokuOpenFlag" @goToPage="onGoToPage"></fast-entry>
+        <a-dropdown :trigger="['click']" placement="bottomRight">
+          <div class="layout-default-body__avatar">
+            <st-icon type="square" width="17px" color="#9BACB9"></st-icon>
+          </div>
+          <div slot="overlay" class="layout-fast-entry">
+            <a-menu class="layout-fast-entry__wrapper">
+              <a-menu-item
+                v-for="(item, index) in entries"
+                :key="index"
+                class="layout-fast-entry__item"
+                @click="goToPage(item)"
+                :disabled="item.disabled"
+              >
+                <div>
+                  <img
+                    :src="item.disabled ? item.iconDisabled : item.icon"
+                    :alt="item.text"
+                  />
+                </div>
+                <div class="layout-fast-entry__text">{{ item.text }}</div>
+              </a-menu-item>
+            </a-menu>
+          </div>
+        </a-dropdown>
+
         <a-dropdown :trigger="['click']" placement="bottomRight">
           <div class="layout-default-body__avatar">
             <img
@@ -162,17 +173,19 @@ import { find } from 'lodash-es'
 import { UserService } from '@/services/user.service'
 import { TokenService } from '@/services/token.service'
 import { TitleService } from '@/services/title.service'
-import FastEntry from './default#/fast-entry.vue'
+import { entries } from './default#/fast-entry.config'
+import FastEntryMiniProgram from '@/views/biz-modals/fast-entry/mini-program'
+import FastEntryHousekeeper from '@/views/biz-modals/fast-entry/housekeeper'
 
 export default {
   components: {
     DefaultSiderMenu,
-    SwitchShop,
+    SwitchShop
     // DefaultSkeleton
     /**
      * 快速入口 九宫格
      */
-    FastEntry
+    //FastEntry
   },
   serviceInject() {
     return {
@@ -187,15 +200,21 @@ export default {
       brand: this.userService.brand$,
       shop: this.userService.shop$,
       theme: this.userService.theme$,
-      title: this.titleService.title$
+      title: this.titleService.title$,
+      urlData: this.userService.urlData$
     }
   },
   data() {
     return {
       isShowSwitchShop: false,
       menuObj: {},
-      sudokuOpenFlag: false
+      sudokuOpenFlag: false,
+      entries
     }
+  },
+  modals: {
+    FastEntryMiniProgram,
+    FastEntryHousekeeper
   },
   computed: {
     breadCrumbs() {
@@ -206,6 +225,12 @@ export default {
     isInShop() {
       return this.shop.id
     }
+  },
+  created() {
+    console.log(this.urlData.list)
+    this.urlData.list
+      ? (entries[4].disabled = false)
+      : (entries[4].disabled = true)
   },
   methods: {
     switchShop() {
@@ -275,14 +300,30 @@ export default {
        */
       this.isShowSwitchShop = false
     },
-    onOpenSudoku() {
-      this.sudokuOpenFlag = true
-    },
-    // onMouseenterCloseSudoku() {
-    //   this.sudokuOpenFlag = false
-    // }
-    onGoToPage() {
-      this.sudokuOpenFlag = false
+    goToPage(item) {
+      if (item.url) {
+        window.open(item.url)
+        return
+      }
+      if (item.openProgram === 'miniProgram') {
+        const urlData = this.urlData
+        this.$modalRouter.push({
+          name: 'fast-entry-mini-program',
+          props: {
+            urlData
+          },
+          on: {}
+        })
+        return
+      }
+      if (item.openProgram === 'housekeeper') {
+        this.$modalRouter.push({
+          name: 'fast-entry-housekeeper',
+          props: {},
+          on: {}
+        })
+        return
+      }
     }
   }
 }
