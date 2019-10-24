@@ -1,9 +1,8 @@
 import container from '@/container'
 import { ExportService } from '@/services/export.service'
-import Vue from 'vue'
 import { Modal } from 'ant-design-vue'
 
-Vue.directive('export-excel', function(el, val, vnode) {
+export default function exportExcelDirective(el: HTMLElement, val: any) {
   const exportService = container.get(ExportService)
   if (!val.value.type) {
     throw new Error('error: type is necessary')
@@ -16,4 +15,4 @@ Vue.directive('export-excel', function(el, val, vnode) {
       }
     })
   }
-})
+}
