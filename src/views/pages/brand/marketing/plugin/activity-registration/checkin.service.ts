@@ -1,7 +1,4 @@
-import {
-  SignUpApi,
-  GetSignUpSignList
-} from './../../../../../../api/v1/marketing/sign-up'
+import { SignUpApi, GetSignUpSignList } from '@/api/v1/marketing/sign-up'
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap, pluck } from 'rxjs/operators'

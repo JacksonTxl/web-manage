@@ -19,10 +19,7 @@
             <a-radio :value="3">多选</a-radio>
           </a-radio-group>
         </st-form-item>
-        <st-form-item
-          v-if="extraType === 2 || extraType === 3"
-          label="报名选项"
-        >
+        <st-form-item v-if="isShowSignUp" label="报名选项">
           <a-input-group compact>
             <a-input
               v-model="option"
@@ -60,7 +57,7 @@
 <script>
 import { ruleOptions } from './add-signup.config'
 import { PatternService } from '@/services/pattern.service'
-import { MessageService } from '../../../services/message.service'
+import { MessageService } from '@/services/message.service'
 const uuidv1 = require('uuid/v1')
 export default {
   name: 'ModalAddTicket',
@@ -96,6 +93,11 @@ export default {
     signUpList: {
       type: Array,
       default: () => []
+    }
+  },
+  computed: {
+    isShowSignUp() {
+      return this.extraType === 2 || this.extraType === 3
     }
   },
   methods: {

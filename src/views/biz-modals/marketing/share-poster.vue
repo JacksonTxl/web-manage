@@ -31,7 +31,7 @@ import { SharePosterService } from './share-poster.service'
 import { AppConfig } from '@/constants/config'
 import { OssService } from '@/services/oss.service'
 import { ShsService } from '@/services/shs.service'
-import { POSTER } from '@/constants/brand/marketing'
+import { ACTIVITY_POSTER } from '@/constants/brand/marketing'
 import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
 
 export default {
@@ -73,7 +73,7 @@ export default {
   },
   data() {
     return {
-      POSTER,
+      ACTIVITY_POSTER,
       show: false,
       url: '',
       title: '分享海报',
@@ -84,7 +84,7 @@ export default {
     }
   },
   created() {
-    if (this.type === this.POSTER.COUPON_TYPE) {
+    if (this.type === this.ACTIVITY_POSTER.POSTER_TYPE) {
       this.sharePosterService
         .getSharePosterInfo(this.activity_id)
         .subscribe(res => {
@@ -118,7 +118,7 @@ export default {
               })
           }
         })
-    } else if (this.type === this.POSTER.QRCODE_TYPE) {
+    } else if (this.type === this.ACTIVITY_POSTER.QRCODE_TYPE) {
       this.activeClass = 'qrcode'
       this.title = '小程序码'
       this.message =

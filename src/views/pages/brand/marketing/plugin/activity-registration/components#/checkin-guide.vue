@@ -1,6 +1,10 @@
 <template>
   <div :class="bComponent()">
-    <img src="~@/assets/img/mina-view.png" alt="" :class="bComponent('left')" />
+    <img
+      src="~@/assets/img/mina-activity-view.png"
+      alt=""
+      :class="bComponent('left')"
+    />
     <div :class="bComponent('right')">
       <st-steps-line>
         <st-steps-line-item

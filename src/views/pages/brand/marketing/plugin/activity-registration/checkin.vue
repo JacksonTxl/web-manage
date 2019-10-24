@@ -30,16 +30,17 @@
           </span>
           <template slot="action" slot-scope="text, record">
             <st-table-actions>
-              <a v-if="record.ticket_status.id === 1">
-                <st-popconfirm
-                  title="签到后将视为已使用，您确定要将其核销签到吗？"
-                  @confirm="onConfirmSignIn(record)"
-                  okText="确认"
-                  cancelText="取消"
-                >
+              <st-popconfirm
+                v-if="record.ticket_status.id === 1"
+                title="签到后将视为已使用，您确定要将其核销签到吗？"
+                @confirm="onConfirmSignIn(record)"
+                okText="确认"
+                cancelText="取消"
+              >
+                <a>
                   签到
-                </st-popconfirm>
-              </a>
+                </a>
+              </st-popconfirm>
             </st-table-actions>
           </template>
         </st-table>
