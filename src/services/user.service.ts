@@ -8,6 +8,7 @@ import { TooltipApi } from '@/api/v1/admin/tooltip'
 import { get, reduce, isPlainObject, mapValues } from 'lodash-es'
 import { NProgressService } from './nprogress.service'
 import { ShopApi } from '@/api/v1/shop'
+import { CodeUrlApi } from '@/api/v1/brand/orcodeurl'
 import { of } from 'rxjs'
 import { then, anyAll } from '@/operators'
 import { Dictionary } from 'lodash'
@@ -115,14 +116,15 @@ export class UserService {
   transactionEnums$ = new Computed<ModuleEnums>(
     this.enums$.pipe(pluck('transaction'))
   )
-
+  urlData$ = new State({})
   constructor(
     private constApi: ConstApi,
     private menuApi: MenuApi,
     private staffApi: StaffApi,
     private tooltipApi: TooltipApi,
     private nprogress: NProgressService,
-    private shopApi: ShopApi
+    private shopApi: ShopApi,
+    private CodeUrlApi: CodeUrlApi
   ) {}
   SET_USER(staff: any) {
     const info = staff.info
@@ -206,6 +208,13 @@ export class UserService {
     return this.shopApi.getShopList().pipe(
       tap(res => {
         this.SET_SHOP_LIST(res)
+      })
+    )
+  }
+  private getCodeUrl() {
+    return this.CodeUrlApi.getCodeUrl().pipe(
+      tap(res => {
+        this.urlData$.commit(() => res)
       })
     )
   }
@@ -296,7 +305,8 @@ export class UserService {
         this.getMenuData(),
         this.getEnums(),
         this.getInvalidTooltips(),
-        this.getShopList()
+        this.getShopList(),
+        this.getCodeUrl()
       ).pipe(
         then(() => {
           this.firstInited$.commit(() => true)

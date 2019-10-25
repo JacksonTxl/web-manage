@@ -1,45 +1,65 @@
-import icon1 from '@/assets/img/fast-entry/1.png'
-import icon2 from '@/assets/img/fast-entry/2.png'
-// import icon3 from '@/assets/img/fast-entry/3.png'
-// import icon4 from '@/assets/img/fast-entry/4.png'
-import icon5 from '@/assets/img/fast-entry/5.png'
-// import icon6 from '@/assets/img/fast-entry/6.png'
-// import icon7 from '@/assets/img/fast-entry/7.png'
-// import icon8 from '@/assets/img/fast-entry/8.png'
-// import icon9 from '@/assets/img/fast-entry/9.png'
-
 export const entries = [
   {
-    icon: icon1,
-    text: '帮助中心'
+    icon:
+      'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/fast-help.png',
+    text: '帮助中心',
+    openProgram: 'help',
+    disabled: true
   },
   {
-    icon: icon2,
-    text: '在线咨询'
+    icon:
+      'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/fast-Udest.png',
+    text: 'Udesk',
+    disabled: false,
+    openProgram: 'Udesk'
   },
-  // {
-  //   icon: icon3,
-  //   text: '场馆列表'
-  // }, {
-  //   icon: icon4,
-  //   text: '营销插件'
-  // },
   {
-    icon: icon5,
+    icon:
+      'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/fast-housekeeper.png',
+    text: '三体云管家',
+    openProgram: 'housekeeper',
+    disabled: true
+  },
+  {
+    icon:
+      'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/fast-hardware.png',
     text: '智能硬件',
-    url: 'https://www.styd.cn/default/product_iot'
+    url: 'https://www.styd.cn/default/product_iot',
+    disabled: false
+  },
+  {
+    icon:
+      'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/fast-miniProgram.png',
+    text: '小程序',
+    openProgram: 'miniProgram',
+    disabled: false
+  },
+  {
+    icon:
+      'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/fast-export.png',
+    text: '导出中心',
+    disabled: false,
+    openProgram: 'export'
+  },
+  {
+    icon:
+      'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/fast-ThinkTank.png',
+    text: '智库',
+    url: 'https://blog.styd.cn/',
+    disabled: false
+  },
+  {
+    icon:
+      'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/fast-data.png',
+    text: '数据中心',
+    url: 'https://www.styd.cn/default/data_report',
+    disabled: false
+  },
+  {
+    icon:
+      'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/fast-book.png',
+    text: '行业白皮书',
+    url: 'https://www.styd.cn/default/white_paper',
+    disabled: false
   }
-  // , {
-  //   icon: icon6,
-  //   text: '管理端App'
-  // }, {
-  //   icon: icon7,
-  //   text: '数据中心'
-  // }, {
-  //   icon: icon8,
-  //   text: '行业白皮书'
-  // }, {
-  //   icon: icon9,
-  //   text: '小程序'
-  // }
 ]

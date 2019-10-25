@@ -32,9 +32,9 @@
               </a>
             </a-checkbox>
           </div>
-          <!-- <span :class="loginUser('pass-content')">
+          <span :class="loginUser('pass-content')">
             <a @click="onClickFindPassword">忘记密码</a>
-          </span> -->
+          </span>
         </div>
       </st-form-item>
       <st-form-item class="mg-b32">

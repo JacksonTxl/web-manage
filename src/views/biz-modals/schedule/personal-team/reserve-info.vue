@@ -312,6 +312,8 @@ export default {
       this.reserveService.getInfo(this.id).subscribe()
     },
     onAddReserveSuccess() {
+      this.memberId = undefined
+      this.consumeType = undefined
       this.getReserveInfo()
     },
     onCancelReserveSuccess() {

@@ -4,8 +4,9 @@
       <st-input-search
         v-model="query.search"
         @search="onSearchCourseName"
-        placeholder="请输入卡名、会员姓名或手机号查找"
+        :placeholder="placeholder"
         :class="b('search')"
+        style="width:372px"
       />
     </div>
     <router-view></router-view>
@@ -28,7 +29,8 @@ export default {
   rxState() {
     return {
       query: this.routeService.query$,
-      authTabs: this.listService.authTabs$
+      authTabs: this.listService.authTabs$,
+      placeholder: this.listService.placeholder$
     }
   },
   methods: {
