@@ -23,9 +23,9 @@ const IS_DEV = env.NODE_ENV !== 'production'
 const IS_PROD = env.NODE_ENV === 'production'
 
 const localApiEnvHostTarget = {
-  dev: 'https://api-saas-dev.styd.cn',
-  test: 'https://api-saas-test.styd.cn',
-  pre: 'https://api-saas-pre.styd.cn'
+  dev: 'https://saas.dev.styd.cn',
+  test: 'https://saas.test.styd.cn',
+  pre: 'https://saas.pre.styd.cn'
 }[env.LOCAL_API_ENV]
 
 module.exports = {
@@ -67,10 +67,7 @@ module.exports = {
     proxy: {
       '/_api': {
         target: localApiEnvHostTarget,
-        changeOrigin: true,
-        pathRewrite: {
-          '^/_api/': '/'
-        }
+        changeOrigin: true
       }
     },
     before(app) {
