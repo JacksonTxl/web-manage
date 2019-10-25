@@ -245,7 +245,7 @@ export default {
       }
       if (parentRoute) {
         const name = parentRoute.name
-        const title = parentRoute.meta.title
+        const title = this.userService.interpolation(parentRoute.meta.title)
         return [
           {
             label: title,
