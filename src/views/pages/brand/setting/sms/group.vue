@@ -55,11 +55,34 @@
         </st-table-actions>
       </div>
       <div slot="send_status_text" slot-scope="text, record">
-        <span
-          class="page-setting-sms-group__status"
-          :class="bPage('status-') + record.send_status"
-        ></span>
-        <span>{{ record.send_status_text }}</span>
+        <st-status-text
+          v-if="record.send_status === 2"
+          :status="{ success: 1 }"
+        >
+          {{ record.send_status_text }}
+        </st-status-text>
+        <st-status-text v-if="record.send_status === 3" :status="{ error: 1 }">
+          {{ record.send_status_text }}
+        </st-status-text>
+        <st-status-text v-if="record.send_status === 1" :status="{ normal: 1 }">
+          {{ record.send_status_text }}
+        </st-status-text>
+        <st-status-text
+          v-if="record.send_status === 0"
+          :status="{ success: 1 }"
+        >
+          {{ record.send_status_text }}
+        </st-status-text>
+      </div>
+      <div slot="received_count" slot-scope="text, record">
+        <a
+          v-modal-link="{
+            name: 'brand-setting-sms-receive',
+            props: { id: record.group_id }
+          }"
+        >
+          {{ record.received_count }}
+        </a>
       </div>
       <div slot="content" slot-scope="text, record">
         <a-tooltip
@@ -115,6 +138,7 @@ import { recordColumns, templateColumns } from './group.config.ts'
 import { UserService } from '@/services/user.service'
 import BrandSettingSmsGroup from '@/views/biz-modals/brand/setting/sms/group'
 import BrandSettingSmsTemplate from '@/views/biz-modals/brand/setting/sms/template'
+import BrandSettingSmsReceive from '@/views/biz-modals/brand/setting/sms/receive'
 
 import tableMixin from '@/mixins/table.mixin'
 const pageName = 'page-setting-sms-group'
@@ -142,7 +166,8 @@ export default {
   },
   modals: {
     BrandSettingSmsGroup,
-    BrandSettingSmsTemplate
+    BrandSettingSmsTemplate,
+    BrandSettingSmsReceive
   },
   computed: {
     recordColumns,

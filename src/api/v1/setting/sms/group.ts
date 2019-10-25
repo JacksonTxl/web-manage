@@ -34,6 +34,10 @@ export class GroupApi extends Api {
   getEditInfo(query: any) {
     return this.http.get('/v1/setting/sms/group/info/' + query)
   }
+  // 获取接收人数列表
+  getReceiveNumList(query: any) {
+    return this.http.get('/v1/setting/sms/group/user/' + query)
+  }
 }
 export interface GroupListQuery {
   page: number

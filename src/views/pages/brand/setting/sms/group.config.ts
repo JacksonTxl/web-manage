@@ -15,7 +15,8 @@ export const recordColumns = () => {
     },
     {
       title: '接收人数',
-      dataIndex: 'received_count'
+      dataIndex: 'received_count',
+      scopedSlots: { customRender: 'received_count' }
     },
     {
       title: '发送状态',

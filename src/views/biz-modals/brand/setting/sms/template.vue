@@ -1,11 +1,5 @@
 <template>
-  <st-modal
-    :bModal="bModal()"
-    title="短信模版"
-    v-model="show"
-    @ok="save"
-    @cancel="cancel"
-  >
+  <st-modal :bModal="bModal()" title="短信模版" v-model="show">
     <st-form :form="form">
       <st-form-item labelWidth="70px" label="模版名称">
         <a-input v-decorator="decorators.title" placeholder="请输入模版名称" />
@@ -22,6 +16,10 @@
         三体云动
       </st-form-item>
     </st-form>
+    <footer slot="footer">
+      <st-button @click="show = false">取消</st-button>
+      <st-button @click="save" type="primary">发送</st-button>
+    </footer>
   </st-modal>
 </template>
 <script>
@@ -65,28 +63,24 @@ export default {
   },
   methods: {
     save() {
-      this.form.validate((error, values) => {
+      this.form.validate().then(values => {
         if (this.info) {
           values.tmpl_id = this.info.tmpl_id
-          return this.templateService
-            .editTemplate({ ...values })
-            .subscribe(res => {
-              this.messageService.success({
-                content: '编辑成功'
-              })
-              this.$emit('success')
-              this.show = false
+          this.templateService.editTemplate({ ...values }).subscribe(res => {
+            this.messageService.success({
+              content: '编辑成功'
             })
+            this.$emit('success')
+            this.show = false
+          })
         } else {
-          return this.templateService
-            .addTemplate({ ...values })
-            .subscribe(res => {
-              this.messageService.success({
-                content: '添加成功'
-              })
-              this.$emit('success')
-              this.show = false
+          this.templateService.addTemplate({ ...values }).subscribe(res => {
+            this.messageService.success({
+              content: '添加成功'
             })
+            this.$emit('success')
+            this.show = false
+          })
         }
       })
     },

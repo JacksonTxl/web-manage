@@ -20,11 +20,13 @@
             {{ item.label }}
           </a-radio>
         </a-radio-group>
-        <a-textarea
+        <st-textarea
+          class="mg-t8"
           v-if="curUser === USER_TYPES.USER"
           v-model="tel"
+          :autosize="{ minRows: 2, maxRows: 4 }"
           placeholder="输入手机号,每行一个"
-        ></a-textarea>
+        ></st-textarea>
         <div :class="bModal('scroll')" v-if="curUser === USER_TYPES.CROWD">
           <a-radio-group v-decorator="decorators.send_value">
             <a-radio-button
@@ -36,8 +38,8 @@
               {{ item.crowd_name }}
             </a-radio-button>
           </a-radio-group>
-          <span>
-            不满足?
+          <span :class="bModal('scroll-add')">
+            <span :class="bModal('scroll-not')">不满足?</span>
             <a @click="goCrowd">
               去添加人群>
             </a>
@@ -67,7 +69,10 @@
         ></a-date-picker>
       </st-form-item>
       <st-form-item labelWidth="70px" label="编辑短信">
-        <a-radio-group v-model="curTem" @change="getCurTemType">
+        <a-radio-group
+          v-decorator="decorators.tmpl_type"
+          @change="getCurTemType"
+        >
           <a-radio
             v-for="(item, index) in tmplType"
             :key="index"
@@ -76,12 +81,14 @@
             {{ item.label }}
           </a-radio>
         </a-radio-group>
-        <a-textarea
-          class="mg-b24"
+        <st-textarea
+          class="mg-b8 mg-t8"
+          :autosize="{ minRows: 2, maxRows: 4 }"
           v-if="curTem === TMPL_TYPES.PERSONAL"
           v-decorator="decorators.content"
+          :maxlength="280"
           placeholder="请输入【签名】"
-        ></a-textarea>
+        ></st-textarea>
         <div :class="bModal('save')" v-if="curTem === TMPL_TYPES.PERSONAL">
           <a-checkbox
             v-decorator="decorators.is_save"
@@ -110,11 +117,13 @@
             {{ item.title }}
           </a-select-option>
         </a-select>
-        <a-textarea
+        <st-textarea
+          :maxlength="280"
+          :autosize="{ minRows: 2, maxRows: 4 }"
           v-if="curTem === TMPL_TYPES.CUSTOM"
           disabled
           :value="temContent"
-        ></a-textarea>
+        ></st-textarea>
       </st-form-item>
     </st-form>
   </st-modal>
@@ -214,7 +223,8 @@ export default {
           title: res.info.title,
           content: res.info.content,
           tmpl_id: res.info.tmpl_id,
-          is_save: res.info.is_save
+          is_save: res.info.is_save,
+          tmpl_type: res.info.tmpl_type
         })
         this.curUser = res.info.user_type
         this.curTime = res.info.send_type
@@ -247,7 +257,8 @@ export default {
             return
           }
           values.send_value = this.tel
-        } else {
+        }
+        if (this.curUser === this.USER_TYPES.CROWD) {
           if (!values.send_value) {
             this.messageService.warn({
               content: '请选择人群'
