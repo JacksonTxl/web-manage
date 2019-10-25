@@ -213,7 +213,8 @@ export default {
           send_time: moment(res.info.send_time),
           title: res.info.title,
           content: res.info.content,
-          tmpl_id: res.info.tmpl_id
+          tmpl_id: res.info.tmpl_id,
+          is_save: res.info.is_save
         })
         this.curUser = res.info.user_type
         this.curTime = res.info.send_type
