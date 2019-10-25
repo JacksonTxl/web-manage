@@ -109,6 +109,7 @@
             <div :class="sale('contract')">
               <a-input-number
                 class="input-number"
+                :min="1"
                 :max="9999"
                 v-decorator="decorators.buyNum"
                 placeholder="请输入购买数量"
