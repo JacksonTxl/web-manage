@@ -88,9 +88,8 @@
           :autosize="{ minRows: 2, maxRows: 4 }"
           v-if="curTem === TMPL_TYPES.PERSONAL"
           v-decorator="decorators.content"
-          @change="setSignVal"
           :maxlength="280"
-          placeholder="请输入【签名】"
+          suffix="[签名]"
         ></st-textarea>
         <div :class="bModal('save')" v-if="curTem === TMPL_TYPES.PERSONAL">
           <a-checkbox
@@ -194,6 +193,7 @@ export default {
   },
   methods: {
     cancel() {},
+    // 获取人群列表
     getCrowdList() {
       return this.groupService.getCrowdList().subscribe()
     },
@@ -215,6 +215,14 @@ export default {
           this.temContent = item.content
         }
       })
+    },
+    setSignVal() {
+      let a = this.form.getFieldsValue().content + '[签名]'
+      console.log(a)
+      this.form.setFieldsValue({
+        content: a
+      })
+      console.log(this.form.getFieldsValue().content)
     },
     getEditInfo(id) {
       return this.groupService.getEditInfo(id).subscribe(res => {
@@ -240,10 +248,12 @@ export default {
         }
       })
     },
+    // 跳转到添加人群
     goCrowd() {
       this.$router.push('/brand/marketing/plugin/crowd/index?type=100003"')
       this.show = false
     },
+    // 日期禁用
     disabledStartDate(current) {
       return current && current < moment()
     },
