@@ -9,7 +9,7 @@
     <div>
       <div :class="b('wrapper')">
         <img :class="b('code-img')" :src="urlData.list" alt="扫描二维码" />
-        <p :class="b('tips')" class="mg-t16">
+        <p class="mg-t16">
           请使用微信扫描二维码
           <br />
           进入微信小程序
@@ -30,9 +30,6 @@ export default {
       messageService: MessageService
     }
   },
-  rxState() {
-    return {}
-  },
   props: {
     urlData: {
       type: Object,
@@ -43,9 +40,6 @@ export default {
     return {
       show: false
     }
-  },
-  created() {
-    console.log(this.urlData.list)
   },
   methods: {
     cancel() {

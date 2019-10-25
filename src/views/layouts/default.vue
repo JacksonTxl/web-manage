@@ -102,12 +102,19 @@
                 @click="goToPage(item)"
                 :disabled="item.disabled"
               >
-                <div>
-                  <img
-                    :src="item.disabled ? item.iconDisabled : item.icon"
-                    :alt="item.text"
-                  />
-                </div>
+                <img
+                  class="fast-entry__pic"
+                  :src="
+                    item.disabled
+                      ? `https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/${
+                          item.iconDisabled
+                        }`
+                      : `https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/${
+                          item.icon
+                        }`
+                  "
+                  :alt="item.text"
+                />
                 <div class="layout-fast-entry__text">{{ item.text }}</div>
               </a-menu-item>
             </a-menu>
