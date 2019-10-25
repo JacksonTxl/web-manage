@@ -39,9 +39,7 @@ export class AppConfig {
   PAGE_ENV = process.env.PAGE_ENV
   // 域名dev环境
   get HOST_IS_DEV() {
-    return (
-      location.hostname.includes('dev') || location.hostname === 'localhost'
-    )
+    return location.hostname.includes('dev')
   }
   // 域名test环境
   get HOST_IS_TEST() {

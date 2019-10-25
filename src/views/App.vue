@@ -3,20 +3,21 @@
     <div id="app">
       <component :is="layoutComponent"></component>
       <modal-router-view></modal-router-view>
-      <!-- 本地开发下 -->
-      <div v-if="appConfig.IS_DEV" class="app-env">
-        <span>
-          API:{{ appConfig.LOCAL_API_ENV }} 页面:{{ appConfig.PAGE_ENV }}
-        </span>
-      </div>
 
-      <!-- 非生产域名下 -->
-      <div
-        v-if="appConfig.HOST_IS_DEV || appConfig.HOST_IS_TEST"
-        class="app-env"
-      >
-        分支:{{ appConfig.GIT_BRANCH }}
-        <a href="/_branch">切换</a>
+      <div class="app-env">
+        <!-- 本地开发下 -->
+        <span v-if="appConfig.IS_DEV">
+          <span>本地开发 API:{{ appConfig.LOCAL_API_ENV }}</span>
+          <span v-show="appConfig.PAGE_ENV">页面:{{ appConfig.PAGE_ENV }}</span>
+        </span>
+        <!-- 域名为.dev 或 .test -->
+        <span
+          v-if="appConfig.HOST_IS_DEV || appConfig.HOST_IS_TEST"
+          class="app-env"
+        >
+          分支:{{ appConfig.GIT_BRANCH }}
+          <a href="/_branch">切换</a>
+        </span>
       </div>
     </div>
   </a-locale-provider>
