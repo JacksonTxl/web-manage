@@ -11,7 +11,12 @@
       </div>
 
       <!-- 非生产域名下 -->
-      <div v-if="appConfig.IS_PROD && !appConfig.HOST_IS_PROD" class="app-env">
+      <div
+        v-if="
+          appConfig.IS_PROD && (appConfig.HOST_IS_DEV || appConfig.HOST_IS_TEST)
+        "
+        class="app-env"
+      >
         分支:{{ appConfig.GIT_BRANCH }}
         <a href="/_branch">切换</a>
       </div>

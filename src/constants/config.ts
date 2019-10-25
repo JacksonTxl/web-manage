@@ -24,15 +24,6 @@ export class AppConfig {
     '/v1/front/cabinet/options/'
   ]
   /**
-   * 图片基础路径
-   */
-  get HOST_IMAGE() {
-    return this.HOST_IS_PROD
-      ? '//styd-saas-public.oss-cn-shanghai.aliyuncs.com'
-      : '//styd-saas-test.oss-cn-shanghai.aliyuncs.com'
-  }
-
-  /**
    * 应用根基路径
    */
   BASE_URL = process.env.BASE_URL
@@ -46,22 +37,35 @@ export class AppConfig {
    * 当前开发使用的页面模式 brand | shop
    */
   PAGE_ENV = process.env.PAGE_ENV
-
+  // 域名dev环境
+  get HOST_IS_DEV() {
+    return (
+      location.hostname.includes('dev') || location.hostname === 'localhost'
+    )
+  }
+  // 域名test环境
+  get HOST_IS_TEST() {
+    return location.hostname.includes('test')
+  }
+  // 域名pre环境
+  get HOST_IS_PRE() {
+    return location.hostname.includes('pre')
+  }
   /**
-   * 是否当前的域名处于生产环境
+   * 域名生产环境
    */
   get HOST_IS_PROD() {
     return location.hostname === 'saas.styd.cn'
   }
   /**
-   * shs环境
+   * shs环境 只在域名为生产环境时请求shs正式服务
    */
   get SHS_API_ENV() {
     return this.HOST_IS_PROD ? 'https://shs.styd.cn' : 'https://shs.dev.styd.cn'
   }
 
   /**
-   * 应用环境
+   * 应用环境 开发环境 和 部署的环境
    */
   NODE_ENV = process.env.NODE_ENV
   IS_DEV = this.NODE_ENV === 'development'
@@ -73,6 +77,15 @@ export class AppConfig {
   GIT_BRANCH = process.env.GIT_BRANCH
   GIT_MESSAGE = process.env.GIT_MESSAGE
   GIT_DATE = process.env.GIT_DATE
+
+  /**
+   * 图片基础路径
+   */
+  get HOST_IMAGE() {
+    return this.HOST_IS_PROD || this.HOST_IS_PRE
+      ? '//styd-saas-public.oss-cn-shanghai.aliyuncs.com'
+      : '//styd-saas-test.oss-cn-shanghai.aliyuncs.com'
+  }
   /**
    * html 产出的files相关配置
    */
