@@ -1238,5 +1238,32 @@ export const routeMapConfig = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
+  },
+  'brand-marketing-plugin-activity-registration-add'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '新增活动报名'
+  },
+  'brand-marketing-plugin-activity-registration-edit'(
+    routeConfig: RouteConfig
+  ) {
+    routeConfig.meta.title = '编辑活动报名'
+  },
+  'brand-marketing-plugin-activity-registration-list'(
+    routeConfig: RouteConfig
+  ) {
+    routeConfig.meta.title = '活动报名'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'brand-marketing-plugin-activity-registration-checkin'(
+    routeConfig: RouteConfig
+  ) {
+    routeConfig.meta.title = '签到验票'
+  },
+  'brand-marketing-plugin-activity-registration-success'(
+    routeConfig: RouteConfig
+  ) {
+    routeConfig.meta.title = '保存成功'
   }
 }
