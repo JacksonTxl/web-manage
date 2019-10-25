@@ -172,8 +172,10 @@ export default {
       })
     },
     onShareChangeGetImage(imageFiles) {
+      imageFiles[0].image_id = this.defaultForm$.image.image_id
       this.$set(this.formInfo, 'imageUrl', imageFiles[0].image_url)
       this.$emit('change', this.formInfo)
+
       this.fileShareList = cloneDeep(imageFiles)
     },
     onSelectGetAddress(address) {
