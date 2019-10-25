@@ -75,7 +75,7 @@
           label="团购优惠"
           required
         >
-          <a-radio-group v-model="isBulk" :defaultValue="1">
+          <a-radio-group v-model="isBulk" :defaultValue="0">
             <a-radio :value="1">开启</a-radio>
             <a-radio :value="0">关闭</a-radio>
           </a-radio-group>
