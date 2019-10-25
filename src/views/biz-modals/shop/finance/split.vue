@@ -159,6 +159,7 @@ export default {
   },
   created() {
     this.splitService.serviceInit(this.id).subscribe(result => {
+      this.description = this.info.description || ''
       const item = {
         edit: this.SPLIT.EDIT_TYPE_3, // 1 主销售编辑 2 协助销售编辑 3协助销售新增
         staff_id: '',
