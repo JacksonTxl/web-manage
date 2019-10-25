@@ -38,7 +38,7 @@
             >
               {{
                 packageTransferInfo.order_status
-                  | enumFilter('sold.order_status')
+                  | enumFilter('sold_common.order_status')
               }}
             </st-info-item>
           </st-info>
@@ -104,7 +104,7 @@
             >
               {{
                 personalCourseInfo.order_status
-                  | enumFilter('sold.order_status')
+                  | enumFilter('sold_common.order_status')
               }}
             </st-info-item>
             <st-info-item

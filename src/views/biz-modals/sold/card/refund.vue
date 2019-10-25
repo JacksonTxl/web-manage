@@ -55,7 +55,9 @@
               label="订单状态"
               v-if="refundInfo.order_status"
             >
-              {{ refundInfo.order_status | enumFilter('sold.order_status') }}
+              {{
+                refundInfo.order_status | enumFilter('sold_common.order_status')
+              }}
             </st-info-item>
           </st-info>
         </a-col>
