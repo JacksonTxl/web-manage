@@ -28,6 +28,7 @@ import { layoutMap } from '@/views/layouts/index.ts'
 import { I18NService } from '@/services/i18n.service'
 import { AppConfig } from '@/constants/config'
 import { RouteService } from '@/services/route.service'
+import { UdeskService } from '@/services/udesk.service'
 
 export default {
   name: 'app',
@@ -36,7 +37,8 @@ export default {
     return {
       i18n: I18NService,
       appConfig: AppConfig,
-      route: RouteService
+      route: RouteService,
+      udeskService: UdeskService
     }
   },
   rxState() {
@@ -49,6 +51,9 @@ export default {
     layoutComponent() {
       return layoutMap[this.$route.meta.layout || 'loading']
     }
+  },
+  mounted() {
+    this.udeskService.init().subscribe()
   }
 }
 </script>
