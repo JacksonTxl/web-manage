@@ -14,11 +14,8 @@ export class FastEntryService implements RouteGuard {
     private authService: AuthService
   ) {}
   getInfo() {
-    console.log('查看获取调用')
     return this.CodeUrlApi.getCodeUrl().pipe(
       tap(res => {
-        console.log('查看获取code')
-        console.log(res)
         res = this.authService.filter(res, 'auth')
         this.info$.commit(() => res.common_info)
         this.auth$.commit(() => res.auth)
@@ -28,7 +25,6 @@ export class FastEntryService implements RouteGuard {
   }
 
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    console.log('调用服务')
     return this.getInfo()
   }
 }

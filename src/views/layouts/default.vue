@@ -210,7 +210,6 @@ export default {
     return {
       isShowSwitchShop: false,
       menuObj: {},
-      sudokuOpenFlag: false,
       entries
     }
   },
@@ -229,7 +228,6 @@ export default {
     }
   },
   created() {
-    console.log(this.urlData.list)
     this.urlData.list
       ? (entries[4].disabled = false)
       : (entries[4].disabled = true)
