@@ -81,13 +81,6 @@
         </a-breadcrumb>
       </div>
       <div class="layout-default-body__personal">
-        <router-link
-          :to="{ name: 'common-export' }"
-          class="layout-default-body__header-link"
-        >
-          <st-icon type="export"></st-icon>
-        </router-link>
-
         <!-- 九宫格 -->
         <a-dropdown :trigger="['click']" placement="bottomRight">
           <div class="layout-default-body__avatar">
@@ -102,19 +95,12 @@
                 @click="goToPage(item)"
                 :disabled="item.disabled"
               >
-                <img
-                  class="fast-entry__pic"
-                  :src="
-                    item.disabled
-                      ? `https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/${
-                          item.iconDisabled
-                        }`
-                      : `https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/${
-                          item.icon
-                        }`
-                  "
-                  :alt="item.text"
-                />
+                <div class="fast-entry__pic">
+                  <img
+                    :src="item.disabled ? item.iconDisabled : item.icon"
+                    :alt="item.text"
+                  />
+                </div>
                 <div class="layout-fast-entry__text">{{ item.text }}</div>
               </a-menu-item>
             </a-menu>

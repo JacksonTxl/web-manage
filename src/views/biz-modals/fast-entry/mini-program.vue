@@ -1,7 +1,7 @@
 <template>
   <st-modal
     title="微信支付配置"
-    class="modal-fast-entry-program"
+    class="modal-fast-entry-mini-program"
     v-model="show"
     :footer="null"
     width="320px"
@@ -23,7 +23,7 @@ import { MessageService } from '@/services/message.service'
 export default {
   name: 'FastEntryProgram',
   bem: {
-    b: 'modal-fast-entry-program'
+    b: 'modal-fast-entry-mini-program'
   },
   serviceInject() {
     return {
