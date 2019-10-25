@@ -6,7 +6,7 @@
         @search="onSearchCourseName"
         :placeholder="placeholder"
         :class="b('search')"
-        width="350px"
+        style="width:372px"
       />
     </div>
     <router-view></router-view>

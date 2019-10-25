@@ -7,6 +7,7 @@
         @search="onSearchCardName"
         placeholder="请输入卡名、合同编号、会员姓名或手机号查找"
         :class="b('search')"
+        style="width:350px"
       />
     </div>
     <router-view></router-view>

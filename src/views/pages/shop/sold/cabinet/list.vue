@@ -6,6 +6,7 @@
       v-model="query.search"
       @search="onKeywordsSearch('search', $event)"
       :class="basic('search')"
+      style="width:360px"
     />
     <st-search-panel @search="onSearchNative" @reset="onSearhReset">
       <st-search-panel-item label="租赁状态：">
