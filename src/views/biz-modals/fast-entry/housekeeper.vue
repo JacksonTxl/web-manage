@@ -8,7 +8,7 @@
   >
     <div>
       <div :class="b('wrapper')">
-        <img :class="b('code-img')" :src="pic" alt="扫描二维码" />
+        <!-- <img :class="b('code-img')" :src="pic" alt="扫描二维码" /> -->
         <p :class="b('tips')" class="mg-t16">
           扫描二维码
           <br />
@@ -19,7 +19,7 @@
   </st-modal>
 </template>
 <script>
-import codeImg from '@/assets/img/fast-entry/code.png'
+// import codeImg from '@/assets/img/fast-entry/code.png'
 export default {
   name: 'FastEntryHousekeeper',
   bem: {
@@ -33,8 +33,8 @@ export default {
   },
   data() {
     return {
-      show: false,
-      pic: codeImg
+      show: false
+      // pic: codeImg
     }
   },
   created() {},

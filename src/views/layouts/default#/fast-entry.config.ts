@@ -2,6 +2,7 @@ import icon1 from '@/assets/img/fast-entry/1.png'
 import icon1Disabled from '@/assets/img/fast-entry/1-disable.png'
 import icon2 from '@/assets/img/fast-entry/2.png'
 import icon3 from '@/assets/img/fast-entry/3.png'
+import icon3Disabled from '@/assets/img/fast-entry/3-disable.png'
 import icon4 from '@/assets/img/fast-entry/4.png'
 import icon5 from '@/assets/img/fast-entry/5.png'
 import icon5Disabled from '@/assets/img/fast-entry/5-disable.png'
@@ -26,9 +27,10 @@ export const entries = [
   },
   {
     icon: icon3,
+    iconDisabled: icon3Disabled,
     text: '三体云管家',
     openProgram: 'housekeeper',
-    disabled: false
+    disabled: true
   },
   {
     icon: icon4,
