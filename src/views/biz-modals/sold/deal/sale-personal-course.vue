@@ -184,10 +184,10 @@
               </st-button>
             </div>
           </st-form-item>
-          <st-form-item label="上课教练" required>
+          <st-form-item :label="`上课${$c('coach')}`" required>
             <a-select
               v-decorator="decorators.coachId"
-              placeholder="选择上课的教练"
+              :placeholder="`选择上课的${$c('coach')}`"
             >
               <a-select-option
                 v-for="(item, index) in coachList"

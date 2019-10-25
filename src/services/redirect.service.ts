@@ -66,7 +66,10 @@ export class RedirectService implements RouteGuard {
               content: `不存在 ${routeName} 下的tabs`
             })
           }
-          return authMap[routeName]
+          return authMap[routeName].map((tab: any) => {
+            tab.label = this.userService.interpolation(tab.label)
+            return tab
+          })
         })
       )
     )

@@ -17,16 +17,16 @@
         <st-t4>私教课程定价模式</st-t4>
         <!-- 教练统一定价 -->
         <div class="mg-t4" v-if="info.price_model === PERSONAL.PRICEMODEL_1">
-          教练统一定价
+          {{ $c('coach') }}统一定价
           <span class="st-des">
-            （每一个私教课程，所授课的教练的课程售出价格一致）
+            （每一个私教课程，所授课的{{ $c('coach') }}的课程售出价格一致）
           </span>
         </div>
         <!-- 教练分级定价 -->
         <div class="mg-t4" v-if="info.price_model === PERSONAL.PRICEMODEL_2">
-          教练分级定价
+          {{ $c('coach') }}分级定价
           <span class="st-des">
-            （每一个私教课程，按教练等级进行差异化定价）
+            （每一个私教课程，按{{ $c('coach') }}等级进行差异化定价）
           </span>
         </div>
         <!-- 私教课程售卖模式 -->
@@ -67,7 +67,9 @@
           <!-- 教练谈单切换至统一标价 -->
           <div v-if="info.sale_model === PERSONAL.SALEMODEL_2">
             <div class="st-des">
-              切换教练谈单至统一标价，从目前私教课程的范围定价中选择最低价或最高价设置为私教课程的标准定价
+              切换{{
+                $c('coach')
+              }}谈单至统一标价，从目前私教课程的范围定价中选择最低价或最高价设置为私教课程的标准定价
             </div>
             <st-form-item
               class="mg-b0 mg-t8"
@@ -91,7 +93,9 @@
           <!-- 统一标价切换至教练谈单 -->
           <div v-if="info.sale_model === PERSONAL.SALEMODEL_1">
             <div class="st-des">
-              切换统一标价至教练谈单，需要设置私教课程的范围定价，设置后遇到小数位，则四舍五入，保留一位小数
+              切换统一标价至{{
+                $c('coach')
+              }}谈单，需要设置私教课程的范围定价，设置后遇到小数位，则四舍五入，保留一位小数
             </div>
             <st-form-item class="mg-b0" labelWidth="70px" label="课程最低价">
               私教课程当前定价下调

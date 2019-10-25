@@ -87,7 +87,7 @@
       </a>
       <span v-else>{{ text }}</span>
       <span slot="memberTitle">
-        会员卡成单数
+        {{ $c('member_card') }}成单数
         <st-help-tooltip id="TSSR001" />
       </span>
       <span slot="depositTitle">

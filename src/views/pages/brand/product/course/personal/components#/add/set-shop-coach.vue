@@ -41,7 +41,7 @@
       <a-col :lg="22" :xs="22" :offset="1">
         <st-form-item>
           <template slot="label">
-            上课教练
+            上课{{ $c('coach') }}
             <st-help-tooltip id="TBCPC002" />
           </template>
           <div class="page-shop-coach-container-coach">

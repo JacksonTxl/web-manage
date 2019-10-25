@@ -393,7 +393,7 @@ export default {
       if (record.follow_coach) {
         this.$confirm({
           title: '提示信息',
-          content: '该用户已存在跟进教练，是否确认替换？',
+          content: `该用户已存在跟进${this.$c('coach')}，是否确认替换？`,
           onOk: () => {
             this.$modalRouter.push({
               name: 'shop-distribution-coach',

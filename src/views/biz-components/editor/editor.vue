@@ -142,6 +142,7 @@ export default {
             })
           },
           init_instance_callback(editor) {
+            editor.setContent(ctx.value)
             ctx.$emit('ready', editor)
           }
         })

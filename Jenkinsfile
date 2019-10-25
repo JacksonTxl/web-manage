@@ -14,6 +14,10 @@ pipeline {
       }
     }
     stage('Build') {
+      /** master 分支不参与自动构建 */
+      when {
+        expression { BRANCH_NAME ==~ /(feat|fix|dev|test).*/}
+      }
       steps {
         sh 'make build'
       }
@@ -42,14 +46,22 @@ pipeline {
         echo "https://saas.test.styd.cn"
       }
     }
-    stage('to=prod') {
-      when {
-        expression { BRANCH_NAME ==~ /(master).*/}
-      }
-      steps {
-        sh 'make rsync to=saas-nginx-m'
-      }
-    }
+    // stage('prod-Build') {
+    //   when {
+    //     expression { BRANCH_NAME ==~ /(master).*/}
+    //   }
+    //   steps {
+    //     sh 'make build'
+    //   }
+    // }
+    // stage('to=prod') {
+    //   when {
+    //     expression { BRANCH_NAME ==~ /(master).*/}
+    //   }
+    //   steps {
+    //     sh 'make rsync to=saas-nginx-m'
+    //   }
+    // }
   }
   post {
     always {

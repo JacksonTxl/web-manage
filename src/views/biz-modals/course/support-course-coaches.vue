@@ -1,7 +1,7 @@
 <template>
   <st-modal
     class="modal-support-course-shops"
-    :title="course.course_name + ' 查看授课教练'"
+    :title="course.course_name + ' 查看授课' + $c('coach')"
     :footer="null"
     v-model="show"
   >
@@ -31,10 +31,12 @@ export default {
   },
   data() {
     return {
-      columnsCoaches,
       show: false,
       supportCoachList: []
     }
+  },
+  computed: {
+    columnsCoaches
   },
   props: {
     course: {

@@ -16,7 +16,7 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           required: true,
-          message: '请选择教练'
+          message: `请选择${vm.$c('coach')}`
         }
       ]
     },

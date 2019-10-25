@@ -12,18 +12,20 @@
     </p>
     <a-radio-group v-model="selectedValue">
       <div :class="bTable()">
-        <div :class="bTable('left')">会员卡</div>
+        <div :class="bTable('left')">{{ $c('member_card') }}</div>
         <div :class="bTable('right')">
           <div :class="bTable('content')">
             <a-radio :value="IMPORT.MEMBER_CARD_BASIC">基础信息</a-radio>
             <label :class="bTable('desc')">
-              仅导入会员卡基础信息，不导入价格，默认会员卡支持单店入场，全门店售卖
+              仅导入{{ $c('member_card') }}基础信息，不导入价格，默认{{
+                $c('member_card')
+              }}支持单店入场，全门店售卖
             </label>
           </div>
           <div :class="bTable('content')">
             <a-radio :value="IMPORT.MEMBER_CARD_PRICE">价格信息</a-radio>
             <label :class="bTable('desc')">
-              会员卡的价格信息，请在录入卡基础信息后进行导入
+              {{ $c('member_card') }}的价格信息，请在录入卡基础信息后进行导入
             </label>
           </div>
         </div>
@@ -92,13 +94,17 @@
               <span>支持消费的门店</span>
             </a-radio>
             <label :class="bTable('desc')">
-              若会员卡、储值卡支持多店消费，或者团体课支持上课门店为多店，请导入卡课支持消费的门店
+              若{{
+                $c('member_card')
+              }}、储值卡支持多店消费，或者团体课支持上课门店为多店，请导入卡课支持消费的门店
             </label>
           </div>
           <div :class="bTable('content')">
             <a-radio :value="IMPORT.SUPPORT_SOLD_SHOP">支持售卖的门店</a-radio>
             <label :class="bTable('desc')">
-              若会员卡、储值卡不支持全门店售卖，或者私教课不支持全门店售卖，请导入卡课支持售卖的门店
+              若{{
+                $c('member_card')
+              }}、储值卡不支持全门店售卖，或者私教课不支持全门店售卖，请导入卡课支持售卖的门店
             </label>
           </div>
         </div>

@@ -8,8 +8,10 @@ import { tap } from 'rxjs/operators'
 export class RefundService {
   packageInfo$ = new State({})
   loading$ = new State({})
-  refundChannelSaas$ = this.userService.getOptions$('sold.refund_channel_saas')
-  refundReasons$ = this.userService.getOptions$('sold.refund_reason')
+  refundChannelSaas$ = this.userService.getOptions$(
+    'sold_common.refund_channel_saas'
+  )
+  refundReasons$ = this.userService.getOptions$('sold_common.refund_reason')
   constructor(private courseApi: CourseApi, private userService: UserService) {}
   @Effect()
   getPackageInfo(id: string, type: string) {

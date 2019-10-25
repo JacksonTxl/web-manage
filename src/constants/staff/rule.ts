@@ -1,10 +1,15 @@
 import { I18NService } from '@/services/i18n.service'
 import { Injectable } from 'vue-service-app'
 import { PatternService } from '@/services/pattern.service'
+import { UserService } from '@/services/user.service'
 
 @Injectable()
 export class RuleConfig {
-  constructor(private i18n: I18NService, private pattern: PatternService) {}
+  constructor(
+    private i18n: I18NService,
+    private pattern: PatternService,
+    private userService: UserService
+  ) {}
   // 登录账号
   get name() {
     // eslint-disable-next-line
@@ -260,7 +265,12 @@ export class RuleConfig {
     return [
       'coach_level_id',
       {
-        rules: [{ required: true, message: '请选择教练等级' }]
+        rules: [
+          {
+            required: true,
+            message: `请选择${this.userService.c('coach')}等级`
+          }
+        ]
       }
     ]
   }

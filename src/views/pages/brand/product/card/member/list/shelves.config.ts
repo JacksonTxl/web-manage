@@ -4,7 +4,7 @@ export enum CARD_TYPE {
   period = 2
 }
 
-export const columns = () => {
+export const columns = (vm: any) => {
   return [
     {
       title: '售卖门店',
@@ -13,7 +13,7 @@ export const columns = () => {
       sorter: true
     },
     {
-      title: '会员卡名称',
+      title: `${vm.$c('member_card')}名称`,
       dataIndex: 'card_name',
       width: 200,
       scopedSlots: { customRender: 'card_name' }

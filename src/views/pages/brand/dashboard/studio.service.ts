@@ -4,7 +4,7 @@ import { tap, catchError } from 'rxjs/operators'
 import { StatApi, RecentQuery } from '@/api/v1/stat/brand'
 import { forkJoin, of } from 'rxjs'
 import { anyAll } from '@/operators/any-all'
-
+import { UserService } from '@/services/user.service'
 @Injectable()
 export class StudioService {
   top$ = new State({})
@@ -14,7 +14,7 @@ export class StudioService {
   entry$ = new State([])
   marketing$ = new State([])
   marketingFunnel$ = new State([])
-  constructor(private statApi: StatApi) {}
+  constructor(private statApi: StatApi, private userService: UserService) {}
   getTop() {
     return this.statApi.getTop({ version: 'studio' }).pipe(
       tap(res => {
@@ -59,7 +59,10 @@ export class StudioService {
     return this.statApi.getAvg({ version: 'studio' }).pipe(
       tap(res => {
         this.avg$.commit(() => [
-          { name: '会员卡', value: res.info.member_card_amount },
+          {
+            name: this.userService.c('member_card'),
+            value: res.info.member_card_amount
+          },
           { name: '储值卡', value: res.info.deposit_card_amount },
           { name: '团体课', value: res.info.team_course_amount },
           { name: '私教课', value: res.info.personal_course_amount },

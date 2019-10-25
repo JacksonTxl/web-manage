@@ -33,7 +33,7 @@
           课程类型设置
         </router-link>
         <router-link class="mg-l8" to="/brand/setting/general/coach-level">
-          教练等级
+          {{ $c('coach') }}等级
         </router-link>
         <router-link class="mg-l8" to="/brand/setting/general/skillful">
           擅长项目

@@ -10,11 +10,11 @@
       <st-form-item label="课程" required>
         <a-input v-model="info.course_name" disabled></a-input>
       </st-form-item>
-      <st-form-item label="上课教练" required>
+      <st-form-item :label="`上课${$c('coach')}`" required>
         <!-- TODO: 需要添加初始值-->
         <a-select
           v-decorator="decorators.coach_id"
-          placeholder="请选择上课教练"
+          :placeholder="`请选择上课${$c('coach')}`"
         >
           <a-select-option
             v-for="courseCoach in courseCoachOptions"

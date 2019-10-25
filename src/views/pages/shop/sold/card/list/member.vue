@@ -1,10 +1,10 @@
 <template>
   <div :class="basic()">
     <st-search-panel @search="onSearchNative" @reset="onSearhReset">
-      <st-search-panel-item label="会员卡类型：">
+      <st-search-panel-item :label="`${$c('member_card')}类型：`">
         <st-search-radio v-model="query.card_type" :options="cardTypes" />
       </st-search-panel-item>
-      <st-search-panel-item label="会员卡状态：">
+      <st-search-panel-item :label="`${$c('member_card')}状态：`">
         <st-search-radio v-model="query.card_status" :options="cardStatus" />
       </st-search-panel-item>
       <st-search-panel-item label="开卡状态：">

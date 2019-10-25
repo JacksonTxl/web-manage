@@ -1,6 +1,6 @@
 <template>
   <section :class="basic()">
-    <st-panel title="会员卡详情">
+    <st-panel :title="`${$c('member_card')}详情`">
       <div slot="actions">
         <st-button
           v-if="auth['shop:sold:sold_member_card|export_contract']"

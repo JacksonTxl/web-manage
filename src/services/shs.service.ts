@@ -5,6 +5,7 @@ import { AppConfig } from '@/constants/config'
 import { HttpService } from './http.service'
 import { tap, switchMap, map, catchError } from 'rxjs/operators'
 import { Observable, pipe, BehaviorSubject } from 'rxjs'
+import { NotificationService } from './notification.service'
 
 interface UploadImageParams {
   // base64图片地址
@@ -35,7 +36,8 @@ export class ShsService {
   constructor(
     private ossService: OssService,
     private http: HttpService,
-    private appConfig: AppConfig
+    private appConfig: AppConfig,
+    private notification: NotificationService
   ) {}
 
   /**
@@ -96,6 +98,12 @@ export class ShsService {
    * @param urlData
    */
   convertBase64UrlToBlob(urlData: string) {
+    if (!urlData) {
+      this.notification.error({
+        title: '海报',
+        content: 'is not qrcode url'
+      })
+    }
     const bytes = window.atob(urlData.split(',')[1])
     const ab = new ArrayBuffer(bytes.length)
     const ia = new Uint8Array(ab)

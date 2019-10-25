@@ -1,10 +1,15 @@
 <template>
-  <st-modal title="分配教练" @ok="save" v-model="show" size="small">
+  <st-modal
+    :title="`分配${$c('coach')}`"
+    @ok="save"
+    v-model="show"
+    size="small"
+  >
     <a-row :gutter="8">
       <a-col :lg="24" style="padding: 0;">
         <a-input-search
           size="large"
-          placeholder="搜索教练昵称"
+          :placeholder="`搜索${$c('coach')}昵称`"
           style="width: 100%;"
           @search="onSearch"
         />
@@ -37,9 +42,9 @@
 <script>
 import { DistributionCoachService } from './distribution-coach.service'
 import { MessageService } from '@/services/message.service'
-const columns = [
+const columns = vm => [
   {
-    title: '私教教练姓名',
+    title: `私教${vm.$c('coach')}姓名`,
     dataIndex: 'coach_name',
     key: 'coach_name'
   },
@@ -70,7 +75,6 @@ export default {
   data() {
     return {
       show: false,
-      columns,
       selectedRowKeys: [],
       pagination: {
         current: 1,
@@ -79,6 +83,9 @@ export default {
       list: [],
       coach_id: ''
     }
+  },
+  computed: {
+    columns
   },
   mounted() {
     this.service.getSaleList().subscribe(res => {

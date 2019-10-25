@@ -4,7 +4,7 @@
       v-model="query.card_name"
       v-di-view="{ name: BRAND_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH }"
       @search="onKeywordsSearch('card_name', $event)"
-      placeholder="请输入会员卡名称查找"
+      :placeholder="`请输入${$c('member_card')}名称查找`"
       maxlength="50"
     />
     <div :class="shelves('search')" class="mg-b16">
@@ -216,7 +216,9 @@ export default {
       })
       this.$confirm({
         title: '批量下架',
-        content: `确定下架所选的${this.selectedRowKeys.length}张会员卡吗？`,
+        content: `确定下架所选的${this.selectedRowKeys.length}张${this.$c(
+          'member_card'
+        )}吗？`,
         onOk: () => {
           return this.shelvesService
             .setCardShelfDown({ card_shop: params })
@@ -235,7 +237,7 @@ export default {
     onShelfDown(record) {
       this.$confirm({
         title: '单个下架',
-        content: `确定下架${record.card_name}会员卡吗？`,
+        content: `确定下架${record.card_name}${this.$c('member_card')}吗？`,
         onOk: () => {
           return this.shelvesService
             .setCardShelfDown({

@@ -10,7 +10,9 @@
       <a-col :lg="8">
         <st-info>
           <st-info-item label="会员名称">{{ info.member_name }}</st-info-item>
-          <st-info-item label="上课教练">{{ info.coach_name }}</st-info-item>
+          <st-info-item :label="`上课${$c('coach')}`">
+            {{ info.coach_name }}
+          </st-info-item>
           <st-info-item label="预约状态">
             <span v-if="info.is_checkin">
               {{ info.is_checkin | enumFilter('reserve.is_checkin') }}

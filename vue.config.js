@@ -24,7 +24,8 @@ const IS_PROD = env.NODE_ENV === 'production'
 
 const localApiEnvHostTarget = {
   dev: 'https://api-saas-dev.styd.cn',
-  test: 'https://api-saas-test.styd.cn'
+  test: 'https://api-saas-test.styd.cn',
+  pre: 'https://api-saas-pre.styd.cn'
 }[env.LOCAL_API_ENV]
 
 module.exports = {
