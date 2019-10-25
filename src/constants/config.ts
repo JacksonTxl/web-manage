@@ -125,9 +125,9 @@ export class AppConfig {
       'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/logo-default.png'
   }
   get UDESK_CONFIG() {
-    return this.HOST_IS_PROD ? this.UDESK_CONFIG_PROD : this.UDESK_CONFIG_TEST
+    return this.HOST_IS_PROD ? this.UDESK_CONFIG_PROD : this.UDESK_CONFIG_DEV
   }
-  UDESK_CONFIG_TEST = {
+  UDESK_CONFIG_DEV = {
     code: '2h23f6f4',
     link: 'https://styd.udesk.cn/im_client/?web_plugin_id=66175',
     config_link: 'https://assets-cli.udesk.cn/im_client/js/udeskApi.js'

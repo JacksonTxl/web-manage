@@ -53,11 +53,15 @@ export class UdeskService implements RouteGuard {
       udesk.style = 'display: none'
     }
   }
-  showUdesk(openDialog = false) {
-    let udesk: any = document.getElementById('udesk_container')
-    if (udesk) {
-      udesk.style = 'display: block'
-      if (openDialog) {
+  /**
+   *
+   * @param params openDialog 是否展示窗口
+   */
+  showUdesk(params = { openDialog: false }) {
+    let udeskEl: any = document.getElementById('udesk_container')
+    if (udeskEl) {
+      udeskEl.style = 'display: block'
+      if (params.openDialog) {
         let udesk_btn: any = document.getElementById('udesk_btn')
         let ev = document.createEvent('MouseEvent')
         ev.initEvent('click', false, false)
