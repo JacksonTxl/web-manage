@@ -5,6 +5,11 @@ export const columns = () => [
     scopedSlots: { customRender: 'card_name' }
   },
   {
+    title: '合同编号',
+    dataIndex: 'contract_number',
+    scopedSlots: { customRender: 'contract_number' }
+  },
+  {
     title: '剩余额度',
     dataIndex: 'remain_amount',
     scopedSlots: { customRender: 'remain_amount' }

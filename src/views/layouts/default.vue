@@ -81,23 +81,34 @@
         </a-breadcrumb>
       </div>
       <div class="layout-default-body__personal">
-        <!-- <a-badge dot>
-          <st-icon type="home" class="layout-default-body__icon"/>
-        </a-badge>
+        <!-- 九宫格 -->
         <a-dropdown :trigger="['click']" placement="bottomRight">
-          <div class="layout-default-body__top-item">
-            <st-icon type="square" class="layout-default-body__icon"/>
+          <div class="layout-default-body__avatar">
+            <st-icon type="square" width="17px" color="#9BACB9"></st-icon>
           </div>
-          <div slot="overlay" class="layout-default-body__fast-entry">
-            <fast-entry />
+          <div slot="overlay" class="layout-fast-entry">
+            <a-menu class="layout-fast-entry__wrapper">
+              <a-menu-item
+                v-for="(item, index) in entries"
+                :key="index"
+                class="layout-fast-entry__item"
+                :class="
+                  item.disabled
+                    ? 'layout-fast-entry__disabled'
+                    : 'layout-fast-entry__activity'
+                "
+                @click="goToPage(item)"
+                :disabled="item.disabled"
+              >
+                <div class="fast-entry__pic">
+                  <img :src="item.icon" :alt="item.text" />
+                </div>
+                <div class="layout-fast-entry__text">{{ item.text }}</div>
+              </a-menu-item>
+            </a-menu>
           </div>
-        </a-dropdown> -->
-        <router-link
-          :to="{ name: 'common-export' }"
-          class="layout-default-body__header-link"
-        >
-          <st-icon type="export"></st-icon>
-        </router-link>
+        </a-dropdown>
+
         <a-dropdown :trigger="['click']" placement="bottomRight">
           <div class="layout-default-body__avatar">
             <img
@@ -157,7 +168,10 @@ import { find } from 'lodash-es'
 import { UserService } from '@/services/user.service'
 import { TokenService } from '@/services/token.service'
 import { TitleService } from '@/services/title.service'
-// import FastEntry from './entry#/fast-entry'
+import { entries } from './default#/fast-entry.config'
+import FastEntryMiniProgram from '@/views/biz-modals/fast-entry/mini-program'
+import FastEntryHousekeeper from '@/views/biz-modals/fast-entry/housekeeper'
+// import { UdeskService } from '@/services/udesk.service'
 
 export default {
   components: {
@@ -167,13 +181,14 @@ export default {
     /**
      * 快速入口 九宫格
      */
-    // FastEntry
+    //FastEntry
   },
   serviceInject() {
     return {
       userService: UserService,
       tokenService: TokenService,
       titleService: TitleService
+      // udeskService: UdeskService
     }
   },
   rxState() {
@@ -182,14 +197,20 @@ export default {
       brand: this.userService.brand$,
       shop: this.userService.shop$,
       theme: this.userService.theme$,
-      title: this.titleService.title$
+      title: this.titleService.title$,
+      urlData: this.userService.urlData$
     }
   },
   data() {
     return {
       isShowSwitchShop: false,
-      menuObj: {}
+      menuObj: {},
+      entries
     }
+  },
+  modals: {
+    FastEntryMiniProgram,
+    FastEntryHousekeeper
   },
   computed: {
     breadCrumbs() {
@@ -200,6 +221,11 @@ export default {
     isInShop() {
       return this.shop.id
     }
+  },
+  created() {
+    this.urlData.list
+      ? (entries[4].disabled = false)
+      : (entries[4].disabled = true)
   },
   methods: {
     switchShop() {
@@ -268,6 +294,39 @@ export default {
        * 切换路由时关闭切换门店 drawer
        */
       this.isShowSwitchShop = false
+    },
+    goToPage(item) {
+      if (item.url) {
+        window.open(item.url)
+        return
+      }
+      if (item.openProgram === 'miniProgram') {
+        const urlData = this.urlData
+        this.$modalRouter.push({
+          name: 'fast-entry-mini-program',
+          props: {
+            urlData
+          },
+          on: {}
+        })
+        return
+      }
+      if (item.openProgram === 'housekeeper') {
+        this.$modalRouter.push({
+          name: 'fast-entry-housekeeper',
+          props: {},
+          on: {}
+        })
+        return
+      }
+      if (item.openProgram === 'export') {
+        this.$router.push({
+          path: '/common/export'
+        })
+      }
+      if (item.openProgram === 'Udesk') {
+        // this.udeskService.open()
+      }
     }
   }
 }

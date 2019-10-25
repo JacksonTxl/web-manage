@@ -275,7 +275,6 @@
       transition: all 0.2s;
     }
   }
-
   // layout-default-body
   &-body {
     position: absolute;
@@ -425,5 +424,57 @@
       .c(rgba(0, 0, 0, 0.45));
       .pd-tb(24px);
     }
+  }
+}
+// 九宫格
+.layout-fast-entry {
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
+  max-height: inherit;
+  &__wrapper {
+    padding: 40px 20px 10px 20px;
+    .w(360px);
+    .h(375px);
+    .bg(@white);
+    box-sizing: border-box;
+    border: none;
+  }
+  &__item {
+    display: inline-block;
+    width: 33.3%;
+    height: 33.3% !important;
+    padding: 0 !important;
+    margin: 0px !important;
+    .ta-c;
+    .fz(12px) !important;
+    .c(@title);
+    .fast-entry__pic {
+      display: flex;
+      justify-content: center;
+      height: 50px;
+      margin-bottom: 10px;
+    }
+    .fast-entry__pic img {
+      display: block;
+      width: 50px;
+    }
+    transition: 0.3s;
+  }
+  &__disabled {
+    filter: grayscale(100%);
+  }
+  &__activity {
+    &:hover {
+      transform: translateY(-6px);
+    }
+  }
+  .layout-fast-entry__text {
+    line-height: 15px;
+  }
+  .ant-menu-vertical .ant-menu-item,
+  .ant-menu-vertical .ant-menu-item:not(:last-child) {
+    margin-bottom: 0;
+  }
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: #fff;
   }
 }
