@@ -64,6 +64,7 @@
           v-show="curTime === SEND_TYPES.ONTIME"
           :disabledDate="disabledStartDate"
           placeholder="请选择时间"
+          class="mg-t8"
           format="YYYY-MM-DD HH:mm"
           showTime
           v-decorator="decorators.send_time"
@@ -87,13 +88,11 @@
           :autosize="{ minRows: 2, maxRows: 4 }"
           v-if="curTem === TMPL_TYPES.PERSONAL"
           v-decorator="decorators.content"
+          @change="setSignVal"
           :maxlength="280"
           placeholder="请输入【签名】"
         ></st-textarea>
-        <div
-          :class="bModal('save')"
-          v-if="curTem === TMPL_TYPES.PERSONAL && !id"
-        >
+        <div :class="bModal('save')" v-if="curTem === TMPL_TYPES.PERSONAL">
           <a-checkbox
             v-decorator="decorators.is_save"
             :class="bModal('save-btn')"
@@ -232,12 +231,12 @@ export default {
         })
         this.curUser = res.info.user_type
         this.curTime = res.info.send_type
+        this.curTem = res.info.tmpl_type
         if (res.info.user_type === this.USER_TYPES.USER) {
           this.tel = res.info.send_value
         }
-        if (res.info.tmpl_id) {
+        if (res.info.tmpl_type === this.TMPL_TYPES.CUSTOM) {
           this.getCurTemContent(res.info.tmpl_id)
-          this.curTem = this.TMPL_TYPES.CUSTOM
         }
       })
     },
