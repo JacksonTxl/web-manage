@@ -26,3 +26,5 @@ yarn-error.log*
 *.sw*
 
 inspect.js
+
+src/views/pages/test/*
