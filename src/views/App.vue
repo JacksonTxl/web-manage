@@ -12,9 +12,7 @@
 
       <!-- 非生产域名下 -->
       <div
-        v-if="
-          appConfig.IS_PROD && (appConfig.HOST_IS_DEV || appConfig.HOST_IS_TEST)
-        "
+        v-if="appConfig.HOST_IS_DEV || appConfig.HOST_IS_TEST"
         class="app-env"
       >
         分支:{{ appConfig.GIT_BRANCH }}
