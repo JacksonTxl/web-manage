@@ -4,6 +4,7 @@
     title="群发短信"
     v-model="show"
     @ok="save"
+    width="486px"
     @cancel="cancel"
   >
     <st-form :form="form">
@@ -89,7 +90,10 @@
           :maxlength="280"
           placeholder="请输入【签名】"
         ></st-textarea>
-        <div :class="bModal('save')" v-if="curTem === TMPL_TYPES.PERSONAL">
+        <div
+          :class="bModal('save')"
+          v-if="curTem === TMPL_TYPES.PERSONAL && !id"
+        >
           <a-checkbox
             v-decorator="decorators.is_save"
             :class="bModal('save-btn')"

@@ -1,5 +1,5 @@
 <template>
-  <st-modal :bModal="bModal()" title="短信模版" v-model="show">
+  <st-modal :bModal="bModal()" title="短信模版" v-model="show" width="486px">
     <st-form :form="form">
       <st-form-item labelWidth="70px" label="模版名称">
         <a-input v-decorator="decorators.title" placeholder="请输入模版名称" />
