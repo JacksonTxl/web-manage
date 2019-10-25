@@ -76,6 +76,9 @@
                 )
               }}
             </st-info-item>
+            <st-info-item label="合同编号" class="mg-b16">
+              {{ packageInfo.contract_number }}
+            </st-info-item>
           </st-info>
         </a-col>
         <a-col :span="9">

@@ -8,7 +8,13 @@
   >
     <div>
       <div :class="b('wrapper')">
-        <img :class="b('code-img')" :src="urlData.list" alt="扫描二维码" />
+        <st-image
+          :class="b('code-img')"
+          width="180px"
+          height="180px"
+          :src="urlData.list"
+          alt="扫描二维码"
+        />
         <p class="mg-t16">
           请使用微信扫描二维码
           <br />
