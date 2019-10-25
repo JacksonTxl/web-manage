@@ -9,7 +9,9 @@
     <a-row :gutter="24" class="modal-reserved-info">
       <a-col :lg="8">
         <st-info>
-          <st-info-item label="上课教练">{{ info.coach_name }}</st-info-item>
+          <st-info-item :label="`上课${$c('coach')}`">
+            {{ info.coach_name }}
+          </st-info-item>
           <st-info-item label="上课时间">{{ info.start_time }}</st-info-item>
           <st-info-item label="课时费">{{ info.course_fee }}元</st-info-item>
         </st-info>

@@ -59,8 +59,10 @@
         </div>
         <div class="page-personal-content__item mg-b24">
           <div class="title mg-b8">
-            <span class="label">上课教练:</span>
-            <span class="value">共{{ info.coaches.length }}名教练</span>
+            <span class="label">上课{{ $c('coach') }}:</span>
+            <span class="value">
+              共{{ info.coaches.length }}名{{ $c('coach') }}
+            </span>
           </div>
           <st-container>
             <st-table
@@ -150,12 +152,12 @@ export default {
     },
     image() {
       return this.info.image.image_key
-    }
+    },
+    coachColumns
   },
   data() {
     return {
       shopColumns,
-      coachColumns,
       priceConfigColumns
     }
   }

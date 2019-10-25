@@ -144,7 +144,7 @@ export const routeMapConfig = {
     ]
   },
   'shop-sold-card-list-member'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '会员卡'
+    routeConfig.meta.title = '{{$c("member_card")}}'
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       card_type: { type: Number, default: -1 },
@@ -285,7 +285,7 @@ export const routeMapConfig = {
     }
   },
   'shop-sold-card-info-member-info'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '会员卡详情'
+    routeConfig.meta.title = '{{$c("member_card")}}详情'
     routeConfig.meta.tabs = [
       'shop-sold-card-info-member-info-operation-record',
       'shop-sold-card-info-member-info-usage-log'
@@ -294,7 +294,7 @@ export const routeMapConfig = {
   'shop-sold-card-info-member-info-consumption-record'(
     routeConfig: RouteConfig
   ) {
-    routeConfig.meta.title = '会籍卡详情'
+    routeConfig.meta.title = '{{$c("member_card")}}详情'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
@@ -404,7 +404,7 @@ export const routeMapConfig = {
     routeConfig.meta.auth = 'brand_shop:staff:staff_setting|tab'
   },
   'shop-product-card-member-list'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '会员卡'
+    routeConfig.meta.title = '{{$c("member_card")}}'
     routeConfig.meta.tabs = [
       'shop-product-card-member-list-shelves',
       'shop-product-card-member-list-all'
@@ -421,7 +421,7 @@ export const routeMapConfig = {
     }
   },
   'shop-product-card-member-list-all'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '全部会员卡项'
+    routeConfig.meta.title = '全部{{$c("member_card")}}项'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -486,7 +486,7 @@ export const routeMapConfig = {
     }
   },
   'brand-product-card-member-list'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '会籍卡'
+    routeConfig.meta.title = '{{$c("member_card")}}'
     routeConfig.meta.tabs = [
       'brand-product-card-member-list-all',
       'brand-product-card-member-list-shelves'
@@ -504,7 +504,7 @@ export const routeMapConfig = {
     }
   },
   'brand-product-card-member-list-all'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '全部会员卡项'
+    routeConfig.meta.title = '全部{{$c("member_card")}}项'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -525,7 +525,7 @@ export const routeMapConfig = {
     }
   },
   'brand-product-card-member-number-info'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '会籍卡详情'
+    routeConfig.meta.title = '{{$c("member_card")}}详情'
   },
   'brand-dashboard-club'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '首页'
@@ -537,19 +537,19 @@ export const routeMapConfig = {
     routeConfig.meta.title = '营销插件'
   },
   'brand-product-card-member-number-edit'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '编辑会籍卡'
+    routeConfig.meta.title = '编辑{{$c("member_card")}}'
   },
   'brand-product-card-member-add-select'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '会籍卡'
+    routeConfig.meta.title = '{{$c("member_card")}}'
   },
   'brand-product-card-member-period-add'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '新增会籍卡'
+    routeConfig.meta.title = '新增{{$c("member_card")}}'
   },
   'brand-product-card-member-number-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增次卡'
   },
   'brand-product-card-member-period-info'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '会籍卡详情'
+    routeConfig.meta.title = '{{$c("member_card")}}详情'
   },
   'brand-product-card-deposit-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '储值卡详情'
@@ -663,7 +663,7 @@ export const routeMapConfig = {
     routeConfig.meta.title = '支付方式'
   },
   'brand-setting-general-coach-level'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '教练等级设置'
+    routeConfig.meta.title = '{{$c("coach")}}等级设置'
   },
   'brand-setting-general-user-level'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '用户等级设置'
@@ -832,10 +832,10 @@ export const routeMapConfig = {
     routeConfig.meta.title = '课程包详情'
   },
   'shop-product-card-member-number-info'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '会员卡详情'
+    routeConfig.meta.title = '{{$c("member_card")}}详情'
   },
   'shop-product-card-member-add-select'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '新增会员卡'
+    routeConfig.meta.title = '新增{{$c("member_card")}}'
   },
   'shop-product-card-member-period-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增期限卡'
@@ -844,7 +844,7 @@ export const routeMapConfig = {
     routeConfig.meta.title = '新增次卡'
   },
   'shop-product-card-member-period-edit'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '编辑会员卡'
+    routeConfig.meta.title = '编辑{{$c("member_card")}}'
   },
   'shop-product-card-deposit-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增储值卡'

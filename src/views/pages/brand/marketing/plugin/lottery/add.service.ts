@@ -11,14 +11,14 @@ export class AddService implements RouteGuard {
   drawCondition$ = this.userService.getOptions$('plugin.draw_condition')
   drawTimesType$ = this.userService.getOptions$('plugin.draw_times_type')
   invitePoster$ = this.userService.getOptions$('plugin.invite_poster')
-  wheelDefault$ = this.userService.getOptions$('plugin.wheel_default')
-  wheelTurnAround$ = this.userService.getOptions$('plugin.wheel_turn_around')
+  wheelDefault$ = this.userService.getOptions$('plugin_wheel.default')
+  wheelTurnAround$ = this.userService.getOptions$('plugin_wheel.turn_around')
   joinCrowdAll$ = this.userService.getOptions$('plugin.join_crowd_all')
   crowd$ = this.userService.getOptions$('plugin.crowd')
   imgType$ = this.userService.getOptions$('plugin.img_type')
-  lucky$ = this.userService.getOptions$('plugin.wheel.lucky')
-  prize$ = this.userService.getOptions$('plugin.wheel.prize')
-  share$ = this.userService.getOptions$('plugin.wheel.share')
+  lucky$ = this.userService.getOptions$('plugin_wheel.lucky')
+  prize$ = this.userService.getOptions$('plugin_wheel.prize')
+  share$ = this.userService.getOptions$('plugin_wheel.share')
   constructor(
     private lotteryApi: LotteryApi,
     private userService: UserService

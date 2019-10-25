@@ -28,12 +28,16 @@ export default {
   },
   data() {
     return {
-      titleData: {
-        title: '会员卡剩余次数',
-        info: '会员卡剩余次数在以下范围的用户'
-      },
       inputnumber2: '',
       inputnumber1: ''
+    }
+  },
+  computed: {
+    titleData: vm => {
+      return {
+        title: `${vm.$c('member_card')}剩余次数`,
+        info: `${vm.$c('member_card')}剩余次数在以下范围的用户`
+      }
     }
   },
   methods: {

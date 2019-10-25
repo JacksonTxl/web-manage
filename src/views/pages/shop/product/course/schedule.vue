@@ -41,7 +41,7 @@
       </a-select>
       <a-select
         class="page-schedule__select"
-        placeholder="请选择教练"
+        :placeholder="`请选择${$c('coach')}`"
         @change="onChange"
         style="width: 120px"
         v-model="query.coach_id"
@@ -66,7 +66,7 @@
     >
       <a-select
         class="page-schedule__select"
-        placeholder="请选择教练"
+        :placeholder="`请选择${$c('coach')}`"
         @change="onChange"
         style="width: 120px"
         v-model="query.coach_id"
@@ -92,7 +92,7 @@
     >
       <a-select
         class="page-schedule__select"
-        placeholder="请选择教练"
+        :placeholder="`请选择${$c('coach')}`"
         @change="onChange"
         style="width: 120px"
         v-model="query.coach_id"

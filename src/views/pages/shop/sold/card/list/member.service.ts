@@ -4,7 +4,7 @@ import { tap } from 'rxjs/operators'
 import { CardApi, GetMemberListInput } from '@/api/v1/sold/cards'
 import { AuthService } from '@/services/auth.service'
 import { UserService } from '@/services/user.service'
-
+import { TitleService } from '@/services/title.service'
 @Injectable()
 export class MemberService implements RouteGuard {
   list$ = new State({})
@@ -15,15 +15,20 @@ export class MemberService implements RouteGuard {
     gift: 'shop:sold:sold_member_card|gift',
     vipRegion: 'shop:sold:sold_member_card|vip_region'
   })
-  cardTypes$ = this.userService.getOptions$('sold.card_type', { addAll: true })
-  cardStatus$ = this.userService.getOptions$('sold.card_status', {
+  cardTypes$ = this.userService.getOptions$('sold_common.card_type', {
     addAll: true
   })
-  isOpens$ = this.userService.getOptions$('sold.is_open', { addAll: true })
+  cardStatus$ = this.userService.getOptions$('sold_common.card_status', {
+    addAll: true
+  })
+  isOpens$ = this.userService.getOptions$('sold_common.is_open', {
+    addAll: true
+  })
   constructor(
     private cardApi: CardApi,
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private titleService: TitleService
   ) {}
   @Effect()
   getList(params: GetMemberListInput) {
@@ -40,6 +45,7 @@ export class MemberService implements RouteGuard {
     return this.cardApi.unFreezeCard(id, 'member')
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    this.titleService.SET_TITLE(this.userService.c('member_card'))
     return this.getList(to.meta.query)
   }
 }

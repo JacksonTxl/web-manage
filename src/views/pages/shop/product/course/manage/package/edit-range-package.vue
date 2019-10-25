@@ -263,8 +263,8 @@
                           <tr class="bg-thead th">
                             <th></th>
                             <th>课程名称</th>
-                            <th>支持预约的教练等级</th>
-                            <th>授课教练数</th>
+                            <th>支持预约的{{ $c('coach') }}等级</th>
+                            <th>授课{{ $c('coach') }}数</th>
                             <th>操作</th>
                           </tr>
                           <tbody>

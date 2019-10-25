@@ -1,6 +1,6 @@
 <template>
   <st-modal
-    title="会员卡恢复售卖"
+    :title="`${$c('member_card')}恢复售卖`"
     v-model="show"
     wrapClassName="modal-card-shop-recover-sale"
     width="484px"
@@ -14,7 +14,9 @@
           type="help"
         />
         <p>
-          注：仅恢复会员卡为可售卖状态，该会员卡需要重新上架至门店。
+          注：仅恢复{{ $c('member_card') }}为可售卖状态，该{{
+            $c('member_card')
+          }}需要重新上架至门店。
         </p>
       </div>
       <div :class="recoverSale('card-name')" class="mg-b24">

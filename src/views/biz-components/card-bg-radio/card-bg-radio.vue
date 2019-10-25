@@ -15,7 +15,7 @@
         :src="cardBgList[bgIndex].image_url | imgFilter({ w: 192, h: 108 })"
         width="192"
         height="108"
-        alt="会员卡背景"
+        :alt="`${$c('member_card')}背景`"
       />
       <div v-else :class="cardRadio('upload')">
         <st-image-upload

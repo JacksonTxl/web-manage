@@ -136,7 +136,7 @@ export const ruleOptions = (vm: any) => {
     album_id: {},
     is_permission: { initialValue: 0 },
     coach_level_id: {
-      rules: [{ required: true, message: '请选择教练等级' }]
+      rules: [{ required: true, message: `请选择${vm.$c('coach')}等级` }]
     },
     graduated_school: {
       rules: [

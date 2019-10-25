@@ -85,7 +85,6 @@ export default {
       priceSetting: 1,
       priceModel: 1,
       initDataSource: [],
-      columnsPrices,
       show: false
     }
   },
@@ -96,8 +95,9 @@ export default {
     }
   },
   computed: {
+    columnsPrices,
     filterColums() {
-      const columns = columnsPrices
+      const columns = this.columnsPrices
       return columns.filter(item => {
         return !(
           (this.priceSetting === this.PRICE_SETTING_SHOP.PRICE_SETTING_1 &&
@@ -128,7 +128,7 @@ export default {
       this.priceModel = state.price_model
       if (this.priceModel === this.PRICE_SETTING_SHOP.PRICE_MODEL_2) {
         this.coachLevel = [
-          { id: -1, name: '所有教练等级' },
+          { id: -1, name: `所有${this.$c('coach')}等级` },
           ...uniqWith(
             this.dataSource.map(item => {
               return {

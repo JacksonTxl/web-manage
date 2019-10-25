@@ -13,7 +13,7 @@ export class PackageService implements RouteGuard {
   auth$ = this.authService.authMap$({
     export: 'shop:sold:sold_package_course|export'
   })
-  courseStatus$ = this.userService.getOptions$('sold.course_status', {
+  courseStatus$ = this.userService.getOptions$('sold_common.course_status', {
     addAll: true
   })
   constructor(

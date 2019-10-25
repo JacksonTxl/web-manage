@@ -318,7 +318,9 @@
                             <th>课程名称</th>
                             <th>节数</th>
                             <th>课时费</th>
-                            <th class="tg-c">支持预约的教练等级</th>
+                            <th class="tg-c">
+                              支持预约的{{ $c('coach') }}等级
+                            </th>
                             <th>总价</th>
                             <th>操作</th>
                           </tr>

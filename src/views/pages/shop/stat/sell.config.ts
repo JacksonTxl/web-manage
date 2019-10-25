@@ -1,4 +1,4 @@
-export const allColumns = () => {
+export const allColumns = (vm: any) => {
   return [
     {
       title: '日期',
@@ -13,7 +13,7 @@ export const allColumns = () => {
       scopedSlots: { customRender: 'member_card_num' }
     },
     {
-      title: '会员卡购买金额（元）',
+      title: `${vm.$c('member_card')}购买金额（元）`,
       dataIndex: 'member_card_amount',
       align: 'right'
     },
@@ -80,7 +80,7 @@ export const allColumns = () => {
     }
   ]
 }
-export const staffColumns = () => {
+export const staffColumns = (vm: any) => {
   return [
     {
       title: '日期',
@@ -107,7 +107,7 @@ export const staffColumns = () => {
       scopedSlots: { customRender: 'member_card_num' }
     },
     {
-      title: '会员卡购买金额（元）',
+      title: `${vm.$c('member_card')}购买金额（元）`,
       dataIndex: 'member_card_amount',
       align: 'right'
     },

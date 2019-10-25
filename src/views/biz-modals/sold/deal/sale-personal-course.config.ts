@@ -42,7 +42,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     coach_level: {
-      rules: [{ required: true, message: '请选择教练等级' }]
+      rules: [{ required: true, message: `请选择${vm.$c('coach')}等级` }]
     },
     buyNum: {
       rules: [
@@ -65,7 +65,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     coachId: {
-      rules: [{ required: true, message: '请选择上课教练' }]
+      rules: [{ required: true, message: `请选择上课${vm.$c('coach')}` }]
     },
     gift_course_num: {},
     coursePrice: {

@@ -135,7 +135,7 @@
               v-if="revenueDaily.length"
               :data="revenueDaily"
               :fields="[
-                '会员卡',
+                $c('member_card'),
                 '私教课',
                 '团体课',
                 '课程包',

@@ -12,8 +12,8 @@
             <action-component v-if="actionLoaded"></action-component>
           </row-container-component>
           <row-container-component
-            title="教练风采"
-            subTitle="最多添加100个教练"
+            :title="`${$c('coach')}风采`"
+            :subTitle="`最多添加100个${$c('coach')}`"
             className="row-container-component-coach"
           >
             <coach-component v-if="coachLoaded"></coach-component>
@@ -136,7 +136,9 @@ export default {
       })
       let coachInfo = this.setCoashIDs()
       if (coachInfo.staff_id_list.length > 100) {
-        this.messageService.warning({ content: '最多可以添加100个教练' })
+        this.messageService.warning({
+          content: `最多可以添加100个${this.$c('coach')}`
+        })
         return
       }
       saveForm.info.push({

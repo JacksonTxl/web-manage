@@ -8,7 +8,7 @@ import {
 } from '@/api/v1/stat/revenue'
 import { forkJoin } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
-
+import { UserService } from '@/services/user.service'
 @Injectable()
 export class RevenueService {
   loading$ = new State({})
@@ -23,7 +23,8 @@ export class RevenueService {
   })
   constructor(
     private revenueApi: RevenueApi,
-    private authService: AuthService
+    private authService: AuthService,
+    private userService: UserService
   ) {}
   // 获取营收统计图信息
   getChart(query: RevenueChartParams) {
@@ -32,11 +33,10 @@ export class RevenueService {
         const data = res.info
         const chartData: any = []
         let chartRing: any = []
-
+        const member_card = this.userService.c('member_card')
         data.advance_fee.items.forEach((item: any, idx: number) => {
-          const chartItem = {
+          const chartItem: any = {
             date: item.date,
-            会员卡: data.member_card.items[idx].amount,
             私教课: data.personal_course.items[idx].amount,
             团体课: data.team_course.items[idx].amount,
             课程包: data.package_course.items[idx].amount,
@@ -46,10 +46,11 @@ export class RevenueService {
             // 定金: data.advance_fee.items[idx].amount,
             // 押金: data.cash_pledge.items[idx].amount,
           }
+          chartItem[member_card] = data.member_card.items[idx].amount
           chartData.push(chartItem)
         })
         chartRing = [
-          { name: '会员卡', value: data.member_card.total_amount },
+          { name: member_card, value: data.member_card.total_amount },
           { name: '私教课', value: data.personal_course.total_amount },
           { name: '团体课', value: data.team_course.total_amount },
           { name: '课程包', value: data.package_course.total_amount },
@@ -85,7 +86,7 @@ export class RevenueService {
             value: data.total_amount || 0
           },
           {
-            label: '会员卡营收(元)',
+            label: `${this.userService.c('member_card')}营收(元)`,
             value: data.member_card_amount || 0
           },
           {

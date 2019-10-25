@@ -1,4 +1,4 @@
-export const columns = () => {
+export const columns = (vm: any) => {
   return [
     {
       title: '日期',
@@ -9,7 +9,7 @@ export const columns = () => {
       dataIndex: 'total_amount'
     },
     {
-      title: '会员卡营收(元)',
+      title: `${vm.$c('member_card')}营收(元)`,
       dataIndex: 'member_card_amount'
     },
     {

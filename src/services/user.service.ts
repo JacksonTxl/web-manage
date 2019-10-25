@@ -11,7 +11,7 @@ import { ShopApi } from '@/api/v1/shop'
 import { of } from 'rxjs'
 import { then, anyAll } from '@/operators'
 import { Dictionary } from 'lodash'
-
+import Vue from 'vue'
 interface User {
   id?: string
   name?: string
@@ -65,9 +65,7 @@ export class UserService {
     menus: [],
     first_url: ''
   })
-  config$ = new State({
-    coach: '教练'
-  })
+  config$ = new State({})
   isShop$ = new Computed(this.shop$.pipe(map(shop => !!shop.id)))
   menus$ = new Computed<any[]>(this.menuData$.pipe(pluck('menus')))
   firstMenuUrl$ = new Computed<string>(this.menuData$.pipe(pluck('first_url')))
@@ -157,6 +155,9 @@ export class UserService {
   SET_ENUMS(enums: any) {
     this.enums$.commit(() => enums)
   }
+  SET_CONFIG(config: any) {
+    this.config$.commit(() => config)
+  }
   SET_MENU_DATA(menuData: any) {
     this.menuData$.commit(() => menuData)
   }
@@ -179,6 +180,11 @@ export class UserService {
     return this.constApi.getEnum().pipe(
       tap(res => {
         this.SET_ENUMS(res)
+        this.SET_CONFIG(res.version_conf.documents.value)
+        // this.SET_CONFIG({
+        //   coach: '<教练>',
+        //   member_card: '<会员卡>'
+        // })
       })
     )
   }
@@ -276,6 +282,12 @@ export class UserService {
   }
   public c(key: string): string {
     return get(this.config$.snapshot(), key, key)
+  }
+  public interpolation(title: string): string {
+    const vm: any = new Vue({
+      template: '<span>' + title + '</span>'
+    }).$mount()
+    return vm.$el.innerText
   }
   private init() {
     if (!this.firstInited$.snapshot()) {

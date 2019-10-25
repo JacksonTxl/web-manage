@@ -1,4 +1,4 @@
-export const columns = [
+export const columns = vm => [
   {
     title: '上课场馆',
     dataIndex: 'shop_name'
@@ -28,7 +28,7 @@ export const columns = [
     scopedSlots: { customRender: 'sell_price' }
   },
   {
-    title: '授课教练数',
+    title: `授课${vm.$c('coach')}数`,
     dataIndex: 'coaches',
     sorter: true,
     scopedSlots: { customRender: 'coaches' }

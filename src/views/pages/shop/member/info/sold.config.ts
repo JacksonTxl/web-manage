@@ -1,4 +1,4 @@
-export const classrecord = () => {
+export const classrecord = (vm: any) => {
   return [
     {
       title: '课程类型',
@@ -14,7 +14,7 @@ export const classrecord = () => {
       dataIndex: 'start_time'
     },
     {
-      title: '上课教练',
+      title: `上课${vm.$c('coach')}`,
       dataIndex: 'coach_name',
       scopedSlots: { customRender: 'coach_name' }
     },

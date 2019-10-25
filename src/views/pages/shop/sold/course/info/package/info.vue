@@ -286,7 +286,7 @@ export default {
     innerColumnsPersonal() {
       const list = [
         { title: '课程名称', dataIndex: 'course_name', key: 'course_name' },
-        { title: '教练等级', dataIndex: 'levels', key: 'levels' }
+        { title: `${this.$c('coach')}等级`, dataIndex: 'levels', key: 'levels' }
       ]
       return list
     },

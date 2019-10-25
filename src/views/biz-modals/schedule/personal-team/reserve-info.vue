@@ -10,7 +10,7 @@
     <a-row :gutter="24" class="modal-reserved-info">
       <a-col :lg="8">
         <st-info>
-          <st-info-item label="上课教练">
+          <st-info-item :label="`上课${$c('coach')}`">
             {{ reserveInfo.coach_name }}
           </st-info-item>
 

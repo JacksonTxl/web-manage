@@ -76,7 +76,7 @@ export default {
     deletStep(e) {
       this.stepsSpan = 12
       let index = this.stepArr.findIndex(function(value, index, arr) {
-        return value.title === '教练信息'
+        return value.title === `${this.$c('coach')}信息`
       })
       if (index === -1) return
       this.stepArr.pop()
@@ -85,7 +85,7 @@ export default {
     addCoachInfo(e) {
       this.stepsSpan = 18
       this.stepArr.push({
-        title: '教练信息',
+        title: `${this.$c('coach')}信息`,
         key: 3
       })
     },

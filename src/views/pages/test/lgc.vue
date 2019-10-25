@@ -2,7 +2,7 @@
   <st-panel>
     <p>
       <router-link to="/brand/product/card/member/list/member-list">
-        品牌会员卡列表
+        品牌{{ $c('member_card') }}列表
       </router-link>
     </p>
     <p>
