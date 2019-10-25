@@ -15,7 +15,7 @@
               v-decorator="decorators.gift_quota"
             >
               <span slot="addonAfter">
-                {{ type | enumFilter('sold.unit') }}
+                {{ type | enumFilter('sold_common.unit') }}
               </span>
             </st-input-number>
           </st-form-item>

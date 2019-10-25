@@ -65,19 +65,19 @@
           :scroll="{ x: 1800 }"
         >
           <template slot="remain_amount" slot-scope="text, record">
-            {{ text }}{{ record.unit | enumFilter('sold.unit') }}
+            {{ text }}{{ record.unit | enumFilter('sold_common.unit') }}
           </template>
           <template slot="init_amount" slot-scope="text, record">
-            {{ text }}{{ record.unit | enumFilter('sold.unit') }}
+            {{ text }}{{ record.unit | enumFilter('sold_common.unit') }}
           </template>
           <template slot="card_status" slot-scope="text">
-            {{ text | enumFilter('sold.card_status') }}
+            {{ text | enumFilter('sold_common.card_status') }}
           </template>
           <template slot="end_time" slot-scope="text">
             {{ text }}
           </template>
           <template slot="is_open" slot-scope="text">
-            {{ text | enumFilter('sold.is_open') }}
+            {{ text | enumFilter('sold_common.is_open') }}
           </template>
           <template slot="start_time" slot-scope="text">
             {{ text }}

@@ -45,7 +45,7 @@
             >
               {{
                 depositTransferInfo.order_status
-                  | enumFilter('sold.order_status')
+                  | enumFilter('sold_common.order_status')
               }}
             </st-info-item>
             <st-info-item
@@ -101,7 +101,7 @@
             >
               {{
                 memberTransferInfo.order_status
-                  | enumFilter('sold.order_status')
+                  | enumFilter('sold_common.order_status')
               }}
             </st-info-item>
             <st-info-item
