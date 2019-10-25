@@ -2,8 +2,6 @@ export const entries = [
   {
     icon:
       'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/fast-help.png',
-    iconDisabled:
-      'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/fast-help-disable.png',
     text: '帮助中心',
     openProgram: 'help',
     disabled: true
@@ -18,8 +16,6 @@ export const entries = [
   {
     icon:
       'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/fast-housekeeper.png',
-    iconDisabled:
-      'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/fast-housekeeper-disable.png',
     text: '三体云管家',
     openProgram: 'housekeeper',
     disabled: true
@@ -34,8 +30,6 @@ export const entries = [
   {
     icon:
       'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/fast-miniProgram.png',
-    iconDisabled:
-      'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/fast-miniProgram-disable.png',
     text: '小程序',
     openProgram: 'miniProgram',
     disabled: false

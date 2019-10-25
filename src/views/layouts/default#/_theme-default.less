@@ -433,7 +433,7 @@
   &__wrapper {
     padding: 40px 20px 10px 20px;
     .w(360px);
-    .h(360px);
+    .h(375px);
     .bg(@white);
     box-sizing: border-box;
     border: none;
@@ -458,6 +458,11 @@
       width: 50px;
     }
     transition: 0.3s;
+  }
+  &__disabled {
+    filter: grayscale(100%);
+  }
+  &__activity {
     &:hover {
       transform: translateY(-6px);
     }
@@ -468,5 +473,8 @@
   .ant-menu-vertical .ant-menu-item,
   .ant-menu-vertical .ant-menu-item:not(:last-child) {
     margin-bottom: 0;
+  }
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: #fff;
   }
 }

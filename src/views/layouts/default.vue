@@ -92,14 +92,16 @@
                 v-for="(item, index) in entries"
                 :key="index"
                 class="layout-fast-entry__item"
+                :class="
+                  item.disabled
+                    ? 'layout-fast-entry__disabled'
+                    : 'layout-fast-entry__activity'
+                "
                 @click="goToPage(item)"
                 :disabled="item.disabled"
               >
                 <div class="fast-entry__pic">
-                  <img
-                    :src="item.disabled ? item.iconDisabled : item.icon"
-                    :alt="item.text"
-                  />
+                  <img :src="item.icon" :alt="item.text" />
                 </div>
                 <div class="layout-fast-entry__text">{{ item.text }}</div>
               </a-menu-item>
