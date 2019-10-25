@@ -1,6 +1,6 @@
 <template>
   <st-modal
-    :bModal="bModal()"
+    :class="bModal()"
     title="群发短信"
     v-model="show"
     @ok="save"
@@ -31,6 +31,7 @@
         <div :class="bModal('scroll')" v-if="curUser === USER_TYPES.CROWD">
           <a-radio-group v-decorator="decorators.send_value">
             <a-radio-button
+              :class="bModal('scroll-btn')"
               class="mg-r8 mg-b8"
               v-for="(item, index) in crowdList"
               :key="index"
@@ -95,10 +96,12 @@
           <a-checkbox
             v-decorator="decorators.is_save"
             :class="bModal('save-btn')"
+            @change="isSave"
           >
             存为模板
           </a-checkbox>
           <a-input
+            :disabled="isSaveChecked"
             v-decorator="decorators.title"
             placeholder="请输入模版标题"
           ></a-input>
@@ -178,7 +181,8 @@ export default {
       temContent: '',
       tel: '',
       info: {},
-      time: ''
+      time: '',
+      isSaveChecked: true
     }
   },
   created() {
@@ -215,6 +219,9 @@ export default {
           this.temContent = item.content
         }
       })
+    },
+    isSave(e) {
+      this.isSaveChecked = !!e.target.value
     },
     setSignVal() {
       let a = this.form.getFieldsValue().content + '[签名]'
@@ -280,12 +287,12 @@ export default {
           }
         }
         if (this.curTem === this.TMPL_TYPES.PERSONAL) {
-          if (!values.title) {
-            this.messageService.warn({
-              content: '请输入模板标题'
-            })
-            return
-          }
+          // if (!values.title) {
+          //   this.messageService.warn({
+          //     content: '请输入模板标题'
+          //   })
+          //   return
+          // }
           if (!values.content) {
             this.messageService.warn({
               content: '请输入模板内容'
