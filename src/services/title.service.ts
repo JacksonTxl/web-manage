@@ -17,7 +17,7 @@ export class TitleService {
   )
   constructor(private userService: UserService) {
     this.appDocumentTitle$.subscribe(appDocumentTitle => {
-      document.title = this.userService.interpolation(appDocumentTitle)
+      document.title = appDocumentTitle
     })
 
     this.normalTitle$.subscribe(normalTitle => {
@@ -27,7 +27,7 @@ export class TitleService {
   }
   // 设定标题 和应用数据相关
   SET_TITLE(title: string) {
-    this.title$.commit(() => title)
+    this.title$.commit(() => this.userService.interpolation(title))
   }
   // 设定普通标题 和应用无关
   SET_NORMAL_TITLE(title: string) {

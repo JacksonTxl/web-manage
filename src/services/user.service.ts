@@ -290,6 +290,9 @@ export class UserService {
     return get(this.config$.snapshot(), key, key)
   }
   public interpolation(title: string): string {
+    if (!title) {
+      return ''
+    }
     const vm: any = new Vue({
       template: '<span>' + title + '</span>'
     }).$mount()

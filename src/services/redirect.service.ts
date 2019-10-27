@@ -3,6 +3,7 @@ import { AuthService } from './auth.service'
 import { NProgressService } from './nprogress.service'
 import { NotificationService } from './notification.service'
 import { UserService } from './user.service'
+import { Errors } from '@/constants/errors'
 
 interface RedirectConfig {
   /**
@@ -43,7 +44,8 @@ export class RedirectService {
   constructor(
     private router: ServiceRouter,
     private nprogress: NProgressService,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private errors: Errors
   ) {}
   /**
    * 负责应用内的跳转服务
@@ -70,8 +72,8 @@ export class RedirectService {
     if (!redirectRouteName) {
       this.nprogress.done()
       this.notification.error({
-        title: 'REDIRECT_ROUTE_EMPTY',
-        content: '跳转路由为空 [redirect.service]'
+        title: this.errors.REDIRECT_ROUTE_EMPTY,
+        content: `路由${to.name}的可跳转子路由为空 [redirect.service]`
       })
       // 找不到redirectRouteName时跳转next()
       return next()
@@ -91,12 +93,12 @@ export class RedirectService {
       } else {
         this.nprogress.done()
         this.notification.error({
-          title: 'WRONG_REDIRECT_ROUTE_NAME',
-          content: `路由不存在 ${JSON.stringify(redirectRouteName)}`
+          title: this.errors.REDIRECT_ROUTE_NAME_NOT_EXIST,
+          content: `跳转路由${JSON.stringify(
+            redirectRouteName
+          )}不存在 [redirect.service]`
         })
-        next({
-          name: 'welcome'
-        })
+        next(false)
       }
     } else {
       next()

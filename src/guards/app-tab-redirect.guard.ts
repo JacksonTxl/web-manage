@@ -2,6 +2,7 @@ import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
 import { RedirectService } from '@/services/redirect.service'
 import { NotificationService } from '@/services/notification.service'
 import { AuthService } from '@/services/auth.service'
+import { Errors } from '@/constants/errors'
 
 /**
  * 跳转守卫
@@ -11,7 +12,8 @@ export class AppTabRedirectGuard implements RouteGuard {
   constructor(
     private authService: AuthService,
     private redirectService: RedirectService,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private errors: Errors
   ) {}
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     // 当路由没有配置meta.tabs时直接next
@@ -36,8 +38,8 @@ export class AppTabRedirectGuard implements RouteGuard {
 
     if (!myAuthedTabs.length) {
       this.notification.error({
-        title: 'NO_TAB_CAN_REDIRECT',
-        content: `[redirect.guard] 该路由下没有tab可跳转 ${to.name}`
+        title: this.errors.NO_AUTH_TAB_CAN_REDIRECT,
+        content: `该路由下没有tab可跳转 ${to.name} [redirect.guard] `
       })
       return next({
         name: 'welcome'

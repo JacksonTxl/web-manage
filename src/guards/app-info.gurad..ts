@@ -5,8 +5,7 @@ import { NProgressService } from '@/services/nprogress.service'
 import { UdeskService } from '@/services/udesk.service'
 import { forkJoin } from 'rxjs'
 import { Injectable } from 'vue-service-app'
-import { tap } from 'rxjs/operators'
-import { anyAll } from '@/operators'
+import { anyAll, then } from '@/operators'
 
 /**
  * 获取全局应用信息
@@ -38,6 +37,10 @@ export class AppInfoGuard {
       this.regionService.fetchRegions(),
       // 获取全局切换门店列表数据
       this.userService.fetchShopList()
+    ).pipe(
+      then(() => {
+        this.nprogressService.SET_TEXT('核心数据加载完毕')
+      })
     )
   }
   /**
@@ -51,18 +54,22 @@ export class AppInfoGuard {
       this.userService.fetchCodeUrl(),
       // 获取udesk 校验参数
       this.udeskService.fetchUdeskCustomerInfo()
+    ).pipe(
+      then(() => {
+        this.nprogressService.SET_TEXT('全部数据加载完毕')
+      })
     )
   }
-  private fetchReqs() {
+  private fetchAppReqs() {
     return forkJoin(this.fetchSinlePointReqs(), this.fetchOptionalReqs()).pipe(
-      tap(() => {
+      then(() => {
         this.firstBootstrap = false
       })
     )
   }
   beforeRouteEnter() {
     if (this.firstBootstrap) {
-      return this.fetchReqs()
+      return this.fetchAppReqs()
     }
   }
 }
