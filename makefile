@@ -32,7 +32,7 @@ build:pull-image
 	# dns=101.132.119.70 为了修正dns解析
 	# 传递环境变量 GIT_BRANCH_ENV
 	docker run -i --rm \
-	--cpus=1 \
+	--cpus=2 \
 	--dns=101.132.119.70 \
 	-v $(PWD):/app \
 	-v $(NAME)_nm:/app/node_modules \
