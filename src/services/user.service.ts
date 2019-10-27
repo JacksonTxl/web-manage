@@ -1,6 +1,6 @@
-import { Injectable, ServiceRoute, Inject } from 'vue-service-app'
+import { Injectable } from 'vue-service-app'
 import { State, Computed, computed } from 'rx-state'
-import { tap, pluck, map, switchMap } from 'rxjs/operators'
+import { tap, pluck, map } from 'rxjs/operators'
 import { ConstApi } from '@/api/const'
 import { MenuApi } from '@/api/v1/common/menu'
 import { StaffApi } from '@/api/v1/staff'
@@ -9,8 +9,6 @@ import { get, reduce, isPlainObject, mapValues } from 'lodash-es'
 import { NProgressService } from './nprogress.service'
 import { ShopApi } from '@/api/v1/shop'
 import { CodeUrlApi } from '@/api/v1/brand/orcodeurl'
-import { of } from 'rxjs'
-import { then, anyAll } from '@/operators'
 import { Dictionary } from 'lodash'
 import Vue from 'vue'
 interface User {
@@ -122,7 +120,6 @@ export class UserService {
     private menuApi: MenuApi,
     private staffApi: StaffApi,
     private tooltipApi: TooltipApi,
-    private nprogress: NProgressService,
     private shopApi: ShopApi,
     private CodeUrlApi: CodeUrlApi
   ) {}
@@ -169,7 +166,7 @@ export class UserService {
   SET_SHOP_LIST(res: any) {
     this.shopList$.commit(() => res.list)
   }
-  private getUser() {
+  fetchStaffInfo() {
     return this.staffApi.getGlobalStaffInfo().pipe(
       tap((res: any) => {
         this.SET_BRAND(res)
@@ -178,7 +175,7 @@ export class UserService {
       })
     )
   }
-  private getEnums() {
+  fetchEnums() {
     return this.constApi.getEnum().pipe(
       tap(res => {
         this.SET_ENUMS(res)
@@ -190,28 +187,28 @@ export class UserService {
       })
     )
   }
-  private getMenuData() {
+  fetchMenuData() {
     return this.menuApi.getList().pipe(
       tap(res => {
         this.SET_MENU_DATA(res)
       })
     )
   }
-  private getInvalidTooltips() {
+  fetchInvalidTooltips() {
     return this.tooltipApi.getInvalid().pipe(
       tap((res: any) => {
         this.SET_INVALID_TOOLTIP(res)
       })
     )
   }
-  private getShopList() {
+  fetchShopList() {
     return this.shopApi.getShopList().pipe(
       tap(res => {
         this.SET_SHOP_LIST(res)
       })
     )
   }
-  private getCodeUrl() {
+  fetchCodeUrl() {
     return this.CodeUrlApi.getCodeUrl().pipe(
       tap(res => {
         this.urlData$.commit(() => res)
@@ -297,31 +294,5 @@ export class UserService {
       template: '<span>' + title + '</span>'
     }).$mount()
     return vm.$el.innerText
-  }
-  private init() {
-    if (!this.firstInited$.snapshot()) {
-      return anyAll(
-        this.getUser(),
-        this.getMenuData(),
-        this.getEnums(),
-        this.getInvalidTooltips(),
-        this.getShopList(),
-        this.getCodeUrl()
-      ).pipe(
-        then(() => {
-          this.firstInited$.commit(() => true)
-        })
-      )
-    } else {
-      return of({})
-    }
-  }
-  beforeRouteEnter() {
-    this.nprogress.SET_TEXT('用户数据加载中...')
-    return this.init().pipe(
-      then(() => {
-        this.nprogress.SET_TEXT('用户信息数据获取完毕')
-      })
-    )
   }
 }

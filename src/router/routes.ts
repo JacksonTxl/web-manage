@@ -1,16 +1,15 @@
 import { ServiceRouteConfig } from 'vue-service-app'
-import { TokenService } from '@/services/token.service'
-import { NProgressService } from '@/services/nprogress.service'
-import { UserService } from '@/services/user.service'
-import { TitleService } from '@/services/title.service'
-import { RouteService } from '@/services/route.service'
-import { AuthService } from '@/services/auth.service'
-import { RedirectService } from '@/services/redirect.service'
+import pageRoutes from './auto-generated-routes'
 import { routeMapConfig } from './route-map.config'
 
-import pageRoutes from './auto-generated-routes'
-import { TrackService } from '@/services/track.service'
-import { UdeskService } from '@/services/udesk.service'
+import { AppTokenGuard } from '@/guards/app-token.guard'
+import { AppInfoGuard } from '@/guards/app-info.gurad.'
+import { ProgressGuard } from '@/guards/progress.guard'
+import { AppTabRedirectGuard } from '@/guards/app-tab-redirect.guard'
+import { SyncQueryGuard } from '@/guards/sync-query.guard'
+import { UdeskGuard } from '@/guards/udesk.guard'
+import { AppTitleGuard } from '@/guards/app-title.guard'
+import { TrackGuard } from '@/guards/track.guard'
 
 const routes: any[] = [
   {
@@ -46,23 +45,17 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
       route.name.startsWith('styleguide') ||
       route.name.startsWith('welcome')
     ) {
-      prependGuards(route, [
-        NProgressService,
-        TrackService,
-        TitleService,
-        RouteService
-      ])
+      prependGuards(route, [ProgressGuard, AppTitleGuard, SyncQueryGuard])
     } else if (route.path.startsWith('/') && !route.redirect) {
       const appGuards: any[] = [
-        NProgressService,
-        TrackService,
-        TokenService,
-        UserService,
-        TitleService,
-        AuthService,
-        UdeskService,
-        RedirectService,
-        RouteService
+        ProgressGuard,
+        TrackGuard,
+        AppTokenGuard,
+        AppInfoGuard,
+        AppTitleGuard,
+        AppTabRedirectGuard,
+        SyncQueryGuard,
+        UdeskGuard
       ]
       prependGuards(route, appGuards)
     }

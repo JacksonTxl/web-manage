@@ -4,19 +4,17 @@ import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
 import { State } from 'rx-state'
 import { tap, map } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
-import { RedirectService } from '@/services/redirect.service'
+import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class ListService implements RouteGuard {
   categoryList$ = new State<any[]>([])
   shopSelectOptions$ = new State<any[]>([])
-  authTabs$ = this.redirectService.getAuthTabs$(
-    'brand-product-course-team-list'
-  )
+  authTabs$ = this.authService.getAuthTabs$('brand-product-course-team-list')
   constructor(
     private shopApi: ShopApi,
     private courseApi: CourseApi,
-    private redirectService: RedirectService
+    private authService: AuthService
   ) {}
   getCategoryList() {
     return this.courseApi.getCourseCategoryList({}).pipe(

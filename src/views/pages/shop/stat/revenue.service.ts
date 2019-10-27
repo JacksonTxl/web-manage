@@ -1,19 +1,19 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
-import { RedirectService } from '@/services/redirect.service'
 import { StatApi, RevenueShopListQuery } from '@/api/v1/stat/shop'
 import { UserService } from '@/services/user.service'
+import { AuthService } from '@/services/auth.service'
 @Injectable()
 export class RevenueService implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
   todayInfo$ = new State([])
-  authTabs$ = this.redirectService.getAuthTabs$('shop-stat-revenue')
+  authTabs$ = this.authService.getAuthTabs$('shop-stat-revenue')
   constructor(
     private StatApi: StatApi,
-    private redirectService: RedirectService,
+    private authService: AuthService,
     private userService: UserService
   ) {}
   @Effect()

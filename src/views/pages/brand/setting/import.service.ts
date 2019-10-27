@@ -1,12 +1,12 @@
-import { OssService } from './../../../../services/oss.service'
 import { Injectable } from 'vue-service-app'
-import { RedirectService } from '@/services/redirect.service'
+import { OssService } from '@/services/oss.service'
+import { AuthService } from '@/services/auth.service'
 import { ImportApi } from '@/api/v1/setting/import/import'
 @Injectable()
 export class ImportService {
-  authTabs$ = this.redirectService.getAuthTabs$('brand-setting-import')
+  authTabs$ = this.authService.getAuthTabs$('brand-setting-import')
   constructor(
-    private redirectService: RedirectService,
+    private authService: AuthService,
     private ossService: OssService,
     private importApi: ImportApi
   ) {}

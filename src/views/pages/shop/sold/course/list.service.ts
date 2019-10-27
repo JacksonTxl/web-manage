@@ -1,11 +1,11 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State } from 'rx-state'
-import { RedirectService } from '@/services/redirect.service'
+import { AuthService } from '@/services/auth.service'
 @Injectable()
 export class ListService {
-  authTabs$ = this.redirectService.getAuthTabs$('shop-sold-course-list')
+  authTabs$ = this.authService.getAuthTabs$('shop-sold-course-list')
   placeholder$ = new State('')
-  constructor(private redirectService: RedirectService) {}
+  constructor(private authService: AuthService) {}
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     if (to.name === 'shop-sold-course-list-personal') {
       this.placeholder$.commit(

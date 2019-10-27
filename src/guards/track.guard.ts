@@ -1,14 +1,16 @@
-import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
+import { RouteGuard, Injectable } from 'vue-service-app'
 import { AppConfig } from '@/constants/config'
 import { ImportService } from '@/services/import.service'
 
+/**
+ * 统计守卫 这里是百度统计
+ */
 @Injectable()
-export class TrackService implements RouteGuard {
+export class TrackGuard implements RouteGuard {
   constructor(
     private appConfig: AppConfig,
     private importService: ImportService
   ) {}
-
   beforeRouteEnter() {
     if (this.appConfig.HOST_IS_PROD) {
       this.importService.loadJs(

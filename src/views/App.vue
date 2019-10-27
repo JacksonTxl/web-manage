@@ -37,12 +37,10 @@ export default {
     return {
       i18n: I18NService,
       appConfig: AppConfig,
-      route: RouteService,
       udeskService: UdeskService
     }
   },
   rxState() {
-    const { layout$, query$ } = this.route
     return {
       antdLocaleMessages: this.i18n.antdLocaleMessages$
     }
@@ -51,9 +49,6 @@ export default {
     layoutComponent() {
       return layoutMap[this.$route.meta.layout || 'loading']
     }
-  },
-  mounted() {
-    this.udeskService.init().subscribe()
   }
 }
 </script>
