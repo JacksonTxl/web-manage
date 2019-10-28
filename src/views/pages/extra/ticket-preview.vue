@@ -1,7 +1,7 @@
 <template>
   <div :class="b()" id="print">
     <div :class="b('section')">
-      <div :class="b('section-item')">
+      <div>
         <span class="mg-b16">打印时间:</span>
         <span>{{ info.print_time }}</span>
       </div>
@@ -72,6 +72,9 @@
     </div>
     <div :class="b('section')">
       <div class="mg-t24">前台签字:</div>
+    </div>
+    <div>
+      <div class="mg-t16 text-center">********感谢您的惠顾！********</div>
     </div>
   </div>
 </template>
