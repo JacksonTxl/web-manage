@@ -6,7 +6,7 @@
     :wrapClassName="
       [
         'st-modal',
-        $attrs.footer ? '' : 'st-modal--footer-null',
+        hasFooter ? '' : 'st-modal--footer-null',
         wrapClassName
       ].join(' ')
     "
@@ -47,6 +47,9 @@ export default {
     }
   },
   computed: {
+    hasFooter() {
+      return this.$attrs.footer || this.$slots.footer
+    },
     computedWidth() {
       let width = 0
       if (this.width) {

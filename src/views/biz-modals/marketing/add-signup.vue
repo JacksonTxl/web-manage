@@ -105,6 +105,10 @@ export default {
       this.extra_info = this.extra_info.filter(item => item !== value)
     },
     onCLickGetOption() {
+      if (this.extra_info === 10) {
+        this.msg.success({ content: '报名的选项最多添加10个选项值' })
+        return
+      }
       if (!this.extra_info.includes(this.option)) {
         this.extra_info.push(this.option)
         this.option = ''

@@ -29,13 +29,13 @@ export default {
       steps: [
         {
           index: 1,
-          title: '签到验票',
-          description: '点击签到，签到后状态更新为已签到'
+          title: '搜索票号',
+          description: '输入参与用户提供的票号'
         },
         {
           index: 2,
-          title: '签到验票',
-          description: '点击签到，签到后状态更新为已签到'
+          title: '校验',
+          description: '检查票号信息是否对应及有效'
         },
         {
           index: 3,

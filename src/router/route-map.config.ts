@@ -1244,7 +1244,9 @@ export const routeMapConfig = {
     routeConfig.meta.title = '名单列表'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
-      size: { type: Number, default: 20 }
+      size: { type: Number, default: 20 },
+      ticket_status: { type: Number, default: -1 },
+      ticket_id: { type: Number, default: -1 }
     }
   },
   'brand-marketing-plugin-activity-registration-add'(routeConfig: RouteConfig) {
@@ -1260,8 +1262,10 @@ export const routeMapConfig = {
   ) {
     routeConfig.meta.title = '活动报名'
     routeConfig.queryOptions = {
-      current_page: { type: Number, default: 1 },
-      size: { type: Number, default: 20 }
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      activity_name: { type: String, default: '' },
+      activity_status: { type: Number, default: -1 }
     }
   },
   'brand-marketing-plugin-activity-registration-checkin'(
