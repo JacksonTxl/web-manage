@@ -1,12 +1,11 @@
 import { Injectable } from 'vue-service-app'
-import { State, Computed, computed } from 'rx-state'
+import { State, Computed, computed, log } from 'rx-state'
 import { tap, pluck, map } from 'rxjs/operators'
 import { ConstApi } from '@/api/const'
 import { MenuApi } from '@/api/v1/common/menu'
 import { StaffApi } from '@/api/v1/staff'
 import { TooltipApi } from '@/api/v1/admin/tooltip'
 import { get, reduce, isPlainObject, mapValues } from 'lodash-es'
-import { NProgressService } from './nprogress.service'
 import { ShopApi } from '@/api/v1/shop'
 import { CodeUrlApi } from '@/api/v1/brand/orcodeurl'
 import { Dictionary } from 'lodash'
@@ -30,9 +29,9 @@ interface Brand {
    */
   saleModel?: number
   /**
-   * 品牌版本 studio 工作室 club 俱乐部
+   * 品牌版本 studio 工作室 club 俱乐部 new_studio 新工作室(封闭会员卡|合同功能的版本)
    */
-  version?: string
+  version: 'club' | 'studio' | 'new_studio'
 }
 
 interface Shop {
@@ -69,10 +68,18 @@ export class UserService {
   menus$ = new Computed<any[]>(this.menuData$.pipe(pluck('menus')))
   firstMenuUrl$ = new Computed<string>(this.menuData$.pipe(pluck('first_url')))
   favoriteMenu$ = new Computed(this.menuData$.pipe(pluck('favorite')))
+  // 是否是工作室版本
+  isBrandStudio$ = new Computed(
+    this.brand$.pipe(map(brand => !!(brand.version === 'new_studio')))
+  )
   theme$ = new Computed(
     this.brand$.pipe(
       map(brand => {
-        return `theme-${brand.version}`
+        return {
+          club: 'theme-club',
+          studio: 'theme-studio',
+          new_studio: 'theme-studio'
+        }[brand.version]
       })
     )
   )
