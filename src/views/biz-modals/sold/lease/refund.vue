@@ -21,7 +21,7 @@
         <a-col :span="13" class="mg-b36">
           <st-info>
             <st-info-item label="订单类型" v-if="info.order_type">
-              {{ info.order_type | enumFilter('sold.order_type') }}
+              {{ info.order_type | enumFilter('sold_common.order_type') }}
             </st-info-item>
             <st-info-item class="mg-b0" label="订单来源">
               {{ info.order_source }} {{ info.mobile }}

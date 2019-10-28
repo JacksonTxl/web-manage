@@ -265,7 +265,7 @@ class VueServiceApp {
             },
             e => {
               console.error('[vue-service-app]', e)
-              next()
+              next(new Error(e))
             }
           )
         }

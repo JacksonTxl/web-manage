@@ -1,8 +1,8 @@
 import { Injectable, RouteGuard } from 'vue-service-app'
 import { State } from 'rx-state'
-import { RedirectService } from '@/services/redirect.service'
+import { AuthService } from '@/services/auth.service'
 @Injectable()
 export class GeneralService {
-  authTabs$ = this.redirectService.getAuthTabs$('brand-setting-general')
-  constructor(private redirectService: RedirectService) {}
+  authTabs$ = this.authService.getAuthTabs$('brand-setting-general')
+  constructor(private authService: AuthService) {}
 }

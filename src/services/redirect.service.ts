@@ -1,16 +1,9 @@
-import {
-  ServiceRoute,
-  Injectable,
-  ServiceRouter,
-  Dictionary,
-  RouteGuard
-} from 'vue-service-app'
+import { ServiceRoute, Injectable, ServiceRouter } from 'vue-service-app'
 import { AuthService } from './auth.service'
-import { State, Computed } from 'rx-state/src'
-import { map } from 'rxjs/operators'
-import { NotificationService } from './notification.service'
 import { NProgressService } from './nprogress.service'
+import { NotificationService } from './notification.service'
 import { UserService } from './user.service'
+import { Errors } from '@/constants/errors'
 
 interface RedirectConfig {
   /**
@@ -47,33 +40,13 @@ interface RedirectConfig {
  * 负责应用跳转 包含tab等
  */
 @Injectable()
-export class RedirectService implements RouteGuard {
-  authedTabMap$ = new State<Dictionary<any>>({})
+export class RedirectService {
   constructor(
-    private authService: AuthService,
     private router: ServiceRouter,
-    private notification: NotificationService,
     private nprogress: NProgressService,
-    private userService: UserService
+    private notification: NotificationService,
+    private errors: Errors
   ) {}
-  getAuthTabs$(routeName: string) {
-    return new Computed(
-      this.authedTabMap$.pipe(
-        map(authMap => {
-          if (!(routeName in authMap)) {
-            this.notification.error({
-              title: 'GET_AUTH_TABS_ERROR',
-              content: `不存在 ${routeName} 下的tabs`
-            })
-          }
-          return authMap[routeName].map((tab: any) => {
-            tab.label = this.userService.interpolation(tab.label)
-            return tab
-          })
-        })
-      )
-    )
-  }
   /**
    * 负责应用内的跳转服务
    * 包括 菜单跳转 tab跳转等
@@ -99,8 +72,8 @@ export class RedirectService implements RouteGuard {
     if (!redirectRouteName) {
       this.nprogress.done()
       this.notification.error({
-        title: 'REDIRECT_ROUTE_EMPTY',
-        content: '跳转路由为空'
+        title: this.errors.REDIRECT_ROUTE_EMPTY,
+        content: `路由${to.name}的可跳转子路由为空 [redirect.service]`
       })
       // 找不到redirectRouteName时跳转next()
       return next()
@@ -120,80 +93,15 @@ export class RedirectService implements RouteGuard {
       } else {
         this.nprogress.done()
         this.notification.error({
-          title: 'WRONG_REDIRECT_ROUTE_NAME',
-          content: `路由不存在 ${JSON.stringify(redirectRouteName)}`
+          title: this.errors.REDIRECT_ROUTE_NAME_NOT_EXIST,
+          content: `跳转路由${JSON.stringify(
+            redirectRouteName
+          )}不存在 [redirect.service]`
         })
-        next({
-          name: 'welcome'
-        })
+        next(false)
       }
     } else {
       next()
     }
-  }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    const hasTabsRoutes = to.matched.filter(r => r.meta.tabs)
-    if (!hasTabsRoutes.length) {
-      return next()
-    }
-    hasTabsRoutes.forEach(r => {
-      const tabRouteNames = r.meta.tabs as string[]
-      const authedTabs = tabRouteNames.reduce(
-        (res, routeName) => {
-          const resolvedRoute = this.router.resolve({
-            name: routeName
-          })
-          const meta = resolvedRoute.route.meta
-          if (!meta) {
-            return res.concat([])
-          }
-          // TODO: 暂时使用常量返回true
-          if (this.authService.tabCan(meta.auth)) {
-            if (!meta.title) {
-              console.error(
-                `[auth.service] 请设置 ${routeName} 下的meta.title `
-              )
-            }
-            return res.concat([
-              {
-                label: meta.title,
-                route: {
-                  name: resolvedRoute.route.name
-                }
-              }
-            ])
-          }
-        },
-        [] as any
-      )
-      this.authedTabMap$.commit(tabMap => {
-        tabMap[r.name as string] = authedTabs
-      })
-    })
-
-    // 父路由的跳转逻辑
-    if (!to.meta.tabs) {
-      return next()
-    }
-    const myAuthedTabs = this.authedTabMap$.snapshot()[to.name]
-
-    if (!myAuthedTabs.length) {
-      this.notification.error({
-        title: 'NO_TAB_CAN_REDIRECT',
-        content: `该路由下没有tab可跳转 ${to.name}`
-      })
-      return next({
-        name: 'welcome'
-      })
-    }
-
-    const firstRouteName = myAuthedTabs[0] ? myAuthedTabs[0].route.name : ''
-    this.redirect({
-      locateRouteName: to.name,
-      redirectRouteName: firstRouteName,
-      from,
-      to,
-      next
-    })
   }
 }

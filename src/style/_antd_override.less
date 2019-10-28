@@ -50,6 +50,7 @@
 .ant-select-selection__placeholder,
 .ant-calendar-range-picker-input::placeholder {
   color: rgba(155, 172, 185);
+  font-size: 14px;
 }
 
 // '›'.chartCodeAt().toString(16)
@@ -107,5 +108,10 @@
 // 按钮禁用样式
 .ant-btn-primary[disabled] {
   background: rgba(205, 212, 223, 1);
-  color: #ffffff;
+  color: #fff;
+  &:hover,
+  &:active {
+    background: rgba(205, 212, 223, 1);
+    color: #fff;
+  }
 }

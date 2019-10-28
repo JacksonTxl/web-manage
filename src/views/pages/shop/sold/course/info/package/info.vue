@@ -91,7 +91,10 @@
               {{ packageInfo.order_id }}
             </st-info-item>
             <st-info-item label="订单状态">
-              {{ packageInfo.order_status | enumFilter('sold.order_status') }}
+              {{
+                packageInfo.order_status
+                  | enumFilter('sold_common.order_status')
+              }}
             </st-info-item>
           </st-info>
         </a-col>
@@ -99,7 +102,8 @@
           <st-info>
             <st-info-item label="允许转让">
               {{
-                packageInfo.is_transferable | enumFilter('sold.is_transferable')
+                packageInfo.is_transferable
+                  | enumFilter('sold_common.is_transferable')
               }}
             </st-info-item>
             <st-info-item
@@ -113,7 +117,10 @@
               }}
             </st-info-item>
             <st-info-item label="当前状态">
-              {{ packageInfo.course_status | enumFilter('sold.course_status') }}
+              {{
+                packageInfo.course_status
+                  | enumFilter('sold_common.course_status')
+              }}
             </st-info-item>
             <st-info-item label="上课范围">
               <a-popover :title="packageInfo.course_range.range_name">

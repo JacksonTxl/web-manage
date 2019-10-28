@@ -12,14 +12,13 @@
   .st-icon + span {
     .mg-l(8px);
   }
-  &[disabled] {
-    .bg(#ccc);
-    .c(@white);
-    &:hover,
-    &:active {
-      border: 1px solid #ccc;
-      .bg(#ccc);
-      .c(@white);
-    }
-  }
+  // 按钮禁用样式
+  // .ant-btn-primary[disabled] {
+  //   background: rgba(205, 212, 223, 1);
+  //   color: #ffffff;
+  // }
+}
+
+.st-button[disabled] {
+  .bg(green);
 }

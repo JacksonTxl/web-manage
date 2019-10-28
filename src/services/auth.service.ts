@@ -1,17 +1,11 @@
-import {
-  Injectable,
-  ServiceRoute,
-  ServiceRouter,
-  Inject
-} from 'vue-service-app'
+import { Injectable, Dictionary, ServiceRouter } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { tap, map } from 'rxjs/operators'
 import { AuthApi } from '@/api/v1/common/auth'
-import { of, forkJoin, pipe } from 'rxjs'
 import { get, set, forEach } from 'lodash-es'
 import { NProgressService } from './nprogress.service'
 import { NotificationService } from './notification.service'
-import { anyAll } from '@/operators'
+import { UserService } from './user.service'
 
 interface DataState {
   list?: any[]
@@ -21,11 +15,24 @@ interface DataState {
 @Injectable()
 export class AuthService {
   auth$ = new State<Array<string>>([])
-  constructor(private authApi: AuthApi, private nprogress: NProgressService) {}
+  authedTabMap$ = new State<Dictionary<any>>({})
+
+  constructor(
+    private authApi: AuthApi,
+    private nprogress: NProgressService,
+    private notification: NotificationService,
+    private userService: UserService,
+    private router: ServiceRouter
+  ) {}
   SET_AUTH(auth: any[]) {
     this.auth$.commit(() => auth)
   }
-  getList() {
+  UPDATE_AUTHED_TAB_MAP(key: string, authedTabs: any[]) {
+    this.authedTabMap$.commit(prevTabMap => {
+      prevTabMap[key] = authedTabs
+    })
+  }
+  fetchList() {
     return this.authApi.getList().pipe(
       tap((res: any) => {
         this.SET_AUTH(get(res, 'auth', []))
@@ -112,18 +119,66 @@ export class AuthService {
   tabCan(s: string) {
     return 1
   }
-  init() {
-    if (!this.auth$.snapshot().length) {
-      return anyAll(this.getList()).pipe(
-        tap(() => {
-          this.nprogress.SET_TEXT('用户权限数据获取完成')
+  /**
+   * 通过路由名称获取授权的tabs数组对象
+   * @param routeName 路由名称
+   */
+  getAuthTabs$(routeName: string) {
+    return new Computed(
+      this.authedTabMap$.pipe(
+        map(authMap => {
+          if (!(routeName in authMap)) {
+            this.notification.error({
+              title: 'GET_AUTH_TABS_ERROR',
+              content: `不存在 ${routeName} 下的tabs`
+            })
+          }
+          return authMap[routeName]
         })
       )
-    } else {
-      return of([])
-    }
+    )
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    return this.init()
+  /**
+   * 通过路由名称计算可用的权限路由数组
+   * @param tabs 需要计算权限的tabs数组
+   */
+  calcAuthedTabsByTabs(tabs: string[]): string[] {
+    const authedTabs = [] as any[]
+    tabs.forEach(routeName => {
+      const resolvedRoute = this.router.resolve({
+        name: routeName
+      })
+      // 查找对应的route下的auth权限点
+      const meta = resolvedRoute.route.meta
+      if (!meta) {
+        return
+      }
+      const tab = {
+        label: this.userService.interpolation(meta.title),
+        route: {
+          name: resolvedRoute.route.name
+        }
+      }
+      if (!meta.title) {
+        console.error(`[auth.service] 请配置 ${routeName} 下的meta.title 标题`)
+        authedTabs.push(tab)
+        return
+      }
+      if (!meta.auth) {
+        console.error(
+          `[auth.service] 请配置 ${routeName} 下的meta.auth 权限点，默认显示 `
+        )
+        authedTabs.push(tab)
+        return
+      }
+
+      // TODO: 暂时使用常量返回true
+      if (this.tabCan(meta.auth)) {
+        authedTabs.push(tab)
+        return
+      }
+    })
+    console.log('authedTabs', authedTabs)
+    return authedTabs
   }
 }

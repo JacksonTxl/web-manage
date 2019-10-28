@@ -92,7 +92,7 @@
             <st-info-item label="允许转让">
               {{
                 personalInfo.is_transferable
-                  | enumFilter('sold.is_transferable')
+                  | enumFilter('sold_common.is_transferable')
               }}
             </st-info-item>
             <st-info-item label="转让手续费">
@@ -104,11 +104,15 @@
             </st-info-item>
             <st-info-item label="当前状态">
               {{
-                personalInfo.course_status | enumFilter('sold.course_status')
+                personalInfo.course_status
+                  | enumFilter('sold_common.course_status')
               }}
             </st-info-item>
             <st-info-item label="订单状态">
-              {{ personalInfo.order_status | enumFilter('sold.order_status') }}
+              {{
+                personalInfo.order_status
+                  | enumFilter('sold_common.order_status')
+              }}
             </st-info-item>
             <st-info-item label="时长">
               {{ personalInfo.duration }}分钟

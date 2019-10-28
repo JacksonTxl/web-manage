@@ -74,7 +74,7 @@
           <st-info>
             <st-info-item label="卡名">{{ info.card_name }}</st-info-item>
             <st-info-item label="类型">
-              {{ info.card_type | enumFilter('sold.card_type') }}
+              {{ info.card_type | enumFilter('sold_common.card_type') }}
             </st-info-item>
             <st-info-item label="初始额度">{{ info.init_amount }}</st-info-item>
             <st-info-item label="剩余额度">
@@ -94,17 +94,19 @@
             <st-info-item label="手机号">{{ info.mobile }}</st-info-item>
             <st-info-item label="订单号">{{ info.order_id }}</st-info-item>
             <st-info-item label="订单状态">
-              {{ info.order_status | enumFilter('sold.order_status') }}
+              {{ info.order_status | enumFilter('sold_common.order_status') }}
             </st-info-item>
             <st-info-item label="当前状态" class="mg-b0">
-              {{ info.card_status | enumFilter('sold.card_status') }}
+              {{ info.card_status | enumFilter('sold_common.card_status') }}
             </st-info-item>
           </st-info>
         </a-col>
         <a-col :span="6">
           <st-info>
             <st-info-item label="允许转让">
-              {{ info.is_transferable | enumFilter('sold.is_transferable') }}
+              {{
+                info.is_transferable | enumFilter('sold_common.is_transferable')
+              }}
             </st-info-item>
             <st-info-item label="转让手续费" v-if="info.is_transferable !== 0">
               {{ info.transfer_num
@@ -128,7 +130,8 @@
                 </template>
                 <a type="primary">
                   {{
-                    info.admission_range.id | enumFilter('sold.admission_range')
+                    info.admission_range.id
+                      | enumFilter('sold_common.admission_range')
                   }}
                 </a>
               </a-popover>
@@ -150,7 +153,7 @@
                 <a type="primary">
                   {{
                     info.course_interests.id
-                      | enumFilter('sold.course_interests')
+                      | enumFilter('sold_common.course_interests')
                   }}
                 </a>
               </a-popover>

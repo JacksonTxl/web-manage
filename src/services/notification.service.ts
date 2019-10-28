@@ -4,7 +4,7 @@ import { notification } from 'ant-design-vue'
  * description: 通知提醒内容，必选
  */
 interface NotificationOptions {
-  title: string
+  title: string | number
   content: string
   duration?: number
   key?: string
@@ -15,7 +15,7 @@ interface NotificationOptions {
 export class NotificationService {
   warning(config: NotificationOptions) {
     notification.warning({
-      message: config.title,
+      message: config.title + '',
       description: config.content,
       duration: config.duration,
       key: config.key
@@ -23,7 +23,7 @@ export class NotificationService {
   }
   success(config: NotificationOptions) {
     notification.success({
-      message: config.title,
+      message: config.title + '',
       description: config.content,
       duration: config.duration,
       key: config.key
@@ -31,7 +31,7 @@ export class NotificationService {
   }
   info(config: NotificationOptions) {
     notification.info({
-      message: config.title,
+      message: config.title + '',
       description: config.content,
       duration: config.duration,
       key: config.key
@@ -39,7 +39,7 @@ export class NotificationService {
   }
   error(config: NotificationOptions) {
     notification.error({
-      message: config.title,
+      message: config.title + '',
       description: config.content,
       duration: config.duration,
       key: config.key
@@ -47,7 +47,7 @@ export class NotificationService {
   }
   warn(config: NotificationOptions) {
     notification.warn({
-      message: config.title,
+      message: config.title + '',
       description: config.content,
       duration: config.duration,
       key: config.key

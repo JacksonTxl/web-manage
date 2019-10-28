@@ -1,7 +1,7 @@
 import { Injectable } from 'vue-service-app'
-import { RedirectService } from '@/services/redirect.service'
+import { AuthService } from '@/services/auth.service'
 @Injectable()
 export class CourseService {
-  authTabs$ = this.redirectService.getAuthTabs$('brand-setting-general-course')
-  constructor(private redirectService: RedirectService) {}
+  authTabs$ = this.authService.getAuthTabs$('brand-setting-general-course')
+  constructor(private authService: AuthService) {}
 }

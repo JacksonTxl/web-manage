@@ -26,7 +26,7 @@
             <st-info-item label="到期日期">{{ info.end_time }}</st-info-item>
             <st-info-item label="订单号">{{ info.order_id }}</st-info-item>
             <st-info-item label="订单状态" v-if="info.order_status">
-              {{ info.order_status | enumFilter('sold.order_status') }}
+              {{ info.order_status | enumFilter('sold_common.order_status') }}
             </st-info-item>
           </st-info>
         </a-col>

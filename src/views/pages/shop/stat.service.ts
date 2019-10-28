@@ -1,9 +1,9 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { RedirectService } from '@/services/redirect.service'
+import { AuthService } from '@/services/auth.service'
 @Injectable()
 export class StatService implements RouteGuard {
-  authTabs$ = this.redirectService.getAuthTabs$('shop-stat')
-  constructor(private redirectService: RedirectService) {}
+  authTabs$ = this.authService.getAuthTabs$('shop-stat')
+  constructor(private authService: AuthService) {}
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     next()
   }
