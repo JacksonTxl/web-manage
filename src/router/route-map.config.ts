@@ -259,6 +259,14 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
+  'shop-sold-course-info-package-info-usage-log'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '使用记录'
+    routeConfig.meta.parentId = 'shop-sold-course-info-package-info'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
   'shop-sold-card-info-deposit-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '储值卡详情'
     routeConfig.meta.tabs = [
@@ -312,6 +320,15 @@ export const routeMapConfig = {
   'shop-sold-card-info-member-info-usage-log'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '使用记录'
     routeConfig.meta.parentId = 'shop-sold-card-info-member-info'
+    routeConfig.queryOptions = {
+      id: { type: Number },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-sold-card-info-deposit-info-usage-log'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '使用记录'
+    routeConfig.meta.parentId = 'shop-sold-card-info-deposit-info'
     routeConfig.queryOptions = {
       id: { type: Number },
       current_page: { type: Number, default: 1 },
