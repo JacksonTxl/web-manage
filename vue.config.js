@@ -40,6 +40,12 @@ module.exports = {
       template: 'src/_modules/account/index.html',
       filename: 'account/index.html',
       chunks: ['chunk-vendors', 'chunk-common', 'runtime~account', 'account']
+    },
+    ticket: {
+      entry: 'src/_modules/ticket/index.ts',
+      template: 'src/_modules/ticket/index.html',
+      filename: 'ticket/index.html',
+      chunks: ['chunk-vendors', 'chunk-common', 'runtime~ticket', 'ticket']
     }
   },
   lintOnSave: false,
@@ -93,6 +99,10 @@ module.exports = {
     config.plugins.delete('preload-account')
     // 去除prefetch
     config.plugins.delete('prefetch-account')
+    // 去除preload
+    config.plugins.delete('preload-ticket')
+    // 去除prefetch
+    config.plugins.delete('prefetch-ticket')
 
     // 默认4096
     config.module
