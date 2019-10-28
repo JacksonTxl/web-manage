@@ -125,6 +125,7 @@
                 class="create-button"
                 @click="onCodeNumber"
                 :loading="loading.getCodeNumber"
+                v-if="!isBrandStudio"
               >
                 自动生成
               </st-button>
@@ -287,6 +288,7 @@ import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
 import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from './sale-cabinet.config'
+import { UserService } from '@/services/user.service'
 export default {
   name: 'ModalSoldDealSaleMemberCard',
   bem: {
@@ -298,6 +300,7 @@ export default {
   serviceInject() {
     return {
       saleDepositCardService: SaleDepositCardService,
+      userService: UserService,
       pattern: PatternService
     }
   },
@@ -308,7 +311,8 @@ export default {
       priceInfo: this.saleDepositCardService.priceInfo$,
       info: this.saleDepositCardService.info$,
       couponList: this.saleDepositCardService.couponList$,
-      saleList: this.saleDepositCardService.saleList$
+      saleList: this.saleDepositCardService.saleList$,
+      isBrandStudio: this.userService.isBrandStudio$
     }
   },
   props: {

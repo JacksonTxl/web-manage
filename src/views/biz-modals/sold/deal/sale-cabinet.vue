@@ -180,7 +180,7 @@
                 class="create-button"
                 @click="onCodeNumber"
                 :loading="loading.getCodeNumber"
-                v-if="isBrandStudio"
+                v-if="!isBrandStudio"
               >
                 自动生成
               </st-button>
