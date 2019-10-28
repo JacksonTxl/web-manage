@@ -14,13 +14,15 @@
         <tr>
           <td :colspan="colspanNum" class="st-form-table__add">
             <st-button
+              :disabled="dataSource.length === 10"
               type="dashed"
               icon="add"
               block
               v-modal-link="{
                 name: 'marketing-add-ticket',
                 props: {
-                  formData: defaultForm$
+                  formData: defaultForm$,
+                  dataSource: dataSource
                 },
                 on: {
                   show: getTableItem,
@@ -71,6 +73,7 @@
 <script>
 import MarketingAddTicket from '@/views/biz-modals/marketing/add-ticket'
 import { CopyService } from '../copy.service'
+import { clone, cloneDeep } from 'lodash-es'
 export default {
   name: 'Step2Form',
   modals: {
@@ -123,8 +126,8 @@ export default {
   methods: {
     initForm() {
       this.$nextTick().then(() => {
-        this.dataSource = this.defaultForm$.ticket_list
-        this.formDataList = this.defaultForm$.ticket_list
+        this.dataSource = cloneDeep(this.defaultForm$.ticket_list)
+        this.formDataList = cloneDeep(this.defaultForm$.ticket_list)
         this.$emit('change', this.dataSource)
       })
     },
@@ -142,7 +145,7 @@ export default {
       this.formDataList = this.formDataList.filter(
         item => item.ticket_id !== ticketId
       )
-      this.$emit('change', this.addDataSource)
+      this.$emit('change', this.dataSource)
     },
     getFormItem(form) {
       this.formDataList.push(form)

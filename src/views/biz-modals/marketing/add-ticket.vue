@@ -173,6 +173,10 @@ export default {
       type: String,
       default: '票种信息设置'
     },
+    dataSource: {
+      type: Array,
+      default: () => []
+    },
     formData: {
       type: Object,
       default: () => {}
