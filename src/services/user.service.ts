@@ -211,7 +211,7 @@ export class UserService {
   fetchCodeUrl() {
     return this.iconUrlApi.getIconList().pipe(
       tap(res => {
-        this.urlData$.commit(() => res.icon_info_list)
+        this.urlData$.commit(() => res.list)
       })
     )
   }
