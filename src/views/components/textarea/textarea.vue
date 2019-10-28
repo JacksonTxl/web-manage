@@ -7,6 +7,10 @@
       @change="onChange"
     ></a-textarea>
     <label :class="b('label')">{{ currentLength }}/{{ maxlength }}</label>
+    <span :class="b('content-copy')" v-if="suffix">
+      {{ content }}
+      <span :class="b('content-text')">{{ suffix }}</span>
+    </span>
   </div>
 </template>
 <script>
@@ -26,6 +30,9 @@ export default {
     maxlength: {
       type: [String, Number],
       default: 500
+    },
+    suffix: {
+      type: String
     }
   },
   data() {
