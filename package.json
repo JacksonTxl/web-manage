@@ -10,15 +10,12 @@
     "dev": "gulp dev",
     "dev:brand": "PAGE_ENV=brand gulp dev",
     "dev:shop": "PAGE_ENV=shop gulp dev",
-
     "dev:test": "cross-env LOCAL_API_ENV=test gulp dev",
     "dev:test:brand": "cross-env LOCAL_API_ENV=test PAGE_ENV=brand gulp dev",
     "dev:test:shop": "cross-env LOCAL_API_ENV=test PAGE_ENV=shop gulp dev",
-
     "dev:pre": "cross-env LOCAL_API_ENV=pre gulp dev",
     "dev:pre:brand": "cross-env LOCAL_API_ENV=pre PAGE_ENV=brand gulp dev",
     "dev:pre:shop": "cross-env LOCAL_API_ENV=pre PAGE_ENV=shop gulp dev",
-
     "init": "yarn install",
     "inspect": "vue-cli-service inspect > inspect.js",
     "inspect:prod": "vue-cli-service inspect --mode production > inspect.js",

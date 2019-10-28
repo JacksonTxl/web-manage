@@ -171,24 +171,19 @@ import { TitleService } from '@/services/title.service'
 import { entries } from './default#/fast-entry.config'
 import FastEntryMiniProgram from '@/views/biz-modals/fast-entry/mini-program'
 import FastEntryHousekeeper from '@/views/biz-modals/fast-entry/housekeeper'
-// import { UdeskService } from '@/services/udesk.service'
+import { UdeskService } from '@/services/udesk.service'
 
 export default {
   components: {
     DefaultSiderMenu,
     SwitchShop
-    // DefaultSkeleton
-    /**
-     * 快速入口 九宫格
-     */
-    //FastEntry
   },
   serviceInject() {
     return {
       userService: UserService,
       tokenService: TokenService,
-      titleService: TitleService
-      // udeskService: UdeskService
+      titleService: TitleService,
+      udeskService: UdeskService
     }
   },
   rxState() {
@@ -325,7 +320,7 @@ export default {
         })
       }
       if (item.openProgram === 'Udesk') {
-        // this.udeskService.open()
+        this.udeskService.showUdesk({ openDialog: true })
       }
     }
   }

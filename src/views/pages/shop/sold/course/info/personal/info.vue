@@ -63,6 +63,9 @@
             <st-info-item label="有效期">
               {{ personalInfo.buy_time }} 至 {{ personalInfo.end_time }}
             </st-info-item>
+            <st-info-item label="合同编号">
+              {{ personalInfo.contract_number }}
+            </st-info-item>
           </st-info>
         </a-col>
         <a-col :span="9">

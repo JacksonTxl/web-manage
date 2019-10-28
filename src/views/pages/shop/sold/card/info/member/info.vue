@@ -80,8 +80,11 @@
             <st-info-item label="剩余额度">
               {{ info.remain_amount }}
             </st-info-item>
-            <st-info-item label="有效期" class="mg-b0">
+            <st-info-item label="有效期" class="mg-b16">
               {{ info.start_time }} 至 {{ info.end_time }}
+            </st-info-item>
+            <st-info-item label="合同编号" class="mg-b0">
+              {{ info.contract_number }}
             </st-info-item>
           </st-info>
         </a-col>
