@@ -290,7 +290,7 @@ export default {
         window.open(item.url)
         return
       }
-      if (item.open_program === 'miniProgram') {
+      if (item.open_program === 'mini_program') {
         const urlData = item
         this.$modalRouter.push({
           name: 'fast-entry-mini-program',
@@ -301,7 +301,7 @@ export default {
         })
         return
       }
-      if (item.open_program === 'housekeeper') {
+      if (item.open_program === 'house_keeper') {
         this.$modalRouter.push({
           name: 'fast-entry-housekeeper',
           props: {},
@@ -314,7 +314,7 @@ export default {
           path: '/common/export'
         })
       }
-      if (item.open_program === 'Udesk') {
+      if (item.open_program === 'udesk') {
         this.udeskService.showUdesk({ openDialog: true })
       }
     }
