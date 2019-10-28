@@ -69,7 +69,10 @@
           </a>
         </st-table-actions>
         <st-table-actions
-          v-if="record.reserve_status.id === 1 && record.reserve_type.id === 1"
+          v-if="
+            record.reserve_status.id === VISIT_STATUS.RESERVED &&
+              record.reserve_type.id === RESERVE_TYPE.COURSE
+          "
         >
           <a @click="onPrint(record.id)">
             打印小票
