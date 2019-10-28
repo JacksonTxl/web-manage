@@ -24,6 +24,7 @@ export const entries = [
     icon:
       'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/fast-hardware.png',
     text: '智能硬件',
+    openProgram: 'hardware',
     url: 'https://www.styd.cn/default/product_iot',
     disabled: false
   },
@@ -45,6 +46,7 @@ export const entries = [
     icon:
       'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/fast-ThinkTank.png',
     text: '智库',
+    openProgram: 'thinkTank',
     url: 'https://blog.styd.cn/',
     disabled: false
   },
@@ -53,12 +55,14 @@ export const entries = [
       'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/fast-data.png',
     text: '数据中心',
     url: 'https://www.styd.cn/default/data_report',
+    openProgram: 'data',
     disabled: false
   },
   {
     icon:
       'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/fast-book.png',
     text: '行业白皮书',
+    openProgram: 'book',
     url: 'https://www.styd.cn/default/white_paper',
     disabled: false
   }

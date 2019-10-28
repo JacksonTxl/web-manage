@@ -8,7 +8,7 @@ import { TooltipApi } from '@/api/v1/admin/tooltip'
 import { get, reduce, isPlainObject, mapValues } from 'lodash-es'
 import { NProgressService } from './nprogress.service'
 import { ShopApi } from '@/api/v1/shop'
-import { CodeUrlApi } from '@/api/v1/brand/orcodeurl'
+import { IconUrlApi } from '@/api/v1/brand/getIconList'
 import { Dictionary } from 'lodash'
 import Vue from 'vue'
 interface User {
@@ -121,7 +121,7 @@ export class UserService {
     private staffApi: StaffApi,
     private tooltipApi: TooltipApi,
     private shopApi: ShopApi,
-    private CodeUrlApi: CodeUrlApi
+    private iconUrlApi: IconUrlApi
   ) {}
   SET_USER(staff: any) {
     const info = staff.info
@@ -209,9 +209,9 @@ export class UserService {
     )
   }
   fetchCodeUrl() {
-    return this.CodeUrlApi.getCodeUrl().pipe(
+    return this.iconUrlApi.getIconList().pipe(
       tap(res => {
-        this.urlData$.commit(() => res)
+        this.urlData$.commit(() => res.icon_info_list)
       })
     )
   }

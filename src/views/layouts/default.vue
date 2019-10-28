@@ -89,16 +89,16 @@
           <div slot="overlay" class="layout-fast-entry">
             <a-menu class="layout-fast-entry__wrapper">
               <a-menu-item
-                v-for="(item, index) in entries"
-                :key="index"
+                v-for="(item, id) in urlData"
+                :key="id"
                 class="layout-fast-entry__item"
                 :class="
-                  item.disabled
+                  !item.enable
                     ? 'layout-fast-entry__disabled'
                     : 'layout-fast-entry__activity'
                 "
                 @click="goToPage(item)"
-                :disabled="item.disabled"
+                :disabled="!item.enable"
               >
                 <div class="fast-entry__pic">
                   <img :src="item.icon" :alt="item.text" />
@@ -218,9 +218,7 @@ export default {
     }
   },
   created() {
-    this.urlData.list
-      ? (entries[4].disabled = false)
-      : (entries[4].disabled = true)
+    console.log(this.urlData)
   },
   methods: {
     switchShop() {
@@ -295,8 +293,8 @@ export default {
         window.open(item.url)
         return
       }
-      if (item.openProgram === 'miniProgram') {
-        const urlData = this.urlData
+      if (item.open_program === 'miniProgram') {
+        const urlData = item
         this.$modalRouter.push({
           name: 'fast-entry-mini-program',
           props: {
@@ -306,7 +304,7 @@ export default {
         })
         return
       }
-      if (item.openProgram === 'housekeeper') {
+      if (item.open_program === 'housekeeper') {
         this.$modalRouter.push({
           name: 'fast-entry-housekeeper',
           props: {},
@@ -314,12 +312,12 @@ export default {
         })
         return
       }
-      if (item.openProgram === 'export') {
+      if (item.open_program === 'export') {
         this.$router.push({
           path: '/common/export'
         })
       }
-      if (item.openProgram === 'Udesk') {
+      if (item.open_program === 'Udesk') {
         this.udeskService.showUdesk({ openDialog: true })
       }
     }
