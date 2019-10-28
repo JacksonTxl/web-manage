@@ -12,7 +12,7 @@ export class UsageLogService implements RouteGuard {
   constructor(private cardApi: CardApi, private soldService: SoldService) {}
   @Effect()
   getList(query: any, type: string) {
-    return this.cardApi.getCardsUsageLog(query, type).pipe(
+    return this.cardApi.getDepositUsageLog(query).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)

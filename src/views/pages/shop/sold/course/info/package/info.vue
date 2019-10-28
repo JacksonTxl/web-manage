@@ -225,7 +225,7 @@ export default {
     return {
       packageInfo: this.infoService.packageInfo$,
       query: this.routeService.query$,
-      authTabs: this.infoService.authTabs$,
+      pageAuthTabs: this.infoService.pageAuthTabs$,
       auth: this.infoService.auth$
     }
   },

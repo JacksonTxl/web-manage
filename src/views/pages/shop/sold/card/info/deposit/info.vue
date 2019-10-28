@@ -137,7 +137,7 @@ export default {
       info: this.infoService.info$,
       query: this.routeService.query$,
       loading: this.infoService.loading$,
-      authTabs: this.infoService.authTabs$,
+      pageAuthTabs: this.infoService.pageAuthTabs$,
       auth: this.infoService.auth$
     }
   },

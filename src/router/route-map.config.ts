@@ -203,7 +203,8 @@ export const routeMapConfig = {
   'shop-sold-course-info-package-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '课程包详情'
     routeConfig.meta.tabs = [
-      'shop-sold-course-info-package-info-operation-record'
+      'shop-sold-course-info-package-info-operation-record',
+      'shop-sold-course-info-package-info-usage-log'
     ]
   },
   'shop-sold-course-info-package-info-consumption-record'(
@@ -270,7 +271,8 @@ export const routeMapConfig = {
   'shop-sold-card-info-deposit-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '储值卡详情'
     routeConfig.meta.tabs = [
-      'shop-sold-card-info-deposit-info-operation-record'
+      'shop-sold-card-info-deposit-info-operation-record',
+      'shop-sold-card-info-deposit-info-usage-log'
     ]
   },
   'shop-sold-card-info-deposit-info-consumption-record'(
