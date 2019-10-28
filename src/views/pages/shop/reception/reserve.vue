@@ -219,8 +219,9 @@ export default {
     },
     onPrint(id) {
       let record = this.info
-      let url = `${window.location.origin}/extra/ticket-preview?id=${id}`
-      window.open(url, '_blank', 'width=800,height=600')
+      // let url = `${window.location.origin}/extra/ticket-preview?id=${id}`
+      // window.open(url, '_blank', 'width=800,height=600')
+      location.href = '/ticket/print?id=' + id
     }
   }
 }
