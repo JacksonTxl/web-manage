@@ -1046,7 +1046,7 @@ export const routeMapConfig = {
   'shop-stat-revenue'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '营收报表'
     routeConfig.queryOptions = {
-      day: { type: Number },
+      recently_day: { type: Number, default: 7 },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       start_date: { type: String, default: '' },
@@ -1056,7 +1056,7 @@ export const routeMapConfig = {
   'shop-stat-order'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '订单报表'
     routeConfig.queryOptions = {
-      day: { type: Number },
+      recently_day: { type: Number, default: 7 },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
