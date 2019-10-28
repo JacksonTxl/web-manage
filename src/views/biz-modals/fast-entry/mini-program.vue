@@ -12,7 +12,7 @@
           :class="b('code-img')"
           width="180px"
           height="180px"
-          :src="urlData.list"
+          :src="urlData.pic"
           alt="扫描二维码"
         />
         <p class="mg-t16">
