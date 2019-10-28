@@ -3,6 +3,7 @@ export const columns = (vm: any) => {
     {
       title: '活动标题',
       dataIndex: 'activity_name',
+      fixed: 'left',
       scopedSlots: { customRender: 'activity_name' }
     },
     {
@@ -38,13 +39,12 @@ export const columns = (vm: any) => {
     {
       title: '活动状态',
       dataIndex: 'activity_status',
-      align: 'right',
       scopedSlots: { customRender: 'activity_status' }
     },
     {
       title: '操作',
       dataIndex: 'action',
-      width: 140,
+      width: 120,
       fixed: 'right',
       scopedSlots: { customRender: 'action' }
     }

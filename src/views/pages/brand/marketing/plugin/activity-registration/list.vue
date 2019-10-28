@@ -1,7 +1,7 @@
 <template>
   <div :class="bPage()">
     <markteing-plugin-title :type="TYPE.ACTIVITY" />
-    <st-panel :class="bPage('content')">
+    <st-panel app initial :class="bPage('content')">
       <div slot="title" :class="bSearch()">
         <div :class="bSearch('button-group')">
           <st-button
@@ -22,6 +22,7 @@
           <a-select
             placeholder="请选择活动报名状态"
             @change="onSingleSearch('activity_status', $event)"
+            v-model="query.activity_status"
             class="mg-r16"
             style="width: 160px"
             :options="activityStatus$"
@@ -97,15 +98,8 @@
             >
               复制
             </a>
-            <a v-if="record.auth.isCancel">
-              <st-popconfirm
-                title="确认取消该活动吗?"
-                @confirm="onClickStop(record)"
-                okText="是的"
-                cancelText="再想想"
-              >
-                取消
-              </st-popconfirm>
+            <a @click="onClickStop(record)" v-if="record.auth.isCancel">
+              取消
             </a>
           </st-table-actions>
         </template>
@@ -195,8 +189,17 @@ export default {
       })
     },
     onClickStop(record) {
-      this.service.cancelSignUp(record.id).subscribe(res => {
-        this.$router.reload()
+      this.$confirm({
+        title: '提示',
+        content: '确认取消该活动吗?',
+        okText: '是的',
+        cancelText: '再想想',
+        onOk: () => {
+          this.service.cancelSignUp(record.id).subscribe(res => {
+            this.$router.reload()
+          })
+        },
+        onCancel() {}
       })
     },
     onClickCopy({ record, pathName }) {
