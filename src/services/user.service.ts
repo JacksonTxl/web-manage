@@ -69,7 +69,7 @@ export class UserService {
   firstMenuUrl$ = new Computed<string>(this.menuData$.pipe(pluck('first_url')))
   favoriteMenu$ = new Computed(this.menuData$.pipe(pluck('favorite')))
 
-  isBrandNewStudio$ = new Computed(
+  isBrandStudio$ = new Computed(
     this.brand$.pipe(map(brand => !!(brand.version === 'new_studio')))
   )
 

@@ -205,7 +205,7 @@ export default {
       theme: this.userService.theme$,
       title: this.titleService.title$,
       urlData: this.userService.urlData$,
-      isBrandStudio: this.userService.isBrandStudio$
+      isThemeStudio: this.userService.isThemeStudio$
     }
   },
   data() {
@@ -229,7 +229,7 @@ export default {
       return this.shop.id
     },
     siderMenuTip() {
-      return this.isBrandStudio ? '工作室版' : '俱乐部版'
+      return this.isThemeStudio ? '工作室版' : '俱乐部版'
     }
   },
   created() {
