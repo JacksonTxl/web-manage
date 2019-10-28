@@ -210,6 +210,39 @@
       height: calc(100vh - 150px);
       // overflow: auto;
     }
+    &__both {
+      min-height: calc(100% - 56px);
+    }
+    &__version {
+      height: 56px;
+      width: 200px;
+      margin-left: -9px;
+      margin-bottom: 0;
+      line-height: 56px;
+      text-align: center;
+      position: relative;
+      &-bg {
+        width: 160px;
+        height: 32px;
+        display: inline-block;
+        background: linear-gradient(
+          270deg,
+          rgba(44, 49, 83, 1) 0%,
+          rgba(66, 73, 124, 1) 51%,
+          rgba(44, 49, 83, 1) 100%
+        );
+        margin-top: 8px;
+      }
+      &-text {
+        position: absolute;
+        left: 0;
+        right: 0;
+        color: rgba(154, 161, 209, 1);
+        font-weight: 500;
+        letter-spacing: 1px;
+        line-height: 50px;
+      }
+    }
     &__often {
       &-title {
         .pd-l(16px);

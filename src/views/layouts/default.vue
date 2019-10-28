@@ -56,6 +56,12 @@
         @click="onClickSiderMenu"
       >
         <default-sider-menu @change="onSiderMenuChange" />
+        <p class="layout-default-sider__version">
+          <label class="layout-default-sider__version-bg"></label>
+          <label class="layout-default-sider__version-text">
+            ·&nbsp;&nbsp;{{ siderMenuTip }}&nbsp;&nbsp;·
+          </label>
+        </p>
       </div>
     </aside>
     <header class="layout-default-body__header">
@@ -198,7 +204,8 @@ export default {
       shop: this.userService.shop$,
       theme: this.userService.theme$,
       title: this.titleService.title$,
-      urlData: this.userService.urlData$
+      urlData: this.userService.urlData$,
+      isBrandStudio: this.userService.isBrandStudio$
     }
   },
   data() {
@@ -220,6 +227,9 @@ export default {
     },
     isInShop() {
       return this.shop.id
+    },
+    siderMenuTip() {
+      return this.isBrandStudio ? '工作室版' : '俱乐部版'
     }
   },
   created() {
