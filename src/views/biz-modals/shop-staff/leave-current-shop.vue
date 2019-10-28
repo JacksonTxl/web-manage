@@ -4,7 +4,6 @@
     size="small"
     v-model="show"
     class="model-leave-store-container"
-    :footer="false"
   >
     <staff-info :staff="staff"></staff-info>
     <template v-if="operate === LEAVE_CURRENT_SHOP.OPERATE_TYPE">
@@ -14,13 +13,11 @@
             确认此员工不在{{ '门店名称' }}进行相关工作
           </p>
         </a-col>
-        <a-row :gutter="8" class="mg-t16">
-          <a-col :lg="24" style="text-align: right;">
-            <st-button class="mg-r8" @click="onCancel">取消</st-button>
-            <st-button type="primary" @click="onSubmit">确认</st-button>
-          </a-col>
-        </a-row>
       </a-row>
+      <template slot="footer">
+        <st-button class="mg-r8" @click="onCancel">取消</st-button>
+        <st-button type="primary" @click="onSubmit">确认</st-button>
+      </template>
     </template>
     <template v-else>
       <a-row :gutter="8" class="mg-t16" v-if="list.length !== 0">
@@ -40,12 +37,9 @@
           </div>
         </a-col>
       </a-row>
-
-      <a-row :gutter="8">
-        <a-col :lg="24" style="text-align: right;">
-          <st-button type="primary" @click="onCancel">知道了</st-button>
-        </a-col>
-      </a-row>
+      <template slot="footer">
+        <st-button type="primary" @click="onCancel">知道了</st-button>
+      </template>
     </template>
   </st-modal>
 </template>

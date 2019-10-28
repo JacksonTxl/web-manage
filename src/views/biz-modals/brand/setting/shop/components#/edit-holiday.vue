@@ -13,7 +13,7 @@
           <st-form-item label="放假结束时间" required>
             <span>{{ endTime }}</span>
           </st-form-item>
-          <st-form-item labelFix class="mg-b0">
+          <st-form-item labelFix class="mg-b24">
             <st-button type="primary" @click="onEdit">修改放假时间</st-button>
             <st-button class="mg-l8" :loading="loading.del" @click="onDel">
               取消放假设置
@@ -45,7 +45,7 @@
               :disabledDate="disabledEndDate"
             />
           </st-form-item>
-          <st-form-item labelFix class="mg-b0">
+          <st-form-item labelFix class="mg-b24">
             <st-button type="primary" :loading="loading.set" @click="onSubmit">
               确认修改放假时间
             </st-button>
