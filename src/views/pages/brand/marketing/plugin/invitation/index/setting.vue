@@ -34,7 +34,11 @@
                 <coupon-tag
                   key="1"
                   class="mg-r8"
-                  :name="inviteeCoupon.coupon_name"
+                  :name="
+                    inviteeCoupon.coupon_name
+                      ? inviteeCoupon.coupon_name
+                      : '111'
+                  "
                   @close="onClose('invitee')"
                 />
                 <st-button @click="onEditCoupon('invitee')" icon="anticon:plus">
@@ -64,7 +68,11 @@
                 <coupon-tag
                   key="2"
                   class="mg-r8"
-                  :name="inviterCoupon.coupon_name"
+                  :name="
+                    inviterCoupon.coupon_name
+                      ? inviterCoupon.coupon_name
+                      : '222'
+                  "
                   @close="onClose('inviter')"
                 />
                 <st-button @click="onEditCoupon('inviter')" icon="anticon:plus">
@@ -89,7 +97,9 @@
               <span class="mg-l24 mg-r8">选择券</span>
               <coupon-tag
                 class="mg-r8"
-                :name="inviteeCoupon.coupon_name"
+                :name="
+                  inviteeCoupon.coupon_name ? inviteeCoupon.coupon_name : '2223'
+                "
                 key="3"
               />
             </div>
@@ -108,7 +118,9 @@
               <span class="mg-l24 mg-r8">选择券</span>
               <coupon-tag
                 class="mg-r8"
-                :name="inviterCoupon.coupon_name"
+                :name="
+                  inviterCoupon.coupon_name ? inviterCoupon.coupon_name : '444'
+                "
                 key="3"
               />
             </div>
@@ -240,10 +252,10 @@ export default {
               .toPromise()
               .then(() => {
                 // 关闭成功
-                this.$router.push({
-                  path: '/brand/marketing/plugin/invitation/index/data'
-                })
-                // this.$router.reload()
+                // this.$router.push({
+                //   path: '/brand/marketing/plugin/invitation/index/data'
+                // })
+                this.$router.reload()
               })
           }
         })

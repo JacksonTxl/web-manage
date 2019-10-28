@@ -1,8 +1,9 @@
 <template>
   <div :class="coupon()">
     <span>{{ name }}</span>
+    <!-- NOTE: 注释 -->
+    <!-- v-if="$options._parentListeners && $options._parentListeners.close" -->
     <st-icon
-      v-if="$options._parentListeners && $options._parentListeners.close"
       @click="onClose"
       class="mg-l8 cursor-pointer"
       type="anticon:close"
@@ -20,9 +21,6 @@ export default {
       type: String,
       required: true
     }
-  },
-  mounted() {
-    console.log(this.$options._parentListeners)
   },
   methods: {
     onClose() {
