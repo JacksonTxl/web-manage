@@ -3,7 +3,13 @@
     v-bind="$attrs"
     :width="computedWidth"
     v-on="$listeners"
-    :wrapClassName="['st-modal', wrapClassName].join(' ')"
+    :wrapClassName="
+      [
+        'st-modal',
+        $attrs.footer ? '' : 'st-modal--footer-null',
+        wrapClassName
+      ].join(' ')
+    "
   >
     <slot name="title" slot="title"></slot>
     <slot name="prepend"></slot>

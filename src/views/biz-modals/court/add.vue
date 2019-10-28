@@ -1,10 +1,5 @@
 <template>
-  <st-modal
-    title="创建场地"
-    v-model="show"
-    wrapClassName="modal-court-add"
-    :footer="null"
-  >
+  <st-modal title="创建场地" v-model="show" wrapClassName="modal-court-add">
     <st-form :form="form" labelWidth="68px" labelGutter="16px">
       <st-form-item label="场地名称" required>
         <a-input
@@ -27,7 +22,7 @@
           </a-radio>
         </a-radio-group>
       </st-form-item>
-      <st-form-item label="容纳人数" v-if="isShowPersonNum">
+      <st-form-item label="容纳人数" v-if="isShowPersonNum" class="mg-b0">
         <st-input-number
           placeholder="请输入最大容纳人数，1-999"
           :min="1"
@@ -36,11 +31,11 @@
         />
       </st-form-item>
     </st-form>
-    <div class="ta-r">
+    <template slot="footer">
       <st-button type="primary" :loading="loading.add" @click="onSubmit">
         保存
       </st-button>
-    </div>
+    </template>
   </st-modal>
 </template>
 

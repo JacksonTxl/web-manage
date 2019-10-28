@@ -53,7 +53,10 @@ export class AppConfig {
    * 域名生产环境
    */
   get HOST_IS_PROD() {
-    return location.hostname === 'saas.styd.cn'
+    return (
+      location.hostname === 'saas.styd.cn' ||
+      location.hostname === 'pro.styd.cn'
+    )
   }
   /**
    * shs环境 只在域名为生产环境时请求shs正式服务

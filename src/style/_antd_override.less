@@ -45,11 +45,19 @@
   .pd(8px 12px);
 }
 
+.ant-input {
+  .lh(32px);
+}
+
 .ant-input::placeholder,
 .ant-select-search__field__placeholder,
 .ant-select-selection__placeholder,
 .ant-calendar-range-picker-input::placeholder {
   color: rgba(155, 172, 185);
+  font-size: 14px;
+}
+// 密码框placeholder样式覆盖
+input[type='password']::placeholder {
   font-size: 14px;
 }
 

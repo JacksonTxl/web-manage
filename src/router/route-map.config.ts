@@ -976,10 +976,18 @@ export const routeMapConfig = {
   'brand-setting-sms'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '消息通知设置'
     routeConfig.meta.tabs = [
+      'brand-setting-sms-group',
       'brand-setting-sms-list',
       'brand-setting-sms-notice',
       'brand-setting-sms-pay'
     ]
+  },
+  'brand-setting-sms-group'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '群发短信'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
   },
   'brand-setting-sms-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '短信列表'
@@ -1046,7 +1054,7 @@ export const routeMapConfig = {
   'shop-stat-revenue'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '营收报表'
     routeConfig.queryOptions = {
-      day: { type: Number },
+      recently_day: { type: Number, default: 7 },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       start_date: { type: String, default: '' },
@@ -1056,7 +1064,7 @@ export const routeMapConfig = {
   'shop-stat-order'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '订单报表'
     routeConfig.queryOptions = {
-      day: { type: Number },
+      recently_day: { type: Number, default: 7 },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
