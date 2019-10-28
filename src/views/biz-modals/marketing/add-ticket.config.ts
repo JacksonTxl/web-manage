@@ -1,4 +1,5 @@
 import { ID } from '@/api/v1/order/transaction/contract'
+import moment from 'moment'
 export const ruleOptions = (vm: any) => {
   const pattern = vm.pattern
   return {
@@ -79,7 +80,22 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    buy_time: {},
+    buy_time: {
+      rules: [
+        {
+          validator: (field: any, value: any, values: any) => {
+            const startTime = moment(vm.stepForm.start_time)
+            const endTime = moment(vm.stepForm.end_time)
+            if (value[0].valueOf() < startTime.valueOf()) {
+              return '售卖开始时间要大于活动开始时间'
+            }
+            if (value[1].valueOf() > endTime.valueOf()) {
+              return '售卖结束时间要小于活动开始时间'
+            }
+          }
+        }
+      ]
+    },
     ticket_remark: {}
   }
 }

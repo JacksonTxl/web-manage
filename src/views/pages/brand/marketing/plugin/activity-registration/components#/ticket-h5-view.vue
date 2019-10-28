@@ -11,7 +11,8 @@
           </st-t3>
           <div :class="bItem('price-info')">
             <span v-if="ticket.reduce_price" class="discount-price">
-              ¥{{ +ticket.ticket_price - +ticket.reduce_price }}
+              ¥
+              {{ ticket | filterPrice }}
             </span>
             <span class="discount-price" v-else>
               ¥{{ ticket.ticket_price }}
@@ -55,6 +56,13 @@ export default {
   },
   components: {
     H5Container
+  },
+  filters: {
+    filterPrice(ticket) {
+      return +ticket.ticket_price - ticket.reduce_price <= 0.1
+        ? 0.1
+        : +ticket.ticket_price - +ticket.reduce_price
+    }
   },
   props: {
     stepInfo: {

@@ -22,7 +22,8 @@
                 name: 'marketing-add-ticket',
                 props: {
                   formData: defaultForm$,
-                  dataSource: dataSource
+                  dataSource: dataSource,
+                  stepForm: stepForm
                 },
                 on: {
                   show: getTableItem,
@@ -99,6 +100,10 @@ export default {
     isCopy: {
       type: Boolean,
       default: false
+    },
+    stepForm: {
+      type: Object,
+      default: () => {}
     },
     isEdit: {
       type: Boolean,
