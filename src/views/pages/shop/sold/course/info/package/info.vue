@@ -183,7 +183,7 @@
         </a-col>
       </a-row>
     </st-panel>
-    <st-panel class="mg-t12" :tabs="authTabs">
+    <st-panel class="mg-t12" :tabs="pageAuthTabs">
       <!-- TODO: 消费记录尚未实现 -->
       <!-- {
           label: '消费记录',

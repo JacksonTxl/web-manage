@@ -10,7 +10,7 @@ export class UsageLogService implements RouteGuard {
   loading$ = new State({})
   constructor(private courseApi: CourseApi, private soldService: SoldService) {}
   getList(query: any, type: string) {
-    return this.courseApi.getCardsUsageLog(query, type).pipe(
+    return this.courseApi.getPackageUsageLog(query, type).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
@@ -18,6 +18,6 @@ export class UsageLogService implements RouteGuard {
     )
   }
   beforeEach(to: ServiceRoute) {
-    return this.getList(to.meta.query, 'personal')
+    return this.getList(to.meta.query)
   }
 }

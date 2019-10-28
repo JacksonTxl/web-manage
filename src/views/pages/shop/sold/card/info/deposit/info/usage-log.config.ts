@@ -9,12 +9,12 @@ export const columns = () => [
     scopedSlots: { customRender: 'usage_detail' }
   },
   {
-    title: '变更额度(次)',
+    title: '变更额度(元)',
     dataIndex: 'amount_change',
     scopedSlots: { customRender: 'amount_change' }
   },
   {
-    title: '剩余额度(次)',
+    title: '剩余额度(元)',
     dataIndex: 'remain_amount'
   },
   {
