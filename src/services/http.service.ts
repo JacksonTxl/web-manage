@@ -176,8 +176,8 @@ export class HttpService {
           const serverResponse: StResponse = err.response
           this.notification.close('ajaxError')
           const errMsg = (serverResponse && serverResponse.msg) || err.message
-
-          this.nprogress.SET_TEXT(`${errMsg} ${err.request.url}`)
+          const errUrl = err.request ? err.request.url : ''
+          this.nprogress.SET_TEXT(`${errMsg} ${errUrl}`)
           this.nprogress.done()
 
           switch (err.status) {
