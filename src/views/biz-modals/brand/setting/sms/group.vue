@@ -127,6 +127,7 @@
           :autosize="{ minRows: 2, maxRows: 4 }"
           v-if="curTem === TMPL_TYPES.CUSTOM"
           disabled
+          suffix="[签名]"
           :value="temContent"
         ></st-textarea>
       </st-form-item>
