@@ -217,9 +217,6 @@ export default {
       return this.shop.id
     }
   },
-  created() {
-    console.log(this.urlData)
-  },
   methods: {
     switchShop() {
       this.isShowSwitchShop = !this.isShowSwitchShop
