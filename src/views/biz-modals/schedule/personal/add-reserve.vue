@@ -84,7 +84,7 @@
           :disabledDate="disabledDate"
         />
       </st-form-item>
-      <st-form-item label="预约时间" required>
+      <st-form-item label="预约时间" required class="mg-b0">
         <a-time-picker
           format="HH:mm"
           v-decorator="decorators.reserve_start_time"
