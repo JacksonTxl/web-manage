@@ -221,7 +221,7 @@ export default {
     onPrint(id) {
       let record = this.info
       let url = `${window.location.origin}/extra/ticket-preview?id=${id}`
-      window.open(url, '_blank', 'width=200,height=100')
+      window.open(url, '_blank', 'width=800,height=600')
     }
   }
 }

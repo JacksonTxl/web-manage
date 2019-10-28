@@ -1,75 +1,36 @@
-@media print {
-  * {
-    text-shadow: none !important;
-    background: 0 0 !important;
-    box-shadow: none !important;
-    page-break-before: auto;
-  }
-  .ticket-print {
-    padding: 0;
-    padding-bottom: 48px;
-  }
-  .ticket-print body {
-    width: 100%;
-    margin: 0;
-    // padding: 20px;
-    font-size: 9pt;
-  }
-  .extra-ticket-preview {
-    // padding: 20px;
-    width: 6.4cm;
-    background: #fff;
-    padding-bottom: 32px;
-
-    &__section {
-      padding: 8px;
-      border-bottom: 2px dotted #231815;
-      &-item {
-        display: flex;
-        justify-content: space-between;
-      }
-    }
-    .text-center {
-      text-align: center;
-    }
-  }
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  div,
-  footer,
-  samp,
-  img {
-    page-break-before: auto;
-    page-break-after: auto;
-    page-break-inside: auto;
-  }
-  table {
-    page-break-before: avoid;
-    page-break-after: avoid;
-    page-break-inside: avoid;
-  }
-
-  @page {
-    margin: 2cm;
-  }
-}
-
 .extra-ticket-preview {
-  // padding: 20px;
-  width: 6.4cm;
+  padding: 0;
+  width: 58mm;
   background: #fff;
   padding-bottom: 32px;
+  color: #000;
+  font-weight: 500;
+  font-size: 16px;
 
+  font: 12px/1.5 Microsoft YaHei, '微软雅黑', Tahoma, Arial, '\5b8b\4f53',
+    sans-serif, 'Hiragino Sans GB';
   &__section {
-    padding: 8px;
+    padding: 16px 0 16px;
+    font-size: 14px;
     border-bottom: 2px dotted #231815;
     &-item {
       display: flex;
       justify-content: space-between;
+      span:first-child {
+        min-width: 69px;
+      }
+    }
+    &-title {
+      margin-top: 16px;
+      font-size: 28px;
+      font-weight: 500;
+    }
+    &-subtitle {
+      display: inline-block;
+      margin-bottom: 22px;
+      font-size: 18px;
+      font-weight: 500;
+      word-break: break-all;
     }
   }
   .text-center {
