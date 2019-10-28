@@ -67,14 +67,10 @@
           <a v-if="record.checkin" @click="onClickCourseSign(record)">
             签到
           </a>
-        </st-table-actions>
-        <st-table-actions
-          v-if="
-            record.reserve_status.id === VISIT_STATUS.RESERVED &&
-              record.reserve_type.id === RESERVE_TYPE.COURSE
-          "
-        >
-          <a @click="onPrint(record.id)">
+          <a
+            v-if="record.reserve_status.id === VISIT_STATUS.RESERVED"
+            @click="onPrint(record.id)"
+          >
             打印小票
           </a>
         </st-table-actions>
