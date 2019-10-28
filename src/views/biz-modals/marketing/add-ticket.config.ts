@@ -1,3 +1,4 @@
+import { ID } from '@/api/v1/order/transaction/contract'
 export const ruleOptions = (vm: any) => {
   const pattern = vm.pattern
   return {
@@ -8,8 +9,18 @@ export const ruleOptions = (vm: any) => {
           message: '请输入票种名称'
         },
         {
-          pattern: pattern.CN_EN_NUM('1-15'),
+          pattern: pattern.CN_EN_NUM('1-10'),
           message: '请输入1~10个字符'
+        },
+        {
+          validator: (field: any, value: any, values: any) => {
+            const ticketNames = vm.dataSource.map(
+              (item: any) => item.ticket_name
+            )
+            if (ticketNames.includes(value)) {
+              return '票种名称重复请重新输入'
+            }
+          }
         }
       ]
     },
