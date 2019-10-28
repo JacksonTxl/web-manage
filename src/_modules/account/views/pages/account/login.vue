@@ -17,12 +17,13 @@
         class="cursor-pointer"
         :class="{
           'qrcode-login': this.loginType === 'qrcode',
-          'page-switch-login-type': this.loginType !== 'bind',
           'page-switch-bind': this.loginType === 'bind'
         }"
         v-if="switchLoginTypeIsShow"
         @click="bindBackLogin"
       ></i>
+      <!-- NOTE: 功能暂未实现，不开放 -->
+      <!-- 'page-switch-login-typQe': this.loginType !== 'bind', -->
       <section class="lf">
         <div class="lf-bg"></div>
       </section>
