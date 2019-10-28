@@ -149,8 +149,10 @@ export default {
     },
     // 存草稿
     onSaveDraftActivity(form) {
+      debugger
       this.stepForm.is_draft = 1
       this.$set(this.stepForm, 'rule_settings', JSON.stringify(form))
+      debugger
       this.service.releaseActivity(this.stepForm).subscribe()
     },
     onClickStep(idx) {

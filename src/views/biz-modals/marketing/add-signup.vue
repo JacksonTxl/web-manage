@@ -87,7 +87,7 @@ export default {
   props: {
     modalTitle: {
       type: String,
-      default: '票种信息设置'
+      default: '报名信息设置'
     },
     extra_sort: Number,
     signUpList: {
