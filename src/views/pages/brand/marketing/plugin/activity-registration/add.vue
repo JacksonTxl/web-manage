@@ -151,7 +151,11 @@ export default {
     onSaveDraftActivity(form) {
       this.stepForm.is_draft = 1
       this.$set(this.stepForm, 'rule_settings', JSON.stringify(form))
-      this.service.releaseActivity(this.stepForm).subscribe()
+      this.service.saveDraftActivity(this.stepForm).subscribe(res => {
+        this.$router.push({
+          path: '/brand/marketing/plugin/activity-registration/list'
+        })
+      })
     },
     onClickStep(idx) {
       this.currentStep = idx

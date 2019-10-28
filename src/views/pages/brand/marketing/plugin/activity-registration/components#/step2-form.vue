@@ -14,13 +14,15 @@
         <tr>
           <td :colspan="colspanNum" class="st-form-table__add">
             <st-button
+              :disabled="dataSource.length === 10"
               type="dashed"
               icon="add"
               block
               v-modal-link="{
                 name: 'marketing-add-ticket',
                 props: {
-                  formData: defaultForm$
+                  formData: defaultForm$,
+                  dataSource: dataSource
                 },
                 on: {
                   show: getTableItem,
@@ -71,6 +73,8 @@
 <script>
 import MarketingAddTicket from '@/views/biz-modals/marketing/add-ticket'
 import { CopyService } from '../copy.service'
+import { clone, cloneDeep } from 'lodash-es'
+import { MessageService } from '../../../../../../../services/message.service'
 export default {
   name: 'Step2Form',
   modals: {
@@ -81,7 +85,8 @@ export default {
   },
   serviceInject() {
     return {
-      copyService: CopyService
+      copyService: CopyService,
+      msg: MessageService
     }
   },
   rxState() {
@@ -123,8 +128,8 @@ export default {
   methods: {
     initForm() {
       this.$nextTick().then(() => {
-        this.dataSource = this.defaultForm$.ticket_list
-        this.formDataList = this.defaultForm$.ticket_list
+        this.dataSource = cloneDeep(this.defaultForm$.ticket_list)
+        this.formDataList = cloneDeep(this.defaultForm$.ticket_list)
         this.$emit('change', this.dataSource)
       })
     },
@@ -136,18 +141,31 @@ export default {
       this.$emit('change', this.dataSource)
     },
     delTicketItemRecord(ticketId) {
-      this.dataSource = this.dataSource.filter(
-        item => item.ticket_id !== ticketId
-      )
-      this.formDataList = this.formDataList.filter(
-        item => item.ticket_id !== ticketId
-      )
-      this.$emit('change', this.addDataSource)
+      this.$confirm({
+        title: '提示',
+        content: '是否删除该票种?',
+        okText: '是的',
+        cancelText: '再想想',
+        onOk: () => {
+          this.dataSource = this.dataSource.filter(
+            item => item.ticket_id !== ticketId
+          )
+          this.formDataList = this.formDataList.filter(
+            item => item.ticket_id !== ticketId
+          )
+          this.$emit('change', this.dataSource)
+        },
+        onCancel() {}
+      })
     },
     getFormItem(form) {
       this.formDataList.push(form)
     },
     onClickAddTicketComplete() {
+      if (this.formDataList.length === 0) {
+        this.msg.error({ content: '最少添加一个票种' })
+        return
+      }
       this.$emit('step-submit', this.formDataList)
     }
   }

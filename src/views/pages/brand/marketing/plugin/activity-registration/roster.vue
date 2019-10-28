@@ -20,6 +20,7 @@
             placeholder="请选择状态"
             @change="onSingleSearch('ticket_status', $event)"
             class="mg-r16"
+            v-model="query.ticket_status"
             style="width: 160px"
             :options="ticketStatus$"
           ></a-select>
@@ -27,6 +28,7 @@
             placeholder="请选择票种"
             @change="onSingleSearch('ticket_id', $event)"
             class="mg-r16"
+            v-model="query.ticket_id"
             style="width: 160px"
             :options="ticketTypeOptions$"
           ></a-select>

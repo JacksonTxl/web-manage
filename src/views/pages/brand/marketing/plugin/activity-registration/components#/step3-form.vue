@@ -25,10 +25,7 @@
             <td>{{ item.extra_name }}</td>
             <td>{{ item.extra_require === 1 ? '必填' : '选填' }}</td>
             <td>
-              <a
-                v-if="item.extra_sort !== 0 && item.extra_sort !== 1"
-                @click="delExtraItemRecord(item.extra_key)"
-              >
+              <a v-if="isDel(item)" @click="delExtraItemRecord(item.extra_key)">
                 删除
               </a>
             </td>
@@ -50,7 +47,7 @@
       <st-button class="mg-r8" @click="onClickBack">
         上一步
       </st-button>
-      <st-button class="mg-r8" @click="goList">
+      <st-button class="mg-r8" @click="onClickSaveDraft">
         存草稿
       </st-button>
       <st-button @click="onClickRelease" type="primary">
@@ -63,6 +60,7 @@
 import { Step3FormService } from './step3-form.service'
 import MarketingAddSignup from '@/views/biz-modals/marketing/add-signup'
 import { CopyService } from '../copy.service'
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'Step3Form',
   bem: {
@@ -136,15 +134,24 @@ export default {
     }
   },
   methods: {
+    isDel(value) {
+      if (this.isEdit) {
+        const extraSortArr = cloneDeep(
+          this.defaultForm$.rule_settings.join_ext_info
+        ).extra_data.map(item => item.extra_sort)
+        return !extraSortArr.includes(value.extra_sort)
+      } else {
+        return value.extra_sort !== 0 && value.extra_sort !== 1
+      }
+    },
     initForm() {
       this.$nextTick().then(() => {
-        const extraData = this.defaultForm$.rule_settings.join_ext_info
-          .extra_data
+        const extraData = cloneDeep(
+          this.defaultForm$.rule_settings.join_ext_info
+        ).extra_data
         this.isStep3 = this.defaultForm$.rule_settings.join_ext_info.extra_type
         this.$set(this, 'addDataSource', extraData)
         this.formData = [...extraData]
-        console.log(extraData, extraData.map(item => item.extra_sort))
-        // this.extraSort = Math.max(...extraData.map(item => +item.extra_sort))
         this.$emit('change', this.dataSource)
       })
     },
@@ -163,11 +170,6 @@ export default {
           show: this.getTableItem,
           submit: this.getFormItem
         }
-      })
-    },
-    goList() {
-      this.$router.push({
-        path: '/brand/marketing/plugin/activity-registration/list'
       })
     },
     getTableItem(item) {

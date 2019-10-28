@@ -22,7 +22,8 @@
           <st-input-number
             class="input"
             :float="true"
-            :min="0"
+            :min="0.1"
+            :max="10000"
             v-decorator="decorators.ticket_price"
           ></st-input-number>
           <span class="mg-l4">元</span>
@@ -34,7 +35,7 @@
           <a-input-number
             class="input"
             :min="1"
-            :max="99999"
+            :max="9999"
             :step="1"
             :precision="0"
             v-decorator="decorators.ticket_total_num"
@@ -172,6 +173,10 @@ export default {
     modalTitle: {
       type: String,
       default: '票种信息设置'
+    },
+    dataSource: {
+      type: Array,
+      default: () => []
     },
     formData: {
       type: Object,
