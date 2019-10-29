@@ -82,7 +82,7 @@
       </div>
       <div class="layout-default-body__personal">
         <!-- 九宫格 -->
-        <a-dropdown :trigger="['click']" placement="bottomRight">
+        <a-dropdown :trigger="['hover']" placement="bottomRight">
           <div class="layout-default-body__avatar">
             <st-icon type="square" width="17px" color="#9BACB9"></st-icon>
           </div>
