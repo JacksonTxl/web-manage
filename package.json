@@ -54,7 +54,7 @@
     "vue-countup-v2": "^3.0.1",
     "vue-di-view": "0.1.2",
     "vue-i18n": "^8.14.1",
-    "vue-modal-router": "0.5.0",
+    "vue-modal-router": "0.5.1",
     "vue-router": "^3.0.2",
     "vue-router-multiguard": "^1.0.3",
     "vue-router-plus": "^0.0.1",

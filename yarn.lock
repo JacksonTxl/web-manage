@@ -12607,10 +12607,10 @@ vue-loader@^15.7.0:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
-vue-modal-router@0.5.0:
-  version "0.5.0"
-  resolved "https://registry.npm.taobao.org/vue-modal-router/download/vue-modal-router-0.5.0.tgz?cache=0&sync_timestamp=1572243978533&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-modal-router%2Fdownload%2Fvue-modal-router-0.5.0.tgz#21a34a29540762db6813f453ec64a572e57069ee"
-  integrity sha1-IaNKKVQHYttoE/RT7GSlcuVwae4=
+vue-modal-router@0.5.1:
+  version "0.5.1"
+  resolved "https://registry.npm.taobao.org/vue-modal-router/download/vue-modal-router-0.5.1.tgz?cache=0&sync_timestamp=1572330031817&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-modal-router%2Fdownload%2Fvue-modal-router-0.5.1.tgz#46b2f26f640f4961d61d453d6672dc8c9a90404b"
+  integrity sha1-RrLyb2QPSWHWHUU9ZnLcjJqQQEs=
 
 vue-ref@^1.0.4:
   version "1.0.6"
