@@ -71,7 +71,7 @@
             :list="fileList"
             @change="onChangeGetShowImage"
             :sizeLimit="2"
-            placeholder="上传照片"
+            placeholder="上传头像"
             :numLimit="10"
           ></st-image-upload>
         </st-form-item>
