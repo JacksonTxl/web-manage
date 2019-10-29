@@ -86,21 +86,7 @@ export default {
     },
     id() {
       return this.staffInfo.staff_id
-    },
-    stepArr: vm => [
-      {
-        title: '基础信息',
-        key: 0
-      },
-      {
-        title: '详细信息',
-        key: 1
-      },
-      {
-        title: `${vm.$c('coach')}信息`,
-        key: 2
-      }
-    ]
+    }
   },
   watch: {
     isPrivateCoach(newVal) {
@@ -113,7 +99,21 @@ export default {
   data() {
     return {
       stepsSpan: 18,
-      currentIndex: 0
+      currentIndex: 0,
+      stepArr: [
+        {
+          title: '基础信息',
+          key: 0
+        },
+        {
+          title: '详细信息',
+          key: 1
+        },
+        {
+          title: `${this.$c('coach')}信息`,
+          key: 2
+        }
+      ]
     }
   },
   mounted() {
