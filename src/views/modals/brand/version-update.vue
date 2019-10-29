@@ -1,6 +1,5 @@
 <template>
   <div :class="b()" v-if="show">
-    <div :class="b('bg')"></div>
     <div :class="b('content')">
       <p :class="b('title')">俱乐部版本专属功能</p>
       <p :class="b('desc')">
@@ -22,11 +21,6 @@ export default {
   data() {
     return {
       show: false
-    }
-  },
-  methods: {
-    getContainer() {
-      return document.querySelector('.layout-default-body__content')
     }
   }
 }

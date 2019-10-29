@@ -1,28 +1,26 @@
 .version-update {
   position: fixed;
   left: 200px;
-  width: calc(100% - 200px);
   z-index: 200;
-  height: 100%;
-  &__bg {
-    background: rgba(0, 0, 0, 1);
-    opacity: 0.5001;
-    height: 100%;
-    width: 100%;
-  }
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
   &__content {
     background: url('~@/assets/img/brand/bg-version-update.png') no-repeat;
-    background-position-x: 174px;
-    background-color: rgba(255, 255, 255, 1);
+    background-position: right;
+    background-color: #fff;
     box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.2);
     border-radius: 4px;
     position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
     width: 484px;
     height: 280px;
-    padding: 36px 0 0 24px;
+    padding: 36px 24px;
   }
   &__title {
     font-size: 20px;
