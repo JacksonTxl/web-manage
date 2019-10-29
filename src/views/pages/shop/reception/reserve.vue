@@ -92,7 +92,6 @@ import tableMixin from '@/mixins/table.mixin'
 import { ReserveService } from './reserve.service'
 import FrontAddReserve from '@/views/biz-modals/front/add-reserve'
 import { columns } from './reserve.config.ts'
-import ReceptionPrint from '@/views/biz-modals/reception/print'
 
 import {
   VISIT_STATUS,
@@ -103,8 +102,7 @@ export default {
   name: 'ReceptionReserve',
   mixins: [tableMixin],
   modals: {
-    FrontAddReserve,
-    ReceptionPrint
+    FrontAddReserve
   },
   bem: {
     bPage: 'page-shop-reception-reserve',
@@ -219,8 +217,6 @@ export default {
     },
     onPrint(id) {
       let record = this.info
-      // let url = `${window.location.origin}/extra/ticket-preview?id=${id}`
-      // window.open(url, '_blank', 'width=800,height=600')
       location.href = '/ticket/print?id=' + id
     }
   }

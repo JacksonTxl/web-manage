@@ -1,5 +1,5 @@
 <template>
-  <div :class="b()" id="print">
+  <div :class="b()">
     <div :class="b('section')">
       <div>
         <span>打印时间:</span>
@@ -79,10 +79,8 @@
   </div>
 </template>
 <script>
-import { dateFilter } from '@/filters/date.filters'
 import moment from 'moment'
 import { PrintService } from './print.service'
-import avatar from '@/assets/img/avatar_default_contract.png'
 import { TICKET_TYPE } from '@/constants/front/reserve'
 export default {
   bem: {
@@ -98,16 +96,12 @@ export default {
       info: this.printService.info$
     }
   },
-  filters: { dateFilter },
   data() {
     return {
-      TICKET_TYPE,
-      avatar: avatar
+      TICKET_TYPE
     }
   },
   created() {
-    let html = document.querySelector('html')
-    html.className += 'ticket-print'
     this.getPrintInfo(this.$route.query.id)
   },
   methods: {

@@ -1,4 +1,4 @@
-.extra-ticket-preview {
+html {
   padding: 0;
   width: 58mm;
   background: #fff;
@@ -9,30 +9,34 @@
 
   font: 12px/1.5 Microsoft YaHei, '微软雅黑', Tahoma, Arial, '\5b8b\4f53',
     sans-serif, 'Hiragino Sans GB';
-  &__section {
-    padding: 16px 0 16px;
-    font-size: 14px;
-    border-bottom: 2px dotted #231815;
-    &-item {
-      display: flex;
-      justify-content: space-between;
-      span:first-child {
-        min-width: 69px;
+  .extra-ticket-preview {
+    width: 58mm;
+    &__section {
+      padding: 16px 0 16px;
+      font-size: 14px;
+      border-bottom: 2px dotted #231815;
+      &-item {
+        display: flex;
+        justify-content: space-between;
+        span:first-child {
+          min-width: 69px;
+        }
+      }
+      &-title {
+        margin-top: 16px;
+        font-size: 28px;
+        font-weight: 500;
+      }
+      &-subtitle {
+        display: inline-block;
+        margin-bottom: 22px;
+        font-size: 18px;
+        font-weight: 500;
+        word-break: break-all;
       }
     }
-    &-title {
-      margin-top: 16px;
-      font-size: 28px;
-      font-weight: 500;
-    }
-    &-subtitle {
-      display: inline-block;
-      margin-bottom: 22px;
-      font-size: 18px;
-      font-weight: 500;
-      word-break: break-all;
-    }
   }
+
   .text-center {
     text-align: center;
   }

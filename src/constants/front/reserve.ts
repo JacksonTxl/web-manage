@@ -15,8 +15,9 @@ export const enum RESERVE_TYPE {
   COURSE = 1,
   VISIT = 2
 }
+// 小票消费类型
 export const enum TICKET_TYPE {
-  PERSONAL = 1,
-  DESOPOSIT = 2,
-  WECHAT = 3
+  PERSONAL = 1, // 私教课
+  DESOPOSIT = 2, // 储值卡
+  WECHAT = 3 // 微信
 }
