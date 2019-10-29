@@ -22,14 +22,10 @@ export default {
   },
   data() {
     return {
-      radioValue: ''
-    }
-  },
-  computed: {
-    titleData: vm => {
-      return {
-        title: `${vm.$c('member_card')}即将到期`,
-        info: `选择自然日内，${vm.$c('member_card')}即将到期的用户`
+      radioValue: '',
+      titleData: {
+        title: `${this.$c('member_card')}即将到期`,
+        info: `选择自然日内，${this.$c('member_card')}即将到期的用户`
       }
     }
   },

@@ -141,7 +141,9 @@ export class CardApi extends Api {
    * 售出 储值卡 详情使用记录
    */
   getDepositUsageLog(query: any) {
-    return this.http.get(`/v1/cards/brand/deposit/cost/${query.id}`, {
+    let id = query.id
+    delete query.id
+    return this.http.get(`/v1/cards/brand/deposit/cost/${id}`, {
       query
     })
   }
