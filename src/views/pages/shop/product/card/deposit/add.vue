@@ -153,10 +153,7 @@
                   <div slot="content">
                     设置此储值卡可售卖的时间范围
                   </div>
-                  <a-icon
-                    class="page-content-card-time__icon"
-                    type="info-circle"
-                  ></a-icon>
+                  <st-help-tooltip />
                 </a-popover>
               </span>
               <a-form-item class="page-a-form">

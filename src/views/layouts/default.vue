@@ -109,7 +109,7 @@
           </div>
         </a-dropdown>
 
-        <a-dropdown :trigger="['click']" placement="bottomRight">
+        <a-dropdown :trigger="['hover']" placement="bottomRight">
           <div class="layout-default-body__avatar">
             <img
               :src="user.avatar | imgFilter({ w: 64, h: 64 })"

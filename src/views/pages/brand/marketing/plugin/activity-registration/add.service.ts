@@ -33,10 +33,18 @@ export class AddService {
     )
   }
   saveDraftActivity(params: SignUpInfo) {
-    return this.api.addSignUp(params).pipe(
-      tap(res => {
-        this.msg.success({ content: '存草稿成功！' })
-      })
-    )
+    if (params.activity_id) {
+      return this.api.updateSignUpInfo(params).pipe(
+        tap(res => {
+          this.msg.success({ content: '存草稿成功！' })
+        })
+      )
+    } else {
+      this.api.addSignUp(params).pipe(
+        tap(res => {
+          this.msg.success({ content: '存草稿成功！' })
+        })
+      )
+    }
   }
 }
