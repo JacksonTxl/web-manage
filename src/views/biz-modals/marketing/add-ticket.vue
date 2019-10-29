@@ -1,5 +1,5 @@
 <template>
-  <st-modal :title="modalTitle" v-model="show" size="small">
+  <st-modal :title="modalTitle" v-model="show" width="500px">
     <div class="modal-marketing-add-ticket">
       <st-form :form="form" labelWidth="66px">
         <st-form-item label="票种类型" required>
@@ -48,60 +48,82 @@
             :options="crowdIdOptions"
           ></a-select>
         </st-form-item>
-        <st-form-item label="购买限制" required>
-          <span>单次购买，最少</span>
-          <a-input-number
-            class="input mg-l4 mg-r4"
-            :min="0"
-            :max="99999"
-            :step="1"
-            :precision="0"
-            v-decorator="decorators.buy_limit_min"
-          ></a-input-number>
-          <span>份，</span>
-          <span>最多</span>
-          <a-input-number
-            class="input mg-l4 mg-r4"
-            :min="0"
-            :max="99999"
-            :step="1"
-            :precision="0"
-            v-decorator="decorators.buy_limit_max"
-          ></a-input-number>
-          <span>份</span>
-        </st-form-item>
+        <a-row>
+          <a-col :span="16">
+            <st-form-item label="购买限制" required>
+              <span>单次购买，最少</span>
+              <a-input-number
+                class="input mg-l4 mg-r4"
+                :min="0"
+                :max="99999"
+                :step="1"
+                :precision="0"
+                v-decorator="decorators.buy_limit_min"
+              ></a-input-number>
+              <span>份，</span>
+            </st-form-item>
+          </a-col>
+          <a-col :span="8">
+            <st-form-item class="st-form-item__row" labelWidth="0">
+              <span>最多</span>
+              <a-input-number
+                class="input mg-l4 mg-r4"
+                :min="0"
+                :max="99999"
+                :step="1"
+                :precision="0"
+                v-decorator="decorators.buy_limit_max"
+              ></a-input-number>
+              <span>份</span>
+            </st-form-item>
+          </a-col>
+        </a-row>
+
         <st-form-item
-          class="form-bulk"
+          class="mg-b0"
           v-show="ticketType === 1"
           label="团购优惠"
           required
         >
-          <a-radio-group v-model="isBulk" :defaultValue="0">
+          <a-radio-group :defaultValue="0" v-model="isBulk">
             <a-radio :value="1">开启</a-radio>
             <a-radio :value="0">关闭</a-radio>
           </a-radio-group>
-          <st-pop-container v-if="isBulk === 1">
-            <div class="arrow"></div>
-            <span>单次购买超过</span>
-            <a-input-number
-              v-decorator="decorators.group_buy_min"
-              class="input mg-l4 mg-r4"
-              :max="99999"
-              :step="1"
-              :precision="0"
-              :min="0"
-            ></a-input-number>
-            <span>张</span>
-            <span class="mg-l4">每张原价减</span>
-            <st-input-number
-              v-decorator="decorators.reduce_price"
-              class="input mg-l4 mg-r4"
-              :float="true"
-              :min="0"
-            ></st-input-number>
-            <span>元</span>
-          </st-pop-container>
         </st-form-item>
+        <div class="form-bulk">
+          <st-pop-container offset="22px" class="mg-t8" v-if="isBulk === 1">
+            <a-row>
+              <a-col :span="13">
+                <st-form-item class="st-form-item__row mg-b0" labelWidth="0">
+                  <span>单次购买超过</span>
+                  <a-input-number
+                    v-decorator="decorators.group_buy_min"
+                    class="input mg-l4 mg-r4"
+                    :max="99999"
+                    :step="1"
+                    :precision="0"
+                    :min="0"
+                  ></a-input-number>
+                  <span>张,</span>
+                </st-form-item>
+              </a-col>
+              <a-col :span="11">
+                <st-form-item class="st-form-item__row mg-b0" labelWidth="0">
+                  <span class="mg-l4">每张原价减</span>
+                  <st-input-number
+                    v-decorator="decorators.reduce_price"
+                    class="input mg-l4 mg-r4"
+                    :float="true"
+                    :min="0"
+                    :max="10000"
+                  ></st-input-number>
+                  <span>元</span>
+                </st-form-item>
+              </a-col>
+            </a-row>
+          </st-pop-container>
+        </div>
+
         <st-form-item label="售卖时间" class="mg-b0" required>
           <a-radio-group
             :style="radioStyle"
@@ -112,11 +134,13 @@
             <a-radio :value="0">活动结束前均可售卖</a-radio>
           </a-radio-group>
         </st-form-item>
-        <st-form-item labelFix>
+        <st-form-item v-if="form.getFieldValue('buy_time_limit')" labelFix>
           <a-range-picker
             :disabledDate="disabledDate"
             class="mg-t8"
             v-if="isShowSaleDatePicker"
+            :showTime="{ format: 'HH:mm' }"
+            format="YYYY-MM-DD HH:mm"
             v-decorator="decorators.buy_time"
           ></a-range-picker>
         </st-form-item>
@@ -142,7 +166,8 @@
 import { ruleOptions } from './add-ticket.config'
 import { PatternService } from '@/services/pattern.service'
 import { MessageService } from '@/services/message.service'
-
+import moment from 'moment'
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'ModalAddTicket',
   bem: {
@@ -187,6 +212,15 @@ export default {
     formData: {
       type: Object,
       default: () => {}
+    },
+    index: Number,
+    isSetting: {
+      type: Boolean,
+      default: false
+    },
+    ticket: {
+      type: Object,
+      default: () => {}
     }
   },
   computed: {
@@ -196,8 +230,38 @@ export default {
   },
   mounted() {
     this.form.setFieldsValue({ crowd_id: 0 })
+    if (!this.ticket) return
+    this.$nextTick().then(() => {
+      const {
+        ticket_name,
+        ticket_price,
+        ticket_total_num,
+        buy_limit_min,
+        buy_limit_max,
+        group_buy_min,
+        buy_time_limit,
+        is_group_buy,
+        buy_start_time,
+        buy_end_time,
+        ticket_remark
+      } = this.ticket
+      const buy_time = [this.moment(buy_start_time), this.moment(buy_end_time)]
+      this.form.setFieldsValue({
+        ticket_name,
+        ticket_price,
+        ticket_total_num,
+        buy_limit_min,
+        buy_limit_max,
+        group_buy_min,
+        buy_time_limit,
+        buy_time,
+        ticket_remark
+      })
+      this.isBulk = is_group_buy
+    })
   },
   methods: {
+    moment,
     getCrowdName(crowdId) {
       let crowdName = ''
       this.crowdIdOptions.forEach(item => {
@@ -249,6 +313,8 @@ export default {
         crowd_id,
         ticket_total_num,
         group_buy_min,
+        buy_limit_min,
+        buy_limit_max,
         reduce_price,
         buy_time_limit,
         ticket_remark,
@@ -270,7 +336,11 @@ export default {
         ticket_total_num,
         crowd_name,
         group_buy_min,
+        buy_limit_min,
+        buy_limit_max,
         ticket_remark,
+        buy_time_limit,
+        is_group_buy: this.isBulk,
         buy_start_time,
         buy_end_time,
         reduce_price
@@ -286,15 +356,22 @@ export default {
         }
         this.show = false
         // 返回表格显示数据
-        this.$emit('show', this.getShowData(values))
+        this.$emit('show', {
+          ticket: this.getShowData(values),
+          index: this.index
+        })
         // 提交给后台字段
-        this.$emit('submit', this.formatData(values))
+        this.$emit('submit', {
+          ticket: this.formatData(values),
+          index: this.index
+        })
       })
     },
     onChangeGetTicketType(e) {
       this.ticketType = e.target.value
       if (this.freeTicket) {
-        this.form.setFieldsValue({ ticket_price: 0 })
+        this.form.setFieldsValue({ ticket_price: 0, is_group_buy: 0 })
+        this.isBulk = 0
       }
     },
     getCurSaleTimeType(e) {

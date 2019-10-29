@@ -31,30 +31,29 @@
         </st-form-item>
         <st-form-item label="活动海报" required>
           <st-image-upload
-            width="96px"
-            height="96px"
+            width="220px"
+            height="140px"
             :list="fileShareList"
             @change="onShareChangeGetImage"
             placeholder="上传图片"
-          ></st-image-upload>
-          <span :class="b('img-tip')">
-            请上传jpg、jpeg, png, bmp格式的图片
-          </span>
+          >
+            <template v-slot:description>
+              <p>请上传jbg、png格式的图片</p>
+              <p>大小不超过2M，建议尺寸16:9</p>
+            </template>
+          </st-image-upload>
         </st-form-item>
         <st-form-item label="活动人数" required>
           <st-input-number
             placeholder="若不限制活动人数，请填写0"
+            :min="0"
+            :max="9999"
             v-decorator="decorators.member_limit_num"
           ></st-input-number>
         </st-form-item>
         <st-form-item label="活动详情" required>
           <st-editor v-model="content"></st-editor>
         </st-form-item>
-        <!-- <st-form-item label="" label-fix>
-      <st-button type="primary" @click="onSubmit">
-        下一步
-      </st-button>
-    </st-form-item> -->
         <div v-di-view="{ name: 'step', show }">
           <st-button type="primary" @click="onSubmit">
             下一步

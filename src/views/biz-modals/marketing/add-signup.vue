@@ -106,14 +106,22 @@ export default {
     },
     onCLickGetOption() {
       if (this.extra_info === 10) {
-        this.msg.success({ content: '报名的选项最多添加10个选项值' })
+        this.msg.error({ content: '报名的选项最多添加10个选项值' })
+        return
+      }
+      if (!this.option) {
+        this.msg.error({ content: '报名选项不能为空' })
+        return
+      }
+      if (!this.pattern.CN_EN_NUM('1-15').test(this.option)) {
+        this.msg.error({ content: '请输入1~15个字符' })
         return
       }
       if (!this.extra_info.includes(this.option)) {
         this.extra_info.push(this.option)
         this.option = ''
       } else {
-        this.msg.success({ content: '选项重复,请重新填写' })
+        this.msg.error({ content: '选项重复,请重新填写' })
       }
     },
     onChangeExtraType(e) {

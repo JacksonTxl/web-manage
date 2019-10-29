@@ -44,6 +44,9 @@
             :style="{ fontSize: '36px', color: '#9BACB9' }"
           /> -->
           <div class="st-image-upload__placeholder">{{ placeholder }}</div>
+          <div class="st-image-upload__description mg-t8">
+            <slot name="description"></slot>
+          </div>
         </slot>
       </a-spin>
     </a-upload>
@@ -83,6 +86,13 @@ export default {
     placeholder: {
       type: String,
       default: '上传照片'
+    },
+    /**
+     * 上传规则描述
+     */
+    description: {
+      type: String,
+      default: ''
     },
     /**
      * 截图模态窗 相关选项
