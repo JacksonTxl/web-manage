@@ -1,6 +1,6 @@
 <template>
   <st-modal
-    title="微信支付配置"
+    title="会员端小程序"
     class="modal-fast-entry-mini-program"
     v-model="show"
     :footer="null"
