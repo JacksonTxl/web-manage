@@ -64,12 +64,12 @@
         @click="onClickSiderMenu"
       >
         <default-sider-menu @change="onSiderMenuChange" />
-        <p class="layout-default-sider__version">
-          <label class="layout-default-sider__version-bg"></label>
+        <div class="layout-default-sider__version">
+          <div class="layout-default-sider__version-bg"></div>
           <label class="layout-default-sider__version-text">
-            ·&nbsp;&nbsp;{{ siderMenuTip }}&nbsp;&nbsp;·
+            {{ siderMenuTip }}
           </label>
-        </p>
+        </div>
       </div>
     </aside>
     <header class="layout-default-body__header">

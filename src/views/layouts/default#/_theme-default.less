@@ -254,6 +254,12 @@
         font-weight: 500;
         letter-spacing: 1px;
         line-height: 50px;
+        &::before {
+          content: '·  ';
+        }
+        &::after {
+          content: '  ·';
+        }
       }
     }
     &__often {

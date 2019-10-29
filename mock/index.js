@@ -138,7 +138,7 @@ const mockerApis = {
         staff_id: 1,
         staff_name: 'Jack',
         mobile: '18801660656',
-        brand_version: 'studio',
+        brand_version: 'club',
         price_model: 2,
         sale_model: 1,
         brand_logo:
