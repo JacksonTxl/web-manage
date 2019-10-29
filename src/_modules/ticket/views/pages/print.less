@@ -7,6 +7,21 @@ html {
 
   font: 12px/1.5 Microsoft YaHei, '微软雅黑', Tahoma, Arial, '\5b8b\4f53',
     sans-serif, 'Hiragino Sans GB';
+  @media print {
+    * {
+      text-shadow: none !important;
+      background: 0 0 !important;
+      box-shadow: none !important;
+      page-break-before: auto;
+    }
+    body {
+      width: 100%;
+      margin: 0;
+      font-size: 16px;
+      color: #000;
+      font-family: '微软雅黑' !important;
+    }
+  }
   .extra-ticket-preview {
     width: 58mm;
     color: #000;

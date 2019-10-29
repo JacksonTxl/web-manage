@@ -11,6 +11,9 @@
     </div>
     <div :class="b('section')">
       <span :class="b('section-subtitle')">{{ info.course_info }}</span>
+      <span :class="b('section-subtitle')" style="font-family:'宋体'">
+        {{ info.course_info }}
+      </span>
       <div :class="b('section-item')">
         <span class="mg-b16">上课教练:</span>
         <span>{{ info.coach_name }}</span>
