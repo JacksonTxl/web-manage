@@ -18,7 +18,7 @@
     </st-form>
     <footer slot="footer">
       <st-button @click="show = false">取消</st-button>
-      <st-button @click="save" type="primary">发送</st-button>
+      <st-button @click="save" type="primary">确认</st-button>
     </footer>
   </st-modal>
 </template>
