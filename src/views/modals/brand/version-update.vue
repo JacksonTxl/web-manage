@@ -3,10 +3,9 @@
     title="功能未开放"
     v-model="show"
     @close="onClose"
-    :closable="false"
     :footer="null"
     :getContainer="getContainer"
-    :maskClosable="false"
+    :maskClosable="true"
   >
     需要升级到俱乐部版本才能使用
   </st-modal>
