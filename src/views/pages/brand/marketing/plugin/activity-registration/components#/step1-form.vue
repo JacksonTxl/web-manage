@@ -192,7 +192,9 @@ export default {
       this.address = address
     },
     disabledDate(current) {
-      return current && current < moment()
+      return (
+        current && current.format('YYYY-MM-DD') < moment().format('YYYY-MM-DD')
+      )
     },
     onSubmit() {
       this.form.validate().then(values => {

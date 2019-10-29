@@ -131,19 +131,28 @@ export default {
       if (this.isEdit) {
         this.service.updateActivity(this.stepForm).subscribe(res => {
           this.$router.push({
-            path: '/brand/marketing/plugin/activity-registration/success'
+            path: '/brand/marketing/plugin/activity-registration/success',
+            query: {
+              activity_id: this.stepForm.activity_id
+            }
           })
         })
       } else if (this.isCopy) {
         this.service.copyActivity(this.stepForm).subscribe(res => {
           this.$router.push({
-            path: '/brand/marketing/plugin/activity-registration/success'
+            path: '/brand/marketing/plugin/activity-registration/success',
+            query: {
+              activity_id: res.activity_id
+            }
           })
         })
       } else {
         this.service.addActivity(this.stepForm).subscribe(res => {
           this.$router.push({
-            path: '/brand/marketing/plugin/activity-registration/success'
+            path: '/brand/marketing/plugin/activity-registration/success',
+            query: {
+              activity_id: res.activity_id
+            }
           })
         })
       }

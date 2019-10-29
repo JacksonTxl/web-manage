@@ -102,7 +102,7 @@
             <span>元</span>
           </st-pop-container>
         </st-form-item>
-        <st-form-item label="售卖时间" required>
+        <st-form-item label="售卖时间" class="mg-b0" required>
           <a-radio-group
             :style="radioStyle"
             @change="getCurSaleTimeType"
@@ -260,6 +260,9 @@ export default {
       if (buy_time_limit === 1) {
         buy_start_time = buy_time[0].format('YYYY-MM-DD HH:mm')
         buy_end_time = buy_time[1].format('YYYY-MM-DD HH:mm')
+      } else {
+        buy_start_time = this.stepForm.start_time
+        buy_end_time = this.stepForm.end_time
       }
       return {
         ticket_name,
