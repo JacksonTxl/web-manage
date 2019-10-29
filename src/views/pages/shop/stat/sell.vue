@@ -151,7 +151,7 @@ export default {
   },
   computed: {
     columns() {
-      return this.showTable === 'all' ? allColumns() : staffColumns()
+      return this.showTable === 'all' ? allColumns(this) : staffColumns(this)
     },
     staffListFilter() {
       if (this.query.department_id === -1) return this.staffList

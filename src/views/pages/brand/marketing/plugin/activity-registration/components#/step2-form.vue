@@ -42,9 +42,14 @@
             <td>{{ item.ticket_total_num }}</td>
             <td>{{ item.crowd_name }}</td>
             <td>
-              <a @click="delTicketItemRecord(item.ticket_id)">
-                删除
-              </a>
+              <st-table-actions>
+                <a @click="editTicketItemRecord(item)">
+                  设置
+                </a>
+                <a @click="delTicketItemRecord(item.ticket_name)">
+                  删除
+                </a>
+              </st-table-actions>
             </td>
           </tr>
         </template>
@@ -132,11 +137,15 @@ export default {
   },
   methods: {
     initForm() {
+      const that = this
       this.$nextTick().then(() => {
         this.dataSource = cloneDeep(this.defaultForm$.ticket_list)
         this.formDataList = cloneDeep(this.defaultForm$.ticket_list)
         this.$emit('change', this.dataSource)
       })
+    },
+    editTicketItemRecord(ticket) {
+      console.log(ticket)
     },
     onClickBack() {
       this.$emit('back', 0)
@@ -145,7 +154,7 @@ export default {
       this.dataSource.push(item)
       this.$emit('change', this.dataSource)
     },
-    delTicketItemRecord(ticketId) {
+    delTicketItemRecord(ticketName) {
       this.$confirm({
         title: '提示',
         content: '是否删除该票种?',
@@ -153,10 +162,10 @@ export default {
         cancelText: '再想想',
         onOk: () => {
           this.dataSource = this.dataSource.filter(
-            item => item.ticket_id !== ticketId
+            item => item.ticket_name !== ticketName
           )
           this.formDataList = this.formDataList.filter(
-            item => item.ticket_id !== ticketId
+            item => item.ticket_name !== ticketName
           )
           this.$emit('change', this.dataSource)
         },

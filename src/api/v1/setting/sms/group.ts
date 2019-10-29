@@ -38,6 +38,9 @@ export class GroupApi extends Api {
   getReceiveNumList(query: any) {
     return this.http.get('/v1/setting/sms/group/user/' + query)
   }
+  getSmsSign() {
+    return this.http.get('/v1/setting/sms/sign')
+  }
 }
 export interface GroupListQuery {
   page: number

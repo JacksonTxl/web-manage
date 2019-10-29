@@ -144,27 +144,7 @@ export default {
   },
   data() {
     return {
-      // 状态锁
-      flag: true,
-      form: this.$form.createForm(this),
-      basicInfoRuleList: {
-        crowd_name: [
-          'crowd_name',
-          {
-            rules: [
-              {
-                required: true,
-                message: '不超过20字，且不包含“/”'
-              }
-            ]
-          }
-        ]
-      }
-    }
-  },
-  computed: {
-    selectData: vm => {
-      return {
+      selectData: {
         // 基础资料
         base_info: {
           title: '基础资料',
@@ -182,8 +162,8 @@ export default {
         deal_info: {
           title: '交易信息',
           value: [
-            `${vm.$c('member_card')}即将到期`,
-            `${vm.$c('member_card')}剩余次数`,
+            `${this.$c('member_card')}即将到期`,
+            `${this.$c('member_card')}剩余次数`,
             '私教课剩余次数',
             '储值卡剩余金额'
           ],
@@ -273,9 +253,26 @@ export default {
           member_level: []
         },
         info: {}
+      },
+      // 状态锁
+      flag: true,
+      form: this.$form.createForm(this),
+      basicInfoRuleList: {
+        crowd_name: [
+          'crowd_name',
+          {
+            rules: [
+              {
+                required: true,
+                message: '不超过20字，且不包含“/”'
+              }
+            ]
+          }
+        ]
       }
     }
   },
+  computed: {},
   created() {
     if (this.$route.query.id) {
       this.getCrowdBrand(this.$route.query.id)

@@ -125,7 +125,15 @@
           >
             <a>删除</a>
           </st-popconfirm>
-          <a>发送</a>
+          <a
+            v-modal-link="{
+              name: 'brand-setting-sms-group',
+              props: { info: record },
+              on: { success: refresh }
+            }"
+          >
+            发送
+          </a>
         </st-table-actions>
       </div>
     </st-table>

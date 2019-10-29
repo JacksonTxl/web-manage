@@ -10,6 +10,7 @@ export class GroupService {
   crowdList$ = new State({})
   templateList$ = new State([])
   info$ = new State([])
+  sign$ = new State({})
   userType$ = this.userService.getOptions$('sms_group.user_type')
   tmplType$ = this.userService.getOptions$('sms_group.tmpl_type')
   sendType$ = this.userService.getOptions$('sms_group.send_type')
@@ -38,5 +39,12 @@ export class GroupService {
   }
   getEditInfo(query: any) {
     return this.GroupApi.getEditInfo(query)
+  }
+  getSmsSign() {
+    return this.GroupApi.getSmsSign().pipe(
+      tap((res: any) => {
+        this.sign$.commit(() => res.info.sign_name)
+      })
+    )
   }
 }

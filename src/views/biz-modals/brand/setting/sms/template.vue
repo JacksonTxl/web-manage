@@ -7,18 +7,18 @@
       <st-form-item labelWidth="70px" label="短信内容">
         <st-textarea
           v-decorator="decorators.content"
-          maxlength="280"
+          :maxlength="280 - sign.length"
           :autosize="{ minRows: 4, maxRows: 6 }"
           placeholder="请输入模版内容"
         />
       </st-form-item>
       <st-form-item labelWidth="70px" label="短信签名">
-        三体云动
+        {{ sign }}
       </st-form-item>
     </st-form>
     <footer slot="footer">
       <st-button @click="show = false">取消</st-button>
-      <st-button @click="save" type="primary">发送</st-button>
+      <st-button @click="save" type="primary">确认</st-button>
     </footer>
   </st-modal>
 </template>
@@ -38,6 +38,11 @@ export default {
       messageService: MessageService
     }
   },
+  rxState() {
+    return {
+      sign: this.templateService.sign$
+    }
+  },
   props: {
     info: {
       type: Object
@@ -53,6 +58,9 @@ export default {
       show: false
     }
   },
+  created() {
+    this.getSmsSign()
+  },
   mounted() {
     if (this.info) {
       this.form.setFieldsValue({
@@ -62,6 +70,9 @@ export default {
     }
   },
   methods: {
+    getSmsSign() {
+      return this.templateService.getSmsSign().subscribe()
+    },
     save() {
       this.form.validate().then(values => {
         if (this.info) {

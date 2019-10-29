@@ -4,7 +4,7 @@ import { TitleService } from '@/services/title.service'
 @Injectable()
 export class AccountTitleGuard implements RouteGuard {
   constructor(private titleService: TitleService) {}
-  beforeRouteEnter(to: ServiceRoute) {
+  beforeEach(to: ServiceRoute) {
     this.titleService.SET_NORMAL_TITLE(to.meta.title)
   }
 }

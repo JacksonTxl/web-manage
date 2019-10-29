@@ -89,8 +89,8 @@
           :autosize="{ minRows: 2, maxRows: 4 }"
           v-if="curTem === TMPL_TYPES.PERSONAL"
           v-decorator="decorators.content"
-          :maxlength="280"
-          suffix="[签名]"
+          :maxlength="280 - sign.length"
+          :suffix="sign"
         ></st-textarea>
         <div :class="bModal('save')" v-if="curTem === TMPL_TYPES.PERSONAL">
           <a-checkbox
@@ -123,11 +123,11 @@
           </a-select-option>
         </a-select>
         <st-textarea
-          :maxlength="280"
+          :maxlength="280 - sign.length"
           :autosize="{ minRows: 2, maxRows: 4 }"
           v-if="curTem === TMPL_TYPES.CUSTOM"
           disabled
-          suffix="[签名]"
+          :suffix="sign"
           :value="temContent"
         ></st-textarea>
       </st-form-item>
@@ -158,7 +158,8 @@ export default {
       userType: this.groupService.userType$,
       tmplType: this.groupService.tmplType$,
       sendType: this.groupService.sendType$,
-      crowdList: this.groupService.crowdList$
+      crowdList: this.groupService.crowdList$,
+      sign: this.groupService.sign$
     }
   },
   props: {
@@ -189,6 +190,7 @@ export default {
   created() {
     this.getCrowdList()
     this.getTemplateOptionList()
+    this.getSmsSign()
   },
   mounted() {
     // 编辑
@@ -201,6 +203,9 @@ export default {
     // 获取人群列表
     getCrowdList() {
       return this.groupService.getCrowdList().subscribe()
+    },
+    getSmsSign() {
+      return this.groupService.getSmsSign().subscribe()
     },
     getTemplateOptionList() {
       return this.groupService.getTemplateOptionList().subscribe()
@@ -223,14 +228,6 @@ export default {
     },
     isSave(e) {
       this.isSaveChecked = !!e.target.value
-    },
-    setSignVal() {
-      let a = this.form.getFieldsValue().content + '[签名]'
-      console.log(a)
-      this.form.setFieldsValue({
-        content: a
-      })
-      console.log(this.form.getFieldsValue().content)
     },
     getEditInfo(id) {
       return this.groupService.getEditInfo(id).subscribe(res => {
@@ -263,7 +260,13 @@ export default {
     },
     // 日期禁用
     disabledStartDate(current) {
-      return current && current < moment()
+      return (
+        current &&
+        current.format('YYYY-MM-DD') >
+          moment()
+            .add(0, 'days')
+            .format('YYYY-MM-DD')
+      )
     },
     save() {
       this.form.validate((error, values) => {

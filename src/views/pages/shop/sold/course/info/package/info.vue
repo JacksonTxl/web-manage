@@ -183,7 +183,7 @@
         </a-col>
       </a-row>
     </st-panel>
-    <st-panel class="mg-t12" :tabs="authTabs">
+    <st-panel class="mg-t12" :tabs="pageAuthTabs">
       <!-- TODO: 消费记录尚未实现 -->
       <!-- {
           label: '消费记录',
@@ -225,7 +225,7 @@ export default {
     return {
       packageInfo: this.infoService.packageInfo$,
       query: this.routeService.query$,
-      authTabs: this.infoService.authTabs$,
+      pageAuthTabs: this.infoService.pageAuthTabs$,
       auth: this.infoService.auth$
     }
   },

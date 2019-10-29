@@ -4,7 +4,7 @@ import { ServiceRoute, Injectable, RouteGuard } from 'vue-service-app'
 @Injectable()
 export class AppTitleGuard implements RouteGuard {
   constructor(private titleService: TitleService) {}
-  beforeRouteEnter(to: ServiceRoute) {
+  beforeEach(to: ServiceRoute) {
     this.titleService.SET_TITLE(to.meta.title)
   }
 }
