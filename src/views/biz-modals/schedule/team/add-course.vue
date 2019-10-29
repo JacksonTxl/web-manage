@@ -62,13 +62,13 @@
           <a-button slot="enterButton">元/节</a-button>
         </a-input-search>
       </st-form-item>
-      <template slot="footer">
-        <st-button class="mg-r16" @click="onClick">批量设置</st-button>
-        <st-button type="primary" :loading="loading.add" @click="onSubmit">
-          提交
-        </st-button>
-      </template>
     </st-form>
+    <template slot="footer">
+      <st-button class="mg-r16" @click="onClick">批量设置</st-button>
+      <st-button type="primary" :loading="loading.add" @click="onSubmit">
+        提交
+      </st-button>
+    </template>
   </st-modal>
 </template>
 

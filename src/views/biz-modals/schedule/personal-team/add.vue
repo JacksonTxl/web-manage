@@ -46,13 +46,13 @@
           <a-button slot="enterButton">元/节</a-button>
         </a-input-search>
       </st-form-item>
-      <template slot="footer">
-        <st-button @click="addInBatch">批量设置</st-button>
-        <st-button class="mg-l8" type="primary" @click="onSubmit">
-          提交
-        </st-button>
-      </template>
     </st-form>
+    <template slot="footer">
+      <st-button @click="addInBatch">批量设置</st-button>
+      <st-button class="mg-l8" type="primary" @click="onSubmit">
+        提交
+      </st-button>
+    </template>
   </st-modal>
 </template>
 

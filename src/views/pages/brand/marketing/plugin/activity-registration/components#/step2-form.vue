@@ -22,7 +22,8 @@
                 name: 'marketing-add-ticket',
                 props: {
                   formData: defaultForm$,
-                  dataSource: dataSource
+                  dataSource: dataSource,
+                  stepForm: stepForm
                 },
                 on: {
                   show: getTableItem,
@@ -74,6 +75,7 @@
 import MarketingAddTicket from '@/views/biz-modals/marketing/add-ticket'
 import { CopyService } from '../copy.service'
 import { clone, cloneDeep } from 'lodash-es'
+import { MessageService } from '../../../../../../../services/message.service'
 export default {
   name: 'Step2Form',
   modals: {
@@ -84,7 +86,8 @@ export default {
   },
   serviceInject() {
     return {
-      copyService: CopyService
+      copyService: CopyService,
+      msg: MessageService
     }
   },
   rxState() {
@@ -97,6 +100,10 @@ export default {
     isCopy: {
       type: Boolean,
       default: false
+    },
+    stepForm: {
+      type: Object,
+      default: () => {}
     },
     isEdit: {
       type: Boolean,
@@ -139,18 +146,31 @@ export default {
       this.$emit('change', this.dataSource)
     },
     delTicketItemRecord(ticketId) {
-      this.dataSource = this.dataSource.filter(
-        item => item.ticket_id !== ticketId
-      )
-      this.formDataList = this.formDataList.filter(
-        item => item.ticket_id !== ticketId
-      )
-      this.$emit('change', this.dataSource)
+      this.$confirm({
+        title: '提示',
+        content: '是否删除该票种?',
+        okText: '是的',
+        cancelText: '再想想',
+        onOk: () => {
+          this.dataSource = this.dataSource.filter(
+            item => item.ticket_id !== ticketId
+          )
+          this.formDataList = this.formDataList.filter(
+            item => item.ticket_id !== ticketId
+          )
+          this.$emit('change', this.dataSource)
+        },
+        onCancel() {}
+      })
     },
     getFormItem(form) {
       this.formDataList.push(form)
     },
     onClickAddTicketComplete() {
+      if (this.formDataList.length === 0) {
+        this.msg.error({ content: '最少添加一个票种' })
+        return
+      }
       this.$emit('step-submit', this.formDataList)
     }
   }

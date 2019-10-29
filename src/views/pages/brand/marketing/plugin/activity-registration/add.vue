@@ -30,6 +30,7 @@
         v-show="currentStep === 1"
         :show="currentStep === 1"
         :isCopy="isCopy"
+        :stepForm="stepForm"
         @back="onBack"
         :isEdit="isEdit"
         @step-submit="onSubmitGetStep2Form"
@@ -151,7 +152,11 @@ export default {
     onSaveDraftActivity(form) {
       this.stepForm.is_draft = 1
       this.$set(this.stepForm, 'rule_settings', JSON.stringify(form))
-      this.service.releaseActivity(this.stepForm).subscribe()
+      this.service.saveDraftActivity(this.stepForm).subscribe(res => {
+        this.$router.push({
+          path: '/brand/marketing/plugin/activity-registration/list'
+        })
+      })
     },
     onClickStep(idx) {
       this.currentStep = idx

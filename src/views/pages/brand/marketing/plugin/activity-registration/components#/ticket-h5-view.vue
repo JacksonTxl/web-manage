@@ -10,11 +10,17 @@
             {{ ticket.ticket_name }}
           </st-t3>
           <div :class="bItem('price-info')">
-            <span class="discount-price">
-              ¥{{ +ticket.ticket_price - +ticket.reduce_price }}
+            <span v-if="ticket.reduce_price" class="discount-price">
+              ¥
+              {{ ticket | filterPrice }}
             </span>
-            <span class="original-price">/¥{{ ticket.ticket_price }}</span>
-            <span class="discount-terms">
+            <span class="discount-price" v-else>
+              ¥{{ ticket.ticket_price }}
+            </span>
+            <span class="original-price" v-if="ticket.reduce_price">
+              /¥{{ ticket.ticket_price }}
+            </span>
+            <span class="discount-terms" v-if="ticket.group_buy_min">
               超过{{ ticket.group_buy_min }}张，每张减¥{{ ticket.reduce_price }}
             </span>
           </div>
@@ -50,6 +56,13 @@ export default {
   },
   components: {
     H5Container
+  },
+  filters: {
+    filterPrice(ticket) {
+      return +ticket.ticket_price - ticket.reduce_price <= 0.1
+        ? 0.1
+        : +ticket.ticket_price - +ticket.reduce_price
+    }
   },
   props: {
     stepInfo: {

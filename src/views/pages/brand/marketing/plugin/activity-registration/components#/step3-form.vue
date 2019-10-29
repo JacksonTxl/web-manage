@@ -47,7 +47,7 @@
       <st-button class="mg-r8" @click="onClickBack">
         上一步
       </st-button>
-      <st-button class="mg-r8" @click="goList">
+      <st-button class="mg-r8" @click="onClickSaveDraft">
         存草稿
       </st-button>
       <st-button @click="onClickRelease" type="primary">
@@ -170,11 +170,6 @@ export default {
           show: this.getTableItem,
           submit: this.getFormItem
         }
-      })
-    },
-    goList() {
-      this.$router.push({
-        path: '/brand/marketing/plugin/activity-registration/list'
       })
     },
     getTableItem(item) {

@@ -22,7 +22,8 @@
           <st-input-number
             class="input"
             :float="true"
-            :min="0"
+            :min="0.1"
+            :max="10000"
             v-decorator="decorators.ticket_price"
           ></st-input-number>
           <span class="mg-l4">元</span>
@@ -34,7 +35,7 @@
           <a-input-number
             class="input"
             :min="1"
-            :max="99999"
+            :max="9999"
             :step="1"
             :precision="0"
             v-decorator="decorators.ticket_total_num"
@@ -101,7 +102,7 @@
             <span>元</span>
           </st-pop-container>
         </st-form-item>
-        <st-form-item label="售卖时间">
+        <st-form-item label="售卖时间" required>
           <a-radio-group
             :style="radioStyle"
             @change="getCurSaleTimeType"
@@ -109,17 +110,19 @@
           >
             <a-radio :value="1">指定时间</a-radio>
             <a-radio :value="0">活动结束前均可售卖</a-radio>
-            <a-range-picker
-              :disabledDate="disabledDate"
-              class="mg-t8"
-              v-if="isShowSaleDatePicker"
-              v-decorator="decorators.buy_time"
-            ></a-range-picker>
           </a-radio-group>
+        </st-form-item>
+        <st-form-item labelFix>
+          <a-range-picker
+            :disabledDate="disabledDate"
+            class="mg-t8"
+            v-if="isShowSaleDatePicker"
+            v-decorator="decorators.buy_time"
+          ></a-range-picker>
         </st-form-item>
         <st-form-item label="备注说明">
           <st-textarea
-            :maxlength="200"
+            :maxlength="100"
             :autosize="{ minRows: 2, maxRows: 6 }"
             v-decorator="decorators.ticket_remark"
             placeholder="请输入备注说明"
@@ -176,6 +179,10 @@ export default {
     dataSource: {
       type: Array,
       default: () => []
+    },
+    stepForm: {
+      type: Object,
+      default: () => {}
     },
     formData: {
       type: Object,
