@@ -359,6 +359,8 @@
       }
     }
     &__dropdown {
+      position: relative;
+      top: -17px;
       .w(180px);
       box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
       border-radius: 4px;
@@ -432,11 +434,14 @@
   height: 20px;
 }
 .layout-fast-entry {
+  position: relative;
+  top: -24px;
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
   max-height: inherit;
   &__wrapper {
     padding: 30px 15px 10px 15px;
-    .w(320px);
+    .w(310px);
     .h(344px);
     .bg(@white);
     box-sizing: border-box;
@@ -466,7 +471,7 @@
   }
   &__activity {
     &:hover {
-      transform: translateY(-6px);
+      transform: translateY(-4px);
     }
   }
   .layout-fast-entry__text {
