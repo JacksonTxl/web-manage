@@ -8,7 +8,6 @@
       <thead>
         <tr>
           <th>报名项标题</th>
-          <th>是否必填</th>
           <th>操作</th>
         </tr>
       </thead>
@@ -23,7 +22,6 @@
         <template v-if="dataSource.length">
           <tr v-for="(item, index) in dataSource" :key="index">
             <td>{{ item.extra_name }}</td>
-            <td>{{ item.extra_require === 1 ? '必填' : '选填' }}</td>
             <td>
               <a v-if="isDel(item)" @click="delExtraItemRecord(item.extra_key)">
                 删除

@@ -1,8 +1,10 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
-import { State } from 'rx-state'
+import { State, Computed } from 'rx-state'
 import { CourseApi } from '@/api/v1/sold/course'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
+import { combineLatest } from 'rxjs'
+import { RouteService } from '@/services/route.service'
 
 @Injectable()
 export class InfoService implements RouteGuard {
@@ -13,7 +15,19 @@ export class InfoService implements RouteGuard {
   authTabs$ = this.authService.getAuthTabs$(
     'shop-sold-course-info-package-info'
   )
-  constructor(private courseApi: CourseApi, private authService: AuthService) {}
+  pageAuthTabs$ = new Computed(
+    combineLatest(this.authTabs$, this.routeService.query$, (authTabs, query) =>
+      authTabs.map((tab: any) => {
+        tab.route.query = { id: query.id }
+        return tab
+      })
+    )
+  )
+  constructor(
+    private courseApi: CourseApi,
+    private authService: AuthService,
+    private routeService: RouteService
+  ) {}
   getPackageInfo(id: string, type: string) {
     return this.courseApi.getCourseInfo(id, type).pipe(
       tap((res: any) => {

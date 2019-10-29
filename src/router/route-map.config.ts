@@ -203,7 +203,8 @@ export const routeMapConfig = {
   'shop-sold-course-info-package-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '课程包详情'
     routeConfig.meta.tabs = [
-      'shop-sold-course-info-package-info-operation-record'
+      'shop-sold-course-info-package-info-operation-record',
+      'shop-sold-course-info-package-info-usage-log'
     ]
   },
   'shop-sold-course-info-package-info-consumption-record'(
@@ -259,10 +260,19 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
+  'shop-sold-course-info-package-info-usage-log'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '使用记录'
+    routeConfig.meta.parentId = 'shop-sold-course-info-package-info'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
   'shop-sold-card-info-deposit-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '储值卡详情'
     routeConfig.meta.tabs = [
-      'shop-sold-card-info-deposit-info-operation-record'
+      'shop-sold-card-info-deposit-info-operation-record',
+      'shop-sold-card-info-deposit-info-usage-log'
     ]
   },
   'shop-sold-card-info-deposit-info-consumption-record'(
@@ -312,6 +322,15 @@ export const routeMapConfig = {
   'shop-sold-card-info-member-info-usage-log'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '使用记录'
     routeConfig.meta.parentId = 'shop-sold-card-info-member-info'
+    routeConfig.queryOptions = {
+      id: { type: Number },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-sold-card-info-deposit-info-usage-log'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '使用记录'
+    routeConfig.meta.parentId = 'shop-sold-card-info-deposit-info'
     routeConfig.queryOptions = {
       id: { type: Number },
       current_page: { type: Number, default: 1 },

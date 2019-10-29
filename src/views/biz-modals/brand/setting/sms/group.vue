@@ -224,14 +224,6 @@ export default {
     isSave(e) {
       this.isSaveChecked = !!e.target.value
     },
-    setSignVal() {
-      let a = this.form.getFieldsValue().content + '[签名]'
-      console.log(a)
-      this.form.setFieldsValue({
-        content: a
-      })
-      console.log(this.form.getFieldsValue().content)
-    },
     getEditInfo(id) {
       return this.groupService.getEditInfo(id).subscribe(res => {
         this.form.setFieldsValue({
@@ -263,7 +255,13 @@ export default {
     },
     // 日期禁用
     disabledStartDate(current) {
-      return current && current < moment()
+      return (
+        current &&
+        current.format('YYYY-MM-DD') >
+          moment()
+            .add(0, 'days')
+            .format('YYYY-MM-DD')
+      )
     },
     save() {
       this.form.validate((error, values) => {

@@ -115,7 +115,7 @@ export default {
   rxState() {
     return {
       loading: this.listService.loading$,
-      sold: this.userService.soldEnums$,
+      cabinetStatus: this.listService.cabinetStatus$,
       page: this.listService.page$,
       query: this.routeService.query$,
       list: this.listService.list$,
@@ -126,9 +126,9 @@ export default {
     columns,
     leaseList() {
       let list = [{ value: -1, label: '全部' }]
-      if (!this.sold.sold_cabinet.cabinet_status) return list
-      Object.entries(this.sold.sold_cabinet.cabinet_status.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
+      if (!this.cabinetStatus.length) return list
+      this.cabinetStatus.forEach(o => {
+        list.push({ value: +o.value, label: o.label })
       })
       return list
     }
