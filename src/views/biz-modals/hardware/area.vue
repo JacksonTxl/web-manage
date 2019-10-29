@@ -74,7 +74,7 @@
         ></st-input-number>
         分钟可入场
       </st-form-item>
-      <st-form-item label="入场签课">
+      <st-form-item label="入场签课" v-if="type !== ENTRY.GATE">
         <st-checkbox
           v-decorator="decorators.checkin"
           :disabled="!isEdit"
