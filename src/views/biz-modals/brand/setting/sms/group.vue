@@ -25,6 +25,7 @@
           class="mg-t8"
           v-if="curUser === USER_TYPES.USER"
           v-model="tel"
+          :maxlength="1000"
           :autosize="{ minRows: 2, maxRows: 4 }"
           placeholder="输入手机号,每行一个"
         ></st-textarea>
@@ -165,6 +166,9 @@ export default {
   props: {
     id: {
       type: String
+    },
+    tmpl: {
+      type: Object
     }
   },
   data() {
@@ -197,6 +201,15 @@ export default {
     if (this.id) {
       this.getEditInfo(this.id)
     }
+    // 从短信模版跳出来
+    if (this.tmpl) {
+      this.form.setFieldsValue({
+        tmpl_type: 2,
+        tmpl_id: this.tmpl.tmpl_id
+      })
+      this.curTem = 2
+      this.getCurTemContent(this.tmpl.tmpl_id)
+    }
   },
   methods: {
     cancel() {},
@@ -220,6 +233,7 @@ export default {
       this.curTime = e.target.value
     },
     getCurTemContent(e) {
+      console.log(111)
       this.templateList.map(item => {
         if (item.tmpl_id === e) {
           this.temContent = item.content
@@ -262,7 +276,7 @@ export default {
     disabledStartDate(current) {
       return (
         current &&
-        current.format('YYYY-MM-DD') >
+        current.format('YYYY-MM-DD') <
           moment()
             .add(0, 'days')
             .format('YYYY-MM-DD')

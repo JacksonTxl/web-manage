@@ -128,7 +128,7 @@
           <a
             v-modal-link="{
               name: 'brand-setting-sms-group',
-              props: { info: record },
+              props: { tmpl: { tmpl_type: 2, tmpl_id: record.tmpl_id } },
               on: { success: refresh }
             }"
           >
