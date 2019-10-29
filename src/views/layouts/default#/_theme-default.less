@@ -219,16 +219,18 @@
     &__scrollbox {
       position: relative;
       height: calc(100vh - 150px);
+      display: flex;
+      flex-direction: column;
       // overflow: auto;
     }
     &__both {
-      min-height: calc(100% - 79px);
+      flex: 1;
     }
     &__version {
       height: 56px;
       width: 200px;
       margin-left: -9px;
-      margin-bottom: 0;
+      margin-bottom: 12px;
       line-height: 56px;
       text-align: center;
       position: relative;
@@ -238,9 +240,9 @@
         display: inline-block;
         background: linear-gradient(
           270deg,
-          rgba(44, 49, 83, 1) 0%,
-          rgba(66, 73, 124, 1) 51%,
-          rgba(44, 49, 83, 1) 100%
+          #2c3153 0%,
+          #42497c 51%,
+          #2c3153 100%
         );
         margin-top: 8px;
       }

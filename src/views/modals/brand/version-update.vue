@@ -17,7 +17,7 @@
 <script>
 export default {
   bem: {
-    b: 'version-update'
+    b: 'modal-brand-version-update'
   },
   data() {
     return {
