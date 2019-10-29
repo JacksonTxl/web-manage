@@ -7,7 +7,7 @@
       <st-form-item labelWidth="70px" label="短信内容">
         <st-textarea
           v-decorator="decorators.content"
-          maxlength="280"
+          maxlength="276"
           :autosize="{ minRows: 4, maxRows: 6 }"
           placeholder="请输入模版内容"
         />
@@ -18,7 +18,7 @@
     </st-form>
     <footer slot="footer">
       <st-button @click="show = false">取消</st-button>
-      <st-button @click="save" type="primary">发送</st-button>
+      <st-button @click="save" type="primary">确认</st-button>
     </footer>
   </st-modal>
 </template>
