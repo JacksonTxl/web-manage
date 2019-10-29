@@ -21,12 +21,12 @@ export class TitleService {
     })
 
     this.normalTitle$.subscribe(normalTitle => {
-      console.log('no', normalTitle)
       document.title = `${normalTitle ? normalTitle + ' - ' : ''}三体云动Pro`
     })
   }
   // 设定标题 和应用数据相关
   SET_TITLE(title: string) {
+    console.log(title)
     this.title$.commit(() => this.userService.interpolation(title))
   }
   // 设定普通标题 和应用无关

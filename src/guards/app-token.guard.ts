@@ -7,7 +7,7 @@ import { Injectable } from 'vue-service-app'
 @Injectable()
 export class AppTokenGuard {
   constructor(private tokenService: TokenService) {}
-  beforeRouteEnter() {
+  beforeEach() {
     if (!this.tokenService.token$.snapshot()) {
       location.href = '/account/login'
     }
