@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="layout-default-sider__both">
     <div v-if="favorite.length" class="layout-default-sider__often">
       <h2 class="layout-default-sider__often-title">常用</h2>
       <ul class="layout-default-sider__often-list">

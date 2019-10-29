@@ -1,4 +1,5 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+
 @Injectable()
 export class MemberService implements RouteGuard {
   constructor() {}
