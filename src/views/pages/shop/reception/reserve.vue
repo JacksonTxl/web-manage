@@ -57,6 +57,12 @@
           <a v-if="record.checkin" @click="onClickCourseSign(record)">
             签到
           </a>
+          <a
+            v-if="record.reserve_status.id === VISIT_STATUS.RESERVED"
+            @click="onPrint(record.id)"
+          >
+            打印小票
+          </a>
         </st-table-actions>
         <st-table-actions v-if="record.reserve_type.id === RESERVE_TYPE.VISIT">
           <a v-if="record.cancel" @click="onClickCancelVisitReserve(record)">
@@ -76,6 +82,7 @@ import tableMixin from '@/mixins/table.mixin'
 import { ReserveService } from './reserve.service'
 import FrontAddReserve from '@/views/biz-modals/front/add-reserve'
 import { columns } from './reserve.config.ts'
+
 import {
   VISIT_STATUS,
   COURSE_STATUS,
@@ -197,6 +204,10 @@ export default {
       this.selectTime.startTime.value = moment()
       this.selectTime.endTime.value = moment()
       this.onSearhReset()
+    },
+    onPrint(id) {
+      let record = this.info
+      location.href = '/ticket/print?id=' + id
     }
   }
 }
