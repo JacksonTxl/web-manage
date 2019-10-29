@@ -12,9 +12,13 @@
       <div :class="b('content')">
         <slot></slot>
       </div>
-    </div>
-    <div v-if="$slots.actions" :class="b('actions', { fixed: isActionFixed })">
-      <slot name="actions"></slot>
+      <div
+        v-if="$slots.actions"
+        :class="b('actions', { fixed: isActionFixed })"
+        :style="actionStyle"
+      >
+        <slot name="actions"></slot>
+      </div>
     </div>
   </div>
 </template>
@@ -34,19 +38,32 @@ export default {
   data() {
     return {
       isActionFixed: true,
+      actionLeft: 0,
+      actionRight: 0,
       footerEl: null
     }
   },
   methods: {
     handleActionsPosition() {
       const rect = this.footerEl.getBoundingClientRect()
-
+      const minaMain = document
+        .querySelector('.st-mina-panel__main')
+        .getBoundingClientRect()
       // 视窗内
       if (rect.top < window.innerHeight) {
         this.isActionFixed = false
       } else {
         this.isActionFixed = true
+        this.actionLeft = minaMain.left
       }
+    }
+  },
+  computed: {
+    actionStyle() {
+      if (!this.isActionFixed) {
+        return {}
+      }
+      return { left: this.actionLeft + 'px' }
     }
   },
   mounted() {
