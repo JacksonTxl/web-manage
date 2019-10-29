@@ -31,8 +31,14 @@ export default {
       type: [String, Number],
       default: 500
     },
+    // 文字后缀
     suffix: {
       type: String
+    },
+    // 单位
+    step: {
+      type: [String, Number],
+      default: 1
     }
   },
   data() {
@@ -57,7 +63,7 @@ export default {
   },
   computed: {
     currentLength() {
-      return this.content.length
+      return Math.floor(this.content.length / this.step)
     }
   },
   methods: {

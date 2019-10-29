@@ -180,6 +180,7 @@
                 class="create-button"
                 @click="onCodeNumber"
                 :loading="loading.getCodeNumber"
+                v-if="!isBrandStudio"
               >
                 自动生成
               </st-button>
@@ -363,6 +364,7 @@ import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
 import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from './sale-personal-course.config'
+import { UserService } from '@/services/user.service'
 export default {
   name: 'ModalSoldDealSaleMemberCard',
   bem: {
@@ -374,6 +376,7 @@ export default {
   serviceInject() {
     return {
       salePersonalCourseService: SalePersonalCourseService,
+      userService: UserService,
       pattern: PatternService
     }
   },
@@ -387,7 +390,8 @@ export default {
       coachList: this.salePersonalCourseService.coachList$,
       personalPrice: this.salePersonalCourseService.personalPrice$,
       priceInfo: this.salePersonalCourseService.priceInfo$,
-      orderAmountPrice: this.salePersonalCourseService.orderAmountPrice$
+      orderAmountPrice: this.salePersonalCourseService.orderAmountPrice$,
+      isBrandStudio: this.userService.isBrandStudio$
     }
   },
   props: {

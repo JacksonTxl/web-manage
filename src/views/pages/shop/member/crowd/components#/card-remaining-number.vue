@@ -29,14 +29,10 @@ export default {
   data() {
     return {
       inputnumber2: '',
-      inputnumber1: ''
-    }
-  },
-  computed: {
-    titleData: vm => {
-      return {
-        title: `${vm.$c('member_card')}剩余次数`,
-        info: `${vm.$c('member_card')}剩余次数在以下范围的用户`
+      inputnumber1: '',
+      titleData: {
+        title: `${this.$c('member_card')}剩余次数`,
+        info: `${this.$c('member_card')}剩余次数在以下范围的用户`
       }
     }
   },

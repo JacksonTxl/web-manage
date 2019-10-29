@@ -6,6 +6,7 @@
       <span class="mg-r24">English</span> -->
     </div>
     <div class="page-login">
+      <img src="~@/assets/img/login-bg-title.png" class="page-login-bg-title" />
       <!-- 密码/二维码 -->
       <!-- <i
         class="page-switch-login-type cursor-pointer"

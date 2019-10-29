@@ -25,6 +25,8 @@
           class="mg-t8"
           v-if="curUser === USER_TYPES.USER"
           v-model="tel"
+          :maxlength="1000"
+          step="11"
           :autosize="{ minRows: 2, maxRows: 4 }"
           placeholder="输入手机号,每行一个"
         ></st-textarea>
@@ -139,6 +141,7 @@ import { ruleOptions } from './group.config'
 import { GroupService } from './group.service'
 import { USER_TYPES, SEND_TYPES, TMPL_TYPES } from '@/constants/setting/sms'
 import { MessageService } from '@/services/message.service'
+import { PatternService } from '@/services/pattern.service'
 
 export default {
   name: 'SettingSmsGroup',
@@ -148,7 +151,8 @@ export default {
   serviceInject() {
     return {
       groupService: GroupService,
-      messageService: MessageService
+      messageService: MessageService,
+      pattern: PatternService
     }
   },
   rxState() {
@@ -165,6 +169,9 @@ export default {
   props: {
     id: {
       type: String
+    },
+    tmpl: {
+      type: Object
     }
   },
   data() {
@@ -196,6 +203,15 @@ export default {
     // 编辑
     if (this.id) {
       this.getEditInfo(this.id)
+    }
+    // 从短信模版跳出来
+    if (this.tmpl) {
+      this.form.setFieldsValue({
+        tmpl_type: 2,
+        tmpl_id: this.tmpl.tmpl_id
+      })
+      this.curTem = 2
+      this.getCurTemContent(this.tmpl.tmpl_id)
     }
   },
   methods: {
@@ -262,7 +278,7 @@ export default {
     disabledStartDate(current) {
       return (
         current &&
-        current.format('YYYY-MM-DD') >
+        current.format('YYYY-MM-DD') <
           moment()
             .add(0, 'days')
             .format('YYYY-MM-DD')
@@ -279,6 +295,16 @@ export default {
               content: '请输入手机号'
             })
             return
+          } else {
+            let telArr = this.tel.split(/[\n]/)
+            telArr.every(item => {
+              if (!this.pattern.MOBILE.test(item)) {
+                this.messageService.warn({
+                  content: '请输入正确格式手机号'
+                })
+                return
+              }
+            })
           }
           values.send_value = this.tel
         }

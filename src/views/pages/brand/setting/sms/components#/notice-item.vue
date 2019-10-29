@@ -261,34 +261,8 @@ export default {
       isShowPre: 0,
       isShowEdit: 0,
       isShowPhone: false, // 默认不展示输入手机号
-      rule: {}
-    }
-  },
-  props: {
-    info: {
-      type: Object,
-      default: () => {}
-    }
-  },
-  computed: {
-    notifyRule() {
-      let list = []
-      if (!this.settingEnums.notify_rule) return list
-      Object.entries(this.settingEnums.notify_rule.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    },
-    notifyHour() {
-      let list = []
-      if (!this.settingEnums.notify_time_hour) return list
-      Object.entries(this.settingEnums.notify_time_hour.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    },
-    params: vm => {
-      return {
+      rule: {},
+      params: {
         id: '',
         msg_suffix: '',
         msg_preffix: '',
@@ -324,7 +298,7 @@ export default {
         receiver: {
           coach: {
             value: 0,
-            name: vm.$c('coach')
+            name: this.$c('coach')
           },
           member: {
             value: 0,
@@ -342,6 +316,30 @@ export default {
           mini_programs: 0
         }
       }
+    }
+  },
+  props: {
+    info: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  computed: {
+    notifyRule() {
+      let list = []
+      if (!this.settingEnums.notify_rule) return list
+      Object.entries(this.settingEnums.notify_rule.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
+    },
+    notifyHour() {
+      let list = []
+      if (!this.settingEnums.notify_time_hour) return list
+      Object.entries(this.settingEnums.notify_time_hour.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
     }
   },
   created() {

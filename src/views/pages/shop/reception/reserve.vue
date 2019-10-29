@@ -207,7 +207,7 @@ export default {
     },
     onPrint(id) {
       let record = this.info
-      location.href = '/ticket/print?id=' + id
+      window.open('/ticket/print?id=' + id)
     }
   }
 }
