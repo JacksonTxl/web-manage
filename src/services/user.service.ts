@@ -78,7 +78,7 @@ export class UserService {
   )
   isThemeStudio$ = new Computed(
     this.brand$.pipe(
-      map(brand => ['studio', 'new_studio'].includes(brand.version))
+      map(brand => ['old_studio', 'new_studio'].includes(brand.version))
     )
   )
 

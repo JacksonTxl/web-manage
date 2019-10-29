@@ -27,5 +27,9 @@ export default {
   },
   mounted() {
     this.showVersionUpdate()
+  },
+  beforeDestory() {
+    console.log(this.brandUpdateMid)
+    this.$modalRouter.close(this.brandUpdateMid)
   }
 }
