@@ -125,7 +125,29 @@ const mockerApis = {
     data: {
       down_url: 'https://saas.test.styd.cn/img/pic.545c7ed0.jpg'
     }
-  }
+  },
+  // 'GET /_api/v1/staff/info': {
+  //   code: 0,
+  //   msg: 'success',
+  //   data: {
+  //     info: {
+  //       brand_id: 1,
+  //       brand_name: '三体云动',
+  //       shop_id: 0,
+  //       shop_name: '',
+  //       staff_id: 1,
+  //       staff_name: 'Jack',
+  //       mobile: '18801660656',
+  //       brand_version: 'club',
+  //       price_model: 2,
+  //       sale_model: 1,
+  //       brand_logo:
+  //         'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/10000/2019-10-11/___9489338e4f2b___.png',
+  //       staff_avatar:
+  //         'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/test/image/10000/2019-09-05/15676641035761973.jpg'
+  //     }
+  //   }
+  // }
 }
 
 module.exports = wrapper(mockerApis)

@@ -184,6 +184,17 @@
       .c(@defaultMenuColor);
       font-size: 12px !important;
     }
+    &__shop-tag {
+      height: 23px;
+      width: 40px;
+      margin-top: 8px;
+      margin-left: 16px;
+    }
+    &__brand-tag {
+      width: 40px;
+      height: 23px;
+      margin-top: 8px;
+    }
     &__certification {
       .pos-a;
       right: -10px;
@@ -208,7 +219,48 @@
     &__scrollbox {
       position: relative;
       height: calc(100vh - 150px);
+      display: flex;
+      flex-direction: column;
       // overflow: auto;
+    }
+    &__both {
+      flex: 1;
+    }
+    &__version {
+      height: 56px;
+      width: 200px;
+      margin-left: -9px;
+      margin-bottom: 12px;
+      line-height: 56px;
+      text-align: center;
+      position: relative;
+      &-bg {
+        width: 160px;
+        height: 32px;
+        display: inline-block;
+        background: linear-gradient(
+          270deg,
+          #2c3153 0%,
+          #42497c 51%,
+          #2c3153 100%
+        );
+        margin-top: 8px;
+      }
+      &-text {
+        position: absolute;
+        left: 0;
+        right: 0;
+        color: rgba(154, 161, 209, 1);
+        font-weight: 500;
+        letter-spacing: 1px;
+        line-height: 50px;
+        &::before {
+          content: '·  ';
+        }
+        &::after {
+          content: '  ·';
+        }
+      }
     }
     &__often {
       &-title {

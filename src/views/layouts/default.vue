@@ -27,6 +27,10 @@
             class="layout-default-sider__arrow"
           ></st-icon>
         </div>
+        <img
+          class="layout-default-sider__shop-tag"
+          src="~@/assets/img/brand/tag-shop.png"
+        />
       </div>
       <!-- 品牌维度下 -->
       <div class="layout-default-sider__brand" v-else>
@@ -49,6 +53,10 @@
             class="layout-default-sider__arrow"
           ></st-icon>
         </div>
+        <img
+          class="layout-default-sider__brand-tag"
+          src="~@/assets/img/brand/tag-brand.png"
+        />
       </div>
       <div
         class="layout-default-sider__scrollbox"
@@ -56,6 +64,12 @@
         @click="onClickSiderMenu"
       >
         <default-sider-menu @change="onSiderMenuChange" />
+        <div class="layout-default-sider__version">
+          <div class="layout-default-sider__version-bg"></div>
+          <label class="layout-default-sider__version-text">
+            {{ siderMenuTip }}
+          </label>
+        </div>
       </div>
     </aside>
     <header class="layout-default-body__header">
@@ -200,7 +214,8 @@ export default {
       shop: this.userService.shop$,
       theme: this.userService.theme$,
       title: this.titleService.title$,
-      urlData: this.userService.urlData$
+      urlData: this.userService.urlData$,
+      isThemeStudio: this.userService.isThemeStudio$
     }
   },
   data() {
@@ -222,6 +237,9 @@ export default {
     },
     isInShop() {
       return this.shop.id
+    },
+    siderMenuTip() {
+      return this.isThemeStudio ? '工作室版' : '俱乐部版'
     }
   },
   methods: {
