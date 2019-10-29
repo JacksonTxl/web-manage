@@ -3,6 +3,8 @@ export default {
   name: 'StPopconfirm',
   render(h) {
     const props = {
+      overlayClassName: 'st-popconfirm',
+      destroyTooltipOnHide: true,
       title: '是否确认删除?',
       okText: '确定',
       cancelText: '取消',
