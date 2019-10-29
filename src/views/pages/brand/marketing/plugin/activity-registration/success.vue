@@ -49,6 +49,11 @@ export default {
       show: false
     }
   },
+  computed: {
+    activityId() {
+      return +this.$route.query.activity_id
+    }
+  },
   methods: {
     onClickGoAddActivity() {
       this.$router.replace({
@@ -68,13 +73,19 @@ export default {
     onClickSharePoster() {
       this.$modalRouter.push({
         name: 'marketing-share-poster',
-        type: 1
+        props: {
+          type: 1,
+          activity_id: this.activityId
+        }
       })
     },
     onClickMinaQrcode() {
       this.$modalRouter.push({
-        name: 'marketing-activity-qrcode',
-        type: 2
+        name: 'marketing-share-poster',
+        props: {
+          type: 2,
+          activity_id: this.activityId
+        }
       })
     }
   }
