@@ -1032,12 +1032,6 @@ export const routeMapConfig = {
   },
   'shop-stat'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '数据统计'
-    routeConfig.meta.tabs = [
-      'shop-stat-revenue',
-      'shop-stat-order',
-      'shop-stat-course',
-      'shop-stat-finance'
-    ]
   },
   'shop-finance-flow'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '收支流水'
