@@ -159,12 +159,8 @@ export default {
             ]
           }
         ]
-      }
-    }
-  },
-  computed: {
-    selectData: vm => {
-      return {
+      },
+      selectData: {
         // 基础资料
         base_info: {
           title: '基础资料',
@@ -183,8 +179,8 @@ export default {
         deal_info: {
           title: '交易信息',
           value: [
-            `${vm.$c('member_card')}即将到期`,
-            `${vm.$c('member_card')}剩余次数`,
+            `${this.$c('member_card')}即将到期`,
+            `${this.$c('member_card')}剩余次数`,
             '私教课剩余次数',
             '储值卡剩余金额'
           ],
