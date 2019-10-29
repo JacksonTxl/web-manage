@@ -35,9 +35,7 @@
                   key="1"
                   class="mg-r8"
                   :name="
-                    inviteeCoupon.coupon_name
-                      ? inviteeCoupon.coupon_name
-                      : '111'
+                    inviteeCoupon.coupon_name ? inviteeCoupon.coupon_name : ''
                   "
                   @close="onClose('invitee')"
                 />
@@ -69,9 +67,7 @@
                   key="2"
                   class="mg-r8"
                   :name="
-                    inviterCoupon.coupon_name
-                      ? inviterCoupon.coupon_name
-                      : '222'
+                    inviterCoupon.coupon_name ? inviterCoupon.coupon_name : ''
                   "
                   @close="onClose('inviter')"
                 />
@@ -98,7 +94,7 @@
               <coupon-tag
                 class="mg-r8"
                 :name="
-                  inviteeCoupon.coupon_name ? inviteeCoupon.coupon_name : '2223'
+                  inviteeCoupon.coupon_name ? inviteeCoupon.coupon_name : ''
                 "
                 key="3"
               />
@@ -119,7 +115,7 @@
               <coupon-tag
                 class="mg-r8"
                 :name="
-                  inviterCoupon.coupon_name ? inviterCoupon.coupon_name : '444'
+                  inviterCoupon.coupon_name ? inviterCoupon.coupon_name : ''
                 "
                 key="3"
               />
@@ -252,10 +248,10 @@ export default {
               .toPromise()
               .then(() => {
                 // 关闭成功
-                // this.$router.push({
-                //   path: '/brand/marketing/plugin/invitation/index/data'
-                // })
-                this.$router.reload()
+                this.$router.push({
+                  path: '/brand/marketing/plugin/invitation/index/data'
+                })
+                // this.$router.reload()
               })
           }
         })
