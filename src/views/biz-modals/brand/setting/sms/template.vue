@@ -7,7 +7,7 @@
       <st-form-item labelWidth="70px" label="短信内容">
         <st-textarea
           v-decorator="decorators.content"
-          maxlength="280"
+          maxlength="276"
           :autosize="{ minRows: 4, maxRows: 6 }"
           placeholder="请输入模版内容"
         />
