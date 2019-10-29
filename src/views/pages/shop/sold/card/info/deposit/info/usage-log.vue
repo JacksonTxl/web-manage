@@ -6,7 +6,7 @@
       rowKey="id"
       @change="onTableChange"
       :dataSource="list"
-      :columns="query.card_type === 1 ? columns : Daycolumns"
+      :columns="columns"
     >
       <template slot="usage_detail" slot-scope="text, record">
         <span v-for="(item, index) in record.usage_detail" :key="index">
@@ -27,7 +27,7 @@
 <script>
 import { UsageLogService } from './usage-log.service'
 import { RouteService } from '@/services/route.service'
-import { columns, Daycolumns } from './usage-log.config'
+import { columns } from './usage-log.config'
 
 import tableMixin from '@/mixins/table.mixin'
 export default {
@@ -55,8 +55,7 @@ export default {
   },
   created() {},
   computed: {
-    columns,
-    Daycolumns
+    columns
   }
 }
 </script>

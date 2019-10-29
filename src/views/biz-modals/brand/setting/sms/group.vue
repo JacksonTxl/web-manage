@@ -26,6 +26,7 @@
           v-if="curUser === USER_TYPES.USER"
           v-model="tel"
           :maxlength="1000"
+          step="11"
           :autosize="{ minRows: 2, maxRows: 4 }"
           placeholder="输入手机号,每行一个"
         ></st-textarea>
@@ -140,6 +141,7 @@ import { ruleOptions } from './group.config'
 import { GroupService } from './group.service'
 import { USER_TYPES, SEND_TYPES, TMPL_TYPES } from '@/constants/setting/sms'
 import { MessageService } from '@/services/message.service'
+import { PatternService } from '@/services/pattern.service'
 
 export default {
   name: 'SettingSmsGroup',
@@ -149,7 +151,8 @@ export default {
   serviceInject() {
     return {
       groupService: GroupService,
-      messageService: MessageService
+      messageService: MessageService,
+      pattern: PatternService
     }
   },
   rxState() {
@@ -233,7 +236,6 @@ export default {
       this.curTime = e.target.value
     },
     getCurTemContent(e) {
-      console.log(111)
       this.templateList.map(item => {
         if (item.tmpl_id === e) {
           this.temContent = item.content
@@ -293,6 +295,16 @@ export default {
               content: '请输入手机号'
             })
             return
+          } else {
+            let telArr = this.tel.split(/[\n]/)
+            telArr.every(item => {
+              if (!this.pattern.MOBILE.test(item)) {
+                this.messageService.warn({
+                  content: '请输入正确格式手机号'
+                })
+                return
+              }
+            })
           }
           values.send_value = this.tel
         }
