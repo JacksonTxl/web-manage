@@ -1,11 +1,7 @@
 <template>
   <section class="st-sold-log-table">
     <st-table
-      :pagination="{
-        current: query.current_page,
-        total: page.total_counts,
-        pageSize: query.size
-      }"
+      :page="page"
       :columns="columns"
       @change="onTableChange"
       :loading="loading.getList"
@@ -19,7 +15,9 @@
         </span>
       </template>
       <template slot="amount_change" slot-scope="text, record">
-        <span :style="{ color: record.amount_change < 0 ? 'red' : 'green' }">
+        <span
+          :class="record.amount_change < 0 ? 'color-error' : 'color-success'"
+        >
           {{ record.amount_change }}
         </span>
       </template>

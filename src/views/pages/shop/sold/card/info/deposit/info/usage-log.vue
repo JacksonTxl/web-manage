@@ -15,7 +15,9 @@
         </span>
       </template>
       <template slot="amount_change" slot-scope="text, record">
-        <span :style="{ color: record.amount_change < 0 ? 'red' : 'green' }">
+        <span
+          :class="record.amount_change < 0 ? 'color-error' : 'color-success'"
+        >
           {{ record.amount_change }}
         </span>
       </template>
