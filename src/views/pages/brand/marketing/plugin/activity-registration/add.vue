@@ -30,6 +30,7 @@
         v-show="currentStep === 1"
         :show="currentStep === 1"
         :isCopy="isCopy"
+        :stepForm="stepForm"
         @back="onBack"
         :isEdit="isEdit"
         @step-submit="onSubmitGetStep2Form"

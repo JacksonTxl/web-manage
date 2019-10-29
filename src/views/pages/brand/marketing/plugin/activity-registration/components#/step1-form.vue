@@ -38,7 +38,7 @@
             placeholder="上传图片"
           ></st-image-upload>
           <span :class="b('img-tip')">
-            请上传jpg、png格式的图片
+            请上传jpg、jpeg, png, bmp格式的图片
           </span>
         </st-form-item>
         <st-form-item label="活动人数" required>

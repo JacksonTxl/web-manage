@@ -1,10 +1,10 @@
 <template>
   <st-modal :title="modalTitle" width="500px" v-model="show">
-    <div class="modal-marketing-add-ticket">
+    <div :class="bModal()">
       <st-form :form="form" labelWidth="66px">
         <st-form-item label="报名标题">
           <a-input
-            placeholder="请输入报名标题"
+            placeholder="请输入报名项"
             v-decorator="decorators.extra_name"
           ></a-input>
         </st-form-item>
@@ -31,14 +31,14 @@
           <st-button
             size="small"
             :key="index"
-            class="mg-r8"
+            class="mg-r8 option-tip"
             v-for="(item, index) in extra_info"
           >
             {{ item }}
             <span class="mg-l16" @click="onCLickDelOption(item)">x</span>
           </st-button>
         </st-form-item>
-        <st-form-item label="是否必填">
+        <st-form-item class="mg-b0" label="是否必填">
           <a-radio-group v-decorator="decorators.extra_require">
             <a-radio :value="1">是</a-radio>
             <a-radio :value="2">否</a-radio>
@@ -62,7 +62,7 @@ const uuidv1 = require('uuid/v1')
 export default {
   name: 'ModalAddTicket',
   bem: {
-    bModal: 'modal-marketing-add-ticket'
+    bModal: 'modal-marketing-add-signup'
   },
   serviceInject() {
     return {
