@@ -31,7 +31,7 @@ interface Brand {
   /**
    * 品牌版本 studio 工作室 club 俱乐部 new_studio 新工作室(封闭会员卡|合同功能的版本)
    */
-  version: 'club' | 'studio' | 'new_studio'
+  version: 'club' | 'old_studio' | 'studio'
 }
 
 interface Shop {
@@ -70,7 +70,7 @@ export class UserService {
   favoriteMenu$ = new Computed(this.menuData$.pipe(pluck('favorite')))
 
   isBrandStudio$ = new Computed(
-    this.brand$.pipe(map(brand => !!(brand.version === 'new_studio')))
+    this.brand$.pipe(map(brand => !!(brand.version === 'studio')))
   )
 
   isThemeClub$ = new Computed(
@@ -78,7 +78,7 @@ export class UserService {
   )
   isThemeStudio$ = new Computed(
     this.brand$.pipe(
-      map(brand => ['old_studio', 'new_studio'].includes(brand.version))
+      map(brand => ['old_studio', 'studio'].includes(brand.version))
     )
   )
 
@@ -87,8 +87,8 @@ export class UserService {
       map(brand => {
         return {
           club: 'theme-club',
-          studio: 'theme-studio',
-          new_studio: 'theme-studio'
+          old_studio: 'theme-studio',
+          studio: 'theme-studio'
         }[brand.version]
       })
     )

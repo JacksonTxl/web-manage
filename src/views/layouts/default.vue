@@ -27,6 +27,10 @@
             class="layout-default-sider__arrow"
           ></st-icon>
         </div>
+        <img
+          class="layout-default-sider__shop-tag"
+          src="~@/assets/img/brand/tag-shop.png"
+        />
       </div>
       <!-- 品牌维度下 -->
       <div class="layout-default-sider__brand" v-else>
@@ -49,6 +53,10 @@
             class="layout-default-sider__arrow"
           ></st-icon>
         </div>
+        <img
+          class="layout-default-sider__brand-tag"
+          src="~@/assets/img/brand/tag-brand.png"
+        />
       </div>
       <div
         class="layout-default-sider__scrollbox"
