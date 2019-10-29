@@ -9,8 +9,8 @@ export class UsageLogService implements RouteGuard {
   page$ = new State({})
   loading$ = new State({})
   constructor(private courseApi: CourseApi, private soldService: SoldService) {}
-  getList(query: any, type: string) {
-    return this.courseApi.getPackageUsageLog(query, type).pipe(
+  getList(query: any) {
+    return this.courseApi.getPackageUsageLog(query).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
