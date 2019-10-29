@@ -130,10 +130,18 @@ export class CardApi extends Api {
     })
   }
   /**
-   * 售出 会员卡/储值卡 详情使用记录
+   * 售出 会员卡 详情使用记录
    */
   getCardsUsageLog(query: any, type: string) {
     return this.http.get(`/v1/sold/cards/${type}/usage/log/${query.id}`, {
+      query
+    })
+  }
+  /**
+   * 售出 储值卡 详情使用记录
+   */
+  getDepositUsageLog(query: any) {
+    return this.http.get(`/v1/cards/brand/deposit/cost/${query.id}`, {
       query
     })
   }
