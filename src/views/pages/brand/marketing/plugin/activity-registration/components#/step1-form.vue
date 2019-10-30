@@ -52,7 +52,8 @@
           ></st-input-number>
         </st-form-item>
         <st-form-item label="活动详情" required>
-          <st-editor v-model="content"></st-editor>
+          <st-editor @change="onChangeEditor" v-model="content"></st-editor>
+          <div class="color-error" v-if="isEditor">请输入活动详情</div>
         </st-form-item>
         <div v-di-view="{ name: 'step', show }">
           <st-button type="primary" @click="onSubmit">
@@ -107,6 +108,7 @@ export default {
     })
     const decorators = form.decorators(ruleOptions)
     return {
+      isEditor: false,
       form,
       formInfo: {},
       decorators,
@@ -145,6 +147,10 @@ export default {
   },
   methods: {
     moment,
+    onChangeEditor() {
+      this.isEditor = this.content.length === 0
+      return this.content.length === 0
+    },
     initForm() {
       this.$nextTick().then(() => {
         const date = [
@@ -200,6 +206,7 @@ export default {
     },
     onSubmit() {
       this.form.validate().then(values => {
+        if (this.onChangeEditor) return
         let { activity_name, member_limit_num } = values
         const start_time = values.date[0].format('YYYY-MM-DD HH:mm')
         const end_time = values.date[1].format('YYYY-MM-DD HH:mm')
