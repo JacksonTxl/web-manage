@@ -11,7 +11,7 @@ export const recordColumns = () => {
       scopedSlots: { customRender: 'content' }
     },
     {
-      title: '接受人',
+      title: '接收人',
       dataIndex: 'received_user',
       width: 140
     },

@@ -1,6 +1,6 @@
 <template>
   <st-modal
-    title="接受人"
+    title="接收人"
     v-model="show"
     :footer="null"
     wrapClassName="scroll-modal"
