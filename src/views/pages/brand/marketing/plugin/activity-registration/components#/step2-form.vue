@@ -43,10 +43,16 @@
             <td>{{ item.crowd_name }}</td>
             <td>
               <st-table-actions>
-                <a @click="editTicketItemRecord(item)">
+                <a
+                  @click="editTicketItemRecord({ ticket: item, index })"
+                  v-if="!isTicketName(item)"
+                >
                   设置
                 </a>
-                <a @click="delTicketItemRecord(item.ticket_name)">
+                <a
+                  @click="delTicketItemRecord(item.ticket_name)"
+                  v-if="!isTicketName(item)"
+                >
                   删除
                 </a>
               </st-table-actions>
@@ -81,6 +87,7 @@ import MarketingAddTicket from '@/views/biz-modals/marketing/add-ticket'
 import { CopyService } from '../copy.service'
 import { clone, cloneDeep } from 'lodash-es'
 import { MessageService } from '../../../../../../../services/message.service'
+import { ACTIVITY_STATUS } from '@/constants/brand/marketing'
 export default {
   name: 'Step2Form',
   modals: {
@@ -124,6 +131,7 @@ export default {
   },
   data() {
     return {
+      ACTIVITY_STATUS,
       checkedShopIds: [],
       dataSource: [],
       formDataList: [],
@@ -133,6 +141,9 @@ export default {
   computed: {
     colspanNum() {
       return 5
+    },
+    ticketList() {
+      return cloneDeep(this.defaultForm$.ticket_list)
     }
   },
   methods: {
@@ -144,14 +155,53 @@ export default {
         this.$emit('change', this.dataSource)
       })
     },
-    editTicketItemRecord(ticket) {
-      console.log(ticket)
+    isTicketName(ticket) {
+      let bool = false
+      this.ticketList.forEach(ele => {
+        if (
+          ele.ticket_name === ticket.ticket_name &&
+          this.defaultForm$.activity_status === ACTIVITY_STATUS.DRAFT
+        ) {
+          bool = true
+        }
+      })
+      bool = this.ticketList
+        .map(ele => ele.ticket_name)
+        .includes(ticket.ticket_name)
+
+      return bool
+    },
+    editTicketItemRecord({ ticket, index }) {
+      this.$modalRouter.push({
+        name: 'marketing-add-ticket',
+        props: {
+          formData: this.defaultForm$,
+          dataSource: this.dataSource,
+          ticket: ticket,
+          index: index,
+          isSetting: true,
+          stepForm: this.stepForm
+        },
+        on: {
+          show: this.getTableItem,
+          submit: this.getFormItem
+        }
+      })
     },
     onClickBack() {
       this.$emit('back', 0)
     },
-    getTableItem(item) {
-      this.dataSource.push(item)
+    getTableItem({ ticket, index }) {
+      if (index > -1) {
+        this.dataSource = this.dataSource.map((ele, idx) => {
+          if (idx === index) {
+            ele = ticket
+          }
+          return ele
+        })
+      } else {
+        this.dataSource.push(ticket)
+      }
       this.$emit('change', this.dataSource)
     },
     delTicketItemRecord(ticketName) {
@@ -172,8 +222,17 @@ export default {
         onCancel() {}
       })
     },
-    getFormItem(form) {
-      this.formDataList.push(form)
+    getFormItem({ ticket, index }) {
+      if (index) {
+        this.formDataList = this.formDataList.map((ele, idx) => {
+          if (idx === index) {
+            ele = ticket
+          }
+          return ele
+        })
+      } else {
+        this.formDataList.push(ticket)
+      }
     },
     onClickAddTicketComplete() {
       if (this.formDataList.length === 0) {

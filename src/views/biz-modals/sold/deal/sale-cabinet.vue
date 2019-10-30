@@ -180,6 +180,7 @@
                 class="create-button"
                 @click="onCodeNumber"
                 :loading="loading.getCodeNumber"
+                v-if="!isBrandStudio"
               >
                 自动生成
               </st-button>
@@ -306,6 +307,7 @@ import { SaleCabinetService } from './sale-cabinet.service'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
 import { PatternService } from '@/services/pattern.service'
+import { UserService } from '@/services/user.service'
 import { ruleOptions } from './sale-cabinet.config'
 export default {
   name: 'ModalSoldDealSaleCabinet',
@@ -318,6 +320,7 @@ export default {
   serviceInject() {
     return {
       saleCabinetService: SaleCabinetService,
+      userService: UserService,
       pattern: PatternService
     }
   },
@@ -329,7 +332,8 @@ export default {
       cabinetList: this.saleCabinetService.cabinetList$,
       info: this.saleCabinetService.info$,
       currentPrice: this.saleCabinetService.currentPrice$,
-      orderAmountPrice: this.saleCabinetService.orderAmountPrice$
+      orderAmountPrice: this.saleCabinetService.orderAmountPrice$,
+      isBrandStudio: this.userService.isBrandStudio$
     }
   },
   props: {

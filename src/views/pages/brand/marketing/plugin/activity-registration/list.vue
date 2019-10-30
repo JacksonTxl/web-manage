@@ -13,7 +13,7 @@
           </st-button>
           <st-button
             @click="onClickRouterPush({ pathName: 'checkinActivity' })"
-            class="mg-l16"
+            class="mg-l8"
           >
             签到验票
           </st-button>
@@ -23,7 +23,7 @@
             placeholder="请选择活动报名状态"
             @change="onSingleSearch('activity_status', $event)"
             v-model="query.activity_status"
-            class="mg-r16"
+            class="mg-r8"
             style="width: 160px"
             :options="activityStatus$"
           ></a-select>
@@ -34,80 +34,91 @@
           />
         </div>
       </div>
-      <st-table
-        :page="page$"
-        rowKey="id"
-        :loading="loading$.getList"
-        :columns="columns"
-        @change="onTableChange"
-        :scroll="{ x: 1500 }"
-        :dataSource="list$"
-      >
-        <span slot="activity_status" slot-scope="text, record">
-          <st-status-text
-            v-if="record.activity_status.id === 1"
-            :status="{ success: 1 }"
-          >
-            {{ record.activity_status.name }}
-          </st-status-text>
-          <st-status-text
-            v-if="record.activity_status.id === 2"
-            :status="{ success: 1 }"
-          >
-            {{ record.activity_status.name }}
-          </st-status-text>
-          <st-status-text
-            v-if="record.activity_status.id === 5"
-            :status="{ normal: 1 }"
-          >
-            {{ record.activity_status.name }}
-          </st-status-text>
-          <st-status-text
-            v-if="record.activity_status.id === 4"
-            :status="{ normal: 1 }"
-          >
-            {{ record.activity_status.name }}
-          </st-status-text>
-          <st-status-text
-            v-if="record.activity_status.id === 3"
-            :status="{ error: 1 }"
-          >
-            {{ record.activity_status.name }}
-          </st-status-text>
-        </span>
-        <template slot="action" slot-scope="text, record">
-          <st-table-actions>
-            <a
-              v-if="record.auth.isEdit"
-              @click="onClickEdit({ record, pathName: 'editActivity' })"
+      <div :class="bPage('table')">
+        <st-table
+          :page="page$"
+          rowKey="id"
+          :loading="loading$.getList"
+          :columns="columns"
+          @change="onTableChange"
+          :scroll="{ x: 1500 }"
+          :dataSource="list$"
+        >
+          <span slot="activity_status" slot-scope="text, record">
+            <st-status-text
+              v-if="record.activity_status.id === 1"
+              :status="{ success: 1 }"
             >
-              编辑
-            </a>
-            <a v-if="record.auth.isAdv" @click="onCLickGeneralize(record)">
-              推广
-            </a>
+              {{ record.activity_status.name }}
+            </st-status-text>
+            <st-status-text
+              v-if="record.activity_status.id === 2"
+              :status="{ success: 1 }"
+            >
+              {{ record.activity_status.name }}
+            </st-status-text>
+            <st-status-text
+              v-if="record.activity_status.id === 5"
+              :status="{ normal: 1 }"
+            >
+              {{ record.activity_status.name }}
+            </st-status-text>
+            <st-status-text
+              v-if="record.activity_status.id === 4"
+              :status="{ normal: 1 }"
+            >
+              {{ record.activity_status.name }}
+            </st-status-text>
+            <st-status-text
+              v-if="record.activity_status.id === 3"
+              :status="{ error: 1 }"
+            >
+              {{ record.activity_status.name }}
+            </st-status-text>
+          </span>
+          <template slot="join_people" slot-scope="text, record">
             <a
-              v-if="record.auth.isName"
               @click="onClickNameList({ record, pathName: 'rosterActivity' })"
+              v-if="text > 0"
             >
-              名单
+              {{ text }}
             </a>
-            <a
-              v-if="record.auth.isCopy"
-              @click="onClickCopy({ record, pathName: 'copyActivity' })"
-            >
-              复制
-            </a>
-            <a @click="onClickStop(record)" v-if="record.auth.isCancel">
-              取消
-            </a>
-          </st-table-actions>
-        </template>
-      </st-table>
+            <span v-else>{{ text }}</span>
+          </template>
+
+          <template slot="action" slot-scope="text, record">
+            <st-table-actions>
+              <a
+                v-if="record.auth.isEdit"
+                @click="onClickEdit({ record, pathName: 'editActivity' })"
+              >
+                编辑
+              </a>
+              <a v-if="record.auth.isAdv" @click="onCLickGeneralize(record)">
+                推广
+              </a>
+              <a
+                v-if="record.auth.isName"
+                @click="onClickNameList({ record, pathName: 'rosterActivity' })"
+              >
+                名单
+              </a>
+              <a
+                v-if="record.auth.isCopy"
+                @click="onClickCopy({ record, pathName: 'copyActivity' })"
+              >
+                复制
+              </a>
+              <a @click="onClickStop(record)" v-if="record.auth.isCancel">
+                取消
+              </a>
+            </st-table-actions>
+          </template>
+        </st-table>
+      </div>
     </st-panel>
   </div>
 </template>
-
 <script>
 // table
 import tableMixin from '@/mixins/table.mixin'
@@ -166,7 +177,9 @@ export default {
   },
   methods: {
     onClickRouterPush({ record, pathName }) {
-      this.$router.push({ name: this.redirectPath[pathName] })
+      this.$router.push({
+        name: this.redirectPath[pathName]
+      })
     },
     onClickEdit({ record, pathName }) {
       this.$router.push({

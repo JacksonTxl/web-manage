@@ -19,7 +19,7 @@
           @change="onTableChange"
           :loading="loading$.getList"
           :dataSource="list$"
-          :pagination="page$"
+          :pagination="null"
         >
           <span
             :class="bPage(`main-status-${text.id}`)"

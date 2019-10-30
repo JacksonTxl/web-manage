@@ -111,7 +111,7 @@ export default {
           body_class: 'st-editor',
           plugins: ['link', 'image'],
           toolbar:
-            'undo redo | styleselect bold italic forecolor backcolor | bullist numlist | alignleft aligncenter alignright  | image link',
+            'undo redo | styleselect bold italic forecolor backcolor | bullist numlist | alignleft aligncenter alignright  | image',
           language_url: this.appConfig.BASE_URL + 'tinymce/5.0.3/zh_CN.js',
           images_upload_handler(blobInfo, succCb, failCb) {
             const file = blobInfo.blob()

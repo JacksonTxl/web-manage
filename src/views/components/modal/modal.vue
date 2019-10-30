@@ -2,6 +2,7 @@
   <a-modal
     v-bind="$attrs"
     :width="computedWidth"
+    :maskClosable="maskClosable"
     v-on="$listeners"
     :wrapClassName="
       [
@@ -44,6 +45,10 @@ export default {
     loading: {
       type: Boolean,
       default: false
+    },
+    maskClosable: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {
@@ -67,7 +72,9 @@ export default {
       this.$emit('change', false)
     },
     clickModal() {
-      this.close()
+      if (this.maskClosable) {
+        this.close()
+      }
     },
     clickModalContent(e) {
       e.stopPropagation()
