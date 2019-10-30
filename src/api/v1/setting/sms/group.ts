@@ -36,7 +36,7 @@ export class GroupApi extends Api {
   }
   // 获取接收人数列表
   getReceiveNumList(query: any) {
-    return this.http.get('/v1/setting/sms/group/user/' + query)
+    return this.http.get('/v1/setting/sms/group/user/' + query.id, { query })
   }
   getSmsSign() {
     return this.http.get('/v1/setting/sms/sign')
