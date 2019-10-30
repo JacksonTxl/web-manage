@@ -37,9 +37,9 @@
                 <template slot="content">
                   <st-button
                     size="small"
-                    :key="index"
+                    :key="idx"
                     class="mg-r8 option-tip"
-                    v-for="(option, index) in item.extra_info"
+                    v-for="(option, idx) in item.extra_info"
                   >
                     {{ option }}
                   </st-button>
@@ -47,9 +47,17 @@
                 <template slot="title">
                   <span>{{ item.extra_name }}选项</span>
                 </template>
-                <span>{{ item.extra_name }}</span>
+                <span>{{ item.extra_name }}{{ item.extra_key }}</span>
               </a-popover>
-              <span v-else>{{ item.extra_name }}</span>
+              <span
+                :class="{
+                  item__require:
+                    item.extra_key === 'username' || item.extra_key === 'mobile'
+                }"
+                v-else
+              >
+                {{ item.extra_name }}
+              </span>
             </td>
             <td>
               <a v-if="isDel(item)" @click="delExtraItemRecord(item.extra_key)">
