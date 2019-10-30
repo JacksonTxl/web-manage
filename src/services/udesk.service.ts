@@ -17,6 +17,7 @@ export class UdeskService {
     return this.http.get('/udesk').pipe(
       tap((res: any) => {
         this.customer$.commit(() => res)
+        console.log(this.customer$)
       })
     )
   }
