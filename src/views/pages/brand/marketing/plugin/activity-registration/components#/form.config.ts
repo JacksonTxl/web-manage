@@ -23,6 +23,7 @@ export const ruleOptions = (vm: any) => {
         },
         {
           validator: (field: any, value: any, values: any) => {
+            if (!value) return
             const startDate = value[0].valueOf()
             const mt = moment()
               .subtract(30, 'm')
