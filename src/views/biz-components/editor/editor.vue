@@ -107,26 +107,30 @@ export default {
           branding: false,
           // 隐藏底栏的元素路径
           elementpath: false,
-          menubar: false,
+          menubar: 'my1',
+          menu: {
+            my1: { title: '图片上传', items: 'copy paste' }
+          },
           body_class: 'st-editor',
           plugins: ['link', 'image'],
           toolbar:
             'undo redo | styleselect bold italic forecolor backcolor | bullist numlist | alignleft aligncenter alignright  | image',
           language_url: this.appConfig.BASE_URL + 'tinymce/5.0.3/zh_CN.js',
-          images_upload_handler(blobInfo, succCb, failCb) {
-            const file = blobInfo.blob()
-
-            failCb('未实现')
-            // ossService
-            //   .put(file, {
-            //     serviceType: OA
-            //   })
-            //   .then(res => {
-            //     succCb(res.url)
-            //   })
-            //   .catch(err => {
-            //     failCb(err.message)
-            //   })
+          // 图片上传
+          images_upload_handler: function(blobInfo, success, failure) {
+            let formData = new FormData()
+            console.log(blobInfo.filename())
+            formData.append('img', blobInfo.blob())
+            self.$axios
+              .post('http://127.0.0.1:8000/upload/', formData)
+              .then(response => {
+                console.log(response.data['url'])
+                if (response.data['code'] == 200) {
+                  success(response.data['url'])
+                } else {
+                  failure('上传失败！')
+                }
+              })
           },
           setup(editor) {
             editor.on('change keyup undo redo', value => {

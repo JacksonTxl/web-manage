@@ -188,6 +188,8 @@ export default {
       show: false,
       ticketType: 1,
       isBulk: 1,
+      // TODO: 用户人群暂未开启，前端静态填写 为全部用户 id 为 0
+      crowdIdOptions: [{ label: '全部用户', value: 0 }],
       radioStyle: {
         display: 'block'
       },

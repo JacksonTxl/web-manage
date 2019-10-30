@@ -4,6 +4,7 @@ export const columns = (vm: any) => {
       title: '活动标题',
       dataIndex: 'activity_name',
       fixed: 'left',
+      width: '140px',
       scopedSlots: { customRender: 'activity_name' }
     },
     {
