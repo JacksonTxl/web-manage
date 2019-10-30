@@ -28,6 +28,7 @@
             :address="address.address"
             @select="onSelectGetAddress"
           ></map-button>
+          <div class="color-danger" v-if="isAddress">请选择地址</div>
         </st-form-item>
         <st-form-item label="活动海报" required>
           <st-image-upload
@@ -42,6 +43,7 @@
               <p>大小不超过2M，建议尺寸16:9</p>
             </template>
           </st-image-upload>
+          <div class="color-danger" v-if="isPoster">请上传活动海报</div>
         </st-form-item>
         <st-form-item label="活动人数" required>
           <st-input-number
@@ -52,8 +54,8 @@
           ></st-input-number>
         </st-form-item>
         <st-form-item label="活动详情" required>
-          <st-editor @change="onChangeEditor" v-model="content"></st-editor>
-          <div class="color-error" v-if="isEditor">请输入活动详情</div>
+          <st-editor @input="onChangeEditor" v-model="content"></st-editor>
+          <div class="color-danger" v-if="isEditor">请输入活动详情</div>
         </st-form-item>
         <div v-di-view="{ name: 'step', show }">
           <st-button type="primary" @click="onSubmit">
@@ -109,6 +111,8 @@ export default {
     const decorators = form.decorators(ruleOptions)
     return {
       isEditor: false,
+      isPoster: false,
+      isAddress: false,
       form,
       formInfo: {},
       decorators,
@@ -150,6 +154,14 @@ export default {
     onChangeEditor() {
       this.isEditor = this.content.length === 0
       return this.content.length === 0
+    },
+    onChangePoster() {
+      this.isPoster = this.fileShareList.length === 0
+      return this.fileShareList.length === 0
+    },
+    onChangeAddress() {
+      this.isAddress = !!!this.address.address
+      return !!!this.address.address
     },
     initForm() {
       this.$nextTick().then(() => {
@@ -193,11 +205,13 @@ export default {
       this.$set(this.formInfo, 'imageUrl', imageFiles[0].image_url)
       this.$emit('change', this.formInfo)
       this.fileShareList = cloneDeep(imageFiles)
+      this.onChangePoster()
     },
     onSelectGetAddress(address) {
       this.$set(this.formInfo, 'address', address.address)
       this.$emit('change', this.formInfo)
       this.address = address
+      this.onChangeAddress()
     },
     disabledDate(current) {
       return (
@@ -205,33 +219,48 @@ export default {
       )
     },
     onSubmit() {
-      this.form.validate().then(values => {
-        if (this.onChangeEditor) return
-        let { activity_name, member_limit_num } = values
-        const start_time = values.date[0].format('YYYY-MM-DD HH:mm')
-        const end_time = values.date[1].format('YYYY-MM-DD HH:mm')
-        const image = this.file
-        const { address, province, city, district, lat, lng } = this.address
-        const activity_id = this.isEdit
-          ? this.defaultForm$.activity_id
-          : undefined
-        const form = {
-          activity_id,
-          address,
-          province,
-          city,
-          district,
-          lat,
-          lng,
-          end_time,
-          start_time,
-          activity_name,
-          member_limit_num: +member_limit_num,
-          description: this.content,
-          image: this.fileShareList[0]
-        }
-        this.$emit('step-submit', form)
-      })
+      this.form
+        .validate()
+        .then(values => {
+          if (
+            this.onChangeEditor() &&
+            this.onChangePoster() &&
+            this.onChangeAddress()
+          )
+            return
+          let { activity_name, member_limit_num } = values
+          const start_time = values.date[0].format('YYYY-MM-DD HH:mm')
+          const end_time = values.date[1].format('YYYY-MM-DD HH:mm')
+          const image = this.file
+          const { address, province, city, district, lat, lng } = this.address
+          const activity_id = this.isEdit
+            ? this.defaultForm$.activity_id
+            : undefined
+          const form = {
+            activity_id,
+            address,
+            province,
+            city,
+            district,
+            lat,
+            lng,
+            end_time,
+            start_time,
+            activity_name,
+            member_limit_num: +member_limit_num,
+            description: this.content,
+            image: this.fileShareList[0]
+          }
+          this.$emit('step-submit', form)
+        })
+        .catch(() => {
+          if (
+            this.onChangeEditor() &&
+            this.onChangePoster() &&
+            this.onChangeAddress()
+          )
+            return
+        })
     }
   }
 }

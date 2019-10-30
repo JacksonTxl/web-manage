@@ -44,7 +44,7 @@
           </a-radio-group>
           <span :class="bModal('scroll-add')">
             <span :class="bModal('scroll-not')">不满足?</span>
-            <a @click="goCrowd">
+            <a @click="goCrowd" class="cursor-pointer">
               去添加人群>
             </a>
           </span>

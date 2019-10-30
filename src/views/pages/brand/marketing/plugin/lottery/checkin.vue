@@ -19,18 +19,20 @@
           :columns="columns"
           :dataSource="list"
           rowKey="id"
-        ></st-table>
-        <div :class="bPage('checkin-btn')">
-          <st-button
-            v-if="list.length > 0"
-            :disabled="list[0] ? list[0].code_status !== 0 : false"
-            type="primary"
-            class="text-center mg-t24"
-            @click="checkin"
-          >
-            核销
-          </st-button>
-        </div>
+        >
+          <div slot="action" slot-scope="text, record">
+            <st-table-actions>
+              <st-button
+                :disabled="record.code_status !== 0"
+                type="primary"
+                class="text-center mg-t24"
+                @click="checkin"
+              >
+                核销
+              </st-button>
+            </st-table-actions>
+          </div>
+        </st-table>
       </div>
       <div :class="bPage('content')" v-else>
         <img
