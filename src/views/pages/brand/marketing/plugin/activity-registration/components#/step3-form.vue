@@ -14,7 +14,13 @@
       <tbody>
         <tr>
           <td :colspan="colspanNum" class="st-form-table__add">
-            <st-button type="dashed" icon="add" @click="onCLickOpenmodal" block>
+            <st-button
+              :disabled="dataSource.length === 10"
+              type="dashed"
+              icon="add"
+              @click="onCLickOpenmodal"
+              block
+            >
               添加
             </st-button>
           </td>
@@ -87,6 +93,7 @@ import MarketingAddSignup from '@/views/biz-modals/marketing/add-signup'
 import { CopyService } from '../copy.service'
 import { cloneDeep } from 'lodash-es'
 import { ACTIVITY_STATUS } from '@/constants/brand/marketing'
+import { MessageService } from '../../../../../../../services/message.service'
 export default {
   name: 'Step3Form',
   bem: {
@@ -101,6 +108,7 @@ export default {
   serviceInject() {
     return {
       service: Step3FormService,
+      msg: MessageService,
       copyService: CopyService
     }
   },
@@ -250,6 +258,13 @@ export default {
       this.$emit('save-draft', this.getStepForm())
     },
     onChangeIsShow() {
+      if (
+        this.defaultForm$.activity_status === ACTIVITY_STATUS.PUBLISHED &&
+        this.defaultForm$.rule_settings.join_ext_info.extra_type === 1
+      ) {
+        this.isStep3 = this.defaultForm$.rule_settings.join_ext_info.extra_type
+        this.msg.error({ content: '已发布的活动，不能关闭活动信息' })
+      }
       const data = this.isStep3 ? this.dataSource : []
       this.$emit('change', data)
     }

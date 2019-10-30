@@ -28,31 +28,13 @@ export class ListService implements RouteGuard {
       tap((res: any) => {
         this.list$.commit(() =>
           res.list.map((item: any) => {
+            const authTemp = item.auth
             let auth = {
-              isEdit: 1,
-              isAdv: 1,
-              isName: 1,
-              isCopy: 1,
-              isCancel: 1
-            }
-            if (item.activity_status.id === 1) {
-              auth.isCopy = 0
-            } else if (item.activity_status.id === 2) {
-              auth.isEdit = 0
-              auth.isAdv = 0
-              auth.isCancel = 0
-            } else if (item.activity_status.id === 3) {
-              auth.isEdit = 0
-              auth.isAdv = 0
-              auth.isCancel = 0
-            } else if (item.activity_status.id === 4) {
-              auth.isAdv = 0
-              auth.isCopy = 0
-            } else if (item.activity_status.id === 5) {
-              auth.isEdit = 0
-              auth.isAdv = 0
-              auth.isName = 0
-              auth.isCancel = 0
+              isEdit: authTemp['brand:activity:sign_up|edit'],
+              isAdv: authTemp['brand:activity:sign_up|promotion'],
+              isName: authTemp['brand:activity:sign_up|list'],
+              isCopy: authTemp['brand:activity:sign_up|add'],
+              isCancel: authTemp['brand:activity:sign_up|end']
             }
             item.auth = auth
             return item

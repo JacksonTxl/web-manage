@@ -40,7 +40,7 @@
             <td>{{ item.ticket_name }}</td>
             <td>{{ item.ticket_price }}</td>
             <td>{{ item.ticket_total_num }}</td>
-            <td>{{ item.crowd_name }}</td>
+            <td>{{ getCrowdName(item.crowd_id) }}</td>
             <td>
               <st-table-actions>
                 <a
@@ -138,7 +138,9 @@ export default {
       checkedShopIds: [],
       dataSource: [],
       formDataList: [],
-      list: []
+      list: [],
+      // TODO: 用户人群暂未开启，前端静态填写 为全部用户 id 为 0
+      crowdIdOptions: [{ label: '全部用户', value: 0 }]
     }
   },
   computed: {
@@ -150,6 +152,13 @@ export default {
     }
   },
   methods: {
+    getCrowdName(crowdId) {
+      let crowdName = ''
+      this.crowdIdOptions.forEach(item => {
+        crowdName = item.value === crowdId ? item.label : ''
+      })
+      return crowdName
+    },
     initForm() {
       const that = this
       this.$nextTick().then(() => {
@@ -159,20 +168,14 @@ export default {
       })
     },
     isTicketName(ticket) {
-      let bool = false
-      this.ticketList.forEach(ele => {
-        if (
-          ele.ticket_name === ticket.ticket_name &&
-          this.defaultForm$.activity_status === ACTIVITY_STATUS.DRAFT
-        ) {
-          bool = true
-        }
-      })
-      bool = this.ticketList
-        .map(ele => ele.ticket_name)
-        .includes(ticket.ticket_name)
-
-      return bool
+      // 草稿状态都可以编辑 不是草稿状态的活动，只有新增过后的 可以编辑和删除
+      if (this.defaultForm$.activity_status === ACTIVITY_STATUS.DRAFT) {
+        return false
+      } else {
+        return this.ticketList
+          .map(item => item.ticket_name)
+          .includes(ticket.ticket_name)
+      }
     },
     editTicketItemRecord({ ticket, index }) {
       this.$modalRouter.push({
