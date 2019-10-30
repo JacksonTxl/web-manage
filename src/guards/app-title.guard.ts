@@ -7,7 +7,7 @@ export class AppTitleGuard implements RouteGuard {
   /**
    * 路由导航完毕才设置title
    */
-  afterEach(to: ServiceRoute) {
+  beforeEach(to: ServiceRoute) {
     this.titleService.SET_TITLE(to.meta.title)
   }
 }
