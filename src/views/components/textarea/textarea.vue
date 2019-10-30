@@ -8,10 +8,6 @@
     ></a-textarea>
     <label :class="b('label')">{{ currentLength }}/{{ maxlength }}</label>
     <label v-if="suffix" :class="b('suffix')">{{ '【' + suffix + '】' }}</label>
-    <!-- <span :class="b('content-copy')" v-if="suffix">
-      {{ content }}
-      <span :class="b('content-text')">{{ suffix }}</span>
-    </span> -->
   </div>
 </template>
 <script>
