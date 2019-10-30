@@ -96,6 +96,9 @@ export default {
   bem: {
     b: 'step-form-signup'
   },
+  // serviceProviders() {
+  //   return [CopyService]
+  // },
   serviceInject() {
     return {
       copyService: CopyService,
@@ -143,7 +146,7 @@ export default {
       return 5
     },
     ticketList() {
-      return cloneDeep(this.defaultForm$.ticket_list)
+      return cloneDeep(this.defaultForm$.ticket_list) || []
     }
   },
   methods: {

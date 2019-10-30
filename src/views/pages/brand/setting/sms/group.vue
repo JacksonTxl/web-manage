@@ -67,10 +67,7 @@
         <st-status-text v-if="record.send_status === 1" :status="{ normal: 1 }">
           {{ record.send_status_text }}
         </st-status-text>
-        <st-status-text
-          v-if="record.send_status === 0"
-          :status="{ success: 1 }"
-        >
+        <st-status-text v-if="record.send_status === 0" :status="{ info: 1 }">
           {{ record.send_status_text }}
         </st-status-text>
       </div>
