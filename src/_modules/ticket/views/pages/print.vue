@@ -21,7 +21,7 @@
       </div>
       <div :class="b('section-item')">
         <span class="mg-b16">上课时间:</span>
-        <span>{{ info.coach_start_time }}</span>
+        <span>{{ info.course_start_time }}</span>
       </div>
     </div>
     <div :class="b('section')">
@@ -60,7 +60,7 @@
         <span>{{ info.contract_number }}</span>
       </div>
       <div :class="b('section-item')">
-        <span class="mg-b16">合同号有效期:</span>
+        <span class="mg-b16">合同有效期:</span>
         <span>{{ info.contract_validity_time }}</span>
       </div>
     </div>
