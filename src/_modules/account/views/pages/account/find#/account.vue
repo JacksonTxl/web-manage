@@ -63,7 +63,7 @@ export default {
     if (account) {
       setTimeout(() => {
         this.next()
-      })
+      }, 400)
     }
   },
   data() {
