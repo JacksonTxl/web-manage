@@ -172,6 +172,9 @@ export default {
     },
     tmpl: {
       type: Object
+    },
+    crowd: {
+      type: Object
     }
   },
   data() {
@@ -212,6 +215,14 @@ export default {
       })
       this.curTem = 2
       this.getCurTemContent(this.tmpl.tmpl_id)
+    }
+    console.log(this.crowd)
+    if (this.crowd) {
+      this.form.setFieldsValue({
+        user_type: 2,
+        send_value: this.crowd.send_value
+      })
+      this.curUser = 2
     }
   },
   methods: {

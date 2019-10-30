@@ -74,8 +74,12 @@
                 </a-menu-item>
                 <a-menu-item style="width:100%">
                   <a
-                    href="javascript:;"
-                    @click="newCrowd('功能正在开发中，敬请期待')"
+                    v-modal-link="{
+                      name: 'brand-setting-sms-group',
+                      props: {
+                        crowd: { user_type: 2, send_value: value[0].id }
+                      }
+                    }"
                   >
                     群发短信
                   </a>
@@ -166,8 +170,12 @@
                 </a-menu-item>
                 <a-menu-item style="width:100%">
                   <a
-                    href="javascript:;"
-                    @click="newCrowd('功能正在开发中，敬请期待')"
+                    v-modal-link="{
+                      name: 'brand-setting-sms-group',
+                      props: {
+                        crowd: { user_type: 2, send_value: value[1].id }
+                      }
+                    }"
                   >
                     群发短信
                   </a>
@@ -258,8 +266,12 @@
                 </a-menu-item>
                 <a-menu-item style="width:100%">
                   <a
-                    href="javascript:;"
-                    @click="newCrowd('功能正在开发中，敬请期待')"
+                    v-modal-link="{
+                      name: 'brand-setting-sms-group',
+                      props: {
+                        crowd: { user_type: 2, send_value: value[2].id }
+                      }
+                    }"
                   >
                     群发短信
                   </a>
@@ -284,6 +296,8 @@
 import { MessageService } from '@/services/message.service'
 import { IndexService } from './index.service'
 import { CrowdAPI } from '@/api/v1/crowd'
+import BrandSettingSmsGroup from '@/views/biz-modals/brand/setting/sms/group'
+
 export default {
   serviceInject() {
     return {
@@ -300,6 +314,9 @@ export default {
   model: {
     type: 'value',
     event: 'dataChangge'
+  },
+  modals: {
+    BrandSettingSmsGroup
   },
   props: {
     value: Array

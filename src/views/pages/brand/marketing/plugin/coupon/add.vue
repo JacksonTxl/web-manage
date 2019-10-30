@@ -30,7 +30,6 @@
         </div>
       </div>
     </h5-container>
-
     <div slot="actions">
       <st-button
         :loading="loading.addMarketingCoupon || loading.editMarketingCoupon"
@@ -90,28 +89,10 @@
         <a-divider :class="basic('line')"></a-divider>
         <a-row :gutter="8">
           <a-col :lg="23">
-            <st-form-item
-              label="优惠范围"
-              required
-              v-if="couponEnums.is_product_range"
-            >
-              <a-radio-group
-                v-if="couponEnums.is_product_range.value.length > 1"
-                v-model="showProductRange"
-                :disabled="isEditMode"
-              >
-                <a-radio
-                  v-for="(item, index) in couponEnums.is_product_range.value"
-                  :value="index"
-                  :key="index"
-                >
-                  {{ item }}
-                </a-radio>
-              </a-radio-group>
+            <st-form-item label="优惠范围" required>
               <a-select
                 :disabled="isEditMode"
-                v-if="showProductRange == '2' && couponEnums.product_range"
-                :defaultValue="rangeIds"
+                :value="rangeIds"
                 style="width: 360px"
                 @change="changeProductRange"
                 mode="multiple"
@@ -119,11 +100,11 @@
                 :class="basic('select')"
               >
                 <a-select-option
-                  v-for="(item, index) in couponEnums.product_range['value']"
+                  v-for="(item, index) in product_ranges"
                   :key="index"
-                  :value="index"
+                  :value="item.value"
                 >
-                  {{ item }}
+                  {{ item.label }}
                 </a-select-option>
               </a-select>
             </st-form-item>
@@ -198,9 +179,12 @@
                 优惠共享
                 <st-help-tooltip id="TBYHQ002" />
               </template>
-              <a-checkbox v-model="isShare" :disabled="isEditMode">
+              <st-checkbox
+                v-decorator="decorators.is_share"
+                :disabled="isEditMode"
+              >
                 不可与其它优惠同享
-              </a-checkbox>
+              </st-checkbox>
             </st-form-item>
             <st-form-item label="每人限领" required v-if="couponType === '1'">
               <a-radio-group
@@ -237,6 +221,7 @@ import { cloneDeep, remove } from 'lodash-es'
 import { AddService } from './add.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import H5Container from '@/views/biz-components/h5/h5-container'
+import { ruleOptions } from './add.config'
 export default {
   name: 'BrandMarketingPluginCouponAdd',
   serviceInject() {
@@ -249,8 +234,9 @@ export default {
   rxState() {
     return {
       loading: this.addService.loading$,
-      info: this.addService.info$,
-      couponEnums: this.userService.couponEnums$
+      // info: this.addService.info$,
+      couponEnums: this.userService.couponEnums$,
+      product_ranges: this.addService.product_ranges$
     }
   },
   bem: {
@@ -258,22 +244,11 @@ export default {
   },
   data() {
     const form = this.$stForm.create()
-    const decorators = form.decorators({
-      coupon_name: {
-        rules: [{ validator: this.coupon_name_validator }]
-      },
-      price: { rules: [{ validator: this.price_validator }] },
-      use_type: { rules: [{ validator: this.use_type_validator }] },
-      full_price: { rules: [{ validator: this.full_price_validator }] },
-      number: { rules: [{ validator: this.number_validator }] },
-      valid_days: { rules: [{ validator: this.valid_days_validator }] },
-      is_limit: { rules: [{ validator: this.is_limit_validator }] },
-      person_limit: { rules: [{ validator: this.person_limit_validator }] }
-    })
+    const decorators = form.decorators(ruleOptions)
     return {
       form,
       decorators,
-      isEditMode: false,
+      // isEditMode: false,
       // form: this.$form.createForm(this),
       // 优惠类型
       couponType: '1',
@@ -294,15 +269,19 @@ export default {
       shopNames: ''
     }
   },
+  props: {
+    isEditMode: {
+      type: Boolean,
+      default: false
+    },
+    info: {
+      type: Object,
+      default: () => {}
+    }
+  },
   created() {
-    if (this.$route.query.id) {
-      // 进入编辑模式
-      this.addService.getInfo(this.$route.query.id).subscribe(res => {
-        this.setFieldsValue()
-        this.isEditMode = true
-      })
-    } else {
-      this.isEditMode = false
+    if (this.isEditMode) {
+      this.setFieldsValue()
     }
   },
   methods: {
@@ -333,85 +312,6 @@ export default {
     onSelectShop(event) {
       this.shopIds = event
     },
-
-    // 优惠券名称
-    coupon_name_validator(rule, value, values) {
-      if (!value) {
-        return '请填写优惠券名称'
-      }
-      if (value.length > 10) {
-        return '优惠券名称长度不能超过10，请重新输入'
-      }
-    },
-    // 面额
-    price_validator(rule, value, values) {
-      let price = value + ''
-      if (!value) {
-        return '请填写优惠券面额'
-      }
-      let value1 = price.split('.')[0]
-      let value2 = price.split('.')[1] || 0
-      let reg1 = new RegExp(/^[1-9]\d{0,3}$/)
-      let reg2 = new RegExp(/^[0-9]\d{0,1}$/)
-
-      if (!(reg1.test(value1) && reg2.test(value2))) {
-        return '请输入正确范围的金额'
-      }
-    },
-    // 使用门槛
-    use_type_validator(rule, value, values) {
-      if (!value) {
-        return '请选择使用条件'
-      }
-    },
-    // 满多少使用
-    full_price_validator(rule, value, values) {
-      let use_type = +values.use_type
-      let couponPirce = +values.price || 0
-
-      if (use_type === 2) {
-        if (!value) {
-          return '请填写使用条件'
-        }
-        if (+value <= 0) {
-          return '满减门槛应大于0'
-        }
-        if (couponPirce > +value) {
-          return '满减门槛不能低于优惠券面额'
-        }
-      }
-    },
-    // 发放数量
-    number_validator(rule, value, values) {
-      if (!value) {
-        return '请填写发放数量'
-      }
-    },
-    // 使用有效期
-    valid_days_validator(rule, value, values) {
-      if (!value) {
-        return '请填写使用期限'
-      }
-    },
-    // 每人是否限领
-    is_limit_validator(rule, value, values) {
-      let is_limit = values.is_limit
-      if (is_limit !== 1 && is_limit !== 2) {
-        return '请选择是否限制领用'
-      }
-    },
-    // 每人限领数量 setFieldsValue
-    person_limit_validator(rule, value, values) {
-      let is_limit = values.is_limit
-      if (is_limit === 2) {
-        if (!value) {
-          return '请输入每人限领数量'
-        }
-        if (+value <= 0) {
-          return '每人限领数量应大于0'
-        }
-      }
-    },
     checkThisLimitRadio() {
       this.form.setFieldsValue({ is_limit: 2 })
     },
@@ -420,19 +320,19 @@ export default {
       this.showProductRange = this.info.is_product_range + ''
       this.showShopRange = this.info.is_shop_range + ''
       this.shopIds = this.info.shop_ids
-      this.isShare = this.info.is_share !== 0
-      this.rangeIds = this.info.range_ids.map(item => {
-        return this.couponEnums.product_range.value[item]
-      })
-      this.form.setFieldsValue({
-        coupon_name: this.info.coupon_name,
-        price: +this.info.price,
-        use_type: this.info.use_type,
-        full_price: +this.info.full_price || '',
-        number: this.info.number,
-        valid_days: this.info.valid_days,
-        is_limit: this.info.is_limit,
-        person_limit: this.info.person_limit || ''
+      this.rangeIds = this.info.range_ids
+      setTimeout(() => {
+        this.form.setFieldsValue({
+          coupon_name: this.info.coupon_name,
+          price: +this.info.price,
+          use_type: this.info.use_type,
+          full_price: +this.info.full_price || '',
+          number: this.info.number,
+          valid_days: this.info.valid_days,
+          is_share: this.info.is_share,
+          is_limit: this.info.is_limit,
+          person_limit: this.info.person_limit || ''
+        })
       })
     },
     // 保存
@@ -456,7 +356,7 @@ export default {
             full_price: values.full_price,
             number: values.number,
             valid_days: values.valid_days,
-            is_share: this.isShare ? 1 : 0,
+            is_share: values.is_share,
             is_limit: values.is_limit,
             person_limit: values.person_limit || undefined
           }
@@ -490,7 +390,6 @@ export default {
       }
     }
   },
-  computed: {},
   components: {
     SelectShop,
     H5Container
