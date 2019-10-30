@@ -7,7 +7,7 @@
       @change="onChange"
     ></a-textarea>
     <label :class="b('label')">{{ currentLength }}/{{ maxlength }}</label>
-    <label :class="b('suffix')">{{ suffix }}</label>
+    <label v-if="suffix" :class="b('suffix')">{{ '【' + suffix + '】' }}</label>
     <!-- <span :class="b('content-copy')" v-if="suffix">
       {{ content }}
       <span :class="b('content-text')">{{ suffix }}</span>
