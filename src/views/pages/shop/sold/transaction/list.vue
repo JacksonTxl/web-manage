@@ -123,7 +123,7 @@ export default {
     createdOrderPrint(order_id) {
       let url = `${
         window.location.origin
-      }/extra/contract-preview?id=${order_id}`
+      }/common/contract-preview?id=${order_id}`
       window.open(url)
     },
     // 查看订单

@@ -249,7 +249,7 @@ import { ContractPreviewService } from './contract-preview.service'
 import avatar from '@/assets/img/avatar_default_contract.png'
 export default {
   bem: {
-    b: 'extra-contract-preview'
+    b: 'common-contract-preview'
   },
   serviceInject() {
     return {

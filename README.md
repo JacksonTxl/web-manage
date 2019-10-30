@@ -81,7 +81,7 @@ saas 项目使用了如下技术栈 如以前从未接触过的，可至以下�
     ├── modals # 全局的模态窗
     └── pages # 视图页面和路由url一一对应
         ├── brand # 品牌维度页面
-        ├── extra # 公共维度页面
+        ├── common # 公共维度页面
         ├── shop # 门店维度页面
         ├── styleguide # 项目styleguide
         └── test # 个人测试用页面文件夹
