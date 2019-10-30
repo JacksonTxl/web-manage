@@ -4,7 +4,7 @@
       <a-select
         placeholder="中奖状态"
         v-model="query.prize_status"
-        class="mg-r24 fix-width"
+        class="mg-r8 fix-width"
         @change="onSingleSearch('prize_status', $event)"
       >
         <a-select-option
@@ -18,7 +18,7 @@
       <a-select
         placeholder="奖品类型"
         v-model="query.prize_type"
-        class="mg-r24 fix-width"
+        class="mg-r8 fix-width"
         @change="onSingleSearch('prize_type', $event)"
       >
         <a-select-option
@@ -43,7 +43,7 @@
           {{ item.label }}
         </a-select-option>
       </a-select>
-      <span class="mg-r24">抽奖时间</span>
+      <span class="mg-r8">抽奖时间</span>
       <a-range-picker
         @change="onChangeDatePicker"
         v-model="queryParams.date"
