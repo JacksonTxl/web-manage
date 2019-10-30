@@ -209,10 +209,6 @@
                   <div slot="content">
                     设置此{{ $c('member_card') }}可售卖的时间范围
                   </div>
-                  <a-icon
-                    class="page-content-card-time__icon"
-                    type="info-circle"
-                  ></a-icon>
                 </a-popover>
               </span>
               <a-form-item class="page-a-form">
