@@ -974,6 +974,9 @@ export const routeMapConfig = {
     routeConfig.meta.title = '新增优惠券'
     routeConfig.meta.parentId = 'brand-marketing-plugin-coupon-list'
   },
+  'brand-marketing-plugin-coupon-edit'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '编辑优惠券'
+  },
   'brand-marketing-plugin-invitation-index'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '邀请有礼'
     routeConfig.meta.tabs = [

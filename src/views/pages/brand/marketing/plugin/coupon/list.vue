@@ -179,7 +179,7 @@ export default {
     // 编辑
     onEdit(record) {
       this.$router.push({
-        path: '/brand/marketing/plugin/coupon/add',
+        path: '/brand/marketing/plugin/coupon/edit',
         query: { id: record.id }
       })
     },

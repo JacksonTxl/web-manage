@@ -1,7 +1,7 @@
 <template>
-  <st-modal :title="modalTitle" width="500px" v-model="show">
+  <st-modal :title="modalTitle" width="568px" v-model="show">
     <div :class="bModal()">
-      <st-form :form="form" labelWidth="66px">
+      <st-form :form="form">
         <st-form-item label="报名标题">
           <a-input
             placeholder="请输入报名项"

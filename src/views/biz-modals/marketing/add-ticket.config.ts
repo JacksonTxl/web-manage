@@ -113,7 +113,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     buy_time_limit: {
-      initialValue: 1,
+      initialValue: 0,
       rules: [
         {
           required: true,

@@ -3,6 +3,7 @@ export const columns = () => {
     {
       title: '流水号',
       dataIndex: 'flow_id',
+      width: 160,
       fixed: 'left'
     },
     {
