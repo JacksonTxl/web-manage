@@ -14,14 +14,43 @@
       <tbody>
         <tr>
           <td :colspan="colspanNum" class="st-form-table__add">
-            <st-button type="dashed" icon="add" @click="onCLickOpenmodal" block>
+            <st-button
+              :disabled="dataSource.length === 10"
+              type="dashed"
+              icon="add"
+              @click="onCLickOpenmodal"
+              block
+            >
               添加
             </st-button>
           </td>
         </tr>
         <template v-if="dataSource.length">
           <tr v-for="(item, index) in dataSource" :key="index">
-            <td>{{ item.extra_name }}</td>
+            <td>
+              <a-popover
+                v-if="
+                  item.extra_type === 'radio' || item.extra_type === 'checkbox'
+                "
+                placement="bottomLeft"
+              >
+                <template slot="content">
+                  <st-button
+                    size="small"
+                    :key="index"
+                    class="mg-r8 option-tip"
+                    v-for="(option, index) in item.extra_info"
+                  >
+                    {{ option }}
+                  </st-button>
+                </template>
+                <template slot="title">
+                  <span>{{ item.extra_name }}选项</span>
+                </template>
+                <span>{{ item.extra_name }}</span>
+              </a-popover>
+              <span v-else>{{ item.extra_name }}</span>
+            </td>
             <td>
               <a v-if="isDel(item)" @click="delExtraItemRecord(item.extra_key)">
                 删除
@@ -45,7 +74,11 @@
       <st-button class="mg-r8" @click="onClickBack">
         上一步
       </st-button>
-      <st-button class="mg-r8" @click="onClickSaveDraft">
+      <st-button
+        v-if="activityStatus !== ACTIVITY_STATUS.PUBLISHED"
+        class="mg-r8"
+        @click="onClickSaveDraft"
+      >
         存草稿
       </st-button>
       <st-button @click="onClickRelease" type="primary">
@@ -59,6 +92,8 @@ import { Step3FormService } from './step3-form.service'
 import MarketingAddSignup from '@/views/biz-modals/marketing/add-signup'
 import { CopyService } from '../copy.service'
 import { cloneDeep } from 'lodash-es'
+import { ACTIVITY_STATUS } from '@/constants/brand/marketing'
+import { MessageService } from '../../../../../../../services/message.service'
 export default {
   name: 'Step3Form',
   bem: {
@@ -67,9 +102,13 @@ export default {
   modals: {
     MarketingAddSignup
   },
+  // serviceProviders() {
+  //   return [CopyService]
+  // },
   serviceInject() {
     return {
       service: Step3FormService,
+      msg: MessageService,
       copyService: CopyService
     }
   },
@@ -83,6 +122,7 @@ export default {
   },
   data() {
     return {
+      ACTIVITY_STATUS,
       checkedShopIds: [],
       addDataSource: [],
       formData: [],
@@ -112,6 +152,9 @@ export default {
   computed: {
     colspanNum() {
       return 5
+    },
+    activityStatus() {
+      return this.defaultForm$.activity_status
     },
     // 如果是编辑的时候，需要活动id
     activity_id() {
@@ -162,6 +205,7 @@ export default {
       this.$modalRouter.push({
         name: 'marketing-add-signup',
         props: {
+          signUpList: this.dataSource,
           extra_sort: this.extraSort
         },
         on: {
@@ -214,6 +258,13 @@ export default {
       this.$emit('save-draft', this.getStepForm())
     },
     onChangeIsShow() {
+      if (
+        this.defaultForm$.activity_status === ACTIVITY_STATUS.PUBLISHED &&
+        this.defaultForm$.rule_settings.join_ext_info.extra_type === 1
+      ) {
+        this.isStep3 = this.defaultForm$.rule_settings.join_ext_info.extra_type
+        this.msg.error({ content: '已发布的活动，不能关闭活动信息' })
+      }
       const data = this.isStep3 ? this.dataSource : []
       this.$emit('change', data)
     }

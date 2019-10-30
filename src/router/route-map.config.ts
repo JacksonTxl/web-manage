@@ -953,7 +953,7 @@ export const routeMapConfig = {
       end_time: { type: String, default: '' }
     }
   },
-  'extra-contract-preview'(routeConfig: RouteConfig) {
+  'common-contract-preview'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '合同预览'
     routeConfig.meta.layout = 'blank'
   },

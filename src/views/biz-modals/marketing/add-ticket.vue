@@ -1,7 +1,7 @@
 <template>
-  <st-modal :title="modalTitle" v-model="show" width="500px">
+  <st-modal :title="modalTitle" v-model="show" width="568px">
     <div class="modal-marketing-add-ticket">
-      <st-form :form="form" labelWidth="66px">
+      <st-form :form="form">
         <st-form-item label="票种类型" required>
           <a-radio-group
             @change="onChangeGetTicketType"
@@ -262,13 +262,6 @@ export default {
   },
   methods: {
     moment,
-    getCrowdName(crowdId) {
-      let crowdName = ''
-      this.crowdIdOptions.forEach(item => {
-        crowdName = item.value === crowdId ? item.label : ''
-      })
-      return crowdName
-    },
     formatData(values) {
       const {
         ticket_name,
@@ -320,7 +313,6 @@ export default {
         ticket_remark,
         buy_time
       } = values
-      const crowd_name = this.getCrowdName(crowd_id)
       let buy_start_time = ''
       let buy_end_time = ''
       if (buy_time_limit === 1) {
@@ -334,7 +326,7 @@ export default {
         ticket_name,
         ticket_price,
         ticket_total_num,
-        crowd_name,
+        crowd_id,
         group_buy_min,
         buy_limit_min,
         buy_limit_max,

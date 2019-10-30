@@ -33,7 +33,14 @@
         <span class="mg-b16">消费类型:</span>
         <span>{{ info.consume_type }}</span>
       </div>
-      <div :class="b('section-item')">
+      <div
+        :class="b('section-item')"
+        v-if="info.ticket_type.code === TICKET_TYPE.PERSONAL"
+      >
+        <span class="mg-b16">合同号:</span>
+        <span>{{ info.contract_number }}</span>
+      </div>
+      <!-- <div :class="b('section-item')">
         <span
           class="mg-b16"
           v-if="info.ticket_type.code === TICKET_TYPE.PERSONAL"
@@ -49,21 +56,21 @@
         <span v-if="info.ticket_type.code !== TICKET_TYPE.WECHAT">
           {{ info.amount_num }}
         </span>
-      </div>
+      </div> -->
     </div>
-    <div
+    <!-- <div
       :class="b('section')"
-      v-if="info.ticket_type.code !== TICKET_TYPE.WECHAT"
-    >
-      <div :class="b('section-item')">
+      v-if="info.ticket_type.code === TICKET_TYPE.PERSONAL"
+    > -->
+    <!-- <div :class="b('section-item')">
         <span class="mg-b16">合同号:</span>
         <span>{{ info.contract_number }}</span>
-      </div>
-      <div :class="b('section-item')">
+      </div> -->
+    <!-- <div :class="b('section-item')">
         <span class="mg-b16">合同有效期:</span>
         <span>{{ info.contract_validity_time }}</span>
-      </div>
-    </div>
+      </div> -->
+    <!-- </div> -->
     <div :class="b('section')">
       <div class="mg-t48">会员签字:</div>
     </div>

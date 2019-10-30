@@ -4,14 +4,14 @@ import Find from '@/_modules/account/views/pages/account/find.vue'
 import { FindService } from '@/_modules/account/views/pages/account/find.service'
 import { ProgressGuard } from '@/guards/progress.guard'
 import { SyncQueryGuard } from '@/guards/sync-query.guard'
-import { AccountTitleGuard } from '@/guards/account-title.guard'
+import { TitleGuard } from '@/guards/title.guard'
 import { TrackGuard } from '@/guards/track.guard'
 
 const accountGuards: any[] = [
   ProgressGuard,
   TrackGuard,
   SyncQueryGuard,
-  AccountTitleGuard
+  TitleGuard
 ]
 
 export default [

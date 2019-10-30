@@ -1,5 +1,14 @@
 .setting-sms-group {
+  position: relative;
+
   &__scroll {
+    .ant-radio-group {
+      .ant-radio-button-wrapper-checked {
+        border-color: #3f66f6;
+        color: #3f66f6 !important;
+        font-weight: 400;
+      }
+    }
     background: #f7f9fc;
     padding: 12px;
     height: 200px;
@@ -12,6 +21,15 @@
       border-radius: 4px !important;
       border-left: 1px solid #cdd4df;
       overflow: hidden !important;
+    }
+    &-add {
+      position: absolute;
+      left: 12px;
+      top: 196px;
+      width: 100%;
+      background: #f7f9fc;
+      height: 30px;
+      z-index: 3;
     }
   }
   &__save {

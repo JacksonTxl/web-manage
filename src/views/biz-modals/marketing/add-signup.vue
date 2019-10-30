@@ -1,7 +1,7 @@
 <template>
-  <st-modal :title="modalTitle" width="500px" v-model="show">
+  <st-modal :title="modalTitle" width="568px" v-model="show">
     <div :class="bModal()">
-      <st-form :form="form" labelWidth="66px">
+      <st-form :form="form">
         <st-form-item label="报名标题">
           <a-input
             placeholder="请输入报名项"
@@ -105,7 +105,7 @@ export default {
       this.extra_info = this.extra_info.filter(item => item !== value)
     },
     onCLickGetOption() {
-      if (this.extra_info === 10) {
+      if (this.extra_info.length >= 10) {
         this.msg.error({ content: '报名的选项最多添加10个选项值' })
         return
       }
