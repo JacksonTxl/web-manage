@@ -29,7 +29,7 @@ export class RegionService {
       return item
     })
   }
-  fetchRegions() {
+  getRegions() {
     const local = window.localStorage
     if (local.getItem('regionTree')) {
       return of(JSON.parse(local.regionTree))
