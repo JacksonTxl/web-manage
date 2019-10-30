@@ -22,14 +22,28 @@
         <template v-if="dataSource.length">
           <tr v-for="(item, index) in dataSource" :key="index">
             <td>
-              {{ item.extra_name }}{{ item.extra_type }}
-              <div
+              <a-popover
                 v-if="
                   item.extra_type === 'radio' || item.extra_type === 'checkbox'
                 "
+                placement="bottomLeft"
               >
-                options
-              </div>
+                <template slot="content">
+                  <st-button
+                    size="small"
+                    :key="index"
+                    class="mg-r8 option-tip"
+                    v-for="(option, index) in item.extra_info"
+                  >
+                    {{ option }}
+                  </st-button>
+                </template>
+                <template slot="title">
+                  <span>{{ item.extra_name }}选项</span>
+                </template>
+                <span>{{ item.extra_name }}</span>
+              </a-popover>
+              <span v-else>{{ item.extra_name }}</span>
             </td>
             <td>
               <a v-if="isDel(item)" @click="delExtraItemRecord(item.extra_key)">
@@ -54,7 +68,11 @@
       <st-button class="mg-r8" @click="onClickBack">
         上一步
       </st-button>
-      <st-button class="mg-r8" @click="onClickSaveDraft">
+      <st-button
+        v-if="activityStatus !== ACTIVITY_STATUS.PUBLISHED"
+        class="mg-r8"
+        @click="onClickSaveDraft"
+      >
         存草稿
       </st-button>
       <st-button @click="onClickRelease" type="primary">
@@ -68,6 +86,7 @@ import { Step3FormService } from './step3-form.service'
 import MarketingAddSignup from '@/views/biz-modals/marketing/add-signup'
 import { CopyService } from '../copy.service'
 import { cloneDeep } from 'lodash-es'
+import { ACTIVITY_STATUS } from '@/constants/brand/marketing'
 export default {
   name: 'Step3Form',
   bem: {
@@ -95,6 +114,7 @@ export default {
   },
   data() {
     return {
+      ACTIVITY_STATUS,
       checkedShopIds: [],
       addDataSource: [],
       formData: [],
@@ -124,6 +144,9 @@ export default {
   computed: {
     colspanNum() {
       return 5
+    },
+    activityStatus() {
+      return this.defaultForm$.activity_status
     },
     // 如果是编辑的时候，需要活动id
     activity_id() {
