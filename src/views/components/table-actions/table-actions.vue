@@ -63,7 +63,9 @@ export default {
     const childnodes = outerActions
     if (innerActions.length > 0) {
       childnodes.push(popoverVnode)
-    } else {
+    }
+
+    if (childnodes.length === 0) {
       childnodes.push(
         h(
           'span',

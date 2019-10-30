@@ -127,17 +127,15 @@ export const ruleOptions = (vm: any) => {
           validator: (field: any, value: any, values: any) => {
             const startTime = moment(vm.stepForm.start_time)
             const endTime = moment(vm.stepForm.end_time)
-            if (value[0].valueOf() < startTime.valueOf()) {
-              return '售卖开始时间要晚于活动开始时间'
-            }
             if (value[0].valueOf() > endTime.valueOf()) {
-              return '售卖开始时间要早于活动开始时间'
+              return `售卖开始时间要早于活动时间${endTime.format(
+                'YYYY-MM-DD  HH:mm'
+              )}`
             }
             if (value[1].valueOf() > endTime.valueOf()) {
-              return '售卖结束时间要晚于活动开始时间'
-            }
-            if (value[1].valueOf() > endTime.valueOf()) {
-              return '售卖结束时间要早于活动结束时间'
+              return `售卖开始时间要早于活动时间${endTime.format(
+                'YYYY-MM-DD  HH:mm'
+              )}`
             }
           }
         }

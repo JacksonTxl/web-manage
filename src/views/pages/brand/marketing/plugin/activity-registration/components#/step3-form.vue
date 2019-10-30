@@ -21,7 +21,16 @@
         </tr>
         <template v-if="dataSource.length">
           <tr v-for="(item, index) in dataSource" :key="index">
-            <td>{{ item.extra_name }}</td>
+            <td>
+              {{ item.extra_name }}{{ item.extra_type }}
+              <div
+                v-if="
+                  item.extra_type === 'radio' || item.extra_type === 'checkbox'
+                "
+              >
+                options
+              </div>
+            </td>
             <td>
               <a v-if="isDel(item)" @click="delExtraItemRecord(item.extra_key)">
                 删除
@@ -67,6 +76,9 @@ export default {
   modals: {
     MarketingAddSignup
   },
+  // serviceProviders() {
+  //   return [CopyService]
+  // },
   serviceInject() {
     return {
       service: Step3FormService,
@@ -162,6 +174,7 @@ export default {
       this.$modalRouter.push({
         name: 'marketing-add-signup',
         props: {
+          signUpList: this.dataSource,
           extra_sort: this.extraSort
         },
         on: {
