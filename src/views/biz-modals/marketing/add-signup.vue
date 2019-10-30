@@ -28,15 +28,17 @@
             />
             <st-button @click="onCLickGetOption">添加</st-button>
           </a-input-group>
-          <st-button
-            size="small"
-            :key="index"
-            class="mg-r8 option-tip"
-            v-for="(item, index) in extra_info"
-          >
-            {{ item }}
-            <span class="mg-l16" @click="onCLickDelOption(item)">x</span>
-          </st-button>
+          <div class="option-group-wrap">
+            <div
+              size="small"
+              :key="index"
+              class="mg-r8 option-tip"
+              v-for="(item, index) in extra_info"
+            >
+              <span class="tip">{{ item }}</span>
+              <span @click="onCLickDelOption(item)">x</span>
+            </div>
+          </div>
         </st-form-item>
         <st-form-item class="mg-b0" label="是否必填">
           <a-radio-group v-decorator="decorators.extra_require">
@@ -102,6 +104,7 @@ export default {
   },
   methods: {
     onCLickDelOption(value) {
+      debugger
       this.extra_info = this.extra_info.filter(item => item !== value)
     },
     onCLickGetOption() {
