@@ -8,12 +8,10 @@
         <st-textarea
           v-decorator="decorators.content"
           :maxlength="280 - sign.length"
+          :suffix="sign"
           :autosize="{ minRows: 4, maxRows: 6 }"
           placeholder="请输入模版内容"
         />
-      </st-form-item>
-      <st-form-item labelWidth="70px" label="短信签名">
-        {{ sign }}
       </st-form-item>
     </st-form>
     <footer slot="footer">

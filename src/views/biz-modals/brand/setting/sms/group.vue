@@ -4,7 +4,7 @@
     title="群发短信"
     v-model="show"
     @ok="save"
-    width="486px"
+    width="502px"
     @cancel="cancel"
   >
     <st-form :form="form">
@@ -34,7 +34,7 @@
           <a-radio-group v-decorator="decorators.send_value">
             <a-radio-button
               :class="bModal('scroll-btn')"
-              class="mg-r8 mg-b8"
+              class="mg-r8"
               v-for="(item, index) in crowdList"
               :key="index"
               :value="item.crowd_id"
@@ -67,7 +67,7 @@
           v-show="curTime === SEND_TYPES.ONTIME"
           :disabledDate="disabledStartDate"
           placeholder="请选择时间"
-          class="mg-t8"
+          style="width:120px;"
           format="YYYY-MM-DD HH:mm"
           showTime
           v-decorator="decorators.send_time"
@@ -109,7 +109,7 @@
           ></a-input>
         </div>
         <a-select
-          style="width:200px"
+          style="width:120px"
           class="mg-b8"
           v-show="curTem === TMPL_TYPES.CUSTOM"
           placeholder="请选择模版"

@@ -53,7 +53,7 @@
     </div>
     <div
       :class="b('section')"
-      v-if="info.ticket_type.code !== TICKET_TYPE.WECHAT"
+      v-if="info.ticket_type.code === TICKET_TYPE.PERSONAL"
     >
       <div :class="b('section-item')">
         <span class="mg-b16">合同号:</span>
