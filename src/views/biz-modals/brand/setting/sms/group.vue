@@ -302,7 +302,7 @@ export default {
                 this.messageService.warn({
                   content: '请输入正确格式手机号'
                 })
-                return
+                return false
               }
             })
           }
