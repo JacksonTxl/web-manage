@@ -35,7 +35,7 @@
         </div>
         <div :class="bSearch('input-group')">
           <st-input-search
-            @search="onSingleSearch('activity_name', $event)"
+            @search="onSingleSearch('keyword', $event)"
             placeholder="请输入姓名、手机号"
             style="width: 290px;"
           />
@@ -59,7 +59,7 @@
             {{ text.name }}
           </span>
           <div slot="registration_info" slot-scope="text">
-            <span v-if="text === '--'"></span>
+            <span v-if="!Array.isArray(text)">--</span>
             <a v-else @click="onClickShowInfo(text)">查看详情</a>
           </div>
           <template slot="action" slot-scope="text, record">
