@@ -297,14 +297,14 @@ export default {
             return
           } else {
             let telArr = this.tel.split(/[\n]/)
-            telArr.every(item => {
-              if (!this.pattern.MOBILE.test(item)) {
+            for (let i = 0; i < telArr.length; i++) {
+              if (!this.pattern.MOBILE.test(telArr[i])) {
                 this.messageService.warn({
                   content: '请输入正确格式手机号'
                 })
-                return false
+                return
               }
-            })
+            }
           }
           values.send_value = this.tel
         }
