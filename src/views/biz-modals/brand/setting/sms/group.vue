@@ -309,7 +309,7 @@ export default {
           } else {
             let telArr = this.tel.split(/[\n]/)
             for (let i = 0; i < telArr.length; i++) {
-              if (!this.pattern.MOBILE.test(telArr[i])) {
+              if (!this.pattern.MOBILE.test(telArr[i].trim())) {
                 this.messageService.warn({
                   content: '请输入正确格式手机号'
                 })
