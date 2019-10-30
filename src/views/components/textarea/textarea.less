@@ -10,26 +10,17 @@
     position: relative;
     border: 0;
     z-index: 2;
-    &-copy {
-      display: inline-block;
-      width: 100%;
-      min-height: 106px;
-      max-height: 170px;
-      padding: 8px 12px 32px;
-      overflow-y: hidden;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 1;
-      color: #fff;
-    }
-    &-text {
-      color: #9bacb9;
-    }
   }
   &__label {
     position: absolute !important;
     right: 16px;
+    bottom: 8px;
+    .fz(14px);
+    .c(@text-light);
+  }
+  &__suffix {
+    position: absolute !important;
+    left: 16px;
     bottom: 8px;
     .fz(14px);
     .c(@text-light);
