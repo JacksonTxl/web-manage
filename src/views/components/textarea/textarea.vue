@@ -34,7 +34,7 @@ export default {
     },
     // 文字后缀
     suffix: {
-      type: String
+      type: [String, Object]
     },
     // 单位
     step: {
