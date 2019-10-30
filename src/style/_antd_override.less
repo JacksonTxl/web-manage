@@ -114,11 +114,23 @@ input[type='password']::placeholder {
 }
 // 按钮禁用样式
 .ant-btn-primary[disabled] {
-  background: rgba(205, 212, 223, 1);
+  background: #cdd4df;
   color: #fff;
   &:hover,
   &:active {
-    background: rgba(205, 212, 223, 1);
+    background: #cdd4df;
     color: #fff;
+  }
+}
+
+.ant-btn-dashed[disabled] {
+  .bg(@bg-gray);
+  .c(@text-light);
+  border-color: @border-color;
+  &:hover,
+  &:active {
+    .bg(@bg-gray);
+    .c(@text-light);
+    border-color: @border-color;
   }
 }

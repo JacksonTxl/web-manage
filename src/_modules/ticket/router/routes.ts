@@ -1,16 +1,10 @@
 import Print from '../views/pages/print.vue'
 import { PrintService } from '../views/pages/print.service'
-import { TitleService } from '@/services/title.service'
-import { RouteService } from '@/services/route.service'
-import { TokenService } from '@/services/token.service'
-import { NProgressService } from '@/services/nprogress.service'
+import { ProgressGuard } from '@/guards/progress.guard'
+import { SyncQueryGuard } from '@/guards/sync-query.guard'
+import { TitleGuard } from '@/guards/title.guard'
 
-const ticketGuards = [
-  NProgressService,
-  TokenService,
-  TitleService,
-  RouteService
-]
+const ticketGuards = [ProgressGuard, SyncQueryGuard, TitleGuard]
 
 export default [
   {
