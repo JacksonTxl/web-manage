@@ -91,7 +91,7 @@ export default {
       list: []
     }
   },
-  created() {
+  mounted() {
     this.checkedShopIds = this.shopIds
     this.getShops(this.shopIds)
   },

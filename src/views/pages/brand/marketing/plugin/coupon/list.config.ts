@@ -1,6 +1,5 @@
 export const columns = (vm: any) => {
   const $t = vm.$t
-  console.log($t)
   return [
     {
       title: '优惠券名称',
