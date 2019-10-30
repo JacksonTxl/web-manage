@@ -1,3 +1,5 @@
+import { StatService } from './../../../../../shop/stat.service'
+import moment from 'moment'
 export const ruleOptions = (vm: any) => {
   const pattern = vm.pattern
   return {
@@ -18,6 +20,17 @@ export const ruleOptions = (vm: any) => {
         {
           required: true,
           message: '请输入活动时间'
+        },
+        {
+          validator: (field: any, value: any, values: any) => {
+            const startDate = value[0].valueOf()
+            const mt = moment()
+              .subtract(30, 'm')
+              .valueOf()
+            if (!vm.isEdit && startDate < mt) {
+              return '选择活动开始时间要大于当前时间'
+            }
+          }
         }
       ]
     },
