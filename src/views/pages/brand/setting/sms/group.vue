@@ -84,7 +84,16 @@
           {{ record.received_count }}
         </a>
       </div>
-      <div slot="content" slot-scope="text, record">
+      <div
+        slot="content"
+        style="overflow: hidden;
+    white-space: nowrap;
+    width:260px;
+     line-clamp: 2;
+    text-overflow:ellipsis;
+"
+        slot-scope="text, record"
+      >
         <a-tooltip
           placement="topLeft"
           overlayClassName="page-setting-sms-group-tooltip"
