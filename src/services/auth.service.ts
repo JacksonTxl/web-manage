@@ -95,9 +95,12 @@ export class AuthService {
     set(data, key, authObj)
     return data
   }
+  /**
+   * 校验某权限是否在全局下拥有
+   */
   can(authKey: string) {
     const authSnap = this.auth$.snapshot()
-    return 1
+    return authSnap.includes(authKey)
   }
   /**
    * 通过map表获取当页的全局权限点
@@ -115,9 +118,6 @@ export class AuthService {
         })
       )
     )
-  }
-  tabCan(s: string) {
-    return 1
   }
   /**
    * 通过路由名称获取授权的tabs数组对象
@@ -171,14 +171,18 @@ export class AuthService {
         authedTabs.push(tab)
         return
       }
-
-      // TODO: 暂时使用常量返回true
-      if (this.tabCan(meta.auth)) {
+      /**
+       * 没有配置 直接显示
+       */
+      if (!meta.auth) {
         authedTabs.push(tab)
-        return
+      } else {
+        if (this.can(meta.auth)) {
+          authedTabs.push(tab)
+        }
       }
     })
-    console.log('authedTabs', authedTabs)
+    console.log('[auth.service] authedTabs', authedTabs)
     return authedTabs
   }
 }

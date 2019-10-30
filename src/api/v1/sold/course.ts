@@ -176,9 +176,7 @@ export class CourseApi extends Api {
    * 售出 课程包 详情使用记录
    */
   getPackageUsageLog(query: any) {
-    let id = query.id
-    delete query.id
-    return this.http.get(`/v1/course/package/cost/detail/${id}`, {
+    return this.http.get(`/v1/course/package/cost/detail/${query.id}`, {
       query
     })
   }

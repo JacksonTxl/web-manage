@@ -145,6 +145,7 @@ export const routeMapConfig = {
   },
   'shop-sold-card-list-member'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '{{$c("member_card")}}'
+    routeConfig.meta.auth = 'shop:sold:sold_member_card|list'
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       card_type: { type: Number, default: -1 },
@@ -158,6 +159,7 @@ export const routeMapConfig = {
   },
   'shop-sold-card-list-deposit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '储值卡'
+    routeConfig.meta.auth = 'shop:sold:sold_deposit_card|list'
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       is_valid: { type: Number, default: -1 },
