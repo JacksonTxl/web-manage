@@ -4,7 +4,7 @@
       v-model="crowdIndexInfo.important_crowd"
       v-if="crowdIndexInfo.important_crowd.length > 0"
     ></index>
-    <st-panel>
+    <st-panel app>
       <div slot="title">
         <router-link
           :to="{ name: 'brand-marketing-plugin-crowd-add' }"

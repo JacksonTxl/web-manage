@@ -65,7 +65,7 @@
             height="164px"
             :list="faceList"
             @change="onChangeGetFace"
-            placeholder="上传人脸"
+            placeholder="上传头像"
           ></face-upload>
         </st-form-item>
         <st-form-item required>

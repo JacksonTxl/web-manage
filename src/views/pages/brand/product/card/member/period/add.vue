@@ -524,6 +524,7 @@
                   v-for="item in sell_type_list"
                   :key="item.value"
                   :value="item.value"
+                  class="mg-r8"
                 >
                   {{ item.label }}
                 </a-checkbox>
