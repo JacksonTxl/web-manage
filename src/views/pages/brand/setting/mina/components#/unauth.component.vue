@@ -13,7 +13,7 @@
         <p>
           点击下方按钮前往微信公众平台注册（目前仅支持「企业」类型主体）；注册成功后授权给三体云动即可。
         </p>
-        <st-button type="secondary" @click="onReg">去官方注册</st-button>
+        <st-button @click="onReg">去官方注册</st-button>
       </div>
     </st-panel>
   </div>
