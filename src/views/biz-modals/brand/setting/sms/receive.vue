@@ -1,6 +1,6 @@
 <template>
   <st-modal
-    title="接受人"
+    title="接收人"
     v-model="show"
     :footer="null"
     wrapClassName="scroll-modal"
@@ -52,16 +52,18 @@ export default {
   },
   created() {
     this.getReceiveNumList({
+      id: this.id,
       size: 20,
       current_page: 1
     })
   },
   methods: {
-    getReceiveNumList() {
-      return this.smsReceiveNumService.getReceiveNumList(this.id).subscribe()
+    getReceiveNumList(query) {
+      return this.smsReceiveNumService.getReceiveNumList(query).subscribe()
     },
     onPageChange(data) {
       this.getReceiveNumList({
+        id: this.id,
         size: data.pageSize,
         current_page: data.current
       })

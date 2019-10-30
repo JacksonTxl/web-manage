@@ -5,9 +5,6 @@
       v-for="(item, index) in fileList"
       :key="index"
     >
-      <!-- NOTE:先去除这个功能 -->
-      <!-- @mouseenter="uploadShowFlag = true" -->
-      <!-- @mouseleave="uploadShowFlag = false" -->
       <img
         class="st-image-upload__item-img"
         :src="
@@ -38,11 +35,6 @@
             type="plus-circle"
             style="font-size: 32px;color: #9BACB9;"
           ></st-icon>
-          <!-- <a-icon
-            type="plus-circle"
-            theme="filled"
-            :style="{ fontSize: '36px', color: '#9BACB9' }"
-          /> -->
           <div class="st-image-upload__placeholder">{{ placeholder }}</div>
           <div class="st-image-upload__description mg-t8">
             <slot name="description"></slot>
