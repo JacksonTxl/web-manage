@@ -8,17 +8,23 @@
         .s(280px, 158px);
       }
     }
+    &__left {
+      width: 73%;
+    }
     &__tip {
       display: flex;
       align-items: center;
       .item {
-        .mg-r(130px);
+        flex: 1;
         .label {
           font-size: 14px;
           font-weight: 400;
           color: rgba(37, 42, 46, 1);
           line-height: 22px;
         }
+      }
+      .item:last-child {
+        min-width: 235px;
       }
     }
     &__description {

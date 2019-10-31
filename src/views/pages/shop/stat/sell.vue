@@ -52,7 +52,7 @@
     </section>
     <st-table
       :page="page"
-      :scroll="{ x: 2250 }"
+      :scroll="{ x: 2300 }"
       @change="onTableChange"
       :loading="loading.init"
       :columns="columns"
