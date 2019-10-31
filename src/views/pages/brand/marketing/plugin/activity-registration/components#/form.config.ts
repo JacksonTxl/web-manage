@@ -1,5 +1,6 @@
 import { StatService } from './../../../../../shop/stat.service'
 import moment from 'moment'
+import { ACTIVITY_STATUS } from '@/constants/brand/marketing'
 export const ruleOptions = (vm: any) => {
   const pattern = vm.pattern
   return {
@@ -43,10 +44,11 @@ export const ruleOptions = (vm: any) => {
         },
         {
           validator: (field: any, value: any, values: any) => {
-            if (!vm.defaultForm$) return
-            if (vm.defaultForm$.member_limit_num === 0) {
-              return '活动人数是0时，该活动不限制人数'
-            }
+            if (
+              vm.defaultForm$ &&
+              vm.defaultForm$.activity_status !== ACTIVITY_STATUS.PUBLISHED
+            )
+              return
             const memberLimitNum = vm.defaultForm$.member_limit_num
             if (value < memberLimitNum) {
               return `编辑活动时，活动人数不能小于${memberLimitNum}`

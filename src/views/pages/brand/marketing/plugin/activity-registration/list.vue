@@ -7,6 +7,7 @@
           <st-button
             @click="onClickRouterPush({ pathName: 'addActivity' })"
             icon="add"
+            :disabled="!auth$.add"
             type="primary"
           >
             新增活动
@@ -160,12 +161,13 @@ export default {
     }
   },
   rxState() {
-    const { page$, list$, activityStatus$, loading$ } = this.service
+    const { page$, list$, activityStatus$, loading$, auth$ } = this.service
     return {
       query: this.routeService.query$,
       activityStatus$,
       page$,
       list$,
+      auth$,
       loading$
     }
   },

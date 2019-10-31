@@ -46,7 +46,7 @@
         </st-form-item>
         <st-form-item label="购买用户" required>
           <a-select
-            style="width:100px"
+            style="width:140px"
             :disabled="isDisabled"
             v-decorator="decorators.crowd_id"
             :options="crowdIdOptions"
@@ -214,7 +214,7 @@ export default {
       radioStyle: {
         display: 'block'
       },
-      isShowSaleDatePicker: true
+      isShowSaleDatePicker: false
     }
   },
   props: {

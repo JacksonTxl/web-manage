@@ -184,13 +184,15 @@ export default {
   },
   methods: {
     isDel(value) {
-      if (this.isEdit) {
+      if (value.extra_sort === 0 && value.extra_sort === 1) {
+        return false
+      } else if (this.activityStatus === ACTIVITY_STATUS.DRAFT) {
+        return true
+      } else if (this.isEdit) {
         const extraSortArr = cloneDeep(
           this.defaultForm$.rule_settings.join_ext_info
         ).extra_data.map(item => item.extra_sort)
         return !extraSortArr.includes(value.extra_sort)
-      } else {
-        return value.extra_sort !== 0 && value.extra_sort !== 1
       }
     },
     initForm() {

@@ -5,6 +5,7 @@ import { tap, map } from 'rxjs/operators'
 import { SignUpApi, GetSignUpList } from '@/api/v1/marketing/sign-up'
 import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
+import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class ListService implements RouteGuard {
@@ -12,7 +13,10 @@ export class ListService implements RouteGuard {
   page$ = new State({})
   loading$ = new State({})
   pluginInfo$ = new State({})
-  auth$ = new State({})
+  auth$ = this.authService.authMap$({
+    add: 'brand:activity:sign_up|add',
+    checkIn: 'brand:activity:sign_up|check_in'
+  })
   activityStatus$ = this.userService.getOptions$(
     'plugin.activity_status_sign_up_join',
     { addAll: true }
@@ -20,7 +24,8 @@ export class ListService implements RouteGuard {
   constructor(
     private signUpApi: SignUpApi,
     private msg: MessageService,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService
   ) {}
   SET_LIST(list: any[]) {
     this.list$.commit(() => list)
