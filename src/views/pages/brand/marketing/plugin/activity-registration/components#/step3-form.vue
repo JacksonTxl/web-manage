@@ -194,6 +194,7 @@ export default {
         ).extra_data.map(item => item.extra_sort)
         return !extraSortArr.includes(value.extra_sort)
       }
+      return true
     },
     initForm() {
       this.$nextTick().then(() => {
