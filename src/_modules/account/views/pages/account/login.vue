@@ -95,7 +95,7 @@
         三体云动Pro&nbsp;·&nbsp;用智能让世界更健康
       </p>
       <p class="page-login-footer__text page-login-footer__copyright">
-        copyright&nbsp;©&nbsp;2015-2019&nbsp;三体云智能科技有限公司
+        Copyright &#169; 2015-2019 三体云智能科技有限公司
       </p>
     </div>
   </div>
@@ -136,7 +136,7 @@ export default {
       ],
       loginTypes: [
         { key: 'user', name: '用户密码登录' },
-        { key: 'mobile', name: '手机动态密码登录' }
+        { key: 'mobile', name: '手机验证码登录' }
       ],
       countryInfo: {}
     }

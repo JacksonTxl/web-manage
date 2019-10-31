@@ -88,12 +88,12 @@ export default {
       this.sharePosterService
         .getSharePosterInfo(this.activity_id)
         .subscribe(res => {
-          if (res.is_auth) {
-            // this.show = false
-            // this.$modalRouter.push({
-            //   name: 'brand-marketing-bind'
-            // })
-            // return
+          if (!res.is_auth) {
+            this.show = false
+            this.$modalRouter.push({
+              name: 'brand-marketing-bind'
+            })
+            return
           } else {
             const activity_date = `${this.info.start_time} - ${
               this.info.end_time
@@ -126,10 +126,10 @@ export default {
       this.button = '下载小程序码'
       this.sharePosterService.getQrCode(this.activity_id).subscribe(res => {
         if (!res.is_auth) {
-          // this.show = false
-          // this.$modalRouter.push({
-          //   name: 'brand-marketing-bind'
-          // })
+          this.show = false
+          this.$modalRouter.push({
+            name: 'brand-marketing-bind'
+          })
         } else {
           this.isLoading = false
           this.url = res.qrcode

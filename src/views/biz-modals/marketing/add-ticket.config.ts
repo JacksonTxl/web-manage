@@ -51,6 +51,7 @@ export const ruleOptions = (vm: any) => {
           validator: (field: any, value: any, values: any) => {
             if (
               vm.ticket &&
+              vm.ticket.ticket_id &&
               vm.formData.activity_status === 1 &&
               value < vm.ticket.ticket_total_num
             ) {
