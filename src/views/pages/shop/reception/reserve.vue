@@ -18,7 +18,7 @@
         </st-search-panel-item>
         <st-search-panel-item label="预约时间：">
           <st-range-picker
-            :disabledDays="60"
+            :disabledDays="180"
             @change="onChangeRangeTime"
             :value="selectTime"
             class="value"
@@ -207,7 +207,7 @@ export default {
     },
     onPrint(id) {
       let record = this.info
-      window.open('/ticket/print?id=' + id, 'width=800;height:600')
+      window.open('/ticket/print?id=' + id, '_blank', 'width=800,height=600')
     }
   }
 }

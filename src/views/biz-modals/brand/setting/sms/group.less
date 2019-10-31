@@ -1,5 +1,4 @@
 .setting-sms-group {
-  position: relative;
   &__form {
     .ant-radio-group {
       .ant-radio-button-wrapper-checked {
@@ -10,9 +9,11 @@
     }
   }
   &__scroll {
+    width: 100%;
     background: #f7f9fc;
     padding: 12px;
     height: 200px;
+    margin-bottom: -48px;
     overflow: auto;
     font-size: 12px;
     &-not {
@@ -24,9 +25,10 @@
       overflow: hidden !important;
     }
     &-add {
-      position: absolute;
+      display: block;
+      position: relative;
       left: 12px;
-      top: 196px;
+      top: -0;
       width: 100%;
       background: #f7f9fc;
       height: 30px;

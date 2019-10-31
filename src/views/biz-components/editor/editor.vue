@@ -95,19 +95,6 @@ export default {
   methods: {
     onChangeGetFile({ image, editor }) {
       editor.setContent(this.value)
-      // 返回插入符号当前位置的selection对象
-      let selection = window.getSelection()
-
-      // 获取包含当前节点的文档片段
-      let range = selection.getRangeAt(0)
-
-      // 创建需追加到光标处节点的文档片段
-      let fragment = range.createContextualFragment(
-        `<img src='${image.url}' width='400' height='400'>`
-      )
-
-      // 将创建的文档片段插入到光标处
-      range.insertNode(fragment.lastChild)
       this.$emit('ready', editor)
       this.$emit('image-change', image)
     }
@@ -158,18 +145,21 @@ export default {
             })
           },
           init_instance_callback(editor) {
-            const editorToolbarEl = document.querySelector('.tox-toolbar')
-            let ele = document.createElement('div')
-            ele.id = 'editorImageUpload'
-            editorToolbarEl.appendChild(ele)
-            new Vue({
-              components: {
-                EditorImage
-              },
-              render: h => (
-                <editor-image editor={editor} onChange={ctx.onChangeGetFile} />
-              )
-            }).$mount('#editorImageUpload')
+            /**
+             * TODO: 图片上传
+             */
+            // const editorToolbarEl = document.querySelector('.tox-toolbar')
+            // let ele = document.createElement('div')
+            // ele.id = 'editorImageUpload'
+            // editorToolbarEl.appendChild(ele)
+            // new Vue({
+            //   components: {
+            //     EditorImage
+            //   },
+            //   render: h => (
+            //     <editor-image editor={editor} onChange={ctx.onChangeGetFile} />
+            //   )
+            // }).$mount('#editorImageUpload')
             editor.setContent(ctx.value)
             ctx.$emit('ready', editor)
           }

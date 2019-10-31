@@ -11,8 +11,7 @@
           </st-t3>
           <div :class="bItem('price-info')">
             <span v-if="ticket.reduce_price" class="discount-price">
-              ¥
-              {{ ticket | filterPrice }}
+              ¥ xxx
             </span>
             <span class="discount-price" v-else>
               ¥{{ ticket.ticket_price }}

@@ -14,7 +14,7 @@
         >
           <st-icon
             size="10px"
-            :type="isOpen ? 'minus' : 'close-tree'"
+            :type="isOpen ? 'open-tree' : 'close-tree'"
           ></st-icon>
         </span>
         <span

@@ -1,10 +1,10 @@
-import { anyAll } from '@/operators/any-all'
 import { UserService } from '@/services/user.service'
 import { StatApi } from '@/api/v1/stat/shop'
 import { Injectable } from 'vue-service-app'
 import { Effect, State } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
+import { forkJoin } from 'rxjs'
 @Injectable()
 export class PersonalConsumeService {
   consumeList$ = new State([])
@@ -45,7 +45,7 @@ export class PersonalConsumeService {
     )
   }
   init(querySelect: any, queryTable: any) {
-    return anyAll(
+    return forkJoin(
       this.getCheckinModalCoachAndCourseList(querySelect),
       this.getConsumeList(queryTable)
     )
