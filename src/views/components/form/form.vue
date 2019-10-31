@@ -1,5 +1,10 @@
 <template>
-  <a-form v-bind="$attrs" v-on="$listeners" class="st-form">
+  <a-form
+    v-bind="$attrs"
+    v-on="$listeners"
+    class="st-form"
+    :class="[`${this.labelAuto ? 'st-form--label-auto' : ''}`]"
+  >
     <slot></slot>
   </a-form>
 </template>
@@ -11,7 +16,8 @@ export default {
     return {
       stFormConfig: {
         labelWidth: this.labelWidth,
-        labelGutter: this.labelGutter
+        labelGutter: this.labelGutter,
+        labelAuto: this.labelAuto
       }
     }
   },
@@ -29,7 +35,25 @@ export default {
     labelGutter: {
       type: String,
       default: ''
+    },
+    /**
+     *
+     * 现在的实现是label会wrap
+     *  TODO: 后期需要实现 自动宽度label 根据表单的所有label中的最大宽度动态计算出
+     */
+    labelAuto: {
+      type: Boolean,
+      default: false
     }
+  },
+  mounted() {
+    const labelEls = [
+      ...this.$el.querySelectorAll('.ant-form-item-label label')
+    ]
+    const maxLabelWidth = parseInt(
+      Math.max(...labelEls.map(el => el.getBoundingClientRect().width))
+    )
+    if (!maxLabelWidth) return
   }
 }
 </script>

@@ -4,7 +4,7 @@
       <span>已约</span>
       <span>{{ reserved_num }}人</span>
     </div>
-    <st-form :form="form">
+    <st-form :form="form" labelAuto>
       <st-form-item label="时间" required>
         <a-date-picker
           :showTime="{ format: 'HH:mm' }"
