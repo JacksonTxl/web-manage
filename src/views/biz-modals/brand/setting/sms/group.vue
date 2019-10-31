@@ -45,7 +45,7 @@
             {{ item.crowd_name }}
           </a-radio-button>
         </a-radio-group>
-        <span :class="bModal('scroll-add')">
+        <span :class="bModal('scroll-add')" v-if="curUser === USER_TYPES.CROWD">
           <span :class="bModal('scroll-not')">不满足?</span>
           <a @click="goCrowd" class="cursor-pointer">
             去添加人群>
