@@ -72,7 +72,7 @@ export default {
           {
             class: 'st-table-actions__empty'
           },
-          ['—']
+          ['--']
         )
       )
     }

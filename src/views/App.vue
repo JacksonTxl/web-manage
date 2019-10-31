@@ -4,9 +4,9 @@
       <component :is="layoutComponent"></component>
       <modal-router-view></modal-router-view>
 
-      <div class="app-env">
+      <div class="app-env" v-if="appConfig.IS_DEV">
         <!-- 本地开发下 -->
-        <span v-if="appConfig.IS_DEV">
+        <span>
           <span>本地开发 API:{{ appConfig.LOCAL_API_ENV }}</span>
           <span v-show="appConfig.PAGE_ENV">页面:{{ appConfig.PAGE_ENV }}</span>
         </span>

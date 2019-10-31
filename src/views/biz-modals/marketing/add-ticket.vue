@@ -14,12 +14,14 @@
         </st-form-item>
         <st-form-item label="票种名称" required>
           <a-input
+            :disabled="isDisabled"
             v-decorator="decorators.ticket_name"
             placeholder="请输入票种名称"
           ></a-input>
         </st-form-item>
         <st-form-item v-show="ticketType === 1" label="价格" required>
           <st-input-number
+            :disabled="isDisabled"
             class="input"
             :float="true"
             :min="0.1"
@@ -42,8 +44,10 @@
           ></a-input-number>
           <span class="mg-l4">张</span>
         </st-form-item>
-        <st-form-item label="购买用户" required style="width:200px">
+        <st-form-item label="购买用户" required>
           <a-select
+            style="width:140px"
+            :disabled="isDisabled"
             v-decorator="decorators.crowd_id"
             :options="crowdIdOptions"
           ></a-select>
@@ -56,6 +60,7 @@
                 class="input mg-l4 mg-r4"
                 :min="0"
                 :max="99999"
+                :disabled="isDisabled"
                 :step="1"
                 :precision="0"
                 v-decorator="decorators.buy_limit_min"
@@ -70,6 +75,7 @@
                 class="input mg-l4 mg-r4"
                 :min="0"
                 :max="99999"
+                :disabled="isDisabled"
                 :step="1"
                 :precision="0"
                 v-decorator="decorators.buy_limit_max"
@@ -85,21 +91,26 @@
           label="团购优惠"
           required
         >
-          <a-radio-group :defaultValue="0" v-model="isBulk">
+          <a-radio-group
+            :disabled="isDisabled"
+            :defaultValue="0"
+            v-model="isBulk"
+          >
             <a-radio :value="1">开启</a-radio>
             <a-radio :value="0">关闭</a-radio>
           </a-radio-group>
         </st-form-item>
-        <div class="form-bulk">
-          <st-pop-container offset="22px" class="mg-t8" v-if="isBulk === 1">
+        <div class="form-bulk" v-show="isBulk === 1">
+          <st-pop-container offset="22px" class="mg-t8">
             <a-row>
-              <a-col :span="13">
+              <a-col :span="11">
                 <st-form-item class="st-form-item__row mg-b0" labelWidth="0">
                   <span>单次购买超过</span>
                   <a-input-number
                     v-decorator="decorators.group_buy_min"
                     class="input mg-l4 mg-r4"
                     :max="99999"
+                    :disabled="isDisabled"
                     :step="1"
                     :precision="0"
                     :min="0"
@@ -107,12 +118,13 @@
                   <span>张,</span>
                 </st-form-item>
               </a-col>
-              <a-col :span="11">
+              <a-col :span="13">
                 <st-form-item class="st-form-item__row mg-b0" labelWidth="0">
                   <span class="mg-l4">每张原价减</span>
                   <st-input-number
                     v-decorator="decorators.reduce_price"
                     class="input mg-l4 mg-r4"
+                    :disabled="isDisabled"
                     :float="true"
                     :min="0"
                     :max="10000"
@@ -124,31 +136,40 @@
           </st-pop-container>
         </div>
 
-        <st-form-item label="售卖时间" class="mg-b0" required>
+        <st-form-item
+          label="售卖时间"
+          :class="{ 'mg-b0': isShowSaleDatePicker }"
+          required
+        >
           <a-radio-group
             :style="radioStyle"
             @change="getCurSaleTimeType"
+            :disabled="isDisabled"
             v-decorator="decorators.buy_time_limit"
           >
             <a-radio :value="1">指定时间</a-radio>
             <a-radio :value="0">活动结束前均可售卖</a-radio>
           </a-radio-group>
         </st-form-item>
-        <st-form-item v-if="form.getFieldValue('buy_time_limit')" labelFix>
+        <st-form-item
+          v-show="isShowSaleDatePicker || form.getFieldValue('buy_time_limit')"
+          labelFix
+        >
           <a-range-picker
             :disabledDate="disabledDate"
             class="mg-t8"
-            v-if="isShowSaleDatePicker"
+            :disabled="isDisabled"
             :showTime="{ format: 'HH:mm' }"
             format="YYYY-MM-DD HH:mm"
             v-decorator="decorators.buy_time"
           ></a-range-picker>
         </st-form-item>
-        <st-form-item label="备注说明">
+        <st-form-item class="mg-b0" label="备注说明">
           <st-textarea
             :maxlength="100"
             :autosize="{ minRows: 2, maxRows: 6 }"
             v-decorator="decorators.ticket_remark"
+            :disabled="isDisabled"
             placeholder="请输入备注说明"
           ></st-textarea>
         </st-form-item>
@@ -168,6 +189,7 @@ import { PatternService } from '@/services/pattern.service'
 import { MessageService } from '@/services/message.service'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
+import { ACTIVITY_STATUS } from '../../../constants/brand/marketing'
 export default {
   name: 'ModalAddTicket',
   bem: {
@@ -193,7 +215,7 @@ export default {
       radioStyle: {
         display: 'block'
       },
-      isShowSaleDatePicker: true
+      isShowSaleDatePicker: false
     }
   },
   props: {
@@ -226,6 +248,13 @@ export default {
   computed: {
     freeTicket() {
       return this.ticketType === 2
+    },
+    isDisabled() {
+      return !!(
+        this.ticket &&
+        this.ticket.ticket_id &&
+        this.formData.activity_status === ACTIVITY_STATUS.PUBLISHED
+      )
     }
   },
   mounted() {
@@ -245,7 +274,9 @@ export default {
         buy_end_time,
         ticket_remark
       } = this.ticket
+      this.ticketType = ticket_price > 0 ? 1 : 2
       const buy_time = [this.moment(buy_start_time), this.moment(buy_end_time)]
+      this.isShowSaleDatePicker = buy_time_limit
       this.form.setFieldsValue({
         ticket_name,
         ticket_price,
