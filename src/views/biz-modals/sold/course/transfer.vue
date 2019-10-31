@@ -479,14 +479,19 @@ export default {
         this.transferService.memberList$.commit(() => [])
         this.form.resetFields(['memberId'])
       } else {
+        let type = 2
+        if (this.isPersonal && this.personalCourseInfo.can_add_member === 1) {
+          type = 1
+        }
+        if (this.isPackage && this.packageTransferInfo.can_add_member === 1) {
+          type = 1
+        }
         // 等于1的时候表示可以新增会员
-        this.transferService
-          .getMember(data, this.personalCourseInfo.can_add_member !== 1 ? 2 : 1)
-          .subscribe(res => {
-            if (!res.list.length) {
-              this.form.resetFields(['memberId'])
-            }
-          })
+        this.transferService.getMember(data, type).subscribe(res => {
+          if (!res.list.length) {
+            this.form.resetFields(['memberId'])
+          }
+        })
       }
     },
     // 选择会员

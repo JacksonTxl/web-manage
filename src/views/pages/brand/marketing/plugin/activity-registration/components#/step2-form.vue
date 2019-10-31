@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100%">
+  <div>
     <st-form-table>
       <thead>
         <tr>
@@ -43,10 +43,7 @@
             <td>{{ getCrowdName(item.crowd_id) }}</td>
             <td>
               <st-table-actions>
-                <a
-                  @click="editTicketItemRecord({ ticket: item, index })"
-                  v-if="!isTicketName(item)"
-                >
+                <a @click="editTicketItemRecord({ ticket: item, index })">
                   设置
                 </a>
                 <a

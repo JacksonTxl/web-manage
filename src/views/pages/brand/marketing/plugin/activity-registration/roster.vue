@@ -74,6 +74,7 @@
                   签到
                 </st-popconfirm>
               </a>
+              <span v-else>{{ record.ticket_status.name }}</span>
             </st-table-actions>
           </template>
         </st-table>
