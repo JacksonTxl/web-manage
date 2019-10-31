@@ -78,7 +78,7 @@ export const ruleOptions = (vm: any) => {
         {
           validator: (field: any, value: any, values: any) => {
             // 票种为免费票团购优惠没有
-            if (values.ticket_price > 0 && value > values.ticket_total_num) {
+            if (+values.ticket_price > 0 && +value > +values.ticket_total_num) {
               return '单次购买最低张数应小于票的总数'
             }
           }
@@ -115,12 +115,13 @@ export const ruleOptions = (vm: any) => {
                 return '单次购买超过张数应小于票的总数'
               }
             }
-            if (Number.isNaN(value) || Number.isNaN(values.buy_limit_max)) {
-              return
-            } else {
-              if (value > values.buy_limit_max) {
-                return '单次购买超过张数应小于购买限制的最高张数'
-              }
+            if (
+              +value < +values.buy_limit_min ||
+              +value > +values.buy_limit_max
+            ) {
+              return `单次购买区间在${values.buy_limit_min} - ${
+                values.buy_limit_max
+              }`
             }
           }
         }
