@@ -244,8 +244,8 @@ export default {
         .validate()
         .then(values => {
           if (
-            this.onChangeEditor() &&
-            this.onChangePoster() &&
+            this.onChangeEditor() ||
+            this.onChangePoster() ||
             this.onChangeAddress()
           )
             return

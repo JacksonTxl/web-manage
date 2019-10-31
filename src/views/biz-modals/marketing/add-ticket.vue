@@ -6,6 +6,7 @@
           <a-radio-group
             @change="onChangeGetTicketType"
             v-model="ticketType"
+            :disabled="isDisabled"
             :defaultValue="1"
           >
             <a-radio :value="1">收费票</a-radio>
@@ -382,15 +383,24 @@ export default {
           })
           return
         }
+        let showData = this.getShowData(values)
+        let form = this.formatData(values)
+        if (this.ticket && this.ticket.ticket_id) {
+          const ticket_id = this.ticket.ticket_id
+          showData = { ticket_id, ...showData }
+          form = { ticket_id, ...form }
+        }
         this.show = false
+
         // 返回表格显示数据
         this.$emit('show', {
-          ticket: this.getShowData(values),
+          ticket: showData,
           index: this.index
         })
+
         // 提交给后台字段
         this.$emit('submit', {
-          ticket: this.formatData(values),
+          ticket: form,
           index: this.index
         })
       })

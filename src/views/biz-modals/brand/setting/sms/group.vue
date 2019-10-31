@@ -126,13 +126,15 @@
             {{ item.title }}
           </a-select-option>
         </a-select>
-        <st-textarea
-          :maxlength="280 - sign.length"
-          :autosize="{ minRows: 2, maxRows: 4 }"
-          v-if="curTem === TMPL_TYPES.CUSTOM"
-          :suffix="sign"
-          v-model="temContent"
-        ></st-textarea>
+        <template>
+          <st-textarea
+            v-if="curTem === TMPL_TYPES.CUSTOM"
+            :maxlength="280 - sign.length"
+            :autosize="{ minRows: 2, maxRows: 4 }"
+            :suffix="sign"
+            v-model="temContent"
+          ></st-textarea>
+        </template>
       </st-form-item>
     </st-form>
   </st-modal>
@@ -215,7 +217,7 @@ export default {
         tmpl_id: this.tmpl.tmpl_id
       })
       this.curTem = 2
-      this.getCurTemContent(this.tmpl.tmpl_id)
+      this.temContent = this.tmpl.content
     }
     if (this.crowd) {
       this.form.setFieldsValue({

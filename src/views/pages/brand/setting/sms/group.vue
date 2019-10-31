@@ -150,7 +150,13 @@
           <a
             v-modal-link="{
               name: 'brand-setting-sms-group',
-              props: { tmpl: { tmpl_type: 2, tmpl_id: record.tmpl_id } },
+              props: {
+                tmpl: {
+                  tmpl_type: 2,
+                  tmpl_id: record.tmpl_id,
+                  content: record.content
+                }
+              },
               on: { success: refresh }
             }"
           >
