@@ -19,7 +19,7 @@ export const ruleOptions = (vm: any) => {
             const ticketNames = vm.dataSource.map(
               (item: any) => item.ticket_name
             )
-            if (!vm.isSetting && ticketNames.includes(value)) {
+            if (ticketNames.includes(value)) {
               return '票种名称重复请重新输入'
             }
           }
