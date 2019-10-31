@@ -157,7 +157,6 @@ export default {
           people_type: this.info.people_type,
           leave_limit: this.info.leave_limit === LEAVE_LIMIT.TRUE ? 1 : 0,
           course_time: this.info.course_time,
-          checkin: this.info.checkin,
           white_list: this.info.white_list
         })
         this.peopleType = this.info.people_type
@@ -166,6 +165,13 @@ export default {
             this.type = item.area_type
           }
         })
+        if (this.type !== this.ENTRY.GATE) {
+          setTimeout(() => {
+            this.form.setFieldsValue({
+              checkin: this.info.checkin
+            })
+          })
+        }
       })
     },
     getCurAreaType(para) {
