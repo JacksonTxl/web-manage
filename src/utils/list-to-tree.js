@@ -38,12 +38,11 @@ export const listToTree = (
 ) => {
   const map = listToMap(list, { keyField })
   const tree = []
-  let number = 0
   forEach(list, item => {
     // parentId
     const parentId = item[parentField]
     item[isLeafField] = true
-    item.key = number++
+    item.key = item.id
     item.title = item.name
     item.scopedSlots = { title: 'title' }
     // 自己是子节点时

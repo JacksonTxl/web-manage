@@ -182,7 +182,7 @@ export default {
     },
     onChangeAddress() {
       this.isAddress = !!!this.address.address
-      return !!this.address.address
+      return !!!this.address.address
     },
     initForm() {
       this.$nextTick().then(() => {
@@ -244,8 +244,8 @@ export default {
         .validate()
         .then(values => {
           if (
-            this.onChangeEditor() &&
-            this.onChangePoster() &&
+            this.onChangeEditor() ||
+            this.onChangePoster() ||
             this.onChangeAddress()
           )
             return
