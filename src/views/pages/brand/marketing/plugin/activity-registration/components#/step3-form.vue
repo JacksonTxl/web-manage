@@ -184,7 +184,7 @@ export default {
   },
   methods: {
     isDel(value) {
-      if (value.extra_sort === 0 && value.extra_sort === 1) {
+      if (value.extra_sort === 0 || value.extra_sort === 1) {
         return false
       } else if (this.activityStatus === ACTIVITY_STATUS.DRAFT) {
         return true
@@ -194,6 +194,7 @@ export default {
         ).extra_data.map(item => item.extra_sort)
         return !extraSortArr.includes(value.extra_sort)
       }
+      return true
     },
     initForm() {
       this.$nextTick().then(() => {

@@ -146,6 +146,7 @@ export default {
   computed: {
     isMemberNumDisabled() {
       return (
+        this.isEdit &&
         this.defaultForm$.activity_status === ACTIVITY_STATUS.PUBLISHED &&
         this.defaultForm$.member_limit_num === 0
       )
