@@ -22,6 +22,7 @@
           </a-select-option>
         </a-select>
       </st-form-item>
+
       <st-form-item label="进入人员范围" required class="page-a-form">
         <a-radio-group
           @change="getCurPeopleType"
@@ -37,6 +38,7 @@
           </a-radio>
         </a-radio-group>
       </st-form-item>
+
       <st-form-item label="指定员工" v-if="peopleType === PEOPLE_TYPE.ONLY">
         <a-select
           mode="multiple"
@@ -56,6 +58,7 @@
           </a-select-option>
         </a-select>
       </st-form-item>
+
       <st-form-item label="离场限制" v-if="type === ENTRY.GATE">
         <st-checkbox
           v-decorator="decorators.leave_limit"
@@ -137,12 +140,12 @@ export default {
       ENTRY,
       CHECKIN,
       PEOPLE_TYPE,
-      peopleType: PEOPLE_TYPE.ONLY,
+      peopleType: 0,
       white_list: [],
       type: ENTRY.GATE // area类型
     }
   },
-  created() {
+  mounted() {
     this.getWhiteList('')
     this.init()
   },
@@ -151,20 +154,14 @@ export default {
       this.areaService.getWhiteList(val).subscribe()
     },
     init() {
-      return this.areaService.init(this.id).subscribe(() => {
-        this.form.setFieldsValue({
-          area_id: this.info.area_id,
-          people_type: this.info.people_type,
-          leave_limit: this.info.leave_limit === LEAVE_LIMIT.TRUE ? 1 : 0,
-          course_time: this.info.course_time,
-          white_list: this.info.white_list
-        })
+      this.areaService.init(this.id).subscribe(res => {
         this.peopleType = this.info.people_type
         this.list.forEach(item => {
           if (item.area_id === this.info.area_id) {
             this.type = item.area_type
           }
         })
+
         if (this.type !== this.ENTRY.GATE) {
           setTimeout(() => {
             this.form.setFieldsValue({
@@ -172,6 +169,25 @@ export default {
             })
           })
         }
+        if (this.type === this.ENTRY.GATE) {
+          setTimeout(() => {
+            this.form.setFieldsValue({
+              leave_limit: this.info.leave_limit
+            })
+          })
+        }
+        if (this.peopleType === this.PEOPLE_TYPE.ONLY) {
+          setTimeout(() => {
+            this.form.setFieldsValue({
+              white_list: this.info.white_list
+            })
+          })
+        }
+        this.form.setFieldsValue({
+          area_id: this.info.area_id,
+          course_time: this.info.course_time,
+          people_type: this.info.people_type
+        })
       })
     },
     getCurAreaType(para) {
