@@ -102,11 +102,19 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
-            if (value > values.ticket_total_num) {
-              return '单次购买超过张数应小于票的总数'
+            if (Number.isNaN(value) || Number.isNaN(values.ticket_total_num)) {
+              return
+            } else {
+              if (value > values.ticket_total_num) {
+                return '单次购买超过张数应小于票的总数'
+              }
             }
-            if (value > values.buy_limit_max) {
-              return '单次购买超过张数应小于购买限制的最高张数'
+            if (Number.isNaN(value) || Number.isNaN(values.buy_limit_max)) {
+              return
+            } else {
+              if (value > values.buy_limit_max) {
+                return '单次购买超过张数应小于购买限制的最高张数'
+              }
             }
           }
         }
@@ -117,7 +125,9 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
-            if (value > values.ticket_price) {
+            debugger
+            if (Number.isNaN(value) || Number.isNaN(values.ticket_price)) return
+            if (+value > +values.ticket_price) {
               return '每张减的价格应小于票的原价'
             }
           }
@@ -137,16 +147,16 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
-            if (vm.formData.activity_status !== ACTIVITY_STATUS.PUBLISHED)
+            if (vm.formData.activity_status === ACTIVITY_STATUS.PUBLISHED)
               return
             const endTime = moment(vm.stepForm.end_time)
             if (value[0].valueOf() > endTime.valueOf()) {
-              return `售卖开始时间要早于活动时间${endTime.format(
+              return `售卖开始时间要早于活动结束时间${endTime.format(
                 'YYYY-MM-DD  HH:mm'
               )}`
             }
             if (value[1].valueOf() > endTime.valueOf()) {
-              return `售卖开始时间要早于活动时间${endTime.format(
+              return `售卖结束时间要早于活动结束时间${endTime.format(
                 'YYYY-MM-DD  HH:mm'
               )}`
             }
