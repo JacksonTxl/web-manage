@@ -90,14 +90,11 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
-            if (value > values.ticket_total_num) {
+            if (+value > +values.ticket_total_num) {
               return '单次购买最高张数应小于票的总数'
             }
-            if (value < values.buy_limit_min) {
-              return '单次购买最低张数应小于最高张数'
-            }
             if (+values.buy_limit_min > 0 && +value < +values.buy_limit_min) {
-              return `最大购买张数应小于最低购买张数${values.buy_limit_min}`
+              return `最大购买张数应大于最低购买张数${values.buy_limit_min}`
             }
           }
         }
