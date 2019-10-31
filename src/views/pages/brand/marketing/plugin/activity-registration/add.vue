@@ -15,7 +15,7 @@
       ></signup-h5-view>
     </div>
     <div :class="bPage()">
-      <a-steps :current="currentStep" size="small">
+      <a-steps :class="bPage('step')" :current="currentStep">
         <a-step v-for="(info, idx) in steps" :key="idx" :title="info.title" />
       </a-steps>
       <div :class="bPage('form')">
@@ -48,9 +48,9 @@
           @change="onChangeStep3Form"
         ></step3-form>
       </div>
-      <div slot="actions">
-        <di-view name="step"></di-view>
-      </div>
+    </div>
+    <div slot="actions">
+      <di-view name="step"></di-view>
     </div>
   </st-mina-panel>
 </template>
