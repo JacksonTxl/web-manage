@@ -19,13 +19,11 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     leave_limit: {
-      initialValue: vm.leave_limit
+      // initialValue: vm.leave_limit
     },
-    checkin: {
-      initialValue: vm.checkin
-    },
+    checkin: {},
     white_list: {
-      initialValue: vm.white_list,
+      // initialValue: vm.white_list,
       rules: [
         {
           required: true,
