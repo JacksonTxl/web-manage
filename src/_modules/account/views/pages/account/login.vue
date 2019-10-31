@@ -136,7 +136,7 @@ export default {
       ],
       loginTypes: [
         { key: 'user', name: '用户密码登录' },
-        { key: 'mobile', name: '手机动态密码登录' }
+        { key: 'mobile', name: '手机验证码登录' }
       ],
       countryInfo: {}
     }
