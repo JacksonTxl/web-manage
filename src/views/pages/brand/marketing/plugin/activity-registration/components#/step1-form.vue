@@ -146,6 +146,7 @@ export default {
   computed: {
     isMemberNumDisabled() {
       return (
+        this.isEdit &&
         this.defaultForm$.activity_status === ACTIVITY_STATUS.PUBLISHED &&
         this.defaultForm$.member_limit_num === 0
       )
@@ -168,8 +169,6 @@ export default {
   methods: {
     moment,
     getImageUrl(imageUrl) {
-      console.log(imageUrl)
-      debugger
       const imgEl = `<img src='${imageUrl.url}' width='400' height='400'>`
       this.content = this.content + imgEl
     },
