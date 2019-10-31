@@ -255,13 +255,11 @@
                 v-decorator="decorators.contractNumber"
                 placeholder="请输入合同编号"
               ></a-input>
-              <st-button
+              <auto-contract-btn
                 class="create-button"
                 @click="onCodeNumber"
                 :loading="loading.getCodeNumber"
-              >
-                自动生成
-              </st-button>
+              ></auto-contract-btn>
             </div>
           </st-form-item>
           <st-form-item
@@ -315,8 +313,12 @@ import { UserService } from '@/services/user.service'
 import { cloneDeep } from 'lodash-es'
 import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from './transfer.config'
+import autoContractBtn from '@/views/biz-components/contract/auto-contract-btn.vue'
 export default {
   name: 'ModalSoldCardTransfer',
+  components: {
+    autoContractBtn
+  },
   bem: {
     transfer: 'modal-sold-card-transfer'
   },

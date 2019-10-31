@@ -77,13 +77,13 @@
                 v-decorator="decorators.contractNumber"
                 placeholder="请输入合同编号"
               ></a-input>
-              <st-button
+              <auto-contract-btn
                 class="create-button"
                 @click="onCodeNumber"
                 :loading="loading.getCodeNumber"
               >
                 自动生成
-              </st-button>
+              </auto-contract-btn>
             </div>
           </st-form-item>
           <st-form-item labelGutter="12px" class="mg-b12" label="商品价格">
@@ -255,6 +255,7 @@ import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
 import { ruleOptions } from './renewal-member.config'
+import autoContractBtn from '@/views/biz-components/contract/auto-contract-btn.vue'
 export default {
   name: 'ModalSoldRenewalMemberCard',
   bem: {
@@ -267,6 +268,9 @@ export default {
     return {
       renewalMemberService: RenewalMemberService
     }
+  },
+  components: {
+    autoContractBtn
   },
   rxState() {
     return {

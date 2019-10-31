@@ -84,13 +84,13 @@
                 v-decorator="decorators.contract_number"
                 placeholder="请输入合同编号"
               ></a-input>
-              <st-button
+              <auto-contract-btn
                 class="create-button"
                 @click="onCodeNumber"
                 :loading="loading.getCodeNumber"
               >
                 自动生成
-              </st-button>
+              </auto-contract-btn>
             </div>
           </st-form-item>
           <st-form-item class="mg-b16" label="租赁费用">
@@ -204,12 +204,16 @@ import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
 import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from './relet.config'
+import autoContractBtn from '@/views/biz-components/contract/auto-contract-btn.vue'
 
 export default {
   name: 'ModalSoldLeaseRelet',
   bem: {
     relet: 'modal-sold-lease-relet',
     sale: 'modal-sold-deal-sale'
+  },
+  components: {
+    autoContractBtn
   },
   serviceProviders() {
     return [ReletService]
