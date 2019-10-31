@@ -39,7 +39,7 @@
             placeholder="上传图片"
           >
             <template v-slot:description>
-              <p>请上传jbg、png格式的图片</p>
+              <p>请上传jpg、png格式的图片</p>
               <p>大小不超过2M，建议尺寸16:9</p>
             </template>
           </st-image-upload>

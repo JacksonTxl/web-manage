@@ -36,7 +36,7 @@
               v-for="(item, index) in extra_info"
             >
               <span class="tip">{{ item }}</span>
-              <span @click="onCLickDelOption(item)">x</span>
+              <span class="mg-l8" @click="onCLickDelOption(item)">x</span>
             </div>
           </div>
         </st-form-item>
