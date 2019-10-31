@@ -40,6 +40,17 @@ export const ruleOptions = (vm: any) => {
         {
           required: true,
           message: '请输入票数'
+        },
+        {
+          validator: (field: any, value: any, values: any) => {
+            if (
+              vm.ticket &&
+              vm.formData.activity_status === 1 &&
+              value < vm.ticket.ticket_total_num
+            ) {
+              return '编辑票种时，票数只能增加不能减少'
+            }
+          }
         }
       ]
     },
@@ -52,7 +63,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     buy_limit_min: {
-      initialValue: 0,
+      initialValue: 1,
       rules: [
         {
           required: true,
@@ -68,7 +79,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     buy_limit_max: {
-      initialValue: 0,
+      initialValue: 1,
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
