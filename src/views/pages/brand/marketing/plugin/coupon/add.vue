@@ -297,14 +297,10 @@ export default {
         .format('YYYY年MM月DD日 23:59')
     },
     getRange() {
-      if (this.isEditMode) {
-        return this.rangeIds
-      } else {
-        let ranges = this.rangeIds.map(item => {
-          return this.couponEnums.product_range.value[item]
-        })
-        return ranges
-      }
+      let ranges = this.rangeIds.map(item => {
+        return this.couponEnums.product_range.value[item]
+      })
+      return ranges
     },
     changeProductRange(event) {
       this.rangeIds = event
