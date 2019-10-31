@@ -82,7 +82,7 @@
       <st-button class="mg-r8" @click="onClickBack">
         上一步
       </st-button>
-      <st-button v-if="!isEdit" class="mg-r8" @click="onClickSaveDraft">
+      <st-button v-if="!isSaveDraft" class="mg-r8" @click="onClickSaveDraft">
         存草稿
       </st-button>
       <st-button @click="onClickRelease" type="primary">
@@ -163,6 +163,12 @@ export default {
     // 如果是编辑的时候，需要活动id
     activity_id() {
       return this.defaultForm$.activity_id
+    },
+    isSaveDraft() {
+      return (
+        this.$route.path.includes('/activity-registration/edit') &&
+        this.activityStatus === ACTIVITY_STATUS.PUBLISHED
+      )
     },
     dataSource() {
       let isDefault = false
