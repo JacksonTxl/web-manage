@@ -12,16 +12,8 @@ export default {
       statService: StatService
     }
   },
-  rxState() {
-    return {
-      authTabs: this.statService.authTabs$
-    }
-  },
   data() {
     return {}
-  },
-  computed: {},
-  methods: {},
-  components: {}
+  }
 }
 </script>
