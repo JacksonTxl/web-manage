@@ -6,6 +6,7 @@
           <a-radio-group
             @change="onChangeGetTicketType"
             v-model="ticketType"
+            :disabled="isDisabled"
             :defaultValue="1"
           >
             <a-radio :value="1">收费票</a-radio>
@@ -100,7 +101,7 @@
             <a-radio :value="0">关闭</a-radio>
           </a-radio-group>
         </st-form-item>
-        <div class="form-bulk" v-show="isBulk === 1">
+        <div class="form-bulk" v-if="isBulk === 1">
           <st-pop-container offset="22px" class="mg-t8">
             <a-row>
               <a-col :span="11">
@@ -151,10 +152,7 @@
             <a-radio :value="0">活动结束前均可售卖</a-radio>
           </a-radio-group>
         </st-form-item>
-        <st-form-item
-          v-show="isShowSaleDatePicker || form.getFieldValue('buy_time_limit')"
-          labelFix
-        >
+        <st-form-item v-show="form.getFieldValue('buy_time_limit')" labelFix>
           <a-range-picker
             :disabledDate="disabledDate"
             class="mg-t8"
@@ -272,22 +270,30 @@ export default {
         is_group_buy,
         buy_start_time,
         buy_end_time,
+        reduce_price,
         ticket_remark
       } = this.ticket
       this.ticketType = ticket_price > 0 ? 1 : 2
       const buy_time = [this.moment(buy_start_time), this.moment(buy_end_time)]
-      this.isShowSaleDatePicker = buy_time_limit
       this.form.setFieldsValue({
         ticket_name,
         ticket_price,
         ticket_total_num,
         buy_limit_min,
         buy_limit_max,
-        group_buy_min,
         buy_time_limit,
-        buy_time,
         ticket_remark
       })
+      // 不为免费票种时才编辑回显
+      console.log(reduce_price)
+      if (ticket_price !== 0) {
+        this.form.setFieldsValue({ group_buy_min, reduce_price })
+      }
+      // 初始化是否自定义时间
+      this.isShowSaleDatePicker = buy_time_limit
+      if (this.isShowSaleDatePicker === 1) {
+        this.form.setFieldsValue({ buy_time })
+      }
       this.isBulk = is_group_buy
     })
   },

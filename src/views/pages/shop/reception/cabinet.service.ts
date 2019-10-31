@@ -1,10 +1,10 @@
-import { anyAll } from '@/operators'
 import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
 import { Effect, State } from 'rx-state/src'
 import { CabinetAreaService as AreaService } from '../setting/components#/area.service'
 import { CabinetApi, DelInput } from '@/api/v1/setting/cabinet'
 import { AuthService } from '@/services/auth.service'
 import { CabinetListService } from './components#/cabinet-list.service'
+import { forkJoin } from 'rxjs'
 
 @Injectable()
 export class CabinetService implements RouteGuard {
@@ -41,7 +41,7 @@ export class CabinetService implements RouteGuard {
     return this.cabinetApi.clearCabinet(params)
   }
   init(query: any) {
-    return anyAll(
+    return forkJoin(
       this.cabinetListService.getList(query.type, query.id),
       this.areaService.getList()
     )

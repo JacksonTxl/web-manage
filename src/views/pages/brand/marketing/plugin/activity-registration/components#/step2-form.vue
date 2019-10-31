@@ -226,7 +226,8 @@ export default {
       })
     },
     getFormItem({ ticket, index }) {
-      if (index) {
+      // 如果索引在则不是添加 则是对票种的设置
+      if (index > -1) {
         this.formDataList = this.formDataList.map((ele, idx) => {
           if (idx === index) {
             ele = ticket

@@ -169,8 +169,6 @@ export default {
   methods: {
     moment,
     getImageUrl(imageUrl) {
-      console.log(imageUrl)
-      debugger
       const imgEl = `<img src='${imageUrl.url}' width='400' height='400'>`
       this.content = this.content + imgEl
     },
@@ -184,7 +182,7 @@ export default {
     },
     onChangeAddress() {
       this.isAddress = !!!this.address.address
-      return !!!this.address.address
+      return !!this.address.address
     },
     initForm() {
       this.$nextTick().then(() => {

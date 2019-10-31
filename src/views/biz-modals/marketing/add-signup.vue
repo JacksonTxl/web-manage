@@ -104,7 +104,6 @@ export default {
   },
   methods: {
     onCLickDelOption(value) {
-      debugger
       this.extra_info = this.extra_info.filter(item => item !== value)
     },
     onCLickGetOption() {
