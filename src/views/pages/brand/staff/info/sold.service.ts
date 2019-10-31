@@ -1,10 +1,10 @@
-import { anyAll } from '@/operators/any-all'
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap, map } from 'rxjs/operators'
 import { StaffApi, GetStaffSoldInput } from '@/api/v1/staff'
 import { cloneDeep } from 'lodash-es'
 import { UserService } from '@/services/user.service'
+import { forkJoin } from 'rxjs'
 
 @Injectable()
 export class SoldService implements RouteGuard {
@@ -41,7 +41,7 @@ export class SoldService implements RouteGuard {
     )
   }
   init(id: string, query: GetStaffSoldInput) {
-    return anyAll(this.getStaffSoldInfo(id, query), this.getShopList())
+    return forkJoin(this.getStaffSoldInfo(id, query), this.getShopList())
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     const { id } = to.meta.query
