@@ -6,7 +6,7 @@ import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { forkJoin } from 'rxjs'
 import moment from 'moment'
-
+import { UserService } from '@/services/user.service'
 interface SetState {
   scheduleTime: any[]
   scheduleList: any[]
@@ -18,7 +18,8 @@ export class PersonalTableService {
   scheduleTime$ = new State([])
   constructor(
     private scheduleService: PersonalScheduleScheduleService,
-    private commonService: PersonalScheduleCommonService
+    private commonService: PersonalScheduleCommonService,
+    private userService: UserService
   ) {}
   getList(query: any) {
     return this.scheduleService.getList(query).pipe(
@@ -70,7 +71,7 @@ export class PersonalTableService {
         })
         scheduleColumns = [
           {
-            title: '教练名称',
+            title: `${this.userService.c('coach')}名称`,
             dataIndex: 'staff_name',
             scopedSlots: { customRender: 'staff_name' }
           },

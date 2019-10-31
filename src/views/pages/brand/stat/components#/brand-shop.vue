@@ -2,7 +2,7 @@
   <div :class="basic()">
     <a-select
       defaultValue="0"
-      style="width: 106px"
+      style="width: 150px"
       @change="handleChange"
       class="mg-l8"
     >

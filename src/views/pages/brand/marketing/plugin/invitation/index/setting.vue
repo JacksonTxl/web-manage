@@ -34,7 +34,9 @@
                 <coupon-tag
                   key="1"
                   class="mg-r8"
-                  :name="inviteeCoupon.coupon_name"
+                  :name="
+                    inviteeCoupon.coupon_name ? inviteeCoupon.coupon_name : ''
+                  "
                   @close="onClose('invitee')"
                 />
                 <st-button @click="onEditCoupon('invitee')" icon="anticon:plus">
@@ -64,7 +66,9 @@
                 <coupon-tag
                   key="2"
                   class="mg-r8"
-                  :name="inviterCoupon.coupon_name"
+                  :name="
+                    inviterCoupon.coupon_name ? inviterCoupon.coupon_name : ''
+                  "
                   @close="onClose('inviter')"
                 />
                 <st-button @click="onEditCoupon('inviter')" icon="anticon:plus">
@@ -89,7 +93,9 @@
               <span class="mg-l24 mg-r8">选择券</span>
               <coupon-tag
                 class="mg-r8"
-                :name="inviteeCoupon.coupon_name"
+                :name="
+                  inviteeCoupon.coupon_name ? inviteeCoupon.coupon_name : ''
+                "
                 key="3"
               />
             </div>
@@ -108,7 +114,9 @@
               <span class="mg-l24 mg-r8">选择券</span>
               <coupon-tag
                 class="mg-r8"
-                :name="inviterCoupon.coupon_name"
+                :name="
+                  inviterCoupon.coupon_name ? inviterCoupon.coupon_name : ''
+                "
                 key="3"
               />
             </div>

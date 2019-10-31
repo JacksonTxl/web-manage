@@ -145,19 +145,6 @@
             <st-form-item class="page-content-card-time mg-b0" required>
               <span slot="label">
                 支持售卖时间
-                <a-popover
-                  trigger="hover"
-                  placement="bottomRight"
-                  arrowPointAtCenter
-                >
-                  <div slot="content">
-                    设置此储值卡可售卖的时间范围
-                  </div>
-                  <a-icon
-                    class="page-content-card-time__icon"
-                    type="info-circle"
-                  ></a-icon>
-                </a-popover>
               </span>
               <a-form-item class="page-a-form">
                 <a-date-picker

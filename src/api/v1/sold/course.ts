@@ -173,6 +173,14 @@ export class CourseApi extends Api {
     })
   }
   /**
+   * 售出 课程包 详情使用记录
+   */
+  getPackageUsageLog(query: any) {
+    return this.http.get(`/v1/course/package/cost/detail`, {
+      query
+    })
+  }
+  /**
    * 售出私教修改教练
    */
   editCoursePersonalCoach(params: EditCoursePersonalCoachInput, id: string) {

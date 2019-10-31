@@ -110,7 +110,7 @@ export default {
           key: 1
         },
         {
-          title: '教练信息',
+          title: `${this.$c('coach')}信息`,
           key: 2
         }
       ]

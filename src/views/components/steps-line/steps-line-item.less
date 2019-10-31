@@ -1,0 +1,27 @@
+.steps-line-item {
+  display: flex;
+  align-items: center;
+  .mg-b(16px);
+  &__index {
+    width: 32px;
+    height: 32px;
+    border-radius: 32px;
+    border: 1px solid @primary-color;
+    .lh(32px);
+    text-align: center;
+    position: relative;
+    .c(@primary-color);
+    &:before {
+      content: '';
+      height: 36px;
+      position: absolute;
+      top: 40px;
+      left: 14px;
+      border: 1px solid #e6e9ef;
+    }
+  }
+  &__content {
+    .mg-l(8px);
+    .mg-t(16px);
+  }
+}

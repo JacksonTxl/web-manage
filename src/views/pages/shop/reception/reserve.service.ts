@@ -35,7 +35,7 @@ export class ReserveService implements RouteGuard {
     )
   }
   /**
-   * TODO: 聚合权限判断 私教课，私教小团课， 团课权限判断
+   * TODO: 聚合权限判断 私教课，私教小团课， 团课权限判断，最好后端优化
    */
   private mapList(list: any, authMap: any) {
     return list.map((item: any) => {
@@ -78,6 +78,13 @@ export class ReserveService implements RouteGuard {
       })
     )
   }
+  // onPrint(params: any) {
+  //   return this.api.onPrint(params).pipe(
+  //     tap(res => {
+  //       this.msg.success({ content: '打印成功' })
+  //     })
+  //   )
+  // }
   init(query: any) {
     return forkJoin([this.getList(query)])
   }

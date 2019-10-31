@@ -40,6 +40,8 @@ Vue.use(VueBemHelper)
 // @ts-ignore
 Vue.use(VueDiView)
 // @ts-ignore
+Vue.use(VueDiView)
+// @ts-ignore
 Vue.use(VueStForm)
 Vue.use(VueStyleguide)
 

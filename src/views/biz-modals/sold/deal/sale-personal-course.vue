@@ -109,6 +109,7 @@
             <div :class="sale('contract')">
               <a-input-number
                 class="input-number"
+                :min="1"
                 :max="9999"
                 v-decorator="decorators.buyNum"
                 placeholder="请输入购买数量"
@@ -179,15 +180,16 @@
                 class="create-button"
                 @click="onCodeNumber"
                 :loading="loading.getCodeNumber"
+                v-if="!isBrandStudio"
               >
                 自动生成
               </st-button>
             </div>
           </st-form-item>
-          <st-form-item label="上课教练" required>
+          <st-form-item :label="`上课${$c('coach')}`" required>
             <a-select
               v-decorator="decorators.coachId"
-              placeholder="选择上课的教练"
+              :placeholder="`选择上课的${$c('coach')}`"
             >
               <a-select-option
                 v-for="(item, index) in coachList"
@@ -362,6 +364,7 @@ import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
 import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from './sale-personal-course.config'
+import { UserService } from '@/services/user.service'
 export default {
   name: 'ModalSoldDealSaleMemberCard',
   bem: {
@@ -373,6 +376,7 @@ export default {
   serviceInject() {
     return {
       salePersonalCourseService: SalePersonalCourseService,
+      userService: UserService,
       pattern: PatternService
     }
   },
@@ -386,7 +390,8 @@ export default {
       coachList: this.salePersonalCourseService.coachList$,
       personalPrice: this.salePersonalCourseService.personalPrice$,
       priceInfo: this.salePersonalCourseService.priceInfo$,
-      orderAmountPrice: this.salePersonalCourseService.orderAmountPrice$
+      orderAmountPrice: this.salePersonalCourseService.orderAmountPrice$,
+      isBrandStudio: this.userService.isBrandStudio$
     }
   },
   props: {

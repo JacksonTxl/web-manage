@@ -54,7 +54,7 @@ export const cardItem = () => {
   ]
 }
 
-export const course = () => {
+export const course = (vm: any) => {
   return [
     {
       title: '合同编号',
@@ -72,7 +72,7 @@ export const course = () => {
       key: 'course_name'
     },
     {
-      title: '上课教练',
+      title: `上课${vm.$c('coach')}`,
       dataIndex: 'coach_name',
       key: 'coach_name',
       scopedSlots: { customRender: 'coach_name' }

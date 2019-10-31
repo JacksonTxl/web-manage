@@ -91,7 +91,7 @@
           <st-t3>{{ li.module_name }}</st-t3>
           <!-- <div v-if="li.course_type === 1"> -->
           <div v-if="index === 0">
-            <p>私人教练全程陪伴，健身事半功倍！</p>
+            <p>私人{{ $c('coach') }}全程陪伴，健身事半功倍！</p>
             <swiper :options="swiperOption">
               <swiper-slide v-for="(li, index) in recommend1" :key="index">
                 <img :src="li" />

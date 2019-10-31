@@ -222,7 +222,7 @@
               <span class="set-info-value">无</span>
             </div>
             <div class="set-info-item" v-if="isSelectMember">
-              <span class="set-info-label">跟进教练</span>
+              <span class="set-info-label">跟进{{ $c('coach') }}</span>
               <template v-if="!isEditCoach">
                 <span class="set-info-value">
                   {{ selectMemberInfo.coach.name || '无' }}
@@ -263,7 +263,7 @@
               </template>
             </div>
             <div class="set-info-item" v-else>
-              <span class="set-info-label">跟进教练</span>
+              <span class="set-info-label">跟进{{ $c('coach') }}</span>
               <span class="set-info-value">无</span>
             </div>
             <div class="set-info-item">
@@ -336,7 +336,7 @@
               </template>
             </div>
             <div class="set-info-item">
-              <span class="set-info-label">跟进教练</span>
+              <span class="set-info-label">跟进{{ $c('coach') }}</span>
               <template v-if="!isEditCoach">
                 <span class="set-info-value">
                   {{ selectMemberInfo.coach.name || '无' }}

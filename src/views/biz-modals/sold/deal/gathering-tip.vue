@@ -10,7 +10,9 @@
     <div :class="gatheringTip('content')">
       <st-icon type="success" class="img" color="#52c41a" />
       <p>{{ message }}</p>
-      <st-button type="primary" @click="print">打印合同</st-button>
+      <st-button v-if="!isBrandStudio" type="primary" @click="print">
+        打印合同
+      </st-button>
       <st-button @click="viewOrder">查看订单</st-button>
       <st-button @click="goPay" v-if="needPay">去支付</st-button>
     </div>
@@ -18,6 +20,7 @@
 </template>
 
 <script>
+import { UserService } from '@/services/user.service'
 export default {
   name: 'ModalSoldDealGatheringTip',
   bem: {
@@ -26,6 +29,16 @@ export default {
   data() {
     return {
       show: false
+    }
+  },
+  serviceInject() {
+    return {
+      userService: UserService
+    }
+  },
+  rxState() {
+    return {
+      isBrandStudio: this.userService.isBrandStudio$
     }
   },
   props: {

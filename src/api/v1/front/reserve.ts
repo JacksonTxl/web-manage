@@ -55,6 +55,12 @@ export class ReserveApi extends Api {
   confirmCourseReserve(params: any) {
     return this.http.put(`/v1/member/sign/${params.id}`, { params })
   }
+  /**
+   * 打印小票
+   */
+  getPrintInfo(id: any) {
+    return this.http.get(`/v1/front/reserve/ticket/${id}`)
+  }
 }
 export interface GetListInput {
   reserve_type: number

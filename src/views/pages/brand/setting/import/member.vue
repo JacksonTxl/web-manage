@@ -21,7 +21,7 @@
             用户跟进员工
           </a-radio>
           <label :class="bTable('desc')">
-            门店维度下，跟进的教练或销售
+            门店维度下，跟进的{{ $c('coach') }}或销售
           </label>
         </div>
       </a-radio-group>

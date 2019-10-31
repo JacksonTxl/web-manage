@@ -1,11 +1,11 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { map, tap, pluck } from 'rxjs/operators'
+import { Injectable } from 'vue-service-app'
+import { map, tap } from 'rxjs/operators'
 import { RegionApi, GetRegionInput } from '@/api/region'
 import { of } from 'rxjs'
 import { State } from 'rx-state'
 
 @Injectable()
-export class RegionService implements RouteGuard {
+export class RegionService {
   regionPC$ = new State([])
   constructor(private regionApi: RegionApi) {}
   getRegionPC() {
@@ -53,8 +53,5 @@ export class RegionService implements RouteGuard {
   }
   getRegionProvinces() {
     return this.regionApi.getRegionProvinces()
-  }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    return this.getRegions()
   }
 }

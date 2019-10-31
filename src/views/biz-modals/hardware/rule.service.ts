@@ -6,7 +6,7 @@ import { tap } from 'rxjs/operators'
 @Injectable()
 export class RuleService {
   loading$ = new State({})
-  rule$ = this.userService.getOptions$('setting.entrance.times_card_rules')
+  rule$ = this.userService.getOptions$('entrance.times_card_rules')
 
   constructor(
     private HareWareApi: HareWareApi,

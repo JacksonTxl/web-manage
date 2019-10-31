@@ -1,6 +1,6 @@
 <template>
   <st-modal title="编辑课程排期" :footer="null" v-model="show" size="small">
-    <st-form :form="form" labelWidth="54px">
+    <st-form :form="form" labelWidth="54px" labelAuto>
       <st-form-item label="时间" required>
         <a-date-picker
           class="full-width"
@@ -27,7 +27,7 @@
           </a-select-option>
         </a-select>
       </st-form-item>
-      <st-form-item label="教练" required>
+      <st-form-item :label="$c('coach')" required>
         <a-select v-decorator="decorators.coach_id">
           <a-select-option
             v-for="coach in courseCoachOptions"

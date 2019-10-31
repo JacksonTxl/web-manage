@@ -36,11 +36,11 @@
       </a-row>
       <st-form :form="form" labelWidth="88px">
         <div :class="sale('sale')">
-          <st-form-item label="会员卡" required labelGutter="12px">
+          <st-form-item :label="$c('member_card')" required labelGutter="12px">
             <a-select
               showSearch
               allowClear
-              placeholder="输入会员卡名搜索"
+              :placeholder="`输入${$c('member_card')}名搜索`"
               :defaultActiveFirstOption="false"
               :showArrow="false"
               :filterOption="false"

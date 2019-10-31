@@ -18,6 +18,9 @@
   }
 }
 
+.ant-modal-mask {
+  .bg(rgba(0, 0, 0, 0.5));
+}
 .ant-modal {
   .ant-modal-title {
     .lh(24px);
@@ -50,6 +53,11 @@
 .ant-select-selection__placeholder,
 .ant-calendar-range-picker-input::placeholder {
   color: rgba(155, 172, 185);
+  font-size: 14px;
+}
+// 密码框placeholder样式覆盖
+input[type='password']::placeholder {
+  font-size: 14px;
 }
 
 // '›'.chartCodeAt().toString(16)
@@ -106,6 +114,29 @@
 }
 // 按钮禁用样式
 .ant-btn-primary[disabled] {
-  background: rgba(205, 212, 223, 1);
-  color: #ffffff;
+  background: #cdd4df;
+  color: #fff;
+  &:hover,
+  &:active {
+    background: #cdd4df;
+    color: #fff;
+  }
+}
+
+.ant-btn-dashed[disabled] {
+  .bg(@bg-gray);
+  .c(@text-light);
+  border-color: @border-color;
+  &:hover,
+  &:active {
+    .bg(@bg-gray);
+    .c(@text-light);
+    border-color: @border-color;
+  }
+}
+
+//form表单错误提示
+.ant-form-explain {
+  font-size: 12px;
+  margin-top: 2px;
 }

@@ -4,6 +4,7 @@ import { tap } from 'rxjs/operators'
 import { StatApi, RecentQuery } from '@/api/v1/stat/brand'
 import { forkJoin } from 'rxjs'
 import { anyAll } from '@/operators'
+import { UserService } from '@/services/user.service'
 
 @Injectable()
 export class ClubService {
@@ -14,7 +15,7 @@ export class ClubService {
   entry$ = new State([])
   marketing$ = new State([])
   marketingFunnel$ = new State([])
-  constructor(private statApi: StatApi) {}
+  constructor(private statApi: StatApi, private userService: UserService) {}
   getTop() {
     return this.statApi.getTop({ version: 'club' }).pipe(
       tap(res => {
@@ -60,7 +61,10 @@ export class ClubService {
     return this.statApi.getAvg({ version: 'club' }).pipe(
       tap(res => {
         this.avg$.commit(() => [
-          { name: '会员卡', value: res.info.member_card_amount },
+          {
+            name: this.userService.c('member_card'),
+            value: res.info.member_card_amount
+          },
           { name: '储值卡', value: res.info.deposit_card_amount },
           { name: '团体课', value: res.info.team_course_amount },
           { name: '私教课', value: res.info.personal_course_amount },

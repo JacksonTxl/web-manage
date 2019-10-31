@@ -31,7 +31,7 @@
           </a-col>
           <!-- <a-col :span="8" v-if="info.is_member_card">
             <div class="info-item">
-              <label class="info-label">会员卡号：</label>
+              <label class="info-label">{{ $c('member_card') }}号：</label>
               <span class="info-text">ST000001</span>
             </div>
           </a-col> -->

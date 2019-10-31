@@ -24,7 +24,7 @@ export class ListService {
     globalBlackSet: 'shop:setting:hardware|global_black_set',
     areaSet: 'shop:setting:hardware|area_set'
   })
-  rule$ = this.userService.getOptions$('setting.entrance.times_card_rules')
+  rule$ = this.userService.getOptions$('entrance.times_card_rules')
   constructor(
     private HareWareApi: HareWareApi,
     private userService: UserService,

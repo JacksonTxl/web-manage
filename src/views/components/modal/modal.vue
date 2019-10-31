@@ -2,8 +2,15 @@
   <a-modal
     v-bind="$attrs"
     :width="computedWidth"
+    :maskClosable="maskClosable"
     v-on="$listeners"
-    :wrapClassName="['st-modal', wrapClassName].join(' ')"
+    :wrapClassName="
+      [
+        'st-modal',
+        isFooterNull ? 'st-modal--footer-null' : '',
+        wrapClassName
+      ].join(' ')
+    "
   >
     <slot name="title" slot="title"></slot>
     <slot name="prepend"></slot>
@@ -38,9 +45,16 @@ export default {
     loading: {
       type: Boolean,
       default: false
+    },
+    maskClosable: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {
+    isFooterNull() {
+      return this.$attrs.footer === false || this.$attrs.footer === null
+    },
     computedWidth() {
       let width = 0
       if (this.width) {
@@ -58,7 +72,9 @@ export default {
       this.$emit('change', false)
     },
     clickModal() {
-      this.close()
+      if (this.maskClosable) {
+        this.close()
+      }
     },
     clickModalContent(e) {
       e.stopPropagation()

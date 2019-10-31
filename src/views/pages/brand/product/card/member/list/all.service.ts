@@ -5,7 +5,7 @@ import { AuthService } from '@/services/auth.service'
 import { tap, map } from 'rxjs/operators'
 import { UserService } from '@/services/user.service'
 import { forkJoin } from 'rxjs'
-
+import { TitleService } from '@/services/title.service'
 @Injectable()
 export class AllService implements RouteGuard {
   list$ = new State([])
@@ -29,7 +29,8 @@ export class AllService implements RouteGuard {
   constructor(
     private cardsApi: CardsApi,
     private userService: UserService,
-    private authService: AuthService
+    private authService: AuthService,
+    private titleService: TitleService
   ) {}
   @Effect()
   getList(query: CardListInput) {
@@ -49,6 +50,7 @@ export class AllService implements RouteGuard {
     return forkJoin([this.getList(query)])
   }
   beforeEach(to: ServiceRoute) {
+    this.titleService.SET_TITLE(`全部${this.userService.c('member_card')}项`)
     return this.init(to.meta.query)
   }
 }

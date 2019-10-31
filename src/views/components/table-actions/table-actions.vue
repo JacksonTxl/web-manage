@@ -64,6 +64,18 @@ export default {
     if (innerActions.length > 0) {
       childnodes.push(popoverVnode)
     }
+
+    if (childnodes.length === 0) {
+      childnodes.push(
+        h(
+          'span',
+          {
+            class: 'st-table-actions__empty'
+          },
+          ['--']
+        )
+      )
+    }
     const result = h(
       'div',
       {

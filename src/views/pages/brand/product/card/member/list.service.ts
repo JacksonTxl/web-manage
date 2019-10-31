@@ -1,10 +1,8 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { RedirectService } from '@/services/redirect.service'
+import { Injectable } from 'vue-service-app'
+import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class ListService {
-  authTabs$ = this.redirectService.getAuthTabs$(
-    'brand-product-card-member-list'
-  )
-  constructor(private redirectService: RedirectService) {}
+  authTabs$ = this.authService.getAuthTabs$('brand-product-card-member-list')
+  constructor(private authService: AuthService) {}
 }

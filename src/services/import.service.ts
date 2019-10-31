@@ -8,6 +8,12 @@ import { Injectable } from 'vue-service-app'
 @Injectable()
 export class ImportService {
   constructor(private appConfig: AppConfig) {}
+  private isJs(src: string) {
+    return src.indexOf('.js') > -1
+  }
+  private isCss(src: string) {
+    return src.indexOf('.css') > -1
+  }
   loadJs(src: string) {
     const s = document.createElement('script')
     const url = src.includes('http') ? src : this.appConfig.BASE_URL + src
@@ -43,12 +49,7 @@ export class ImportService {
       }
     })
   }
-  isJs(src: string) {
-    return src.indexOf('.js') > -1
-  }
-  isCss(src: string) {
-    return src.indexOf('.css') > -1
-  }
+
   load(srcs = []) {
     const tasks: any[] = []
     srcs.forEach(src => {

@@ -21,7 +21,7 @@
             {{ item.start_time }}-{{ item.end_time }}
           </span>
           <st-t3 class="course__name">{{ item.course_name }}</st-t3>
-          <p class="course__coach">教练：{{ item.coach_name }}</p>
+          <p class="course__coach">{{ $c('coach') }}：{{ item.coach_name }}</p>
         </div>
 
         <div class="item__extra" :class="item | barClass">
@@ -32,7 +32,7 @@
             </div>
             <st-t3 class="mg-b8 course__name">{{ item.course_name }}</st-t3>
             <p class="mg-b8 course__item">
-              <span class="label">教练：</span>
+              <span class="label">{{ $c('coach') }}：</span>
               <span class="value">{{ item.coach_name }}</span>
             </p>
             <p v-if="item.court_name" class="mg-b8 course__item">

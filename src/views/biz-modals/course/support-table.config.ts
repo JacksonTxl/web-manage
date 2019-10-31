@@ -16,13 +16,13 @@ export const columnsShops = [
     dataIndex: 'shop_name'
   }
 ]
-export const columnsCoaches = [
+export const columnsCoaches = (vm: any) => [
   {
-    title: '教练',
+    title: vm.$c('coach'),
     dataIndex: 'nickname'
   },
   {
-    title: '教练等级',
+    title: `${vm.$c('coach')}等级`,
     dataIndex: 'level_name'
   },
   {
@@ -31,13 +31,13 @@ export const columnsCoaches = [
     scopedSlots: { customRender: 'nature_work' }
   }
 ]
-export const columnsPrices = [
+export const columnsPrices = (vm: any) => [
   {
     title: '门店',
     dataIndex: 'shop_name'
   },
   {
-    title: '教练等级',
+    title: `${vm.$c('coach')}等级`,
     dataIndex: 'level'
   },
   {
@@ -54,9 +54,9 @@ export const columnsPrices = [
     scopedSlots: { customRender: 'transfer_num' }
   }
 ]
-export const columnsPricesShop = [
+export const columnsPricesShop = (vm: any) => [
   {
-    title: '教练等级',
+    title: `${vm.$c('coach')}等级`,
     dataIndex: 'level'
   },
   {

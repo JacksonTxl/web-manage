@@ -1,0 +1,26 @@
+.step-form-signup {
+  &__step-form {
+    width: 60%;
+  }
+  &__button-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .option-tip {
+    background: #f7f9fc;
+    .c(#3e4d5c);
+  }
+  .item__require {
+    position: relative;
+    &:before {
+      display: inline-block;
+      margin-right: 4px;
+      content: '*';
+      font-family: SimSun;
+      line-height: 1;
+      font-size: 14px;
+      color: #f5222d;
+    }
+  }
+}

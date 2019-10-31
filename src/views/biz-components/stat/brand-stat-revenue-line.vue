@@ -26,17 +26,20 @@ export default {
     // 使用的字段key值数组
     fields: {
       type: Array,
-      default: () => [
-        '会员卡',
-        '私教课',
-        '团体课',
-        // '储值卡',
-        '课程包',
-        '云店',
-        // '定金',
-        // '押金',
-        '其它'
-      ]
+      default() {
+        const member_card = this.$c('member_card')
+        return [
+          member_card,
+          '私教课',
+          '团体课',
+          // '储值卡',
+          '课程包',
+          '云店',
+          // '定金',
+          // '押金',
+          '其它'
+        ]
+      }
     },
     // 颜色数组
     colors: {

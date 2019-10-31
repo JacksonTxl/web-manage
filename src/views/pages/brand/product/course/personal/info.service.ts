@@ -1,6 +1,6 @@
 import { State } from 'rx-state'
 import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
-import { tap } from 'rxjs/operators'
+import { tap, catchError } from 'rxjs/operators'
 import {
   BrandPersonalCourseApi,
   GetPersonalBrandInfoInput
@@ -14,9 +14,15 @@ export class InfoService implements RouteGuard {
   }
   getPersonalBrandInfo(query: GetPersonalBrandInfoInput) {
     return this.brandPersonalCourseApi.getPersonalBrandInfo(query).pipe(
-      tap(res => {
-        this.SET_TEAM_COURSE_INFO(res)
-      })
+      tap(
+        res => {
+          this.SET_TEAM_COURSE_INFO(res)
+        },
+        catchError((res: any) => {
+          console.log('没有详情')
+          return res
+        })
+      )
     )
   }
   init(query: GetPersonalBrandInfoInput) {

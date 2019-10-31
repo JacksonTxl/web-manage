@@ -74,7 +74,7 @@ export class NoCaptchaService {
       nvcCallback: (data: any) => {
         // data为getNVCVal()的值，此函数为二次验证滑动或者刮刮卡通过后的回调函数
         // data跟业务请求一起上传，由后端请求AnalyzeNvc接口，接口会返回100或者900
-        const el: any = document.getElementById('nc_1__bg')
+        const el: any = document.getElementsByClassName('nc_bg')[0]
         el.style.width = '100%'
       }
     }

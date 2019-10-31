@@ -168,9 +168,11 @@ export default {
     return {
       SHOP_SETTING,
       IS_AVAILABLE,
-      columns,
       defaultValue: -1
     }
+  },
+  computed: {
+    columns
   },
   rxState() {
     return {

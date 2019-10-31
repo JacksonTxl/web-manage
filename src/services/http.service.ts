@@ -1,6 +1,5 @@
-import { forEach } from 'lodash-es'
 import qs from 'qs'
-import { Observable, throwError } from 'rxjs'
+import { Observable } from 'rxjs'
 import { ajax, AjaxError } from 'rxjs/ajax'
 import { catchError, pluck, timeout, tap, shareReplay } from 'rxjs/operators'
 import { StResponse } from '@/types/app'
@@ -176,8 +175,11 @@ export class HttpService {
         catchError((err: AjaxError) => {
           const serverResponse: StResponse = err.response
           this.notification.close('ajaxError')
-          this.nprogress.SET_TEXT(`${err.message}`)
           const errMsg = (serverResponse && serverResponse.msg) || err.message
+          const errUrl = err.request ? err.request.url : ''
+          this.nprogress.SET_TEXT(`${errMsg}`)
+          this.nprogress.done()
+
           switch (err.status) {
             case 400:
               if (ignoreCodes.includes(serverResponse.code)) {

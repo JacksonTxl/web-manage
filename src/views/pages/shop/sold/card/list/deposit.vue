@@ -32,7 +32,7 @@
           :scroll="{ x: 1800 }"
         >
           <template slot="is_valid" slot-scope="text">
-            {{ text | enumFilter('sold.is_valid') }}
+            {{ text | enumFilter('sold_common.is_valid') }}
           </template>
           <template slot="end_time" slot-scope="text">
             {{ text }}

@@ -298,7 +298,7 @@ export default {
         receiver: {
           coach: {
             value: 0,
-            name: '教练'
+            name: this.$c('coach')
           },
           member: {
             value: 0,

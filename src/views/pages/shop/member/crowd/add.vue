@@ -144,9 +144,6 @@ export default {
   },
   data() {
     return {
-      // 状态锁
-      flag: true,
-
       selectData: {
         // 基础资料
         base_info: {
@@ -165,8 +162,8 @@ export default {
         deal_info: {
           title: '交易信息',
           value: [
-            '会员卡即将到期',
-            '会员卡剩余次数',
+            `${this.$c('member_card')}即将到期`,
+            `${this.$c('member_card')}剩余次数`,
             '私教课剩余次数',
             '储值卡剩余金额'
           ],
@@ -257,6 +254,8 @@ export default {
         },
         info: {}
       },
+      // 状态锁
+      flag: true,
       form: this.$form.createForm(this),
       basicInfoRuleList: {
         crowd_name: [
@@ -273,6 +272,7 @@ export default {
       }
     }
   },
+  computed: {},
   created() {
     if (this.$route.query.id) {
       this.getCrowdBrand(this.$route.query.id)

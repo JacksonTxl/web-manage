@@ -24,11 +24,11 @@
           @endCount="endCount"
         ></input-phone-code>
       </st-form-item>
-      <st-form-item :class="mobile('pass')" class="mg-b16">
+      <st-form-item :class="mobile('pass')" class="mg-b12">
         <div :class="mobile('pass-content')">
           <a-checkbox v-decorator="decorators.isAgree">
             我已阅读并同意
-            <a @click="clickAgreement">《用户服务协议》</a>
+            <a @click="clickAgreement">《 用户服务协议 》</a>
           </a-checkbox>
         </div>
       </st-form-item>

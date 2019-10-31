@@ -148,7 +148,7 @@
                         <th>课程名称</th>
                         <th>节数（节）</th>
                         <th>课时费（元）</th>
-                        <th>支持预约的教练等级</th>
+                        <th>支持预约的{{ $c('coach') }}等级</th>
                         <th>总价（元）</th>
                       </tr>
                       <tbody>
@@ -180,7 +180,7 @@
                                 <div>
                                   <a-dropdown placement="bottomRight">
                                     <a href="javascript:void(0)">
-                                      教练等级范围&nbsp;&nbsp;
+                                      {{ $c('coach') }}等级范围&nbsp;&nbsp;
                                       <st-icon
                                         class="icon-12"
                                         type="down-small"

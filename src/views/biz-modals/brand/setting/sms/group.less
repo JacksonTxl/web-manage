@@ -1,0 +1,43 @@
+.setting-sms-group {
+  position: relative;
+  &__form {
+    .ant-radio-group {
+      .ant-radio-button-wrapper-checked {
+        border-color: #3f66f6;
+        color: #3f66f6 !important;
+        font-weight: 400;
+      }
+    }
+  }
+  &__scroll {
+    background: #f7f9fc;
+    padding: 12px;
+    height: 200px;
+    overflow: auto;
+    font-size: 12px;
+    &-not {
+      color: #9bacb9;
+    }
+    &-btn {
+      border-radius: 4px !important;
+      border-left: 1px solid #cdd4df;
+      overflow: hidden !important;
+    }
+    &-add {
+      position: absolute;
+      left: 12px;
+      top: 196px;
+      width: 100%;
+      background: #f7f9fc;
+      height: 30px;
+      z-index: 3;
+    }
+  }
+  &__save {
+    display: flex;
+    justify-content: space-between;
+    &-btn {
+      width: 140px;
+    }
+  }
+}

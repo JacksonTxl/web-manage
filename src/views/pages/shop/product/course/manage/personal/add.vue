@@ -53,7 +53,7 @@ export default {
           key: 0
         },
         {
-          title: '设置上课教练',
+          title: `设置上课${this.$c('coach')}`,
           key: 1
         },
         {

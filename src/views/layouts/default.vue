@@ -27,6 +27,10 @@
             class="layout-default-sider__arrow"
           ></st-icon>
         </div>
+        <img
+          class="layout-default-sider__shop-tag"
+          src="~@/assets/img/brand/tag-shop.png"
+        />
       </div>
       <!-- 品牌维度下 -->
       <div class="layout-default-sider__brand" v-else>
@@ -49,6 +53,10 @@
             class="layout-default-sider__arrow"
           ></st-icon>
         </div>
+        <img
+          class="layout-default-sider__brand-tag"
+          src="~@/assets/img/brand/tag-brand.png"
+        />
       </div>
       <div
         class="layout-default-sider__scrollbox"
@@ -56,6 +64,12 @@
         @click="onClickSiderMenu"
       >
         <default-sider-menu @change="onSiderMenuChange" />
+        <div class="layout-default-sider__version">
+          <div class="layout-default-sider__version-bg"></div>
+          <label class="layout-default-sider__version-text">
+            {{ siderMenuTip }}
+          </label>
+        </div>
       </div>
     </aside>
     <header class="layout-default-body__header">
@@ -81,24 +95,42 @@
         </a-breadcrumb>
       </div>
       <div class="layout-default-body__personal">
-        <!-- <a-badge dot>
-          <st-icon type="home" class="layout-default-body__icon"/>
-        </a-badge>
-        <a-dropdown :trigger="['click']" placement="bottomRight">
-          <div class="layout-default-body__top-item">
-            <st-icon type="square" class="layout-default-body__icon"/>
+        <!-- 九宫格 -->
+        <a-dropdown :trigger="['hover']" placement="bottomRight">
+          <div class="layout-default-body__avatar">
+            <st-icon
+              class="layout-fast-entry_icon"
+              type="square"
+              color="#9BACB9"
+            ></st-icon>
           </div>
-          <div slot="overlay" class="layout-default-body__fast-entry">
-            <fast-entry />
+          <div slot="overlay" class="layout-fast-entry">
+            <a-menu class="layout-fast-entry__wrapper">
+              <a-menu-item
+                v-for="(item, id) in urlData"
+                :key="id"
+                class="layout-fast-entry__item"
+                :class="
+                  !item.enable
+                    ? 'layout-fast-entry__disabled'
+                    : 'layout-fast-entry__activity'
+                "
+                @click="goToPage(item)"
+                :disabled="!item.enable"
+              >
+                <div class="fast-entry__pic">
+                  <img
+                    :src="item.enable ? item.icon : item.disable_icon"
+                    :alt="item.text"
+                  />
+                </div>
+                <div class="layout-fast-entry__text">{{ item.text }}</div>
+              </a-menu-item>
+            </a-menu>
           </div>
-        </a-dropdown> -->
-        <router-link
-          :to="{ name: 'common-export' }"
-          class="layout-default-body__header-link"
-        >
-          <st-icon type="export"></st-icon>
-        </router-link>
-        <a-dropdown :trigger="['click']" placement="bottomRight">
+        </a-dropdown>
+
+        <a-dropdown :trigger="['hover']" placement="bottomRight">
           <div class="layout-default-body__avatar">
             <img
               :src="user.avatar | imgFilter({ w: 64, h: 64 })"
@@ -157,23 +189,22 @@ import { find } from 'lodash-es'
 import { UserService } from '@/services/user.service'
 import { TokenService } from '@/services/token.service'
 import { TitleService } from '@/services/title.service'
-// import FastEntry from './entry#/fast-entry'
+import { entries } from './default#/fast-entry.config'
+import FastEntryMiniProgram from '@/views/biz-modals/fast-entry/mini-program'
+import FastEntryHousekeeper from '@/views/biz-modals/fast-entry/housekeeper'
+import { UdeskService } from '@/services/udesk.service'
 
 export default {
   components: {
     DefaultSiderMenu,
     SwitchShop
-    // DefaultSkeleton
-    /**
-     * 快速入口 九宫格
-     */
-    // FastEntry
   },
   serviceInject() {
     return {
       userService: UserService,
       tokenService: TokenService,
-      titleService: TitleService
+      titleService: TitleService,
+      udeskService: UdeskService
     }
   },
   rxState() {
@@ -182,14 +213,21 @@ export default {
       brand: this.userService.brand$,
       shop: this.userService.shop$,
       theme: this.userService.theme$,
-      title: this.titleService.title$
+      title: this.titleService.title$,
+      urlData: this.userService.urlData$,
+      isThemeStudio: this.userService.isThemeStudio$
     }
   },
   data() {
     return {
       isShowSwitchShop: false,
-      menuObj: {}
+      menuObj: {},
+      entries
     }
+  },
+  modals: {
+    FastEntryMiniProgram,
+    FastEntryHousekeeper
   },
   computed: {
     breadCrumbs() {
@@ -199,6 +237,9 @@ export default {
     },
     isInShop() {
       return this.shop.id
+    },
+    siderMenuTip() {
+      return this.isThemeStudio ? '工作室版' : '俱乐部版'
     }
   },
   methods: {
@@ -219,7 +260,7 @@ export default {
       }
       if (parentRoute) {
         const name = parentRoute.name
-        const title = parentRoute.meta.title
+        const title = this.userService.interpolation(parentRoute.meta.title)
         return [
           {
             label: title,
@@ -268,6 +309,39 @@ export default {
        * 切换路由时关闭切换门店 drawer
        */
       this.isShowSwitchShop = false
+    },
+    goToPage(item) {
+      if (item.url) {
+        window.open(item.url)
+        return
+      }
+      if (item.open_program === 'mini_program') {
+        const urlData = item
+        this.$modalRouter.push({
+          name: 'fast-entry-mini-program',
+          props: {
+            urlData
+          },
+          on: {}
+        })
+        return
+      }
+      if (item.open_program === 'house_keeper') {
+        this.$modalRouter.push({
+          name: 'fast-entry-housekeeper',
+          props: {},
+          on: {}
+        })
+        return
+      }
+      if (item.open_program === 'export') {
+        this.$router.push({
+          path: '/common/export'
+        })
+      }
+      if (item.open_program === 'udesk') {
+        this.udeskService.showUdesk({ openDialog: true })
+      }
     }
   }
 }

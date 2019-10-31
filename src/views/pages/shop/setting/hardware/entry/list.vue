@@ -93,7 +93,6 @@
                 详情
               </a>
               <a
-                v-if="record.auth['shop:setting:hardware|area_set']"
                 v-modal-link="{
                   name: 'hardware-area',
                   props: {

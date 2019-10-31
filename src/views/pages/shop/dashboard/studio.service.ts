@@ -7,7 +7,7 @@ import {
   RevenueParams
 } from '@/api/v1/stat/overview/shop'
 import { anyAll } from '@/operators'
-
+import { UserService } from '@/services/user.service'
 @Injectable()
 export class StudioService implements RouteGuard {
   top$ = new State({
@@ -27,7 +27,10 @@ export class StudioService implements RouteGuard {
   member$ = new State({})
   newMember$ = new State([])
 
-  constructor(private overviewApi: OverviewApi) {}
+  constructor(
+    private overviewApi: OverviewApi,
+    private userService: UserService
+  ) {}
   getTop(query: Version) {
     return this.overviewApi.getTop(query).pipe(
       tap(res => {
@@ -41,8 +44,9 @@ export class StudioService implements RouteGuard {
       tap(res => {
         const data = res.info
         let lineData: any = []
+        const member_card = this.userService.c('member_card')
         this.revenueSummary$.commit(() => [
-          { name: '会员卡', value: data.summary.member_card_amount },
+          { name: member_card, value: data.summary.member_card_amount },
           { name: '私教课', value: data.summary.personal_course_amount },
           { name: '团体课', value: data.summary.team_course_amount },
           { name: '课程包', value: data.summary.package_course_amount },
@@ -51,9 +55,9 @@ export class StudioService implements RouteGuard {
         ])
         this.revenueSum$.commit(() => data.summary.total_amount)
         for (let key in data.daily.member_card_amount) {
-          let chartItem = {
+          let chartItem: any = {
             date: key,
-            会员卡: Number(data.daily.member_card_amount[key]),
+            // 会员卡: Number(data.daily.member_card_amount[key]),
             私教课: Number(data.daily.personal_course_amount[key]),
             团体课: Number(data.daily.team_course_amount[key]),
             课程包: Number(data.daily.package_course_amount[key]),
@@ -61,6 +65,7 @@ export class StudioService implements RouteGuard {
             其他: Number(data.daily.other_amount[key]),
             总营收: Number(data.daily.total_amount[key])
           }
+          chartItem[member_card] = Number(data.daily.member_card_amount[key])
           lineData.push(chartItem)
         }
         console.log('营收', lineData)

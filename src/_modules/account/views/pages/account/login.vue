@@ -6,6 +6,7 @@
       <span class="mg-r24">English</span> -->
     </div>
     <div class="page-login">
+      <img src="~@/assets/img/login-bg-title.png" class="page-login-bg-title" />
       <!-- 密码/二维码 -->
       <!-- <i
         class="page-switch-login-type cursor-pointer"
@@ -17,12 +18,13 @@
         class="cursor-pointer"
         :class="{
           'qrcode-login': this.loginType === 'qrcode',
-          'page-switch-login-type': this.loginType !== 'bind',
           'page-switch-bind': this.loginType === 'bind'
         }"
         v-if="switchLoginTypeIsShow"
         @click="bindBackLogin"
       ></i>
+      <!-- NOTE: 功能暂未实现，不开放 -->
+      <!-- 'page-switch-login-typQe': this.loginType !== 'bind', -->
       <section class="lf">
         <div class="lf-bg"></div>
       </section>

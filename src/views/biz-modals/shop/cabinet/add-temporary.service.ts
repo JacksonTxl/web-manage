@@ -10,7 +10,7 @@ import { UserService } from '@/services/user.service'
 @Injectable()
 export class AddTemporaryService {
   loading$ = new State({})
-  sortTypes$ = this.userService.getOptions$('setting.cabinet.sort_type')
+  sortTypes$ = this.userService.getOptions$('cabinet.sort_type')
   constructor(
     private cabinetApi: TemporaryCabinetApi,
     private userService: UserService

@@ -68,7 +68,7 @@
                 </span>
               </li>
             </ul>
-            <div class="mg-t24" :class="b('sub-title')">
+            <div :class="b('sub-title')">
               特权类目
               <st-help-tooltip id="TBYHDJ002" />
             </div>
@@ -214,7 +214,9 @@ export default {
       })
     },
     onCancel() {
-      this.$router.reload()
+      this.$router.push({
+        query: {}
+      })
     },
     onConditionChange(val) {
       this.condition = val

@@ -1,15 +1,14 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { tap, first } from 'rxjs/operators'
-import { Store } from '@/services/store'
-import { RedirectService } from '@/services/redirect.service'
+import { Injectable, ServiceRoute } from 'vue-service-app'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import {
   StatApi,
   OrderShopListQuery,
   SellStaffListQuery
 } from '@/api/v1/stat/shop'
 import { forkJoin } from 'rxjs'
-interface SetState {}
+import { AuthService } from '@/services/auth.service'
+
 @Injectable()
 export class SellService {
   list$ = new State([])
@@ -17,11 +16,8 @@ export class SellService {
   staffList$ = new State([])
   page$ = new State({})
   loading$ = new State({})
-  authTabs$ = this.redirectService.getAuthTabs$('shop-stat-sell')
-  constructor(
-    private StatApi: StatApi,
-    private redirectService: RedirectService
-  ) {}
+  authTabs$ = this.authService.getAuthTabs$('shop-stat-sell')
+  constructor(private StatApi: StatApi, private authService: AuthService) {}
   @Effect()
   getsellList(query: OrderShopListQuery) {
     return this.StatApi.getSellList(query).pipe(

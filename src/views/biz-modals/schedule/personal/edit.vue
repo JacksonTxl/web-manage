@@ -3,7 +3,7 @@
     <div class="modal-schedule-edit">
       <div class="modal-schedule-edit__info">
         <div class="coach">
-          <span>上课教练:</span>
+          <span>上课{{ $c('coach') }}:</span>
           <span>{{ staffName }}</span>
         </div>
         <div class="time">

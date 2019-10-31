@@ -35,9 +35,6 @@ export default {
       info: this.indexService.info$
     }
   },
-  created() {
-    this.getInfo()
-  },
   data() {
     return {}
   },
@@ -45,9 +42,6 @@ export default {
   methods: {
     goLink(url) {
       window.open(url)
-    },
-    getInfo() {
-      this.indexService.getInfo().subscribe()
     }
   }
 }

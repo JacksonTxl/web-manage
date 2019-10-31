@@ -12,7 +12,7 @@ export class SoldService implements RouteGuard {
   page$ = new State({})
   loading$ = new State({})
   shopOptions$ = new State([])
-  orderStatus$ = this.userService.getOptions$('sold.order_status').pipe(
+  orderStatus$ = this.userService.getOptions$('sold_common.order_status').pipe(
     map(list => {
       return [{ label: '全部订单状态', value: -1 }, ...cloneDeep(list)]
     })

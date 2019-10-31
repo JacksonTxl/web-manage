@@ -142,7 +142,7 @@
                   arrowPointAtCenter
                 >
                   <div slot="content">
-                    设置此会员卡可售卖的时间范围
+                    设置此{{ $c('member_card') }}可售卖的时间范围
                   </div>
                   <a-icon
                     class="page-content-card-time__icon"
@@ -255,7 +255,7 @@
           <a-col :lg="22">
             <st-form-item
               class="page-content-card-introduction mt-4"
-              label="会员卡介绍"
+              :label="`${$c('member_card')}介绍`"
             >
               <st-textarea
                 v-model="cardData.card_contents"

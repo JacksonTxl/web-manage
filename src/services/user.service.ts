@@ -1,17 +1,15 @@
-import { Injectable, ServiceRoute, Inject } from 'vue-service-app'
-import { State, Computed, computed } from 'rx-state'
-import { tap, pluck, map, switchMap } from 'rxjs/operators'
+import { Injectable } from 'vue-service-app'
+import { State, Computed, computed, log } from 'rx-state'
+import { tap, pluck, map } from 'rxjs/operators'
 import { ConstApi } from '@/api/const'
 import { MenuApi } from '@/api/v1/common/menu'
 import { StaffApi } from '@/api/v1/staff'
 import { TooltipApi } from '@/api/v1/admin/tooltip'
 import { get, reduce, isPlainObject, mapValues } from 'lodash-es'
-import { NProgressService } from './nprogress.service'
 import { ShopApi } from '@/api/v1/shop'
-import { of } from 'rxjs'
-import { then, anyAll } from '@/operators'
+import { IconUrlApi } from '@/api/v1/brand/getIconList'
 import { Dictionary } from 'lodash'
-
+import Vue from 'vue'
 interface User {
   id?: string
   name?: string
@@ -31,9 +29,9 @@ interface Brand {
    */
   saleModel?: number
   /**
-   * 品牌版本 studio 工作室 club 俱乐部
+   * 品牌版本 studio 工作室 club 俱乐部 new_studio 新工作室(封闭会员卡|合同功能的版本)
    */
-  version?: string
+  version: 'club' | 'old_studio' | 'studio'
 }
 
 interface Shop {
@@ -65,17 +63,33 @@ export class UserService {
     menus: [],
     first_url: ''
   })
-  config$ = new State({
-    coach: '教练'
-  })
+  config$ = new State({})
   isShop$ = new Computed(this.shop$.pipe(map(shop => !!shop.id)))
   menus$ = new Computed<any[]>(this.menuData$.pipe(pluck('menus')))
   firstMenuUrl$ = new Computed<string>(this.menuData$.pipe(pluck('first_url')))
   favoriteMenu$ = new Computed(this.menuData$.pipe(pluck('favorite')))
+
+  isBrandStudio$ = new Computed(
+    this.brand$.pipe(map(brand => !!(brand.version === 'studio')))
+  )
+
+  isThemeClub$ = new Computed(
+    this.brand$.pipe(map(brand => ['club'].includes(brand.version)))
+  )
+  isThemeStudio$ = new Computed(
+    this.brand$.pipe(
+      map(brand => ['old_studio', 'studio'].includes(brand.version))
+    )
+  )
+
   theme$ = new Computed(
     this.brand$.pipe(
       map(brand => {
-        return `theme-${brand.version}`
+        return {
+          club: 'theme-club',
+          old_studio: 'theme-studio',
+          studio: 'theme-studio'
+        }[brand.version]
       })
     )
   )
@@ -111,20 +125,20 @@ export class UserService {
   )
   finance$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('finance')))
   crowdEnums$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('crowd')))
-  soldEnums$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('sold')))
+  soldEnums$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('sold_common')))
   couponEnums$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('coupon')))
   pluginEnums$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('plugin')))
   transactionEnums$ = new Computed<ModuleEnums>(
     this.enums$.pipe(pluck('transaction'))
   )
-
+  urlData$ = new State({})
   constructor(
     private constApi: ConstApi,
     private menuApi: MenuApi,
     private staffApi: StaffApi,
     private tooltipApi: TooltipApi,
-    private nprogress: NProgressService,
-    private shopApi: ShopApi
+    private shopApi: ShopApi,
+    private iconUrlApi: IconUrlApi
   ) {}
   SET_USER(staff: any) {
     const info = staff.info
@@ -157,6 +171,9 @@ export class UserService {
   SET_ENUMS(enums: any) {
     this.enums$.commit(() => enums)
   }
+  SET_CONFIG(config: any) {
+    this.config$.commit(() => config)
+  }
   SET_MENU_DATA(menuData: any) {
     this.menuData$.commit(() => menuData)
   }
@@ -166,7 +183,7 @@ export class UserService {
   SET_SHOP_LIST(res: any) {
     this.shopList$.commit(() => res.list)
   }
-  private getUser() {
+  fetchStaffInfo() {
     return this.staffApi.getGlobalStaffInfo().pipe(
       tap((res: any) => {
         this.SET_BRAND(res)
@@ -175,31 +192,43 @@ export class UserService {
       })
     )
   }
-  private getEnums() {
+  fetchEnums() {
     return this.constApi.getEnum().pipe(
       tap(res => {
         this.SET_ENUMS(res)
+        this.SET_CONFIG(res.version_conf.documents.value)
+        // this.SET_CONFIG({
+        //   coach: '<教练>',
+        //   member_card: '<会员卡>'
+        // })
       })
     )
   }
-  private getMenuData() {
+  fetchMenuData() {
     return this.menuApi.getList().pipe(
       tap(res => {
         this.SET_MENU_DATA(res)
       })
     )
   }
-  private getInvalidTooltips() {
+  fetchInvalidTooltips() {
     return this.tooltipApi.getInvalid().pipe(
       tap((res: any) => {
         this.SET_INVALID_TOOLTIP(res)
       })
     )
   }
-  private getShopList() {
+  fetchShopList() {
     return this.shopApi.getShopList().pipe(
       tap(res => {
         this.SET_SHOP_LIST(res)
+      })
+    )
+  }
+  fetchCodeUrl() {
+    return this.iconUrlApi.getIconList().pipe(
+      tap(res => {
+        this.urlData$.commit(() => res.list)
       })
     )
   }
@@ -277,29 +306,13 @@ export class UserService {
   public c(key: string): string {
     return get(this.config$.snapshot(), key, key)
   }
-  private init() {
-    if (!this.firstInited$.snapshot()) {
-      return anyAll(
-        this.getUser(),
-        this.getMenuData(),
-        this.getEnums(),
-        this.getInvalidTooltips(),
-        this.getShopList()
-      ).pipe(
-        then(() => {
-          this.firstInited$.commit(() => true)
-        })
-      )
-    } else {
-      return of({})
+  public interpolation(title: string): string {
+    if (!title) {
+      return ''
     }
-  }
-  beforeRouteEnter() {
-    this.nprogress.SET_TEXT('用户数据加载中...')
-    return this.init().pipe(
-      then(() => {
-        this.nprogress.SET_TEXT('用户信息数据获取完毕')
-      })
-    )
+    const vm: any = new Vue({
+      template: '<span>' + title + '</span>'
+    }).$mount()
+    return vm.$el.innerText
   }
 }

@@ -66,6 +66,9 @@
         <st-button block type="dashed" icon="add">
           表单添加 type=dashed
         </st-button>
+        <st-button block type="dashed" icon="add" disabled>
+          表单添加 type=dashed disabled
+        </st-button>
       </div>
     </div>
   </div>

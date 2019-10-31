@@ -68,7 +68,7 @@
                 "
               >
                 <p class="page-admission-range-shop__describe">
-                  设置支持此会员卡出入场馆范围
+                  设置支持此{{ $c('member_card') }}出入场馆范围
                 </p>
                 <select-shop
                   :shopIds="cardData.admission_shop_list"
@@ -435,7 +435,7 @@
                 v-if="cardData.support_sales === SUPPORT_SALES.SPECIFIED_STORE"
               >
                 <p class="page-support-sales-shop__describe">
-                  设置支持此会员卡售卖场馆范围
+                  设置支持此{{ $c('member_card') }}售卖场馆范围
                 </p>
                 <select-shop
                   :shopIds="cardData.sell_shop_list"
@@ -524,6 +524,7 @@
                   v-for="item in sell_type_list"
                   :key="item.value"
                   :value="item.value"
+                  class="mg-r8"
                 >
                   {{ item.label }}
                 </a-checkbox>
@@ -550,7 +551,7 @@
           <a-col :lg="22">
             <st-form-item
               class="page-content-card-introduction mt-4"
-              label="会员卡介绍"
+              :label="`${$c('member_card')}介绍`"
             >
               <st-textarea
                 v-model="cardData.card_introduction"

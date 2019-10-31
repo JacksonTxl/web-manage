@@ -87,12 +87,12 @@
       </a>
       <span v-else>{{ text }}</span>
       <span slot="memberTitle">
-        会员卡成单数
+        {{ $c('member_card') }}成单数
         <st-help-tooltip id="TSSR001" />
       </span>
       <span slot="depositTitle">
         储值卡成单数
-        <st-help-tooltip id="TSCR002" />
+        <st-help-tooltip id="TSSR002" />
       </span>
       <span slot="teamTitle">
         团课购买节数
@@ -151,7 +151,7 @@ export default {
   },
   computed: {
     columns() {
-      return this.showTable === 'all' ? allColumns() : staffColumns()
+      return this.showTable === 'all' ? allColumns(this) : staffColumns(this)
     },
     staffListFilter() {
       if (this.query.department_id === -1) return this.staffList

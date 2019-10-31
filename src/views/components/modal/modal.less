@@ -20,7 +20,7 @@
     }
   }
   &__body {
-    .pd(24px);
+    .pd(24px 24px 0 24px);
   }
   .ant-modal {
     .pos-a;
@@ -36,7 +36,6 @@
   .ant-modal-body {
     .pd(0);
   }
-
   .ant-modal-content {
     .w(100%);
   }
@@ -46,6 +45,11 @@
     max-height: calc(100vh - @bodyMaxHeightOffset);
   }
   .ant-modal-footer {
-    padding: 0 24px 24px;
+    padding: 24px;
+  }
+  &--footer-null {
+    .st-modal__body {
+      padding-bottom: 24px;
+    }
   }
 }

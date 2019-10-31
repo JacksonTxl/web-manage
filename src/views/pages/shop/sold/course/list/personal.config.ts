@@ -1,8 +1,13 @@
-export const columns = () => [
+export const columns = (vm: any) => [
   {
     title: '课程名',
     dataIndex: 'course_name',
     scopedSlots: { customRender: 'course_name' }
+  },
+  {
+    title: '合同编号',
+    dataIndex: 'contract_number',
+    scopedSlots: { customRender: 'contract_number' }
   },
   {
     title: '剩余课时',
@@ -15,7 +20,7 @@ export const columns = () => [
     scopedSlots: { customRender: 'init_course_num' }
   },
   {
-    title: '教练级别',
+    title: `${vm.$c('coach')}级别`,
     dataIndex: 'coach_level',
     scopedSlots: { customRender: 'coach_level' }
   },
@@ -45,7 +50,7 @@ export const columns = () => [
     scopedSlots: { customRender: 'buy_time' }
   },
   {
-    title: '上课教练',
+    title: `上课${vm.$c('coach')}`,
     dataIndex: 'coach_name',
     scopedSlots: { customRender: 'coach_name' }
   },

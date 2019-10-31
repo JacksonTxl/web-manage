@@ -1,10 +1,10 @@
 <template>
   <div :class="basic()">
     <st-search-panel @search="onSearchNative" @reset="onSearhReset">
-      <st-search-panel-item label="会员卡类型：">
+      <st-search-panel-item :label="`${$c('member_card')}类型：`">
         <st-search-radio v-model="query.card_type" :options="cardTypes" />
       </st-search-panel-item>
-      <st-search-panel-item label="会员卡状态：">
+      <st-search-panel-item :label="`${$c('member_card')}状态：`">
         <st-search-radio v-model="query.card_status" :options="cardStatus" />
       </st-search-panel-item>
       <st-search-panel-item label="开卡状态：">
@@ -65,19 +65,19 @@
           :scroll="{ x: 1800 }"
         >
           <template slot="remain_amount" slot-scope="text, record">
-            {{ text }}{{ record.unit | enumFilter('sold.unit') }}
+            {{ text }}{{ record.unit | enumFilter('sold_common.unit') }}
           </template>
           <template slot="init_amount" slot-scope="text, record">
-            {{ text }}{{ record.unit | enumFilter('sold.unit') }}
+            {{ text }}{{ record.unit | enumFilter('sold_common.unit') }}
           </template>
           <template slot="card_status" slot-scope="text">
-            {{ text | enumFilter('sold.card_status') }}
+            {{ text | enumFilter('sold_common.card_status') }}
           </template>
           <template slot="end_time" slot-scope="text">
             {{ text }}
           </template>
           <template slot="is_open" slot-scope="text">
-            {{ text | enumFilter('sold.is_open') }}
+            {{ text | enumFilter('sold_common.is_open') }}
           </template>
           <template slot="start_time" slot-scope="text">
             {{ text }}
@@ -496,7 +496,7 @@ export default {
     createdOrderPrint(order_id) {
       let url = `${
         window.location.origin
-      }/extra/contract-preview?id=${order_id}`
+      }/common/contract-preview?id=${order_id}`
       window.open(url)
     },
     // 查看订单

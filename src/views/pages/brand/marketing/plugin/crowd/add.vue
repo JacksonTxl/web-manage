@@ -146,7 +146,20 @@ export default {
     return {
       // 状态锁
       flag: true,
-
+      form: this.$form.createForm(this),
+      basicInfoRuleList: {
+        crowd_name: [
+          'crowd_name',
+          {
+            rules: [
+              {
+                required: true,
+                message: '不超过20字，且不包含“/”'
+              }
+            ]
+          }
+        ]
+      },
       selectData: {
         // 基础资料
         base_info: {
@@ -166,8 +179,8 @@ export default {
         deal_info: {
           title: '交易信息',
           value: [
-            '会员卡即将到期',
-            '会员卡剩余次数',
+            `${this.$c('member_card')}即将到期`,
+            `${this.$c('member_card')}剩余次数`,
             '私教课剩余次数',
             '储值卡剩余金额'
           ],
@@ -259,20 +272,6 @@ export default {
           }
         },
         info: {}
-      },
-      form: this.$form.createForm(this),
-      basicInfoRuleList: {
-        crowd_name: [
-          'crowd_name',
-          {
-            rules: [
-              {
-                required: true,
-                message: '不超过20字，且不包含“/”'
-              }
-            ]
-          }
-        ]
       }
     }
   },

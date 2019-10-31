@@ -88,13 +88,15 @@ export default {
   data() {
     return {
       columns,
+      selectedRowKeys: [],
+      pagination: {},
       list: [
         {
           id: 1,
           q: '201901',
           w: '1号',
           e: '超人',
-          r: '私教教练、销售',
+          r: `私教${this.$c('coach')}、销售`,
           t: '部门1',
           y: '上海体验店',
           u: '11923',
@@ -102,9 +104,7 @@ export default {
           o: '12323',
           p: '1233'
         }
-      ],
-      selectedRowKeys: [],
-      pagination: {}
+      ]
     }
   },
   methods: {

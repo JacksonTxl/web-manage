@@ -232,6 +232,7 @@ export default {
       this.studioService.getMarketing(query).subscribe()
     },
     reload() {
+      const member_card = this.$c('member_card')
       this.dataSimpleBar = {
         name: '会员占比',
         percent: 0.18
@@ -310,7 +311,7 @@ export default {
         { name: '14-36次', value: 90 }
       ]
       this.data2 = [
-        { name: '会员卡', value: 2500 },
+        { name: member_card, value: 2500 },
         { name: '储值卡', value: 2000 },
         { name: '团体课', value: 1000 },
         { name: '私教课', value: 2311.26 },
@@ -318,7 +319,7 @@ export default {
       ]
 
       this.data3 = [
-        { name: '会员卡', value: 2500 },
+        { name: member_card, value: 2500 },
         { name: '私教课', value: 2000 },
         { name: '团体课', value: 1000 },
         { name: '储值卡', value: 2311.26 },
@@ -333,7 +334,7 @@ export default {
           团体课: 6985,
           储值卡: 25456,
           课程包: 12554,
-          会员卡: 11564,
+          member_card: 11564,
           云店: 12544,
           定金: 1125,
           押金: 4568,
@@ -345,7 +346,7 @@ export default {
           团体课: 6985,
           储值卡: 2546,
           课程包: 12541,
-          会员卡: 11564,
+          member_card: 11564,
           云店: 12254,
           定金: 12125,
           押金: 4568,
@@ -357,7 +358,7 @@ export default {
           团体课: 69815,
           储值卡: 2546,
           课程包: 12524,
-          会员卡: 11564,
+          member_card: 11564,
           云店: 12154,
           定金: 12151,
           押金: 45168,
@@ -369,7 +370,7 @@ export default {
           团体课: 69851,
           储值卡: 2546,
           课程包: 1254,
-          会员卡: 11564,
+          member_card: 11564,
           云店: 1254,
           定金: 125,
           押金: 4568,
@@ -381,7 +382,7 @@ export default {
           团体课: 69851,
           储值卡: 2546,
           课程包: 1254,
-          会员卡: 11564,
+          member_card: 11564,
           云店: 1254,
           定金: 125,
           押金: 4568,

@@ -35,7 +35,7 @@
           :dataSource="list"
         >
           <template slot="course_status" slot-scope="text">
-            {{ text | enumFilter('sold.course_status') }}
+            {{ text | enumFilter('sold_common.course_status') }}
           </template>
           <template slot="end_time" slot-scope="text">
             {{ moment(text).format('YYYY-MM-DD HH:mm') }}
@@ -87,7 +87,7 @@
                 "
                 @click="onEditCoach(record)"
               >
-                修改教练
+                修改{{ $c('coach') }}
               </a>
               <a
                 v-if="record.auth['shop:sold:sold_personal_course|transfer']"
@@ -337,7 +337,7 @@ export default {
     },
     // 跳转合同
     toContract(record) {
-      let url = `${window.location.origin}/extra/contract-preview?id=${
+      let url = `${window.location.origin}/common/contract-preview?id=${
         record.order_id
       }`
       window.open(url)

@@ -28,6 +28,7 @@ export class TeamService implements RouteGuard {
   }
 
   beforeEach(to: ServiceRoute, form: ServiceRoute) {
+    console.log(to.query)
     return this.init(to.query)
   }
 }

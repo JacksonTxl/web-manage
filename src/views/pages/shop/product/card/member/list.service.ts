@@ -1,7 +1,7 @@
 import { Injectable } from 'vue-service-app'
-import { RedirectService } from '@/services/redirect.service'
+import { AuthService } from '@/services/auth.service'
 @Injectable()
 export class ListService {
-  authTabs$ = this.redirectService.getAuthTabs$('shop-product-card-member-list')
-  constructor(private redirectService: RedirectService) {}
+  authTabs$ = this.authService.getAuthTabs$('shop-product-card-member-list')
+  constructor(private authService: AuthService) {}
 }

@@ -28,12 +28,12 @@ export default {
   },
   data() {
     return {
-      titleData: {
-        title: '会员卡剩余次数',
-        info: '会员卡剩余次数在以下范围的用户'
-      },
       inputnumber2: '',
-      inputnumber1: ''
+      inputnumber1: '',
+      titleData: {
+        title: `${this.$c('member_card')}剩余次数`,
+        info: `${this.$c('member_card')}剩余次数在以下范围的用户`
+      }
     }
   },
   methods: {

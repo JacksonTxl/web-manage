@@ -1,4 +1,4 @@
-# saas-fe
+# saas-pro
 
 ## 初始化
 
@@ -8,20 +8,28 @@
 npm run init
 ```
 
-### 开发
+### 本地开发
 
 ```shell
 # linux macos windows 用户
+# 使用dev环境的api
 npm run dev
 
-```
-
-本地使用test的api
-```shell
+# 使用test环境的api
 npm run dev:test
+
+# 使用pre环境api
+npm run dev:pre
 ```
 
-## 开发mock账号
+## 开发 mock 账号
+
 abc123
 abc123
 
+## 站点域名
+
+- [dev 开发环境](https://saas.dev.styd.cn)
+- [test 测试环境](https://saas.test.styd.cn)
+- [pre 预发布环境](https://saas.pre.styd.cn)
+- [prod 生产环境](https://pro.styd.cn)

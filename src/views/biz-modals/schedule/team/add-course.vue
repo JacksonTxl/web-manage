@@ -1,6 +1,6 @@
 <template>
-  <st-modal title="新增课程排期" :footer="null" v-model="show" width="484px">
-    <st-form :form="form">
+  <st-modal title="新增课程排期" v-model="show" width="484px">
+    <st-form :form="form" labelAuto>
       <st-form-item label="时间" required>
         <a-date-picker
           placeholder="请选择时间"
@@ -22,8 +22,11 @@
           </a-select-option>
         </a-select>
       </st-form-item>
-      <st-form-item label="教练" required>
-        <a-select placeholder="请选择教练" v-decorator="decorators.coach_id">
+      <st-form-item :label="$c('coach')" required>
+        <a-select
+          :placeholder="`请选择${$c('coach')}`"
+          v-decorator="decorators.coach_id"
+        >
           <a-select-option
             v-for="coach in coachOptions"
             :key="coach.id"
@@ -50,7 +53,7 @@
           <a-button slot="enterButton">人</a-button>
         </a-input-search>
       </st-form-item>
-      <st-form-item label="课时费" required>
+      <st-form-item label="课时费" required class="mg-b0">
         <a-input-search
           placeholder="请输入课时费"
           v-decorator="decorators.course_fee"
@@ -59,15 +62,13 @@
           <a-button slot="enterButton">元/节</a-button>
         </a-input-search>
       </st-form-item>
-      <a-row>
-        <a-col :span="24" :style="{ textAlign: 'right' }">
-          <st-button class="mg-r16" @click="onClick">批量设置</st-button>
-          <st-button type="primary" :loading="loading.add" @click="onSubmit">
-            提交
-          </st-button>
-        </a-col>
-      </a-row>
     </st-form>
+    <template slot="footer">
+      <st-button class="mg-r16" @click="onClick">批量设置</st-button>
+      <st-button type="primary" :loading="loading.add" @click="onSubmit">
+        提交
+      </st-button>
+    </template>
   </st-modal>
 </template>
 

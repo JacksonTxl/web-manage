@@ -31,7 +31,7 @@
             },
             {
               if: auth['shop:sold:sold_personal_course|change_coach'],
-              text: '修改教练',
+              text: `修改${$c('coach')}`,
               click: onEditCoach
             },
             {
@@ -63,6 +63,9 @@
             <st-info-item label="有效期">
               {{ personalInfo.buy_time }} 至 {{ personalInfo.end_time }}
             </st-info-item>
+            <st-info-item label="合同编号">
+              {{ personalInfo.contract_number }}
+            </st-info-item>
           </st-info>
         </a-col>
         <a-col :span="9">
@@ -73,10 +76,10 @@
             <st-info-item label="手机号">
               {{ personalInfo.mobile }}
             </st-info-item>
-            <st-info-item label="上课教练">
+            <st-info-item :label="`上课${$c('coach')}`">
               {{ personalInfo.coach_name }}
             </st-info-item>
-            <st-info-item label="教练等级">
+            <st-info-item :label="`${$c('coach')}等级`">
               {{ personalInfo.coach_level }}
             </st-info-item>
             <st-info-item label="订单号">
@@ -89,7 +92,7 @@
             <st-info-item label="允许转让">
               {{
                 personalInfo.is_transferable
-                  | enumFilter('sold.is_transferable')
+                  | enumFilter('sold_common.is_transferable')
               }}
             </st-info-item>
             <st-info-item label="转让手续费">
@@ -101,11 +104,15 @@
             </st-info-item>
             <st-info-item label="当前状态">
               {{
-                personalInfo.course_status | enumFilter('sold.course_status')
+                personalInfo.course_status
+                  | enumFilter('sold_common.course_status')
               }}
             </st-info-item>
             <st-info-item label="订单状态">
-              {{ personalInfo.order_status | enumFilter('sold.order_status') }}
+              {{
+                personalInfo.order_status
+                  | enumFilter('sold_common.order_status')
+              }}
             </st-info-item>
             <st-info-item label="时长">
               {{ personalInfo.duration }}分钟
@@ -202,7 +209,7 @@ export default {
     // 跳转合同
     toContract() {
       let record = this.personalInfo
-      let url = `${window.location.origin}/extra/contract-preview?id=${
+      let url = `${window.location.origin}/common/contract-preview?id=${
         record.order_id
       }`
       window.open(url)

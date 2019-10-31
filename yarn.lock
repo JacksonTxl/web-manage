@@ -2017,10 +2017,10 @@ ant-design-palettes@^1.1.3:
   dependencies:
     tinycolor2 "^1.4.1"
 
-ant-design-vue@^1.3.5:
-  version "1.3.10"
-  resolved "https://registry.npm.taobao.org/ant-design-vue/download/ant-design-vue-1.3.10.tgz?cache=0&sync_timestamp=1560262531225&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fant-design-vue%2Fdownload%2Fant-design-vue-1.3.10.tgz#82813f90888f77dd0e56c8a71e14efa0f8d8e3da"
-  integrity sha1-goE/kIiPd90OVsinHhTvoPjY49o=
+ant-design-vue@1.3.8:
+  version "1.3.8"
+  resolved "https://registry.npm.taobao.org/ant-design-vue/download/ant-design-vue-1.3.8.tgz#b8c9fc30fd658f134c09d7698f2825a342cfef5f"
+  integrity sha1-uMn8MP1ljxNMCddpjyglo0LP718=
   dependencies:
     "@ant-design/icons" "^1.1.15"
     "@ant-design/icons-vue" "^1.0.1"
@@ -2336,11 +2336,9 @@ async-settle@^1.0.0:
     async-done "^1.2.2"
 
 async-validator@^1.8.2:
-  version "1.11.3"
-  resolved "https://registry.npm.taobao.org/async-validator/download/async-validator-1.11.3.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fasync-validator%2Fdownload%2Fasync-validator-1.11.3.tgz#23703b19740721d88edbcb6310f6d745da9ec109"
-  integrity sha1-I3A7GXQHIdiO28tjEPbXRdqewQk=
-  dependencies:
-    babel-runtime "6.x"
+  version "1.12.2"
+  resolved "https://registry.npm.taobao.org/async-validator/download/async-validator-1.12.2.tgz#beae671e7174d2938b7b4b69d2fb7e722b7fd72c"
+  integrity sha1-vq5nHnF00pOLe0tp0vt+cit/1yw=
 
 async@^1.5.2:
   version "1.5.2"
@@ -12394,6 +12392,11 @@ uuid@^3.0.1, uuid@^3.3.2:
   resolved "https://registry.npm.taobao.org/uuid/download/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
   integrity sha1-G0r0lV6zB3xQHCOHL8ZROBFYcTE=
 
+uuid@^3.3.3:
+  version "3.3.3"
+  resolved "https://registry.npm.taobao.org/uuid/download/uuid-3.3.3.tgz#4568f0216e78760ee1dbf3a4d2cf53e224112866"
+  integrity sha1-RWjwIW54dg7h2/Ok0s9T4iQRKGY=
+
 v-viewer@^1.4.0:
   version "1.4.2"
   resolved "https://registry.npm.taobao.org/v-viewer/download/v-viewer-1.4.2.tgz#23c31a037091445b6cba8aaa287e7e00a73f0971"
@@ -12552,10 +12555,10 @@ vue-countup-v2@^3.0.1:
   dependencies:
     lodash-es latest
 
-vue-di-view@0.1.1:
-  version "0.1.1"
-  resolved "https://registry.npm.taobao.org/vue-di-view/download/vue-di-view-0.1.1.tgz#5612d1634f1213b7447ef7d518c437bb45baa908"
-  integrity sha1-VhLRY08SE7dEfvfVGMQ3u0W6qQg=
+vue-di-view@0.1.2:
+  version "0.1.2"
+  resolved "https://registry.npm.taobao.org/vue-di-view/download/vue-di-view-0.1.2.tgz#23d19e397b77278f86ac42136621958f7021b92a"
+  integrity sha1-I9GeOXt3J4+GrEITZiGVj3AhuSo=
 
 vue-eslint-parser@^2.0.3:
   version "2.0.3"
@@ -12602,10 +12605,10 @@ vue-loader@^15.7.0:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
-vue-modal-router@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.npm.taobao.org/vue-modal-router/download/vue-modal-router-0.4.1.tgz#01d081dbe3233e0152bac1cf25483546e2a88dec"
-  integrity sha1-AdCB2+MjPgFSusHPJUg1RuKojew=
+vue-modal-router@0.5.1:
+  version "0.5.1"
+  resolved "https://registry.npm.taobao.org/vue-modal-router/download/vue-modal-router-0.5.1.tgz?cache=0&sync_timestamp=1572330031817&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-modal-router%2Fdownload%2Fvue-modal-router-0.5.1.tgz#46b2f26f640f4961d61d453d6672dc8c9a90404b"
+  integrity sha1-RrLyb2QPSWHWHUU9ZnLcjJqQQEs=
 
 vue-ref@^1.0.4:
   version "1.0.6"
@@ -12624,12 +12627,7 @@ vue-router-plus@^0.0.1:
   dependencies:
     vue-router "^3.1.3"
 
-vue-router@^3.0.2:
-  version "3.0.7"
-  resolved "https://registry.npm.taobao.org/vue-router/download/vue-router-3.0.7.tgz?cache=0&sync_timestamp=1562164292099&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-router%2Fdownload%2Fvue-router-3.0.7.tgz#b36ca107b4acb8ff5bc4ff824584059c23fcb87b"
-  integrity sha1-s2yhB7SsuP9bxP+CRYQFnCP8uHs=
-
-vue-router@^3.1.3:
+vue-router@^3.0.2, vue-router@^3.1.3:
   version "3.1.3"
   resolved "https://registry.npm.taobao.org/vue-router/download/vue-router-3.1.3.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-router%2Fdownload%2Fvue-router-3.1.3.tgz#e6b14fabc0c0ee9fda0e2cbbda74b350e28e412b"
   integrity sha1-5rFPq8DA7p/aDiy72nSzUOKOQSs=
@@ -12818,10 +12816,10 @@ webpack-merge@^4.1.1, webpack-merge@^4.2.1:
   dependencies:
     lodash "^4.17.5"
 
-webpack-mocker-api@0.0.2:
-  version "0.0.2"
-  resolved "https://registry.npm.taobao.org/webpack-mocker-api/download/webpack-mocker-api-0.0.2.tgz#2b93e0843c3f4192c4bc889bcfd2ce5d1e3ed70f"
-  integrity sha1-K5PghDw/QZLEvIibz9LOXR4+1w8=
+webpack-mocker-api@0.0.3:
+  version "0.0.3"
+  resolved "https://registry.npm.taobao.org/webpack-mocker-api/download/webpack-mocker-api-0.0.3.tgz#26ff06c4d2f9459658b82d67fdf884df33a43733"
+  integrity sha1-Jv8GxNL5RZZYuC1n/fiE3zOkNzM=
   dependencies:
     chalk "^2.4.2"
     lodash "^4.17.15"

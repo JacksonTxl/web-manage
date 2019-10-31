@@ -12,8 +12,8 @@ export class EditLongTermService {
   loading$ = new State({})
   state$: State<any>
   resData$: Computed<Object>
-  transferUnits$ = this.userService.getOptions$('setting.cabinet.transfer_unit')
-  useStatus$ = this.userService.getOptions$('setting.cabinet.use_status')
+  transferUnits$ = this.userService.getOptions$('cabinet.transfer_unit')
+  useStatus$ = this.userService.getOptions$('cabinet.use_status')
   constructor(
     private cabinetApi: LongTermCabinetApi,
     private userService: UserService

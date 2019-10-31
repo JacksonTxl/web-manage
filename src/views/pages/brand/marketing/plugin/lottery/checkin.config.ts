@@ -31,6 +31,11 @@ export const columns = () => {
     {
       title: '兑换码状态',
       dataIndex: 'code_status_name'
+    },
+    {
+      title: '操作',
+      dataIndex: 'action',
+      scopedSlots: { customRender: 'action' }
     }
   ]
 }

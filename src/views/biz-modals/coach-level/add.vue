@@ -1,6 +1,6 @@
 <template>
   <st-modal
-    title="添加教练等级"
+    :title="`添加${$c('coach')}等级`"
     v-model="show"
     @ok="onSubmit"
     @cancel="onCancel"
@@ -8,12 +8,12 @@
     size="small"
   >
     <div>
-      <st-form :form="form">
+      <st-form :form="form" labelAuto>
         <a-row>
           <a-col :xs="22">
-            <st-form-item label="教练等级" required>
+            <st-form-item :label="`${$c('coach')}等级`" required>
               <a-input
-                placeholder="请输入教练等级"
+                :placeholder="`请输入${$c('coach')}等级`"
                 v-decorator="decorators.setting_name"
                 maxlength="20"
               ></a-input>

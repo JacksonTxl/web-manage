@@ -3,7 +3,6 @@ import { State, Effect, Computed } from 'rx-state'
 import { CardApi } from '@/api/v1/sold/cards'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
-import { RedirectService } from '@/services/redirect.service'
 import { RouteService } from '@/services/route.service'
 import { combineLatest } from 'rxjs'
 
@@ -13,9 +12,7 @@ export class InfoService implements RouteGuard {
   loading$ = new State({})
   auth$ = new State({})
   id = ''
-  authTabs$ = this.redirectService.getAuthTabs$(
-    'shop-sold-card-info-member-info'
-  )
+  authTabs$ = this.authService.getAuthTabs$('shop-sold-card-info-member-info')
   pageAuthTabs$ = new Computed(
     combineLatest(this.authTabs$, this.routeService.query$, (authTabs, query) =>
       authTabs.map((tab: any) => {
@@ -27,7 +24,6 @@ export class InfoService implements RouteGuard {
   constructor(
     private cardApi: CardApi,
     private authService: AuthService,
-    private redirectService: RedirectService,
     private routeService: RouteService
   ) {}
   @Effect()

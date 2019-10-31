@@ -1,5 +1,5 @@
 <template>
-  <st-modal title="复制排期" :footer="null" @ok="save" v-model="show">
+  <st-modal title="复制排期" @ok="save" v-model="show">
     <st-form :form="form">
       <st-form-item label="时间" required>
         <a-radio-group v-model="timeType" @change="onChangeTimeType">
@@ -15,7 +15,7 @@
           @change="onChangeCopyTime"
         />
       </st-form-item>
-      <st-form-item required>
+      <st-form-item required class="mg-b0">
         <template slot="label">
           应用排期
           <st-help-tooltip id="TSGC001" />
@@ -27,14 +27,12 @@
         ~
         <a-date-picker v-model="applyEndDate" disabled />
       </st-form-item>
-      <a-row>
-        <a-col :span="24" :style="{ textAlign: 'right' }">
-          <st-button type="primary" :loading="loading.copy" @click="onSubmit">
-            确认复制
-          </st-button>
-        </a-col>
-      </a-row>
     </st-form>
+    <template slot="footer">
+      <st-button type="primary" :loading="loading.copy" @click="onSubmit">
+        确认复制
+      </st-button>
+    </template>
   </st-modal>
 </template>
 

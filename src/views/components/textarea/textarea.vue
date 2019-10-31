@@ -7,6 +7,7 @@
       @change="onChange"
     ></a-textarea>
     <label :class="b('label')">{{ currentLength }}/{{ maxlength }}</label>
+    <label v-if="suffix" :class="b('suffix')">{{ '【' + suffix + '】' }}</label>
   </div>
 </template>
 <script>
@@ -26,6 +27,15 @@ export default {
     maxlength: {
       type: [String, Number],
       default: 500
+    },
+    // 文字后缀
+    suffix: {
+      type: [String, Object]
+    },
+    // 单位
+    step: {
+      type: [String, Number],
+      default: 1
     }
   },
   data() {
@@ -50,7 +60,7 @@ export default {
   },
   computed: {
     currentLength() {
-      return this.content.length
+      return Math.floor(this.content.length / this.step)
     }
   },
   methods: {

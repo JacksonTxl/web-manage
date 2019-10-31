@@ -2,10 +2,11 @@
   <st-panel app initial :class="basic()">
     <st-input-search
       slot="title"
-      placeholder="请输入租赁柜名、会员姓名或手机号查找"
+      placeholder="请输入租赁柜号、合同编号、会员姓名或手机号查找"
       v-model="query.search"
       @search="onKeywordsSearch('search', $event)"
       :class="basic('search')"
+      style="width:372px"
     />
     <st-search-panel @search="onSearchNative" @reset="onSearhReset">
       <st-search-panel-item label="租赁状态：">
@@ -114,7 +115,7 @@ export default {
   rxState() {
     return {
       loading: this.listService.loading$,
-      sold: this.userService.soldEnums$,
+      cabinetStatus: this.listService.cabinetStatus$,
       page: this.listService.page$,
       query: this.routeService.query$,
       list: this.listService.list$,
@@ -125,9 +126,9 @@ export default {
     columns,
     leaseList() {
       let list = [{ value: -1, label: '全部' }]
-      if (!this.sold.sold_cabinet.cabinet_status) return list
-      Object.entries(this.sold.sold_cabinet.cabinet_status.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
+      if (!this.cabinetStatus.length) return list
+      this.cabinetStatus.forEach(o => {
+        list.push({ value: +o.value, label: o.label })
       })
       return list
     }
@@ -188,7 +189,7 @@ export default {
       const order_id = record.order_id
       let url = `${
         window.location.origin
-      }/extra/contract-preview?id=${order_id}`
+      }/common/contract-preview?id=${order_id}`
       window.open(url)
     },
     // 查看订单

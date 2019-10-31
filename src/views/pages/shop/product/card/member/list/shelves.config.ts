@@ -2,10 +2,10 @@ export enum CARD_TYPE {
   number = 1,
   period = 2
 }
-export const columns = () => {
+export const columns = (vm: any) => {
   return [
     {
-      title: '会员卡名称',
+      title: `${vm.$c('member_card')}名称`,
       dataIndex: 'card_name',
       width: 200,
       scopedSlots: { customRender: 'card_name' }

@@ -23,8 +23,9 @@ const IS_DEV = env.NODE_ENV !== 'production'
 const IS_PROD = env.NODE_ENV === 'production'
 
 const localApiEnvHostTarget = {
-  dev: 'https://api-saas-dev.styd.cn',
-  test: 'https://api-saas-test.styd.cn'
+  dev: 'https://saas.dev.styd.cn',
+  test: 'https://saas.test.styd.cn',
+  pre: 'https://saas.pre.styd.cn'
 }[env.LOCAL_API_ENV]
 
 module.exports = {
@@ -40,6 +41,12 @@ module.exports = {
       template: 'src/_modules/account/index.html',
       filename: 'account/index.html',
       chunks: ['chunk-vendors', 'chunk-common', 'runtime~account', 'account']
+    },
+    ticket: {
+      entry: 'src/_modules/ticket/index.ts',
+      template: 'src/_modules/ticket/index.html',
+      filename: 'ticket/index.html',
+      chunks: ['chunk-vendors', 'chunk-common', 'runtime~ticket', 'ticket']
     }
   },
   lintOnSave: false,
@@ -66,10 +73,7 @@ module.exports = {
     proxy: {
       '/_api': {
         target: localApiEnvHostTarget,
-        changeOrigin: true,
-        pathRewrite: {
-          '^/_api/': '/'
-        }
+        changeOrigin: true
       }
     },
     before(app) {
@@ -93,6 +97,10 @@ module.exports = {
     config.plugins.delete('preload-account')
     // 去除prefetch
     config.plugins.delete('prefetch-account')
+    // 去除preload
+    config.plugins.delete('preload-ticket')
+    // 去除prefetch
+    config.plugins.delete('prefetch-ticket')
 
     // 默认4096
     config.module

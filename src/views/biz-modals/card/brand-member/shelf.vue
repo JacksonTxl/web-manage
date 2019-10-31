@@ -1,6 +1,6 @@
 <template>
   <st-modal
-    title="批量上架会员卡"
+    :title="`批量上架${$c('member_card')}`"
     v-model="show"
     wrapClassName="modal-card-batch-shelves"
     width="668px"

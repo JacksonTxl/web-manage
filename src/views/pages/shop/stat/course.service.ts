@@ -1,12 +1,10 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { tap, first } from 'rxjs/operators'
-import { Store } from '@/services/store'
-import { RedirectService } from '@/services/redirect.service'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { StatApi, OrderShopListQuery } from '@/api/v1/stat/shop'
 import { forkJoin } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
-interface SetState {}
+import { UserService } from '@/services/user.service'
 @Injectable()
 export class CourseService {
   list$ = new State([])
@@ -18,11 +16,11 @@ export class CourseService {
     export_all: 'shop:stat:class_reports|list_summary',
     export_coach: 'shop:stat:class_reports|list_coach'
   })
-  authTabs$ = this.redirectService.getAuthTabs$('shop-stat-course')
+  authTabs$ = this.authService.getAuthTabs$('shop-stat-course')
   constructor(
     private StatApi: StatApi,
-    private redirectService: RedirectService,
-    private authService: AuthService
+    private authService: AuthService,
+    private userService: UserService
   ) {}
   @Effect()
   getCourseList(query: OrderShopListQuery) {
@@ -53,7 +51,10 @@ export class CourseService {
     return this.StatApi.getCoachList().pipe(
       tap((res: any) => {
         this.coachList$.commit(() => {
-          return [{ id: -1, name: '全部教练' }, ...res.info.coach_list]
+          return [
+            { id: -1, name: `全部${this.userService.c('coach')}` },
+            ...res.info.coach_list
+          ]
         })
         this.departmentList$.commit(() => {
           return [{ id: -1, name: '全部部门' }, ...res.info.department_list]

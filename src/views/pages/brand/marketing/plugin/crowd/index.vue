@@ -4,7 +4,7 @@
       v-model="crowdIndexInfo.important_crowd"
       v-if="crowdIndexInfo.important_crowd.length > 0"
     ></index>
-    <st-panel>
+    <st-panel app>
       <div slot="title">
         <router-link
           :to="{ name: 'brand-marketing-plugin-crowd-add' }"
@@ -54,8 +54,12 @@
               </a-menu-item>
               <a-menu-item style="width:130px">
                 <a
-                  href="javascript:;"
-                  @click="newCrowd('功能正在开发中，敬请期待')"
+                  v-modal-link="{
+                    name: 'brand-setting-sms-group',
+                    props: {
+                      crowd: { user_type: 2, send_value: record.id }
+                    }
+                  }"
                 >
                   群发短信
                 </a>
@@ -97,6 +101,7 @@ import { MessageService } from '@/services/message.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './index.config'
+import BrandSettingSmsGroup from '@/views/biz-modals/brand/setting/sms/group'
 
 export default {
   mixins: [tableMixin],
@@ -115,6 +120,9 @@ export default {
       auth: this.indexService.auth$,
       query: this.routeService.query$
     }
+  },
+  modals: {
+    BrandSettingSmsGroup
   },
   data() {
     return {}
