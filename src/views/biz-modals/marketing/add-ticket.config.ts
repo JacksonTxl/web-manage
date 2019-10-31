@@ -125,7 +125,6 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
-            debugger
             if (Number.isNaN(value) || Number.isNaN(values.ticket_price)) return
             if (+value > +values.ticket_price) {
               return '每张减的价格应小于票的原价'
@@ -150,12 +149,20 @@ export const ruleOptions = (vm: any) => {
             if (vm.formData.activity_status === ACTIVITY_STATUS.PUBLISHED)
               return
             const endTime = moment(vm.stepForm.end_time)
-            if (value.length && value[0].valueOf() > endTime.valueOf()) {
+            if (
+              value &&
+              value.length &&
+              value[0].valueOf() > endTime.valueOf()
+            ) {
               return `售卖开始时间要早于活动结束时间${endTime.format(
                 'YYYY-MM-DD  HH:mm'
               )}`
             }
-            if (value.length && value[1].valueOf() > endTime.valueOf()) {
+            if (
+              value &&
+              value.length &&
+              value[1].valueOf() > endTime.valueOf()
+            ) {
               return `售卖结束时间要早于活动结束时间${endTime.format(
                 'YYYY-MM-DD  HH:mm'
               )}`
