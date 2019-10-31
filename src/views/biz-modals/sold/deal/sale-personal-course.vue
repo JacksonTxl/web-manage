@@ -101,7 +101,7 @@
               </a-radio>
             </a-radio-group>
           </st-form-item>
-          <st-form-item required :extra="isAmountStateTip">
+          <st-form-item required>
             <template slot="label">
               购买数量
               <st-help-tooltip id="TSSD002" />
@@ -125,7 +125,7 @@
               </st-button>
               <st-button
                 class="create-button"
-                @click="isAmountDisabled = false"
+                @click="onClickCourseEdit"
                 v-else
               >
                 编辑
@@ -624,35 +624,46 @@ export default {
       this.couponText = `${price}元`
     },
     onClickCourseAmount() {
-      this.form.validate(['buyNum']).then(() => {
-        const params = {
-          id: this.id,
-          buy_num: this.form.getFieldValue('buyNum'),
-          coach_level_id: this.form.getFieldValue('coach_level') || 0 // 默认0 为没有等级，否则分级
-        }
-        this.salePersonalCourseService
-          .getPersonalPriceInfo(params)
-          .subscribe(result => {
-            this.isAmountDisabled = true
-            this.validEndTime = this.info.effective_unit * params.buy_num || 0
-            // 调用优惠券列表
-            this.fetchCouponList()
-            // 调用获取商品原价
-            if (
-              this.info.sale_model === 1 &&
-              !this.form.getFieldValue('coursePrice') &&
-              this.form.getFieldValue('coursePrice') !== 0
-            ) {
-              return
-            }
-            this.getOrderPrice()
-            this.getPrice(
-              this.selectCoupon,
-              this.selectAdvance,
-              +this.reduceAmount
-            )
+      // this.form.validate(['buyNum']).then(() => {
+      const params = {
+        id: this.id,
+        buy_num: this.form.getFieldValue('buyNum'),
+        coach_level_id: this.form.getFieldValue('coach_level') || 0 // 默认0 为没有等级，否则分级
+      }
+      this.salePersonalCourseService
+        .getPersonalPriceInfo(params)
+        .subscribe(result => {
+          this.isAmountDisabled = true
+          this.form.setFieldsValue({
+            buyNum: params.buy_num
           })
+          this.validEndTime = this.info.effective_unit * params.buy_num || 0
+          // 调用优惠券列表
+          this.fetchCouponList()
+          // 调用获取商品原价
+          if (
+            this.info.sale_model === 1 &&
+            !this.form.getFieldValue('coursePrice') &&
+            this.form.getFieldValue('coursePrice') !== 0
+          ) {
+            return
+          }
+          this.getOrderPrice()
+          this.getPrice(
+            this.selectCoupon,
+            this.selectAdvance,
+            +this.reduceAmount
+          )
+        })
+      // })
+    },
+    onClickCourseEdit() {
+      const val = this.form.getFieldValue('buyNum')
+      this.isAmountDisabled = false
+      this.form.setFieldsValue({
+        buyNum: val
       })
+      this.form.validate(['buyNum'])
     },
     // 计算实付金额
     getPrice(coupon, advance, reduce) {
@@ -695,10 +706,10 @@ export default {
       })
     },
     onCreateOrder() {
-      if (!this.isAmountDisabled) {
-        this.isAmountStateTip = '购买数量未确认，请点击确定！'
-        return
-      }
+      // if (!this.isAmountDisabled) {
+      //   this.isAmountStateTip = '购买数量未确认，请点击确定！'
+      //   return
+      // }
       this.form.validate().then(values => {
         this.salePersonalCourseService
           .setTransactionOrder({
@@ -733,10 +744,10 @@ export default {
       })
     },
     onPay() {
-      if (!this.isAmountDisabled) {
-        this.isAmountStateTip = '购买数量未确认，请点击确定！'
-        return
-      }
+      // if (!this.isAmountDisabled) {
+      //   this.isAmountStateTip = '购买数量未确认，请点击确定！'
+      //   return
+      // }
       this.form.validate().then(values => {
         this.salePersonalCourseService
           .setTransactionPay({
