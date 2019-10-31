@@ -70,6 +70,9 @@
         <st-status-text v-if="record.send_status === 0" :status="{ info: 1 }">
           {{ record.send_status_text }}
         </st-status-text>
+        <st-status-text v-if="record.send_status === 4" :status="{ error: 1 }">
+          {{ record.send_status_text }}
+        </st-status-text>
       </div>
       <div slot="received_count" slot-scope="text, record">
         <a
