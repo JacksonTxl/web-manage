@@ -176,14 +176,13 @@
                 v-decorator="decorators.contractNumber"
                 placeholder="请输入合同编号"
               ></a-input>
-              <st-button
+              <auto-contract-btn
                 class="create-button"
                 @click="onCodeNumber"
                 :loading="loading.getCodeNumber"
-                v-if="!isBrandStudio"
               >
                 自动生成
-              </st-button>
+              </auto-contract-btn>
             </div>
           </st-form-item>
           <st-form-item :label="`上课${$c('coach')}`" required>
@@ -365,10 +364,14 @@ import { timer } from 'rxjs'
 import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from './sale-personal-course.config'
 import { UserService } from '@/services/user.service'
+import autoContractBtn from '@/views/biz-components/contract/auto-contract-btn.vue'
 export default {
   name: 'ModalSoldDealSaleMemberCard',
   bem: {
     sale: 'modal-sold-deal-sale'
+  },
+  components: {
+    autoContractBtn
   },
   serviceProviders() {
     return [SalePersonalCourseService]
@@ -390,8 +393,7 @@ export default {
       coachList: this.salePersonalCourseService.coachList$,
       personalPrice: this.salePersonalCourseService.personalPrice$,
       priceInfo: this.salePersonalCourseService.priceInfo$,
-      orderAmountPrice: this.salePersonalCourseService.orderAmountPrice$,
-      isBrandStudio: this.userService.isBrandStudio$
+      orderAmountPrice: this.salePersonalCourseService.orderAmountPrice$
     }
   },
   props: {
