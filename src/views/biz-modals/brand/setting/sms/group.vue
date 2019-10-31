@@ -67,7 +67,7 @@
           v-show="curTime === SEND_TYPES.ONTIME"
           :disabledDate="disabledStartDate"
           placeholder="请选择时间"
-          style="width:120px;"
+          style="width:144px"
           format="YYYY-MM-DD HH:mm"
           showTime
           v-decorator="decorators.send_time"
@@ -103,13 +103,13 @@
             存为模板
           </a-checkbox>
           <a-input
-            :disabled="isSaveChecked"
+            :disabled="!isSaveChecked"
             v-decorator="decorators.title"
             placeholder="请输入模版标题"
           ></a-input>
         </div>
         <a-select
-          style="width:120px"
+          style="width:130px"
           class="mg-b8"
           v-show="curTem === TMPL_TYPES.CUSTOM"
           placeholder="请选择模版"
@@ -193,7 +193,7 @@ export default {
       tel: '',
       info: {},
       time: '',
-      isSaveChecked: true
+      isSaveChecked: false
     }
   },
   created() {
@@ -253,7 +253,7 @@ export default {
       })
     },
     isSave(e) {
-      this.isSaveChecked = !!e.target.value
+      this.isSaveChecked = !e.target.value
     },
     getEditInfo(id) {
       return this.groupService.getEditInfo(id).subscribe(res => {
@@ -271,6 +271,7 @@ export default {
         this.curUser = res.info.user_type
         this.curTime = res.info.send_type
         this.curTem = res.info.tmpl_type
+        this.temContent = res.info.content
         if (res.info.user_type === this.USER_TYPES.USER) {
           this.tel = res.info.send_value
         }
@@ -327,12 +328,12 @@ export default {
           }
         }
         if (this.curTem === this.TMPL_TYPES.PERSONAL) {
-          // if (!values.title) {
-          //   this.messageService.warn({
-          //     content: '请输入模板标题'
-          //   })
-          //   return
-          // }
+          if (this.isSaveChecked && !values.title) {
+            this.messageService.warn({
+              content: '请输入模板标题'
+            })
+            return
+          }
           if (!values.content) {
             this.messageService.warn({
               content: '请输入模板内容'
