@@ -128,9 +128,8 @@
           :maxlength="280 - sign.length"
           :autosize="{ minRows: 2, maxRows: 4 }"
           v-if="curTem === TMPL_TYPES.CUSTOM"
-          disabled
           :suffix="sign"
-          :value="temContent"
+          v-model="temContent"
         ></st-textarea>
       </st-form-item>
     </st-form>
@@ -341,12 +340,13 @@ export default {
             return
           }
         } else {
-          if (!values.tmpl_id) {
+          if (!this.temContent) {
             this.messageService.warn({
-              content: '请选择模板'
+              content: '请填写模板内容'
             })
             return
           }
+          values.content = this.temContent
         }
 
         if (this.id) {
