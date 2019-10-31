@@ -14,6 +14,7 @@
           </st-button>
           <st-button
             @click="onClickRouterPush({ pathName: 'checkinActivity' })"
+            :disabled="!auth$.checkIn"
             class="mg-l8"
           >
             签到验票
