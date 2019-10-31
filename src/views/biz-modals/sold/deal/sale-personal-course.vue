@@ -624,7 +624,6 @@ export default {
       this.couponText = `${price}元`
     },
     onClickCourseAmount() {
-      // this.form.validate(['buyNum']).then(() => {
       const params = {
         id: this.id,
         buy_num: this.form.getFieldValue('buyNum'),
@@ -655,7 +654,6 @@ export default {
             +this.reduceAmount
           )
         })
-      // })
     },
     onClickCourseEdit() {
       const val = this.form.getFieldValue('buyNum')
@@ -706,10 +704,6 @@ export default {
       })
     },
     onCreateOrder() {
-      // if (!this.isAmountDisabled) {
-      //   this.isAmountStateTip = '购买数量未确认，请点击确定！'
-      //   return
-      // }
       this.form.validate().then(values => {
         this.salePersonalCourseService
           .setTransactionOrder({
@@ -744,10 +738,6 @@ export default {
       })
     },
     onPay() {
-      // if (!this.isAmountDisabled) {
-      //   this.isAmountStateTip = '购买数量未确认，请点击确定！'
-      //   return
-      // }
       this.form.validate().then(values => {
         this.salePersonalCourseService
           .setTransactionPay({
