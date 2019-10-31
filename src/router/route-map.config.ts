@@ -411,6 +411,7 @@ export const routeMapConfig = {
   'brand-setting-app-staff'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工'
     routeConfig.meta.tabs = ['brand-setting-app-staff-skillful']
+    routeConfig.meta.auth = 'brand_shop:staff:staff_setting|tab'
   },
   'brand-setting-app-course-category'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '课程类型'
@@ -418,11 +419,9 @@ export const routeMapConfig = {
   },
   'brand-setting-app-course-training-aim'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '训练目的'
-    routeConfig.meta.auth = 'brand_shop:course:course_setting|tab'
   },
   'brand-setting-app-staff-skillful'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '擅长项目'
-    routeConfig.meta.auth = 'brand_shop:staff:staff_setting|tab'
   },
   'shop-product-card-member-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '{{$c("member_card")}}'
@@ -675,7 +674,6 @@ export const routeMapConfig = {
   },
   'brand-setting-general-course-personal'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教设置'
-    routeConfig.meta.auth = 'brand_shop:flow:expenditure|tab'
   },
   'brand-setting-general-course-team'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '团课设置'
