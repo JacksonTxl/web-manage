@@ -77,7 +77,8 @@ export const ruleOptions = (vm: any) => {
         },
         {
           validator: (field: any, value: any, values: any) => {
-            if (value > values.ticket_total_num) {
+            // 票种为免费票团购优惠没有
+            if (values.ticket_price > 0 && value > values.ticket_total_num) {
               return '单次购买最低张数应小于票的总数'
             }
           }
