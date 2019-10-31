@@ -55,7 +55,7 @@
               <a-input-number
                 class="input mg-l4 mg-r4"
                 :min="0"
-                :max="99999"
+                :max="9999"
                 :disabled="isDisabled"
                 :step="1"
                 :precision="0"
@@ -70,7 +70,7 @@
               <a-input-number
                 class="input mg-l4 mg-r4"
                 :min="0"
-                :max="99999"
+                :max="9999"
                 :disabled="isDisabled"
                 :step="1"
                 :precision="0"
