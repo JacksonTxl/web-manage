@@ -118,7 +118,7 @@ export default {
     this.initList()
   },
   mounted() {
-    if (this.eventInfo.length) {
+    if (this.eventInfo && this.eventInfo.length) {
       let number = this.eventInfo.length
       this.number = number
       this.list[number] = cloneDeep(this.eventInfo)
@@ -135,6 +135,7 @@ export default {
       })
     } else {
       this.number = 0
+      this.actList = cloneDeep(this.activityList)
     }
   },
   watch: {
