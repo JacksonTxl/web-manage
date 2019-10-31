@@ -81,6 +81,9 @@ export const ruleOptions = (vm: any) => {
             if (+values.ticket_price > 0 && +value > +values.ticket_total_num) {
               return '单次购买最低张数应小于票的总数'
             }
+            if (+values.buy_limit_max > 0 && +value > +values.buy_limit_max) {
+              return `最低购买张数应该小于最大购买张数${values.buy_limit_max}`
+            }
           }
         }
       ]

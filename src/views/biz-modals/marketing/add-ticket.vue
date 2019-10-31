@@ -273,7 +273,6 @@ export default {
         ticket_remark
       } = this.ticket
       this.ticketType = ticket_price > 0 ? 1 : 2
-      debugger
       const buy_time = [this.moment(buy_start_time), this.moment(buy_end_time)]
       this.form.setFieldsValue({
         ticket_name,
