@@ -103,7 +103,7 @@
             存为模板
           </a-checkbox>
           <a-input
-            :disabled="isSaveChecked"
+            :disabled="!isSaveChecked"
             v-decorator="decorators.title"
             placeholder="请输入模版标题"
           ></a-input>
@@ -193,7 +193,7 @@ export default {
       tel: '',
       info: {},
       time: '',
-      isSaveChecked: true
+      isSaveChecked: false
     }
   },
   created() {
@@ -253,7 +253,7 @@ export default {
       })
     },
     isSave(e) {
-      this.isSaveChecked = !!e.target.value
+      this.isSaveChecked = !e.target.value
     },
     getEditInfo(id) {
       return this.groupService.getEditInfo(id).subscribe(res => {
@@ -328,12 +328,12 @@ export default {
           }
         }
         if (this.curTem === this.TMPL_TYPES.PERSONAL) {
-          // if (!values.title) {
-          //   this.messageService.warn({
-          //     content: '请输入模板标题'
-          //   })
-          //   return
-          // }
+          if (this.isSaveChecked && !values.title) {
+            this.messageService.warn({
+              content: '请输入模板标题'
+            })
+            return
+          }
           if (!values.content) {
             this.messageService.warn({
               content: '请输入模板内容'
