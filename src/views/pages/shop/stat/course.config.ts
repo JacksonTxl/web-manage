@@ -9,50 +9,61 @@ export const allColumns = (vm: any) => {
     {
       title: '上课节数（私）',
       dataIndex: 'personal_course_num',
-      scopedSlots: { customRender: 'personal_course_num' }
+      scopedSlots: { customRender: 'personal_course_num' },
+      align: 'right'
     },
     {
       title: `上课${vm.$c('coach')}数（私）`,
-      dataIndex: 'personal_coach_num'
+      dataIndex: 'personal_coach_num',
+      align: 'right'
     },
     {
       title: '预约人数（私)',
-      dataIndex: 'personal_reserved_num'
+      dataIndex: 'personal_reserved_num',
+      align: 'right'
     },
     {
       title: '签到人数（私）',
-      dataIndex: 'personal_checkin_num'
+      dataIndex: 'personal_checkin_num',
+      align: 'right'
     },
     {
       dataIndex: 'personal_checkin_amount',
       slots: { title: 'personalTitle' },
-      scopedSlots: { customRender: 'personal_checkin_amount' }
+      scopedSlots: { customRender: 'personal_checkin_amount' },
+      align: 'right'
     },
     {
       title: '上课节数（团）',
       dataIndex: 'team_course_num',
-      scopedSlots: { customRender: 'team_course_num' }
+      scopedSlots: { customRender: 'team_course_num' },
+      align: 'right'
     },
     {
       title: `上课${vm.$c('coach')}数（团）`,
-      dataIndex: 'team_coach_num'
+      dataIndex: 'team_coach_num',
+      align: 'right'
     },
     {
       title: '可约人数（团）',
-      dataIndex: 'team_can_reserve_num'
+      dataIndex: 'team_can_reserve_num',
+      align: 'right'
     },
     {
       title: '预约人数（团）',
-      dataIndex: 'team_reserved_num'
+      dataIndex: 'team_reserved_num',
+      align: 'right'
     },
     {
       title: '签到人数（团）',
-      dataIndex: 'team_checkin_num'
+      dataIndex: 'team_checkin_num',
+      align: 'right'
     },
     {
       dataIndex: 'team_checkin_amount',
       slots: { title: 'teamTitle' },
-      scopedSlots: { customRender: 'team_checkin_amount' }
+      scopedSlots: { customRender: 'team_checkin_amount' },
+      align: 'right'
     }
   ]
 }
@@ -79,42 +90,51 @@ export const coachColumns = (vm: any) => {
     {
       title: '上课节数（私）',
       dataIndex: 'personal_course_num',
-      scopedSlots: { customRender: 'personal_course_num' }
+      scopedSlots: { customRender: 'personal_course_num' },
+      align: 'right'
     },
     {
       title: '预约人数（私)',
-      dataIndex: 'personal_reserved_num'
+      dataIndex: 'personal_reserved_num',
+      align: 'right'
     },
     {
       title: '签到人数（私）',
-      dataIndex: 'personal_checkin_num'
+      dataIndex: 'personal_checkin_num',
+      align: 'right'
     },
     {
       dataIndex: 'personal_checkin_amount',
       slots: { title: 'personalTitle' },
-      scopedSlots: { customRender: 'personal_checkin_amount' }
+      scopedSlots: { customRender: 'personal_checkin_amount' },
+      align: 'right'
     },
     {
       title: '上课节数（团）',
       dataIndex: 'team_course_num',
-      scopedSlots: { customRender: 'team_course_num' }
+      scopedSlots: { customRender: 'team_course_num' },
+      align: 'right'
     },
     {
       title: '可约人数（团）',
-      dataIndex: 'team_can_reserve_num'
+      dataIndex: 'team_can_reserve_num',
+      align: 'right'
     },
     {
       title: '预约人数（团）',
-      dataIndex: 'team_reserved_num'
+      dataIndex: 'team_reserved_num',
+      align: 'right'
     },
     {
       title: '签到人数（团）',
-      dataIndex: 'team_checkin_num'
+      dataIndex: 'team_checkin_num',
+      align: 'right'
     },
     {
       dataIndex: 'team_checkin_amount',
       slots: { title: 'teamTitle' },
-      scopedSlots: { customRender: 'team_checkin_amount' }
+      scopedSlots: { customRender: 'team_checkin_amount' },
+      align: 'right'
     }
   ]
 }
