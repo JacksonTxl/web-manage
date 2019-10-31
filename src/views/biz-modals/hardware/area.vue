@@ -161,32 +161,27 @@ export default {
             this.type = item.area_type
           }
         })
-
-        if (this.type !== this.ENTRY.GATE) {
-          setTimeout(() => {
+        setTimeout(() => {
+          if (this.type !== this.ENTRY.GATE) {
             this.form.setFieldsValue({
               checkin: this.info.checkin
             })
-          })
-        }
-        if (this.type === this.ENTRY.GATE) {
-          setTimeout(() => {
+          }
+          if (this.type === this.ENTRY.GATE) {
             this.form.setFieldsValue({
-              leave_limit: this.info.leave_limit
+              leave_limit: this.info.leave_limit === LEAVE_LIMIT.TRUE ? 1 : 0
             })
-          })
-        }
-        if (this.peopleType === this.PEOPLE_TYPE.ONLY) {
-          setTimeout(() => {
+          }
+          if (this.peopleType === this.PEOPLE_TYPE.ONLY) {
             this.form.setFieldsValue({
               white_list: this.info.white_list
             })
+          }
+          this.form.setFieldsValue({
+            area_id: this.info.area_id,
+            course_time: this.info.course_time,
+            people_type: this.info.people_type
           })
-        }
-        this.form.setFieldsValue({
-          area_id: this.info.area_id,
-          course_time: this.info.course_time,
-          people_type: this.info.people_type
         })
       })
     },
