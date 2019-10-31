@@ -1,6 +1,14 @@
 // 表单重置
 .st-form {
   width: 100%;
+  &--label-auto {
+    .ant-form-item-label label {
+      .mg-r(0);
+      .lh(14px);
+      display: inline-block;
+      white-space: normal;
+    }
+  }
 }
 
 .st-form-item {
@@ -8,15 +16,12 @@
 
   .ant-form-item-label {
     .lh(32px);
-    .w(108px);
-    label {
-      .mg-r(0);
-      .lh(14px);
-      display: inline-block;
-      white-space: normal;
-      &:after {
-        content: none;
-      }
+    .w(88px);
+    /**
+    * 统一没有: 号
+    */
+    label:after {
+      content: none;
     }
   }
 
