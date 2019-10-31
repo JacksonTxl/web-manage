@@ -379,21 +379,21 @@ export default {
     },
     onChangeGetTicketTotalNum() {
       this.form.setFieldsValue({
-        buy_limit_min: 0,
-        buy_limit_max: 0
+        buy_limit_min: 1,
+        buy_limit_max: 1
       })
       if (this.isBulk) {
         this.form.setFieldsValue({
-          group_buy_min: 0,
-          reduce_price: 0
+          group_buy_min: 1,
+          reduce_price: 1
         })
       }
     },
     onChangeGetTicketPrice() {
       if (this.isBulk) {
         this.form.setFieldsValue({
-          group_buy_min: 0,
-          reduce_price: 0
+          group_buy_min: 1,
+          reduce_price: 1
         })
       }
     },
