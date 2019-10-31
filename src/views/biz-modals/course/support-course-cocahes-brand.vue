@@ -27,6 +27,7 @@
         <a-col :lg="10"></a-col>
         <a-col :lg="8">
           <st-input-search
+            style="width:100%"
             @search="onSearchKeyWords"
             :placeholder="`通过${$c('coach')}昵称查询`"
           ></st-input-search>

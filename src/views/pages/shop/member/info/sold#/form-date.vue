@@ -13,7 +13,7 @@
           v-model="value.reserve_type"
         >
           <a-select-option
-            v-for="(item, key, index) in reserveEnums.reserve_type.value"
+            v-for="(item, key, index) in reserveEnums.reserve_course_type.value"
             :value="key"
             :key="index"
           >
