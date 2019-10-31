@@ -8,7 +8,7 @@
     @cancel="cancel"
   >
     <st-form :form="form">
-      <st-form-item labelWidth="70px" label="接受对象">
+      <st-form-item labelWidth="70px" label="接受对象" :class="bModal('form')">
         <a-radio-group
           v-decorator="decorators.user_type"
           @change="getCurPrizUserType"
@@ -30,25 +30,27 @@
           :autosize="{ minRows: 2, maxRows: 4 }"
           placeholder="输入手机号,每行一个"
         ></st-textarea>
-        <div :class="bModal('scroll')" v-if="curUser === USER_TYPES.CROWD">
-          <a-radio-group v-decorator="decorators.send_value">
-            <a-radio-button
-              :class="bModal('scroll-btn')"
-              class="mg-r8"
-              v-for="(item, index) in crowdList"
-              :key="index"
-              :value="item.crowd_id"
-            >
-              {{ item.crowd_name }}
-            </a-radio-button>
-          </a-radio-group>
-          <span :class="bModal('scroll-add')">
-            <span :class="bModal('scroll-not')">不满足?</span>
-            <a @click="goCrowd" class="cursor-pointer">
-              去添加人群>
-            </a>
-          </span>
-        </div>
+        <a-radio-group
+          :class="bModal('scroll')"
+          v-decorator="decorators.send_value"
+          v-show="curUser === USER_TYPES.CROWD"
+        >
+          <a-radio-button
+            :class="bModal('scroll-btn')"
+            class="mg-r8"
+            v-for="(item, index) in crowdList"
+            :key="index"
+            :value="item.crowd_id"
+          >
+            {{ item.crowd_name }}
+          </a-radio-button>
+        </a-radio-group>
+        <span :class="bModal('scroll-add')">
+          <span :class="bModal('scroll-not')">不满足?</span>
+          <a @click="goCrowd" class="cursor-pointer">
+            去添加人群>
+          </a>
+        </span>
       </st-form-item>
       <st-form-item labelWidth="70px" label="发送时间">
         <a-radio-group
@@ -215,7 +217,6 @@ export default {
       this.curTem = 2
       this.getCurTemContent(this.tmpl.tmpl_id)
     }
-    console.log(this.crowd)
     if (this.crowd) {
       this.form.setFieldsValue({
         user_type: 2,
@@ -259,7 +260,7 @@ export default {
       return this.groupService.getEditInfo(id).subscribe(res => {
         this.form.setFieldsValue({
           user_type: res.info.user_type,
-          send_value: res.info.send_value,
+          send_value: res.info.send_value - 0,
           send_type: res.info.send_type,
           send_time: moment(res.info.send_time),
           title: res.info.title,
@@ -273,7 +274,7 @@ export default {
         this.curTem = res.info.tmpl_type
         this.temContent = res.info.content
         if (res.info.user_type === this.USER_TYPES.USER) {
-          this.tel = res.info.send_value
+          this.tel = res.info.send_value - 0
         }
         if (res.info.tmpl_type === this.TMPL_TYPES.CUSTOM) {
           this.getCurTemContent(res.info.tmpl_id)

@@ -1,5 +1,6 @@
 import { ID } from '@/api/v1/order/transaction/contract'
 import moment from 'moment'
+import { ACTIVITY_STATUS } from '@/constants/brand/marketing'
 export const ruleOptions = (vm: any) => {
   const pattern = vm.pattern
   return {
@@ -136,7 +137,8 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
-            const startTime = moment(vm.stepForm.start_time)
+            if (vm.formData.activity_status !== ACTIVITY_STATUS.PUBLISHED)
+              return
             const endTime = moment(vm.stepForm.end_time)
             if (value[0].valueOf() > endTime.valueOf()) {
               return `售卖开始时间要早于活动时间${endTime.format(

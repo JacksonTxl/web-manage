@@ -8,7 +8,7 @@
     size="small"
   >
     <div>
-      <st-form :form="form">
+      <st-form :form="form" labelAuto>
         <a-row>
           <a-col :xs="22">
             <st-form-item :label="`${$c('coach')}等级`" required>

@@ -36,7 +36,7 @@ export default {
       type: String,
       default: ''
     },
-    // 类型 控制样式 type|input
+    // 类型 控制样式 text|input
     type: {
       type: String,
       default: 'input'

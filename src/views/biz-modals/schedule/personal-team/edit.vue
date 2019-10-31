@@ -1,6 +1,6 @@
 <template>
   <st-modal title="编辑课程排期" :footer="null" v-model="show" size="small">
-    <st-form :form="form" labelWidth="54px">
+    <st-form :form="form" labelWidth="54px" labelAuto>
       <st-form-item label="时间" required>
         <a-date-picker
           class="full-width"
