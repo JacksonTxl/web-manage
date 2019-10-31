@@ -189,6 +189,7 @@ import { PatternService } from '@/services/pattern.service'
 import { MessageService } from '@/services/message.service'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
+import { ACTIVITY_STATUS } from '../../../constants/brand/marketing'
 export default {
   name: 'ModalAddTicket',
   bem: {
@@ -252,7 +253,7 @@ export default {
       return !!(
         this.ticket &&
         this.ticket.ticket_id &&
-        this.formData.activity_status
+        this.formData.activity_status === ACTIVITY_STATUS.PUBLISHED
       )
     }
   },
