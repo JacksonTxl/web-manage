@@ -82,11 +82,7 @@
       <st-button class="mg-r8" @click="onClickBack">
         上一步
       </st-button>
-      <st-button
-        v-if="activityStatus !== ACTIVITY_STATUS.PUBLISHED"
-        class="mg-r8"
-        @click="onClickSaveDraft"
-      >
+      <st-button v-if="!isEdit" class="mg-r8" @click="onClickSaveDraft">
         存草稿
       </st-button>
       <st-button @click="onClickRelease" type="primary">
@@ -198,10 +194,12 @@ export default {
     },
     initForm() {
       this.$nextTick().then(() => {
-        const extraData = cloneDeep(
+        const joinExtInfo = cloneDeep(
           this.defaultForm$.rule_settings.join_ext_info
-        ).extra_data
-        this.isStep3 = this.defaultForm$.rule_settings.join_ext_info.extra_type
+        )
+        const extraData = joinExtInfo.extra_data
+        this.isStep3 = this.isEdit ? joinExtInfo.extra_type : 0
+
         this.$set(this, 'addDataSource', extraData)
         this.formData = [...extraData]
         this.$emit('change', this.dataSource)
@@ -270,6 +268,7 @@ export default {
     },
     onChangeIsShow() {
       if (
+        this.isEdit &&
         this.defaultForm$.activity_status === ACTIVITY_STATUS.PUBLISHED &&
         this.defaultForm$.rule_settings.join_ext_info.extra_type === 1
       ) {

@@ -27,6 +27,7 @@
             :float="true"
             :min="0.1"
             :max="10000"
+            @change="onChangeGetTicketPrice"
             v-decorator="decorators.ticket_price"
           ></st-input-number>
           <span class="mg-l4">元</span>
@@ -41,18 +42,12 @@
             :max="9999"
             :step="1"
             :precision="0"
+            @change="onChangeGetTicketTotalNum"
             v-decorator="decorators.ticket_total_num"
           ></a-input-number>
           <span class="mg-l4">张</span>
         </st-form-item>
-        <st-form-item label="购买用户" required>
-          <a-select
-            style="width:140px"
-            :disabled="isDisabled"
-            v-decorator="decorators.crowd_id"
-            :options="crowdIdOptions"
-          ></a-select>
-        </st-form-item>
+
         <a-row>
           <a-col :span="16">
             <st-form-item label="购买限制" required>
@@ -85,7 +80,14 @@
             </st-form-item>
           </a-col>
         </a-row>
-
+        <st-form-item label="购买用户" required>
+          <a-select
+            style="width:140px"
+            :disabled="isDisabled"
+            v-decorator="decorators.crowd_id"
+            :options="crowdIdOptions"
+          ></a-select>
+        </st-form-item>
         <st-form-item
           class="mg-b0"
           v-show="ticketType === 1"
@@ -110,7 +112,7 @@
                   <a-input-number
                     v-decorator="decorators.group_buy_min"
                     class="input mg-l4 mg-r4"
-                    :max="99999"
+                    :max="9999"
                     :disabled="isDisabled"
                     :step="1"
                     :precision="0"
@@ -373,6 +375,26 @@ export default {
         buy_start_time,
         buy_end_time,
         reduce_price
+      }
+    },
+    onChangeGetTicketTotalNum() {
+      this.form.setFieldsValue({
+        buy_limit_min: 0,
+        buy_limit_max: 0
+      })
+      if (this.isBulk) {
+        this.form.setFieldsValue({
+          group_buy_min: 0,
+          reduce_price: 0
+        })
+      }
+    },
+    onChangeGetTicketPrice() {
+      if (this.isBulk) {
+        this.form.setFieldsValue({
+          group_buy_min: 0,
+          reduce_price: 0
+        })
       }
     },
     onSubmit() {
