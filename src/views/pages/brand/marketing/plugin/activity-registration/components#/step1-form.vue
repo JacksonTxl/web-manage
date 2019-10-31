@@ -169,8 +169,6 @@ export default {
   methods: {
     moment,
     getImageUrl(imageUrl) {
-      console.log(imageUrl)
-      debugger
       const imgEl = `<img src='${imageUrl.url}' width='400' height='400'>`
       this.content = this.content + imgEl
     },
