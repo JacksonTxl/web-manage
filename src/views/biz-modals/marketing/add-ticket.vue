@@ -6,6 +6,7 @@
           <a-radio-group
             @change="onChangeGetTicketType"
             v-model="ticketType"
+            :disabled="isDisabled"
             :defaultValue="1"
           >
             <a-radio :value="1">收费票</a-radio>

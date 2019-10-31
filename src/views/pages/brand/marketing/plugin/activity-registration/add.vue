@@ -1,5 +1,5 @@
 <template>
-  <st-mina-panel :class="bPage()">
+  <st-mina-panel>
     <div slot="preview">
       <activity-h5-view
         v-if="currentStep === 0"
@@ -14,41 +14,43 @@
         :stepInfo="step3Info"
       ></signup-h5-view>
     </div>
-    <a-steps :current="currentStep" size="small">
-      <a-step v-for="(info, idx) in steps" :key="idx" :title="info.title" />
-    </a-steps>
-    <div :class="bPage('form')">
-      <step1-form
-        v-show="currentStep === 0"
-        :show="currentStep === 0"
-        :isCopy="isCopy"
-        :isEdit="isEdit"
-        @step-submit="onSubmitGetStep1Form"
-        @change="onChangeStep1Form"
-      ></step1-form>
-      <step2-form
-        v-show="currentStep === 1"
-        :show="currentStep === 1"
-        :isCopy="isCopy"
-        :stepForm="stepForm"
-        @back="onBack"
-        :isEdit="isEdit"
-        @step-submit="onSubmitGetStep2Form"
-        @change="onChangeStep2Form"
-      ></step2-form>
-      <step3-form
-        v-show="currentStep === 2"
-        :show="currentStep === 2"
-        :isCopy="isCopy"
-        :isEdit="isEdit"
-        @back="onBack"
-        @release="onReleaseActivity"
-        @save-draft="onSaveDraftActivity"
-        @change="onChangeStep3Form"
-      ></step3-form>
-    </div>
-    <div slot="actions">
-      <di-view name="step"></di-view>
+    <div :class="bPage()">
+      <a-steps :current="currentStep" size="small">
+        <a-step v-for="(info, idx) in steps" :key="idx" :title="info.title" />
+      </a-steps>
+      <div :class="bPage('form')">
+        <step1-form
+          v-show="currentStep === 0"
+          :show="currentStep === 0"
+          :isCopy="isCopy"
+          :isEdit="isEdit"
+          @step-submit="onSubmitGetStep1Form"
+          @change="onChangeStep1Form"
+        ></step1-form>
+        <step2-form
+          v-show="currentStep === 1"
+          :show="currentStep === 1"
+          :isCopy="isCopy"
+          :stepForm="stepForm"
+          @back="onBack"
+          :isEdit="isEdit"
+          @step-submit="onSubmitGetStep2Form"
+          @change="onChangeStep2Form"
+        ></step2-form>
+        <step3-form
+          v-show="currentStep === 2"
+          :show="currentStep === 2"
+          :isCopy="isCopy"
+          :isEdit="isEdit"
+          @back="onBack"
+          @release="onReleaseActivity"
+          @save-draft="onSaveDraftActivity"
+          @change="onChangeStep3Form"
+        ></step3-form>
+      </div>
+      <div slot="actions">
+        <di-view name="step"></di-view>
+      </div>
     </div>
   </st-mina-panel>
 </template>
