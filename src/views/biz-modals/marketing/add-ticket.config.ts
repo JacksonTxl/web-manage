@@ -12,7 +12,7 @@ export const ruleOptions = (vm: any) => {
         },
         {
           pattern: pattern.CN_EN_NUM('1-10'),
-          message: '请输入1~10个字符'
+          message: '请输入1~10个英文，中文字符'
         },
         {
           validator: (field: any, value: any, values: any) => {
@@ -150,12 +150,12 @@ export const ruleOptions = (vm: any) => {
             if (vm.formData.activity_status === ACTIVITY_STATUS.PUBLISHED)
               return
             const endTime = moment(vm.stepForm.end_time)
-            if (value[0].valueOf() > endTime.valueOf()) {
+            if (value.length && value[0].valueOf() > endTime.valueOf()) {
               return `售卖开始时间要早于活动结束时间${endTime.format(
                 'YYYY-MM-DD  HH:mm'
               )}`
             }
-            if (value[1].valueOf() > endTime.valueOf()) {
+            if (value.length && value[1].valueOf() > endTime.valueOf()) {
               return `售卖结束时间要早于活动结束时间${endTime.format(
                 'YYYY-MM-DD  HH:mm'
               )}`
