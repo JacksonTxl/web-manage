@@ -47,7 +47,7 @@
                 <template slot="title">
                   <span>{{ item.extra_name }}选项</span>
                 </template>
-                <span>{{ item.extra_name }}{{ item.extra_key }}</span>
+                <span>{{ item.extra_name }}</span>
               </a-popover>
               <span
                 :class="{
