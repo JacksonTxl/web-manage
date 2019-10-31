@@ -115,11 +115,10 @@ const mockerApis = {
         menu_type: 2
       }
     ]
-  }),
+  })
   /**
    * mock start
    */
-  'GET /_api/const/enum': {}
 }
 
 module.exports = wrapper(mockerApis)
