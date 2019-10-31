@@ -184,6 +184,7 @@ export default {
       }
       e.preventDefault()
       this.form.validate().then(values => {
+        values.area_type = this.type
         values.leave_limit = values.leave_limit
           ? LEAVE_LIMIT.TRUE
           : LEAVE_LIMIT.FALSE
