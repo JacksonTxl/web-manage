@@ -5,6 +5,8 @@
 <script>
 import { AppConfig } from '@/constants/config'
 import { ImportService } from '@/services/import.service.ts'
+import EditorImage from './editor-image'
+import Vue from 'vue'
 
 const editorEvents = [
   'activate',
@@ -90,6 +92,26 @@ export default {
       return 'st-editor-' + this._uid
     }
   },
+  methods: {
+    onChangeGetFile({ image, editor }) {
+      editor.setContent(this.value)
+      // 返回插入符号当前位置的selection对象
+      let selection = window.getSelection()
+
+      // 获取包含当前节点的文档片段
+      let range = selection.getRangeAt(0)
+
+      // 创建需追加到光标处节点的文档片段
+      let fragment = range.createContextualFragment(
+        `<img src='${image.url}' width='400' height='400'>`
+      )
+
+      // 将创建的文档片段插入到光标处
+      range.insertNode(fragment.lastChild)
+      this.$emit('ready', editor)
+      this.$emit('image-change', image)
+    }
+  },
   mounted() {
     this.importService
       .load(['tinymce/5.0.3/tinymce.min.js'])
@@ -107,30 +129,20 @@ export default {
           branding: false,
           // 隐藏底栏的元素路径
           elementpath: false,
-          menubar: 'my1',
-          menu: {
-            my1: { title: '图片上传', items: 'copy paste' }
-          },
+          menubar: false,
           body_class: 'st-editor',
           plugins: ['link', 'image'],
           toolbar:
-            'undo redo | styleselect bold italic forecolor backcolor | bullist numlist | alignleft aligncenter alignright  | image',
+            'undo redo | styleselect bold italic forecolor backcolor | bullist numlist | alignleft aligncenter alignright',
           language_url: this.appConfig.BASE_URL + 'tinymce/5.0.3/zh_CN.js',
           // 图片上传
           images_upload_handler: function(blobInfo, success, failure) {
             let formData = new FormData()
             console.log(blobInfo.filename())
             formData.append('img', blobInfo.blob())
-            self.$axios
-              .post('http://127.0.0.1:8000/upload/', formData)
-              .then(response => {
-                console.log(response.data['url'])
-                if (response.data['code'] == 200) {
-                  success(response.data['url'])
-                } else {
-                  failure('上传失败！')
-                }
-              })
+            ctx.$modalRouter.push({
+              name: 'face-recognition'
+            })
           },
           setup(editor) {
             editor.on('change keyup undo redo', value => {
@@ -146,6 +158,18 @@ export default {
             })
           },
           init_instance_callback(editor) {
+            const editorToolbarEl = document.querySelector('.tox-toolbar')
+            let ele = document.createElement('div')
+            ele.id = 'editorImageUpload'
+            editorToolbarEl.appendChild(ele)
+            new Vue({
+              components: {
+                EditorImage
+              },
+              render: h => (
+                <editor-image editor={editor} onChange={ctx.onChangeGetFile} />
+              )
+            }).$mount('#editorImageUpload')
             editor.setContent(ctx.value)
             ctx.$emit('ready', editor)
           }

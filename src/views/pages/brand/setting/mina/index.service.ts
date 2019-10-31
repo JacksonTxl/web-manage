@@ -20,4 +20,7 @@ export class IndexService {
   subAudit() {
     return this.settingMinaApi.subAudit()
   }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+    return this.getInfo()
+  }
 }

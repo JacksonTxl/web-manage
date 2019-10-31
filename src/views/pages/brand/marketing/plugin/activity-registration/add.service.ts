@@ -40,7 +40,7 @@ export class AddService {
         })
       )
     } else {
-      this.api.addSignUp(params).pipe(
+      return this.api.addSignUp(params).pipe(
         tap(res => {
           this.msg.success({ content: '存草稿成功！' })
         })

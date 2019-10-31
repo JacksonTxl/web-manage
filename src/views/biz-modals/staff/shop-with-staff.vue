@@ -7,7 +7,7 @@
     <st-container>
       <st-table
         :columns="columns"
-        :rowKey="record => record.shop_name"
+        rowKey="id"
         :pagination="null"
         :dataSource="shopList"
       ></st-table>
@@ -35,11 +35,6 @@ const columns = [
 ]
 export default {
   name: 'SupportCourseShops',
-  serviceInject() {
-    return {
-      brandService: BrandService
-    }
-  },
   data() {
     return {
       columns,
@@ -49,21 +44,9 @@ export default {
   },
   props: {
     shopList: {
-      type: Number,
-      default: -1
+      type: Array,
+      default: () => []
     }
-  },
-  methods: {
-    getShops() {
-      this.brandService
-        .getCoursePersonalSupportShops({ course_id: this.courseId })
-        .subscribe(state => {
-          this.supportShopList = state.shops
-        })
-    }
-  },
-  mounted() {
-    this.getShops()
   }
 }
 </script>

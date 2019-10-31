@@ -8,7 +8,7 @@
     @cancel="cancel"
   >
     <st-form :form="form">
-      <st-form-item labelWidth="70px" label="接受对象">
+      <st-form-item labelWidth="70px" label="接受对象" :class="bModal('form')">
         <a-radio-group
           v-decorator="decorators.user_type"
           @change="getCurPrizUserType"
@@ -30,25 +30,27 @@
           :autosize="{ minRows: 2, maxRows: 4 }"
           placeholder="输入手机号,每行一个"
         ></st-textarea>
-        <div :class="bModal('scroll')" v-if="curUser === USER_TYPES.CROWD">
-          <a-radio-group v-decorator="decorators.send_value">
-            <a-radio-button
-              :class="bModal('scroll-btn')"
-              class="mg-r8"
-              v-for="(item, index) in crowdList"
-              :key="index"
-              :value="item.crowd_id"
-            >
-              {{ item.crowd_name }}
-            </a-radio-button>
-          </a-radio-group>
-          <span :class="bModal('scroll-add')">
-            <span :class="bModal('scroll-not')">不满足?</span>
-            <a @click="goCrowd" class="cursor-pointer">
-              去添加人群>
-            </a>
-          </span>
-        </div>
+        <a-radio-group
+          :class="bModal('scroll')"
+          v-decorator="decorators.send_value"
+          v-show="curUser === USER_TYPES.CROWD"
+        >
+          <a-radio-button
+            :class="bModal('scroll-btn')"
+            class="mg-r8"
+            v-for="(item, index) in crowdList"
+            :key="index"
+            :value="item.crowd_id"
+          >
+            {{ item.crowd_name }}
+          </a-radio-button>
+        </a-radio-group>
+        <span :class="bModal('scroll-add')">
+          <span :class="bModal('scroll-not')">不满足?</span>
+          <a @click="goCrowd" class="cursor-pointer">
+            去添加人群>
+          </a>
+        </span>
       </st-form-item>
       <st-form-item labelWidth="70px" label="发送时间">
         <a-radio-group
@@ -67,7 +69,7 @@
           v-show="curTime === SEND_TYPES.ONTIME"
           :disabledDate="disabledStartDate"
           placeholder="请选择时间"
-          style="width:120px;"
+          style="width:144px"
           format="YYYY-MM-DD HH:mm"
           showTime
           v-decorator="decorators.send_time"
@@ -103,13 +105,13 @@
             存为模板
           </a-checkbox>
           <a-input
-            :disabled="isSaveChecked"
+            :disabled="!isSaveChecked"
             v-decorator="decorators.title"
             placeholder="请输入模版标题"
           ></a-input>
         </div>
         <a-select
-          style="width:120px"
+          style="width:130px"
           class="mg-b8"
           v-show="curTem === TMPL_TYPES.CUSTOM"
           placeholder="请选择模版"
@@ -128,9 +130,8 @@
           :maxlength="280 - sign.length"
           :autosize="{ minRows: 2, maxRows: 4 }"
           v-if="curTem === TMPL_TYPES.CUSTOM"
-          disabled
           :suffix="sign"
-          :value="temContent"
+          v-model="temContent"
         ></st-textarea>
       </st-form-item>
     </st-form>
@@ -194,7 +195,7 @@ export default {
       tel: '',
       info: {},
       time: '',
-      isSaveChecked: true
+      isSaveChecked: false
     }
   },
   created() {
@@ -216,7 +217,6 @@ export default {
       this.curTem = 2
       this.getCurTemContent(this.tmpl.tmpl_id)
     }
-    console.log(this.crowd)
     if (this.crowd) {
       this.form.setFieldsValue({
         user_type: 2,
@@ -254,13 +254,13 @@ export default {
       })
     },
     isSave(e) {
-      this.isSaveChecked = !!e.target.value
+      this.isSaveChecked = !e.target.value
     },
     getEditInfo(id) {
       return this.groupService.getEditInfo(id).subscribe(res => {
         this.form.setFieldsValue({
           user_type: res.info.user_type,
-          send_value: res.info.send_value,
+          send_value: res.info.send_value - 0,
           send_type: res.info.send_type,
           send_time: moment(res.info.send_time),
           title: res.info.title,
@@ -272,8 +272,9 @@ export default {
         this.curUser = res.info.user_type
         this.curTime = res.info.send_type
         this.curTem = res.info.tmpl_type
+        this.temContent = res.info.content
         if (res.info.user_type === this.USER_TYPES.USER) {
-          this.tel = res.info.send_value
+          this.tel = res.info.send_value - 0
         }
         if (res.info.tmpl_type === this.TMPL_TYPES.CUSTOM) {
           this.getCurTemContent(res.info.tmpl_id)
@@ -328,12 +329,12 @@ export default {
           }
         }
         if (this.curTem === this.TMPL_TYPES.PERSONAL) {
-          // if (!values.title) {
-          //   this.messageService.warn({
-          //     content: '请输入模板标题'
-          //   })
-          //   return
-          // }
+          if (this.isSaveChecked && !values.title) {
+            this.messageService.warn({
+              content: '请输入模板标题'
+            })
+            return
+          }
           if (!values.content) {
             this.messageService.warn({
               content: '请输入模板内容'
@@ -341,12 +342,13 @@ export default {
             return
           }
         } else {
-          if (!values.tmpl_id) {
+          if (!this.temContent) {
             this.messageService.warn({
-              content: '请选择模板'
+              content: '请填写模板内容'
             })
             return
           }
+          values.content = this.temContent
         }
 
         if (this.id) {

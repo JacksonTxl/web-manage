@@ -27,6 +27,9 @@
         <a-radio-button :value="1">发送记录</a-radio-button>
         <a-radio-button :value="0">短信模版</a-radio-button>
       </a-radio-group>
+      <st-button class="fl-r mg-r16" v-if="isShowList" @click="refresh">
+        刷新
+      </st-button>
     </div>
     <st-table
       v-if="isShowList"
@@ -68,6 +71,9 @@
           {{ record.send_status_text }}
         </st-status-text>
         <st-status-text v-if="record.send_status === 0" :status="{ info: 1 }">
+          {{ record.send_status_text }}
+        </st-status-text>
+        <st-status-text v-if="record.send_status === 4" :status="{ error: 1 }">
           {{ record.send_status_text }}
         </st-status-text>
       </div>

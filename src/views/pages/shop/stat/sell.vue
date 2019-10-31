@@ -92,7 +92,7 @@
       </span>
       <span slot="depositTitle">
         储值卡成单数
-        <st-help-tooltip id="TSCR002" />
+        <st-help-tooltip id="TSSR002" />
       </span>
       <span slot="teamTitle">
         团课购买节数

@@ -49,12 +49,17 @@
           <st-input-number
             placeholder="若不限制活动人数，请填写0"
             :min="0"
+            :disabled="isMemberNumDisabled"
             :max="9999"
             v-decorator="decorators.member_limit_num"
           ></st-input-number>
         </st-form-item>
         <st-form-item label="活动详情" required>
-          <st-editor @input="onChangeEditor" v-model="content"></st-editor>
+          <st-editor
+            @image-change="getImageUrl"
+            @input="onChangeEditor"
+            v-model="content"
+          ></st-editor>
           <div class="color-danger" v-if="isEditor">请输入活动详情</div>
         </st-form-item>
         <div v-di-view="{ name: 'step', show }">
@@ -74,9 +79,11 @@ import { PatternService } from '@/services/pattern.service'
 import MapButton from '@/views/biz-components/map-button/map-button'
 import StEditor from '@/views/biz-components/editor/editor'
 import moment from 'moment'
+import { ACTIVITY_STATUS } from '@/constants/brand/marketing'
 import { cloneDeep } from 'lodash-es'
 import { CopyService } from '../copy.service'
 import { EditService } from '../edit.service'
+
 export default {
   name: 'Step1Form',
   bem: {
@@ -110,6 +117,7 @@ export default {
     })
     const decorators = form.decorators(ruleOptions)
     return {
+      ACTIVITY_STATUS,
       isEditor: false,
       isPoster: false,
       isAddress: false,
@@ -135,6 +143,14 @@ export default {
       default: false
     }
   },
+  computed: {
+    isMemberNumDisabled() {
+      return (
+        this.defaultForm$.activity_status === ACTIVITY_STATUS.PUBLISHED &&
+        this.defaultForm$.member_limit_num === 0
+      )
+    }
+  },
   created() {
     if (!this.isCopy && !this.isEdit) return
     this.initForm()
@@ -151,6 +167,12 @@ export default {
   },
   methods: {
     moment,
+    getImageUrl(imageUrl) {
+      console.log(imageUrl)
+      debugger
+      const imgEl = `<img src='${imageUrl.url}' width='400' height='400'>`
+      this.content = this.content + imgEl
+    },
     onChangeEditor() {
       this.isEditor = this.content.length === 0
       return this.content.length === 0
