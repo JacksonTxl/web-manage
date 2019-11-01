@@ -40,7 +40,6 @@
           <td class="align-items-center">
             <st-image-upload
               width="80px"
-              height="80px"
               :size-limit="5"
               @change="onAddImgChange"
             />
