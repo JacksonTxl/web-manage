@@ -68,7 +68,7 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :lg="22" :xs="22" :offset="1">
+      <a-col :xxl="10" :lg="14" :xs="22" :offset="1">
         <st-form-item label="课程介绍">
           <st-textarea
             v-decorator="ruleConfig.description"
