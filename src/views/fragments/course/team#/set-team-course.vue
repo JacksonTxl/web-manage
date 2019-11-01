@@ -85,7 +85,7 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :lg="22" :xs="22" :offset="1">
         <st-form-item label="图片">
           <div class="page-upload-container">
             <st-image-upload
