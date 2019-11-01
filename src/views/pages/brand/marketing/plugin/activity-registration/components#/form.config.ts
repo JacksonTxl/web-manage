@@ -44,13 +44,18 @@ export const ruleOptions = (vm: any) => {
         },
         {
           validator: (field: any, value: any, values: any) => {
+            if (value === 0 && vm.defaultForm$.member_limit_num) return
             if (
               vm.defaultForm$ &&
               vm.defaultForm$.activity_status !== ACTIVITY_STATUS.PUBLISHED
             )
               return
             const memberLimitNum = vm.defaultForm$.member_limit_num
-            if (value < memberLimitNum) {
+            if (
+              vm.$route.path.includes('/activity-registration/edit') &&
+              value > 0 &&
+              value < memberLimitNum
+            ) {
               return `编辑活动时，活动人数不能小于${memberLimitNum}`
             }
           }

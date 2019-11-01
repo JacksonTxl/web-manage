@@ -6,6 +6,7 @@
           <a-radio-group
             @change="onChangeGetTicketType"
             v-model="ticketType"
+            :disabled="isDisabled"
             :defaultValue="1"
           >
             <a-radio :value="1">收费票</a-radio>
@@ -26,6 +27,7 @@
             :float="true"
             :min="0.1"
             :max="10000"
+            @change="onChangeGetTicketPrice"
             v-decorator="decorators.ticket_price"
           ></st-input-number>
           <span class="mg-l4">元</span>
@@ -40,18 +42,12 @@
             :max="9999"
             :step="1"
             :precision="0"
+            @change="onChangeGetTicketTotalNum"
             v-decorator="decorators.ticket_total_num"
           ></a-input-number>
           <span class="mg-l4">张</span>
         </st-form-item>
-        <st-form-item label="购买用户" required>
-          <a-select
-            style="width:140px"
-            :disabled="isDisabled"
-            v-decorator="decorators.crowd_id"
-            :options="crowdIdOptions"
-          ></a-select>
-        </st-form-item>
+
         <a-row>
           <a-col :span="16">
             <st-form-item label="购买限制" required>
@@ -59,7 +55,7 @@
               <a-input-number
                 class="input mg-l4 mg-r4"
                 :min="0"
-                :max="99999"
+                :max="9999"
                 :disabled="isDisabled"
                 :step="1"
                 :precision="0"
@@ -74,7 +70,7 @@
               <a-input-number
                 class="input mg-l4 mg-r4"
                 :min="0"
-                :max="99999"
+                :max="9999"
                 :disabled="isDisabled"
                 :step="1"
                 :precision="0"
@@ -84,7 +80,14 @@
             </st-form-item>
           </a-col>
         </a-row>
-
+        <st-form-item label="购买用户" required>
+          <a-select
+            style="width:140px"
+            :disabled="isDisabled"
+            v-decorator="decorators.crowd_id"
+            :options="crowdIdOptions"
+          ></a-select>
+        </st-form-item>
         <st-form-item
           class="mg-b0"
           v-show="ticketType === 1"
@@ -109,7 +112,7 @@
                   <a-input-number
                     v-decorator="decorators.group_buy_min"
                     class="input mg-l4 mg-r4"
-                    :max="99999"
+                    :max="9999"
                     :disabled="isDisabled"
                     :step="1"
                     :precision="0"
@@ -374,6 +377,26 @@ export default {
         reduce_price
       }
     },
+    onChangeGetTicketTotalNum() {
+      this.form.setFieldsValue({
+        buy_limit_min: 1,
+        buy_limit_max: 1
+      })
+      if (this.isBulk) {
+        this.form.setFieldsValue({
+          group_buy_min: 1,
+          reduce_price: 1
+        })
+      }
+    },
+    onChangeGetTicketPrice() {
+      if (this.isBulk) {
+        this.form.setFieldsValue({
+          group_buy_min: 1,
+          reduce_price: 1
+        })
+      }
+    },
     onSubmit() {
       this.form.validate().then(values => {
         if (values.buy_time_limit === 1 && !values.buy_time) {
@@ -382,15 +405,24 @@ export default {
           })
           return
         }
+        let showData = this.getShowData(values)
+        let form = this.formatData(values)
+        if (this.ticket && this.ticket.ticket_id) {
+          const ticket_id = this.ticket.ticket_id
+          showData = { ticket_id, ...showData }
+          form = { ticket_id, ...form }
+        }
         this.show = false
+
         // 返回表格显示数据
         this.$emit('show', {
-          ticket: this.getShowData(values),
+          ticket: showData,
           index: this.index
         })
+
         // 提交给后台字段
         this.$emit('submit', {
-          ticket: this.formatData(values),
+          ticket: form,
           index: this.index
         })
       })

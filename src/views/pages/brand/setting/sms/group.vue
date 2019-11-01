@@ -72,9 +72,6 @@
         >
           {{ record.send_status_text }}
         </st-status-text>
-        <st-status-text v-if="record.send_status === 3" :status="{ error: 1 }">
-          {{ record.send_status_text }}
-        </st-status-text>
         <st-status-text v-if="record.send_status === 1" :status="{ normal: 1 }">
           {{ record.send_status_text }}
         </st-status-text>
@@ -82,6 +79,12 @@
           {{ record.send_status_text }}
         </st-status-text>
         <st-status-text v-if="record.send_status === 4" :status="{ error: 1 }">
+          {{ record.send_status_text }}
+        </st-status-text>
+        <st-status-text
+          v-if="record.send_status === 3"
+          :status="{ warning: 1 }"
+        >
           {{ record.send_status_text }}
         </st-status-text>
       </div>
@@ -150,7 +153,13 @@
           <a
             v-modal-link="{
               name: 'brand-setting-sms-group',
-              props: { tmpl: { tmpl_type: 2, tmpl_id: record.tmpl_id } },
+              props: {
+                tmpl: {
+                  tmpl_type: 2,
+                  tmpl_id: record.tmpl_id,
+                  content: record.content
+                }
+              },
               on: { success: refresh }
             }"
           >

@@ -79,7 +79,9 @@ export default {
       this.$router.push({ query: this.query })
     },
     deleteCourse(course) {
-      this.listService.deleteCourse(course.id).subscribe()
+      this.listService.deleteCourse(course.id).subscribe(() => {
+        this.$router.reload()
+      })
     }
   },
   mounted() {

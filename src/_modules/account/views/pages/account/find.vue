@@ -57,7 +57,7 @@
           isBindAccount ? bFooter('copyright--active') : bFooter('copyright')
         "
       >
-        Copyright&nbsp;©&nbsp;2015-2019&nbsp;三体云智能科技有限公司
+        Copyright &#169; 2015-2019 三体云智能科技有限公司
       </p>
     </footer>
   </div>

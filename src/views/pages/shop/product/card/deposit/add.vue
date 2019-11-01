@@ -244,7 +244,7 @@
         <a-row :gutter="8">
           <a-col :lg="22">
             <st-form-item
-              class="page-content-card-introduction mt-4"
+              class="page-content-card-introduction mg-t4"
               label="储值卡介绍"
             >
               <st-textarea
@@ -258,7 +258,7 @@
         </a-row>
         <a-row :gutter="8">
           <a-col :lg="22">
-            <st-form-item class="page-content-card-contents mt-4" label="备注">
+            <st-form-item class="page-content-card-contents mg-t4" label="备注">
               <st-textarea
                 v-model="cardData.description"
                 maxlength="500"

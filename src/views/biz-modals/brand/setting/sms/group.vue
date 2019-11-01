@@ -126,13 +126,15 @@
             {{ item.title }}
           </a-select-option>
         </a-select>
-        <st-textarea
-          :maxlength="280 - sign.length"
-          :autosize="{ minRows: 2, maxRows: 4 }"
-          v-if="curTem === TMPL_TYPES.CUSTOM"
-          :suffix="sign"
-          v-model="temContent"
-        ></st-textarea>
+        <template>
+          <st-textarea
+            v-if="curTem === TMPL_TYPES.CUSTOM"
+            :maxlength="280 - sign.length"
+            :autosize="{ minRows: 2, maxRows: 4 }"
+            :suffix="sign"
+            v-model="temContent"
+          ></st-textarea>
+        </template>
       </st-form-item>
     </st-form>
   </st-modal>
@@ -169,7 +171,7 @@ export default {
   },
   props: {
     id: {
-      type: String
+      type: Number
     },
     tmpl: {
       type: Object
@@ -215,7 +217,7 @@ export default {
         tmpl_id: this.tmpl.tmpl_id
       })
       this.curTem = 2
-      this.getCurTemContent(this.tmpl.tmpl_id)
+      this.temContent = this.tmpl.content
     }
     if (this.crowd) {
       this.form.setFieldsValue({
@@ -260,13 +262,13 @@ export default {
       return this.groupService.getEditInfo(id).subscribe(res => {
         this.form.setFieldsValue({
           user_type: res.info.user_type,
-          send_value: res.info.send_value - 0,
+          send_value: res.info.send_value,
           send_type: res.info.send_type,
           send_time: moment(res.info.send_time),
           title: res.info.title,
           content: res.info.content,
           tmpl_id: res.info.tmpl_id,
-          is_save: res.info.is_save,
+          is_save: 0,
           tmpl_type: res.info.tmpl_type
         })
         this.curUser = res.info.user_type
@@ -274,7 +276,7 @@ export default {
         this.curTem = res.info.tmpl_type
         this.temContent = res.info.content
         if (res.info.user_type === this.USER_TYPES.USER) {
-          this.tel = res.info.send_value - 0
+          this.tel = res.info.send_value
         }
         if (res.info.tmpl_type === this.TMPL_TYPES.CUSTOM) {
           this.getCurTemContent(res.info.tmpl_id)

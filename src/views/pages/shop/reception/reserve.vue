@@ -18,7 +18,7 @@
         </st-search-panel-item>
         <st-search-panel-item label="预约时间：">
           <st-range-picker
-            :disabledDays="60"
+            :disabledDays="180"
             @change="onChangeRangeTime"
             :value="selectTime"
             class="value"

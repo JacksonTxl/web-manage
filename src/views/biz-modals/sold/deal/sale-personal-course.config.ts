@@ -60,6 +60,9 @@ export const ruleOptions = (vm: any) => {
             } else if (value < price) {
               return `不能少于课程定价的最低购买节数${price}`
             }
+            if (!vm.isAmountDisabled) {
+              return '购买数量未确认，请点击确定'
+            }
           }
         }
       ]
