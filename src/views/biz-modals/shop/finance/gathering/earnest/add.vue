@@ -94,13 +94,13 @@
                 v-decorator="decorators.contract_number"
                 placeholder="请输入合同编号"
               ></a-input>
-              <st-button
+              <auto-contract-btn
                 class="create-button"
                 @click="onCodeNumber"
                 :loading="loading.getCodeNumber"
               >
                 自动生成
-              </st-button>
+              </auto-contract-btn>
             </div>
           </st-form-item>
         </div>
@@ -154,11 +154,14 @@ import { AddService } from './add.service'
 import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from './add.config'
 import { CODE_NUMBER } from '@/constants/sold/transaction'
-
+import autoContractBtn from '@/views/biz-components/contract/auto-contract-btn.vue'
 export default {
   name: 'ModalSoldDealSaleMemberCard',
   bem: {
     sale: 'modal-sold-deal-sale'
+  },
+  components: {
+    autoContractBtn
   },
   serviceProviders() {
     return [AddService]

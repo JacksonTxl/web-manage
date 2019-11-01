@@ -42,7 +42,7 @@ export const shortcutList = () => {
     {
       id: 'orderPage',
       icon: 'reception-create',
-      label: '销售开单',
+      label: '交易签单',
       auth: true,
       version: 1
     },

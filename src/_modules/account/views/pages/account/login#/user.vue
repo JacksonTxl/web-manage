@@ -4,7 +4,7 @@
       <st-form-item>
         <a-input
           size="large"
-          placeholder="用户名"
+          placeholder="请输入用户名"
           v-decorator="decorators.name"
         />
       </st-form-item>
@@ -12,7 +12,7 @@
         <a-input
           size="large"
           type="password"
-          placeholder="密码"
+          placeholder="请输入密码"
           v-decorator="decorators.password"
         />
       </st-form-item>

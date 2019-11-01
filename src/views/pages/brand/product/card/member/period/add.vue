@@ -42,7 +42,7 @@
         <a-row :gutter="8">
           <a-col :lg="23">
             <st-form-item
-              class="page-content-card-admission-range mt-4"
+              class="page-content-card-admission-range mg-t4"
               required
             >
               <template slot="label">
@@ -81,7 +81,7 @@
         <a-row :gutter="8">
           <a-col :span="24">
             <st-form-item
-              class="page-content-card-price-setting mt-4"
+              class="page-content-card-price-setting mg-t4"
               required
               :help="priceValidatorText"
             >
@@ -410,7 +410,7 @@
         <a-row :gutter="8">
           <a-col :lg="23">
             <st-form-item
-              class="page-content-card-support-sales mt-4"
+              class="page-content-card-support-sales mg-t4"
               label="支持售卖门店"
               required
             >
@@ -550,7 +550,7 @@
         <a-row :gutter="8">
           <a-col :lg="22">
             <st-form-item
-              class="page-content-card-introduction mt-4"
+              class="page-content-card-introduction mg-t4"
               :label="`${$c('member_card')}介绍`"
             >
               <st-textarea
@@ -564,7 +564,7 @@
         </a-row>
         <a-row :gutter="8">
           <a-col :lg="22">
-            <st-form-item class="page-content-card-contents mt-4" label="备注">
+            <st-form-item class="page-content-card-contents mg-t4" label="备注">
               <st-textarea
                 v-model="cardData.card_contents"
                 maxlength="500"

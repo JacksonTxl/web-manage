@@ -352,7 +352,7 @@ export default {
     },
     // 跳转合同
     toContract(record) {
-      let url = `${window.location.origin}/extra/contract-preview?id=${
+      let url = `${window.location.origin}/common/contract-preview?id=${
         record.order_id
       }`
       window.open(url)
