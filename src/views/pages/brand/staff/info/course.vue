@@ -184,8 +184,7 @@ export default {
           id: this.query.id,
           start_time: moment(e[0]).format('YYYY-MM-DD'),
           end_time: moment(e[1]).format('YYYY-MM-DD')
-        },
-        force: true
+        }
       })
     }
   }

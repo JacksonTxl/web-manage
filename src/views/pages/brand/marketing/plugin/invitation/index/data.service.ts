@@ -49,9 +49,7 @@ export class DataService implements RouteGuard {
       this.getInviteInvitee({ page: 1, size: 20 })
     )
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: () => {}) {
-    this.init().subscribe(res => {
-      next()
-    })
+  beforeEach() {
+    return this.init()
   }
 }

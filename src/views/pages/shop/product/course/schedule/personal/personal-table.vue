@@ -178,7 +178,7 @@ export default {
               return item.id
             })
           this.scheduleService.delInBatch(ids).subscribe(res => {
-            this.$router.push({ query: this.query, force: true })
+            this.$router.push({ query: this.query })
           })
         },
         onCancel() {}
@@ -204,7 +204,7 @@ export default {
           })
           this.onSelectionReset()
           this.scheduleService.delInBatch(ids).subscribe(res => {
-            this.$router.push({ query: this.query, force: true })
+            this.$router.push({ query: this.query })
           })
         },
         onCancel() {}

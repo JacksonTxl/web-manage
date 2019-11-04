@@ -1,10 +1,10 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, RouteGuard } from 'vue-service-app'
 import { RedirectService } from '@/services/redirect.service'
 import moment from 'moment'
 @Injectable()
 export class PersonalTeamService implements RouteGuard {
   constructor(private redirectService: RedirectService) {}
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeRouteEnter() {
     let weekOfday: any = moment().format('E')
     let start_date: string = moment()
       .subtract(weekOfday - 1, 'days')
@@ -13,15 +13,12 @@ export class PersonalTeamService implements RouteGuard {
       .add(7 - weekOfday, 'days')
       .format('YYYY-MM-DD')
 
-    const redirectRouteQuery: any = { start_date, end_date }
-    this.redirectService.redirect({
+    return this.redirectService.redirect({
       locateRouteName: 'shop-product-course-schedule-personal-team',
-      redirectRouteName:
-        'shop-product-course-schedule-personal-team-personal-team',
-      redirectRouteQuery,
-      next,
-      from,
-      to
+      redirectRoute: {
+        name: 'shop-product-course-schedule-personal-team-personal-team',
+        query: { start_date, end_date }
+      }
     })
   }
 }

@@ -114,7 +114,7 @@ export default {
       console.log(value)
     },
     refresh() {
-      this.$router.push({ query: {}, force: true })
+      this.$router.push({ query: {} })
     },
     deleteTreeNode(value) {
       this.aService.delCrowdBrandCrowd(value.id).subscribe(res => {

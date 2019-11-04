@@ -3,13 +3,12 @@ import { RedirectService } from '@/services/redirect.service'
 @Injectable()
 export class PackageService implements RouteGuard {
   constructor(private redirectService: RedirectService) {}
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.redirectService.redirect({
+  beforeRouteEnter() {
+    return this.redirectService.redirect({
       locateRouteName: 'shop-product-course-manage-package',
-      redirectRouteName: 'shop-product-course-manage-package-list',
-      to,
-      from,
-      next
+      redirectRoute: {
+        name: 'shop-product-course-manage-package-list'
+      }
     })
   }
 }

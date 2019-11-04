@@ -98,7 +98,7 @@ export default {
           .update({ id: this.info.id, coach_id: values.coach_id })
           .subscribe(res => {
             this.show = false
-            this.$router.push({ query: this.query, force: true })
+            this.$router.push({ query: this.query })
           })
       })
     }

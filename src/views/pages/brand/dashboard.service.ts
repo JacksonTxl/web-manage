@@ -8,15 +8,13 @@ export class DashboardService implements RouteGuard {
     private redirectService: RedirectService,
     private userService: UserService
   ) {}
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.redirectService.redirect({
+  beforeEach(to: ServiceRoute) {
+    const useVersion = this.userService.useVersion$.snapshot()
+    return this.redirectService.redirect({
       locateRouteName: 'brand-dashboard',
-      redirectRouteName: `brand-dashboard-${
-        this.userService.brand$.snapshot().version
-      }`,
-      from,
-      to,
-      next
+      redirectRoute: {
+        name: `brand-dashboard-${useVersion}`
+      }
     })
   }
 }

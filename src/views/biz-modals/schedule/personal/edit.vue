@@ -141,13 +141,13 @@ export default {
       }
       this.scheduleService.update(date).subscribe(res => {
         this.show = false
-        this.$router.push({ query: this.query, force: true })
+        this.$router.push({ query: this.query })
       })
     },
     onClickCopySchedule() {
       this.scheduleService.copy({ id: this.id || 108 }).subscribe(res => {
         this.show = false
-        this.$router.push({ query: this.query, force: true })
+        this.$router.push({ query: this.query })
       })
     },
     initScheduleInfo() {

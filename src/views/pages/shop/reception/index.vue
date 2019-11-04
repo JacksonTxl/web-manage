@@ -952,9 +952,9 @@ export default {
     // 入场
     onEntry() {
       let cabinet_id = this.cabinet === -1 ? undefined : +this.cabinet
-      let proof_type = this.entranceOptionList.filter(
-        i => i.id === this.proof
-      )[0].proof_type
+      let proof_type =
+        this.entranceOptionList.length > 0 &&
+        this.entranceOptionList.filter(i => i.id === this.proof)[0].proof_type
       let proof_value = +this.proof
       let seller_id = this.seller === -1 ? undefined : +this.seller
       let coach_id = this.coach === -1 ? undefined : +this.coach

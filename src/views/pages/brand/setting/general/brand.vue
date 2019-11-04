@@ -165,9 +165,7 @@ export default {
         this.messageService.success({
           content: '保存成功'
         })
-        this.$router.push({
-          force: true
-        })
+        this.$router.push({})
         this.userService.getUser().subscribe()
       })
     },
