@@ -59,7 +59,9 @@
           </a-row>
         </div>
         <div :class="h5('hr')"></div>
-        <st-t3 :class="h5('coach-title')">{{ coach.module_title }}</st-t3>
+        <st-t3 :class="h5('coach-title')" v-if="coach">
+          {{ coach.module_title }}
+        </st-t3>
         <div :class="h5('coach')">
           <swiper :options="coachOption" class="coach-li">
             <swiper-slide v-for="(li, index) in coachInfo" :key="index">
@@ -230,6 +232,8 @@ export default {
     ]
     this.recommend2 = this.recommend1.slice(0).reverse()
     this.recommend3 = [coursepack1, coursepack2, coursepack3, coursepack4]
+    console.log(this.coach)
+    console.log(this.coachInfo)
   },
   methods: {
     imageFilter(key, opts) {
