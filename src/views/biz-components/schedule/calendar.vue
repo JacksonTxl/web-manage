@@ -246,7 +246,7 @@ export default {
     },
     oChangeDate(date) {
       this.start = date.start_date
-      this.$router.push({ query: { ...date }, force: true })
+      this.$router.push({ query: { ...date } })
       this.isDay ? this.getWeeks() : this.getWeeks('week')
     },
     onClickGetTable() {
@@ -294,7 +294,7 @@ export default {
     },
 
     onClickGetWeek() {
-      this.$router.push({ query: { ...this.currentWeek }, force: true })
+      this.$router.push({ query: { ...this.currentWeek } })
       this.getWeeks('week')
     },
     onChangeGetDate(date) {

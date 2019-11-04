@@ -20,9 +20,7 @@ export class TeamTableService implements RouteGuard {
   beforeEach(to: ServiceRoute, form: ServiceRoute) {
     return forkJoin(this.initOptions(), this.scheduleService.getTable(to.query))
   }
-  beforeRouteEnter(to: ServiceRoute, form: ServiceRoute, next: any) {
-    this.initOptions().subscribe(() => {
-      next()
-    })
+  beforeRouteEnter() {
+    return this.initOptions()
   }
 }

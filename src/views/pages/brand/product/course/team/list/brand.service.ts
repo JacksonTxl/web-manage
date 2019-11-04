@@ -36,7 +36,7 @@ export class BrandService implements RouteGuard {
   init(query: any) {
     return forkJoin(this.getList(query))
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+  beforeEach(to: ServiceRoute) {
     return this.init({ ...to.query })
   }
 }

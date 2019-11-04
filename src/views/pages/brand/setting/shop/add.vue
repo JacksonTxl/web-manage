@@ -323,7 +323,7 @@ export default {
     onValidtorPhone() {
       if (this.form.getFieldValue('shop_phone') && !this.phoneAddDisabled) {
         // input框里有值才添加
-        this.form.validateFields(['shop_phone'], { force: true }).then(res => {
+        this.form.validateFields(['shop_phone'], {}).then(res => {
           let arr = [...this.shopData.shop_phones]
           arr.push(res.shop_phone)
           this.shopData.shop_phones = [...new Set(arr)]

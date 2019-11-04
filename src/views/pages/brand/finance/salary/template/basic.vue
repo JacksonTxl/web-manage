@@ -144,8 +144,7 @@ export default {
         query: {
           size: this.page.pageSize,
           page: this.page.current
-        },
-        force: true
+        }
       })
     },
     onDelete(e) {
@@ -162,8 +161,7 @@ export default {
               content: '删除成功'
             })
             that.$router.push({
-              query: {},
-              force: true
+              query: {}
             })
           })
         },

@@ -175,8 +175,7 @@ export default {
     },
     onListChange() {
       this.$router.push({
-        query: {},
-        force: true
+        query: {}
       })
     },
     onDel(id) {

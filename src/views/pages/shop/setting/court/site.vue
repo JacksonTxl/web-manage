@@ -40,6 +40,7 @@
           <td class="align-items-center">
             <st-image-upload
               width="80px"
+              height="80px"
               :size-limit="5"
               @change="onAddImgChange"
             />
@@ -230,8 +231,7 @@ export default {
       this.isAdd = false
       this.editInfo = {}
       this.$router.push({
-        query: this.query,
-        force: true
+        query: this.query
       })
     },
     onAddImgChange(fileList) {

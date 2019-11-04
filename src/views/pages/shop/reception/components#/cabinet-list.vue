@@ -35,9 +35,16 @@
               <st-icon
                 class="smart-cabinet-logo__img"
                 type="cabinet-logo"
-                color="#3F66F6"
+                color="#ffffff"
               ></st-icon>
             </div>
+            <!-- <div class="smart-cabinet-logo smart-cabinet-logo--disabled">
+              <st-icon
+                class="smart-cabinet-logo__img"
+                type="cabinet-logo"
+                color="#9BACB9"
+              ></st-icon>
+            </div> -->
             <div
               :class="b('item-normal')"
               v-if="

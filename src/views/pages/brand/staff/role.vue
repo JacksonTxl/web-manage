@@ -118,12 +118,6 @@ export default {
         query: { id: role.id }
       })
     }
-  },
-  mounted() {
-    this.$router.push({
-      name: 'brand-staff-role-info',
-      query: { id: this.roles[0].id }
-    })
   }
 }
 </script>
