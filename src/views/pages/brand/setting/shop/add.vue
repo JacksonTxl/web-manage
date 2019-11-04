@@ -122,8 +122,17 @@
               width="240px"
               height="135px"
             >
-              <a-icon type="plus" />
-              <div class="page-upload-text">上传店招</div>
+              <a-icon
+                type="plus-circle"
+                theme="filled"
+                :style="{
+                  fontSize: '32px',
+                  verticalAlign: 'super',
+                  marginRight: '8px',
+                  color: '#9BACB9'
+                }"
+              />
+              <div class="page-upload-text">上传门店照片</div>
               <div class="page-upload-text">大小不超过5M，建议尺寸16:9</div>
             </st-image-upload>
           </st-form-item>
