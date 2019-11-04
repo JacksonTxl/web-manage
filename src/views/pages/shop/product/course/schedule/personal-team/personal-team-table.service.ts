@@ -18,9 +18,7 @@ export class PersonalTeamTableService implements RouteGuard {
   beforeEach(to: ServiceRoute, form: ServiceRoute) {
     return this.scheduleService.getTable(to.query)
   }
-  beforeRouteEnter(to: ServiceRoute, form: ServiceRoute, next: any) {
-    this.initOptions().subscribe(() => {
-      next()
-    })
+  beforeRouteEnter() {
+    return this.initOptions()
   }
 }

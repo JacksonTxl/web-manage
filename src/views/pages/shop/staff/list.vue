@@ -355,8 +355,7 @@ export default {
       this.$router.push({
         query: {
           shop_id: e
-        },
-        force: true
+        }
       })
     },
     onChooseStaffFn(e) {
@@ -367,8 +366,7 @@ export default {
       this.$router.push({
         query: {
           work_status: e
-        },
-        force: true
+        }
       })
     },
     onSearch(e) {

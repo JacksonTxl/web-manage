@@ -126,8 +126,7 @@ export default {
   methods: {
     refresh() {
       this.$router.push({
-        query: {},
-        force: true
+        query: {}
       })
     },
     onPageChange(e) {
@@ -136,8 +135,7 @@ export default {
         query: {
           size: e.pageSize,
           page: e.current
-        },
-        force: true
+        }
       })
     },
     onDelete(e) {
@@ -154,8 +152,7 @@ export default {
               content: '删除成功'
             })
             that.$router.push({
-              query: {},
-              force: true
+              query: {}
             })
           })
         },

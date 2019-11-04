@@ -106,8 +106,7 @@ export default {
         query: {
           id: this.id,
           keyword: e
-        },
-        force: true
+        }
       })
     }
   }

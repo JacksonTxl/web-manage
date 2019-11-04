@@ -53,10 +53,9 @@ export class LoginService implements RouteGuard {
       })
     )
   }
-  beforeRouteEnter(to: any, from: any, next: any) {
+  beforeRouteEnter(to: any) {
     if (to.meta.query.isBind) {
       this.isBind$.commit(() => to.meta.query.isBind)
     }
-    next()
   }
 }

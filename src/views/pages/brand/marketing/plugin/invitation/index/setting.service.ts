@@ -27,9 +27,7 @@ export class SettingService implements RouteGuard {
   edit(params: SetInviteEditInput) {
     return this.marketingApi.setInviteEdit(params)
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: () => {}) {
-    this.getInviteEditInfo(to.params).subscribe(() => {
-      next()
-    })
+  beforeEach(to: ServiceRoute) {
+    return this.getInviteEditInfo(to.params)
   }
 }

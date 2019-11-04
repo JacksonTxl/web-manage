@@ -110,8 +110,7 @@ export default {
           id: this.id,
           follow_date_first: moment(e[0]).format('YYYY-MM-DD'),
           follow_date_last: moment(e[1]).format('YYYY-MM-DD')
-        },
-        force: true
+        }
       })
     }
   }

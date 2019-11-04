@@ -68,28 +68,38 @@ export class UserService {
   menus$ = new Computed<any[]>(this.menuData$.pipe(pluck('menus')))
   firstMenuUrl$ = new Computed<string>(this.menuData$.pipe(pluck('first_url')))
   favoriteMenu$ = new Computed(this.menuData$.pipe(pluck('favorite')))
-
+  /**
+   * 使用版本 club 俱乐部 studio
+   */
+  useVersion$ = new Computed(
+    this.brand$.pipe(
+      map(brand => {
+        return {
+          club: 'club',
+          old_studio: 'studio',
+          studio: 'studio'
+        }[brand.version]
+      })
+    )
+  )
+  /**
+   * 标准工作室版本
+   */
   isBrandStudio$ = new Computed(
     this.brand$.pipe(map(brand => !!(brand.version === 'studio')))
   )
 
   isThemeClub$ = new Computed(
-    this.brand$.pipe(map(brand => ['club'].includes(brand.version)))
+    this.useVersion$.pipe(map(useVersion => useVersion === 'club'))
   )
   isThemeStudio$ = new Computed(
-    this.brand$.pipe(
-      map(brand => ['old_studio', 'studio'].includes(brand.version))
-    )
+    this.useVersion$.pipe(map(useVersion => useVersion === 'studio'))
   )
 
   theme$ = new Computed(
-    this.brand$.pipe(
-      map(brand => {
-        return {
-          club: 'theme-club',
-          old_studio: 'theme-studio',
-          studio: 'theme-studio'
-        }[brand.version]
+    this.useVersion$.pipe(
+      map(useVersion => {
+        return `theme-${useVersion}`
       })
     )
   )

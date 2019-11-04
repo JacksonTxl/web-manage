@@ -206,17 +206,13 @@ export default {
       let that = this
       if (value) {
         // input框里有值才添加
-        this.form.validateFields(
-          ['certification_name'],
-          { force: true },
-          (error, value) => {
-            if (!error) {
-              let arr = [...this.coachInfoData.certification_name]
-              arr.push(value.certification_name)
-              this.coachInfoData.certification_name = [...new Set(arr)]
-            }
+        this.form.validateFields(['certification_name'], {}, (error, value) => {
+          if (!error) {
+            let arr = [...this.coachInfoData.certification_name]
+            arr.push(value.certification_name)
+            this.coachInfoData.certification_name = [...new Set(arr)]
           }
-        )
+        })
       }
     },
     // 移除证书
