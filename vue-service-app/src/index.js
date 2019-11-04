@@ -3,7 +3,7 @@ import multiguard from 'vue-router-multiguard'
 import { isCtor, isFn, last } from './utils'
 import ServiceRouter from './router'
 import VuePlugin from './vue-plugin'
-import { hookWrapper } from 'vue-router-plus/src/utils'
+import { hookWrapper } from 'vue-router-plus'
 
 class VueServiceApp {
   static install(Vue, container) {
