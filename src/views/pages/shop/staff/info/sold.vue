@@ -162,8 +162,7 @@ export default {
           id: this.id,
           order_time_first: moment(e[0]).format('YYYY-MM-DD'),
           order_time_last: moment(e[1]).format('YYYY-MM-DD')
-        },
-        force: true
+        }
       })
     }
   }

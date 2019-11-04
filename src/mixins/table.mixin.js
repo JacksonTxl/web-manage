@@ -103,8 +103,7 @@ export default {
         query: {
           ...this.query,
           [this.currentPageField]: 1
-        },
-        force: true
+        }
       })
     },
     /**
@@ -121,8 +120,7 @@ export default {
           ...this.query,
           ...searchFieldsValue,
           [this.currentPageField]: 1
-        },
-        force: true
+        }
       })
     },
     /**
@@ -134,8 +132,7 @@ export default {
         query: {
           [this.currentPageField]: 1,
           size: this.query.size
-        },
-        force: true
+        }
       })
     },
     /**
@@ -148,8 +145,7 @@ export default {
           ...this.query,
           ...{ [key]: data },
           [this.currentPageField]: 1
-        },
-        force: true
+        }
       })
     },
     /**
@@ -167,8 +163,7 @@ export default {
           ...pick(this.query, keepFields),
           [this.currentPageField]: 1,
           size: this.query.size
-        },
-        force: true
+        }
       })
     },
     // 重置 多选框

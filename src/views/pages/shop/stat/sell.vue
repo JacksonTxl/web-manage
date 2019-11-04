@@ -198,7 +198,7 @@ export default {
         query.department_id = -1
         query.staff_id = -1
       }
-      this.$router.push({ query, force: true })
+      this.$router.push({ query })
     }
   }
 }

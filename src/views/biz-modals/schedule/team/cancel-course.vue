@@ -37,7 +37,7 @@ export default {
   methods: {
     save() {
       this.teamScheduleService.del(this.id).subscribe(res => {
-        this.$router.push({ query: this.query, force: true })
+        this.$router.push({ query: this.query })
         this.show = false
       })
     }

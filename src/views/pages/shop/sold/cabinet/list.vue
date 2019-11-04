@@ -223,10 +223,7 @@ export default {
                 },
                 on: {
                   success: res => {
-                    this.$router.push({
-                      force: true,
-                      query: this.$router.query
-                    })
+                    this.$router.reload()
                     this.tipCallBack(res.orderId, 'cabinet_order', res.type)
                   }
                 }
@@ -250,10 +247,7 @@ export default {
                       },
                       on: {
                         success: res => {
-                          this.$router.push({
-                            force: true,
-                            query: this.$router.query
-                          })
+                          this.$router.reload()
                           this.tipCallBack(
                             result.order_id,
                             'cabinet_order',

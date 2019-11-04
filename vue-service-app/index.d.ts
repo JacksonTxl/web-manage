@@ -85,6 +85,8 @@ interface VueServiceAppConfig {
 
 declare module 'vue-service-app' {
   export class ServiceRouter extends VueRouter {
+    to: ServiceRoute
+    from: ServiceRoute
     push(
       location: string | MyLocation,
       onComplete?: Function,
@@ -96,6 +98,7 @@ declare module 'vue-service-app' {
       onAbort?: (err: Error) => void
     ): Promise<VueRoute>
     reload(): void
+    redirect(location: string | Location): void
     isHistoryBF: boolean
   }
   export class InjectionToken {

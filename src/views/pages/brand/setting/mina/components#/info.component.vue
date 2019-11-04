@@ -161,7 +161,7 @@ export default {
         name: 'brand-setting-mina-mch',
         on: {
           success: () => {
-            this.$router.push({ query: this.query, force: true })
+            this.$router.push({ query: this.query })
           }
         }
       })

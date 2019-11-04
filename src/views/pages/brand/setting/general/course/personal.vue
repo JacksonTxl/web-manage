@@ -148,9 +148,7 @@ export default {
   },
   methods: {
     onChange() {
-      this.$router.push({
-        force: true
-      })
+      this.$router.push({})
     },
     onEditPricingSetting() {
       const isChanged = this.pricingInfo.is_changed

@@ -265,8 +265,7 @@ export default {
     },
     onCabinetListChange() {
       this.$router.push({
-        query: this.query,
-        force: true
+        query: this.query
       })
       this.onAreaListChange()
     },

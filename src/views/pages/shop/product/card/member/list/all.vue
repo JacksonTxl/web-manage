@@ -289,7 +289,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ query: this.query, force: true })
+            this.$router.push({ query: this.query })
           }
         }
       })
@@ -314,7 +314,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ query: this.query, force: true })
+            this.$router.push({ query: this.query })
           }
         }
       })
@@ -330,7 +330,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ query: this.query, force: true })
+            this.$router.push({ query: this.query })
           }
         }
       })
