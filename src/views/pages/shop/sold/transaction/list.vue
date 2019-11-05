@@ -1,47 +1,43 @@
 <template>
-  <st-panel app :class="basic()">
-    <div slot="title" :class="sale('search')">
-      <a-select
-        :class="sale('select')"
-        v-model="query.product_type"
-        @change="onSearch"
-        style="width: 160px"
-      >
-        <a-select-option
-          v-for="(item, index) in productTypes"
-          :key="index"
-          :value="item.value"
-        >
-          {{ item.label }}
-        </a-select-option>
-      </a-select>
-      <st-input-search
-        v-model="query.product_name"
-        @search="onSearch"
-        placeholder="请输入商品名查找"
-        :class="basic('search')"
-      />
-    </div>
-
-    <st-table
-      :page="page"
-      rowKey="id"
-      :loading="loading.getList"
-      :columns="columns"
-      @change="onTableChange"
-      :dataSource="list"
+  <st-panel initial app :class="basic()">
+    <st-tabs
+      defaultActiveKey="1"
+      v-model="query.product_type"
+      @change="onSearch"
     >
-      <div slot="action" slot-scope="text, record">
-        <st-table-actions>
-          <a
-            v-if="record.auth['shop:product:product|order']"
-            @click="onTransaction(record)"
-          >
-            签单
-          </a>
-        </st-table-actions>
-      </div>
-    </st-table>
+      <st-tab-pane
+        v-for="item in productTypes"
+        :tab="item.label"
+        :key="item.value"
+        forceRender
+      >
+        <st-table
+          :page="page"
+          rowKey="id"
+          :loading="loading.getList"
+          :columns="columns"
+          @change="onTableChange"
+          :dataSource="list"
+        >
+          <div slot="action" slot-scope="text, record">
+            <st-table-actions>
+              <a
+                v-if="record.auth['shop:product:product|order']"
+                @click="onTransaction(record)"
+              >
+                签单
+              </a>
+            </st-table-actions>
+          </div>
+        </st-table>
+      </st-tab-pane>
+    </st-tabs>
+    <st-input-search
+      v-model="query.product_name"
+      @search="onSearch"
+      placeholder="请输入商品名查找"
+      :class="basic('search')"
+    />
   </st-panel>
 </template>
 
