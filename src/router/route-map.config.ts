@@ -1154,7 +1154,8 @@ export const routeMapConfig = {
       'brand-setting-import-staff',
       'brand-setting-import-commodity',
       'brand-setting-import-member',
-      'brand-setting-import-sold',
+      // TODO 1107暂时不上
+      // 'brand-setting-import-sold',
       'brand-setting-import-record'
     ]
   },
