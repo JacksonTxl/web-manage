@@ -215,7 +215,7 @@ export default {
       }
       if (this.getSmartOfflineNum().length > 0) {
         this.messageService.error({
-          content: '不能选择离线智能储物柜，请重新选择´'
+          content: '已离线的储物柜无法清柜，请重新选择'
         })
         return
       }

@@ -115,7 +115,10 @@
               </a>
             </div>
             <div :class="b('action')" v-if="isOperationInBatch">
-              <a-checkbox :value="item.id" />
+              <a-checkbox
+                :value="item.id"
+                :disabled="disabledCabinetCheck(item)"
+              />
             </div>
           </div>
         </div>
@@ -186,7 +189,9 @@ export default {
       const { list } = this
       const ret = []
       list.forEach(item => {
-        ret.push(item.id)
+        if (!this.disabledCabinetCheck(item)) {
+          ret.push(item.id)
+        }
       })
       return ret
     },
@@ -204,6 +209,9 @@ export default {
     }
   },
   methods: {
+    disabledCabinetCheck(item) {
+      return item.is_smart && !item.on_line
+    },
     cabinetItemAction(item) {
       if (
         item.is_smart && // 是否是智能柜
