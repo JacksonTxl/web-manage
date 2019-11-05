@@ -134,8 +134,7 @@ export default {
     },
     onPageChange(data) {
       this.$router.push({
-        query: { ...this.query, page: data.current, size: data.pageSize },
-        force: true
+        query: { ...this.query, page: data.current, size: data.pageSize }
       })
     },
     // 查询

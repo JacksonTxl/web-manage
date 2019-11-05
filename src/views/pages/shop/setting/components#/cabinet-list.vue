@@ -35,7 +35,7 @@
                 <st-icon
                   class="smart-cabinet-logo__img"
                   type="cabinet-logo"
-                  color="#3F66F6"
+                  color="#ffffff"
                 ></st-icon>
               </div>
               <div :class="b('item-num')">{{ item.serial_num }}</div>

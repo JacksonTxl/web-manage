@@ -187,7 +187,7 @@ export default {
   methods: {
     onDeleteCourse(record) {
       this.brandService.deleteCourse(record.course_id).subscribe(() => {
-        this.$router.push({ query: this.query, force: true })
+        this.$router.push({ query: this.query })
       })
     },
     onSetAvailable(record) {
@@ -198,7 +198,7 @@ export default {
       this.brandService
         .setAvailable({ course_id: record.course_id, available })
         .subscribe(() => {
-          this.$router.push({ query: this.query, force: true })
+          this.$router.push({ query: this.query })
         })
     },
     filterOption(input, option) {

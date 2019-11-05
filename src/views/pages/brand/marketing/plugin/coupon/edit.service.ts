@@ -21,13 +21,9 @@ export class EditService implements RouteGuard {
       })
     )
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeRouteEnter(to: ServiceRoute) {
     if (to.meta.query.id) {
-      this.getInfo(to.meta.query.id).subscribe(res => {
-        next()
-      })
-    } else {
-      next()
+      return this.getInfo(to.meta.query.id)
     }
   }
 }

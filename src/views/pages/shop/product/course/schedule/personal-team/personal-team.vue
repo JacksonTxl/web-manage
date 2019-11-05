@@ -121,7 +121,7 @@ export default {
     },
     // 刷新页面
     onScheduleChange() {
-      this.$router.push({ query: this.query, force: true })
+      this.$router.push({ query: this.query })
     }
   }
 }

@@ -436,7 +436,7 @@ export default {
         delete values.md
         this.addService.addUser(values).subscribe(() => {
           this.messageService.success({ content: '添加成功' })
-          this.$router.push({ name: 'shop-member-list', force: true })
+          this.$router.push({ name: 'shop-member-list' })
         })
       })
     },

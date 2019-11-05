@@ -8,13 +8,12 @@ export class IndexService implements RouteGuard {
     private userService: UserService,
     private redirectService: RedirectService
   ) {}
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.redirectService.redirect({
+  beforeRouteEnter() {
+    return this.redirectService.redirect({
       locateRouteName: 'index',
-      redirectRouteName: this.userService.firstMenuUrl$.snapshot(),
-      to,
-      from,
-      next
+      redirectRoute: {
+        name: this.userService.firstMenuUrl$.snapshot()
+      }
     })
   }
 }

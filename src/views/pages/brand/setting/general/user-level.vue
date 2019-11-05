@@ -208,8 +208,7 @@ export default {
           content: '保存成功'
         })
         this.$router.push({
-          query: {},
-          force: true
+          query: {}
         })
       })
     },

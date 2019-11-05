@@ -3,7 +3,7 @@
     <st-form :form="form" labelWidth="96px">
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="课程包名称" required>
+          <st-form-item label="课程包名称" required class="mg-t40">
             <a-input
               v-decorator="[
                 'course_name',

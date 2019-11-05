@@ -161,7 +161,7 @@ export default {
       this.pageBtnFocusState = evt.target.value
     },
     onScheduleChange() {
-      this.$router.push({ query: this.query, force: true })
+      this.$router.push({ query: this.query })
     },
     // 添加团课排期
     onAddSchedule(date) {

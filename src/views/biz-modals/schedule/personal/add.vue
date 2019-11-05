@@ -135,7 +135,7 @@ export default {
         schedule_info: this.schedule_info
       }
       this.scheduleService.add(reqdata).subscribe(() => {
-        this.$router.push({ query: this.routeService.query$, force: true })
+        this.$router.push({ query: this.routeService.query$ })
         this.show = false
       })
     }

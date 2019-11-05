@@ -417,8 +417,7 @@ export default {
               content: '上架成功'
             })
             this.$router.push({
-              query: { ...this.query, page: 1 },
-              force: true
+              query: { ...this.query, page: 1 }
             })
           })
       } else {
@@ -452,8 +451,7 @@ export default {
                 content: '上架成功'
               })
               this.$router.push({
-                query: { ...this.query, page: 1 },
-                force: true
+                query: { ...this.query, page: 1 }
               })
             })
         })
@@ -474,7 +472,7 @@ export default {
         this.messageService.success({
           content: '下架成功'
         })
-        this.$router.push({ query: { ...this.query, page: 1 }, force: true })
+        this.$router.push({ query: { ...this.query, page: 1 } })
       })
     },
     deletePackage(id, name) {
