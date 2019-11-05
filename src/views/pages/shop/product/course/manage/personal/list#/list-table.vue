@@ -94,14 +94,12 @@
           href="javascript:;"
           v-if="record.auth['brand_shop:product:personal_course|del']"
         >
-          <a-popconfirm
+          <st-popconfirm
             :title="'一旦删除则无法恢复，确认删除' + record.course_name + '？'"
             @confirm="onConfirmDeleteCourse(record)"
-            okText="确定"
-            cancelText="取消"
           >
             删除
-          </a-popconfirm>
+          </st-popconfirm>
         </a>
       </st-table-actions>
     </div>
