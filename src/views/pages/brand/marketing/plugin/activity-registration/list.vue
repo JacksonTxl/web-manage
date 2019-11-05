@@ -1,7 +1,7 @@
 <template>
-  <div :class="bPage()">
+  <st-panel-layout :class="bPage()">
     <markteing-plugin-title :type="TYPE.ACTIVITY" />
-    <st-panel app initial :class="bPage('content')">
+    <st-panel app :class="bPage('content')">
       <div slot="title" :class="bSearch()">
         <div :class="bSearch('button-group')">
           <st-button
@@ -119,7 +119,7 @@
         </st-table>
       </div>
     </st-panel>
-  </div>
+  </st-panel-layout>
 </template>
 <script>
 // table

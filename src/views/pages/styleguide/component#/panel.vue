@@ -72,6 +72,27 @@
         这是一个内容
       </st-panel>
     </section>
+    <p class="mg-t16">
+      flex结合st-panel-layout使用
+      <a>案例</a>
+      （营销插件：活动报名）
+    </p>
+    <section class="sg-app-content">
+      <st-panel-layout>
+        <div
+          style="width:100%;height:140px;background: #fff;"
+          class="mg-b8 pd-16"
+        >
+          这里放页面的头部
+        </div>
+        <st-panel flex title="hello" loading>
+          <div slot="actions">
+            <st-button type="primary">操作</st-button>
+          </div>
+          这是一个内容
+        </st-panel>
+      </st-panel-layout>
+    </section>
 
     <!-- st-panel end -->
   </div>

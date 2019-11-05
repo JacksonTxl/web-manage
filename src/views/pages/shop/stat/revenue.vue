@@ -1,15 +1,7 @@
 <template>
   <div :class="bPage()">
     <div :class="bPage('count')">
-      <div :class="bPage('actions')">
-        最近更新时间：
-        <span :class="bPage('actions-span')" class="mg-r8">
-          {{ todayInfo.time }}
-        </span>
-        <span @click="refresh">
-          <st-icon type="refresh"></st-icon>
-        </span>
-      </div>
+      <st-refresh-btn :date="todayInfo.time" :action="refresh" />
       <a-row :class="bPage('income-row')">
         <div :class="bPage('income-detail')">
           <swiper :options="sliderOptions">
@@ -95,17 +87,17 @@ export default {
   },
   components: { swiper, swiperSlide },
   created() {
-    this.getRevenueShopToday()
+    this.getRevenueShopToday().subscribe()
   },
   methods: {
     recentChange(searchFieldsValue) {
       this.onMultiSearch(searchFieldsValue)
     },
     getRevenueShopToday() {
-      return this.revenueService.getRevenueShopToday().subscribe()
+      return this.revenueService.getRevenueShopToday()
     },
     refresh() {
-      this.getRevenueShopToday()
+      return this.getRevenueShopToday()
     }
   }
 }

@@ -168,6 +168,9 @@ export default {
   },
   methods: {
     moment,
+    /**
+     * TODO: 富文本上传图片
+     */
     getImageUrl(imageUrl) {
       const imgEl = `<img src='${imageUrl.url}' width='400' height='400'>`
       this.content = this.content + imgEl

@@ -5,12 +5,16 @@
         <st-form-item label="票种类型" required>
           <a-radio-group
             @change="onChangeGetTicketType"
-            v-model="ticketType"
             :disabled="isDisabled"
-            :defaultValue="1"
+            v-model="ticketType"
           >
-            <a-radio :value="1">收费票</a-radio>
-            <a-radio :value="2">免费票</a-radio>
+            <a-radio
+              v-for="item in ticketTypeList"
+              :value="item.value"
+              :key="item.value"
+            >
+              {{ item.label }}
+            </a-radio>
           </a-radio-group>
         </st-form-item>
         <st-form-item label="票种名称" required>
@@ -20,7 +24,7 @@
             placeholder="请输入票种名称"
           ></a-input>
         </st-form-item>
-        <st-form-item v-show="ticketType === 1" label="价格" required>
+        <st-form-item v-show="ticketType === 2" label="价格" required>
           <st-input-number
             :disabled="isDisabled"
             class="input"
@@ -32,7 +36,7 @@
           ></st-input-number>
           <span class="mg-l4">元</span>
         </st-form-item>
-        <st-form-item v-show="ticketType === 2" label="价格" required>
+        <st-form-item v-show="ticketType === 1" label="价格" required>
           <span>免费</span>
         </st-form-item>
         <st-form-item label="票数" required>
@@ -89,8 +93,8 @@
           ></a-select>
         </st-form-item>
         <st-form-item
-          class="mg-b0"
-          v-show="ticketType === 1"
+          :class="{ 'mg-b0': isBulk === 1 }"
+          v-show="ticketType === 2"
           label="团购优惠"
           required
         >
@@ -190,6 +194,7 @@ import { MessageService } from '@/services/message.service'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { ACTIVITY_STATUS } from '../../../constants/brand/marketing'
+import { UserService } from '../../../services/user.service'
 export default {
   name: 'ModalAddTicket',
   bem: {
@@ -198,7 +203,13 @@ export default {
   serviceInject() {
     return {
       pattern: PatternService,
+      userService: UserService,
       messageService: MessageService
+    }
+  },
+  rxState() {
+    return {
+      ticketTypeList: this.userService.getOptions$('plugin.ticket_type')
     }
   },
   data() {
@@ -208,7 +219,7 @@ export default {
       form,
       decorators,
       show: false,
-      ticketType: 1,
+      ticketType: this.ticketTypeList[1].value,
       isBulk: 1,
       // TODO: 用户人群暂未开启，前端静态填写 为全部用户 id 为 0
       crowdIdOptions: [{ label: '全部用户', value: 0 }],
@@ -247,7 +258,7 @@ export default {
   },
   computed: {
     freeTicket() {
-      return this.ticketType === 2
+      return this.ticketType === 1
     },
     isDisabled() {
       return !!(
@@ -275,7 +286,7 @@ export default {
         reduce_price,
         ticket_remark
       } = this.ticket
-      this.ticketType = ticket_price > 0 ? 1 : 2
+      this.ticketType = ticket_price > 0 ? 2 : 1
       const buy_time = [this.moment(buy_start_time), this.moment(buy_end_time)]
       this.form.setFieldsValue({
         ticket_name,
@@ -378,6 +389,7 @@ export default {
       }
     },
     onChangeGetTicketTotalNum() {
+      if (isDisabled) return
       this.form.setFieldsValue({
         buy_limit_min: 1,
         buy_limit_max: 1
@@ -428,7 +440,6 @@ export default {
       })
     },
     onChangeGetTicketType(e) {
-      this.ticketType = e.target.value
       if (this.freeTicket) {
         this.form.setFieldsValue({ ticket_price: 0, is_group_buy: 0 })
         this.isBulk = 0

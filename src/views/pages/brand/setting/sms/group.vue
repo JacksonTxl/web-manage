@@ -38,6 +38,7 @@
           <st-icon type="refresh"></st-icon>
         </span>
       </span>
+      <st-refresh-btn :action="refresh"></st-refresh-btn>
     </div>
     <st-table
       v-if="isShowList"
@@ -223,13 +224,13 @@ export default {
     // 撤销
     onReset(id) {
       return this.groupService.onReset(id).subscribe(res => {
-        this.refresh()
+        this.$router.reload()
       })
     },
     // 删除
     onDelete(id) {
       return this.groupService.onDelete(id).subscribe(res => {
-        this.refresh()
+        this.$router.reload()
       })
     },
     handleTableChange(e) {

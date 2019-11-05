@@ -14,7 +14,7 @@
         </li>
         <li class="mg-r48" @click="onClickGoactivityAd">
           <img src="~@/assets/img/brand/marketing/lottery/ad.png" alt="" />
-          <a>设置小程序海报</a>
+          <a>设置活动广告</a>
         </li>
         <li @click="onClickMinaQrcode">
           <img src="~@/assets/img/brand/marketing/lottery/mina.png" alt="" />

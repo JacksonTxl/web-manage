@@ -8,9 +8,7 @@
         :class="activeClass"
         style="width:100%"
       />
-      <div v-else class="loading-state">
-        <a-spin size="large" />
-      </div>
+      <st-image v-else></st-image>
       <div class="mg-t24">
         <st-button
           block

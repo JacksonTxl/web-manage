@@ -58,6 +58,7 @@ export default {
         { id: 'input-number', title: '数字输入' },
         { id: 'input-search', title: '搜索框' },
         { id: 'panel', title: '应用面板' },
+        { id: 'panel-layout', title: '应用面板' },
         { id: 'search-panel', title: '查询面板' },
         { id: 'alert', title: '提示' },
         { id: 'checkbox-button', title: '复选按钮组' },
