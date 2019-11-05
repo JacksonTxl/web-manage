@@ -31,20 +31,26 @@
             :key="index"
           >
             <div :class="b('item-num')">{{ item.serial_num }}</div>
-            <div class="smart-cabinet-logo" v-if="item.is_smart">
-              <st-icon
-                class="smart-cabinet-logo__img"
-                type="cabinet-logo"
-                color="#ffffff"
-              ></st-icon>
-            </div>
-            <!-- <div class="smart-cabinet-logo smart-cabinet-logo--disabled">
-              <st-icon
-                class="smart-cabinet-logo__img"
-                type="cabinet-logo"
-                color="#9BACB9"
-              ></st-icon>
-            </div> -->
+
+            <template v-if="item.is_smart">
+              <div class="smart-cabinet-logo" v-if="item.is_online">
+                <st-icon
+                  class="smart-cabinet-logo__img"
+                  type="cabinet-logo"
+                  color="#ffffff"
+                ></st-icon>
+              </div>
+
+              <st-help-tooltip :isCustom="true" title="该储物柜已离线" v-else>
+                <div class="smart-cabinet-logo smart-cabinet-logo--disabled">
+                  <st-icon
+                    class="smart-cabinet-logo__img"
+                    type="cabinet-logo"
+                    color="#9BACB9"
+                  ></st-icon>
+                </div>
+              </st-help-tooltip>
+            </template>
             <div
               :class="b('item-normal')"
               v-if="
