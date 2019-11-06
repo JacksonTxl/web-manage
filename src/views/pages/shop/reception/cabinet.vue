@@ -213,6 +213,12 @@ export default {
         })
         return
       }
+      if (this.getSmartOfflineNum().length > 0) {
+        this.messageService.error({
+          content: '已离线的储物柜无法清柜，请重新选择'
+        })
+        return
+      }
       this.$confirm({
         title: `当前选中柜子中共有${this.getUsingCabinetNum()}个柜子在使用中，请问确认进行清柜操作？`,
         onOk: () => {
@@ -230,6 +236,15 @@ export default {
         },
         onCancel() {}
       })
+    },
+    getSmartOfflineNum() {
+      const checkedCabinets = this.checked.map(id =>
+        find(this.cabinetList, { id })
+      )
+      const checkedOfflineCabinets = checkedCabinets.filter(
+        item => item.is_smart && !item.is_online
+      )
+      return checkedOfflineCabinets.length
     },
     getUsingCabinetNum() {
       const checkedCabinets = this.checked.map(id =>

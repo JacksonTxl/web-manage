@@ -7,7 +7,7 @@
         </st-form-item>
         <st-form-item label="课程名称" required>
           <a-input
-            placeholder="支持输入4~30个字的课程名称"
+            placeholder="支持输入1~30个字的课程名称"
             maxlength="30"
             disabled
             v-decorator="ruleConfig.courseName"
