@@ -8,7 +8,7 @@ export const ruleOptions = (vm: any) => {
           message: '请输入课程名称'
         },
         {
-          min: 4,
+          min: 1,
           message: '支持输入1~30个字的课程名称'
         }
       ]
