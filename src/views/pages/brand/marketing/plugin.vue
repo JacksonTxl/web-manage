@@ -1,10 +1,10 @@
 <template>
   <div :class="basic()">
-    <div :class="basic('main')">
+    <st-panel-layout :class="basic('main')">
       <div :class="basic('effect')">
-        <header>
+        <st-t2>
           营销效果
-        </header>
+        </st-t2>
         <section>
           <ul v-if="num">
             <li>
@@ -51,7 +51,12 @@
         </section>
       </div>
 
-      <section :class="section()" class="brand-marketing-section--play">
+      <st-panel
+        app
+        initial
+        :class="section()"
+        class="brand-marketing-section--play"
+      >
         <div :class="section('hd')">
           <st-t2 :class="section('title')">营销玩法</st-t2>
           <label :class="section('label')">拉新、促进成单</label>
@@ -82,8 +87,8 @@
             </a-col>
           </a-row>
         </div>
-      </section>
-    </div>
+      </st-panel>
+    </st-panel-layout>
 
     <section :class="sider()">
       <header>
