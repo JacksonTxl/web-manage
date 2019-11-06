@@ -3,6 +3,7 @@
     <st-tabs
       :class="basic('tab')"
       :defaultActiveKey="query.product_type"
+      v-model="query.product_type"
       @change="onTabSearch"
     >
       <st-tab-pane
@@ -33,7 +34,7 @@
     </st-table>
     <st-input-search
       v-model="query.product_name"
-      @search="onSearch"
+      @search="onKeywordSearch"
       placeholder="请输入商品名查找"
       :class="basic('search')"
     />
@@ -285,13 +286,21 @@ export default {
         }
       })
     },
+    onKeywordSearch() {
+      this.$router.push({
+        query: this.query
+      })
+      this.getProductList(this.query)
+    },
+    onTabSearch() {
+      this.query.product_name = ''
+      this.$router.push({
+        query: this.query
+      })
+      this.getProductList(this.query)
+    },
     getProductList(query) {
       return this.listService.getProductList(query).subscribe()
-    },
-    onTabSearch(val) {
-      this.query.product_type = val
-      this.query.product_name = ''
-      this.getProductList(this.query)
     }
   }
 }
