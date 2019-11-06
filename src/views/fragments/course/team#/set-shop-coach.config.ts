@@ -8,9 +8,8 @@ export const ruleOptions = (vm: any) => {
           message: '请输入课程名称'
         },
         {
-          min: 4,
-          message: '支持输入4~30个字的课程名称',
-          transform: (v: string) => v.trim()
+          min: 1,
+          message: '支持输入1~30个字的课程名称'
         }
       ]
     },

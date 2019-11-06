@@ -4,7 +4,7 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程名称" required class="mg-t40">
           <a-input
-            placeholder="支持输入4~30个字的课程名称，中文占2个字符"
+            placeholder="支持输入1~30个字的课程名称，中文占2个字符"
             maxlength="30"
             v-decorator="decorators.course_name"
             @change="onCourseNameChange"
