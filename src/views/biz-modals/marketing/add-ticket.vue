@@ -389,7 +389,7 @@ export default {
       }
     },
     onChangeGetTicketTotalNum() {
-      if (isDisabled) return
+      if (this.isDisabled) return
       this.form.setFieldsValue({
         buy_limit_min: 1,
         buy_limit_max: 1
