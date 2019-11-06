@@ -32,8 +32,7 @@
       </div>
     </st-table>
     <st-input-search
-      v-model="query.product_name"
-      @search="onSearch"
+      @search="onKeywordSearch"
       placeholder="请输入商品名查找"
       :class="basic('search')"
     />
@@ -291,6 +290,10 @@ export default {
     onTabSearch(val) {
       this.query.product_type = val
       this.query.product_name = ''
+      this.getProductList(this.query)
+    },
+    onKeywordSearch(val) {
+      this.query.product_name = val
       this.getProductList(this.query)
     }
   }
