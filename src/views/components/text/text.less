@@ -1,0 +1,39 @@
+.st-text {
+  display: flex;
+  align-items: center;
+  &__dot {
+    .s(6px, 6px);
+    border-radius: 50%;
+    .mg-r(8px);
+  }
+  &--none {
+    .st-text__dot {
+      display: none;
+    }
+  }
+  &--success {
+    .st-text__dot {
+      .bg(#3dd49f);
+    }
+  }
+  &--warning {
+    .st-text__dot {
+      .bg(@warning-color);
+    }
+  }
+  &--info {
+    .st-text__dot {
+      .bg(@info-color);
+    }
+  }
+  &--normal {
+    .st-text__dot {
+      .bg(rgba(black, 0.25));
+    }
+  }
+  &--error {
+    .st-text__dot {
+      .bg(@error-color);
+    }
+  }
+}

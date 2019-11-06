@@ -38,7 +38,7 @@
           <st-icon type="refresh"></st-icon>
         </span>
       </span>
-      <st-refresh-btn :action="refresh"></st-refresh-btn>
+      <!-- <st-refresh-btn :action="refresh"></st-refresh-btn> -->
     </div>
     <st-table
       v-if="isShowList"
