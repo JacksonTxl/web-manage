@@ -3,6 +3,7 @@
     <st-tabs
       :class="basic('tab')"
       :defaultActiveKey="query.product_type"
+      v-model="query.product_type"
       @change="onTabSearch"
     >
       <st-tab-pane
@@ -15,7 +16,7 @@
       :page="page"
       :class="basic('table')"
       rowKey="id"
-      :loading="loading.getProductList"
+      :loading="loading.getList"
       :columns="columns"
       @change="onTableChange"
       :dataSource="list"
@@ -285,13 +286,11 @@ export default {
         }
       })
     },
-    getProductList(query) {
-      return this.listService.getProductList(query).subscribe()
-    },
-    onTabSearch(val) {
-      this.query.product_type = val
+    onTabSearch() {
       this.query.product_name = ''
-      this.getProductList(this.query)
+      this.$router.push({
+        query: this.query
+      })
     }
   }
 }
