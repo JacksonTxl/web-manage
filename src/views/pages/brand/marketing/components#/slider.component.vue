@@ -52,7 +52,7 @@
               width="100%"
               height="137px"
               :list="[]"
-              :sizeLimit="2"
+              :sizeLimit="5"
               placeholder="添加活动图片"
               :numLimit="5"
             >

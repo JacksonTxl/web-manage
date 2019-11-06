@@ -287,6 +287,9 @@ export default {
       })
     },
     onKeywordSearch() {
+      this.$router.push({
+        query: this.query
+      })
       this.getProductList(this.query)
     },
     onTabSearch() {
