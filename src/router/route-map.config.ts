@@ -342,7 +342,7 @@ export const routeMapConfig = {
   'shop-sold-transaction-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '交易签单'
     routeConfig.queryOptions = {
-      page: { type: Number, default: 1 },
+      current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       product_name: { type: String, default: '' },
       product_type: { type: Number, default: 1 }

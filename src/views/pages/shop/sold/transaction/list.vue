@@ -301,6 +301,13 @@ export default {
     },
     getProductList(query) {
       return this.listService.getProductList(query).subscribe()
+    },
+    onTableChange(pagination) {
+      this.query.current_page = pagination.current
+      this.$router.push({
+        query: this.query
+      })
+      this.getProductList(this.query)
     }
   }
 }
