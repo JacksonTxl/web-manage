@@ -210,7 +210,7 @@ export default {
   },
   methods: {
     disabledCabinetCheck(item) {
-      return item.is_smart && !item.on_line
+      return item.is_smart && !item.is_online
     },
     cabinetItemAction(item) {
       if (
