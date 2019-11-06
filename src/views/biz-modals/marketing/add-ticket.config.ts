@@ -1,3 +1,4 @@
+import { forEach } from 'lodash-es'
 import { ID } from '@/api/v1/order/transaction/contract'
 import moment from 'moment'
 import { ACTIVITY_STATUS } from '@/constants/brand/marketing'
@@ -49,11 +50,19 @@ export const ruleOptions = (vm: any) => {
         },
         {
           validator: (field: any, value: any, values: any) => {
+            let ticketTotalNum = 0
+            if (vm.formData && Array.isArray(vm.formData.ticket_list)) {
+              vm.formData.ticket_list.forEach((item: any) => {
+                if (vm.ticket && item.ticket_id === vm.ticket.ticket_id) {
+                  ticketTotalNum = item.ticket_total_num
+                }
+              })
+            }
             if (
               vm.ticket &&
               vm.ticket.ticket_id &&
               vm.formData.activity_status === 1 &&
-              value < vm.ticket.ticket_total_num
+              value < ticketTotalNum
             ) {
               return '编辑票种时，票数只能增加不能减少'
             }

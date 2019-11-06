@@ -1,7 +1,8 @@
 <template>
-  <div :class="inviation()">
+  <st-panel-layout :class="inviation()">
     <MarkteingPluginTitle :type="TYPE.INVITE" />
     <st-panel
+      app
       :tabs="[
         {
           label: '数据',
@@ -15,7 +16,7 @@
     >
       <router-view></router-view>
     </st-panel>
-  </div>
+  </st-panel-layout>
 </template>
 <script>
 import MarkteingPluginTitle from '../../components#/marketing-title'
