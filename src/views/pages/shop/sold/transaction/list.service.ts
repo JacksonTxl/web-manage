@@ -17,7 +17,7 @@ export class ListService implements RouteGuard {
     private userService: UserService
   ) {}
   @Effect()
-  getList(params: TransactionListInput) {
+  getProductList(params: TransactionListInput) {
     return this.transactionApi.getTransactionList(params).pipe(
       tap((res: any) => {
         res = this.authService.filter(res)
@@ -27,6 +27,6 @@ export class ListService implements RouteGuard {
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    return this.getList(to.meta.query)
+    // return this.getList(to.meta.query)
   }
 }
