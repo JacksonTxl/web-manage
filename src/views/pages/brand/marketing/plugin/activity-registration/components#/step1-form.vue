@@ -1,6 +1,6 @@
 <template>
   <a-row>
-    <a-col :lg="14">
+    <a-col :xl="14">
       <st-form :form="form" :class="b()">
         <st-form-item label="活动标题" required>
           <a-input
@@ -69,7 +69,7 @@
         </div>
       </st-form>
     </a-col>
-    <a-col :lg="10"></a-col>
+    <a-col :xl="10"></a-col>
   </a-row>
 </template>
 
