@@ -294,6 +294,7 @@ export default {
     },
     onTabSearch() {
       this.query.product_name = ''
+      this.query.current_page = 1
       this.$router.push({
         query: this.query
       })
