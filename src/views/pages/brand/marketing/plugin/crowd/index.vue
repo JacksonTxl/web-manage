@@ -1,5 +1,5 @@
 <template>
-  <div class="shop-member-crowd-index">
+  <st-panel-layout class="shop-member-crowd-index">
     <index
       v-model="crowdIndexInfo.important_crowd"
       v-if="crowdIndexInfo.important_crowd.length > 0"
@@ -92,7 +92,7 @@
         </div>
       </st-table>
     </st-panel>
-  </div>
+  </st-panel-layout>
 </template>
 <script>
 import index from './components#/index'
