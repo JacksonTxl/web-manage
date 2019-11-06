@@ -50,14 +50,17 @@
           :scroll="{ x: 1500 }"
           :dataSource="list$"
         >
-          <span
-            class="status"
-            :class="bPage(`list-status-${text.id}`)"
-            slot="ticket_status"
-            slot-scope="text"
-          >
-            {{ text.name }}
-          </span>
+          <template slot="ticket_status" slot-scope="text">
+            <st-text
+              :status="{
+                error: text.id === 1,
+                success: text.id === 2,
+                normal: text.id === 3
+              }"
+            >
+              {{ text.name }}
+            </st-text>
+          </template>
           <div slot="registration_info" slot-scope="text">
             <span v-if="!Array.isArray(text)">--</span>
             <a v-else @click="onClickShowInfo(text)">查看详情</a>
