@@ -294,6 +294,7 @@ export default {
     },
     onTabSearch() {
       this.query.product_name = ''
+      this.query.current_page = 1
       this.$router.push({
         query: this.query
       })
@@ -301,6 +302,13 @@ export default {
     },
     getProductList(query) {
       return this.listService.getProductList(query).subscribe()
+    },
+    onTableChange(pagination) {
+      this.query.current_page = pagination.current
+      this.$router.push({
+        query: this.query
+      })
+      this.getProductList(this.query)
     }
   }
 }
