@@ -1,5 +1,5 @@
 <template>
-  <div :class="bPage()">
+  <st-panel-layout :class="bPage()">
     <MarkteingPluginTitle :type="TYPE.LOTTERY" />
     <st-panel app>
       <div :class="bPage('action')" class="mg-b16">
@@ -111,7 +111,7 @@
         </div>
       </st-table>
     </st-panel>
-  </div>
+  </st-panel-layout>
 </template>
 <script>
 import { IndexService } from './index.service'

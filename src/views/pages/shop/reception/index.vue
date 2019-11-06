@@ -1,5 +1,5 @@
 <template>
-  <section :class="reception()">
+  <st-panel-layout :class="reception()">
     <div :class="reception('form-block')" class="mg-b12">
       <div
         :class="reception('form-block-item')"
@@ -58,337 +58,225 @@
         ></div>
       </template>
     </div>
-    <div :class="reception('member-todoist')">
-      <div :class="reception('member')">
-        <div :class="reception('member-search')">
-          <a-select
-            v-model="selectMember"
-            :class="reception('member-search-select')"
-            showSearch
-            allowClear
-            :showArrow="false"
-            placeholder="检索姓名或手机号查找用户"
-            :defaultActiveFirstOption="false"
-            :filterOption="false"
-            @popupScroll="scroll"
-            @select="onMemberSelect"
-            @search="onMemberSearch"
-          >
-            <span slot="notFoundContent" v-if="isSearchNone">
-              查无此用户，
-              <a @click="onAddUser">添加新用户？</a>
-            </span>
-            <span slot="notFoundContent" v-else>无数据</span>
-            <a-select-option v-for="item in memberList" :key="item.id">
-              <span
-                v-html="
-                  `${item.member_name} ${item.mobile}`.replace(
-                    new RegExp(lastMemberSearchText, 'g'),
-                    `\<span class='global-highlight-color'\>${lastMemberSearchText}\<\/span\>`
-                  )
-                "
-              >
-                {{ item.member_name }} {{ item.mobile }}
+    <st-panel app initial>
+      <div :class="reception('member-todoist')">
+        <div :class="reception('member')">
+          <div :class="reception('member-search')">
+            <a-select
+              v-model="selectMember"
+              :class="reception('member-search-select')"
+              showSearch
+              allowClear
+              :showArrow="false"
+              placeholder="检索姓名或手机号查找用户"
+              :defaultActiveFirstOption="false"
+              :filterOption="false"
+              @popupScroll="scroll"
+              @select="onMemberSelect"
+              @search="onMemberSearch"
+            >
+              <span slot="notFoundContent" v-if="isSearchNone">
+                查无此用户，
+                <a @click="onAddUser">添加新用户？</a>
               </span>
-            </a-select-option>
-            <a-select-option
-              disabled
-              :key="new Date() + Math.random()"
-              :class="reception('member-search-tip')"
-              v-if="!isSearchNone && page.current_page < page.total_pages"
+              <span slot="notFoundContent" v-else>无数据</span>
+              <a-select-option v-for="item in memberList" :key="item.id">
+                <span
+                  v-html="
+                    `${item.member_name} ${item.mobile}`.replace(
+                      new RegExp(lastMemberSearchText, 'g'),
+                      `\<span class='global-highlight-color'\>${lastMemberSearchText}\<\/span\>`
+                    )
+                  "
+                >
+                  {{ item.member_name }} {{ item.mobile }}
+                </span>
+              </a-select-option>
+              <a-select-option
+                disabled
+                :key="new Date() + Math.random()"
+                :class="reception('member-search-tip')"
+                v-if="!isSearchNone && page.current_page < page.total_pages"
+              >
+                <a-spin size="small"></a-spin>
+              </a-select-option>
+              <a-select-option
+                disabled
+                :class="reception('member-search-tip')"
+                :key="new Date() + Math.random()"
+                v-if="!isSearchNone && page.current_page >= page.total_pages"
+              >
+                已经到底啦
+              </a-select-option>
+            </a-select>
+            <st-button
+              type="primary"
+              :loading="loading.setEntrance"
+              @click="onEntry"
+              :disabled="!isSelectMember || !auth.checkin"
+              v-if="!isEntry"
             >
-              <a-spin size="small"></a-spin>
-            </a-select-option>
-            <a-select-option
-              disabled
-              :class="reception('member-search-tip')"
-              :key="new Date() + Math.random()"
-              v-if="!isSearchNone && page.current_page >= page.total_pages"
-            >
-              已经到底啦
-            </a-select-option>
-          </a-select>
-          <st-button
-            type="primary"
-            :loading="loading.setEntrance"
-            @click="onEntry"
-            :disabled="!isSelectMember || !auth.checkin"
-            v-if="!isEntry"
-          >
-            入场
-          </st-button>
-          <st-button
-            type="danger"
-            :loading="loading.setEntranceLeave"
-            @click="onLeaveConfirm"
-            v-else
-            :disabled="!isSelectMember || !auth.checkout"
-          >
-            离场
-          </st-button>
-        </div>
-        <div :class="reception('info')">
-          <div :class="reception('personal-info')">
-            <div>
-              <st-info>
-                <st-info-item label="名称">{{ memberName }}</st-info-item>
-                <st-info-item label="手机号">{{ memberMobile }}</st-info-item>
-                <st-info-item label="实体卡号">
-                  {{ memberPhysicalCard }}
-                </st-info-item>
-                <st-info-item label="会员类型">{{ memberType }}</st-info-item>
-                <st-info-item class="mg-b0" label="入场状态">
-                  {{ memberEntryStatus }}
-                </st-info-item>
-              </st-info>
-            </div>
-            <div class="imgPlaceholder" v-if="!isSelectMember">
-              <img src="~@/assets/img/reception_avatar_default.png" alt="" />
-            </div>
-            <face-upload
-              :class="reception('upload')"
-              width="180px"
-              height="180px"
-              placeholder="上传人脸"
-              @change="photoChange"
-              :list="photoList"
+              入场
+            </st-button>
+            <st-button
+              type="danger"
+              :loading="loading.setEntranceLeave"
+              @click="onLeaveConfirm"
               v-else
-            ></face-upload>
+              :disabled="!isSelectMember || !auth.checkout"
+            >
+              离场
+            </st-button>
           </div>
-          <div :class="reception('set-info')" v-if="!isEntry">
-            <div class="set-info-item">
-              <span class="set-info-label">入场凭证</span>
-              <div class="set-info-select entrance-item">
-                <a-select v-model="proof" style="width:100%">
-                  <a-select-option
-                    :value="-1"
-                    v-if="!entranceOptionList.length"
-                  >
-                    无
-                  </a-select-option>
-                  <a-select-option
-                    v-for="item in entranceOptionList"
-                    :value="item.id"
-                    :key="item.id"
-                  >
-                    {{ item.name }}
-                  </a-select-option>
-                </a-select>
+          <div :class="reception('info')">
+            <div :class="reception('personal-info')">
+              <div>
+                <st-info>
+                  <st-info-item label="名称">{{ memberName }}</st-info-item>
+                  <st-info-item label="手机号">{{ memberMobile }}</st-info-item>
+                  <st-info-item label="实体卡号">
+                    {{ memberPhysicalCard }}
+                  </st-info-item>
+                  <st-info-item label="会员类型">{{ memberType }}</st-info-item>
+                  <st-info-item class="mg-b0" label="入场状态">
+                    {{ memberEntryStatus }}
+                  </st-info-item>
+                </st-info>
               </div>
+              <div class="imgPlaceholder" v-if="!isSelectMember">
+                <img src="~@/assets/img/reception_avatar_default.png" alt="" />
+              </div>
+              <face-upload
+                :class="reception('upload')"
+                width="180px"
+                height="180px"
+                placeholder="上传人脸"
+                @change="photoChange"
+                :list="photoList"
+                v-else
+              ></face-upload>
             </div>
-            <div class="set-info-item" v-if="isSelectMember">
-              <span class="set-info-label">跟进销售</span>
-              <template v-if="!isEditSeller">
-                <span class="set-info-value">
-                  {{ selectMemberInfo.seller.name || '无' }}
-                  <a @click="isEditSeller = true" v-if="auth.bindSalesman">
-                    <st-icon type="edit"></st-icon>
-                    &nbsp;编辑
-                  </a>
-                </span>
-              </template>
-              <template v-else>
-                <a-select
-                  v-model="seller"
-                  @change="onSellerChange"
-                  class="set-info-select mg-r8"
-                >
-                  <a-select-option :value="-1">无</a-select-option>
-                  <a-select-option
-                    v-for="item in sellerList"
-                    :value="item.id"
-                    :key="item.id"
+            <div :class="reception('set-info')" v-if="!isEntry">
+              <div class="set-info-item">
+                <span class="set-info-label">入场凭证</span>
+                <div class="set-info-select entrance-item">
+                  <a-select v-model="proof" style="width:100%">
+                    <a-select-option
+                      :value="-1"
+                      v-if="!entranceOptionList.length"
+                    >
+                      无
+                    </a-select-option>
+                    <a-select-option
+                      v-for="item in entranceOptionList"
+                      :value="item.id"
+                      :key="item.id"
+                    >
+                      {{ item.name }}
+                    </a-select-option>
+                  </a-select>
+                </div>
+              </div>
+              <div class="set-info-item" v-if="isSelectMember">
+                <span class="set-info-label">跟进销售</span>
+                <template v-if="!isEditSeller">
+                  <span class="set-info-value">
+                    {{ selectMemberInfo.seller.name || '无' }}
+                    <a @click="isEditSeller = true" v-if="auth.bindSalesman">
+                      <st-icon type="edit"></st-icon>
+                      &nbsp;编辑
+                    </a>
+                  </span>
+                </template>
+                <template v-else>
+                  <a-select
+                    v-model="seller"
+                    @change="onSellerChange"
+                    class="set-info-select mg-r8"
                   >
-                    {{ item.name }}
-                  </a-select-option>
-                </a-select>
-                <st-button
-                  type="primary"
-                  :loading="loading.editSeller"
-                  @click="onEditSeller"
-                >
-                  确定
-                </st-button>
-                <a
-                  class="set-info-edit-button mg-l8"
-                  @click="onEditSellerCancel"
-                >
-                  取消
-                </a>
-              </template>
-            </div>
-            <div class="set-info-item" v-else>
-              <span class="set-info-label">跟进销售</span>
-              <span class="set-info-value">无</span>
-            </div>
-            <div class="set-info-item" v-if="isSelectMember">
-              <span class="set-info-label">跟进{{ $c('coach') }}</span>
-              <template v-if="!isEditCoach">
-                <span class="set-info-value">
-                  {{ selectMemberInfo.coach.name || '无' }}
-                  <a @click="isEditCoach = true" v-if="auth.bindCoach">
-                    <st-icon type="edit"></st-icon>
-                    &nbsp;编辑
-                  </a>
-                </span>
-              </template>
-              <template v-else>
-                <a-select
-                  v-model="coach"
-                  @change="onCoachChange"
-                  class="set-info-select mg-r8"
-                >
-                  <a-select-option :value="-1">无</a-select-option>
-                  <a-select-option
-                    v-for="item in coachList"
-                    :value="item.id"
-                    :key="item.id"
+                    <a-select-option :value="-1">无</a-select-option>
+                    <a-select-option
+                      v-for="item in sellerList"
+                      :value="item.id"
+                      :key="item.id"
+                    >
+                      {{ item.name }}
+                    </a-select-option>
+                  </a-select>
+                  <st-button
+                    type="primary"
+                    :loading="loading.editSeller"
+                    @click="onEditSeller"
                   >
-                    {{ item.name }}
-                  </a-select-option>
-                </a-select>
-                <st-button
-                  type="primary"
-                  :loading="loading.editCoach"
-                  @click="onEditCoach"
-                >
-                  确定
-                </st-button>
-                <a
-                  class="set-info-edit-button mg-l8"
-                  @click="onEditCoachCancel"
-                >
-                  取消
-                </a>
-              </template>
-            </div>
-            <div class="set-info-item" v-else>
-              <span class="set-info-label">跟进{{ $c('coach') }}</span>
-              <span class="set-info-value">无</span>
-            </div>
-            <div class="set-info-item">
-              <span class="set-info-label">储物柜</span>
-              <a-select
-                showSearch
-                placeholder="输入储物柜号搜索"
-                optionFilterProp="children"
-                v-model="cabinet"
-                :filterOption="filterOption"
-                class="set-info-select"
-              >
-                <a-select-option :value="-1">无</a-select-option>
-                <a-select-option
-                  v-for="item in stCabinetList"
-                  :value="item.id"
-                  :key="item.id"
-                >
-                  {{ item.name }}
-                </a-select-option>
-              </a-select>
-            </div>
-          </div>
-          <div :class="reception('set-info')" v-else>
-            <div class="set-info-item">
-              <span class="set-info-label">入场凭证</span>
-              <span class="set-info-value" v-if="selectMemberInfo.proof">
-                {{ selectMemberInfo.proof.name }}
-              </span>
-            </div>
-            <div class="set-info-item">
-              <span class="set-info-label">跟进销售</span>
-              <template v-if="!isEditSeller">
-                <span class="set-info-value">
-                  {{ selectMemberInfo.seller.name || '无' }}
-                  <a @click="isEditSeller = true" v-if="auth.bindSalesman">
-                    <st-icon type="edit"></st-icon>
-                    &nbsp;编辑
-                  </a>
-                </span>
-              </template>
-              <template v-else>
-                <a-select
-                  v-model="seller"
-                  @change="onSellerChange"
-                  class="set-info-select mg-r8"
-                >
-                  <a-select-option :value="-1">无</a-select-option>
-                  <a-select-option
-                    v-for="item in sellerList"
-                    :value="item.id"
-                    :key="item.id"
+                    确定
+                  </st-button>
+                  <a
+                    class="set-info-edit-button mg-l8"
+                    @click="onEditSellerCancel"
                   >
-                    {{ item.name }}
-                  </a-select-option>
-                </a-select>
-                <st-button
-                  type="primary"
-                  :loading="loading.editSeller"
-                  @click="onEditSeller"
-                >
-                  确定
-                </st-button>
-                <a
-                  class="set-info-edit-button mg-l8"
-                  @click="onEditSellerCancel"
-                >
-                  取消
-                </a>
-              </template>
-            </div>
-            <div class="set-info-item">
-              <span class="set-info-label">跟进{{ $c('coach') }}</span>
-              <template v-if="!isEditCoach">
-                <span class="set-info-value">
-                  {{ selectMemberInfo.coach.name || '无' }}
-                  <a @click="isEditCoach = true" v-if="auth.bindCoach">
-                    <st-icon type="edit"></st-icon>
-                    &nbsp;编辑
+                    取消
                   </a>
-                </span>
-              </template>
-              <template v-else>
-                <a-select
-                  v-model="coach"
-                  @change="onCoachChange"
-                  class="set-info-select mg-r8"
-                >
-                  <a-select-option :value="-1">无</a-select-option>
-                  <a-select-option
-                    v-for="item in coachList"
-                    :value="item.id"
-                    :key="item.id"
+                </template>
+              </div>
+              <div class="set-info-item" v-else>
+                <span class="set-info-label">跟进销售</span>
+                <span class="set-info-value">无</span>
+              </div>
+              <div class="set-info-item" v-if="isSelectMember">
+                <span class="set-info-label">跟进{{ $c('coach') }}</span>
+                <template v-if="!isEditCoach">
+                  <span class="set-info-value">
+                    {{ selectMemberInfo.coach.name || '无' }}
+                    <a @click="isEditCoach = true" v-if="auth.bindCoach">
+                      <st-icon type="edit"></st-icon>
+                      &nbsp;编辑
+                    </a>
+                  </span>
+                </template>
+                <template v-else>
+                  <a-select
+                    v-model="coach"
+                    @change="onCoachChange"
+                    class="set-info-select mg-r8"
                   >
-                    {{ item.name }}
-                  </a-select-option>
-                </a-select>
-                <st-button
-                  type="primary"
-                  :loading="loading.editCoach"
-                  @click="onEditCoach"
-                >
-                  确定
-                </st-button>
-                <a
-                  class="set-info-edit-button mg-l8"
-                  @click="onEditCoachCancel"
-                >
-                  取消
-                </a>
-              </template>
-            </div>
-            <div class="set-info-item">
-              <span class="set-info-label">储物柜</span>
-              <template v-if="!isEditCabinet">
-                <span class="set-info-value">
-                  {{ selectMemberInfo.cabinet.name || '无' }}
-                  <a @click="isEditCabinet = true">
-                    <st-icon type="edit"></st-icon>
-                    &nbsp;编辑
+                    <a-select-option :value="-1">无</a-select-option>
+                    <a-select-option
+                      v-for="item in coachList"
+                      :value="item.id"
+                      :key="item.id"
+                    >
+                      {{ item.name }}
+                    </a-select-option>
+                  </a-select>
+                  <st-button
+                    type="primary"
+                    :loading="loading.editCoach"
+                    @click="onEditCoach"
+                  >
+                    确定
+                  </st-button>
+                  <a
+                    class="set-info-edit-button mg-l8"
+                    @click="onEditCoachCancel"
+                  >
+                    取消
                   </a>
-                </span>
-              </template>
-              <template v-else>
-                <a-select v-model="cabinet" class="set-info-select mg-r8">
+                </template>
+              </div>
+              <div class="set-info-item" v-else>
+                <span class="set-info-label">跟进{{ $c('coach') }}</span>
+                <span class="set-info-value">无</span>
+              </div>
+              <div class="set-info-item">
+                <span class="set-info-label">储物柜</span>
+                <a-select
+                  showSearch
+                  placeholder="输入储物柜号搜索"
+                  optionFilterProp="children"
+                  v-model="cabinet"
+                  :filterOption="filterOption"
+                  class="set-info-select"
+                >
                   <a-select-option :value="-1">无</a-select-option>
                   <a-select-option
                     v-for="item in stCabinetList"
@@ -398,49 +286,231 @@
                     {{ item.name }}
                   </a-select-option>
                 </a-select>
-                <st-button
-                  type="primary"
-                  :loading="loading.editEntranceCabinet"
-                  @click="onEditCabinet"
-                >
-                  确定
-                </st-button>
-                <a
-                  class="set-info-edit-button mg-l8"
-                  @click="onEditCabinetCancel"
-                >
-                  取消
-                </a>
-              </template>
+              </div>
+            </div>
+            <div :class="reception('set-info')" v-else>
+              <div class="set-info-item">
+                <span class="set-info-label">入场凭证</span>
+                <span class="set-info-value" v-if="selectMemberInfo.proof">
+                  {{ selectMemberInfo.proof.name }}
+                </span>
+              </div>
+              <div class="set-info-item">
+                <span class="set-info-label">跟进销售</span>
+                <template v-if="!isEditSeller">
+                  <span class="set-info-value">
+                    {{ selectMemberInfo.seller.name || '无' }}
+                    <a @click="isEditSeller = true" v-if="auth.bindSalesman">
+                      <st-icon type="edit"></st-icon>
+                      &nbsp;编辑
+                    </a>
+                  </span>
+                </template>
+                <template v-else>
+                  <a-select
+                    v-model="seller"
+                    @change="onSellerChange"
+                    class="set-info-select mg-r8"
+                  >
+                    <a-select-option :value="-1">无</a-select-option>
+                    <a-select-option
+                      v-for="item in sellerList"
+                      :value="item.id"
+                      :key="item.id"
+                    >
+                      {{ item.name }}
+                    </a-select-option>
+                  </a-select>
+                  <st-button
+                    type="primary"
+                    :loading="loading.editSeller"
+                    @click="onEditSeller"
+                  >
+                    确定
+                  </st-button>
+                  <a
+                    class="set-info-edit-button mg-l8"
+                    @click="onEditSellerCancel"
+                  >
+                    取消
+                  </a>
+                </template>
+              </div>
+              <div class="set-info-item">
+                <span class="set-info-label">跟进{{ $c('coach') }}</span>
+                <template v-if="!isEditCoach">
+                  <span class="set-info-value">
+                    {{ selectMemberInfo.coach.name || '无' }}
+                    <a @click="isEditCoach = true" v-if="auth.bindCoach">
+                      <st-icon type="edit"></st-icon>
+                      &nbsp;编辑
+                    </a>
+                  </span>
+                </template>
+                <template v-else>
+                  <a-select
+                    v-model="coach"
+                    @change="onCoachChange"
+                    class="set-info-select mg-r8"
+                  >
+                    <a-select-option :value="-1">无</a-select-option>
+                    <a-select-option
+                      v-for="item in coachList"
+                      :value="item.id"
+                      :key="item.id"
+                    >
+                      {{ item.name }}
+                    </a-select-option>
+                  </a-select>
+                  <st-button
+                    type="primary"
+                    :loading="loading.editCoach"
+                    @click="onEditCoach"
+                  >
+                    确定
+                  </st-button>
+                  <a
+                    class="set-info-edit-button mg-l8"
+                    @click="onEditCoachCancel"
+                  >
+                    取消
+                  </a>
+                </template>
+              </div>
+              <div class="set-info-item">
+                <span class="set-info-label">储物柜</span>
+                <template v-if="!isEditCabinet">
+                  <span class="set-info-value">
+                    {{ selectMemberInfo.cabinet.name || '无' }}
+                    <a @click="isEditCabinet = true">
+                      <st-icon type="edit"></st-icon>
+                      &nbsp;编辑
+                    </a>
+                  </span>
+                </template>
+                <template v-else>
+                  <a-select v-model="cabinet" class="set-info-select mg-r8">
+                    <a-select-option :value="-1">无</a-select-option>
+                    <a-select-option
+                      v-for="item in stCabinetList"
+                      :value="item.id"
+                      :key="item.id"
+                    >
+                      {{ item.name }}
+                    </a-select-option>
+                  </a-select>
+                  <st-button
+                    type="primary"
+                    :loading="loading.editEntranceCabinet"
+                    @click="onEditCabinet"
+                  >
+                    确定
+                  </st-button>
+                  <a
+                    class="set-info-edit-button mg-l8"
+                    @click="onEditCabinetCancel"
+                  >
+                    取消
+                  </a>
+                </template>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div :class="reception('todoist')">
-        <a-tabs defaultActiveKey="1" class="todoist-tabs">
-          <a-tab-pane tab="待办" key="1" forceRender>
-            <div :class="reception('todoist-to-do')">
-              <st-button
-                type="dashed"
-                icon="add"
-                @click="onAddWorkNotes"
-                :disabled="!auth.addTodo"
-                class="to-do-add"
-              >
-                添加待办
-              </st-button>
-              <ul :class="reception('todoist-to-do-list')" v-scrollBar>
-                <li
-                  v-for="(item, i) in workNoteList"
-                  :key="i"
-                  class="animated delay-f2s"
-                  :class="{
-                    fadeOut: i === animateIndex,
-                    'mg-t12': i + 1 > 2,
-                    'mg-r12': (i + 1) % 2 !== 0
-                  }"
+        <div :class="reception('todoist')">
+          <a-tabs defaultActiveKey="1" class="todoist-tabs">
+            <a-tab-pane tab="待办" key="1" forceRender>
+              <div :class="reception('todoist-to-do')">
+                <st-button
+                  type="dashed"
+                  icon="add"
+                  @click="onAddWorkNotes"
+                  :disabled="!auth.addTodo"
+                  class="to-do-add"
                 >
-                  <div class="to-do-main">
+                  添加待办
+                </st-button>
+                <ul :class="reception('todoist-to-do-list')" v-scrollBar>
+                  <li
+                    v-for="(item, i) in workNoteList"
+                    :key="i"
+                    class="animated delay-f2s"
+                    :class="{
+                      fadeOut: i === animateIndex,
+                      'mg-t12': i + 1 > 2,
+                      'mg-r12': (i + 1) % 2 !== 0
+                    }"
+                  >
+                    <div class="to-do-main">
+                      <template v-if="item.nickname">
+                        <a-tooltip
+                          overlayClassName="st-light-tooltip"
+                          v-if="item.nickname.length > 2"
+                        >
+                          <template slot="title">
+                            {{ item.nickname }}
+                          </template>
+                          <span class="operation-name cursor-pointer">
+                            {{ item.nickname.substr(0, 2) }}
+                          </span>
+                        </a-tooltip>
+                        <span class="operation-name cursor-pointer" v-else>
+                          {{ item.nickname }}
+                        </span>
+                      </template>
+                      <span class="operation-name cursor-pointer" v-else>
+                        无
+                      </span>
+                      <p>
+                        <span class="fw-600">
+                          <a-tooltip
+                            placement="topLeft"
+                            overlayClassName="st-light-tooltip"
+                          >
+                            <template slot="title">
+                              {{ item.subject }}
+                            </template>
+                            <span>{{ item.subject }}</span>
+                          </a-tooltip>
+                        </span>
+                        <span>
+                          <a-tooltip
+                            placement="topLeft"
+                            overlayClassName="st-light-tooltip"
+                          >
+                            <template slot="title">
+                              {{ item.content }}
+                            </template>
+                            <span>{{ item.content }}</span>
+                          </a-tooltip>
+                        </span>
+                      </p>
+                    </div>
+                    <div class="operation-time">
+                      <span class="font-number">{{ item.created_time }}</span>
+                      <st-button
+                        class="to-do-button"
+                        @click="onSetWorkNote(item, i)"
+                      >
+                        完成
+                      </st-button>
+                    </div>
+                  </li>
+                  <li
+                    v-if="workNoteList.length % 2 !== 0"
+                    class="mg-t12 none-item"
+                  ></li>
+                </ul>
+              </div>
+            </a-tab-pane>
+            <a-tab-pane tab="已完成" key="2" forceRender>
+              <ul :class="reception('todoist-finish-list')" v-scrollBar>
+                <li
+                  v-for="(item, i) in workNoteDoneList"
+                  :key="i"
+                  :class="{ 'mg-t12': i + 1 > 2, 'mg-r12': (i + 1) % 2 !== 0 }"
+                >
+                  <div class="finish-main">
                     <template v-if="item.nickname">
                       <a-tooltip
                         overlayClassName="st-light-tooltip"
@@ -457,7 +527,7 @@
                         {{ item.nickname }}
                       </span>
                     </template>
-                    <span class="operation-name cursor-pointer" v-else>无</span>
+                    <span class="operation-name" v-else>无</span>
                     <p>
                       <span class="fw-600">
                         <a-tooltip
@@ -484,87 +554,21 @@
                     </p>
                   </div>
                   <div class="operation-time">
-                    <span class="font-number">{{ item.created_time }}</span>
-                    <st-button
-                      class="to-do-button"
-                      @click="onSetWorkNote(item, i)"
-                    >
-                      完成
-                    </st-button>
+                    <span class="font-number">{{ item.updated_time }}</span>
+                    <span class="finish-status">已完成</span>
                   </div>
                 </li>
                 <li
-                  v-if="workNoteList.length % 2 !== 0"
+                  v-if="workNoteDoneList.length % 2 !== 0"
                   class="mg-t12 none-item"
                 ></li>
               </ul>
-            </div>
-          </a-tab-pane>
-          <a-tab-pane tab="已完成" key="2" forceRender>
-            <ul :class="reception('todoist-finish-list')" v-scrollBar>
-              <li
-                v-for="(item, i) in workNoteDoneList"
-                :key="i"
-                :class="{ 'mg-t12': i + 1 > 2, 'mg-r12': (i + 1) % 2 !== 0 }"
-              >
-                <div class="finish-main">
-                  <template v-if="item.nickname">
-                    <a-tooltip
-                      overlayClassName="st-light-tooltip"
-                      v-if="item.nickname.length > 2"
-                    >
-                      <template slot="title">
-                        {{ item.nickname }}
-                      </template>
-                      <span class="operation-name cursor-pointer">
-                        {{ item.nickname.substr(0, 2) }}
-                      </span>
-                    </a-tooltip>
-                    <span class="operation-name cursor-pointer" v-else>
-                      {{ item.nickname }}
-                    </span>
-                  </template>
-                  <span class="operation-name" v-else>无</span>
-                  <p>
-                    <span class="fw-600">
-                      <a-tooltip
-                        placement="topLeft"
-                        overlayClassName="st-light-tooltip"
-                      >
-                        <template slot="title">
-                          {{ item.subject }}
-                        </template>
-                        <span>{{ item.subject }}</span>
-                      </a-tooltip>
-                    </span>
-                    <span>
-                      <a-tooltip
-                        placement="topLeft"
-                        overlayClassName="st-light-tooltip"
-                      >
-                        <template slot="title">
-                          {{ item.content }}
-                        </template>
-                        <span>{{ item.content }}</span>
-                      </a-tooltip>
-                    </span>
-                  </p>
-                </div>
-                <div class="operation-time">
-                  <span class="font-number">{{ item.updated_time }}</span>
-                  <span class="finish-status">已完成</span>
-                </div>
-              </li>
-              <li
-                v-if="workNoteDoneList.length % 2 !== 0"
-                class="mg-t12 none-item"
-              ></li>
-            </ul>
-          </a-tab-pane>
-        </a-tabs>
+            </a-tab-pane>
+          </a-tabs>
+        </div>
       </div>
-    </div>
-  </section>
+    </st-panel>
+  </st-panel-layout>
 </template>
 <script>
 import { IndexService } from './index.service'
