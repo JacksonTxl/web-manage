@@ -160,12 +160,12 @@ export class AuthService {
         }
       }
       if (!meta.title) {
-        console.error(`[auth.service] 请配置 ${routeName} 下的meta.title 标题`)
+        console.warn(`[auth.service] 请配置 ${routeName} 下的meta.title 标题`)
         authedTabs.push(tab)
         return
       }
       if (!meta.auth) {
-        console.error(
+        console.warn(
           `[auth.service] 请配置 ${routeName} 下的meta.auth 权限点，默认显示 `
         )
         authedTabs.push(tab)

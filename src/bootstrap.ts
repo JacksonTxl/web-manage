@@ -1,4 +1,5 @@
 import './hot-release'
+import './sentry-reporter'
 import '@abraham/reflection'
 import Vue from 'vue'
 import Antd from 'ant-design-vue'

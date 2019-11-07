@@ -1,14 +1,14 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { RedirectService } from '@/services/redirect.service'
 @Injectable()
 export class PersonalService implements RouteGuard {
-  constructor() {}
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    if (to.name === 'brand-product-course-personal') {
-      next({
+  constructor(private redirectService: RedirectService) {}
+  beforeRouteEnter() {
+    return this.redirectService.redirect({
+      locateRouteName: 'brand-product-course-personal',
+      redirectRoute: {
         name: 'brand-product-course-personal-list'
-      })
-    } else {
-      next()
-    }
+      }
+    })
   }
 }
