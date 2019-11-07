@@ -1,5 +1,5 @@
 <template>
-  <section :class="basic()">
+  <st-panel-layout :class="basic()">
     <st-panel title="课程包详情">
       <div slot="actions">
         <st-button
@@ -183,7 +183,7 @@
         </a-col>
       </a-row>
     </st-panel>
-    <st-panel class="mg-t12" :tabs="pageAuthTabs">
+    <st-panel app class="mg-t12" :tabs="pageAuthTabs">
       <!-- TODO: 消费记录尚未实现 -->
       <!-- {
           label: '消费记录',
@@ -194,7 +194,7 @@
         }, -->
       <router-view></router-view>
     </st-panel>
-  </section>
+  </st-panel-layout>
 </template>
 <script>
 import { InfoService } from './info.service'

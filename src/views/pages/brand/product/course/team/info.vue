@@ -1,5 +1,5 @@
 <template>
-  <div app class="page-team-info">
+  <st-panel-layout app class="page-team-info">
     <div class="header mg-b24">
       <div :class="b('left')" class="mg-r24">
         <st-t3 class="mg-b16">
@@ -65,7 +65,8 @@
         />
       </div>
     </div>
-    <div :class="bb()" v-if="teamCourseInfo.support_shop_list.length">
+
+    <st-panel app :class="bb()" v-if="teamCourseInfo.support_shop_list.length">
       <div class="page-team-content__item mg-b24">
         <div class="title mg-b8">
           <span class="label">上课门店:</span>
@@ -81,8 +82,8 @@
           ></st-table>
         </st-container>
       </div>
-    </div>
-  </div>
+    </st-panel>
+  </st-panel-layout>
 </template>
 <script>
 import { shopColumns } from './info#table.config'
