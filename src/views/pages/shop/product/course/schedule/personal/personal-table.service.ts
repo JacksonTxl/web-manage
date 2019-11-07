@@ -30,17 +30,6 @@ export class PersonalTableService {
             timing: []
           }
         })
-        // schedule_info: [, …]
-        // 0: { id: 97692957606068, schedule_date: "2019-07-28", timing: [{ start_time: "00:00", end_time: "23:00" }] }
-        // 1: { id: 100403216187512, schedule_date: "2019-07-22", timing: [{ start_time: "00:00", end_time: "24:00" }] }
-        // 2: { id: 100403216187514, schedule_date: "2019-07-23", timing: [{ start_time: "00:00", end_time: "24:00" }] }
-        // 3: { id: 100403216187516, schedule_date: "2019-07-24", timing: [{ start_time: "00:00", end_time: "24:00" }] }
-        // 4: { id: 100403216187518, schedule_date: "2019-07-25", timing: [{ start_time: "00:00", end_time: "24:00" }] }
-        // 5: { id: 100403216187520, schedule_date: "2019-07-26", timing: [{ start_time: "00:00", end_time: "24:00" }] }
-        // 6: { id: 100403216187522, schedule_date: "2019-07-27", timing: [{ start_time: "00:00", end_time: "24:00" }] }
-        // 7: { id: 100403216187524, schedule_date: "2019-07-28", timing: [{ start_time: "00:00", end_time: "24:00" }] }
-        // staff_id: 97692957606056
-        // staff_name: "丝绒"
         const list = res.list.map((item: any) => {
           //  去除后端返回的重复数据
           item.schedule_info = schedule_info.map((sInfo: any) => {
@@ -95,11 +84,9 @@ export class PersonalTableService {
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    return forkJoin(this.getList(to.query), this.initOptions())
+    return this.getList(to.meta.query)
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    forkJoin(this.initOptions()).subscribe(() => {
-      next()
-    })
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+    return this.initOptions()
   }
 }

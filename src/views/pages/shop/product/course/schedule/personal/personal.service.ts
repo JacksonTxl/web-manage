@@ -20,16 +20,10 @@ export class PersonalService implements RouteGuard {
     this.state$ = new State({})
   }
 
-  initOptions() {
-    return forkJoin(
-      this.commonService.getCoachListInBatch(),
-      this.commonService.getCoachList()
-    )
-  }
   beforeEach(to: ServiceRoute, form: ServiceRoute) {
-    return forkJoin(this.initOptions(), this.reserveService.getList(to.query))
+    return forkJoin(this.reserveService.getList(to.query))
   }
   beforeRouteEnter(to: ServiceRoute, form: ServiceRoute) {
-    return this.initOptions()
+    return this.commonService.getCoachList()
   }
 }

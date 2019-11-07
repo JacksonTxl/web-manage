@@ -18,17 +18,14 @@ export class TeamService implements RouteGuard {
     private scheduleService: ScheduleService
   ) {}
 
-  init(query: any) {
+  beforeEach(to: ServiceRoute, form: ServiceRoute) {
+    return this.scheduleService.getList(to.meta.query)
+  }
+  beforeRouteEnter(to: ServiceRoute, form: ServiceRoute) {
     return forkJoin(
       this.commonService.getCoachList(),
       this.commonService.getCourseList(),
-      this.commonService.getCourtList(),
-      this.scheduleService.getList(query)
+      this.commonService.getCourtList()
     )
-  }
-
-  beforeEach(to: ServiceRoute, form: ServiceRoute) {
-    console.log(to.query)
-    return this.init(to.query)
   }
 }

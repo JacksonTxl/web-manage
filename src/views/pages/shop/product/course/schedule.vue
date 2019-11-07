@@ -11,7 +11,7 @@
         v-model="query.course_id"
         placeholder="请选择课程"
         @change="onChange"
-        style="width: 120px"
+        style="width: 200px"
         class="page-schedule__select mg-r8"
       >
         <a-select-option :value="-1">全部</a-select-option>
@@ -27,7 +27,7 @@
         v-model="query.court_id"
         placeholder="请选择场地"
         @change="onChange"
-        style="width: 120px"
+        style="width: 200px"
         class="page-schedule__select mg-r8"
       >
         <a-select-option :value="-1">全部</a-select-option>
@@ -43,7 +43,7 @@
         class="page-schedule__select"
         :placeholder="`请选择${$c('coach')}`"
         @change="onChange"
-        style="width: 120px"
+        style="width: 200px"
         v-model="query.coach_id"
       >
         <a-select-option :value="-1">全部</a-select-option>
@@ -60,15 +60,14 @@
       slot="actions"
       v-if="
         routeName === 'shop-product-course-schedule-personal-personal' ||
-          routeName ===
-            'shop-product-course-schedule-personal-personal-reserve-table'
+          routeName === 'shop-product-course-schedule-personal-personal-table'
       "
     >
       <a-select
         class="page-schedule__select"
         :placeholder="`请选择${$c('coach')}`"
         @change="onChange"
-        style="width: 120px"
+        style="width: 200px"
         v-model="query.coach_id"
       >
         <a-select-option :value="-1">全部</a-select-option>
@@ -94,7 +93,7 @@
         class="page-schedule__select"
         :placeholder="`请选择${$c('coach')}`"
         @change="onChange"
-        style="width: 120px"
+        style="width: 200px"
         v-model="query.coach_id"
       >
         <a-select-option :value="-1">全部</a-select-option>
