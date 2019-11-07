@@ -128,7 +128,7 @@ const mockerApis = {
   },
   // 'GET /_api/v1/staff/info': {
   //   code: 0,
-  //   msg: 'success',1
+  //   msg: 'success',
   //   data: {
   //     info: {
   //       brand_id: 1,

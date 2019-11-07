@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import brandVersionUpdateMixin from '@/mixins/brand-version-update.mixin'
-export default {
-  mixins: [brandVersionUpdateMixin]
-}
+// import brandVersionUpdateMixin from '@/mixins/brand-version-update.mixin'
+// export default {
+//   mixins: [brandVersionUpdateMixin]
+// }
 </script>
