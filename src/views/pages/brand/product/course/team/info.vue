@@ -58,10 +58,11 @@
         </div>
       </div>
 
-      <div :class="b('right')">
+      <div class="page-team-header__right" v-viewer="{ url: 'data-src' }">
         <img
-          class="image"
-          :src="teamCourseInfo.image.image_url | imgFilter({ w: 280, h: 158 })"
+          :src="image | imgFilter({ w: 560, h: 320, type: 'course' })"
+          :data-src="image | imgFilter({ w: 1000, type: 'course' })"
+          :alt="teamCourseInfo.course_name"
         />
       </div>
     </div>
@@ -76,6 +77,7 @@
         </div>
         <st-container>
           <st-table
+            rowKey="shop_id"
             :dataSource="teamCourseInfo.support_shop_list"
             :columns="shopColumns"
             page-mode="client"
@@ -103,6 +105,11 @@ export default {
   rxState() {
     return {
       teamCourseInfo: this.infoService.teamCourseInfo$
+    }
+  },
+  computed: {
+    image() {
+      return this.teamCourseInfo.image.image_key
     }
   },
   filters: {
