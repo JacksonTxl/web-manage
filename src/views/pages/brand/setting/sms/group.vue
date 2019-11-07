@@ -27,18 +27,12 @@
         <a-radio-button :value="1">发送记录</a-radio-button>
         <a-radio-button :value="0">短信模版</a-radio-button>
       </a-radio-group>
-      <span
-        class="fl-r"
+      <st-refresh-btn
+        class="fl-r mg-r8"
         :class="bPage('actions')"
         v-if="isShowList"
-        @click="refresh"
-      >
-        刷新
-        <span @click="refresh">
-          <st-icon type="refresh"></st-icon>
-        </span>
-      </span>
-      <!-- <st-refresh-btn :action="refresh"></st-refresh-btn> -->
+        :action="action"
+      ></st-refresh-btn>
     </div>
     <st-table
       v-if="isShowList"
@@ -233,8 +227,11 @@ export default {
     getGroupList() {
       return this.groupService.getGroupList().subscribe()
     },
+    action() {
+      return this.groupService.getGroupList()
+    },
     refresh() {
-      this.$router.reload()
+      return this.$router.reload()
     }
   }
 }
