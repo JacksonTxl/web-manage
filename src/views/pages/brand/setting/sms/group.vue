@@ -27,18 +27,12 @@
         <a-radio-button :value="1">发送记录</a-radio-button>
         <a-radio-button :value="0">短信模版</a-radio-button>
       </a-radio-group>
-      <span
-        class="fl-r"
+      <st-refresh-btn
+        class="fl-r mg-r8"
         :class="bPage('actions')"
         v-if="isShowList"
-        @click="getGroupList"
-      >
-        刷新
-        <span @click="getGroupList">
-          <st-icon type="getGroupList"></st-icon>
-        </span>
-      </span>
-      <!-- <st-refresh-btn :action="refresh"></st-refresh-btn> -->
+        :action="getGroupList"
+      ></st-refresh-btn>
     </div>
     <st-table
       v-if="isShowList"
