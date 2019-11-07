@@ -192,7 +192,6 @@ export class HttpService {
               })
               break
             case 401:
-              console.log('is401')
               this.notification.warn({
                 title: this.i18n.t('http.401'),
                 key: 'ajaxError',

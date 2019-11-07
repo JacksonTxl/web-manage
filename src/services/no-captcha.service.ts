@@ -1,7 +1,8 @@
 import { Injectable } from 'vue-service-app'
+import { NotificationService } from './notification.service'
 @Injectable()
 export class NoCaptchaService {
-  constructor() {}
+  constructor(private notification: NotificationService) {}
   init(opts: any = {}) {
     //无痕配置 && 滑动验证、刮刮卡、问答验证码通用配置
     // @ts-ignore
@@ -122,5 +123,28 @@ export class NoCaptchaService {
   resetNVC() {
     // @ts-ignore
     nvcReset()
+  }
+  generateNVCVal() {
+    // @ts-ignore
+    const nvcVal = window.getNVCVal()
+    if (!nvcVal) {
+      return
+    }
+    const nvcValDecode = JSON.parse(decodeURIComponent(nvcVal))
+    const flag = this.validateVal(nvcValDecode)
+    if (!flag) {
+      this.notification.warn({
+        title: '页面依赖加载失败',
+        key: 'ajaxError',
+        content: '请刷新页面，重新加载'
+      })
+      return false
+    }
+    return nvcVal
+  }
+  validateVal(val: object) {
+    const arr = Object.values(val)
+    const filterArr = arr.filter(item => !item)
+    return !filterArr.length
   }
 }
