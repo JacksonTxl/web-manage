@@ -1,5 +1,5 @@
-import { PersonalScheduleCommonService } from './service#/common.service'
-import { PersonalScheduleScheduleService } from './service#/schedule.service'
+import { PersonalScheduleCommonService } from './schedule/personal/service#/common.service'
+import { PersonalScheduleScheduleService } from './schedule/personal/service#/schedule.service'
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
@@ -16,6 +16,7 @@ export class PersonalTableService {
   scheduleList$ = new State([])
   scheduleColumns$ = new State([])
   scheduleTime$ = new State([])
+  formPage$ = new State('')
   constructor(
     private scheduleService: PersonalScheduleScheduleService,
     private commonService: PersonalScheduleCommonService,
@@ -48,7 +49,7 @@ export class PersonalTableService {
             item[sInfo.schedule_date] = sInfo
             item.schedule_info.forEach((itemInfo: any) => {
               item[itemInfo.schedule_date] = itemInfo
-              console.log('itemInfo', itemInfo)
+              // console.log('itemInfo', itemInfo)
               if (sInfo.schedule_date === itemInfo.schedule_date) {
                 ele = itemInfo
               }
@@ -95,6 +96,12 @@ export class PersonalTableService {
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    console.log(from.name)
+    if (from.name === 'shop-product-course-schedule-personal-personal') {
+      this.formPage$.commit(() => 'personal')
+    } else if ('shop-product-course-schedule-personal-personal-reserve-table') {
+      this.formPage$.commit(() => 'personal-reserve-table')
+    }
     return forkJoin(this.getList(to.query), this.initOptions())
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {

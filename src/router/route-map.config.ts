@@ -793,8 +793,8 @@ export const routeMapConfig = {
   'shop-product-course-schedule-personal'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教1v1排期'
   },
-  'shop-product-course-schedule-personal-table'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '私教1v1排期'
+  'shop-product-course-personal-table'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '私教1v1排期管理'
   },
   'shop-product-course-schedule-personal-team'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教小团课排期'
