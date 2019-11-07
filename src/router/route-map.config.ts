@@ -342,7 +342,7 @@ export const routeMapConfig = {
   'shop-sold-transaction-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '交易签单'
     routeConfig.queryOptions = {
-      page: { type: Number, default: 1 },
+      current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       product_name: { type: String, default: '' },
       product_type: { type: Number, default: 1 }
@@ -389,7 +389,7 @@ export const routeMapConfig = {
     routeConfig.meta.tabs = [
       'brand-setting-general-brand',
       'brand-setting-general-coach-level',
-      'brand-setting-general-user-level',
+      // 'brand-setting-general-user-level', //暂时隐藏用户等级设置
       'brand-setting-general-course',
       'brand-setting-general-pay-type'
     ]
@@ -1154,7 +1154,8 @@ export const routeMapConfig = {
       'brand-setting-import-staff',
       'brand-setting-import-commodity',
       'brand-setting-import-member',
-      'brand-setting-import-sold',
+      // TODO 1107暂时不上
+      // 'brand-setting-import-sold',
       'brand-setting-import-record'
     ]
   },

@@ -361,16 +361,14 @@ export default {
           this.addService.editMarketingCoupon(params).subscribe(res => {
             // 编辑成功
             this.$router.push({
-              path: '/brand/marketing/plugin/coupon/list',
-              force: true
+              path: '/brand/marketing/plugin/coupon/list'
             })
           })
         } else {
           this.addService.addMarketingCoupon(params).subscribe(res => {
             // 新增成功
             this.$router.push({
-              path: `/brand/marketing/plugin/coupon/list`,
-              force: true
+              path: `/brand/marketing/plugin/coupon/list`
             })
           })
         }

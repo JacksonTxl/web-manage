@@ -111,8 +111,17 @@
                   width="240px"
                   height="135px"
                 >
-                  <a-icon type="plus" />
-                  <div class="page-upload-text">上传店招</div>
+                  <a-icon
+                    type="plus-circle"
+                    theme="filled"
+                    :style="{
+                      fontSize: '32px',
+                      verticalAlign: 'super',
+                      marginRight: '8px',
+                      color: '#9BACB9'
+                    }"
+                  />
+                  <div class="page-upload-text">上传门店图片</div>
                   <div class="page-upload-text">大小不超过5M，建议尺寸16:9</div>
                 </st-image-upload>
                 <p class="st-des ta-c">可添加20张门店图片</p>
@@ -252,7 +261,7 @@ export default {
       this.phoneValidtorType = 1
       if (this.form.getFieldValue('shopPhone') && !this.phoneAddDisabled) {
         // input框里有值才添加
-        this.form.validateFields(['shopPhone'], { force: true }).then(res => {
+        this.form.validateFields(['shopPhone'], {}).then(res => {
           let arr = [...this.shopPhones]
           arr.push(res.shopPhone)
           this.shopPhones = [...new Set(arr)]

@@ -3,6 +3,7 @@ import multiguard from 'vue-router-multiguard'
 import { isCtor, isFn, last } from './utils'
 import ServiceRouter from './router'
 import VuePlugin from './vue-plugin'
+import { hookWrapper } from 'vue-router-plus'
 
 class VueServiceApp {
   static install(Vue, container) {
@@ -144,133 +145,85 @@ class VueServiceApp {
   }
   _calcMiddlewaresByRoute(to, from) {
     const matched = to.matched
-    const toLast = last(to.matched)
-    const fromLast = last(from.matched)
 
     // 该路由自己的守卫controller
-    const myGuardPromises = [to.meta.controller]
+    const myControllerPromise = [to.meta.controller]
       .filter(G => isFn(G) || isCtor(G))
       .map(G => (isCtor(G) ? Promise.resolve(G) : G()))
 
-    // 包含所有父级路由下的守卫
-    const allGuardPromises = matched
+    // 路由parent controllers
+    const parentControllersPromises = matched
+      .slice(0, -1)
       .reduce(
-        (res, routeRecord) =>
-          res
-            .concat(routeRecord.meta.guards || [])
-            .concat([routeRecord.meta.controller]),
+        (res, routeRecord) => res.concat([routeRecord.meta.controller]),
         []
       )
-      // 保留import() 和 构造函数
       .filter(G => isFn(G) || isCtor(G))
       .map(G => (isCtor(G) ? Promise.resolve(G) : G()))
 
-    return Promise.all(allGuardPromises)
-      .then(preAllguards => {
-        return Promise.all(myGuardPromises).then(myGuards => {
-          return {
-            allGuards: preAllguards,
-            myGuards
-          }
-        })
-      })
-      .then(({ allGuards, myGuards }) => {
-        // 同name -> 路由更新
-        if (to.name === from.name) {
-          return this._getBeforeMiddlewaresByGuards(
-            allGuards,
+    // 路由guards
+    const guardsPromises = matched
+      .reduce(
+        (res, routeRecord) => res.concat(routeRecord.meta.guards || []),
+        []
+      )
+      .filter(G => isFn(G) || isCtor(G))
+      .map(G => (isCtor(G) ? Promise.resolve(G) : G()))
+
+    return Promise.all([
+      Promise.all(guardsPromises),
+      Promise.all(parentControllersPromises),
+      Promise.all(myControllerPromise)
+    ]).then(([guards, parentControllers, myController]) => {
+      // 同name -> 路由更新
+      if (to.name === from.name) {
+        return this._getBeforeMiddlewaresByGuards(
+          [...guards, ...parentControllers, ...myController],
+          'beforeRouteUpdate'
+        )
+      }
+      if (to.name !== from.name) {
+        // 父级是更新 自己是enter
+        // FIXME: 当父亲路由到子路由 /role -> /role/info 时会触发父路由的beforeRouteEnter
+        // 因为这种跳转的from不是中间的路由的route，而是最开始跳转的开始页route
+        const toLast = last(to.matched)
+        const fromLast = last(from.matched)
+
+        if (
+          toLast &&
+          fromLast &&
+          toLast.parent &&
+          fromLast.parent &&
+          toLast.parent.name === fromLast.parent.name
+        ) {
+          // guards 执行beforeRouteEnter
+          const guardMiddlewares = this._getBeforeMiddlewaresByGuards(
+            guards,
+            'beforeRouteEnter'
+          )
+          // 所有父级执行beforeRouteUpdate
+          const parentMiddlewares = this._getBeforeMiddlewaresByGuards(
+            parentControllers,
             'beforeRouteUpdate'
           )
-        }
-        if (to.name !== from.name) {
-          // 父级是更新 自己是enter
-          if (
-            toLast &&
-            fromLast &&
-            toLast.parent &&
-            fromLast.parent &&
-            toLast.parent.name === fromLast.parent.name
-          ) {
-            // 所有父级执行beforeRouteUpdate
-            const parentGuards = allGuards.slice(
-              0,
-              allGuards.length - myGuards.length
-            )
-            const parentMiddlewares = this._getBeforeMiddlewaresByGuards(
-              parentGuards,
-              'beforeRouteUpdate'
-            )
-            const myMiddlewares = this._getBeforeMiddlewaresByGuards(
-              myGuards,
-              'beforeRouteEnter'
-            )
+          const myMiddlewares = this._getBeforeMiddlewaresByGuards(
+            myController,
+            'beforeRouteEnter'
+          )
 
-            return [...parentMiddlewares, ...myMiddlewares]
-          } else {
-            return this._getBeforeMiddlewaresByGuards(
-              allGuards,
-              'beforeRouteEnter'
-            )
-          }
-        }
-      })
-  }
-
-  _makeAsyncMiddlewares(middlewares) {
-    return middlewares.map(fn => {
-      /**
-       * 含有next
-       */
-      if (fn.length > 2) {
-        return (to, from, next) => {
-          const ret = fn(to, from, next)
-          if (ret && (ret.then || ret.subscribe)) {
-            throw new Error(
-              `[vue-service-app] can not use next() and (Promise or Observable) together -> ${
-                fn.name
-              }`
-            )
-          }
-          return ret
-        }
-      }
-      /**
-       * Promise 或 Observable
-       */
-      return (to, from, next) => {
-        const p = fn(to, from)
-        if (!p) {
-          return next()
-        }
-        if (p.then) {
-          p.then(res => {
-            if (res && res.next) {
-              next(res.next)
-            } else {
-              next()
-            }
-          }).catch(e => {
-            console.error('[vue-service-app]', e)
-            next(new Error(e))
-          })
-        }
-        if (p.subscribe) {
-          p.subscribe(
-            res => {
-              if (res && res.next) {
-                next(res.next)
-              } else {
-                next()
-              }
-            },
-            e => {
-              console.error('[vue-service-app]', e)
-              next(new Error(e))
-            }
+          return [...guardMiddlewares, ...parentMiddlewares, ...myMiddlewares]
+        } else {
+          return this._getBeforeMiddlewaresByGuards(
+            [...guards, ...parentControllers, ...myController],
+            'beforeRouteEnter'
           )
         }
       }
     })
+  }
+
+  _makeAsyncMiddlewares(middlewares) {
+    return middlewares.map(fn => hookWrapper(fn))
   }
 }
 

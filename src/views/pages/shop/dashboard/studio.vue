@@ -10,8 +10,8 @@
         </div>
         <a-row :class="bCount('title')">
           <a-col :lg="4"></a-col>
-          <a-col :lg="5" style="position:relative;left:-16px;">
-            <st-help-tooltip id="TSNM001"></st-help-tooltip>
+          <a-col :lg="5">
+            <!-- <st-help-tooltip id="TSNM001"></st-help-tooltip> -->
             购买私教(人)
             <span :class="[bCount('topIcon'), 'user']">
               <img :src="topIconUser" />

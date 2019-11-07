@@ -21,27 +21,17 @@
           :dataSource="list$"
           :page="false"
         >
-          <span
-            :class="bPage(`main-status-${text.id}`)"
-            slot="ticket_status"
-            slot-scope="text"
-          >
-            <st-status-text v-if="text.id === 1" :status="{ error: 1 }">
+          <template slot="ticket_status" slot-scope="text">
+            <st-text
+              :status="{
+                error: text.id === 1,
+                success: text.id === 2,
+                normal: text.id === 3
+              }"
+            >
               {{ text.name }}
-            </st-status-text>
-            <st-status-text v-if="text.id === 2" :status="{ success: 1 }">
-              {{ text.name }}
-            </st-status-text>
-            <st-status-text v-if="text.id === 5" :status="{ warning: 1 }">
-              {{ text.name }}
-            </st-status-text>
-            <st-status-text v-if="text.id === 4" :status="{ info: 1 }">
-              {{ text.name }}
-            </st-status-text>
-            <st-status-text v-if="text.id === 3" :status="{ normal: 1 }">
-              {{ text.name }}
-            </st-status-text>
-          </span>
+            </st-text>
+          </template>
           <template slot="action" slot-scope="text, record">
             <st-table-actions>
               <a v-if="record.ticket_status.id === 1">

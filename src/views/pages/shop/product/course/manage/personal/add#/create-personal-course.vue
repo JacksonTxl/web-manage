@@ -4,7 +4,7 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程名称" required>
           <a-input
-            placeholder="支持输入4~30个字的课程名称"
+            placeholder="支持输入1~30个字的课程名称"
             maxlength="30"
             v-decorator="ruleConfig.courseName"
             @change="onCourseNameChange"
@@ -68,7 +68,7 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :lg="22" :xs="22" :offset="1">
+      <a-col :xxl="10" :lg="14" :xs="22" :offset="1">
         <st-form-item label="课程介绍">
           <st-textarea
             v-decorator="ruleConfig.description"

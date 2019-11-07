@@ -1,5 +1,5 @@
 <template>
-  <div class="page-personal-course-info">
+  <st-panel-layout class="page-personal-course-info">
     <st-panel class=" mg-b16">
       <div class="page-personal-header">
         <div class="page-personal-header__left mg-r24">
@@ -46,7 +46,7 @@
         </div>
       </div>
     </st-panel>
-    <st-panel>
+    <st-panel app>
       <div class="page-personal-content">
         <div class="page-personal-content__item mg-b24">
           <div class="title mg-b8">
@@ -149,7 +149,7 @@
         </div>
       </div>
     </st-panel>
-  </div>
+  </st-panel-layout>
 </template>
 <script>
 import {

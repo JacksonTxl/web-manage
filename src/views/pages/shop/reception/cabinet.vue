@@ -196,8 +196,7 @@ export default {
     },
     onCabinetListChange() {
       this.$router.push({
-        query: this.query,
-        force: true
+        query: this.query
       })
       this.onAreaListChange()
     },
@@ -211,6 +210,12 @@ export default {
       if (this.checked.length <= 0) {
         this.messageService.error({
           content: '请选择储物柜'
+        })
+        return
+      }
+      if (this.getSmartOfflineNum().length > 0) {
+        this.messageService.error({
+          content: '已离线的储物柜无法清柜，请重新选择'
         })
         return
       }
@@ -231,6 +236,15 @@ export default {
         },
         onCancel() {}
       })
+    },
+    getSmartOfflineNum() {
+      const checkedCabinets = this.checked.map(id =>
+        find(this.cabinetList, { id })
+      )
+      const checkedOfflineCabinets = checkedCabinets.filter(
+        item => item.is_smart && !item.is_online
+      )
+      return checkedOfflineCabinets.length
     },
     getUsingCabinetNum() {
       const checkedCabinets = this.checked.map(id =>

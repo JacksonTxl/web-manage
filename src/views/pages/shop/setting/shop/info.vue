@@ -1,5 +1,5 @@
 <template>
-  <div :class="shopInfo()">
+  <st-panel-layout :class="shopInfo()">
     <div :class="shopInfo('detail')">
       <div
         :class="shopInfo('picture')"
@@ -62,14 +62,14 @@
         </div>
       </div>
     </div>
-    <div :class="shopInfo('time')" class="mg-t12">
+    <st-panel app :class="shopInfo('time')" class="mg-t12">
       <st-t3 class="mg-b16">营业时间</st-t3>
       <shop-hour-picker
         :isInfo="true"
         v-model="info.business_time"
       ></shop-hour-picker>
-    </div>
-  </div>
+    </st-panel>
+  </st-panel-layout>
 </template>
 <script>
 import { InfoService } from './info.service'

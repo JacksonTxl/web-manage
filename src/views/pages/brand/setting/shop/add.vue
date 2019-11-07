@@ -122,8 +122,17 @@
               width="240px"
               height="135px"
             >
-              <a-icon type="plus" />
-              <div class="page-upload-text">上传店招</div>
+              <a-icon
+                type="plus-circle"
+                theme="filled"
+                :style="{
+                  fontSize: '32px',
+                  verticalAlign: 'super',
+                  marginRight: '8px',
+                  color: '#9BACB9'
+                }"
+              />
+              <div class="page-upload-text">上传门店照片</div>
               <div class="page-upload-text">大小不超过5M，建议尺寸16:9</div>
             </st-image-upload>
           </st-form-item>
@@ -314,7 +323,7 @@ export default {
     onValidtorPhone() {
       if (this.form.getFieldValue('shop_phone') && !this.phoneAddDisabled) {
         // input框里有值才添加
-        this.form.validateFields(['shop_phone'], { force: true }).then(res => {
+        this.form.validateFields(['shop_phone'], {}).then(res => {
           let arr = [...this.shopData.shop_phones]
           arr.push(res.shop_phone)
           this.shopData.shop_phones = [...new Set(arr)]

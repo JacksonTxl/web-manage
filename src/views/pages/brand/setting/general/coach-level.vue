@@ -140,8 +140,7 @@ export default {
       this.$router.push({
         query: {
           page: 1
-        },
-        force: true
+        }
       })
     }
   }

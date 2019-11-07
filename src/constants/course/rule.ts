@@ -23,8 +23,8 @@ export class RuleConfig {
             message: '请输入课程名称'
           },
           {
-            min: 4,
-            message: '支持输入4~30个字的课程名称'
+            min: 1,
+            message: '支持输入1~30个字的课程名称'
           }
         ]
       }

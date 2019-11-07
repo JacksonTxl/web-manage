@@ -119,6 +119,7 @@ export default {
           menubar: false,
           body_class: 'st-editor',
           plugins: ['link', 'image'],
+          min_height: 153,
           toolbar:
             'undo redo | styleselect bold italic forecolor backcolor | bullist numlist | alignleft aligncenter alignright',
           language_url: this.appConfig.BASE_URL + 'tinymce/5.0.3/zh_CN.js',

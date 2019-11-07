@@ -21,9 +21,7 @@ export class IndexService implements RouteGuard {
       })
     )
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: () => {}) {
-    this.getOpenStatus().subscribe(() => {
-      next()
-    })
+  beforeRouteEnter() {
+    return this.getOpenStatus()
   }
 }

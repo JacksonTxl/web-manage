@@ -1,10 +1,10 @@
 <template>
-  <div class="shop-member-crowd-index">
+  <st-panel-layout class="shop-member-crowd-index">
     <index
       v-model="crowdIndexInfo.info.important_crowd"
       v-if="crowdIndexInfo.info.important_crowd.length > 0"
     ></index>
-    <st-panel>
+    <st-panel app>
       <div slot="title">
         <router-link
           :to="{ name: 'shop-member-crowd-add' }"
@@ -66,7 +66,7 @@
         </div>
       </st-table>
     </st-panel>
-  </div>
+  </st-panel-layout>
 </template>
 <script>
 import index from './components#/index'
@@ -114,7 +114,7 @@ export default {
       console.log(value)
     },
     refresh() {
-      this.$router.push({ query: {}, force: true })
+      this.$router.push({ query: {} })
     },
     deleteTreeNode(value) {
       this.aService.delCrowdBrandCrowd(value.id).subscribe(res => {

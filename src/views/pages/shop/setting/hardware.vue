@@ -1,7 +1,5 @@
 <template>
-  <st-panel app :tabs="authTabs">
-    <router-view></router-view>
-  </st-panel>
+  <router-view></router-view>
 </template>
 <script>
 import { HardwareService } from './hardware.service'

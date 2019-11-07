@@ -4,7 +4,7 @@ import moment from 'moment'
 @Injectable()
 export class PersonalService implements RouteGuard {
   constructor(private redirectService: RedirectService) {}
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeRouteEnter() {
     let weekOfday: any = moment().format('E')
     let start_date: string = moment()
       .subtract(weekOfday - 1, 'days')
@@ -13,14 +13,12 @@ export class PersonalService implements RouteGuard {
       .add(7 - weekOfday, 'days')
       .format('YYYY-MM-DD')
 
-    const redirectRouteQuery: any = { start_date, end_date }
-    this.redirectService.redirect({
+    return this.redirectService.redirect({
       locateRouteName: 'shop-product-course-schedule-personal',
-      redirectRouteName: 'shop-product-course-schedule-personal-personal',
-      redirectRouteQuery,
-      next,
-      from,
-      to
+      redirectRoute: {
+        name: 'shop-product-course-schedule-personal-personal',
+        query: { start_date, end_date }
+      }
     })
   }
 }

@@ -1,6 +1,6 @@
 <template>
-  <a-row :class="role()">
-    <a-col :span="5" :class="roleList()">
+  <div :class="role()">
+    <div :class="roleList()">
       <header :class="roleList('search')">
         <!-- <st-input-search placeholder="请输入部门/员工名称" round="round"></st-input-search> -->
       </header>
@@ -50,11 +50,11 @@
       <footer v-if="auth.add" :class="roleList('add')" @click="onCLickAddRole">
         <a>添加角色</a>
       </footer>
-    </a-col>
-    <a-col :span="19" :class="roleContent()">
+    </div>
+    <div :class="roleContent()">
       <router-view></router-view>
-    </a-col>
-  </a-row>
+    </div>
+  </div>
 </template>
 <script>
 import { RoleService } from './role.service'
@@ -118,12 +118,6 @@ export default {
         query: { id: role.id }
       })
     }
-  },
-  mounted() {
-    this.$router.push({
-      name: 'brand-staff-role-info',
-      query: { id: this.roles[0].id }
-    })
   }
 }
 </script>

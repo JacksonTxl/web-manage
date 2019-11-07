@@ -1,7 +1,7 @@
 <template>
-  <div :class="bPage()">
+  <st-panel-layout :class="bPage()">
     <markteing-plugin-title :type="TYPE.ACTIVITY" />
-    <st-panel app initial :class="bPage('content')">
+    <st-panel app :class="bPage('content')">
       <div slot="title" :class="bSearch()">
         <div :class="bSearch('button-group')">
           <st-button
@@ -46,38 +46,21 @@
           :scroll="{ x: 1500 }"
           :dataSource="list$"
         >
-          <span slot="activity_status" slot-scope="text, record">
-            <st-status-text
-              v-if="record.activity_status.id === 1"
-              :status="{ success: 1 }"
+          <template slot="activity_status" slot-scope="text, record">
+            <st-text
+              :status="{
+                error: record.activity_status.id === 3,
+                success:
+                  record.activity_status.id === 2 ||
+                  record.activity_status.id === 1,
+                normal:
+                  record.activity_status.id === 4 ||
+                  record.activity_status.id === 5
+              }"
             >
-              {{ record.activity_status.name }}
-            </st-status-text>
-            <st-status-text
-              v-if="record.activity_status.id === 2"
-              :status="{ success: 1 }"
-            >
-              {{ record.activity_status.name }}
-            </st-status-text>
-            <st-status-text
-              v-if="record.activity_status.id === 5"
-              :status="{ normal: 1 }"
-            >
-              {{ record.activity_status.name }}
-            </st-status-text>
-            <st-status-text
-              v-if="record.activity_status.id === 4"
-              :status="{ normal: 1 }"
-            >
-              {{ record.activity_status.name }}
-            </st-status-text>
-            <st-status-text
-              v-if="record.activity_status.id === 3"
-              :status="{ error: 1 }"
-            >
-              {{ record.activity_status.name }}
-            </st-status-text>
-          </span>
+              {{ text.name }}
+            </st-text>
+          </template>
           <template slot="join_people" slot-scope="text, record">
             <a
               @click="onClickNameList({ record, pathName: 'rosterActivity' })"
@@ -119,7 +102,7 @@
         </st-table>
       </div>
     </st-panel>
-  </div>
+  </st-panel-layout>
 </template>
 <script>
 // table

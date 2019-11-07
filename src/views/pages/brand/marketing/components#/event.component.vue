@@ -21,7 +21,7 @@
               width="100%"
               height="85px"
               :list="li.image_url ? [li] : li.filelist"
-              :sizeLimit="2"
+              :sizeLimit="5"
               placeholder="添加活动图片"
               :numLimit="1"
             >

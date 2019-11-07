@@ -1,14 +1,15 @@
 import { CourseApi } from '@/api/v1/setting/course'
 import { ShopApi } from '@/api/v1/shop'
 import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { tap, map, pluck } from 'rxjs/operators'
+import { State } from 'rx-state'
+import { tap, map } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
 import {
   ShopTeamCourseApi,
   GetTeamBrandCourseListInput
 } from '@/api/v1/course/team/shop'
 import { AuthService } from '@/services/auth.service'
+import { RedirectService } from '@/services/redirect.service'
 
 @Injectable()
 export class ListService implements RouteGuard {
@@ -27,7 +28,8 @@ export class ListService implements RouteGuard {
     private shopApi: ShopApi,
     private courseApi: CourseApi,
     private shopTeamCourseApi: ShopTeamCourseApi,
-    private authService: AuthService
+    private authService: AuthService,
+    private redirectService: RedirectService
   ) {
     this.state$ = new State({
       teamCourseList: []
@@ -96,21 +98,15 @@ export class ListService implements RouteGuard {
     return this.init({ ...to.query })
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    return this.initOptions().pipe(
-      map(res => {
-        const target = {
-          name: 'brand-product-course-team-list-brand'
-        }
-        if (to.name === 'brand-product-course-team-list' && target) {
-          return {
-            next: target
+    return this.initOptions()
+      .toPromise()
+      .then(() => {
+        return this.redirectService.redirect({
+          locateRouteName: 'brand-product-course-team-list',
+          redirectRoute: {
+            name: 'brand-product-course-team-list-brand'
           }
-        } else {
-          return {
-            next: true
-          }
-        }
+        })
       })
-    )
   }
 }
