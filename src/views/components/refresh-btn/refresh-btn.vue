@@ -19,6 +19,7 @@
 </template>
 
 <script>
+const TIME_FORMAT = 'YYYY-MM-DD HH:mm'
 export default {
   name: 'StRefreshBtn',
   props: {
@@ -34,7 +35,7 @@ export default {
       /**
        * TODO: 问设计需不需要秒
        */
-      showDate: moment().format('YYYY-MM-DD HH:mm:ss'),
+      showDate: moment().format(TIME_FORMAT),
       loading: true
     }
   },
@@ -44,7 +45,7 @@ export default {
       const timer = setTimeout(() => {
         this.action().subscribe(() => {
           this.loading = true
-          this.showDate = moment().format('YYYY-MM-DD HH:mm:ss')
+          this.showDate = moment().format(TIME_FORMAT)
           clearTimeout(timer)
         })
       }, 300)

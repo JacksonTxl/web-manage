@@ -2,8 +2,7 @@
   <st-panel initial app :class="basic()">
     <st-tabs
       :class="basic('tab')"
-      :defaultActiveKey="query.product_type"
-      v-model="query.product_type"
+      :activeKey="$searchQuery.product_type"
       @change="onTabSearch"
     >
       <st-tab-pane
@@ -34,7 +33,7 @@
     </st-table>
     <st-input-search
       v-model="query.product_name"
-      @search="onKeywordSearch"
+      @search="onSearch"
       placeholder="请输入商品名查找"
       :class="basic('search')"
     />
@@ -286,36 +285,25 @@ export default {
         }
       })
     },
-    onKeywordSearch() {
-      this.$router.push({
-        query: this.query
-      })
-      this.getProductList(this.query)
+    getProductList() {
+      return this.listService.getProductList().subscribe()
     },
-    onTabSearch() {
-      this.query.product_name = ''
-      this.query.current_page = 1
+    onTabSearch(val) {
       this.$router.push({
-        query: this.query
+        query: {
+          ...this.$searchQuery,
+          product_name: '',
+          current_page: 1,
+          product_type: val
+        }
       })
-      this.getProductList(this.query)
-    },
-    getProductList(query) {
-      return this.listService.getProductList(query).subscribe()
     },
     onTableChange(pagination) {
       this.query.current_page = pagination.current
+      this.query.size = pagination.pageSize
       this.$router.push({
         query: this.query
       })
-      this.getProductList(this.query)
-    }
-  },
-  watch: {
-    query(oVal, nVal) {
-      if (!nVal.current_page) {
-        this.onTabSearch()
-      }
     }
   }
 }

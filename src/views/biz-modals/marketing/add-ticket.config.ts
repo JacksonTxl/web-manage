@@ -20,12 +20,9 @@ export const ruleOptions = (vm: any) => {
             const ticketNames = vm.dataSource.map(
               (item: any) => item.ticket_name
             )
-            // 当为设置票种的时候且活动不是已发布时，进行票种名称重复校验
-            if (
-              vm.formData.activity_status !== ACTIVITY_STATUS.PUBLISHED &&
-              !vm.isSetting &&
-              ticketNames.includes(value)
-            ) {
+            // 如果编辑时编辑后的票名和之前一样不需要校验
+            if (vm.ticket && vm.ticket.ticket_name === value) return
+            if (ticketNames.includes(value)) {
               return '票种名称重复请重新输入'
             }
           }

@@ -17,5 +17,16 @@
         这是一大段文本 这是一大段文本 这是一大段文本
       </st-overflow-text>
     </div>
+    <p>[content]数组类型，代表分行</p>
+    <div>
+      <st-overflow-text
+        :value="[
+          '指定门店',
+          'hdjsadhkadsjahgdjhasgjhgdasjhgdjsagdsjhdksjh',
+          '打卡机大概好久啊是的感觉撒给大家啊是空间的撒谎就快点回家啊是个好的事'
+        ]"
+        max-width="200px"
+      ></st-overflow-text>
+    </div>
   </div>
 </template>
