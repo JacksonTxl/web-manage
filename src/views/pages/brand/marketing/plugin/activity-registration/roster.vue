@@ -55,7 +55,7 @@
               :status="{
                 error: text.id === 1,
                 success: text.id === 2,
-                normal: text.id === 3
+                default: text.id === 3
               }"
             >
               {{ text.name }}

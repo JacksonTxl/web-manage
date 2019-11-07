@@ -70,7 +70,7 @@
         <st-text
           :status="{
             success: record.send_status === 2,
-            normal: record.send_status === 1,
+            default: record.send_status === 1,
             info: record.send_status === 0,
             error: record.send_status === 4,
             warning: record.send_status === 3
