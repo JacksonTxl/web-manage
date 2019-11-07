@@ -26,10 +26,7 @@ export class ListService implements RouteGuard {
       })
     )
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    return this.getProductList(to.meta.query)
-  }
-  beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.getProductList(to.meta.query)
   }
 }

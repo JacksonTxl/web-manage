@@ -53,7 +53,7 @@
                 success:
                   record.activity_status.id === 2 ||
                   record.activity_status.id === 1,
-                normal:
+                default:
                   record.activity_status.id === 4 ||
                   record.activity_status.id === 5
               }"

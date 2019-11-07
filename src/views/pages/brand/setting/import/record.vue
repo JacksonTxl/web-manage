@@ -5,10 +5,7 @@
         导入记录
       </st-t2>
       <div class="row-tip-btn">
-        <label @click="getList">
-          刷新导入记录
-          <st-icon type="refresh"></st-icon>
-        </label>
+        <st-refresh-btn :action="refresh" />
       </div>
     </div>
     <st-table
@@ -85,6 +82,9 @@ export default {
     },
     getList() {
       this.$router.reload()
+    },
+    refresh() {
+      return this.recordService.getList()
     }
   }
 }

@@ -168,6 +168,11 @@ export class HttpService {
       })
     )
   }
+  private makeNoReportError(err: any) {
+    if (err) {
+      err.noReport = true
+    }
+  }
   private ajaxErrorHandler(options: RequestOptions) {
     const ignoreCodes = options.ignoreCodes || []
     return (source$: Observable<any>) =>
@@ -190,6 +195,7 @@ export class HttpService {
                 key: 'ajaxError',
                 content: errMsg
               })
+              this.makeNoReportError(err)
               break
             case 401:
               this.notification.warn({
@@ -197,6 +203,8 @@ export class HttpService {
                 key: 'ajaxError',
                 content: errMsg
               })
+              this.makeNoReportError(err)
+              // @ts-ignore
               location.href = '/account/login'
               break
             case 403:
@@ -205,6 +213,7 @@ export class HttpService {
                 key: 'ajaxError',
                 content: errMsg
               })
+              this.makeNoReportError(err)
               break
             case 404:
               this.notification.error({

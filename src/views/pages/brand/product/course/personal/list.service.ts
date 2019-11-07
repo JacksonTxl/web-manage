@@ -5,6 +5,7 @@ import { State } from 'rx-state'
 import { tap, map } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
+import { RedirectService } from '@/services/redirect.service'
 
 @Injectable()
 export class ListService implements RouteGuard {
@@ -16,7 +17,8 @@ export class ListService implements RouteGuard {
   constructor(
     private shopApi: ShopApi,
     private courseApi: CourseApi,
-    private authService: AuthService
+    private authService: AuthService,
+    private redirectService: RedirectService
   ) {}
   getCategoryList() {
     return this.courseApi.getCourseCategoryList({}).pipe(
@@ -52,16 +54,16 @@ export class ListService implements RouteGuard {
   init() {
     return forkJoin(this.getShopList(), this.getCategoryList())
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.init().subscribe(() => {
-      const target = {
-        name: 'brand-product-course-personal-list-brand'
-      }
-      if (to.name === 'brand-product-course-personal-list' && target) {
-        next(target)
-      } else {
-        next()
-      }
-    })
+  beforeRouteEnter() {
+    return this.init()
+      .toPromise()
+      .then(() => {
+        return this.redirectService.redirect({
+          locateRouteName: 'brand-product-course-personal-list',
+          redirectRoute: {
+            name: 'brand-product-course-personal-list-brand'
+          }
+        })
+      })
   }
 }

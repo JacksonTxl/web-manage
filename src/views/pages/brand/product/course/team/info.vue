@@ -1,5 +1,5 @@
 <template>
-  <st-panel-layout app class="page-team-info">
+  <st-panel-layout class="page-team-info">
     <div class="header mg-b24">
       <div :class="b('left')" class="mg-r24">
         <st-t3 class="mg-b16">
@@ -66,7 +66,7 @@
       </div>
     </div>
 
-    <st-panel app :class="bb()" v-if="teamCourseInfo.support_shop_list.length">
+    <st-panel app :class="bb()">
       <div class="page-team-content__item mg-b24">
         <div class="title mg-b8">
           <span class="label">上课门店:</span>

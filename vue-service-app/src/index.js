@@ -188,7 +188,7 @@ class VueServiceApp {
         // 因为这种跳转的from不是中间的路由的route，而是最开始跳转的开始页route
         const toLast = last(to.matched)
         const fromLast = last(from.matched)
-
+        console.log('to', to, 'from', from)
         if (
           toLast &&
           fromLast &&

@@ -98,13 +98,12 @@ export default {
   serviceInject() {
     return {
       brandService: BrandService,
-      listService: ListService,
       routeService: RouteService
     }
   },
   rxState() {
     return {
-      categoryList: this.listService.categoryList$,
+      categoryList: this.brandService.categoryList$,
       query: this.routeService.query$,
       auth: this.brandService.auth$,
       list: this.brandService.list$,

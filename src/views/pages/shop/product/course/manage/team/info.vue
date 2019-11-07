@@ -57,12 +57,11 @@
           {{ teamCourseInfo.train_aim | filterTrainAim }}
         </div>
       </div>
-
-      <div :class="b('right')">
+      <div class="page-team-header__right" v-viewer="{ url: 'data-src' }">
         <img
-          class="image"
-          :src="image | imgFilter({ w: 280, h: 158, type: 'course' })"
-          alt="课程图片"
+          :src="image | imgFilter({ w: 560, h: 320, type: 'course' })"
+          :data-src="image | imgFilter({ w: 1000, type: 'course' })"
+          :alt="teamCourseInfo.course_name"
         />
       </div>
     </div>
