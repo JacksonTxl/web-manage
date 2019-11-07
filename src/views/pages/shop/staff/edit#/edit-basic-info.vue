@@ -283,7 +283,12 @@ export default {
             this.$emit('updateStaffInfo')
           } else {
             this.message.success({ content: '编辑成功' })
-            this.$router.go(-1)
+            this.$router.push({
+              path: '/shop/staff/info/basic',
+              query: {
+                id: this.data.staff_id
+              }
+            })
           }
         })
     },
