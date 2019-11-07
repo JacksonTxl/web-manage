@@ -97,6 +97,7 @@ export default {
     },
     mapOk(data) {
       this.$emit('select', data)
+      this.$emit('change', data)
     }
   }
 }

@@ -49,7 +49,7 @@ export class GroupService {
     return this.GroupApi.onDelete(query).pipe()
   }
   init(query: any) {
-    return forkJoin(this.getTemplateList(query), this.getGroupList(query))
+    return forkJoin(this.getGroupList(query))
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.init(to.meta.query)

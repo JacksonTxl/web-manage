@@ -6,7 +6,7 @@
         class="mg-r12"
         v-modal-link="{
           name: 'brand-setting-sms-group',
-          on: { success: refresh }
+          on: { success: getGroupList }
         }"
       >
         群发消息
@@ -14,7 +14,7 @@
       <st-button
         v-modal-link="{
           name: 'brand-setting-sms-template',
-          on: { success: refresh }
+          on: { success: getTemplateList }
         }"
       >
         新建短信模版
@@ -31,7 +31,7 @@
         class="fl-r mg-r8"
         :class="bPage('actions')"
         v-if="isShowList"
-        :action="action"
+        :action="getGroupList"
       ></st-refresh-btn>
     </div>
     <st-table
@@ -53,7 +53,7 @@
             v-modal-link="{
               name: 'brand-setting-sms-group',
               props: { id: record.group_id },
-              on: { success: refresh }
+              on: { success: getGroupList }
             }"
           >
             编辑
@@ -110,7 +110,7 @@
       v-else
       :page="templatePage"
       :loading="loading.getTemplateList"
-      @change="onTableChange"
+      @change="onTemTableChange"
       :columns="templateColumns"
       :dataSource="templateList"
       rowKey="tmpl_id"
@@ -121,7 +121,7 @@
           <a
             v-modal-link="{
               name: 'brand-setting-sms-template',
-              on: { success: refresh },
+              on: { success: getTemplateList },
               props: { info: record }
             }"
           >
@@ -145,7 +145,7 @@
                   content: record.content
                 }
               },
-              on: { success: refresh }
+              on: { success: getTemplateList }
             }"
           >
             发送
@@ -208,30 +208,35 @@ export default {
     // 撤销
     onReset(id) {
       return this.groupService.onReset(id).subscribe(res => {
-        this.$router.reload()
+        this.getGroupList()
       })
     },
     // 删除
     onDelete(id) {
       return this.groupService.onDelete(id).subscribe(res => {
-        this.$router.reload()
+        this.getTemplateList()
       })
     },
     handleTableChange(e) {
       this.isShowList = e.target.value
-      this.$router.push({ query: { ...this.query, current_page: 1 } })
+      if (this.isShowList) {
+        this.getGroupList()
+      } else {
+        this.getTemplateList()
+      }
     },
-    getTemplateList() {
-      return this.groupService.getTemplateList().subscribe()
+    onTemTableChange(pagination) {
+      let para = {
+        current_page: pagination.current,
+        size: pagination.pageSize
+      }
+      this.getTemplateList(para)
+    },
+    getTemplateList(para) {
+      return this.groupService.getTemplateList(para).subscribe()
     },
     getGroupList() {
       return this.groupService.getGroupList().subscribe()
-    },
-    action() {
-      return this.groupService.getGroupList()
-    },
-    refresh() {
-      return this.$router.reload()
     }
   }
 }

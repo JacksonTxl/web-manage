@@ -4,6 +4,7 @@
   padding-bottom: 37px;
   border-radius: 4px;
   outline: none !important;
+  transition: border 0.3s;
   &__content {
     .pd(8px 12px 32px);
     background: transparent;
@@ -29,4 +30,8 @@
   .ant-input:focus {
     box-shadow: none;
   }
+}
+
+.ant-form-item-control.has-error .st-textarea {
+  border-color: @error-color;
 }
