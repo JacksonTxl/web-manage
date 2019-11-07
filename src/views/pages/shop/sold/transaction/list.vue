@@ -310,13 +310,6 @@ export default {
       })
       this.getProductList(this.query)
     }
-  },
-  watch: {
-    query(oVal, nVal) {
-      if (!nVal.current_page) {
-        this.onTabSearch()
-      }
-    }
   }
 }
 </script>
