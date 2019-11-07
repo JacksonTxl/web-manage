@@ -133,14 +133,14 @@
                     <tr>
                       <td colspan="5" class="pd-y0 pd-x0">
                         <st-button
-                          :disabled="rallyPriceList.length > 3"
+                          :disabled="rallyPriceList.length > 11"
                           type="dashed"
                           icon="add"
                           class="page-price-setting-set__add"
                           block
                           @click="brand_price_add"
                         >
-                          添加定价规格（{{ rallyPriceList.length }}/4）
+                          添加定价规格（{{ rallyPriceList.length }}/12）
                         </st-button>
                       </td>
                     </tr>
