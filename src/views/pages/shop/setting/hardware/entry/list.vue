@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <st-panel app :class="bPage()">
+  <st-panel-layout>
+    <st-panel :class="bPage()">
       <div :class="bPage('global')">
         <st-t2>全局通行设置</st-t2>
         <div :class="bPage('global-item')">
@@ -111,7 +111,7 @@
         </st-table>
       </div>
     </st-panel>
-  </div>
+  </st-panel-layout>
 </template>
 <script>
 import { columns, ruleColumns } from './list.config'

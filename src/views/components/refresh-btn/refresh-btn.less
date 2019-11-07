@@ -1,0 +1,34 @@
+.st-refresh-btn {
+  cursor: pointer;
+  background: #f7f9fc;
+  border-radius: 4px;
+  display: inline-block;
+  color: #9bacb9;
+  padding: 5px 16px;
+  &__date {
+    .mg-r(8px);
+  }
+  @keyframes animal {
+    0% {
+      transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
+      -webkit-transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+      -ms-transform: rotate(360deg);
+      -webkit-transform: rotate(360deg);
+    }
+  }
+  &__icon {
+    cursor: pointer;
+  }
+  &__icon--loading {
+    .st-icon {
+      -webkit-animation: animal 1s infinite linear;
+      -webkit-transform-origin: center center;
+      -ms-transform-origin: center center;
+      transform-origin: center center;
+    }
+  }
+}

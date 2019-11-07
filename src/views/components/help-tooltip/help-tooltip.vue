@@ -1,7 +1,7 @@
 <template>
   <span class="st-help-tooltip">
     <a-tooltip
-      v-if="invalidTooltips.indexOf(id) === -1"
+      v-if="invalidTooltips.indexOf(id) === -1 && !isCustom"
       :placement="placement"
       v-bind="$attrs"
       v-on="$listeners"
@@ -15,6 +15,9 @@
       <span class="st-help-tooltip-img">
         <img height="14" width="14" src="~@/assets/img/tooltip-help.png" />
       </span>
+      <slot></slot>
+    </a-tooltip>
+    <a-tooltip v-else v-bind="$attrs" v-on="$listeners" :mouseEnterDelay="0.3">
       <slot></slot>
     </a-tooltip>
   </span>
@@ -44,6 +47,10 @@ export default {
     placement: {
       type: String,
       default: 'top'
+    },
+    isCustom: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

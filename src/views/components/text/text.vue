@@ -1,7 +1,7 @@
 <template>
   <span :class="b(finalStatus)">
-    <i class="st-status-text__dot"></i>
-    <span class="st-status-text__content">
+    <i class="st-text__dot"></i>
+    <span class="st-text__content">
       <slot></slot>
     </span>
   </span>
@@ -9,9 +9,9 @@
 
 <script>
 export default {
-  name: 'StStatusText',
+  name: 'StText',
   bem: {
-    b: 'st-status-text'
+    b: 'st-text'
   },
   props: {
     status: {

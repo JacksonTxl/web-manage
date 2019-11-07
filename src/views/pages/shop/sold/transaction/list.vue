@@ -1,32 +1,22 @@
 <template>
-  <st-panel app :class="basic()">
-    <div slot="title" :class="sale('search')">
-      <a-select
-        :class="sale('select')"
-        v-model="query.product_type"
-        @change="onSearch"
-        style="width: 160px"
-      >
-        <a-select-option
-          v-for="(item, index) in productTypes"
-          :key="index"
-          :value="item.value"
-        >
-          {{ item.label }}
-        </a-select-option>
-      </a-select>
-      <st-input-search
-        v-model="query.product_name"
-        @search="onSearch"
-        placeholder="请输入商品名查找"
-        :class="basic('search')"
-      />
-    </div>
-
+  <st-panel initial app :class="basic()">
+    <st-tabs
+      :class="basic('tab')"
+      :defaultActiveKey="query.product_type"
+      v-model="query.product_type"
+      @change="onTabSearch"
+    >
+      <st-tab-pane
+        v-for="item in productTypes"
+        :tab="item.label"
+        :key="item.value"
+      ></st-tab-pane>
+    </st-tabs>
     <st-table
       :page="page"
+      :class="basic('table')"
       rowKey="id"
-      :loading="loading.getList"
+      :loading="loading.getProductList"
       :columns="columns"
       @change="onTableChange"
       :dataSource="list"
@@ -42,6 +32,12 @@
         </st-table-actions>
       </div>
     </st-table>
+    <st-input-search
+      v-model="query.product_name"
+      @search="onKeywordSearch"
+      placeholder="请输入商品名查找"
+      :class="basic('search')"
+    />
   </st-panel>
 </template>
 
@@ -289,6 +285,30 @@ export default {
           }
         }
       })
+    },
+    onKeywordSearch() {
+      this.$router.push({
+        query: this.query
+      })
+      this.getProductList(this.query)
+    },
+    onTabSearch() {
+      this.query.product_name = ''
+      this.query.current_page = 1
+      this.$router.push({
+        query: this.query
+      })
+      this.getProductList(this.query)
+    },
+    getProductList(query) {
+      return this.listService.getProductList(query).subscribe()
+    },
+    onTableChange(pagination) {
+      this.query.current_page = pagination.current
+      this.$router.push({
+        query: this.query
+      })
+      this.getProductList(this.query)
     }
   }
 }

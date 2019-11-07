@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <st-panel-layout>
     <MarkteingPluginTitle :type="TYPE.COUPON" />
     <st-panel app initial :class="basic()">
       <div slot="title" :class="basic('search')">
@@ -99,7 +99,7 @@
         </st-table>
       </div>
     </st-panel>
-  </div>
+  </st-panel-layout>
 </template>
 
 <script>
