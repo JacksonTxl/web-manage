@@ -107,7 +107,11 @@ export default {
   },
   methods: {
     onNext(params) {
-      params.nvc_val = window.getNVCVal()
+      const nvc_val = this.noCaptchaService.generateNVCVal()
+      if (!nvc_val) {
+        return
+      }
+      params.nvc_val = nvc_val
       this.findService.checkAccount(params).subscribe(res => {
         this.noCaptchaService.resetNVC()
         this.info = res

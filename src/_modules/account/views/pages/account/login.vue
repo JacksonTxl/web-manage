@@ -182,7 +182,12 @@ export default {
       }
     },
     onLogin(params) {
-      params.nvc_val = window.getNVCVal()
+      // params.nvc_val = window.getNVCVal()
+      const nvc_val = this.noCaptchaService.generateNVCVal()
+      if (!nvc_val) {
+        return
+      }
+      params.nvc_val = nvc_val
       this.loginService.loginAccount(params).subscribe(res => {
         this.noCaptchaService.resetNVC()
         localStorage.clear()
