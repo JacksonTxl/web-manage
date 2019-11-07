@@ -134,9 +134,9 @@ export class NoCaptchaService {
     const flag = this.validateVal(nvcValDecode)
     if (!flag) {
       this.notification.warn({
-        title: '页面依赖加载失败',
+        title: '提示',
         key: 'ajaxError',
-        content: '请刷新页面，重新加载'
+        content: '登录异常，请刷新页面重试'
       })
       return false
     }
