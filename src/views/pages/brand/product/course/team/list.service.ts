@@ -23,12 +23,12 @@ export class ListService implements RouteGuard {
       map(res => {
         const list = res.list
         return [
-          { id: -1, setting_name: '全部课程类型' },
+          { value: -1, label: '全部课程类型' },
           ...list.map((item: any) => {
             const { id, setting_name } = item
             return {
-              label: id,
-              value: setting_name
+              label: setting_name,
+              value: id
             }
           })
         ]
