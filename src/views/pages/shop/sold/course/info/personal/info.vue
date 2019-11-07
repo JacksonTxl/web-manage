@@ -1,5 +1,5 @@
 <template>
-  <section :class="basic()">
+  <st-panel-layout :class="basic()">
     <st-panel title="私教课详情">
       <div slot="actions">
         <st-btn-actions
@@ -128,7 +128,7 @@
         </a-col>
       </a-row>
     </st-panel>
-    <st-panel class="mg-t12" :tabs="pageAuthTabs">
+    <st-panel app class="mg-t12" :tabs="pageAuthTabs">
       <!-- TODO：暂不开放，预留代码 -->
       <!-- {
           label: '消费记录',
@@ -139,7 +139,7 @@
         }, -->
       <router-view></router-view>
     </st-panel>
-  </section>
+  </st-panel-layout>
 </template>
 <script>
 import { InfoService } from './info.service'

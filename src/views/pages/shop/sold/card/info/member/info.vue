@@ -1,5 +1,5 @@
 <template>
-  <section :class="basic()">
+  <st-panel-layout :class="basic()">
     <st-panel :title="`${$c('member_card')}详情`">
       <div slot="actions">
         <st-button
@@ -165,10 +165,10 @@
         </a-col>
       </a-row>
     </st-panel>
-    <st-panel class="mg-t16" :tabs="pageAuthTabs">
+    <st-panel app class="mg-t16" :tabs="pageAuthTabs">
       <router-view></router-view>
     </st-panel>
-  </section>
+  </st-panel-layout>
 </template>
 <script>
 import { InfoService } from './info.service'

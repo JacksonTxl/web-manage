@@ -1,5 +1,5 @@
 <template>
-  <section :class="basic()" class="page-shop-info-range-package">
+  <st-panel-layout :class="basic()" class="page-shop-info-range-package">
     <st-panel>
       <div :class="basic('package-info')">
         <div>
@@ -28,7 +28,7 @@
         </div>
       </div>
     </st-panel>
-    <st-panel class="mg-t16">
+    <st-panel app class="mg-t16">
       <st-info>
         <st-info-item label="上课范围" class="mg-b8"></st-info-item>
         <div :class="info('course')" class="mg-b24">
@@ -206,7 +206,7 @@
         <p :class="basic('remarks')">{{ packageInfo.remarks || '无' }}</p>
       </st-info>
     </st-panel>
-  </section>
+  </st-panel-layout>
 </template>
 <script>
 import { InfoRangePackageService } from './info-range-package.service'
