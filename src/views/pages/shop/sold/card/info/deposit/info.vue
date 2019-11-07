@@ -1,6 +1,6 @@
 <template>
-  <section :class="basic()">
-    <st-panel app title="储值卡详情">
+  <st-panel-layout :class="basic()">
+    <st-panel title="储值卡详情">
       <div slot="actions">
         <st-button
           v-if="auth['shop:sold:sold_deposit_card|export_contract']"
@@ -105,10 +105,10 @@
         </a-col>
       </a-row>
     </st-panel>
-    <st-panel class="mg-t16" :tabs="pageAuthTabs">
+    <st-panel app class="mg-t16" :tabs="pageAuthTabs">
       <router-view></router-view>
     </st-panel>
-  </section>
+  </st-panel-layout>
 </template>
 <script>
 import { InfoService } from './info.service'

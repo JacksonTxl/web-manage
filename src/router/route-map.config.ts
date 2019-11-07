@@ -389,7 +389,7 @@ export const routeMapConfig = {
     routeConfig.meta.tabs = [
       'brand-setting-general-brand',
       'brand-setting-general-coach-level',
-      'brand-setting-general-user-level',
+      // 'brand-setting-general-user-level', //暂时隐藏用户等级设置
       'brand-setting-general-course',
       'brand-setting-general-pay-type'
     ]

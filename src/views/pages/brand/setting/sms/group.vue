@@ -67,27 +67,17 @@
         </st-table-actions>
       </span>
       <div slot="send_status_text" slot-scope="text, record">
-        <st-status-text
-          v-if="record.send_status === 2"
-          :status="{ success: 1 }"
+        <st-text
+          :status="{
+            success: record.send_status === 2,
+            normal: record.send_status === 1,
+            info: record.send_status === 0,
+            error: record.send_status === 4,
+            warning: record.send_status === 3
+          }"
         >
           {{ record.send_status_text }}
-        </st-status-text>
-        <st-status-text v-if="record.send_status === 1" :status="{ normal: 1 }">
-          {{ record.send_status_text }}
-        </st-status-text>
-        <st-status-text v-if="record.send_status === 0" :status="{ info: 1 }">
-          {{ record.send_status_text }}
-        </st-status-text>
-        <st-status-text v-if="record.send_status === 4" :status="{ error: 1 }">
-          {{ record.send_status_text }}
-        </st-status-text>
-        <st-status-text
-          v-if="record.send_status === 3"
-          :status="{ warning: 1 }"
-        >
-          {{ record.send_status_text }}
-        </st-status-text>
+        </st-text>
       </div>
       <div slot="received_count" slot-scope="text, record">
         <a
