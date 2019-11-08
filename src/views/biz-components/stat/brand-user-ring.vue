@@ -101,14 +101,14 @@ export default {
         start: (xScales, yScales) => {
           if (this.dv.sum('value') === 0) {
             this.hoverable = false
-            return ['19%', '50%']
+            return ['22%', '50%']
           }
           return []
         },
         end: (xScales, yScales) => {
           if (this.dv.sum('value') === 0) {
             this.hoverable = false
-            return ['81%', '50%']
+            return ['78%', '50%']
           }
           return []
         },
@@ -123,14 +123,14 @@ export default {
         start: (xScales, yScales) => {
           if (this.dv.sum('value') === 0) {
             this.hoverable = false
-            return ['81%', '50%']
+            return ['78%', '50%']
           }
           return []
         },
         end: (xScales, yScales) => {
           if (this.dv.sum('value') === 0) {
             this.hoverable = false
-            return ['19%', '50%']
+            return ['22%', '50%']
           }
           return []
         },
