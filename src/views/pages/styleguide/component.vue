@@ -87,6 +87,8 @@ export default {
         { id: 'form-table', title: '纯样式表格' },
         { id: 'pagination', title: '分页' },
         { id: 'page-route-nav', title: '页面路由导航' },
+        { id: 'image', title: '图片懒加载' },
+        { id: 'mina-panel', title: '小程序设置预览布局' },
         { id: 'textarea', title: '文本域' }
       ]
     }
