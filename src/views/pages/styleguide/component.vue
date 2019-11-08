@@ -54,6 +54,7 @@ export default {
         { id: 'button', title: '按钮' },
         { id: 'switch', title: '开关' },
         { id: 'icon', title: '图标' },
+        { id: 'text', title: '文本可带状态' },
         { id: 'hr', title: '分割线' },
         { id: 'input-number', title: '数字输入' },
         { id: 'input-search', title: '搜索框' },
@@ -70,7 +71,7 @@ export default {
         { id: 'modal', title: '模态窗' },
         { id: 'help-popover', title: '帮助气泡' },
         { id: 'tag', title: '标签' },
-        { id: 'status-text', title: '状态文本' },
+
         { id: 'pop-container', title: '带小三角容器' },
         { id: 'plugin-form-title', title: '插件标题' },
         { id: 'no-data', title: '默认占位图' },
