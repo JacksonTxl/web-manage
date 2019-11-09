@@ -127,3 +127,27 @@ const b$ = new Computed(
   )
 )
 ```
+
+## 使用计算状态
+
+```js
+import { computed, State } from 'rx-state'
+
+const ADD = v => v + 1
+
+const a$ = new State(1)
+const b$ = new State(2)
+
+const c$ = computed((a, b) => a + b, [a$, b$])
+const d$ = computed((a, c) => a * c, [a$, c$])
+
+c$.subscribe(v => {
+  console.log(v)
+})
+
+d$.subscribe(v => {
+  console.log(v)
+})
+
+a$.commit(ADD)
+```

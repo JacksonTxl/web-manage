@@ -10778,10 +10778,10 @@ send@0.17.1:
     range-parser "~1.2.1"
     statuses "~1.5.0"
 
-sentry-reporter-js@^0.3.3:
-  version "0.3.3"
-  resolved "https://registry.npm.taobao.org/sentry-reporter-js/download/sentry-reporter-js-0.3.3.tgz#912930edfff3aae3d44e62804c6410879008cf00"
-  integrity sha1-kSkw7f/zquPUTmKATGQQh5AIzwA=
+sentry-reporter-js@0.3.5:
+  version "0.3.5"
+  resolved "https://registry.npm.taobao.org/sentry-reporter-js/download/sentry-reporter-js-0.3.5.tgz#6aef2fd2b0cf581372dce9841be11e16234f369b"
+  integrity sha1-au8v0rDPWBNy3OmEG+EeFiNPNps=
   dependencies:
     path-to-regexp "^2.2.1"
     qs "^6.5.2"
