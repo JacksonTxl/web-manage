@@ -3,6 +3,7 @@ import VueRouter, {
   RouteConfig as VueRouteConfig,
   Location
 } from 'vue-router'
+import VueRouterPlus from 'vue-router-plus'
 import { VueConstructor } from 'vue'
 import Vue from 'vue'
 
@@ -69,6 +70,14 @@ export interface RouteGuard {
   afterEach?(to: ServiceRoute, from: ServiceRoute, next: Function): void
 }
 
+export interface Controller {
+  beforeEach?(to: ServiceRoute, from: ServiceRoute, next: Function): void
+  beforeRouteEnter?(to: ServiceRoute, from: ServiceRoute, next: Function): void
+  beforeRouteUpdate?(to: ServiceRoute, from: ServiceRoute, next: Function): void
+  beforeRouteLeave?(to: ServiceRoute, from: ServiceRoute, next: Function): void
+  beforeCreate?(): void
+}
+
 export class Container {
   get<T>(provide: Ctor<T>): T
   get(provide: any): any
@@ -84,22 +93,8 @@ interface VueServiceAppConfig {
 }
 
 declare module 'vue-service-app' {
-  export class ServiceRouter extends VueRouter {
-    to: ServiceRoute
-    from: ServiceRoute
-    push(
-      location: string | MyLocation,
-      onComplete?: Function,
-      onAbort?: (err: Error) => void
-    ): Promise<VueRoute>
-    replace(
-      location: string | MyLocation,
-      onComplete?: Function,
-      onAbort?: (err: Error) => void
-    ): Promise<VueRoute>
-    reload(): void
-    redirect(location: string | Location): void
-    isHistoryBF: boolean
+  export class ServiceRouter extends VueRouterPlus {
+    isHistoryBF: Boolean
   }
   export class InjectionToken {
     constructor(desc: string)

@@ -1,6 +1,6 @@
 import { Injectable, ServiceRouter, ServiceRoute } from 'vue-service-app'
 import { Location } from 'vue-router'
-import { Observable } from 'rxjs'
+import { Observable, onErrorResumeNext } from 'rxjs'
 
 interface RedirectConfig {
   locateRouteName: string
@@ -14,7 +14,10 @@ export class RedirectService {
   constructor(private router: ServiceRouter) {}
   redirect(redirectConfig: RedirectConfig) {
     if (this.router.to.name === redirectConfig.locateRouteName) {
-      return this.router.redirect(redirectConfig.redirectRoute)
+      this.router.next(redirectConfig.redirectRoute)
+    } else {
+      this.router.next()
     }
+    return false
   }
 }

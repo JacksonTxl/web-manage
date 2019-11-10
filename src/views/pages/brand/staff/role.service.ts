@@ -74,20 +74,18 @@ export class RoleService implements RouteGuard {
     )
   }
 
-  beforeRouteEnter() {
-    console.log('beforeRouteEnter')
-    return this.getAllList()
-      .toPromise()
-      .then(res => {
-        return this.redirectService.redirect({
-          locateRouteName: 'brand-staff-role',
-          redirectRoute: {
-            name: 'brand-staff-role-info',
-            query: {
-              id: get(res, 'roles.0.id')
-            }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+    this.getAllList().subscribe((res: any) => {
+      if (to.name === 'brand-staff-role') {
+        next({
+          name: 'brand-staff-role-info',
+          query: {
+            id: get(res, 'roles.0.id')
           }
         })
-      })
+      } else {
+        next()
+      }
+    })
   }
 }

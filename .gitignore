@@ -28,3 +28,4 @@ yarn-error.log*
 inspect.js
 
 src/views/pages/test/*
+!src/views/pages/test/.gitkeep

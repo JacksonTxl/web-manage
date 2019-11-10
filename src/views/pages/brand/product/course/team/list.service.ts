@@ -54,16 +54,15 @@ export class ListService implements RouteGuard {
   init() {
     return forkJoin(this.getShopList(), this.getCategoryList())
   }
-  beforeRouteEnter() {
-    return this.init()
-      .toPromise()
-      .then(() => {
-        return this.redirectService.redirect({
-          locateRouteName: 'brand-product-course-team-list',
-          redirectRoute: {
-            name: 'brand-product-course-team-list-brand'
-          }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+    this.init().subscribe(() => {
+      if (to.name === 'brand-product-course-team-list') {
+        next({
+          name: 'brand-product-course-team-list-brand'
         })
-      })
+      } else {
+        next()
+      }
+    })
   }
 }
