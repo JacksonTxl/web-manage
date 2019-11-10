@@ -1,6 +1,6 @@
 import { ReserveApi, GetListInput } from './../../../../api/v1/front/reserve'
 import { UserService } from '@/services/user.service'
-import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
+import { Controller, ServiceRoute, Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state/src'
 import { tap, map } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
@@ -8,7 +8,7 @@ import { MessageService } from '@/services/message.service'
 import { cloneDeep } from 'lodash-es'
 
 @Injectable()
-export class ReserveService implements RouteGuard {
+export class ReserveService implements Controller {
   loading$ = new State({})
   page$ = new State({})
   list$ = new State([])

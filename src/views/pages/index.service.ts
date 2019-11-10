@@ -1,14 +1,14 @@
-import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
+import { Controller, Injectable, ServiceRoute } from 'vue-service-app'
 import { UserService } from '@/services/user.service'
 import { RedirectService } from '@/services/redirect.service'
 
 @Injectable()
-export class IndexService implements RouteGuard {
+export class IndexService implements Controller {
   constructor(
     private userService: UserService,
     private redirectService: RedirectService
   ) {}
-  beforeRouteEnter() {
+  beforeEach() {
     return this.redirectService.redirect({
       locateRouteName: 'index',
       redirectRoute: {

@@ -1,4 +1,4 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State } from 'rx-state/src'
 import { tap } from 'rxjs/operators'
 import {
@@ -10,7 +10,7 @@ import { forkJoin } from 'rxjs'
 import { anyAll } from '@/operators'
 import { UserService } from '@/services/user.service'
 @Injectable()
-export class ClubService implements RouteGuard {
+export class ClubService implements Controller {
   top$ = new State({
     revenue_amount: {},
     course_checkin_num: {},

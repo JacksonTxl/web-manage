@@ -1,11 +1,11 @@
 import { TokenService } from '@/services/token.service'
-import { Injectable } from 'vue-service-app'
+import { Injectable, RouteGuard } from 'vue-service-app'
 
 /**
  * 登录态校验
  */
 @Injectable()
-export class AppTokenGuard {
+export class AppTokenGuard implements RouteGuard {
   constructor(private tokenService: TokenService) {}
   beforeEach() {
     if (!this.tokenService.token$.snapshot()) {

@@ -1,11 +1,11 @@
-import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
+import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State } from 'rx-state'
 import { PackageApi } from '@/api/v1/course/package'
 import { tap } from 'rxjs/operators'
 import { reduce } from 'lodash-es'
 
 @Injectable()
-export class InfoFixPackageService implements RouteGuard {
+export class InfoFixPackageService implements Controller {
   packageInfo$ = new State({})
   constructor(private packageApi: PackageApi) {}
   info(id: string) {

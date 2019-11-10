@@ -1,5 +1,5 @@
 import { ListService } from './../list.service'
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { tap } from 'rxjs/operators'
 import { State, Effect, log } from 'rx-state'
 import { BrandTeamCourseApi } from '@/api/v1/course/team/brand'
@@ -7,7 +7,7 @@ import { AuthService } from '@/services/auth.service'
 import { forkJoin } from 'rxjs'
 
 @Injectable()
-export class BrandService implements RouteGuard {
+export class BrandService implements Controller {
   // loading
   loading$ = new State({})
   // 业务状态

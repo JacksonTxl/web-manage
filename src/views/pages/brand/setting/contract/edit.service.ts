@@ -1,4 +1,4 @@
-import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
+import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { ContractApi, ContractInput } from '@/api/v1/setting/contract'
 import { forkJoin } from 'rxjs'
 import { tap, pluck } from 'rxjs/operators'
@@ -7,7 +7,7 @@ import { RouteService } from '@/services/route.service'
 import { SN_GENERATE_RULE } from '@/constants/setting/contract'
 
 @Injectable()
-export class EditService implements RouteGuard {
+export class EditService implements Controller {
   state$: State<any>
   info$: Computed<any>
   lawContent$: Computed<string>

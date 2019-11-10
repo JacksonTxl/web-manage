@@ -1,11 +1,11 @@
-import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
+import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State } from 'rx-state'
 import { MarketingApi } from '@/api/v1/marketing/marketing'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()
-export class IndexService implements RouteGuard {
+export class IndexService implements Controller {
   isOpen$ = new State(false)
   authTabs$ = this.authService.getAuthTabs$(
     'brand-marketing-plugin-invitation-index'

@@ -1,4 +1,4 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { SettingMinaApi } from '@/api/v1/setting/mina'
 import { tap } from 'rxjs/operators'
 import { State, Effect } from 'rx-state'

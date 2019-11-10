@@ -1,4 +1,4 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import {
@@ -6,7 +6,7 @@ import {
   GetUpdateInfoInput
 } from '@/api/v1/course/team/brand'
 @Injectable()
-export class EditService implements RouteGuard {
+export class EditService implements Controller {
   info$ = new State({})
   constructor(private courseApi: BrandTeamCourseApi) {}
   getUpdateInfo(query: GetUpdateInfoInput) {

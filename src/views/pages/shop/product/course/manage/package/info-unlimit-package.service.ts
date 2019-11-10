@@ -1,10 +1,10 @@
-import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
+import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State } from 'rx-state'
 import { PackageApi } from '@/api/v1/course/package'
 import { tap } from 'rxjs/operators'
 
 @Injectable()
-export class InfoUnlimitPackageService implements RouteGuard {
+export class InfoUnlimitPackageService implements Controller {
   packageInfo$ = new State({})
   constructor(private packageApi: PackageApi) {}
   info(id: string) {

@@ -71,10 +71,25 @@ export interface RouteGuard {
 }
 
 export interface Controller {
+  /**
+   * 路由进入前和路由更新时
+   */
   beforeEach?(to: ServiceRoute, from: ServiceRoute, next: Function): void
+  /**
+   * 路由进入前
+   */
   beforeRouteEnter?(to: ServiceRoute, from: ServiceRoute, next: Function): void
+  /**
+   * 路由更新时
+   */
   beforeRouteUpdate?(to: ServiceRoute, from: ServiceRoute, next: Function): void
+  /**
+   * 路由离开当前时
+   */
   beforeRouteLeave?(to: ServiceRoute, from: ServiceRoute, next: Function): void
+  /**
+   * vue视图初始化时
+   */
   beforeCreate?(): void
 }
 

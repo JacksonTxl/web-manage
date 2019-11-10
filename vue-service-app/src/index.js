@@ -5,6 +5,7 @@ import ServiceRouter from './router'
 import VuePlugin from './vue-plugin'
 import { plusHook } from 'vue-router-plus'
 import createController from './controller-mixin'
+import { isPlainObject } from 'lodash-es'
 
 class VueServiceApp {
   static install(Vue, container) {
@@ -39,8 +40,9 @@ class VueServiceApp {
     this.initRouter()
     this.initProvideRouter()
     // router.beforeEach
-    this.beforeEachGuardsHandler()
-    this.beforeEachController()
+    this.resolveAllHooksHandler()
+    this.guardsHandler()
+    this.controllerHandler()
     this.afterEachHandler()
 
     console.log('[vue-service-app]', this)
@@ -74,31 +76,125 @@ class VueServiceApp {
   initProvideRouter() {
     this.container.bindValue(ServiceRouter, this.router)
   }
-  /**
-   * 路由前置处理
-   */
-  beforeEachGuardsHandler() {
+  resolveAllHooksHandler() {
     this.router.beforeEach((to, from, next) => {
+      if (!to.matched.length) {
+        return next()
+      }
+      const matched = to.matched
+      const tasks = []
+
+      matched.forEach(routeRecord => {
+        // 路由守卫
+        const Guards = routeRecord.meta.guards
+        // 路由控制器
+        const Controller = routeRecord.meta.controller
+        // 路由组件
+        const Component = routeRecord.components.default
+
+        if (isFn(Controller)) {
+          tasks.push(
+            Controller().then(Ctrl => {
+              routeRecord.Controller = Ctrl
+            })
+          )
+        }
+        if (isFn(Component)) {
+          tasks.push(
+            Component().then(Comp => {
+              routeRecord.Component = Comp.default
+            })
+          )
+        }
+        if (isPlainObject(Component)) {
+          routeRecord.Component = Component
+        }
+        // resolve 异步 guards
+        if (Guards && Guards.length) {
+          const GuardsQueue = Guards.filter(G => isFn(G) || isCtor(G)).map(G =>
+            isCtor(G) ? Promise.resolve(G) : G()
+          )
+          tasks.push(
+            Promise.all(GuardsQueue).then(Gs => {
+              routeRecord.Guards = Gs
+            })
+          )
+        }
+      })
+      if (!tasks.length) {
+        return next()
+      }
+      Promise.all(tasks).then(() => {
+        next()
+        // console.log(matched)
+      })
+    })
+  }
+  guardsHandler() {
+    this.router.beforeEach((to, from, next) => {
+      const matched = to.matched
+      if (!matched) {
+        return next()
+      }
+      console.log(matched)
+      const guards = matched.reduce(
+        (res, routeRecord) => res.concat(routeRecord.Guards || []),
+        []
+      )
+      let middlewares = []
+      // 同name -> 路由更新的钩子
+      if (to.name === from.name) {
+        middlewares = this._getBeforeMiddlewaresByGuards(
+          guards,
+          'beforeRouteUpdate'
+        )
+      }
+      // 不同name -> guard的路由进入钩子
+      if (to.name !== from.name) {
+        middlewares = this._getBeforeMiddlewaresByGuards(
+          guards,
+          'beforeRouteEnter'
+        )
+      }
+
+      if (!middlewares.length) {
+        return next()
+      }
+
+      const plusMiddlewares = middlewares.map(fn => plusHook(fn))
+
+      multiguard(plusMiddlewares)(to, from, next)
+    })
+  }
+  controllerHandler() {
+    this.router.beforeEach((to, from, next) => {
+      if (this.isControllerMixied) {
+        return next()
+      }
       const matched = to.matched
       if (!matched.length) {
         return next()
       }
-      this._calcMiddlewaresByRoute(to, from).then(middlewares => {
-        // 不要随意使用console.log 会使对象无法回收
-        if (!middlewares) {
-          return next()
-        }
-        if (!middlewares.length) {
-          return next()
-        }
-
-        const mulitguardsMiddlewares = this._makeAsyncMiddlewares(middlewares)
-        return multiguard(mulitguardsMiddlewares)(to, from, next)
-      })
+      matched
+        .filter(routeRecord => routeRecord.Controller)
+        .forEach(routeRecord => {
+          if (routeRecord.isControllerMixed) {
+            return
+          }
+          const Component = routeRecord.Component
+          if (Component) {
+            Component.mixins = Component.mixins || []
+            const controllerMixin = createController(
+              routeRecord.Controller,
+              this.container
+            )
+            Component.mixins.push(controllerMixin)
+            routeRecord.isControllerMixed = true
+          }
+        })
+      return next()
     })
   }
-  beforeEachController() {}
-
   /**
    * 路由后置处理
    */
@@ -108,25 +204,19 @@ class VueServiceApp {
       if (!matched.length) {
         return
       }
-      const allGuardPromises = matched
-        .reduce(
-          (res, routeRecord) => res.concat(routeRecord.meta.guards || []),
-          []
-        )
-        .filter(G => isFn(G) || isCtor(G))
-        .map(G => (isCtor(G) ? Promise.resolve(G) : G()))
-      Promise.all(allGuardPromises).then(Guards => {
-        Guards.map(G => this.container.get(G))
-          .filter(g => g.afterEach)
-          .reduce((res, g) => res.concat([g.afterEach.bind(g)]), [])
-          .forEach(fn => {
-            fn(to, from)
-          })
-      })
+
+      matched
+        .reduce((res, routeRecord) => res.concat(routeRecord.Guards || []), [])
+        .map(G => this.container.get(G))
+        .filter(g => g.afterEach)
+        .reduce((res, g) => res.concat([g.afterEach.bind(g)]), [])
+        .forEach(fn => {
+          fn(to, from)
+        })
     })
   }
   /**
-   * @param {Array<any>} Guards 路由构造函数或 Promise<Guard>
+   * @param {Array<any>} Guards 路由构造函数
    * @param {string} mode beforeRouteEnter 或  beforeRouteUpdate
    */
   _getBeforeMiddlewaresByGuards(Guards, mode) {
@@ -143,33 +233,6 @@ class VueServiceApp {
         }
         return res
       }, [])
-  }
-  _calcMiddlewaresByRoute(to, from) {
-    const matched = to.matched
-
-    // 路由guards
-    const guardsPromises = matched
-      .reduce(
-        (res, routeRecord) => res.concat(routeRecord.meta.guards || []),
-        []
-      )
-      .filter(G => isFn(G) || isCtor(G))
-      .map(G => (isCtor(G) ? Promise.resolve(G) : G()))
-
-    return Promise.all(guardsPromises).then(guards => {
-      console.log(guards, 'guards')
-      // 同name -> 路由更新
-      if (to.name === from.name) {
-        return this._getBeforeMiddlewaresByGuards(guards, 'beforeRouteUpdate')
-      }
-      if (to.name !== from.name) {
-        return this._getBeforeMiddlewaresByGuards(guards, 'beforeRouteEnter')
-      }
-    })
-  }
-
-  _makeAsyncMiddlewares(middlewares) {
-    return middlewares.map(fn => plusHook(fn))
   }
 }
 

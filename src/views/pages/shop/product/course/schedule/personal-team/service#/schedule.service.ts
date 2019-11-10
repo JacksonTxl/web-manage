@@ -1,4 +1,4 @@
-import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
+import { Controller, Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state'
 import { tap, pluck } from 'rxjs/operators'
 import {

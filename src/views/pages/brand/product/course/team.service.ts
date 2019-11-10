@@ -1,9 +1,9 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { RedirectService } from '@/services/redirect.service'
 @Injectable()
-export class TeamService implements RouteGuard {
+export class TeamService implements Controller {
   constructor(private redirectService: RedirectService) {}
-  beforeRouteEnter() {
+  beforeEach() {
     return this.redirectService.redirect({
       locateRouteName: 'brand-product-course-team',
       redirectRoute: {

@@ -1,10 +1,10 @@
-import { Injectable, RouteGuard } from 'vue-service-app'
+import { Injectable, Controller } from 'vue-service-app'
 import { RedirectService } from '@/services/redirect.service'
 import moment from 'moment'
 @Injectable()
-export class PersonalTeamService implements RouteGuard {
+export class PersonalTeamService implements Controller {
   constructor(private redirectService: RedirectService) {}
-  beforeRouteEnter() {
+  beforeEach() {
     let weekOfday: any = moment().format('E')
     let start_date: string = moment()
       .subtract(weekOfday - 1, 'days')

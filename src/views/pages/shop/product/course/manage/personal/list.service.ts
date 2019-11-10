@@ -1,6 +1,6 @@
 import { CourseApi } from './../../../../../../../api/v1/setting/course'
 import { ShopApi } from '@/api/v1/shop'
-import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
+import { Controller, ServiceRoute, Injectable } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { tap, map } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
@@ -12,7 +12,7 @@ import { AuthService } from '@/services/auth.service'
 import { MessageService } from '@/services/message.service'
 
 @Injectable()
-export class ListService implements RouteGuard {
+export class ListService implements Controller {
   // loading
   loading$ = new State({})
   // 业务状态

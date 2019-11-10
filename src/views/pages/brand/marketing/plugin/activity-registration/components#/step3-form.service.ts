@@ -1,6 +1,6 @@
 import { tap } from 'rxjs/operators'
 import { State } from 'rx-state'
-import { RouteGuard, Injectable } from 'vue-service-app'
+import { Controller, Injectable } from 'vue-service-app'
 import { SignUpApi } from '@/api/v1/marketing/sign-up'
 @Injectable()
 export class Step3FormService {

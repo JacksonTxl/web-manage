@@ -1,4 +1,4 @@
-import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
+import { Controller, Injectable, ServiceRoute } from 'vue-service-app'
 import { Effect, State } from 'rx-state/src'
 import { CabinetAreaService as AreaService } from '../setting/components#/area.service'
 import { CabinetApi, DelInput } from '@/api/v1/setting/cabinet'
@@ -7,7 +7,7 @@ import { CabinetListService } from './components#/cabinet-list.service'
 import { forkJoin } from 'rxjs'
 
 @Injectable()
-export class CabinetService implements RouteGuard {
+export class CabinetService implements Controller {
   loading$ = new State({})
   auth$ = this.authService.authMap$({
     areaAdd: 'shop:cabinet:cabinet_area|add',

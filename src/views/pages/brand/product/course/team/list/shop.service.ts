@@ -1,5 +1,5 @@
 import { ListService } from './../list.service'
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { tap } from 'rxjs/operators'
 import { State, Effect } from 'rx-state'
 import {
@@ -12,7 +12,7 @@ import { forkJoin } from 'rxjs'
 import { MessageService } from '@/services/message.service'
 
 @Injectable()
-export class ShopService implements RouteGuard {
+export class ShopService implements Controller {
   // loading
   loading$ = new State({})
   // 业务状态

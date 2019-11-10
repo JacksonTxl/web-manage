@@ -1,11 +1,11 @@
-import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
+import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State } from 'rx-state'
 import { MarketingApi, GetInviteTableInput } from '@/api/v1/marketing/marketing'
 import { tap } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
 
 @Injectable()
-export class DataService implements RouteGuard {
+export class DataService implements Controller {
   loading$ = new State({})
   statInfo$ = new State({})
   reportList$ = new State([])

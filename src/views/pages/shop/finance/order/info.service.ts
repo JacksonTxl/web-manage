@@ -1,11 +1,11 @@
-import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
+import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state'
 import { OrderApi } from '@/api/v1/finance/order'
 import { tap, pluck } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()
-export class InfoService implements RouteGuard {
+export class InfoService implements Controller {
   info$: Computed<any>
   id = ''
   tabs$ = new State([])

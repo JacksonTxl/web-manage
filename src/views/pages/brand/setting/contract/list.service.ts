@@ -1,4 +1,4 @@
-import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
+import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { ContractApi } from '@/api/v1/setting/contract'
 import { forkJoin } from 'rxjs'
 import { tap, pluck } from 'rxjs/operators'
@@ -11,7 +11,7 @@ interface ListState {
 }
 
 @Injectable()
-export class ListService implements RouteGuard {
+export class ListService implements Controller {
   state$: State<ListState>
   list$: Computed<any[]>
   auth$ = this.authService.authMap$({

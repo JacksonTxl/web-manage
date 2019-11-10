@@ -1,4 +1,4 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { forkJoin } from 'rxjs'
 import { tap } from 'rxjs/operators'
@@ -12,7 +12,7 @@ import {
 } from '@/api/v1/staff'
 
 @Injectable()
-export class EditService implements RouteGuard {
+export class EditService implements Controller {
   staffInfo$ = new State({})
   department$ = new State([])
   staffSpecialty$ = new State({})

@@ -1,11 +1,11 @@
 import { SignUpApi, GetSignUpSignList } from '@/api/v1/marketing/sign-up'
-import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
+import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap, pluck } from 'rxjs/operators'
 import { MessageService } from '@/services/message.service'
 
 @Injectable()
-export class CheckinService implements RouteGuard {
+export class CheckinService implements Controller {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})

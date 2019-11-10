@@ -1,4 +1,4 @@
-import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
+import { Controller, Injectable, ServiceRoute } from 'vue-service-app'
 import { forkJoin, timer } from 'rxjs'
 import { PersonalTeamScheduleScheduleService } from './service#/schedule.service'
 import { PersonalTeamScheduleCommonService } from './service#/common.service'
@@ -6,7 +6,7 @@ import { AuthService } from '@/services/auth.service'
 import { State, Computed } from 'rx-state'
 
 @Injectable()
-export class PersonalTeamService implements RouteGuard {
+export class PersonalTeamService implements Controller {
   state$: State<any>
   auth$ = this.authService.authMap$({
     add: 'shop:schedule:personal_team_course_schedule|add',

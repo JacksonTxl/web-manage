@@ -1,5 +1,5 @@
 import { State, Computed } from 'rx-state'
-import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
+import { Controller, ServiceRoute, Injectable } from 'vue-service-app'
 import { tap, pluck } from 'rxjs/operators'
 import {
   ShopPersonalCourseApi,
@@ -9,7 +9,7 @@ export interface SetState {
   info: any
 }
 @Injectable()
-export class InfoService implements RouteGuard {
+export class InfoService implements Controller {
   state$: State<SetState>
   info$: Computed<any>
   constructor(private courseApi: ShopPersonalCourseApi) {

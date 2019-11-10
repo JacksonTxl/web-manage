@@ -1,11 +1,11 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { LabelApi, ListParams } from '@/api/v1/label'
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()
-export class ListService implements RouteGuard {
+export class ListService implements Controller {
   list$ = new State([])
   page$ = new State({})
   auth$ = this.authService.authMap$({

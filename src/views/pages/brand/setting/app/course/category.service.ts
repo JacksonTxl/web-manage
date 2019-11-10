@@ -1,11 +1,11 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { CourseApi, DeleteCourseCategoryInput } from '@/api/v1/setting/course'
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()
-export class CategoryService implements RouteGuard {
+export class CategoryService implements Controller {
   resData$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({

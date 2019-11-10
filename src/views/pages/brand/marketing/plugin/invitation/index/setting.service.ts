@@ -1,11 +1,11 @@
-import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
+import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { MarketingApi, SetInviteEditInput } from '@/api/v1/marketing/marketing'
 import { tap } from 'rxjs/operators'
 import { add } from 'lodash-es'
 
 @Injectable()
-export class SettingService implements RouteGuard {
+export class SettingService implements Controller {
   loading$ = new State({})
   settingInfo$ = new State({})
   constructor(private marketingApi: MarketingApi) {}

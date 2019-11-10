@@ -1,12 +1,12 @@
 import { UserService } from '@/services/user.service'
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap, map } from 'rxjs/operators'
 import { ShopStaffApi, GetStaffSoldInput } from '@/api/v1/staff/staff'
 import { cloneDeep } from 'lodash-es'
 
 @Injectable()
-export class SoldService implements RouteGuard {
+export class SoldService implements Controller {
   page$ = new State({})
   soldInfo$ = new State([])
   loading$ = new State({})
