@@ -164,7 +164,7 @@
                   </a>
                 </st-table>
                 <st-button
-                  :disabled="rallyPriceList.length > 11"
+                  :disabled="rallyPriceList.length >= 12"
                   type="dashed"
                   icon="add"
                   class="page-price-setting-set__add"

@@ -126,7 +126,7 @@
                     <tr>
                       <td colspan="5" class="pd-y0 pd-x0">
                         <st-button
-                          :disabled="rallyPriceList.length > 11 || isShelfCard"
+                          :disabled="rallyPriceList.length >= 12 || isShelfCard"
                           type="dashed"
                           icon="add"
                           class="page-price-setting-set__add"
@@ -274,7 +274,7 @@
                       <td colspan="5" class="pd-y0 pd-x0">
                         <st-button
                           v-if="!isShelfCard"
-                          :disabled="shopPriceList.length > 11"
+                          :disabled="shopPriceList.length >= 12"
                           type="dashed"
                           icon="add"
                           class="page-price-setting-set__add"
