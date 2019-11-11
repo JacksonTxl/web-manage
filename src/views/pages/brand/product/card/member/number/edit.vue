@@ -292,14 +292,14 @@
                     <tr>
                       <td colspan="6" class="pd-y0 pd-x0">
                         <st-button
-                          :disabled="shopPriceList.length > 3 || isShelfCard"
+                          :disabled="shopPriceList.length > 11 || isShelfCard"
                           type="dashed"
                           icon="add"
                           class="page-price-setting-set__add"
                           block
                           @click="shop_price_add"
                         >
-                          添加定价规格（{{ shopPriceList.length }}/4）
+                          添加定价规格（{{ shopPriceList.length }}/12）
                         </st-button>
                       </td>
                     </tr>
