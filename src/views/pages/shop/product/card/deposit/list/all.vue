@@ -12,7 +12,6 @@
       <st-button v-if="auth.add" type="primary" @click="onAddCard" icon="add">
         新增储值卡
       </st-button>
-      {{ cardList }}
       <div>
         <a-select
           :class="all('search__select')"
