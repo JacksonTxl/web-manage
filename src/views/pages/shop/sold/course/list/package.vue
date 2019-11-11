@@ -15,7 +15,7 @@
       </st-search-panel-item>
     </st-search-panel>
     <div :class="basic('content')">
-      <div :class="basic('content-batch')" class="mg-b16">
+      <div :class="basic('content-batch')">
         <!-- NOTE: 导出 -->
         <!-- <st-button v-if="auth.export" type="primary">批量导出</st-button> -->
       </div>
@@ -24,7 +24,7 @@
           :alertSelection="{onReset: onClear}"
           :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
          -->
-      <div :class="basic('table')">
+      <div>
         <st-table
           :page="page"
           rowKey="id"
