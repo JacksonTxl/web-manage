@@ -1,11 +1,11 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { MemberApi, EditFaceParams } from '@/api/v1/member'
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()
-export class InfoService implements RouteGuard {
+export class InfoService implements Controller {
   info$ = new State({})
   basicInfo$ = new State({})
   auth$ = new State({})

@@ -181,7 +181,7 @@ export class HttpService {
           const serverResponse: StResponse = err.response
           this.notification.close('ajaxError')
           const errMsg = (serverResponse && serverResponse.msg) || err.message
-          const errUrl = err.request ? err.request.url : ''
+          // const errUrl = err.request ? err.request.url : ''
           this.nprogress.SET_TEXT(`${errMsg}`)
           this.nprogress.done()
 
@@ -195,7 +195,6 @@ export class HttpService {
                 key: 'ajaxError',
                 content: errMsg
               })
-              this.makeNoReportError(err)
               break
             case 401:
               this.notification.warn({
@@ -203,7 +202,6 @@ export class HttpService {
                 key: 'ajaxError',
                 content: errMsg
               })
-              this.makeNoReportError(err)
               // @ts-ignore
               location.href = '/account/login'
               break
@@ -213,7 +211,6 @@ export class HttpService {
                 key: 'ajaxError',
                 content: errMsg
               })
-              this.makeNoReportError(err)
               break
             case 404:
               this.notification.error({
@@ -237,6 +234,7 @@ export class HttpService {
               })
               break
           }
+          this.makeNoReportError(err)
           throw err
         })
       )

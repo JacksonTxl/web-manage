@@ -1,6 +1,6 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 @Injectable()
-export class ContractService implements RouteGuard {
+export class ContractService implements Controller {
   constructor() {}
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     if (to.name === 'brand-setting-contract') {

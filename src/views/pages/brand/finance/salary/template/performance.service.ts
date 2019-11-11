@@ -1,11 +1,11 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { FinanceApi, SalaryBasicQuery } from '@/api/v1/finance'
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()
-export class PerformanceService implements RouteGuard {
+export class PerformanceService implements Controller {
   auth$ = this.authService.authMap$({
     add: 'brand_shop:salary:commission_template|add'
   })

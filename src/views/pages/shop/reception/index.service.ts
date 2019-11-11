@@ -1,4 +1,4 @@
-import { Injectable, RouteGuard } from 'vue-service-app'
+import { Injectable, Controller } from 'vue-service-app'
 import { State, Effect, Action } from 'rx-state'
 import {
   FrontApi,
@@ -14,7 +14,7 @@ import { forkJoin, EMPTY } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()
-export class IndexService implements RouteGuard {
+export class IndexService implements Controller {
   loading$ = new State({})
   workNoteList$ = new State([])
   workNoteDoneList$ = new State([])

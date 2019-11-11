@@ -1,4 +1,4 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { ShopPersonalCourseApi } from '@/api/v1/course/personal/shop'
 import { BrandPersonalCourseApi } from '@/api/v1/course/personal/brand'
 import { tap } from 'rxjs/operators'
@@ -8,7 +8,7 @@ import { AuthService } from '@/services/auth.service'
 import { MessageService } from '@/services/message.service'
 
 @Injectable()
-export class ShopService implements RouteGuard {
+export class ShopService implements Controller {
   // loading
   loading$ = new State({})
   // 业务状态

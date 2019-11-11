@@ -1,6 +1,6 @@
 import { CourseApi } from '@/api/v1/setting/course'
 import { ShopApi } from '@/api/v1/shop'
-import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
+import { Controller, ServiceRoute, Injectable } from 'vue-service-app'
 import { State } from 'rx-state'
 import { tap, map } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
@@ -12,7 +12,7 @@ import { AuthService } from '@/services/auth.service'
 import { RedirectService } from '@/services/redirect.service'
 
 @Injectable()
-export class ListService implements RouteGuard {
+export class ListService implements Controller {
   // loading
   loading$ = new State({})
   // 业务状态
@@ -97,16 +97,15 @@ export class ListService implements RouteGuard {
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.init({ ...to.query })
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    return this.initOptions()
-      .toPromise()
-      .then(() => {
-        return this.redirectService.redirect({
-          locateRouteName: 'brand-product-course-team-list',
-          redirectRoute: {
-            name: 'brand-product-course-team-list-brand'
-          }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+    this.initOptions().subscribe(() => {
+      if (to.name === 'brand-product-course-team-list') {
+        next({
+          name: 'brand-product-course-team-list-brand'
         })
-      })
+      } else {
+        next()
+      }
+    })
   }
 }

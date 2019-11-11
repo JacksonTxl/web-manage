@@ -1,4 +1,4 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { CourseApi, GetCourseListInput } from '@/api/v1/sold/course'
@@ -6,7 +6,7 @@ import { AuthService } from '@/services/auth.service'
 import { UserService } from '@/services/user.service'
 
 @Injectable()
-export class PersonalService implements RouteGuard {
+export class PersonalService implements Controller {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})

@@ -1,4 +1,4 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State } from 'rx-state/src'
 import { tap, catchError } from 'rxjs/operators'
 import { StatApi, RecentQuery } from '@/api/v1/stat/brand'
@@ -6,8 +6,21 @@ import { forkJoin, of } from 'rxjs'
 import { anyAll } from '@/operators/any-all'
 import { UserService } from '@/services/user.service'
 @Injectable()
-export class StudioService {
-  top$ = new State({})
+export class StudioService implements Controller {
+  top$ = new State({
+    order: {
+      chart: []
+    },
+    revenue: {
+      chart: []
+    },
+    user: {
+      chart: []
+    },
+    visit: {
+      chart: []
+    }
+  })
   userFunnel$ = new State([])
   user$ = new State([])
   avg$ = new State([])
@@ -132,7 +145,7 @@ export class StudioService {
       this.getEntry()
     )
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+  beforeRouteEnter() {
     return this.init()
   }
 }

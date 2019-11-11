@@ -1,10 +1,10 @@
-import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
+import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { OrderApi } from '@/api/v1/finance/order'
 
 @Injectable()
-export class RefundInfoService implements RouteGuard {
+export class RefundInfoService implements Controller {
   info$ = new State({})
   loading$ = new State({})
   constructor(private orderApi: OrderApi) {}

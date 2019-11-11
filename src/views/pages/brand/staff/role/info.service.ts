@@ -1,5 +1,5 @@
 import { UserService } from '@/services/user.service'
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { pluck, tap, switchMap, catchError } from 'rxjs/operators'
 import { GetInitInfoPut, RoleInfo, RoleApi } from '@/api/v1/staff/role'

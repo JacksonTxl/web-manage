@@ -1,13 +1,12 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State } from 'rx-state'
 import { tap, switchMap } from 'rxjs/operators'
 import { GetInitInfoPut, RoleInfo, RoleApi } from '@/api/v1/staff/role'
 import { AuthService } from '@/services/auth.service'
-import { RedirectService } from '@/services/redirect.service'
 import { get } from 'lodash-es'
 
 @Injectable()
-export class RoleService implements RouteGuard {
+export class RoleService implements Controller {
   roleList$ = new State([])
   stat$ = new State({})
   auth$ = this.authService.authMap$({
@@ -15,11 +14,7 @@ export class RoleService implements RouteGuard {
     del: 'brand:auth:role|del',
     edit: 'brand:auth:role|edit'
   })
-  constructor(
-    private roleApi: RoleApi,
-    private authService: AuthService,
-    private redirectService: RedirectService
-  ) {}
+  constructor(private roleApi: RoleApi, private authService: AuthService) {}
   /**
    * 获取所有角色列表（角色编辑页面）
    */
@@ -74,20 +69,26 @@ export class RoleService implements RouteGuard {
     )
   }
 
-  beforeRouteEnter() {
-    console.log('beforeRouteEnter')
-    return this.getAllList()
-      .toPromise()
-      .then(res => {
-        return this.redirectService.redirect({
-          locateRouteName: 'brand-staff-role',
-          redirectRoute: {
-            name: 'brand-staff-role-info',
-            query: {
-              id: get(res, 'roles.0.id')
-            }
-          }
-        })
+  redirect(to: ServiceRoute, from: ServiceRoute, next: any) {
+    if (to.name === 'brand-staff-role') {
+      next({
+        name: 'brand-staff-role-info',
+        query: {
+          id: get(this.roleList$.snapshot(), '0.id')
+        }
       })
+    } else {
+      next()
+    }
+  }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+    debugger
+    console.log('beforeRouteEnter')
+    this.getAllList().subscribe(() => {
+      this.redirect(to, from, next)
+    })
+  }
+  beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
+    this.redirect(to, from, next)
   }
 }

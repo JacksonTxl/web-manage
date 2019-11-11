@@ -1,8 +1,8 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State } from 'rx-state'
 import { AuthService } from '@/services/auth.service'
 @Injectable()
-export class SmsService implements RouteGuard {
+export class SmsService implements Controller {
   state$ = new State({})
   authTabs$ = this.authService.getAuthTabs$('brand-setting-sms')
   constructor(private authService: AuthService) {}

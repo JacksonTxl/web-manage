@@ -1,4 +1,4 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { map, tap } from 'rxjs/operators'
 import { GatheringApi, EarnestParams } from '@/api/v1/finance/gathering'
@@ -6,7 +6,7 @@ import { AuthService } from '@/services/auth.service'
 import { UserService } from '@/services/user.service'
 
 @Injectable()
-export class EarnestService implements RouteGuard {
+export class EarnestService implements Controller {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})

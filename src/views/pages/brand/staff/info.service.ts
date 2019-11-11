@@ -1,7 +1,7 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
-import { StaffApi } from '../../../../api/v1/staff'
+import { StaffApi } from '@/api/v1/staff'
 import { AuthService } from '@/services/auth.service'
 
 interface SetState {
@@ -9,7 +9,7 @@ interface SetState {
   auth: object
 }
 @Injectable()
-export class InfoService {
+export class InfoService implements Controller {
   info$ = new State({})
   auth$ = new State({})
   constructor(private staffApi: StaffApi, private authService: AuthService) {}
@@ -23,7 +23,7 @@ export class InfoService {
       })
     )
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
     let { id } = to.meta.query
     return this.getInfo(id)
   }

@@ -1,7 +1,7 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 
 @Injectable()
-export class CourseService implements RouteGuard {
+export class CourseService implements Controller {
   constructor() {}
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     if (to.name === 'shop-sold-course') {

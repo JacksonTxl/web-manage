@@ -1,9 +1,9 @@
-import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
+import { Controller, ServiceRoute, Injectable } from 'vue-service-app'
 import { UserService } from '@/services/user.service'
 import { RedirectService } from '@/services/redirect.service'
 
 @Injectable()
-export class DashboardService implements RouteGuard {
+export class DashboardService implements Controller {
   constructor(
     private redirectService: RedirectService,
     private userService: UserService

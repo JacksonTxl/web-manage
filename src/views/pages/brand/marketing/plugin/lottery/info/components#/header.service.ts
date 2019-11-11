@@ -1,11 +1,11 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { LotteryApi, GetPrizedListQuery } from '@/api/v1/marketing/lottery'
 import { forkJoin } from 'rxjs'
 import { tap } from 'rxjs/operators'
 import { State, Effect } from 'rx-state'
 
 @Injectable()
-export class HeaderService implements RouteGuard {
+export class HeaderService implements Controller {
   info$ = new State({})
   loading$ = new State({})
   constructor(private lotteryApi: LotteryApi) {}

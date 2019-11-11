@@ -1,4 +1,4 @@
-import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
+import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { CardApi } from '@/api/v1/sold/cards'
 import { tap } from 'rxjs/operators'
@@ -7,7 +7,7 @@ import { combineLatest } from 'rxjs'
 import { RouteService } from '@/services/route.service'
 
 @Injectable()
-export class InfoService implements RouteGuard {
+export class InfoService implements Controller {
   info$ = new State({})
   loading$ = new State({})
   auth$ = new State({})

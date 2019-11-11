@@ -1,4 +1,4 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap, map } from 'rxjs/operators'
 import { StaffApi, GetStaffSoldInput } from '@/api/v1/staff'
@@ -7,7 +7,7 @@ import { UserService } from '@/services/user.service'
 import { forkJoin } from 'rxjs'
 
 @Injectable()
-export class SoldService implements RouteGuard {
+export class SoldService implements Controller {
   soldInfo$ = new State({})
   page$ = new State({})
   loading$ = new State({})

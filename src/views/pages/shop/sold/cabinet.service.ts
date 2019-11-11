@@ -1,10 +1,10 @@
-import { Injectable, RouteGuard } from 'vue-service-app'
+import { Injectable, Controller } from 'vue-service-app'
 import { RedirectService } from '@/services/redirect.service'
 
 @Injectable()
-export class CabinetService implements RouteGuard {
+export class CabinetService implements Controller {
   constructor(private redirectService: RedirectService) {}
-  beforeRouteEnter() {
+  beforeEach() {
     return this.redirectService.redirect({
       locateRouteName: 'shop-sold-cabinet',
       redirectRoute: {

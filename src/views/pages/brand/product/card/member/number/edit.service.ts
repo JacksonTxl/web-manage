@@ -1,4 +1,4 @@
-import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
+import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { Effect, State, computed } from 'rx-state'
 import { CardsApi, CardsInput } from '@/api/v1/cards'
 import { tap, pluck, map } from 'rxjs/operators'
@@ -6,7 +6,7 @@ import { ShopApi, GetShopBasicInput } from '@/api/v1/shop'
 import { UserService } from '@/services/user.service'
 import { forkJoin } from 'rxjs'
 @Injectable()
-export class EditService implements RouteGuard {
+export class EditService implements Controller {
   cardInfo$ = new State({})
   loading$ = new State({})
   cardBgList$ = this.userService.getOptions$('member_card.card_bg_list')

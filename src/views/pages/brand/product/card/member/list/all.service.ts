@@ -1,4 +1,4 @@
-import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
+import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { CardsApi, CardListInput } from '@/api/v1/cards'
 import { AuthService } from '@/services/auth.service'
@@ -7,7 +7,7 @@ import { UserService } from '@/services/user.service'
 import { forkJoin } from 'rxjs'
 import { TitleService } from '@/services/title.service'
 @Injectable()
-export class AllService implements RouteGuard {
+export class AllService implements Controller {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})

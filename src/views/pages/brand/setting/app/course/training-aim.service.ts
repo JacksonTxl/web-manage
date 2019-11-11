@@ -1,11 +1,11 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { TrainingApi, DeleteTrainingAimInput } from '@/api/v1/setting/training'
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()
-export class TrainingAimService implements RouteGuard {
+export class TrainingAimService implements Controller {
   resData$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({
