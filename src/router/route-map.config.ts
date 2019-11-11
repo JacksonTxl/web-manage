@@ -1123,7 +1123,11 @@ export const routeMapConfig = {
   },
   'brand-stat'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '数据统计'
-    routeConfig.meta.tabs = ['brand-stat-revenue', 'brand-stat-order']
+    routeConfig.meta.tabs = [
+      'brand-stat-revenue',
+      'brand-stat-order',
+      'brand-stat-course'
+    ]
   },
   'brand-stat-revenue'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '营收'
@@ -1140,6 +1144,17 @@ export const routeMapConfig = {
     routeConfig.meta.title = '订单'
     routeConfig.queryOptions = {
       shop: { type: Number, default: 0 },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      day: { type: Number, default: 7 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' }
+    }
+  },
+  'brand-stat-course'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '课程'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: 0 },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       day: { type: Number, default: 7 },
