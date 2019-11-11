@@ -73,8 +73,7 @@
             disabled
             @click="goRouter('/brand/setting/import/sold')"
           >
-            <!-- 导入售出 -->
-            暂不开放
+            导入售出
           </st-button>
         </div>
         <p>

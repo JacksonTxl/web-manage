@@ -43,7 +43,7 @@
           变更入场vip区域
         </st-button>
       </div>
-      <div :class="basic('table')">
+      <div>
         <st-table
           :page="page"
           :loading="loading.getList"
