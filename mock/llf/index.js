@@ -1,5 +1,3 @@
 module.exports = {
-  'GET /_api/const/enum'(req, res) {
-    res.status(400).json({})
-  }
+  'GET /_api/v1/common/menu': {}
 }

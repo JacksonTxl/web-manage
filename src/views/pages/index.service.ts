@@ -9,10 +9,14 @@ export class IndexService implements RouteGuard {
     private redirectService: RedirectService
   ) {}
   beforeRouteEnter() {
+    const firstUrl = this.userService.firstMenuUrl$.snapshot()
+    if (!firstUrl) {
+      return
+    }
     return this.redirectService.redirect({
       locateRouteName: 'index',
       redirectRoute: {
-        name: this.userService.firstMenuUrl$.snapshot()
+        name: firstUrl
       }
     })
   }

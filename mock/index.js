@@ -8,7 +8,7 @@ const llfMock = require('./llf/index.js')
 
 const mockerApis = Object.assign(
   {},
-  zlxMock,
+  // zlxMock,
   // llfMock
 )
 
