@@ -117,9 +117,6 @@ export default {
     SoldCourseSurplus,
     SoldCourseTransfer
   },
-  serviceProviders() {
-    return [PackageService]
-  },
   serviceInject() {
     return {
       routeService: RouteService,

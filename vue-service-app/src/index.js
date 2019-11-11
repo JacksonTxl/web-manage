@@ -194,7 +194,7 @@ class VueServiceApp {
               routeRecord.Controller,
               this.container
             )
-            Component.mixins.push(controllerMixin)
+            Component.mixins.unshift(controllerMixin)
             routeRecord.isControllerMixed = true
           }
         })

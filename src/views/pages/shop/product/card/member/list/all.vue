@@ -244,9 +244,6 @@ export default {
     CardShopMemberShopTable,
     CardShopMemberStopSale
   },
-  serviceProviders() {
-    return [AllService]
-  },
   serviceInject() {
     return {
       routeService: RouteService,

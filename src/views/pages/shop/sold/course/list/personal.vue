@@ -145,9 +145,6 @@ export default {
     SoldCourseLease,
     SoldCourseActivated
   },
-  serviceProviders() {
-    return [PersonalService]
-  },
   serviceInject() {
     return {
       routeService: RouteService,

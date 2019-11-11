@@ -20,7 +20,9 @@ const createController = (Ctrl, container) => {
   forEach(routeHookMaps, (vmHooks, ctrlHook) => {
     if (isFunction(ctrl[ctrlHook])) {
       vmHooks.forEach(vmHook => {
-        mixin[vmHook].push(plusHook(ctrl[ctrlHook].bind(ctrl)))
+        const hook = plusHook(ctrl[ctrlHook].bind(ctrl))
+        console.dir(hook)
+        mixin[vmHook].push(hook)
       })
     }
   })
@@ -29,6 +31,7 @@ const createController = (Ctrl, container) => {
       mixin[vmHook].push(ctrl[vmHook].bind(ctrl))
     }
   })
+  console.log('myMixin', mixin)
   return mixin
 }
 

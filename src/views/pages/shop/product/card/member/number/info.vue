@@ -316,9 +316,6 @@ export default {
     MemberCard,
     H5Container
   },
-  serviceProviders() {
-    return [InfoService]
-  },
   serviceInject() {
     return {
       infoService: InfoService

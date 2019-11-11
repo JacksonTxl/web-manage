@@ -384,9 +384,6 @@ export default {
     CardBgRadio,
     FormBanner
   },
-  serviceProviders() {
-    return [EditService]
-  },
   serviceInject() {
     return {
       rules: RuleConfig,

@@ -107,9 +107,6 @@ export default {
     SoldDealGathering,
     SoldLeaseTransfer
   },
-  serviceProviders() {
-    return [ListService]
-  },
   serviceInject() {
     return {
       listService: ListService,
