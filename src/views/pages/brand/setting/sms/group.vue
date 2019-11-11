@@ -31,7 +31,7 @@
         class="fl-r mg-r8"
         :class="bPage('actions')"
         v-if="isShowList"
-        :action="getGroupList"
+        :action="refresh"
       ></st-refresh-btn>
     </div>
     <st-table
@@ -237,6 +237,9 @@ export default {
     },
     getGroupList() {
       return this.groupService.getGroupList().subscribe()
+    },
+    refresh() {
+      return this.groupService.getGroupList()
     }
   }
 }
