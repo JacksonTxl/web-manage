@@ -18,7 +18,7 @@ export default {
     }
   },
   created() {
-    this.printService.getPrintInfo(id).subscribe()
+    this.printService.getPrintInfo(this.$route.query.id).subscribe()
   }
 }
 </script>
