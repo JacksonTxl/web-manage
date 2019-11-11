@@ -108,9 +108,6 @@ export default {
   modals: {
     CardShopDepositShopTable
   },
-  serviceProviders() {
-    return [ShelvesService]
-  },
   serviceInject() {
     return {
       messageService: MessageService,

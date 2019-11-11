@@ -27,11 +27,7 @@ export class AllService implements Controller {
     private userService: UserService,
     private cardApi: CardsApi,
     private authService: AuthService
-  ) {
-    this.list$.subscribe(newVal => {
-      console.log(newVal)
-    })
-  }
+  ) {}
   @Effect()
   getList(query: CardListInput) {
     return this.cardApi.getCardList(query, 'shop', 'deposit').pipe(

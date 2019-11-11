@@ -94,9 +94,6 @@ export default {
     SoldCardRefund,
     SoldCardTransfer
   },
-  serviceProviders() {
-    return [DepositService]
-  },
   serviceInject() {
     return {
       routeService: RouteService,

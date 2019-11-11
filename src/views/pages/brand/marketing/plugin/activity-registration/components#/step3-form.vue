@@ -106,9 +106,6 @@ export default {
   modals: {
     MarketingAddSignup
   },
-  // serviceProviders() {
-  //   return [CopyService]
-  // },
   serviceInject() {
     return {
       service: Step3FormService,

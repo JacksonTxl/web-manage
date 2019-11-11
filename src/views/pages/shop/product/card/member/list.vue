@@ -11,9 +11,6 @@ import { ListService } from './list.service'
 import { SHOP_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH } from '@/constants/events'
 export default {
   name: 'PageShopProductMember',
-  serviceProviders() {
-    return [ListService]
-  },
   serviceInject() {
     return {
       routeService: RouteService,

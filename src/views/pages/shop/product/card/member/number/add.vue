@@ -370,9 +370,6 @@ export default {
     H5Container,
     CardBgRadio
   },
-  serviceProviders() {
-    return [AddService]
-  },
   serviceInject() {
     return {
       rules: RuleConfig,

@@ -204,9 +204,6 @@ export default {
     CardShopDepositShopTable,
     CardShopDepositStopSale
   },
-  serviceProviders() {
-    return [AllService]
-  },
   serviceInject() {
     return {
       routeService: RouteService,
