@@ -1,5 +1,5 @@
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
-import { State, Effect } from 'rx-state'
+import { State, Effect, log } from 'rx-state'
 import { CardsApi, CardListInput } from '@/api/v1/cards'
 import { tap, map } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
@@ -16,6 +16,7 @@ export class AllService implements Controller {
   publishChannel$ = this.userService
     .getOptions$('deposit_card.publish_channel')
     .pipe(map(options => [{ value: -1, label: '所有渠道' }].concat(options)))
+
   sellStatus$ = this.userService
     .getOptions$('deposit_card.sell_status')
     .pipe(
@@ -26,7 +27,11 @@ export class AllService implements Controller {
     private userService: UserService,
     private cardApi: CardsApi,
     private authService: AuthService
-  ) {}
+  ) {
+    this.list$.subscribe(newVal => {
+      console.log(newVal)
+    })
+  }
   @Effect()
   getList(query: CardListInput) {
     return this.cardApi.getCardList(query, 'shop', 'deposit').pipe(

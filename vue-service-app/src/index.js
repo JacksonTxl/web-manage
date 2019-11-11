@@ -92,22 +92,28 @@ class VueServiceApp {
         // 路由组件
         const Component = routeRecord.components.default
 
-        if (isFn(Controller)) {
-          tasks.push(
-            Controller().then(Ctrl => {
-              routeRecord.Controller = Ctrl
-            })
-          )
+        if (isCtor(Controller)) {
+          routeRecord.Controller = Controller
+        } else {
+          if (isFn(Controller)) {
+            tasks.push(
+              Controller().then(Ctrl => {
+                routeRecord.Controller = Ctrl
+              })
+            )
+          }
         }
-        if (isFn(Component)) {
-          tasks.push(
-            Component().then(Comp => {
-              routeRecord.Component = Comp.default
-            })
-          )
-        }
+
         if (isPlainObject(Component)) {
           routeRecord.Component = Component
+        } else {
+          if (isFn(Component)) {
+            tasks.push(
+              Component().then(Comp => {
+                routeRecord.Component = Comp.default
+              })
+            )
+          }
         }
         // resolve 异步 guards
         if (Guards && Guards.length) {
@@ -136,7 +142,7 @@ class VueServiceApp {
       if (!matched) {
         return next()
       }
-      console.log(matched)
+      console.log('matched', matched)
       const guards = matched.reduce(
         (res, routeRecord) => res.concat(routeRecord.Guards || []),
         []

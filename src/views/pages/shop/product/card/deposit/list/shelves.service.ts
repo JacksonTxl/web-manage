@@ -33,6 +33,7 @@ export class ShelvesService implements Controller {
     return this.cardApi.setCardsShelfDown(id, 'shop', 'deposit')
   }
   beforeEach(to: ServiceRoute) {
+    console.log('shelves')
     return this.getList(to.meta.query)
   }
 }

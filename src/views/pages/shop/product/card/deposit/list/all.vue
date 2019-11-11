@@ -7,10 +7,12 @@
       :placeholder="`请输入${$c('member_card')}名称查找`"
       maxlength="50"
     />
+
     <div :class="all('search')">
       <st-button v-if="auth.add" type="primary" @click="onAddCard" icon="add">
         新增储值卡
       </st-button>
+      {{ cardList }}
       <div>
         <a-select
           :class="all('search__select')"
