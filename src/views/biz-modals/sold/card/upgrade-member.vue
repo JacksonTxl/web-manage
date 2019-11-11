@@ -90,6 +90,33 @@
               </a-radio>
             </a-radio-group>
           </st-form-item>
+          <st-form-item label="初始额度" required>
+            <div :class="sale('contract')">
+              <a-input-number
+                class="input-number"
+                :min="1"
+                :max="9999"
+                v-decorator="decorators.buyNum"
+                placeholder="请输入初始额度"
+                :disabled="isAmountDisabled"
+              ></a-input-number>
+              <st-button
+                class="create-button"
+                @click="onClickAmountConfirm"
+                :loading="loading.getPersonalPriceInfo"
+                v-if="!isAmountDisabled"
+              >
+                确定
+              </st-button>
+              <st-button
+                class="create-button"
+                @click="onClickAmountEdit"
+                v-else
+              >
+                编辑
+              </st-button>
+            </div>
+          </st-form-item>
           <st-form-item
             labelGutter="12px"
             label="有效时间"
@@ -412,6 +439,8 @@ export default {
       selectSpecs: null,
       // 选择的规格
       selectSpecsItem: {},
+      // 初始额度可编辑
+      isAmountDisabled: false,
       // 开卡方式
       selectOpenType: null,
       // 有效时间
@@ -582,6 +611,21 @@ export default {
       // 重置选择的开始时间
       this.form.resetFields(['startTime'])
       this.endTime = '-'
+    },
+    onClickAmountConfirm() {
+      const val = this.form.getFieldValue('buyNum')
+      this.isAmountDisabled = true
+      this.form.setFieldsValue({
+        buyNum: val
+      })
+    },
+    onClickAmountEdit() {
+      const val = this.form.getFieldValue('buyNum')
+      this.isAmountDisabled = false
+      this.form.setFieldsValue({
+        buyNum: val
+      })
+      this.form.validate(['buyNum'])
     },
     // 有效时间
     disabledStartDate(startTime) {
