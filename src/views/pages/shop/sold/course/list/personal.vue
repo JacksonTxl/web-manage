@@ -19,7 +19,7 @@
         <!-- NOTE: 导出 -->
         <!-- <st-button v-if="auth.export" type="primary">批量导出</st-button> -->
       </div>
-      <div :class="basic('table')">
+      <div>
         <!--
           NOTE: 本期不做，先去掉选择框
           :alertSelection="{onReset: onClear}"
