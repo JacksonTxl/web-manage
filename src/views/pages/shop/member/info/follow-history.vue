@@ -23,6 +23,16 @@
         </st-info>
       </a-col>
       <a-col :lg="8">
+        <st-info>
+          <st-info-item label="第几次跟进">
+            {{ followInfo.info.register_way }}
+          </st-info-item>
+          <st-info-item label="总跟进次数">
+            {{ followInfo.info.follow_salesman_name }}
+          </st-info-item>
+        </st-info>
+      </a-col>
+      <a-col :lg="8">
         <st-info></st-info>
       </a-col>
     </a-row>

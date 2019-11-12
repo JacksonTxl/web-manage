@@ -391,7 +391,8 @@ export const routeMapConfig = {
       'brand-setting-general-coach-level',
       // 'brand-setting-general-user-level', //暂时隐藏用户等级设置
       'brand-setting-general-course',
-      'brand-setting-general-pay-type'
+      'brand-setting-general-pay-type',
+      'brand-setting-general-crm'
     ]
   },
   'brand-setting-app'(routeConfig: RouteConfig) {
@@ -662,6 +663,10 @@ export const routeMapConfig = {
   },
   'brand-setting-general-brand'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '品牌设置'
+    routeConfig.meta.auth = ''
+  },
+  'brand-setting-general-crm'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = 'CRM规则设置'
     routeConfig.meta.auth = ''
   },
   'brand-setting-general-course'(routeConfig: RouteConfig) {
