@@ -31,6 +31,7 @@
         />
       </div>
       <div :class="basic('content')">
+        <!-- 做判断  -->
         <st-table
           :page="page"
           rowKey="id"
@@ -58,7 +59,15 @@
               <template slot="title">
                 <span>支持门店</span>
               </template>
-              <a>{{ text }}</a>
+              <template>
+                <a
+                  v-modal-link="{
+                    name: 'finance-search-staff-list-salary'
+                  }"
+                >
+                  {{ text }}
+                </a>
+              </template>
               <a>共几家门店</a>
             </a-popover>
           </template>
@@ -78,11 +87,18 @@
           <template slot="action" slot-scope="text, record">
             <st-table-actions sytle="width: 120px">
               <a
+                @click="onData(record)"
+                v-if="record.auth['brand:activity:coupon|edit']"
+              >
+                数据
+              </a>
+              <a
                 @click="onEdit(record)"
                 v-if="record.auth['brand:activity:coupon|edit']"
               >
                 编辑
               </a>
+              <!-- 写静态页面-->
               <!-- <a
                 @click="onGeneralize(record)"
                 v-if="record.auth['brand:activity:coupon|promotion']"
@@ -181,6 +197,13 @@ export default {
       let { coupon_name, coupon_status } = this.query
       this.couponName = coupon_name
       this.couponStatus = coupon_status || -1
+    },
+    // 查看数据   根据id传id获取数据列表
+    onData() {
+      this.$router.push({
+        path: '/brand/marketing/plugin/group-activities/data'
+        // query: { id: record.id }
+      })
     },
     // 编辑
     onEdit(record) {
