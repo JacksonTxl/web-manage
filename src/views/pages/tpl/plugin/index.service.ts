@@ -1,7 +1,6 @@
 import { Controller, Injectable, ServiceRoute } from 'vue-service-app'
 import { AuthService } from '@/services/auth.service'
 import { State, Effect } from 'rx-state'
-import { StPage } from '@/types/app'
 import { then } from '@/operators'
 import { SignUpApi, GetSignUpList } from '@/api/v1/marketing/sign-up'
 import { UserService } from '@/services/user.service'
@@ -10,7 +9,7 @@ import { UserService } from '@/services/user.service'
 export class IndexService implements Controller {
   loading$ = new State({})
   list$ = new State([])
-  page$ = new State<StPage>({})
+  page$ = new State({})
   pluginInfo$ = new State({})
   /**
    * 获取全局的权限 {[权限别名]：权限 }
@@ -34,16 +33,19 @@ export class IndexService implements Controller {
   SET_LIST(list: any[]) {
     this.list$.commit(() => list)
   }
-  SET_PAGE(page: StPage) {
+  SET_PAGE(page: any) {
     this.page$.commit(() => page)
   }
+  /**
+   * 会变更loading$状态
+   */
   @Effect()
   getList(params: GetSignUpList) {
     return this.signUpApi.getSignUpList(params).pipe(
       then((res: any) => {
         res = this.authService.filter(res)
         this.SET_LIST(res.list)
-        this.page$.commit(() => res.page)
+        this.SET_PAGE(res.page)
       })
     )
   }

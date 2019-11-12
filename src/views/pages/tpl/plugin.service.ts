@@ -9,7 +9,7 @@ export class PluginService implements Controller {
     // 判断路由为tpl-plugin时动态跳转到子页面
     if (to.name === 'tpl-plugin') {
       next({
-        name: 'tpl-plugin-list'
+        name: 'tpl-plugin-index'
       })
     } else {
       next()
