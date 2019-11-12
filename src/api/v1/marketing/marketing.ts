@@ -78,7 +78,9 @@ export class MarketingApi extends Api {
    * 获取已领取列表
    */
   getReceiveList(query: any) {
-    return this.http.get(`/v1/plugin/coupon/receive/${query.id}`, { query })
+    return this.http.get(`/v1/plugin/coupon/receive/${query.id}`, {
+      query
+    })
   }
   /**
    * 邀请有礼是否已开启
@@ -132,7 +134,9 @@ export class MarketingApi extends Api {
    * 获取插件介绍信息
    */
   getPluginInfo(plugin_type: number) {
-    return this.http.get(`/v1/plugin/introduction`, { query: { plugin_type } })
+    return this.http.get(`/v1/plugin/introduction`, {
+      query: { plugin_type }
+    })
   }
   /**
    * 获取优惠券图片生成的token
@@ -151,5 +155,13 @@ export class MarketingApi extends Api {
    */
   getQrcode() {
     return this.http.get(`/v1/plugin/coupon/qrcode`)
+  }
+  /**
+   * 获取拼团列表
+   */
+  getAssembleList(plugin_type: number) {
+    return this.http.get(`/v1/plugin/introduction`, {
+      query: { plugin_type }
+    })
   }
 }
