@@ -3,10 +3,10 @@
     <marketing-title :type="TYPE.ACTIVITY"></marketing-title>
     <st-panel app>
       <div slot="title">
-        <st-button @click="onAdd" type="primary" icon="add">
+        <st-button v-if="auth$.add" @click="onAdd" type="primary" icon="add">
           新增活动
         </st-button>
-        <st-button class="mg-l8">
+        <st-button v-if="auth$.checkIn" class="mg-l8">
           签到验票
         </st-button>
       </div>
@@ -108,12 +108,19 @@ export default {
     /**
      * @type {IndexService}
      */
-    const { activityStatusOptions$, list$, loading$, page$ } = this.indexService
+    const {
+      activityStatusOptions$,
+      list$,
+      loading$,
+      page$,
+      auth$
+    } = this.indexService
     return {
       activityStatusOptions$,
       list$,
       loading$,
-      page$
+      page$,
+      auth$
     }
   },
   data() {

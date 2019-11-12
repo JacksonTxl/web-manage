@@ -5,7 +5,6 @@ import { State } from 'rx-state'
 import { tap, map } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
-import { RedirectService } from '@/services/redirect.service'
 
 @Injectable()
 export class ListService implements Controller {
@@ -15,8 +14,7 @@ export class ListService implements Controller {
   constructor(
     private shopApi: ShopApi,
     private courseApi: CourseApi,
-    private authService: AuthService,
-    private redirectService: RedirectService
+    private authService: AuthService
   ) {}
   getCategoryList() {
     return this.courseApi.getCourseCategoryList({}).pipe(
