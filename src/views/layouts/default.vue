@@ -199,6 +199,7 @@ import { TitleService } from '@/services/title.service'
 import { entries } from './default#/fast-entry.config'
 import FastEntryMiniProgram from '@/views/biz-modals/fast-entry/mini-program'
 import FastEntryHousekeeper from '@/views/biz-modals/fast-entry/housekeeper'
+import AccountBind from '@/views/biz-modals/account/bind'
 import { UdeskService } from '@/services/udesk.service'
 
 export default {
@@ -234,7 +235,8 @@ export default {
   },
   modals: {
     FastEntryMiniProgram,
-    FastEntryHousekeeper
+    FastEntryHousekeeper,
+    AccountBind
   },
   computed: {
     breadCrumbs() {
@@ -255,7 +257,7 @@ export default {
     },
     onClickBind() {
       this.$modalRouter.push({
-        name: 'account-agreement',
+        name: 'account-bind',
         props: {},
         on: {}
       })

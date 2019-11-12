@@ -1,16 +1,27 @@
+import { UserApi } from '@/api/v1/account/user'
 import { Injectable } from 'vue-service-app'
 import { Effect, State } from 'rx-state'
-import { CourtApi, SetInput } from '@/api/v1/shop/area'
-import { UserService } from '@/services/user.service'
+import { LoginApi } from '@/api/login'
+import { tap } from 'rxjs/operators'
 
 @Injectable()
-export class AddService {
+export class BindService {
   loading$ = new State({})
-  areaType$ = this.userService.getOptions$('shop.area_type')
-  constructor(protected courtApi: CourtApi, private userService: UserService) {}
+  info$ = new State({})
+  constructor(private loginApi: LoginApi, private userApi: UserApi) {}
 
+  getCaptcha(params: any) {
+    return this.loginApi.getCaptcha(params)
+  }
+  fetchUserInfo() {
+    return this.userApi.fetchUserInfo().pipe(
+      tap(res => {
+        this.info$.commit(() => res)
+      })
+    )
+  }
   @Effect()
-  add(params: SetInput) {
-    return this.courtApi.add(params)
+  bindAccountPhone(params: any) {
+    return this.userApi.bindAccountPhone(params)
   }
 }

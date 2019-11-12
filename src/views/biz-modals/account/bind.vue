@@ -1,69 +1,81 @@
 <template>
-  <st-modal :title="modalTitle" v-model="show" wrapClassName="modal-court-add">
-    <st-form :form="form" labelWidth="68px" labelGutter="16px">
-      <st-form-item label="场地名称" required>
-        <a-input
-          placeholder="请输入场地名称，不超过10个字"
-          maxlength="10"
-          v-decorator="decorators.area_name"
-        />
+  <st-modal :title="modalTitle" v-model="show" size="small">
+    <st-form :form="form" labelWidth="88px" labelGutter="16px">
+      <st-form-item label="当前手机号" label-auto v-if="info.bind_mobile">
+        <label>{{ info.bind_mobile }}</label>
       </st-form-item>
-      <st-form-item label="场地属性" required>
-        <a-radio-group
-          @change="onChooseRadio"
-          v-decorator="decorators.area_type"
-        >
-          <a-radio
-            v-for="(item, index) in areaType"
-            :key="index"
-            :value="item.value"
-          >
-            {{ item.label }}
-          </a-radio>
-        </a-radio-group>
+      <st-form-item label="绑定手机号" required>
+        <input-phone
+          v-decorator="decorators.country_phone"
+          placeholder="请输入手机号码"
+          size="default"
+        ></input-phone>
       </st-form-item>
-      <st-form-item label="容纳人数" v-if="isShowPersonNum" class="mg-b0">
-        <st-input-number
-          placeholder="请输入最大容纳人数，1-999"
-          :min="1"
-          :max="999"
-          v-decorator="decorators.contain_number"
-        />
+      <!-- 无痕验证 -->
+      <st-form-item class="mg-b0" label-fix label="滑块验证">
+        <no-captcha id="change-phone"></no-captcha>
+      </st-form-item>
+      <st-form-item label="短信验证码" class="mg-b0">
+        <input-phone-code
+          class="test"
+          size="default"
+          v-decorator="decorators.captcha"
+          @click="onClickCaptcha"
+          placeholder="请输入验证码"
+          :isCountTime="isCountTime"
+          @endCount="endCount"
+        ></input-phone-code>
       </st-form-item>
     </st-form>
     <template slot="footer">
-      <st-button type="primary" :loading="loading.add" @click="onSubmit">
-        保存
+      <st-button type="default" @click="show = false">
+        取消
+      </st-button>
+      <st-button type="primary" :loading="loading.add" @click="onBind">
+        确认绑定
       </st-button>
     </template>
   </st-modal>
 </template>
 
 <script>
-import { AddService } from './add.service'
-import { MessageService } from '@/services/message.service'
+import { BindService } from './bind.service'
+import { ruleOptions } from './bind.config'
+import NoCaptcha from '@/views/biz-components/no-captcha'
 import { PatternService } from '@/services/pattern.service'
-import { ruleOptions } from './court.config'
-import { AREA_TYPE } from '@/constants/setting/court'
+import { NoCaptchaService } from '@/services/no-captcha.service'
+import InputPhone from '@/views/biz-components/input-phone/input-phone'
+import InputPhoneCode from '@/views/biz-components/input-phone-code/input-phone-code'
+import { MessageService } from '@/services/message.service'
+import { cloneDeep } from 'lodash-es'
 
 export default {
   serviceInject() {
     return {
-      addService: AddService,
+      bindService: BindService,
       messageService: MessageService,
+      noCaptchaService: NoCaptchaService,
       pattern: PatternService
     }
   },
   rxState() {
     return {
-      loading: this.addService.loading$,
-      areaType: this.addService.areaType$
+      info: this.bindService.info$,
+      loading: this.bindService.loading$
     }
+  },
+  components: {
+    NoCaptcha,
+    InputPhone,
+    InputPhoneCode
   },
   computed: {
     modalTitle() {
-      return '绑定手机号'
+      return this.info.bind_mobile ? '更改绑定手机号' : '绑定手机号'
     }
+  },
+  mounted() {
+    this.bindService.fetchUserInfo().subscribe()
   },
   data() {
     const form = this.$stForm.create()
@@ -72,39 +84,60 @@ export default {
       form,
       decorators,
       show: false,
-      isShowPersonNum: true,
-      AREA_TYPE
+      isCountTime: false
     }
   },
   methods: {
-    onSubmit() {
-      this.form.validate().then(() => {
-        const data = this.getData()
-        this.addService.add(data).subscribe(this.onSubmitSuccess)
+    onClickCaptcha() {
+      this.form.validate(['country_phone']).then(values => {
+        const { country_phone } = values
+        const params = {
+          phone: country_phone.phone,
+          country_code_id: country_phone.code_id,
+          is_bind: 2
+        }
+        this.getCaptcha(params)
       })
     },
-    onCancel() {
-      this.show = false
-    },
-    getData() {
-      const data = this.form.getFieldsValue()
-      data.area_type = this.area_type
-      return data
-    },
-    onChooseRadio(e) {
-      this.area_type = e.target.value
-      if (this.area_type === AREA_TYPE.GATE) {
-        this.isShowPersonNum = false
-      } else {
-        this.isShowPersonNum = true
+    getCaptcha(params) {
+      const nvc_val = this.noCaptchaService.generateNVCVal()
+      if (!nvc_val) {
+        return
       }
+      params.nvc_val = nvc_val
+      this.bindService.getCaptcha(params).subscribe(res => {
+        this.noCaptchaService.resetNVC()
+        this.isCountTime = true
+      }, this.errorHandler)
     },
-    onSubmitSuccess() {
-      this.messageService.success({
-        content: '添加成功'
+    errorHandler(err) {
+      const code = err.response.code
+      if (this.noCaptchaService.testIsNeedCallCaptcha(code)) {
+        this.noCaptchaService.callCaptcha(code)
+        return
+      }
+      this.noCaptchaService.resetNVC()
+    },
+    endCount() {
+      this.isCountTime = false
+    },
+    onSelectCountry(event) {
+      this.countryInfo = event
+    },
+    onBind() {
+      this.form.validate().then(values => {
+        const params = cloneDeep(values)
+        const country_phone = values.country_phone
+        params.phone = country_phone.phone
+        params.country_code_id = country_phone.code_id
+        delete params.country_phone
+        delete params.name
+        delete params.password
+        this.bindService.bindAccountPhone(params).subscribe(res => {
+          this.show = false
+          this.messageService.success({ content: '绑定手机号成功' })
+        })
       })
-      this.$emit('change')
-      this.show = false
     }
   }
 }
