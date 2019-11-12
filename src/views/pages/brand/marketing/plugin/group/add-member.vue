@@ -145,7 +145,7 @@
   </st-mina-panel>
 </template>
 <script>
-import { ruleOptions, cardColumns } from './add.config'
+import { ruleOptions, cardColumns } from './add-member.config'
 import SelectShop from '@/views/fragments/shop/select-shop'
 export default {
   bem: {
