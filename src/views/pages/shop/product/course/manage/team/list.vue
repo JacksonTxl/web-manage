@@ -58,7 +58,6 @@ export default {
   rxState() {
     return {
       query: this.routeService.query$,
-      shopsOptions: this.listService.shopSelectOptions$,
       categoryList: this.listService.categoryList$,
       auth: this.listService.auth$
     }

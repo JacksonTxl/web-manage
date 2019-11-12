@@ -19,7 +19,6 @@ export class ListService implements Controller {
   list$ = new State([])
   page$ = new State({})
   categoryList$ = new State<any[]>([])
-  shopSelectOptions$ = new State<any[]>([])
   state$: State<any>
   auth$ = this.authService.authMap$({
     add: 'brand_shop:product:team_course|add'
@@ -65,28 +64,8 @@ export class ListService implements Controller {
       })
     )
   }
-  getShopList() {
-    return this.shopApi.getShopList().pipe(
-      map(res => {
-        const shopInfo = res.list
-        return [
-          { shop_id: -1, shop_name: '所有门店' },
-          ...shopInfo.map((item: any) => {
-            const { shop_id, shop_name } = item
-            return {
-              shop_id,
-              shop_name
-            }
-          })
-        ]
-      }),
-      tap(state => {
-        this.shopSelectOptions$.commit(() => state)
-      })
-    )
-  }
   initOptions() {
-    return forkJoin(this.getShopList(), this.getCategoryList())
+    return forkJoin(this.getCategoryList())
   }
   deleteCourse(courseId: string) {
     return this.shopTeamCourseApi.deleteTeamCourse(courseId)
