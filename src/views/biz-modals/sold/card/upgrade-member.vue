@@ -107,7 +107,6 @@
               <st-button
                 class="create-button"
                 @click="onClickAmountConfirm"
-                :loading="loading.getPersonalPriceInfo"
                 v-if="!isAmountDisabled"
               >
                 确定
@@ -141,9 +140,10 @@
                 moment(upgradeCardInfo.server_time * 1000).format(
                   'YYYY-MM-DD HH:mm'
                 )
-              }}&nbsp;至&nbsp;{{
+              }}&nbsp;至&nbsp;
+              {{
                 moment(upgradeCardInfo.server_time * 1000)
-                  .add(selectSpecsItem.valid_time, 'd')
+                  .add(getValidTime, 'd')
                   .format('YYYY-MM-DD HH:mm')
               }}
             </template>
@@ -444,7 +444,8 @@ export default {
       // 选择的规格
       selectSpecsItem: {},
       // 初始额度可编辑
-      isAmountDisabled: false,
+      isAmountDisabled: true,
+      getValidTime: 0,
       // 开卡方式
       selectOpenType: null,
       // 有效时间
@@ -587,6 +588,7 @@ export default {
           this.form.setFieldsValue({
             valid_time: this.selectSpecsItem.valid_time
           })
+          this.getValidTime = this.selectSpecsItem.valid_time
           this.form.validate(['valid_time'])
           // 设置默认卡价格
           this.cardPrice = this.upgradeCardInfo.specs[0].price
@@ -604,6 +606,7 @@ export default {
           valid_time: this.selectSpecsItem.valid_time
         })
         this.form.validate(['valid_time'])
+        this.getValidTime = this.selectSpecsItem.valid_time
         // 设置默认卡价格
         this.cardPrice = this.upgradeCardInfo.specs[0].price
       }
@@ -636,6 +639,10 @@ export default {
       this.form.setFieldsValue({
         valid_time: val
       })
+      if (this.startTime) {
+        this.endTime = this.startTime.add(val, 'd').format('YYYY-MM-DD HH:mm')
+      }
+      this.getValidTime = val
     },
     onClickAmountEdit() {
       const val = this.form.getFieldValue('valid_time')
@@ -652,7 +659,8 @@ export default {
     onStartTimeChange(data) {
       this.startTime = cloneDeep(data)
       let s = cloneDeep(data)
-      let dayScope = this.selectSpecsItem.valid_time
+      // let dayScope = this.selectSpecsItem.valid_time
+      let dayScope = this.form.getFieldValue('valid_time')
       this.endTime = s.add(dayScope, 'd').format('YYYY-MM-DD HH:mm')
     },
     // 合同
