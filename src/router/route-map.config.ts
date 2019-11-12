@@ -1001,6 +1001,7 @@ export const routeMapConfig = {
       'brand-setting-sms-group',
       'brand-setting-sms-list',
       'brand-setting-sms-notice',
+      'brand-setting-sms-push',
       'brand-setting-sms-pay'
     ]
   },
@@ -1032,6 +1033,9 @@ export const routeMapConfig = {
   },
   'brand-setting-sms-notice'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '通知模版'
+  },
+  'brand-setting-sms-push'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '推送模板'
   },
   'shop-stat'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '数据统计'
