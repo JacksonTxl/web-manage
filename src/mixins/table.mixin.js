@@ -63,13 +63,6 @@ export default {
       selectedRows: []
     }
   },
-  created() {
-    if (!this.query) {
-      console.error(
-        '[tableMixin] 需要订阅routeService.query$ 到this.query以生效'
-      )
-    }
-  },
   computed: {
     // 多选是否至少勾选一项
     isSelectedEnabled() {
@@ -86,7 +79,7 @@ export default {
       return _field
     },
     prevPage() {
-      return this.query[this.currentPageField]
+      return this.$searchQuery[this.currentPageField]
     }
   },
   methods: {
@@ -101,7 +94,7 @@ export default {
       this.onSelectionReset()
       this.$router.push({
         query: {
-          ...this.query,
+          ...this.$searchQuery,
           [this.currentPageField]: 1
         }
       })
@@ -117,7 +110,7 @@ export default {
       }
       this.$router.push({
         query: {
-          ...this.query,
+          ...this.$searchQuery,
           ...searchFieldsValue,
           [this.currentPageField]: 1
         }
@@ -131,7 +124,7 @@ export default {
       this.$router.push({
         query: {
           [this.currentPageField]: 1,
-          size: this.query.size
+          size: this.$searchQuery.size
         }
       })
     },
@@ -142,7 +135,7 @@ export default {
       this.onSelectionReset()
       this.$router.push({
         query: {
-          ...this.query,
+          ...this.$searchQuery,
           ...{ [key]: data },
           [this.currentPageField]: 1
         }
@@ -160,9 +153,9 @@ export default {
       this.$router.push({
         query: {
           [key]: data,
-          ...pick(this.query, keepFields),
+          ...pick(this.$searchQuery, keepFields),
           [this.currentPageField]: 1,
-          size: this.query.size
+          size: this.$searchQuery.size
         }
       })
     },
@@ -195,7 +188,7 @@ export default {
         pagination.current !== this.prevPage ? pagination.current : 1
       this.$router.push({
         query: {
-          ...this.query,
+          ...this.$searchQuery,
           [this.currentPageField]: nextPage,
           size: pagination.pageSize,
           sort_by,
