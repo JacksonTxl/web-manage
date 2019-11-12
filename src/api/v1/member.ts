@@ -410,6 +410,18 @@ export class MemberApi extends Api {
   updateUserFace(id: number, params: EditFaceParams) {
     return this.http.put(`/v1/member/face/${id}`, { params })
   }
+  /**
+   * 获取跟进日志时间轴列表
+   */
+  getFollowRecordList(id: number) {
+    return this.http.get(`/v1/member/follow/axis/${id}`)
+  }
+  getSaleOptionList() {
+    return this.http.get(`/v1/staff/sale`)
+  }
+  getCoachOptionList() {
+    return this.http.get(`/v1/staff/coach`)
+  }
 }
 export interface EditFaceParams {
   image_face: object

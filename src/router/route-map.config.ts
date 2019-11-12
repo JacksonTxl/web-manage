@@ -739,6 +739,10 @@ export const routeMapConfig = {
       be_member_start_time: { type: String, default: '' },
       be_member_stop_time: { type: String, default: '' },
       is_follow: { type: Number, default: -1 },
+      saleman_protect_remain: { type: Number },
+      coach_protect_remain: { type: Number },
+      follow_min: { type: Number, default: 0 },
+      follow_max: { type: Number, default: 999 },
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
@@ -756,6 +760,9 @@ export const routeMapConfig = {
     routeConfig.meta.title = '用户详情'
   },
   'shop-member-info-sales-interests'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '用户详情'
+  },
+  'shop-member-info-follow-record'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '用户详情'
   },
   'shop-member-info-user-experience'(routeConfig: RouteConfig) {

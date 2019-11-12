@@ -1,0 +1,32 @@
+.member-follow-record {
+  margin-left: 120px;
+  &__timeline-item {
+    height: 44px;
+    margin-left: 12px;
+    line-height: 44px;
+    border-radius: 4px;
+    padding-left: 20px;
+    border: 1px solid rgba(230, 233, 239, 1);
+    font-size: 14px;
+    color: #252a2e;
+  }
+  .member-follow-record__timeline-item::before {
+    content: '';
+    width: 0px;
+    height: 0px;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-right: 6px solid #fff;
+    position: absolute;
+    top: 18px;
+    left: -6px;
+  }
+  &__timeline-position {
+    position: absolute;
+    left: -120px;
+    top: 0px;
+  }
+  .ant-timeline-item-head-blue {
+    margin-top: 10px;
+  }
+}
