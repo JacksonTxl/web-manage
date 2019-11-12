@@ -16,7 +16,7 @@
       <a-row :class="bPage('main')" class="mg-t32 mg-l24">
         <a-col :lg="8" class="main-item">
           <brand-statistics-course-ring
-            name="总售课节数"
+            name="总售课数"
             :height="198"
             tooltipId="TBDAC001"
             :data="soldChartData$"
@@ -24,7 +24,7 @@
         </a-col>
         <a-col :lg="8" class="main-item">
           <brand-statistics-course-ring
-            name="总消课节数"
+            name="总消课数"
             :height="198"
             tooltipId="TBDAC002"
             :data="checkInChartData$"
@@ -32,7 +32,7 @@
         </a-col>
         <a-col :lg="8" class="main-item">
           <brand-statistics-course-ring
-            name="未消课节数"
+            name="未消课数"
             :height="198"
             tooltipId="TBDAC003"
             :data="notCheckInChartData$"

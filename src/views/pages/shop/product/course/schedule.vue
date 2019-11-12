@@ -1,5 +1,5 @@
 <template>
-  <st-panel class="page-schedule-st-panel" app :tabs="authTabs">
+  <st-panel class="page-schedule-st-panel" fixed app :tabs="authTabs">
     <div
       slot="actions"
       v-if="
