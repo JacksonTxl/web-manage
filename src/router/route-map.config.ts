@@ -1266,5 +1266,9 @@ export const routeMapConfig = {
   ) {
     routeConfig.meta.title = '保存成功'
   },
+  'brand-marketing-plugin-group-add'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '新增拼团'
+    routeConfig.meta.parentId = 'brand-marketing-plugin-group-list'
+  },
   ...tplConfigs
 }

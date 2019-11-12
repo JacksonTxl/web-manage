@@ -1,6 +1,6 @@
 export const ruleOptions = (vm: any) => {
   return {
-    coupon_name: {
+    group_name: {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
@@ -104,3 +104,22 @@ export const ruleOptions = (vm: any) => {
     }
   }
 }
+export const cardColumns = [
+  {
+    title: '期限/次数',
+    dataIndex: 'city_name',
+    width: '22%'
+  },
+  {
+    title: '原价',
+    dataIndex: 'district_name',
+    width: '22%'
+  },
+  {
+    title: '拼团价',
+    dataIndex: 'group_price',
+    width: '34%',
+    slots: { title: 'group_price' },
+    scopedSlots: { customRender: 'group_price' }
+  }
+]
