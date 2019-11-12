@@ -90,16 +90,20 @@
               </a-radio>
             </a-radio-group>
           </st-form-item>
-          <st-form-item label="初始额度" required>
+          <st-form-item labelGutter="12px" label="初始额度" required>
             <div :class="sale('contract')">
-              <a-input-number
+              <st-input-number
                 class="input-number"
                 :min="1"
-                :max="9999"
-                v-decorator="decorators.buyNum"
+                :max="selectSpecsItem.valid_time"
+                v-decorator="decorators.valid_time"
                 placeholder="请输入初始额度"
                 :disabled="isAmountDisabled"
-              ></a-input-number>
+              >
+                <div slot="addonAfter" v-if="selectSpecsItem.valid_unit">
+                  {{ selectSpecsItem.valid_unit }}
+                </div>
+              </st-input-number>
               <st-button
                 class="create-button"
                 @click="onClickAmountConfirm"
@@ -579,6 +583,11 @@ export default {
           this.selectSpecsItem = cloneDeep(this.upgradeCardInfo.specs[0])
           // 设置默认开卡方式
           this.selectOpenType = this.upgradeCardInfo.open_type[0].id
+          // 设置初始额度
+          this.form.setFieldsValue({
+            valid_time: this.selectSpecsItem.valid_time
+          })
+          this.form.validate(['valid_time'])
           // 设置默认卡价格
           this.cardPrice = this.upgradeCardInfo.specs[0].price
         })
@@ -590,6 +599,11 @@ export default {
         this.selectSpecsItem = cloneDeep(this.upgradeCardInfo.specs[0])
         // 设置默认开卡方式
         this.selectOpenType = this.upgradeCardInfo.open_type[0].id
+        // 设置初始额度
+        this.form.setFieldsValue({
+          valid_time: this.selectSpecsItem.valid_time
+        })
+        this.form.validate(['valid_time'])
         // 设置默认卡价格
         this.cardPrice = this.upgradeCardInfo.specs[0].price
       }
@@ -605,6 +619,10 @@ export default {
       // 重置选择的开始时间
       this.form.resetFields(['startTime'])
       this.endTime = '-'
+      this.form.setFieldsValue({
+        valid_time: this.selectSpecsItem.valid_time
+      })
+      this.form.validate(['valid_time'])
     },
     // 开卡方式
     onOpenTypeChange(data) {
@@ -613,19 +631,19 @@ export default {
       this.endTime = '-'
     },
     onClickAmountConfirm() {
-      const val = this.form.getFieldValue('buyNum')
+      const val = this.form.getFieldValue('valid_time')
       this.isAmountDisabled = true
       this.form.setFieldsValue({
-        buyNum: val
+        valid_time: val
       })
     },
     onClickAmountEdit() {
-      const val = this.form.getFieldValue('buyNum')
+      const val = this.form.getFieldValue('valid_time')
       this.isAmountDisabled = false
       this.form.setFieldsValue({
-        buyNum: val
+        valid_time: val
       })
-      this.form.validate(['buyNum'])
+      this.form.validate(['valid_time'])
     },
     // 有效时间
     disabledStartDate(startTime) {
@@ -720,7 +738,8 @@ export default {
                 reduce_price: +this.reduceAmount,
                 description: this.description,
                 staff_sale_id: +values.saleName,
-                gift_amount: +this.giftAmount
+                gift_amount: +this.giftAmount,
+                init_amount: values.valid_time
               },
               this.id
             )
@@ -753,7 +772,8 @@ export default {
                 reduce_price: +this.reduceAmount,
                 description: this.description,
                 staff_sale_id: +values.saleName,
-                gift_amount: +this.giftAmount
+                gift_amount: +this.giftAmount,
+                init_amount: values.valid_time
               },
               this.id
             )
