@@ -13,11 +13,32 @@
         </div>
       </header>
 
-      <main :class="bPage('mian')" class="mg-t32">
-        <brand-statistics-revenue-ring
-          :data="chartData$"
-        ></brand-statistics-revenue-ring>
-      </main>
+      <a-row :class="bPage('main')" class="mg-t32 mg-l24">
+        <a-col :lg="8" class="main-item">
+          <brand-statistics-course-ring
+            name="总售课节数"
+            :height="198"
+            tooltipId="TBDAC001"
+            :data="soldChartData$"
+          />
+        </a-col>
+        <a-col :lg="8" class="main-item">
+          <brand-statistics-course-ring
+            name="总消课节数"
+            :height="198"
+            tooltipId="TBDAC002"
+            :data="checkInChartData$"
+          />
+        </a-col>
+        <a-col :lg="8" class="main-item">
+          <brand-statistics-course-ring
+            name="未消课节数"
+            :height="198"
+            tooltipId="TBDAC003"
+            :data="notCheckInChartData$"
+          />
+        </a-col>
+      </a-row>
     </div>
     <st-hr />
     <div :class="bPage('section')">
@@ -35,7 +56,7 @@
           :loading="loading$.getList"
           :columns="columns"
           :scroll="{ x: 1800 }"
-          rowKey="member_id"
+          rowKey="stat_date"
           :page="page$"
           @change="onTableChange"
           :dataSource="list$"
@@ -47,7 +68,7 @@
 
 <script>
 import BrandShop from './components#/brand-shop'
-import BrandStatisticsRevenueRing from '@/views/biz-components/stat/brand-stat-revenue-ring'
+import BrandStatisticsCourseRing from '@/views/biz-components/stat/brand-stat-course-ring'
 import { RouteService } from '@/services/route.service'
 import { CourseService } from './course.service'
 import tableMixin from '@/mixins/table.mixin'
@@ -62,14 +83,24 @@ export default {
     }
   },
   rxState() {
-    const { list$, page$, auth$, loading$, chartData$ } = this.service
+    const {
+      list$,
+      page$,
+      auth$,
+      loading$,
+      soldChartData$,
+      checkInChartData$,
+      notCheckInChartData$
+    } = this.service
     return {
       query: this.routeService.query$,
       list$,
       page$,
       auth$,
       loading$,
-      chartData$
+      soldChartData$,
+      checkInChartData$,
+      notCheckInChartData$
     }
   },
   bem: {
@@ -123,7 +154,7 @@ export default {
   },
   components: {
     BrandShop,
-    BrandStatisticsRevenueRing
+    BrandStatisticsCourseRing
   }
 }
 </script>

@@ -24,7 +24,11 @@ export const columns = (vm: any) => [
   {
     title: '私教课消课节数',
     align: 'right',
-    dataIndex: 'team_checkin_num'
+    dataIndex: 'personal_checkin_num'
   },
-  { title: '团课消课节数', align: 'right', dataIndex: 'team_course_num' }
+  {
+    title: '团课消课节数',
+    align: 'right',
+    dataIndex: 'team_checkin_num'
+  }
 ]

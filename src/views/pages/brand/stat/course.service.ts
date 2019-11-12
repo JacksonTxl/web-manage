@@ -12,7 +12,7 @@ import { UserService } from '@/services/user.service'
 @Injectable()
 export class CourseService {
   soldChartData$ = new State<object[]>([])
-  CheckInChartData$ = new State<object[]>([])
+  checkInChartData$ = new State<object[]>([])
   notCheckInChartData$ = new State<object[]>([])
   list$ = new State([])
   page$ = new State({})
@@ -31,36 +31,42 @@ export class CourseService {
     return this.api.getChart(query).pipe(
       tap(res => {
         const data = res.info
-        const chartData: any = []
-        let chartRing: any = []
-        const member_card = this.userService.c('member_card')
-        data.advance_fee.items.forEach((item: any, idx: number) => {
-          const chartItem: any = {
-            date: item.date,
-            私教课: data.personal_course.items[idx].amount,
-            团体课: data.team_course.items[idx].amount,
-            课程包: data.package_course.items[idx].amount,
-            云店: data.shop.items[idx].amount,
-            其它: data.other.items[idx].amount
-            // 储值卡: data.deposit_card.items[idx].amount,
-            // 定金: data.advance_fee.items[idx].amount,
-            // 押金: data.cash_pledge.items[idx].amount,
+        const saleCourse = data.sale_course
+        const checkInCourse = data.checkin_course
+        const notCheckInCourse = data.not_checkin_course
+        let soldChartData: any = []
+        let checkInChartData: any = []
+        let notCheckInChartData: any = []
+        soldChartData = [
+          {
+            name: '私教课售课',
+            value: saleCourse.sale_personal_num,
+            percent: saleCourse.personal_checkin_percentage
+          },
+          {
+            name: '团体课售课',
+            value: saleCourse.sale_team_num,
+            percent: saleCourse.team_checkin_percentage
           }
-          chartItem[member_card] = data.member_card.items[idx].amount
-          chartData.push(chartItem)
-        })
-        chartRing = [
-          { name: member_card, value: data.member_card.total_amount },
-          { name: '私教课', value: data.personal_course.total_amount },
-          { name: '团体课', value: data.team_course.total_amount },
-          { name: '课程包', value: data.package_course.total_amount },
-          { name: '云店', value: data.shop.total_amount },
-          { name: '其它', value: data.other.total_amount }
         ]
-        // { name: '定金', value: data.advance_fee.total_amount },
-        // { name: '押金', value: data.cash_pledge.total_amount },
-        // { name: '储值卡', value: data.deposit_card.total_amount },
-        this.dataRing$.commit(() => chartRing)
+        checkInChartData = [
+          { name: '私教课消课', value: checkInCourse.personal_checkin_num },
+          {
+            name: '团体课消课',
+            value: checkInCourse.team_checkin_num,
+            percent: '10%'
+          }
+        ]
+        notCheckInChartData = [
+          {
+            name: '未私教课消课',
+            value: notCheckInCourse.personal_not_checkin_num
+          },
+          { name: '未团体课消课', value: notCheckInCourse.team_not_checkin_num }
+        ]
+        this.soldChartData$.commit(() => soldChartData)
+        this.checkInChartData$.commit(() => checkInChartData)
+        this.notCheckInChartData$.commit(() => notCheckInChartData)
       })
     )
   }
