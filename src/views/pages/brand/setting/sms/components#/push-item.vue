@@ -122,6 +122,7 @@
                 placeholder="请输入手机号码，多个用逗号分隔"
               />
             </div>
+            <!-- 发送规则的选项 -->
             <div>
               <span class="color-title mg-r8">发送规则</span>
               <span
@@ -142,7 +143,7 @@
                 </a-select>
                 发送
               </span>
-
+              <!-- 产品到期 对应列的title -->
               <a-radio-group
                 v-if="
                   info.notify_type.value === 1 &&
@@ -267,6 +268,7 @@ export default {
     }
   },
   computed: {
+    // 枚举规则下拉
     notifyRule() {
       let list = []
       if (!this.settingEnums.notify_rule) return list
@@ -275,6 +277,7 @@ export default {
       })
       return list
     },
+    // 枚举规则单选
     notifyHour() {
       let list = []
       if (!this.settingEnums.notify_time_hour) return list

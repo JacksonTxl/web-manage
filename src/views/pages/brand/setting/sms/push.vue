@@ -49,7 +49,6 @@ export default {
   },
   data() {
     return {
-      memberList: [],
       shopList: []
     }
   },
@@ -66,9 +65,6 @@ export default {
     },
     getNoticeList() {
       return this.noticeService.getNoticeList().subscribe(res => {
-        this.memberList = this.list.filter(
-          ({ notify_type }) => notify_type.value === 1
-        )
         this.shopList = this.list.filter(
           ({ notify_type }) => notify_type.value === 2
         )
