@@ -157,6 +157,13 @@
               </a-menu-item>-->
               <!-- <a-menu-divider/> -->
               <a-menu-item
+                @click="onClickBind"
+                class="layout-default-body__options"
+              >
+                <st-icon type="bind-phone" color="#000000"></st-icon>
+                <span>绑定手机号</span>
+              </a-menu-item>
+              <a-menu-item
                 @click="onClickLogout"
                 class="layout-default-body__options"
               >
@@ -245,6 +252,13 @@ export default {
   methods: {
     switchShop() {
       this.isShowSwitchShop = !this.isShowSwitchShop
+    },
+    onClickBind() {
+      this.$modalRouter.push({
+        name: 'account-agreement',
+        props: {},
+        on: {}
+      })
     },
     onClickLogout() {
       this.tokenService.REMOVE_TOKEN()
