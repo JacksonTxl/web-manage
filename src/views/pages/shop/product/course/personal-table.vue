@@ -1,5 +1,5 @@
 <template>
-  <st-panel app>
+  <st-panel initial app>
     <div class="page-personal-table schedule-table">
       <div
         class="page-personal-table__title pd-x24 pd-y16 schedule-table__title"
