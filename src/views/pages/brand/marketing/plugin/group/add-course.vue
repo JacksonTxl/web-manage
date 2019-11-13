@@ -38,14 +38,13 @@
         <a-row :gutter="8">
           <a-col :lg="16">
             <st-form-item label="优惠设置" required>
-              <div>
+              <div :class="basic('table')">
                 <st-table
                   rowKey="card_id"
                   :columns="cardColumns"
                   :dataSource="tableData"
                   :pagination="false"
                   :scroll="{ y: 230 }"
-                  :class="basic('add_border')"
                   align="center"
                 >
                   <template

@@ -38,14 +38,13 @@
         <a-row :gutter="8">
           <a-col :lg="16">
             <st-form-item label="优惠设置" required>
-              <div>
+              <div :class="basic('table')">
                 <st-table
                   rowKey="card_id"
                   :columns="cardColumns"
                   :dataSource="tableData"
                   :pagination="false"
                   :scroll="{ y: 230 }"
-                  :class="basic('add_border')"
                   :rowSelection="{
                     onChange: onChange,
                     rowSelection: rowSelection
@@ -134,7 +133,7 @@
                 </a-radio>
               </a-radio-group>
               <select-shop
-                :class="basic('add_border')"
+                :class="basic('table')"
                 v-if="showShopRange == '2'"
                 @change="onSelectShop"
                 :shopIds="shopIds"
