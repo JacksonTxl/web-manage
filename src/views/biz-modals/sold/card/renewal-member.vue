@@ -539,7 +539,7 @@ export default {
         if (!error) {
           let reduce_amount = this.reduceAmount ? +this.reduceAmount : undefined
           this.renewalMemberService
-            .renewal(
+            .renewalPay(
               {
                 contract_number: values.contractNumber,
                 rule_id: this.selectSpecs,
