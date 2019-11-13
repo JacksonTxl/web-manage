@@ -4,30 +4,56 @@
       <span class="mg-r24">您是否需要收集参与者的必要信息</span>
       <st-switch v-model="isStep3" @change="onChangeIsShow"></st-switch>
     </div>
-    <st-form-table class="mg-t24" v-if="isStep3">
-      <thead>
-        <tr>
-          <th>报名项标题</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td :colspan="colspanNum" class="st-form-table__add">
-            <st-button
-              :disabled="dataSource.length === 10"
-              type="dashed"
-              icon="add"
-              @click="onCLickOpenmodal"
-              block
-            >
-              添加
-            </st-button>
-          </td>
-        </tr>
-        <template v-if="dataSource.length">
-          <tr v-for="(item, index) in dataSource" :key="index">
-            <td>
+    <div class="mg-t24" v-if="isStep3">
+      <ul :class="pComponents('table-header')">
+        <li :class="pComponents('table-header-item')">报名项标题</li>
+        <li :class="pComponents('table-header-item')">操作</li>
+      </ul>
+      <st-button
+        :disabled="dataSource.length === 10"
+        type="dashed"
+        icon="add"
+        class="mg-t8"
+        @click="onCLickOpenmodal"
+        block
+      >
+        添加
+      </st-button>
+      <ul class="mg-t8" :class="pComponents('draggable')" tag="ul">
+        <template v-for="(item, index) in dataSource">
+          <li
+            v-if="index <= 1 || !isDel(item)"
+            :class="pComponents('draggable-li')"
+            :key="index"
+          >
+            <div :class="pComponents('draggable-name')">
+              <span style="color: red" v-if="index <= 1">*</span>
+              {{ item.extra_name }}
+            </div>
+            <div :class="pComponents('draggable-action')">
+              <a @click="delExtraItemRecord(item.extra_key)">
+                --
+              </a>
+            </div>
+          </li>
+        </template>
+      </ul>
+      <!-- v-if="index > 1" v-if="isDel(item)" -->
+      <draggable
+        class="mg-t8"
+        v-model="addDataSource"
+        @end="onEnd"
+        :class="pComponents('draggable')"
+        tag="ul"
+      >
+        <template v-for="(item, index) in dataSource">
+          <li
+            v-if="index > 1 && isDel(item)"
+            :class="pComponents('draggable-li')"
+            :key="index"
+          >
+            <div :class="pComponents('draggable-name')">
+              <st-icon color="#9BACB9" type="draggable" class="mg-r8"></st-icon>
               <a-popover
                 v-if="
                   item.extra_type === 'radio' || item.extra_type === 'checkbox'
@@ -49,32 +75,19 @@
                 </template>
                 <span>{{ item.extra_name }}</span>
               </a-popover>
-              <span
-                :class="{
-                  item__require:
-                    item.extra_key === 'username' || item.extra_key === 'mobile'
-                }"
-                v-else
-              >
-                {{ item.extra_name }}
-              </span>
-            </td>
-            <td>
+              <span v-else>{{ item.extra_name }}</span>
+            </div>
+            <div :class="pComponents('draggable-action')">
               <a v-if="isDel(item)" @click="delExtraItemRecord(item.extra_key)">
                 删除
               </a>
-            </td>
-          </tr>
+              <a v-else>--</a>
+            </div>
+          </li>
         </template>
-        <template v-else>
-          <tr>
-            <td :colspan="colspanNum">
-              <st-no-data />
-            </td>
-          </tr>
-        </template>
-      </tbody>
-    </st-form-table>
+      </draggable>
+    </div>
+
     <div
       v-di-view="{ name: 'step', show }"
       :class="pComponents('button-group')"
@@ -92,6 +105,7 @@
   </div>
 </template>
 <script>
+import draggable from 'vuedraggable'
 import { Step3FormService } from './step3-form.service'
 import MarketingAddSignup from '@/views/biz-modals/marketing/add-signup'
 import { CopyService } from '../copy.service'
@@ -131,6 +145,9 @@ export default {
       extraSort: 3,
       list: []
     }
+  },
+  components: {
+    draggable
   },
   props: {
     isCopy: {
@@ -182,6 +199,14 @@ export default {
     }
   },
   methods: {
+    onEnd() {
+      const list = this.addDataSource.map((item, index) => {
+        item.extra_sort = index
+        return item
+      })
+      this.$set(this, 'addDataSource', list)
+      this.$emit('change', this.dataSource)
+    },
     isDel(value) {
       if (value.extra_sort === 0 || value.extra_sort === 1) {
         return false
@@ -264,6 +289,7 @@ export default {
       this.$emit('change', this.addDataSource)
     },
     onClickRelease() {
+      debugger
       this.$emit('release', this.getStepForm())
     },
     onClickSaveDraft() {

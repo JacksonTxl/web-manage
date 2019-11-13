@@ -127,6 +127,7 @@ export default {
     },
     // 发布活动
     onReleaseActivity(form) {
+      debugger
       this.stepForm.is_draft = 0
       this.$set(this.stepForm, 'rule_settings', JSON.stringify(form))
       // 发布
