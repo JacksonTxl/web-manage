@@ -11,7 +11,6 @@ import VueBemHelper from '@/vendor/vue-bem-helper'
 import VueRxState from '@/vendor/vue-rx-state'
 // @ts-ignore
 import VueStyleguide from '@/vendor/vue-styleguide'
-import VuePortal from 'portal-vue'
 
 import VueStForm from 'vue-st-form'
 
@@ -39,9 +38,6 @@ Vue.use(VueRxState)
 Vue.use(Antd)
 Vue.use(Viewer)
 Vue.use(VueBemHelper)
-Vue.use(VuePortal)
-// @ts-ignore
-Vue.use(VueDiView)
 // @ts-ignore
 Vue.use(VueDiView)
 // @ts-ignore
