@@ -10,45 +10,21 @@
         <a-select
           style="width: 160px;margin-left:12px"
           placeholder="课程类型"
+          :options="reserveTypeOptions"
           v-model="value.reserve_type"
-        >
-          <a-select-option
-            v-for="(item, key, index) in reserveEnums.reserve_course_type.value"
-            :value="key"
-            :key="index"
-          >
-            {{ item }}
-          </a-select-option>
-        </a-select>
+        ></a-select>
         <a-select
           style="width: 160px;margin-left:12px"
           placeholder="预约状态"
           v-model="value.reserve_status"
-        >
-          <a-select-option value="-1">全部预约状态</a-select-option>
-          <a-select-option
-            v-for="(item, key, index) in reserveEnums.reserve_status.value"
-            :value="key"
-            :key="index"
-          >
-            {{ item }}
-          </a-select-option>
-        </a-select>
+          :options="reserveStatusOptions"
+        ></a-select>
         <a-select
           style="width: 160px;margin-left:12px"
           placeholder="签到状态"
+          :options="reserveCheckinOptions"
           v-model="value.checkin_status"
-        >
-          <a-select-option value="-1">全部签到状态</a-select-option>
-
-          <a-select-option
-            v-for="(item, key, index) in reserveEnums.is_checkin.value"
-            :value="key"
-            :key="index"
-          >
-            {{ item }}
-          </a-select-option>
-        </a-select>
+        ></a-select>
         <st-input-search
           placeholder="请输入课程名称"
           style="float: right;"
@@ -70,9 +46,17 @@ export default {
     /**
      * @type {UserService}
      */
-    const user = this.userService
+    const userService = this.userService
     return {
-      reserveEnums: user.reserveEnums$
+      reserveTypeOptions: userService.getOptions$('reserve.reserve_type', {
+        addAll: '全部预约类型'
+      }),
+      reserveStatusOptions: userService.getOptions$('reserve.reserve_status', {
+        addAll: '全部预约状态'
+      }),
+      reserveCheckinOptions: userService.getOptions$('reserve.is_checkin', {
+        addAll: '签到状态'
+      })
     }
   },
   name: 'formData',
