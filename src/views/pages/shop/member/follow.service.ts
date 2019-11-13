@@ -1,7 +1,9 @@
 import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
-import { MemberApi } from '@/api/v1/member'
+import { forkJoin } from 'rxjs'
+import { UserService } from '@/services/user.service'
+import { StatApi } from '@/api/v1/stat/shop'
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()
@@ -12,6 +14,9 @@ export class FollowService implements Controller {
   memberListInfo$: Computed<string>
   list$ = new State({})
   page$ = new State({})
+  staffList$ = new State({})
+  coachList$ = new State({})
+  operatorList$ = new State({})
   auth$ = this.authService.authMap$({
     add: 'shop:member:member|add',
     import: 'shop:member:member|import',
@@ -20,7 +25,11 @@ export class FollowService implements Controller {
     bindSalesman: 'shop:member:member|bind_salesman',
     export: 'shop:member:member|export'
   })
-  constructor(private memberApi: MemberApi, private authService: AuthService) {
+  constructor(
+    private statApi: StatApi,
+    private authService: AuthService,
+    private userService: UserService
+  ) {
     this.state$ = new State({
       memberListInfo: {}
     })
@@ -29,8 +38,8 @@ export class FollowService implements Controller {
     )
   }
   @Effect()
-  getListInfo(paramsObj: any) {
-    return this.memberApi.getMember(paramsObj).pipe(
+  getList(paramsObj: any) {
+    return this.statApi.getFollowHistory(paramsObj).pipe(
       tap(res => {
         res = this.authService.filter(res)
         this.list$.commit(() => res.list)
@@ -38,7 +47,34 @@ export class FollowService implements Controller {
       })
     )
   }
+  getStaffList() {
+    console.log('getStaffList')
+    return this.statApi.getDepartmentStaffList().pipe(
+      tap((res: any) => {
+        this.staffList$.commit(() => {
+          return [{ id: -1, name: '所有销售' }, ...res.info.staff_list]
+        })
+      })
+    )
+  }
+  getCoachList() {
+    console.log('getCoachList')
+    return this.statApi.getCoachList().pipe(
+      tap((res: any) => {
+        this.coachList$.commit(() => {
+          return [{ id: -1, name: '全部教练' }, ...res.info.coach_list]
+        })
+      })
+    )
+  }
+  init(query: any) {
+    return forkJoin(
+      this.getList(query),
+      this.getCoachList(),
+      this.getStaffList()
+    )
+  }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    return this.getListInfo(to.meta.query)
+    return this.init(to.meta.query)
   }
 }

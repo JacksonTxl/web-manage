@@ -72,6 +72,13 @@ export class StatApi {
   getFollowStaffList(query: any) {
     return this.http.get('v1/stat/fellow/staff', { query })
   }
+  getFollowShopTotal(query: any) {
+    return this.http.get('v1/stat/fellow/follow_total', { query })
+  }
+  getFollowHistory(query: any) {
+    console.log(query)
+    return this.http.get('v1/member/follow/history', { query })
+  }
 }
 
 export interface PersonalCourseQuery {

@@ -1,11 +1,11 @@
 <template>
   <div :class="bPage()">
     <div :class="bPage('count')">
-      <st-refresh-btn :date="todayInfo.time" :action="refresh" />
+      <st-refresh-btn :date="totalInfo.time" :action="refresh" />
       <a-row :class="bPage('income-row')">
         <div :class="bPage('income-detail')">
           <swiper :options="sliderOptions">
-            <swiper-slide v-for="(item, index) in todayInfo.res" :key="index">
+            <swiper-slide v-for="(item, index) in totalInfo.res" :key="index">
               <div :class="bPage('income')">
                 <p :class="bPage('income-label')">{{ item.label }}</p>
                 <p :class="bPage('income-value')">{{ item.value }}</p>
@@ -74,7 +74,7 @@ export default {
       loading: this.followService.loading$,
       list: this.followService.list$,
       page: this.followService.page$,
-      todayInfo: this.followService.todayInfo$,
+      totalInfo: this.followService.totalInfo$,
       shop: this.userService.shop$
     }
   },
@@ -100,21 +100,18 @@ export default {
   },
   components: { swiper, swiperSlide },
   created() {
-    this.getFollowShopToday().subscribe()
-  },
-  created() {
-    //console.log(this.userService.shop$.value.id)
-    //console.log(this.shop.id)
+    query.shop_id = this.shop.id
+    this.getFollowShopTotal(query).subscribe()
   },
   methods: {
     recentChange(searchFieldsValue) {
       this.onMultiSearch(searchFieldsValue)
     },
-    getFollowShopToday() {
-      return this.followService.getFollowShopToday()
+    getFollowShopTotal(query) {
+      return this.followService.getFollowShopTotal(query)
     },
     refresh() {
-      return this.getFollowShopToday()
+      return this.getFollowShopTotal(query)
     },
     handleSizeChange(val) {
       this.showTable = val.target.value

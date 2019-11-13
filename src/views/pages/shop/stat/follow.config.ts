@@ -6,42 +6,42 @@ export const dateColumns = (vm: any) => {
     },
     {
       title: '电话跟进数',
-      dataIndex: 'total_amount',
+      dataIndex: 'follow_phone',
       align: 'right'
     },
     {
       title: `微信跟进数`,
-      dataIndex: 'member_card_amount',
+      dataIndex: 'follow_wx',
       align: 'right'
     },
     {
       title: '客户到访跟进数',
-      dataIndex: 'personal_course_amount',
+      dataIndex: 'member_visit',
       align: 'right'
     },
     {
       title: '上门拜访跟进数',
-      dataIndex: 'team_course_amount',
+      dataIndex: 'staff_visit',
       align: 'right'
     },
     {
       title: '邀约成功数',
-      dataIndex: 'package_course_amount',
+      dataIndex: 'is_invited',
       align: 'right'
     },
     {
       title: '实际到访数',
-      dataIndex: 'shop_amount',
+      dataIndex: 'actual_visit',
       align: 'right'
     },
     {
       title: '签约数',
-      dataIndex: 'other_amount',
+      dataIndex: 'is_signed',
       align: 'right'
     },
     {
       title: '购卡数',
-      dataIndex: 'other_amount',
+      dataIndex: 'purchased_card',
       align: 'right'
     }
   ]
@@ -50,56 +50,56 @@ export const staffColumns = (vm: any) => {
   return [
     {
       title: '员工',
-      dataIndex: 'stat_date'
+      dataIndex: 'staff_name'
     },
     {
       title: '每日跟进总数',
-      dataIndex: 'total_amount',
+      dataIndex: 'follow_total',
       align: 'right'
     },
     {
       title: '电话跟进数',
-      dataIndex: 'total_amount',
+      dataIndex: 'follow_phone',
       align: 'right'
     },
     {
       title: `微信跟进数`,
-      dataIndex: 'member_card_amount',
+      dataIndex: 'follow_wx',
       align: 'right'
     },
     {
       title: '客户到访跟进数',
-      dataIndex: 'personal_course_amount',
+      dataIndex: 'member_visit',
       align: 'right'
     },
     {
       title: '上门拜访跟进数',
-      dataIndex: 'team_course_amount',
+      dataIndex: 'staff_visit',
       align: 'right'
     },
     {
       title: '已电话数',
-      dataIndex: 'package_course_amount',
+      dataIndex: 'is_called',
       align: 'right'
     },
     {
       title: '已邀约数',
-      dataIndex: 'shop_amount',
+      dataIndex: 'is_invited',
       align: 'right'
     },
     {
       title: '实际到访数',
-      dataIndex: 'other_amount',
+      dataIndex: 'actual_visit',
       align: 'right'
     },
     {
       title: '已签到数',
-      dataIndex: 'other_amount',
+      dataIndex: 'is_signed',
       align: 'right'
     },
     {
       title: '已购卡数',
-      dataIndex: 'other_amount',
+      dataIndex: 'purchased_card',
       align: 'right'
     }
   ]

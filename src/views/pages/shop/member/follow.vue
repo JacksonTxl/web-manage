@@ -16,12 +16,15 @@
           />
         </st-search-panel-item>
         <st-search-panel-item label="跟进方式：">
-          <st-search-radio v-model="query.follow_way" :options="sourceList" />
+          <st-search-radio
+            v-model="query.follow_way"
+            :options="followWayList"
+          />
         </st-search-panel-item>
         <st-search-panel-item label="跟进状态：">
           <st-search-radio
             v-model="query.follow_status"
-            :options="sourceList"
+            :options="followStatusList"
           />
         </st-search-panel-item>
         <st-search-panel-item label="跟进员工：">
@@ -34,11 +37,11 @@
             v-model="query.follow_salesman_id"
           >
             <a-select-option
-              :value="+department.id"
-              v-for="department in mockData"
-              :key="department.id"
+              :value="+staff.id"
+              v-for="staff in staffList"
+              :key="staff.id"
             >
-              {{ department.name }}
+              {{ staff.name }}
             </a-select-option>
           </a-select>
           <a-select
@@ -51,11 +54,11 @@
             v-model="query.follow_coach_id"
           >
             <a-select-option
-              :value="+staff.id"
-              v-for="staff in mockData"
-              :key="staff.id"
+              :value="+coach.id"
+              v-for="coach in coachList"
+              :key="coach.id"
             >
-              {{ staff.name }}
+              {{ coach.name }}
             </a-select-option>
           </a-select>
           <a-select
@@ -68,11 +71,11 @@
             v-model="query.operator_id"
           >
             <a-select-option
-              :value="+staff.id"
-              v-for="staff in mockData"
-              :key="staff.id"
+              :value="+operator.id"
+              v-for="operator in operatorList"
+              :key="operator.id"
             >
-              {{ staff.name }}
+              {{ operator.name }}
             </a-select-option>
           </a-select>
         </st-search-panel-item>
@@ -102,6 +105,27 @@
       @change="onTableChange"
       :dataSource="list"
     >
+      <span slot="operator" slot-scope="text, record">
+        {{ record.operator.label }}
+      </span>
+      <span slot="member" slot-scope="text, record">
+        {{ record.member.label }}
+      </span>
+      <span slot="member_level" slot-scope="text, record">
+        {{ record.member_level.label }}
+      </span>
+      <span slot="coach" slot-scope="text, record">
+        {{ record.coach.label }}
+      </span>
+      <span slot="salesman" slot-scope="text, record">
+        {{ record.salesman.label }}
+      </span>
+      <span slot="follow_way" slot-scope="text, record">
+        {{ record.follow_way.label }}
+      </span>
+      <span slot="follow_status" slot-scope="text, record">
+        {{ record.follow_status.label }}
+      </span>
       <template slot="operate_object" slot-scope="text, record">
         <span v-if="text.length === 0">{{ record.object }}</span>
         <div v-else>
@@ -139,17 +163,17 @@ export default {
     return {
       loading: this.followService.loading$,
       shopMemberEnums: user.shopMemberEnums$,
-      reserveEnums: user.reserveEnums$,
       memberEnums: user.memberEnums$,
       auth: this.followService.auth$,
       query: this.routeService.query$,
       list: this.followService.list$,
-      page: this.followService.page$
+      page: this.followService.page$,
+      staffList: this.followService.staffList$,
+      coachList: this.followService.coachList$
     }
   },
   data() {
     return {
-      mockData: [1, 1, 2, 3, 5],
       dateFormat: 'YYYY-MM-DD',
       expand: false,
       sourceRegisterList: [],
@@ -177,7 +201,6 @@ export default {
   },
   computed: {
     columns,
-    // 刷选枚举
     memberLevel() {
       let list = [{ value: -1, label: '全部' }]
       if (!this.shopMemberEnums.member_level) return list
@@ -186,34 +209,47 @@ export default {
       })
       return list
     },
-    // no
-    defaultRegValue() {
-      if (!this.query.register_start_time) return []
+    followWayList() {
+      let list = [{ value: -1, label: '全部' }]
+      if (!this.memberEnums.follow_way) return list
+      Object.entries(this.memberEnums.follow_way.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
+    },
+    followStatusList() {
+      let list = [{ value: -1, label: '全部' }]
+      if (!this.memberEnums.follow_status) return list
+      Object.entries(this.memberEnums.follow_status.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
+    },
+    operatorList() {
+      const coachList = this.coachList
+      const staffList = this.staffList
       return [
-        moment(this.query.register_start_time, this.dateFormat),
-        moment(this.query.register_stop_time, this.dateFormat)
+        { id: -1, name: '录入人' }
+        // ...coachList.shift(),
+        // ...staffList.shift()
       ]
     },
+    // no
     defaultBeMemberValue() {
       if (!this.query.be_member_start_time) return null
       return [
         moment(this.query.be_member_start_time, this.dateFormat),
         moment(this.query.be_member_stop_time, this.dateFormat)
       ]
-    },
-    // 刷选枚举
-    sourceList() {
-      let list = [{ value: -1, label: '全部' }]
-      if (!this.memberEnums.source_channel) return list
-      Object.entries(this.memberEnums.source_channel.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
     }
   },
+  created() {
+    console.log(this.coachList)
+  },
   mounted() {
-    console.log(this.query)
-    this.sourceRegisters()
+    //console.log(this.query)
+    //console.log(this.memberEnums)
+    //this.sourceRegisters()
     this.setSearchData()
   },
   watch: {
