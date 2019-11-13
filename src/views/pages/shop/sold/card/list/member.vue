@@ -98,7 +98,7 @@
               </a>
               <a
                 v-if="record.auth['shop:sold:sold_member_card|renew']"
-                @click="onRenewal(record)"
+                @click="cardActions.onRenewal(record)"
               >
                 续卡
               </a>
@@ -431,39 +431,6 @@ export default {
           success: () => {
             this.$router.reload()
             this.onClear()
-          }
-        }
-      })
-    },
-    // 续卡
-    onRenewal(record) {
-      this.$modalRouter.push({
-        name: 'sold-card-renewal-member',
-        props: {
-          id: record.id
-        },
-        on: {
-          success: async res => {
-            this.$router.reload()
-            if (res.type === 'create') {
-              // 创建订单成功
-              let props = {
-                order_id: res.orderId,
-                type: 'member',
-                message: '订单创建成功',
-                needPay: true
-              }
-              let orderSuccessRes = await this.createdGatheringTip(props)
-              this.tipCallBack(res.orderId, 'member', orderSuccessRes.type)
-            } else if (res.type === 'createPay') {
-              // 创建订单成功 并且到支付页面
-              let props = {
-                order_id: res.orderId,
-                type: 'member'
-              }
-              let payOrderRes = await this.createdOrderPay(props)
-              this.payCallBack(res.orderId, 'member', payOrderRes.type)
-            }
           }
         }
       })
