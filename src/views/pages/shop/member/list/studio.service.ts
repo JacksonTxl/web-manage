@@ -1,12 +1,11 @@
 import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
-import { MemberApi, CoachParams, CoachQuery, SaleQuery } from '@/api/v1/member'
+import { MemberApi } from '@/api/v1/member'
 import { AuthService } from '@/services/auth.service'
-import { forkJoin } from 'rxjs'
 
 @Injectable()
-export class ClubListService implements Controller {
+export class StudioService implements Controller {
   // 业务状态
   state$ = new State({})
   loading$ = new State({})
@@ -19,9 +18,7 @@ export class ClubListService implements Controller {
     tag: 'shop:member:member|tag',
     bindCoach: 'shop:member:member|bind_coach',
     bindSalesman: 'shop:member:member|bind_salesman',
-    export: 'shop:member:member|export',
-    sale: 'shop:member:member|batch_unbind_saleman',
-    coach: 'shop:member:member|batch_unbind_coach'
+    export: 'shop:member:member|export'
   })
   constructor(private memberApi: MemberApi, private authService: AuthService) {
     this.state$ = new State({
@@ -47,16 +44,7 @@ export class ClubListService implements Controller {
   getMemberSourceRegisters() {
     return this.memberApi.getMemberSourceRegisters()
   }
-  getSaleOptionList(query: SaleQuery) {
-    return this.memberApi.getSaleList(query)
-  }
-  getCoachOptionList(query: CoachQuery) {
-    return this.memberApi.getCoachList(query)
-  }
-  init(query: any) {
-    return forkJoin(this.getListInfo(query))
-  }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    return this.init(to.meta.query)
+    return this.getListInfo(to.meta.query)
   }
 }

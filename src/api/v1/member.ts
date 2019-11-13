@@ -161,7 +161,31 @@ export class MemberApi extends Api {
   getMember(query: any) {
     return this.http.get(`/v1/member`, { query })
   }
-
+  /**
+   * 俱乐部会员列表
+   */
+  getClubMember(query: any) {
+    return this.http.get(`/v1/member/club_member`, { query })
+  }
+  /**
+   * 获取客保规则
+   */
+  getCrmRule() {
+    return this.http.get(`/v1/setting/crm-rules`)
+  }
+  /**
+   * 销售抛入公海
+   */
+  dropSalerSea(params: any) {
+    console.log(params)
+    return this.http.put(`/v1/member/cancel_sales`, { params })
+  }
+  /**
+   * 教练抛入公海
+   */
+  dropCoachSea(params: any) {
+    return this.http.put(`/v1/member/cancel_coach`, { params })
+  }
   /**
    * 根据员工名称查询员工列表
    */

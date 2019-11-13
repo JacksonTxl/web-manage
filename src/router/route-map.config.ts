@@ -728,7 +728,28 @@ export const routeMapConfig = {
   'shop-reception-cabinet'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '储物柜使用'
   },
-  'shop-member-list'(routeConfig: RouteConfig) {
+  'shop-member-list-club'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '用户列表'
+    routeConfig.queryOptions = {
+      keyword: { type: String, default: '' },
+      member_level: { type: Number, default: -1 },
+      register_way: { type: Number, default: -1 },
+      register_start_time: { type: String, default: '' },
+      register_stop_time: { type: String, default: '' },
+      be_member_start_time: { type: String, default: '' },
+      be_member_stop_time: { type: String, default: '' },
+      saleman_protect_remain: { type: Number },
+      coach_protect_remain: { type: Number },
+      follow_min: { type: Number, default: 0 },
+      follow_max: { type: Number, default: 999 },
+      follow_salesman_id: { type: Number },
+      follow_coach_id: { type: Number },
+      follow_status: { type: Number },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-member-list-studio'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '用户列表'
     routeConfig.queryOptions = {
       keyword: { type: String, default: '' },
@@ -739,10 +760,6 @@ export const routeMapConfig = {
       be_member_start_time: { type: String, default: '' },
       be_member_stop_time: { type: String, default: '' },
       is_follow: { type: Number, default: -1 },
-      saleman_protect_remain: { type: Number },
-      coach_protect_remain: { type: Number },
-      follow_min: { type: Number, default: 0 },
-      follow_max: { type: Number, default: 999 },
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }

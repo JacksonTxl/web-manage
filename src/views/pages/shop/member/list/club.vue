@@ -18,6 +18,12 @@
         <st-search-panel-item label="来源方式：">
           <st-search-radio v-model="query.register_way" :options="sourceList" />
         </st-search-panel-item>
+        <st-search-panel-item label="跟进状态：">
+          <st-search-radio
+            v-model="query.follow_status"
+            :options="followStatus"
+          />
+        </st-search-panel-item>
         <st-search-panel-item label="注册时间：">
           <st-range-picker
             :disabledDays="180"
@@ -31,11 +37,12 @@
               :value="selectMemberTime"
             ></st-range-picker>
           </st-search-panel-item>
-          <st-search-panel-item label="员工跟进：">
-            <st-search-radio v-model="query.is_follow" :options="isFollow" />
-          </st-search-panel-item>
           <st-search-panel-item label="跟进员工：">
-            <a-select class="mg-t8 mg-r40 select" placeholder="请选择销售">
+            <a-select
+              class="mg-t8 mg-r40 select"
+              v-model="query.follow_salesman_id"
+              placeholder="请选择销售"
+            >
               <a-select-option
                 v-for="(item, index) in saleList"
                 :key="index"
@@ -44,7 +51,11 @@
                 {{ item.sale_name }}
               </a-select-option>
             </a-select>
-            <a-select class="mg-t8 select" placeholder="请选择教练">
+            <a-select
+              class="mg-t8 select"
+              v-model="query.follow_coach_id"
+              placeholder="请选择教练"
+            >
               <a-select-option
                 v-for="(item, index) in coachList"
                 :key="index"
@@ -114,9 +125,10 @@
         class="shop-member-list-button"
         :disabled="!selectedRows.length"
         v-modal-link="{
-          name: 'shop-add-lable',
-          props: {
-            memberIds: selectedRowKeys
+          name: 'shop-drop-saler-sea',
+          props: { memberIds: selectedRowKeys },
+          on: {
+            success: refeshPage
           }
         }"
       >
@@ -127,9 +139,10 @@
         class="shop-member-list-button"
         :disabled="!selectedRows.length"
         v-modal-link="{
-          name: 'shop-add-lable',
-          props: {
-            memberIds: selectedRowKeys
+          name: 'shop-drop-coach-sea',
+          props: { memberIds: selectedRowKeys },
+          on: {
+            success: refeshPage
           }
         }"
       >
@@ -176,7 +189,13 @@
       <!-- <st-button v-if="auth.export" :disabled='isSelectedDisabled' class="shop-member-list-button">批量导出</st-button> -->
     </div>
     <st-table
-      :columns="columns"
+      :columns="
+        crmRule.sales_is_protect
+          ? saleColumns
+          : crmRule.coach_is_protect
+          ? coachColumns
+          : columns
+      "
       :loading="loading.getListInfo"
       :scroll="{ x: 1400 }"
       :alertSelection="{ onReset: onSelectionReset }"
@@ -206,6 +225,24 @@
         </a>
         <span v-else>{{ text }}</span>
       </div>
+      <div slot="salesman_protect_day" slot-scope="text, record">
+        <span class="mg-r4">{{ record.salesman_protect_day }}</span>
+        <a-tooltip placement="top">
+          <template slot="title">
+            <span>{{ record.salesman_protect }}</span>
+          </template>
+          <span><st-icon type="help" /></span>
+        </a-tooltip>
+      </div>
+      <div slot="coach_protect_day" slot-scope="text, record">
+        <span class="mg-r4">{{ record.coach_protect_day }}</span>
+        <a-tooltip placement="top">
+          <template slot="title">
+            <span>{{ record.coach_protect }}</span>
+          </template>
+          <span><st-icon type="help" /></span>
+        </a-tooltip>
+      </div>
       <div slot="action" slot-scope="text, record">
         <st-table-actions>
           <a
@@ -234,13 +271,25 @@
           </a>
           <a
             v-if="record.auth['shop:member:member|unbind_saleman']"
-            @click="onDistributionSale(record)"
+            v-modal-link="{
+              name: 'shop-drop-saler-sea',
+              props: { memberIds: Array.of(record.member_id) },
+              on: {
+                success: refeshPage
+              }
+            }"
           >
             抛入销售公海
           </a>
           <a
             v-if="record.auth['shop:member:member|unbind_coach']"
-            @click="onDistributionSale(record)"
+            v-modal-link="{
+              name: 'shop-drop-coach-sea',
+              props: { memberIds: Array.of(record.member_id) },
+              on: {
+                success: refeshPage
+              }
+            }"
           >
             抛入教练公海
           </a>
@@ -292,18 +341,20 @@
 import moment from 'moment'
 import { cloneDeep, filter } from 'lodash-es'
 import { UserService } from '@/services/user.service'
-import { ClubListService } from './club-list.service'
+import { ClubService } from './club.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
-import { columns } from './list.config'
+import { columns, coachColumns, saleColumns } from './club.config'
 import ShopAddLable from '@/views/biz-modals/shop/add-lable'
 import ShopBindingEntityCard from '@/views/biz-modals/shop/binding-entity-card'
 import ShopDistributionCoach from '@/views/biz-modals/shop/distribution-coach'
 import ShopDistributionSale from '@/views/biz-modals/shop/distribution-sale'
 import ShopFrozen from '@/views/biz-modals/shop/frozen'
 import ShopMissingCard from '@/views/biz-modals/shop/missing-card'
+import ShopDropSalerSea from '@/views/biz-modals/shop/drop-saler-sea'
+import ShopDropCoachSea from '@/views/biz-modals/shop/drop-coach-sea'
 export default {
-  name: 'memberList',
+  name: 'ShopMemberListClub',
   mixins: [tableMixin],
   modals: {
     ShopAddLable,
@@ -311,11 +362,13 @@ export default {
     ShopDistributionCoach,
     ShopDistributionSale,
     ShopFrozen,
-    ShopMissingCard
+    ShopMissingCard,
+    ShopDropCoachSea,
+    ShopDropSalerSea
   },
   serviceInject() {
     return {
-      clubListService: ClubListService,
+      clubService: ClubService,
       userService: UserService,
       routeService: RouteService
     }
@@ -323,14 +376,14 @@ export default {
   rxState() {
     const user = this.userService
     return {
-      loading: this.clubListService.loading$,
+      loading: this.clubService.loading$,
       shopMemberEnums: user.shopMemberEnums$,
       reserveEnums: user.reserveEnums$,
       memberEnums: user.memberEnums$,
-      auth: this.clubListService.auth$,
+      auth: this.clubService.auth$,
       query: this.routeService.query$,
-      list: this.clubListService.list$,
-      page: this.clubListService.page$
+      list: this.clubService.list$,
+      page: this.clubService.page$
     }
   },
   data() {
@@ -381,23 +434,18 @@ export default {
         }
       },
       coachList: [],
-      slaeList: []
+      saleList: [],
+      crmRule: {}
     }
   },
   computed: {
     columns,
+    coachColumns,
+    saleColumns,
     memberLevel() {
       let list = [{ value: -1, label: '全部' }]
       if (!this.shopMemberEnums.member_level) return list
       Object.entries(this.shopMemberEnums.member_level.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    },
-    isFollow() {
-      let list = [{ value: -1, label: '全部' }]
-      if (!this.memberEnums.is_follow) return list
-      Object.entries(this.memberEnums.is_follow.value).forEach(o => {
         list.push({ value: +o[0], label: o[1] })
       })
       return list
@@ -423,11 +471,28 @@ export default {
         list.push({ value: +o[0], label: o[1] })
       })
       return list
+    },
+    followStatus() {
+      let list = [{ value: -1, label: '全部' }]
+      if (!this.memberEnums.follow_status) return list
+      Object.entries(this.memberEnums.source_channel.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
     }
+    // computedColumn() {
+    //   let res = this.crmRule.sales_is_protect
+    //     ? this.saleColumns
+    //     : this.crmRule.coach_is_protect
+    //     ? this.coachColumns
+    //     : columns
+    //   return res
+    // }
   },
   created() {
     this.getCoachOptionList()
     this.getSaleOptionList()
+    this.getCrmRule()
   },
   mounted() {
     this.sourceRegisters()
@@ -438,13 +503,12 @@ export default {
       this.setSearchData()
     }
   },
-
   methods: {
     refeshPage() {
       this.$router.reload()
     },
     sourceRegisters() {
-      this.clubListService.getMemberSourceRegisters().subscribe(status => {
+      this.clubService.getMemberSourceRegisters().subscribe(status => {
         this.sourceRegisterList = status
       })
     },
@@ -558,11 +622,9 @@ export default {
         title: '提示信息',
         content: '确认解绑选中的会员关系？',
         onOk: () => {
-          this.clubListService
-            .removeWechatBind(record.member_id)
-            .subscribe(() => {
-              this.$router.reload()
-            })
+          this.clubService.removeWechatBind(record.member_id).subscribe(() => {
+            this.$router.reload()
+          })
         },
         onCancel() {}
       })
@@ -610,13 +672,18 @@ export default {
       this.$router.push({ query: this.form })
     },
     getCoachOptionList() {
-      return this.clubListService.getCoachOptionList().subscribe(res => {
+      return this.clubService.getCoachOptionList().subscribe(res => {
         this.coachList = res.list
       })
     },
     getSaleOptionList() {
-      return this.clubListService.getSaleOptionList().subscribe(res => {
+      return this.clubService.getSaleOptionList().subscribe(res => {
         this.saleList = res.list
+      })
+    },
+    getCrmRule() {
+      return this.clubService.getCrmRule().subscribe(res => {
+        this.crmRule = res
       })
     }
   }

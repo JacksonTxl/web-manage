@@ -5,10 +5,12 @@
 const { wrapper } = require('webpack-mocker-api')
 const zlxMock = require('./zlx/index.js')
 const llfMock = require('./llf/index.js')
+const lyMock = require('./ly/index.js')
 
 const mockerApis = Object.assign(
   {},
   zlxMock,
+  lyMock
   // llfMock
 )
 
