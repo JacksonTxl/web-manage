@@ -718,6 +718,11 @@ export const routeMapConfig = {
   },
   'shop-member-info-sold'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '用户详情'
+    routeConfig.queryOptions = {
+      reserve_type: { type: Number, default: -1 },
+      reserve_status: { type: Number, default: -1 },
+      is_checkin: { type: Number, default: -1 }
+    }
   },
   'shop-member-info-reserve'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '用户详情'

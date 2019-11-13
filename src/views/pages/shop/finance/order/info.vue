@@ -2,28 +2,25 @@
   <section :class="basic()">
     <st-panel title="订单详情">
       <div slot="actions">
-        <st-button
-          v-if="auth['brand_shop:order:order|refund']"
-          @click="onRefund"
-          type="primary"
-        >
-          退款
-        </st-button>
-        <st-button
-          class="mg-r8"
-          v-if="auth['brand_shop:order:order|pay']"
-          @click="createdOrderPay"
-          type="primary"
-        >
-          收款
-        </st-button>
-        <st-button
-          v-if="auth['brand_shop:order:order|cancel']"
-          @click="onCancel"
-          type="primary"
-        >
-          取消
-        </st-button>
+        <st-btn-actions
+          :options="[
+            {
+              if: auth['brand_shop:order:order|refund'],
+              text: '退款',
+              click: onRefund
+            },
+            {
+              if: auth['brand_shop:order:order|refund'],
+              text: '收款',
+              click: createdOrderPay
+            },
+            {
+              if: auth['brand_shop:order:order|cancel'],
+              text: '取消',
+              click: onCancel
+            }
+          ]"
+        ></st-btn-actions>
         <!-- <st-button
           class="mg-r8"
           v-if="auth['brand_shop:order:order|split']"
