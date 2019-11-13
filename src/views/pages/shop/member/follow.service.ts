@@ -38,12 +38,6 @@ export class FollowService implements Controller {
       })
     )
   }
-  removeWechatBind(id: number) {
-    return this.memberApi.removeWechatBind(id)
-  }
-  getMemberSourceRegisters() {
-    return this.memberApi.getMemberSourceRegisters()
-  }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.getListInfo(to.meta.query)
   }

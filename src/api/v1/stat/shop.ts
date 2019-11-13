@@ -66,6 +66,12 @@ export class StatApi {
   getSellStaffList(query: SellStaffListQuery) {
     return this.http.get('/v1/stat/sale/staff', { query })
   }
+  getFollowDateList(query: any) {
+    return this.http.get('v1/stat/fellow/dates', { query })
+  }
+  getFollowStaffList(query: any) {
+    return this.http.get('v1/stat/fellow/staff', { query })
+  }
 }
 
 export interface PersonalCourseQuery {

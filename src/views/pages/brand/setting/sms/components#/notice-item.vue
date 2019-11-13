@@ -125,6 +125,12 @@
               <span class="color-title">接收人员</span>
               <span class=" mg-l16 inlineblock">
                 <st-checkbox
+                  v-if="params.receiver.seller"
+                  v-model="params.receiver.seller.value"
+                >
+                  {{ params.receiver.coach.seller }}
+                </st-checkbox>
+                <st-checkbox
                   v-if="params.receiver.coach"
                   v-model="params.receiver.coach.value"
                 >
@@ -217,6 +223,51 @@
                   {{ item.label }}
                 </a-radio>
               </a-radio-group>
+              <span
+                v-if="
+                  info.notify_sub_type.value === 10 ||
+                    info.notify_sub_type.value === 12
+                "
+              >
+                {{
+                  info.notify_sub_type.value === 10
+                    ? '客保到期前'
+                    : '会员流失前'
+                }}
+                <a-select v-model="params.notify_time" style="width:100px">
+                  <a-select-option
+                    v-for="(item, index) in notifyHour"
+                    :key="index"
+                    :value="item.value"
+                  >
+                    {{ item.label }}
+                  </a-select-option>
+                </a-select>
+                天提醒，
+              </span>
+              <span v-if="info.notify_sub_type.value === 14">
+                会员课程剩余
+                <a-select v-model="params.notify_number" style="width:100px">
+                  <a-select-option
+                    v-for="(item, index) in notifyNumber"
+                    :key="index"
+                    :value="item.value"
+                  >
+                    {{ item.label }}
+                  </a-select-option>
+                </a-select>
+                次时，或会员课程有效期剩余
+                <a-select v-model="params.notify_time" style="width:100px">
+                  <a-select-option
+                    v-for="(item, index) in notifyHour"
+                    :key="index"
+                    :value="item.value"
+                  >
+                    {{ item.label }}
+                  </a-select-option>
+                </a-select>
+                天时提醒，每日早7点推送
+              </span>
               <span v-else>
                 {{ info.notify_time.name }}
               </span>
@@ -248,6 +299,7 @@ export default {
   },
   rxState() {
     const user = this.userService
+    console.log(user.settingEnums$)
     return {
       settingEnums: user.settingEnums$
     }
@@ -304,12 +356,17 @@ export default {
             value: 0,
             name: '会员'
           },
+          seller: {
+            value: 0,
+            name: '销售'
+          },
           custom: {
             value: 0,
             name: '自定义'
           }
         },
         notify_time: '',
+        notify_number: '',
         notify_mode: {
           sms: 0,
           app: 0,
@@ -340,6 +397,14 @@ export default {
         list.push({ value: +o[0], label: o[1] })
       })
       return list
+    },
+    notifyNumber() {
+      let list = []
+      if (!this.settingEnums.notify_number) return list
+      Object.entries(this.settingEnums.notify_number.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
     }
   },
   created() {
@@ -353,7 +418,7 @@ export default {
       this.params.receiver = this.info.receiver
     }
     this.params.notify_time = this.info.notify_time.value
-
+    this.params.notify_number = this.info.notify_number.value
     this.params.msg_preffix = this.info.msg_preffix
     this.params.msg_suffix = this.info.msg_suffix
     this.params.custom_phone = this.info.custom_phone.join(' ')
@@ -405,6 +470,9 @@ export default {
       if (this.info.receiver.custom) {
         receiver.custom = 0
       }
+      if (this.info.receiver.seller) {
+        receiver.seller = 0
+      }
       if (this.info.course_type.team_course) {
         course_type.team_course = this.params.course_type.team_course.value
           ? 1
@@ -438,7 +506,9 @@ export default {
       if (this.info.receiver.custom) {
         receiver.custom = this.params.receiver.custom.value ? 1 : 0
       }
-
+      if (this.info.receiver.seller) {
+        receiver.seller = this.params.receiver.seller.value ? 1 : 0
+      }
       const para = Object.assign({}, this.params, {
         id: this.info.id,
         custom_phone:

@@ -39,12 +39,10 @@ export const columns = (vm: any) => [
   },
   {
     title: '下次跟进时间',
-    fixed: 'right',
     scopedSlots: { customRender: 'action' }
   },
   {
     title: '下次跟进次数',
-    fixed: 'right',
     scopedSlots: { customRender: 'action' }
   },
   {

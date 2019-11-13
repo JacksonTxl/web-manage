@@ -51,6 +51,7 @@
 <script>
 import { FollowService } from './follow.service'
 import { RouteService } from '@/services/route.service'
+import { UserService } from '@/services/user.service'
 import tableMixin from '@/mixins/table.mixin'
 import { dateColumns, staffColumns } from './follow.config.ts'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
@@ -63,7 +64,8 @@ export default {
   serviceInject() {
     return {
       routeService: RouteService,
-      followService: FollowService
+      followService: FollowService,
+      userService: UserService
     }
   },
   rxState() {
@@ -72,7 +74,8 @@ export default {
       loading: this.followService.loading$,
       list: this.followService.list$,
       page: this.followService.page$,
-      todayInfo: this.followService.todayInfo$
+      todayInfo: this.followService.todayInfo$,
+      shop: this.userService.shop$
     }
   },
   data() {
@@ -99,6 +102,10 @@ export default {
   created() {
     this.getFollowShopToday().subscribe()
   },
+  created() {
+    //console.log(this.userService.shop$.value.id)
+    //console.log(this.shop.id)
+  },
   methods: {
     recentChange(searchFieldsValue) {
       this.onMultiSearch(searchFieldsValue)
@@ -112,10 +119,7 @@ export default {
     handleSizeChange(val) {
       this.showTable = val.target.value
       let query = { showTable: this.showTable }
-      // if (this.showTable === 'staff') {
-      //   query.department_id = -1
-      //   query.staff_id = -1
-      // }
+      query.shop_id = this.shop.id
       this.$router.push({ query })
     }
   }

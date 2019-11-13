@@ -738,6 +738,24 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
+  'shop-member-follow'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '用户跟进列表'
+    routeConfig.queryOptions = {
+      keyword: { type: String, default: '' },
+      member_level: { type: Number, default: -1 },
+      follow_way: { type: Number, default: -1 },
+      follow_status: { type: Number, default: -1 },
+      follow_start_date: { type: String, default: '' },
+      follow_end_date: { type: String, default: '' },
+      follow_salesman_id: { type: Number, default: -1 },
+      follow_coach_id: { type: Number, default: -1 },
+      follow_start_num: { type: Number, default: -1 },
+      follow_end_num: { type: Number, default: -1 },
+      operator_id: { type: Number, default: -1 },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
   'shop-member-info-basic'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '用户详情'
   },
@@ -1074,7 +1092,6 @@ export const routeMapConfig = {
   'shop-stat-revenue'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '营收报表'
     routeConfig.queryOptions = {
-      showTable: { type: String, default: 'all' },
       recently_day: { type: Number, default: 7 },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -1085,6 +1102,7 @@ export const routeMapConfig = {
   'shop-stat-follow'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '跟进报表'
     routeConfig.queryOptions = {
+      showTable: { type: String, default: 'all' },
       recently_day: { type: Number, default: 7 },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
