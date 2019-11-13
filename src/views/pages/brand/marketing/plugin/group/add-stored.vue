@@ -1,17 +1,21 @@
 <template>
   <st-mina-panel :class="basic()">
-    <div slot="actions">
-      <st-button type="primary">
-        确 定
-      </st-button>
-    </div>
     <div>
-      <!-- <st-form :form="form" labelWidth="118px"> -->
-      <st-form labelWidth="118px">
+      <st-form :form="form" labelWidth="118px">
+        <!-- <st-form labelWidth="118px"> -->
         <a-row :gutter="8">
-          <a-col :span="11">
+          <a-col :span="10">
             <st-form-item label="活动名称" required>
-              <a-input placeholder="请输入活动名称" maxlength="15"></a-input>
+              <a-input
+                placeholder="请输入活动名称"
+                v-decorator="decorators.group_name"
+                maxlength="30"
+                @change="changeName"
+              ></a-input>
+              <span slot="suffix">
+                {{ groupName.length }}
+                /30
+              </span>
             </st-form-item>
             <st-form-item label="选择储值卡" required>
               <!-- <a-select :placeholder="`请输入${$c('member_card')}类型`"> -->
@@ -31,9 +35,15 @@
                   rowKey="id"
                   :dataSource="tableData"
                   :columns="columnsGroupStored"
+                  :pagination="false"
                 >
+                  {{ tableData.city_name }}
                   <template slot="discount" slot-scope="customRender, record">
-                    <st-input-number :float="true" v-model="record.discount">
+                    <st-input-number
+                      :float="true"
+                      v-model="record.discount"
+                      style="width:100px;"
+                    >
                       <template slot="addonAfter">
                         元
                       </template>
@@ -53,12 +63,16 @@
                 format="YYYY-MM-DD HH:mm"
               />
             </st-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="8">
+          <a-col :span="10">
             <st-form-item required>
               <template slot="label">
                 参团人数
-                <st-help-tooltip id="TBYHQ002" />
+                <st-help-tooltip id="TBPTXJ001" />
               </template>
-              <st-input-number :float="false">
+              <st-input-number v-decorator="decorators.num">
                 <template slot="addonAfter">
                   人
                 </template>
@@ -66,10 +80,10 @@
             </st-form-item>
             <st-form-item required>
               <template slot="label">
-                拼团有效时间
-                <st-help-tooltip id="TBYHQ002" />
+                拼团有效期
+                <st-help-tooltip id="TBPTXJ002" />
               </template>
-              <st-input-number>
+              <st-input-number v-decorator="decorators.time">
                 <template slot="addonAfter">
                   小时
                 </template>
@@ -84,7 +98,10 @@
                 <a-checkbox>
                   限制库存
                 </a-checkbox>
-                <st-input-number style="width: 200px;"></st-input-number>
+                <st-input-number
+                  v-decorator="decorators.stock"
+                  style="width: 200px;"
+                ></st-input-number>
               </a-checkbox-group>
             </st-form-item>
           </a-col>
@@ -102,7 +119,7 @@
           </a-col>
         </a-row>
         <a-row :gutter="8">
-          <a-col :span="11">
+          <a-col :span="10">
             <st-form-item label="发布状态" required>
               <a-radio-group :defaultValue="0" v-model="releaseRadio">
                 <a-radio :value="0">立即发布</a-radio>
@@ -120,38 +137,54 @@
           </a-col>
         </a-row>
       </st-form>
+      <div slot="actions">
+        <st-button type="primary">
+          确 定
+        </st-button>
+      </div>
     </div>
   </st-mina-panel>
 </template>
 
 <script>
-import { columnsGroupStored } from './add-stored.config'
+import { columnsGroupStored, ruleOptions } from './add-stored.config'
+import addService from './add-stored.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
+// import moment from 'monment'
 
 export default {
   // name: PageBrandMarketingGroupAddStored,
   bem: {
     basic: 'brand-marketing-group-stored'
   },
+  serviceInject() {
+    return {
+      Add: addService
+    }
+  },
   components: {
     SelectShop
   },
   props: {
     isEdit: {
-      type: Boolean,
-      default: false
+      type: Number,
+      default: 0
     }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       columnsGroupStored,
+      groupName: '',
       shopRadio: 0, // @parmas=0 所有门店； @parmas=1 指定门店
       releaseRadio: 0, // @parmas=0 立即发布；@parmas=1 暂不发布； @parmas=3 定时发布
       tableData: [
         {
-          city_name: '22',
-          district_name: '33',
-          group_price: '44',
+          price: '22',
+          discount: '44',
           card_id: 1
         }
       ]
@@ -166,7 +199,8 @@ export default {
     },
     getShopId(shopId) {
       console.log(shopId)
-    }
+    },
+    changeName(e) {}
   }
 }
 </script>
