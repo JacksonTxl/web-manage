@@ -9357,6 +9357,11 @@ point-at-length@~1.0.2:
     isarray "~0.0.1"
     parse-svg-path "~0.1.1"
 
+portal-vue@^2.1.6:
+  version "2.1.6"
+  resolved "https://registry.npm.taobao.org/portal-vue/download/portal-vue-2.1.6.tgz#a7d4790b14a79af7fd159a60ec88c30cddc6c639"
+  integrity sha1-p9R5CxSnmvf9FZpg7IjDDN3Gxjk=
+
 portfinder@^1.0.20:
   version "1.0.20"
   resolved "https://registry.npm.taobao.org/portfinder/download/portfinder-1.0.20.tgz#bea68632e54b2e13ab7b0c4775e9b41bf270e44a"
