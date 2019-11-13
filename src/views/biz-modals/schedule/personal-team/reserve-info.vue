@@ -4,7 +4,7 @@
     title="预约详情"
     @ok="save"
     :footer="null"
-    width="848px"
+    width="686px"
     v-model="show"
   >
     <a-row :gutter="24" class="modal-reserved-info">
@@ -69,7 +69,10 @@
                   v-for="member in memberOptions"
                   :key="member.member_id"
                 >
-                  {{ member.member_name }}
+                  <div class="st-form-table__add-option">
+                    <span class="item-name">{{ member.member_name }}</span>
+                    <span class="item-phone">{{ member.mobile }}</span>
+                  </div>
                 </a-select-option>
               </a-select>
             </td>
@@ -77,7 +80,7 @@
               <a-select
                 slot="consume_type"
                 placeholder="选择消费方式"
-                style="width: 120px"
+                style="width: 280px"
                 @change="onChangeConsumeType"
               >
                 <a-select-opt-group
