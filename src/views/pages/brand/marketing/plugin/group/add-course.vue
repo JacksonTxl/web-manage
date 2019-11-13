@@ -28,8 +28,8 @@
                 </span>
               </a-input>
             </st-form-item>
-            <st-form-item label="选择会籍卡" required>
-              <a-select @change="chooseCard" showSearch placeholder="请输入">
+            <st-form-item label="拼团门店" required>
+              <a-select @change="chooseShop" showSearch placeholder="请输入">
                 <a-select-option value="lucy">Lucy</a-select-option>
               </a-select>
             </st-form-item>
@@ -46,10 +46,7 @@
                   :pagination="false"
                   :scroll="{ y: 230 }"
                   :class="basic('add_border')"
-                  :rowSelection="{
-                    onChange: onChange,
-                    rowSelection: rowSelection
-                  }"
+                  align="center"
                 >
                   <template
                     slot="group_price"
@@ -68,14 +65,19 @@
         </a-row>
         <a-row :gutter="8">
           <a-col :lg="10">
+            <st-form-item label="选择课程包" required>
+              <a-select @change="chooseCourse" showSearch placeholder="请输入">
+                <a-select-option value="lucy">Lucy</a-select-option>
+              </a-select>
+            </st-form-item>
             <st-form-item label="活动时间" required>
               <!-- <st-range-picker
                 v-model="decorators.activityTime"
               ></st-range-picker> -->
               <a-range-picker
                 @change="changeTime"
-                :disabledDate="disabledDate"
                 :showTime="{ format: 'HH:mm' }"
+                :disabledDate="disabledDate"
                 format="YYYY-MM-DD HH:mm"
               />
             </st-form-item>
@@ -119,30 +121,6 @@
           </a-col>
         </a-row>
         <a-row :gutter="8">
-          <a-col :lg="16">
-            <st-form-item required>
-              <span slot="label">
-                选择门店
-                <st-help-tooltip id="TBPTXJ004" />
-              </span>
-              <a-radio-group v-model="showShopRange">
-                <a-radio :value="1" :key="1">
-                  所有门店
-                </a-radio>
-                <a-radio :value="2" :key="2">
-                  指定门店
-                </a-radio>
-              </a-radio-group>
-              <select-shop
-                :class="basic('add_border')"
-                v-if="showShopRange == '2'"
-                @change="onSelectShop"
-                :shopIds="shopIds"
-              ></select-shop>
-            </st-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="8">
           <a-col :lg="10">
             <st-form-item required>
               <span slot="label">
@@ -175,11 +153,11 @@
   </st-mina-panel>
 </template>
 <script>
-import { ruleOptions, cardColumns } from './add-member.config'
-import SelectShop from '@/views/fragments/shop/select-shop'
+import { ruleOptions, cardColumns } from './add-course.config'
+import moment from 'moment'
 export default {
   bem: {
-    basic: 'brand-marketing-group-member'
+    basic: 'brand-marketing-group-course'
   },
   data() {
     const form = this.$stForm.create()
@@ -191,30 +169,27 @@ export default {
       cardColumns,
       tableData: [
         {
-          city_name: '22',
           district_name: '33',
           group_price: '44',
           card_id: 1
+        },
+        {
+          district_name: '33',
+          group_price: '44',
+          card_id: 2
         }
       ],
-      // 是否指定门店
-      showShopRange: 1,
-      shopIds: [],
       // 发布状态
       releaseStatus: 1
     }
   },
   methods: {
-    // 选择会籍卡
-    chooseCard(value) {
+    // 选择门店
+    chooseShop(value) {
       console.log(value)
     },
-    // 优惠设置选择变化
-    onChange(value) {
-      console.log(value)
-    },
-    // 优惠设置选择变化
-    rowSelection(value) {
+    // 选择课程包
+    chooseCourse(value) {
       console.log(value)
     },
     // 活动时间
@@ -223,10 +198,6 @@ export default {
     },
     // 是否限制库存
     limitStock(value) {
-      console.log(value)
-    },
-    // 选择门店
-    onSelectShop(value) {
       console.log(value)
     },
     // 修改发布时间
@@ -241,9 +212,6 @@ export default {
         current && current.format('YYYY-MM-DD') < moment().format('YYYY-MM-DD')
       )
     }
-  },
-  components: {
-    SelectShop
   }
 }
 </script>

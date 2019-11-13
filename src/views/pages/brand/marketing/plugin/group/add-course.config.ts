@@ -70,22 +70,15 @@ export const ruleOptions = (vm: any) => {
 }
 export const cardColumns = [
   {
-    title: '期限/次数',
-    dataIndex: 'city_name',
-    width: '22%',
-    align: 'center'
-  },
-  {
     title: '原价',
     dataIndex: 'district_name',
-    align: 'center',
-    width: '22%'
+    width: '60%',
+    align: 'center'
   },
   {
     title: '拼团价',
     dataIndex: 'group_price',
-    width: '38%',
-    align: 'center',
+    width: '40%',
     slots: { title: 'group_price' },
     scopedSlots: { customRender: 'group_price' }
   }
