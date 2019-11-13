@@ -92,7 +92,7 @@
               </a>
               <a
                 v-if="record.auth['shop:sold:sold_member_card|upgrade']"
-                @click="onUpgrade(record)"
+                @click="cardActions.upgradeCard(record)"
               >
                 升级
               </a>
@@ -168,6 +168,7 @@ import SoldCardTransfer from '@/views/biz-modals/sold/card/transfer'
 import SoldCardUpgradeMember from '@/views/biz-modals/sold/card/upgrade-member'
 import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
 import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
+import useCardActions from '@/hooks/card-actions.hook'
 export default {
   name: 'PageShopSoldCardMemberList',
   mixins: [tableMixin],
@@ -203,6 +204,12 @@ export default {
       query: this.routeService.query$,
       auth: this.memberService.auth$
     }
+  },
+  beforeCreate() {
+    this.cardActions = useCardActions(this)
+    this.cardActions.$on('refresh', val => {
+      this.$router.reload()
+    })
   },
   computed: {
     columns,
@@ -428,84 +435,6 @@ export default {
         }
       })
     },
-    // 订单收款modal
-    createdOrderPay(props) {
-      return new Promise((resolve, reject) => {
-        this.$modalRouter.push({
-          name: 'sold-deal-gathering',
-          props,
-          on: {
-            success: resolve
-          }
-        })
-      })
-    },
-    // 订单收款回调
-    async payCallBack(orderId, modalType, callBackType) {
-      switch (callBackType) {
-        case 'cancel':
-          this.onSearch()
-          break
-        case 'pay':
-          this.createdGatheringTip({
-            message: '收款成功',
-            order_id: orderId
-          }).then(res => {
-            this.tipCallBack(orderId, modalType, res.type)
-          })
-          break
-      }
-    },
-    // 创建成功，提示框modal
-    createdGatheringTip(props) {
-      return new Promise((resolve, reject) => {
-        this.$modalRouter.push({
-          name: 'sold-deal-gathering-tip',
-          props,
-          on: {
-            success: resolve
-          }
-        })
-      })
-    },
-    // 提示框回调，gathering-tip
-    async tipCallBack(orderId, modalType, callBackType) {
-      switch (callBackType) {
-        case 'cancel':
-          this.$router.reload()
-          break
-        case 'Print':
-          this.createdOrderPrint(orderId)
-          break
-        case 'ViewOrder':
-          this.createdOrderViewOrder(orderId)
-          break
-        case 'Pay':
-          this.createdOrderPay({ order_id: orderId, type: modalType }).then(
-            res => {
-              this.payCallBack(orderId, modalType, res.type)
-            }
-          )
-          break
-      }
-    },
-    // 打印合同
-    createdOrderPrint(order_id) {
-      let url = `${
-        window.location.origin
-      }/common/contract-preview?id=${order_id}`
-      window.open(url)
-    },
-    // 查看订单
-    createdOrderViewOrder(order_id) {
-      console.log('查看订单')
-      this.$router.push({
-        name: 'shop-finance-order-info-collection-details',
-        query: {
-          id: order_id
-        }
-      })
-    },
     // 续卡
     onRenewal(record) {
       this.$modalRouter.push({
@@ -535,46 +464,6 @@ export default {
               let payOrderRes = await this.createdOrderPay(props)
               this.payCallBack(res.orderId, 'member', payOrderRes.type)
             }
-          }
-        }
-      })
-    },
-    // 升级
-    onUpgrade(record) {
-      this.$modalRouter.push({
-        name: 'sold-card-upgrade-member',
-        props: {
-          id: record.id
-        },
-        on: {
-          success: async res => {
-            this.$router.reload()
-            if (res.type === 'create') {
-              // 创建订单成功
-              let props = {
-                order_id: res.orderId,
-                type: 'member',
-                message: '订单创建成功',
-                needPay: true
-              }
-              let orderSuccessRes = await this.createdGatheringTip(props)
-              this.tipCallBack(res.orderId, 'member', orderSuccessRes.type)
-            } else if (res.type === 'createPay') {
-              // 创建订单成功 并且到支付页面
-              let props = {
-                order_id: res.orderId,
-                type: 'member'
-              }
-              let payOrderRes = await this.createdOrderPay(props)
-              this.payCallBack(res.orderId, 'member', payOrderRes.type)
-            }
-            // 创建订单成功 并且到支付页面
-            // let props = {
-            //   order_id: res.orderId,
-            //   type: 'member'
-            // }
-            // let payOrderRes = await this.createdOrderPay(props)
-            // this.payCallBack(res.orderId, 'member', payOrderRes.type)
           }
         }
       })
