@@ -1104,6 +1104,7 @@ export const routeMapConfig = {
   },
   'brand-stat-revenue'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '营收'
+    routeConfig.meta.auth = 'brand_shop:stat:revenue_reports|page'
     routeConfig.queryOptions = {
       shop_id: { type: Number, default: 0 },
       current_page: { type: Number, default: 1 },
@@ -1115,6 +1116,7 @@ export const routeMapConfig = {
   },
   'brand-stat-order'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '订单'
+    routeConfig.meta.auth = 'brand_shop:stat:order_reports|page'
     routeConfig.queryOptions = {
       shop: { type: Number, default: 0 },
       current_page: { type: Number, default: 1 },
