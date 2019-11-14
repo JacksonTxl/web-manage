@@ -2,25 +2,26 @@ import { Injectable } from 'vue-service-app'
 import { State } from 'rx-state'
 import { MarketingApi } from '@/api/v1/marketing/marketing'
 import { tap } from 'rxjs/operators'
+import { PosterApi } from '@/api/v1/marketing/poster'
 
 @Injectable()
 export class PosterService {
   token$ = new State({})
   info$ = new State({})
   loading$ = new State({})
-  qrcode$ = new State({})
-  constructor(protected marketingApi: MarketingApi) {}
-  getPosterInfo(id: number) {
-    return this.marketingApi.getPosterInfo(id).pipe(
+  qrCode$ = new State({})
+  constructor(protected api: PosterApi) {}
+  getPosterInfo(id: number, type: string) {
+    return this.api.getPosterInfo(id, type).pipe(
       tap((res: any) => {
         this.info$.commit(() => res.info)
       })
     )
   }
-  getQrcode() {
-    return this.marketingApi.getQrcode().pipe(
+  getQrCode(id: number, type: string) {
+    return this.api.getQrCode(id, type).pipe(
       tap((res: any) => {
-        this.qrcode$.commit(() => res.qrcode)
+        this.qrCode$.commit(() => res.qrcode)
       })
     )
   }
