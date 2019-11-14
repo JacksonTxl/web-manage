@@ -1,17 +1,18 @@
 import { Api } from '@/api/api'
 
-export class ShopApi extends Api {
-  getList(query: GetListInput) {
-    return this.http.get('/v1/brand/shop', { query })
+export class TaskApi extends Api {
+  /**
+   * 获取门店下任务中心数据列表
+   * @param query
+   */
+  getList(query: any) {
+    return this.http.get('/v1/setting/brand/task', { query })
   }
-}
-export interface GetListInput {
   /**
-   * 页码
+   * 获取任务执行详情列表信息
+   * @param query
    */
-  page?: number
-  /**
-   * 单页条数
-   */
-  size?: number
+  getDetailList(query: any) {
+    return this.http.get(`/v1/setting/task/${query.task_id}`, { query })
+  }
 }

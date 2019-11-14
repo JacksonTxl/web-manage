@@ -1,6 +1,6 @@
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state/src'
-import { TaskApi } from '@/api/v1/brand/task'
+import { TaskApi } from '@/api/v1/setting/task'
 import { tap, map } from 'rxjs/operators'
 
 @Injectable()

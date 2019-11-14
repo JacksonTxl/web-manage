@@ -1271,5 +1271,19 @@ export const routeMapConfig = {
   ) {
     routeConfig.meta.title = '保存成功'
   },
+  'brand-setting-task-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '任务中心'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-setting-task-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '任务中心'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
   ...tplConfigs
 }
