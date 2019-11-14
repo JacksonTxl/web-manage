@@ -53,7 +53,7 @@ const ROUTE_NAMES_USE_PAGE = [
   'shop-setting-hardware-entry-list'
 ]
 
-export default (query, $searchQuery) => ({
+export default ($searchQuery, query) => ({
   data() {
     return {
       // 选中项目的keys
