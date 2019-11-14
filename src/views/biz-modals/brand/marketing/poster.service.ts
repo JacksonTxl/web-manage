@@ -12,6 +12,27 @@ export class PosterService {
   qrCode$ = new State({})
   constructor(protected api: PosterApi) {}
   getPosterInfo(id: number, type: string) {
+    if (type === 'signUp') {
+      return this.getSignUpPosterInfo(id)
+    } else if (type === 'wheel') {
+      return this.getWheelPosterInfo(id)
+    } else if (type === 'coupon') {
+      return this.getCouponPosterInfo(id)
+    }
+    return
+  }
+  getQrCode(id: number, type: string) {
+    letaction
+    if (type === 'signUp') {
+      return this.getSignUpQrCode(id)
+    } else if (type === 'wheel') {
+      return this.getWheelQrCode(id)
+    } else if (type === 'coupon') {
+      return this.getCouponQrCode()
+    }
+    return ''
+  }
+  getPosterInfo(id: number, type: string) {
     return this.api.getPosterInfo(id, type).pipe(
       tap((res: any) => {
         this.info$.commit(() => res.info)
