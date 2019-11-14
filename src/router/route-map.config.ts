@@ -71,7 +71,7 @@ export const routeMapConfig = {
     }
   },
   'shop-product-course-schedule-personal-personal'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '私教1v1排期'
+    routeConfig.meta.title = '私教1v1预约'
     routeConfig.queryOptions = {
       coach_id: { type: Number, default: -1 }
     }
@@ -79,7 +79,7 @@ export const routeMapConfig = {
   'shop-product-course-schedule-personal-personal-reserve-table'(
     routeConfig: RouteConfig
   ) {
-    routeConfig.meta.title = '私教1v1排期'
+    routeConfig.meta.title = '私教1v1预约'
     routeConfig.queryOptions = {
       coach_id: { type: Number, default: -1 }
     }
@@ -768,10 +768,10 @@ export const routeMapConfig = {
     routeConfig.meta.title = '团课排期'
   },
   'shop-product-course-schedule-personal'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '私教1v1排期'
+    routeConfig.meta.title = '私教1v1预约'
   },
   'shop-product-course-schedule-personal-table'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '私教1v1排期'
+    routeConfig.meta.title = '私教1v1预约'
   },
   'shop-product-course-schedule-personal-team'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教小团课排期'
