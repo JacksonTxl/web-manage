@@ -466,7 +466,7 @@ export default {
       return {
         province_name: province[0].name,
         city_name: city[0].name,
-        district_name: district[0].name
+        district_name: district[0] ? district[0].name : ''
       }
     },
     setEditInfo(obj) {
