@@ -13,7 +13,12 @@
             :class="b('qr-code')"
             :value="value"
             :scale="1"
-            :options="{ scale: 1, width: 240, color: { dark: '#252a2e' } }"
+            :options="{
+              margin: 0,
+              scale: 1,
+              width: 160,
+              color: { dark: '#252a2e' }
+            }"
           ></vue-qrcode>
           <img
             :class="b('app-logo')"
