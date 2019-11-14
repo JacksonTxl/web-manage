@@ -47,10 +47,10 @@ export class ClubService implements Controller {
   getMemberSourceRegisters() {
     return this.memberApi.getMemberSourceRegisters()
   }
-  getSaleOptionList(query: SaleQuery) {
+  getSaleList(query: any) {
     return this.memberApi.getSaleList(query)
   }
-  getCoachOptionList(query: CoachQuery) {
+  getCoachList(query: any) {
     return this.memberApi.getCoachList(query)
   }
   getCrmRule() {

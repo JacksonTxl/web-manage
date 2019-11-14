@@ -490,8 +490,8 @@ export default {
     // }
   },
   created() {
-    this.getCoachOptionList()
-    this.getSaleOptionList()
+    this.getCoachList()
+    this.getSaleList()
     this.getCrmRule()
   },
   mounted() {
@@ -671,13 +671,13 @@ export default {
     queryFunc() {
       this.$router.push({ query: this.form })
     },
-    getCoachOptionList() {
-      return this.clubService.getCoachOptionList().subscribe(res => {
+    getCoachList() {
+      return this.clubService.getCoachList().subscribe(res => {
         this.coachList = res.list
       })
     },
-    getSaleOptionList() {
-      return this.clubService.getSaleOptionList().subscribe(res => {
+    getSaleList() {
+      return this.clubService.getSaleList().subscribe(res => {
         this.saleList = res.list
       })
     },

@@ -173,6 +173,9 @@ export class MemberApi extends Api {
   getCrmRule() {
     return this.http.get(`/v1/setting/crm-rules`)
   }
+  setCrmRule(params: any) {
+    return this.http.put(`/v1/setting/crm-rules`, { params })
+  }
   /**
    * 销售抛入公海
    */
@@ -439,12 +442,6 @@ export class MemberApi extends Api {
    */
   getFollowRecordList(id: number) {
     return this.http.get(`/v1/member/follow/axis/${id}`)
-  }
-  getSaleOptionList() {
-    return this.http.get(`/v1/staff/sale`)
-  }
-  getCoachOptionList() {
-    return this.http.get(`/v1/staff/coach`)
   }
 }
 export interface EditFaceParams {
