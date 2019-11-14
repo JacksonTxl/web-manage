@@ -465,6 +465,7 @@ export default {
     cardAndSpecs(newVal, oldVal) {
       // 先重围优惠券
       this.resetCoupon()
+      if (!this.upgradeCardInfo.id || !this.selectSpecsItem.id) return
       this.upgradeMemberService.couponAction$.dispatch({
         member_id: this.info.member_id,
         card_id: this.upgradeCardInfo.id,
