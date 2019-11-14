@@ -70,7 +70,7 @@ export default {
         { id: 'modal', title: '模态窗' },
         { id: 'help-popover', title: '帮助气泡' },
         { id: 'tag', title: '标签' },
-        { id: 'status-text', title: '状态文本' },
+        { id: 'text', title: '状态文本' },
         { id: 'pop-container', title: '带小三角容器' },
         { id: 'plugin-form-title', title: '插件标题' },
         { id: 'no-data', title: '默认占位图' },
