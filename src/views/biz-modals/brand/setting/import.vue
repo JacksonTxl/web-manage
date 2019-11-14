@@ -94,11 +94,11 @@ export default {
   computed: {
     isType() {
       const types = [
-        IMPORT.SOLD_MEMBER_CARD,
-        IMPORT.SOLD_DEPOSIT,
-        IMPORT.SOLD_PERSONAL_COURSE,
-        IMPORT.SOLD_PACKAGE17,
-        IMPORT.SOLD_LEASE
+        this.IMPORT.SOLD_MEMBER_CARD,
+        this.IMPORT.SOLD_DEPOSIT,
+        this.IMPORT.SOLD_PERSONAL_COURSE,
+        this.IMPORT.SOLD_PACKAGE,
+        this.IMPORT.SOLD_LEASE
       ]
       return types.includes(this.type)
     }
