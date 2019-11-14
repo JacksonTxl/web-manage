@@ -9,7 +9,8 @@ export class TitleService {
   appDocumentTitle$ = computed<string>(
     (title: string, brand: any, shop: any) => {
       if (brand.name || shop.name) {
-        return `${title ? title + ' - ' : ''}${shop.name} ${brand.name}`
+        return `${title ? title + ' - ' : ''}${shop.name || ''} ${brand.name ||
+          ''}`
       }
       return `${title ? title + ' - ' : ''}三体云动Pro`
     },

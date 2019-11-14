@@ -14,7 +14,7 @@
         style="width: 200px"
         class="page-schedule__select mg-r8"
       >
-        <a-select-option :value="-1">全部</a-select-option>
+        <a-select-option :value="-1">全部课程</a-select-option>
         <a-select-option
           v-for="course in courseOptions"
           :key="course.id"
@@ -30,7 +30,7 @@
         style="width: 200px"
         class="page-schedule__select mg-r8"
       >
-        <a-select-option :value="-1">全部</a-select-option>
+        <a-select-option :value="-1">全部场地</a-select-option>
         <a-select-option
           v-for="court in courtOptions"
           :key="court.id"
@@ -46,7 +46,7 @@
         style="width: 200px"
         v-model="query.coach_id"
       >
-        <a-select-option :value="-1">全部</a-select-option>
+        <a-select-option :value="-1">全部{{ $c('coach') }}</a-select-option>
         <a-select-option
           v-for="coach in coachOptions"
           :key="coach.id"
