@@ -63,7 +63,7 @@ import { ListService } from './list.service'
 import { columns } from './list.config.ts'
 import tableMixin from '@/mixins/table.mixin'
 import { TASK_STATUS } from '@/constants/brand/setting/task'
-import BrandSettingTaskDetail from '@/views/biz-modals/brand/setting/task/detail'
+import CommonTaskDetail from '@/views/biz-modals/common/task/detail'
 export default {
   mixins: [tableMixin],
   name: 'PageBrandSettingShopList',
@@ -86,7 +86,7 @@ export default {
     columns
   },
   modals: {
-    BrandSettingTaskDetail
+    CommonTaskDetail
   },
   data() {
     return {
