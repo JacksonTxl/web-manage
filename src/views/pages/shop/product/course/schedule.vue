@@ -72,7 +72,7 @@
       >
         <a-select-option :value="-1">全部</a-select-option>
         <a-select-option
-          v-for="coach in coachInBatchOptions"
+          v-for="coach in coachPersonalOptions"
           :key="coach.id"
           :value="coach.id"
         >
