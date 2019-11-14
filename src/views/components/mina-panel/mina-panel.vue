@@ -1,6 +1,6 @@
 <template>
   <div :class="b({ initial })">
-    <div :class="b('preview')">
+    <div v-if="$slots.preview" :class="b('preview')">
       <slot name="preview"></slot>
     </div>
     <a-row>

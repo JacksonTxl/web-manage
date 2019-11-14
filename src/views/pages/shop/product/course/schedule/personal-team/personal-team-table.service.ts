@@ -1,10 +1,10 @@
 import { PersonalTeamScheduleScheduleService as ScheduleService } from './service#/schedule.service'
-import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
+import { Controller, Injectable, ServiceRoute } from 'vue-service-app'
 import { forkJoin, timer } from 'rxjs'
 import { PersonalTeamScheduleCommonService as CommonService } from './service#/common.service'
 
 @Injectable()
-export class PersonalTeamTableService implements RouteGuard {
+export class PersonalTeamTableService implements Controller {
   constructor(
     private commonService: CommonService,
     private scheduleService: ScheduleService

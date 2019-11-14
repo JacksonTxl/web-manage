@@ -1,4 +1,4 @@
-import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
+import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap, pluck } from 'rxjs/operators'
 import { SignUpApi, SignUpInfo } from '@/api/v1/marketing/sign-up'

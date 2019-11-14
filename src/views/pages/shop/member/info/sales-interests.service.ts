@@ -1,10 +1,10 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { MemberApi } from '@/api/v1/member'
 
 @Injectable()
-export class SalesInterestsService implements RouteGuard {
+export class SalesInterestsService implements Controller {
   couponList$ = new State([])
   couponCount$ = new State({})
   page$ = new State({})

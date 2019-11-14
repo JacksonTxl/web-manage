@@ -1,11 +1,11 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { SettingMinaApi } from '@/api/v1/setting/mina'
 import { forkJoin } from 'rxjs'
 import { tap } from 'rxjs/operators'
 import { State } from 'rx-state'
 
 @Injectable()
-export class ActivityService implements RouteGuard {
+export class ActivityService implements Controller {
   actList$ = new State({})
   info$ = new State({})
   constructor(private settingMinaApi: SettingMinaApi) {}

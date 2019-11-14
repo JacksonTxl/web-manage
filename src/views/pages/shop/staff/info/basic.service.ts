@@ -1,11 +1,11 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { ShopStaffApi } from '@/api/v1/staff/staff'
 import { cloneDeep } from 'lodash-es'
 
 @Injectable()
-export class BasicService implements RouteGuard {
+export class BasicService implements Controller {
   basicInfo$ = new State({})
   constructor(private staffApi: ShopStaffApi) {}
   private formatInfo(commonInfo: any) {

@@ -1,11 +1,11 @@
-import { Injectable, RouteGuard } from 'vue-service-app'
+import { Injectable, Controller } from 'vue-service-app'
 import { State, Effect } from 'rx-state/src'
 import { ShopApi, ShopEditShopInput } from '@/api/v1/shop'
 import { tap } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
 
 @Injectable()
-export class EditService implements RouteGuard {
+export class EditService implements Controller {
   loading$ = new State({})
   info$ = new State({})
   serviceList$ = new State([])

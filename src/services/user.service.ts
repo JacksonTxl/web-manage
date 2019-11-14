@@ -269,14 +269,15 @@ export class UserService {
   public getOptions$(
     key: string,
     options: {
-      addAll?: boolean
+      addAll?: boolean | string
     } = {}
   ): Computed<{ label: string; value: number }[]> {
     return computed(
       (enums: any) => {
         let opts = this.getOptions(enums, key)
         if (options.addAll) {
-          opts = [{ value: -1, label: '全部' }].concat(opts)
+          const allLabel = options.addAll === true ? '全部' : options.addAll
+          opts = [{ value: -1, label: allLabel }].concat(opts)
         }
         return opts
       },

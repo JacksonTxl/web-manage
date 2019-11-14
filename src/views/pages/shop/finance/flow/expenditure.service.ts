@@ -1,12 +1,12 @@
 import { FlowApi, GetListInput } from './../../../../../api/v1/finance/flow'
 import { UserService } from '@/services/user.service'
-import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
+import { Controller, ServiceRoute, Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state/src'
 import { tap, map } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
 
 @Injectable()
-export class ExpenditureService implements RouteGuard {
+export class ExpenditureService implements Controller {
   loading$ = new State({})
   page$ = new State({})
   list$ = new State([])

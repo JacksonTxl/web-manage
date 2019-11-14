@@ -1,3 +1,5 @@
+import { ServiceRouteConfig } from "vue-service-app";
+
 export interface ImgFilterOptions {
   /**
    * 图片宽度
@@ -32,4 +34,32 @@ export interface StPage {
    * 当前页
    */
   current_page: number
+}
+
+
+export interface RouteConfig extends ServiceRouteConfig {
+  meta: {
+    /**
+     * 布局视图名称 @/views/layouts/index.ts
+     */
+    layout: string
+    /**
+     * 面包屑的标题
+     */
+    title: string
+    name: string
+    /**
+     * 生命平级路由的父级路由nameπ
+     */
+    parentId: string
+    /**
+     * 路由对应的权限key名
+     */
+    auth: string
+    /**
+     * 父级路由带有的tabs路由名数组
+     */
+    tabs: string[]
+  }
+  guards: object[]
 }

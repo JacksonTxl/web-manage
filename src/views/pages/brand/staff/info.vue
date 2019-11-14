@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-staffdata-container">
+  <st-panel-layout class="pages-staffdata-container">
     <st-panel class="pages-staffdata-header">
       <a-row>
         <a-col :span="15" class="pages-staffdata-header-detail">
@@ -116,11 +116,11 @@
         </a-col>
       </a-row>
     </st-panel>
-    <st-panel :tabs="identity">
+    <st-panel app :tabs="identity">
       <div slot="actions"></div>
       <router-view></router-view>
     </st-panel>
-  </div>
+  </st-panel-layout>
 </template>
 <script>
 import { InfoService } from './info.service'

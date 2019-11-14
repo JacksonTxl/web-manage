@@ -71,7 +71,7 @@ export default {
         { id: 'modal', title: '模态窗' },
         { id: 'help-popover', title: '帮助气泡' },
         { id: 'tag', title: '标签' },
-
+        { id: 'text', title: '状态文本' },
         { id: 'pop-container', title: '带小三角容器' },
         { id: 'plugin-form-title', title: '插件标题' },
         { id: 'no-data', title: '默认占位图' },
@@ -88,6 +88,8 @@ export default {
         { id: 'form-table', title: '纯样式表格' },
         { id: 'pagination', title: '分页' },
         { id: 'page-route-nav', title: '页面路由导航' },
+        { id: 'image', title: '图片懒加载' },
+        { id: 'mina-panel', title: '小程序设置预览布局' },
         { id: 'textarea', title: '文本域' }
       ]
     }

@@ -93,9 +93,6 @@ export default {
   bem: {
     b: 'step-form-signup'
   },
-  // serviceProviders() {
-  //   return [CopyService]
-  // },
   serviceInject() {
     return {
       copyService: CopyService,

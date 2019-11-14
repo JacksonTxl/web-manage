@@ -1,4 +1,4 @@
-import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
+import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import {
   FrontApi,
@@ -10,7 +10,7 @@ import { AuthService } from '@/services/auth.service'
 import { UserService } from '@/services/user.service'
 
 @Injectable()
-export class EntranceService implements RouteGuard {
+export class EntranceService implements Controller {
   loading$ = new State({})
   list$ = new State([])
   page$ = new State({})

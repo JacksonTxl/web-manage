@@ -31,7 +31,7 @@
         class="fl-r mg-r8"
         :class="bPage('actions')"
         v-if="isShowList"
-        :action="getGroupList"
+        :action="refresh"
       ></st-refresh-btn>
     </div>
     <st-table
@@ -45,11 +45,16 @@
       :class="bPage('table')"
     >
       <span slot="action" slot-scope="text, record">
-        <st-table-actions v-if="record.send_status === 0">
-          <st-popconfirm title="确定撤销吗" @confirm="onReset(record.group_id)">
+        <st-table-actions>
+          <st-popconfirm
+            v-if="record.send_status === 0"
+            title="确定撤销吗"
+            @confirm="onReset(record.group_id)"
+          >
             <a>撤销</a>
           </st-popconfirm>
           <a
+            v-if="record.send_status === 0"
             v-modal-link="{
               name: 'brand-setting-sms-group',
               props: { id: record.group_id },
@@ -237,6 +242,9 @@ export default {
     },
     getGroupList() {
       return this.groupService.getGroupList().subscribe()
+    },
+    refresh() {
+      return this.groupService.getGroupList()
     }
   }
 }

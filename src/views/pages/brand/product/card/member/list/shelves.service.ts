@@ -1,4 +1,4 @@
-import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
+import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import {
   CardsApi,
@@ -12,7 +12,7 @@ import { AuthService } from '@/services/auth.service'
 import { UserService } from '@/services/user.service'
 
 @Injectable()
-export class ShelvesService implements RouteGuard {
+export class ShelvesService implements Controller {
   shopList$ = new State([])
   list$ = new State([])
   page$ = new State({})

@@ -1,8 +1,8 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 @Injectable()
-export class ShopService implements RouteGuard {
+export class ShopService implements Controller {
   constructor() {}
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     if (to.name === 'brand-setting-shop') {
       next({
         name: 'brand-setting-shop-list'

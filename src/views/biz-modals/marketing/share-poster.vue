@@ -2,20 +2,14 @@
   <st-modal :title="title" v-model="show" width="400px" :footer="null">
     <div :class="basic()">
       <p>{{ message }}</p>
-      <img
-        v-if="!isLoading"
-        :src="url"
-        :class="activeClass"
-        style="width:100%"
-      />
-      <st-image v-else></st-image>
+      <st-image :class="activeClass" :src="url"></st-image>
       <div class="mg-t24">
         <st-button
           block
           pill
           type="primary"
           icon="download"
-          size="large"
+          class="share-poster-button"
           @click="downloadPoster"
         >
           {{ button }}
@@ -35,7 +29,7 @@ import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
 export default {
   name: 'BrandMarketingActivityPoster',
   bem: {
-    basic: 'brand-marketing-activity-poster'
+    basic: 'modal-marketing-activity-share-poster'
   },
   modals: {
     BrandMarketingBind

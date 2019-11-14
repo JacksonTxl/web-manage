@@ -1,4 +1,4 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State, Computed } from 'rx-state/src'
 import { pluck, tap } from 'rxjs/operators'
 import {
@@ -9,7 +9,7 @@ import {
 import { anyAll } from '@/operators'
 import { UserService } from '@/services/user.service'
 @Injectable()
-export class StudioService implements RouteGuard {
+export class StudioService implements Controller {
   top$ = new State({
     revenue_amount: {},
     course_checkin_num: {},

@@ -1,8 +1,16 @@
 export class AppConfig {
   /**
-   * token名称
+   * saas token名称
    */
-  TOKEN_NAME = 'saas-token'
+  SAAS_TOKEN_NAME = 'saas-token'
+  /**
+   * 提供给第三方（文档中心等）用的 token 名称
+   */
+  THIRD_PARTY_TOKEN_NAME = 'third-party-token'
+  /**
+   * cookie 有效期
+   */
+  COOKIE_EXPIRES = 7
   /**
    * API请求基路径
    */

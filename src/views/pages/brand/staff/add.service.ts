@@ -1,5 +1,5 @@
 import { RoleApi } from '@/api/v1/staff/role'
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { ShopStaffApi } from '@/api/v1/staff/staff'
@@ -7,7 +7,7 @@ import { StaffApi, AddStaffBasicInfoParams } from '@/api/v1/staff'
 import { forkJoin } from 'rxjs'
 
 @Injectable()
-export class AddService implements RouteGuard {
+export class AddService implements Controller {
   loading$ = new State({})
   codeList$ = new State([])
   roleList$ = new State([])

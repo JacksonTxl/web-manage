@@ -8,10 +8,15 @@
   >
     <section :class="b()">
       <label :class="b('tip')">数据处理方式:</label>
-      <div :class="b('content')">
+      <div v-if="type === 11" :class="b('content')">
         <p>新增并覆盖原始数据</p>
         <p>针对不重复的数据，进行新增</p>
         <p>针对重复数据，进行覆盖</p>
+      </div>
+      <div v-else :class="b('content')">
+        <p>新增数据</p>
+        <p>针对不重复数据，进行新增，重复数据导入失败</p>
+        <p>若一张表格合同编号出现重复，导入失败</p>
       </div>
       <div :class="b('file')">
         <a-upload

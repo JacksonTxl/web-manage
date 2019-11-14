@@ -1,6 +1,6 @@
 import { CourseApi } from './../../../../../../../api/v1/setting/course'
 import { ShopApi } from '@/api/v1/shop'
-import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
+import { Controller, ServiceRoute, Injectable } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { tap, map } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
@@ -12,14 +12,13 @@ import { AuthService } from '@/services/auth.service'
 import { MessageService } from '@/services/message.service'
 
 @Injectable()
-export class ListService implements RouteGuard {
+export class ListService implements Controller {
   // loading
   loading$ = new State({})
   // 业务状态
   list$ = new State([])
   page$ = new State({})
   categoryList$ = new State<any[]>([])
-  shopSelectOptions$ = new State<any[]>([])
   priceGradient$ = new State<any[]>([])
   dataSource$ = new State<any[]>([])
   auth$ = this.authService.authMap$({
@@ -91,28 +90,8 @@ export class ListService implements RouteGuard {
       })
     )
   }
-  getShopList() {
-    return this.shopApi.getShopList().pipe(
-      map(res => {
-        const shopInfo = res.list
-        return [
-          { shop_id: -1, shop_name: '所有门店' },
-          ...shopInfo.map((item: any) => {
-            const { shop_id, shop_name } = item
-            return {
-              shop_id,
-              shop_name
-            }
-          })
-        ]
-      }),
-      tap(state => {
-        this.shopSelectOptions$.commit(() => state)
-      })
-    )
-  }
   initOptions() {
-    return forkJoin(this.getShopList(), this.getCategoryList())
+    return forkJoin(this.getCategoryList())
   }
   @Effect()
   getList(params: any) {

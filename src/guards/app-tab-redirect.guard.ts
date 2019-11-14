@@ -46,9 +46,10 @@ export class AppTabRedirectGuard implements RouteGuard {
         title: this.errors.NO_AUTH_TAB_CAN_REDIRECT,
         content: `该路由下没有tab可跳转 ${to.name} [redirect.guard] `
       })
-      return this.router.redirect({
+      this.router.next({
         name: 'welcome'
       })
+      return false
     }
 
     const firstRouteName = myAuthedTabs[0] ? myAuthedTabs[0].route.name : ''

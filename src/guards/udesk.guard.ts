@@ -7,15 +7,18 @@ import { UdeskService } from '@/services/udesk.service'
 @Injectable()
 export class UdeskGuard implements RouteGuard {
   isCreate = false
-  constructor(private udeskService: UdeskService) {
-    //  实例化udesk对象
-    // this.udeskService.create()
-  }
+  constructor(private udeskService: UdeskService) {}
   beforeRouteEnter(to: ServiceRoute) {
     if (!this.isCreate) {
-      this.udeskService.create()
-      this.isCreate = true
+      this.udeskService.create().then(() => {
+        this.isCreate = true
+        this.udeskIsShow(to)
+      })
+    } else {
+      this.udeskIsShow(to)
     }
+  }
+  udeskIsShow(to: ServiceRoute) {
     if (
       to.name === 'brand-dashboard-studio' ||
       to.name === 'shop-dashboard-studio'

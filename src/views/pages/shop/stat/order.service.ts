@@ -1,10 +1,10 @@
 import { tap } from 'rxjs/operators'
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { StatApi, OrderShopListQuery } from '@/api/v1/stat/shop'
 import { AuthService } from '@/services/auth.service'
 @Injectable()
-export class OrderService implements RouteGuard {
+export class OrderService implements Controller {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})

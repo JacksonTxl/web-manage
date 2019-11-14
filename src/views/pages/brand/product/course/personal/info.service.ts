@@ -1,12 +1,12 @@
 import { State } from 'rx-state'
-import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
+import { Controller, ServiceRoute, Injectable } from 'vue-service-app'
 import { tap, catchError } from 'rxjs/operators'
 import {
   BrandPersonalCourseApi,
   GetPersonalBrandInfoInput
 } from '@/api/v1/course/personal/brand'
 @Injectable()
-export class InfoService implements RouteGuard {
+export class InfoService implements Controller {
   personalCourseInfo$ = new State({})
   constructor(private brandPersonalCourseApi: BrandPersonalCourseApi) {}
   SET_TEAM_COURSE_INFO(data: any) {

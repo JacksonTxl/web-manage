@@ -4,14 +4,14 @@ import { RegionService } from '@/services/region.service'
 import { NProgressService } from '@/services/nprogress.service'
 import { UdeskService } from '@/services/udesk.service'
 import { forkJoin } from 'rxjs'
-import { Injectable } from 'vue-service-app'
+import { Injectable, RouteGuard } from 'vue-service-app'
 import { anyAll, then } from '@/operators'
 
 /**
  * 获取全局应用信息
  */
 @Injectable()
-export class AppInfoGuard {
+export class AppInfoGuard implements RouteGuard {
   firstBootstrap = true
   constructor(
     private userService: UserService,

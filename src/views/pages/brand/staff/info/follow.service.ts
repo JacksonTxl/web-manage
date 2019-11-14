@@ -1,10 +1,10 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { StaffApi, GetStaffFollowInput } from '@/api/v1/staff'
 
 @Injectable()
-export class FollowService implements RouteGuard {
+export class FollowService implements Controller {
   followList$ = new State({})
   page$ = new State({})
   loading$ = new State({})

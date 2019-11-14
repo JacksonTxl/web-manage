@@ -1,4 +1,4 @@
-import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
+import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { Effect, State } from 'rx-state'
 import { PackageApi, OnsalePackageInput } from '@/api/v1/course/package'
 import { mergeMap, tap, map } from 'rxjs/operators'
@@ -6,7 +6,7 @@ import { UserService } from '@/services/user.service'
 import { remove } from 'lodash-es'
 
 @Injectable()
-export class AddFixPackageService implements RouteGuard {
+export class AddFixPackageService implements Controller {
   // 是否配置了用户端
   appConfig = true
   unitList$ = this.userService.getOptions$('package_course.valid_time_unit')

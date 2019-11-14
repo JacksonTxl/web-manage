@@ -1,4 +1,4 @@
-import { isCtor } from './utils'
+import { isCtor, isFn } from './utils'
 const INJECTED = '__injectedTypes'
 
 export class Container {
@@ -16,9 +16,9 @@ export class Container {
         const newInstance = this.getInstanceFromClass(token)
         this.providers.set(token, newInstance)
         return newInstance
-      } else {
-        console.error('[vue-service-app] Invalid provide->', token)
       }
+
+      console.error('[vue-service-app] Invalid provide->', token)
     }
   }
   destroy(token) {
@@ -27,6 +27,7 @@ export class Container {
       this.providers.delete(token)
     }
   }
+
   getInstanceFromClass(Cls) {
     if (Cls[INJECTED]) {
       const injects = Cls[INJECTED].map(childToken => this.get(childToken))

@@ -1,6 +1,6 @@
 import { CourseApi } from '@/api/v1/setting/course'
 import { ShopApi } from '@/api/v1/shop'
-import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
+import { Controller, ServiceRoute, Injectable } from 'vue-service-app'
 import { State } from 'rx-state'
 import { tap, map } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
@@ -12,14 +12,13 @@ import { AuthService } from '@/services/auth.service'
 import { RedirectService } from '@/services/redirect.service'
 
 @Injectable()
-export class ListService implements RouteGuard {
+export class ListService implements Controller {
   // loading
   loading$ = new State({})
   // 业务状态
   list$ = new State([])
   page$ = new State({})
   categoryList$ = new State<any[]>([])
-  shopSelectOptions$ = new State<any[]>([])
   state$: State<any>
   auth$ = this.authService.authMap$({
     add: 'brand_shop:product:team_course|add'
@@ -65,28 +64,8 @@ export class ListService implements RouteGuard {
       })
     )
   }
-  getShopList() {
-    return this.shopApi.getShopList().pipe(
-      map(res => {
-        const shopInfo = res.list
-        return [
-          { shop_id: -1, shop_name: '所有门店' },
-          ...shopInfo.map((item: any) => {
-            const { shop_id, shop_name } = item
-            return {
-              shop_id,
-              shop_name
-            }
-          })
-        ]
-      }),
-      tap(state => {
-        this.shopSelectOptions$.commit(() => state)
-      })
-    )
-  }
   initOptions() {
-    return forkJoin(this.getShopList(), this.getCategoryList())
+    return forkJoin(this.getCategoryList())
   }
   deleteCourse(courseId: string) {
     return this.shopTeamCourseApi.deleteTeamCourse(courseId)
@@ -97,16 +76,15 @@ export class ListService implements RouteGuard {
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.init({ ...to.query })
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    return this.initOptions()
-      .toPromise()
-      .then(() => {
-        return this.redirectService.redirect({
-          locateRouteName: 'brand-product-course-team-list',
-          redirectRoute: {
-            name: 'brand-product-course-team-list-brand'
-          }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+    this.initOptions().subscribe(() => {
+      if (to.name === 'brand-product-course-team-list') {
+        next({
+          name: 'brand-product-course-team-list-brand'
         })
-      })
+      } else {
+        next()
+      }
+    })
   }
 }

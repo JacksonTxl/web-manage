@@ -1,12 +1,12 @@
-import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
-import { State, Effect } from 'rx-state'
+import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
+import { State, Effect, log } from 'rx-state'
 import { CardsApi, CardListInput } from '@/api/v1/cards'
 import { tap, map } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
 import { UserService } from '@/services/user.service'
 
 @Injectable()
-export class AllService implements RouteGuard {
+export class AllService implements Controller {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
@@ -16,6 +16,7 @@ export class AllService implements RouteGuard {
   publishChannel$ = this.userService
     .getOptions$('deposit_card.publish_channel')
     .pipe(map(options => [{ value: -1, label: '所有渠道' }].concat(options)))
+
   sellStatus$ = this.userService
     .getOptions$('deposit_card.sell_status')
     .pipe(

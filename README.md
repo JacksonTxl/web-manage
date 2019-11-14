@@ -34,8 +34,10 @@ abc123
 - pre 预发布环境 https://saas.pre.styd.cn
 - prod 生产环境 https://pro.styd.cn
 
+## 更新日志
+* [更新日志](https://gitlab.styd.cn/fe/saas/web/wikis/%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97)
+
 ## 链接
 * [前端规范文档](https://www.tapd.cn/33239975/markdown_wikis/?#1133239975001000607)
 * [styleguide (需要本地打开)](http://localhost:8060/styleguide)
-* [组件更新日志](https://gitlab.styd.cn/fe/saas/web/wikis/%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97)
 * [pro 规范文档](https://gitlab.styd.cn/fe/saas/web/wikis/%E8%A7%84%E8%8C%83/1.%E4%BB%8B%E7%BB%8D)

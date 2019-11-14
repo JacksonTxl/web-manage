@@ -1,4 +1,4 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import {
@@ -9,7 +9,7 @@ import {
 import { forkJoin } from 'rxjs'
 
 @Injectable()
-export class ReserveService implements RouteGuard {
+export class ReserveService implements Controller {
   cardsListInfo$ = new State([])
   cardPage$ = new State({})
   courseListInfo$ = new State([])

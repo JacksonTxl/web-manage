@@ -79,14 +79,14 @@
                     <tr>
                       <td colspan="6" class="pd-y0 pd-x0">
                         <st-button
-                          :disabled="rallyPriceList.length > 3"
+                          :disabled="rallyPriceList.length >= 12"
                           type="dashed"
                           icon="add"
                           class="page-price-setting-set__add"
                           block
                           @click="price_add"
                         >
-                          添加定价规格（{{ rallyPriceList.length }}/4）
+                          添加定价规格（{{ rallyPriceList.length }}/12）
                         </st-button>
                       </td>
                     </tr>
@@ -369,9 +369,6 @@ export default {
     MemberCard,
     H5Container,
     CardBgRadio
-  },
-  serviceProviders() {
-    return [AddService]
   },
   serviceInject() {
     return {

@@ -1,11 +1,11 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
 import { PaymentSettingApi, UpdateInput } from '@/api/v1/setting/payments'
 
 @Injectable()
-export class PayTypeService implements RouteGuard {
+export class PayTypeService implements Controller {
   loading$ = new State({})
   info$ = new State({})
   auth$ = this.authService.authMap$({

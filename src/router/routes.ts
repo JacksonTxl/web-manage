@@ -45,7 +45,7 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
       route.name.startsWith('styleguide') ||
       route.name.startsWith('welcome')
     ) {
-      prependGuards(route, [ProgressGuard, AppTitleGuard, SyncQueryGuard])
+      route.guards = [ProgressGuard, AppTitleGuard, SyncQueryGuard]
     } else if (route.path.startsWith('/') && !route.redirect) {
       const appGuards: any[] = [
         ProgressGuard,
@@ -57,9 +57,8 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
         SyncQueryGuard,
         UdeskGuard
       ]
-      prependGuards(route, appGuards)
+      route.guards = appGuards
     }
-    // 规范title i18n 名称
     // if (route.name) {
     //   route.meta.title = `${route.name}.title`
     // }

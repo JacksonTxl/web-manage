@@ -89,9 +89,6 @@ export default {
   bem: {
     b: 'step-form-activity'
   },
-  // serviceProviders() {
-  //   return [CopyService]
-  // },
   serviceInject() {
     return {
       copyService: CopyService,

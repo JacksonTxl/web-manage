@@ -1,4 +1,4 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
@@ -9,7 +9,7 @@ import {
 } from '@/api/v1/setting/sms/pay'
 interface SetState {}
 @Injectable()
-export class PayService implements RouteGuard {
+export class PayService implements Controller {
   state$: State<SetState>
   info$ = new State([])
   page$ = new State([])

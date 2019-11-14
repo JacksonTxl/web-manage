@@ -1,4 +1,4 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State, Computed, Effect, Action } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
@@ -10,7 +10,7 @@ interface CrowdIndexState {
   crowdIndexInfo: any
 }
 @Injectable()
-export class IndexService extends Store<CrowdIndexState> implements RouteGuard {
+export class IndexService extends Store<CrowdIndexState> implements Controller {
   state$: State<CrowdIndexState>
   crowdIndexInfo$: Computed<string>
   auth$ = this.authService.authMap$({

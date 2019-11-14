@@ -100,9 +100,6 @@ export default {
     ShopFinanceGatheringEarnestAdd,
     ShopFinanceGatheringEarnestDeal
   },
-  serviceProviders() {
-    return [EarnestService]
-  },
   serviceInject() {
     return {
       routeService: RouteService,

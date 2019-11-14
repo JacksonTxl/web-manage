@@ -17,7 +17,6 @@ export class UdeskService {
     return this.http.get('/udesk').pipe(
       tap((res: any) => {
         this.customer$.commit(() => res)
-        console.log(this.customer$)
       })
     )
   }
@@ -41,11 +40,16 @@ export class UdeskService {
       c = h.getElementsByTagName(c)[0]
       c.parentNode.insertBefore(g, c)
     })(window, document, 'script', `${config.config_link}`, 'ud')
-    // @ts-ignore
-    ud({
-      code: `${config.code}`,
-      link: `${config.link}`,
-      customer
+    return new Promise((resolve, reject) => {
+      // @ts-ignore
+      ud({
+        code: `${config.code}`,
+        link: `${config.link}`,
+        customer,
+        onReady: () => {
+          resolve()
+        }
+      })
     })
   }
   hiddenUdesk() {

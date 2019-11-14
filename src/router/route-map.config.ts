@@ -1,37 +1,9 @@
 import { findLast } from 'lodash-es'
-import { ServiceRouteConfig } from 'vue-service-app'
 import moment from 'moment'
+import { RouteConfig } from '@/types/app'
 
-interface RouteConfig extends ServiceRouteConfig {
-  meta: {
-    /**
-     * 布局视图名称 @/views/layouts/index.ts
-     */
-    layout: string
-    /**
-     * 面包屑的标题
-     */
-    title: string
-    name: string
-    /**
-     * 生命平级路由的父级路由nameπ
-     */
-    parentId: string
-    /**
-     * 路由对应的权限key名
-     */
-    auth: string
-    /**
-     * 父级路由带有的tabs路由名数组
-     */
-    tabs: string[]
-  }
-  guards: object[]
-}
-interface StaffEdit extends ServiceRouteConfig {
-  staff_id?: number
-  currentIndex?: number
-}
+import tplConfigs from './route-config/tpl'
+
 export const routeMapConfig = {
   styleguide(routeConfig: RouteConfig) {
     routeConfig.redirect = { name: 'styleguide-component' }
@@ -746,6 +718,11 @@ export const routeMapConfig = {
   },
   'shop-member-info-sold'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '用户详情'
+    routeConfig.queryOptions = {
+      reserve_type: { type: Number, default: -1 },
+      reserve_status: { type: Number, default: -1 },
+      is_checkin: { type: Number, default: -1 }
+    }
   },
   'shop-member-info-reserve'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '用户详情'
@@ -1154,8 +1131,7 @@ export const routeMapConfig = {
       'brand-setting-import-staff',
       'brand-setting-import-commodity',
       'brand-setting-import-member',
-      // TODO 1107暂时不上
-      // 'brand-setting-import-sold',
+      'brand-setting-import-sold',
       'brand-setting-import-record'
     ]
   },
@@ -1294,5 +1270,6 @@ export const routeMapConfig = {
     routeConfig: RouteConfig
   ) {
     routeConfig.meta.title = '保存成功'
-  }
+  },
+  ...tplConfigs
 }

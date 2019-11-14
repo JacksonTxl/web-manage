@@ -23,6 +23,9 @@
         <router-link class="mg-l8" to="/styleguide/chart">
           Chart(图表)
         </router-link>
+        <router-link class="mg-l8" to="/styleguide/tpl">
+          Template(模版)
+        </router-link>
       </div>
       <div class="sg__bd">
         <a-back-top />
