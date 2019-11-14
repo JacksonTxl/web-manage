@@ -1,10 +1,19 @@
-import Vue from 'vue'
+import SoldCardRenewalMember from '@/views/biz-modals/sold/card/renewal-member'
+import SoldCardUpgradeMember from '@/views/biz-modals/sold/card/upgrade-member'
+import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
+import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
 
-const useCardActions = parent => {
-  return new Vue({
+const useCardActions = () => {
+  return {
+    modals: {
+      SoldCardRenewalMember,
+      SoldCardUpgradeMember,
+      SoldDealGatheringTip,
+      SoldDealGathering
+    },
     methods: {
       upgradeCard(record) {
-        parent.$modalRouter.push({
+        this.$modalRouter.push({
           name: 'sold-card-upgrade-member',
           props: {
             id: record.id
@@ -37,7 +46,7 @@ const useCardActions = parent => {
       },
       // 续卡
       onRenewal(record) {
-        parent.$modalRouter.push({
+        this.$modalRouter.push({
           name: 'sold-card-renewal-member',
           props: {
             id: record.id
@@ -70,7 +79,7 @@ const useCardActions = parent => {
       // 订单收款modal
       createdOrderPay(props) {
         return new Promise((resolve, reject) => {
-          parent.$modalRouter.push({
+          this.$modalRouter.push({
             name: 'sold-deal-gathering',
             props,
             on: {
@@ -83,8 +92,8 @@ const useCardActions = parent => {
       async payCallBack(orderId, modalType, callBackType) {
         switch (callBackType) {
           case 'cancel':
-            // parent.$router.reload()
-            // parent.onSearch()
+            // this.$router.reload()
+            // this.onSearch()
             this.$emit('refresh')
             break
           case 'pay':
@@ -100,7 +109,7 @@ const useCardActions = parent => {
       // 创建成功，提示框modal
       createdGatheringTip(props) {
         return new Promise((resolve, reject) => {
-          parent.$modalRouter.push({
+          this.$modalRouter.push({
             name: 'sold-deal-gathering-tip',
             props,
             on: {
@@ -113,7 +122,7 @@ const useCardActions = parent => {
       async tipCallBack(orderId, modalType, callBackType) {
         switch (callBackType) {
           case 'cancel':
-            // parent.$router.reload()
+            // this.$router.reload()
             this.$emit('refresh')
             break
           case 'Print':
@@ -150,7 +159,7 @@ const useCardActions = parent => {
         })
       }
     }
-  })
+  }
 }
 
 export default useCardActions

@@ -170,12 +170,8 @@ import SoldCardArea from '@/views/biz-modals/sold/card/area'
 import SoldCardFreeze from '@/views/biz-modals/sold/card/freeze'
 import SoldCardGiving from '@/views/biz-modals/sold/card/giving'
 import SoldCardRefund from '@/views/biz-modals/sold/card/refund'
-import SoldCardRenewalMember from '@/views/biz-modals/sold/card/renewal-member'
 import SoldCardSetTime from '@/views/biz-modals/sold/card/set-time'
 import SoldCardTransfer from '@/views/biz-modals/sold/card/transfer'
-import SoldCardUpgradeMember from '@/views/biz-modals/sold/card/upgrade-member'
-import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
-import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
 import useCardActions from '@/hooks/card-actions.hook'
 export default {
   name: 'PageShopSoldCardMemberList',
@@ -188,12 +184,8 @@ export default {
     SoldCardFreeze,
     SoldCardGiving,
     SoldCardRefund,
-    SoldCardRenewalMember,
     SoldCardSetTime,
-    SoldCardTransfer,
-    SoldCardUpgradeMember,
-    SoldDealGatheringTip,
-    SoldDealGathering
+    SoldCardTransfer
   },
   serviceInject() {
     return {
@@ -214,10 +206,14 @@ export default {
     }
   },
   beforeCreate() {
-    this.cardActions = useCardActions(this)
     this.cardActions.$on('refresh', val => {
       this.$router.reload()
     })
+  },
+  hooks() {
+    return {
+      cardActions: useCardActions()
+    }
   },
   computed: {
     columns,
