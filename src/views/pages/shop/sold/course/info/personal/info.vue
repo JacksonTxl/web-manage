@@ -17,7 +17,7 @@
             {
               if: auth['shop:sold:sold_personal_course|expire'],
               text: '延长有效期',
-              click: onActivated
+              click: onLease
             },
             {
               if: auth['shop:sold:sold_personal_course|frozen'],

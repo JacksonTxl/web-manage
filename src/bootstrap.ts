@@ -30,6 +30,8 @@ import './directives/register'
 
 // @ts-ignore
 import Scrollbar from '@/vendor/vue-scrollbar'
+// @ts-ignore
+import VueComponentHooks from '@/vendor/vue-component-hooks'
 import { UserService } from './services/user.service'
 
 Vue.use(VueServiceApp, container)
@@ -41,10 +43,9 @@ Vue.use(VueBemHelper)
 // @ts-ignore
 Vue.use(VueDiView)
 // @ts-ignore
-Vue.use(VueDiView)
-// @ts-ignore
 Vue.use(VueStForm)
 Vue.use(VueStyleguide)
+Vue.use(VueComponentHooks)
 
 Vue.component(ICountUp.name, ICountUp)
 
