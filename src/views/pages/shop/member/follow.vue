@@ -27,59 +27,63 @@
             :options="followStatusList"
           />
         </st-search-panel-item>
-        <st-search-panel-item label="跟进员工：">
-          <a-select
-            class="mg-r16"
-            placeholder="请选择跟进销售"
-            optionFilterProp="children"
-            style="width: 200px"
-            @change="onChangeSell"
-            v-model="query.follow_salesman_id"
-          >
-            <a-select-option
-              :value="+staff.id"
-              v-for="staff in staffList"
-              :key="staff.id"
-            >
-              {{ staff.name }}
-            </a-select-option>
-          </a-select>
-          <a-select
-            showSearch
-            placeholder="请选择跟进教练"
-            optionFilterProp="children"
-            class="mg-r16"
-            style="width: 200px"
-            @change="onChangeCoach"
-            v-model="query.follow_coach_id"
-          >
-            <a-select-option
-              :value="+coach.id"
-              v-for="coach in coachList"
-              :key="coach.id"
-            >
-              {{ coach.name }}
-            </a-select-option>
-          </a-select>
-          <a-select
-            showSearch
-            placeholder="请选择录入人"
-            optionFilterProp="children"
-            class="mg-r16"
-            style="width: 200px"
-            @change="onChangeOperator"
-            v-model="query.operator_id"
-          >
-            <a-select-option
-              :value="+operator.id"
-              v-for="operator in operatorList"
-              :key="operator.id"
-            >
-              {{ operator.name }}
-            </a-select-option>
-          </a-select>
-        </st-search-panel-item>
         <div slot="more">
+          <st-search-panel-item label="跟进销售：">
+            <a-select
+              class="mg-r16"
+              placeholder="请选择跟进销售"
+              optionFilterProp="children"
+              style="width: 200px"
+              @change="onChangeSell"
+              v-model="query.follow_salesman_id"
+            >
+              <a-select-option
+                :value="+staff.id"
+                v-for="staff in staffList"
+                :key="staff.id"
+              >
+                {{ staff.sale_name }}
+              </a-select-option>
+            </a-select>
+          </st-search-panel-item>
+          <st-search-panel-item label="跟进教练：">
+            <a-select
+              showSearch
+              placeholder="请选择跟进教练"
+              optionFilterProp="children"
+              class="mg-r16"
+              style="width: 200px"
+              @change="onChangeCoach"
+              v-model="query.follow_coach_id"
+            >
+              <a-select-option
+                :value="+coach.id"
+                v-for="coach in coachList"
+                :key="coach.id"
+              >
+                {{ coach.coach_name }}
+              </a-select-option>
+            </a-select>
+          </st-search-panel-item>
+          <st-search-panel-item label="录入人：">
+            <a-select
+              showSearch
+              placeholder="请选择录入人"
+              optionFilterProp="children"
+              class="mg-r16"
+              style="width: 200px"
+              @change="onChangeOperator"
+              v-model="query.operator_id"
+            >
+              <a-select-option
+                :value="+operator.id"
+                v-for="operator in operatorList"
+                :key="operator.id"
+              >
+                {{ operator.name }}
+              </a-select-option>
+            </a-select>
+          </st-search-panel-item>
           <st-search-panel-item label="跟进情况：">
             <st-range-picker
               :disabledDays="180"

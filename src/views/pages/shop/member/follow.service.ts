@@ -4,6 +4,8 @@ import { pluck, tap } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
 import { UserService } from '@/services/user.service'
 import { StatApi } from '@/api/v1/stat/shop'
+import { MemberApi, SaleQuery, CoachQuery } from '@/api/v1/member'
+
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()
@@ -27,6 +29,7 @@ export class FollowService implements Controller {
   })
   constructor(
     private statApi: StatApi,
+    private memberApi: MemberApi,
     private authService: AuthService,
     private userService: UserService
   ) {
@@ -47,22 +50,20 @@ export class FollowService implements Controller {
       })
     )
   }
-  getStaffList() {
-    console.log('getStaffList')
-    return this.statApi.getDepartmentStaffList().pipe(
+  getStaffList(param: SaleQuery) {
+    return this.memberApi.getSaleList(param).pipe(
       tap((res: any) => {
         this.staffList$.commit(() => {
-          return [{ id: -1, name: '所有销售' }, ...res.info.staff_list]
+          return [{ id: -1, sale_name: '所有销售' }, ...res.list]
         })
       })
     )
   }
-  getCoachList() {
-    console.log('getCoachList')
-    return this.statApi.getCoachList().pipe(
+  getCoachList(param: CoachQuery) {
+    return this.memberApi.getCoachList(param).pipe(
       tap((res: any) => {
         this.coachList$.commit(() => {
-          return [{ id: -1, name: '全部教练' }, ...res.info.coach_list]
+          return [{ id: -1, coach_name: '全部教练' }, ...res.list]
         })
       })
     )
@@ -70,8 +71,8 @@ export class FollowService implements Controller {
   init(query: any) {
     return forkJoin(
       this.getList(query),
-      this.getCoachList(),
-      this.getStaffList()
+      this.getCoachList(query.CoachQuery),
+      this.getStaffList(query.retrieve)
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
