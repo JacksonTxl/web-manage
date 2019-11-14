@@ -1,6 +1,5 @@
 <template>
   <st-panel class="page-schedule-st-panel" app :tabs="authTabs">
-    {{ query }}
     <div
       slot="actions"
       v-if="
