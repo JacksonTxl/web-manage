@@ -26,7 +26,7 @@
             @select="getCurCouponShops"
             class="mg-t8"
             v-if="curPrizeType === PRIZE_TYPE.DEFAULT"
-            placeholder="请选择优惠卷"
+            placeholder="请选择优惠券"
             v-decorator="decorators.coupon_id"
           >
             <a-select-option
@@ -262,7 +262,7 @@ export default {
         value.activity_prize_id = this.info ? this.info.activity_prize_id : 0
         if (this.curPrizeType === this.PRIZE_TYPE.DEFAULT && !value.coupon_id) {
           this.messageService.warning({
-            content: '请选择优惠卷'
+            content: '请选择优惠券'
           })
           return
         }
