@@ -70,7 +70,6 @@
           <label class="desc">售出的卡、课记录</label>
           <st-button
             type="primary"
-            disabled
             @click="goRouter('/brand/setting/import/sold')"
           >
             导入售出

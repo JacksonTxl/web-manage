@@ -1,5 +1,5 @@
 <template>
-  <st-panel class="page-shop-sale-list-brand">
+  <st-panel app class="page-shop-sale-list-brand">
     <div slot="title">
       <st-input-search
         v-model="query.course_name"
