@@ -94,10 +94,10 @@
         储值卡成单数
         <st-help-tooltip id="TSSR002" />
       </span>
-      <span slot="teamTitle">
+      <!-- <span slot="teamTitle">
         团课购买节数
         <st-help-tooltip id="TSSR003" />
-      </span>
+      </span> -->
       <span slot="totalTitle">
         总购课节数
         <st-help-tooltip id="TSSR004" />
