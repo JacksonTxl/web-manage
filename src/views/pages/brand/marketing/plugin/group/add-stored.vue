@@ -59,6 +59,7 @@
             <st-form-item label="活动时间" required>
               <a-range-picker
                 @change="changeTime"
+                :disabledDate="disabledDate"
                 :showTime="{ format: 'HH:mm' }"
                 format="YYYY-MM-DD HH:mm"
               />
@@ -131,6 +132,7 @@
               <a-date-picker
                 @change="changeTime"
                 :showTime="{ format: 'HH:mm' }"
+                :disabledDate="disabledDate"
                 format="YYYY-MM-DD HH:mm"
               />
             </st-form-item>
@@ -148,7 +150,7 @@
 
 <script>
 import { columnsGroupStored, ruleOptions } from './add-stored.config'
-import addService from './add-stored.service'
+// import addService from './add-stored.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
 // import moment from 'monment'
 
@@ -200,7 +202,13 @@ export default {
     getShopId(shopId) {
       console.log(shopId)
     },
-    changeName(e) {}
+    changeName(e) {},
+    disabledDate(current) {
+      return (
+        current &&
+        current.format('YYYY-MM-DD HH:mm') < moment().format('YYYY-MM-DD HH:mm')
+      )
+    }
   }
 }
 </script>
