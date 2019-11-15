@@ -1,3 +1,27 @@
 .modal-reserved-info {
   display: flex;
+  &__table {
+    width: 100%;
+    overflow: auto;
+    .st-form-table__add-td {
+      padding-left: 16px !important;
+    }
+  }
+}
+.st-form-table__add-option {
+  display: flex;
+  flex-direction: column;
+  .item-name {
+    font-size: 14px;
+    .c(#3e4d5c);
+  }
+  .item-phone {
+    color: #9bacb9;
+    font-size: 12px;
+  }
+}
+.ant-select-selection-selected-value {
+  .item-phone {
+    display: none;
+  }
 }

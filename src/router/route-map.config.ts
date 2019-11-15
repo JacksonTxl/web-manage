@@ -65,6 +65,7 @@ export const routeMapConfig = {
     }
   },
   'shop-product-course-schedule-team-team-table'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '团课排期'
     routeConfig.queryOptions = {
       course_id: { type: Number, default: -1 },
       court_id: { type: Number, default: -1 },

@@ -5,6 +5,9 @@
       slot="title"
     >
       <div class="title__left">
+        <st-button type="primary" class="mg-r8" @click="onClickSettingSchdule">
+          管理私教排期
+        </st-button>
         <st-button v-if="auth.add">
           <a
             v-modal-link="{
@@ -89,6 +92,7 @@ import { columns } from '../personal-reserve-table.config'
 import { RouteService } from '@/services/route.service'
 import date from '@/views/biz-components/schedule/date#/date-component.vue'
 import SchedulePersonalAddReserve from '@/views/biz-modals/schedule/personal/add-reserve'
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'PersonalReservetable',
   mixins: [tableMixin],
@@ -155,6 +159,23 @@ export default {
       this.$router.push({
         name: 'shop-product-course-schedule-personal',
         query: this.query
+      })
+    },
+    // 管理私教排期
+    onClickSettingSchdule() {
+      let requestParam = cloneDeep(this.query)
+      if (this.query.start_date === this.query.end_date) {
+        let weekOfday = moment(this.query.start_date, 'YYYY-MM-DD').format('E')
+        requestParam.start_date = moment(this.query.start_date)
+          .subtract(weekOfday - 1, 'days')
+          .format('YYYY-MM-DD')
+        requestParam.end_date = moment(this.query.start_date)
+          .add(7 - weekOfday, 'days')
+          .format('YYYY-MM-DD')
+      }
+      this.$router.push({
+        name: 'shop-product-course-personal-table',
+        query: requestParam
       })
     },
     getList(val = {}) {
