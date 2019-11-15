@@ -20,6 +20,13 @@ export class ListService implements Controller {
       })
     )
   }
+  /**
+   * 终止任务
+   * @param taskId
+   */
+  stopTask(taskId: any) {
+    return this.taskApi.stopTask(taskId)
+  }
   beforeEach(to: ServiceRoute) {
     return this.getList(to.meta.query)
   }

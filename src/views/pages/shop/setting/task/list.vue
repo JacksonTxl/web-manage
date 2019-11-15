@@ -64,12 +64,14 @@ import { columns } from './list.config.ts'
 import tableMixin from '@/mixins/table.mixin'
 import { TASK_STATUS } from '@/constants/brand/setting/task'
 import CommonTaskDetail from '@/views/biz-modals/common/task/detail'
+import { MessageService } from '@/services/message.service'
 export default {
   mixins: [tableMixin],
   name: 'PageBrandSettingShopList',
   serviceInject() {
     return {
       routeService: RouteService,
+      messageService: MessageService,
       listService: ListService
     }
   },
@@ -108,7 +110,10 @@ export default {
       })
     },
     stopTask(item) {
-      console.log(item)
+      this.listService.stopTask(item.id).subscribe(res => {
+        this.messageService.success('终止任务成功!')
+        this.$router.reload()
+      })
     }
   }
 }

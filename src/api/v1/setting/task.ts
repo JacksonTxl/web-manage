@@ -8,4 +8,11 @@ export class TaskApi extends Api {
   getList(query: any) {
     return this.http.get('/v1/setting/shop/task', { query })
   }
+  /**
+   * 终止任务
+   * @param query
+   */
+  stopTask(task_id: any) {
+    return this.http.delete(`/v1/setting/task/${task_id}`)
+  }
 }
