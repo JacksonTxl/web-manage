@@ -212,4 +212,12 @@ export class CourseApi extends Api {
       params
     })
   }
+  /**
+   * 售出私教课延长有效期
+   */
+  taskExtendDays(params: any) {
+    return this.http.post(`/v1/sold/course/personal/task_extend_time`, {
+      params
+    })
+  }
 }

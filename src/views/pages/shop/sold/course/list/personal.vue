@@ -26,6 +26,14 @@
         >
           赠送额度
         </st-button>
+        <st-button
+          type="primary"
+          class="mg-r8"
+          @click="onExtendDays"
+          :disabled="selectedRowKeys.length < 1"
+        >
+          延长有效期
+        </st-button>
       </div>
       <div>
         <st-table
@@ -145,6 +153,7 @@ import SoldCourseTransfer from '@/views/biz-modals/sold/course/transfer'
 import SoldCourseLease from '@/views/biz-modals/sold/course/lease'
 import SoldCourseActivated from '@/views/biz-modals/sold/course/activated'
 import SoldCourseGiving from '@/views/biz-modals/sold/course/giving'
+import SoldCourseExtendDay from '@/views/biz-modals/sold/course/extend-day'
 import CommonTaskSuccessTip from '@/views/biz-modals/common/task/success-tip'
 export default {
   name: 'PageShopSoldCoursePersonalList',
@@ -161,7 +170,8 @@ export default {
     SoldCourseLease,
     SoldCourseActivated,
     SoldCourseGiving,
-    CommonTaskSuccessTip
+    CommonTaskSuccessTip,
+    SoldCourseExtendDay
   },
   serviceInject() {
     return {
@@ -224,6 +234,20 @@ export default {
     onGiving() {
       this.$modalRouter.push({
         name: 'sold-course-giving',
+        props: {
+          id: this.selectedRowKeys
+        },
+        on: {
+          success: () => {
+            this.successTip()
+          }
+        }
+      })
+    },
+    // 延长有效期
+    onExtendDays() {
+      this.$modalRouter.push({
+        name: 'sold-course-extend-day',
         props: {
           id: this.selectedRowKeys
         },
