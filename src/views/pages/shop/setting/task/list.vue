@@ -49,9 +49,14 @@
       <div slot="action" slot-scope="text, record">
         <st-table-actions>
           <!-- v-if="record.auth['brand:shop:shop_type|edit']" -->
-          <a @click="stopTask(record)">
-            终止任务
-          </a>
+          <st-popconfirm
+            @confirm="stopTask(record)"
+            title="确认要终止该任务么？"
+          >
+            <a>
+              终止任务
+            </a>
+          </st-popconfirm>
         </st-table-actions>
       </div>
     </st-table>
@@ -111,7 +116,7 @@ export default {
     },
     stopTask(item) {
       this.listService.stopTask(item.id).subscribe(res => {
-        this.messageService.success('终止任务成功!')
+        this.messageService.success({ content: '终止任务成功!' })
         this.$router.reload()
       })
     }
