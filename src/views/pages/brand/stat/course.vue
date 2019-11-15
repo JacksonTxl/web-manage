@@ -1,12 +1,16 @@
 <template>
   <div :class="bPage()">
     <div :class="bPage('section')">
-      <header :class="bPage('header')">
-        <st-t3 :class="bPage('title')">
+      <header :class="bHeader('header')">
+        <st-t3 :class="bHeader('title')">
           课程概览
         </st-t3>
-        <div :class="bPage('actions')">
-          <brand-shop class="mg-r12" @change="onChangeChartShop"></brand-shop>
+        <div :class="bHeader('actions')">
+          <shop-select
+            :defaultValue="-1"
+            class="mg-r12"
+            @change="onChangeChartShop"
+          />
           <st-recent-radio-group
             @change="onChangeChartDays"
           ></st-recent-radio-group>
@@ -42,10 +46,14 @@
     </div>
     <st-hr />
     <div :class="bPage('section')">
-      <header :class="bPage('header')">
-        <st-t3 :class="bPage('title')"></st-t3>
-        <div :class="bPage('actions')">
-          <brand-shop class="mg-r12" @change="onChangeTableShop"></brand-shop>
+      <header :class="bHeader('header')">
+        <st-t3 :class="bHeader('title')"></st-t3>
+        <div :class="bHeader('actions')">
+          <shop-select
+            v-model="query.shop_id"
+            @change="onSingleSearch('shop_id', $event)"
+            class="mg-r12"
+          />
           <st-recent-radio-group
             @change="onChangeTableDays"
           ></st-recent-radio-group>
@@ -55,7 +63,7 @@
         <st-table
           :loading="loading$.getList"
           :columns="columns"
-          :scroll="{ x: 1800 }"
+          :scroll="{ x: 800 }"
           rowKey="stat_date"
           :page="page$"
           @change="onTableChange"
@@ -67,8 +75,8 @@
 </template>
 
 <script>
-import BrandShop from './components#/brand-shop'
 import BrandStatisticsCourseRing from '@/views/biz-components/stat/brand-stat-course-ring'
+import shopSelect from '@/views/biz-components/shop-select'
 import { RouteService } from '@/services/route.service'
 import { CourseService } from './course.service'
 import tableMixin from '@/mixins/table.mixin'
@@ -104,13 +112,14 @@ export default {
     }
   },
   bem: {
-    bPage: 'page-brand-stat-course'
+    bPage: 'page-brand-stat-course',
+    bHeader: 'page-brand-stat-header'
   },
   watch: {},
   data() {
     return {
       chartParam: {
-        shop_id: 0,
+        shop_id: -1,
         day: 7,
         start_date: undefined,
         end_date: undefined
@@ -129,7 +138,6 @@ export default {
   },
   methods: {
     onChangeChartShop(event) {
-      this.chartParam.shop_id = event
       this.getChart()
     },
     onChangeChartDays(event) {
@@ -137,10 +145,6 @@ export default {
       this.chartParam.start_date = event.start_date || undefined
       this.chartParam.end_date = event.end_date || undefined
       this.getChart()
-    },
-    onChangeTableShop(event) {
-      this.query.shop_id = event
-      this.onSearch()
     },
     onChangeTableDays(event) {
       this.query.day = event.recently_day || undefined
@@ -153,7 +157,7 @@ export default {
     }
   },
   components: {
-    BrandShop,
+    shopSelect,
     BrandStatisticsCourseRing
   }
 }
