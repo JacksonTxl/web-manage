@@ -129,7 +129,7 @@ export default {
   },
   methods: {
     onChangeChartShop(event) {
-      this.chartParam.shop = event
+      this.chartParam.shop_id = event
       this.getChart()
     },
     onChangeChartDays(event) {
