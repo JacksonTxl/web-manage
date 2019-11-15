@@ -1,5 +1,11 @@
 <template>
   <st-panel initial app :class="basic()">
+    <st-input-search
+      v-model="query.product_name"
+      @search="onSearch"
+      placeholder="请输入商品名查找"
+      :class="basic('search')"
+    />
     <st-tabs
       :class="basic('tab')"
       :activeKey="$searchQuery.product_type"
@@ -31,12 +37,6 @@
         </st-table-actions>
       </div>
     </st-table>
-    <st-input-search
-      v-model="query.product_name"
-      @search="onSearch"
-      placeholder="请输入商品名查找"
-      :class="basic('search')"
-    />
   </st-panel>
 </template>
 
@@ -86,9 +86,6 @@ export default {
   },
   computed: {
     columns
-  },
-  data() {
-    return {}
   },
   methods: {
     getList() {
@@ -284,9 +281,6 @@ export default {
           }
         }
       })
-    },
-    getProductList() {
-      return this.listService.getProductList().subscribe()
     },
     onTabSearch(val) {
       this.$router.push({

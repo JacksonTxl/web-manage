@@ -59,7 +59,7 @@
     "vue-modal-router": "0.5.1",
     "vue-router": "3.0.7",
     "vue-router-multiguard": "^1.0.3",
-    "vue-router-plus": "0.2.2",
+    "vue-router-plus": "0.2.3",
     "vue-st-form": "0.0.6",
     "vuedraggable": "^2.19.2",
     "webpack": "^4.41.1"
