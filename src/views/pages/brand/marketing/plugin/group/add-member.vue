@@ -124,17 +124,8 @@
                 选择门店
                 <st-help-tooltip id="TBPTXJ004" />
               </span>
-              <a-radio-group v-model="showShopRange">
-                <a-radio :value="1" :key="1">
-                  所有门店
-                </a-radio>
-                <a-radio :value="2" :key="2">
-                  指定门店
-                </a-radio>
-              </a-radio-group>
               <select-shop
                 :class="basic('table')"
-                v-if="showShopRange == '2'"
                 @change="onSelectShop"
                 :shopIds="shopIds"
               ></select-shop>
@@ -197,7 +188,6 @@ export default {
         }
       ],
       // 是否指定门店
-      showShopRange: 1,
       shopIds: [],
       // 发布状态
       releaseStatus: 1

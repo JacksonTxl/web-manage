@@ -1266,9 +1266,14 @@ export const routeMapConfig = {
   ) {
     routeConfig.meta.title = '保存成功'
   },
-  'brand-marketing-plugin-group-add'(routeConfig: RouteConfig) {
+  'brand-marketing-plugin-group-add-member'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增拼团'
-    routeConfig.meta.parentId = 'brand-marketing-plugin-group-list'
+  },
+  'brand-marketing-plugin-group-add-course'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '新增拼团'
+  },
+  'brand-marketing-plugin-group-choose'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '选择拼团类型'
   },
   ...tplConfigs
 }

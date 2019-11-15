@@ -28,7 +28,11 @@
                 </span>
               </a-input>
             </st-form-item>
-            <st-form-item label="拼团门店" required>
+            <st-form-item required>
+              <span slot="label">
+                拼团门店
+                <st-help-tooltip id="TBPTXJ005" />
+              </span>
               <a-select @change="chooseShop" showSearch placeholder="请输入">
                 <a-select-option value="lucy">Lucy</a-select-option>
               </a-select>
