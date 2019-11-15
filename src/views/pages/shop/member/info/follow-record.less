@@ -1,9 +1,9 @@
 .member-follow-record {
   margin-left: 120px;
   &__timeline-item {
-    height: 44px;
+    height: 46px;
     margin-left: 12px;
-    line-height: 44px;
+    line-height: 46px;
     border-radius: 4px;
     padding-left: 20px;
     border: 1px solid rgba(230, 233, 239, 1);
@@ -14,17 +14,25 @@
     content: '';
     width: 0px;
     height: 0px;
-    border-top: 6px solid transparent;
-    border-bottom: 6px solid transparent;
-    border-right: 6px solid #fff;
+    border: 6px solid transparent;
+    border-right: 6px solid #ddd;
     position: absolute;
     top: 18px;
-    left: -6px;
+    left: 0px;
+  }
+  .member-follow-record__timeline-item::after {
+    content: '';
+    position: absolute;
+    top: 18px;
+    left: 1px;
+    border: 6px solid transparent;
+    border-right: 6px solid #fff;
   }
   &__timeline-position {
     position: absolute;
     left: -120px;
     top: 0px;
+    font-family: 'DINAlternate-Bold,DINAlternate';
   }
   .ant-timeline-item-head-blue {
     margin-top: 10px;
