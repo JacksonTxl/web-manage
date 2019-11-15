@@ -1,6 +1,6 @@
 <template>
   <st-modal
-    title="额度赠送"
+    title="赠送额度"
     size="small"
     v-model="show"
     wrapClassName="modal-sold-card-giving"
@@ -8,6 +8,16 @@
     <div :class="giving('content')">
       <st-form :form="form" labelWidth="75px">
         <div :class="giving('giving')">
+          <st-form-item label="选择" required>
+            <a-radio-group v-model="dat">
+              <a-radio :style="radioStyle" :key="1" :value="1">
+                已选当前{{ id.length }}条数据
+              </a-radio>
+              <a-radio :style="radioStyle" :key="2" :value="2">
+                已选现有筛选条件下全部的{{ page.total_counts }}条数据
+              </a-radio>
+            </a-radio-group>
+          </st-form-item>
           <st-form-item label="赠送额度" required>
             <st-input-number
               :max="99999"
@@ -40,6 +50,7 @@
 <script>
 import { GivingService } from './giving.service'
 import { ruleOptions } from './giving.config'
+import { RouteService } from '@/services/route.service'
 export default {
   name: 'ModalSoldCardGiving',
   bem: {
@@ -50,11 +61,13 @@ export default {
   },
   serviceInject() {
     return {
-      givingService: GivingService
+      givingService: GivingService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
+      query: this.routeService.query$,
       loading: this.givingService.loading$
     }
   },
@@ -64,8 +77,13 @@ export default {
       required: true
     },
     type: {
-      type: String || Number,
+      type: [String, Number],
       required: true
+    },
+    page: {
+      type: Object,
+      required: true,
+      default: () => {}
     }
   },
   data() {
@@ -75,7 +93,12 @@ export default {
       form,
       decorators,
       show: false,
-      description: ''
+      description: '',
+      radioStyle: {
+        display: 'block',
+        height: '30px',
+        lineHeight: '30px'
+      }
     }
   },
   methods: {

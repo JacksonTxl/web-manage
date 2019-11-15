@@ -17,6 +17,16 @@
       </span>
       <slot></slot>
     </a-tooltip>
+    <a-tooltip
+      v-if="defaultVisible && isCustom"
+      v-bind="$attrs"
+      v-on="$listeners"
+      :mouseEnterDelay="0.3"
+      :visible="visible"
+      @visibleChange="change"
+    >
+      <slot></slot>
+    </a-tooltip>
     <a-tooltip v-else v-bind="$attrs" v-on="$listeners" :mouseEnterDelay="0.3">
       <slot></slot>
     </a-tooltip>
@@ -39,6 +49,10 @@ export default {
       menuData: this.userService.menuData$
     }
   },
+  model: {
+    prop: 'visible',
+    event: 'change'
+  },
   props: {
     id: {
       type: [Number, String],
@@ -51,7 +65,12 @@ export default {
     isCustom: {
       type: Boolean,
       default: false
-    }
+    },
+    defaultVisible: {
+      type: Boolean,
+      default: false
+    },
+    visible: Boolean
   },
   data() {
     return {
@@ -71,6 +90,9 @@ export default {
         this.content = res.info.content
         this.loaded = true
       })
+    },
+    change(event) {
+      this.$emit('change', event)
     }
   }
 }
