@@ -1,14 +1,7 @@
 <template>
   <st-panel app initial :tabs="authTabs">
-    <div slot="actions">
-      <st-input-search
-        v-model="query.search"
-        @search="onSearchCourseName"
-        :placeholder="placeholder"
-        :class="b('search')"
-        style="width:372px"
-      />
-    </div>
+    <di-view slot="actions" name="SHOP_SOLD_COURSE_LIST_SEARCH"></di-view>
+
     <router-view></router-view>
   </st-panel>
 </template>
