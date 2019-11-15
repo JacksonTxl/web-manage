@@ -20,6 +20,7 @@
                 @focus="setFocus('sales_is_limit', 1)"
                 v-model="crmRule.sales_limit_num"
                 :max="9999"
+                type="number"
                 class="input"
                 placeholder="请输入"
               >
@@ -80,7 +81,7 @@
             <a-input
               :min="1"
               :max="9999"
-              v-model="crmRule.sales_follow_days"
+              v-model="crmRule.sales_protect_days"
               class="input"
               @focus="setFocus('sales_follow_limit', 1)"
               placeholder="请输入"
@@ -99,12 +100,12 @@
             {{ item.label }}
           </a-radio>
           可跟进
-          <a-radio :value="1">
+          <a-radio :value="3">
             <a-input
               :min="1"
               :max="9999"
               class="input"
-              @focus="setFocus('sales_follow_rule', 1)"
+              @focus="setFocus('sales_follow_rule', 3)"
               v-model="crmRule.sales_follow_days"
               placeholder="请输入"
             >
@@ -168,11 +169,11 @@
             {{ item.label }}
           </a-radio>
           可跟进
-          <a-radio :value="2">
+          <a-radio :value="3">
             <a-input
               :min="1"
               :max="9999"
-              @focus="setFocus('coach_follow_rule', 1)"
+              @focus="setFocus('coach_follow_rule', 3)"
               class="input"
               placeholder="请输入"
             >
@@ -272,6 +273,7 @@ export default {
       })
     },
     setCrmRule() {
+      console.log(this.crmRule)
       return this.crmService.setCrmRule(this.crmRule).subscribe(res => {
         this.messageService.success({ content: '编辑成功' })
         this.getCrmRule()
