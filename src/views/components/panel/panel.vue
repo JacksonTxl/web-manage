@@ -5,7 +5,8 @@
       {
         'st-panel--app': app,
         'st-panel--tabs': tabs,
-        'st-panel--initial': initial
+        'st-panel--initial': initial,
+        'st-panel--fixed': fixed
       }
     ]"
   >
@@ -56,6 +57,10 @@ export default {
       default: undefined
     },
     app: {
+      type: Boolean,
+      default: false
+    },
+    fixed: {
       type: Boolean,
       default: false
     },

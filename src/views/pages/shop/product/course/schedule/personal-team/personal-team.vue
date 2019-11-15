@@ -6,6 +6,7 @@
       @add="onAddSchedule"
       :cardList="cardList"
       :startDate="startDate"
+      fixed
     >
       <div slot="toolbar-left">
         <st-button

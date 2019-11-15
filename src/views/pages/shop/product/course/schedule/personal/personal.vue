@@ -7,6 +7,7 @@
       addTitle="添加预约"
       :cardList="cardList"
       :startDate="startDate"
+      fixed
     >
       <div slot="toolbar-left">
         <st-button type="primary" class="mg-r24" @click="onClickSettingSchdule">
