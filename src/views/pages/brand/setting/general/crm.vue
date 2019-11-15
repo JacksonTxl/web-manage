@@ -12,7 +12,10 @@
           <div class="st-des mg-t4">客户成为正式会员后不受此人数限制</div>
         </a-col>
         <a-col :span="12" class="ta-r">
-          <a-radio-group v-model="crmRule.sales_is_limit">
+          <a-radio-group
+            v-model="crmRule.sales_is_limit"
+            @change="setFocus('sales_limit_num', '')"
+          >
             <a-radio :value="0" class="mg-r48">不限制</a-radio>
             <a-radio :value="1">
               <a-input
@@ -39,7 +42,10 @@
           <div class="st-des mg-t4">客户成为正式会员后不受此人数限制</div>
         </a-col>
         <a-col :span="12" class="ta-r">
-          <a-radio-group v-model="crmRule.coach_is_limit">
+          <a-radio-group
+            v-model="crmRule.coach_is_limit"
+            @change="setFocus('coach_limit_num', '')"
+          >
             <a-radio :value="0" class="mg-r48">不限制</a-radio>
             <a-radio :value="1">
               <a-input
@@ -75,7 +81,10 @@
       </a-row>
       <div :class="bPage('custom')" v-if="crmRule.sales_is_protect">
         <st-t4 class="mg-t4 mg-b24">销售跟进客户保护天数</st-t4>
-        <a-radio-group v-model="crmRule.sales_follow_limit">
+        <a-radio-group
+          v-model="crmRule.sales_is_protect_limit"
+          @change="setFocus('sales_protect_days', '')"
+        >
           <a-radio :value="0" class="mg-r48">不限制</a-radio>
           <a-radio :value="1">
             <a-input
@@ -83,15 +92,18 @@
               :max="9999"
               v-model="crmRule.sales_protect_days"
               class="input"
-              @focus="setFocus('sales_follow_limit', 1)"
+              @focus="setFocus('sales_is_protect_limit', 1)"
               placeholder="请输入"
             >
               <span slot="addonAfter">天</span>
             </a-input>
           </a-radio>
         </a-radio-group>
-        <st-t4 class="mg-t4 mg-b24">会员流失后解绑跟进销售规则</st-t4>
-        <a-radio-group v-model="crmRule.sales_follow_rule">
+        <st-t4 class="mg-t24 mg-b24">会员流失后解绑跟进销售规则</st-t4>
+        <a-radio-group
+          v-model="crmRule.sales_follow_rule"
+          @change="setFocus('sales_follow_days', '')"
+        >
           <a-radio
             v-for="item in userUntied"
             :key="item.value"
@@ -134,14 +146,17 @@
       </a-row>
       <div :class="bPage('custom')" v-if="crmRule.coach_is_protect">
         <st-t4 class="mg-t4 mg-b24">教练跟进客户保护天数</st-t4>
-        <a-radio-group v-model="crmRule.coach_is_protect_limit">
+        <a-radio-group
+          v-model="crmRule.coach_is_protect_limit"
+          @change="setFocus('coach_protect_days', '')"
+        >
           <a-radio :value="0" class="mg-r48">不限制</a-radio>
           <a-radio :value="1">
             <a-input
               :min="1"
               :max="9999"
               class="input"
-              v-model="crmRule.coach_follow_days"
+              v-model="crmRule.coach_protect_days"
               @focus="setFocus('coach_is_protect_limit', 1)"
               placeholder="请输入"
             >
@@ -149,18 +164,21 @@
             </a-input>
           </a-radio>
         </a-radio-group>
-        <st-t4 class="mg-t4 mg-b24">购买以下项目不解绑教练</st-t4>
-        <a-radio-group v-model="crmRule.coach_untie_condition">
-          <a-radio
+        <st-t4 class="mg-t24 mg-b24">购买以下项目不解绑教练</st-t4>
+        <a-checkbox-group v-model="crmRule.coach_untie_condition">
+          <a-checkbox
             v-for="item in courseType"
             :key="item.value"
             :value="item.value"
           >
             {{ item.label }}
-          </a-radio>
-        </a-radio-group>
-        <st-t4 class="mg-t4 mg-b24">会员课程失效后解绑跟进教练规则</st-t4>
-        <a-radio-group v-model="crmRule.coach_follow_rule">
+          </a-checkbox>
+        </a-checkbox-group>
+        <st-t4 class="mg-t24 mg-b24">会员课程失效后解绑跟进教练规则</st-t4>
+        <a-radio-group
+          v-model="crmRule.coach_follow_rule"
+          @change="setFocus('coach_follow_days', '')"
+        >
           <a-radio
             v-for="item in userUntied"
             :key="item.value"
@@ -175,6 +193,7 @@
               :max="9999"
               @focus="setFocus('coach_follow_rule', 3)"
               class="input"
+              v-model="crmRule.coach_follow_days"
               placeholder="请输入"
             >
               <span slot="addonAfter">天</span>
@@ -185,9 +204,11 @@
       </div>
       <st-hr></st-hr>
     </div>
-    <st-button type="primary" class="text-center" @click="setCrmRule">
-      保存
-    </st-button>
+    <div>
+      <st-button class="btn" type="primary" @click="setCrmRule">
+        保存
+      </st-button>
+    </div>
   </st-panel>
 </template>
 
@@ -222,8 +243,8 @@ export default {
         coach_is_limit: 0,
         coach_is_protect: 0,
         sales_is_protect: 0,
-        coach_untie_condition: 1,
-        sales_follow_limit: 0,
+        coach_untie_condition: [],
+        sales_is_protect_limit: 0,
         sales_follow_rule: 1,
         coach_is_protect_limit: 0,
         coach_follow_rule: 1
@@ -249,10 +270,18 @@ export default {
             success: () => {
               if (type === 'sales') {
                 this.crmRule.sales_is_protect = 0
+                this.crmRule.sales_is_protect_limit = 0
+                this.crmRule.sales_protect_days = ''
+                this.crmRule.sales_follow_rule = 1
+                this.crmRule.sales_follow_days = ''
               }
 
               if (type === 'coach') {
                 this.crmRule.coach_is_protect = 0
+                this.crmRule.coach_is_protect_limit = 0
+                this.crmRule.coach_protect_days = ''
+                this.crmRule.coach_follow_rule = 1
+                this.crmRule.coach_follow_days = ''
               }
             },
             cancel: () => {
@@ -273,7 +302,6 @@ export default {
       })
     },
     setCrmRule() {
-      console.log(this.crmRule)
       return this.crmService.setCrmRule(this.crmRule).subscribe(res => {
         this.messageService.success({ content: '编辑成功' })
         this.getCrmRule()
