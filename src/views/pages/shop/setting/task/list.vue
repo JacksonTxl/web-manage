@@ -88,7 +88,7 @@ export default {
     columns
   },
   modals: {
-    CommonSettingTaskDetail
+    CommonTaskDetail
   },
   data() {
     return {
