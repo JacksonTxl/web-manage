@@ -66,7 +66,7 @@
           </a-col>
         </a-row>
         <a-row :gutter="8">
-          <a-col :span="18">
+          <a-col :span="16">
             <st-form-item label="活动时间" required>
               <!-- <a-date-picker
                 style="width:181px;"
@@ -83,10 +83,7 @@
                 format="YYYY-MM-DD HH:mm"
                 v-model="end_time"
               /> -->
-              <st-range-picker
-                :disabledDays="180"
-                :value="selectTime"
-              ></st-range-picker>
+              <st-range-picker :value="selectTime"></st-range-picker>
             </st-form-item>
           </a-col>
         </a-row>
@@ -344,9 +341,6 @@ export default {
           })
         }
       })
-    },
-    fun() {
-      return ''
     }
   },
   components: {
