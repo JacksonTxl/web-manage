@@ -1,7 +1,7 @@
 // 发布状态
 export const enum ACTIVITY_STATUS {
-  START = 1,
+  PUBLISHER = 1,
   NO_START = 2,
   RELEASE = 3,
-  END = 5
+  END = 4
 }
