@@ -47,4 +47,7 @@ export class GroupBuyApi extends Api {
   editGroup(params: EditParams) {
     return this.http.put(`/v1/plugin/group_buy/${params.id}`, { params })
   }
+  getStoredData(id: any) {
+    return this.http.get('/v1/plugin/group_buy/' + id)
+  }
 }
