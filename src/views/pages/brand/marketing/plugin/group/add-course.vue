@@ -15,7 +15,7 @@
     <div>
       <st-form :form="form" labelWidth="118px">
         <a-row :gutter="8">
-          <a-col :lg="10">
+          <a-col :span="10">
             <st-form-item label="活动名称" required>
               <a-input
                 v-decorator="decorators.group_name"
@@ -40,7 +40,7 @@
           </a-col>
         </a-row>
         <a-row :gutter="8">
-          <a-col :lg="16">
+          <a-col :span="16">
             <st-form-item label="优惠设置" required>
               <div :class="basic('table')">
                 <st-table
@@ -67,7 +67,7 @@
           </a-col>
         </a-row>
         <a-row :gutter="8">
-          <a-col :lg="10">
+          <a-col :span="10">
             <st-form-item label="选择课程包" required>
               <a-select @change="chooseCourse" showSearch placeholder="请输入">
                 <a-select-option value="lucy">Lucy</a-select-option>
@@ -87,7 +87,7 @@
           </a-col>
         </a-row>
         <a-row :gutter="8">
-          <a-col :lg="10">
+          <a-col :span="10">
             <st-form-item required>
               <span slot="label">
                 参团人数
@@ -124,7 +124,7 @@
           </a-col>
         </a-row>
         <a-row :gutter="8">
-          <a-col :lg="10">
+          <a-col :span="10">
             <st-form-item required>
               <span slot="label">
                 发布状态

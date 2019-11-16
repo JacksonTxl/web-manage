@@ -1,7 +1,7 @@
 export const ruleOptions = (vm: any) => {
   return {
     // 活动名称
-    group_name: {
+    activity_name: {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
@@ -16,7 +16,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     // 参团人数
-    num: {
+    group_sum: {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
@@ -34,7 +34,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     // 拼团有效期
-    time: {
+    valid_time: {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
@@ -52,7 +52,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     // 活动库存
-    stock: {
+    stock_total: {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
@@ -71,13 +71,13 @@ export const ruleOptions = (vm: any) => {
 export const cardColumns = [
   {
     title: '期限/次数',
-    dataIndex: 'city_name',
+    dataIndex: 'spec',
     width: '22%',
     align: 'center'
   },
   {
     title: '原价',
-    dataIndex: 'district_name',
+    dataIndex: 'price',
     align: 'center',
     width: '22%'
   },

@@ -1,24 +1,17 @@
 <template>
   <st-mina-panel app>
     <div slot="actions">
-      <!-- <st-button
-        :loading="loading.addMarketingCoupon || loading.editMarketingCoupon"
-        type="primary"
-        @click="onSubmit"
-      >
+      <st-button :loading="loading.addGroup" type="primary" @click="onSubmit">
         保 存
-      </st-button> -->
-      <st-button type="primary">
-        保存
       </st-button>
     </div>
     <div>
       <st-form :form="form" labelWidth="118px">
         <a-row :gutter="8">
-          <a-col :lg="10">
+          <a-col :span="10">
             <st-form-item label="活动名称" required>
               <a-input
-                v-decorator="decorators.group_name"
+                v-decorator="decorators.activity_name"
                 placeholder="请输入活动名称"
                 @change="changeName"
               >
@@ -29,27 +22,34 @@
               </a-input>
             </st-form-item>
             <st-form-item label="选择会籍卡" required>
-              <a-select @change="chooseCard" showSearch placeholder="请输入">
-                <a-select-option value="lucy">Lucy</a-select-option>
+              <a-select showSearch v-model="cardId" placeholder="请输入">
+                <a-select-option value="11">11</a-select-option>
+                <a-select-option value="22">22</a-select-option>
+                <a-select-option value="33">33</a-select-option>
               </a-select>
             </st-form-item>
           </a-col>
         </a-row>
         <a-row :gutter="8">
-          <a-col :lg="16">
+          <a-col :span="16">
             <st-form-item label="优惠设置" required>
               <div :class="basic('table')">
                 <st-table
-                  rowKey="card_id"
                   :columns="cardColumns"
                   :dataSource="tableData"
                   :pagination="false"
                   :scroll="{ y: 230 }"
-                  :rowSelection="{
-                    onChange: onChange,
-                    rowSelection: rowSelection
-                  }"
+                  :rowSelection="
+                    tableData.length > 1
+                      ? {
+                          onChange: onChange,
+                          selectedRowKeys: selectedRowKeys
+                        }
+                      : null
+                  "
+                  rowKey="id"
                 >
+                  <!-- rowKey="key" -->
                   <template
                     slot="group_price"
                     slot-scope="customRender, record"
@@ -66,28 +66,38 @@
           </a-col>
         </a-row>
         <a-row :gutter="8">
-          <a-col :lg="10">
+          <a-col :span="18">
             <st-form-item label="活动时间" required>
-              <!-- <st-range-picker
-                v-model="decorators.activityTime"
-              ></st-range-picker> -->
-              <a-range-picker
-                @change="changeTime"
+              <!-- <a-date-picker
+                style="width:181px;"
                 :disabledDate="disabledDate"
                 :showTime="{ format: 'HH:mm' }"
                 format="YYYY-MM-DD HH:mm"
+                v-model="start_time"
               />
+              ~
+              <a-date-picker
+                style="width:181px;"
+                :disabledDate="disabledDate"
+                :showTime="{ format: 'HH:mm' }"
+                format="YYYY-MM-DD HH:mm"
+                v-model="end_time"
+              /> -->
+              <st-range-picker
+                :disabledDays="180"
+                :value="selectTime"
+              ></st-range-picker>
             </st-form-item>
           </a-col>
         </a-row>
         <a-row :gutter="8">
-          <a-col :lg="10">
+          <a-col :span="10">
             <st-form-item required>
               <span slot="label">
                 参团人数
                 <st-help-tooltip id="TBPTXJ001" />
               </span>
-              <st-input-number v-decorator="decorators.num">
+              <st-input-number v-decorator="decorators.group_sum">
                 <template slot="addonAfter">
                   人
                 </template>
@@ -98,7 +108,7 @@
                 拼团有效期
                 <st-help-tooltip id="TBPTXJ002" />
               </span>
-              <st-input-number v-decorator="decorators.time">
+              <st-input-number v-decorator="decorators.valid_time">
                 <template slot="addonAfter">
                   小时
                 </template>
@@ -109,16 +119,19 @@
                 活动库存
                 <st-help-tooltip id="TBPTXJ003" />
               </span>
-              <a-checkbox @change="limitStock">限制库存&nbsp;&nbsp;</a-checkbox>
+              <a-checkbox @change="limitStock" :checked="isLimit">
+                限制库存&nbsp;&nbsp;
+              </a-checkbox>
               <st-input-number
+                v-if="isLimit"
                 :class="basic('stock')"
-                v-decorator="decorators.stock"
+                v-decorator="decorators.stock_total"
               ></st-input-number>
             </st-form-item>
           </a-col>
         </a-row>
         <a-row :gutter="8">
-          <a-col :lg="16">
+          <a-col :span="16">
             <st-form-item required>
               <span slot="label">
                 选择门店
@@ -133,7 +146,7 @@
           </a-col>
         </a-row>
         <a-row :gutter="8">
-          <a-col :lg="10">
+          <a-col :span="10">
             <st-form-item required>
               <span slot="label">
                 发布状态
@@ -153,9 +166,10 @@
             </st-form-item>
             <st-form-item label="发布时间" required v-if="releaseStatus === 3">
               <a-date-picker
-                @change="changeReleaseTime"
+                :disabledDate="disabledDate"
                 :showTime="{ format: 'HH:mm' }"
                 format="YYYY-MM-DD HH:mm"
+                v-model="publishTime"
               />
             </st-form-item>
           </a-col>
@@ -167,7 +181,20 @@
 <script>
 import { ruleOptions, cardColumns } from './add-member.config'
 import SelectShop from '@/views/fragments/shop/select-shop'
+import { AddMemberService } from './add-member.service'
+import moment from 'moment'
+import { values } from 'lodash-es'
 export default {
+  serviceInject() {
+    return {
+      addMemberService: AddMemberService
+    }
+  },
+  rxState() {
+    return {
+      loading: this.addMemberService.loading$
+    }
+  },
   bem: {
     basic: 'brand-marketing-group-member'
   },
@@ -178,57 +205,148 @@ export default {
       form,
       decorators,
       groupName: '',
+      cardId: '',
+      skuList: [{ id: 1, spec: '30次', price: 100 }],
+      selectedRowKeys: [], // 优惠设置选中项
+      activity_time: [],
+      isLimit: true,
+      shopIds: [],
       cardColumns,
       tableData: [
         {
-          city_name: '22',
-          district_name: '33',
-          group_price: '44',
-          card_id: 1
+          spec: '33',
+          price: '33',
+          group_price: '55',
+          id: 100
+        },
+        {
+          spec: '33',
+          price: '43',
+          group_price: '77',
+          id: 102
+        },
+        {
+          spec: '55',
+          price: '93',
+          group_price: '888',
+          id: 105
         }
       ],
-      // 是否指定门店
-      shopIds: [],
       // 发布状态
-      releaseStatus: 1
+      releaseStatus: 1,
+      publishTime: null,
+      selectTime: {
+        startTime: {
+          showTime: false,
+          disabledBegin: moment(),
+          placeholder: '开始日期',
+          disabled: false,
+          value: null,
+          format: 'YYYY-MM-DD',
+          change: $event => {}
+        },
+        endTime: {
+          showTime: false,
+          placeholder: '结束日期',
+          disabled: false,
+          value: null,
+          format: 'YYYY-MM-DD',
+          change: $event => {},
+          disabledDate: this.disabledDate
+        }
+      }
+    }
+  },
+  props: {
+    // 是否是编辑0:新建，1:已发布, 2:暂不发布, 3:定时发布
+    editType: {
+      type: Number,
+      default: 0
     }
   },
   methods: {
-    // 选择会籍卡
-    chooseCard(value) {
-      console.log(value)
-    },
     // 优惠设置选择变化
     onChange(value) {
-      console.log(value)
-    },
-    // 优惠设置选择变化
-    rowSelection(value) {
-      console.log(value)
-    },
-    // 活动时间
-    changeTime(value) {
-      console.log(value)
+      this.selectedRowKeys = value
     },
     // 是否限制库存
     limitStock(value) {
-      console.log(value)
+      this.isLimit = value.target.checked
     },
     // 选择门店
     onSelectShop(value) {
       console.log(value)
     },
-    // 修改发布时间
-    changeReleaseTime(value) {
-      console.log(value)
-    },
+    // 为了同步字数
     changeName(e) {
       this.groupName = e.target.value
     },
+    // select选择设置开始时间不能小于现在
     disabledDate(current) {
       return (
-        current && current.format('YYYY-MM-DD') < moment().format('YYYY-MM-DD')
+        current &&
+        current.format('YYYY-MM-DD HH:mm') < moment().format('YYYY-MM-DD HH:mm')
       )
+    },
+    // 新建拼团活动
+    onSubmit() {
+      this.form.validate().then(values => {
+        console.log(this.editType, 'this.editType')
+        let params = {}
+        if (this.editType === 1 || this.editType === 3) {
+          // 编辑
+          params = {
+            id: 1,
+            product_type: 1,
+            activity_name: values.activity_name,
+            end_time: this.selectTime.endTime.value,
+            stock_total: values.stock_total
+          }
+        } else {
+          let list = []
+          this.selectedRowKeys.forEach((id, index) => {
+            this.tableData.forEach(item => {
+              if (item.id === id) {
+                list.push({ sku_id: id, group_price: item.group_price })
+              }
+            })
+          })
+          params = {
+            product_type: 1, // 会籍卡
+            activity_name: values.activity_name, // 活动名称
+            product_id: this.cardId, //商品id
+            sku: list, //卡、课规格[{“sku_id”:1,”group_price”:20},]
+            // start_time: moment(values.start_time).format('YYYY-MM-DD HH:MM'),
+            // end_time: moment(values.end_time).format('YYYY-MM-DD HH:MM'),
+            start_time: this.selectTime.startTime.value,
+            end_time: this.selectTime.endTime.value,
+            group_sum: values.group_sum, //成团人数
+            valid_time: values.valid_time, //拼团有效期
+            is_limit_stock: '', //是否限制库存0不限制 1限制
+            stock_total: values.stock_total, //库存
+            shop_ids: '', //门店ids [1,2,3,4]
+            published_type: '', //发布状态(1-立即发布 2-暂不发布 3-定时发布)
+            published_time: '' //发布时间
+          }
+        }
+        if (this.editType) {
+          // 编辑 type为2，3只能编辑名称，结束时间，库存
+          this.addMemberService.editGroup(params).subscribe(res => {
+            console.log(params, res, '这是编辑返回的数据')
+          })
+        } else {
+          this.addMemberService.addGroup(params).subscribe(res => {
+            // 新建成功 todo(路由地址未确定)
+            console.log(params, res, '==============')
+            // this.$router.push({
+            //   path: `/brand/marketing/plugin/group/list`
+            // })
+          })
+        }
+      })
+    },
+    fun() {
+      return ''
     }
   },
   components: {
