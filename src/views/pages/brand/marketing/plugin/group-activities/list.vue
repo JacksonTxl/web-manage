@@ -15,17 +15,17 @@
         </div>
         <a-select
           :class="basic('select')"
-          v-model="couponStatus"
+          v-model="activityStatus"
           placeholder="活动状态"
-          @change="onSingleSearch('coupon_status', $event)"
+          @change="onSingleSearch('activity_status', $event)"
           style="width: 160px"
         >
-          <a-select-option v-for="item in productType" :key="item.value">
+          <a-select-option v-for="item in activityType" :key="item.value">
             {{ item.label }}
           </a-select-option>
         </a-select>
         <st-input-search
-          v-model="couponName"
+          v-model="activityName"
           @search="onSingleSearch('coupon_name', $event)"
           placeholder="请输入活动名称"
         />
@@ -59,20 +59,8 @@
               <template slot="title">
                 <span>支持门店</span>
               </template>
-              <template>
-                <a
-                  v-modal-link="{
-                    name: 'finance-search-staff-list-salary'
-                  }"
-                >
-                  {{ text }}
-                </a>
-              </template>
               <a>共几家门店</a>
             </a-popover>
-          </template>
-          <template slot="valid_days" slot-scope="text">
-            <span>领券当天开始 {{ text }} 天内有效</span>
           </template>
           <template slot="draw_num" slot-scope="text, record">
             <a @click="goReceive(record)">{{ text }}</a>
@@ -80,22 +68,13 @@
           <template slot="coupon_type" slot-scope="text">
             <span>{{ text | couponTypeFilter }}</span>
           </template>
-          <template slot="put_status" slot-scope="text">
-            <span>{{ text | putStatusFilter }}</span>
-          </template>
           <!-- 做权限点判断 -->
           <template slot="action" slot-scope="text, record">
             <st-table-actions sytle="width: 120px">
-              <a
-                @click="onData(record)"
-                v-if="record.auth['brand:activity:coupon|edit']"
-              >
+              <a @click="onData(record)">
                 数据
               </a>
-              <a
-                @click="onEdit(record)"
-                v-if="record.auth['brand:activity:coupon|edit']"
-              >
+              <a @click="onEdit(record)">
                 编辑
               </a>
               <!-- 写静态页面-->
@@ -105,16 +84,10 @@
               >
                 推广
               </a> -->
-              <a
-                @click="onStop(record)"
-                v-if="record.auth['brand:activity:coupon|end']"
-              >
+              <a @click="onStop(record)">
                 结束
               </a>
-              <a
-                @click="onStop(record)"
-                v-if="record.auth['brand:activity:coupon|end']"
-              >
+              <a @click="onStop(record)">
                 删除
               </a>
             </st-table-actions>
@@ -136,7 +109,7 @@ import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
 import BrandMarketingPoster from '@/views/biz-modals/brand/marketing/poster'
 
 export default {
-  name: 'PageBrandMarketingPluginCouponList',
+  name: 'PageBrandMarketingPluginGroupActivitiesList',
   mixins: [tableMixin],
   bem: {
     basic: 'page-brand-plugin-coupon'
@@ -156,19 +129,19 @@ export default {
     return {
       list: this.listService.list$,
       page: this.listService.page$,
-      loading: this.listService.loading$,
+      // loading: this.listService.loading$,
       query: this.routeService.query$,
-      couponEnums: this.userService.couponEnums$,
+      // couponEnums: this.userService.couponEnums$,
       auth: this.listService.auth$
     }
   },
   computed: {
-    coupon_status() {
-      return (this.couponEnums && this.couponEnums.coupon_status) || []
+    activity_status() {
+      return (this.activityEnums && this.activityEnums.activity_status) || []
     },
-    productType() {
+    activityType() {
       let list = []
-      Object.entries(this.coupon_status.value).forEach(o => {
+      Object.entries(this.activity_status.value).forEach(o => {
         list.push({ value: +o[0], label: o[1] })
       })
       // return list
@@ -178,36 +151,45 @@ export default {
   data(vm) {
     return {
       TYPE,
-      couponName: '',
-      couponStatus: -1,
-      columns: columns(vm)
+      activityName: '',
+      activityStatus: -1,
+      columns: columns(vm),
+      activityEnums: {
+        // select 假数据
+        activity_status: {
+          description: '活动状态',
+          value: { 1: '已结束', 2: '活动中', 3: '未开始', 4: '待发布' }
+        }
+      }
     }
   },
   mounted() {
     this.setSearchData()
+    console.log(this.list)
   },
   watch: {
     query(newVal) {
+      console.log(newVal)
       this.setSearchData()
     }
   },
   methods: {
     // 设置searchData
     setSearchData() {
-      let { coupon_name, coupon_status } = this.query
-      this.couponName = coupon_name
-      this.couponStatus = coupon_status || -1
+      // let { activity_name, activity_status } = this.query
+      // this.activityName = activity_name
+      // this.activityStatus = activity_status || -1
     },
     // 查看数据   根据id传id获取数据列表
-    onData() {
+    onData(record) {
       this.$router.push({
-        path: '/brand/marketing/plugin/group-activities/data'
-        // query: { id: record.id }
+        path: '/brand/marketing/plugin/group-activities/data',
+        query: { id: record.id }
       })
     },
     // 编辑
     onEdit(record) {
-      // 跳转编辑页面
+      // 跳转编辑页面  传类型卡及卡id
       this.$router.push({
         path: '/brand/marketing/plugin/coupon/edit', // 路由要改
         query: { id: record.id }
@@ -243,7 +225,7 @@ export default {
         })
       }
     },
-    // 停止优惠券模板
+    // 结束活动
     onStop(record) {
       let that = this
       this.$confirm({
@@ -258,7 +240,7 @@ export default {
         onCancel() {}
       })
     },
-    // 新增优惠券活动
+    // 新增活动
     onAddCoupon() {
       this.$router.push({ path: '/brand/marketing/plugin/coupon/add' })
     },
@@ -269,13 +251,16 @@ export default {
       })
     }
   },
+  //  过滤器
   filters: {
     couponTypeFilter(val) {
       switch (val) {
         case 1:
-          return '普通券'
+          return '会籍卡'
         case 2:
-          return '活动券'
+          return '私教课'
+        case 3:
+          return '小班课'
         default:
           return ''
       }

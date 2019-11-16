@@ -1,26 +1,24 @@
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
-import { State, Effect } from 'rx-state'
-import { GroupApi, GroupListParams } from '@/api/v1/marketing/group'
+import { GroupApi, GroupData } from '@/api/v1/marketing/group'
 import { MarketingApi } from '@/api/v1/marketing/marketing'
+import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
-
+import { anyAll } from '@/operators'
 @Injectable()
-export class ListService implements Controller {
+export class DataService {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
-  auth$ = this.authService.authMap$({
-    add: 'brand:activity:coupon|add'
-  })
+  auth$ = this.authService.authMap$({})
   constructor(
     private marketingApi: MarketingApi,
     private GroupApi: GroupApi,
     private authService: AuthService
   ) {}
   @Effect()
-  getList(params: GroupListParams) {
-    return this.GroupApi.getList(params).pipe(
+  getData(params: GroupData) {
+    return this.GroupApi.getData(params).pipe(
       tap((res: any) => {
         console.log(res)
         res = this.authService.filter(res)
@@ -28,12 +26,5 @@ export class ListService implements Controller {
         this.page$.commit(() => res.page)
       })
     )
-  }
-  stopMarketingCoupon(id: number) {
-    return this.marketingApi.stopMarketingCoupon(id).pipe(tap((res: any) => {}))
-  }
-  beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    console.log(to)
-    return this.getList(to.meta.query)
   }
 }

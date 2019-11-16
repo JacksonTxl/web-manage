@@ -3,57 +3,43 @@ export const columns = (vm: any) => {
   return [
     {
       title: '活动名称',
-      dataIndex: 'coupon_name',
-      scopedSlots: { customRender: 'coupon_name' }
+      dataIndex: 'activity_name',
+      scopedSlots: { customRender: 'activity_name' }
     },
     {
       title: '商品类型',
-      dataIndex: 'coupon_type',
-      scopedSlots: { customRender: 'coupon_type' }
+      dataIndex: 'product_type',
+      scopedSlots: { customRender: 'product_type' }
     },
     {
       title: '支持门店',
-      dataIndex: 'is_shop_range',
-      scopedSlots: { customRender: 'is_shop_range' }
-    },
-    {
-      title: '面额(元)',
-      dataIndex: 'price',
-      align: 'right',
-      scopedSlots: { customRender: 'price' }
+      dataIndex: 'support_sales',
+      scopedSlots: { customRender: 'support_sales' }
     },
     {
       title: '有效时间',
-      dataIndex: 'valid_days',
-      scopedSlots: { customRender: 'valid_days' }
+      dataIndex: 'start_time',
+      scopedSlots: { customRender: 'start_time' }
     },
     {
-      title: '剩余数量',
-      dataIndex: 'margin',
-      align: 'right',
-      scopedSlots: { customRender: 'margin' }
+      title: '活动状态',
+      dataIndex: 'activity_status',
+      scopedSlots: { customRender: 'activity_status' }
     },
     {
-      title: '已领取',
-      dataIndex: 'draw_num',
-      align: 'right',
-      scopedSlots: { customRender: 'draw_num' }
+      title: '开团人次',
+      dataIndex: 'group_total',
+      scopedSlots: { customRender: 'group_total' }
     },
     {
-      title: '已使用',
-      dataIndex: 'use_num',
-      align: 'right',
-      scopedSlots: { customRender: 'use_num' }
+      title: '成团订单',
+      dataIndex: 'group_success_total',
+      scopedSlots: { customRender: 'group_success_total' }
     },
     {
-      title: '状态',
-      dataIndex: 'coupon_status',
-      scopedSlots: { customRender: 'coupon_status' }
-    },
-    {
-      title: '投放状态',
-      dataIndex: 'put_status',
-      scopedSlots: { customRender: 'put_status' }
+      title: '剩余活动库存',
+      dataIndex: 'stock_remaining',
+      scopedSlots: { customRender: 'stock_remaining' }
     },
     {
       title: '操作',
