@@ -8,17 +8,18 @@
             <st-form-item label="活动名称" required>
               <a-input
                 placeholder="请输入活动名称"
-                v-decorator="decorators.group_name"
+                v-decorator="decorators.activity_name"
                 maxlength="30"
                 @change="changeName"
-              ></a-input>
-              <span slot="suffix">
-                {{ groupName.length }}
-                /30
-              </span>
+                :disabled="isEdit"
+              >
+                <span slot="suffix" :disabled="isEdit">
+                  {{ activityName.length > 30 ? 30 : activityName.length }}
+                  /30
+                </span>
+              </a-input>
             </st-form-item>
             <st-form-item label="选择储值卡" required>
-              <!-- <a-select :placeholder="`请输入${$c('member_card')}类型`"> -->
               <a-select placeholder="请输入">
                 <a-select-option value="1">1</a-select-option>
                 <a-select-option value="2">2</a-select-option>
@@ -33,15 +34,14 @@
               <div :class="basic('table')">
                 <st-table
                   rowKey="id"
-                  :dataSource="tableData"
+                  :dataSource="info.sku"
                   :columns="columnsGroupStored"
                   :pagination="false"
                 >
-                  {{ tableData.city_name }}
                   <template slot="discount" slot-scope="customRender, record">
                     <st-input-number
                       :float="true"
-                      v-model="record.discount"
+                      v-model="record.group_price"
                       style="width:100px;"
                     >
                       <template slot="addonAfter">
@@ -62,6 +62,7 @@
                 :disabledDate="disabledDate"
                 :showTime="{ format: 'HH:mm' }"
                 format="YYYY-MM-DD HH:mm"
+                v-model="rangeTime"
               />
             </st-form-item>
           </a-col>
@@ -73,7 +74,7 @@
                 参团人数
                 <st-help-tooltip id="TBPTXJ001" />
               </template>
-              <st-input-number v-decorator="decorators.num">
+              <st-input-number v-decorator="decorators.group_sum">
                 <template slot="addonAfter">
                   人
                 </template>
@@ -84,7 +85,7 @@
                 拼团有效期
                 <st-help-tooltip id="TBPTXJ002" />
               </template>
-              <st-input-number v-decorator="decorators.time">
+              <st-input-number v-decorator="decorators.valid_time">
                 <template slot="addonAfter">
                   小时
                 </template>
@@ -95,15 +96,14 @@
                 活动库存
                 <st-help-tooltip id="TBPTXJ003" />
               </template>
-              <a-checkbox-group>
-                <a-checkbox>
-                  限制库存
-                </a-checkbox>
-                <st-input-number
-                  v-decorator="decorators.stock"
-                  style="width: 200px;"
-                ></st-input-number>
-              </a-checkbox-group>
+              <a-checkbox @change="checkBox" :checked="!!info.is_limit_stock">
+                限制库存
+              </a-checkbox>
+              <st-input-number
+                v-decorator="decorators.stock_total"
+                :min="0"
+                style="width: 200px;"
+              ></st-input-number>
             </st-form-item>
           </a-col>
         </a-row>
@@ -122,13 +122,16 @@
         <a-row :gutter="8">
           <a-col :span="10">
             <st-form-item label="发布状态" required>
-              <a-radio-group :defaultValue="0" v-model="releaseRadio">
-                <a-radio :value="0">立即发布</a-radio>
-                <a-radio :value="1">暂不发布</a-radio>
-                <a-radio :value="2">定时发布</a-radio>
+              <a-radio-group
+                :defaultValue="info.published_type || 1"
+                v-model="publishedType"
+              >
+                <a-radio :value="1">立即发布</a-radio>
+                <a-radio :value="2">暂不发布</a-radio>
+                <a-radio :value="3">定时发布</a-radio>
               </a-radio-group>
             </st-form-item>
-            <st-form-item label="发布时间" required v-if="releaseRadio === 2">
+            <st-form-item label="发布时间" required v-if="publishedType === 3">
               <a-date-picker
                 @change="changeTime"
                 :showTime="{ format: 'HH:mm' }"
@@ -150,9 +153,9 @@
 
 <script>
 import { columnsGroupStored, ruleOptions } from './add-stored.config'
-// import addService from './add-stored.service'
+import { AddStoredService } from './add-stored.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
-// import moment from 'monment'
+import moment, { months } from 'moment'
 
 export default {
   // name: PageBrandMarketingGroupAddStored,
@@ -161,7 +164,7 @@ export default {
   },
   serviceInject() {
     return {
-      Add: addService
+      Add: AddStoredService
     }
   },
   components: {
@@ -169,8 +172,12 @@ export default {
   },
   props: {
     isEdit: {
-      type: Number,
-      default: 0
+      type: Boolean,
+      default: false
+    },
+    info: {
+      type: Object,
+      default: () => {}
     }
   },
   data() {
@@ -180,20 +187,15 @@ export default {
       form,
       decorators,
       columnsGroupStored,
-      groupName: '',
-      shopRadio: 0, // @parmas=0 所有门店； @parmas=1 指定门店
-      releaseRadio: 0, // @parmas=0 立即发布；@parmas=1 暂不发布； @parmas=3 定时发布
-      tableData: [
-        {
-          price: '22',
-          discount: '44',
-          card_id: 1
-        }
-      ]
+      activityName: '',
+      publishedType: 1, // @parmas=0 立即发布；@parmas=1 暂不发布； @parmas=3 定时发布
+      limitStock: 0,
+      rangeTime: []
     }
   },
   mounted() {
-    console.log(this.isEdit)
+    console.log(this.info)
+    this.setFieldsValue()
   },
   methods: {
     changeTime(val) {
@@ -202,12 +204,31 @@ export default {
     getShopId(shopId) {
       console.log(shopId)
     },
-    changeName(e) {},
+    changeName(e) {
+      this.activityName = e.target.value
+    },
+    checkBox(e) {
+      console.log(e.target.checked)
+    },
     disabledDate(current) {
       return (
         current &&
         current.format('YYYY-MM-DD HH:mm') < moment().format('YYYY-MM-DD HH:mm')
       )
+    },
+    setFieldsValue() {
+      this.activityName = this.info.activity_name
+      this.publishedType = this.info.published_type
+      this.rangeTime = [
+        moment(this.info.start_time),
+        moment(this.info.end_time)
+      ]
+      this.form.setFieldsValue({
+        activity_name: this.info.activity_name,
+        group_sum: this.info.group_sum,
+        valid_time: this.info.valid_time,
+        stock_total: this.info.stock_total
+      })
     }
   }
 }

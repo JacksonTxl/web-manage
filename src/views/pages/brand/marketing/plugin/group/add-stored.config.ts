@@ -3,12 +3,11 @@ export const columnsGroupStored = [
     title: '原价',
     dataIndex: 'price',
     width: '60%',
-    align: 'center',
-    scopedSlots: { customRender: 'price' }
+    align: 'center'
   },
   {
     title: '拼团价',
-    dataIndex: 'discount',
+    dataIndex: 'group_price',
     width: '40%',
     slots: { title: 'discount' },
     scopedSlots: { customRender: 'discount' }
@@ -18,7 +17,7 @@ export const columnsGroupStored = [
 export const ruleOptions = (vm: any) => {
   return {
     // 活动名称
-    group_name: {
+    activity_name: {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
@@ -33,7 +32,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     // 参团人数
-    num: {
+    group_sum: {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
@@ -51,7 +50,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     // 拼团有效期
-    time: {
+    valid_time: {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
@@ -69,7 +68,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     // 活动库存
-    stock: {
+    stock_total: {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {

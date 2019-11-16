@@ -1,6 +1,6 @@
 import { Api } from '../../api'
 
-export interface AddParmas {
+export interface AddParams {
   product_type: number
   activity_name: string
   product_id: number
@@ -14,4 +14,10 @@ export interface AddParmas {
   shop_ids: Array<any>
   published_type: number
   published_time: string
+}
+
+export class GroupBuyApi extends Api {
+  getStoredData(id: any) {
+    return this.http.get('/v1/plugin/group_buy/' + id)
+  }
 }
