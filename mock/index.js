@@ -16,7 +16,6 @@ const mockerApis = Object.assign(
   llfMock,
   lyMock,
   // ls
-
 )
 
 module.exports = wrapper(mockerApis)
