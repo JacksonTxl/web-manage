@@ -37,7 +37,7 @@
       ],
       "published_type": 1,
       "published_time": "2019-11-14 00:00:00",
-      "activity_state": [{ "id": 2, "name": "未开始" }]
+      "activity_state": [{ "id": 1, "name": "未开始" }]
     }
   }
 }

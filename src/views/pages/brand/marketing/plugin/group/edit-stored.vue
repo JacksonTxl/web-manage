@@ -1,5 +1,5 @@
 <template>
-  <stored-card :isEdit="true" :info="info.info"></stored-card>
+  <stored-card :isEdit="true" :info="info.info" :list="list.list"></stored-card>
 </template>
 
 <script>
@@ -13,7 +13,8 @@ export default {
   },
   rxState() {
     return {
-      info: this.editStoredService.info$
+      info: this.editStoredService.info$,
+      list: this.editStoredService.list$
     }
   },
   components: {
