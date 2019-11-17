@@ -50,4 +50,10 @@ export class GroupBuyApi extends Api {
   getStoredData(id: any) {
     return this.http.get('/v1/plugin/group_buy/' + id)
   }
+  /**
+   * 获取会籍卡列表
+   */
+  getMemberList() {
+    return this.http.get('/v1/cards/member/brand_list')
+  }
 }
