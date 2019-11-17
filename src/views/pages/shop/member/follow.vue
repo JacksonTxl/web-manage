@@ -130,7 +130,7 @@
       <span slot="follow_status" slot-scope="text, record">
         {{ record.follow_status.label }}
       </span>
-      <template slot="operate_object" slot-scope="text, record">
+      <template slot="follow_content" slot-scope="text, record">
         <span v-if="text.length === 0">{{ record.object }}</span>
         <div v-else>
           <a-popover title="跟进内容">
@@ -229,16 +229,6 @@ export default {
       })
       return list
     },
-    operatorList() {
-      const coachList = this.coachList
-      const staffList = this.staffList
-      return [
-        { id: -1, name: '录入人' }
-        // ...coachList.shift(),
-        // ...staffList.shift()
-      ]
-    },
-    // no
     defaultBeMemberValue() {
       if (!this.query.be_member_start_time) return null
       return [
@@ -251,9 +241,6 @@ export default {
     console.log(this.coachList)
   },
   mounted() {
-    //console.log(this.query)
-    //console.log(this.memberEnums)
-    //this.sourceRegisters()
     this.setSearchData()
   },
   watch: {
@@ -280,11 +267,6 @@ export default {
     },
     refeshPage() {
       this.$router.reload()
-    },
-    sourceRegisters() {
-      this.followService.getMemberSourceRegisters().subscribe(status => {
-        this.sourceRegisterList = status
-      })
     },
     // 查询
     onSearchNative() {
@@ -313,14 +295,15 @@ export default {
       }
       this.$refs.stSeleter.handleResetItem()
       this.consumption = []
-      this.$router.push({ query: {} })
-    },
-    toggle() {
-      this.expand = !this.expand
-    },
-    queryFunc() {
-      this.$router.push({ query: this.form })
+      this.$router.reload()
     }
+    // ,
+    // toggle() {
+    //   this.expand = !this.expand
+    // },
+    // queryFunc() {
+    //   this.$router.push({ query: this.form })
+    // }
   }
 }
 </script>

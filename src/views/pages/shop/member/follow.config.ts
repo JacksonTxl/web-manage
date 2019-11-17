@@ -52,6 +52,7 @@ export const columns = (vm: any) => [
   },
   {
     title: '跟进内容',
-    dataIndex: 'follow_content'
+    dataIndex: 'follow_content',
+    scopedSlots: { customRender: 'follow_content' }
   }
 ]

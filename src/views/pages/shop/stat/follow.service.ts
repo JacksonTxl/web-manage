@@ -36,7 +36,7 @@ export class FollowService implements Controller {
   getFollowShopTotal(query: any) {
     return this.StatApi.getFollowShopTotal(query).pipe(
       tap((res: any) => {
-        let data = res.info
+        let data = res
         const arr = [
           {
             label: '电话跟进数',

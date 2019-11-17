@@ -67,17 +67,17 @@ export class StatApi {
     return this.http.get('/v1/stat/sale/staff', { query })
   }
   getFollowDateList(query: any) {
-    return this.http.get('v1/stat/fellow/dates', { query })
+    return this.http.get('/v1/stat/follow/dates', { query })
   }
   getFollowStaffList(query: any) {
-    return this.http.get('v1/stat/fellow/staff', { query })
+    return this.http.get('/v1/stat/follow/staff', { query })
   }
   getFollowShopTotal(query: any) {
-    return this.http.get('v1/stat/fellow/follow_total', { query })
+    return this.http.get('/v1/stat/follow/follow_total', { query })
   }
   getFollowHistory(query: any) {
     console.log(query)
-    return this.http.get('v1/member/follow/history', { query })
+    return this.http.get('/v1/member/follow/history', { query })
   }
 }
 

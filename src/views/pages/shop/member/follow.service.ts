@@ -2,7 +2,6 @@ import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
-import { UserService } from '@/services/user.service'
 import { StatApi } from '@/api/v1/stat/shop'
 import { MemberApi, SaleQuery, CoachQuery } from '@/api/v1/member'
 
@@ -13,7 +12,6 @@ export class FollowService implements Controller {
   // 业务状态
   state$ = new State({})
   loading$ = new State({})
-  memberListInfo$: Computed<string>
   list$ = new State({})
   page$ = new State({})
   staffList$ = new State({})
@@ -30,16 +28,8 @@ export class FollowService implements Controller {
   constructor(
     private statApi: StatApi,
     private memberApi: MemberApi,
-    private authService: AuthService,
-    private userService: UserService
-  ) {
-    this.state$ = new State({
-      memberListInfo: {}
-    })
-    this.memberListInfo$ = new Computed(
-      this.state$.pipe(pluck('memberListInfo'))
-    )
-  }
+    private authService: AuthService
+  ) {}
   @Effect()
   getList(paramsObj: any) {
     return this.statApi.getFollowHistory(paramsObj).pipe(
@@ -68,11 +58,21 @@ export class FollowService implements Controller {
       })
     )
   }
+  getOperatorList() {
+    return this.memberApi.getCoachList().pipe(
+      tap((res: any) => {
+        this.coachList$.commit(() => {
+          return [{ id: -1, coach_name: '录入人' }, ...res.list]
+        })
+      })
+    )
+  }
   init(query: any) {
     return forkJoin(
       this.getList(query),
       this.getCoachList(query.CoachQuery),
-      this.getStaffList(query.retrieve)
+      this.getStaffList(query.retrieve),
+      this.getOperatorList()
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {

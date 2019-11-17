@@ -100,8 +100,8 @@ export default {
   },
   components: { swiper, swiperSlide },
   created() {
-    query.shop_id = this.shop.id
-    this.getFollowShopTotal(query).subscribe()
+    this.query.shop_id = this.shop.id
+    this.getFollowShopTotal(this.query).subscribe()
   },
   methods: {
     recentChange(searchFieldsValue) {
@@ -111,12 +111,12 @@ export default {
       return this.followService.getFollowShopTotal(query)
     },
     refresh() {
-      return this.getFollowShopTotal(query)
+      return this.getFollowShopTotal(this.query)
     },
     handleSizeChange(val) {
-      this.showTable = val.target.value
-      let query = { showTable: this.showTable }
-      query.shop_id = this.shop.id
+      this.query.shop_id = this.shop.id
+      this.query.showTable = this.showTable = val.target.value
+      let query = this.query
       this.$router.push({ query })
     }
   }
