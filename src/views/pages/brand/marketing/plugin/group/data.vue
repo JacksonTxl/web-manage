@@ -113,12 +113,12 @@
 </template>
 <script>
 import { columns } from './data.config.ts'
-import { columnsData } from './totaldata.config.js'
+import { columnsData } from './total-data.config.ts'
 let Color = ''
 export default {
-  name: 'PageBrandMarketingPluginGroupActivitiesListData',
+  name: 'PageBrandMarketingPluginGroupListData',
   bem: {
-    activities: 'brand-marketing-plugin-group-activities-data'
+    activities: 'brand-marketing-plugin-group-data'
   },
   rxState() {
     return {
