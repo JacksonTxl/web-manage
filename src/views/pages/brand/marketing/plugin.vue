@@ -141,6 +141,8 @@ export default {
       this.pluginService.getInfo().subscribe()
     },
     goToPlugin(route) {
+      // console.log(route);
+      // return false;
       this.$router.push({ name: route })
     }
   }
