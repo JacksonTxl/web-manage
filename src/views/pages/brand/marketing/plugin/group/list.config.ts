@@ -18,13 +18,13 @@ export const columns = (vm: any) => {
     },
     {
       title: '有效时间',
-      dataIndex: 'start_time',
-      scopedSlots: { customRender: 'start_time' }
+      dataIndex: 'activity_time',
+      scopedSlots: { customRender: 'activity_time' }
     },
     {
       title: '活动状态',
-      dataIndex: 'activity_status',
-      scopedSlots: { customRender: 'activity_status' }
+      dataIndex: 'activity_state',
+      scopedSlots: { customRender: 'activity_state' }
     },
     {
       title: '开团人次',

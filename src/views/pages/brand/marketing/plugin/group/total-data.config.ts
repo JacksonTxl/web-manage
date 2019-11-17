@@ -1,23 +1,26 @@
 export const columnsData = [
   {
-    title: '邀请人姓名',
-    dataIndex: 'inviter_name'
+    title: '开团数',
+    dataIndex: 'group_total'
   },
   {
-    title: '邀请人手机号',
-    dataIndex: 'inviter_mobile'
+    title: '成团数',
+    dataIndex: 'group_success_total'
   },
   {
-    title: '拉新用户姓名',
-    dataIndex: 'invitee_name'
+    title: '参与人数',
+    dataIndex: 'join_total'
   },
   {
-    title: '拉新用户手机号',
-    dataIndex: 'invitee_mobile'
+    title: '新用户数',
+    dataIndex: 'new_total'
   },
   {
-    title: '拉新带来的交易额',
-    dataIndex: 'newbie_revenue',
-    align: 'right'
+    title: '成单数',
+    dataIndex: 'success_order_total'
+  },
+  {
+    title: '成交金额',
+    dataIndex: 'success_amount_total'
   }
 ]

@@ -31,7 +31,15 @@ export interface EditParams {
   published_type: number
   published_time: string
 }
-
+export interface GroupListParams {
+  activity_status: number
+  activity_name: string
+}
+export interface GroupData {
+  id: string
+  group_status: number
+  search_where: string
+}
 export class GroupBuyApi extends Api {
   /**
    * 新增拼团活动
@@ -49,5 +57,17 @@ export class GroupBuyApi extends Api {
   }
   getStoredData(id: any) {
     return this.http.get('/v1/plugin/group_buy/' + id)
+  }
+  /**
+   * 拼团列表
+   */
+  getList(query: GroupListParams) {
+    return this.http.get(`/v1/plugin/group_buy`, { query })
+  }
+  /**
+   * 数据列表
+   */
+  getData(query: GroupData) {
+    return this.http.get(`/v1/plugin/group_buy/data/`, { query })
   }
 }
