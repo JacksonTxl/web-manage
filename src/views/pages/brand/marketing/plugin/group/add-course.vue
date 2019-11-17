@@ -165,6 +165,12 @@ export default {
   bem: {
     basic: 'brand-marketing-group-course'
   },
+  props: {
+    info: {
+      type: Object,
+      default: () => {}
+    }
+  },
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
@@ -218,6 +224,9 @@ export default {
       type: Number,
       default: 0
     }
+  },
+  mounted() {
+    console.log('------------', this.info)
   },
   methods: {
     // 是否限制库存
