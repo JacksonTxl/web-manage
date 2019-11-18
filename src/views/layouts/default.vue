@@ -157,6 +157,13 @@
               </a-menu-item>-->
               <!-- <a-menu-divider/> -->
               <a-menu-item
+                @click="onClickBind"
+                class="layout-default-body__options"
+              >
+                <st-icon type="bind-phone" color="#000000"></st-icon>
+                <span>绑定手机号</span>
+              </a-menu-item>
+              <a-menu-item
                 @click="onClickLogout"
                 class="layout-default-body__options"
               >
@@ -192,6 +199,7 @@ import { TitleService } from '@/services/title.service'
 import { entries } from './default#/fast-entry.config'
 import FastEntryMiniProgram from '@/views/biz-modals/fast-entry/mini-program'
 import FastEntryHousekeeper from '@/views/biz-modals/fast-entry/housekeeper'
+import AccountBind from '@/views/biz-modals/account/bind'
 import { UdeskService } from '@/services/udesk.service'
 
 export default {
@@ -227,7 +235,8 @@ export default {
   },
   modals: {
     FastEntryMiniProgram,
-    FastEntryHousekeeper
+    FastEntryHousekeeper,
+    AccountBind
   },
   computed: {
     breadCrumbs() {
@@ -245,6 +254,13 @@ export default {
   methods: {
     switchShop() {
       this.isShowSwitchShop = !this.isShowSwitchShop
+    },
+    onClickBind() {
+      this.$modalRouter.push({
+        name: 'account-bind',
+        props: {},
+        on: {}
+      })
     },
     onClickLogout() {
       this.tokenService.REMOVE_TOKEN()
