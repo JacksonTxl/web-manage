@@ -77,7 +77,7 @@
               <a-select
                 slot="consume_type"
                 placeholder="请选择消费方式"
-                style="width: 280px"
+                style="width: 240px"
                 v-model="showConsumeType"
                 @change="onChangeConsumeType"
               >
@@ -104,7 +104,7 @@
                 slot="site_num_list"
                 mode="multiple"
                 placeholder="请选择座位"
-                style="width: 120px"
+                style="width: 100px"
                 v-model="showSite"
                 :maxTagCount="3"
                 @change="onChangeSiteNumList"
