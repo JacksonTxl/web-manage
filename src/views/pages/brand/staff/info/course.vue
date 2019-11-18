@@ -23,7 +23,7 @@
         ></a-select>
       </a-col>
       <a-col :lg="2"></a-col>
-      <a-col :lg="6">
+      <a-col :lg="6" class="text-right">
         <st-input-search
           placeholder="请输入课程名称"
           @search="onSingleSearch('course_name', $event)"

@@ -16,7 +16,7 @@
         />
       </a-col>
       <a-col :lg="2"></a-col>
-      <a-col :lg="6">
+      <a-col :lg="6" class="text-right">
         <st-input-search
           placeholder="请输入用户姓名进行查询"
           @search="onSingleSearch('member_name', $event)"

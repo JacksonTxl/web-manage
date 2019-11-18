@@ -27,7 +27,7 @@
             format="YYYY-MM-DD"
           />
         </a-col>
-        <a-col :lg="6">
+        <a-col :lg="6" class="text-right">
           <st-input-search
             placeholder="请输入会员名姓名、手机号进行查询"
             @search="onSingleSearch('keyword', $event)"
