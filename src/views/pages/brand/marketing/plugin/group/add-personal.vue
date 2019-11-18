@@ -1,6 +1,6 @@
 <template>
   <div>
-    私教课
+    私教 课
   </div>
 </template>
 <script>
