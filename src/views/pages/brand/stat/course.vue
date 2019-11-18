@@ -9,6 +9,7 @@
           <shop-select
             :defaultValue="-1"
             class="mg-r12"
+            v-model="chartParam.shop_id"
             @change="onChangeChartShop"
           />
           <st-recent-radio-group
@@ -125,7 +126,7 @@ export default {
         end_date: undefined
       },
       dataParam: {
-        shop: 0,
+        shop_id: -1,
         day: 7
       }
     }
