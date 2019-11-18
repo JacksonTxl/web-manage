@@ -8,6 +8,7 @@ import { anyAll } from '@/operators'
 @Injectable()
 export class EditStoredService implements Controller {
   info$ = new State({})
+  list$ = new State({})
   constructor(private groupBuyApi: GroupBuyApi) {}
   @Effect()
   getStoredData(id: number) {
@@ -17,8 +18,15 @@ export class EditStoredService implements Controller {
       })
     )
   }
+  getDepositList() {
+    return this.groupBuyApi.getDepositList().pipe(
+      tap((res: any) => {
+        this.list$.commit(() => res)
+      })
+    )
+  }
   init() {
-    return anyAll(this.getStoredData(1))
+    return anyAll(this.getStoredData(1), this.getDepositList())
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     return this.init()

@@ -55,6 +55,9 @@ export class GroupBuyApi extends Api {
   editGroup(params: EditParams) {
     return this.http.put(`/v1/plugin/group_buy/${params.id}`, { params })
   }
+  /**
+   * 编辑数据回显
+   * */
   getStoredData(id: any) {
     return this.http.get('/v1/plugin/group_buy/' + id)
   }
@@ -69,5 +72,17 @@ export class GroupBuyApi extends Api {
    */
   getData(query: GroupData) {
     return this.http.get(`/v1/plugin/group_buy/data/`, { query })
+  }
+  /**
+   * 获取会籍卡列表
+   */
+  getMemberList() {
+    return this.http.get('/v1/cards/member/brand_list')
+  }
+  /**
+   * 获取储值卡列表
+   * */
+  getDepositList() {
+    return this.http.get('/v1/cards/deposit/brand_list')
   }
 }

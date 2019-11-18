@@ -1,14 +1,22 @@
-import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
+import {
+  Injectable,
+  Controller,
+  RouteGuard,
+  ServiceRoute
+} from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import {
   AddParams,
   EditParams,
   GroupBuyApi
 } from '@/api/v1/marketing/group_buy'
+import { anyAll } from '@/operators'
+import { tap } from 'rxjs/operators'
 
 @Injectable()
-export class AddMemberService {
+export class AddMemberService implements Controller {
   loading$ = new State({})
+  memberList$ = new State([])
   constructor(private groupBuyApi: GroupBuyApi) {}
 
   // 新增拼团活动
@@ -21,5 +29,21 @@ export class AddMemberService {
   @Effect()
   editGroup(params: EditParams) {
     return this.groupBuyApi.editGroup(params)
+  }
+  // 获取会籍卡列表
+  @Effect()
+  getMemberList() {
+    return this.groupBuyApi.getMemberList().pipe(
+      tap((res: any) => {
+        console.log(res, '===================')
+        this.memberList$.commit(() => res.data.list)
+      })
+    )
+  }
+  init() {
+    return anyAll(this.getMemberList())
+  }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+    return this.init()
   }
 }
