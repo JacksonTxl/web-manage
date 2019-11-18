@@ -18,7 +18,10 @@
             :key="member.member_id"
             :value="+member.member_id"
           >
-            {{ member.member_name }}
+            <div class="st-form-table__add-option">
+              <span class="item-name">{{ member.member_name }}</span>
+              <span class="item-phone">{{ member.mobile }}</span>
+            </div>
           </a-select-option>
         </a-select>
       </st-form-item>
@@ -81,6 +84,7 @@
         <a-date-picker
           @change="onChangeDatePick"
           v-decorator="decorators.scheduling_id"
+          style="width:100%"
           :disabledDate="disabledDate"
         />
       </st-form-item>
@@ -89,6 +93,7 @@
           format="HH:mm"
           v-decorator="decorators.reserve_start_time"
           :disabledMinutes="disabledMinutes"
+          style="width:100%"
           :disabledHours="disabledHours"
         />
       </st-form-item>

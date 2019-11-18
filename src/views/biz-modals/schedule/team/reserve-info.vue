@@ -34,7 +34,7 @@
         </st-info>
       </a-col>
     </a-row>
-    <st-container>
+    <st-container class="modal-reserved-info__table">
       <st-form-table hoverable>
         <thead>
           <tr>
@@ -49,12 +49,12 @@
         </thead>
         <tbody v-if="isAdd">
           <tr>
-            <td class="st-form-table__add">
+            <td width="140px" class="mg-l0 st-form-table__add-td">
               <a-select
                 slot="member"
                 showSearch
                 placeholder="搜索会员名"
-                style="width: 120px"
+                style="width:140px"
                 :defaultActiveFirstOption="false"
                 :showArrow="false"
                 :filterOption="false"
@@ -66,15 +66,18 @@
                   v-for="member in memberOptions"
                   :key="member.id"
                 >
-                  {{ member.member_name }}
+                  <div class="st-form-table__add-option">
+                    <span class="item-name">{{ member.member_name }}</span>
+                    <span class="item-phone">{{ member.mobile }}</span>
+                  </div>
                 </a-select-option>
               </a-select>
             </td>
-            <td>
+            <td width="240px">
               <a-select
                 slot="consume_type"
                 placeholder="请选择消费方式"
-                style="width: 120px"
+                style="width: 240px"
                 v-model="showConsumeType"
                 @change="onChangeConsumeType"
               >
@@ -96,12 +99,12 @@
                 </a-select-opt-group>
               </a-select>
             </td>
-            <td>
+            <td width="120px">
               <a-select
                 slot="site_num_list"
                 mode="multiple"
                 placeholder="请选择座位"
-                style="width: 120px"
+                style="width: 100px"
                 v-model="showSite"
                 :maxTagCount="3"
                 @change="onChangeSiteNumList"
@@ -114,13 +117,13 @@
                 </a-select-option>
               </a-select>
             </td>
-            <td>
+            <td width="120px">
               <span slot="current_reservation_num">
                 {{ currentReservationNum }}人
               </span>
             </td>
-            <td>未签到</td>
-            <td>
+            <td width="120px">未签到</td>
+            <td width="120px">
               <a
                 href="javascript:;"
                 @click="onClickReserve"

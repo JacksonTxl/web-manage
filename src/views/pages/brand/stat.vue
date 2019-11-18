@@ -1,9 +1,7 @@
 <template>
-  <div :class="b()">
-    <st-panel :tabs="authTabs">
-      <router-view></router-view>
-    </st-panel>
-  </div>
+  <st-panel :class="b()" app :tabs="authTabs">
+    <router-view></router-view>
+  </st-panel>
 </template>
 
 <script>

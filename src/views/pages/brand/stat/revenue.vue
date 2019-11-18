@@ -1,20 +1,21 @@
 <template>
   <div :class="b()">
     <div :class="b('section')">
-      <a-row>
-        <a-col :span="4" :class="b('title')">
+      <header :class="bHeader('header')">
+        <st-t3 :class="bHeader('title')">
           营收概览
-        </a-col>
-        <a-col :span="20" :class="b('actions')">
-          <brand-shop
+        </st-t3>
+        <div :class="bHeader('actions')">
+          <shop-select
+            v-model="dataParam.shop_id"
             @change="onChangeChartShop"
-            style="flex: 1;margin-right: 12px;text-align: right;"
-          ></brand-shop>
+            class="mg-r12"
+          />
           <st-recent-radio-group
             @change="onChangeChartDays"
           ></st-recent-radio-group>
-        </a-col>
-      </a-row>
+        </div>
+      </header>
       <div class="mg-t36" style="display: flex">
         <brand-statistics-revenue-line
           :data="dataLine"
@@ -28,20 +29,17 @@
     </div>
     <st-hr></st-hr>
     <div :class="b('section')">
-      <a-row>
-        <a-col :span="4" :class="b('title')">
-          当日营收
-        </a-col>
-        <a-col :span="20" :class="b('actions')">
-          <brand-shop
-            style="flex: 1;margin-right: 12px;text-align: right;"
-            @change="onChangeTodayShop"
-          ></brand-shop>
-          <span :class="b('actions-span')">
-            最近更新时间：{{ dataToday.time }}
-          </span>
-        </a-col>
-      </a-row>
+      <header :class="bHeader('header')">
+        <st-t3 :class="bHeader('title')">当日营收</st-t3>
+        <div :class="bHeader('actions')">
+          <shop-select
+            class="mg-r12"
+            v-model="chartTodayShop"
+            @change="getDataToday"
+          />
+          <st-refresh-btn :action="refresh"></st-refresh-btn>
+        </div>
+      </header>
       <a-row :class="b('income-row')">
         <div :class="b('income-detail')">
           <swiper :options="sliderOptions">
@@ -63,28 +61,24 @@
     </div>
     <st-hr />
     <div :class="b('section')">
-      <a-row class="mg-b16">
-        <a-col :span="4" :class="b('title')">
-          <!-- TODO: 本期不实现 -->
-          <!-- <st-button type="primary" class="shop-member-list-button" v-if="auth.export">
-            批量导出
-          </st-button> -->
-        </a-col>
-        <a-col :span="20" :class="b('actions')">
-          <brand-shop
-            style="flex: 1;margin-right: 12px;text-align: right;"
-            @change="onChangeDataShop"
-          ></brand-shop>
+      <header :class="bHeader('header')">
+        <st-t3 :class="bHeader('title')"></st-t3>
+        <div :class="bHeader('actions')">
+          <shop-select
+            v-model="query.shop_id"
+            @change="onSingleSearch('shop_id', $event)"
+            class="mg-r12"
+          />
           <st-recent-radio-group
             @change="onChangeDataDays"
             :value="query"
           ></st-recent-radio-group>
-          <!-- <recent-radio-group  @change="onChangeDataDays" :value="query"></recent-radio-group> -->
-        </a-col>
-      </a-row>
+        </div>
+      </header>
       <st-table
         :loading="loading.getList"
         :columns="columns"
+        class="mg-t16"
         :scroll="{ x: 1400 }"
         rowKey="member_id"
         :page="page"
@@ -99,7 +93,7 @@
 </template>
 
 <script>
-import BrandShop from './components#/brand-shop'
+import shopSelect from '@/views/biz-components/shop-select'
 import BrandStatisticsRevenueLine from '@/views/biz-components/stat/brand-stat-revenue-line'
 import BrandStatisticsRevenueRing from '@/views/biz-components/stat/brand-stat-revenue-ring'
 import { RouteService } from '@/services/route.service'
@@ -130,19 +124,20 @@ export default {
     }
   },
   bem: {
-    b: 'page-brand-stat-revenue'
+    b: 'page-brand-stat-revenue',
+    bHeader: 'page-brand-stat-header'
   },
   data() {
     return {
       chartParam: {
-        shop: 0,
+        shop_id: -1,
         day: 7,
         start_date: undefined,
         end_date: undefined
       },
-      chartTodayShop: 0,
+      chartTodayShop: -1,
       dataParam: {
-        shop: 0,
+        shop_id: -1,
         day: 7
       },
       sliderOptions: {
@@ -166,7 +161,7 @@ export default {
   },
   methods: {
     onChangeChartShop(event) {
-      this.chartParam.shop = event
+      this.chartParam.shop_id = event
       this.getChart()
     },
     onChangeChartDays(event) {
@@ -174,10 +169,6 @@ export default {
       this.chartParam.start_date = event.start_date || undefined
       this.chartParam.end_date = event.end_date || undefined
       this.getChart()
-    },
-    onChangeTodayShop(event) {
-      this.chartTodayShop = event
-      this.getDataToday()
     },
     onChangeDataShop(event) {
       this.query.shop_id = event
@@ -190,14 +181,17 @@ export default {
       this.onSearch()
     },
     getDataToday() {
-      this.revenueService.getDataToday(this.chartTodayShop).subscribe()
+      return this.revenueService.getDataToday(this.chartTodayShop).subscribe()
+    },
+    refresh() {
+      return this.revenueService.getDataToday(this.chartTodayShop)
     },
     getChart() {
       this.revenueService.getChart(this.chartParam).subscribe()
     }
   },
   components: {
-    BrandShop,
+    shopSelect,
     BrandStatisticsRevenueLine,
     BrandStatisticsRevenueRing,
     swiper,

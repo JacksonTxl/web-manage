@@ -72,7 +72,10 @@
         </div>
       </div>
     </aside>
-    <header class="layout-default-body__header">
+    <header
+      class="layout-default-body__header"
+      :class="{ 'layout-default-body__header--schedule': isSchedule }"
+    >
       <div class="layout-default-body__location">
         <template v-if="title">
           <h2>{{ title }}</h2>
@@ -203,6 +206,7 @@ import AccountBind from '@/views/biz-modals/account/bind'
 import { UdeskService } from '@/services/udesk.service'
 
 export default {
+  name: 'SaasLayout',
   components: {
     DefaultSiderMenu,
     SwitchShop
@@ -246,6 +250,9 @@ export default {
     },
     isInShop() {
       return this.shop.id
+    },
+    isSchedule() {
+      return this.$route.path.includes('shop/product/course/schedule')
     },
     siderMenuTip() {
       return this.isThemeStudio ? '工作室版' : '俱乐部版'

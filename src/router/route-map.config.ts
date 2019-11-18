@@ -65,6 +65,7 @@ export const routeMapConfig = {
     }
   },
   'shop-product-course-schedule-team-team-table'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '团课排期'
     routeConfig.queryOptions = {
       course_id: { type: Number, default: -1 },
       court_id: { type: Number, default: -1 },
@@ -1101,13 +1102,17 @@ export const routeMapConfig = {
   },
   'brand-stat'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '数据统计'
-    routeConfig.meta.tabs = ['brand-stat-revenue', 'brand-stat-order']
+    routeConfig.meta.tabs = [
+      'brand-stat-revenue',
+      'brand-stat-order',
+      'brand-stat-course'
+    ]
   },
   'brand-stat-revenue'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '营收'
     routeConfig.meta.auth = 'brand_shop:stat:revenue_reports|page'
     routeConfig.queryOptions = {
-      shop_id: { type: Number, default: 0 },
+      shop_id: { type: Number, default: -1 },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       day: { type: Number, default: 7 },
@@ -1119,7 +1124,19 @@ export const routeMapConfig = {
     routeConfig.meta.title = '订单'
     routeConfig.meta.auth = 'brand_shop:stat:order_reports|page'
     routeConfig.queryOptions = {
-      shop: { type: Number, default: 0 },
+      shop_id: { type: Number, default: -1 },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      day: { type: Number, default: 7 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' }
+    }
+  },
+  'brand-stat-course'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '课程'
+    routeConfig.meta.auth = 'brand:stat:course|page'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: -1 },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       day: { type: Number, default: 7 },

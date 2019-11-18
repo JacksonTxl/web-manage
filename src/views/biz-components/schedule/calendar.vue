@@ -1,5 +1,5 @@
 <template>
-  <div :class="bSchedule()">
+  <div :class="[bSchedule(), { 'schedule-calendar--fixed': fixed }]">
     <div :class="bSchedule('toolbar')" class="pd-x24">
       <div :class="bToolbar('left')">
         <slot name="toolbar-left"></slot>
@@ -56,6 +56,7 @@
                 'first-unit': index === 0,
                 'unit-day': weeks.length === 1
               }"
+              :id="'timer-' + i"
               v-for="i in 24"
               :key="i"
             >
@@ -102,6 +103,7 @@
             </li>
             <schedule-unit
               :class="{ 'first-unit': index === 0 }"
+              :id="index === 0 ? 'timer-' + i : ''"
               v-for="i in 24"
               :key="i"
               :date="item"
@@ -173,6 +175,14 @@ export default {
     startDate: {
       type: String,
       default: moment().format('YYYY-MM-DD')
+    },
+    fixed: {
+      type: Boolean,
+      default: false
+    },
+    rangeTime: {
+      type: Array,
+      default: () => [8, 24]
     },
     cardList: {
       type: Array,
@@ -309,6 +319,9 @@ export default {
     } else {
       this.getWeeks('week')
     }
+    this.$nextTick().then(() => {
+      document.getElementById('timer-8').scrollIntoView()
+    })
   },
   components: {
     DateComponent,

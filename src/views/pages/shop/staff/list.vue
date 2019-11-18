@@ -1,7 +1,28 @@
 <template>
   <st-panel class="page-shop-staff-list" app>
     <a-row>
-      <a-col :lg="17" class="page-shop-staff-list__selectRow">
+      <a-col :lg="6" class="page-shop-staff-list__selectRow">
+        <st-button
+          v-if="auth.add"
+          type="primary"
+          class="mg-r8"
+          icon="add"
+          @click="onAddStaff"
+        >
+          添加员工
+        </st-button>
+        <!-- NOTE: 导入 -->
+        <!-- <st-button v-if="auth.import" class="mg-r8" @click="onExportStaff">导入员工</st-button> -->
+        <st-button
+          :disabled="!selectedRowKeys.length"
+          @click="onJoinDepartment"
+          v-if="auth.join"
+          icon="add"
+        >
+          批量加入部门
+        </st-button>
+      </a-col>
+      <a-col :lg="18" style="text-align: right;">
         <a-tree-select
           showSearch
           class="mg-r8"
@@ -52,12 +73,14 @@
           class="mg-r8"
           :defaultValue="-1"
           placeholder="请选择员工职能"
+          style="width: 140px"
           v-model="query.identity"
           @change="onSingleSearch('identity', $event)"
           :options="identityList"
         ></a-select>
         <a-select
           class="mg-r8"
+          style="width: 140px"
           :defaultValue="-1"
           placeholder="请选择员工状态"
           v-model="query.work_status"
@@ -72,20 +95,6 @@
             {{ item }}
           </a-select-option>
         </a-select>
-        <st-button v-if="auth.add" class="mg-r8" icon="add" @click="onAddStaff">
-          添加员工
-        </st-button>
-        <!-- NOTE: 导入 -->
-        <!-- <st-button v-if="auth.import" class="mg-r8" @click="onExportStaff">导入员工</st-button> -->
-        <st-button
-          :disabled="!selectedRowKeys.length"
-          @click="onJoinDepartment"
-          v-if="auth.join"
-        >
-          批量加入部门
-        </st-button>
-      </a-col>
-      <a-col :lg="7" style="text-align: right;">
         <st-input-search
           placeholder="搜索员工"
           v-model="query.keyword"

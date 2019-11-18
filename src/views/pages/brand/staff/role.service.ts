@@ -82,7 +82,6 @@ export class RoleService implements Controller {
     }
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    debugger
     console.log('beforeRouteEnter')
     this.getAllList().subscribe(() => {
       this.redirect(to, from, next)

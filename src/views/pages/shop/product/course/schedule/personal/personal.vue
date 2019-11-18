@@ -7,14 +7,10 @@
       addTitle="添加预约"
       :cardList="cardList"
       :startDate="startDate"
+      fixed
     >
       <div slot="toolbar-left">
-        <st-button
-          v-if="!isDay"
-          type="primary"
-          class="mg-r24"
-          @click="onClickSettingSchdule"
-        >
+        <st-button type="primary" class="mg-r24" @click="onClickSettingSchdule">
           管理私教排期
         </st-button>
       </div>
@@ -29,6 +25,7 @@ import { PersonalScheduleReserveService } from './service#/reserve.service'
 import { RouteService } from '@/services/route.service'
 import SchedulePersonalAddReserve from '@/views/biz-modals/schedule/personal/add-reserve'
 import SchedulePersonalReserveInfo from '@/views/biz-modals/schedule/personal/reserve-info'
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'TeamSchedule',
   serviceInject() {
@@ -84,9 +81,19 @@ export default {
     },
     // 管理私教排期
     onClickSettingSchdule() {
+      let requestParam = cloneDeep(this.query)
+      if (this.query.start_date === this.query.end_date) {
+        let weekOfday = moment(this.query.start_date, 'YYYY-MM-DD').format('E')
+        requestParam.start_date = moment(this.query.start_date)
+          .subtract(weekOfday - 1, 'days')
+          .format('YYYY-MM-DD')
+        requestParam.end_date = moment(this.query.start_date)
+          .add(7 - weekOfday, 'days')
+          .format('YYYY-MM-DD')
+      }
       this.$router.push({
-        name: 'shop-product-course-schedule-personal-personal-table',
-        query: this.query
+        name: 'shop-product-course-personal-table',
+        query: requestParam
       })
     },
     // 进入表格模式

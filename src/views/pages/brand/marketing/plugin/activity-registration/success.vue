@@ -8,7 +8,7 @@
       <st-t2 :class="bPage('content-title')">发布成功</st-t2>
       <p :class="bPage('content-subtitle')">更多曝光推广，获得更多客户与订单</p>
       <ul :class="bPage('content-list')">
-        <li @click="onClickSharePoster" class="mg-r48">
+        <li @click="onClickSharePoster(1)" class="mg-r48">
           <img src="~@/assets/img/brand/marketing/lottery/poster.png" alt="" />
           <a>分享海报</a>
         </li>
@@ -16,7 +16,7 @@
           <img src="~@/assets/img/brand/marketing/lottery/ad.png" alt="" />
           <a>设置活动广告</a>
         </li>
-        <li @click="onClickMinaQrcode">
+        <li @click="onClickSharePoster(2)">
           <img src="~@/assets/img/brand/marketing/lottery/mina.png" alt="" />
           <a>小程序码</a>
         </li>
@@ -33,16 +33,14 @@
   </st-panel>
 </template>
 <script>
-import MarketingSharePoster from '@/views/biz-modals/marketing/share-poster'
-import MarketingActivityQrcode from '@/views/biz-modals/marketing/share-poster'
+import MarketingPoster from '@/views/biz-modals/brand/marketing/poster'
 export default {
   name: 'ReleaseActivity',
   bem: {
     bPage: 'page-marketing-release-activity'
   },
   modals: {
-    MarketingSharePoster,
-    MarketingActivityQrcode
+    MarketingPoster
   },
   data() {
     return {
@@ -70,23 +68,18 @@ export default {
         name: 'brand-marketing-activity'
       })
     },
-    onClickSharePoster() {
+    pushModal(type) {
       this.$modalRouter.push({
-        name: 'marketing-share-poster',
+        name: 'marketing-poster',
         props: {
-          type: 1,
+          pluginType: 'signUp',
+          type,
           activity_id: this.activityId
         }
       })
     },
-    onClickMinaQrcode() {
-      this.$modalRouter.push({
-        name: 'marketing-share-poster',
-        props: {
-          type: 2,
-          activity_id: this.activityId
-        }
-      })
+    onClickSharePoster(type) {
+      this.pushModal(type)
     }
   }
 }

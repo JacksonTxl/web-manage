@@ -1,101 +1,107 @@
 <template>
-  <div class="page-personal-table schedule-table">
-    <div
-      class="page-personal-table__title pd-x24 pd-y16 schedule-table__title"
-      slot="title"
-    >
-      <div class="title__left">
-        <st-button class="mg-r8" type="primary">
-          <a
-            v-modal-link="{
-              name: 'schedule-personal-inbatch-add',
-              props: { id: 1 }
-            }"
-          >
-            批量排期
-          </a>
-        </st-button>
-        <st-button :disabled="isBatchDel">
-          <a herf="javascript:;" @click="onClickDeleteInBatchSchedule">
-            批量删除
-          </a>
-        </st-button>
-      </div>
-      <div class="title__center">
-        <date
-          @today="getList"
-          :start="query.start_date"
-          @pre="getList"
-          @next="getList"
-        />
-      </div>
-      <div class="title__right schedule-button">
-        <st-button @click="onClickSkipSchedule">
-          <st-icon type="calendar"></st-icon>
-        </st-button>
-      </div>
-    </div>
-    <a-row class="mg-t32 mg-r24 mg-l24">
-      <st-table
-        :columns="scheduleColumns"
-        rowKey="staff_id"
-        :alertSelection="{ onReset: onSelectionReset }"
-        :rowSelection="{
-          selectedRowKeys: selectedRowKeys,
-          fixed: true,
-          onChange: onSelectChange
-        }"
-        :page="false"
-        @change="onTableChange"
-        :dataSource="scheduleList"
-        :scroll="{ x: 1440 }"
+  <st-panel initial app>
+    <div class="page-personal-table schedule-table">
+      <div
+        class="page-personal-table__title pd-x24 pd-y16 schedule-table__title"
+        slot="title"
       >
-        <a href="javascript:;" slot="staff_name" slot-scope="text">
-          {{ text }}
-        </a>
-        <template v-for="item in scheduleTime" :slot="item" slot-scope="text">
-          <a-popover :key="item" v-if="text.timing.length" placement="rightTop">
-            <template slot="content">
-              <template v-for="timingItem in text.timing">
-                <p :key="timingItem.start_time">
-                  {{ timingItem.start_time }}~{{ timingItem.end_time }}
-                </p>
-              </template>
-            </template>
-            <template slot="title">
-              <span>排期</span>
-            </template>
-            {{ text.timing | timingFilter }}
-          </a-popover>
-          <span :key="item" v-else>{{ text.timing | timingFilter }}</span>
-        </template>
-        <div slot="action" slot-scope="text, record">
-          <a
-            class="mg-r8"
-            v-modal-link="{
-              name: 'schedule-personal-edit',
-              props: { id: record.staff_id, start: scheduleTime[0] }
-            }"
-          >
-            编辑
-          </a>
-          <a
-            href="javascript:;"
-            @click="onClickDeleteSchedule(record.schedule_info)"
-          >
-            删除
-          </a>
+        <div class="title__left">
+          <st-button @click="onClickSkipSchedule" type="primary">
+            返回预约列表
+          </st-button>
         </div>
-      </st-table>
-    </a-row>
-  </div>
+        <div class="title__center">
+          <date
+            @today="getList"
+            :start="query.start_date"
+            @pre="getList"
+            @next="getList"
+          />
+        </div>
+        <div class="title__right schedule-button">
+          <st-button class="mg-r8" type="primary">
+            <a
+              v-modal-link="{
+                name: 'schedule-personal-inbatch-add',
+                props: { id: 1 }
+              }"
+            >
+              批量排期
+            </a>
+          </st-button>
+          <st-button :disabled="isBatchDel">
+            <a herf="javascript:;" @click="onClickDeleteInBatchSchedule">
+              批量删除
+            </a>
+          </st-button>
+        </div>
+      </div>
+      <a-row class="mg-t32 mg-r24 mg-l24">
+        <st-table
+          :columns="scheduleColumns"
+          rowKey="staff_id"
+          :alertSelection="{ onReset: onSelectionReset }"
+          :rowSelection="{
+            selectedRowKeys: selectedRowKeys,
+            fixed: true,
+            onChange: onSelectChange
+          }"
+          :page="false"
+          @change="onTableChange"
+          :dataSource="scheduleList"
+          :scroll="{ x: 1440 }"
+        >
+          <a href="javascript:;" slot="staff_name" slot-scope="text">
+            {{ text }}
+          </a>
+          <template v-for="item in scheduleTime" :slot="item" slot-scope="text">
+            <a-popover
+              :key="item"
+              v-if="text.timing.length"
+              placement="rightTop"
+            >
+              <template slot="content">
+                <template v-for="timingItem in text.timing">
+                  <p :key="timingItem.start_time">
+                    {{ timingItem.start_time }}~{{ timingItem.end_time }}
+                  </p>
+                </template>
+              </template>
+              <template slot="title">
+                <span>排期</span>
+              </template>
+              {{ text.timing | timingFilter }}
+            </a-popover>
+            <span :key="item" v-else>{{ text.timing | timingFilter }}</span>
+          </template>
+          <div slot="action" slot-scope="text, record">
+            <a
+              class="mg-r8"
+              v-modal-link="{
+                name: 'schedule-personal-edit',
+                props: { id: record.staff_id, start: scheduleTime[0] }
+              }"
+            >
+              编辑
+            </a>
+            <a
+              href="javascript:;"
+              @click="onClickDeleteSchedule(record.schedule_info)"
+            >
+              删除
+            </a>
+          </div>
+        </st-table>
+      </a-row>
+    </div>
+  </st-panel>
 </template>
 
 <script>
 import tableMixin from '@/mixins/table.mixin'
 import { PersonalTableService } from './personal-table.service'
 import { RouteService } from '@/services/route.service'
-import { PersonalScheduleScheduleService } from './service#/schedule.service'
+import { PersonalScheduleScheduleService } from './schedule/personal/service#/schedule.service'
 import date from '@/views/biz-components/schedule/date#/date-component.vue'
 import SchedulePersonalAdd from '@/views/biz-modals/schedule/personal/add'
 import SchedulePersonalEdit from '@/views/biz-modals/schedule/personal/edit'
@@ -120,7 +126,8 @@ export default {
       query: this.routeService.query$,
       scheduleTime: this.tableService.scheduleTime$,
       scheduleColumns: this.tableService.scheduleColumns$,
-      scheduleList: this.tableService.scheduleList$
+      scheduleList: this.tableService.scheduleList$,
+      formPage: this.tableService.formPage$
     }
   },
   computed: {
@@ -159,11 +166,9 @@ export default {
     date
   },
   methods: {
+    // 返回列表
     onClickSkipSchedule() {
-      this.$router.push({
-        name: 'shop-product-course-schedule-personal',
-        query: this.query
-      })
+      this.$router.go(-1)
     },
     onClickDeleteSchedule(scheduleInfo) {
       this.$confirm({

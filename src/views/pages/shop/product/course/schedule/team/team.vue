@@ -4,6 +4,7 @@
       @get-table="onGetTable"
       @detail="onDetail"
       @add="onAddSchedule"
+      fixed
       :cardList="cardList"
       :startDate="startDate"
     >

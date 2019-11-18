@@ -16,8 +16,17 @@
           :disabledDate="disabledDate"
         ></a-range-picker>
       </st-form-item>
-      <st-form-item labelWidth="88px" :label="`${$c('coach')}：`" required>
-        <a-select :placeholder="`请选择${$c('coach')}`" v-model="coachId">
+      <st-form-item
+        labelWidth="88px"
+        :label="`${$c('coach')}：`"
+        labelAuto
+        required
+      >
+        <a-select
+          :placeholder="`请选择${$c('coach')}`"
+          mode="multiple"
+          v-model="coachId"
+        >
           <a-select-option
             v-for="coach in coachOptions"
             :key="coach.id"
@@ -94,7 +103,7 @@ export default {
   data() {
     return {
       show: false,
-      coachId: '',
+      coachId: undefined,
       start: '',
       end: '',
       schedule_info: [
