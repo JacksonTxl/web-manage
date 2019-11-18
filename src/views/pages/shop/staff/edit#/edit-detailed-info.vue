@@ -89,7 +89,7 @@
         </st-form-item>
         <st-form-item label="备注">
           <st-textarea
-            :maxlength="300"
+            :maxlength="500"
             :rows="10"
             v-decorator="decorators.description"
             placeholder="填写点什么吧"
