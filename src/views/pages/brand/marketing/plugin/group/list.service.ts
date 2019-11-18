@@ -34,7 +34,6 @@ export class ListService implements Controller {
     return this.marketingApi.stopMarketingCoupon(id).pipe(tap((res: any) => {}))
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    console.log(to)
     return this.getList(to.meta.query)
   }
 }

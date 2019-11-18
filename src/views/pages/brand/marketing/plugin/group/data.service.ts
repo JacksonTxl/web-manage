@@ -30,7 +30,6 @@ export class DataService implements Controller {
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    console.log(to)
     return this.getData(to.meta.query)
   }
 }

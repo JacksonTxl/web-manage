@@ -166,7 +166,7 @@ export default {
       activityStatus: -1,
       columns: columns(vm),
       activityEnums: {
-        // select 假数据
+        // select 假数据做处理
         activity_status: {
           description: '活动状态',
           value: { 1: '已结束', 2: '活动中', 3: '未开始', 4: '待发布' }
@@ -176,7 +176,6 @@ export default {
   },
   mounted() {
     this.setSearchData()
-    console.log(this.userService)
   },
   watch: {
     query(newVal) {
@@ -194,14 +193,6 @@ export default {
     onData(record) {
       this.$router.push({
         path: '/brand/marketing/plugin/group/data',
-        query: { id: record.id }
-      })
-    },
-    // 编辑
-    onEdit(record) {
-      // 跳转编辑页面  传类型卡及卡id
-      this.$router.push({
-        path: '/brand/marketing/plugin/coupon/edit', // 路由要改
         query: { id: record.id }
       })
     },

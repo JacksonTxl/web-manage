@@ -9,7 +9,7 @@
         <div :class="activities('desc')">
           <p :class="activities('activity')">活动商品：健身房年卡</p>
           <p :class="activities('activity')">
-            活动时间：2019-05-20 10:38-2019-05-27 10:38
+            活动时间：2019-05-20 10:38~2019-05-27 10:38
           </p>
         </div>
         <!-- <Header :id="query.id" /> -->
