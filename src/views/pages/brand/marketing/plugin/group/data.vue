@@ -9,7 +9,7 @@
         <div :class="activities('desc')">
           <p :class="activities('activity')">活动商品：健身房年卡</p>
           <p :class="activities('activity')">
-            活动时间：2019-05-20 10:38-2019-05-27 10:38
+            活动时间：2019-05-20 10:38~2019-05-27 10:38
           </p>
         </div>
         <!-- <Header :id="query.id" /> -->
@@ -24,7 +24,7 @@
               </p>
               <ICountUp
                 class="number-up font-number"
-                :endVal="statInfo.total_inviter_num"
+                :endVal="collect[0].group_total"
               />
             </a-col>
             <a-col :span="4">
@@ -34,7 +34,7 @@
               </p>
               <ICountUp
                 class="number-up font-number"
-                :endVal="statInfo.total_newbie_register_num"
+                :endVal="collect[0].group_success_total"
               />
             </a-col>
             <a-col :span="4">
@@ -44,7 +44,7 @@
               </p>
               <ICountUp
                 class="number-up font-number"
-                :endVal="statInfo.total_coupon_num"
+                :endVal="collect[0].join_total"
               />
             </a-col>
             <a-col :span="4">
@@ -54,7 +54,7 @@
               </p>
               <ICountUp
                 class="number-up font-number"
-                :endVal="statInfo.total_newbieorder_num"
+                :endVal="collect[0].new_total"
               />
             </a-col>
             <a-col :span="4">
@@ -64,7 +64,7 @@
               </p>
               <ICountUp
                 class="number-up font-number"
-                :endVal="statInfo.total_ordernewbie_num"
+                :endVal="collect[0].success_order_total"
               />
             </a-col>
             <a-col :span="4">
@@ -74,36 +74,36 @@
               </p>
               <ICountUp
                 class="number-up font-number"
-                :endVal="statInfo.total_newbiorder_num"
+                :endVal="collect[0].success_amount_total"
               />
             </a-col>
           </a-row>
         </div>
-        <div :class="activities('search')">
-          <a-select
-            :class="activities('select')"
-            v-model="groupStatus"
-            placeholder="活动状态"
-            @change="onSingleSearch('group_status', $event)"
-            style="width: 130px"
-          >
-            <a-select-option v-for="item in groupType" :key="item.value">
-              {{ item.label }}
-            </a-select-option>
-          </a-select>
-          <st-input-search
-            v-model="groupName"
-            @search="onSingleSearch('coupon_name', $event)"
-            placeholder="请输入活动名称"
-          />
-        </div>
+      </st-panel>
+      <st-panel :class="activities('search')">
+        <a-select
+          :class="activities('select')"
+          v-model="groupStatus"
+          placeholder="活动状态"
+          @change="onSingleSearch('group_status', $event)"
+          style="width: 130px"
+        >
+          <a-select-option v-for="item in groupType" :key="item.value">
+            {{ item.label }}
+          </a-select-option>
+        </a-select>
+        <st-input-search
+          v-model="groupName"
+          @search="onSingleSearch('coupon_name', $event)"
+          placeholder="请输入活动名称"
+        />
       </st-panel>
       <st-panel>
         <a-table
           rowKey="id"
           :columns="columns"
-          :scroll="{ x: 1300 }"
-          :dataSource="newList"
+          :scroll="{ x: 1200 }"
+          :dataSource="list"
           :rowClassName="rowClassName"
           @expandedRowsChange="onShow"
         ></a-table>
@@ -112,21 +112,29 @@
   </div>
 </template>
 <script>
+import { DataService } from './data.service.ts'
 import { columns } from './data.config.ts'
-import { columnsData } from './total-data.config.ts'
+import { State, Effect } from 'rx-state'
+import tableMixin from '@/mixins/table.mixin'
+
 let Color = ''
 export default {
   name: 'PageBrandMarketingPluginGroupListData',
   bem: {
-    activities: 'brand-marketing-plugin-group-data'
+    activities: 'brand-marketing-plugin-group-list-data'
+  },
+  serviceInject() {
+    return {
+      dataService: DataService
+    }
   },
   rxState() {
     return {
       list: this.dataService.list$,
       page: this.dataService.page$,
+      collect: this.dataService.collect$,
       // loading: this.listService.loading$,
-      query: this.routeService.query$,
-      // couponEnums: this.userService.couponEnums$,
+      // query: this.routeService.query$,
       auth: this.dataService.auth$
     }
   },
@@ -136,7 +144,6 @@ export default {
       flag: true,
       groupName: '',
       groupStatus: -1,
-      columnsData,
       columns: columns(vm),
       couponEnums: {
         // select 假数据
@@ -144,14 +151,6 @@ export default {
           description: '活动状态',
           value: { 1: '已结束', 2: '活动中', 3: '未开始', 4: '待发布' }
         }
-      },
-      statInfo: {
-        total_coupon_num: 1,
-        total_inviter_num: 56,
-        total_newbie_register_num: 345,
-        total_newbieorder_num: 4352,
-        total_ordernewbie_num: 432,
-        total_newbiorder_num: 3425
       }
     }
   },
@@ -166,30 +165,11 @@ export default {
       })
       return [{ value: -1, label: '全部状态' }, ...list]
       console.log(list)
-    },
-    newList() {
-      let newList = []
-      this.list.filter((item, index) => {
-        newList.push({
-          id: item.group_number,
-          start_time: item.opening_time,
-          children: item.children,
-          shop_name: item.group_store,
-          member_name: item.group_member,
-          member_type: item.group_identity,
-          group_status: item.group_status,
-          member_mobile: item.group_phone,
-          join_start_time: item.participation_time,
-          is_new_member: item.newold_users,
-          order_id: item.order_number
-        })
-      })
-      return newList
     }
   },
   mounted() {
     this.setSearchData()
-    console.log(Color)
+    console.log(this.collect[0].group_success_total)
   },
   watch: {
     query(newVal) {

@@ -1,6 +1,6 @@
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
-import { GroupApi, GroupListParams } from '@/api/v1/marketing/group'
+import { GroupBuyApi, GroupListParams } from '@/api/v1/marketing/group_buy'
 import { MarketingApi } from '@/api/v1/marketing/marketing'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
@@ -11,16 +11,17 @@ export class ListService implements Controller {
   page$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({
+    // 记得设置鉴权
     add: 'brand:activity:coupon|add'
   })
   constructor(
     private marketingApi: MarketingApi,
-    private GroupApi: GroupApi,
+    private GroupBuyApi: GroupBuyApi,
     private authService: AuthService
   ) {}
   @Effect()
   getList(params: GroupListParams) {
-    return this.GroupApi.getList(params).pipe(
+    return this.GroupBuyApi.getList(params).pipe(
       tap((res: any) => {
         console.log(res)
         res = this.authService.filter(res)
@@ -33,7 +34,6 @@ export class ListService implements Controller {
     return this.marketingApi.stopMarketingCoupon(id).pipe(tap((res: any) => {}))
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    console.log(to)
     return this.getList(to.meta.query)
   }
 }

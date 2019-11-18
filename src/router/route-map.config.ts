@@ -1275,5 +1275,23 @@ export const routeMapConfig = {
   'brand-marketing-plugin-group-choose'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '选择拼团类型'
   },
+  'brand-marketing-plugin-group-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '拼团列表'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      activity_name: { type: String, default: '' },
+      activity_status: { type: Number, default: -1 }
+    }
+  },
+  'brand-marketing-plugin-group-data'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '数据列表'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      search_where: { type: String, default: '' },
+      group_status: { type: Number, default: -1 }
+    }
+  },
   ...tplConfigs
 }

@@ -31,7 +31,7 @@ export default {
         {
           name: '私教课',
           bg: require('@/assets/img/brand/marketing/group/mod_sijiaoke.png'),
-          url: './add-course'
+          url: './add-personal'
         },
         {
           name: '课程包',

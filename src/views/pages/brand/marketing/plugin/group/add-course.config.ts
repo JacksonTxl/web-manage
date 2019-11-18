@@ -71,7 +71,7 @@ export const ruleOptions = (vm: any) => {
 export const cardColumns = [
   {
     title: '原价',
-    dataIndex: 'district_name',
+    dataIndex: 'price',
     width: '60%',
     align: 'center'
   },
