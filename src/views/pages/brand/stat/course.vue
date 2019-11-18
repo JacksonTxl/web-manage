@@ -51,7 +51,7 @@
         <st-t3 :class="bHeader('title')"></st-t3>
         <div :class="bHeader('actions')">
           <shop-select
-            v-model="query.shop_id"
+            v-model="$searchQuery.shop_id"
             @change="onSingleSearch('shop_id', $event)"
             class="mg-r12"
           />
@@ -102,7 +102,6 @@ export default {
       notCheckInChartData$
     } = this.service
     return {
-      query: this.routeService.query$,
       list$,
       page$,
       auth$,
@@ -148,9 +147,9 @@ export default {
       this.getChart()
     },
     onChangeTableDays(event) {
-      this.query.day = event.recently_day || undefined
-      this.query.start_date = event.start_date || undefined
-      this.query.end_date = event.end_date || undefined
+      this.$searchQuery.day = event.recently_day || undefined
+      this.$searchQuery.start_date = event.start_date || undefined
+      this.$searchQuery.end_date = event.end_date || undefined
       this.onSearch()
     },
     getChart() {
