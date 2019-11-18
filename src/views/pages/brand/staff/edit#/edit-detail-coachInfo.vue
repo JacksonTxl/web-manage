@@ -54,7 +54,7 @@
         </st-form-item>
         <st-form-item label="个人经历">
           <st-textarea
-            :maxlength="300"
+            :maxlength="500"
             :rows="10"
             v-decorator="decorators.introduction"
             placeholder="填写点什么吧"
