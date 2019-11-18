@@ -178,8 +178,8 @@ export class CardApi extends Api {
   /**
    * 售出 会员卡 批量赠送
    */
-  setCardGive(params: CardGiveInput) {
-    return this.http.put(`/v1/sold/cards/member/give`, { params })
+  setCardGive(params: any) {
+    return this.http.post(`/v1/sold/cards/batch/amount`, { params })
   }
   /**
    * 售出 会员卡 续卡回显
@@ -211,6 +211,14 @@ export class CardApi extends Api {
   getCardUpgradeList(card_name_search?: string) {
     return this.http.get(`/v1/sold/cards/shop/saled_card`, {
       query: { card_name_search }
+    })
+  }
+  /**
+   * 获取会员卡可使用条数
+   */
+  fetchSoldCardValidNum(query: any) {
+    return this.http.get(`/v1/sold/cards/batch/count`, {
+      query
     })
   }
 }

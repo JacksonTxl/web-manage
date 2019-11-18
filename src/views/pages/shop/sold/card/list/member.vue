@@ -190,6 +190,7 @@ import SoldCardUpgradeMember from '@/views/biz-modals/sold/card/upgrade-member'
 import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
 import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
 import useCardActions from '@/hooks/card-actions.hook'
+import CommonTaskSuccessTip from '@/views/biz-modals/common/task/success-tip'
 export default {
   name: 'PageShopSoldCardMemberList',
   mixins: [tableMixin],
@@ -206,7 +207,8 @@ export default {
     SoldCardTransfer,
     SoldCardUpgradeMember,
     SoldDealGatheringTip,
-    SoldDealGathering
+    SoldDealGathering,
+    CommonTaskSuccessTip
   },
   serviceInject() {
     return {
@@ -454,6 +456,16 @@ export default {
           type: this.selectedRows[0].card_type,
           page: this.page
         },
+        on: {
+          success: () => {
+            this.successTip()
+          }
+        }
+      })
+    },
+    successTip() {
+      this.$modalRouter.push({
+        name: 'common-task-success-tip',
         on: {
           success: () => {
             this.$router.reload()
