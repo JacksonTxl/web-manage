@@ -4,7 +4,6 @@
     title="预约详情"
     @ok="save"
     :footer="null"
-    width="686px"
     v-model="show"
   >
     <a-row :gutter="24" class="modal-reserved-info">

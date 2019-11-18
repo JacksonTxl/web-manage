@@ -16,7 +16,12 @@
           :disabledDate="disabledDate"
         ></a-range-picker>
       </st-form-item>
-      <st-form-item labelWidth="88px" :label="`${$c('coach')}：`" required>
+      <st-form-item
+        labelWidth="88px"
+        :label="`${$c('coach')}：`"
+        labelAuto
+        required
+      >
         <a-select
           :placeholder="`请选择${$c('coach')}`"
           mode="multiple"
