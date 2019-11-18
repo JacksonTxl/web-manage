@@ -40,6 +40,11 @@ export interface GroupData {
   group_status: number
   search_where: string
 }
+export interface GroupData {
+  id: string
+  group_status: number
+  search_where: string
+}
 export class GroupBuyApi extends Api {
   /**
    * 新增拼团活动
@@ -96,5 +101,11 @@ export class GroupBuyApi extends Api {
    */
   getCourseList(params: { shop_id: number }) {
     return this.http.get('/v1/course/package_list', { params })
+  }
+  /**
+   * 获取私教课列表  记得加参数
+   */
+  getPersonalList() {
+    return this.http.get('/v1/course/personal/brand_list')
   }
 }

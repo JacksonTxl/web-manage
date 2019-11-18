@@ -10,7 +10,6 @@ export class EditStoredService implements Controller {
   info$ = new State({})
   list$ = new State({})
   constructor(private groupBuyApi: GroupBuyApi) {}
-  @Effect()
   getStoredData(id: number) {
     return this.groupBuyApi.getStoredData(id).pipe(
       tap((res: any) => {
@@ -25,10 +24,11 @@ export class EditStoredService implements Controller {
       })
     )
   }
-  init() {
-    return anyAll(this.getStoredData(1), this.getDepositList())
+  @Effect()
+  init(id: any) {
+    return anyAll(this.getStoredData(id), this.getDepositList())
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    return this.init()
+    return this.init(to.meta.query.id)
   }
 }
