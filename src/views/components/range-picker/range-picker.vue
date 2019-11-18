@@ -1,6 +1,7 @@
 <template>
   <div class="st-range-datepicker">
     <a-date-picker
+      :disabled="value.startTime.disabled"
       :disabledDate="disabledStartDate"
       :showTime="value.startTime.showTime"
       :placeholder="value.startTime.placeholder"
@@ -11,6 +12,7 @@
     />
     &nbsp;~&nbsp;
     <a-date-picker
+      :disabled="value.endTime.disabled"
       :disabledDate="disabledEndDate"
       :showTime="value.endTime.showTime"
       :placeholder="value.endTime.placeholder"

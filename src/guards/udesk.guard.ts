@@ -9,6 +9,7 @@ export class UdeskGuard implements RouteGuard {
   isCreate = false
   constructor(private udeskService: UdeskService) {}
   beforeRouteEnter(to: ServiceRoute) {
+    console.log(this.isCreate)
     if (!this.isCreate) {
       this.udeskService.create().then(() => {
         this.isCreate = true
@@ -19,6 +20,7 @@ export class UdeskGuard implements RouteGuard {
     }
   }
   udeskIsShow(to: ServiceRoute) {
+    console.log(to)
     if (
       to.name === 'brand-dashboard-studio' ||
       to.name === 'shop-dashboard-studio'
