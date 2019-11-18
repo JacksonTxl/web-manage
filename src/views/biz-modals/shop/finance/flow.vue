@@ -66,6 +66,7 @@
               placeholder="请选择收款时间"
               :showToday="false"
               showTime
+              :disabledDate="disabledDate"
             />
           </st-form-item>
         </div>
@@ -133,6 +134,19 @@ export default {
             this.show = false
           })
       })
+    },
+    disabledDate(current) {
+      let flag = false
+      if (current < moment(this.info.flow_time)) {
+        return true
+      }
+      if (
+        current > moment(this.info.flow_time).add(30, 'days') ||
+        current > moment()
+      ) {
+        return true
+      }
+      return false
     }
   }
 }
