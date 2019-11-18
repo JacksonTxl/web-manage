@@ -84,15 +84,10 @@ export class PersonalTableService {
       this.commonService.getCoachListInBatch()
     )
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    if (from.name === 'shop-product-course-schedule-personal-personal') {
-      this.formPage$.commit(() => 'personal')
-    } else if ('shop-product-course-schedule-personal-personal-reserve-table') {
-      this.formPage$.commit(() => 'personal-reserve-table')
-    }
+  beforeEach(to: ServiceRoute) {
     return this.getList(to.query)
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+  beforeRouteEnter(to: ServiceRoute) {
     return this.initOptions()
   }
 }
