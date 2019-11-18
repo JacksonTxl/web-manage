@@ -22,10 +22,19 @@
               </a-input>
             </st-form-item>
             <st-form-item label="选择会籍卡" required>
-              <a-select showSearch v-model="cardId" placeholder="请输入">
-                <a-select-option value="11">11</a-select-option>
-                <a-select-option value="22">22</a-select-option>
-                <a-select-option value="33">33</a-select-option>
+              <a-select
+                showSearch
+                v-model="cardId"
+                placeholder="请输入"
+                @change="chooseMember"
+              >
+                <a-select-option
+                  :value="item.id"
+                  v-for="(item, index) in memberList"
+                  :key="index"
+                >
+                  {{ item.product_name }}
+                </a-select-option>
               </a-select>
             </st-form-item>
           </a-col>
@@ -49,7 +58,6 @@
                   "
                   rowKey="id"
                 >
-                  <!-- rowKey="key" -->
                   <template
                     slot="group_price"
                     slot-scope="customRender, record"
@@ -83,7 +91,10 @@
                 format="YYYY-MM-DD HH:mm"
                 v-model="end_time"
               /> -->
-              <st-range-picker :value="selectTime"></st-range-picker>
+              <st-range-picker
+                :disabledDays="180"
+                :value="selectTime"
+              ></st-range-picker>
             </st-form-item>
           </a-col>
         </a-row>
@@ -189,7 +200,8 @@ export default {
   },
   rxState() {
     return {
-      loading: this.addMemberService.loading$
+      loading: this.addMemberService.loading$,
+      memberList: this.addMemberService.memberList$
     }
   },
   bem: {
@@ -209,26 +221,7 @@ export default {
       isLimit: true,
       shopIds: [],
       cardColumns,
-      tableData: [
-        {
-          spec: '33',
-          price: '33',
-          group_price: '55',
-          id: 100
-        },
-        {
-          spec: '33',
-          price: '43',
-          group_price: '77',
-          id: 102
-        },
-        {
-          spec: '55',
-          price: '93',
-          group_price: '888',
-          id: 105
-        }
-      ],
+      tableData: [],
       // 发布状态
       releaseStatus: 1,
       publishTime: null,
@@ -239,7 +232,7 @@ export default {
           placeholder: '开始日期',
           disabled: false,
           value: null,
-          format: 'YYYY-MM-DD',
+          format: 'YYYY-MM-DD HH:mm',
           change: $event => {}
         },
         endTime: {
@@ -247,7 +240,7 @@ export default {
           placeholder: '结束日期',
           disabled: false,
           value: null,
-          format: 'YYYY-MM-DD',
+          format: 'YYYY-MM-DD HH:mm',
           change: $event => {},
           disabledDate: this.disabledDate
         }
@@ -262,6 +255,13 @@ export default {
     }
   },
   methods: {
+    chooseMember(value) {
+      this.memberList.filter(item => {
+        if (item.id === value) {
+          this.tableData = item.product_spec
+        }
+      })
+    },
     // 优惠设置选择变化
     onChange(value) {
       this.selectedRowKeys = value
@@ -271,8 +271,8 @@ export default {
       this.isLimit = value.target.checked
     },
     // 选择门店
-    onSelectShop(value) {
-      console.log(value)
+    onSelectShop(shopIds) {
+      this.shopIds = shopIds
     },
     // 为了同步字数
     changeName(e) {

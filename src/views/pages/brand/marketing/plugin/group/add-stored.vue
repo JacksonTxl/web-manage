@@ -2,7 +2,6 @@
   <st-mina-panel :class="basic()">
     <div>
       <st-form :form="form" labelWidth="118px">
-        <!-- <st-form labelWidth="118px"> -->
         <a-row :gutter="8">
           <a-col :span="10">
             <st-form-item label="活动名称" required>
@@ -11,7 +10,7 @@
                 v-decorator="decorators.activity_name"
                 maxlength="30"
                 @change="changeName"
-                :disabled="isEdit"
+                :disabled="isEdit && activityState > ACTIVITY_STATUS.UNDER_WAY"
               >
                 <span slot="suffix" :disabled="isEdit">
                   {{ activityName.length > 30 ? 30 : activityName.length }}
@@ -19,11 +18,21 @@
                 </span>
               </a-input>
             </st-form-item>
-            <st-form-item label="选择储值卡" required>
-              <a-select placeholder="请输入">
-                <a-select-option value="1">1</a-select-option>
-                <a-select-option value="2">2</a-select-option>
-                <a-select-option value="3">3</a-select-option>
+            <st-form-item label="选择储值卡" require>
+              <a-select
+                showSearch
+                @change="changeSelect"
+                placeholder="请选择储值卡"
+                v-model="storedId"
+              >
+                <!-- :disabled="isEdit && activityState >= ACTIVITY_STATUS.NO_START" -->
+                <a-select-option
+                  :value="item.id"
+                  v-for="(item, index) in list"
+                  :key="index"
+                >
+                  {{ item.product_name }}
+                </a-select-option>
               </a-select>
             </st-form-item>
           </a-col>
@@ -34,7 +43,7 @@
               <div :class="basic('table')">
                 <st-table
                   rowKey="id"
-                  :dataSource="info.sku"
+                  :dataSource="currentStored"
                   :columns="columnsGroupStored"
                   :pagination="false"
                 >
@@ -43,6 +52,9 @@
                       :float="true"
                       v-model="record.group_price"
                       style="width:100px;"
+                      :disabled="
+                        isEdit && activityState >= ACTIVITY_STATUS.NO_START
+                      "
                     >
                       <template slot="addonAfter">
                         元
@@ -57,13 +69,10 @@
         <a-row :gutter="8">
           <a-col :span="11">
             <st-form-item label="活动时间" required>
-              <a-range-picker
-                @change="changeTime"
-                :disabledDate="disabledDate"
-                :showTime="{ format: 'HH:mm' }"
-                format="YYYY-MM-DD HH:mm"
-                v-model="rangeTime"
-              />
+              <st-range-picker
+                :disabledDays="180"
+                :value="selectTime"
+              ></st-range-picker>
             </st-form-item>
           </a-col>
         </a-row>
@@ -74,7 +83,10 @@
                 参团人数
                 <st-help-tooltip id="TBPTXJ001" />
               </template>
-              <st-input-number v-decorator="decorators.group_sum">
+              <st-input-number
+                v-decorator="decorators.group_sum"
+                :disabled="isEdit && activityState >= ACTIVITY_STATUS.NO_START"
+              >
                 <template slot="addonAfter">
                   人
                 </template>
@@ -85,7 +97,10 @@
                 拼团有效期
                 <st-help-tooltip id="TBPTXJ002" />
               </template>
-              <st-input-number v-decorator="decorators.valid_time">
+              <st-input-number
+                v-decorator="decorators.valid_time"
+                :disabled="isEdit && activityState >= ACTIVITY_STATUS.NO_START"
+              >
                 <template slot="addonAfter">
                   小时
                 </template>
@@ -102,6 +117,7 @@
               <st-input-number
                 v-decorator="decorators.stock_total"
                 :min="0"
+                :disabled="isEdit && activityState >= ACTIVITY_STATUS.NO_START"
                 style="width: 200px;"
               ></st-input-number>
             </st-form-item>
@@ -125,6 +141,7 @@
               <a-radio-group
                 :defaultValue="info.published_type || 1"
                 v-model="publishedType"
+                :disabled="isEdit && activityState > ACTIVITY_STATUS.PUBLISHER"
               >
                 <a-radio :value="1">立即发布</a-radio>
                 <a-radio :value="2">暂不发布</a-radio>
@@ -156,6 +173,7 @@ import { columnsGroupStored, ruleOptions } from './add-stored.config'
 import { AddStoredService } from './add-stored.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import moment, { months } from 'moment'
+import { ACTIVITY_STATUS } from '@/constants/marketing/group-buy'
 
 export default {
   // name: PageBrandMarketingGroupAddStored,
@@ -178,6 +196,10 @@ export default {
     info: {
       type: Object,
       default: () => {}
+    },
+    list: {
+      type: Array,
+      default: () => {}
     }
   },
   data() {
@@ -190,7 +212,31 @@ export default {
       activityName: '',
       publishedType: 1, // @parmas=0 立即发布；@parmas=1 暂不发布； @parmas=3 定时发布
       limitStock: 0,
-      rangeTime: []
+      rangeTime: [],
+      activityState: Number, // 当前活动活动状态
+      storedId: '', // 回显下拉选中product
+      currentStored: [], // 当前下拉选中详细
+      selectTime: {
+        startTime: {
+          showTime: false,
+          disabledBegin: moment(),
+          placeholder: '开始日期',
+          disabled: false,
+          value: null,
+          format: 'YYYY-MM-DD HH:mm',
+          change: $event => {}
+        },
+        endTime: {
+          showTime: false,
+          placeholder: '结束日期',
+          disabled: false,
+          value: null,
+          format: 'YYYY-MM-DD HH:mm',
+          change: $event => {},
+          disabledDate: this.disabledDate
+        }
+      },
+      ACTIVITY_STATUS
     }
   },
   mounted() {
@@ -203,6 +249,13 @@ export default {
     },
     getShopId(shopId) {
       console.log(shopId)
+    },
+    changeSelect(id) {
+      this.list.filter(item => {
+        if (item.id == id) {
+          this.currentStored = item.product_spec
+        }
+      })
     },
     changeName(e) {
       this.activityName = e.target.value
@@ -219,10 +272,11 @@ export default {
     setFieldsValue() {
       this.activityName = this.info.activity_name
       this.publishedType = this.info.published_type
-      this.rangeTime = [
-        moment(this.info.start_time),
-        moment(this.info.end_time)
-      ]
+      this.selectTime.startTime.value = moment(this.info.start_time)
+      this.selectTime.endTime.value = moment(this.info.end_time)
+      this.activityState = this.info.activity_state[0].id
+      this.storedId = this.info.product.id
+      this.currentStored = this.info.sku
       this.form.setFieldsValue({
         activity_name: this.info.activity_name,
         group_sum: this.info.group_sum,
