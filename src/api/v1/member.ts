@@ -180,7 +180,6 @@ export class MemberApi extends Api {
    * 销售抛入公海
    */
   dropSalerSea(params: any) {
-    console.log(params)
     return this.http.put(`/v1/member/cancel_sales`, { params })
   }
   /**

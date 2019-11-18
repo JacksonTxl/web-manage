@@ -24,19 +24,7 @@
             :options="followStatus"
           />
         </st-search-panel-item>
-        <st-search-panel-item label="注册时间：">
-          <st-range-picker
-            :disabledDays="180"
-            :value="selectTime"
-          ></st-range-picker>
-        </st-search-panel-item>
         <div slot="more">
-          <st-search-panel-item label="入会时间：">
-            <st-range-picker
-              :disabledDays="180"
-              :value="selectMemberTime"
-            ></st-range-picker>
-          </st-search-panel-item>
           <st-search-panel-item label="跟进员工：">
             <a-select
               class="mg-t8 mg-r40 select"
@@ -227,7 +215,7 @@
       </div>
       <div slot="salesman_protect_day" slot-scope="text, record">
         <span class="mg-r4">{{ record.salesman_protect_day }}</span>
-        <a-tooltip placement="top">
+        <a-tooltip placement="top" v-if="record.sales_days_limit">
           <template slot="title">
             <span>{{ record.salesman_protect }}</span>
           </template>
@@ -236,7 +224,7 @@
       </div>
       <div slot="coach_protect_day" slot-scope="text, record">
         <span class="mg-r4">{{ record.coach_protect_day }}</span>
-        <a-tooltip placement="top">
+        <a-tooltip placement="top" v-if="record.coach_days_limit">
           <template slot="title">
             <span>{{ record.coach_protect }}</span>
           </template>
@@ -353,6 +341,8 @@ import ShopFrozen from '@/views/biz-modals/shop/frozen'
 import ShopMissingCard from '@/views/biz-modals/shop/missing-card'
 import ShopDropSalerSea from '@/views/biz-modals/shop/drop-saler-sea'
 import ShopDropCoachSea from '@/views/biz-modals/shop/drop-coach-sea'
+import { MessageService } from '@/services/message.service'
+
 export default {
   name: 'ShopMemberListClub',
   mixins: [tableMixin],
@@ -370,7 +360,8 @@ export default {
     return {
       clubService: ClubService,
       userService: UserService,
-      routeService: RouteService
+      routeService: RouteService,
+      messageService: MessageService
     }
   },
   rxState() {
@@ -395,44 +386,6 @@ export default {
       selectDataList: [],
       selectedRowKeys: [],
       selectedRows: [],
-      selectTime: {
-        startTime: {
-          showTime: false,
-          disabledBegin: null,
-          placeholder: '开始日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        },
-        endTime: {
-          showTime: false,
-          placeholder: '结束日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        }
-      },
-      selectMemberTime: {
-        startTime: {
-          showTime: false,
-          disabledBegin: null,
-          placeholder: '开始日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        },
-        endTime: {
-          showTime: false,
-          placeholder: '结束日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        }
-      },
       coachList: [],
       saleList: [],
       crmRule: {}
@@ -449,20 +402,6 @@ export default {
         list.push({ value: +o[0], label: o[1] })
       })
       return list
-    },
-    defaultRegValue() {
-      if (!this.query.register_start_time) return []
-      return [
-        moment(this.query.register_start_time, this.dateFormat),
-        moment(this.query.register_stop_time, this.dateFormat)
-      ]
-    },
-    defaultBeMemberValue() {
-      if (!this.query.be_member_start_time) return null
-      return [
-        moment(this.query.be_member_start_time, this.dateFormat),
-        moment(this.query.be_member_stop_time, this.dateFormat)
-      ]
     },
     sourceList() {
       let list = [{ value: -1, label: '全部' }]
@@ -496,12 +435,6 @@ export default {
   },
   mounted() {
     this.sourceRegisters()
-    this.setSearchData()
-  },
-  watch: {
-    query(newVal) {
-      this.setSearchData()
-    }
   },
   methods: {
     refeshPage() {
@@ -514,34 +447,13 @@ export default {
     },
     // 查询
     onSearchNative() {
-      this.query.register_start_time = this.selectTime.startTime.value
-        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')}`
-        : ''
-      this.query.register_stop_time = this.selectTime.endTime.value
-        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')}`
-        : ''
-      this.query.be_member_start_time = this.selectMemberTime.startTime.value
-        ? `${this.selectMemberTime.startTime.value.format('YYYY-MM-DD')}`
-        : ''
-      this.query.be_member_stop_time = this.selectMemberTime.endTime.value
-        ? `${this.selectMemberTime.endTime.value.format('YYYY-MM-DD')}`
-        : ''
+      if (this.query.follow_min > this.query.follow_max) {
+        this.messageService.warning({
+          content: '最小跟进次数要小于最大跟进次数'
+        })
+        return
+      }
       this.onSearch()
-    },
-    // 设置searchData
-    setSearchData() {
-      this.selectTime.startTime.value = this.query.register_start_time
-        ? cloneDeep(moment(this.query.register_start_time))
-        : null
-      this.selectTime.endTime.value = this.query.register_stop_time
-        ? cloneDeep(moment(this.query.register_stop_time))
-        : null
-      this.selectMemberTime.startTime.value = this.query.be_member_start_time
-        ? cloneDeep(moment(this.query.be_member_start_time))
-        : null
-      this.selectMemberTime.endTime.value = this.query.be_member_stop_time
-        ? cloneDeep(moment(this.query.be_member_stop_time))
-        : null
     },
     // 分配教练
     onDistributionCoach(record) {

@@ -28,10 +28,12 @@ export default {
   methods: {
     save(e) {
       e.preventDefault()
-      this.Service.dropCoachSea(this.memberIds).subscribe(state => {
-        this.show = false
-        this.$emit('success', true)
-      })
+      this.Service.dropCoachSea({ member_ids: this.memberIds }).subscribe(
+        state => {
+          this.show = false
+          this.$emit('success', true)
+        }
+      )
     }
   }
 }

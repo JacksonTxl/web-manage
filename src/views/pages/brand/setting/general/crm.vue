@@ -16,7 +16,7 @@
                   可分配给该员工的潜在会员和流失会员上限数,正式会员后不受此限制
                 </span>
               </template>
-              <span><st-icon color="#9bacb9" type="help" /></span>
+              <span><st-icon color="#9bacb9" type="help" class="mg-l4" /></span>
             </a-tooltip>
           </st-t4>
           <div class="st-des mg-t4">客户成为正式会员后不受此人数限制</div>
@@ -53,7 +53,7 @@
                   可分配给该员工的会员上限数,已购买课程的会员不受此限制
                 </span>
               </template>
-              <span><st-icon color="#9bacb9" type="help" /></span>
+              <span><st-icon color="#9bacb9" type="help" class="mg-l4" /></span>
             </a-tooltip>
           </st-t4>
           <div class="st-des mg-t4">客户成为正式会员后不受此人数限制</div>
@@ -104,7 +104,7 @@
                 客户保护天数,为员工分配客户后,该员工可跟进会员的天数,超过客保天数后,自动解除跟进人,不限制表示可以一直跟进下去
               </span>
             </template>
-            <span><st-icon color="#9bacb9" type="help" /></span>
+            <span><st-icon color="#9bacb9" type="help" class="mg-l4" /></span>
           </a-tooltip>
         </st-t4>
         <a-radio-group v-model="crmRule.sales_is_protect_limit">
@@ -127,6 +127,7 @@
           <a-radio
             v-for="item in userUntied"
             :key="item.value"
+            class="mg-r32"
             :value="item.value"
           >
             {{ item.label }}
@@ -173,7 +174,7 @@
                 客户保护天数,为员工分配客户后,该员工可跟进会员的天数,超过客保天数后,自动解除跟进人,不限制表示可以一直跟进下去
               </span>
             </template>
-            <span><st-icon color="#9bacb9" type="help" /></span>
+            <span><st-icon color="#9bacb9" type="help" class="mg-l4" /></span>
           </a-tooltip>
         </st-t4>
         <a-radio-group v-model="crmRule.coach_is_protect_limit">
@@ -182,7 +183,7 @@
             <a-input
               :min="1"
               :max="9999"
-              class="input"
+              class="input mg-r32"
               v-model="crmRule.coach_protect_days"
               @focus="setFocus('coach_is_protect_limit', 1)"
               placeholder="请输入"
@@ -197,6 +198,7 @@
             v-for="item in courseType"
             :key="item.value"
             :value="item.value"
+            class="mg-r36"
           >
             {{ item.label }}
           </a-checkbox>
@@ -207,6 +209,7 @@
             v-for="item in userUntied"
             :key="item.value"
             :value="item.value"
+            class="mg-r32"
           >
             {{ item.label }}
           </a-radio>
