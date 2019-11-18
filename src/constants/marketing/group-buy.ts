@@ -17,7 +17,7 @@ export const enum ACTIVITY_STATUS {
  * 发布状态
  * @params {Number} RELEASE_SRTATUS
  * @params {Number} RELEASE_SRTATUS.PROMPTLY 备注：立即发布
- * @params {Number} RELEASE_SRTATUS.NO_START 备注：暂不发布
+ * @params {Number} RELEASE_SRTATUS.TEMPORARILY 备注：暂不发布
  * @params {Number} RELEASE_SRTATUS.TIMING 备注：定时发布
  * */
 export const enum RELEASE_SRTATUS {
