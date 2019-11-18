@@ -43,6 +43,17 @@
                 {{ act.activity_name }}
               </a-select-option>
             </a-select>
+            <!-- <a-cascader
+              :options="actList"
+              placeholder="请输入连接的活动"
+              :fieldNames="{
+                label: 'activity_name',
+                value: 'id',
+                children: 'children'
+              }"
+              @change="actSelect(li, $event)"
+              changeOnSelect
+            /> -->
           </st-form-item>
         </div>
         <div :class="slider('addbox')" :span="8" v-if="list.length < 5">
@@ -137,7 +148,9 @@ export default {
   mounted() {
     this.list = cloneDeep(this.sliderInfo)
     this.actList = cloneDeep(this.activityList)
+    console.log(this.actList, 'actList')
     this.list.forEach(item => {
+      // 需要对children进行遍历
       if (!this.actList.some(act => act.id === item.activity_id)) {
         this.actList.push({
           activity_name: item.activity_name,
@@ -147,6 +160,7 @@ export default {
         })
       }
     })
+    console.log(this.list, 'list')
   },
   watch: {
     list: {
@@ -178,7 +192,9 @@ export default {
       this.list.splice(index, 1)
     },
     actSelect(item, value) {
+      console.log(item, value, '==========')
       let selected = this.actList.filter(it => it.id === value)[0]
+      console.log(selected, '========selected')
       item.activity_type = selected.activity_type
       item.activity_name = selected.activity_name
       item.is_over = 0

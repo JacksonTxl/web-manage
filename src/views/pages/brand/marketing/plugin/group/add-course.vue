@@ -11,9 +11,10 @@
           <a-col :span="10">
             <st-form-item label="活动名称" required>
               <a-input
-                v-decorator="decorators.group_name"
+                v-decorator="decorators.activity_name"
                 placeholder="请输入活动名称"
                 @change="changeName"
+                :disabled="isEdit && activityState > ACTIVITY_STATUS.UNDER_WAY"
               >
                 <span slot="suffix">
                   {{ groupName.length }}
@@ -29,6 +30,7 @@
               <a-select
                 showSearch
                 v-model="shopId"
+                :disabled="isEdit && activityState > ACTIVITY_STATUS.UNDER_WAY"
                 placeholder="请输入"
                 @change="changeShop"
               >
@@ -51,6 +53,7 @@
                 v-model="courseId"
                 placeholder="请输入"
                 @change="changeCourse"
+                :disabled="isEdit && activityState > ACTIVITY_STATUS.UNDER_WAY"
               >
                 <a-select-option
                   :value="item.id"
@@ -79,7 +82,12 @@
                     slot="group_price"
                     slot-scope="customRender, record"
                   >
-                    <st-input-number v-model="record.group_price">
+                    <st-input-number
+                      v-model="record.group_price"
+                      :disabled="
+                        isEdit && activityState > ACTIVITY_STATUS.UNDER_WAY
+                      "
+                    >
                       <template slot="addonAfter">
                         元
                       </template>
@@ -106,7 +114,10 @@
                 参团人数
                 <st-help-tooltip id="TBPTXJ001" />
               </span>
-              <st-input-number v-decorator="decorators.num">
+              <st-input-number
+                v-decorator="decorators.group_sum"
+                :disabled="isEdit && activityState > ACTIVITY_STATUS.UNDER_WAY"
+              >
                 <template slot="addonAfter">
                   人
                 </template>
@@ -117,7 +128,10 @@
                 拼团有效期
                 <st-help-tooltip id="TBPTXJ002" />
               </span>
-              <st-input-number v-decorator="decorators.time">
+              <st-input-number
+                v-decorator="decorators.valid_time"
+                :disabled="isEdit && activityState > ACTIVITY_STATUS.UNDER_WAY"
+              >
                 <template slot="addonAfter">
                   小时
                 </template>
@@ -133,7 +147,7 @@
               </a-checkbox>
               <st-input-number
                 :class="basic('stock')"
-                v-decorator="decorators.stock"
+                v-decorator="decorators.stock_total"
               ></st-input-number>
             </st-form-item>
           </a-col>
@@ -145,7 +159,10 @@
                 发布状态
                 <st-help-tooltip id="TBPTXJ005" />
               </span>
-              <a-radio-group v-model="releaseStatus">
+              <a-radio-group
+                v-model="releaseStatus"
+                :disabled="isEdit && activityState > ACTIVITY_STATUS.UNDER_WAY"
+              >
                 <a-radio :value="1" :key="1">
                   立即发布
                 </a-radio>
@@ -157,7 +174,12 @@
                 </a-radio>
               </a-radio-group>
             </st-form-item>
-            <st-form-item label="发布时间" required v-if="releaseStatus === 3">
+            <st-form-item
+              label="发布时间"
+              required
+              v-if="releaseStatus === 3"
+              :disabled="isEdit && activityState > ACTIVITY_STATUS.UNDER_WAY"
+            >
               <a-date-picker
                 :disabledDate="disabledDate"
                 :showTime="{ format: 'HH:mm' }"
@@ -175,6 +197,7 @@
 import { ruleOptions, cardColumns } from './add-course.config'
 import { AddMemberService } from './add-member.service'
 import { AddCourseService } from './add-course.service'
+import { ACTIVITY_STATUS } from '@/constants/marketing/group-buy'
 import moment from 'moment'
 export default {
   serviceInject() {
@@ -194,9 +217,22 @@ export default {
     basic: 'brand-marketing-group-course'
   },
   props: {
+    isEdit: {
+      type: Boolean,
+      default: false
+    },
     info: {
       type: Object,
       default: () => {}
+    }
+  },
+  watch: {
+    info(n, o) {
+      if (this.isEdit) {
+        this.setFieldsValue()
+        this.addCourseService.init().subscribe(res => {})
+        this.changeShop(this.shopId)
+      }
     }
   },
   data() {
@@ -207,30 +243,6 @@ export default {
       decorators,
       groupName: '',
       cardColumns,
-      // shopList: [
-      //   {
-      //     brand_id: 1,
-      //     shop_id: 12,
-      //     province_id: 310000,
-      //     province_name: '上海市',
-      //     city_id: 310100,
-      //     city_name: '上海市',
-      //     district_id: 310106,
-      //     district_name: '静安区',
-      //     shop_name: 'kael的1店'
-      //   },
-      //   {
-      //     brand_id: 1,
-      //     shop_id: 13,
-      //     province_id: 310000,
-      //     province_name: '上海市',
-      //     city_id: 310100,
-      //     city_name: '上海市',
-      //     district_id: 310106,
-      //     district_name: '静安区',
-      //     shop_name: 'kael的1店'
-      //   }
-      // ],
       courseList: [],
       shopId: '',
       courseId: '',
@@ -258,22 +270,13 @@ export default {
           disabledDate: this.disabledDate
         }
       },
-      publishTime: null
+      publishTime: null,
+      activityState: Number,
+      ACTIVITY_STATUS
     }
-  },
-  props: {
-    // 是否是编辑0:新建，1:已发布, 2:暂不发布, 3:定时发布
-    editType: {
-      type: Number,
-      default: 0
-    }
-  },
-  mounted() {
-    // console.log('------------', this.info)
   },
   methods: {
     changeShop(value) {
-      console.log('0000000000000000000000')
       this.addCourseService.getCourseList({ shop_id: 1 }).subscribe(res => {
         this.$router.reload()
       })
@@ -300,39 +303,27 @@ export default {
     },
     onSubmit() {
       this.form.validate().then(values => {
-        console.log(this.editType, 'this.editType')
         let params = {}
-        if (this.editType === 1 || this.editType === 3) {
-          // 编辑
-          params = {
-            id: 1,
-            product_type: 4,
-            activity_name: values.activity_name,
-            end_time: this.selectTime.endTime.value,
-            stock_total: values.stock_total
-          }
-        } else {
-          let list = []
-          this.tableData.forEach((item, index) => {
-            list.push({ id: id, group_price: item.group_price })
-          })
-          params = {
-            product_type: 4, // 课程包
-            activity_name: values.activity_name, // 活动名称
-            product_id: this.courseId, //商品id
-            sku: list, //卡、课规格[{“sku_id”:1,”group_price”:20},]
-            start_time: this.selectTime.startTime.value,
-            end_time: this.selectTime.endTime.value,
-            group_sum: values.group_sum, //成团人数
-            valid_time: values.valid_time, //拼团有效期
-            is_limit_stock: this.isLimit ? 1 : 0, //是否限制库存0不限制 1限制
-            stock_total: values.stock_total, //库存
-            shop_ids: [this.shopId], //门店ids [1,2,3,4]
-            published_type: this.releaseStatus, //发布状态(1-立即发布 2-暂不发布 3-定时发布)
-            published_time: moment(this.publishTime).format('YYYY-MM-DD HH:mm') //发布时间
-          }
+        let list = []
+        this.tableData.forEach((item, index) => {
+          list.push({ id: id, group_price: item.group_price })
+        })
+        params = {
+          product_type: 4, // 课程包
+          activity_name: values.activity_name, // 活动名称
+          product_id: this.courseId, //商品id
+          sku: list, //卡、课规格[{“sku_id”:1,”group_price”:20},]
+          start_time: this.selectTime.startTime.value,
+          end_time: this.selectTime.endTime.value,
+          group_sum: values.group_sum, //成团人数
+          valid_time: values.valid_time, //拼团有效期
+          is_limit_stock: this.isLimit ? 1 : 0, //是否限制库存0不限制 1限制
+          stock_total: values.stock_total, //库存
+          shop_ids: [this.shopId], //门店ids [1,2,3,4]
+          published_type: this.releaseStatus, //发布状态(1-立即发布 2-暂不发布 3-定时发布)
+          published_time: moment(this.publishTime).format('YYYY-MM-DD HH:mm') //发布时间
         }
-        if (this.editType) {
+        if (this.isEdit) {
           // 编辑 type为2，3只能编辑名称，结束时间，库存
           this.addMemberService.editGroup(params).subscribe(res => {
             console.log(params, res, '这是编辑返回的数据')
@@ -347,6 +338,28 @@ export default {
           })
         }
       })
+    },
+    // 详情回显
+    setFieldsValue() {
+      console.log(this.info, 'support_shop')
+      this.groupName = this.info.activity_name
+      this.releaseStatus = this.info.published_type
+      this.shopId = this.info.support_shop[0].shop_id
+      this.selectTime.startTime.value = moment(this.info.start_time)
+      this.selectTime.endTime.value = moment(this.info.end_time)
+      this.activityState = this.info.activity_state[0].id
+      this.courseId = this.info.product.id
+      this.tableData = this.info.sku
+      this.isLimit = this.info.is_limit_stock === 1
+      this.selectTime.startTime.disabled =
+        this.activityState > this.ACTIVITY_STATUS.PUBLISHER
+      this.form.setFieldsValue({
+        activity_name: this.info.activity_name,
+        group_sum: this.info.group_sum,
+        valid_time: this.info.valid_time,
+        stock_total: this.info.stock_total
+      })
+      console.log(this.info.sku)
     }
   }
 }

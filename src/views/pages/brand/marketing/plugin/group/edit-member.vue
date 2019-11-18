@@ -1,9 +1,9 @@
 <template>
-  <course-card :isEdit="true" :info="info.info"></course-card>
+  <member-card :isEdit="true" :info="info.info"></member-card>
 </template>
 
 <script>
-import CourseCard from './add-course'
+import memberCard from './add-member'
 import { EditStoredService } from './edit-stored.service'
 export default {
   serviceInject() {
@@ -20,7 +20,7 @@ export default {
     this.editStoredService.init().subscribe(res => {})
   },
   components: {
-    CourseCard
+    memberCard
   }
 }
 </script>
