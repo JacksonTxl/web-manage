@@ -90,7 +90,11 @@ export default {
         case undefined:
         case '':
         case '.':
-          this.number = ''
+          if (this.number) {
+            this.number = this.min > this.number ? this.min : this.number
+          } else {
+            this.number = this.min || ''
+          }
           this.triggerChange()
           this.$emit('blur', `${this.number}`)
           break
