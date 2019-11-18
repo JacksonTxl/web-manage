@@ -8,14 +8,21 @@
     <div class="mg-t24">
       <a-row class="align-items-center">
         <a-col :span="12">
-          <st-t4 class="mg-t4">销售可跟进客户上限</st-t4>
+          <st-t4 class="mg-t4">
+            销售可跟进客户上限
+            <a-tooltip placement="top">
+              <template slot="title">
+                <span>
+                  可分配给该员工的潜在会员和流失会员上限数,正式会员后不受此限制
+                </span>
+              </template>
+              <span><st-icon color="#9bacb9" type="help" /></span>
+            </a-tooltip>
+          </st-t4>
           <div class="st-des mg-t4">客户成为正式会员后不受此人数限制</div>
         </a-col>
         <a-col :span="12" class="ta-r">
-          <a-radio-group
-            v-model="crmRule.sales_is_limit"
-            @change="setFocus('sales_limit_num', '')"
-          >
+          <a-radio-group v-model="crmRule.sales_is_limit">
             <a-radio :value="0" class="mg-r48">不限制</a-radio>
             <a-radio :value="1">
               <a-input
@@ -38,14 +45,21 @@
     <div class="mg-t24">
       <a-row class="align-items-center">
         <a-col :span="12">
-          <st-t4 class="mg-t4">教练可跟进客户上限</st-t4>
+          <st-t4 class="mg-t4">
+            教练可跟进客户上限
+            <a-tooltip placement="top">
+              <template slot="title">
+                <span>
+                  可分配给该员工的会员上限数,已购买课程的会员不受此限制
+                </span>
+              </template>
+              <span><st-icon color="#9bacb9" type="help" /></span>
+            </a-tooltip>
+          </st-t4>
           <div class="st-des mg-t4">客户成为正式会员后不受此人数限制</div>
         </a-col>
         <a-col :span="12" class="ta-r">
-          <a-radio-group
-            v-model="crmRule.coach_is_limit"
-            @change="setFocus('coach_limit_num', '')"
-          >
+          <a-radio-group v-model="crmRule.coach_is_limit">
             <a-radio :value="0" class="mg-r48">不限制</a-radio>
             <a-radio :value="1">
               <a-input
@@ -81,10 +95,7 @@
       </a-row>
       <div :class="bPage('custom')" v-if="crmRule.sales_is_protect">
         <st-t4 class="mg-t4 mg-b24">销售跟进客户保护天数</st-t4>
-        <a-radio-group
-          v-model="crmRule.sales_is_protect_limit"
-          @change="setFocus('sales_protect_days', '')"
-        >
+        <a-radio-group v-model="crmRule.sales_is_protect_limit">
           <a-radio :value="0" class="mg-r48">不限制</a-radio>
           <a-radio :value="1">
             <a-input
@@ -100,10 +111,7 @@
           </a-radio>
         </a-radio-group>
         <st-t4 class="mg-t24 mg-b24">会员流失后解绑跟进销售规则</st-t4>
-        <a-radio-group
-          v-model="crmRule.sales_follow_rule"
-          @change="setFocus('sales_follow_days', '')"
-        >
+        <a-radio-group v-model="crmRule.sales_follow_rule">
           <a-radio
             v-for="item in userUntied"
             :key="item.value"
@@ -146,10 +154,7 @@
       </a-row>
       <div :class="bPage('custom')" v-if="crmRule.coach_is_protect">
         <st-t4 class="mg-t4 mg-b24">教练跟进客户保护天数</st-t4>
-        <a-radio-group
-          v-model="crmRule.coach_is_protect_limit"
-          @change="setFocus('coach_protect_days', '')"
-        >
+        <a-radio-group v-model="crmRule.coach_is_protect_limit">
           <a-radio :value="0" class="mg-r48">不限制</a-radio>
           <a-radio :value="1">
             <a-input
@@ -175,10 +180,7 @@
           </a-checkbox>
         </a-checkbox-group>
         <st-t4 class="mg-t24 mg-b24">会员课程失效后解绑跟进教练规则</st-t4>
-        <a-radio-group
-          v-model="crmRule.coach_follow_rule"
-          @change="setFocus('coach_follow_days', '')"
-        >
+        <a-radio-group v-model="crmRule.coach_follow_rule">
           <a-radio
             v-for="item in userUntied"
             :key="item.value"
