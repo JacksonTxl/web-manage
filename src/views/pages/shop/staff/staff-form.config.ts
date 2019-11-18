@@ -168,23 +168,9 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    description: {
-      rules: [
-        {
-          pattern: pattern.CN_EN_NUM('0-300'),
-          message: '请输入0-300个字，中英文及数字'
-        }
-      ]
-    },
+    description: {},
     employment_time: {},
-    introduction: {
-      rules: [
-        {
-          pattern: pattern.CN_EN_NUM('1-300'),
-          message: '请输入1-300个字，中英文及数字'
-        }
-      ]
-    },
+    introduction: {},
     specialty_id: {},
     certification_name: {
       rules: [
