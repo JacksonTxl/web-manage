@@ -56,4 +56,17 @@ export class GroupBuyApi extends Api {
   getMemberList() {
     return this.http.get('/v1/cards/member/brand_list')
   }
+  /**
+   * 获取门店列表
+   */
+  getShopList() {
+    return this.http.get('/v1/shop/all_list')
+  }
+  /**
+   * 获取课程包列表
+   */
+  getCourseList(params: { shop_id: number }) {
+    console.log('88888888888888888888')
+    return this.http.get('/v1/course/package_list', { params })
+  }
 }

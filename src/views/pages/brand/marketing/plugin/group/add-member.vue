@@ -313,17 +313,15 @@ export default {
             activity_name: values.activity_name, // 活动名称
             product_id: this.cardId, //商品id
             sku: list, //卡、课规格[{“sku_id”:1,”group_price”:20},]
-            // start_time: moment(values.start_time).format('YYYY-MM-DD HH:MM'),
-            // end_time: moment(values.end_time).format('YYYY-MM-DD HH:MM'),
             start_time: this.selectTime.startTime.value,
             end_time: this.selectTime.endTime.value,
             group_sum: values.group_sum, //成团人数
             valid_time: values.valid_time, //拼团有效期
-            is_limit_stock: '', //是否限制库存0不限制 1限制
+            is_limit_stock: this.isLimit ? 1 : 0, //是否限制库存0不限制 1限制
             stock_total: values.stock_total, //库存
-            shop_ids: '', //门店ids [1,2,3,4]
-            published_type: '', //发布状态(1-立即发布 2-暂不发布 3-定时发布)
-            published_time: '' //发布时间
+            shop_ids: this.shopIds, //门店ids [1,2,3,4]
+            published_type: this.releaseStatus, //发布状态(1-立即发布 2-暂不发布 3-定时发布)
+            published_time: moment(this.publishTime).format('YYYY-MM-DD HH:mm') //发布时间
           }
         }
         if (this.editType) {
