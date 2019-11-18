@@ -98,7 +98,6 @@
 import index from './components#/index'
 import { IndexService } from './index.service'
 import { MessageService } from '@/services/message.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './index.config'
 import BrandSettingSmsGroup from '@/views/biz-modals/brand/setting/sms/group'
@@ -108,8 +107,7 @@ export default {
   serviceInject() {
     return {
       indexService: IndexService,
-      messageService: MessageService,
-      routeService: RouteService
+      messageService: MessageService
     }
   },
   rxState() {
@@ -117,8 +115,7 @@ export default {
       loading: this.indexService.loading$,
       crowdIndexInfo: this.indexService.crowdIndexInfo$,
       crowdIndexList: this.indexService.crowdIndexList$,
-      auth: this.indexService.auth$,
-      query: this.routeService.query$
+      auth: this.indexService.auth$
     }
   },
   modals: {

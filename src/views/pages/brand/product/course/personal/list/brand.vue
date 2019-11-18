@@ -16,7 +16,7 @@
           <a-select
             showSearch
             :defaultValue="defaultValue"
-            v-model="query.category_id"
+            v-model="$searchQuery.category_id"
             :filterOption="filterOption"
             optionFilterProp="children"
             class="mg-r8"
@@ -142,7 +142,6 @@
 </template>
 
 <script>
-import { RouteService } from '@/services/route.service'
 import { ListService } from '../list.service'
 import { BrandService } from './brand.service'
 import tableMixin from '@/mixins/table.mixin'
@@ -160,8 +159,7 @@ export default {
   serviceInject() {
     return {
       listService: ListService,
-      brandService: BrandService,
-      routeService: RouteService
+      brandService: BrandService
     }
   },
   data() {
@@ -180,7 +178,6 @@ export default {
       loading: this.brandService.loading$,
       list: this.brandService.list$,
       page: this.brandService.page$,
-      query: this.routeService.query$,
       auth: this.brandService.auth$
     }
   },

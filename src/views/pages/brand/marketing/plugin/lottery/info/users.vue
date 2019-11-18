@@ -3,7 +3,7 @@
     <div class="mg-b24">
       <a-select
         placeholder="中奖状态"
-        v-model="query.prize_status"
+        v-model="$searchQuery.prize_status"
         class="mg-r8 fix-width"
         @change="onSingleSearch('prize_status', $event)"
       >
@@ -17,7 +17,7 @@
       </a-select>
       <a-select
         placeholder="奖品类型"
-        v-model="query.prize_type"
+        v-model="$searchQuery.prize_type"
         class="mg-r8 fix-width"
         @change="onSingleSearch('prize_type', $event)"
       >
@@ -31,7 +31,7 @@
       </a-select>
       <a-select
         placeholder="奖品状态"
-        v-model="query.present_status"
+        v-model="$searchQuery.present_status"
         class="mg-r24 fix-width"
         @change="onSingleSearch('present_status', $event)"
       >
@@ -51,7 +51,7 @@
       />
       <st-input-search
         style="display:inline-block;float:right"
-        v-model="query.keyword"
+        v-model="$searchQuery.keyword"
         @search="onSearch"
         placeholder="可输入姓名、手机号、奖品名称"
       ></st-input-search>
@@ -71,7 +71,6 @@
 import { UsersService } from './users.service'
 import { columns } from './users.config.ts'
 import tableMixin from '@/mixins/table.mixin'
-import { RouteService } from '@/services/route.service'
 
 export default {
   name: 'PluginLotteryInfoUser',
@@ -85,13 +84,11 @@ export default {
   },
   serviceInject() {
     return {
-      userService: UsersService,
-      routeService: RouteService
+      userService: UsersService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       list: this.userService.list$,
       page: this.userService.page$,
       loading: this.userService.loading$,

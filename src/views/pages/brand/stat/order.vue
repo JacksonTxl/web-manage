@@ -38,7 +38,7 @@
         <st-t3 :class="bHeader('title')"></st-t3>
         <div :class="bHeader('actions')">
           <shop-select
-            v-model="query.shop_id"
+            v-model="$searchQuery.shop_id"
             @change="onSingleSearch('shop_id', $event)"
             class="mg-r12"
           />
@@ -68,7 +68,6 @@
 <script>
 import shopSelect from '@/views/biz-components/shop-select'
 import BrandStatOrderFacetBar from '@/views/biz-components/stat/brand-stat-order-facet-bar'
-import { RouteService } from '@/services/route.service'
 import { OrderService } from './order.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './order.config'
@@ -77,13 +76,11 @@ export default {
   mixins: [tableMixin],
   serviceInject() {
     return {
-      orderService: OrderService,
-      routeService: RouteService
+      orderService: OrderService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       list: this.orderService.list$,
       page: this.orderService.page$,
       auth: this.orderService.auth$,
@@ -128,9 +125,9 @@ export default {
       this.getChart()
     },
     onChangeDataDays(event) {
-      this.query.day = event.recently_day || undefined
-      this.query.start_date = event.start_date || undefined
-      this.query.end_date = event.end_date || undefined
+      this.$searchQuery.day = event.recently_day || undefined
+      this.$searchQuery.start_date = event.start_date || undefined
+      this.$searchQuery.end_date = event.end_date || undefined
       this.onSearch()
     },
     getChart() {

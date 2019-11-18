@@ -26,7 +26,6 @@
 </template>
 <script>
 import { UsageLogService } from './usage-log.service'
-import { RouteService } from '@/services/route.service'
 import { columns } from './usage-log.config'
 
 import tableMixin from '@/mixins/table.mixin'
@@ -35,7 +34,6 @@ export default {
   mixins: [tableMixin],
   serviceInject() {
     return {
-      routeService: RouteService,
       usageLogService: UsageLogService
     }
   },
@@ -43,8 +41,7 @@ export default {
     return {
       page: this.usageLogService.page$,
       list: this.usageLogService.list$,
-      loading: this.usageLogService.loading$,
-      query: this.routeService.query$
+      loading: this.usageLogService.loading$
     }
   },
   data() {

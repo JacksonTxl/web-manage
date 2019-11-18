@@ -122,7 +122,7 @@ export default {
   },
   methods: {
     onModalTest() {
-      this.aService.getListInfo(this.$route.query.id).subscribe()
+      this.aService.getListInfo(this.$searchQueryid).subscribe()
     }
   }
 }

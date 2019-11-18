@@ -13,7 +13,7 @@
         <div class="title__center">
           <date
             @today="getList"
-            :start="query.start_date"
+            :start="$searchQuery.start_date"
             @pre="getList"
             @next="getList"
           />
@@ -100,7 +100,6 @@
 <script>
 import tableMixin from '@/mixins/table.mixin'
 import { PersonalTableService } from './personal-table.service'
-import { RouteService } from '@/services/route.service'
 import { PersonalScheduleScheduleService } from './schedule/personal/service#/schedule.service'
 import date from '@/views/biz-components/schedule/date#/date-component.vue'
 import SchedulePersonalAdd from '@/views/biz-modals/schedule/personal/add'
@@ -117,13 +116,11 @@ export default {
   serviceInject() {
     return {
       tableService: PersonalTableService,
-      scheduleService: PersonalScheduleScheduleService,
-      routeService: RouteService
+      scheduleService: PersonalScheduleScheduleService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       scheduleTime: this.tableService.scheduleTime$,
       scheduleColumns: this.tableService.scheduleColumns$,
       scheduleList: this.tableService.scheduleList$,

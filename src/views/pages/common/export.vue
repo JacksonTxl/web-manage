@@ -35,7 +35,6 @@
 
 <script>
 import { ExportService } from './export.service'
-import { RouteService } from '@/services/route.service'
 import { columns } from './export.config'
 import tableMixin from '@/mixins/table.mixin'
 import ExportFail from '@/views/biz-modals/common/export-fail'
@@ -47,18 +46,15 @@ export default {
   },
   serviceInject() {
     return {
-      exportService: ExportService,
-      routeService: RouteService
+      exportService: ExportService
     }
   },
   rxState() {
     const { loading$, list$, page$ } = this.exportService
-    const { query$ } = this.routeService
     return {
       loading$,
       list$,
-      page$,
-      query: query$
+      page$
     }
   },
   data() {

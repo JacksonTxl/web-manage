@@ -3,16 +3,16 @@
     <div slot="title">
       <st-input-search
         placeholder="请输入订单编号、会员姓名或手机号查找"
-        v-model="query.keyword"
+        v-model="$searchQuery.keyword"
         @search="onSingleSearch('keyword', $event, true)"
       />
     </div>
     <st-search-panel slot="prepend">
       <st-search-panel-item label="订单状态：">
-        <st-search-radio v-model="query.status" :options="orderStatus" />
+        <st-search-radio v-model="$searchQuery.status" :options="orderStatus" />
       </st-search-panel-item>
       <st-search-panel-item label="支付状态：">
-        <st-search-radio v-model="query.type" :options="payStatus" />
+        <st-search-radio v-model="$searchQuery.type" :options="payStatus" />
       </st-search-panel-item>
       <st-search-panel-item label="创建时间：">
         <st-range-picker
@@ -88,7 +88,6 @@
 <script>
 import { cloneDeep, filter } from 'lodash-es'
 import { ListService } from './list.service'
-import { RouteService } from '@/services/route.service'
 import { columns } from './list.config'
 import tableMixin from '@/mixins/table.mixin'
 import ShopFinanceCancel from '@/views/biz-modals/shop/finance/cancel'
@@ -109,15 +108,13 @@ export default {
   },
   serviceInject() {
     return {
-      listService: ListService,
-      routeService: RouteService
+      listService: ListService
     }
   },
   rxState() {
     return {
       loading: this.listService.loading$,
       page: this.listService.page$,
-      query: this.routeService.query$,
       list: this.listService.list$,
       orderStatus: this.listService.orderStatus$,
       payStatus: this.listService.payStatus$,
@@ -167,21 +164,21 @@ export default {
   methods: {
     // 查询
     onSearchNative() {
-      this.query.start_date = this.selectTime.startTime.value
+      this.$searchQuery.start_date = this.selectTime.startTime.value
         ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')}`
         : ''
-      this.query.end_date = this.selectTime.endTime.value
+      this.$searchQuery.end_date = this.selectTime.endTime.value
         ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')}`
         : ''
       this.onSearch()
     },
     // 设置searchData
     setSearchData() {
-      this.selectTime.startTime.value = this.query.start_date
-        ? moment(this.query.start_date)
+      this.selectTime.startTime.value = this.$searchQuery.start_date
+        ? moment(this.$searchQuery.start_date)
         : null
-      this.selectTime.endTime.value = this.query.end_date
-        ? moment(this.query.end_date)
+      this.selectTime.endTime.value = this.$searchQuery.end_date
+        ? moment(this.$searchQuery.end_date)
         : null
     },
     // 收款

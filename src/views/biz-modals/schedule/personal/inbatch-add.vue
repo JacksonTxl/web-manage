@@ -80,7 +80,6 @@ n
 <script>
 import { PersonalScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/personal/service#/schedule.service'
 import { PersonalScheduleCommonService } from '@/views/pages/shop/product/course/schedule/personal/service#/common.service'
-import { RouteService } from '@/services/route.service'
 import ScheduleTimePicker from '@/views/biz-components/schedule-time-picker/schedule-time-picker'
 export default {
   name: 'AddScheduleInBatch',
@@ -90,14 +89,12 @@ export default {
   serviceInject() {
     return {
       commonService: PersonalScheduleCommonService,
-      scheduleService: PersonalScheduleScheduleService,
-      routeService: RouteService
+      scheduleService: PersonalScheduleScheduleService
     }
   },
   rxState() {
     return {
-      coachOptions: this.commonService.coachInBatchOptions$,
-      query: this.routeService.query$
+      coachOptions: this.commonService.coachInBatchOptions$
     }
   },
   data() {

@@ -19,7 +19,7 @@
       <div class="title__center">
         <date
           @today="getTable"
-          :start="query.start_date"
+          :start="$searchQuery.start_date"
           @pre="getTable"
           @next="getTable"
         />
@@ -111,7 +111,6 @@
 
 <script>
 import { TeamScheduleScheduleService } from '../team/service#/schedule.service'
-import { RouteService } from '@/services/route.service'
 import ScheduleTeamAddCourseBatch from '@/views/biz-modals/schedule/team/add-course-batch'
 import ScheduleTeamAddCourse from '@/views/biz-modals/schedule/team/add-course'
 import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
@@ -127,14 +126,12 @@ export default {
   },
   serviceInject() {
     return {
-      teamScheduleScheduleService: TeamScheduleScheduleService,
-      routeService: RouteService
+      teamScheduleScheduleService: TeamScheduleScheduleService
     }
   },
   rxState() {
     return {
-      scheduleTable: this.teamScheduleScheduleService.scheduleTable$,
-      query: this.routeService.query$
+      scheduleTable: this.teamScheduleScheduleService.scheduleTable$
     }
   },
   data() {

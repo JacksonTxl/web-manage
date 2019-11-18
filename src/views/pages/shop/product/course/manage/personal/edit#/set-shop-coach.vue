@@ -43,7 +43,6 @@
 <script>
 import { EditService } from '../edit.service'
 import { MessageService } from '@/services/message.service'
-import { RouteService } from '@/services/route.service'
 import SelectCoach from '@/views/fragments/coach/select-coach'
 import { UserService } from '@/services/user.service'
 import { RuleConfig } from '@/constants/course/rule'
@@ -55,15 +54,13 @@ export default {
       editService: EditService,
       messageService: MessageService,
       userService: UserService,
-      routeService: RouteService,
       ruleConfig: RuleConfig
     }
   },
   rxState() {
     return {
       loading: this.editService.loading$,
-      personalCourseEnums: this.userService.personalCourseEnums$,
-      query: this.routeService.query$
+      personalCourseEnums: this.userService.personalCourseEnums$
     }
   },
   components: {
@@ -114,7 +111,7 @@ export default {
     },
     getData() {
       const data = this.form.getFieldsValue()
-      data.course_id = +this.query.id
+      data.course_id = +this.$searchQuery.id
       return data
     }
   }

@@ -19,7 +19,7 @@
       <div class="title__center">
         <date
           @today="getTable"
-          :start="query.start_date"
+          :start="$searchQuery.start_date"
           @pre="getTable"
           @next="getTable"
         />
@@ -107,7 +107,6 @@
 
 <script>
 import { PersonalTeamScheduleScheduleService } from '../personal-team/service#/schedule.service'
-import { RouteService } from '@/services/route.service'
 import date from '@/views/biz-components/schedule/date#/date-component.vue'
 import SchedulePersonalTeamReserveInfo from '@/views/biz-modals/schedule/personal-team/reserve-info'
 import SchedulePersonalTeamAddInBatch from '@/views/biz-modals/schedule/personal-team/add-in-batch'
@@ -123,8 +122,7 @@ export default {
   },
   serviceInject() {
     return {
-      scheduleService: PersonalTeamScheduleScheduleService,
-      routeService: RouteService
+      scheduleService: PersonalTeamScheduleScheduleService
     }
   },
   data() {
@@ -136,10 +134,8 @@ export default {
     date
   },
   rxState() {
-    console.log(this.scheduleService)
     return {
-      scheduleTable: this.scheduleService.scheduleTable$,
-      query: this.routeService.query$
+      scheduleTable: this.scheduleService.scheduleTable$
     }
   },
   filters: {

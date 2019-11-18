@@ -22,7 +22,7 @@
       <div class="title__center">
         <date
           @today="getList"
-          :start="query.start_date"
+          :start="$searchQuery.start_date"
           @pre="getList"
           @next="getList"
         />
@@ -89,7 +89,6 @@
 import tableMixin from '@/mixins/table.mixin'
 import { PersonalScheduleReserveService } from './service#/reserve.service'
 import { columns } from '../personal-reserve-table.config'
-import { RouteService } from '@/services/route.service'
 import date from '@/views/biz-components/schedule/date#/date-component.vue'
 import SchedulePersonalAddReserve from '@/views/biz-modals/schedule/personal/add-reserve'
 import { cloneDeep } from 'lodash-es'
@@ -101,8 +100,7 @@ export default {
   },
   serviceInject() {
     return {
-      reserveService: PersonalScheduleReserveService,
-      routeService: RouteService
+      reserveService: PersonalScheduleReserveService
     }
   },
   rxState() {
@@ -110,8 +108,7 @@ export default {
       auth: this.reserveService.auth$,
       list: this.reserveService.list$,
       page: this.reserveService.page$,
-      loading: this.reserveService.loading$,
-      query: this.routeService.query$
+      loading: this.reserveService.loading$
     }
   },
   filters: {
@@ -139,7 +136,7 @@ export default {
     columns
   },
   mounted() {
-    this.currentTime = this.$route.query.start_date
+    this.currentTime = this.$searchQuerystart_date
   },
   methods: {
     handleSizeChange(evt, type) {
@@ -164,12 +161,15 @@ export default {
     // 管理私教排期
     onClickSettingSchdule() {
       let requestParam = cloneDeep(this.query)
-      if (this.query.start_date === this.query.end_date) {
-        let weekOfday = moment(this.query.start_date, 'YYYY-MM-DD').format('E')
-        requestParam.start_date = moment(this.query.start_date)
+      if (this.$searchQuery.start_date === this.$searchQuery.end_date) {
+        let weekOfday = moment(
+          this.$searchQuery.start_date,
+          'YYYY-MM-DD'
+        ).format('E')
+        requestParam.start_date = moment(this.$searchQuery.start_date)
           .subtract(weekOfday - 1, 'days')
           .format('YYYY-MM-DD')
-        requestParam.end_date = moment(this.query.start_date)
+        requestParam.end_date = moment(this.$searchQuery.start_date)
           .add(7 - weekOfday, 'days')
           .format('YYYY-MM-DD')
       }

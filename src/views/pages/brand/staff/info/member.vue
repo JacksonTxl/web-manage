@@ -5,7 +5,7 @@
         <a-col :lg="18">
           <shop-select
             style="width: 160px"
-            v-model="query.shop_id"
+            v-model="$searchQuery.shop_id"
             :defaultValue="-1"
             @change="onSingleSearch('shop_id', $event)"
           ></shop-select>
@@ -57,7 +57,6 @@
 <script>
 import { memberColums } from './columns.config'
 import { MemberService } from './member.service'
-import { RouteService } from '@/services/route.service'
 import ShopSelect from '@/views/biz-components/shop-select'
 import tableMixin from '@/mixins/table.mixin'
 
@@ -65,16 +64,14 @@ export default {
   mixins: [tableMixin],
   serviceInject() {
     return {
-      service: MemberService,
-      routeService: RouteService
+      service: MemberService
     }
   },
   rxState() {
     return {
       memberInfo: this.service.memberInfo$,
       loading: this.service.loading$,
-      page: this.service.page$,
-      query: this.routeService.query$
+      page: this.service.page$
     }
   },
   data() {
@@ -89,7 +86,7 @@ export default {
     ShopSelect
   },
   mounted() {
-    this.id = this.$route.meta.query.id
+    this.id = this.$searchQuery.id
   },
   methods: {
     goCourseDetai(e) {

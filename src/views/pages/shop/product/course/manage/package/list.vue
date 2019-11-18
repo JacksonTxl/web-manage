@@ -3,7 +3,7 @@
     <div slot="title">
       <st-input-search
         @search="onSingleSearch('course_name', $event, true)"
-        v-model="query.course_name"
+        v-model="$searchQuery.course_name"
         placeholder="课程包名称"
       />
     </div>
@@ -20,7 +20,7 @@
       </router-link>
       <div :class="listClass('select-group')">
         <a-select
-          v-model="query.package_type"
+          v-model="$searchQuery.package_type"
           @change="onSingleSearch('package_type', $event)"
           :class="listClass('select')"
           style="width: 160px"
@@ -37,7 +37,7 @@
           </a-select-option>
         </a-select>
         <a-select
-          v-model="query.shelf_status"
+          v-model="$searchQuery.shelf_status"
           @change="onSingleSearch('shelf_status', $event)"
           :class="listClass('select')"
           style="width: 160px"
@@ -218,7 +218,6 @@ import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { ListService } from './list.service'
 import { UserService } from '@/services/user.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
 import { MessageService } from '@/services/message.service'
@@ -229,7 +228,6 @@ export default {
   serviceInject() {
     return {
       userService: UserService,
-      routeService: RouteService,
       messageService: MessageService,
       listService: ListService
     }
@@ -240,7 +238,6 @@ export default {
       page: this.listService.page$,
       loading: this.listService.loading$,
       package_course: this.userService.packageCourseEnums$,
-      query: this.routeService.query$,
       auth: this.listService.auth$
     }
   },

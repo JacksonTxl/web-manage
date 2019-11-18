@@ -124,7 +124,6 @@
 </template>
 <script>
 import { UserLevelService } from './user-level.service'
-import { RouteService } from '@/services/route.service'
 import { MessageService } from '@/services/message.service'
 import SelectCondition from './components#/select-condition'
 import SelectRights from './components#/select-rights'
@@ -135,7 +134,6 @@ export default {
   serviceInject() {
     return {
       userLevelService: UserLevelService,
-      routeService: RouteService,
       messageService: MessageService
     }
   },
@@ -144,7 +142,6 @@ export default {
     return {
       list: userLevelService.list$,
       info: userLevelService.info$,
-      query: this.routeService.query$,
       loading: userLevelService.loading$,
       auth: userLevelService.auth$
     }
@@ -166,7 +163,7 @@ export default {
   },
   computed: {
     isEdit() {
-      return this.query.type === 'edit'
+      return this.$searchQuery.type === 'edit'
     },
     /**
      * 潜在会员

@@ -43,9 +43,9 @@
       <div :class="basic('content')">
         <st-table
           :pagination="{
-            current: query.page,
+            current: $searchQuery.page,
             total: page.total_counts,
-            pageSize: query.size
+            pageSize: $searchQuery.size
           }"
           rowKey="id"
           :columns="columns"
@@ -72,7 +72,6 @@
 <script>
 import { ReceiveService } from './receive.service'
 import { UserService } from '@/services/user.service'
-import { RouteService } from '@/services/route.service'
 import { cloneDeep } from 'lodash-es'
 import { columns } from './receive.config'
 import moment from 'moment'
@@ -84,8 +83,7 @@ export default {
   serviceInject() {
     return {
       receiveService: ReceiveService,
-      userService: UserService,
-      routeService: RouteService
+      userService: UserService
     }
   },
   rxState() {
@@ -94,7 +92,6 @@ export default {
       page: this.receiveService.page$,
       loading: this.receiveService.loading$,
       info: this.receiveService.info$,
-      query: this.routeService.query$,
       couponEnums: this.userService.couponEnums$,
       auth: this.receiveService.auth$
     }
@@ -140,7 +137,7 @@ export default {
     // 查询
     onSearch() {
       let params = {
-        id: this.query.id,
+        id: this.$searchQuery.id,
         coupon_status: this.queryParams.couponStatus || -1,
         keyword: this.queryParams.keyword,
         start_time: this.queryParams.date[0]
@@ -155,7 +152,7 @@ export default {
     // 重置
     onReset() {
       let query = {
-        id: this.query.id,
+        id: this.$searchQuery.id,
         keyword: '',
         coupon_status: '',
         start_time: '',
@@ -166,15 +163,17 @@ export default {
     },
     // 设置searchData
     setSearchData() {
-      this.queryParams.keyword = this.query.keyword
-      this.queryParams.couponStatus = this.query.coupon_status
-        ? +this.query.coupon_status
+      this.queryParams.keyword = this.$searchQuery.keyword
+      this.queryParams.couponStatus = this.$searchQuery.coupon_status
+        ? +this.$searchQuery.coupon_status
         : -1
-      if (this.query.start_time) {
-        this.queryParams.date[0] = cloneDeep(moment(this.query.start_time))
+      if (this.$searchQuery.start_time) {
+        this.queryParams.date[0] = cloneDeep(
+          moment(this.$searchQuery.start_time)
+        )
       }
-      if (this.query.end_time) {
-        this.queryParams.date[1] = cloneDeep(moment(this.query.end_time))
+      if (this.$searchQuery.end_time) {
+        this.queryParams.date[1] = cloneDeep(moment(this.$searchQuery.end_time))
       }
     },
     // 编辑

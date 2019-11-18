@@ -59,7 +59,6 @@
 
 <script>
 import { PersonalScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/personal/service#/schedule.service'
-import { RouteService } from '@/services/route.service'
 import ScheduleTimePicker from '@/views/biz-components/schedule-time-picker/schedule-time-picker'
 export default {
   name: 'EditShchedule',
@@ -68,14 +67,11 @@ export default {
   },
   serviceInject() {
     return {
-      scheduleService: PersonalScheduleScheduleService,
-      routeService: RouteService
+      scheduleService: PersonalScheduleScheduleService
     }
   },
   rxState() {
-    return {
-      query: this.routeService.query$
-    }
+    return {}
   },
   data() {
     return {

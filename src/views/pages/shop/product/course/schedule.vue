@@ -8,7 +8,7 @@
       "
     >
       <a-select
-        v-model="query.course_id"
+        v-model="$searchQuery.course_id"
         placeholder="请选择课程"
         @change="onChange"
         style="width: 200px"
@@ -24,7 +24,7 @@
         </a-select-option>
       </a-select>
       <a-select
-        v-model="query.court_id"
+        v-model="$searchQuery.court_id"
         placeholder="请选择场地"
         @change="onChange"
         style="width: 200px"
@@ -44,7 +44,7 @@
         :placeholder="`请选择${$c('coach')}`"
         @change="onChange"
         style="width: 200px"
-        v-model="query.coach_id"
+        v-model="$searchQuery.coach_id"
       >
         <a-select-option :value="-1">全部{{ $c('coach') }}</a-select-option>
         <a-select-option
@@ -68,7 +68,7 @@
         :placeholder="`请选择${$c('coach')}`"
         @change="onChange"
         style="width: 200px"
-        v-model="query.coach_id"
+        v-model="$searchQuery.coach_id"
       >
         <a-select-option :value="-1">全部</a-select-option>
         <a-select-option
@@ -94,7 +94,7 @@
         :placeholder="`请选择${$c('coach')}`"
         @change="onChange"
         style="width: 200px"
-        v-model="query.coach_id"
+        v-model="$searchQuery.coach_id"
       >
         <a-select-option :value="-1">全部</a-select-option>
         <a-select-option
@@ -113,7 +113,6 @@
 <script>
 import { TeamScheduleCommonService } from './schedule/team/service#/common.service'
 import { PersonalScheduleCommonService } from './schedule/personal/service#/common.service'
-import { RouteService } from '../../../../../services/route.service'
 import { PersonalTeamScheduleCommonService } from './schedule/personal-team/service#/common.service'
 import { ScheduleService } from './schedule.service'
 import ScheduleTeamEditSchedule from '@/views/biz-modals/schedule/team/edit-course'
@@ -127,8 +126,7 @@ export default {
       scheduleService: ScheduleService,
       teamScheduleCommonService: TeamScheduleCommonService,
       personalScheduleCommonService: PersonalScheduleCommonService,
-      personalTeamScheduleCommonService: PersonalTeamScheduleCommonService,
-      routeService: RouteService
+      personalTeamScheduleCommonService: PersonalTeamScheduleCommonService
     }
   },
   rxState() {
@@ -136,7 +134,6 @@ export default {
     const pscs = this.personalScheduleCommonService
     const ptscs = this.personalTeamScheduleCommonService
     return {
-      query: this.routeService.query$,
       coachOptions: tss.coachOptions$,
       courseOptions: tss.courseOptions$,
       courtOptions: tss.courtOptions$,

@@ -37,23 +37,20 @@
 <script>
 import { FollowService } from './follow.service'
 import { followColumns } from './columns.config'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 
 export default {
   mixins: [tableMixin],
   serviceInject() {
     return {
-      followservice: FollowService,
-      routerService: RouteService
+      followservice: FollowService
     }
   },
   rxState() {
     return {
       followList: this.followservice.followList$,
       loading: this.followservice.loading$,
-      page: this.followservice.page$,
-      query: this.routerService.query$
+      page: this.followservice.page$
     }
   },
   data() {
@@ -63,7 +60,7 @@ export default {
   },
   computed: { followColumns },
   mounted() {
-    this.id = this.$route.meta.query.id
+    this.id = this.$searchQuery.id
   },
   methods: {
     range(start, end) {

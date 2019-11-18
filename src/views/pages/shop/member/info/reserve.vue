@@ -256,7 +256,7 @@ export default {
     }
   },
   mounted() {
-    this.id = this.$route.meta.query.id
+    this.id = this.$searchQuery.id
   }
 }
 </script>

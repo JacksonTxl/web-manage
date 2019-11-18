@@ -2,9 +2,9 @@
   <section>
     <st-table
       :pagination="{
-        current: query.page,
+        current: $searchQuery.page,
         total: page.total_counts,
-        pageSize: query.size
+        pageSize: $searchQuery.size
       }"
       :columns="columns"
       @change="onPageChange"
@@ -20,7 +20,6 @@
 <script>
 import moment from 'moment'
 import { ConsumptionRecordService } from './consumption-record.service'
-import { RouteService } from '@/services/route.service'
 const columns = [
   {
     title: '消费时间',
@@ -55,15 +54,13 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       consumptionRecordService: ConsumptionRecordService
     }
   },
   rxState() {
     return {
       page: this.consumptionRecordService.page$,
-      list: this.consumptionRecordService.list$,
-      query: this.routeService.query$
+      list: this.consumptionRecordService.list$
     }
   },
   computed: {

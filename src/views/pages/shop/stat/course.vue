@@ -33,7 +33,7 @@
             optionFilterProp="children"
             style="width: 200px"
             @change="onChangeDepartment"
-            v-model="query.department_id"
+            v-model="$searchQuery.department_id"
             :filterOption="filterOption"
           >
             <a-select-option
@@ -51,7 +51,7 @@
             class="mg-r8"
             style="width: 200px"
             @change="onChangeCoach"
-            v-model="query.coach_id"
+            v-model="$searchQuery.coach_id"
             :filterOption="filterOption"
           >
             <a-select-option
@@ -121,7 +121,6 @@
 </template>
 <script>
 import { CourseService } from './course.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import ShopStatPersonalCourse from '@/views/biz-modals/shop/stat/personal-course'
 import ShopStatPersonalConsume from '@/views/biz-modals/shop/stat/personal-consume'
@@ -142,13 +141,11 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       courseService: CourseService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       loading: this.courseService.loading$,
       list: this.courseService.list$,
       departmentList: this.courseService.departmentList$,
@@ -167,17 +164,17 @@ export default {
       return this.showTable === 'all' ? allColumns(vm) : coachColumns(vm)
     },
     coachListFilter(vm) {
-      if (this.query.department_id === -1) return this.coachList
+      if (this.$searchQuery.department_id === -1) return this.coachList
       return [
         { id: -1, name: `全部${vm.$c('coach')}` },
         ...this.coachList.filter(item => {
-          return this.query.department_id === item.department_id
+          return this.$searchQuery.department_id === item.department_id
         })
       ]
     }
   },
   created() {
-    this.showTable = this.query.showTable
+    this.showTable = this.$searchQuery.showTable
   },
   methods: {
     getPersonalCourse(record) {

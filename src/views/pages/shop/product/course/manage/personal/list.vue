@@ -2,7 +2,7 @@
   <st-panel app class="page-shop-sale-list-brand">
     <div slot="title">
       <st-input-search
-        v-model="query.course_name"
+        v-model="$searchQuery.course_name"
         @search="onChange"
         placeholder="私教课名称"
       ></st-input-search>
@@ -22,7 +22,7 @@
         <div>
           <a-select
             :defaultValue="-1"
-            v-model="query.category_id"
+            v-model="$searchQuery.category_id"
             class="mg-r16"
             style="width: 160px"
             @change="onChange"
@@ -46,20 +46,17 @@
 
 <script>
 import ListTable from './list#/list-table'
-import { RouteService } from '@/services/route.service'
 import { ListService } from './list.service'
 export default {
   name: 'PersonalCourseListInShop',
   serviceInject() {
     return {
-      listService: ListService,
-      routeService: RouteService
+      listService: ListService
     }
   },
   rxState() {
     return {
       categoryList: this.listService.categoryList$,
-      query: this.routeService.query$,
       auth: this.listService.auth$
     }
   },

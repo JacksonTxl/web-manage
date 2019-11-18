@@ -53,19 +53,14 @@
 </template>
 <script>
 import tableMixin from '@/mixins/table.mixin'
-import { RouteService } from '@/services/route.service'
 const tableData = new Array(60).fill(1).map((item, i) => ({ id: i, name: i }))
 export default {
   mixins: [tableMixin],
   serviceInject() {
-    return {
-      route: RouteService
-    }
+    return {}
   },
   rxState() {
-    return {
-      query: this.route.query$
-    }
+    return {}
   },
   data() {
     return {

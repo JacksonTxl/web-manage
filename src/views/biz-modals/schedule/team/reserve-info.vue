@@ -187,7 +187,6 @@ import { MessageService } from '@/services/message.service'
 import { TeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/team/service#/common.service'
 import { TeamScheduleReserveService } from '@/views/pages/shop/product/course/schedule/team/service#/reserve.service'
 import ScheduleTeamCancelCourse from '@/views/biz-modals/schedule/team/cancel-course'
-import { RouteService } from '@/services/route.service'
 import ScheduleTeamEditCourse from '@/views/biz-modals/schedule/team/edit-course'
 
 export default {
@@ -200,14 +199,12 @@ export default {
     return {
       teamScheduleCommonService: TeamScheduleCommonService,
       teamScheduleReserveService: TeamScheduleReserveService,
-      messageService: MessageService,
-      routeService: RouteService
+      messageService: MessageService
     }
   },
   rxState() {
     const common = this.teamScheduleCommonService
     return {
-      query: this.routeService.query$,
       infoAuth: this.teamScheduleReserveService.infoAuth$,
       memberOptions: common.memberOptions$,
       consumeOptions: common.consumeOptions$,

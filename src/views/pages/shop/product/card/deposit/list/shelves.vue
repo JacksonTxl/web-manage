@@ -1,7 +1,7 @@
 <template>
   <div :class="shelves()">
     <st-input-search
-      v-model="query.card_name"
+      v-model="$searchQuery.card_name"
       v-di-view="{ name: SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH }"
       @search="onKeywordsSearch('card_name', $event)"
       :placeholder="`请输入${$c('member_card')}名称查找`"
@@ -10,7 +10,7 @@
     <div :class="shelves('search')">
       <a-select
         :class="shelves('search__select')"
-        v-model="query.publish_channel"
+        v-model="$searchQuery.publish_channel"
         @change="onSingleSearch('publish_channel', $event)"
       >
         <a-select-option
@@ -93,7 +93,6 @@
 <script>
 import { MessageService } from '@/services/message.service'
 import { ShelvesService } from './shelves.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './shelves.config.ts'
 import CardShopDepositShopTable from '@/views/biz-modals/card/shop-deposit/shop-table'
@@ -111,7 +110,6 @@ export default {
   serviceInject() {
     return {
       messageService: MessageService,
-      routeService: RouteService,
       shelvesService: ShelvesService
     }
   },
@@ -120,8 +118,7 @@ export default {
       loading: this.shelvesService.loading$,
       publishChannel: this.shelvesService.publishChannel$,
       list: this.shelvesService.list$,
-      page: this.shelvesService.page$,
-      query: this.routeService.query$
+      page: this.shelvesService.page$
     }
   },
   data() {

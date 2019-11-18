@@ -45,7 +45,6 @@
 </template>
 <script>
 import { MessageService } from '@/services/message.service'
-import { RouteService } from '@/services/route.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import { SetBrandTeamCourseService } from './set-brand-team-course.service'
 import { SetShopTeamCourseService } from './set-shop-team-course.service'
@@ -63,14 +62,12 @@ export default {
     }
     return {
       messageService: MessageService,
-      routeService: RouteService,
       courseService: CourseService
     }
   },
   rxState() {
     return {
       loading: this.courseService.loading$,
-      query: this.routeService.query$,
       shopSetting$: this.courseService.shopSetting$
     }
   },
@@ -156,7 +153,7 @@ export default {
     },
     getData() {
       const data = this.form.getFieldsValue()
-      const id = this.query.id
+      const id = this.$searchQuery.id
       data.course_id = this.info.course_id || +id
       data.shop_ids = this.shopIds
       return data

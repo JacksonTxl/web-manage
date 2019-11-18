@@ -933,7 +933,7 @@ export default {
           this.cardData.start_time = `${this.start_time.format('YYYY-MM-DD')}`
           this.cardData.end_time = `${this.end_time.format('YYYY-MM-DD')}`
           // 卡id
-          this.cardData.id = +this.$route.query.id
+          this.cardData.id = +this.$searchQueryid
           // 转让
           this.cardData.num = this.cardData._is_transfer
             ? +values.cardData.num

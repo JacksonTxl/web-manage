@@ -105,21 +105,18 @@
 import { PersonalScheduleCommonService as CommonService } from '@/views/pages/shop/product/course/schedule/personal/service#/common.service'
 import { difference, cloneDeep } from 'lodash-es'
 import { PersonalScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/personal/service#/reserve.service'
-import { RouteService } from '@/services/route.service'
 import { ruleOptions } from './add-reserve.config'
 export default {
   name: 'AddReserve',
   serviceInject() {
     return {
       commonService: CommonService,
-      reserveService: ReserveService,
-      routeService: RouteService
+      reserveService: ReserveService
     }
   },
   rxState() {
     const cs = this.commonService
     return {
-      query: this.routeService.query$,
       courseCoachOptions: cs.courseCoachOptions$,
       consumeOptions: cs.consumeOptions$,
       memberOptions: cs.memberOptions$,

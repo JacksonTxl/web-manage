@@ -21,7 +21,6 @@
 </template>
 <script>
 import { FinanceService } from './finance.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './finance.config.ts'
 export default {
@@ -32,13 +31,11 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       financeService: FinanceService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       loading: this.financeService.loading$,
       list: this.financeService.list$,
       page: this.financeService.page$

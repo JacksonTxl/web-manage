@@ -8,7 +8,7 @@
             maxlength="30"
             v-decorator="decorators.course_name"
             @change="onCourseNameChange"
-            :disabled="query.id"
+            :disabled="$searchQuery.id"
           />
         </st-form-item>
       </a-col>
@@ -157,7 +157,6 @@
 
 <script>
 import { MessageService } from '@/services/message.service'
-import { RouteService } from '@/services/route.service'
 import StSelectCourseCategory from '@/views/fragments/course/select-course-category'
 import StSelectTrainingAim from '@/views/fragments/course/select-training-aim'
 import { SetBrandTeamCourseService } from './set-brand-team-course.service'
@@ -175,14 +174,12 @@ export default {
     }
     return {
       messageService: MessageService,
-      routeService: RouteService,
       courseService: CourseService
     }
   },
   rxState() {
     return {
-      loading: this.courseService.loading$,
-      query: this.routeService.query$
+      loading: this.courseService.loading$
     }
   },
   components: {

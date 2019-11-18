@@ -16,7 +16,7 @@
             optionFilterProp="children"
             style="width: 200px"
             @change="onChangeDepartment"
-            v-model="query.department_id"
+            v-model="$searchQuery.department_id"
             :filterOption="filterOption"
           >
             <a-select-option
@@ -34,7 +34,7 @@
             class="mg-r8"
             style="width: 200px"
             @change="onChangeStaff"
-            v-model="query.staff_id"
+            v-model="$searchQuery.staff_id"
             :filterOption="filterOption"
           >
             <a-select-option
@@ -115,7 +115,6 @@
 </template>
 <script>
 import { SellService } from './sell.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import ShopStatSellAmount from '@/views/biz-modals/shop/stat/sell-amount'
 import { allColumns, staffColumns } from './sell.config.ts'
@@ -130,13 +129,11 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       sellService: SellService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       loading: this.sellService.loading$,
       list: this.sellService.list$,
       departmentList: this.sellService.departmentList$,
@@ -154,17 +151,17 @@ export default {
       return this.showTable === 'all' ? allColumns(this) : staffColumns(this)
     },
     staffListFilter() {
-      if (this.query.department_id === -1) return this.staffList
+      if (this.$searchQuery.department_id === -1) return this.staffList
       return [
         { id: -1, name: '所有销售' },
         ...this.staffList.filter(item => {
-          return this.query.department_id === item.department_id
+          return this.$searchQuery.department_id === item.department_id
         })
       ]
     }
   },
   created() {
-    this.showTable = this.query.showTable
+    this.showTable = this.$searchQuery.showTable
   },
   methods: {
     getSellTotalAmount(record) {

@@ -294,7 +294,7 @@ export default {
   created() {
     let html = document.querySelector('html')
     html.className += ' print'
-    let id = this.$route.query.id
+    let id = this.$searchQueryid
     this.getInfo(id)
   },
   methods: {

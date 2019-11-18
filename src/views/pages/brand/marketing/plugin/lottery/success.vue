@@ -23,7 +23,7 @@
                 name: 'brand-marketing-plugin-poster',
                 props: {
                   type: 1,
-                  id: query.id
+                  id: $searchQuery.id
                 },
                 on: { done: onModalTest }
               }"
@@ -52,7 +52,7 @@
                 name: 'brand-marketing-plugin-poster',
                 props: {
                   type: 2,
-                  id: query.id
+                  id: $searchQuery.id
                 },
                 on: { done: onModalTest }
               }"
@@ -79,7 +79,6 @@
 </template>
 <script>
 import BrandMarketingPluginPoster from '@/views/biz-modals/brand/marketing/plugin/poster'
-import { RouteService } from '@/services/route.service'
 
 export default {
   name: 'PluginLotteryAdd',
@@ -93,14 +92,10 @@ export default {
     BrandMarketingPluginPoster
   },
   serviceInject() {
-    return {
-      routeService: RouteService
-    }
+    return {}
   },
   rxState() {
-    return {
-      query: this.routeService.query$
-    }
+    return {}
   },
   methods: {
     onModalTest() {}

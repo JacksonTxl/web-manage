@@ -132,22 +132,19 @@
 import { cloneDeep } from 'lodash-es'
 import { imgFilter } from '@/filters/resource.filters'
 import { MessageService } from '@/services/message.service'
-import { RouteService } from '@/services/route.service'
 import { SiteService } from './site.service'
 export default {
   serviceInject() {
     return {
       messageService: MessageService,
-      siteService: SiteService,
-      routeService: RouteService
+      siteService: SiteService
     }
   },
   rxState() {
     const siteService = this.siteService
     return {
       resData: siteService.resData$,
-      loading: siteService.loading$,
-      query: this.routeService.query$
+      loading: siteService.loading$
     }
   },
   bem: {
@@ -179,7 +176,7 @@ export default {
       this.isAdd = true
       this.editInfo = {}
       this.addInfo = {
-        shop_area_id: this.query.id,
+        shop_area_id: this.$searchQuery.id,
         seat_img: {},
         seat_name: '',
         seat_num: ''

@@ -1,9 +1,13 @@
-import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
+import {
+  Injectable,
+  Controller,
+  ServiceRoute,
+  ServiceRouter
+} from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state'
 import { CardApi } from '@/api/v1/sold/cards'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
-import { RouteService } from '@/services/route.service'
 import { combineLatest } from 'rxjs'
 
 @Injectable()
@@ -14,8 +18,9 @@ export class InfoService implements Controller {
   id = ''
   authTabs$ = this.authService.getAuthTabs$('shop-sold-card-info-member-info')
   pageAuthTabs$ = new Computed(
-    combineLatest(this.authTabs$, this.routeService.query$, (authTabs, query) =>
+    combineLatest(this.authTabs$, authTabs =>
       authTabs.map((tab: any) => {
+        const query = this.router.to.meta.query
         tab.route.query = { id: query.id, card_type: query.card_type }
         return tab
       })
@@ -24,7 +29,7 @@ export class InfoService implements Controller {
   constructor(
     private cardApi: CardApi,
     private authService: AuthService,
-    private routeService: RouteService
+    private router: ServiceRouter
   ) {}
   @Effect()
   getInfo(id: string) {

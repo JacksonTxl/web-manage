@@ -119,7 +119,7 @@ export default {
   computed: {
     columns,
     showTable() {
-      return this.$route.query.showTable || 'all'
+      return this.$searchQueryshowTable || 'all'
     },
     query() {
       return {
@@ -131,11 +131,11 @@ export default {
       }
     },
     staffListFilter() {
-      if (this.query.department_id === -1) return this.modalStaffList
+      if (this.$searchQuery.department_id === -1) return this.modalStaffList
       return [
         { id: -1, name: '所有销售' },
         ...this.modalStaffList.filter(item => {
-          return this.query.department_id === item.department_id
+          return this.$searchQuery.department_id === item.department_id
         })
       ]
     }

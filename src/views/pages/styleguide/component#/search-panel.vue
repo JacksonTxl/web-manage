@@ -2,10 +2,10 @@
   <div>
     <st-search-panel @search="onSearch" @reset="onReset">
       <st-search-panel-item label="通知对象：">
-        <st-search-radio v-model="query.m1" :options="list1" />
+        <st-search-radio v-model="$searchQuery.m1" :options="list1" />
       </st-search-panel-item>
       <st-search-panel-item label="发送状态：">
-        <st-search-radio v-model="query.m2" :options="list2" />
+        <st-search-radio v-model="$searchQuery.m2" :options="list2" />
       </st-search-panel-item>
       <st-search-panel-item label="发送时间：">
         <st-range-picker
@@ -20,7 +20,7 @@
 
       <div slot="more">
         <st-search-panel-item label="发送状态：">
-          <st-search-radio v-model="query.m3" :options="list3" />
+          <st-search-radio v-model="$searchQuery.m3" :options="list3" />
         </st-search-panel-item>
       </div>
     </st-search-panel>

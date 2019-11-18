@@ -22,7 +22,6 @@
 import Calendar from '@/views/biz-components/schedule/calendar'
 import { PersonalTeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/personal/service#/schedule.service'
 import { PersonalScheduleReserveService } from './service#/reserve.service'
-import { RouteService } from '@/services/route.service'
 import SchedulePersonalAddReserve from '@/views/biz-modals/schedule/personal/add-reserve'
 import SchedulePersonalReserveInfo from '@/views/biz-modals/schedule/personal/reserve-info'
 import { cloneDeep } from 'lodash-es'
@@ -30,14 +29,12 @@ export default {
   name: 'TeamSchedule',
   serviceInject() {
     return {
-      personalScheduleReserveService: PersonalScheduleReserveService,
-      routeService: RouteService
+      personalScheduleReserveService: PersonalScheduleReserveService
     }
   },
   rxState() {
     return {
-      cardList: this.personalScheduleReserveService.reserveTable$,
-      query: this.routeService.query$
+      cardList: this.personalScheduleReserveService.reserveTable$
     }
   },
   modals: {
@@ -49,11 +46,11 @@ export default {
   },
   computed: {
     startDate() {
-      return this.$route.query.start_date || moment().format('YYYY-MM-DD')
+      return this.$searchQuerystart_date || moment().format('YYYY-MM-DD')
     },
     isDay() {
-      const start = this.query.start_date
-      const end = this.query.end_date
+      const start = this.$searchQuery.start_date
+      const end = this.$searchQuery.end_date
       return start === end
     }
   },
@@ -82,12 +79,15 @@ export default {
     // 管理私教排期
     onClickSettingSchdule() {
       let requestParam = cloneDeep(this.query)
-      if (this.query.start_date === this.query.end_date) {
-        let weekOfday = moment(this.query.start_date, 'YYYY-MM-DD').format('E')
-        requestParam.start_date = moment(this.query.start_date)
+      if (this.$searchQuery.start_date === this.$searchQuery.end_date) {
+        let weekOfday = moment(
+          this.$searchQuery.start_date,
+          'YYYY-MM-DD'
+        ).format('E')
+        requestParam.start_date = moment(this.$searchQuery.start_date)
           .subtract(weekOfday - 1, 'days')
           .format('YYYY-MM-DD')
-        requestParam.end_date = moment(this.query.start_date)
+        requestParam.end_date = moment(this.$searchQuery.start_date)
           .add(7 - weekOfday, 'days')
           .format('YYYY-MM-DD')
       }

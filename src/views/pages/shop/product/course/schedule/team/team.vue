@@ -25,7 +25,6 @@
 <script>
 import Calendar from '@/views/biz-components/schedule/calendar'
 import { TeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/team/service#/schedule.service'
-import { RouteService } from '@/services/route.service'
 import ScheduleTeamAddCourseBatch from '@/views/biz-modals/schedule/team/add-course-batch'
 import ScheduleTeamAddCourse from '@/views/biz-modals/schedule/team/add-course'
 import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
@@ -40,14 +39,12 @@ export default {
   },
   serviceInject() {
     return {
-      teamSchduleService: TeamScheduleScheduleService,
-      routeService: RouteService
+      teamSchduleService: TeamScheduleScheduleService
     }
   },
   rxState() {
     return {
-      cardList: this.teamSchduleService.scheduleTeamCourseList$,
-      query: this.routeService.query$
+      cardList: this.teamSchduleService.scheduleTeamCourseList$
     }
   },
   components: {
@@ -58,7 +55,7 @@ export default {
   },
   computed: {
     startDate() {
-      return this.$route.query.start_date || moment().format('YYYY-MM-DD')
+      return this.$searchQuerystart_date || moment().format('YYYY-MM-DD')
     }
   },
   methods: {

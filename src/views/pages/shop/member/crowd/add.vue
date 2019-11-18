@@ -10,7 +10,7 @@
       </div>
       <div class="shop-member-crowd-add__right">
         <st-t2 style="margin-bottom: 24px;">
-          {{ $route.query.id ? '编辑人群' : '新增人群' }}
+          {{ $searchQuery.id ? '编辑人群' : '新增人群' }}
         </st-t2>
         <st-form
           :form="form"
@@ -274,8 +274,8 @@ export default {
   },
   computed: {},
   created() {
-    if (this.$route.query.id) {
-      this.getCrowdBrand(this.$route.query.id)
+    if (this.$searchQueryid) {
+      this.getCrowdBrand(this.$searchQueryid)
     }
     this.getFilterData()
   },
@@ -349,9 +349,9 @@ export default {
             })
             return
           }
-          if (this.$route.query.id) {
+          if (this.$searchQueryid) {
             this.addService
-              .getCrowdBrandCrowd(this.$route.query.id, obj)
+              .getCrowdBrandCrowd(this.$searchQueryid, obj)
               .subscribe(status => {
                 this.$router.push({ name: 'shop-member-crowd-index' })
               })

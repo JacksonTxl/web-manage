@@ -191,8 +191,8 @@ export default {
   },
   computed: {
     isDay() {
-      const start = this.$route.query.start_date
-      const end = this.$route.query.end_date
+      const start = this.$searchQuerystart_date
+      const end = this.$searchQueryend_date
       return start === end
     },
     currentTime() {
@@ -292,7 +292,7 @@ export default {
     getWeeks(val) {
       if (val !== 'week' && this.isDay) {
         this.weeks = []
-        this.weeks.push({ week: 0, date: this.$route.query.start_date })
+        this.weeks.push({ week: 0, date: this.$searchQuerystart_date })
         return
       }
       if (val === 'week') {
@@ -312,7 +312,7 @@ export default {
     }
   },
   created() {
-    this.currentWeek = cloneDeep(this.$route.query)
+    this.currentWeek = cloneDeep(this.$searchQuery)
     this.start = this.startDate
     if (this.isDay) {
       this.getWeeks()

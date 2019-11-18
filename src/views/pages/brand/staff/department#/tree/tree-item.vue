@@ -86,19 +86,16 @@
 
 <script>
 import { DepartmentService } from '@/views/pages/brand/staff/department.service'
-import { RouteService } from '@/services/route.service'
 
 export default {
   serviceInject() {
     return {
-      departmentService: DepartmentService,
-      routeService: RouteService
+      departmentService: DepartmentService
     }
   },
   rxState() {
     return {
-      auth: this.departmentService.auth$,
-      query: this.routeService.query$
+      auth: this.departmentService.auth$
     }
   },
   name: 'TreeItem',

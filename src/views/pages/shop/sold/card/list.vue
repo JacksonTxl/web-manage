@@ -5,7 +5,6 @@
   </st-panel>
 </template>
 <script>
-import { RouteService } from '@/services/route.service'
 import { ListService } from './list.service'
 export default {
   name: 'PageShopSoldCard',
@@ -14,13 +13,11 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       listService: ListService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       authTabs: this.listService.authTabs$
     }
   }

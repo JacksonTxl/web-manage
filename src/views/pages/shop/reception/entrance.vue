@@ -12,13 +12,13 @@
         <a-input-search
           style="width: 200px"
           class="mg-r8"
-          v-model="query.keyword"
+          v-model="$searchQuery.keyword"
           @search="onSingleSearch('keyword', $event)"
           placeholder="请输入姓名或手机号查找"
         />
         <a-select
           style="width: 160px"
-          v-model="query.entry_type"
+          v-model="$searchQuery.entry_type"
           @change="onSingleSearch('entry_type', $event)"
         >
           <a-select-option v-for="item in entryTypeList" :key="item.value">
@@ -67,7 +67,6 @@
 <script>
 import { EntranceService } from './entrance.service'
 import { columns } from './entrance.config.ts'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 
 export default {
@@ -78,7 +77,6 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       entranceService: EntranceService
     }
   },
@@ -88,8 +86,7 @@ export default {
       entryTypeList: this.entranceService.entryTypeList$,
       list: this.entranceService.list$,
       page: this.entranceService.page$,
-      loading: this.entranceService.loading$,
-      query: this.routeService.query$
+      loading: this.entranceService.loading$
     }
   },
   computed: {

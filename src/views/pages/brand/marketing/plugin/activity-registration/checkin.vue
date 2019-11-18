@@ -58,7 +58,6 @@
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './checkin-table.config'
 import CheckinGuide from '@/views/pages/brand/marketing/plugin/activity-registration/components#/checkin-guide.vue'
-import { RouteService } from '@/services/route.service'
 import { CheckinService } from './checkin.service'
 export default {
   name: 'CheckInList',
@@ -71,14 +70,12 @@ export default {
   },
   serviceInject() {
     return {
-      service: CheckinService,
-      routeService: RouteService
+      service: CheckinService
     }
   },
   rxState() {
     const { page$, list$, loading$ } = this.service
     return {
-      query: this.routeService.query$,
       loading$,
       page$,
       list$

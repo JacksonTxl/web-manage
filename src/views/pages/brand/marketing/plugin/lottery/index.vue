@@ -16,7 +16,7 @@
         <div style="text-align:right">
           <a-select
             placeholder="活动状态"
-            v-model="query.activity_status"
+            v-model="$searchQuery.activity_status"
             class="mg-r16"
             @change="onSingleSearch('activity_status', $event)"
             style="width:100px;display:inline-block;"
@@ -31,7 +31,7 @@
           </a-select>
           <st-input-search
             style="display:inline-block;"
-            v-model="query.keyword"
+            v-model="$searchQuery.keyword"
             @search="onKeywordsSearch('keyword', $event)"
             placeholder="请输入活动名称"
           ></st-input-search>
@@ -118,7 +118,6 @@ import { IndexService } from './index.service'
 import MarkteingPluginTitle from '../../components#/marketing-title'
 import { columns } from './index.config.ts'
 import tableMixin from '@/mixins/table.mixin'
-import { RouteService } from '@/services/route.service'
 import BrandMarketingPluginPoster from '@/views/biz-modals/brand/marketing/plugin/poster'
 import { ACTIVITY_STATUS } from '@/constants/marketing/lottery'
 import { TYPE } from '@/constants/marketing/plugin'
@@ -136,8 +135,7 @@ export default {
   },
   serviceInject() {
     return {
-      indexService: IndexService,
-      routeService: RouteService
+      indexService: IndexService
     }
   },
   rxState() {
@@ -145,8 +143,7 @@ export default {
       list: this.indexService.list$,
       page: this.indexService.page$,
       loading: this.indexService.loading$,
-      status: this.indexService.status$,
-      query: this.routeService.query$
+      status: this.indexService.status$
     }
   },
   components: {

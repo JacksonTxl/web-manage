@@ -467,7 +467,7 @@ export default {
           this.cardData.start_time = `${this.start_time.format('YYYY-MM-DD')}`
           this.cardData.end_time = `${this.end_time.format('YYYY-MM-DD')}`
           // 卡id
-          this.cardData.card_id = +this.$route.query.id
+          this.cardData.card_id = +this.$searchQueryid
           this.addService.editCard(this.cardData).subscribe(res => {
             this.$router.push({
               name: 'shop-product-card-deposit-list-all'

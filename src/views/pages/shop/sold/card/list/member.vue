@@ -2,7 +2,7 @@
   <div :class="basic()">
     <div v-di-view="{ name: 'SHOP_SOLD_CARD_LIST_ACTIONS' }">
       <st-input-search
-        v-model="query.search"
+        v-model="$searchQuery.search"
         @search="onKeywordsSearch('search', $event)"
         placeholder="请输入卡名、合同编号、会员姓名或手机号查找"
         style="width:360px"
@@ -10,13 +10,19 @@
     </div>
     <st-search-panel @search="onSearchNative" @reset="onSearhReset">
       <st-search-panel-item :label="`${$c('member_card')}类型：`">
-        <st-search-radio v-model="query.card_type" :options="cardTypes" />
+        <st-search-radio
+          v-model="$searchQuery.card_type"
+          :options="cardTypes"
+        />
       </st-search-panel-item>
       <st-search-panel-item :label="`${$c('member_card')}状态：`">
-        <st-search-radio v-model="query.card_status" :options="cardStatus" />
+        <st-search-radio
+          v-model="$searchQuery.card_status"
+          :options="cardStatus"
+        />
       </st-search-panel-item>
       <st-search-panel-item label="开卡状态：">
-        <st-search-radio v-model="query.is_open" :options="isOpens" />
+        <st-search-radio v-model="$searchQuery.is_open" :options="isOpens" />
       </st-search-panel-item>
 
       <div slot="more">
@@ -163,7 +169,6 @@
 import moment from 'moment'
 import { cloneDeep, filter } from 'lodash-es'
 import { MemberService } from './member.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './member.config'
 import SoldCardArea from '@/views/biz-modals/sold/card/area'
@@ -189,7 +194,6 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       memberService: MemberService
     }
   },
@@ -201,7 +205,6 @@ export default {
       cardTypes: this.memberService.cardTypes$,
       cardStatus: this.memberService.cardStatus$,
       isOpens: this.memberService.isOpens$,
-      query: this.routeService.query$,
       auth: this.memberService.auth$
     }
   },
@@ -276,21 +279,21 @@ export default {
     },
     // 查询
     onSearchNative() {
-      this.query.start_time = this.selectTime.startTime.value
+      this.$searchQuery.start_time = this.selectTime.startTime.value
         ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00:00`
         : ''
-      this.query.end_time = this.selectTime.endTime.value
+      this.$searchQuery.end_time = this.selectTime.endTime.value
         ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59:59`
         : ''
       this.onSearch()
     },
     // 设置searchData
     setSearchData() {
-      this.selectTime.startTime.value = this.query.start_time
-        ? cloneDeep(moment(this.query.start_time))
+      this.selectTime.startTime.value = this.$searchQuery.start_time
+        ? cloneDeep(moment(this.$searchQuery.start_time))
         : null
-      this.selectTime.endTime.value = this.query.end_time
-        ? cloneDeep(moment(this.query.end_time))
+      this.selectTime.endTime.value = this.$searchQuery.end_time
+        ? cloneDeep(moment(this.$searchQuery.end_time))
         : null
     },
     // moment

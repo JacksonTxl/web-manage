@@ -46,7 +46,6 @@ import { RecordService } from './record.service'
 import { MessageService } from '@/services/message.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './record.config.ts'
-import { RouteService } from '@/services/route.service'
 import { IMPORT_STATUS } from '@/constants/setting/import'
 export default {
   bem: {
@@ -56,13 +55,11 @@ export default {
   serviceInject() {
     return {
       recordService: RecordService,
-      routeService: RouteService,
       messageService: MessageService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       list: this.recordService.list$,
       page: this.recordService.page$,
       loading: this.recordService.loading$

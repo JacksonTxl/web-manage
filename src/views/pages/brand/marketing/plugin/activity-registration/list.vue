@@ -24,7 +24,7 @@
           <a-select
             placeholder="请选择活动报名状态"
             @change="onSingleSearch('activity_status', $event)"
-            v-model="query.activity_status"
+            v-model="$searchQuery.activity_status"
             class="mg-r8"
             style="width: 160px"
             :options="activityStatus$"
@@ -111,7 +111,6 @@ import { ListService } from './list.service'
 import MarkteingPluginTitle from '../../components#/marketing-title'
 import { columns } from './list.config'
 import { TYPE } from '@/constants/marketing/plugin'
-import { RouteService } from '@/services/route.service'
 import MarketingSharePoster from '@/views/biz-modals/marketing/share-poster'
 
 // modal
@@ -140,14 +139,12 @@ export default {
   },
   serviceInject() {
     return {
-      service: ListService,
-      routeService: RouteService
+      service: ListService
     }
   },
   rxState() {
     const { page$, list$, activityStatus$, loading$, auth$ } = this.service
     return {
-      query: this.routeService.query$,
       activityStatus$,
       page$,
       list$,

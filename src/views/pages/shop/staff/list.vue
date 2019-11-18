@@ -27,7 +27,7 @@
           showSearch
           class="mg-r8"
           style="width: 160px"
-          v-model="query.department_id"
+          v-model="$searchQuery.department_id"
           :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
           placeholder="请选择部门"
           allowClear
@@ -74,7 +74,7 @@
           :defaultValue="-1"
           placeholder="请选择员工职能"
           style="width: 140px"
-          v-model="query.identity"
+          v-model="$searchQuery.identity"
           @change="onSingleSearch('identity', $event)"
           :options="identityList"
         ></a-select>
@@ -83,7 +83,7 @@
           style="width: 140px"
           :defaultValue="-1"
           placeholder="请选择员工状态"
-          v-model="query.work_status"
+          v-model="$searchQuery.work_status"
           @change="onSingleSearch('work_status', $event)"
           :options="workStatusList"
         >
@@ -97,7 +97,7 @@
         </a-select>
         <st-input-search
           placeholder="搜索员工"
-          v-model="query.keyword"
+          v-model="$searchQuery.keyword"
           @search="onKeywordsSearch('keyword', $event)"
         />
       </a-col>
@@ -241,7 +241,6 @@
 import { UserService } from '@/services/user.service'
 import { ListService } from './list.service'
 import ChangeStaffPostion from './list#/change-staff-postion'
-import { RouteService } from '../../../../services/route.service'
 import { columns } from './list.config'
 import tableMixin from '@/mixins/table.mixin'
 import ShopStaffBatchImport from '@/views/biz-modals/shop-staff/batch-import'
@@ -268,13 +267,11 @@ export default {
   serviceInject() {
     return {
       userService: UserService,
-      routeService: RouteService,
       service: ListService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       staffList: this.service.staffList$,
       page: this.service.page$,
       loading: this.service.loading$,

@@ -65,7 +65,7 @@
         <st-t3 :class="bHeader('title')"></st-t3>
         <div :class="bHeader('actions')">
           <shop-select
-            v-model="query.shop_id"
+            v-model="$searchQuery.shop_id"
             @change="onSingleSearch('shop_id', $event)"
             class="mg-r12"
           />
@@ -96,7 +96,6 @@
 import shopSelect from '@/views/biz-components/shop-select'
 import BrandStatisticsRevenueLine from '@/views/biz-components/stat/brand-stat-revenue-line'
 import BrandStatisticsRevenueRing from '@/views/biz-components/stat/brand-stat-revenue-ring'
-import { RouteService } from '@/services/route.service'
 import { RevenueService } from './revenue.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './revenue.config'
@@ -107,13 +106,11 @@ export default {
   mixins: [tableMixin],
   serviceInject() {
     return {
-      revenueService: RevenueService,
-      routeService: RouteService
+      revenueService: RevenueService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       list: this.revenueService.list$,
       page: this.revenueService.page$,
       auth: this.revenueService.auth$,
@@ -171,13 +168,13 @@ export default {
       this.getChart()
     },
     onChangeDataShop(event) {
-      this.query.shop_id = event
+      this.$searchQuery.shop_id = event
       this.onSearch()
     },
     onChangeDataDays(event) {
-      this.query.day = event.recently_day || undefined
-      this.query.start_date = event.start_date || undefined
-      this.query.end_date = event.end_date || undefined
+      this.$searchQuery.day = event.recently_day || undefined
+      this.$searchQuery.start_date = event.start_date || undefined
+      this.$searchQuery.end_date = event.end_date || undefined
       this.onSearch()
     },
     getDataToday() {

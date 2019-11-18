@@ -60,7 +60,6 @@
 <script>
 import { EditService } from '../../edit.service'
 import { MessageService } from '@/services/message.service'
-import { RouteService } from '@/services/route.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import SelectCoach from '@/views/fragments/coach/select-coach'
 import { ruleOptions } from '../set-shop-coach.config'
@@ -70,14 +69,12 @@ export default {
   serviceInject() {
     return {
       editService: EditService,
-      messageService: MessageService,
-      routeService: RouteService
+      messageService: MessageService
     }
   },
   rxState() {
     return {
       loading: this.editService.loading$,
-      query: this.routeService.query$,
       shopSetting: this.editService.shopSetting$
     }
   },
@@ -151,7 +148,7 @@ export default {
     },
     getData() {
       const data = this.form.getFieldsValue()
-      data.course_id = +this.query.id
+      data.course_id = +this.$searchQuery.id
       data.shop_ids = this.shopIds
       return data
     },

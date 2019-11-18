@@ -66,7 +66,7 @@
                   v-modal-link="{
                     name: 'shop-add-lable',
                     props: {
-                      memberIds: [$route.query.id]
+                      memberIds: [$searchQuery.id]
                     },
                     on: { done: onModalTest }
                   }"
@@ -101,7 +101,7 @@
                   name: 'shop-binding-entity-card',
                   props: {
                     record: {
-                      member_id: $route.query.id,
+                      member_id: $searchQuery.id,
                       member_name: info.member_name,
                       mobile: info.mobile
                     }
@@ -136,7 +136,7 @@
                     解除微信绑定
                   </a-menu-item>
                   <!-- <a-menu-item key="4" v-if="auth['shop:member:member|transfer']">
-                    <a v-modal-link="{ name: 'shop-transfer-shop',props: {record: {member_id:$route.query.id, member_name: info.member_name, mobile: info.mobile}}}">转店</a>
+                    <a v-modal-link="{ name: 'shop-transfer-shop',props: {record: {member_id:$searchQuery.id, member_name: info.member_name, mobile: info.mobile}}}">转店</a>
                   </a-menu-item> -->
                   <a-menu-item key="5" v-if="auth['shop:member:member|frozen']">
                     <a
@@ -144,7 +144,7 @@
                         name: 'shop-frozen',
                         props: {
                           record: {
-                            member_id: $route.query.id,
+                            member_id: $searchQuery.id,
                             member_name: info.member_name,
                             mobile: info.mobile
                           }
@@ -163,7 +163,7 @@
                         name: 'shop-missing-card',
                         props: {
                           record: {
-                            member_id: $route.query.id,
+                            member_id: $searchQuery.id,
                             member_name: info.member_name,
                             mobile: info.mobile
                           }
@@ -225,41 +225,41 @@
           label: '用户资料',
           route: {
             name: 'shop-member-info-basic',
-            query: { id: $route.query.id }
+            query: { id: $searchQuery.id }
           }
         },
         {
           label: '员工跟进',
           route: {
             name: 'shop-member-info-follow-history',
-            query: { id: $route.query.id }
+            query: { id: $searchQuery.id }
           }
         },
         {
           label: '预约上课',
           route: {
             name: 'shop-member-info-sold',
-            query: { id: $route.query.id }
+            query: { id: $searchQuery.id }
           }
         },
         {
           label: '卡课消费',
           route: {
             name: 'shop-member-info-reserve',
-            query: { id: $route.query.id }
+            query: { id: $searchQuery.id }
           }
         },
         {
           label: '营销权益',
           route: {
             name: 'shop-member-info-sales-interests',
-            query: { id: $route.query.id }
+            query: { id: $searchQuery.id }
           }
         }
       ]"
     >
       <!-- 这个版本去掉 -->
-      <!-- { label: '用户体测', route: { name: 'shop-member-info-user-experience',query:{id:$route.query.id} } }, -->
+      <!-- { label: '用户体测', route: { name: 'shop-member-info-user-experience',query:{id:$searchQuery.id} } }, -->
 
       <div slot="actions"></div>
       <router-view></router-view>
@@ -269,7 +269,6 @@
 
 <script>
 import { InfoService } from './info.service'
-import { RouteService } from '@/services/route.service'
 import FaceRecognition from '@/views/biz-modals/face/recognition'
 import ShopAddLable from '@/views/biz-modals/shop/add-lable'
 import ShopBindingEntityCard from '@/views/biz-modals/shop/binding-entity-card'
@@ -280,16 +279,14 @@ import ShopMissingCard from '@/views/biz-modals/shop/missing-card'
 export default {
   serviceInject() {
     return {
-      infoService: InfoService,
-      routeService: RouteService
+      infoService: InfoService
     }
   },
   rxState() {
     return {
       info: this.infoService.info$,
       auth: this.infoService.auth$,
-      authCommon: this.infoService.authCommon$,
-      query: this.routeService.query$
+      authCommon: this.infoService.authCommon$
     }
   },
   modals: {
@@ -315,11 +312,11 @@ export default {
           change: res => {
             let result = res[0]
             this.infoService
-              .editFace(this.query.id, {
+              .editFace(this.$searchQuery.id, {
                 image_face: result
               })
               .subscribe(() => {
-                this.infoService.getHeaderInfo(this.query.id).subscribe()
+                this.infoService.getHeaderInfo(this.$searchQuery.id).subscribe()
               })
           }
         }
@@ -341,18 +338,18 @@ export default {
     handleClose(tag) {
       let self = this
       this.infoService
-        .getMemberLabelDelete({ user_id: self.$route.query.id, tag_id: tag.id })
+        .getMemberLabelDelete({ user_id: self.$searchQuery.id, tag_id: tag.id })
         .subscribe(state => {})
     },
     editMember() {
       this.$router.push({
         name: 'shop-member-edit',
-        query: { id: this.$route.query.id }
+        query: { id: this.$searchQueryid }
       })
     },
     onModalTest() {
       let self = this
-      this.infoService.getHeaderInfo(self.$route.query.id).subscribe()
+      this.infoService.getHeaderInfo(self.$searchQuery.id).subscribe()
     },
     // 分配教练
     onDistributionCoach() {
@@ -364,7 +361,7 @@ export default {
             this.$modalRouter.push({
               name: 'shop-distribution-coach',
               props: {
-                memberIds: [this.$route.query.id],
+                memberIds: [this.$searchQueryid],
                 coachId: this.info.follow_coach_id
               },
               on: {
@@ -380,7 +377,7 @@ export default {
         this.$modalRouter.push({
           name: 'shop-distribution-coach',
           props: {
-            memberIds: [this.$route.query.id],
+            memberIds: [this.$searchQueryid],
             coachId: this.info.follow_coach_id
           },
           on: {
@@ -401,7 +398,7 @@ export default {
             this.$modalRouter.push({
               name: 'shop-distribution-sale',
               props: {
-                memberIds: [this.$route.query.id],
+                memberIds: [this.$searchQueryid],
                 saleId: this.info.follow_salesman_id
               },
               on: {
@@ -417,7 +414,7 @@ export default {
         this.$modalRouter.push({
           name: 'shop-distribution-sale',
           props: {
-            memberIds: [this.$route.query.id],
+            memberIds: [this.$searchQueryid],
             saleId: this.info.follow_salesman_id
           },
           on: {
@@ -430,7 +427,7 @@ export default {
     }
   },
   mounted() {
-    this.id = this.$route.query.id
+    this.id = this.$searchQueryid
   }
 }
 </script>

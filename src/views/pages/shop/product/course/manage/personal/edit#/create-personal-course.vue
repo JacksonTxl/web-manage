@@ -108,7 +108,6 @@
 <script>
 import { EditService } from '../edit.service'
 import { MessageService } from '@/services/message.service'
-import { RouteService } from '@/services/route.service'
 import StSelectCourseCategory from '@/views/fragments/course/select-course-category'
 import StSelectTrainingAim from '@/views/fragments/course/select-training-aim'
 import { UserService } from '@/services/user.service'
@@ -121,7 +120,6 @@ export default {
       editService: EditService,
       messageService: MessageService,
       userService: UserService,
-      routeService: RouteService,
       ruleConfig: RuleConfig
     }
   },
@@ -129,8 +127,7 @@ export default {
     const user = this.userService
     return {
       loading: this.editService.loading$,
-      personalCourseEnums: user.personalCourseEnums$,
-      query: this.routeService.query$
+      personalCourseEnums: user.personalCourseEnums$
     }
   },
   components: {
@@ -203,7 +200,7 @@ export default {
     },
     getData() {
       const data = this.form.getFieldsValue()
-      data.course_id = +this.query.id
+      data.course_id = +this.$searchQuery.id
       return data
     }
   }

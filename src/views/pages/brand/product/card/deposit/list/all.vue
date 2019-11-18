@@ -1,7 +1,7 @@
 <template>
   <div :class="all()">
     <st-input-search
-      v-model="query.card_name"
+      v-model="$searchQuery.card_name"
       v-di-view="{ name: BRAND_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH }"
       @search="onKeywordsSearch('card_name', $event)"
       placeholder="请输入储值卡名称搜索"
@@ -15,7 +15,7 @@
         <a-select
           :class="all('search__select')"
           class="mg-r8"
-          v-model="query.publish_channel"
+          v-model="$searchQuery.publish_channel"
           @change="onSingleSearch('publish_channel', $event)"
         >
           <a-select-option
@@ -28,7 +28,7 @@
         </a-select>
         <a-select
           :class="all('search__select')"
-          v-model="query.sell_status"
+          v-model="$searchQuery.sell_status"
           @change="onSingleSearch('sell_status', $event)"
         >
           <a-select-option
@@ -183,7 +183,6 @@
 </template>
 <script>
 import { AllService } from './all.service'
-import { RouteService } from '@/services/route.service'
 import { columns } from './all.config.ts'
 import { BRAND_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH } from '@/constants/events'
 import tableMixin from '@/mixins/table.mixin'
@@ -203,7 +202,6 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       allService: AllService
     }
   },
@@ -214,7 +212,6 @@ export default {
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       sellStatus: this.allService.sellStatus$,
       loading: this.allService.loading$,
       publishChannel: this.allService.publishChannel$,

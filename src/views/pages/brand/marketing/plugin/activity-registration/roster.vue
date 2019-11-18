@@ -20,7 +20,7 @@
             placeholder="请选择状态"
             @change="onSingleSearch('ticket_status', $event)"
             class="mg-r16"
-            v-model="query.ticket_status"
+            v-model="$searchQuery.ticket_status"
             style="width: 160px"
             :options="ticketStatus$"
           ></a-select>
@@ -28,7 +28,7 @@
             placeholder="请选择票种"
             @change="onSingleSearch('ticket_id', $event)"
             class="mg-r16"
-            v-model="query.ticket_id"
+            v-model="$searchQuery.ticket_id"
             style="width: 160px"
             :options="ticketTypeOptions$"
           ></a-select>
@@ -89,7 +89,6 @@
 <script>
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './roster.config'
-import { RouteService } from '@/services/route.service'
 import { RosterService } from './roster.service'
 import MarketingActivitySignUpInfo from '@/views/biz-modals/marketing/activity-signup-info'
 export default {
@@ -104,8 +103,7 @@ export default {
   },
   serviceInject() {
     return {
-      service: RosterService,
-      routeService: RouteService
+      service: RosterService
     }
   },
   rxState() {
@@ -123,8 +121,7 @@ export default {
       loading$,
       ticketStatus$,
       activityInfo$,
-      ticketTypeOptions$,
-      query: this.routeService.query$
+      ticketTypeOptions$
     }
   },
   computed: {

@@ -2,16 +2,22 @@
   <div :class="bPage()">
     <st-input-search
       :class="bPage('input-search')"
-      @search="onSingleSearch('search', query.search, { keyword: true })"
-      v-model="query.search"
+      @search="onSingleSearch('search', $searchQuery.search, { keyword: true })"
+      v-model="$searchQuery.search"
       placeholder="请输入姓名或手机号查找"
     ></st-input-search>
     <st-search-panel @search="onSearchList" @reset="onSearhReset">
       <st-search-panel-item label="通知对象：">
-        <st-search-radio v-model="query.notify_type" :options="notifyType" />
+        <st-search-radio
+          v-model="$searchQuery.notify_type"
+          :options="notifyType"
+        />
       </st-search-panel-item>
       <st-search-panel-item label="发送状态：">
-        <st-search-radio v-model="query.send_status" :options="sendStatus" />
+        <st-search-radio
+          v-model="$searchQuery.send_status"
+          :options="sendStatus"
+        />
       </st-search-panel-item>
       <st-search-panel-item label="发送时间：">
         <st-range-picker
@@ -45,7 +51,6 @@
   </div>
 </template>
 <script>
-import { RouteService } from '@/services/route.service'
 import { ListService } from './list.service'
 import { columns } from './list.config.ts'
 import { UserService } from '@/services/user.service'
@@ -61,13 +66,11 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       listService: ListService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       loading: this.listService.loading$,
       page: this.listService.page$,
       list: this.listService.list$,
@@ -120,20 +123,20 @@ export default {
   },
   methods: {
     onSearchList() {
-      this.query.start_time = this.selectTime.startTime.value
+      this.$searchQuery.start_time = this.selectTime.startTime.value
         ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')}`
         : ''
-      this.query.end_time = this.selectTime.endTime.value
+      this.$searchQuery.end_time = this.selectTime.endTime.value
         ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')}`
         : ''
       this.onSearch({ ...this.query })
     },
     setSearchData() {
-      this.selectTime.startTime.value = this.query.start_time
-        ? cloneDeep(moment(this.query.start_time))
+      this.selectTime.startTime.value = this.$searchQuery.start_time
+        ? cloneDeep(moment(this.$searchQuery.start_time))
         : null
-      this.selectTime.endTime.value = this.query.end_time
-        ? cloneDeep(moment(this.query.end_time))
+      this.selectTime.endTime.value = this.$searchQuery.end_time
+        ? cloneDeep(moment(this.$searchQuery.end_time))
         : null
     }
   }

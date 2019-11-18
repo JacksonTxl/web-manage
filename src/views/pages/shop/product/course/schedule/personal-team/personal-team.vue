@@ -25,7 +25,6 @@
 <script>
 import Calendar from '@/views/biz-components/schedule/calendar'
 import { PersonalTeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/schedule.service'
-import { RouteService } from '@/services/route.service'
 import SchedulePersonalTeamAddInBatch from '@/views/biz-modals/schedule/personal-team/add-in-batch'
 import SchedulePersonalTeamAdd from '@/views/biz-modals/schedule/personal-team/add'
 import SchedulePersonalTeamCopy from '@/views/biz-modals/schedule/personal-team/copy'
@@ -40,14 +39,12 @@ export default {
   },
   serviceInject() {
     return {
-      PersonalTeamSchduleService: PersonalTeamScheduleScheduleService,
-      routeService: RouteService
+      PersonalTeamSchduleService: PersonalTeamScheduleScheduleService
     }
   },
   rxState() {
     return {
-      cardList: this.PersonalTeamSchduleService.courseList$,
-      query: this.routeService.query$
+      cardList: this.PersonalTeamSchduleService.courseList$
     }
   },
   components: {
@@ -58,7 +55,7 @@ export default {
   },
   computed: {
     startDate() {
-      return this.$route.query.start_date || moment().format('YYYY-MM-DD')
+      return this.$searchQuerystart_date || moment().format('YYYY-MM-DD')
     }
   },
   methods: {
@@ -117,7 +114,7 @@ export default {
     onGetTable() {
       this.$router.push({
         name: 'shop-product-course-schedule-personal-team-personal-team-table',
-        query: { ...this.$route.query }
+        query: { ...this.$searchQuery }
       })
     },
     // 刷新页面

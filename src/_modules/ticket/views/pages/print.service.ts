@@ -1,4 +1,4 @@
-import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Injectable, Controller } from 'vue-service-app'
 import { ReserveApi } from '@/api/v1/front/reserve'
 import { tap } from 'rxjs/operators'
 import { State } from 'rx-state'

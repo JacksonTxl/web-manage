@@ -114,7 +114,7 @@ export default {
   computed: {
     columns,
     showTable() {
-      return this.$route.query.showTable || 'all'
+      return this.$searchQueryshowTable || 'all'
     },
     page() {
       const { current_page, total_counts } = this.page$

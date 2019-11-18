@@ -574,7 +574,7 @@ export default {
           this.cardData.start_time = moment(this.start_time).format(dateFormat)
           this.cardData.end_time = moment(this.end_time).format(dateFormat)
           // 卡id
-          this.cardData.card_id = +this.$route.query.id
+          this.cardData.card_id = +this.$searchQueryid
           this.addService
             .editCard(this.cardData)
             .subscribe(this.onSubmitSuccess)

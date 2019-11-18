@@ -48,18 +48,18 @@ export default {
   },
   computed: {
     isDay() {
-      const start = this.$route.query.start_date
-      const end = this.$route.query.end_date
+      const start = this.$searchQuerystart_date
+      const end = this.$searchQueryend_date
       return start === end
     },
     isCurrent() {
-      const start = moment(this.$route.query.start_date).valueOf()
-      const end = moment(this.$route.query.end_date).valueOf()
+      const start = moment(this.$searchQuerystart_date).valueOf()
+      const end = moment(this.$searchQueryend_date).valueOf()
       const current = moment(moment().format('YYYY-MM-DD')).valueOf()
       return current < start || end < current
     },
     start() {
-      return this.$route.query.start_date
+      return this.$searchQuerystart_date
     },
     endTime() {
       return this.isDay
@@ -72,14 +72,14 @@ export default {
       let start = moment(this.startTime).format('LL')
       let end = moment(this.endTime).format('LL')
       return this.isDay
-        ? moment(this.$route.query.start_date).format('LL')
+        ? moment(this.$searchQuerystart_date).format('LL')
         : `${start} ~ ${end}`
     }
   },
   methods: {
     onClickPre() {
       this.startTime = this.isDay
-        ? moment(this.$route.query.start_date)
+        ? moment(this.$searchQuerystart_date)
             .subtract(1, 'days')
             .format('YYYY-MM-DD')
         : moment(this.startTime)
@@ -89,7 +89,7 @@ export default {
     },
     onClickNext() {
       this.startTime = this.isDay
-        ? moment(this.$route.query.start_date)
+        ? moment(this.$searchQuerystart_date)
             .add(1, 'days')
             .format('YYYY-MM-DD')
         : moment(this.startTime)

@@ -61,7 +61,6 @@ import FilterStaff from './department#/filter-staff.vue'
 import OpreationButton from './department#/opreation-button.vue'
 import StaffTable from './department#/staff-table'
 import { DepartmentService } from './department.service'
-import { RouteService } from '@/services/route.service'
 import { UserService } from '@/services/user.service'
 import StOrganTree from './department#/tree/tree.vue'
 import { ShopStaffApi } from '@/api/v1/staff/staff'
@@ -75,7 +74,6 @@ export default {
   serviceInject() {
     return {
       departmentService: DepartmentService,
-      routeService: RouteService,
       userService: UserService,
       shopStaffApi: ShopStaffApi
     }
@@ -88,7 +86,6 @@ export default {
       loading: this.departmentService.loading$,
       page: this.departmentService.page$,
       auth: this.departmentService.auth$,
-      query: this.routeService.query$,
       brand: this.userService.brand$
     }
   },
@@ -139,7 +136,7 @@ export default {
       })
     },
     getDepartment(item = 0) {
-      this.query.department_id = item
+      this.$searchQuery.department_id = item
       this.$router.push({ query: this.query })
     },
     selectedRow(ids) {

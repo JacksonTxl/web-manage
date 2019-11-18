@@ -105,7 +105,6 @@
 <script>
 import { ListService } from './list.service'
 import { UserService } from '@/services/user.service'
-import { RouteService } from '@/services/route.service'
 import MarkteingPluginTitle from '../../components#/marketing-title'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
@@ -126,8 +125,7 @@ export default {
   serviceInject() {
     return {
       listService: ListService,
-      userService: UserService,
-      routeService: RouteService
+      userService: UserService
     }
   },
   rxState() {
@@ -135,7 +133,6 @@ export default {
       list: this.listService.list$,
       page: this.listService.page$,
       loading: this.listService.loading$,
-      query: this.routeService.query$,
       couponEnums: this.userService.couponEnums$,
       auth: this.listService.auth$
     }

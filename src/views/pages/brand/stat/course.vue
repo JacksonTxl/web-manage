@@ -78,7 +78,6 @@
 <script>
 import BrandStatisticsCourseRing from '@/views/biz-components/stat/brand-stat-course-ring'
 import shopSelect from '@/views/biz-components/shop-select'
-import { RouteService } from '@/services/route.service'
 import { CourseService } from './course.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './course.config'
@@ -87,8 +86,7 @@ export default {
   mixins: [tableMixin],
   serviceInject() {
     return {
-      service: CourseService,
-      routeService: RouteService
+      service: CourseService
     }
   },
   rxState() {
