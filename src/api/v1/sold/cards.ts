@@ -227,4 +227,10 @@ export class CardApi extends Api {
       query
     })
   }
+  /**
+   * 售出 会员卡 批量更改入场时间
+   */
+  setCardEnterTime(params: any) {
+    return this.http.post(`/v1/sold/cards/batch/admission_time`, { params })
+  }
 }

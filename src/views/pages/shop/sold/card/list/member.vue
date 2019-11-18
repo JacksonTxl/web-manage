@@ -58,10 +58,19 @@
           type="primary"
           class="mg-r8"
           v-if="auth.vipRegion"
-          :disabled="selectedRowKeys.length < 1 || diffSelectedRows.length > 0"
+          :disabled="selectedRowKeys.length < 1"
           @click="onAreas"
         >
           变更入场vip区域
+        </st-button>
+
+        <st-button
+          type="primary"
+          class="mg-r8"
+          :disabled="selectedRowKeys.length < 1"
+          @click="onEnterTime"
+        >
+          变更入场时段
         </st-button>
       </div>
       <div>
@@ -181,6 +190,7 @@ import tableMixin from '@/mixins/table.mixin'
 import { columns } from './member.config'
 import SoldCardArea from '@/views/biz-modals/sold/card/area'
 import SoldCardBatchArea from '@/views/biz-modals/sold/card/batch-area'
+import SoldCardBatchEnterTime from '@/views/biz-modals/sold/card/batch-enter-time'
 import SoldCardFreeze from '@/views/biz-modals/sold/card/freeze'
 import SoldCardGiving from '@/views/biz-modals/sold/card/giving'
 import SoldCardRefund from '@/views/biz-modals/sold/card/refund'
@@ -210,7 +220,8 @@ export default {
     SoldDealGatheringTip,
     SoldDealGathering,
     CommonTaskSuccessTip,
-    SoldCardBatchArea
+    SoldCardBatchArea,
+    SoldCardBatchEnterTime
   },
   serviceInject() {
     return {
@@ -438,6 +449,20 @@ export default {
     onAreas() {
       this.$modalRouter.push({
         name: 'sold-card-batch-area',
+        props: {
+          id: this.selectedRowKeys
+        },
+        on: {
+          success: () => {
+            this.successTip()
+          }
+        }
+      })
+    },
+    // 批量变更入场时间段
+    onEnterTime() {
+      this.$modalRouter.push({
+        name: 'sold-card-batch-enter-time',
         props: {
           id: this.selectedRowKeys
         },
