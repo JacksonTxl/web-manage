@@ -1140,21 +1140,27 @@ export const routeMapConfig = {
   },
   'brand-setting-import-explain'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '导入说明'
+    routeConfig.meta.auth = 'brand:setting:import|import_intro'
   },
   'brand-setting-import-staff'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '导入员工'
+    routeConfig.meta.auth = 'brand:setting:import|import_staff'
   },
   'brand-setting-import-commodity'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '导入商品'
+    routeConfig.meta.auth = 'brand:setting:import|import_product'
   },
   'brand-setting-import-member'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '导入用户'
+    routeConfig.meta.auth = 'brand:setting:import|import_member'
   },
   'brand-setting-import-sold'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '导入售出'
+    routeConfig.meta.auth = 'brand:setting:import|import_sold'
   },
   'brand-setting-import-record'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '导入记录'
+    routeConfig.meta.auth = 'brand:setting:import|import_get'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
