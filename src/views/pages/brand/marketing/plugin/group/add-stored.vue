@@ -24,8 +24,8 @@
                 @change="changeSelect"
                 placeholder="请选择储值卡"
                 v-model="storedId"
+                :disabled="isEdit && activityState >= ACTIVITY_STATUS.NO_START"
               >
-                <!-- :disabled="isEdit && activityState >= ACTIVITY_STATUS.NO_START" -->
                 <a-select-option
                   :value="item.id"
                   v-for="(item, index) in list"
@@ -111,7 +111,7 @@
                 活动库存
                 <st-help-tooltip id="TBPTXJ003" />
               </template>
-              <a-checkbox @change="checkBox" :checked="!!info.is_limit_stock">
+              <a-checkbox @change="checkBox" :checked="!!limitStock">
                 限制库存
               </a-checkbox>
               <st-input-number
@@ -139,7 +139,7 @@
           <a-col :span="10">
             <st-form-item label="发布状态" required>
               <a-radio-group
-                :defaultValue="info.published_type || 1"
+                :defaultValue="publishedType || 1"
                 v-model="publishedType"
                 :disabled="isEdit && activityState > ACTIVITY_STATUS.PUBLISHER"
               >
@@ -169,9 +169,10 @@
 </template>
 
 <script>
-import { columnsGroupStored, ruleOptions } from './add-stored.config'
-import { AddStoredService } from './add-stored.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
+import { AddMemberService } from './add-member.service'
+import { AddStoredService } from './add-stored.service'
+import { columnsGroupStored, ruleOptions } from './add-stored.config'
 import moment, { months } from 'moment'
 import { ACTIVITY_STATUS } from '@/constants/marketing/group-buy'
 
@@ -182,7 +183,13 @@ export default {
   },
   serviceInject() {
     return {
+      AddCopy: AddMemberService,
       Add: AddStoredService
+    }
+  },
+  rxState() {
+    return {
+      loading$: this.Add.loading$
     }
   },
   components: {
@@ -240,8 +247,9 @@ export default {
     }
   },
   mounted() {
-    console.log(this.info)
-    this.setFieldsValue()
+    if (this.isEdit) {
+      this.setFieldsValue()
+    }
   },
   methods: {
     changeTime(val) {
@@ -277,6 +285,9 @@ export default {
       this.activityState = this.info.activity_state[0].id
       this.storedId = this.info.product.id
       this.currentStored = this.info.sku
+      this.limitStock = this.info.is_limit_stock
+      this.selectTime.startTime.disabled =
+        this.activityState < this.ACTIVITY_STATUS.NO_START
       this.form.setFieldsValue({
         activity_name: this.info.activity_name,
         group_sum: this.info.group_sum,
