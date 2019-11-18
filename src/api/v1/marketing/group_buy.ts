@@ -85,4 +85,16 @@ export class GroupBuyApi extends Api {
   getDepositList() {
     return this.http.get('/v1/cards/deposit/brand_list')
   }
+  /**
+   * 获取门店列表
+   */
+  getShopList() {
+    return this.http.get('/v1/shop/all_list')
+  }
+  /**
+   * 获取课程包列表
+   */
+  getCourseList(params: { shop_id: number }) {
+    return this.http.get('/v1/course/package_list', { params })
+  }
 }

@@ -287,7 +287,7 @@ export default {
       this.currentStored = this.info.sku
       this.limitStock = this.info.is_limit_stock
       this.selectTime.startTime.disabled =
-        this.activityState < this.ACTIVITY_STATUS.NO_START
+        this.activityState > this.ACTIVITY_STATUS.PUBLISHER
       this.form.setFieldsValue({
         activity_name: this.info.activity_name,
         group_sum: this.info.group_sum,

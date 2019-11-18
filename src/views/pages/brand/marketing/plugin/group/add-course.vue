@@ -26,8 +26,19 @@
                 拼团门店
                 <st-help-tooltip id="TBPTXJ005" />
               </span>
-              <a-select showSearch v-model="shopId" placeholder="请输入">
-                <a-select-option value="lucy">Lucy</a-select-option>
+              <a-select
+                showSearch
+                v-model="shopId"
+                placeholder="请输入"
+                @change="changeShop"
+              >
+                <a-select-option
+                  :value="item.shop_id"
+                  v-for="(item, index) in shopList"
+                  :key="index"
+                >
+                  {{ item.shop_name }}
+                </a-select-option>
               </a-select>
             </st-form-item>
           </a-col>
@@ -35,27 +46,29 @@
         <a-row :gutter="8">
           <a-col :span="10">
             <st-form-item label="选择课程包" required>
-              <a-select showSearch v-model="courseId" placeholder="请输入">
-                <a-select-option value="lucy">Lucy</a-select-option>
+              <a-select
+                showSearch
+                v-model="courseId"
+                placeholder="请输入"
+                @change="changeCourse"
+              >
+                <a-select-option
+                  :value="item.id"
+                  v-for="(item, index) in courseList"
+                  :key="index"
+                >
+                  {{ item.product_name }}
+                </a-select-option>
               </a-select>
             </st-form-item>
           </a-col>
         </a-row>
         <a-row :gutter="8">
           <a-col :span="16">
-            <st-form-item label="活动时间" required>
-              <!-- <st-range-picker
-                v-model="decorators.activityTime"
-              ></st-range-picker> -->
-              <st-range-picker
-                :disabledDays="180"
-                :value="selectTime"
-              ></st-range-picker>
-            </st-form-item>
             <st-form-item label="优惠设置" required>
               <div :class="basic('table')">
                 <st-table
-                  rowKey="card_id"
+                  rowKey="id"
                   :columns="cardColumns"
                   :dataSource="tableData"
                   :pagination="false"
@@ -74,6 +87,15 @@
                   </template>
                 </st-table>
               </div>
+            </st-form-item>
+            <st-form-item label="活动时间" required>
+              <!-- <st-range-picker
+                v-model="decorators.activityTime"
+              ></st-range-picker> -->
+              <st-range-picker
+                :disabledDays="180"
+                :value="selectTime"
+              ></st-range-picker>
             </st-form-item>
           </a-col>
         </a-row>
@@ -152,16 +174,20 @@
 <script>
 import { ruleOptions, cardColumns } from './add-course.config'
 import { AddMemberService } from './add-member.service'
+import { AddCourseService } from './add-course.service'
 import moment from 'moment'
 export default {
   serviceInject() {
     return {
-      addMemberService: AddMemberService
+      addMemberService: AddMemberService,
+      addCourseService: AddCourseService
     }
   },
   rxState() {
     return {
-      loading: this.addMemberService.loading$
+      loading: this.addMemberService.loading$,
+      shopList: this.addCourseService.shopList$,
+      courseList: this.addCourseService.courseList$
     }
   },
   bem: {
@@ -181,20 +207,34 @@ export default {
       decorators,
       groupName: '',
       cardColumns,
-      shopId: 0,
-      courseId: 0,
-      tableData: [
-        {
-          district_name: '33',
-          group_price: '44',
-          card_id: 1
-        },
-        {
-          district_name: '33',
-          group_price: '44',
-          card_id: 2
-        }
-      ],
+      // shopList: [
+      //   {
+      //     brand_id: 1,
+      //     shop_id: 12,
+      //     province_id: 310000,
+      //     province_name: '上海市',
+      //     city_id: 310100,
+      //     city_name: '上海市',
+      //     district_id: 310106,
+      //     district_name: '静安区',
+      //     shop_name: 'kael的1店'
+      //   },
+      //   {
+      //     brand_id: 1,
+      //     shop_id: 13,
+      //     province_id: 310000,
+      //     province_name: '上海市',
+      //     city_id: 310100,
+      //     city_name: '上海市',
+      //     district_id: 310106,
+      //     district_name: '静安区',
+      //     shop_name: 'kael的1店'
+      //   }
+      // ],
+      courseList: [],
+      shopId: '',
+      courseId: '',
+      tableData: [],
       isLimit: false,
       // 发布状态
       releaseStatus: 1,
@@ -217,7 +257,8 @@ export default {
           change: $event => {},
           disabledDate: this.disabledDate
         }
-      }
+      },
+      publishTime: null
     }
   },
   props: {
@@ -228,9 +269,22 @@ export default {
     }
   },
   mounted() {
-    console.log('------------', this.info)
+    // console.log('------------', this.info)
   },
   methods: {
+    changeShop(value) {
+      console.log('0000000000000000000000')
+      this.addCourseService.getCourseList({ shop_id: 1 }).subscribe(res => {
+        this.$router.reload()
+      })
+    },
+    changeCourse(value) {
+      this.courseList.filter(item => {
+        if (item.id === value) {
+          this.tableData = item.product_spec
+        }
+      })
+    },
     // 是否限制库存
     limitStock(value) {
       this.isLimit = value.target.checked
@@ -259,29 +313,23 @@ export default {
           }
         } else {
           let list = []
-          this.selectedRowKeys.forEach((id, index) => {
-            this.tableData.forEach(item => {
-              if (item.id === id) {
-                list.push({ sku_id: id, group_price: item.group_price })
-              }
-            })
+          this.tableData.forEach((item, index) => {
+            list.push({ id: id, group_price: item.group_price })
           })
           params = {
-            product_type: 4, // 会籍卡
+            product_type: 4, // 课程包
             activity_name: values.activity_name, // 活动名称
-            product_id: this.cardId, //商品id
+            product_id: this.courseId, //商品id
             sku: list, //卡、课规格[{“sku_id”:1,”group_price”:20},]
-            // start_time: moment(values.start_time).format('YYYY-MM-DD HH:MM'),
-            // end_time: moment(values.end_time).format('YYYY-MM-DD HH:MM'),
             start_time: this.selectTime.startTime.value,
             end_time: this.selectTime.endTime.value,
             group_sum: values.group_sum, //成团人数
             valid_time: values.valid_time, //拼团有效期
-            is_limit_stock: '', //是否限制库存0不限制 1限制
+            is_limit_stock: this.isLimit ? 1 : 0, //是否限制库存0不限制 1限制
             stock_total: values.stock_total, //库存
-            shop_ids: '', //门店ids [1,2,3,4]
-            published_type: '', //发布状态(1-立即发布 2-暂不发布 3-定时发布)
-            published_time: '' //发布时间
+            shop_ids: [this.shopId], //门店ids [1,2,3,4]
+            published_type: this.releaseStatus, //发布状态(1-立即发布 2-暂不发布 3-定时发布)
+            published_time: moment(this.publishTime).format('YYYY-MM-DD HH:mm') //发布时间
           }
         }
         if (this.editType) {
