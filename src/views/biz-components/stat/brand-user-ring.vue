@@ -215,11 +215,6 @@ export default {
       })
     }
   },
-  mounted() {
-    const e = document.createEvent('Event')
-    e.initEvent('resize', true, true)
-    window.dispatchEvent(e)
-  },
   beforeDestroy() {
     if (this.chart) {
       this.offMouseHandlers.forEach(fn => fn())

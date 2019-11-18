@@ -1134,6 +1134,7 @@ export const routeMapConfig = {
   },
   'brand-stat-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '课程'
+    routeConfig.meta.auth = 'brand_shop:stat:course|page'
     routeConfig.queryOptions = {
       shop_id: { type: Number, default: -1 },
       current_page: { type: Number, default: 1 },
