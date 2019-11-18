@@ -53,21 +53,22 @@ export class FollowService implements Controller {
     return this.memberApi.getCoachList(param).pipe(
       tap((res: any) => {
         this.coachList$.commit(() => {
-          return [{ id: -1, coach_name: '全部教练' }, ...res.list]
+          return [{ id: -1, coach_name: '所有教练' }, ...res.list]
         })
       })
     )
   }
   getOperatorList() {
-    return this.memberApi.getCoachList().pipe(
+    return this.statApi.getFollowOperatoList().pipe(
       tap((res: any) => {
-        this.coachList$.commit(() => {
-          return [{ id: -1, coach_name: '录入人' }, ...res.list]
+        this.operatorList$.commit(() => {
+          return [{ id: -1, name: '录入人' }, ...res.list]
         })
       })
     )
   }
   init(query: any) {
+    console.log(query)
     return forkJoin(
       this.getList(query),
       this.getCoachList(query.CoachQuery),

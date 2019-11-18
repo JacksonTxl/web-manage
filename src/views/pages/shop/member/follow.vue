@@ -91,9 +91,19 @@
             ></st-range-picker>
           </st-search-panel-item>
           <st-search-panel-item label="跟进次数：">
-            <a-input @change="onChangeStart" style="width:80px" type="number" />
+            <a-input
+              v-model="query.follow_start_num"
+              @change="onChangeStart"
+              style="width:80px"
+              type="number"
+            />
             &nbsp;~&nbsp;
-            <a-input @change="onChangeEnd" style="width:80px" type="number" />
+            <a-input
+              v-model="query.follow_end_num"
+              @change="onChangeEnd"
+              style="width:80px"
+              type="number"
+            />
           </st-search-panel-item>
         </div>
       </st-search-panel>
@@ -104,7 +114,7 @@
       :columns="columns"
       :loading="loading.getListInfo"
       :scroll="{ x: 1400 }"
-      rowKey="member_id"
+      rowKey="id"
       :page="page"
       @change="onTableChange"
       :dataSource="list"
@@ -130,15 +140,19 @@
       <span slot="follow_status" slot-scope="text, record">
         {{ record.follow_status.label }}
       </span>
+      <span slot="contentTitle">
+        跟进内容
+        <st-help-tooltip id="TSSR003" />
+      </span>
       <template slot="follow_content" slot-scope="text, record">
         <span v-if="text.length === 0">{{ record.object }}</span>
         <div v-else>
-          <a-popover title="跟进内容">
+          <st-overflow-text title="跟进内容">
             <template slot="content">
-              <pre>{{ record.object }}</pre>
+              {{ record.follow_content }}
             </template>
             <a class="pop-object__text">{{ text }}</a>
-          </a-popover>
+          </st-overflow-text>
         </div>
       </template>
     </st-table>
@@ -173,15 +187,15 @@ export default {
       list: this.followService.list$,
       page: this.followService.page$,
       staffList: this.followService.staffList$,
-      coachList: this.followService.coachList$
+      coachList: this.followService.coachList$,
+      operatorList: this.followService.operatorList$
     }
   },
   data() {
     return {
+      startNum: -1,
+      endNum: -1,
       dateFormat: 'YYYY-MM-DD',
-      expand: false,
-      sourceRegisterList: [],
-      consumption: [],
       selectTime: {
         startTime: {
           showTime: false,
@@ -228,17 +242,10 @@ export default {
         list.push({ value: +o[0], label: o[1] })
       })
       return list
-    },
-    defaultBeMemberValue() {
-      if (!this.query.be_member_start_time) return null
-      return [
-        moment(this.query.be_member_start_time, this.dateFormat),
-        moment(this.query.be_member_stop_time, this.dateFormat)
-      ]
     }
   },
   created() {
-    console.log(this.coachList)
+    //console.log(this.coachList)
   },
   mounted() {
     this.setSearchData()
@@ -294,16 +301,8 @@ export default {
         self.form[prop] = ''
       }
       this.$refs.stSeleter.handleResetItem()
-      this.consumption = []
       this.$router.reload()
     }
-    // ,
-    // toggle() {
-    //   this.expand = !this.expand
-    // },
-    // queryFunc() {
-    //   this.$router.push({ query: this.form })
-    // }
   }
 }
 </script>
