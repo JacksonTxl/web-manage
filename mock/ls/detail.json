@@ -1,0 +1,43 @@
+{
+  "code": 0,
+  "msg": "success",
+  "data": {
+    "info": {
+      "product_type": 1,
+      "activity_name": "拼团活动1",
+      "product": {
+        "id": 1,
+        "name": "商品名称"
+      },
+      "sku": [
+        { "id": 1, "group_price": 10, "price": 20, "spec": "20次/金牌教练" }
+      ],
+      "init_course_num": 1,
+      "start_time": "2019-11-14 00:00:00",
+      "end_time": "2019-11-14 00:00:00",
+      "group_sum": 10,
+      "valid_time": "10",
+      "is_limit_stock": 1,
+      "stock_total": "100",
+      "support_shop ": [
+        {
+          "brand_id": 1,
+          "shop_id": 12,
+          "province_id": 310000,
+          "province_name": "上海市",
+          "city_id": 310100,
+          "city_name": "上海市",
+          "district_id": 310106,
+          "district_name": "静安区",
+          "province_id": 310000,
+          "province_name": "上海市",
+          "shop_id": 12,
+          "shop_name": "kael的1店"
+        }
+      ],
+      "published_type": 1,
+      "published_time": "2019-11-14 00:00:00",
+      "activity_state": [{ "id": 1, "name": "未开始" }]
+    }
+  }
+}
