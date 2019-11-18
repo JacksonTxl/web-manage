@@ -136,7 +136,6 @@ export default {
       })
     },
     disabledDate(current) {
-      let flag = false
       if (current < moment(this.info.flow_time)) {
         return true
       }
