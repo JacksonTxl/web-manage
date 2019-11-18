@@ -168,17 +168,7 @@ export default {
   methods: {
     // 返回列表
     onClickSkipSchedule() {
-      if (this.formPage === 'personal') {
-        this.$router.push({
-          name: 'shop-product-course-schedule-personal',
-          query: this.query
-        })
-      } else if (this.formPage === 'personal-reserve-table') {
-        this.$router.push({
-          name: 'shop-product-course-schedule-personal-personal-reserve-table',
-          query: this.query
-        })
-      }
+      this.$router.go(-1)
     },
     onClickDeleteSchedule(scheduleInfo) {
       this.$confirm({
