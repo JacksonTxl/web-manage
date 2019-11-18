@@ -18,7 +18,7 @@
                 </span>
               </a-input>
             </st-form-item>
-            <st-form-item label="选择储值卡" require>
+            <st-form-item label="选择储值卡" required>
               <a-select
                 showSearch
                 @change="changeSelect"
@@ -68,7 +68,12 @@
         </a-row>
         <a-row :gutter="8">
           <a-col :span="11">
-            <st-form-item label="活动时间" required>
+            <st-form-item
+              label="活动时间"
+              :help="errTips"
+              :validateStatus="helpShow ? 'error' : ''"
+              required
+            >
               <st-range-picker
                 :disabledDays="180"
                 :value="selectTime"
@@ -111,13 +116,19 @@
                 活动库存
                 <st-help-tooltip id="TBPTXJ003" />
               </template>
-              <a-checkbox @change="checkBox" :checked="!!limitStock">
+              <a-checkbox
+                @change="checkBox"
+                :disabled="
+                  (isEdit && limitStock) || activityState >= ACTIVITY_STATUS.END
+                "
+                :checked="limitStock"
+              >
                 限制库存
               </a-checkbox>
               <st-input-number
                 v-decorator="decorators.stock_total"
                 :min="0"
-                :disabled="isEdit && activityState >= ACTIVITY_STATUS.NO_START"
+                :disabled="isEdit && activityState >= ACTIVITY_STATUS.END"
                 style="width: 200px;"
               ></st-input-number>
             </st-form-item>
@@ -139,28 +150,34 @@
           <a-col :span="10">
             <st-form-item label="发布状态" required>
               <a-radio-group
-                :defaultValue="publishedType || 1"
+                :defaultValue="publishedType || RELEASE_SRTATUS.PROMPTLY"
                 v-model="publishedType"
-                :disabled="isEdit && activityState > ACTIVITY_STATUS.PUBLISHER"
+                :disabled="isEdit && activityState > RELEASE_SRTATUS.PUBLISHER"
               >
-                <a-radio :value="1">立即发布</a-radio>
-                <a-radio :value="2">暂不发布</a-radio>
-                <a-radio :value="3">定时发布</a-radio>
+                <a-radio :value="RELEASE_SRTATUS.PROMPTLY">立即发布</a-radio>
+                <a-radio :value="RELEASE_SRTATUS.TEMPORARILY">暂不发布</a-radio>
+                <a-radio :value="RELEASE_SRTATUS.TIMING">定时发布</a-radio>
               </a-radio-group>
             </st-form-item>
-            <st-form-item label="发布时间" required v-if="publishedType === 3">
+            <st-form-item
+              label="发布时间"
+              required
+              :help="errText"
+              :validateStatus="showHelp ? 'error' : ''"
+              v-if="publishedType === RELEASE_SRTATUS.TIMING"
+            >
               <a-date-picker
-                @change="changeTime"
-                :showTime="{ format: 'HH:mm' }"
                 :disabledDate="disabledDate"
+                :showTime="{ format: 'HH:mm' }"
                 format="YYYY-MM-DD HH:mm"
+                v-model="publishTime"
               />
             </st-form-item>
           </a-col>
         </a-row>
       </st-form>
       <div slot="actions">
-        <st-button type="primary">
+        <st-button @click="onSubmit" type="primary">
           确 定
         </st-button>
       </div>
@@ -174,7 +191,10 @@ import { AddMemberService } from './add-member.service'
 import { AddStoredService } from './add-stored.service'
 import { columnsGroupStored, ruleOptions } from './add-stored.config'
 import moment, { months } from 'moment'
-import { ACTIVITY_STATUS } from '@/constants/marketing/group-buy'
+import {
+  ACTIVITY_STATUS,
+  RELEASE_SRTATUS
+} from '@/constants/marketing/group-buy'
 
 export default {
   // name: PageBrandMarketingGroupAddStored,
@@ -183,13 +203,14 @@ export default {
   },
   serviceInject() {
     return {
-      AddCopy: AddMemberService,
-      Add: AddStoredService
+      Add: AddMemberService,
+      AddSotred: AddStoredService
     }
   },
   rxState() {
     return {
-      loading$: this.Add.loading$
+      loading: this.Add.loading$,
+      list: this.AddSotred.list$
     }
   },
   components: {
@@ -203,10 +224,6 @@ export default {
     info: {
       type: Object,
       default: () => {}
-    },
-    list: {
-      type: Array,
-      default: () => {}
     }
   },
   data() {
@@ -216,13 +233,17 @@ export default {
       form,
       decorators,
       columnsGroupStored,
-      activityName: '',
+      activityName: '', // 活动名称
       publishedType: 1, // @parmas=0 立即发布；@parmas=1 暂不发布； @parmas=3 定时发布
-      limitStock: 0,
-      rangeTime: [],
+      limitStock: true, // 是否限制库存
+      publishTime: null, //
       activityState: Number, // 当前活动活动状态
       storedId: '', // 回显下拉选中product
       currentStored: [], // 当前下拉选中详细
+      errTips: '', // 活动时间错误提示
+      errText: '', // 发布时间错误提示
+      helpShow: false,
+      showHelp: false,
       selectTime: {
         startTime: {
           showTime: false,
@@ -243,7 +264,9 @@ export default {
           disabledDate: this.disabledDate
         }
       },
-      ACTIVITY_STATUS
+      ACTIVITY_STATUS,
+      RELEASE_SRTATUS,
+      shopList: null
     }
   },
   mounted() {
@@ -252,11 +275,8 @@ export default {
     }
   },
   methods: {
-    changeTime(val) {
-      console.log(val)
-    },
     getShopId(shopId) {
-      console.log(shopId)
+      this.shopList = shopId
     },
     changeSelect(id) {
       this.list.filter(item => {
@@ -269,13 +289,67 @@ export default {
       this.activityName = e.target.value
     },
     checkBox(e) {
-      console.log(e.target.checked)
+      this.limitStock = e.target.checked
     },
     disabledDate(current) {
       return (
         current &&
         current.format('YYYY-MM-DD HH:mm') < moment().format('YYYY-MM-DD HH:mm')
       )
+    },
+    onSubmit() {
+      this.form.validate().then(values => {
+        if (
+          !this.selectTime.startTime.value ||
+          !this.selectTime.endTime.value
+        ) {
+          this.errTips = '请选择活动时间'
+          this.helpShow = true
+          return
+        }
+        if (
+          !this.publishTime &&
+          this.publishedType === this.RELEASE_SRTATUS.TIMING
+        ) {
+          this.errText = '请选择发布时间'
+          this.showHelp = true
+          return
+        }
+        let tmpList = [
+          {
+            sku_id: this.currentStored[0].id,
+            group_price: this.currentStored[0].group_price
+          }
+        ]
+        let params = {
+          product_type: 2,
+          activity_name: values.activityName,
+          product_id: this.storedId,
+          sku: tmpList,
+          start_time: moment(this.selectTime.startTime.value).format(
+            'YYYY-MM-DD HH:mm'
+          ),
+          end_time: moment(this.selectTime.endTime.value).format(
+            'YYYY-MM-DD HH:mm'
+          ),
+          group_sum: this.group_price,
+          valid_time: values.valid_time,
+          is_limit_stock: this.limitStock,
+          stock_total: values.stock_total,
+          shop_ids: this.shopList,
+          published_type: this.publishedType,
+          published_time: moment(this.publishTime).format('YYYY-MM-DD HH:mm')
+        }
+        if (!this.isEdit) {
+          this.Add.addGroup(params).subscribe(res => {
+            console.log(params, res, '这是添加返回的数据')
+          })
+        } else {
+          this.Add.editGroup(params).subscribe(res => {
+            console.log(params, res, '这是编辑返回的数据')
+          })
+        }
+      })
     },
     setFieldsValue() {
       this.activityName = this.info.activity_name
@@ -285,7 +359,7 @@ export default {
       this.activityState = this.info.activity_state[0].id
       this.storedId = this.info.product.id
       this.currentStored = this.info.sku
-      this.limitStock = this.info.is_limit_stock
+      this.limitStock = this.info.is_limit_stock === 1
       this.selectTime.startTime.disabled =
         this.activityState > this.ACTIVITY_STATUS.PUBLISHER
       this.form.setFieldsValue({
