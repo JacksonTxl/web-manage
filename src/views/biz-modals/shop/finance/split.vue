@@ -204,10 +204,9 @@ export default {
       }
 
       delete record.edit
-      record.split_money = (
-        (+record.split_ratio / 100) *
-        +this.info.actual_price
-      ).toFixed(1)
+      let splite_money = (+record.split_ratio / 100) * +this.info.actual_price
+      splite_money = Math.floor(splite_money * 10) / 10
+      record.split_money = splite_money
       this.info.split_items.splice(0, 1, record)
       const newRecord = {
         edit: this.SPLIT.EDIT_TYPE_3,
