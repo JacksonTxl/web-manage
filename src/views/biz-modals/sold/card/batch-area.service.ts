@@ -27,7 +27,7 @@ export class BatchAreaService {
   }
   @Effect()
   setCardVip(params: CardVipInput) {
-    return this.cardApi.setCardVipArea(params)
+    return this.cardApi.setCardVipAreaBatch(params)
   }
   init(params: any) {
     return anyAll(this.fetchCardNum(params), this.getVips())

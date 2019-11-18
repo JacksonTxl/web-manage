@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import { RouteService } from '@/services/route.service'
 import { BatchAreaService } from './batch-area.service'
 import { BATCH_TYPE, BATCH_INFO } from '@/constants/common/batch-operation'
 import { cloneDeep } from 'lodash-es'
@@ -73,14 +74,16 @@ export default {
   },
   serviceInject() {
     return {
+      routeService: RouteService,
       batchAreaService: BatchAreaService
     }
   },
   rxState() {
     return {
+      query: this.routeService.query$,
       vips: this.batchAreaService.vips$,
       loading: this.batchAreaService.loading$,
-      count: this.givingService.count$
+      count: this.batchAreaService.count$
     }
   },
   data() {
@@ -98,7 +101,7 @@ export default {
     }
   },
   mounted() {
-    this.batchAreaService.getVips().subscribe()
+    this.batchAreaService.init(this.query).subscribe()
   },
   computed: {
     helpText() {
@@ -119,8 +122,10 @@ export default {
     onSubmit() {
       this.batchAreaService
         .setCardVip({
-          id: this.id,
-          vip_id: this.cardVip
+          batch_type: this.batch_type,
+          sold_ids: this.id,
+          vip_ids: this.cardVip,
+          conditions: this.query
         })
         .subscribe(res => {
           this.show = false

@@ -180,6 +180,7 @@ import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './member.config'
 import SoldCardArea from '@/views/biz-modals/sold/card/area'
+import SoldCardBatchArea from '@/views/biz-modals/sold/card/batch-area'
 import SoldCardFreeze from '@/views/biz-modals/sold/card/freeze'
 import SoldCardGiving from '@/views/biz-modals/sold/card/giving'
 import SoldCardRefund from '@/views/biz-modals/sold/card/refund'
@@ -208,7 +209,8 @@ export default {
     SoldCardUpgradeMember,
     SoldDealGatheringTip,
     SoldDealGathering,
-    CommonTaskSuccessTip
+    CommonTaskSuccessTip,
+    SoldCardBatchArea
   },
   serviceInject() {
     return {
@@ -435,14 +437,13 @@ export default {
     // 批量变更vip入场区域
     onAreas() {
       this.$modalRouter.push({
-        name: 'sold-card-area',
+        name: 'sold-card-batch-area',
         props: {
           id: this.selectedRowKeys
         },
         on: {
           success: () => {
-            this.$router.reload()
-            this.onClear()
+            this.successTip()
           }
         }
       })

@@ -170,6 +170,12 @@ export class CardApi extends Api {
     return this.http.put(`/v1/sold/cards/member/vip`, { params })
   }
   /**
+   * 售出 会员卡批量修改vip区域
+   */
+  setCardVipAreaBatch(params: CardVipInput) {
+    return this.http.post(`/v1/sold/cards/batch/vip_area`, { params })
+  }
+  /**
    * 售出 会员卡 设置有效日期
    */
   setCardSettingTime(params: CardSettingTimeInput, id: string) {
