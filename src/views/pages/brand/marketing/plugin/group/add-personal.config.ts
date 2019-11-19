@@ -15,6 +15,17 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
+    activity_search: {
+      rules: [
+        {
+          validator: (field: any, value: any, values: any) => {
+            if (!value) {
+              return '请填写选择课程'
+            }
+          }
+        }
+      ]
+    },
     group_hour: {
       rules: [
         {

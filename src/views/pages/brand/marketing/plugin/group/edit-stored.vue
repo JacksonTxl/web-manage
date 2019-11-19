@@ -1,5 +1,5 @@
 <template>
-  <stored-card :isEdit="true" :info="info.info"></stored-card>
+  <stored-card :isEdit="true" :list="list.list" :info="info.info"></stored-card>
 </template>
 
 <script>
@@ -9,13 +9,17 @@ export default {
   // name: PageBrandMarketingGroupEditStored,
   serviceInject() {
     return {
-      editStoredService: EditStoredService
+      edit: EditStoredService
     }
   },
   rxState() {
     return {
-      info: this.editStoredService.info$
+      info: this.edit.info$,
+      list: this.edit.list$
     }
+  },
+  mounted() {
+    console.log(this.list)
   },
   components: {
     storedCard

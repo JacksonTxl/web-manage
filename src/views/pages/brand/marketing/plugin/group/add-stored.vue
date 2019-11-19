@@ -19,16 +19,20 @@
               </a-input>
             </st-form-item>
             <st-form-item label="选择储值卡" required>
+              <a-input
+                type="hidden"
+                v-decorator="decorators.depositId"
+              ></a-input>
               <a-select
                 showSearch
                 @change="changeSelect"
                 placeholder="请选择储值卡"
-                v-model="storedId"
+                v-model="depositId"
                 :disabled="isEdit && activityState >= ACTIVITY_STATUS.NO_START"
               >
                 <a-select-option
                   :value="item.id"
-                  v-for="(item, index) in list"
+                  v-for="(item, index) in depositList"
                   :key="index"
                 >
                   {{ item.product_name }}
@@ -74,6 +78,7 @@
               :validateStatus="helpShow ? 'error' : ''"
               required
             >
+              <a-input type="hidden" v-></a-input>
               <st-range-picker
                 :disabledDays="180"
                 :value="selectTime"
@@ -137,13 +142,22 @@
         </a-row>
         <a-row :gutter="8">
           <a-col :span="16">
-            <st-form-item label="选择门店" :class="basic('shop')" required>
+            <st-form-item
+              :class="basic('shop')"
+              :help="shopErrText"
+              :validateStatus="shopHelp ? 'error' : ''"
+              required
+            >
+              <template slot="label">
+                选择门店
+                <st-help-tooltip id="TBPTXJ004" />
+              </template>
               <div :class="basic('shop--container')">
                 <st-t4 :class="basic('shop--set')">
                   设置支持会员卡售卖场馆范围
                 </st-t4>
                 <select-shop
-                  :shopIds="info.support_shop"
+                  :shopIds="info ? info.support_shop : []"
                   :groupParams="groupParams"
                   @change="getShopId"
                 ></select-shop>
@@ -215,7 +229,7 @@ export default {
   rxState() {
     return {
       loading: this.Add.loading$,
-      list: this.AddSotred.list$
+      depositList: this.AddSotred.list$
     }
   },
   components: {
@@ -228,6 +242,10 @@ export default {
     },
     info: {
       type: Object,
+      default: () => {}
+    },
+    list: {
+      type: Array,
       default: () => {}
     }
   },
@@ -247,12 +265,14 @@ export default {
       limitStock: true, // 是否限制库存
       publishTime: null, //
       activityState: Number, // 当前活动活动状态
-      storedId: '', // 回显下拉选中product
+      depositId: '', // 回显下拉选中product
       currentStored: [], // 当前下拉选中详细
       errTips: '', // 活动时间错误提示
       errText: '', // 发布时间错误提示
       helpShow: false,
       showHelp: false,
+      shopErrText: '',
+      shopHelp: false,
       shopIds: [],
       selectTime: {
         startTime: {
@@ -282,15 +302,25 @@ export default {
   mounted() {
     if (this.isEdit) {
       this.setFieldsValue()
-      console.log(this.shopList)
+      this.depositList = this.list
     }
   },
   methods: {
+    changeTime(e) {
+      console.log(e)
+    },
     getShopId(shopId) {
       this.shopList = shopId
+      if (this.shopList.length > 1) {
+        this.shopHelp = false
+        this.shopErrText = ''
+      }
     },
     changeSelect(id) {
-      this.list.filter(item => {
+      this.form.setFieldsValue({
+        depositId: id
+      })
+      this.depositList.filter(item => {
         if (item.id == id) {
           this.currentStored = item.product_spec
         }
@@ -310,23 +340,27 @@ export default {
       )
     },
     onSubmit() {
+      let formFlag = false
+      if (!this.selectTime.startTime.value || !this.selectTime.endTime.value) {
+        this.errTips = '请选择活动时间'
+        this.helpShow = true
+        formFlag = true
+      }
+      if (
+        !this.publishTime &&
+        this.publishedType === this.RELEASE_SRTATUS.TIMING
+      ) {
+        this.errText = '请选择发布时间'
+        this.showHelp = true
+        formFlag = true
+      }
+      if (!this.shopList.length) {
+        this.shopErrText = '请选择门店'
+        this.shopHelp = true
+        formFlag = true
+      }
       this.form.validate().then(values => {
-        if (
-          !this.selectTime.startTime.value ||
-          !this.selectTime.endTime.value
-        ) {
-          this.errTips = '请选择活动时间'
-          this.helpShow = true
-          return
-        }
-        if (
-          !this.publishTime &&
-          this.publishedType === this.RELEASE_SRTATUS.TIMING
-        ) {
-          this.errText = '请选择发布时间'
-          this.showHelp = true
-          return
-        }
+        if (formFlag) return
         let tmpList = [
           {
             sku_id: this.currentStored[0].id,
@@ -336,7 +370,7 @@ export default {
         let params = {
           product_type: 2,
           activity_name: values.activityName,
-          product_id: this.storedId,
+          product_id: this.depositId,
           sku: tmpList,
           start_time: moment(this.selectTime.startTime.value).format(
             'YYYY-MM-DD HH:mm'
@@ -369,10 +403,10 @@ export default {
       this.selectTime.startTime.value = moment(this.info.start_time)
       this.selectTime.endTime.value = moment(this.info.end_time)
       this.activityState = this.info.activity_state[0].id
-      this.storedId = this.info.product.id
+      this.depositId = this.info.product.id
       this.currentStored = this.info.sku
       this.limitStock = this.info.is_limit_stock === 1
-      this.shopList = this.info.support_shop
+      this.shopList = this.info.support_shop || []
       this.selectTime.startTime.disabled =
         this.activityState > this.ACTIVITY_STATUS.PUBLISHER
       this.form.setFieldsValue({
