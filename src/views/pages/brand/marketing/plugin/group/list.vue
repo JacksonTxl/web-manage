@@ -95,8 +95,8 @@
               <a @click="onGeneralize(record)">
                 推广
               </a>
-              <a @click="onStop(record)">
-                结束
+              <a @click="onEdit(record)">
+                编辑
               </a>
               <a @click="onStop(record)">
                 删除
@@ -226,7 +226,14 @@ export default {
         })
       }
     },
-    // 结束活动
+    onEdit(record) {
+      console.log(record.id)
+      this.$router.push({
+        path: '/brand/marketing/plugin/group/add-member',
+        query: { id: record.id }
+      })
+    },
+    // 删除活动
     onStop(record) {
       let that = this
       this.$confirm({
@@ -234,9 +241,10 @@ export default {
         content:
           '结束后当用户进入投放该优惠券的活动时，将无法领取该优惠券。确认要结束？',
         onOk() {
-          that.listService.stopMarketingCoupon(record.id).subscribe(res => {
-            that.$router.reload()
-          })
+          // 调取接口
+          // that.listService.stopMarketingCoupon(record.id).subscribe(res => {
+          //   that.$router.reload()
+          // })
         },
         onCancel() {}
       })
@@ -244,12 +252,6 @@ export default {
     // 新增活动
     onAddGroup() {
       this.$router.push({ path: '/brand/marketing/plugin/group/choose' })
-    },
-    goReceive(record) {
-      // this.$router.push({
-      //   path: '/brand/marketing/plugin/coupon/receive',
-      //   query: { id: record.id }
-      // })
     }
   },
   //  过滤器

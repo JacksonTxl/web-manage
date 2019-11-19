@@ -88,13 +88,13 @@ export const ruleOptions = (vm: any) => {
 export const cardColumns = [
   {
     title: '教练等级',
-    dataIndex: 'spec',
+    dataIndex: 'level',
     width: '22%',
     align: 'center'
   },
   {
     title: '课时',
-    dataIndex: 'price',
+    dataIndex: 'hour',
     align: 'center',
     width: '22%'
   },

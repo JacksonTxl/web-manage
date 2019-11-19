@@ -4,18 +4,18 @@
  */
 const { wrapper } = require('webpack-mocker-api')
 const zlxMock = require('./zlx/index.js')
-const llfMock = require('./llf/index.js')
+// const llfMock = require('./llf/index.js')
 const ls = require('./ls/index.js')
 
 const lyjMock = require('./lyj/index.js')
 const lyMock = require('./ly/index.js')
 const mockerApis = Object.assign(
   {},
-  // lyjMock
+  lyjMock,
   // zlxMock,
-  llfMock,
+  // llfMock,
   lyMock,
-  // ls
+  ls
 )
 
 module.exports = wrapper(mockerApis)
