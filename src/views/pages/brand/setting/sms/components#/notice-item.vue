@@ -267,8 +267,8 @@
             </div>
           </div>
           <div :class="bComponent('text')" style="padding-left:0">
-            <span class="color-primary mg-r12" @click="cancel">取消</span>
-            <span class="color-primary" @click="save">保存</span>
+            <span class="btn color-primary mg-r12" @click="cancel">取消</span>
+            <span class="btn color-primary" @click="save">保存</span>
           </div>
         </div>
         <div class="shadow-bottom"></div>
@@ -402,6 +402,7 @@ export default {
       this.params.receiver = this.info.receiver
     }
     this.params.notify_time = this.info.notify_time.value
+    this.params.notify_number = this.info.notify_number
     this.params.msg_preffix = this.info.msg_preffix
     this.params.msg_suffix = this.info.msg_suffix
     this.params.custom_phone = this.info.custom_phone.join(' ')
@@ -502,6 +503,7 @@ export default {
         receiver,
         course_type
       })
+      console.log(this.params)
       this.$emit('editInfo', para)
       this.isShowEdit = 0
     }
