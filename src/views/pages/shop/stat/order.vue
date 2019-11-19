@@ -22,7 +22,6 @@
 </template>
 <script>
 import { OrderService } from './order.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './order.config.ts'
 export default {
@@ -32,13 +31,11 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       orderService: OrderService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       loading: this.orderService.loading$,
       list: this.orderService.list$,
       page: this.orderService.page$

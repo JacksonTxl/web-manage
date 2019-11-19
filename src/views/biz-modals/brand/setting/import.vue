@@ -8,7 +8,12 @@
   >
     <section :class="b()">
       <label :class="b('tip')">数据处理方式:</label>
-      <div :class="b('content')">
+      <div v-if="isType" :class="b('content')">
+        <p>新增数据</p>
+        <p>针对不重复数据，进行新增，重复数据导入失败</p>
+        <p>若一张表格合同编号出现重复，导入失败</p>
+      </div>
+      <div v-else :class="b('content')">
         <p>新增并覆盖原始数据</p>
         <p>针对不重复的数据，进行新增</p>
         <p>针对重复数据，进行覆盖</p>
@@ -83,10 +88,21 @@ export default {
       progress: 0,
       isPrivate: true,
       fileList: [],
-      fileType: 'xlsx, csv'
+      fileType: ['xlsx']
     }
   },
-  created() {},
+  computed: {
+    isType() {
+      const types = [
+        this.IMPORT.SOLD_MEMBER_CARD,
+        this.IMPORT.SOLD_DEPOSIT,
+        this.IMPORT.SOLD_PERSONAL_COURSE,
+        this.IMPORT.SOLD_PACKAGE,
+        this.IMPORT.SOLD_LEASE
+      ]
+      return types.includes(this.type)
+    }
+  },
   methods: {
     onSubmit() {
       const params = {
@@ -139,7 +155,8 @@ export default {
     fileCheck(data) {
       const { size, name } = data.file
       const { sizeLimit, fileType } = this
-      if (!fileType.includes(name.split('.')[1])) {
+      const names = name.split('.')
+      if (names.length <= 0 || !fileType.includes(names[names.length - 1])) {
         return {
           isValid: false,
           msg: `请上传${fileType}格式的文件`

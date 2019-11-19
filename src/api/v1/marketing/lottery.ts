@@ -92,7 +92,7 @@ export class LotteryApi extends Api {
   stopActivity(id: string) {
     return this.http.put('/v1/plugin/wheel/end?id=' + id)
   }
-  // 优惠卷列表
+  // 优惠劵列表
   getCouponList(coupon_id: string) {
     return this.http.get('/v1/plugin/wheel/coupon?coupon_id=' + coupon_id)
   }
@@ -101,13 +101,13 @@ export class LotteryApi extends Api {
     return this.http.get('/v1/plugin/wheel/prize_info')
   }
   /**
-   * 获取优惠券海报信息
+   * 获取大转盘海报信息
    */
   getPosterInfo(id: number) {
     return this.http.get(`/v1/plugin/wheel/poster?id=` + id)
   }
   /**
-   * 获取优惠券小程序码
+   * 获取大转盘小程序码
    */
   getQrcode(id: number) {
     return this.http.get(`/v1/plugin/wheel/qrcode?id=` + id)

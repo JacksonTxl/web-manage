@@ -125,7 +125,6 @@
 <script>
 import { InfoService } from './info.service'
 import { forEach } from 'lodash-es'
-import { RouteService } from '@/services/route.service'
 import StaffBindEntityCard from '@/views/biz-modals/staff/bind-entity-card'
 import StaffRePassword from '@/views/biz-modals/staff/re-password'
 import StaffReinstatement from '@/views/biz-modals/staff/reinstatement'
@@ -143,15 +142,13 @@ export default {
   },
   serviceInject() {
     return {
-      infoService: InfoService,
-      routeService: RouteService
+      infoService: InfoService
     }
   },
   rxState() {
     return {
       info: this.infoService.info$,
-      auth: this.infoService.auth$,
-      query: this.routeService.query$
+      auth: this.infoService.auth$
     }
   },
   data() {
@@ -159,23 +156,38 @@ export default {
       identity: [],
       basic: {
         label: '员工资料',
-        route: { name: 'brand-staff-info-basic', query: { id: this.query.id } }
+        route: {
+          name: 'brand-staff-info-basic',
+          query: { id: this.$searchQuery.id }
+        }
       },
       course: {
         label: '上课记录',
-        route: { name: 'brand-staff-info-course', query: { id: this.query.id } }
+        route: {
+          name: 'brand-staff-info-course',
+          query: { id: this.$searchQuery.id }
+        }
       },
       follow: {
         label: '跟进记录',
-        route: { name: 'brand-staff-info-follow', query: { id: this.query.id } }
+        route: {
+          name: 'brand-staff-info-follow',
+          query: { id: this.$searchQuery.id }
+        }
       },
       sold: {
         label: '售卖订单',
-        route: { name: 'brand-staff-info-sold', query: { id: this.query.id } }
+        route: {
+          name: 'brand-staff-info-sold',
+          query: { id: this.$searchQuery.id }
+        }
       },
       member: {
         label: '服务课程',
-        route: { name: 'brand-staff-info-member', query: { id: this.query.id } }
+        route: {
+          name: 'brand-staff-info-member',
+          query: { id: this.$searchQuery.id }
+        }
       }
     }
   },

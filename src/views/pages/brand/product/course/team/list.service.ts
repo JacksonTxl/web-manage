@@ -1,11 +1,10 @@
-import { CourseApi } from '@/api/v1/setting/course'
 import { ShopApi } from '@/api/v1/shop'
 import { Controller, ServiceRoute, Injectable } from 'vue-service-app'
 import { State } from 'rx-state'
 import { tap, map } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
-import { RedirectService } from '@/services/redirect.service'
+import { CourseApi } from '@/api/v1/special/course'
 
 @Injectable()
 export class ListService implements Controller {
@@ -15,8 +14,7 @@ export class ListService implements Controller {
   constructor(
     private shopApi: ShopApi,
     private courseApi: CourseApi,
-    private authService: AuthService,
-    private redirectService: RedirectService
+    private authService: AuthService
   ) {}
   getCategoryList() {
     return this.courseApi.getCourseCategoryList({}).pipe(

@@ -21,7 +21,7 @@ export class PersonalService implements Controller {
   }
 
   beforeEach(to: ServiceRoute, form: ServiceRoute) {
-    return forkJoin(this.reserveService.getList(to.query))
+    return forkJoin(this.reserveService.getList(to.meta.query))
   }
   beforeRouteEnter(to: ServiceRoute, form: ServiceRoute) {
     return this.commonService.getCoachList()

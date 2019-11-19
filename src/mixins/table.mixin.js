@@ -65,6 +65,9 @@ export default {
     }
   },
   computed: {
+    finalSearchQuery() {
+      return this.query || this.$searchQuery
+    },
     // 多选是否至少勾选一项
     isSelectedEnabled() {
       return this.selectedRowKeys.length > 0
@@ -80,7 +83,7 @@ export default {
       return _field
     },
     prevPage() {
-      return this.$searchQuery[this.currentPageField]
+      return this.finalSearchQuery[this.currentPageField]
     }
   },
   methods: {
@@ -95,7 +98,7 @@ export default {
       this.onSelectionReset()
       this.$router.push({
         query: {
-          ...this.$searchQuery,
+          ...this.finalSearchQuery,
           [this.currentPageField]: 1
         }
       })
@@ -111,7 +114,7 @@ export default {
       }
       this.$router.push({
         query: {
-          ...this.$searchQuery,
+          ...this.finalSearchQuery,
           ...searchFieldsValue,
           [this.currentPageField]: 1
         }
@@ -125,7 +128,7 @@ export default {
       this.$router.push({
         query: {
           [this.currentPageField]: 1,
-          size: this.$searchQuery.size
+          size: this.finalSearchQuery.size
         }
       })
     },
@@ -136,7 +139,7 @@ export default {
       this.onSelectionReset()
       this.$router.push({
         query: {
-          ...this.$searchQuery,
+          ...this.finalSearchQuery,
           ...{ [key]: data },
           [this.currentPageField]: 1
         }
@@ -154,9 +157,9 @@ export default {
       this.$router.push({
         query: {
           [key]: data,
-          ...pick(this.$searchQuery, keepFields),
+          ...pick(this.finalSearchQuery, keepFields),
           [this.currentPageField]: 1,
-          size: this.$searchQuery.size
+          size: this.finalSearchQuery.size
         }
       })
     },
@@ -189,7 +192,7 @@ export default {
         pagination.current !== this.prevPage ? pagination.current : 1
       this.$router.push({
         query: {
-          ...this.$searchQuery,
+          ...this.finalSearchQuery,
           [this.currentPageField]: nextPage,
           size: pagination.pageSize,
           sort_by,

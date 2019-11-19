@@ -21,7 +21,7 @@
       <a-col :span="16" class="ta-r">
         <a-select
           class="mg-r8"
-          v-model="query.category_id"
+          v-model="$searchQuery.category_id"
           style="width: 160px"
           @change="onChange"
         >
@@ -43,12 +43,10 @@
 <script>
 import ShopTable from './list#/shop-table'
 import { ListService } from './list.service'
-import { RouteService } from '@/services/route.service'
 export default {
   name: 'TeamCourseList',
   serviceInject() {
     return {
-      routeService: RouteService,
       listService: ListService
     }
   },
@@ -57,8 +55,6 @@ export default {
   },
   rxState() {
     return {
-      query: this.routeService.query$,
-      shopsOptions: this.listService.shopSelectOptions$,
       categoryList: this.listService.categoryList$,
       auth: this.listService.auth$
     }
@@ -76,7 +72,7 @@ export default {
       this.$router.push({ query: { course_name: this.course_name } })
     },
     onChange() {
-      this.$router.push({ query: this.query })
+      this.$router.push({ query: this.$searchQuery })
     },
     deleteCourse(course) {
       this.listService.deleteCourse(course.id).subscribe(() => {
@@ -85,7 +81,7 @@ export default {
     }
   },
   mounted() {
-    this.query.category_id = -1
+    this.$searchQuery.category_id = -1
   }
 }
 </script>

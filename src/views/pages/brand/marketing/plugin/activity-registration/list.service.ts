@@ -12,7 +12,9 @@ export class ListService implements Controller {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
+  info$ = new State({})
   pluginInfo$ = new State({})
+  brand$ = this.userService.brand$
   auth$ = this.authService.authMap$({
     add: 'brand:activity:sign_up|add',
     checkIn: 'brand:activity:sign_up|check_in'
@@ -44,6 +46,13 @@ export class ListService implements Controller {
         })
         this.SET_LIST(list)
         this.page$.commit(() => res.page)
+      })
+    )
+  }
+  getSharePosterInfo(activity_id: number) {
+    return this.signUpApi.getSharePosterInfo(activity_id).pipe(
+      tap((res: any) => {
+        this.info$.commit(() => res.info)
       })
     )
   }

@@ -43,8 +43,6 @@
   </div>
 </template>
 <script>
-import { RouteService } from '@/services/route.service'
-
 import { NoticeService } from './notice.service'
 import { thsMember, thsShop } from './notice.config'
 import NoticeItem from './components#/notice-item'
@@ -57,13 +55,11 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       noticeService: NoticeService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       list: this.noticeService.list$
     }
   },

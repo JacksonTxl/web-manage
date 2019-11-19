@@ -129,7 +129,6 @@
 <script>
 import { columns } from './staff-table.config.ts'
 import tableMixin from '@/mixins/table.mixin'
-import { RouteService } from '@/services/route.service'
 import StaffBindEntityCard from '@/views/biz-modals/staff/bind-entity-card'
 import StaffDelete from '@/views/biz-modals/staff/delete'
 import StaffRePassword from '@/views/biz-modals/staff/re-password'
@@ -152,14 +151,10 @@ export default {
     StaffUpdateStaffPosition
   },
   serviceInject() {
-    return {
-      routerService: RouteService
-    }
+    return {}
   },
   rxState() {
-    return {
-      query: this.routerService.query$
-    }
+    return {}
   },
   props: {
     staffList: {

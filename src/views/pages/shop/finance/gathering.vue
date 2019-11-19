@@ -2,7 +2,7 @@
   <st-panel app initial :tabs="authTabs">
     <div slot="actions">
       <st-input-search
-        v-model="query.keyword"
+        v-model="$searchQuery.keyword"
         @search="onSearchCardName"
         placeholder="请输入会员姓名或手机号查找"
         :class="b('search')"
@@ -12,7 +12,6 @@
   </st-panel>
 </template>
 <script>
-import { RouteService } from '@/services/route.service'
 import { GatheringService } from './gathering.service'
 export default {
   name: 'PageShopSoldCard',
@@ -21,20 +20,18 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       gatheringService: GatheringService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       authTabs: this.gatheringService.authTabs$
     }
   },
   methods: {
     onSearchCardName() {
       this.$router.push({
-        query: { ...this.query, keyword: this.query.keyword }
+        query: { ...this.$searchQuery, keyword: this.$searchQuery.keyword }
       })
     }
   }

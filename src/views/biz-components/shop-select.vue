@@ -2,38 +2,53 @@
   <a-select
     :mode="mode"
     allowClear
-    :placeholder="placeholder || '全部门店'"
-    :value="value"
+    :placeholder="placeholder || '请选择全部门店'"
+    :value="cValue"
+    :style="{ width }"
     :defaultValue="defaultValue"
     :disabled="disabled"
     @change="onChange"
-  >
-    <a-select-option
-      :value="shop.id"
-      v-for="shop in shopOptions"
-      :key="shop.id"
-    >
-      {{ shop.shop_name }}
-    </a-select-option>
-  </a-select>
+    :options="shopOptions"
+  />
 </template>
 
 <script>
-import { StaffApi } from '../../api/v1/staff'
+import { UserService } from '@/services/user.service'
 export default {
   model: {
     prop: 'value',
     event: 'change'
   },
   name: 'ShopSelect',
-  data() {
-    return {
-      shopOptions: []
-    }
-  },
   serviceInject() {
     return {
-      staffApi: StaffApi
+      userService: UserService
+    }
+  },
+  rxState() {
+    return {
+      shopList: this.userService.shopList$
+    }
+  },
+  computed: {
+    cValue: {
+      set(newValue) {
+        this.$emit('change', newValue)
+      },
+      get() {
+        return this.value || this.defaultValue
+      }
+    },
+    shopOptions() {
+      return [
+        { label: '全部门店', value: -1 },
+        ...this.shopList.map(item => {
+          return {
+            label: item.shop_name,
+            value: item.shop_id
+          }
+        })
+      ]
     }
   },
   props: {
@@ -45,6 +60,10 @@ export default {
     },
     useType: {
       type: String
+    },
+    width: {
+      type: String,
+      default: '150px'
     },
     value: {
       type: [Number, String, Array]
@@ -58,19 +77,7 @@ export default {
   methods: {
     onChange(value) {
       this.$emit('change', value)
-    },
-    getShopList() {
-      this.staffApi.getShopList().subscribe(res => {
-        this.shopOptions =
-          this.useType === 'form'
-            ? res.shops
-            : [{ id: -1, shop_name: '全部门店' }, ...res.shops]
-      })
-      console.log('getShopList', this.value)
     }
-  },
-  created() {
-    this.getShopList()
   }
 }
 </script>

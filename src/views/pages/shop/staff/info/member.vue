@@ -50,23 +50,20 @@
 <script>
 import { memberColums } from './columns.config'
 import { MemberService } from './member.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 
 export default {
   mixins: [tableMixin],
   serviceInject() {
     return {
-      service: MemberService,
-      routerService: RouteService
+      service: MemberService
     }
   },
   rxState() {
     return {
       memberInfo: this.service.memberInfo$,
       loading: this.service.loading$,
-      page: this.service.page$,
-      query: this.routerService.query$
+      page: this.service.page$
     }
   },
   data() {
@@ -76,7 +73,7 @@ export default {
   },
   computed: { memberColums },
   mounted() {
-    this.id = this.$route.meta.query.id
+    this.id = this.$searchQuery.id
   },
   methods: {
     goCourseDetai(e) {

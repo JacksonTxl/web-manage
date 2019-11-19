@@ -125,7 +125,6 @@
 </template>
 <script>
 import { InfoService } from './info.service'
-import { RouteService } from '@/services/route.service'
 import ShopStaffBindCard from '@/views/biz-modals/shop-staff/bind-card'
 import ShopStaffLeaveCurrentShop from '@/views/biz-modals/shop-staff/leave-current-shop'
 import ShopStaffRePassword from '@/views/biz-modals/shop-staff/re-password'
@@ -144,38 +143,51 @@ export default {
   },
   serviceInject() {
     return {
-      infoService: InfoService,
-      routeService: RouteService
+      infoService: InfoService
     }
   },
   rxState() {
     return {
       info: this.infoService.info$,
-      auth: this.infoService.auth$,
-      query: this.routeService.query$
+      auth: this.infoService.auth$
     }
   },
   data() {
     return {
       basic: {
         label: '员工资料',
-        route: { name: 'shop-staff-info-basic', query: { id: this.query.id } }
+        route: {
+          name: 'shop-staff-info-basic',
+          query: { id: this.$searchQuery.id }
+        }
       },
       course: {
         label: '上课记录',
-        route: { name: 'shop-staff-info-course', query: { id: this.query.id } }
+        route: {
+          name: 'shop-staff-info-course',
+          query: { id: this.$searchQuery.id }
+        }
       },
       follow: {
         label: '跟进记录',
-        route: { name: 'shop-staff-info-follow', query: { id: this.query.id } }
+        route: {
+          name: 'shop-staff-info-follow',
+          query: { id: this.$searchQuery.id }
+        }
       },
       sold: {
         label: '售卖订单',
-        route: { name: 'shop-staff-info-sold', query: { id: this.query.id } }
+        route: {
+          name: 'shop-staff-info-sold',
+          query: { id: this.$searchQuery.id }
+        }
       },
       member: {
         label: '服务课程',
-        route: { name: 'shop-staff-info-member', query: { id: this.query.id } }
+        route: {
+          name: 'shop-staff-info-member',
+          query: { id: this.$searchQuery.id }
+        }
       },
       tabList: []
     }

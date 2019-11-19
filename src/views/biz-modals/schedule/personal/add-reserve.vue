@@ -18,7 +18,10 @@
             :key="member.member_id"
             :value="+member.member_id"
           >
-            {{ member.member_name }}
+            <div class="st-form-table__add-option">
+              <span class="item-name">{{ member.member_name }}</span>
+              <span class="item-phone">{{ member.mobile }}</span>
+            </div>
           </a-select-option>
         </a-select>
       </st-form-item>
@@ -81,6 +84,7 @@
         <a-date-picker
           @change="onChangeDatePick"
           v-decorator="decorators.scheduling_id"
+          style="width:100%"
           :disabledDate="disabledDate"
         />
       </st-form-item>
@@ -89,6 +93,7 @@
           format="HH:mm"
           v-decorator="decorators.reserve_start_time"
           :disabledMinutes="disabledMinutes"
+          style="width:100%"
           :disabledHours="disabledHours"
         />
       </st-form-item>
@@ -100,21 +105,18 @@
 import { PersonalScheduleCommonService as CommonService } from '@/views/pages/shop/product/course/schedule/personal/service#/common.service'
 import { difference, cloneDeep } from 'lodash-es'
 import { PersonalScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/personal/service#/reserve.service'
-import { RouteService } from '@/services/route.service'
 import { ruleOptions } from './add-reserve.config'
 export default {
   name: 'AddReserve',
   serviceInject() {
     return {
       commonService: CommonService,
-      reserveService: ReserveService,
-      routeService: RouteService
+      reserveService: ReserveService
     }
   },
   rxState() {
     const cs = this.commonService
     return {
-      query: this.routeService.query$,
       courseCoachOptions: cs.courseCoachOptions$,
       consumeOptions: cs.consumeOptions$,
       memberOptions: cs.memberOptions$,

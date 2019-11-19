@@ -3,7 +3,7 @@
     <div slot="actions">
       <st-input-search
         placeholder="请输入流水号或订单号查找"
-        v-model="query.search_number"
+        v-model="$searchQuery.search_number"
         @search="onKeywordsSearch('search_number', $event)"
       />
     </div>
@@ -13,7 +13,6 @@
 <script>
 import { FlowService } from './flow.service'
 import tableMixin from '@/mixins/table.mixin'
-import { RouteService } from '../../../../services/route.service'
 
 export default {
   name: 'FinanceFlow',
@@ -23,14 +22,12 @@ export default {
   },
   serviceInject() {
     return {
-      flowService: FlowService,
-      routeService: RouteService
+      flowService: FlowService
     }
   },
   rxState() {
     return {
-      authTabs: this.flowService.authTabs$,
-      query: this.routeService.query$
+      authTabs: this.flowService.authTabs$
     }
   },
   data() {

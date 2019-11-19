@@ -10,7 +10,7 @@
             class="mg-r8"
             :defaultValue="-1"
             style="width: 160px"
-            v-model="query.shop_id"
+            v-model="$searchQuery.shop_id"
             @change="onSingleSearch('shop_id', $event)"
           >
             <a-select-option
@@ -24,7 +24,7 @@
           <a-select
             class="mg-r8"
             :defaultValue="-1"
-            v-model="query.category_id"
+            v-model="$searchQuery.category_id"
             style="width: 160px"
             @change="onSingleSearch('category_id', $event)"
           >
@@ -103,7 +103,6 @@
 </template>
 
 <script>
-import { RouteService } from '@/services/route.service'
 import { ShopService } from './shop.service'
 import { ListService } from '../list.service'
 import tableMixin from '@/mixins/table.mixin'
@@ -122,15 +121,13 @@ export default {
   serviceInject() {
     return {
       listService: ListService,
-      shopService: ShopService,
-      routeService: RouteService
+      shopService: ShopService
     }
   },
   rxState() {
     return {
       shopsOptions: this.listService.shopSelectOptions$,
       categoryList: this.listService.categoryList$,
-      query: this.routeService.query$,
       auth: this.shopService.auth$,
       list: this.shopService.list$,
       page: this.shopService.page$,

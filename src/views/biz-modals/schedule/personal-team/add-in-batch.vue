@@ -133,7 +133,6 @@ import { cloneDeep } from 'lodash-es'
 import { PersonalTeamScheduleCommonService as CommonService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/common.service'
 import { PersonalTeamScheduleScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/schedule.service'
 import { MessageService } from '@/services/message.service'
-import { RouteService } from '../../../../services/route.service'
 import { columns } from './add-in-batch.config'
 export default {
   name: 'AddCourseScheduleBatch',
@@ -141,7 +140,6 @@ export default {
     return {
       commonService: CommonService,
       scheduleService: ScheduleService,
-      routeService: RouteService,
       msg: MessageService
     }
   },

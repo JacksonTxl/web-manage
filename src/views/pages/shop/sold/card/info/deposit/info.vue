@@ -112,7 +112,6 @@
 </template>
 <script>
 import { InfoService } from './info.service'
-import { RouteService } from '@/services/route.service'
 import moment from 'moment'
 import SoldCardRefund from '@/views/biz-modals/sold/card/refund'
 import SoldCardTransfer from '@/views/biz-modals/sold/card/transfer'
@@ -128,14 +127,12 @@ export default {
   },
   serviceInject() {
     return {
-      infoService: InfoService,
-      routeService: RouteService
+      infoService: InfoService
     }
   },
   rxState() {
     return {
       info: this.infoService.info$,
-      query: this.routeService.query$,
       loading: this.infoService.loading$,
       pageAuthTabs: this.infoService.pageAuthTabs$,
       auth: this.infoService.auth$

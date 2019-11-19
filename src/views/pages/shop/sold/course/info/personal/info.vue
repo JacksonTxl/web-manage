@@ -17,7 +17,7 @@
             {
               if: auth['shop:sold:sold_personal_course|expire'],
               text: '延长有效期',
-              click: onActivated
+              click: onLease
             },
             {
               if: auth['shop:sold:sold_personal_course|frozen'],
@@ -144,7 +144,6 @@
 <script>
 import { InfoService } from './info.service'
 import moment from 'moment'
-import { RouteService } from '@/services/route.service'
 import SoldCourseCoach from '@/views/biz-modals/sold/course/coach'
 import SoldCourseFreeze from '@/views/biz-modals/sold/course/freeze'
 import SoldCourseRefund from '@/views/biz-modals/sold/course/refund'
@@ -169,14 +168,12 @@ export default {
   },
   serviceInject() {
     return {
-      infoService: InfoService,
-      routeService: RouteService
+      infoService: InfoService
     }
   },
   rxState() {
     return {
       personalInfo: this.infoService.personalInfo$,
-      query: this.routeService.query$,
       pageAuthTabs: this.infoService.pageAuthTabs$,
       auth: this.infoService.auth$
     }

@@ -159,7 +159,7 @@ export default {
       this.pageData.current = value.current
       this.pageData.pageSize = value.pageSize
       this.aService
-        .getMemberSideRecord(self.$route.query.id, {
+        .getMemberSideRecord(self.$searchQuery.id, {
           size: this.pageData.pageSize,
           page: this.pageData.current
         })
@@ -168,7 +168,7 @@ export default {
     onModalTest() {
       let self = this
       this.aService
-        .getMemberSideRecord(self.$route.query.id, {
+        .getMemberSideRecord(self.$searchQuery.id, {
           size: this.pageData.pageSize,
           page: this.pageData.current
         })

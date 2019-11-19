@@ -17,7 +17,7 @@
             :defaultValue="-1"
             class="mg-r8"
             style="width: 160px"
-            v-model="query.shop_id"
+            v-model="$searchQuery.shop_id"
             @change="onSingleSearch('shop_id', $event)"
             :options="shopsOptions"
           />
@@ -25,7 +25,7 @@
             class="mg-r8"
             :defaultValue="-1"
             placeholder="课程类型"
-            v-model="query.category_id"
+            v-model="$searchQuery.category_id"
             style="width: 160px"
             :options="categoryList"
             @change="onSingleSearch('category_id', $event)"
@@ -83,7 +83,6 @@
 
 <script>
 import { ShopService } from './shop.service'
-import { RouteService } from '@/services/route.service'
 import CourseTransfromBrandTeamCourse from '@/views/biz-modals/course/transfrom-brand-team-course'
 import { columns } from './shop.config'
 import tableMixin from '@/mixins/table.mixin'
@@ -92,15 +91,13 @@ export default {
   mixins: [tableMixin],
   serviceInject() {
     return {
-      shopService: ShopService,
-      routeService: RouteService
+      shopService: ShopService
     }
   },
   rxState() {
     return {
       shopsOptions: this.shopService.shopsOptions$,
       categoryList: this.shopService.categoryList$,
-      query: this.routeService.query$,
       auth: this.shopService.auth$,
       list: this.shopService.list$,
       page: this.shopService.page$,
@@ -124,7 +121,7 @@ export default {
       })
     },
     onChange() {
-      this.$router.push({ query: { ...this.query, course_name: '' } })
+      this.$router.push({ query: { ...this.$searchQuery, course_name: '' } })
     },
     onClickCourseInfo(id) {
       this.$router.push({

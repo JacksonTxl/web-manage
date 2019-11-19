@@ -6,7 +6,7 @@
           style="width: 160px"
           class="mg-r8"
           :defaultValue="-1"
-          v-model="query.shop_id"
+          v-model="$searchQuery.shop_id"
           @change="onSingleSearch('shop_id', $event)"
         />
         <a-range-picker
@@ -16,7 +16,7 @@
         />
       </a-col>
       <a-col :lg="2"></a-col>
-      <a-col :lg="6">
+      <a-col :lg="6" class="text-right">
         <st-input-search
           placeholder="请输入用户姓名进行查询"
           @search="onSingleSearch('member_name', $event)"
@@ -46,22 +46,19 @@
 import { FollowService } from './follow.service'
 import { followColumns } from './columns.config'
 import ShopSelect from '@/views/biz-components/shop-select'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 
 export default {
   mixins: [tableMixin],
   serviceInject() {
     return {
-      followService: FollowService,
-      routeService: RouteService
+      followService: FollowService
     }
   },
   rxState() {
     return {
       followList: this.followService.followList$,
       page: this.followService.page$,
-      query: this.routeService.query$,
       loading: this.followService.loading$
     }
   },
@@ -77,7 +74,7 @@ export default {
     followColumns
   },
   mounted() {
-    this.id = this.$route.meta.query.id
+    this.id = this.$searchQuery.id
     // this.pagination.total = this.followList.page.total_counts
   },
   methods: {

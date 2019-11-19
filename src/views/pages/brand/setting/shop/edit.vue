@@ -340,7 +340,7 @@ export default {
           this.fileListHostiry.unshift(...this.shopData.shop_images)
           this.shopData.shop_images = cloneDeep(this.fileListHostiry)
           this.editService
-            .edit(this.$route.meta.query.id, this.shopData)
+            .edit(this.$searchQuery.id, this.shopData)
             .subscribe(() => {
               this.$router.push({
                 name: 'brand-setting-shop-list'

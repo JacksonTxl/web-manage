@@ -76,7 +76,6 @@
 </template>
 <script>
 import { MessageService } from '@/services/message.service'
-import { RouteService } from '@/services/route.service'
 import { CabinetService } from './cabinet.service'
 import { CabinetListService } from './components#/cabinet-list.service'
 import { CabinetAreaService as AreaService } from '../setting/components#/area.service'
@@ -92,7 +91,6 @@ export default {
   serviceInject() {
     return {
       messageService: MessageService,
-      routeService: RouteService,
       cabinetService: CabinetService,
       cabinetListService: CabinetListService,
       areaService: AreaService
@@ -102,7 +100,6 @@ export default {
     return {
       list: this.areaService.list$,
       cabinetList: this.cabinetListService.list$,
-      query: this.routeService.query$,
       auth: this.cabinetService.auth$,
       loading: this.cabinetService.loading$
     }
@@ -124,14 +121,14 @@ export default {
   },
   computed: {
     type() {
-      return this.query.type || 'temporary'
+      return this.$searchQuery.type || 'temporary'
     },
     defaultActiveKey() {
-      return +this.query.id || 0
+      return +this.$searchQuery.id || 0
     },
     currentArea() {
       const { list } = this
-      const id = this.query.id
+      const id = this.$searchQuery.id
       let currentArea = {}
       list.forEach(item => {
         if (item.id === +id) {
@@ -144,7 +141,7 @@ export default {
       return this.currentArea.area_name
     },
     cabinetType() {
-      return this.query.type === 'long-term'
+      return this.$searchQuery.type === 'long-term'
     }
   },
   created() {
@@ -156,7 +153,7 @@ export default {
       const id = (list[0] && list[0].id) || 0
       this.$router.replace({
         query: {
-          ...this.query,
+          ...this.$searchQuery,
           id
         }
       })
@@ -176,7 +173,7 @@ export default {
     onAreaChange(id) {
       this.$router.push({
         query: {
-          ...this.query,
+          ...this.$searchQuery,
           id
         }
       })
@@ -187,7 +184,7 @@ export default {
     onCabinetTabChange(key) {
       this.$router.push({
         query: {
-          ...this.query,
+          ...this.$searchQuery,
           type: key
         }
       })
@@ -196,7 +193,7 @@ export default {
     },
     onCabinetListChange() {
       this.$router.push({
-        query: this.query
+        query: this.$searchQuery
       })
       this.onAreaListChange()
     },

@@ -17,7 +17,7 @@
         <a-select
           style="width: 160px"
           class="mg-r8"
-          v-model="query.shop_status"
+          v-model="$searchQuery.shop_status"
           @change="onSingleSearch('shop_status', $event)"
         >
           <a-select-option
@@ -30,7 +30,7 @@
         </a-select>
         <a-select
           style="width: 160px"
-          v-model="query.is_valid"
+          v-model="$searchQuery.is_valid"
           @change="onSingleSearch('is_valid', $event)"
         >
           <a-select-option
@@ -152,7 +152,6 @@
   </st-panel>
 </template>
 <script>
-import { RouteService } from '@/services/route.service'
 import { ListService } from './list.service'
 import { columns } from './list.config.ts'
 import { dateFilter } from '@/filters/date.filters'
@@ -165,14 +164,12 @@ export default {
   name: 'PageBrandSettingShopList',
   serviceInject() {
     return {
-      routeService: RouteService,
       appConfig: AppConfig,
       listService: ListService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       loading: this.listService.loading$,
       list: this.listService.list$,
       page: this.listService.page$,
@@ -194,7 +191,7 @@ export default {
   },
   methods: {
     onListChange() {
-      this.$router.push({ query: this.query })
+      this.$router.push({ query: this.$searchQuery })
     }
   }
 }

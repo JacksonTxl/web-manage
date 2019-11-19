@@ -30,6 +30,7 @@
           <st-t3 class="title">导入员工</st-t3>
           <label class="desc">员工基础信息</label>
           <st-button
+            v-if="auth$.staff"
             type="primary"
             @click="goRouter('/brand/setting/import/staff')"
           >
@@ -43,6 +44,7 @@
           <st-t3 class="title">导入商品</st-t3>
           <label class="desc">卡、课都属于商品</label>
           <st-button
+            v-if="auth$.product"
             type="primary"
             @click="goRouter('/brand/setting/import/commodity')"
           >
@@ -58,6 +60,7 @@
           门店会员（潜在会员、正式会员、流失会员）
         </label>
         <st-button
+          v-if="auth$.member"
           type="primary"
           @click="goRouter('/brand/setting/import/member')"
         >
@@ -69,8 +72,8 @@
           <st-t3 class="title">导入售出</st-t3>
           <label class="desc">售出的卡、课记录</label>
           <st-button
+            v-if="auth$.sold"
             type="primary"
-            disabled
             @click="goRouter('/brand/setting/import/sold')"
           >
             导入售出
@@ -88,16 +91,23 @@
   </st-panel>
 </template>
 <script>
+import { ExplainService } from './explain.service'
+
 export default {
   bem: {
     b: 'page-setting-explain',
     bContentItem: 'page-setting-explain__item-content'
   },
   serviceInject() {
-    return {}
+    return {
+      explainService: ExplainService
+    }
   },
   rxState() {
-    return {}
+    const { auth$ } = this.explainService
+    return {
+      auth$
+    }
   },
   data() {
     return {}

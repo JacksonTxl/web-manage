@@ -6,7 +6,7 @@
           <a-select
             style="width: 160px"
             placeholder="请选择门店"
-            v-model="query.shop_id"
+            v-model="$searchQuery.shop_id"
             :defaultValue="-1"
             :options="shopOptions"
             @change="onSingleSearch('shop_id', $event)"
@@ -17,7 +17,7 @@
             :defaultValue="-1"
             placeholder="请选择订单状态"
             :options="orderStatus"
-            v-model="query.order_status"
+            v-model="$searchQuery.order_status"
             @change="onSingleSearch('order_status', $event)"
           ></a-select>
           <a-range-picker
@@ -27,7 +27,7 @@
             format="YYYY-MM-DD"
           />
         </a-col>
-        <a-col :lg="6">
+        <a-col :lg="6" class="text-right">
           <st-input-search
             placeholder="请输入会员名姓名、手机号进行查询"
             @search="onSingleSearch('keyword', $event)"
@@ -64,13 +64,11 @@
 <script>
 import { soldColums } from './columns.config'
 import { SoldService } from './sold.service'
-import { RouteService } from '@/services/route.service'
 import tableMixins from '@/mixins/table.mixin'
 export default {
   serviceInject() {
     return {
-      soldservice: SoldService,
-      routeService: RouteService
+      soldservice: SoldService
     }
   },
   rxState() {
@@ -79,8 +77,7 @@ export default {
       orderStatus: this.soldservice.orderStatus$,
       soldInfo: this.soldservice.soldInfo$,
       page: this.soldservice.page$,
-      loading: this.soldservice.loading$,
-      query: this.routeService.query$
+      loading: this.soldservice.loading$
     }
   },
   mixins: [tableMixins],
@@ -93,7 +90,7 @@ export default {
     soldColums
   },
   mounted() {
-    this.id = this.$route.meta.query.id
+    this.id = this.$searchQuery.id
   },
   methods: {
     range(start, end) {

@@ -2,9 +2,9 @@
   <section class="st-sold-log-table">
     <st-table
       :pagination="{
-        current: query.current_page,
+        current: $searchQuery.current_page,
         total: page.total_counts,
-        pageSize: query.size
+        pageSize: $searchQuery.size
       }"
       :columns="columns"
       @change="onTableChange"
@@ -29,7 +29,6 @@
 <script>
 import moment from 'moment'
 import { UsageLogService } from './usage-log.service'
-import { RouteService } from '@/services/route.service'
 import { columns } from './usage-log.config'
 import tableMixin from '@/mixins/table.mixin'
 export default {
@@ -40,7 +39,6 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       usageLogService: UsageLogService
     }
   },
@@ -48,8 +46,7 @@ export default {
     return {
       page: this.usageLogService.page$,
       list: this.usageLogService.list$,
-      loading: this.usageLogService.loading$,
-      query: this.routeService.query$
+      loading: this.usageLogService.loading$
     }
   },
   data() {

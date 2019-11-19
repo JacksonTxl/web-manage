@@ -6,7 +6,7 @@
           class="mg-r8"
           style="width: 160px"
           :defaultValue="-1"
-          v-model="query.shop_id"
+          v-model="$searchQuery.shop_id"
           @change="onSingleSearch('shop_id', $event)"
         ></shop-select>
         <a-range-picker
@@ -23,7 +23,7 @@
         ></a-select>
       </a-col>
       <a-col :lg="2"></a-col>
-      <a-col :lg="6">
+      <a-col :lg="6" class="text-right">
         <st-input-search
           placeholder="请输入课程名称"
           @search="onSingleSearch('course_name', $event)"
@@ -66,7 +66,6 @@
 <script>
 import { courseColums } from './columns.config'
 import { CourseService } from './course.service'
-import { RouteService } from '../../../../../services/route.service'
 import ShopSelect from '@/views/biz-components/shop-select'
 import tableMixin from '@/mixins/table.mixin'
 import SchedulePersonalReserveInfo from '@/views/biz-modals/schedule/personal/reserve-info'
@@ -82,13 +81,11 @@ export default {
   },
   serviceInject() {
     return {
-      service: CourseService,
-      routeService: RouteService
+      service: CourseService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       courseInfo: this.service.courseInfo$,
       loading: this.service.loading$,
       page: this.service.page$,
@@ -181,7 +178,7 @@ export default {
     onChooseDate(e) {
       this.$router.push({
         query: {
-          id: this.query.id,
+          id: this.$searchQuery.id,
           start_time: moment(e[0]).format('YYYY-MM-DD'),
           end_time: moment(e[1]).format('YYYY-MM-DD')
         }

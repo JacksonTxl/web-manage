@@ -118,7 +118,7 @@ export default {
     }
   },
   created() {
-    let { currentIndex } = this.$route.query
+    let { currentIndex } = this.$searchQuery
     if (!this.isPrivateCoach) {
       this.stepsSpan = 12
       this.stepArr.pop()

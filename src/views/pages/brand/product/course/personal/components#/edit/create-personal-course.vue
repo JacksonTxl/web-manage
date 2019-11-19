@@ -108,7 +108,6 @@
 <script>
 import { EditService } from '../../edit.service'
 import { MessageService } from '@/services/message.service'
-import { RouteService } from '@/services/route.service'
 // TODO: fragments迁移到biz-components
 import StSelectCourseCategory from '@/views/fragments/course/select-course-category'
 import StSelectTrainingAim from '@/views/fragments/course/select-training-aim'
@@ -118,14 +117,12 @@ export default {
   serviceInject() {
     return {
       editService: EditService,
-      messageService: MessageService,
-      routeService: RouteService
+      messageService: MessageService
     }
   },
   rxState() {
     return {
-      loading: this.editService.loading$,
-      query: this.routeService.query$
+      loading: this.editService.loading$
     }
   },
   components: {
@@ -203,7 +200,7 @@ export default {
     },
     getData() {
       const data = this.form.getFieldsValue()
-      data.course_id = +this.query.id
+      data.course_id = +this.$searchQuery.id
       return data
     }
   }

@@ -466,7 +466,7 @@ export default {
       return {
         province_name: province[0].name,
         city_name: city[0].name,
-        district_name: district[0].name
+        district_name: district[0] ? district[0].name : ''
       }
     },
     setEditInfo(obj) {
@@ -525,7 +525,7 @@ export default {
     } else {
       this.options = JSON.parse(window.localStorage.getItem('regionTree'))
     }
-    this.editService.serviceInit(this.$route.query.id).subscribe(res => {
+    this.editService.serviceInit(this.$searchQuery.id).subscribe(res => {
       setTimeout(() => {
         this.setEditInfo(this.info)
         this.form.validateFields()

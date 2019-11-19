@@ -1,5 +1,5 @@
 <template>
-  <st-panel class="page-schedule-st-panel" app :tabs="authTabs">
+  <st-panel class="page-schedule-st-panel st-panel--fixed" app :tabs="authTabs">
     <div
       slot="actions"
       v-if="
@@ -8,13 +8,13 @@
       "
     >
       <a-select
-        v-model="query.course_id"
+        v-model="$searchQuery.course_id"
         placeholder="请选择课程"
         @change="onChange"
         style="width: 200px"
         class="page-schedule__select mg-r8"
       >
-        <a-select-option :value="-1">全部</a-select-option>
+        <a-select-option :value="-1">全部课程</a-select-option>
         <a-select-option
           v-for="course in courseOptions"
           :key="course.id"
@@ -24,13 +24,13 @@
         </a-select-option>
       </a-select>
       <a-select
-        v-model="query.court_id"
+        v-model="$searchQuery.court_id"
         placeholder="请选择场地"
         @change="onChange"
         style="width: 200px"
         class="page-schedule__select mg-r8"
       >
-        <a-select-option :value="-1">全部</a-select-option>
+        <a-select-option :value="-1">全部场地</a-select-option>
         <a-select-option
           v-for="court in courtOptions"
           :key="court.id"
@@ -44,9 +44,9 @@
         :placeholder="`请选择${$c('coach')}`"
         @change="onChange"
         style="width: 200px"
-        v-model="query.coach_id"
+        v-model="$searchQuery.coach_id"
       >
-        <a-select-option :value="-1">全部</a-select-option>
+        <a-select-option :value="-1">全部{{ $c('coach') }}</a-select-option>
         <a-select-option
           v-for="coach in coachOptions"
           :key="coach.id"
@@ -68,11 +68,11 @@
         :placeholder="`请选择${$c('coach')}`"
         @change="onChange"
         style="width: 200px"
-        v-model="query.coach_id"
+        v-model="$searchQuery.coach_id"
       >
         <a-select-option :value="-1">全部</a-select-option>
         <a-select-option
-          v-for="coach in coachInBatchOptions"
+          v-for="coach in coachPersonalOptions"
           :key="coach.id"
           :value="coach.id"
         >
@@ -94,7 +94,7 @@
         :placeholder="`请选择${$c('coach')}`"
         @change="onChange"
         style="width: 200px"
-        v-model="query.coach_id"
+        v-model="$searchQuery.coach_id"
       >
         <a-select-option :value="-1">全部</a-select-option>
         <a-select-option
@@ -113,7 +113,6 @@
 <script>
 import { TeamScheduleCommonService } from './schedule/team/service#/common.service'
 import { PersonalScheduleCommonService } from './schedule/personal/service#/common.service'
-import { RouteService } from '../../../../../services/route.service'
 import { PersonalTeamScheduleCommonService } from './schedule/personal-team/service#/common.service'
 import { ScheduleService } from './schedule.service'
 import ScheduleTeamEditSchedule from '@/views/biz-modals/schedule/team/edit-course'
@@ -127,8 +126,7 @@ export default {
       scheduleService: ScheduleService,
       teamScheduleCommonService: TeamScheduleCommonService,
       personalScheduleCommonService: PersonalScheduleCommonService,
-      personalTeamScheduleCommonService: PersonalTeamScheduleCommonService,
-      routeService: RouteService
+      personalTeamScheduleCommonService: PersonalTeamScheduleCommonService
     }
   },
   rxState() {
@@ -136,7 +134,6 @@ export default {
     const pscs = this.personalScheduleCommonService
     const ptscs = this.personalTeamScheduleCommonService
     return {
-      query: this.routeService.query$,
       coachOptions: tss.coachOptions$,
       courseOptions: tss.courseOptions$,
       courtOptions: tss.courtOptions$,
@@ -157,7 +154,7 @@ export default {
   },
   methods: {
     onChange() {
-      this.$router.push({ query: this.query })
+      this.$router.push({ query: this.$searchQuery })
     },
     onClickEdit() {
       this.$modalRouter.push({ name: 'schedule-team-edit-course' })

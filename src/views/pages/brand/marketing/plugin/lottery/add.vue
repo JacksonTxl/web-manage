@@ -313,7 +313,9 @@
               <tr>
                 <td colspan="6" class="st-form-table__add">
                   <st-button
-                    :disabled="query.activity_id && query.status === 1"
+                    :disabled="
+                      $searchQuery.activity_id && $searchQuery.status === 1
+                    "
                     @click="getCurPrizeIndex(-1)"
                     type="dashed"
                     block
@@ -370,7 +372,9 @@
                     <st-table-actions>
                       <a @click="showEditTable(index)">编辑</a>
                       <a
-                        :disabled="query.activity_id && query.status === 1"
+                        :disabled="
+                          $searchQuery.activity_id && $searchQuery.status === 1
+                        "
                         href="javascript:;"
                         @click="onDelete(index)"
                       >
@@ -441,7 +445,6 @@ import Steps from './components#/step'
 import { ruleOptions } from './form.config.ts'
 import { PatternService } from '@/services/pattern.service'
 import BrandMarketingPluginAddPrize from '@/views/biz-modals/brand/marketing/plugin/add-prize'
-import { RouteService } from '@/services/route.service'
 import { cloneDeep } from 'lodash-es'
 import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
@@ -538,13 +541,11 @@ export default {
     return {
       addService: AddService,
       pattern: PatternService,
-      routeService: RouteService,
       messageService: MessageService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       drawCondition: this.addService.drawCondition$,
       drawTimesType: this.addService.drawTimesType$,
       invitePoster: this.addService.invitePoster$,
@@ -570,8 +571,8 @@ export default {
   },
   mounted() {
     // this.notPrize.prize = this.lucky[0]
-    if (this.query.activity_id) {
-      this.editVIew(this.query.activity_id)
+    if (this.$searchQuery.activity_id) {
+      this.editVIew(this.$searchQuery.activity_id)
     }
   },
   methods: {
@@ -651,8 +652,8 @@ export default {
           })
           return
         }
-        if (this.query.activity_id) {
-          value.activity_id = this.query.activity_id
+        if (this.$searchQuery.activity_id) {
+          value.activity_id = this.$searchQuery.activity_id
           this.addService.edit(value).subscribe(res => {
             this.$router.push('./success?id=' + res.id)
           })

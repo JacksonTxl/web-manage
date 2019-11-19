@@ -1,15 +1,12 @@
-import { CourseApi } from './../../../../../../../api/v1/setting/course'
 import { ShopApi } from '@/api/v1/shop'
 import { Controller, ServiceRoute, Injectable } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
+import { State, Effect } from 'rx-state'
 import { tap, map } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
-import {
-  ShopPersonalCourseApi,
-  GetPersonalCourseListInShopInput
-} from '@/api/v1/course/personal/shop'
+import { ShopPersonalCourseApi } from '@/api/v1/course/personal/shop'
 import { AuthService } from '@/services/auth.service'
 import { MessageService } from '@/services/message.service'
+import { CourseApi } from '@/api/v1/special/course'
 
 @Injectable()
 export class ListService implements Controller {
@@ -19,7 +16,6 @@ export class ListService implements Controller {
   list$ = new State([])
   page$ = new State({})
   categoryList$ = new State<any[]>([])
-  shopSelectOptions$ = new State<any[]>([])
   priceGradient$ = new State<any[]>([])
   dataSource$ = new State<any[]>([])
   auth$ = this.authService.authMap$({
@@ -91,28 +87,8 @@ export class ListService implements Controller {
       })
     )
   }
-  getShopList() {
-    return this.shopApi.getShopList().pipe(
-      map(res => {
-        const shopInfo = res.list
-        return [
-          { shop_id: -1, shop_name: '所有门店' },
-          ...shopInfo.map((item: any) => {
-            const { shop_id, shop_name } = item
-            return {
-              shop_id,
-              shop_name
-            }
-          })
-        ]
-      }),
-      tap(state => {
-        this.shopSelectOptions$.commit(() => state)
-      })
-    )
-  }
   initOptions() {
-    return forkJoin(this.getShopList(), this.getCategoryList())
+    return forkJoin(this.getCategoryList())
   }
   @Effect()
   getList(params: any) {

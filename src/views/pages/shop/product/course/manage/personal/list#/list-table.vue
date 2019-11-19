@@ -110,7 +110,6 @@
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
 import { ListService } from '../list.service'
-import { RouteService } from '../../../../../../../../services/route.service'
 import CoursePriceSettingShopUpdate from '@/views/biz-modals/course/price-setting-shop-update'
 import CoursePriceSettingShop from '@/views/biz-modals/course/price-setting-shop'
 import CourseSupportCourseCoaches from '@/views/biz-modals/course/support-course-coaches'
@@ -129,16 +128,14 @@ export default {
   },
   serviceInject() {
     return {
-      service: ListService,
-      routeService: RouteService
+      service: ListService
     }
   },
   rxState() {
     return {
       list: this.service.list$,
       page: this.service.page$,
-      loading: this.service.loading$,
-      query: this.routeService.query$
+      loading: this.service.loading$
     }
   },
   methods: {

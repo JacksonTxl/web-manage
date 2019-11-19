@@ -65,7 +65,6 @@
 import { MessageService } from '@/services/message.service'
 import { PersonalScheduleScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/personal/service#/schedule.service'
 import { PersonalScheduleCommonService } from '@/views/pages/shop/product/course/schedule/personal/service#/common.service'
-import { RouteService } from '@/services/route.service'
 import ScheduleTimePicker from '@/views/biz-components/schedule-time-picker/schedule-time-picker'
 export default {
   components: {
@@ -75,13 +74,11 @@ export default {
     return {
       messageService: MessageService,
       commonService: PersonalScheduleCommonService,
-      scheduleService: ScheduleService,
-      routeService: RouteService
+      scheduleService: ScheduleService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       coachOptions: this.commonService.coachOptions$ || []
     }
   },
@@ -123,7 +120,7 @@ export default {
   },
   methods: {
     onClickCopySchedule() {
-      if (this.coachId) {
+      if (coachId) {
         this.scheduleService.copy({ id: this.coachId }).subscribe()
       } else {
         this.messageService.error({ content: `请选择${this.$c('coach')}` })
@@ -135,7 +132,7 @@ export default {
         schedule_info: this.schedule_info
       }
       this.scheduleService.add(reqdata).subscribe(() => {
-        this.$router.push({ query: this.routeService.query$ })
+        this.$router.reload()
         this.show = false
       })
     }

@@ -1,5 +1,11 @@
 <template>
   <st-panel initial app :class="basic()">
+    <st-input-search
+      v-model="$searchQuery.product_name"
+      @search="onSearch"
+      placeholder="请输入商品名查找"
+      :class="basic('search')"
+    />
     <st-tabs
       :class="basic('tab')"
       :activeKey="$searchQuery.product_type"
@@ -31,18 +37,11 @@
         </st-table-actions>
       </div>
     </st-table>
-    <st-input-search
-      v-model="query.product_name"
-      @search="onSearch"
-      placeholder="请输入商品名查找"
-      :class="basic('search')"
-    />
   </st-panel>
 </template>
 
 <script>
 import { ListService } from './list.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
 import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
@@ -70,8 +69,7 @@ export default {
   },
   serviceInject() {
     return {
-      listService: ListService,
-      routeService: RouteService
+      listService: ListService
     }
   },
   rxState() {
@@ -79,7 +77,6 @@ export default {
       list: this.listService.list$,
       page: this.listService.page$,
       loading: this.listService.loading$,
-      query: this.routeService.query$,
       productTypes: this.listService.productTypes$,
       auth: this.listService.auth$
     }
@@ -87,16 +84,13 @@ export default {
   computed: {
     columns
   },
-  data() {
-    return {}
-  },
   methods: {
     getList() {
       this.$router.reload()
     },
     // 签单
     onTransaction(record) {
-      switch (this.query.product_type) {
+      switch (this.$searchQuery.product_type) {
         case 1:
           this.onMember(record)
           break
@@ -285,9 +279,6 @@ export default {
         }
       })
     },
-    getProductList() {
-      return this.listService.getProductList().subscribe()
-    },
     onTabSearch(val) {
       this.$router.push({
         query: {
@@ -299,10 +290,10 @@ export default {
       })
     },
     onTableChange(pagination) {
-      this.query.current_page = pagination.current
-      this.query.size = pagination.pageSize
+      this.$searchQuery.current_page = pagination.current
+      this.$searchQuery.size = pagination.pageSize
       this.$router.push({
-        query: this.query
+        query: this.$searchQuery
       })
     }
   }

@@ -8,7 +8,7 @@ ComponentsDemoKeys.forEach(keyPath => {
   const file = ComponentsDemoContext(keyPath)
   const component = file.default || file
   const parsed = parse(keyPath)
-  demoComponents['demo-' + parsed.name] = component
+  demoComponents['demo-st-' + parsed.name] = component
 })
-
+console.log('demoComponents', demoComponents)
 export default demoComponents

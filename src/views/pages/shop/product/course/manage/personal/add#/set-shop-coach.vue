@@ -134,7 +134,7 @@ export default {
     },
     getData() {
       const data = this.form.getFieldsValue()
-      data.course_id = +this.query.id
+      data.course_id = +this.$searchQuery.id
       return data
     }
   }

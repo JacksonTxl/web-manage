@@ -16,7 +16,7 @@
           <a-select
             showSearch
             :defaultValue="defaultValue"
-            v-model="query.category_id"
+            v-model="$searchQuery.category_id"
             :filterOption="filterOption"
             optionFilterProp="children"
             class="mg-r8"
@@ -142,7 +142,6 @@
 </template>
 
 <script>
-import { RouteService } from '@/services/route.service'
 import { ListService } from '../list.service'
 import { BrandService } from './brand.service'
 import tableMixin from '@/mixins/table.mixin'
@@ -160,8 +159,7 @@ export default {
   serviceInject() {
     return {
       listService: ListService,
-      brandService: BrandService,
-      routeService: RouteService
+      brandService: BrandService
     }
   },
   data() {
@@ -180,14 +178,13 @@ export default {
       loading: this.brandService.loading$,
       list: this.brandService.list$,
       page: this.brandService.page$,
-      query: this.routeService.query$,
       auth: this.brandService.auth$
     }
   },
   methods: {
     onDeleteCourse(record) {
       this.brandService.deleteCourse(record.course_id).subscribe(() => {
-        this.$router.push({ query: this.query })
+        this.$router.push({ query: this.$searchQuery })
       })
     },
     onSetAvailable(record) {
@@ -198,7 +195,7 @@ export default {
       this.brandService
         .setAvailable({ course_id: record.course_id, available })
         .subscribe(() => {
-          this.$router.push({ query: this.query })
+          this.$router.push({ query: this.$searchQuery })
         })
     },
     filterOption(input, option) {
@@ -209,7 +206,7 @@ export default {
       )
     },
     onChange() {
-      this.$router.push({ query: { ...this.query, course_name: '' } })
+      this.$router.push({ query: { ...this.$searchQuery, course_name: '' } })
     },
     addPersonalCourse() {
       this.$router.push({ name: 'brand-product-course-personal-add' })

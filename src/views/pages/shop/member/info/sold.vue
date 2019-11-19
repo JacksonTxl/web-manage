@@ -110,14 +110,12 @@
 import formDate from './sold#/form-date.vue'
 import { SoldService } from './sold.service'
 import { classrecord, admission } from './sold.config.ts'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 export default {
   mixins: [tableMixin],
   serviceInject() {
     return {
-      soldService: SoldService,
-      routeService: RouteService
+      soldService: SoldService
     }
   },
   rxState() {
@@ -126,8 +124,7 @@ export default {
       soldPage: this.soldService.soldPage$,
       entranceList: this.soldService.entranceList$,
       entrancePage: this.soldService.entrancePage$,
-      auth: this.soldService.auth$,
-      query: this.routeService.query$
+      auth: this.soldService.auth$
     }
   },
   computed: {
@@ -152,9 +149,9 @@ export default {
     return {
       form: {
         start_date: '', // 上课日期
-        reserve_type: '1',
-        reserve_status: '-1',
-        checkin_status: '-1',
+        reserve_type: 1,
+        reserve_status: -1,
+        checkin_status: -1,
         course_name: undefined,
         size: 20,
         page: 1
@@ -163,7 +160,7 @@ export default {
   },
   created() {
     // let self = this
-    // this.soldService.init(self.$route.query.id, self.form).subscribe()
+    // this.soldService.init(self.$searchQuery.id, self.form).subscribe()
   },
   methods: {
     /* 取消预约 */
@@ -176,12 +173,12 @@ export default {
         cancelText: '再看看',
         onOk() {
           let getdata = {
-            id: self.$route.query.id,
+            id: self.$searchQuery.id,
             reserve_type: record.reserve_type.id,
             reserve_id: record.id
           }
           self.soldService.getMemberCancel(getdata).subscribe(res => {
-            self.soldService.init(self.$route.query.id, self.form).subscribe()
+            self.soldService.init(self.$searchQuery.id, self.form).subscribe()
           })
         },
         onCancel() {}
@@ -195,13 +192,13 @@ export default {
         content: '确认签到?',
         onOk() {
           let getdata = {
-            id: self.$route.query.id,
+            id: self.$searchQuery.id,
             reserve_type: record.reserve_type.id,
             reserve_id: record.id
           }
           console.log(record, getdata)
           self.soldService.getMemberSign(getdata).subscribe(res => {
-            self.soldService.init(self.$route.query.id, self.form).subscribe()
+            self.soldService.init(self.$searchQuery.id, self.form).subscribe()
           })
         },
         onCancel() {}
@@ -218,7 +215,7 @@ export default {
     // 入场记录分页
     entrancePageChange(e) {
       this.soldService
-        .getMemberEntrance(this.$route.query.id, {
+        .getMemberEntrance(this.$searchQuery.id, {
           size: e.pageSize,
           page: e.current
         })
@@ -229,7 +226,7 @@ export default {
     form: {
       handler() {
         this.soldService
-          .getMemberReserve(this.$route.query.id, this.form)
+          .getMemberReserve(this.$searchQuery.id, this.form)
           .subscribe()
       },
       deep: true

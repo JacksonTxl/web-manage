@@ -116,7 +116,6 @@
 <script>
 import { columns, ruleColumns } from './list.config'
 import { ListService } from './list.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import HardwareArea from '@/views/biz-modals/hardware/area'
 import HardwareBlacklist from '@/views/biz-modals/hardware/black-list'
@@ -127,7 +126,6 @@ export default {
   mixins: [tableMixin],
   serviceInject() {
     return {
-      routeService: RouteService,
       listService: ListService
     }
   },
@@ -135,7 +133,6 @@ export default {
     return {
       list: this.listService.list$,
       page: this.listService.page$,
-      query: this.routeService.query$,
       auth: this.listService.auth$,
       loading: this.listService.loading$,
       rule: this.listService.rule$,

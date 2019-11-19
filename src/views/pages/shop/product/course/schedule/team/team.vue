@@ -4,6 +4,7 @@
       @get-table="onGetTable"
       @detail="onDetail"
       @add="onAddSchedule"
+      fixed
       :cardList="cardList"
       :startDate="startDate"
     >
@@ -12,10 +13,13 @@
           type="primary"
           class="mg-r12"
           @click="onClickScheduleInBatch"
+          v-if="auth.addBatch"
         >
           批量排期
         </st-button>
-        <st-button @click="onClickCopySchedule">复制排期</st-button>
+        <st-button @click="onClickCopySchedule" v-if="auth.copy">
+          复制排期
+        </st-button>
       </div>
     </calendar>
   </div>
@@ -24,11 +28,11 @@
 <script>
 import Calendar from '@/views/biz-components/schedule/calendar'
 import { TeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/team/service#/schedule.service'
-import { RouteService } from '@/services/route.service'
 import ScheduleTeamAddCourseBatch from '@/views/biz-modals/schedule/team/add-course-batch'
 import ScheduleTeamAddCourse from '@/views/biz-modals/schedule/team/add-course'
 import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
 import ScheduleTeamReserveInfo from '@/views/biz-modals/schedule/team/reserve-info'
+import { TeamService } from './team.service'
 export default {
   name: 'TeamSchedule',
   modals: {
@@ -40,13 +44,13 @@ export default {
   serviceInject() {
     return {
       teamSchduleService: TeamScheduleScheduleService,
-      routeService: RouteService
+      service: TeamService
     }
   },
   rxState() {
     return {
-      cardList: this.teamSchduleService.scheduleTeamCourseList$,
-      query: this.routeService.query$
+      auth: this.service.auth$,
+      cardList: this.teamSchduleService.scheduleTeamCourseList$
     }
   },
   components: {
@@ -57,7 +61,7 @@ export default {
   },
   computed: {
     startDate() {
-      return this.$route.query.start_date || moment().format('YYYY-MM-DD')
+      return this.$searchQuery.start_date || moment().format('YYYY-MM-DD')
     }
   },
   methods: {
@@ -119,12 +123,12 @@ export default {
     onGetTable() {
       this.$router.push({
         name: 'shop-product-course-schedule-team-team-table',
-        query: this.query
+        query: this.$searchQuery
       })
     },
     // 刷新页面
     onScheduleChange() {
-      this.$router.push({ query: this.query })
+      this.$router.push({ query: this.$searchQuery })
     }
   }
 }

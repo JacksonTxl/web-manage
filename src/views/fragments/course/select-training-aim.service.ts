@@ -1,7 +1,7 @@
 import { Injectable } from 'vue-service-app'
 import { Effect } from 'rx-state'
 import { Store } from '@/services/store'
-import { TrainingApi, AddTrainingAimInput } from '@/api/v1/setting/training'
+import { TrainingApi } from '@/api/v1/special/training'
 
 @Injectable()
 export class SelectTrainingAimService extends Store<any> {
@@ -11,9 +11,5 @@ export class SelectTrainingAimService extends Store<any> {
   @Effect()
   getTrainingAimList() {
     return this.trainingApi.getTrainingAimList()
-  }
-  @Effect()
-  addTrainingAims(params: AddTrainingAimInput) {
-    this.trainingApi.addTrainingAim(params)
   }
 }

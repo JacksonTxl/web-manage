@@ -24,7 +24,7 @@
           <a-select
             placeholder="请选择活动报名状态"
             @change="onSingleSearch('activity_status', $event)"
-            v-model="query.activity_status"
+            v-model="$searchQuery.activity_status"
             class="mg-r8"
             style="width: 160px"
             :options="activityStatus$"
@@ -111,8 +111,7 @@ import { ListService } from './list.service'
 import MarkteingPluginTitle from '../../components#/marketing-title'
 import { columns } from './list.config'
 import { TYPE } from '@/constants/marketing/plugin'
-import { RouteService } from '@/services/route.service'
-import MarketingSharePoster from '@/views/biz-modals/marketing/share-poster'
+import MarketingSharePoster from '@/views/biz-modals/brand/marketing/share-poster'
 
 // modal
 export default {
@@ -140,19 +139,27 @@ export default {
   },
   serviceInject() {
     return {
-      service: ListService,
-      routeService: RouteService
+      service: ListService
     }
   },
   rxState() {
-    const { page$, list$, activityStatus$, loading$, auth$ } = this.service
+    const {
+      info$,
+      brand$,
+      page$,
+      list$,
+      activityStatus$,
+      loading$,
+      auth$
+    } = this.service
     return {
-      query: this.routeService.query$,
       activityStatus$,
       page$,
       list$,
       auth$,
-      loading$
+      loading$,
+      brand$,
+      info$
     }
   },
   components: {
@@ -174,11 +181,24 @@ export default {
       })
     },
     onCLickGeneralize(record) {
-      this.$modalRouter.push({
-        name: 'marketing-share-poster',
-        props: {
-          activity_id: record.id
-        }
+      this.service.getSharePosterInfo(record.id).subscribe(() => {
+        const info = this.info$
+        const activity_date = `${info.start_time} - ${info.end_time}`
+        this.$modalRouter.push({
+          name: 'marketing-share-poster',
+          props: {
+            info: {
+              qrcode_url: info.qrcode,
+              brand_name: this.brand$.name,
+              brand_logo: this.brand$.logo,
+              activity_img: info.image.image_url,
+              activity_title: info.activity_name,
+              activity_date,
+              activity_address: info.address
+            },
+            shsUrl: '/saas/activity'
+          }
+        })
       })
     },
     onClickNameList({ record, pathName }) {

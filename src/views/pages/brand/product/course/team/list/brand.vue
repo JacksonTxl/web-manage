@@ -15,7 +15,7 @@
         <div>
           <a-select
             :defaultValue="-1"
-            v-model="query.category_id"
+            v-model="$searchQuery.category_id"
             class="mg-r16"
             style="width: 160px"
             :options="categoryList"
@@ -87,7 +87,6 @@
 </template>
 
 <script>
-import { RouteService } from '@/services/route.service'
 import { BrandService } from './brand.service'
 import { ListService } from '../list.service'
 import tableMixin from '@/mixins/table.mixin'
@@ -97,14 +96,12 @@ export default {
   mixins: [tableMixin],
   serviceInject() {
     return {
-      brandService: BrandService,
-      routeService: RouteService
+      brandService: BrandService
     }
   },
   rxState() {
     return {
       categoryList: this.brandService.categoryList$,
-      query: this.routeService.query$,
       auth: this.brandService.auth$,
       list: this.brandService.list$,
       page: this.brandService.page$,

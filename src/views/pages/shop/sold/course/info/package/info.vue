@@ -199,7 +199,6 @@
 <script>
 import { InfoService } from './info.service'
 import moment from 'moment'
-import { RouteService } from '@/services/route.service'
 import SoldCourseFreeze from '@/views/biz-modals/sold/course/freeze'
 import SoldCourseRefund from '@/views/biz-modals/sold/course/refund'
 import SoldCourseSurplus from '@/views/biz-modals/sold/course/surplus'
@@ -217,14 +216,12 @@ export default {
   },
   serviceInject() {
     return {
-      infoService: InfoService,
-      routeService: RouteService
+      infoService: InfoService
     }
   },
   rxState() {
     return {
       packageInfo: this.infoService.packageInfo$,
-      query: this.routeService.query$,
       pageAuthTabs: this.infoService.pageAuthTabs$,
       auth: this.infoService.auth$
     }

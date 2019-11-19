@@ -1,7 +1,7 @@
 <template>
   <div :class="b()">
     <a-input
-      size="large"
+      :size="size"
       :class="b('input')"
       :placeholder="placeholder"
       @change="onChange"
@@ -33,7 +33,11 @@ export default {
         return false
       }
     },
-    isCountTime: Boolean
+    isCountTime: Boolean,
+    size: {
+      type: String,
+      default: 'large'
+    }
   },
   watch: {
     value: {

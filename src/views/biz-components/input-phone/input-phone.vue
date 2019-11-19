@@ -1,7 +1,7 @@
 <template>
   <div :class="b()">
     <a-input
-      size="large"
+      :size="size"
       :class="b('input')"
       :placeholder="placeholder"
       @change="onChange"
@@ -62,6 +62,10 @@ export default {
       //   phone_code: 86,
       //   phone: ''
       // })
+    },
+    size: {
+      type: String,
+      default: 'large'
     }
   },
   mounted() {

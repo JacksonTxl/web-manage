@@ -1,5 +1,5 @@
-import { PersonalScheduleCommonService } from './service#/common.service'
-import { PersonalScheduleScheduleService } from './service#/schedule.service'
+import { PersonalScheduleCommonService } from './schedule/personal/service#/common.service'
+import { PersonalScheduleScheduleService } from './schedule/personal/service#/schedule.service'
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
@@ -7,6 +7,7 @@ import { Store } from '@/services/store'
 import { forkJoin } from 'rxjs'
 import moment from 'moment'
 import { UserService } from '@/services/user.service'
+import { AuthService } from '@/services/auth.service'
 interface SetState {
   scheduleTime: any[]
   scheduleList: any[]
@@ -16,10 +17,17 @@ export class PersonalTableService {
   scheduleList$ = new State([])
   scheduleColumns$ = new State([])
   scheduleTime$ = new State([])
+  formPage$ = new State('')
+  auth$ = this.authService.authMap$({
+    add: 'shop:schedule:personal_course_schedule|add',
+    addBatch: 'shop:schedule:personal_course_schedule|batch_add',
+    copy: 'shop:schedule:personal_course_schedule|copy'
+  })
   constructor(
     private scheduleService: PersonalScheduleScheduleService,
     private commonService: PersonalScheduleCommonService,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService
   ) {}
   getList(query: any) {
     return this.scheduleService.getList(query).pipe(
@@ -37,7 +45,7 @@ export class PersonalTableService {
             item[sInfo.schedule_date] = sInfo
             item.schedule_info.forEach((itemInfo: any) => {
               item[itemInfo.schedule_date] = itemInfo
-              console.log('itemInfo', itemInfo)
+              // console.log('itemInfo', itemInfo)
               if (sInfo.schedule_date === itemInfo.schedule_date) {
                 ele = itemInfo
               }
@@ -83,10 +91,10 @@ export class PersonalTableService {
       this.commonService.getCoachListInBatch()
     )
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    return this.getList(to.meta.query)
+  beforeEach(to: ServiceRoute) {
+    return this.getList(to.query)
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+  beforeRouteEnter(to: ServiceRoute) {
     return this.initOptions()
   }
 }

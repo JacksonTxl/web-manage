@@ -3,14 +3,17 @@
     <st-input-search
       slot="title"
       placeholder="请输入租赁柜号、合同编号、会员姓名或手机号查找"
-      v-model="query.search"
+      v-model="$searchQuery.search"
       @search="onKeywordsSearch('search', $event)"
       :class="basic('search')"
       style="width:372px"
     />
     <st-search-panel @search="onSearchNative" @reset="onSearhReset">
       <st-search-panel-item label="租赁状态：">
-        <st-search-radio v-model="query.lease_status" :options="leaseList" />
+        <st-search-radio
+          v-model="$searchQuery.lease_status"
+          :options="leaseList"
+        />
       </st-search-panel-item>
       <st-search-panel-item label="起租时间：">
         <st-range-picker
@@ -84,7 +87,6 @@ import moment from 'moment'
 import { cloneDeep, filter } from 'lodash-es'
 import { UserService } from '@/services/user.service'
 import { ListService } from './list.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
 import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
@@ -108,8 +110,7 @@ export default {
   serviceInject() {
     return {
       userService: UserService,
-      listService: ListService,
-      routeService: RouteService
+      listService: ListService
     }
   },
   rxState() {
@@ -117,7 +118,6 @@ export default {
       loading: this.listService.loading$,
       cabinetStatus: this.listService.cabinetStatus$,
       page: this.listService.page$,
-      query: this.routeService.query$,
       list: this.listService.list$,
       auth: this.listService.auth$
     }
@@ -167,21 +167,21 @@ export default {
   methods: {
     // 查询
     onSearchNative() {
-      this.query.start_time = this.selectTime.startTime.value
+      this.$searchQuery.start_time = this.selectTime.startTime.value
         ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00:00`
         : ''
-      this.query.end_time = this.selectTime.endTime.value
+      this.$searchQuery.end_time = this.selectTime.endTime.value
         ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59:59`
         : ''
       this.onSearch()
     },
     // 设置searchData
     setSearchData() {
-      this.selectTime.startTime.value = this.query.start_time
-        ? cloneDeep(moment(this.query.start_time))
+      this.selectTime.startTime.value = this.$searchQuery.start_time
+        ? cloneDeep(moment(this.$searchQuery.start_time))
         : null
-      this.selectTime.endTime.value = this.query.end_time
-        ? cloneDeep(moment(this.query.end_time))
+      this.selectTime.endTime.value = this.$searchQuery.end_time
+        ? cloneDeep(moment(this.$searchQuery.end_time))
         : null
     },
     // 跳转合同

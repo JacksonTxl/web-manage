@@ -43,7 +43,6 @@
 </template>
 <script>
 import { RevenueService } from './revenue.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './revenue.config.ts'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
@@ -55,13 +54,11 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       revenueService: RevenueService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       loading: this.revenueService.loading$,
       list: this.revenueService.list$,
       page: this.revenueService.page$,

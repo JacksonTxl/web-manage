@@ -1,9 +1,13 @@
-import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
+import {
+  Injectable,
+  Controller,
+  ServiceRoute,
+  ServiceRouter
+} from 'vue-service-app'
 import { ContractApi, ContractInput } from '@/api/v1/setting/contract'
 import { forkJoin } from 'rxjs'
 import { tap, pluck } from 'rxjs/operators'
 import { State, log, Computed, Effect } from 'rx-state'
-import { RouteService } from '@/services/route.service'
 import { SN_GENERATE_RULE } from '@/constants/setting/contract'
 
 @Injectable()
@@ -14,7 +18,7 @@ export class EditService implements Controller {
   codeRules$: Computed<any[]>
   codeDemo$: Computed<string>
   loading$ = new State({})
-  constructor(private contractApi: ContractApi, private route: RouteService) {
+  constructor(private contractApi: ContractApi, private router: ServiceRouter) {
     this.state$ = new State({
       info: {},
       lawContent: '',
@@ -43,7 +47,7 @@ export class EditService implements Controller {
   }
   @Effect()
   getInfo() {
-    const id = this.route.query$.snapshot().id
+    const id = this.router.to.meta.query.id
     return this.contractApi.getInfo(id).pipe(
       tap(res => {
         this.state$.commit(state => {
@@ -54,7 +58,7 @@ export class EditService implements Controller {
   }
   @Effect()
   getCodeInfo() {
-    const id = this.route.query$.snapshot().id
+    const id = this.router.to.meta.query.id
     return this.contractApi.getCodeInfo(id).pipe(
       tap(res => {
         this.SET_CODE(res.list, res.code.rand_code)
@@ -63,7 +67,7 @@ export class EditService implements Controller {
   }
   @Effect()
   getConstitutionInfo() {
-    const id = this.route.query$.snapshot().id
+    const id = this.router.to.meta.query.id
     return this.contractApi.getConstitutionInfo(id).pipe(
       tap(res => {
         this.state$.commit(state => {
@@ -80,7 +84,7 @@ export class EditService implements Controller {
   init() {
     return forkJoin(this.getInfo(), this.getConstitutionInfo())
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+  beforeEach(to: ServiceRoute) {
     return this.init()
   }
 }

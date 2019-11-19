@@ -161,7 +161,6 @@
   </div>
 </template>
 <script>
-import { RouteService } from '@/services/route.service'
 import { GroupService } from './group.service'
 import { recordColumns, templateColumns } from './group.config.ts'
 import { UserService } from '@/services/user.service'
@@ -179,13 +178,11 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       groupService: GroupService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       loading: this.groupService.loading$,
       templatePage: this.groupService.templatePage$,
       templateList: this.groupService.templateList$,
