@@ -391,7 +391,8 @@ export const routeMapConfig = {
       'brand-setting-general-coach-level',
       // 'brand-setting-general-user-level', //暂时隐藏用户等级设置
       'brand-setting-general-course',
-      'brand-setting-general-pay-type'
+      'brand-setting-general-pay-type',
+      'brand-setting-general-crm'
     ]
   },
   'brand-setting-app'(routeConfig: RouteConfig) {
@@ -664,6 +665,10 @@ export const routeMapConfig = {
     routeConfig.meta.title = '品牌设置'
     routeConfig.meta.auth = ''
   },
+  'brand-setting-general-crm'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = 'CRM规则设置'
+    routeConfig.meta.auth = ''
+  },
   'brand-setting-general-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '课程定价及预约设置'
     routeConfig.meta.auth = ''
@@ -723,7 +728,24 @@ export const routeMapConfig = {
   'shop-reception-cabinet'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '储物柜使用'
   },
-  'shop-member-list'(routeConfig: RouteConfig) {
+  'shop-member-list-club'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '用户列表'
+    routeConfig.queryOptions = {
+      keyword: { type: String, default: '' },
+      member_level: { type: Number, default: -1 },
+      register_way: { type: Number, default: -1 },
+      saleman_protect_remain: { type: Number },
+      coach_protect_remain: { type: Number },
+      follow_min: { type: Number },
+      follow_max: { type: Number },
+      follow_salesman_id: { type: Number },
+      follow_coach_id: { type: Number },
+      follow_status: { type: Number },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-member-list-studio'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '用户列表'
     routeConfig.queryOptions = {
       keyword: { type: String, default: '' },
@@ -769,6 +791,9 @@ export const routeMapConfig = {
     routeConfig.meta.title = '用户详情'
   },
   'shop-member-info-sales-interests'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '用户详情'
+  },
+  'shop-member-info-follow-record'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '用户详情'
   },
   'shop-member-info-user-experience'(routeConfig: RouteConfig) {
