@@ -121,7 +121,7 @@ export default {
       })
     },
     onChange() {
-      this.$router.push({ query: { ...this.query, course_name: '' } })
+      this.$router.push({ query: { ...this.$searchQuery, course_name: '' } })
     },
     onClickCourseInfo(id) {
       this.$router.push({

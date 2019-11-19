@@ -180,7 +180,7 @@ export default {
               return item.id
             })
           this.scheduleService.delInBatch(ids).subscribe(res => {
-            this.$router.push({ query: this.query })
+            this.$router.push({ query: this.$searchQuery })
           })
         },
         onCancel() {}
@@ -206,7 +206,7 @@ export default {
           })
           this.onSelectionReset()
           this.scheduleService.delInBatch(ids).subscribe(res => {
-            this.$router.push({ query: this.query })
+            this.$router.push({ query: this.$searchQuery })
           })
         },
         onCancel() {}
@@ -224,7 +224,7 @@ export default {
     },
     getList(val = {}) {
       const query = {
-        ...this.query,
+        ...this.$searchQuery,
         start_date: val.start_date,
         end_date: val.end_date
       }

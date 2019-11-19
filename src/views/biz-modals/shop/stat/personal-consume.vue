@@ -153,14 +153,14 @@ export default {
       this.init()
     },
     getConsumeList() {
-      this.personalConsumeService.getConsumeList(this.query).subscribe()
+      this.personalConsumeService.getConsumeList(this.$searchQuery).subscribe()
     },
     init() {
       const course_type = this.course_type
       this.coach_id = this.record.coach_id || -1
       this.stat_date = this.record.stat_date
       this.personalConsumeService
-        .init({ course_type }, { ...this.query })
+        .init({ course_type }, { ...this.$searchQuery })
         .subscribe()
     },
     filterOption(input, option) {

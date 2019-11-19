@@ -154,7 +154,7 @@ export default {
   },
   methods: {
     onChange() {
-      this.$router.push({ query: this.query })
+      this.$router.push({ query: this.$searchQuery })
     },
     onClickEdit() {
       this.$modalRouter.push({ name: 'schedule-team-edit-course' })

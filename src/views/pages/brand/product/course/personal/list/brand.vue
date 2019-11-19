@@ -184,7 +184,7 @@ export default {
   methods: {
     onDeleteCourse(record) {
       this.brandService.deleteCourse(record.course_id).subscribe(() => {
-        this.$router.push({ query: this.query })
+        this.$router.push({ query: this.$searchQuery })
       })
     },
     onSetAvailable(record) {
@@ -195,7 +195,7 @@ export default {
       this.brandService
         .setAvailable({ course_id: record.course_id, available })
         .subscribe(() => {
-          this.$router.push({ query: this.query })
+          this.$router.push({ query: this.$searchQuery })
         })
     },
     filterOption(input, option) {
@@ -206,7 +206,7 @@ export default {
       )
     },
     onChange() {
-      this.$router.push({ query: { ...this.query, course_name: '' } })
+      this.$router.push({ query: { ...this.$searchQuery, course_name: '' } })
     },
     addPersonalCourse() {
       this.$router.push({ name: 'brand-product-course-personal-add' })

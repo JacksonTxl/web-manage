@@ -129,7 +129,7 @@ export default {
   },
   methods: {
     getCourseList() {
-      this.teamCourseService.getCourseList(this.query).subscribe()
+      this.teamCourseService.getCourseList(this.$searchQuery).subscribe()
     },
     filterOption(input, option) {
       return (
@@ -143,7 +143,7 @@ export default {
       this.stat_date = this.record.stat_date
 
       this.teamCourseService
-        .init({ course_type: COURSE_TYPE.TEAM }, { ...this.query })
+        .init({ course_type: COURSE_TYPE.TEAM }, { ...this.$searchQuery })
         .subscribe()
     }
   },

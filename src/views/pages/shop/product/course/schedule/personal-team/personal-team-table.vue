@@ -155,7 +155,7 @@ export default {
     },
     // 刷新页面
     onScheduleChange() {
-      this.$router.push({ query: this.query })
+      this.$router.push({ query: this.$searchQuery })
     },
     onClickAdd() {
       this.$modalRouter.push({
@@ -191,12 +191,12 @@ export default {
     onClickSkipSchedule() {
       this.$router.push({
         name: 'shop-product-course-schedule-personal-team',
-        query: { ...this.query }
+        query: { ...this.$searchQuery }
       })
     },
     getTable(val = {}) {
       const query = {
-        ...this.query,
+        ...this.$searchQuery,
         start_date: val.start_date,
         end_date: val.end_date
       }

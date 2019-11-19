@@ -165,7 +165,7 @@ export default {
         this.show = false
         this.$router.push({
           query: {
-            ...this.query
+            ...this.$searchQuery
           }
         })
       })

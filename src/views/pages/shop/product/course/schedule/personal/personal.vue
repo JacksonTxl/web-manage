@@ -78,7 +78,7 @@ export default {
     },
     // 管理私教排期
     onClickSettingSchdule() {
-      let requestParam = cloneDeep(this.query)
+      let requestParam = cloneDeep(this.$searchQuery)
       if (this.$searchQuery.start_date === this.$searchQuery.end_date) {
         let weekOfday = moment(
           this.$searchQuery.start_date,
@@ -100,12 +100,12 @@ export default {
     onGetTable() {
       this.$router.push({
         name: 'shop-product-course-schedule-personal-personal-reserve-table',
-        query: this.query
+        query: this.$searchQuery
       })
     },
     // 刷新页面
     onScheduleChange() {
-      this.$router.push({ query: this.query })
+      this.$router.push({ query: this.$searchQuery })
     }
   }
 }
