@@ -39,6 +39,10 @@
           :scroll="{ x: 1240 }"
           :dataSource="list"
         >
+          <!-- 商品类型 -->
+          <template slot="product_type" slot-scope="text, record">
+            <span>{{ record.product_type.name }}</span>
+          </template>
           <!-- 支持门店 -->
           <!-- v-if="text.id === SUPPORT_SALES.SPECIFIED_STORE" 做判断 -->
 
@@ -234,17 +238,33 @@ export default {
       }
     },
     onEdit(record) {
-      console.log(record.id)
-      // if (record.product_type.id === 3) {
-      this.$router.push({
-        path: '/brand/marketing/plugin/group/add-personal',
-        query: { id: record.id }
-      })
-      // }
+      let id = record.product_type.id
+      if (id === 3) {
+        this.$router.push({
+          path: '/brand/marketing/plugin/group/add-personal',
+          query: { id: id }
+        })
+      } else if (id === 2) {
+        this.$router.push({
+          path: '/brand/marketing/plugin/group/add-stored',
+          query: { id: id }
+        })
+      } else if (id === 1) {
+        this.$router.push({
+          path: '/brand/marketing/plugin/group/add-member',
+          query: { id: id }
+        })
+      } else {
+        this.$router.push({
+          path: '/brand/marketing/plugin/group/add-course',
+          query: { id: id }
+        })
+      }
     },
     // 删除活动
     onStop(record) {
       let that = this
+      // 结束tip不对
       this.$confirm({
         title: '提示',
         content:

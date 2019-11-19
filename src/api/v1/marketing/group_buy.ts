@@ -112,7 +112,7 @@ export class GroupBuyApi extends Api {
     return this.http.get('/v1/course/personal/brand_list')
   }
   /**
-   * 获取私教课列表
+   * 获取教练列表
    */
   getCoachList(params: { id: number }) {
     return this.http.get('/v1/course/personal/coach_level/', { params })
