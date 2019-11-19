@@ -16,6 +16,12 @@
           :options="courseStatus"
         />
       </st-search-panel-item>
+      <st-search-panel-item label="课程类型：">
+        <st-search-radio
+          v-model="$searchQuery.package_type"
+          :options="packageTypes"
+        />
+      </st-search-panel-item>
       <st-search-panel-item label="购买时间：">
         <st-range-picker
           :disabledDays="180"
@@ -142,6 +148,7 @@ export default {
       loading: this.packageService.loading$,
       page: this.packageService.page$,
       courseStatus: this.packageService.courseStatus$,
+      packageTypes: this.packageService.packageTypes$,
       auth: this.packageService.auth$
     }
   },

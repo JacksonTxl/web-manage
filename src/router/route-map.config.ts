@@ -170,6 +170,7 @@ export const routeMapConfig = {
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       course_status: { type: Number, default: -1 },
+      package_type: { type: Number, default: -1 },
       start_time: { type: String, default: '' },
       end_time: { type: String, default: '' },
       page: { type: Number, default: 1 },

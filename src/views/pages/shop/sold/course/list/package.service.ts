@@ -16,6 +16,9 @@ export class PackageService implements Controller {
   courseStatus$ = this.userService.getOptions$('sold_common.course_status', {
     addAll: true
   })
+  packageTypes$ = this.userService.getOptions$('package_course.package_type', {
+    addAll: true
+  })
   constructor(
     private courseApi: CourseApi,
     private authService: AuthService,
