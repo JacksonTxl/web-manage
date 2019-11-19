@@ -22,6 +22,7 @@
               </a-input>
             </st-form-item>
             <st-form-item label="选择会籍卡" required>
+              <a-input type="hidden" v-decorator="decorators.cardId" />
               <a-select
                 showSearch
                 v-model="cardId"
@@ -41,7 +42,12 @@
         </a-row>
         <a-row :gutter="8">
           <a-col :span="16">
-            <st-form-item label="优惠设置" required>
+            <st-form-item
+              label="优惠设置"
+              required
+              :help="tableText"
+              :validateStatus="tableErr ? 'error' : ''"
+            >
               <div :class="basic('table')">
                 <st-table
                   :columns="cardColumns"
@@ -75,22 +81,12 @@
         </a-row>
         <a-row :gutter="8">
           <a-col :span="16">
-            <st-form-item label="活动时间" required>
-              <!-- <a-date-picker
-                style="width:181px;"
-                :disabledDate="disabledDate"
-                :showTime="{ format: 'HH:mm' }"
-                format="YYYY-MM-DD HH:mm"
-                v-model="start_time"
-              />
-              ~
-              <a-date-picker
-                style="width:181px;"
-                :disabledDate="disabledDate"
-                :showTime="{ format: 'HH:mm' }"
-                format="YYYY-MM-DD HH:mm"
-                v-model="end_time"
-              /> -->
+            <st-form-item
+              label="活动时间"
+              :help="errTips"
+              :validateStatus="helpShow ? 'error' : ''"
+              required
+            >
               <st-range-picker
                 :disabledDays="180"
                 :value="selectTime"
@@ -127,13 +123,20 @@
                 活动库存
                 <st-help-tooltip id="TBPTXJ003" />
               </span>
-              <a-checkbox @change="limitStock" :checked="isLimit">
+              <a-checkbox
+                @change="limitStock"
+                :checked="isLimit"
+                :disabled="
+                  (isEdit && isLimit) || activityState >= ACTIVITY_STATUS.END
+                "
+              >
                 限制库存&nbsp;&nbsp;
               </a-checkbox>
               <st-input-number
                 v-if="isLimit"
                 :class="basic('stock')"
                 v-decorator="decorators.stock_total"
+                :disabled="isEdit && activityState >= ACTIVITY_STATUS.END"
               ></st-input-number>
             </st-form-item>
           </a-col>
@@ -160,19 +163,23 @@
                 发布状态
                 <st-help-tooltip id="TBPTXJ005" />
               </span>
-              <a-radio-group v-model="releaseStatus">
-                <a-radio :value="1" :key="1">
-                  立即发布
-                </a-radio>
-                <a-radio :value="2" :key="2">
-                  暂不发布
-                </a-radio>
-                <a-radio :value="3" :key="3">
-                  定时发布
-                </a-radio>
+              <a-radio-group
+                :defaultValue="releaseStatus || RELEASE_SRTATUS.PROMPTLY"
+                v-model="releaseStatus"
+                :disabled="isEdit && activityState > RELEASE_SRTATUS.PUBLISHER"
+              >
+                <a-radio :value="RELEASE_SRTATUS.PROMPTLY">立即发布</a-radio>
+                <a-radio :value="RELEASE_SRTATUS.TEMPORARILY">暂不发布</a-radio>
+                <a-radio :value="RELEASE_SRTATUS.TIMING">定时发布</a-radio>
               </a-radio-group>
             </st-form-item>
-            <st-form-item label="发布时间" required v-if="releaseStatus === 3">
+            <st-form-item
+              label="发布时间"
+              required
+              :help="errText"
+              :validateStatus="showHelp ? 'error' : ''"
+              v-if="releaseStatus === RELEASE_SRTATUS.TIMING"
+            >
               <a-date-picker
                 :disabledDate="disabledDate"
                 :showTime="{ format: 'HH:mm' }"
@@ -192,7 +199,10 @@ import SelectShop from '@/views/fragments/shop/select-shop'
 import { AddMemberService } from './add-member.service'
 import moment from 'moment'
 import { values } from 'lodash-es'
-import { ACTIVITY_STATUS } from '@/constants/marketing/group-buy'
+import {
+  ACTIVITY_STATUS,
+  RELEASE_SRTATUS
+} from '@/constants/marketing/group-buy'
 export default {
   serviceInject() {
     return {
@@ -223,8 +233,7 @@ export default {
       shopIds: [],
       cardColumns,
       tableData: [],
-      // 发布状态
-      releaseStatus: 1,
+      releaseStatus: 1, // 发布状态
       publishTime: null,
       selectTime: {
         startTime: {
@@ -247,7 +256,14 @@ export default {
         }
       },
       activityState: Number, // 当前活动活动状态
-      ACTIVITY_STATUS
+      ACTIVITY_STATUS,
+      RELEASE_SRTATUS,
+      errTips: '', // 活动时间错误提示
+      errText: '', // 发布时间错误提示
+      tableText: '', // 优惠设置错误提示
+      helpShow: false,
+      showHelp: false,
+      tableErr: false
     }
   },
   props: {
@@ -272,13 +288,15 @@ export default {
   },
   methods: {
     chooseMember(value) {
+      this.form.setFieldsValue({
+        cardId: value
+      })
       this.memberList.filter(item => {
         if (item.id === value) {
           this.tableData = item.product_spec
           if (this.selectedRowKeys && this.isEdit) {
             this.info.sku.forEach(item => {
               this.tableData.forEach(card => {
-                console.log(item, card, '-------------zheli')
                 if (item.id === card.id) {
                   card.group_price = item.group_price
                 }
@@ -314,15 +332,44 @@ export default {
     // 新建拼团活动
     onSubmit() {
       this.form.validate().then(values => {
+        if (
+          !this.selectTime.startTime.value ||
+          !this.selectTime.endTime.value
+        ) {
+          this.errTips = '请选择活动时间'
+          this.helpShow = true
+          return
+        }
+        if (
+          !this.publishTime &&
+          this.releaseStatus === this.RELEASE_SRTATUS.TIMING
+        ) {
+          this.errText = '请选择发布时间'
+          this.showHelp = true
+          return
+        }
+        if (!this.selectedRowKeys.length) {
+          this.tableText = '请选择会籍卡规格'
+          this.tableErr = true
+        }
         let params = {}
+        let isReturn = false
         let list = []
         this.selectedRowKeys.forEach((id, index) => {
           this.tableData.forEach(item => {
             if (item.id === id) {
+              if (!item.group_price) {
+                this.tableText = '请输入拼团价'
+                this.tableErr = true
+                isReturn = true
+              }
               list.push({ sku_id: id, group_price: item.group_price })
             }
           })
         })
+        if (isReturn) {
+          return
+        }
         params = {
           product_type: 1, // 会籍卡
           activity_name: values.activity_name, // 活动名称
@@ -339,16 +386,17 @@ export default {
           published_time: moment(this.publishTime).format('YYYY-MM-DD HH:mm') //发布时间
         }
         if (this.isEdit) {
+          params.id = this.$route.query.id
           this.addMemberService.editGroup(params).subscribe(res => {
-            console.log(params, res, '这是编辑返回的数据')
+            this.$router.push({
+              path: `/brand/marketing/plugin/group/list`
+            })
           })
         } else {
           this.addMemberService.addGroup(params).subscribe(res => {
-            // 新建成功 todo(路由地址未确定)
-            console.log(params, res, '==============')
-            // this.$router.push({
-            //   path: `/brand/marketing/plugin/group/list`
-            // })
+            this.$router.push({
+              path: `/brand/marketing/plugin/group/list`
+            })
           })
         }
       })
@@ -373,6 +421,7 @@ export default {
       this.info.sku.forEach(item => {
         this.selectedRowKeys.push(item.id)
       })
+      this.shopIds = this.info.shop_ids
     }
   },
   components: {

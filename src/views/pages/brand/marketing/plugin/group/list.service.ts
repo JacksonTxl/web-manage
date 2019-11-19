@@ -12,7 +12,7 @@ export class ListService implements Controller {
   loading$ = new State({})
   auth$ = this.authService.authMap$({
     // 记得设置鉴权
-    add: 'brand:activity:coupon|add'
+    add: 'brand:activity:group|add'
   })
   constructor(
     private marketingApi: MarketingApi,

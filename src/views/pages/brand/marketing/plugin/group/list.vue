@@ -93,14 +93,15 @@
               <a @click="onData(record)">
                 数据
               </a>
-
               <!-- v-if="record.auth['brand:activity:coupon|promotion']" 推广的数据判断 -->
               <a @click="onGeneralize(record)">
                 推广
               </a>
+              <!-- v-if="record.auth['brand:activity:group|edit']" 推广的数据判断 -->
               <a @click="onEdit(record)">
                 编辑
               </a>
+              <!-- v-if="record.auth['brand:activity:group|del']" 推广的数据判断 -->
               <a @click="onStop(record)">
                 结束
               </a>
@@ -206,6 +207,7 @@ export default {
       })
     },
     onData(record) {
+      console.log(record)
       this.$router.push({
         path: '/brand/marketing/plugin/group/data',
         query: { id: record.id }

@@ -17,7 +17,9 @@ export default {
     }
   },
   mounted() {
-    this.editStoredService.init().subscribe(res => {})
+    this.editStoredService
+      .init(this.$route.query.id ? this.$route.query.id : '')
+      .subscribe(res => {})
   },
   components: {
     memberCard
