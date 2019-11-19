@@ -196,4 +196,28 @@ export class CourseApi extends Api {
       params
     })
   }
+  /**
+   * 售出私教课批量赠送，当前搜索条件下 获取操作条数
+   */
+  fetchSoldCourseValidNum(params: any) {
+    return this.http.post(`/v1/sold/course/personal/task_num`, {
+      params
+    })
+  }
+  /**
+   * 售出私教课批量赠送
+   */
+  taskAddCourseNum(params: any) {
+    return this.http.post(`/v1/sold/course/personal/task_add_courses`, {
+      params
+    })
+  }
+  /**
+   * 售出私教课延长有效期
+   */
+  taskExtendDays(params: any) {
+    return this.http.post(`/v1/sold/course/personal/task_extend_time`, {
+      params
+    })
+  }
 }

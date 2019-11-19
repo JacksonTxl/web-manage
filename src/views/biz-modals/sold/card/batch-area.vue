@@ -1,6 +1,6 @@
 <template>
-  <st-modal title="赠送额度" size="small" v-model="show">
-    <st-form :form="form" labelWidth="75px">
+  <st-modal title="批量入场vip区域设置" size="small" v-model="show">
+    <st-form labelWidth="75px">
       <st-form-item
         label="选择"
         required
@@ -21,23 +21,16 @@
           </a-radio>
         </a-radio-group>
       </st-form-item>
-      <st-form-item label="赠送额度" required>
-        <st-input-number
-          :max="999"
-          placeholder="请输入赠送额度"
-          v-decorator="decorators.amount"
-        >
-          <span slot="addonAfter">
-            {{ type | enumFilter('sold_common.unit') }}
-          </span>
-        </st-input-number>
-      </st-form-item>
-      <st-form-item label="备注" class="mg-b0">
-        <a-textarea
-          v-decorator="decorators.content"
-          placeholder="请输入备注"
-          :autosize="{ minRows: 4, maxRows: 6 }"
-        />
+      <st-form-item label="入场vip区域" class="mg-b0">
+        <a-checkbox-group v-model="cardVip">
+          <a-checkbox
+            v-for="(item, index) in vips"
+            :key="index"
+            :value="+item.id"
+          >
+            {{ item.area_name }}
+          </a-checkbox>
+        </a-checkbox-group>
       </st-form-item>
     </st-form>
     <template slot="footer">
@@ -55,7 +48,7 @@
             当前选择项已有数据，将会有2-5s无法正常使用。
           </div>
         </div>
-        <st-button type="primary" :loading="loading.setGive">
+        <st-button type="primary" :loading="loading.setCardVip">
           确认提交
         </st-button>
       </st-popconfirm>
@@ -64,56 +57,41 @@
 </template>
 
 <script>
-import { GivingService } from './giving.service'
-import { ruleOptions } from './giving.config'
 import { RouteService } from '@/services/route.service'
+import { BatchAreaService } from './batch-area.service'
 import { BATCH_TYPE, BATCH_INFO } from '@/constants/common/batch-operation'
 import { cloneDeep } from 'lodash-es'
 export default {
-  name: 'ModalSoldCardGiving',
-  bem: {
-    giving: 'modal-sold-card-giving'
+  name: 'ModalSoldCardArea',
+  props: {
+    id: {
+      type: Array,
+      required: true
+    }
   },
   serviceProviders() {
-    return [GivingService]
+    return [BatchAreaService]
   },
   serviceInject() {
     return {
-      givingService: GivingService,
-      routeService: RouteService
+      routeService: RouteService,
+      batchAreaService: BatchAreaService
     }
   },
   rxState() {
     return {
       query: this.routeService.query$,
-      loading: this.givingService.loading$,
-      count: this.givingService.count$
+      vips: this.batchAreaService.vips$,
+      loading: this.batchAreaService.loading$,
+      count: this.batchAreaService.count$
     }
-  },
-  props: {
-    id: {
-      type: Array,
-      required: true
-    },
-    type: {
-      type: [String, Number],
-      required: true
-    }
-  },
-  mounted() {
-    const params = cloneDeep(this.query)
-    params.card_type = this.type
-    this.givingService.fetchCardNum(params).subscribe()
   },
   data() {
-    const form = this.$stForm.create()
-    const decorators = form.decorators(ruleOptions)
     return {
       BATCH_TYPE,
       BATCH_INFO,
-      form,
-      decorators,
       show: false,
+      cardVip: [],
       radioStyle: {
         display: 'block',
         height: '30px',
@@ -121,6 +99,9 @@ export default {
       },
       batch_type: BATCH_TYPE.SELECTED
     }
+  },
+  mounted() {
+    this.batchAreaService.init(this.query).subscribe()
   },
   computed: {
     helpText() {
@@ -139,20 +120,17 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.form.validate().then(values => {
-        this.givingService
-          .setGive({
-            sold_ids: this.id,
-            batch_type: this.batch_type,
-            card_type: this.type,
-            conditions: this.query,
-            ...values
-          })
-          .subscribe(res => {
-            this.$emit('success')
-            this.show = false
-          })
-      })
+      this.batchAreaService
+        .setCardVip({
+          batch_type: this.batch_type,
+          sold_ids: this.id,
+          vip_ids: this.cardVip,
+          conditions: this.query
+        })
+        .subscribe(res => {
+          this.show = false
+          this.$emit('success')
+        })
     }
   }
 }

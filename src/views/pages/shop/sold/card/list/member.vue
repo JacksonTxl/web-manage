@@ -38,23 +38,53 @@
       <div :class="basic('content-batch')" class="mg-b16">
         <!-- NOTE: 导出 -->
         <!-- <st-button type="primary" class="mg-r8" v-if="auth.export">批量导出</st-button> -->
-        <st-button
-          type="primary"
-          class="mg-r8"
-          v-if="auth.gift"
-          :disabled="selectedRowKeys.length < 1 || diffSelectedRows.length > 0"
-          @click="onGiving"
+        <template
+          v-if="selectedRowKeys.length >= 1 && diffSelectedRows.length === 0"
         >
-          赠送额度
-        </st-button>
+          <st-button
+            type="primary"
+            class="mg-r8"
+            v-if="auth.gift"
+            @click="onGiving"
+          >
+            赠送额度
+          </st-button>
+        </template>
+        <template v-else>
+          <st-help-tooltip
+            :isCustom="true"
+            title="只支持一种类型卡选择"
+            :defaultVisible="true"
+            v-model="visible"
+          >
+            <st-button
+              type="primary"
+              class="mg-r8"
+              v-if="auth.gift"
+              :disabled="true"
+            >
+              赠送额度
+            </st-button>
+          </st-help-tooltip>
+        </template>
+
         <st-button
           type="primary"
           class="mg-r8"
           v-if="auth.vipRegion"
-          :disabled="selectedRowKeys.length < 1 || diffSelectedRows.length > 0"
+          :disabled="selectedRowKeys.length < 1"
           @click="onAreas"
         >
           变更入场vip区域
+        </st-button>
+
+        <st-button
+          type="primary"
+          class="mg-r8"
+          :disabled="selectedRowKeys.length < 1"
+          @click="onEnterTime"
+        >
+          变更入场时段
         </st-button>
       </div>
       <div>
@@ -172,12 +202,15 @@ import { MemberService } from './member.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './member.config'
 import SoldCardArea from '@/views/biz-modals/sold/card/area'
+import SoldCardBatchArea from '@/views/biz-modals/sold/card/batch-area'
+import SoldCardBatchEnterTime from '@/views/biz-modals/sold/card/batch-enter-time'
 import SoldCardFreeze from '@/views/biz-modals/sold/card/freeze'
 import SoldCardGiving from '@/views/biz-modals/sold/card/giving'
 import SoldCardRefund from '@/views/biz-modals/sold/card/refund'
 import SoldCardSetTime from '@/views/biz-modals/sold/card/set-time'
 import SoldCardTransfer from '@/views/biz-modals/sold/card/transfer'
 import useCardActions from '@/hooks/card-actions.hook'
+import CommonTaskSuccessTip from '@/views/biz-modals/common/task/success-tip'
 export default {
   name: 'PageShopSoldCardMemberList',
   mixins: [tableMixin],
@@ -190,7 +223,13 @@ export default {
     SoldCardGiving,
     SoldCardRefund,
     SoldCardSetTime,
-    SoldCardTransfer
+    SoldCardTransfer,
+    SoldCardUpgradeMember,
+    SoldDealGatheringTip,
+    SoldDealGathering,
+    CommonTaskSuccessTip,
+    SoldCardBatchArea,
+    SoldCardBatchEnterTime
   },
   serviceInject() {
     return {
@@ -232,6 +271,7 @@ export default {
   },
   data() {
     return {
+      visible: false,
       searchData: {
         card_type: -1,
         card_status: 1,
@@ -300,11 +340,15 @@ export default {
     moment,
     // 列表选择
     onSelectChange(selectedRowKeys, selectedRows) {
+      this.visible = false
       if (selectedRows && selectedRows.length > 0) {
         const firstItem = selectedRows[0]
         this.diffSelectedRows = selectedRows.filter(
           item => item.card_type !== firstItem.card_type
         )
+        if (this.diffSelectedRows.length) {
+          this.visible = true
+        }
       }
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
@@ -414,14 +458,27 @@ export default {
     // 批量变更vip入场区域
     onAreas() {
       this.$modalRouter.push({
-        name: 'sold-card-area',
+        name: 'sold-card-batch-area',
         props: {
           id: this.selectedRowKeys
         },
         on: {
           success: () => {
-            this.$router.reload()
-            this.onClear()
+            this.successTip()
+          }
+        }
+      })
+    },
+    // 批量变更入场时间段
+    onEnterTime() {
+      this.$modalRouter.push({
+        name: 'sold-card-batch-enter-time',
+        props: {
+          id: this.selectedRowKeys
+        },
+        on: {
+          success: () => {
+            this.successTip()
           }
         }
       })
@@ -432,8 +489,19 @@ export default {
         name: 'sold-card-giving',
         props: {
           id: this.selectedRowKeys,
-          type: this.selectedRows[0].card_type
+          type: this.selectedRows[0].card_type,
+          page: this.page
         },
+        on: {
+          success: () => {
+            this.successTip()
+          }
+        }
+      })
+    },
+    successTip() {
+      this.$modalRouter.push({
+        name: 'common-task-success-tip',
         on: {
           success: () => {
             this.$router.reload()

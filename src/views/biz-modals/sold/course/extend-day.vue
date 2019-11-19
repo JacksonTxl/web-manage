@@ -1,5 +1,10 @@
 <template>
-  <st-modal title="赠送额度" size="small" v-model="show">
+  <st-modal
+    title="延长有效期"
+    size="small"
+    v-model="show"
+    wrapClassName="modal-sold-card-giving1"
+  >
     <st-form :form="form" labelWidth="75px">
       <st-form-item
         label="选择"
@@ -17,18 +22,18 @@
             :value="BATCH_TYPE.CONDITION"
             :disabled="helpShow"
           >
-            已选现有筛选条件下全部的{{ count }}条数据
+            已选现有筛选条件下全部的{{ list_num }}条数据
           </a-radio>
         </a-radio-group>
       </st-form-item>
-      <st-form-item label="赠送额度" required>
+      <st-form-item label="延长天数" required>
         <st-input-number
           :max="999"
-          placeholder="请输入赠送额度"
-          v-decorator="decorators.amount"
+          placeholder="请输入延长天数"
+          v-decorator="decorators.extend_days"
         >
           <span slot="addonAfter">
-            {{ type | enumFilter('sold_common.unit') }}
+            天
           </span>
         </st-input-number>
       </st-form-item>
@@ -64,46 +69,36 @@
 </template>
 
 <script>
-import { GivingService } from './giving.service'
-import { ruleOptions } from './giving.config'
+import { ExtengDayService } from './extend-day.service'
+import { ruleOptions } from './extend-day.config'
 import { RouteService } from '@/services/route.service'
 import { BATCH_TYPE, BATCH_INFO } from '@/constants/common/batch-operation'
-import { cloneDeep } from 'lodash-es'
 export default {
-  name: 'ModalSoldCardGiving',
-  bem: {
-    giving: 'modal-sold-card-giving'
-  },
+  name: 'ModalSoldCourseGiving',
   serviceProviders() {
-    return [GivingService]
+    return [ExtengDayService]
   },
   serviceInject() {
     return {
-      givingService: GivingService,
+      extengDayService: ExtengDayService,
       routeService: RouteService
     }
   },
   rxState() {
     return {
       query: this.routeService.query$,
-      loading: this.givingService.loading$,
-      count: this.givingService.count$
+      list_num: this.extengDayService.list_num$,
+      loading: this.extengDayService.loading$
     }
   },
   props: {
     id: {
       type: Array,
       required: true
-    },
-    type: {
-      type: [String, Number],
-      required: true
     }
   },
   mounted() {
-    const params = cloneDeep(this.query)
-    params.card_type = this.type
-    this.givingService.fetchCardNum(params).subscribe()
+    this.extengDayService.fetchCourseNum().subscribe()
   },
   data() {
     const form = this.$stForm.create()
@@ -114,6 +109,7 @@ export default {
       form,
       decorators,
       show: false,
+      description: '',
       radioStyle: {
         display: 'block',
         height: '30px',
@@ -124,27 +120,26 @@ export default {
   },
   computed: {
     helpText() {
-      return this.count > this.BATCH_INFO.LIMIT_NUM
+      return this.list_num > this.BATCH_INFO.LIMIT_NUM
         ? this.BATCH_INFO.ERROR_TIP
         : ''
     },
     helpShow() {
-      return this.count > this.BATCH_INFO.LIMIT_NUM
+      return this.list_num > this.BATCH_INFO.LIMIT_NUM
     },
     operateDataNum() {
       return this.batch_type === this.BATCH_TYPE.SELECTED
         ? this.id.length
-        : this.count
+        : this.list_num
     }
   },
   methods: {
     onSubmit() {
       this.form.validate().then(values => {
-        this.givingService
-          .setGive({
-            sold_ids: this.id,
+        this.extengDayService
+          .taskExtendDays({
             batch_type: this.batch_type,
-            card_type: this.type,
+            sold_ids: this.id,
             conditions: this.query,
             ...values
           })
