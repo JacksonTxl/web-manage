@@ -114,7 +114,7 @@ export default {
   computed: {
     columns,
     showTable() {
-      return this.$searchQueryshowTable || 'all'
+      return this.$searchQuery.showTable || 'all'
     },
     page() {
       const { current_page, total_counts } = this.page$

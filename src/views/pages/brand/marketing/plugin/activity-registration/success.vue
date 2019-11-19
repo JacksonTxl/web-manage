@@ -49,7 +49,7 @@ export default {
   },
   computed: {
     activityId() {
-      return +this.$searchQueryactivity_id
+      return +this.$searchQuery.activity_id
     }
   },
   methods: {
