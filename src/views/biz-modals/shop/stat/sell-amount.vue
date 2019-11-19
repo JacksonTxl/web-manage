@@ -51,12 +51,11 @@
     </div>
     <st-table
       :scroll="{ y: 345 }"
-      :page="page"
       :columns="columns"
       :loading="loading.getSellAmountList"
-      @change="getAmountList"
       rowKey="id"
       :dataSource="amountList"
+      page-mode="client"
     >
       <span slot="sale_price" slot-scope="text">
         {{ text }}
@@ -112,7 +111,7 @@ export default {
         staff_id: -1,
         department_id: -1,
         current_page: 1,
-        size: 20
+        size: 999
       }
     }
   },
@@ -162,7 +161,7 @@ export default {
     init() {
       this.pageParams.staff_id = this.record.staff_id || -1
       this.pageParams.stat_date = this.record.stat_date
-      this.sellAmountervice.init({ ...this.squery }).subscribe()
+      this.sellAmountervice.init({ ...this.query }).subscribe()
     }
   },
   mounted() {
