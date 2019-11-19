@@ -13,10 +13,13 @@
           type="primary"
           class="mg-r12"
           @click="onClickScheduleInBatch"
+          v-if="auth.addBatch"
         >
           批量排期
         </st-button>
-        <st-button @click="onClickCopySchedule">复制排期</st-button>
+        <st-button @click="onClickCopySchedule" v-if="auth.copy">
+          复制排期
+        </st-button>
       </div>
     </calendar>
   </div>
@@ -29,6 +32,7 @@ import ScheduleTeamAddCourseBatch from '@/views/biz-modals/schedule/team/add-cou
 import ScheduleTeamAddCourse from '@/views/biz-modals/schedule/team/add-course'
 import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
 import ScheduleTeamReserveInfo from '@/views/biz-modals/schedule/team/reserve-info'
+import { TeamService } from './team.service'
 export default {
   name: 'TeamSchedule',
   modals: {
@@ -39,11 +43,13 @@ export default {
   },
   serviceInject() {
     return {
-      teamSchduleService: TeamScheduleScheduleService
+      teamSchduleService: TeamScheduleScheduleService,
+      service: TeamService
     }
   },
   rxState() {
     return {
+      auth: this.service.auth$,
       cardList: this.teamSchduleService.scheduleTeamCourseList$
     }
   },
@@ -55,7 +61,7 @@ export default {
   },
   computed: {
     startDate() {
-      return this.$searchQuerystart_date || moment().format('YYYY-MM-DD')
+      return this.$searchQuery.start_date || moment().format('YYYY-MM-DD')
     }
   },
   methods: {
@@ -117,12 +123,12 @@ export default {
     onGetTable() {
       this.$router.push({
         name: 'shop-product-course-schedule-team-team-table',
-        query: this.query
+        query: this.$searchQuery
       })
     },
     // 刷新页面
     onScheduleChange() {
-      this.$router.push({ query: this.query })
+      this.$router.push({ query: this.$searchQuery })
     }
   }
 }

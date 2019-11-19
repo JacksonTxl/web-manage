@@ -57,12 +57,12 @@ export default {
       })
     },
     sharePoster() {
-      let auth = Number(this.$searchQueryisAuth)
+      let auth = Number(this.$searchQuery.isAuth)
       if (auth) {
         this.$modalRouter.push({
           name: 'brand-marketing-poster',
           props: {
-            id: String(this.$searchQueryid),
+            id: String(this.$searchQuery.id),
             type: 1
           },
           on: {
@@ -83,12 +83,12 @@ export default {
       }
     },
     shareQrcode() {
-      let auth = Number(this.$searchQueryisAuth)
+      let auth = Number(this.$searchQuery.isAuth)
       if (auth) {
         this.$modalRouter.push({
           name: 'brand-marketing-poster',
           props: {
-            id: this.$searchQueryid,
+            id: this.$searchQuery.id,
             type: 2
           },
           on: {

@@ -191,7 +191,7 @@ export default {
   },
   methods: {
     onListChange() {
-      this.$router.push({ query: this.query })
+      this.$router.push({ query: this.$searchQuery })
     }
   }
 }
