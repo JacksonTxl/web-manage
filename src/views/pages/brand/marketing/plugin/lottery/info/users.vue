@@ -115,7 +115,7 @@ export default {
           ? moment(this.queryParams.date[1]).format('YYYY-MM-DD')
           : ''
       }
-      this.$router.push({ query: { ...this.query, ...params } })
+      this.$router.push({ query: { ...this.$searchQuery, ...params } })
     }
   }
 }

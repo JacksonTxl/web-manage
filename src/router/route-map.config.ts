@@ -20,6 +20,7 @@ export const routeMapConfig = {
   },
   'brand-product-course-personal-list-shop'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '门店私教课程库'
+    routeConfig.meta.auth = 'brand_shop:product:personal_course|shop_list'
     routeConfig.queryOptions = {
       shop_id: { type: Number, default: -1 },
       category_id: { type: Number, default: -1 },
@@ -29,6 +30,7 @@ export const routeMapConfig = {
   },
   'brand-product-course-personal-list-brand'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '品牌私教课程库'
+    routeConfig.meta.auth = 'brand_shop:product:personal_course|all_list'
     routeConfig.queryOptions = {
       category_id: { type: Number, default: -1 },
       course_name: { type: String, default: '' }
@@ -43,6 +45,7 @@ export const routeMapConfig = {
   },
   'brand-product-course-team-list-shop'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '门店团体课程库'
+    routeConfig.meta.auth = 'brand_shop:product:team_course|shop_list'
     routeConfig.queryOptions = {
       shop_id: { type: Number, default: -1 },
       category_id: { type: Number, default: -1 },
@@ -88,6 +91,7 @@ export const routeMapConfig = {
   },
   'brand-product-course-team-list-brand'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '品牌团体课程库'
+    routeConfig.meta.auth = 'brand_shop:product:team_course|all_list'
     routeConfig.queryOptions = {
       category_id: { type: Number, default: -1 },
       course_name: { type: String, default: '' }
@@ -156,6 +160,7 @@ export const routeMapConfig = {
   },
   'shop-sold-course-list-personal'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教课'
+    routeConfig.meta.auth = 'shop:sold:sold_personal_course|list'
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       course_status: { type: Number, default: -1 },
@@ -167,6 +172,7 @@ export const routeMapConfig = {
   },
   'shop-sold-course-list-package'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '课程包'
+    routeConfig.meta.auth = 'shop:sold:sold_package_course|list'
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       course_status: { type: Number, default: -1 },
@@ -377,6 +383,7 @@ export const routeMapConfig = {
   },
   'brand-setting-app-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '课程'
+    routeConfig.meta.auth = 'brand_shop:course:course_setting|tab'
     routeConfig.meta.tabs = [
       'brand-setting-app-course-category',
       'brand-setting-app-course-training-aim'
@@ -389,13 +396,15 @@ export const routeMapConfig = {
   },
   'brand-setting-app-course-category'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '课程类型'
-    routeConfig.meta.auth = 'brand_shop:course:course_setting|tab'
+    routeConfig.meta.auth = 'brand_shop:course:course_type|list'
   },
   'brand-setting-app-course-training-aim'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '训练目的'
+    routeConfig.meta.auth = 'brand_shop:course:training_aim|list'
   },
   'brand-setting-app-staff-skillful'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '擅长项目'
+    routeConfig.meta.auth = 'brand_shop:coach:good_at|list'
   },
   'shop-product-card-member-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '{{$c("member_card")}}'
@@ -461,6 +470,7 @@ export const routeMapConfig = {
   },
   'brand-product-card-deposit-list-shelves'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '门店上架储值卡'
+    routeConfig.meta.auth = 'brand_shop:product:deposit_card|shop_list'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -471,6 +481,7 @@ export const routeMapConfig = {
   },
   'brand-product-card-deposit-list-all'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '全部储值卡项'
+    routeConfig.meta.auth = 'brand_shop:product:deposit_card|all_list'
     routeConfig.queryOptions = {
       sell_status: { type: Number, default: -1 },
       publish_channel: { type: Number, default: -1 },
@@ -488,6 +499,7 @@ export const routeMapConfig = {
   },
   'brand-product-card-member-list-shelves'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '门店上架卡项'
+    routeConfig.meta.auth = 'brand_shop:product:member_card|shop_list'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -499,6 +511,7 @@ export const routeMapConfig = {
   },
   'brand-product-card-member-list-all'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '全部{{$c("member_card")}}项'
+    routeConfig.meta.auth = 'brand_shop:product:member_card|all_list'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -520,6 +533,7 @@ export const routeMapConfig = {
   },
   'brand-product-card-member-number-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '{{$c("member_card")}}详情'
+    routeConfig.meta.auth = 'brand_shop:product:member_card|get'
   },
   'brand-dashboard-club'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '首页'
@@ -544,9 +558,11 @@ export const routeMapConfig = {
   },
   'brand-product-card-member-period-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '{{$c("member_card")}}详情'
+    routeConfig.meta.auth = 'brand_shop:product:member_card|get'
   },
   'brand-product-card-deposit-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '储值卡详情'
+    routeConfig.meta.auth = 'brand_shop:product:deposit_card|get'
   },
   'brand-product-card-deposit-edit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑储值卡'
@@ -630,17 +646,19 @@ export const routeMapConfig = {
   },
   'brand-finance-salary-template-basic'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '底薪模板'
+    routeConfig.meta.auth = 'brand_shop:salary:basic_template|list'
   },
   'brand-finance-salary-template-performance'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '业绩模板'
+    routeConfig.meta.auth = 'brand_shop:salary:commission_template|list'
   },
   'brand-setting-general-brand'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '品牌设置'
-    routeConfig.meta.auth = ''
+    routeConfig.meta.auth = 'brand_shop:brand:brand_info|get'
   },
   'brand-setting-general-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '课程定价及预约设置'
-    routeConfig.meta.auth = ''
+    routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|tab'
     routeConfig.meta.tabs = [
       'brand-setting-general-course-personal',
       'brand-setting-general-course-team'
@@ -648,21 +666,27 @@ export const routeMapConfig = {
   },
   'brand-setting-general-course-personal'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教设置'
+    routeConfig.meta.auth = 'brand:setting:personal_course_reserve_setting|edit'
   },
   'brand-setting-general-course-team'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '团课设置'
+    routeConfig.meta.auth = 'brand:setting:team_course_reserve_setting|edit'
   },
   'brand-setting-general-pay-type'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '支付方式'
+    routeConfig.meta.auth = 'brand:setting:payment_method|get'
   },
   'brand-setting-general-coach-level'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '{{$c("coach")}}等级设置'
+    routeConfig.meta.auth = 'brand:setting:coach_level|list'
   },
   'brand-setting-general-user-level'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '用户等级设置'
+    routeConfig.meta.auth = 'brand:setting:member_level|get'
   },
   'brand-setting-shop-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '门店设置'
+    routeConfig.meta.auth = 'brand_shop:shop:shop|list'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -765,18 +789,21 @@ export const routeMapConfig = {
   },
   'shop-product-course-schedule-team'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '团课排期'
+    routeConfig.meta.auth = 'shop:schedule:team_course_schedule|list'
   },
   'shop-product-course-schedule-team-table'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '团课排期'
   },
   'shop-product-course-schedule-personal'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教1v1预约'
+    routeConfig.meta.auth = 'shop:reserve:personal_course_reserve|list'
   },
   'shop-product-course-schedule-personal-table'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教1v1预约'
   },
   'shop-product-course-schedule-personal-team'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教小团课排期'
+    routeConfig.meta.auth = 'shop:schedule:personal_team_course_schedule|list'
   },
   'shop-product-course-schedule-personal-team-personal-team-table'(
     routeConfig: RouteConfig
@@ -974,6 +1001,7 @@ export const routeMapConfig = {
     routeConfig.meta.title = '新建人群'
     routeConfig.meta.parentId = 'brand-marketing-plugin-crowd-index'
   },
+  // TODO: 短信设置权限接入
   'brand-setting-sms'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '消息通知设置'
     routeConfig.meta.tabs = [

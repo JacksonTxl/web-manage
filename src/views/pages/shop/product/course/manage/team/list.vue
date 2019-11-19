@@ -72,7 +72,7 @@ export default {
       this.$router.push({ query: { course_name: this.course_name } })
     },
     onChange() {
-      this.$router.push({ query: this.query })
+      this.$router.push({ query: this.$searchQuery })
     },
     deleteCourse(course) {
       this.listService.deleteCourse(course.id).subscribe(() => {
