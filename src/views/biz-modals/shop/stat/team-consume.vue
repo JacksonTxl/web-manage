@@ -59,7 +59,7 @@
         v-if="auth$.export"
         v-export-excel="{
           type: 'shop/team/course/checkin',
-          query: $searchQuery
+          query: query
         }"
       >
         全部导出
@@ -119,10 +119,6 @@ export default {
     showTable() {
       return this.$searchQuery.showTable || 'all'
     },
-    page() {
-      const { current_page, total_counts } = this.page$
-      return { current_page, total_counts }
-    },
     query() {
       return {
         stat_date: this.stat_date,
@@ -135,7 +131,7 @@ export default {
   },
   methods: {
     getConsumeList() {
-      this.teamConsumeService.getConsumeList(this.$searchQuery).subscribe()
+      this.teamConsumeService.getConsumeList(this.query).subscribe()
     },
     filterOption(input, option) {
       return (
@@ -148,7 +144,7 @@ export default {
       this.coach_id = this.record.coach_id || -1
       this.stat_date = this.record.stat_date
       this.teamConsumeService
-        .init({ course_type: COURSE_TYPE.TEAM }, { ...this.$searchQuery })
+        .init({ course_type: COURSE_TYPE.TEAM }, { ...this.query })
         .subscribe()
     }
   },

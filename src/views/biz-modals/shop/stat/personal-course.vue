@@ -65,7 +65,7 @@
       <st-button
         type="primary"
         v-if="auth$.export"
-        v-export-excel="{ type: 'shop/personal/course', query: $searchQuery }"
+        v-export-excel="{ type: 'shop/personal/course', query: query }"
       >
         全部导出
       </st-button>
@@ -146,14 +146,14 @@ export default {
   },
   methods: {
     getCourseList() {
-      this.personalCourseService.getCourseList(this.$searchQuery).subscribe()
+      this.personalCourseService.getCourseList(this.query).subscribe()
     },
     init() {
       const course_type = this.course_type
       this.coach_id = this.record.coach_id || -1
       this.stat_date = this.record.stat_date
       this.personalCourseService
-        .init({ course_type }, { ...this.$searchQuery })
+        .init({ course_type }, { ...this.query })
         .subscribe()
     },
     onChangeCourseType(val) {

@@ -57,7 +57,7 @@
       <st-button
         type="primary"
         v-if="auth$.export"
-        v-export-excel="{ type: 'shop/team/course', query: $searchQuery }"
+        v-export-excel="{ type: 'shop/team/course', query: query }"
       >
         全部导出
       </st-button>
@@ -129,7 +129,7 @@ export default {
   },
   methods: {
     getCourseList() {
-      this.teamCourseService.getCourseList(this.$searchQuery).subscribe()
+      this.teamCourseService.getCourseList(this.query).subscribe()
     },
     filterOption(input, option) {
       return (
@@ -143,7 +143,7 @@ export default {
       this.stat_date = this.record.stat_date
 
       this.teamCourseService
-        .init({ course_type: COURSE_TYPE.TEAM }, { ...this.$searchQuery })
+        .init({ course_type: COURSE_TYPE.TEAM }, { ...this.query })
         .subscribe()
     }
   },
