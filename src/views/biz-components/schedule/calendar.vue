@@ -320,7 +320,7 @@ export default {
       this.getWeeks('week')
     }
     this.$nextTick().then(() => {
-      document.getElementById('timer-8').scrollIntoView()
+      document.getElementById('timer-7').scrollIntoView()
     })
   },
   components: {
