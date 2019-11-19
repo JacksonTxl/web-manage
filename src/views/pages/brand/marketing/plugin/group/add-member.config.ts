@@ -15,6 +15,15 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
+    // 会籍卡
+    cardId: {
+      rules: [
+        {
+          required: true,
+          message: '请选择会籍卡'
+        }
+      ]
+    },
     // 参团人数
     group_sum: {
       rules: [

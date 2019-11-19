@@ -68,7 +68,12 @@
         </a-row>
         <a-row :gutter="8">
           <a-col :span="16">
-            <st-form-item label="优惠设置" required>
+            <st-form-item
+              label="优惠设置"
+              required
+              :help="tableText"
+              :validateStatus="tableErr ? 'error' : ''"
+            >
               <div :class="basic('table')">
                 <st-table
                   rowKey="id"
@@ -96,10 +101,12 @@
                 </st-table>
               </div>
             </st-form-item>
-            <st-form-item label="活动时间" required>
-              <!-- <st-range-picker
-                v-model="decorators.activityTime"
-              ></st-range-picker> -->
+            <st-form-item
+              label="活动时间"
+              :help="errTips"
+              :validateStatus="helpShow ? 'error' : ''"
+              required
+            >
               <st-range-picker
                 :disabledDays="180"
                 :value="selectTime"
@@ -142,12 +149,19 @@
                 活动库存
                 <st-help-tooltip id="TBPTXJ003" />
               </span>
-              <a-checkbox @change="limitStock" :checked="isLimit">
+              <a-checkbox
+                @change="limitStock"
+                :checked="isLimit"
+                :disabled="
+                  (isEdit && isLimit) || activityState >= ACTIVITY_STATUS.END
+                "
+              >
                 限制库存&nbsp;&nbsp;
               </a-checkbox>
               <st-input-number
                 :class="basic('stock')"
                 v-decorator="decorators.stock_total"
+                :disabled="isEdit && activityState >= ACTIVITY_STATUS.END"
               ></st-input-number>
             </st-form-item>
           </a-col>
@@ -160,24 +174,21 @@
                 <st-help-tooltip id="TBPTXJ005" />
               </span>
               <a-radio-group
+                :defaultValue="releaseStatus || RELEASE_SRTATUS.PROMPTLY"
                 v-model="releaseStatus"
-                :disabled="isEdit && activityState > ACTIVITY_STATUS.UNDER_WAY"
+                :disabled="isEdit && activityState > RELEASE_SRTATUS.PUBLISHER"
               >
-                <a-radio :value="1" :key="1">
-                  立即发布
-                </a-radio>
-                <a-radio :value="2" :key="2">
-                  暂不发布
-                </a-radio>
-                <a-radio :value="3" :key="3">
-                  定时发布
-                </a-radio>
+                <a-radio :value="RELEASE_SRTATUS.PROMPTLY">立即发布</a-radio>
+                <a-radio :value="RELEASE_SRTATUS.TEMPORARILY">暂不发布</a-radio>
+                <a-radio :value="RELEASE_SRTATUS.TIMING">定时发布</a-radio>
               </a-radio-group>
             </st-form-item>
             <st-form-item
               label="发布时间"
               required
-              v-if="releaseStatus === 3"
+              :help="errText"
+              :validateStatus="showHelp ? 'error' : ''"
+              v-if="releaseStatus === RELEASE_SRTATUS.TIMING"
               :disabled="isEdit && activityState > ACTIVITY_STATUS.UNDER_WAY"
             >
               <a-date-picker
@@ -197,19 +208,24 @@
 import { ruleOptions, cardColumns } from './add-course.config'
 import { AddMemberService } from './add-member.service'
 import { AddCourseService } from './add-course.service'
-import { ACTIVITY_STATUS } from '@/constants/marketing/group-buy'
+import { UserService } from '@/services/user.service'
+import {
+  ACTIVITY_STATUS,
+  RELEASE_SRTATUS
+} from '@/constants/marketing/group-buy'
 import moment from 'moment'
 export default {
   serviceInject() {
     return {
       addMemberService: AddMemberService,
-      addCourseService: AddCourseService
+      addCourseService: AddCourseService,
+      userService: UserService
     }
   },
   rxState() {
     return {
       loading: this.addMemberService.loading$,
-      shopList: this.addCourseService.shopList$,
+      shopList: this.userService.shopList$,
       courseList: this.addCourseService.courseList$
     }
   },
@@ -230,7 +246,6 @@ export default {
     info(n, o) {
       if (this.isEdit) {
         this.setFieldsValue()
-        this.addCourseService.init().subscribe(res => {})
         this.changeShop(this.shopId)
       }
     }
@@ -248,8 +263,7 @@ export default {
       courseId: '',
       tableData: [],
       isLimit: false,
-      // 发布状态
-      releaseStatus: 1,
+      releaseStatus: 1, // 发布状态
       selectTime: {
         startTime: {
           showTime: false,
@@ -272,7 +286,14 @@ export default {
       },
       publishTime: null,
       activityState: Number,
-      ACTIVITY_STATUS
+      ACTIVITY_STATUS,
+      RELEASE_SRTATUS,
+      errTips: '', // 活动时间错误提示
+      errText: '', // 发布时间错误提示
+      tableText: '', // 优惠设置错误提示
+      helpShow: false,
+      showHelp: false,
+      tableErr: false
     }
   },
   methods: {
@@ -303,11 +324,36 @@ export default {
     },
     onSubmit() {
       this.form.validate().then(values => {
+        if (
+          !this.selectTime.startTime.value ||
+          !this.selectTime.endTime.value
+        ) {
+          this.errTips = '请选择活动时间'
+          this.helpShow = true
+          return
+        }
+        if (
+          !this.publishTime &&
+          this.publishedType === this.RELEASE_SRTATUS.TIMING
+        ) {
+          this.errText = '请选择发布时间'
+          this.showHelp = true
+          return
+        }
         let params = {}
         let list = []
+        let isReturn = false
         this.tableData.forEach((item, index) => {
-          list.push({ id: id, group_price: item.group_price })
+          if (!item.group_price) {
+            this.tableText = '请输入拼团价'
+            this.tableErr = true
+            isReturn = true
+          }
+          list.push({ id: item.id, group_price: item.group_price })
         })
+        if (isReturn) {
+          return
+        }
         params = {
           product_type: 4, // 课程包
           activity_name: values.activity_name, // 活动名称
@@ -324,17 +370,17 @@ export default {
           published_time: moment(this.publishTime).format('YYYY-MM-DD HH:mm') //发布时间
         }
         if (this.isEdit) {
-          // 编辑 type为2，3只能编辑名称，结束时间，库存
+          params.id = this.$route.query.id
           this.addMemberService.editGroup(params).subscribe(res => {
-            console.log(params, res, '这是编辑返回的数据')
+            this.$router.push({
+              path: `/brand/marketing/plugin/group/list`
+            })
           })
         } else {
           this.addMemberService.addGroup(params).subscribe(res => {
-            // 新建成功 todo(路由地址未确定)
-            console.log(params, res, '==============')
-            // this.$router.push({
-            //   path: `/brand/marketing/plugin/group/list`
-            // })
+            this.$router.push({
+              path: `/brand/marketing/plugin/group/list`
+            })
           })
         }
       })
@@ -344,7 +390,7 @@ export default {
       console.log(this.info, 'support_shop')
       this.groupName = this.info.activity_name
       this.releaseStatus = this.info.published_type
-      this.shopId = this.info.support_shop[0].shop_id
+      // this.shopId = this.info.support_shop[0].shop_id
       this.selectTime.startTime.value = moment(this.info.start_time)
       this.selectTime.endTime.value = moment(this.info.end_time)
       this.activityState = this.info.activity_state[0].id
@@ -359,7 +405,7 @@ export default {
         valid_time: this.info.valid_time,
         stock_total: this.info.stock_total
       })
-      console.log(this.info.sku)
+      this.shopId = this.info.shop_ids[0]
     }
   }
 }
