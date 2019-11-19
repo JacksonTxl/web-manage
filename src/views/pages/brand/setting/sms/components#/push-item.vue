@@ -7,6 +7,7 @@
       <div :class="bComponent('text')" style="padding-left:0">
         <st-switch @change="save" v-model="params.notify_mode.sms"></st-switch>
       </div>
+      <!-- 会员 -->
       <div
         :class="bComponent('text')"
         style="padding-left:0"
@@ -30,6 +31,7 @@
           预览
         </span>
       </div>
+      <!-- 门店 -->
       <div
         :class="bComponent('text')"
         style="padding-left:0"
@@ -37,6 +39,7 @@
       >
         <st-switch @change="save" v-model="params.notify_mode.app"></st-switch>
       </div>
+      <!-- 是否展示编辑 -->
       <div
         v-show="
           params.notify_mode.sms ||
@@ -44,6 +47,7 @@
             params.notify_mode.mini_programs
         "
       >
+        <!-- 默认预览内容 -->
         <div class="shadow"></div>
         <div :class="bComponent('column')" v-show="!isShowEdit">
           <div class="width75" :class="bComponent('text')" v-if="info.preview">
@@ -63,23 +67,8 @@
             <span class="color-title">接收人员:</span>
             <span class="mg-l8">{{ info.receiver_description }}</span>
           </div>
-          <div
-            class="width75"
-            :class="bComponent('text')"
-            v-if="info.course_type_description"
-          >
-            <span class="color-title">课程类型:</span>
-            <span class="mg-l8">{{ info.course_type_description }}</span>
-          </div>
-          <div
-            class="width75"
-            :class="bComponent('text')"
-            v-if="info.order_type_description"
-          >
-            <span class="color-title">订单类型:</span>
-            <span class="mg-l8">{{ info.order_type_description }}</span>
-          </div>
         </div>
+        <!-- 打开编辑的块 -->
         <div :class="bComponent('column')" v-show="isShowEdit">
           <div class="width75" :class="bComponent('text')">
             <div class="mg-b16" v-if="info.preview">
@@ -104,32 +93,9 @@
               <span class="mg-r8 color-title">预览内容</span>
               <span :class="bComponent('text-right')">{{ info.preview }}</span>
             </div>
-            <div class="mg-b16" v-if="Object.keys(info.course_type).length > 0">
-              <span class="color-title">课程类型</span>
-              <span class="mg-l16 inlineblock">
-                <st-checkbox
-                  v-if="params.course_type.team_course"
-                  v-model="params.course_type.team_course.value"
-                >
-                  {{ params.course_type.team_course.name }}
-                </st-checkbox>
-                <st-checkbox
-                  v-if="params.course_type.personal_course"
-                  v-model="params.course_type.personal_course.value"
-                >
-                  {{ params.course_type.personal_course.name }}
-                </st-checkbox>
-              </span>
-            </div>
             <div class="mg-b16" v-if="Object.keys(info.receiver).length > 0">
               <span class="color-title">接收人员</span>
               <span class=" mg-l16 inlineblock">
-                <st-checkbox
-                  v-if="params.receiver.seller"
-                  v-model="params.receiver.seller.value"
-                >
-                  {{ params.receiver.seller.name }}
-                </st-checkbox>
                 <st-checkbox
                   v-if="params.receiver.coach"
                   v-model="params.receiver.coach.value"
@@ -156,36 +122,7 @@
                 placeholder="请输入手机号码，多个用逗号分隔"
               />
             </div>
-
-            <div class="mg-b16" v-if="Object.keys(info.order_type).length > 0">
-              <span class="color-title">订单类型</span>
-              <span class="mg-l16 inlineblock">
-                <st-checkbox
-                  v-if="params.order_type.advance"
-                  v-model="params.order_type.advance.value"
-                >
-                  {{ params.order_type.advance.name }}
-                </st-checkbox>
-                <st-checkbox
-                  v-if="params.order_type.deposit"
-                  v-model="params.order_type.deposit.value"
-                >
-                  {{ params.order_type.deposit.name }}
-                </st-checkbox>
-                <st-checkbox
-                  v-if="params.order_type.product"
-                  v-model="params.order_type.product.value"
-                >
-                  {{ params.order_type.product.name }}
-                </st-checkbox>
-                <st-checkbox
-                  v-if="params.order_type.poundage"
-                  v-model="params.order_type.poundage.value"
-                >
-                  {{ params.order_type.poundage.name }}
-                </st-checkbox>
-              </span>
-            </div>
+            <!-- 发送规则的选项 -->
             <div>
               <span class="color-title mg-r8">发送规则</span>
               <span
@@ -206,7 +143,7 @@
                 </a-select>
                 发送
               </span>
-
+              <!-- 产品到期 对应列的title -->
               <a-radio-group
                 v-if="
                   info.notify_type.value === 1 &&
@@ -223,45 +160,7 @@
                   {{ item.label }}
                 </a-radio>
               </a-radio-group>
-              <span
-                v-if="
-                  info.notify_sub_type.value === 10 ||
-                    info.notify_sub_type.value === 12
-                "
-              >
-                {{
-                  info.notify_sub_type.value === 10
-                    ? '客保到期前'
-                    : '会员流失前'
-                }}
-                <a-input
-                  v-model="params.notify_time"
-                  style="width:80px"
-                  type="number"
-                />
-                天提醒，每日早7点推送
-              </span>
-              <span v-if="info.notify_sub_type.value === 14">
-                会员课程剩余
-                <a-input
-                  v-model="params.notify_number"
-                  style="width:80px"
-                  type="number"
-                />
-                次时，或会员课程有效期剩余
-                <a-input
-                  v-model="params.notify_time"
-                  style="width:80px"
-                  type="number"
-                />
-                天时提醒，每日早7点推送
-              </span>
-              <span
-                v-if="
-                  info.notify_sub_type.value !== 6 &&
-                    info.notify_sub_type.value !== 4
-                "
-              >
+              <span v-else>
                 {{ info.notify_time.name }}
               </span>
             </div>
@@ -346,10 +245,6 @@ export default {
           },
           member: {
             value: 0,
-            name: '会员'
-          },
-          seller: {
-            value: 0,
             name: '销售'
           },
           custom: {
@@ -358,7 +253,6 @@ export default {
           }
         },
         notify_time: '',
-        notify_number: '',
         notify_mode: {
           sms: 0,
           app: 0,
@@ -374,6 +268,7 @@ export default {
     }
   },
   computed: {
+    // 枚举规则下拉
     notifyRule() {
       let list = []
       if (!this.settingEnums.notify_rule) return list
@@ -382,6 +277,7 @@ export default {
       })
       return list
     },
+    // 枚举规则单选
     notifyHour() {
       let list = []
       if (!this.settingEnums.notify_time_hour) return list
@@ -402,6 +298,7 @@ export default {
       this.params.receiver = this.info.receiver
     }
     this.params.notify_time = this.info.notify_time.value
+
     this.params.msg_preffix = this.info.msg_preffix
     this.params.msg_suffix = this.info.msg_suffix
     this.params.custom_phone = this.info.custom_phone.join(' ')
@@ -453,9 +350,6 @@ export default {
       if (this.info.receiver.custom) {
         receiver.custom = 0
       }
-      if (this.info.receiver.seller) {
-        receiver.seller = 0
-      }
       if (this.info.course_type.team_course) {
         course_type.team_course = this.params.course_type.team_course.value
           ? 1
@@ -489,9 +383,7 @@ export default {
       if (this.info.receiver.custom) {
         receiver.custom = this.params.receiver.custom.value ? 1 : 0
       }
-      if (this.info.receiver.seller) {
-        receiver.seller = this.params.receiver.seller.value ? 1 : 0
-      }
+
       const para = Object.assign({}, this.params, {
         id: this.info.id,
         custom_phone:
