@@ -29,7 +29,7 @@
             <span>（自动匹配店招图片）</span>
           </div>
           <st-form-item v-else labelWidth="46px" label="链接">
-            <a-select
+            <!-- <a-select
               placeholder="请输入连接的活动"
               @select="actSelect(li, $event)"
               v-model="li.activity_id"
@@ -42,9 +42,10 @@
               >
                 {{ act.activity_name }}
               </a-select-option>
-            </a-select>
-            <!-- <a-cascader
+            </a-select> -->
+            <a-cascader
               :options="actList"
+              v-model="li.activity_id"
               placeholder="请输入连接的活动"
               :fieldNames="{
                 label: 'activity_name',
@@ -53,7 +54,7 @@
               }"
               @change="actSelect(li, $event)"
               changeOnSelect
-            /> -->
+            />
           </st-form-item>
         </div>
         <div :class="slider('addbox')" :span="8" v-if="list.length < 5">
@@ -78,7 +79,7 @@
               </span>
             </st-image-upload>
             <st-form-item labelWidth="46px" label="链接">
-              <a-select
+              <!-- <a-select
                 placeholder="请输入连接的活动"
                 @select="addSelect"
                 v-model="addItem.activity_id"
@@ -91,7 +92,19 @@
                 >
                   {{ act.activity_name }}
                 </a-select-option>
-              </a-select>
+              </a-select> -->
+              <a-cascader
+                :options="actList"
+                v-model="addItem.activity_id"
+                placeholder="请输入连接的活动"
+                :fieldNames="{
+                  label: 'activity_name',
+                  value: 'id',
+                  children: 'children'
+                }"
+                @change="addSelect"
+                changeOnSelect
+              />
             </st-form-item>
           </div>
         </div>
@@ -101,7 +114,7 @@
 </template>
 <script>
 import { H5WrapperService } from '@/views/pages/brand/setting/mina/components#/h5/h5-wrapper.service'
-import { cloneDeep, find as _find } from 'lodash-es'
+import { cloneDeep, find as _find, values } from 'lodash-es'
 import draggable from 'vuedraggable'
 import { ActivityService } from '../activity.service'
 import over from '@/assets/img/brand/setting/mina/over.png'
@@ -135,45 +148,61 @@ export default {
       activity_id: '',
       addItem: {
         image_url: '',
-        activity_id: '',
+        activity_id: [],
         activity_type: '',
         activity_name: '',
         is_default: 0,
         is_over: 0
       },
       actFilterList: [],
-      over: over
+      over: over,
+      mo: [267011423273052]
     }
   },
   mounted() {
     this.list = cloneDeep(this.sliderInfo)
     this.actList = cloneDeep(this.activityList)
-    console.log(this.actList, 'actList')
+    console.log(this.list, '00000000000000')
+    console.log(this.actList, '11111111')
     this.list.forEach(item => {
       // 需要对children进行遍历
-      if (!this.actList.some(act => act.id === item.activity_id)) {
-        this.actList.push({
-          activity_name: item.activity_name,
-          activity_type: item.activity_type,
-          id: item.activity_id,
-          isover: true
-        })
-      }
+      this.actList.forEach(it => {
+        if (item.activity_type === it.activity_type) {
+          if (it.children) {
+            if (!it.children.some(act => act.id === item.activity_id)) {
+              it.children.push({
+                activity_name: item.activity_name,
+                activity_type: item.activity_type,
+                id: item.activity_id,
+                isover: true
+              })
+            }
+          }
+        }
+      })
+      // if (!this.actList.some(act => act.id === item.activity_id)) {
+      //   this.actList.push({
+      //     activity_name: item.activity_name,
+      //     activity_type: item.activity_type,
+      //     id: item.activity_id,
+      //     isover: true
+      //   })
+      // }
+      item.activity_id = [item.activity_id]
     })
-    console.log(this.list, 'list')
+    console.log(this.actList, '222')
   },
   watch: {
     list: {
       deep: true,
       handler(newVal) {
-        console.log(newVal)
         this.h5WrapperService.SET_H5INFO(newVal, 1)
       }
     }
   },
   methods: {
     filterActList(id) {
-      return !!_find(this.list, o => o.activity_id === id)
+      return !!_find(this.list, o => o.activity_id[0] === id)
     },
     imageUploadChange(img) {
       let addItem = Object.assign({}, this.addItem)
@@ -183,7 +212,7 @@ export default {
       }
       if (addItem.image_url) {
         this.list.push(addItem)
-        this.addItem.activity_id = ''
+        this.addItem.activity_id = []
         this.addItem.activity_type = ''
         this.addItem.activity_name = ''
       }
@@ -192,15 +221,38 @@ export default {
       this.list.splice(index, 1)
     },
     actSelect(item, value) {
-      console.log(item, value, '==========')
-      let selected = this.actList.filter(it => it.id === value)[0]
-      console.log(selected, '========selected')
+      let selected = this.actList.filter(it => it.id === value[0])[0]
+      this.actList.forEach(it => {
+        if (it.id === value[0]) {
+          selected = it
+        }
+        if (it.children) {
+          it.children.forEach(i => {
+            if (i.id === value[0]) {
+              selected = value[0]
+            }
+          })
+        }
+      })
       item.activity_type = selected.activity_type
       item.activity_name = selected.activity_name
       item.is_over = 0
     },
     addSelect(value) {
-      let selected = this.actList.filter(it => it.id === value)[0]
+      console.log(value, '=======value')
+      let selected = this.actList.filter(it => it.id === value[0])[0]
+      this.actList.forEach(it => {
+        if (it.id === value[0]) {
+          selected = it
+        }
+        if (it.children) {
+          it.children.forEach(i => {
+            if (i.id === value[0]) {
+              selected = value[0]
+            }
+          })
+        }
+      })
       this.addItem.activity_type = selected.activity_type
       this.addItem.activity_name = selected.activity_name
     }

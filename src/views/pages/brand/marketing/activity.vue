@@ -132,6 +132,11 @@ export default {
         is_save,
         info: []
       }
+      for (let i = 0; i < this.sliderInfo.length; i++) {
+        this.sliderInfo[i].activity_id = this.sliderInfo[i].activity_id[0]
+      }
+      console.log(this.sliderInfo, '这是提交的数据')
+      return
       saveForm.info.push({
         category: 1,
         content: this.sliderInfo

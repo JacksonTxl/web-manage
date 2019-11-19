@@ -33,6 +33,22 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
+    shopId: {
+      rules: [
+        {
+          required: true,
+          message: '请选择拼团门店'
+        }
+      ]
+    },
+    courseId: {
+      rules: [
+        {
+          required: true,
+          message: '请选择课程包'
+        }
+      ]
+    },
     // 拼团有效期
     valid_time: {
       rules: [

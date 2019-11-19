@@ -143,16 +143,26 @@
         </a-row>
         <a-row :gutter="8">
           <a-col :span="16">
-            <st-form-item required>
+            <st-form-item required :class="basic('shop')">
               <span slot="label">
                 选择门店
                 <st-help-tooltip id="TBPTXJ004" />
               </span>
-              <select-shop
+              <!-- <select-shop
                 :class="basic('table')"
                 @change="onSelectShop"
                 :shopIds="shopIds"
-              ></select-shop>
+              ></select-shop> -->
+              <div :class="basic('shop--container')">
+                <st-t4 :class="basic('shop--set')">
+                  设置支持会员卡售卖场馆范围
+                </st-t4>
+                <select-shop
+                  :shopIds="info ? info.support_shop : []"
+                  :groupParams="groupParams"
+                  @change="onSelectShop"
+                ></select-shop>
+              </div>
             </st-form-item>
           </a-col>
         </a-row>
@@ -263,7 +273,11 @@ export default {
       tableText: '', // 优惠设置错误提示
       helpShow: false,
       showHelp: false,
-      tableErr: false
+      tableErr: false,
+      groupParams: {
+        type: 1,
+        id: null
+      }
     }
   },
   props: {
@@ -291,6 +305,7 @@ export default {
       this.form.setFieldsValue({
         cardId: value
       })
+      this.groupParams.id = value
       this.memberList.filter(item => {
         if (item.id === value) {
           this.tableData = item.product_spec
@@ -331,42 +346,40 @@ export default {
     },
     // 新建拼团活动
     onSubmit() {
-      this.form.validate().then(values => {
-        if (
-          !this.selectTime.startTime.value ||
-          !this.selectTime.endTime.value
-        ) {
-          this.errTips = '请选择活动时间'
-          this.helpShow = true
-          return
-        }
-        if (
-          !this.publishTime &&
-          this.releaseStatus === this.RELEASE_SRTATUS.TIMING
-        ) {
-          this.errText = '请选择发布时间'
-          this.showHelp = true
-          return
-        }
-        if (!this.selectedRowKeys.length) {
-          this.tableText = '请选择会籍卡规格'
-          this.tableErr = true
-        }
-        let params = {}
-        let isReturn = false
-        let list = []
-        this.selectedRowKeys.forEach((id, index) => {
-          this.tableData.forEach(item => {
-            if (item.id === id) {
-              if (!item.group_price) {
-                this.tableText = '请输入拼团价'
-                this.tableErr = true
-                isReturn = true
-              }
-              list.push({ sku_id: id, group_price: item.group_price })
+      let isReturn = false
+      let list = []
+      if (!this.selectTime.startTime.value || !this.selectTime.endTime.value) {
+        this.errTips = '请选择活动时间'
+        this.helpShow = true
+        isReturn = true
+      }
+      if (
+        !this.publishTime &&
+        this.releaseStatus === this.RELEASE_SRTATUS.TIMING
+      ) {
+        this.errText = '请选择发布时间'
+        this.showHelp = true
+        isReturn = true
+      }
+      if (!this.selectedRowKeys.length) {
+        this.tableText = '请选择会籍卡规格'
+        this.tableErr = true
+        isReturn = true
+      }
+      this.selectedRowKeys.forEach((id, index) => {
+        this.tableData.forEach(item => {
+          if (item.id === id) {
+            if (!item.group_price) {
+              this.tableText = '请输入拼团价'
+              this.tableErr = true
+              isReturn = true
             }
-          })
+            list.push({ sku_id: id, group_price: item.group_price })
+          }
         })
+      })
+      this.form.validate().then(values => {
+        let params = {}
         if (isReturn) {
           return
         }
@@ -421,7 +434,7 @@ export default {
       this.info.sku.forEach(item => {
         this.selectedRowKeys.push(item.id)
       })
-      this.shopIds = this.info.shop_ids
+      this.shopIds = this.info.support_shop
     }
   },
   components: {

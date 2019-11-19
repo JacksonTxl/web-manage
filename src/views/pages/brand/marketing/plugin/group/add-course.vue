@@ -27,6 +27,7 @@
                 拼团门店
                 <st-help-tooltip id="TBPTXJ005" />
               </span>
+              <a-input type="hidden" v-decorator="decorators.shopId" />
               <a-select
                 showSearch
                 v-model="shopId"
@@ -48,6 +49,7 @@
         <a-row :gutter="8">
           <a-col :span="10">
             <st-form-item label="选择课程包" required>
+              <a-input type="hidden" v-decorator="decorators.courseId" />
               <a-select
                 showSearch
                 v-model="courseId"
@@ -159,6 +161,7 @@
                 限制库存&nbsp;&nbsp;
               </a-checkbox>
               <st-input-number
+                v-if="isLimit"
                 :class="basic('stock')"
                 v-decorator="decorators.stock_total"
                 :disabled="isEdit && activityState >= ACTIVITY_STATUS.END"
@@ -262,7 +265,7 @@ export default {
       shopId: '',
       courseId: '',
       tableData: [],
-      isLimit: false,
+      isLimit: true,
       releaseStatus: 1, // 发布状态
       selectTime: {
         startTime: {
@@ -298,11 +301,17 @@ export default {
   },
   methods: {
     changeShop(value) {
+      this.form.setFieldsValue({
+        shopId: value
+      })
       this.addCourseService.getCourseList({ shop_id: 1 }).subscribe(res => {
         this.$router.reload()
       })
     },
     changeCourse(value) {
+      this.form.setFieldsValue({
+        courseId: value
+      })
       this.courseList.filter(item => {
         if (item.id === value) {
           this.tableData = item.product_spec
@@ -323,34 +332,31 @@ export default {
       )
     },
     onSubmit() {
+      let list = []
+      let isReturn = false
+      if (!this.selectTime.startTime.value || !this.selectTime.endTime.value) {
+        this.errTips = '请选择活动时间'
+        this.helpShow = true
+        isReturn = true
+      }
+      if (
+        !this.publishTime &&
+        this.publishedType === this.RELEASE_SRTATUS.TIMING
+      ) {
+        this.errText = '请选择发布时间'
+        this.showHelp = true
+        isReturn = true
+      }
+      this.tableData.forEach((item, index) => {
+        if (!item.group_price) {
+          this.tableText = '请输入拼团价'
+          this.tableErr = true
+          isReturn = true
+        }
+        list.push({ id: item.id, group_price: item.group_price })
+      })
       this.form.validate().then(values => {
-        if (
-          !this.selectTime.startTime.value ||
-          !this.selectTime.endTime.value
-        ) {
-          this.errTips = '请选择活动时间'
-          this.helpShow = true
-          return
-        }
-        if (
-          !this.publishTime &&
-          this.publishedType === this.RELEASE_SRTATUS.TIMING
-        ) {
-          this.errText = '请选择发布时间'
-          this.showHelp = true
-          return
-        }
         let params = {}
-        let list = []
-        let isReturn = false
-        this.tableData.forEach((item, index) => {
-          if (!item.group_price) {
-            this.tableText = '请输入拼团价'
-            this.tableErr = true
-            isReturn = true
-          }
-          list.push({ id: item.id, group_price: item.group_price })
-        })
         if (isReturn) {
           return
         }
