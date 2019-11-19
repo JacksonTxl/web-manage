@@ -66,7 +66,6 @@
 <script>
 import { GivingService } from './giving.service'
 import { ruleOptions } from './giving.config'
-import { RouteService } from '@/services/route.service'
 import { BATCH_TYPE, BATCH_INFO } from '@/constants/common/batch-operation'
 export default {
   name: 'ModalSoldCourseGiving',
@@ -81,7 +80,6 @@ export default {
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       list_num: this.givingService.list_num$,
       loading: this.givingService.loading$
     }
@@ -134,7 +132,7 @@ export default {
           .taskAddCourseNum({
             batch_type: this.batch_type,
             sold_ids: this.id,
-            conditions: this.query,
+            conditions: this.$searchQuery,
             ...values
           })
           .subscribe(res => {

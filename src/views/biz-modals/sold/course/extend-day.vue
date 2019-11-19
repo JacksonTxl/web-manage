@@ -71,7 +71,6 @@
 <script>
 import { ExtengDayService } from './extend-day.service'
 import { ruleOptions } from './extend-day.config'
-import { RouteService } from '@/services/route.service'
 import { BATCH_TYPE, BATCH_INFO } from '@/constants/common/batch-operation'
 export default {
   name: 'ModalSoldCourseGiving',
@@ -86,7 +85,6 @@ export default {
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       list_num: this.extengDayService.list_num$,
       loading: this.extengDayService.loading$
     }
@@ -140,7 +138,7 @@ export default {
           .taskExtendDays({
             batch_type: this.batch_type,
             sold_ids: this.id,
-            conditions: this.query,
+            conditions: this.$searchQuery,
             ...values
           })
           .subscribe(res => {

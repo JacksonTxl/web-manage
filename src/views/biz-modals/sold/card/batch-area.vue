@@ -57,7 +57,6 @@
 </template>
 
 <script>
-import { RouteService } from '@/services/route.service'
 import { BatchAreaService } from './batch-area.service'
 import { BATCH_TYPE, BATCH_INFO } from '@/constants/common/batch-operation'
 import { cloneDeep } from 'lodash-es'
@@ -74,13 +73,11 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       batchAreaService: BatchAreaService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       vips: this.batchAreaService.vips$,
       loading: this.batchAreaService.loading$,
       count: this.batchAreaService.count$
@@ -101,7 +98,7 @@ export default {
     }
   },
   mounted() {
-    this.batchAreaService.init(this.query).subscribe()
+    this.batchAreaService.init(this.$searchQuery).subscribe()
   },
   computed: {
     helpText() {
@@ -125,7 +122,7 @@ export default {
           batch_type: this.batch_type,
           sold_ids: this.id,
           vip_ids: this.cardVip,
-          conditions: this.query
+          conditions: this.$searchQuery
         })
         .subscribe(res => {
           this.show = false

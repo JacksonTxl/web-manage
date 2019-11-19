@@ -224,9 +224,6 @@ export default {
     SoldCardRefund,
     SoldCardSetTime,
     SoldCardTransfer,
-    SoldCardUpgradeMember,
-    SoldDealGatheringTip,
-    SoldDealGathering,
     CommonTaskSuccessTip,
     SoldCardBatchArea,
     SoldCardBatchEnterTime
@@ -272,11 +269,6 @@ export default {
   data() {
     return {
       visible: false,
-      searchData: {
-        card_type: -1,
-        card_status: 1,
-        is_open: -1
-      },
       // 结束时间面板是否显示
       endOpen: false,
       selectedRowKeys: [],

@@ -62,7 +62,6 @@
 
 <script>
 import { BatchEnterTimeService } from './batch-enter-time.service'
-import { RouteService } from '@/services/route.service'
 import { BATCH_TYPE, BATCH_INFO } from '@/constants/common/batch-operation'
 import { cloneDeep } from 'lodash-es'
 import ShopHourPicker from '@/views/biz-components/shop-hour-picker/shop-hour-picker'
@@ -73,13 +72,11 @@ export default {
   },
   serviceInject() {
     return {
-      batchEnterTimeService: BatchEnterTimeService,
-      routeService: RouteService
+      batchEnterTimeService: BatchEnterTimeService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       loading: this.batchEnterTimeService.loading$,
       count: this.batchEnterTimeService.count$,
       inoutTypes: this.batchEnterTimeService.inoutTypes$
@@ -95,7 +92,7 @@ export default {
     }
   },
   mounted() {
-    this.batchEnterTimeService.fetchCardNum(this.query).subscribe()
+    this.batchEnterTimeService.fetchCardNum(this.$searchQuery).subscribe()
   },
   data() {
     return {
@@ -129,14 +126,13 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log(this.timeList)
       this.batchEnterTimeService
         .setCardEnterTime({
           sold_ids: this.id,
           batch_type: this.batch_type,
           inout_type: this.admissionTime,
           inout_time: this.timeList,
-          conditions: this.query
+          conditions: this.$searchQuery
         })
         .subscribe(res => {
           this.$emit('success')

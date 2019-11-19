@@ -63,7 +63,6 @@
   </st-panel>
 </template>
 <script>
-import { RouteService } from '@/services/route.service'
 import { ListService } from './list.service'
 import { columns } from './list.config.ts'
 import tableMixin from '@/mixins/table.mixin'
@@ -75,14 +74,12 @@ export default {
   name: 'PageBrandSettingShopList',
   serviceInject() {
     return {
-      routeService: RouteService,
       messageService: MessageService,
       listService: ListService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       loading: this.listService.loading$,
       last_updated_time: this.listService.last_updated_time$,
       list: this.listService.list$,
@@ -102,7 +99,7 @@ export default {
   },
   methods: {
     refresh() {
-      return this.listService.getList(this.query)
+      return this.listService.getList(this.$searchQuery)
     },
     onClickModal(id, type) {
       this.$modalRouter.push({

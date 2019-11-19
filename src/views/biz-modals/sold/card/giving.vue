@@ -66,7 +66,6 @@
 <script>
 import { GivingService } from './giving.service'
 import { ruleOptions } from './giving.config'
-import { RouteService } from '@/services/route.service'
 import { BATCH_TYPE, BATCH_INFO } from '@/constants/common/batch-operation'
 import { cloneDeep } from 'lodash-es'
 export default {
@@ -79,13 +78,11 @@ export default {
   },
   serviceInject() {
     return {
-      givingService: GivingService,
-      routeService: RouteService
+      givingService: GivingService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       loading: this.givingService.loading$,
       count: this.givingService.count$
     }
@@ -101,7 +98,7 @@ export default {
     }
   },
   mounted() {
-    const params = cloneDeep(this.query)
+    const params = cloneDeep(this.$searchQuery)
     params.card_type = this.type
     this.givingService.fetchCardNum(params).subscribe()
   },
@@ -145,7 +142,7 @@ export default {
             sold_ids: this.id,
             batch_type: this.batch_type,
             card_type: this.type,
-            conditions: this.query,
+            conditions: this.$searchQuery,
             ...values
           })
           .subscribe(res => {
