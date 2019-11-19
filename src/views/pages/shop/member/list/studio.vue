@@ -3,7 +3,7 @@
     <div slot="title">
       <st-input-search
         placeholder="输入用户姓名、手机号"
-        v-model="query.keyword"
+        v-model="$searchQuery.keyword"
         @search="onKeywordsSearch('keyword', $event)"
       />
     </div>
@@ -11,12 +11,15 @@
       <st-search-panel @search="onSearchNative" @reset="onSearhReset">
         <st-search-panel-item label="用户级别：">
           <st-search-radio
-            v-model="query.member_level"
+            v-model="$searchQuery.member_level"
             :options="memberLevel"
           />
         </st-search-panel-item>
         <st-search-panel-item label="来源方式：">
-          <st-search-radio v-model="query.register_way" :options="sourceList" />
+          <st-search-radio
+            v-model="$searchQuery.register_way"
+            :options="sourceList"
+          />
         </st-search-panel-item>
         <st-search-panel-item label="注册时间：">
           <st-range-picker
@@ -32,7 +35,10 @@
             ></st-range-picker>
           </st-search-panel-item>
           <st-search-panel-item label="员工跟进：">
-            <st-search-radio v-model="query.is_follow" :options="isFollow" />
+            <st-search-radio
+              v-model="$searchQuery.is_follow"
+              :options="isFollow"
+            />
           </st-search-panel-item>
         </div>
       </st-search-panel>
@@ -208,7 +214,6 @@ import moment from 'moment'
 import { cloneDeep, filter } from 'lodash-es'
 import { UserService } from '@/services/user.service'
 import { StudioService } from './studio.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './studio.config'
 import ShopAddLable from '@/views/biz-modals/shop/add-lable'
@@ -231,8 +236,7 @@ export default {
   serviceInject() {
     return {
       studioService: StudioService,
-      userService: UserService,
-      routeService: RouteService
+      userService: UserService
     }
   },
   rxState() {
@@ -243,7 +247,6 @@ export default {
       reserveEnums: user.reserveEnums$,
       memberEnums: user.memberEnums$,
       auth: this.studioService.auth$,
-      query: this.routeService.query$,
       list: this.studioService.list$,
       page: this.studioService.page$
     }
@@ -316,17 +319,17 @@ export default {
       return list
     },
     defaultRegValue() {
-      if (!this.query.register_start_time) return []
+      if (!this.$searchQuery.register_start_time) return []
       return [
-        moment(this.query.register_start_time, this.dateFormat),
-        moment(this.query.register_stop_time, this.dateFormat)
+        moment(this.$searchQuery.register_start_time, this.dateFormat),
+        moment(this.$searchQuery.register_stop_time, this.dateFormat)
       ]
     },
     defaultBeMemberValue() {
-      if (!this.query.be_member_start_time) return null
+      if (!this.$searchQuery.be_member_start_time) return null
       return [
-        moment(this.query.be_member_start_time, this.dateFormat),
-        moment(this.query.be_member_stop_time, this.dateFormat)
+        moment(this.$searchQuery.be_member_start_time, this.dateFormat),
+        moment(this.$searchQuery.be_member_stop_time, this.dateFormat)
       ]
     },
     sourceList() {
@@ -343,7 +346,7 @@ export default {
     this.setSearchData()
   },
   watch: {
-    query(newVal) {
+    $searchQuery(newVal) {
       this.setSearchData()
     }
   },
@@ -359,33 +362,37 @@ export default {
     },
     // 查询
     onSearchNative() {
-      this.query.register_start_time = this.selectTime.startTime.value
+      this.$searchQuery.register_start_time = this.selectTime.startTime.value
         ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')}`
         : ''
-      this.query.register_stop_time = this.selectTime.endTime.value
+      this.$searchQuery.register_stop_time = this.selectTime.endTime.value
         ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')}`
         : ''
-      this.query.be_member_start_time = this.selectMemberTime.startTime.value
+      this.$searchQuery.be_member_start_time = this.selectMemberTime.startTime
+        .value
         ? `${this.selectMemberTime.startTime.value.format('YYYY-MM-DD')}`
         : ''
-      this.query.be_member_stop_time = this.selectMemberTime.endTime.value
+      this.$searchQuery.be_member_stop_time = this.selectMemberTime.endTime
+        .value
         ? `${this.selectMemberTime.endTime.value.format('YYYY-MM-DD')}`
         : ''
       this.onSearch()
     },
     // 设置searchData
     setSearchData() {
-      this.selectTime.startTime.value = this.query.register_start_time
-        ? cloneDeep(moment(this.query.register_start_time))
+      this.selectTime.startTime.value = this.$searchQuery.register_start_time
+        ? cloneDeep(moment(this.$searchQuery.register_start_time))
         : null
-      this.selectTime.endTime.value = this.query.register_stop_time
-        ? cloneDeep(moment(this.query.register_stop_time))
+      this.selectTime.endTime.value = this.$searchQuery.register_stop_time
+        ? cloneDeep(moment(this.$searchQuery.register_stop_time))
         : null
-      this.selectMemberTime.startTime.value = this.query.be_member_start_time
-        ? cloneDeep(moment(this.query.be_member_start_time))
+      this.selectMemberTime.startTime.value = this.$searchQuery
+        .be_member_start_time
+        ? cloneDeep(moment(this.$searchQuery.be_member_start_time))
         : null
-      this.selectMemberTime.endTime.value = this.query.be_member_stop_time
-        ? cloneDeep(moment(this.query.be_member_stop_time))
+      this.selectMemberTime.endTime.value = this.$searchQuery
+        .be_member_stop_time
+        ? cloneDeep(moment(this.$searchQuery.be_member_stop_time))
         : null
     },
     // 分配教练
@@ -479,7 +486,7 @@ export default {
     edit(record) {
       this.$router.push({
         name: 'shop-member-edit',
-        query: { id: record.member_id }
+        $searchQuery: { id: record.member_id }
       })
     },
     addUser() {
@@ -488,7 +495,7 @@ export default {
     infoFunc(record) {
       this.$router.push({
         name: 'shop-member-info-basic',
-        query: { id: record.member_id }
+        $searchQuery: { id: record.member_id }
       })
     },
     moment,
@@ -499,7 +506,7 @@ export default {
       }
       this.$refs.stSeleter.handleResetItem()
       this.consumption = []
-      this.$router.push({ query: {} })
+      this.$router.push({ $searchQuery: {} })
     },
     toggle() {
       this.expand = !this.expand
@@ -515,8 +522,8 @@ export default {
         return item.id
       })
     },
-    queryFunc() {
-      this.$router.push({ query: this.form })
+    $searchQueryFunc() {
+      this.$router.push({ $searchQuery: this.form })
     }
   }
 }

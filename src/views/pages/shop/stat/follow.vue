@@ -50,7 +50,6 @@
 </template>
 <script>
 import { FollowService } from './follow.service'
-import { RouteService } from '@/services/route.service'
 import { UserService } from '@/services/user.service'
 import tableMixin from '@/mixins/table.mixin'
 import { dateColumns, staffColumns } from './follow.config.ts'
@@ -63,14 +62,12 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       followService: FollowService,
       userService: UserService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       loading: this.followService.loading$,
       list: this.followService.list$,
       page: this.followService.page$,
@@ -100,24 +97,24 @@ export default {
   },
   components: { swiper, swiperSlide },
   created() {
-    this.query.shop_id = this.shop.id
-    this.getFollowShopTotal(this.query).subscribe()
+    this.$searchQuery.shop_id = this.shop.id
+    this.getFollowShopTotal(this.$searchQuery).subscribe()
   },
   methods: {
     recentChange(searchFieldsValue) {
       this.onMultiSearch(searchFieldsValue)
     },
-    getFollowShopTotal(query) {
-      return this.followService.getFollowShopTotal(query)
+    getFollowShopTotal($searchQuery) {
+      return this.followService.getFollowShopTotal($searchQuery)
     },
     refresh() {
-      return this.getFollowShopTotal(this.query)
+      return this.getFollowShopTotal(this.$searchQuery)
     },
     handleSizeChange(val) {
-      this.query.shop_id = this.shop.id
-      this.query.showTable = this.showTable = val.target.value
-      let query = this.query
-      this.$router.push({ query })
+      this.$searchQuery.shop_id = this.shop.id
+      this.$searchQuery.showTable = this.showTable = val.target.value
+      let $searchQuery = this.$searchQuery
+      this.$router.push({ $searchQuery })
     }
   }
 }

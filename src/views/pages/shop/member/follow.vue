@@ -3,7 +3,7 @@
     <div slot="title">
       <st-input-search
         placeholder="输入用户姓名、手机号"
-        v-model="query.keyword"
+        v-model="$searchQuery.keyword"
         @search="onKeywordsSearch('keyword', $event)"
       />
     </div>
@@ -11,19 +11,19 @@
       <st-search-panel @search="onSearchNative" @reset="onSearhReset">
         <st-search-panel-item label="用户级别：">
           <st-search-radio
-            v-model="query.member_level"
+            v-model="$searchQuery.member_level"
             :options="memberLevel"
           />
         </st-search-panel-item>
         <st-search-panel-item label="跟进方式：">
           <st-search-radio
-            v-model="query.follow_way"
+            v-model="$searchQuery.follow_way"
             :options="followWayList"
           />
         </st-search-panel-item>
         <st-search-panel-item label="跟进状态：">
           <st-search-radio
-            v-model="query.follow_status"
+            v-model="$searchQuery.follow_status"
             :options="followStatusList"
           />
         </st-search-panel-item>
@@ -35,7 +35,7 @@
               optionFilterProp="children"
               style="width: 200px"
               @change="onChangeSell"
-              v-model="query.follow_salesman_id"
+              v-model="$searchQuery.follow_salesman_id"
             >
               <a-select-option
                 :value="+staff.id"
@@ -54,7 +54,7 @@
               class="mg-r16"
               style="width: 200px"
               @change="onChangeCoach"
-              v-model="query.follow_coach_id"
+              v-model="$searchQuery.follow_coach_id"
             >
               <a-select-option
                 :value="+coach.id"
@@ -73,7 +73,7 @@
               class="mg-r16"
               style="width: 200px"
               @change="onChangeOperator"
-              v-model="query.operator_id"
+              v-model="$searchQuery.operator_id"
             >
               <a-select-option
                 :value="+operator.id"
@@ -92,13 +92,13 @@
           </st-search-panel-item>
           <st-search-panel-item label="跟进次数：">
             <a-input
-              v-model="query.follow_start_num"
+              v-model="$searchQuery.follow_start_num"
               style="width:80px"
               type="number"
             />
             &nbsp;~&nbsp;
             <a-input
-              v-model="query.follow_end_num"
+              v-model="$searchQuery.follow_end_num"
               style="width:80px"
               type="number"
             />
@@ -161,7 +161,6 @@ import moment from 'moment'
 import { cloneDeep, filter } from 'lodash-es'
 import { UserService } from '@/services/user.service'
 import { FollowService } from './follow.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './follow.config'
 export default {
@@ -170,8 +169,7 @@ export default {
   serviceInject() {
     return {
       followService: FollowService,
-      userService: UserService,
-      routeService: RouteService
+      userService: UserService
     }
   },
   rxState() {
@@ -181,7 +179,6 @@ export default {
       shopMemberEnums: user.shopMemberEnums$,
       memberEnums: user.memberEnums$,
       auth: this.followService.auth$,
-      query: this.routeService.query$,
       list: this.followService.list$,
       page: this.followService.page$,
       staffList: this.followService.staffList$,
@@ -249,7 +246,7 @@ export default {
     this.setSearchData()
   },
   watch: {
-    query(newVal) {
+    $searchQuery(newVal) {
       this.setSearchData()
     }
   },
@@ -269,21 +266,21 @@ export default {
     },
     // 查询
     onSearchNative() {
-      this.query.follow_start_date = this.selectTime.startTime.value
+      this.$searchQuery.follow_start_date = this.selectTime.startTime.value
         ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')}`
         : ''
-      this.query.follow_end_date = this.selectTime.endTime.value
+      this.$searchQuery.follow_end_date = this.selectTime.endTime.value
         ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')}`
         : ''
       this.onSearch()
     },
     // 设置searchData
     setSearchData() {
-      this.selectTime.startTime.value = this.query.follow_start_date
-        ? cloneDeep(moment(this.query.follow_start_date))
+      this.selectTime.startTime.value = this.$searchQuery.follow_start_date
+        ? cloneDeep(moment(this.$searchQuery.follow_start_date))
         : null
-      this.selectTime.endTime.value = this.query.follow_end_date
-        ? cloneDeep(moment(this.query.follow_end_date))
+      this.selectTime.endTime.value = this.$searchQuery.follow_end_date
+        ? cloneDeep(moment(this.$searchQuery.follow_end_date))
         : null
     },
     moment,

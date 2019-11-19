@@ -3,7 +3,7 @@
     <div slot="title">
       <st-input-search
         placeholder="输入用户姓名、手机号"
-        v-model="query.keyword"
+        v-model="$searchQuery.keyword"
         @search="onKeywordsSearch('keyword', $event)"
       />
     </div>
@@ -11,16 +11,19 @@
       <st-search-panel @search="onSearchNative" @reset="onSearhReset">
         <st-search-panel-item label="用户级别：">
           <st-search-radio
-            v-model="query.member_level"
+            v-model="$searchQuery.member_level"
             :options="memberLevel"
           />
         </st-search-panel-item>
         <st-search-panel-item label="来源方式：">
-          <st-search-radio v-model="query.register_way" :options="sourceList" />
+          <st-search-radio
+            v-model="$searchQuery.register_way"
+            :options="sourceList"
+          />
         </st-search-panel-item>
         <st-search-panel-item label="跟进状态：">
           <st-search-radio
-            v-model="query.follow_status"
+            v-model="$searchQuery.follow_status"
             :options="followStatus"
           />
         </st-search-panel-item>
@@ -28,7 +31,7 @@
           <st-search-panel-item label="跟进员工：">
             <a-select
               class="mg-t8 mg-r40 select"
-              v-model="query.follow_salesman_id"
+              v-model="$searchQuery.follow_salesman_id"
               placeholder="请选择销售"
             >
               <a-select-option
@@ -41,7 +44,7 @@
             </a-select>
             <a-select
               class="mg-t8 select"
-              v-model="query.follow_coach_id"
+              v-model="$searchQuery.follow_coach_id"
               placeholder="请选择教练"
             >
               <a-select-option
@@ -57,13 +60,13 @@
             <a-input
               placeholder="输入天数"
               class="input"
-              v-model="query.saleman_protect_remain"
+              v-model="$searchQuery.saleman_protect_remain"
             />
             天后销售客保到期
             <a-input
               placeholder="输入天数"
               class="input mg-l40"
-              v-model="query.coach_protect_remain"
+              v-model="$searchQuery.coach_protect_remain"
             />
             天后教练客保到期
           </st-search-panel-item>
@@ -71,13 +74,13 @@
             <a-input
               placeholder="输入次数"
               class="input"
-              v-model="query.follow_min"
+              v-model="$searchQuery.follow_min"
             />
             -
             <a-input
               placeholder="输入次数"
               class="input"
-              v-model="query.follow_max"
+              v-model="$searchQuery.follow_max"
             />
           </st-search-panel-item>
         </div>
@@ -330,7 +333,6 @@ import moment from 'moment'
 import { cloneDeep, filter } from 'lodash-es'
 import { UserService } from '@/services/user.service'
 import { ClubService } from './club.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns, coachColumns, saleColumns } from './club.config'
 import ShopAddLable from '@/views/biz-modals/shop/add-lable'
@@ -360,7 +362,6 @@ export default {
     return {
       clubService: ClubService,
       userService: UserService,
-      routeService: RouteService,
       messageService: MessageService
     }
   },
@@ -372,7 +373,6 @@ export default {
       reserveEnums: user.reserveEnums$,
       memberEnums: user.memberEnums$,
       auth: this.clubService.auth$,
-      query: this.routeService.query$,
       list: this.clubService.list$,
       page: this.clubService.page$
     }
@@ -447,7 +447,7 @@ export default {
     },
     // 查询
     onSearchNative() {
-      if (this.query.follow_min > this.query.follow_max) {
+      if (this.$searchQuery.follow_min > this.$searchQuery.follow_max) {
         this.messageService.warning({
           content: '最小跟进次数要小于最大跟进次数'
         })
@@ -544,7 +544,7 @@ export default {
     edit(record) {
       this.$router.push({
         name: 'shop-member-edit',
-        query: { id: record.member_id }
+        $searchQuery: { id: record.member_id }
       })
     },
     addUser() {
@@ -553,7 +553,7 @@ export default {
     infoFunc(record) {
       this.$router.push({
         name: 'shop-member-info-basic',
-        query: { id: record.member_id }
+        $searchQuery: { id: record.member_id }
       })
     },
     moment,
@@ -564,7 +564,7 @@ export default {
       }
       this.$refs.stSeleter.handleResetItem()
       this.consumption = []
-      this.$router.push({ query: {} })
+      this.$router.push({ $searchQuery: {} })
     },
     toggle() {
       this.expand = !this.expand
@@ -580,8 +580,8 @@ export default {
         return item.id
       })
     },
-    queryFunc() {
-      this.$router.push({ query: this.form })
+    $searchQueryFunc() {
+      this.$router.push({ $searchQuery: this.form })
     },
     getCoachList() {
       return this.clubService.getCoachList().subscribe(res => {

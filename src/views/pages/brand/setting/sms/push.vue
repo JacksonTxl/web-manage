@@ -23,7 +23,7 @@
   </div>
 </template>
 <script>
-import { RouteService } from '@/services/route.service'
+// import { RouteService } from '@/services/route.service'
 
 import { NoticeService } from './push.service'
 import { thsShop } from './push.config'
@@ -37,13 +37,13 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
+      // routeService: RouteService,
       noticeService: NoticeService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
+      // query: this.routeService.query$,
       list: this.noticeService.list$
     }
   },
