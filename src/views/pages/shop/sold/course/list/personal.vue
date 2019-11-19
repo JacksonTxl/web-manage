@@ -8,7 +8,7 @@
         style="width:372px"
       />
     </div>
-    <st-search-panel @search="onSearchNative" @reset="onSearhReset">
+    <st-search-panel @search="onSearchNative" @reset="onSearhResetNative">
       <st-search-panel-item label="课程状态：">
         <st-search-radio
           v-model="$searchQuery.course_status"
@@ -229,11 +229,6 @@ export default {
   mounted() {
     this.setSearchData()
   },
-  watch: {
-    query(newVal) {
-      this.setSearchData()
-    }
-  },
   methods: {
     // 额度赠送
     onGiving() {
@@ -289,9 +284,13 @@ export default {
         : ''
       this.onSearch()
     },
+    onSearhResetNative() {
+      this.selectTime.startTime.value = null
+      this.selectTime.endTime.value = null
+      this.onSearhReset()
+    },
     // 设置searchData
     setSearchData() {
-      this.course_status = this.$searchQuery.course_status
       this.selectTime.startTime.value = this.$searchQuery.start_time
         ? cloneDeep(moment(this.$searchQuery.start_time))
         : null

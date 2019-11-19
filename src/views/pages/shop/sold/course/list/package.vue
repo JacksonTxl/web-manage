@@ -9,7 +9,7 @@
       />
     </div>
 
-    <st-search-panel @search="onSearchNative" @reset="onSearhReset">
+    <st-search-panel @search="onSearchNative" @reset="onSearhResetNative">
       <st-search-panel-item label="课程状态：">
         <st-search-radio
           v-model="$searchQuery.course_status"
@@ -28,16 +28,22 @@
         <!-- NOTE: 导出 -->
         <!-- <st-button v-if="auth.export" type="primary">批量导出</st-button> -->
       </div>
-      <!--
-          NOTE: 本期不做，先去掉选择框
-          :alertSelection="{onReset: onClear}"
-          :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
-         -->
       <div>
         <st-table
           :page="page"
           rowKey="id"
           :loading="loading.getList"
+          :alertSelection="{ onReset: onClear }"
+          :rowSelection="{
+            selectedRowKeys: selectedRowKeys,
+            fixed: true,
+            onChange: onSelectChange,
+            getCheckboxProps: record => ({
+              props: {
+                disabled: disabledSelect(record)
+              }
+            })
+          }"
           @change="onTableChange"
           :scroll="{ x: 1800 }"
           :columns="columns"
@@ -167,32 +173,25 @@ export default {
       }
     }
   },
-
   mounted() {
     this.setSearchData()
-  },
-  watch: {
-    query(newVal) {
-      this.setSearchData()
-    }
   },
   computed: {
     columns
   },
   methods: {
+    disabledSelect(record) {
+      if (record.course_status !== 1 && record.course_status !== 4) {
+        return true
+      }
+    },
     // 清空列表选择
     onClear() {
       this.selectedRowKeys = []
       this.selectedRows = []
     },
-    onPageChange(data) {
-      this.$router.push({
-        query: { ...this.query, page: data.current, size: data.pageSize }
-      })
-    },
     // 修改剩余课时
     onSurplus(record) {
-      let that = this
       let data = {
         id: record.id,
         courseName: record.course_name,
@@ -208,14 +207,13 @@ export default {
         },
         on: {
           success() {
-            that.$router.reload()
+            this.$router.reload()
           }
         }
       })
     },
     // 冻结
     onFreeze(record) {
-      let that = this
       this.$modalRouter.push({
         name: 'sold-course-freeze',
         props: {
@@ -224,9 +222,7 @@ export default {
         },
         on: {
           success: () => {
-            setTimeout(() => {
-              this.$router.reload()
-            }, 100)
+            this.$router.reload()
           }
         }
       })
@@ -249,7 +245,6 @@ export default {
     },
     // 转让
     onTransfer(record) {
-      let that = this
       this.$modalRouter.push({
         name: 'sold-course-transfer',
         props: {
@@ -257,8 +252,8 @@ export default {
           id: record.id
         },
         on: {
-          success() {
-            that.$router.reload()
+          success: () => {
+            this.$router.reload()
           }
         }
       })
@@ -272,7 +267,6 @@ export default {
     },
     // 退款
     onRefund(record) {
-      let that = this
       this.$modalRouter.push({
         name: 'sold-course-refund',
         props: {
@@ -280,8 +274,8 @@ export default {
           id: record.id
         },
         on: {
-          success() {
-            that.$router.reload()
+          success: () => {
+            this.$router.reload()
           }
         }
       })
@@ -303,9 +297,13 @@ export default {
         : ''
       this.onSearch()
     },
+    onSearhResetNative() {
+      this.selectTime.startTime.value = null
+      this.selectTime.endTime.value = null
+      this.onSearhReset()
+    },
     // 设置searchData
     setSearchData() {
-      this.course_status = this.$searchQuery.course_status
       this.selectTime.startTime.value = this.$searchQuery.start_time
         ? cloneDeep(moment(this.$searchQuery.start_time))
         : null
