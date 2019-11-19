@@ -4,7 +4,6 @@ import { pluck, tap } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
 import { StatApi } from '@/api/v1/stat/shop'
 import { MemberApi, SaleQuery, CoachQuery } from '@/api/v1/member'
-
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()

@@ -139,8 +139,8 @@
         {{ record.follow_status.label }}
       </span>
       <span slot="contentTitle">
-        跟进内容
-        <st-help-tooltip id="TSSR003" />
+        当前已跟进次数
+        <st-help-tooltip id="TSCRM003" />
       </span>
       <template slot="follow_content" slot-scope="text, record">
         <span v-if="text.length === 0">{{ record.object }}</span>
@@ -238,9 +238,6 @@ export default {
       })
       return list
     }
-  },
-  created() {
-    //console.log(this.coachList)
   },
   mounted() {
     this.setSearchData()
