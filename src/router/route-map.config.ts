@@ -670,11 +670,11 @@ export const routeMapConfig = {
   },
   'brand-setting-general-course-personal'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教设置'
-    routeConfig.meta.auth = 'brand:setting:personal_course_reserve_setting|edit'
+    routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|tab'
   },
   'brand-setting-general-course-team'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '团课设置'
-    routeConfig.meta.auth = 'brand:setting:team_course_reserve_setting|edit'
+    routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|tab'
   },
   'brand-setting-general-pay-type'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '支付方式'
