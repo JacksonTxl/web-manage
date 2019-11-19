@@ -80,7 +80,7 @@ export default {
       this.searchData.shop_id = e
     },
     onChange() {
-      this.$router.push({ query: this.query })
+      this.$router.push({ query: this.$searchQuery })
     },
     reset(value) {
       console.log(`selected ${value}`)

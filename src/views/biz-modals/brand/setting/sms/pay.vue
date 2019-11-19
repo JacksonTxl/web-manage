@@ -122,7 +122,7 @@ export default {
     },
     postSmsPay(para) {
       return this.settingSmsPayService
-        .postSmsPay({ ...this.query })
+        .postSmsPay({ ...this.$searchQuery })
         .subscribe(res => {
           this.imgUrl = res.info.url
         })

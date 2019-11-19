@@ -266,7 +266,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ query: this.query })
+            this.$router.push({ query: this.$searchQuery })
           }
         }
       })
@@ -281,7 +281,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ query: this.query })
+            this.$router.push({ query: this.$searchQuery })
           }
         }
       })

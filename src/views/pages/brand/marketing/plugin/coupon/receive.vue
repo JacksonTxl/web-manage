@@ -131,7 +131,7 @@ export default {
     },
     onPageChange(data) {
       this.$router.push({
-        query: { ...this.query, page: data.current, size: data.pageSize }
+        query: { ...this.$searchQuery, page: data.current, size: data.pageSize }
       })
     },
     // 查询
@@ -147,7 +147,7 @@ export default {
           ? moment(this.queryParams.date[1]).format('YYYY-MM-DD HH:mm')
           : ''
       }
-      this.$router.push({ query: { ...this.query, ...params } })
+      this.$router.push({ query: { ...this.$searchQuery, ...params } })
     },
     // 重置
     onReset() {
@@ -159,7 +159,7 @@ export default {
         end_time: ''
       }
       this.queryParams.date = []
-      this.$router.push({ query: { ...this.query, ...query } })
+      this.$router.push({ query: { ...this.$searchQuery, ...query } })
     },
     // 设置searchData
     setSearchData() {

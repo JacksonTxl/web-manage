@@ -132,7 +132,7 @@ export default {
   },
   methods: {
     getConsumeList() {
-      this.teamConsumeService.getConsumeList(this.query).subscribe()
+      this.teamConsumeService.getConsumeList(this.$searchQuery).subscribe()
     },
     filterOption(input, option) {
       return (
@@ -145,7 +145,7 @@ export default {
       this.coach_id = this.record.coach_id || -1
       this.stat_date = this.record.stat_date
       this.teamConsumeService
-        .init({ course_type: COURSE_TYPE.TEAM }, { ...this.query })
+        .init({ course_type: COURSE_TYPE.TEAM }, { ...this.$searchQuery })
         .subscribe()
     }
   },

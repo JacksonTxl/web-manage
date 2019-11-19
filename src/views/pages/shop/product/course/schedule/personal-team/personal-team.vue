@@ -119,7 +119,7 @@ export default {
     },
     // 刷新页面
     onScheduleChange() {
-      this.$router.push({ query: this.query })
+      this.$router.push({ query: this.$searchQuery })
     }
   }
 }

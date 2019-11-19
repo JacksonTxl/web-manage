@@ -293,7 +293,7 @@ export default {
       this.$searchQuery.current_page = pagination.current
       this.$searchQuery.size = pagination.pageSize
       this.$router.push({
-        query: this.query
+        query: this.$searchQuery
       })
     }
   }
