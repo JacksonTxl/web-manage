@@ -39,6 +39,10 @@
           :scroll="{ x: 1240 }"
           :dataSource="list"
         >
+          <!-- 商品类型 -->
+          <template slot="product_type" slot-scope="text, record">
+            <span>{{ record.product_type.name }}</span>
+          </template>
           <!-- 支持门店 -->
           <!-- v-if="text.id === SUPPORT_SALES.SPECIFIED_STORE" 做判断 -->
 
@@ -101,6 +105,9 @@
               <!-- v-if="record.auth['brand:activity:group|del']" 推广的数据判断 -->
               <a @click="onStop(record)">
                 删除
+              </a>
+              <a @click="onRelease(record)">
+                发布
               </a>
             </st-table-actions>
           </template>
@@ -191,6 +198,10 @@ export default {
       // this.activityStatus = activity_status || -1
     },
     // 查看数据   根据id传id获取数据列表
+    // 活动发布
+    onRelease(record) {
+      // 活动发布
+    },
     onData(record) {
       console.log(record)
       this.$router.push({
@@ -229,15 +240,33 @@ export default {
       }
     },
     onEdit(record) {
-      console.log(record.id)
-      this.$router.push({
-        path: '/brand/marketing/plugin/group/add-member',
-        query: { id: record.id }
-      })
+      let id = record.product_type.id
+      if (id === 3) {
+        this.$router.push({
+          path: '/brand/marketing/plugin/group/add-personal',
+          query: { id: id }
+        })
+      } else if (id === 2) {
+        this.$router.push({
+          path: '/brand/marketing/plugin/group/add-stored',
+          query: { id: id }
+        })
+      } else if (id === 1) {
+        this.$router.push({
+          path: '/brand/marketing/plugin/group/add-member',
+          query: { id: id }
+        })
+      } else {
+        this.$router.push({
+          path: '/brand/marketing/plugin/group/add-course',
+          query: { id: id }
+        })
+      }
     },
     // 删除活动
     onStop(record) {
       let that = this
+      // 结束tip不对
       this.$confirm({
         title: '提示',
         content:

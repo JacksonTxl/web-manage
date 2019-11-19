@@ -19,22 +19,7 @@
       "valid_time": "10",
       "is_limit_stock": 1,
       "stock_total": "100",
-      "support_shop ": [
-        {
-          "brand_id": 1,
-          "shop_id": 12,
-          "province_id": 310000,
-          "province_name": "上海市",
-          "city_id": 310100,
-          "city_name": "上海市",
-          "district_id": 310106,
-          "district_name": "静安区",
-          "province_id": 310000,
-          "province_name": "上海市",
-          "shop_id": 12,
-          "shop_name": "kael的1店"
-        }
-      ],
+      "support_shop": [1],
       "published_type": 1,
       "published_time": "2019-11-14 00:00:00",
       "activity_state": [{ "id": 1, "name": "未开始" }]

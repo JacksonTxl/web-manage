@@ -359,11 +359,10 @@ export default {
           })
         } else {
           this.addPersonalService.addGroup(params).subscribe(res => {
-            // 新建成功 todo(路由地址未确定)
             console.log(params, res, '==============')
-            // this.$router.push({
-            //   path: `/brand/marketing/plugin/group/list`
-            // })
+            this.$router.push({
+              path: `/brand/marketing/plugin/group/list`
+            })
           })
         }
       })

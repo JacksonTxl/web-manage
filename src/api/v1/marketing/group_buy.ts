@@ -94,12 +94,6 @@ export class GroupBuyApi extends Api {
     return this.http.get('/v1/cards/deposit/brand_list')
   }
   /**
-   * 获取门店列表
-   */
-  getShopList() {
-    return this.http.get('/v1/shop/all_list')
-  }
-  /**
    * 获取课程包列表
    */
   getCourseList(params: { shop_id: number }) {
@@ -112,7 +106,7 @@ export class GroupBuyApi extends Api {
     return this.http.get('/v1/course/personal/brand_list')
   }
   /**
-   * 获取私教课列表
+   * 获取教练列表
    */
   getCoachList(params: { id: number }) {
     return this.http.get('/v1/course/personal/coach_level/', { params })

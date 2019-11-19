@@ -20,7 +20,8 @@
               v-modal-link="{
                 name: 'shop-select',
                 props: {
-                  checked: checkedShopIds
+                  checked: checkedShopIds,
+                  groupParams: group
                 },
                 on: {
                   change: onSelectShopComplete
@@ -83,12 +84,19 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    groupParams: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   },
   data() {
     return {
       checkedShopIds: [],
-      list: []
+      list: [],
+      group: this.groupParams
     }
   },
   mounted() {

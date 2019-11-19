@@ -5,7 +5,7 @@
     "list": [
       {
         "activity_name": "活动1",
-        "product_type": "会籍卡",
+        "product_type": { "id": 1, "name": "会籍卡" },
         "support_sales": "门店1",
         "activity_time": "2019-11-14 00:00~2019-11-14 00:00",
         "activity_state": [
@@ -18,7 +18,7 @@
       },
       {
         "activity_name": "活动1",
-        "product_type": "会籍卡",
+        "product_type": { "id": 2, "name": "储值卡" },
         "support_sales": "门店1",
         "activity_time": "2019-11-14 00:00~2019-11-14 00:00",
         "activity_state": [
@@ -31,7 +31,7 @@
       },
       {
         "activity_name": "活动1",
-        "product_type": "会籍卡",
+        "product_type": { "id": 4, "name": "课程包" },
         "support_sales": "门店1",
         "activity_time": "2019-11-14 00:00~2019-11-14 00:00",
         "activity_state": [
@@ -44,7 +44,7 @@
       },
       {
         "activity_name": "活动1",
-        "product_type": "会籍卡",
+        "product_type": { "id": 3, "name": "私教课" },
         "support_sales": "门店1",
         "activity_time": "2019-11-14 00:00~2019-11-14 00:00",
         "activity_state": [
