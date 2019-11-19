@@ -320,7 +320,20 @@ export default {
       this.getWeeks('week')
     }
     this.$nextTick().then(() => {
-      document.getElementById('timer-7').scrollIntoView()
+      function heightToTop(ele) {
+        //ele为指定跳转到该位置的DOM节点
+        let root = document.body
+        let height = 0
+        do {
+          height += ele.offsetTop
+          ele = ele.offsetParent
+        } while (ele !== root)
+        return height
+      }
+      // 减去232固定高度
+      window.scrollTo({
+        top: heightToTop(document.querySelector('#timer-9')) - 232
+      })
     })
   },
   components: {
