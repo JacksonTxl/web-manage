@@ -156,7 +156,7 @@ export default {
       const { size, name } = data.file
       const { sizeLimit, fileType } = this
       const names = name.split('.')
-      if (!names.length <= 0 || !fileType.includes(names[names.length - 1])) {
+      if (names.length <= 0 || !fileType.includes(names[names.length - 1])) {
         return {
           isValid: false,
           msg: `请上传${fileType}格式的文件`
