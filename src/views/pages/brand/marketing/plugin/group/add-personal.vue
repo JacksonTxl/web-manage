@@ -252,16 +252,33 @@ export default {
   },
 
   props: {
-    // 是否是编辑0:新建，1:已发布, 2:暂不发布, 3:定时发布
-    editType: {
-      type: Number,
-      default: 0
+    // 是否编辑
+    isEdit: {
+      type: Boolean,
+      default: false
+    },
+    info: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  watch: {
+    // 疑问
+    info(n, o) {
+      if (this.isEdit) {
+        this.setFieldsValue()
+        this.addMemberService.init().subscribe(res => {
+          this.chooseMember(this.cardId)
+        })
+      }
     }
   },
   updated() {
     // console.log(this.newCoach)
   },
-  mounted() {},
+  mounted() {
+    console.log(decorators)
+  },
   computed: {
     // 教练增加默认课时
     newCoach() {
@@ -273,6 +290,24 @@ export default {
     }
   },
   methods: {
+    // 疑问
+    chooseMember(value) {
+      this.memberList.filter(item => {
+        if (item.id === value) {
+          this.tableData = item.product_spec
+          if (this.selectedRowKeys && this.isEdit) {
+            this.info.sku.forEach(item => {
+              this.tableData.forEach(card => {
+                console.log(item, card, '-------------zheli')
+                if (item.id === card.id) {
+                  card.group_price = item.group_price
+                }
+              })
+            })
+          }
+        }
+      })
+    },
     // 输入拼团课时
     changeHour(e) {
       this.groupHour = e.target.value
@@ -352,7 +387,7 @@ export default {
             published_time: moment(this.publishTime).format('YYYY-MM-DD HH:mm') //发布时间
           }
         }
-        if (this.editType) {
+        if (this.isEdit) {
           // 编辑 type为2，3只能编辑名称，结束时间，库存
           this.addPersonalService.editGroup(params).subscribe(res => {
             console.log(params, res, '这是编辑返回的数据')

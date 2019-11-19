@@ -30,8 +30,13 @@ export class ListService implements Controller {
       })
     )
   }
-  stopMarketingCoupon(id: number) {
-    return this.marketingApi.stopMarketingCoupon(id).pipe(tap((res: any) => {}))
+  @Effect()
+  stopGroup(params: { id: number }) {
+    return this.GroupBuyApi.stopGroupList(params).pipe(tap((res: any) => {}))
+  }
+  @Effect()
+  releaseGroup(params: { id: number }) {
+    return this.GroupBuyApi.releaseGroupList(params).pipe(tap((res: any) => {}))
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.getList(to.meta.query)

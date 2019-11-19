@@ -46,19 +46,18 @@
           <!-- 支持门店 -->
           <!-- v-if="text.id === SUPPORT_SALES.SPECIFIED_STORE" 做判断 -->
 
-          <!-- <template slot="support_sales" slot-scope="text, record"> -->
-          <!-- {{ text.name }} -->
-          <!-- <a
-              v-if="text.id"
+          <template slot="support_sales" slot-scope="text, record">
+            <a
+              v-if="record.id"
               v-modal-link="{
                 name: 'card-brand-member-shop-table',
-                props: { id: record.id, type: 'Sale', title: '支持门店' }
+                props: { id: record.id, type: 'Group', title: '支持门店' }
               }"
             >
-              {{ text.name }}
-            </a> -->
-          <!-- <span class="use_num">{{ text.name }}</span> -->
-          <!-- </template> -->
+              {{ text }}
+            </a>
+            <!-- <span class="use_num">{{ text.name }}</span> -->
+          </template>
           <!-- 活动状态 -->
           <template slot="activity_state" slot-scope="text, record">
             <span
@@ -103,7 +102,7 @@
                 编辑
               </a>
               <a @click="onStop(record)">
-                删除
+                结束
               </a>
               <a @click="onRelease(record)">
                 发布
@@ -125,6 +124,7 @@ import { columns } from './list.config'
 import { TYPE } from '@/constants/marketing/plugin'
 import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
 import BrandMarketingPoster from '@/views/biz-modals/brand/marketing/poster'
+import CardBrandMemberShopTable from '@/views/biz-modals/card/brand-member/shop-table'
 
 export default {
   name: 'PageBrandMarketingPluginGroupList',
@@ -133,8 +133,9 @@ export default {
     basic: 'page-brand-plugin-group-list'
   },
   modals: {
-    BrandMarketingBind, // 头部规则说明
-    BrandMarketingPoster // 海报
+    BrandMarketingBind, //
+    BrandMarketingPoster, // 海报
+    CardBrandMemberShopTable
   },
   serviceInject() {
     return {
@@ -196,10 +197,13 @@ export default {
       // this.activityName = activity_name
       // this.activityStatus = activity_status || -1
     },
-    // 查看数据   根据id传id获取数据列表
     // 活动发布
     onRelease(record) {
       // 活动发布
+      // releaseGroup
+      this.listService.releaseGroup({ id: record.id }).subscribe(res => {
+        that.$router.reload()
+      })
     },
     onData(record) {
       this.$router.push({
@@ -237,6 +241,7 @@ export default {
         })
       }
     },
+    // 编辑列表
     onEdit(record) {
       let id = record.product_type.id
       if (id === 3) {
@@ -261,19 +266,18 @@ export default {
         })
       }
     },
-    // 删除活动
+    // 结束活动
     onStop(record) {
       let that = this
       // 结束tip不对
       this.$confirm({
         title: '提示',
-        content:
-          '结束后当用户进入投放该优惠券的活动时，将无法领取该优惠券。确认要结束？',
+        content: '确定停止该活动吗？活动停止后，未成团订单将自动关闭并退款。',
         onOk() {
-          // 调取接口
-          // that.listService.stopMarketingCoupon(record.id).subscribe(res => {
-          //   that.$router.reload()
-          // })
+          that.listService.stopGroup({ id: record.id }).subscribe(res => {
+            console.log(res)
+            that.$router.reload()
+          })
         },
         onCancel() {}
       })

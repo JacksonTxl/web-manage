@@ -99,14 +99,25 @@
         />
       </st-panel>
       <st-panel>
-        <a-table
-          rowKey="id"
-          :columns="columns"
-          :scroll="{ x: 1200 }"
-          :dataSource="list"
-          :rowClassName="rowClassName"
-          @expandedRowsChange="onShow"
-        ></a-table>
+        <template v-if="list.length > 1">
+          <a-table
+            rowKey="id"
+            :columns="columns"
+            :scroll="{ x: 1200 }"
+            :dataSource="list"
+            :rowClassName="rowClassName"
+            @expandedRowsChange="onShow"
+          ></a-table>
+        </template>
+        <template v-else>
+          <a-table
+            id="atable_no_data"
+            rowKey="id"
+            :columns="columns"
+            :scroll="{ y: 0 }"
+            :dataSource="list"
+          ></a-table>
+        </template>
       </st-panel>
     </st-panel-layout>
   </div>
