@@ -49,6 +49,15 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
+    // 储值卡
+    depositId: {
+      rules: [
+        {
+          required: true,
+          message: '请选择储值卡'
+        }
+      ]
+    },
     // 拼团有效期
     valid_time: {
       rules: [
@@ -77,6 +86,13 @@ export const ruleOptions = (vm: any) => {
             }
             if (value > 999999) {
               return '活动库存不能超过999999，请重新输入'
+            }
+            if (+vm.info.stock_total > +value) {
+              let msg =
+                '活动库存输入必须在' +
+                vm.info.stock_total +
+                '～999999之间，请重新输入'
+              return msg
             }
           }
         }
