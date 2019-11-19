@@ -117,12 +117,12 @@ export default {
     onGetTable() {
       this.$router.push({
         name: 'shop-product-course-schedule-team-team-table',
-        query: this.$searchQuery
+        query: this.query
       })
     },
     // 刷新页面
     onScheduleChange() {
-      this.$router.push({ query: this.$searchQuery })
+      this.$router.push({ query: this.query })
     }
   }
 }

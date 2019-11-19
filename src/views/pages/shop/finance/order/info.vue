@@ -18,17 +18,14 @@
               if: auth['brand_shop:order:order|cancel'],
               text: '取消',
               click: onCancel
+            },
+            {
+              if: auth['brand_shop:order:order|split'],
+              text: '业绩拆分',
+              click: onSplit
             }
           ]"
         ></st-btn-actions>
-        <!-- <st-button
-          class="mg-r8"
-          v-if="auth['brand_shop:order:order|split']"
-          @click="onSplit"
-          type="primary"
-        >
-          业绩拆分
-        </st-button> -->
       </div>
       <a-row :gutter="24">
         <a-col :span="9">
@@ -174,7 +171,6 @@ export default {
         },
         on: {
           success: result => {
-            console.log('取消订单!')
             this.$router.reload()
           }
         }
