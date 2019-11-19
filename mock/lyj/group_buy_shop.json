@@ -1,0 +1,42 @@
+{
+  "code": 0,
+  "msg": "success",
+  "data": {
+    "list": [
+      {
+        "id": 1,
+        "province_name": "上海市",
+        "city_name": "上海市",
+        "district_name": "静安区",
+        "shop_name": "k的店"
+      },
+      {
+        "id": 4,
+        "province_name": "上海市",
+        "city_name": "上海市",
+        "district_name": "静安区",
+        "shop_name": "kael的1店"
+      },
+      {
+        "id": 7,
+        "province_name": "上海市",
+        "city_name": "上海市",
+        "district_name": "静安区",
+        "shop_name": "kael店"
+      },
+      {
+        "id": 31,
+        "province_name": "上海市",
+        "city_name": "上海市",
+        "district_name": "静安区",
+        "shop_name": "1店"
+      }
+    ],
+    "page": {
+      "total_counts": 0,
+      "total_pages": 0,
+      "current_page": 1,
+      "size": 20
+    }
+  }
+}

@@ -39,6 +39,10 @@
           :scroll="{ x: 1240 }"
           :dataSource="list"
         >
+          <!-- 商品类型 -->
+          <template slot="product_type" slot-scope="text, record">
+            <span>{{ record.product_type.name }}</span>
+          </template>
           <!-- 支持门店 -->
           <!-- v-if="text.id === SUPPORT_SALES.SPECIFIED_STORE" 做判断 -->
 
@@ -95,11 +99,14 @@
               <a @click="onGeneralize(record)">
                 推广
               </a>
-              <a @click="onStop(record)">
-                结束
+              <a @click="onEdit(record)">
+                编辑
               </a>
               <a @click="onStop(record)">
                 删除
+              </a>
+              <a @click="onRelease(record)">
+                发布
               </a>
             </st-table-actions>
           </template>
@@ -190,6 +197,10 @@ export default {
       // this.activityStatus = activity_status || -1
     },
     // 查看数据   根据id传id获取数据列表
+    // 活动发布
+    onRelease(record) {
+      // 活动发布
+    },
     onData(record) {
       this.$router.push({
         path: '/brand/marketing/plugin/group/data',
@@ -226,17 +237,43 @@ export default {
         })
       }
     },
-    // 结束活动
+    onEdit(record) {
+      let id = record.product_type.id
+      if (id === 3) {
+        this.$router.push({
+          path: '/brand/marketing/plugin/group/add-personal',
+          query: { id: id }
+        })
+      } else if (id === 2) {
+        this.$router.push({
+          path: '/brand/marketing/plugin/group/add-stored',
+          query: { id: id }
+        })
+      } else if (id === 1) {
+        this.$router.push({
+          path: '/brand/marketing/plugin/group/add-member',
+          query: { id: id }
+        })
+      } else {
+        this.$router.push({
+          path: '/brand/marketing/plugin/group/add-course',
+          query: { id: id }
+        })
+      }
+    },
+    // 删除活动
     onStop(record) {
       let that = this
+      // 结束tip不对
       this.$confirm({
         title: '提示',
         content:
           '结束后当用户进入投放该优惠券的活动时，将无法领取该优惠券。确认要结束？',
         onOk() {
-          that.listService.stopMarketingCoupon(record.id).subscribe(res => {
-            that.$router.reload()
-          })
+          // 调取接口
+          // that.listService.stopMarketingCoupon(record.id).subscribe(res => {
+          //   that.$router.reload()
+          // })
         },
         onCancel() {}
       })
@@ -244,12 +281,6 @@ export default {
     // 新增活动
     onAddGroup() {
       this.$router.push({ path: '/brand/marketing/plugin/group/choose' })
-    },
-    goReceive(record) {
-      // this.$router.push({
-      //   path: '/brand/marketing/plugin/coupon/receive',
-      //   query: { id: record.id }
-      // })
     }
   },
   //  过滤器

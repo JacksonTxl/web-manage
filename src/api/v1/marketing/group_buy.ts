@@ -45,6 +45,9 @@ export interface GroupData {
   group_status: number
   search_where: string
 }
+export interface CoachList {
+  id: number
+}
 export class GroupBuyApi extends Api {
   /**
    * 新增拼团活动
@@ -103,9 +106,15 @@ export class GroupBuyApi extends Api {
     return this.http.get('/v1/course/package_list', { params })
   }
   /**
-   * 获取私教课列表  记得加参数
+   * 获取私教课列表
    */
   getPersonalList() {
     return this.http.get('/v1/course/personal/brand_list')
+  }
+  /**
+   * 获取教练列表
+   */
+  getCoachList(params: { id: number }) {
+    return this.http.get('/v1/course/personal/coach_level/', { params })
   }
 }

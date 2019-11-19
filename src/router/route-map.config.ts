@@ -1293,5 +1293,8 @@ export const routeMapConfig = {
       group_status: { type: Number, default: -1 }
     }
   },
+  'brand-marketing-plugin-group-add-personal'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '新增私教课'
+  },
   ...tplConfigs
 }

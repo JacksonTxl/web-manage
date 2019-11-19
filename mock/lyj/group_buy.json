@@ -1,0 +1,66 @@
+{
+  "code": 0,
+  "msg": "success",
+  "data": {
+    "list": [
+      {
+        "activity_name": "活动1",
+        "product_type": { "id": 1, "name": "会籍卡" },
+        "support_sales": "门店1",
+        "activity_time": "2019-11-14 00:00~2019-11-14 00:00",
+        "activity_state": [
+          { "id": 1, "name": "未发布", "published_time": "2019:11:11 00:00:00" }
+        ],
+        "group_total": "15",
+        "group_success_total": "10",
+        "stock_remaining": "10",
+        "id": "323"
+      },
+      {
+        "activity_name": "活动1",
+        "product_type": { "id": 2, "name": "储值卡" },
+        "support_sales": "门店1",
+        "activity_time": "2019-11-14 00:00~2019-11-14 00:00",
+        "activity_state": [
+          { "id": 1, "name": "未发布", "published_time": "2019:11:11 00:00:00" }
+        ],
+        "group_total": "15",
+        "group_success_total": "10",
+        "stock_remaining": "10",
+        "id": "3"
+      },
+      {
+        "activity_name": "活动1",
+        "product_type": { "id": 4, "name": "课程包" },
+        "support_sales": "门店1",
+        "activity_time": "2019-11-14 00:00~2019-11-14 00:00",
+        "activity_state": [
+          { "id": 1, "name": "未发布", "published_time": "2019:11:11 00:00:00" }
+        ],
+        "group_total": "15",
+        "group_success_total": "10",
+        "stock_remaining": "10",
+        "id": "23"
+      },
+      {
+        "activity_name": "活动1",
+        "product_type": { "id": 3, "name": "私教课" },
+        "support_sales": "门店1",
+        "activity_time": "2019-11-14 00:00~2019-11-14 00:00",
+        "activity_state": [
+          { "id": 1, "name": "未发布", "published_time": "2019:11:11 00:00:00" }
+        ],
+        "group_total": "15",
+        "group_success_total": "10",
+        "stock_remaining": "10",
+        "id": "42323"
+      }
+    ],
+    "page": {
+      "total_counts": 5,
+      "total_pages": 1,
+      "current_page": 1,
+      "size": 20
+    }
+  }
+}
