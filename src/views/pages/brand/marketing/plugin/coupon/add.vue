@@ -336,7 +336,7 @@ export default {
       this.form.validate().then(values => {
         let params = {}
         if (this.isEditMode) {
-          params.id = this.$searchQueryid
+          params.id = this.$searchQuery.id
           params.before_number = this.info.number
           params.after_number = values.number
         } else {

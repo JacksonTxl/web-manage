@@ -69,7 +69,7 @@ export default {
   methods: {
     onPageChange(data) {
       this.$router.push({
-        query: { ...this.query, page: data.current, size: data.pageSize }
+        query: { ...this.$searchQuery, page: data.current, size: data.pageSize }
       })
     }
   }

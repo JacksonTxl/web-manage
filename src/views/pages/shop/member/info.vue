@@ -344,7 +344,7 @@ export default {
     editMember() {
       this.$router.push({
         name: 'shop-member-edit',
-        query: { id: this.$searchQueryid }
+        query: { id: this.$searchQuery.id }
       })
     },
     onModalTest() {
@@ -361,7 +361,7 @@ export default {
             this.$modalRouter.push({
               name: 'shop-distribution-coach',
               props: {
-                memberIds: [this.$searchQueryid],
+                memberIds: [this.$searchQuery.id],
                 coachId: this.info.follow_coach_id
               },
               on: {
@@ -377,7 +377,7 @@ export default {
         this.$modalRouter.push({
           name: 'shop-distribution-coach',
           props: {
-            memberIds: [this.$searchQueryid],
+            memberIds: [this.$searchQuery.id],
             coachId: this.info.follow_coach_id
           },
           on: {
@@ -398,7 +398,7 @@ export default {
             this.$modalRouter.push({
               name: 'shop-distribution-sale',
               props: {
-                memberIds: [this.$searchQueryid],
+                memberIds: [this.$searchQuery.id],
                 saleId: this.info.follow_salesman_id
               },
               on: {
@@ -414,7 +414,7 @@ export default {
         this.$modalRouter.push({
           name: 'shop-distribution-sale',
           props: {
-            memberIds: [this.$searchQueryid],
+            memberIds: [this.$searchQuery.id],
             saleId: this.info.follow_salesman_id
           },
           on: {
@@ -427,7 +427,7 @@ export default {
     }
   },
   mounted() {
-    this.id = this.$searchQueryid
+    this.id = this.$searchQuery.id
   }
 }
 </script>

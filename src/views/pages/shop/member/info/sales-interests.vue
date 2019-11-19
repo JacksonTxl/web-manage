@@ -72,7 +72,7 @@ export default {
     onPageChange(e) {
       this.$router.push({
         query: {
-          id: this.$searchQueryid,
+          id: this.$searchQuery.id,
           size: e.pageSize,
           current_page: e.current
         }

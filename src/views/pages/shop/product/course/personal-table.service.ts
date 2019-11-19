@@ -7,6 +7,7 @@ import { Store } from '@/services/store'
 import { forkJoin } from 'rxjs'
 import moment from 'moment'
 import { UserService } from '@/services/user.service'
+import { AuthService } from '@/services/auth.service'
 interface SetState {
   scheduleTime: any[]
   scheduleList: any[]
@@ -17,10 +18,16 @@ export class PersonalTableService {
   scheduleColumns$ = new State([])
   scheduleTime$ = new State([])
   formPage$ = new State('')
+  auth$ = this.authService.authMap$({
+    add: 'shop:schedule:personal_course_schedule|add',
+    addBatch: 'shop:schedule:personal_course_schedule|batch_add',
+    copy: 'shop:schedule:personal_course_schedule|copy'
+  })
   constructor(
     private scheduleService: PersonalScheduleScheduleService,
     private commonService: PersonalScheduleCommonService,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService
   ) {}
   getList(query: any) {
     return this.scheduleService.getList(query).pipe(

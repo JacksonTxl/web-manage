@@ -146,7 +146,7 @@ export default {
       })
     },
     onScheduleChange() {
-      this.$router.push({ query: this.query })
+      this.$router.push({ query: this.$searchQuery })
     }
   }
 }
