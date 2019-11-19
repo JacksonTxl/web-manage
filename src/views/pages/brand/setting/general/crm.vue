@@ -25,17 +25,18 @@
           <a-radio-group v-model="crmRule.sales_is_limit">
             <a-radio :value="0" class="mg-r48">不限制</a-radio>
             <a-radio :value="1">
-              <a-input
+              <st-input-number
                 :min="1"
                 @focus="setFocus('sales_is_limit', 1)"
                 v-model="crmRule.sales_limit_num"
                 :max="9999"
-                type="number"
+                :step="1"
+                :precision="0"
                 class="input"
                 placeholder="请输入"
               >
                 <span slot="addonAfter">人</span>
-              </a-input>
+              </st-input-number>
             </a-radio>
           </a-radio-group>
         </a-col>
@@ -62,16 +63,18 @@
           <a-radio-group v-model="crmRule.coach_is_limit">
             <a-radio :value="0" class="mg-r48">不限制</a-radio>
             <a-radio :value="1">
-              <a-input
+              <st-input-number
                 :min="1"
                 :max="9999"
+                :step="1"
+                :precision="0"
                 @focus="setFocus('coach_is_limit', 1)"
                 v-model="crmRule.coach_limit_num"
                 class="input"
                 placeholder="请输入"
               >
                 <span slot="addonAfter">人</span>
-              </a-input>
+              </st-input-number>
             </a-radio>
           </a-radio-group>
         </a-col>
@@ -110,16 +113,18 @@
         <a-radio-group v-model="crmRule.sales_is_protect_limit">
           <a-radio :value="0" class="mg-r48">不限制</a-radio>
           <a-radio :value="1">
-            <a-input
+            <st-input-number
               :min="1"
               :max="9999"
+              :step="1"
+              :precision="0"
               v-model="crmRule.sales_protect_days"
               class="input"
               @focus="setFocus('sales_is_protect_limit', 1)"
               placeholder="请输入"
             >
               <span slot="addonAfter">天</span>
-            </a-input>
+            </st-input-number>
           </a-radio>
         </a-radio-group>
         <st-t4 class="mg-t24 mg-b24">会员流失后解绑跟进销售规则</st-t4>
@@ -134,9 +139,11 @@
           </a-radio>
           可跟进
           <a-radio :value="3">
-            <a-input
+            <st-input-number
               :min="1"
               :max="9999"
+              :step="1"
+              :precision="0"
               class="input"
               @focus="setFocus('sales_follow_rule', 3)"
               v-model="crmRule.sales_follow_days"
@@ -144,7 +151,7 @@
             >
               <span slot="addonAfter">天</span>
               后解绑
-            </a-input>
+            </st-input-number>
           </a-radio>
         </a-radio-group>
       </div>
@@ -180,16 +187,18 @@
         <a-radio-group v-model="crmRule.coach_is_protect_limit">
           <a-radio :value="0" class="mg-r48">不限制</a-radio>
           <a-radio :value="1">
-            <a-input
+            <st-input-number
               :min="1"
               :max="9999"
+              :step="1"
+              :precision="0"
               class="input mg-r32"
               v-model="crmRule.coach_protect_days"
               @focus="setFocus('coach_is_protect_limit', 1)"
               placeholder="请输入"
             >
               <span slot="addonAfter">天</span>
-            </a-input>
+            </st-input-number>
           </a-radio>
         </a-radio-group>
         <st-t4 class="mg-t24 mg-b24">购买以下项目不解绑教练</st-t4>
@@ -215,9 +224,11 @@
           </a-radio>
           可跟进
           <a-radio :value="3">
-            <a-input
+            <st-input-number
               :min="1"
               :max="9999"
+              :step="1"
+              :precision="0"
               @focus="setFocus('coach_follow_rule', 3)"
               class="input"
               v-model="crmRule.coach_follow_days"
@@ -225,7 +236,7 @@
             >
               <span slot="addonAfter">天</span>
               后解绑
-            </a-input>
+            </st-input-number>
           </a-radio>
         </a-radio-group>
       </div>
