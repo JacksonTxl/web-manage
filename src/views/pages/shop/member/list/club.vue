@@ -544,7 +544,7 @@ export default {
     edit(record) {
       this.$router.push({
         name: 'shop-member-edit',
-        $searchQuery: { id: record.member_id }
+        query: { id: record.member_id }
       })
     },
     addUser() {
@@ -553,7 +553,7 @@ export default {
     infoFunc(record) {
       this.$router.push({
         name: 'shop-member-info-basic',
-        $searchQuery: { id: record.member_id }
+        query: { id: record.member_id }
       })
     },
     moment,
@@ -564,7 +564,7 @@ export default {
       }
       this.$refs.stSeleter.handleResetItem()
       this.consumption = []
-      this.$router.push({ $searchQuery: {} })
+      this.$router.push({ query: {} })
     },
     toggle() {
       this.expand = !this.expand
@@ -581,7 +581,7 @@ export default {
       })
     },
     $searchQueryFunc() {
-      this.$router.push({ $searchQuery: this.form })
+      this.$router.push({ query: this.form })
     },
     getCoachList() {
       return this.clubService.getCoachList().subscribe(res => {

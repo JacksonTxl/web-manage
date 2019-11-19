@@ -34,7 +34,7 @@
                 class="input"
                 placeholder="请输入"
               >
-                <span slot="addonAfter">天</span>
+                <span slot="addonAfter">人</span>
               </a-input>
             </a-radio>
           </a-radio-group>
@@ -330,7 +330,7 @@ export default {
     },
     setCrmRule() {
       if (this.crmRule.sales_is_limit === 0) {
-        this.crmRule.sales_limit_num = ''
+        delete this.crmRule.sales_limit_num
       } else {
         if (!this.crmRule.sales_limit_num) {
           this.messageService.warning({
@@ -340,7 +340,7 @@ export default {
         }
       }
       if (this.crmRule.coach_is_limit === 0) {
-        this.crmRule.coach_limit_num = ''
+        delete this.crmRule.coach_limit_num
       } else {
         if (!this.crmRule.coach_limit_num) {
           this.messageService.warning({
@@ -350,7 +350,7 @@ export default {
         }
       }
       if (this.crmRule.sales_is_protect_limit === 0) {
-        this.crmRule.sales_protect_days = ''
+        delete this.crmRule.sales_protect_days
       } else {
         if (!this.crmRule.sales_protect_days) {
           this.messageService.warning({
@@ -360,7 +360,7 @@ export default {
         }
       }
       if (this.crmRule.sales_follow_rule !== 3) {
-        this.crmRule.sales_follow_days = ''
+        delete this.crmRule.sales_follow_days
       } else {
         if (
           this.crmRule.sales_follow_rule === 3 &&
@@ -373,7 +373,7 @@ export default {
         }
       }
       if (this.crmRule.coach_is_protect_limit === 0) {
-        this.crmRule.coach_protect_days = ''
+        delete this.crmRule.coach_protect_days
       } else {
         if (!this.crmRule.coach_protect_days) {
           this.messageService.warning({
@@ -383,7 +383,7 @@ export default {
         }
       }
       if (this.crmRule.coach_follow_rule !== 3) {
-        this.crmRule.coach_follow_days = ''
+        delete this.crmRule.coach_follow_days
       } else {
         if (
           this.crmRule.coach_follow_rule === 3 &&
