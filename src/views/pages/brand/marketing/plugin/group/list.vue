@@ -101,6 +101,9 @@
               <a @click="onStop(record)">
                 删除
               </a>
+              <a @click="onRelease(record)">
+                发布
+              </a>
             </st-table-actions>
           </template>
         </st-table>
@@ -190,6 +193,10 @@ export default {
       // this.activityStatus = activity_status || -1
     },
     // 查看数据   根据id传id获取数据列表
+    // 活动发布
+    onRelease(record) {
+      // 活动发布
+    },
     onData(record) {
       this.$router.push({
         path: '/brand/marketing/plugin/group/data',
@@ -228,10 +235,12 @@ export default {
     },
     onEdit(record) {
       console.log(record.id)
+      // if (record.product_type.id === 3) {
       this.$router.push({
-        path: '/brand/marketing/plugin/group/add-member',
+        path: '/brand/marketing/plugin/group/add-personal',
         query: { id: record.id }
       })
+      // }
     },
     // 删除活动
     onStop(record) {
