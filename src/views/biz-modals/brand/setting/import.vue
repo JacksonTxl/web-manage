@@ -88,7 +88,7 @@ export default {
       progress: 0,
       isPrivate: true,
       fileList: [],
-      fileType: 'xlsx, csv'
+      fileType: ['xlsx']
     }
   },
   computed: {
@@ -155,7 +155,8 @@ export default {
     fileCheck(data) {
       const { size, name } = data.file
       const { sizeLimit, fileType } = this
-      if (!fileType.includes(name.split('.')[1])) {
+      const names = name.split('.')
+      if (!names.length <= 0 || !fileType.includes(names[names.length - 1])) {
         return {
           isValid: false,
           msg: `请上传${fileType}格式的文件`
