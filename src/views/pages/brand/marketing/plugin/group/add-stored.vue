@@ -126,8 +126,9 @@
                 限制库存
               </a-checkbox>
               <st-input-number
+                v-if="limitStock"
                 v-decorator="decorators.stock_total"
-                :min="0"
+                :min="+decorators.stock_total || 0"
                 :disabled="isEdit && activityState >= ACTIVITY_STATUS.END"
                 style="width: 200px;"
               ></st-input-number>
@@ -141,7 +142,11 @@
                 <st-t4 :class="basic('shop--set')">
                   设置支持会员卡售卖场馆范围
                 </st-t4>
-                <select-shop @change="getShopId"></select-shop>
+                <select-shop
+                  :shopIds="info.support_shop"
+                  :groupParams="groupParams"
+                  @change="getShopId"
+                ></select-shop>
               </div>
             </st-form-item>
           </a-col>
@@ -233,6 +238,10 @@ export default {
       form,
       decorators,
       columnsGroupStored,
+      groupParams: {
+        type: 2,
+        id: null
+      },
       activityName: '', // 活动名称
       publishedType: 1, // @parmas=0 立即发布；@parmas=1 暂不发布； @parmas=3 定时发布
       limitStock: true, // 是否限制库存
@@ -244,6 +253,7 @@ export default {
       errText: '', // 发布时间错误提示
       helpShow: false,
       showHelp: false,
+      shopIds: [],
       selectTime: {
         startTime: {
           showTime: false,
@@ -272,6 +282,7 @@ export default {
   mounted() {
     if (this.isEdit) {
       this.setFieldsValue()
+      console.log(this.shopList)
     }
   },
   methods: {
@@ -284,6 +295,7 @@ export default {
           this.currentStored = item.product_spec
         }
       })
+      this.groupParams.id = this.currentStored[0].id
     },
     changeName(e) {
       this.activityName = e.target.value
@@ -360,6 +372,7 @@ export default {
       this.storedId = this.info.product.id
       this.currentStored = this.info.sku
       this.limitStock = this.info.is_limit_stock === 1
+      this.shopList = this.info.support_shop
       this.selectTime.startTime.disabled =
         this.activityState > this.ACTIVITY_STATUS.PUBLISHER
       this.form.setFieldsValue({

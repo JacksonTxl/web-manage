@@ -1,7 +1,7 @@
 import { Injectable } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
-import { ShopApi } from '@/api/v1/shop'
+import { ShopApi, GroupBuy } from '@/api/v1/shop'
 
 @Injectable()
 export class SelectService {
@@ -15,13 +15,23 @@ export class SelectService {
     this.list$ = new Computed(this.state$.pipe(pluck('list')))
   }
   @Effect()
-  getShopListTree() {
-    return this.shopApi.getShopListTree().pipe(
-      tap(res => {
-        this.state$.commit(state => {
-          state.list = res.list
+  getShopListTree(params: GroupBuy) {
+    if (params && params.type && `${params.id}`) {
+      return this.shopApi.getGroupShopList(params).pipe(
+        tap(res => {
+          this.state$.commit(state => {
+            state.list = res.list
+          })
         })
-      })
-    )
+      )
+    } else {
+      return this.shopApi.getShopListTree().pipe(
+        tap(res => {
+          this.state$.commit(state => {
+            state.list = res.list
+          })
+        })
+      )
+    }
   }
 }

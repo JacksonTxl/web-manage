@@ -52,6 +52,12 @@ export default {
       default() {
         return []
       }
+    },
+    groupParams: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   },
   computed: {
@@ -59,8 +65,8 @@ export default {
       return this.shopIds.length
     }
   },
-  created() {
-    this.selectService.getShopListTree().subscribe(res => {
+  mounted() {
+    this.selectService.getShopListTree(this.groupParams).subscribe(res => {
       this.treeData = json2AntDesignTreeData(res.list)
       this.initCheckedKeys()
     })
