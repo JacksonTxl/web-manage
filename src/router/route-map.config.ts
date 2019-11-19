@@ -415,6 +415,7 @@ export const routeMapConfig = {
   },
   'shop-product-card-member-list-shelves'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '门店上架卡项'
+    routeConfig.meta.auth = 'brand_shop:product:member_card|shop_list'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -425,6 +426,7 @@ export const routeMapConfig = {
   },
   'shop-product-card-member-list-all'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '全部{{$c("member_card")}}项'
+    routeConfig.meta.auth = 'brand_shop:product:member_card|all_list'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -444,6 +446,7 @@ export const routeMapConfig = {
   },
   'shop-product-card-deposit-list-shelves'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '门店上架储值卡'
+    routeConfig.meta.auth = 'brand_shop:product:deposit_card|shop_list'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -453,6 +456,7 @@ export const routeMapConfig = {
   },
   'shop-product-card-deposit-list-all'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '全部储值卡'
+    routeConfig.meta.auth = 'brand_shop:product:deposit_card|all_list'
     routeConfig.queryOptions = {
       sell_status: { type: Number, default: -1 },
       publish_channel: { type: Number, default: -1 },
@@ -1052,6 +1056,7 @@ export const routeMapConfig = {
   },
   'shop-finance-flow-expenditure'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '支出流水'
+    // routeConfig.meta.auth = 'brand_shop:flow:expenditure|tab'
     routeConfig.queryOptions = {
       search_number: { type: String },
       start_amount: { type: String },
@@ -1064,6 +1069,7 @@ export const routeMapConfig = {
   },
   'shop-finance-flow-income'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '收入流水'
+    // routeConfig.meta.auth = 'brand_shop:flow:income|tab'
     routeConfig.queryOptions = {
       search_number: { type: String },
       current_page: { type: Number, default: 1 },
@@ -1276,6 +1282,7 @@ export const routeMapConfig = {
   },
   'shop-finance-gathering-earnest'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '定金管理'
+    // routeConfig.meta.auth = 'shop:temporary_payment:bargin|list'
     routeConfig.queryOptions = {
       keyword: { type: String, default: '' },
       use_status: { type: Number, default: -1 },
