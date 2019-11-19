@@ -119,7 +119,7 @@ export default {
   computed: {
     columns,
     showTable() {
-      return this.$searchQueryshowTable || 'all'
+      return this.$searchQuery.showTable || 'all'
     },
     query() {
       return {

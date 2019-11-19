@@ -55,7 +55,7 @@ export default {
   },
   computed: {
     startDate() {
-      return this.$searchQuerystart_date || moment().format('YYYY-MM-DD')
+      return this.$searchQuery.start_date || moment().format('YYYY-MM-DD')
     }
   },
   methods: {
