@@ -37,7 +37,10 @@
             v-model="chartTodayShop"
             @change="getDataToday"
           />
-          <st-refresh-btn :action="refresh"></st-refresh-btn>
+          <st-refresh-btn
+            :action="refresh"
+            :rangeTime="300000"
+          ></st-refresh-btn>
         </div>
       </header>
       <a-row :class="b('income-row')">
