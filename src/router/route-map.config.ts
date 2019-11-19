@@ -749,8 +749,8 @@ export const routeMapConfig = {
       follow_end_date: { type: String, default: '' },
       follow_salesman_id: { type: Number, default: -1 },
       follow_coach_id: { type: Number, default: -1 },
-      follow_start_num: { type: Number, default: '' },
-      follow_end_num: { type: Number, default: '' },
+      follow_start_num: { type: String, default: '' },
+      follow_end_num: { type: String, default: '' },
       operator_id: { type: Number, default: -1 },
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }

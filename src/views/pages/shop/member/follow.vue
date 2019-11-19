@@ -93,14 +93,12 @@
           <st-search-panel-item label="跟进次数：">
             <a-input
               v-model="query.follow_start_num"
-              @change="onChangeStart"
               style="width:80px"
               type="number"
             />
             &nbsp;~&nbsp;
             <a-input
               v-model="query.follow_end_num"
-              @change="onChangeEnd"
               style="width:80px"
               type="number"
             />
@@ -265,12 +263,6 @@ export default {
     },
     onChangeOperator(value) {
       this.onMultiSearch({ operator_id: value })
-    },
-    onChangeStart(event) {
-      this.query.follow_start_num = event.target.value
-    },
-    onChangeEnd(event) {
-      this.query.follow_end_num = event.target.value
     },
     refeshPage() {
       this.$router.reload()

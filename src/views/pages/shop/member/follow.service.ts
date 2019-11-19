@@ -18,11 +18,8 @@ export class FollowService implements Controller {
   coachList$ = new State({})
   operatorList$ = new State({})
   auth$ = this.authService.authMap$({
-    add: 'shop:member:member|add',
     import: 'shop:member:member|import',
     tag: 'shop:member:member|tag',
-    bindCoach: 'shop:member:member|bind_coach',
-    bindSalesman: 'shop:member:member|bind_salesman',
     export: 'shop:member:member|export'
   })
   constructor(
@@ -77,6 +74,14 @@ export class FollowService implements Controller {
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    to.meta.query.follow_start_num =
+      to.meta.query.follow_start_num === ''
+        ? to.meta.query.follow_start_num
+        : Number(to.meta.query.follow_start_num)
+    to.meta.query.follow_end_num =
+      to.meta.query.follow_end_num === ''
+        ? to.meta.query.follow_end_num
+        : Number(to.meta.query.follow_end_num)
     return this.init(to.meta.query)
   }
 }

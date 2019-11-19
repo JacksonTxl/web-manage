@@ -128,7 +128,7 @@
                   v-if="params.receiver.seller"
                   v-model="params.receiver.seller.value"
                 >
-                  {{ params.receiver.coach.seller }}
+                  {{ params.receiver.seller.name }}
                 </st-checkbox>
                 <st-checkbox
                   v-if="params.receiver.coach"
@@ -234,41 +234,34 @@
                     ? '客保到期前'
                     : '会员流失前'
                 }}
-                <a-select v-model="params.notify_time" style="width:100px">
-                  <a-select-option
-                    v-for="(item, index) in notifyHour"
-                    :key="index"
-                    :value="item.value"
-                  >
-                    {{ item.label }}
-                  </a-select-option>
-                </a-select>
-                天提醒，
+                <a-input
+                  v-model="params.notify_time"
+                  style="width:80px"
+                  type="number"
+                />
+                天提醒，每日早7点推送
               </span>
               <span v-if="info.notify_sub_type.value === 14">
                 会员课程剩余
-                <a-select v-model="params.notify_number" style="width:100px">
-                  <a-select-option
-                    v-for="(item, index) in notifyNumber"
-                    :key="index"
-                    :value="item.value"
-                  >
-                    {{ item.label }}
-                  </a-select-option>
-                </a-select>
+                <a-input
+                  v-model="params.notify_number"
+                  style="width:80px"
+                  type="number"
+                />
                 次时，或会员课程有效期剩余
-                <a-select v-model="params.notify_time" style="width:100px">
-                  <a-select-option
-                    v-for="(item, index) in notifyHour"
-                    :key="index"
-                    :value="item.value"
-                  >
-                    {{ item.label }}
-                  </a-select-option>
-                </a-select>
+                <a-input
+                  v-model="params.notify_time"
+                  style="width:80px"
+                  type="number"
+                />
                 天时提醒，每日早7点推送
               </span>
-              <span v-else>
+              <span
+                v-if="
+                  info.notify_sub_type.value !== 6 &&
+                    info.notify_sub_type.value !== 4
+                "
+              >
                 {{ info.notify_time.name }}
               </span>
             </div>
@@ -299,7 +292,6 @@ export default {
   },
   rxState() {
     const user = this.userService
-    console.log(user.settingEnums$)
     return {
       settingEnums: user.settingEnums$
     }
@@ -397,14 +389,6 @@ export default {
         list.push({ value: +o[0], label: o[1] })
       })
       return list
-    },
-    notifyNumber() {
-      let list = []
-      if (!this.settingEnums.notify_number) return list
-      Object.entries(this.settingEnums.notify_number.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
     }
   },
   created() {
@@ -418,7 +402,6 @@ export default {
       this.params.receiver = this.info.receiver
     }
     this.params.notify_time = this.info.notify_time.value
-    this.params.notify_number = this.info.notify_number.value
     this.params.msg_preffix = this.info.msg_preffix
     this.params.msg_suffix = this.info.msg_suffix
     this.params.custom_phone = this.info.custom_phone.join(' ')
