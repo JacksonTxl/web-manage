@@ -8,29 +8,30 @@
           </div>
           <div v-if="item.follow_axis_type === FOLLOW_STATUS.BIND_SALE">
             <span>{{ item.operator_name }}</span>
-            分配了跟进销售{{ item.follow_salesman_name }}
+            分配了跟进销售【{{ item.follow_salesman_name }}】
           </div>
           <div v-if="item.follow_axis_type === FOLLOW_STATUS.BIND_COACH">
             <span>{{ item.operator_name }}</span>
-            分配了跟进教练{{ item.follow_coach_name }}
+            分配了跟进教练【{{ item.follow_coach_name }}】
           </div>
           <div v-if="item.follow_axis_type === FOLLOW_STATUS.UNBIND_SALE">
             <span>{{ item.operator_name }}</span>
-            解绑了跟进销售{{ item.follow_salesman_name }}
+            解绑了跟进销售【{{ item.follow_salesman_name }}】
           </div>
           <div v-if="item.follow_axis_type === FOLLOW_STATUS.UNBIND_COACH">
             <span>{{ item.operator_name }}</span>
-            解绑了跟进教练{{ item.follow_coach_name }}
+            解绑了跟进教练【{{ item.follow_coach_name }}】
           </div>
           <div v-if="item.follow_axis_type === FOLLOW_STATUS.AUTO_UNBIND_SALE">
-            客户到期解绑了跟进销售{{ item.follow_salesman_name }}
+            客户到期解绑了跟进销售【{{ item.follow_salesman_name }}】
           </div>
           <div v-if="item.follow_axis_type === FOLLOW_STATUS.AUTO_UNBIND_COACH">
-            客户到期解绑了跟进教练{{ item.follow_coach_name }}
+            客户到期解绑了跟进教练【{{ item.follow_coach_name }}】
           </div>
           <div v-if="item.follow_axis_type === FOLLOW_STATUS.NORMAL">
-            <span>{{ item.operator_name }}添加了跟进记录</span>
-            <span>当前第{{ item.current_follow_count }}次跟进</span>
+            【{{ item.operator_name }}】添加了跟进记录当前第{{
+              item.current_follow_count
+            }}次跟进
           </div>
           <div :class="bPage('timeline-position')">
             <div>{{ item.created_time }}</div>
