@@ -111,4 +111,16 @@ export class GroupBuyApi extends Api {
   getCoachList(params: { id: number }) {
     return this.http.get('/v1/course/personal/coach_level/', { params })
   }
+  /**
+   * 获取教练列表
+   */
+  stopGroupList(params: { id: number }) {
+    return this.http.get('/v1/plugin/group_buy/stop/', { params })
+  }
+  /**
+   * 获取教练列表
+   */
+  releaseGroupList(params: { id: number }) {
+    return this.http.get('/v1/plugin/group_buy/release/', { params })
+  }
 }
