@@ -219,8 +219,7 @@
               </a-radio-group>
               <span
                 v-if="
-                  info.notify_type.value === 1 &&
-                    info.notify_sub_type.value !== 6 &&
+                  info.notify_sub_type.value !== 6 &&
                     info.notify_sub_type.value !== 4
                 "
               >
