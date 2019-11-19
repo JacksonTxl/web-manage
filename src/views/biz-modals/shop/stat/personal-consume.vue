@@ -68,7 +68,7 @@
         v-if="auth$.export"
         v-export-excel="{
           type: 'shop/personal/course/checkin',
-          query: $searchQuery
+          query: query
         }"
       >
         全部导出
@@ -128,10 +128,6 @@ export default {
     showTable() {
       return this.$searchQuery.showTable || 'all'
     },
-    page() {
-      const { current_page, total_counts } = this.page$
-      return { current_page, total_counts }
-    },
     query() {
       return {
         stat_date: this.stat_date,
@@ -156,14 +152,14 @@ export default {
       this.init()
     },
     getConsumeList() {
-      this.personalConsumeService.getConsumeList(this.$searchQuery).subscribe()
+      this.personalConsumeService.getConsumeList(this.query).subscribe()
     },
     init() {
       const course_type = this.course_type
       this.coach_id = this.record.coach_id || -1
       this.stat_date = this.record.stat_date
       this.personalConsumeService
-        .init({ course_type }, { ...this.$searchQuery })
+        .init({ course_type }, { ...this.query })
         .subscribe()
     },
     filterOption(input, option) {

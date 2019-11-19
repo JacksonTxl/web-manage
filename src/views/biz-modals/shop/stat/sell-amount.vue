@@ -51,12 +51,11 @@
     </div>
     <st-table
       :scroll="{ y: 345 }"
-      :page="page"
       :columns="columns"
       :loading="loading.getSellAmountList"
-      @change="getAmountList"
       rowKey="id"
       :dataSource="amountList"
+      page-mode="client"
     >
       <span slot="sale_price" slot-scope="text">
         {{ text }}
@@ -112,7 +111,7 @@ export default {
         staff_id: -1,
         department_id: -1,
         current_page: 1,
-        size: 20
+        size: 999
       }
     }
   },
@@ -131,11 +130,11 @@ export default {
       }
     },
     staffListFilter() {
-      if (this.$searchQuery.department_id === -1) return this.modalStaffList
+      if (this.query.department_id === -1) return this.modalStaffList
       return [
         { id: -1, name: '所有销售' },
         ...this.modalStaffList.filter(item => {
-          return this.$searchQuery.department_id === item.department_id
+          return this.query.department_id === item.department_id
         })
       ]
     }
@@ -148,11 +147,9 @@ export default {
       }
       if (changeType === 'changeDepartment') {
         this.pageParams.staff_id = -1
-        this.sellAmountervice
-          .getDepartmentStaffList(this.$searchQuery)
-          .subscribe()
+        this.sellAmountervice.getDepartmentStaffList(this.query).subscribe()
       }
-      this.sellAmountervice.getSellAmountList(this.$searchQuery).subscribe()
+      this.sellAmountervice.getSellAmountList(this.query).subscribe()
     },
     filterOption(input, option) {
       return (
@@ -164,7 +161,7 @@ export default {
     init() {
       this.pageParams.staff_id = this.record.staff_id || -1
       this.pageParams.stat_date = this.record.stat_date
-      this.sellAmountervice.init({ ...this.$searchQuery }).subscribe()
+      this.sellAmountervice.init({ ...this.query }).subscribe()
     }
   },
   mounted() {
