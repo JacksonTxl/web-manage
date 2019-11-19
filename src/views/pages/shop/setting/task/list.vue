@@ -106,7 +106,7 @@ export default {
     },
     onClickModal(id, type) {
       this.$modalRouter.push({
-        name: 'brand-setting-task-detail',
+        name: 'common-task-detail',
         props: {
           task_id: id,
           popup_type: type

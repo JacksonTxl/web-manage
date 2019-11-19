@@ -42,7 +42,7 @@ export default {
   },
   props: {
     task_id: {
-      type: String
+      type: [String, Number]
     },
     popup_type: {
       type: String

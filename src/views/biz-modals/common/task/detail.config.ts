@@ -2,19 +2,19 @@ export const columns = () => {
   return [
     {
       title: '合同编号',
-      dataIndex: 'index'
+      dataIndex: 'contract_number'
     },
     {
       title: '会员姓名',
-      dataIndex: 'mobile'
+      dataIndex: 'member_name'
     },
     {
       title: '类型',
-      dataIndex: 'username'
+      dataIndex: 'task_type'
     },
     {
       title: '执行时间',
-      dataIndex: 'username'
+      dataIndex: 'task_time'
     }
   ]
 }
