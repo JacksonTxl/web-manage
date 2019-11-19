@@ -66,7 +66,10 @@
       <st-button
         type="primary"
         v-if="auth$.export"
-        v-export-excel="{ type: 'shop/personal/course/checkin', query: query }"
+        v-export-excel="{
+          type: 'shop/personal/course/checkin',
+          query: $searchQuery
+        }"
       >
         全部导出
       </st-button>

@@ -11,7 +11,7 @@
           v-show="showTable === 'all'"
           class="mg-l8"
           type="primary"
-          v-export-excel="{ type: 'course/shop', query: query }"
+          v-export-excel="{ type: 'course/shop', query: $searchQuery }"
         >
           全部导出
         </st-button>
@@ -20,7 +20,7 @@
           v-if="auth.export_coach"
           v-show="showTable === 'coach'"
           class="mg-l8"
-          v-export-excel="{ type: 'shop/coach', query: query }"
+          v-export-excel="{ type: 'shop/coach', query: $searchQuery }"
         >
           全部导出
         </st-button>
