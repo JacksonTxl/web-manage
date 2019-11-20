@@ -158,7 +158,7 @@ import {
 } from '@/constants/marketing/group-buy'
 export default {
   bem: {
-    basic: 'brand-marketing-group-member'
+    basic: 'brand-marketing-group-form'
   },
   props: {
     isEdit: {
@@ -298,7 +298,6 @@ export default {
       this.selectTime.startTime.value = moment(this.info.start_time)
       this.selectTime.endTime.value = moment(this.info.end_time)
       this.activityState = this.info.activity_state[0].id
-      this.cardId = this.info.product.id
       this.isLimit = this.info.is_limit_stock === 1
       this.selectTime.startTime.disabled =
         this.activityState > this.ACTIVITY_STATUS.PUBLISHER
@@ -308,10 +307,6 @@ export default {
         valid_time: this.info.valid_time,
         stock_total: this.info.stock_total
       })
-      this.info.sku.forEach(item => {
-        this.selectedRowKeys.push(item.id)
-      })
-      this.shopIds = this.info.support_shop
     }
   },
   components: {
