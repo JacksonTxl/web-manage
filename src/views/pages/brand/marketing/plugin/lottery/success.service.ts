@@ -3,27 +3,28 @@ import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { SignUpApi } from '@/api/v1/marketing/sign-up'
 import { UserService } from '@/services/user.service'
+import { LotteryApi } from '@/api/v1/marketing/lottery'
 
 @Injectable()
-export class SharePosterService {
+export class SuccessService {
   loading$ = new State({})
   info$ = new State({})
   qrcode$ = new State({})
   brand$ = this.userService.brand$
-  constructor(private api: SignUpApi, private userService: UserService) {}
+  constructor(private api: LotteryApi, private userService: UserService) {}
   @Effect()
-  getSharePosterInfo(activity_id: number) {
-    return this.api.getSharePosterInfo(activity_id).pipe(
+  getSharePosterInfo(lottery_id: number) {
+    return this.api.getPosterInfo(lottery_id).pipe(
       tap((res: any) => {
         this.info$.commit(() => res.info)
       })
     )
   }
   @Effect()
-  getQrCode(activity_id: number) {
-    return this.api.getQrCode(activity_id).pipe(
+  getQrCode(lottery_id: number) {
+    return this.api.getQrcode(lottery_id).pipe(
       tap((res: any) => {
-        this.info$.commit(() => res.info)
+        this.qrcode$.commit(() => res.qrcode)
       })
     )
   }

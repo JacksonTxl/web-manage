@@ -118,9 +118,10 @@ import { IndexService } from './index.service'
 import MarkteingPluginTitle from '../../components#/marketing-title'
 import { columns } from './index.config.ts'
 import tableMixin from '@/mixins/table.mixin'
-import BrandMarketingPluginPoster from '@/views/biz-modals/brand/marketing/plugin/poster'
+import BrandMarketingPluginPoster from '@/views/biz-modals/brand/marketing/share-poster'
 import { ACTIVITY_STATUS } from '@/constants/marketing/lottery'
 import { TYPE } from '@/constants/marketing/plugin'
+import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
 export default {
   name: 'PluginLotteryIndex',
   mixins: [tableMixin],
@@ -143,6 +144,7 @@ export default {
       list: this.indexService.list$,
       page: this.indexService.page$,
       loading: this.indexService.loading$,
+      info: this.indexService.info$,
       status: this.indexService.status$
     }
   },
@@ -153,37 +155,33 @@ export default {
     columns
   },
   modals: {
-    BrandMarketingPluginPoster
+    BrandMarketingPluginPoster,
+    BrandMarketingBind
   },
   methods: {
     onGeneralize(record) {
       // let is_auth = record.is_auth
       // 绑定小程序
-      if (true) {
+      this.indexService.getPosterInfo(record.id).subscribe(res => {
+        if (!res.is_auth) {
+          this.show = false
+          this.$modalRouter.push({
+            name: 'brand-marketing-bind'
+          })
+          return
+        }
         // 分享海报
         this.$modalRouter.push({
           name: 'brand-marketing-plugin-poster',
           props: {
-            id: String(record.id),
-            type: 1
-          },
-          on: {
-            success: () => {
-              console.log('success')
-            }
+            info: {
+              qrcode_url: this.info.qrcode_url,
+              sub_name: this.info.sub_name
+            },
+            shsUrl: '/saas/lottery_poster'
           }
         })
-      } else {
-        // 未绑定小程序
-        this.$modalRouter.push({
-          name: 'brand-marketing-bind',
-          on: {
-            success: () => {
-              console.log('success')
-            }
-          }
-        })
-      }
+      })
     },
     // 停止优惠券模板
     onStop(record) {
