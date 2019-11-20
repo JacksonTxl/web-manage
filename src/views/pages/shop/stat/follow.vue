@@ -5,7 +5,7 @@
       <a-row :class="bPage('income-row')">
         <div :class="bPage('income-detail')">
           <swiper :options="sliderOptions">
-            <swiper-slide v-for="(item, index) in totalInfo.res" :key="index">
+            <swiper-slide v-for="(item, index) in totalInfo.list" :key="index">
               <div :class="bPage('income')">
                 <p :class="bPage('income-label')">{{ item.label }}</p>
                 <p :class="bPage('income-value')">{{ item.value }}</p>
@@ -29,9 +29,6 @@
           <a-radio-button value="staff">员工</a-radio-button>
         </a-radio-group>
       </div>
-      <span>
-        <!-- <st-button type="primary" class="shop-member-list-button">批量导出</st-button> -->
-      </span>
       <span>
         <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
       </span>

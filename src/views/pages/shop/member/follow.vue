@@ -121,7 +121,10 @@
         {{ record.operator.label }}
       </span>
       <span slot="member" slot-scope="text, record">
-        {{ record.member.label }}
+        <a href="javascript:;" @click="infoFunc(record)">
+          {{ record.operator.label }}
+        </a>
+        <!-- <span v-else>{{ record.operator.label }}</span> -->
       </span>
       <span slot="member_level" slot-scope="text, record">
         {{ record.member_level.label }}
@@ -139,15 +142,14 @@
         {{ record.follow_status.label }}
       </span>
       <span slot="contentTitle">
-        跟进内容
-        <st-help-tooltip id="TSSR003" />
+        当前已跟进次数
+        <st-help-tooltip id="TSCRM003" />
       </span>
-      <template slot="follow_content" slot-scope="text, record">
-        <span v-if="text.length === 0">{{ record.object }}</span>
-        <div v-else>
+      <template slot="follow_content" slot-scope="text">
+        <div>
           <st-overflow-text title="跟进内容">
             <template slot="content">
-              {{ record.follow_content }}
+              {{ text }}
             </template>
             <a class="pop-object__text">{{ text }}</a>
           </st-overflow-text>
@@ -239,9 +241,6 @@ export default {
       return list
     }
   },
-  created() {
-    //console.log(this.coachList)
-  },
   mounted() {
     this.setSearchData()
   },
@@ -282,6 +281,13 @@ export default {
       this.selectTime.endTime.value = this.$searchQuery.follow_end_date
         ? cloneDeep(moment(this.$searchQuery.follow_end_date))
         : null
+    },
+    infoFunc(record) {
+      console.log(record.member.id)
+      this.$router.push({
+        name: 'shop-member-info-basic',
+        $searchQuery: { id: record.member.id }
+      })
     },
     moment,
     handleReset() {

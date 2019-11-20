@@ -9,7 +9,7 @@ export const columns = (vm: any) => [
     scopedSlots: { customRender: 'operator' }
   },
   {
-    title: '跟进客服',
+    title: '跟进客户',
     dataIndex: 'member',
     scopedSlots: { customRender: 'member' }
   },
@@ -48,15 +48,15 @@ export const columns = (vm: any) => [
     width: '150px'
   },
   {
-    title: '下次跟进次数',
     dataIndex: 'follow_num',
     align: 'right',
-    width: '110px'
+    slots: { title: 'contentTitle' },
+    width: '143px'
   },
   {
+    title: '跟进内容',
     dataIndex: 'follow_content',
     width: '150px',
-    slots: { title: 'contentTitle' },
     scopedSlots: { customRender: 'follow_content' }
   }
 ]

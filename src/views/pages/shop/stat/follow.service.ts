@@ -40,47 +40,46 @@ export class FollowService implements Controller {
         const arr = [
           {
             label: '电话跟进数',
-            value: data.follow_phone || 0
+            value: res.follow_phone || 0
           },
           {
             label: '微信跟进数',
-            value: data.follow_wx || 0
+            value: res.follow_wx || 0
           },
           {
             label: '客户到访跟进数',
-            value: data.member_visit || 0
+            value: res.member_visit || 0
           },
           {
             label: '上门拜访跟进数',
-            value: data.staff_visit || 0
+            value: res.staff_visit || 0
           },
           {
             label: '邀约成功数',
-            value: data.is_invited || 0
+            value: res.invited_success || 0
           },
           {
             label: '实际到访数',
-            value: data.actual_visit || 0
+            value: res.actual_visit || 0
           },
           {
             label: '签约数',
-            value: data.is_signed || 0
+            value: res.is_signed || 0
           },
           {
             label: '购卡数',
-            value: data.purchased_card || 0
+            value: res.purchased_card || 0
           }
         ]
         const obj = {
           time: data.updated_time,
-          res: arr
+          list: arr
         }
         this.totalInfo$.commit(() => obj)
       })
     )
   }
   beforeEach(to: ServiceRoute, form: ServiceRoute) {
-    console.log(to.meta.query)
     return to.meta.query.showTable === 'all'
       ? this.getFollowDateList(to.meta.query)
       : this.getFollowStaffList(to.meta.query)
