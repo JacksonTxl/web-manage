@@ -171,7 +171,6 @@ export default {
           cursor: 'pointer'
         })
         .tooltip('name*percent', function(item, percent, a) {
-          console.log('name*percent', percent, a)
           return {
             name: item,
             value: percent + '%'
