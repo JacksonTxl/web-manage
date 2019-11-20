@@ -126,12 +126,7 @@ module.exports = {
         vue: 'window.Vue',
         'vue-router': 'window.VueRouter',
         moment: 'window.moment',
-        'ant-design-vue': 'window.antd',
-        immer: 'window.immer',
-        rxjs: 'window.rxjs',
-        'rxjs/operators': 'window.rxjs.operators',
-        'rxjs/ajax': 'window.rxjs.ajax',
-        'lodash-es': 'window._'
+        'ant-design-vue': 'window.antd'
       })
       .plugin('hot-release')
       .use(WebpackHotRelease)
@@ -150,14 +145,14 @@ module.exports = {
               'moment/locale/zh-cn.js',
               IS_DEV
                 ? 'ant-design-vue/dist/antd.js'
-                : 'ant-design-vue/dist/antd.min.js',
-              'immer/dist/immer.umd.js',
-              IS_DEV
-                ? 'rxjs/bundles/rxjs.umd.js'
-                : 'rxjs/bundles/rxjs.umd.min.js',
-              IS_DEV ? 'lodash/lodash.js' : 'lodash/lodash.min.js'
+                : 'ant-design-vue/dist/antd.min.js'
+              // 'immer/dist/immer.umd.js',
+              // IS_DEV
+              //   ? 'rxjs/bundles/rxjs.umd.js'
+              //   : 'rxjs/bundles/rxjs.umd.min.js',
+              // IS_DEV ? 'lodash/lodash.js' : 'lodash/lodash.min.js'
             ],
-            base: ['./antd.css']
+            'base-style': ['./antd.css']
           }
         }
       ])
