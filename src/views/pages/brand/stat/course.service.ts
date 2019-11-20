@@ -32,22 +32,27 @@ export class CourseService {
         {
           name: '私教课售课',
           value: saleCourse.sale_personal_num,
-          percent: saleCourse.personal_checkin_percentage
+          percent: saleCourse.sale_personal_percentage
         },
         {
           name: '团体课售课',
           value: saleCourse.sale_team_num,
-          percent: saleCourse.team_checkin_percentage
+          percent: saleCourse.sale_team_percentage
         }
       ]
     })
   }
   SET_CHECK_IN_CHART_DATA(checkInCourse: any) {
     this.checkInChartData$.commit(() => [
-      { name: '私教课消课', value: checkInCourse.personal_checkin_num },
+      {
+        name: '私教课消课',
+        value: checkInCourse.personal_checkin_num,
+        percent: checkInCourse.personal_checkin_percentage
+      },
       {
         name: '团体课消课',
-        value: checkInCourse.team_checkin_num
+        value: checkInCourse.team_checkin_num,
+        percent: checkInCourse.teams_checkin_percentage
       }
     ])
   }
@@ -55,9 +60,14 @@ export class CourseService {
     this.notCheckInChartData$.commit(() => [
       {
         name: '未私教课消课',
-        value: notCheckInCourse.personal_not_checkin_num
+        value: notCheckInCourse.personal_not_checkin_num,
+        percent: notCheckInCourse.personal_not_checkin_percentage
       },
-      { name: '未团体课消课', value: notCheckInCourse.team_not_checkin_num }
+      {
+        name: '未团体课消课',
+        value: notCheckInCourse.team_not_checkin_num,
+        percent: notCheckInCourse.team_not_checkin_percentage
+      }
     ])
   }
   // 获取营收统计图信息

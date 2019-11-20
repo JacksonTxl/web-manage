@@ -41,21 +41,13 @@ export default {
     initDv() {
       this.dv = new View()
       this.dv.source(this.data)
-      this.dv
-        .transform({
-          type: 'map',
-          callback(row) {
-            row.value = +row.value
-            return row
-          }
-        })
-        // 计算百分比
-        .transform({
-          type: 'percent',
-          field: 'value',
-          dimension: 'name',
-          as: 'percent'
-        })
+      this.dv.transform({
+        type: 'map',
+        callback(row) {
+          row.value = +row.value
+          return row
+        }
+      })
     },
     initChart() {
       this.chart = new Chart({
@@ -178,11 +170,11 @@ export default {
           fillOpacity: 1,
           cursor: 'pointer'
         })
-        .tooltip('name*percent', function(item, percent) {
-          percent = (percent * 100).toFixed(1) + '%'
+        .tooltip('name*percent', function(item, percent, a) {
+          console.log('name*percent', percent, a)
           return {
             name: item,
-            value: percent
+            value: percent + '%'
           }
         })
         .position('value')
