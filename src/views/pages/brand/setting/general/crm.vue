@@ -243,7 +243,12 @@
       <st-hr></st-hr>
     </div>
     <div>
-      <st-button class="btn" type="primary" @click="setCrmRule">
+      <st-button
+        :loading="isLoading"
+        class="btn"
+        type="primary"
+        @click="setCrmRule"
+      >
         保存
       </st-button>
     </div>
@@ -286,7 +291,8 @@ export default {
         sales_follow_rule: 1,
         coach_is_protect_limit: 0,
         coach_follow_rule: 1
-      }
+      },
+      isLoading: false
     }
   },
   created() {
@@ -406,7 +412,9 @@ export default {
           return
         }
       }
+      this.isLoading = true
       return this.crmService.setCrmRule(this.crmRule).subscribe(res => {
+        this.isLoading = false
         this.messageService.success({ content: '编辑成功' })
         this.getCrmRule()
       })
