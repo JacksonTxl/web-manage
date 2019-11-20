@@ -17,13 +17,6 @@
           <st-info-item label="来源方式">
             {{ followInfo.info.register_way }}
           </st-info-item>
-          <st-info-item label="总跟进次数">
-            {{ followInfo.info.follow_count }}
-          </st-info-item>
-        </st-info>
-      </a-col>
-      <a-col :lg="8">
-        <st-info>
           <st-info-item label="跟进销售">
             {{ followInfo.info.follow_salesman_name }}
           </st-info-item>
