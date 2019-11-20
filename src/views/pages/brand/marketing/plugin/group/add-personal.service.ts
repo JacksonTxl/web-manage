@@ -27,20 +27,18 @@ export class AddPersonalService implements Controller {
   }
 
   // 编辑拼团活动
-  @Effect()
   editGroup(params: EditParams) {
     return this.GroupBuyApi.editGroup(params)
   }
   // 获取私教列表
-  @Effect()
   getList() {
     return this.GroupBuyApi.getPersonalList().pipe(
       tap((res: any) => {
+        console.log(res)
         this.personalList$.commit(() => res.list)
       })
     )
   }
-  @Effect()
   addCoach(params: { id: number }) {
     return this.GroupBuyApi.getCoachList(params).pipe(
       tap((res: any) => {

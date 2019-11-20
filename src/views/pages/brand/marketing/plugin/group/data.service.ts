@@ -17,6 +17,7 @@ export class DataService implements Controller {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
         this.collect$.commit(() => res.collect)
+        this.loading$.commit(() => res.loading)
       })
     )
   }

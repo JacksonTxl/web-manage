@@ -83,15 +83,9 @@
   </group-form>
 </template>
 <script>
-import {
-  ACTIVITY_STATUS,
-  RELEASE_SRTATUS
-} from '@/constants/marketing/group-buy'
 import GroupForm from './components#/group-form'
 import { ruleOptions, cardColumns } from './add-personal.config'
-import SelectShop from '@/views/fragments/shop/select-shop'
 import { AddPersonalService } from './add-personal.service'
-import moment from 'moment'
 import { values } from 'lodash-es'
 export default {
   serviceInject() {
@@ -107,18 +101,14 @@ export default {
     }
   },
   bem: {
-    basic: 'brand-marketing-group-member'
+    basic: 'brand-marketing-group-personal'
   },
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
-      ACTIVITY_STATUS,
-      RELEASE_SRTATUS,
       form,
       decorators,
-      groupName: '', // 活动名称
-      groupHour: '', // 课程时长
       cardId: '', // 活动商品
       selectedRowKeys: [], // 优惠设置选中项
       isLimit: true, // 限制库存
@@ -131,33 +121,12 @@ export default {
       // 发布状态
       releaseStatus: 1,
       publishTime: null, // 发布时间
-      selectTime: {
-        startTime: {
-          showTime: false,
-          disabledBegin: moment(),
-          placeholder: '开始日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD HH:mm',
-          change: $event => {}
-        },
-        endTime: {
-          showTime: false,
-          placeholder: '结束日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD HH:mm',
-          change: $event => {},
-          disabledDate: this.disabledDate
-        }
-      },
       activityState: Number, // 当前活动活动状态
-      errTips: '', // 活动时间错误提示
-      errText: '', // 发布时间错误提示
       tableText: '', // 优惠设置错误提示
       helpShow: false,
       showHelp: false,
-      tableErr: false
+      tableErr: false,
+      sku: [] // 卡、课规格[{“sku_id”:1,”group_price”:20},]
     }
   },
 
@@ -198,25 +167,6 @@ export default {
     }
   },
   methods: {
-    chooseMember(value) {
-      this.form.setFieldsValue({
-        cardId: value
-      })
-      this.personalList.filter(item => {
-        if (item.id === value) {
-          this.newCoach = item.product_spec
-          if (this.selectedRowKeys && this.isEdit) {
-            this.info.sku.forEach(item => {
-              this.newCoach.forEach(card => {
-                if (item.id === card.id) {
-                  card.group_price = item.group_price
-                }
-              })
-            })
-          }
-        }
-      })
-    },
     // 输入拼团课时
     changeHour(e) {
       this.groupHour = e.target.value
@@ -233,38 +183,27 @@ export default {
     // 优惠设置选择变化
     onChange(value) {
       this.selectedRowKeys = value
-      console.log(this.selectedRowKeys, '选择优惠设置')
-    },
-    // 是否限制库存
-    limitStock(value) {
-      this.isLimit = value.target.checked
-      console.log(this.isLimit, '限制库存')
-    },
-    // 选择门店
-    onSelectShop(shopIds) {
-      this.shopIds = shopIds
-      console.log(this.shopIds, '选择门店')
-    },
-    // 为了同步字数
-    changeName(e) {
-      this.groupName = e.target.value
-      console.log(this.groupName, '活动名称')
-    },
-    // select选择设置开始时间不能小于现在
-    disabledDate(current) {
-      return (
-        current &&
-        current.format('YYYY-MM-DD HH:mm') < moment().format('YYYY-MM-DD HH:mm')
-      )
+      this.selectedRowKeys.forEach((id, index) => {
+        this.newCoach.forEach(item => {
+          if (item.id === id) {
+            if (!item.group_price) {
+              this.tableText = '请输入拼团价'
+              this.tableErr = true
+            }
+            this.sku.push({ sku_id: id, group_price: item.group_price })
+          }
+        })
+      })
+      console.log(this.sku, '卡规格')
     },
     // 新建拼团活动
-    onSubmit() {
+    onSubmit(data) {
+      console.log(data)
       this.form.validate().then(values => {
         if (
           !this.selectTime.startTime.value ||
           !this.selectTime.endTime.value
         ) {
-          console.log(1)
           this.errTips = '请选择活动时间'
           this.helpShow = true
           return
@@ -300,7 +239,7 @@ export default {
           return
         }
         params = {
-          product_type: 1, // 会籍卡
+          product_type: 3, // 会籍卡
           activity_name: values.activity_name, // 活动名称
           product_id: this.cardId, //商品id
           sku: list, //卡、课规格[{“sku_id”:1,”group_price”:20},]

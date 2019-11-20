@@ -1,7 +1,7 @@
 <template>
   <div :class="activities()">
     <st-panel-layout>
-      <st-panel class="mg-b12">
+      <st-panel class="mg-b12" app>
         <!-- 这里是动态 -->
         <st-t2>
           双十一健身拼团活动
@@ -14,13 +14,13 @@
         </div>
         <!-- <Header :id="query.id" /> -->
       </st-panel>
-      <st-panel style="margin-top: 20px;">
+      <st-panel>
         <div :class="activities('block')">
           <a-row :class="activities('acount')">
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 开团数
-                <st-help-tooltip id="TBMGM001" />
+                <st-help-tooltip id="" />
               </p>
               <ICountUp
                 class="number-up font-number"
@@ -30,7 +30,7 @@
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 成团数
-                <st-help-tooltip id="TBMGM002" />
+                <st-help-tooltip id="" />
               </p>
               <ICountUp
                 class="number-up font-number"
@@ -40,7 +40,7 @@
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 参与人数
-                <st-help-tooltip id="TBMGM003" />
+                <st-help-tooltip id="" />
               </p>
               <ICountUp
                 class="number-up font-number"
@@ -50,7 +50,7 @@
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 新用户数
-                <st-help-tooltip id="TBMGM004" />
+                <st-help-tooltip id="" />
               </p>
               <ICountUp
                 class="number-up font-number"
@@ -60,7 +60,7 @@
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 成单数
-                <st-help-tooltip id="TBMGM004" />
+                <st-help-tooltip id="" />
               </p>
               <ICountUp
                 class="number-up font-number"
@@ -70,7 +70,7 @@
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 成交金额
-                <st-help-tooltip id="TBMGM004" />
+                <st-help-tooltip id="" />
               </p>
               <ICountUp
                 class="number-up font-number"
@@ -80,7 +80,7 @@
           </a-row>
         </div>
       </st-panel>
-      <st-panel :class="activities('search')">
+      <header :class="activities('search')">
         <a-select
           :class="activities('select')"
           v-model="groupStatus"
@@ -97,7 +97,7 @@
           @search="onGroupSearch('searchWhere', $event)"
           placeholder="请输入活动名称"
         />
-      </st-panel>
+      </header>
       <st-panel>
         <template v-if="list.length > 1">
           <a-table
@@ -144,7 +144,7 @@ export default {
       list: this.dataService.list$,
       page: this.dataService.page$,
       collect: this.dataService.collect$
-      // loading: this.listService.loading$,
+      // loading: this.listService.loading$
     }
   },
   data(vm) {
