@@ -1,5 +1,10 @@
 <template>
   <st-mina-panel :class="basic()">
+    <div slot="actions">
+      <st-button @click="onSubmit" type="primary">
+        确 定
+      </st-button>
+    </div>
     <div>
       <st-form :form="form" labelWidth="118px">
         <a-row :gutter="8">
@@ -195,11 +200,6 @@
           </a-col>
         </a-row>
       </st-form>
-      <div slot="actions">
-        <st-button @click="onSubmit" type="primary">
-          确 定
-        </st-button>
-      </div>
     </div>
   </st-mina-panel>
 </template>
@@ -208,6 +208,7 @@
 import SelectShop from '@/views/fragments/shop/select-shop'
 import { AddMemberService } from './add-member.service'
 import { AddStoredService } from './add-stored.service'
+import { PatternService } from '@/services/pattern.service'
 import { columnsGroupStored, ruleOptions } from './add-stored.config'
 import moment, { months } from 'moment'
 import {
@@ -216,14 +217,15 @@ import {
 } from '@/constants/marketing/group-buy'
 
 export default {
-  // name: PageBrandMarketingGroupAddStored,
+  name: 'PageBrandMarketingGroupAddStored',
   bem: {
     basic: 'brand-marketing-group-stored'
   },
   serviceInject() {
     return {
       Add: AddMemberService,
-      AddSotred: AddStoredService
+      AddSotred: AddStoredService,
+      pattern: PatternService
     }
   },
   rxState() {
@@ -306,9 +308,6 @@ export default {
     }
   },
   methods: {
-    changeTime(e) {
-      console.log(e)
-    },
     getShopId(shopId) {
       this.shopList = shopId
       if (this.shopList.length > 1) {
