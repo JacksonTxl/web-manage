@@ -4,6 +4,7 @@ import { pluck, tap } from 'rxjs/operators'
 import { MemberApi, CoachParams, CoachQuery, SaleQuery } from '@/api/v1/member'
 import { AuthService } from '@/services/auth.service'
 import { forkJoin } from 'rxjs'
+import { UserService } from '@/services/user.service'
 
 @Injectable()
 export class ClubService implements Controller {
@@ -13,6 +14,18 @@ export class ClubService implements Controller {
   memberListInfo$: Computed<string>
   list$ = new State({})
   page$ = new State({})
+  memberLevel$ = this.userService.getOptions$('member.member_level', {
+    addAll: true
+  })
+  isFollow$ = this.userService.getOptions$('member.is_follow', {
+    addAll: true
+  })
+  sourceList$ = this.userService.getOptions$('member.source_channel', {
+    addAll: true
+  })
+  followStatus$ = this.userService.getOptions$('member.club_follow_status', {
+    addAll: true
+  })
   auth$ = this.authService.authMap$({
     add: 'shop:member:member|add',
     import: 'shop:member:member|import',
@@ -23,7 +36,11 @@ export class ClubService implements Controller {
     unbindSalesman: 'shop:member:member|batch_unbind_saleman',
     unbindCoach: 'shop:member:member|batch_unbind_coach'
   })
-  constructor(private memberApi: MemberApi, private authService: AuthService) {
+  constructor(
+    private memberApi: MemberApi,
+    private authService: AuthService,
+    private userService: UserService
+  ) {
     this.state$ = new State({
       memberListInfo: {}
     })
