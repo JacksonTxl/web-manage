@@ -34,7 +34,8 @@
             }}次跟进
           </div>
           <div :class="bPage('timeline-position')">
-            <div>{{ item.created_time }}</div>
+            <span>{{ item.time }}</span>
+            <span class="date">{{ item.date }}</span>
           </div>
         </div>
       </a-timeline-item>
