@@ -302,7 +302,7 @@ export default {
         },
         on: {
           ok: () => {
-            this.$router.push({ query: this.query })
+            this.$router.push({ query: this.$searchQuery })
           }
         }
       })
@@ -322,7 +322,7 @@ export default {
       this.getReserveInfo()
     },
     onDelScheduleScuccess() {
-      this.$router.push({ query: this.query })
+      this.$router.push({ query: this.$searchQuery })
       this.show = false
     }
   }

@@ -8,7 +8,7 @@
       <st-t2 :class="bPage('content-title')">发布成功</st-t2>
       <p :class="bPage('content-subtitle')">更多曝光推广，获得更多客户与订单</p>
       <ul :class="bPage('content-list')">
-        <li @click="onClickSharePoster(1)" class="mg-r48">
+        <li @click="pushSharePosterModal()" class="mg-r48">
           <img src="~@/assets/img/brand/marketing/lottery/poster.png" alt="" />
           <a>分享海报</a>
         </li>
@@ -16,7 +16,7 @@
           <img src="~@/assets/img/brand/marketing/lottery/ad.png" alt="" />
           <a>设置活动广告</a>
         </li>
-        <li @click="onClickSharePoster(2)">
+        <li @click="pushQrCodeModal()">
           <img src="~@/assets/img/brand/marketing/lottery/mina.png" alt="" />
           <a>小程序码</a>
         </li>
@@ -33,7 +33,8 @@
   </st-panel>
 </template>
 <script>
-import MarketingPoster from '@/views/biz-modals/brand/marketing/poster'
+import MarketingPoster from '@/views/biz-modals/brand/marketing/share-poster'
+import { SuccessService } from './success.service'
 export default {
   name: 'ReleaseActivity',
   bem: {
@@ -42,6 +43,15 @@ export default {
   modals: {
     MarketingPoster
   },
+  serviceInject() {
+    return {
+      service: SuccessService
+    }
+  },
+  rxState() {
+    const { info$, qrcode$, brand$ } = this.service
+    return { info$, qrcode$, brand$ }
+  },
   data() {
     return {
       show: false
@@ -49,7 +59,7 @@ export default {
   },
   computed: {
     activityId() {
-      return +this.$searchQueryactivity_id
+      return +this.$searchQuery.activity_id
     }
   },
   methods: {
@@ -68,18 +78,36 @@ export default {
         name: 'brand-marketing-activity'
       })
     },
-    pushModal(type) {
-      this.$modalRouter.push({
-        name: 'marketing-poster',
-        props: {
-          pluginType: 'signUp',
-          type,
-          activity_id: this.activityId
-        }
+    pushSharePosterModal() {
+      this.service.getSharePosterInfo(this.activityId).subscribe(() => {
+        const info = this.info$
+        const activity_date = `${info.start_time} - ${info.end_time}`
+        this.$modalRouter.push({
+          name: 'marketing-poster',
+          props: {
+            info: {
+              qrcode_url: info.qrcode,
+              brand_name: this.brand$.name,
+              brand_logo: this.brand$.logo,
+              activity_img: info.image.image_url,
+              activity_title: info.activity_name,
+              activity_date,
+              activity_address: info.address
+            },
+            shsUrl: '/saas/activity'
+          }
+        })
       })
     },
-    onClickSharePoster(type) {
-      this.pushModal(type)
+    pushQrCodeModal() {
+      this.service.getQrCode(this.activityId).subscribe(() => {
+        this.$modalRouter.push({
+          name: 'marketing-poster',
+          props: {
+            url: this.qrcode$
+          }
+        })
+      })
     }
   }
 }

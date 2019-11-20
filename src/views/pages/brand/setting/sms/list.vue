@@ -129,7 +129,7 @@ export default {
       this.$searchQuery.end_time = this.selectTime.endTime.value
         ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')}`
         : ''
-      this.onSearch({ ...this.query })
+      this.onSearch({ ...this.$searchQuery })
     },
     setSearchData() {
       this.selectTime.startTime.value = this.$searchQuery.start_time

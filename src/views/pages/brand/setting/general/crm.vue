@@ -10,14 +10,7 @@
         <a-col :span="12">
           <st-t4 class="mg-t4">
             销售可跟进客户上限
-            <a-tooltip placement="top">
-              <template slot="title">
-                <span>
-                  可分配给该员工的潜在会员和流失会员上限数,正式会员后不受此限制
-                </span>
-              </template>
-              <span><st-icon color="#9bacb9" type="help" class="mg-l4" /></span>
-            </a-tooltip>
+            <st-help-tooltip id="TBCRM001" />
           </st-t4>
           <div class="st-des mg-t4">客户成为正式会员后不受此人数限制</div>
         </a-col>
@@ -25,17 +18,18 @@
           <a-radio-group v-model="crmRule.sales_is_limit">
             <a-radio :value="0" class="mg-r48">不限制</a-radio>
             <a-radio :value="1">
-              <a-input
+              <st-input-number
                 :min="1"
                 @focus="setFocus('sales_is_limit', 1)"
                 v-model="crmRule.sales_limit_num"
                 :max="9999"
-                type="number"
+                :step="1"
+                :precision="0"
                 class="input"
                 placeholder="请输入"
               >
-                <span slot="addonAfter">天</span>
-              </a-input>
+                <span slot="addonAfter">人</span>
+              </st-input-number>
             </a-radio>
           </a-radio-group>
         </a-col>
@@ -47,14 +41,7 @@
         <a-col :span="12">
           <st-t4 class="mg-t4">
             教练可跟进客户上限
-            <a-tooltip placement="top">
-              <template slot="title">
-                <span>
-                  可分配给该员工的会员上限数,已购买课程的会员不受此限制
-                </span>
-              </template>
-              <span><st-icon color="#9bacb9" type="help" class="mg-l4" /></span>
-            </a-tooltip>
+            <st-help-tooltip id="TBCRM002" />
           </st-t4>
           <div class="st-des mg-t4">客户成为正式会员后不受此人数限制</div>
         </a-col>
@@ -62,16 +49,18 @@
           <a-radio-group v-model="crmRule.coach_is_limit">
             <a-radio :value="0" class="mg-r48">不限制</a-radio>
             <a-radio :value="1">
-              <a-input
+              <st-input-number
                 :min="1"
                 :max="9999"
+                :step="1"
+                :precision="0"
                 @focus="setFocus('coach_is_limit', 1)"
                 v-model="crmRule.coach_limit_num"
                 class="input"
                 placeholder="请输入"
               >
                 <span slot="addonAfter">人</span>
-              </a-input>
+              </st-input-number>
             </a-radio>
           </a-radio-group>
         </a-col>
@@ -98,28 +87,23 @@
       <div :class="bPage('custom')" v-if="crmRule.sales_is_protect">
         <st-t4 class="mg-t4 mg-b24">
           销售跟进客户保护天数
-          <a-tooltip placement="top">
-            <template slot="title">
-              <span>
-                客户保护天数,为员工分配客户后,该员工可跟进会员的天数,超过客保天数后,自动解除跟进人,不限制表示可以一直跟进下去
-              </span>
-            </template>
-            <span><st-icon color="#9bacb9" type="help" class="mg-l4" /></span>
-          </a-tooltip>
+          <st-help-tooltip id="TBCRM003" />
         </st-t4>
         <a-radio-group v-model="crmRule.sales_is_protect_limit">
           <a-radio :value="0" class="mg-r48">不限制</a-radio>
           <a-radio :value="1">
-            <a-input
+            <st-input-number
               :min="1"
               :max="9999"
+              :step="1"
+              :precision="0"
               v-model="crmRule.sales_protect_days"
               class="input"
               @focus="setFocus('sales_is_protect_limit', 1)"
               placeholder="请输入"
             >
               <span slot="addonAfter">天</span>
-            </a-input>
+            </st-input-number>
           </a-radio>
         </a-radio-group>
         <st-t4 class="mg-t24 mg-b24">会员流失后解绑跟进销售规则</st-t4>
@@ -134,9 +118,11 @@
           </a-radio>
           可跟进
           <a-radio :value="3">
-            <a-input
+            <st-input-number
               :min="1"
               :max="9999"
+              :step="1"
+              :precision="0"
               class="input"
               @focus="setFocus('sales_follow_rule', 3)"
               v-model="crmRule.sales_follow_days"
@@ -144,7 +130,7 @@
             >
               <span slot="addonAfter">天</span>
               后解绑
-            </a-input>
+            </st-input-number>
           </a-radio>
         </a-radio-group>
       </div>
@@ -168,28 +154,23 @@
       <div :class="bPage('custom')" v-if="crmRule.coach_is_protect">
         <st-t4 class="mg-t4 mg-b24">
           教练跟进客户保护天数
-          <a-tooltip placement="top">
-            <template slot="title">
-              <span>
-                客户保护天数,为员工分配客户后,该员工可跟进会员的天数,超过客保天数后,自动解除跟进人,不限制表示可以一直跟进下去
-              </span>
-            </template>
-            <span><st-icon color="#9bacb9" type="help" class="mg-l4" /></span>
-          </a-tooltip>
+          <st-help-tooltip id="TBCRM004" />
         </st-t4>
         <a-radio-group v-model="crmRule.coach_is_protect_limit">
           <a-radio :value="0" class="mg-r48">不限制</a-radio>
           <a-radio :value="1">
-            <a-input
+            <st-input-number
               :min="1"
               :max="9999"
+              :step="1"
+              :precision="0"
               class="input mg-r32"
               v-model="crmRule.coach_protect_days"
               @focus="setFocus('coach_is_protect_limit', 1)"
               placeholder="请输入"
             >
               <span slot="addonAfter">天</span>
-            </a-input>
+            </st-input-number>
           </a-radio>
         </a-radio-group>
         <st-t4 class="mg-t24 mg-b24">购买以下项目不解绑教练</st-t4>
@@ -215,9 +196,11 @@
           </a-radio>
           可跟进
           <a-radio :value="3">
-            <a-input
+            <st-input-number
               :min="1"
               :max="9999"
+              :step="1"
+              :precision="0"
               @focus="setFocus('coach_follow_rule', 3)"
               class="input"
               v-model="crmRule.coach_follow_days"
@@ -225,14 +208,19 @@
             >
               <span slot="addonAfter">天</span>
               后解绑
-            </a-input>
+            </st-input-number>
           </a-radio>
         </a-radio-group>
       </div>
       <st-hr></st-hr>
     </div>
     <div>
-      <st-button class="btn" type="primary" @click="setCrmRule">
+      <st-button
+        :loading="loading.setCrmRule"
+        class="btn"
+        type="primary"
+        @click="setCrmRule"
+      >
         保存
       </st-button>
     </div>
@@ -257,30 +245,18 @@ export default {
   rxState() {
     return {
       courseType: this.crmService.courseType$,
-      userUntied: this.crmService.userUntied$
+      userUntied: this.crmService.userUntied$,
+      crmRule: this.crmService.crmRule$,
+      loading: this.crmService.loading$
     }
   },
   modals: {
     BrandSettingCrmReset
   },
   data() {
-    return {
-      crmRule: {
-        sales_is_limit: 0,
-        coach_is_limit: 0,
-        coach_is_protect: 0,
-        sales_is_protect: 0,
-        coach_untie_condition: [],
-        sales_is_protect_limit: 0,
-        sales_follow_rule: 1,
-        coach_is_protect_limit: 0,
-        coach_follow_rule: 1
-      }
-    }
+    return {}
   },
-  created() {
-    this.getCrmRule()
-  },
+  created() {},
   methods: {
     setFocus(key, value) {
       this.crmRule[key] = value
@@ -323,14 +299,9 @@ export default {
         })
       }
     },
-    getCrmRule() {
-      return this.crmService.getCrmRule().subscribe(res => {
-        this.crmRule = res
-      })
-    },
     setCrmRule() {
       if (this.crmRule.sales_is_limit === 0) {
-        this.crmRule.sales_limit_num = ''
+        delete this.crmRule.sales_limit_num
       } else {
         if (!this.crmRule.sales_limit_num) {
           this.messageService.warning({
@@ -340,7 +311,7 @@ export default {
         }
       }
       if (this.crmRule.coach_is_limit === 0) {
-        this.crmRule.coach_limit_num = ''
+        delete this.crmRule.coach_limit_num
       } else {
         if (!this.crmRule.coach_limit_num) {
           this.messageService.warning({
@@ -350,7 +321,7 @@ export default {
         }
       }
       if (this.crmRule.sales_is_protect_limit === 0) {
-        this.crmRule.sales_protect_days = ''
+        delete this.crmRule.sales_protect_days
       } else {
         if (!this.crmRule.sales_protect_days) {
           this.messageService.warning({
@@ -360,7 +331,7 @@ export default {
         }
       }
       if (this.crmRule.sales_follow_rule !== 3) {
-        this.crmRule.sales_follow_days = ''
+        delete this.crmRule.sales_follow_days
       } else {
         if (
           this.crmRule.sales_follow_rule === 3 &&
@@ -373,7 +344,7 @@ export default {
         }
       }
       if (this.crmRule.coach_is_protect_limit === 0) {
-        this.crmRule.coach_protect_days = ''
+        delete this.crmRule.coach_protect_days
       } else {
         if (!this.crmRule.coach_protect_days) {
           this.messageService.warning({
@@ -383,7 +354,7 @@ export default {
         }
       }
       if (this.crmRule.coach_follow_rule !== 3) {
-        this.crmRule.coach_follow_days = ''
+        delete this.crmRule.coach_follow_days
       } else {
         if (
           this.crmRule.coach_follow_rule === 3 &&
@@ -397,7 +368,7 @@ export default {
       }
       return this.crmService.setCrmRule(this.crmRule).subscribe(res => {
         this.messageService.success({ content: '编辑成功' })
-        this.getCrmRule()
+        this.$router.reload()
       })
     }
   }

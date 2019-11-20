@@ -222,7 +222,7 @@ export default {
             .then(() => {
               this.onSelectionReset()
               this.$router.push({
-                query: { ...this.query, current_page: 1 }
+                query: { ...this.$searchQuery, current_page: 1 }
               })
             })
         }
@@ -241,7 +241,7 @@ export default {
             .toPromise()
             .then(() => {
               this.$router.push({
-                query: { ...this.query, current_page: 1 }
+                query: { ...this.$searchQuery, current_page: 1 }
               })
             })
         }

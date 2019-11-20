@@ -2,11 +2,18 @@ import { TeamScheduleScheduleService as ScheduleService } from './service#/sched
 import { Controller, Injectable, ServiceRoute } from 'vue-service-app'
 import { forkJoin } from 'rxjs'
 import { TeamScheduleCommonService as CommonService } from './service#/common.service'
+import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class TeamTableService implements Controller {
+  auth$ = this.authService.authMap$({
+    add: 'shop:schedule:team_course_schedule|add',
+    addBatch: 'shop:schedule:team_course_schedule|batch_add',
+    copy: 'shop:schedule:team_course_schedule|copy'
+  })
   constructor(
     private commonService: CommonService,
+    private authService: AuthService,
     private scheduleService: ScheduleService
   ) {}
 

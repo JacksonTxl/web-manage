@@ -108,7 +108,7 @@ export default {
     save(e) {
       e.preventDefault()
       this.form.validate().then(values => {
-        values.id = this.$searchQueryid
+        values.id = this.$searchQuery.id
         this.getMemberFollowHistory(values)
       })
     }

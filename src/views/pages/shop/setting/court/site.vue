@@ -228,7 +228,7 @@ export default {
       this.isAdd = false
       this.editInfo = {}
       this.$router.push({
-        query: this.query
+        query: this.$searchQuery
       })
     },
     onAddImgChange(fileList) {

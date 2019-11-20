@@ -1,7 +1,7 @@
 <template>
   <div :class="basic()">
     <info-component :data="info"></info-component>
-    <div :class="basic('content')">
+    <div :class="basic('content', { unauth: info.is_auth === 0 })">
       <un-auth-component
         v-if="info.is_auth === 0"
         :url="info.auth_url"

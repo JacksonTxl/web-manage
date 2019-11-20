@@ -1,5 +1,8 @@
 import { message } from 'ant-design-vue'
-
+message.config({
+  duration: 2,
+  maxCount: 3
+})
 interface MessageOptions {
   /**
    * 提示内容

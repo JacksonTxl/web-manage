@@ -191,8 +191,8 @@ export default {
   },
   computed: {
     isDay() {
-      const start = this.$searchQuerystart_date
-      const end = this.$searchQueryend_date
+      const start = this.$searchQuery.start_date
+      const end = this.$searchQuery.end_date
       return start === end
     },
     currentTime() {
@@ -292,7 +292,7 @@ export default {
     getWeeks(val) {
       if (val !== 'week' && this.isDay) {
         this.weeks = []
-        this.weeks.push({ week: 0, date: this.$searchQuerystart_date })
+        this.weeks.push({ week: 0, date: this.$searchQuery.start_date })
         return
       }
       if (val === 'week') {
@@ -320,7 +320,20 @@ export default {
       this.getWeeks('week')
     }
     this.$nextTick().then(() => {
-      document.getElementById('timer-8').scrollIntoView()
+      function heightToTop(ele) {
+        //ele为指定跳转到该位置的DOM节点
+        let root = document.body
+        let height = 0
+        do {
+          height += ele.offsetTop
+          ele = ele.offsetParent
+        } while (ele !== root)
+        return height
+      }
+      // 减去232固定高度
+      window.scrollTo({
+        top: heightToTop(document.querySelector('#timer-9')) - 232
+      })
     })
   },
   components: {

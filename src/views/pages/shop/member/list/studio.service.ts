@@ -3,6 +3,7 @@ import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { MemberApi } from '@/api/v1/member'
 import { AuthService } from '@/services/auth.service'
+import { UserService } from '@/services/user.service'
 
 @Injectable()
 export class StudioService implements Controller {
@@ -20,7 +21,11 @@ export class StudioService implements Controller {
     bindSalesman: 'shop:member:member|bind_salesman',
     export: 'shop:member:member|export'
   })
-  constructor(private memberApi: MemberApi, private authService: AuthService) {
+  constructor(
+    private memberApi: MemberApi,
+    private authService: AuthService,
+    private userService: UserService
+  ) {
     this.state$ = new State({
       memberListInfo: {}
     })

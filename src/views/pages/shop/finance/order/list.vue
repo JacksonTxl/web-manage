@@ -128,7 +128,7 @@ export default {
     this.setSearchData()
   },
   watch: {
-    query() {
+    $searchQuery() {
       this.setSearchData()
     }
   },
