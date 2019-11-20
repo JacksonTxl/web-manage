@@ -74,8 +74,7 @@ export default {
   },
   serviceInject() {
     return {
-      givingService: GivingService,
-      routeService: RouteService
+      givingService: GivingService
     }
   },
   rxState() {

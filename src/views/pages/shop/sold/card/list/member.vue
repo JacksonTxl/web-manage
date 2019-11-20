@@ -481,8 +481,7 @@ export default {
         name: 'sold-card-giving',
         props: {
           id: this.selectedRowKeys,
-          type: this.selectedRows[0].card_type,
-          page: this.page
+          type: this.selectedRows[0].card_type
         },
         on: {
           success: () => {

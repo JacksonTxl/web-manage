@@ -200,8 +200,8 @@ export class CourseApi extends Api {
    * 售出私教课批量赠送，当前搜索条件下 获取操作条数
    */
   fetchSoldCourseValidNum(params: any) {
-    return this.http.post(`/v1/sold/course/personal/task_num`, {
-      params
+    return this.http.get(`/v1/sold/course/personal/task_num`, {
+      query: params
     })
   }
   /**
@@ -219,5 +219,27 @@ export class CourseApi extends Api {
     return this.http.post(`/v1/sold/course/personal/task_extend_time`, {
       params
     })
+  }
+  /**
+   * 售出课程包，当前搜索条件下 获取操作条数
+   */
+  fetchSoldPackageValidNum(params: any) {
+    return this.http.get(`/v1/sold/course/package/task_num`, {
+      query: params
+    })
+  }
+  /**
+   * 售出课程包，更换课程上课范围
+   */
+  changePackageRange(params: any) {
+    return this.http.post(`/v1/sold/course/package/task_package_range`, {
+      params
+    })
+  }
+  /**
+   * 售出课程包，获取全部私教课上课列表
+   */
+  geAllPersonalCourseList() {
+    return this.http.get(`/v1/course/package/personal_all`)
   }
 }
