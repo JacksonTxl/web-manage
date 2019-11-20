@@ -1,218 +1,79 @@
 <template>
-  <st-mina-panel app>
-    <div slot="actions">
-      <st-button :loading="loading.addGroup" type="primary" @click="onSubmit">
-        保 存
-      </st-button>
-    </div>
-    <div>
-      <st-form :form="form" labelWidth="118px">
-        <a-row :gutter="8">
-          <a-col :span="10">
-            <st-form-item label="活动名称" required>
-              <a-input
-                v-decorator="decorators.activity_name"
-                placeholder="请输入活动名称"
-                @change="changeName"
-              >
-                <span slot="suffix">
-                  {{ groupName.length }}
-                  /30
-                </span>
-              </a-input>
-            </st-form-item>
-            <st-form-item label="选择会籍卡" required>
-              <a-input type="hidden" v-decorator="decorators.cardId" />
-              <a-select
-                showSearch
-                v-model="cardId"
-                placeholder="请输入"
-                @change="chooseMember"
-              >
-                <a-select-option
-                  :value="item.id"
-                  v-for="(item, index) in memberList"
-                  :key="index"
-                >
-                  {{ item.product_name }}
-                </a-select-option>
-              </a-select>
-            </st-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="8">
-          <a-col :span="16">
-            <st-form-item
-              label="优惠设置"
-              required
-              :help="tableText"
-              :validateStatus="tableErr ? 'error' : ''"
+  <group-form
+    :form="form"
+    :decorators="decorators"
+    :loading="loading"
+    :isEdit="isEdit"
+    :info="info"
+    :shopIds="shopIds"
+    @onsubmit="onSubmit"
+  >
+    <template slot="choose-product">
+      <a-row :gutter="8">
+        <a-col :span="10">
+          <st-form-item label="选择会籍卡" required>
+            <a-input type="hidden" v-decorator="decorators.cardId" />
+            <a-select
+              showSearch
+              v-model="cardId"
+              placeholder="请输入"
+              @change="chooseMember"
             >
-              <div :class="basic('table')">
-                <st-table
-                  :columns="cardColumns"
-                  :dataSource="tableData"
-                  :pagination="false"
-                  :scroll="{ y: 230 }"
-                  :rowSelection="
-                    tableData.length > 1
-                      ? {
-                          onChange: onChange,
-                          selectedRowKeys: selectedRowKeys
-                        }
-                      : null
-                  "
-                  rowKey="id"
-                >
-                  <template
-                    slot="group_price"
-                    slot-scope="customRender, record"
-                  >
-                    <st-input-number v-model="record.group_price">
-                      <template slot="addonAfter">
-                        元
-                      </template>
-                    </st-input-number>
-                  </template>
-                </st-table>
-              </div>
-            </st-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="8">
-          <a-col :span="16">
-            <st-form-item
-              label="活动时间"
-              :help="errTips"
-              :validateStatus="helpShow ? 'error' : ''"
-              required
-            >
-              <st-range-picker
-                :disabledDays="180"
-                :value="selectTime"
-              ></st-range-picker>
-            </st-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="8">
-          <a-col :span="10">
-            <st-form-item required>
-              <span slot="label">
-                参团人数
-                <st-help-tooltip id="TBPTXJ001" />
-              </span>
-              <st-input-number v-decorator="decorators.group_sum">
-                <template slot="addonAfter">
-                  人
-                </template>
-              </st-input-number>
-            </st-form-item>
-            <st-form-item required>
-              <span slot="label">
-                拼团有效期
-                <st-help-tooltip id="TBPTXJ002" />
-              </span>
-              <st-input-number v-decorator="decorators.valid_time">
-                <template slot="addonAfter">
-                  小时
-                </template>
-              </st-input-number>
-            </st-form-item>
-            <st-form-item required>
-              <span slot="label">
-                活动库存
-                <st-help-tooltip id="TBPTXJ003" />
-              </span>
-              <a-checkbox
-                @change="limitStock"
-                :checked="isLimit"
-                :disabled="
-                  (isEdit && isLimit) || activityState >= ACTIVITY_STATUS.END
+              <a-select-option
+                :value="item.id"
+                v-for="(item, index) in memberList"
+                :key="index"
+              >
+                {{ item.product_name }}
+              </a-select-option>
+            </a-select>
+          </st-form-item>
+        </a-col>
+      </a-row>
+      <a-row :gutter="8">
+        <a-col :span="16">
+          <st-form-item
+            label="优惠设置"
+            required
+            :help="tableText"
+            :validateStatus="tableErr ? 'error' : ''"
+          >
+            <div :class="basic('table')">
+              <st-table
+                :columns="cardColumns"
+                :dataSource="tableData"
+                :pagination="false"
+                :scroll="{ y: 230 }"
+                :rowSelection="
+                  tableData.length > 1
+                    ? {
+                        onChange: onChange,
+                        selectedRowKeys: selectedRowKeys
+                      }
+                    : null
                 "
+                rowKey="id"
               >
-                限制库存&nbsp;&nbsp;
-              </a-checkbox>
-              <st-input-number
-                v-if="isLimit"
-                :class="basic('stock')"
-                v-decorator="decorators.stock_total"
-                :disabled="isEdit && activityState >= ACTIVITY_STATUS.END"
-              ></st-input-number>
-            </st-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="8">
-          <a-col :span="16">
-            <st-form-item required :class="basic('shop')">
-              <span slot="label">
-                选择门店
-                <st-help-tooltip id="TBPTXJ004" />
-              </span>
-              <!-- <select-shop
-                :class="basic('table')"
-                @change="onSelectShop"
-                :shopIds="shopIds"
-              ></select-shop> -->
-              <div :class="basic('shop--container')">
-                <st-t4 :class="basic('shop--set')">
-                  设置支持会员卡售卖场馆范围
-                </st-t4>
-                <select-shop
-                  :shopIds="info ? info.support_shop : []"
-                  :groupParams="groupParams"
-                  @change="onSelectShop"
-                ></select-shop>
-              </div>
-            </st-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="8">
-          <a-col :span="10">
-            <st-form-item required>
-              <span slot="label">
-                发布状态
-                <st-help-tooltip id="TBPTXJ005" />
-              </span>
-              <a-radio-group
-                :defaultValue="releaseStatus || RELEASE_SRTATUS.PROMPTLY"
-                v-model="releaseStatus"
-                :disabled="isEdit && activityState > RELEASE_SRTATUS.PUBLISHER"
-              >
-                <a-radio :value="RELEASE_SRTATUS.PROMPTLY">立即发布</a-radio>
-                <a-radio :value="RELEASE_SRTATUS.TEMPORARILY">暂不发布</a-radio>
-                <a-radio :value="RELEASE_SRTATUS.TIMING">定时发布</a-radio>
-              </a-radio-group>
-            </st-form-item>
-            <st-form-item
-              label="发布时间"
-              required
-              :help="errText"
-              :validateStatus="showHelp ? 'error' : ''"
-              v-if="releaseStatus === RELEASE_SRTATUS.TIMING"
-            >
-              <a-date-picker
-                :disabledDate="disabledDate"
-                :showTime="{ format: 'HH:mm' }"
-                format="YYYY-MM-DD HH:mm"
-                v-model="publishTime"
-              />
-            </st-form-item>
-          </a-col>
-        </a-row>
-      </st-form>
-    </div>
-  </st-mina-panel>
+                <template slot="group_price" slot-scope="customRender, record">
+                  <st-input-number v-model="record.group_price">
+                    <template slot="addonAfter">
+                      元
+                    </template>
+                  </st-input-number>
+                </template>
+              </st-table>
+            </div>
+          </st-form-item>
+        </a-col>
+      </a-row>
+    </template>
+  </group-form>
 </template>
 <script>
+import GroupForm from './components#/group-form'
 import { ruleOptions, cardColumns } from './add-member.config'
-import SelectShop from '@/views/fragments/shop/select-shop'
 import { AddMemberService } from './add-member.service'
-import moment from 'moment'
 import { values } from 'lodash-es'
-import {
-  ACTIVITY_STATUS,
-  RELEASE_SRTATUS
-} from '@/constants/marketing/group-buy'
 export default {
   serviceInject() {
     return {
@@ -234,50 +95,14 @@ export default {
     return {
       form,
       decorators,
-      groupName: '',
       cardId: '',
       skuList: [{ id: 1, spec: '30次', price: 100 }],
       selectedRowKeys: [], // 优惠设置选中项
-      activity_time: [],
-      isLimit: true,
-      shopIds: [],
       cardColumns,
-      tableData: [],
-      releaseStatus: 1, // 发布状态
-      publishTime: null,
-      selectTime: {
-        startTime: {
-          showTime: false,
-          disabledBegin: moment(),
-          placeholder: '开始日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD HH:mm',
-          change: $event => {}
-        },
-        endTime: {
-          showTime: false,
-          placeholder: '结束日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD HH:mm',
-          change: $event => {},
-          disabledDate: this.disabledDate
-        }
-      },
-      activityState: Number, // 当前活动活动状态
-      ACTIVITY_STATUS,
-      RELEASE_SRTATUS,
-      errTips: '', // 活动时间错误提示
-      errText: '', // 发布时间错误提示
-      tableText: '', // 优惠设置错误提示
-      helpShow: false,
-      showHelp: false,
+      tableText: '',
       tableErr: false,
-      groupParams: {
-        type: 1,
-        id: null
-      }
+      tableData: [],
+      shopIds: []
     }
   },
   props: {
@@ -325,42 +150,13 @@ export default {
     onChange(value) {
       this.selectedRowKeys = value
     },
-    // 是否限制库存
-    limitStock(value) {
-      this.isLimit = value.target.checked
-    },
-    // 选择门店
-    onSelectShop(shopIds) {
-      this.shopIds = shopIds
-    },
-    // 为了同步字数
-    changeName(e) {
-      this.groupName = e.target.value
-    },
-    // select选择设置开始时间不能小于现在
-    disabledDate(current) {
-      return (
-        current &&
-        current.format('YYYY-MM-DD HH:mm') < moment().format('YYYY-MM-DD HH:mm')
-      )
-    },
     // 新建拼团活动
-    onSubmit() {
+    onSubmit(data) {
+      console.log(data)
+      return
       let isReturn = false
       let list = []
-      if (!this.selectTime.startTime.value || !this.selectTime.endTime.value) {
-        this.errTips = '请选择活动时间'
-        this.helpShow = true
-        isReturn = true
-      }
-      if (
-        !this.publishTime &&
-        this.releaseStatus === this.RELEASE_SRTATUS.TIMING
-      ) {
-        this.errText = '请选择发布时间'
-        this.showHelp = true
-        isReturn = true
-      }
+
       if (!this.selectedRowKeys.length) {
         this.tableText = '请选择会籍卡规格'
         this.tableErr = true
@@ -438,7 +234,7 @@ export default {
     }
   },
   components: {
-    SelectShop
+    GroupForm
   }
 }
 </script>
