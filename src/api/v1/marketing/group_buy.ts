@@ -123,4 +123,10 @@ export class GroupBuyApi extends Api {
   releaseGroupList(params: { id: number }) {
     return this.http.get('/v1/plugin/group_buy/release/', { params })
   }
+  /**
+   * 获取推广海报
+   */
+  getPosterInfo(params: { id: number }) {
+    return this.http.get('/v1/plugin/group_buy/spread/', { params })
+  }
 }

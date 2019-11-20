@@ -11,6 +11,6 @@ module.exports = {
   'GET /_api/v1/course/personal/brand_list': brand_personal_list,
   'GET /_api/v1/plugin/group_buy/shop/': group_buy_shop,
   'GET /_api/v1/course/personal/coach_level/': course_personal_coach_level,
-  'GET /_api/v1/plugin/index_marketing': markting,
+  // 'GET /_api/v1/plugin/index/marketing': markting,
   'GET /_api/v1/plugin/group_buy/': detil
 }

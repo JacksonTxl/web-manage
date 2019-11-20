@@ -39,8 +39,6 @@
             <span>{{ record.product_type.name }}</span>
           </template>
           <!-- 支持门店 -->
-          <!-- v-if="text.id === SUPPORT_SALES.SPECIFIED_STORE" 做判断 -->
-
           <template slot="support_sales" slot-scope="text, record">
             <a
               v-if="record.id"
@@ -51,7 +49,6 @@
             >
               {{ text }}
             </a>
-            <!-- <span class="use_num">{{ text.name }}</span> -->
           </template>
           <!-- 活动状态 -->
           <template slot="activity_state" slot-scope="text, record">
@@ -75,7 +72,6 @@
                   {{ record.activity_state[0].name }}
                   <a-icon type="exclamation-circle" />
                 </span>
-                <!-- v-if="text.id === SELL_STATUS.NO_SELL"  做判断 -->
               </a-popover>
             </span>
             <span v-else>
@@ -112,8 +108,6 @@
 </template>
 <script>
 import { ListService } from './list.service'
-import { UserService } from '@/services/user.service'
-// import { RouteService } from '@/services/route.service'
 import MarkteingPluginTitle from '../../components#/marketing-title'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
@@ -135,46 +129,45 @@ export default {
   },
   serviceInject() {
     return {
-      listService: ListService,
-      userService: UserService
+      listService: ListService
     }
   },
   rxState() {
     return {
       list: this.listService.list$,
       page: this.listService.page$,
-      // loading: this.listService.loading$,
-      // query: this.$searchQuery,
-      // couponEnums: this.userService.couponEnums$,
-      auth: this.listService.auth$
+      loading: this.listService.loading$,
+      auth: this.listService.auth$,
+      info: this.listService.info$
     }
   },
-  computed: {
-    activity_status() {
-      return (this.activityEnums && this.activityEnums.activity_status) || []
-    },
-    activityType() {
-      let list = []
-      Object.entries(this.activity_status.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      // return list
-      return [{ value: -1, label: '全部状态' }, ...list]
-    }
-  },
+
   data(vm) {
     return {
       TYPE,
       activityName: '',
       activityStatus: -1,
       columns: columns(vm),
-      activityEnums: {
+      activityEnum: {
         // select 假数据做处理
         activity_status: {
           description: '活动状态',
           value: { 1: '已结束', 2: '活动中', 3: '未开始', 4: '待发布' }
         }
       }
+    }
+  },
+  computed: {
+    //状态
+    activity_status() {
+      return (this.activityEnum && this.activityEnum.activity_status) || []
+    },
+    activityType() {
+      let list = []
+      Object.entries(this.activity_status.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return [{ value: -1, label: '全部状态' }, ...list]
     }
   },
   mounted() {
@@ -187,21 +180,20 @@ export default {
     }
   },
   methods: {
-    // 设置searchData
+    // 设置状态&名称
     setSearchData() {
       let { activity_name, activity_status } = this.$searchQuery
-      console.log(this.$searchQuery)
+      console.log(activity_name, activity_status)
       this.activityName = activity_name
       this.activityStatus = activity_status || -1
     },
     // 活动发布
     onRelease(record) {
-      // 活动发布
-      // releaseGroup
       this.listService.releaseGroup({ id: record.id }).subscribe(res => {
         that.$router.reload()
       })
     },
+    // 数据
     onData(record) {
       console.log(record)
       this.$router.push({
@@ -211,55 +203,33 @@ export default {
     },
     // 推广
     onGeneralize(record) {
-      let is_auth = record.is_auth
-      // 绑定小程序
-      if (is_auth) {
-        // 分享海报
-        this.$modalRouter.push({
-          name: 'brand-marketing-poster',
-          props: {
-            id: String(record.id),
-            type: 1
-          },
-          on: {
-            success: () => {
-              console.log('success')
-            }
-          }
-        })
-      } else {
-        // 未绑定小程序
-        this.$modalRouter.push({
-          name: 'brand-marketing-bind',
-          on: {
-            success: () => {
-              console.log('success')
-            }
-          }
-        })
-      }
+      console.log(record.id)
+      this.listService.getSharePosterInfo({ id: record.id }).subscribe(res => {
+        console.log(res)
+      })
     },
     // 编辑列表
     onEdit(record) {
       let id = record.product_type.id
+      let url = ['edit-personal', 'dit-stored', 'edit-member', 'edit-course']
       if (id === 3) {
         this.$router.push({
-          path: '/brand/marketing/plugin/group/add-personal',
+          path: '/brand/marketing/plugin/group/edit-personal',
           query: { id: id }
         })
       } else if (id === 2) {
         this.$router.push({
-          path: '/brand/marketing/plugin/group/add-stored',
+          path: '/brand/marketing/plugin/group/edit-stored',
           query: { id: id }
         })
       } else if (id === 1) {
         this.$router.push({
-          path: '/brand/marketing/plugin/group/add-member',
+          path: '/brand/marketing/plugin/group/edit-member',
           query: { id: id }
         })
       } else {
         this.$router.push({
-          path: '/brand/marketing/plugin/group/add-course',
+          path: '/brand/marketing/plugin/group/edit-course',
           query: { id: id }
         })
       }
@@ -267,7 +237,6 @@ export default {
     // 结束活动
     onStop(record) {
       let that = this
-      // 结束tip不对
       this.$confirm({
         title: '提示',
         content: '确定停止该活动吗？活动停止后，未成团订单将自动关闭并退款。',
@@ -283,19 +252,6 @@ export default {
     // 新增活动
     onAddGroup() {
       this.$router.push({ path: '/brand/marketing/plugin/group/choose' })
-    }
-  },
-  //  过滤器
-  filters: {
-    putStatusFilter(val) {
-      switch (val) {
-        case 1:
-          return '未投放'
-        case 2:
-          return '已投放'
-        default:
-          return ''
-      }
     }
   },
   components: {

@@ -1,213 +1,93 @@
 <template>
-  <st-mina-panel app>
-    <div slot="actions">
-      <st-button :loading="loading.addGroup" type="primary" @click="onSubmit">
-        保 存
-      </st-button>
-    </div>
-    <div>
-      <st-form :form="form" labelWidth="118px">
-        <a-row :gutter="8">
-          <a-col :span="10">
-            <st-form-item label="活动名称" required>
-              <a-input
-                v-decorator="decorators.activity_name"
-                placeholder="请输入活动名称"
-                @change="changeName"
-              >
-                <span slot="suffix" :class="basic('tip')">
-                  {{ groupName.length }}
-                  /30
-                </span>
-              </a-input>
-            </st-form-item>
-            <st-form-item label="选择私教课" required>
-              <a-input type="hidden" v-decorator="decorators.cardId" />
-              <a-select
-                showSearch
-                v-model="cardId"
-                placeholder="请选择私教课"
-                @change="handleChange"
-              >
-                <a-select-option
-                  v-for="item in personalList"
-                  :value="item.brand_id"
-                  :key="item.id"
-                >
-                  {{ item.brand_id }}
-                  {{ item.product_name }}
-                </a-select-option>
-              </a-select>
-            </st-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="8">
-          <a-col :span="10">
-            <st-form-item label="拼团课时" required>
-              <a-input
-                v-decorator="decorators.group_hour"
-                placeholder="请输入拼团课时"
-                @change="changeHour"
-              ></a-input>
-            </st-form-item>
-          </a-col>
-        </a-row>
-        <!-- 输入完课时 之后才可以显示优惠设置的教练信息 -->
-        <a-row :gutter="8">
-          <a-col :span="16">
-            <st-form-item
-              label="优惠设置"
-              required
-              :help="tableText"
-              :validateStatus="tableErr ? 'error' : ''"
+  <group-form
+    :form="form"
+    :decorators="decorators"
+    :loading="loading"
+    :isEdit="isEdit"
+    :info="info"
+    :shopIds="shopIds"
+    @onsubmit="onSubmit"
+  >
+    <template slot="choose-product">
+      <a-row :gutter="8">
+        <a-col :span="10">
+          <st-form-item label="选择私教课" required>
+            <a-input type="hidden" v-decorator="decorators.cardId" />
+            <a-select
+              showSearch
+              v-model="cardId"
+              placeholder="请选择私教课"
+              @change="handleChange"
             >
-              <div :class="basic('table')">
-                <st-table
-                  v-if="decorators.group_hour"
-                  :columns="cardColumns"
-                  :dataSource="newCoach"
-                  :pagination="false"
-                  :scroll="{ y: 230 }"
-                  :rowSelection="
-                    newCoach.length > 1
-                      ? {
-                          onChange: onChange,
-                          selectedRowKeys: selectedRowKeys
-                        }
-                      : null
-                  "
-                  rowKey="id"
-                >
-                  <!-- rowKey="key" -->
-                  <template
-                    slot="group_price"
-                    slot-scope="customRender, record"
-                  >
-                    <st-input-number v-model="record.group_price">
-                      <template slot="addonAfter">
-                        元
-                      </template>
-                    </st-input-number>
-                  </template>
-                </st-table>
-              </div>
-            </st-form-item>
-          </a-col>
-        </a-row>
-
-        <a-row :gutter="8">
-          <a-col :span="16">
-            <st-form-item
-              label="活动时间"
-              :help="errTips"
-              :validateStatus="helpShow ? 'error' : ''"
-              required
-            >
-              <st-range-picker
-                :disabledDays="180"
-                :value="selectTime"
-              ></st-range-picker>
-            </st-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="8">
-          <a-col :span="10">
-            <st-form-item required>
-              <span slot="label">
-                参团人数
-                <st-help-tooltip id="TBPTXJ001" />
-              </span>
-              <st-input-number v-decorator="decorators.group_sum">
-                <template slot="addonAfter">
-                  人
+              <a-select-option
+                v-for="item in personalList"
+                :value="item.brand_id"
+                :key="item.id"
+              >
+                {{ item.brand_id }}
+                {{ item.product_name }}
+              </a-select-option>
+            </a-select>
+          </st-form-item>
+        </a-col>
+      </a-row>
+      <a-row :gutter="8">
+        <a-col :span="10">
+          <st-form-item label="拼团课时" required>
+            <a-input
+              v-decorator="decorators.group_hour"
+              placeholder="请输入拼团课时"
+              @change="changeHour"
+            ></a-input>
+          </st-form-item>
+        </a-col>
+      </a-row>
+      <a-row :gutter="8">
+        <a-col :span="16">
+          <st-form-item
+            label="优惠设置"
+            required
+            :help="tableText"
+            :validateStatus="tableErr ? 'error' : ''"
+          >
+            <div :class="basic('table')">
+              <st-table
+                v-if="decorators.group_hour"
+                :columns="cardColumns"
+                :dataSource="newCoach"
+                :pagination="false"
+                :scroll="{ y: 230 }"
+                :rowSelection="
+                  newCoach.length > 1
+                    ? {
+                        onChange: onChange,
+                        selectedRowKeys: selectedRowKeys
+                      }
+                    : null
+                "
+                rowKey="id"
+              >
+                <template slot="group_price" slot-scope="customRender, record">
+                  <st-input-number v-model="record.group_price">
+                    <template slot="addonAfter">
+                      元
+                    </template>
+                  </st-input-number>
                 </template>
-              </st-input-number>
-            </st-form-item>
-            <st-form-item required>
-              <span slot="label">
-                拼团有效期
-                <st-help-tooltip id="TBPTXJ002" />
-              </span>
-              <st-input-number v-decorator="decorators.valid_time">
-                <template slot="addonAfter">
-                  小时
-                </template>
-              </st-input-number>
-            </st-form-item>
-            <st-form-item required>
-              <span slot="label">
-                活动库存
-                <st-help-tooltip id="TBPTXJ003" />
-              </span>
-              <a-checkbox @change="limitStock" :checked="isLimit">
-                限制库存&nbsp;&nbsp;
-              </a-checkbox>
-              <st-input-number
-                v-if="isLimit"
-                :class="basic('stock')"
-                v-decorator="decorators.stock_total"
-              ></st-input-number>
-            </st-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="8">
-          <a-col :span="16">
-            <st-form-item required>
-              <span slot="label">
-                选择门店
-                <st-help-tooltip id="TBPTXJ004" />
-              </span>
-              <select-shop
-                :class="basic('table')"
-                :groupParams="groupParams"
-                @change="onSelectShop"
-                :shopIds="shopIds"
-              ></select-shop>
-            </st-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="8">
-          <a-col :span="10">
-            <st-form-item required>
-              <span slot="label">
-                发布状态
-                <st-help-tooltip id="TBPTXJ005" />
-              </span>
-              <a-radio-group
-                :defaultValue="releaseStatus || RELEASE_SRTATUS.PROMPTLY"
-                v-model="releaseStatus"
-                :disabled="isEdit && activityState > RELEASE_SRTATUS.PUBLISHER"
-              >
-                <a-radio :value="RELEASE_SRTATUS.PROMPTLY">立即发布</a-radio>
-                <a-radio :value="RELEASE_SRTATUS.TEMPORARILY">暂不发布</a-radio>
-                <a-radio :value="RELEASE_SRTATUS.TIMING">定时发布</a-radio>
-              </a-radio-group>
-            </st-form-item>
-            <st-form-item
-              label="发布时间"
-              required
-              :help="errText"
-              :validateStatus="showHelp ? 'error' : ''"
-              v-if="releaseStatus === RELEASE_SRTATUS.TIMING"
-            >
-              <a-date-picker
-                :disabledDate="disabledDate"
-                :showTime="{ format: 'HH:mm' }"
-                format="YYYY-MM-DD HH:mm"
-                v-model="publishTime"
-              />
-            </st-form-item>
-          </a-col>
-        </a-row>
-      </st-form>
-    </div>
-  </st-mina-panel>
+              </st-table>
+            </div>
+          </st-form-item>
+        </a-col>
+      </a-row>
+    </template>
+  </group-form>
 </template>
 <script>
 import {
   ACTIVITY_STATUS,
   RELEASE_SRTATUS
 } from '@/constants/marketing/group-buy'
+import GroupForm from './components#/group-form'
 import { ruleOptions, cardColumns } from './add-personal.config'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import { AddPersonalService } from './add-personal.service'
@@ -318,7 +198,6 @@ export default {
     }
   },
   methods: {
-    // 疑问
     chooseMember(value) {
       this.form.setFieldsValue({
         cardId: value
@@ -475,7 +354,7 @@ export default {
     }
   },
   components: {
-    SelectShop
+    GroupForm
   }
 }
 </script>

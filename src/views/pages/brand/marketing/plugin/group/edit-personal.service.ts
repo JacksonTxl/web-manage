@@ -6,7 +6,7 @@ import { tap } from 'rxjs/operators'
 import { anyAll } from '@/operators'
 
 @Injectable()
-export class EditCoachsService {
+export class EditPersonalService implements Controller {
   info$ = new State({})
   coachList$ = new State({})
   constructor(private groupBuyApi: GroupBuyApi) {}
@@ -15,7 +15,7 @@ export class EditCoachsService {
       tap((res: any) => {
         console.log(res)
         this.coachList$.commit(() => res.list)
-      })``
+      })
     )
   }
   @Effect()
