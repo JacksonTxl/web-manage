@@ -19,7 +19,7 @@
           />
         </div>
         <div class="title__right schedule-button">
-          <st-button class="mg-r8" type="primary">
+          <st-button v-if="auth.addBatch" class="mg-r8" type="primary">
             <a
               v-modal-link="{
                 name: 'schedule-personal-inbatch-add',
@@ -121,6 +121,7 @@ export default {
   },
   rxState() {
     return {
+      auth: this.tableService.auth$,
       scheduleTime: this.tableService.scheduleTime$,
       scheduleColumns: this.tableService.scheduleColumns$,
       scheduleList: this.tableService.scheduleList$,

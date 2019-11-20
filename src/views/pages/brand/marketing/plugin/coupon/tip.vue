@@ -27,8 +27,11 @@
 </template>
 
 <script>
+/**
+ * TODO: 这个组件没有使用到，张飞说和产品商量过了
+ */
 import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
-import BrandMarketingPoster from '@/views/biz-modals/brand/marketing/poster'
+import BrandMarketingPoster from '@/views/biz-modals/brand/marketing/share-poster'
 export default {
   name: 'PageBrandMarketingPluginCouponTip',
   bem: {

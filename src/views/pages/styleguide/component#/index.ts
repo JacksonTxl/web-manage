@@ -10,6 +10,5 @@ ComponentsDemoKeys.forEach(keyPath => {
   const parsed = parse(keyPath)
   demoComponents['demo-st-' + parsed.name] = component
 })
-debugger
 console.log('demoComponents', demoComponents)
 export default demoComponents

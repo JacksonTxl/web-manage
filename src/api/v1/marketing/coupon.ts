@@ -98,7 +98,9 @@ export class CouponApi extends Api {
    * 根据会员手机号或名称搜索会员信息
    */
   getTransactionMemeberList(query: any) {
-    return this.http.get(`/v1/order/transaction/sale/range/member`, { query })
+    return this.http.get(`/v1/order/transaction/sale/range/member`, {
+      query
+    })
   }
   /**
    * 获取商品应付金额
@@ -120,5 +122,17 @@ export class CouponApi extends Api {
     return this.http.get(`/v1/order/transaction/sale/range/member`, {
       query: { member, type }
     })
+  }
+  /**
+   * 获取优惠券海报信息
+   */
+  getPosterInfo(id: number) {
+    return this.http.get(`/v1/plugin/coupon/poster/${id}`)
+  }
+  /**
+   * 获取优惠券小程序码
+   */
+  getQrcode() {
+    return this.http.get(`/v1/plugin/coupon/qrcode`)
   }
 }

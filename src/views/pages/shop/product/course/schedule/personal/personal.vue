@@ -10,7 +10,12 @@
       fixed
     >
       <div slot="toolbar-left">
-        <st-button type="primary" class="mg-r24" @click="onClickSettingSchdule">
+        <st-button
+          type="primary"
+          v-if="auth.get"
+          class="mg-r24"
+          @click="onClickSettingSchdule"
+        >
           管理私教排期
         </st-button>
       </div>
@@ -25,16 +30,19 @@ import { PersonalScheduleReserveService } from './service#/reserve.service'
 import SchedulePersonalAddReserve from '@/views/biz-modals/schedule/personal/add-reserve'
 import SchedulePersonalReserveInfo from '@/views/biz-modals/schedule/personal/reserve-info'
 import { cloneDeep } from 'lodash-es'
+import { PersonalService } from './personal.service'
 export default {
   name: 'TeamSchedule',
   serviceInject() {
     return {
-      personalScheduleReserveService: PersonalScheduleReserveService
+      personalScheduleReserveService: PersonalScheduleReserveService,
+      service: PersonalService
     }
   },
   rxState() {
     return {
-      cardList: this.personalScheduleReserveService.reserveTable$
+      cardList: this.personalScheduleReserveService.reserveTable$,
+      auth: this.service.auth$
     }
   },
   modals: {
@@ -63,7 +71,6 @@ export default {
     },
     // 查看详情
     onDetail(info) {
-      console.log(info)
       this.$modalRouter.push({
         name: 'schedule-personal-reserve-info',
         props: {

@@ -9,10 +9,14 @@
           v-modal-link="{ name: 'schedule-team-add-course-batch' }"
           class="mg-r12"
           type="primary"
+          v-if="auth.addBatch"
         >
           批量排期
         </st-button>
-        <st-button v-modal-link="{ name: 'schedule-team-copy-schedule' }">
+        <st-button
+          v-if="auth.copy"
+          v-modal-link="{ name: 'schedule-team-copy-schedule' }"
+        >
           复制排期
         </st-button>
       </div>
@@ -116,6 +120,7 @@ import ScheduleTeamAddCourse from '@/views/biz-modals/schedule/team/add-course'
 import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
 import date from '@/views/biz-components/schedule/date#/date-component.vue'
 import ScheduleTeamReserveInfo from '@/views/biz-modals/schedule/team/reserve-info'
+import { TeamTableService } from './team-table.service'
 export default {
   name: 'ScheduleTeamTable',
   modals: {
@@ -126,11 +131,13 @@ export default {
   },
   serviceInject() {
     return {
-      teamScheduleScheduleService: TeamScheduleScheduleService
+      teamScheduleScheduleService: TeamScheduleScheduleService,
+      service: TeamTableService
     }
   },
   rxState() {
     return {
+      auth: this.service.auth$,
       scheduleTable: this.teamScheduleScheduleService.scheduleTable$
     }
   },

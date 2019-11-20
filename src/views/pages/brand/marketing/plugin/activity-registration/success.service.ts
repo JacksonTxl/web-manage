@@ -5,7 +5,7 @@ import { SignUpApi } from '@/api/v1/marketing/sign-up'
 import { UserService } from '@/services/user.service'
 
 @Injectable()
-export class SharePosterService {
+export class SuccessService {
   loading$ = new State({})
   info$ = new State({})
   qrcode$ = new State({})
@@ -23,7 +23,7 @@ export class SharePosterService {
   getQrCode(activity_id: number) {
     return this.api.getQrCode(activity_id).pipe(
       tap((res: any) => {
-        this.info$.commit(() => res.info)
+        this.qrcode$.commit(() => res.qrcode)
       })
     )
   }
