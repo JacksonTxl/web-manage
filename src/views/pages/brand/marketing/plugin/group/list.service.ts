@@ -10,18 +10,19 @@ export class ListService implements Controller {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
+  info$ = new State({})
   auth$ = this.authService.authMap$({
     // 记得设置鉴权
     add: 'brand:activity:group|add'
   })
   constructor(
     private marketingApi: MarketingApi,
-    private GroupBuyApi: GroupBuyApi,
+    private groupBuyApi: GroupBuyApi,
     private authService: AuthService
   ) {}
   @Effect()
   getList(params: GroupListParams) {
-    return this.GroupBuyApi.getList(params).pipe(
+    return this.groupBuyApi.getList(params).pipe(
       tap((res: any) => {
         console.log(res)
         res = this.authService.filter(res)
@@ -30,13 +31,18 @@ export class ListService implements Controller {
       })
     )
   }
-  @Effect()
   stopGroup(params: { id: number }) {
-    return this.GroupBuyApi.stopGroupList(params).pipe(tap((res: any) => {}))
+    return this.groupBuyApi.stopGroupList(params).pipe(tap((res: any) => {}))
   }
-  @Effect()
   releaseGroup(params: { id: number }) {
-    return this.GroupBuyApi.releaseGroupList(params).pipe(tap((res: any) => {}))
+    return this.groupBuyApi.releaseGroupList(params).pipe(tap((res: any) => {}))
+  }
+  getSharePosterInfo(params: { id: number }) {
+    return this.groupBuyApi.getPosterInfo(params).pipe(
+      tap((res: any) => {
+        this.info$.commit(() => res.info)
+      })
+    )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.getList(to.meta.query)
