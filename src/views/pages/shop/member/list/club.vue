@@ -168,13 +168,7 @@
       <!-- <st-button v-if="auth.export" :disabled='isSelectedDisabled' class="shop-member-list-button">批量导出</st-button> -->
     </div>
     <st-table
-      :columns="
-        crmRule.sales_is_protect
-          ? saleColumns
-          : crmRule.coach_is_protect
-          ? coachColumns
-          : columns
-      "
+      :columns="columns"
       :loading="loading.getListInfo"
       :scroll="{ x: 1400 }"
       :alertSelection="{ onReset: onSelectionReset }"
@@ -310,7 +304,7 @@ import { cloneDeep, filter } from 'lodash-es'
 import { UserService } from '@/services/user.service'
 import { ClubService } from './club.service'
 import tableMixin from '@/mixins/table.mixin'
-import { columns, coachColumns, saleColumns } from './club.config'
+import { columns } from './club.config'
 import ShopAddLable from '@/views/biz-modals/shop/add-lable'
 import ShopBindingEntityCard from '@/views/biz-modals/shop/binding-entity-card'
 import ShopDistributionCoach from '@/views/biz-modals/shop/distribution-coach'
@@ -338,15 +332,15 @@ export default {
     }
   },
   rxState() {
-    const user = this.userService
     return {
       loading: this.clubService.loading$,
-      shopMemberEnums: user.shopMemberEnums$,
-      reserveEnums: user.reserveEnums$,
-      memberEnums: user.memberEnums$,
       auth: this.clubService.auth$,
       list: this.clubService.list$,
-      page: this.clubService.page$
+      page: this.clubService.page$,
+      memberLevel: this.clubService.memberLevel$,
+      isFollow: this.clubService.isFollow$,
+      sourceList: this.clubService.sourceList$,
+      followStatus: this.clubService.followStatus$
     }
   },
   data() {
@@ -364,41 +358,7 @@ export default {
     }
   },
   computed: {
-    columns,
-    coachColumns,
-    saleColumns,
-    memberLevel() {
-      let list = [{ value: -1, label: '全部' }]
-      if (!this.shopMemberEnums.member_level) return list
-      Object.entries(this.shopMemberEnums.member_level.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    },
-    sourceList() {
-      let list = [{ value: -1, label: '全部' }]
-      if (!this.memberEnums.source_channel) return list
-      Object.entries(this.memberEnums.source_channel.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    },
-    followStatus() {
-      let list = [{ value: -1, label: '全部' }]
-      if (!this.memberEnums.follow_status) return list
-      Object.entries(this.memberEnums.source_channel.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    }
-    // computedColumn() {
-    //   let res = this.crmRule.sales_is_protect
-    //     ? this.saleColumns
-    //     : this.crmRule.coach_is_protect
-    //     ? this.coachColumns
-    //     : columns
-    //   return res
-    // }
+    columns
   },
   created() {
     this.getCoachList()

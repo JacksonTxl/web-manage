@@ -13,6 +13,15 @@ export class StudioService implements Controller {
   memberListInfo$: Computed<string>
   list$ = new State({})
   page$ = new State({})
+  memberLevel$ = this.userService.getOptions$('member.member_level', {
+    addAll: true
+  })
+  isFollow$ = this.userService.getOptions$('member.is_follow', {
+    addAll: true
+  })
+  sourceList$ = this.userService.getOptions$('member.source_channel', {
+    addAll: true
+  })
   auth$ = this.authService.authMap$({
     add: 'shop:member:member|add',
     import: 'shop:member:member|import',
