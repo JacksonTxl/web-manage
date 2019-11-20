@@ -30,7 +30,7 @@
         <div slot="more">
           <st-search-panel-item label="跟进员工：">
             <a-select
-              class="mg-t8 mg-r40 select"
+              class="mg-r40 select"
               v-model="$searchQuery.follow_salesman_id"
               placeholder="请选择销售"
             >
@@ -43,7 +43,7 @@
               </a-select-option>
             </a-select>
             <a-select
-              class="mg-t8 select"
+              class=" select"
               v-model="$searchQuery.follow_coach_id"
               placeholder="请选择教练"
             >
@@ -112,7 +112,7 @@
         加标签
       </st-button>
       <st-button
-        v-if="auth.sale"
+        v-if="auth.unbindSalesman"
         class="shop-member-list-button"
         :disabled="!selectedRows.length"
         @click="dropSalerSea(selectedRowKeys)"
@@ -120,7 +120,7 @@
         抛入销售公海
       </st-button>
       <st-button
-        v-if="auth.coach"
+        v-if="auth.unbindCoach"
         class="shop-member-list-button"
         :disabled="!selectedRows.length"
         @click="dropCoachSea(selectedRowKeys)"

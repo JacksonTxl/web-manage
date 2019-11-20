@@ -10,14 +10,7 @@
         <a-col :span="12">
           <st-t4 class="mg-t4">
             销售可跟进客户上限
-            <a-tooltip placement="top">
-              <template slot="title">
-                <span>
-                  可分配给该员工的潜在会员和流失会员上限数,正式会员后不受此限制
-                </span>
-              </template>
-              <span><st-icon color="#9bacb9" type="help" class="mg-l4" /></span>
-            </a-tooltip>
+            <st-help-tooltip id="TBCRM001" />
           </st-t4>
           <div class="st-des mg-t4">客户成为正式会员后不受此人数限制</div>
         </a-col>
@@ -48,14 +41,7 @@
         <a-col :span="12">
           <st-t4 class="mg-t4">
             教练可跟进客户上限
-            <a-tooltip placement="top">
-              <template slot="title">
-                <span>
-                  可分配给该员工的会员上限数,已购买课程的会员不受此限制
-                </span>
-              </template>
-              <span><st-icon color="#9bacb9" type="help" class="mg-l4" /></span>
-            </a-tooltip>
+            <st-help-tooltip id="TBCRM002" />
           </st-t4>
           <div class="st-des mg-t4">客户成为正式会员后不受此人数限制</div>
         </a-col>
@@ -101,14 +87,7 @@
       <div :class="bPage('custom')" v-if="crmRule.sales_is_protect">
         <st-t4 class="mg-t4 mg-b24">
           销售跟进客户保护天数
-          <a-tooltip placement="top">
-            <template slot="title">
-              <span>
-                客户保护天数,为员工分配客户后,该员工可跟进会员的天数,超过客保天数后,自动解除跟进人,不限制表示可以一直跟进下去
-              </span>
-            </template>
-            <span><st-icon color="#9bacb9" type="help" class="mg-l4" /></span>
-          </a-tooltip>
+          <st-help-tooltip id="TBCRM003" />
         </st-t4>
         <a-radio-group v-model="crmRule.sales_is_protect_limit">
           <a-radio :value="0" class="mg-r48">不限制</a-radio>
@@ -175,14 +154,7 @@
       <div :class="bPage('custom')" v-if="crmRule.coach_is_protect">
         <st-t4 class="mg-t4 mg-b24">
           教练跟进客户保护天数
-          <a-tooltip placement="top">
-            <template slot="title">
-              <span>
-                客户保护天数,为员工分配客户后,该员工可跟进会员的天数,超过客保天数后,自动解除跟进人,不限制表示可以一直跟进下去
-              </span>
-            </template>
-            <span><st-icon color="#9bacb9" type="help" class="mg-l4" /></span>
-          </a-tooltip>
+          <st-help-tooltip id="TBCRM004" />
         </st-t4>
         <a-radio-group v-model="crmRule.coach_is_protect_limit">
           <a-radio :value="0" class="mg-r48">不限制</a-radio>

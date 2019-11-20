@@ -20,8 +20,8 @@ export class ClubService implements Controller {
     bindCoach: 'shop:member:member|bind_coach',
     bindSalesman: 'shop:member:member|bind_salesman',
     export: 'shop:member:member|export',
-    sale: 'shop:member:member|batch_unbind_saleman',
-    coach: 'shop:member:member|batch_unbind_coach'
+    unbindSalesman: 'shop:member:member|batch_unbind_saleman',
+    unbindCoach: 'shop:member:member|batch_unbind_coach'
   })
   constructor(private memberApi: MemberApi, private authService: AuthService) {
     this.state$ = new State({
