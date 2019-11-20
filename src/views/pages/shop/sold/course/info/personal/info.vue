@@ -40,6 +40,11 @@
               click: onTransfer
             },
             {
+              if: auth['shop:sold:sold_personal_course|transfer'],
+              text: '转让',
+              click: onTransfer
+            },
+            {
               if: auth['brand_shop:order:order|refund'],
               text: '退款',
               click: onRefund
