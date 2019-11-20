@@ -17,7 +17,7 @@ export const ruleOptions = (vm: any) => {
         {
           validator: (fileds: any, value: any, values: any) => {
             if (!value || value.length > 15) {
-              return '请选择转让会员，查询条件长度15'
+              return '请选择会员，查询条件长度15'
             }
           }
         }
