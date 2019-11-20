@@ -805,7 +805,7 @@ export const routeMapConfig = {
   },
   'shop-product-course-schedule-personal'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教1v1预约'
-    routeConfig.meta.auth = 'shop:schedule:personal_course_schedule|list'
+    routeConfig.meta.auth = 'shop:reserve:personal_course_reserve|list'
   },
   'shop-product-course-schedule-personal-table'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教1v1预约'
