@@ -5,7 +5,6 @@
     :value="number"
     @change="numberChange"
     @blur="numberBlur"
-    @focus="numberFocus"
     :disabled="disabled"
     maxlength="12"
   >
@@ -112,35 +111,6 @@ export default {
           this.number += ''
           this.triggerChange()
           this.$emit('blur', `${this.number}`)
-      }
-    },
-    numberFocus(e) {
-      switch (e.target.value) {
-        case null:
-        case undefined:
-        case '':
-        case '.':
-          if (this.number) {
-            this.number = this.min > this.number ? this.min : this.number
-          } else {
-            this.number = this.min || ''
-          }
-          this.triggerChange()
-          this.$emit('focus', `${this.number}`)
-          break
-        default:
-          if (!this.float) {
-            this.number = parseInt(+e.target.value, 10)
-            this.number = this.min > this.number ? this.min : this.number
-            this.number = this.max < this.number ? this.max : this.number
-          } else {
-            this.number = parseInt(+e.target.value * 10, 10) / 10
-            this.number = this.min > this.number ? this.min : this.number
-            this.number = this.max < this.number ? this.max : this.number
-          }
-          this.number += ''
-          this.triggerChange()
-          this.$emit('focus', `${this.number}`)
       }
     },
     numberChange(e) {

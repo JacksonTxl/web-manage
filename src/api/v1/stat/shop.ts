@@ -66,22 +66,6 @@ export class StatApi {
   getSellStaffList(query: SellStaffListQuery) {
     return this.http.get('/v1/stat/sale/staff', { query })
   }
-  getFollowDateList(query: any) {
-    return this.http.get('/v1/stat/follow/dates', { query })
-  }
-  getFollowStaffList(query: any) {
-    return this.http.get('/v1/stat/follow/staff', { query })
-  }
-  getFollowShopTotal(query: any) {
-    return this.http.get('/v1/stat/follow/follow_total', { query })
-  }
-  getFollowHistory(query: any) {
-    console.log(query)
-    return this.http.get('/v1/member/follow/history', { query })
-  }
-  getFollowOperatoList() {
-    return this.http.get('/v1/member/record_staff')
-  }
 }
 
 export interface PersonalCourseQuery {

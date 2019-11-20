@@ -255,13 +255,6 @@
             name: 'shop-member-info-sales-interests',
             query: { id: $searchQuery.id }
           }
-        },
-        {
-          label: '跟进日志',
-          route: {
-            name: 'shop-member-info-follow-record',
-            query: { id: $route.query.id }
-          }
         }
       ]"
     >
