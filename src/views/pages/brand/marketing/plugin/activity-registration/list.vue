@@ -112,13 +112,14 @@ import MarkteingPluginTitle from '../../components#/marketing-title'
 import { columns } from './list.config'
 import { TYPE } from '@/constants/marketing/plugin'
 import MarketingSharePoster from '@/views/biz-modals/brand/marketing/share-poster'
-
+import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
 // modal
 export default {
   name: 'ActivityList',
   mixins: [tableMixin],
   modals: {
-    MarketingSharePoster
+    MarketingSharePoster,
+    BrandMarketingBind
   },
   bem: {
     bPage: 'page-plugin-activity-registration',
@@ -181,7 +182,14 @@ export default {
       })
     },
     onCLickGeneralize(record) {
-      this.service.getSharePosterInfo(record.id).subscribe(() => {
+      this.service.getSharePosterInfo(record.id).subscribe(res => {
+        if (!res.is_auth) {
+          this.show = false
+          this.$modalRouter.push({
+            name: 'brand-marketing-bind'
+          })
+          return
+        }
         const info = this.info$
         const activity_date = `${info.start_time} - ${info.end_time}`
         this.$modalRouter.push({

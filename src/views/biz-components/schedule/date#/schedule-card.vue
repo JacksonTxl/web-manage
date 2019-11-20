@@ -79,7 +79,7 @@ export default {
   },
   computed: {
     start() {
-      return this.$searchQuerystart_date
+      return this.$searchQuery.start_date
     }
   },
   filters: {

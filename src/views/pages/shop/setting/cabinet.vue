@@ -195,7 +195,7 @@ export default {
       const list = this.list
       const queryId = this.$searchQuery.id
       const id = (list[0] && list[0].id) || 0
-      this.$searchQueryHandler({ id })
+      this.queryHandler({ id })
     },
     addArea() {
       this.isShowAddAreaBtn = true
@@ -245,13 +245,13 @@ export default {
       })
     },
     onAreaChange(id) {
-      this.$searchQueryHandler({ id })
+      this.queryHandler({ id })
     },
     onAreaSortChange(e) {
       this.cabinetService.sort(this.list).subscribe()
     },
     onCabinetTabChange(key) {
-      this.$searchQueryHandler({ type: key })
+      this.queryHandler({ type: key })
       this.checked = []
       this.isOperationInBatch = false
     },
