@@ -52,7 +52,6 @@ export default {
   },
   created() {
     this.shsService.getShsImage(this.info, this.shsUrl).subscribe(res => {
-      debugger
       this.url = res
     })
   },
