@@ -14,6 +14,9 @@ export class ClubService implements Controller {
   memberListInfo$: Computed<string>
   list$ = new State({})
   page$ = new State({})
+  coachList$ = new State({})
+  saleList$ = new State({})
+  crmRule$ = new State({})
   memberLevel$ = this.userService.getOptions$('member.member_level', {
     addAll: true
   })
@@ -65,13 +68,25 @@ export class ClubService implements Controller {
     return this.memberApi.getMemberSourceRegisters()
   }
   getSaleList(query: any) {
-    return this.memberApi.getSaleList(query)
+    return this.memberApi.getSaleList(query).pipe(
+      tap(res => {
+        this.saleList$.commit(() => res.list)
+      })
+    )
   }
   getCoachList(query: any) {
-    return this.memberApi.getCoachList(query)
+    return this.memberApi.getCoachList(query).pipe(
+      tap(res => {
+        this.coachList$.commit(() => res.list)
+      })
+    )
   }
   getCrmRule() {
-    return this.memberApi.getCrmRule()
+    return this.memberApi.getCrmRule().pipe(
+      tap(res => {
+        this.crmRule$.commit(() => res)
+      })
+    )
   }
   dropCoachSea(params: any) {
     return this.memberApi.dropCoachSea(params)
@@ -84,5 +99,12 @@ export class ClubService implements Controller {
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.init(to.meta.query)
+  }
+  beforeRouteEnter(to: ServiceRoute) {
+    return forkJoin(
+      this.getCrmRule(),
+      this.getCoachList({}),
+      this.getSaleList({})
+    )
   }
 }

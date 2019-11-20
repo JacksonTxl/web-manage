@@ -337,6 +337,9 @@ export default {
       auth: this.clubService.auth$,
       list: this.clubService.list$,
       page: this.clubService.page$,
+      saleList: this.clubService.saleList$,
+      coachList: this.clubService.coachList$,
+      crmRule: this.clubService.crmRule$,
       memberLevel: this.clubService.memberLevel$,
       isFollow: this.clubService.isFollow$,
       sourceList: this.clubService.sourceList$,
@@ -351,20 +354,13 @@ export default {
       consumption: [],
       selectDataList: [],
       selectedRowKeys: [],
-      selectedRows: [],
-      coachList: [],
-      saleList: [],
-      crmRule: {}
+      selectedRows: []
     }
   },
   computed: {
     columns
   },
-  created() {
-    this.getCoachList()
-    this.getSaleList()
-    this.getCrmRule()
-  },
+  created() {},
   mounted() {
     this.sourceRegisters()
   },
@@ -538,21 +534,6 @@ export default {
     },
     $searchQueryFunc() {
       this.$router.push({ query: this.form })
-    },
-    getCoachList() {
-      return this.clubService.getCoachList().subscribe(res => {
-        this.coachList = res.list
-      })
-    },
-    getSaleList() {
-      return this.clubService.getSaleList().subscribe(res => {
-        this.saleList = res.list
-      })
-    },
-    getCrmRule() {
-      return this.clubService.getCrmRule().subscribe(res => {
-        this.crmRule = res
-      })
     }
   }
 }
