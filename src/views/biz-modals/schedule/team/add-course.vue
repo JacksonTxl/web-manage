@@ -3,6 +3,7 @@
     <st-form :form="form" labelAuto>
       <st-form-item label="时间" required>
         <a-date-picker
+          style="width: 100%"
           placeholder="请选择时间"
           :showTime="{ format: 'HH:mm' }"
           format="YYYY-MM-DD HH:mm"
