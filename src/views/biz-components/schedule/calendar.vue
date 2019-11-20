@@ -1,5 +1,5 @@
 <template>
-  <div :class="bSchedule()">
+  <div :class="[bSchedule(), { 'schedule-calendar--fixed': fixed }]">
     <div :class="bSchedule('toolbar')" class="pd-x24">
       <div :class="bToolbar('left')">
         <slot name="toolbar-left"></slot>
@@ -56,6 +56,7 @@
                 'first-unit': index === 0,
                 'unit-day': weeks.length === 1
               }"
+              :id="'timer-' + i"
               v-for="i in 24"
               :key="i"
             >
@@ -67,6 +68,7 @@
                       :date="item"
                       :time="i"
                       @change="onChangeGetDate"
+                      v-if="authAdd"
                       class="unit-add-day"
                     >
                       {{ addTitle }}
@@ -102,6 +104,7 @@
             </li>
             <schedule-unit
               :class="{ 'first-unit': index === 0 }"
+              :id="index === 0 ? 'timer-' + i : ''"
               v-for="i in 24"
               :key="i"
               :date="item"
@@ -112,6 +115,7 @@
                 <add-button
                   :date="item"
                   :time="i"
+                  v-if="authAdd"
                   @change="onChangeGetDate"
                   class="unit-add"
                 >
@@ -119,7 +123,7 @@
                 </add-button>
               </div>
               <add-button
-                v-else
+                v-else-if="authAdd"
                 :date="item"
                 :time="i"
                 @change="onChangeGetDate"
@@ -170,9 +174,21 @@ export default {
       type: String,
       default: '添加课程排期'
     },
+    authAdd: {
+      type: Boolean,
+      default: true
+    },
     startDate: {
       type: String,
       default: moment().format('YYYY-MM-DD')
+    },
+    fixed: {
+      type: Boolean,
+      default: false
+    },
+    rangeTime: {
+      type: Array,
+      default: () => [8, 24]
     },
     cardList: {
       type: Array,
@@ -181,8 +197,8 @@ export default {
   },
   computed: {
     isDay() {
-      const start = this.$route.query.start_date
-      const end = this.$route.query.end_date
+      const start = this.$searchQuery.start_date
+      const end = this.$searchQuery.end_date
       return start === end
     },
     currentTime() {
@@ -282,7 +298,13 @@ export default {
     getWeeks(val) {
       if (val !== 'week' && this.isDay) {
         this.weeks = []
-        this.weeks.push({ week: 0, date: this.$route.query.start_date })
+        this.weeks.push({ week: 0, date: this.$searchQuery.start_date })
+        this.$nextTick().then(() => {
+          // 减去232固定高度
+          window.scrollTo({
+            top: this.heightToTop(document.querySelector('#timer-9')) - 232
+          })
+        })
         return
       }
       if (val === 'week') {
@@ -299,16 +321,32 @@ export default {
     },
     onChangeGetDate(date) {
       this.$emit('add', date)
+    },
+    heightToTop(ele) {
+      //ele为指定跳转到该位置的DOM节点
+      let root = document.body
+      let height = 0
+      do {
+        height += ele.offsetTop
+        ele = ele.offsetParent
+      } while (ele !== root)
+      return height
     }
   },
   created() {
-    this.currentWeek = cloneDeep(this.$route.query)
+    this.currentWeek = cloneDeep(this.$searchQuery)
     this.start = this.startDate
     if (this.isDay) {
       this.getWeeks()
     } else {
       this.getWeeks('week')
     }
+    this.$nextTick().then(() => {
+      // 减去232固定高度
+      window.scrollTo({
+        top: this.heightToTop(document.querySelector('#timer-9')) - 232
+      })
+    })
   },
   components: {
     DateComponent,

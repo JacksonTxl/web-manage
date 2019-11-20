@@ -102,9 +102,9 @@ export default {
   created() {
     this.settingSmsPayService.getSmsPayDetail().subscribe(res => {
       this.info = res
-      this.query.sms_num = this.info.price_setting[0].num.value
-      this.query.pay_price = this.info.price_setting[0].pay_price.value
-      this.query.pay_channel = this.info.publish_channel[0].value
+      this.$searchQuery.sms_num = this.info.price_setting[0].num.value
+      this.$searchQuery.pay_price = this.info.price_setting[0].pay_price.value
+      this.$searchQuery.pay_channel = this.info.publish_channel[0].value
     })
   },
   methods: {
@@ -113,16 +113,16 @@ export default {
     },
     getCurPayInfo(para, index) {
       this.curCount = index
-      this.query.sms_num = para.num.value
-      this.query.pay_price = para.pay_price.value
+      this.$searchQuery.sms_num = para.num.value
+      this.$searchQuery.pay_price = para.pay_price.value
     },
     getCurPayWay(para, index) {
       this.curChannel = index
-      this.query.pay_channel = para.value
+      this.$searchQuery.pay_channel = para.value
     },
     postSmsPay(para) {
       return this.settingSmsPayService
-        .postSmsPay({ ...this.query })
+        .postSmsPay({ ...this.$searchQuery })
         .subscribe(res => {
           this.imgUrl = res.info.url
         })

@@ -38,7 +38,6 @@
 <script>
 import { PersonalScheduleCommonService as CommonService } from '@/views/pages/shop/product/course/schedule/personal/service#/common.service'
 import { difference, cloneDeep } from 'lodash-es'
-import { RouteService } from '@/services/route.service'
 import { PersonalScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/personal/service#/reserve.service'
 import { ruleOptions } from './add-reserve.config'
 export default {
@@ -46,14 +45,12 @@ export default {
   serviceInject() {
     return {
       commonService: CommonService,
-      reserveService: ReserveService,
-      routeService: RouteService
+      reserveService: ReserveService
     }
   },
   rxState() {
     const cs = this.commonService
     return {
-      query: this.routeService.query$,
       courseCoachOptions: cs.courseCoachOptions$ || [],
       consumeOptions: cs.consumeOptions$ || [],
       memberOptions: cs.memberOptions$ || [],
@@ -98,7 +95,7 @@ export default {
           .update({ id: this.info.id, coach_id: values.coach_id })
           .subscribe(res => {
             this.show = false
-            this.$router.push({ query: this.query })
+            this.$router.push({ query: this.$searchQuery })
           })
       })
     }

@@ -1,9 +1,17 @@
 <template>
   <div :class="basic()">
+    <div v-di-view="{ name: 'SHOP_SOLD_COURSE_LIST_SEARCH' }">
+      <st-input-search
+        v-model="$searchQuery.search"
+        @search="onKeywordsSearch('search', $event)"
+        placeholder="请输入私教课名、合同编号、会员姓名或手机号查找"
+        style="width:372px"
+      />
+    </div>
     <st-search-panel @search="onSearchNative" @reset="onSearhReset">
       <st-search-panel-item label="课程状态：">
         <st-search-radio
-          v-model="query.course_status"
+          v-model="$searchQuery.course_status"
           :options="courseStatus"
         />
       </st-search-panel-item>
@@ -120,7 +128,6 @@
 import moment from 'moment'
 import { cloneDeep, filter } from 'lodash-es'
 import { PersonalService } from './personal.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './personal.config'
 import SoldCourseCoach from '@/views/biz-modals/sold/course/coach'
@@ -147,7 +154,6 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       personalService: PersonalService
     }
   },
@@ -157,7 +163,6 @@ export default {
       list: this.personalService.list$,
       page: this.personalService.page$,
       courseStatus: this.personalService.courseStatus$,
-      query: this.routeService.query$,
       auth: this.personalService.auth$
     }
   },
@@ -205,22 +210,22 @@ export default {
   methods: {
     // 查询
     onSearchNative() {
-      this.query.start_time = this.selectTime.startTime.value
+      this.$searchQuery.start_time = this.selectTime.startTime.value
         ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00:00`
         : ''
-      this.query.end_time = this.selectTime.endTime.value
+      this.$searchQuery.end_time = this.selectTime.endTime.value
         ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59:59`
         : ''
       this.onSearch()
     },
     // 设置searchData
     setSearchData() {
-      this.course_status = this.query.course_status
-      this.selectTime.startTime.value = this.query.start_time
-        ? cloneDeep(moment(this.query.start_time))
+      this.course_status = this.$searchQuery.course_status
+      this.selectTime.startTime.value = this.$searchQuery.start_time
+        ? cloneDeep(moment(this.$searchQuery.start_time))
         : null
-      this.selectTime.endTime.value = this.query.end_time
-        ? cloneDeep(moment(this.query.end_time))
+      this.selectTime.endTime.value = this.$searchQuery.end_time
+        ? cloneDeep(moment(this.$searchQuery.end_time))
         : null
     },
     // moment

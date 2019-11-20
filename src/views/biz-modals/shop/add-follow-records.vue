@@ -107,7 +107,7 @@ export default {
     },
     getMemberFollowHistory(data) {
       let self = this
-      self.Service.getMemberFollowHistory(self.$route.query.id, data).subscribe(
+      self.Service.getMemberFollowHistory(self.$searchQuery.id, data).subscribe(
         state => {
           self.getData = state.info
           self.show = false

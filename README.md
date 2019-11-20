@@ -34,6 +34,9 @@ abc123
 - pre 预发布环境 https://saas.pre.styd.cn
 - prod 生产环境 https://pro.styd.cn
 
+## Checklist
+* [checklist](https://gitlab.styd.cn/fe/saas/web/wikis/checklist)
+
 ## 更新日志
 * [更新日志](https://gitlab.styd.cn/fe/saas/web/wikis/%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97)
 

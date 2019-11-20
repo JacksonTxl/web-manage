@@ -6,7 +6,6 @@ import { AppTokenGuard } from '@/guards/app-token.guard'
 import { AppInfoGuard } from '@/guards/app-info.gurad.'
 import { ProgressGuard } from '@/guards/progress.guard'
 import { AppTabRedirectGuard } from '@/guards/app-tab-redirect.guard'
-import { SyncQueryGuard } from '@/guards/sync-query.guard'
 import { UdeskGuard } from '@/guards/udesk.guard'
 import { AppTitleGuard } from '@/guards/app-title.guard'
 import { TrackGuard } from '@/guards/track.guard'
@@ -45,7 +44,7 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
       route.name.startsWith('styleguide') ||
       route.name.startsWith('welcome')
     ) {
-      route.guards = [ProgressGuard, AppTitleGuard, SyncQueryGuard]
+      route.guards = [ProgressGuard, AppTitleGuard]
     } else if (route.path.startsWith('/') && !route.redirect) {
       const appGuards: any[] = [
         ProgressGuard,
@@ -54,7 +53,6 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
         AppInfoGuard,
         AppTitleGuard,
         AppTabRedirectGuard,
-        SyncQueryGuard,
         UdeskGuard
       ]
       route.guards = appGuards

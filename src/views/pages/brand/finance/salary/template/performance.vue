@@ -88,7 +88,6 @@
 <script>
 import { PerformanceService } from './performance.service'
 import { MessageService } from '@/services/message.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import FinanceAddPerformanceTemplate from '@/views/biz-modals/finance/add-performance-template'
 import FinanceEditPerformanceTemplate from '@/views/biz-modals/finance/edit-performance-template'
@@ -99,13 +98,11 @@ export default {
   serviceInject() {
     return {
       basicService: PerformanceService,
-      messageService: MessageService,
-      routeService: RouteService
+      messageService: MessageService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       list: this.basicService.list$,
       auth: this.basicService.auth$,
       page: this.basicService.page$,

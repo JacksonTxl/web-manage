@@ -10,7 +10,8 @@ export class PersonalReserveTableService implements Controller {
   auth$ = this.authService.authMap$({
     add: 'shop:schedule:personal_course_schedule|add',
     addBatch: 'shop:schedule:personal_course_schedule|batch_add',
-    copy: 'shop:schedule:personal_course_schedule|copy'
+    copy: 'shop:schedule:personal_course_schedule|copy',
+    get: 'shop:schedule:personal_course_schedule|get'
   })
   constructor(
     private commonService: CommonService,

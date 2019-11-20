@@ -46,7 +46,6 @@
 </template>
 <script>
 import { OperationRecordService } from './operation-record.service'
-import { RouteService } from '@/services/route.service'
 import { columns } from './operation-record.config'
 import tableMixin from '@/mixins/table.mixin'
 export default {
@@ -54,7 +53,6 @@ export default {
   mixins: [tableMixin],
   serviceInject() {
     return {
-      routeService: RouteService,
       operationRecordService: OperationRecordService
     }
   },
@@ -62,8 +60,7 @@ export default {
     return {
       page: this.operationRecordService.page$,
       list: this.operationRecordService.list$,
-      loading: this.operationRecordService.loading$,
-      query: this.routeService.query$
+      loading: this.operationRecordService.loading$
     }
   },
   computed: {

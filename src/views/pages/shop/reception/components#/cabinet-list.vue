@@ -136,7 +136,6 @@ import ShopCabinetEditTemporary from '@/views/biz-modals/shop/cabinet/edit-tempo
 import ShopCabinetOpen from '@/views/biz-modals/shop/cabinet/open'
 import ShopCabinetEditStatus from '@/views/biz-modals/shop/cabinet/edit-status'
 import { CABINET, CABINET_BUSINESS_TYPE } from '@/constants/reception/cabinet'
-import { RouteService } from '@/services/route.service'
 export default {
   bem: {
     b: 'shop-reception-cabinet',
@@ -145,16 +144,14 @@ export default {
   },
   serviceInject() {
     return {
-      cabinetService: CabinetService,
-      routeService: RouteService
+      cabinetService: CabinetService
     }
   },
   rxState() {
     const cabinetService = this.cabinetService
     return {
       list: cabinetService.list$,
-      auth: cabinetService.auth$,
-      query: this.routeService.query$
+      auth: cabinetService.auth$
     }
   },
   modals: {
@@ -196,7 +193,7 @@ export default {
       return ret
     },
     isCabinetType() {
-      return this.query.type === 'long-term'
+      return this.$searchQuery.type === 'long-term'
     }
   },
   data() {

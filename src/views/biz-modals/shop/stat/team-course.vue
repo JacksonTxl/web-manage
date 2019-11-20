@@ -114,7 +114,7 @@ export default {
   computed: {
     columns,
     showTable() {
-      return this.$route.query.showTable || 'all'
+      return this.$searchQuery.showTable || 'all'
     },
     query() {
       return {

@@ -3,7 +3,7 @@
     <div slot="actions">
       <st-input-search
         placeholder="输入团体课名称"
-        v-model="query.course_name"
+        v-model="$searchQuery.course_name"
         @search="onKeywordsSearch('course_name', $event)"
       ></st-input-search>
     </div>
@@ -11,7 +11,6 @@
   </st-panel>
 </template>
 <script>
-import { RouteService } from '@/services/route.service'
 import { ListService } from './list.service'
 import tableMixin from '@/mixins/table.mixin'
 export default {
@@ -19,13 +18,11 @@ export default {
   mixins: [tableMixin],
   serviceInject() {
     return {
-      routeService: RouteService,
       listService: ListService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       authTabs: this.listService.authTabs$
     }
   }

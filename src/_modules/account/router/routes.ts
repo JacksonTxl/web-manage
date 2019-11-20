@@ -3,16 +3,10 @@ import { LoginService } from '@/_modules/account/views/pages/account/login.servi
 import Find from '@/_modules/account/views/pages/account/find.vue'
 import { FindService } from '@/_modules/account/views/pages/account/find.service'
 import { ProgressGuard } from '@/guards/progress.guard'
-import { SyncQueryGuard } from '@/guards/sync-query.guard'
 import { TitleGuard } from '@/guards/title.guard'
 import { TrackGuard } from '@/guards/track.guard'
 
-const accountGuards: any[] = [
-  ProgressGuard,
-  TrackGuard,
-  SyncQueryGuard,
-  TitleGuard
-]
+const accountGuards: any[] = [ProgressGuard, TrackGuard, TitleGuard]
 
 export default [
   {

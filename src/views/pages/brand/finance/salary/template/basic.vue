@@ -86,7 +86,6 @@
 <script>
 import { BasicService } from './basic.service'
 import { MessageService } from '@/services/message.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import FinanceAddTemplate from '@/views/biz-modals/finance/add-template'
 import FinanceBasicTemplateEdit from '@/views/biz-modals/finance/basic-template-edit'
@@ -102,14 +101,12 @@ export default {
   serviceInject() {
     return {
       basicService: BasicService,
-      messageService: MessageService,
-      routeService: RouteService
+      messageService: MessageService
     }
   },
   rxState() {
     return {
       // 路由query订阅
-      query: this.routeService.query$,
       list: this.basicService.list$,
       loading: this.basicService.loading$,
       page: this.basicService.page$,

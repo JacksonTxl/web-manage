@@ -5,6 +5,14 @@
       slot="title"
     >
       <div class="title__left">
+        <st-button
+          type="primary"
+          v-if="auth.get"
+          class="mg-r8"
+          @click="onClickSettingSchdule"
+        >
+          管理私教排期
+        </st-button>
         <st-button v-if="auth.add">
           <a
             v-modal-link="{
@@ -19,7 +27,7 @@
       <div class="title__center">
         <date
           @today="getList"
-          :start="query.start_date"
+          :start="$searchQuery.start_date"
           @pre="getList"
           @next="getList"
         />
@@ -86,9 +94,9 @@
 import tableMixin from '@/mixins/table.mixin'
 import { PersonalScheduleReserveService } from './service#/reserve.service'
 import { columns } from '../personal-reserve-table.config'
-import { RouteService } from '@/services/route.service'
 import date from '@/views/biz-components/schedule/date#/date-component.vue'
 import SchedulePersonalAddReserve from '@/views/biz-modals/schedule/personal/add-reserve'
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'PersonalReservetable',
   mixins: [tableMixin],
@@ -97,8 +105,7 @@ export default {
   },
   serviceInject() {
     return {
-      reserveService: PersonalScheduleReserveService,
-      routeService: RouteService
+      reserveService: PersonalScheduleReserveService
     }
   },
   rxState() {
@@ -106,8 +113,7 @@ export default {
       auth: this.reserveService.auth$,
       list: this.reserveService.list$,
       page: this.reserveService.page$,
-      loading: this.reserveService.loading$,
-      query: this.routeService.query$
+      loading: this.reserveService.loading$
     }
   },
   filters: {
@@ -135,7 +141,7 @@ export default {
     columns
   },
   mounted() {
-    this.currentTime = this.$route.query.start_date
+    this.currentTime = this.$searchQuery.start_date
   },
   methods: {
     handleSizeChange(evt, type) {
@@ -154,12 +160,32 @@ export default {
     onClickSkipSchedule() {
       this.$router.push({
         name: 'shop-product-course-schedule-personal',
-        query: this.query
+        query: this.$searchQuery
+      })
+    },
+    // 管理私教排期
+    onClickSettingSchdule() {
+      let requestParam = cloneDeep(this.$searchQuery)
+      if (this.$searchQuery.start_date === this.$searchQuery.end_date) {
+        let weekOfday = moment(
+          this.$searchQuery.start_date,
+          'YYYY-MM-DD'
+        ).format('E')
+        requestParam.start_date = moment(this.$searchQuery.start_date)
+          .subtract(weekOfday - 1, 'days')
+          .format('YYYY-MM-DD')
+        requestParam.end_date = moment(this.$searchQuery.start_date)
+          .add(7 - weekOfday, 'days')
+          .format('YYYY-MM-DD')
+      }
+      this.$router.push({
+        name: 'shop-product-course-personal-table',
+        query: requestParam
       })
     },
     getList(val = {}) {
       const query = {
-        ...this.query,
+        ...this.$searchQuery,
         start_date: val.start_date,
         end_date: val.end_date
       }

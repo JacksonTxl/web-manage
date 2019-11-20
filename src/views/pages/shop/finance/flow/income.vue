@@ -19,7 +19,7 @@
           :step="1"
           :precision="0"
           float
-          v-model="query.start_amount"
+          v-model="$searchQuery.start_amount"
         ></st-input-number>
         至
         <st-input-number
@@ -28,7 +28,7 @@
           :precision="0"
           float
           class="amount__input mg-l8"
-          v-model="query.end_amount"
+          v-model="$searchQuery.end_amount"
         ></st-input-number>
       </st-search-panel-item>
       <st-search-panel-item label="创建时间：">
@@ -85,7 +85,6 @@
   </div>
 </template>
 <script>
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { IncomeService } from './income.service'
 import { columns } from './income.config.ts'
@@ -103,14 +102,12 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       service: IncomeService
     }
   },
   rxState() {
     const { loading$, page$, list$, payType$ } = this.service
     return {
-      query: this.routeService.query$,
       loading$,
       page$,
       list$,
@@ -183,9 +180,11 @@ export default {
       const end_date = this.selectTime.endTime.value
         ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')}`
         : ''
-      this.query.pay_channel = this.checkedList
-      this.query.current_page = 1
-      this.$router.push({ query: { ...this.query, start_date, end_date } })
+      this.$searchQuery.pay_channel = this.checkedList
+      this.$searchQuery.current_page = 1
+      this.$router.push({
+        query: { ...this.$searchQuery, start_date, end_date }
+      })
     },
     onReset() {
       this.checkedList = []

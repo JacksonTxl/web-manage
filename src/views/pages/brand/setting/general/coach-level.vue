@@ -91,7 +91,6 @@
 </template>
 <script>
 import { CoachLevelService } from './coach-level.service'
-import { RouteService } from '@/services/route.service'
 import { MessageService } from '@/services/message.service'
 import CoachLevelEdit from '@/views/biz-modals/coach-level/edit.vue'
 import CoachLevelAdd from '@/views/biz-modals/coach-level/add.vue'
@@ -100,14 +99,12 @@ export default {
   serviceInject() {
     return {
       listService: CoachLevelService,
-      routeService: RouteService,
       messageService: MessageService
     }
   },
   rxState() {
     return {
       resData: this.listService.resData$,
-      query: this.routeService.query$,
       auth: this.listService.auth$
     }
   },

@@ -102,7 +102,6 @@
 </template>
 <script>
 import { BrandService } from './brand.service'
-import { RouteService } from '@/services/route.service'
 import { MessageService } from '@/services/message.service'
 import { UserService } from '@/services/user.service'
 import { PatternService } from '@/services/pattern.service'
@@ -113,7 +112,6 @@ export default {
   serviceInject() {
     return {
       brandService: BrandService,
-      routeService: RouteService,
       messageService: MessageService,
       userService: UserService,
       pattern: PatternService
@@ -124,7 +122,6 @@ export default {
     return {
       brandInfo: this.brandService.brandInfo$,
       systemInfo: this.brandService.systemInfo$,
-      query: this.routeService.query$,
       settingEnums: user.settingEnums$,
       loading: this.brandService.loading$
     }
@@ -136,7 +133,7 @@ export default {
   },
   computed: {
     isEdit() {
-      return this.query.type === 'edit'
+      return this.$searchQuery.type === 'edit'
     }
   },
   created() {

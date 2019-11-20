@@ -39,17 +39,17 @@ export const allColumns = (vm: any) => {
       dataIndex: 'personal_course_amount',
       align: 'right'
     },
-    {
-      dataIndex: 'team_course_num',
-      align: 'right',
-      slots: { title: 'teamTitle' },
-      scopedSlots: { customRender: 'team_course_num' }
-    },
-    {
-      title: '团课购买金额（元）',
-      dataIndex: 'team_course_amount',
-      align: 'right'
-    },
+    // {
+    //   dataIndex: 'team_course_num',
+    //   align: 'right',
+    //   slots: { title: 'teamTitle' },
+    //   scopedSlots: { customRender: 'team_course_num' }
+    // },
+    // {
+    //   title: '团课购买金额（元）',
+    //   dataIndex: 'team_course_amount',
+    //   align: 'right'
+    // },
     {
       title: '课程包购买节数',
       dataIndex: 'package_course_num',
@@ -132,17 +132,17 @@ export const staffColumns = (vm: any) => {
       dataIndex: 'personal_course_amount',
       align: 'right'
     },
-    {
-      dataIndex: 'team_course_num',
-      align: 'right',
-      slots: { title: 'teamTitle' },
-      scopedSlots: { customRender: 'team_course_num' }
-    },
-    {
-      title: '团课购买金额（元）',
-      dataIndex: 'team_course_amount',
-      align: 'right'
-    },
+    // {
+    //   dataIndex: 'team_course_num',
+    //   align: 'right',
+    //   slots: { title: 'teamTitle' },
+    //   scopedSlots: { customRender: 'team_course_num' }
+    // },
+    // {
+    //   title: '团课购买金额（元）',
+    //   dataIndex: 'team_course_amount',
+    //   align: 'right'
+    // },
     {
       title: '课程包购买节数',
       dataIndex: 'package_course_num',

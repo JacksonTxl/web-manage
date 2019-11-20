@@ -6,7 +6,7 @@
         :defaultValue="-1"
         placeholder="请选择订单状态"
         :options="orderStatus"
-        v-model="query.order_status"
+        v-model="$searchQuery.order_status"
         @change="onSingleSearch('order_status', $event)"
       ></a-select>
       <a-range-picker
@@ -55,15 +55,13 @@
 <script>
 import { soldColums } from './columns.config'
 import { SoldService } from './sold.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 
 export default {
   mixins: [tableMixin],
   serviceInject() {
     return {
-      soldService: SoldService,
-      routerService: RouteService
+      soldService: SoldService
     }
   },
   rxState() {
@@ -71,7 +69,6 @@ export default {
       soldInfo: this.soldService.soldInfo$,
       loading: this.soldService.loading$,
       page: this.soldService.page$,
-      query: this.routerService.query$,
       orderStatus: this.soldService.orderStatus$
     }
   },
@@ -82,7 +79,7 @@ export default {
   },
   computed: { soldColums },
   mounted() {
-    this.id = this.$route.meta.query.id
+    this.id = this.$searchQuery.id
   },
   methods: {
     range(start, end) {

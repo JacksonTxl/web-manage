@@ -1,7 +1,7 @@
 <template>
   <div :class="shelves()">
     <st-input-search
-      v-model="query.card_name"
+      v-model="$searchQuery.card_name"
       v-di-view="{ name: SHOP_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH }"
       @search="onKeywordsSearch('card_name', $event)"
       :placeholder="`请输入${$c('member_card')}名称查找`"
@@ -11,7 +11,7 @@
       <a-select
         :class="shelves('search__select')"
         class="mg-r8"
-        v-model="query.card_type"
+        v-model="$searchQuery.card_type"
         @change="onSingleSearch('card_type', $event)"
       >
         <a-select-option
@@ -24,7 +24,7 @@
       </a-select>
       <a-select
         :class="shelves('search__select')"
-        v-model="query.publish_channel"
+        v-model="$searchQuery.publish_channel"
         @change="onSingleSearch('publish_channel', $event)"
       >
         <a-select-option
@@ -110,7 +110,6 @@
 <script>
 import { MessageService } from '@/services/message.service'
 import { ShelvesService } from './shelves.service'
-import { RouteService } from '@/services/route.service'
 import { columns, CARD_TYPE } from './shelves.config.ts'
 import tableMixin from '@/mixins/table.mixin'
 import CardShopMemberShopTable from '@/views/biz-modals/card/shop-member/shop-table'
@@ -128,7 +127,6 @@ export default {
   serviceInject() {
     return {
       messageService: MessageService,
-      routeService: RouteService,
       shelvesService: ShelvesService
     }
   },
@@ -138,8 +136,7 @@ export default {
       publishChannel: this.shelvesService.publishChannel$,
       cardType: this.shelvesService.cardType$,
       list: this.shelvesService.list$,
-      page: this.shelvesService.page$,
-      query: this.routeService.query$
+      page: this.shelvesService.page$
     }
   },
   computed: {

@@ -52,7 +52,6 @@
 <script>
 import { courseColums } from './columns.config'
 import { CourseService } from './course.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import SchedulePersonalReserveInfo from '@/views/biz-modals/schedule/personal/reserve-info'
 import SchedulePersonalTeamReserveInfo from '@/views/biz-modals/schedule/personal-team/reserve-info'
@@ -66,8 +65,7 @@ export default {
   },
   serviceInject() {
     return {
-      service: CourseService,
-      routerService: RouteService
+      service: CourseService
     }
   },
   rxState() {
@@ -75,7 +73,6 @@ export default {
       courseInfo: this.service.courseInfo$,
       loading: this.service.loading$,
       page: this.service.page$,
-      query: this.routerService.query$,
       reserveStatus: this.service.reserveStatus$
     }
   },
@@ -86,7 +83,7 @@ export default {
   },
   computed: { courseColums },
   mounted() {
-    this.id = this.$route.meta.query.id
+    this.id = this.$searchQuery.id
   },
   methods: {
     goCourseDetai(e) {

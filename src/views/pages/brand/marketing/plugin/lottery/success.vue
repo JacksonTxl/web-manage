@@ -12,22 +12,16 @@
           更多曝光推广，获得更多客户与订单
         </div>
         <div :class="bPage('content-action')">
-          <span :class="bPage('content-action-item')">
+          <span
+            @click="pushSharePosterModal"
+            :class="bPage('content-action-item')"
+          >
             <img
               :class="bPage('content-action-img')"
               src="~@/assets/img/brand/marketing/lottery/poster.png"
               alt="success"
             />
-            <a
-              v-modal-link="{
-                name: 'brand-marketing-plugin-poster',
-                props: {
-                  type: 1,
-                  id: query.id
-                },
-                on: { done: onModalTest }
-              }"
-            >
+            <a>
               分享海报
             </a>
           </span>
@@ -41,22 +35,16 @@
               设置活动广告
             </router-link>
           </span>
-          <span :class="bPage('content-action-item')">
+          <span
+            @click="pushQrCodeModal()"
+            :class="bPage('content-action-item')"
+          >
             <img
               :class="bPage('content-action-img')"
               src="~@/assets/img/brand/marketing/lottery/mina.png"
               alt="success"
             />
-            <a
-              v-modal-link="{
-                name: 'brand-marketing-plugin-poster',
-                props: {
-                  type: 2,
-                  id: query.id
-                },
-                on: { done: onModalTest }
-              }"
-            >
+            <a>
               小程序码
             </a>
           </span>
@@ -78,8 +66,10 @@
   </div>
 </template>
 <script>
-import BrandMarketingPluginPoster from '@/views/biz-modals/brand/marketing/plugin/poster'
-import { RouteService } from '@/services/route.service'
+import MarketingPoster from '@/views/biz-modals/brand/marketing/share-poster'
+import MarketingQrCode from '@/views/biz-modals/brand/marketing/qr-code'
+import { SuccessService } from './success.service'
+import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
 
 export default {
   name: 'PluginLotteryAdd',
@@ -90,20 +80,57 @@ export default {
     bPage: 'page-brand-marketing-plugin-lottery-success'
   },
   modals: {
-    BrandMarketingPluginPoster
+    MarketingPoster,
+    MarketingQrCode,
+    BrandMarketingBind
   },
   serviceInject() {
     return {
-      routeService: RouteService
+      service: SuccessService
     }
   },
   rxState() {
-    return {
-      query: this.routeService.query$
+    const { info$, qrcode$ } = this.service
+    return { info$, qrcode$ }
+  },
+  computed: {
+    lotteryId() {
+      return this.$searchQuery.id
     }
   },
   methods: {
-    onModalTest() {}
+    pushSharePosterModal() {
+      this.service.getSharePosterInfo(this.lotteryId).subscribe(res => {
+        const info = this.info$
+        if (!res.is_auth) {
+          this.show = false
+          this.$modalRouter.push({
+            name: 'brand-marketing-bind'
+          })
+          return
+        }
+        this.$modalRouter.push({
+          name: 'marketing-poster',
+          props: {
+            info: {
+              qrcode_url: info.qrcode_url,
+              sub_name: info.sub_name
+            },
+            shsUrl: '/saas/lottery_poster'
+          }
+        })
+      })
+    },
+    pushQrCodeModal() {
+      this.service.getQrCode(this.lotteryId).subscribe(() => {
+        this.$modalRouter.push({
+          name: 'marketing-qr-code',
+          props: {
+            url: this.qrcode$
+          }
+        })
+      })
+    }
   }
 }
 </script>

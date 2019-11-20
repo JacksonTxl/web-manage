@@ -2,7 +2,10 @@
   <div :class="b()">
     <st-search-panel @search="onSearchNative" @reset="onSearhReset">
       <st-search-panel-item label="定金状态：">
-        <st-search-radio v-model="query.use_status" :options="useStatus" />
+        <st-search-radio
+          v-model="$searchQuery.use_status"
+          :options="useStatus"
+        />
       </st-search-panel-item>
       <st-search-panel-item label="查询日期：">
         <st-range-picker
@@ -81,7 +84,6 @@
 import moment from 'moment'
 import { cloneDeep, filter } from 'lodash-es'
 import { EarnestService } from './earnest.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './earnest.config'
 import ShopFinanceRefund from '@/views/biz-modals/shop/finance/refund'
@@ -102,7 +104,6 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       earnestService: EarnestService,
       ossService: OssService
     }
@@ -113,7 +114,6 @@ export default {
       list: this.earnestService.list$,
       page: this.earnestService.page$,
       useStatus: this.earnestService.useStatus$,
-      query: this.routeService.query$,
       auth: this.earnestService.auth$
     }
   },
@@ -164,21 +164,21 @@ export default {
   methods: {
     // 查询
     onSearchNative() {
-      this.query.start_date = this.selectTime.startTime.value
+      this.$searchQuery.start_date = this.selectTime.startTime.value
         ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00:00`
         : ''
-      this.query.end_date = this.selectTime.endTime.value
+      this.$searchQuery.end_date = this.selectTime.endTime.value
         ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59:59`
         : ''
       this.onSearch()
     },
     // 设置searchData
     setSearchData() {
-      this.selectTime.startTime.value = this.query.start_date
-        ? cloneDeep(moment(this.query.start_date))
+      this.selectTime.startTime.value = this.$searchQuery.start_date
+        ? cloneDeep(moment(this.$searchQuery.start_date))
         : null
-      this.selectTime.endTime.value = this.query.end_date
-        ? cloneDeep(moment(this.query.end_date))
+      this.selectTime.endTime.value = this.$searchQuery.end_date
+        ? cloneDeep(moment(this.$searchQuery.end_date))
         : null
     },
     // moment

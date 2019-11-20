@@ -67,7 +67,6 @@
 </template>
 <script>
 import { SkillfulService } from './skillful.service'
-import { RouteService } from '@/services/route.service'
 import { MessageService } from '@/services/message.service'
 import SkillfulAdd from '@/views/biz-modals/skillful/add'
 import SkillfulEdit from '@/views/biz-modals/skillful/edit'
@@ -79,14 +78,12 @@ export default {
   serviceInject() {
     return {
       listService: SkillfulService,
-      routeService: RouteService,
       messageService: MessageService
     }
   },
   rxState() {
     return {
       resData: this.listService.resData$,
-      query: this.routeService.query$,
       auth: this.listService.auth$
     }
   },

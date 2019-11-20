@@ -16,7 +16,7 @@
         <div style="text-align:right">
           <a-select
             placeholder="活动状态"
-            v-model="query.activity_status"
+            v-model="$searchQuery.activity_status"
             class="mg-r16"
             @change="onSingleSearch('activity_status', $event)"
             style="width:100px;display:inline-block;"
@@ -31,7 +31,7 @@
           </a-select>
           <st-input-search
             style="display:inline-block;"
-            v-model="query.keyword"
+            v-model="$searchQuery.keyword"
             @search="onKeywordsSearch('keyword', $event)"
             placeholder="请输入活动名称"
           ></st-input-search>
@@ -118,10 +118,10 @@ import { IndexService } from './index.service'
 import MarkteingPluginTitle from '../../components#/marketing-title'
 import { columns } from './index.config.ts'
 import tableMixin from '@/mixins/table.mixin'
-import { RouteService } from '@/services/route.service'
-import BrandMarketingPluginPoster from '@/views/biz-modals/brand/marketing/plugin/poster'
+import BrandMarketingPluginPoster from '@/views/biz-modals/brand/marketing/share-poster'
 import { ACTIVITY_STATUS } from '@/constants/marketing/lottery'
 import { TYPE } from '@/constants/marketing/plugin'
+import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
 export default {
   name: 'PluginLotteryIndex',
   mixins: [tableMixin],
@@ -136,8 +136,7 @@ export default {
   },
   serviceInject() {
     return {
-      indexService: IndexService,
-      routeService: RouteService
+      indexService: IndexService
     }
   },
   rxState() {
@@ -145,8 +144,8 @@ export default {
       list: this.indexService.list$,
       page: this.indexService.page$,
       loading: this.indexService.loading$,
-      status: this.indexService.status$,
-      query: this.routeService.query$
+      info: this.indexService.info$,
+      status: this.indexService.status$
     }
   },
   components: {
@@ -156,37 +155,33 @@ export default {
     columns
   },
   modals: {
-    BrandMarketingPluginPoster
+    BrandMarketingPluginPoster,
+    BrandMarketingBind
   },
   methods: {
     onGeneralize(record) {
       // let is_auth = record.is_auth
       // 绑定小程序
-      if (true) {
+      this.indexService.getPosterInfo(record.id).subscribe(res => {
+        if (!res.is_auth) {
+          this.show = false
+          this.$modalRouter.push({
+            name: 'brand-marketing-bind'
+          })
+          return
+        }
         // 分享海报
         this.$modalRouter.push({
           name: 'brand-marketing-plugin-poster',
           props: {
-            id: String(record.id),
-            type: 1
-          },
-          on: {
-            success: () => {
-              console.log('success')
-            }
+            info: {
+              qrcode_url: this.info.qrcode_url,
+              sub_name: this.info.sub_name
+            },
+            shsUrl: '/saas/lottery_poster'
           }
         })
-      } else {
-        // 未绑定小程序
-        this.$modalRouter.push({
-          name: 'brand-marketing-bind',
-          on: {
-            success: () => {
-              console.log('success')
-            }
-          }
-        })
-      }
+      })
     },
     // 停止优惠券模板
     onStop(record) {

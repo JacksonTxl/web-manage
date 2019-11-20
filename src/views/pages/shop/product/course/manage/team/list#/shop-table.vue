@@ -43,7 +43,7 @@
           编辑
         </a>
 
-        <a href="javascript:;">
+        <a v-if="record.auth['brand_shop:product:team_course|del']">
           <st-popconfirm
             :title="'一旦删除则无法恢复，确认删除' + record.course_name + '？'"
             @confirm="onConfirmDeleteCourse(record)"
@@ -60,7 +60,6 @@
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './shop.config'
 import { ListService } from '../list.service'
-import { RouteService } from '../../../../../../../../services/route.service'
 export default {
   name: 'TeamTableShop',
   mixins: [tableMixin],
@@ -71,16 +70,14 @@ export default {
   },
   serviceInject() {
     return {
-      service: ListService,
-      routeService: RouteService
+      service: ListService
     }
   },
   rxState() {
     return {
       list: this.service.list$,
       page: this.service.page$,
-      loading: this.service.loading$,
-      query: this.routeService.query$
+      loading: this.service.loading$
     }
   },
   methods: {

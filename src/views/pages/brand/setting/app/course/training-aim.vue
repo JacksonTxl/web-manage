@@ -69,7 +69,6 @@
 </template>
 <script>
 import { TrainingAimService } from './training-aim.service'
-import { RouteService } from '@/services/route.service'
 import { MessageService } from '@/services/message.service'
 import TrainingAdd from '@/views/biz-modals/training/add'
 import TrainingEdit from '@/views/biz-modals/training/edit'
@@ -81,7 +80,6 @@ export default {
   serviceInject() {
     return {
       listService: TrainingAimService,
-      routeService: RouteService,
       messageService: MessageService
     }
   },
@@ -90,7 +88,6 @@ export default {
     return {
       resData: listService.resData$,
       loading: listService.loading$,
-      query: this.routeService.query$,
       auth: listService.auth$
     }
   },

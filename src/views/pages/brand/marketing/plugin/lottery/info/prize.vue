@@ -14,7 +14,6 @@
 import { PrizeService } from './prize.service'
 import { columns } from './prize.config.ts'
 import tableMixin from '@/mixins/table.mixin'
-import { RouteService } from '@/services/route.service'
 
 export default {
   name: 'PluginLotteryInfoPrize',
@@ -24,13 +23,11 @@ export default {
   },
   serviceInject() {
     return {
-      prizeService: PrizeService,
-      routeService: RouteService
+      prizeService: PrizeService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       list: this.prizeService.list$,
       page: this.prizeService.page$,
       loading: this.prizeService.loading$

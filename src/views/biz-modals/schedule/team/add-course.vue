@@ -3,6 +3,7 @@
     <st-form :form="form" labelAuto>
       <st-form-item label="时间" required>
         <a-date-picker
+          style="width: 100%"
           placeholder="请选择时间"
           :showTime="{ format: 'HH:mm' }"
           format="YYYY-MM-DD HH:mm"
@@ -76,7 +77,6 @@
 import { cloneDeep } from 'lodash-es'
 import { TeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/team/service#/schedule.service'
 import { TeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/team/service#/common.service'
-import { RouteService } from '@/services/route.service'
 import { TeamService } from '@/views/pages/shop/product/course/schedule/team/team.service'
 import ScheduleTeamAddCourseBatch from '@/views/biz-modals/schedule/team/add-course-batch'
 import { ruleOptions } from './add-course.config'
@@ -89,7 +89,6 @@ export default {
     return {
       teamScheduleCommomService: TeamScheduleCommonService,
       teamScheduleScheduleService: TeamScheduleScheduleService,
-      routeService: RouteService,
       teamService: TeamService
     }
   },
@@ -97,7 +96,6 @@ export default {
     const tss = this.teamScheduleCommomService
     return {
       loading: this.teamScheduleScheduleService.loading$,
-      query: this.routeService.query$,
       coachOptions: tss.coachOptions$,
       courseOptions: tss.courseOptions$,
       courtOptions: tss.courtOptions$
@@ -149,7 +147,7 @@ export default {
       })
     },
     onScheduleChange() {
-      this.$router.push({ query: this.query })
+      this.$router.push({ query: this.$searchQuery })
     }
   }
 }

@@ -2,14 +2,14 @@
   <div class="filter-staff">
     <shop-select
       class="filter-staff__item mg-r8"
-      v-model="query.shop_id"
+      v-model="$searchQuery.shop_id"
       @change="onSingleSearch('shop_id', $event)"
     ></shop-select>
     <a-select
       class="filter-staff__item mg-r8"
       allowClear
       placeholder="全部员工状态"
-      v-model="query.work_status"
+      v-model="$searchQuery.work_status"
       @change="onSingleSearch('work_status', $event)"
     >
       <a-select-option
@@ -24,14 +24,13 @@
       class="filter-staff__item"
       placeholder="搜索员工"
       round="round"
-      v-model="query.keyword"
+      v-model="$searchQuery.keyword"
       @search="onKeywordsSearch('keyword', $event)"
     ></st-input-search>
   </div>
 </template>
 <script>
-import { RouteService } from '../../../../../services/route.service'
-import { UserService } from '../../../../../services/user.service'
+import { UserService } from '@/services/user.service'
 import tableMixin from '@/mixins/table.mixin'
 import ShopSelect from '@/views/biz-components/shop-select'
 export default {
@@ -39,14 +38,12 @@ export default {
   mixins: [tableMixin],
   serviceInject() {
     return {
-      routeService: RouteService,
       userService: UserService
     }
   },
   rxState() {
     return {
-      staffEnums: this.userService.staffEnums$,
-      query: this.routeService.query$
+      staffEnums: this.userService.staffEnums$
     }
   },
   components: {
@@ -83,7 +80,7 @@ export default {
       this.searchData.shop_id = e
     },
     onChange() {
-      this.$router.push({ query: this.query })
+      this.$router.push({ query: this.$searchQuery })
     },
     reset(value) {
       console.log(`selected ${value}`)

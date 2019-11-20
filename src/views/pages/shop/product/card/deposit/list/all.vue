@@ -1,7 +1,7 @@
 <template>
   <div :class="all()">
     <st-input-search
-      v-model="query.card_name"
+      v-model="$searchQuery.card_name"
       v-di-view="{ name: SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH }"
       @search="onKeywordsSearch('card_name', $event)"
       :placeholder="`请输入${$c('member_card')}名称查找`"
@@ -16,7 +16,7 @@
         <a-select
           :class="all('search__select')"
           class="mg-r8"
-          v-model="query.publish_channel"
+          v-model="$searchQuery.publish_channel"
           @change="onSingleSearch('publish_channel', $event)"
         >
           <a-select-option
@@ -29,7 +29,7 @@
         </a-select>
         <a-select
           :class="all('search__select')"
-          v-model="query.sell_status"
+          v-model="$searchQuery.sell_status"
           @change="onSingleSearch('sell_status', $event)"
         >
           <a-select-option
@@ -180,7 +180,6 @@
 </template>
 <script>
 import { AllService } from './all.service'
-import { RouteService } from '@/services/route.service'
 import { columns } from './all.config.ts'
 import tableMixin from '@/mixins/table.mixin'
 import CardShopDepositRecoverSale from '@/views/biz-modals/card/shop-deposit/recover-sale'
@@ -205,7 +204,6 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       allService: AllService
     }
   },
@@ -216,7 +214,6 @@ export default {
       loading: this.allService.loading$,
       publishChannel: this.allService.publishChannel$,
       sellStatus: this.allService.sellStatus$,
-      query: this.routeService.query$,
       auth: this.allService.auth$
     }
   },
@@ -278,7 +275,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ query: this.query })
+            this.$router.push({ query: this.$searchQuery })
           }
         }
       })
@@ -293,7 +290,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ query: this.query })
+            this.$router.push({ query: this.$searchQuery })
           }
         }
       })

@@ -105,13 +105,12 @@
 <script>
 import { ListService } from './list.service'
 import { UserService } from '@/services/user.service'
-import { RouteService } from '@/services/route.service'
 import MarkteingPluginTitle from '../../components#/marketing-title'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
 import { TYPE } from '@/constants/marketing/plugin'
 import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
-import BrandMarketingPoster from '@/views/biz-modals/brand/marketing/poster'
+import BrandMarketingPoster from '@/views/biz-modals/brand/marketing/share-poster'
 
 export default {
   name: 'PageBrandMarketingPluginCouponList',
@@ -126,8 +125,7 @@ export default {
   serviceInject() {
     return {
       listService: ListService,
-      userService: UserService,
-      routeService: RouteService
+      userService: UserService
     }
   },
   rxState() {
@@ -135,7 +133,8 @@ export default {
       list: this.listService.list$,
       page: this.listService.page$,
       loading: this.listService.loading$,
-      query: this.routeService.query$,
+      info: this.listService.info$,
+      brand: this.listService.brand$,
       couponEnums: this.userService.couponEnums$,
       auth: this.listService.auth$
     }
@@ -172,7 +171,7 @@ export default {
   methods: {
     // 设置searchData
     setSearchData() {
-      let { coupon_name, coupon_status } = this.query
+      let { coupon_name, coupon_status } = this.$searchQuery
       this.couponName = coupon_name
       this.couponStatus = coupon_status || -1
     },
@@ -186,31 +185,29 @@ export default {
     onGeneralize(record) {
       let is_auth = record.is_auth
       // 绑定小程序
-      if (is_auth) {
+      if (!is_auth) {
+        // 未绑定小程序
+        this.$modalRouter.push({
+          name: 'brand-marketing-bind'
+        })
+        return
+      }
+      this.listService.getPosterInfo(record.id).subscribe(res => {
+        const info = {
+          qrcode_url: this.info.qrcode_url,
+          brand_logo: this.info.brand_logo,
+          brand_name: this.info.brand_name,
+          price: this.info.price
+        }
         // 分享海报
         this.$modalRouter.push({
           name: 'brand-marketing-poster',
           props: {
-            id: String(record.id),
-            type: 1
-          },
-          on: {
-            success: () => {
-              console.log('success')
-            }
+            info,
+            shsUrl: '/saas/poster'
           }
         })
-      } else {
-        // 未绑定小程序
-        this.$modalRouter.push({
-          name: 'brand-marketing-bind',
-          on: {
-            success: () => {
-              console.log('success')
-            }
-          }
-        })
-      }
+      })
     },
     // 停止优惠券模板
     onStop(record) {

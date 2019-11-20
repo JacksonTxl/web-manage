@@ -59,7 +59,7 @@ export default {
     }
   },
   created() {
-    let query = this.$route.query
+    let query = this.$searchQuery
     if (query.type) {
       this.msgType = query.type
     } else {

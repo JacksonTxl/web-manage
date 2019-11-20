@@ -6,20 +6,17 @@
 </template>
 
 <script>
-import { RouteService } from '@/services/route.service'
 import { ListService } from './list.service'
 import { SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH } from '@/constants/events'
 export default {
   name: 'PageShopProductDeposit',
   serviceInject() {
     return {
-      routeService: RouteService,
       listService: ListService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       authTabs: this.listService.authTabs$
     }
   },

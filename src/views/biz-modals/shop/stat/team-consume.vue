@@ -57,7 +57,10 @@
       <st-button
         type="primary"
         v-if="auth$.export"
-        v-export-excel="{ type: 'shop/team/course/checkin', query: query }"
+        v-export-excel="{
+          type: 'shop/team/course/checkin',
+          query: query
+        }"
       >
         全部导出
       </st-button>
@@ -114,11 +117,7 @@ export default {
   computed: {
     columns,
     showTable() {
-      return this.$route.query.showTable || 'all'
-    },
-    page() {
-      const { current_page, total_counts } = this.page$
-      return { current_page, total_counts }
+      return this.$searchQuery.showTable || 'all'
     },
     query() {
       return {

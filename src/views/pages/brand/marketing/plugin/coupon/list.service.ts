@@ -1,3 +1,4 @@
+import { UserService } from '@/services/user.service'
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { CouponApi, CouponListParams } from '@/api/v1/marketing/coupon'
@@ -10,13 +11,16 @@ export class ListService implements Controller {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
+  info$ = new State({})
   auth$ = this.authService.authMap$({
     add: 'brand:activity:coupon|add'
   })
+  brand$ = this.userService.brand$
   constructor(
     private marketingApi: MarketingApi,
     private couponApi: CouponApi,
-    private authService: AuthService
+    private authService: AuthService,
+    private userService: UserService
   ) {}
   @Effect()
   getList(params: CouponListParams) {
@@ -28,7 +32,13 @@ export class ListService implements Controller {
       })
     )
   }
-
+  getPosterInfo(id: number) {
+    return this.couponApi.getPosterInfo(id).pipe(
+      tap((res: any) => {
+        this.info$.commit(() => res.info)
+      })
+    )
+  }
   stopMarketingCoupon(id: number) {
     return this.marketingApi.stopMarketingCoupon(id).pipe(tap((res: any) => {}))
   }

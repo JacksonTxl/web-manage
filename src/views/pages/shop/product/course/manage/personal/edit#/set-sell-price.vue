@@ -82,7 +82,6 @@
 <script>
 import { AddService } from '../add.service'
 import { MessageService } from '@/services/message.service'
-import { RouteService } from '@/services/route.service'
 import { UserService } from '@/services/user.service'
 import { RuleConfig } from '@/constants/course/rule'
 import SetPrice from '@/views/fragments/course/set-price'
@@ -95,7 +94,6 @@ export default {
       addService: AddService,
       messageService: MessageService,
       userService: UserService,
-      routeService: RouteService,
       ruleConfig: RuleConfig,
       gradientService: GradientService
     }
@@ -104,8 +102,7 @@ export default {
     const user = this.userService
     return {
       loading: this.addService.loading$,
-      personalCourseEnums: user.personalCourseEnums$,
-      query: this.routeService.query$
+      personalCourseEnums: user.personalCourseEnums$
     }
   },
   props: {
@@ -210,7 +207,7 @@ export default {
     },
     getData() {
       const data = this.form.getFieldsValue()
-      data.course_id = +this.query.id
+      data.course_id = +this.$searchQuery.id
       data.price_gradient = this.priceGradient
       data.single_reserve = +this.singleReserve
       if (data.single_reserve) {

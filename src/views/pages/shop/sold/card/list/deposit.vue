@@ -2,7 +2,7 @@
   <div :class="basic()">
     <div v-di-view="{ name: 'SHOP_SOLD_CARD_LIST_ACTIONS' }">
       <st-input-search
-        v-model="query.search"
+        v-model="$searchQuery.search"
         @search="onKeywordsSearch('search', $event)"
         placeholder="请输入卡名、合同编号、会员姓名或手机号查找"
         style="width:360px"
@@ -11,7 +11,7 @@
 
     <st-search-panel @search="onSearchNative" @reset="onSearhReset">
       <st-search-panel-item label="储值卡状态：">
-        <st-search-radio v-model="query.is_valid" :options="isValids" />
+        <st-search-radio v-model="$searchQuery.is_valid" :options="isValids" />
       </st-search-panel-item>
       <st-search-panel-item label="购买时间：">
         <st-range-picker
@@ -88,7 +88,6 @@
 import moment from 'moment'
 import { cloneDeep, filter } from 'lodash-es'
 import { DepositService } from './deposit.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './deposit.config'
 import SoldCardRefund from '@/views/biz-modals/sold/card/refund'
@@ -105,7 +104,6 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       depositService: DepositService
     }
   },
@@ -115,7 +113,6 @@ export default {
       loading: this.depositService.loading$,
       page: this.depositService.page$,
       isValids: this.depositService.isValids$,
-      query: this.routeService.query$,
       auth: this.depositService.auth$
     }
   },
@@ -206,22 +203,22 @@ export default {
     },
     // 查询
     onSearchNative() {
-      this.query.start_time = this.selectTime.startTime.value
+      this.$searchQuery.start_time = this.selectTime.startTime.value
         ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00:00`
         : ''
-      this.query.end_time = this.selectTime.endTime.value
+      this.$searchQuery.end_time = this.selectTime.endTime.value
         ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59:59`
         : ''
       this.onSearch()
     },
     // 设置searchData
     setSearchData() {
-      this.is_valid = this.query.is_valid
-      this.selectTime.startTime.value = this.query.start_time
-        ? cloneDeep(moment(this.query.start_time))
+      this.is_valid = this.$searchQuery.is_valid
+      this.selectTime.startTime.value = this.$searchQuery.start_time
+        ? cloneDeep(moment(this.$searchQuery.start_time))
         : null
-      this.selectTime.endTime.value = this.query.end_time
-        ? cloneDeep(moment(this.query.end_time))
+      this.selectTime.endTime.value = this.$searchQuery.end_time
+        ? cloneDeep(moment(this.$searchQuery.end_time))
         : null
     },
     // moment

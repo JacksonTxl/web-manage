@@ -113,7 +113,7 @@ export default {
       pagination: this.tablePagination,
       locale: this.locale,
       dataSource: this.dataSource,
-      scroll: this.dataSource.length > 1 ? this.scroll : {},
+      scroll: this.dataSource.length >= 1 ? this.scroll : {},
       ...this.$attrs
     }
     const ce = this.alertSelection.onReset

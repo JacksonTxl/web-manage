@@ -106,7 +106,6 @@
 </template>
 <script>
 import { MessageService } from '@/services/message.service'
-import { RouteService } from '@/services/route.service'
 import { CabinetService } from './cabinet.service'
 import AddCabinetArea from './components#/add-area'
 import EditCabinetArea from './components#/edit-area'
@@ -130,7 +129,6 @@ export default {
   serviceInject() {
     return {
       messageService: MessageService,
-      routeService: RouteService,
       cabinetService: CabinetService,
       cabinetListService: CabinetListService,
       areaService: AreaService
@@ -139,7 +137,6 @@ export default {
   rxState() {
     return {
       list: this.areaService.list$,
-      query: this.routeService.query$,
       auth: this.cabinetService.auth$,
       loading: this.cabinetService.loading$,
       resData: this.cabinetListService.resData$
@@ -162,14 +159,14 @@ export default {
   },
   computed: {
     type() {
-      return this.query.type || 'temporary'
+      return this.$searchQuery.type || 'temporary'
     },
     defaultActiveKey() {
-      return +this.query.id || 0
+      return +this.$searchQuery.id || 0
     },
     currentArea() {
       const { list } = this
-      const id = this.query.id
+      const id = this.$searchQuery.id
       let currentArea = {}
       list.forEach(item => {
         if (item.id === +id) {
@@ -196,7 +193,7 @@ export default {
   methods: {
     initQueryId() {
       const list = this.list
-      const queryId = this.query.id
+      const queryId = this.$searchQuery.id
       const id = (list[0] && list[0].id) || 0
       this.queryHandler({ id })
     },
@@ -260,12 +257,12 @@ export default {
     },
     queryHandler(query) {
       this.$router.push({
-        query: Object.assign({ ...this.query }, query)
+        query: Object.assign({ ...this.$searchQuery }, query)
       })
     },
     onCabinetListChange() {
       this.$router.push({
-        query: this.query
+        query: this.$searchQuery
       })
       this.onAreaListChange()
     },
@@ -312,7 +309,7 @@ export default {
       this.isOperationInBatch = !this.isOperationInBatch
     },
     openBatchAdd() {
-      const { id } = this.query
+      const { id } = this.$searchQuery
       const { type, areaName } = this
       if (!+id) {
         this.messageService.error({
@@ -333,7 +330,7 @@ export default {
       })
     },
     validSelectedData() {
-      const type = this.query.type
+      const type = this.$searchQuery.type
       for (let i = 0; i < this.checked.length; i++) {
         const temp = this.listMap.get(this.checked[i])
         if (temp.is_smart) {

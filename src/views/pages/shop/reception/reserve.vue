@@ -3,7 +3,7 @@
     <div slot="title">
       <st-input-search
         placeholder="输入用户姓名、手机号"
-        v-model="query.keyword"
+        v-model="$searchQuery.keyword"
         @search="onKeywordsSearch('keyword', $event)"
       />
     </div>
@@ -12,7 +12,7 @@
         <st-search-panel-item label="预约类型：">
           <st-search-radio
             class="value"
-            v-model="query.reserve_type"
+            v-model="$searchQuery.reserve_type"
             :options="reserveType$"
           />
         </st-search-panel-item>
@@ -77,7 +77,6 @@
   </st-panel>
 </template>
 <script>
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { ReserveService } from './reserve.service'
 import FrontAddReserve from '@/views/biz-modals/front/add-reserve'
@@ -100,14 +99,12 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       service: ReserveService
     }
   },
   rxState() {
     const { loading$, page$, list$, reserveType$ } = this.service
     return {
-      query: this.routeService.query$,
       loading$,
       page$,
       list$,
@@ -196,8 +193,8 @@ export default {
       const end_time = this.selectTime.endTime.value
         ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59`
         : ''
-      this.query.start_time = start_time
-      this.query.end_time = end_time
+      this.$searchQuery.start_time = start_time
+      this.$searchQuery.end_time = end_time
       this.onSearch()
     },
     onReset() {

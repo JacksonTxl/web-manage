@@ -1,15 +1,12 @@
-import { CourseApi } from './../../../../../../../api/v1/setting/course'
 import { ShopApi } from '@/api/v1/shop'
 import { Controller, ServiceRoute, Injectable } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
+import { State, Effect } from 'rx-state'
 import { tap, map } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
-import {
-  ShopPersonalCourseApi,
-  GetPersonalCourseListInShopInput
-} from '@/api/v1/course/personal/shop'
+import { ShopPersonalCourseApi } from '@/api/v1/course/personal/shop'
 import { AuthService } from '@/services/auth.service'
 import { MessageService } from '@/services/message.service'
+import { CourseApi } from '@/api/v1/special/course'
 
 @Injectable()
 export class ListService implements Controller {

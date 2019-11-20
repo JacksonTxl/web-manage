@@ -1,10 +1,9 @@
-import { RouteService } from '@/services/route.service'
-import { Injectable } from 'vue-service-app'
+import { Injectable, ServiceRouter } from 'vue-service-app'
 import { tap } from 'rxjs/operators'
 import { State } from 'rx-state'
 import { CabinetApi } from '@/api/v1/setting/cabinet'
 import { AuthService } from '@/services/auth.service'
-import { CABINET, CABINET_BUSINESS_TYPE } from '@/constants/reception/cabinet'
+import { CABINET_BUSINESS_TYPE } from '@/constants/reception/cabinet'
 
 @Injectable()
 export class CabinetListService {
@@ -16,7 +15,7 @@ export class CabinetListService {
   constructor(
     private cabinetApi: CabinetApi,
     private authService: AuthService,
-    private routeService: RouteService
+    private router: ServiceRouter
   ) {}
   getList(type: string, id: number) {
     return this.cabinetApi.getList(id, type).pipe(
@@ -30,7 +29,7 @@ export class CabinetListService {
     )
   }
   cabinetUsingItem(item: any) {
-    const isCabinetType = this.routeService.query$.value.type === 'long-term'
+    const isCabinetType = this.router.to.meta.type === 'long-term'
     if (isCabinetType && item.sale_status === 1) {
       item.cabinet_business_type = 2
     }

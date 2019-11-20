@@ -1,7 +1,7 @@
 <template>
   <div>
     <st-panel app class="mg-b12">
-      <Header :id="query.id" />
+      <Header :id="$searchQuery.id" />
     </st-panel>
     <router-view></router-view>
   </div>
@@ -11,7 +11,6 @@ import { InfoService } from './info.service'
 import { columns } from './info/prize.config.ts'
 import tableMixin from '@/mixins/table.mixin'
 import Header from './info/components#/header'
-import { RouteService } from '@/services/route.service'
 
 export default {
   name: 'PluginLotteryInfoPrize',
@@ -21,13 +20,11 @@ export default {
   },
   serviceInject() {
     return {
-      infoService: InfoService,
-      routeService: RouteService
+      infoService: InfoService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       list: this.infoService.list$,
       page: this.infoService.page$,
       loading: this.infoService.loading$

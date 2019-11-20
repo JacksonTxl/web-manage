@@ -15,7 +15,7 @@
         <div>
           <a-select
             :defaultValue="-1"
-            v-model="query.category_id"
+            v-model="$searchQuery.category_id"
             class="mg-r16"
             style="width: 160px"
             :options="categoryList"
@@ -67,7 +67,7 @@
             >
               编辑
             </a>
-            <a href="javascript:;">
+            <a v-if="record.auth['brand_shop:product:team_course|del']">
               <st-popconfirm
                 :title="
                   '一旦删除则无法恢复，确认删除' + record.course_name + '？'
@@ -87,7 +87,6 @@
 </template>
 
 <script>
-import { RouteService } from '@/services/route.service'
 import { BrandService } from './brand.service'
 import { ListService } from '../list.service'
 import tableMixin from '@/mixins/table.mixin'
@@ -97,14 +96,12 @@ export default {
   mixins: [tableMixin],
   serviceInject() {
     return {
-      brandService: BrandService,
-      routeService: RouteService
+      brandService: BrandService
     }
   },
   rxState() {
     return {
       categoryList: this.brandService.categoryList$,
-      query: this.routeService.query$,
       auth: this.brandService.auth$,
       list: this.brandService.list$,
       page: this.brandService.page$,

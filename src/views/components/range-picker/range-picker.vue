@@ -1,22 +1,24 @@
 <template>
   <div class="st-range-datepicker">
     <a-date-picker
+      :disabled="model.startTime.disabled"
       :disabledDate="disabledStartDate"
-      :showTime="value.startTime.showTime"
-      :placeholder="value.startTime.placeholder"
-      :format="value.startTime.format"
-      v-model="value.startTime.value"
-      @change="value.startTime.change"
+      :showTime="model.startTime.showTime"
+      :placeholder="model.startTime.placeholder"
+      :format="model.startTime.format"
+      v-model="model.startTime.value"
+      @change="model.startTime.change"
       @openChange="handleStartOpenChange"
     />
     &nbsp;~&nbsp;
     <a-date-picker
+      :disabled="model.endTime.disabled"
       :disabledDate="disabledEndDate"
-      :showTime="value.endTime.showTime"
-      :placeholder="value.endTime.placeholder"
-      :format="value.endTime.format"
-      v-model="value.endTime.value"
-      @change="value.endTime.change"
+      :showTime="model.endTime.showTime"
+      :placeholder="model.endTime.placeholder"
+      :format="model.endTime.format"
+      v-model="model.endTime.value"
+      @change="model.endTime.change"
       :open="endOpen"
       @openChange="handleEndOpenChange"
     />
@@ -64,7 +66,22 @@ export default {
     return {
       startValue: null,
       endValue: null,
-      endOpen: false
+      endOpen: false,
+      model: {}
+    }
+  },
+  created() {
+    this.model = this.value
+    const oriStartChange = this.model.startTime.change.bind(null)
+    const oriEndChange = this.model.endTime.change.bind(null)
+
+    this.model.startTime.change = $event => {
+      this.$emit('change', [$event, this.model.endTime.value])
+      oriStartChange($event)
+    }
+    this.model.endTime.change = $event => {
+      this.$emit('change', [this.model.startTime.value, $event])
+      oriEndChange($event)
     }
   },
   mounted() {},

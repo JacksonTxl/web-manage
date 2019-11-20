@@ -33,7 +33,6 @@
   </div>
 </template>
 <script>
-import { RouteService } from '@/services/route.service'
 import { PayService } from './pay.service'
 import { columns } from './pay.config.ts'
 import tableMixin from '@/mixins/table.mixin'
@@ -49,13 +48,11 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       payService: PayService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       page: this.payService.page$,
       info: this.payService.info$,
       loading: this.payService.loading$

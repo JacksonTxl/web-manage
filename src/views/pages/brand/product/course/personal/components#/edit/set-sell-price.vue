@@ -93,7 +93,6 @@
 <script>
 import { AddService } from '../../add.service'
 import { MessageService } from '@/services/message.service'
-import { RouteService } from '@/services/route.service'
 import SetPrice from '@/views/fragments/course/set-price'
 import { GradientService } from '@/views/fragments/course/personal#/gradient.service'
 import { ruleOptions } from '../set-sell-price.config'
@@ -104,14 +103,12 @@ export default {
     return {
       addService: AddService,
       messageService: MessageService,
-      routeService: RouteService,
       gradientService: GradientService
     }
   },
   rxState() {
     return {
       loading: this.addService.loading$,
-      query: this.routeService.query$,
       sellType: this.addService.sellType$
     }
   },
@@ -227,7 +224,7 @@ export default {
     },
     getData() {
       const data = this.form.getFieldsValue()
-      data.course_id = +this.query.id
+      data.course_id = +this.$searchQuery.id
       data.price_gradient = this.priceGradient
       data.single_reserve = +this.singleReserve
       if (data.single_reserve) {

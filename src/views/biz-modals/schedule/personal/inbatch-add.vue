@@ -16,8 +16,17 @@
           :disabledDate="disabledDate"
         ></a-range-picker>
       </st-form-item>
-      <st-form-item labelWidth="88px" :label="`${$c('coach')}：`" required>
-        <a-select :placeholder="`请选择${$c('coach')}`" v-model="coachId">
+      <st-form-item
+        labelWidth="88px"
+        :label="`${$c('coach')}：`"
+        labelAuto
+        required
+      >
+        <a-select
+          :placeholder="`请选择${$c('coach')}`"
+          mode="multiple"
+          v-model="coachId"
+        >
           <a-select-option
             v-for="coach in coachOptions"
             :key="coach.id"
@@ -71,7 +80,6 @@ n
 <script>
 import { PersonalScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/personal/service#/schedule.service'
 import { PersonalScheduleCommonService } from '@/views/pages/shop/product/course/schedule/personal/service#/common.service'
-import { RouteService } from '@/services/route.service'
 import ScheduleTimePicker from '@/views/biz-components/schedule-time-picker/schedule-time-picker'
 export default {
   name: 'AddScheduleInBatch',
@@ -81,20 +89,18 @@ export default {
   serviceInject() {
     return {
       commonService: PersonalScheduleCommonService,
-      scheduleService: PersonalScheduleScheduleService,
-      routeService: RouteService
+      scheduleService: PersonalScheduleScheduleService
     }
   },
   rxState() {
     return {
-      coachOptions: this.commonService.coachInBatchOptions$,
-      query: this.routeService.query$
+      coachOptions: this.commonService.coachInBatchOptions$
     }
   },
   data() {
     return {
       show: false,
-      coachId: '',
+      coachId: undefined,
       start: '',
       end: '',
       schedule_info: [
@@ -159,7 +165,7 @@ export default {
         this.show = false
         this.$router.push({
           query: {
-            ...this.query
+            ...this.$searchQuery
           }
         })
       })

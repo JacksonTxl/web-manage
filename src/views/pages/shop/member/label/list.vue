@@ -12,7 +12,7 @@
     </div>
     <div slot="actions">
       <st-input-search
-        v-model="query.tag_name"
+        v-model="$searchQuery.tag_name"
         placeholder="请输入标签名"
         @search="onSearch"
       />
@@ -52,7 +52,6 @@
 <script>
 import { ListService } from './list.service'
 import { MessageService } from '@/services/message.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config.ts'
 import LabelAdd from '@/views/biz-modals/label/add'
@@ -67,14 +66,12 @@ export default {
   serviceInject() {
     return {
       listService: ListService,
-      messageService: MessageService,
-      routeService: RouteService
+      messageService: MessageService
     }
   },
   rxState() {
     return {
       auth: this.listService.auth$,
-      query: this.routeService.query$,
       list: this.listService.list$,
       page: this.listService.page$
     }

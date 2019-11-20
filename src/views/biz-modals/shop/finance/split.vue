@@ -46,7 +46,7 @@
               v-for="(saler, salerIndex) in saleList"
               @click="changeSaleMan(saler, index)"
               :key="salerIndex"
-              :value="saler.id"
+              :value="+saler.id"
             >
               {{ saler.staff_name }}
             </a-select-option>
@@ -126,6 +126,7 @@ import { SplitService } from './split.service'
 import { cloneDeep } from 'lodash-es'
 import { columns } from './split.config'
 import { SPLIT } from '@/constants/finance/split'
+import { MessageService } from '@/services/message.service'
 export default {
   name: 'ModalShopFinanceOrderSplit',
   bem: {
@@ -133,7 +134,8 @@ export default {
   },
   serviceInject() {
     return {
-      splitService: SplitService
+      splitService: SplitService,
+      messageService: MessageService
     }
   },
   rxState() {
@@ -162,7 +164,7 @@ export default {
       this.description = this.info.description || ''
       const item = {
         edit: this.SPLIT.EDIT_TYPE_3, // 1 主销售编辑 2 协助销售编辑 3协助销售新增
-        staff_id: '',
+        staff_id: undefined,
         staff_name: '',
         staff_type: this.SPLIT.STAFF_TYPE_2,
         staff_type_name: '协助销售',
@@ -185,33 +187,36 @@ export default {
       for (let i = 1; i < this.info.split_items.length; i++) {
         percent += parseInt(this.info.split_items[i].split_ratio || 0, 10)
         if (this.info.split_items[i].staff_id === record.staff_id) {
+          this.messageService.error({
+            content: '销售人员不能重复'
+          })
           return false
         }
       }
       percent += parseInt(record.split_ratio, 10)
       if (percent > 100) {
+        this.messageService.error({
+          content: '拆分比例总和不能超过100%'
+        })
         return false
       }
       return true
     },
     addSaleMan(record) {
-      if (
-        !record.staff_id ||
-        !record.split_ratio ||
-        !this.validSaleMan(record)
-      ) {
+      if (!record.staff_id || !record.split_ratio) {
         return
       }
-
+      if (!this.validSaleMan(record)) {
+        return
+      }
       delete record.edit
-      record.split_money = (
-        (+record.split_ratio / 100) *
-        +this.info.actual_price
-      ).toFixed(1)
+      let split_money = (+record.split_ratio / 100) * +this.info.actual_price
+      split_money = Math.floor(split_money * 10) / 10
+      record.split_money = split_money
       this.info.split_items.splice(0, 1, record)
       const newRecord = {
         edit: this.SPLIT.EDIT_TYPE_3,
-        staff_id: '',
+        staff_id: undefined,
         staff_name: '',
         staff_type: this.SPLIT.STAFF_TYPE_2,
         staff_type_name: '协助销售',
@@ -221,13 +226,25 @@ export default {
       this.info.split_items.unshift(newRecord)
     },
     onSave(record, index) {
+      let percent = 0
+      const arr = cloneDeep(this.info.split_items)
+      arr.shift()
+      arr.map(item => {
+        percent += parseInt(item.split_ratio || 0, 10)
+      })
+      // percent += parseInt(record.split_ratio, 10)
+      if (percent > 100) {
+        this.messageService.error({
+          content: '拆分比例总和不能超过100%'
+        })
+        return
+      }
       delete record.edit
-      record.split_money = (
-        (+record.split_ratio / 100) *
-        +this.info.actual_price
-      ).toFixed(1)
+      let split_money = (+record.split_ratio / 100) * +this.info.actual_price
+      split_money = Math.floor(split_money * 10) / 10
+      record.split_money = split_money
       this.info.split_items.splice(index, 1, record)
-      this.info.split_items[0].staff_id = ''
+      this.info.split_items[0].staff_id = undefined
       this.info.split_items[0].split_ratio = ''
     },
     onEidt(record, index) {

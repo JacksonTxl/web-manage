@@ -1,7 +1,7 @@
 <template>
   <div :class="all()">
     <st-input-search
-      v-model="query.card_name"
+      v-model="$searchQuery.card_name"
       v-di-view="{ name: SHOP_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH }"
       @search="onKeywordsSearch('card_name', $event)"
       :placeholder="`请输入${$c('member_card')}名称查找`"
@@ -17,7 +17,7 @@
         <a-select
           :class="all('search__select')"
           class="mg-r8"
-          v-model="query.card_type"
+          v-model="$searchQuery.card_type"
           @change="onSingleSearch('card_type', $event)"
         >
           <a-select-option
@@ -31,7 +31,7 @@
         <a-select
           :class="all('search__select')"
           class="mg-r8"
-          v-model="query.publish_channel"
+          v-model="$searchQuery.publish_channel"
           @change="onSingleSearch('publish_channel', $event)"
         >
           <a-select-option
@@ -45,7 +45,7 @@
         <a-select
           :class="all('search__select')"
           class="mg-r8"
-          v-model="query.shelf_status"
+          v-model="$searchQuery.shelf_status"
           @change="onSingleSearch('shelf_status', $event)"
         >
           <a-select-option
@@ -58,7 +58,7 @@
         </a-select>
         <a-select
           style="width: 160px"
-          v-model="query.sell_status"
+          v-model="$searchQuery.sell_status"
           @change="onSingleSearch('sell_status', $event)"
         >
           <a-select-option
@@ -219,7 +219,6 @@
 <script>
 import { columns, CARD_TYPE } from './all.config.ts'
 import { AllService } from './all.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import CardShopMemberRecoverSale from '@/views/biz-modals/card/shop-member/recover-sale'
 import CardShopMemberShelf from '@/views/biz-modals/card/shop-member/shelf'
@@ -246,7 +245,6 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       allService: AllService
     }
   },
@@ -259,7 +257,6 @@ export default {
       cardType: this.allService.cardType$,
       sellStatus: this.allService.sellStatus$,
       shelfStatus: this.allService.shelfStatus$,
-      query: this.routeService.query$,
       auth: this.allService.auth$
     }
   },
@@ -286,7 +283,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ query: this.query })
+            this.$router.push({ query: this.$searchQuery })
           }
         }
       })
@@ -311,7 +308,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ query: this.query })
+            this.$router.push({ query: this.$searchQuery })
           }
         }
       })
@@ -327,7 +324,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ query: this.query })
+            this.$router.push({ query: this.$searchQuery })
           }
         }
       })

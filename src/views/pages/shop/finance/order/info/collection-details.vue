@@ -24,7 +24,6 @@
 <script>
 import moment from 'moment'
 import { CollectionDetailsService } from './collection-details.service'
-import { RouteService } from '@/services/route.service'
 import ShopFinanceFlow from '@/views/biz-modals/shop/finance/flow'
 import { columns } from './collection-details.config'
 export default {
@@ -34,15 +33,13 @@ export default {
   },
   serviceInject() {
     return {
-      routeService: RouteService,
       collectionDetailsService: CollectionDetailsService
     }
   },
   rxState() {
     return {
       list: this.collectionDetailsService.list$,
-      loading: this.collectionDetailsService.loading$,
-      query: this.routeService.query$
+      loading: this.collectionDetailsService.loading$
     }
   },
   computed: {
@@ -57,7 +54,7 @@ export default {
         name: 'shop-finance-flow',
         props: {
           id: record.flow_id,
-          order_id: this.query.id
+          order_id: this.$searchQuery.id
         },
         on: {
           success: result => {

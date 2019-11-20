@@ -10,7 +10,7 @@ export class UdeskGuard implements RouteGuard {
   constructor(private udeskService: UdeskService) {}
   beforeRouteEnter(to: ServiceRoute) {
     if (!this.isCreate) {
-      this.udeskService.create().then(() => {
+      return this.udeskService.create().then(() => {
         this.isCreate = true
         this.udeskIsShow(to)
       })
@@ -19,10 +19,13 @@ export class UdeskGuard implements RouteGuard {
     }
   }
   udeskIsShow(to: ServiceRoute) {
-    if (
-      to.name === 'brand-dashboard-studio' ||
-      to.name === 'shop-dashboard-studio'
-    ) {
+    const arr = [
+      'brand-dashboard-studio',
+      'shop-dashboard-studio',
+      'brand-dashboard-club',
+      'shop-dashboard-club'
+    ]
+    if (arr.includes(to.name)) {
       this.udeskService.showUdesk()
     } else {
       this.udeskService.hiddenUdesk()

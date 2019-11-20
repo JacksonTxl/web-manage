@@ -1,20 +1,22 @@
 <template>
   <div :class="b()">
     <div :class="b('section')">
-      <a-row>
-        <a-col :span="4" :class="b('title')">
+      <header :class="bHeader('header')">
+        <st-t3 :class="bHeader('title')">
           订单概览
-        </a-col>
-        <a-col :span="20" :class="b('actions')">
-          <brand-shop
+        </st-t3>
+        <div :class="bHeader('actions')">
+          <shop-select
+            :defaultValue="-1"
+            class="mg-r12"
+            v-model="chartParam.shop_id"
             @change="onChangeChartShop"
-            style="flex: 1;margin-right: 12px;text-align: right;"
-          ></brand-shop>
+          />
           <st-recent-radio-group
             @change="onChangeChartDays"
           ></st-recent-radio-group>
-        </a-col>
-      </a-row>
+        </div>
+      </header>
       <a-row class="mg-t32">
         <brand-stat-order-facet-bar
           :data="chartData"
@@ -23,29 +25,35 @@
     </div>
     <st-hr />
     <div :class="b('section')">
-      <a-row class="mg-b16">
-        <a-col :span="4" :class="b('title')">
-          <!-- TODO: 本期不实现 -->
-          <!-- <st-button type="primary" class="shop-member-list-button" v-if="auth.export">
+      <!-- <a-row class="mg-b16">
+        <a-col :span="4" :class="b('title')"> -->
+      <!-- TODO: 本期不实现 -->
+      <!-- <st-button type="primary" class="shop-member-list-button" v-if="auth.export">
             批量导出
           </st-button> -->
-        </a-col>
-        <a-col :span="20" :class="b('actions')">
-          <brand-shop
-            style="flex: 1;margin-right: 12px;text-align: right;"
-            @change="onChangeDataShop"
-          ></brand-shop>
+      <!-- </a-col>
+        <a-col :span="20" :class="b('actions')"></a-col>
+      </a-row> -->
+      <header :class="bHeader('header')">
+        <st-t3 :class="bHeader('title')"></st-t3>
+        <div :class="bHeader('actions')">
+          <shop-select
+            v-model="$searchQuery.shop_id"
+            @change="onSingleSearch('shop_id', $event)"
+            class="mg-r12"
+          />
           <st-recent-radio-group
             @change="onChangeDataDays"
             :value="query"
           ></st-recent-radio-group>
-        </a-col>
-      </a-row>
+        </div>
+      </header>
       <st-table
         :loading="loading.getList"
         :columns="columns"
         :scroll="{ x: 1800 }"
         rowKey="member_id"
+        class="mg-t16"
         :page="page"
         @change="onTableChange"
         :dataSource="list"
@@ -58,9 +66,8 @@
 </template>
 
 <script>
-import BrandShop from './components#/brand-shop'
+import shopSelect from '@/views/biz-components/shop-select'
 import BrandStatOrderFacetBar from '@/views/biz-components/stat/brand-stat-order-facet-bar'
-import { RouteService } from '@/services/route.service'
 import { OrderService } from './order.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './order.config'
@@ -69,13 +76,11 @@ export default {
   mixins: [tableMixin],
   serviceInject() {
     return {
-      orderService: OrderService,
-      routeService: RouteService
+      orderService: OrderService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
       list: this.orderService.list$,
       page: this.orderService.page$,
       auth: this.orderService.auth$,
@@ -84,19 +89,20 @@ export default {
     }
   },
   bem: {
-    b: 'page-brand-stat-order'
+    b: 'page-brand-stat-order',
+    bHeader: 'page-brand-stat-header'
   },
   watch: {},
   data() {
     return {
       chartParam: {
-        shop: 0,
+        shop_id: -1,
         day: 7,
         start_date: undefined,
         end_date: undefined
       },
       dataParam: {
-        shop: 0,
+        shop_id: -1,
         day: 7
       }
     }
@@ -109,7 +115,7 @@ export default {
   },
   methods: {
     onChangeChartShop(event) {
-      this.chartParam.shop = event
+      this.chartParam.shop_id = event
       this.getChart()
     },
     onChangeChartDays(event) {
@@ -118,14 +124,10 @@ export default {
       this.chartParam.end_date = event.end_date || undefined
       this.getChart()
     },
-    onChangeDataShop(event) {
-      this.query.shop_id = event
-      this.onSearch()
-    },
     onChangeDataDays(event) {
-      this.query.day = event.recently_day || undefined
-      this.query.start_date = event.start_date || undefined
-      this.query.end_date = event.end_date || undefined
+      this.$searchQuery.day = event.recently_day || undefined
+      this.$searchQuery.start_date = event.start_date || undefined
+      this.$searchQuery.end_date = event.end_date || undefined
       this.onSearch()
     },
     getChart() {
@@ -133,7 +135,7 @@ export default {
     }
   },
   components: {
-    BrandShop,
+    shopSelect,
     BrandStatOrderFacetBar
   }
 }

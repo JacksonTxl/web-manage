@@ -72,7 +72,6 @@
 import index from './components#/index'
 import { IndexService } from './index.service'
 import { MessageService } from '@/services/message.service'
-import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './index.config'
 export default {
@@ -80,14 +79,12 @@ export default {
   serviceInject() {
     return {
       aService: IndexService,
-      messageService: MessageService,
-      routeService: RouteService
+      messageService: MessageService
     }
   },
   rxState() {
     return {
       crowdIndexInfo: this.aService.crowdIndexInfo$,
-      query: this.routeService.query$,
       auth: this.aService.auth$
     }
   },

@@ -525,7 +525,7 @@ export default {
     } else {
       this.options = JSON.parse(window.localStorage.getItem('regionTree'))
     }
-    this.editService.serviceInit(this.$route.query.id).subscribe(res => {
+    this.editService.serviceInit(this.$searchQuery.id).subscribe(res => {
       setTimeout(() => {
         this.setEditInfo(this.info)
         this.form.validateFields()
