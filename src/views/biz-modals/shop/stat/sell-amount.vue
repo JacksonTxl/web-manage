@@ -51,12 +51,11 @@
     </div>
     <st-table
       :scroll="{ y: 345 }"
-      :page="page"
       :columns="columns"
       :loading="loading.getSellAmountList"
-      @change="getAmountList"
       rowKey="id"
       :dataSource="amountList"
+      page-mode="client"
     >
       <span slot="sale_price" slot-scope="text">
         {{ text }}
@@ -112,14 +111,14 @@ export default {
         staff_id: -1,
         department_id: -1,
         current_page: 1,
-        size: 20
+        size: 999
       }
     }
   },
   computed: {
     columns,
     showTable() {
-      return this.$searchQueryshowTable || 'all'
+      return this.$searchQuery.showTable || 'all'
     },
     query() {
       return {
@@ -131,11 +130,11 @@ export default {
       }
     },
     staffListFilter() {
-      if (this.$searchQuery.department_id === -1) return this.modalStaffList
+      if (this.query.department_id === -1) return this.modalStaffList
       return [
         { id: -1, name: '所有销售' },
         ...this.modalStaffList.filter(item => {
-          return this.$searchQuery.department_id === item.department_id
+          return this.query.department_id === item.department_id
         })
       ]
     }

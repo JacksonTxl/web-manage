@@ -153,7 +153,7 @@ export default {
       const id = (list[0] && list[0].id) || 0
       this.$router.replace({
         query: {
-          ...this.query,
+          ...this.$searchQuery,
           id
         }
       })
@@ -173,7 +173,7 @@ export default {
     onAreaChange(id) {
       this.$router.push({
         query: {
-          ...this.query,
+          ...this.$searchQuery,
           id
         }
       })
@@ -184,7 +184,7 @@ export default {
     onCabinetTabChange(key) {
       this.$router.push({
         query: {
-          ...this.query,
+          ...this.$searchQuery,
           type: key
         }
       })
@@ -193,7 +193,7 @@ export default {
     },
     onCabinetListChange() {
       this.$router.push({
-        query: this.query
+        query: this.$searchQuery
       })
       this.onAreaListChange()
     },

@@ -247,6 +247,11 @@ export default {
         }
       })
     },
+    onPageChange(data) {
+      this.$router.push({
+        query: { ...this.$searchQuery, page: data.current, size: data.pageSize }
+      })
+    },
     // 修改剩余课时
     onSurplus(record) {
       let data = {

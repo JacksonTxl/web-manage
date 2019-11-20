@@ -153,7 +153,9 @@ export default {
         : ''
       this.$searchQuery.pay_channel = this.checkedList
       this.$searchQuery.current_page = 1
-      this.$router.push({ query: { ...this.query, start_date, end_date } })
+      this.$router.push({
+        query: { ...this.$searchQuery, start_date, end_date }
+      })
     },
     onReset() {
       this.checkedList = []

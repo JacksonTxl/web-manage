@@ -195,7 +195,7 @@ export default {
       const list = this.list
       const queryId = this.$searchQuery.id
       const id = (list[0] && list[0].id) || 0
-      this.queryHandler({ id })
+      this.$searchQueryHandler({ id })
     },
     addArea() {
       this.isShowAddAreaBtn = true
@@ -245,24 +245,24 @@ export default {
       })
     },
     onAreaChange(id) {
-      this.queryHandler({ id })
+      this.$searchQueryHandler({ id })
     },
     onAreaSortChange(e) {
       this.cabinetService.sort(this.list).subscribe()
     },
     onCabinetTabChange(key) {
-      this.queryHandler({ type: key })
+      this.$searchQueryHandler({ type: key })
       this.checked = []
       this.isOperationInBatch = false
     },
     queryHandler(query) {
       this.$router.push({
-        query: Object.assign({ ...this.query }, query)
+        query: Object.assign({ ...this.$searchQuery }, query)
       })
     },
     onCabinetListChange() {
       this.$router.push({
-        query: this.query
+        query: this.$searchQuery
       })
       this.onAreaListChange()
     },
@@ -309,7 +309,7 @@ export default {
       this.isOperationInBatch = !this.isOperationInBatch
     },
     openBatchAdd() {
-      const { id } = this.query
+      const { id } = this.$searchQuery
       const { type, areaName } = this
       if (!+id) {
         this.messageService.error({

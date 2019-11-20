@@ -1,5 +1,5 @@
 <template>
-  <div class="brand-stat-course-ring"></div>
+  <div style="style: 1000px" class="brand-stat-course-ring"></div>
 </template>
 
 <script>
@@ -179,7 +179,7 @@ export default {
           cursor: 'pointer'
         })
         .tooltip('name*percent', function(item, percent) {
-          percent = parseInt(percent * 100) + '%'
+          percent = (percent * 100).toFixed(1) + '%'
           return {
             name: item,
             value: percent

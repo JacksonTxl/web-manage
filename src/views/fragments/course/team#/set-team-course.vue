@@ -293,7 +293,7 @@ export default {
     },
     getData() {
       const data = this.form.getFieldsValue()
-      const { id } = this.query
+      const { id } = this.$searchQuery
       if (id) {
         data.course_id = +id
       }

@@ -137,7 +137,7 @@ export default {
     },
     getDepartment(item = 0) {
       this.$searchQuery.department_id = item
-      this.$router.push({ query: this.query })
+      this.$router.push({ query: this.$searchQuery })
     },
     selectedRow(ids) {
       this.ids = ids

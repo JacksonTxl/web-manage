@@ -4,10 +4,7 @@
       <span>点击刷新</span>
     </template>
     <div class="st-refresh-btn" @click="refresh">
-      最近更新时间：
-      <span class="st-refresh-btn__date">
-        {{ showDate }}
-      </span>
+      <span class="st-refresh-btn__date">最近更新时间：{{ showDate }}</span>
       <span
         class="st-refresh-btn__icon"
         :class="{ 'st-refresh-btn__icon--loading': !loading }"
@@ -19,34 +16,53 @@
 </template>
 
 <script>
+import { MessageService } from '../../../services/message.service'
 const TIME_FORMAT = 'YYYY-MM-DD HH:mm'
 export default {
   name: 'StRefreshBtn',
+  serviceInject() {
+    return {
+      msg: MessageService
+    }
+  },
   props: {
     date: {
       type: String
     },
     action: {
       type: Function
+    },
+    rangeTime: {
+      type: Number,
+      default: 0
     }
   },
   data() {
     return {
-      /**
-       * TODO: 问设计需不需要秒
-       */
       showDate: moment().format(TIME_FORMAT),
-      loading: true
+      loading: true,
+      times: 0,
+      intervalTimer: ''
     }
   },
   methods: {
     refresh() {
+      if (this.times > 0) {
+        this.msg.error({ content: `刷新过快，请稍后再试` })
+        return
+      }
+      clearInterval(this.intervalTimer)
+      this.times = this.rangeTime
+
       this.loading = false
       const timer = setTimeout(() => {
         this.action().subscribe(() => {
           this.loading = true
           this.showDate = moment().format(TIME_FORMAT)
           clearTimeout(timer)
+          this.intervalTimer = setInterval(() => {
+            this.times--
+          }, 1000)
         })
       }, 300)
     }

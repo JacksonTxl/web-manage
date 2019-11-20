@@ -19,7 +19,7 @@
           />
         </div>
         <div class="title__right schedule-button">
-          <st-button class="mg-r8" type="primary">
+          <st-button v-if="auth.addBatch" class="mg-r8" type="primary">
             <a
               v-modal-link="{
                 name: 'schedule-personal-inbatch-add',
@@ -121,6 +121,7 @@ export default {
   },
   rxState() {
     return {
+      auth: this.tableService.auth$,
       scheduleTime: this.tableService.scheduleTime$,
       scheduleColumns: this.tableService.scheduleColumns$,
       scheduleList: this.tableService.scheduleList$,
@@ -180,7 +181,7 @@ export default {
               return item.id
             })
           this.scheduleService.delInBatch(ids).subscribe(res => {
-            this.$router.push({ query: this.query })
+            this.$router.push({ query: this.$searchQuery })
           })
         },
         onCancel() {}
@@ -206,7 +207,7 @@ export default {
           })
           this.onSelectionReset()
           this.scheduleService.delInBatch(ids).subscribe(res => {
-            this.$router.push({ query: this.query })
+            this.$router.push({ query: this.$searchQuery })
           })
         },
         onCancel() {}
@@ -224,7 +225,7 @@ export default {
     },
     getList(val = {}) {
       const query = {
-        ...this.query,
+        ...this.$searchQuery,
         start_date: val.start_date,
         end_date: val.end_date
       }

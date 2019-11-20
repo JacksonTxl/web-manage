@@ -215,7 +215,7 @@ export default {
     // 入场记录分页
     entrancePageChange(e) {
       this.soldService
-        .getMemberEntrance(this.$searchQueryid, {
+        .getMemberEntrance(this.$searchQuery.id, {
           size: e.pageSize,
           page: e.current
         })
@@ -226,7 +226,7 @@ export default {
     form: {
       handler() {
         this.soldService
-          .getMemberReserve(this.$searchQueryid, this.form)
+          .getMemberReserve(this.$searchQuery.id, this.form)
           .subscribe()
       },
       deep: true

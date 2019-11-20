@@ -169,7 +169,7 @@ export default {
   methods: {
     // 设置searchData
     setSearchData() {
-      let { coupon_name, coupon_status } = this.query
+      let { coupon_name, coupon_status } = this.$searchQuery
       this.couponName = coupon_name
       this.couponStatus = coupon_status || -1
     },

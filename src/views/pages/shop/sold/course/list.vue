@@ -26,7 +26,7 @@ export default {
   methods: {
     onSearchCourseName(val) {
       this.$router.push({
-        query: { ...this.query, search: this.$searchQuery.search }
+        query: { ...this.$searchQuery, search: this.$searchQuery.search }
       })
     }
   }

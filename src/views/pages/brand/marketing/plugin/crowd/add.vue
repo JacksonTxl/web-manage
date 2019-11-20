@@ -276,8 +276,8 @@ export default {
     }
   },
   created() {
-    if (this.$searchQueryid) {
-      this.getCrowdBrand(this.$searchQueryid)
+    if (this.$searchQuery.id) {
+      this.getCrowdBrand(this.$searchQuery.id)
     }
     this.getFilterData()
   },
@@ -349,9 +349,9 @@ export default {
             })
             return
           }
-          if (this.$searchQueryid) {
+          if (this.$searchQuery.id) {
             this.addService
-              .getCrowdBrandCrowd(this.$searchQueryid, obj)
+              .getCrowdBrandCrowd(this.$searchQuery.id, obj)
               .subscribe(status => {
                 this.$router.push({
                   name: 'brand-marketing-plugin-crowd-index'

@@ -289,7 +289,6 @@ export default {
       this.$emit('change', this.addDataSource)
     },
     onClickRelease() {
-      debugger
       this.$emit('release', this.getStepForm())
     },
     onClickSaveDraft() {
