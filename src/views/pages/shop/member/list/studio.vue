@@ -240,15 +240,14 @@ export default {
     }
   },
   rxState() {
-    const user = this.userService
     return {
       loading: this.studioService.loading$,
-      shopMemberEnums: user.shopMemberEnums$,
-      reserveEnums: user.reserveEnums$,
-      memberEnums: user.memberEnums$,
       auth: this.studioService.auth$,
       list: this.studioService.list$,
-      page: this.studioService.page$
+      page: this.studioService.page$,
+      memberLevel: this.studioService.memberLevel$,
+      isFollow: this.studioService.isFollow$,
+      sourceList: this.studioService.sourceList$
     }
   },
   data() {
@@ -301,45 +300,7 @@ export default {
     }
   },
   computed: {
-    columns,
-    memberLevel() {
-      let list = [{ value: -1, label: '全部' }]
-      if (!this.shopMemberEnums.member_level) return list
-      Object.entries(this.shopMemberEnums.member_level.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    },
-    isFollow() {
-      let list = [{ value: -1, label: '全部' }]
-      if (!this.memberEnums.is_follow) return list
-      Object.entries(this.memberEnums.is_follow.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    },
-    defaultRegValue() {
-      if (!this.$searchQuery.register_start_time) return []
-      return [
-        moment(this.$searchQuery.register_start_time, this.dateFormat),
-        moment(this.$searchQuery.register_stop_time, this.dateFormat)
-      ]
-    },
-    defaultBeMemberValue() {
-      if (!this.$searchQuery.be_member_start_time) return null
-      return [
-        moment(this.$searchQuery.be_member_start_time, this.dateFormat),
-        moment(this.$searchQuery.be_member_stop_time, this.dateFormat)
-      ]
-    },
-    sourceList() {
-      let list = [{ value: -1, label: '全部' }]
-      if (!this.memberEnums.source_channel) return list
-      Object.entries(this.memberEnums.source_channel.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    }
+    columns
   },
   mounted() {
     this.sourceRegisters()
