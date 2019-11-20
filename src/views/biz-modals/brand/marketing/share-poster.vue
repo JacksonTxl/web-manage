@@ -2,7 +2,7 @@
   <st-modal :title="title" v-model="show" width="400px" :footer="null">
     <div :class="basic()">
       <p :class="basic('tip')">{{ message }}</p>
-      <st-image :url="url" :class="basic('poster')"></st-image>
+      <st-image :src="url" :class="basic('poster')"></st-image>
       <st-button
         block
         pill
@@ -52,6 +52,7 @@ export default {
   },
   created() {
     this.shsService.getShsImage(this.info, this.shsUrl).subscribe(res => {
+      debugger
       this.url = res
     })
   },
