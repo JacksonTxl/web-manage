@@ -244,7 +244,7 @@
     </div>
     <div>
       <st-button
-        :loading="isLoading"
+        :loading="loading.setCrmRule"
         class="btn"
         type="primary"
         @click="setCrmRule"
@@ -273,31 +273,18 @@ export default {
   rxState() {
     return {
       courseType: this.crmService.courseType$,
-      userUntied: this.crmService.userUntied$
+      userUntied: this.crmService.userUntied$,
+      crmRule: this.crmService.crmRule$,
+      loading: this.crmService.loading$
     }
   },
   modals: {
     BrandSettingCrmReset
   },
   data() {
-    return {
-      crmRule: {
-        sales_is_limit: 0,
-        coach_is_limit: 0,
-        coach_is_protect: 0,
-        sales_is_protect: 0,
-        coach_untie_condition: [],
-        sales_is_protect_limit: 0,
-        sales_follow_rule: 1,
-        coach_is_protect_limit: 0,
-        coach_follow_rule: 1
-      },
-      isLoading: false
-    }
+    return {}
   },
-  created() {
-    this.getCrmRule()
-  },
+  created() {},
   methods: {
     setFocus(key, value) {
       this.crmRule[key] = value
@@ -339,11 +326,6 @@ export default {
           }
         })
       }
-    },
-    getCrmRule() {
-      return this.crmService.getCrmRule().subscribe(res => {
-        this.crmRule = res
-      })
     },
     setCrmRule() {
       if (this.crmRule.sales_is_limit === 0) {
@@ -412,11 +394,9 @@ export default {
           return
         }
       }
-      this.isLoading = true
       return this.crmService.setCrmRule(this.crmRule).subscribe(res => {
-        this.isLoading = false
         this.messageService.success({ content: '编辑成功' })
-        this.getCrmRule()
+        this.$router.reload()
       })
     }
   }
