@@ -68,6 +68,7 @@
                       :date="item"
                       :time="i"
                       @change="onChangeGetDate"
+                      v-if="authAdd"
                       class="unit-add-day"
                     >
                       {{ addTitle }}
@@ -114,6 +115,7 @@
                 <add-button
                   :date="item"
                   :time="i"
+                  v-if="authAdd"
                   @change="onChangeGetDate"
                   class="unit-add"
                 >
@@ -121,7 +123,7 @@
                 </add-button>
               </div>
               <add-button
-                v-else
+                v-else-if="authAdd"
                 :date="item"
                 :time="i"
                 @change="onChangeGetDate"
@@ -171,6 +173,10 @@ export default {
     addTitle: {
       type: String,
       default: '添加课程排期'
+    },
+    authAdd: {
+      type: Boolean,
+      default: true
     },
     startDate: {
       type: String,
@@ -293,6 +299,12 @@ export default {
       if (val !== 'week' && this.isDay) {
         this.weeks = []
         this.weeks.push({ week: 0, date: this.$searchQuery.start_date })
+        this.$nextTick().then(() => {
+          // 减去232固定高度
+          window.scrollTo({
+            top: this.heightToTop(document.querySelector('#timer-9')) - 232
+          })
+        })
         return
       }
       if (val === 'week') {
@@ -309,6 +321,16 @@ export default {
     },
     onChangeGetDate(date) {
       this.$emit('add', date)
+    },
+    heightToTop(ele) {
+      //ele为指定跳转到该位置的DOM节点
+      let root = document.body
+      let height = 0
+      do {
+        height += ele.offsetTop
+        ele = ele.offsetParent
+      } while (ele !== root)
+      return height
     }
   },
   created() {
@@ -320,19 +342,9 @@ export default {
       this.getWeeks('week')
     }
     this.$nextTick().then(() => {
-      function heightToTop(ele) {
-        //ele为指定跳转到该位置的DOM节点
-        let root = document.body
-        let height = 0
-        do {
-          height += ele.offsetTop
-          ele = ele.offsetParent
-        } while (ele !== root)
-        return height
-      }
       // 减去232固定高度
       window.scrollTo({
-        top: heightToTop(document.querySelector('#timer-9')) - 232
+        top: this.heightToTop(document.querySelector('#timer-9')) - 232
       })
     })
   },

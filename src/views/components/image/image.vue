@@ -1,6 +1,12 @@
 <template>
-  <a-spin :spinning="loading">
-    <img :src="src" v-on="$listeners" v-bind="$attrs" />
+  <a-spin :class="b()" :spinning="loading">
+    <img
+      v-if="src"
+      :src="src"
+      :class="b('image')"
+      v-on="$listeners"
+      v-bind="$attrs"
+    />
   </a-spin>
 </template>
 

@@ -136,7 +136,7 @@ export default {
     columns
   },
   mounted() {
-    this.currentTime = this.$searchQuerystart_date
+    this.currentTime = this.$searchQuery.start_date
   },
   methods: {
     handleSizeChange(evt, type) {
