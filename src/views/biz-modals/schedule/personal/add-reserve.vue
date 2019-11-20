@@ -19,6 +19,14 @@
             :value="+member.member_id"
           >
             <div class="st-form-table__add-option">
+              <!-- <span
+                class="item-name"
+                v-html="keywordFilter(member.member_name)"
+              ></span>
+              <span
+                class="item-phone"
+                v-html="keywordFilter(member.mobile)"
+              ></span> -->
               <span class="item-name">{{ member.member_name }}</span>
               <span class="item-phone">{{ member.mobile }}</span>
             </div>
@@ -133,6 +141,7 @@ export default {
       decorators,
       member_id: '',
       show: false,
+      keyword: '',
       value: '',
       fetching: false,
       formKeyFlag: [
@@ -146,6 +155,15 @@ export default {
     }
   },
   methods: {
+    // TODO: 优化
+    // keywordFilter(str) {
+    //   if (!this.keyword) return str
+    //   str = str.replace(
+    //     new RegExp(this.keyword),
+    //     `<i class="color-primary">${this.keyword}</i>`
+    //   )
+    //   return str
+    // },
     // 获取消费方式 权重2
     onChangeConsume(val) {
       if (!val) return
@@ -163,6 +181,7 @@ export default {
     // 获取会员 权重1
     onSearchMember(val) {
       this.fetching = true
+      this.keyword = val
       this.commonService.getOptions('getMemberList', { member: val }, () => {
         this.fetching = false
       })

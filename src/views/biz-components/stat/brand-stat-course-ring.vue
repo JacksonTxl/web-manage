@@ -89,9 +89,9 @@ export default {
         html: () => {
           let sum = this.dv.sum('value')
           return `<div class='guide'>
-          <div class='guide-name'>${
+          <div class='guide-name'><span class="mg-r4">${
             this.name
-          }<span class='guide-name-tooltip'></span></div>
+          }</span><span class='guide-name-tooltip'></span></div>
             <div class='guide-title'><span class='guide-value'>${sum}</span><span class='guide-unit'>${
             this.unit
           }</span></div>
@@ -171,7 +171,6 @@ export default {
           cursor: 'pointer'
         })
         .tooltip('name*percent', function(item, percent, a) {
-          console.log('name*percent', percent, a)
           return {
             name: item,
             value: percent + '%'

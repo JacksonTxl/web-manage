@@ -10,7 +10,7 @@
               click: onRefund
             },
             {
-              if: auth['brand_shop:order:order|refund'],
+              if: auth['brand_shop:order:order|pay'],
               text: '收款',
               click: createdOrderPay
             },

@@ -52,7 +52,7 @@ export class CourseService {
       {
         name: '团体课消课',
         value: checkInCourse.team_checkin_num,
-        percent: checkInCourse.teams_checkin_percentage
+        percent: checkInCourse.team_checkin_percentage
       }
     ])
   }
