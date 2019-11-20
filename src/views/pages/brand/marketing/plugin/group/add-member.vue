@@ -117,6 +117,7 @@ export default {
   },
   watch: {
     info(n, o) {
+      console.log(n, '第一次传值')
       if (this.isEdit) {
         this.setFieldsValue()
         this.addMemberService.init().subscribe(res => {
@@ -130,7 +131,6 @@ export default {
       this.form.setFieldsValue({
         cardId: value
       })
-      this.groupParams.id = value
       this.memberList.filter(item => {
         if (item.id === value) {
           this.tableData = item.product_spec
@@ -153,10 +153,8 @@ export default {
     // 新建拼团活动
     onSubmit(data) {
       console.log(data)
-      return
       let isReturn = false
       let list = []
-
       if (!this.selectedRowKeys.length) {
         this.tableText = '请选择会籍卡规格'
         this.tableErr = true
@@ -174,63 +172,46 @@ export default {
           }
         })
       })
-      this.form.validate().then(values => {
-        let params = {}
-        if (isReturn) {
-          return
-        }
-        params = {
-          product_type: 1, // 会籍卡
-          activity_name: values.activity_name, // 活动名称
-          product_id: this.cardId, //商品id
-          sku: list, //卡、课规格[{“sku_id”:1,”group_price”:20},]
-          start_time: this.selectTime.startTime.value,
-          end_time: this.selectTime.endTime.value,
-          group_sum: values.group_sum, //成团人数
-          valid_time: values.valid_time, //拼团有效期
-          is_limit_stock: this.isLimit ? 1 : 0, //是否限制库存0不限制 1限制
-          stock_total: values.stock_total, //库存
-          shop_ids: this.shopIds, //门店ids [1,2,3,4]
-          published_type: this.releaseStatus, //发布状态(1-立即发布 2-暂不发布 3-定时发布)
-          published_time: moment(this.publishTime).format('YYYY-MM-DD HH:mm') //发布时间
-        }
-        if (this.isEdit) {
-          params.id = this.$route.query.id
-          this.addMemberService.editGroup(params).subscribe(res => {
-            this.$router.push({
-              path: `/brand/marketing/plugin/group/list`
-            })
+      let params = {}
+      if (isReturn) {
+        return
+      }
+      params = {
+        product_type: 1, // 会籍卡
+        activity_name: data.activity_name, // 活动名称
+        product_id: this.cardId, //商品id()
+        sku: list, //卡、课规格[{“sku_id”:1,”group_price”:20},]()
+        start_time: data.start_time,
+        end_time: data.end_time,
+        group_sum: data.group_sum, //成团人数
+        valid_time: data.valid_time, //拼团有效期
+        is_limit_stock: data.is_limit_stock, //是否限制库存0不限制 1限制
+        stock_total: data.stock_total, //库存
+        shop_ids: data.shop_ids, //门店ids [1,2,3,4]()
+        published_type: data.published_type, //发布状态(1-立即发布 2-暂不发布 3-定时发布)
+        published_time: data.published_time //发布时间
+      }
+      if (this.isEdit) {
+        params.id = this.$route.query.id
+        this.addMemberService.editGroup(params).subscribe(res => {
+          this.$router.push({
+            path: `/brand/marketing/plugin/group/list`
           })
-        } else {
-          this.addMemberService.addGroup(params).subscribe(res => {
-            this.$router.push({
-              path: `/brand/marketing/plugin/group/list`
-            })
+        })
+      } else {
+        this.addMemberService.addGroup(params).subscribe(res => {
+          this.$router.push({
+            path: `/brand/marketing/plugin/group/list`
           })
-        }
-      })
+        })
+      }
     },
     // 详情回显
     setFieldsValue() {
-      this.groupName = this.info.activity_name
-      this.releaseStatus = this.info.published_type
-      this.selectTime.startTime.value = moment(this.info.start_time)
-      this.selectTime.endTime.value = moment(this.info.end_time)
-      this.activityState = this.info.activity_state[0].id
       this.cardId = this.info.product.id
-      this.isLimit = this.info.is_limit_stock === 1
-      this.selectTime.startTime.disabled =
-        this.activityState > this.ACTIVITY_STATUS.PUBLISHER
-      this.form.setFieldsValue({
-        activity_name: this.info.activity_name,
-        group_sum: this.info.group_sum,
-        valid_time: this.info.valid_time,
-        stock_total: this.info.stock_total
-      })
       this.info.sku.forEach(item => {
         this.selectedRowKeys.push(item.id)
       })
-      this.shopIds = this.info.support_shop
     }
   },
   components: {

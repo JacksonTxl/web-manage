@@ -1,18 +1,16 @@
 export const ruleOptions = (vm: any) => {
+  // const pattern = vm.pattern
   return {
     // 活动名称
     activity_name: {
       rules: [
-        {
-          validator: (field: any, value: any, values: any) => {
-            if (!value) {
-              return '请填写活动名称'
-            }
-            if (value.length > 30) {
-              return '活动名称长度不能超过30，请重新输入'
-            }
-          }
-        }
+        // {
+        //   validator: (field: any, value: any, values: any) => {
+        //     if (!value || !value.match(pattern.CN_EN_NUM_SPACE('1-30'))) {
+        //       return '请输入会员姓名，支持格式长度1~30中英文'
+        //     }
+        //   }
+        // }
       ]
     },
     // 会籍卡

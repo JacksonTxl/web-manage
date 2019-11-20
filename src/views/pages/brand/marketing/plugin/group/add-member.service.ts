@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  Controller,
-  RouteGuard,
-  ServiceRoute
-} from 'vue-service-app'
+import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import {
   AddParams,

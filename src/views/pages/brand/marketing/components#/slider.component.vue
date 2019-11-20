@@ -162,8 +162,6 @@ export default {
   mounted() {
     this.list = cloneDeep(this.sliderInfo)
     this.actList = cloneDeep(this.activityList)
-    console.log(this.list, '00000000000000')
-    console.log(this.actList, '11111111')
     this.list.forEach(item => {
       // 需要对children进行遍历
       this.actList.forEach(it => {
@@ -190,7 +188,6 @@ export default {
       // }
       item.activity_id = [item.activity_id]
     })
-    console.log(this.actList, '222')
   },
   watch: {
     list: {
@@ -236,6 +233,10 @@ export default {
       })
       item.activity_type = selected.activity_type
       item.activity_name = selected.activity_name
+      if (item.activity_type === 5) {
+        item.product_type = selected.product_type || -1
+        item.product_template_id = selected.product_template_id || -1
+      }
       item.is_over = 0
     },
     addSelect(value) {

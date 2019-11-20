@@ -1362,5 +1362,11 @@ export const routeMapConfig = {
   'brand-marketing-plugin-group-add-personal'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增私教课'
   },
+  'brand-marketing-plugin-group-edit-course'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '编辑拼团'
+  },
+  'brand-marketing-plugin-group-edit-member'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '编辑拼团'
+  },
   ...tplConfigs
 }

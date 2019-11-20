@@ -139,6 +139,8 @@ export default {
         category: 1,
         content: this.sliderInfo
       })
+      console.log(saveForm, '这是提交的数据')
+      return
       saveForm.info.push({
         category: 3,
         content: this.eventInfo
