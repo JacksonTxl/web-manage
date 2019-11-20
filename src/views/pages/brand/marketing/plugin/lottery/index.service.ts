@@ -10,6 +10,7 @@ export class IndexService implements Controller {
   list$ = new State({})
   page$ = new State({})
   loading$ = new State({})
+  info$ = new State({})
   status$ = this.userService.getOptions$('plugin.activity_status')
   constructor(
     private lotteryApi: LotteryApi,
@@ -21,6 +22,13 @@ export class IndexService implements Controller {
       tap(res => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+      })
+    )
+  }
+  getPosterInfo(id: number) {
+    return this.lotteryApi.getPosterInfo(id).pipe(
+      tap((res: any) => {
+        this.info$.commit(() => res.info)
       })
     )
   }

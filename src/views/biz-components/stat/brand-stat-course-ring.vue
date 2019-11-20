@@ -41,21 +41,13 @@ export default {
     initDv() {
       this.dv = new View()
       this.dv.source(this.data)
-      this.dv
-        .transform({
-          type: 'map',
-          callback(row) {
-            row.value = +row.value
-            return row
-          }
-        })
-        // 计算百分比
-        .transform({
-          type: 'percent',
-          field: 'value',
-          dimension: 'name',
-          as: 'percent'
-        })
+      this.dv.transform({
+        type: 'map',
+        callback(row) {
+          row.value = +row.value
+          return row
+        }
+      })
     },
     initChart() {
       this.chart = new Chart({
@@ -97,9 +89,9 @@ export default {
         html: () => {
           let sum = this.dv.sum('value')
           return `<div class='guide'>
-          <div class='guide-name'>${
+          <div class='guide-name'><span class="mg-r4">${
             this.name
-          }<span class='guide-name-tooltip'></span></div>
+          }</span><span class='guide-name-tooltip'></span></div>
             <div class='guide-title'><span class='guide-value'>${sum}</span><span class='guide-unit'>${
             this.unit
           }</span></div>
@@ -178,11 +170,10 @@ export default {
           fillOpacity: 1,
           cursor: 'pointer'
         })
-        .tooltip('name*percent', function(item, percent) {
-          percent = (percent * 100).toFixed(1) + '%'
+        .tooltip('name*percent', function(item, percent, a) {
           return {
             name: item,
-            value: percent
+            value: percent + '%'
           }
         })
         .position('value')

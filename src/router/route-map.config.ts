@@ -75,6 +75,10 @@ export const routeMapConfig = {
       coach_id: { type: Number, default: -1 }
     }
   },
+  'shop-product-course-personal-table'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '管理私教排期'
+    routeConfig.meta.parentRouteName = 'shop-product-course-schedule'
+  },
   'shop-product-course-schedule-personal-personal'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教1v1预约'
     routeConfig.queryOptions = {
@@ -202,7 +206,7 @@ export const routeMapConfig = {
     routeConfig: RouteConfig
   ) {
     routeConfig.meta.title = '操作日志'
-    routeConfig.meta.parentId = 'shop-sold-course-info-package-info'
+    routeConfig.meta.parentRouteName = 'shop-sold-course-info-package-info'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
@@ -228,7 +232,7 @@ export const routeMapConfig = {
     routeConfig: RouteConfig
   ) {
     routeConfig.meta.title = '操作日志'
-    routeConfig.meta.parentId = 'shop-sold-course-info-personal-info'
+    routeConfig.meta.parentRouteName = 'shop-sold-course-info-personal-info'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
@@ -236,7 +240,7 @@ export const routeMapConfig = {
   },
   'shop-sold-course-info-personal-info-usage-log'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '使用记录'
-    routeConfig.meta.parentId = 'shop-sold-course-info-personal-info'
+    routeConfig.meta.parentRouteName = 'shop-sold-course-info-personal-info'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
@@ -244,7 +248,7 @@ export const routeMapConfig = {
   },
   'shop-sold-course-info-package-info-usage-log'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '使用记录'
-    routeConfig.meta.parentId = 'shop-sold-course-info-package-info'
+    routeConfig.meta.parentRouteName = 'shop-sold-course-info-package-info'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
@@ -270,7 +274,7 @@ export const routeMapConfig = {
     routeConfig: RouteConfig
   ) {
     routeConfig.meta.title = '操作日志'
-    routeConfig.meta.parentId = 'shop-sold-card-info-deposit-info'
+    routeConfig.meta.parentRouteName = 'shop-sold-card-info-deposit-info'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
@@ -294,7 +298,7 @@ export const routeMapConfig = {
   },
   'shop-sold-card-info-member-info-operation-record'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '操作日志'
-    routeConfig.meta.parentId = 'shop-sold-card-info-member-info'
+    routeConfig.meta.parentRouteName = 'shop-sold-card-info-member-info'
     routeConfig.queryOptions = {
       id: { type: Number },
       page: { type: Number, default: 1 },
@@ -303,7 +307,7 @@ export const routeMapConfig = {
   },
   'shop-sold-card-info-member-info-usage-log'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '使用记录'
-    routeConfig.meta.parentId = 'shop-sold-card-info-member-info'
+    routeConfig.meta.parentRouteName = 'shop-sold-card-info-member-info'
     routeConfig.queryOptions = {
       id: { type: Number },
       current_page: { type: Number, default: 1 },
@@ -312,7 +316,7 @@ export const routeMapConfig = {
   },
   'shop-sold-card-info-deposit-info-usage-log'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '使用记录'
-    routeConfig.meta.parentId = 'shop-sold-card-info-deposit-info'
+    routeConfig.meta.parentRouteName = 'shop-sold-card-info-deposit-info'
     routeConfig.queryOptions = {
       id: { type: Number },
       current_page: { type: Number, default: 1 },
@@ -362,7 +366,8 @@ export const routeMapConfig = {
   },
   'brand-product-course-personal-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增私教课'
-    routeConfig.meta.parentId = 'brand-product-course-personal-list-brand'
+    routeConfig.meta.parentRouteName =
+      'brand-product-course-personal-list-brand'
   },
   'brand-setting-general'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '系统设置'
@@ -527,7 +532,7 @@ export const routeMapConfig = {
   },
   'shop-reception-entrance'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '入场管理'
-    routeConfig.meta.parentId = 'shop-reception-index'
+    routeConfig.meta.parentRouteName = 'shop-reception-index'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -889,7 +894,7 @@ export const routeMapConfig = {
   },
   'shop-staff-info-basic'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
-    routeConfig.meta.parentId = 'shop-staff-list'
+    routeConfig.meta.parentRouteName = 'shop-staff-list'
     routeConfig.queryOptions = {
       shop_id: { type: Number, default: -1 }
     }
@@ -920,7 +925,7 @@ export const routeMapConfig = {
   },
   'shop-staff-edit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑员工'
-    routeConfig.meta.parentId = 'shop-staff-list'
+    routeConfig.meta.parentRouteName = 'shop-staff-list'
   },
   'shop-staff-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增员工'
@@ -973,14 +978,14 @@ export const routeMapConfig = {
   },
   'brand-setting-mina-pay-config'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '微信支付配置'
-    routeConfig.meta.parentId = 'brand-setting-mina-index'
+    routeConfig.meta.parentRouteName = 'brand-setting-mina-index'
   },
   'brand-marketing-plugin'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '营销插件'
   },
   'brand-marketing-plugin-coupon-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增优惠券'
-    routeConfig.meta.parentId = 'brand-marketing-plugin-coupon-list'
+    routeConfig.meta.parentRouteName = 'brand-marketing-plugin-coupon-list'
   },
   'brand-marketing-plugin-coupon-edit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑优惠券'
@@ -1003,7 +1008,7 @@ export const routeMapConfig = {
   },
   'brand-marketing-plugin-crowd-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新建人群'
-    routeConfig.meta.parentId = 'brand-marketing-plugin-crowd-index'
+    routeConfig.meta.parentRouteName = 'brand-marketing-plugin-crowd-index'
   },
   // TODO: 短信设置权限接入
   'brand-setting-sms'(routeConfig: RouteConfig) {

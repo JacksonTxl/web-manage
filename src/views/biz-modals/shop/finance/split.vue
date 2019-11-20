@@ -187,11 +187,17 @@ export default {
       for (let i = 1; i < this.info.split_items.length; i++) {
         percent += parseInt(this.info.split_items[i].split_ratio || 0, 10)
         if (this.info.split_items[i].staff_id === record.staff_id) {
+          this.messageService.error({
+            content: '销售人员不能重复'
+          })
           return false
         }
       }
       percent += parseInt(record.split_ratio, 10)
       if (percent > 100) {
+        this.messageService.error({
+          content: '拆分比例总和不能超过100%'
+        })
         return false
       }
       return true
@@ -201,9 +207,6 @@ export default {
         return
       }
       if (!this.validSaleMan(record)) {
-        this.messageService.error({
-          content: '信息有误，且拆分比例总和为100%'
-        })
         return
       }
       delete record.edit
@@ -224,10 +227,12 @@ export default {
     },
     onSave(record, index) {
       let percent = 0
-      this.info.split_items.map(item => {
+      const arr = cloneDeep(this.info.split_items)
+      arr.shift()
+      arr.map(item => {
         percent += parseInt(item.split_ratio || 0, 10)
       })
-      percent += parseInt(record.split_ratio, 10)
+      // percent += parseInt(record.split_ratio, 10)
       if (percent > 100) {
         this.messageService.error({
           content: '拆分比例总和不能超过100%'

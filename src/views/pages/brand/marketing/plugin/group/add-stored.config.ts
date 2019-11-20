@@ -53,6 +53,25 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
+    activity_time: {
+      rules: [
+        {
+          validator: (field: any, value: any, values: any) => {
+            console.log('value', value)
+            if (!value) {
+              return '请选择活动时间'
+            }
+            console.log(vm.$children)
+            if (
+              vm.$children.info &&
+              value.endTime < vm.$children.info.end_time
+            ) {
+              return '活动结束时间只能延长不可缩短'
+            }
+          }
+        }
+      ]
+    },
     // 储值卡
     depositId: {
       rules: [
@@ -97,6 +116,25 @@ export const ruleOptions = (vm: any) => {
                 vm.info.stock_total +
                 '～999999之间，请重新输入'
               return msg
+            }
+          }
+        }
+      ]
+    },
+    published_time: {
+      rules: [
+        {
+          required: true,
+          message: '请选择发布时间'
+        },
+        {
+          validator: (field: any, value: any, values: any) => {
+            if (
+              vm.$children[0].ACTIVITY_STATUS.TIMING ===
+                vm.$children[0].activityState &&
+              !value
+            ) {
+              return '请选择发布时间'
             }
           }
         }

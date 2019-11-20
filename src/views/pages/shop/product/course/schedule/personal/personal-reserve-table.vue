@@ -5,7 +5,12 @@
       slot="title"
     >
       <div class="title__left">
-        <st-button type="primary" class="mg-r8" @click="onClickSettingSchdule">
+        <st-button
+          type="primary"
+          v-if="auth.get"
+          class="mg-r8"
+          @click="onClickSettingSchdule"
+        >
           管理私教排期
         </st-button>
         <st-button v-if="auth.add">

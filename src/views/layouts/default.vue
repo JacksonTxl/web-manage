@@ -274,11 +274,11 @@ export default {
       location.href = '/account/login'
     },
     getParentBreadCrumb() {
-      const parentId = this.$route.meta.parentId
+      const parentRouteName = this.$route.meta.parentRouteName
       let parentRoute
-      if (parentId) {
+      if (parentRouteName) {
         parentRoute = this.$router.resolve({
-          name: parentId
+          name: parentRouteName
         }).resolved
       }
       if (parentRoute) {

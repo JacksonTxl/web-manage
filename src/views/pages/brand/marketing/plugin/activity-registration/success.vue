@@ -36,6 +36,7 @@
 import MarketingPoster from '@/views/biz-modals/brand/marketing/share-poster'
 import MarketingQrCode from '@/views/biz-modals/brand/marketing/qr-code'
 import { SuccessService } from './success.service'
+import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
 export default {
   name: 'ReleaseActivity',
   bem: {
@@ -81,9 +82,16 @@ export default {
       })
     },
     pushSharePosterModal() {
-      this.service.getSharePosterInfo(this.activityId).subscribe(() => {
+      this.service.getSharePosterInfo(this.activityId).subscribe(res => {
         const info = this.info$
         const activity_date = `${info.start_time} - ${info.end_time}`
+        if (!res.is_auth) {
+          this.show = false
+          this.$modalRouter.push({
+            name: 'brand-marketing-bind'
+          })
+          return
+        }
         this.$modalRouter.push({
           name: 'marketing-poster',
           props: {

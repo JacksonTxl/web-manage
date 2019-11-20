@@ -14,6 +14,7 @@
                 v-decorator="decorators.activity_name"
                 placeholder="请输入活动名称"
                 @change="changeName"
+                maxlength="30"
               >
                 <span slot="suffix">
                   {{ groupName.length }}
@@ -26,15 +27,10 @@
         <slot name="choose-product"></slot>
         <a-row :gutter="8">
           <a-col :span="16">
-            <st-form-item
-              label="活动时间"
-              :help="errTips"
-              :validateStatus="helpShow ? 'error' : ''"
-              required
-            >
+            <st-form-item label="活动时间" required>
               <st-range-picker
                 :disabledDays="180"
-                :value="selectTime"
+                v-decorator="decorators.activity_time"
               ></st-range-picker>
             </st-form-item>
           </a-col>
@@ -86,7 +82,7 @@
             </st-form-item>
           </a-col>
         </a-row>
-        <a-row :gutter="8">
+        <a-row :gutter="8" v-if="showSelectShop">
           <a-col :span="16">
             <st-form-item required :class="basic('shop')">
               <span slot="label">
@@ -119,27 +115,25 @@
                 <st-help-tooltip id="TBPTXJ005" />
               </span>
               <a-radio-group
-                :defaultValue="releaseStatus || RELEASE_SRTATUS.PROMPTLY"
+                :defaultValue="releaseStatus || RELEASE_STATUS.PROMPTLY"
                 v-model="releaseStatus"
-                :disabled="isEdit && activityState > RELEASE_SRTATUS.PUBLISHER"
+                :disabled="isEdit && activityState > RELEASE_STATUS.PUBLISHER"
               >
-                <a-radio :value="RELEASE_SRTATUS.PROMPTLY">立即发布</a-radio>
-                <a-radio :value="RELEASE_SRTATUS.TEMPORARILY">暂不发布</a-radio>
-                <a-radio :value="RELEASE_SRTATUS.TIMING">定时发布</a-radio>
+                <a-radio :value="RELEASE_STATUS.PROMPTLY">立即发布</a-radio>
+                <a-radio :value="RELEASE_STATUS.TEMPORARILY">暂不发布</a-radio>
+                <a-radio :value="RELEASE_STATUS.TIMING">定时发布</a-radio>
               </a-radio-group>
             </st-form-item>
             <st-form-item
               label="发布时间"
               required
-              :help="errText"
-              :validateStatus="showHelp ? 'error' : ''"
-              v-if="releaseStatus === RELEASE_SRTATUS.TIMING"
+              v-if="releaseStatus === RELEASE_STATUS.TIMING"
             >
               <a-date-picker
                 :disabledDate="disabledDate"
                 :showTime="{ format: 'HH:mm' }"
                 format="YYYY-MM-DD HH:mm"
-                v-model="publishTime"
+                v-decorator="decorators.published_time"
               />
             </st-form-item>
           </a-col>
@@ -154,7 +148,7 @@ import moment from 'moment'
 import { values } from 'lodash-es'
 import {
   ACTIVITY_STATUS,
-  RELEASE_SRTATUS
+  RELEASE_STATUS
 } from '@/constants/marketing/group-buy'
 export default {
   bem: {
@@ -195,6 +189,12 @@ export default {
       default: () => {
         return {}
       }
+    },
+    showSelectShop: {
+      type: Boolean,
+      default: () => {
+        return true
+      }
     }
   },
   mounted() {
@@ -205,7 +205,7 @@ export default {
   data() {
     return {
       ACTIVITY_STATUS,
-      RELEASE_SRTATUS,
+      RELEASE_STATUS,
       groupName: '',
       errTips: '', // 活动时间错误提示
       errText: '', // 发布时间错误提示
@@ -214,7 +214,7 @@ export default {
       activityState: Number, // 当前活动活动状态
       isLimit: true,
       releaseStatus: 1, // 发布状态
-      publishTime: null,
+      publishTime: null /* ,
       selectTime: {
         startTime: {
           showTime: false,
@@ -234,7 +234,7 @@ export default {
           change: $event => {},
           disabledDate: this.disabledDate
         }
-      }
+      } */
     }
   },
   methods: {
@@ -259,27 +259,26 @@ export default {
     },
     // 新建拼团活动
     onSubmit() {
+      /* let isReturn = false
+      if (!this.selectTime.startTime.value || !this.selectTime.endTime.value) {
+        this.errTips = '请选择活动时间'
+        this.helpShow = true
+        isReturn = true
+      } */
+      // if (
+      //   !this.publishTime &&
+      //   this.releaseStatus === this.RELEASE_STATUS.TIMING
+      // ) {
+      //   this.errText = '请选择发布时间'
+      //   this.showHelp = true
+      //   isReturn = true
+      // }
       this.form.validate().then(values => {
-        if (
-          !this.selectTime.startTime.value ||
-          !this.selectTime.endTime.value
-        ) {
-          this.errTips = '请选择活动时间'
-          this.helpShow = true
-          isReturn = true
-        }
-        if (
-          !this.publishTime &&
-          this.releaseStatus === this.RELEASE_SRTATUS.TIMING
-        ) {
-          this.errText = '请选择发布时间'
-          this.showHelp = true
-          isReturn = true
-        }
+        if (isReturn) return
         this.$emit('onsubmit', {
           activity_name: values.activity_name, // 活动名称
-          start_time: moment(this.selectTime.startTime.value),
-          end_time: moment(this.selectTime.endTime.value),
+          start_time: moment(values[0]).format('YYYY-MM-DD HH:mm'),
+          end_time: moment(values[1]).format('YYYY-MM-DD HH:mm'),
           group_sum: values.group_sum, //成团人数
           valid_time: values.valid_time, //拼团有效期
           is_limit_stock: this.isLimit ? 1 : 0, //是否限制库存0不限制 1限制
@@ -294,17 +293,22 @@ export default {
     setFieldsValue() {
       this.groupName = this.info.activity_name
       this.releaseStatus = this.info.published_type
-      this.selectTime.startTime.value = moment(this.info.start_time)
-      this.selectTime.endTime.value = moment(this.info.end_time)
+      // this.selectTime.startTime.value = moment(this.info.start_time)
+      // this.selectTime.endTime.value = moment(this.info.end_time)
       this.activityState = this.info.activity_state[0].id
       this.isLimit = this.info.is_limit_stock === 1
       this.selectTime.startTime.disabled =
         this.activityState > this.ACTIVITY_STATUS.PUBLISHER
       this.form.setFieldsValue({
+        published_time: this.info.published_time,
         activity_name: this.info.activity_name,
         group_sum: this.info.group_sum,
         valid_time: this.info.valid_time,
-        stock_total: this.info.stock_total
+        stock_total: this.info.stock_total,
+        activity_time: {
+          startTime: moment(this.info.start_time),
+          endTime: moment(this.info.end_time)
+        }
       })
     }
   },

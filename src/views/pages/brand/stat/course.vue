@@ -57,6 +57,7 @@
           />
           <st-recent-radio-group
             @change="onChangeTableDays"
+            :value="value"
           ></st-recent-radio-group>
         </div>
       </header>
@@ -132,7 +133,15 @@ export default {
     this.getChart()
   },
   computed: {
-    columns
+    columns,
+    value() {
+      let day = this.$searchQuery.start_date ? 0 : this.$searchQuery.day
+      return {
+        day,
+        start_date: this.$searchQuery.start_date,
+        end_date: this.$searchQuery.end_date
+      }
+    }
   },
   methods: {
     onChangeChartShop(event) {
