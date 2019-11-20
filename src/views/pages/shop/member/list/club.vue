@@ -115,13 +115,7 @@
         v-if="auth.sale"
         class="shop-member-list-button"
         :disabled="!selectedRows.length"
-        v-modal-link="{
-          name: 'shop-drop-saler-sea',
-          props: { memberIds: selectedRowKeys },
-          on: {
-            success: refeshPage
-          }
-        }"
+        @click="dropSalerSea(selectedRowKeys)"
       >
         抛入销售公海
       </st-button>
@@ -129,13 +123,7 @@
         v-if="auth.coach"
         class="shop-member-list-button"
         :disabled="!selectedRows.length"
-        v-modal-link="{
-          name: 'shop-drop-coach-sea',
-          props: { memberIds: selectedRowKeys },
-          on: {
-            success: refeshPage
-          }
-        }"
+        @click="dropCoachSea(selectedRowKeys)"
       >
         抛入教练公海
       </st-button>
@@ -262,25 +250,13 @@
           </a>
           <a
             v-if="record.auth['shop:member:member|unbind_saleman']"
-            v-modal-link="{
-              name: 'shop-drop-saler-sea',
-              props: { memberIds: Array.of(record.member_id) },
-              on: {
-                success: refeshPage
-              }
-            }"
+            @click="dropSalerSea(Array.of(record.member_id))"
           >
             抛入销售公海
           </a>
           <a
             v-if="record.auth['shop:member:member|unbind_coach']"
-            v-modal-link="{
-              name: 'shop-drop-coach-sea',
-              props: { memberIds: Array.of(record.member_id) },
-              on: {
-                success: refeshPage
-              }
-            }"
+            @click="dropCoachSea(Array.of(record.member_id))"
           >
             抛入教练公海
           </a>
@@ -341,8 +317,6 @@ import ShopDistributionCoach from '@/views/biz-modals/shop/distribution-coach'
 import ShopDistributionSale from '@/views/biz-modals/shop/distribution-sale'
 import ShopFrozen from '@/views/biz-modals/shop/frozen'
 import ShopMissingCard from '@/views/biz-modals/shop/missing-card'
-import ShopDropSalerSea from '@/views/biz-modals/shop/drop-saler-sea'
-import ShopDropCoachSea from '@/views/biz-modals/shop/drop-coach-sea'
 import { MessageService } from '@/services/message.service'
 
 export default {
@@ -354,9 +328,7 @@ export default {
     ShopDistributionCoach,
     ShopDistributionSale,
     ShopFrozen,
-    ShopMissingCard,
-    ShopDropCoachSea,
-    ShopDropSalerSea
+    ShopMissingCard
   },
   serviceInject() {
     return {
@@ -536,6 +508,30 @@ export default {
         onOk: () => {
           this.clubService.removeWechatBind(record.member_id).subscribe(() => {
             this.$router.reload()
+          })
+        },
+        onCancel() {}
+      })
+    },
+    dropCoachSea(para) {
+      this.$confirm({
+        title: '提示信息',
+        content: '是否将教练抛入公海？',
+        onOk: () => {
+          this.clubService.dropCoachSea({ member_ids: para }).subscribe(() => {
+            this.refeshPage()
+          })
+        },
+        onCancel() {}
+      })
+    },
+    dropSalerSea(para) {
+      this.$confirm({
+        title: '提示信息',
+        content: '是否将销售抛入公海？',
+        onOk: () => {
+          this.clubService.dropSalerSea({ member_ids: para }).subscribe(() => {
+            this.refeshPage()
           })
         },
         onCancel() {}

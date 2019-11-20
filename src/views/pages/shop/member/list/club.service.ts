@@ -56,6 +56,12 @@ export class ClubService implements Controller {
   getCrmRule() {
     return this.memberApi.getCrmRule()
   }
+  dropCoachSea(params: any) {
+    return this.memberApi.dropCoachSea(params)
+  }
+  dropSalerSea(params: any) {
+    return this.memberApi.dropSalerSea(params)
+  }
   init(query: any) {
     return forkJoin(this.getListInfo(query))
   }
