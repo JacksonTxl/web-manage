@@ -1,10 +1,11 @@
 import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
-import { forkJoin } from 'rxjs'
+import { anyAll } from '@/operators'
 import { StatApi } from '@/api/v1/stat/shop'
 import { MemberApi, SaleQuery, CoachQuery } from '@/api/v1/member'
 import { AuthService } from '@/services/auth.service'
+import { UserService } from '@/services/user.service'
 
 @Injectable()
 export class FollowService implements Controller {
@@ -24,8 +25,19 @@ export class FollowService implements Controller {
   constructor(
     private statApi: StatApi,
     private memberApi: MemberApi,
-    private authService: AuthService
+    private authService: AuthService,
+    private userService: UserService
   ) {}
+  memberLevel$ = this.userService.getOptions$('shop_member.member_level', {
+    addAll: true
+  })
+  followWayList$ = this.userService.getOptions$('member.follow_way', {
+    addAll: true
+  })
+  followStatusList$ = this.userService.getOptions$('member.follow_status', {
+    addAll: true
+  })
+
   @Effect()
   getList(paramsObj: any) {
     return this.statApi.getFollowHistory(paramsObj).pipe(
@@ -36,24 +48,27 @@ export class FollowService implements Controller {
       })
     )
   }
+  @Effect()
   getStaffList(param: SaleQuery) {
     return this.memberApi.getSaleList(param).pipe(
       tap((res: any) => {
         this.staffList$.commit(() => {
-          return [{ id: -1, sale_name: '所有销售' }, ...res.list]
+          return [{ id: -1, sale_name: '全部' }, ...res.list]
         })
       })
     )
   }
+  @Effect()
   getCoachList(param: CoachQuery) {
     return this.memberApi.getCoachList(param).pipe(
       tap((res: any) => {
         this.coachList$.commit(() => {
-          return [{ id: -1, coach_name: '所有教练' }, ...res.list]
+          return [{ id: -1, coach_name: '全部' }, ...res.list]
         })
       })
     )
   }
+  @Effect()
   getOperatorList() {
     return this.statApi.getFollowOperatoList().pipe(
       tap((res: any) => {
@@ -65,7 +80,7 @@ export class FollowService implements Controller {
   }
   init(query: any) {
     console.log(query)
-    return forkJoin(
+    return anyAll(
       this.getList(query),
       this.getCoachList(query.CoachQuery),
       this.getStaffList(query.retrieve),
@@ -73,14 +88,12 @@ export class FollowService implements Controller {
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    to.meta.query.follow_start_num =
-      to.meta.query.follow_start_num === ''
-        ? to.meta.query.follow_start_num
-        : Number(to.meta.query.follow_start_num)
-    to.meta.query.follow_end_num =
-      to.meta.query.follow_end_num === ''
-        ? to.meta.query.follow_end_num
-        : Number(to.meta.query.follow_end_num)
+    to.meta.query.follow_start_num = to.meta.query.follow_start_num
+      ? Number(to.meta.query.follow_start_num)
+      : ''
+    to.meta.query.follow_end_num = to.meta.query.follow_end_num
+      ? Number(to.meta.query.follow_end_num)
+      : ''
     return this.init(to.meta.query)
   }
 }

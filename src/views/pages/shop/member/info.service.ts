@@ -45,7 +45,6 @@ export class InfoService implements Controller {
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     const { id } = to.meta.query
-    console.log(to.meta.query.id)
     return this.getHeaderInfo(id)
   }
 }

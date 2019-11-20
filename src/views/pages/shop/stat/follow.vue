@@ -110,8 +110,8 @@ export default {
     handleSizeChange(val) {
       this.$searchQuery.shop_id = this.shop.id
       this.$searchQuery.showTable = this.showTable = val.target.value
-      let $searchQuery = this.$searchQuery
-      this.$router.push({ $searchQuery })
+      let query = this.$searchQuery
+      this.$router.push({ query })
     }
   }
 }

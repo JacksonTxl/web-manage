@@ -25,6 +25,7 @@ export class FollowService implements Controller {
       })
     )
   }
+  @Effect()
   getFollowStaffList(query: any) {
     return this.StatApi.getFollowStaffList(query).pipe(
       tap((res: any) => {
@@ -33,6 +34,7 @@ export class FollowService implements Controller {
       })
     )
   }
+  @Effect()
   getFollowShopTotal(query: any) {
     return this.StatApi.getFollowShopTotal(query).pipe(
       tap((res: any) => {

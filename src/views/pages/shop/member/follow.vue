@@ -1,5 +1,5 @@
 <template>
-  <st-panel app class="shop-member-list">
+  <st-panel app :class="bPage()">
     <div slot="title">
       <st-input-search
         placeholder="输入用户姓名、手机号"
@@ -30,10 +30,9 @@
         <div slot="more">
           <st-search-panel-item label="跟进销售：">
             <a-select
-              class="mg-r16"
+              :class="bPage('item')"
               placeholder="请选择跟进销售"
               optionFilterProp="children"
-              style="width: 200px"
               @change="onChangeSell"
               v-model="$searchQuery.follow_salesman_id"
             >
@@ -51,8 +50,7 @@
               showSearch
               placeholder="请选择跟进教练"
               optionFilterProp="children"
-              class="mg-r16"
-              style="width: 200px"
+              :class="bPage('item')"
               @change="onChangeCoach"
               v-model="$searchQuery.follow_coach_id"
             >
@@ -70,8 +68,7 @@
               showSearch
               placeholder="请选择录入人"
               optionFilterProp="children"
-              class="mg-r16"
-              style="width: 200px"
+              :class="bPage('item')"
               @change="onChangeOperator"
               v-model="$searchQuery.operator_id"
             >
@@ -93,13 +90,13 @@
           <st-search-panel-item label="跟进次数：">
             <a-input
               v-model="$searchQuery.follow_start_num"
-              style="width:80px"
+              :class="bPage('number')"
               type="number"
             />
             &nbsp;~&nbsp;
             <a-input
               v-model="$searchQuery.follow_end_num"
-              style="width:80px"
+              :class="bPage('number')"
               type="number"
             />
           </st-search-panel-item>
@@ -121,10 +118,14 @@
         {{ record.operator.label }}
       </span>
       <span slot="member" slot-scope="text, record">
-        <a href="javascript:;" @click="infoFunc(record)">
+        <a
+          href="javascript:;"
+          v-if="auth['shop:member:member|get']"
+          @click="infoFunc(record)"
+        >
           {{ record.operator.label }}
         </a>
-        <!-- <span v-else>{{ record.operator.label }}</span> -->
+        <span v-else>{{ record.operator.label }}</span>
       </span>
       <span slot="member_level" slot-scope="text, record">
         {{ record.member_level.label }}
@@ -161,31 +162,32 @@
 <script>
 import moment from 'moment'
 import { cloneDeep, filter } from 'lodash-es'
-import { UserService } from '@/services/user.service'
 import { FollowService } from './follow.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './follow.config'
 export default {
-  name: 'memberList',
+  name: 'PageShopMemberFollow',
+  bem: {
+    bPage: 'page-shop-member-follow'
+  },
   mixins: [tableMixin],
   serviceInject() {
     return {
-      followService: FollowService,
-      userService: UserService
+      followService: FollowService
     }
   },
   rxState() {
-    const user = this.userService
     return {
       loading: this.followService.loading$,
-      shopMemberEnums: user.shopMemberEnums$,
-      memberEnums: user.memberEnums$,
       auth: this.followService.auth$,
       list: this.followService.list$,
       page: this.followService.page$,
       staffList: this.followService.staffList$,
       coachList: this.followService.coachList$,
-      operatorList: this.followService.operatorList$
+      operatorList: this.followService.operatorList$,
+      memberLevel: this.followService.memberLevel$,
+      followWayList: this.followService.followWayList$,
+      followStatusList: this.followService.followStatusList$
     }
   },
   data() {
@@ -199,7 +201,7 @@ export default {
           disabledBegin: null,
           placeholder: '开始日期',
           disabled: false,
-          value: null,
+          value: '',
           format: 'YYYY-MM-DD',
           change: $event => {}
         },
@@ -207,7 +209,7 @@ export default {
           showTime: false,
           placeholder: '结束日期',
           disabled: false,
-          value: null,
+          value: '',
           format: 'YYYY-MM-DD',
           change: $event => {}
         }
@@ -215,39 +217,10 @@ export default {
     }
   },
   computed: {
-    columns,
-    memberLevel() {
-      let list = [{ value: -1, label: '全部' }]
-      if (!this.shopMemberEnums.member_level) return list
-      Object.entries(this.shopMemberEnums.member_level.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    },
-    followWayList() {
-      let list = [{ value: -1, label: '全部' }]
-      if (!this.memberEnums.follow_way) return list
-      Object.entries(this.memberEnums.follow_way.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    },
-    followStatusList() {
-      let list = [{ value: -1, label: '全部' }]
-      if (!this.memberEnums.follow_status) return list
-      Object.entries(this.memberEnums.follow_status.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    }
+    columns
   },
   mounted() {
     this.setSearchData()
-  },
-  watch: {
-    $searchQuery(newVal) {
-      this.setSearchData()
-    }
   },
 
   methods: {
@@ -276,17 +249,16 @@ export default {
     // 设置searchData
     setSearchData() {
       this.selectTime.startTime.value = this.$searchQuery.follow_start_date
-        ? cloneDeep(moment(this.$searchQuery.follow_start_date))
+        ? moment(this.$searchQuery.follow_start_date)
         : null
       this.selectTime.endTime.value = this.$searchQuery.follow_end_date
-        ? cloneDeep(moment(this.$searchQuery.follow_end_date))
+        ? moment(this.$searchQuery.follow_end_date)
         : null
     },
     infoFunc(record) {
-      console.log(record.member.id)
       this.$router.push({
         name: 'shop-member-info-basic',
-        $searchQuery: { id: record.member.id }
+        query: { id: record.member.id }
       })
     },
     moment,
