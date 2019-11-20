@@ -148,6 +148,7 @@ import SoldCourseRefund from '@/views/biz-modals/sold/course/refund'
 import SoldCourseSurplus from '@/views/biz-modals/sold/course/surplus'
 import SoldCourseTransfer from '@/views/biz-modals/sold/course/transfer'
 import SoldCourseScope from '@/views/biz-modals/sold/course/scope'
+import CommonTaskSuccessTip from '@/views/biz-modals/common/task/success-tip'
 export default {
   name: 'PageShopSoldCoursePackageList',
   mixins: [tableMixin],
@@ -159,7 +160,8 @@ export default {
     SoldCourseRefund,
     SoldCourseSurplus,
     SoldCourseTransfer,
-    SoldCourseScope
+    SoldCourseScope,
+    CommonTaskSuccessTip
   },
   serviceInject() {
     return {

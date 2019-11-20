@@ -142,7 +142,7 @@
           </table>
         </div>
       </st-form-item>
-      <st-form-item label="私教课程" class="mg-b0">
+      <st-form-item label="私教课程" class="mg-b0" required>
         <div :class="(add('personal-course-table'), add('course'))">
           <table>
             <colgroup>
