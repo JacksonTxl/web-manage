@@ -4,6 +4,7 @@
       :date="last_updated_time"
       :action="refresh"
       class="mg-b16"
+      :rangeTime="120"
     />
     <st-table
       :scroll="{ x: 1200 }"
