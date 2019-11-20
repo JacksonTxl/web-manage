@@ -83,7 +83,6 @@
               :validateStatus="helpShow ? 'error' : ''"
               required
             >
-              <a-input type="hidden" v-></a-input>
               <st-range-picker
                 :disabledDays="180"
                 :value="selectTime"
