@@ -15,6 +15,14 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
+    cardId: {
+      rules: [
+        {
+          required: true,
+          message: '请选择私教课'
+        }
+      ]
+    },
     activity_search: {
       rules: [
         {

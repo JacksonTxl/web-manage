@@ -22,6 +22,7 @@
               </a-input>
             </st-form-item>
             <st-form-item label="选择私教课" required>
+              <a-input type="hidden" v-decorator="decorators.cardId" />
               <a-select
                 showSearch
                 v-model="cardId"
@@ -54,7 +55,12 @@
         <!-- 输入完课时 之后才可以显示优惠设置的教练信息 -->
         <a-row :gutter="8">
           <a-col :span="16">
-            <st-form-item label="优惠设置" required>
+            <st-form-item
+              label="优惠设置"
+              required
+              :help="tableText"
+              :validateStatus="tableErr ? 'error' : ''"
+            >
               <div :class="basic('table')">
                 <st-table
                   v-if="decorators.group_hour"
@@ -91,7 +97,12 @@
 
         <a-row :gutter="8">
           <a-col :span="16">
-            <st-form-item label="活动时间" required>
+            <st-form-item
+              label="活动时间"
+              :help="errTips"
+              :validateStatus="helpShow ? 'error' : ''"
+              required
+            >
               <st-range-picker
                 :disabledDays="180"
                 :value="selectTime"
@@ -148,6 +159,7 @@
               </span>
               <select-shop
                 :class="basic('table')"
+                :groupParams="groupParams"
                 @change="onSelectShop"
                 :shopIds="shopIds"
               ></select-shop>
@@ -161,19 +173,23 @@
                 发布状态
                 <st-help-tooltip id="TBPTXJ005" />
               </span>
-              <a-radio-group v-model="releaseStatus">
-                <a-radio :value="1" :key="1">
-                  立即发布
-                </a-radio>
-                <a-radio :value="2" :key="2">
-                  暂不发布
-                </a-radio>
-                <a-radio :value="3" :key="3">
-                  定时发布
-                </a-radio>
+              <a-radio-group
+                :defaultValue="releaseStatus || RELEASE_SRTATUS.PROMPTLY"
+                v-model="releaseStatus"
+                :disabled="isEdit && activityState > RELEASE_SRTATUS.PUBLISHER"
+              >
+                <a-radio :value="RELEASE_SRTATUS.PROMPTLY">立即发布</a-radio>
+                <a-radio :value="RELEASE_SRTATUS.TEMPORARILY">暂不发布</a-radio>
+                <a-radio :value="RELEASE_SRTATUS.TIMING">定时发布</a-radio>
               </a-radio-group>
             </st-form-item>
-            <st-form-item label="发布时间" required v-if="releaseStatus === 3">
+            <st-form-item
+              label="发布时间"
+              required
+              :help="errText"
+              :validateStatus="showHelp ? 'error' : ''"
+              v-if="releaseStatus === RELEASE_SRTATUS.TIMING"
+            >
               <a-date-picker
                 :disabledDate="disabledDate"
                 :showTime="{ format: 'HH:mm' }"
@@ -188,7 +204,10 @@
   </st-mina-panel>
 </template>
 <script>
-import { ACTIVITY_STATUS } from '@/constants/marketing/group-buy'
+import {
+  ACTIVITY_STATUS,
+  RELEASE_SRTATUS
+} from '@/constants/marketing/group-buy'
 import { ruleOptions, cardColumns } from './add-personal.config'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import { AddPersonalService } from './add-personal.service'
@@ -215,6 +234,7 @@ export default {
     const decorators = form.decorators(ruleOptions)
     return {
       ACTIVITY_STATUS,
+      RELEASE_SRTATUS,
       form,
       decorators,
       groupName: '', // 活动名称
@@ -224,6 +244,10 @@ export default {
       isLimit: true, // 限制库存
       shopIds: [], //选择门店
       cardColumns,
+      groupParams: {
+        type: 3,
+        id: null
+      },
       // 发布状态
       releaseStatus: 1,
       publishTime: null, // 发布时间
@@ -247,7 +271,13 @@ export default {
           disabledDate: this.disabledDate
         }
       },
-      activityState: Number // 当前活动活动状态
+      activityState: Number, // 当前活动活动状态
+      errTips: '', // 活动时间错误提示
+      errText: '', // 发布时间错误提示
+      tableText: '', // 优惠设置错误提示
+      helpShow: false,
+      showHelp: false,
+      tableErr: false
     }
   },
 
@@ -276,9 +306,7 @@ export default {
   updated() {
     // console.log(this.newCoach)
   },
-  mounted() {
-    console.log(decorators)
-  },
+  mounted() {},
   computed: {
     // 教练增加默认课时
     newCoach() {
@@ -292,13 +320,15 @@ export default {
   methods: {
     // 疑问
     chooseMember(value) {
-      this.memberList.filter(item => {
+      this.form.setFieldsValue({
+        cardId: value
+      })
+      this.personalList.filter(item => {
         if (item.id === value) {
-          this.tableData = item.product_spec
+          this.newCoach = item.product_spec
           if (this.selectedRowKeys && this.isEdit) {
             this.info.sku.forEach(item => {
-              this.tableData.forEach(card => {
-                console.log(item, card, '-------------zheli')
+              this.newCoach.forEach(card => {
                 if (item.id === card.id) {
                   card.group_price = item.group_price
                 }
@@ -318,6 +348,7 @@ export default {
     },
     // 设置选择私教课
     handleChange(e) {
+      this.groupParams.id = e
       this.addPersonalService.addCoach({ id: e }).subscribe(res => {})
     },
     // 优惠设置选择变化
@@ -350,51 +381,69 @@ export default {
     // 新建拼团活动
     onSubmit() {
       this.form.validate().then(values => {
-        console.log(this.editType, 'this.editType')
-
+        if (
+          !this.selectTime.startTime.value ||
+          !this.selectTime.endTime.value
+        ) {
+          console.log(1)
+          this.errTips = '请选择活动时间'
+          this.helpShow = true
+          return
+        }
+        if (
+          !this.publishTime &&
+          this.releaseStatus === this.RELEASE_SRTATUS.TIMING
+        ) {
+          this.errText = '请选择发布时间'
+          this.showHelp = true
+          return
+        }
+        if (!this.selectedRowKeys.length) {
+          this.tableText = '请选择私教课规格'
+          this.tableErr = true
+        }
         let params = {}
-        if (this.editType === 1 || this.editType === 3) {
-          // 编辑
-          params = {
-            id: 1,
-            product_type: 1,
-            activity_name: values.activity_name,
-            end_time: this.selectTime.endTime.value,
-            stock_total: values.stock_total
-          }
-        } else {
-          let list = []
-          this.selectedRowKeys.forEach((id, index) => {
-            this.newCoach.forEach(item => {
-              if (item.id === id) {
-                list.push({ sku_id: id, group_price: item.group_price })
+        let isReturn = false
+        let list = []
+        this.selectedRowKeys.forEach((id, index) => {
+          this.newCoach.forEach(item => {
+            if (item.id === id) {
+              if (!item.group_price) {
+                this.tableText = '请输入拼团价'
+                this.tableErr = true
+                isReturn = true
               }
-            })
+              list.push({ sku_id: id, group_price: item.group_price })
+            }
           })
-          params = {
-            product_type: 3, // 私教课
-            activity_name: values.activity_name, // 活动名称
-            product_id: this.cardId, //商品id
-            sku: list, //卡、课规格[{“sku_id”:1,”group_price”:20},]
-            start_time: this.selectTime.startTime.value,
-            end_time: this.selectTime.endTime.value,
-            group_sum: values.group_sum, //成团人数
-            valid_time: values.valid_time, //拼团有效期
-            is_limit_stock: this.isLimit ? 1 : 0, //是否限制库存0不限制 1限制
-            stock_total: values.stock_total, //库存
-            shop_ids: this.shopIds, //门店ids [1,2,3,4]
-            published_type: this.releaseStatus, //发布状态(1-立即发布 2-暂不发布 3-定时发布)
-            published_time: moment(this.publishTime).format('YYYY-MM-DD HH:mm') //发布时间
-          }
+        })
+        if (isReturn) {
+          return
+        }
+        params = {
+          product_type: 1, // 会籍卡
+          activity_name: values.activity_name, // 活动名称
+          product_id: this.cardId, //商品id
+          sku: list, //卡、课规格[{“sku_id”:1,”group_price”:20},]
+          start_time: this.selectTime.startTime.value,
+          end_time: this.selectTime.endTime.value,
+          group_sum: values.group_sum, //成团人数
+          valid_time: values.valid_time, //拼团有效期
+          is_limit_stock: this.isLimit ? 1 : 0, //是否限制库存0不限制 1限制
+          stock_total: values.stock_total, //库存
+          shop_ids: this.shopIds, //门店ids [1,2,3,4]
+          published_type: this.releaseStatus, //发布状态(1-立即发布 2-暂不发布 3-定时发布)
+          published_time: moment(this.publishTime).format('YYYY-MM-DD HH:mm') //发布时间
         }
         if (this.isEdit) {
-          // 编辑 type为2，3只能编辑名称，结束时间，库存
-          this.addPersonalService.editGroup(params).subscribe(res => {
-            console.log(params, res, '这是编辑返回的数据')
+          params.id = this.$route.query.id
+          this.addMemberService.editGroup(params).subscribe(res => {
+            this.$router.push({
+              path: `/brand/marketing/plugin/group/list`
+            })
           })
         } else {
-          this.addPersonalService.addGroup(params).subscribe(res => {
-            console.log(params, res, '==============')
+          this.addMemberService.addGroup(params).subscribe(res => {
             this.$router.push({
               path: `/brand/marketing/plugin/group/list`
             })
@@ -422,6 +471,7 @@ export default {
       this.info.sku.forEach(item => {
         this.selectedRowKeys.push(item.id)
       })
+      this.shopIds = this.info.shop_ids
     }
   },
   components: {
