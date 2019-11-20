@@ -34,6 +34,7 @@
 </template>
 <script>
 import MarketingPoster from '@/views/biz-modals/brand/marketing/share-poster'
+import MarketingQrCode from '@/views/biz-modals/brand/marketing/qr-code'
 import { SuccessService } from './success.service'
 export default {
   name: 'ReleaseActivity',
@@ -41,7 +42,8 @@ export default {
     bPage: 'page-marketing-release-activity'
   },
   modals: {
-    MarketingPoster
+    MarketingPoster,
+    MarketingQrCode
   },
   serviceInject() {
     return {
@@ -86,7 +88,9 @@ export default {
           name: 'marketing-poster',
           props: {
             info: {
-              qrcode_url: info.qrcode,
+              qrcode_url:
+                info.qrcode ||
+                'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/activite-paying.png',
               brand_name: this.brand$.name,
               brand_logo: this.brand$.logo,
               activity_img: info.image.image_url,
@@ -102,9 +106,11 @@ export default {
     pushQrCodeModal() {
       this.service.getQrCode(this.activityId).subscribe(() => {
         this.$modalRouter.push({
-          name: 'marketing-poster',
+          name: 'marketing-qr-code',
           props: {
-            url: this.qrcode$
+            url:
+              this.qrcode$ ||
+              'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/activite-paying.png'
           }
         })
       })

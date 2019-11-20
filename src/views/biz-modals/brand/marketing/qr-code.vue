@@ -1,11 +1,12 @@
 <template>
   <st-modal :title="title" v-model="show" width="400px" :footer="null">
     <div :class="basic()">
-      <p>{{ message }}</p>
-      <st-image v-if="!isLoading" :src="url" class="qr-code" />
+      <p :class="basic('tip')">{{ message }}</p>
+      <st-image :src="url" :class="basic('qrcode')" />
       <st-button
         block
         pill
+        :class="basic('button')"
         type="primary"
         icon="download"
         size="large"
@@ -25,7 +26,7 @@ import { POSTER } from '@/constants/brand/marketing'
 export default {
   name: 'BrandMarketingPoster',
   bem: {
-    basic: 'brand-marketing-poster'
+    basic: 'brand-marketing-share'
   },
   serviceInject() {
     return {

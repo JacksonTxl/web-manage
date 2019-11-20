@@ -1,14 +1,15 @@
 <template>
   <st-modal :title="title" v-model="show" width="400px" :footer="null">
     <div :class="basic()">
-      <p>{{ message }}</p>
-      <st-image :url="url" class="poster"></st-image>
+      <p :class="basic('tip')">{{ message }}</p>
+      <st-image :url="url" :class="basic('poster')"></st-image>
       <st-button
         block
         pill
         type="primary"
         icon="download"
         size="large"
+        :class="basic('button')"
         @click="downloadPoster"
       >
         {{ button }}
@@ -22,7 +23,7 @@ import { ShsService } from '@/services/shs.service'
 export default {
   name: 'BrandMarketingPoster',
   bem: {
-    basic: 'brand-marketing-poster'
+    basic: 'brand-marketing-share'
   },
   serviceInject() {
     return {
