@@ -4,12 +4,7 @@
     <st-panel app initial :class="basic()">
       <div slot="title" :class="basic('search')">
         <div :class="basic('add')">
-          <st-button
-            icon="add"
-            type="primary"
-            @click="onAddGroup"
-            v-if="auth.add"
-          >
+          <st-button icon="add" type="primary" @click="onAddGroup">
             新增活动
           </st-button>
         </div>
@@ -118,7 +113,7 @@
 <script>
 import { ListService } from './list.service'
 import { UserService } from '@/services/user.service'
-import { RouteService } from '@/services/route.service'
+// import { RouteService } from '@/services/route.service'
 import MarkteingPluginTitle from '../../components#/marketing-title'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
@@ -141,8 +136,7 @@ export default {
   serviceInject() {
     return {
       listService: ListService,
-      userService: UserService,
-      routeService: RouteService
+      userService: UserService
     }
   },
   rxState() {
@@ -150,7 +144,7 @@ export default {
       list: this.listService.list$,
       page: this.listService.page$,
       // loading: this.listService.loading$,
-      query: this.routeService.query$,
+      // query: this.$searchQuery,
       // couponEnums: this.userService.couponEnums$,
       auth: this.listService.auth$
     }
@@ -187,16 +181,18 @@ export default {
     this.setSearchData()
   },
   watch: {
-    query(newVal) {
+    $searchQuery(newVal) {
+      console.log(newVal)
       this.setSearchData()
     }
   },
   methods: {
     // 设置searchData
     setSearchData() {
-      // let { activity_name, activity_status } = this.query
-      // this.activityName = activity_name
-      // this.activityStatus = activity_status || -1
+      let { activity_name, activity_status } = this.$searchQuery
+      console.log(this.$searchQuery)
+      this.activityName = activity_name
+      this.activityStatus = activity_status || -1
     },
     // 活动发布
     onRelease(record) {

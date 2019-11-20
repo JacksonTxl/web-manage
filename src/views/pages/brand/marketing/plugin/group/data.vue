@@ -117,6 +117,7 @@
             :scroll="{ y: 0 }"
             :dataSource="list"
           ></a-table>
+          <st-no-data />
         </template>
       </st-panel>
     </st-panel-layout>
