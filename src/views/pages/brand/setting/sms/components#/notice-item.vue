@@ -503,7 +503,6 @@ export default {
         receiver,
         course_type
       })
-      console.log(this.params)
       this.$emit('editInfo', para)
       this.isShowEdit = 0
     }

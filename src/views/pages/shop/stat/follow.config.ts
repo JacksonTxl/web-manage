@@ -5,12 +5,21 @@ export const dateColumns = (vm: any) => {
       dataIndex: 'stat_date'
     },
     {
+      title: '员工',
+      dataIndex: 'staff_id'
+    },
+    {
+      title: '每日跟进总数',
+      dataIndex: 'follow_total',
+      align: 'right'
+    },
+    {
       title: '电话跟进数',
       dataIndex: 'follow_phone',
       align: 'right'
     },
     {
-      title: `微信跟进数`,
+      title: '微信跟进数',
       dataIndex: 'follow_wx',
       align: 'right'
     },
@@ -25,7 +34,12 @@ export const dateColumns = (vm: any) => {
       align: 'right'
     },
     {
-      title: '邀约成功数',
+      title: '已电话数',
+      dataIndex: 'is_called',
+      align: 'right'
+    },
+    {
+      title: '已邀约数',
       dataIndex: 'is_invited',
       align: 'right'
     },
@@ -35,12 +49,17 @@ export const dateColumns = (vm: any) => {
       align: 'right'
     },
     {
-      title: '签约数',
+      title: '邀约成功数',
+      dataIndex: 'invited_success',
+      align: 'right'
+    },
+    {
+      title: '已签到数',
       dataIndex: 'is_signed',
       align: 'right'
     },
     {
-      title: '购卡数',
+      title: '已购卡数',
       dataIndex: 'purchased_card',
       align: 'right'
     }
@@ -90,6 +109,11 @@ export const staffColumns = (vm: any) => {
     {
       title: '实际到访数',
       dataIndex: 'actual_visit',
+      align: 'right'
+    },
+    {
+      title: '邀约成功数',
+      dataIndex: 'invited_success',
       align: 'right'
     },
     {

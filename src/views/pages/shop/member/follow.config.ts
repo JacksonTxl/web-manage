@@ -9,7 +9,7 @@ export const columns = (vm: any) => [
     scopedSlots: { customRender: 'operator' }
   },
   {
-    title: '跟进客服',
+    title: '跟进客户',
     dataIndex: 'member',
     scopedSlots: { customRender: 'member' }
   },
