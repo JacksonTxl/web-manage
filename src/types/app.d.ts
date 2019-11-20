@@ -51,7 +51,7 @@ export interface RouteConfig extends ServiceRouteConfig {
     /**
      * 生命平级路由的父级路由nameπ
      */
-    parentId: string
+    parentRouteName: string
     /**
      * 路由对应的权限key名
      */
