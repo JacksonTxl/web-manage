@@ -79,6 +79,7 @@
         </st-button>
 
         <st-button
+          v-if="auth.batch_admission"
           type="primary"
           class="mg-r8"
           :disabled="selectedRowKeys.length < 1"

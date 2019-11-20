@@ -31,6 +31,7 @@
           class="mg-r8"
           @click="onGiving"
           :disabled="selectedRowKeys.length < 1"
+          v-if="auth.batch_gift_number"
         >
           赠送额度
         </st-button>
@@ -39,6 +40,7 @@
           class="mg-r8"
           @click="onExtendDays"
           :disabled="selectedRowKeys.length < 1"
+          v-if="auth.batch_extension"
         >
           延长有效期
         </st-button>

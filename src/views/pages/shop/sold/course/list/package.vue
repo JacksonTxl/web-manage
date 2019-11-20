@@ -36,7 +36,12 @@
         <template
           v-if="selectedRowKeys.length >= 1 && diffSelectedRows.length === 0"
         >
-          <st-button type="primary" class="mg-r8" @click="onChangeCourse">
+          <st-button
+            type="primary"
+            class="mg-r8"
+            @click="onChangeCourse"
+            v-if="auth.course_range"
+          >
             变更上课范围
           </st-button>
         </template>
@@ -47,7 +52,12 @@
             :defaultVisible="true"
             v-model="visible"
           >
-            <st-button type="primary" class="mg-r8" :disabled="true">
+            <st-button
+              type="primary"
+              class="mg-r8"
+              :disabled="true"
+              v-if="auth.course_range"
+            >
               变更上课范围
             </st-button>
           </st-help-tooltip>

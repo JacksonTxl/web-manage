@@ -48,8 +48,8 @@
       <!-- 操作 -->
       <div slot="action" slot-scope="text, record">
         <st-table-actions>
-          <!-- v-if="record.auth['brand:shop:shop_type|edit']" -->
           <st-popconfirm
+            v-if="record.auth['brand:task:task_center|end']"
             @confirm="stopTask(record)"
             title="确认要终止该任务么？"
           >
