@@ -18,34 +18,10 @@
   </st-modal>
 </template>
 <script>
-import { PosterService } from './poster.service'
-import { AppConfig } from '@/constants/config'
-import { OssService } from '@/services/oss.service'
-import { ShsService } from '@/services/shs.service'
-import { POSTER } from '@/constants/brand/marketing'
 export default {
   name: 'BrandMarketingPoster',
   bem: {
     basic: 'brand-marketing-share'
-  },
-  serviceInject() {
-    return {
-      posterService: PosterService,
-      appConfig: AppConfig,
-      shsService: ShsService
-    }
-  },
-  serviceProviders() {
-    return [ShsService]
-  },
-  rxState() {
-    return {
-      loading: this.posterService.loading$,
-      isLoading: this.shsService.loading$,
-      token: this.posterService.token$,
-      info: this.posterService.info$,
-      qrcode: this.posterService.qrcode$
-    }
   },
   props: {
     url: String
