@@ -13,6 +13,6 @@ export class TaskApi extends Api {
    * @param query
    */
   stopTask(task_id: any) {
-    return this.http.delete(`/v1/setting/task/${task_id}`)
+    return this.http.delete(`/v1/setting/shop/task/${task_id}`)
   }
 }
