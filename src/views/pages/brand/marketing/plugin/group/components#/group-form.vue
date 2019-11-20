@@ -181,6 +181,15 @@ export default {
         return {}
       }
     },
+    groupParams: {
+      type: Object,
+      default: () => {
+        return {
+          type: null,
+          id: null
+        }
+      }
+    },
     loading: {
       type: Object,
       default: () => {
@@ -188,14 +197,9 @@ export default {
       }
     }
   },
-  watch: {
-    info(n, o) {
-      if (this.isEdit) {
-        this.setFieldsValue()
-        this.addMemberService.init().subscribe(res => {
-          this.chooseMember(this.cardId)
-        })
-      }
+  mounted() {
+    if (this.isEdit) {
+      this.setFieldsValue()
     }
   },
   data() {
@@ -207,12 +211,7 @@ export default {
       errText: '', // 发布时间错误提示
       helpShow: false,
       showHelp: false,
-      groupParams: {
-        type: 1,
-        id: null
-      },
       activityState: Number, // 当前活动活动状态
-      activity_time: [],
       isLimit: true,
       releaseStatus: 1, // 发布状态
       publishTime: null,
@@ -279,8 +278,8 @@ export default {
         }
         this.$emit('onsubmit', {
           activity_name: values.activity_name, // 活动名称
-          start_time: this.selectTime.startTime.value,
-          end_time: this.selectTime.endTime.value,
+          start_time: moment(this.selectTime.startTime.value),
+          end_time: moment(this.selectTime.endTime.value),
           group_sum: values.group_sum, //成团人数
           valid_time: values.valid_time, //拼团有效期
           is_limit_stock: this.isLimit ? 1 : 0, //是否限制库存0不限制 1限制
