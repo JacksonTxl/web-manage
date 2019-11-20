@@ -34,6 +34,7 @@
 </template>
 <script>
 import MarketingPoster from '@/views/biz-modals/brand/marketing/share-poster'
+import MarketingQrCode from '@/views/biz-modals/brand/marketing/qr-code'
 import { SuccessService } from './success.service'
 export default {
   name: 'ReleaseActivity',
@@ -41,7 +42,8 @@ export default {
     bPage: 'page-marketing-release-activity'
   },
   modals: {
-    MarketingPoster
+    MarketingPoster,
+    MarketingQrCode
   },
   serviceInject() {
     return {
@@ -102,7 +104,7 @@ export default {
     pushQrCodeModal() {
       this.service.getQrCode(this.activityId).subscribe(() => {
         this.$modalRouter.push({
-          name: 'marketing-poster',
+          name: 'marketing-qr-code',
           props: {
             url: this.qrcode$
           }
