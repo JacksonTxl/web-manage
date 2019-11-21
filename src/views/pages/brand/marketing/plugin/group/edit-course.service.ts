@@ -8,7 +8,10 @@ import { anyAll } from '@/operators'
 @Injectable()
 export class EditCourseService implements Controller {
   info$ = new State({})
+  loading$ = new State({})
+  courseList$ = new State({})
   constructor(private groupBuyApi: GroupBuyApi) {}
+  @Effect()
   getDetailData(id: number) {
     return this.groupBuyApi.getStoredData(id).pipe(
       tap((res: any) => {
@@ -17,11 +20,18 @@ export class EditCourseService implements Controller {
     )
   }
   @Effect()
+  getCourseList(params: { shop_id: number }) {
+    return this.groupBuyApi.getCourseList(params).pipe(
+      tap((res: any) => {
+        this.courseList$.commit(() => res.list)
+      })
+    )
+  }
+  @Effect()
   init(id: any) {
     return anyAll(this.getDetailData(id))
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    console.log('sdjfkjsdkf')
     return this.init(to.meta.query.id)
   }
 }
