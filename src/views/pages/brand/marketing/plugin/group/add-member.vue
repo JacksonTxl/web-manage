@@ -117,7 +117,6 @@ export default {
   },
   watch: {
     info(n, o) {
-      console.log(n, '第一次传值')
       if (this.isEdit) {
         this.setFieldsValue()
         this.addMemberService.init().subscribe(res => {
