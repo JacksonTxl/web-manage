@@ -8,13 +8,13 @@ import { anyAll } from '@/operators'
 @Injectable()
 export class EditPersonalService implements Controller {
   info$ = new State({})
-  coachList$ = new State({})
+  coach$ = new State({})
   constructor(private groupBuyApi: GroupBuyApi) {}
   getCoachList(params: { id: number }) {
     return this.groupBuyApi.getCoachList(params).pipe(
       tap((res: any) => {
         console.log(res)
-        this.coachList$.commit(() => res.list)
+        this.coach$.commit(() => res.list)
       })
     )
   }
