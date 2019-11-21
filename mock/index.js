@@ -8,13 +8,15 @@ const zlxMock = require('./zlx/index.js')
 const ls = require('./ls/index.js')
 const lyjMock = require('./lyj/index.js')
 const lyMock = require('./ly/index.js')
+const lxlMock = require('./lxl/index')
 const mockerApis = Object.assign(
   {},
   lyjMock,
   // zlxMock,
   // llfMock,
   // lyMock,
-  ls
+  ls,
+  lxlMock
 )
 
 module.exports = wrapper(mockerApis)
