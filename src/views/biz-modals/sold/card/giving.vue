@@ -7,19 +7,11 @@
         :help="helpText"
         :validateStatus="helpShow ? 'error' : ''"
       >
-        <a-radio-group v-model="batch_type">
-          <a-radio :style="radioStyle" :key="1" :value="BATCH_TYPE.SELECTED">
-            已选当前{{ id.length }}条数据
-          </a-radio>
-          <a-radio
-            :style="radioStyle"
-            :key="2"
-            :value="BATCH_TYPE.CONDITION"
-            :disabled="helpShow"
-          >
-            已选现有筛选条件下全部的{{ count }}条数据
-          </a-radio>
-        </a-radio-group>
+        <st-batch-select-radio
+          :ids="this.ids"
+          v-model="batch_type"
+          :total="count"
+        ></st-batch-select-radio>
       </st-form-item>
       <st-form-item label="赠送额度" required>
         <st-input-number
@@ -88,7 +80,7 @@ export default {
     }
   },
   props: {
-    id: {
+    ids: {
       type: Array,
       required: true
     },
@@ -111,11 +103,6 @@ export default {
       form,
       decorators,
       show: false,
-      radioStyle: {
-        display: 'block',
-        height: '30px',
-        lineHeight: '30px'
-      },
       batch_type: BATCH_TYPE.SELECTED
     }
   },
@@ -130,7 +117,7 @@ export default {
     },
     operateDataNum() {
       return this.batch_type === this.BATCH_TYPE.SELECTED
-        ? this.id.length
+        ? this.ids.length
         : this.count
     }
   },
@@ -139,7 +126,7 @@ export default {
       this.form.validate().then(values => {
         this.givingService
           .setGive({
-            sold_ids: this.id,
+            sold_ids: this.ids,
             batch_type: this.batch_type,
             card_type: this.type,
             conditions: this.$searchQuery,

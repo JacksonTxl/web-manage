@@ -1,10 +1,5 @@
 <template>
-  <st-modal
-    v-model="show"
-    wrapClassName="task-success-tip"
-    size="small"
-    @cancel="onConfirm"
-  >
+  <st-modal v-model="show" size="small" @cancel="onConfirm">
     <div :class="b()">
       <div :class="b('title')">
         <st-icon
@@ -30,7 +25,7 @@
 export default {
   name: 'ModalSettingTaskTip',
   bem: {
-    b: 'modal-success-tip'
+    b: 'modal-task-success-tip'
   },
   data() {
     return {

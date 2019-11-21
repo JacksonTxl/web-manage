@@ -237,7 +237,7 @@ export default {
       this.$modalRouter.push({
         name: 'sold-course-giving',
         props: {
-          id: this.selectedRowKeys
+          ids: this.selectedRowKeys
         },
         on: {
           success: () => {
@@ -251,7 +251,7 @@ export default {
       this.$modalRouter.push({
         name: 'sold-course-extend-day',
         props: {
-          id: this.selectedRowKeys
+          ids: this.selectedRowKeys
         },
         on: {
           success: () => {
