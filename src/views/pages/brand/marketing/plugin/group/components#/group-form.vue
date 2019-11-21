@@ -28,10 +28,11 @@
         <a-row :gutter="8">
           <a-col :span="16">
             <st-form-item label="活动时间" required>
-              <st-range-picker
+              <st-range-picker-2
                 :disabledDays="180"
+                :options="activityOptions"
                 v-decorator="decorators.activity_time"
-              ></st-range-picker>
+              ></st-range-picker-2>
             </st-form-item>
           </a-col>
         </a-row>
@@ -197,9 +198,11 @@ export default {
       }
     }
   },
-  mounted() {
-    if (this.isEdit) {
-      this.setFieldsValue()
+  watch: {
+    info() {
+      if (this.isEdit) {
+        this.setFieldsValue()
+      }
     }
   },
   data() {
@@ -214,27 +217,22 @@ export default {
       activityState: Number, // 当前活动活动状态
       isLimit: true,
       releaseStatus: 1, // 发布状态
-      publishTime: null /* ,
-      selectTime: {
-        startTime: {
-          showTime: false,
-          disabledBegin: moment(),
+      publishTime: null,
+      activityOptions: {
+        start: {
+          showTime: true,
+          disabledBegin: moment().format('YYYY-MM-DD'),
           placeholder: '开始日期',
           disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD HH:mm',
-          change: $event => {}
+          format: 'YYYY-MM-DD HH:mm:ss'
         },
-        endTime: {
-          showTime: false,
+        end: {
+          showTime: true,
           placeholder: '结束日期',
           disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD HH:mm',
-          change: $event => {},
-          disabledDate: this.disabledDate
+          format: 'YYYY-MM-DD HH:mm:ss'
         }
-      } */
+      }
     }
   },
   methods: {
@@ -259,22 +257,8 @@ export default {
     },
     // 新建拼团活动
     onSubmit() {
-      /* let isReturn = false
-      if (!this.selectTime.startTime.value || !this.selectTime.endTime.value) {
-        this.errTips = '请选择活动时间'
-        this.helpShow = true
-        isReturn = true
-      } */
-      // if (
-      //   !this.publishTime &&
-      //   this.releaseStatus === this.RELEASE_STATUS.TIMING
-      // ) {
-      //   this.errText = '请选择发布时间'
-      //   this.showHelp = true
-      //   isReturn = true
-      // }
       this.form.validate().then(values => {
-        if (isReturn) return
+        console.log(values)
         this.$emit('onsubmit', {
           activity_name: values.activity_name, // 活动名称
           start_time: moment(values[0]).format('YYYY-MM-DD HH:mm'),
@@ -291,25 +275,21 @@ export default {
     },
     // 详情回显
     setFieldsValue() {
-      this.groupName = this.info.activity_name
       this.releaseStatus = this.info.published_type
-      // this.selectTime.startTime.value = moment(this.info.start_time)
-      // this.selectTime.endTime.value = moment(this.info.end_time)
       this.activityState = this.info.activity_state[0].id
       this.isLimit = this.info.is_limit_stock === 1
-      this.selectTime.startTime.disabled =
-        this.activityState > this.ACTIVITY_STATUS.PUBLISHER
       this.form.setFieldsValue({
-        published_time: this.info.published_time,
         activity_name: this.info.activity_name,
         group_sum: this.info.group_sum,
         valid_time: this.info.valid_time,
         stock_total: this.info.stock_total,
-        activity_time: {
-          startTime: moment(this.info.start_time),
-          endTime: moment(this.info.end_time)
-        }
+        activity_time: [this.info.start_time, this.info.end_time]
       })
+      if (this.releaseStatus === RELEASE_STATUS.TIMING) {
+        this.form.setFieldsValue({
+          published_time: this.info.published_time
+        })
+      }
     }
   },
   components: {

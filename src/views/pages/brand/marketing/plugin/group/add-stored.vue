@@ -6,6 +6,7 @@
     :isEdit="isEdit"
     :info="info"
     :shopIds="shopIds"
+    :groupParams="groupParams"
     @onsubmit="onSubmit"
   >
     <template slot="choose-product">
@@ -75,7 +76,7 @@ import moment, { months } from 'moment'
 import GroupForm from './components#/group-form.vue'
 import {
   ACTIVITY_STATUS,
-  RELEASE_SRTATUS
+  RELEASE_STATUS
 } from '@/constants/marketing/group-buy'
 
 export default {
@@ -158,10 +159,6 @@ export default {
           group_price: this.currentStored[0].group_price
         }
       ]
-
-      // sku: tmpList
-      // product_id: this.depositId
-
       if (!this.isEdit) {
         this.Add.addGroup(params).subscribe(res => {
           console.log(params, res, '这是添加返回的数据')

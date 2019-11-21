@@ -1,211 +1,4 @@
 <template>
-  <!-- <st-mina-panel app>
-    <div slot="actions">
-      <st-button :loading="loading.addGroup" type="primary" @click="onSubmit">
-        保 存
-      </st-button>
-    </div>
-    <div>
-      <st-form :form="form" labelWidth="118px">
-        <a-row :gutter="8">
-          <a-col :span="10">
-            <st-form-item label="活动名称" required>
-              <a-input
-                v-decorator="decorators.activity_name"
-                placeholder="请输入活动名称"
-                @change="changeName"
-                :disabled="isEdit && activityState > ACTIVITY_STATUS.UNDER_WAY"
-              >
-                <span slot="suffix">
-                  {{ groupName.length }}
-                  /30
-                </span>
-              </a-input>
-            </st-form-item>
-            <st-form-item required>
-              <span slot="label">
-                拼团门店
-                <st-help-tooltip id="TBPTXJ005" />
-              </span>
-              <a-input type="hidden" v-decorator="decorators.shopId" />
-              <a-select
-                showSearch
-                v-model="shopId"
-                :disabled="isEdit && activityState > ACTIVITY_STATUS.UNDER_WAY"
-                placeholder="请输入"
-                @change="changeShop"
-              >
-                <a-select-option
-                  :value="item.shop_id"
-                  v-for="(item, index) in shopList"
-                  :key="index"
-                >
-                  {{ item.shop_name }}
-                </a-select-option>
-              </a-select>
-            </st-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="8">
-          <a-col :span="10">
-            <st-form-item label="选择课程包" required>
-              <a-input type="hidden" v-decorator="decorators.courseId" />
-              <a-select
-                showSearch
-                v-model="courseId"
-                placeholder="请输入"
-                @change="changeCourse"
-                :disabled="isEdit && activityState > ACTIVITY_STATUS.UNDER_WAY"
-              >
-                <a-select-option
-                  :value="item.id"
-                  v-for="(item, index) in courseList"
-                  :key="index"
-                >
-                  {{ item.product_name }}
-                </a-select-option>
-              </a-select>
-            </st-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="8">
-          <a-col :span="16">
-            <st-form-item
-              label="优惠设置"
-              required
-              :help="tableText"
-              :validateStatus="tableErr ? 'error' : ''"
-            >
-              <div :class="basic('table')">
-                <st-table
-                  rowKey="id"
-                  :columns="cardColumns"
-                  :dataSource="tableData"
-                  :pagination="false"
-                  :scroll="{ y: 230 }"
-                  align="center"
-                >
-                  <template
-                    slot="group_price"
-                    slot-scope="customRender, record"
-                  >
-                    <st-input-number
-                      v-model="record.group_price"
-                      :disabled="
-                        isEdit && activityState > ACTIVITY_STATUS.UNDER_WAY
-                      "
-                    >
-                      <template slot="addonAfter">
-                        元
-                      </template>
-                    </st-input-number>
-                  </template>
-                </st-table>
-              </div>
-            </st-form-item>
-            <st-form-item
-              label="活动时间"
-              :help="errTips"
-              :validateStatus="helpShow ? 'error' : ''"
-              required
-            >
-              <st-range-picker
-                :disabledDays="180"
-                :value="selectTime"
-              ></st-range-picker>
-            </st-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="8">
-          <a-col :span="10">
-            <st-form-item required>
-              <span slot="label">
-                参团人数
-                <st-help-tooltip id="TBPTXJ001" />
-              </span>
-              <st-input-number
-                v-decorator="decorators.group_sum"
-                :disabled="isEdit && activityState > ACTIVITY_STATUS.UNDER_WAY"
-              >
-                <template slot="addonAfter">
-                  人
-                </template>
-              </st-input-number>
-            </st-form-item>
-            <st-form-item required>
-              <span slot="label">
-                拼团有效期
-                <st-help-tooltip id="TBPTXJ002" />
-              </span>
-              <st-input-number
-                v-decorator="decorators.valid_time"
-                :disabled="isEdit && activityState > ACTIVITY_STATUS.UNDER_WAY"
-              >
-                <template slot="addonAfter">
-                  小时
-                </template>
-              </st-input-number>
-            </st-form-item>
-            <st-form-item required>
-              <span slot="label">
-                活动库存
-                <st-help-tooltip id="TBPTXJ003" />
-              </span>
-              <a-checkbox
-                @change="limitStock"
-                :checked="isLimit"
-                :disabled="
-                  (isEdit && isLimit) || activityState >= ACTIVITY_STATUS.END
-                "
-              >
-                限制库存&nbsp;&nbsp;
-              </a-checkbox>
-              <st-input-number
-                v-if="isLimit"
-                :class="basic('stock')"
-                v-decorator="decorators.stock_total"
-                :disabled="isEdit && activityState >= ACTIVITY_STATUS.END"
-              ></st-input-number>
-            </st-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="8">
-          <a-col :span="10">
-            <st-form-item required>
-              <span slot="label">
-                发布状态
-                <st-help-tooltip id="TBPTXJ005" />
-              </span>
-              <a-radio-group
-                :defaultValue="releaseStatus || RELEASE_SRTATUS.PROMPTLY"
-                v-model="releaseStatus"
-                :disabled="isEdit && activityState > RELEASE_SRTATUS.PUBLISHER"
-              >
-                <a-radio :value="RELEASE_SRTATUS.PROMPTLY">立即发布</a-radio>
-                <a-radio :value="RELEASE_SRTATUS.TEMPORARILY">暂不发布</a-radio>
-                <a-radio :value="RELEASE_SRTATUS.TIMING">定时发布</a-radio>
-              </a-radio-group>
-            </st-form-item>
-            <st-form-item
-              label="发布时间"
-              required
-              :help="errText"
-              :validateStatus="showHelp ? 'error' : ''"
-              v-if="releaseStatus === RELEASE_SRTATUS.TIMING"
-              :disabled="isEdit && activityState > ACTIVITY_STATUS.UNDER_WAY"
-            >
-              <a-date-picker
-                :disabledDate="disabledDate"
-                :showTime="{ format: 'HH:mm' }"
-                format="YYYY-MM-DD HH:mm"
-                v-model="publishTime"
-              />
-            </st-form-item>
-          </a-col>
-        </a-row>
-      </st-form>
-    </div>
-  </st-mina-panel> -->
   <group-form
     :form="form"
     :decorators="decorators"
@@ -214,6 +7,7 @@
     :info="info"
     :shopIds="shopIds"
     @onsubmit="onSubmit"
+    :showSelectShop="false"
   >
     <template slot="choose-product">
       <a-row :gutter="8">
@@ -309,7 +103,7 @@ import { AddCourseService } from './add-course.service'
 import { UserService } from '@/services/user.service'
 import {
   ACTIVITY_STATUS,
-  RELEASE_SRTATUS
+  RELEASE_STATUS
 } from '@/constants/marketing/group-buy'
 import moment from 'moment'
 export default {
@@ -361,7 +155,6 @@ export default {
       courseId: '',
       tableData: [],
       isLimit: true,
-      releaseStatus: 1, // 发布状态
       selectTime: {
         startTime: {
           showTime: false,
@@ -385,7 +178,7 @@ export default {
       publishTime: null,
       activityState: Number,
       ACTIVITY_STATUS,
-      RELEASE_SRTATUS,
+      RELEASE_STATUS,
       errTips: '', // 活动时间错误提示
       errText: '', // 发布时间错误提示
       tableText: '', // 优惠设置错误提示
@@ -475,24 +268,10 @@ export default {
     // 详情回显
     setFieldsValue() {
       console.log(this.info, 'support_shop')
-      this.groupName = this.info.activity_name
-      this.releaseStatus = this.info.published_type
-      // this.shopId = this.info.support_shop[0].shop_id
-      this.selectTime.startTime.value = moment(this.info.start_time)
-      this.selectTime.endTime.value = moment(this.info.end_time)
       this.activityState = this.info.activity_state[0].id
       this.courseId = this.info.product.id
       this.tableData = this.info.sku
-      this.isLimit = this.info.is_limit_stock === 1
-      this.selectTime.startTime.disabled =
-        this.activityState > this.ACTIVITY_STATUS.PUBLISHER
-      this.form.setFieldsValue({
-        activity_name: this.info.activity_name,
-        group_sum: this.info.group_sum,
-        valid_time: this.info.valid_time,
-        stock_total: this.info.stock_total
-      })
-      this.shopId = this.info.shop_ids[0]
+      this.shopId = this.info.support_shop[0]
     }
   },
   components: {
