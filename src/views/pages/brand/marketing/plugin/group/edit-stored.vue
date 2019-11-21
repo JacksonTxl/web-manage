@@ -18,9 +18,6 @@ export default {
       list: this.edit.list$
     }
   },
-  mounted() {
-    console.log(this.list)
-  },
   components: {
     storedCard
   }
