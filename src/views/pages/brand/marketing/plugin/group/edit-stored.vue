@@ -6,7 +6,7 @@
 import storedCard from './add-stored'
 import { EditStoredService } from './edit-stored.service'
 export default {
-  // name: PageBrandMarketingGroupEditStored,
+  name: 'PageBrandMarketingGroupEditStored',
   serviceInject() {
     return {
       edit: EditStoredService
