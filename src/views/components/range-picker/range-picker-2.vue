@@ -97,14 +97,14 @@ export default {
   },
   methods: {
     disabledStartDate(newStartValue) {
-      if (!newStartValue || !this.endValue) {
-        return false
-      }
       if (this.startOptions.disabledBegin) {
         return (
           newStartValue.valueOf() <
           moment(this.startOptions.disabledBegin).valueOf()
         )
+      }
+      if (!newStartValue || !this.endValue) {
+        return false
       }
       return newStartValue.valueOf() > this.endValue.valueOf()
     },
