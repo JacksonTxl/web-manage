@@ -19,7 +19,6 @@ export class DataService implements Controller {
   getData(params: GroupData) {
     return this.groupBuyApi.getData(params).pipe(
       tap((res: any) => {
-        console.log(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
         this.collect$.commit(() => res.collect)
