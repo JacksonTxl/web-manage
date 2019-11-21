@@ -134,10 +134,10 @@ export default {
       shopList: null
     }
   },
-  mounted() {
-    if (this.isEdit) {
+  watch: {
+    info(n, o) {
+      console.log('kll')
       this.setFieldsValue()
-      this.depositList = this.list
     }
   },
   methods: {
@@ -170,6 +170,7 @@ export default {
       }
     },
     setFieldsValue() {
+      console.log(this.info)
       this.activityState = this.info.activity_state[0].id
       this.depositId = this.info.product.id
       this.currentStored = this.info.sku
