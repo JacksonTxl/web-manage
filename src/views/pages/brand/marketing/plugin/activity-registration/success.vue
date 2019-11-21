@@ -34,7 +34,7 @@
 </template>
 <script>
 import { SuccessService } from './success.service'
-import useShare from '@/hooks/marketing/poster.hook'
+import useShare from '@/hooks/marketing/share.hook'
 export default {
   name: 'ReleaseActivity',
   bem: {

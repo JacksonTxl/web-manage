@@ -66,11 +66,8 @@
   </div>
 </template>
 <script>
-import MarketingPoster from '@/views/biz-modals/brand/marketing/share-poster'
-import MarketingQrCode from '@/views/biz-modals/brand/marketing/qr-code'
 import { SuccessService } from './success.service'
-import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
-import useShare from '@/hooks/marketing/poster.hook'
+import useShare from '@/hooks/marketing/share.hook'
 
 export default {
   name: 'PluginLotteryAdd',

@@ -109,9 +109,7 @@ import MarkteingPluginTitle from '../../components#/marketing-title'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
 import { TYPE } from '@/constants/marketing/plugin'
-import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
-import BrandMarketingPoster from '@/views/biz-modals/brand/marketing/share-poster'
-import useShare from '@/hooks/marketing/poster.hook'
+import useShare from '@/hooks/marketing/share.hook'
 
 export default {
   name: 'PageBrandMarketingPluginCouponList',

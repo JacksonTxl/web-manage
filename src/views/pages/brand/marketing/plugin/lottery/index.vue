@@ -120,7 +120,7 @@ import { columns } from './index.config.ts'
 import tableMixin from '@/mixins/table.mixin'
 import { ACTIVITY_STATUS } from '@/constants/marketing/lottery'
 import { TYPE } from '@/constants/marketing/plugin'
-import useShare from '@/hooks/marketing/poster.hook'
+import useShare from '@/hooks/marketing/share.hook'
 export default {
   name: 'PluginLotteryIndex',
   mixins: [tableMixin],
