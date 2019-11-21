@@ -34,6 +34,32 @@
           ></a-input>
         </st-form-item>
         <st-hr class="mg-y32"></st-hr>
+        <a-row :gutter="8" v-if="$searchQuery.type === '1'">
+          <a-col :lg="23">
+            <st-form-item
+              class="page-content-card-admission-range mg-t4"
+              required
+            >
+              <template slot="label">
+                支持入场人数
+                <st-help-tooltip id="TBMCDC001" />
+              </template>
+              <a-select
+                v-decorator="decorators.cardData.support_member_num"
+                placeholder="请选择入场人数"
+              >
+                <a-select-option
+                  v-for="(item, index) in supportMemeberNums"
+                  :key="index"
+                  :value="item.value"
+                >
+                  {{ item.label }}
+                </a-select-option>
+              </a-select>
+            </st-form-item>
+          </a-col>
+        </a-row>
+
         <a-row :gutter="8">
           <a-col :lg="23">
             <st-form-item
@@ -663,7 +689,10 @@ export default {
       MEMBER_CARD,
       cardData: {
         // 会员卡类型1-次卡 2-期限卡
-        card_type: CARD_TYPE.NUMBER,
+        card_type:
+          this.$searchQuery.type === '1'
+            ? CARD_TYPE.MORE_NUMBER
+            : CARD_TYPE.NUMBER,
         // 会员卡名称
         card_name: '',
         // 支持入场范围 1-单店 2-多店 3-全店
@@ -804,6 +833,12 @@ export default {
           this.cardData.num = this.cardData._is_transfer
             ? +values.cardData.num
             : undefined
+          if (!this.$searchQuery.type) {
+            this.cardData.support_member_num = 1
+          } else {
+            this.cardData.support_member_num =
+              values.cardData.support_member_num
+          }
           this.addService.addCard(this.cardData).subscribe(res => {
             this.$router.push({
               name: 'brand-product-card-member-list-all'

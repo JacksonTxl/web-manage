@@ -266,11 +266,17 @@ export default {
   methods: {
     // 编辑
     onEdit(record) {
+      const query = {
+        id: record.id
+      }
+      if (record.card_number_type === 2) {
+        query.type = 1
+      }
       this.$router.push({
         path: `/brand/product/card/member/${
           this.CARD_TYPE[record.card_type.id]
         }/edit`,
-        query: { id: record.id }
+        query
       })
     },
     // 上架
