@@ -259,20 +259,6 @@ export default {
     },
     // 新建拼团活动
     onSubmit() {
-      /* let isReturn = false
-      if (!this.selectTime.startTime.value || !this.selectTime.endTime.value) {
-        this.errTips = '请选择活动时间'
-        this.helpShow = true
-        isReturn = true
-      } */
-      // if (
-      //   !this.publishTime &&
-      //   this.releaseStatus === this.RELEASE_STATUS.TIMING
-      // ) {
-      //   this.errText = '请选择发布时间'
-      //   this.showHelp = true
-      //   isReturn = true
-      // }
       this.form.validate().then(values => {
         if (isReturn) return
         this.$emit('onsubmit', {
@@ -293,12 +279,10 @@ export default {
     setFieldsValue() {
       this.groupName = this.info.activity_name
       this.releaseStatus = this.info.published_type
-      // this.selectTime.startTime.value = moment(this.info.start_time)
-      // this.selectTime.endTime.value = moment(this.info.end_time)
       this.activityState = this.info.activity_state[0].id
       this.isLimit = this.info.is_limit_stock === 1
-      this.selectTime.startTime.disabled =
-        this.activityState > this.ACTIVITY_STATUS.PUBLISHER
+      /* this.selectTime.startTime.disabled =
+        this.activityState > this.ACTIVITY_STATUS.PUBLISHER */
       this.form.setFieldsValue({
         published_time: this.info.published_time,
         activity_name: this.info.activity_name,
@@ -306,8 +290,8 @@ export default {
         valid_time: this.info.valid_time,
         stock_total: this.info.stock_total,
         activity_time: {
-          startTime: moment(this.info.start_time),
-          endTime: moment(this.info.end_time)
+          startTime: { value: moment(this.info.start_time) },
+          endTime: { value: moment(this.info.end_time) }
         }
       })
     }
