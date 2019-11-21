@@ -45,7 +45,7 @@ export interface GroupData {
   group_status: number
   search_where: string
 }
-export interface CoachList {
+export interface GroupDataId {
   id: number
 }
 export class GroupBuyApi extends Api {
@@ -112,13 +112,13 @@ export class GroupBuyApi extends Api {
     return this.http.get('/v1/course/personal/coach_level/', { params })
   }
   /**
-   * 获取教练列表
+   * 拼团结束
    */
   stopGroupList(params: { id: number }) {
     return this.http.get('/v1/plugin/group_buy/stop/', { params })
   }
   /**
-   * 获取教练列表
+   * 拼团发布
    */
   releaseGroupList(params: { id: number }) {
     return this.http.get('/v1/plugin/group_buy/release/', { params })
@@ -128,5 +128,12 @@ export class GroupBuyApi extends Api {
    */
   getPosterInfo(params: { id: number }) {
     return this.http.get('/v1/plugin/group_buy/spread/', { params })
+  }
+  /**
+   * 获取数据top
+   */
+  getGroupBuyDataTop(query: GroupDataId) {
+    console.log(query)
+    return this.http.get('/v1/plugin/group_buy/data_top/322')
   }
 }
