@@ -2,7 +2,7 @@
   <st-modal :title="title" v-model="show" width="400px" :footer="null">
     <div :class="basic()">
       <p :class="basic('tip')">{{ message }}</p>
-      <st-image :src="url" :class="basic('qrcode')" />
+      <st-image :src="qrCodeUrl" :class="basic('qrcode')" />
       <st-button
         block
         pill
@@ -19,7 +19,7 @@
 </template>
 <script>
 export default {
-  name: 'BrandMarketingPoster',
+  name: 'BrandMarketingQrcode',
   bem: {
     basic: 'brand-marketing-share'
   },
@@ -39,7 +39,7 @@ export default {
   methods: {
     downloadPoster() {
       const a = document.createElement('a')
-      a.href = this.url
+      a.href = this.qrCodeUrl
       a.target = '_blank'
       a.download = 'poster.png'
       a.click()

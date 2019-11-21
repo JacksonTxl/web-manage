@@ -111,7 +111,7 @@ import { ListService } from './list.service'
 import MarkteingPluginTitle from '../../components#/marketing-title'
 import { columns } from './list.config'
 import { TYPE } from '@/constants/marketing/plugin'
-import useShare from '@/hooks/marketing/poster.hook'
+import useShare from '@/hooks/marketing/share.hook'
 // modal
 export default {
   name: 'ActivityList',

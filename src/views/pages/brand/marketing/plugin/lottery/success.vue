@@ -66,11 +66,8 @@
   </div>
 </template>
 <script>
-import MarketingPoster from '@/views/biz-modals/brand/marketing/share-poster'
-import MarketingQrCode from '@/views/biz-modals/brand/marketing/qr-code'
 import { SuccessService } from './success.service'
-import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
-import useShare from '@/hooks/marketing/poster.hook'
+import useShare from '@/hooks/marketing/share.hook'
 
 export default {
   name: 'PluginLotteryAdd',
@@ -91,7 +88,7 @@ export default {
   },
   hooks() {
     return {
-      share: userShare()
+      share: useShare()
     }
   },
   computed: {
@@ -112,8 +109,8 @@ export default {
       })
     },
     pushQrCodeModal() {
-      this.service.getQrCode(this.lotteryId).subscribe(() => {
-        this.share.qrCode({ qrCodeUrl: this.qrcode$ })
+      this.service.getQrCode(this.lotteryId).subscribe(res => {
+        this.share.qrCode({ isAuth: res.is_auth, qrCodeUrl: this.qrcode$ })
       })
     }
   }
