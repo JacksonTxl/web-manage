@@ -279,13 +279,17 @@ export default {
       this.activityState = this.info.activity_state[0].id
       this.isLimit = this.info.is_limit_stock === 1
       this.form.setFieldsValue({
-        published_time: this.info.published_time,
         activity_name: this.info.activity_name,
         group_sum: this.info.group_sum,
         valid_time: this.info.valid_time,
         stock_total: this.info.stock_total,
         activity_time: [this.info.start_time, this.info.end_time]
       })
+      if (this.releaseStatus === RELEASE_STATUS.TIMING) {
+        this.form.setFieldsValue({
+          published_time: this.info.published_time
+        })
+      }
     }
   },
   components: {

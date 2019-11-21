@@ -140,6 +140,256 @@
             "order_id": "31"
           }
         ]
+      },
+      {
+        "id": "6",
+        "start_time": "2019-11-14 10:00:00",
+        "shop_name": "门店1",
+        "group_status": "拼团成功",
+        "member_name": "会员名",
+        "member_type": "团长",
+        "member_mobile": "13111112222",
+        "join_start_time": "2019-11-14 10:00:00",
+        "is_new_member": "新用户",
+        "order_id": "23213312",
+        "children": [
+          {
+            "id": "2",
+            "start_time": "2019-11-14 10:00:00",
+            "shop_name": "门店1",
+            "group_status": "拼团成功",
+            "member_name": "会员名",
+            "member_type": "团员",
+            "member_mobile": "13111112222",
+            "join_start_time": "2019-11-14 10:00:00",
+            "is_new_member": "新用户",
+            "order_id": "212312"
+          },
+          {
+            "id": "15",
+            "start_time": "2019-11-14 10:00:00",
+            "shop_name": "门店1",
+            "group_status": "拼团成功",
+            "member_name": "会员名",
+            "member_type": "团员",
+            "member_mobile": "13111112222",
+            "join_start_time": "2019-11-14 10:00:00",
+            "is_new_member": "新用户",
+            "order_id": "212312"
+          },
+          {
+            "id": "14",
+            "start_time": "2019-11-14 10:00:00",
+            "shop_name": "门店1",
+            "group_status": "拼团成功",
+            "member_name": "会员名",
+            "member_type": "团员",
+            "member_mobile": "13111112222",
+            "join_start_time": "2019-11-14 10:00:00",
+            "is_new_member": "新用户",
+            "order_id": "212312"
+          }
+        ]
+      },
+      {
+        "id": "13556",
+        "start_time": "2019-11-14 10:00:00",
+        "shop_name": "门店1",
+        "group_status": "拼团成功",
+        "member_name": "会员名",
+        "member_type": "团长",
+        "member_mobile": "13111112222",
+        "join_start_time": "2019-11-14 10:00:00",
+        "is_new_member": "新用户",
+        "order_id": "23213312",
+        "children": [
+          {
+            "id": "11654652",
+            "start_time": "2019-11-14 10:00:00",
+            "shop_name": "门店1",
+            "group_status": "拼团成功",
+            "member_name": "会员名",
+            "member_type": "团员",
+            "member_mobile": "13111112222",
+            "join_start_time": "2019-11-14 10:00:00",
+            "is_new_member": "新用户",
+            "order_id": "212312"
+          },
+          {
+            "id": "14556",
+            "start_time": "2019-11-14 10:00:00",
+            "shop_name": "门店1",
+            "group_status": "拼团成功",
+            "member_name": "会员名",
+            "member_type": "团员",
+            "member_mobile": "13111112222",
+            "join_start_time": "2019-11-14 10:00:00",
+            "is_new_member": "新用户",
+            "order_id": "212312"
+          },
+          {
+            "id": "152",
+            "start_time": "2019-11-14 10:00:00",
+            "shop_name": "门店1",
+            "group_status": "拼团成功",
+            "member_name": "会员名",
+            "member_type": "团员",
+            "member_mobile": "13111112222",
+            "join_start_time": "2019-11-14 10:00:00",
+            "is_new_member": "新用户",
+            "order_id": "212312"
+          }
+        ]
+      },
+      {
+        "id": "134556",
+        "start_time": "2019-11-14 10:00:00",
+        "shop_name": "门店1",
+        "group_status": "拼团成功",
+        "member_name": "会员名",
+        "member_type": "团长",
+        "member_mobile": "13111112222",
+        "join_start_time": "2019-11-14 10:00:00",
+        "is_new_member": "新用户",
+        "order_id": "23213312",
+        "children": [
+          {
+            "id": "141652",
+            "start_time": "2019-11-14 10:00:00",
+            "shop_name": "门店1",
+            "group_status": "拼团成功",
+            "member_name": "会员名",
+            "member_type": "团员",
+            "member_mobile": "13111112222",
+            "join_start_time": "2019-11-14 10:00:00",
+            "is_new_member": "新用户",
+            "order_id": "212312"
+          },
+          {
+            "id": "14345",
+            "start_time": "2019-11-14 10:00:00",
+            "shop_name": "门店1",
+            "group_status": "拼团成功",
+            "member_name": "会员名",
+            "member_type": "团员",
+            "member_mobile": "13111112222",
+            "join_start_time": "2019-11-14 10:00:00",
+            "is_new_member": "新用户",
+            "order_id": "212312"
+          },
+          {
+            "id": "144352",
+            "start_time": "2019-11-14 10:00:00",
+            "shop_name": "门店1",
+            "group_status": "拼团成功",
+            "member_name": "会员名",
+            "member_type": "团员",
+            "member_mobile": "13111112222",
+            "join_start_time": "2019-11-14 10:00:00",
+            "is_new_member": "新用户",
+            "order_id": "212312"
+          }
+        ]
+      },
+      {
+        "id": "14356",
+        "start_time": "2019-11-14 10:00:00",
+        "shop_name": "门店1",
+        "group_status": "拼团成功",
+        "member_name": "会员名",
+        "member_type": "团长",
+        "member_mobile": "13111112222",
+        "join_start_time": "2019-11-14 10:00:00",
+        "is_new_member": "新用户",
+        "order_id": "23213312",
+        "children": [
+          {
+            "id": "116652",
+            "start_time": "2019-11-14 10:00:00",
+            "shop_name": "门店1",
+            "group_status": "拼团成功",
+            "member_name": "会员名",
+            "member_type": "团员",
+            "member_mobile": "13111112222",
+            "join_start_time": "2019-11-14 10:00:00",
+            "is_new_member": "新用户",
+            "order_id": "212312"
+          },
+          {
+            "id": "1345",
+            "start_time": "2019-11-14 10:00:00",
+            "shop_name": "门店1",
+            "group_status": "拼团成功",
+            "member_name": "会员名",
+            "member_type": "团员",
+            "member_mobile": "13111112222",
+            "join_start_time": "2019-11-14 10:00:00",
+            "is_new_member": "新用户",
+            "order_id": "212312"
+          },
+          {
+            "id": "1486352",
+            "start_time": "2019-11-14 10:00:00",
+            "shop_name": "门店1",
+            "group_status": "拼团成功",
+            "member_name": "会员名",
+            "member_type": "团员",
+            "member_mobile": "13111112222",
+            "join_start_time": "2019-11-14 10:00:00",
+            "is_new_member": "新用户",
+            "order_id": "212312"
+          }
+        ]
+      },
+      {
+        "id": "137856",
+        "start_time": "2019-11-14 10:00:00",
+        "shop_name": "门店1",
+        "group_status": "拼团成功",
+        "member_name": "会员名",
+        "member_type": "团长",
+        "member_mobile": "13111112222",
+        "join_start_time": "2019-11-14 10:00:00",
+        "is_new_member": "新用户",
+        "order_id": "23213312",
+        "children": [
+          {
+            "id": "1178652",
+            "start_time": "2019-11-14 10:00:00",
+            "shop_name": "门店1",
+            "group_status": "拼团成功",
+            "member_name": "会员名",
+            "member_type": "团员",
+            "member_mobile": "13111112222",
+            "join_start_time": "2019-11-14 10:00:00",
+            "is_new_member": "新用户",
+            "order_id": "212312"
+          },
+          {
+            "id": "14785",
+            "start_time": "2019-11-14 10:00:00",
+            "shop_name": "门店1",
+            "group_status": "拼团成功",
+            "member_name": "会员名",
+            "member_type": "团员",
+            "member_mobile": "13111112222",
+            "join_start_time": "2019-11-14 10:00:00",
+            "is_new_member": "新用户",
+            "order_id": "212312"
+          },
+          {
+            "id": "1408352",
+            "start_time": "2019-11-14 10:00:00",
+            "shop_name": "门店1",
+            "group_status": "拼团成功",
+            "member_name": "会员名",
+            "member_type": "团员",
+            "member_mobile": "13111112222",
+            "join_start_time": "2019-11-14 10:00:00",
+            "is_new_member": "新用户",
+            "order_id": "212312"
+          }
+        ]
       }
     ],
     "page": {

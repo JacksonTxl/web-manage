@@ -3,16 +3,13 @@
     <st-panel-layout>
       <st-panel class="mg-b12" app>
         <!-- 这里是动态 -->
-        <st-t2>
-          双十一健身拼团活动
-        </st-t2>
+        <st-t2></st-t2>
         <div :class="activities('desc')">
           <p :class="activities('activity')">活动商品：健身房年卡</p>
           <p :class="activities('activity')">
             活动时间：2019-05-20 10:38~2019-05-27 10:38
           </p>
         </div>
-        <!-- <Header :id="query.id" /> -->
       </st-panel>
       <st-panel>
         <div :class="activities('block')">
@@ -85,7 +82,7 @@
           :class="activities('select')"
           v-model="groupStatus"
           placeholder="活动状态"
-          @change="onGroupSearch('data_status', $event)"
+          @change="onSingleSearch('data_status', $event)"
           style="width: 130px"
         >
           <a-select-option v-for="item in groupType" :key="item.value">
@@ -94,7 +91,7 @@
         </a-select>
         <st-input-search
           v-model="searchWhere"
-          @search="onGroupSearch('searchWhere', $event)"
+          @search="onSingleSearch('searchWhere', $event)"
           placeholder="请输入活动名称"
         />
       </header>
@@ -126,7 +123,7 @@ import { DataService } from './data.service.ts'
 import { columns } from './data.config.ts'
 import { State, Effect } from 'rx-state'
 import tableMixin from '@/mixins/table.mixin'
-
+import Header from '../lottery/info/components#/header'
 let Color = ''
 export default {
   name: 'PageBrandMarketingPluginGroupListData',
@@ -143,8 +140,8 @@ export default {
     return {
       list: this.dataService.list$,
       page: this.dataService.page$,
-      collect: this.dataService.collect$
-      // loading: this.listService.loading$
+      collect: this.dataService.collect$,
+      loading: this.dataService.loading$
     }
   },
   data(vm) {
@@ -163,34 +160,34 @@ export default {
       }
     }
   },
-  watch: {
-    $searchQuery(newVal) {
-      console.log(newVal)
-      this.setSearchData()
-    }
-  },
+
   computed: {
     group_status() {
       return (this.dataEnum && this.dataEnum.group_status) || []
     },
     groupType() {
       let list = []
-      Object.entries(this.group_status.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
+      Object.entries(this.group_status.value).forEach(item => {
+        list.push({ value: +item[0], label: item[1] })
       })
       return [{ value: -1, label: '全部状态' }, ...list]
       // console.log(list)
     }
   },
+  watch: {
+    $searchQuery(newVal) {
+      console.log(newVal)
+      this.setSearchData()
+    }
+  },
   mounted() {
     this.setSearchData()
-    console.log(this.$searchQuery)
+    console.log(this.dataService)
   },
 
   methods: {
     setSearchData() {
       let { search_where, group_status } = this.$searchQuery
-      console.log(search_where, group_status)
       this.searchWhere = search_where
       this.groupStatus = group_status || -1
     },
@@ -211,9 +208,9 @@ export default {
         return name.indexOf('shadow') === -1 ? name : name.replace('shadow', '')
       }
     },
-    // onGroupSearch(val, e) {
-    //   console.log(val, e)
-    // },
+    onGroupSearch(val, e) {
+      console.log(val, e)
+    },
     onShow(list) {
       this.showList = list
       this.rowClassName()
