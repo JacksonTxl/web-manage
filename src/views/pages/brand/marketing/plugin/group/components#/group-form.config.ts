@@ -9,11 +9,8 @@ export default (vm: any) => {
             if (!value) {
               return '请填写活动名称'
             }
-            if (value.length > 30) {
-              return '活动名称长度不能超过30，请重新输入'
-            }
-            if (!pattern.CN_EN_NUM.test(value)) {
-              return '输入的活动名称格式错误，请重新输入'
+            if (!value.match(pattern.CN_EN_NUM_SPACE('1-30'))) {
+              return '请输入活动名称，支持格式长度1~30中英文'
             }
           }
         }

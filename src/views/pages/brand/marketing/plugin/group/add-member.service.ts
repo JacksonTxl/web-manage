@@ -30,7 +30,6 @@ export class AddMemberService implements Controller {
   getMemberList() {
     return this.groupBuyApi.getMemberList().pipe(
       tap((res: any) => {
-        console.log(res, '===================')
         this.memberList$.commit(() => res.list)
       })
     )

@@ -7,6 +7,7 @@
     :info="info"
     :shopIds="shopIds"
     @onsubmit="onSubmit"
+    :groupParams="groupParams"
   >
     <template slot="choose-product">
       <a-row :gutter="8">
@@ -74,10 +75,12 @@ import GroupForm from './components#/group-form'
 import { ruleOptions, cardColumns } from './add-member.config'
 import { AddMemberService } from './add-member.service'
 import { values } from 'lodash-es'
+import { PatternService } from '@/services/pattern.service'
 export default {
   serviceInject() {
     return {
-      addMemberService: AddMemberService
+      addMemberService: AddMemberService,
+      pattern: PatternService
     }
   },
   rxState() {
@@ -96,13 +99,16 @@ export default {
       form,
       decorators,
       cardId: '',
-      skuList: [{ id: 1, spec: '30次', price: 100 }],
       selectedRowKeys: [], // 优惠设置选中项
       cardColumns,
       tableText: '',
       tableErr: false,
       tableData: [],
-      shopIds: []
+      shopIds: [],
+      groupParams: {
+        type: 1,
+        id: null
+      }
     }
   },
   props: {
@@ -130,6 +136,7 @@ export default {
       this.form.setFieldsValue({
         cardId: value
       })
+      this.groupParams.id = value
       this.memberList.filter(item => {
         if (item.id === value) {
           this.tableData = item.product_spec
