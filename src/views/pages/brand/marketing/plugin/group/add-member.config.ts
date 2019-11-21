@@ -72,6 +72,18 @@ export const ruleOptions = (vm: any) => {
           }
         }
       ]
+    },
+    activity_time: {
+      rules: [
+        {
+          validator: (field: any, value: any, values: any) => {
+            console.log(value)
+            if (!value) {
+              return '请填写活动时间'
+            }
+          }
+        }
+      ]
     }
   }
 }

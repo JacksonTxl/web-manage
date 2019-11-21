@@ -28,10 +28,11 @@
         <a-row :gutter="8">
           <a-col :span="16">
             <st-form-item label="活动时间" required>
-              <st-range-picker
+              <st-range-picker-2
                 :disabledDays="180"
+                :options="activityOptions"
                 v-decorator="decorators.activity_time"
-              ></st-range-picker>
+              ></st-range-picker-2>
             </st-form-item>
           </a-col>
         </a-row>
@@ -214,27 +215,22 @@ export default {
       activityState: Number, // 当前活动活动状态
       isLimit: true,
       releaseStatus: 1, // 发布状态
-      publishTime: null /* ,
-      selectTime: {
-        startTime: {
-          showTime: false,
-          disabledBegin: moment(),
+      publishTime: null,
+      activityOptions: {
+        start: {
+          showTime: true,
+          disabledBegin: moment().format('YYYY-MM-DD'),
           placeholder: '开始日期',
           disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD HH:mm',
-          change: $event => {}
+          format: 'YYYY-MM-DD HH:mm:ss'
         },
-        endTime: {
-          showTime: false,
+        end: {
+          showTime: true,
           placeholder: '结束日期',
           disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD HH:mm',
-          change: $event => {},
-          disabledDate: this.disabledDate
+          format: 'YYYY-MM-DD HH:mm:ss'
         }
-      } */
+      }
     }
   },
   methods: {
