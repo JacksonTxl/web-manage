@@ -117,10 +117,6 @@ export default {
   bem: {
     basic: 'page-brand-plugin-coupon'
   },
-  modals: {
-    BrandMarketingBind,
-    BrandMarketingPoster
-  },
   serviceInject() {
     return {
       listService: ListService,
