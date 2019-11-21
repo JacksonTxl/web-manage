@@ -1,0 +1,68 @@
+{
+  "code": 0,
+  "msg": "success",
+  "data": {
+    "list": [
+      {
+        "id": 1,
+        "brand_id": 1,
+        "shop_id": 1,
+        "product_name": "课程包1",
+        "product_spec": [
+          {
+            "id": 1,
+            "price": 100
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "brand_id": 1,
+        "shop_id": 1,
+        "product_name": "课程包12",
+        "product_spec": [
+          {
+            "id": 1,
+            "price": 100
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "brand_id": 1,
+        "shop_id": 1,
+        "product_name": "课程包13",
+        "product_spec": [
+          {
+            "id": 1,
+            "price": 100
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "brand_id": 1,
+        "shop_id": 1,
+        "product_name": "课程包14",
+        "product_spec": [
+          {
+            "id": 1,
+            "price": 100
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "brand_id": 1,
+        "shop_id": 1,
+        "product_name": "课程包15",
+        "product_spec": [
+          {
+            "id": 1,
+            "price": 100
+          }
+        ]
+      }
+    ]
+  }
+}
