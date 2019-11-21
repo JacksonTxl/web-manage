@@ -25,7 +25,7 @@
         <!-- NOTE: 导出 -->
         <!-- <st-button type="primary" class="mg-r8" v-if="auth.export">批量导出</st-button> -->
       </div>
-      <div :class="basic('table')">
+      <div>
         <!--
           NOTE: 本期没有按钮不做
           :alertSelection="{onReset: onClear}"
