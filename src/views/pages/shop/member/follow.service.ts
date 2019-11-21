@@ -73,7 +73,7 @@ export class FollowService implements Controller {
     return this.statApi.getFollowOperatoList().pipe(
       tap((res: any) => {
         this.operatorList$.commit(() => {
-          return [{ id: -1, name: '录入人' }, ...res.list]
+          return [{ id: -1, name: '全部' }, ...res.list]
         })
       })
     )
