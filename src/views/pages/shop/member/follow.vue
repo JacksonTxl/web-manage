@@ -123,9 +123,9 @@
           v-if="auth['shop:member:member|get']"
           @click="infoFunc(record)"
         >
-          {{ record.operator.label }}
+          {{ record.member.label }}
         </a>
-        <span v-else>{{ record.operator.label }}</span>
+        <span v-else>{{ record.member.label }}</span>
       </span>
       <span slot="member_level" slot-scope="text, record">
         {{ record.member_level.label }}
