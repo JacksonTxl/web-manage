@@ -87,10 +87,11 @@ export default {
     type: {
       type: [String, Number],
       required: true
-    }
+    },
+    searchQuery: Object
   },
   mounted() {
-    const params = cloneDeep(this.$searchQuery)
+    const params = cloneDeep(this.searchQuery)
     params.card_type = this.type
     this.givingService.fetchCardNum(params).subscribe()
   },
@@ -129,7 +130,7 @@ export default {
             sold_ids: this.ids,
             batch_type: this.batch_type,
             card_type: this.type,
-            conditions: this.$searchQuery,
+            conditions: this.searchQuery,
             ...values
           })
           .subscribe(res => {

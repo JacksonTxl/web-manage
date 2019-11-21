@@ -237,7 +237,8 @@ export default {
       this.$modalRouter.push({
         name: 'sold-course-giving',
         props: {
-          ids: this.selectedRowKeys
+          ids: this.selectedRowKeys,
+          searchQuery: cloneDeep(this.$searchQuery)
         },
         on: {
           success: () => {
@@ -251,7 +252,8 @@ export default {
       this.$modalRouter.push({
         name: 'sold-course-extend-day',
         props: {
-          ids: this.selectedRowKeys
+          ids: this.selectedRowKeys,
+          searchQuery: cloneDeep(this.$searchQuery)
         },
         on: {
           success: () => {

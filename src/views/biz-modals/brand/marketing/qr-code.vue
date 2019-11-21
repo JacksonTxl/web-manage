@@ -24,7 +24,7 @@ export default {
     basic: 'brand-marketing-share'
   },
   props: {
-    url: String
+    qrCodeUrl: String
   },
   data() {
     return {

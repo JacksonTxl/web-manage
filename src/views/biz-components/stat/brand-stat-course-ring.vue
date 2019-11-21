@@ -10,6 +10,7 @@ import { decimalFilter } from './filters'
 import StHelpTooltip from '@/views/components/help-tooltip/help-tooltip'
 
 export default {
+  name: 'BrandStatCourseRing',
   mixins: [chartMixin],
   props: {
     data: {
@@ -27,6 +28,10 @@ export default {
     tooltipId: {
       type: String,
       default: ''
+    },
+    total: {
+      type: Number,
+      default: 0
     },
     colors: {
       type: Array,
@@ -194,6 +199,10 @@ export default {
         const origin = e.data._origin
         $s('.guide-value').textContent = origin.value
         $s('.guide-name').textContent = origin.name
+      })
+      this.chart.on('interval:mouseleave', e => {
+        $s('.guide-value').textContent = this.total
+        $s('.guide-name').textContent = this.name
       })
       const legendListItems = [
         ...this.$el.querySelectorAll('.g2-legend-list-item')

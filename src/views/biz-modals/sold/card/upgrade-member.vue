@@ -95,13 +95,13 @@
               <st-input-number
                 class="input-number"
                 :min="1"
-                :max="selectSpecsItem.valid_time"
-                v-decorator="decorators.valid_time"
+                :max="selectSpecsItem.card_amount"
+                v-decorator="decorators.card_amount"
                 placeholder="请输入初始额度"
                 :disabled="isAmountDisabled"
               >
-                <div slot="addonAfter" v-if="selectSpecsItem.valid_unit">
-                  {{ selectSpecsItem.valid_unit }}
+                <div slot="addonAfter" v-if="selectSpecsItem.card_type">
+                  {{ selectSpecsItem.card_type }}
                 </div>
               </st-input-number>
               <st-button
@@ -587,10 +587,10 @@ export default {
           this.selectOpenType = this.upgradeCardInfo.open_type[0].id
           // 设置初始额度
           this.form.setFieldsValue({
-            valid_time: this.selectSpecsItem.valid_time
+            card_amount: this.selectSpecsItem.card_amount
           })
-          this.getValidTime = this.selectSpecsItem.valid_time
-          this.form.validate(['valid_time'])
+          this.getValidTime = this.selectSpecsItem.card_amount
+          this.form.validate(['card_amount'])
           // 设置默认卡价格
           this.cardPrice = this.upgradeCardInfo.specs[0].price
         })
@@ -604,10 +604,10 @@ export default {
         this.selectOpenType = this.upgradeCardInfo.open_type[0].id
         // 设置初始额度
         this.form.setFieldsValue({
-          valid_time: this.selectSpecsItem.valid_time
+          card_amount: this.selectSpecsItem.card_amount
         })
-        this.form.validate(['valid_time'])
-        this.getValidTime = this.selectSpecsItem.valid_time
+        this.form.validate(['card_amount'])
+        this.getValidTime = this.selectSpecsItem.card_amount
         // 设置默认卡价格
         this.cardPrice = this.upgradeCardInfo.specs[0].price
       }
@@ -624,9 +624,9 @@ export default {
       this.form.resetFields(['startTime'])
       this.endTime = '-'
       this.form.setFieldsValue({
-        valid_time: this.selectSpecsItem.valid_time
+        card_amount: this.selectSpecsItem.card_amount
       })
-      this.form.validate(['valid_time'])
+      this.form.validate(['card_amount'])
     },
     // 开卡方式
     onOpenTypeChange(data) {
@@ -635,10 +635,10 @@ export default {
       this.endTime = '-'
     },
     onClickAmountConfirm() {
-      const val = this.form.getFieldValue('valid_time')
+      const val = this.form.getFieldValue('card_amount')
       this.isAmountDisabled = true
       this.form.setFieldsValue({
-        valid_time: val
+        card_amount: val
       })
       if (this.startTime) {
         this.endTime = this.startTime.add(val, 'd').format('YYYY-MM-DD HH:mm')
@@ -646,12 +646,12 @@ export default {
       this.getValidTime = val
     },
     onClickAmountEdit() {
-      const val = this.form.getFieldValue('valid_time')
+      const val = this.form.getFieldValue('card_amount')
       this.isAmountDisabled = false
       this.form.setFieldsValue({
-        valid_time: val
+        card_amount: val
       })
-      this.form.validate(['valid_time'])
+      this.form.validate(['card_amount'])
     },
     // 有效时间
     disabledStartDate(startTime) {
@@ -660,8 +660,8 @@ export default {
     onStartTimeChange(data) {
       this.startTime = cloneDeep(data)
       let s = cloneDeep(data)
-      // let dayScope = this.selectSpecsItem.valid_time
-      let dayScope = this.form.getFieldValue('valid_time')
+      // let dayScope = this.selectSpecsItem.card_amount
+      let dayScope = this.form.getFieldValue('card_amount')
       this.endTime = s.add(dayScope, 'd').format('YYYY-MM-DD HH:mm')
     },
     // 合同
@@ -748,7 +748,7 @@ export default {
                 description: this.description,
                 staff_sale_id: +values.saleName,
                 gift_amount: +this.giftAmount,
-                init_amount: values.valid_time
+                init_amount: values.card_amount
               },
               this.id
             )
@@ -782,7 +782,7 @@ export default {
                 description: this.description,
                 staff_sale_id: +values.saleName,
                 gift_amount: +this.giftAmount,
-                init_amount: values.valid_time
+                init_amount: values.card_amount
               },
               this.id
             )
