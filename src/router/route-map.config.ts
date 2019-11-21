@@ -180,6 +180,7 @@ export const routeMapConfig = {
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       course_status: { type: Number, default: -1 },
+      package_type: { type: Number, default: -1 },
       start_time: { type: String, default: '' },
       end_time: { type: String, default: '' },
       page: { type: Number, default: 1 },
@@ -1390,6 +1391,20 @@ export const routeMapConfig = {
     routeConfig: RouteConfig
   ) {
     routeConfig.meta.title = '保存成功'
+  },
+  'brand-setting-task-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '任务中心'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-setting-task-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '任务中心'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
   },
   ...tplConfigs
 }

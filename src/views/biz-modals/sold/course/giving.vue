@@ -17,7 +17,7 @@
             :value="BATCH_TYPE.CONDITION"
             :disabled="helpShow"
           >
-            已选现有筛选条件下全部的{{ count }}条数据
+            已选现有筛选条件下全部的{{ list_num }}条数据
           </a-radio>
         </a-radio-group>
       </st-form-item>
@@ -25,10 +25,10 @@
         <st-input-number
           :max="999"
           placeholder="请输入赠送额度"
-          v-decorator="decorators.amount"
+          v-decorator="decorators.add_courses"
         >
           <span slot="addonAfter">
-            {{ type | enumFilter('sold_common.unit') }}
+            课时
           </span>
         </st-input-number>
       </st-form-item>
@@ -55,7 +55,7 @@
             当前选择项已有数据，将会有2-5s无法正常使用。
           </div>
         </div>
-        <st-button type="primary" :loading="loading.setGive">
+        <st-button type="primary" :loading="loading.taskAddCourseNum">
           确认提交
         </st-button>
       </st-popconfirm>
@@ -67,12 +67,8 @@
 import { GivingService } from './giving.service'
 import { ruleOptions } from './giving.config'
 import { BATCH_TYPE, BATCH_INFO } from '@/constants/common/batch-operation'
-import { cloneDeep } from 'lodash-es'
 export default {
-  name: 'ModalSoldCardGiving',
-  bem: {
-    giving: 'modal-sold-card-giving'
-  },
+  name: 'ModalSoldCourseGiving',
   serviceProviders() {
     return [GivingService]
   },
@@ -83,24 +79,18 @@ export default {
   },
   rxState() {
     return {
-      loading: this.givingService.loading$,
-      count: this.givingService.count$
+      list_num: this.givingService.list_num$,
+      loading: this.givingService.loading$
     }
   },
   props: {
     id: {
       type: Array,
       required: true
-    },
-    type: {
-      type: [String, Number],
-      required: true
     }
   },
   mounted() {
-    const params = cloneDeep(this.$searchQuery)
-    params.card_type = this.type
-    this.givingService.fetchCardNum(params).subscribe()
+    this.givingService.fetchCourseNum().subscribe()
   },
   data() {
     const form = this.$stForm.create()
@@ -121,27 +111,26 @@ export default {
   },
   computed: {
     helpText() {
-      return this.count > this.BATCH_INFO.LIMIT_NUM
+      return this.list_num > this.BATCH_INFO.LIMIT_NUM
         ? this.BATCH_INFO.ERROR_TIP
         : ''
     },
     helpShow() {
-      return this.count > this.BATCH_INFO.LIMIT_NUM
+      return this.list_num > this.BATCH_INFO.LIMIT_NUM
     },
     operateDataNum() {
       return this.batch_type === this.BATCH_TYPE.SELECTED
         ? this.id.length
-        : this.count
+        : this.list_num
     }
   },
   methods: {
     onSubmit() {
       this.form.validate().then(values => {
         this.givingService
-          .setGive({
-            sold_ids: this.id,
+          .taskAddCourseNum({
             batch_type: this.batch_type,
-            card_type: this.type,
+            sold_ids: this.id,
             conditions: this.$searchQuery,
             ...values
           })

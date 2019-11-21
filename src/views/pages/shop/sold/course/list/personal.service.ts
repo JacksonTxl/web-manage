@@ -11,7 +11,9 @@ export class PersonalService implements Controller {
   page$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({
-    export: 'shop:sold:sold_personal_course|export'
+    export: 'shop:sold:sold_personal_course|export',
+    batch_extension: 'shop:sold:sold_personal_course|batch_extension',
+    batch_gift_number: 'shop:sold:sold_personal_course|batch_gift_number'
   })
   courseStatus$ = this.userService.getOptions$('sold_common.course_status', {
     addAll: true

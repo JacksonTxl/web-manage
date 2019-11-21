@@ -9,11 +9,17 @@
       />
     </div>
 
-    <st-search-panel @search="onSearchNative" @reset="onSearhReset">
+    <st-search-panel @search="onSearchNative" @reset="onSearhResetNative">
       <st-search-panel-item label="课程状态：">
         <st-search-radio
           v-model="$searchQuery.course_status"
           :options="courseStatus"
+        />
+      </st-search-panel-item>
+      <st-search-panel-item label="课程类型：">
+        <st-search-radio
+          v-model="$searchQuery.package_type"
+          :options="packageTypes"
         />
       </st-search-panel-item>
       <st-search-panel-item label="购买时间：">
@@ -24,20 +30,55 @@
       </st-search-panel-item>
     </st-search-panel>
     <div :class="basic('content')">
-      <div :class="basic('content-batch')">
+      <div :class="basic('content-batch')" class="mg-b16">
         <!-- NOTE: 导出 -->
         <!-- <st-button v-if="auth.export" type="primary">批量导出</st-button> -->
+        <template
+          v-if="selectedRowKeys.length >= 1 && diffSelectedRows.length === 0"
+        >
+          <st-button
+            type="primary"
+            class="mg-r8"
+            @click="onChangeCourse"
+            v-if="auth.course_range"
+          >
+            变更上课范围
+          </st-button>
+        </template>
+        <template v-else>
+          <st-help-tooltip
+            :isCustom="true"
+            title="仅支持范围内课程变更"
+            :defaultVisible="true"
+            v-model="visible"
+          >
+            <st-button
+              type="primary"
+              class="mg-r8"
+              :disabled="true"
+              v-if="auth.course_range"
+            >
+              变更上课范围
+            </st-button>
+          </st-help-tooltip>
+        </template>
       </div>
-      <!--
-          NOTE: 本期不做，先去掉选择框
-          :alertSelection="{onReset: onClear}"
-          :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
-         -->
       <div>
         <st-table
           :page="page"
           rowKey="id"
           :loading="loading.getList"
+          :alertSelection="{ onReset: onClear }"
+          :rowSelection="{
+            selectedRowKeys: selectedRowKeys,
+            fixed: true,
+            onChange: onSelectChange,
+            getCheckboxProps: record => ({
+              props: {
+                disabled: disabledSelect(record)
+              }
+            })
+          }"
           @change="onTableChange"
           :scroll="{ x: 1800 }"
           :columns="columns"
@@ -45,6 +86,9 @@
         >
           <template slot="course_status" slot-scope="text">
             {{ text | enumFilter('sold_common.course_status') }}
+          </template>
+          <template slot="package_type" slot-scope="text">
+            {{ text | enumFilter('package_course.package_type') }}
           </template>
           <template slot="course_end_time" slot-scope="text">
             {{ moment(text).format('YYYY-MM-DD HH:mm') }}
@@ -113,6 +157,8 @@ import SoldCourseFreeze from '@/views/biz-modals/sold/course/freeze'
 import SoldCourseRefund from '@/views/biz-modals/sold/course/refund'
 import SoldCourseSurplus from '@/views/biz-modals/sold/course/surplus'
 import SoldCourseTransfer from '@/views/biz-modals/sold/course/transfer'
+import SoldCourseScope from '@/views/biz-modals/sold/course/scope'
+import CommonTaskSuccessTip from '@/views/biz-modals/common/task/success-tip'
 export default {
   name: 'PageShopSoldCoursePackageList',
   mixins: [tableMixin],
@@ -123,7 +169,9 @@ export default {
     SoldCourseFreeze,
     SoldCourseRefund,
     SoldCourseSurplus,
-    SoldCourseTransfer
+    SoldCourseTransfer,
+    SoldCourseScope,
+    CommonTaskSuccessTip
   },
   serviceInject() {
     return {
@@ -136,16 +184,18 @@ export default {
       loading: this.packageService.loading$,
       page: this.packageService.page$,
       courseStatus: this.packageService.courseStatus$,
+      packageTypes: this.packageService.packageTypes$,
       auth: this.packageService.auth$
     }
   },
   data() {
     return {
-      course_status: -1,
+      visible: false,
       // 结束时间面板是否显示
       endOpen: false,
       selectedRowKeys: [],
       selectedRows: [],
+      diffSelectedRows: [],
       selectTime: {
         startTime: {
           showTime: false,
@@ -167,23 +217,47 @@ export default {
       }
     }
   },
-
   mounted() {
     this.setSearchData()
-  },
-  watch: {
-    query(newVal) {
-      this.setSearchData()
-    }
   },
   computed: {
     columns
   },
   methods: {
+    disabledSelect(record) {
+      if (record.course_status !== 1 && record.course_status !== 4) {
+        return true
+      }
+    },
     // 清空列表选择
     onClear() {
       this.selectedRowKeys = []
       this.selectedRows = []
+    },
+    // 变更上课范围
+    onChangeCourse() {
+      this.$modalRouter.push({
+        name: 'sold-course-scope',
+        props: {
+          id: this.selectedRowKeys
+        },
+        on: {
+          success: () => {
+            this.successTip()
+          }
+        }
+      })
+    },
+    successTip() {
+      this.$modalRouter.push({
+        name: 'common-task-success-tip',
+        on: {
+          success: () => {
+            this.$router.reload()
+            this.onClear()
+          }
+        }
+      })
     },
     onPageChange(data) {
       this.$router.push({
@@ -192,7 +266,6 @@ export default {
     },
     // 修改剩余课时
     onSurplus(record) {
-      let that = this
       let data = {
         id: record.id,
         courseName: record.course_name,
@@ -208,14 +281,13 @@ export default {
         },
         on: {
           success() {
-            that.$router.reload()
+            this.$router.reload()
           }
         }
       })
     },
     // 冻结
     onFreeze(record) {
-      let that = this
       this.$modalRouter.push({
         name: 'sold-course-freeze',
         props: {
@@ -224,9 +296,7 @@ export default {
         },
         on: {
           success: () => {
-            setTimeout(() => {
-              this.$router.reload()
-            }, 100)
+            this.$router.reload()
           }
         }
       })
@@ -249,7 +319,6 @@ export default {
     },
     // 转让
     onTransfer(record) {
-      let that = this
       this.$modalRouter.push({
         name: 'sold-course-transfer',
         props: {
@@ -257,8 +326,8 @@ export default {
           id: record.id
         },
         on: {
-          success() {
-            that.$router.reload()
+          success: () => {
+            this.$router.reload()
           }
         }
       })
@@ -272,7 +341,6 @@ export default {
     },
     // 退款
     onRefund(record) {
-      let that = this
       this.$modalRouter.push({
         name: 'sold-course-refund',
         props: {
@@ -280,8 +348,8 @@ export default {
           id: record.id
         },
         on: {
-          success() {
-            that.$router.reload()
+          success: () => {
+            this.$router.reload()
           }
         }
       })
@@ -303,9 +371,13 @@ export default {
         : ''
       this.onSearch()
     },
+    onSearhResetNative() {
+      this.selectTime.startTime.value = null
+      this.selectTime.endTime.value = null
+      this.onSearhReset()
+    },
     // 设置searchData
     setSearchData() {
-      this.course_status = this.$searchQuery.course_status
       this.selectTime.startTime.value = this.$searchQuery.start_time
         ? cloneDeep(moment(this.$searchQuery.start_time))
         : null
@@ -313,11 +385,17 @@ export default {
         ? cloneDeep(moment(this.$searchQuery.end_time))
         : null
     },
-
     // moment
     moment,
-    onSelectChange(selectedRowKeys) {
+    onSelectChange(selectedRowKeys, selectedRows) {
+      this.visible = false
       this.selectedRowKeys = selectedRowKeys
+      this.diffSelectedRows = selectedRows.filter(
+        item => item.package_type !== 2
+      )
+      if (this.diffSelectedRows.length) {
+        this.visible = true
+      }
     }
   }
 }

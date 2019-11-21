@@ -5,6 +5,11 @@ export const columns = () => [
     scopedSlots: { customRender: 'course_name' }
   },
   {
+    title: '课程包类型',
+    dataIndex: 'package_type',
+    scopedSlots: { customRender: 'package_type' }
+  },
+  {
     title: '合同编号',
     dataIndex: 'contract_number',
     scopedSlots: { customRender: 'contract_number' }
