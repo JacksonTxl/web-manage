@@ -16,7 +16,7 @@
                 @change="changeName"
                 maxlength="30"
               >
-                <span slot="suffix">
+                <span :class="basic('name--gray')" slot="suffix">
                   {{ groupName.length }}
                   /30
                 </span>
