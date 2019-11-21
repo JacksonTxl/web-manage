@@ -11,9 +11,13 @@ export class PackageService implements Controller {
   page$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({
-    export: 'shop:sold:sold_package_course|export'
+    export: 'shop:sold:sold_package_course|export',
+    course_range: 'shop:sold:sold_package_course|batch_change_course_range'
   })
   courseStatus$ = this.userService.getOptions$('sold_common.course_status', {
+    addAll: true
+  })
+  packageTypes$ = this.userService.getOptions$('package_course.package_type', {
     addAll: true
   })
   constructor(

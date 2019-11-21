@@ -65,7 +65,7 @@
       </st-form-item>
     </st-form>
     <template slot="footer">
-      <st-button class="mg-r16" @click="onClick">批量设置</st-button>
+      <st-button @click="onClick">批量设置</st-button>
       <st-button type="primary" :loading="loading.add" @click="onSubmit">
         提交
       </st-button>
