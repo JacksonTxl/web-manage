@@ -28,7 +28,7 @@ export const ruleOptions = (vm: any) => {
             if (value.length > 30) {
               return '活动名称长度不能超过30，请重新输入'
             }
-            if (!pattern.CN_EN_NUM.test(value)) {
+            if (!pattern.CN_EN_NUM(value)) {
               return '输入的活动名称格式错误，请重新输入'
             }
           }
@@ -61,7 +61,6 @@ export const ruleOptions = (vm: any) => {
             if (!value) {
               return '请选择活动时间'
             }
-            console.log(vm.$children)
             if (
               vm.$children.info &&
               value.endTime < vm.$children.info.end_time
