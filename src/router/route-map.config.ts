@@ -668,7 +668,7 @@ export const routeMapConfig = {
   },
   'brand-setting-general-crm'(routeConfig: RouteConfig) {
     routeConfig.meta.title = 'CRM规则设置'
-    routeConfig.meta.auth = ''
+    routeConfig.meta.auth = 'brand:setting:customer_protection_rule|get'
   },
   'brand-setting-general-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '课程定价及预约设置'
