@@ -106,12 +106,14 @@ import {
   RELEASE_STATUS
 } from '@/constants/marketing/group-buy'
 import moment from 'moment'
+import { PatternService } from '@/services/pattern.service'
 export default {
   serviceInject() {
     return {
       addMemberService: AddMemberService,
       addCourseService: AddCourseService,
-      userService: UserService
+      userService: UserService,
+      pattern: PatternService
     }
   },
   rxState() {
