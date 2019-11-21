@@ -269,7 +269,7 @@ export default {
       const query = {
         id: record.id
       }
-      if (record.card_number_type === 2) {
+      if (record.card_number_type.id === 2) {
         query.type = 1
       }
       this.$router.push({
