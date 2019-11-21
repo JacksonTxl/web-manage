@@ -177,13 +177,13 @@
                 <st-help-tooltip id="TBPTXJ005" />
               </span>
               <a-radio-group
-                :defaultValue="releaseStatus || RELEASE_SRTATUS.PROMPTLY"
+                :defaultValue="releaseStatus || RELEASE_STATUS.PROMPTLY"
                 v-model="releaseStatus"
-                :disabled="isEdit && activityState > RELEASE_SRTATUS.PUBLISHER"
+                :disabled="isEdit && activityState > RELEASE_STATUS.PUBLISHER"
               >
-                <a-radio :value="RELEASE_SRTATUS.PROMPTLY">立即发布</a-radio>
-                <a-radio :value="RELEASE_SRTATUS.TEMPORARILY">暂不发布</a-radio>
-                <a-radio :value="RELEASE_SRTATUS.TIMING">定时发布</a-radio>
+                <a-radio :value="RELEASE_STATUS.PROMPTLY">立即发布</a-radio>
+                <a-radio :value="RELEASE_STATUS.TEMPORARILY">暂不发布</a-radio>
+                <a-radio :value="RELEASE_STATUS.TIMING">定时发布</a-radio>
               </a-radio-group>
             </st-form-item>
             <st-form-item
@@ -191,7 +191,7 @@
               required
               :help="errText"
               :validateStatus="showHelp ? 'error' : ''"
-              v-if="releaseStatus === RELEASE_SRTATUS.TIMING"
+              v-if="releaseStatus === RELEASE_STATUS.TIMING"
               :disabled="isEdit && activityState > ACTIVITY_STATUS.UNDER_WAY"
             >
               <a-date-picker
@@ -309,7 +309,7 @@ import { AddCourseService } from './add-course.service'
 import { UserService } from '@/services/user.service'
 import {
   ACTIVITY_STATUS,
-  RELEASE_SRTATUS
+  RELEASE_STATUS
 } from '@/constants/marketing/group-buy'
 import moment from 'moment'
 export default {
@@ -385,7 +385,7 @@ export default {
       publishTime: null,
       activityState: Number,
       ACTIVITY_STATUS,
-      RELEASE_SRTATUS,
+      RELEASE_STATUS,
       errTips: '', // 活动时间错误提示
       errText: '', // 发布时间错误提示
       tableText: '', // 优惠设置错误提示
