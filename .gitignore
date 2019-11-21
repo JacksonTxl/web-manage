@@ -5,7 +5,7 @@ public/release.json
 docs/.vuepress/dist
 src/router/auto-generated-routes.ts
 src/style/_views.less
-
+mock/index.js
 
 package-lock.json
 # local env files
