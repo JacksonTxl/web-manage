@@ -29,6 +29,6 @@ export class EditStoredService implements Controller {
     return anyAll(this.getStoredData(id), this.getDepositList())
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    return this.init(to.meta.query.id)
+    this.init(to.meta.query.id).subscribe(() => {})
   }
 }

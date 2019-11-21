@@ -2,25 +2,25 @@
   <personal-card
     :isEdit="true"
     :info="info.info"
-    :coachList="coachList"
+    :coach="coach"
   ></personal-card>
 </template>
 
 <script>
 import personalCard from './add-personal'
 import { EditStoredService } from './edit-stored.service'
-// import { EditPersonalService } from './edit-personal.service'
+import { EditPersonalService } from './edit-personal.service'
 export default {
   serviceInject() {
     return {
-      editStoredService: EditStoredService
-      // editPersonalService: EditPersonalService
+      editStoredService: EditStoredService,
+      editPersonalService: EditPersonalService
     }
   },
   rxState() {
     return {
-      info: this.editStoredService.info$
-      // coachList: this.editCoachsService.coachList$
+      info: this.editStoredService.info$,
+      coach: this.editPersonalService.coach$
     }
   },
   mounted() {

@@ -1,5 +1,10 @@
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
-import { GroupBuyApi, GroupData } from '@/api/v1/marketing/group_buy'
+import {
+  GroupBuyApi,
+  GroupData,
+  GroupDataId
+} from '@/api/v1/marketing/group_buy'
+import { LotteryApi } from '@/api/v1/marketing/lottery'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 @Injectable()
@@ -8,6 +13,7 @@ export class DataService implements Controller {
   page$ = new State({})
   loading$ = new State({})
   collect$ = new State([])
+  info$ = new State({})
   constructor(private groupBuyApi: GroupBuyApi) {}
   @Effect()
   getData(params: GroupData) {
@@ -18,6 +24,14 @@ export class DataService implements Controller {
         this.page$.commit(() => res.page)
         this.collect$.commit(() => res.collect)
         this.loading$.commit(() => res.loading)
+      })
+    )
+  }
+  getDatatop(params: GroupDataId) {
+    return this.groupBuyApi.getGroupBuyDataTop(params).pipe(
+      tap((res: any) => {
+        console.log(res)
+        // this.info$.commit(() => res)
       })
     )
   }

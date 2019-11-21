@@ -1,6 +1,6 @@
 <template>
   <st-panel-layout>
-    <MarkteingPluginTitle :type="TYPE.COUPON" />
+    <MarkteingPluginTitle :type="TYPE.GROUP_BUY" />
     <st-panel app initial :class="basic()">
       <div slot="title" :class="basic('search')">
         <div :class="basic('add')">
@@ -189,8 +189,16 @@ export default {
     },
     // 活动发布
     onRelease(record) {
-      this.listService.releaseGroup({ id: record.id }).subscribe(res => {
-        that.$router.reload()
+      let that = this
+      this.$confirm({
+        title: '提示',
+        content: '确定发布该活动?发布成功后，用户即可在小程序端看到该活动。',
+        onOk() {
+          that.listService.releaseGroup({ id: record.id }).subscribe(res => {
+            that.$router.reload()
+          })
+        },
+        onCancel() {}
       })
     },
     // 数据
@@ -228,6 +236,7 @@ export default {
     // 编辑列表
     onEdit(record) {
       let id = record.product_type.id
+      console.log(id)
       switch (id) {
         case 3:
           this.routeRul('edit-personal', id)

@@ -11,8 +11,8 @@
     <template slot="choose-product">
       <a-row :gutter="8">
         <a-col :span="10">
-          <st-form-item label="选择私教课" required>
-            <a-input type="hidden" v-decorator="decorators.cardId" />
+          <st-form-item label="选择私教课">
+            <a-input type="hidden" />
             <a-select
               showSearch
               v-model="cardId"
@@ -45,6 +45,7 @@
       <a-row :gutter="8">
         <a-col :span="16">
           <st-form-item
+            v-decorator="decorators.group_hour"
             label="优惠设置"
             required
             :help="tableText"
@@ -52,7 +53,6 @@
           >
             <div :class="basic('table')">
               <st-table
-                v-if="decorators.group_hour"
                 :columns="cardColumns"
                 :dataSource="newCoach"
                 :pagination="false"
@@ -112,7 +112,6 @@ export default {
       cardId: '', // 活动商品
       selectedRowKeys: [], // 优惠设置选中项
       isLimit: true, // 限制库存
-      shopIds: [], //选择门店
       cardColumns,
       groupParams: {
         type: 3,
@@ -126,7 +125,8 @@ export default {
       helpShow: false,
       showHelp: false,
       tableErr: false,
-      sku: [] // 卡、课规格[{“sku_id”:1,”group_price”:20},]
+      sku: [], // 卡、课规格[{“sku_id”:1,”group_price”:20},]
+      shopIds: []
     }
   },
 
@@ -146,8 +146,9 @@ export default {
     info(n, o) {
       if (this.isEdit) {
         this.setFieldsValue()
-        this.addMemberService.init().subscribe(res => {
-          this.chooseMember(this.cardId)
+        console.log(this.cardId, '编辑时触发')
+        this.addPersonalService.init().subscribe(res => {
+          this.handleChange(this.cardId)
         })
       }
     }
@@ -175,7 +176,7 @@ export default {
         item.hour = e.target.value
       })
     },
-    // 设置选择私教课
+    // 设置选择私教课并返回教练
     handleChange(e) {
       this.groupParams.id = e
       this.addPersonalService.addCoach({ id: e }).subscribe(res => {})
@@ -199,97 +200,56 @@ export default {
     // 新建拼团活动
     onSubmit(data) {
       console.log(data)
-      this.form.validate().then(values => {
-        if (
-          !this.selectTime.startTime.value ||
-          !this.selectTime.endTime.value
-        ) {
-          this.errTips = '请选择活动时间'
-          this.helpShow = true
-          return
-        }
-        if (
-          !this.publishTime &&
-          this.releaseStatus === this.RELEASE_SRTATUS.TIMING
-        ) {
-          this.errText = '请选择发布时间'
-          this.showHelp = true
-          return
-        }
-        if (!this.selectedRowKeys.length) {
-          this.tableText = '请选择私教课规格'
-          this.tableErr = true
-        }
-        let params = {}
-        let isReturn = false
-        let list = []
-        this.selectedRowKeys.forEach((id, index) => {
-          this.newCoach.forEach(item => {
-            if (item.id === id) {
-              if (!item.group_price) {
-                this.tableText = '请输入拼团价'
-                this.tableErr = true
-                isReturn = true
-              }
-              list.push({ sku_id: id, group_price: item.group_price })
-            }
-          })
-        })
-        if (isReturn) {
-          return
-        }
-        params = {
-          product_type: 3, // 会籍卡
-          activity_name: values.activity_name, // 活动名称
-          product_id: this.cardId, //商品id
-          sku: list, //卡、课规格[{“sku_id”:1,”group_price”:20},]
-          start_time: this.selectTime.startTime.value,
-          end_time: this.selectTime.endTime.value,
-          group_sum: values.group_sum, //成团人数
-          valid_time: values.valid_time, //拼团有效期
-          is_limit_stock: this.isLimit ? 1 : 0, //是否限制库存0不限制 1限制
-          stock_total: values.stock_total, //库存
-          shop_ids: this.shopIds, //门店ids [1,2,3,4]
-          published_type: this.releaseStatus, //发布状态(1-立即发布 2-暂不发布 3-定时发布)
-          published_time: moment(this.publishTime).format('YYYY-MM-DD HH:mm') //发布时间
-        }
-        if (this.isEdit) {
-          params.id = this.$route.query.id
-          this.addMemberService.editGroup(params).subscribe(res => {
-            this.$router.push({
-              path: `/brand/marketing/plugin/group/list`
-            })
-          })
-        } else {
-          this.addMemberService.addGroup(params).subscribe(res => {
-            this.$router.push({
-              path: `/brand/marketing/plugin/group/list`
-            })
-          })
-        }
-      })
+      console.log(this.selectedRowKeys.length)
+      if (!this.selectedRowKeys.length) {
+        this.tableText = '请选择私教课规格'
+        this.tableErr = true
+      }
+      let params = {}
+      // let isReturn = false
+      // if (isReturn) {
+      //   return
+      // }
+      // 275404963775803 门店id
+      params = {
+        product_type: 3, // 会籍卡
+        activity_name: data.activity_name, // 活动名称
+        product_id: this.cardId, //商品id
+        sku: this.sku, //卡、课规格[{“sku_id”:1,”group_price”:20},]
+        start_time: data.start_time,
+        end_time: data.end_time,
+        group_sum: data.group_sum, //成团人数
+        valid_time: data.valid_time, //拼团有效期
+        is_limit_stock: data.is_limit_stock, //是否限制库存0不限制 1限制
+        stock_total: data.stock_total, //库存
+        shop_ids: data.shop_ids, //门店ids [1,2,3,4]
+        published_type: data.published_type, //发布状态(1-立即发布 2-暂不发布 3-定时发布)
+        published_time: data.published_time //发布时间
+      }
+      console.log(params)
+      // if (this.isEdit) {
+      //   params.id = this.$route.query.id
+      //   this.addMemberService.editGroup(params).subscribe(res => {
+      //     this.$router.push({
+      //       path: `/brand/marketing/plugin/group/list`
+      //     })
+      //   })
+      // } else {
+      //   this.addMemberService.addGroup(params).subscribe(res => {
+      //     this.$router.push({
+      //       path: `/brand/marketing/plugin/group/list`
+      //     })
+      //   })
+      // }
+      // })
     },
     // 详情回显
     setFieldsValue() {
-      this.groupName = this.info.activity_name
-      this.releaseStatus = this.info.published_type
-      this.selectTime.startTime.value = moment(this.info.start_time)
-      this.selectTime.endTime.value = moment(this.info.end_time)
-      this.activityState = this.info.activity_state[0].id
       this.cardId = this.info.product.id
-      this.isLimit = this.info.is_limit_stock === 1
-      this.selectTime.startTime.disabled =
-        this.activityState > this.ACTIVITY_STATUS.PUBLISHER
-      this.form.setFieldsValue({
-        activity_name: this.info.activity_name,
-        group_sum: this.info.group_sum,
-        valid_time: this.info.valid_time,
-        stock_total: this.info.stock_total
-      })
       this.info.sku.forEach(item => {
         this.selectedRowKeys.push(item.id)
       })
-      this.shopIds = this.info.shop_ids
+      // this.ids = this.shopIds
     }
   },
   components: {

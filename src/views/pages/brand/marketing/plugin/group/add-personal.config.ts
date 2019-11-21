@@ -18,8 +18,12 @@ export const ruleOptions = (vm: any) => {
     cardId: {
       rules: [
         {
-          required: true,
-          message: '请选择私教课'
+          validator: (field: any, value: any, values: any) => {
+            console.log(value)
+            if (!value) {
+              return '请填写课时'
+            }
+          }
         }
       ]
     },
