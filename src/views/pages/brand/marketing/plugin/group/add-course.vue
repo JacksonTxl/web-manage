@@ -106,12 +106,14 @@ import {
   RELEASE_STATUS
 } from '@/constants/marketing/group-buy'
 import moment from 'moment'
+import { PatternService } from '@/services/pattern.service'
 export default {
   serviceInject() {
     return {
       addMemberService: AddMemberService,
       addCourseService: AddCourseService,
-      userService: UserService
+      userService: UserService,
+      pattern: PatternService
     }
   },
   rxState() {
@@ -132,6 +134,12 @@ export default {
     info: {
       type: Object,
       default: () => {}
+    }
+  },
+  mounted() {
+    if (this.isEdit) {
+      this.setFieldsValue()
+      this.changeShop(this.shopId)
     }
   },
   watch: {
@@ -268,6 +276,7 @@ export default {
     // 详情回显
     setFieldsValue() {
       console.log(this.info, 'support_shop')
+      // 编辑不能改变活动开始时间
       this.activityState = this.info.activity_state[0].id
       this.courseId = this.info.product.id
       this.tableData = this.info.sku

@@ -134,6 +134,6 @@ export class GroupBuyApi extends Api {
    */
   getGroupBuyDataTop(query: GroupDataId) {
     console.log(query)
-    return this.http.get('/v1/plugin/group_buy/data_top/322')
+    return this.http.get('/v1/plugin/group_buy/data_top/', { query })
   }
 }

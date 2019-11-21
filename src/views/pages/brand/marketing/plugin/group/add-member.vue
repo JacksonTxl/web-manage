@@ -75,10 +75,12 @@ import GroupForm from './components#/group-form'
 import { ruleOptions, cardColumns } from './add-member.config'
 import { AddMemberService } from './add-member.service'
 import { values } from 'lodash-es'
+import { PatternService } from '@/services/pattern.service'
 export default {
   serviceInject() {
     return {
-      addMemberService: AddMemberService
+      addMemberService: AddMemberService,
+      pattern: PatternService
     }
   },
   rxState() {
