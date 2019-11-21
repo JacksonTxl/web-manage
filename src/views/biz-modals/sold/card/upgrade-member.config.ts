@@ -1,6 +1,6 @@
 export const ruleOptions = (vm: any) => {
   return {
-    valid_time: {
+    card_amount: {
       rules: [
         {
           validator: (rule: any, value: any, values: any) => {

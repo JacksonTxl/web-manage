@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { merge } from 'lodash-es'
 export default {
   name: 'StRangePicker2',
   model: {
@@ -43,21 +44,7 @@ export default {
     },
     options: {
       type: Object,
-      default: () => ({
-        start: {
-          showTime: false,
-          disabledBegin: '2019-07-03',
-          placeholder: '开始日期',
-          disabled: false,
-          format: 'YYYY-MM-DD'
-        },
-        end: {
-          showTime: false,
-          placeholder: '结束日期',
-          disabled: false,
-          format: 'YYYY-MM-DD'
-        }
-      })
+      default: () => ({})
     }
   },
   data() {
@@ -67,10 +54,27 @@ export default {
   },
   computed: {
     startOptions() {
-      return this.options.start
+      return merge(
+        {
+          showTime: false,
+          disabledBegin: null,
+          placeholder: '开始日期',
+          disabled: false,
+          format: 'YYYY-MM-DD'
+        },
+        this.options.start
+      )
     },
     endOptions() {
-      return this.options.end
+      return merge(
+        {
+          showTime: false,
+          placeholder: '结束日期',
+          disabled: false,
+          format: 'YYYY-MM-DD'
+        },
+        this.options.end
+      )
     },
     startValue: {
       get() {

@@ -118,10 +118,9 @@ import { IndexService } from './index.service'
 import MarkteingPluginTitle from '../../components#/marketing-title'
 import { columns } from './index.config.ts'
 import tableMixin from '@/mixins/table.mixin'
-import BrandMarketingPluginPoster from '@/views/biz-modals/brand/marketing/share-poster'
 import { ACTIVITY_STATUS } from '@/constants/marketing/lottery'
 import { TYPE } from '@/constants/marketing/plugin'
-import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
+import useShare from '@/hooks/marketing/poster.hook'
 export default {
   name: 'PluginLotteryIndex',
   mixins: [tableMixin],
@@ -139,6 +138,11 @@ export default {
       indexService: IndexService
     }
   },
+  hooks() {
+    return {
+      share: useShare()
+    }
+  },
   rxState() {
     return {
       list: this.indexService.list$,
@@ -154,33 +158,18 @@ export default {
   computed: {
     columns
   },
-  modals: {
-    BrandMarketingPluginPoster,
-    BrandMarketingBind
-  },
   methods: {
     onGeneralize(record) {
       // let is_auth = record.is_auth
       // 绑定小程序
       this.indexService.getPosterInfo(record.id).subscribe(res => {
-        if (!res.is_auth) {
-          this.show = false
-          this.$modalRouter.push({
-            name: 'brand-marketing-bind'
-          })
-          return
+        const info = this.info
+        const shsInfo = {
+          qrcode_url: info.qrcode_url,
+          sub_name: info.sub_name
         }
-        // 分享海报
-        this.$modalRouter.push({
-          name: 'brand-marketing-plugin-poster',
-          props: {
-            info: {
-              qrcode_url: this.info.qrcode_url,
-              sub_name: this.info.sub_name
-            },
-            shsUrl: '/saas/lottery_poster'
-          }
-        })
+        const isAuth = res.is_auth
+        this.share.poster({ isAuth, shsInfo, shsPath: '/saas/lottery_poster' })
       })
     },
     // 停止优惠券模板

@@ -111,6 +111,7 @@ import { columns } from './list.config'
 import { TYPE } from '@/constants/marketing/plugin'
 import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
 import BrandMarketingPoster from '@/views/biz-modals/brand/marketing/share-poster'
+import useShare from '@/hooks/marketing/poster.hook'
 
 export default {
   name: 'PageBrandMarketingPluginCouponList',
@@ -137,6 +138,11 @@ export default {
       brand: this.listService.brand$,
       couponEnums: this.userService.couponEnums$,
       auth: this.listService.auth$
+    }
+  },
+  hooks() {
+    return {
+      share: useShare()
     }
   },
   computed: {
@@ -183,30 +189,15 @@ export default {
       })
     },
     onGeneralize(record) {
-      let is_auth = record.is_auth
-      // 绑定小程序
-      if (!is_auth) {
-        // 未绑定小程序
-        this.$modalRouter.push({
-          name: 'brand-marketing-bind'
-        })
-        return
-      }
+      let isAuth = record.is_auth
       this.listService.getPosterInfo(record.id).subscribe(res => {
-        const info = {
+        const shsInfo = {
           qrcode_url: this.info.qrcode_url,
           brand_logo: this.info.brand_logo,
           brand_name: this.info.brand_name,
           price: this.info.price
         }
-        // 分享海报
-        this.$modalRouter.push({
-          name: 'brand-marketing-poster',
-          props: {
-            info,
-            shsUrl: '/saas/poster'
-          }
-        })
+        this.share.poster({ isAuth, shsInfo, shsPath: '/saas/poster' })
       })
     },
     // 停止优惠券模板

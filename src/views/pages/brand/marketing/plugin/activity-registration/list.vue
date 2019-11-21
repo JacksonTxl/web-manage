@@ -111,16 +111,11 @@ import { ListService } from './list.service'
 import MarkteingPluginTitle from '../../components#/marketing-title'
 import { columns } from './list.config'
 import { TYPE } from '@/constants/marketing/plugin'
-import MarketingSharePoster from '@/views/biz-modals/brand/marketing/share-poster'
-import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
+import useShare from '@/hooks/marketing/poster.hook'
 // modal
 export default {
   name: 'ActivityList',
   mixins: [tableMixin],
-  modals: {
-    MarketingSharePoster,
-    BrandMarketingBind
-  },
   bem: {
     bPage: 'page-plugin-activity-registration',
     bSearch: 'search'
@@ -136,6 +131,11 @@ export default {
         copyActivity: 'brand-marketing-plugin-activity-registration-copy',
         rosterActivity: 'brand-marketing-plugin-activity-registration-roster'
       }
+    }
+  },
+  hooks() {
+    return {
+      share: useShare()
     }
   },
   serviceInject() {
@@ -183,29 +183,21 @@ export default {
     },
     onCLickGeneralize(record) {
       this.service.getSharePosterInfo(record.id).subscribe(res => {
-        if (!res.is_auth) {
-          this.show = false
-          this.$modalRouter.push({
-            name: 'brand-marketing-bind'
-          })
-          return
-        }
         const info = this.info$
         const activity_date = `${info.start_time} - ${info.end_time}`
-        this.$modalRouter.push({
-          name: 'marketing-share-poster',
-          props: {
-            info: {
-              qrcode_url: info.qrcode,
-              brand_name: this.brand$.name,
-              brand_logo: this.brand$.logo,
-              activity_img: info.image.image_url,
-              activity_title: info.activity_name,
-              activity_date,
-              activity_address: info.address
-            },
-            shsUrl: '/saas/activity'
-          }
+        const shsInfo = {
+          qrcode_url: info.qrcode,
+          brand_name: this.brand$.name,
+          brand_logo: this.brand$.logo,
+          activity_img: info.image.image_url,
+          activity_title: info.activity_name,
+          activity_date,
+          activity_address: info.address
+        }
+        this.share.poster({
+          isAuth: res.is_auth,
+          shsInfo,
+          shsPath: '/saas/activity'
         })
       })
     },
