@@ -23,6 +23,7 @@
           v-model="activityName"
           @search="onSingleSearch('coupon_name', $event)"
           placeholder="请输入活动名称"
+          maxlength="50"
         />
       </div>
       <div :class="basic('content')">
@@ -123,8 +124,8 @@ export default {
     basic: 'page-brand-plugin-group-list'
   },
   modals: {
-    BrandMarketingBind, //
-    MarketingSharePoster, // 海报
+    BrandMarketingBind,
+    MarketingSharePoster,
     CardBrandMemberShopTable
   },
   serviceInject() {
@@ -175,17 +176,17 @@ export default {
   },
   watch: {
     $searchQuery(newVal) {
-      console.log(newVal)
       this.setSearchData()
+      console.log(newVal)
     }
   },
   methods: {
     // 设置状态&名称
     setSearchData() {
-      let { activity_name, activity_status } = this.$searchQuery
-      console.log(activity_name, activity_status)
-      this.activityName = activity_name
+      let { coupon_name, activity_status } = this.$searchQuery
+      this.activityName = coupon_name
       this.activityStatus = activity_status || -1
+      console.log(this.activityName, this.activityStatus)
     },
     // 活动发布
     onRelease(record) {
@@ -201,20 +202,21 @@ export default {
         onCancel() {}
       })
     },
+    routeRul(url, id) {
+      this.$router.push({
+        path: `/brand/marketing/plugin/group/${url}`,
+        query: { id: id }
+      })
+    },
     // 数据
     onData(record) {
-      console.log(record)
-      this.$router.push({
-        path: '/brand/marketing/plugin/group/data',
-        query: { id: record.id }
-      })
+      this.routeRul('data', record.id)
     },
     // 推广
     onGeneralize(record) {
       this.listService.getSharePosterInfo({ id: record.id }).subscribe(res => {
         console.log(res)
         const info = this.info$
-        console.log(info)
         // const activity_date = `${info.start_time} - ${info.end_time}`
         this.$modalRouter.push({
           name: 'marketing-share-poster',
@@ -253,12 +255,7 @@ export default {
         default:
       }
     },
-    routeRul(url, id) {
-      this.$router.push({
-        path: `/brand/marketing/plugin/group/${url}`,
-        query: { id: id }
-      })
-    },
+
     // 结束活动
     onStop(record) {
       let that = this
@@ -276,7 +273,7 @@ export default {
     },
     // 新增活动
     onAddGroup() {
-      this.$router.push({ path: '/brand/marketing/plugin/group/choose' })
+      this.routeRul('choose')
     }
   },
   components: {

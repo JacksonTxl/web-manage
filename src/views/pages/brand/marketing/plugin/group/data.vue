@@ -3,7 +3,7 @@
     <st-panel-layout>
       <st-panel class="mg-b12" app>
         <!-- 这里是动态 -->
-        <st-t2></st-t2>
+        <st-t2>可是大家分厘卡电视机</st-t2>
         <div :class="activities('desc')">
           <p :class="activities('activity')">活动商品：健身房年卡</p>
           <p :class="activities('activity')">
@@ -76,26 +76,25 @@
             </a-col>
           </a-row>
         </div>
-      </st-panel>
-      <header :class="activities('search')">
-        <a-select
-          :class="activities('select')"
-          v-model="groupStatus"
-          placeholder="活动状态"
-          @change="onSingleSearch('data_status', $event)"
-          style="width: 130px"
-        >
-          <a-select-option v-for="item in groupType" :key="item.value">
-            {{ item.label }}
-          </a-select-option>
-        </a-select>
-        <st-input-search
-          v-model="searchWhere"
-          @search="onSingleSearch('searchWhere', $event)"
-          placeholder="请输入活动名称"
-        />
-      </header>
-      <st-panel>
+        <div :class="activities('search')">
+          <a-select
+            :class="activities('select')"
+            v-model="groupStatus"
+            placeholder="活动状态"
+            @change="onSingleSearch('data_status', $event)"
+            style="width: 130px"
+          >
+            <a-select-option v-for="item in groupType" :key="item.value">
+              {{ item.label }}
+            </a-select-option>
+          </a-select>
+          <st-input-search
+            v-model="searchWhere"
+            @search="onSingleSearch('searchWhere', $event)"
+            placeholder="请输入活动名称"
+            maxlength="50"
+          />
+        </div>
         <template v-if="list.length > 1">
           <a-table
             rowKey="id"
@@ -187,8 +186,8 @@ export default {
 
   methods: {
     setSearchData() {
-      let { search_where, group_status } = this.$searchQuery
-      this.searchWhere = search_where
+      let { searchWhere, group_status } = this.$searchQuery
+      this.searchWhere = searchWhere
       this.groupStatus = group_status || -1
     },
     rowClassName(record, index) {

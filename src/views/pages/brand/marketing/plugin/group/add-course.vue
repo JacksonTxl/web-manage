@@ -136,6 +136,12 @@ export default {
       default: () => {}
     }
   },
+  mounted() {
+    if (this.isEdit) {
+      this.setFieldsValue()
+      this.changeShop(this.shopId)
+    }
+  },
   watch: {
     info(n, o) {
       if (this.isEdit) {
@@ -270,6 +276,7 @@ export default {
     // 详情回显
     setFieldsValue() {
       console.log(this.info, 'support_shop')
+      // 编辑不能改变活动开始时间
       this.activityState = this.info.activity_state[0].id
       this.courseId = this.info.product.id
       this.tableData = this.info.sku

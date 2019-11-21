@@ -205,6 +205,11 @@ export default {
       }
     }
   },
+  mounted() {
+    if (this.isEdit) {
+      this.setFieldsValue()
+    }
+  },
   data() {
     return {
       ACTIVITY_STATUS,
@@ -290,6 +295,8 @@ export default {
           published_time: this.info.published_time
         })
       }
+      // 编辑不能改变活动开始时间
+      this.activityOptions.start.disabled = true
     }
   },
   components: {

@@ -4,22 +4,17 @@
 
 <script>
 import CourseCard from './add-course'
-import { EditStoredService } from './edit-stored.service'
+import { EditCourseService } from './edit-course.service'
 export default {
   serviceInject() {
     return {
-      editStoredService: EditStoredService
+      editCourseService: EditCourseService
     }
   },
   rxState() {
     return {
-      info: this.editStoredService.info$
+      info: this.editCourseService.info$
     }
-  },
-  mounted() {
-    this.editStoredService
-      .init(this.$route.query.id ? this.$route.query.id : '')
-      .subscribe(res => {})
   },
   components: {
     CourseCard
