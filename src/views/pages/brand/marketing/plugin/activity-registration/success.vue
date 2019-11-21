@@ -101,8 +101,8 @@ export default {
       })
     },
     pushQrCodeModal() {
-      this.service.getQrCode(this.activityId).subscribe(() => {
-        this.share.qrCode({ qrCodeUrl: this.qrcode$ })
+      this.service.getQrCode(this.activityId).subscribe(res => {
+        this.share.qrCode({ isAuth: res.is_auth, qrCodeUrl: this.qrcode$ })
       })
     }
   }

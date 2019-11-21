@@ -39,7 +39,11 @@ const useShare = () => {
        * 分享小程序营销插件二维码
        * params.qrCodeUrl 二维码路径
        */
-      qrCode({ qrCodeUrl }) {
+      qrCode({ isAuth, qrCodeUrl }) {
+        if (!isAuth) {
+          this.$_openMarketingBind()
+          return
+        }
         this.$_openQrCode({ qrCodeUrl })
       },
       /**
