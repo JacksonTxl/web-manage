@@ -198,9 +198,11 @@ export default {
       }
     }
   },
-  mounted() {
-    if (this.isEdit) {
-      this.setFieldsValue()
+  watch: {
+    info() {
+      if (this.isEdit) {
+        this.setFieldsValue()
+      }
     }
   },
   data() {
@@ -256,7 +258,7 @@ export default {
     // 新建拼团活动
     onSubmit() {
       this.form.validate().then(values => {
-        if (isReturn) return
+        console.log(values)
         this.$emit('onsubmit', {
           activity_name: values.activity_name, // 活动名称
           start_time: moment(values[0]).format('YYYY-MM-DD HH:mm'),
@@ -276,8 +278,6 @@ export default {
       this.releaseStatus = this.info.published_type
       this.activityState = this.info.activity_state[0].id
       this.isLimit = this.info.is_limit_stock === 1
-      /* this.selectTime.startTime.disabled =
-        this.activityState > this.ACTIVITY_STATUS.PUBLISHER */
       this.form.setFieldsValue({
         published_time: this.info.published_time,
         activity_name: this.info.activity_name,
