@@ -42,9 +42,8 @@ export default {
   components: demoComponents,
   methods: {
     onShowCode(demo) {
-      fetch(
-        `/_editor?file=src/views/pages/styleguide/component%23/${demo.id}.vue`
-      )
+      let id = demo.id.replace('st-', '')
+      fetch(`/_editor?file=src/views/pages/styleguide/component%23/${id}.vue`)
     }
   },
   computed: {
