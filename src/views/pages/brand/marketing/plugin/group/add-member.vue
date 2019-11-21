@@ -7,6 +7,7 @@
     :info="info"
     :shopIds="shopIds"
     @onsubmit="onSubmit"
+    :groupParams="groupParams"
   >
     <template slot="choose-product">
       <a-row :gutter="8">
@@ -96,13 +97,16 @@ export default {
       form,
       decorators,
       cardId: '',
-      skuList: [{ id: 1, spec: '30次', price: 100 }],
       selectedRowKeys: [], // 优惠设置选中项
       cardColumns,
       tableText: '',
       tableErr: false,
       tableData: [],
-      shopIds: []
+      shopIds: [],
+      groupParams: {
+        type: 1,
+        id: null
+      }
     }
   },
   props: {
@@ -130,6 +134,7 @@ export default {
       this.form.setFieldsValue({
         cardId: value
       })
+      this.groupParams.id = value
       this.memberList.filter(item => {
         if (item.id === value) {
           this.tableData = item.product_spec
