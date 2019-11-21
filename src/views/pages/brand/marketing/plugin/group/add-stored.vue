@@ -75,7 +75,7 @@ import moment, { months } from 'moment'
 import GroupForm from './components#/group-form.vue'
 import {
   ACTIVITY_STATUS,
-  RELEASE_SRTATUS
+  RELEASE_STATUS
 } from '@/constants/marketing/group-buy'
 
 export default {
