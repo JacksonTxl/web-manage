@@ -59,12 +59,12 @@ export class CourseService {
   SET_NOT_CHECK_IN_CHART_DATA(notCheckInCourse: any) {
     this.notCheckInChartData$.commit(() => [
       {
-        name: '未私教课消课',
+        name: '私教课未消课',
         value: notCheckInCourse.personal_not_checkin_num,
         percent: notCheckInCourse.personal_not_checkin_percentage
       },
       {
-        name: '未团体课消课',
+        name: '团体课未消课',
         value: notCheckInCourse.team_not_checkin_num,
         percent: notCheckInCourse.team_not_checkin_percentage
       }
