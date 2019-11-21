@@ -13,7 +13,7 @@ export class TaskApi extends Api {
    * @param query
    */
   getDetailList(query: any) {
-    return this.http.get(`/v1/setting/task/${query.task_id}`, { query })
+    return this.http.get(`/v1/setting/brand/task/${query.task_id}`, { query })
   }
   /**
    * 终止任务

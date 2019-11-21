@@ -9,6 +9,13 @@ export class TaskApi extends Api {
     return this.http.get('/v1/setting/shop/task', { query })
   }
   /**
+   * 获取任务执行详情列表信息
+   * @param query
+   */
+  getDetailList(query: any) {
+    return this.http.get(`/v1/setting/shop/task/${query.task_id}`, { query })
+  }
+  /**
    * 终止任务
    * @param query
    */

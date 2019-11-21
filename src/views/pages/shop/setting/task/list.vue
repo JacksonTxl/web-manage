@@ -68,7 +68,7 @@ import { ListService } from './list.service'
 import { columns } from './list.config.ts'
 import tableMixin from '@/mixins/table.mixin'
 import { TASK_STATUS } from '@/constants/brand/setting/task'
-import CommonTaskDetail from '@/views/biz-modals/common/task/detail'
+import TaskDetail from '@/views/biz-modals/task/detail'
 import { MessageService } from '@/services/message.service'
 export default {
   mixins: [tableMixin],
@@ -91,7 +91,7 @@ export default {
     columns
   },
   modals: {
-    CommonTaskDetail
+    TaskDetail
   },
   data() {
     return {
@@ -104,7 +104,7 @@ export default {
     },
     onClickModal(id, type) {
       this.$modalRouter.push({
-        name: 'common-task-detail',
+        name: 'task-detail',
         props: {
           task_id: id,
           popup_type: type
