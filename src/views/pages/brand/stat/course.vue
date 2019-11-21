@@ -25,6 +25,7 @@
             name="总售课数"
             :height="198"
             tooltipId="TBDAC001"
+            :total="soldChartTotal$"
             :data="soldChartData$"
           />
         </a-col>
@@ -33,6 +34,7 @@
             name="总消课数"
             :height="198"
             tooltipId="TBDAC002"
+            :total="checkInCourseTotal$"
             :data="checkInChartData$"
           />
         </a-col>
@@ -41,6 +43,7 @@
             name="未消课节数"
             :height="198"
             tooltipId="TBDAC003"
+            :total="notCheckInCourseTotal$"
             :data="notCheckInChartData$"
           />
         </a-col>
@@ -99,7 +102,10 @@ export default {
       loading$,
       soldChartData$,
       checkInChartData$,
-      notCheckInChartData$
+      notCheckInChartData$,
+      soldChartTotal$,
+      checkInCourseTotal$,
+      notCheckInCourseTotal$
     } = this.service
     return {
       list$,
@@ -108,7 +114,10 @@ export default {
       loading$,
       soldChartData$,
       checkInChartData$,
-      notCheckInChartData$
+      notCheckInChartData$,
+      soldChartTotal$,
+      checkInCourseTotal$,
+      notCheckInCourseTotal$
     }
   },
   bem: {
