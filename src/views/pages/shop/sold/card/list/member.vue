@@ -453,7 +453,7 @@ export default {
       this.$modalRouter.push({
         name: 'sold-card-batch-area',
         props: {
-          id: this.selectedRowKeys
+          ids: this.selectedRowKeys
         },
         on: {
           success: () => {
@@ -467,7 +467,7 @@ export default {
       this.$modalRouter.push({
         name: 'sold-card-batch-enter-time',
         props: {
-          id: this.selectedRowKeys
+          ids: this.selectedRowKeys
         },
         on: {
           success: () => {
@@ -481,7 +481,7 @@ export default {
       this.$modalRouter.push({
         name: 'sold-card-giving',
         props: {
-          id: this.selectedRowKeys,
+          ids: this.selectedRowKeys,
           type: this.selectedRows[0].card_type
         },
         on: {

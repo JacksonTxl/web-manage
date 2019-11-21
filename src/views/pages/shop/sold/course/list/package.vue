@@ -239,7 +239,7 @@ export default {
       this.$modalRouter.push({
         name: 'sold-course-scope',
         props: {
-          id: this.selectedRowKeys
+          ids: this.selectedRowKeys
         },
         on: {
           success: () => {

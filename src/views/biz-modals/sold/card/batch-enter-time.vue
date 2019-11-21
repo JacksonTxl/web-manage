@@ -7,19 +7,11 @@
         :help="helpText"
         :validateStatus="helpShow ? 'error' : ''"
       >
-        <a-radio-group v-model="batch_type">
-          <a-radio :style="radioStyle" :key="1" :value="BATCH_TYPE.SELECTED">
-            已选当前{{ id.length }}条数据
-          </a-radio>
-          <a-radio
-            :style="radioStyle"
-            :key="2"
-            :value="BATCH_TYPE.CONDITION"
-            :disabled="helpShow"
-          >
-            已选现有筛选条件下全部的{{ count }}条数据
-          </a-radio>
-        </a-radio-group>
+        <st-batch-select-radio
+          :ids="this.ids"
+          v-model="batch_type"
+          :total="count"
+        ></st-batch-select-radio>
       </st-form-item>
       <st-form-item label="入场时段" required>
         <a-radio-group v-model="admissionTime">
@@ -86,7 +78,7 @@ export default {
     ShopHourPicker
   },
   props: {
-    id: {
+    ids: {
       type: Array,
       required: true
     }
@@ -99,11 +91,6 @@ export default {
       BATCH_TYPE,
       BATCH_INFO,
       show: false,
-      radioStyle: {
-        display: 'block',
-        height: '30px',
-        lineHeight: '30px'
-      },
       batch_type: BATCH_TYPE.SELECTED,
       timeList: [],
       admissionTime: 1
@@ -120,7 +107,7 @@ export default {
     },
     operateDataNum() {
       return this.batch_type === this.BATCH_TYPE.SELECTED
-        ? this.id.length
+        ? this.ids.length
         : this.count
     }
   },
@@ -128,7 +115,7 @@ export default {
     onSubmit() {
       this.batchEnterTimeService
         .setCardEnterTime({
-          sold_ids: this.id,
+          sold_ids: this.ids,
           batch_type: this.batch_type,
           inout_type: this.admissionTime,
           inout_time: this.timeList,
