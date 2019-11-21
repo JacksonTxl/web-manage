@@ -38,7 +38,8 @@
         bottom: 33px;
       }
       .shop-reception-cabinet-item--using__action {
-        display: block;
+        height: 28px;
+        transition: height 0.5s;
       }
     }
     &--normal-using {
@@ -51,7 +52,8 @@
           margin-bottom: 17px;
         }
         .shop-reception-cabinet-item--using__action {
-          display: block;
+          height: 28px;
+          transition: height 0.5s;
         }
       }
     }
@@ -132,8 +134,10 @@
     }
     &__action {
       cursor: pointer;
-      display: none;
+      display: block;
       width: 113px;
+      height: 0;
+      overflow: hidden;
       background: rgba(235, 239, 255, 1);
       text-align: center;
       line-height: 28px;

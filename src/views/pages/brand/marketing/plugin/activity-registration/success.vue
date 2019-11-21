@@ -34,7 +34,7 @@
 </template>
 <script>
 import { SuccessService } from './success.service'
-import useShare from '@/hooks/marketing/poster.hook'
+import useShare from '@/hooks/marketing/share.hook'
 export default {
   name: 'ReleaseActivity',
   bem: {
@@ -101,8 +101,8 @@ export default {
       })
     },
     pushQrCodeModal() {
-      this.service.getQrCode(this.activityId).subscribe(() => {
-        this.share.qrCode({ qrCodeUrl: this.qrcode$ })
+      this.service.getQrCode(this.activityId).subscribe(res => {
+        this.share.qrCode({ isAuth: res.is_auth, qrCodeUrl: this.qrcode$ })
       })
     }
   }
