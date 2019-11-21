@@ -14,6 +14,9 @@ export class EditService implements Controller {
   supportSales$ = this.userService.getOptions$('member_card.support_sales')
   unit$ = this.userService.getOptions$('member_card.unit')
   sellType$ = this.userService.getOptions$('member_card.sell_type')
+  supportMemberNums$ = this.userService.getOptions$(
+    'member_card.support_member_num'
+  )
   isShelfCard$ = computed<boolean>(
     (card: any) => {
       if (!card.shelf_shop_num) return false

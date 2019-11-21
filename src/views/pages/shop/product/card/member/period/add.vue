@@ -38,6 +38,31 @@
           ></a-input>
         </st-form-item>
         <st-hr class="mg-y32"></st-hr>
+        <a-row :gutter="8" v-if="$searchQuery.type === '1'">
+          <a-col :lg="23">
+            <st-form-item
+              class="page-content-card-admission-range mg-t4"
+              required
+            >
+              <template slot="label">
+                支持入场人数
+                <st-help-tooltip id="TBMCDC001" />
+              </template>
+              <a-select
+                v-decorator="decorators.support_member_num"
+                placeholder="请选择入场人数"
+              >
+                <a-select-option
+                  v-for="(item, index) in supportMemberNums"
+                  :key="index"
+                  :value="item.value"
+                >
+                  {{ item.label }}
+                </a-select-option>
+              </a-select>
+            </st-form-item>
+          </a-col>
+        </a-row>
         <a-row :gutter="8">
           <a-col :lg="23">
             <st-form-item class="mg-b16" label="支持入场门店">
@@ -356,7 +381,8 @@ export default {
       priceSetting: this.addService.priceSetting$,
       supportSales: this.addService.supportSales$,
       unit: this.addService.unit$,
-      sellType: this.addService.sellType$
+      sellType: this.addService.sellType$,
+      supportMemberNums: this.addService.supportMemberNums$
     }
   },
   bem: {

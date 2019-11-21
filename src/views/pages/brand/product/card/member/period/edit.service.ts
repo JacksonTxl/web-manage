@@ -15,6 +15,9 @@ export class EditService implements Controller {
   supportSales$ = this.userService.getOptions$('member_card.support_sales')
   unit$ = this.userService.getOptions$('member_card.unit')
   sellType$ = this.userService.getOptions$('member_card.sell_type')
+  supportMemberNums$ = this.userService.getOptions$(
+    'member_card.support_member_num'
+  )
   // 是否上架的卡
   isShelfCard$ = computed<boolean>(
     (card: any) => {

@@ -13,7 +13,7 @@ export class AddService {
   supportSales$ = this.userService.getOptions$('member_card.support_sales')
   unit$ = this.userService.getOptions$('member_card.unit')
   sellType$ = this.userService.getOptions$('member_card.sell_type')
-  supportMemeberNums$ = this.userService.getOptions$(
+  supportMemberNums$ = this.userService.getOptions$(
     'member_card.support_member_num'
   )
   constructor(

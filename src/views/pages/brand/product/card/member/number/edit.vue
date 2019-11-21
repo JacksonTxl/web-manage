@@ -49,7 +49,7 @@
                 placeholder="请选择入场人数"
               >
                 <a-select-option
-                  v-for="(item, index) in supportMemeberNums"
+                  v-for="(item, index) in supportMemberNums"
                   :key="index"
                   :value="item.value"
                 >
@@ -704,7 +704,8 @@ export default {
       supportSales: this.editService.supportSales$,
       unit: this.editService.unit$,
       sellType: this.editService.sellType$,
-      isShelfCard: this.editService.isShelfCard$
+      isShelfCard: this.editService.isShelfCard$,
+      supportMemberNums: this.editService.supportMemberNums$
     }
   },
   bem: {
