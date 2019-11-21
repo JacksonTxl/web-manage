@@ -12,9 +12,10 @@
             v-model="chartParam.shop_id"
             @change="onChangeChartShop"
           />
-          <st-recent-radio-group
+          <!-- TODO: 暂时隐藏 -->
+          <!-- <st-recent-radio-group
             @change="onChangeChartDays"
-          ></st-recent-radio-group>
+          ></st-recent-radio-group> -->
         </div>
       </header>
 
@@ -24,6 +25,7 @@
             name="总售课数"
             :height="198"
             tooltipId="TBDAC001"
+            :total="soldChartTotal$"
             :data="soldChartData$"
           />
         </a-col>
@@ -32,14 +34,16 @@
             name="总消课数"
             :height="198"
             tooltipId="TBDAC002"
+            :total="checkInCourseTotal$"
             :data="checkInChartData$"
           />
         </a-col>
         <a-col :lg="8" class="main-item">
           <brand-statistics-course-ring
-            name="未消课数"
+            name="未消课节数"
             :height="198"
             tooltipId="TBDAC003"
+            :total="notCheckInCourseTotal$"
             :data="notCheckInChartData$"
           />
         </a-col>
@@ -98,7 +102,10 @@ export default {
       loading$,
       soldChartData$,
       checkInChartData$,
-      notCheckInChartData$
+      notCheckInChartData$,
+      soldChartTotal$,
+      checkInCourseTotal$,
+      notCheckInCourseTotal$
     } = this.service
     return {
       list$,
@@ -107,7 +114,10 @@ export default {
       loading$,
       soldChartData$,
       checkInChartData$,
-      notCheckInChartData$
+      notCheckInChartData$,
+      soldChartTotal$,
+      checkInCourseTotal$,
+      notCheckInCourseTotal$
     }
   },
   bem: {
