@@ -453,7 +453,8 @@ export default {
       this.$modalRouter.push({
         name: 'sold-card-batch-area',
         props: {
-          ids: this.selectedRowKeys
+          ids: this.selectedRowKeys,
+          searchQuery: cloneDeep(this.$searchQuery)
         },
         on: {
           success: () => {
@@ -467,7 +468,8 @@ export default {
       this.$modalRouter.push({
         name: 'sold-card-batch-enter-time',
         props: {
-          ids: this.selectedRowKeys
+          ids: this.selectedRowKeys,
+          searchQuery: cloneDeep(this.$searchQuery)
         },
         on: {
           success: () => {
@@ -482,7 +484,8 @@ export default {
         name: 'sold-card-giving',
         props: {
           ids: this.selectedRowKeys,
-          type: this.selectedRows[0].card_type
+          type: this.selectedRows[0].card_type,
+          searchQuery: cloneDeep(this.$searchQuery)
         },
         on: {
           success: () => {

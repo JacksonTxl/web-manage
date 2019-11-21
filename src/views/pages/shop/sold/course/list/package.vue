@@ -239,7 +239,8 @@ export default {
       this.$modalRouter.push({
         name: 'sold-course-scope',
         props: {
-          ids: this.selectedRowKeys
+          ids: this.selectedRowKeys,
+          searchQuery: this.$searchQuery
         },
         on: {
           success: () => {

@@ -58,7 +58,8 @@ export default {
     ids: {
       type: Array,
       required: true
-    }
+    },
+    searchQuery: Object
   },
   serviceProviders() {
     return [BatchAreaService]
@@ -85,7 +86,7 @@ export default {
     }
   },
   mounted() {
-    this.batchAreaService.init(this.$searchQuery).subscribe()
+    this.batchAreaService.init(this.searchQuery).subscribe()
   },
   computed: {
     helpText() {
@@ -109,7 +110,7 @@ export default {
           batch_type: this.batch_type,
           sold_ids: this.ids,
           vip_ids: this.cardVip,
-          conditions: this.$searchQuery
+          conditions: this.searchQuery
         })
         .subscribe(res => {
           this.show = false

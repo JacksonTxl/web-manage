@@ -81,10 +81,11 @@ export default {
     ids: {
       type: Array,
       required: true
-    }
+    },
+    searchQuery: Object
   },
   mounted() {
-    this.batchEnterTimeService.fetchCardNum(this.$searchQuery).subscribe()
+    this.batchEnterTimeService.fetchCardNum(this.searchQuery).subscribe()
   },
   data() {
     return {
@@ -119,7 +120,7 @@ export default {
           batch_type: this.batch_type,
           inout_type: this.admissionTime,
           inout_time: this.timeList,
-          conditions: this.$searchQuery
+          conditions: this.searchQuery
         })
         .subscribe(res => {
           this.$emit('success')

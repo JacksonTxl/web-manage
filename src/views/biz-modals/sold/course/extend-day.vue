@@ -84,10 +84,13 @@ export default {
     ids: {
       type: Array,
       required: true
+    },
+    searchQuery: {
+      type: Object
     }
   },
   mounted() {
-    this.extengDayService.fetchCourseNum().subscribe()
+    this.extengDayService.fetchCourseNum(this.searchQuery).subscribe()
   },
   data() {
     const form = this.$stForm.create()
@@ -124,7 +127,7 @@ export default {
           .taskExtendDays({
             batch_type: this.batch_type,
             sold_ids: this.ids,
-            conditions: this.$searchQuery,
+            conditions: this.searchQuery,
             ...values
           })
           .subscribe(res => {
