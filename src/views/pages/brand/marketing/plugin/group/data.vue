@@ -1,7 +1,7 @@
 <template>
   <div :class="activities()">
     <st-panel-layout>
-      <st-panel class="mg-b12">
+      <st-panel class="mg-b12" app>
         <!-- 这里是动态 -->
         <st-t2>
           双十一健身拼团活动
@@ -14,13 +14,13 @@
         </div>
         <!-- <Header :id="query.id" /> -->
       </st-panel>
-      <st-panel style="margin-top: 20px;">
+      <st-panel>
         <div :class="activities('block')">
           <a-row :class="activities('acount')">
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 开团数
-                <st-help-tooltip id="TBMGM001" />
+                <st-help-tooltip id="" />
               </p>
               <ICountUp
                 class="number-up font-number"
@@ -30,7 +30,7 @@
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 成团数
-                <st-help-tooltip id="TBMGM002" />
+                <st-help-tooltip id="" />
               </p>
               <ICountUp
                 class="number-up font-number"
@@ -40,7 +40,7 @@
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 参与人数
-                <st-help-tooltip id="TBMGM003" />
+                <st-help-tooltip id="" />
               </p>
               <ICountUp
                 class="number-up font-number"
@@ -50,7 +50,7 @@
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 新用户数
-                <st-help-tooltip id="TBMGM004" />
+                <st-help-tooltip id="" />
               </p>
               <ICountUp
                 class="number-up font-number"
@@ -60,7 +60,7 @@
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 成单数
-                <st-help-tooltip id="TBMGM004" />
+                <st-help-tooltip id="" />
               </p>
               <ICountUp
                 class="number-up font-number"
@@ -70,7 +70,7 @@
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 成交金额
-                <st-help-tooltip id="TBMGM004" />
+                <st-help-tooltip id="" />
               </p>
               <ICountUp
                 class="number-up font-number"
@@ -80,12 +80,12 @@
           </a-row>
         </div>
       </st-panel>
-      <st-panel :class="activities('search')">
+      <header :class="activities('search')">
         <a-select
           :class="activities('select')"
           v-model="groupStatus"
           placeholder="活动状态"
-          @change="onSingleSearch('group_status', $event)"
+          @change="onGroupSearch('data_status', $event)"
           style="width: 130px"
         >
           <a-select-option v-for="item in groupType" :key="item.value">
@@ -93,11 +93,11 @@
           </a-select-option>
         </a-select>
         <st-input-search
-          v-model="groupName"
-          @search="onSingleSearch('coupon_name', $event)"
+          v-model="searchWhere"
+          @search="onGroupSearch('searchWhere', $event)"
           placeholder="请输入活动名称"
         />
-      </st-panel>
+      </header>
       <st-panel>
         <template v-if="list.length > 1">
           <a-table
@@ -114,10 +114,8 @@
             id="atable_no_data"
             rowKey="id"
             :columns="columns"
-            :scroll="{ y: 0 }"
             :dataSource="list"
           ></a-table>
-          <st-no-data />
         </template>
       </st-panel>
     </st-panel-layout>
@@ -133,8 +131,9 @@ let Color = ''
 export default {
   name: 'PageBrandMarketingPluginGroupListData',
   bem: {
-    activities: 'brand-marketing-plugin-group-list-data'
+    activities: 'brand-marketing-plugin-group-data'
   },
+  mixins: [tableMixin],
   serviceInject() {
     return {
       dataService: DataService
@@ -144,31 +143,35 @@ export default {
     return {
       list: this.dataService.list$,
       page: this.dataService.page$,
-      collect: this.dataService.collect$,
-      // loading: this.listService.loading$,
-      // query: this.routeService.query$,
-      auth: this.dataService.auth$
+      collect: this.dataService.collect$
+      // loading: this.listService.loading$
     }
   },
   data(vm) {
     return {
       showList: [],
       flag: true,
-      groupName: '',
+      searchWhere: '',
       groupStatus: -1,
       columns: columns(vm),
-      couponEnums: {
+      dataEnum: {
         // select 假数据
-        coupon_status: {
+        group_status: {
           description: '活动状态',
           value: { 1: '已结束', 2: '活动中', 3: '未开始', 4: '待发布' }
         }
       }
     }
   },
+  watch: {
+    $searchQuery(newVal) {
+      console.log(newVal)
+      this.setSearchData()
+    }
+  },
   computed: {
     group_status() {
-      return (this.couponEnums && this.couponEnums.coupon_status) || []
+      return (this.dataEnum && this.dataEnum.group_status) || []
     },
     groupType() {
       let list = []
@@ -176,25 +179,27 @@ export default {
         list.push({ value: +o[0], label: o[1] })
       })
       return [{ value: -1, label: '全部状态' }, ...list]
-      console.log(list)
+      // console.log(list)
     }
   },
   mounted() {
     this.setSearchData()
-    console.log(this.collect[0].group_success_total)
+    console.log(this.$searchQuery)
   },
-  watch: {
-    query(newVal) {
-      this.setSearchData()
-    }
-  },
+
   methods: {
+    setSearchData() {
+      let { search_where, group_status } = this.$searchQuery
+      console.log(search_where, group_status)
+      this.searchWhere = search_where
+      this.groupStatus = group_status || -1
+    },
     rowClassName(record, index) {
       let id = record && record.id
       let has = this.showList.includes(id)
       let className = ''
       if (index % 2 !== 0) {
-        className = has ? 'classname shadow' : 'classname'
+        className = has ? 'evengb shadow' : 'evengb'
       } else {
         className = has ? 'shadow' : ''
       }
@@ -206,16 +211,9 @@ export default {
         return name.indexOf('shadow') === -1 ? name : name.replace('shadow', '')
       }
     },
-
-    // 设置searchData
-    setSearchData() {
-      // let { group_name, group_status } = this.query
-      // this.groupName = coupon_name
-      // this.groupStatus = group_status || -1
-    },
-    onSingleSearch(val, e) {
-      console.log(val, e)
-    },
+    // onGroupSearch(val, e) {
+    //   console.log(val, e)
+    // },
     onShow(list) {
       this.showList = list
       this.rowClassName()
