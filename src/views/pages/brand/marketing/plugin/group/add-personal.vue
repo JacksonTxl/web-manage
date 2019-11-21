@@ -205,11 +205,13 @@ export default {
         this.tableText = '请选择私教课规格'
         this.tableErr = true
       }
+
       let params = {}
-      // let isReturn = false
-      // if (isReturn) {
-      //   return
-      // }
+      let isReturn = false
+      if (isReturn) {
+        return
+      }
+
       // 275404963775803 门店id
       params = {
         product_type: 3, // 会籍卡
@@ -227,21 +229,21 @@ export default {
         published_time: data.published_time //发布时间
       }
       console.log(params)
-      // if (this.isEdit) {
-      //   params.id = this.$route.query.id
-      //   this.addMemberService.editGroup(params).subscribe(res => {
-      //     this.$router.push({
-      //       path: `/brand/marketing/plugin/group/list`
-      //     })
-      //   })
-      // } else {
-      //   this.addMemberService.addGroup(params).subscribe(res => {
-      //     this.$router.push({
-      //       path: `/brand/marketing/plugin/group/list`
-      //     })
-      //   })
-      // }
-      // })
+      if (this.isEdit) {
+        params.id = this.$route.query.id
+        this.addMemberService.editGroup(params).subscribe(res => {
+          console.log(res)
+          this.$router.push({
+            path: `/brand/marketing/plugin/group/list`
+          })
+        })
+      } else {
+        this.addMemberService.addGroup(params).subscribe(res => {
+          this.$router.push({
+            path: `/brand/marketing/plugin/group/list`
+          })
+        })
+      }
     },
     // 详情回显
     setFieldsValue() {
@@ -249,7 +251,6 @@ export default {
       this.info.sku.forEach(item => {
         this.selectedRowKeys.push(item.id)
       })
-      // this.ids = this.shopIds
     }
   },
   components: {
