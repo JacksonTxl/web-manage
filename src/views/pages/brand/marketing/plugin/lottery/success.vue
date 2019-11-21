@@ -66,10 +66,8 @@
   </div>
 </template>
 <script>
-import MarketingPoster from '@/views/biz-modals/brand/marketing/share-poster'
-import MarketingQrCode from '@/views/biz-modals/brand/marketing/qr-code'
 import { SuccessService } from './success.service'
-import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
+import useShare from '@/hooks/marketing/share.hook'
 
 export default {
   name: 'PluginLotteryAdd',
@@ -78,11 +76,6 @@ export default {
   },
   bem: {
     bPage: 'page-brand-marketing-plugin-lottery-success'
-  },
-  modals: {
-    MarketingPoster,
-    MarketingQrCode,
-    BrandMarketingBind
   },
   serviceInject() {
     return {
@@ -93,6 +86,11 @@ export default {
     const { info$, qrcode$ } = this.service
     return { info$, qrcode$ }
   },
+  hooks() {
+    return {
+      share: userShare()
+    }
+  },
   computed: {
     lotteryId() {
       return this.$searchQuery.id
@@ -102,33 +100,17 @@ export default {
     pushSharePosterModal() {
       this.service.getSharePosterInfo(this.lotteryId).subscribe(res => {
         const info = this.info$
-        if (!res.is_auth) {
-          this.show = false
-          this.$modalRouter.push({
-            name: 'brand-marketing-bind'
-          })
-          return
+        const shsInfo = {
+          qrcode_url: info.qrcode_url,
+          sub_name: info.sub_name
         }
-        this.$modalRouter.push({
-          name: 'marketing-poster',
-          props: {
-            info: {
-              qrcode_url: info.qrcode_url,
-              sub_name: info.sub_name
-            },
-            shsUrl: '/saas/lottery_poster'
-          }
-        })
+        const isAuth = res.is_auth
+        this.share.poster({ isAuth, shsInfo, shsPath: '/saas/lottery_poster' })
       })
     },
     pushQrCodeModal() {
       this.service.getQrCode(this.lotteryId).subscribe(() => {
-        this.$modalRouter.push({
-          name: 'marketing-qr-code',
-          props: {
-            url: this.qrcode$
-          }
-        })
+        this.share.qrCode({ qrCodeUrl: this.qrcode$ })
       })
     }
   }
