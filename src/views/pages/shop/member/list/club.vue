@@ -170,7 +170,7 @@
     <st-table
       :columns="columns"
       :loading="loading.getListInfo"
-      :scroll="{ x: 1400 }"
+      :scroll="{ x: 1800 }"
       :alertSelection="{ onReset: onSelectionReset }"
       :rowSelection="{ selectedRowKeys, onChange: onSelectionChange }"
       rowKey="member_id"
@@ -188,6 +188,14 @@
           />
         </span>
       </div>
+      <span slot="customSaleTitle">
+        跟进销售课保天数
+        <st-help-tooltip id="TSCRM001" />
+      </span>
+      <span slot="customCoachTitle">
+        跟进销售课保天数
+        <st-help-tooltip id="TSCRM002" />
+      </span>
       <div slot="member_name" slot-scope="text, record">
         <a
           href="javascript:;"

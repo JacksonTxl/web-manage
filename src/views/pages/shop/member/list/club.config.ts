@@ -47,8 +47,8 @@ export const columns = (vm: any) => {
     },
     { title: '跟进销售', dataIndex: 'follow_salesman' },
     {
-      title: '跟进销售课保天数',
       dataIndex: 'salesman_protect_day',
+      slots: { title: 'customSaleTitle' },
       scopedSlots: { customRender: 'salesman_protect_day' }
     },
     { title: `跟进${vm.$c('coach')}`, dataIndex: 'follow_coach' },
@@ -82,8 +82,8 @@ export const columns = (vm: any) => {
     { title: '跟进销售', dataIndex: 'follow_salesman' },
     { title: `跟进${vm.$c('coach')}`, dataIndex: 'follow_coach' },
     {
-      title: '跟进教练课保天数',
       dataIndex: 'coach_protect_day',
+      slots: { title: 'customCoachTitle' },
       scopedSlots: { customRender: 'coach_protect_day' }
     },
 
