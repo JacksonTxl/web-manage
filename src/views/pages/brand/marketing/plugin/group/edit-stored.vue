@@ -131,7 +131,7 @@ export default {
       })
       this.groupParams.id = this.currentStored[0].id
     },
-    onSubmit() {
+    onSubmit(params) {
       let tmpList = [
         {
           sku_id: this.currentStored[0].id,
