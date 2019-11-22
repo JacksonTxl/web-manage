@@ -165,7 +165,10 @@
               <span @click="onCancelMemberChildren">取消</span>
             </p>
           </st-form-item>
-          <st-form-item v-if="!searchMemberChildrenIsShow" label="入场成员">
+          <st-form-item
+            v-if="info && info.support_member_num > 1"
+            label="入场成员"
+          >
             <a-tag
               v-for="(item, index) in newMemeberList"
               :key="index"
@@ -555,6 +558,11 @@ export default {
     },
     onCancelMemberChildren() {
       this.searchMemberChildrenIsShow = true
+      this.form.resetFields([
+        'memberChildrenId',
+        'memberChildrenName',
+        'memberChildrenMobile'
+      ])
     },
     onAddMemberChildren() {
       if (this.newMemeberList.length >= this.info.support_member_num - 1) {
@@ -666,8 +674,19 @@ export default {
       }
     },
     onMemberChildrenChange(data) {
+      if (this.newMemeberList.length >= this.info.support_member_num - 1) {
+        this.messageService.error({
+          content: '当前卡人数已达上限，无法继续添加'
+        })
+        return
+      }
       if (data) {
-        console.log(data)
+        const arr = this.memberChildrenList.filter(item => item.id === data)
+        this.newMemeberList.push({
+          id: arr[0].id,
+          memberName: arr[0].member_name,
+          memberMobile: arr[0].mobile
+        })
       }
     },
     onSelectAdvance() {
@@ -747,6 +766,19 @@ export default {
       })
     },
     onCreateOrder() {
+      this.searchMemberChildrenIsShow = false
+      const family_member_ids = []
+      const family_member_info = []
+      this.newMemeberList.forEach(item => {
+        if (item.id) {
+          family_member_ids.push(item.id)
+        } else {
+          family_member_info.push({
+            name: item.memberName,
+            mobile: item.memberMobile
+          })
+        }
+      })
       this.form.validate().then(values => {
         this.saleMemberCardService
           .setTransactionOrder({
@@ -767,7 +799,9 @@ export default {
             sale_id: values.saleName,
             description: this.description,
             sale_range: this.info.sale_range.type,
-            order_amount: this.currentPrice
+            order_amount: this.currentPrice,
+            family_member_ids,
+            family_member_info
           })
           .subscribe(result => {
             this.$emit('success', {
@@ -779,6 +813,19 @@ export default {
       })
     },
     onPay() {
+      this.searchMemberChildrenIsShow = false
+      const family_member_ids = []
+      const family_member_info = []
+      this.newMemeberList.forEach(item => {
+        if (item.id) {
+          family_member_ids.push(item.id)
+        } else {
+          family_member_info.push({
+            name: item.memberName,
+            mobile: item.memberMobile
+          })
+        }
+      })
       this.form.validate().then(values => {
         this.saleMemberCardService
           .setTransactionPay({
@@ -799,7 +846,9 @@ export default {
             sale_id: values.saleName,
             description: this.description,
             sale_range: this.info.sale_range.type,
-            order_amount: this.currentPrice
+            order_amount: this.currentPrice,
+            family_member_ids,
+            family_member_info
           })
           .subscribe(result => {
             this.$emit('success', {

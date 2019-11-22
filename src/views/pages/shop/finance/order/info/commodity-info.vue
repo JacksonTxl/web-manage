@@ -31,6 +31,9 @@
             <st-info-item label="入场范围">
               {{ info.admission_range }}
             </st-info-item>
+            <st-info-item label="支持入场人数">
+              {{ info.support_member_num }}
+            </st-info-item>
           </st-info>
         </a-col>
       </a-row>

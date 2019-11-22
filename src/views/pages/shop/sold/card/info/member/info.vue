@@ -96,8 +96,31 @@
             <st-info-item label="订单状态">
               {{ info.order_status | enumFilter('sold_common.order_status') }}
             </st-info-item>
-            <st-info-item label="当前状态" class="mg-b0">
+            <st-info-item label="当前状态">
               {{ info.card_status | enumFilter('sold_common.card_status') }}
+            </st-info-item>
+            <st-info-item
+              v-if="info.card_number_type === 2"
+              label="卡成员"
+              class="mg-b0"
+            >
+              <template v-if="info.card_member.length === 0">
+                无
+              </template>
+              <template v-else>
+                <router-link
+                  :to="{
+                    path: '/shop/member/info/basic',
+                    query: {
+                      id: item.id
+                    }
+                  }"
+                  v-for="(item, index) in info.card_member"
+                  :key="index"
+                >
+                  {{ item.name }}
+                </router-link>
+              </template>
             </st-info-item>
           </st-info>
         </a-col>
