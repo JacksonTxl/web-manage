@@ -4,7 +4,7 @@ import { GroupBuyApi, GroupListParams } from '@/api/v1/marketing/group_buy'
 import { MarketingApi } from '@/api/v1/marketing/marketing'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
-
+import { UserService } from '@/services/user.service'
 @Injectable()
 export class ListService implements Controller {
   list$ = new State([])
@@ -15,10 +15,12 @@ export class ListService implements Controller {
     // 记得设置鉴权
     add: 'brand:activity:group|add'
   })
+  // brand$ = this.userService.brand$  需要
   constructor(
     private marketingApi: MarketingApi,
     private groupBuyApi: GroupBuyApi,
-    private authService: AuthService
+    private authService: AuthService,
+    private userService: UserService
   ) {}
   @Effect()
   getList(params: GroupListParams) {
