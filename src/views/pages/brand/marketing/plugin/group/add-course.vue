@@ -2,7 +2,7 @@
   <group-form
     :form="form"
     :decorators="decorators"
-    :loading="loading"
+    :loading="loading.addGroup"
     :shopIds="shopIds"
     @onsubmit="onSubmit"
     :showSelectShop="false"
@@ -196,6 +196,7 @@ export default {
       )
     },
     onSubmit(data) {
+      console.log(data)
       let list = []
       let isReturn = false
       this.tableData.forEach((item, index) => {
@@ -225,20 +226,11 @@ export default {
         published_type: data.published_type, //发布状态(1-立即发布 2-暂不发布 3-定时发布)
         published_time: data.published_time //发布时间
       }
-      if (this.isEdit) {
-        params.id = this.$route.query.id
-        this.addMemberService.editGroup(params).subscribe(res => {
-          this.$router.push({
-            path: `/brand/marketing/plugin/group/list`
-          })
+      this.addMemberService.addGroup(params).subscribe(res => {
+        this.$router.push({
+          path: `/brand/marketing/plugin/group/list`
         })
-      } else {
-        this.addMemberService.addGroup(params).subscribe(res => {
-          this.$router.push({
-            path: `/brand/marketing/plugin/group/list`
-          })
-        })
-      }
+      })
     }
   },
   components: {
