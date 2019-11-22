@@ -46,11 +46,12 @@
         </a-radio-group>
       </div>
     </div>
-    <template v-for="card in scheduleTable">
+    <div class="schedule-table__content">
       <a-card
         :title="card.date | filterStartTime"
         :key="card.date"
-        class="mg-l24 mg-r24 mg-t8"
+        v-for="card in scheduleTable"
+        class="mg-l24 mg-r24"
       >
         <span
           slot="extra"
@@ -109,7 +110,7 @@
           </a-col>
         </a-row>
       </a-card>
-    </template>
+    </div>
   </div>
 </template>
 
