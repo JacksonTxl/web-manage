@@ -71,6 +71,7 @@
                 </a-select> -->
                 <a-cascader
                   :options="actList"
+                  :allowClear="false"
                   v-model="li.activity_id"
                   placeholder="请输入链接的活动"
                   :fieldNames="{
@@ -79,7 +80,6 @@
                     children: 'children'
                   }"
                   @change="actSelect(li, $event)"
-                  changeOnSelect
                 />
               </st-form-item>
             </div>
@@ -134,10 +134,10 @@ export default {
       let number = this.eventInfo.length
       this.number = number
       this.list[number] = cloneDeep(this.eventInfo)
-      this.actList = cloneDeep(this.activityList)
+      this.actList = cloneDeep(this.activityList.list)
       this.list[number].forEach(item => {
         this.actList.forEach(ite => {
-          if (ite.type === item.activity_type) {
+          if (ite.id === item.activity_type) {
             if (ite.children && ite.children.length) {
               if (!ite.children.some(act => act.id === item.activity_id)) {
                 if (item.activity_type === 5) {
@@ -159,6 +159,8 @@ export default {
                 }
               }
             }
+            item.id = ite.id
+            item.activity_id = [item.id, item.activity_id]
           }
         })
         if (!this.actList.some(act => act.id === item.activity_id)) {
@@ -169,6 +171,7 @@ export default {
             isover: true
           })
         }
+        // item.activity_id = [item.activity_id]
       })
     } else {
       this.number = 0
@@ -257,11 +260,16 @@ export default {
       this.list = list
     },
     actSelect(item, value) {
-      this.actList.forEach(ite => {
-        if (ite.children && ite.children.length) {
-          let selected = ite.children.filter(it => it.id === value)[0]
-        }
-      })
+      // this.actList.forEach(ite => {
+      //   if (ite.children && ite.children.length) {
+      //     let selected = ite.children.filter(it => it.id === value[0])[0]
+      //   }
+      // })
+      let selecttedParent = this.actList.filter(ite => ite.id === value[0])[0]
+      let selected = {}
+      if (selecttedParent.children && selecttedParent.children.length) {
+        selected = selecttedParent.children.filter(it => it.id === value[1])[0]
+      }
       item.activity_type = selected.activity_type
       item.activity_name = selected.activity_name
       if (selected.activity_type === 5) {
