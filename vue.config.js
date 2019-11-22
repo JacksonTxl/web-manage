@@ -78,7 +78,7 @@ module.exports = {
       }
     },
     before(app) {
-      // mockerApi(app, Path.resolve('./mock/index.js'))
+      mockerApi(app, Path.resolve('./mock/index.js'))
       app.use(
         '/_editor',
         openInEditor({
