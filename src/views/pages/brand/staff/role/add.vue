@@ -83,11 +83,13 @@
           </st-container>
         </div>
       </st-form-item>
-      <st-form-item label=" ">
-        <st-button type="primary" @click="onClickSubmit">保存</st-button>
-        <st-button class="mg-l8" @click="onCancel">取消</st-button>
-      </st-form-item>
     </st-form>
+    <div class="page-role-info__btn">
+      <st-button type="primary" @click="onClickSubmit" class="mg-r16">
+        保存
+      </st-button>
+      <st-button @click="onCancel">取消</st-button>
+    </div>
   </div>
 </template>
 
