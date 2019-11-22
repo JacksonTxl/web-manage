@@ -44,6 +44,7 @@
                         ></st-input-search>
                         <a-tree
                           checkable
+                          @check="onTeamTree"
                           @expand="onExpand"
                           v-model="teamCourseIds"
                           :expandedKeys.sync="expandedKeysCourse"
@@ -165,6 +166,7 @@
                         <a-tree
                           checkable
                           @expand="onExpand"
+                          @check="onPersonalTree"
                           v-model="personalCourseIds"
                           :expandedKeys.sync="expandedKeysPersonal"
                           :autoExpandParent="autoExpandParentPersonal"
@@ -369,7 +371,16 @@
 import { ScopeService } from './scope.service'
 import { ruleOptions } from './scope.config'
 import { BATCH_TYPE, BATCH_INFO } from '@/constants/common/batch-operation'
-import { cloneDeep, remove, every, filter, reduce, forEach } from 'lodash-es'
+import {
+  cloneDeep,
+  remove,
+  every,
+  filter,
+  reduce,
+  forEach,
+  find,
+  intersection
+} from 'lodash-es'
 export default {
   name: 'ModalSoldCourseScope',
   bem: {
@@ -419,11 +430,14 @@ export default {
       autoExpandParentCourse: true,
       teamCourseList: [],
       searchCourseValue: '',
+      teamChildrenIds: [],
 
       personalCourseIds: [],
       expandedKeysPersonal: [],
       autoExpandParentPersonal: true,
       searchPersonalValue: '',
+      personalChildrenIds: [],
+
       BATCH_TYPE,
       BATCH_INFO,
       form,
@@ -440,7 +454,7 @@ export default {
   computed: {
     teamCourseShowList() {
       return this.teamCourseList.filter(item =>
-        this.teamCourseIds.includes(item.id)
+        this.teamChildrenIds.includes(item.id)
       )
     },
     personalCourseShowList() {
@@ -451,7 +465,8 @@ export default {
         total += item.coach_number
       })
       return this.personalCourseList.filter(item => {
-        if (this.personalCourseIds.includes(item.id)) {
+        // if (this.personalCourseIds.includes(item.id)) {
+        if (this.personalChildrenIds.includes(item.id)) {
           item.coachGradeList = cocahes
           item.coach = total
           return item
@@ -473,6 +488,38 @@ export default {
     }
   },
   methods: {
+    onTeamTree() {
+      this.teamChildrenIds = this.teamCourseIds.filter(
+        i => !find(this.teamCourseTreeList, { id: i })
+      )
+      this.teamCourseIds.forEach((i, index) => {
+        const item = find(this.teamCourseTreeList, { id: i })
+        if (item) {
+          const isExist = item.children.some(childrenItem =>
+            this.teamCourseIds.includes(childrenItem.id)
+          )
+          if (!isExist) {
+            this.teamCourseIds.splice(index, 1)
+          }
+        }
+      })
+    },
+    onPersonalTree() {
+      this.personalChildrenIds = this.personalCourseIds.filter(
+        i => !find(this.personalCourseTreeList, { id: i })
+      )
+      this.personalCourseIds.forEach((i, index) => {
+        const item = find(this.personalCourseTreeList, { id: i })
+        if (item) {
+          const isExist = item.children.some(childrenItem =>
+            this.personalCourseIds.includes(childrenItem.id)
+          )
+          if (!isExist) {
+            this.personalCourseIds.splice(index, 1)
+          }
+        }
+      })
+    },
     coachItemChange(item, index) {
       const arr = this.coachList.filter(i => item.coachGradeList.includes(i.id))
       let total = 0
@@ -483,11 +530,13 @@ export default {
     },
     onClickDeleteTeam(i, index) {
       this.teamCourseIds = this.teamCourseIds.filter(item => item !== i.id)
+      this.onTeamTree()
     },
     onClickDeletePersonal(i, index) {
       this.personalCourseIds = this.personalCourseIds.filter(
         item => item !== i.id
       )
+      this.onPersonalTree()
     },
     checkAllChange(type) {
       if (type === 'team') {
@@ -508,12 +557,14 @@ export default {
         if (this.teamCheckAll) {
           this.teamCourseIds = []
           this.teamCheckAll = false
+          this.onTeamTree()
         }
       }
       if (type === 'personal') {
         if (this.personalCheckAll) {
           this.personalCourseIds = []
           this.personalCheckAll = false
+          this.onPersonalTree()
         }
       }
     },
@@ -615,7 +666,7 @@ export default {
             batch_type: this.batch_type,
             sold_ids: this.ids,
             conditions: this.searchQuery,
-            range_teams: this.teamCourseIds,
+            range_teams: this.teamChildrenIds,
             range_personals: arr
           })
           .subscribe(res => {
