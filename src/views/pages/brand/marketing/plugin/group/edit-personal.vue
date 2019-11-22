@@ -3,7 +3,7 @@
     :form="form"
     :decorators="decorators"
     :isEdit="true"
-    :info="info.info"
+    :info="info"
     :shopIds="shopIds"
     @onsubmit="onSubmit"
   >
@@ -44,7 +44,6 @@
       <a-row :gutter="8">
         <a-col :span="16">
           <st-form-item
-            v-decorator="decorators.group_hour"
             label="优惠设置"
             required
             :help="tableText"
@@ -103,16 +102,8 @@ export default {
     basic: 'brand-marketing-group-personal'
   },
   mounted() {
+    console.log(this.info)
     this.setFieldsValue()
-    // let that = this
-    // this.editPersonalService.getList().subscribe(res => {
-    //   that
-    //     .editPersonalService()
-    //     .getCoachList()
-    //     .subscribe(() => {})
-    // })
-    // console.log(this.info, '============info')
-    // this.editStoredService.init()
   },
   data() {
     const form = this.$stForm.create()
@@ -122,12 +113,8 @@ export default {
       decorators,
       cardId: '', // 活动商品
       selectedRowKeys: [], // 优惠设置选中项
-      isLimit: true, // 限制库存
+      // isLimit: true, // 限制库存
       cardColumns,
-      groupParams: {
-        type: 3,
-        id: null
-      },
       // 发布状态
       releaseStatus: 1,
       publishTime: null, // 发布时间
@@ -138,7 +125,10 @@ export default {
       tableErr: false,
       sku: [], // 卡、课规格[{“sku_id”:1,”group_price”:20},]
       shopIds: [],
-      newCoach: []
+      newCoach: [],
+      groupHour: '',
+      published_type: 3,
+      id: ''
     }
   },
   computed: {
@@ -157,10 +147,11 @@ export default {
       this.newCoach.forEach((item, index) => {
         item.hour = e.target.value
       })
+      this.setFieldsValue()
     },
     // 设置选择私教课并返回教练
     handleChange(e) {
-      this.groupParams.id = e
+      this.id = e
       this.editPersonalService.getCoachList({ id: e }).subscribe(res => {
         this.setFieldsValue()
       })
@@ -230,7 +221,19 @@ export default {
       this.newCoach = this.coach.map(item => {
         return { level: item.level, id: item.id, hour: '--' }
       })
-      console.log('dsfasdfasfsad', this.newCoach)
+      this.info.sku.filter(item => {
+        this.newCoach.filter(it => {
+          if (item.id === it.id) {
+            console.log(item.group_price)
+            it.group_price = item.group_price
+          }
+          it.hour = this.info.init_course_num
+        })
+      })
+      this.form.setFieldsValue({
+        group_hour: this.info.init_course_num
+      })
+      this.published_type = this.info.published_type
     }
   },
   components: {
