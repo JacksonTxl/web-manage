@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+  <body>
+    <script>
+      var str = '江山依旧在，几度夕阳红。Hello,大家好,好好学习，天天向上'
+      function getTextWidth(str) {
+        var width = 0
+        var html = document.createElement('span')
+        html.innerText = str
+        html.className = 'getTextWidth'
+        document.querySelector('body').appendChild(html)
+        width = document.querySelector('.getTextWidth').offsetWidth
+        document.querySelector('.getTextWidth').remove()
+        return width
+      }
+
+      var w = getTextWidth(str)
+      console.log(w)
+    </script>
+  </body>
+</html>
