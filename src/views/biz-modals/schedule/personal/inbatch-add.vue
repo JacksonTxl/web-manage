@@ -35,7 +35,7 @@
             {{ coach.staff_name }}
           </a-select-option>
         </a-select>
-        <div class="color-danger">建议选择教练数不超过4人</div>
+        <div class="color-danger">建议选择教练数不超过10人</div>
       </st-form-item>
     </st-form>
     <div class="modal-schedule__time modal-reserve-schedule__time mg-t16">
@@ -76,7 +76,6 @@
     </div>
   </st-modal>
 </template>
-n
 
 <script>
 import { PersonalScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/personal/service#/schedule.service'
