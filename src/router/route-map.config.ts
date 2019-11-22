@@ -749,7 +749,7 @@ export const routeMapConfig = {
       follow_salesman_id: { type: Number },
       follow_coach_id: { type: Number },
       follow_status: { type: Number },
-      page: { type: Number, default: 1 },
+      current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
   },
@@ -764,7 +764,7 @@ export const routeMapConfig = {
       be_member_start_time: { type: String, default: '' },
       be_member_stop_time: { type: String, default: '' },
       is_follow: { type: Number, default: -1 },
-      page: { type: Number, default: 1 },
+      current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
   },
