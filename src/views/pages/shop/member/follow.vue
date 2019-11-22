@@ -148,12 +148,7 @@
       </span>
       <template slot="follow_content" slot-scope="text">
         <div>
-          <st-overflow-text title="跟进内容">
-            <template slot="content">
-              {{ text }}
-            </template>
-            <a class="pop-object__text">{{ text }}</a>
-          </st-overflow-text>
+          <st-overflow-text title="跟进内容" max-width="200px" :value="text" />
         </div>
       </template>
     </st-table>
