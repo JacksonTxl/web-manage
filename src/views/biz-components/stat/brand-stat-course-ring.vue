@@ -10,6 +10,7 @@ import { decimalFilter } from './filters'
 import StHelpTooltip from '@/views/components/help-tooltip/help-tooltip'
 
 export default {
+  name: 'BrandStatCourseRing',
   mixins: [chartMixin],
   props: {
     data: {
@@ -27,6 +28,10 @@ export default {
     tooltipId: {
       type: String,
       default: ''
+    },
+    total: {
+      type: Number,
+      default: 0
     },
     colors: {
       type: Array,
@@ -89,9 +94,9 @@ export default {
         html: () => {
           let sum = this.dv.sum('value')
           return `<div class='guide'>
-          <div class='guide-name'>${
+          <div class='guide-name'><span class="mg-r4">${
             this.name
-          }<span class='guide-name-tooltip'></span></div>
+          }</span><span class='guide-name-tooltip'></span></div>
             <div class='guide-title'><span class='guide-value'>${sum}</span><span class='guide-unit'>${
             this.unit
           }</span></div>
@@ -171,7 +176,6 @@ export default {
           cursor: 'pointer'
         })
         .tooltip('name*percent', function(item, percent, a) {
-          console.log('name*percent', percent, a)
           return {
             name: item,
             value: percent + '%'
@@ -195,6 +199,10 @@ export default {
         const origin = e.data._origin
         $s('.guide-value').textContent = origin.value
         $s('.guide-name').textContent = origin.name
+      })
+      this.chart.on('interval:mouseleave', e => {
+        $s('.guide-value').textContent = this.total
+        $s('.guide-name').textContent = this.name
       })
       const legendListItems = [
         ...this.$el.querySelectorAll('.g2-legend-list-item')

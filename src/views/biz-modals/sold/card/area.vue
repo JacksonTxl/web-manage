@@ -1,27 +1,18 @@
 <template>
-  <st-modal
-    title="入场vip区域设置"
-    size="small"
-    v-model="show"
-    wrapClassName="modal-sold-card-area"
-  >
-    <div :class="area('content')">
-      <st-form labelWidth="75px">
-        <div :class="area('area')">
-          <st-form-item label="入场vip区域" class="mg-b0">
-            <a-checkbox-group v-model="cardVip">
-              <a-checkbox
-                v-for="(item, index) in vips"
-                :key="index"
-                :value="+item.id"
-              >
-                {{ item.area_name }}
-              </a-checkbox>
-            </a-checkbox-group>
-          </st-form-item>
-        </div>
-      </st-form>
-    </div>
+  <st-modal title="入场vip区域设置" size="small" v-model="show">
+    <st-form labelWidth="75px">
+      <st-form-item label="入场vip区域" class="mg-b0">
+        <a-checkbox-group v-model="cardVip">
+          <a-checkbox
+            v-for="(item, index) in vips"
+            :key="index"
+            :value="+item.id"
+          >
+            {{ item.area_name }}
+          </a-checkbox>
+        </a-checkbox-group>
+      </st-form-item>
+    </st-form>
     <template slot="footer">
       <st-button @click="onSubmit" :loading="loading.setCardVip" type="primary">
         确认提交
@@ -35,9 +26,6 @@ import { AreaService } from './area.service'
 import { cloneDeep } from 'lodash-es'
 export default {
   name: 'ModalSoldCardArea',
-  bem: {
-    area: 'modal-sold-card-area'
-  },
   props: {
     id: {
       type: Array,

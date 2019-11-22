@@ -3,6 +3,7 @@ import { State, Effect, Computed } from 'rx-state'
 import { OrderApi } from '@/api/v1/finance/order'
 import { tap, pluck } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
+import { RedirectService } from '@/services/redirect.service'
 
 @Injectable()
 export class InfoService implements Controller {
@@ -93,9 +94,10 @@ export class InfoService implements Controller {
     return orderType
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: () => {}) {
-    const routeName = to.name
+    console.log('hello')
     this.id = to.meta.query.id
-    if (routeName === 'shop-finance-order-info-collection-details') {
+    console.log(this.id)
+    if (to.name === 'shop-finance-order-info-collection-details') {
       this.getInfo(this.id).subscribe(res => {
         next()
       })

@@ -17,6 +17,9 @@ export class CourseService {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
+  soldChartTotal$ = new State(0)
+  checkInCourseTotal$ = new State(0)
+  notCheckInCourseTotal$ = new State(0)
 
   auth$ = this.authService.authMap$({
     export: 'brand_shop:stat:order_reports|batch_export'
@@ -41,6 +44,7 @@ export class CourseService {
         }
       ]
     })
+    this.soldChartTotal$.commit(() => saleCourse.sale_total_num)
   }
   SET_CHECK_IN_CHART_DATA(checkInCourse: any) {
     this.checkInChartData$.commit(() => [
@@ -52,23 +56,27 @@ export class CourseService {
       {
         name: '团体课消课',
         value: checkInCourse.team_checkin_num,
-        percent: checkInCourse.teams_checkin_percentage
+        percent: checkInCourse.team_checkin_percentage
       }
     ])
+    this.checkInCourseTotal$.commit(() => checkInCourse.total_checkin_num)
   }
   SET_NOT_CHECK_IN_CHART_DATA(notCheckInCourse: any) {
     this.notCheckInChartData$.commit(() => [
       {
-        name: '未私教课消课',
+        name: '私教课未消课',
         value: notCheckInCourse.personal_not_checkin_num,
         percent: notCheckInCourse.personal_not_checkin_percentage
       },
       {
-        name: '未团体课消课',
+        name: '团体课未消课',
         value: notCheckInCourse.team_not_checkin_num,
         percent: notCheckInCourse.team_not_checkin_percentage
       }
     ])
+    this.notCheckInCourseTotal$.commit(
+      () => notCheckInCourse.total_not_checkin_num
+    )
   }
   // 获取营收统计图信息
   getChart(query: CourseChartParams) {
