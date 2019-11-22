@@ -41,7 +41,7 @@
         <a-col :lg="8">
           <st-info>
             <st-info-item label="微信支付">
-              {{ data.mina_info.is_mch === 1 ? '已配置' : '立刻配置' }}
+              {{ data.mina_info.is_mch === 1 ? '已配置' : '未配置' }}
 
               <a :class="info('a')" @click="resetMch">
                 {{ data.mina_info.is_mch === 1 ? '重新配置' : '立刻配置' }}
