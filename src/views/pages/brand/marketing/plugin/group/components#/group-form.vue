@@ -75,8 +75,7 @@
                 @change="limitStock"
                 :checked="isLimit"
                 :disabled="
-                  (isEdit && isLimit) ||
-                    activityState >= ACTIVITY_STATUS.PUBLISHER
+                  isEdit && isLimit && activityState > ACTIVITY_STATUS.PUBLISHER
                 "
               >
                 限制库存&nbsp;&nbsp;
@@ -320,7 +319,10 @@ export default {
         })
       }
       // 编辑不能改变活动开始时间
-      this.activityOptions.start.disabled = true
+      this.activityOptions.start.disabled =
+        this.isEdit &&
+        this.isLimit &&
+        this.activityState > this.ACTIVITY_STATUS.PUBLISHER
     }
   },
   components: {
