@@ -34,11 +34,6 @@ export const columns = vm => [
     scopedSlots: { customRender: 'publish_name' }
   },
   {
-    title: '是否有效',
-    dataIndex: 'available',
-    scopedSlots: { customRender: 'available' }
-  },
-  {
     title: '操作',
     dataIndex: 'action',
     fixed: 'right',

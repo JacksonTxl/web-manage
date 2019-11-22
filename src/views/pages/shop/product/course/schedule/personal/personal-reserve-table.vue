@@ -62,7 +62,7 @@
         </a-radio-group>
       </div>
     </div>
-    <a-row class="mg-t24 mg-r24 mg-l24">
+    <div class="schedule-table__content mg-r24 mg-l24">
       <st-table
         :columns="columns"
         rowKey="id"
@@ -98,7 +98,7 @@
           </st-table-actions>
         </div>
       </st-table>
-    </a-row>
+    </div>
   </div>
 </template>
 

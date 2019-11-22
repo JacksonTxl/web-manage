@@ -6,12 +6,21 @@
     box-shadow: 0px 10px 20px 0px rgba(196, 193, 219, 0.2);
     display: flex;
     justify-content: space-between;
+    position: fixed;
+    z-index: 2;
+    left: 216px;
+    width: auto;
+    right: 16px;
+    background: #fff;
   }
   .title__left {
     width: 220px;
   }
   .title__right {
     width: 220px;
+  }
+  &__content {
+    .pd-t(88px);
   }
 }
 
@@ -20,6 +29,7 @@
   .ant-card-bordered {
     border: 0;
   }
+
   .add-schedule {
     cursor: pointer;
   }
@@ -44,7 +54,6 @@
     .schedule-button {
       text-align: right;
     }
-    box-shadow: 0px 10px 10px 0px rgba(196, 193, 219, 0.4);
   }
   &__item {
     display: flex;
