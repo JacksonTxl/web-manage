@@ -269,8 +269,8 @@ export default {
         if (shopFlag) return
         this.$emit('onsubmit', {
           activity_name: values.activity_name, // 活动名称
-          start_time: moment(values[0]).format('YYYY-MM-DD HH:mm'),
-          end_time: moment(values[1]).format('YYYY-MM-DD HH:mm'),
+          start_time: moment(values[0]).format('YYYY-MM-DD HH:mm:ss'),
+          end_time: moment(values[1]).format('YYYY-MM-DD HH:mm:ss'),
           group_sum: values.group_sum, //成团人数
           valid_time: values.valid_time, //拼团有效期
           is_limit_stock: this.isLimit ? 1 : 0, //是否限制库存0不限制 1限制
@@ -278,7 +278,7 @@ export default {
           shop_ids: this.shopIds, //门店ids [1,2,3,4]
           published_type: this.releaseStatus, //发布状态(1-立即发布 2-暂不发布 3-定时发布)
           published_time: moment(values.published_time).format(
-            'YYYY-MM-DD HH:mm'
+            'YYYY-MM-DD HH:mm:ss'
           ) //发布时间
         })
       })
