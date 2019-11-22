@@ -415,6 +415,7 @@ import { PatternService } from '@/services/pattern.service'
 import { UserService } from '@/services/user.service'
 import { ruleOptions } from './sale-member-card.config'
 import autoContractBtn from '@/views/biz-components/contract/auto-contract-btn.vue'
+import { MessageService } from '@/services/message.service'
 export default {
   name: 'ModalSoldDealSaleMemberCard',
   bem: {
@@ -430,6 +431,7 @@ export default {
     return {
       saleMemberCardService: SaleMemberCardService,
       userService: UserService,
+      messageService: MessageService,
       pattern: PatternService
     }
   },
@@ -548,20 +550,35 @@ export default {
     }
   },
   methods: {
-    onCancelMemberChildren(item, index) {
+    deleteNewMember(item, index) {
       this.newMemeberList.splice(index, 1)
     },
+    onCancelMemberChildren() {
+      this.searchMemberChildrenIsShow = true
+    },
     onAddMemberChildren() {
-      // this.form.validate()
-      this.newMemeberList.push({
-        memberName: this.form.getFieldValue('memberChildrenName'),
-        memberMobile: this.form.getFieldValue('memberChildrenMobile')
-      })
-      this.form.resetFields([
-        'memberChildrenId',
-        'memberChildrenName',
-        'memberChildrenMobile'
-      ])
+      if (this.newMemeberList.length >= this.info.support_member_num - 1) {
+        this.messageService.error({
+          content: '当前卡人数已达上限，无法继续添加'
+        })
+        return
+      }
+      this.form.validateFields(
+        ['memberChildrenName', 'memberChildrenMobile'],
+        (errors, values) => {
+          if (!errors) {
+            this.newMemeberList.push({
+              memberName: values.memberChildrenName,
+              memberMobile: values.memberChildrenMobile
+            })
+            this.form.resetFields([
+              'memberChildrenId',
+              'memberChildrenName',
+              'memberChildrenMobile'
+            ])
+          }
+        }
+      )
     },
     // 规格发生改变
     onChangeSpecs(event) {
