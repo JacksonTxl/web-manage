@@ -21,7 +21,7 @@
             :options="followWayList"
           />
         </st-search-panel-item>
-        <st-search-panel-item label="跟进状态：">
+        <st-search-panel-item label="跟进：">
           <st-search-radio
             v-model="$searchQuery.follow_status"
             :options="followStatusList"
@@ -81,7 +81,7 @@
               </a-select-option>
             </a-select>
           </st-search-panel-item>
-          <st-search-panel-item label="跟进情况：">
+          <st-search-panel-item label="跟进日期：">
             <st-range-picker
               :disabledDays="180"
               :value="selectTime"
