@@ -91,6 +91,12 @@ export class PackageApi extends Api {
     })
   }
   /**
+   * 门店下所有课程列表
+   */
+  geAlltCourseList() {
+    return this.http.get(`/v1/course/package/course_all`)
+  }
+  /**
    * 教练等级与教练数列表
    */
   getCoachList() {

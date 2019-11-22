@@ -161,7 +161,33 @@ export class MemberApi extends Api {
   getMember(query: any) {
     return this.http.get(`/v1/member`, { query })
   }
-
+  /**
+   * 俱乐部会员列表
+   */
+  getClubMember(query: any) {
+    return this.http.get(`/v1/member/club_member`, { query })
+  }
+  /**
+   * 获取客保规则
+   */
+  getCrmRule() {
+    return this.http.get(`/v1/setting/crm-rules`)
+  }
+  setCrmRule(params: any) {
+    return this.http.put(`/v1/setting/crm-rules`, { params })
+  }
+  /**
+   * 销售抛入公海
+   */
+  dropSalerSea(params: any) {
+    return this.http.put(`/v1/member/cancel_sales`, { params })
+  }
+  /**
+   * 教练抛入公海
+   */
+  dropCoachSea(params: any) {
+    return this.http.put(`/v1/member/cancel_coach`, { params })
+  }
   /**
    * 根据员工名称查询员工列表
    */
@@ -409,6 +435,12 @@ export class MemberApi extends Api {
    */
   updateUserFace(id: number, params: EditFaceParams) {
     return this.http.put(`/v1/member/face/${id}`, { params })
+  }
+  /**
+   * 获取跟进日志时间轴列表
+   */
+  getFollowRecordList(id: number) {
+    return this.http.get(`/v1/member/follow/axis/${id}`)
   }
 }
 export interface EditFaceParams {
