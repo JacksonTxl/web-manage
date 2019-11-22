@@ -134,7 +134,7 @@
             <st-form-item
               label="发布时间"
               required
-              v-if="releaseStatus === RELEASE_STATUS.TIMING"
+              v-show="releaseStatus === RELEASE_STATUS.TIMING"
             >
               <a-date-picker
                 :disabledDate="disabledDate"
@@ -307,7 +307,7 @@ export default {
       })
       if (this.releaseStatus === RELEASE_STATUS.TIMING) {
         this.form.setFieldsValue({
-          published_time: this.info.published_time
+          published_time: moment(this.info.published_time)
         })
       }
       // 编辑不能改变活动开始时间
