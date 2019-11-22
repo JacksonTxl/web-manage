@@ -1,28 +1,24 @@
 <template>
   <a-row>
-    <a-col :lg="24">
-      <a-col :lg="16">
-        <shop-select
-          style="width: 160px"
-          class="mg-r8"
-          :defaultValue="-1"
-          v-model="$searchQuery.shop_id"
-          @change="onSingleSearch('shop_id', $event)"
-        />
-        <a-range-picker
-          @change="onChooseDate"
-          :disabledDate="disabledDate"
-          format="YYYY-MM-DD"
-        />
-      </a-col>
-      <a-col :lg="2"></a-col>
-      <a-col :lg="6" class="text-right">
-        <st-input-search
-          placeholder="请输入用户姓名进行查询"
-          @search="onSingleSearch('member_name', $event)"
-        />
-      </a-col>
-    </a-col>
+    <shop-select
+      style="width: 160px"
+      class="mg-r8"
+      :defaultValue="-1"
+      v-model="$searchQuery.shop_id"
+      @change="onSingleSearch('shop_id', $event)"
+    />
+    <a-range-picker
+      @change="onChooseDate"
+      :disabledDate="disabledDate"
+      format="YYYY-MM-DD"
+    />
+
+    <st-input-search
+      class="fl-r"
+      placeholder="请输入用户姓名进行查询"
+      @search="onSingleSearch('member_name', $event)"
+    />
+
     <a-col :lg="24" class="mg-t16">
       <st-table
         :columns="followColumns"

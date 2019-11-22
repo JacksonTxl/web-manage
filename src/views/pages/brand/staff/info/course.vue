@@ -1,35 +1,26 @@
 <template>
   <a-row>
-    <a-col :lg="24">
-      <a-col :lg="16">
-        <shop-select
-          class="mg-r8"
-          style="width: 160px"
-          :defaultValue="-1"
-          v-model="$searchQuery.shop_id"
-          @change="onSingleSearch('shop_id', $event)"
-        ></shop-select>
-        <a-range-picker
-          class="mg-r8"
-          @change="onChooseDate"
-          format="YYYY-MM-DD"
-        />
-        <a-select
-          style="width: 160px;"
-          :defaultValue="-1"
-          placeholder="请选择预约状态"
-          @change="onSingleSearch('schedule_status', $event)"
-          :options="reserveStatus"
-        ></a-select>
-      </a-col>
-      <a-col :lg="2"></a-col>
-      <a-col :lg="6" class="text-right">
-        <st-input-search
-          placeholder="请输入课程名称"
-          @search="onSingleSearch('course_name', $event)"
-        />
-      </a-col>
-    </a-col>
+    <shop-select
+      class="mg-r8"
+      style="width: 160px"
+      :defaultValue="-1"
+      v-model="$searchQuery.shop_id"
+      @change="onSingleSearch('shop_id', $event)"
+    ></shop-select>
+    <a-range-picker class="mg-r8" @change="onChooseDate" format="YYYY-MM-DD" />
+    <a-select
+      style="width: 160px;"
+      :defaultValue="-1"
+      placeholder="请选择预约状态"
+      @change="onSingleSearch('schedule_status', $event)"
+      :options="reserveStatus"
+    ></a-select>
+
+    <st-input-search
+      class="fl-r"
+      placeholder="请输入课程名称"
+      @search="onSingleSearch('course_name', $event)"
+    />
     <a-col :lg="24" class="mg-t16">
       <st-table
         :columns="courseColums"
