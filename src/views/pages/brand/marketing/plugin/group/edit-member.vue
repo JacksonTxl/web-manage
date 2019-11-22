@@ -53,7 +53,7 @@
                       }
                     : null
                 "
-                rowKey="sku_id"
+                rowKey="id"
               >
                 <template slot="group_price" slot-scope="customRender, record">
                   <st-input-number v-model="record.group_price" :float="true">
@@ -153,7 +153,7 @@ export default {
       }
       this.selectedRowKeys.forEach((id, index) => {
         this.tableData.forEach(item => {
-          if (item.sku_id === id) {
+          if (item.id === id) {
             if (!item.group_price) {
               this.tableText = '请输入拼团价'
               this.tableErr = true

@@ -2,9 +2,10 @@
   <group-form
     :form="form"
     :decorators="decorators"
-    :loading="loading"
+    :loading="loading.addGroup"
     :isEdit="true"
     :info="info.info"
+    :confirmLoading="confirmLoading"
     @onsubmit="onSubmit"
     :showSelectShop="false"
   >
@@ -67,7 +68,7 @@
           >
             <div :class="basic('table')">
               <st-table
-                rowKey="sku_id"
+                rowKey="id"
                 :columns="cardColumns"
                 :dataSource="tableData"
                 :pagination="false"
@@ -149,7 +150,8 @@ export default {
       tableText: '', // 优惠设置错误提示
       helpShow: false,
       showHelp: false,
-      tableErr: false
+      tableErr: false,
+      confirmLoading: false
     }
   },
   methods: {
@@ -225,7 +227,8 @@ export default {
     setFieldsValue() {
       this.activityState = this.info.info.activity_state[0].id
       this.courseId = this.info.info.product.id
-      this.tableData = this.info.info.sku
+      console.log(this.tableData, 'tableData==========')
+      // this.tableData = this.info.info.sku
       this.shopId = this.info.info.support_shop[0]
     }
   },

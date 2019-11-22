@@ -141,7 +141,7 @@
             <st-form-item
               label="发布时间"
               required
-              v-if="releaseStatus === RELEASE_STATUS.TIMING"
+              v-show="releaseStatus === RELEASE_STATUS.TIMING"
             >
               <a-date-picker
                 :disabledDate="disabledDate"
@@ -287,10 +287,10 @@ export default {
           end_time: moment(values.activity_time[1]).format(
             'YYYY-MM-DD HH:mm:ss'
           ),
-          group_sum: values.group_sum, //成团人数
-          valid_time: values.valid_time, //拼团有效期
+          group_sum: +values.group_sum, //成团人数
+          valid_time: +values.valid_time, //拼团有效期
           is_limit_stock: this.isLimit ? 1 : 0, //是否限制库存0不限制 1限制
-          stock_total: this.isLimit ? values.stock_total : 0, //库存
+          stock_total: this.isLimit ? +values.stock_total : 0, //库存
           shop_ids: this.shopIds, //门店ids [1,2,3,4]
           published_type: this.releaseStatus, //发布状态(1-立即发布 2-暂不发布 3-定时发布)
           published_time: moment(values.published_time).format(
@@ -316,7 +316,7 @@ export default {
       })
       if (this.releaseStatus === RELEASE_STATUS.TIMING) {
         this.form.setFieldsValue({
-          published_time: this.info.published_time
+          published_time: moment(this.info.published_time)
         })
       }
       // 编辑不能改变活动开始时间

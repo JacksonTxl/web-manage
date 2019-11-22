@@ -3,11 +3,13 @@
     <st-panel-layout>
       <st-panel class="mg-b12" app>
         <!-- 这里是动态 -->
-        <st-t2>可是大家分厘卡电视机</st-t2>
+        <st-t2>{{ info.activity_name }}</st-t2>
         <div :class="activities('desc')">
-          <p :class="activities('activity')">活动商品：健身房年卡</p>
           <p :class="activities('activity')">
-            活动时间：2019-05-20 10:38~2019-05-27 10:38
+            活动商品：{{ info.product_name }}
+          </p>
+          <p :class="activities('activity')">
+            活动时间：{{ info.start_time }}~{{ info.end_time }}
           </p>
         </div>
       </st-panel>
@@ -21,7 +23,7 @@
               </p>
               <ICountUp
                 class="number-up font-number"
-                :endVal="collect[0].group_total"
+                :endVal="collect.group_total"
               />
             </a-col>
             <a-col :span="4">
@@ -31,7 +33,7 @@
               </p>
               <ICountUp
                 class="number-up font-number"
-                :endVal="collect[0].group_success_total"
+                :endVal="collect.group_success_total"
               />
             </a-col>
             <a-col :span="4">
@@ -41,7 +43,7 @@
               </p>
               <ICountUp
                 class="number-up font-number"
-                :endVal="collect[0].join_total"
+                :endVal="collect.join_total"
               />
             </a-col>
             <a-col :span="4">
@@ -51,7 +53,7 @@
               </p>
               <ICountUp
                 class="number-up font-number"
-                :endVal="collect[0].new_total"
+                :endVal="collect.new_total"
               />
             </a-col>
             <a-col :span="4">
@@ -61,7 +63,7 @@
               </p>
               <ICountUp
                 class="number-up font-number"
-                :endVal="collect[0].success_order_total"
+                :endVal="collect.success_order_total"
               />
             </a-col>
             <a-col :span="4">
@@ -71,7 +73,7 @@
               </p>
               <ICountUp
                 class="number-up font-number"
-                :endVal="collect[0].success_amount_total"
+                :endVal="collect.success_amount_total"
               />
             </a-col>
           </a-row>
@@ -140,7 +142,8 @@ export default {
       list: this.dataService.list$,
       page: this.dataService.page$,
       collect: this.dataService.collect$,
-      loading: this.dataService.loading$
+      loading: this.dataService.loading$,
+      info: this.dataService.info$
     }
   },
   data(vm) {
@@ -156,7 +159,8 @@ export default {
           description: '活动状态',
           value: { 1: '已结束', 2: '活动中', 3: '未开始', 4: '待发布' }
         }
-      }
+      },
+      numTwo: ''
     }
   },
 
@@ -180,8 +184,12 @@ export default {
     }
   },
   mounted() {
+    console.log(this.info)
     this.setSearchData()
-    console.log(this.dataService)
+    console.log((3.987).toFixed(1))
+    // this.numTwo = this.collect.success_amount_total.toFixed(1)
+    console.log(parseInt(this.collect.success_amount_total))
+    // console.log(this.numTwo)
   },
 
   methods: {
