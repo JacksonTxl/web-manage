@@ -245,6 +245,7 @@ export default {
           })
           .subscribe(() => {
             this.show = false
+            this.$router.reload()
           })
       })
     }

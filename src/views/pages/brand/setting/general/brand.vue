@@ -163,7 +163,7 @@ export default {
           content: '保存成功'
         })
         this.$router.push({})
-        this.userService.getUser().subscribe()
+        this.userService.fetchStaffInfo().subscribe()
       })
     },
     onCancel() {
