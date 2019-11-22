@@ -56,7 +56,7 @@
                 rowKey="id"
               >
                 <template slot="group_price" slot-scope="customRender, record">
-                  <st-input-number v-model="record.group_price">
+                  <st-input-number v-model="record.group_price" :float="true">
                     <template slot="addonAfter">
                       元
                     </template>

@@ -2,7 +2,7 @@
   <group-form
     :form="form"
     :decorators="decorators"
-    :loading="loading"
+    :loading="loading.addGroup"
     :isEdit="isEdit"
     :info="info"
     :shopIds="shopIds"
@@ -154,7 +154,7 @@ export default {
     }
   },
   updated() {
-    // console.log(this.newCoach)
+    console.log(this.newCoach)
   },
   mounted() {},
   computed: {
@@ -206,12 +206,23 @@ export default {
         this.tableErr = true
       }
 
-      let params = {}
+      let params = ({
+        activity_name, // 活动名称
+        start_time,
+        end_time,
+        group_sum, //成团人数
+        valid_time, //拼团有效期
+        is_limit_stock, //是否限制库存0不限制 1限制
+        stock_total, //库存
+        shop_ids, //门店ids [1,2,3,4]
+        published_type,
+        published_time
+      } = data)
+
       let isReturn = false
       if (isReturn) {
         return
       }
-
       // 275404963775803 门店id
       params = {
         product_type: 3, // 会籍卡
@@ -244,13 +255,6 @@ export default {
           })
         })
       }
-    },
-    // 详情回显
-    setFieldsValue() {
-      this.cardId = this.info.product.id
-      this.info.sku.forEach(item => {
-        this.selectedRowKeys.push(item.id)
-      })
     }
   },
   components: {

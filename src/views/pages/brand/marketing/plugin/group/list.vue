@@ -237,9 +237,10 @@ export default {
     },
     // 编辑列表
     onEdit(record) {
-      let id = record.product_type.id
-      console.log(id)
-      switch (id) {
+      console.log(record.id, '活动id')
+      let typeId = record.product_type.id
+      let id = record.id
+      switch (typeId) {
         case 3:
           this.routeRul('edit-personal', id)
           break

@@ -5,11 +5,7 @@ import {
   ServiceRoute
 } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
-import {
-  GroupBuyApi,
-  AddParams,
-  EditParams
-} from '@/api/v1/marketing/group_buy'
+import { GroupBuyApi, AddParams } from '@/api/v1/marketing/group_buy'
 import { anyAll } from '@/operators'
 import { tap } from 'rxjs/operators'
 
@@ -25,17 +21,12 @@ export class AddPersonalService implements Controller {
   addGroup(params: AddParams) {
     return this.GroupBuyApi.addGroup(params)
   }
-
-  // 编辑拼团活动
-  editGroup(params: EditParams) {
-    return this.GroupBuyApi.editGroup(params)
-  }
   // 获取私教列表
   getList() {
     return this.GroupBuyApi.getPersonalList().pipe(
       tap((res: any) => {
-        console.log(res)
         this.personalList$.commit(() => res.list)
+        this.loading$.commit(() => res.loading)
       })
     )
   }

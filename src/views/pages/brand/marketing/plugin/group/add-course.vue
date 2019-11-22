@@ -72,7 +72,7 @@
                 align="center"
               >
                 <template slot="group_price" slot-scope="customRender, record">
-                  <st-input-number v-model="record.group_price">
+                  <st-input-number :float="true" v-model="record.group_price">
                     <template slot="addonAfter">
                       元
                     </template>

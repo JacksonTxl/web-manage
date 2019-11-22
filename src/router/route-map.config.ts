@@ -1376,6 +1376,11 @@ export const routeMapConfig = {
   'brand-marketing-plugin-group-edit-personal'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑拼团'
   },
-
+  'brand-marketing-plugin-group-add-stored'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '编辑拼团'
+  },
+  'brand-marketing-plugin-group-edit-stored'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '编辑拼团'
+  },
   ...tplConfigs
 }
