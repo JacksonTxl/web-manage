@@ -7,6 +7,7 @@ import { anyAll } from '@/operators'
 
 @Injectable()
 export class EditStoredService implements Controller {
+  loading$ = new State({})
   info$ = new State({})
   list$ = new State({})
   constructor(private groupBuyApi: GroupBuyApi) {}
@@ -29,6 +30,6 @@ export class EditStoredService implements Controller {
     return anyAll(this.getStoredData(id), this.getDepositList())
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    this.init(to.meta.query.id).subscribe(() => {})
+    return this.init(to.meta.query.id)
   }
 }

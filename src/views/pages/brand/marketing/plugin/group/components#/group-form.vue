@@ -1,7 +1,7 @@
 <template>
   <st-mina-panel app>
     <div slot="actions">
-      <st-button :loading="loading.addGroup" type="primary" @click="onSubmit">
+      <st-button :loading="confirmLoading" type="primary" @click="onSubmit">
         保 存
       </st-button>
     </div>
@@ -85,7 +85,12 @@
         </a-row>
         <a-row :gutter="8" v-if="showSelectShop">
           <a-col :span="16">
-            <st-form-item required :class="basic('shop')">
+            <st-form-item
+              required
+              :help="errTips"
+              :validateStatus="showErr ? 'error' : ''"
+              :class="basic('shop')"
+            >
               <span slot="label">
                 选择门店
                 <st-help-tooltip id="TBPTXJ004" />
@@ -186,22 +191,15 @@ export default {
       }
     },
     loading: {
-      type: Object,
-      default: () => {
-        return {}
-      }
+      type: Boolean
+    },
+    confirmLoading: {
+      type: Boolean
     },
     showSelectShop: {
       type: Boolean,
       default: () => {
         return true
-      }
-    }
-  },
-  watch: {
-    info() {
-      if (this.isEdit) {
-        this.setFieldsValue()
       }
     }
   },
@@ -216,9 +214,7 @@ export default {
       RELEASE_STATUS,
       groupName: '',
       errTips: '', // 活动时间错误提示
-      errText: '', // 发布时间错误提示
-      helpShow: false,
-      showHelp: false,
+      showErr: false,
       activityState: Number, // 当前活动活动状态
       isLimit: true,
       releaseStatus: 1, // 发布状态
@@ -237,7 +233,8 @@ export default {
           disabled: false,
           format: 'YYYY-MM-DD HH:mm:ss'
         }
-      }
+      },
+      shopIds: []
     }
   },
   methods: {
@@ -262,19 +259,27 @@ export default {
     },
     // 新建拼团活动
     onSubmit() {
+      let shopFlag = false
+      if (this.showSelectShop && !this.shopIds.length) {
+        this.errTips = '请选择门店'
+        this.showErr = true
+        shopFlag = true
+      }
       this.form.validate().then(values => {
-        console.log(values)
+        if (shopFlag) return
         this.$emit('onsubmit', {
           activity_name: values.activity_name, // 活动名称
-          start_time: moment(values[0]).format('YYYY-MM-DD HH:mm'),
-          end_time: moment(values[1]).format('YYYY-MM-DD HH:mm'),
+          start_time: moment(values[0]).format('YYYY-MM-DD HH:mm:ss'),
+          end_time: moment(values[1]).format('YYYY-MM-DD HH:mm:ss'),
           group_sum: values.group_sum, //成团人数
           valid_time: values.valid_time, //拼团有效期
           is_limit_stock: this.isLimit ? 1 : 0, //是否限制库存0不限制 1限制
           stock_total: values.stock_total, //库存
           shop_ids: this.shopIds, //门店ids [1,2,3,4]
           published_type: this.releaseStatus, //发布状态(1-立即发布 2-暂不发布 3-定时发布)
-          published_time: moment(this.publishTime).format('YYYY-MM-DD HH:mm') //发布时间
+          published_time: moment(values.published_time).format(
+            'YYYY-MM-DD HH:mm:ss'
+          ) //发布时间
         })
       })
     },
@@ -283,6 +288,7 @@ export default {
       this.releaseStatus = this.info.published_type
       this.activityState = this.info.activity_state[0].id
       this.isLimit = this.info.is_limit_stock === 1
+      this.shopIds = this.info.support_shop
       this.form.setFieldsValue({
         activity_name: this.info.activity_name,
         group_sum: this.info.group_sum,

@@ -77,6 +77,7 @@
               >
                 <template slot="group_price" slot-scope="customRender, record">
                   <st-input-number
+                    :float="true"
                     v-model="record.group_price"
                     :disabled="
                       isEdit && activityState > ACTIVITY_STATUS.UNDER_WAY
