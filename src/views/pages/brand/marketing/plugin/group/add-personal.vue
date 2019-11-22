@@ -42,7 +42,6 @@
       <a-row :gutter="8">
         <a-col :span="16">
           <st-form-item
-            v-decorator="decorators.group_hour"
             label="优惠设置"
             required
             :help="tableText"
@@ -175,15 +174,19 @@ export default {
     onSubmit(data) {
       console.log(data)
       if (this.tableErr) return
-      data.init_course_num = data.group_hour
+      const selectedCoach = this.newCoach.filter(item => item.is_select)
+      if (selectedCoach.length === 0) {
+        this.tableText = '请选择至少一个教练'
+        this.tableErr = true
+        return
+      }
+      data.init_course_num = +this.groupHour
       data.product_type = 3 // 私教课
       data.product_id = this.courseId
-      data.sku = this.newCoach.map(item => {
-        if (item.is_select) {
-          return {
-            sku_id: item.id,
-            group_price: item.group_price
-          }
+      data.sku = selectedCoach.map(item => {
+        return {
+          sku_id: item.id,
+          group_price: item.group_price
         }
       })
       if (this.confirmLoading) return

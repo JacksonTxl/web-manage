@@ -12,7 +12,7 @@
     <template slot="choose-product">
       <a-row :gutter="8">
         <a-col :span="10">
-          <st-form-item label="选择会籍卡" required>
+          <st-form-item :label="`选择${$c('member_card')}`" required>
             <a-input type="hidden" v-decorator="decorators.cardId" />
             <a-select
               showSearch
@@ -128,6 +128,7 @@ export default {
           if (this.selectedRowKeys) {
             this.info.info.sku.forEach(item => {
               this.tableData.forEach(card => {
+                console.log(item, card, '===========')
                 if (item.sku_id === card.id) {
                   card.group_price = item.group_price
                 }
@@ -136,6 +137,7 @@ export default {
           }
         }
       })
+      console.log(this.tableData, 'tableData')
     },
     // 优惠设置选择变化
     onChange(value) {
