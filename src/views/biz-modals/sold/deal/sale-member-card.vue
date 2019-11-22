@@ -101,6 +101,80 @@
               <span @click="onCancelMember">取消添加</span>
             </p>
           </st-form-item>
+          <st-form-item v-if="searchMemberChildrenIsShow" label="卡成员">
+            <a-select
+              showSearch
+              allowClear
+              placeholder="输入手机号或会员名搜索"
+              :defaultActiveFirstOption="false"
+              :showArrow="false"
+              :filterOption="false"
+              v-decorator="decorators.memberChildrenId"
+              @search="onMemberChildrenSearch"
+              @change="onMemberChildrenChange"
+              notFoundContent="无搜索结果"
+            >
+              <a-select-option
+                v-for="(item, index) in memberChildrenList"
+                :value="item.id"
+                :key="index"
+              >
+                <span
+                  v-html="
+                    `${item.member_name} ${item.mobile}`.replace(
+                      new RegExp(memberChildrenSearchText, 'g'),
+                      `\<span class='global-highlight-color'\>${memberChildrenSearchText}\<\/span\>`
+                    )
+                  "
+                >
+                  {{ item.member_name }} {{ item.mobile }}
+                </span>
+              </a-select-option>
+            </a-select>
+            <p
+              v-if="
+                !memberChildrenList.length && memberChildrenSearchText !== ''
+              "
+              class="add-text"
+            >
+              查无此会员，
+              <span @click="onShowMemberChildren">添加新会员？</span>
+            </p>
+          </st-form-item>
+          <st-form-item
+            v-if="!searchMemberChildrenIsShow"
+            label="会员姓名"
+            required
+          >
+            <a-input
+              v-decorator="decorators.memberChildrenName"
+              placeholder="请输入会员姓名"
+            ></a-input>
+          </st-form-item>
+          <st-form-item
+            v-if="!searchMemberChildrenIsShow"
+            label="手机号"
+            required
+          >
+            <a-input
+              v-decorator="decorators.memberChildrenMobile"
+              placeholder="请输入手机号"
+            ></a-input>
+            <p class="add-text">
+              <span @click="onAddMemberChildren" class="mg-r8">确认</span>
+              <span @click="onCancelMemberChildren">取消</span>
+            </p>
+          </st-form-item>
+          <st-form-item v-if="!searchMemberChildrenIsShow" label="入场成员">
+            <a-tag
+              v-for="(item, index) in newMemeberList"
+              :key="index"
+              @close="deleteNewMember(item, index)"
+              closable
+            >
+              {{ item.memberName }}({{ item.memberMobile }})
+            </a-tag>
+          </st-form-item>
           <st-form-item label="规格" required>
             <a-radio-group
               @change="onChangeSpecs"
@@ -363,6 +437,7 @@ export default {
     return {
       loading: this.saleMemberCardService.loading$,
       memberList: this.saleMemberCardService.memberList$,
+      memberChildrenList: this.saleMemberCardService.memberChildrenList$,
       info: this.saleMemberCardService.info$,
       saleList: this.saleMemberCardService.saleList$,
       couponList: this.saleMemberCardService.couponList$,
@@ -395,6 +470,9 @@ export default {
       // 搜索会员
       memberSearchText: '',
       searchMemberIsShow: true,
+      // 搜索卡成员
+      memberChildrenSearchText: '',
+      searchMemberChildrenIsShow: true,
       // 定金
       advanceDropdownVisible: false,
       advanceList: [],
@@ -416,7 +494,9 @@ export default {
       validStartTime: moment(),
       validEndTime: '',
       // 赠送天数
-      gift_amount: 0
+      gift_amount: 0,
+      // 新增成员列表展示
+      newMemeberList: []
     }
   },
   mounted() {
@@ -468,6 +548,21 @@ export default {
     }
   },
   methods: {
+    onCancelMemberChildren(item, index) {
+      this.newMemeberList.splice(index, 1)
+    },
+    onAddMemberChildren() {
+      // this.form.validate()
+      this.newMemeberList.push({
+        memberName: this.form.getFieldValue('memberChildrenName'),
+        memberMobile: this.form.getFieldValue('memberChildrenMobile')
+      })
+      this.form.resetFields([
+        'memberChildrenId',
+        'memberChildrenName',
+        'memberChildrenMobile'
+      ])
+    },
     // 规格发生改变
     onChangeSpecs(event) {
       this.selectedNorm = event.target.value
@@ -541,6 +636,23 @@ export default {
         this.fetchCouponList(data)
       }
     },
+    // 搜索卡成员
+    onMemberChildrenSearch(data) {
+      this.memberChildrenSearchText = data
+      if (data === '') {
+        this.saleMemberCardService.memberChildrenList$.commit(() => [])
+        this.form.resetFields(['memberChildrenId'])
+      } else {
+        this.saleMemberCardService
+          .getMemberChildren(data, this.info.sale_range.type)
+          .subscribe()
+      }
+    },
+    onMemberChildrenChange(data) {
+      if (data) {
+        console.log(data)
+      }
+    },
     onSelectAdvance() {
       timer(200).subscribe(() => {
         this.advanceDropdownVisible = false
@@ -560,6 +672,15 @@ export default {
     onAddMember() {
       this.searchMemberIsShow = false
       this.form.resetFields(['memberId', 'memberName', 'memberMobile'])
+    },
+    // 切换添加会员
+    onShowMemberChildren() {
+      this.searchMemberChildrenIsShow = false
+      this.form.resetFields([
+        'memberChildrenId',
+        'memberChildrenName',
+        'memberChildrenMobile'
+      ])
     },
     onCancelMember() {
       this.searchMemberIsShow = true
