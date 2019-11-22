@@ -1,7 +1,7 @@
 <template>
   <div class="page-personal-table schedule-table">
     <div
-      class="page-personal-table__title pd-x24 pd-y16 schedule-table__title"
+      class="page-personal-table__title pd-x24 pd-y16 schedule-table__title schedule-table__title--fixed"
       slot="title"
     >
       <div class="title__left">
