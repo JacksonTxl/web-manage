@@ -1,50 +1,19 @@
-import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { MemberApi } from '@/api/v1/member'
-import { AuthService } from '@/services/auth.service'
+import { Controller, ServiceRoute, Injectable } from 'vue-service-app'
+import { UserService } from '@/services/user.service'
+import { RedirectService } from '@/services/redirect.service'
 
 @Injectable()
 export class ListService implements Controller {
-  // 业务状态
-  state$ = new State({})
-  loading$ = new State({})
-  memberListInfo$: Computed<string>
-  list$ = new State({})
-  page$ = new State({})
-  auth$ = this.authService.authMap$({
-    add: 'shop:member:member|add',
-    import: 'shop:member:member|import',
-    tag: 'shop:member:member|tag',
-    bindCoach: 'shop:member:member|bind_coach',
-    bindSalesman: 'shop:member:member|bind_salesman',
-    export: 'shop:member:member|export'
-  })
-  constructor(private memberApi: MemberApi, private authService: AuthService) {
-    this.state$ = new State({
-      memberListInfo: {}
+  constructor(
+    private redirectService: RedirectService,
+    private userService: UserService
+  ) {}
+  beforeEach(to: ServiceRoute) {
+    return this.redirectService.redirect({
+      locateRouteName: 'shop-member-list',
+      redirectRoute: {
+        name: `shop-member-list-${this.userService.useVersion$.snapshot()}`
+      }
     })
-    this.memberListInfo$ = new Computed(
-      this.state$.pipe(pluck('memberListInfo'))
-    )
-  }
-  @Effect()
-  getListInfo(paramsObj: any) {
-    return this.memberApi.getMember(paramsObj).pipe(
-      tap(res => {
-        res = this.authService.filter(res)
-        this.list$.commit(() => res.list)
-        this.page$.commit(() => res.page)
-      })
-    )
-  }
-  removeWechatBind(id: number) {
-    return this.memberApi.removeWechatBind(id)
-  }
-  getMemberSourceRegisters() {
-    return this.memberApi.getMemberSourceRegisters()
-  }
-  beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    return this.getListInfo(to.meta.query)
   }
 }

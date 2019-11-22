@@ -1,37 +1,66 @@
 import { isFunction, forEach } from 'lodash-es'
 import { plusHook } from 'vue-router-plus'
+import Multiguard from 'vue-router-multiguard'
 
 const createController = (Ctrl, container) => {
-  const ctrl = container.get(Ctrl)
-  const routeHookMaps = {
-    beforeEach: ['beforeRouteEnter', 'beforeRouteUpdate'],
-    beforeRouteEnter: ['beforeRouteEnter'],
-    beforeRouteUpdate: ['beforeRouteUpdate'],
-    beforeRouteLeave: ['beforeRouteLeave']
-  }
-  const vmHooks = ['beforeCreate']
+  let ctrl
   const mixin = {
-    beforeRouteEnter: [],
-    beforeRouteUpdate: [],
+    beforeRouteEnter: [
+      function(to, from, next) {
+        ctrl = container.get(Ctrl)
+        next()
+      },
+      function(to, from, next) {
+        if (!ctrl) {
+          next()
+        }
+        const beforeHooks = []
+        if (isFunction(ctrl.beforeEach)) {
+          beforeHooks.push(plusHook(ctrl.beforeEach.bind(ctrl)))
+        }
+        if (isFunction(ctrl.beforeRouteEnter)) {
+          beforeHooks.push(plusHook(ctrl.beforeRouteEnter.bind(ctrl)))
+        }
+        return Multiguard(beforeHooks)(to, from, next)
+      }
+    ],
+    beforeRouteUpdate: [
+      function(to, from, next) {
+        if (!ctrl) {
+          next()
+        }
+        const updateHooks = []
+        if (isFunction(ctrl.beforeEach)) {
+          updateHooks.push(plusHook(ctrl.beforeEach.bind(ctrl)))
+        }
+        if (isFunction(ctrl.beforeRouteUpdate)) {
+          updateHooks.push(plusHook(ctrl.beforeRouteUpdate.bind(ctrl)))
+        }
+        return Multiguard(updateHooks)(to, from, next)
+      }
+    ],
     beforeRouteLeave: [],
-    beforeCreate: []
+    beforeCreate: [
+      function() {
+        if (!ctrl) {
+          return
+        }
+        if (isFunction(ctrl.beforeCreate)) {
+          const ret = ctrl.beforeCreate.call(ctrl)
+          if (ret && ret.subscribe) {
+            ret.subscribe()
+          }
+          return ret
+        }
+      }
+    ],
+    beforeDestroy: [
+      function() {
+        container.destroy(Ctrl)
+        ctrl = null
+      }
+    ]
   }
-
-  forEach(routeHookMaps, (vmHooks, ctrlHook) => {
-    if (isFunction(ctrl[ctrlHook])) {
-      vmHooks.forEach(vmHook => {
-        const hook = plusHook(ctrl[ctrlHook].bind(ctrl))
-        console.dir(hook)
-        mixin[vmHook].push(hook)
-      })
-    }
-  })
-  forEach(vmHooks, vmHook => {
-    if (isFunction(ctrl[vmHook])) {
-      mixin[vmHook].push(ctrl[vmHook].bind(ctrl))
-    }
-  })
-  console.log('myMixin', mixin)
   return mixin
 }
 

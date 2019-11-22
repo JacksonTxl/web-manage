@@ -1,0 +1,49 @@
+.member-follow-record {
+  margin-left: 120px;
+  &__timeline-item {
+    height: 46px;
+    margin-left: 12px;
+    line-height: 46px;
+    border-radius: 4px;
+    padding-left: 20px;
+    border: 1px solid rgba(230, 233, 239, 1);
+    font-size: 14px;
+    color: #252a2e;
+  }
+  .member-follow-record__timeline-item::before {
+    content: '';
+    width: 0px;
+    height: 0px;
+    border: 6px solid transparent;
+    border-right: 6px solid #ddd;
+    position: absolute;
+    top: 18px;
+    left: 0px;
+  }
+  .member-follow-record__timeline-item::after {
+    content: '';
+    position: absolute;
+    top: 18px;
+    left: 1px;
+    border: 6px solid transparent;
+    border-right: 6px solid #fff;
+  }
+  &__timeline-position {
+    position: absolute;
+    left: -120px;
+    top: 10px;
+    font-family: 'DINAlternate-Bold,DINAlternate';
+    line-height: 24px;
+  }
+  .ant-timeline-item-head-blue {
+    margin-top: 10px;
+  }
+  .ant-timeline-item-head {
+    background-color: #3f66f6;
+  }
+  .date {
+    display: block;
+    line-height: 20px;
+    color: #9bacb9;
+  }
+}

@@ -35,7 +35,7 @@
         >
           <a-radio-button
             value="calendar"
-            class="mg-l32"
+            class="mg-l12"
             @click="onClickSkipSchedule"
           >
             <st-icon type="calendar"></st-icon>
