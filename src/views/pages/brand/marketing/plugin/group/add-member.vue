@@ -2,7 +2,7 @@
   <group-form
     :form="form"
     :decorators="decorators"
-    :loading="loading"
+    :loading="loading.addGroup"
     :isEdit="isEdit"
     :info="info"
     :shopIds="shopIds"
@@ -56,7 +56,7 @@
                 rowKey="id"
               >
                 <template slot="group_price" slot-scope="customRender, record">
-                  <st-input-number v-model="record.group_price">
+                  <st-input-number v-model="record.group_price" :float="true">
                     <template slot="addonAfter">
                       元
                     </template>
@@ -121,16 +121,16 @@ export default {
       default: () => {}
     }
   },
-  watch: {
-    info(n, o) {
-      if (this.isEdit) {
-        this.setFieldsValue()
-        this.addMemberService.init().subscribe(res => {
-          this.chooseMember(this.cardId)
-        })
-      }
-    }
-  },
+  // watch: {
+  //   info(n, o) {
+  //     if (this.isEdit) {
+  //       this.setFieldsValue()
+  //       this.addMemberService.init().subscribe(res => {
+  //         this.chooseMember(this.cardId)
+  //       })
+  //     }
+  //   }
+  // },
   methods: {
     chooseMember(value) {
       this.form.setFieldsValue({
@@ -161,23 +161,31 @@ export default {
       console.log(data)
       let isReturn = false
       let list = []
-      if (!this.selectedRowKeys.length) {
+      if (this.tableData.length > 1 && !this.selectedRowKeys.length) {
         this.tableText = '请选择会籍卡规格'
         this.tableErr = true
         isReturn = true
       }
-      this.selectedRowKeys.forEach((id, index) => {
-        this.tableData.forEach(item => {
-          if (item.id === id) {
-            if (!item.group_price) {
-              this.tableText = '请输入拼团价'
-              this.tableErr = true
-              isReturn = true
+      if (this.tableData.length > 1) {
+        this.selectedRowKeys.forEach((id, index) => {
+          this.tableData.forEach(item => {
+            if (item.id === id) {
+              if (!item.group_price) {
+                this.tableText = '请输入拼团价'
+                this.tableErr = true
+                isReturn = true
+              }
+              list.push({ sku_id: id, group_price: item.group_price })
             }
-            list.push({ sku_id: id, group_price: item.group_price })
-          }
+          })
         })
-      })
+      } else {
+        list.push({
+          sku_id: this.tableData[0].id,
+          group_price: this.tableData[0].group_price
+        })
+      }
+
       let params = {}
       if (isReturn) {
         return
@@ -197,28 +205,20 @@ export default {
         published_type: data.published_type, //发布状态(1-立即发布 2-暂不发布 3-定时发布)
         published_time: data.published_time //发布时间
       }
-      if (this.isEdit) {
-        params.id = this.$route.query.id
-        this.addMemberService.editGroup(params).subscribe(res => {
-          this.$router.push({
-            path: `/brand/marketing/plugin/group/list`
-          })
+
+      this.addMemberService.addGroup(params).subscribe(res => {
+        this.$router.push({
+          path: `/brand/marketing/plugin/group/list`
         })
-      } else {
-        this.addMemberService.addGroup(params).subscribe(res => {
-          this.$router.push({
-            path: `/brand/marketing/plugin/group/list`
-          })
-        })
-      }
-    },
-    // 详情回显
-    setFieldsValue() {
-      this.cardId = this.info.product.id
-      this.info.sku.forEach(item => {
-        this.selectedRowKeys.push(item.id)
       })
     }
+    // 详情回显
+    // setFieldsValue() {
+    //   this.cardId = this.info.product.id
+    //   this.info.sku.forEach(item => {
+    //     this.selectedRowKeys.push(item.id)
+    //   })
+    // }
   },
   components: {
     GroupForm
