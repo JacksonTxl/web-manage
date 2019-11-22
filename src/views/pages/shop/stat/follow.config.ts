@@ -6,7 +6,7 @@ export const dateColumns = (vm: any) => {
     },
     {
       title: '员工',
-      dataIndex: 'staff_id'
+      dataIndex: 'staff_name'
     },
     {
       title: '每日跟进总数',
