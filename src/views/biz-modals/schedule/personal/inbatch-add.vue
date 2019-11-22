@@ -1,7 +1,6 @@
 <template>
   <st-modal
     title="批量排期"
-    @ok="save"
     v-model="show"
     wrapClassName="modal-schedule-inbatch-add"
   >
@@ -74,6 +73,16 @@
         </a-row>
       </st-container>
     </div>
+    <slot name="footer" slot="footer">
+      <st-button @click="show = false">取消</st-button>
+      <st-button
+        @click="save"
+        :loading="loading.addScheduleInBatch"
+        type="primary"
+      >
+        确定
+      </st-button>
+    </slot>
   </st-modal>
 </template>
 
@@ -94,6 +103,7 @@ export default {
   },
   rxState() {
     return {
+      loading: this.scheduleService.loading$,
       coachOptions: this.commonService.coachInBatchOptions$
     }
   },
