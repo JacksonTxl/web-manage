@@ -1,35 +1,40 @@
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 // import { AuthService } from '@/services/auth.service'
-import { GroupBuyApi } from '@/api/v1/marketing/group_buy'
+import { GroupBuyApi, EditParams } from '@/api/v1/marketing/group_buy'
 import { tap } from 'rxjs/operators'
 import { anyAll } from '@/operators'
 
 @Injectable()
-export class EditCourseService implements Controller {
-  info$ = new State({})
+export class EditMemberService implements Controller {
   loading$ = new State({})
-  courseList$ = new State({})
+  info$ = new State({})
+  memberList$ = new State([])
   constructor(private groupBuyApi: GroupBuyApi) {}
-  @Effect()
-  getDetailData(id: number) {
+  getStoredData(id: number) {
     return this.groupBuyApi.getStoredData(id).pipe(
       tap((res: any) => {
         this.info$.commit(() => res)
       })
     )
   }
+  // 编辑拼团活动
   @Effect()
-  getCourseList(params: { shop_id: number }) {
-    return this.groupBuyApi.getCourseList(params).pipe(
+  editGroup(params: EditParams) {
+    return this.groupBuyApi.editGroup(params)
+  }
+  // 获取会籍卡列表
+  @Effect()
+  getMemberList() {
+    return this.groupBuyApi.getMemberList().pipe(
       tap((res: any) => {
-        this.courseList$.commit(() => res.list)
+        this.memberList$.commit(() => res.list)
       })
     )
   }
   @Effect()
   init(id: any) {
-    return anyAll(this.getDetailData(id))
+    return anyAll(this.getStoredData(id), this.getMemberList())
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     return this.init(to.meta.query.id)
