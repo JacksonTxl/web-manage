@@ -2,9 +2,7 @@
   <group-form
     :form="form"
     :decorators="decorators"
-    :loading="loading"
-    :isEdit="isEdit"
-    :info="info"
+    :loading="loading.addGroup"
     :shopIds="shopIds"
     @onsubmit="onSubmit"
     :showSelectShop="false"
@@ -21,7 +19,6 @@
             <a-select
               showSearch
               v-model="shopId"
-              :disabled="isEdit && activityState > ACTIVITY_STATUS.UNDER_WAY"
               placeholder="请输入"
               @change="changeShop"
             >
@@ -45,7 +42,6 @@
               v-model="courseId"
               placeholder="请输入"
               @change="changeCourse"
-              :disabled="isEdit && activityState > ACTIVITY_STATUS.UNDER_WAY"
             >
               <a-select-option
                 :value="item.id"
@@ -76,13 +72,7 @@
                 align="center"
               >
                 <template slot="group_price" slot-scope="customRender, record">
-                  <st-input-number
-                    :float="true"
-                    v-model="record.group_price"
-                    :disabled="
-                      isEdit && activityState > ACTIVITY_STATUS.UNDER_WAY
-                    "
-                  >
+                  <st-input-number :float="true" v-model="record.group_price">
                     <template slot="addonAfter">
                       元
                     </template>
@@ -126,30 +116,6 @@ export default {
   },
   bem: {
     basic: 'brand-marketing-group-course'
-  },
-  props: {
-    isEdit: {
-      type: Boolean,
-      default: false
-    },
-    info: {
-      type: Object,
-      default: () => {}
-    }
-  },
-  mounted() {
-    if (this.isEdit) {
-      this.setFieldsValue()
-      this.changeShop(this.shopId)
-    }
-  },
-  watch: {
-    info(n, o) {
-      if (this.isEdit) {
-        this.setFieldsValue()
-        this.changeShop(this.shopId)
-      }
-    }
   },
   data() {
     const form = this.$stForm.create()
@@ -202,7 +168,7 @@ export default {
       this.form.setFieldsValue({
         shopId: value
       })
-      this.addCourseService.getCourseList({ shop_id: 1 }).subscribe(res => {
+      this.addCourseService.getCourseList({ shop_id: value }).subscribe(res => {
         this.$router.reload()
       })
     },
@@ -230,6 +196,7 @@ export default {
       )
     },
     onSubmit(data) {
+      console.log(data)
       let list = []
       let isReturn = false
       this.tableData.forEach((item, index) => {
@@ -259,29 +226,11 @@ export default {
         published_type: data.published_type, //发布状态(1-立即发布 2-暂不发布 3-定时发布)
         published_time: data.published_time //发布时间
       }
-      if (this.isEdit) {
-        params.id = this.$route.query.id
-        this.addMemberService.editGroup(params).subscribe(res => {
-          this.$router.push({
-            path: `/brand/marketing/plugin/group/list`
-          })
+      this.addMemberService.addGroup(params).subscribe(res => {
+        this.$router.push({
+          path: `/brand/marketing/plugin/group/list`
         })
-      } else {
-        this.addMemberService.addGroup(params).subscribe(res => {
-          this.$router.push({
-            path: `/brand/marketing/plugin/group/list`
-          })
-        })
-      }
-    },
-    // 详情回显
-    setFieldsValue() {
-      console.log(this.info, 'support_shop')
-      // 编辑不能改变活动开始时间
-      this.activityState = this.info.activity_state[0].id
-      this.courseId = this.info.product.id
-      this.tableData = this.info.sku
-      this.shopId = this.info.support_shop[0]
+      })
     }
   },
   components: {

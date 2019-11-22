@@ -16,7 +16,7 @@
                 @change="changeName"
                 maxlength="30"
               >
-                <span slot="suffix">
+                <span :class="basic('name--gray')" slot="suffix">
                   {{ groupName.length }}
                   /30
                 </span>
@@ -271,10 +271,15 @@ export default {
       }
       this.form.validate().then(values => {
         if (shopFlag) return
+        console.log(values)
         this.$emit('onsubmit', {
           activity_name: values.activity_name, // 活动名称
-          start_time: moment(values[0]).format('YYYY-MM-DD HH:mm:ss'),
-          end_time: moment(values[1]).format('YYYY-MM-DD HH:mm:ss'),
+          start_time: moment(values.activity_time[0]).format(
+            'YYYY-MM-DD HH:mm:ss'
+          ),
+          end_time: moment(values.activity_time[1]).format(
+            'YYYY-MM-DD HH:mm:ss'
+          ),
           group_sum: values.group_sum, //成团人数
           valid_time: values.valid_time, //拼团有效期
           is_limit_stock: this.isLimit ? 1 : 0, //是否限制库存0不限制 1限制

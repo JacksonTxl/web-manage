@@ -19,7 +19,7 @@
       "valid_time": 10,
       "is_limit_stock": 1,
       "stock_total": 100,
-      "support_shop ": [1, 2, 3, 4, 5],
+      "support_shop": [1, 2, 3, 4, 5],
       "published_type": 1,
       "published_time": "2019-11-14 00:00:00",
       "activity_state": [{ "id": 2, "name": "未开始" }]
