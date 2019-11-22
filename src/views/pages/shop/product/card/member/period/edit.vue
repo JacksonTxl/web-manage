@@ -518,6 +518,11 @@ export default {
         end_time: moment(this.cardInfo.end_time * 1000),
         transferNum: this.cardInfo.transfer_num
       })
+      if (this.$searchQuery.type === '1') {
+        this.form.setFieldsValue({
+          support_member_num: this.cardInfo.support_member_num
+        })
+      }
       this.startTimeIsDisabled =
         this.cardInfo.start_time * 1000 <
           moment()
@@ -571,7 +576,9 @@ export default {
               card_introduction: this.cardIntroduction,
               card_contents: this.cardContents,
               card_bg: this.cardBg,
-              price_gradient
+              price_gradient,
+              support_member_num:
+                this.$searchQuery.type === '1' ? values.support_member_num : 1
             })
             .subscribe(res => {
               // 编辑成功

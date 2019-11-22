@@ -499,7 +499,10 @@ export default {
           })
           this.addService
             .addCard({
-              card_type: CARD_TYPE.PERIOD,
+              card_type:
+                this.$searchQuery.type === '1'
+                  ? CARD_TYPE.MORE_PERIOD
+                  : CARD_TYPE.PERIOD,
               card_name: values.card_name,
               start_time: `${this.start_time.format('YYYY-MM-DD')}`,
               end_time: `${this.end_time.format('YYYY-MM-DD')}`,
@@ -510,7 +513,9 @@ export default {
               card_introduction: this.cardIntroduction,
               card_contents: this.cardContents,
               card_bg: this.cardBg,
-              price_gradient
+              price_gradient,
+              support_member_num:
+                this.$searchQuery.type === '1' ? values.support_member_num : 1
             })
             .subscribe(res => {
               // 新增成功
