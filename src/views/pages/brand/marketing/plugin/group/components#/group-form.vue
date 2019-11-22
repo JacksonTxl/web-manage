@@ -43,7 +43,10 @@
                 参团人数
                 <st-help-tooltip id="TBPTXJ001" />
               </span>
-              <st-input-number v-decorator="decorators.group_sum">
+              <st-input-number
+                :disabled="isEdit && activityState > ACTIVITY_STATUS.PUBLISHER"
+                v-decorator="decorators.group_sum"
+              >
                 <template slot="addonAfter">
                   人
                 </template>
@@ -54,7 +57,10 @@
                 拼团有效期
                 <st-help-tooltip id="TBPTXJ002" />
               </span>
-              <st-input-number v-decorator="decorators.valid_time">
+              <st-input-number
+                :disabled="isEdit && activityState > ACTIVITY_STATUS.PUBLISHER"
+                v-decorator="decorators.valid_time"
+              >
                 <template slot="addonAfter">
                   小时
                 </template>
@@ -69,7 +75,8 @@
                 @change="limitStock"
                 :checked="isLimit"
                 :disabled="
-                  (isEdit && isLimit) || activityState >= ACTIVITY_STATUS.END
+                  (isEdit && isLimit) ||
+                    activityState >= ACTIVITY_STATUS.PUBLISHER
                 "
               >
                 限制库存&nbsp;&nbsp;
@@ -124,7 +131,7 @@
               <a-radio-group
                 :defaultValue="releaseStatus || RELEASE_STATUS.PROMPTLY"
                 v-model="releaseStatus"
-                :disabled="isEdit && activityState > RELEASE_STATUS.PUBLISHER"
+                :disabled="isEdit && activityState > ACTIVITY_STATUS.PUBLISHER"
               >
                 <a-radio :value="RELEASE_STATUS.PROMPTLY">立即发布</a-radio>
                 <a-radio :value="RELEASE_STATUS.TEMPORARILY">暂不发布</a-radio>
@@ -295,9 +302,11 @@ export default {
     // 详情回显
     setFieldsValue() {
       this.releaseStatus = this.info.published_type
-      this.activityState = this.info.activity_state[0].id
+      this.activityState = Number(this.info.activity_state[0].id)
+      console.log('this.activityState', this.activityState)
       this.isLimit = this.info.is_limit_stock === 1
       this.shopIds = this.info.support_shop
+      this.groupName = this.info.activity_name
       this.form.setFieldsValue({
         activity_name: this.info.activity_name,
         group_sum: this.info.group_sum,
