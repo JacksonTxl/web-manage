@@ -97,7 +97,7 @@ export class GroupBuyApi extends Api {
    * 获取课程包列表
    */
   getCourseList(params: { shop_id: number }) {
-    return this.http.get('/v1/course/package_list', { params })
+    return this.http.get('/v1/course/package/group/list', { query: params })
   }
   /**
    * 获取私教课列表

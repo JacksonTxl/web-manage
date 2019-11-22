@@ -2,7 +2,7 @@
   <group-form
     :form="form"
     :decorators="decorators"
-    :loading="loading"
+    :loading="loading.editGroup"
     :isEdit="true"
     :info="info.info"
     :shopIds="shopIds"

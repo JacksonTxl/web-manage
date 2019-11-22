@@ -12,13 +12,13 @@ const lcf = require('./lcf/index.js')
 const lxlMock = require('./lxl/index')
 const mockerApis = Object.assign(
   {},
-  lyjMock,
+  // lyjMock,
   // zlxMock,
   // llfMock,
   // lyMock,
-  ls,
-  lcf,
-  lxlMock
+  // ls,
+  // lcf,
+  // lxlMock
 )
 
 module.exports = wrapper(mockerApis)
