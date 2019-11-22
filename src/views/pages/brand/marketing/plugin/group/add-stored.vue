@@ -2,10 +2,9 @@
   <group-form
     :form="form"
     :decorators="decorators"
-    :loading="loading"
-    :isEdit="isEdit"
-    :info="info"
-    :shopIds="shopIds"
+    :loading="loading.addGroup"
+    :confirmLoading="loading.addGroup"
+    :isEdit="false"
     :groupParams="groupParams"
     @onsubmit="onSubmit"
   >
@@ -19,11 +18,10 @@
               @change="changeSelect"
               placeholder="请选择储值卡"
               v-model="depositId"
-              :disabled="isEdit && activityState >= ACTIVITY_STATUS.NO_START"
             >
               <a-select-option
                 :value="item.id"
-                v-for="(item, index) in depositList"
+                v-for="(item, index) in list"
                 :key="index"
               >
                 {{ item.product_name }}
@@ -48,9 +46,6 @@
                     :float="true"
                     v-model="record.group_price"
                     style="width:100px;"
-                    :disabled="
-                      isEdit && activityState >= ACTIVITY_STATUS.NO_START
-                    "
                   >
                     <template slot="addonAfter">
                       元
@@ -68,7 +63,6 @@
 
 <script>
 import SelectShop from '@/views/fragments/shop/select-shop'
-import { AddMemberService } from './add-member.service'
 import { AddStoredService } from './add-stored.service'
 import { PatternService } from '@/services/pattern.service'
 import { columnsGroupStored, ruleOptions } from './add-stored.config'
@@ -86,33 +80,18 @@ export default {
   },
   serviceInject() {
     return {
-      Add: AddMemberService,
-      AddSotred: AddStoredService,
+      addSotred: AddStoredService,
       pattern: PatternService
     }
   },
   rxState() {
     return {
-      loading: this.Add.loading$,
-      depositList: this.AddSotred.list$
+      loading: this.addSotred.loading$,
+      list: this.addSotred.list$
     }
   },
   components: {
     GroupForm
-  },
-  props: {
-    isEdit: {
-      type: Boolean,
-      default: false
-    },
-    info: {
-      type: Object,
-      default: () => {}
-    },
-    list: {
-      type: Array,
-      default: () => {}
-    }
   },
   data() {
     const form = this.$stForm.create()
@@ -134,18 +113,12 @@ export default {
       shopList: null
     }
   },
-  watch: {
-    info(n, o) {
-      console.log('kll')
-      this.setFieldsValue()
-    }
-  },
   methods: {
     changeSelect(id) {
       this.form.setFieldsValue({
         depositId: id
       })
-      this.depositList.filter(item => {
+      this.list.filter(item => {
         if (item.id == id) {
           this.currentStored = item.product_spec
         }
@@ -159,22 +132,12 @@ export default {
           group_price: this.currentStored[0].group_price
         }
       ]
-      if (!this.isEdit) {
-        this.Add.addGroup(params).subscribe(res => {
-          console.log(params, res, '这是添加返回的数据')
-        })
-      } else {
-        this.Add.editGroup(params).subscribe(res => {
-          console.log(params, res, '这是编辑返回的数据')
-        })
-      }
-    },
-    setFieldsValue() {
-      console.log(this.info)
-      this.activityState = this.info.activity_state[0].id
-      this.depositId = this.info.product.id
-      this.currentStored = this.info.sku
-      this.shopList = this.info.support_shop || []
+      params.product_type = 2
+      params.product_id = this.currentStored[0].id
+      params.sku = tmpList
+      this.Add.addGroup(params).subscribe(res => {
+        console.log(params, res, '这是编辑返回的数据')
+      })
     }
   }
 }

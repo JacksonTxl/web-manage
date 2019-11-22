@@ -1,12 +1,86 @@
 <template>
-  <stored-card :isEdit="true" :list="list.list" :info="info.info"></stored-card>
+  <group-form
+    :form="form"
+    :decorators="decorators"
+    :loading="loading.addGroup"
+    :confirmLoading="loading.addGroup"
+    :isEdit="true"
+    :info="info.info"
+    :shopIds="shopList"
+    :groupParams="groupParams"
+    @onsubmit="onSubmit"
+  >
+    <template slot="choose-product">
+      <a-row :gutter="8">
+        <a-col :span="10">
+          <st-form-item label="选择储值卡" required>
+            <a-input type="hidden" v-decorator="decorators.depositId"></a-input>
+            <a-select
+              showSearch
+              @change="changeSelect"
+              placeholder="请选择储值卡"
+              v-model="depositId"
+              :disabled="activityState >= ACTIVITY_STATUS.NO_START"
+            >
+              <a-select-option
+                :value="item.id"
+                v-for="(item, index) in list.list"
+                :key="index"
+              >
+                {{ item.product_name }}
+              </a-select-option>
+            </a-select>
+          </st-form-item>
+        </a-col>
+      </a-row>
+
+      <a-row :gutter="8">
+        <a-col :span="16">
+          <st-form-item label="优惠设置" required>
+            <div :class="basic('table')">
+              <st-table
+                rowKey="id"
+                :dataSource="currentStored"
+                :columns="columnsGroupStored"
+                :pagination="false"
+              >
+                <template slot="discount" slot-scope="customRender, record">
+                  <st-input-number
+                    :float="true"
+                    v-model="record.group_price"
+                    style="width:100px;"
+                    :disabled="activityState >= ACTIVITY_STATUS.NO_START"
+                  >
+                    <template slot="addonAfter">
+                      元
+                    </template>
+                  </st-input-number>
+                </template>
+              </st-table>
+            </div>
+          </st-form-item>
+        </a-col>
+      </a-row>
+    </template>
+  </group-form>
 </template>
 
 <script>
-import storedCard from './add-stored'
+import GroupForm from './components#/group-form.vue'
 import { EditStoredService } from './edit-stored.service'
+import { columnsGroupStored, ruleOptions } from './add-stored.config'
+import SelectShop from '@/views/fragments/shop/select-shop'
+import { PatternService } from '@/services/pattern.service'
+import moment, { months } from 'moment'
+import {
+  ACTIVITY_STATUS,
+  RELEASE_STATUS
+} from '@/constants/marketing/group-buy'
 export default {
   name: 'PageBrandMarketingGroupEditStored',
+  bem: {
+    basic: 'brand-marketing-group-stored'
+  },
   serviceInject() {
     return {
       edit: EditStoredService
@@ -14,12 +88,72 @@ export default {
   },
   rxState() {
     return {
+      loading: this.edit.loading$,
       info: this.edit.info$,
       list: this.edit.list$
     }
   },
   components: {
-    storedCard
+    GroupForm
+  },
+  data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
+    return {
+      form,
+      decorators,
+      columnsGroupStored,
+      groupParams: {
+        type: 2,
+        id: null
+      },
+      activityState: Number, // 当前活动活动状态
+      depositId: '', // 回显下拉选中product
+      currentStored: [], // 当前下拉选中详细
+      shopIds: [],
+      ACTIVITY_STATUS,
+      RELEASE_STATUS,
+      shopList: null
+    }
+  },
+  mounted() {
+    this.setFieldsValue()
+  },
+  methods: {
+    changeSelect(id) {
+      this.form.setFieldsValue({
+        depositId: id
+      })
+      this.list.list.filter(item => {
+        if (item.id == id) {
+          this.currentStored = item.product_spec
+        }
+      })
+      this.groupParams.id = this.currentStored[0].id
+    },
+    onSubmit() {
+      let tmpList = [
+        {
+          sku_id: this.currentStored[0].id,
+          group_price: this.currentStored[0].group_price
+        }
+      ]
+      params.product_type = 2
+      params.product_id = this.currentStored[0].id
+      params.sku = tmpList
+      this.Add.editGroup(params).subscribe(res => {
+        console.log(params, res, '这是编辑返回的数据')
+      })
+    },
+    setFieldsValue() {
+      this.activityState = this.info.info.activity_state[0].id
+      this.depositId = this.info.info.product.id
+      this.currentStored = this.info.info.sku
+      this.shopList = this.info.info.support_shop || []
+      this.form.setFieldsValue({
+        depositId: this.info.info.product.id
+      })
+    }
   }
 }
 </script>

@@ -22,8 +22,14 @@ export class AddStoredService {
       })
     )
   }
+  // 新增拼团活动
+  @Effect()
+  addGroup(params: AddParams) {
+    return this.groupBuyApi.addGroup(params)
+  }
+  @Effect()
   init() {
-    return this.getDepositList()
+    return anyAll(this.getDepositList())
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     return this.init()
