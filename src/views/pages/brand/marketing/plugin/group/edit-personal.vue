@@ -16,6 +16,7 @@
             <a-input type="hidden" />
             <a-select
               showSearch
+              :disabled="true"
               v-model="courseId"
               placeholder="请选择私教课"
               @change="selectCourseChange"
@@ -37,6 +38,7 @@
             <a-input
               v-decorator="decorators.group_hour"
               placeholder="请输入拼团课时"
+              :disabled="true"
               @change="changeHour"
             ></a-input>
           </st-form-item>
@@ -60,15 +62,17 @@
                   newCoach.length > 1
                     ? {
                         onChange: onChange,
-                        selectedRowKeys: selectedRowKeys
+                        selectedRowKeys: selectedRowKeys,
+                        getCheckboxProps: getCheckboxProps
                       }
                     : null
                 "
-                rowKey="sku_id"
+                rowKey="id"
               >
                 <template slot="group_price" slot-scope="customRender, record">
                   <st-input-number
                     v-model="record.group_price"
+                    :disabled="true"
                     @change="setPriceChange"
                   >
                     <template slot="addonAfter">
@@ -111,6 +115,7 @@ export default {
   mounted() {
     this.editPersonalService.getPersonalList().subscribe(() => {
       this.courseId = this.info.product.id
+      this.groupHour = this.info.init_course_num
       this.selectCourseChange(this.courseId)
     })
   },
@@ -128,7 +133,13 @@ export default {
       shopIds: [],
       newCoach: [],
       groupHour: '',
-      confirmLoading: false
+      confirmLoading: false,
+      // 禁用优惠设置的选择
+      getCheckboxProps: () => ({
+        props: {
+          disabled: true
+        }
+      })
     }
   },
   methods: {
@@ -144,7 +155,8 @@ export default {
     // 设置选择私教课并返回教练
     selectCourseChange(id) {
       this.form.setFieldsValue({
-        courseId: id
+        courseId: id,
+        group_hour: this.info.init_course_num
       })
       this.editPersonalService.getCoachList(id).subscribe(res => {
         this.newCoach = this.coach.map(item => {
@@ -152,7 +164,7 @@ export default {
             is_select: false,
             level: item.spec,
             id: item.id,
-            hour: '--',
+            hour: this.info.init_course_num,
             group_price: ''
           }
         })
@@ -164,7 +176,6 @@ export default {
       })
     },
     setCoachPrice() {
-      let selectIds = this.info.sku.map(item => item.sku_id)
       this.newCoach.forEach(item => {
         let selectCoach = this.info.sku.filter(sku => sku.sku_id === item.id)
         console.log(selectCoach)
@@ -172,6 +183,7 @@ export default {
         item.group_price =
           selectCoach.length > 0 ? selectCoach[0].group_price : ''
       })
+      this.selectedRowKeys = this.info.sku.map(sku => sku.sku_id)
       console.log(this.newCoach)
     },
     // 优惠设置选择变化
@@ -180,6 +192,7 @@ export default {
       this.newCoach.forEach(coach => {
         coach.is_select = this.selectedRowKeys.indexOf(coach.id) !== -1
       })
+      this.setPriceChange()
     },
     // 处理输入拼团价格的逻辑
     setPriceChange() {
@@ -197,12 +210,16 @@ export default {
     onSubmit(data) {
       console.log(data)
       if (this.tableErr) return
-      data.sku = this.newCoach.map(item => {
-        if (item.is_select) {
-          return {
-            sku_id: item.id,
-            group_price: item.group_price
-          }
+      const selectedCoach = this.newCoach.filter(item => item.is_select)
+      if (selectedCoach.length === 0) {
+        this.tableText = '请选择至少一个教练'
+        this.tableErr = true
+        return
+      }
+      data.sku = selectedCoach.map(item => {
+        return {
+          sku_id: item.id,
+          group_price: item.group_price
         }
       })
       data.init_course_num = +this.groupHour
