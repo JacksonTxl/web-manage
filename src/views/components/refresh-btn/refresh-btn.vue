@@ -48,7 +48,7 @@ export default {
   methods: {
     refresh() {
       if (this.times > 0) {
-        this.msg.error({ content: `刷新过快，请稍后再试` })
+        this.msg.error({ content: `间隔太短，请稍后尝试` })
         return
       }
       clearInterval(this.intervalTimer)

@@ -7,7 +7,7 @@
     :style="{ maxWidth }"
   >
     <template slot="content">
-      <slot>
+      <slot name="content">
         <ul>
           <li class="mg-t8" v-for="(item, index) in value" :key="index">
             {{ index + 1 }}、 {{ item }}
@@ -15,7 +15,9 @@
         </ul>
       </slot>
     </template>
-    <slot>{{ showValue }}</slot>
+    <slot>
+      {{ showValue }}
+    </slot>
   </a-popover>
 </template>
 <script>
