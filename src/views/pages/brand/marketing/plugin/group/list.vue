@@ -21,7 +21,7 @@
         </a-select>
         <st-input-search
           v-model="activityName"
-          @search="onSingleSearch('coupon_name', $event)"
+          @search="onSingleSearch('activty_name', $event)"
           placeholder="请输入活动名称"
           maxlength="50"
         />
@@ -108,6 +108,8 @@
   </st-panel-layout>
 </template>
 <script>
+import { UserService } from '@/services/user.service'
+
 import { ListService } from './list.service'
 import MarkteingPluginTitle from '../../components#/marketing-title'
 import tableMixin from '@/mixins/table.mixin'
@@ -130,7 +132,8 @@ export default {
   },
   serviceInject() {
     return {
-      listService: ListService
+      listService: ListService,
+      userService: UserService
     }
   },
   rxState() {
@@ -153,7 +156,7 @@ export default {
         // select 假数据做处理
         activity_status: {
           description: '活动状态',
-          value: { 1: '已结束', 2: '活动中', 3: '未开始', 4: '待发布' }
+          value: { 5: '已结束', 2: '未开启', 1: '已开启' }
         }
       }
     }
@@ -173,20 +176,20 @@ export default {
   },
   mounted() {
     this.setSearchData()
+    console.log(this.$searchQuery)
+    console.log(this.auth)
   },
   watch: {
-    $searchQuery(newVal) {
+    query(newVal) {
       this.setSearchData()
-      console.log(newVal)
     }
   },
   methods: {
     // 设置状态&名称
     setSearchData() {
-      let { coupon_name, activity_status } = this.$searchQuery
-      this.activityName = coupon_name
+      let { activty_name, activity_status } = this.$searchQuery
+      this.activityName = activty_name
       this.activityStatus = activity_status || -1
-      console.log(this.activityName, this.activityStatus)
     },
     // 活动发布
     onRelease(record) {
@@ -205,23 +208,24 @@ export default {
 
     // 数据
     onData(record) {
+      console.log(record.id)
       this.routeRul('data', record.id)
     },
     // 推广
     onGeneralize(record) {
       this.listService.getSharePosterInfo({ id: record.id }).subscribe(res => {
         console.log(res)
-        const info = this.info$
+        const info = res
         // const activity_date = `${info.start_time} - ${info.end_time}`
         this.$modalRouter.push({
           name: 'marketing-share-poster',
           props: {
             info: {
-              qrcode_url: res.qrcode_url,
-              brand_name: res.brand_name,
-              brand_logo: res.brand_logo,
-              activity_img: res.product_logo,
-              activity_title: res.product_name
+              qrcode_url: info.qrcode_base, // besa  64
+              brand_name: info.brand_name,
+              brand_logo: info.product_logo,
+              activity_img: info.product_logo,
+              activity_title: info.product_name
               // activity_date,
               // activity_address: info.address
             },
@@ -234,6 +238,7 @@ export default {
     onEdit(record) {
       console.log(record.id, '活动id')
       let typeId = record.product_type.id
+      console.log(typeId)
       let id = record.id
       switch (typeId) {
         case 3:
