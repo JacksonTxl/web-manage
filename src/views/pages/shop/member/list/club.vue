@@ -193,7 +193,7 @@
         <st-help-tooltip id="TSCRM001" />
       </span>
       <span slot="customCoachTitle">
-        跟进销售客保天数
+        跟进教练客保天数
         <st-help-tooltip id="TSCRM002" />
       </span>
       <div slot="member_name" slot-scope="text, record">
