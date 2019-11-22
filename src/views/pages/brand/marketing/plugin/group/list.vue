@@ -202,12 +202,7 @@ export default {
         onCancel() {}
       })
     },
-    routeRul(url, id) {
-      this.$router.push({
-        path: `/brand/marketing/plugin/group/${url}`,
-        query: { id: id }
-      })
-    },
+
     // 数据
     onData(record) {
       this.routeRul('data', record.id)
@@ -242,21 +237,27 @@ export default {
       let id = record.id
       switch (typeId) {
         case 3:
-          this.routeRul('edit-personal', id)
+          this.routeRul('edit-personal', `${id}`)
           break
         case 2:
-          this.routeRul('edit-stored', id)
+          this.routeRul('edit-stored', `${id}`)
           break
         case 1:
-          this.routeRul('edit-member', id)
+          this.routeRul('edit-member', `${id}`)
           break
         case 4:
-          this.routeRul('edit-course', id)
+          this.routeRul('edit-course', `${id}`)
           break
         default:
       }
     },
-
+    routeRul(url, id) {
+      console.log(url, id)
+      this.$router.push({
+        path: `/brand/marketing/plugin/group/${url}`,
+        query: { id: id }
+      })
+    },
     // 结束活动
     onStop(record) {
       let that = this

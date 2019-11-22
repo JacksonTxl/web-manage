@@ -141,18 +141,7 @@ export default {
       default: () => {}
     }
   },
-  watch: {
-    // 疑问
-    info(n, o) {
-      if (this.isEdit) {
-        this.setFieldsValue()
-        console.log(this.cardId, '编辑时触发')
-        this.addPersonalService.init().subscribe(res => {
-          this.handleChange(this.cardId)
-        })
-      }
-    }
-  },
+  watch: {},
   updated() {
     console.log(this.newCoach)
   },

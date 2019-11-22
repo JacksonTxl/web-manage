@@ -33,6 +33,7 @@ export class AddPersonalService implements Controller {
   addCoach(params: { id: number }) {
     return this.GroupBuyApi.getCoachList(params).pipe(
       tap((res: any) => {
+        console.log(res)
         this.coachList$.commit(() => res.list)
       })
     )
