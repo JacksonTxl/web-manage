@@ -854,7 +854,7 @@ export default {
         this.indexService.getCabinetList(id).subscribe(() => {
           this.stCabinetList =
             this.selectMemberInfo.cabinet && this.selectMemberInfo.cabinet.id
-              ? [this.selectMemberInfo.cabinet, ...this.cabinetList]
+              ? [...this.cabinetList]
               : cloneDeep(this.cabinetList)
         })
         this.seller = res.info.seller.id || -1
