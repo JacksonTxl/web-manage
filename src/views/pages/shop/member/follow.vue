@@ -200,7 +200,7 @@ export default {
           disabledBegin: null,
           placeholder: '开始日期',
           disabled: false,
-          value: '',
+          value: null,
           format: 'YYYY-MM-DD',
           change: $event => {}
         },
@@ -208,7 +208,7 @@ export default {
           showTime: false,
           placeholder: '结束日期',
           disabled: false,
-          value: '',
+          value: null,
           format: 'YYYY-MM-DD',
           change: $event => {}
         }
@@ -221,7 +221,11 @@ export default {
   mounted() {
     this.setSearchData()
   },
-
+  watch: {
+    $searchQuery(newVal) {
+      this.setSearchData()
+    }
+  },
   methods: {
     onChangeSell(value) {
       this.onMultiSearch({ follow_salesman_id: value })
@@ -267,7 +271,7 @@ export default {
         self.form[prop] = ''
       }
       this.$refs.stSeleter.handleResetItem()
-      this.$router.reload()
+      this.$router.push({ query: {} })
     }
   }
 }
