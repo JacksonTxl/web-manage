@@ -94,6 +94,9 @@ export default {
   components: {
     GroupForm
   },
+  mounted() {
+    console.log(this.list)
+  },
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
@@ -124,18 +127,18 @@ export default {
           this.currentStored = item.product_spec
         }
       })
-      this.groupParams.id = this.currentStored[0].id
+      this.groupParams.id = this.depositId
       this.$refs.group.updateShop()
     },
     onSubmit(params) {
       let tmpList = [
         {
-          sku_id: this.currentStored[0].id,
+          sku_id: this.depositId,
           group_price: this.currentStored[0].group_price
         }
       ]
       params.product_type = 2
-      params.product_id = this.currentStored[0].id
+      params.product_id = this.depositId
       params.sku = tmpList
 
       this.addSotred.addGroup(params).subscribe(res => {
