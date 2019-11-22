@@ -45,6 +45,7 @@
             </a-select> -->
             <a-cascader
               :options="actList"
+              :allowClear="false"
               v-model="li.activity_id"
               placeholder="请输入链接的活动"
               :fieldNames="{
@@ -53,7 +54,6 @@
                 children: 'children'
               }"
               @change="actSelect(li, $event)"
-              changeOnSelect
             />
           </st-form-item>
         </div>
@@ -95,6 +95,7 @@
               </a-select> -->
               <a-cascader
                 :options="actList"
+                :allowClear="false"
                 v-model="addItem.activity_id"
                 placeholder="请输入链接的活动"
                 :fieldNames="{
@@ -103,7 +104,6 @@
                   children: 'children'
                 }"
                 @change="addSelect"
-                changeOnSelect
               />
             </st-form-item>
           </div>
@@ -161,12 +161,14 @@ export default {
   },
   mounted() {
     this.list = cloneDeep(this.sliderInfo)
-    this.actList = cloneDeep(this.activityList)
+    this.actList = cloneDeep(this.activityList.list)
+    console.log(this.list, 'list')
+    console.log(this.actList, 'actList')
     this.list.forEach(item => {
       // 需要对children进行遍历
-      console.log(this.actList, '===========actList')
       this.actList.forEach(it => {
-        if (item.activity_type === it.activity_type) {
+        // it.id = it.type
+        if (item.activity_type === it.id) {
           if (it.children && it.children.length) {
             if (!it.children.some(act => act.id === item.activity_id)) {
               if (item.activity_type === 5) {
@@ -188,6 +190,8 @@ export default {
               }
             }
           }
+          item.id = it.id
+          item.activity_id = [item.id, item.activity_id]
         }
       })
       // if (!this.actList.some(act => act.id === item.activity_id)) {
@@ -196,10 +200,13 @@ export default {
       //     activity_type: item.activity_type,
       //     id: item.activity_id,
       //     isover: true
-      //   })
+      //   })it
       // }
-      item.activity_id = [item.activity_id]
+      // item.id = it.type
+      // item.activity_id = [item.id, item.activity_id]
     })
+    console.log(this.list, 'list这里')
+    console.log(this.actList, 'actList这里')
   },
   watch: {
     list: {
@@ -230,19 +237,11 @@ export default {
       this.list.splice(index, 1)
     },
     actSelect(item, value) {
-      let selected = this.actList.filter(it => it.id === value[0])[0]
-      this.actList.forEach(it => {
-        if (it.id === value[0]) {
-          selected = it
-        }
-        if (it.children) {
-          it.children.forEach(i => {
-            if (i.id === value[0]) {
-              selected = value[0]
-            }
-          })
-        }
-      })
+      let selected = {}
+      let selecttedParent = this.actList.filter(it => it.id === value[0])[0]
+      if (selecttedParent.children && selecttedParent.children.length) {
+        selected = selecttedParent.children.filter(it => it.id === value[1])[0]
+      }
       item.activity_type = selected.activity_type
       item.activity_name = selected.activity_name
       if (item.activity_type === 5) {
@@ -252,22 +251,17 @@ export default {
       item.is_over = 0
     },
     addSelect(value) {
-      console.log(value, '=======value')
-      let selected = this.actList.filter(it => it.id === value[0])[0]
-      this.actList.forEach(it => {
-        if (it.id === value[0]) {
-          selected = it
-        }
-        if (it.children) {
-          it.children.forEach(i => {
-            if (i.id === value[0]) {
-              selected = value[0]
-            }
-          })
-        }
-      })
+      let selected = {}
+      let selecttedParent = this.actList.filter(it => it.id === value[0])[0]
+      if (selecttedParent.children && selecttedParent.children.length) {
+        selected = selecttedParent.children.filter(it => it.id === value[1])[0]
+      }
       this.addItem.activity_type = selected.activity_type
       this.addItem.activity_name = selected.activity_name
+      if (item.activity_type === 5) {
+        item.product_type = selected.product_type || -1
+        item.product_template_id = selected.product_template_id || -1
+      }
     }
   }
 }
