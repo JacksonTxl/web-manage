@@ -171,7 +171,8 @@ export default {
       avg: this.clubService.avg$,
       entry: this.clubService.entry$,
       marketing: this.clubService.marketing$,
-      marketingFunnel: this.clubService.marketingFunnel$
+      marketingFunnel: this.clubService.marketingFunnel$,
+      loading: this.clubService.loading$
     }
   },
   bem: {

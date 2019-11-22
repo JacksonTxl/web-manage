@@ -1,7 +1,6 @@
 <template>
   <st-modal
     title="批量排期"
-    @ok="save"
     v-model="show"
     wrapClassName="modal-schedule-inbatch-add"
   >
@@ -35,6 +34,7 @@
             {{ coach.staff_name }}
           </a-select-option>
         </a-select>
+        <div class="color-danger">建议选择教练数不超过10人</div>
       </st-form-item>
     </st-form>
     <div class="modal-schedule__time modal-reserve-schedule__time mg-t16">
@@ -73,9 +73,18 @@
         </a-row>
       </st-container>
     </div>
+    <slot name="footer" slot="footer">
+      <st-button @click="show = false">取消</st-button>
+      <st-button
+        @click="save"
+        :loading="loading.addScheduleInBatch"
+        type="primary"
+      >
+        确定
+      </st-button>
+    </slot>
   </st-modal>
 </template>
-n
 
 <script>
 import { PersonalScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/personal/service#/schedule.service'
@@ -94,6 +103,7 @@ export default {
   },
   rxState() {
     return {
+      loading: this.scheduleService.loading$,
       coachOptions: this.commonService.coachInBatchOptions$
     }
   },

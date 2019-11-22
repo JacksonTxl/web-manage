@@ -71,7 +71,7 @@
           />
           <st-recent-radio-group
             @change="onChangeDataDays"
-            :value="query"
+            :value="$searchQuery"
           ></st-recent-radio-group>
         </div>
       </header>

@@ -2,7 +2,7 @@
   <st-panel initial app>
     <div class="page-personal-table schedule-table">
       <div
-        class="page-personal-table__title pd-x24 pd-y16 schedule-table__title"
+        class="page-personal-table__title pd-x24 pd-y16 schedule-table__title schedule-table__title--fixed"
         slot="title"
       >
         <div class="title__left">
@@ -36,7 +36,7 @@
           </st-button>
         </div>
       </div>
-      <a-row class="mg-t32 mg-r24 mg-l24">
+      <div class="schedule-table__content  mg-r24 mg-l24">
         <st-table
           :columns="scheduleColumns"
           rowKey="staff_id"
@@ -92,7 +92,7 @@
             </a>
           </div>
         </st-table>
-      </a-row>
+      </div>
     </div>
   </st-panel>
 </template>

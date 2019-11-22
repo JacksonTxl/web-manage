@@ -36,9 +36,8 @@
           slot="description"
           slot-scope="text"
           max-width="300px"
-        >
-          {{ text }}
-        </st-overflow-text>
+          :value="text"
+        ></st-overflow-text>
         <div slot="actions" slot-scope="text, record">
           <st-table-actions>
             <a

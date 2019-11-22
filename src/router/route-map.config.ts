@@ -180,6 +180,7 @@ export const routeMapConfig = {
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       course_status: { type: Number, default: -1 },
+      package_type: { type: Number, default: -1 },
       start_time: { type: String, default: '' },
       end_time: { type: String, default: '' },
       page: { type: Number, default: 1 },
@@ -376,7 +377,8 @@ export const routeMapConfig = {
       'brand-setting-general-coach-level',
       // 'brand-setting-general-user-level', //暂时隐藏用户等级设置
       'brand-setting-general-course',
-      'brand-setting-general-pay-type'
+      'brand-setting-general-pay-type',
+      'brand-setting-general-crm'
     ]
   },
   'brand-setting-app'(routeConfig: RouteConfig) {
@@ -665,6 +667,10 @@ export const routeMapConfig = {
     routeConfig.meta.title = '品牌设置'
     routeConfig.meta.auth = 'brand_shop:brand:brand_info|get'
   },
+  'brand-setting-general-crm'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = 'CRM规则设置'
+    routeConfig.meta.auth = 'brand:setting:customer_protection_rule|get'
+  },
   'brand-setting-general-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '课程定价及预约设置'
     routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|tab'
@@ -730,7 +736,24 @@ export const routeMapConfig = {
   'shop-reception-cabinet'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '储物柜使用'
   },
-  'shop-member-list'(routeConfig: RouteConfig) {
+  'shop-member-list-club'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '用户列表'
+    routeConfig.queryOptions = {
+      keyword: { type: String, default: '' },
+      member_level: { type: Number, default: -1 },
+      register_way: { type: Number, default: -1 },
+      saleman_protect_remain: { type: Number },
+      coach_protect_remain: { type: Number },
+      follow_min: { type: Number },
+      follow_max: { type: Number },
+      follow_salesman_id: { type: Number },
+      follow_coach_id: { type: Number },
+      follow_status: { type: Number },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-member-list-studio'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '用户列表'
     routeConfig.queryOptions = {
       keyword: { type: String, default: '' },
@@ -741,6 +764,24 @@ export const routeMapConfig = {
       be_member_start_time: { type: String, default: '' },
       be_member_stop_time: { type: String, default: '' },
       is_follow: { type: Number, default: -1 },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-member-follow'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '用户跟进列表'
+    routeConfig.queryOptions = {
+      keyword: { type: String, default: '' },
+      member_level: { type: Number, default: -1 },
+      follow_way: { type: Number, default: -1 },
+      follow_status: { type: Number, default: -1 },
+      follow_start_date: { type: String, default: '' },
+      follow_end_date: { type: String, default: '' },
+      follow_salesman_id: { type: Number, default: -1 },
+      follow_coach_id: { type: Number, default: -1 },
+      follow_start_num: { type: String, default: '' },
+      follow_end_num: { type: String, default: '' },
+      operator_id: { type: Number, default: -1 },
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
@@ -763,6 +804,9 @@ export const routeMapConfig = {
     routeConfig.meta.title = '用户详情'
   },
   'shop-member-info-sales-interests'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '用户详情'
+  },
+  'shop-member-info-follow-record'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '用户详情'
   },
   'shop-member-info-user-experience'(routeConfig: RouteConfig) {
@@ -1095,6 +1139,17 @@ export const routeMapConfig = {
       end_date: { type: String, default: '' }
     }
   },
+  'shop-stat-follow'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '跟进报表'
+    routeConfig.queryOptions = {
+      showTable: { type: String, default: 'all' },
+      recently_day: { type: Number, default: 7 },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' }
+    }
+  },
   'shop-stat-order'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '订单报表'
     routeConfig.queryOptions = {
@@ -1381,6 +1436,20 @@ export const routeMapConfig = {
   },
   'brand-marketing-plugin-group-edit-stored'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑拼团'
+  },
+  'brand-setting-task-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '任务中心'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-setting-task-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '任务中心'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
   },
   ...tplConfigs
 }
