@@ -1,7 +1,7 @@
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 // import { AuthService } from '@/services/auth.service'
-import { GroupBuyApi } from '@/api/v1/marketing/group_buy'
+import { GroupBuyApi, EditParams } from '@/api/v1/marketing/group_buy'
 import { tap } from 'rxjs/operators'
 import { anyAll } from '@/operators'
 
@@ -24,6 +24,9 @@ export class EditStoredService implements Controller {
         this.list$.commit(() => res)
       })
     )
+  }
+  editGroup(params: EditParams) {
+    return this.groupBuyApi.editGroup(params)
   }
   @Effect()
   init(id: any) {

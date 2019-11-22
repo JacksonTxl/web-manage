@@ -83,7 +83,8 @@ export default {
   },
   serviceInject() {
     return {
-      edit: EditStoredService
+      edit: EditStoredService,
+      pattern: PatternService
     }
   },
   rxState() {
@@ -138,10 +139,11 @@ export default {
           group_price: this.currentStored[0].group_price
         }
       ]
+      params.id = this.$searchQuery.id
       params.product_type = 2
       params.product_id = this.depositId
       params.sku = tmpList
-      this.Add.editGroup(params).subscribe(res => {
+      this.edit.editGroup(params).subscribe(res => {
         console.log(params, res, '这是编辑返回的数据')
       })
     },
