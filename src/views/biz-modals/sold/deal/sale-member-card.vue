@@ -25,6 +25,9 @@
             <st-info-item label="约课权益">
               {{ info.course_interests }}
             </st-info-item>
+            <st-info-item label="支持入场人数">
+              {{ info.support_member_num }}
+            </st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
