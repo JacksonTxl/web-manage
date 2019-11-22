@@ -225,7 +225,8 @@ export default {
     setFieldsValue() {
       this.activityState = this.info.info.activity_state[0].id
       this.courseId = this.info.info.product.id
-      this.tableData = this.info.info.sku
+      console.log(this.tableData, 'tableData==========')
+      // this.tableData = this.info.info.sku
       this.shopId = this.info.info.support_shop[0]
     }
   },

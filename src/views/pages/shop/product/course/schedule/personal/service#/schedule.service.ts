@@ -22,6 +22,7 @@ export class PersonalScheduleScheduleService {
   scheduleTeamCourseList$: Computed<any>
   scheduleTable$: Computed<any>
   refresh$: Computed<any>
+  loading$ = new State({})
 
   constructor(
     private scheduleApi: PersonalScheduleApi,
@@ -105,6 +106,7 @@ export class PersonalScheduleScheduleService {
       })
     )
   }
+  @Effect()
   addScheduleInBatch(params: AddScheduleInBatchInput) {
     return this.scheduleApi.addScheduleInBatch(params).pipe(
       switchMap(state => {

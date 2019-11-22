@@ -55,7 +55,7 @@
                 ></a-input>
               </st-form-item>
               <st-form-item labelWidth="46px" label="链接">
-                <a-select
+                <!-- <a-select
                   placeholder="请输入链接的活动"
                   @select="actSelect(li, $event)"
                   v-model="li.activity_id"
@@ -68,7 +68,19 @@
                   >
                     {{ act.activity_name }}
                   </a-select-option>
-                </a-select>
+                </a-select> -->
+                <a-cascader
+                  :options="actList"
+                  v-model="li.activity_id"
+                  placeholder="请输入链接的活动"
+                  :fieldNames="{
+                    label: 'activity_name',
+                    value: 'id',
+                    children: 'children'
+                  }"
+                  @change="actSelect(li, $event)"
+                  changeOnSelect
+                />
               </st-form-item>
             </div>
           </div>
@@ -124,6 +136,31 @@ export default {
       this.list[number] = cloneDeep(this.eventInfo)
       this.actList = cloneDeep(this.activityList)
       this.list[number].forEach(item => {
+        this.actList.forEach(ite => {
+          if (ite.type === item.activity_type) {
+            if (ite.children && ite.children.length) {
+              if (!ite.children.some(act => act.id === item.activity_id)) {
+                if (item.activity_type === 5) {
+                  ite.children.push({
+                    activity_name: item.activity_name,
+                    activity_type: item.activity_type,
+                    id: item.activity_id,
+                    isover: true,
+                    product_type: item.product_type,
+                    product_template_id: item.product_template_id
+                  })
+                } else {
+                  ite.children.push({
+                    activity_name: item.activity_name,
+                    activity_type: item.activity_type,
+                    id: item.activity_id,
+                    isover: true
+                  })
+                }
+              }
+            }
+          }
+        })
         if (!this.actList.some(act => act.id === item.activity_id)) {
           this.actList.push({
             activity_name: item.activity_name,
@@ -137,6 +174,26 @@ export default {
       this.number = 0
       this.actList = cloneDeep(this.activityList)
     }
+
+    // if (this.eventInfo && this.eventInfo.length) {
+    //   let number = this.eventInfo.length
+    //   this.number = number
+    //   this.list[number] = cloneDeep(this.eventInfo)
+    //   this.actList = cloneDeep(this.activityList)
+    //   this.list[number].forEach(item => {
+    //     if (!this.actList.some(act => act.id === item.activity_id)) {
+    //       this.actList.push({
+    //         activity_name: item.activity_name,
+    //         activity_type: item.activity_type,
+    //         id: item.activity_id,
+    //         isover: true
+    //       })
+    //     }
+    //   })
+    // } else {
+    //   this.number = 0
+    //   this.actList = cloneDeep(this.activityList)
+    // }
   },
   watch: {
     list: {
@@ -200,9 +257,20 @@ export default {
       this.list = list
     },
     actSelect(item, value) {
-      let selected = this.actList.filter(it => it.id === value)[0]
+      this.actList.forEach(ite => {
+        if (ite.children && ite.children.length) {
+          let selected = ite.children.filter(it => it.id === value)[0]
+        }
+      })
       item.activity_type = selected.activity_type
       item.activity_name = selected.activity_name
+      if (selected.activity_type === 5) {
+        item.product_type = selected.product_type
+        item.product_template_id = selected.product_template_id
+      }
+      // let selected = this.actList.filter(it => it.id === value)[0]
+      // item.activity_type = selected.activity_type
+      // item.activity_name = selected.activity_name
     },
     imageUploadChange(e, index) {
       if (e.length) {

@@ -82,10 +82,6 @@ export default (vm: any) => {
     published_time: {
       rules: [
         {
-          required: true,
-          message: '请选择发布时间'
-        },
-        {
           validator: (field: any, value: any, values: any) => {
             if (
               vm.$children[0].ACTIVITY_STATUS.TIMING ===

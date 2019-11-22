@@ -138,9 +138,16 @@ export default {
           checkedShopIds.splice(index, 1)
         }
       })
+      console.log('list-shop', list)
       this.list = list
       this.checkedShopIds = checkedShopIds
       this.$emit('change', checkedShopIds)
+    },
+    // 拼团逻辑，清空门店
+    clearShopList() {
+      this.list = []
+      this.checkedShopIds = []
+      this.$emit('change', this.checkedShopIds)
     }
   }
 }

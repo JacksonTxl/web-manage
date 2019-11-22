@@ -203,7 +203,11 @@ export default {
   },
   methods: {
     onClickDelete(record) {
-      this.$modalRouter.push({ name: 'staff-delete', props: { staff: record } })
+      this.$modalRouter.push({
+        name: 'staff-delete',
+        props: { staff: record },
+        on: {}
+      })
     },
     staffLeave(record) {
       this.$modalRouter.push({
