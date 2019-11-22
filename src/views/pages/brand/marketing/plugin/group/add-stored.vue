@@ -125,7 +125,7 @@ export default {
       })
       this.groupParams.id = this.currentStored[0].id
     },
-    onSubmit() {
+    onSubmit(params) {
       let tmpList = [
         {
           sku_id: this.currentStored[0].id,
@@ -135,7 +135,8 @@ export default {
       params.product_type = 2
       params.product_id = this.currentStored[0].id
       params.sku = tmpList
-      this.Add.addGroup(params).subscribe(res => {
+
+      this.addSotred.addGroup(params).subscribe(res => {
         console.log(params, res, '这是编辑返回的数据')
       })
     }
