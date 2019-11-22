@@ -31,12 +31,12 @@
             <p>{{ li.title }}</p>
           </div>
         </div>
-        <div :class="h5('notice')">
+        <!-- <div :class="h5('notice')">
           <img :class="h5('notice-img')" :src="noticeImg" />
           <span :class="h5('notice-span')">
             公告标题或摘要信息…公告标题或摘要信息……
           </span>
-        </div>
+        </div> -->
         <div :class="h5('event')">
           <a-row>
             <a-col

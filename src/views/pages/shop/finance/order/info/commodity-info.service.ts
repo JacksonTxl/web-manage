@@ -17,10 +17,8 @@ export class CommodityInfoService implements Controller {
       })
     )
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: () => {}) {
+  beforeEach(to: ServiceRoute) {
     this.product_type$.commit(() => to.meta.query.type)
-    this.getCommodityInfo(to.meta.query.id).subscribe(() => {
-      next()
-    })
+    return this.getCommodityInfo(to.meta.query.id)
   }
 }

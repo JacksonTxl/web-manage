@@ -28,7 +28,7 @@
           :value="pageBtnFocusState"
           @change="handleSizeChange($event, 'page')"
         >
-          <a-radio-button value="calendar" class="mg-l32">
+          <a-radio-button value="calendar" class="mg-l12">
             <st-icon type="calendar"></st-icon>
           </a-radio-button>
           <a-radio-button value="list" @click="onClickGetTable">

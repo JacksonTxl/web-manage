@@ -33,13 +33,25 @@
         />
       </div>
       <div class="title__right schedule-button">
+        <!-- TODO: 周日还没写功能-->
+        <!-- <a-radio-group
+          :value="dataBtnFocusState"
+          @change="handleSizeChange($event, 'date')"
+        >
+          <a-radio-button value="week" @click="onClickGetWeek">
+            周
+          </a-radio-button>
+          <a-radio-button value="day" @click="onClickGetCurrent">
+            日
+          </a-radio-button>
+        </a-radio-group> -->
         <a-radio-group
           :value="pageBtnFocusState"
           @change="handleSizeChange($event, 'page')"
         >
           <a-radio-button
             value="calendar"
-            class="mg-l32"
+            class="mg-l12"
             @click="onClickSkipSchedule"
           >
             <st-icon type="calendar"></st-icon>
@@ -97,6 +109,7 @@ import { columns } from '../personal-reserve-table.config'
 import date from '@/views/biz-components/schedule/date#/date-component.vue'
 import SchedulePersonalAddReserve from '@/views/biz-modals/schedule/personal/add-reserve'
 import { cloneDeep } from 'lodash-es'
+import { PersonalReserveTableService } from './personal-reserve-table.service'
 export default {
   name: 'PersonalReservetable',
   mixins: [tableMixin],
@@ -105,12 +118,13 @@ export default {
   },
   serviceInject() {
     return {
-      reserveService: PersonalScheduleReserveService
+      reserveService: PersonalScheduleReserveService,
+      service: PersonalReserveTableService
     }
   },
   rxState() {
     return {
-      auth: this.reserveService.auth$,
+      auth: this.service.auth$,
       list: this.reserveService.list$,
       page: this.reserveService.page$,
       loading: this.reserveService.loading$
@@ -134,6 +148,7 @@ export default {
     return {
       page: {},
       currentTime: '',
+      dataBtnFocusState: 'week',
       pageBtnFocusState: 'list'
     }
   },
@@ -161,6 +176,20 @@ export default {
       this.$router.push({
         name: 'shop-product-course-schedule-personal',
         query: this.$searchQuery
+      })
+    },
+    onClickGetWeek() {
+      this.$router.push({ query: { ...this.currentWeek } })
+      this.getWeeks('week')
+    },
+    onClickGetCurrent() {
+      let current = moment().format('YYYY-MM-DD')
+      this.getWeeks()
+      this.$router.push({
+        query: {
+          start_date: current,
+          end_date: current
+        }
       })
     },
     // 管理私教排期

@@ -227,7 +227,9 @@ export default {
     },
     onSave(record, index) {
       let percent = 0
-      this.info.split_items.map(item => {
+      const arr = cloneDeep(this.info.split_items)
+      arr.shift()
+      arr.map(item => {
         percent += parseInt(item.split_ratio || 0, 10)
       })
       // percent += parseInt(record.split_ratio, 10)
