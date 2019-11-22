@@ -41,13 +41,16 @@
         <a-col :lg="8">
           <st-info>
             <st-info-item label="微信支付">
-              已配置
-              <a :class="info('a')" @click="resetMch">重新配置</a>
+              {{ data.mina_info.is_mch === 1 ? '已配置' : '立刻配置' }}
+
+              <a :class="info('a')" @click="resetMch">
+                {{ data.mina_info.is_mch === 1 ? '重新配置' : '立刻配置' }}
+              </a>
             </st-info-item>
             <st-info-item label="微信授权">
               {{ data.is_auth | authFilter }}
               <a :class="info('a')" :href="data.auth_url" target="_blank">
-                重新授权
+                {{ data.is_auth === 1 ? '重新授权' : '立刻授权' }}
               </a>
             </st-info-item>
           </st-info>
@@ -157,11 +160,17 @@ export default {
   },
   methods: {
     resetMch() {
+      const params = this.data
       this.$modalRouter.push({
         name: 'brand-setting-mina-mch',
+        props: {
+          params
+        },
         on: {
           success: () => {
-            this.$router.push({ query: this.$searchQuery })
+            this.$router.push({
+              query: this.$searchQuery
+            })
           }
         }
       })

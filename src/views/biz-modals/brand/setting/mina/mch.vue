@@ -30,7 +30,9 @@
       <p class="tip-p">2. 申请通过后，将对应支付配置信息填写完整即可；</p>
     </div>
     <template slot="footer">
-      <st-button type="primary" @click="toSetMch">重新配置</st-button>
+      <st-button type="primary" @click="toSetMch">
+        {{ params.mina_info.is_mch === 1 ? '重新配置' : '立刻配置' }}
+      </st-button>
     </template>
   </st-modal>
 </template>
@@ -42,6 +44,12 @@ export default {
     return {
       messageService: MessageService,
       settingService: SettingMinaMchService
+    }
+  },
+  props: {
+    params: {
+      type: Object,
+      default: () => {}
     }
   },
   data() {
