@@ -44,7 +44,14 @@ export default {
     },
     options: {
       type: Object,
-      default: () => ({})
+      default: () => ({
+        start: {
+          // ...
+        },
+        end: {
+          // ...
+        }
+      })
     }
   },
   data() {
