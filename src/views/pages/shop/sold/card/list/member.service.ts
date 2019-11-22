@@ -13,6 +13,7 @@ export class MemberService implements Controller {
   auth$ = this.authService.authMap$({
     export: 'shop:sold:sold_member_card|export',
     gift: 'shop:sold:sold_member_card|gift',
+    batch_admission: 'shop:sold:sold_member_card|batch_admission',
     vipRegion: 'shop:sold:sold_member_card|vip_region'
   })
   cardTypes$ = this.userService.getOptions$('sold_common.card_type', {

@@ -151,10 +151,10 @@ export default {
     bindAccount() {
       return (
         this.rePasswordInfo &&
-        (this.rePasswordInfo.wechat &&
-          this.rePasswordInfo.mail &&
-          this.rePasswordInfo.phone &&
-          this.rePasswordInfo.QQ)
+        this.rePasswordInfo.wechat &&
+        this.rePasswordInfo.mail &&
+        this.rePasswordInfo.phone &&
+        this.rePasswordInfo.QQ
       )
     }
   },
@@ -195,6 +195,7 @@ export default {
           if (values.name && values.password && values.repeat_password) {
             this.rePasswordService.setAccount(form).subscribe(() => {
               this.show = false
+              this.$router.reload()
             })
           } else {
             this.rePasswordService
@@ -203,12 +204,14 @@ export default {
               })
               .subscribe(() => {
                 this.show = false
+                this.$router.reload()
               })
           }
         } else {
           if (values.password && values.repeat_password) {
             this.rePasswordService.rePassword(form).subscribe(() => {
               this.show = false
+              this.$router.reload()
             })
           } else {
             this.rePasswordService
@@ -217,6 +220,7 @@ export default {
               })
               .subscribe(() => {
                 this.show = false
+                this.$router.reload()
               })
           }
           this.show = false

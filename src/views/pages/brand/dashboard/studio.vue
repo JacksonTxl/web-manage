@@ -10,6 +10,7 @@
             <count-card
               title="今日营收额(元)"
               :count="this.revenue.num"
+              :skeletonLoading="loading.init"
               :footer="{ label: '近7天日均营收额：', value: this.revenue.avg }"
               :trend="{
                 isUp: this.revenue.ratio >= 0,
@@ -30,6 +31,7 @@
             <count-card
               title="今日订单数(单)"
               :count="this.order.num"
+              :skeletonLoading="loading.init"
               :footer="{ label: '近7天日均订单数：', value: this.order.avg }"
               :trend="{
                 isUp: this.order.ratio >= 0,
@@ -52,6 +54,7 @@
             <count-card
               title="今日客流量(人)"
               :count="this.visit.num"
+              :skeletonLoading="loading.init"
               :footer="{ label: '近7天日均客流量：', value: this.visit.avg }"
             >
               <template slot="title">
@@ -70,6 +73,7 @@
             <count-card
               title="用户数(人)"
               :count="this.user.num"
+              :skeletonLoading="loading.init"
               :footer="{ label: '近7天日转化会员率：', value: this.user.ratio }"
             >
               <template slot="title">
@@ -93,7 +97,10 @@
             <template v-slot:user>
               <div class="mg-t8 mg-l32 user-chart-box">
                 <div class="funnel-vertical">
-                  <funnel-vertical :data="userFunnel"></funnel-vertical>
+                  <funnel-vertical
+                    :skeletonLoading="loading.init"
+                    :data="userFunnel"
+                  ></funnel-vertical>
                 </div>
                 <div class="revenue-area">
                   <brand-revenue-area
@@ -150,6 +157,7 @@ import CountCard from './components#/count-card'
 import FunnelVertical from '@/views/biz-components/stat/brand-funnel-vertical'
 import { StudioService } from './studio.service'
 import SidebarComponent from './components#/sidebar.component'
+
 export default {
   name: 'Dashboard',
   serviceInject() {
@@ -165,7 +173,8 @@ export default {
       avg: this.studioService.avg$,
       entry: this.studioService.entry$,
       marketing: this.studioService.marketing$,
-      marketingFunnel: this.studioService.marketingFunnel$
+      marketingFunnel: this.studioService.marketingFunnel$,
+      loading: this.studioService.loading$
     }
   },
   bem: {

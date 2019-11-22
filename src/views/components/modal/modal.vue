@@ -95,7 +95,7 @@ export default {
         this.clickModalContent,
         false
       )
-      document.body.style = 'overflow:hidden;padding-right:6px;'
+      document.body.style = 'overflow:hidden;padding-right:8px;'
     }
   },
   beforeDestroy() {

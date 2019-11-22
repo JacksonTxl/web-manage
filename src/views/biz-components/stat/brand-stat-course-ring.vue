@@ -201,7 +201,6 @@ export default {
         $s('.guide-name').textContent = origin.name
       })
       this.chart.on('interval:mouseleave', e => {
-        debugger
         $s('.guide-value').textContent = this.total
         $s('.guide-name').textContent = this.name
       })

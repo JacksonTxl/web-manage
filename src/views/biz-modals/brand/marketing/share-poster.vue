@@ -34,11 +34,11 @@ export default {
     return [ShsService]
   },
   props: {
-    info: {
+    shsInfo: {
       type: Object,
       default: () => {}
     },
-    shsUrl: String
+    shsPath: String
   },
   data() {
     return {
@@ -51,7 +51,7 @@ export default {
     }
   },
   created() {
-    this.shsService.getShsImage(this.info, this.shsUrl).subscribe(res => {
+    this.shsService.getShsImage(this.shsInfo, this.shsPath).subscribe(res => {
       this.url = res
     })
   },

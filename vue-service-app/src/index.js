@@ -142,7 +142,7 @@ class VueServiceApp {
       if (!matched) {
         return next()
       }
-      console.log('matched', matched)
+      // console.log('matched', matched)
       const guards = matched.reduce(
         (res, routeRecord) => res.concat(routeRecord.Guards || []),
         []
