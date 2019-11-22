@@ -1,26 +1,13 @@
 import groupFormConfig from './components#/group-form.config'
 export const ruleOptions = (vm: any) => {
-  const pattern = vm.pattern
   const groupFrom = groupFormConfig(vm)
   return Object.assign(groupFrom, {
-    cardId: {
-      rules: [
-        {
-          validator: (field: any, value: any, values: any) => {
-            console.log(value)
-            if (!value) {
-              return '请填写课时'
-            }
-          }
-        }
-      ]
-    },
-    activity_search: {
+    courseId: {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
             if (!value) {
-              return '请填写选择课程'
+              return '请选择私教课'
             }
           }
         }
