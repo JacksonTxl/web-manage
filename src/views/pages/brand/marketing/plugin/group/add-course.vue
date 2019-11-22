@@ -3,7 +3,7 @@
     :form="form"
     :decorators="decorators"
     :loading="loading.addGroup"
-    :shopIds="shopIds"
+    :confirmLoading="confirmLoading"
     @onsubmit="onSubmit"
     :showSelectShop="false"
   >
@@ -123,44 +123,17 @@ export default {
     return {
       form,
       decorators,
-      groupName: '',
       cardColumns,
       courseList: [],
       shopId: '',
       courseId: '',
       tableData: [],
       isLimit: true,
-      selectTime: {
-        startTime: {
-          showTime: false,
-          disabledBegin: moment(),
-          placeholder: '开始日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD HH:mm',
-          change: $event => {}
-        },
-        endTime: {
-          showTime: false,
-          placeholder: '结束日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD HH:mm',
-          change: $event => {},
-          disabledDate: this.disabledDate
-        }
-      },
-      publishTime: null,
-      activityState: Number,
       ACTIVITY_STATUS,
       RELEASE_STATUS,
-      errTips: '', // 活动时间错误提示
-      errText: '', // 发布时间错误提示
       tableText: '', // 优惠设置错误提示
-      helpShow: false,
-      showHelp: false,
       tableErr: false,
-      shopIds: []
+      confirmLoading: false
     }
   },
   methods: {
@@ -182,51 +155,20 @@ export default {
         }
       })
     },
-    // 是否限制库存
-    limitStock(value) {
-      this.isLimit = value.target.checked
-    },
-    changeName(e) {
-      this.groupName = e.target.value
-    },
-    disabledDate(current) {
-      return (
-        current &&
-        current.format('YYYY-MM-DD HH:mm') < moment().format('YYYY-MM-DD HH:mm')
-      )
-    },
     onSubmit(data) {
       console.log(data)
-      let list = []
-      let isReturn = false
-      this.tableData.forEach((item, index) => {
-        if (!item.group_price) {
-          this.tableText = '请输入拼团价'
-          this.tableErr = true
-          isReturn = true
+      data.product_type = 4
+      data.product_id = this.courseId
+      data.sku = this.tableData.map(item => {
+        return {
+          sku_id: item.id,
+          group_price: item.group_price
         }
-        list.push({ id: item.id, group_price: item.group_price })
       })
-      let params = {}
-      if (isReturn) {
-        return
-      }
-      params = {
-        product_type: 4, // 课程包
-        activity_name: data.activity_name, // 活动名称
-        product_id: this.courseId, //商品id
-        sku: list, //卡、课规格[{“sku_id”:1,”group_price”:20},]
-        start_time: data.start_time,
-        end_time: data.end_time,
-        group_sum: data.group_sum, //成团人数
-        valid_time: data.valid_time, //拼团有效期
-        is_limit_stock: data.is_limit_stock, //是否限制库存0不限制 1限制
-        stock_total: data.stock_total, //库存
-        shop_ids: [this.shopId], //门店ids [1,2,3,4]
-        published_type: data.published_type, //发布状态(1-立即发布 2-暂不发布 3-定时发布)
-        published_time: data.published_time //发布时间
-      }
-      this.addMemberService.addGroup(params).subscribe(res => {
+      if (this.confirmLoading) return
+      this.confirmLoading = true
+      this.addMemberService.addGroup(data).subscribe(res => {
+        this.confirmLoading = false
         this.$router.push({
           path: `/brand/marketing/plugin/group/list`
         })

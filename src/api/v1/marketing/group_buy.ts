@@ -35,18 +35,11 @@ export interface GroupListParams {
   activity_status: number
   activity_name: string
 }
+
 export interface GroupData {
   id: string
   group_status: number
   search_where: string
-}
-export interface GroupData {
-  id: string
-  group_status: number
-  search_where: string
-}
-export interface GroupDataId {
-  id: number
 }
 export class GroupBuyApi extends Api {
   /**
@@ -78,8 +71,10 @@ export class GroupBuyApi extends Api {
   /**
    * 数据列表
    */
-  getData(query: GroupData) {
-    return this.http.get(`/v1/plugin/group_buy/data/`, { query })
+  getData(params: GroupData) {
+    return this.http.get(`/v1/plugin/group_buy/data/${params.id}`, {
+      query: params
+    })
   }
   /**
    * 获取会籍卡列表
@@ -97,7 +92,9 @@ export class GroupBuyApi extends Api {
    * 获取课程包列表
    */
   getCourseList(params: { shop_id: number }) {
-    return this.http.get('/v1/course/package/group/list', { query: params })
+    return this.http.get('/v1/course/package/group/list', {
+      query: params
+    })
   }
   /**
    * 获取私教课列表
@@ -108,8 +105,8 @@ export class GroupBuyApi extends Api {
   /**
    * 获取教练列表
    */
-  getCoachList(params: { id: number }) {
-    return this.http.get(`/v1/course/personal/coach_level/${params.id}`)
+  getCoachList(id: number) {
+    return this.http.get(`/v1/course/personal/coach_level/${id}`)
   }
   /**
    * 拼团结束
@@ -127,13 +124,13 @@ export class GroupBuyApi extends Api {
    * 获取推广海报
    */
   getPosterInfo(params: { id: number }) {
-    return this.http.get('/v1/plugin/group_buy/spread/', { params })
+    return this.http.get(`/v1/plugin/group_buy/spread/${params.id}`)
   }
   /**
    * 获取数据top
    */
-  getGroupBuyDataTop(query: GroupDataId) {
+  getGroupBuyDataTop(query: number) {
     console.log(query)
-    return this.http.get('/v1/plugin/group_buy/data_top/', { query })
+    return this.http.get(`/v1/plugin/group_buy/data_top/${query}`)
   }
 }
