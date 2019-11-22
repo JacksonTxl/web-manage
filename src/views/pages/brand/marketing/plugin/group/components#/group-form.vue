@@ -108,6 +108,7 @@
                   :shopIds="info ? info.support_shop : []"
                   :groupParams="groupParams"
                   @change="onSelectShop"
+                  ref="selectShop"
                 ></select-shop>
               </div>
             </st-form-item>
@@ -238,6 +239,9 @@ export default {
     }
   },
   methods: {
+    updateShop() {
+      this.$refs.selectShop.clearShopList()
+    },
     // 是否限制库存
     limitStock(value) {
       this.isLimit = value.target.checked

@@ -7,6 +7,7 @@
     :isEdit="false"
     :groupParams="groupParams"
     @onsubmit="onSubmit"
+    ref="group"
   >
     <template slot="choose-product">
       <a-row :gutter="8">
@@ -124,6 +125,7 @@ export default {
         }
       })
       this.groupParams.id = this.currentStored[0].id
+      this.$refs.group.updateShop()
     },
     onSubmit(params) {
       let tmpList = [
