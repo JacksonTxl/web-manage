@@ -108,6 +108,7 @@
                   :shopIds="info ? info.support_shop : []"
                   :groupParams="groupParams"
                   @change="onSelectShop"
+                  ref="selectShop"
                 ></select-shop>
               </div>
             </st-form-item>
@@ -133,7 +134,7 @@
             <st-form-item
               label="发布时间"
               required
-              v-if="releaseStatus === RELEASE_STATUS.TIMING"
+              v-show="releaseStatus === RELEASE_STATUS.TIMING"
             >
               <a-date-picker
                 :disabledDate="disabledDate"
@@ -238,6 +239,9 @@ export default {
     }
   },
   methods: {
+    updateShop() {
+      this.$refs.selectShop.clearShopList()
+    },
     // 是否限制库存
     limitStock(value) {
       this.isLimit = value.target.checked
@@ -303,7 +307,7 @@ export default {
       })
       if (this.releaseStatus === RELEASE_STATUS.TIMING) {
         this.form.setFieldsValue({
-          published_time: this.info.published_time
+          published_time: moment(this.info.published_time)
         })
       }
       // 编辑不能改变活动开始时间

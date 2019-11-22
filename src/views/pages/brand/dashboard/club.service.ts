@@ -1,5 +1,5 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State } from 'rx-state/src'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
+import { State, Effect } from 'rx-state/src'
 import { tap } from 'rxjs/operators'
 import { StatApi, RecentQuery } from '@/api/v1/stat/brand'
 import { forkJoin } from 'rxjs'
@@ -7,8 +7,27 @@ import { anyAll } from '@/operators'
 import { UserService } from '@/services/user.service'
 
 @Injectable()
-export class ClubService {
-  top$ = new State({})
+export class ClubService implements Controller {
+  loading$ = new State({})
+  top$ = new State({
+    order: {
+      num: '',
+      ratio: 0,
+      avg: '',
+      chart: []
+    },
+    revenue: {
+      avg: '',
+      num: '',
+      chart: []
+    },
+    user: {
+      chart: []
+    },
+    visit: {
+      chart: []
+    }
+  })
   userFunnel$ = new State([])
   user$ = new State([])
   avg$ = new State([])
@@ -126,6 +145,7 @@ export class ClubService {
       })
     )
   }
+  @Effect()
   init() {
     return anyAll(
       this.getTop(),
@@ -135,7 +155,7 @@ export class ClubService {
       this.getEntry()
     )
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+  beforeRouteEnter() {
     return this.init()
   }
 }

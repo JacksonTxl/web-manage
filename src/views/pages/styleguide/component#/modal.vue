@@ -14,10 +14,10 @@
       modal demo2
     </st-button>
     <st-button @click="onClickShow676" type="primary" class="mg-l24">
-      width: 676
+      默认[size] 676px
     </st-button>
     <st-button @click="onClickShow484" type="primary" class="mg-l24">
-      width: 484
+      [size]=small 484px
     </st-button>
     <st-modal
       class="modal-support-course-shops"

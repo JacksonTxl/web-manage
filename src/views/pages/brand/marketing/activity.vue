@@ -135,12 +135,14 @@ export default {
       for (let i = 0; i < this.sliderInfo.length; i++) {
         this.sliderInfo[i].activity_id = this.sliderInfo[i].activity_id[0]
       }
+      for (let i = 0; i < this.eventInfo.length; i++) {
+        this.eventInfo[i].activity_id = this.eventInfo[i].activity_id[0]
+      }
       saveForm.info.push({
         category: 1,
         content: this.sliderInfo
       })
       console.log(saveForm, '这是提交的数据')
-      return
       saveForm.info.push({
         category: 3,
         content: this.eventInfo

@@ -112,31 +112,9 @@ export default {
       }
     }
   },
-  // props: {
-  //   isEdit: {
-  //     type: Boolean,
-  //     default: false
-  //   },
-  //   info: {
-  //     type: Object,
-  //     default: () => {}
-  //   }
-  // },
-  // watch: {
-  //   info(n, o) {
-  //     if (this.isEdit) {
-  //       this.setFieldsValue()
-  //       this.editMemberService.init().subscribe(res => {
-  //         this.chooseMember(this.cardId)
-  //       })
-  //     }
-  //   }
-  // },
   mounted() {
     this.setFieldsValue()
-    // this.editMemberService.init().subscribe(res => {
     this.chooseMember(this.cardId)
-    // })
   },
   methods: {
     chooseMember(value) {
@@ -150,7 +128,7 @@ export default {
           if (this.selectedRowKeys) {
             this.info.info.sku.forEach(item => {
               this.tableData.forEach(card => {
-                if (item.id === card.id) {
+                if (item.sku_id === card.id) {
                   card.group_price = item.group_price
                 }
               })
@@ -163,7 +141,7 @@ export default {
     onChange(value) {
       this.selectedRowKeys = value
     },
-    // 新建拼团活动
+    // 编辑拼团活动
     onSubmit(data) {
       console.log(data)
       let isReturn = false
@@ -216,7 +194,7 @@ export default {
       console.log(this.info, 'info-------------')
       this.cardId = this.info.info.product.id
       this.info.info.sku.forEach(item => {
-        this.selectedRowKeys.push(item.id)
+        this.selectedRowKeys.push(item.sku_id)
       })
     }
   },

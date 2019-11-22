@@ -1,5 +1,9 @@
 <template>
-  <div :class="b()" :style="chartStyle">
+  <st-skeleton
+    v-if="skeletonLoading"
+    :options="{ width: '100%', height: '400px' }"
+  ></st-skeleton>
+  <div v-else :class="b()" :style="chartStyle">
     <div v-for="(item, idx) in dv" :key="item.name" :class="b('item')">
       <div :class="b('item-before')" :style="triStyle"></div>
       <div :class="b('text')">
@@ -21,6 +25,10 @@ export default {
     height: {
       type: Number,
       default: 400
+    },
+    skeletonLoading: {
+      type: Boolean,
+      default: false
     },
     /**
      * @example

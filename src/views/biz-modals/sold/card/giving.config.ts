@@ -1,7 +1,8 @@
 export const ruleOptions = (vm: any) => {
   return {
-    gift_quota: {
+    amount: {
       rules: [{ required: true, message: '请输入赠送额度' }]
-    }
+    },
+    content: {}
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
-import { State } from 'rx-state/src'
+import { State, Effect } from 'rx-state/src'
 import { tap, catchError } from 'rxjs/operators'
 import { StatApi, RecentQuery } from '@/api/v1/stat/brand'
 import { forkJoin, of } from 'rxjs'
@@ -7,6 +7,7 @@ import { anyAll } from '@/operators/any-all'
 import { UserService } from '@/services/user.service'
 @Injectable()
 export class StudioService implements Controller {
+  loading$ = new State({})
   top$ = new State({
     order: {
       chart: []
@@ -136,6 +137,7 @@ export class StudioService implements Controller {
       })
     )
   }
+  @Effect()
   init() {
     return anyAll(
       this.getTop(),

@@ -33,18 +33,12 @@
   </st-panel>
 </template>
 <script>
-import MarketingPoster from '@/views/biz-modals/brand/marketing/share-poster'
-import MarketingQrCode from '@/views/biz-modals/brand/marketing/qr-code'
 import { SuccessService } from './success.service'
-import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
+import useShare from '@/hooks/marketing/share.hook'
 export default {
   name: 'ReleaseActivity',
   bem: {
     bPage: 'page-marketing-release-activity'
-  },
-  modals: {
-    MarketingPoster,
-    MarketingQrCode
   },
   serviceInject() {
     return {
@@ -54,6 +48,11 @@ export default {
   rxState() {
     const { info$, qrcode$, brand$ } = this.service
     return { info$, qrcode$, brand$ }
+  },
+  hooks() {
+    return {
+      share: useShare()
+    }
   },
   data() {
     return {
@@ -85,38 +84,25 @@ export default {
       this.service.getSharePosterInfo(this.activityId).subscribe(res => {
         const info = this.info$
         const activity_date = `${info.start_time} - ${info.end_time}`
-        if (!res.is_auth) {
-          this.show = false
-          this.$modalRouter.push({
-            name: 'brand-marketing-bind'
-          })
-          return
+        const shsInfo = {
+          qrcode_url: info.qrcode,
+          brand_name: this.brand$.name,
+          brand_logo: this.brand$.logo,
+          activity_img: info.image.image_url,
+          activity_title: info.activity_name,
+          activity_date,
+          activity_address: info.address
         }
-        this.$modalRouter.push({
-          name: 'marketing-poster',
-          props: {
-            info: {
-              qrcode_url: info.qrcode,
-              brand_name: this.brand$.name,
-              brand_logo: this.brand$.logo,
-              activity_img: info.image.image_url,
-              activity_title: info.activity_name,
-              activity_date,
-              activity_address: info.address
-            },
-            shsUrl: '/saas/activity'
-          }
+        this.share.poster({
+          isAuth: res.is_auth,
+          shsInfo,
+          shsPath: '/saas/activity'
         })
       })
     },
     pushQrCodeModal() {
-      this.service.getQrCode(this.activityId).subscribe(() => {
-        this.$modalRouter.push({
-          name: 'marketing-qr-code',
-          props: {
-            url: this.qrcode$
-          }
-        })
+      this.service.getQrCode(this.activityId).subscribe(res => {
+        this.share.qrCode({ isAuth: res.is_auth, qrCodeUrl: this.qrcode$ })
       })
     }
   }

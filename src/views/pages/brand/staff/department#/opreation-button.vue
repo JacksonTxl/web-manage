@@ -5,6 +5,7 @@
       v-if="auth.add"
       @click="onClickAddStaff"
       icon="add"
+      type="primary"
     >
       添加员工
     </st-button>

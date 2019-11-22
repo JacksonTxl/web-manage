@@ -114,7 +114,7 @@
                 编辑
               </a>
             </div>
-            <div :class="b('action')" v-if="isOperationInBatch">
+            <div :class="b('action')" v-show="isOperationInBatch">
               <a-checkbox
                 :value="item.id"
                 :disabled="disabledCabinetCheck(item)"

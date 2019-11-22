@@ -44,3 +44,8 @@ abc123
 * [前端规范文档](https://www.tapd.cn/33239975/markdown_wikis/?#1133239975001000607)
 * [styleguide (需要本地打开)](http://localhost:8060/styleguide)
 * [pro 规范文档](https://gitlab.styd.cn/fe/saas/web/wikis/%E8%A7%84%E8%8C%83/1.%E4%BB%8B%E7%BB%8D)
+
+
+## mock
+
+复制根目录下的mock-tpl.js 到 mock/index.js 再启动项目
