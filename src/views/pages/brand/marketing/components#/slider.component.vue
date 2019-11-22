@@ -46,7 +46,7 @@
             <a-cascader
               :options="actList"
               v-model="li.activity_id"
-              placeholder="请输入连接的活动"
+              placeholder="请输入链接的活动"
               :fieldNames="{
                 label: 'activity_name',
                 value: 'id',
@@ -96,7 +96,7 @@
               <a-cascader
                 :options="actList"
                 v-model="addItem.activity_id"
-                placeholder="请输入连接的活动"
+                placeholder="请输入链接的活动"
                 :fieldNames="{
                   label: 'activity_name',
                   value: 'id',
@@ -164,16 +164,28 @@ export default {
     this.actList = cloneDeep(this.activityList)
     this.list.forEach(item => {
       // 需要对children进行遍历
+      console.log(this.actList, '===========actList')
       this.actList.forEach(it => {
         if (item.activity_type === it.activity_type) {
-          if (it.children) {
+          if (it.children && it.children.length) {
             if (!it.children.some(act => act.id === item.activity_id)) {
-              it.children.push({
-                activity_name: item.activity_name,
-                activity_type: item.activity_type,
-                id: item.activity_id,
-                isover: true
-              })
+              if (item.activity_type === 5) {
+                it.children.push({
+                  activity_name: item.activity_name,
+                  activity_type: item.activity_type,
+                  id: item.activity_id,
+                  isover: true,
+                  product_type: item.product_type,
+                  product_template_id: item.product_template_id
+                })
+              } else {
+                it.children.push({
+                  activity_name: item.activity_name,
+                  activity_type: item.activity_type,
+                  id: item.activity_id,
+                  isover: true
+                })
+              }
             }
           }
         }

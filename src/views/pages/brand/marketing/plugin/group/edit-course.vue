@@ -67,7 +67,7 @@
           >
             <div :class="basic('table')">
               <st-table
-                rowKey="id"
+                rowKey="sku_id"
                 :columns="cardColumns"
                 :dataSource="tableData"
                 :pagination="false"
