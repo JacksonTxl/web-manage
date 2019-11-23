@@ -1,7 +1,7 @@
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 // import { AuthService } from '@/services/auth.service'
-import { GroupBuyApi } from '@/api/v1/marketing/group_buy'
+import { GroupBuyApi, EditParams } from '@/api/v1/marketing/group_buy'
 import { tap } from 'rxjs/operators'
 import { anyAll } from '@/operators'
 import { forkJoin } from 'rxjs'
@@ -9,6 +9,7 @@ import { forkJoin } from 'rxjs'
 @Injectable()
 export class EditPersonalService implements Controller {
   info$ = new State({})
+  loading$ = new State({})
   coach$ = new State({})
   personalList$ = new State([])
   constructor(private groupBuyApi: GroupBuyApi) {}
@@ -22,7 +23,8 @@ export class EditPersonalService implements Controller {
     )
   }
   // 获取私教列表
-  getList() {
+  @Effect()
+  getPersonalList() {
     return this.groupBuyApi.getPersonalList().pipe(
       tap((res: any) => {
         console.log(res)
@@ -30,22 +32,20 @@ export class EditPersonalService implements Controller {
       })
     )
   }
-
   @Effect()
-  getCoachList(params: { id: 1 }) {
-    return this.groupBuyApi.getCoachList(params).pipe(
+  getCoachList(id: number) {
+    return this.groupBuyApi.getCoachList(id).pipe(
       tap((res: any) => {
         console.log(res)
         this.coach$.commit(() => res.list)
       })
     )
   }
+  editGroupbuy(params: EditParams) {
+    return this.groupBuyApi.editGroup(params)
+  }
   init(params: any) {
-    return forkJoin(
-      this.getPersonalDetail(params),
-      this.getList(),
-      this.getCoachList({ id: 1 })
-    )
+    return anyAll(this.getPersonalDetail(params))
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     return this.init(to.meta.query.id)

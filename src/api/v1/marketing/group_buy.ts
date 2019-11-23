@@ -105,8 +105,8 @@ export class GroupBuyApi extends Api {
   /**
    * 获取教练列表
    */
-  getCoachList(params: { id: number }) {
-    return this.http.get(`/v1/course/personal/coach_level/${params.id}`)
+  getCoachList(id: number) {
+    return this.http.get(`/v1/course/personal/coach_level/${id}`)
   }
   /**
    * 拼团结束

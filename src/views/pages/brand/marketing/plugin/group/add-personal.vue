@@ -3,7 +3,7 @@
     :form="form"
     :decorators="decorators"
     :loading="loading.addGroup"
-    :shopIds="shopIds"
+    :confirmLoading="confirmLoading"
     @onsubmit="onSubmit"
   >
     <template slot="choose-product">
@@ -42,7 +42,6 @@
       <a-row :gutter="8">
         <a-col :span="16">
           <st-form-item
-            v-decorator="decorators.group_hour"
             label="优惠设置"
             required
             :help="tableText"
@@ -116,23 +115,11 @@ export default {
       decorators,
       courseId: '', // 活动商品
       selectedRowKeys: [], // 优惠设置选中项
-      isLimit: true, // 限制库存
       cardColumns,
-      groupParams: {
-        type: 3,
-        id: null
-      },
-      // 发布状态
-      releaseStatus: 1,
-      publishTime: null, // 发布时间
-      activityState: Number, // 当前活动活动状态
       tableText: '', // 优惠设置错误提示
-      helpShow: false,
-      showHelp: false,
       tableErr: false,
-      sku: [], // 卡、课规格[{“sku_id”:1,”group_price”:20},]
-      shopIds: [],
-      newCoach: []
+      newCoach: [],
+      confirmLoading: false
     }
   },
   methods: {
@@ -144,12 +131,11 @@ export default {
       })
     },
     // 设置选择私教课并返回教练
-    selectCourseChange(e) {
+    selectCourseChange(id) {
       this.form.setFieldsValue({
-        courseId: e
+        courseId: id
       })
-      this.groupParams.id = e
-      this.addPersonalService.addCoach({ id: e }).subscribe(res => {
+      this.addPersonalService.getCoachList(id).subscribe(res => {
         this.newCoach = this.coach.map(item => {
           return {
             is_select: false,
@@ -172,6 +158,7 @@ export default {
         coach.is_select = this.selectedRowKeys.indexOf(coach.id) !== -1
       })
     },
+    // 处理输入拼团价格的逻辑
     setPriceChange() {
       let selectedCoach = this.newCoach.filter(item => item.is_select)
       let hasEmpty = selectedCoach.filter(item => !item.group_price)
@@ -187,51 +174,25 @@ export default {
     onSubmit(data) {
       console.log(data)
       if (this.tableErr) return
-
-      // let {
-      //   activity_name, // 活动名称
-      //   start_time,
-      //   end_time,
-      //   group_sum, //成团人数
-      //   valid_time, //拼团有效期
-      //   is_limit_stock, //是否限制库存0不限制 1限制
-      //   stock_total, //库存
-      //   shop_ids, //门店ids [1,2,3,4]
-      //   published_type,
-      //   published_time
-      // } = data
-
-      let isReturn = false
-      if (isReturn) {
+      const selectedCoach = this.newCoach.filter(item => item.is_select)
+      if (selectedCoach.length === 0) {
+        this.tableText = '请选择至少一个教练'
+        this.tableErr = true
         return
       }
+      data.init_course_num = +this.groupHour
       data.product_type = 3 // 私教课
       data.product_id = this.courseId
-      data.sku = this.newCoach.map(item => {
-        if (item.is_select) {
-          return {
-            sku_id: item.id,
-            group_price: item.group_price
-          }
+      data.sku = selectedCoach.map(item => {
+        return {
+          sku_id: item.id,
+          group_price: item.group_price
         }
       })
-      // 275404963775803 门店id
-      // let params = {
-      //   product_type: 3, // 会籍卡
-      //   activity_name: activity_name, // 活动名称
-      //   product_id: this.courseId, //商品id
-      //   sku: this.sku, //卡、课规格[{“sku_id”:1,”group_price”:20},]
-      //   start_time: start_time,
-      //   end_time: end_time,
-      //   group_sum: group_sum, //成团人数
-      //   valid_time: valid_time, //拼团有效期
-      //   is_limit_stock: is_limit_stock, //是否限制库存0不限制 1限制
-      //   stock_total: stock_total, //库存
-      //   shop_ids: shop_ids, //门店ids [1,2,3,4]
-      //   published_type: published_type, //发布状态(1-立即发布 2-暂不发布 3-定时发布)
-      //   published_time: published_time //发布时间
-      // }
-      this.addPersonalService.addGroup(data).subscribe(res => {
+      if (this.confirmLoading) return
+      this.confirmLoading = true
+      this.addPersonalService.createGroupbuy(data).subscribe(res => {
+        this.confirmLoading = false
         this.$router.push({
           path: `/brand/marketing/plugin/group/list`
         })

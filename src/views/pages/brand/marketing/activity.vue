@@ -133,16 +133,15 @@ export default {
         info: []
       }
       for (let i = 0; i < this.sliderInfo.length; i++) {
-        this.sliderInfo[i].activity_id = this.sliderInfo[i].activity_id[0]
+        this.sliderInfo[i].activity_id = this.sliderInfo[i].activity_id[1] || 0
       }
       for (let i = 0; i < this.eventInfo.length; i++) {
-        this.eventInfo[i].activity_id = this.eventInfo[i].activity_id[0]
+        this.eventInfo[i].activity_id = this.eventInfo[i].activity_id[1]
       }
       saveForm.info.push({
         category: 1,
         content: this.sliderInfo
       })
-      console.log(saveForm, '这是提交的数据')
       saveForm.info.push({
         category: 3,
         content: this.eventInfo

@@ -2,9 +2,10 @@
   <group-form
     :form="form"
     :decorators="decorators"
-    :loading="loading"
+    :loading="loading.addGroup"
     :isEdit="true"
     :info="info.info"
+    :confirmLoading="confirmLoading"
     @onsubmit="onSubmit"
     :showSelectShop="false"
   >
@@ -149,7 +150,8 @@ export default {
       tableText: '', // 优惠设置错误提示
       helpShow: false,
       showHelp: false,
-      tableErr: false
+      tableErr: false,
+      confirmLoading: false
     }
   },
   methods: {

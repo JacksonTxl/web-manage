@@ -12,7 +12,7 @@
     <template slot="choose-product">
       <a-row :gutter="8">
         <a-col :span="10">
-          <st-form-item label="选择会籍卡" required>
+          <st-form-item :label="`选择${$c('member_card')}`" required>
             <a-input type="hidden" v-decorator="decorators.cardId" />
             <a-select
               showSearch

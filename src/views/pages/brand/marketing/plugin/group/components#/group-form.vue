@@ -43,7 +43,10 @@
                 参团人数
                 <st-help-tooltip id="TBPTXJ001" />
               </span>
-              <st-input-number v-decorator="decorators.group_sum">
+              <st-input-number
+                :disabled="isEdit && activityState > ACTIVITY_STATUS.PUBLISHER"
+                v-decorator="decorators.group_sum"
+              >
                 <template slot="addonAfter">
                   人
                 </template>
@@ -54,7 +57,10 @@
                 拼团有效期
                 <st-help-tooltip id="TBPTXJ002" />
               </span>
-              <st-input-number v-decorator="decorators.valid_time">
+              <st-input-number
+                :disabled="isEdit && activityState > ACTIVITY_STATUS.PUBLISHER"
+                v-decorator="decorators.valid_time"
+              >
                 <template slot="addonAfter">
                   小时
                 </template>
@@ -69,7 +75,7 @@
                 @change="limitStock"
                 :checked="isLimit"
                 :disabled="
-                  (isEdit && isLimit) || activityState >= ACTIVITY_STATUS.END
+                  isEdit && isLimit && activityState > ACTIVITY_STATUS.PUBLISHER
                 "
               >
                 限制库存&nbsp;&nbsp;
@@ -124,7 +130,7 @@
               <a-radio-group
                 :defaultValue="releaseStatus || RELEASE_STATUS.PROMPTLY"
                 v-model="releaseStatus"
-                :disabled="isEdit && activityState > RELEASE_STATUS.PUBLISHER"
+                :disabled="isEdit && activityState > ACTIVITY_STATUS.PUBLISHER"
               >
                 <a-radio :value="RELEASE_STATUS.PROMPTLY">立即发布</a-radio>
                 <a-radio :value="RELEASE_STATUS.TEMPORARILY">暂不发布</a-radio>
@@ -280,10 +286,10 @@ export default {
           end_time: moment(values.activity_time[1]).format(
             'YYYY-MM-DD HH:mm:ss'
           ),
-          group_sum: values.group_sum, //成团人数
-          valid_time: values.valid_time, //拼团有效期
+          group_sum: +values.group_sum, //成团人数
+          valid_time: +values.valid_time, //拼团有效期
           is_limit_stock: this.isLimit ? 1 : 0, //是否限制库存0不限制 1限制
-          stock_total: this.isLimit ? values.stock_total : 0, //库存
+          stock_total: this.isLimit ? +values.stock_total : 0, //库存
           shop_ids: this.shopIds, //门店ids [1,2,3,4]
           published_type: this.releaseStatus, //发布状态(1-立即发布 2-暂不发布 3-定时发布)
           published_time: moment(values.published_time).format(
@@ -295,9 +301,11 @@ export default {
     // 详情回显
     setFieldsValue() {
       this.releaseStatus = this.info.published_type
-      this.activityState = this.info.activity_state[0].id
+      this.activityState = Number(this.info.activity_state[0].id)
+      console.log('this.activityState', this.activityState)
       this.isLimit = this.info.is_limit_stock === 1
       this.shopIds = this.info.support_shop
+      this.groupName = this.info.activity_name
       this.form.setFieldsValue({
         activity_name: this.info.activity_name,
         group_sum: this.info.group_sum,
@@ -311,7 +319,10 @@ export default {
         })
       }
       // 编辑不能改变活动开始时间
-      this.activityOptions.start.disabled = true
+      this.activityOptions.start.disabled =
+        this.isEdit &&
+        this.isLimit &&
+        this.activityState > this.ACTIVITY_STATUS.PUBLISHER
     }
   },
   components: {
