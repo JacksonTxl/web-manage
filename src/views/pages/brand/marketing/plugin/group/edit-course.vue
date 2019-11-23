@@ -20,7 +20,7 @@
             <a-select
               showSearch
               v-decorator="decorators.shop_id"
-              :disabled="canEdit"
+              :disabled="disabledEdit"
               @change="changeShop"
             >
               <a-select-option
@@ -41,7 +41,7 @@
               showSearch
               v-decorator="decorators.course_id"
               @change="changeCourse"
-              :disabled="canEdit"
+              :disabled="disabledEdit"
             >
               <a-select-option
                 :value="item.id"
@@ -75,7 +75,7 @@
                   <st-input-number
                     :float="true"
                     v-model="record.group_price"
-                    :disabled="canEdit"
+                    :disabled="disabledEdit"
                   >
                     <template slot="addonAfter">
                       元
@@ -141,7 +141,7 @@ export default {
       tableText: '', // 优惠设置错误提示
       tableErr: false,
       confirmLoading: false,
-      canEdit: false
+      disabledEdit: false
     }
   },
   methods: {
@@ -186,7 +186,8 @@ export default {
         course_id: this.info.product.id
       })
       // 是否能够编辑, 当活动未开始时可以编辑
-      this.canEdit = this.info.activity_state.id >= ACTIVITY_STATUS.NO_START
+      this.disabledEdit =
+        this.info.activity_state.id >= ACTIVITY_STATUS.NO_START
       // 将详情信息中的sku和courseList中选中的某项课程包中的product_spec进行合并,得到一个含有price和group_price的数组,赋值给tableData
       this.tableData = this.info.sku.map((item, key) => {
         let courseProductSpec = this.courseList
