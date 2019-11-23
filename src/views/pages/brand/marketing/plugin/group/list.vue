@@ -21,7 +21,7 @@
         </a-select>
         <st-input-search
           v-model="activityName"
-          @search="onSingleSearch('activty_name', $event)"
+          @search="onSingleSearch('activity_name', $event)"
           placeholder="请输入活动名称"
           maxlength="50"
         />
@@ -177,9 +177,9 @@ export default {
   },
   mounted() {
     this.setSearchData()
-    console.log(this.couponEnums, '枚举')
-    console.log(this.auth, '权限点')
-    console.log(this.page, 'page页面')
+    console.log(this.$searchQuery)
+    // console.log(this.auth, '权限点')
+    // console.log(this.page, 'page页面')
   },
   watch: {
     query(newVal) {
@@ -189,8 +189,8 @@ export default {
   methods: {
     // 设置状态&名称
     setSearchData() {
-      let { activty_name, activity_status } = this.$searchQuery
-      this.activityName = activty_name
+      let { activity_name, activity_status } = this.$searchQuery
+      this.activityName = activity_name
       this.activityStatus = activity_status || -1
     },
     // 活动发布
