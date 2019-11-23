@@ -135,7 +135,7 @@ export default {
     onSubmit(params) {
       let tmpList = [
         {
-          sku_id: this.depositId,
+          sku_id: this.currentStored[0].sku_id,
           group_price: this.currentStored[0].group_price
         }
       ]
@@ -153,7 +153,6 @@ export default {
       this.activityState = this.info.info.activity_state[0].id
       this.depositId = this.info.info.product.id
       this.currentStored = this.info.info.sku
-      console.log('this.info.info.sku', this.info.info.sku)
       this.shopList = this.info.info.support_shop || []
       this.form.setFieldsValue({
         depositId: this.info.info.product.id
