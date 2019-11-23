@@ -126,7 +126,6 @@ export default {
       })
       this.groupParams.id = this.depositId
       this.$refs.group.updateShop()
-      console.log(' this.currentStored', this.currentStored)
     },
     onSubmit(params) {
       let tmpList = [
