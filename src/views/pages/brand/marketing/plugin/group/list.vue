@@ -56,11 +56,11 @@
             <span
               v-if="
                 record.activity_state.length === 1 &&
-                  record.activity_state[0].published_time
+                  record.activity_state.published_time
               "
             >
               <a-popover
-                v-if="record.activity_state[0].published_time"
+                v-if="record.activity_state.published_time"
                 trigger="click"
                 placement="topLeft"
                 :overlayStyle="{ width: '300px' }"
@@ -70,13 +70,13 @@
                   <span>{{ record.activity_state[0].published_time }}</span>
                 </template>
                 <span>
-                  {{ record.activity_state[0].name }}
+                  {{ record.activity_state.name }}
                   <a-icon type="exclamation-circle" />
                 </span>
               </a-popover>
             </span>
             <span v-else>
-              {{ record.activity_state[0].name }}
+              {{ record.activity_state.name }}
             </span>
           </template>
           <!-- 做权限点判断 -->
@@ -272,7 +272,7 @@ export default {
         title: '提示',
         content: '确定停止该活动吗？活动停止后，未成团订单将自动关闭并退款。',
         onOk() {
-          that.listService.stopGroup({ id: record.id }).subscribe(res => {
+          that.listService.stopGroup(record.id).subscribe(res => {
             console.log(res)
             that.$router.reload()
           })

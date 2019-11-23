@@ -2,8 +2,8 @@
   <group-form
     :form="form"
     :decorators="decorators"
-    :loading="loading.addGroup"
-    :confirmLoading="confirmLoading"
+    :loading="loading.getPersonalList"
+    :confirmLoading="loading.createGroupbuy"
     @onsubmit="onSubmit"
   >
     <template slot="choose-product">
@@ -118,8 +118,7 @@ export default {
       cardColumns,
       tableText: '', // 优惠设置错误提示
       tableErr: false,
-      newCoach: [],
-      confirmLoading: false
+      newCoach: []
     }
   },
   methods: {
@@ -189,10 +188,7 @@ export default {
           group_price: item.group_price
         }
       })
-      if (this.confirmLoading) return
-      this.confirmLoading = true
       this.addPersonalService.createGroupbuy(data).subscribe(res => {
-        this.confirmLoading = false
         this.$router.push({
           path: `/brand/marketing/plugin/group/list`
         })
