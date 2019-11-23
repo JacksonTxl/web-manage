@@ -20,7 +20,7 @@
             <a-select
               showSearch
               v-decorator="decorators.shop_id"
-              :disabled="true"
+              :disabled="activityState >= ACTIVITY_STATUS.NO_START"
               @change="changeShop"
             >
               <a-select-option
@@ -41,7 +41,7 @@
               showSearch
               v-decorator="decorators.course_id"
               @change="changeCourse"
-              :disabled="true"
+              :disabled="activityState >= ACTIVITY_STATUS.NO_START"
             >
               <a-select-option
                 :value="item.id"
@@ -75,7 +75,7 @@
                   <st-input-number
                     :float="true"
                     v-model="record.group_price"
-                    :disabled="true"
+                    :disabled="activityState >= ACTIVITY_STATUS.NO_START"
                   >
                     <template slot="addonAfter">
                       元
@@ -137,7 +137,8 @@ export default {
       RELEASE_STATUS,
       tableText: '', // 优惠设置错误提示
       tableErr: false,
-      confirmLoading: false
+      confirmLoading: false,
+      activityState: Number // 当前活动活动状态
     }
   },
   methods: {
@@ -174,7 +175,7 @@ export default {
     },
     // 详情回显
     setFieldsValue() {
-      this.activityState = this.info.info.activity_state[0].id
+      this.activityState = this.info.info.activity_state.id
       this.courseId = this.info.info.product.id
       console.log(this.tableData, 'tableData==========')
       // this.tableData = this.info.info.sku
