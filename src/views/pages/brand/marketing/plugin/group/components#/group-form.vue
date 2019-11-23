@@ -277,7 +277,6 @@ export default {
       }
       this.form.validate().then(values => {
         if (shopFlag) return
-        console.log(values)
         this.$emit('onsubmit', {
           activity_name: values.activity_name, // 活动名称
           start_time: moment(values.activity_time[0]).format(
@@ -302,7 +301,6 @@ export default {
     setFieldsValue() {
       this.releaseStatus = this.info.published_type
       this.activityState = Number(this.info.activity_state[0].id)
-      console.log('this.activityState', this.activityState)
       this.isLimit = this.info.is_limit_stock === 1
       this.shopIds = this.info.support_shop
       this.groupName = this.info.activity_name
