@@ -75,7 +75,9 @@
                 @change="limitStock"
                 :checked="isLimit"
                 :disabled="
-                  isEdit && isLimit && activityState > ACTIVITY_STATUS.PUBLISHER
+                  isEdit &&
+                    !isLimit &&
+                    activityState > ACTIVITY_STATUS.PUBLISHER
                 "
               >
                 限制库存&nbsp;&nbsp;
