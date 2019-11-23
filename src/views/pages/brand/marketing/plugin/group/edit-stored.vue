@@ -144,7 +144,9 @@ export default {
       params.product_id = this.depositId
       params.sku = tmpList
       this.edit.editGroup(params).subscribe(res => {
-        console.log(params, res, '这是编辑返回的数据')
+        this.$router.push({
+          path: `/brand/marketing/plugin/group/list`
+        })
       })
     },
     setFieldsValue() {
