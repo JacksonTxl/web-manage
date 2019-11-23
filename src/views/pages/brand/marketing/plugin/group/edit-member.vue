@@ -2,7 +2,8 @@
   <group-form
     :form="form"
     :decorators="decorators"
-    :loading="loading.editGroup"
+    :loading="loading.init"
+    :confirmLoading="loading.editGroup"
     :isEdit="true"
     :info="info.info"
     :shopIds="shopIds"
@@ -50,7 +51,8 @@
                   tableData.length > 1
                     ? {
                         onChange: onChange,
-                        selectedRowKeys: selectedRowKeys
+                        selectedRowKeys: selectedRowKeys,
+                        getCheckboxProps: getCheckboxProps
                       }
                     : null
                 "
@@ -121,7 +123,13 @@ export default {
       },
       ACTIVITY_STATUS,
       RELEASE_STATUS,
-      activityState: Number // 当前活动活动状态
+      activityState: Number, // 当前活动活动状态
+      // 禁用优惠设置的选择
+      getCheckboxProps: () => ({
+        props: {
+          disabled: true
+        }
+      })
     }
   },
   mounted() {
@@ -210,6 +218,11 @@ export default {
       this.cardId = this.info.info.product.id
       this.info.info.sku.forEach(item => {
         this.selectedRowKeys.push(item.sku_id)
+      })
+      this.getCheckboxProps = () => ({
+        props: {
+          disabled: this.info.info.activity_state.id >= ACTIVITY_STATUS.NO_START
+        }
       })
     }
   },
