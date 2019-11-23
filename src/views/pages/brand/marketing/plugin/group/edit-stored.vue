@@ -135,7 +135,7 @@ export default {
     onSubmit(params) {
       let tmpList = [
         {
-          sku_id: this.depositId,
+          sku_id: this.currentStored[0].sku_id,
           group_price: this.currentStored[0].group_price
         }
       ]
@@ -144,14 +144,15 @@ export default {
       params.product_id = this.depositId
       params.sku = tmpList
       this.edit.editGroup(params).subscribe(res => {
-        console.log(params, res, '这是编辑返回的数据')
+        this.$router.push({
+          path: `/brand/marketing/plugin/group/list`
+        })
       })
     },
     setFieldsValue() {
       this.activityState = this.info.info.activity_state[0].id
       this.depositId = this.info.info.product.id
       this.currentStored = this.info.info.sku
-      console.log('this.info.info.sku', this.info.info.sku)
       this.shopList = this.info.info.support_shop || []
       this.form.setFieldsValue({
         depositId: this.info.info.product.id

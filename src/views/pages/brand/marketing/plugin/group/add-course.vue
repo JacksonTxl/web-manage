@@ -2,8 +2,8 @@
   <group-form
     :form="form"
     :decorators="decorators"
-    :loading="loading.addGroup"
-    :confirmLoading="confirmLoading"
+    :loading="loading.getCourseList"
+    :confirmLoading="loading.createGroupbuy"
     @onsubmit="onSubmit"
     :showSelectShop="false"
   >
@@ -15,10 +15,9 @@
               拼团门店
               <st-help-tooltip id="TBPTXJ005" />
             </span>
-            <a-input type="hidden" v-decorator="decorators.shopId" />
             <a-select
               showSearch
-              v-model="shopId"
+              v-decorator="decorators.shop_id"
               placeholder="请输入"
               @change="changeShop"
             >
@@ -36,11 +35,9 @@
       <a-row :gutter="8">
         <a-col :span="10">
           <st-form-item label="选择课程包" required>
-            <a-input type="hidden" v-decorator="decorators.courseId" />
             <a-select
-              showSearch
-              v-model="courseId"
               placeholder="请输入"
+              v-decorator="decorators.course_id"
               @change="changeCourse"
             >
               <a-select-option
@@ -89,7 +86,6 @@
 <script>
 import GroupForm from './components#/group-form'
 import { ruleOptions, cardColumns } from './add-course.config'
-import { AddMemberService } from './add-member.service'
 import { AddCourseService } from './add-course.service'
 import { UserService } from '@/services/user.service'
 import {
@@ -101,7 +97,6 @@ import { PatternService } from '@/services/pattern.service'
 export default {
   serviceInject() {
     return {
-      addMemberService: AddMemberService,
       addCourseService: AddCourseService,
       userService: UserService,
       pattern: PatternService
@@ -109,7 +104,7 @@ export default {
   },
   rxState() {
     return {
-      loading: this.addMemberService.loading$,
+      loading: this.addCourseService.loading$,
       shopList: this.userService.shopList$,
       courseList: this.addCourseService.courseList$
     }
@@ -125,50 +120,37 @@ export default {
       decorators,
       cardColumns,
       courseList: [],
-      shopId: '',
-      courseId: '',
       tableData: [],
-      isLimit: true,
       ACTIVITY_STATUS,
       RELEASE_STATUS,
       tableText: '', // 优惠设置错误提示
-      tableErr: false,
-      confirmLoading: false
+      tableErr: false
     }
   },
   methods: {
     changeShop(value) {
-      this.form.setFieldsValue({
-        shopId: value
-      })
       this.addCourseService.getCourseList({ shop_id: value }).subscribe(res => {
         this.$router.reload()
       })
     },
     changeCourse(value) {
-      this.form.setFieldsValue({
-        courseId: value
-      })
-      this.courseList.filter(item => {
-        if (item.id === value) {
-          this.tableData = item.product_spec
-        }
-      })
+      this.tableData = this.courseList.filter(
+        item => item.id === value
+      )[0].product_spec
     },
     onSubmit(data) {
       console.log(data)
+      data.shop_ids = [+this.form.getFieldValue('shop_id')]
       data.product_type = 4
-      data.product_id = this.courseId
+      data.product_id = this.form.getFieldValue('course_id')
       data.sku = this.tableData.map(item => {
         return {
-          sku_id: item.id,
-          group_price: item.group_price
+          sku_id: this.form.getFieldValue('course_id'),
+          group_price: item.group_price,
+          price: item.price
         }
       })
-      if (this.confirmLoading) return
-      this.confirmLoading = true
-      this.addMemberService.addGroup(data).subscribe(res => {
-        this.confirmLoading = false
+      this.addCourseService.createGroupbuy(data).subscribe(res => {
         this.$router.push({
           path: `/brand/marketing/plugin/group/list`
         })

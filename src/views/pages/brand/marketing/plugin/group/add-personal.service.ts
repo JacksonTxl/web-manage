@@ -15,7 +15,6 @@ export class AddPersonalService implements Controller {
   personalList$ = new State([])
   coachList$ = new State([])
   constructor(private GroupBuyApi: GroupBuyApi) {}
-
   // 新增拼团活动
   @Effect()
   createGroupbuy(params: AddParams) {

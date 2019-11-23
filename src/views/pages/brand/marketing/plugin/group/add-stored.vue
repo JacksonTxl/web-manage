@@ -94,9 +94,6 @@ export default {
   components: {
     GroupForm
   },
-  mounted() {
-    console.log(this.list)
-  },
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
@@ -133,7 +130,7 @@ export default {
     onSubmit(params) {
       let tmpList = [
         {
-          sku_id: this.depositId,
+          sku_id: this.currentStored[0].id,
           group_price: this.currentStored[0].group_price
         }
       ]
@@ -142,7 +139,9 @@ export default {
       params.sku = tmpList
 
       this.addSotred.addGroup(params).subscribe(res => {
-        console.log(params, res, '这是编辑返回的数据')
+        this.$router.push({
+          path: `/brand/marketing/plugin/group/list`
+        })
       })
     }
   }
