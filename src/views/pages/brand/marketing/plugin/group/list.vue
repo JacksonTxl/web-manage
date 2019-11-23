@@ -45,7 +45,7 @@
               v-if="record.id"
               v-modal-link="{
                 name: 'card-brand-member-shop-table',
-                props: { id: record.id, type: 'Group', title: '支持门店' }
+                props: { id: record.id, type: 'group', title: '支持门店' }
               }"
             >
               {{ text }}
@@ -177,7 +177,8 @@ export default {
   mounted() {
     this.setSearchData()
     console.log(this.$searchQuery)
-    console.log(this.auth)
+    console.log(this.auth, '权限点')
+    console.log(this.page, 'page页面')
   },
   watch: {
     query(newVal) {

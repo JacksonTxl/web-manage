@@ -31,50 +31,45 @@
                 成团数
                 <st-help-tooltip id="" />
               </p>
-              <ICountUp
-                class="number-up font-number"
-                :endVal="collect.group_success_total"
-              />
+              <p class="number-up font-number">
+                {{ collect.group_success_total }}
+              </p>
             </a-col>
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 参与人数
                 <st-help-tooltip id="" />
               </p>
-              <ICountUp
-                class="number-up font-number"
-                :endVal="collect.join_total"
-              />
+              <p class="number-up font-number">
+                {{ collect.join_total }}
+              </p>
             </a-col>
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 新用户数
                 <st-help-tooltip id="" />
               </p>
-              <ICountUp
-                class="number-up font-number"
-                :endVal="collect.new_total"
-              />
+              <p class="number-up font-number">
+                {{ collect.new_total }}
+              </p>
             </a-col>
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 成单数
                 <st-help-tooltip id="" />
               </p>
-              <ICountUp
-                class="number-up font-number"
-                :endVal="collect.success_order_total"
-              />
+              <p class="number-up font-number">
+                {{ collect.success_order_total }}
+              </p>
             </a-col>
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 成交金额
                 <st-help-tooltip id="" />
               </p>
-              <ICountUp
-                class="number-up font-number"
-                :endVal="collect.success_amount_total"
-              />
+              <p class="number-up font-number">
+                {{ collect.success_amount_total }}
+              </p>
             </a-col>
           </a-row>
         </div>
@@ -174,22 +169,19 @@ export default {
         list.push({ value: +item[0], label: item[1] })
       })
       return [{ value: -1, label: '全部状态' }, ...list]
-      // console.log(list)
+    },
+    collects() {
+      return (list = Number(this.collect.success_amount_total))
     }
   },
   watch: {
     $searchQuery(newVal) {
-      console.log(newVal)
       this.setSearchData()
     }
   },
   mounted() {
-    console.log(this.info)
     this.setSearchData()
-    console.log((3.987).toFixed(1))
-    // this.numTwo = this.collect.success_amount_total.toFixed(1)
-    console.log(parseInt(this.collect.success_amount_total))
-    // console.log(this.numTwo)
+    console.log(this.collectss)
   },
 
   methods: {
@@ -214,9 +206,6 @@ export default {
         let name = Color
         return name.indexOf('shadow') === -1 ? name : name.replace('shadow', '')
       }
-    },
-    onGroupSearch(val, e) {
-      console.log(val, e)
     },
     onShow(list) {
       this.showList = list

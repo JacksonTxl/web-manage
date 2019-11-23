@@ -34,7 +34,7 @@ export class ShopTableService {
   }
   @Effect()
   getGroupShopList(query: ListPageInput, id: string) {
-    return this.cardApi.getCardsMemberSaleShop(query, id).pipe(
+    return this.cardApi.getgroupShelfList(query, id).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)

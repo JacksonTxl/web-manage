@@ -25,7 +25,7 @@ export class DataService implements Controller {
       })
     )
   }
-  getDatatop(id: Number) {
+  getDatatop(id: number) {
     return this.groupBuyApi.getGroupBuyDataTop(id).pipe(
       tap((res: any) => {
         console.log(res)
