@@ -21,10 +21,9 @@
                 开团数
                 <st-help-tooltip id="" />
               </p>
-              <ICountUp
-                class="number-up font-number"
-                :endVal="collect.group_total"
-              />
+              <p class="number-up font-number">
+                {{ collect.group_total }}
+              </p>
             </a-col>
             <a-col :span="4">
               <p :class="activities('acount-title')">
@@ -78,7 +77,7 @@
             :class="activities('select')"
             v-model="groupStatus"
             placeholder="活动状态"
-            @change="onSingleSearch('data_status', $event)"
+            @change="onSingleSearch('group_status', $event)"
             style="width: 130px"
           >
             <a-select-option v-for="item in groupType" :key="item.value">
@@ -87,7 +86,7 @@
           </a-select>
           <st-input-search
             v-model="searchWhere"
-            @search="onSingleSearch('searchWhere', $event)"
+            @search="onSingleSearch('search_where', $event)"
             placeholder="请输入活动名称"
             maxlength="50"
           />
@@ -152,10 +151,9 @@ export default {
         // select 假数据
         group_status: {
           description: '活动状态',
-          value: { 1: '已结束', 2: '活动中', 3: '未开始', 4: '待发布' }
+          value: { 1: '拼团成功', 3: '拼团中', 4: '拼团失败' }
         }
-      },
-      numTwo: ''
+      }
     }
   },
 
@@ -169,9 +167,6 @@ export default {
         list.push({ value: +item[0], label: item[1] })
       })
       return [{ value: -1, label: '全部状态' }, ...list]
-    },
-    collects() {
-      return (list = Number(this.collect.success_amount_total))
     }
   },
   watch: {
@@ -181,13 +176,14 @@ export default {
   },
   mounted() {
     this.setSearchData()
-    console.log(this.collectss)
+    console.log(this.$searchQuery)
+    console.log(this.list)
   },
 
   methods: {
     setSearchData() {
-      let { searchWhere, group_status } = this.$searchQuery
-      this.searchWhere = searchWhere
+      let { search_where, group_status } = this.$searchQuery
+      this.searchWhere = search_where
       this.groupStatus = group_status || -1
     },
     rowClassName(record, index) {

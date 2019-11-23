@@ -142,8 +142,7 @@ export default {
       page: this.listService.page$,
       loading: this.listService.loading$,
       auth: this.listService.auth$,
-      info: this.listService.info$,
-      couponEnums: this.userService.couponEnums$
+      info: this.listService.info$
     }
   },
 
