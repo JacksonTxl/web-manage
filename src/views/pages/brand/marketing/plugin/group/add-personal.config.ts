@@ -2,7 +2,7 @@ import groupFormConfig from './components#/group-form.config'
 export const ruleOptions = (vm: any) => {
   const groupFrom = groupFormConfig(vm)
   return Object.assign(groupFrom, {
-    courseId: {
+    course_id: {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
