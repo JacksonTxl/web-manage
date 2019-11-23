@@ -4,8 +4,8 @@
     :decorators="decorators"
     :isEdit="true"
     :info="info"
-    :loading="loading.addGroup"
-    :confirmLoading="confirmLoading"
+    :loading="loading.getPersonalDetail"
+    :confirmLoading="loading.editGroupbuy"
     :shopIds="shopIds"
     @onsubmit="onSubmit"
   >
@@ -133,7 +133,6 @@ export default {
       shopIds: [],
       newCoach: [],
       groupHour: '',
-      confirmLoading: false,
       // 禁用优惠设置的选择
       getCheckboxProps: () => ({
         props: {
@@ -226,11 +225,7 @@ export default {
       data.product_type = 3
       data.product_id = this.courseId
       data.id = +this.$route.query.id
-      if (this.confirmLoading) return
-      this.confirmLoading = true
-      console.log(data)
       this.editPersonalService.editGroupbuy(data).subscribe(res => {
-        this.confirmLoading = false
         this.$router.push({
           path: `/brand/marketing/plugin/group/list`
         })
