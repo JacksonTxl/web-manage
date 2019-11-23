@@ -138,40 +138,43 @@ export default {
       this.list[number].forEach(item => {
         this.actList.forEach(ite => {
           if (ite.id === item.activity_type) {
-            if (ite.children && ite.children.length) {
-              if (!ite.children.some(act => act.id === item.activity_id)) {
-                if (item.activity_type === 5) {
-                  ite.children.push({
-                    activity_name: item.activity_name,
-                    activity_type: item.activity_type,
-                    id: item.activity_id,
-                    isover: true,
-                    product_type: item.product_type,
-                    product_template_id: item.product_template_id
-                  })
-                } else {
-                  ite.children.push({
-                    activity_name: item.activity_name,
-                    activity_type: item.activity_type,
-                    id: item.activity_id,
-                    isover: true
-                  })
-                }
+            if (!ite.children.some(act => act.id === item.activity_id)) {
+              if (item.activity_type === 5) {
+                ite.children.push({
+                  activity_name: item.activity_name,
+                  activity_type: item.activity_type,
+                  id: item.activity_id,
+                  isover: true,
+                  product_type: item.product_type,
+                  product_template_id: item.product_template_id
+                })
+              } else {
+                ite.children.push({
+                  activity_name: item.activity_name,
+                  activity_type: item.activity_type,
+                  id: item.activity_id,
+                  isover: true
+                })
               }
             }
             item.id = ite.id
             item.activity_id = [item.id, item.activity_id]
           }
         })
-        if (!this.actList.some(act => act.id === item.activity_id)) {
-          this.actList.push({
-            activity_name: item.activity_name,
-            activity_type: item.activity_type,
-            id: item.activity_id,
-            isover: true
-          })
-        }
+        // if (!this.actList.some(act => act.id === item.activity_id)) {
+        //   this.actList.push({
+        //     activity_name: item.activity_name,
+        //     activity_type: item.activity_type,
+        //     id: item.activity_id,
+        //     isover: true
+        //   })
+        // }
         // item.activity_id = [item.activity_id]
+      })
+      this.actList.forEach(item => {
+        if (!item.children.length) {
+          item.disabled = true
+        }
       })
     } else {
       this.number = 0
@@ -267,9 +270,7 @@ export default {
       // })
       let selecttedParent = this.actList.filter(ite => ite.id === value[0])[0]
       let selected = {}
-      if (selecttedParent.children && selecttedParent.children.length) {
-        selected = selecttedParent.children.filter(it => it.id === value[1])[0]
-      }
+      selected = selecttedParent.children.filter(it => it.id === value[1])[0]
       item.activity_type = selected.activity_type
       item.activity_name = selected.activity_name
       if (selected.activity_type === 5) {
