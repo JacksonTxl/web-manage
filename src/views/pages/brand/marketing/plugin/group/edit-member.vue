@@ -19,6 +19,7 @@
               v-model="cardId"
               placeholder="请输入"
               @change="chooseMember"
+              :disabled="activityState >= ACTIVITY_STATUS.NO_START"
             >
               <a-select-option
                 :value="item.id"
@@ -56,7 +57,11 @@
                 rowKey="id"
               >
                 <template slot="group_price" slot-scope="customRender, record">
-                  <st-input-number v-model="record.group_price" :float="true">
+                  <st-input-number
+                    v-model="record.group_price"
+                    :float="true"
+                    :disabled="activityState >= ACTIVITY_STATUS.NO_START"
+                  >
                     <template slot="addonAfter">
                       元
                     </template>
@@ -76,6 +81,10 @@ import { ruleOptions, cardColumns } from './add-member.config'
 import { EditMemberService } from './edit-member.service'
 import { values } from 'lodash-es'
 import { PatternService } from '@/services/pattern.service'
+import {
+  ACTIVITY_STATUS,
+  RELEASE_STATUS
+} from '@/constants/marketing/group-buy'
 export default {
   serviceInject() {
     return {
@@ -109,7 +118,10 @@ export default {
       groupParams: {
         type: 1,
         id: null
-      }
+      },
+      ACTIVITY_STATUS,
+      RELEASE_STATUS,
+      activityState: Number // 当前活动活动状态
     }
   },
   mounted() {
@@ -194,6 +206,7 @@ export default {
     // 详情回显
     setFieldsValue() {
       console.log(this.info, 'info-------------')
+      this.activityState = this.info.info.activity_state.id
       this.cardId = this.info.info.product.id
       this.info.info.sku.forEach(item => {
         this.selectedRowKeys.push(item.sku_id)
