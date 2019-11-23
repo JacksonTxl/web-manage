@@ -1,7 +1,7 @@
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 // import { AuthService } from '@/services/auth.service'
-import { GroupBuyApi } from '@/api/v1/marketing/group_buy'
+import { GroupBuyApi, EditParams } from '@/api/v1/marketing/group_buy'
 import { tap } from 'rxjs/operators'
 import { anyAll } from '@/operators'
 
@@ -11,6 +11,10 @@ export class EditCourseService implements Controller {
   loading$ = new State({})
   courseList$ = new State({})
   constructor(private groupBuyApi: GroupBuyApi) {}
+  @Effect()
+  editGroupbuy(params: EditParams) {
+    return this.groupBuyApi.editGroup(params)
+  }
   @Effect()
   getDetailData(id: number) {
     return this.groupBuyApi.getStoredData(id).pipe(
