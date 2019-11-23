@@ -10,10 +10,8 @@
       <a-row :gutter="8">
         <a-col :span="10">
           <st-form-item label="选择私教课">
-            <a-input type="hidden" v-decorator="decorators.courseId" />
             <a-select
-              showSearch
-              v-model="courseId"
+              v-decorator="decorators.course_id"
               placeholder="请选择私教课"
               @change="selectCourseChange"
             >
@@ -113,7 +111,6 @@ export default {
     return {
       form,
       decorators,
-      courseId: '', // 活动商品
       selectedRowKeys: [], // 优惠设置选中项
       cardColumns,
       tableText: '', // 优惠设置错误提示
@@ -124,16 +121,12 @@ export default {
   methods: {
     // 输入拼团课时
     changeHour(e) {
-      this.groupHour = e.target.value
       this.newCoach.forEach((item, index) => {
         item.hour = e.target.value
       })
     },
     // 设置选择私教课并返回教练
     selectCourseChange(id) {
-      this.form.setFieldsValue({
-        courseId: id
-      })
       this.addPersonalService.getCoachList(id).subscribe(res => {
         this.newCoach = this.coach.map(item => {
           return {
@@ -179,9 +172,9 @@ export default {
         this.tableErr = true
         return
       }
-      data.init_course_num = +this.groupHour
+      data.init_course_num = +this.form.getFieldValue('group_hour')
       data.product_type = 3 // 私教课
-      data.product_id = this.courseId
+      data.product_id = +this.form.getFieldValue('course_id')
       data.sku = selectedCoach.map(item => {
         return {
           sku_id: item.id,

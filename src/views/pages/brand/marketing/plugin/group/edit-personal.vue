@@ -13,11 +13,10 @@
       <a-row :gutter="8">
         <a-col :span="10">
           <st-form-item label="选择私教课">
-            <a-input type="hidden" />
             <a-select
               showSearch
-              :disabled="true"
-              v-model="courseId"
+              :disabled="disabledEdit"
+              v-decorator="decorators.course_id"
               placeholder="请选择私教课"
               @change="selectCourseChange"
             >
@@ -38,7 +37,7 @@
             <a-input
               v-decorator="decorators.group_hour"
               placeholder="请输入拼团课时"
-              :disabled="true"
+              :disabled="disabledEdit"
               @change="changeHour"
             ></a-input>
           </st-form-item>
@@ -72,7 +71,7 @@
                 <template slot="group_price" slot-scope="customRender, record">
                   <st-input-number
                     v-model="record.group_price"
-                    :disabled="true"
+                    :disabled="disabledEdit"
                     @change="setPriceChange"
                   >
                     <template slot="addonAfter">
@@ -94,6 +93,10 @@ import GroupForm from './components#/group-form'
 import { ruleOptions, cardColumns } from './add-personal.config'
 import { EditPersonalService } from './edit-personal.service'
 import { PatternService } from '@/services/pattern.service'
+import {
+  ACTIVITY_STATUS,
+  RELEASE_STATUS
+} from '@/constants/marketing/group-buy'
 export default {
   serviceInject() {
     return {
@@ -114,9 +117,9 @@ export default {
   },
   mounted() {
     this.editPersonalService.getPersonalList().subscribe(() => {
-      this.courseId = this.info.product.id
-      this.groupHour = this.info.init_course_num
-      this.selectCourseChange(this.courseId)
+      // this.courseId = this.info.product.id
+      // this.groupHour = this.info.init_course_num
+      this.selectCourseChange(this.info.product.id)
     })
   },
   data() {
@@ -126,19 +129,21 @@ export default {
       form,
       decorators,
       courseId: '', // 活动商品
+      ACTIVITY_STATUS,
+      RELEASE_STATUS,
       selectedRowKeys: [], // 优惠设置选中项
       cardColumns,
       tableText: '', // 优惠设置错误提示
       tableErr: false,
       shopIds: [],
       newCoach: [],
-      groupHour: '',
       // 禁用优惠设置的选择
       getCheckboxProps: () => ({
         props: {
           disabled: true
         }
-      })
+      }),
+      disabledEdit: false
     }
   },
   methods: {
@@ -154,7 +159,7 @@ export default {
     // 设置选择私教课并返回教练
     selectCourseChange(id) {
       this.form.setFieldsValue({
-        courseId: id,
+        course_id: id,
         group_hour: this.info.init_course_num
       })
       this.editPersonalService.getCoachList(id).subscribe(res => {
@@ -171,6 +176,7 @@ export default {
           this.selectedRowKeys = this.newCoach
           this.newCoach[0].is_select = true
         }
+        this.setFieldsValue()
         this.setCoachPrice()
       })
     },
@@ -221,9 +227,9 @@ export default {
           group_price: item.group_price
         }
       })
-      data.init_course_num = +this.groupHour
+      data.init_course_num = +this.form.getFieldValue('group_hour')
       data.product_type = 3
-      data.product_id = this.courseId
+      data.product_id = +this.form.getFieldValue('course_id')
       data.id = +this.$route.query.id
       this.editPersonalService.editGroupbuy(data).subscribe(res => {
         this.$router.push({
@@ -233,13 +239,19 @@ export default {
     },
     // 详情回显
     setFieldsValue() {
-      this.newCoach = this.coach.map(item => {
-        return { level: item.spec, id: item.id, hour: '--' }
-      })
       this.newCoach.forEach(item => {
         item.is_select =
           this.info.sku.filter(skuItem => skuItem.sku_id === item.id).length > 0
       })
+      // 是否能够编辑, 当活动未开始时可以编辑
+      this.disabledEdit =
+        this.info.activity_state.id >= ACTIVITY_STATUS.NO_START
+      this.getCheckboxProps = () => ({
+        props: {
+          disabled: this.disabledEdit
+        }
+      })
+      console.log(this.disabledEdit)
       this.selectedRowKeys = this.newCoach.map(item => {
         if (item.is_select) {
           return item.id
