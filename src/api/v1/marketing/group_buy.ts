@@ -111,8 +111,8 @@ export class GroupBuyApi extends Api {
   /**
    * 拼团结束
    */
-  stopGroupList(params: { id: number }) {
-    return this.http.get('/v1/plugin/group_buy/stop/', { params })
+  stopGroupList(id: number) {
+    return this.http.get(`/v1/plugin/group_buy/stop/${id}`)
   }
   /**
    * 拼团发布idid

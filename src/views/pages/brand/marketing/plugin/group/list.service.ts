@@ -32,8 +32,8 @@ export class ListService implements Controller {
       })
     )
   }
-  stopGroup(params: { id: number }) {
-    return this.groupBuyApi.stopGroupList(params).pipe(tap((res: any) => {}))
+  stopGroup(id: number) {
+    return this.groupBuyApi.stopGroupList(id).pipe(tap((res: any) => {}))
   }
   releaseGroup(id: number) {
     return this.groupBuyApi.releaseGroupList(id).pipe(tap((res: any) => {}))
