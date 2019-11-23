@@ -318,9 +318,7 @@ export default {
       }
       // 编辑不能改变活动开始时间
       this.activityOptions.start.disabled =
-        this.isEdit &&
-        this.isLimit &&
-        this.activityState > this.ACTIVITY_STATUS.PUBLISHER
+        this.isEdit && this.activityState > this.ACTIVITY_STATUS.PUBLISHER
     }
   },
   components: {

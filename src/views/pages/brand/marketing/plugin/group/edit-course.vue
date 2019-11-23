@@ -140,6 +140,7 @@ export default {
       RELEASE_STATUS,
       tableText: '', // 优惠设置错误提示
       tableErr: false,
+      confirmLoading: false,
       canEdit: false
     }
   },
