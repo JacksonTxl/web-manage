@@ -41,6 +41,7 @@ export class EditPersonalService implements Controller {
       })
     )
   }
+  @Effect()
   editGroupbuy(params: EditParams) {
     return this.groupBuyApi.editGroup(params)
   }

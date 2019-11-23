@@ -3,7 +3,7 @@ export const ruleOptions = (vm: any) => {
   const pattern = vm.pattern
   const groupFrom = groupFormConfig(vm)
   return Object.assign(groupFrom, {
-    shopId: {
+    shop_id: {
       rules: [
         {
           required: true,
@@ -11,7 +11,7 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    courseId: {
+    course_id: {
       rules: [
         {
           required: true,
