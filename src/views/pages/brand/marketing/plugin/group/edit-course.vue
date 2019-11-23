@@ -4,8 +4,8 @@
     :decorators="decorators"
     :loading="loading.addGroup"
     :isEdit="true"
-    :info="info.info"
-    :confirmLoading="confirmLoading"
+    :info="info"
+    :confirmLoading="loading.editGroupbuy"
     @onsubmit="onSubmit"
     :showSelectShop="false"
   >
@@ -20,7 +20,7 @@
             <a-select
               showSearch
               v-decorator="decorators.shop_id"
-              :disabled="activityState >= ACTIVITY_STATUS.NO_START"
+              :disabled="canEdit"
               @change="changeShop"
             >
               <a-select-option
@@ -41,7 +41,7 @@
               showSearch
               v-decorator="decorators.course_id"
               @change="changeCourse"
-              :disabled="activityState >= ACTIVITY_STATUS.NO_START"
+              :disabled="canEdit"
             >
               <a-select-option
                 :value="item.id"
@@ -75,7 +75,7 @@
                   <st-input-number
                     :float="true"
                     v-model="record.group_price"
-                    :disabled="activityState >= ACTIVITY_STATUS.NO_START"
+                    :disabled="canEdit"
                   >
                     <template slot="addonAfter">
                       元
@@ -121,8 +121,11 @@ export default {
     basic: 'brand-marketing-group-course'
   },
   mounted() {
-    this.setFieldsValue()
-    this.changeShop(this.shopId)
+    this.editCourseService
+      .getCourseList({ shop_id: this.info.support_shop[0] })
+      .subscribe(res => {
+        this.setFieldsValue()
+      })
   },
   data() {
     const form = this.$stForm.create()
@@ -138,14 +141,16 @@ export default {
       tableText: '', // 优惠设置错误提示
       tableErr: false,
       confirmLoading: false,
-      activityState: Number // 当前活动活动状态
+      canEdit: false
     }
   },
   methods: {
     changeShop(value) {
-      this.addCourseService.getCourseList({ shop_id: value }).subscribe(res => {
-        this.$router.reload()
-      })
+      this.editCourseService
+        .getCourseList({ shop_id: value })
+        .subscribe(res => {
+          this.$router.reload()
+        })
     },
     changeCourse(value) {
       this.tableData = this.courseList.filter(
@@ -175,11 +180,20 @@ export default {
     },
     // 详情回显
     setFieldsValue() {
-      this.activityState = this.info.info.activity_state.id
-      this.courseId = this.info.info.product.id
-      console.log(this.tableData, 'tableData==========')
-      // this.tableData = this.info.info.sku
-      this.shopId = this.info.info.support_shop[0]
+      console.log(this.info)
+      this.form.setFieldsValue({
+        shop_id: this.info.support_shop[0],
+        course_id: this.info.product.id
+      })
+      // 是否能够编辑, 当活动未开始时可以编辑
+      this.canEdit = this.info.activity_state.id >= ACTIVITY_STATUS.NO_START
+      // 将详情信息中的sku和courseList中选中的某项课程包中的product_spec进行合并,得到一个含有price和group_price的数组,赋值给tableData
+      this.tableData = this.info.sku.map((item, key) => {
+        let courseProductSpec = this.courseList
+          .filter(course => item.sku_id === course.id)
+          .shift().product_spec
+        return Object.assign({}, item, courseProductSpec[key])
+      })
     }
   },
   components: {

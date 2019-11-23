@@ -150,7 +150,7 @@ export default {
       })
     },
     setFieldsValue() {
-      this.activityState = this.info.info.activity_state[0].id
+      this.activityState = this.info.info.activity_state.id
       this.depositId = this.info.info.product.id
       this.currentStored = this.info.info.sku
       this.shopList = this.info.info.support_shop || []
