@@ -300,7 +300,7 @@ export default {
     // 详情回显
     setFieldsValue() {
       this.releaseStatus = this.info.published_type
-      this.activityState = Number(this.info.activity_state[0].id)
+      this.activityState = Number(this.info.activity_state.id)
       this.isLimit = this.info.is_limit_stock === 1
       this.shopIds = this.info.support_shop
       this.groupName = this.info.activity_name

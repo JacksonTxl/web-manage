@@ -2,8 +2,8 @@
   <group-form
     :form="form"
     :decorators="decorators"
-    :loading="loading.addGroup"
-    :confirmLoading="confirmLoading"
+    :loading="loading.getCourseList"
+    :confirmLoading="loading.createGroupbuy"
     @onsubmit="onSubmit"
     :showSelectShop="false"
   >
@@ -124,8 +124,7 @@ export default {
       ACTIVITY_STATUS,
       RELEASE_STATUS,
       tableText: '', // 优惠设置错误提示
-      tableErr: false,
-      confirmLoading: false
+      tableErr: false
     }
   },
   methods: {
@@ -147,13 +146,11 @@ export default {
       data.sku = this.tableData.map(item => {
         return {
           sku_id: this.form.getFieldValue('course_id'),
-          group_price: item.group_price
+          group_price: item.group_price,
+          price: item.price
         }
       })
-      if (this.confirmLoading) return
-      this.confirmLoading = true
       this.addCourseService.createGroupbuy(data).subscribe(res => {
-        this.confirmLoading = false
         this.$router.push({
           path: `/brand/marketing/plugin/group/list`
         })
