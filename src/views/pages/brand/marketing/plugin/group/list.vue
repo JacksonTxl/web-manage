@@ -45,7 +45,7 @@
               v-if="record.id"
               v-modal-link="{
                 name: 'card-brand-member-shop-table',
-                props: { id: record.id, type: 'group', title: '支持门店' }
+                props: { id: record.id, type: 'Group', title: '支持门店' }
               }"
             >
               {{ text }}
@@ -142,7 +142,8 @@ export default {
       page: this.listService.page$,
       loading: this.listService.loading$,
       auth: this.listService.auth$,
-      info: this.listService.info$
+      info: this.listService.info$,
+      couponEnums: this.userService.couponEnums$
     }
   },
 
@@ -176,7 +177,7 @@ export default {
   },
   mounted() {
     this.setSearchData()
-    console.log(this.$searchQuery)
+    console.log(this.couponEnums, '枚举')
     console.log(this.auth, '权限点')
     console.log(this.page, 'page页面')
   },
@@ -199,7 +200,7 @@ export default {
         title: '提示',
         content: '确定发布该活动?发布成功后，用户即可在小程序端看到该活动。',
         onOk() {
-          that.listService.releaseGroup({ id: record.id }).subscribe(res => {
+          that.listService.releaseGroup(record.id).subscribe(res => {
             that.$router.reload()
           })
         },

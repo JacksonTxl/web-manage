@@ -26,7 +26,6 @@ export class ListService implements Controller {
   getList(params: GroupListParams) {
     return this.groupBuyApi.getList(params).pipe(
       tap((res: any) => {
-        console.log(res)
         res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
@@ -36,8 +35,8 @@ export class ListService implements Controller {
   stopGroup(params: { id: number }) {
     return this.groupBuyApi.stopGroupList(params).pipe(tap((res: any) => {}))
   }
-  releaseGroup(params: { id: number }) {
-    return this.groupBuyApi.releaseGroupList(params).pipe(tap((res: any) => {}))
+  releaseGroup(id: number) {
+    return this.groupBuyApi.releaseGroupList(id).pipe(tap((res: any) => {}))
   }
   getSharePosterInfo(params: { id: number }) {
     return this.groupBuyApi.getPosterInfo(params).pipe(
