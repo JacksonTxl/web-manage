@@ -74,9 +74,7 @@
               <a-checkbox
                 @change="limitStock"
                 :checked="isLimit"
-                :disabled="
-                  isEdit && isLimit && activityState > ACTIVITY_STATUS.PUBLISHER
-                "
+                :disabled="isEdit && activityState > ACTIVITY_STATUS.PUBLISHER"
               >
                 限制库存&nbsp;&nbsp;
               </a-checkbox>

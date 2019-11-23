@@ -272,7 +272,7 @@ export default {
         title: '提示',
         content: '确定停止该活动吗？活动停止后，未成团订单将自动关闭并退款。',
         onOk() {
-          that.listService.stopGroup({ id: record.id }).subscribe(res => {
+          that.listService.stopGroup(record.id).subscribe(res => {
             console.log(res)
             that.$router.reload()
           })
