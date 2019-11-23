@@ -115,10 +115,10 @@ export class GroupBuyApi extends Api {
     return this.http.get('/v1/plugin/group_buy/stop/', { params })
   }
   /**
-   * 拼团发布
+   * 拼团发布idid
    */
-  releaseGroupList(params: { id: number }) {
-    return this.http.get('/v1/plugin/group_buy/release/', { params })
+  releaseGroupList(id: number) {
+    return this.http.get(`/v1/plugin/group_buy/release/${id}`)
   }
   /**
    * 获取推广海报
