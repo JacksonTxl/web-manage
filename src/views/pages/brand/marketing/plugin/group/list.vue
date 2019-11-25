@@ -219,6 +219,7 @@ export default {
       this.listService.getSharePosterInfo({ id: record.id }).subscribe(res => {
         console.log(res)
         let isAuth = 1
+
         const shsInfo = {
           person_num: res.info.group_sum,
           name: res.info.product_name,
@@ -229,7 +230,12 @@ export default {
           image: res.info.product_logo
         }
         // console.log(shsInfo, '海报内容')
-        this.share.poster({ isAuth, shsInfo, shsPath: '/saas-mina/groupbuy' })
+        this.share.poster({
+          isAuth,
+          shsInfo,
+          isQrCodeBtn: true,
+          shsPath: '/saas-mina/groupbuy'
+        })
       })
     },
     // 编辑列表

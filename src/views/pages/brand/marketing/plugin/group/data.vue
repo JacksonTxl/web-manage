@@ -95,7 +95,7 @@
           <a-table
             rowKey="id"
             :columns="columns"
-            :scroll="{ x: 1200 }"
+            :scroll="{ x: 1240 }"
             :dataSource="list"
             :rowClassName="rowClassName"
             @expandedRowsChange="onShow"
@@ -204,6 +204,7 @@ export default {
       }
     },
     onShow(list) {
+      console.log(list)
       this.showList = list
       this.rowClassName()
     }
