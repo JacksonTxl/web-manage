@@ -1,6 +1,11 @@
 <template>
   <div class="page-role-info">
-    <st-form :form="form" class="page-role-info__edit" labelWidth="80px">
+    <st-form
+      :form="form"
+      class="page-role-info__edit"
+      labelWidth="80px"
+      @submit.prevent=""
+    >
       <st-form-item label="角色名称">
         <a-input
           placeholder="请输入角色名称"
@@ -89,13 +94,13 @@
           </st-container>
         </div>
       </st-form-item>
-      <st-form-item label="    ">
-        <st-button type="primary" @click="onClickSubmit" class="mg-r16">
-          保存
-        </st-button>
-        <st-button @click="onCancel">取消</st-button>
-      </st-form-item>
     </st-form>
+    <div class="page-role-info__btn">
+      <st-button type="primary" @click="onClickSubmit" class="mg-r16">
+        保存
+      </st-button>
+      <st-button @click="onCancel">取消</st-button>
+    </div>
   </div>
 </template>
 
@@ -160,6 +165,7 @@ export default {
     }
   },
   methods: {
+    a() {},
     onCancel() {
       this.$router.go(-1)
     },
