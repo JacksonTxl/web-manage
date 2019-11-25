@@ -67,8 +67,8 @@
 
 <script>
 import GroupForm from './components#/group-form.vue'
-import { EditStoredService } from './edit-stored.service'
-import { columnsGroupStored, ruleOptions } from './add-stored.config'
+import { EditDepositService } from './edit-deposit.service'
+import { columnsGroupStored, ruleOptions } from './add-deposit.config'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import { PatternService } from '@/services/pattern.service'
 import moment, { months } from 'moment'
@@ -77,13 +77,13 @@ import {
   RELEASE_STATUS
 } from '@/constants/marketing/group-buy'
 export default {
-  name: 'PageBrandMarketingGroupEditStored',
+  name: 'PageBrandMarketingGroupEditDeposit',
   bem: {
-    basic: 'brand-marketing-group-stored'
+    basic: 'brand-marketing-group-deposit'
   },
   serviceInject() {
     return {
-      edit: EditStoredService,
+      edit: EditDepositService,
       pattern: PatternService
     }
   },

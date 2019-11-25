@@ -64,9 +64,9 @@
 
 <script>
 import SelectShop from '@/views/fragments/shop/select-shop'
-import { AddStoredService } from './add-stored.service'
+import { AddDepositService } from './add-deposit.service'
 import { PatternService } from '@/services/pattern.service'
-import { columnsGroupStored, ruleOptions } from './add-stored.config'
+import { columnsGroupStored, ruleOptions } from './add-deposit.config'
 import moment, { months } from 'moment'
 import GroupForm from './components#/group-form.vue'
 import {
@@ -75,20 +75,20 @@ import {
 } from '@/constants/marketing/group-buy'
 
 export default {
-  name: 'PageBrandMarketingGroupAddStored',
+  name: 'PageBrandMarketingGroupAddDeposit',
   bem: {
-    basic: 'brand-marketing-group-stored'
+    basic: 'brand-marketing-group-deposit'
   },
   serviceInject() {
     return {
-      addSotred: AddStoredService,
+      add: AddDepositService,
       pattern: PatternService
     }
   },
   rxState() {
     return {
-      loading: this.addSotred.loading$,
-      list: this.addSotred.list$
+      loading: this.add.loading$,
+      list: this.add.list$
     }
   },
   components: {
@@ -138,7 +138,7 @@ export default {
       params.product_id = this.depositId
       params.sku = tmpList
 
-      this.addSotred.addGroup(params).subscribe(res => {
+      this.add.addGroup(params).subscribe(res => {
         this.$router.push({
           path: `/brand/marketing/plugin/group/list`
         })

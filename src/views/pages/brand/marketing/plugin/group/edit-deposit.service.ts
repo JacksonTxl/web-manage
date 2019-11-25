@@ -6,7 +6,7 @@ import { tap } from 'rxjs/operators'
 import { anyAll } from '@/operators'
 
 @Injectable()
-export class EditStoredService implements Controller {
+export class EditDepositService implements Controller {
   loading$ = new State({})
   info$ = new State({})
   list$ = new State({})

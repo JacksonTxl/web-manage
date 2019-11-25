@@ -1431,10 +1431,10 @@ export const routeMapConfig = {
   'brand-marketing-plugin-group-edit-personal'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑拼团'
   },
-  'brand-marketing-plugin-group-add-stored'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '编辑拼团'
+  'brand-marketing-plugin-group-add-deposit'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '新增拼团'
   },
-  'brand-marketing-plugin-group-edit-stored'(routeConfig: RouteConfig) {
+  'brand-marketing-plugin-group-edit-deposit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑拼团'
   },
   'brand-setting-task-list'(routeConfig: RouteConfig) {
