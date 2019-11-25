@@ -295,7 +295,10 @@ export default {
   },
   methods: {
     getShopName(shop) {
-      return shop.map(item => item.name).join(',')
+      return shop
+        .filter(Boolean)
+        .map(item => item.name)
+        .join(',')
     },
     changeStaffPosition(id) {
       this.userService.getEnums().subscribe(res => {
