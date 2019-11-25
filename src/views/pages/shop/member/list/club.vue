@@ -210,7 +210,10 @@
       </div>
       <div slot="salesman_protect_day" slot-scope="text, record">
         <span class="mg-r4">{{ record.salesman_protect_day }}</span>
-        <a-tooltip placement="top" v-if="record.sales_days_limit">
+        <a-tooltip
+          placement="top"
+          v-if="record.sales_days_limit && record.follow_salesman_id"
+        >
           <template slot="title">
             <span>{{ record.salesman_protect }}</span>
           </template>
@@ -219,7 +222,10 @@
       </div>
       <div slot="coach_protect_day" slot-scope="text, record">
         <span class="mg-r4">{{ record.coach_protect_day }}</span>
-        <a-tooltip placement="top" v-if="record.coach_days_limit">
+        <a-tooltip
+          placement="top"
+          v-if="record.coach_days_limit && record.follow_coach_id"
+        >
           <template slot="title">
             <span>{{ record.coach_protect }}</span>
           </template>
