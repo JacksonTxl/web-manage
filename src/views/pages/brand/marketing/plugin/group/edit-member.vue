@@ -192,24 +192,20 @@ export default {
     onSubmit(data) {
       console.log(data)
       let isReturn = false
-      let list = []
+      // let list = []
       if (!this.selectedRowKeys.length) {
         this.tableText = '请选择会籍卡规格'
         this.tableErr = true
         isReturn = true
       }
-      this.selectedRowKeys.forEach((id, index) => {
-        this.tableData.forEach(item => {
-          if (item.id === id) {
-            // if (!item.group_price) {
-            //   this.tableText = '请输入拼团价'
-            //   this.tableErr = true
-            //   isReturn = true
-            // }
-            list.push({ sku_id: id, group_price: item.group_price })
+      const list = this.tableData
+        .filter(item => item.is_select)
+        .map(item => {
+          return {
+            sku_id: item.id,
+            group_price: item.group_price
           }
         })
-      })
       let params = {}
       if (isReturn) {
         return
