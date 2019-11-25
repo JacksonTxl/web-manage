@@ -32,8 +32,17 @@
         @change="onTableChange"
       >
         <template slot="schedule_status" slot-scope="text, record">
-          <!-- 课程状态 -->
-          {{ record.schedule_status.name }}
+          <st-text
+            :status="{
+              success: record.schedule_status.id === 2,
+              default:
+                record.schedule_status.id === 3 ||
+                record.schedule_status.id === 4,
+              primary: record.schedule_status.id === 1
+            }"
+          >
+            {{ record.schedule_status.name }}
+          </st-text>
         </template>
         <template slot="course_type" slot-scope="text, record">
           <!-- 课程类型 -->

@@ -45,7 +45,7 @@
                         <a-tree
                           checkable
                           @check="onTeamTree"
-                          @expand="onExpand"
+                          @expand="onExpandCourse"
                           v-model="teamCourseIds"
                           :expandedKeys.sync="expandedKeysCourse"
                           :autoExpandParent="autoExpandParentCourse"
@@ -165,7 +165,7 @@
                         ></st-input-search>
                         <a-tree
                           checkable
-                          @expand="onExpand"
+                          @expand="onExpandPersonal"
                           @check="onPersonalTree"
                           v-model="personalCourseIds"
                           :expandedKeys.sync="expandedKeysPersonal"
@@ -594,7 +594,7 @@ export default {
           if (item.name.indexOf(value) > -1) {
             return this.getParentKey(
               item.name,
-              cloneDeep(this.personalCourseList)
+              cloneDeep(this.personalCourseTreeList)
             )
           }
           return null
@@ -620,9 +620,13 @@ export default {
       }
       return parentKey
     },
-    onExpand(expandedKeys) {
-      this.expandedKeys = expandedKeys
-      this.autoExpandParent = false
+    onExpandCourse(expandedKeys) {
+      this.expandedKeysCourse = expandedKeys
+      this.autoExpandParentCourse = false
+    },
+    onExpandPersonal(expandedKeys) {
+      this.expandedKeysPersonal = expandedKeys
+      this.autoExpandParentPersonal = false
     },
     coachAllChange() {
       const arr = this.coachList.filter(i =>

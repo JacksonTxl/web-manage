@@ -69,9 +69,8 @@
         maxWidth="200px"
         slot="remark"
         slot-scope="text"
-      >
-        {{ text }}
-      </st-overflow-text>
+        :vlaue="text"
+      />
     </st-table>
   </st-panel>
 </template>

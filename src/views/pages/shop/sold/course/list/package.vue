@@ -42,7 +42,7 @@
             @click="onChangeCourse"
             v-if="auth.course_range"
           >
-            变更上课范围
+            更换上课范围
           </st-button>
         </template>
         <template v-else>
@@ -58,7 +58,7 @@
               :disabled="true"
               v-if="auth.course_range"
             >
-              变更上课范围
+              更换上课范围
             </st-button>
           </st-help-tooltip>
         </template>
@@ -396,6 +396,9 @@ export default {
       )
       if (this.diffSelectedRows.length) {
         this.visible = true
+        setTimeout(() => {
+          this.visible = false
+        }, 2000)
       }
     }
   }

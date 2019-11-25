@@ -16,6 +16,7 @@
       <st-form-item label="赠送额度" required>
         <st-input-number
           :max="999"
+          :min="1"
           placeholder="请输入赠送额度"
           v-decorator="decorators.add_courses"
         >
