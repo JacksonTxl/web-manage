@@ -8,7 +8,7 @@
       />
     </div>
     <div slot="prepend">
-      <st-search-panel @search="onSearchNative" @reset="onSearhReset">
+      <st-search-panel @search="onSearchNative" @reset="handleReset">
         <st-search-panel-item label="用户级别：">
           <st-search-radio
             v-model="$searchQuery.member_level"
@@ -218,11 +218,6 @@ export default {
   computed: {
     columns
   },
-  watch: {
-    $searchQuery(newVal) {
-      this.setSearchData()
-    }
-  },
   methods: {
     onChangeSell(value) {
       this.onMultiSearch({ follow_salesman_id: value })
@@ -246,14 +241,6 @@ export default {
         : ''
       this.onSearch()
     },
-    setSearchData() {
-      this.selectTime.startTime.value = this.$searchQuery.follow_start_date
-        ? moment(this.$searchQuery.follow_start_date)
-        : null
-      this.selectTime.endTime.value = this.$searchQuery.follow_end_date
-        ? moment(this.$searchQuery.follow_end_date)
-        : null
-    },
     infoFunc(record) {
       this.$router.push({
         name: 'shop-member-info-basic',
@@ -262,12 +249,9 @@ export default {
     },
     moment,
     handleReset() {
-      let self = this
-      for (let prop in self.form) {
-        self.form[prop] = ''
-      }
-      this.$refs.stSeleter.handleResetItem()
-      this.$router.push({ query: {} })
+      this.selectTime.startTime.value = null
+      this.selectTime.endTime.value = null
+      this.onSearhReset()
     }
   }
 }
