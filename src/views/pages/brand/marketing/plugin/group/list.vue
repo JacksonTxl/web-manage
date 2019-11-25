@@ -239,14 +239,13 @@ export default {
     onEdit(record) {
       console.log(record.id, '活动id')
       let typeId = record.product_type.id
-      console.log(typeId)
       let id = record.id
       switch (typeId) {
         case 3:
           this.routeRul('edit-personal', `${id}`)
           break
         case 2:
-          this.routeRul('edit-stored', `${id}`)
+          this.routeRul('edit-deposit', `${id}`)
           break
         case 1:
           this.routeRul('edit-member', `${id}`)
