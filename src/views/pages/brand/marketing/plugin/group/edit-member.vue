@@ -125,6 +125,7 @@ export default {
       RELEASE_STATUS,
       activityState: Number, // 当前活动活动状态
       oldStock: Number,
+      oldTime: '',
       // 禁用优惠设置的选择
       getCheckboxProps: () => ({
         props: {
@@ -149,7 +150,6 @@ export default {
           if (this.selectedRowKeys) {
             this.info.info.sku.forEach(item => {
               this.tableData.forEach(card => {
-                console.log(item, card, '===========')
                 if (item.sku_id === card.id) {
                   card.group_price = item.group_price
                 }
@@ -158,7 +158,6 @@ export default {
           }
         }
       })
-      console.log(this.tableData, 'tableData')
     },
     // 优惠设置选择变化
     onChange(value) {
@@ -217,6 +216,7 @@ export default {
       this.activityState = this.info.info.activity_state.id
       this.cardId = this.info.info.product.id
       this.oldStock = this.info.info.stock_total
+      this.oldTime = new Date(this.info.info.end_time)
       this.info.info.sku.forEach(item => {
         this.selectedRowKeys.push(item.sku_id)
       })
