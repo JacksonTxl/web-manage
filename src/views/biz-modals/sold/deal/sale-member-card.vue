@@ -766,7 +766,7 @@ export default {
       })
     },
     onCreateOrder() {
-      this.searchMemberChildrenIsShow = false
+      this.searchMemberChildrenIsShow = true
       const family_member_ids = []
       const family_member_info = []
       this.newMemeberList.forEach(item => {
@@ -813,7 +813,7 @@ export default {
       })
     },
     onPay() {
-      this.searchMemberChildrenIsShow = false
+      this.searchMemberChildrenIsShow = true
       const family_member_ids = []
       const family_member_info = []
       this.newMemeberList.forEach(item => {

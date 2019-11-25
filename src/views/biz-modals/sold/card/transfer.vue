@@ -33,6 +33,12 @@
             <st-info-item label="会员姓名">
               {{ depositTransferInfo.member_name }}
             </st-info-item>
+            <st-info-item
+              label="卡成员"
+              v-if="depositTransferInfo.card_number_type === 2"
+            >
+              {{ depositTransferInfo.card_member }}
+            </st-info-item>
             <st-info-item label="手机号">
               {{ depositTransferInfo.mobile }}
             </st-info-item>

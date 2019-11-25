@@ -36,7 +36,7 @@
             </p>
           </a-col>
         </a-row>
-        <a-row :gutter="8" v-if="$searchQuery.type === '1'">
+        <a-row :gutter="8" v-if="$searchQuery.type == 1">
           <a-col :lg="23">
             <st-form-item
               class="page-content-card-admission-range mg-t4"

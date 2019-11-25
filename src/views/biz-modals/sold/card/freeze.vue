@@ -10,6 +10,15 @@
         <a-col :span="24">
           <st-info>
             <st-info-item label="卡名">{{ freezeInfo.card_name }}</st-info-item>
+            <st-info-item label="购卡人">
+              {{ freezeInfo.member_name }}
+            </st-info-item>
+            <st-info-item
+              label="卡成员"
+              v-if="freezeInfo.card_number_type === 2"
+            >
+              {{ freezeInfo.card_member }}
+            </st-info-item>
             <st-info-item label="额度">
               {{ freezeInfo.remain_amount }}
             </st-info-item>

@@ -3,7 +3,6 @@
     title="冻结"
     :footer="null"
     v-model="show"
-    size="small"
     wrapClassName="modal-shop-frozen"
   >
     <st-form :form="form" labelWidth="80px">

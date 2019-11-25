@@ -15,6 +15,15 @@
           </st-form-item>
           <st-form-item
             labelGutter="12px"
+            label="卡成员"
+            class="mg-b16"
+            v-if="info.card_number_type === 2"
+          >
+            {{ info.card_member }}
+          </st-form-item>
+
+          <st-form-item
+            labelGutter="12px"
             label="规格"
             class="mg-b16"
             required
