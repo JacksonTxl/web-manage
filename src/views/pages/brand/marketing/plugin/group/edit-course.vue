@@ -183,6 +183,7 @@ export default {
     setFieldsValue() {
       console.log(this.info)
       this.oldStock = this.info.stock_total
+      this.oldTime = new Date(this.info.info.end_time)
       this.form.setFieldsValue({
         shop_id: this.info.support_shop[0],
         course_id: this.info.product.id
