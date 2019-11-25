@@ -34,7 +34,7 @@
           ></a-input>
         </st-form-item>
         <st-hr class="mg-y32"></st-hr>
-        <a-row :gutter="8" v-if="$searchQuery.type === '1'">
+        <a-row :gutter="8" v-if="isFamilyCard">
           <a-col :lg="23">
             <st-form-item
               class="page-content-card-admission-range mg-t4"
@@ -690,10 +690,7 @@ export default {
       MEMBER_CARD,
       cardData: {
         // 会员卡类型1-次卡 2-期限卡
-        card_type:
-          this.$searchQuery.type === '1'
-            ? CARD_TYPE.MORE_NUMBER
-            : CARD_TYPE.NUMBER,
+        card_type: this.isFamilyCard ? CARD_TYPE.MORE_NUMBER : CARD_TYPE.NUMBER,
         // 会员卡名称
         card_name: '',
         // 支持入场范围 1-单店 2-多店 3-全店
@@ -834,7 +831,7 @@ export default {
           this.cardData.num = this.cardData._is_transfer
             ? +values.cardData.num
             : undefined
-          if (!this.$searchQuery.type) {
+          if (!this.isFamilyCard) {
             this.cardData.support_member_num = 1
           } else {
             this.cardData.support_member_num =
@@ -1138,6 +1135,10 @@ export default {
     // 转让设置的max
     transferMax() {
       return this.cardData.unit === UNIT.PERCENT ? 100 : 999999.9
+    },
+    // 是否是多人卡
+    isFamilyCard() {
+      return this.$searchQuery.type === 1
     }
   }
 }

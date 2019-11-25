@@ -36,7 +36,7 @@
         </p>
 
         <st-hr class="mg-y32" />
-        <a-row :gutter="8" v-if="$searchQuery.type === '1'">
+        <a-row :gutter="8" v-if="isFamilyCard">
           <a-col :lg="23">
             <st-form-item
               class="page-content-card-admission-range mg-t4"
@@ -704,10 +704,7 @@ export default {
         // 卡id
         id: null,
         // 会员卡类型1-次卡 2-期限卡
-        card_type:
-          this.$searchQuery.type === '1'
-            ? CARD_TYPE.MORE_PERIOD
-            : CARD_TYPE.PERIOD,
+        card_type: this.isFamilyCard ? CARD_TYPE.MORE_PERIOD : CARD_TYPE.PERIOD,
         // 会员卡名称
         card_name: '',
         // 支持入场范围 1-单店 2-多店 3-全店
@@ -796,7 +793,7 @@ export default {
         end_time: moment(this.cardInfo.end_time * 1000),
         'cardData.num': this.cardInfo.transfer_num
       })
-      if (this.$searchQuery.type === '1') {
+      if (this.isFamilyCard) {
         this.form.setFieldsValue({
           'cardData.support_member_num': this.cardInfo.support_member_num
         })
@@ -936,7 +933,7 @@ export default {
           this.cardData.num = this.cardData._is_transfer
             ? +values.cardData.num
             : undefined
-          if (!this.$searchQuery.type) {
+          if (!this.isFamilyCard) {
             this.cardData.support_member_num = 1
           } else {
             this.cardData.support_member_num =
@@ -1246,6 +1243,10 @@ export default {
     // 转让设置的max
     transferMax() {
       return this.cardData.unit === UNIT.PERCENT ? 100 : 999999.9
+    },
+    // 是否是多人卡
+    isFamilyCard() {
+      return this.$searchQuery.type === 1
     }
   }
 }
