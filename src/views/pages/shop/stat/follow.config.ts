@@ -54,7 +54,7 @@ export const dateColumns = (vm: any) => {
       align: 'right'
     },
     {
-      title: '已签到数',
+      title: '已签约数',
       dataIndex: 'is_signed',
       align: 'right'
     },
@@ -117,7 +117,7 @@ export const staffColumns = (vm: any) => {
       align: 'right'
     },
     {
-      title: '已签到数',
+      title: '已签约数',
       dataIndex: 'is_signed',
       align: 'right'
     },
