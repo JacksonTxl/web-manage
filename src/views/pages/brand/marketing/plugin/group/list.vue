@@ -179,7 +179,7 @@ export default {
   mounted() {
     this.setSearchData()
     console.log(this.$searchQuery)
-    // console.log(this.auth, '权限点')
+    console.log(this.userService, '权限点')
     // console.log(this.page, 'page页面')
   },
   watch: {
@@ -219,7 +219,7 @@ export default {
       this.listService.getSharePosterInfo({ id: record.id }).subscribe(res => {
         console.log(res)
         let isAuth = 1
-
+        let isQrCodeBtn = true
         const shsInfo = {
           person_num: res.info.group_sum,
           name: res.info.product_name,
@@ -233,7 +233,7 @@ export default {
         this.share.poster({
           isAuth,
           shsInfo,
-          isQrCodeBtn: true,
+          isQrCodeBtn,
           shsPath: '/saas-mina/groupbuy'
         })
       })
