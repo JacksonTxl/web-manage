@@ -150,7 +150,7 @@
         <div>
           <st-overflow-text
             title="跟进内容"
-            max-width="200px"
+            max-width="180px"
             :value="text"
           ></st-overflow-text>
         </div>
