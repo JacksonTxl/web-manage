@@ -1,6 +1,5 @@
 <template>
   <st-panel-layout class="pages-staffdata-container">
-    {{ auth }}
     <st-panel class="pages-staffdata-header">
       <a-row>
         <a-col :span="15" class="pages-staffdata-header-detail">
