@@ -11,7 +11,7 @@ export class BatchAreaService {
   loading$ = new State({})
   constructor(private cardApi: CardApi) {}
   fetchCardNum(params: any) {
-    return this.cardApi.fetchSoldCardValidNum(params).pipe(
+    return this.cardApi.fetchSoldCardVIPOrTimeValidNum(params).pipe(
       tap((res: any) => {
         this.count$.commit(() => res.info.count)
       })
