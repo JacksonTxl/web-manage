@@ -1,5 +1,5 @@
 export const columns = (vm: any) => [
-  { title: '日期', fixed: 'left', dataIndex: 'stat_date' },
+  { title: '日期', fixed: 'left', dataIndex: 'stat_date', width: 160 },
   {
     title: `总售课节数`,
     align: 'right',

@@ -1,6 +1,7 @@
 import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
+import { anyAll } from '@/operators'
 import { StatApi } from '@/api/v1/stat/shop'
 import { UserService } from '@/services/user.service'
 import { AuthService } from '@/services/auth.service'
@@ -81,9 +82,13 @@ export class FollowService implements Controller {
       })
     )
   }
+  init(query: any) {
+    query.shop_id = this.userService.shop$.value.id
+    return query.showTable === 'all'
+      ? anyAll(this.getFollowDateList(query), this.getFollowShopTotal(query))
+      : anyAll(this.getFollowStaffList(query), this.getFollowShopTotal(query))
+  }
   beforeEach(to: ServiceRoute, form: ServiceRoute) {
-    return to.meta.query.showTable === 'all'
-      ? this.getFollowDateList(to.meta.query)
-      : this.getFollowStaffList(to.meta.query)
+    return this.init(to.meta.query)
   }
 }

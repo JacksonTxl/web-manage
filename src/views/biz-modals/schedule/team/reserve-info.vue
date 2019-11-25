@@ -56,6 +56,7 @@
                 placeholder="搜索会员名"
                 style="width:140px"
                 :defaultActiveFirstOption="false"
+                :dropdownMatchSelectWidth="false"
                 :showArrow="false"
                 :filterOption="false"
                 @search="onSearch"
@@ -67,8 +68,14 @@
                   :key="member.id"
                 >
                   <div class="st-form-table__add-option">
-                    <span class="item-name">{{ member.member_name }}</span>
-                    <span class="item-phone">{{ member.mobile }}</span>
+                    <span
+                      class="item-name"
+                      v-html="keywordFilter(member.member_name)"
+                    ></span>
+                    <span
+                      class="item-phone"
+                      v-html="keywordFilter(member.mobile)"
+                    ></span>
                   </div>
                 </a-select-option>
               </a-select>
@@ -79,6 +86,7 @@
                 placeholder="请选择消费方式"
                 style="width: 240px"
                 v-model="showConsumeType"
+                :dropdownMatchSelectWidth="false"
                 @change="onChangeConsumeType"
               >
                 <a-select-opt-group
@@ -302,6 +310,14 @@ export default {
     }
   },
   methods: {
+    keywordFilter(str) {
+      if (!this.keyword) return str
+      str = str.replace(
+        new RegExp(this.keyword),
+        `<span class="color-primary">${this.keyword}</span>`
+      )
+      return str
+    },
     onClickCancelCourse() {
       this.$modalRouter.push({
         name: 'schedule-team-cancel-course',

@@ -368,7 +368,7 @@ export default {
         }
       }
       return this.crmService.setCrmRule(this.crmRule).subscribe(res => {
-        this.messageService.success({ content: '编辑成功' })
+        this.messageService.success({ content: '保存成功' })
         this.$router.reload()
       })
     }

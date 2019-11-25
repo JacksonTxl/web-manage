@@ -109,14 +109,13 @@
 </template>
 <script>
 import { UserService } from '@/services/user.service'
-
 import { ListService } from './list.service'
 import MarkteingPluginTitle from '../../components#/marketing-title'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
 import { TYPE } from '@/constants/marketing/plugin'
 import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
-import MarketingSharePoster from '@/views/biz-modals/brand/marketing/share-poster'
+import useShare from '@/hooks/marketing/share.hook'
 import CardBrandMemberShopTable from '@/views/biz-modals/card/brand-member/shop-table'
 
 export default {
@@ -127,7 +126,6 @@ export default {
   },
   modals: {
     BrandMarketingBind,
-    MarketingSharePoster,
     CardBrandMemberShopTable
   },
   serviceInject() {
@@ -145,7 +143,11 @@ export default {
       info: this.listService.info$
     }
   },
-
+  hooks() {
+    return {
+      share: useShare()
+    }
+  },
   data(vm) {
     return {
       TYPE,
@@ -216,23 +218,18 @@ export default {
     onGeneralize(record) {
       this.listService.getSharePosterInfo({ id: record.id }).subscribe(res => {
         console.log(res)
-        const info = res
-        // const activity_date = `${info.start_time} - ${info.end_time}`
-        this.$modalRouter.push({
-          name: 'marketing-share-poster',
-          props: {
-            info: {
-              qrcode_url: info.qrcode_base, // besa  64
-              brand_name: info.brand_name,
-              brand_logo: info.product_logo,
-              activity_img: info.product_logo,
-              activity_title: info.product_name
-              // activity_date,
-              // activity_address: info.address
-            },
-            shsUrl: '/saas/activity'
-          }
-        })
+        let isAuth = 1
+        const shsInfo = {
+          person_num: res.info.group_sum,
+          name: res.info.product_name,
+          qrcode_url: res.info.qrcode_base,
+          logo: res.info.brand_logo,
+          brand_name: res.info.brand_name,
+          price: res.info.price,
+          image: res.info.product_logo
+        }
+        // console.log(shsInfo, '海报内容')
+        this.share.poster({ isAuth, shsInfo, shsPath: '/saas-mina/groupbuy' })
       })
     },
     // 编辑列表

@@ -228,6 +228,14 @@ export class CardApi extends Api {
     })
   }
   /**
+   * 获取会员卡 vip 区域和入场时间可使用条数
+   */
+  fetchSoldCardVIPOrTimeValidNum(query: any) {
+    return this.http.get(`/v1/sold/cards/batch/num`, {
+      query
+    })
+  }
+  /**
    * 售出 会员卡 批量更改入场时间
    */
   setCardEnterTime(params: any) {

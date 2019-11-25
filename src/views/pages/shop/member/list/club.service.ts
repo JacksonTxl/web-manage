@@ -70,14 +70,18 @@ export class ClubService implements Controller {
   getSaleList(query: any) {
     return this.memberApi.getSaleList(query).pipe(
       tap(res => {
-        this.saleList$.commit(() => res.list)
+        this.saleList$.commit(() => {
+          return [{ id: -1, sale_name: '全部' }, ...res.list]
+        })
       })
     )
   }
   getCoachList(query: any) {
     return this.memberApi.getCoachList(query).pipe(
       tap(res => {
-        this.coachList$.commit(() => res.list)
+        this.coachList$.commit(() => {
+          return [{ id: -1, coach_name: '全部' }, ...res.list]
+        })
       })
     )
   }
