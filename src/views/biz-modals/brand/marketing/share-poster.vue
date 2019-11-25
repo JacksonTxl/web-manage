@@ -24,7 +24,7 @@
           :class="basic('button')"
           @click="downloadQrCode"
         >
-          下载二维码
+          下载小程序码
         </st-button>
       </div>
     </div>
@@ -55,7 +55,7 @@ export default {
     // 是否添加下载二维码按钮
     isQrCodeBtn: {
       type: Boolean,
-      default: false
+      default: true
     },
     shsPath: String
   },
