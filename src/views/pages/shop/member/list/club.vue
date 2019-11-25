@@ -57,13 +57,21 @@
             </a-select>
           </st-search-panel-item>
           <st-search-panel-item label="客保情况：">
-            <a-input
+            <st-input-number
+              :min="0"
+              :max="99999"
+              :step="1"
+              :precision="0"
               placeholder="输入天数"
               class="input"
               v-model="$searchQuery.saleman_protect_remain"
             />
             天后销售客保到期
-            <a-input
+            <st-input-number
+              :min="0"
+              :max="99999"
+              :step="1"
+              :precision="0"
               placeholder="输入天数"
               class="input mg-l40"
               v-model="$searchQuery.coach_protect_remain"
@@ -71,13 +79,21 @@
             天后教练客保到期
           </st-search-panel-item>
           <st-search-panel-item label="跟进次数：">
-            <a-input
+            <st-input-number
+              :min="0"
+              :max="99999"
+              :step="1"
+              :precision="0"
               placeholder="输入次数"
               class="input"
               v-model="$searchQuery.follow_min"
             />
             -
-            <a-input
+            <st-input-number
+              :min="0"
+              :max="99999"
+              :step="1"
+              :precision="0"
               placeholder="输入次数"
               class="input"
               v-model="$searchQuery.follow_max"
