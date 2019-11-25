@@ -141,7 +141,8 @@ export default {
       tableText: '', // 优惠设置错误提示
       tableErr: false,
       confirmLoading: false,
-      disabledEdit: false
+      disabledEdit: false,
+      oldStock: Number
     }
   },
   methods: {
@@ -181,6 +182,7 @@ export default {
     // 详情回显
     setFieldsValue() {
       console.log(this.info)
+      this.oldStock = this.info.stock_total
       this.form.setFieldsValue({
         shop_id: this.info.support_shop[0],
         course_id: this.info.product.id

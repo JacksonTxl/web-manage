@@ -26,7 +26,7 @@ export default {
         {
           name: '储值卡',
           bg: require('@/assets/img/brand/marketing/group/mod_stored.png'),
-          url: './add-stored'
+          url: './add-deposit'
         },
         {
           name: '私教课',

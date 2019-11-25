@@ -124,6 +124,7 @@ export default {
       ACTIVITY_STATUS,
       RELEASE_STATUS,
       activityState: Number, // 当前活动活动状态
+      oldStock: Number,
       // 禁用优惠设置的选择
       getCheckboxProps: () => ({
         props: {
@@ -213,9 +214,9 @@ export default {
     },
     // 详情回显
     setFieldsValue() {
-      console.log(this.info, 'info-------------')
       this.activityState = this.info.info.activity_state.id
       this.cardId = this.info.info.product.id
+      this.oldStock = this.info.info.stock_total
       this.info.info.sku.forEach(item => {
         this.selectedRowKeys.push(item.sku_id)
       })
