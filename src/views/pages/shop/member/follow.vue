@@ -88,16 +88,20 @@
             ></st-range-picker>
           </st-search-panel-item>
           <st-search-panel-item label="跟进次数：">
-            <a-input
+            <st-input-number
               v-model="$searchQuery.follow_start_num"
               :class="bPage('number')"
-              type="number"
+              :float="false"
+              :min="0"
+              :max="9999"
             />
             &nbsp;~&nbsp;
-            <a-input
+            <st-input-number
               v-model="$searchQuery.follow_end_num"
               :class="bPage('number')"
-              type="number"
+              :float="false"
+              :min="0"
+              :max="9999"
             />
           </st-search-panel-item>
         </div>
@@ -108,7 +112,7 @@
     <st-table
       :columns="columns"
       :loading="loading.getListInfo"
-      :scroll="{ x: 1400 }"
+      :scroll="{ x: 1500 }"
       rowKey="id"
       :page="page"
       @change="onTableChange"
@@ -191,8 +195,6 @@ export default {
   },
   data() {
     return {
-      startNum: -1,
-      endNum: -1,
       dateFormat: 'YYYY-MM-DD',
       selectTime: {
         startTime: {
