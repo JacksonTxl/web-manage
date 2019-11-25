@@ -63,6 +63,12 @@ export default (vm: any) => {
             if (value > 999999) {
               return '活动库存不能超过999999，请重新输入'
             }
+            if (
+              vm.activityState > vm.ACTIVITY_STATUS.PUBLISHER &&
+              value < vm.oldStock
+            ) {
+              return '活动库存只能增加不可减少'
+            }
           }
         }
       ]

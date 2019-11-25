@@ -162,32 +162,28 @@ export default {
   mounted() {
     this.list = cloneDeep(this.sliderInfo)
     this.actList = cloneDeep(this.activityList.list)
-    console.log(this.list, 'list')
-    console.log(this.actList, 'actList')
     this.list.forEach(item => {
       // 需要对children进行遍历
       this.actList.forEach(it => {
         // it.id = it.type
         if (item.activity_type === it.id) {
-          if (it.children && it.children.length) {
-            if (!it.children.some(act => act.id === item.activity_id)) {
-              if (item.activity_type === 5) {
-                it.children.push({
-                  activity_name: item.activity_name,
-                  activity_type: item.activity_type,
-                  id: item.activity_id,
-                  isover: true,
-                  product_type: item.product_type,
-                  product_template_id: item.product_template_id
-                })
-              } else {
-                it.children.push({
-                  activity_name: item.activity_name,
-                  activity_type: item.activity_type,
-                  id: item.activity_id,
-                  isover: true
-                })
-              }
+          if (!it.children.some(act => act.id === item.activity_id)) {
+            if (item.activity_type === 5) {
+              it.children.push({
+                activity_name: item.activity_name,
+                activity_type: item.activity_type,
+                id: item.activity_id,
+                isover: true,
+                product_type: item.product_type,
+                product_template_id: item.product_template_id
+              })
+            } else {
+              it.children.push({
+                activity_name: item.activity_name,
+                activity_type: item.activity_type,
+                id: item.activity_id,
+                isover: true
+              })
             }
           }
           item.id = it.id
@@ -204,6 +200,11 @@ export default {
       // }
       // item.id = it.type
       // item.activity_id = [item.id, item.activity_id]
+    })
+    this.actList.forEach(item => {
+      if (!item.children.length) {
+        item.disabled = true
+      }
     })
     console.log(this.list, 'list这里')
     console.log(this.actList, 'actList这里')
@@ -239,9 +240,7 @@ export default {
     actSelect(item, value) {
       let selected = {}
       let selecttedParent = this.actList.filter(it => it.id === value[0])[0]
-      if (selecttedParent.children && selecttedParent.children.length) {
-        selected = selecttedParent.children.filter(it => it.id === value[1])[0]
-      }
+      selected = selecttedParent.children.filter(it => it.id === value[1])[0]
       item.activity_type = selected.activity_type
       item.activity_name = selected.activity_name
       if (item.activity_type === 5) {
@@ -253,9 +252,7 @@ export default {
     addSelect(value) {
       let selected = {}
       let selecttedParent = this.actList.filter(it => it.id === value[0])[0]
-      if (selecttedParent.children && selecttedParent.children.length) {
-        selected = selecttedParent.children.filter(it => it.id === value[1])[0]
-      }
+      selected = selecttedParent.children.filter(it => it.id === value[1])[0]
       this.addItem.activity_type = selected.activity_type
       this.addItem.activity_name = selected.activity_name
       if (item.activity_type === 5) {

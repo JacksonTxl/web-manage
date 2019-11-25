@@ -10,7 +10,7 @@ import { tap } from 'rxjs/operators'
 import { anyAll } from '@/operators'
 
 @Injectable()
-export class AddStoredService {
+export class AddDepositService {
   loading$ = new State({})
   list$ = new State({})
   constructor(private groupBuyApi: GroupBuyApi) {}
