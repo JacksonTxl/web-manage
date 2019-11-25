@@ -16,19 +16,16 @@ export class DataService implements Controller {
   getData(params: GroupData) {
     return this.groupBuyApi.getData(params).pipe(
       tap((res: any) => {
-        console.log(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
         this.collect$.commit(() => res.collect)
         this.loading$.commit(() => res.loading)
-        console.log(this.collect$)
       })
     )
   }
   getDatatop(id: number) {
     return this.groupBuyApi.getGroupBuyDataTop(id).pipe(
       tap((res: any) => {
-        console.log(res)
         this.info$.commit(() => res)
         console.log(this.info$)
       })

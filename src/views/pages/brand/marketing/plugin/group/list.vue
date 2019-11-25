@@ -85,21 +85,23 @@
               <a @click="onData(record)">
                 数据
               </a>
-              <!-- v-if="record.auth['brand:activity:coupon|promotion']" 推广的数据判断 -->
+              <!-- v-if="record.auth['brand:activity:group_buy|data']" 推广的数据判断 -->
               <a @click="onGeneralize(record)">
                 推广
               </a>
-              <!-- v-if="record.auth['brand:activity:group|edit']" 推广的数据判断 -->
+              <!-- v-if="record.auth['brand:activity:group_buy|edit']" 编辑的数据判断 -->
               <a @click="onEdit(record)">
                 编辑
               </a>
-              <!-- v-if="record.auth['brand:activity:group|del']" 推广的数据判断 -->
+              <!-- v-if="record.auth['brand:activity:group_buy|spread']" 推广的数据判断 -->
               <a @click="onStop(record)">
                 结束
               </a>
+              <!-- v-if="record.auth['brand:activity:group_buy|stop']" 结束的数据判断 -->
               <a @click="onRelease(record)">
                 发布
               </a>
+              <!-- v-if="record.auth['brand:activity:group_buy|release']" 发布的数据判断 -->
             </st-table-actions>
           </template>
         </st-table>
@@ -179,8 +181,6 @@ export default {
   mounted() {
     this.setSearchData()
     console.log(this.$searchQuery)
-    console.log(this.userService, '权限点')
-    // console.log(this.page, 'page页面')
   },
   watch: {
     query(newVal) {
@@ -211,7 +211,6 @@ export default {
 
     // 数据
     onData(record) {
-      console.log(record.id)
       this.routeRul('data', record.id)
     },
     // 推广
@@ -220,21 +219,15 @@ export default {
         console.log(res)
         let isAuth = 1
         let isQrCodeBtn = true
+        console.log(this.info)
         const shsInfo = {
-          person_num: res.info.group_sum,
-          name: res.info.product_name,
-          qrcode_url: res.info.qrcode_base,
-          logo: res.info.brand_logo,
-          brand_name: res.info.brand_name,
-          price: res.info.price,
-          image: res.info.product_logo
-        }
-        // console.log(shsInfo, '海报内容')
-        let obj = {
-          isAuth,
-          shsInfo,
-          isQrCodeBtn,
-          shsPath: '/saas-mina/groupbuy'
+          person_num: this.info.group_sum,
+          name: this.info.product_name,
+          qrcode_url: this.info.qrcode_base,
+          logo: this.info.brand_logo,
+          brand_name: this.info.brand_name,
+          price: this.info.price,
+          image: this.info.product_logo
         }
         this.share.poster({
           isAuth,
@@ -242,12 +235,10 @@ export default {
           isQrCodeBtn,
           shsPath: '/saas-mina/groupbuy'
         })
-        console.log(obj)
       })
     },
     // 编辑列表
     onEdit(record) {
-      console.log(record.id, '活动id')
       let typeId = record.product_type.id
       let id = record.id
       switch (typeId) {
@@ -267,7 +258,6 @@ export default {
       }
     },
     routeRul(url, id) {
-      console.log(url, id)
       this.$router.push({
         path: `/brand/marketing/plugin/group/${url}`,
         query: { id: id }
@@ -281,7 +271,6 @@ export default {
         content: '确定停止该活动吗？活动停止后，未成团订单将自动关闭并退款。',
         onOk() {
           that.listService.stopGroup(record.id).subscribe(res => {
-            console.log(res)
             that.$router.reload()
           })
         },
