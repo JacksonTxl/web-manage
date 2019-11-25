@@ -150,18 +150,39 @@ export default {
           if (this.selectedRowKeys) {
             this.info.info.sku.forEach(item => {
               this.tableData.forEach(card => {
+                card.is_select = false
                 if (item.sku_id === card.id) {
                   card.group_price = item.group_price
+                  card.is_select = true
                 }
               })
             })
           }
         }
       })
+      if (this.tableData.length === 1) {
+        this.tableData[0].is_select = true
+      }
     },
     // 优惠设置选择变化
     onChange(value) {
       this.selectedRowKeys = value
+      this.tableData.forEach(card => {
+        card.is_select = this.selectedRowKeys.indexOf(card.id) !== -1
+      })
+      this.setPriceChange()
+    },
+    // 处理输入拼团价格的逻辑
+    setPriceChange() {
+      let selectedCard = this.tableData.filter(item => item.is_select)
+      let hasEmpty = selectedCard.filter(item => !item.group_price)
+      if (hasEmpty.length > 0) {
+        this.tableText = '请输入拼团价格'
+        this.tableErr = true
+      } else {
+        this.tableText = ''
+        this.tableErr = false
+      }
     },
     // 编辑拼团活动
     onSubmit(data) {
@@ -176,11 +197,11 @@ export default {
       this.selectedRowKeys.forEach((id, index) => {
         this.tableData.forEach(item => {
           if (item.id === id) {
-            if (!item.group_price) {
-              this.tableText = '请输入拼团价'
-              this.tableErr = true
-              isReturn = true
-            }
+            // if (!item.group_price) {
+            //   this.tableText = '请输入拼团价'
+            //   this.tableErr = true
+            //   isReturn = true
+            // }
             list.push({ sku_id: id, group_price: item.group_price })
           }
         })

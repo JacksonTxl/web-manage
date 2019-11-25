@@ -69,7 +69,11 @@
                 align="center"
               >
                 <template slot="group_price" slot-scope="customRender, record">
-                  <st-input-number :float="true" v-model="record.group_price">
+                  <st-input-number
+                    :float="true"
+                    v-model="record.group_price"
+                    @input="setPriceChange"
+                  >
                     <template slot="addonAfter">
                       元
                     </template>
@@ -137,9 +141,20 @@ export default {
       this.tableData = this.courseList.filter(
         item => item.id === value
       )[0].product_spec
+      this.tableData[0].is_select = true
+    },
+    setPriceChange() {
+      let selectedCard = this.tableData.filter(item => item.is_select)
+      let hasEmpty = selectedCard.filter(item => !item.group_price)
+      if (hasEmpty.length > 0) {
+        this.tableText = '请输入拼团价格'
+        this.tableErr = true
+      } else {
+        this.tableText = ''
+        this.tableErr = false
+      }
     },
     onSubmit(data) {
-      console.log(data)
       data.shop_ids = [+this.form.getFieldValue('shop_id')]
       data.product_type = 4
       data.product_id = this.form.getFieldValue('course_id')

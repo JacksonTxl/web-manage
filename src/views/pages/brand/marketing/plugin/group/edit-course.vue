@@ -76,6 +76,7 @@
                     :float="true"
                     v-model="record.group_price"
                     :disabled="disabledEdit"
+                    @input="setPriceChange"
                   >
                     <template slot="addonAfter">
                       元
@@ -158,6 +159,25 @@ export default {
         item => item.id === value
       )[0].product_spec
     },
+    // 处理输入拼团价格的逻辑
+    setPriceChange() {
+      // let selectedCard = this.tableData.filter(item => item.is_select)
+      // let hasEmpty = selectedCard.filter(item => !item.group_price)
+      // if (hasEmpty.length > 0) {
+      //   this.tableText = '请输入拼团价格'
+      //   this.tableErr = true
+      // } else {
+      //   this.tableText = ''
+      //   this.tableErr = false
+      // }
+      if (!this.tableData[0].group_price) {
+        this.tableText = '请输入拼团价格'
+        this.tableErr = true
+      } else {
+        this.tableText = ''
+        this.tableErr = false
+      }
+    },
     onSubmit(data) {
       console.log(data)
       data.id = +this.$route.query.id
@@ -183,7 +203,7 @@ export default {
     setFieldsValue() {
       console.log(this.info)
       this.oldStock = this.info.stock_total
-      this.oldTime = new Date(this.info.info.end_time)
+      this.oldTime = new Date(this.info.end_time)
       this.form.setFieldsValue({
         shop_id: this.info.support_shop[0],
         course_id: this.info.product.id
