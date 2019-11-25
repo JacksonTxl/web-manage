@@ -480,7 +480,7 @@ export default {
     dropCoachSea(para) {
       this.$confirm({
         title: '提示信息',
-        content: '是否将教练抛入公海？',
+        content: '是否将客户抛入公海？',
         onOk: () => {
           this.clubService.dropCoachSea({ member_ids: para }).subscribe(() => {
             this.refeshPage()
@@ -492,7 +492,7 @@ export default {
     dropSalerSea(para) {
       this.$confirm({
         title: '提示信息',
-        content: '是否将销售抛入公海？',
+        content: '是否将客户抛入公海？',
         onOk: () => {
           this.clubService.dropSalerSea({ member_ids: para }).subscribe(() => {
             this.refeshPage()
