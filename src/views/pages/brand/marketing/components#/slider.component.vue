@@ -168,23 +168,19 @@ export default {
         // it.id = it.type
         if (item.activity_type === it.id) {
           if (!it.children.some(act => act.id === item.activity_id)) {
-            if (item.activity_type === 5) {
-              it.children.push({
-                activity_name: item.activity_name,
-                activity_type: item.activity_type,
-                id: item.activity_id,
-                isover: true,
-                product_type: item.product_type,
-                product_template_id: item.product_template_id
-              })
-            } else {
-              it.children.push({
-                activity_name: item.activity_name,
-                activity_type: item.activity_type,
-                id: item.activity_id,
-                isover: true
-              })
+            let tmpArrChild = {
+              activity_name: item.activity_name,
+              activity_type: item.activity_type,
+              id: item.activity_id,
+              isover: true
             }
+            let tmpProduct = {
+              product_type: item.product_type,
+              product_template_id: item.product_template_id
+            }
+            item.activity_type === 5
+              ? it.children.push(Object.assign(tmpArrChild, tmpProduct))
+              : it.children.push(tmpArrChild)
           }
           item.id = it.id
           item.activity_id = [item.id, item.activity_id]
