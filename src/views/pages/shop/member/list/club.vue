@@ -136,7 +136,8 @@
                 name: 'shop-distribution-coach',
                 props: {
                   memberIds: selectedRowKeys
-                }
+                },
+                on: { success: refeshPage }
               }"
             >
               分配教练
@@ -149,7 +150,8 @@
                 name: 'shop-distribution-sale',
                 props: {
                   memberIds: selectedRowKeys
-                }
+                },
+                on: { success: refeshPage }
               }"
             >
               分配销售
