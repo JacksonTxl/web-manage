@@ -130,13 +130,8 @@
           max-width="200px"
           slot="shop"
           slot-scope="text, record"
-        >
-          <template v-for="item in record.shop">
-            <span :key="item.id" class="mg-r8" v-if="item">
-              {{ item.name }}
-            </span>
-          </template>
-        </st-overflow-text>
+          :value="getShopName(record.shop)"
+        />
         <template slot="identity" slot-scope="text, record">
           <template v-for="item in record.identity">
             <span :key="item.id" class="mg-r8">{{ item.name }}</span>
@@ -299,6 +294,9 @@ export default {
     }
   },
   methods: {
+    getShopName(shop) {
+      return shop.map(item => item.name).join(',')
+    },
     changeStaffPosition(id) {
       this.userService.getEnums().subscribe(res => {
         this.enums = res.staff
