@@ -21,7 +21,7 @@
             :options="followWayList"
           />
         </st-search-panel-item>
-        <st-search-panel-item label="跟进：">
+        <st-search-panel-item label="跟进状态：">
           <st-search-radio
             v-model="$searchQuery.follow_status"
             :options="followStatusList"
@@ -218,9 +218,6 @@ export default {
   computed: {
     columns
   },
-  mounted() {
-    this.setSearchData()
-  },
   watch: {
     $searchQuery(newVal) {
       this.setSearchData()
@@ -242,14 +239,13 @@ export default {
     // 查询
     onSearchNative() {
       this.$searchQuery.follow_start_date = this.selectTime.startTime.value
-        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')}`
+        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00`
         : ''
       this.$searchQuery.follow_end_date = this.selectTime.endTime.value
-        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')}`
+        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59`
         : ''
       this.onSearch()
     },
-    // 设置searchData
     setSearchData() {
       this.selectTime.startTime.value = this.$searchQuery.follow_start_date
         ? moment(this.$searchQuery.follow_start_date)
