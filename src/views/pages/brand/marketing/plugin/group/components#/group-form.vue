@@ -253,6 +253,10 @@ export default {
     // 选择门店
     onSelectShop(shopIds) {
       this.shopIds = shopIds
+      if (this.shopIds.length) {
+        this.errTips = ''
+        this.showErr = false
+      }
     },
     // 为了同步字数
     changeName(e) {

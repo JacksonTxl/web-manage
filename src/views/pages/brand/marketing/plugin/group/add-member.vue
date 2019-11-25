@@ -3,9 +3,6 @@
     :form="form"
     :decorators="decorators"
     :confirmLoading="loading.addGroup"
-    :isEdit="isEdit"
-    :info="info"
-    :shopIds="shopIds"
     @onsubmit="onSubmit"
     :groupParams="groupParams"
   >
@@ -109,33 +106,12 @@ export default {
       tableText: '',
       tableErr: false,
       tableData: [],
-      shopIds: [],
       groupParams: {
         type: 1,
         id: null
       }
     }
   },
-  props: {
-    isEdit: {
-      type: Boolean,
-      default: false
-    },
-    info: {
-      type: Object,
-      default: () => {}
-    }
-  },
-  // watch: {
-  //   info(n, o) {
-  //     if (this.isEdit) {
-  //       this.setFieldsValue()
-  //       this.addMemberService.init().subscribe(res => {
-  //         this.chooseMember(this.cardId)
-  //       })
-  //     }
-  //   }
-  // },
   methods: {
     chooseMember(value) {
       this.form.setFieldsValue({
@@ -145,16 +121,9 @@ export default {
       this.memberList.filter(item => {
         if (item.id === value) {
           this.tableData = item.product_spec
-          if (this.selectedRowKeys && this.isEdit) {
-            this.info.sku.forEach(item => {
-              this.tableData.forEach(card => {
-                card.is_select = false
-                if (item.id === card.id) {
-                  card.group_price = item.group_price
-                }
-              })
-            })
-          }
+          this.tableData.forEach(card => {
+            card.is_select = false
+          })
         }
       })
       if (this.tableData.length === 1) {
@@ -183,50 +152,30 @@ export default {
     },
     // 新建拼团活动
     onSubmit(data) {
-      console.log(data)
       let isReturn = false
-      let list = []
+      // let list = []
+      if (this.tableErr) return
       if (this.tableData.length > 1 && !this.selectedRowKeys.length) {
-        this.tableText = '请选择会籍卡规格'
+        this.tableText = '请选择至少一个会籍卡规格'
         this.tableErr = true
         isReturn = true
       }
-      if (this.tableData.length > 1) {
-        this.selectedRowKeys.forEach((id, index) => {
-          this.tableData.forEach(item => {
-            if (item.id === id) {
-              list.push({ sku_id: id, group_price: item.group_price })
-            }
-          })
+      const list = this.tableData
+        .filter(item => item.is_select)
+        .map(item => {
+          return {
+            sku_id: item.id,
+            group_price: item.group_price
+          }
         })
-      } else {
-        list.push({
-          sku_id: this.tableData[0].id,
-          group_price: this.tableData[0].group_price
-        })
-      }
-
-      let params = {}
+      // let params = {}
       if (isReturn) {
         return
       }
-      params = {
-        product_type: 1, // 会籍卡
-        activity_name: data.activity_name, // 活动名称
-        product_id: this.cardId, //商品id()
-        sku: list, //卡、课规格[{“sku_id”:1,”group_price”:20},]()
-        start_time: data.start_time,
-        end_time: data.end_time,
-        group_sum: data.group_sum, //成团人数
-        valid_time: data.valid_time, //拼团有效期
-        is_limit_stock: data.is_limit_stock, //是否限制库存0不限制 1限制
-        stock_total: data.stock_total, //库存
-        shop_ids: data.shop_ids, //门店ids [1,2,3,4]()
-        published_type: data.published_type, //发布状态(1-立即发布 2-暂不发布 3-定时发布)
-        published_time: data.published_time //发布时间
-      }
-
-      this.addMemberService.addGroup(params).subscribe(res => {
+      data.product_type = 1
+      data.sku = list
+      data.product_id = this.cardId
+      this.addMemberService.addGroup(data).subscribe(res => {
         this.$router.push({
           path: `/brand/marketing/plugin/group/list`
         })

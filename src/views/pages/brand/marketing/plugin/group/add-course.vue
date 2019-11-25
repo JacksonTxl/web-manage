@@ -145,9 +145,7 @@ export default {
       this.tableData[0].is_select = true
     },
     setPriceChange() {
-      let selectedCard = this.tableData.filter(item => item.is_select)
-      let hasEmpty = selectedCard.filter(item => !item.group_price)
-      if (hasEmpty.length > 0) {
+      if (!this.tableData[0].group_price) {
         this.tableText = '请输入拼团价格'
         this.tableErr = true
       } else {

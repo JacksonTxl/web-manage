@@ -162,15 +162,6 @@ export default {
     },
     // 处理输入拼团价格的逻辑
     setPriceChange() {
-      // let selectedCard = this.tableData.filter(item => item.is_select)
-      // let hasEmpty = selectedCard.filter(item => !item.group_price)
-      // if (hasEmpty.length > 0) {
-      //   this.tableText = '请输入拼团价格'
-      //   this.tableErr = true
-      // } else {
-      //   this.tableText = ''
-      //   this.tableErr = false
-      // }
       if (!this.tableData[0].group_price) {
         this.tableText = '请输入拼团价格'
         this.tableErr = true

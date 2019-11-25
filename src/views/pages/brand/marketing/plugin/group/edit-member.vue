@@ -192,45 +192,29 @@ export default {
     onSubmit(data) {
       console.log(data)
       let isReturn = false
-      let list = []
+      // let list = []
       if (!this.selectedRowKeys.length) {
         this.tableText = '请选择会籍卡规格'
         this.tableErr = true
         isReturn = true
       }
-      this.selectedRowKeys.forEach((id, index) => {
-        this.tableData.forEach(item => {
-          if (item.id === id) {
-            // if (!item.group_price) {
-            //   this.tableText = '请输入拼团价'
-            //   this.tableErr = true
-            //   isReturn = true
-            // }
-            list.push({ sku_id: id, group_price: item.group_price })
+      const list = this.tableData
+        .filter(item => item.is_select)
+        .map(item => {
+          return {
+            sku_id: item.id,
+            group_price: item.group_price
           }
         })
-      })
-      let params = {}
+      // let params = {}
       if (isReturn) {
         return
       }
-      params = {
-        product_type: 1, // 会籍卡
-        activity_name: data.activity_name, // 活动名称
-        product_id: this.cardId, //商品id()
-        sku: list, //卡、课规格[{“sku_id”:1,”group_price”:20},]()
-        start_time: data.start_time,
-        end_time: data.end_time,
-        group_sum: data.group_sum, //成团人数
-        valid_time: data.valid_time, //拼团有效期
-        is_limit_stock: data.is_limit_stock, //是否限制库存0不限制 1限制
-        stock_total: data.stock_total, //库存
-        shop_ids: data.shop_ids, //门店ids [1,2,3,4]()
-        published_type: data.published_type, //发布状态(1-立即发布 2-暂不发布 3-定时发布)
-        published_time: data.published_time //发布时间
-      }
+      data.product_type = 1
+      data.product_id = this.cardId
+      data.sku = list
       params.id = this.$route.query.id
-      this.editMemberService.editGroup(params).subscribe(res => {
+      this.editMemberService.editGroup(data).subscribe(res => {
         this.$router.push({
           path: `/brand/marketing/plugin/group/list`
         })

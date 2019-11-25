@@ -36,7 +36,12 @@
 
       <a-row :gutter="8">
         <a-col :span="16">
-          <st-form-item label="优惠设置" required>
+          <st-form-item
+            label="优惠设置"
+            :help="tableText"
+            :validateStatus="tableErr ? 'error' : ''"
+            required
+          >
             <div :class="basic('table')">
               <st-table
                 rowKey="id"
@@ -47,6 +52,7 @@
                 <template slot="discount" slot-scope="customRender, record">
                   <st-input-number
                     :float="true"
+                    @input="setPriceChange"
                     v-model="record.group_price"
                     style="width:110px;"
                     :disabled="activityState >= ACTIVITY_STATUS.NO_START"
@@ -114,13 +120,24 @@ export default {
       shopIds: [],
       ACTIVITY_STATUS,
       RELEASE_STATUS,
-      shopList: null
+      shopList: null,
+      tableText: '',
+      tableErr: ''
     }
   },
   mounted() {
     this.setFieldsValue()
   },
   methods: {
+    setPriceChange() {
+      if (!this.currentStored[0].group_price) {
+        this.tableText = '请输入拼团价格'
+        this.tableErr = true
+      } else {
+        this.tableText = ''
+        this.tableErr = false
+      }
+    },
     changeSelect(id) {
       this.form.setFieldsValue({
         depositId: id
