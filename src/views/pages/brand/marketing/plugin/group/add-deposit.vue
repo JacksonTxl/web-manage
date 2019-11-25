@@ -46,7 +46,7 @@
                   <st-input-number
                     :float="true"
                     v-model="record.group_price"
-                    style="width:100px;"
+                    style="width:110px;"
                   >
                     <template slot="addonAfter">
                       元

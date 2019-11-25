@@ -63,6 +63,7 @@
                     v-model="record.group_price"
                     :float="true"
                     @input="setPriceChange"
+                    style="width:110px;"
                     :disabled="activityState >= ACTIVITY_STATUS.NO_START"
                   >
                     <template slot="addonAfter">

@@ -33,6 +33,7 @@
               v-decorator="decorators.group_hour"
               placeholder="请输入拼团课时"
               @change="changeHour"
+              style="width:110px;"
             ></a-input>
           </st-form-item>
         </a-col>
