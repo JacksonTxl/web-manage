@@ -321,6 +321,7 @@ export default {
       // 编辑不能改变活动开始时间
       this.activityOptions.start.disabled =
         this.isEdit && this.activityState > this.ACTIVITY_STATUS.PUBLISHER
+      // 活动结束不能改变活动结束时间
       this.activityOptions.end.disabled =
         this.isEdit && this.activityState >= this.ACTIVITY_STATUS.END
     }
