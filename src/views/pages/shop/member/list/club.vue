@@ -57,13 +57,21 @@
             </a-select>
           </st-search-panel-item>
           <st-search-panel-item label="客保情况：">
-            <a-input
+            <st-input-number
+              :min="0"
+              :max="9999"
+              :step="1"
+              :precision="0"
               placeholder="输入天数"
               class="input"
               v-model="$searchQuery.saleman_protect_remain"
             />
             天后销售客保到期
-            <a-input
+            <st-input-number
+              :min="0"
+              :max="9999"
+              :step="1"
+              :precision="0"
               placeholder="输入天数"
               class="input mg-l40"
               v-model="$searchQuery.coach_protect_remain"
@@ -71,13 +79,21 @@
             天后教练客保到期
           </st-search-panel-item>
           <st-search-panel-item label="跟进次数：">
-            <a-input
+            <st-input-number
+              :min="0"
+              :max="9999"
+              :step="1"
+              :precision="0"
               placeholder="输入次数"
               class="input"
               v-model="$searchQuery.follow_min"
             />
             -
-            <a-input
+            <st-input-number
+              :min="0"
+              :max="9999"
+              :step="1"
+              :precision="0"
               placeholder="输入次数"
               class="input"
               v-model="$searchQuery.follow_max"
@@ -210,7 +226,10 @@
       </div>
       <div slot="salesman_protect_day" slot-scope="text, record">
         <span class="mg-r4">{{ record.salesman_protect_day }}</span>
-        <a-tooltip placement="top" v-if="record.sales_days_limit">
+        <a-tooltip
+          placement="top"
+          v-if="record.sales_days_limit && record.follow_salesman_id"
+        >
           <template slot="title">
             <span>{{ record.salesman_protect }}</span>
           </template>
@@ -219,7 +238,10 @@
       </div>
       <div slot="coach_protect_day" slot-scope="text, record">
         <span class="mg-r4">{{ record.coach_protect_day }}</span>
-        <a-tooltip placement="top" v-if="record.coach_days_limit">
+        <a-tooltip
+          placement="top"
+          v-if="record.coach_days_limit && record.follow_coach_id"
+        >
           <template slot="title">
             <span>{{ record.coach_protect }}</span>
           </template>
