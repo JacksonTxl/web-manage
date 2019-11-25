@@ -1,7 +1,18 @@
 <template>
   <div :class="bPage()">
+    <div class="mg-b16" :class="bPage('count-action')">
+      <div :class="bPage('left')">
+        <!-- TODO: <st-button type="primary" class="shop-member-list-button">批量导出</st-button> -->
+        <a-radio-group :value="showTable" @change="handleSizeChange">
+          <a-radio-button value="all">日期</a-radio-button>
+          <a-radio-button value="staff">员工</a-radio-button>
+        </a-radio-group>
+      </div>
+      <span>
+        <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
+      </span>
+    </div>
     <div :class="bPage('count')">
-      <st-refresh-btn :date="totalInfo.time" :action="refresh" />
       <a-row :class="bPage('income-row')">
         <div :class="bPage('income-detail')">
           <swiper :options="sliderOptions">
@@ -21,18 +32,6 @@
         </div>
       </a-row>
     </div>
-    <div class="mg-b16" :class="bPage('count-action')">
-      <div :class="bPage('left')">
-        <!-- TODO: <st-button type="primary" class="shop-member-list-button">批量导出</st-button> -->
-        <a-radio-group :value="showTable" @change="handleSizeChange">
-          <a-radio-button value="all">日期</a-radio-button>
-          <a-radio-button value="staff">员工</a-radio-button>
-        </a-radio-group>
-      </div>
-      <span>
-        <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
-      </span>
-    </div>
     <!-- :alertSelection="{ onReset: onSelectionReset }" -->
     <!-- :rowSelection="{ selectedRowKeys, onChange: onSelectionChange }" -->
     <st-table
@@ -47,7 +46,6 @@
 </template>
 <script>
 import { FollowService } from './follow.service'
-import { UserService } from '@/services/user.service'
 import tableMixin from '@/mixins/table.mixin'
 import { dateColumns, staffColumns } from './follow.config.ts'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
@@ -59,8 +57,7 @@ export default {
   },
   serviceInject() {
     return {
-      followService: FollowService,
-      userService: UserService
+      followService: FollowService
     }
   },
   rxState() {
@@ -68,8 +65,7 @@ export default {
       loading: this.followService.loading$,
       list: this.followService.list$,
       page: this.followService.page$,
-      totalInfo: this.followService.totalInfo$,
-      shop: this.userService.shop$
+      totalInfo: this.followService.totalInfo$
     }
   },
   data() {
@@ -93,10 +89,6 @@ export default {
     }
   },
   components: { swiper, swiperSlide },
-  created() {
-    this.$searchQuery.shop_id = this.shop.id
-    this.getFollowShopTotal(this.$searchQuery).subscribe()
-  },
   methods: {
     recentChange(searchFieldsValue) {
       this.onMultiSearch(searchFieldsValue)
@@ -108,7 +100,6 @@ export default {
       return this.getFollowShopTotal(this.$searchQuery)
     },
     handleSizeChange(val) {
-      this.$searchQuery.shop_id = this.shop.id
       this.$searchQuery.showTable = this.showTable = val.target.value
       let query = this.$searchQuery
       this.$router.push({ query })
