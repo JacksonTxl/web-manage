@@ -973,9 +973,11 @@ export default {
             : undefined
           if (!this.$searchQuery.type) {
             this.cardData.support_member_num = 1
+            this.cardData.card_type = CARD_TYPE.NUMBER
           } else {
             this.cardData.support_member_num =
               values.cardData.support_member_num
+            this.cardData.card_type = CARD_TYPE.MORE_NUMBER
           }
           this.editService.editCard(this.cardData).subscribe(res => {
             this.$router.push({

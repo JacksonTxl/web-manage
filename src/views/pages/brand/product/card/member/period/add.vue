@@ -815,9 +815,11 @@ export default {
             : undefined
           if (!this.isFamilyCard) {
             this.cardData.support_member_num = 1
+            this.cardData.card_type = CARD_TYPE.PERIOD
           } else {
             this.cardData.support_member_num =
               values.cardData.support_member_num
+            this.cardData.card_type = CARD_TYPE.MORE_PERIOD
           }
 
           this.addService.addCard(this.cardData).subscribe(res => {
