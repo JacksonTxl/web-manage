@@ -59,7 +59,7 @@
               <div class="page-course-item">
                 <div class="page-course-item-tip">2.</div>
                 <div class="page-course-item-cont">
-                  建议尺寸为?px * ?px， 不可大于2M
+                  建议尺寸为750px * 422px， 不可大于2M
                 </div>
               </div>
             </div>

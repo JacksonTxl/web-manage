@@ -137,8 +137,8 @@ export const soldColums = () => {
     },
     {
       title: '完成时间',
-      dataIndex: 'pay_finished_time',
-      key: 'pay_finished_time'
+      dataIndex: 'pay_last_time',
+      key: 'pay_last_time'
     }
   ]
 }

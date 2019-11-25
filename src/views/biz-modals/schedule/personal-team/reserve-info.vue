@@ -58,6 +58,7 @@
                 placeholder="搜索会员名"
                 style="width: 120px"
                 :defaultActiveFirstOption="false"
+                :dropdownMatchSelectWidth="false"
                 :showArrow="false"
                 :filterOption="false"
                 @search="onSearch"
@@ -69,8 +70,14 @@
                   :key="member.member_id"
                 >
                   <div class="st-form-table__add-option">
-                    <span class="item-name">{{ member.member_name }}</span>
-                    <span class="item-phone">{{ member.mobile }}</span>
+                    <span
+                      class="item-name"
+                      v-html="keywordFilter(member.member_name)"
+                    ></span>
+                    <span
+                      class="item-phone"
+                      v-html="keywordFilter(member.mobile)"
+                    ></span>
                   </div>
                 </a-select-option>
               </a-select>
@@ -80,6 +87,7 @@
                 slot="consume_type"
                 placeholder="选择消费方式"
                 style="width: 280px"
+                :dropdownMatchSelectWidth="false"
                 @change="onChangeConsumeType"
               >
                 <a-select-opt-group
@@ -214,6 +222,7 @@ export default {
       consumeTypeId: '',
       siteNumIds: [],
       dataSource: [],
+      keyword: '',
       show: false,
       info: {}
     }
@@ -231,7 +240,16 @@ export default {
     this.getReserveInfo()
   },
   methods: {
+    keywordFilter(str) {
+      if (!this.keyword) return str
+      str = str.replace(
+        new RegExp(this.keyword),
+        `<span class="color-primary">${this.keyword}</span>`
+      )
+      return str
+    },
     onSearch(value) {
+      this.keyword = value
       this.commonService
         .getMemberList({
           member_name: value

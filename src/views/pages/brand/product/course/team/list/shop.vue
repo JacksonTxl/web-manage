@@ -41,11 +41,6 @@
         :dataSource="list"
         :scroll="{ x: 1440 }"
         :loading="loading.getList"
-        :alertSelection="{ onReset: onSelectionReset }"
-        :rowSelection="{
-          selectedRowKeys: selectedRowKeys,
-          onChange: onSelectionChange
-        }"
         :page="page"
         @change="onTableChange"
       >

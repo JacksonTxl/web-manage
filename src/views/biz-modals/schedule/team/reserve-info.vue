@@ -242,6 +242,7 @@ export default {
       memberId: '',
       showSite: [],
       consumeType: '',
+      keyword: '',
       consumeId: '',
       consumeTypeId: '',
       siteNumIds: [],
@@ -338,6 +339,7 @@ export default {
       this.show = false
     },
     onSearch(value) {
+      this.keyword = value
       this.teamScheduleCommonService
         .getMemberList({ member_name: value })
         .subscribe()

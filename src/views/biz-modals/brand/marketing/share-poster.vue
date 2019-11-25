@@ -24,7 +24,7 @@
           :class="basic('button')"
           @click="downloadQrCode"
         >
-          下载二维码
+          下载小程序码
         </st-button>
       </div>
     </div>

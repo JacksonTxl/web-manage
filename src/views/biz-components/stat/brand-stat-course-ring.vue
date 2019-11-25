@@ -1,5 +1,5 @@
 <template>
-  <div style="style: 1000px" class="brand-stat-course-ring"></div>
+  <div class="brand-stat-course-ring"></div>
 </template>
 
 <script>
