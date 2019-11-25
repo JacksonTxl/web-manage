@@ -5,7 +5,7 @@
     :loading="loading.addGroup"
     :confirmLoading="loading.addGroup"
     :isEdit="true"
-    :info="info.info"
+    :info="info"
     :shopIds="shopList"
     :groupParams="groupParams"
     @onsubmit="onSubmit"
@@ -150,12 +150,12 @@ export default {
       })
     },
     setFieldsValue() {
-      this.activityState = this.info.info.activity_state.id
-      this.depositId = this.info.info.product.id
-      this.currentStored = this.info.info.sku
-      this.shopList = this.info.info.support_shop || []
+      this.activityState = this.info.activity_state.id
+      this.depositId = this.info.product.id
+      this.currentStored = this.info.sku
+      this.shopList = this.info.support_shop || []
       this.form.setFieldsValue({
-        depositId: this.info.info.product.id
+        depositId: this.info.product.id
       })
     }
   }

@@ -14,7 +14,7 @@ export class EditDepositService implements Controller {
   getStoredData(id: number) {
     return this.groupBuyApi.getStoredData(id).pipe(
       tap((res: any) => {
-        this.info$.commit(() => res)
+        this.info$.commit(() => res.info)
       })
     )
   }

@@ -1,3 +1,4 @@
+import moment from 'moment'
 export default (vm: any) => {
   const pattern = vm.pattern
   return {
@@ -65,7 +66,7 @@ export default (vm: any) => {
             }
             if (
               vm.activityState > vm.ACTIVITY_STATUS.PUBLISHER &&
-              value < vm.oldStock
+              value < vm.info.stock_total
             ) {
               return '活动库存只能增加不可减少'
             }
@@ -77,13 +78,12 @@ export default (vm: any) => {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
-            console.log(value)
             if (!value) {
               return '请填写活动时间'
             }
             if (
               vm.activityState > vm.ACTIVITY_STATUS.PUBLISHER &&
-              value[1] < vm.oldTime
+              moment(value[1]).valueOf() < moment(vm.info.end_time).valueOf()
             ) {
               return '活动时间只能延长不可缩短'
             }
