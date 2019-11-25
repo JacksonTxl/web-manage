@@ -34,7 +34,7 @@
               v-if="record.course_status === '有效'"
               class="effective"
             ></span>
-            <span v-if="record.course_status === '失效'" class="invalid"></span>
+            <span v-if="record.course_status === '无效'" class="invalid"></span>
             <span
               v-if="record.course_status === '已冻结'"
               class="frozen"
