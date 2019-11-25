@@ -66,7 +66,8 @@ export default (vm: any) => {
             }
             if (
               vm.activityState > vm.ACTIVITY_STATUS.PUBLISHER &&
-              value < vm.info.stock_total
+              value < vm.info.stock_total &&
+              vm.$children[0].isEdit
             ) {
               return '活动库存只能增加不可减少'
             }
@@ -83,7 +84,8 @@ export default (vm: any) => {
             }
             if (
               vm.activityState > vm.ACTIVITY_STATUS.PUBLISHER &&
-              moment(value[1]).valueOf() < moment(vm.info.end_time).valueOf()
+              moment(value[1]).valueOf() < moment(vm.info.end_time).valueOf() &&
+              vm.$children[0].isEdit
             ) {
               return '活动时间只能延长不可缩短'
             }

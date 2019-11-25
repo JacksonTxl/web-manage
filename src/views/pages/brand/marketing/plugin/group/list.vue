@@ -230,12 +230,19 @@ export default {
           image: res.info.product_logo
         }
         // console.log(shsInfo, '海报内容')
+        let obj = {
+          isAuth,
+          shsInfo,
+          isQrCodeBtn,
+          shsPath: '/saas-mina/groupbuy'
+        }
         this.share.poster({
           isAuth,
           shsInfo,
           isQrCodeBtn,
           shsPath: '/saas-mina/groupbuy'
         })
+        console.log(obj)
       })
     },
     // 编辑列表
