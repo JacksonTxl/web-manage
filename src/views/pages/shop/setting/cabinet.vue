@@ -336,7 +336,7 @@ export default {
         if (temp.is_smart) {
           return 'smart'
         }
-        if (type === 'long-term' && temp.sale_status > 0) {
+        if (type === 'long-term' && temp.sale_status === 1) {
           return 'using'
         }
         if (type === 'temporary' && temp.cabinet_business_type === 2) {

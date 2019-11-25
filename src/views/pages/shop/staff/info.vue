@@ -37,83 +37,7 @@
           style="text-align: right;"
           v-if="info.work_status.name === '在职'"
         >
-          <st-button
-            class="mg-r8"
-            v-if="auth['brand_shop:staff:staff|edit']"
-            type="primary"
-            @click="editStaffInfo"
-          >
-            编辑资料
-          </st-button>
-          <st-button
-            class="mg-r8"
-            v-if="auth['brand_shop:staff:staff|bind_card']"
-            v-modal-link="{
-              name: 'shop-staff-bind-card',
-              props: { staff: info }
-            }"
-          >
-            绑实体卡
-          </st-button>
-          <st-button
-            class="mg-r8"
-            v-if="auth['brand_shop:staff:staff|rebind_card']"
-            v-modal-link="{
-              name: 'shop-staff-bind-card',
-              props: { staff: info }
-            }"
-          >
-            重绑实体卡
-          </st-button>
-          <a-dropdown>
-            <a-menu slot="overlay" @click="handleMenuClick">
-              <a-menu-item>
-                <a
-                  v-if="auth['brand_shop:staff:account|save']"
-                  v-modal-link="{
-                    name: 'shop-staff-re-password',
-                    props: { staff: info }
-                  }"
-                >
-                  管理登录账号
-                </a>
-              </a-menu-item>
-              <a-menu-item>
-                <a
-                  v-if="auth['brand_shop:staff:staff|position']"
-                  @click="jumpToStaffPosition"
-                >
-                  职位变更
-                </a>
-              </a-menu-item>
-              <a-menu-item>
-                <a
-                  v-if="auth['brand_shop:staff:staff|salary']"
-                  v-modal-link="{
-                    name: 'shop-staff-salary-account-setting',
-                    props: { staff: info }
-                  }"
-                >
-                  设置薪资账户
-                </a>
-              </a-menu-item>
-              <a-menu-item>
-                <a
-                  v-if="auth['brand_shop:staff:staff|shop_leave']"
-                  v-modal-link="{
-                    name: 'shop-staff-leave-current-shop',
-                    props: { staff: info }
-                  }"
-                >
-                  解除门店关系
-                </a>
-              </a-menu-item>
-            </a-menu>
-            <st-button>
-              更多操作
-              <a-icon type="down" />
-            </st-button>
-          </a-dropdown>
+          <st-btn-actions :options="btnOptions"></st-btn-actions>
         </a-col>
       </a-row>
     </st-panel>
@@ -200,6 +124,58 @@ export default {
           this.info.image_avatar.image_url) ||
         ''
       )
+    },
+    btnOptions() {
+      const options = [
+        {
+          text: '编辑资料',
+          click: this.editStaffInfo,
+          auth: 'brand_shop:staff:staff|edit'
+        },
+        {
+          text: '绑定实体卡',
+          click: this.openModalBindCard,
+          auth: 'brand_shop:staff:staff|bind_card'
+        },
+        {
+          text: '重绑实体卡',
+          click: this.openModalRebindCard,
+          auth: 'brand_shop:staff:staff|rebind_card'
+        },
+        {
+          text: '职位变更',
+          click: this.openModalPosition,
+          auth: 'brand_shop:staff:staff|position'
+        },
+        {
+          text: '离职',
+          click: this.openModalLeave,
+          auth: 'brand_shop:staff:staff|leave'
+        },
+        {
+          text: '复职',
+          click: this.openModalReinstate,
+          auth: 'brand_shop:staff:staff|reinstate'
+        },
+        {
+          text: '管理登录账户',
+          click: this.openModalSave,
+          auth: 'brand_shop:staff:account|save'
+        },
+        {
+          text: '设置薪资账户',
+          click: this.openModalSalary,
+          auth: 'brand_shop:staff:staff|salary'
+        },
+        {
+          text: '解除门店关系',
+          click: this.openModalShopLeave,
+          auth: 'brand_shop:staff:staff|shop_leave'
+        }
+      ]
+      return options.filter(item => {
+        return !!this.auth[item.auth]
+      })
     }
   },
   created() {
@@ -228,16 +204,47 @@ export default {
     setIndentyList(arr, targetArr) {
       arr.forEach(key => targetArr.add(key, this[key]))
     },
-    jumpToStaffPosition(info) {
-      console.log(this.info)
+    openModal(modalType) {
+      const modalPathList = {
+        bind_card: 'shop-staff-bind-card',
+        rebind_card: 'shop-staff-bind-card',
+        leave: 'shop-staff-turnover',
+        reinstate: 'shop-staff-reinstatement',
+        save: 'shop-staff-re-password',
+        position: 'shop-staff-update-staff-position',
+        salary: 'shop-staff-salary-account-setting',
+        shop_leave: 'shop-staff-leave-current-shop'
+      }
+      const name = modalPathList[modalType]
       this.$modalRouter.push({
-        name: 'shop-staff-update-staff-position',
-        props: {
-          staff: this.info
-        }
+        name,
+        props: { staff: this.info }
       })
     },
-    handleMenuClick() {},
+    openModalBindCard() {
+      this.openModal('bind_card')
+    },
+    openModalRebindCard() {
+      this.openModal('rebind_card')
+    },
+    openModalLeave() {
+      this.openModal('leave')
+    },
+    openModalReinstate() {
+      this.openModal('reinstate')
+    },
+    openModalSave() {
+      this.openModal('save')
+    },
+    openModalPosition() {
+      this.openModal('position')
+    },
+    openModalSalary() {
+      this.openModal('salary')
+    },
+    openModalShopLeave() {
+      this.openModal('shop_leave')
+    },
     editStaffInfo() {
       this.$router.push({
         name: 'shop-staff-edit',

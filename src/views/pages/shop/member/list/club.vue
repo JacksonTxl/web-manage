@@ -57,13 +57,21 @@
             </a-select>
           </st-search-panel-item>
           <st-search-panel-item label="客保情况：">
-            <a-input
+            <st-input-number
+              :min="0"
+              :max="9999"
+              :step="1"
+              :precision="0"
               placeholder="输入天数"
               class="input"
               v-model="$searchQuery.saleman_protect_remain"
             />
             天后销售客保到期
-            <a-input
+            <st-input-number
+              :min="0"
+              :max="9999"
+              :step="1"
+              :precision="0"
               placeholder="输入天数"
               class="input mg-l40"
               v-model="$searchQuery.coach_protect_remain"
@@ -71,13 +79,21 @@
             天后教练客保到期
           </st-search-panel-item>
           <st-search-panel-item label="跟进次数：">
-            <a-input
+            <st-input-number
+              :min="0"
+              :max="9999"
+              :step="1"
+              :precision="0"
               placeholder="输入次数"
               class="input"
               v-model="$searchQuery.follow_min"
             />
             -
-            <a-input
+            <st-input-number
+              :min="0"
+              :max="9999"
+              :step="1"
+              :precision="0"
               placeholder="输入次数"
               class="input"
               v-model="$searchQuery.follow_max"
@@ -136,7 +152,8 @@
                 name: 'shop-distribution-coach',
                 props: {
                   memberIds: selectedRowKeys
-                }
+                },
+                on: { success: refeshPage }
               }"
             >
               分配教练
@@ -149,7 +166,8 @@
                 name: 'shop-distribution-sale',
                 props: {
                   memberIds: selectedRowKeys
-                }
+                },
+                on: { success: refeshPage }
               }"
             >
               分配销售
@@ -193,7 +211,7 @@
         <st-help-tooltip id="TSCRM001" />
       </span>
       <span slot="customCoachTitle">
-        跟进销售客保天数
+        跟进教练客保天数
         <st-help-tooltip id="TSCRM002" />
       </span>
       <div slot="member_name" slot-scope="text, record">
@@ -208,7 +226,10 @@
       </div>
       <div slot="salesman_protect_day" slot-scope="text, record">
         <span class="mg-r4">{{ record.salesman_protect_day }}</span>
-        <a-tooltip placement="top" v-if="record.sales_days_limit">
+        <a-tooltip
+          placement="top"
+          v-if="record.sales_days_limit && record.follow_salesman_id"
+        >
           <template slot="title">
             <span>{{ record.salesman_protect }}</span>
           </template>
@@ -217,7 +238,10 @@
       </div>
       <div slot="coach_protect_day" slot-scope="text, record">
         <span class="mg-r4">{{ record.coach_protect_day }}</span>
-        <a-tooltip placement="top" v-if="record.coach_days_limit">
+        <a-tooltip
+          placement="top"
+          v-if="record.coach_days_limit && record.follow_coach_id"
+        >
           <template slot="title">
             <span>{{ record.coach_protect }}</span>
           </template>
@@ -480,7 +504,7 @@ export default {
     dropCoachSea(para) {
       this.$confirm({
         title: '提示信息',
-        content: '是否将教练抛入公海？',
+        content: '是否将客户抛入公海？',
         onOk: () => {
           this.clubService.dropCoachSea({ member_ids: para }).subscribe(() => {
             this.refeshPage()
@@ -492,7 +516,7 @@ export default {
     dropSalerSea(para) {
       this.$confirm({
         title: '提示信息',
-        content: '是否将销售抛入公海？',
+        content: '是否将客户抛入公海？',
         onOk: () => {
           this.clubService.dropSalerSea({ member_ids: para }).subscribe(() => {
             this.refeshPage()

@@ -746,9 +746,9 @@ export const routeMapConfig = {
       coach_protect_remain: { type: Number },
       follow_min: { type: Number },
       follow_max: { type: Number },
-      follow_salesman_id: { type: Number },
-      follow_coach_id: { type: Number },
-      follow_status: { type: Number },
+      follow_salesman_id: { type: Number, default: -1 },
+      follow_coach_id: { type: Number, default: -1 },
+      follow_status: { type: Number, default: -1 },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }

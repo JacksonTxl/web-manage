@@ -79,7 +79,6 @@ export class FollowService implements Controller {
     )
   }
   init(query: any) {
-    console.log(query)
     return anyAll(
       this.getList(query),
       this.getCoachList(query.CoachQuery),

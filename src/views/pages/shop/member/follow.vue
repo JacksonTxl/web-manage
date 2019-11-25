@@ -8,7 +8,7 @@
       />
     </div>
     <div slot="prepend">
-      <st-search-panel @search="onSearchNative" @reset="onSearhReset">
+      <st-search-panel @search="onSearchNative" @reset="handleReset">
         <st-search-panel-item label="用户级别：">
           <st-search-radio
             v-model="$searchQuery.member_level"
@@ -81,7 +81,7 @@
               </a-select-option>
             </a-select>
           </st-search-panel-item>
-          <st-search-panel-item label="跟进情况：">
+          <st-search-panel-item label="跟进日期：">
             <st-range-picker
               :disabledDays="180"
               :value="selectTime"
@@ -148,7 +148,11 @@
       </span>
       <template slot="follow_content" slot-scope="text">
         <div>
-          <st-overflow-text title="跟进内容" max-width="200px" :value="text" />
+          <st-overflow-text
+            title="跟进内容"
+            max-width="180px"
+            :value="text"
+          ></st-overflow-text>
         </div>
       </template>
     </st-table>
@@ -196,7 +200,7 @@ export default {
           disabledBegin: null,
           placeholder: '开始日期',
           disabled: false,
-          value: '',
+          value: null,
           format: 'YYYY-MM-DD',
           change: $event => {}
         },
@@ -204,7 +208,7 @@ export default {
           showTime: false,
           placeholder: '结束日期',
           disabled: false,
-          value: '',
+          value: null,
           format: 'YYYY-MM-DD',
           change: $event => {}
         }
@@ -214,10 +218,6 @@ export default {
   computed: {
     columns
   },
-  mounted() {
-    this.setSearchData()
-  },
-
   methods: {
     onChangeSell(value) {
       this.onMultiSearch({ follow_salesman_id: value })
@@ -234,21 +234,12 @@ export default {
     // 查询
     onSearchNative() {
       this.$searchQuery.follow_start_date = this.selectTime.startTime.value
-        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')}`
+        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00`
         : ''
       this.$searchQuery.follow_end_date = this.selectTime.endTime.value
-        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')}`
+        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59`
         : ''
       this.onSearch()
-    },
-    // 设置searchData
-    setSearchData() {
-      this.selectTime.startTime.value = this.$searchQuery.follow_start_date
-        ? moment(this.$searchQuery.follow_start_date)
-        : null
-      this.selectTime.endTime.value = this.$searchQuery.follow_end_date
-        ? moment(this.$searchQuery.follow_end_date)
-        : null
     },
     infoFunc(record) {
       this.$router.push({
@@ -258,12 +249,9 @@ export default {
     },
     moment,
     handleReset() {
-      let self = this
-      for (let prop in self.form) {
-        self.form[prop] = ''
-      }
-      this.$refs.stSeleter.handleResetItem()
-      this.$router.reload()
+      this.selectTime.startTime.value = null
+      this.selectTime.endTime.value = null
+      this.onSearhReset()
     }
   }
 }
