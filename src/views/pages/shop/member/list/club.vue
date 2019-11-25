@@ -136,7 +136,8 @@
                 name: 'shop-distribution-coach',
                 props: {
                   memberIds: selectedRowKeys
-                }
+                },
+                on: { success: refeshPage }
               }"
             >
               分配教练
@@ -149,7 +150,8 @@
                 name: 'shop-distribution-sale',
                 props: {
                   memberIds: selectedRowKeys
-                }
+                },
+                on: { success: refeshPage }
               }"
             >
               分配销售
@@ -193,7 +195,7 @@
         <st-help-tooltip id="TSCRM001" />
       </span>
       <span slot="customCoachTitle">
-        跟进销售客保天数
+        跟进教练客保天数
         <st-help-tooltip id="TSCRM002" />
       </span>
       <div slot="member_name" slot-scope="text, record">
@@ -480,7 +482,7 @@ export default {
     dropCoachSea(para) {
       this.$confirm({
         title: '提示信息',
-        content: '是否将教练抛入公海？',
+        content: '是否将客户抛入公海？',
         onOk: () => {
           this.clubService.dropCoachSea({ member_ids: para }).subscribe(() => {
             this.refeshPage()
@@ -492,7 +494,7 @@ export default {
     dropSalerSea(para) {
       this.$confirm({
         title: '提示信息',
-        content: '是否将销售抛入公海？',
+        content: '是否将客户抛入公海？',
         onOk: () => {
           this.clubService.dropSalerSea({ member_ids: para }).subscribe(() => {
             this.refeshPage()

@@ -67,9 +67,8 @@
         maxWidth="200px"
         slot="remark"
         slot-scope="text"
-      >
-        {{ text }}
-      </st-overflow-text>
+        :value="text"
+      />
 
       <div slot="action" slot-scope="text, record">
         <st-table-actions>

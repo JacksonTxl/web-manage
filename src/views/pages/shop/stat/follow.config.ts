@@ -9,7 +9,7 @@ export const dateColumns = (vm: any) => {
       dataIndex: 'staff_name'
     },
     {
-      title: '每日跟进总数',
+      title: '跟进总数',
       dataIndex: 'follow_total',
       align: 'right'
     },
@@ -54,7 +54,7 @@ export const dateColumns = (vm: any) => {
       align: 'right'
     },
     {
-      title: '已签到数',
+      title: '已签约数',
       dataIndex: 'is_signed',
       align: 'right'
     },
@@ -117,7 +117,7 @@ export const staffColumns = (vm: any) => {
       align: 'right'
     },
     {
-      title: '已签到数',
+      title: '已签约数',
       dataIndex: 'is_signed',
       align: 'right'
     },
