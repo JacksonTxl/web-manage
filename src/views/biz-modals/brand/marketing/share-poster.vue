@@ -74,8 +74,13 @@ export default {
     this.shsService.getShsImage(shsInfo, this.shsPath).subscribe(res => {
       this.url = res
     })
+    console.log(this.isQrCodeBtn)
   },
-
+  watch: {
+    isQrCodeBtn(news) {
+      console.log(this.isQrCodeBtn)
+    }
+  },
   methods: {
     downloadPoster() {
       const a = document.createElement('a')
