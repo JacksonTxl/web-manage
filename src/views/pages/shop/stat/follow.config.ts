@@ -9,7 +9,7 @@ export const dateColumns = (vm: any) => {
       dataIndex: 'staff_name'
     },
     {
-      title: '每日跟进总数',
+      title: '跟进总数',
       dataIndex: 'follow_total',
       align: 'right'
     },
