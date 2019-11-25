@@ -1,9 +1,9 @@
-import { Injectable } from 'vue-service-app'
+import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { Effect, State } from 'rx-state'
 import { CardsApi, CardsInput } from '@/api/v1/cards'
 import { UserService } from '@/services/user.service'
 @Injectable()
-export class AddService {
+export class AddService implements Controller {
   loading$ = new State({})
   cardBgList$ = this.userService.getOptions$('member_card.card_bg_list')
   admissionRange$ = this.userService.getOptions$('member_card.admission_range')
@@ -18,5 +18,13 @@ export class AddService {
   @Effect()
   addCard(data: CardsInput) {
     return this.cardsApi.addCard(data, 'shop')
+  }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+    if (to.meta.query.type === 1) {
+      this.cardBgList$ = this.userService.getOptions$(
+        'member_card.family_card_bg_list'
+      )
+    }
+    next()
   }
 }

@@ -587,6 +587,7 @@
               <card-bg-radio
                 @change="onCardBgChange"
                 v-model="cardData.card_bg"
+                :isFamilyCard="isFamilyCard"
               />
             </st-form-item>
           </a-col>

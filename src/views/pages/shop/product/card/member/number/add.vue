@@ -339,7 +339,11 @@
               required
               :help="cardBgValidatorText"
             >
-              <card-bg-radio @change="onCardBgChange" v-model="cardBg" />
+              <card-bg-radio
+                @change="onCardBgChange"
+                v-model="cardBg"
+                :isFamilyCard="isFamilyCard"
+              />
             </st-form-item>
           </a-col>
         </a-row>
