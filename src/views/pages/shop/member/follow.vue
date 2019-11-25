@@ -21,7 +21,7 @@
             :options="followWayList"
           />
         </st-search-panel-item>
-        <st-search-panel-item label="跟进状态：">
+        <st-search-panel-item label="跟进：">
           <st-search-radio
             v-model="$searchQuery.follow_status"
             :options="followStatusList"
@@ -81,7 +81,7 @@
               </a-select-option>
             </a-select>
           </st-search-panel-item>
-          <st-search-panel-item label="跟进情况：">
+          <st-search-panel-item label="跟进日期：">
             <st-range-picker
               :disabledDays="180"
               :value="selectTime"
@@ -148,12 +148,11 @@
       </span>
       <template slot="follow_content" slot-scope="text">
         <div>
-          <st-overflow-text title="跟进内容">
-            <template slot="content">
-              {{ text }}
-            </template>
-            <a class="pop-object__text">{{ text }}</a>
-          </st-overflow-text>
+          <st-overflow-text
+            title="跟进内容"
+            max-width="200px"
+            :value="text"
+          ></st-overflow-text>
         </div>
       </template>
     </st-table>
@@ -201,7 +200,7 @@ export default {
           disabledBegin: null,
           placeholder: '开始日期',
           disabled: false,
-          value: '',
+          value: null,
           format: 'YYYY-MM-DD',
           change: $event => {}
         },
@@ -209,7 +208,7 @@ export default {
           showTime: false,
           placeholder: '结束日期',
           disabled: false,
-          value: '',
+          value: null,
           format: 'YYYY-MM-DD',
           change: $event => {}
         }
@@ -222,7 +221,11 @@ export default {
   mounted() {
     this.setSearchData()
   },
-
+  watch: {
+    $searchQuery(newVal) {
+      this.setSearchData()
+    }
+  },
   methods: {
     onChangeSell(value) {
       this.onMultiSearch({ follow_salesman_id: value })
@@ -268,7 +271,7 @@ export default {
         self.form[prop] = ''
       }
       this.$refs.stSeleter.handleResetItem()
-      this.$router.reload()
+      this.$router.push({ query: {} })
     }
   }
 }

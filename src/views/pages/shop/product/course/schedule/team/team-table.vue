@@ -1,7 +1,7 @@
 <template>
   <div class="page-team-table schedule-table">
     <div
-      class="page-team-table__title pd-x24 pd-y16 schedule-table__title"
+      class="page-team-table__title pd-x24 pd-y16 schedule-table__title schedule-table__title--fixed"
       slot="title"
     >
       <div class="title__left">
@@ -46,11 +46,12 @@
         </a-radio-group>
       </div>
     </div>
-    <template v-for="card in scheduleTable">
+    <div class="schedule-table__content">
       <a-card
         :title="card.date | filterStartTime"
         :key="card.date"
-        class="mg-l24 mg-r24 mg-t8"
+        v-for="card in scheduleTable"
+        class="mg-l24 mg-r24"
       >
         <span
           slot="extra"
@@ -109,7 +110,7 @@
           </a-col>
         </a-row>
       </a-card>
-    </template>
+    </div>
   </div>
 </template>
 
