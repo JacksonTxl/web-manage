@@ -55,7 +55,7 @@ export default {
     // 是否添加下载二维码按钮
     isQrCodeBtn: {
       type: Boolean,
-      default: true
+      default: false
     },
     shsPath: String
   },
