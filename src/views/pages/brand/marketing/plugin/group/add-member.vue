@@ -56,7 +56,11 @@
                 rowKey="id"
               >
                 <template slot="group_price" slot-scope="customRender, record">
-                  <st-input-number v-model="record.group_price" :float="true">
+                  <st-input-number
+                    v-model="record.group_price"
+                    :float="true"
+                    @input="setPriceChange"
+                  >
                     <template slot="addonAfter">
                       元
                     </template>
@@ -143,6 +147,7 @@ export default {
           if (this.selectedRowKeys && this.isEdit) {
             this.info.sku.forEach(item => {
               this.tableData.forEach(card => {
+                card.is_select = false
                 if (item.id === card.id) {
                   card.group_price = item.group_price
                 }
@@ -151,10 +156,29 @@ export default {
           }
         }
       })
+      if (this.tableData.length === 1) {
+        this.tableData[0].is_select = true
+      }
     },
     // 优惠设置选择变化
     onChange(value) {
       this.selectedRowKeys = value
+      this.tableData.forEach(card => {
+        card.is_select = this.selectedRowKeys.indexOf(card.id) !== -1
+      })
+      // this.setPriceChange()
+    },
+    // 处理输入拼团价格的逻辑
+    setPriceChange() {
+      let selectedCard = this.tableData.filter(item => item.is_select)
+      let hasEmpty = selectedCard.filter(item => !item.group_price)
+      if (hasEmpty.length > 0) {
+        this.tableText = '请输入拼团价格'
+        this.tableErr = true
+      } else {
+        this.tableText = ''
+        this.tableErr = false
+      }
     },
     // 新建拼团活动
     onSubmit(data) {
@@ -170,11 +194,6 @@ export default {
         this.selectedRowKeys.forEach((id, index) => {
           this.tableData.forEach(item => {
             if (item.id === id) {
-              if (!item.group_price) {
-                this.tableText = '请输入拼团价'
-                this.tableErr = true
-                isReturn = true
-              }
               list.push({ sku_id: id, group_price: item.group_price })
             }
           })
@@ -212,13 +231,6 @@ export default {
         })
       })
     }
-    // 详情回显
-    // setFieldsValue() {
-    //   this.cardId = this.info.product.id
-    //   this.info.sku.forEach(item => {
-    //     this.selectedRowKeys.push(item.id)
-    //   })
-    // }
   },
   components: {
     GroupForm
