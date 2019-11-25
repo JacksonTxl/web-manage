@@ -21,6 +21,7 @@
       <st-form-item label="延长天数" required>
         <st-input-number
           :max="999"
+          :min="1"
           placeholder="请输入延长天数"
           v-decorator="decorators.extend_days"
         >
