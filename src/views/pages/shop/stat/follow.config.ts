@@ -6,7 +6,8 @@ export const dateColumns = (vm: any) => {
     },
     {
       title: '员工',
-      dataIndex: 'staff_name'
+      dataIndex: 'staff_name',
+      width: '180px'
     },
     {
       title: '每日跟进总数',
@@ -69,7 +70,8 @@ export const staffColumns = (vm: any) => {
   return [
     {
       title: '员工',
-      dataIndex: 'staff_name'
+      dataIndex: 'staff_name',
+      width: '180px'
     },
     {
       title: '跟进总数',

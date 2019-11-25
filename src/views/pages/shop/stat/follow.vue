@@ -39,6 +39,7 @@
       @change="onTableChange"
       :loading="loading.getFollowShopList"
       :columns="columns"
+      :scroll="{ x: 1800 }"
       :dataSource="list"
       rowKey="id"
     ></st-table>
