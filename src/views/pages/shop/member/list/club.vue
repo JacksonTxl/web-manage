@@ -59,7 +59,7 @@
           <st-search-panel-item label="客保情况：">
             <st-input-number
               :min="0"
-              :max="99999"
+              :max="9999"
               :step="1"
               :precision="0"
               placeholder="输入天数"
@@ -69,7 +69,7 @@
             天后销售客保到期
             <st-input-number
               :min="0"
-              :max="99999"
+              :max="9999"
               :step="1"
               :precision="0"
               placeholder="输入天数"
@@ -81,7 +81,7 @@
           <st-search-panel-item label="跟进次数：">
             <st-input-number
               :min="0"
-              :max="99999"
+              :max="9999"
               :step="1"
               :precision="0"
               placeholder="输入次数"
@@ -91,7 +91,7 @@
             -
             <st-input-number
               :min="0"
-              :max="99999"
+              :max="9999"
               :step="1"
               :precision="0"
               placeholder="输入次数"
