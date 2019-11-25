@@ -64,7 +64,7 @@
                 <template slot="group_price" slot-scope="customRender, record">
                   <st-input-number
                     v-model="record.group_price"
-                    @change="setPriceChange"
+                    @input="setPriceChange"
                   >
                     <template slot="addonAfter">
                       元
