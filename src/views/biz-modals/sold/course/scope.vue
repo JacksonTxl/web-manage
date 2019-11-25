@@ -594,7 +594,7 @@ export default {
           if (item.name.indexOf(value) > -1) {
             return this.getParentKey(
               item.name,
-              cloneDeep(this.personalCourseList)
+              cloneDeep(this.personalCourseTreeList)
             )
           }
           return null

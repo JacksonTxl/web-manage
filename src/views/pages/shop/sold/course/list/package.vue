@@ -396,6 +396,9 @@ export default {
       )
       if (this.diffSelectedRows.length) {
         this.visible = true
+        setTimeout(() => {
+          this.visible = false
+        }, 2000)
       }
     }
   }

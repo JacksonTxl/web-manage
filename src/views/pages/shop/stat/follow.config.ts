@@ -6,10 +6,11 @@ export const dateColumns = (vm: any) => {
     },
     {
       title: '员工',
-      dataIndex: 'staff_name'
+      dataIndex: 'staff_name',
+      width: '180px'
     },
     {
-      title: '跟进总数',
+      title: '每日跟进总数',
       dataIndex: 'follow_total',
       align: 'right'
     },
@@ -69,10 +70,11 @@ export const staffColumns = (vm: any) => {
   return [
     {
       title: '员工',
-      dataIndex: 'staff_name'
+      dataIndex: 'staff_name',
+      width: '180px'
     },
     {
-      title: '每日跟进总数',
+      title: '跟进总数',
       dataIndex: 'follow_total',
       align: 'right'
     },
