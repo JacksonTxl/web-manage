@@ -60,6 +60,7 @@
                     v-model="record.group_price"
                     :float="true"
                     @input="setPriceChange"
+                    style="width:110px;"
                   >
                     <template slot="addonAfter">
                       元

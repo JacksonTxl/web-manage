@@ -72,7 +72,8 @@
                   <st-input-number
                     v-model="record.group_price"
                     :disabled="disabledEdit"
-                    @change="setPriceChange"
+                    @input="setPriceChange"
+                    style="width:110px;"
                   >
                     <template slot="addonAfter">
                       元
@@ -197,7 +198,7 @@ export default {
       this.newCoach.forEach(coach => {
         coach.is_select = this.selectedRowKeys.indexOf(coach.id) !== -1
       })
-      this.setPriceChange()
+      // this.setPriceChange()
     },
     // 处理输入拼团价格的逻辑
     setPriceChange() {

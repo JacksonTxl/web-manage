@@ -77,6 +77,7 @@
                     v-model="record.group_price"
                     :disabled="disabledEdit"
                     @input="setPriceChange"
+                    style="width:110px;"
                   >
                     <template slot="addonAfter">
                       元

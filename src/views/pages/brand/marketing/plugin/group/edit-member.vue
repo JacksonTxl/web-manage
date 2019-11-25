@@ -5,7 +5,7 @@
     :loading="loading.init"
     :confirmLoading="loading.editGroup"
     :isEdit="true"
-    :info="info.info"
+    :info="info"
     :shopIds="shopIds"
     @onsubmit="onSubmit"
     :groupParams="groupParams"
@@ -62,6 +62,8 @@
                   <st-input-number
                     v-model="record.group_price"
                     :float="true"
+                    @input="setPriceChange"
+                    style="width:110px;"
                     :disabled="activityState >= ACTIVITY_STATUS.NO_START"
                   >
                     <template slot="addonAfter">
@@ -147,10 +149,12 @@ export default {
       this.memberList.filter(item => {
         if (item.id === value) {
           this.tableData = item.product_spec
+          this.tableData.forEach(item => {
+            item.is_select = false
+          })
           if (this.selectedRowKeys) {
-            this.info.info.sku.forEach(item => {
+            this.info.sku.forEach(item => {
               this.tableData.forEach(card => {
-                card.is_select = false
                 if (item.sku_id === card.id) {
                   card.group_price = item.group_price
                   card.is_select = true
@@ -170,7 +174,7 @@ export default {
       this.tableData.forEach(card => {
         card.is_select = this.selectedRowKeys.indexOf(card.id) !== -1
       })
-      this.setPriceChange()
+      // this.setPriceChange()
     },
     // 处理输入拼团价格的逻辑
     setPriceChange() {
@@ -234,16 +238,16 @@ export default {
     },
     // 详情回显
     setFieldsValue() {
-      this.activityState = this.info.info.activity_state.id
-      this.cardId = this.info.info.product.id
-      this.oldStock = this.info.info.stock_total
-      this.oldTime = new Date(this.info.info.end_time)
-      this.info.info.sku.forEach(item => {
+      this.activityState = this.info.activity_state.id
+      this.cardId = this.info.product.id
+      this.oldStock = this.info.stock_total
+      this.oldTime = new Date(this.info.end_time)
+      this.info.sku.forEach(item => {
         this.selectedRowKeys.push(item.sku_id)
       })
       this.getCheckboxProps = () => ({
         props: {
-          disabled: this.info.info.activity_state.id >= ACTIVITY_STATUS.NO_START
+          disabled: this.info.activity_state.id >= ACTIVITY_STATUS.NO_START
         }
       })
     }
