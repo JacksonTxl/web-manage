@@ -118,11 +118,13 @@
                     <div>{{ item.course_type }}</div>
                     <div>{{ item.course_name }}</div>
                     <div>
-                      <a
-                        href="javascript:void(0)"
-                        @click="onRemove(item.course_id)"
-                      >
-                        删除
+                      <a href="javascript:void(0)">
+                        <st-popconfirm
+                          :title="'一旦删除则无法恢复，确认删除'"
+                          @click="onRemove(item.course_id)"
+                        >
+                          删除
+                        </st-popconfirm>
                       </a>
                     </div>
                   </li>
