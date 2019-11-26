@@ -75,7 +75,9 @@
             </div>
             <div class="time-position">
               <div>{{ item.follow_date.split(' ')[1] }}</div>
-              <div>{{ item.follow_date.split(' ')[0] }}</div>
+              <div class="time-position-grey">
+                {{ item.follow_date.split(' ')[0] }}
+              </div>
             </div>
           </a-timeline-item>
         </a-timeline>
