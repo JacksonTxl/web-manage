@@ -222,13 +222,13 @@ export default {
   },
   methods: {
     onChangeSell(value) {
-      this.onMultiSearch({ follow_salesman_id: value })
+      this.$searchQuery.follow_salesman_id = value
     },
     onChangeCoach(value) {
-      this.onMultiSearch({ follow_coach_id: value })
+      this.$searchQuery.follow_coach_id = value
     },
     onChangeOperator(value) {
-      this.onMultiSearch({ operator_id: value })
+      this.$searchQuery.operator_id = value
     },
     refeshPage() {
       this.$router.reload()
