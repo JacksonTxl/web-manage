@@ -4,7 +4,7 @@ import {
   AddParams,
   EditParams,
   GroupBuyApi
-} from '@/api/v1/marketing/group_buy'
+} from '@/api/v1/marketing/group-buy'
 import { AuthService } from '@/services/auth.service'
 import { tap } from 'rxjs/operators'
 import { anyAll } from '@/operators'
