@@ -214,7 +214,10 @@ export default {
 
     // 数据
     onData(record) {
-      this.routeRul('data', record.id)
+      this.$router.push({
+        path: './data',
+        query: { id: record.id }
+      })
     },
     // 推广
     onGeneralize(record) {
@@ -243,25 +246,31 @@ export default {
       let id = record.id
       switch (typeId) {
         case 3:
-          this.routeRul('edit-personal', id)
+          this.$router.push({
+            path: './edit-personal',
+            query: { id: id }
+          })
           break
         case 2:
-          this.routeRul('edit-deposit', id)
+          this.$router.push({
+            path: './edit-deposit',
+            query: { id: id }
+          })
           break
         case 1:
-          this.routeRul('edit-member', id)
+          this.$router.push({
+            path: './edit-member',
+            query: { id: id }
+          })
           break
         case 4:
-          this.routeRul('edit-package-course', id)
+          this.$router.push({
+            path: './edit-package-course',
+            query: { id: id }
+          })
           break
         default:
       }
-    },
-    routeRul(url, id) {
-      this.$router.push({
-        path: `/brand/marketing/plugin/group/${url}`,
-        query: { id: id }
-      })
     },
     // 结束活动
     onStop(record) {
@@ -279,7 +288,9 @@ export default {
     },
     // 新增活动
     onAddGroup() {
-      this.routeRul('choose')
+      this.$router.push({
+        path: './choose'
+      })
     }
   },
   components: {
