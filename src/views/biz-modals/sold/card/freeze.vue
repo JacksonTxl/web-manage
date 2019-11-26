@@ -169,7 +169,8 @@ export default {
               {
                 end_time: values.end_time.format('YYYY-MM-DD HH:mm'),
                 poundage: this.frozen_fee,
-                pay_method: values.pay_method
+                pay_method: values.pay_method,
+                member_id: this.freezeInfo.member_id
               },
               this.id
             )
