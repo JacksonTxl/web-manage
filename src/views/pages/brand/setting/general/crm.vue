@@ -153,7 +153,7 @@
       </a-row>
       <div :class="bPage('custom')" v-if="crmRule.coach_is_protect">
         <st-t4 class="mg-t4 mg-b24">
-          教练跟进客户保护天数
+          教练分配客户保护天数
           <st-help-tooltip id="TBCRM004" />
         </st-t4>
         <a-radio-group v-model="crmRule.coach_is_protect_limit">
@@ -173,8 +173,11 @@
             </st-input-number>
           </a-radio>
         </a-radio-group>
-        <st-t4 class="mg-t24 mg-b24">购买以下项目不解绑教练</st-t4>
-        <a-checkbox-group v-model="crmRule.coach_untie_condition">
+        <st-t4 class="mg-t24 mg-b24 mg-l40">当会员购买以下项目不解绑教练</st-t4>
+        <a-checkbox-group
+          class="mg-l40"
+          v-model="crmRule.coach_untie_condition"
+        >
           <a-checkbox
             v-for="item in courseType"
             :key="item.value"
@@ -184,7 +187,7 @@
             {{ item.label }}
           </a-checkbox>
         </a-checkbox-group>
-        <st-t4 class="mg-t24 mg-b24">会员课程失效后解绑跟进教练规则</st-t4>
+        <st-t4 class="mg-t24 mg-b24">全部会员课程失效后解绑跟进教练规则</st-t4>
         <a-radio-group v-model="crmRule.coach_follow_rule">
           <a-radio
             v-for="item in userUntied"
