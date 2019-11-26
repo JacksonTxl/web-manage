@@ -65,7 +65,7 @@
                     value: 'id',
                     children: 'children'
                   }"
-                  @change="onActChange(li, arguments)"
+                  @change="onActChange(li, $event)"
                 />
               </st-form-item>
             </div>

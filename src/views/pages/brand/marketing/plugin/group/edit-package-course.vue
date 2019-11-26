@@ -99,7 +99,8 @@ import { EditCoursePackageService } from './edit-package-course.service'
 import { UserService } from '@/services/user.service'
 import {
   ACTIVITY_STATUS,
-  RELEASE_STATUS
+  RELEASE_STATUS,
+  PRODUCT_TYPE
 } from '@/constants/marketing/group-buy'
 import moment from 'moment'
 import { PatternService } from '@/services/pattern.service'
@@ -120,7 +121,7 @@ export default {
     }
   },
   mounted() {
-    this.editCourseService
+    this.editCoursePackageService
       .getCourseList({ shop_id: this.info.support_shop[0] })
       .subscribe(res => {
         this.setFieldsValue()
@@ -137,6 +138,7 @@ export default {
       tableData: [],
       ACTIVITY_STATUS,
       RELEASE_STATUS,
+      PRODUCT_TYPE,
       tableText: '', // 优惠设置错误提示
       tableErr: false,
       confirmLoading: false,
@@ -146,7 +148,7 @@ export default {
   },
   methods: {
     changeShop(value) {
-      this.editCourseService
+      this.editCoursePackageService
         .getCourseList({ shop_id: value })
         .subscribe(res => {
           this.$router.reload()
@@ -171,7 +173,7 @@ export default {
       console.log(data)
       data.id = +this.$route.query.id
       data.shop_ids = [+this.form.getFieldValue('shop_id')]
-      data.product_type = 4
+      data.product_type = PRODUCT_TYPE.PACKAGE_COURSE
       data.product_id = this.form.getFieldValue('course_id')
       data.sku = this.tableData.map(item => {
         return {
@@ -181,7 +183,7 @@ export default {
       })
       if (this.confirmLoading) return
       this.confirmLoading = true
-      this.editCourseService.editGroupbuy(data).subscribe(res => {
+      this.editCoursePackageService.editGroupbuy(data).subscribe(res => {
         this.confirmLoading = false
         this.$router.push({
           path: `./list`

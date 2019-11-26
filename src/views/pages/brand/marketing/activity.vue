@@ -133,12 +133,10 @@ export default {
         info: []
       }
       for (let i = 0; i < this.sliderInfo.length; i++) {
-        this.sliderInfo[i].activity_id =
-          this.sliderInfo[i].activity_id[1] || this.sliderInfo[i].activity_id
+        this.sliderInfo[i].activity_id = this.sliderInfo[i].activity_id[1]
       }
       for (let i = 0; i < this.eventInfo.length; i++) {
-        this.eventInfo[i].activity_id =
-          this.eventInfo[i].activity_id[1] || this.eventInfo[i].activity_id
+        this.eventInfo[i].activity_id = this.eventInfo[i].activity_id[1]
       }
       saveForm.info.push({
         category: 1,
@@ -154,6 +152,7 @@ export default {
             title: '保存成功',
             content: '成功'
           })
+          this.$router.reload()
         } else if (res.is_success === 0) {
           this.notificationService.error({
             title: '保存失败',
