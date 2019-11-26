@@ -19,7 +19,7 @@
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 开团数
-                <st-help-tooltip id="" />
+                <st-help-tooltip id="TBPTSJ001" />
               </p>
               <p class="number-up font-number">
                 {{ collect.group_total }}
@@ -28,7 +28,7 @@
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 成团数
-                <st-help-tooltip id="" />
+                <st-help-tooltip id="TBPTSJ002" />
               </p>
               <p class="number-up font-number">
                 {{ collect.group_success_total }}
@@ -37,7 +37,7 @@
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 参与人数
-                <st-help-tooltip id="" />
+                <st-help-tooltip id="TBPTSJ003" />
               </p>
               <p class="number-up font-number">
                 {{ collect.join_total }}
@@ -46,7 +46,7 @@
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 新用户数
-                <st-help-tooltip id="" />
+                <st-help-tooltip id="TBPTSJ004" />
               </p>
               <p class="number-up font-number">
                 {{ collect.new_total }}
@@ -55,7 +55,7 @@
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 成单数
-                <st-help-tooltip id="" />
+                <st-help-tooltip id="TBPTSJ005" />
               </p>
               <p class="number-up font-number">
                 {{ collect.success_order_total }}
@@ -64,7 +64,7 @@
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 成交金额
-                <st-help-tooltip id="" />
+                <st-help-tooltip id="TBPTSJ006" />
               </p>
               <p class="number-up font-number">
                 {{ collect.success_amount_total }}
