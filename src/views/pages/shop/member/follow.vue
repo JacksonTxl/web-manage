@@ -111,7 +111,7 @@
     <st-table
       :columns="columns"
       :loading="loading.getListInfo"
-      :scroll="{ x: 1500 }"
+      :scroll="{ x: 1520 }"
       rowKey="id"
       :page="page"
       @change="onTableChange"
