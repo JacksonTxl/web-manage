@@ -70,7 +70,19 @@
                 <a-col :span="6">
                   下次跟进时间：{{ item.follow_next_time }}
                 </a-col>
-                <a-col :span="6">{{ item.follow_status | followStatus }}</a-col>
+                <a-col :span="6">
+                  <st-text
+                    :status="{
+                      success: item.follow_status === 2,
+                      default: item.follow_status === 1,
+                      info: item.follow_status === 0,
+                      error: item.follow_status === 4,
+                      warning: item.follow_status === 3
+                    }"
+                  >
+                    {{ item.follow_status | followStatus }}
+                  </st-text>
+                </a-col>
               </div>
             </div>
             <div class="time-position">
