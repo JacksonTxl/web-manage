@@ -15,23 +15,29 @@ export class SelectService {
     this.list$ = new Computed(this.state$.pipe(pluck('list')))
   }
   @Effect()
-  getShopListTree(params: GroupBuy) {
-    if (params && params.type && `${params.id}`) {
-      return this.shopApi.getGroupShopList(params).pipe(
-        tap(res => {
-          this.state$.commit(state => {
-            state.list = res.list
-          })
-        })
-      )
+  getShopListTree(params: GroupBuy, type: string) {
+    if (type === 'group') {
+      return this.getGroupShopList(params)
     } else {
-      return this.shopApi.getShopListTree().pipe(
-        tap(res => {
-          this.state$.commit(state => {
-            state.list = res.list
-          })
-        })
-      )
+      return this.getShopList()
     }
+  }
+  getGroupShopList(params: GroupBuy) {
+    return this.shopApi.getGroupShopList(params).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.list = res.list
+        })
+      })
+    )
+  }
+  getShopList() {
+    return this.shopApi.getShopListTree().pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.list = res.list
+        })
+      })
+    )
   }
 }

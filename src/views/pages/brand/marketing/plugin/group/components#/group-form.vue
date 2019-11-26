@@ -104,17 +104,18 @@
                 @change="onSelectShop"
                 :shopIds="shopIds"
               ></select-shop> -->
-              <div :class="basic('shop--container')">
+              <st-container>
                 <st-t4 :class="basic('shop--set')">
                   设置支持会员卡售卖场馆范围
                 </st-t4>
                 <select-shop
                   :shopIds="info ? info.support_shop : []"
+                  type="group"
                   :groupParams="groupParams"
                   @change="onSelectShop"
                   ref="selectShop"
                 ></select-shop>
-              </div>
+              </st-container>
             </st-form-item>
           </a-col>
         </a-row>

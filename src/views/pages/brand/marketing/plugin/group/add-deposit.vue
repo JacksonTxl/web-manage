@@ -40,7 +40,7 @@
             :validateStatus="tableErr ? 'error' : ''"
             required
           >
-            <div :class="basic('table')">
+            <st-container>
               <st-table
                 rowKey="id"
                 :dataSource="currentStored"
@@ -60,7 +60,7 @@
                   </st-input-number>
                 </template>
               </st-table>
-            </div>
+            </st-container>
           </st-form-item>
         </a-col>
       </a-row>
@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import SelectShop from '@/views/fragments/shop/select-shop'
+// import SelectShop from '@/views/fragments/shop/select-shop'
 import { AddDepositService } from './add-deposit.service'
 import { PatternService } from '@/services/pattern.service'
 import { columnsGroupStored, ruleOptions } from './add-deposit.config'
@@ -82,9 +82,9 @@ import {
 
 export default {
   name: 'PageBrandMarketingGroupAddDeposit',
-  bem: {
+  /* bem: {
     basic: 'brand-marketing-group-deposit'
-  },
+  }, */
   serviceInject() {
     return {
       add: AddDepositService,
