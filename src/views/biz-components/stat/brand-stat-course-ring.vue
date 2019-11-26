@@ -58,7 +58,7 @@ export default {
       this.chart = new Chart({
         container: this.$el,
         forceFit: true,
-        padding: ['auto', 140, 'auto', 'auto'],
+        padding: ['auto', 20, 'auto', 'auto'],
         height: this.height
       })
       this.chart.source(this.dv, {
@@ -130,14 +130,14 @@ export default {
         start: (xScales, yScales) => {
           if (this.dv.sum('value') === 0) {
             this.hoverable = false
-            return ['78%', '50%']
+            return ['70%', '50%']
           }
           return []
         },
         end: (xScales, yScales) => {
           if (this.dv.sum('value') === 0) {
             this.hoverable = false
-            return ['22%', '50%']
+            return ['30%', '50%']
           }
           return []
         },
