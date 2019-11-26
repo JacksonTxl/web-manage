@@ -4,7 +4,7 @@ import {
   AddParams,
   EditParams,
   GroupBuyApi
-} from '@/api/v1/marketing/group_buy'
+} from '@/api/v1/marketing/group-buy'
 import { anyAll } from '@/operators'
 import { tap } from 'rxjs/operators'
 

@@ -5,7 +5,7 @@ import {
   ServiceRoute
 } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
-import { GroupBuyApi, AddParams } from '@/api/v1/marketing/group_buy'
+import { GroupBuyApi, AddParams } from '@/api/v1/marketing/group-buy'
 import { anyAll } from '@/operators'
 import { tap } from 'rxjs/operators'
 

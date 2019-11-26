@@ -30,7 +30,7 @@ export default {
         },
         {
           name: '私教课',
-          bg: require('@/assets/img/brand/marketing/group/mod_sijiaoke.png'),
+          bg: require('@/assets/img/brand/marketing/group/mod_personal.png'),
           url: './add-personal'
         },
         {

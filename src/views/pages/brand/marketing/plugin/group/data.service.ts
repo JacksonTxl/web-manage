@@ -1,5 +1,6 @@
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
-import { GroupBuyApi, GroupData } from '@/api/v1/marketing/group_buy'
+import { GroupBuyApi, GroupData } from '@/api/v1/marketing/group-buy'
+import { LotteryApi } from '@/api/v1/marketing/lottery'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'

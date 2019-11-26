@@ -219,9 +219,7 @@ export default {
     // 推广
     onGeneralize(record) {
       this.listService.getSharePosterInfo({ id: record.id }).subscribe(res => {
-        console.log(res)
         let isAuth = 1
-        let isQrCodeBtn = true
         const shsInfo = {
           person_num: this.info.group_sum,
           name: this.info.product_name,
@@ -234,7 +232,7 @@ export default {
         this.share.poster({
           isAuth,
           shsInfo,
-          isQrCodeBtn,
+          hasQrCodeBtn: true,
           shsPath: '/saas-mina/groupbuy'
         })
       })
