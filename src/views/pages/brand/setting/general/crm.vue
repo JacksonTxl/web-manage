@@ -372,7 +372,9 @@ export default {
         }
       }
       return this.crmService.setCrmRule(this.crmRule).subscribe(res => {
-        this.messageService.success({ content: '保存成功' })
+        this.messageService.success({
+          content: '保存成功,新规则将在明日0点生效'
+        })
         this.$router.reload()
       })
     }
