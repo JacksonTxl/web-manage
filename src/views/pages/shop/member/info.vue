@@ -1,225 +1,132 @@
 <template>
-  <div class="shop-member-info">
-    <st-panel class="shop-member-info-title">
-      <a-row :gutter="24">
-        <a-col :span="14">
-          <div class="shop-member-info-title-pannel-left">
-            <div class="shop-member-info-title-pannel__img">
-              <div
-                class="img-box  st-preview-item st-preview-item--cover"
-                v-viewer="{ url: 'data-src' }"
-              >
-                <img
-                  class="img-url"
-                  :src="info.image_face.image_url"
-                  :data-src="info.image_face.image_url"
-                />
-                <span class="img-describe">{{ info.member_level.name }}</span>
-              </div>
-              <div class="input-face" v-if="authCommon.face">
-                <a href="#" @click="openFaceUpload">
-                  <a-icon type="plus" />
-                  录入人脸
-                </a>
-              </div>
+  <st-panel-layout class="shop-member-info">
+    <a-row class="shop-member-info-title">
+      <a-col :span="14">
+        <div class="shop-member-info-title-pannel-left">
+          <div class="shop-member-info-title-pannel__img">
+            <div
+              class="img-box  st-preview-item st-preview-item--cover"
+              v-viewer="{ url: 'data-src' }"
+            >
+              <img
+                class="img-url"
+                :src="info.image_face.image_url"
+                :data-src="info.image_face.image_url"
+              />
+              <span class="img-describe">{{ info.member_level.name }}</span>
             </div>
-
-            <div class="shop-member-info-title-pannel__info">
-              <st-t2>
-                {{ info.member_name }}
-                <st-icon
-                  v-if="info.sex === 1"
-                  :type="'female'"
-                  :style="'color:#FF5E41'"
-                />
-                <st-icon
-                  v-if="info.sex === 2"
-                  :type="'male'"
-                  :style="'color:#3F66F6'"
-                />
-              </st-t2>
-              <div class="shop-member-info-title-pannel__info__phone">
-                <div>
-                  手机号：
-                  <span>{{ info.mobile }}</span>
-                </div>
-                <div class="line" v-if="info.member_level.id !== 1"></div>
-                <div v-if="info.member_level.id !== 1">
-                  首次成为会员时间：
-                  <span>{{ info.be_member_time }}</span>
-                </div>
-              </div>
-              <div class="label-list">
-                <template v-for="(tag, index) in info.member_tag">
-                  <a-tooltip :key="index" :title="tag.name">
-                    <a-tag
-                      class="tag-item"
-                      :key="tag.name"
-                      :closable="true"
-                      @close="handleClose(tag)"
-                    >
-                      {{ tag.name }}
-                    </a-tag>
-                  </a-tooltip>
-                </template>
-                <a
-                  v-modal-link="{
-                    name: 'shop-add-lable',
-                    props: {
-                      memberIds: [$searchQuery.id]
-                    },
-                    on: { done: onModalTest }
-                  }"
-                >
-                  <a-tag
-                    v-if="authCommon.add"
-                    style="background: #fff; borderStyle: dashed;"
-                  >
-                    <a-icon type="plus" style="margin-right: 8px;" />
-                    标签
-                  </a-tag>
-                </a>
-              </div>
+            <div class="input-face" v-if="authCommon.face">
+              <a href="#" @click="openFaceUpload">
+                <a-icon type="plus" />
+                录入人脸
+              </a>
             </div>
           </div>
-        </a-col>
-        <a-col :span="10">
-          <div class="shop-member-info-title-pannel-right">
-            <div class="pannel-right__operation">
-              <st-button
-                v-if="auth['shop:member:member|edit']"
-                type="primary"
-                class="pannel-right__operation__margin"
-                @click="editMember"
-              >
-                编辑资料
-              </st-button>
+
+          <div class="shop-member-info-title-pannel__info">
+            <st-t2>
+              {{ info.member_name }}
+              <st-icon
+                v-if="info.sex === 1"
+                :type="'female'"
+                :style="'color:#FF5E41'"
+              />
+              <st-icon
+                v-if="info.sex === 2"
+                :type="'male'"
+                :style="'color:#3F66F6'"
+              />
+            </st-t2>
+            <div class="shop-member-info-title-pannel__info__phone">
+              <div>
+                手机号：
+                <span>{{ info.mobile }}</span>
+              </div>
+              <div class="line" v-if="info.member_level.id !== 1"></div>
+              <div v-if="info.member_level.id !== 1">
+                首次成为会员时间：
+                <span>{{ info.be_member_time }}</span>
+              </div>
+            </div>
+            <div class="label-list">
+              <template v-for="(tag, index) in info.member_tag">
+                <a-tooltip :key="index" :title="tag.name">
+                  <a-tag
+                    class="tag-item"
+                    :key="tag.name"
+                    :closable="true"
+                    @close="handleClose(tag)"
+                  >
+                    {{ tag.name }}
+                  </a-tag>
+                </a-tooltip>
+              </template>
               <a
-                v-if="auth['shop:member:member|bind_card']"
-                class="pannel-right__operation__margin"
                 v-modal-link="{
-                  name: 'shop-binding-entity-card',
+                  name: 'shop-add-lable',
                   props: {
-                    record: {
-                      member_id: $searchQuery.id,
-                      member_name: info.member_name,
-                      mobile: info.mobile
-                    }
-                  }
+                    memberIds: [$searchQuery.id]
+                  },
+                  on: { done: onModalTest }
                 }"
               >
-                <st-button class="pannel-right__operation__margin">
-                  绑定实体卡
-                </st-button>
+                <a-tag
+                  v-if="authCommon.add"
+                  style="background: #fff; borderStyle: dashed;"
+                >
+                  <a-icon type="plus" style="margin-right: 8px;" />
+                  标签
+                </a-tag>
               </a>
-              <a-dropdown>
-                <a-menu slot="overlay">
-                  <a-menu-item
-                    key="1"
-                    v-if="auth['shop:member:member|bind_coach']"
-                  >
-                    <a @click="onDistributionCoach">
-                      更改跟进{{ $c('coach') }}
-                    </a>
-                  </a-menu-item>
-                  <a-menu-item
-                    key="2"
-                    v-if="auth['shop:member:member|bind_salesman']"
-                  >
-                    <a @click="onDistributionSale">更改跟进销售</a>
-                  </a-menu-item>
-                  <a-menu-item
-                    key="3"
-                    v-if="auth['shop:member:member|unbind_wechat']"
-                    @click="onRemoveBind"
-                  >
-                    解除微信绑定
-                  </a-menu-item>
-                  <!-- <a-menu-item key="4" v-if="auth['shop:member:member|transfer']">
-                    <a v-modal-link="{ name: 'shop-transfer-shop',props: {record: {member_id:$searchQuery.id, member_name: info.member_name, mobile: info.mobile}}}">转店</a>
-                  </a-menu-item> -->
-                  <a-menu-item key="5" v-if="auth['shop:member:member|frozen']">
-                    <a
-                      v-modal-link="{
-                        name: 'shop-frozen',
-                        props: {
-                          record: {
-                            member_id: $searchQuery.id,
-                            member_name: info.member_name,
-                            mobile: info.mobile
-                          }
-                        }
-                      }"
-                    >
-                      冻结用户
-                    </a>
-                  </a-menu-item>
-                  <a-menu-item
-                    key="6"
-                    v-if="auth['shop:member:member|rebind_card']"
-                  >
-                    <a
-                      v-modal-link="{
-                        name: 'shop-missing-card',
-                        props: {
-                          record: {
-                            member_id: $searchQuery.id,
-                            member_name: info.member_name,
-                            mobile: info.mobile
-                          }
-                        }
-                      }"
-                    >
-                      重绑实体卡
-                    </a>
-                  </a-menu-item>
-                </a-menu>
-                <st-button style="margin-left: 8px">
-                  更多操作
-                  <a-icon type="down" />
-                </st-button>
-              </a-dropdown>
-            </div>
-            <div class="pannel-right__operation">
-              <div class="pannel-right__num__box">
-                <span class="pannel-right__num font-number">
-                  {{ info.valid_card }}
-                </span>
-                <span class="pannel-right__num__margin">/</span>
-                <span>张</span>
-                <p>
-                  有效{{ $c('member_card') }}
-                  <st-help-tooltip id="TSXQ001" />
-                </p>
-              </div>
-              <div class="pannel-right__num__box">
-                <span class="pannel-right__num font-number">
-                  {{ info.valid_personal_class }}
-                </span>
-                <span class="pannel-right__num__margin">/</span>
-                <span>节</span>
-                <p>
-                  有效私教课
-                  <st-help-tooltip id="TSXQ002" />
-                </p>
-              </div>
-              <div class="pannel-right__num__box">
-                <span class="pannel-right__num font-number">
-                  {{ info.deposit_balance }}
-                </span>
-                <span class="pannel-right__num__margin">/</span>
-                <span>元</span>
-                <p>
-                  储值卡余额
-                  <st-help-tooltip id="TSXQ003" />
-                </p>
-              </div>
             </div>
           </div>
-        </a-col>
-      </a-row>
-    </st-panel>
+        </div>
+      </a-col>
+      <a-col :span="10">
+        <div class="shop-member-info-title-pannel-right">
+          <div class="pannel-right__operation">
+            <st-btn-actions :options="btnOptions" />
+          </div>
+          <div class="pannel-right__operation">
+            <div class="pannel-right__num__box">
+              <span class="pannel-right__num font-number">
+                {{ info.valid_card }}
+              </span>
+              <span class="pannel-right__num__margin">/</span>
+              <span>张</span>
+              <p>
+                有效{{ $c('member_card') }}
+                <st-help-tooltip id="TSXQ001" />
+              </p>
+            </div>
+            <div class="pannel-right__num__box">
+              <span class="pannel-right__num font-number">
+                {{ info.valid_personal_class }}
+              </span>
+              <span class="pannel-right__num__margin">/</span>
+              <span>节</span>
+              <p>
+                有效私教课
+                <st-help-tooltip id="TSXQ002" />
+              </p>
+            </div>
+            <div class="pannel-right__num__box">
+              <span class="pannel-right__num font-number">
+                {{ info.deposit_balance }}
+              </span>
+              <span class="pannel-right__num__margin">/</span>
+              <span>元</span>
+              <p>
+                储值卡余额
+                <st-help-tooltip id="TSXQ003" />
+              </p>
+            </div>
+          </div>
+        </div>
+      </a-col>
+    </a-row>
     <st-panel
+      app
       :tabs="[
         {
           label: '用户资料',
@@ -271,7 +178,7 @@
       <div slot="actions"></div>
       <router-view></router-view>
     </st-panel>
-  </div>
+  </st-panel-layout>
 </template>
 
 <script>
@@ -311,7 +218,99 @@ export default {
       id: ''
     }
   },
+  computed: {
+    btnOptions() {
+      return [
+        {
+          text: '编辑资料',
+          click: this.editMember,
+          if: this.auth['shop:member:member|edit']
+        },
+        {
+          text: '绑定实体卡',
+          click: this.openBindingEntityCardModal,
+          if: this.auth['shop:member:member|bind_card']
+        },
+        {
+          text: `更改跟进${this.$c('coach')}`,
+          click: this.onDistributionCoach,
+          if: this.auth['shop:member:member|change_coach']
+        },
+        {
+          text: '更改跟进销售',
+          click: this.onDistributionSale,
+          if: this.auth['shop:member:member|change_salesman']
+        },
+        {
+          text: '解除微信绑定',
+          click: this.onRemoveBind,
+          if: this.auth['shop:member:member|unbind_wechat']
+        },
+        {
+          text: '冻结用户',
+          click: this.openFrozenModal,
+          if: this.auth['shop:member:member|frozen']
+        },
+        {
+          text: '重绑实体卡',
+          click: this.openMissingCardModal,
+          if: this.auth['shop:member:member|rebind_card']
+        }
+      ]
+    }
+  },
   methods: {
+    submitSuccess() {
+      this.$router.reload()
+      this.$message.success({ content: '提交成功' })
+    },
+    getRecord() {
+      return {
+        member_id: this.$searchQuery.id,
+        member_name: this.info.member_name,
+        mobile: this.info.mobile
+      }
+    },
+    openFrozenModal() {
+      this.$modalRouter.push({
+        name: 'shop-frozen',
+        props: {
+          record: this.getRecord()
+        },
+        on: {
+          success: () => {
+            this.submitSuccess()
+          }
+        }
+      })
+    },
+    openMissingCardModal() {
+      this.$modalRouter.push({
+        name: 'shop-missing-card',
+        props: {
+          record: this.getRecord()
+        },
+        on: {
+          success: () => {
+            this.submitSuccess()
+          }
+        }
+      })
+    },
+    openBindingEntityCardModal() {
+      this.$modalRouter.push({
+        name: 'shop-binding-entity-card',
+        props: {
+          record: this.getRecord()
+        },
+        on: {
+          success: () => {
+            this.submitSuccess()
+          }
+        }
+      })
+    },
+
     openFaceUpload() {
       this.$modalRouter.push({
         name: 'face-recognition',

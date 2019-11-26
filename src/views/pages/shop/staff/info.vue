@@ -126,56 +126,53 @@ export default {
       )
     },
     btnOptions() {
-      const options = [
+      return [
         {
           text: '编辑资料',
           click: this.editStaffInfo,
-          auth: 'brand_shop:staff:staff|edit'
+          if: this.auth['brand_shop:staff:staff|edit']
         },
         {
           text: '绑定实体卡',
           click: this.openModalBindCard,
-          auth: 'brand_shop:staff:staff|bind_card'
+          if: this.auth['brand_shop:staff:staff|bind_card']
         },
         {
           text: '重绑实体卡',
           click: this.openModalRebindCard,
-          auth: 'brand_shop:staff:staff|rebind_card'
+          if: this.auth['brand_shop:staff:staff|rebind_card']
         },
         {
           text: '职位变更',
           click: this.openModalPosition,
-          auth: 'brand_shop:staff:staff|position'
+          if: this.auth['brand_shop:staff:staff|position']
         },
         {
           text: '离职',
           click: this.openModalLeave,
-          auth: 'brand_shop:staff:staff|leave'
+          if: this.auth['brand_shop:staff:staff|leave']
         },
         {
           text: '复职',
           click: this.openModalReinstate,
-          auth: 'brand_shop:staff:staff|reinstate'
+          if: this.auth['brand_shop:staff:staff|reinstate']
         },
         {
           text: '管理登录账户',
           click: this.openModalSave,
-          auth: 'brand_shop:staff:account|save'
+          if: this.auth['brand_shop:staff:account|save']
         },
         {
           text: '设置薪资账户',
           click: this.openModalSalary,
-          auth: 'brand_shop:staff:staff|salary'
+          if: this.auth['brand_shop:staff:staff|salary']
         },
         {
           text: '解除门店关系',
           click: this.openModalShopLeave,
-          auth: 'brand_shop:staff:staff|shop_leave'
+          if: this.auth['brand_shop:staff:staff|salary']
         }
       ]
-      return options.filter(item => {
-        return !!this.auth[item.auth]
-      })
     }
   },
   created() {
