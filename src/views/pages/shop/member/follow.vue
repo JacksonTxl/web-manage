@@ -255,7 +255,7 @@ export default {
     handleReset() {
       this.selectTime.startTime.value = null
       this.selectTime.endTime.value = null
-      this.onSearhReset()
+      this.onSearchReset()
     }
   }
 }

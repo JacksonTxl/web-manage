@@ -9,7 +9,7 @@
       />
     </div>
 
-    <st-search-panel @search="onSearchNative" @reset="onSearhResetNative">
+    <st-search-panel @search="onSearchNative" @reset="onSearchResetNative">
       <st-search-panel-item label="课程状态：">
         <st-search-radio
           v-model="$searchQuery.course_status"
@@ -372,10 +372,10 @@ export default {
         : ''
       this.onSearch()
     },
-    onSearhResetNative() {
+    onSearchResetNative() {
       this.selectTime.startTime.value = null
       this.selectTime.endTime.value = null
-      this.onSearhReset()
+      this.onSearchReset()
     },
     // 设置searchData
     setSearchData() {

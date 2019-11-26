@@ -9,7 +9,7 @@
       />
     </div>
 
-    <st-search-panel @search="onSearchNative" @reset="onSearhReset">
+    <st-search-panel @search="onSearchNative" @reset="onSearchReset">
       <st-search-panel-item label="储值卡状态：">
         <st-search-radio v-model="$searchQuery.is_valid" :options="isValids" />
       </st-search-panel-item>

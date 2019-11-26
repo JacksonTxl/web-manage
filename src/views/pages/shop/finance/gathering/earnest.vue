@@ -1,6 +1,6 @@
 <template>
   <div :class="b()">
-    <st-search-panel @search="onSearchNative" @reset="onSearhReset">
+    <st-search-panel @search="onSearchNative" @reset="onSearchReset">
       <st-search-panel-item label="定金状态：">
         <st-search-radio
           v-model="$searchQuery.use_status"
