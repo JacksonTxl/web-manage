@@ -62,6 +62,9 @@
             >
               修改入场vip区域
             </a-menu-item>
+            <a-menu-item @click="onChangeMember">
+              变更成员
+            </a-menu-item>
           </a-menu>
           <st-button>
             更多操作
@@ -293,6 +296,12 @@ export default {
     // 升级
     onUpgrade() {
       this.cardActions.upgradeCard({
+        id: this.infoService.id
+      })
+    },
+    // 变更成员
+    onChangeMember() {
+      this.cardActions.onChangeMember({
         id: this.infoService.id
       })
     },

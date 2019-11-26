@@ -39,6 +39,14 @@
               <span slot="start_end" slot-scope="text, record">
                 {{ record.start_time }} ~ {{ record.end_time }}
               </span>
+              <span
+                slot="member_info"
+                slot-scope="text, record"
+                v-if="record.member_info"
+              >
+                购卡人：{{ record.member_info.card_buyer }}，卡成员
+                {{ record.member_info.card_members.join(',') }}
+              </span>
             </st-table>
           </st-form-item>
         </a-col>
@@ -278,8 +286,7 @@ export default {
         },
         getCheckboxProps: record => ({
           props: {
-            disabled: record.name === 'Disabled User', // Column configuration not to be checked
-            name: record.name
+            disabled: record.product_type === 1 && record.is_purchaser !== 1
           }
         })
       }

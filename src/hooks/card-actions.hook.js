@@ -2,6 +2,7 @@ import SoldCardRenewalMember from '@/views/biz-modals/sold/card/renewal-member'
 import SoldCardUpgradeMember from '@/views/biz-modals/sold/card/upgrade-member'
 import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
 import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
+import SoldDealChangeMember from '@/views/biz-modals/sold/deal/change-member'
 
 const useCardActions = () => {
   return {
@@ -9,7 +10,8 @@ const useCardActions = () => {
       SoldCardRenewalMember,
       SoldCardUpgradeMember,
       SoldDealGatheringTip,
-      SoldDealGathering
+      SoldDealGathering,
+      SoldDealChangeMember
     },
     methods: {
       upgradeCard(record) {
@@ -76,6 +78,20 @@ const useCardActions = () => {
           }
         })
       },
+      // 变更成员
+      onChangeMember(record) {
+        this.$modalRouter.push({
+          name: 'sold-deal-change-member',
+          props: {
+            id: record.id
+          },
+          on: {
+            success: () => {
+              this.$emit('refresh')
+            }
+          }
+        })
+      },
       // 订单收款modal
       createdOrderPay(props) {
         return new Promise((resolve, reject) => {
@@ -92,8 +108,6 @@ const useCardActions = () => {
       async payCallBack(orderId, modalType, callBackType) {
         switch (callBackType) {
           case 'cancel':
-            // this.$router.reload()
-            // this.onSearch()
             this.$emit('refresh')
             break
           case 'pay':
