@@ -62,7 +62,7 @@
             :help="tableText"
             :validateStatus="tableErr ? 'error' : ''"
           >
-            <div :class="basic('table')">
+            <st-container>
               <st-table
                 rowKey="id"
                 :columns="cardColumns"
@@ -85,7 +85,7 @@
                   </st-input-number>
                 </template>
               </st-table>
-            </div>
+            </st-container>
           </st-form-item>
         </a-col>
       </a-row>
@@ -118,9 +118,6 @@ export default {
       courseList: this.editCoursePackageService.courseList$,
       info: this.editCoursePackageService.info$
     }
-  },
-  bem: {
-    basic: 'brand-marketing-group-course'
   },
   mounted() {
     this.editCourseService

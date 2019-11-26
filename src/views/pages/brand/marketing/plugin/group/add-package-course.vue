@@ -59,7 +59,7 @@
             :help="tableText"
             :validateStatus="tableErr ? 'error' : ''"
           >
-            <div :class="basic('table')">
+            <st-container>
               <st-table
                 rowKey="id"
                 :columns="cardColumns"
@@ -81,7 +81,7 @@
                   </st-input-number>
                 </template>
               </st-table>
-            </div>
+            </st-container>
           </st-form-item>
         </a-col>
       </a-row>
@@ -116,9 +116,6 @@ export default {
       shopList: this.userService.shopList$,
       courseList: this.addPackageCourseService.courseList$
     }
-  },
-  bem: {
-    basic: 'brand-marketing-group-course'
   },
   data() {
     const form = this.$stForm.create()

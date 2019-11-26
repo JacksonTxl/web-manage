@@ -41,7 +41,7 @@
             :help="tableText"
             :validateStatus="tableErr ? 'error' : ''"
           >
-            <div :class="basic('table')">
+            <st-container>
               <st-table
                 :columns="cardColumns"
                 :dataSource="tableData"
@@ -72,7 +72,7 @@
                   </st-input-number>
                 </template>
               </st-table>
-            </div>
+            </st-container>
           </st-form-item>
         </a-col>
       </a-row>
@@ -102,9 +102,6 @@ export default {
       memberList: this.editMemberService.memberList$,
       info: this.editMemberService.info$
     }
-  },
-  bem: {
-    basic: 'brand-marketing-group-member'
   },
   data() {
     const form = this.$stForm.create()
