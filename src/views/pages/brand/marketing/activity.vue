@@ -133,6 +133,14 @@ export default {
         is_save,
         info: []
       }
+      for (let i = 0; i < this.sliderInfo.length; i++) {
+        this.sliderInfo[i].activity_id =
+          this.sliderInfo[i].activity_id[1] || this.sliderInfo[i].activity_id
+      }
+      for (let i = 0; i < this.eventInfo.length; i++) {
+        this.eventInfo[i].activity_id =
+          this.eventInfo[i].activity_id[1] || this.eventInfo[i].activity_id
+      }
       saveForm.info.push({
         category: 1,
         content: this.sliderInfo

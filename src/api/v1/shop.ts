@@ -55,6 +55,11 @@ export class ShopApi extends Api {
       params
     })
   }
+  getGroupShopList(params: GroupBuy) {
+    return this.http.get('v1/shop/all_list', {
+      params
+    })
+  }
 }
 
 export interface ShopImages {
@@ -183,4 +188,22 @@ export interface ShopInput {
 }
 export interface GetShopBasicInput {
   shop_ids: number[]
+}
+
+/**
+ * 拼团参数
+ *
+ */
+export interface GroupBuy {
+  /**
+   * 拼团商品类型
+   * 1：会籍卡
+   * 2：储值卡
+   * 3：私教课
+   */
+  type: any
+  /**
+   * 商品ID
+   */
+  id: any
 }

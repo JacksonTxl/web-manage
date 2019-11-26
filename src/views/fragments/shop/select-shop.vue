@@ -20,7 +20,8 @@
               v-modal-link="{
                 name: 'shop-select',
                 props: {
-                  checked: checkedShopIds
+                  checked: checkedShopIds,
+                  groupParams: group
                 },
                 on: {
                   change: onSelectShopComplete
@@ -83,12 +84,19 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    groupParams: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   },
   data() {
     return {
       checkedShopIds: [],
-      list: []
+      list: [],
+      group: this.groupParams
     }
   },
   mounted() {
@@ -130,9 +138,16 @@ export default {
           checkedShopIds.splice(index, 1)
         }
       })
+      console.log('list-shop', list)
       this.list = list
       this.checkedShopIds = checkedShopIds
       this.$emit('change', checkedShopIds)
+    },
+    // 拼团逻辑，清空门店
+    clearShopList() {
+      this.list = []
+      this.checkedShopIds = []
+      this.$emit('change', this.checkedShopIds)
     }
   }
 }

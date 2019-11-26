@@ -17,7 +17,7 @@
         </st-button>
         <st-button
           pill
-          v-if="isQrCodeBtn"
+          v-if="hasQrCodeBtn"
           type="primary"
           icon="download"
           size="large"
@@ -53,7 +53,7 @@ export default {
       default: () => {}
     },
     // 是否添加下载二维码按钮
-    isQrCodeBtn: {
+    hasQrCodeBtn: {
       type: Boolean,
       default: false
     },
@@ -75,7 +75,6 @@ export default {
       this.url = res
     })
   },
-
   methods: {
     downloadPoster() {
       const a = document.createElement('a')

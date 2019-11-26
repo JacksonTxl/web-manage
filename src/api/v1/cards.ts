@@ -41,7 +41,9 @@ export class CardsApi extends Api {
    * 卡已上架列表
    */
   getCardShelfList(query: CardShelfListInput, type: string, cardType: string) {
-    return this.http.get(`/v1/cards/${cardType}/${type}/shelf`, { query })
+    return this.http.get(`/v1/cards/${cardType}/${type}/shelf`, {
+      query
+    })
   }
   /**
    * 卡列表
@@ -126,7 +128,9 @@ export class CardsApi extends Api {
     type: string,
     cardType: string
   ) {
-    return this.http.put(`/v1/cards/${cardType}/${type}/stop/${id}`, { params })
+    return this.http.put(`/v1/cards/${cardType}/${type}/stop/${id}`, {
+      params
+    })
   }
   /**
    * 获取服务器系统时间
@@ -169,13 +173,17 @@ export class CardsApi extends Api {
    *  品牌储值卡下架
    */
   setBrandDepositShelfDown(params: BrandCardShelfDownInput) {
-    return this.http.put(`/v1/cards/deposit/brand/shelf/down`, { params })
+    return this.http.put(`/v1/cards/deposit/brand/shelf/down`, {
+      params
+    })
   }
   /**
    *  储值卡消费门店列表
    */
   getCardsDepositConsumeShop(query: ListPageInput, id: string) {
-    return this.http.get(`/v1/cards/deposit/consume/shop/${id}`, { query })
+    return this.http.get(`/v1/cards/deposit/consume/shop/${id}`, {
+      query
+    })
   }
   /**
    *  储值卡支持售卖门店列表
@@ -206,6 +214,12 @@ export class CardsApi extends Api {
    */
   getCourseTeamShelfList(query: CourseTeamShelfListInput, type: string) {
     return this.http.get(`/v1/course/team/${type}/shelf`, { query })
+  }
+  /**
+   * 获取拼团支持门店列表
+   */
+  getGroupShelfList(query: ListPageInput, id: number) {
+    return this.http.get(`v1/plugin/group_buy/shop/${id}`, { query })
   }
 }
 export interface CardsInput {

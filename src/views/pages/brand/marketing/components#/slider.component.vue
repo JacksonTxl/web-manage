@@ -19,7 +19,7 @@
             />
           </div>
           <div v-if="li.is_over === 1" :class="slider('overMask')"></div>
-          <img v-if="li.is_over === 1" :class="slider('over')" :src="over" />
+          <img v-if="li.is_over === 1" :class="slider('over')" :src="overImg" />
           <img
             style="object-fit: cover;"
             :src="li.image_url | imgFilter({ w: 482, h: 274 })"
@@ -29,20 +29,18 @@
             <span>（自动匹配店招图片）</span>
           </div>
           <st-form-item v-else labelWidth="46px" label="链接">
-            <a-select
-              placeholder="请输入连接的活动"
-              @select="actSelect(li, $event)"
+            <a-cascader
+              :options="actList"
+              :allowClear="false"
               v-model="li.activity_id"
-            >
-              <a-select-option
-                v-for="(act, i) in actList"
-                :key="i"
-                :value="act.id"
-                :disabled="filterActList(act.id) || act.isover"
-              >
-                {{ act.activity_name }}
-              </a-select-option>
-            </a-select>
+              placeholder="请输入链接的活动"
+              :fieldNames="{
+                label: 'activity_name',
+                value: 'id',
+                children: 'children'
+              }"
+              @change="onActSelect(li, $event)"
+            />
           </st-form-item>
         </div>
         <div :class="slider('addbox')" :span="8" v-if="list.length < 5">
@@ -67,20 +65,18 @@
               </span>
             </st-image-upload>
             <st-form-item labelWidth="46px" label="链接">
-              <a-select
-                placeholder="请输入连接的活动"
-                @select="addSelect"
+              <a-cascader
+                :options="actList"
+                :allowClear="false"
                 v-model="addItem.activity_id"
-              >
-                <a-select-option
-                  v-for="(act, i) in actList"
-                  :key="i"
-                  :value="act.id"
-                  :disabled="filterActList(act.id) || act.isover"
-                >
-                  {{ act.activity_name }}
-                </a-select-option>
-              </a-select>
+                placeholder="请输入链接的活动"
+                :fieldNames="{
+                  label: 'activity_name',
+                  value: 'id',
+                  children: 'children'
+                }"
+                @change="onAddSelect"
+              />
             </st-form-item>
           </div>
         </div>
@@ -90,10 +86,10 @@
 </template>
 <script>
 import { H5WrapperService } from '@/views/pages/brand/setting/mina/components#/h5/h5-wrapper.service'
-import { cloneDeep, find as _find } from 'lodash-es'
+import { cloneDeep, find as _find, values } from 'lodash-es'
 import draggable from 'vuedraggable'
 import { ActivityService } from '../activity.service'
-import over from '@/assets/img/brand/setting/mina/over.png'
+import overImg from '@/assets/img/brand/setting/mina/over.png'
 
 export default {
   bem: {
@@ -124,42 +120,63 @@ export default {
       activity_id: '',
       addItem: {
         image_url: '',
-        activity_id: '',
+        activity_id: [],
         activity_type: '',
         activity_name: '',
         is_default: 0,
         is_over: 0
       },
       actFilterList: [],
-      over: over
+      overImg
     }
   },
   mounted() {
     this.list = cloneDeep(this.sliderInfo)
-    this.actList = cloneDeep(this.activityList)
+    this.actList = cloneDeep(this.activityList.list)
     this.list.forEach(item => {
-      if (!this.actList.some(act => act.id === item.activity_id)) {
-        this.actList.push({
-          activity_name: item.activity_name,
-          activity_type: item.activity_type,
-          id: item.activity_id,
-          isover: true
-        })
+      // 需要对children进行遍历
+      this.actList.forEach(it => {
+        // it.id = it.type
+        if (item.activity_type === it.id) {
+          if (!it.children.some(act => act.id === item.activity_id)) {
+            let tmpArrChild = {
+              activity_name: item.activity_name,
+              activity_type: item.activity_type,
+              id: item.activity_id,
+              isover: true
+            }
+            let tmpProduct = {
+              product_type: item.product_type,
+              product_template_id: item.product_template_id
+            }
+            item.activity_type === 5
+              ? it.children.push(Object.assign(tmpArrChild, tmpProduct))
+              : it.children.push(tmpArrChild)
+          }
+          item.id = it.id
+          item.activity_id = [item.id, item.activity_id]
+        }
+      })
+    })
+    this.actList.forEach(item => {
+      if (!item.children.length) {
+        item.disabled = true
       }
     })
+    console.log(this.list, 'list这里')
+    console.log(this.actList, 'actList这里')
   },
   watch: {
     list: {
       deep: true,
       handler(newVal) {
-        console.log(newVal)
         this.h5WrapperService.SET_H5INFO(newVal, 1)
       }
     }
   },
   methods: {
     filterActList(id) {
-      return !!_find(this.list, o => o.activity_id === id)
+      return !!_find(this.list, o => o.activity_id[0] === id)
     },
     imageUploadChange(img) {
       let addItem = Object.assign({}, this.addItem)
@@ -169,7 +186,7 @@ export default {
       }
       if (addItem.image_url) {
         this.list.push(addItem)
-        this.addItem.activity_id = ''
+        this.addItem.activity_id = []
         this.addItem.activity_type = ''
         this.addItem.activity_name = ''
       }
@@ -177,16 +194,28 @@ export default {
     delSlider(index) {
       this.list.splice(index, 1)
     },
-    actSelect(item, value) {
-      let selected = this.actList.filter(it => it.id === value)[0]
+    onActSelect(item, value) {
+      let selected = {}
+      let selecttedParent = this.actList.filter(it => it.id === value[0])[0]
+      selected = selecttedParent.children.filter(it => it.id === value[1])[0]
       item.activity_type = selected.activity_type
       item.activity_name = selected.activity_name
+      if (item.activity_type === 5) {
+        item.product_type = selected.product_type || -1
+        item.product_template_id = selected.product_template_id || -1
+      }
       item.is_over = 0
     },
-    addSelect(value) {
-      let selected = this.actList.filter(it => it.id === value)[0]
+    onAddSelect(value) {
+      let selected = {}
+      let selecttedParent = this.actList.filter(it => it.id === value[0])[0]
+      selected = selecttedParent.children.filter(it => it.id === value[1])[0]
       this.addItem.activity_type = selected.activity_type
       this.addItem.activity_name = selected.activity_name
+      if (item.activity_type === 5) {
+        item.product_type = selected.product_type || -1
+        item.product_template_id = selected.product_template_id || -1
+      }
     }
   }
 }
