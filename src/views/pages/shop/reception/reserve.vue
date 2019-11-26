@@ -200,7 +200,7 @@ export default {
     onReset() {
       this.selectTime.startTime.value = moment()
       this.selectTime.endTime.value = moment()
-      this.onSearhReset()
+      this.onSearchReset()
     },
     onPrint(id) {
       let record = this.info

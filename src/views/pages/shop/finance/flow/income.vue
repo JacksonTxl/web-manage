@@ -189,7 +189,7 @@ export default {
       this.checkedList = []
       this.selectTime.startTime.value = null
       this.selectTime.endTime.value = null
-      this.onSearhReset()
+      this.onSearchReset()
     }
   }
 }

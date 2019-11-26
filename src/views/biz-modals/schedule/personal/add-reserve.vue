@@ -7,6 +7,7 @@
           placeholder="请输入会员名"
           v-decorator="decorators.member_id"
           style="width: 100%"
+          :dropdownMatchSelectWidth="false"
           :filterOption="false"
           @search="onSearchMember"
           @change="onChangeMember"
@@ -19,16 +20,14 @@
             :value="+member.member_id"
           >
             <div class="st-form-table__add-option">
-              <!-- <span
+              <span
                 class="item-name"
                 v-html="keywordFilter(member.member_name)"
               ></span>
               <span
                 class="item-phone"
                 v-html="keywordFilter(member.mobile)"
-              ></span> -->
-              <span class="item-name">{{ member.member_name }}</span>
-              <span class="item-phone">{{ member.mobile }}</span>
+              ></span>
             </div>
           </a-select-option>
         </a-select>
@@ -37,6 +36,7 @@
         <a-select
           v-decorator="decorators.consume_type"
           @change="onChangeConsume"
+          :dropdownMatchSelectWidth="false"
           placeholder="选择消费方式"
         >
           <a-select-opt-group
@@ -155,15 +155,14 @@ export default {
     }
   },
   methods: {
-    // TODO: 优化
-    // keywordFilter(str) {
-    //   if (!this.keyword) return str
-    //   str = str.replace(
-    //     new RegExp(this.keyword),
-    //     `<i class="color-primary">${this.keyword}</i>`
-    //   )
-    //   return str
-    // },
+    keywordFilter(str) {
+      if (!this.keyword) return str
+      str = str.replace(
+        new RegExp(this.keyword),
+        `<span class="color-primary">${this.keyword}</span>`
+      )
+      return str
+    },
     // 获取消费方式 权重2
     onChangeConsume(val) {
       if (!val) return

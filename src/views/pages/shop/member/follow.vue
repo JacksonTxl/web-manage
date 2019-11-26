@@ -88,16 +88,22 @@
             ></st-range-picker>
           </st-search-panel-item>
           <st-search-panel-item label="跟进次数：">
-            <a-input
+            <st-input-number
               v-model="$searchQuery.follow_start_num"
               :class="bPage('number')"
-              type="number"
+              :float="false"
+              :min="0"
+              :max="9999"
+              placeholder="0"
             />
             &nbsp;~&nbsp;
-            <a-input
+            <st-input-number
               v-model="$searchQuery.follow_end_num"
               :class="bPage('number')"
-              type="number"
+              :float="false"
+              :min="0"
+              :max="9999"
+              placeholder="9999"
             />
           </st-search-panel-item>
         </div>
@@ -108,7 +114,7 @@
     <st-table
       :columns="columns"
       :loading="loading.getListInfo"
-      :scroll="{ x: 1400 }"
+      :scroll="{ x: 1520 }"
       rowKey="id"
       :page="page"
       @change="onTableChange"
@@ -150,7 +156,7 @@
         <div>
           <st-overflow-text
             title="跟进内容"
-            max-width="200px"
+            max-width="180px"
             :value="text"
           ></st-overflow-text>
         </div>
@@ -191,8 +197,6 @@ export default {
   },
   data() {
     return {
-      startNum: -1,
-      endNum: -1,
       dateFormat: 'YYYY-MM-DD',
       selectTime: {
         startTime: {
@@ -220,13 +224,13 @@ export default {
   },
   methods: {
     onChangeSell(value) {
-      this.onMultiSearch({ follow_salesman_id: value })
+      this.$searchQuery.follow_salesman_id = value
     },
     onChangeCoach(value) {
-      this.onMultiSearch({ follow_coach_id: value })
+      this.$searchQuery.follow_coach_id = value
     },
     onChangeOperator(value) {
-      this.onMultiSearch({ operator_id: value })
+      this.$searchQuery.operator_id = value
     },
     refeshPage() {
       this.$router.reload()
@@ -251,7 +255,7 @@ export default {
     handleReset() {
       this.selectTime.startTime.value = null
       this.selectTime.endTime.value = null
-      this.onSearhReset()
+      this.onSearchReset()
     }
   }
 }

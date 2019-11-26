@@ -8,7 +8,7 @@
       />
     </div>
     <div slot="prepend">
-      <st-search-panel @search="onSearchNative" @reset="onSearhReset">
+      <st-search-panel @search="onSearchNative" @reset="onSearchReset">
         <st-search-panel-item label="用户级别：">
           <st-search-radio
             v-model="$searchQuery.member_level"
@@ -28,7 +28,7 @@
           />
         </st-search-panel-item>
         <div slot="more">
-          <st-search-panel-item label="跟进员工：">
+          <st-search-panel-item label="跟进销售：">
             <a-select
               class="mg-r40 select"
               v-model="$searchQuery.follow_salesman_id"
@@ -42,6 +42,8 @@
                 {{ item.sale_name }}
               </a-select-option>
             </a-select>
+          </st-search-panel-item>
+          <st-search-panel-item label="跟进教练：">
             <a-select
               class=" select"
               v-model="$searchQuery.follow_coach_id"
@@ -66,7 +68,7 @@
               class="input"
               v-model="$searchQuery.saleman_protect_remain"
             />
-            天后销售客保到期
+            天内销售客保到期
             <st-input-number
               :min="0"
               :max="9999"
@@ -76,7 +78,7 @@
               class="input mg-l40"
               v-model="$searchQuery.coach_protect_remain"
             />
-            天后教练客保到期
+            天内教练客保到期
           </st-search-panel-item>
           <st-search-panel-item label="跟进次数：">
             <st-input-number
@@ -84,7 +86,7 @@
               :max="9999"
               :step="1"
               :precision="0"
-              placeholder="输入次数"
+              placeholder="0"
               class="input"
               v-model="$searchQuery.follow_min"
             />
@@ -94,7 +96,7 @@
               :max="9999"
               :step="1"
               :precision="0"
-              placeholder="输入次数"
+              placeholder="9999"
               class="input"
               v-model="$searchQuery.follow_max"
             />

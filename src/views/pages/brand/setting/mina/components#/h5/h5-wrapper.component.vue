@@ -114,25 +114,25 @@ export default {
         this.isFixed = false
       }
     },
-    saveConfirm(is_save) {
+    saveConfirm(is_status) {
       let content = ''
-      if (is_save === 1) content = '是否确认将当前配置信息发布到小程序？'
-      if (is_save === 2) content = '是否确认将当前配置信息发布到小程序？'
+      if (is_status === 1) content = '是否确认将当前配置信息发布到小程序？'
+      if (is_status === 2) content = '是否确认将当前配置信息发布到小程序？'
       this.$confirm({
         content: content,
         onOk: () => {
-          this.save(is_save)
+          this.save(is_status)
         }
       })
     },
-    save(is_save) {
+    save(is_status) {
       let saveForm = {
-        is_save,
         info: []
       }
       saveForm.info.push({
         category: 2,
-        content: this.actionInfo
+        content: this.actionInfo,
+        status: is_status
       })
       let coachInfo = this.setCoashIDs()
       if (coachInfo.staff_id_list.length > 100) {
@@ -143,12 +143,14 @@ export default {
       }
       saveForm.info.push({
         category: 4,
-        content: coachInfo
+        content: coachInfo,
+        status: is_status
       })
 
       saveForm.info.push({
         category: 5,
-        content: this.courseInfo
+        content: this.courseInfo,
+        status: is_status
       })
       // this.h5WrapperService.save(saveForm).subscribe()
       // this.h5WrapperService.saveMenu(this.menuInfo).subscribe()
