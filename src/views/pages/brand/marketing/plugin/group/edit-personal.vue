@@ -74,6 +74,7 @@
                     :disabled="disabledEdit"
                     @input="setPriceChange"
                     style="width:110px;"
+                    :float="true"
                   >
                     <template slot="addonAfter">
                       元

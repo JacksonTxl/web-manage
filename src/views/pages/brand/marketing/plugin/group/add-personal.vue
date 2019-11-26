@@ -65,6 +65,7 @@
                   <st-input-number
                     v-model="record.group_price"
                     @input="setPriceChange"
+                    :float="true"
                     style="width:110px;"
                   >
                     <template slot="addonAfter">
