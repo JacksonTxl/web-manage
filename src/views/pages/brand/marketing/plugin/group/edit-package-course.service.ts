@@ -6,7 +6,7 @@ import { tap } from 'rxjs/operators'
 import { anyAll } from '@/operators'
 
 @Injectable()
-export class EditCourseService implements Controller {
+export class EditPackageCourseService implements Controller {
   info$ = new State({})
   loading$ = new State({})
   courseList$ = new State({})

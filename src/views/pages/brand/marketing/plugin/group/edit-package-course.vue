@@ -62,7 +62,7 @@
             :help="tableText"
             :validateStatus="tableErr ? 'error' : ''"
           >
-            <div :class="basic('table')">
+            <st-container>
               <st-table
                 rowKey="id"
                 :columns="cardColumns"
@@ -85,7 +85,7 @@
                   </st-input-number>
                 </template>
               </st-table>
-            </div>
+            </st-container>
           </st-form-item>
         </a-col>
       </a-row>
@@ -94,8 +94,8 @@
 </template>
 <script>
 import GroupForm from './components#/group-form'
-import { ruleOptions, cardColumns } from './add-course.config'
-import { EditCourseService } from './edit-course.service'
+import { ruleOptions, cardColumns } from './add-package-course.config'
+import { EditCoursePackageService } from './edit-package-course.service'
 import { UserService } from '@/services/user.service'
 import {
   ACTIVITY_STATUS,
@@ -106,21 +106,18 @@ import { PatternService } from '@/services/pattern.service'
 export default {
   serviceInject() {
     return {
-      editCourseService: EditCourseService,
+      editCoursePackageService: EditCoursePackageService,
       userService: UserService,
       pattern: PatternService
     }
   },
   rxState() {
     return {
-      loading: this.editCourseService.loading$,
+      loading: this.editCoursePackageService.loading$,
       shopList: this.userService.shopList$,
-      courseList: this.editCourseService.courseList$,
-      info: this.editCourseService.info$
+      courseList: this.editCoursePackageService.courseList$,
+      info: this.editCoursePackageService.info$
     }
-  },
-  bem: {
-    basic: 'brand-marketing-group-course'
   },
   mounted() {
     this.editCourseService
@@ -187,7 +184,7 @@ export default {
       this.editCourseService.editGroupbuy(data).subscribe(res => {
         this.confirmLoading = false
         this.$router.push({
-          path: `/brand/marketing/plugin/group/list`
+          path: `./list`
         })
       })
     },

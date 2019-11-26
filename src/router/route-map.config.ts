@@ -1395,7 +1395,7 @@ export const routeMapConfig = {
   'brand-marketing-plugin-group-add-member'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增拼团'
   },
-  'brand-marketing-plugin-group-add-course'(routeConfig: RouteConfig) {
+  'brand-marketing-plugin-group-add-package-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增拼团'
   },
   'brand-marketing-plugin-group-choose'(routeConfig: RouteConfig) {
@@ -1422,7 +1422,7 @@ export const routeMapConfig = {
   'brand-marketing-plugin-group-add-personal'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增拼团'
   },
-  'brand-marketing-plugin-group-edit-course'(routeConfig: RouteConfig) {
+  'brand-marketing-plugin-group-edit-package-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑拼团'
   },
   'brand-marketing-plugin-group-edit-member'(routeConfig: RouteConfig) {

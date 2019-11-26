@@ -55,20 +55,6 @@
                 ></a-input>
               </st-form-item>
               <st-form-item labelWidth="46px" label="链接">
-                <!-- <a-select
-                  placeholder="请输入链接的活动"
-                  @select="actSelect(li, $event)"
-                  v-model="li.activity_id"
-                >
-                  <a-select-option
-                    v-for="(act, i) in actList"
-                    :disabled="act.isover"
-                    :key="i"
-                    :value="act.id"
-                  >
-                    {{ act.activity_name }}
-                  </a-select-option>
-                </a-select> -->
                 <a-cascader
                   :options="actList"
                   :allowClear="false"
@@ -79,7 +65,7 @@
                     value: 'id',
                     children: 'children'
                   }"
-                  @change="onActChange(li, $event)"
+                  @change="onActChange(li, arguments)"
                 />
               </st-form-item>
             </div>
@@ -161,15 +147,6 @@ export default {
             item.activity_id = [item.id, item.activity_id]
           }
         })
-        // if (!this.actList.some(act => act.id === item.activity_id)) {
-        //   this.actList.push({
-        //     activity_name: item.activity_name,
-        //     activity_type: item.activity_type,
-        //     id: item.activity_id,
-        //     isover: true
-        //   })
-        // }
-        // item.activity_id = [item.activity_id]
       })
       this.actList.forEach(item => {
         if (!item.children.length) {
@@ -180,26 +157,6 @@ export default {
       this.number = 0
       this.actList = cloneDeep(this.activityList)
     }
-
-    // if (this.eventInfo && this.eventInfo.length) {
-    //   let number = this.eventInfo.length
-    //   this.number = number
-    //   this.list[number] = cloneDeep(this.eventInfo)
-    //   this.actList = cloneDeep(this.activityList)
-    //   this.list[number].forEach(item => {
-    //     if (!this.actList.some(act => act.id === item.activity_id)) {
-    //       this.actList.push({
-    //         activity_name: item.activity_name,
-    //         activity_type: item.activity_type,
-    //         id: item.activity_id,
-    //         isover: true
-    //       })
-    //     }
-    //   })
-    // } else {
-    //   this.number = 0
-    //   this.actList = cloneDeep(this.activityList)
-    // }
   },
   watch: {
     list: {
@@ -263,24 +220,17 @@ export default {
       this.list = list
     },
     onActChange(item, value) {
-      // this.actList.forEach(ite => {
-      //   if (ite.children && ite.children.length) {
-      //     let selected = ite.children.filter(it => it.id === value[0])[0]
-      //   }
-      // })
       console.log('vlaue', value)
-      let selecttedParent = this.actList.filter(ite => ite.id === value[0])[0]
-      let selected = {}
-      selected = selecttedParent.children.filter(it => it.id === value[1])[0]
+      const selecttedParent = this.actList.filter(ite => ite.id === value[0])[0]
+      const selected = selecttedParent.children.filter(
+        it => it.id === value[1]
+      )[0]
       item.activity_type = selected.activity_type
       item.activity_name = selected.activity_name
       if (selected.activity_type === 5) {
         item.product_type = selected.product_type
         item.product_template_id = selected.product_template_id
       }
-      // let selected = this.actList.filter(it => it.id === value)[0]
-      // item.activity_type = selected.activity_type
-      // item.activity_name = selected.activity_name
     },
     imageUploadChange(e, index) {
       if (e.length) {
