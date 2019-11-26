@@ -21,7 +21,8 @@
                 name: 'shop-select',
                 props: {
                   checked: checkedShopIds,
-                  groupParams: group
+                  groupParams,
+                  type
                 },
                 on: {
                   change: onSelectShopComplete
@@ -90,6 +91,10 @@ export default {
       default: () => {
         return {}
       }
+    },
+    type: {
+      type: String,
+      default: ''
     }
   },
   data() {
