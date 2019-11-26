@@ -4,6 +4,7 @@
       slot="preview"
       id="h5"
       :class="{ fixed: isFixed }"
+      :openMiniFlag="openMiniFlag"
     ></h5-component>
 
     <st-tabs defaultActiveKey="1">
@@ -20,8 +21,16 @@
           title="营销活动推广设置"
           subTitle="推广活动数量会对图片尺寸有不同要求"
         >
-          <div>123</div>
-          <event-component v-if="eventLoaded"></event-component>
+          <st-form-item label="功能开关" required>
+            <st-switch v-model="openStatus" @change="onOpenStatusChange" />
+            <span class="mg-l12 mg-r12">
+              {{ openMiniFlag ? '已' : '未' }}开启
+            </span>
+            <span v-if="!openMiniFlag">
+              （一旦开启，将会在小程序展示，如需关闭，请谨慎操作。）
+            </span>
+          </st-form-item>
+          <event-component v-if="openMiniFlag"></event-component>
         </row-container-component>
       </st-tab-pane>
     </st-tabs>
@@ -72,7 +81,8 @@ export default {
   data() {
     return {
       sliderLoaded: false,
-      eventLoaded: false,
+      openStatus: 0,
+      openMiniFlag: false,
       isFixed: false,
       offsetTop: 0
     }
@@ -104,6 +114,11 @@ export default {
   destroyed() {
     window.removeEventListener('scroll', this.handleScroll)
   },
+  watch: {
+    openStatus(newVal) {
+      newVal ? (this.openMiniFlag = true) : (this.openMiniFlag = false)
+    }
+  },
   methods: {
     handleScroll() {
       let scrollTop =
@@ -117,29 +132,44 @@ export default {
         this.isFixed = false
       }
     },
-    saveConfirm(is_save) {
+    onOpenStatusChange(data) {
+      if (!data) {
+        this.$confirm({
+          title: '提示',
+          content: `一旦关闭，小程序会关闭首页营销位，请谨慎操作。`,
+          onCancel: () => {
+            this.openStatus = 1
+          },
+          onOk: () => {
+            //this.openStatus === 3
+          }
+        })
+      }
+    },
+    saveConfirm(is_status) {
       let content = ''
-      if (is_save === 1) content = '是否确认将当前配置信息发布到小程序？'
-      if (is_save === 2) content = '是否确认将当前配置信息发布到小程序？'
+      if (is_status === 1) content = '是否确认将当前配置信息发布到小程序？'
+      if (is_status === 2) content = '是否确认将当前配置信息发布到小程序？'
       this.$confirm({
         content: content,
         onOk: () => {
-          this.save(is_save)
+          this.save(is_status)
         }
       })
     },
-    save(is_save) {
+    save(is_status) {
       let saveForm = {
-        is_save,
         info: []
       }
       saveForm.info.push({
         category: 1,
-        content: this.sliderInfo
+        content: this.sliderInfo,
+        status: is_status
       })
       saveForm.info.push({
         category: 3,
-        content: this.eventInfo
+        content: this.eventInfo,
+        status: this.openStatus ? 2 : 3
       })
       this.h5WrapperService.save(saveForm).subscribe(res => {
         if (res.is_success === 1) {
@@ -172,8 +202,8 @@ export default {
         this.sliderLoaded = true
       })
       this.h5WrapperService.getH5Info({ category: 2 }).subscribe()
-      this.h5WrapperService.getH5Info({ category: 3 }).subscribe(() => {
-        this.eventLoaded = true
+      this.h5WrapperService.getH5Info({ category: 3 }).subscribe(res => {
+        this.openStatus = res.status
       })
       this.h5WrapperService.getH5Info({ category: 4 }).subscribe(res => {
         let staff_id = []
