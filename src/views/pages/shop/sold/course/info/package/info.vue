@@ -185,32 +185,32 @@ export default {
         {
           if: auth['shop:sold:sold_package_course|export_contract'],
           text: '查看合同',
-          click: toContract
+          click: this.toContract
         },
         {
           if: auth['shop:sold:sold_package_course|frozen'],
           text: '冻结',
-          click: onFreeze
+          click: this.onFreeze
         },
         {
           if: auth['shop:sold:sold_package_course|transfer'],
           text: '转让',
-          click: toContract
+          click: this.toContract
         },
         {
           if: auth['brand_shop:order:order|refund'],
           text: '退款',
-          click: toContract
+          click: this.toContract
         },
         {
           if: auth['shop:sold:sold_package_course|unfrozen'],
           text: '取消冻结',
-          click: onUnfreeze
+          click: this.onUnfreeze
         },
         {
           if: auth['shop:sold:sold_package_course|course_num'],
           text: '修改剩余课时',
-          click: toContract
+          click: this.toContract
         }
       ]
     },

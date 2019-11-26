@@ -8,10 +8,7 @@
         />
       </st-search-panel-item>
       <st-search-panel-item label="查询日期：">
-        <st-range-picker
-          :disabledDays="180"
-          :value="selectTime"
-        ></st-range-picker>
+        <st-range-picker :disabledDays="180" v-model="date" />
       </st-search-panel-item>
     </st-search-panel>
     <div :class="b('content')">
@@ -130,25 +127,7 @@ export default {
       selectedRowKeys: [],
       selectedRows: [],
       diffSelectedRows: [],
-      selectTime: {
-        startTime: {
-          showTime: false,
-          disabledBegin: null,
-          placeholder: '开始日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        },
-        endTime: {
-          showTime: false,
-          placeholder: '结束日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        }
-      },
+      date: [],
       soldDealInfo: '',
       earnestInfo: ''
     }
@@ -164,22 +143,23 @@ export default {
   methods: {
     // 查询
     onSearchNative() {
-      this.$searchQuery.start_date = this.selectTime.startTime.value
-        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00:00`
+      this.$searchQuery.start_date = this.date[0]
+        ? `${this.date[0].format('YYYY-MM-DD')} 00:00:00`
         : ''
-      this.$searchQuery.end_date = this.selectTime.endTime.value
-        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59:59`
+      this.$searchQuery.end_date = this.date[1]
+        ? `${this.date[1].format('YYYY-MM-DD')} 23:59:59`
         : ''
       this.onSearch()
     },
     // 设置searchData
     setSearchData() {
-      this.selectTime.startTime.value = this.$searchQuery.start_date
+      const start = this.$searchQuery.start_date
         ? cloneDeep(moment(this.$searchQuery.start_date))
         : null
-      this.selectTime.endTime.value = this.$searchQuery.end_date
+      const end = this.$searchQuery.end_date
         ? cloneDeep(moment(this.$searchQuery.end_date))
         : null
+      this.date = [start, end]
     },
     // moment
     moment,
