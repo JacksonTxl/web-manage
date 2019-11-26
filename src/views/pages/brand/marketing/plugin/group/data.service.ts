@@ -1,6 +1,5 @@
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { GroupBuyApi, GroupData } from '@/api/v1/marketing/group_buy'
-import { LotteryApi } from '@/api/v1/marketing/lottery'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
@@ -27,7 +26,6 @@ export class DataService implements Controller {
     return this.groupBuyApi.getGroupBuyDataTop(id).pipe(
       tap((res: any) => {
         this.info$.commit(() => res)
-        console.log(this.info$)
       })
     )
   }

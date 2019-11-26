@@ -82,26 +82,36 @@
           <!-- 做权限点判断 -->
           <template slot="action" slot-scope="text, record">
             <st-table-actions sytle="width: 120px">
-              <a @click="onData(record)">
+              <a
+                @click="onData(record)"
+                v-if="record.auth['brand:activity:group_buy|data']"
+              >
                 数据
               </a>
-              <!-- v-if="record.auth['brand:activity:group_buy|data']" 推广的数据判断 -->
-              <a @click="onGeneralize(record)">
+              <a
+                @click="onGeneralize(record)"
+                v-if="record.auth['brand:activity:group_buy|spread']"
+              >
                 推广
               </a>
-              <!-- v-if="record.auth['brand:activity:group_buy|edit']" 编辑的数据判断 -->
-              <a @click="onEdit(record)">
+              <a
+                @click="onEdit(record)"
+                v-if="record.auth['brand:activity:group_buy|edit']"
+              >
                 编辑
               </a>
-              <!-- v-if="record.auth['brand:activity:group_buy|spread']" 推广的数据判断 -->
-              <a @click="onStop(record)">
+              <a
+                @click="onStop(record)"
+                v-if="record.auth['brand:activity:group_buy|stop']"
+              >
                 结束
               </a>
-              <!-- v-if="record.auth['brand:activity:group_buy|stop']" 结束的数据判断 -->
-              <a @click="onRelease(record)">
+              <a
+                @click="onRelease(record)"
+                v-if="record.auth['brand:activity:group_buy|release']"
+              >
                 发布
               </a>
-              <!-- v-if="record.auth['brand:activity:group_buy|release']" 发布的数据判断 -->
             </st-table-actions>
           </template>
         </st-table>
@@ -142,7 +152,8 @@ export default {
       page: this.listService.page$,
       loading: this.listService.loading$,
       auth: this.listService.auth$,
-      info: this.listService.info$
+      info: this.listService.info$,
+      groupBuyEnums: this.userService.groupBuyEnums$
     }
   },
   hooks() {
@@ -155,20 +166,13 @@ export default {
       TYPE,
       activityName: '',
       activityStatus: -1,
-      columns: columns(vm),
-      activityEnum: {
-        // select 假数据做处理
-        activity_status: {
-          description: '活动状态',
-          value: { 5: '已结束', 2: '未开启', 1: '已开启' }
-        }
-      }
+      columns: columns(vm)
     }
   },
   computed: {
     //状态
     activity_status() {
-      return (this.activityEnum && this.activityEnum.activity_status) || []
+      return (this.groupBuyEnums && this.groupBuyEnums.activity_status) || []
     },
     activityType() {
       let list = []
@@ -180,7 +184,6 @@ export default {
   },
   mounted() {
     this.setSearchData()
-    console.log(this.$searchQuery)
   },
   watch: {
     query(newVal) {
@@ -219,7 +222,6 @@ export default {
         console.log(res)
         let isAuth = 1
         let isQrCodeBtn = true
-        console.log(this.info)
         const shsInfo = {
           person_num: this.info.group_sum,
           name: this.info.product_name,
