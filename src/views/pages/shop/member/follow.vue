@@ -94,6 +94,7 @@
               :float="false"
               :min="0"
               :max="9999"
+              placeholder="0"
             />
             &nbsp;~&nbsp;
             <st-input-number
@@ -102,6 +103,7 @@
               :float="false"
               :min="0"
               :max="9999"
+              placeholder="9999"
             />
           </st-search-panel-item>
         </div>
