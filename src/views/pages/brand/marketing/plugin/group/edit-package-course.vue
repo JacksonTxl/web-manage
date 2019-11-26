@@ -123,7 +123,7 @@ export default {
     basic: 'brand-marketing-group-course'
   },
   mounted() {
-    this.editCourseService
+    this.editCoursePackageService
       .getCourseList({ shop_id: this.info.support_shop[0] })
       .subscribe(res => {
         this.setFieldsValue()
@@ -149,7 +149,7 @@ export default {
   },
   methods: {
     changeShop(value) {
-      this.editCourseService
+      this.editCoursePackageService
         .getCourseList({ shop_id: value })
         .subscribe(res => {
           this.$router.reload()
@@ -184,7 +184,7 @@ export default {
       })
       if (this.confirmLoading) return
       this.confirmLoading = true
-      this.editCourseService.editGroupbuy(data).subscribe(res => {
+      this.editCoursePackageService.editGroupbuy(data).subscribe(res => {
         this.confirmLoading = false
         this.$router.push({
           path: `./list`

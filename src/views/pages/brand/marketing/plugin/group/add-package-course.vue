@@ -136,9 +136,11 @@ export default {
   },
   methods: {
     changeShop(value) {
-      this.addCourseService.getCourseList({ shop_id: value }).subscribe(res => {
-        this.$router.reload()
-      })
+      this.addPackageCourseService
+        .getCourseList({ shop_id: value })
+        .subscribe(res => {
+          this.$router.reload()
+        })
     },
     changeCourse(value) {
       this.tableData = this.courseList.filter(
@@ -166,7 +168,7 @@ export default {
           price: item.price
         }
       })
-      this.addCourseService.createGroupbuy(data).subscribe(res => {
+      this.addPackageCourseService.createGroupbuy(data).subscribe(res => {
         this.$router.push({
           path: `./list`
         })
