@@ -116,14 +116,15 @@
           >
             {{ item.label }}
           </a-radio>
-          可跟进
+
           <a-radio :value="3">
+            可跟进
             <st-input-number
               :min="1"
               :max="9999"
               :step="1"
               :precision="0"
-              class="input"
+              class="input "
               @focus="setFocus('sales_follow_rule', 3)"
               v-model="crmRule.sales_follow_days"
               placeholder="请输入"
@@ -197,8 +198,8 @@
           >
             {{ item.label }}
           </a-radio>
-          可跟进
           <a-radio :value="3">
+            可跟进
             <st-input-number
               :min="1"
               :max="9999"
