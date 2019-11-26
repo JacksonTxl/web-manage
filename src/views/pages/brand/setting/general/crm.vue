@@ -285,7 +285,7 @@ export default {
                 this.crmRule.coach_protect_days = ''
                 this.crmRule.coach_follow_rule = 1
                 this.crmRule.coach_follow_days = ''
-                this.crmRule.coach_untie_condition = []
+                this.crmRule.coach_untie_condition = [1, 2]
               }
             },
             cancel: () => {

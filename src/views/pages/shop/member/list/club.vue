@@ -66,7 +66,7 @@
               class="input"
               v-model="$searchQuery.saleman_protect_remain"
             />
-            天后销售客保到期
+            天内销售客保到期
             <st-input-number
               :min="0"
               :max="9999"
@@ -76,7 +76,7 @@
               class="input mg-l40"
               v-model="$searchQuery.coach_protect_remain"
             />
-            天后教练客保到期
+            天内教练客保到期
           </st-search-panel-item>
           <st-search-panel-item label="跟进次数：">
             <st-input-number

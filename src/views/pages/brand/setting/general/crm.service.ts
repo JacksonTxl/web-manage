@@ -11,7 +11,7 @@ export class CrmService {
     coach_is_limit: 0,
     coach_is_protect: 0,
     sales_is_protect: 0,
-    coach_untie_condition: [],
+    coach_untie_condition: [1, 2],
     sales_is_protect_limit: 0,
     sales_follow_rule: 1,
     coach_is_protect_limit: 0,
