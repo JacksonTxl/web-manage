@@ -36,7 +36,7 @@ export default {
         {
           name: '课程包',
           bg: require('@/assets/img/brand/marketing/group/mod_course.png'),
-          url: './add-course'
+          url: './add-package-course'
         }
       ]
     }

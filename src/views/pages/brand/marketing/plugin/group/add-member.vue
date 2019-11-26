@@ -177,7 +177,7 @@ export default {
       data.product_id = this.cardId
       this.addMemberService.addGroup(data).subscribe(res => {
         this.$router.push({
-          path: `/brand/marketing/plugin/group/list`
+          path: `./list`
         })
       })
     }

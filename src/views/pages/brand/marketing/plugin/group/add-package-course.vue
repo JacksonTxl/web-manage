@@ -2,10 +2,8 @@
   <group-form
     :form="form"
     :decorators="decorators"
-    :loading="loading.addGroup"
-    :isEdit="true"
-    :info="info"
-    :confirmLoading="loading.editGroupbuy"
+    :loading="loading.getCourseList"
+    :confirmLoading="loading.createGroupbuy"
     @onsubmit="onSubmit"
     :showSelectShop="false"
   >
@@ -20,13 +18,13 @@
             <a-select
               showSearch
               v-decorator="decorators.shop_id"
-              :disabled="disabledEdit"
+              placeholder="请输入"
               @change="changeShop"
             >
               <a-select-option
                 :value="item.shop_id"
-                v-for="item in shopList"
-                :key="item.shop_id"
+                v-for="(item, index) in shopList"
+                :key="index"
               >
                 {{ item.shop_name }}
               </a-select-option>
@@ -38,15 +36,14 @@
         <a-col :span="10">
           <st-form-item label="选择课程包" required>
             <a-select
-              showSearch
+              placeholder="请输入"
               v-decorator="decorators.course_id"
               @change="changeCourse"
-              :disabled="disabledEdit"
             >
               <a-select-option
                 :value="item.id"
-                v-for="item in courseList"
-                :key="item.id"
+                v-for="(item, index) in courseList"
+                :key="index"
               >
                 {{ item.product_name }}
               </a-select-option>
@@ -75,7 +72,6 @@
                   <st-input-number
                     :float="true"
                     v-model="record.group_price"
-                    :disabled="disabledEdit"
                     @input="setPriceChange"
                     style="width:110px;"
                   >
@@ -94,8 +90,8 @@
 </template>
 <script>
 import GroupForm from './components#/group-form'
-import { ruleOptions, cardColumns } from './add-course.config'
-import { EditCourseService } from './edit-course.service'
+import { ruleOptions, cardColumns } from './add-package-course.config'
+import { AddPackageCourseService } from './add-package-course.service'
 import { UserService } from '@/services/user.service'
 import {
   ACTIVITY_STATUS,
@@ -106,28 +102,23 @@ import { PatternService } from '@/services/pattern.service'
 export default {
   serviceInject() {
     return {
-      editCourseService: EditCourseService,
+      addPackageCourseService: AddPackageCourseService,
       userService: UserService,
       pattern: PatternService
     }
   },
+  components: {
+    GroupForm
+  },
   rxState() {
     return {
-      loading: this.editCourseService.loading$,
+      loading: this.addPackageCourseService.loading$,
       shopList: this.userService.shopList$,
-      courseList: this.editCourseService.courseList$,
-      info: this.editCourseService.info$
+      courseList: this.addPackageCourseService.courseList$
     }
   },
   bem: {
     basic: 'brand-marketing-group-course'
-  },
-  mounted() {
-    this.editCourseService
-      .getCourseList({ shop_id: this.info.support_shop[0] })
-      .subscribe(res => {
-        this.setFieldsValue()
-      })
   },
   data() {
     const form = this.$stForm.create()
@@ -136,31 +127,25 @@ export default {
       form,
       decorators,
       cardColumns,
-      courseList: [],
       tableData: [],
       ACTIVITY_STATUS,
       RELEASE_STATUS,
       tableText: '', // 优惠设置错误提示
-      tableErr: false,
-      confirmLoading: false,
-      disabledEdit: false,
-      oldStock: Number
+      tableErr: false
     }
   },
   methods: {
     changeShop(value) {
-      this.editCourseService
-        .getCourseList({ shop_id: value })
-        .subscribe(res => {
-          this.$router.reload()
-        })
+      this.addCourseService.getCourseList({ shop_id: value }).subscribe(res => {
+        this.$router.reload()
+      })
     },
     changeCourse(value) {
       this.tableData = this.courseList.filter(
         item => item.id === value
       )[0].product_spec
+      this.tableData[0].is_select = true
     },
-    // 处理输入拼团价格的逻辑
     setPriceChange() {
       if (!this.tableData[0].group_price) {
         this.tableText = '请输入拼团价格'
@@ -171,49 +156,22 @@ export default {
       }
     },
     onSubmit(data) {
-      console.log(data)
-      data.id = +this.$route.query.id
       data.shop_ids = [+this.form.getFieldValue('shop_id')]
       data.product_type = 4
       data.product_id = this.form.getFieldValue('course_id')
       data.sku = this.tableData.map(item => {
         return {
           sku_id: this.form.getFieldValue('course_id'),
-          group_price: item.group_price
+          group_price: item.group_price,
+          price: item.price
         }
       })
-      if (this.confirmLoading) return
-      this.confirmLoading = true
-      this.editCourseService.editGroupbuy(data).subscribe(res => {
-        this.confirmLoading = false
+      this.addCourseService.createGroupbuy(data).subscribe(res => {
         this.$router.push({
-          path: `/brand/marketing/plugin/group/list`
+          path: `./list`
         })
       })
-    },
-    // 详情回显
-    setFieldsValue() {
-      console.log(this.info)
-      this.oldStock = this.info.stock_total
-      this.oldTime = new Date(this.info.end_time)
-      this.form.setFieldsValue({
-        shop_id: this.info.support_shop[0],
-        course_id: this.info.product.id
-      })
-      // 是否能够编辑, 当活动未开始时可以编辑
-      this.disabledEdit =
-        this.info.activity_state.id >= ACTIVITY_STATUS.NO_START
-      // 将详情信息中的sku和courseList中选中的某项课程包中的product_spec进行合并,得到一个含有price和group_price的数组,赋值给tableData
-      this.tableData = this.info.sku.map((item, key) => {
-        let courseProductSpec = this.courseList
-          .filter(course => item.sku_id === course.id)
-          .shift().product_spec
-        return Object.assign({}, item, courseProductSpec[key])
-      })
     }
-  },
-  components: {
-    GroupForm
   }
 }
 </script>

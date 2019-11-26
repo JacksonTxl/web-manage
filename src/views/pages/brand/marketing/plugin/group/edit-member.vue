@@ -216,7 +216,7 @@ export default {
       params.id = this.$route.query.id
       this.editMemberService.editGroup(data).subscribe(res => {
         this.$router.push({
-          path: `/brand/marketing/plugin/group/list`
+          path: `./list`
         })
       })
     },
