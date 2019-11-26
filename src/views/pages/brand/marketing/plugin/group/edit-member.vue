@@ -143,24 +143,19 @@ export default {
         cardId: value
       })
       this.groupParams.id = value
-      this.memberList.filter(item => {
-        if (item.id === value) {
-          this.tableData = item.product_spec
-          this.tableData.forEach(item => {
-            item.is_select = false
+      let member = this.memberList.filter(item => item.id === value)
+      this.tableData = member.product_spec
+      this.tableData = this.tableData.map(item => (item.is_select = false))
+      if (this.selectedRowKeys) {
+        this.info.sku.forEach(item => {
+          this.tableData.forEach(card => {
+            if (item.sku_id === card.id) {
+              card.group_price = item.group_price
+              card.is_select = true
+            }
           })
-          if (this.selectedRowKeys) {
-            this.info.sku.forEach(item => {
-              this.tableData.forEach(card => {
-                if (item.sku_id === card.id) {
-                  card.group_price = item.group_price
-                  card.is_select = true
-                }
-              })
-            })
-          }
-        }
-      })
+        })
+      }
       if (this.tableData.length === 1) {
         this.tableData[0].is_select = true
       }
