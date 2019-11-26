@@ -84,7 +84,7 @@
         </td>
         <td>
           <template v-if="item.isEdit">
-            <a-input placeholder="输入姓名" v-model="item.mobile"></a-input>
+            <a-input placeholder="输入手机号" v-model="item.mobile"></a-input>
           </template>
           <template v-else>
             {{ item.mobile }}

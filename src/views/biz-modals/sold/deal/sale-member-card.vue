@@ -663,7 +663,7 @@ export default {
                 return item.id
               }
             }),
-            family_member_info: this.memberChildrenlist.filter(item => item.id)
+            family_member_info: this.memberChildrenlist.filter(item => !item.id)
           })
           .subscribe(result => {
             this.$emit('success', {
