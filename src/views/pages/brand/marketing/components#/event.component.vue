@@ -65,7 +65,7 @@
                     value: 'id',
                     children: 'children'
                   }"
-                  @change="onActChange(li, $event)"
+                  @change="onActChange(li, arguments)"
                 />
               </st-form-item>
             </div>
@@ -221,16 +221,22 @@ export default {
     },
     onActChange(item, value) {
       console.log('vlaue', value)
-      const selecttedParent = this.actList.filter(ite => ite.id === value[0])[0]
-      const selected = selecttedParent.children.filter(
-        it => it.id === value[1]
-      )[0]
-      item.activity_type = selected.activity_type
-      item.activity_name = selected.activity_name
-      if (selected.activity_type === 5) {
-        item.product_type = selected.product_type
+      item.activity_type = value[1][1].activity_type
+      item.activity_name = value[1][1].activity_name
+      if (value[1][0].id === 5) {
+        item.product_type = value[1][1].product_type
         item.product_template_id = selected.product_template_id
       }
+      // const selecttedParent = this.actList.filter(ite => ite.id === value[0])[0]
+      // const selected = selecttedParent.children.filter(
+      //   it => it.id === value[1]
+      // )[0]
+      // item.activity_type = selected.activity_type
+      // item.activity_name = selected.activity_name
+      // if (selected.activity_type === 5) {
+      //   item.product_type = selected.product_type
+      //   item.product_template_id = selected.product_template_id
+      // }
     },
     imageUploadChange(e, index) {
       if (e.length) {
