@@ -183,34 +183,34 @@ export default {
     btnOptions() {
       return [
         {
-          if: auth['shop:sold:sold_package_course|export_contract'],
+          if: this.auth['shop:sold:sold_package_course|export_contract'],
           text: '查看合同',
-          click: toContract
+          click: this.toContract
         },
         {
-          if: auth['shop:sold:sold_package_course|frozen'],
+          if: this.auth['shop:sold:sold_package_course|frozen'],
           text: '冻结',
-          click: onFreeze
+          click: this.onFreeze
         },
         {
-          if: auth['shop:sold:sold_package_course|transfer'],
+          if: this.auth['shop:sold:sold_package_course|transfer'],
           text: '转让',
-          click: toContract
+          click: this.onTransfer
         },
         {
-          if: auth['brand_shop:order:order|refund'],
+          if: this.auth['brand_shop:order:order|refund'],
           text: '退款',
-          click: toContract
+          click: this.onRefund
         },
         {
-          if: auth['shop:sold:sold_package_course|unfrozen'],
+          if: this.auth['shop:sold:sold_package_course|unfrozen'],
           text: '取消冻结',
-          click: onUnfreeze
+          click: this.onUnfreeze
         },
         {
-          if: auth['shop:sold:sold_package_course|course_num'],
+          if: this.auth['shop:sold:sold_package_course|course_num'],
           text: '修改剩余课时',
-          click: toContract
+          click: this.onSurplus
         }
       ]
     },
@@ -416,7 +416,7 @@ export default {
       })
     },
     // 取消冻结
-    onUnfreeze(record) {
+    onUnfreeze() {
       this.$confirm({
         title: '提示',
         content: '是否取消冻结？',
@@ -432,7 +432,7 @@ export default {
       })
     },
     // 转让
-    onTransfer(record) {
+    onTransfer() {
       this.$modalRouter.push({
         name: 'sold-course-transfer',
         props: {
@@ -440,14 +440,14 @@ export default {
           id: this.infoService.id
         },
         on: {
-          success() {
+          success: () => {
             this.$router.reload()
           }
         }
       })
     },
     // 退款
-    onRefund(record) {
+    onRefund() {
       this.$modalRouter.push({
         name: 'sold-course-refund',
         props: {
@@ -455,7 +455,7 @@ export default {
           type: 'package'
         },
         on: {
-          success() {
+          success: () => {
             this.$router.reload()
           }
         }
