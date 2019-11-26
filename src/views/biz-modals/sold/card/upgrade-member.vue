@@ -24,7 +24,7 @@
         </a-col>
         <a-col :span="11">
           <st-info>
-            <st-info-item label="会员姓名">{{ info.member_name }}</st-info-item>
+            <st-info-item label="购卡人">{{ info.member_name }}</st-info-item>
             <st-info-item label="卡成员" v-if="info.card_number_type === 2">
               {{ info.card_member }}
             </st-info-item>
@@ -759,7 +759,9 @@ export default {
               this.show = false
               this.$emit('success', {
                 type: 'create',
-                orderId: res.info.order_id
+                orderId: res.info.order_id,
+                soldId: res.info.sold_id,
+                isFamilyCard: this.info.card_number_type === 2
               })
             })
         }
@@ -793,7 +795,9 @@ export default {
               this.show = false
               this.$emit('success', {
                 type: 'createPay',
-                orderId: res.info.order_id
+                orderId: res.info.order_id,
+                soldId: res.info.sold_id,
+                isFamilyCard: this.info.card_number_type === 2
               })
             })
         }

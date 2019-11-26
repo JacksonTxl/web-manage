@@ -14,7 +14,6 @@ export class SaleMemberCardService {
   loading$ = new State({})
   info$ = new State({})
   memberList$ = new State({})
-  memberChildrenList$ = new State({})
   saleList$ = new State({})
   couponList$ = new State({})
   currentPriceAction$: Action<any>
@@ -53,14 +52,6 @@ export class SaleMemberCardService {
     return this.transactionApi.getMemberList(member, type).pipe(
       tap((res: any) => {
         this.memberList$.commit(() => res.list)
-      })
-    )
-  }
-  @Effect()
-  getMemberChildren(member: string, type: number) {
-    return this.transactionApi.getMemberList(member, type).pipe(
-      tap((res: any) => {
-        this.memberChildrenList$.commit(() => res.list)
       })
     )
   }

@@ -10,9 +10,10 @@
       </st-form-item>
       <st-form-item labelGutter="12px" label="卡成员" required class="mg-b0">
         <add-card-member
+          v-if="info && info.sale_range"
           v-model="list"
           :max="info.support_member_num"
-          :type="2"
+          :type="info.sale_range.type"
         ></add-card-member>
       </st-form-item>
     </st-form>

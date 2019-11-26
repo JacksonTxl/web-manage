@@ -25,7 +25,10 @@
             <st-info-item label="约课权益">
               {{ info.course_interests }}
             </st-info-item>
-            <st-info-item label="支持入场人数">
+            <st-info-item
+              label="支持入场人数"
+              v-if="info.card_number_type === 2"
+            >
               {{ info.support_member_num }}
             </st-info-item>
           </st-info>
@@ -101,82 +104,12 @@
               <span @click="onCancelMember">取消添加</span>
             </p>
           </st-form-item>
-          <st-form-item v-if="searchMemberChildrenIsShow" label="卡成员">
-            <a-select
-              showSearch
-              allowClear
-              placeholder="输入手机号或会员名搜索"
-              :defaultActiveFirstOption="false"
-              :showArrow="false"
-              :filterOption="false"
-              v-decorator="decorators.memberChildrenId"
-              @search="onMemberChildrenSearch"
-              @change="onMemberChildrenChange"
-              notFoundContent="无搜索结果"
-            >
-              <a-select-option
-                v-for="(item, index) in memberChildrenList"
-                :value="item.id"
-                :key="index"
-              >
-                <span
-                  v-html="
-                    `${item.member_name} ${item.mobile}`.replace(
-                      new RegExp(memberChildrenSearchText, 'g'),
-                      `\<span class='global-highlight-color'\>${memberChildrenSearchText}\<\/span\>`
-                    )
-                  "
-                >
-                  {{ item.member_name }} {{ item.mobile }}
-                </span>
-              </a-select-option>
-            </a-select>
-            <p
-              v-if="
-                !memberChildrenList.length && memberChildrenSearchText !== ''
-              "
-              class="add-text"
-            >
-              查无此会员，
-              <span @click="onShowMemberChildren">添加新会员？</span>
-            </p>
-          </st-form-item>
-          <st-form-item
-            v-if="!searchMemberChildrenIsShow"
-            label="会员姓名"
-            required
-          >
-            <a-input
-              v-decorator="decorators.memberChildrenName"
-              placeholder="请输入会员姓名"
-            ></a-input>
-          </st-form-item>
-          <st-form-item
-            v-if="!searchMemberChildrenIsShow"
-            label="手机号"
-            required
-          >
-            <a-input
-              v-decorator="decorators.memberChildrenMobile"
-              placeholder="请输入手机号"
-            ></a-input>
-            <p class="add-text">
-              <span @click="onAddMemberChildren" class="mg-r8">确认</span>
-              <span @click="onCancelMemberChildren">取消</span>
-            </p>
-          </st-form-item>
-          <st-form-item
-            v-if="info && info.support_member_num > 1"
-            label="入场成员"
-          >
-            <a-tag
-              v-for="(item, index) in newMemeberList"
-              :key="index"
-              @close="deleteNewMember(item, index)"
-              closable
-            >
-              {{ item.memberName }}({{ item.memberMobile }})
-            </a-tag>
+          <st-form-item label="卡成员" v-if="info.card_number_type === 2">
+            <add-card-member
+              v-model="memberChildrenlist"
+              :max="info.support_member_num"
+              :type="info.sale_range.type"
+            ></add-card-member>
           </st-form-item>
           <st-form-item label="规格" required>
             <a-radio-group
@@ -418,6 +351,7 @@ import { PatternService } from '@/services/pattern.service'
 import { UserService } from '@/services/user.service'
 import { ruleOptions } from './sale-member-card.config'
 import autoContractBtn from '@/views/biz-components/contract/auto-contract-btn.vue'
+import AddCardMember from '@/views/biz-components/add-card-member/add-card-member'
 import { MessageService } from '@/services/message.service'
 export default {
   name: 'ModalSoldDealSaleMemberCard',
@@ -425,7 +359,8 @@ export default {
     sale: 'modal-sold-deal-sale'
   },
   components: {
-    autoContractBtn
+    autoContractBtn,
+    AddCardMember
   },
   serviceProviders() {
     return [SaleMemberCardService]
@@ -442,7 +377,6 @@ export default {
     return {
       loading: this.saleMemberCardService.loading$,
       memberList: this.saleMemberCardService.memberList$,
-      memberChildrenList: this.saleMemberCardService.memberChildrenList$,
       info: this.saleMemberCardService.info$,
       saleList: this.saleMemberCardService.saleList$,
       couponList: this.saleMemberCardService.couponList$,
@@ -500,8 +434,8 @@ export default {
       validEndTime: '',
       // 赠送天数
       gift_amount: 0,
-      // 新增成员列表展示
-      newMemeberList: []
+      // 卡成员展示
+      memberChildrenlist: []
     }
   },
   mounted() {
@@ -553,41 +487,6 @@ export default {
     }
   },
   methods: {
-    deleteNewMember(item, index) {
-      this.newMemeberList.splice(index, 1)
-    },
-    onCancelMemberChildren() {
-      this.searchMemberChildrenIsShow = true
-      this.form.resetFields([
-        'memberChildrenId',
-        'memberChildrenName',
-        'memberChildrenMobile'
-      ])
-    },
-    onAddMemberChildren() {
-      if (this.newMemeberList.length >= this.info.support_member_num - 1) {
-        this.messageService.error({
-          content: '当前卡人数已达上限，无法继续添加'
-        })
-        return
-      }
-      this.form.validateFields(
-        ['memberChildrenName', 'memberChildrenMobile'],
-        (errors, values) => {
-          if (!errors) {
-            this.newMemeberList.push({
-              memberName: values.memberChildrenName,
-              memberMobile: values.memberChildrenMobile
-            })
-            this.form.resetFields([
-              'memberChildrenId',
-              'memberChildrenName',
-              'memberChildrenMobile'
-            ])
-          }
-        }
-      )
-    },
     // 规格发生改变
     onChangeSpecs(event) {
       this.selectedNorm = event.target.value
@@ -659,34 +558,6 @@ export default {
           this.advanceList = cloneDeep(res.list)
         })
         this.fetchCouponList(data)
-      }
-    },
-    // 搜索卡成员
-    onMemberChildrenSearch(data) {
-      this.memberChildrenSearchText = data
-      if (data === '') {
-        this.saleMemberCardService.memberChildrenList$.commit(() => [])
-        this.form.resetFields(['memberChildrenId'])
-      } else {
-        this.saleMemberCardService
-          .getMemberChildren(data, this.info.sale_range.type)
-          .subscribe()
-      }
-    },
-    onMemberChildrenChange(data) {
-      if (this.newMemeberList.length >= this.info.support_member_num - 1) {
-        this.messageService.error({
-          content: '当前卡人数已达上限，无法继续添加'
-        })
-        return
-      }
-      if (data) {
-        const arr = this.memberChildrenList.filter(item => item.id === data)
-        this.newMemeberList.push({
-          id: arr[0].id,
-          memberName: arr[0].member_name,
-          memberMobile: arr[0].mobile
-        })
       }
     },
     onSelectAdvance() {
@@ -766,19 +637,6 @@ export default {
       })
     },
     onCreateOrder() {
-      this.searchMemberChildrenIsShow = true
-      const family_member_ids = []
-      const family_member_info = []
-      this.newMemeberList.forEach(item => {
-        if (item.id) {
-          family_member_ids.push(item.id)
-        } else {
-          family_member_info.push({
-            name: item.memberName,
-            mobile: item.memberMobile
-          })
-        }
-      })
       this.form.validate().then(values => {
         this.saleMemberCardService
           .setTransactionOrder({
@@ -800,8 +658,12 @@ export default {
             description: this.description,
             sale_range: this.info.sale_range.type,
             order_amount: this.currentPrice,
-            family_member_ids,
-            family_member_info
+            family_member_ids: this.memberChildrenlist.map(item => {
+              if (item.id) {
+                return item.id
+              }
+            }),
+            family_member_info: this.memberChildrenlist.filter(item => item.id)
           })
           .subscribe(result => {
             this.$emit('success', {
@@ -813,19 +675,6 @@ export default {
       })
     },
     onPay() {
-      this.searchMemberChildrenIsShow = true
-      const family_member_ids = []
-      const family_member_info = []
-      this.newMemeberList.forEach(item => {
-        if (item.id) {
-          family_member_ids.push(item.id)
-        } else {
-          family_member_info.push({
-            name: item.memberName,
-            mobile: item.memberMobile
-          })
-        }
-      })
       this.form.validate().then(values => {
         this.saleMemberCardService
           .setTransactionPay({
@@ -847,8 +696,12 @@ export default {
             description: this.description,
             sale_range: this.info.sale_range.type,
             order_amount: this.currentPrice,
-            family_member_ids,
-            family_member_info
+            family_member_ids: this.memberChildrenlist.map(item => {
+              if (item.id) {
+                return item.id
+              }
+            }),
+            family_member_info: this.memberChildrenlist.filter(item => !item.id)
           })
           .subscribe(result => {
             this.$emit('success', {

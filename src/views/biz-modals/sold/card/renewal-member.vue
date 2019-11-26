@@ -537,7 +537,9 @@ export default {
               this.show = false
               this.$emit('success', {
                 type: 'create',
-                orderId: res.info.order_id
+                orderId: res.info.order_id,
+                soldId: res.info.sold_id,
+                isFamilyCard: this.info.card_number_type === 2
               })
             })
         }
@@ -574,7 +576,9 @@ export default {
               this.show = false
               this.$emit('success', {
                 type: 'createPay',
-                orderId: res.info.order_id
+                orderId: res.info.order_id,
+                soldId: res.info.sold_id,
+                isFamilyCard: this.info.card_number_type === 2
               })
             })
         }
