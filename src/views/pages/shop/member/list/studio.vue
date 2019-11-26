@@ -8,7 +8,7 @@
       />
     </div>
     <div slot="prepend">
-      <st-search-panel @search="onSearchNative" @reset="onSearhReset">
+      <st-search-panel @search="onSearchNative" @reset="onSearchReset">
         <st-search-panel-item label="用户级别：">
           <st-search-radio
             v-model="$searchQuery.member_level"

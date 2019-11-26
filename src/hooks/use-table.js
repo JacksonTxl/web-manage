@@ -121,7 +121,7 @@ export default ($searchQuery, query) => ({
     /**
      * 筛选重置
      */
-    onSearhReset() {
+    onSearchReset() {
       this.onSelectionReset()
       this.$router.push({
         query: {

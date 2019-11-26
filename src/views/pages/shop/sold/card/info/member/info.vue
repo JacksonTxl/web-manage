@@ -2,72 +2,7 @@
   <st-panel-layout :class="basic()">
     <st-panel :title="`${$c('member_card')}详情`">
       <div slot="actions">
-        <st-button
-          v-if="auth['shop:sold:sold_member_card|export_contract']"
-          type="primary"
-          class="mg-r8"
-          @click="toContract"
-        >
-          查看合同
-        </st-button>
-        <st-button
-          v-if="auth['shop:sold:sold_member_card|frozen']"
-          class="mg-r8"
-          @click="onFreeze"
-        >
-          冻结
-        </st-button>
-        <st-button
-          v-if="auth['shop:sold:sold_member_card|renew']"
-          class="mg-r8"
-          @click="onRenewal"
-        >
-          续卡
-        </st-button>
-        <a-dropdown>
-          <a-menu slot="overlay">
-            <a-menu-item
-              v-if="auth['shop:sold:sold_member_card|upgrade']"
-              @click="onUpgrade"
-            >
-              升级
-            </a-menu-item>
-            <a-menu-item
-              v-if="auth['shop:sold:sold_member_card|transfer']"
-              @click="onTransfer"
-            >
-              转让
-            </a-menu-item>
-            <a-menu-item
-              v-if="auth['brand_shop:order:order|refund']"
-              @click="onRefund"
-            >
-              退款
-            </a-menu-item>
-            <a-menu-item
-              v-if="auth['shop:sold:sold_member_card|unfrozen']"
-              @click="onUnfreeze"
-            >
-              取消冻结
-            </a-menu-item>
-            <a-menu-item
-              v-if="auth['shop:sold:sold_member_card|vaild_time']"
-              @click="onSetTime"
-            >
-              修改有效时间
-            </a-menu-item>
-            <a-menu-item
-              v-if="auth['shop:sold:sold_member_card|vip_region']"
-              @click="onArea"
-            >
-              修改入场vip区域
-            </a-menu-item>
-          </a-menu>
-          <st-button>
-            更多操作
-            <a-icon type="down" />
-          </st-button>
-        </a-dropdown>
+        <st-btn-actions :options="btnOptions" />
       </div>
       <a-row :gutter="24">
         <a-col :span="9">
@@ -219,7 +154,56 @@ export default {
     // 门店范围
     admissionColumns,
     // 授课范围
-    courseColumns
+    courseColumns,
+    btnOptions() {
+      return [
+        {
+          text: '查看合同',
+          click: this.toContract,
+          if: this.auth['shop:sold:sold_member_card|export_contract']
+        },
+        {
+          text: '冻结',
+          click: this.onFreeze,
+          if: this.auth['shop:sold:sold_member_card|frozen']
+        },
+        {
+          text: '续卡',
+          click: this.onRenewal,
+          if: this.auth['shop:sold:sold_member_card|renew']
+        },
+        {
+          text: '升级',
+          click: this.onUpgrade,
+          if: this.auth['shop:sold:sold_member_card|upgrade']
+        },
+        {
+          text: '转让',
+          click: this.onTransfer,
+          if: this.auth['shop:sold:sold_member_card|transfer']
+        },
+        {
+          text: '退款',
+          click: this.onRefund,
+          if: this.auth['brand_shop:order:order|refund']
+        },
+        {
+          text: '取消冻结',
+          click: this.onUnfreeze,
+          if: this.auth['shop:sold:sold_member_card|unfrozen']
+        },
+        {
+          text: '修改有效时间',
+          click: this.onSetTime,
+          if: this.auth['shop:sold:sold_member_card|vaild_time']
+        },
+        {
+          text: '修改入场vip区域',
+          click: this.onArea,
+          if: this.auth['shop:sold:sold_member_card|vip_region']
+        }
+      ]
+    }
   },
   methods: {
     moment,

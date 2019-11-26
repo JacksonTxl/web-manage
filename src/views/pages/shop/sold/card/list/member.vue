@@ -8,7 +8,7 @@
         style="width:360px"
       />
     </div>
-    <st-search-panel @search="onSearchNative" @reset="onSearhResetNative">
+    <st-search-panel @search="onSearchNative" @reset="onSearchResetNative">
       <st-search-panel-item :label="`${$c('member_card')}类型：`">
         <st-search-radio
           v-model="$searchQuery.card_type"
@@ -320,10 +320,10 @@ export default {
         : ''
       this.onSearch()
     },
-    onSearhResetNative() {
+    onSearchResetNative() {
       this.selectTime.startTime.value = null
       this.selectTime.endTime.value = null
-      this.onSearhReset()
+      this.onSearchReset()
     },
     // 设置searchData
     setSearchData() {

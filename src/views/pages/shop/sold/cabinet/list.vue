@@ -8,7 +8,7 @@
       :class="basic('search')"
       style="width:372px"
     />
-    <st-search-panel @search="onSearchNative" @reset="onSearhReset">
+    <st-search-panel @search="onSearchNative" @reset="onSearchReset">
       <st-search-panel-item label="租赁状态：">
         <st-search-radio
           v-model="$searchQuery.lease_status"

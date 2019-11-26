@@ -315,7 +315,7 @@ export default {
       this.value = e + ''
     },
     joinok() {
-      this.onSearhReset()
+      this.onSearchReset()
     },
     onJoinDepartment(e) {
       console.log('批量加入部门')

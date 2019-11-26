@@ -144,11 +144,11 @@ export default {
       })
     },
     onSearchNative() {
-      const start_date = this.selectTime.startTime.value
-        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')}`
+      const start_date = this.date[0]
+        ? `${this.date[0].format('YYYY-MM-DD')}`
         : ''
-      const end_date = this.selectTime.endTime.value
-        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')}`
+      const end_date = this.date[1]
+        ? `${this.date[1].format('YYYY-MM-DD')}`
         : ''
       this.$searchQuery.pay_channel = this.checkedList
       this.$searchQuery.current_page = 1
@@ -158,9 +158,8 @@ export default {
     },
     onReset() {
       this.checkedList = []
-      this.selectTime.startTime.value = null
-      this.selectTime.endTime.value = null
-      this.onSearhReset()
+      this.date = [null, null]
+      this.this.onSearchReset()
     }
   }
 }
