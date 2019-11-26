@@ -130,7 +130,6 @@ export class GroupBuyApi extends Api {
    * 获取数据top
    */
   getGroupBuyDataTop(query: number) {
-    console.log(query)
     return this.http.get(`/v1/plugin/group_buy/data_top/${query}`)
   }
 }

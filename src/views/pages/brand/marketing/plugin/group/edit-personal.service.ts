@@ -1,6 +1,5 @@
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
-// import { AuthService } from '@/services/auth.service'
 import { GroupBuyApi, EditParams } from '@/api/v1/marketing/group-buy'
 import { tap } from 'rxjs/operators'
 import { anyAll } from '@/operators'

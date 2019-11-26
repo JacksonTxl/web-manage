@@ -141,6 +141,9 @@ export class UserService {
   transactionEnums$ = new Computed<ModuleEnums>(
     this.enums$.pipe(pluck('transaction'))
   )
+  groupBuyEnums$ = new Computed<ModuleEnums>(
+    this.enums$.pipe(pluck('group_buy'))
+  )
   urlData$ = new State({})
   constructor(
     private constApi: ConstApi,
