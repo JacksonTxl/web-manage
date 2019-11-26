@@ -20,6 +20,7 @@
           title="营销活动推广设置"
           subTitle="推广活动数量会对图片尺寸有不同要求"
         >
+          <div>123</div>
           <event-component v-if="eventLoaded"></event-component>
         </row-container-component>
       </st-tab-pane>
