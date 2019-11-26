@@ -6,7 +6,7 @@ import { tap } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
 
 @Injectable()
-export class AddCourseService {
+export class AddPackageCourseService {
   loading$ = new State({})
   courseList$ = new State({})
   constructor(private groupBuyApi: GroupBuyApi) {}
@@ -15,7 +15,6 @@ export class AddCourseService {
     return this.groupBuyApi.getCourseList(params).pipe(
       tap((res: any) => {
         this.courseList$.commit(() => res.list)
-        this.loading$.commit(() => {})
       })
     )
   }

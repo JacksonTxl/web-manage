@@ -19,7 +19,7 @@
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 开团数
-                <st-help-tooltip id="" />
+                <st-help-tooltip id="TBPTSJ001" />
               </p>
               <p class="number-up font-number">
                 {{ collect.group_total }}
@@ -28,7 +28,7 @@
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 成团数
-                <st-help-tooltip id="" />
+                <st-help-tooltip id="TBPTSJ002" />
               </p>
               <p class="number-up font-number">
                 {{ collect.group_success_total }}
@@ -37,7 +37,7 @@
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 参与人数
-                <st-help-tooltip id="" />
+                <st-help-tooltip id="TBPTSJ003" />
               </p>
               <p class="number-up font-number">
                 {{ collect.join_total }}
@@ -46,7 +46,7 @@
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 新用户数
-                <st-help-tooltip id="" />
+                <st-help-tooltip id="TBPTSJ004" />
               </p>
               <p class="number-up font-number">
                 {{ collect.new_total }}
@@ -55,7 +55,7 @@
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 成单数
-                <st-help-tooltip id="" />
+                <st-help-tooltip id="TBPTSJ005" />
               </p>
               <p class="number-up font-number">
                 {{ collect.success_order_total }}
@@ -64,7 +64,7 @@
             <a-col :span="4">
               <p :class="activities('acount-title')">
                 成交金额
-                <st-help-tooltip id="" />
+                <st-help-tooltip id="TBPTSJ006" />
               </p>
               <p class="number-up font-number">
                 {{ collect.success_amount_total }}
@@ -114,6 +114,7 @@
   </div>
 </template>
 <script>
+import { UserService } from '@/services/user.service'
 import { DataService } from './data.service.ts'
 import { columns } from './data.config.ts'
 import { State, Effect } from 'rx-state'
@@ -128,7 +129,8 @@ export default {
   mixins: [tableMixin],
   serviceInject() {
     return {
-      dataService: DataService
+      dataService: DataService,
+      userService: UserService
     }
   },
   rxState() {
@@ -137,29 +139,25 @@ export default {
       page: this.dataService.page$,
       collect: this.dataService.collect$,
       loading: this.dataService.loading$,
-      info: this.dataService.info$
+      info: this.dataService.info$,
+      groupBuyDataEnums: this.userService.groupBuyEnums$
     }
   },
-  data(vm) {
+  data() {
     return {
       showList: [],
       flag: true,
       searchWhere: '',
       groupStatus: -1,
-      columns: columns(vm),
-      dataEnum: {
-        // select 假数据
-        group_status: {
-          description: '活动状态',
-          value: { 1: '拼团成功', 3: '拼团中', 4: '拼团失败' }
-        }
-      }
+      columns
     }
   },
 
   computed: {
     group_status() {
-      return (this.dataEnum && this.dataEnum.group_status) || []
+      return (
+        (this.groupBuyDataEnums && this.groupBuyDataEnums.group_status) || []
+      )
     },
     groupType() {
       let list = []
@@ -176,10 +174,7 @@ export default {
   },
   mounted() {
     this.setSearchData()
-    console.log(this.$searchQuery)
-    console.log(this.list)
   },
-
   methods: {
     setSearchData() {
       let { search_where, group_status } = this.$searchQuery
@@ -204,7 +199,6 @@ export default {
       }
     },
     onShow(list) {
-      console.log(list)
       this.showList = list
       this.rowClassName()
     }

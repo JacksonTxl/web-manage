@@ -19,7 +19,7 @@
             />
           </div>
           <div v-if="li.is_over === 1" :class="slider('overMask')"></div>
-          <img v-if="li.is_over === 1" :class="slider('over')" :src="over" />
+          <img v-if="li.is_over === 1" :class="slider('over')" :src="overImg" />
           <img
             style="object-fit: cover;"
             :src="li.image_url | imgFilter({ w: 482, h: 274 })"
@@ -29,20 +29,6 @@
             <span>（自动匹配店招图片）</span>
           </div>
           <st-form-item v-else labelWidth="46px" label="链接">
-            <!-- <a-select
-              placeholder="请输入连接的活动"
-              @select="actSelect(li, $event)"
-              v-model="li.activity_id"
-            >
-              <a-select-option
-                v-for="(act, i) in actList"
-                :key="i"
-                :value="act.id"
-                :disabled="filterActList(act.id) || act.isover"
-              >
-                {{ act.activity_name }}
-              </a-select-option>
-            </a-select> -->
             <a-cascader
               :options="actList"
               :allowClear="false"
@@ -53,7 +39,7 @@
                 value: 'id',
                 children: 'children'
               }"
-              @change="actSelect(li, $event)"
+              @change="onActSelect(li, $event)"
             />
           </st-form-item>
         </div>
@@ -79,20 +65,6 @@
               </span>
             </st-image-upload>
             <st-form-item labelWidth="46px" label="链接">
-              <!-- <a-select
-                placeholder="请输入连接的活动"
-                @select="addSelect"
-                v-model="addItem.activity_id"
-              >
-                <a-select-option
-                  v-for="(act, i) in actList"
-                  :key="i"
-                  :value="act.id"
-                  :disabled="filterActList(act.id) || act.isover"
-                >
-                  {{ act.activity_name }}
-                </a-select-option>
-              </a-select> -->
               <a-cascader
                 :options="actList"
                 :allowClear="false"
@@ -103,7 +75,7 @@
                   value: 'id',
                   children: 'children'
                 }"
-                @change="addSelect"
+                @change="onAddSelect"
               />
             </st-form-item>
           </div>
@@ -117,7 +89,7 @@ import { H5WrapperService } from '@/views/pages/brand/setting/mina/components#/h
 import { cloneDeep, find as _find, values } from 'lodash-es'
 import draggable from 'vuedraggable'
 import { ActivityService } from '../activity.service'
-import over from '@/assets/img/brand/setting/mina/over.png'
+import overImg from '@/assets/img/brand/setting/mina/over.png'
 
 export default {
   bem: {
@@ -155,8 +127,7 @@ export default {
         is_over: 0
       },
       actFilterList: [],
-      over: over,
-      mo: [267011423273052]
+      overImg
     }
   },
   mounted() {
@@ -186,16 +157,6 @@ export default {
           item.activity_id = [item.id, item.activity_id]
         }
       })
-      // if (!this.actList.some(act => act.id === item.activity_id)) {
-      //   this.actList.push({
-      //     activity_name: item.activity_name,
-      //     activity_type: item.activity_type,
-      //     id: item.activity_id,
-      //     isover: true
-      //   })it
-      // }
-      // item.id = it.type
-      // item.activity_id = [item.id, item.activity_id]
     })
     this.actList.forEach(item => {
       if (!item.children.length) {
@@ -233,7 +194,7 @@ export default {
     delSlider(index) {
       this.list.splice(index, 1)
     },
-    actSelect(item, value) {
+    onActSelect(item, value) {
       let selected = {}
       let selecttedParent = this.actList.filter(it => it.id === value[0])[0]
       selected = selecttedParent.children.filter(it => it.id === value[1])[0]
@@ -245,7 +206,7 @@ export default {
       }
       item.is_over = 0
     },
-    addSelect(value) {
+    onAddSelect(value) {
       let selected = {}
       let selecttedParent = this.actList.filter(it => it.id === value[0])[0]
       selected = selecttedParent.children.filter(it => it.id === value[1])[0]

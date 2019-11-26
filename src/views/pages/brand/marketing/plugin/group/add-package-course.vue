@@ -59,7 +59,7 @@
             :help="tableText"
             :validateStatus="tableErr ? 'error' : ''"
           >
-            <div :class="basic('table')">
+            <st-container>
               <st-table
                 rowKey="id"
                 :columns="cardColumns"
@@ -81,7 +81,7 @@
                   </st-input-number>
                 </template>
               </st-table>
-            </div>
+            </st-container>
           </st-form-item>
         </a-col>
       </a-row>
@@ -90,8 +90,8 @@
 </template>
 <script>
 import GroupForm from './components#/group-form'
-import { ruleOptions, cardColumns } from './add-course.config'
-import { AddCourseService } from './add-course.service'
+import { ruleOptions, cardColumns } from './add-package-course.config'
+import { AddPackageCourseService } from './add-package-course.service'
 import { UserService } from '@/services/user.service'
 import {
   ACTIVITY_STATUS,
@@ -102,20 +102,20 @@ import { PatternService } from '@/services/pattern.service'
 export default {
   serviceInject() {
     return {
-      addCourseService: AddCourseService,
+      addPackageCourseService: AddPackageCourseService,
       userService: UserService,
       pattern: PatternService
     }
   },
+  components: {
+    GroupForm
+  },
   rxState() {
     return {
-      loading: this.addCourseService.loading$,
+      loading: this.addPackageCourseService.loading$,
       shopList: this.userService.shopList$,
-      courseList: this.addCourseService.courseList$
+      courseList: this.addPackageCourseService.courseList$
     }
-  },
-  bem: {
-    basic: 'brand-marketing-group-course'
   },
   data() {
     const form = this.$stForm.create()
@@ -124,7 +124,6 @@ export default {
       form,
       decorators,
       cardColumns,
-      courseList: [],
       tableData: [],
       ACTIVITY_STATUS,
       RELEASE_STATUS,
@@ -166,13 +165,10 @@ export default {
       })
       this.addCourseService.createGroupbuy(data).subscribe(res => {
         this.$router.push({
-          path: `/brand/marketing/plugin/group/list`
+          path: `./list`
         })
       })
     }
-  },
-  components: {
-    GroupForm
   }
 }
 </script>
