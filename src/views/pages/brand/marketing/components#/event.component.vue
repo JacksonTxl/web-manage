@@ -79,7 +79,7 @@
                     value: 'id',
                     children: 'children'
                   }"
-                  @change="actSelect(li, $event)"
+                  @change="onActChange(li, $event)"
                 />
               </st-form-item>
             </div>
@@ -262,12 +262,13 @@ export default {
       }
       this.list = list
     },
-    actSelect(item, value) {
+    onActChange(item, value) {
       // this.actList.forEach(ite => {
       //   if (ite.children && ite.children.length) {
       //     let selected = ite.children.filter(it => it.id === value[0])[0]
       //   }
       // })
+      console.log('vlaue', value)
       let selecttedParent = this.actList.filter(ite => ite.id === value[0])[0]
       let selected = {}
       selected = selecttedParent.children.filter(it => it.id === value[1])[0]

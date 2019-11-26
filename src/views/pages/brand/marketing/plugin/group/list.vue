@@ -218,7 +218,6 @@ export default {
       this.listService.getSharePosterInfo({ id: record.id }).subscribe(res => {
         console.log(res)
         let isAuth = 1
-        let isQrCodeBtn = true
         console.log(this.info)
         const shsInfo = {
           person_num: this.info.group_sum,
@@ -232,7 +231,7 @@ export default {
         this.share.poster({
           isAuth,
           shsInfo,
-          isQrCodeBtn,
+          hasQrCodeBtn: true,
           shsPath: '/saas-mina/groupbuy'
         })
       })

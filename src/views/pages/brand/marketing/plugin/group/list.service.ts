@@ -1,6 +1,6 @@
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
-import { GroupBuyApi, GroupListParams } from '@/api/v1/marketing/group_buy'
+import { GroupBuyApi, GroupListParams } from '@/api/v1/marketing/group-buy'
 import { MarketingApi } from '@/api/v1/marketing/marketing'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
