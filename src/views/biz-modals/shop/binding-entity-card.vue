@@ -35,7 +35,7 @@ import { ruleOptions } from './binding-entity-card.config'
 export default {
   serviceInject() {
     return {
-      Service: BindingEntityCardService
+      service: BindingEntityCardService
     }
   },
   name: 'bindingEntityCard',
@@ -64,12 +64,12 @@ export default {
       })
     },
     getLableList(data) {
-      this.Service.getMemberCard(this.record.member_id, data).subscribe(
-        state => {
+      this.service
+        .getMemberCard(this.record.member_id, data)
+        .subscribe(state => {
           this.show = false
           this.$emit('success')
-        }
-      )
+        })
     }
   }
 }

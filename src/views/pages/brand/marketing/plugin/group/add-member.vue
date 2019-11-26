@@ -153,7 +153,6 @@ export default {
     // 新建拼团活动
     onSubmit(data) {
       let isReturn = false
-      // let list = []
       if (this.tableErr) return
       if (this.tableData.length > 1 && !this.selectedRowKeys.length) {
         this.tableText = '请选择至少一个会籍卡规格'
@@ -168,7 +167,6 @@ export default {
             group_price: item.group_price
           }
         })
-      // let params = {}
       if (isReturn) {
         return
       }

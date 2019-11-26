@@ -116,14 +116,15 @@
           >
             {{ item.label }}
           </a-radio>
-          可跟进
+
           <a-radio :value="3">
+            可跟进
             <st-input-number
               :min="1"
               :max="9999"
               :step="1"
               :precision="0"
-              class="input"
+              class="input "
               @focus="setFocus('sales_follow_rule', 3)"
               v-model="crmRule.sales_follow_days"
               placeholder="请输入"
@@ -153,7 +154,7 @@
       </a-row>
       <div :class="bPage('custom')" v-if="crmRule.coach_is_protect">
         <st-t4 class="mg-t4 mg-b24">
-          教练跟进客户保护天数
+          教练分配客户保护天数
           <st-help-tooltip id="TBCRM004" />
         </st-t4>
         <a-radio-group v-model="crmRule.coach_is_protect_limit">
@@ -173,8 +174,11 @@
             </st-input-number>
           </a-radio>
         </a-radio-group>
-        <st-t4 class="mg-t24 mg-b24">购买以下项目不解绑教练</st-t4>
-        <a-checkbox-group v-model="crmRule.coach_untie_condition">
+        <st-t4 class="mg-t24 mg-b24 mg-l40">当会员购买以下项目不解绑教练</st-t4>
+        <a-checkbox-group
+          class="mg-l40"
+          v-model="crmRule.coach_untie_condition"
+        >
           <a-checkbox
             v-for="item in courseType"
             :key="item.value"
@@ -184,7 +188,7 @@
             {{ item.label }}
           </a-checkbox>
         </a-checkbox-group>
-        <st-t4 class="mg-t24 mg-b24">会员课程失效后解绑跟进教练规则</st-t4>
+        <st-t4 class="mg-t24 mg-b24">全部会员课程失效后解绑跟进教练规则</st-t4>
         <a-radio-group v-model="crmRule.coach_follow_rule">
           <a-radio
             v-for="item in userUntied"
@@ -194,8 +198,8 @@
           >
             {{ item.label }}
           </a-radio>
-          可跟进
           <a-radio :value="3">
+            可跟进
             <st-input-number
               :min="1"
               :max="9999"
@@ -285,7 +289,7 @@ export default {
                 this.crmRule.coach_protect_days = ''
                 this.crmRule.coach_follow_rule = 1
                 this.crmRule.coach_follow_days = ''
-                this.crmRule.coach_untie_condition = []
+                this.crmRule.coach_untie_condition = [1, 2]
               }
             },
             cancel: () => {
@@ -368,7 +372,9 @@ export default {
         }
       }
       return this.crmService.setCrmRule(this.crmRule).subscribe(res => {
-        this.messageService.success({ content: '保存成功' })
+        this.messageService.success({
+          content: '保存成功,新规则将在明日0点生效'
+        })
         this.$router.reload()
       })
     }

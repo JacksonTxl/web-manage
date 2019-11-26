@@ -187,9 +187,7 @@ export default {
     },
     // 编辑拼团活动
     onSubmit(data) {
-      console.log(data)
       let isReturn = false
-      // let list = []
       if (!this.selectedRowKeys.length) {
         this.tableText = '请选择会籍卡规格'
         this.tableErr = true
@@ -203,14 +201,13 @@ export default {
             group_price: item.group_price
           }
         })
-      // let params = {}
       if (isReturn) {
         return
       }
       data.product_type = 1
       data.product_id = this.cardId
       data.sku = list
-      params.id = this.$route.query.id
+      data.id = this.$route.query.id
       this.editMemberService.editGroup(data).subscribe(res => {
         this.$router.push({
           path: `./list`
