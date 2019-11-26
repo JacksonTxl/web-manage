@@ -65,9 +65,9 @@ export default (vm: any) => {
               return '活动库存不能超过999999，请重新输入'
             }
             if (
+              vm.ACTIVITY_STATUS &&
               vm.activityState > vm.ACTIVITY_STATUS.PUBLISHER &&
-              value < vm.info.stock_total &&
-              vm.$children[0].isEdit
+              value < vm.info.stock_total
             ) {
               return '活动库存只能增加不可减少'
             }
@@ -83,9 +83,9 @@ export default (vm: any) => {
               return '请填写活动时间'
             }
             if (
+              vm.ACTIVITY_STATUS &&
               vm.activityState > vm.ACTIVITY_STATUS.PUBLISHER &&
-              moment(value[1]).valueOf() < moment(vm.info.end_time).valueOf() &&
-              vm.$children[0].isEdit
+              moment(value[1]).valueOf() < moment(vm.info.end_time).valueOf()
             ) {
               return '活动时间只能延长不可缩短'
             }
