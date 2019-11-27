@@ -42,7 +42,7 @@
             :help="tableText"
             :validateStatus="tableErr ? 'error' : ''"
           >
-            <div :class="basic('table')">
+            <st-container>
               <st-table
                 :columns="cardColumns"
                 :dataSource="tableData"
@@ -73,7 +73,7 @@
                   </st-input-number>
                 </template>
               </st-table>
-            </div>
+            </st-container>
           </st-form-item>
         </a-col>
       </a-row>
@@ -86,10 +86,7 @@ import { ruleOptions, cardColumns } from './add-member.config'
 import { EditMemberService } from './edit-member.service'
 import { values } from 'lodash-es'
 import { PatternService } from '@/services/pattern.service'
-import {
-  ACTIVITY_STATUS,
-  RELEASE_STATUS
-} from '@/constants/marketing/group-buy'
+import { ACTIVITY_STATUS } from '@/constants/marketing/group-buy'
 export default {
   serviceInject() {
     return {
@@ -103,9 +100,6 @@ export default {
       memberList: this.editMemberService.memberList$,
       info: this.editMemberService.info$
     }
-  },
-  bem: {
-    basic: 'brand-marketing-group-member'
   },
   data() {
     const form = this.$stForm.create()
@@ -125,7 +119,6 @@ export default {
         id: null
       },
       ACTIVITY_STATUS,
-      RELEASE_STATUS,
       activityState: Number, // 当前活动活动状态
       oldStock: Number,
       oldTime: '',
@@ -147,24 +140,20 @@ export default {
         cardId: value
       })
       this.groupParams.id = value
-      this.memberList.filter(item => {
-        if (item.id === value) {
-          this.tableData = item.product_spec
-          this.tableData.forEach(item => {
-            item.is_select = false
+      let member = this.memberList.filter(item => item.id === value)[0]
+      this.tableData = member.product_spec.map(item =>
+        Object.assign(item, { is_select: false })
+      )
+      if (this.selectedRowKeys) {
+        this.info.sku.forEach(item => {
+          this.tableData.forEach(card => {
+            if (item.sku_id === card.id) {
+              card.group_price = item.group_price
+              card.is_select = true
+            }
           })
-          if (this.selectedRowKeys) {
-            this.info.sku.forEach(item => {
-              this.tableData.forEach(card => {
-                if (item.sku_id === card.id) {
-                  card.group_price = item.group_price
-                  card.is_select = true
-                }
-              })
-            })
-          }
-        }
-      })
+        })
+      }
       if (this.tableData.length === 1) {
         this.tableData[0].is_select = true
       }

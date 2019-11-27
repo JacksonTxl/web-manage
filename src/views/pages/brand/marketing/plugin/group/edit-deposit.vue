@@ -79,10 +79,7 @@ import { columnsGroupStored, ruleOptions } from './add-deposit.config'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import { PatternService } from '@/services/pattern.service'
 import moment, { months } from 'moment'
-import {
-  ACTIVITY_STATUS,
-  RELEASE_STATUS
-} from '@/constants/marketing/group-buy'
+import { ACTIVITY_STATUS } from '@/constants/marketing/group-buy'
 export default {
   name: 'PageBrandMarketingGroupEditDeposit',
   bem: {
@@ -120,7 +117,6 @@ export default {
       currentStored: [], // 当前下拉选中详细
       shopIds: [],
       ACTIVITY_STATUS,
-      RELEASE_STATUS,
       shopList: null,
       tableText: '',
       tableErr: ''

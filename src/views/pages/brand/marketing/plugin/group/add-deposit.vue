@@ -40,7 +40,7 @@
             :validateStatus="tableErr ? 'error' : ''"
             required
           >
-            <div :class="basic('table')">
+            <st-container>
               <st-table
                 rowKey="id"
                 :dataSource="currentStored"
@@ -60,7 +60,7 @@
                   </st-input-number>
                 </template>
               </st-table>
-            </div>
+            </st-container>
           </st-form-item>
         </a-col>
       </a-row>
@@ -69,22 +69,19 @@
 </template>
 
 <script>
-import SelectShop from '@/views/fragments/shop/select-shop'
+// import SelectShop from '@/views/fragments/shop/select-shop'
 import { AddDepositService } from './add-deposit.service'
 import { PatternService } from '@/services/pattern.service'
 import { columnsGroupStored, ruleOptions } from './add-deposit.config'
 import moment, { months } from 'moment'
 import GroupForm from './components#/group-form.vue'
-import {
-  ACTIVITY_STATUS,
-  RELEASE_STATUS
-} from '@/constants/marketing/group-buy'
+import { ACTIVITY_STATUS } from '@/constants/marketing/group-buy'
 
 export default {
   name: 'PageBrandMarketingGroupAddDeposit',
-  bem: {
+  /* bem: {
     basic: 'brand-marketing-group-deposit'
-  },
+  }, */
   serviceInject() {
     return {
       add: AddDepositService,
@@ -116,7 +113,6 @@ export default {
       currentStored: [], // 当前下拉选中详细
       shopIds: [],
       ACTIVITY_STATUS,
-      RELEASE_STATUS,
       shopList: null,
       tableText: '',
       tableErr: false

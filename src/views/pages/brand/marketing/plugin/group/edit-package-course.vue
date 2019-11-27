@@ -62,7 +62,7 @@
             :help="tableText"
             :validateStatus="tableErr ? 'error' : ''"
           >
-            <div :class="basic('table')">
+            <st-container>
               <st-table
                 rowKey="id"
                 :columns="cardColumns"
@@ -85,7 +85,7 @@
                   </st-input-number>
                 </template>
               </st-table>
-            </div>
+            </st-container>
           </st-form-item>
         </a-col>
       </a-row>
@@ -97,10 +97,7 @@ import GroupForm from './components#/group-form'
 import { ruleOptions, cardColumns } from './add-package-course.config'
 import { EditCoursePackageService } from './edit-package-course.service'
 import { UserService } from '@/services/user.service'
-import {
-  ACTIVITY_STATUS,
-  RELEASE_STATUS
-} from '@/constants/marketing/group-buy'
+import { ACTIVITY_STATUS, PRODUCT_TYPE } from '@/constants/marketing/group-buy'
 import moment from 'moment'
 import { PatternService } from '@/services/pattern.service'
 export default {
@@ -119,9 +116,6 @@ export default {
       info: this.editCoursePackageService.info$
     }
   },
-  bem: {
-    basic: 'brand-marketing-group-course'
-  },
   mounted() {
     this.editCoursePackageService
       .getCourseList({ shop_id: this.info.support_shop[0] })
@@ -139,7 +133,7 @@ export default {
       courseList: [],
       tableData: [],
       ACTIVITY_STATUS,
-      RELEASE_STATUS,
+      PRODUCT_TYPE,
       tableText: '', // 优惠设置错误提示
       tableErr: false,
       confirmLoading: false,
@@ -174,7 +168,7 @@ export default {
       console.log(data)
       data.id = +this.$route.query.id
       data.shop_ids = [+this.form.getFieldValue('shop_id')]
-      data.product_type = 4
+      data.product_type = PRODUCT_TYPE.PACKAGE_COURSE
       data.product_id = this.form.getFieldValue('course_id')
       data.sku = this.tableData.map(item => {
         return {

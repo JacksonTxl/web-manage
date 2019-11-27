@@ -175,7 +175,6 @@ export default {
   mounted() {
     this.setSearchData()
   },
-
   methods: {
     setSearchData() {
       let { search_where, group_status } = this.$searchQuery
