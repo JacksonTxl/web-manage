@@ -82,10 +82,7 @@
             </a-select>
           </st-search-panel-item>
           <st-search-panel-item label="跟进日期：">
-            <st-range-picker
-              :disabledDays="180"
-              :value="selectTime"
-            ></st-range-picker>
+            <st-range-picker :disabledDays="180" v-model="date" />
           </st-search-panel-item>
           <st-search-panel-item label="跟进次数：">
             <st-input-number
@@ -114,7 +111,7 @@
     <st-table
       :columns="columns"
       :loading="loading.getListInfo"
-      :scroll="{ x: 1500 }"
+      :scroll="{ x: 1520 }"
       rowKey="id"
       :page="page"
       @change="onTableChange"
@@ -198,31 +195,22 @@ export default {
   data() {
     return {
       dateFormat: 'YYYY-MM-DD',
-      selectTime: {
-        startTime: {
-          showTime: false,
-          disabledBegin: null,
-          placeholder: '开始日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        },
-        endTime: {
-          showTime: false,
-          placeholder: '结束日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        }
-      }
+      date: []
     }
   },
   computed: {
     columns
   },
+  mounted() {
+    this.setSearchDate()
+  },
   methods: {
+    setSearchDate() {
+      if (!this.$searchQuery.follow_start_date) return
+      const start = moment(this.$searchQuery.follow_start_date)
+      const end = moment(this.$searchQuery.follow_end_date)
+      this.date = [start, end]
+    },
     onChangeSell(value) {
       this.$searchQuery.follow_salesman_id = value
     },
@@ -237,11 +225,11 @@ export default {
     },
     // 查询
     onSearchNative() {
-      this.$searchQuery.follow_start_date = this.selectTime.startTime.value
-        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00`
+      this.$searchQuery.follow_start_date = this.date[0]
+        ? `${this.date[0].format('YYYY-MM-DD')} 00:00`
         : ''
-      this.$searchQuery.follow_end_date = this.selectTime.endTime.value
-        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59`
+      this.$searchQuery.follow_end_date = this.date[1]
+        ? `${this.date[1].format('YYYY-MM-DD')} 23:59`
         : ''
       this.onSearch()
     },
@@ -253,9 +241,8 @@ export default {
     },
     moment,
     handleReset() {
-      this.selectTime.startTime.value = null
-      this.selectTime.endTime.value = null
-      this.onSearhReset()
+      this.date = [null, null]
+      this.onSearchReset()
     }
   }
 }
