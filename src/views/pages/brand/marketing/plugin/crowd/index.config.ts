@@ -6,7 +6,7 @@ export const columns = () => [
   },
   {
     title: '人群定义',
-    width: '30%',
+    width: '25%',
     dataIndex: 'description',
     scopedSlots: { customRender: 'description' }
   },
