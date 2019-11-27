@@ -2,54 +2,7 @@
   <st-panel-layout :class="basic()">
     <st-panel title="课程包详情">
       <div slot="actions">
-        <st-button
-          v-if="auth['shop:sold:sold_package_course|export_contract']"
-          class="mg-r8"
-          type="primary"
-          @click="toContract"
-        >
-          查看合同
-        </st-button>
-        <st-button
-          v-if="auth['shop:sold:sold_package_course|frozen']"
-          class="mg-r8"
-          @click="onFreeze"
-        >
-          冻结
-        </st-button>
-        <st-button
-          v-if="auth['shop:sold:sold_package_course|unfrozen']"
-          class="mg-r8"
-          @click="onUnfreeze"
-        >
-          取消冻结
-        </st-button>
-        <a-dropdown>
-          <a-menu slot="overlay">
-            <a-menu-item
-              v-if="auth['shop:sold:sold_package_course|course_num']"
-              @click="onSurplus"
-            >
-              修改剩余课时
-            </a-menu-item>
-            <a-menu-item
-              v-if="auth['shop:sold:sold_package_course|transfer']"
-              @click="onTransfer"
-            >
-              转让
-            </a-menu-item>
-            <a-menu-item
-              v-if="auth['brand_shop:order:order|refund']"
-              @click="onRefund"
-            >
-              退款
-            </a-menu-item>
-          </a-menu>
-          <st-button>
-            更多操作
-            <a-icon type="down" />
-          </st-button>
-        </a-dropdown>
+        <st-btn-actions :options="btnOptions" />
       </div>
       <a-row :gutter="24">
         <a-col :span="9">
@@ -227,6 +180,40 @@ export default {
     }
   },
   computed: {
+    btnOptions() {
+      return [
+        {
+          if: this.auth['shop:sold:sold_package_course|export_contract'],
+          text: '查看合同',
+          click: this.toContract
+        },
+        {
+          if: this.auth['shop:sold:sold_package_course|frozen'],
+          text: '冻结',
+          click: this.onFreeze
+        },
+        {
+          if: this.auth['shop:sold:sold_package_course|transfer'],
+          text: '转让',
+          click: this.onTransfer
+        },
+        {
+          if: this.auth['brand_shop:order:order|refund'],
+          text: '退款',
+          click: this.onRefund
+        },
+        {
+          if: this.auth['shop:sold:sold_package_course|unfrozen'],
+          text: '取消冻结',
+          click: this.onUnfreeze
+        },
+        {
+          if: this.auth['shop:sold:sold_package_course|course_num'],
+          text: '修改剩余课时',
+          click: this.onSurplus
+        }
+      ]
+    },
     rangeType() {
       return this.packageInfo.course_range
         ? this.packageInfo.course_range.range_type
@@ -429,7 +416,7 @@ export default {
       })
     },
     // 取消冻结
-    onUnfreeze(record) {
+    onUnfreeze() {
       this.$confirm({
         title: '提示',
         content: '是否取消冻结？',
@@ -445,7 +432,7 @@ export default {
       })
     },
     // 转让
-    onTransfer(record) {
+    onTransfer() {
       this.$modalRouter.push({
         name: 'sold-course-transfer',
         props: {
@@ -453,14 +440,14 @@ export default {
           id: this.infoService.id
         },
         on: {
-          success() {
+          success: () => {
             this.$router.reload()
           }
         }
       })
     },
     // 退款
-    onRefund(record) {
+    onRefund() {
       this.$modalRouter.push({
         name: 'sold-course-refund',
         props: {
@@ -468,7 +455,7 @@ export default {
           type: 'package'
         },
         on: {
-          success() {
+          success: () => {
             this.$router.reload()
           }
         }

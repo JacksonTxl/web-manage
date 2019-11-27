@@ -5,7 +5,7 @@
         type="primary"
         v-if="auth.add"
         icon="add"
-        v-modal-link="{ name: 'label-add', on: { change: onSearhReset } }"
+        v-modal-link="{ name: 'label-add', on: { change: onSearchReset } }"
       >
         添加标签
       </st-button>
@@ -32,7 +32,7 @@
               v-modal-link="{
                 name: 'label-edit',
                 props: { item: record },
-                on: { change: onSearhReset }
+                on: { change: onSearchReset }
               }"
             >
               编辑

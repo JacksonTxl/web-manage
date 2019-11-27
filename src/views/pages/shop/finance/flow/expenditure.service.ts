@@ -23,9 +23,6 @@ export class ExpenditureService implements Controller {
       })
     )
   }
-  init(query: any) {
-    return forkJoin([this.getList(query)])
-  }
   beforeRouteEnter(to: ServiceRoute) {
     this.userService.getOptions$('finance.pay_channel').pipe(
       tap((list: any) => {
@@ -34,6 +31,6 @@ export class ExpenditureService implements Controller {
     )
   }
   beforeEach(to: ServiceRoute) {
-    return this.init(to.meta.query)
+    return this.getList(to.meta.query)
   }
 }

@@ -12,3 +12,9 @@ export const courseColumns = (vm: any) => {
     { title: '课程名称', dataIndex: 'name', key: 'name' }
   ]
 }
+export const enterTimeColumns = (vm: any) => {
+  return [
+    { title: '星期', dataIndex: 'week', key: 'week' },
+    { title: '时间段', dataIndex: 'time', key: 'time' }
+  ]
+}

@@ -8,7 +8,7 @@
         style="width:372px"
       />
     </div>
-    <st-search-panel @search="onSearchNative" @reset="onSearhResetNative">
+    <st-search-panel @search="onSearchNative" @reset="onSearchResetNative">
       <st-search-panel-item label="课程状态：">
         <st-search-radio
           v-model="$searchQuery.course_status"
@@ -16,10 +16,7 @@
         />
       </st-search-panel-item>
       <st-search-panel-item label="购买时间：">
-        <st-range-picker
-          :disabledDays="180"
-          :value="selectTime"
-        ></st-range-picker>
+        <st-range-picker :disabledDays="180" v-model="date" />
       </st-search-panel-item>
     </st-search-panel>
     <div :class="basic('content')">
@@ -203,25 +200,7 @@ export default {
       // 结束时间面板是否显示
       endOpen: false,
       selectedRowKeys: [],
-      selectTime: {
-        startTime: {
-          showTime: false,
-          disabledBegin: null,
-          placeholder: '开始日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        },
-        endTime: {
-          showTime: false,
-          placeholder: '结束日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        }
-      }
+      date: []
     }
   },
 
@@ -280,27 +259,27 @@ export default {
     },
     // 查询
     onSearchNative() {
-      this.$searchQuery.start_time = this.selectTime.startTime.value
-        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00:00`
+      this.$searchQuery.start_time = this.date[0]
+        ? `${this.date[0].format('YYYY-MM-DD')} 00:00:00`
         : ''
-      this.$searchQuery.end_time = this.selectTime.endTime.value
-        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59:59`
+      this.$searchQuery.end_time = this.date[1]
+        ? `${this.date[1].format('YYYY-MM-DD')} 23:59:59`
         : ''
       this.onSearch()
     },
-    onSearhResetNative() {
-      this.selectTime.startTime.value = null
-      this.selectTime.endTime.value = null
-      this.onSearhReset()
+    onSearchResetNative() {
+      this.date = [null, null]
+      this.onSearchReset()
     },
     // 设置searchData
     setSearchData() {
-      this.selectTime.startTime.value = this.$searchQuery.start_time
+      const start = this.$searchQuery.start_time
         ? cloneDeep(moment(this.$searchQuery.start_time))
         : null
-      this.selectTime.endTime.value = this.$searchQuery.end_time
+      const end = this.$searchQuery.end_time
         ? cloneDeep(moment(this.$searchQuery.end_time))
         : null
+      this.date = [start, end]
     },
     // moment
     moment,
