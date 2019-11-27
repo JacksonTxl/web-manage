@@ -11,7 +11,6 @@ export const walkTree = (tree, fn) => {
           isLeaf: !hasChildren,
           isTop: depth === 0
         })
-        console.log(needContinue)
         if (needContinue === false) {
           return
         }

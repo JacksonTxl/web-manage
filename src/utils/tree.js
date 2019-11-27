@@ -1,45 +1,59 @@
-import { merge } from 'lodash-es'
-
+import { merge, omit } from 'lodash-es'
+class TreeNode {
+  constructor(data, options = {}) {
+    this.data = omit(data, [options.children])
+    this.id = data[options.id]
+    this.name = data[options.name]
+    this.parent = null
+    this.children = []
+  }
+  setParent(parentNode) {
+    this.parent = parentNode
+  }
+}
 export class Tree {
-  constructor(tree = [], options = {}) {
-    this.tree = tree
+  constructor(treeData = [], options = {}) {
     this.options = merge(
       {
         id: 'id',
-        children: 'children'
+        children: 'children',
+        name: 'name'
       },
       options
     )
+    this._treeData = treeData
+    this._tree = []
+    this._init()
   }
-  _id(node) {
-    return node[this.options.id]
-  }
-  _children(node) {
-    return node[this.options.children]
-  }
-  _toMap() {
-    const map = {}
-    const walk = (tree, parent) => {
-      tree.forEach(node => {
-        node._extra = {
-          parent
-        }
-        // 新的不会覆盖老的
-        if (!map[this._id(node)]) {
-          map[this._id(node)] = node
-        }
-        if (this._children(node) && this._children(node).length) {
-          walk(this._children(node), node)
+  _init() {
+    this._tree = []
+    const walk = (tree, parentTreeNode = null, childrenInsert = []) => {
+      tree.forEach(data => {
+        const treeNode = new TreeNode(data, this.options)
+        treeNode.setParent(parentTreeNode)
+        childrenInsert.push(treeNode)
+
+        if (data.children && data.children.length) {
+          walk(data.children, treeNode, treeNode.children)
         }
       })
     }
-    walk(this.tree)
-    return map
+    walk(this._treeData, null, this._tree)
+    console.log(this._tree)
   }
-  findById(id) {
-    const map = this._toMap()
-    console.log(Object.create(map[id]))
-
-    return map[id]
+  findNodeById(id) {
+    let find = undefined
+    const walk = tree => {
+      tree.forEach(node => {
+        if (node.id === id) {
+          find = node
+        }
+        if (!find && node.children && node.children.length) {
+          walk(node.children)
+        }
+      })
+    }
+    walk(this._tree)
+    return find
   }
 }
