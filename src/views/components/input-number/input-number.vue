@@ -5,6 +5,7 @@
     :value="number"
     @change="numberChange"
     @blur="numberBlur"
+    @focus="numberFocus"
     :disabled="disabled"
     maxlength="12"
   >
@@ -93,7 +94,7 @@ export default {
           if (this.number) {
             this.number = this.min > this.number ? this.min : this.number
           } else {
-            this.number = this.min || ''
+            this.number = ''
           }
           this.triggerChange()
           this.$emit('blur', `${this.number}`)
@@ -112,6 +113,9 @@ export default {
           this.triggerChange()
           this.$emit('blur', `${this.number}`)
       }
+    },
+    numberFocus(e) {
+      this.$emit('focus')
     },
     numberChange(e) {
       // 控制不能输入非数字

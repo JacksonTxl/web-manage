@@ -34,9 +34,12 @@
         :columns="columns"
         :pagination="false"
       >
-        <st-overflow-text slot="description" slot-scope="text">
-          {{ text }}
-        </st-overflow-text>
+        <st-overflow-text
+          slot="description"
+          slot-scope="text"
+          :value="text"
+          width="200px"
+        />
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
             <st-more-dropdown>

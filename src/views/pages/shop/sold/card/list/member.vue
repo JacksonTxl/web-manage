@@ -8,7 +8,7 @@
         style="width:360px"
       />
     </div>
-    <st-search-panel @search="onSearchNative" @reset="onSearhReset">
+    <st-search-panel @search="onSearchNative" @reset="onSearchResetNative">
       <st-search-panel-item :label="`${$c('member_card')}类型：`">
         <st-search-radio
           v-model="$searchQuery.card_type"
@@ -27,10 +27,7 @@
 
       <div slot="more">
         <st-search-panel-item label="开卡时间：">
-          <st-range-picker
-            :disabledDays="180"
-            :value="selectTime"
-          ></st-range-picker>
+          <st-range-picker :disabledDays="180" v-model="date" />
         </st-search-panel-item>
       </div>
     </st-search-panel>
@@ -38,23 +35,54 @@
       <div :class="basic('content-batch')" class="mg-b16">
         <!-- NOTE: 导出 -->
         <!-- <st-button type="primary" class="mg-r8" v-if="auth.export">批量导出</st-button> -->
-        <st-button
-          type="primary"
-          class="mg-r8"
-          v-if="auth.gift"
-          :disabled="selectedRowKeys.length < 1 || diffSelectedRows.length > 0"
-          @click="onGiving"
+        <template
+          v-if="selectedRowKeys.length >= 1 && diffSelectedRows.length === 0"
         >
-          赠送额度
-        </st-button>
+          <st-button
+            type="primary"
+            class="mg-r8"
+            v-if="auth.gift"
+            @click="onGiving"
+          >
+            赠送额度
+          </st-button>
+        </template>
+        <template v-else>
+          <st-help-tooltip
+            :isCustom="true"
+            title="只支持一种类型卡选择"
+            :defaultVisible="true"
+            v-model="visible"
+          >
+            <st-button
+              type="primary"
+              class="mg-r8"
+              v-if="auth.gift"
+              :disabled="true"
+            >
+              赠送额度
+            </st-button>
+          </st-help-tooltip>
+        </template>
+
         <st-button
           type="primary"
           class="mg-r8"
           v-if="auth.vipRegion"
-          :disabled="selectedRowKeys.length < 1 || diffSelectedRows.length > 0"
+          :disabled="selectedRowKeys.length < 1"
           @click="onAreas"
         >
           变更入场vip区域
+        </st-button>
+
+        <st-button
+          v-if="auth.batch_admission"
+          type="primary"
+          class="mg-r8"
+          :disabled="selectedRowKeys.length < 1"
+          @click="onEnterTime"
+        >
+          变更入场时段
         </st-button>
       </div>
       <div>
@@ -172,12 +200,15 @@ import { MemberService } from './member.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './member.config'
 import SoldCardArea from '@/views/biz-modals/sold/card/area'
+import SoldCardBatchArea from '@/views/biz-modals/sold/card/batch-area'
+import SoldCardBatchEnterTime from '@/views/biz-modals/sold/card/batch-enter-time'
 import SoldCardFreeze from '@/views/biz-modals/sold/card/freeze'
 import SoldCardGiving from '@/views/biz-modals/sold/card/giving'
 import SoldCardRefund from '@/views/biz-modals/sold/card/refund'
 import SoldCardSetTime from '@/views/biz-modals/sold/card/set-time'
 import SoldCardTransfer from '@/views/biz-modals/sold/card/transfer'
 import useCardActions from '@/hooks/card-actions.hook'
+import CommonTaskSuccessTip from '@/views/biz-modals/common/task/success-tip'
 export default {
   name: 'PageShopSoldCardMemberList',
   mixins: [tableMixin],
@@ -190,7 +221,10 @@ export default {
     SoldCardGiving,
     SoldCardRefund,
     SoldCardSetTime,
-    SoldCardTransfer
+    SoldCardTransfer,
+    CommonTaskSuccessTip,
+    SoldCardBatchArea,
+    SoldCardBatchEnterTime
   },
   serviceInject() {
     return {
@@ -232,35 +266,13 @@ export default {
   },
   data() {
     return {
-      searchData: {
-        card_type: -1,
-        card_status: 1,
-        is_open: -1
-      },
+      visible: false,
       // 结束时间面板是否显示
       endOpen: false,
       selectedRowKeys: [],
       selectedRows: [],
       diffSelectedRows: [],
-      selectTime: {
-        startTime: {
-          showTime: false,
-          disabledBegin: null,
-          placeholder: '开始日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        },
-        endTime: {
-          showTime: false,
-          placeholder: '结束日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        }
-      }
+      date: []
     }
   },
   mounted() {
@@ -279,32 +291,44 @@ export default {
     },
     // 查询
     onSearchNative() {
-      this.$searchQuery.start_time = this.selectTime.startTime.value
-        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00:00`
+      this.$searchQuery.start_time = this.date[0]
+        ? `${this.date[0].format('YYYY-MM-DD')} 00:00:00`
         : ''
-      this.$searchQuery.end_time = this.selectTime.endTime.value
-        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59:59`
+      this.$searchQuery.end_time = this.date[1]
+        ? `${this.date[1].format('YYYY-MM-DD')} 23:59:59`
         : ''
       this.onSearch()
     },
+    onSearchResetNative() {
+      this.date = [null, null]
+      this.onSearchReset()
+    },
     // 设置searchData
     setSearchData() {
-      this.selectTime.startTime.value = this.$searchQuery.start_time
+      const start = this.$searchQuery.start_time
         ? cloneDeep(moment(this.$searchQuery.start_time))
         : null
-      this.selectTime.endTime.value = this.$searchQuery.end_time
+      const end = this.$searchQuery.end_time
         ? cloneDeep(moment(this.$searchQuery.end_time))
         : null
+      this.date = [start, end]
     },
     // moment
     moment,
     // 列表选择
     onSelectChange(selectedRowKeys, selectedRows) {
+      this.visible = false
       if (selectedRows && selectedRows.length > 0) {
         const firstItem = selectedRows[0]
         this.diffSelectedRows = selectedRows.filter(
           item => item.card_type !== firstItem.card_type
         )
+        if (this.diffSelectedRows.length) {
+          this.visible = true
+          setTimeout(() => {
+            this.visible = false
+          }, 2000)
+        }
       }
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
@@ -414,14 +438,29 @@ export default {
     // 批量变更vip入场区域
     onAreas() {
       this.$modalRouter.push({
-        name: 'sold-card-area',
+        name: 'sold-card-batch-area',
         props: {
-          id: this.selectedRowKeys
+          ids: this.selectedRowKeys,
+          searchQuery: cloneDeep(this.$searchQuery)
         },
         on: {
           success: () => {
-            this.$router.reload()
-            this.onClear()
+            this.successTip()
+          }
+        }
+      })
+    },
+    // 批量变更入场时间段
+    onEnterTime() {
+      this.$modalRouter.push({
+        name: 'sold-card-batch-enter-time',
+        props: {
+          ids: this.selectedRowKeys,
+          searchQuery: cloneDeep(this.$searchQuery)
+        },
+        on: {
+          success: () => {
+            this.successTip()
           }
         }
       })
@@ -431,9 +470,20 @@ export default {
       this.$modalRouter.push({
         name: 'sold-card-giving',
         props: {
-          id: this.selectedRowKeys,
-          type: this.selectedRows[0].card_type
+          ids: this.selectedRowKeys,
+          type: this.selectedRows[0].card_type,
+          searchQuery: cloneDeep(this.$searchQuery)
         },
+        on: {
+          success: () => {
+            this.successTip()
+          }
+        }
+      })
+    },
+    successTip() {
+      this.$modalRouter.push({
+        name: 'common-task-success-tip',
         on: {
           success: () => {
             this.$router.reload()

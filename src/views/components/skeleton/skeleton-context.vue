@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: 'StSkeletonWrap',
+  name: 'StSkeletonContext',
   functional: true,
   props: {
     loading: {

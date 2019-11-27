@@ -1,7 +1,7 @@
 <template>
   <div class="page-team-table schedule-table">
     <div
-      class="page-team-table__title pd-x24 pd-y16 schedule-table__title"
+      class="page-team-table__title pd-x24 pd-y16 schedule-table__title schedule-table__title--fixed"
       slot="title"
     >
       <div class="title__left">
@@ -32,7 +32,7 @@
         >
           <a-radio-button
             value="calendar"
-            class="mg-l32"
+            class="mg-l12"
             @click="onClickSkipSchedule"
           >
             <st-icon type="calendar"></st-icon>
@@ -43,66 +43,68 @@
         </a-radio-group>
       </div>
     </div>
-    <a-card
-      :title="card.date | filterStartTime"
-      v-for="card in scheduleTable"
-      :key="card.date"
-      class="mg-l24 mg-r24 mg-t8"
-    >
-      <span
-        href="javascript:;"
-        slot="extra"
-        class="add-schedule"
-        @click="onClickAdd"
+    <div class="schedule-table__content">
+      <a-card
+        :title="card.date | filterStartTime"
+        v-for="card in scheduleTable"
+        :key="card.date"
+        class="mg-l24 mg-r24 mg-t8"
       >
-        + 添加课程排期
-      </span>
-      <a-row
-        class="page-team-table__item"
-        v-for="info in card.data"
-        :key="info.id"
-      >
-        <a-col :lg="3" class="time">
-          {{ info.start_time }} - {{ info.end_time }}
-        </a-col>
-        <a-col :lg="12" class="content">
-          <div class="course-info">
-            <div class="course-name">{{ info.course_name }}</div>
-            <div class="address">
-              <div>
-                <span class="label">{{ $c('coach') }}：</span>
-                <span class="value">{{ info.coach_name }}</span>
+        <span
+          href="javascript:;"
+          slot="extra"
+          class="add-schedule"
+          @click="onClickAdd"
+        >
+          + 添加课程排期
+        </span>
+        <a-row
+          class="page-team-table__item"
+          v-for="info in card.data"
+          :key="info.id"
+        >
+          <a-col :lg="3" class="time">
+            {{ info.start_time }} - {{ info.end_time }}
+          </a-col>
+          <a-col :lg="12" class="content">
+            <div class="course-info">
+              <div class="course-name">{{ info.course_name }}</div>
+              <div class="address">
+                <div>
+                  <span class="label">{{ $c('coach') }}：</span>
+                  <span class="value">{{ info.coach_name }}</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div :lg="5" :offset="3" class="reserve">
-            <div class="mg-r24">
-              <span class="label">签到：</span>
-              <span class="value">{{ info.checkin_num }}人</span>
+            <div :lg="5" :offset="3" class="reserve">
+              <div class="mg-r24">
+                <span class="label">签到：</span>
+                <span class="value">{{ info.checkin_num }}人</span>
+              </div>
+              <div class="mg-r24">
+                <span class="label">预约：</span>
+                <span class="value">{{ info.reserved_num }}人</span>
+              </div>
+              <div v-if="info.can_reserve_num">
+                <span class="label">可约：</span>
+                <span class="value">{{ info.can_reserve_num }}人</span>
+              </div>
             </div>
-            <div class="mg-r24">
-              <span class="label">预约：</span>
-              <span class="value">{{ info.reserved_num }}人</span>
-            </div>
-            <div v-if="info.can_reserve_num">
-              <span class="label">可约：</span>
-              <span class="value">{{ info.can_reserve_num }}人</span>
-            </div>
-          </div>
-        </a-col>
-        <a-col
-          :lg="2"
-          :offset="7"
-          class="action"
-          v-modal-link="{
-            name: 'schedule-personal-team-reserve-info',
-            props: { id: info.id }
-          }"
-        >
-          <a href="#">查看详情</a>
-        </a-col>
-      </a-row>
-    </a-card>
+          </a-col>
+          <a-col
+            :lg="2"
+            :offset="7"
+            class="action"
+            v-modal-link="{
+              name: 'schedule-personal-team-reserve-info',
+              props: { id: info.id }
+            }"
+          >
+            <a href="#">查看详情</a>
+          </a-col>
+        </a-row>
+      </a-card>
+    </div>
   </div>
 </template>
 

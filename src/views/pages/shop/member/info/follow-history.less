@@ -31,11 +31,22 @@
 
   .time-position {
     position: absolute;
-    left: -120px;
+    left: -118px;
     top: 10px;
+    text-align: right;
+    &-grey {
+      color: #9bacb9;
+    }
   }
 
   .ant-timeline-item-head {
     top: 10px;
+    background-color: #3f66f6;
+    border: 1px solid #fff;
+  }
+  .ant-timeline.ant-timeline-pending
+    .ant-timeline-item-last
+    .ant-timeline-item-tail {
+    border-left: 2px solid #e8e8e8;
   }
 }

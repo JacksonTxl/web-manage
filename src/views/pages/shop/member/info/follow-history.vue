@@ -17,6 +17,13 @@
           <st-info-item label="来源方式">
             {{ followInfo.info.register_way }}
           </st-info-item>
+          <st-info-item label="总跟进次数">
+            {{ followInfo.info.follow_count }}
+          </st-info-item>
+        </st-info>
+      </a-col>
+      <a-col :lg="8">
+        <st-info>
           <st-info-item label="跟进销售">
             {{ followInfo.info.follow_salesman_name }}
           </st-info-item>
@@ -63,12 +70,26 @@
                 <a-col :span="6">
                   下次跟进时间：{{ item.follow_next_time }}
                 </a-col>
-                <a-col :span="6">{{ item.follow_status | followStatus }}</a-col>
+                <a-col :span="6">
+                  <st-text
+                    :status="{
+                      success: item.follow_status === 2,
+                      default: item.follow_status === 1,
+                      info: item.follow_status === 0,
+                      error: item.follow_status === 4,
+                      warning: item.follow_status === 3
+                    }"
+                  >
+                    {{ item.follow_status | followStatus }}
+                  </st-text>
+                </a-col>
               </div>
             </div>
             <div class="time-position">
               <div>{{ item.follow_date.split(' ')[1] }}</div>
-              <div>{{ item.follow_date.split(' ')[0] }}</div>
+              <div class="time-position-grey">
+                {{ item.follow_date.split(' ')[0] }}
+              </div>
             </div>
           </a-timeline-item>
         </a-timeline>

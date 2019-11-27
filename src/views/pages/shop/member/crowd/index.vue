@@ -36,9 +36,8 @@
           slot="description"
           slot-scope="text"
           max-width="300px"
-        >
-          {{ text }}
-        </st-overflow-text>
+          :value="text"
+        ></st-overflow-text>
         <div slot="actions" slot-scope="text, record">
           <st-table-actions>
             <a
@@ -56,11 +55,13 @@
             >
               编辑
             </router-link>
-            <a
-              v-if="record.auth['shop:member:crowd|del']"
-              @click="deleteTreeNode(record)"
-            >
-              删除
+            <a v-if="record.auth['shop:member:crowd|del']">
+              <st-popconfirm
+                :title="'一旦删除则无法恢复，确认删除'"
+                @click="deleteTreeNode(record)"
+              >
+                删除
+              </st-popconfirm>
             </a>
           </st-table-actions>
         </div>

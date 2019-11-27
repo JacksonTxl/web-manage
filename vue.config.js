@@ -78,7 +78,12 @@ module.exports = {
       }
     },
     before(app) {
-      // mockerApi(app, Path.resolve('./mock/index.js'))
+      if (!fs.existsSync('./mock/index.js')) {
+        throw new Error(
+          '[saas-pro] 没有发现mock/index.js 请从mock-tpl.js 复制一份到mock/index.js'
+        )
+      }
+      mockerApi(app, Path.resolve('./mock/index.js'))
       app.use(
         '/_editor',
         openInEditor({

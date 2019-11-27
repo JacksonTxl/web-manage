@@ -41,8 +41,13 @@
     >
       <div slot="action" slot-scope="text, record">
         <st-table-actions>
-          <a @click="deletePerson(record)">
-            删除
+          <a>
+            <st-popconfirm
+              :title="'一旦删除则无法恢复，确认删除'"
+              @click="deletePerson(record)"
+            >
+              删除
+            </st-popconfirm>
           </a>
         </st-table-actions>
       </div>

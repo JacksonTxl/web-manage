@@ -32,11 +32,7 @@
         ></st-input-number>
       </st-search-panel-item>
       <st-search-panel-item label="创建时间：">
-        <st-range-picker
-          :disabledDays="180"
-          :value="selectTime"
-          class="value"
-        ></st-range-picker>
+        <st-range-picker :disabledDays="180" v-model="date" class="value" />
       </st-search-panel-item>
 
       <div slot="button">
@@ -67,9 +63,8 @@
         maxWidth="200px"
         slot="remark"
         slot-scope="text"
-      >
-        {{ text }}
-      </st-overflow-text>
+        :value="text"
+      />
 
       <div slot="action" slot-scope="text, record">
         <st-table-actions>
@@ -119,31 +114,22 @@ export default {
       checkedList: [],
       indeterminate: false,
       checkAll: false,
-      selectTime: {
-        startTime: {
-          showTime: false,
-          disabledBegin: null,
-          placeholder: '开始日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        },
-        endTime: {
-          showTime: false,
-          placeholder: '结束日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        }
-      }
+      date: []
     }
   },
   computed: {
     columns
   },
+  mounted() {
+    this.setSearchDate()
+  },
   methods: {
+    setSearchDate() {
+      if (!this.$searchQuery.start_date) return
+      const start = moment(this.$searchQuery.start_date)
+      const end = moment(this.$searchQuery.end_date)
+      this.date = [start, end]
+    },
     onChangePayType(checkedList) {
       this.indeterminate =
         !!checkedList.length && checkedList.length < this.payType$.length
@@ -174,11 +160,11 @@ export default {
       })
     },
     onSearchNative() {
-      const start_date = this.selectTime.startTime.value
-        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')}`
+      const start_date = this.date[0]
+        ? `${this.date[0].format('YYYY-MM-DD')}`
         : ''
-      const end_date = this.selectTime.endTime.value
-        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')}`
+      const end_date = this.date[1]
+        ? `${this.date[1].format('YYYY-MM-DD')}`
         : ''
       this.$searchQuery.pay_channel = this.checkedList
       this.$searchQuery.current_page = 1
@@ -188,9 +174,8 @@ export default {
     },
     onReset() {
       this.checkedList = []
-      this.selectTime.startTime.value = null
-      this.selectTime.endTime.value = null
-      this.onSearhReset()
+      this.date = [null, null]
+      this.onSearchReset()
     }
   }
 }

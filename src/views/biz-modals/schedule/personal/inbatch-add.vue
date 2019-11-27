@@ -85,7 +85,6 @@
     </slot>
   </st-modal>
 </template>
-n
 
 <script>
 import { PersonalScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/personal/service#/schedule.service'

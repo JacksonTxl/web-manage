@@ -183,7 +183,6 @@
                   {{ selectMemberInfo.seller.name || '无' }}
                   <a @click="isEditSeller = true" v-if="auth.bindSalesman">
                     <st-icon type="edit"></st-icon>
-                    &nbsp;编辑
                   </a>
                 </span>
               </template>
@@ -228,7 +227,6 @@
                   {{ selectMemberInfo.coach.name || '无' }}
                   <a @click="isEditCoach = true" v-if="auth.bindCoach">
                     <st-icon type="edit"></st-icon>
-                    &nbsp;编辑
                   </a>
                 </span>
               </template>
@@ -301,7 +299,6 @@
                   {{ selectMemberInfo.seller.name || '无' }}
                   <a @click="isEditSeller = true" v-if="auth.bindSalesman">
                     <st-icon type="edit"></st-icon>
-                    &nbsp;编辑
                   </a>
                 </span>
               </template>
@@ -342,7 +339,6 @@
                   {{ selectMemberInfo.coach.name || '无' }}
                   <a @click="isEditCoach = true" v-if="auth.bindCoach">
                     <st-icon type="edit"></st-icon>
-                    &nbsp;编辑
                   </a>
                 </span>
               </template>
@@ -383,7 +379,6 @@
                   {{ selectMemberInfo.cabinet.name || '无' }}
                   <a @click="isEditCabinet = true">
                     <st-icon type="edit"></st-icon>
-                    &nbsp;编辑
                   </a>
                 </span>
               </template>
@@ -859,7 +854,7 @@ export default {
         this.indexService.getCabinetList(id).subscribe(() => {
           this.stCabinetList =
             this.selectMemberInfo.cabinet && this.selectMemberInfo.cabinet.id
-              ? [this.selectMemberInfo.cabinet, ...this.cabinetList]
+              ? [...this.cabinetList]
               : cloneDeep(this.cabinetList)
         })
         this.seller = res.info.seller.id || -1

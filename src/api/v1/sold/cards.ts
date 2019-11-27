@@ -170,6 +170,12 @@ export class CardApi extends Api {
     return this.http.put(`/v1/sold/cards/member/vip`, { params })
   }
   /**
+   * 售出 会员卡批量修改vip区域
+   */
+  setCardVipAreaBatch(params: CardVipInput) {
+    return this.http.post(`/v1/sold/cards/batch/vip_area`, { params })
+  }
+  /**
    * 售出 会员卡 设置有效日期
    */
   setCardSettingTime(params: CardSettingTimeInput, id: string) {
@@ -178,8 +184,8 @@ export class CardApi extends Api {
   /**
    * 售出 会员卡 批量赠送
    */
-  setCardGive(params: CardGiveInput) {
-    return this.http.put(`/v1/sold/cards/member/give`, { params })
+  setCardGive(params: any) {
+    return this.http.post(`/v1/sold/cards/batch/amount`, { params })
   }
   /**
    * 售出 会员卡 续卡回显
@@ -212,5 +218,27 @@ export class CardApi extends Api {
     return this.http.get(`/v1/sold/cards/shop/saled_card`, {
       query: { card_name_search }
     })
+  }
+  /**
+   * 获取会员卡可使用条数
+   */
+  fetchSoldCardValidNum(query: any) {
+    return this.http.get(`/v1/sold/cards/batch/count`, {
+      query
+    })
+  }
+  /**
+   * 获取会员卡 vip 区域和入场时间可使用条数
+   */
+  fetchSoldCardVIPOrTimeValidNum(query: any) {
+    return this.http.get(`/v1/sold/cards/batch/num`, {
+      query
+    })
+  }
+  /**
+   * 售出 会员卡 批量更改入场时间
+   */
+  setCardEnterTime(params: any) {
+    return this.http.post(`/v1/sold/cards/batch/admission_time`, { params })
   }
 }

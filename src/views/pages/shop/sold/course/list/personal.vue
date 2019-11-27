@@ -8,7 +8,7 @@
         style="width:372px"
       />
     </div>
-    <st-search-panel @search="onSearchNative" @reset="onSearhReset">
+    <st-search-panel @search="onSearchNative" @reset="onSearchResetNative">
       <st-search-panel-item label="课程状态：">
         <st-search-radio
           v-model="$searchQuery.course_status"
@@ -16,26 +16,47 @@
         />
       </st-search-panel-item>
       <st-search-panel-item label="购买时间：">
-        <st-range-picker
-          :disabledDays="180"
-          :value="selectTime"
-        ></st-range-picker>
+        <st-range-picker :disabledDays="180" v-model="date" />
       </st-search-panel-item>
     </st-search-panel>
     <div :class="basic('content')">
-      <div :class="basic('content-batch')">
+      <div :class="basic('content-batch')" class="mg-b16">
         <!-- NOTE: 导出 -->
         <!-- <st-button v-if="auth.export" type="primary">批量导出</st-button> -->
+        <st-button
+          type="primary"
+          class="mg-r8"
+          @click="onGiving"
+          :disabled="selectedRowKeys.length < 1"
+          v-if="auth.batch_gift_number"
+        >
+          赠送额度
+        </st-button>
+        <st-button
+          type="primary"
+          class="mg-r8"
+          @click="onExtendDays"
+          :disabled="selectedRowKeys.length < 1"
+          v-if="auth.batch_extension"
+        >
+          延长有效期
+        </st-button>
       </div>
       <div>
-        <!--
-          NOTE: 本期不做，先去掉选择框
-          :alertSelection="{onReset: onClear}"
-          :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
-        -->
         <st-table
           :page="page"
           :loading="loading.getList"
+          :alertSelection="{ onReset: onClear }"
+          :rowSelection="{
+            selectedRowKeys: selectedRowKeys,
+            fixed: true,
+            onChange: onSelectChange,
+            getCheckboxProps: record => ({
+              props: {
+                disabled: disabledSelect(record)
+              }
+            })
+          }"
           rowKey="id"
           :scroll="{ x: 1800 }"
           :columns="columns"
@@ -137,6 +158,9 @@ import SoldCourseSurplusPersonal from '@/views/biz-modals/sold/course/surplus-pe
 import SoldCourseTransfer from '@/views/biz-modals/sold/course/transfer'
 import SoldCourseLease from '@/views/biz-modals/sold/course/lease'
 import SoldCourseActivated from '@/views/biz-modals/sold/course/activated'
+import SoldCourseGiving from '@/views/biz-modals/sold/course/giving'
+import SoldCourseExtendDay from '@/views/biz-modals/sold/course/extend-day'
+import CommonTaskSuccessTip from '@/views/biz-modals/common/task/success-tip'
 export default {
   name: 'PageShopSoldCoursePersonalList',
   mixins: [tableMixin],
@@ -150,7 +174,10 @@ export default {
     SoldCourseSurplusPersonal,
     SoldCourseTransfer,
     SoldCourseLease,
-    SoldCourseActivated
+    SoldCourseActivated,
+    SoldCourseGiving,
+    CommonTaskSuccessTip,
+    SoldCourseExtendDay
   },
   serviceInject() {
     return {
@@ -168,31 +195,12 @@ export default {
   },
   data() {
     return {
-      course_status: -1,
       start_time: null,
       end_time: null,
       // 结束时间面板是否显示
       endOpen: false,
       selectedRowKeys: [],
-      selectTime: {
-        startTime: {
-          showTime: false,
-          disabledBegin: null,
-          placeholder: '开始日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        },
-        endTime: {
-          showTime: false,
-          placeholder: '结束日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        }
-      }
+      date: []
     }
   },
 
@@ -202,31 +210,76 @@ export default {
   mounted() {
     this.setSearchData()
   },
-  watch: {
-    query(newVal) {
-      this.setSearchData()
-    }
-  },
   methods: {
+    // 额度赠送
+    onGiving() {
+      this.$modalRouter.push({
+        name: 'sold-course-giving',
+        props: {
+          ids: this.selectedRowKeys,
+          searchQuery: cloneDeep(this.$searchQuery)
+        },
+        on: {
+          success: () => {
+            this.successTip()
+          }
+        }
+      })
+    },
+    // 延长有效期
+    onExtendDays() {
+      this.$modalRouter.push({
+        name: 'sold-course-extend-day',
+        props: {
+          ids: this.selectedRowKeys,
+          searchQuery: cloneDeep(this.$searchQuery)
+        },
+        on: {
+          success: () => {
+            this.successTip()
+          }
+        }
+      })
+    },
+    successTip() {
+      this.$modalRouter.push({
+        name: 'common-task-success-tip',
+        on: {
+          success: () => {
+            this.$router.reload()
+            this.onClear()
+          }
+        }
+      })
+    },
+    disabledSelect(record) {
+      if (record.course_status !== 1 && record.course_status !== 4) {
+        return true
+      }
+    },
     // 查询
     onSearchNative() {
-      this.$searchQuery.start_time = this.selectTime.startTime.value
-        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00:00`
+      this.$searchQuery.start_time = this.date[0]
+        ? `${this.date[0].format('YYYY-MM-DD')} 00:00:00`
         : ''
-      this.$searchQuery.end_time = this.selectTime.endTime.value
-        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59:59`
+      this.$searchQuery.end_time = this.date[1]
+        ? `${this.date[1].format('YYYY-MM-DD')} 23:59:59`
         : ''
       this.onSearch()
     },
+    onSearchResetNative() {
+      this.date = [null, null]
+      this.onSearchReset()
+    },
     // 设置searchData
     setSearchData() {
-      this.course_status = this.$searchQuery.course_status
-      this.selectTime.startTime.value = this.$searchQuery.start_time
+      const start = this.$searchQuery.start_time
         ? cloneDeep(moment(this.$searchQuery.start_time))
         : null
-      this.selectTime.endTime.value = this.$searchQuery.end_time
+      const end = this.$searchQuery.end_time
         ? cloneDeep(moment(this.$searchQuery.end_time))
         : null
+      this.date = [start, end]
     },
     // moment
     moment,

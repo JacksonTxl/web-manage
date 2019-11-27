@@ -1,56 +1,43 @@
 <template>
   <div class="pages-brand-staff-info-member-container">
-    <a-row>
-      <a-col :lg="24">
-        <a-col :lg="18">
-          <shop-select
-            style="width: 160px"
-            v-model="$searchQuery.shop_id"
-            :defaultValue="-1"
-            @change="onSingleSearch('shop_id', $event)"
-          ></shop-select>
-        </a-col>
-        <a-col :lg="6" class="text-right">
-          <st-input-search
-            placeholder="请输入会员名姓名、手机号进行查询"
-            @search="onSingleSearch('keyword', $event)"
-          />
-        </a-col>
-      </a-col>
-      <a-col :lg="24" class="mg-t16">
-        <st-table
-          :columns="memberColums"
-          :dataSource="memberInfo"
-          :scroll="{ x: 1300 }"
-          :loading="loading.getStaffServiceCourses"
-          :page="page"
-          @change="onTableChange"
-        >
-          <template slot="course_name" slot-scope="text, record">
-            <a href="javascript:;" class="mg-r8" @click="goCourseDetai(record)">
-              {{ text }}
-            </a>
-          </template>
-          <!-- <template slot="member_name" slot-scope="text, record">
+    <shop-select
+      style="width: 160px"
+      v-model="$searchQuery.shop_id"
+      :defaultValue="-1"
+      @change="onSingleSearch('shop_id', $event)"
+    ></shop-select>
+    <st-input-search
+      class="fl-r"
+      placeholder="请输入会员名姓名、手机号进行查询"
+      @search="onSingleSearch('keyword', $event)"
+    />
+    <a-col :lg="24" class="mg-t16">
+      <st-table
+        :columns="memberColums"
+        :dataSource="memberInfo"
+        :scroll="{ x: 1300 }"
+        :loading="loading.getStaffServiceCourses"
+        :page="page"
+        @change="onTableChange"
+      >
+        <template slot="course_name" slot-scope="text, record">
+          <a href="javascript:;" class="mg-r8" @click="goCourseDetai(record)">
+            {{ text }}
+          </a>
+        </template>
+        <!-- <template slot="member_name" slot-scope="text, record">
             <a href="javascript:;" class="mg-r8" @click="goMemberDetai(record)">
               {{ text }}
             </a> 品牌下没有用户选项 不允许跳转
           </template> -->
-          <template slot="course_status" slot-scope="text, record">
-            <span
-              v-if="record.course_status === '有效'"
-              class="effective"
-            ></span>
-            <span v-if="record.course_status === '失效'" class="invalid"></span>
-            <span
-              v-if="record.course_status === '已冻结'"
-              class="frozen"
-            ></span>
-            {{ text }}
-          </template>
-        </st-table>
-      </a-col>
-    </a-row>
+        <template slot="course_status" slot-scope="text, record">
+          <span v-if="record.course_status === '有效'" class="effective"></span>
+          <span v-if="record.course_status === '无效'" class="invalid"></span>
+          <span v-if="record.course_status === '已冻结'" class="frozen"></span>
+          {{ text }}
+        </template>
+      </st-table>
+    </a-col>
   </div>
 </template>
 
