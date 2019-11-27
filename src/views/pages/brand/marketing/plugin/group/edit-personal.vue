@@ -96,10 +96,7 @@ import GroupForm from './components#/group-form'
 import { ruleOptions, cardColumns } from './add-personal.config'
 import { EditPersonalService } from './edit-personal.service'
 import { PatternService } from '@/services/pattern.service'
-import {
-  ACTIVITY_STATUS,
-  RELEASE_STATUS
-} from '@/constants/marketing/group-buy'
+import { ACTIVITY_STATUS } from '@/constants/marketing/group-buy'
 export default {
   serviceInject() {
     return {
@@ -133,7 +130,6 @@ export default {
       decorators,
       courseId: '', // 活动商品
       ACTIVITY_STATUS,
-      RELEASE_STATUS,
       selectedRowKeys: [], // 优惠设置选中项
       cardColumns,
       tableText: '', // 优惠设置错误提示

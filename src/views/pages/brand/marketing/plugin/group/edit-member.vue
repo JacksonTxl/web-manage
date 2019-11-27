@@ -86,10 +86,7 @@ import { ruleOptions, cardColumns } from './add-member.config'
 import { EditMemberService } from './edit-member.service'
 import { values } from 'lodash-es'
 import { PatternService } from '@/services/pattern.service'
-import {
-  ACTIVITY_STATUS,
-  RELEASE_STATUS
-} from '@/constants/marketing/group-buy'
+import { ACTIVITY_STATUS } from '@/constants/marketing/group-buy'
 export default {
   serviceInject() {
     return {
@@ -122,7 +119,6 @@ export default {
         id: null
       },
       ACTIVITY_STATUS,
-      RELEASE_STATUS,
       activityState: Number, // 当前活动活动状态
       oldStock: Number,
       oldTime: '',

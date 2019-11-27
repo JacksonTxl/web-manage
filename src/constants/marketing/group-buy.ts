@@ -14,19 +14,6 @@ export const enum ACTIVITY_STATUS {
 }
 
 /**
- * 发布状态
- * @params {Number} RELEASE_STATUS
- * @params {Number} RELEASE_STATUS.PROMPTLY 备注：立即发布
- * @params {Number} RELEASE_STATUS.TEMPORARILY 备注：暂不发布
- * @params {Number} RELEASE_STATUS.TIMING 备注：定时发布
- * */
-export const enum RELEASE_STATUS {
-  PROMPTLY = 1,
-  TEMPORARILY = 2,
-  TIMING = 3
-}
-
-/**
  * 商品类型
  * @params {Number} PRODUCT_TYPE
  * @params {Number} PRODUCT_TYPE. 备注：立即发布

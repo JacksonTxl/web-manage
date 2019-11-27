@@ -97,11 +97,7 @@ import GroupForm from './components#/group-form'
 import { ruleOptions, cardColumns } from './add-package-course.config'
 import { EditCoursePackageService } from './edit-package-course.service'
 import { UserService } from '@/services/user.service'
-import {
-  ACTIVITY_STATUS,
-  RELEASE_STATUS,
-  PRODUCT_TYPE
-} from '@/constants/marketing/group-buy'
+import { ACTIVITY_STATUS, PRODUCT_TYPE } from '@/constants/marketing/group-buy'
 import moment from 'moment'
 import { PatternService } from '@/services/pattern.service'
 export default {
@@ -137,7 +133,6 @@ export default {
       courseList: [],
       tableData: [],
       ACTIVITY_STATUS,
-      RELEASE_STATUS,
       PRODUCT_TYPE,
       tableText: '', // 优惠设置错误提示
       tableErr: false,

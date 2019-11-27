@@ -123,7 +123,7 @@
                 <st-help-tooltip id="TBPTXJ005" />
               </span>
               <a-radio-group
-                :defaultValue="releaseStatus || RELEASE_STATUS.PROMPTLY"
+                :defaultValue="releaseStatus || publishedType[0].value"
                 v-model="releaseStatus"
                 :disabled="isEdit && activityState > ACTIVITY_STATUS.PUBLISHER"
               >
@@ -139,7 +139,7 @@
             <st-form-item
               label="发布时间"
               required
-              v-show="releaseStatus === RELEASE_STATUS.TIMING"
+              v-show="releaseStatus === publishedType[2].value"
             >
               <a-date-picker
                 :disabledDate="disabledDate"
@@ -158,10 +158,7 @@
 import SelectShop from '@/views/fragments/shop/select-shop'
 import moment from 'moment'
 import { values } from 'lodash-es'
-import {
-  ACTIVITY_STATUS,
-  RELEASE_STATUS
-} from '@/constants/marketing/group-buy'
+import { ACTIVITY_STATUS } from '@/constants/marketing/group-buy'
 import { UserService } from '@/services/user.service'
 export default {
   serviceInject() {
@@ -235,7 +232,6 @@ export default {
   data() {
     return {
       ACTIVITY_STATUS,
-      RELEASE_STATUS,
       groupName: '',
       errTips: '', // 活动时间错误提示
       showErr: false,
@@ -332,7 +328,7 @@ export default {
         stock_total: this.info.stock_total,
         activity_time: [this.info.start_time, this.info.end_time]
       })
-      if (this.releaseStatus === RELEASE_STATUS.TIMING) {
+      if (this.releaseStatus === this.publishedType[2].value) {
         this.form.setFieldsValue({
           published_time: moment(this.info.published_time)
         })

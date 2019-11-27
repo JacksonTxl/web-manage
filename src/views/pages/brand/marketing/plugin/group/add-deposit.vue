@@ -75,10 +75,7 @@ import { PatternService } from '@/services/pattern.service'
 import { columnsGroupStored, ruleOptions } from './add-deposit.config'
 import moment, { months } from 'moment'
 import GroupForm from './components#/group-form.vue'
-import {
-  ACTIVITY_STATUS,
-  RELEASE_STATUS
-} from '@/constants/marketing/group-buy'
+import { ACTIVITY_STATUS } from '@/constants/marketing/group-buy'
 
 export default {
   name: 'PageBrandMarketingGroupAddDeposit',
@@ -116,7 +113,6 @@ export default {
       currentStored: [], // 当前下拉选中详细
       shopIds: [],
       ACTIVITY_STATUS,
-      RELEASE_STATUS,
       shopList: null,
       tableText: '',
       tableErr: false
