@@ -85,7 +85,6 @@ export default {
     },
     downloadQrCode() {
       const a = document.createElement('a')
-      debugger
       a.href = this.shsInfo.qrcode_url
       a.target = '_blank'
       a.download = 'qrcode.png'
