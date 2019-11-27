@@ -57,7 +57,8 @@
           name: 'shop-add-lable',
           props: {
             memberIds: selectedRowKeys
-          }
+          },
+          on: { success: refeshPage }
         }"
       >
         加标签
@@ -71,7 +72,8 @@
                 name: 'shop-distribution-coach',
                 props: {
                   memberIds: selectedRowKeys
-                }
+                },
+                on: { success: refeshPage }
               }"
             >
               分配教练
@@ -84,7 +86,8 @@
                 name: 'shop-distribution-sale',
                 props: {
                   memberIds: selectedRowKeys
-                }
+                },
+                on: { success: refeshPage }
               }"
             >
               分配销售
@@ -272,6 +275,7 @@ export default {
 
   methods: {
     refeshPage() {
+      this.selectedRowKeys = []
       this.$router.reload()
     },
     sourceRegisters() {
@@ -327,7 +331,7 @@ export default {
               },
               on: {
                 success: () => {
-                  this.$router.reload()
+                  this.refeshPage()
                 }
               }
             })
@@ -343,7 +347,7 @@ export default {
           },
           on: {
             success: () => {
-              this.$router.reload()
+              this.refeshPage()
             }
           }
         })
@@ -364,7 +368,7 @@ export default {
               },
               on: {
                 success: () => {
-                  this.$router.reload()
+                  this.refeshPage()
                 }
               }
             })
@@ -380,7 +384,7 @@ export default {
           },
           on: {
             success: () => {
-              this.$router.reload()
+              this.refeshPage()
             }
           }
         })
@@ -394,7 +398,7 @@ export default {
           this.studioService
             .removeWechatBind(record.member_id)
             .subscribe(() => {
-              this.$router.reload()
+              this.refeshPage()
             })
         },
         onCancel() {}

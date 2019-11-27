@@ -20,6 +20,7 @@
               @change="imageUploadChange($event, index)"
               width="100%"
               height="85px"
+              :filterOptions="fillWidth"
               :list="li.image_url ? [li] : li.filelist"
               :sizeLimit="5"
               placeholder="添加活动图片"
@@ -111,7 +112,10 @@ export default {
       filelist: [],
       link: '',
       number: 0,
-      span: 24
+      span: 24,
+      fillWidth: {
+        w: 300
+      }
     }
   },
   created() {
