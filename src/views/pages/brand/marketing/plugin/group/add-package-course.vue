@@ -59,7 +59,7 @@
             :help="tableText"
             :validateStatus="tableErr ? 'error' : ''"
           >
-            <div :class="basic('table')">
+            <st-container>
               <st-table
                 rowKey="id"
                 :columns="cardColumns"
@@ -81,7 +81,7 @@
                   </st-input-number>
                 </template>
               </st-table>
-            </div>
+            </st-container>
           </st-form-item>
         </a-col>
       </a-row>
@@ -93,10 +93,7 @@ import GroupForm from './components#/group-form'
 import { ruleOptions, cardColumns } from './add-package-course.config'
 import { AddPackageCourseService } from './add-package-course.service'
 import { UserService } from '@/services/user.service'
-import {
-  ACTIVITY_STATUS,
-  RELEASE_STATUS
-} from '@/constants/marketing/group-buy'
+import { PRODUCT_TYPE } from '@/constants/marketing/group-buy'
 import moment from 'moment'
 import { PatternService } from '@/services/pattern.service'
 export default {
@@ -117,9 +114,6 @@ export default {
       courseList: this.addPackageCourseService.courseList$
     }
   },
-  bem: {
-    basic: 'brand-marketing-group-course'
-  },
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
@@ -128,19 +122,16 @@ export default {
       decorators,
       cardColumns,
       tableData: [],
-      ACTIVITY_STATUS,
-      RELEASE_STATUS,
       tableText: '', // 优惠设置错误提示
-      tableErr: false
+      tableErr: false,
+      PRODUCT_TYPE
     }
   },
   methods: {
     changeShop(value) {
       this.addPackageCourseService
         .getCourseList({ shop_id: value })
-        .subscribe(res => {
-          this.$router.reload()
-        })
+        .subscribe(res => {})
     },
     changeCourse(value) {
       this.tableData = this.courseList.filter(
@@ -159,7 +150,7 @@ export default {
     },
     onSubmit(data) {
       data.shop_ids = [+this.form.getFieldValue('shop_id')]
-      data.product_type = 4
+      data.product_type = PRODUCT_TYPE.PACKAGE_COURSE
       data.product_id = this.form.getFieldValue('course_id')
       data.sku = this.tableData.map(item => {
         return {

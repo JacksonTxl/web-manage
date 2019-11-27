@@ -58,6 +58,10 @@ export default {
       default: () => {
         return {}
       }
+    },
+    type: {
+      type: String,
+      default: ''
     }
   },
   computed: {
@@ -66,10 +70,12 @@ export default {
     }
   },
   mounted() {
-    this.selectService.getShopListTree(this.groupParams).subscribe(res => {
-      this.treeData = json2AntDesignTreeData(res.list)
-      this.initCheckedKeys()
-    })
+    this.selectService
+      .getShopListTree(this.groupParams, this.type)
+      .subscribe(res => {
+        this.treeData = json2AntDesignTreeData(res.list)
+        this.initCheckedKeys()
+      })
   },
   methods: {
     initCheckedKeys() {

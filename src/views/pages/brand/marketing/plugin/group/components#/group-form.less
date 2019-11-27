@@ -2,25 +2,13 @@
   &__stock {
     width: calc(100% - 100px);
   }
-  &__shop {
-    &--container {
-      padding: 12px;
-      border: 1px solid @border-color-base;
-      border-radius: 4px;
-    }
-    &--set {
-      line-height: 0;
-      margin-top: 20px;
-      margin-bottom: 12px;
-      opacity: 0.2;
-    }
-  }
   &__name {
     &--gray {
       color: #9bacb9;
     }
   }
 }
+// NOTE：input加字数限制，覆盖ant样式，后期替换组件
 .ant-input-affix-wrapper .ant-input:not(:last-child) {
   padding-right: 56px;
 }

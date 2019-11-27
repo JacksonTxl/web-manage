@@ -99,23 +99,19 @@
                 选择门店
                 <st-help-tooltip id="TBPTXJ004" />
               </span>
-              <!-- <select-shop
-                :class="basic('table')"
-                @change="onSelectShop"
-                :shopIds="shopIds"
-              ></select-shop> -->
-              <div :class="basic('shop--container')">
+              <st-container>
                 <st-t4 :class="basic('shop--set')">
                   设置支持会员卡售卖场馆范围
                 </st-t4>
                 <select-shop
                   :shopIds="info ? info.support_shop : []"
+                  type="group"
                   :groupParams="groupParams"
                   @change="onSelectShop"
                   ref="selectShop"
                   :disabled="isEditMode"
                 ></select-shop>
-              </div>
+              </st-container>
             </st-form-item>
           </a-col>
         </a-row>
@@ -127,19 +123,23 @@
                 <st-help-tooltip id="TBPTXJ005" />
               </span>
               <a-radio-group
-                :defaultValue="releaseStatus || RELEASE_STATUS.PROMPTLY"
+                :defaultValue="releaseStatus || publishedType[0].value"
                 v-model="releaseStatus"
                 :disabled="isEdit && activityState > ACTIVITY_STATUS.PUBLISHER"
               >
-                <a-radio :value="RELEASE_STATUS.PROMPTLY">立即发布</a-radio>
-                <a-radio :value="RELEASE_STATUS.TEMPORARILY">暂不发布</a-radio>
-                <a-radio :value="RELEASE_STATUS.TIMING">定时发布</a-radio>
+                <a-radio
+                  :value="item.value"
+                  v-for="item in publishedType"
+                  :key="item.value"
+                >
+                  {{ item.label }}
+                </a-radio>
               </a-radio-group>
             </st-form-item>
             <st-form-item
               label="发布时间"
               required
-              v-show="releaseStatus === RELEASE_STATUS.TIMING"
+              v-show="releaseStatus === publishedType[2].value"
             >
               <a-date-picker
                 :disabledDate="disabledDate"
@@ -158,11 +158,19 @@
 import SelectShop from '@/views/fragments/shop/select-shop'
 import moment from 'moment'
 import { values } from 'lodash-es'
-import {
-  ACTIVITY_STATUS,
-  RELEASE_STATUS
-} from '@/constants/marketing/group-buy'
+import { ACTIVITY_STATUS } from '@/constants/marketing/group-buy'
+import { UserService } from '@/services/user.service'
 export default {
+  serviceInject() {
+    return {
+      userService: UserService
+    }
+  },
+  rxState() {
+    return {
+      publishedType: this.userService.getOptions$('group_buy.published_type')
+    }
+  },
   bem: {
     basic: 'brand-marketing-group-form'
   },
@@ -216,6 +224,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.publishedType, 'publishedType')
     if (this.isEdit) {
       this.setFieldsValue()
     }
@@ -223,7 +232,6 @@ export default {
   data() {
     return {
       ACTIVITY_STATUS,
-      RELEASE_STATUS,
       groupName: '',
       errTips: '', // 活动时间错误提示
       showErr: false,
@@ -320,7 +328,7 @@ export default {
         stock_total: this.info.stock_total,
         activity_time: [this.info.start_time, this.info.end_time]
       })
-      if (this.releaseStatus === RELEASE_STATUS.TIMING) {
+      if (this.releaseStatus === this.publishedType[2].value) {
         this.form.setFieldsValue({
           published_time: moment(this.info.published_time)
         })

@@ -2,9 +2,9 @@
   <st-panel app>
     <div :class="basic()">
       <router-link :to="i.url" v-for="(i, index) in typeList" :key="index">
-        <div :class="basic('card')">
+        <div :class="bCard()">
           <img :src="i.bg" :alt="i.name" />
-          <div :class="basic('card--name')">{{ i.name }}</div>
+          <div :class="bCard('name')">{{ i.name }}</div>
         </div>
       </router-link>
     </div>
@@ -13,7 +13,8 @@
 <script>
 export default {
   bem: {
-    basic: 'brand-marketing-plugin-choose'
+    basic: 'brand-marketing-plugin-choose',
+    bCard: 'card'
   },
   data() {
     return {
