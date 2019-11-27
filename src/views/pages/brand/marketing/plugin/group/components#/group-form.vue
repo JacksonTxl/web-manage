@@ -114,6 +114,7 @@
                   :groupParams="groupParams"
                   @change="onSelectShop"
                   ref="selectShop"
+                  :disabled="isEditMode"
                 ></select-shop>
               </st-container>
             </st-form-item>
@@ -206,6 +207,12 @@ export default {
       type: Boolean,
       default: () => {
         return true
+      }
+    },
+    isEditMode: {
+      type: Boolean,
+      default: () => {
+        return false
       }
     }
   },

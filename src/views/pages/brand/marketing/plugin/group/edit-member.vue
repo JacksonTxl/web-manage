@@ -9,6 +9,7 @@
     :shopIds="shopIds"
     @onsubmit="onSubmit"
     :groupParams="groupParams"
+    :isEditMode="activityState >= ACTIVITY_STATUS.NO_START"
   >
     <template slot="choose-product">
       <a-row :gutter="8">
