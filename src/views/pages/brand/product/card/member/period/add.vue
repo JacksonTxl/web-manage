@@ -52,6 +52,7 @@
               <a-select
                 v-decorator="decorators.cardData.support_member_num"
                 placeholder="请选择入场人数"
+                class="page-content-card-input"
               >
                 <a-select-option
                   v-for="(item, index) in supportMemberNums"

@@ -35,7 +35,7 @@
               {{ info.card_status | enumFilter('sold_common.card_status') }}
             </st-info-item>
             <st-info-item label="入场时段">
-              <template v-if="info.admission_time.type < 2">
+              <template v-if="info && info.admission_time.type < 2">
                 {{ info.admission_time.name }}
               </template>
               <a-popover :title="info.admission_time.name" v-else>
@@ -52,29 +52,6 @@
                   {{ info.admission_time.name }}
                 </a>
               </a-popover>
-            </st-info-item>
-            <st-info-item
-              v-if="info.card_number_type === 2"
-              label="卡成员"
-              class="mg-b0"
-            >
-              <template v-if="info.card_member.length === 0">
-                无
-              </template>
-              <template v-else>
-                <router-link
-                  :to="{
-                    path: '/shop/member/info/basic',
-                    query: {
-                      id: item.id
-                    }
-                  }"
-                  v-for="(item, index) in info.card_member"
-                  :key="index"
-                >
-                  {{ item.name }}
-                </router-link>
-              </template>
             </st-info-item>
           </st-info>
         </a-col>
@@ -134,6 +111,28 @@
                   }}
                 </a>
               </a-popover>
+            </st-info-item>
+            <st-info-item
+              v-if="info && info.card_number_type === 2"
+              label="卡成员"
+            >
+              <template v-if="info.card_member.length === 0">
+                无
+              </template>
+              <template v-else>
+                <router-link
+                  :to="{
+                    path: '/shop/member/info/basic',
+                    query: {
+                      id: item.id
+                    }
+                  }"
+                  v-for="(item, index) in info.card_member"
+                  :key="index"
+                >
+                  {{ item.name }}
+                </router-link>
+              </template>
             </st-info-item>
             <st-info-item label="备注" class="mg-b0">
               {{ info.description }}

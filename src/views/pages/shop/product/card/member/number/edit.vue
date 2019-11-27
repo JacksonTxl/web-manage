@@ -48,6 +48,8 @@
               </template>
               <a-select
                 v-decorator="decorators.support_member_num"
+                :disabled="isShelfCard"
+                class="page-content-card-input"
                 placeholder="请选择入场人数"
               >
                 <a-select-option
@@ -260,7 +262,7 @@
               </span>
               <a-form-item class="page-a-form">
                 <a-date-picker
-                  :disabled="startTimeIsDisabled"
+                  :disabled="isShelfCard"
                   :disabledDate="disabledStartDate"
                   v-decorator="decorators.start_time"
                   format="YYYY-MM-DD"
