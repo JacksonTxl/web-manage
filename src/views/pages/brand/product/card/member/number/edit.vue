@@ -971,7 +971,7 @@ export default {
           this.cardData.num = this.cardData._is_transfer
             ? +values.cardData.num
             : undefined
-          if (!this.$searchQuery.type) {
+          if (!this.isFamilyCard) {
             this.cardData.support_member_num = 1
             this.cardData.card_type = CARD_TYPE.NUMBER
           } else {
@@ -1288,7 +1288,7 @@ export default {
     },
     // 是否是多人卡
     isFamilyCard() {
-      return this.$searchQuery.type === 1
+      return this.$searchQuery.type === 'family-card'
     }
   }
 }

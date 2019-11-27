@@ -1141,7 +1141,7 @@ export default {
     },
     // 是否是多人卡
     isFamilyCard() {
-      return this.$searchQuery.type === 1
+      return this.$searchQuery.type === 'family-card'
     }
   }
 }

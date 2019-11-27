@@ -29,7 +29,7 @@ export class AddService implements Controller {
     return this.shopApi.getShopBasic(params).pipe(pluck('shops'))
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    if (to.meta.query.type === 1) {
+    if (to.meta.query.type === 'family-card') {
       this.cardBgList$ = this.userService.getOptions$(
         'member_card.family_card_bg_list'
       )

@@ -25,7 +25,7 @@
         <a-col :span="11">
           <st-info>
             <st-info-item label="购卡人">{{ info.member_name }}</st-info-item>
-            <st-info-item label="卡成员" v-if="info.card_number_type === 2">
+            <st-info-item label="卡成员" v-if="isFamilyCard">
               {{ info.card_member }}
             </st-info-item>
             <st-info-item label="手机号">{{ info.mobile }}</st-info-item>
@@ -496,6 +496,9 @@ export default {
               ${this.reduceAmount}-
               ${this.selectCoupon}-
               ${this.surplusPrice}`
+    },
+    isFamilyCard() {
+      return this.info.card_number_type === 2
     }
   },
   watch: {
@@ -761,7 +764,7 @@ export default {
                 type: 'create',
                 orderId: res.info.order_id,
                 soldId: res.info.sold_id,
-                isFamilyCard: this.info.card_number_type === 2
+                isFamilyCard: this.isFamilyCard
               })
             })
         }
@@ -797,7 +800,7 @@ export default {
                 type: 'createPay',
                 orderId: res.info.order_id,
                 soldId: res.info.sold_id,
-                isFamilyCard: this.info.card_number_type === 2
+                isFamilyCard: this.isFamilyCard
               })
             })
         }

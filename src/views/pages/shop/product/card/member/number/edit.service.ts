@@ -41,7 +41,7 @@ export class EditService implements Controller {
     return forkJoin([this.getCardInfo(id)])
   }
   beforeRouteEnter(to: ServiceRoute) {
-    if (to.meta.query.type === 1) {
+    if (to.meta.query.type === 'family-card') {
       this.cardBgList$ = this.userService.getOptions$(
         'member_card.family_card_bg_list'
       )

@@ -17,7 +17,7 @@
             labelGutter="12px"
             label="卡成员"
             class="mg-b16"
-            v-if="info.card_number_type === 2"
+            v-if="isFamilyCard"
           >
             {{ info.card_member }}
           </st-form-item>
@@ -403,6 +403,9 @@ export default {
     },
     orderAmountText() {
       return this.priceInfo < 0 ? '小计不能为负' : ''
+    },
+    isFamilyCard() {
+      return this.info.card_number_type === 2
     }
   },
   methods: {
@@ -539,7 +542,7 @@ export default {
                 type: 'create',
                 orderId: res.info.order_id,
                 soldId: res.info.sold_id,
-                isFamilyCard: this.info.card_number_type === 2
+                isFamilyCard: this.isFamilyCard
               })
             })
         }
@@ -578,7 +581,7 @@ export default {
                 type: 'createPay',
                 orderId: res.info.order_id,
                 soldId: res.info.sold_id,
-                isFamilyCard: this.info.card_number_type === 2
+                isFamilyCard: this.isFamilyCard
               })
             })
         }

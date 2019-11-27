@@ -1,6 +1,6 @@
 <template>
   <st-modal title="成员更改" v-model="show" @cancel="show = false" size="small">
-    <st-form :form="form" labelWidth="88px">
+    <st-form :form="form">
       <st-form-item labelGutter="12px" label="购卡人" required>
         <a-input
           :value="info.member_name + ' ' + info.mobile"

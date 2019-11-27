@@ -286,6 +286,7 @@ export default {
         },
         getCheckboxProps: record => ({
           props: {
+            // 产品类型为 1 会员卡 2 课程包  is_purchaser 1 为购卡人
             disabled: record.product_type === 1 && record.is_purchaser !== 1
           }
         })

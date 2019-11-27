@@ -270,7 +270,7 @@ export default {
         id: record.id
       }
       if (record.card_number_type.id === 2) {
-        query.type = 1
+        query.type = 'family-card'
       }
       this.$router.push({
         path: `/brand/product/card/member/${

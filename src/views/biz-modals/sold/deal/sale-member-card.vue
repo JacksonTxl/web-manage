@@ -1,7 +1,6 @@
 <template>
   <st-modal
     title="交易签单"
-    size="small"
     v-model="show"
     @cancel="onCancel"
     wrapClassName="modal-sold-deal-sale"
@@ -637,12 +636,6 @@ export default {
       })
     },
     onCreateOrder() {
-      const arr = []
-      this.memberChildrenlist.forEach(item => {
-        if (item.id) {
-          arr.push(item.id)
-        }
-      })
       this.form.validate().then(values => {
         this.saleMemberCardService
           .setTransactionOrder({
@@ -664,7 +657,9 @@ export default {
             description: this.description,
             sale_range: this.info.sale_range.type,
             order_amount: this.currentPrice,
-            family_member_ids: arr,
+            family_member_ids: this.memberChildrenlist
+              .filter(item => !!item.id)
+              .map(item => item.id),
             family_member_info: this.memberChildrenlist.filter(item => !item.id)
           })
           .subscribe(result => {
@@ -677,12 +672,6 @@ export default {
       })
     },
     onPay() {
-      const arr = []
-      this.memberChildrenlist.forEach(item => {
-        if (item.id) {
-          arr.push(item.id)
-        }
-      })
       this.form.validate().then(values => {
         this.saleMemberCardService
           .setTransactionPay({
@@ -704,7 +693,9 @@ export default {
             description: this.description,
             sale_range: this.info.sale_range.type,
             order_amount: this.currentPrice,
-            family_member_ids: arr,
+            family_member_ids: this.memberChildrenlist
+              .filter(item => !!item.id)
+              .map(item => item.id),
             family_member_info: this.memberChildrenlist.filter(item => !item.id)
           })
           .subscribe(result => {

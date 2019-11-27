@@ -559,7 +559,7 @@ export const routeMapConfig = {
     routeConfig.meta.title = '编辑{{$c("member_card")}}'
     routeConfig.queryOptions = {
       type: {
-        type: Number
+        type: String
       }
     }
   },
@@ -570,7 +570,7 @@ export const routeMapConfig = {
     routeConfig.meta.title = '新增{{$c("member_card")}}'
     routeConfig.queryOptions = {
       type: {
-        type: Number
+        type: String
       }
     }
   },
@@ -578,7 +578,7 @@ export const routeMapConfig = {
     routeConfig.meta.title = '编辑{{$c("member_card")}}'
     routeConfig.queryOptions = {
       type: {
-        type: Number
+        type: String
       }
     }
   },
@@ -586,7 +586,7 @@ export const routeMapConfig = {
     routeConfig.meta.title = '新增次卡'
     routeConfig.queryOptions = {
       type: {
-        type: Number
+        type: String
       }
     }
   },
@@ -942,7 +942,7 @@ export const routeMapConfig = {
     routeConfig.meta.title = '新增期限卡'
     routeConfig.queryOptions = {
       type: {
-        type: Number
+        type: String
       }
     }
   },
@@ -950,7 +950,7 @@ export const routeMapConfig = {
     routeConfig.meta.title = '编辑{{$c("member_card")}}'
     routeConfig.queryOptions = {
       type: {
-        type: Number
+        type: String
       }
     }
   },
@@ -958,7 +958,7 @@ export const routeMapConfig = {
     routeConfig.meta.title = '新增次卡'
     routeConfig.queryOptions = {
       type: {
-        type: Number
+        type: String
       }
     }
   },
@@ -966,7 +966,7 @@ export const routeMapConfig = {
     routeConfig.meta.title = '编辑次卡'
     routeConfig.queryOptions = {
       type: {
-        type: Number
+        type: String
       }
     }
   },

@@ -13,10 +13,7 @@
             <st-info-item label="购卡人">
               {{ freezeInfo.member_name }}
             </st-info-item>
-            <st-info-item
-              label="卡成员"
-              v-if="freezeInfo.card_number_type === 2"
-            >
+            <st-info-item label="卡成员" v-if="isFamilyCard">
               {{ freezeInfo.card_member }}
             </st-info-item>
             <st-info-item label="额度">
@@ -135,6 +132,11 @@ export default {
     freeze: 'modal-sold-card-freeze'
   },
   props: ['id'],
+  computed: {
+    isFamilyCard() {
+      return freezeInfo.card_number_type === 2
+    }
+  },
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
