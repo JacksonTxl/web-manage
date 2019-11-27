@@ -261,7 +261,7 @@
               </span>
               <a-form-item class="page-a-form">
                 <a-date-picker
-                  :disabled="startTimeIsDisabled"
+                  :disabled="isShelfCard"
                   :disabledDate="disabledStartDate"
                   v-decorator="decorators.start_time"
                   format="YYYY-MM-DD"
