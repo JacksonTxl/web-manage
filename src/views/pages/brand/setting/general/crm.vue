@@ -180,6 +180,7 @@
           v-model="crmRule.coach_untie_condition"
         >
           <a-checkbox
+            disabled
             v-for="item in courseType"
             :key="item.value"
             :value="item.value"
@@ -221,6 +222,7 @@
     <div>
       <st-button
         :loading="loading.setCrmRule"
+        v-if="auth.edit"
         class="btn"
         type="primary"
         @click="setCrmRule"
@@ -251,7 +253,8 @@ export default {
       courseType: this.crmService.courseType$,
       userUntied: this.crmService.userUntied$,
       crmRule: this.crmService.crmRule$,
-      loading: this.crmService.loading$
+      loading: this.crmService.loading$,
+      auth: this.crmService.auth$
     }
   },
   modals: {
