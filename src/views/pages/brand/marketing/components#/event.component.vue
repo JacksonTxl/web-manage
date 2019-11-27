@@ -80,6 +80,7 @@
 import { H5WrapperService } from '@/views/pages/brand/setting/mina/components#/h5/h5-wrapper.service'
 import { cloneDeep } from 'lodash-es'
 import { ActivityService } from '../activity.service'
+import { Tree } from '@/utils/tree'
 export default {
   bem: {
     event: 'activity-event-component'
@@ -126,31 +127,30 @@ export default {
       this.list[number] = cloneDeep(this.eventInfo)
       this.actList = cloneDeep(this.activityList.list)
       this.list[number].forEach(item => {
-        this.actList.forEach(ite => {
-          if (ite.id === item.activity_type) {
-            if (!ite.children.some(act => act.id === item.activity_id)) {
-              if (item.activity_type === 5) {
-                ite.children.push({
-                  activity_name: item.activity_name,
-                  activity_type: item.activity_type,
-                  id: item.activity_id,
-                  isover: true,
-                  product_type: item.product_type,
-                  product_template_id: item.product_template_id
-                })
-              } else {
-                ite.children.push({
-                  activity_name: item.activity_name,
-                  activity_type: item.activity_type,
-                  id: item.activity_id,
-                  isover: true
-                })
-              }
-            }
-            item.id = ite.id
-            item.activity_id = [item.id, item.activity_id]
+        const tree = new Tree(this.actList, { name: 'activity_name' })
+        if (!tree.findNodeById(item.activity_id)) {
+          // 找到对应的父节点
+          const node = tree.findNodeById(item.activity_type)
+          if (item.activity_type === 5) {
+            node.children.push({
+              activity_name: item.activity_name,
+              activity_type: item.activity_type,
+              id: item.activity_id,
+              isover: true,
+              product_type: item.product_type,
+              product_template_id: item.product_template_id
+            })
+          } else {
+            node.children.push({
+              activity_name: item.activity_name,
+              activity_type: item.activity_type,
+              id: item.activity_id,
+              isover: true
+            })
           }
-        })
+          item.id = node.id
+          item.activity_id = [item.id, item.activity_id]
+        }
       })
       this.actList.forEach(item => {
         if (!item.children.length) {

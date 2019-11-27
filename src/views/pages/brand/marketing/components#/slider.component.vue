@@ -90,6 +90,7 @@ import { cloneDeep, find as _find, values } from 'lodash-es'
 import draggable from 'vuedraggable'
 import { ActivityService } from '../activity.service'
 import overImg from '@/assets/img/brand/setting/mina/over.png'
+import { Tree } from '@/utils/tree'
 
 export default {
   bem: {
@@ -134,37 +135,31 @@ export default {
     this.list = cloneDeep(this.sliderInfo)
     this.actList = cloneDeep(this.activityList.list)
     this.list.forEach(item => {
-      // 需要对children进行遍历
-      this.actList.forEach(it => {
-        // it.id = it.type
-        if (item.activity_type === it.id) {
-          if (!it.children.some(act => act.id === item.activity_id)) {
-            let tmpArrChild = {
-              activity_name: item.activity_name,
-              activity_type: item.activity_type,
-              id: item.activity_id,
-              isover: true
-            }
-            let tmpProduct = {
-              product_type: item.product_type,
-              product_template_id: item.product_template_id
-            }
-            item.activity_type === 5
-              ? it.children.push(Object.assign(tmpArrChild, tmpProduct))
-              : it.children.push(tmpArrChild)
-          }
-          item.id = it.id
-          item.activity_id = [item.id, item.activity_id]
+      const tree = new Tree(this.actList, { name: 'activity_name' })
+      if (!tree.findNodeById(item.activity_id)) {
+        const node = tree.findNodeById(item.activity_type)
+        let tmpArrChild = {
+          activity_name: item.activity_name,
+          activity_type: item.activity_type,
+          id: item.activity_id,
+          isover: true
         }
-      })
+        let tmpProduct = {
+          product_type: item.product_type,
+          product_template_id: item.product_template_id
+        }
+        item.activity_type === 5
+          ? node.children.push(Object.assign(tmpArrChild, tmpProduct))
+          : node.children.push(tmpArrChild)
+        item.id = node.id
+        item.activity_id = [item.id, item.activity_id]
+      }
     })
     this.actList.forEach(item => {
       if (!item.children.length) {
         item.disabled = true
       }
     })
-    console.log(this.list, 'list这里')
-    console.log(this.actList, 'actList这里')
   },
   watch: {
     list: {
