@@ -48,13 +48,13 @@ export default {
       ],
       moreCardTypeList: [
         {
-          bg: require('@/assets/img/bg-card-member-more-period.png'),
+          bg: require('@/assets/img/bg-card-member-family-period.png'),
           title: '多人共享期限卡',
           describe: '支持购卡人、卡成员在固定期限进入场馆锻炼',
           url: './period/add?type=family-card'
         },
         {
-          bg: require('@/assets/img/bg-card-member-more-number.png'),
+          bg: require('@/assets/img/bg-card-member-family-number.png'),
           title: '多人共享次卡',
           describe: '支持购卡人、卡成员进入场馆锻炼固定次数',
           url: './number/add?type=family-card'
