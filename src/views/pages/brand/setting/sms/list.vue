@@ -6,7 +6,7 @@
       v-model="$searchQuery.search"
       placeholder="请输入姓名或手机号查找"
     ></st-input-search>
-    <st-search-panel @search="onSearchList" @reset="onSearhReset">
+    <st-search-panel @search="onSearchList" @reset="onSearchReset">
       <st-search-panel-item label="通知对象：">
         <st-search-radio
           v-model="$searchQuery.notify_type"
@@ -20,10 +20,7 @@
         />
       </st-search-panel-item>
       <st-search-panel-item label="发送时间：">
-        <st-range-picker
-          :disabledDays="180"
-          v-model="selectTime"
-        ></st-range-picker>
+        <st-range-picker :disabledDays="180" v-model="date" />
       </st-search-panel-item>
     </st-search-panel>
 
@@ -59,6 +56,7 @@ import tableMixin from '@/mixins/table.mixin'
 const pageName = 'page-setting-sms-list'
 
 export default {
+  name: 'SmsList',
   mixins: [tableMixin],
   bem: {
     bPage: pageName,
@@ -79,7 +77,13 @@ export default {
     }
   },
   computed: {
-    columns
+    columns,
+    startDate() {
+      return this.date[0].format('YYYY-MM-DD') || null
+    },
+    endDate() {
+      return this.date[1].format('YYYY-MM-DD') || null
+    }
   },
   created() {
     let list = [{ value: -1, label: '全部' }]
@@ -96,48 +100,23 @@ export default {
   },
   data() {
     return {
-      selectTime: {
-        startTime: {
-          showTime: false,
-          disabledBegin: null,
-          placeholder: '开始日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        },
-        endTime: {
-          showTime: false,
-          placeholder: '结束日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        }
-      },
+      date: [],
       orderStatusList: [],
-      payStatusList: [],
-      start_date: null,
-      end_date: null
+      payStatusList: []
     }
   },
   methods: {
     onSearchList() {
-      this.$searchQuery.start_time = this.selectTime.startTime.value
-        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')}`
-        : ''
-      this.$searchQuery.end_time = this.selectTime.endTime.value
-        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')}`
-        : ''
+      this.$searchQuery.start_time = this.startDate
+      this.$searchQuery.end_time = this.endDate
       this.onSearch({ ...this.$searchQuery })
     },
     setSearchData() {
-      this.selectTime.startTime.value = this.$searchQuery.start_time
-        ? cloneDeep(moment(this.$searchQuery.start_time))
-        : null
-      this.selectTime.endTime.value = this.$searchQuery.end_time
-        ? cloneDeep(moment(this.$searchQuery.end_time))
-        : null
+      if (!this.$searchQuery.start_time) return
+      this.date = [
+        moment(this.$searchQuery.start_time || null),
+        moment(this.$searchQuery.end_time || null)
+      ]
     }
   }
 }

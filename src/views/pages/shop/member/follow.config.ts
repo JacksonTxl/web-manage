@@ -45,7 +45,7 @@ export const columns = (vm: any) => [
   {
     title: '下次跟进时间',
     dataIndex: 'follow_next_time',
-    width: '150px'
+    width: '180px'
   },
   {
     dataIndex: 'follow_num',

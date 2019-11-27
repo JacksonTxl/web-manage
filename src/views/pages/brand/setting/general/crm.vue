@@ -43,7 +43,7 @@
             教练可跟进客户上限
             <st-help-tooltip id="TBCRM002" />
           </st-t4>
-          <div class="st-des mg-t4">客户成为正式会员后不受此人数限制</div>
+          <div class="st-des mg-t4">客户购买私教课或课程包后不受此人数限制</div>
         </a-col>
         <a-col :span="12" class="ta-r">
           <a-radio-group v-model="crmRule.coach_is_limit">

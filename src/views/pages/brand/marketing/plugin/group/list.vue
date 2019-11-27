@@ -55,8 +55,7 @@
           <template slot="activity_state" slot-scope="text, record">
             <span
               v-if="
-                record.activity_state.length === 1 &&
-                  record.activity_state.published_time
+                record.activity_state && record.activity_state.published_time
               "
             >
               <a-popover
@@ -67,7 +66,7 @@
               >
                 <template slot="content">
                   <span>发布时间：</span>
-                  <span>{{ record.activity_state[0].published_time }}</span>
+                  <span>{{ record.activity_state.published_time }}</span>
                 </template>
                 <span>
                   {{ record.activity_state.name }}

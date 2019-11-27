@@ -89,6 +89,7 @@ export default {
     this.service.getSaleList().subscribe(res => {
       this.list = res.list
       this.selectedRowKeys = [this.saleId]
+      this.chooseId = this.saleId
     })
   },
   methods: {

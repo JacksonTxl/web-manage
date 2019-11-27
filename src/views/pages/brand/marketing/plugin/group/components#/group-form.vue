@@ -28,11 +28,11 @@
         <a-row :gutter="8">
           <a-col :span="16">
             <st-form-item label="活动时间" required>
-              <st-range-picker-2
+              <st-range-picker
                 :disabledDays="180"
                 :options="activityOptions"
                 v-decorator="decorators.activity_time"
-              ></st-range-picker-2>
+              ></st-range-picker>
             </st-form-item>
           </a-col>
         </a-row>
