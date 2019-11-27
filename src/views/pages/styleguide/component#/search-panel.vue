@@ -8,10 +8,7 @@
         <st-search-radio v-model="$searchQuery.m2" :options="list2" />
       </st-search-panel-item>
       <st-search-panel-item label="发送时间：">
-        <st-range-picker
-          :disabledDays="180"
-          :value="selectTime"
-        ></st-range-picker>
+        <st-range-picker :disabledDays="180" v-model="date" />
       </st-search-panel-item>
 
       <st-search-panel-item label="复选框">
@@ -36,6 +33,7 @@ export default {
         m2: 2,
         m3: 2
       },
+      date: [],
       list1: [
         { label: '普通券', value: 1 },
         { label: '优惠券', value: 2 },

@@ -20,11 +20,7 @@
         />
       </st-search-panel-item>
       <st-search-panel-item label="发送时间：">
-        <st-range-picker-2
-          :disabledDays="180"
-          :options="selectTime"
-          v-model="date"
-        ></st-range-picker-2>
+        <st-range-picker :disabledDays="180" v-model="date" />
       </st-search-panel-item>
     </st-search-panel>
 
@@ -104,25 +100,6 @@ export default {
   },
   data() {
     return {
-      selectTime: {
-        startTime: {
-          showTime: false,
-          disabledBegin: null,
-          placeholder: '开始日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        },
-        endTime: {
-          showTime: false,
-          placeholder: '结束日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        }
-      },
       date: [],
       orderStatusList: [],
       payStatusList: []

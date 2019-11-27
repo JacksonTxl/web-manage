@@ -58,7 +58,7 @@ export default {
       this.chart = new Chart({
         container: this.$el,
         forceFit: true,
-        padding: ['auto', 20, 'auto', 'auto'],
+        padding: ['auto', 180, 'auto', 'auto'],
         height: this.height
       })
       this.chart.source(this.dv, {
@@ -68,8 +68,10 @@ export default {
       })
       this.chart.tooltip({
         showTitle: false,
-        itemTpl:
-          '<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name} <span class="st-g2-tooltip-value">| {value}</span></li>'
+        itemTpl: `<li>
+                    <span style="background-color:{color};" class="g2-tooltip-marker">{name}</span>
+                    <span class="st-g2-tooltip-value">| {value}</span>
+                  </li>`
       })
       this.chart.coord('theta', {
         innerRadius: 0.65
@@ -89,21 +91,26 @@ export default {
                   </li>`
         }
       })
+
+      // 总计的自定义DOM
       this.chart.guide().html({
         position: ['50%', '50%'],
         html: () => {
           let sum = this.dv.sum('value')
           return `<div class='guide'>
-          <div class='guide-name'><span class="mg-r4">${
-            this.name
-          }</span><span class='guide-name-tooltip'></span></div>
-            <div class='guide-title'><span class='guide-value'>${sum}</span><span class='guide-unit'>${
-            this.unit
-          }</span></div>
-            </div>`
+                    <div class='guide-name'>
+                      <span class="mg-r4">${this.name}</span>
+                      <span id="guide-name-tooltip${this.tooltipId}"></span>
+                      </div>
+                    <div class='guide-title'>
+                      <span class='guide-value'>${sum}</span>
+                      <span class='guide-unit'>${this.unit}</span>
+                    </div>
+                  </div>`
         }
       })
 
+      // 但数据为0的时候初始化
       this.chart.guide().arc({
         start: (xScales, yScales) => {
           if (this.dv.sum('value') === 0) {
@@ -130,14 +137,14 @@ export default {
         start: (xScales, yScales) => {
           if (this.dv.sum('value') === 0) {
             this.hoverable = false
-            return ['70%', '50%']
+            return ['78%', '50%']
           }
           return []
         },
         end: (xScales, yScales) => {
           if (this.dv.sum('value') === 0) {
             this.hoverable = false
-            return ['30%', '50%']
+            return ['22%', '50%']
           }
           return []
         },
@@ -169,6 +176,7 @@ export default {
         }
       })
 
+      // 环形图初始化
       const interval = this.chart
         .intervalStack()
         .style({
@@ -194,15 +202,23 @@ export default {
       this.chart.render()
       this.changeData()
       const $s = this.$el.querySelector.bind(this.$el)
-
+      // 鼠标进入环形显示相关的值
       this.chart.on('interval:mouseenter', e => {
         const origin = e.data._origin
         $s('.guide-value').textContent = origin.value
         $s('.guide-name').textContent = origin.name
       })
+      // 鼠标离开显示总值
       this.chart.on('interval:mouseleave', e => {
         $s('.guide-value').textContent = this.total
         $s('.guide-name').textContent = this.name
+        const component = new Vue({
+          components: {
+            StHelpTooltip
+          },
+          render: h => <st-help-tooltip class={'mg-l4'} id={this.tooltipId} />
+        }).$mount()
+        $s('.guide-name').appendChild(component.$el)
       })
       const legendListItems = [
         ...this.$el.querySelectorAll('.g2-legend-list-item')
@@ -210,11 +226,23 @@ export default {
 
       const vm = this
       vm.offMouseHandlers = []
+      // 控制右边标注的鼠标移入移出的数值变化
       const mouseHandler = function() {
         const name = this.dataset.value
         const row = vm.dv.findRow({ name })
         $s('.guide-value').textContent = row.value
         $s('.guide-name').textContent = row.name
+      }
+      const mouseLeaveHandler = () => {
+        $s('.guide-value').textContent = this.total
+        $s('.guide-name').textContent = this.name
+        const component = new Vue({
+          components: {
+            StHelpTooltip
+          },
+          render: h => <st-help-tooltip class={'mg-l4'} id={this.tooltipId} />
+        }).$mount()
+        $s('.guide-name').appendChild(component.$el)
       }
 
       legendListItems.forEach(el => {
@@ -223,14 +251,21 @@ export default {
           el.addEventListener('mouseenter', mouseHandler, false)
         })
       })
+      legendListItems.forEach(el => {
+        el.addEventListener('mouseleave', mouseLeaveHandler, false)
+        this.offMouseHandlers.push(() => {
+          el.addEventListener('mouseleave', mouseLeaveHandler, false)
+        })
+      })
     },
     changeData() {
       new Vue({
+        el: `#guide-name-tooltip${this.tooltipId}`,
         components: {
           StHelpTooltip
         },
         render: h => <st-help-tooltip id={this.tooltipId} />
-      }).$mount('.guide-name-tooltip')
+      })
     }
   },
   beforeDestroy() {

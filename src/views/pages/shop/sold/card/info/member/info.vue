@@ -31,8 +31,27 @@
             <st-info-item label="订单状态">
               {{ info.order_status | enumFilter('sold_common.order_status') }}
             </st-info-item>
-            <st-info-item label="当前状态" class="mg-b0">
+            <st-info-item label="当前状态">
               {{ info.card_status | enumFilter('sold_common.card_status') }}
+            </st-info-item>
+            <st-info-item label="入场时段">
+              <template v-if="info.admission_time.type < 2">
+                {{ info.admission_time.name }}
+              </template>
+              <a-popover :title="info.admission_time.name" v-else>
+                <template slot="content">
+                  <st-table
+                    :columns="enterTimeColumns"
+                    :dataSource="info.admission_time.list"
+                    :pagination="false"
+                    key="id"
+                    :class="basic('popover-content')"
+                  ></st-table>
+                </template>
+                <a type="primary">
+                  {{ info.admission_time.name }}
+                </a>
+              </a-popover>
             </st-info-item>
           </st-info>
         </a-col>
@@ -113,7 +132,11 @@ import SoldCardFreeze from '@/views/biz-modals/sold/card/freeze'
 import SoldCardRefund from '@/views/biz-modals/sold/card/refund'
 import SoldCardSetTime from '@/views/biz-modals/sold/card/set-time'
 import SoldCardTransfer from '@/views/biz-modals/sold/card/transfer'
-import { admissionColumns, courseColumns } from '../info.config'
+import {
+  admissionColumns,
+  courseColumns,
+  enterTimeColumns
+} from '../info.config'
 import useCardActions from '@/hooks/card-actions.hook'
 export default {
   name: 'PageShopSoldCardMemberInfo',
@@ -155,6 +178,7 @@ export default {
     admissionColumns,
     // 授课范围
     courseColumns,
+    enterTimeColumns,
     btnOptions() {
       return [
         {

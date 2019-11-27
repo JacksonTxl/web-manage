@@ -52,7 +52,6 @@
               placeholder="请选择下次跟进时间"
               format="YYYY-MM-DD HH:mm:ss"
               :disabledDate="disabledDate"
-              :disabledTime="disabledDateTime"
               :showTime="{ defaultValue: moment('00:00:00', 'HH:mm:ss') }"
               v-decorator="decorators.follow_next_time"
             />

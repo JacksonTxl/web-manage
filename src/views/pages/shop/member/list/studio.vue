@@ -22,17 +22,11 @@
           />
         </st-search-panel-item>
         <st-search-panel-item label="注册时间：">
-          <st-range-picker
-            :disabledDays="180"
-            :value="selectTime"
-          ></st-range-picker>
+          <st-range-picker :disabledDays="180" v-model="date" />
         </st-search-panel-item>
         <div slot="more">
           <st-search-panel-item label="入会时间：">
-            <st-range-picker
-              :disabledDays="180"
-              :value="selectMemberTime"
-            ></st-range-picker>
+            <st-range-picker :disabledDays="180" v-model="memberDate" />
           </st-search-panel-item>
           <st-search-panel-item label="员工跟进：">
             <st-search-radio
@@ -63,7 +57,8 @@
           name: 'shop-add-lable',
           props: {
             memberIds: selectedRowKeys
-          }
+          },
+          on: { success: refeshPage }
         }"
       >
         加标签
@@ -77,7 +72,8 @@
                 name: 'shop-distribution-coach',
                 props: {
                   memberIds: selectedRowKeys
-                }
+                },
+                on: { success: refeshPage }
               }"
             >
               分配教练
@@ -90,7 +86,8 @@
                 name: 'shop-distribution-sale',
                 props: {
                   memberIds: selectedRowKeys
-                }
+                },
+                on: { success: refeshPage }
               }"
             >
               分配销售
@@ -259,44 +256,8 @@ export default {
       selectDataList: [],
       selectedRowKeys: [],
       selectedRows: [],
-      selectTime: {
-        startTime: {
-          showTime: false,
-          disabledBegin: null,
-          placeholder: '开始日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        },
-        endTime: {
-          showTime: false,
-          placeholder: '结束日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        }
-      },
-      selectMemberTime: {
-        startTime: {
-          showTime: false,
-          disabledBegin: null,
-          placeholder: '开始日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        },
-        endTime: {
-          showTime: false,
-          placeholder: '结束日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        }
-      }
+      date: [],
+      memberDate: []
     }
   },
   computed: {
@@ -314,6 +275,7 @@ export default {
 
   methods: {
     refeshPage() {
+      this.selectedRowKeys = []
       this.$router.reload()
     },
     sourceRegisters() {
@@ -323,38 +285,36 @@ export default {
     },
     // 查询
     onSearchNative() {
-      this.$searchQuery.register_start_time = this.selectTime.startTime.value
-        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')}`
+      this.$searchQuery.register_start_time = this.date[0]
+        ? `${this.date[0].format('YYYY-MM-DD')}`
         : ''
-      this.$searchQuery.register_stop_time = this.selectTime.endTime.value
-        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')}`
+      this.$searchQuery.register_stop_time = this.date[1]
+        ? `${this.date[1].format('YYYY-MM-DD')}`
         : ''
-      this.$searchQuery.be_member_start_time = this.selectMemberTime.startTime
-        .value
-        ? `${this.selectMemberTime.startTime.value.format('YYYY-MM-DD')}`
+      this.$searchQuery.be_member_start_time = this.memberDate[0]
+        ? `${this.memberDate[0].format('YYYY-MM-DD')}`
         : ''
-      this.$searchQuery.be_member_stop_time = this.selectMemberTime.endTime
-        .value
-        ? `${this.selectMemberTime.endTime.value.format('YYYY-MM-DD')}`
+      this.$searchQuery.be_member_stop_time = this.memberDate[1]
+        ? `${this.memberDate[1].format('YYYY-MM-DD')}`
         : ''
       this.onSearch()
     },
     // 设置searchData
     setSearchData() {
-      this.selectTime.startTime.value = this.$searchQuery.register_start_time
+      const start = this.$searchQuery.register_start_time
         ? cloneDeep(moment(this.$searchQuery.register_start_time))
         : null
-      this.selectTime.endTime.value = this.$searchQuery.register_stop_time
+      const end = this.$searchQuery.register_stop_time
         ? cloneDeep(moment(this.$searchQuery.register_stop_time))
         : null
-      this.selectMemberTime.startTime.value = this.$searchQuery
-        .be_member_start_time
+      const memberStart = this.$searchQuery.be_member_start_time
         ? cloneDeep(moment(this.$searchQuery.be_member_start_time))
         : null
-      this.selectMemberTime.endTime.value = this.$searchQuery
-        .be_member_stop_time
+      const memberEnd = this.$searchQuery.be_member_stop_time
         ? cloneDeep(moment(this.$searchQuery.be_member_stop_time))
         : null
+      this.date = [start, end]
+      this.memberDate = [memberStart, memberEnd]
     },
     // 分配教练
     onDistributionCoach(record) {
@@ -371,7 +331,7 @@ export default {
               },
               on: {
                 success: () => {
-                  this.$router.reload()
+                  this.refeshPage()
                 }
               }
             })
@@ -387,7 +347,7 @@ export default {
           },
           on: {
             success: () => {
-              this.$router.reload()
+              this.refeshPage()
             }
           }
         })
@@ -408,7 +368,7 @@ export default {
               },
               on: {
                 success: () => {
-                  this.$router.reload()
+                  this.refeshPage()
                 }
               }
             })
@@ -424,7 +384,7 @@ export default {
           },
           on: {
             success: () => {
-              this.$router.reload()
+              this.refeshPage()
             }
           }
         })
@@ -438,7 +398,7 @@ export default {
           this.studioService
             .removeWechatBind(record.member_id)
             .subscribe(() => {
-              this.$router.reload()
+              this.refeshPage()
             })
         },
         onCancel() {}

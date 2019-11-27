@@ -15,10 +15,7 @@
         <st-search-radio v-model="$searchQuery.type" :options="payStatus" />
       </st-search-panel-item>
       <st-search-panel-item label="创建时间：">
-        <st-range-picker
-          :disabledDays="180"
-          :value="selectTime"
-        ></st-range-picker>
+        <st-range-picker :disabledDays="180" v-model="date" />
       </st-search-panel-item>
       <div slot="button">
         <st-button type="primary" @click="onSearchNative">查询</st-button>
@@ -140,46 +137,29 @@ export default {
       type: -1,
       start_date: null,
       end_date: null,
-      selectTime: {
-        startTime: {
-          showTime: false,
-          disabledBegin: null,
-          placeholder: '开始日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        },
-        endTime: {
-          showTime: false,
-          placeholder: '结束日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        }
-      }
+      date: []
     }
   },
   methods: {
-    // 查询
-    onSearchNative() {
-      this.$searchQuery.start_date = this.selectTime.startTime.value
-        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')}`
-        : ''
-      this.$searchQuery.end_date = this.selectTime.endTime.value
-        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')}`
-        : ''
-      this.onSearch()
-    },
     // 设置searchData
     setSearchData() {
-      this.selectTime.startTime.value = this.$searchQuery.start_date
-        ? moment(this.$searchQuery.start_date)
+      const start = this.$searchQuery.start_date
+        ? cloneDeep(moment(this.$searchQuery.start_date))
         : null
-      this.selectTime.endTime.value = this.$searchQuery.end_date
-        ? moment(this.$searchQuery.end_date)
+      const end = this.$searchQuery.end_date
+        ? cloneDeep(moment(this.$searchQuery.end_date))
         : null
+      this.date = [start, end]
+    },
+    // 查询
+    onSearchNative() {
+      this.$searchQuery.start_date = this.date[0]
+        ? `${this.date[0].format('YYYY-MM-DD')}`
+        : ''
+      this.$searchQuery.end_date = this.date[1]
+        ? `${this.date[1].format('YYYY-MM-DD')}`
+        : ''
+      this.onSearch()
     },
     // 收款
     onGathering(record) {

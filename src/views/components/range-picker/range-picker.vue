@@ -1,122 +1,137 @@
 <template>
-  <div class="st-range-datepicker">
+  <div class="st-range-picker">
     <a-date-picker
-      :disabled="model.startTime.disabled"
+      :disabled="startOptions.disabled"
       :disabledDate="disabledStartDate"
-      :showTime="model.startTime.showTime"
-      :placeholder="model.startTime.placeholder"
-      :format="model.startTime.format"
-      v-model="model.startTime.value"
-      @change="model.startTime.change"
+      :showTime="startOptions.showTime"
+      :placeholder="startOptions.placeholder"
+      :format="startOptions.format"
+      v-model="startValue"
       @openChange="handleStartOpenChange"
     />
     &nbsp;~&nbsp;
     <a-date-picker
-      :disabled="model.endTime.disabled"
+      :disabled="endOptions.disabled"
       :disabledDate="disabledEndDate"
-      :showTime="model.endTime.showTime"
-      :placeholder="model.endTime.placeholder"
-      :format="model.endTime.format"
-      v-model="model.endTime.value"
-      @change="model.endTime.change"
+      :showTime="endOptions.showTime"
+      :placeholder="endOptions.placeholder"
+      :format="endOptions.format"
+      v-model="endValue"
       :open="endOpen"
       @openChange="handleEndOpenChange"
     />
   </div>
 </template>
+
 <script>
-import moment from 'moment'
+import { merge } from 'lodash-es'
 export default {
   name: 'StRangePicker',
-  serviceInject() {
-    return {}
+  model: {
+    prop: 'value',
+    event: 'change'
   },
   props: {
+    /**
+     * 模型值，使用[YYYY-MM-DD,YYYY-MM-DD]
+     */
+    value: {
+      type: Array
+    },
     disabledDays: {
-      type: Number || String,
+      type: [Number, String],
       default: 0
     },
-    value: {
+    options: {
       type: Object,
-      default: () => {
-        const obj = {
-          startTime: {
-            showTime: false,
-            disabledBegin: '2019-07-03',
-            placeholder: '开始日期',
-            disabled: false,
-            value: null,
-            format: 'YYYY-MM-DD',
-            change: $event => {}
-          },
-          endTime: {
-            showTime: false,
-            placeholder: '结束日期',
-            disabled: false,
-            value: null,
-            format: 'YYYY-MM-DD',
-            change: $event => {}
-          }
+      default: () => ({
+        start: {
+          // ...
+        },
+        end: {
+          // ...
         }
-        return obj
-      }
+      })
     }
   },
   data() {
     return {
-      startValue: null,
-      endValue: null,
-      endOpen: false,
-      model: {}
+      endOpen: false
     }
   },
-  created() {
-    this.model = this.value
-    const oriStartChange = this.model.startTime.change.bind(null)
-    const oriEndChange = this.model.endTime.change.bind(null)
-
-    this.model.startTime.change = $event => {
-      this.$emit('change', [$event, this.model.endTime.value])
-      oriStartChange($event)
-    }
-    this.model.endTime.change = $event => {
-      this.$emit('change', [this.model.startTime.value, $event])
-      oriEndChange($event)
+  computed: {
+    startOptions() {
+      return merge(
+        {
+          showTime: false,
+          disabledBegin: null,
+          placeholder: '开始日期',
+          disabled: false,
+          format: 'YYYY-MM-DD'
+        },
+        this.options.start
+      )
+    },
+    endOptions() {
+      return merge(
+        {
+          showTime: false,
+          placeholder: '结束日期',
+          disabled: false,
+          format: 'YYYY-MM-DD'
+        },
+        this.options.end
+      )
+    },
+    startValue: {
+      get() {
+        if (!this.value || !this.value[0]) {
+          return null
+        }
+        return moment(this.value[0])
+      },
+      set(newVal) {
+        this.$emit('change', [newVal, this.endValue])
+      }
+    },
+    endValue: {
+      get() {
+        if (!this.value || !this.value[1]) {
+          return null
+        }
+        return moment(this.value[1])
+      },
+      set(newVal) {
+        this.$emit('change', [this.startValue, newVal])
+      }
     }
   },
-  mounted() {},
-  computed: {},
-  watch: {},
   methods: {
-    moment,
-    disabledStartDate(startValue) {
-      const endValue = this.value.endTime.value
-      if (this.value.startTime.disabledBegin) {
+    disabledStartDate(newStartValue) {
+      if (this.startOptions.disabledBegin) {
         return (
-          startValue.valueOf() <
-          moment(this.value.startTime.disabledBegin).valueOf()
+          newStartValue.valueOf() <
+          moment(this.startOptions.disabledBegin).valueOf()
         )
       }
-      if (!startValue || !endValue) {
+      if (!newStartValue || !this.endValue) {
         return false
       }
-
-      return startValue.valueOf() > endValue.valueOf()
+      return newStartValue.valueOf() > this.endValue.valueOf()
     },
-    disabledEndDate(endValue) {
-      const startValue = this.value.startTime.value
-      if (!endValue || !startValue) {
+    disabledEndDate(newEndValue) {
+      if (!newEndValue || !this.startValue) {
         return false
       }
       if (+this.disabledDays > 0) {
         return (
-          moment(startValue)
+          moment(this.startValue)
             .add(+this.disabledDays, 'days')
-            .valueOf() < endValue.valueOf() ||
-          moment(startValue).valueOf() > endValue.valueOf()
+            .valueOf() < newEndValue.valueOf() ||
+          moment(this.startValue).valueOf() > newEndValue.valueOf()
         )
       }
-      return moment(startValue).valueOf() < endValue.valueOf()
+      return moment(this.startValue).valueOf() > newEndValue.valueOf()
     },
     handleStartOpenChange(open) {
       if (!open) {

@@ -43,7 +43,7 @@
             教练可跟进客户上限
             <st-help-tooltip id="TBCRM002" />
           </st-t4>
-          <div class="st-des mg-t4">客户成为正式会员后不受此人数限制</div>
+          <div class="st-des mg-t4">客户购买私教课或课程包后不受此人数限制</div>
         </a-col>
         <a-col :span="12" class="ta-r">
           <a-radio-group v-model="crmRule.coach_is_limit">
@@ -180,6 +180,7 @@
           v-model="crmRule.coach_untie_condition"
         >
           <a-checkbox
+            disabled
             v-for="item in courseType"
             :key="item.value"
             :value="item.value"
@@ -221,6 +222,7 @@
     <div>
       <st-button
         :loading="loading.setCrmRule"
+        v-if="auth.edit"
         class="btn"
         type="primary"
         @click="setCrmRule"
@@ -251,7 +253,8 @@ export default {
       courseType: this.crmService.courseType$,
       userUntied: this.crmService.userUntied$,
       crmRule: this.crmService.crmRule$,
-      loading: this.crmService.loading$
+      loading: this.crmService.loading$,
+      auth: this.crmService.auth$
     }
   },
   modals: {
