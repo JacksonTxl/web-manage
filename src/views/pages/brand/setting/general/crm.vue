@@ -180,6 +180,7 @@
           v-model="crmRule.coach_untie_condition"
         >
           <a-checkbox
+            disabled
             v-for="item in courseType"
             :key="item.value"
             :value="item.value"
