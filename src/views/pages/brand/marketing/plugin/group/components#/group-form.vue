@@ -99,11 +99,6 @@
                 选择门店
                 <st-help-tooltip id="TBPTXJ004" />
               </span>
-              <!-- <select-shop
-                :class="basic('table')"
-                @change="onSelectShop"
-                :shopIds="shopIds"
-              ></select-shop> -->
               <st-container>
                 <st-t4 :class="basic('shop--set')">
                   设置支持会员卡售卖场馆范围
@@ -132,9 +127,13 @@
                 v-model="releaseStatus"
                 :disabled="isEdit && activityState > ACTIVITY_STATUS.PUBLISHER"
               >
-                <a-radio :value="RELEASE_STATUS.PROMPTLY">立即发布</a-radio>
-                <a-radio :value="RELEASE_STATUS.TEMPORARILY">暂不发布</a-radio>
-                <a-radio :value="RELEASE_STATUS.TIMING">定时发布</a-radio>
+                <a-radio
+                  :value="item.value"
+                  v-for="item in publishedType"
+                  :key="item.value"
+                >
+                  {{ item.label }}
+                </a-radio>
               </a-radio-group>
             </st-form-item>
             <st-form-item
@@ -163,7 +162,18 @@ import {
   ACTIVITY_STATUS,
   RELEASE_STATUS
 } from '@/constants/marketing/group-buy'
+import { UserService } from '@/services/user.service'
 export default {
+  serviceInject() {
+    return {
+      userService: UserService
+    }
+  },
+  rxState() {
+    return {
+      publishedType: this.userService.getOptions$('group_buy.published_type')
+    }
+  },
   bem: {
     basic: 'brand-marketing-group-form'
   },
@@ -217,6 +227,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.publishedType, 'publishedType')
     if (this.isEdit) {
       this.setFieldsValue()
     }
