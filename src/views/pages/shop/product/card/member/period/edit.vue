@@ -47,6 +47,7 @@
                 v-decorator="decorators.support_member_num"
                 :disabled="isShelfCard"
                 placeholder="请选择入场人数"
+                class="page-content-card-input"
               >
                 <a-select-option
                   v-for="(item, index) in supportMemberNums"
