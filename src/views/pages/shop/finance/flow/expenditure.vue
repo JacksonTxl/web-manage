@@ -33,11 +33,7 @@
           ></st-input-number>
         </st-search-panel-item>
         <st-search-panel-item label="创建时间：">
-          <st-range-picker
-            :disabledDays="180"
-            :value="selectTime"
-            class="value"
-          ></st-range-picker>
+          <st-range-picker :disabledDays="180" v-model="date" class="value" />
         </st-search-panel-item>
 
         <div slot="button">
@@ -104,31 +100,22 @@ export default {
       checkedList: [],
       indeterminate: false,
       checkAll: false,
-      selectTime: {
-        startTime: {
-          showTime: false,
-          disabledBegin: null,
-          placeholder: '开始日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        },
-        endTime: {
-          showTime: false,
-          placeholder: '结束日期',
-          disabled: false,
-          value: null,
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        }
-      }
+      date: []
     }
   },
   computed: {
     columns
   },
+  mounted() {
+    this.setSearchDate()
+  },
   methods: {
+    setSearchDate() {
+      if (!this.$searchQuery.start_date) return
+      const start = moment(this.$searchQuery.start_date)
+      const end = moment(this.$searchQuery.end_date)
+      this.date = [start, end]
+    },
     onChangePayType(checkedList) {
       this.indeterminate =
         !!checkedList.length && checkedList.length < this.payType$.length
@@ -159,7 +146,7 @@ export default {
     onReset() {
       this.checkedList = []
       this.date = [null, null]
-      this.this.onSearchReset()
+      this.onSearchReset()
     }
   }
 }

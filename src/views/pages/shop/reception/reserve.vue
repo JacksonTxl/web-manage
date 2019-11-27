@@ -17,12 +17,7 @@
           />
         </st-search-panel-item>
         <st-search-panel-item label="预约时间：">
-          <st-range-picker
-            :disabledDays="180"
-            @change="onChangeRangeTime"
-            :value="selectTime"
-            class="value"
-          ></st-range-picker>
+          <st-range-picker :disabledDays="180" v-model="date" class="value" />
         </st-search-panel-item>
       </st-search-panel>
     </div>
@@ -116,25 +111,7 @@ export default {
       VISIT_STATUS,
       COURSE_STATUS,
       RESERVE_TYPE,
-      selectTime: {
-        startTime: {
-          showTime: false,
-          disabledBegin: null,
-          placeholder: '开始日期',
-          disabled: false,
-          value: moment(),
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        },
-        endTime: {
-          showTime: false,
-          placeholder: '结束日期',
-          disabled: false,
-          value: moment(),
-          format: 'YYYY-MM-DD',
-          change: $event => {}
-        }
-      }
+      date: []
     }
   },
   computed: {
@@ -150,9 +127,6 @@ export default {
           }
         }
       })
-    },
-    onChangeRangeTime(value) {
-      console.log(value)
     },
     onClickCancelVisitReserve(record) {
       this.service.cancelVisitReserve(record.id).subscribe(res => {
@@ -187,19 +161,18 @@ export default {
         })
     },
     onSearchNative() {
-      const start_time = this.selectTime.startTime.value
-        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00`
+      const start_time = this.date[0]
+        ? `${this.date[0].format('YYYY-MM-DD')} 00:00`
         : ''
-      const end_time = this.selectTime.endTime.value
-        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 23:59`
+      const end_time = this.date[1]
+        ? `${this.date[1].format('YYYY-MM-DD')} 23:59`
         : ''
       this.$searchQuery.start_time = start_time
       this.$searchQuery.end_time = end_time
       this.onSearch()
     },
     onReset() {
-      this.selectTime.startTime.value = moment()
-      this.selectTime.endTime.value = moment()
+      this.date = [null, null]
       this.onSearchReset()
     },
     onPrint(id) {
