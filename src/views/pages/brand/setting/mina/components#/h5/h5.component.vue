@@ -51,7 +51,7 @@
                 :class="h5('event-img')"
                 :style="{
                   backgroundImage:
-                    'url(' + imageFilter(li.image_url, { h: 88 }) + ')'
+                    'url(' + imageFilter(li.image_url, { w: 300, h: 170 }) + ')'
                 }"
               ></div>
               <div v-else class="img"></div>

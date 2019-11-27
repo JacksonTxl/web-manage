@@ -3,6 +3,7 @@ import { MemberApi, CoachParams, CoachQuery, SaleQuery } from '@/api/v1/member'
 import { UserService } from '@/services/user.service'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
+import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class CrmService {
@@ -18,7 +19,14 @@ export class CrmService {
     coach_follow_rule: 1
   })
   loading$ = new State({})
-  constructor(private memberApi: MemberApi, private userService: UserService) {}
+  auth$ = this.authService.authMap$({
+    edit: 'brand:setting:customer_protection_rule|edit'
+  })
+  constructor(
+    private memberApi: MemberApi,
+    private userService: UserService,
+    private authService: AuthService
+  ) {}
   courseType$ = this.userService.getOptions$('member.course_consume_type')
   userUntied$ = this.userService.getOptions$('setting.crm_rules_user_untied')
 
