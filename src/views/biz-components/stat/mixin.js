@@ -31,18 +31,6 @@ export default {
         }
       }
     }
-    // data(newData) {
-    //   if (newData.length) {
-    //     if (!this.chart) {
-    //       this.initDv()
-    //       this.initChart()
-    //     } else {
-    //       this.initDv()
-    //       this.chart.changeData(this.dv)
-    //       this.changeData && this.changeData() // 自定义的changeData
-    //     }
-    //   }
-    // }
   },
   beforeDestroy() {
     if (this.chart) {
