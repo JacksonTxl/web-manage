@@ -144,9 +144,12 @@ export default {
         cardId: value
       })
       this.groupParams.id = value
-      let member = this.memberList.filter(item => item.id === value)
+      let member = this.memberList.filter(item => item.id === value)[0]
       this.tableData = member.product_spec
-      this.tableData = this.tableData.map(item => (item.is_select = false))
+      // this.tableData = this.tableData.map(item => (item.is_select = false))
+      this.tableData.forEach(item => {
+        item.is_select = false
+      })
       if (this.selectedRowKeys) {
         this.info.sku.forEach(item => {
           this.tableData.forEach(card => {
