@@ -189,6 +189,9 @@
               >
                 修改入场vip区域
               </a>
+              <a @click="cardActions.onChangeMember(record)">
+                变更成员
+              </a>
             </st-table-actions>
           </div>
         </st-table>

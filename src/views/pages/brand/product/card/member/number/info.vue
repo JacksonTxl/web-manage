@@ -57,6 +57,10 @@
         </div>
       </div>
       <div :class="item('admission_range')" class="mg-b24">
+        <p class="mg-b24">
+          <span class="label">支持入场人数：</span>
+          <span class="value">{{ cardInfo.support_member_num }}</span>
+        </p>
         <!-- 支持入场范围 -->
         <p class="mg-b8">
           <span class="label">支持入场门店：</span>

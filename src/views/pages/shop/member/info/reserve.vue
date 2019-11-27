@@ -56,6 +56,9 @@
       <span slot="remain_amount" slot-scope="text, record">
         {{ record.remain_amount.number }}{{ record.remain_amount.type }}
       </span>
+      <template slot="members" slot-scope="text, record">
+        {{ memberInfo(record.members) }}
+      </template>
     </st-table>
     <st-hr></st-hr>
 
@@ -169,6 +172,16 @@ export default {
     }
   },
   methods: {
+    memberInfo(arr) {
+      console.log(arr.filter(item => item.is_purchaser === 1))
+      return `购卡人：${arr
+        .filter(item => item.is_purchaser === 1)
+        .map(item => item.member_info)
+        .join('')}卡成员：${arr
+        .filter(item => item.is_purchaser !== 1)
+        .map(item => item.member_info)
+        .join(',')}`
+    },
     /**
      * 设置页码
      * cardOrCourse 卡或课

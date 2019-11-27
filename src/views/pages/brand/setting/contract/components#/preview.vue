@@ -70,6 +70,7 @@
         <thead>
           <tr v-if="showAllTh">
             <th>商品名称</th>
+            <th>支持入场人数</th>
             <th>价格</th>
             <th>优惠</th>
             <th>小计</th>
@@ -82,6 +83,7 @@
         <tbody>
           <tr v-if="info.contract_type === CONTRACT_TYPE.MEMBER_CARD">
             <td>会员年卡</td>
+            <td>5</td>
             <td>10000.00元</td>
             <td>400.00元</td>
             <td>9600.00元</td>

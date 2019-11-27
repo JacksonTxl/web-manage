@@ -53,6 +53,29 @@
                 </a>
               </a-popover>
             </st-info-item>
+            <st-info-item
+              v-if="info.card_number_type === 2"
+              label="卡成员"
+              class="mg-b0"
+            >
+              <template v-if="info.card_member.length === 0">
+                无
+              </template>
+              <template v-else>
+                <router-link
+                  :to="{
+                    path: '/shop/member/info/basic',
+                    query: {
+                      id: item.id
+                    }
+                  }"
+                  v-for="(item, index) in info.card_member"
+                  :key="index"
+                >
+                  {{ item.name }}
+                </router-link>
+              </template>
+            </st-info-item>
           </st-info>
         </a-col>
         <a-col :span="6">
@@ -225,6 +248,10 @@ export default {
           text: '修改入场vip区域',
           click: this.onArea,
           if: this.auth['shop:sold:sold_member_card|vip_region']
+        },
+        {
+          text: '变更成员',
+          click: this.onChangeMember
         }
       ]
     }
@@ -278,6 +305,12 @@ export default {
     // 升级
     onUpgrade() {
       this.cardActions.upgradeCard({
+        id: this.infoService.id
+      })
+    },
+    // 变更成员
+    onChangeMember() {
+      this.cardActions.onChangeMember({
         id: this.infoService.id
       })
     },

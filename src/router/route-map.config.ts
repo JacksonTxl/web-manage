@@ -557,15 +557,38 @@ export const routeMapConfig = {
   },
   'brand-product-card-member-number-edit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑{{$c("member_card")}}'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
   },
   'brand-product-card-member-add-select'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '{{$c("member_card")}}'
   },
   'brand-product-card-member-period-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增{{$c("member_card")}}'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
+  },
+  'brand-product-card-member-period-edit'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '编辑{{$c("member_card")}}'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
   },
   'brand-product-card-member-number-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增次卡'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
   },
   'brand-product-card-member-period-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '{{$c("member_card")}}详情'
@@ -917,13 +940,37 @@ export const routeMapConfig = {
   },
   'shop-product-card-member-period-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增期限卡'
-  },
-  'shop-product-card-member-number-add'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '新增次卡'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
   },
   'shop-product-card-member-period-edit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑{{$c("member_card")}}'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
   },
+  'shop-product-card-member-number-add'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '新增次卡'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
+  },
+  'shop-product-card-member-number-edit'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '编辑次卡'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
+  },
+
   'shop-product-card-deposit-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增储值卡'
   },

@@ -241,4 +241,10 @@ export class CardApi extends Api {
   setCardEnterTime(params: any) {
     return this.http.post(`/v1/sold/cards/batch/admission_time`, { params })
   }
+  /**
+   * 售出 会员卡 更改成员
+   */
+  changeCardMember(id: number, params: any) {
+    return this.http.put(`/v1/sold/cards/member/cards/edit/${id}`, { params })
+  }
 }

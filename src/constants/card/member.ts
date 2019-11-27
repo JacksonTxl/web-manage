@@ -6,7 +6,15 @@ export enum CARD_TYPE {
   /**
    * 期限卡
    */
-  PERIOD = 2
+  PERIOD = 2,
+  /**
+   * 次卡
+   */
+  MORE_NUMBER = 3,
+  /**
+   * 期限卡
+   */
+  MORE_PERIOD = 4
 }
 
 export enum SELL_STATUS {

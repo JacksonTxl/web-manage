@@ -10,6 +10,12 @@
         <a-col :span="24">
           <st-info>
             <st-info-item label="卡名">{{ freezeInfo.card_name }}</st-info-item>
+            <st-info-item label="购卡人">
+              {{ freezeInfo.member_name }}
+            </st-info-item>
+            <st-info-item label="卡成员" v-if="isFamilyCard">
+              {{ freezeInfo.card_member }}
+            </st-info-item>
             <st-info-item label="额度">
               {{ freezeInfo.remain_amount }}
             </st-info-item>
@@ -126,6 +132,11 @@ export default {
     freeze: 'modal-sold-card-freeze'
   },
   props: ['id'],
+  computed: {
+    isFamilyCard() {
+      return freezeInfo.card_number_type === 2
+    }
+  },
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
@@ -160,7 +171,8 @@ export default {
               {
                 end_time: values.end_time.format('YYYY-MM-DD HH:mm'),
                 poundage: this.frozen_fee,
-                pay_method: values.pay_method
+                pay_method: values.pay_method,
+                member_id: this.freezeInfo.member_id
               },
               this.id
             )

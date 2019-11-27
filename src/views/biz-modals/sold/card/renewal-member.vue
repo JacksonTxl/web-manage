@@ -15,6 +15,15 @@
           </st-form-item>
           <st-form-item
             labelGutter="12px"
+            label="卡成员"
+            class="mg-b16"
+            v-if="isFamilyCard"
+          >
+            {{ info.card_member }}
+          </st-form-item>
+
+          <st-form-item
+            labelGutter="12px"
             label="规格"
             class="mg-b16"
             required
@@ -394,6 +403,9 @@ export default {
     },
     orderAmountText() {
       return this.priceInfo < 0 ? '小计不能为负' : ''
+    },
+    isFamilyCard() {
+      return this.info.card_number_type === 2
     }
   },
   methods: {
@@ -528,7 +540,9 @@ export default {
               this.show = false
               this.$emit('success', {
                 type: 'create',
-                orderId: res.info.order_id
+                orderId: res.info.order_id,
+                soldId: res.info.sold_id,
+                isFamilyCard: this.isFamilyCard
               })
             })
         }
@@ -565,7 +579,9 @@ export default {
               this.show = false
               this.$emit('success', {
                 type: 'createPay',
-                orderId: res.info.order_id
+                orderId: res.info.order_id,
+                soldId: res.info.sold_id,
+                isFamilyCard: this.isFamilyCard
               })
             })
         }
