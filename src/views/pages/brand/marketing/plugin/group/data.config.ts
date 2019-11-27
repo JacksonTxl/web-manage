@@ -29,8 +29,7 @@ export const columns = [
   },
   {
     title: '参与时间',
-    dataIndex: 'join_start_time',
-    align: 'right'
+    dataIndex: 'join_start_time'
   },
   {
     title: '新老用户',
