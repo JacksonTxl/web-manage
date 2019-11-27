@@ -81,7 +81,7 @@ export interface H5Query {
   category: number
 }
 export interface SaveForm {
-  is_save: number // 1保存，2发布
+  is_status: number // 2发布3关闭
   content: []
 }
 export interface StaffID {

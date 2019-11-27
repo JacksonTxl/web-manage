@@ -37,7 +37,7 @@
             公告标题或摘要信息…公告标题或摘要信息……
           </span>
         </div> -->
-        <div :class="h5('event')">
+        <div :class="h5('event')" v-if="openMiniFlag">
           <a-row>
             <a-col
               v-for="(li, index) in eventInfo"
@@ -184,6 +184,13 @@ export default {
       brand: this.userService.brand$
     }
   },
+  props: {
+    // 门店上架会员卡数量
+    openMiniFlag: {
+      type: Boolean,
+      default: false
+    }
+  },
   filters: {
     priceFilter(val) {
       if (val) {
@@ -232,8 +239,6 @@ export default {
     ]
     this.recommend2 = this.recommend1.slice(0).reverse()
     this.recommend3 = [coursepack1, coursepack2, coursepack3, coursepack4]
-    console.log(this.coach)
-    console.log(this.coachInfo)
   },
   methods: {
     imageFilter(key, opts) {
