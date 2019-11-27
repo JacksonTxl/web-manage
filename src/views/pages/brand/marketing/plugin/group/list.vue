@@ -32,7 +32,7 @@
           rowKey="id"
           :columns="columns"
           @change="onTableChange"
-          :scroll="{ x: 1240 }"
+          :scroll="{ x: 1440 }"
           :dataSource="list"
         >
           <!-- 商品类型 -->
