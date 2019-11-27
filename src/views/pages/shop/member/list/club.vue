@@ -124,7 +124,8 @@
           name: 'shop-add-lable',
           props: {
             memberIds: selectedRowKeys
-          }
+          },
+          on: { success: refeshPage }
         }"
       >
         加标签
@@ -400,6 +401,7 @@ export default {
   },
   methods: {
     refeshPage() {
+      this.selectedRowKeys = []
       this.$router.reload()
     },
     sourceRegisters() {
