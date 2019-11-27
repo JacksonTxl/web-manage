@@ -55,9 +55,9 @@ export class ShopApi extends Api {
       params
     })
   }
-  getGroupShopList(params: GroupBuy) {
+  getGroupShopList(query: GroupBuy) {
     return this.http.get('v1/shop/all_list', {
-      params
+      query
     })
   }
 }

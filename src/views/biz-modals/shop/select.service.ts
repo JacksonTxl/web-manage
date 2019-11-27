@@ -15,15 +15,15 @@ export class SelectService {
     this.list$ = new Computed(this.state$.pipe(pluck('list')))
   }
   @Effect()
-  getShopListTree(params: GroupBuy, type: string) {
+  getShopListTree(query: GroupBuy, type: string) {
     if (type === 'group') {
-      return this.getGroupShopList(params)
+      return this.getGroupShopList(query)
     } else {
       return this.getShopList()
     }
   }
-  getGroupShopList(params: GroupBuy) {
-    return this.shopApi.getGroupShopList(params).pipe(
+  getGroupShopList(query: GroupBuy) {
+    return this.shopApi.getGroupShopList(query).pipe(
       tap(res => {
         this.state$.commit(state => {
           state.list = res.list
