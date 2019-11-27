@@ -58,7 +58,7 @@ export default {
       this.chart = new Chart({
         container: this.$el,
         forceFit: true,
-        padding: ['auto', 20, 'auto', 'auto'],
+        padding: ['auto', 180, 'auto', 'auto'],
         height: this.height
       })
       this.chart.source(this.dv, {
@@ -96,7 +96,7 @@ export default {
           return `<div class='guide'>
           <div class='guide-name'><span class="mg-r4">${
             this.name
-          }</span><span class='guide-name-tooltip'></span></div>
+          }</span><span id="guide-name-tooltip${this.tooltipId}"></span></div>
             <div class='guide-title'><span class='guide-value'>${sum}</span><span class='guide-unit'>${
             this.unit
           }</span></div>
@@ -130,14 +130,14 @@ export default {
         start: (xScales, yScales) => {
           if (this.dv.sum('value') === 0) {
             this.hoverable = false
-            return ['70%', '50%']
+            return ['78%', '50%']
           }
           return []
         },
         end: (xScales, yScales) => {
           if (this.dv.sum('value') === 0) {
             this.hoverable = false
-            return ['30%', '50%']
+            return ['22%', '50%']
           }
           return []
         },
@@ -203,6 +203,13 @@ export default {
       this.chart.on('interval:mouseleave', e => {
         $s('.guide-value').textContent = this.total
         $s('.guide-name').textContent = this.name
+        const component = new Vue({
+          components: {
+            StHelpTooltip
+          },
+          render: h => <st-help-tooltip class={'mg-l4'} id={this.tooltipId} />
+        }).$mount()
+        $s('.guide-name').appendChild(component.$el)
       })
       const legendListItems = [
         ...this.$el.querySelectorAll('.g2-legend-list-item')
@@ -216,6 +223,17 @@ export default {
         $s('.guide-value').textContent = row.value
         $s('.guide-name').textContent = row.name
       }
+      const mouseLeaveHandler = () => {
+        $s('.guide-value').textContent = this.total
+        $s('.guide-name').textContent = this.name
+        const component = new Vue({
+          components: {
+            StHelpTooltip
+          },
+          render: h => <st-help-tooltip class={'mg-l4'} id={this.tooltipId} />
+        }).$mount()
+        $s('.guide-name').appendChild(component.$el)
+      }
 
       legendListItems.forEach(el => {
         el.addEventListener('mouseenter', mouseHandler, false)
@@ -223,14 +241,21 @@ export default {
           el.addEventListener('mouseenter', mouseHandler, false)
         })
       })
+      legendListItems.forEach(el => {
+        el.addEventListener('mouseleave', mouseLeaveHandler, false)
+        this.offMouseHandlers.push(() => {
+          el.addEventListener('mouseleave', mouseLeaveHandler, false)
+        })
+      })
     },
     changeData() {
       new Vue({
+        el: `#guide-name-tooltip${this.tooltipId}`,
         components: {
           StHelpTooltip
         },
         render: h => <st-help-tooltip id={this.tooltipId} />
-      }).$mount('.guide-name-tooltip')
+      })
     }
   },
   beforeDestroy() {
