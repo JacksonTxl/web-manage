@@ -57,7 +57,7 @@
         {{ record.remain_amount.number }}{{ record.remain_amount.type }}
       </span>
       <template slot="members" slot-scope="text, record">
-        {{ memberInfo(record.members) }}
+        {{ memberInfo(record) }}
       </template>
     </st-table>
     <st-hr></st-hr>
@@ -172,15 +172,19 @@ export default {
     }
   },
   methods: {
-    memberInfo(arr) {
-      console.log(arr.filter(item => item.is_purchaser === 1))
+    memberInfo(record) {
+      const arr = record.members
+      let familyInfo = ''
+      if (record.card_number_type === 2) {
+        familyInfo = `卡成员：${arr
+          .filter(item => item.is_purchaser !== 1)
+          .map(item => item.member_info)
+          .join(',')}`
+      }
       return `购卡人：${arr
         .filter(item => item.is_purchaser === 1)
         .map(item => item.member_info)
-        .join('')}卡成员：${arr
-        .filter(item => item.is_purchaser !== 1)
-        .map(item => item.member_info)
-        .join(',')}`
+        .join('')}${familyInfo}`
     },
     /**
      * 设置页码
