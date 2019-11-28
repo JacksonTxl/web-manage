@@ -1,15 +1,15 @@
 <template>
   <div class="member-info-sales-interests">
     <div class="member-info-sales-interests-item">
-      <st-t2 class="member-info-sales-interests-item__padding">优惠劵</st-t2>
+      <st-t4 class="member-info-sales-interests-item__padding">优惠劵</st-t4>
       <st-t4 class="member-info-sales-interests-item__padding">
-        可用优惠劵:{{ couponCount.can_use }}
+        可用优惠劵：{{ couponCount.can_use }}
       </st-t4>
       <st-t4 class="member-info-sales-interests-item__padding">
-        已使用优惠劵:{{ couponCount.used }}
+        已使用优惠劵：{{ couponCount.used }}
       </st-t4>
       <st-t4 class="member-info-sales-interests-item__padding">
-        过期优惠券:{{ couponCount.expire }}
+        过期优惠券：{{ couponCount.expire }}
       </st-t4>
     </div>
     <a-row :gutter="24" class="mg-t16">
