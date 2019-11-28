@@ -34,7 +34,10 @@
             <tbody>
               <tr class="checkbox border-bottom">
                 <td colspan="3" class="team-course-add-buton">
-                  <a-popover trigger="click" placement="bottom">
+                  <a-popover
+                    trigger="click"
+                    :getPopupContainer="getPopupContainer"
+                  >
                     <template slot="content">
                       <div :class="b('popup-scroll')">
                         <st-input-search
@@ -155,7 +158,7 @@
             <tbody>
               <tr class="checkbox border-bottom">
                 <td colspan="5" class="personal-course-add-buton">
-                  <a-popover trigger="click" placement="bottom">
+                  <a-popover trigger="click">
                     <template slot="content">
                       <div :class="b('popup-scroll')">
                         <st-input-search
@@ -488,6 +491,9 @@ export default {
     }
   },
   methods: {
+    getPopupContainer() {
+      return document.getElementsByClassName('modal-sold-course-scope')[0]
+    },
     onTeamTree() {
       this.teamChildrenIds = this.teamCourseIds.filter(
         i => !find(this.teamCourseTreeList, { id: i })
