@@ -134,9 +134,10 @@ export default {
   mounted() {
     this.list = cloneDeep(this.sliderInfo)
     this.actList = cloneDeep(this.activityList.list)
-    this.list.forEach(item => {
-      const tree = new Tree(this.actList, { name: 'activity_name' })
-      if (!tree.findNodeById(item.activity_id)) {
+    this.list.forEach((item, index) => {
+      item.activity_id = [item.activity_type, item.activity_id]
+      const tree = new Tree(this.actList)
+      if (index !== 0 && !tree.findNodeById(item.activity_id[1])) {
         const node = tree.findNodeById(item.activity_type)
         let tmpArrChild = {
           activity_name: item.activity_name,
@@ -151,8 +152,6 @@ export default {
         item.activity_type === 5
           ? node.children.push(Object.assign(tmpArrChild, tmpProduct))
           : node.children.push(tmpArrChild)
-        item.id = node.id
-        item.activity_id = [item.id, item.activity_id]
       }
     })
     this.actList.forEach(item => {

@@ -127,6 +127,7 @@ export default {
       this.list[number] = cloneDeep(this.eventInfo)
       this.actList = cloneDeep(this.activityList.list)
       this.list[number].forEach(item => {
+        item.activity_id = [item.activity_type, item.activity_id]
         const tree = new Tree(this.actList, { name: 'activity_name' })
         if (!tree.findNodeById(item.activity_id)) {
           // 找到对应的父节点
@@ -148,8 +149,6 @@ export default {
               isover: true
             })
           }
-          item.id = node.id
-          item.activity_id = [item.id, item.activity_id]
         }
       })
       this.actList.forEach(item => {
