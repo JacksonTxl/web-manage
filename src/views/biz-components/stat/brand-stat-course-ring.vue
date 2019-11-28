@@ -69,7 +69,8 @@ export default {
       this.chart.tooltip({
         showTitle: false,
         itemTpl: `<li>
-                    <span style="background-color:{color};" class="g2-tooltip-marker">{name}</span>
+                    <span style="background-color:{color};" class="g2-tooltip-marker"></span>
+                    {name}
                     <span class="st-g2-tooltip-value">| {value}</span>
                   </li>`
       })
