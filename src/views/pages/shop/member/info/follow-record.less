@@ -1,8 +1,13 @@
 .member-follow-record {
   margin-left: 120px;
+  margin-top: 8px;
+  &:first-child {
+    margin-top: 10px;
+  }
   &__timeline-item {
     height: 46px;
     margin-left: 12px;
+    margin-bottom: 6px;
     line-height: 46px;
     border-radius: 4px;
     padding-left: 20px;
@@ -32,7 +37,6 @@
     position: absolute;
     left: -120px;
     top: 10px;
-    font-family: 'DINAlternate-Bold,DINAlternate';
     line-height: 24px;
     text-align: right;
   }
@@ -41,7 +45,10 @@
   }
   .ant-timeline-item-head {
     background-color: #3f66f6;
-    border: 1px solid #fff;
+    border: 2px solid #fff;
+  }
+  .ant-timeline-item-content {
+    top: -8px;
   }
   .date {
     display: block;

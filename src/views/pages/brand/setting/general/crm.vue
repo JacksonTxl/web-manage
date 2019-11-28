@@ -174,9 +174,9 @@
             </st-input-number>
           </a-radio>
         </a-radio-group>
-        <st-t4 class="mg-t24 mg-b24 mg-l40">当会员购买以下项目不解绑教练</st-t4>
+        <st-t4 class="mg-t24 mg-b24">当会员购买以下项目不解绑教练</st-t4>
         <a-checkbox-group
-          class="mg-l40"
+          class="mg-l24"
           v-model="crmRule.coach_untie_condition"
         >
           <a-checkbox
