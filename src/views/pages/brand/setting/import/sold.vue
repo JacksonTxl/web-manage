@@ -40,6 +40,14 @@
             </label>
           </div>
           <div :class="bTable('content')">
+            <a-radio :value="IMPORT.FAMILY_CARD">
+              多人{{ $c('member_card') }}
+            </a-radio>
+            <label :class="bTable('desc')">
+              包含期卡和次卡——默认不限制入场时间
+            </label>
+          </div>
+          <div :class="bTable('content')">
             <a-radio :value="IMPORT.SOLD_MEMBER_CARD_ENTER_TIME">
               <span>{{ $c('member_card') }}入场时间</span>
             </a-radio>
