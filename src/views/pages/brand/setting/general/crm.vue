@@ -175,10 +175,7 @@
           </a-radio>
         </a-radio-group>
         <st-t4 class="mg-t24 mg-b24">当会员购买以下项目不解绑教练</st-t4>
-        <a-checkbox-group
-          class="mg-l24"
-          v-model="crmRule.coach_untie_condition"
-        >
+        <a-checkbox-group v-model="crmRule.coach_untie_condition">
           <a-checkbox
             disabled
             v-for="item in courseType"
