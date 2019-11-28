@@ -64,7 +64,7 @@
           >
             <st-container>
               <st-table
-                rowKey="id"
+                rowKey="activity_name"
                 :columns="cardColumns"
                 :dataSource="tableData"
                 :pagination="false"
@@ -121,6 +121,7 @@ export default {
       .getCourseList({ shop_id: this.info.support_shop[0] })
       .subscribe(res => {
         this.setFieldsValue()
+        this.tableData = this.info.sku
       })
   },
   data() {
@@ -136,7 +137,6 @@ export default {
       PRODUCT_TYPE,
       tableText: '', // 优惠设置错误提示
       tableErr: false,
-      confirmLoading: false,
       disabledEdit: false,
       oldStock: Number
     }
@@ -145,9 +145,7 @@ export default {
     changeShop(value) {
       this.editPackageCourseService
         .getCourseList({ shop_id: value })
-        .subscribe(res => {
-          this.$router.reload()
-        })
+        .subscribe(res => {})
     },
     changeCourse(value) {
       this.tableData = this.courseList.filter(
@@ -176,10 +174,7 @@ export default {
           group_price: item.group_price
         }
       })
-      if (this.confirmLoading) return
-      this.confirmLoading = true
       this.editPackageCourseService.editGroupbuy(data).subscribe(res => {
-        this.confirmLoading = false
         this.$router.push({
           path: `./list`
         })
@@ -197,13 +192,6 @@ export default {
       // 是否能够编辑, 当活动未开始时可以编辑
       this.disabledEdit =
         this.info.activity_state.id >= ACTIVITY_STATUS.NO_START
-      // 将详情信息中的sku和courseList中选中的某项课程包中的product_spec进行合并,得到一个含有price和group_price的数组,赋值给tableData
-      this.tableData = this.info.sku.map((item, key) => {
-        let courseProductSpec = this.courseList
-          .filter(course => item.sku_id === course.id)
-          .shift().product_spec
-        return Object.assign({}, item, courseProductSpec[key])
-      })
     }
   },
   components: {
