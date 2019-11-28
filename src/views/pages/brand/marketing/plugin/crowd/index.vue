@@ -36,7 +36,10 @@
       >
         <template slot="description" slot-scope="text">
           <div>
-            <st-overflow-text max-width="25%" :value="text"></st-overflow-text>
+            <st-overflow-text
+              max-width="300px"
+              :value="text"
+            ></st-overflow-text>
           </div>
         </template>
         <div slot="action" slot-scope="text, record">

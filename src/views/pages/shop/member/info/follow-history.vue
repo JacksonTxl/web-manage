@@ -73,11 +73,7 @@
                 <a-col :span="6">
                   <st-text
                     :status="{
-                      success: item.follow_status === 2,
-                      default: item.follow_status === 1,
-                      info: item.follow_status === 0,
-                      error: item.follow_status === 4,
-                      warning: item.follow_status === 3
+                      success: true
                     }"
                   >
                     {{ item.follow_status | followStatus }}
