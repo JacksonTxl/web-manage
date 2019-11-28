@@ -214,9 +214,9 @@ export class CardApi extends Api {
   /**
    * 门店可售卖的会员卡列表
    */
-  getCardUpgradeList(card_name_search?: string) {
+  getCardUpgradeList(card_name_search?: string, card_number_type = -1) {
     return this.http.get(`/v1/sold/cards/shop/saled_card`, {
-      query: { card_name_search }
+      query: { card_name_search, card_number_type }
     })
   }
   /**

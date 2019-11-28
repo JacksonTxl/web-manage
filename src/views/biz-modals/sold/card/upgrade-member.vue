@@ -538,11 +538,13 @@ export default {
       } else {
         // 判断之前是否请求过
         if (!this.cardLists[data]) {
-          this.upgradeMemberService.getCardList(data).subscribe(res => {
-            // 缓存请求结果
-            this.cardLists[data] = cloneDeep(res.list)
-            this.cardList = cloneDeep(res.list)
-          })
+          this.upgradeMemberService
+            .getCardList(data, this.info.card_number_type)
+            .subscribe(res => {
+              // 缓存请求结果
+              this.cardLists[data] = cloneDeep(res.list)
+              this.cardList = cloneDeep(res.list)
+            })
         } else {
           // 取缓存
           this.cardList = cloneDeep(this.cardLists[data])
