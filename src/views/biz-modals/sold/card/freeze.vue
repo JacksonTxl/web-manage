@@ -134,7 +134,7 @@ export default {
   props: ['id'],
   computed: {
     isFamilyCard() {
-      return freezeInfo.card_number_type === 2
+      return this.freezeInfo.card_number_type === 2
     }
   },
   data() {
