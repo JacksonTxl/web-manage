@@ -95,7 +95,7 @@
 <script>
 import GroupForm from './components#/group-form'
 import { ruleOptions, cardColumns } from './add-package-course.config'
-import { EditCoursePackageService } from './edit-package-course.service'
+import { EditPackageCourseService } from './edit-package-course.service'
 import { UserService } from '@/services/user.service'
 import { ACTIVITY_STATUS, PRODUCT_TYPE } from '@/constants/marketing/group-buy'
 import moment from 'moment'
@@ -103,21 +103,21 @@ import { PatternService } from '@/services/pattern.service'
 export default {
   serviceInject() {
     return {
-      editCoursePackageService: EditCoursePackageService,
+      editPackageCourseService: EditPackageCourseService,
       userService: UserService,
       pattern: PatternService
     }
   },
   rxState() {
     return {
-      loading: this.editCoursePackageService.loading$,
+      loading: this.editPackageCourseService.loading$,
       shopList: this.userService.shopList$,
-      courseList: this.editCoursePackageService.courseList$,
-      info: this.editCoursePackageService.info$
+      courseList: this.editPackageCourseService.courseList$,
+      info: this.editPackageCourseService.info$
     }
   },
   mounted() {
-    this.editCoursePackageService
+    this.editPackageCourseService
       .getCourseList({ shop_id: this.info.support_shop[0] })
       .subscribe(res => {
         this.setFieldsValue()
@@ -143,7 +143,7 @@ export default {
   },
   methods: {
     changeShop(value) {
-      this.editCoursePackageService
+      this.editPackageCourseService
         .getCourseList({ shop_id: value })
         .subscribe(res => {
           this.$router.reload()
@@ -178,7 +178,7 @@ export default {
       })
       if (this.confirmLoading) return
       this.confirmLoading = true
-      this.editCoursePackageService.editGroupbuy(data).subscribe(res => {
+      this.editPackageCourseService.editGroupbuy(data).subscribe(res => {
         this.confirmLoading = false
         this.$router.push({
           path: `./list`
