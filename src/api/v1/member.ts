@@ -173,6 +173,9 @@ export class MemberApi extends Api {
   getCrmRule() {
     return this.http.get(`/v1/setting/crm-rules`)
   }
+  getClubCrmRule() {
+    return this.http.get(`/v1/member/crm-rules`)
+  }
   setCrmRule(params: any) {
     return this.http.put(`/v1/setting/crm-rules`, { params })
   }
