@@ -6,11 +6,14 @@ export const walkTree = (tree, fn) => {
     if (Array.isArray(nodes)) {
       nodes.forEach(node => {
         const hasChildren = node.children && node.children.length
-        fn(node, {
+        const needContinue = fn(node, {
           depth,
           isLeaf: !hasChildren,
           isTop: depth === 0
         })
+        if (needContinue === false) {
+          return
+        }
         if (hasChildren) {
           walk(node.children, depth + 1)
         }

@@ -4176,6 +4176,11 @@ d3-hexjson@~1.0.1:
   dependencies:
     d3-array "1"
 
+d3-hierarchy@^1.1.9:
+  version "1.1.9"
+  resolved "https://registry.npm.taobao.org/d3-hierarchy/download/d3-hierarchy-1.1.9.tgz?cache=0&sync_timestamp=1574108571076&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fd3-hierarchy%2Fdownload%2Fd3-hierarchy-1.1.9.tgz#2f6bee24caaea43f8dc37545fa01628559647a83"
+  integrity sha1-L2vuJMqupD+Nw3VF+gFihVlkeoM=
+
 d3-hierarchy@~1.1.5:
   version "1.1.8"
   resolved "https://registry.npm.taobao.org/d3-hierarchy/download/d3-hierarchy-1.1.8.tgz#7a6317bd3ed24e324641b6f1e76e978836b008cc"

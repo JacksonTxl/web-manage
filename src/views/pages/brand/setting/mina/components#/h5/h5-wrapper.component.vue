@@ -4,6 +4,7 @@
       slot="preview"
       id="h5"
       :class="{ fixed: isFixed }"
+      :openMiniFlag="openMiniFlag"
     ></h5-component>
     <div :class="h5wpr('right')">
       <st-tabs defaultActiveKey="1" class="st-tabs">
@@ -88,7 +89,14 @@ export default {
       courseLoaded: false,
       menuLoaded: false,
       isFixed: false,
+      openMiniFlag: false,
+      openStatus: 0,
       offsetTop: 0
+    }
+  },
+  watch: {
+    openStatus(newVal) {
+      newVal ? (this.openMiniFlag = true) : (this.openMiniFlag = false)
     }
   },
   created() {
@@ -189,7 +197,9 @@ export default {
       this.h5WrapperService.getH5Info({ category: 2 }).subscribe(() => {
         this.actionLoaded = true
       })
-      this.h5WrapperService.getH5Info({ category: 3 }).subscribe()
+      this.h5WrapperService.getH5Info({ category: 3 }).subscribe(res => {
+        this.openStatus = res.status
+      })
       this.h5WrapperService.getH5Info({ category: 4 }).subscribe(() => {
         let staff_id = []
         if (that.coach) {
