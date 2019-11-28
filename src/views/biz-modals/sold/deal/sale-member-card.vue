@@ -106,7 +106,7 @@
           <st-form-item label="卡成员" v-if="info.card_number_type === 2">
             <add-card-member
               v-model="memberChildrenlist"
-              :max="info.support_member_num"
+              :max="info.support_member_num - 1"
               :type="info.sale_range.type"
             ></add-card-member>
           </st-form-item>
