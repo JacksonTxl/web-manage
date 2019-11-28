@@ -6,7 +6,7 @@
           <div>
             {{ item.follow_content }}
           </div>
-          <div :class="bPage('timeline-position')">
+          <div :class="bPage('timeline-position')" class="font-number">
             <span>{{ item.time }}</span>
             <span class="date">{{ item.date }}</span>
           </div>

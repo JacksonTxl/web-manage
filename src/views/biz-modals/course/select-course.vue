@@ -55,7 +55,13 @@
                   >
                     <div class="pl-24">{{ item.course_category }}</div>
                     <div>{{ item.course_type }}</div>
-                    <div>{{ item.course_name }}</div>
+                    <div>
+                      <st-overflow-text
+                        slot=""
+                        max-width="180px"
+                        :value="item.course_name"
+                      ></st-overflow-text>
+                    </div>
                     <div>
                       <a
                         href="javascript:void(0)"
@@ -116,7 +122,13 @@
                   >
                     <div class="pl-24">{{ item.course_category }}</div>
                     <div>{{ item.course_type }}</div>
-                    <div>{{ item.course_name }}</div>
+                    <div>
+                      <st-overflow-text
+                        slot=""
+                        max-width="180px"
+                        :value="item.course_name"
+                      ></st-overflow-text>
+                    </div>
                     <div>
                       <a href="javascript:void(0)">
                         <st-popconfirm

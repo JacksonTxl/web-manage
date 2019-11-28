@@ -501,10 +501,13 @@ export default {
       this.teamCourseIds.forEach((i, index) => {
         const item = find(this.teamCourseTreeList, { id: i })
         if (item) {
-          const isExist = item.children.some(childrenItem =>
+          const isExist = item.children.filter(childrenItem =>
             this.teamCourseIds.includes(childrenItem.id)
           )
-          if (!isExist) {
+          if (isExist.length <= 0) {
+            this.teamCourseIds.splice(index, 1)
+          } else if (isExist.length !== item.children.length) {
+            const index = this.teamCourseIds.indexOf(item.id)
             this.teamCourseIds.splice(index, 1)
           }
         }
@@ -517,10 +520,13 @@ export default {
       this.personalCourseIds.forEach((i, index) => {
         const item = find(this.personalCourseTreeList, { id: i })
         if (item) {
-          const isExist = item.children.some(childrenItem =>
+          const isExist = item.children.filter(childrenItem =>
             this.personalCourseIds.includes(childrenItem.id)
           )
-          if (!isExist) {
+          if (isExist.length <= 0) {
+            this.personalCourseIds.splice(index, 1)
+          } else if (isExist.length !== item.children.length) {
+            const index = this.personalCourseIds.indexOf(item.id)
             this.personalCourseIds.splice(index, 1)
           }
         }
