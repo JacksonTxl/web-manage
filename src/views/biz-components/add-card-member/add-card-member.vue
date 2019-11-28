@@ -19,61 +19,56 @@
       <tbody>
         <tr>
           <td colspan="3" :class="b('search-wrapper')">
-            <a-popover trigger="click" placement="bottom" v-model="visible">
-              <template slot="content">
-                <div :class="b('search')">
-                  <a-select
-                    showSearch
-                    allowClear
-                    placeholder="输入手机号或会员名搜索"
-                    :defaultActiveFirstOption="false"
-                    :showArrow="false"
-                    :filterOption="false"
-                    v-model="memberId"
-                    @search="onMemberSearch"
-                    @change="onMemberChange"
-                    notFoundContent="无搜索结果"
-                    :class="b('search-select')"
-                  >
-                    <a-select-option
-                      v-for="(item, index) in memberList"
-                      :value="item.id"
-                      :key="index"
-                    >
-                      <span
-                        v-html="
-                          `${item.member_name} ${item.mobile}`.replace(
-                            new RegExp(memberSearchText, 'g'),
-                            `\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`
-                          )
-                        "
-                      >
-                        {{ item.member_name }} {{ item.mobile }}
-                      </span>
-                    </a-select-option>
-                  </a-select>
-                  <p
-                    v-if="
-                      !memberList.length &&
-                        memberSearchText !== '' &&
-                        type !== 2
+            <st-button
+              :disabled="list.length >= max"
+              type="dashed"
+              icon="add"
+              block
+              @click="onClickAddMember"
+            >
+              添加卡成员
+            </st-button>
+            <div
+              :class="b('search-section')"
+              v-show="visible"
+              tabindex="1"
+              id="search-section"
+            >
+              <a-input-search
+                placeholder="请输入手机号码或者会员姓名"
+                v-model="memberSearchText"
+                @search="onMemberSearch"
+                @focus="onFocusSearch"
+                @blur="onBlurSearch"
+              />
+              <ul :class="b('search-list')">
+                <li
+                  :class="b('search-text')"
+                  v-for="(item, index) in memberList"
+                  :value="item.id"
+                  :key="index"
+                  @click.stop="onMemberChange(item)"
+                >
+                  <span
+                    v-html="
+                      `${item.member_name} ${item.mobile}`.replace(
+                        new RegExp(memberSearchText, 'g'),
+                        `\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`
+                      )
                     "
-                    :class="b('add-text')"
-                  >
-                    查无此会员，
-                    <a @click="onAddMember">添加新会员？</a>
-                  </p>
-                </div>
-              </template>
-              <st-button
-                :disabled="list.length >= max"
-                type="dashed"
-                icon="add"
-                block
-              >
-                添加卡成员
-              </st-button>
-            </a-popover>
+                  ></span>
+                </li>
+                <li
+                  :class="[b('search-text'), b('search-tip')]"
+                  v-if="
+                    memberList.length === 0 && memberSearchText && type !== 2
+                  "
+                >
+                  查无此会员，
+                  <a @click="onAddMember">添加新会员？</a>
+                </li>
+              </ul>
+            </div>
           </td>
         </tr>
         <tr v-for="(item, index) in list" :key="index">
@@ -122,6 +117,9 @@ export default {
   bem: {
     b: 'page-add-card-member'
   },
+  serviceProviders() {
+    return [AddCardMemberService]
+  },
   serviceInject() {
     return {
       addCardMemberService: AddCardMemberService
@@ -155,11 +153,37 @@ export default {
       visible: false,
       memberSearchText: '',
       searchMemberIsShow: true,
-      memberId: ''
+      memberId: '',
+      searchFlag: false
     }
   },
-  computed: {},
+  computed: {
+    selectEle() {
+      return document.getElementById('search-section')
+    }
+  },
   methods: {
+    onFocusSearch() {
+      this.searchFlag = true
+    },
+    onBlurSearch() {
+      this.searchFlag = false
+      this.selectEle.focus()
+    },
+    onClickAddMember() {
+      this.visible = true
+      setTimeout(() => {
+        this.selectEle.focus()
+      })
+      this.selectEle.onblur = () => {
+        setTimeout(() => {
+          if (!this.searchFlag) {
+            this.visible = false
+            this.resetSearchCondition()
+          }
+        })
+      }
+    },
     onConfirmItem(item, index) {
       item.isEdit = false
       this.$emit('change', this.list)
@@ -187,17 +211,17 @@ export default {
       }
     },
     onMemberChange(data) {
-      if (data) {
-        const isExist = this.list.filter(item => item.id === data)
-        if (isExist.length > 0) return
-        const selectedItem = this.memberList.filter(item => item.id === data)
-        this.list.unshift({
-          id: selectedItem[0].id,
-          name: selectedItem[0].member_name,
-          mobile: selectedItem[0].mobile
-        })
-        this.$emit('change', this.list)
-      }
+      if (this.list.length >= this.max) return
+      this.list.unshift({
+        id: data.id,
+        name: data.member_name,
+        mobile: data.mobile
+      })
+      this.$emit('change', this.list)
+    },
+    resetSearchCondition() {
+      this.memberSearchText = ''
+      this.memberList = []
     }
   }
 }
