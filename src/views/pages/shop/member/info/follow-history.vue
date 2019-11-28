@@ -81,7 +81,7 @@
                 </a-col>
               </div>
             </div>
-            <div class="time-position">
+            <div class="time-position font-number">
               <div>{{ item.follow_date.split(' ')[1] }}</div>
               <div class="time-position-grey">
                 {{ item.follow_date.split(' ')[0] }}
