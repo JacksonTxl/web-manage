@@ -41,7 +41,6 @@ export default {
     },
     shopOptions() {
       return [
-        { label: '全部门店', value: -1 },
         ...this.shopList.map(item => {
           return {
             label: item.shop_name,

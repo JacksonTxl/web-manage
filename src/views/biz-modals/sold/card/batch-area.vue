@@ -14,7 +14,7 @@
         ></st-batch-select-radio>
       </st-form-item>
       <st-form-item label="入场vip区域" class="mg-b0">
-        <a-checkbox-group v-model="cardVip">
+        <a-checkbox-group v-model="cardVip" v-if="vips.length">
           <a-checkbox
             v-for="(item, index) in vips"
             :key="index"
@@ -23,6 +23,7 @@
             {{ item.area_name }}
           </a-checkbox>
         </a-checkbox-group>
+        <span v-else>未设置vip区域场地</span>
       </st-form-item>
     </st-form>
     <template slot="footer">
@@ -40,7 +41,11 @@
             当前选择项已有数据，将会有2-5s无法正常使用。
           </div>
         </div>
-        <st-button type="primary" :loading="loading.setCardVip">
+        <st-button
+          type="primary"
+          :loading="loading.setCardVip"
+          :disabled="btnDisabled"
+        >
           确认提交
         </st-button>
       </st-popconfirm>
@@ -82,7 +87,15 @@ export default {
       BATCH_INFO,
       show: false,
       cardVip: [],
-      batch_type: BATCH_TYPE.SELECTED
+      batch_type: BATCH_TYPE.SELECTED,
+      btnDisabled: false
+    }
+  },
+  watch: {
+    vips(newVal) {
+      newVal.length === 0
+        ? (this.btnDisabled = true)
+        : (this.btnDisabled = false)
     }
   },
   mounted() {
