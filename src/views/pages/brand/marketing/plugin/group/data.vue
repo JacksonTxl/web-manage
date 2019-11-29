@@ -87,7 +87,7 @@
           <st-input-search
             v-model="searchWhere"
             @search="onSingleSearch('search_where', $event)"
-            placeholder="请输入活动名称"
+            placeholder="请输入会员名或手机号"
             maxlength="50"
           />
         </div>
