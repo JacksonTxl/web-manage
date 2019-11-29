@@ -56,20 +56,18 @@
                 ></a-input>
               </st-form-item>
               <st-form-item labelWidth="46px" label="链接">
-                <a-select
-                  placeholder="请输入链接的活动"
-                  @select="actSelect(li, $event)"
+                <a-cascader
+                  :options="actList"
+                  :allowClear="false"
                   v-model="li.activity_id"
-                >
-                  <a-select-option
-                    v-for="(act, i) in actList"
-                    :disabled="act.isover"
-                    :key="i"
-                    :value="act.id"
-                  >
-                    {{ act.activity_name }}
-                  </a-select-option>
-                </a-select>
+                  placeholder="请输入链接的活动"
+                  :fieldNames="{
+                    label: 'activity_name',
+                    value: 'id',
+                    children: 'children'
+                  }"
+                  @change="onActChange(li, arguments)"
+                />
               </st-form-item>
             </div>
           </div>
@@ -82,6 +80,7 @@
 import { H5WrapperService } from '@/views/pages/brand/setting/mina/components#/h5/h5-wrapper.service'
 import { cloneDeep } from 'lodash-es'
 import { ActivityService } from '../activity.service'
+import { Tree } from '@/utils/tree'
 export default {
   bem: {
     event: 'activity-event-component'
@@ -126,15 +125,35 @@ export default {
       let number = this.eventInfo.length
       this.number = number
       this.list[number] = cloneDeep(this.eventInfo)
-      this.actList = cloneDeep(this.activityList)
+      this.actList = cloneDeep(this.activityList.list)
       this.list[number].forEach(item => {
-        if (!this.actList.some(act => act.id === item.activity_id)) {
-          this.actList.push({
-            activity_name: item.activity_name,
-            activity_type: item.activity_type,
-            id: item.activity_id,
-            isover: true
-          })
+        item.activity_id = [item.activity_type, item.activity_id]
+        const tree = new Tree(this.actList, { name: 'activity_name' })
+        if (!tree.findNodeById(item.activity_id)) {
+          // 找到对应的父节点
+          const node = tree.findNodeById(item.activity_type)
+          if (item.activity_type === 5) {
+            node.children.push({
+              activity_name: item.activity_name,
+              activity_type: item.activity_type,
+              id: item.activity_id,
+              isover: true,
+              product_type: item.product_type,
+              product_template_id: item.product_template_id
+            })
+          } else {
+            node.children.push({
+              activity_name: item.activity_name,
+              activity_type: item.activity_type,
+              id: item.activity_id,
+              isover: true
+            })
+          }
+        }
+      })
+      this.actList.forEach(item => {
+        if (!item.children.length) {
+          item.disabled = true
         }
       })
     } else {
@@ -203,10 +222,24 @@ export default {
       }
       this.list = list
     },
-    actSelect(item, value) {
-      let selected = this.actList.filter(it => it.id === value)[0]
-      item.activity_type = selected.activity_type
-      item.activity_name = selected.activity_name
+    onActChange(item, value) {
+      console.log('vlaue', value)
+      item.activity_type = value[1][1].activity_type
+      item.activity_name = value[1][1].activity_name
+      if (value[1][0].id === 5) {
+        item.product_type = value[1][1].product_type
+        item.product_template_id = selected.product_template_id
+      }
+      // const selecttedParent = this.actList.filter(ite => ite.id === value[0])[0]
+      // const selected = selecttedParent.children.filter(
+      //   it => it.id === value[1]
+      // )[0]
+      // item.activity_type = selected.activity_type
+      // item.activity_name = selected.activity_name
+      // if (selected.activity_type === 5) {
+      //   item.product_type = selected.product_type
+      //   item.product_template_id = selected.product_template_id
+      // }
     },
     imageUploadChange(e, index) {
       if (e.length) {

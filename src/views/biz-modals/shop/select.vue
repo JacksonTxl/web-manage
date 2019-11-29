@@ -52,6 +52,16 @@ export default {
       default() {
         return []
       }
+    },
+    groupParams: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
+    type: {
+      type: String,
+      default: ''
     }
   },
   computed: {
@@ -59,11 +69,13 @@ export default {
       return this.shopIds.length
     }
   },
-  created() {
-    this.selectService.getShopListTree().subscribe(res => {
-      this.treeData = json2AntDesignTreeData(res.list)
-      this.initCheckedKeys()
-    })
+  mounted() {
+    this.selectService
+      .getShopListTree(this.groupParams, this.type)
+      .subscribe(res => {
+        this.treeData = json2AntDesignTreeData(res.list)
+        this.initCheckedKeys()
+      })
   },
   methods: {
     initCheckedKeys() {

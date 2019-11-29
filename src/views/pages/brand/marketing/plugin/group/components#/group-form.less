@@ -1,0 +1,14 @@
+.brand-marketing-group-form {
+  &__stock {
+    width: calc(100% - 100px);
+  }
+  &__name {
+    &--gray {
+      color: #9bacb9;
+    }
+  }
+}
+// NOTE：input加字数限制，覆盖ant样式，后期替换组件
+.ant-input-affix-wrapper .ant-input:not(:last-child) {
+  padding-right: 56px;
+}

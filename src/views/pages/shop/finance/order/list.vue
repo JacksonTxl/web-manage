@@ -123,6 +123,7 @@ export default {
   },
   mounted() {
     this.setSearchData()
+    console.log(this.list)
   },
   watch: {
     $searchQuery() {

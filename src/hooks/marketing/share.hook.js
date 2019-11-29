@@ -12,11 +12,12 @@ const useShare = () => {
       MarketingQrCode
     },
     methods: {
-      $_openMarketingSharePoster({ shsInfo, shsPath }) {
+      $_openMarketingSharePoster({ shsInfo, hasQrCodeBtn, shsPath }) {
         this.$modalRouter.push({
           name: 'marketing-share-poster',
           props: {
             shsInfo,
+            hasQrCodeBtn,
             shsPath
           }
         })
@@ -55,12 +56,12 @@ const useShare = () => {
        * } 是否有分享海报权限
        *
        */
-      poster({ isAuth, shsInfo, shsPath }) {
+      poster({ isAuth, shsInfo, hasQrCodeBtn, shsPath }) {
         if (!isAuth) {
           this.$_openMarketingBind()
           return
         }
-        this.$_openMarketingSharePoster({ shsInfo, shsPath })
+        this.$_openMarketingSharePoster({ shsInfo, hasQrCodeBtn, shsPath })
       }
     }
   }

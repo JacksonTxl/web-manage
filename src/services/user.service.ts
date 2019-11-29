@@ -141,6 +141,9 @@ export class UserService {
   transactionEnums$ = new Computed<ModuleEnums>(
     this.enums$.pipe(pluck('transaction'))
   )
+  groupBuyEnums$ = new Computed<ModuleEnums>(
+    this.enums$.pipe(pluck('group_buy'))
+  )
   urlData$ = new State({})
   constructor(
     private constApi: ConstApi,
@@ -206,11 +209,7 @@ export class UserService {
     return this.constApi.getEnum().pipe(
       tap(res => {
         this.SET_ENUMS(res)
-        this.SET_CONFIG(res.version_conf.documents.value)
-        // this.SET_CONFIG({
-        //   coach: '<教练>',
-        //   member_card: '<会员卡>'
-        // })
+        this.SET_CONFIG(get(res, 'version_conf.documents.value', {}))
       })
     )
   }
