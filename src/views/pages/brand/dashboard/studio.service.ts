@@ -148,6 +148,6 @@ export class StudioService implements Controller {
     )
   }
   beforeCreate() {
-    return this.init().subscribe()
+    return this.init()
   }
 }

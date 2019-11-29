@@ -5,7 +5,15 @@ export default {
   install(Vue, rootContainer) {
     Vue.use(ServiceRouter)
     Vue.mixin({
+      computed: {
+        $skeletonLoading() {
+          return this.$root._skeletonLoading
+        }
+      },
       beforeCreate() {
+        if (this.$root === this) {
+          Vue.util.defineReactive(this, '_skeletonLoading', false)
+        }
         const { serviceInject, serviceProviders } = this.$options
 
         if (serviceProviders) {
