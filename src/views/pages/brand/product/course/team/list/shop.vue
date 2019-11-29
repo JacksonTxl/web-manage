@@ -63,7 +63,7 @@
           <st-table-actions>
             <a
               href="javascript:;"
-              v-if="record.auth['brand_shop:product:team_course|get']"
+              v-if="record.auth['brand:product:team_course|get']"
               class="mg-r8"
               @click="onClickCourseInfo(record.id)"
             >

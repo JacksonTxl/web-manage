@@ -22,7 +22,7 @@ export class CourseService {
   notCheckInCourseTotal$ = new State(0)
 
   auth$ = this.authService.authMap$({
-    export: 'brand_shop:stat:order_reports|batch_export'
+    export: 'brand:stat:order_reports|batch_export'
   })
   constructor(
     private api: CourseApi,

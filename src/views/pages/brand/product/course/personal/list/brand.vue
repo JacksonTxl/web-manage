@@ -105,7 +105,7 @@
           <st-table-actions>
             <router-link
               class="mg-r8"
-              v-if="record.auth['brand_shop:product:personal_course|get']"
+              v-if="record.auth['brand:product:personal_course|get']"
               :to="{
                 name: 'brand-product-course-personal-info',
                 query: { id: record.course_id }
@@ -114,7 +114,7 @@
               详情
             </router-link>
             <router-link
-              v-if="record.auth['brand_shop:product:personal_course|edit']"
+              v-if="record.auth['brand:product:personal_course|edit']"
               :to="{
                 name: 'brand-product-course-personal-edit',
                 query: { id: record.course_id }
@@ -122,7 +122,7 @@
             >
               编辑
             </router-link>
-            <a v-if="record.auth['brand_shop:product:personal_course|del']">
+            <a v-if="record.auth['brand:product:personal_course|del']">
               <st-popconfirm
                 :title="
                   '一旦删除则无法恢复，确认删除' + record.course_name + '？'

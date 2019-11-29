@@ -171,7 +171,7 @@
       <div slot="action" slot-scope="text, record">
         <st-table-actions>
           <router-link
-            v-if="record.auth['brand_shop:product:member_card|get']"
+            v-if="record.auth['shop:product:member_card|get']"
             :to="{
               path: `/shop/product/card/member/${
                 CARD_TYPE[record.card_type.id]
@@ -182,31 +182,31 @@
             详情
           </router-link>
           <a
-            v-if="record.auth['brand_shop:product:member_card|edit']"
+            v-if="record.auth['shop:product:member_card|edit']"
             @click="onEdit(record)"
           >
             编辑
           </a>
           <a
-            v-if="record.auth['brand_shop:product:member_card|up']"
+            v-if="record.auth['shop:product:member_card|up']"
             @click="onShelf(record)"
           >
             上架
           </a>
           <a
-            v-if="record.auth['brand_shop:product:member_card|pause']"
+            v-if="record.auth['shop:product:member_card|pause']"
             @click="onStopSale(record)"
           >
             停售
           </a>
           <a
-            v-if="record.auth['brand_shop:product:member_card|restore']"
+            v-if="record.auth['shop:product:member_card|restore']"
             @click="onRecoverSale(record)"
           >
             恢复售卖
           </a>
           <a
-            v-if="record.auth['brand_shop:product:member_card|del']"
+            v-if="record.auth['shop:product:member_card|del']"
             @click="onDelete(record)"
           >
             删除
