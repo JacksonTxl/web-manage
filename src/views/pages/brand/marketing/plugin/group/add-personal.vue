@@ -134,6 +134,7 @@ export default {
     },
     // 设置选择私教课并返回教练
     selectCourseChange(id) {
+      this.groupParams.id = id
       this.addPersonalService.getCoachList(id).subscribe(res => {
         this.newCoach = this.coach.map(item => {
           return {
