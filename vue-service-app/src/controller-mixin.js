@@ -46,9 +46,17 @@ const createController = (Ctrl, container) => {
           return
         }
         if (isFunction(ctrl.beforeCreate)) {
+          this.$root._skeletonLoading = true
           const ret = ctrl.beforeCreate.call(ctrl)
           if (ret && ret.subscribe) {
-            ret.subscribe()
+            ret.subscribe(
+              () => {
+                this.$root._skeletonLoading = false
+              },
+              () => {
+                this.$root._skeletonLoading = false
+              }
+            )
           }
           return ret
         }
