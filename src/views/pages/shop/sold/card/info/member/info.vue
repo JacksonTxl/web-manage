@@ -250,7 +250,8 @@ export default {
         },
         {
           text: '变更成员',
-          click: this.onChangeMember
+          click: this.onChangeMember,
+          if: this.auth['shop:sold:sold_member_card|edit']
         }
       ]
     }
