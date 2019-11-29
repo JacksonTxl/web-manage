@@ -86,7 +86,7 @@ export class ClubService implements Controller {
     )
   }
   getCrmRule() {
-    return this.memberApi.getCrmRule().pipe(
+    return this.memberApi.getClubCrmRule().pipe(
       tap(res => {
         this.crmRule$.commit(() => res)
       })
