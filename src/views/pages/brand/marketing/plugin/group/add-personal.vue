@@ -4,6 +4,7 @@
     :decorators="decorators"
     :loading="loading.getPersonalList"
     :confirmLoading="loading.createGroupbuy"
+    :groupParams="groupParams"
     @onsubmit="onSubmit"
   >
     <template slot="choose-product">
@@ -117,7 +118,11 @@ export default {
       cardColumns,
       tableText: '', // 优惠设置错误提示
       tableErr: false,
-      newCoach: []
+      newCoach: [],
+      groupParams: {
+        type: 3,
+        id: null
+      }
     }
   },
   methods: {

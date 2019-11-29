@@ -8,7 +8,7 @@
     :confirmLoading="loading.editGroupbuy"
     :shopIds="shopIds"
     @onsubmit="onSubmit"
-    :isEditMode="activityState >= ACTIVITY_STATUS.NO_START"
+    :groupParams="groupParams"
   >
     <template slot="choose-product">
       <a-row :gutter="8">
@@ -142,7 +142,11 @@ export default {
           disabled: true
         }
       }),
-      disabledEdit: false
+      disabledEdit: false,
+      groupParams: {
+        type: 3,
+        id: null
+      }
     }
   },
   methods: {
@@ -161,6 +165,7 @@ export default {
         course_id: id,
         group_hour: this.info.init_course_num
       })
+      this.groupParams.id = id
       this.editPersonalService.getCoachList(id).subscribe(res => {
         this.newCoach = this.coach.map(item => {
           return {

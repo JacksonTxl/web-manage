@@ -109,7 +109,9 @@
                   :groupParams="groupParams"
                   @change="onSelectShop"
                   ref="selectShop"
-                  :disabled="isEditMode"
+                  :disabled="
+                    isEdit && activityState > ACTIVITY_STATUS.PUBLISHER
+                  "
                 ></select-shop>
               </st-container>
             </st-form-item>
@@ -214,12 +216,6 @@ export default {
       type: Boolean,
       default: () => {
         return true
-      }
-    },
-    isEditMode: {
-      type: Boolean,
-      default: () => {
-        return false
       }
     }
   },
