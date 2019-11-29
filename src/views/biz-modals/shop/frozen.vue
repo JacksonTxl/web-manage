@@ -252,7 +252,7 @@ export default {
         }
         values.product = this.selectedRows.map(item => {
           return {
-            product_type: item.type,
+            product_type: item.product_type,
             product_id: item.id
           }
         })
