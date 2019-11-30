@@ -129,7 +129,7 @@ export default {
       this.list[number].forEach(item => {
         item.activity_id = [item.activity_type, item.activity_id]
         const tree = new Tree(this.actList, { name: 'activity_name' })
-        if (!tree.findNodeById(item.activity_id)) {
+        if (this.number && !tree.findNodeById(item.activity_id[1])) {
           // 找到对应的父节点
           const node = tree.findNodeById(item.activity_type)
           if (item.activity_type === 5) {
@@ -151,15 +151,15 @@ export default {
           }
         }
       })
-      this.actList.forEach(item => {
-        if (!item.children.length) {
-          item.disabled = true
-        }
-      })
     } else {
       this.number = 0
-      this.actList = cloneDeep(this.activityList)
+      this.actList = cloneDeep(this.activityList.list)
     }
+    this.actList.forEach(item => {
+      if (!item.children.length) {
+        item.disabled = true
+      }
+    })
   },
   watch: {
     list: {
@@ -228,7 +228,7 @@ export default {
       item.activity_name = value[1][1].activity_name
       if (value[1][0].id === 5) {
         item.product_type = value[1][1].product_type
-        item.product_template_id = selected.product_template_id
+        item.product_template_id = value[1][1].product_template_id
       }
       // const selecttedParent = this.actList.filter(ite => ite.id === value[0])[0]
       // const selected = selecttedParent.children.filter(
