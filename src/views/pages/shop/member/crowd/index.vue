@@ -58,7 +58,7 @@
             <a v-if="record.auth['shop:member:crowd|del']">
               <st-popconfirm
                 :title="'一旦删除则无法恢复，确认删除'"
-                @click="deleteTreeNode(record)"
+                @confirm="deleteTreeNode(record)"
               >
                 删除
               </st-popconfirm>

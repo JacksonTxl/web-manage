@@ -1,117 +1,113 @@
 <template>
-  <div :class="activities()">
-    <st-panel-layout>
-      <st-panel class="mg-b12" app>
-        <!-- 这里是动态 -->
-        <st-t2>{{ info.activity_name }}</st-t2>
-        <div :class="activities('desc')">
-          <p :class="activities('activity')">
-            活动商品：{{ info.product_name }}
-          </p>
-          <p :class="activities('activity')">
-            活动时间：{{ info.start_time }}~{{ info.end_time }}
-          </p>
-        </div>
-      </st-panel>
-      <st-panel>
-        <div :class="activities('block')">
-          <a-row :class="activities('acount')">
-            <a-col :span="4">
-              <p :class="activities('acount-title')">
-                开团数
-                <st-help-tooltip id="TBPTSJ001" />
-              </p>
-              <p class="number-up font-number">
-                {{ collect.group_total }}
-              </p>
-            </a-col>
-            <a-col :span="4">
-              <p :class="activities('acount-title')">
-                成团数
-                <st-help-tooltip id="TBPTSJ002" />
-              </p>
-              <p class="number-up font-number">
-                {{ collect.group_success_total }}
-              </p>
-            </a-col>
-            <a-col :span="4">
-              <p :class="activities('acount-title')">
-                参与人数
-                <st-help-tooltip id="TBPTSJ003" />
-              </p>
-              <p class="number-up font-number">
-                {{ collect.join_total }}
-              </p>
-            </a-col>
-            <a-col :span="4">
-              <p :class="activities('acount-title')">
-                新用户数
-                <st-help-tooltip id="TBPTSJ004" />
-              </p>
-              <p class="number-up font-number">
-                {{ collect.new_total }}
-              </p>
-            </a-col>
-            <a-col :span="4">
-              <p :class="activities('acount-title')">
-                成单数
-                <st-help-tooltip id="TBPTSJ005" />
-              </p>
-              <p class="number-up font-number">
-                {{ collect.success_order_total }}
-              </p>
-            </a-col>
-            <a-col :span="4">
-              <p :class="activities('acount-title')">
-                成交金额
-                <st-help-tooltip id="TBPTSJ006" />
-              </p>
-              <p class="number-up font-number">
-                {{ collect.success_amount_total }}
-              </p>
-            </a-col>
-          </a-row>
-        </div>
-        <div :class="activities('search')">
-          <a-select
-            :class="activities('select')"
-            v-model="groupStatus"
-            placeholder="活动状态"
-            @change="onSingleSearch('group_status', $event)"
-            style="width: 130px"
-          >
-            <a-select-option v-for="item in groupType" :key="item.value">
-              {{ item.label }}
-            </a-select-option>
-          </a-select>
-          <st-input-search
-            v-model="searchWhere"
-            @search="onSingleSearch('search_where', $event)"
-            placeholder="请输入会员名或手机号"
-            maxlength="50"
-          />
-        </div>
-        <template v-if="list.length > 1">
-          <a-table
-            rowKey="id"
-            :columns="columns"
-            :scroll="{ x: 1240 }"
-            :dataSource="list"
-            :rowClassName="rowClassName"
-            @expandedRowsChange="onShow"
-          ></a-table>
-        </template>
-        <template v-else>
-          <a-table
-            id="atable_no_data"
-            rowKey="id"
-            :columns="columns"
-            :dataSource="list"
-          ></a-table>
-        </template>
-      </st-panel>
-    </st-panel-layout>
-  </div>
+  <st-panel-layout :class="activities()">
+    <st-panel class="mg-b12">
+      <!-- 这里是动态 -->
+      <st-t2>{{ info.activity_name }}</st-t2>
+      <div :class="activities('desc')">
+        <p :class="activities('activity')">活动商品：{{ info.product_name }}</p>
+        <p :class="activities('activity')">
+          活动时间：{{ info.start_time }}~{{ info.end_time }}
+        </p>
+      </div>
+    </st-panel>
+    <st-panel app>
+      <div :class="activities('block')">
+        <a-row :class="activities('acount')">
+          <a-col :span="4">
+            <p :class="activities('acount-title')">
+              开团数
+              <st-help-tooltip id="TBPTSJ001" />
+            </p>
+            <p class="number-up font-number">
+              {{ collect.group_total }}
+            </p>
+          </a-col>
+          <a-col :span="4">
+            <p :class="activities('acount-title')">
+              成团数
+              <st-help-tooltip id="TBPTSJ002" />
+            </p>
+            <p class="number-up font-number">
+              {{ collect.group_success_total }}
+            </p>
+          </a-col>
+          <a-col :span="4">
+            <p :class="activities('acount-title')">
+              参与人数
+              <st-help-tooltip id="TBPTSJ003" />
+            </p>
+            <p class="number-up font-number">
+              {{ collect.join_total }}
+            </p>
+          </a-col>
+          <a-col :span="4">
+            <p :class="activities('acount-title')">
+              新用户数
+              <st-help-tooltip id="TBPTSJ004" />
+            </p>
+            <p class="number-up font-number">
+              {{ collect.new_total }}
+            </p>
+          </a-col>
+          <a-col :span="4">
+            <p :class="activities('acount-title')">
+              成单数
+              <st-help-tooltip id="TBPTSJ005" />
+            </p>
+            <p class="number-up font-number">
+              {{ collect.success_order_total }}
+            </p>
+          </a-col>
+          <a-col :span="4">
+            <p :class="activities('acount-title')">
+              成交金额
+              <st-help-tooltip id="TBPTSJ006" />
+            </p>
+            <p class="number-up font-number">
+              {{ collect.success_amount_total }}
+            </p>
+          </a-col>
+        </a-row>
+      </div>
+      <div :class="activities('search')">
+        <a-select
+          :class="activities('select')"
+          v-model="groupStatus"
+          placeholder="活动状态"
+          @change="onSingleSearch('group_status', $event)"
+          style="width: 130px"
+        >
+          <a-select-option v-for="item in groupType" :key="item.value">
+            {{ item.label }}
+          </a-select-option>
+        </a-select>
+        <st-input-search
+          v-model="searchWhere"
+          @search="onSingleSearch('search_where', $event)"
+          placeholder="请输入会员名或手机号"
+          maxlength="50"
+        />
+      </div>
+      <template v-if="list.length > 1">
+        <a-table
+          rowKey="id"
+          :columns="columns"
+          :scroll="{ x: 1240 }"
+          :dataSource="list"
+          :rowClassName="rowClassName"
+          @expandedRowsChange="onShow"
+        ></a-table>
+      </template>
+      <template v-else>
+        <a-table
+          id="atable_no_data"
+          rowKey="id"
+          :columns="columns"
+          :dataSource="list"
+        ></a-table>
+      </template>
+    </st-panel>
+  </st-panel-layout>
 </template>
 <script>
 import { UserService } from '@/services/user.service'

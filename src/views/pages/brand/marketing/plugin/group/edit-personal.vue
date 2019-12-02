@@ -13,7 +13,7 @@
     <template slot="choose-product">
       <a-row :gutter="8">
         <a-col :span="10">
-          <st-form-item label="选择私教课">
+          <st-form-item label="选择私教课" required>
             <a-select
               showSearch
               :disabled="disabledEdit"
@@ -115,6 +115,9 @@ export default {
   bem: {
     basic: 'brand-marketing-group-personal'
   },
+  computed: {
+    cardColumns
+  },
   mounted() {
     this.editPersonalService.getPersonalList().subscribe(() => {
       // this.courseId = this.info.product.id
@@ -131,7 +134,6 @@ export default {
       courseId: '', // 活动商品
       ACTIVITY_STATUS,
       selectedRowKeys: [], // 优惠设置选中项
-      cardColumns,
       tableText: '', // 优惠设置错误提示
       tableErr: false,
       shopIds: [],

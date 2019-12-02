@@ -10,7 +10,7 @@
     <template slot="choose-product">
       <a-row :gutter="8">
         <a-col :span="10">
-          <st-form-item label="选择私教课">
+          <st-form-item label="选择私教课" required>
             <a-select
               v-decorator="decorators.course_id"
               placeholder="请选择私教课"
