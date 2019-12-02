@@ -19,7 +19,7 @@
       class="mg-b24"
     >
       <template slot="maxTagPlaceholder">
-        <div>已选择{{ blackList.length || 0 }}个</div>
+        <div>已选择{{ blackKeys.length || 0 }}个</div>
       </template>
       <a-select-option
         v-for="item in searchList"
@@ -99,9 +99,12 @@ export default {
       this.blackService.onSearchKeyWords(val).subscribe()
     },
     joinPerson(para) {
+      let arr = this.blackList
       this.blackList = []
+      this.blackKeys = Array.from(new Set(this.blackKeys))
+      let searchRes = this.searchList.concat(arr)
       this.blackKeys.map(id => {
-        this.searchList.map(searchItem => {
+        searchRes.map(searchItem => {
           if (searchItem.user_id === id) {
             this.blackList.push(searchItem)
           }
@@ -128,6 +131,19 @@ export default {
           this.show = false
           this.$emit('success')
         })
+    }
+  },
+  watch: {
+    // 去重
+    blackList() {
+      for (var i = 0; i < this.blackList.length; i++) {
+        for (var j = i + 1; j < this.blackList.length; j++) {
+          if (this.blackList[i].user_id === this.blackList[j].user_id) {
+            this.blackList.splice(j, 1)
+            j--
+          }
+        }
+      }
     }
   }
 }
