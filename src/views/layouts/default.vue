@@ -98,6 +98,9 @@
         </a-breadcrumb>
       </div>
       <div class="layout-default-body__personal">
+        <a-badge :count="100">
+          <a href="#" class="head-example"></a>
+        </a-badge>
         <!-- 九宫格 -->
         <a-dropdown :trigger="['hover']" placement="bottomRight">
           <div class="layout-default-body__avatar">

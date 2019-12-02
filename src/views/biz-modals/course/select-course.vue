@@ -121,7 +121,7 @@
                       <a href="javascript:void(0)">
                         <st-popconfirm
                           :title="'一旦删除则无法恢复，确认删除'"
-                          @click="onRemove(item.course_id)"
+                          @confirm="onRemove(item.course_id)"
                         >
                           删除
                         </st-popconfirm>
