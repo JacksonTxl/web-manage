@@ -21,15 +21,17 @@
           title="营销活动推广设置"
           subTitle="推广活动数量会对图片尺寸有不同要求"
         >
-          <st-form-item label="功能开关" required>
-            <st-switch v-model="openStatus" @change="onOpenStatusChange" />
-            <span class="mg-l12 mg-r12">
-              {{ openMiniFlag ? '已' : '未' }}开启
-            </span>
-            <span v-if="!openMiniFlag">
-              （一旦开启，将会在小程序展示，如需关闭，请谨慎操作。）
-            </span>
-          </st-form-item>
+          <st-form>
+            <st-form-item label="功能开关" required>
+              <st-switch v-model="openStatus" @change="onOpenStatusChange" />
+              <span class="mg-l12 mg-r12">
+                {{ openMiniFlag ? '已' : '未' }}开启
+              </span>
+              <span v-if="!openMiniFlag">
+                （一旦开启，将会在小程序展示，如需关闭，请谨慎操作。）
+              </span>
+            </st-form-item>
+          </st-form>
           <event-component v-if="openMiniFlag"></event-component>
         </row-container-component>
       </st-tab-pane>
@@ -160,6 +162,14 @@ export default {
     save(is_status) {
       let saveForm = {
         info: []
+      }
+      for (let i = 0; i < this.sliderInfo.length; i++) {
+        this.sliderInfo[i].activity_id =
+          this.sliderInfo[i].activity_id[1] || this.sliderInfo[i].activity_id
+      }
+      for (let i = 0; i < this.eventInfo.length; i++) {
+        this.eventInfo[i].activity_id =
+          this.eventInfo[i].activity_id[1] || this.eventInfo[i].activity_id
       }
       saveForm.info.push({
         category: 1,
