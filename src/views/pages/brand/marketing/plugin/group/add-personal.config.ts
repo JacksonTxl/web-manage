@@ -32,25 +32,27 @@ export const ruleOptions = (vm: any) => {
     }
   })
 }
-export const cardColumns = [
-  {
-    title: '教练等级',
-    dataIndex: 'level',
-    width: '22%',
-    align: 'center'
-  },
-  {
-    title: '课时',
-    dataIndex: 'hour',
-    align: 'center',
-    width: '22%'
-  },
-  {
-    title: '拼团价',
-    dataIndex: 'group_price',
-    width: '38%',
-    align: 'center',
-    slots: { title: 'group_price' },
-    scopedSlots: { customRender: 'group_price' }
-  }
-]
+export const cardColumns = (vm: any) => {
+  return [
+    {
+      title: `${vm.$c('coach')}等级`,
+      dataIndex: 'level',
+      width: '22%',
+      align: 'center'
+    },
+    {
+      title: '课时',
+      dataIndex: 'hour',
+      align: 'center',
+      width: '22%'
+    },
+    {
+      title: '拼团价',
+      dataIndex: 'group_price',
+      width: '38%',
+      align: 'center',
+      slots: { title: 'group_price' },
+      scopedSlots: { customRender: 'group_price' }
+    }
+  ]
+}

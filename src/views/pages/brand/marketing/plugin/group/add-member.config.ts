@@ -8,7 +8,7 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           required: true,
-          message: '请选择会籍卡'
+          message: `请选择${vm.$c('member_card')}`
         }
       ]
     }
