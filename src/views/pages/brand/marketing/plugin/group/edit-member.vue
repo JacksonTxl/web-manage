@@ -181,7 +181,7 @@ export default {
     onSubmit(data) {
       let isReturn = false
       if (!this.selectedRowKeys.length) {
-        this.tableText = '请选择会籍卡规格'
+        this.tableText = `请选择${this.$c('member_card')}规格`
         this.tableErr = true
         isReturn = true
       }

@@ -221,7 +221,7 @@ export default {
       if (this.tableErr) return
       const selectedCoach = this.newCoach.filter(item => item.is_select)
       if (selectedCoach.length === 0) {
-        this.tableText = '请选择至少一个教练'
+        this.tableText = `请选择至少一个${this.$c('coach')}`
         this.tableErr = true
         return
       }
