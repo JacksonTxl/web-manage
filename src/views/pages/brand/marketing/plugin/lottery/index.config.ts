@@ -23,7 +23,8 @@ export const columns = () => {
     },
     {
       title: '活动状态',
-      dataIndex: 'activity_status_name'
+      dataIndex: 'activity_status_name',
+      scopedSlots: { customRender: 'activity_status_name' }
     },
     {
       title: '操作',

@@ -12,6 +12,12 @@ import StHelpTooltip from '@/views/components/help-tooltip/help-tooltip'
 export default {
   name: 'BrandStatCourseRing',
   mixins: [chartMixin],
+  data() {
+    return {
+      intervalStack: {},
+      resize: -99
+    }
+  },
   props: {
     data: {
       type: Array,
@@ -40,12 +46,48 @@ export default {
     unit: {
       type: String,
       default: '节'
+    },
+    options: {
+      type: Object,
+      default: () => {
+        return {
+          height: 198,
+          totalName: '',
+          color: ['#4679F9', '#894BFF'],
+          totalCount: 0,
+          unit: ''
+        }
+      }
+    }
+  },
+  watch: {
+    // 当浏览器窗口变小时，tooltip会消失问题
+    resize() {
+      this.$nextTick(() => {
+        const $s = this.$el.querySelector.bind(this.$el)
+        const component = new Vue({
+          components: {
+            StHelpTooltip
+          },
+          render: h => <st-help-tooltip id={this.tooltipId} />
+        }).$mount()
+        $s(`#guide-name-tooltip${this.tooltipId}`).appendChild(component.$el)
+      })
+    }
+  },
+  computed: {
+    dataSource() {
+      //传入的总计为0时，多一个环形图为0的灰色环形图
+      if (this.total === 0) {
+        return [...this.data, { name: 'empty', value: 1 }]
+      }
+      return this.data
     }
   },
   methods: {
     initDv() {
       this.dv = new View()
-      this.dv.source(this.data)
+      this.dv.source(this.dataSource)
       this.dv.transform({
         type: 'map',
         callback(row) {
@@ -55,130 +97,28 @@ export default {
       })
     },
     initChart() {
-      this.chart = new Chart({
-        container: this.$el,
-        forceFit: true,
-        padding: ['auto', 180, 'auto', 'auto'],
-        height: this.height
-      })
+      // chart初始化实例
+      this.getChartInstance()
+      // 加载数据
       this.chart.source(this.dv, {
         value: {
           formatter: v => v + this.unit
         }
       })
-      this.chart.tooltip({
-        showTitle: false,
-        itemTpl: `<li>
-                    <span style="background-color:{color};" class="g2-tooltip-marker"></span>
-                    {name}
-                    <span class="st-g2-tooltip-value">| {value}</span>
-                  </li>`
-      })
-      this.chart.coord('theta', {
-        innerRadius: 0.65
-      })
-      this.chart.legend({
-        position: 'right-center',
-        useHtml: true,
-        itemTpl: (name, color, checked, index) => {
-          const row = this.dv.findRow({ name })
-          const value = row.value
-          return `<li class="g2-legend-list-item item-{index} {checked}" data-color="{originColor}" data-value="{originValue}">
-                    <i class="g2-legend-marker" style="background-color:{color};"></i>
-                    <span class="g2-legend-text">${name}</span>
-                    <div class='legend-right mg-l12'>
-                      <span class='legend-percent'>${value}${this.unit}</span>
-                    </div>
-                  </li>`
-        }
-      })
-
-      // 总计的自定义DOM
-      this.chart.guide().html({
-        position: ['50%', '50%'],
-        html: () => {
-          let sum = this.dv.sum('value')
-          return `<div class='guide'>
-                    <div class='guide-name'>
-                      <span class="mg-r4">${this.name}</span>
-                      <span id="guide-name-tooltip${this.tooltipId}"></span>
-                      </div>
-                    <div class='guide-title'>
-                      <span class='guide-value'>${sum}</span>
-                      <span class='guide-unit'>${this.unit}</span>
-                    </div>
-                  </div>`
-        }
-      })
-
-      // 但数据为0的时候初始化
-      this.chart.guide().arc({
-        start: (xScales, yScales) => {
-          if (this.dv.sum('value') === 0) {
-            this.hoverable = false
-            return ['22%', '50%']
-          }
-          return []
-        },
-        end: (xScales, yScales) => {
-          if (this.dv.sum('value') === 0) {
-            this.hoverable = false
-            return ['78%', '50%']
-          }
-          return []
-        },
-        style: {
-          lineWidth: 0,
-          fill: '#E9EDF2',
-          fillOpacity: 1,
-          stroke: '#ccc'
-        }
-      })
-      this.chart.guide().arc({
-        start: (xScales, yScales) => {
-          if (this.dv.sum('value') === 0) {
-            this.hoverable = false
-            return ['78%', '50%']
-          }
-          return []
-        },
-        end: (xScales, yScales) => {
-          if (this.dv.sum('value') === 0) {
-            this.hoverable = false
-            return ['22%', '50%']
-          }
-          return []
-        },
-        style: {
-          lineWidth: 0,
-          fill: '#E9EDF2',
-          fillOpacity: 1,
-          stroke: '#ccc'
-        }
-      })
-      this.chart.guide().arc({
-        start: ['30%', '50%'],
-        end: ['70%', '50%'],
-        style: {
-          lineWidth: 0,
-          fill: '#fff',
-          fillOpacity: 1,
-          stroke: '#ccc'
-        }
-      })
-      this.chart.guide().arc({
-        start: ['70%', '50%'],
-        end: ['30%', '50%'],
-        style: {
-          lineWidth: 0,
-          fill: '#fff',
-          fillOpacity: 1,
-          stroke: '#ccc'
-        }
-      })
-
+      // 设置坐标系
+      this.setCoord()
+      // 设置提示信息
+      this.setTooltip()
+      // 设置图例
+      this.setLegend()
+      // 设置复制元素
+      this.setGuideHtml()
+      // 设置渲染环形图
+      this.getintervalStack()
+    },
+    getintervalStack() {
       // 环形图初始化
-      const interval = this.chart
+      this.intervalStack = this.chart
         .intervalStack()
         .style({
           fillOpacity: 1,
@@ -191,7 +131,7 @@ export default {
           }
         })
         .position('value')
-        .color('name', this.colors)
+        .color('name', [...this.colors, '#e9edf2'])
         .select(false)
         .active({
           style: {
@@ -199,79 +139,132 @@ export default {
             lineWidth: 8
           }
         })
-
       this.chart.render()
-      this.changeData()
+      // 自定义监听环形图事件
+      this.chartEvent()
+    },
+    getChartInstance() {
+      this.chart = new Chart({
+        container: this.$el,
+        forceFit: true,
+        padding: ['auto', 160, 'auto', 'auto'],
+        height: this.height
+      })
+    },
+    setTooltip() {
+      this.chart.tooltip({
+        showTitle: false,
+        itemTpl: `<li class="tooltip-item-{name}">
+                    <span style="background-color:{color};" class="g2-tooltip-marker"></span>
+                    {name}
+                    <span class="st-g2-tooltip-value">| {value}</span>
+                  </li>`
+      })
+    },
+    setCoord() {
+      this.chart.coord('theta', {
+        innerRadius: 0.65
+      })
+    },
+    setLegend() {
+      this.chart.legend({
+        position: 'right-center',
+        useHtml: true,
+        itemTpl: (name, color, checked, index) => {
+          const row = this.dv.findRow({ name })
+          const value = row.value
+          return `<li class="g2-legend-list-item item-{originValue} item-{index} {checked}" data-color="{originColor}" data-value="{originValue}">
+                    <i class="g2-legend-marker" style="background-color:{color};"></i>
+                    <span class="g2-legend-text">${name}</span>
+                    <div class='legend-right mg-l12'>
+                      <span class='legend-percent'>${value}${this.unit}</span>
+                    </div>
+                  </li>`
+        },
+        onHover: ev => {
+          // 总计为 0 是执行hover
+          // if (this.total === 0) return
+          const $s = this.$el.querySelector.bind(this.$el)
+          const name = ev.item.value
+          const row = this.dv.findRow({ name })
+          const shapes = ev.shapes
+          const geom = ev.geom
+          const legend = ev.currentTarget
+          // 选中对应单元
+          this.total !== 0 && geom.setShapesActived(shapes)
+          legend.addEventListener('mouseleave', () => {
+            this.resetTotal()
+          })
+          $s('.guide-value').textContent = row.value
+          $s('.guide-name-text').textContent = row.name
+          $s('.guide-name-tooltip').setAttribute('style', 'display: none')
+        }
+      })
+    },
+    setGuideHtml() {
+      // 总计的自定义DOM
+      this.chart.guide().html({
+        position: ['50%', '50%'],
+        html: () => {
+          this.resize = Math.random()
+          return `<div class='guide'>
+                    <div class='guide-name'>
+                      <span class="guide-name-text">${this.name}</span>
+                      <span class="guide-name-tooltip" id="guide-name-tooltip${
+                        this.tooltipId
+                      }"></span>
+                    </div>
+                    <div class='guide-title'>
+                      <span class='guide-value'>${this.total}</span>
+                      <span class='guide-unit'>${this.unit}</span>
+                    </div>
+                  </div>`
+        }
+      })
+    },
+    resetTotal() {
       const $s = this.$el.querySelector.bind(this.$el)
+      $s('.guide-value').textContent = this.total
+      // 总计的时候显示tooltip
+      $s('.guide-name-tooltip').setAttribute('style', 'display: inline') //.style({ display: 'inline' })
+      $s('.guide-name-text').textContent = this.name
+    },
+    setUnit(e) {
+      const $s = this.$el.querySelector.bind(this.$el)
+      // 当环形图总计都是零的时候隐藏tooltip
+      if (e.data._origin.name === 'empty') {
+        $s('.g2-tooltip').setAttribute('style', 'display: none')
+        return
+      }
+      const origin = e.data._origin
+      const shapes = e.shapes
+      const geom = e.geom
+
+      $s('.guide-value').textContent = origin.value
+      $s('.guide-name-text').textContent = origin.name
+      // 不是总计的时候隐藏tooltip
+      $s('.guide-name-tooltip').setAttribute('style', 'display: none')
+    },
+    chartEvent() {
       // 鼠标进入环形显示相关的值
-      this.chart.on('interval:mouseenter', e => {
-        const origin = e.data._origin
-        $s('.guide-value').textContent = origin.value
-        $s('.guide-name').textContent = origin.name
+      this.chart.on('interval:mouseenter', ev => {
+        const shape = ev.shape
+        const origin = ev.data._origin
+        if (origin.name === 'empty') {
+          this.intervalStack.clearActivedShapes(shape)
+        }
+        this.setUnit(ev)
       })
       // 鼠标离开显示总值
       this.chart.on('interval:mouseleave', e => {
-        $s('.guide-value').textContent = this.total
-        $s('.guide-name').textContent = this.name
-        const component = new Vue({
-          components: {
-            StHelpTooltip
-          },
-          render: h => <st-help-tooltip class={'mg-l4'} id={this.tooltipId} />
-        }).$mount()
-        $s('.guide-name').appendChild(component.$el)
-      })
-      const legendListItems = [
-        ...this.$el.querySelectorAll('.g2-legend-list-item')
-      ]
-
-      const vm = this
-      vm.offMouseHandlers = []
-      // 控制右边标注的鼠标移入移出的数值变化
-      const mouseHandler = function() {
-        const name = this.dataset.value
-        const row = vm.dv.findRow({ name })
-        $s('.guide-value').textContent = row.value
-        $s('.guide-name').textContent = row.name
-      }
-      const mouseLeaveHandler = () => {
-        $s('.guide-value').textContent = this.total
-        $s('.guide-name').textContent = this.name
-        const component = new Vue({
-          components: {
-            StHelpTooltip
-          },
-          render: h => <st-help-tooltip class={'mg-l4'} id={this.tooltipId} />
-        }).$mount()
-        $s('.guide-name').appendChild(component.$el)
-      }
-
-      legendListItems.forEach(el => {
-        el.addEventListener('mouseenter', mouseHandler, false)
-        this.offMouseHandlers.push(() => {
-          el.addEventListener('mouseenter', mouseHandler, false)
-        })
-      })
-      legendListItems.forEach(el => {
-        el.addEventListener('mouseleave', mouseLeaveHandler, false)
-        this.offMouseHandlers.push(() => {
-          el.addEventListener('mouseleave', mouseLeaveHandler, false)
-        })
-      })
-    },
-    changeData() {
-      new Vue({
-        el: `#guide-name-tooltip${this.tooltipId}`,
-        components: {
-          StHelpTooltip
-        },
-        render: h => <st-help-tooltip id={this.tooltipId} />
+        this.resetTotal()
       })
     }
   },
   beforeDestroy() {
     if (this.chart) {
-      this.offMouseHandlers.forEach(fn => fn())
+      // 注销图形所有事件
+      this.chart.off()
     }
   }
 }

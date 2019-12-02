@@ -56,6 +56,7 @@ export default {
         { id: 'st-hr', title: '分割线' },
         { id: 'st-input-number', title: '数字输入' },
         { id: 'st-input-search', title: '搜索框' },
+        { id: 'st-input', title: '展示长度输入框' },
         { id: 'st-panel', title: '应用面板' },
         { id: 'st-panel-layout', title: '应用面板' },
         { id: 'st-search-panel', title: '查询面板' },
