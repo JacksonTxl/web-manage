@@ -46,6 +46,12 @@
               >
                 购卡人：{{ record.member_info.card_buyer }}，卡成员
                 {{ record.member_info.card_members.join(',') }}
+                <span
+                  v-if="record.product_type === 1 && record.is_purchaser !== 1"
+                  class="error-color"
+                >
+                  需要购卡人冻结
+                </span>
               </span>
             </st-table>
           </st-form-item>
