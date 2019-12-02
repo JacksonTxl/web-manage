@@ -23,11 +23,13 @@
         删除
       </li>
       <li>
-        <st-icon type="anticon:setting" color="red"></st-icon>
-        使用[anticon:__] ant design自带的图标
+        <st-button icon="wechat" type="primary">
+          按钮中使用[icon]图标 使用st 的iconfont图标
+        </st-button>
       </li>
       <li>
-        <st-button icon="wechat" type="primary">按钮中使用[icon]图标</st-button>
+        <st-icon type="anticon:setting" color="red"></st-icon>
+        使用[anticon:__] ant design自带的图标
       </li>
     </st-container>
   </div>

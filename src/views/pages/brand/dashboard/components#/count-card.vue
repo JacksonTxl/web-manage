@@ -1,6 +1,6 @@
 <template>
   <div class="page-dashboard-count-card">
-    <a-skeleton v-if="skeletonLoading" active></a-skeleton>
+    <a-skeleton v-if="$skeletonLoading" active></a-skeleton>
     <template v-else>
       <div class="title">
         {{ title }}

@@ -118,7 +118,7 @@
           </div>
         </st-form-item>
         <!-- 侯补预约 -->
-        <st-form-item label="侯补预约">
+        <!-- <st-form-item label="侯补预约">
           <a-checkbox
             :checked="!!info.alternate_reserve"
             @change="onCheckboxChange('alternate_reserve')"
@@ -128,7 +128,7 @@
           <div class="st-des">
             当报名用户取消预约时，自动按候补顺序为用户进行补位预约
           </div>
-        </st-form-item>
+        </st-form-item> -->
         <!-- 签到方式 -->
         <st-form-item label="签到方式">
           <a-checkbox

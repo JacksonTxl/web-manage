@@ -73,11 +73,7 @@
                 <a-col :span="6">
                   <st-text
                     :status="{
-                      success: item.follow_status === 2,
-                      default: item.follow_status === 1,
-                      info: item.follow_status === 0,
-                      error: item.follow_status === 4,
-                      warning: item.follow_status === 3
+                      success: true
                     }"
                   >
                     {{ item.follow_status | followStatus }}
@@ -85,7 +81,7 @@
                 </a-col>
               </div>
             </div>
-            <div class="time-position">
+            <div class="time-position font-number">
               <div>{{ item.follow_date.split(' ')[1] }}</div>
               <div class="time-position-grey">
                 {{ item.follow_date.split(' ')[0] }}

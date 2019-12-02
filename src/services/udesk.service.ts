@@ -64,6 +64,7 @@ export class UdeskService {
    */
   showUdesk(params = { openDialog: false }) {
     let udeskEl: any = document.getElementById('udesk_container')
+    console.log(udeskEl)
     if (udeskEl) {
       udeskEl.style = 'display: block'
       if (params.openDialog) {

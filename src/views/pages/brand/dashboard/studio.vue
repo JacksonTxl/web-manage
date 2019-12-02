@@ -10,7 +10,6 @@
             <count-card
               title="今日营收额(元)"
               :count="this.revenue.num"
-              :skeletonLoading="loading.init"
               :footer="{ label: '近7天日均营收额：', value: this.revenue.avg }"
               :trend="{
                 isUp: this.revenue.ratio >= 0,
@@ -31,7 +30,6 @@
             <count-card
               title="今日订单数(单)"
               :count="this.order.num"
-              :skeletonLoading="loading.init"
               :footer="{ label: '近7天日均订单数：', value: this.order.avg }"
               :trend="{
                 isUp: this.order.ratio >= 0,
@@ -54,7 +52,6 @@
             <count-card
               title="今日客流量(人)"
               :count="this.visit.num"
-              :skeletonLoading="loading.init"
               :footer="{ label: '近7天日均客流量：', value: this.visit.avg }"
             >
               <template slot="title">
@@ -73,7 +70,6 @@
             <count-card
               title="用户数(人)"
               :count="this.user.num"
-              :skeletonLoading="loading.init"
               :footer="{ label: '近7天日转化会员率：', value: this.user.ratio }"
             >
               <template slot="title">
@@ -97,13 +93,23 @@
             <template v-slot:user>
               <div class="mg-t8 mg-l32 user-chart-box">
                 <div class="funnel-vertical">
-                  <funnel-vertical
-                    :skeletonLoading="loading.init"
-                    :data="userFunnel"
-                  ></funnel-vertical>
+                  <st-skeleton
+                    v-if="$skeletonLoading"
+                    :style="{ width: '100%', height: '400px' }"
+                  ></st-skeleton>
+                  <funnel-vertical v-else :data="userFunnel"></funnel-vertical>
                 </div>
                 <div class="revenue-area">
+                  <st-skeleton
+                    v-if="$skeletonLoading"
+                    :style="{
+                      width: '100%',
+                      height: '400px',
+                      margin: '0 16px'
+                    }"
+                  ></st-skeleton>
                   <brand-revenue-area
+                    v-else
                     :fields="['注册用户', '消费用户', '购买私教', '消课人数']"
                     class="user-chart-box__item"
                     :data="userChartData"
@@ -132,12 +138,24 @@
         <a-col :span="12">
           <st-container class="bg-white" type="2">
             <st-t3 style="margin-bottom:20px">客单价</st-t3>
-            <brand-user-avg-bar :data="avg" :height="295"></brand-user-avg-bar>
+            <st-skeleton
+              v-if="$skeletonLoading"
+              :style="{ width: '100%', height: '295px' }"
+            ></st-skeleton>
+            <brand-user-avg-bar
+              v-else
+              :data="avg"
+              :height="295"
+            ></brand-user-avg-bar>
           </st-container>
         </a-col>
         <a-col :span="12">
           <st-container class="bg-white" type="2">
             <st-t3 style="margin-bottom:20px">用户活跃分析</st-t3>
+            <st-skeleton
+              v-if="$skeletonLoading"
+              :style="{ width: '100%', height: '295px' }"
+            ></st-skeleton>
             <brand-user-ring :data="entry" :height="295"></brand-user-ring>
           </st-container>
         </a-col>

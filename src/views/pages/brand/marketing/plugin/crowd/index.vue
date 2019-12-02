@@ -37,9 +37,9 @@
         <st-overflow-text
           slot="description"
           slot-scope="text"
+          max-width="300px"
           :value="text"
-          width="200px"
-        />
+        ></st-overflow-text>
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
             <st-more-dropdown>

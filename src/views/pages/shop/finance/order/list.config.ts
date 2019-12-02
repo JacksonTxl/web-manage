@@ -6,6 +6,11 @@ export const columns = () => {
       scopedSlots: { customRender: 'id' }
     },
     {
+      title: '订单类型',
+      dataIndex: 'activity_type_name',
+      scopedSlots: { customRender: 'activity_type_name' }
+    },
+    {
       title: '商品名称',
       dataIndex: 'product_name',
       scopedSlots: { customRender: 'product_name' }

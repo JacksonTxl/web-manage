@@ -1,6 +1,8 @@
 <template>
   <section class="sg-section">
-    <h3>st-hr 分割线</h3>
+    <p>
+      默认上下mg 24px
+    </p>
     <st-hr></st-hr>
   </section>
 </template>
