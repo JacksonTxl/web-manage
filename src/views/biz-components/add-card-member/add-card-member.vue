@@ -37,7 +37,7 @@
               <a-input-search
                 placeholder="请输入手机号码或者会员姓名"
                 v-model="memberSearchText"
-                @search="onMemberSearch"
+                @change="onMemberSearch"
                 @focus="onFocusSearch"
                 @blur="onBlurSearch"
               />
@@ -205,9 +205,12 @@ export default {
       })
     },
     onMemberSearch(data) {
-      this.memberSearchText = data
+      this.memberSearchText = data.target.value
       if (data) {
-        this.addCardMemberService.getMember(data, this.type).subscribe()
+        this.addCardMemberService.memberListAction$.dispatch(
+          data.target.value,
+          this.type
+        )
       }
     },
     onMemberChange(data) {
@@ -217,6 +220,7 @@ export default {
         name: data.member_name,
         mobile: data.mobile
       })
+      this.resetSearchCondition()
       this.$emit('change', this.list)
     },
     resetSearchCondition() {
