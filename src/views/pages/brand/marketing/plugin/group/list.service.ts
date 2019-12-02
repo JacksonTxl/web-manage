@@ -13,7 +13,7 @@ export class ListService implements Controller {
   info$ = new State({})
   auth$ = this.authService.authMap$({
     // 记得设置鉴权
-    add: 'brand:activity:group|add'
+    add: 'brand:activity:group_buy|add'
   })
   // brand$ = this.userService.brand$  需要
   constructor(
