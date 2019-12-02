@@ -3,7 +3,7 @@
     <MarkteingPluginTitle :type="TYPE.GROUP_BUY" />
     <st-panel app initial :class="basic()">
       <div slot="title" :class="basic('search')">
-        <div :class="basic('add')">
+        <div :class="basic('add')" v-if="auth.add">
           <st-button icon="add" type="primary" @click="onAddGroup">
             新增活动
           </st-button>
@@ -183,6 +183,8 @@ export default {
   },
   mounted() {
     this.setSearchData()
+    console.log(this.listService)
+    console.log(this.auth)
   },
   watch: {
     query(newVal) {
