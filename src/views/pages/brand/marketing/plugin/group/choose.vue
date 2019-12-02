@@ -20,7 +20,7 @@ export default {
     return {
       typeList: [
         {
-          name: '会籍卡',
+          name: `${this.$c('member_card')}`,
           bg: require('@/assets/img/brand/marketing/group/mod_member.png'),
           url: './add-member'
         },

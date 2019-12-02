@@ -35,7 +35,6 @@ export class AddMemberService implements Controller {
     )
   }
   init() {
-    console.log('进来init了')
     return anyAll(this.getMemberList())
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {

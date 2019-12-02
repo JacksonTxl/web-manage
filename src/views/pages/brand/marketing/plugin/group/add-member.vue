@@ -155,7 +155,7 @@ export default {
       let isReturn = false
       if (this.tableErr) return
       if (this.tableData.length > 1 && !this.selectedRowKeys.length) {
-        this.tableText = '请选择至少一个会籍卡规格'
+        this.tableText = `请选择至少一个${this.$c('member_card')}规格`
         this.tableErr = true
         isReturn = true
       }

@@ -10,7 +10,7 @@
     <template slot="choose-product">
       <a-row :gutter="8">
         <a-col :span="10">
-          <st-form-item label="选择私教课">
+          <st-form-item label="选择私教课" required>
             <a-select
               v-decorator="decorators.course_id"
               placeholder="请选择私教课"
@@ -102,6 +102,9 @@ export default {
       coach: this.addPersonalService.coachList$
     }
   },
+  computed: {
+    cardColumns
+  },
   mounted() {
     console.log(this.personalList)
   },
@@ -115,7 +118,6 @@ export default {
       form,
       decorators,
       selectedRowKeys: [], // 优惠设置选中项
-      cardColumns,
       tableText: '', // 优惠设置错误提示
       tableErr: false,
       newCoach: [],
@@ -176,7 +178,7 @@ export default {
       if (this.tableErr) return
       const selectedCoach = this.newCoach.filter(item => item.is_select)
       if (selectedCoach.length === 0) {
-        this.tableText = '请选择至少一个教练'
+        this.tableText = `请选择至少一个${this.$c('coach')}`
         this.tableErr = true
         return
       }

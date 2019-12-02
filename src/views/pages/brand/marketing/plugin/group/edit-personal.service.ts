@@ -16,7 +16,6 @@ export class EditPersonalService implements Controller {
   getPersonalDetail(id: number) {
     return this.groupBuyApi.getStoredData(id).pipe(
       tap((res: any) => {
-        console.log(res.info, '这是接口返回的')
         this.info$.commit(() => res.info)
       })
     )

@@ -101,7 +101,7 @@
               </span>
               <st-container>
                 <st-t4 :class="basic('shop--set')">
-                  设置支持会员卡售卖场馆范围
+                  设置支持活动的场馆范围
                 </st-t4>
                 <select-shop
                   :shopIds="info ? info.support_shop : []"

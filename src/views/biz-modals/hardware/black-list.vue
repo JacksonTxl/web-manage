@@ -44,7 +44,7 @@
           <a>
             <st-popconfirm
               :title="'一旦删除则无法恢复，确认删除'"
-              @click="deletePerson(record)"
+              @confirm="deletePerson(record)"
             >
               删除
             </st-popconfirm>
