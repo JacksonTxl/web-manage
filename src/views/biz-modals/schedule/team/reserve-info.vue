@@ -341,7 +341,7 @@ export default {
     onSearch(value) {
       this.keyword = value
       this.teamScheduleCommonService
-        .getMemberList({ member_name: value })
+        .getMemberList({ member: value })
         .subscribe()
     },
     onClickCancel(id) {
