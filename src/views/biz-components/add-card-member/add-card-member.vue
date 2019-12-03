@@ -112,6 +112,8 @@
 <script>
 import { cloneDeep } from 'lodash-es'
 import { AddCardMemberService } from './add-card-member.service'
+import { MessageService } from '@/services/message.service'
+import { PatternService } from '@/services/pattern.service'
 export default {
   name: 'AddCardMember',
   bem: {
@@ -122,7 +124,9 @@ export default {
   },
   serviceInject() {
     return {
-      addCardMemberService: AddCardMemberService
+      addCardMemberService: AddCardMemberService,
+      messageService: MessageService,
+      patternService: PatternService
     }
   },
   rxState() {
@@ -184,8 +188,30 @@ export default {
         })
       }
     },
-    onConfirmItem(item, index) {
-      item.isEdit = false
+    onConfirmItem(data, index) {
+      if (!data.name) {
+        this.messageService.error({
+          content: '请填写正确成员姓名'
+        })
+        return
+      }
+      if (!data.mobile || !this.patternService.MOBILE.test(data.mobile)) {
+        this.messageService.error({
+          content: '请填写正确手机号'
+        })
+        return
+      }
+
+      const isExist = this.list.filter(
+        item => item.mobile === data.mobile && !item.isEdit
+      )
+      if (isExist && isExist.length > 0) {
+        this.messageService.error({
+          content: '该手机号已经存在'
+        })
+        return
+      }
+      data.isEdit = false
       this.$emit('change', this.list)
     },
     onCancelItem(item, index) {
@@ -197,6 +223,13 @@ export default {
       this.$emit('change', this.list)
     },
     onAddMember() {
+      const isExistEdit = this.list.filter(item => item.isEdit)
+      if (isExistEdit && isExistEdit.length > 0) {
+        this.messageService.error({
+          content: '还有没有添加完成的成员'
+        })
+        return
+      }
       this.visible = false
       this.list.unshift({
         name: '',
@@ -215,11 +248,26 @@ export default {
     },
     onMemberChange(data) {
       if (this.list.length >= this.max) return
-      this.list.unshift({
+      const isExist = this.list.filter(
+        item => item.mobile === data.mobile && !item.isEdit
+      )
+      if (isExist && isExist.length > 0) {
+        this.messageService.error({
+          content: '该手机号已经存在'
+        })
+        return
+      }
+      const isExistEdit = this.list.filter(item => item.isEdit)
+      let insertIndex = 0
+      if (isExistEdit && isExistEdit.length > 0) {
+        insertIndex = 1
+      }
+      this.list.splice(insertIndex, 0, {
         id: data.id,
         name: data.member_name,
         mobile: data.mobile
       })
+      this.selectEle.blur()
       this.resetSearchCondition()
       this.$emit('change', this.list)
     },
