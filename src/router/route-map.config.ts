@@ -621,6 +621,12 @@ export const routeMapConfig = {
   },
   'brand-staff-department'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工管理'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      shop_id: { type: Number, default: -1 },
+      work_status: { type: Number, default: -1 }
+    }
   },
   'brand-staff-info-basic'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
