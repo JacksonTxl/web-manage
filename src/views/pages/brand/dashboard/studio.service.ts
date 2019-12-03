@@ -147,7 +147,7 @@ export class StudioService implements Controller {
       this.getEntry()
     )
   }
-  beforeRouteEnter() {
+  beforeCreate() {
     return this.init()
   }
 }

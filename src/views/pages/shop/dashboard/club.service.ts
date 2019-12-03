@@ -205,7 +205,7 @@ export class ClubService implements Controller {
       this.getNewMember({ recently_day: 7 })
     )
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+  beforeEach() {
     return this.init()
   }
 }

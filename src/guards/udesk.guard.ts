@@ -9,6 +9,7 @@ export class UdeskGuard implements RouteGuard {
   isCreate = false
   constructor(private udeskService: UdeskService) {}
   beforeRouteEnter(to: ServiceRoute) {
+    console.log(this.isCreate)
     if (!this.isCreate) {
       return this.udeskService.create().then(() => {
         this.isCreate = true

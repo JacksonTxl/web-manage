@@ -99,10 +99,19 @@
             <template v-slot:user>
               <div class="mg-t8 mg-l32 user-chart-box">
                 <div class="funnel-vertical">
-                  <funnel-vertical :data="userFunnel"></funnel-vertical>
+                  <st-skeleton
+                    v-if="$skeletonLoading"
+                    :style="{ height: '400px' }"
+                  ></st-skeleton>
+                  <funnel-vertical v-else :data="userFunnel"></funnel-vertical>
                 </div>
                 <div class="revenue-area">
+                  <st-skeleton
+                    v-if="$skeletonLoading"
+                    :style="{ height: '400px', margin: '0 16px' }"
+                  ></st-skeleton>
                   <brand-revenue-area
+                    v-else
                     :fields="['注册用户', '消费用户', '办理入会', '购买私教']"
                     class="user-chart-box__item"
                     :data="userChartData"
