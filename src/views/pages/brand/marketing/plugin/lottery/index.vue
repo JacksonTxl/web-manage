@@ -56,6 +56,17 @@
             {{ record.activity_join_num }}
           </router-link>
         </span>
+        <template slot="activity_status_name" slot-scope="text, record">
+          <st-text
+            :status="{
+              error: record.activity_status === 2,
+              success: record.activity_status === 1,
+              default: record.activity_status === 3
+            }"
+          >
+            {{ text }}
+          </st-text>
+        </template>
         <span slot="time" slot-scope="record">
           {{ record.activity_start_time }}~{{ record.activity_end_time }}
         </span>

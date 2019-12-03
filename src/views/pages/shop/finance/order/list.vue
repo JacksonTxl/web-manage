@@ -123,6 +123,7 @@ export default {
   },
   mounted() {
     this.setSearchData()
+    console.log(this.list)
   },
   watch: {
     $searchQuery() {
@@ -163,6 +164,7 @@ export default {
     },
     // 收款
     onGathering(record) {
+      console.log(this.productType(record.product_type))
       this.$modalRouter.push({
         name: 'sold-deal-gathering',
         props: {

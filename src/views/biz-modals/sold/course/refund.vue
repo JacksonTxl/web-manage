@@ -166,7 +166,8 @@ export default {
       form,
       decorators,
       show: true,
-      refundReason: this.refundReasons[0].value,
+      // 客户要求退款退货（此商品变为无效）
+      refundReason: 2,
       frozenPayType: this.refundChannelSaas[0].value,
       description: ''
     }

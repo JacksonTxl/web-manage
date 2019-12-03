@@ -40,7 +40,10 @@ export default {
       }
     },
     shopOptions() {
+      const allShop =
+        this.useType === 'form' ? [] : [{ label: '全部门店', value: -1 }]
       return [
+        ...allShop,
         ...this.shopList.map(item => {
           return {
             label: item.shop_name,

@@ -32,4 +32,13 @@ export class ShopTableService {
       })
     )
   }
+  @Effect()
+  getGroupShopList(query: ListPageInput, id: number) {
+    return this.cardApi.getGroupShelfList(query, id).pipe(
+      tap((res: any) => {
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
+      })
+    )
+  }
 }

@@ -10857,10 +10857,10 @@ send@0.17.1:
     range-parser "~1.2.1"
     statuses "~1.5.0"
 
-sentry-reporter-js@0.3.5:
-  version "0.3.5"
-  resolved "https://registry.npm.taobao.org/sentry-reporter-js/download/sentry-reporter-js-0.3.5.tgz#6aef2fd2b0cf581372dce9841be11e16234f369b"
-  integrity sha1-au8v0rDPWBNy3OmEG+EeFiNPNps=
+sentry-reporter-js@0.3.6:
+  version "0.3.6"
+  resolved "https://registry.npm.taobao.org/sentry-reporter-js/download/sentry-reporter-js-0.3.6.tgz#f928cc21f24f0f105053cce2b72ff551e03ab946"
+  integrity sha1-+SjMIfJPDxBQU8zity/1UeA6uUY=
   dependencies:
     path-to-regexp "^2.2.1"
     qs "^6.5.2"
@@ -12723,20 +12723,20 @@ vue-router-multiguard@^1.0.3:
   resolved "https://registry.npm.taobao.org/vue-router-multiguard/download/vue-router-multiguard-1.0.3.tgz#f700991719b40642fb22d5dd0baed6777cfecfaa"
   integrity sha1-9wCZFxm0BkL7ItXdC67Wd3z+z6o=
 
-vue-router-plus@0.2.3:
-  version "0.2.3"
-  resolved "https://registry.npm.taobao.org/vue-router-plus/download/vue-router-plus-0.2.3.tgz?cache=0&sync_timestamp=1573796830344&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-router-plus%2Fdownload%2Fvue-router-plus-0.2.3.tgz#0fca708452beaa148f8a2d859ecfa2af600cc157"
-  integrity sha1-D8pwhFK+qhSPii2Fns+ir2AMwVc=
+vue-router-plus@0.3.0:
+  version "0.3.0"
+  resolved "https://registry.npm.taobao.org/vue-router-plus/download/vue-router-plus-0.3.0.tgz?cache=0&sync_timestamp=1575354677261&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-router-plus%2Fdownload%2Fvue-router-plus-0.3.0.tgz#7055b1179d6f3c67469e73aebab2a87cbb9c5953"
+  integrity sha1-cFWxF51vPGdGnnOuurKofLucWVM=
 
 vue-router@3.0.7:
   version "3.0.7"
   resolved "https://registry.npm.taobao.org/vue-router/download/vue-router-3.0.7.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-router%2Fdownload%2Fvue-router-3.0.7.tgz#b36ca107b4acb8ff5bc4ff824584059c23fcb87b"
   integrity sha1-s2yhB7SsuP9bxP+CRYQFnCP8uHs=
 
-vue-st-form@0.0.6:
-  version "0.0.6"
-  resolved "https://registry.npm.taobao.org/vue-st-form/download/vue-st-form-0.0.6.tgz#27c15913665daf608c49e968bb67652a9a65e9bb"
-  integrity sha1-J8FZE2Zdr2CMSelou2dlKppl6bs=
+vue-st-form@0.0.7:
+  version "0.0.7"
+  resolved "https://registry.npm.taobao.org/vue-st-form/download/vue-st-form-0.0.7.tgz#57d851f1708bbd9e182a239ac2cf321f45af4265"
+  integrity sha1-V9hR8XCLvZ4YKiOaws8yH0WvQmU=
 
 vue-style-loader@^4.1.0:
   version "4.1.2"

@@ -621,6 +621,12 @@ export const routeMapConfig = {
   },
   'brand-staff-department'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工管理'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      shop_id: { type: Number, default: -1 },
+      work_status: { type: Number, default: -1 }
+    }
   },
   'brand-staff-info-basic'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
@@ -1438,6 +1444,51 @@ export const routeMapConfig = {
     routeConfig: RouteConfig
   ) {
     routeConfig.meta.title = '保存成功'
+  },
+  'brand-marketing-plugin-group-add-member'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '新增拼团'
+  },
+  'brand-marketing-plugin-group-add-package-course'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '新增拼团'
+  },
+  'brand-marketing-plugin-group-choose'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '选择拼团类型'
+  },
+  'brand-marketing-plugin-group-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '拼团列表'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      activity_name: { type: String, default: '' },
+      activity_status: { type: Number, default: -1 }
+    }
+  },
+  'brand-marketing-plugin-group-data'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '数据列表'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      search_where: { type: String, default: '' },
+      group_status: { type: Number, default: -1 }
+    }
+  },
+  'brand-marketing-plugin-group-add-personal'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '新增拼团'
+  },
+  'brand-marketing-plugin-group-edit-package-course'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '编辑拼团'
+  },
+  'brand-marketing-plugin-group-edit-member'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '编辑拼团'
+  },
+  'brand-marketing-plugin-group-edit-personal'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '编辑拼团'
+  },
+  'brand-marketing-plugin-group-add-deposit'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '新增拼团'
+  },
+  'brand-marketing-plugin-group-edit-deposit'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '编辑拼团'
   },
   'brand-setting-task-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '任务中心'
