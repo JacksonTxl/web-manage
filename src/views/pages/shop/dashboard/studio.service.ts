@@ -24,7 +24,10 @@ export class StudioService implements Controller {
   courseSummary$ = new State([])
   inoutNum$ = new State([])
   inoutTime$ = new State([])
-  member$ = new State({})
+  member$ = new State({
+    member: {},
+    marketing: {}
+  })
   newMember$ = new State([])
 
   constructor(
@@ -206,7 +209,7 @@ export class StudioService implements Controller {
       this.getBuyCourse({ recently_day: 7 })
     )
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+  beforeEach() {
     return this.init()
   }
 }

@@ -67,6 +67,7 @@ export class EditService extends Store<EditState> {
       })
     )
   }
+  @Effect()
   updateMemberEdit(id: string, params: UpdateMemberEdit) {
     return this.memberApi.updateMemberEdit(id, params)
   }

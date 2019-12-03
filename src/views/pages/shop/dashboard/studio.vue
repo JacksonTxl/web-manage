@@ -345,9 +345,6 @@ export default {
       pieImg: pieImg
     }
   },
-  created() {
-    // this.getInit()
-  },
   components: {
     ShopRevenueRing,
     ShopRevenueLine,
@@ -375,9 +372,6 @@ export default {
     },
     switchMember(memberType) {
       this.memberType = memberType
-    },
-    getInit() {
-      this.studioComponentService.init().subscribe()
     },
     refresh() {
       // 5分钟间隔限制

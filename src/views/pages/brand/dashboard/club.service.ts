@@ -155,7 +155,7 @@ export class ClubService implements Controller {
       this.getEntry()
     )
   }
-  beforeRouteEnter() {
+  beforeCreate() {
     return this.init()
   }
 }

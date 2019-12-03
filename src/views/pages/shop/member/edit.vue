@@ -272,7 +272,13 @@
       <a-row :gutter="8">
         <a-col :offset="1">
           <st-form-item labelWidth="88px" label-fix>
-            <st-button type="primary" html-type="submit">保存</st-button>
+            <st-button
+              :loading="loading.updateMemberEdit"
+              type="primary"
+              html-type="submit"
+            >
+              保存
+            </st-button>
           </st-form-item>
         </a-col>
       </a-row>
@@ -305,6 +311,7 @@ export default {
   rxState() {
     return {
       info: this.editService.info$,
+      loading: this.editService.loading$,
       memberEnums: this.userService.memberEnums$,
       staffEnums: this.userService.staffEnums$,
       countryInfo: this.editService.countryInfo$,
@@ -455,7 +462,12 @@ export default {
         }
         this.editService.updateMemberEdit(this.id, values).subscribe(res => {
           this.messageService.success({ content: '修改成功' })
-          this.$router.go(-1)
+          this.$router.push({
+            name: 'shop-member-info-basic',
+            query: {
+              id: this.$searchQuery.id
+            }
+          })
         })
       })
     },
