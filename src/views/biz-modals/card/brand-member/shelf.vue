@@ -4,7 +4,7 @@
     v-model="show"
     wrapClassName="modal-card-batch-shelves"
     width="668px"
-    :loading="loading"
+    :loading="firstLoading"
   >
     <section :class="shelves('content')">
       <div :class="shelves('info')" class="mg-b24">
@@ -550,7 +550,7 @@ export default {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
-      loading: false,
+      firstLoading: false,
       BRAND_MEMBER,
       form,
       decorators,
@@ -751,9 +751,9 @@ export default {
     }
   },
   created() {
-    this.loading = true
+    this.firstLoading = true
     this.shelfService.getInfo(this.id).subscribe(res => {
-      this.loading = false
+      this.firstLoading = false
     })
   }
 }
