@@ -67,13 +67,13 @@
         </st-table-actions>
         <st-table-actions v-if="record.reserve_type.id === RESERVE_TYPE.VISIT">
           <a
-            v-if="record.auth['shop:reserve:course_reserve|del']"
+            v-if="record.auth['shop:reserve:visit_reserve|del']"
             @click="onClickCancelVisitReserve(record)"
           >
             取消
           </a>
           <a
-            v-if="record.auth['shop:reserve:course_reserve|checkin']"
+            v-if="record.auth['shop:reserve:visit_reserve|checkin']"
             @click="onClickconfirmVisitReserve(record)"
           >
             确认到访
