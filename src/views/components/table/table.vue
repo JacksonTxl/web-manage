@@ -110,11 +110,8 @@ export default {
     CustomExpandIcon(props) {
       let text
       if (props.record.children && props.record.children.length) {
-        if (props.expanded) {
-          text = <st-icon type="table-up">collapse</st-icon>
-        } else {
-          text = <st-icon type="table-down">expand</st-icon>
-        }
+        const type = props.expanded ? 'table-up' : 'table-down'
+        text = <st-icon type={type} />
       }
       return (
         <span
