@@ -160,7 +160,8 @@ export default {
       show: false,
       description: '',
       frozenPayType: 2,
-      refundReason: 1
+      // 客户要求退款退货（此商品变为无效）
+      refundReason: 2
     }
   },
   computed: {},

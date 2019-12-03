@@ -122,7 +122,7 @@ export default {
       this.$modalRouter.push({
         name: 'sold-deal-gathering',
         props: {
-          order_id: this.infoService.id,
+          order_id: this.$searchQuery.id,
           type: this.productType(this.info.product_type)
         },
         on: {
@@ -134,7 +134,7 @@ export default {
     },
     // 退款
     onRefund() {
-      const props = { id: this.infoService.id }
+      const props = { id: this.$searchQuery.id }
       if (this.info.product_type === this.ORDER_PRODUCT_TYPE.EARNEST) {
         props.goodsInvalid = true
       }
@@ -153,7 +153,7 @@ export default {
       this.$modalRouter.push({
         name: 'shop-finance-split',
         props: {
-          id: this.info.id
+          id: this.$searchQuery.id
         },
         on: {
           success: result => {
@@ -167,7 +167,7 @@ export default {
       this.$modalRouter.push({
         name: 'shop-finance-cancel',
         props: {
-          id: this.info.id
+          id: this.$searchQuery.id
         },
         on: {
           success: result => {

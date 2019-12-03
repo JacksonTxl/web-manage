@@ -8,7 +8,6 @@ import { RedirectService } from '@/services/redirect.service'
 @Injectable()
 export class InfoService implements Controller {
   info$: Computed<any>
-  id = ''
   tabs$ = new State([])
   auth$: Computed<object>
   state$: State<any>
@@ -41,7 +40,7 @@ export class InfoService implements Controller {
               label: '商品信息',
               route: {
                 name: 'shop-finance-order-info-commodity-info',
-                query: { id, type: res.info.product_type }
+                query: { id }
               }
             }
           ]
@@ -59,50 +58,7 @@ export class InfoService implements Controller {
       })
     )
   }
-  getOrderType(type: number) {
-    //  1-会员卡 2-私教课 3-团体课 4-课程包 5-储值卡 6-小班课 7-手续费 8-定金 9-押金
-    let orderType = 'member/card'
-    switch (type) {
-      case 1:
-        orderType = 'member/card'
-        break
-      case 2:
-        orderType = 'personal/course'
-        break
-      case 3:
-        orderType = 'member/card'
-        break
-      case 4:
-        orderType = 'package/course'
-        break
-      case 5:
-        orderType = 'deposit/card'
-        break
-      case 6:
-        orderType = 'member/card'
-        break
-      case 7:
-        orderType = 'member/card'
-        break
-      case 8:
-        orderType = 'advance'
-        break
-      case 9:
-        orderType = 'member/card'
-        break
-    }
-    return orderType
-  }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: () => {}) {
-    console.log('hello')
-    this.id = to.meta.query.id
-    console.log(this.id)
-    if (to.name === 'shop-finance-order-info-collection-details') {
-      this.getInfo(this.id).subscribe(res => {
-        next()
-      })
-    } else {
-      next()
-    }
+  beforeRouteEnter(to: ServiceRoute) {
+    return this.getInfo(to.meta.query.id)
   }
 }
