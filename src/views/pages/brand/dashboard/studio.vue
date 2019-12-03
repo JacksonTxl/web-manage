@@ -95,7 +95,7 @@
                 <div class="funnel-vertical">
                   <st-skeleton
                     v-if="$skeletonLoading"
-                    :style="{ width: '100%', height: '400px' }"
+                    :style="{ height: '400px' }"
                   ></st-skeleton>
                   <funnel-vertical v-else :data="userFunnel"></funnel-vertical>
                 </div>
@@ -103,7 +103,6 @@
                   <st-skeleton
                     v-if="$skeletonLoading"
                     :style="{
-                      width: '100%',
                       height: '400px',
                       margin: '0 16px'
                     }"
@@ -138,24 +137,13 @@
         <a-col :span="12">
           <st-container class="bg-white" type="2">
             <st-t3 style="margin-bottom:20px">客单价</st-t3>
-            <st-skeleton
-              v-if="$skeletonLoading"
-              :style="{ width: '100%', height: '295px' }"
-            ></st-skeleton>
-            <brand-user-avg-bar
-              v-else
-              :data="avg"
-              :height="295"
-            ></brand-user-avg-bar>
+            <brand-user-avg-bar :data="avg" :height="295"></brand-user-avg-bar>
           </st-container>
         </a-col>
         <a-col :span="12">
           <st-container class="bg-white" type="2">
             <st-t3 style="margin-bottom:20px">用户活跃分析</st-t3>
-            <st-skeleton
-              v-if="$skeletonLoading"
-              :style="{ width: '100%', height: '295px' }"
-            ></st-skeleton>
+
             <brand-user-ring :data="entry" :height="295"></brand-user-ring>
           </st-container>
         </a-col>
