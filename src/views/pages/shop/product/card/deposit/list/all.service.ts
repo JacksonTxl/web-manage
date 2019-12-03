@@ -44,6 +44,9 @@ export class AllService implements Controller {
   deleteCard(id: string) {
     return this.cardApi.setCardsDelete(id, 'shop', 'deposit')
   }
+  setCardShelfDown(id: string) {
+    return this.cardApi.setCardsShelfDown(id, 'shop', 'deposit')
+  }
   beforeEach(to: ServiceRoute) {
     return this.getList(to.meta.query)
   }
