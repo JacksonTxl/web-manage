@@ -13,7 +13,7 @@
           v-if="info && info.sale_range"
           v-model="list"
           :max="info.support_member_num - 1"
-          :type="info.sale_range.type"
+          :type="2"
         ></add-card-member>
       </st-form-item>
     </st-form>

@@ -22,7 +22,7 @@
           subTitle="推广活动数量会对图片尺寸有不同要求"
         >
           <st-form>
-            <st-form-item label="功能开关" required>
+            <st-form-item label="功能开关" labelWidth="71px" required>
               <st-switch v-model="openStatus" @change="onOpenStatusChange" />
               <span class="mg-l12 mg-r12">
                 {{ openMiniFlag ? '已' : '未' }}开启

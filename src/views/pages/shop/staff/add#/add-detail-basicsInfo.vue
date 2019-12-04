@@ -1,5 +1,5 @@
 <template>
-  <st-form :form="form">
+  <st-form :form="form" :class="addBasicsInfo()">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="员工头像">
@@ -11,6 +11,21 @@
             :sizeLimit="2"
             placeholder="上传头像"
           ></st-image-upload>
+          <div class="page-course-photo-des mg-l16">
+            <div class="page-course-item">
+              <div class="page-course-item-tip">1.</div>
+              <div class="page-course-item-cont">
+                图片格式必须为：png,bmp,
+                jpeg,jpg,gif,建议使用png格式图片，以保存最佳效果
+              </div>
+            </div>
+            <div class="page-course-item">
+              <div class="page-course-item-tip">2.</div>
+              <div class="page-course-item-cont">
+                建议尺寸为200px * 200px， 不大于200KB
+              </div>
+            </div>
+          </div>
         </st-form-item>
         <st-form-item label="姓名" required>
           <a-input
@@ -269,6 +284,9 @@ import FaceUpload from '@/views/biz-components/face-upload/face-upload'
 import { cloneDeep } from 'lodash-es'
 export default {
   name: 'StaffDetailBasics',
+  bem: {
+    addBasicsInfo: 'page-shop-staff-add-detail'
+  },
   serviceInject() {
     return {
       pattern: PatternService,
