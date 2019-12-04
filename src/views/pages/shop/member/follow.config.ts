@@ -49,7 +49,6 @@ export const columns = (vm: any) => [
   },
   {
     dataIndex: 'follow_num',
-    align: 'right',
     slots: { title: 'contentTitle' },
     width: '143px'
   },

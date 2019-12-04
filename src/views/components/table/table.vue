@@ -106,12 +106,29 @@ export default {
       return map(this.$slots, (vnode, slot) => (
         <template slot={slot}>{vnode}</template>
       ))
+    },
+    CustomExpandIcon(props) {
+      let text
+      if (props.record.children && props.record.children.length) {
+        const type = props.expanded ? 'table-up' : 'table-down'
+        text = <st-icon type={type} />
+      }
+      return (
+        <span
+          class="st-expand-row-icon mg-r8"
+          onClick={e => props.onExpand(props.record, e)}
+          style={{ cursor: 'pointer' }}
+        >
+          {text}
+        </span>
+      )
     }
   },
   render(h) {
     const props = {
       pagination: this.tablePagination,
       locale: this.locale,
+      expandIcon: this.CustomExpandIcon,
       dataSource: this.dataSource,
       scroll: this.dataSource.length >= 1 ? this.scroll : {},
       ...this.$attrs

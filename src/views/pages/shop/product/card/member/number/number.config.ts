@@ -14,6 +14,17 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
+    support_member_num: {
+      rules: [
+        {
+          validator: (field: any, value: any, values: any) => {
+            if (!value) {
+              return '请选择支持入场人数'
+            }
+          }
+        }
+      ]
+    },
     start_time: {
       rules: [
         {

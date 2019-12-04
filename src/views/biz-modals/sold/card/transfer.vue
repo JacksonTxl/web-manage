@@ -33,6 +33,7 @@
             <st-info-item label="会员姓名">
               {{ depositTransferInfo.member_name }}
             </st-info-item>
+
             <st-info-item label="手机号">
               {{ depositTransferInfo.mobile }}
             </st-info-item>
@@ -67,6 +68,9 @@
             <st-info-item label="卡名">
               {{ memberTransferInfo.card_name }}
             </st-info-item>
+            <st-info-item label="卡成员" v-if="isFamilyCard">
+              {{ memberTransferInfo.card_member }}
+            </st-info-item>
             <st-info-item label="当前额度">
               {{ memberTransferInfo.remain_amount }}
             </st-info-item>
@@ -89,6 +93,7 @@
             <st-info-item label="会员姓名">
               {{ memberTransferInfo.member_name }}
             </st-info-item>
+
             <st-info-item label="手机号">
               {{ memberTransferInfo.mobile }}
             </st-info-item>
@@ -359,6 +364,9 @@ export default {
         this.memberTransferInfo.sale_range ||
         {}
       )
+    },
+    isFamilyCard() {
+      return this.memberTransferInfo.card_number_type === 2
     }
   },
   props: ['id', 'type'],

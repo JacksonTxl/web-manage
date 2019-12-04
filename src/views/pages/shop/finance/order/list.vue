@@ -29,7 +29,7 @@
         <!-- <st-button type="primary" v-if="auth.export" :disabled="isSelectedDisabled">批量导出</st-button> -->
       </div>
       <st-table
-        :scroll="{ x: 1840 }"
+        :scroll="{ x: 2100 }"
         rowKey="id"
         :columns="columns"
         :page="page"
@@ -164,6 +164,7 @@ export default {
     },
     // 收款
     onGathering(record) {
+      console.log(this.productType(record.product_type))
       this.$modalRouter.push({
         name: 'sold-deal-gathering',
         props: {

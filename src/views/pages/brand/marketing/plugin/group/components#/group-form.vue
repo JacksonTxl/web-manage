@@ -122,7 +122,7 @@
             <st-form-item required>
               <span slot="label">
                 发布状态
-                <st-help-tooltip id="TBPTXJ005" />
+                <st-help-tooltip id="TBPTXJ006" />
               </span>
               <a-radio-group
                 :defaultValue="releaseStatus || publishedType[0].value"

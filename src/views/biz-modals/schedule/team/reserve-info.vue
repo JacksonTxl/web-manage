@@ -80,7 +80,7 @@
                 </a-select-option>
               </a-select>
             </td>
-            <td width="240px">
+            <td width="240px" class="mg-l0 st-form-table__add-td">
               <a-select
                 slot="consume_type"
                 placeholder="请选择消费方式"
@@ -107,7 +107,7 @@
                 </a-select-opt-group>
               </a-select>
             </td>
-            <td width="120px">
+            <td width="120px" class="mg-l0 st-form-table__add-td">
               <a-select
                 slot="site_num_list"
                 mode="multiple"
@@ -341,7 +341,7 @@ export default {
     onSearch(value) {
       this.keyword = value
       this.teamScheduleCommonService
-        .getMemberList({ member_name: value })
+        .getMemberList({ member: value })
         .subscribe()
     },
     onClickCancel(id) {

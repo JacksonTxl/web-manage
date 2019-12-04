@@ -3,7 +3,6 @@
     title="冻结"
     :footer="null"
     v-model="show"
-    size="small"
     wrapClassName="modal-shop-frozen"
   >
     <st-form :form="form" labelWidth="80px">
@@ -39,6 +38,20 @@
               </span>
               <span slot="start_end" slot-scope="text, record">
                 {{ record.start_time }} ~ {{ record.end_time }}
+              </span>
+              <span
+                slot="member_info"
+                slot-scope="text, record"
+                v-if="record.member_info"
+              >
+                购卡人：{{ record.member_info.card_buyer }}，卡成员
+                {{ record.member_info.card_members.join(',') }}
+                <span
+                  v-if="record.product_type === 1 && record.is_purchaser !== 1"
+                  class="error-color"
+                >
+                  需要购卡人冻结
+                </span>
               </span>
             </st-table>
           </st-form-item>
@@ -245,7 +258,7 @@ export default {
         }
         values.product = this.selectedRows.map(item => {
           return {
-            product_type: item.type,
+            product_type: item.product_type,
             product_id: item.id
           }
         })
@@ -279,8 +292,8 @@ export default {
         },
         getCheckboxProps: record => ({
           props: {
-            disabled: record.name === 'Disabled User', // Column configuration not to be checked
-            name: record.name
+            // 产品类型为 1 会员卡 2 课程包  is_purchaser 1 为购卡人
+            disabled: record.product_type === 1 && record.is_purchaser !== 1
           }
         })
       }

@@ -13,6 +13,11 @@ export const columns = (vm: any) => {
       title: '有效期',
       dataIndex: 'start_end',
       scopedSlots: { customRender: 'start_end' }
+    },
+    {
+      title: '备注',
+      dataIndex: 'member_info',
+      scopedSlots: { customRender: 'member_info' }
     }
   ]
 }

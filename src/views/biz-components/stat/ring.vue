@@ -1,7 +1,7 @@
 <template>
-  <div class="biz-stat-ring" :style="{ height: height + 'px' }">
-    <div ref="placeholder" class="biz-stat-ring__placeholder"></div>
-    <div ref="data" class="biz-stat-ring__data"></div>
+  <div class="biz-stat-ring">
+    <div ref="dataChart" class="biz-stat-ring__data-chart"></div>
+    <div ref="placeholderChart" class="biz-stat-ring__placeholder-chart"></div>
   </div>
 </template>
 
@@ -14,6 +14,7 @@ import StHelpTooltip from '@/views/components/help-tooltip/help-tooltip'
 
 export default {
   name: 'BizStatRing',
+  mixins: [chartMixin],
   props: {
     data: {
       type: Array,
@@ -42,19 +43,10 @@ export default {
     unit: {
       type: String,
       default: '节'
-    },
-    options: {
-      type: Object,
-      default: () => ({})
     }
-  },
-  mounted() {
-    this.initDv()
-    this.initChart()
   },
   methods: {
     initDv() {
-      console.log('ok')
       this.dv = new View()
       this.dv.source(this.data)
       this.dv.transform({
@@ -66,177 +58,188 @@ export default {
       })
     },
     initChart() {
-      console.log(this.$refs.placeholder)
-      this.placeholderChart = new Chart({
-        container: this.$refs.placeholder,
+      this.chart = new Chart({
+        container: this.$refs.dataChart,
         forceFit: true,
-        renderer: 'svg',
-        padding: ['auto', 120, 'auto', 'auto'],
+        padding: ['auto', 20, 'auto', 'auto'],
         height: this.height
       })
+      this.chart.source(this.dv, {
+        value: {
+          formatter: v => v + this.unit
+        }
+      })
+      this.chart.tooltip({
+        showTitle: false,
+        itemTpl:
+          '<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name} <span class="st-g2-tooltip-value">| {value}</span></li>'
+      })
+      this.chart.coord('theta', {
+        innerRadius: 0.65
+      })
+      this.chart.legend({
+        position: 'right-center',
+        useHtml: true,
+        itemTpl: (name, color, checked, index) => {
+          const row = this.dv.findRow({ name })
+          const value = row.value
+          return `<li class="g2-legend-list-item item-{index} {checked}" data-color="{originColor}" data-value="{originValue}">
+                    <i class="g2-legend-marker" style="background-color:{color};"></i>
+                    <span class="g2-legend-text">${name}</span>
+                    <div class='legend-right mg-l12'>
+                      <span class='legend-percent'>${value}${this.unit}</span>
+                    </div>
+                  </li>`
+        }
+      })
+      this.chart.guide().html({
+        position: ['50%', '50%'],
+        html: () => {
+          let sum = this.dv.sum('value')
+          return `<div class='guide'>
+          <div class='guide-name'><span class="mg-r4">${
+            this.name
+          }</span><span class='guide-name-tooltip'></span></div>
+            <div class='guide-title'><span class='guide-value'>${sum}</span><span class='guide-unit'>${
+            this.unit
+          }</span></div>
+            </div>`
+        }
+      })
 
-      this.placeholderChart.source([{ name: '', value: 0 }])
+      this.chart.guide().arc({
+        start: (xScales, yScales) => {
+          if (this.dv.sum('value') === 0) {
+            this.hoverable = false
+            return ['22%', '50%']
+          }
+          return []
+        },
+        end: (xScales, yScales) => {
+          if (this.dv.sum('value') === 0) {
+            this.hoverable = false
+            return ['78%', '50%']
+          }
+          return []
+        },
+        style: {
+          lineWidth: 0,
+          fill: '#E9EDF2',
+          fillOpacity: 1,
+          stroke: '#ccc'
+        }
+      })
+      this.chart.guide().arc({
+        start: (xScales, yScales) => {
+          if (this.dv.sum('value') === 0) {
+            this.hoverable = false
+            return ['70%', '50%']
+          }
+          return []
+        },
+        end: (xScales, yScales) => {
+          if (this.dv.sum('value') === 0) {
+            this.hoverable = false
+            return ['30%', '50%']
+          }
+          return []
+        },
+        style: {
+          lineWidth: 0,
+          fill: '#E9EDF2',
+          fillOpacity: 1,
+          stroke: '#ccc'
+        }
+      })
+      this.chart.guide().arc({
+        start: ['30%', '50%'],
+        end: ['70%', '50%'],
+        style: {
+          lineWidth: 0,
+          fill: '#fff',
+          fillOpacity: 1,
+          stroke: '#ccc'
+        }
+      })
+      this.chart.guide().arc({
+        start: ['70%', '50%'],
+        end: ['30%', '50%'],
+        style: {
+          lineWidth: 0,
+          fill: '#fff',
+          fillOpacity: 1,
+          stroke: '#ccc'
+        }
+      })
 
-      this.placeholderChart
+      const interval = this.chart
         .intervalStack()
+        .style({
+          fillOpacity: 1,
+          cursor: 'pointer'
+        })
+        .tooltip('name*percent', function(item, percent, a) {
+          return {
+            name: item,
+            value: percent + '%'
+          }
+        })
         .position('value')
-        .color('name', ['#E9EDF2'])
-        .tooltip(false)
+        .color('name', this.colors)
+        .select(false)
+        .active({
+          style: {
+            fillOpacity: 1,
+            lineWidth: 8
+          }
+        })
 
-      this.placeholderChart.render()
+      this.chart.render()
+      this.changeData()
+      const $s = this.$el.querySelector.bind(this.$el)
 
-      // this.chart = new Chart({
-      //   container: this.$refs.dataChart,
-      //   forceFit: true,
-      //   padding: ['auto', 180, 'auto', 'auto'],
-      //   renderer: 'svg',
-      //   height: this.height
-      // })
-      // this.chart.source(this.dv, {
-      //   value: {
-      //     formatter: v => v + this.unit
-      //   }
-      // })
-      // this.chart.tooltip({
-      //   showTitle: false,
-      //   itemTpl: `<li>
-      //               <span style="background-color:{color};" class="g2-tooltip-marker">{name}</span>
-      //               <span class="st-g2-tooltip-value">| {value}</span>
-      //             </li>`
-      // })
-      // this.chart.coord('theta', {
-      //   innerRadius: 0.65
-      // })
-      // this.chart.legend({
-      //   position: 'right-center',
-      //   useHtml: true,
-      //   itemTpl: (name, color, checked, index) => {
-      //     const row = this.dv.findRow({ name })
-      //     const value = row.value
-      //     return `<li class="g2-legend-list-item item-{index} {checked}" data-color="{originColor}" data-value="{originValue}">
-      //               <i class="g2-legend-marker" style="background-color:{color};"></i>
-      //               <span class="g2-legend-text">${name}</span>
-      //               <div class='legend-right mg-l12'>
-      //                 <span class='legend-percent'>${value}${this.unit}</span>
-      //               </div>
-      //             </li>`
-      //   }
-      // })
+      this.chart.on('interval:mouseenter', e => {
+        const origin = e.data._origin
+        $s('.guide-value').textContent = origin.value
+        $s('.guide-name').textContent = origin.name
+      })
+      this.chart.on('interval:mouseleave', e => {
+        $s('.guide-value').textContent = this.total
+        $s('.guide-name').textContent = this.name
+      })
+      const legendListItems = [
+        ...this.$el.querySelectorAll('.g2-legend-list-item')
+      ]
 
-      // // 总计的自定义DOM
-      // this.chart.guide().html({
-      //   position: ['50%', '50%'],
-      //   html: () => {
-      //     let sum = this.dv.sum('value')
-      //     return `<div class='guide'>
-      //               <div class='guide-name'>
-      //                 <span class="mg-r4">${this.name}</span>
-      //                 <span id="guide-name-tooltip${this.tooltipId}"></span>
-      //                 </div>
-      //               <div class='guide-title'>
-      //                 <span class='guide-value'>${sum}</span>
-      //                 <span class='guide-unit'>${this.unit}</span>
-      //               </div>
-      //             </div>`
-      //   }
-      // })
+      const vm = this
+      vm.offMouseHandlers = []
+      const mouseHandler = function() {
+        const name = this.dataset.value
+        const row = vm.dv.findRow({ name })
+        $s('.guide-value').textContent = row.value
+        $s('.guide-name').textContent = row.name
+      }
 
-      // // 环形图初始化
-      // const interval = this.chart
-      //   .intervalStack()
-      //   .style({
-      //     fillOpacity: 1,
-      //     cursor: 'pointer'
-      //   })
-      //   .tooltip('name*percent', function(item, percent, a) {
-      //     return {
-      //       name: item,
-      //       value: percent + '%'
-      //     }
-      //   })
-      //   .position('value')
-      //   .color('name', this.colors)
-      //   .select(false)
-      //   .active({
-      //     style: {
-      //       fillOpacity: 1,
-      //       lineWidth: 8
-      //     }
-      //   })
-
-      // this.chart.render()
-      // this.changeData()
-      // const $s = this.$el.querySelector.bind(this.$el)
-      // // 鼠标进入环形显示相关的值
-      // this.chart.on('interval:mouseenter', e => {
-      //   const origin = e.data._origin
-      //   $s('.guide-value').textContent = origin.value
-      //   $s('.guide-name').textContent = origin.name
-      // })
-      // // 鼠标离开显示总值
-      // this.chart.on('interval:mouseleave', e => {
-      //   $s('.guide-value').textContent = this.total
-      //   $s('.guide-name').textContent = this.name
-      //   const component = new Vue({
-      //     components: {
-      //       StHelpTooltip
-      //     },
-      //     render: h => <st-help-tooltip class={'mg-l4'} id={this.tooltipId} />
-      //   }).$mount()
-      //   $s('.guide-name').appendChild(component.$el)
-      // })
-      // const legendListItems = [
-      //   ...this.$el.querySelectorAll('.g2-legend-list-item')
-      // ]
-
-      // const vm = this
-      // vm.offMouseHandlers = []
-      // // 控制右边标注的鼠标移入移出的数值变化
-      // const mouseHandler = function() {
-      //   const name = this.dataset.value
-      //   const row = vm.dv.findRow({ name })
-      //   $s('.guide-value').textContent = row.value
-      //   $s('.guide-name').textContent = row.name
-      // }
-      // const mouseLeaveHandler = () => {
-      //   $s('.guide-value').textContent = this.total
-      //   $s('.guide-name').textContent = this.name
-      //   const component = new Vue({
-      //     components: {
-      //       StHelpTooltip
-      //     },
-      //     render: h => <st-help-tooltip class={'mg-l4'} id={this.tooltipId} />
-      //   }).$mount()
-      //   $s('.guide-name').appendChild(component.$el)
-      // }
-
-      // legendListItems.forEach(el => {
-      //   el.addEventListener('mouseenter', mouseHandler, false)
-      //   this.offMouseHandlers.push(() => {
-      //     el.addEventListener('mouseenter', mouseHandler, false)
-      //   })
-      // })
-      // legendListItems.forEach(el => {
-      //   el.addEventListener('mouseleave', mouseLeaveHandler, false)
-      //   this.offMouseHandlers.push(() => {
-      //     el.addEventListener('mouseleave', mouseLeaveHandler, false)
-      //   })
-      // })
+      legendListItems.forEach(el => {
+        el.addEventListener('mouseenter', mouseHandler, false)
+        this.offMouseHandlers.push(() => {
+          el.addEventListener('mouseenter', mouseHandler, false)
+        })
+      })
     },
     changeData() {
-      // new Vue({
-      //   el: `#guide-name-tooltip${this.tooltipId}`,
-      //   components: {
-      //     StHelpTooltip
-      //   },
-      //   render: h => <st-help-tooltip id={this.tooltipId} />
-      // })
+      new Vue({
+        components: {
+          StHelpTooltip
+        },
+        render: h => <st-help-tooltip id={this.tooltipId} />
+      }).$mount('.guide-name-tooltip')
     }
   },
   beforeDestroy() {
-    // if (this.chart) {
-    //   this.offMouseHandlers.forEach(fn => fn())
-    // }
+    if (this.chart) {
+      this.offMouseHandlers.forEach(fn => fn())
+    }
   }
 }
 </script>
