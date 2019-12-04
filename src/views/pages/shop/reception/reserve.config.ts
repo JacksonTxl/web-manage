@@ -6,12 +6,12 @@ export const columns = () => {
       scopedSlots: { customRender: 'reserve_time' }
     },
     {
-      title: '预约人',
+      title: '预约用户',
       dataIndex: 'member',
       scopedSlots: { customRender: 'member' }
     },
     {
-      title: '手机号',
+      title: '预约用户手机号',
       dataIndex: 'mobile',
       scopedSlots: { customRender: 'mobile' }
     },
@@ -21,12 +21,17 @@ export const columns = () => {
       scopedSlots: { customRender: 'reserve_type' }
     },
     {
+      title: '预约课程',
+      dataIndex: 'reserve_course_name',
+      scopedSlots: { customRender: 'reserve_course_name' }
+    },
+    {
       title: '预约状态',
       dataIndex: 'reserve_status',
       scopedSlots: { customRender: 'reserve_status' }
     },
     {
-      title: '接待人',
+      title: '接待人/上课教练',
       dataIndex: 'receptionist_name',
       scopedSlots: { customRender: 'receptionist_name' }
     },
