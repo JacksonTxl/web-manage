@@ -9,7 +9,7 @@ export class DetailService {
   list$ = new State([])
   page$ = new State({
     current_page: 1,
-    size: 20,
+    size: 10,
     total_counts: 1,
     total_pages: 1
   })
