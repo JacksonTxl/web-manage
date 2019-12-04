@@ -479,7 +479,7 @@
               label="支持售卖时间"
               required
             >
-              <a-form-item class="page-a-form">
+              <div class="page-a-form">
                 <a-date-picker
                   :disabledDate="disabledStartDate"
                   v-decorator="decorators.start_time"
@@ -489,9 +489,9 @@
                   @openChange="handleStartOpenChange"
                   @change="start_time_change"
                 />
-              </a-form-item>
+              </div>
               ~
-              <a-form-item class="page-a-form">
+              <div class="page-a-form">
                 <a-date-picker
                   :disabledDate="disabledEndDate"
                   v-decorator="decorators.end_time"
@@ -502,7 +502,7 @@
                   @openChange="handleEndOpenChange"
                   @change="end_time_change"
                 />
-              </a-form-item>
+              </div>
             </st-form-item>
           </a-col>
         </a-row>

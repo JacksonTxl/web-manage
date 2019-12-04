@@ -13,6 +13,7 @@
       :scroll="{ y: 230 }"
       @change="onPageChange"
       :page="page"
+      :class="list.length > 0 ? 'st-scroll-data' : ''"
     />
   </st-modal>
 </template>
