@@ -16,7 +16,8 @@ export const enum IMPORT {
   SOLD_PACKAGE = 17,
   SOLD_LEASE = 13,
   SOLD_DEPOSIT = 14,
-  FILE_SAVE_TYPE = 1
+  FILE_SAVE_TYPE = 1,
+  FAMILY_CARD = 18
 }
 export const enum IMPORT_STATUS {
   SUCCESS = 1,

@@ -1,7 +1,6 @@
 <template>
   <st-modal
     title="交易签单"
-    size="small"
     v-model="show"
     @cancel="onCancel"
     wrapClassName="modal-sold-deal-sale"
@@ -24,6 +23,12 @@
             </st-info-item>
             <st-info-item label="约课权益">
               {{ info.course_interests }}
+            </st-info-item>
+            <st-info-item
+              label="支持入场人数"
+              v-if="info.card_number_type === 2"
+            >
+              {{ info.support_member_num }}
             </st-info-item>
           </st-info>
         </a-col>
@@ -97,6 +102,13 @@
             <p class="add-text">
               <span @click="onCancelMember">取消添加</span>
             </p>
+          </st-form-item>
+          <st-form-item label="卡成员" v-if="info.card_number_type === 2">
+            <add-card-member
+              v-model="memberChildrenlist"
+              :max="info.support_member_num - 1"
+              :type="info.sale_range.type"
+            ></add-card-member>
           </st-form-item>
           <st-form-item label="规格" required>
             <a-radio-group
@@ -338,13 +350,16 @@ import { PatternService } from '@/services/pattern.service'
 import { UserService } from '@/services/user.service'
 import { ruleOptions } from './sale-member-card.config'
 import autoContractBtn from '@/views/biz-components/contract/auto-contract-btn.vue'
+import AddCardMember from '@/views/biz-components/add-card-member/add-card-member'
+import { MessageService } from '@/services/message.service'
 export default {
   name: 'ModalSoldDealSaleMemberCard',
   bem: {
     sale: 'modal-sold-deal-sale'
   },
   components: {
-    autoContractBtn
+    autoContractBtn,
+    AddCardMember
   },
   serviceProviders() {
     return [SaleMemberCardService]
@@ -353,6 +368,7 @@ export default {
     return {
       saleMemberCardService: SaleMemberCardService,
       userService: UserService,
+      messageService: MessageService,
       pattern: PatternService
     }
   },
@@ -392,6 +408,9 @@ export default {
       // 搜索会员
       memberSearchText: '',
       searchMemberIsShow: true,
+      // 搜索卡成员
+      memberChildrenSearchText: '',
+      searchMemberChildrenIsShow: true,
       // 定金
       advanceDropdownVisible: false,
       advanceList: [],
@@ -413,7 +432,9 @@ export default {
       validStartTime: moment(),
       validEndTime: '',
       // 赠送天数
-      gift_amount: 0
+      gift_amount: 0,
+      // 卡成员展示
+      memberChildrenlist: []
     }
   },
   mounted() {
@@ -558,6 +579,15 @@ export default {
       this.searchMemberIsShow = false
       this.form.resetFields(['memberId', 'memberName', 'memberMobile'])
     },
+    // 切换添加会员
+    onShowMemberChildren() {
+      this.searchMemberChildrenIsShow = false
+      this.form.resetFields([
+        'memberChildrenId',
+        'memberChildrenName',
+        'memberChildrenMobile'
+      ])
+    },
     onCancelMember() {
       this.searchMemberIsShow = true
       this.form.resetFields(['memberId', 'memberName', 'memberMobile'])
@@ -626,7 +656,11 @@ export default {
             sale_id: values.saleName,
             description: this.description,
             sale_range: this.info.sale_range.type,
-            order_amount: this.currentPrice
+            order_amount: this.currentPrice,
+            family_member_ids: this.memberChildrenlist
+              .filter(item => !!item.id)
+              .map(item => item.id),
+            family_member_info: this.memberChildrenlist.filter(item => !item.id)
           })
           .subscribe(result => {
             this.$emit('success', {
@@ -658,7 +692,11 @@ export default {
             sale_id: values.saleName,
             description: this.description,
             sale_range: this.info.sale_range.type,
-            order_amount: this.currentPrice
+            order_amount: this.currentPrice,
+            family_member_ids: this.memberChildrenlist
+              .filter(item => !!item.id)
+              .map(item => item.id),
+            family_member_info: this.memberChildrenlist.filter(item => !item.id)
           })
           .subscribe(result => {
             this.$emit('success', {

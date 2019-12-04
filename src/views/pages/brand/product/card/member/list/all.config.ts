@@ -15,6 +15,11 @@ export const columns = (vm: any) => {
       scopedSlots: { customRender: 'card_type' }
     },
     {
+      title: '支持入场人数',
+      dataIndex: 'support_member_num',
+      align: 'right'
+    },
+    {
       title: '有效期/有效次数',
       dataIndex: 'time_gradient',
       scopedSlots: { customRender: 'time_gradient' }

@@ -186,6 +186,12 @@
               >
                 修改入场vip区域
               </a>
+              <a
+                v-if="record.auth['shop:sold:sold_member_card|edit']"
+                @click="cardActions.onChangeMember(record)"
+              >
+                变更成员
+              </a>
             </st-table-actions>
           </div>
         </st-table>

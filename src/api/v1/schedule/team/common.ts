@@ -68,7 +68,7 @@ export interface ConsumeQuery {
  * 搜索会员
  */
 export interface GetMemberInput {
-  member_name: string // 会员名
+  member: string // 会员名
 }
 
 /**

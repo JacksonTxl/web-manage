@@ -214,9 +214,9 @@ export class CardApi extends Api {
   /**
    * 门店可售卖的会员卡列表
    */
-  getCardUpgradeList(card_name_search?: string) {
+  getCardUpgradeList(card_name_search?: string, card_number_type = -1) {
     return this.http.get(`/v1/sold/cards/shop/saled_card`, {
-      query: { card_name_search }
+      query: { card_name_search, card_number_type }
     })
   }
   /**
@@ -240,5 +240,11 @@ export class CardApi extends Api {
    */
   setCardEnterTime(params: any) {
     return this.http.post(`/v1/sold/cards/batch/admission_time`, { params })
+  }
+  /**
+   * 售出 会员卡 更改成员
+   */
+  changeCardMember(id: number, params: any) {
+    return this.http.put(`/v1/sold/cards/member/cards/edit/${id}`, { params })
   }
 }
