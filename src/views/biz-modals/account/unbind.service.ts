@@ -8,20 +8,21 @@ import { tap } from 'rxjs/operators'
 export class UnbindService {
   loading$ = new State({})
   info$ = new State({})
+  account$ = new State({})
   constructor(private loginApi: LoginApi, private userApi: UserApi) {}
 
   getCaptcha(params: any) {
     return this.loginApi.getCaptcha(params)
   }
   fetchUserInfo() {
-    return this.userApi.fetchUserInfo().pipe(
+    return this.userApi.fetchUserAccount().pipe(
       tap(res => {
-        this.info$.commit(() => res)
+        this.account$.commit(() => res.info)
       })
     )
   }
   @Effect()
-  bindAccountPhone(params: any) {
-    return this.userApi.bindAccountPhone(params)
+  unbindAccountPhone(params: any) {
+    return this.userApi.unbindAccountPhone(params)
   }
 }
