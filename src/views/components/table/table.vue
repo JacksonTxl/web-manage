@@ -31,6 +31,10 @@ export default {
       type: String,
       default: 'server'
     },
+    isExpand: {
+      type: Boolean,
+      default: false
+    },
     simplePage: {
       type: Boolean,
       default: false
@@ -136,13 +140,16 @@ export default {
     }
   },
   render(h) {
-    const props = {
+    let props = {
       pagination: this.tablePagination,
       locale: this.locale,
-      expandIcon: this.CustomExpandIcon,
       dataSource: this.dataSource,
       scroll: this.dataSource.length >= 1 ? this.scroll : {},
       ...this.$attrs
+    }
+    // 判断是否是父子表格
+    if (this.isExpand) {
+      this.props.expandIcon = this.CustomExpandIcon
     }
     const ce = this.alertSelection.onReset
       ? h('div', { class: 'st-table-wapper' }, [
