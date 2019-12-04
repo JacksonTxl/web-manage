@@ -4,6 +4,7 @@
     v-model="show"
     wrapClassName="modal-card-batch-shelves"
     width="668px"
+    :loading="firstLoading"
   >
     <section :class="shelves('content')">
       <div :class="shelves('info')" class="mg-b24">
@@ -386,7 +387,7 @@
               class="mg-b16"
               :class="shelves('tree-search')"
               @search="onTreeSearch"
-              placeholder="Search"
+              placeholder="请输入场地名称查询"
             />
             <a-tree
               checkable
@@ -549,6 +550,7 @@ export default {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
+      firstLoading: false,
       BRAND_MEMBER,
       form,
       decorators,
@@ -749,7 +751,10 @@ export default {
     }
   },
   created() {
-    this.shelfService.getInfo(this.id).subscribe()
+    this.firstLoading = true
+    this.shelfService.getInfo(this.id).subscribe(res => {
+      this.firstLoading = false
+    })
   }
 }
 </script>

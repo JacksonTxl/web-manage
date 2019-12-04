@@ -24,7 +24,10 @@
         </a-col>
         <a-col :span="11">
           <st-info>
-            <st-info-item label="会员姓名">{{ info.member_name }}</st-info-item>
+            <st-info-item label="购卡人">{{ info.member_name }}</st-info-item>
+            <st-info-item label="卡成员" v-if="isFamilyCard">
+              {{ info.card_member }}
+            </st-info-item>
             <st-info-item label="手机号">{{ info.mobile }}</st-info-item>
             <st-info-item label="订单号">{{ info.order_id }}</st-info-item>
             <st-info-item label="订单状态" v-if="info.order_status">
@@ -133,6 +136,11 @@ export default {
   filters: {
     timeFormatFilter(data) {
       return data ? moment(data).format('YYYY-MM-DD HH:mm') : '-'
+    }
+  },
+  computed: {
+    isFamilyCard() {
+      return this.info.card_number_type === 2
     }
   },
   methods: {

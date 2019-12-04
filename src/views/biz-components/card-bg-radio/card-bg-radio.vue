@@ -88,7 +88,9 @@ export default {
     return {
       // 截图参数对象
       cropperModal: {},
-      card_bg_list: this.memberCard.card_bg_list.value,
+      card_bg_list: this.isFamilyCard
+        ? this.memberCard.family_card_bg_list.value
+        : this.memberCard.card_bg_list.value,
       // 备份
       list: [],
       // radioIndex
@@ -142,6 +144,10 @@ export default {
           index: 1
         }
       }
+    },
+    isFamilyCard: {
+      type: Boolean,
+      default: false
     }
   },
   mounted() {

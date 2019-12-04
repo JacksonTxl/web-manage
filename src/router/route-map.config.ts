@@ -557,15 +557,38 @@ export const routeMapConfig = {
   },
   'brand-product-card-member-number-edit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑{{$c("member_card")}}'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
   },
   'brand-product-card-member-add-select'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '{{$c("member_card")}}'
   },
   'brand-product-card-member-period-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增{{$c("member_card")}}'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
+  },
+  'brand-product-card-member-period-edit'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '编辑{{$c("member_card")}}'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
   },
   'brand-product-card-member-number-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增次卡'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
   },
   'brand-product-card-member-period-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '{{$c("member_card")}}详情'
@@ -598,6 +621,12 @@ export const routeMapConfig = {
   },
   'brand-staff-department'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工管理'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      shop_id: { type: Number, default: -1 },
+      work_status: { type: Number, default: -1 }
+    }
   },
   'brand-staff-info-basic'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
@@ -917,13 +946,37 @@ export const routeMapConfig = {
   },
   'shop-product-card-member-period-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增期限卡'
-  },
-  'shop-product-card-member-number-add'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '新增次卡'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
   },
   'shop-product-card-member-period-edit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑{{$c("member_card")}}'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
   },
+  'shop-product-card-member-number-add'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '新增次卡'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
+  },
+  'shop-product-card-member-number-edit'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '编辑次卡'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
+  },
+
   'shop-product-card-deposit-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增储值卡'
   },

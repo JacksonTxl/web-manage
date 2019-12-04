@@ -19,6 +19,10 @@ export const columns = (vm: any) => {
       scopedSlots: { customRender: 'card_name' }
     },
     {
+      title: `支持入场人数`,
+      dataIndex: 'support_member_num'
+    },
+    {
       title: '类型',
       dataIndex: 'card_type',
       scopedSlots: { customRender: 'card_type' }

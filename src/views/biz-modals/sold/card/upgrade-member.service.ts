@@ -71,8 +71,8 @@ export class UpgradeMemberService {
     )
   }
   @Effect()
-  getCardList(search?: string) {
-    return this.cardApi.getCardUpgradeList(search)
+  getCardList(search?: string, card_number_type?: number) {
+    return this.cardApi.getCardUpgradeList(search, card_number_type)
   }
   @Effect()
   getCodeNumber(id: string) {

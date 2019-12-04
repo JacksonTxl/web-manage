@@ -179,7 +179,8 @@ export default {
     getRefundReason: {
       get: function() {
         if (!this.updateReasonFlag) {
-          return this.refundReasonsChange[0].value
+          // 客户要求退款退货（此商品变为无效）
+          return 2
         }
         return this.refundReason
       },

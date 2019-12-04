@@ -19,6 +19,17 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
+    'cardData.support_member_num': {
+      rules: [
+        {
+          validator: (field: any, value: any, values: any) => {
+            if (!value) {
+              return '请选择支持入场人数'
+            }
+          }
+        }
+      ]
+    },
     'cardData.admission_range': {
       initialValue: ADMISSION_RANGE.ONLY_STORE,
       rules: [
