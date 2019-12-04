@@ -12723,10 +12723,10 @@ vue-router-multiguard@^1.0.3:
   resolved "https://registry.npm.taobao.org/vue-router-multiguard/download/vue-router-multiguard-1.0.3.tgz#f700991719b40642fb22d5dd0baed6777cfecfaa"
   integrity sha1-9wCZFxm0BkL7ItXdC67Wd3z+z6o=
 
-vue-router-plus@0.3.0:
-  version "0.3.0"
-  resolved "https://registry.npm.taobao.org/vue-router-plus/download/vue-router-plus-0.3.0.tgz?cache=0&sync_timestamp=1575354677261&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-router-plus%2Fdownload%2Fvue-router-plus-0.3.0.tgz#7055b1179d6f3c67469e73aebab2a87cbb9c5953"
-  integrity sha1-cFWxF51vPGdGnnOuurKofLucWVM=
+vue-router-plus@0.3.1:
+  version "0.3.1"
+  resolved "https://registry.npm.taobao.org/vue-router-plus/download/vue-router-plus-0.3.1.tgz?cache=0&sync_timestamp=1575446417652&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-router-plus%2Fdownload%2Fvue-router-plus-0.3.1.tgz#4b3eca86550d2dc56ca279af0dd7d12a79700842"
+  integrity sha1-Sz7KhlUNLcVsonmvDdfRKnlwCEI=
 
 vue-router@3.0.7:
   version "3.0.7"
