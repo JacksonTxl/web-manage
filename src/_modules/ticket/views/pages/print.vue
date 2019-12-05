@@ -18,7 +18,11 @@ export default {
     }
   },
   created() {
-    this.printService.getPrintInfo(this.$route.query.id).subscribe()
+    this.printService.getPrintInfo(this.$route.query.id).subscribe(res => {
+      setTimeout(() => {
+        window.print()
+      })
+    })
   }
 }
 </script>
