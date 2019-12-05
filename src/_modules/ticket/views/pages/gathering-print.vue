@@ -89,7 +89,7 @@ export default {
       .subscribe(res => {
         setTimeout(() => {
           window.print()
-        })
+        }, 500)
       })
   }
 }
