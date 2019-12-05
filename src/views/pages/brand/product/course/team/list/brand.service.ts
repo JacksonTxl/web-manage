@@ -15,7 +15,7 @@ export class BrandService implements Controller {
   page$ = new State({})
 
   auth$ = this.authService.authMap$({
-    add: 'brand_shop:product:team_course|add'
+    add: 'brand:product:team_course|add'
   })
   categoryList$ = this.listService.categoryList$
   constructor(

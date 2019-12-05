@@ -6,6 +6,7 @@ import { tap, map } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
 import { MessageService } from '@/services/message.service'
 import { cloneDeep } from 'lodash-es'
+import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class ReserveService implements Controller {
@@ -22,14 +23,16 @@ export class ReserveService implements Controller {
   constructor(
     private userService: UserService,
     private api: ReserveApi,
-    private msg: MessageService
+    private msg: MessageService,
+    private authService: AuthService
   ) {}
 
   @Effect()
   getList(params: GetListInput) {
     return this.api.getList(params).pipe(
       tap((res: any) => {
-        this.list$.commit(() => this.mapList(res.list, res.auth_map))
+        res = this.authService.filter(res)
+        this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })
     )
