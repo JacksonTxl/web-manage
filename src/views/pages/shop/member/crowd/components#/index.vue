@@ -44,7 +44,6 @@
         </div>
         <div class="shop-member-crowd-index-box__btn">
           <router-link
-            v-if="auth.analyst"
             class="shop-member-crowd-index-box__btn-rq shop-member-crowd-index-box__btn-rq-line"
             tag="span"
             :to="{
@@ -111,7 +110,6 @@
         </div>
         <div class="shop-member-crowd-index-box__btn">
           <router-link
-            v-if="auth.analyst"
             class="shop-member-crowd-index-box__btn-rq shop-member-crowd-index-box__btn-rq-line"
             tag="span"
             :to="{
@@ -178,7 +176,6 @@
         </div>
         <div class="shop-member-crowd-index-box__btn">
           <router-link
-            v-if="auth.analyst"
             class="shop-member-crowd-index-box__btn-rq shop-member-crowd-index-box__btn-rq-line"
             tag="span"
             :to="{

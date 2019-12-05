@@ -17,7 +17,7 @@ export class OrderService {
   loading$ = new State({})
 
   auth$ = this.authService.authMap$({
-    export: 'brand_shop:stat:order_reports|batch_export'
+    export: 'brand:stat:order_reports|batch_export'
   })
   constructor(
     private orderApi: OrderApi,

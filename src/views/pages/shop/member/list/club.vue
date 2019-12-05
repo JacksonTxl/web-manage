@@ -269,10 +269,22 @@
             v-if="record.auth['shop:member:member|bind_coach']"
             @click="onDistributionCoach(record)"
           >
+            绑定教练
+          </a>
+          <a
+            v-if="record.auth['shop:member:member|change_coach']"
+            @click="onDistributionCoach(record)"
+          >
             分配教练
           </a>
           <a
             v-if="record.auth['shop:member:member|bind_salesman']"
+            @click="onDistributionSale(record)"
+          >
+            绑定销售
+          </a>
+          <a
+            v-if="record.auth['shop:member:member|change_salesman']"
             @click="onDistributionSale(record)"
           >
             分配销售
@@ -423,77 +435,33 @@ export default {
     },
     // 分配教练
     onDistributionCoach(record) {
-      if (record.follow_coach) {
-        this.$confirm({
-          title: '提示信息',
-          content: `该用户已存在跟进${this.$c('coach')}，是否确认替换？`,
-          onOk: () => {
-            this.$modalRouter.push({
-              name: 'shop-distribution-coach',
-              props: {
-                memberIds: [record.member_id],
-                coachId: record.follow_coach_id
-              },
-              on: {
-                success: () => {
-                  this.$router.reload()
-                }
-              }
-            })
-          },
-          onCancel() {}
-        })
-      } else {
-        this.$modalRouter.push({
-          name: 'shop-distribution-coach',
-          props: {
-            memberIds: [record.member_id],
-            coachId: record.follow_coach_id
-          },
-          on: {
-            success: () => {
-              this.$router.reload()
-            }
+      this.$modalRouter.push({
+        name: 'shop-distribution-coach',
+        props: {
+          memberIds: [record.member_id],
+          coachId: record.follow_coach_id
+        },
+        on: {
+          success: () => {
+            this.$router.reload()
           }
-        })
-      }
+        }
+      })
     },
     // 分配销售
     onDistributionSale(record) {
-      if (record.follow_salesman) {
-        this.$confirm({
-          title: '提示信息',
-          content: '该用户已存在跟进销售，是否确认替换？',
-          onOk: () => {
-            this.$modalRouter.push({
-              name: 'shop-distribution-sale',
-              props: {
-                memberIds: [record.member_id],
-                saleId: record.follow_salesman_id
-              },
-              on: {
-                success: () => {
-                  this.$router.reload()
-                }
-              }
-            })
-          },
-          onCancel() {}
-        })
-      } else {
-        this.$modalRouter.push({
-          name: 'shop-distribution-sale',
-          props: {
-            memberIds: [record.member_id],
-            saleId: record.follow_salesman_id
-          },
-          on: {
-            success: () => {
-              this.$router.reload()
-            }
+      this.$modalRouter.push({
+        name: 'shop-distribution-sale',
+        props: {
+          memberIds: [record.member_id],
+          saleId: record.follow_salesman_id
+        },
+        on: {
+          success: () => {
+            this.$router.reload()
           }
-        })
-      }
+        }
+      })
     },
     onRemoveBind(record) {
       this.$confirm({

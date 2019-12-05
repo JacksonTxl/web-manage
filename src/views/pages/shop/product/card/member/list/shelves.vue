@@ -86,7 +86,7 @@
       <div slot="action" slot-scope="text, record">
         <st-table-actions>
           <router-link
-            v-if="record.auth['brand_shop:product:member_card|get']"
+            v-if="record.auth['shop:product:member_card|get']"
             :to="{
               path: `/shop/product/card/member/${
                 CARD_TYPE[record.card_type.id]
@@ -97,7 +97,7 @@
             详情
           </router-link>
           <a
-            v-if="record.auth['brand_shop:product:member_card|down']"
+            v-if="record.auth['shop:product:member_card|down']"
             @click="onShelfDown(record)"
           >
             下架
