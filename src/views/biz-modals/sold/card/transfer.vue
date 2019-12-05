@@ -283,12 +283,16 @@
           >
             {{ memberTransferInfo.poundage }}元
           </st-form-item>
-          <st-form-item label="减免金额" labelGutter="12px" v-if="isMember">
+          <st-form-item label="减免金额" labelGutter="12px">
             <st-input-number
               :float="true"
               v-decorator="decorators.handling_fee_reduce"
               placeholder="请输入减免金额"
-              :max="memberTransferInfo.poundage"
+              :max="
+                isMember
+                  ? memberTransferInfo.poundage
+                  : depositTransferInfo.poundage
+              "
             >
               <span slot="addonAfter">元</span>
             </st-input-number>

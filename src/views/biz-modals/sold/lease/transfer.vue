@@ -141,12 +141,12 @@
           <st-form-item label="手续费" labelGutter="12px" type="text">
             {{ info.transfer }}
           </st-form-item>
-          <st-form-item label="减免金额" labelGutter="12px" v-if="isMember">
+          <st-form-item label="减免金额" labelGutter="12px">
             <st-input-number
               :float="true"
               v-decorator="decorators.handling_fee_reduce"
               placeholder="请输入减免金额"
-              :max="info.transfer"
+              :max="info.transfer_num"
             >
               <span slot="addonAfter">元</span>
             </st-input-number>

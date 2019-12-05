@@ -306,7 +306,7 @@
           <st-form-item label="手续费" labelGutter="12px">
             {{ poundage }}元
           </st-form-item>
-          <st-form-item label="减免金额" labelGutter="12px" v-if="isMember">
+          <st-form-item label="减免金额" labelGutter="12px">
             <st-input-number
               :float="true"
               v-decorator="decorators.handling_fee_reduce"
