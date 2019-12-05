@@ -21,7 +21,7 @@ export default {
     this.printService.getPrintInfo(this.$route.query.id).subscribe(res => {
       setTimeout(() => {
         window.print()
-      })
+      }, 500)
     })
   }
 }
