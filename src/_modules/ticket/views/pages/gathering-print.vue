@@ -63,7 +63,7 @@
       </div>
     </div>
     <div>
-      <div class="mg-t16 text-center">********感谢您的惠顾！********</div>
+      <div class="mg-t16 text-center">*******感谢您的惠顾！*******</div>
     </div>
   </div>
 </template>
