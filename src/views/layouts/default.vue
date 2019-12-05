@@ -171,6 +171,13 @@
                 <span>绑定手机号</span>
               </a-menu-item>
               <a-menu-item
+                @click="onClickModifyPass"
+                class="layout-default-body__options"
+              >
+                <st-icon type="bind-phone" color="#000000"></st-icon>
+                <span>修改密码</span>
+              </a-menu-item>
+              <a-menu-item
                 @click="onClickUnbind"
                 class="layout-default-body__options"
               >
@@ -215,6 +222,7 @@ import FastEntryMiniProgram from '@/views/biz-modals/fast-entry/mini-program'
 import FastEntryHousekeeper from '@/views/biz-modals/fast-entry/housekeeper'
 import AccountBind from '@/views/biz-modals/account/bind'
 import AccountUnbind from '@/views/biz-modals/account/unbind'
+import AccountModify from '@/views/biz-modals/account/modify'
 import { UdeskService } from '@/services/udesk.service'
 
 export default {
@@ -253,7 +261,8 @@ export default {
     FastEntryMiniProgram,
     FastEntryHousekeeper,
     AccountBind,
-    AccountUnbind
+    AccountUnbind,
+    AccountModify
   },
   computed: {
     breadCrumbs() {
@@ -285,6 +294,13 @@ export default {
     onClickUnbind() {
       this.$modalRouter.push({
         name: 'account-unbind',
+        props: {},
+        on: {}
+      })
+    },
+    onClickModifyPass() {
+      this.$modalRouter.push({
+        name: 'account-modify',
         props: {},
         on: {}
       })
