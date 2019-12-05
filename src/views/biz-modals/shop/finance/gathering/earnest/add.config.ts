@@ -46,6 +46,6 @@ export const ruleOptions = (vm: any) => {
     },
     description: {},
     pay_channel: [{ required: true, message: '请选择支付方式' }],
-    sale_id: {}
+    sale_id: [{ required: true, message: '请选择销售人员' }]
   }
 }
