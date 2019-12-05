@@ -170,7 +170,7 @@ export default {
         {
           text: '解除门店关系',
           click: this.openModalShopLeave,
-          if: this.auth['shop:staff:staff|salary']
+          if: this.auth['shop:staff:staff|shop_leave']
         }
       ]
     }
