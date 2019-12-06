@@ -370,7 +370,9 @@
                   </td>
                   <td>
                     <st-table-actions>
-                      <a @click="showEditTable(index)">编辑</a>
+                      <a @click="showEditTable(index)">
+                        {{ isShowEditTable === index ? '确认' : '编辑' }}
+                      </a>
                       <a
                         :disabled="
                           $searchQuery.activity_id && $searchQuery.status === 1
@@ -378,7 +380,7 @@
                         href="javascript:;"
                         @click="onDelete(index)"
                       >
-                        删除
+                        {{ isShowEditTable === index ? '取消' : '删除' }}
                       </a>
                     </st-table-actions>
                   </td>
@@ -531,7 +533,9 @@ export default {
         slidesPerView: 1.05
       },
       defaultValue: [moment().format('HH:mm'), moment('11:59', 'HH:mm')],
-      isShowEditTable: -1
+      isShowEditTable: -1,
+      prizeRate: [],
+      prizeNum: []
     }
   },
   bem: {
@@ -577,7 +581,13 @@ export default {
   },
   methods: {
     showEditTable(index) {
-      this.isShowEditTable = index
+      if (this.isShowEditTable === index) {
+        this.prizeList[index].number = this.prizeNum[index]
+        this.prizeList[index].rate = this.prizeRate[index]
+        this.isShowEditTable = -1
+      } else {
+        this.isShowEditTable = index
+      }
     },
     next(para) {
       if (para.index) {
@@ -707,6 +717,8 @@ export default {
         this.prizeList.splice(this.curPrizeIndex, 1, val)
       } else {
         this.prizeList.push(val)
+        this.prizeRate.push(val.rate)
+        this.prizeNum.push(val.number)
       }
     },
     getCurPrizeIndex(index) {
@@ -718,15 +730,19 @@ export default {
       )
     },
     onDelete(para) {
+      if (this.isShowEditTable === para) {
+        this.isShowEditTable = -1
+        return false
+      }
       this.prizeList = this.prizeList.filter((item, index) => {
         return index !== para
       })
     },
     editTableNum(val, index) {
-      this.prizeList[index].number = val
+      this.prizeNum[index] = val
     },
     editTableRate(val, index) {
-      this.prizeList[index].rate = val
+      this.prizeRate[index] = val
     },
     editVIew(id) {
       return this.addService.editVIew(id).subscribe(res => {
@@ -742,6 +758,11 @@ export default {
           moment(res.activity_base.end_time.trim())
         ]
         this.prizeList = res.activity_prizes
+        res.activity_prizes.forEach((item, index) => {
+          this.prizeNum[index] = item.number
+          this.prizeRate[index] = item.rate
+        })
+        this.prizeNum
         this.preview.startTime = res.activity_base.start_time
         this.preview.endTime = res.activity_base.end_time
         this.preview.perTimes = res.activity_rule.per_times
