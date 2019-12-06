@@ -21,7 +21,7 @@ SentryReporter.init({
   // debug: true,
   enviroment: location.hostname,
   release: process.env.GIT_COMMIT,
-  ignoreErrors: ['ajax error'],
+  ignoreErrors: ['ajax error', 'Non-Error exception captured with keys'],
   framework: {
     Vue
   },
