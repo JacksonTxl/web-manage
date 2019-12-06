@@ -18,7 +18,14 @@ export class ModifyApi extends Api {
   checkAccount(params: any) {
     return this.http.post('/v1/staff/bind/check/pwd', { params })
   }
+  checkCaptcha(params: any) {
+    return this.http.post('/v1/staff/bind/check/captcha', { params })
+  }
+
   resetPass(params: any) {
     return this.http.post('/v1/staff/bind/reset/pwd', { params })
+  }
+  getCaptcha(params: any) {
+    return this.http.post('/login/captcha/phone', { params })
   }
 }

@@ -1,6 +1,6 @@
 <template>
-  <st-modal title="修改密码" v-model="show" width="476px">
-    <div v-if="!isShowFooter">
+  <st-modal title="修改密码" v-model="show" width="476px" :class="b()">
+    <div v-if="!isShowFooter && !isShowSuccess">
       正在为账号名{{
         info.account_name
       }}修改密码，为确认是您本人操作，请完成身份验证
@@ -8,43 +8,46 @@
         您当前暂未绑定手机号码，无法使用手机验证修改密码，
         <a href="">去绑定</a>
       </span>
-      <div>
+      <div :class="b('item')" class="mg-t16">
         密码验证方式
-        <st-button type="primary" @click="checkPass">去验证</st-button>
+        <st-button type="primary" pill @click="checkPass">去验证</st-button>
       </div>
-      <div v-if="!isBind">
+      <div v-if="!isBind" :class="b('item')">
         手机号码验证方式
-        <st-button type="primary" @click="checkTel">去验证</st-button>
+        <st-button type="primary" pill @click="checkTel">去验证</st-button>
       </div>
-      <div>联系管理员修改密码</div>
+      <div :class="b('item')">联系管理员修改密码</div>
     </div>
     <st-form :form="form" labelWidth="88px" labelGutter="16px">
-      <st-form-item
-        label="当前手机号"
-        label-auto
-        v-if="isShowPass || isShowTel"
-      >
-        <label>{{ info.account_name }}</label>
-      </st-form-item>
-      <st-form-item label="当前密码" required v-if="isShowPass">
-        <a-input
-          v-decorator="decorators.password"
-          placeholder="请输入当前密码"
-          size="default"
-        ></a-input>
-      </st-form-item>
+      <div v-if="isShowPass">
+        <st-form-item label="当前账户" label-auto>
+          <label>{{ info.account_name }}</label>
+        </st-form-item>
+        <st-form-item label="当前密码" required>
+          <a-input
+            v-decorator="decorators.password"
+            placeholder="请输入当前密码"
+            size="default"
+          ></a-input>
+        </st-form-item>
+      </div>
+      <div v-if="isShowTel">
+        <st-form-item label="当前手机号" label-auto>
+          <label>{{ info.account_phone }}</label>
+        </st-form-item>
+        <st-form-item label="短信验证码" class="mg-b0">
+          <input-phone-code
+            class="test"
+            size="default"
+            v-decorator="decorators.captcha"
+            @click="onClickCaptcha"
+            placeholder="请输入验证码"
+            :isCountTime="isCountTime"
+            @endCount="endCount"
+          ></input-phone-code>
+        </st-form-item>
+      </div>
 
-      <st-form-item label="短信验证码" class="mg-b0" v-if="isShowTel">
-        <input-phone-code
-          class="test"
-          size="default"
-          v-decorator="decorators.captcha"
-          @click="onClickCaptcha"
-          placeholder="请输入验证码"
-          :isCountTime="isCountTime"
-          @endCount="endCount"
-        ></input-phone-code>
-      </st-form-item>
       <div v-if="!isShowTel && !isShowPass && isShowFooter">
         <st-form-item label="新密码" required>
           <a-input
@@ -63,7 +66,7 @@
       </div>
     </st-form>
     <template slot="footer">
-      <div v-if="isShowFooter">
+      <div v-show="isShowFooter">
         <st-button type="default" @click="show = false">
           取消
         </st-button>
@@ -83,6 +86,15 @@
         </st-button>
       </div>
     </template>
+    <div :class="b('success')" v-if="isShowSuccess">
+      <img
+        src="/img/success.c90c2656.png"
+        alt="success"
+        :class="b('success-img')"
+      />
+      <div :class="b('success-text')" class="mg-t16 mg-b16">密码更新成功</div>
+      <st-button pill type="primary" @click="goLogin">立即登陆</st-button>
+    </div>
   </st-modal>
 </template>
 
@@ -91,12 +103,14 @@ import { ModifyService } from './modify.service'
 import { ruleOptions } from './modify.config'
 import { PatternService } from '@/services/pattern.service'
 import { NoCaptchaService } from '@/services/no-captcha.service'
-import InputPhone from '@/views/biz-components/input-phone/input-phone'
 import InputPhoneCode from '@/views/biz-components/input-phone-code/input-phone-code'
 import { MessageService } from '@/services/message.service'
 import { cloneDeep } from 'lodash-es'
 
 export default {
+  bem: {
+    b: 'account-modify'
+  },
   serviceInject() {
     return {
       modifyService: ModifyService,
@@ -135,7 +149,8 @@ export default {
       isCountTime: false,
       isShowFooter: false,
       isShowTel: false,
-      isShowPass: false
+      isShowPass: false,
+      isShowSuccess: false
     }
   },
   methods: {
@@ -148,7 +163,13 @@ export default {
       this.isShowTel = true
     },
     goTelNext() {
-      this.form.validate(['country_phone']).then(values => {})
+      this.form.validate(['captcha']).then(values => {
+        this.modifyService
+          .checkCaptcha({ captcha: values.captcha })
+          .subscribe(res => {
+            this.isShowTel = false
+          })
+      })
     },
     goPassNext() {
       this.form.validate(['password']).then(values => {
@@ -160,15 +181,11 @@ export default {
       })
     },
     onClickCaptcha() {
-      this.form.validate(['country_phone']).then(values => {
-        const { country_phone } = values
-        const params = {
-          phone: country_phone.phone,
-          country_code_id: country_phone.code_id,
-          is_bind: 2
-        }
-        this.getCaptcha(params)
-      })
+      const params = {
+        phone: this.info.account_phone,
+        country_code_id: this.info.country_code_id
+      }
+      this.getCaptcha(params)
     },
     getCaptcha(params) {
       const nvc_val = this.noCaptchaService.generateNVCVal()
@@ -196,31 +213,16 @@ export default {
           repwd: values.repwd
         }
         this.modifyService.resetPass(para).subscribe(res => {
-          consoel.log(res)
+          this.messageService.success({ content: '修改成功' })
+          this.isShowFooter = false
+          this.isShowSuccess = true
         })
       })
     },
     endCount() {
       this.isCountTime = false
     },
-    onSelectCountry(event) {
-      this.countryInfo = event
-    },
-    onBind() {
-      this.form.validate().then(values => {
-        const params = cloneDeep(values)
-        const country_phone = values.country_phone
-        params.phone = country_phone.phone
-        params.country_code_id = country_phone.code_id
-        delete params.country_phone
-        delete params.name
-        delete params.password
-        this.modifyService.bindAccountPhone(params).subscribe(res => {
-          this.show = false
-          this.messageService.success({ content: '绑定手机号成功' })
-        })
-      })
-    }
+    goLogin() {}
   }
 }
 </script>

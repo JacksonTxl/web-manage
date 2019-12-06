@@ -19,11 +19,12 @@ export class ModifyService {
   checkAccount(params: any) {
     return this.modifyApi.checkAccount(params)
   }
-
-  // @Effect()
-  // checkCaptcha(params: any) {
-  //   return this.modifyApi.checkCaptcha(params)
-  // }
+  getCaptcha(params: any) {
+    return this.modifyApi.getCaptcha(params)
+  }
+  checkCaptcha(params: any) {
+    return this.modifyApi.checkCaptcha(params)
+  }
   @Effect()
   resetPass(params: any) {
     return this.modifyApi.resetPass(params)
