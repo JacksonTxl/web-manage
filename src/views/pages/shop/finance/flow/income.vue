@@ -90,7 +90,7 @@
 <script>
 import tableMixin from '@/mixins/table.mixin'
 import { IncomeService } from './income.service'
-import { columns, totalItems } from './income.config.ts'
+import { columns } from './income.config.ts'
 import ShopFinanceFlow from '@/views/biz-modals/shop/finance/flow'
 import { cloneDeep } from 'lodash-es'
 export default {
@@ -127,8 +127,7 @@ export default {
     }
   },
   computed: {
-    columns,
-    totalItems
+    columns
   },
   mounted() {
     this.setSearchDate()

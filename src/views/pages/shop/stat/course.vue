@@ -72,7 +72,20 @@
       :indexs="columns"
       :dataSource="total$"
       hasTitle
-    ></st-total>
+    >
+      <template v-slot:personal_checkin_amount="record">
+        <st-total-item
+          @click.native="onCLickPersonalCheckinAmount"
+          :item="record.item"
+        ></st-total-item>
+      </template>
+      <template v-slot:team_checkin_amount="record">
+        <st-total-item
+          @click.native="onCLickTeamCheckinAmount"
+          :item="record.item"
+        ></st-total-item>
+      </template>
+    </st-total>
     <st-table
       class="mg-t12"
       :page="page"
@@ -185,6 +198,23 @@ export default {
     this.showTable = this.$searchQuery.showTable
   },
   methods: {
+    onCLickPersonalCheckinAmount() {
+      this.$modalRouter.push({
+        name: 'shop-stat-personal-consume',
+        props: {
+          type: 'total'
+        }
+      })
+    },
+    onCLickTeamCheckinAmount() {
+      console.log('你点击了+ onCLickTeamCheckinAmount')
+      this.$modalRouter.push({
+        name: 'shop-stat-team-consume',
+        props: {
+          type: 'total'
+        }
+      })
+    },
     getPersonalCourse(record) {
       this.$modalRouter.push({
         name: 'shop-stat-personal-course',

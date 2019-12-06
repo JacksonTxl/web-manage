@@ -55,7 +55,14 @@
       :indexs="columns"
       :dataSource="total$"
       hasTitle
-    ></st-total>
+    >
+      <template v-slot:performance_amount="record">
+        <st-total-item
+          @click.native="onCLickPerformanceAmount"
+          :item="record.item"
+        ></st-total-item>
+      </template>
+    </st-total>
     <st-table
       :page="page"
       :scroll="{ x: 2300 }"
@@ -172,6 +179,14 @@ export default {
     this.showTable = this.$searchQuery.showTable
   },
   methods: {
+    onCLickPerformanceAmount() {
+      this.$modalRouter.push({
+        name: 'shop-stat-sell-amount',
+        props: {
+          type: 'total'
+        }
+      })
+    },
     getSellTotalAmount(record) {
       this.$modalRouter.push({
         name: 'shop-stat-sell-amount',

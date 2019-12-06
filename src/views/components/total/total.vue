@@ -14,19 +14,8 @@
             :class="{ 'st-total-item__active': item.slotName }"
             :key="index"
           >
-            <slot :name="item.slotName">
-              <div :class="b('swiper-slide')">
-                <span :class="b('swiper-slide-label')">{{ item.label }}</span>
-                <i-count-up
-                  :class="b('swiper-slide-value')"
-                  :endVal="+item.value"
-                  :options="{ prefix: `<b>${item.unit}</b>`, decimalPlaces: 1 }"
-                  v-if="+item.value"
-                />
-                <span v-else :class="b('swiper-slide-value')">
-                  --
-                </span>
-              </div>
+            <slot :name="item.slotName" v-bind:item="item">
+              <st-total-item :item="item"></st-total-item>
             </slot>
           </swiper-slide>
         </swiper>

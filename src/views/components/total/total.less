@@ -2,8 +2,12 @@
   //display: flex;
   overflow: hidden;
   &-item__active {
+    cursor: pointer;
     &:hover {
-      .c(@primary-color);
+      .st-total__swiper-slide-label,
+      .st-total__swiper-slide-value {
+        .c(@primary-color);
+      }
     }
   }
   &__title {
