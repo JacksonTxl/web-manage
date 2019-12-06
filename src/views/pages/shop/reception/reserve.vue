@@ -188,7 +188,6 @@ export default {
       this.onSearchReset()
     },
     onPrint(id) {
-      let record = this.info
       window.open('/ticket/print?id=' + id, '_blank', 'width=800,height=600')
     }
   }

@@ -181,6 +181,9 @@ const useCardActions = () => {
             this.$emit('refresh')
             this.createdOrderPrint(orderId)
             break
+          case 'PrintOrder':
+            this.printOrder(orderId)
+            break
           case 'ViewOrder':
             this.$emit('refresh')
             this.createdOrderViewOrder(orderId)
@@ -204,6 +207,14 @@ const useCardActions = () => {
             })
             break
         }
+      },
+      // 打印小票
+      printOrder(order_id) {
+        window.open(
+          '/ticket/gathering-print?id=' + order_id,
+          '_blank',
+          'width=800,height=600'
+        )
       },
       // 打印合同
       createdOrderPrint(order_id) {

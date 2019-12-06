@@ -1,14 +1,14 @@
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
-import { ReserveApi } from '@/api/v1/front/reserve'
+import { OrderApi } from '@/api/v1/finance/order'
 import { tap } from 'rxjs/operators'
 import { State } from 'rx-state'
 
 @Injectable()
-export class PrintService implements Controller {
+export class GatheringPrintService implements Controller {
   info$ = new State({})
-  constructor(private reserveApi: ReserveApi) {}
+  constructor(private orderApi: OrderApi) {}
   getPrintInfo(id: any) {
-    return this.reserveApi.getPrintInfo(id).pipe(
+    return this.orderApi.gatheringTicketInfo(id).pipe(
       tap(res => {
         this.info$.commit(() => res.info)
       })
