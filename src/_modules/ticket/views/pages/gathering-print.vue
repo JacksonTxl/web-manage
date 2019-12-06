@@ -63,7 +63,7 @@
       </div>
     </div>
     <div>
-      <div class="mg-t16 text-center">*******感谢您的惠顾！*******</div>
+      <div class="mg-t16 ta-c">*******感谢您的惠顾！*******</div>
     </div>
   </div>
 </template>
@@ -83,14 +83,8 @@ export default {
       info: this.gatheringPrintService.info$
     }
   },
-  created() {
-    this.gatheringPrintService
-      .getPrintInfo(this.$route.query.id)
-      .subscribe(res => {
-        setTimeout(() => {
-          window.print()
-        }, 500)
-      })
+  mounted() {
+    window.print()
   }
 }
 </script>

@@ -1,63 +1,50 @@
-html {
-  padding: 0;
-  width: 100%;
-  padding-bottom: 32px;
-  font-weight: 500;
-  font-size: 16px;
-  font: 12px/1.5 Microsoft YaHei, '微软雅黑', Tahoma, Arial, '\5b8b\4f53',
-    sans-serif, 'Hiragino Sans GB';
-  @media print {
-    * {
-      text-shadow: none !important;
-      background: 0 0 !important;
-      box-shadow: none !important;
-      page-break-before: auto;
-    }
-    body {
-      width: 100%;
-      margin: 0;
-      font-size: 16px;
-      color: #000;
-      font-family: '微软雅黑' !important;
-    }
+@media print {
+  * {
+    text-shadow: none !important;
+    background: 0 0 !important;
+    box-shadow: none !important;
+    page-break-before: auto;
   }
-  .extra-gathering-ticket-preview {
-    width: 63mm;
+  body {
+    width: 100%;
+    margin: 0;
+    font-size: 16px;
     color: #000;
-    padding: 8px;
-    background: #fff;
+    font-family: '微软雅黑' !important;
+  }
+}
+.extra-gathering-ticket-preview {
+  width: 63mm;
+  color: #000;
+  padding: 8px;
+  background: #fff;
 
-    &__section {
-      padding: 16px 0 0 0;
-      font-size: 14px;
-      border-bottom: 2px dotted #231815;
-      &-item {
-        display: flex;
-        justify-content: space-between;
-        span:first-child {
-          min-width: 69px;
-          white-space: nowrap;
-        }
-        span:last-child {
-          word-break: break-all;
-        }
+  &__section {
+    padding: 16px 0 0 0;
+    font-size: 14px;
+    border-bottom: 2px dotted #231815;
+    &-item {
+      display: flex;
+      justify-content: space-between;
+      span:first-child {
+        min-width: 69px;
+        white-space: nowrap;
       }
-      &-title {
-        margin-top: 16px;
-        font-size: 28px;
-        font-weight: 500;
-      }
-      &-subtitle {
-        display: inline-block;
-        margin-bottom: 22px;
-        font-size: 18px;
-        font-weight: 500;
+      span:last-child {
         word-break: break-all;
       }
     }
-  }
-
-  .text-center {
-    text-align: center;
+    &-title {
+      margin-top: 16px;
+      font-size: 28px;
+      font-weight: 500;
+    }
+    &-subtitle {
+      display: inline-block;
+      margin-bottom: 22px;
+      font-size: 18px;
+      font-weight: 500;
+      word-break: break-all;
+    }
   }
 }

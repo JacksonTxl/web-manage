@@ -17,12 +17,8 @@ export default {
       info: this.printService.info$
     }
   },
-  created() {
-    this.printService.getPrintInfo(this.$route.query.id).subscribe(res => {
-      setTimeout(() => {
-        window.print()
-      }, 500)
-    })
+  mounted() {
+    window.print()
   }
 }
 </script>
