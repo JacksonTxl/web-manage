@@ -16,6 +16,7 @@ export class SellService {
   staffList$ = new State([])
   page$ = new State({})
   loading$ = new State({})
+  total$ = new State({})
   authTabs$ = this.authService.getAuthTabs$('shop-stat-sell')
   constructor(private StatApi: StatApi, private authService: AuthService) {}
   @Effect()
@@ -24,6 +25,7 @@ export class SellService {
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+        this.total$.commit(() => res.total)
       })
     )
   }

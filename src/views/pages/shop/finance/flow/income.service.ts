@@ -11,16 +11,21 @@ export class IncomeService implements Controller {
   loading$ = new State({})
   page$ = new State({})
   list$ = new State([])
+  total$ = new State({})
   payType$ = this.userService.getOptions$('finance.pay_channel')
 
   constructor(private userService: UserService, private api: FlowApi) {}
-
+  // SET_TOTAL(total) {
+  //   let totalData = total
+  //   for()
+  // }
   @Effect()
   getList(params: GetListInput) {
     return this.api.getIncomeListInShop(params).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+        this.total$.commit(() => res.total)
       })
     )
   }

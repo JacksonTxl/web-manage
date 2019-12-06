@@ -1,0 +1,59 @@
+.st-total {
+  //display: flex;
+  overflow: hidden;
+  &-item__active {
+    &:hover {
+      .c(@primary-color);
+    }
+  }
+  &__title {
+    text-align: center;
+    float: left;
+    .pd(16px 24px);
+    .bg(rgba(227, 233, 255, 0.8));
+    .tip {
+      .lh(24px);
+    }
+    .total-t3 {
+      .mg-t(12px);
+      .lh(24px);
+    }
+  }
+  &__swiper {
+    position: relative;
+  }
+  &__swiper-slide {
+    display: flex;
+    flex-direction: column;
+    .pd(16px 24px 12px 24px);
+  }
+  &__swiper-slide-value {
+    font-size: 20px;
+    .mg-t(12px);
+    color: rgba(37, 42, 46, 1);
+    line-height: 28px;
+  }
+  &__swiper-slide-label {
+    color: rgba(94, 106, 127, 1);
+    line-height: 24px;
+  }
+  &__content {
+    width: calc(100% - 104px);
+    float: right;
+    .bg(#f5f7ff);
+    .pd(0 16px);
+    div.swiper-button-prev {
+      background-image: none;
+      outline: unset;
+      left: 0;
+      top: 60px;
+    }
+    div.swiper-button-next {
+      background-image: none;
+      outline: unset;
+      right: 0;
+      top: 60px;
+      width: 13px;
+    }
+  }
+}

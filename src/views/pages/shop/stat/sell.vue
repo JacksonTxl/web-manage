@@ -50,9 +50,16 @@
         <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
       </div>
     </section>
+    <st-total
+      :class="bPage('total')"
+      :indexs="columns"
+      :dataSource="total$"
+      hasTitle
+    ></st-total>
     <st-table
       :page="page"
       :scroll="{ x: 2300 }"
+      class="mg-t12"
       @change="onTableChange"
       :loading="loading.init"
       :columns="columns"
@@ -138,7 +145,8 @@ export default {
       list: this.sellService.list$,
       departmentList: this.sellService.departmentList$,
       staffList: this.sellService.staffList$,
-      page: this.sellService.page$
+      page: this.sellService.page$,
+      total$: this.sellService.total$
     }
   },
   data() {

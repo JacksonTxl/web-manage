@@ -48,6 +48,13 @@
         </div>
       </st-search-panel>
     </div>
+    <st-total
+      :class="bPage('total')"
+      :indexs="columns"
+      :dataSource="total$"
+      class="pd-x24"
+      hasTitle
+    ></st-total>
     <st-table
       :columns="columns"
       :scroll="{ x: 1400 }"
@@ -87,11 +94,12 @@ export default {
     }
   },
   rxState() {
-    const { loading$, page$, list$, payType$ } = this.service
+    const { loading$, page$, list$, payType$, total$ } = this.service
     return {
       loading$,
       page$,
       list$,
+      total$,
       payType$
     }
   },

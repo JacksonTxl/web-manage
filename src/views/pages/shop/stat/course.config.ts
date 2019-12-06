@@ -9,6 +9,7 @@ export const allColumns = (vm: any) => {
     {
       title: '上课节数（私）',
       dataIndex: 'personal_course_num',
+      unit: '',
       scopedSlots: { customRender: 'personal_course_num' },
       align: 'right'
     },
