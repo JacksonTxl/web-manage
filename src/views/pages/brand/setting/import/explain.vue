@@ -23,6 +23,11 @@
       <p>
         3、为了保证系统顺畅，将在系统非繁忙时间内，按照您上传文件的顺序依次进行数据导入，请您在次日检查导入结果。
       </p>
+      <p>
+        4、请在导入前阅读
+        <a href="https://help.styd.cn/" target="__blank">帮助中心导入文档</a>
+        ，避免出现数据导入错误。点击跳转至帮助中心。
+      </p>
     </a-row>
     <st-container type="2" class="bg-gray">
       <div :class="b('item-content')" class="mg-b16">
