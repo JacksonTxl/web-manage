@@ -285,14 +285,10 @@
           </st-form-item>
           <st-form-item label="减免金额" labelGutter="12px">
             <st-input-number
-              :float="true"
+              float
               v-decorator="decorators.handling_fee_reduce"
               placeholder="请输入减免金额"
-              :max="
-                isMember
-                  ? memberTransferInfo.poundage
-                  : depositTransferInfo.poundage
-              "
+              :max="reduceMax"
             >
               <span slot="addonAfter">元</span>
             </st-input-number>
@@ -381,6 +377,11 @@ export default {
     },
     isFamilyCard() {
       return this.memberTransferInfo.card_number_type === 2
+    },
+    reduceMax() {
+      return this.isMember
+        ? this.memberTransferInfo.poundage
+        : this.depositTransferInfo.poundage
     }
   },
   props: ['id', 'type'],
