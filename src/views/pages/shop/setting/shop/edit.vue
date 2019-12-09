@@ -152,7 +152,6 @@
 <script>
 import { PatternService } from '@/services/pattern.service'
 import { EditService } from './edit.service'
-import { RuleConfig } from '@/constants/rule'
 import { cloneDeep } from 'lodash-es'
 import ShopMapLocation from '@/views/biz-modals/shop/map-location'
 import CheckboxFacilityGroup from '@/views/biz-components/checkbox-facility/checkbox-facility-group'
@@ -175,7 +174,6 @@ export default {
   serviceInject() {
     return {
       pattern: PatternService,
-      rules: RuleConfig,
       editService: EditService
     }
   },

@@ -85,6 +85,18 @@ export const rules = (vm: any) => {
         ]
       }
     ],
+    floatNum: [
+      'floatNum',
+      {
+        rules: [
+          {
+            required: true,
+            pattern: pattern.NUM_FLOAT(1),
+            message: '浮点数，最多包含一位小数'
+          }
+        ]
+      }
+    ],
     mobile: [
       'mobile',
       {
