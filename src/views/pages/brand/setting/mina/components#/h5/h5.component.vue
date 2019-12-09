@@ -120,6 +120,14 @@
               <img :src="li" />
             </div>
           </div>
+          <div v-if="index === 3">
+            <p>推荐小班课</p>
+            <swiper :options="swiperOption">
+              <swiper-slide v-for="(li, index) in recommend2" :key="index">
+                <img :src="li" />
+              </swiper-slide>
+            </swiper>
+          </div>
         </div>
         <div :class="h5('nav')">
           <div v-for="(li, index) in menuInfo" class="nav-li" :key="index">
