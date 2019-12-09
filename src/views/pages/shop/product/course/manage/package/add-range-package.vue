@@ -856,37 +856,40 @@ export default {
     save() {
       this.course_validator()
       this.image_validator()
-      this.form.validateFieldsAndScroll((err, values) => {
-        if (!err && !this.courseIsNone && !this.imageIsNone) {
-          this.packageData.course_name = values.course_name
-          this.packageData.price = values.price
-          this.packageData.valid_time = values.valid_time
-          this.packageData.frozen_days = values.frozen_days
-          this.packageData.transfer_rate = this.packageData.is_allow_transfer
-            ? +values.transfer_rate
-            : undefined
-          this.packageData.start_time = `${this.start_time.format(
-            'YYYY-MM-DD'
-          )}`
-          this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')}`
-          this.packageData.team_range = []
-          this.teamCourseList.forEach(i => {
-            this.packageData.team_range.push(i.course_id)
-          })
-          this.packageData.personal_range = []
-          this.personalCourseList.forEach(i => {
-            this.packageData.personal_range.push({
-              course_id: i.course_id,
-              coach_level: cloneDeep(i.coachGradeList)
+      this.form.validateFieldsAndScroll(
+        { scroll: { offsetTop: 80 } },
+        (err, values) => {
+          if (!err && !this.courseIsNone && !this.imageIsNone) {
+            this.packageData.course_name = values.course_name
+            this.packageData.price = values.price
+            this.packageData.valid_time = values.valid_time
+            this.packageData.frozen_days = values.frozen_days
+            this.packageData.transfer_rate = this.packageData.is_allow_transfer
+              ? +values.transfer_rate
+              : undefined
+            this.packageData.start_time = `${this.start_time.format(
+              'YYYY-MM-DD'
+            )}`
+            this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')}`
+            this.packageData.team_range = []
+            this.teamCourseList.forEach(i => {
+              this.packageData.team_range.push(i.course_id)
             })
-          })
-          this.addPackageService.add(this.packageData).subscribe(res => {
-            this.$router.push({
-              path: '/shop/product/course/manage/package/list'
+            this.packageData.personal_range = []
+            this.personalCourseList.forEach(i => {
+              this.packageData.personal_range.push({
+                course_id: i.course_id,
+                coach_level: cloneDeep(i.coachGradeList)
+              })
             })
-          })
+            this.addPackageService.add(this.packageData).subscribe(res => {
+              this.$router.push({
+                path: '/shop/product/course/manage/package/list'
+              })
+            })
+          }
         }
-      })
+      )
     },
     // 保存并上架
     onsale() {

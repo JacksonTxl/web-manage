@@ -29,7 +29,7 @@
         <!-- <st-button type="primary" v-if="auth.export" :disabled="isSelectedDisabled">批量导出</st-button> -->
       </div>
       <st-table
-        :scroll="{ x: 1840 }"
+        :scroll="{ x: 2100 }"
         rowKey="id"
         :columns="columns"
         :page="page"
@@ -74,6 +74,9 @@
               @click="onSplit(record)"
             >
               业绩拆分
+            </a>
+            <a @click="printOrder(record.id)">
+              打印小票
             </a>
           </st-table-actions>
         </div>
@@ -142,6 +145,14 @@ export default {
     }
   },
   methods: {
+    // 打印小票
+    printOrder(order_id) {
+      window.open(
+        '/ticket/gathering-print?id=' + order_id,
+        '_blank',
+        'width=800,height=600'
+      )
+    },
     // 设置searchData
     setSearchData() {
       const start = this.$searchQuery.start_date

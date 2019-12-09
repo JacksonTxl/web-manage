@@ -41,7 +41,7 @@ export default {
       }
     },
     max: {
-      type: Number,
+      type: [String, Number],
       default() {
         return 999999999999
       }

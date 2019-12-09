@@ -35,7 +35,7 @@
               }
             })
           }" -->
-      <div :class="b('table')">
+      <div>
         <st-table
           :page="page"
           rowKey="id"

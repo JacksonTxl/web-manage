@@ -150,7 +150,7 @@
           <st-table-actions>
             <a
               href="javascript: void(0)"
-              v-if="record.auth['brand_shop:staff:staff|get']"
+              v-if="record.auth['shop:staff:staff|get']"
               @click="onSearchDetail(record)"
             >
               详情
@@ -158,14 +158,14 @@
             <template v-if="record.work_status.name === '在职'">
               <a
                 href="javascript: void(0)"
-                v-if="record.auth['brand_shop:staff:staff|edit']"
+                v-if="record.auth['shop:staff:staff|edit']"
                 @click="onEdit(record)"
               >
                 编辑
               </a>
               <a
                 href="javascript: void(0)"
-                v-if="record.auth['brand_shop:staff:staff|bind_card']"
+                v-if="record.auth['shop:staff:staff|bind_card']"
                 v-modal-link="{
                   name: 'shop-staff-bind-card',
                   props: { staff: record }
@@ -175,7 +175,7 @@
               </a>
               <a
                 href="javascript: void(0)"
-                v-if="record.auth['brand_shop:staff:staff|rebind_card']"
+                v-if="record.auth['shop:staff:staff|rebind_card']"
                 v-modal-link="{
                   name: 'shop-staff-bind-card',
                   props: { staff: record }
@@ -185,7 +185,7 @@
               </a>
               <a
                 href="javascript: void(0)"
-                v-if="record.auth['brand_shop:staff:account|save']"
+                v-if="record.auth['shop:staff:account|save']"
                 v-modal-link="{
                   name: 'shop-staff-re-password',
                   props: { staff: record }
@@ -195,7 +195,7 @@
               </a>
               <a
                 href="javascript: void(0)"
-                v-if="record.auth['brand_shop:staff:staff|position']"
+                v-if="record.auth['shop:staff:staff|position']"
                 v-modal-link="{
                   name: 'shop-staff-update-staff-position',
                   props: { staff: record }
@@ -205,7 +205,7 @@
               </a>
               <a
                 href="javascript: void(0)"
-                v-if="record.auth['brand_shop:staff:staff|salary']"
+                v-if="record.auth['shop:staff:staff|salary']"
                 v-modal-link="{
                   name: 'shop-staff-salary-account-setting',
                   props: { staff: record }
@@ -215,7 +215,7 @@
               </a>
               <a
                 href="javascript: void(0)"
-                v-if="record.auth['brand_shop:staff:staff|shop_leave']"
+                v-if="record.auth['shop:staff:staff|shop_leave']"
                 v-modal-link="{
                   name: 'shop-staff-leave-current-shop',
                   props: { staff: record }

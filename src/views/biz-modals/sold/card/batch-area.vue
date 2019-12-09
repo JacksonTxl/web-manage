@@ -1,5 +1,10 @@
 <template>
-  <st-modal title="批量入场vip区域设置" size="small" v-model="show">
+  <st-modal
+    title="批量入场vip区域设置"
+    size="small"
+    v-model="show"
+    :class="batch()"
+  >
     <st-form labelWidth="75px">
       <st-form-item
         label="选择"
@@ -13,7 +18,7 @@
           :total="count"
         ></st-batch-select-radio>
       </st-form-item>
-      <st-form-item label="入场vip区域" class="mg-b0">
+      <st-form-item label="入场vip区域" :class="batch('entry')">
         <a-checkbox-group v-model="cardVip" v-if="vips.length">
           <a-checkbox
             v-for="(item, index) in vips"
@@ -59,6 +64,9 @@ import { BATCH_TYPE, BATCH_INFO } from '@/constants/common/batch-operation'
 import { cloneDeep } from 'lodash-es'
 export default {
   name: 'ModalSoldCardArea',
+  bem: {
+    batch: 'sold-card-batch-area'
+  },
   props: {
     ids: {
       type: Array,

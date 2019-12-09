@@ -21,7 +21,7 @@ export class ListService implements Controller {
   categoryList$ = new State<any[]>([])
   state$: State<any>
   auth$ = this.authService.authMap$({
-    add: 'brand_shop:product:team_course|add'
+    add: 'shop:product:team_course|add'
   })
   constructor(
     private courseApi: CourseApi,

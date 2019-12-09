@@ -94,10 +94,9 @@
     <st-container
       v-if="!isEdit && brandInfo.description"
       type="2"
-      class="bg-gray"
-    >
-      {{ brandInfo.description }}
-    </st-container>
+      :class="b('text-style')"
+      v-html="brandInfo.description"
+    ></st-container>
   </st-panel>
 </template>
 <script>

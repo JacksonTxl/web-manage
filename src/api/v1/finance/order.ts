@@ -108,4 +108,10 @@ export class OrderApi extends Api {
       params: { ...params }
     })
   }
+  /**
+   * 打印小票详情
+   */
+  gatheringTicketInfo(orderId: number) {
+    return this.http.get(`/v1/finance/order/ticket/${orderId}`)
+  }
 }

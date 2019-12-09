@@ -13,8 +13,11 @@
             <st-info-item label="剩余课时">
               {{ info.remain_course_num }}
             </st-info-item>
-            <st-info-item class="mg-b24" label="有效期">
+            <st-info-item label="有效期">
               {{ info.valid_date }}
+            </st-info-item>
+            <st-info-item class="mg-b24" label="剩余冻结时长">
+              {{ info.frozen_time_remain }}
             </st-info-item>
           </st-info>
         </a-col>

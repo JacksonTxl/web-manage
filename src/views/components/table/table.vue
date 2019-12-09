@@ -30,6 +30,14 @@ export default {
     pageMode: {
       type: String,
       default: 'server'
+    },
+    isExpand: {
+      type: Boolean,
+      default: false
+    },
+    simplePage: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {
@@ -52,6 +60,9 @@ export default {
         emptyText: <st-no-data />
       }
     },
+    defaultPageSize() {
+      return this.simplePage ? 10 : 20
+    },
     tablePagination: {
       get() {
         if (this.pagination === false || this.page === false) {
@@ -60,7 +71,7 @@ export default {
         let _p = merge(
           {
             current: this.current,
-            pageSize: this.pageSize,
+            pageSize: this.defaultPageSize,
             total: this.total,
             showTotal: function(total, range) {
               return `共${total}条`
@@ -77,7 +88,7 @@ export default {
         )
         if (this.page) {
           if (this.page.size) {
-            _p.pageSize = +this.page.size || 20
+            _p.pageSize = +this.page.size || this.defaultPageSize
           }
           if (this.page.current_page) {
             _p.current = +this.page.current_page || 1
@@ -85,7 +96,11 @@ export default {
           if (this.page.total_counts) {
             _p.total = +this.page.total_counts || 0
           }
+          if (this.simplePage) {
+            _p.simple = true
+          }
         }
+        console.log(_p)
         return _p
       }
     }
@@ -125,13 +140,16 @@ export default {
     }
   },
   render(h) {
-    const props = {
+    let props = {
       pagination: this.tablePagination,
       locale: this.locale,
-      expandIcon: this.CustomExpandIcon,
       dataSource: this.dataSource,
       scroll: this.dataSource.length >= 1 ? this.scroll : {},
       ...this.$attrs
+    }
+    // 判断是否是父子表格
+    if (this.isExpand) {
+      this.props.expandIcon = this.CustomExpandIcon
     }
     const ce = this.alertSelection.onReset
       ? h('div', { class: 'st-table-wapper' }, [

@@ -13,6 +13,8 @@
       :scroll="{ y: 230 }"
       @change="onPageChange"
       :page="page"
+      :simplePage="true"
+      :class="list.length > 0 ? 'st-scroll-data' : ''"
     />
   </st-modal>
 </template>
@@ -53,7 +55,7 @@ export default {
     this.getDetailList({
       task_id: this.task_id,
       popup_type: this.popup_type,
-      size: 20,
+      size: 10,
       current_page: 1
     })
   },

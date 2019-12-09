@@ -7,14 +7,14 @@
           <st-button
             @click="onClickRouterPush({ pathName: 'addActivity' })"
             icon="add"
-            :disabled="!auth$.add"
+            v-if="auth$.add"
             type="primary"
           >
             新增活动
           </st-button>
           <st-button
             @click="onClickRouterPush({ pathName: 'checkinActivity' })"
-            :disabled="!auth$.checkIn"
+            v-if="auth$.checkIn"
             class="mg-l8"
           >
             签到验票

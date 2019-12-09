@@ -1127,6 +1127,7 @@ export default {
               coach_level: cloneDeep(i.coachGradeList)
             })
           })
+          this.packageData.album_id = this.packageInfo.album_id // 这个给后端快捷找到相册使用，前端不需要处理使用
           this.editPackageService
             .editPackage(this.packageData)
             .subscribe(res => {

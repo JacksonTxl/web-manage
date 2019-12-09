@@ -20,9 +20,9 @@ export class DepartmentService {
   staffList$ = new State([])
   page$ = new State({})
   auth$ = this.authService.authMap$({
-    join: 'brand_shop:staff:staff|join',
-    add: 'brand_shop:staff:staff|add',
-    import: 'brand_shop:staff:staff|import',
+    join: 'brand:staff:staff|join',
+    add: 'brand:staff:staff|add',
+    import: 'brand:staff:staff|import',
     departmentAdd: 'brand:auth:department|add',
     departmentDel: 'brand:auth:department|del',
     departmentEdit: 'brand:auth:department|edit'

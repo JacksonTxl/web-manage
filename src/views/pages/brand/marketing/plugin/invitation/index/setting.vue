@@ -1,7 +1,7 @@
 <template>
   <div :class="inviation()">
     <st-form :form="form" labelWidth="94px">
-      <st-form-item label="功能开关" required>
+      <st-form-item label="功能开关" required v-if="auth.add">
         <st-switch v-model="openStatus" @change="onOpenStatusChange" />
         <span class="mg-l12 mg-r12">{{ openStatus ? '已' : '未' }}开启</span>
         <span v-if="!openStatus">
@@ -126,7 +126,7 @@
           <!-- <st-card-bg-radio v-model="banner"/> -->
           <st-invitation-bg-radio v-model="invite_poster" />
         </st-form-item>
-        <st-form-item label-fix>
+        <st-form-item label-fix v-if="auth.edit">
           <st-button
             type="primary"
             :loading="loading.edit || loading.add"
@@ -164,7 +164,8 @@ export default {
     return {
       isOpen: this.indexService.isOpen$,
       loading: this.settingService.loading$,
-      settingInfo: this.settingService.settingInfo$
+      settingInfo: this.settingService.settingInfo$,
+      auth: this.settingService.auth$
     }
   },
   data() {

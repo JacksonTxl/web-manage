@@ -232,6 +232,11 @@ export default {
           if: this.auth['shop:member:member|bind_card']
         },
         {
+          text: `绑定跟进${this.$c('coach')}`,
+          click: this.onDistributionCoach,
+          if: this.auth['shop:member:member|bind_coach']
+        },
+        {
           text: `更改跟进${this.$c('coach')}`,
           click: this.onDistributionCoach,
           if: this.auth['shop:member:member|change_coach']
@@ -240,6 +245,11 @@ export default {
           text: '更改跟进销售',
           click: this.onDistributionSale,
           if: this.auth['shop:member:member|change_salesman']
+        },
+        {
+          text: '绑定跟进销售',
+          click: this.onDistributionSale,
+          if: this.auth['shop:member:member|bind_salesman']
         },
         {
           text: '解除微信绑定',
@@ -359,77 +369,33 @@ export default {
     },
     // 分配教练
     onDistributionCoach() {
-      if (this.info.follow_coach_id && this.info.follow_coach_id > 0) {
-        this.$confirm({
-          title: '提示信息',
-          content: `该用户已存在跟进${this.$c('coach')}，是否确认替换？`,
-          onOk: () => {
-            this.$modalRouter.push({
-              name: 'shop-distribution-coach',
-              props: {
-                memberIds: [this.$searchQuery.id],
-                coachId: this.info.follow_coach_id
-              },
-              on: {
-                success: () => {
-                  this.$router.reload()
-                }
-              }
-            })
-          },
-          onCancel() {}
-        })
-      } else {
-        this.$modalRouter.push({
-          name: 'shop-distribution-coach',
-          props: {
-            memberIds: [this.$searchQuery.id],
-            coachId: this.info.follow_coach_id
-          },
-          on: {
-            success: () => {
-              this.$router.reload()
-            }
+      this.$modalRouter.push({
+        name: 'shop-distribution-coach',
+        props: {
+          memberIds: [this.$searchQuery.id],
+          coachId: this.info.follow_coach_id
+        },
+        on: {
+          success: () => {
+            this.$router.reload()
           }
-        })
-      }
+        }
+      })
     },
     // 分配销售
     onDistributionSale() {
-      if (this.info.follow_salesman_id && this.info.follow_salesman_id > 0) {
-        this.$confirm({
-          title: '提示信息',
-          content: '该用户已存在跟进销售，是否确认替换？',
-          onOk: () => {
-            this.$modalRouter.push({
-              name: 'shop-distribution-sale',
-              props: {
-                memberIds: [this.$searchQuery.id],
-                saleId: this.info.follow_salesman_id
-              },
-              on: {
-                success: () => {
-                  this.$router.reload()
-                }
-              }
-            })
-          },
-          onCancel() {}
-        })
-      } else {
-        this.$modalRouter.push({
-          name: 'shop-distribution-sale',
-          props: {
-            memberIds: [this.$searchQuery.id],
-            saleId: this.info.follow_salesman_id
-          },
-          on: {
-            success: () => {
-              this.$router.reload()
-            }
+      this.$modalRouter.push({
+        name: 'shop-distribution-sale',
+        props: {
+          memberIds: [this.$searchQuery.id],
+          saleId: this.info.follow_salesman_id
+        },
+        on: {
+          success: () => {
+            this.$router.reload()
           }
-        })
-      }
+        }
+      })
     }
   },
   mounted() {
