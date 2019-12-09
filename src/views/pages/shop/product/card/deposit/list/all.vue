@@ -135,7 +135,7 @@
       <div slot="action" slot-scope="text, record">
         <st-table-actions>
           <router-link
-            v-if="record.auth['brand_shop:product:deposit_card|get']"
+            v-if="record.auth['shop:product:deposit_card|get']"
             :to="{
               path: `/shop/product/card/deposit/info`,
               query: { id: record.id }
@@ -144,31 +144,37 @@
             详情
           </router-link>
           <a
-            v-if="record.auth['brand_shop:product:deposit_card|edit']"
+            v-if="record.auth['shop:product:deposit_card|edit']"
             @click="onEdit(record)"
           >
             编辑
           </a>
           <a
-            v-if="record.auth['brand_shop:product:deposit_card|up']"
+            v-if="record.auth['shop:product:deposit_card|up']"
             @click="onShelf(record)"
           >
             上架
           </a>
           <a
-            v-if="record.auth['brand_shop:product:deposit_card|pause']"
+            v-if="record.auth['shop:product:deposit_card|down']"
+            @click="onShelfDown(record)"
+          >
+            下架
+          </a>
+          <a
+            v-if="record.auth['shop:product:deposit_card|pause']"
             @click="onStopSale(record)"
           >
             停售
           </a>
           <a
-            v-if="record.auth['brand_shop:product:deposit_card|restore']"
+            v-if="record.auth['shop:product:deposit_card|restore']"
             @click="onRecoverSale(record)"
           >
             恢复售卖
           </a>
           <a
-            v-if="record.auth['brand_shop:product:deposit_card|del']"
+            v-if="record.auth['shop:product:deposit_card|del']"
             @click="onDelete(record)"
           >
             删除
@@ -179,6 +185,7 @@
   </div>
 </template>
 <script>
+import { MessageService } from '@/services/message.service'
 import { AllService } from './all.service'
 import { columns } from './all.config.ts'
 import tableMixin from '@/mixins/table.mixin'
@@ -204,7 +211,8 @@ export default {
   },
   serviceInject() {
     return {
-      allService: AllService
+      allService: AllService,
+      messageService: MessageService
     }
   },
   rxState() {
@@ -260,6 +268,24 @@ export default {
             .setShelf(record.id)
             .toPromise()
             .then(() => {
+              this.$router.reload()
+            })
+        }
+      })
+    },
+    // 下架
+    onShelfDown(record) {
+      this.$confirm({
+        title: `下架${this.$c('member_card')}`,
+        content: `确定下架${record.card_name}储值卡吗？`,
+        onOk: () => {
+          return this.allService
+            .setCardShelfDown(record.id)
+            .toPromise()
+            .then(() => {
+              this.messageService.success({
+                content: '下架成功'
+              })
               this.$router.reload()
             })
         }

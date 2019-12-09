@@ -167,6 +167,7 @@ import { cloneDeep, filter } from 'lodash-es'
 import { FollowService } from './follow.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './follow.config'
+import { MessageService } from '@/services/message.service'
 export default {
   name: 'PageShopMemberFollow',
   bem: {
@@ -175,7 +176,8 @@ export default {
   mixins: [tableMixin],
   serviceInject() {
     return {
-      followService: FollowService
+      followService: FollowService,
+      messageService: MessageService
     }
   },
   rxState() {
@@ -225,6 +227,18 @@ export default {
     },
     // 查询
     onSearchNative() {
+      console.log(this.$searchQuery.follow_start_num)
+      console.log(this.$searchQuery.follow_end_num)
+      if (
+        this.$searchQuery.follow_start_num > this.$searchQuery.follow_end_num &&
+        this.$searchQuery.follow_start_num !== '' &&
+        this.$searchQuery.follow_end_num !== ''
+      ) {
+        this.messageService.warning({
+          content: '最小跟进次数要小于最大跟进次数'
+        })
+        return
+      }
       this.$searchQuery.follow_start_date = this.date[0]
         ? `${this.date[0].format('YYYY-MM-DD')} 00:00`
         : ''

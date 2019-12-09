@@ -19,7 +19,7 @@ export class ListService implements Controller {
   priceGradient$ = new State<any[]>([])
   dataSource$ = new State<any[]>([])
   auth$ = this.authService.authMap$({
-    add: 'brand_shop:product:personal_course|add'
+    add: 'shop:product:personal_course|add'
   })
   constructor(
     private shopPersonalCourseApi: ShopPersonalCourseApi,

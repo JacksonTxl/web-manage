@@ -124,6 +124,14 @@ export default {
         }
       })
     },
+    // 打印小票
+    printOrder(order_id) {
+      window.open(
+        '/ticket/gathering-print?id=' + order_id,
+        '_blank',
+        'width=800,height=600'
+      )
+    },
     // 订单收款modal
     createdOrderPay(props) {
       return new Promise((resolve, reject) => {
@@ -159,6 +167,9 @@ export default {
           break
         case 'ViewOrder':
           this.createdOrderViewOrder(orderId)
+          break
+        case 'PrintOrder':
+          this.printOrder(orderId)
           break
         case 'Pay':
           this.createdOrderPay({ order_id: orderId, type: modalType }).then(

@@ -87,7 +87,7 @@
           <st-table-actions>
             <router-link
               class="mg-r8"
-              v-if="record.auth['brand_shop:product:personal_course|get']"
+              v-if="record.auth['brand:product:personal_course|get']"
               :to="{
                 name: 'brand-product-course-personal-info',
                 query: { id: record.course_id }

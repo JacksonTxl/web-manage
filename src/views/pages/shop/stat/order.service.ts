@@ -7,6 +7,7 @@ import { AuthService } from '@/services/auth.service'
 export class OrderService implements Controller {
   list$ = new State([])
   page$ = new State({})
+  total$ = new State({})
   loading$ = new State({})
   authTabs$ = this.authService.getAuthTabs$('shop-stat-revenue')
   constructor(private StatApi: StatApi, private authService: AuthService) {}
@@ -16,6 +17,7 @@ export class OrderService implements Controller {
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+        this.total$.commit(() => res.total)
       })
     )
   }

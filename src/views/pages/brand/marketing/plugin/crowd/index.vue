@@ -46,7 +46,7 @@
               <span slot="title">定向运营</span>
               <a-menu-item style="width:130px">
                 <a
-                  v-if="record.auth['shop:member:crowd|export']"
+                  v-if="record.auth['brand:member:crowd|export']"
                   v-export-excel="{
                     type: 'crowd/' + record.id,
                     query: record
@@ -77,7 +77,7 @@
               </a-menu-item>
             </st-more-dropdown>
             <router-link
-              v-if="record.auth['shop:member:crowd|edit']"
+              v-if="record.auth['brand:member:crowd|edit']"
               :to="{
                 name: 'brand-marketing-plugin-crowd-add',
                 query: { id: record.id }
@@ -86,7 +86,7 @@
               编辑
             </router-link>
             <st-popconfirm
-              v-if="record.auth['shop:member:crowd|del']"
+              v-if="record.auth['brand:member:crowd|del']"
               @confirm="deleteTreeNode(record)"
             >
               <a>删除</a>

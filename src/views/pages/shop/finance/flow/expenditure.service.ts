@@ -10,6 +10,7 @@ export class ExpenditureService implements Controller {
   loading$ = new State({})
   page$ = new State({})
   list$ = new State([])
+  total$ = new State({})
   payType$ = this.userService.getOptions$('finance.pay_channel')
 
   constructor(private userService: UserService, private api: FlowApi) {}
@@ -20,6 +21,7 @@ export class ExpenditureService implements Controller {
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+        this.total$.commit(() => res.total)
       })
     )
   }

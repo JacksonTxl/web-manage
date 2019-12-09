@@ -14,8 +14,8 @@ export class IndexService extends Store<CrowdIndexState> {
   state$: State<CrowdIndexState>
   crowdIndexInfo$: Computed<string>
   auth$ = this.authService.authMap$({
-    analyst: 'shop:member:crowd|analyst',
-    export: 'shop:member:crowd|export'
+    // analyst: 'shop:member:crowd|analyst',  //NOTE: 权限点人群分析去掉
+    export: 'brand:member:crowd|export'
   })
   constructor(private crowdAPI: CrowdAPI, private authService: AuthService) {
     super()

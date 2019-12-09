@@ -8,9 +8,9 @@ export const allColumns = (vm: any) => {
     },
     {
       dataIndex: 'member_card_num',
+      titleTotal: '入场卡成单数',
       align: 'right',
-      slots: { title: 'memberTitle' },
-      scopedSlots: { customRender: 'member_card_num' }
+      slots: { title: 'memberTitle' }
     },
     {
       title: `${vm.$c('member_card')}购买金额（元）`,
@@ -19,9 +19,9 @@ export const allColumns = (vm: any) => {
     },
     {
       dataIndex: 'deposit_card_num',
+      titleTotal: '储值卡成单数',
       align: 'right',
-      slots: { title: 'depositTitle' },
-      scopedSlots: { customRender: 'deposit_card_num' }
+      slots: { title: 'depositTitle' }
     },
     {
       title: '储值卡购买金额（元）',
@@ -31,8 +31,7 @@ export const allColumns = (vm: any) => {
     {
       title: '私教购买节数',
       dataIndex: 'personal_course_num',
-      align: 'right',
-      scopedSlots: { customRender: 'personal_course_num' }
+      align: 'right'
     },
     {
       title: '私教购买金额（元）',
@@ -62,19 +61,20 @@ export const allColumns = (vm: any) => {
     },
     {
       dataIndex: 'total_course_num',
+      titleTotal: '总购课节数 ',
       align: 'right',
-      slots: { title: 'totalTitle' },
-      scopedSlots: { customRender: 'total_course_num' }
+      slots: { title: 'totalTitle' }
     },
     {
       dataIndex: 'other_amount',
       align: 'right',
-      slots: { title: 'otherTitle' },
-      scopedSlots: { customRender: 'other_amount' }
+      titleTotal: '其它销售金额（元） ',
+      slots: { title: 'otherTitle' }
     },
     {
       dataIndex: 'performance_amount',
       align: 'right',
+      titleTotal: '总销售业绩（元) ',
       slots: { title: 'performanceTitle' },
       scopedSlots: { customRender: 'performance_amount' }
     }

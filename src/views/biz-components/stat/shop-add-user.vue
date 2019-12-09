@@ -58,7 +58,8 @@ export default {
         },
         value: {
           formatter: toKFilter,
-          min: 0
+          min: 0,
+          tickCount: 2
         }
       })
 
@@ -97,6 +98,12 @@ export default {
           shadowOffsetY: 4
         })
         .color(this.color)
+        .tooltip('name*value', (name, value) => {
+          return {
+            name: '购买私教用户',
+            value: value + '人'
+          }
+        })
 
       this.chart.render()
     }

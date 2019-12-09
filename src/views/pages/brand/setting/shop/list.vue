@@ -98,13 +98,13 @@
       <div slot="action" slot-scope="text, record">
         <st-table-actions>
           <router-link
-            v-if="record.auth['brand_shop:shop:shop|get']"
+            v-if="record.auth['brand:shop:shop|get']"
             :to="`./info?id=${record.shop_id}`"
           >
             详情
           </router-link>
           <router-link
-            v-if="record.auth['brand_shop:shop:shop|edit']"
+            v-if="record.auth['brand:shop:shop|edit']"
             :to="`./edit?id=${record.shop_id}`"
           >
             编辑

@@ -14,6 +14,7 @@
         打印合同
       </st-button>
       <st-button @click="viewOrder">查看订单</st-button>
+      <st-button @click="printOrder" type="primary">打印小票</st-button>
       <st-button @click="goPay" v-if="needPay">去支付</st-button>
       <st-button @click="changeMember" v-if="isFamilyCard">变更成员</st-button>
     </div>
@@ -56,6 +57,13 @@ export default {
       this.$emit('success', {
         orderId: this.order_id,
         type: 'Print'
+      })
+    },
+    printOrder() {
+      this.show = false
+      this.$emit('success', {
+        orderId: this.order_id,
+        type: 'PrintOrder'
       })
     },
     viewOrder() {

@@ -1,10 +1,8 @@
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { GroupBuyApi, GroupListParams } from '@/api/v1/marketing/group-buy'
-import { MarketingApi } from '@/api/v1/marketing/marketing'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
-import { UserService } from '@/services/user.service'
 @Injectable()
 export class ListService implements Controller {
   list$ = new State([])
@@ -17,10 +15,8 @@ export class ListService implements Controller {
   })
   // brand$ = this.userService.brand$  需要
   constructor(
-    private marketingApi: MarketingApi,
     private groupBuyApi: GroupBuyApi,
-    private authService: AuthService,
-    private userService: UserService
+    private authService: AuthService
   ) {}
   @Effect()
   getList(params: GroupListParams) {
