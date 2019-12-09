@@ -200,11 +200,11 @@ export default {
     },
     // 时间过滤器
     timeFilter(time) {
-      return /^\d+$/.test(time) && time > 9
+      return /^\d+$/.test(time) && time >= 10
         ? time + ':00'
-        : /^\d+$/.test(time) && time <= 9
+        : /^\d+$/.test(time) && time < 10
         ? '0' + time + ':00'
-        : !/^\d+$/.test(time) && time <= 9
+        : !/^\d+$/.test(time) && time < 10
         ? '0' + (time + '').replace(/.5/gi, ':30')
         : (time + '').replace(/.5/gi, ':30') + ''
     },
