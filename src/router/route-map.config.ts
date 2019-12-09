@@ -866,7 +866,8 @@ export const routeMapConfig = {
     routeConfig.meta.tabs = [
       'shop-product-course-schedule-team',
       'shop-product-course-schedule-personal',
-      'shop-product-course-schedule-personal-team'
+      'shop-product-course-schedule-personal-team',
+      'shop-product-course-schedule-mini-team'
     ]
   },
   'shop-product-course-schedule-team'(routeConfig: RouteConfig) {
@@ -899,6 +900,18 @@ export const routeMapConfig = {
     routeConfig: RouteConfig
   ) {
     routeConfig.meta.title = '私教小团课排期'
+    routeConfig.queryOptions = {
+      coach_id: { type: Number, default: -1 }
+    }
+  },
+  'shop-product-course-schedule-mini-team'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '小班课'
+    routeConfig.queryOptions = {
+      coach_id: { type: Number, default: -1 }
+    }
+  },
+  'shop-product-course-schedule-mini-team-table'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '小班课'
     routeConfig.queryOptions = {
       coach_id: { type: Number, default: -1 }
     }

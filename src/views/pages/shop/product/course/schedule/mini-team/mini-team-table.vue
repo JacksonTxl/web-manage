@@ -1,0 +1,199 @@
+<template>
+  <div class="page-team-table schedule-table">
+    <div
+      class="page-team-table__title pd-x24 pd-y16 schedule-table__title schedule-table__title--fixed"
+      slot="title"
+    >
+      <div class="title__left">
+        <st-button
+          v-modal-link="{ name: 'schedule-team-add-course-batch' }"
+          class="mg-r12"
+          type="primary"
+          v-if="auth.addBatch"
+        >
+          批量排期
+        </st-button>
+        <st-button
+          v-if="auth.copy"
+          v-modal-link="{ name: 'schedule-team-copy-schedule' }"
+        >
+          复制排期
+        </st-button>
+      </div>
+      <div class="title__center">
+        <date
+          @today="getTable"
+          :start="$searchQuery.start_date"
+          @pre="getTable"
+          @next="getTable"
+        />
+      </div>
+      <div class="title__right schedule-button">
+        <a-radio-group
+          :value="pageBtnFocusState"
+          @change="handleSizeChange($event, 'page')"
+        >
+          <a-radio-button
+            value="calendar"
+            class="mg-l12"
+            @click="onClickSkipSchedule"
+          >
+            <st-icon type="calendar"></st-icon>
+          </a-radio-button>
+          <a-radio-button value="list">
+            <st-icon type="list"></st-icon>
+          </a-radio-button>
+        </a-radio-group>
+      </div>
+    </div>
+    <div class="schedule-table__content">
+      <a-card
+        :title="card.date | filterStartTime"
+        :key="card.date"
+        v-for="card in scheduleTable"
+        class="mg-l24 mg-r24"
+      >
+        <span
+          slot="extra"
+          class="add-schedule"
+          @click="onAddSchedule(card.date)"
+        >
+          + 添加课程排期
+        </span>
+        <a-row
+          class="page-team-table__item"
+          v-for="info in card.data"
+          :key="info.id"
+        >
+          <a-col :lg="3" class="time">
+            {{ info.start_time }} - {{ info.end_time }}
+          </a-col>
+          <a-col :lg="12" class="content">
+            <div class="course-info">
+              <div class="course-name">{{ info.course_name }}</div>
+              <div class="address">
+                <div class="mg-r24">
+                  <span class="label">场地：</span>
+                  <span class="value">{{ info.court_name }}</span>
+                </div>
+                <div>
+                  <span class="label">{{ $c('coach') }}：</span>
+                  <span class="value">{{ info.coach_name }}</span>
+                </div>
+              </div>
+            </div>
+            <div :lg="5" :offset="3" class="reserve">
+              <div class="mg-r24">
+                <span class="label">签到：</span>
+                <span class="value">{{ info.checkin_num }}人</span>
+              </div>
+              <div class="mg-r24">
+                <span class="label">预约：</span>
+                <span class="value">{{ info.reserved_num }}人</span>
+              </div>
+              <div>
+                <span class="label">可约：</span>
+                <span class="value">{{ info.reserve_max }}人</span>
+              </div>
+            </div>
+          </a-col>
+          <a-col
+            :lg="2"
+            :offset="7"
+            class="action"
+            v-modal-link="{
+              name: 'schedule-team-reserve-info',
+              props: { id: info.id }
+            }"
+          >
+            <a href="#">查看详情</a>
+          </a-col>
+        </a-row>
+      </a-card>
+    </div>
+  </div>
+</template>
+
+<script>
+import { TeamScheduleScheduleService } from '../team/service#/schedule.service'
+import ScheduleTeamAddCourseBatch from '@/views/biz-modals/schedule/team/add-course-batch'
+import ScheduleTeamAddCourse from '@/views/biz-modals/schedule/team/add-course'
+import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
+import date from '@/views/biz-components/schedule/date#/date-component.vue'
+import ScheduleTeamReserveInfo from '@/views/biz-modals/schedule/team/reserve-info'
+import { TeamTableService } from './mini-team-table.service'
+export default {
+  name: 'ScheduleTeamTable',
+  modals: {
+    ScheduleTeamAddCourseBatch,
+    ScheduleTeamAddCourse,
+    ScheduleTeamCopySchedule,
+    ScheduleTeamReserveInfo
+  },
+  serviceInject() {
+    return {
+      teamScheduleScheduleService: TeamScheduleScheduleService,
+      service: TeamTableService
+    }
+  },
+  rxState() {
+    return {
+      auth: this.service.auth$,
+      scheduleTable: this.teamScheduleScheduleService.scheduleTable$
+    }
+  },
+  data() {
+    return {
+      pageBtnFocusState: 'list'
+    }
+  },
+  filters: {
+    filterStartTime(val) {
+      const weekday = moment(val)
+        .format('ddd')
+        .valueOf()
+      const MMDD = moment(val)
+        .format('MM-DD')
+        .valueOf()
+      return `${MMDD} ${weekday}`
+    }
+  },
+  components: {
+    date
+  },
+  methods: {
+    handleSizeChange(evt, type) {
+      this.pageBtnFocusState = evt.target.value
+    },
+    onScheduleChange() {
+      this.$router.push({ query: this.$searchQuery })
+    },
+    // 添加团课排期
+    onAddSchedule(date) {
+      this.$modalRouter.push({
+        name: 'schedule-team-add-course',
+        props: { time: moment(date) },
+        on: {
+          ok: res => {
+            this.onScheduleChange()
+          }
+        }
+      })
+    },
+    onClickSkipSchedule() {
+      this.$router.push({
+        name: 'shop-product-course-schedule-team',
+        query: this.$searchQuery
+      })
+    },
+    getTable(val = {}) {
+      const query = {
+        ...this.$searchQuery,
+        start_date: val.start_date,
+        end_date: val.end_date
+      }
+      this.$router.push({ query })
+    }
+  }
+}
+</script>

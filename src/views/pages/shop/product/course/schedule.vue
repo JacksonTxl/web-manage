@@ -106,6 +106,46 @@
         </a-select-option>
       </a-select>
     </div>
+    <div
+      slot="actions"
+      v-if="
+        routeName === 'shop-product-course-schedule-mini-team-mini-team' ||
+          routeName === 'shop-product-course-schedule-mini-team-mini-team-table'
+      "
+    >
+      <a-select
+        v-model="$searchQuery.course_id"
+        placeholder="请选择课程"
+        @change="onChange"
+        style="width: 200px"
+        class="page-schedule__select mg-r8"
+      >
+        <a-select-option :value="-1">全部课程</a-select-option>
+        <a-select-option
+          v-for="course in courseOptions"
+          :key="course.id"
+          :value="course.id"
+        >
+          {{ course.course_name }}
+        </a-select-option>
+      </a-select>
+      <a-select
+        class="page-schedule__select"
+        :placeholder="`请选择${$c('coach')}`"
+        @change="onChange"
+        style="width: 200px"
+        v-model="$searchQuery.coach_id"
+      >
+        <a-select-option :value="-1">全部{{ $c('coach') }}</a-select-option>
+        <a-select-option
+          v-for="coach in coachOptions"
+          :key="coach.id"
+          :value="coach.id"
+        >
+          {{ coach.staff_name }}
+        </a-select-option>
+      </a-select>
+    </div>
     <router-view></router-view>
   </st-panel>
 </template>
@@ -151,6 +191,9 @@ export default {
     routeName() {
       return this.$route.name
     }
+  },
+  created() {
+    console.log(this.$route.name)
   },
   methods: {
     onChange() {
