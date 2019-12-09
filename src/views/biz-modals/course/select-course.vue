@@ -32,7 +32,7 @@
             <col style="width:16%;" />
           </colgroup>
           <tr class="bg-thead">
-            <th class="pl-24">课程类别</th>
+            <th class="pl-9">课程类别</th>
             <th>课程类型</th>
             <th>课程名称</th>
             <th>操作</th>
@@ -99,7 +99,7 @@
             <col style="width:16%;" />
           </colgroup>
           <tr class="bg-thead">
-            <th class="pl-24">课程类别</th>
+            <th class="pl-9">课程类别</th>
             <th>课程类型</th>
             <th>课程名称</th>
             <th>操作</th>

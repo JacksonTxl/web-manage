@@ -374,9 +374,7 @@
                         {{ isShowEditTable === index ? '确认' : '编辑' }}
                       </a>
                       <a
-                        :disabled="
-                          $searchQuery.activity_id && $searchQuery.status === 1
-                        "
+                        :disabled="deleteBtnStatus"
                         href="javascript:;"
                         @click="onDelete(index)"
                       >
@@ -577,6 +575,11 @@ export default {
     // this.notPrize.prize = this.lucky[0]
     if (this.$searchQuery.activity_id) {
       this.editVIew(this.$searchQuery.activity_id)
+    }
+  },
+  computed: {
+    deleteBtnStatus() {
+      return this.$searchQuery.activity_id && this.$searchQuery.status === 1
     }
   },
   methods: {

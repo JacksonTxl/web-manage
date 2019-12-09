@@ -54,7 +54,6 @@
         <st-input-number
           placeholder="请输入人数"
           v-decorator="decorators.limit_num"
-          type="number"
         >
           <span slot="addonAfter" class="addon-width">人</span>
         </st-input-number>
@@ -63,7 +62,6 @@
         <st-input-number
           placeholder="请输入课时费"
           v-decorator="decorators.course_fee"
-          type="number"
         >
           <span slot="addonAfter" class="addon-width">元/节</span>
         </st-input-number>
