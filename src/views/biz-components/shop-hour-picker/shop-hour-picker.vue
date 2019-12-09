@@ -200,19 +200,19 @@ export default {
     },
     // 时间过滤器
     timeFilter(time) {
-      return /^\d+$/.test(time) && time > 9
+      return /^\d+$/.test(time) && time >= 10
         ? time + ':00'
-        : /^\d+$/.test(time) && time <= 9
+        : /^\d+$/.test(time) && time < 10
         ? '0' + time + ':00'
-        : !/^\d+$/.test(time) && time <= 9
+        : !/^\d+$/.test(time) && time < 10
         ? '0' + (time + '').replace(/.5/gi, ':30')
         : (time + '').replace(/.5/gi, ':30') + ''
     },
     // tooltip格式处理
     formatter(value) {
       const valueHalf =
-        value > 9 ? `${parseInt(value)}:30` : `0${parseInt(value)}:30`
-      const valueInt = value > 9 ? `${value}:00` : `0${value}:00`
+        value >= 10 ? `${parseInt(value)}:30` : `0${parseInt(value)}:30`
+      const valueInt = value >= 10 ? `${value}:00` : `0${value}:00`
       return value % 1 === 0 ? valueInt : valueHalf
     },
     onChange(sliders) {

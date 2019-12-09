@@ -58,9 +58,9 @@
           <span slot="addonAfter" class="addon-width">人</span>
         </st-input-number>
       </st-form-item>
-      <st-form-item label="课时费" required class="mg-b0">
+      <st-form-item label="单节预约价格" required class="mg-b0">
         <st-input-number
-          placeholder="请输入课时费"
+          placeholder="请输入单节预约价格"
           v-decorator="decorators.course_fee"
         >
           <span slot="addonAfter" class="addon-width">元/节</span>
