@@ -393,7 +393,8 @@ export const routeMapConfig = {
     routeConfig.meta.auth = 'brand:course:course_setting|tab'
     routeConfig.meta.tabs = [
       'brand-setting-app-course-category',
-      'brand-setting-app-course-training-aim'
+      'brand-setting-app-course-training-aim',
+      'brand-setting-app-course-group-range'
     ]
   },
   'brand-setting-app-staff'(routeConfig: RouteConfig) {
@@ -407,6 +408,10 @@ export const routeMapConfig = {
   },
   'brand-setting-app-course-training-aim'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '训练目的'
+    routeConfig.meta.auth = 'brand_shop:course:training_aim|list'
+  },
+  'brand-setting-app-course-group-range'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '小班课适用范围'
     routeConfig.meta.auth = 'brand_shop:course:training_aim|list'
   },
   'brand-setting-app-staff-skillful'(routeConfig: RouteConfig) {
