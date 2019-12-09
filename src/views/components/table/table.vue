@@ -123,14 +123,16 @@ export default {
       ))
     },
     CustomExpandIcon(props) {
-      let text
+      let text = ''
+      let className = 'st-expand-row-icon'
       if (props.record.children && props.record.children.length) {
         const type = props.expanded ? 'table-up' : 'table-down'
         text = <st-icon type={type} />
+        className = 'st-expand-row-icon mg-r8'
       }
       return (
         <span
-          class="st-expand-row-icon mg-r8"
+          class={className}
           onClick={e => props.onExpand(props.record, e)}
           style={{ cursor: 'pointer' }}
         >
@@ -149,7 +151,7 @@ export default {
     }
     // 判断是否是父子表格
     if (this.isExpand) {
-      this.props.expandIcon = this.CustomExpandIcon
+      props.expandIcon = this.CustomExpandIcon
     }
     const ce = this.alertSelection.onReset
       ? h('div', { class: 'st-table-wapper' }, [
