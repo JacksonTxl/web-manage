@@ -71,8 +71,9 @@
 import { columns } from './team-consume.config'
 import { TeamConsumeService } from './team-consume.service'
 import { COURSE_TYPE } from '@/constants/stat/course'
+import { cloneDeep } from 'lodash-es'
 export default {
-  name: 'TeamConsume',
+  name: 'ModalTeamConsume',
   serviceInject() {
     return {
       teamConsumeService: TeamConsumeService
@@ -99,8 +100,11 @@ export default {
   props: {
     record: {
       type: Object,
-      default: () => {}
-    }
+      default: () => {
+        return {}
+      }
+    },
+    type: String
   },
   data() {
     return {
@@ -119,6 +123,20 @@ export default {
     showTable() {
       return this.$searchQuery.showTable || 'all'
     },
+    totalQuery() {
+      let query = cloneDeep(this.$searchQuery)
+      delete query.showTable
+      delete query.current_page
+      delete query.size
+      return {
+        current_page: this.current_page,
+        size: this.size,
+        coach_id: this.coach_id,
+        course_id: this.course_id,
+        type: '/total',
+        ...query
+      }
+    },
     query() {
       return {
         stat_date: this.stat_date,
@@ -131,7 +149,8 @@ export default {
   },
   methods: {
     getConsumeList() {
-      this.teamConsumeService.getConsumeList(this.query).subscribe()
+      const query = this.type === 'total' ? this.totalQuery : this.query
+      this.teamConsumeService.getConsumeList(query).subscribe()
     },
     filterOption(input, option) {
       return (
@@ -143,8 +162,9 @@ export default {
     init() {
       this.coach_id = this.record.coach_id || -1
       this.stat_date = this.record.stat_date
+      const query = this.type === 'total' ? this.totalQuery : this.query
       this.teamConsumeService
-        .init({ course_type: COURSE_TYPE.TEAM }, { ...this.query })
+        .init({ course_type: COURSE_TYPE.TEAM }, { ...query, type: '/total' })
         .subscribe()
     }
   },

@@ -67,7 +67,27 @@
         <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
       </div>
     </section>
+    <st-total
+      :class="bPage('total')"
+      :indexs="columns"
+      :dataSource="total$"
+      hasTitle
+    >
+      <template v-slot:personal_checkin_amount="record">
+        <st-total-item
+          @click.native="onCLickPersonalCheckinAmount"
+          :item="record.item"
+        ></st-total-item>
+      </template>
+      <template v-slot:team_checkin_amount="record">
+        <st-total-item
+          @click.native="onCLickTeamCheckinAmount"
+          :item="record.item"
+        ></st-total-item>
+      </template>
+    </st-total>
     <st-table
+      class="mg-t12"
       :page="page"
       :scroll="{ x: 1800 }"
       @change="onTableChange"
@@ -148,6 +168,7 @@ export default {
     return {
       loading: this.courseService.loading$,
       list: this.courseService.list$,
+      total$: this.courseService.total$,
       departmentList: this.courseService.departmentList$,
       coachList: this.courseService.coachList$,
       page: this.courseService.page$,
@@ -177,6 +198,23 @@ export default {
     this.showTable = this.$searchQuery.showTable
   },
   methods: {
+    onCLickPersonalCheckinAmount() {
+      this.$modalRouter.push({
+        name: 'shop-stat-personal-consume',
+        props: {
+          type: 'total'
+        }
+      })
+    },
+    onCLickTeamCheckinAmount() {
+      console.log('你点击了+ onCLickTeamCheckinAmount')
+      this.$modalRouter.push({
+        name: 'shop-stat-team-consume',
+        props: {
+          type: 'total'
+        }
+      })
+    },
     getPersonalCourse(record) {
       this.$modalRouter.push({
         name: 'shop-stat-personal-course',

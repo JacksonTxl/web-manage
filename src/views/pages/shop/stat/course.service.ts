@@ -11,6 +11,7 @@ export class CourseService {
   departmentList$ = new State([])
   coachList$ = new State([])
   page$ = new State({})
+  total$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({
     export_all: 'shop:stat:class_reports|list_summary',
@@ -28,6 +29,7 @@ export class CourseService {
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+        this.total$.commit(() => res.total)
       })
     )
   }
@@ -37,6 +39,7 @@ export class CourseService {
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+        this.total$.commit(() => res.total)
       })
     )
   }
