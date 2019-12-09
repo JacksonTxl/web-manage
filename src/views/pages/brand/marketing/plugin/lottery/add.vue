@@ -733,6 +733,9 @@ export default {
       if (this.isShowEditTable === para) {
         this.isShowEditTable = -1
         return false
+      } else {
+        this.prizeRate.splice(para, 1)
+        this.prizeNum.splice(para, 1)
       }
       this.prizeList = this.prizeList.filter((item, index) => {
         return index !== para
@@ -762,7 +765,6 @@ export default {
           this.prizeNum[index] = item.number
           this.prizeRate[index] = item.rate
         })
-        this.prizeNum
         this.preview.startTime = res.activity_base.start_time
         this.preview.endTime = res.activity_base.end_time
         this.preview.perTimes = res.activity_rule.per_times
