@@ -171,7 +171,7 @@ export default {
       this.init()
     },
     getConsumeList() {
-      const query = type === 'total' ? this.totalQuery : this.query
+      const query = this.type === 'total' ? this.totalQuery : this.query
       this.personalConsumeService.getConsumeList(query).subscribe()
     },
     init() {
