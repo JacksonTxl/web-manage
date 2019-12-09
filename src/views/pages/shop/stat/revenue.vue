@@ -12,10 +12,16 @@
               </div>
             </swiper-slide>
           </swiper>
-          <div class="swiper-button-prev" slot="button-prev">
+          <div
+            class="swiper-r-button-prev swiper-button-prev"
+            slot="button-prev"
+          >
             <st-icon type="arrow-left" class="arrow-left" />
           </div>
-          <div class="swiper-button-next" slot="button-next">
+          <div
+            class="swiper-r-button-next swiper-button-next"
+            slot="button-next"
+          >
             <st-icon type="arrow-right1" class="arrow-right1" />
           </div>
         </div>
@@ -73,8 +79,8 @@ export default {
       sliderOptions: {
         autoplay: false,
         navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev'
+          nextEl: '.swiper-r-button-next',
+          prevEl: '.swiper-r-button-prev'
         },
         slidesPerView: 6,
         centeredSlides: false,

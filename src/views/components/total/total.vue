@@ -8,7 +8,7 @@
     </div>
     <div :class="b('content')" :style="{ width: !hasTitle ? '100%' : '' }">
       <div :class="b('swiper')">
-        <swiper :options="sliderOptions">
+        <swiper :options="sliderOptions" ref="swiperTotal">
           <swiper-slide
             v-for="(item, index) in showData"
             :class="{ 'st-total-item__active': item.slotName }"
@@ -18,21 +18,21 @@
               <st-total-item :item="item"></st-total-item>
             </slot>
           </swiper-slide>
+          <div
+            v-if="showData.length > 6"
+            class="swiper-total-button-prev swiper-button-prev"
+            slot="button-prev"
+          >
+            <st-icon type="arrow-left" class="arrow-left" />
+          </div>
+          <div
+            v-if="showData.length > 6"
+            class="swiper-total-button-next swiper-button-next"
+            slot="button-next"
+          >
+            <st-icon type="arrow-right1" class="arrow-right1" />
+          </div>
         </swiper>
-        <div
-          v-if="showData.length > 6"
-          class="swiper-button-prev"
-          slot="button-prev"
-        >
-          <st-icon type="arrow-left" class="arrow-left" />
-        </div>
-        <div
-          v-if="showData.length > 6"
-          class="swiper-button-next"
-          slot="button-next"
-        >
-          <st-icon type="arrow-right1" class="arrow-right1" />
-        </div>
       </div>
     </div>
   </div>
@@ -87,8 +87,8 @@ export default {
       sliderOptions: {
         autoplay: false,
         navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev'
+          nextEl: '.swiper-total-button-next',
+          prevEl: '.swiper-total-button-prev'
         },
         slidesPerView: 6,
         centeredSlides: false,
