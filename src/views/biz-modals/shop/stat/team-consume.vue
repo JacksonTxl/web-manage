@@ -149,7 +149,7 @@ export default {
   },
   methods: {
     getConsumeList() {
-      const query = type === 'total' ? this.totalQuery : this.query
+      const query = this.type === 'total' ? this.totalQuery : this.query
       this.teamConsumeService.getConsumeList(query).subscribe()
     },
     filterOption(input, option) {
