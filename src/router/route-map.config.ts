@@ -1158,7 +1158,7 @@ export const routeMapConfig = {
   },
   'shop-finance-flow-expenditure'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '支出流水'
-    routeConfig.meta.auth = 'shop:flow:expenditure|tab'
+    routeConfig.meta.auth = 'shop:flow:expenditure|detail_list'
     routeConfig.queryOptions = {
       search_number: { type: String },
       start_amount: { type: String },
@@ -1171,7 +1171,7 @@ export const routeMapConfig = {
   },
   'shop-finance-flow-income'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '收入流水'
-    routeConfig.meta.auth = 'shop:flow:income|tab'
+    routeConfig.meta.auth = 'shop:flow:income|detail_list'
     routeConfig.queryOptions = {
       search_number: { type: String },
       current_page: { type: Number, default: 1 },
