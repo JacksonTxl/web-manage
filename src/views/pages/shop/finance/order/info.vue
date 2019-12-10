@@ -117,8 +117,8 @@ export default {
     }
   },
   created() {
-    //this.info.parents = { name: '家长', mobile: 1399032421340 }
-    this.info.parents = '--'
+    this.info.parents = { name: '家长', mobile: 1399032421340 }
+    //this.info.parents = '--'
   },
   computed: {
     infoParents() {
