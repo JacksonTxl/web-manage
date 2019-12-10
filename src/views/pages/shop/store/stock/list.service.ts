@@ -3,6 +3,6 @@ import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class ListService {
-  authTabs$ = this.authService.getAuthTabs$('shop-stored-stock-list')
+  authTabs$ = this.authService.getAuthTabs$('shop-store-stock-list')
   constructor(private authService: AuthService) {}
 }

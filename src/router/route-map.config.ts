@@ -1504,14 +1504,14 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
-  'shop-stored-stock-list'(routeConfig: RouteConfig) {
+  'shop-store-stock-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '库存管理'
     routeConfig.meta.tabs = [
-      'shop-stored-stock-list-search',
-      'shop-stored-stock-list-detail'
+      'shop-store-stock-list-search',
+      'shop-store-stock-list-detail'
     ]
   },
-  'shop-stored-stock-list-search'(routeConfig: RouteConfig) {
+  'shop-store-stock-list-search'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '库存查询'
     routeConfig.queryOptions = {
       // page: { type: Number, default: 1 },
@@ -1523,10 +1523,10 @@ export const routeMapConfig = {
       // shelf_status: { type: Number, default: -1 }
     }
   },
-  'shop-stored-stock-list-detail'(routeConfig: RouteConfig) {
+  'shop-store-stock-list-detail'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '出入库明细'
   },
-  'shop-stored-list'(routeConfig: RouteConfig) {
+  'shop-store-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '云店列表' // 暂时这样未确定
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
