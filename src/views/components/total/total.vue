@@ -99,7 +99,7 @@ export default {
         slidesPerView: 6,
         breakpoints: {
           // when window width is >= 1280px
-          1280: {
+          1440: {
             slidesPerView: 4
           }
         },

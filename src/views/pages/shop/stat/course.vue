@@ -195,7 +195,10 @@ export default {
       return [
         { id: -1, name: `全部${vm.$c('coach')}` },
         ...this.coachList.filter(item => {
-          return this.$searchQuery.department_id === item.department_id
+          item.department_id = Array.isArray(item.department_id)
+            ? item.department_id
+            : [item.department_id]
+          return item.department_id.includes(this.$searchQuery.department_id)
         })
       ]
     }
