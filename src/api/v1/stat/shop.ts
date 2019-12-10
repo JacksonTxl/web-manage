@@ -63,7 +63,7 @@ export class StatApi {
     )
   }
   getSellAmount(query: any) {
-    return this.http.get(`/v1/stat/sale${query.total || ''}`, {
+    return this.http.get(`/v1/stat/sale${query.type || ''}`, {
       query
     })
   }

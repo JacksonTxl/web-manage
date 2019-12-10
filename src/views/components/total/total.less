@@ -4,8 +4,8 @@
   &-item__active {
     cursor: pointer;
     &:hover {
-      .st-total__swiper-slide-label,
-      .st-total__swiper-slide-value {
+      .st-total__item-label,
+      .st-total__item-value {
         .c(@primary-color);
       }
     }
@@ -16,33 +16,34 @@
     border-radius: 4px 0 0 4px;
     .pd(16px 24px);
     .bg(rgba(227, 233, 255, 0.8));
-    .tip {
-      .lh(24px);
-    }
-    .total-t3 {
-      .mg-t(12px);
-      .lh(24px);
-    }
   }
-  &__swiper {
-    position: relative;
+  &__t3 {
+    .mg-t(12px);
+    .lh(24px);
   }
-  &__swiper-slide {
+  &__tip {
+    .lh(24px);
+  }
+  &__item {
+    .mg(0 24px 0 34px);
+  }
+  &__item-content {
     display: flex;
     flex-direction: column;
-    .pd(16px 24px 12px 24px);
+    .mg(16px 0 12px 0);
   }
-  &__swiper-slide-value {
+  &__item-value {
     font-size: 20px;
     .mg-t(12px);
-    color: rgba(37, 42, 46, 1);
+    color: #252a2e;
     line-height: 28px;
   }
-  &__swiper-slide-label {
-    color: rgba(94, 106, 127, 1);
+  &__item-label {
+    color: #5e6a7f;
     line-height: 24px;
   }
   &__content {
+    position: relative;
     border-radius: 0 4px 4px 0;
     width: calc(100% - 104px);
     float: right;
@@ -51,15 +52,19 @@
     div.swiper-button-prev {
       background-image: none;
       outline: unset;
-      left: 0;
+      left: 16px;
       top: 60px;
+      z-index: 1;
     }
     div.swiper-button-next {
       background-image: none;
       outline: unset;
-      right: 0;
+      right: 16px;
       top: 60px;
-      width: 13px;
+      z-index: 1;
+    }
+    &--full {
+      width: 100%;
     }
   }
 }
