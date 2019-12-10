@@ -37,7 +37,7 @@
 import { detailColumns } from './detail.config.ts'
 export default {
   bem: {
-    detail: 'page-shop-stored-stock-list-detail'
+    detail: 'page-shop-store-stock-list-detail'
   },
   data() {
     return { detailColumns, tableData: [], chooseGood: -1, stockType: -1 }
