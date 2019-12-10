@@ -5,7 +5,7 @@ import { TeamScheduleCommonService as CommonService } from './service#/common.se
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()
-export class TeamTableService implements Controller {
+export class MiniTeamTableService implements Controller {
   auth$ = this.authService.authMap$({
     add: 'shop:schedule:team_course_schedule|add',
     addBatch: 'shop:schedule:team_course_schedule|batch_add',

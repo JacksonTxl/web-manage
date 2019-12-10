@@ -116,10 +116,14 @@ export default {
       ORDER_PRODUCT_TYPE
     }
   },
+  created() {
+    //this.info.parents = { name: '家长', mobile: 1399032421340 }
+    this.info.parents = '--'
+  },
   computed: {
     infoParents() {
-      const parentsMess = ''
-      if (typeof this.info.parents === object) {
+      let parentsMess = ''
+      if (typeof this.info.parents === 'object') {
         parentsMess = `${this.info.parents.name} (${this.info.parents.mobile})`
       } else {
         parentsMess = this.info.parents

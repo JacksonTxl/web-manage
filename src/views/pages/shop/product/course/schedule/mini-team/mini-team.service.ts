@@ -5,7 +5,7 @@ import { forkJoin } from 'rxjs'
 import { TeamScheduleCommonService as CommonService } from './service#/common.service'
 
 @Injectable()
-export class TeamService implements Controller {
+export class MiniTeamService implements Controller {
   auth$ = this.authService.authMap$({
     add: 'shop:schedule:team_course_schedule|add',
     addBatch: 'shop:schedule:team_course_schedule|batch_add',

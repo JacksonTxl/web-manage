@@ -33,7 +33,7 @@ import ScheduleTeamAddCourseBatch from '@/views/biz-modals/schedule/team/add-cou
 import ScheduleTeamAddCourse from '@/views/biz-modals/schedule/team/add-course'
 import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
 import ScheduleTeamReserveInfo from '@/views/biz-modals/schedule/team/reserve-info'
-import { TeamService } from './mini-team.service'
+import { MiniTeamService } from './mini-team.service'
 export default {
   name: 'TeamSchedule',
   modals: {
@@ -45,7 +45,7 @@ export default {
   serviceInject() {
     return {
       teamSchduleService: TeamScheduleScheduleService,
-      service: TeamService
+      service: MiniTeamService
     }
   },
   rxState() {
