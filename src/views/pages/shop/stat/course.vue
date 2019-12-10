@@ -3,8 +3,10 @@
     <section class="mg-b16" :class="bHeard()">
       <div :class="bHeard('left')">
         <a-radio-group :value="showTable" @change="handleSizeChange">
-          <a-radio-button value="all">汇总</a-radio-button>
-          <a-radio-button value="coach">{{ $c('coach') }}</a-radio-button>
+          <a-radio-button value="all" v-if="auth.summary">汇总</a-radio-button>
+          <a-radio-button value="coach" v-if="auth.coach">
+            {{ $c('coach') }}
+          </a-radio-button>
         </a-radio-group>
         <st-button
           v-if="auth.export_all"
@@ -195,7 +197,7 @@ export default {
     }
   },
   created() {
-    this.showTable = this.$searchQuery.showTable
+    this.showTable = this.auth.summary ? 'all' : 'staff'
   },
   methods: {
     onCLickPersonalCheckinAmount() {
