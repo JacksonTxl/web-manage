@@ -1504,5 +1504,27 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
+  'shop-stored-stock-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '库存管理'
+    routeConfig.meta.tabs = [
+      'shop-stored-stock-list-search',
+      'shop-stored-stock-list-detail'
+    ]
+  },
+  'shop-stored-stock-list-search'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '库存查询'
+    routeConfig.queryOptions = {
+      // page: { type: Number, default: 1 },
+      // size: { type: Number, default: 20 },
+      // card_type: { type: Number, default: -1 },
+      // publish_channel: { type: Number, default: -1 },
+      card_name: { type: String, default: '' }
+      // sell_status: { type: Number, default: -1 },
+      // shelf_status: { type: Number, default: -1 }
+    }
+  },
+  'shop-stored-stock-list-detail'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '出入库明细'
+  },
   ...tplConfigs
 }
