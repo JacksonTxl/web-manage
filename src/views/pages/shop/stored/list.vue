@@ -48,22 +48,13 @@
             <a @click="onUpShelf(record)">
               上架
             </a>
-            <a
-              @click="onEdit(record)"
-              v-if="record.auth['brand:activity:group_buy|edit']"
-            >
+            <a @click="onEdit(record)">
               编辑
             </a>
-            <a
-              @click="onStopShelf(record)"
-              v-if="record.auth['brand:activity:group_buy|stop']"
-            >
+            <a @click="onStopShelf(record)">
               下架
             </a>
-            <a
-              @click="onDel(record)"
-              v-if="record.auth['brand:activity:group_buy|release']"
-            >
+            <a @click="onDel(record)">
               删除
             </a>
           </st-table-actions>
