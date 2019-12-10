@@ -43,11 +43,12 @@ export default {
         })
     },
     beforeUpload(file) {
-      const isLt2M = file.size / 1024 / 1024 < 2
-      if (!isLt2M) {
-        this.messageService.error({ content: '上传图片最大不能超过2M' })
+      const MAX_SIZE = 2
+      const isLimit = file.size / 1024 / 1024 < MAX_SIZE
+      if (!isLimit) {
+        this.messageService.error({ content: `上传图片最大不能超过${MAX_SIZE}M` })
       }
-      return isLt2M
+      return isLimit
     }
   }
 }
