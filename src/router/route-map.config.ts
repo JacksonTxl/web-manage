@@ -1126,6 +1126,7 @@ export const routeMapConfig = {
   },
   'brand-setting-sms-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '短信列表'
+    routeConfig.meta.auth = 'brand_shop:message:sms|list'
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       current_page: { type: Number, default: 1 },
@@ -1138,6 +1139,7 @@ export const routeMapConfig = {
   },
   'brand-setting-sms-pay'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '短信充值'
+    routeConfig.meta.auth = 'brand_shop:message:sms|charge_list'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
@@ -1145,6 +1147,7 @@ export const routeMapConfig = {
   },
   'brand-setting-sms-notice'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '通知模版'
+    routeConfig.meta.auth = 'brand_shop:message:notify|list'
   },
   'shop-stat'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '数据统计'
