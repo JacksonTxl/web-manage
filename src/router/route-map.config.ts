@@ -1526,6 +1526,32 @@ export const routeMapConfig = {
   'shop-store-stock-list-detail'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '出入库明细'
   },
+  'shop-store-order-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '发货管理'
+    routeConfig.meta.tabs = [
+      'shop-store-order-list-verification',
+      'shop-store-order-list-shipments',
+      'shop-store-order-list-signin'
+    ]
+  },
+  'shop-store-order-list-shipments'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '待发货订单'
+    routeConfig.queryOptions = {
+      card_name: { type: String, default: '' }
+    }
+  },
+  'shop-store-order-list-signin'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '待签收订单'
+    routeConfig.queryOptions = {
+      card_name: { type: String, default: '' }
+    }
+  },
+  'shop-store-order-list-verification'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '待核销订单'
+    routeConfig.queryOptions = {
+      card_name: { type: String, default: '' }
+    }
+  },
   'shop-store-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '云店列表' // 暂时这样未确定
     routeConfig.queryOptions = {
