@@ -104,8 +104,7 @@ export const staffColumns = (vm: any) => {
       dataIndex: 'member_card_num',
       align: 'right',
       titleTotal: '会籍卡成单数',
-      slots: { title: 'memberTitle' },
-      scopedSlots: { customRender: 'member_card_num' }
+      slots: { title: 'memberTitle' }
     },
     {
       title: `${vm.$c('member_card')}购买金额（元）`,
@@ -116,8 +115,7 @@ export const staffColumns = (vm: any) => {
       dataIndex: 'deposit_card_num',
       titleTotal: '储值卡成单数',
       align: 'right',
-      slots: { title: 'depositTitle' },
-      scopedSlots: { customRender: 'deposit_card_num' }
+      slots: { title: 'depositTitle' }
     },
     {
       title: '储值卡购买金额（元）',
