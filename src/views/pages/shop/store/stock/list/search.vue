@@ -10,7 +10,7 @@
   </div>
 </template>
 <script>
-import SHOP_STORED_STOCK_KEYWORDS_SEARCH from '@/constants/events'
+import { SHOP_STORED_STOCK_KEYWORDS_SEARCH } from '@/constants/events'
 export default {
   data() {
     return { SHOP_STORED_STOCK_KEYWORDS_SEARCH, name: '' }
