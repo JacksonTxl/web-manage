@@ -102,7 +102,6 @@ export default {
       })
     },
     onClickFlowChargeAgainst(record) {
-      console.log(record)
       this.$modalRouter.push({
         name: 'shop-finance-flow',
         props: {

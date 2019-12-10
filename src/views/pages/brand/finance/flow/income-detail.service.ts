@@ -1,10 +1,9 @@
-import { FlowApi, GetListInput } from '../../../../../api/v1/finance/flow'
+import { FlowApi } from '@/api/v1/finance/flow'
 import { UserService } from '@/services/user.service'
 import { Controller, ServiceRoute, Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state/src'
-import { tap, map } from 'rxjs/operators'
+import { tap } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
-import { cloneDeep } from 'lodash-es'
 
 @Injectable()
 export class IncomeDetailService implements Controller {
@@ -16,8 +15,8 @@ export class IncomeDetailService implements Controller {
   constructor(private userService: UserService, private api: FlowApi) {}
 
   @Effect()
-  getList(params: GetListInput) {
-    return this.api.getIncomeListInShop(params).pipe(
+  getList(params: any) {
+    return this.api.getIncomeList(params).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)

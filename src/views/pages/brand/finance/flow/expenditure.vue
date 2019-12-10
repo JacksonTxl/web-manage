@@ -1,85 +1,55 @@
 <template>
-  <st-panel :class="bPage()">
-    <div slot="prepend">
-      <st-search-panel :class="bSearch()">
-        <st-search-panel-item label="支付方式：">
-          <a-checkbox @change="onCheckAllChange" :checked="checkAll">
-            全部
-          </a-checkbox>
-          <a-checkbox-group
-            @change="onChangePayType"
-            v-model="checkedList"
-            :options="payType$"
-          />
-        </st-search-panel-item>
-        <st-search-panel-item label="流水金额：">
-          <st-input-number
-            class="amount__input mg-r8"
-            :min="1"
-            :max="99999"
-            :step="1"
-            :precision="0"
-            float
-            v-model="$searchQuery.start_amount"
-          ></st-input-number>
-          至
-          <st-input-number
-            :min="1"
-            :max="99999"
-            :precision="0"
-            float
-            class="amount__input mg-l8"
-            v-model="$searchQuery.end_amount"
-          ></st-input-number>
-        </st-search-panel-item>
-        <st-search-panel-item label="创建时间：">
-          <st-range-picker :disabledDays="180" v-model="date" class="value" />
-        </st-search-panel-item>
+  <div :class="bPage()">
+    <st-search-panel :class="bSearch()">
+      <st-search-panel-item label="查询门店：">
+        <shop-select v-model="$searchQuery.shop_id" class="mg-r12" />
+      </st-search-panel-item>
+      <st-search-panel-item label="查询日期：">
+        <st-range-picker :disabledDays="180" v-model="date" class="value" />
+      </st-search-panel-item>
 
-        <div slot="button">
-          <st-button
-            type="primary"
-            @click="onSearchNative"
-            :loading="loading$.getList"
-          >
-            查询
-          </st-button>
-          <st-button class="mg-l8" @click="onReset">重置</st-button>
-        </div>
-      </st-search-panel>
-    </div>
+      <div slot="button">
+        <st-button
+          type="primary"
+          @click="onSearchNative"
+          :loading="loading$.getList"
+        >
+          查询
+        </st-button>
+        <st-button class="mg-l8" @click="onReset">重置</st-button>
+      </div>
+    </st-search-panel>
     <st-table
       :columns="columns"
       :scroll="{ x: 1400 }"
-      :rowKey="record => record.flow_id"
+      rowKey="id"
       :page="page$"
       @change="onTableChange"
       :dataSource="list$"
     >
-      <span slot="price" :class="{ price__red: +text < 0 }" slot-scope="text">
-        {{ text }}
+      <span slot="internal_amount">
+        内部结转退款
+        <st-help-tooltip id="TBFES001" />
       </span>
-      <span slot="flow_type" slot-scope="text">{{ text.name }}</span>
-      <st-overflow-text
-        title="备注"
-        maxWidth="200px"
-        slot="remark"
-        slot-scope="text"
-        :vlaue="text"
-      />
     </st-table>
-  </st-panel>
+  </div>
 </template>
 <script>
 import tableMixin from '@/mixins/table.mixin'
 import { ExpenditureService } from './expenditure.service'
 import { columns } from './expenditure.config.ts'
+import ShopFinanceFlow from '@/views/biz-modals/shop/finance/flow'
+import { cloneDeep } from 'lodash-es'
+import ShopSelect from '@/views/biz-components/shop-select'
 export default {
   name: 'FinanceFlowExpenditure',
   mixins: [tableMixin],
   bem: {
-    bPage: 'page-shop-flow-expenditure',
+    bPage: 'page-brand-flow-expenditure',
     bSearch: 'search'
+  },
+  modals: {
+    ShopFinanceFlow
   },
   serviceInject() {
     return {
@@ -91,15 +61,13 @@ export default {
     return {
       loading$,
       page$,
-      list$,
-      payType$
+      list$
     }
   },
   data() {
     return {
       checkedList: [],
       indeterminate: false,
-      checkAll: false,
       date: []
     }
   },
@@ -108,6 +76,9 @@ export default {
   },
   mounted() {
     this.setSearchDate()
+  },
+  components: {
+    ShopSelect
   },
   methods: {
     setSearchDate() {
@@ -128,6 +99,20 @@ export default {
           : [],
         indeterminate: false,
         checkAll: e.target.checked
+      })
+    },
+    onClickFlowChargeAgainst(record) {
+      this.$modalRouter.push({
+        name: 'shop-finance-flow',
+        props: {
+          id: record.flow_id,
+          order_id: record.order_id
+        },
+        on: {
+          success: result => {
+            this.$router.reload()
+          }
+        }
       })
     },
     onSearchNative() {

@@ -10,7 +10,7 @@ export class FlowApi extends Api {
     })
   }
   /**
-   * 获取收入流水 -- 品牌
+   * 获取收入流水明细 -- 品牌
    */
   getIncomeList(query: GetListInput) {
     return this.http.get('/v1/finance/flow/income/detail', { query })

@@ -1,6 +1,9 @@
 <template>
-  <div :class="bPage()">
+  <div :class="b()">
     <st-search-panel :class="bSearch()">
+      <st-search-panel-item label="查询门店：">
+        <shop-select v-model="$searchQuery.shop_id" class="mg-r12" />
+      </st-search-panel-item>
       <st-search-panel-item label="收银方式：">
         <a-checkbox @change="onCheckAllChange" :checked="checkAll">
           全部
@@ -13,13 +16,14 @@
       </st-search-panel-item>
       <st-search-panel-item label="流水金额：">
         <st-input-number
-          class="amount__input mg-r8"
+          class="amount__input"
           :min="0"
           :max="99999"
           :step="1"
           :precision="0"
           float
           v-model="$searchQuery.start_amount"
+          placeholder="请输入金额范围"
         ></st-input-number>
         至
         <st-input-number
@@ -27,11 +31,12 @@
           :max="99999"
           :precision="0"
           float
-          class="amount__input mg-l8"
+          class="amount__input"
           v-model="$searchQuery.end_amount"
+          placeholder="请输入金额范围"
         ></st-input-number>
       </st-search-panel-item>
-      <st-search-panel-item label="创建时间：">
+      <st-search-panel-item label="查询日期：">
         <st-range-picker :disabledDays="180" v-model="date" class="value" />
       </st-search-panel-item>
 
@@ -84,12 +89,13 @@ import tableMixin from '@/mixins/table.mixin'
 import { IncomeDetailService } from './income-detail.service'
 import { columns } from './income-detail.config'
 import ShopFinanceFlow from '@/views/biz-modals/shop/finance/flow'
+import ShopSelect from '@/views/biz-components/shop-select'
 import { cloneDeep } from 'lodash-es'
 export default {
   name: 'FinanceFlowIncome',
   mixins: [tableMixin],
   bem: {
-    bPage: 'page-shop-flow-income',
+    b: 'page-brand-flow-income',
     bSearch: 'search'
   },
   modals: {
@@ -97,7 +103,7 @@ export default {
   },
   serviceInject() {
     return {
-      service: IncomeService
+      service: IncomeDetailService
     }
   },
   rxState() {
@@ -123,6 +129,9 @@ export default {
   mounted() {
     this.setSearchDate()
   },
+  components: {
+    ShopSelect
+  },
   methods: {
     setSearchDate() {
       if (!this.$searchQuery.start_date) return
@@ -145,7 +154,6 @@ export default {
       })
     },
     onClickFlowChargeAgainst(record) {
-      console.log(record)
       this.$modalRouter.push({
         name: 'shop-finance-flow',
         props: {
