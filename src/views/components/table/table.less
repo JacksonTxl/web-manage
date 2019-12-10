@@ -2,11 +2,11 @@
   .st-expand-row-icon {
     .c(#9bacb9);
   }
-  .ant-table-row-level-0 {
-    + .ant-table-row-level-1 {
-      background: inherit;
-    }
-  }
+  // .ant-table-row-level-0 {
+  //   + .ant-table-row-level-1 {
+  //     background: inherit;
+  //   }
+  // }
   .ant-table-thead > tr > th {
     .bg(@table-bg-color-thead-second);
     .c(rgba(94, 106, 127, 1));
@@ -27,7 +27,6 @@
       padding-left: 16px;
     }
   }
-
   .ant-table-row {
     &:nth-child(even) {
       .bg(@table-bg-color-row-2);
@@ -50,3 +49,27 @@
     line-height: 22px;
   }
 }
+// TODO: 组件优化父子表格
+// .generate-spaces(@n, @i: 0) when (@i < @n) {
+//   @even: @i * 2;
+//   @odd: @i * 2 + 1;
+//   .st-table--expand tr[data-row-key^='@{even}'] {
+//     background: red !important;
+//   }
+//   .st-table--expand tr[data-row-key^='@{odd}'] {
+//     background: green !important;
+//   }
+//   .generate-spaces(@n, @i + 1);
+// }
+// .generate-spaces(10);
+// .st-table--expand {
+//   .ant-table-row-level-0 {
+//     box-shadow: 0px 8px 10px 0px #d2d2d2;
+//     &:last-child {
+//       box-shadow: 0 0 0 0 #d2d2d2;
+//     }
+//     // &:nth-child(even) {
+//     //   .bg(green)
+//     // }
+//   }
+// }
