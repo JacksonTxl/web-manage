@@ -10,7 +10,7 @@ export const ruleOptions = (vm: any) => {
             if (!value) {
               return '请输入手机号'
             }
-            if (value && !vm.rules.mobile.test(value)) {
+            if (value && !vm.pattern.MOBILE.test(value)) {
               return '输入的手机号格式错误，请重新输入'
             }
           }

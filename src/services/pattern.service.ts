@@ -162,6 +162,13 @@ export class PatternService {
     return this.createPattern('NUM_POINT', len)
   }
   /**
+   * 浮点数，最多支持 decimal 位小数
+   * @param decimal
+   */
+  NUM_FLOAT(decimal: number = 1) {
+    return new RegExp(`^\\d+(\.\\d{1,${decimal}})?$`)
+  }
+  /**
    * 中文、英文、数字，不含标点符号
    * @param len
    */
