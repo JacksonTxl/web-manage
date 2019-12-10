@@ -14,10 +14,19 @@
       :columns="columns"
       :dataSource="list"
     >
+      <ul
+        slot="childrens"
+        slot-scope="customRender, record"
+        :class="basic('sku')"
+      >
+        <li v-for="(item, index) in record.childrens" :key="index">
+          {{ item.name }}
+        </li>
+      </ul>
       <div slot="action">
         <st-table-actions>
           <a>
-            签单
+            发货
           </a>
         </st-table-actions>
       </div>
@@ -32,7 +41,7 @@ export default {
   name: 'shipments',
   mixins: [tableMixin],
   bem: {
-    basic: 'page-shop-store-order-shipments'
+    basic: 'page-order-shipments'
   },
   data() {
     return {
@@ -40,44 +49,46 @@ export default {
       name: '',
       list: [
         {
-          key: '1',
-          name: 'John Brown',
-          age: 32,
-          tel: '0571-22098909',
-          phone: 18889898989,
-          address: 'New York No. 1 Lake Park'
+          childrens: [
+            {
+              name: 'aaaa'
+            },
+            {
+              name: 'bbb'
+            }
+          ],
+          ren: '胡歌',
+          phone: '15635295211',
+          adress: '北京',
+          time: '2019'
         },
         {
-          key: '2',
-          name: 'Jim Green',
-          tel: '0571-22098333',
-          phone: 18889898888,
-          age: 42,
-          address: 'London No. 1 Lake Park'
+          childrens: [
+            {
+              name: 'aaaa'
+            },
+            {
+              name: 'bbb'
+            },
+            {
+              name: 'ccc'
+            }
+          ],
+          ren: '胡歌',
+          phone: '15635295211',
+          adress: '北京',
+          time: '2019'
         },
         {
-          key: '3',
-          name: 'Joe Black',
-          age: 32,
-          tel: '0575-22098909',
-          phone: 18900010002,
-          address: 'Sidney No. 1 Lake Park'
-        },
-        {
-          key: '4',
-          name: 'Jim Red',
-          age: 18,
-          tel: '0575-22098909',
-          phone: 18900010002,
-          address: 'London No. 2 Lake Park'
-        },
-        {
-          key: '5',
-          name: 'Jake White',
-          age: 18,
-          tel: '0575-22098909',
-          phone: 18900010002,
-          address: 'Dublin No. 2 Lake Park'
+          childrens: [
+            {
+              name: 'aaaa'
+            }
+          ],
+          ren: '胡歌',
+          phone: '15635295211',
+          adress: '北京',
+          time: '2019'
         }
       ]
     }

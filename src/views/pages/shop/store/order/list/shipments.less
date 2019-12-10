@@ -1,0 +1,41 @@
+.page-order-shipments {
+  &__table {
+    .ant-table-thead {
+      tr {
+        th {
+          border-right: 1px solid #e6e9ef;
+          &:last-child {
+            border-right: none;
+          }
+        }
+      }
+    }
+    .ant-table-tbody {
+      tr {
+        border: 1px solid #e6e9ef;
+        border-right: none;
+        border-left: none;
+        td {
+          padding: 0 12px;
+          border: 1px solid #e6e9ef;
+          &:first-child {
+            padding: 0;
+            border-left: none;
+          }
+          &:last-child {
+            border-right: none;
+          }
+        }
+      }
+    }
+  }
+  &__sku {
+    li {
+      padding: 16px 0 16px 12px;
+      border-bottom: 1px solid #e6e9ef;
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+}
