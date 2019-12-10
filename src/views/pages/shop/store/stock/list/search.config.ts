@@ -1,4 +1,4 @@
-export const detailColumns = [
+export const searchColumns = [
   {
     title: '商品名称',
     dataIndex: 'spec',
@@ -22,6 +22,9 @@ export const detailColumns = [
   {
     title: '操作',
     dataIndex: 'price4',
-    align: 'center'
+    align: 'center',
+    width: 140,
+    fixed: 'right',
+    scopedSlots: { customRender: 'action' }
   }
 ]
