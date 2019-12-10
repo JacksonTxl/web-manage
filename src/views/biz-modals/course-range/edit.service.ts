@@ -3,11 +3,11 @@ import { Effect, State } from 'rx-state'
 import { CourseApi, AddCourseCategoryInput } from '@/api/v1/setting/course'
 
 @Injectable()
-export class AddService {
+export class EditService {
   loading$ = new State({})
   constructor(protected courseApi: CourseApi) {}
   @Effect()
-  addCourseCategory(params: AddCourseCategoryInput) {
-    return this.courseApi.addCourseCategory(params)
+  editCourseRange(params: AddCourseCategoryInput) {
+    return this.courseApi.editCourseRange(params)
   }
 }

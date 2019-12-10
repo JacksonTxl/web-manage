@@ -7,7 +7,7 @@ export class AddService {
   loading$ = new State({})
   constructor(protected courseApi: CourseApi) {}
   @Effect()
-  addCourseCategory(params: AddCourseCategoryInput) {
-    return this.courseApi.addCourseCategory(params)
+  addCourseRange(params: AddCourseCategoryInput) {
+    return this.courseApi.addCourseRange(params)
   }
 }

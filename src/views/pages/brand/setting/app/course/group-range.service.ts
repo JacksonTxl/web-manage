@@ -9,7 +9,7 @@ export class GroupRangeService implements Controller {
   resData$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({
-    add: true
+    add: 'brand_shop:course:course_scope|add'
   })
   constructor(private authService: AuthService, private courseApi: CourseApi) {}
   @Effect()
@@ -21,8 +21,8 @@ export class GroupRangeService implements Controller {
       })
     )
   }
-  deleteCourseCategory(params: DeleteCourseCategoryInput) {
-    return this.courseApi.deleteCourseCategory(params)
+  deleteCourseRange(params: DeleteCourseCategoryInput) {
+    return this.courseApi.deleteCourseRange(params)
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.getCourseGroupRangeList(to.meta.query)

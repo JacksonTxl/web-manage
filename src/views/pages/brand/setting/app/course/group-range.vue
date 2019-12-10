@@ -6,7 +6,7 @@
     <st-form-table class="mg-t8" :loading="loading.getCourseGroupRangeList">
       <thead>
         <tr>
-          <th>训练目的</th>
+          <th>课程范围</th>
           <th>标记课程数</th>
           <th>创建人</th>
           <th>最后修改时间</th>
@@ -15,7 +15,7 @@
       </thead>
       <tbody>
         <tr>
-          <td colspan="5" class="st-form-table__add">
+          <td v-if="auth.add" colspan="5" class="st-form-table__add">
             <st-button
               type="dashed"
               icon="add"
@@ -24,7 +24,7 @@
               v-modal-link="{
                 name: 'course-range-add',
                 on: {
-                  change: onListChange
+                  success: onListChange
                 }
               }"
             >
@@ -40,19 +40,21 @@
           <td>
             <st-table-actions>
               <a
+                v-if="item.auth['brand_shop:course:course_scope|edit']"
                 v-modal-link="{
                   name: 'course-range-edit',
-                  props: { id: item.id, setting_name: item.setting_name },
-                  on: { change: onListChange }
+                  props: { info: item },
+                  on: { success: onListChange }
                 }"
               >
                 编辑
               </a>
               <st-popconfirm
+                v-if="item.auth['brand_shop:course:course_scope|del']"
                 :title="
                   `删除后不可进行恢复，${
                     item.used_number ? '已标记的课程将删除此训练目的，' : ''
-                  }确定删除此训练目的？`
+                  }确定删除此课程范围？`
                 "
                 @confirm="onDelete(item.id)"
               >
@@ -94,7 +96,7 @@ export default {
   },
   methods: {
     onDelete(id) {
-      this.groupRangeService.deleteCourseCategory({ id }).subscribe(() => {
+      this.groupRangeService.deleteCourseRange(id).subscribe(() => {
         this.messageService.success({
           content: '删除成功'
         })

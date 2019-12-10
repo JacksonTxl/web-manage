@@ -1,6 +1,6 @@
 <template>
   <st-modal
-    title="添加课程类型"
+    title="添加适用范围"
     v-model="show"
     @ok="onSubmit"
     @cancel="onCancel"
@@ -11,9 +11,9 @@
       <st-form :form="form">
         <a-row>
           <a-col :xs="22">
-            <st-form-item label="课程类型" required>
+            <st-form-item label="适用范围" required>
               <a-input
-                placeholder="请输入课程类型名称"
+                placeholder="请输入适用范围"
                 v-decorator="decorators.setting_name"
                 maxlength="20"
               ></a-input>
@@ -54,11 +54,11 @@ export default {
     onSubmit(e) {
       e.preventDefault()
       this.form.validate().then(values => {
-        this.addService.addCourseCategory(values).subscribe(() => {
+        this.addService.addCourseRange(values).subscribe(() => {
           this.messageService.success({
             content: '添加成功'
           })
-          this.$emit('change')
+          this.$emit('success')
           this.show = false
         })
       })
