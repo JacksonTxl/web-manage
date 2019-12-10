@@ -164,7 +164,7 @@ export default {
       this.stat_date = this.record.stat_date
       const query = this.type === 'total' ? this.totalQuery : this.query
       this.teamConsumeService
-        .init({ course_type: COURSE_TYPE.TEAM }, { ...query, type: '/total' })
+        .init({ course_type: COURSE_TYPE.TEAM }, { ...query })
         .subscribe()
     }
   },

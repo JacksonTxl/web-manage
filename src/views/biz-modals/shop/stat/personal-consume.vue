@@ -124,7 +124,9 @@ export default {
       consumeList: [],
       course_type: COURSE_TYPE.PERSONAL,
       coach_id: -1,
-      course_id: -1
+      course_id: -1,
+      current_page: 1,
+      size: 999
     }
   },
   computed: {
@@ -153,8 +155,8 @@ export default {
         course_type: this.course_type,
         coach_id: this.coach_id,
         course_id: this.course_id,
-        current_page: 1,
-        size: 999
+        current_page: this.current_page,
+        size: this.size
       }
     },
     courseTypeList() {
@@ -180,7 +182,7 @@ export default {
       this.stat_date = this.record.stat_date
       const query = this.type === 'total' ? this.totalQuery : this.query
       this.personalConsumeService
-        .init({ course_type }, { ...query, type: '/total' })
+        .init({ course_type }, { ...query })
         .subscribe()
     },
     filterOption(input, option) {
