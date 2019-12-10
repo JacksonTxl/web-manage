@@ -76,13 +76,17 @@
       <template v-slot:personal_checkin_amount="record">
         <st-total-item
           @click.native="onCLickPersonalCheckinAmount"
-          :item="record.item"
+          :unit="record.unit"
+          :label="record.label"
+          :value="record.value"
         ></st-total-item>
       </template>
       <template v-slot:team_checkin_amount="record">
         <st-total-item
           @click.native="onCLickTeamCheckinAmount"
-          :item="record.item"
+          :unit="record.unit"
+          :label="record.label"
+          :value="record.value"
         ></st-total-item>
       </template>
     </st-total>

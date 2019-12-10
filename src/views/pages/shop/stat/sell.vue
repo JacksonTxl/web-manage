@@ -59,7 +59,9 @@
       <template v-slot:performance_amount="record">
         <st-total-item
           @click.native="onCLickPerformanceAmount"
-          :item="record.item"
+          :unit="record.unit"
+          :label="record.label"
+          :value="record.value"
         ></st-total-item>
       </template>
     </st-total>

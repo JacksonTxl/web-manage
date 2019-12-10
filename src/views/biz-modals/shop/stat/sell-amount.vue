@@ -181,7 +181,7 @@ export default {
       this.pageParams.staff_id = this.record.staff_id || -1
       this.pageParams.stat_date = this.record.stat_date
       const query = this.type === 'total' ? this.totalQuery : this.query
-      this.sellAmountervice.init({ ...this.query }).subscribe()
+      this.sellAmountervice.init({ ...query }).subscribe()
     }
   },
   mounted() {

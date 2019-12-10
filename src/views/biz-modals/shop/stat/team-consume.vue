@@ -128,14 +128,19 @@ export default {
       delete query.showTable
       delete query.current_page
       delete query.size
-      return {
+      query = {
+        course_type: this.course_type,
         current_page: this.current_page,
         size: this.size,
-        coach_id: this.coach_id,
+
         course_id: this.course_id,
         type: '/total',
         ...query
       }
+      if (this.showTable === 'all') {
+        query.coach_id = this.coach_id
+      }
+      return query
     },
     query() {
       return {
