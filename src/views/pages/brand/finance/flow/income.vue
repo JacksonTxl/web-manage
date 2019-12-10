@@ -2,11 +2,7 @@
   <div :class="bPage()">
     <st-search-panel :class="bSearch()">
       <st-search-panel-item label="查询门店：">
-        <shop-select
-          v-model="dataParam.shop_id"
-          @change="onChangeChartShop"
-          class="mg-r12"
-        />
+        <shop-select v-model="$searchQuery.shop_id" class="mg-r12" />
       </st-search-panel-item>
       <st-search-panel-item label="查询日期：">
         <st-range-picker :disabledDays="180" v-model="date" class="value" />
@@ -26,33 +22,15 @@
     <st-table
       :columns="columns"
       :scroll="{ x: 1400 }"
-      :rowKey="record => record.flow_id"
+      rowKey="id"
       :page="page$"
       @change="onTableChange"
       :dataSource="list$"
     >
-      <span slot="price" :class="{ price__red: +text < 0 }" slot-scope="text">
-        {{ text }}
+      <span slot="internal_amount">
+        内部结转
+        <st-help-tooltip id="TBFIS001" />
       </span>
-      <span slot="flow_type" slot-scope="text">{{ text.name }}</span>
-      <st-overflow-text
-        title="备注"
-        maxWidth="200px"
-        slot="remark"
-        slot-scope="text"
-        :value="text"
-      />
-
-      <div slot="action" slot-scope="text, record">
-        <st-table-actions>
-          <a
-            v-if="record.auth['brand_shop:flow:income|reverse']"
-            @click="onClickFlowChargeAgainst(record)"
-          >
-            流水冲销
-          </a>
-        </st-table-actions>
-      </div>
     </st-table>
   </div>
 </template>
@@ -83,15 +61,13 @@ export default {
     return {
       loading$,
       page$,
-      list$,
-      payType$
+      list$
     }
   },
   data() {
     return {
       checkedList: [],
       indeterminate: false,
-      checkAll: false,
       date: []
     }
   },

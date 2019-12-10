@@ -16,6 +16,12 @@ export class FlowApi extends Api {
     return this.http.get('/v1/finance/flow/income/detail', { query })
   }
   /**
+   * 获取收入流水汇总 -- 品牌
+   */
+  getIncomeSummaryList(query: any) {
+    return this.http.get('/v1/finance/flow/income/summary', { query })
+  }
+  /**
    * 获取支出流水 -- 门店
    */
   getExpenditureListInShop(query: GetListInput) {

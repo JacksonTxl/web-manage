@@ -1,49 +1,58 @@
 export const columns = () => {
   return [
     {
-      title: '流水号',
-      dataIndex: 'flow_id'
+      title: '查询日期',
+      dataIndex: 'stat_date'
     },
     {
-      title: '金额（元）',
-      dataIndex: 'price',
-      scopedSlots: { customRender: 'price' },
-      sorter: true
+      title: '门店名称',
+      dataIndex: 'shop_name'
     },
     {
-      title: '收银方式',
-      dataIndex: 'pay_channel'
+      title: '微信（线上）',
+      dataIndex: 'online_wechat_amount',
+      align: 'right'
     },
     {
-      title: '类型',
-      dataIndex: 'flow_type',
-      scopedSlots: { customRender: 'flow_type' }
+      title: '微信（线下）',
+      dataIndex: 'offline_wechat_amount',
+      align: 'right'
     },
     {
-      title: '收款时间',
-      dataIndex: 'flow_time',
-      sorter: true
+      title: '支付宝（线下）',
+      dataIndex: 'offline_ailipay_amount',
+      align: 'right'
     },
     {
-      title: '操作人',
-      dataIndex: 'operator_name'
+      title: '线下POS',
+      dataIndex: 'offline_pos_amount',
+      align: 'right'
     },
     {
-      title: '关联订单号',
-      dataIndex: 'order_id',
-      scopedSlots: { customRender: 'member_name' }
+      title: '现金',
+      dataIndex: 'cash_amount',
+      align: 'right'
     },
     {
-      title: '备注',
-      dataIndex: 'remark',
-      scopedSlots: { customRender: 'remark' }
+      title: '银行转账',
+      dataIndex: 'bank_transfer_amount',
+      align: 'right'
     },
     {
-      title: '操作',
-      dataIndex: 'action',
-      fixed: 'right',
-      width: 140,
-      scopedSlots: { customRender: 'action' }
+      title: '内部结转',
+      dataIndex: 'internal_amount',
+      slot: { title: 'internal_amount' },
+      align: 'right'
+    },
+    {
+      title: '其它',
+      dataIndex: 'other_amount',
+      align: 'right'
+    },
+    {
+      title: '总收银金额',
+      dataIndex: 'total_amount',
+      align: 'right'
     }
   ]
 }
