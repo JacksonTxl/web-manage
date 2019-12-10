@@ -87,6 +87,9 @@ export default {
         case 'ViewOrder':
           this.createdOrderViewOrder(orderId)
           break
+        case 'PrintOrder':
+          this.printOrder(orderId)
+          break
         case 'Pay':
           this.createdOrderPay({ order_id: orderId, type: modalType }).then(
             res => {
@@ -157,6 +160,14 @@ export default {
         let payOrderRes = await this.createdOrderPay(props)
         this.payCallBack(result.orderId, type, payOrderRes.type)
       }
+    },
+    // 打印小票
+    printOrder(order_id) {
+      window.open(
+        '/ticket/gathering-print?id=' + order_id,
+        '_blank',
+        'width=800,height=600'
+      )
     },
     // 会员卡签单
     onMember(record) {
