@@ -127,17 +127,24 @@ export default {
     columns
   },
   mounted() {
-    this.setSearchDate()
+    this.setSearchData()
   },
   components: {
     ShopSelect
   },
   methods: {
-    setSearchDate() {
+    setSearchData() {
       if (!this.$searchQuery.start_date) return
       const start = moment(this.$searchQuery.start_date)
       const end = moment(this.$searchQuery.end_date)
       this.date = [start, end]
+      if (!this.$searchQuery.pay_channel) {
+        return
+      }
+      this.checkedList = this.$searchQuery.pay_channel.map(item => +item)
+      if (this.$searchQuery.pay_channel.length === this.payType$.length) {
+        this.checkAll = true
+      }
     },
     onChangePayType(checkedList) {
       this.indeterminate =
@@ -182,6 +189,7 @@ export default {
     },
     onReset() {
       this.checkedList = []
+      this.checkAll = false
       this.date = [null, null]
       this.onSearchReset()
     }

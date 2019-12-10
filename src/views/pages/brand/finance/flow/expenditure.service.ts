@@ -13,7 +13,7 @@ export class ExpenditureService implements Controller {
 
   @Effect()
   getList(params: GetListInput) {
-    return this.api.getExpenditureListInShop(params).pipe(
+    return this.api.getExpenditureSummaryList(params).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)

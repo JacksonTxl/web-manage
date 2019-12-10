@@ -2,6 +2,9 @@
   <st-panel :class="bPage()">
     <div slot="prepend">
       <st-search-panel :class="bSearch()">
+        <st-search-panel-item label="查询门店：">
+          <shop-select v-model="$searchQuery.shop_id" class="mg-r12" />
+        </st-search-panel-item>
         <st-search-panel-item label="支付方式：">
           <a-checkbox @change="onCheckAllChange" :checked="checkAll">
             全部
@@ -14,25 +17,27 @@
         </st-search-panel-item>
         <st-search-panel-item label="流水金额：">
           <st-input-number
-            class="amount__input mg-r8"
-            :min="1"
+            class="amount__input"
+            :min="0"
             :max="99999"
             :step="1"
             :precision="0"
             float
             v-model="$searchQuery.start_amount"
+            placeholder="请输入金额范围"
           ></st-input-number>
           至
           <st-input-number
-            :min="1"
+            :min="0"
             :max="99999"
             :precision="0"
             float
-            class="amount__input mg-l8"
+            class="amount__input"
             v-model="$searchQuery.end_amount"
+            placeholder="请输入金额范围"
           ></st-input-number>
         </st-search-panel-item>
-        <st-search-panel-item label="创建时间：">
+        <st-search-panel-item label="查询日期：">
           <st-range-picker :disabledDays="180" v-model="date" class="value" />
         </st-search-panel-item>
 
@@ -51,7 +56,7 @@
     <st-table
       :columns="columns"
       :scroll="{ x: 1400 }"
-      :rowKey="record => record.flow_id"
+      rowKey="id"
       :page="page$"
       @change="onTableChange"
       :dataSource="list$"
@@ -73,7 +78,8 @@
 <script>
 import tableMixin from '@/mixins/table.mixin'
 import { ExpenditureDetailService } from './expenditure-detail.service'
-import { columns } from './expenditure.config.ts'
+import { columns } from './expenditure-detail.config.ts'
+import ShopSelect from '@/views/biz-components/shop-select'
 export default {
   name: 'FinanceFlowExpenditure',
   mixins: [tableMixin],
@@ -107,14 +113,24 @@ export default {
     columns
   },
   mounted() {
-    this.setSearchDate()
+    this.setSearchData()
+  },
+  components: {
+    ShopSelect
   },
   methods: {
-    setSearchDate() {
+    setSearchData() {
       if (!this.$searchQuery.start_date) return
       const start = moment(this.$searchQuery.start_date)
       const end = moment(this.$searchQuery.end_date)
       this.date = [start, end]
+      if (!this.$searchQuery.pay_channel) {
+        return
+      }
+      this.checkedList = this.$searchQuery.pay_channel.map(item => +item)
+      if (this.$searchQuery.pay_channel.length === this.payType$.length) {
+        this.checkAll = true
+      }
     },
     onChangePayType(checkedList) {
       this.indeterminate =
@@ -145,6 +161,7 @@ export default {
     },
     onReset() {
       this.checkedList = []
+      this.checkAll = false
       this.date = [null, null]
       this.onSearchReset()
     }

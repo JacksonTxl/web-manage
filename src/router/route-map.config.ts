@@ -758,17 +758,15 @@ export const routeMapConfig = {
     routeConfig.meta.tabs = [
       'brand-finance-flow-income',
       'brand-finance-flow-income-detail',
-      'brand-finance-flow-expenditure'
-      // 'brand-finance-flow-expenditure-detail'
+      'brand-finance-flow-expenditure',
+      'brand-finance-flow-expenditure-detail'
     ]
   },
   'brand-finance-flow-expenditure'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '支出流水-汇总'
     // routeConfig.meta.auth = 'brand_shop:flow:expenditure|tab'
     routeConfig.queryOptions = {
-      search_number: { type: String },
-      start_amount: { type: String },
-      end_amount: { type: String },
+      shop_id: { type: Number, default: -1 },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       start_date: { type: String, default: '' },
@@ -779,9 +777,10 @@ export const routeMapConfig = {
     routeConfig.meta.title = '支出流水-明细'
     // routeConfig.meta.auth = 'brand_shop:flow:expenditure|tab'
     routeConfig.queryOptions = {
-      search_number: { type: String },
-      start_amount: { type: String },
-      end_amount: { type: String },
+      shop_id: { type: Number, default: -1 },
+      search_number: { type: String, default: '' },
+      start_amount: { type: String, default: '' },
+      end_amount: { type: String, default: '' },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       start_date: { type: String, default: '' },

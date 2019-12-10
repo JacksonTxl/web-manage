@@ -37,6 +37,14 @@ export class FlowApi extends Api {
       query
     })
   }
+  /**
+   * 获取支出流水汇总 -- 品牌
+   */
+  getExpenditureSummaryList(query: any) {
+    return this.http.get('/v1/finance/flow/expenditure/summary', {
+      query
+    })
+  }
 }
 export interface GetListInput {
   reserve_type: number
