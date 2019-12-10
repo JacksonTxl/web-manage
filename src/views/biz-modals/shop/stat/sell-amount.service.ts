@@ -39,7 +39,7 @@ export class SellAmountService {
   }
   init(query: any) {
     return forkJoin(
-      this.getDepartmentStaffList(query),
+      this.getDepartmentStaffList(),
       this.getSellAmountList(query)
     )
   }
