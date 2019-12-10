@@ -710,7 +710,8 @@ export const routeMapConfig = {
     routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|tab'
     routeConfig.meta.tabs = [
       'brand-setting-general-course-personal',
-      'brand-setting-general-course-team'
+      'brand-setting-general-course-team',
+      'brand-setting-general-course-group'
     ]
   },
   'brand-setting-general-course-personal'(routeConfig: RouteConfig) {
@@ -719,6 +720,10 @@ export const routeMapConfig = {
   },
   'brand-setting-general-course-team'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '团课设置'
+    routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|tab'
+  },
+  'brand-setting-general-course-group'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '小班课设置'
     routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|tab'
   },
   'brand-setting-general-pay-type'(routeConfig: RouteConfig) {
@@ -906,6 +911,25 @@ export const routeMapConfig = {
     routeConfig.meta.title = '私教小团课排期'
     routeConfig.queryOptions = {
       coach_id: { type: Number, default: -1 }
+    }
+  },
+  'shop-product-course-manage-group'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '小班课'
+    routeConfig.queryOptions = {
+      course_status: { type: Number, default: -1 },
+      course_name: { type: String, default: '' },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-product-course-manage-group-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '小班课'
+    routeConfig.meta.parentRouteName = 'shop-product-course-manage-group'
+    routeConfig.queryOptions = {
+      course_status: { type: Number, default: -1 },
+      course_name: { type: String, default: '' },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
     }
   },
   'shop-product-course-manage-team-list'(routeConfig: RouteConfig) {
