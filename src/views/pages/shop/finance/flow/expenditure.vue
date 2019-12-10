@@ -48,6 +48,17 @@
         </div>
       </st-search-panel>
     </div>
+    <div :class="bPage('button-wapper')" class="pd-x24 mg-t24">
+      <st-button
+        type="primary"
+        v-export-excel="{
+          type: 'finance/flow/shop/expenditure/detail',
+          query: $searchQuery
+        }"
+      >
+        全部导出
+      </st-button>
+    </div>
     <st-total
       :class="bPage('total')"
       :indexs="columns"
