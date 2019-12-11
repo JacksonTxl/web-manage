@@ -7,7 +7,7 @@
       ></sales-analysis>
     </div>
     <div :class="basic('right')">
-      <st-t3>购买次数分布图</st-t3>
+      <st-t3>{{ title }}</st-t3>
       <div class="radio-group">
         <a-radio-group @change="onChange" v-model="value">
           <a-radio :value="1">客户数</a-radio>
@@ -16,7 +16,7 @@
       </div>
       <shop-entry-bar
         v-if="inoutTime.length"
-        :data="inoutTime"
+        :data="value === 1 ? inoutTime : inoutTimes"
       ></shop-entry-bar>
     </div>
   </div>
@@ -35,13 +35,21 @@ export default {
   },
   data() {
     return {
+      title: '购买次数分布图',
       value: 1,
       inoutTime: [
-        { name: '08:00之前', value: 128 },
-        { name: '08:00-12:00', value: 132 },
-        { name: '08:00-12:002', value: 132 },
-        { name: '08:00-12:003', value: 132 },
-        { name: '08:00-12:004', value: 132 }
+        { name: '购买1次', value: 128 },
+        { name: '购买2次', value: 132 },
+        { name: '购买3次', value: 132 },
+        { name: '购买4次', value: 132 },
+        { name: '购买5次及以上', value: 132 }
+      ],
+      inoutTimes: [
+        { name: '0~50元', value: 128 },
+        { name: '50~100元', value: 132 },
+        { name: '100~500元', value: 132 },
+        { name: '505~1000元', value: 132 },
+        { name: '1000元以上', value: 132 }
       ],
       salesList: {
         title: ['排名', '用户', '购买数(次)'],
@@ -77,7 +85,11 @@ export default {
   },
   methods: {
     onChange() {
-      console.log(this.value)
+      if (this.value === 1) {
+        this.title = '购买次数分布图'
+      } else {
+        this.title = '消费金额分布图'
+      }
     }
   }
 }
