@@ -64,6 +64,7 @@ export default {
       pageSize: 20,
       total: 0,
       current: 1,
+      isChildren: false,
       count: 1
     }
   },
@@ -76,12 +77,12 @@ export default {
     tableDataSource() {
       let dataSource = []
       let isChildren = false
-      this.dataSource.forEach(element => {
-        if (Array.isArray(element.children)) {
-          isChildren = true
+      this.dataSource.forEach(ele => {
+        if (Array.isArray(ele.children)) {
+          isChildren = Array.isArray(ele.children)
         }
       })
-      // 有子表
+      // 有子表定义key
       if (isChildren) {
         dataSource = addKey(this.dataSource)
       }
@@ -212,7 +213,7 @@ export default {
           h(
             'a-table',
             {
-              class: 'st-table',
+              class: ['st-table', this.isExpand ? 'st-table--expand' : ''],
               props,
               on: {
                 change: this.onChange
@@ -226,7 +227,7 @@ export default {
       : h(
           'a-table',
           {
-            class: 'st-table',
+            class: ['st-table', this.isExpand ? 'st-table--expand' : ''],
             props,
             on: {
               change: this.onChange
