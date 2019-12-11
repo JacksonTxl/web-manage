@@ -166,6 +166,7 @@ export default {
       const query = this.type === 'total' ? this.totalQuery : this.query
       if (changeType === 'changeDepartment') {
         this.pageParams.staff_id = -1
+        query.staff_id = -1
         this.sellAmountervice.getDepartmentStaffList(query).subscribe()
       }
       this.sellAmountervice.getSellAmountList(query).subscribe()
