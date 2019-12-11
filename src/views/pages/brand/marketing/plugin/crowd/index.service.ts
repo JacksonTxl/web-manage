@@ -15,7 +15,7 @@ export class IndexService {
   crowdIndexList$ = new State([])
   loading$ = new State({})
   auth$ = this.authService.authMap$({
-    add: 'shop:member:crowd|add'
+    add: 'brand:member:crowd|add'
   })
   constructor(private crowdAPI: CrowdAPI, private authService: AuthService) {}
   // 获取列表

@@ -17,8 +17,8 @@ export default {
       info: this.printService.info$
     }
   },
-  created() {
-    this.printService.getPrintInfo(this.$route.query.id).subscribe()
+  mounted() {
+    window.print()
   }
 }
 </script>

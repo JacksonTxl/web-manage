@@ -1,0 +1,70 @@
+.st-total {
+  border-radius: 4px;
+  overflow: hidden;
+  &-item__active {
+    cursor: pointer;
+    &:hover {
+      .st-total__item-label,
+      .st-total__item-value {
+        .c(@primary-color);
+      }
+    }
+  }
+  &__title {
+    text-align: center;
+    float: left;
+    border-radius: 4px 0 0 4px;
+    .pd(16px 24px);
+    .bg(rgba(227, 233, 255, 0.8));
+  }
+  &__t3 {
+    .mg-t(12px);
+    .lh(24px);
+  }
+  &__tip {
+    .lh(24px);
+  }
+  &__item {
+    .mg(0 24px 0 34px);
+  }
+  &__item-content {
+    display: flex;
+    flex-direction: column;
+    .mg(16px 0 12px 0);
+  }
+  &__item-value {
+    font-size: 20px;
+    .mg-t(12px);
+    color: #252a2e;
+    line-height: 28px;
+  }
+  &__item-label {
+    color: #5e6a7f;
+    line-height: 24px;
+  }
+  &__content {
+    position: relative;
+    border-radius: 0 4px 4px 0;
+    width: calc(100% - 104px);
+    float: right;
+    .bg(#f5f7ff);
+    .pd(0 16px);
+    div.swiper-button-prev {
+      background-image: none;
+      outline: unset;
+      left: 16px;
+      top: 60px;
+      z-index: 1;
+    }
+    div.swiper-button-next {
+      background-image: none;
+      outline: unset;
+      right: 16px;
+      top: 60px;
+      z-index: 1;
+    }
+    &--full {
+      width: 100%;
+    }
+  }
+}

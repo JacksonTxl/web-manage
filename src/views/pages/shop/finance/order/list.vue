@@ -75,6 +75,12 @@
             >
               业绩拆分
             </a>
+            <a
+              v-if="record.auth['shop:order:order|print']"
+              @click="printOrder(record.id)"
+            >
+              打印小票
+            </a>
           </st-table-actions>
         </div>
       </st-table>
@@ -142,6 +148,14 @@ export default {
     }
   },
   methods: {
+    // 打印小票
+    printOrder(order_id) {
+      window.open(
+        '/ticket/gathering-print?id=' + order_id,
+        '_blank',
+        'width=800,height=600'
+      )
+    },
     // 设置searchData
     setSearchData() {
       const start = this.$searchQuery.start_date

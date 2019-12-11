@@ -360,7 +360,7 @@
 <script>
 import { UserService } from '@/services/user.service'
 import moment from 'moment'
-import { RuleConfig } from '@/constants/rule'
+import { PatternService } from '@/services/pattern.service'
 import { cloneDeep, remove } from 'lodash-es'
 import { EditService } from './edit.service'
 import MemberCard from '@/views/biz-components/h5/pages/member-card'
@@ -383,7 +383,7 @@ export default {
   },
   serviceInject() {
     return {
-      rules: RuleConfig,
+      pattern: PatternService,
       editService: EditService,
       userService: UserService
     }
@@ -709,7 +709,7 @@ export default {
         this.rallyPriceIsOk = false
       } else {
         this.rallyPriceIsOk = this.priceValidateRuleText.every(i =>
-          this.rules.number.test(i)
+          this.pattern.NUM_FLOAT(1).test(i)
         )
       }
     },

@@ -8,13 +8,20 @@
         <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
       </div>
     </section>
+    <st-total
+      :class="bPage('total')"
+      :indexs="columns"
+      :dataSource="total$"
+      hasTitle
+    ></st-total>
     <st-table
-      :page="page"
+      :page="page$"
+      class="mg-t12"
       :scroll="{ x: 1800 }"
       @change="onTableChange"
-      :loading="loading.getOrderShopList"
+      :loading="loading$.getOrderShopList"
       :columns="columns"
-      :dataSource="list"
+      :dataSource="list$"
       rowKey="id"
     ></st-table>
   </div>
@@ -35,11 +42,8 @@ export default {
     }
   },
   rxState() {
-    return {
-      loading: this.financeService.loading$,
-      list: this.financeService.list$,
-      page: this.financeService.page$
-    }
+    const { total$, page$, list$, loading$ } = this.financeService
+    return { total$, page$, list$, loading$ }
   },
   data() {
     return {}

@@ -16,13 +16,14 @@ export class CourseService {
   notCheckInChartData$ = new State<object[]>([])
   list$ = new State([])
   page$ = new State({})
+  total$ = new State({})
   loading$ = new State({})
   soldChartTotal$ = new State(0)
   checkInCourseTotal$ = new State(0)
   notCheckInCourseTotal$ = new State(0)
 
   auth$ = this.authService.authMap$({
-    export: 'brand_shop:stat:order_reports|batch_export'
+    export: 'brand:stat:order_reports|batch_export'
   })
   constructor(
     private api: CourseApi,
@@ -96,6 +97,7 @@ export class CourseService {
       tap(res => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+        this.total$.commit(() => res.total)
       })
     )
   }

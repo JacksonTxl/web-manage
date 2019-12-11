@@ -101,10 +101,14 @@
                     class="bg-row-odd team-course-list-content"
                     v-if="teamCourseListIsShow && packageData.is_team"
                   >
-                    <td class="rightline" colspan="2"></td>
+                    <td
+                      class="rightline"
+                      colspan="2"
+                      style="background-color:#fff"
+                    ></td>
                     <td class="team-course-table" colspan="4">
                       <div :class="add('team-course-table')">
-                        <table>
+                        <st-form-table>
                           <colgroup>
                             <col style="width:5%;" />
                             <col style="width:81%;" />
@@ -132,8 +136,7 @@
                               <td colspan="3">
                                 <p
                                   v-if="!teamCourseList.length"
-                                  class="bg-row-even"
-                                  style="margin: 0;text-align:center;padding: 8px 0;"
+                                  style="margin: 0;text-align:center;"
                                 >
                                   无数据
                                 </p>
@@ -199,11 +202,11 @@
                               </td>
                             </tr>
                           </tbody>
-                        </table>
+                        </st-form-table>
                       </div>
                     </td>
                   </tr>
-                  <tr class="bg-row-even checkbox topline">
+                  <tr class="bg-row-top checkbox">
                     <td class="tg-c">
                       <a-checkbox @change="personalCheckboxChange" />
                     </td>
@@ -257,10 +260,14 @@
                     class="bg-row-even personal-course-list-content"
                     v-if="personalCourseListIsShow && packageData.is_personal"
                   >
-                    <td class="rightline" colspan="2"></td>
+                    <td
+                      class="rightline"
+                      colspan="2"
+                      style="background-color:#fafafa"
+                    ></td>
                     <td class="personal-course-table" colspan="4">
                       <div :class="add('personal-course-table')">
-                        <table>
+                        <st-form-table>
                           <colgroup>
                             <col style="width:5%;" />
                             <col style="width:29%;" />
@@ -292,8 +299,7 @@
                               <td colspan="5">
                                 <p
                                   v-if="!personalCourseList.length"
-                                  class="bg-row-even"
-                                  style="margin: 0;text-align:center;padding: 8px 0;"
+                                  style="margin: 0;text-align:center;"
                                 >
                                   无数据
                                 </p>
@@ -472,7 +478,7 @@
                               </td>
                             </tr>
                           </tbody>
-                        </table>
+                        </st-form-table>
                       </div>
                     </td>
                   </tr>

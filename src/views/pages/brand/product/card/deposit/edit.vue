@@ -339,7 +339,7 @@
 </template>
 <script>
 import moment from 'moment'
-import { RuleConfig } from '@/constants/rule'
+import { PatternService } from '@/services/pattern.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import { cloneDeep, remove } from 'lodash-es'
 import { EditService } from './edit.service'
@@ -363,7 +363,7 @@ export default {
   mixins: [h5mixin],
   serviceInject() {
     return {
-      rules: RuleConfig,
+      pattern: PatternService,
       addService: EditService,
       appConfig: AppConfig,
       messageService: MessageService

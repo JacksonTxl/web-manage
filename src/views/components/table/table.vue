@@ -68,10 +68,12 @@ export default {
         if (this.pagination === false || this.page === false) {
           return false
         }
+        const pageSize =
+          this.pageMode === 'client' ? this.pageSize : this.defaultPageSize
         let _p = merge(
           {
             current: this.current,
-            pageSize: this.defaultPageSize,
+            pageSize,
             total: this.total,
             showTotal: function(total, range) {
               return `共${total}条`
@@ -100,7 +102,7 @@ export default {
             _p.simple = true
           }
         }
-        console.log(_p)
+        console.log('点击change你也会进来初始化么', _p)
         return _p
       }
     }
@@ -123,14 +125,16 @@ export default {
       ))
     },
     CustomExpandIcon(props) {
-      let text
+      let text = ''
+      let className = 'st-expand-row-icon'
       if (props.record.children && props.record.children.length) {
         const type = props.expanded ? 'table-up' : 'table-down'
         text = <st-icon type={type} />
+        className = 'st-expand-row-icon mg-r8'
       }
       return (
         <span
-          class="st-expand-row-icon mg-r8"
+          class={className}
           onClick={e => props.onExpand(props.record, e)}
           style={{ cursor: 'pointer' }}
         >
@@ -149,7 +153,7 @@ export default {
     }
     // 判断是否是父子表格
     if (this.isExpand) {
-      this.props.expandIcon = this.CustomExpandIcon
+      props.expandIcon = this.CustomExpandIcon
     }
     const ce = this.alertSelection.onReset
       ? h('div', { class: 'st-table-wapper' }, [

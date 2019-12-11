@@ -4,6 +4,7 @@ import { forkJoin } from 'rxjs'
 import { tap } from 'rxjs/operators'
 import { State, Effect } from 'rx-state'
 import { UserService } from '@/services/user.service'
+import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class IndexService implements Controller {
@@ -12,9 +13,14 @@ export class IndexService implements Controller {
   loading$ = new State({})
   info$ = new State({})
   status$ = this.userService.getOptions$('plugin.activity_status')
+  auth$ = this.authService.authMap$({
+    add: 'brand:activity:turn|add',
+    destory: 'brand:activity:prize|add'
+  })
   constructor(
     private lotteryApi: LotteryApi,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService
   ) {}
   @Effect()
   getActivityList(query: GetActivityListQuery) {

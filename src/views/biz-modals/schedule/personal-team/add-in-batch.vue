@@ -31,7 +31,7 @@
       </span>
       <span slot="courseFeeTitle" class="modal-table-title">
         <i class="color-danger mg-r8">*</i>
-        课时费
+        单节预约价格
       </span>
       <template slot="start_time" slot-scope="text, record">
         <a-date-picker

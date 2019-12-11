@@ -15,9 +15,9 @@ export class ListService implements Controller {
   workStatusList$ = this.userService.getOptions$('staff.work_status')
   loading$ = new State({})
   auth$ = this.authService.authMap$({
-    join: 'brand_shop:staff:staff|join',
-    add: 'brand_shop:staff:staff|add',
-    import: 'brand_shop:staff:staff|import'
+    join: 'shop:staff:staff|join',
+    add: 'shop:staff:staff|add',
+    import: 'shop:staff:staff|import'
   })
   constructor(
     private staffApi: ShopStaffApi,

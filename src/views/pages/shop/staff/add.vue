@@ -75,7 +75,7 @@ export default {
     // 删除步骤轴
     deletStep(e) {
       this.stepsSpan = 12
-      let index = this.stepArr.findIndex(function(value, index, arr) {
+      let index = this.stepArr.findIndex((value, index, arr) => {
         return value.title === `${this.$c('coach')}信息`
       })
       if (index === -1) return

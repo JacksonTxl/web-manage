@@ -53,9 +53,6 @@ export default {
       width = document.querySelector('.getTextWidth').offsetWidth
       document.querySelector('.getTextWidth').remove()
 
-      console.log(width)
-      console.log(+this.maxWidth.replace('px', ''))
-      console.log(width > +this.maxWidth.replace('px', ''))
       return width > +this.maxWidth.replace('px', '')
     },
     showValue() {

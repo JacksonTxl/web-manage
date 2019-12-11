@@ -14,10 +14,11 @@ export class OrderService {
   chartData$ = new State<object[]>([])
   list$ = new State([])
   page$ = new State({})
+  total$ = new State({})
   loading$ = new State({})
 
   auth$ = this.authService.authMap$({
-    export: 'brand_shop:stat:order_reports|batch_export'
+    export: 'brand:stat:order_reports|batch_export'
   })
   constructor(
     private orderApi: OrderApi,
@@ -68,6 +69,7 @@ export class OrderService {
       tap(res => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+        this.total$.commit(() => res.total)
       })
     )
   }

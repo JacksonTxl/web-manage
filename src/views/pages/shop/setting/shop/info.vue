@@ -36,7 +36,12 @@
         </st-info>
         <checkbox-facility-info :serviceList="serviceListComputed" />
         <div :class="shopInfo('button')">
-          <st-button type="primary" @click="onEdit" class="mg-r8">
+          <st-button
+            type="primary"
+            @click="onEdit"
+            class="mg-r8"
+            v-if="auth.edit"
+          >
             编辑
           </st-button>
           <st-button
@@ -99,7 +104,8 @@ export default {
   rxState() {
     return {
       serviceList: this.infoService.serviceList$,
-      info: this.infoService.info$
+      info: this.infoService.info$,
+      auth: this.infoService.auth$
     }
   },
   computed: {

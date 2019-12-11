@@ -12,7 +12,7 @@ export class AllService implements Controller {
   page$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({
-    add: 'brand_shop:product:member_card|add'
+    add: 'brand:product:member_card|add'
   })
   publishChannel$ = this.userService
     .getOptions$('member_card.publish_channel')
