@@ -68,6 +68,7 @@
 import { columns } from './team-course.config'
 import { TeamCourseService } from './team-course.service'
 import { COURSE_TYPE } from '@/constants/stat/course'
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'TeamCourse',
   serviceInject() {
@@ -98,9 +99,9 @@ export default {
       type: Object,
       default: () => {
         return {}
-      },
-      type: String
-    }
+      }
+    },
+    type: String
   },
   data() {
     return {
