@@ -80,7 +80,11 @@ window.cdnUtils = {
    */
   isUseCdn: function() {
     // TODO:// 用于测试 test 环境，上线前要修改
-    return this.config[this.getEnv()] && (location.search.match(/is_use_cdn=([^&])/) || [])[1] === '1'
+    var env = this.getEnv()
+    if (env === 'pre') {
+      return true
+    }
+    return this.config[env] && (location.search.match(/is_use_cdn=([^&])/) || [])[1] === '1'
   },
   /**
    * 读取 localStorage
