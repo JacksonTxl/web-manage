@@ -2,7 +2,28 @@
   <div :class="bPage()">
     <section class="mg-b16" :class="bHeard()">
       <div :class="bHeard('left')">
-        <!-- TODO: <st-button type="primary" class="shop-member-list-button">批量导出</st-button> -->
+        <div :class="bPage('button-wapper')" class="mg-r8">
+          <st-button
+            type="primary"
+            v-if="showTable === 'all'"
+            v-export-excel="{
+              type: 'sale/summary',
+              query: $searchQuery
+            }"
+          >
+            全部导出
+          </st-button>
+          <st-button
+            v-else
+            type="primary"
+            v-export-excel="{
+              type: 'sale/staff',
+              query: $searchQuery
+            }"
+          >
+            全部导出
+          </st-button>
+        </div>
         <a-radio-group :value="showTable" @change="handleSizeChange">
           <a-radio-button value="all">汇总</a-radio-button>
           <a-radio-button value="staff">员工</a-radio-button>

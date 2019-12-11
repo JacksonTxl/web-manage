@@ -58,7 +58,7 @@
         type="primary"
         v-if="auth$.export"
         v-export-excel="{
-          type: 'shop/team/course/checkin',
+          type: 'sale',
           query: query
         }"
       >

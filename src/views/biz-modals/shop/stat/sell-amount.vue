@@ -65,6 +65,18 @@
         <st-help-tooltip id="TSSR007" />
       </span>
     </st-table>
+    <div slot="footer">
+      <st-button
+        type="primary"
+        v-if="auth$.export"
+        v-export-excel="{
+          type: '/sale',
+          query: query
+        }"
+      >
+        全部导出
+      </st-button>
+    </div>
   </st-modal>
 </template>
 <script>
@@ -85,11 +97,13 @@ export default {
     let {
       amountList$,
       page$,
+      auth$,
       loading$,
       modalDepartmentList$,
       modalStaffList$
     } = this.sellAmountervice
     return {
+      auth$,
       page: page$,
       amountList: amountList$,
       loading: loading$,
@@ -166,6 +180,7 @@ export default {
       const query = this.type === 'total' ? this.totalQuery : this.query
       if (changeType === 'changeDepartment') {
         this.pageParams.staff_id = -1
+        query.staff_id = -1
         this.sellAmountervice.getDepartmentStaffList(query).subscribe()
       }
       this.sellAmountervice.getSellAmountList(query).subscribe()
