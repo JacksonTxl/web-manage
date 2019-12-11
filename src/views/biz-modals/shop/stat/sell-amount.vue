@@ -3,7 +3,6 @@
     wrapClassName="modal-stat-sell-amount"
     title="总销售业绩"
     width="1150px"
-    :footer="null"
     v-model="show"
     :loading="loading.init"
   >
@@ -66,6 +65,7 @@
       </span>
     </st-table>
     <div slot="footer">
+      khjgfxjhsgj
       <st-button
         type="primary"
         v-if="auth$.export"
