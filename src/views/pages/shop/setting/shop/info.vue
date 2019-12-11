@@ -105,7 +105,7 @@ export default {
     return {
       serviceList: this.infoService.serviceList$,
       info: this.infoService.info$,
-      auth: this.infoService.auth$$
+      auth: this.infoService.auth$
     }
   },
   computed: {
