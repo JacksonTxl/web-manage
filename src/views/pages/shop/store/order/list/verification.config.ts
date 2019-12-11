@@ -6,7 +6,7 @@ export const columns = () => [
     scopedSlots: { customRender: 'childrens' }
   },
   {
-    title: '收货人',
+    title: '会员名称',
     dataIndex: 'ren'
   },
   {
@@ -14,12 +14,8 @@ export const columns = () => [
     dataIndex: 'phone'
   },
   {
-    title: '收货地址',
-    dataIndex: 'adress'
-  },
-  {
     title: '创建时间',
-    dataIndex: 'time'
+    dataIndex: 'adress'
   },
   {
     title: '订单编号',
