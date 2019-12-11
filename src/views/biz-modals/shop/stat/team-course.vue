@@ -96,7 +96,10 @@ export default {
   props: {
     record: {
       type: Object,
-      default: () => {}
+      default: () => {
+        return {}
+      },
+      type: String
     }
   },
   data() {
@@ -108,13 +111,33 @@ export default {
       coach_id: -1,
       course_id: -1,
       current_page: 1,
-      size: 999
+      // TODO: 准备做后端翻页
+      size: 99999
     }
   },
   computed: {
     columns,
     showTable() {
       return this.$searchQuery.showTable || 'all'
+    },
+    totalQuery() {
+      let query = cloneDeep(this.$searchQuery)
+      delete query.showTable
+      delete query.current_page
+      delete query.size
+      query = {
+        course_type: this.course_type,
+        current_page: this.current_page,
+        size: this.size,
+
+        course_id: this.course_id,
+        type: '/total',
+        ...query
+      }
+      if (this.showTable === 'all') {
+        query.coach_id = this.coach_id
+      }
+      return query
     },
     query() {
       return {
@@ -129,7 +152,8 @@ export default {
   },
   methods: {
     getCourseList() {
-      this.teamCourseService.getCourseList(this.query).subscribe()
+      const query = this.type === 'total' ? this.totalQuery : this.query
+      this.teamCourseService.getCourseList(query).subscribe()
     },
     filterOption(input, option) {
       return (
@@ -141,9 +165,9 @@ export default {
     init() {
       this.coach_id = this.record.coach_id || -1
       this.stat_date = this.record.stat_date
-
+      const query = this.type === 'total' ? this.totalQuery : this.query
       this.teamCourseService
-        .init({ course_type: COURSE_TYPE.TEAM }, { ...this.query })
+        .init({ course_type: COURSE_TYPE.TEAM }, { ...query })
         .subscribe()
     }
   },
