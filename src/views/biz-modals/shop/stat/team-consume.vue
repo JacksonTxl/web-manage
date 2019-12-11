@@ -115,7 +115,8 @@ export default {
       coach_id: -1,
       course_id: -1,
       current_page: 1,
-      size: 999
+      // TODO: 后端翻页
+      size: 99999
     }
   },
   computed: {
