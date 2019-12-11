@@ -7,39 +7,22 @@
       placeholder="请输入订单编号、会员姓名或手机号查找"
       maxlength="50"
     />
-    <st-table
-      :page="1"
-      :class="basic('table')"
-      rowKey="id"
+    <row-table
       :columns="columns"
-      :dataSource="list"
-    >
-      <ul
-        slot="childrens"
-        slot-scope="customRender, record"
-        :class="basic('sku')"
-      >
-        <li v-for="(item, index) in record.childrens" :key="index">
-          {{ item.name }}
-        </li>
-      </ul>
-      <div slot="action">
-        <st-table-actions>
-          <a>
-            发货
-          </a>
-        </st-table-actions>
-      </div>
-    </st-table>
+      :listData="list"
+      actionText="发货"
+    ></row-table>
   </div>
 </template>
 <script>
-import tableMixin from '@/mixins/table.mixin'
+import RowTable from '../components#/row-table.vue'
 import { columns } from './shipments.config'
 import { SHOP_STORE_ORDER_KEYWORDS_SEARCH } from '@/constants/events'
 export default {
   name: 'shipments',
-  mixins: [tableMixin],
+  components: {
+    RowTable
+  },
   bem: {
     basic: 'page-order-shipments'
   },
@@ -51,7 +34,9 @@ export default {
         {
           childrens: [
             {
-              name: 'aaaa'
+              name: 'aaaadsad的撒大建设靠大家阿里斯顿拉萨机了',
+              num: 2,
+              price: 12.04
             },
             {
               name: 'bbb'

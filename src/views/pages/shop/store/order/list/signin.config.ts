@@ -19,16 +19,18 @@ export const columns = () => [
   },
   {
     title: '创建时间',
-    dataIndex: 'time'
-  },
-  {
-    title: '订单编号',
     dataIndex: 'times'
   },
   {
-    title: '操作',
-    dataIndex: 'action',
-    width: 140,
-    scopedSlots: { customRender: 'action' }
+    title: '订单编号',
+    dataIndex: ''
+  },
+  {
+    title: '快递公司',
+    dataIndex: ''
+  },
+  {
+    title: '快递单号',
+    dataIndex: ''
   }
 ]
