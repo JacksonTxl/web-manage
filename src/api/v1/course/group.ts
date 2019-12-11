@@ -10,9 +10,15 @@ export class CourseGroupApi extends Api {
     return this.http.post('/v1/course/small-course', { params })
   }
   setCoach(params: any) {
-    return this.http.post('/v1/course/small-course/set-coach/' + params)
+    return this.http.put(
+      '/v1/course/small-course/set-coach/' + params.course_id,
+      { params }
+    )
   }
   setPrice(params: any) {
-    return this.http.post('/v1/course/small-course/set-coach/' + params)
+    return this.http.put(
+      '/v1/course/small-course/set-price/' + params.course_id,
+      { params }
+    )
   }
 }

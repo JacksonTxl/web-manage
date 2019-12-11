@@ -16,7 +16,7 @@ export class ListService implements Controller {
   page$ = new State({})
 
   auth$ = this.authService.authMap$({
-    // add: 'shop:product:team_course|add'
+    add: true
   })
   constructor(
     private courseApi: CourseApi,

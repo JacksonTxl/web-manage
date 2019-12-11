@@ -3,70 +3,23 @@
     <a-row :gutter="10">
       <a-col :lg="10" :xs="10" :offset="1">
         <st-form-item label="课程名称">
-          <a-input
-            placeholder="课程名称"
-            disabled
-            v-decorator="decorators.course_name"
-          />
+          <a-input placeholder="课程名称" disabled v-model="courseName" />
         </st-form-item>
         <st-form-item label="负责人">
           <a-select placeholder="请输入负责人"></a-select>
         </st-form-item>
-        <st-form-item label="上课教练">
-          <st-form-table>
-            <thead>
-              <tr>
-                <th>教练</th>
-                <th>教练等级</th>
-                <th>工作性质</th>
-                <th v-if="!disabled">操作</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="st-form-table__add">
-                  <st-button
-                    type="dashed"
-                    icon="add"
-                    block
-                    v-modal-link="{
-                      name: 'shop-select',
-                      props: {
-                        checked: checkedShopIds,
-                        groupParams,
-                        type
-                      },
-                      on: {
-                        change: onSelectShopComplete
-                      }
-                    }"
-                  >
-                    添加教练
-                  </st-button>
-                </td>
-              </tr>
-              <!-- <template v-if="list.length">
-                <tr v-for="(item, index) in list" :key="index">
-                  <td>{{ item.province }}</td>
-                  <td>{{ item.city }}</td>
-                  <td>{{ item.district }}</td>
-                  <td>{{ item.shop_name }}</td>
-                  <td v-if="!disabled">
-                    <a @click="delShopTableRecord(item.shop_id)">
-                      删除
-                    </a>
-                  </td>
-                </tr>
-              </template>
-              <template v-else>
-                <tr>
-                  <td :colspan="colspanNum">
-                    <st-no-data />
-                  </td>
-                </tr>
-              </template> -->
-            </tbody>
-          </st-form-table>
+        <st-form-item>
+          <template slot="label">
+            上课{{ $c('coach') }}
+            <st-help-tooltip id="TSCPC001" />
+          </template>
+          <div class="page-shop-coach-container-coach">
+            <input type="hidden" v-decorator="decorators.coachIds" />
+            <select-coach
+              :shopIds="shopIds"
+              @change="onSelectCoachChange"
+            ></select-coach>
+          </div>
         </st-form-item>
       </a-col>
     </a-row>
@@ -87,10 +40,10 @@
 <script>
 import { AddService } from '../add.service'
 import { MessageService } from '@/services/message.service'
-import SelectCoach from '@/views/fragments/coach/select-coach'
 import { UserService } from '@/services/user.service'
 import { ruleOptions } from '../form.config'
 import { PatternService } from '@/services/pattern.service'
+import SelectCoach from '@/views/fragments/coach/select-coach'
 
 export default {
   name: 'SetShopCoach',
@@ -108,7 +61,9 @@ export default {
       personalCourseEnums: this.userService.personalCourseEnums$
     }
   },
-  components: {},
+  components: {
+    SelectCoach
+  },
   props: {
     courseName: {
       type: String,
@@ -137,6 +92,7 @@ export default {
     return {
       form,
       decorators,
+      shopIds: [],
       fileList: []
     }
   },

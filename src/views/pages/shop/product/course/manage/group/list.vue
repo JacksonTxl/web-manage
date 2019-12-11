@@ -1,23 +1,35 @@
 <template>
   <st-panel :class="b()" app>
-    <st-button type="primary" @click="goAddGroup">新建小班课</st-button>
-    <div :class="b('action')">
+    <div slot="title">
       <st-input-search
         placeholder="团课名称"
         v-model="$searchQuery.course_name"
         @search="onSearchCourseName"
       />
-      <a-select
-        class="mg-r8"
-        v-model="$searchQuery.course_status"
-        style="width: 160px"
-        @change="onChange"
-      >
-        <a-select-option v-for="item in []" :key="item.id" :value="item.id">
-          {{ item.setting_name }}
-        </a-select-option>
-      </a-select>
     </div>
+    <a-row>
+      <a-col :span="8">
+        <st-button type="primary" class="mg-b16" icon="add" @click="goAddGroup">
+          新增小班课
+        </st-button>
+      </a-col>
+      <a-col :span="16" class="ta-r">
+        <a-select
+          class="mg-r8"
+          v-model="$searchQuery.course_status"
+          style="width: 160px"
+          @change="onChange"
+        >
+          <!-- <a-select-option
+            v-for="category in categoryList"
+            :key="category.id"
+            :value="category.id"
+          >
+            {{ category.setting_name }}
+          </a-select-option> -->
+        </a-select>
+      </a-col>
+    </a-row>
 
     <st-table
       rowKey="id"
@@ -52,12 +64,12 @@ export default {
   },
   data() {
     return {
-      columns
+      // columns
     }
   },
-  // computed: {
-  //   columns
-  // },
+  computed: {
+    columns
+  },
   methods: {
     goAddGroup() {
       this.$router.push({ path: './add' })

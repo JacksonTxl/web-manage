@@ -56,6 +56,14 @@ export const ruleOptions = (vm: any) => {
           message: '请输入1-15个字符'
         }
       ]
+    },
+    coachIds: {
+      rules: [
+        {
+          // required: true,
+          message: '请输入用户名'
+        }
+      ]
     }
     // img_type: {
     //   rules: [
