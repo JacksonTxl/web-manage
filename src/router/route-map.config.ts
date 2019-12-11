@@ -913,18 +913,8 @@ export const routeMapConfig = {
       coach_id: { type: Number, default: -1 }
     }
   },
-  'shop-product-course-manage-group'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '小班课'
-    routeConfig.queryOptions = {
-      course_status: { type: Number, default: -1 },
-      course_name: { type: String, default: '' },
-      current_page: { type: Number, default: 1 },
-      size: { type: Number, default: 20 }
-    }
-  },
   'shop-product-course-manage-group-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '小班课'
-    routeConfig.meta.parentRouteName = 'shop-product-course-manage-group'
     routeConfig.queryOptions = {
       course_status: { type: Number, default: -1 },
       course_name: { type: String, default: '' },

@@ -16,7 +16,7 @@ export class ListService implements Controller {
   page$ = new State({})
 
   auth$ = this.authService.authMap$({
-    add: 'shop:product:team_course|add'
+    // add: 'shop:product:team_course|add'
   })
   constructor(
     private courseApi: CourseApi,
@@ -37,7 +37,7 @@ export class ListService implements Controller {
     return forkJoin(this.getList(query))
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    return this.init(to.meta.query)
+    // return this.init(to.meta.query)
   }
   // beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
   //   this.initOptions().subscribe(() => {

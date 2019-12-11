@@ -4,6 +4,15 @@ export class CourseGroupApi extends Api {
    *小班课列表
    */
   getList(params: any) {
-    return this.http.get('/v1/setting/course/small_course/reserve', { params })
+    return this.http.get('/v1/course/small-course/list', { params })
+  }
+  addGroup(params: any) {
+    return this.http.post('/v1/course/small-course', { params })
+  }
+  setCoach(params: any) {
+    return this.http.post('/v1/course/small-course/set-coach/' + params)
+  }
+  setPrice(params: any) {
+    return this.http.post('/v1/course/small-course/set-coach/' + params)
   }
 }
