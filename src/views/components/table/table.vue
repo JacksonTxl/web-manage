@@ -60,6 +60,19 @@ export default {
         emptyText: <st-no-data />
       }
     },
+    tableDataSource() {
+      let dataSource = []
+      let isChildren = false
+      this.dataSource.forEach(element => {
+        if (Array.isArray[element.children]) {
+          isChildren = true
+        }
+      })
+      // 有子表
+      if (isChildren) {
+      }
+      return dataSource
+    },
     defaultPageSize() {
       return this.simplePage ? 10 : 20
     },
@@ -102,7 +115,6 @@ export default {
             _p.simple = true
           }
         }
-        console.log('点击change你也会进来初始化么', _p)
         return _p
       }
     }
