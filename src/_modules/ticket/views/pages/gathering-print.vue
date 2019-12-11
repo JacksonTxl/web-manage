@@ -28,8 +28,10 @@
     <div :class="b('section')">
       <template v-for="(item, index) in info.product_list">
         <span :class="b('section-subtitle')" :key="index">
-          {{ item.product_name
-          }}{{ item.specification ? '(' + item.specification + ')' : '' }}
+          {{ item.product_name }}
+          {{ item.specification ? '(' + item.specification + ')' : '' }}
+          *
+          {{ item.product_count }}
         </span>
         <div :class="b('section-item')" :key="index">
           <span class="mg-b16">定价:￥{{ item.price }}</span>
