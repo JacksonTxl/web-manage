@@ -36,12 +36,10 @@
       </div>
       <div :class="basic('content')">
         <st-table
-          :page="page"
           rowKey="id"
           :columns="columns"
-          @change="onTableChange"
-          :scroll="{ x: 1440 }"
-          :dataSource="[]"
+          :dataSource="list"
+          :isExpand="true"
         ></st-table>
         <template slot="action" slot-scope="text, record">
           <st-table-actions sytle="width: 120px">
@@ -85,7 +83,73 @@ export default {
       goodsSortType: {
         value: { 1: '上衣', 3: '裙子', 4: '马丁靴' }
       },
-      columns: columns(vm)
+      columns: columns(vm),
+      list: [
+        {
+          id: '1',
+          activity_name: '父级列表',
+          product_type: '娱乐',
+          support_sales: '线下',
+          activity_time: '以上架',
+          activity_state: '10',
+          group_total: '90',
+          group_success_total: '10',
+          children: [
+            {
+              id: '2',
+              activity_name: '子级列表',
+              product_type: '娱乐',
+              support_sales: '线下',
+              activity_time: '以上架',
+              activity_state: '10',
+              group_total: '90',
+              group_success_total: '10'
+            },
+            {
+              id: '5',
+              activity_name: '子级列表',
+              product_type: '娱乐',
+              support_sales: '线下',
+              activity_time: '以上架',
+              activity_state: '60',
+              group_total: '90',
+              group_success_total: '30'
+            }
+          ]
+        },
+        {
+          id: '3',
+          activity_name: '父级列表',
+          product_type: '娱乐',
+          support_sales: '线下',
+          activity_time: '以上架',
+          activity_state: '10',
+          group_total: '90',
+          group_success_total: '10',
+          children: [
+            {
+              id: '9',
+              activity_name: '子级列表',
+              product_type: '娱乐',
+              support_sales: '线下',
+              activity_time: '以上架',
+              activity_state: '10',
+              group_total: '90',
+              group_success_total: '10'
+            },
+            {
+              id: '6',
+              activity_name: '子级列表',
+              product_type: '娱乐',
+              support_sales: '线下',
+              activity_time: '以上架',
+              activity_state: '60',
+              group_total: '90',
+              group_success_total: '30'
+            }
+          ]
+        }
+      ]
     }
   },
   computed: {
@@ -108,6 +172,33 @@ export default {
     console.log(this.allUpShelfStatus)
   },
   methods: {
+    rowClassName(record, index) {
+      let id = record && record.id
+      let has = this.showList.includes(id)
+      let className = ''
+      if (index % 2 !== 0) {
+        className = has ? 'evengb shadow' : 'evengb'
+      } else {
+        className = has ? 'shadow' : ''
+      }
+      if (record && record.children) {
+        Color = className
+        return className
+      } else {
+        let name = Color
+        return name.indexOf('shadow') === -1 ? name : name.replace('shadow', '')
+      }
+    },
+    onShow(list) {
+      this.showList = list
+      this.rowClassName()
+    },
+    onshow() {
+      console.log('时间触发')
+    },
+    onTableChange() {
+      console.log(1)
+    },
     // 新建商品
     onAddGoods() {
       console.log(1)
