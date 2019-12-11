@@ -1504,5 +1504,62 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
+  'shop-store-stock-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '库存管理'
+    routeConfig.meta.tabs = [
+      'shop-store-stock-list-search',
+      'shop-store-stock-list-detail'
+    ]
+  },
+  'shop-store-stock-list-search'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '库存查询'
+    routeConfig.queryOptions = {
+      // page: { type: Number, default: 1 },
+      // size: { type: Number, default: 20 },
+      // card_type: { type: Number, default: -1 },
+      // publish_channel: { type: Number, default: -1 },
+      card_name: { type: String, default: '' }
+      // sell_status: { type: Number, default: -1 },
+      // shelf_status: { type: Number, default: -1 }
+    }
+  },
+  'shop-store-stock-list-detail'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '出入库明细'
+  },
+  'shop-store-order-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '发货管理'
+    routeConfig.meta.tabs = [
+      'shop-store-order-list-verification',
+      'shop-store-order-list-shipments',
+      'shop-store-order-list-signin'
+    ]
+  },
+  'shop-store-order-list-shipments'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '待发货订单'
+    routeConfig.queryOptions = {
+      card_name: { type: String, default: '' }
+    }
+  },
+  'shop-store-order-list-signin'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '待签收订单'
+    routeConfig.queryOptions = {
+      card_name: { type: String, default: '' }
+    }
+  },
+  'shop-store-order-list-verification'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '待核销订单'
+    routeConfig.queryOptions = {
+      card_name: { type: String, default: '' }
+    }
+  },
+  'shop-store-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '云店列表' // 暂时这样未确定
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      activity_name: { type: String, default: '' },
+      activity_status: { type: Number, default: -1 }
+    }
+  },
   ...tplConfigs
 }
