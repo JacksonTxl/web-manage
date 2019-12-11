@@ -56,7 +56,7 @@
     <div slot="footer">
       <st-button
         type="primary"
-        v-if="auth$.export"
+        v-if="auth$.export && type !== 'total'"
         v-export-excel="{
           type: 'shop/team/course/checkin',
           query: query
