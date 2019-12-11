@@ -16,10 +16,10 @@
           @click="onClickScheduleInBatch"
           v-if="auth.addBatch"
         >
-          批量排期
+          排课
         </st-button>
-        <st-button @click="onClickCopySchedule" v-if="auth.copy">
-          复制排期
+        <st-button @click="onClickScheduleInBatch" v-if="auth.addBatch">
+          批量修改
         </st-button>
       </div>
     </calendar>
@@ -98,26 +98,18 @@ export default {
         }
       })
     },
-    // 批量排期
+    // 排课-批量修改
     onClickScheduleInBatch() {
-      this.$modalRouter.push({
-        name: 'schedule-team-add-course-batch',
-        on: {
-          ok: res => {
-            this.onScheduleChange()
-          }
+      this.$router.push({
+        path: '/shop/product/course/schedule/mini-team/inbatch-add',
+        query: {
+          // activity_id: this.stepForm.activity_id
         }
-      })
-    },
-    // 复制排期
-    onClickCopySchedule() {
-      this.$modalRouter.push({
-        name: 'schedule-team-copy-schedule',
-        on: {
-          ok: res => {
-            this.onScheduleChange()
-          }
-        }
+        // on: {
+        //   ok: res => {
+        //     this.onScheduleChange()
+        //   }
+        // }
       })
     },
     // 进入表格模式

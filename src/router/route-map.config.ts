@@ -916,6 +916,11 @@ export const routeMapConfig = {
       coach_id: { type: Number, default: -1 }
     }
   },
+  'shop-product-course-schedule-mini-team-inbatch-add'(
+    routeConfig: RouteConfig
+  ) {
+    routeConfig.meta.title = '小班课排期'
+  },
   'shop-product-course-manage-team-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '团体课'
     routeConfig.queryOptions = {

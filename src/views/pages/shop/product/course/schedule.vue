@@ -193,7 +193,7 @@ export default {
     }
   },
   created() {
-    console.log(this.$route.name)
+    // console.log(this.$route.name)
   },
   methods: {
     onChange() {

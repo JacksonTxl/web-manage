@@ -1,0 +1,40 @@
+.page-shop-schedule-inbatch-add {
+  padding: 0 64px;
+  .st-container--type-1 {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    height: 500px;
+  }
+  &__head {
+    .ant-form-item-control-wrapper {
+      width: 270px;
+      flex: none;
+    }
+  }
+  &__schedule {
+    width: 100%;
+    height: 100%;
+  }
+  &__select__date {
+    padding: 12px 0;
+    margin-bottom: 0;
+  }
+  &__schedule__table {
+    display: flex;
+    flex: 1;
+  }
+  &__schedule__item {
+    flex: 1;
+    padding: 20px 15px;
+  }
+  &__schedule__item:nth-child(2n) {
+    background-color: @white;
+  }
+  &__schedule__item:nth-child(2n-1) {
+    background-color: #fafafa;
+  }
+  &__schedule__card {
+    padding: 10px 5px;
+  }
+}

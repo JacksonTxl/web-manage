@@ -101,6 +101,7 @@ export default {
       is_initialize_status: 0
     }
     this.list.push(item)
+    // mock 数据 end
   },
   methods: {
     isInitial(item) {
