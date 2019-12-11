@@ -56,7 +56,7 @@
     <div slot="footer">
       <st-button
         type="primary"
-        v-if="auth$.export"
+        v-if="auth$.export && type !== 'total'"
         v-export-excel="{
           type: 'shop/team/course/checkin',
           query: query
@@ -115,7 +115,8 @@ export default {
       coach_id: -1,
       course_id: -1,
       current_page: 1,
-      size: 999
+      // TODO: 后端翻页
+      size: 99999
     }
   },
   computed: {

@@ -37,10 +37,13 @@ export class StatApi {
   getCheckinModalCoachAndCourseList(query: any) {
     return this.http.get('/v1/stat/course/shop/course/checkin/coach', { query })
   }
-  getPersonalCourse(query: PersonalCourseQuery) {
-    return this.http.get('/v1/stat/course/shop/personal/course', {
-      query
-    })
+  getPersonalCourse(query: any) {
+    return this.http.get(
+      `/v1/stat/course/shop/personal/course${query.type || ''}`,
+      {
+        query
+      }
+    )
   }
   getPersonalConsume(query: any) {
     return this.http.get(
@@ -51,8 +54,13 @@ export class StatApi {
     )
   }
 
-  getTeamCourse(query: TeamCourseQuery) {
-    return this.http.get('/v1/stat/course/shop/team/course', { query })
+  getTeamCourse(query: any) {
+    return this.http.get(
+      `/v1/stat/course/shop/team/course${query.type || ''}`,
+      {
+        query
+      }
+    )
   }
   getTeamConsume(query: any) {
     return this.http.get(

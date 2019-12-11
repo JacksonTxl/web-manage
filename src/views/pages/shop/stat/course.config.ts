@@ -9,7 +9,7 @@ export const allColumns = (vm: any) => {
     {
       title: '上课节数（私）',
       dataIndex: 'personal_course_num',
-      unit: '',
+      scopedSlots: { customRender: 'personal_course_num' },
       align: 'right'
     },
     {
@@ -37,6 +37,7 @@ export const allColumns = (vm: any) => {
     {
       title: '上课节数（团）',
       dataIndex: 'team_course_num',
+      scopedSlots: { customRender: 'team_course_num' },
       align: 'right'
     },
     {
@@ -91,6 +92,7 @@ export const coachColumns = (vm: any) => {
     {
       title: '上课节数（私）',
       dataIndex: 'personal_course_num',
+      scopedSlots: { customRender: 'personal_course_num' },
       align: 'right'
     },
     {
@@ -113,6 +115,7 @@ export const coachColumns = (vm: any) => {
     {
       title: '上课节数（团）',
       dataIndex: 'team_course_num',
+      scopedSlots: { customRender: 'team_course_num' },
       align: 'right'
     },
     {

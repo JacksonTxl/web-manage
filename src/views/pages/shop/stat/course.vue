@@ -91,6 +91,22 @@
           :value="record.value"
         ></st-total-item>
       </template>
+      <template v-slot:personal_course_num="record">
+        <st-total-item
+          @click.native="onCLickPersonalNum"
+          :unit="record.unit"
+          :label="record.label"
+          :value="record.value"
+        ></st-total-item>
+      </template>
+      <template v-slot:team_course_num="record">
+        <st-total-item
+          @click.native="onCLickTeamNum"
+          :unit="record.unit"
+          :label="record.label"
+          :value="record.value"
+        ></st-total-item>
+      </template>
     </st-total>
     <st-table
       class="mg-t12"
@@ -219,6 +235,22 @@ export default {
       console.log('你点击了+ onCLickTeamCheckinAmount')
       this.$modalRouter.push({
         name: 'shop-stat-team-consume',
+        props: {
+          type: 'total'
+        }
+      })
+    },
+    onCLickPersonalNum() {
+      this.$modalRouter.push({
+        name: 'shop-stat-personal-course',
+        props: {
+          type: 'total'
+        }
+      })
+    },
+    onCLickTeamNum() {
+      this.$modalRouter.push({
+        name: 'shop-stat-team-course',
         props: {
           type: 'total'
         }

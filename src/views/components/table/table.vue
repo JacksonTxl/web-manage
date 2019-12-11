@@ -1,5 +1,17 @@
 <script>
 import { merge, omit, map } from 'lodash-es'
+function addKey(dataSource) {
+  for (let i in dataSource) {
+    dataSource[i].key = i % 2 ? `odd-${i}` : `even-${i}`
+    if (dataSource[i].children) {
+      for (let j in dataSource[i].children) {
+        dataSource[i].children[j].key = `${dataSource[i].key}-${j}`
+      }
+    }
+  }
+  // console.log(dataSource)
+  return dataSource
+}
 export default {
   name: 'StTable',
   props: {
@@ -51,7 +63,8 @@ export default {
     return {
       pageSize: 20,
       total: 0,
-      current: 1
+      current: 1,
+      count: 1
     }
   },
   computed: {
@@ -59,6 +72,20 @@ export default {
       return {
         emptyText: <st-no-data />
       }
+    },
+    tableDataSource() {
+      let dataSource = []
+      let isChildren = false
+      this.dataSource.forEach(element => {
+        if (Array.isArray(element.children)) {
+          isChildren = true
+        }
+      })
+      // 有子表
+      if (isChildren) {
+        dataSource = addKey(this.dataSource)
+      }
+      return dataSource.length > 0 ? dataSource : this.dataSource
     },
     defaultPageSize() {
       return this.simplePage ? 10 : 20
@@ -68,10 +95,12 @@ export default {
         if (this.pagination === false || this.page === false) {
           return false
         }
+        const pageSize =
+          this.pageMode === 'client' ? this.pageSize : this.defaultPageSize
         let _p = merge(
           {
             current: this.current,
-            pageSize: this.defaultPageSize,
+            pageSize,
             total: this.total,
             showTotal: function(total, range) {
               return `共${total}条`
@@ -100,7 +129,6 @@ export default {
             _p.simple = true
           }
         }
-        console.log(_p)
         return _p
       }
     }
@@ -145,7 +173,7 @@ export default {
     let props = {
       pagination: this.tablePagination,
       locale: this.locale,
-      dataSource: this.dataSource,
+      dataSource: this.tableDataSource,
       scroll: this.dataSource.length >= 1 ? this.scroll : {},
       ...this.$attrs
     }
