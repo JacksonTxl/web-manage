@@ -161,17 +161,17 @@ window.cdnUtils = {
       domains.forEach(function(domain) {
         var task = new Promise(function(taskResolve, taskReject) {
           var img = new Image()
-          img.src = `${domain}img/sample.gif`
+          img.src = domain + 'img/cdn/sample.gif?t=' + +new Date()
           img.onload = function() {
-            console.log(`${domain} success`)
+            console.log(domain + ' success')
             successedDomains.push(domain)
             taskResolve(domain)
           }
           img.onerror = function() {
-            console.warn(`${domain} error`)
+            console.warn(domain, 'error')
             that.collectErrors(domain)
             failedDomains.push(domain)
-            taskReject(new Error(`${domain} error`))
+            taskReject(new Error(domain + ' error'))
           }
         })
         .catch(function(e) {})
@@ -240,7 +240,7 @@ window.cdnUtils = {
     })
   },
   collectErrors(domain) {
-    let cdnErrors = this.get('cdnErrors') || {}
+    var cdnErrors = this.get('cdnErrors') || {}
     cdnErrors[domain] = Date()
     this.set('cdnErrors',cdnErrors)
   }

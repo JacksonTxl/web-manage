@@ -91,7 +91,7 @@
 <script>
 import tableMixin from '@/mixins/table.mixin'
 import { ExpenditureService } from './expenditure.service'
-import { columns } from './expenditure.config.ts'
+import { columns, totalColumns } from './expenditure.config.ts'
 export default {
   name: 'FinanceFlowExpenditure',
   mixins: [tableMixin],
@@ -123,7 +123,8 @@ export default {
     }
   },
   computed: {
-    columns
+    columns,
+    totalColumns
   },
   mounted() {
     this.setSearchDate()
