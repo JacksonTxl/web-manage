@@ -324,8 +324,73 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
-  'shop-sold-transaction-list'(routeConfig: RouteConfig) {
+  'shop-sold-transaction'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '交易签单'
+    routeConfig.meta.tabs = [
+      'shop-sold-transaction-member',
+      'shop-sold-transaction-deposit',
+      'shop-sold-transaction-personal',
+      'shop-sold-transaction-package',
+      'shop-sold-transaction-lease',
+      'shop-sold-transaction-store'
+    ]
+  },
+  // 'shop-sold-transaction-list'(routeConfig: RouteConfig) {
+  //   routeConfig.meta.title = '交易签单'
+  //   routeConfig.queryOptions = {
+  //     current_page: { type: Number, default: 1 },
+  //     size: { type: Number, default: 20 },
+  //     product_name: { type: String, default: '' },
+  //     product_type: { type: Number, default: 1 }
+  //   }
+  // },
+  'shop-sold-transaction-member'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '{{$c("member_card")}}'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      product_name: { type: String, default: '' },
+      product_type: { type: Number, default: 1 }
+    }
+  },
+  'shop-sold-transaction-personal'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '私教课'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      product_name: { type: String, default: '' },
+      product_type: { type: Number, default: 1 }
+    }
+  },
+  'shop-sold-transaction-package'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '课程包'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      product_name: { type: String, default: '' },
+      product_type: { type: Number, default: 1 }
+    }
+  },
+  'shop-sold-transaction-store'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '云店'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      product_name: { type: String, default: '' },
+      product_type: { type: Number, default: 1 }
+    }
+  },
+  'shop-sold-transaction-deposit'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '储值卡'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      product_name: { type: String, default: '' },
+      product_type: { type: Number, default: 1 }
+    }
+  },
+  'shop-sold-transaction-lease'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '租赁柜'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
