@@ -9,8 +9,8 @@ export const columns = () => {
     {
       title: '金额（元）',
       titleTotal: '流水总金额（元）',
-      dataIndex: 'price',
       scopedSlots: { customRender: 'price' },
+      dataIndex: 'price',
       sorter: true
     },
     {
@@ -40,6 +40,16 @@ export const columns = () => {
       title: '备注',
       dataIndex: 'remark',
       scopedSlots: { customRender: 'remark' }
+    }
+  ]
+}
+export const totalColumns = () => {
+  return [
+    {
+      title: '金额（元）',
+      titleTotal: '流水总金额（元）',
+      dataIndex: 'price',
+      sorter: true
     }
   ]
 }

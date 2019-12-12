@@ -49,33 +49,15 @@
     line-height: 22px;
   }
 }
-// TODO: 组件优化父子表格
-// .generate-spaces(@n, @i: 0) when (@i < @n) {
-//   @even: @i * 2;
-//   @odd: @i * 2 + 1;
-//   .st-table--expand tr[data-row-key^='@{even}'] {
-//     background: red !important;
-//   }
-//   .st-table--expand tr[data-row-key^='@{odd}'] {
-//     background: green !important;
-//   }
-//   .generate-spaces(@n, @i + 1);
-// }
-// .generate-spaces(10);
-tr[data-row-key^='even'] {
-  background: #fff !important;
-}
-tr[data-row-key^='odd'] {
-  background: #fafafa !important;
-}
+
 .st-table--expand {
-  .ant-table-row-level-0 {
-    box-shadow: 0px 8px 10px 0px #d2d2d2;
-    &:last-child {
-      box-shadow: 0 0 0 0 #d2d2d2;
-    }
-    // &:nth-child(even) {
-    //   .bg(green)
-    // }
+  tr[data-row-key^='even'] {
+    background: #fff !important;
+  }
+  tr[data-row-key^='odd'] {
+    background: #fafafa !important;
+  }
+  .ant-table-row-level-0 + .ant-table-row-level-1 {
+    box-shadow: inset 0px 8px 24px -8px #e1e1e1;
   }
 }
