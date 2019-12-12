@@ -1,24 +1,30 @@
 <template>
   <div :class="basic()">
-    <div :class="basic('left')">
-      <sales-analysis
-        title="购买次数TOP5"
-        :salesList="salesList"
-      ></sales-analysis>
-    </div>
-    <div :class="basic('right')">
-      <st-t3>{{ title }}</st-t3>
-      <div class="radio-group">
-        <a-radio-group @change="onChange" v-model="value">
-          <a-radio :value="1">客户数</a-radio>
-          <a-radio :value="2">支付金额</a-radio>
-        </a-radio-group>
-      </div>
-      <shop-entry-bar
-        v-if="inoutTime.length"
-        :data="value === 1 ? inoutTime : inoutTimes"
-      ></shop-entry-bar>
-    </div>
+    <a-row>
+      <a-col :span="8">
+        <div :class="basic('left')">
+          <sales-analysis
+            title="购买次数TOP5"
+            :salesList="salesList"
+          ></sales-analysis>
+        </div>
+      </a-col>
+      <a-col :span="16">
+        <div :class="basic('right')">
+          <st-t3>{{ title }}</st-t3>
+          <div class="radio-group">
+            <a-radio-group @change="onChange" v-model="value">
+              <a-radio :value="1">客户数</a-radio>
+              <a-radio :value="2">支付金额</a-radio>
+            </a-radio-group>
+          </div>
+          <shop-entry-bar
+            v-if="inoutTime.length"
+            :data="value === 1 ? inoutTime : inoutTimes"
+          ></shop-entry-bar>
+        </div>
+      </a-col>
+    </a-row>
   </div>
 </template>
 <script>
@@ -42,7 +48,7 @@ export default {
         { name: '购买2次', value: 132 },
         { name: '购买3次', value: 132 },
         { name: '购买4次', value: 132 },
-        { name: '购买5次及以上', value: 132 }
+        { name: '购买4次以上', value: 132 }
       ],
       inoutTimes: [
         { name: '0~50元', value: 128 },

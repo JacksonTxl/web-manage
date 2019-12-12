@@ -32,7 +32,7 @@
               ]"
               v-for="(item, index) in wholeNav"
               :key="index"
-              @click="wholenavFun(index)"
+              @click="wholenavFun(index, item)"
             >
               <div>
                 {{ item.title }}
@@ -42,74 +42,88 @@
             </div>
           </div>
           <div :class="basic('revenue_trend')">
-            <div style="flex:1">
-              <st-t3 style="margin-bottom: 35px;">营收趋势</st-t3>
-              <shop-stored-data-line
-                :data="courseDaily"
-              ></shop-stored-data-line>
-            </div>
-            <div style="width:416px;margin-left:74px">
-              <WholeTabls @change="onChangeTabs">
-                <template v-slot:user>
-                  <component
-                    v-bind:is="wholeNavcom"
-                    :data="dataRing"
-                    style="width: 419px;"
-                    :height="
-                      wholeNavcom === 'brand-user-avg-bar' ? '325' : '332'
-                    "
-                  ></component>
-                </template>
-                <template v-slot:marketing>
-                  <component
-                    v-bind:is="wholeNavcom"
-                    :data="dataRing"
-                    style="width: 419px;"
-                    :height="
-                      wholeNavcom === 'brand-user-avg-bar' ? '325' : '332'
-                    "
-                  ></component>
-                </template>
-              </WholeTabls>
-            </div>
+            <a-row>
+              <a-col :span="16">
+                <div>
+                  <st-t3 style="margin-bottom: 35px; margin-top:32px">
+                    {{ wholenavTitle }}
+                  </st-t3>
+                  <shop-stored-data-line
+                    :data="courseDaily"
+                  ></shop-stored-data-line>
+                </div>
+              </a-col>
+              <a-col :span="8">
+                <div style="width:90%;margin-top: 20px; margin-left: 10%;">
+                  <WholeTabls @change="onChangeTabs">
+                    <template v-slot:user>
+                      <component
+                        v-bind:is="wholeNavcom"
+                        :data="dataRing"
+                        style="width: 100%;"
+                        :height="
+                          wholeNavcom === 'brand-user-avg-bar' ? '325' : '332'
+                        "
+                      ></component>
+                    </template>
+                    <template v-slot:marketing>
+                      <component
+                        v-bind:is="wholeNavcom"
+                        :data="dataRing"
+                        style="width: 100%;"
+                        :height="
+                          wholeNavcom === 'brand-user-avg-bar' ? '325' : '332'
+                        "
+                      ></component>
+                    </template>
+                  </WholeTabls>
+                </div>
+              </a-col>
+            </a-row>
           </div>
         </st-panel>
         <!-- 销售分析 类目分析-->
         <div :class="salesCategory()">
           <div :class="salesCategory('sales_box')">
-            <st-container class="bg-white" type="2">
-              <st-t3>销售分析</st-t3>
-              <date-picker></date-picker>
-            </st-container>
-            <div :class="salesCategory('sales_TOP5')">
-              <div style="flex:1">
-                <sales-analysis
-                  title="销量TOP5"
-                  :salesList="salesList"
-                ></sales-analysis>
-              </div>
-              <div class="hr"></div>
-              <div style="flex:1">
-                <sales-analysis
-                  title="营收TOP5"
-                  :salesList="salesList"
-                ></sales-analysis>
-              </div>
-            </div>
-          </div>
-          <div :class="salesCategory('category_box')">
-            <st-container class="bg-white" type="2">
-              <st-t3>类目分析</st-t3>
-              <date-picker></date-picker>
-            </st-container>
-            <div style="margin:0 24px">
-              <st-t3 style="margin-top:32px">类目营收占比</st-t3>
-              <shop-stored-data-revenue-ring
-                :data="dataRingss"
-                :padding="[60, 60, 38, 0]"
-                style="width: 337px;"
-              ></shop-stored-data-revenue-ring>
-            </div>
+            <a-row>
+              <a-col :span="16">
+                <st-container class="bg-white" type="2">
+                  <st-t3>销售分析</st-t3>
+                  <date-picker></date-picker>
+                </st-container>
+                <div :class="salesCategory('sales_TOP5')">
+                  <div style="flex:1">
+                    <sales-analysis
+                      title="销量TOP5"
+                      :salesList="salesList"
+                    ></sales-analysis>
+                  </div>
+                  <div class="hr"></div>
+                  <div style="flex:1">
+                    <sales-analysis
+                      title="营收TOP5"
+                      :salesList="salesList"
+                    ></sales-analysis>
+                  </div>
+                </div>
+              </a-col>
+              <a-col :span="8">
+                <div :class="salesCategory('category_box')">
+                  <st-container class="bg-white" type="2">
+                    <st-t3>类目分析</st-t3>
+                    <date-picker></date-picker>
+                  </st-container>
+                  <div style="margin:0 24px">
+                    <st-t3 style="margin-top:32px">类目营收占比</st-t3>
+                    <shop-stored-data-revenue-ring
+                      :data="dataRingss"
+                      :padding="[60, 60, 38, 0]"
+                      style="width: 337px;"
+                    ></shop-stored-data-revenue-ring>
+                  </div>
+                </div>
+              </a-col>
+            </a-row>
           </div>
         </div>
         <!-- 购买次数 消费金额 -->
@@ -153,6 +167,7 @@ export default {
   },
   data() {
     return {
+      wholenavTitle: '营收金额(元)',
       wholenavIndex: 0,
       wholeNavcom: 'shop-stored-data-ring',
       headerInfo: [
@@ -189,17 +204,17 @@ export default {
         },
         {
           icon: IconStoredOrder,
-          title: '营收金额(元)',
+          title: '订单数(单)',
           num: '1,122'
         },
         {
           icon: IconStoredTransaction,
-          title: '营收金额(元)',
+          title: '交易会员数(人)',
           num: '1,122'
         },
         {
           icon: IconStoredPassenger,
-          title: '营收金额(元)',
+          title: '客单价(元)',
           num: '1,122'
         }
       ],
@@ -288,8 +303,9 @@ export default {
       console.log(query)
     },
     change() {},
-    wholenavFun(index) {
+    wholenavFun(index, item) {
       this.wholenavIndex = index
+      this.wholenavTitle = item.title
       if (index > 1) {
         this.wholeNavcom = 'brand-user-avg-bar'
       } else {
