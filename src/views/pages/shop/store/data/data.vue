@@ -55,7 +55,7 @@
               </a-col>
               <a-col :span="8">
                 <div style="width:90%;margin-top: 20px; margin-left: 10%;">
-                  <WholeTabls @change="onChangeTabs">
+                  <whole-tabls @change="onChangeTabs">
                     <template v-slot:user>
                       <component
                         v-bind:is="wholeNavcom"
@@ -80,7 +80,7 @@
                         "
                       ></component>
                     </template>
-                  </WholeTabls>
+                  </whole-tabls>
                 </div>
               </a-col>
             </a-row>
@@ -132,14 +132,14 @@
         </div>
         <!-- 购买次数 消费金额 -->
         <div class="buy-consumption">
-          <BuyConsumptionTables @change="onChangeTabs">
+          <buy-consumption-tables @change="onChangeTabs">
             <template v-slot:user>
-              <BuyNumber></BuyNumber>
+              <buy-number></buy-number>
             </template>
             <template v-slot:marketing>
-              <BuyNumber></BuyNumber>
+              <buy-number></buy-number>
             </template>
-          </BuyConsumptionTables>
+          </buy-consumption-tables>
         </div>
       </section>
     </st-panel-layout>
