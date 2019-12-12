@@ -64,7 +64,7 @@
     <div slot="footer">
       <st-button
         type="primary"
-        v-if="auth$.export"
+        v-if="auth$.export && type !== 'total'"
         v-export-excel="exportParams"
       >
         全部导出
