@@ -21,4 +21,10 @@ export class CourseGroupApi extends Api {
       { params }
     )
   }
+  /*
+   * 获取小班课范围列表
+   */
+  getCourseGroupRangeList(params: any) {
+    return this.http.get('/v1/setting/course/scope', { params })
+  }
 }

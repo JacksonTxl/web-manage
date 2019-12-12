@@ -7,22 +7,32 @@
             placeholder="支持输入1~30个字的课程名称"
             maxlength="30"
             v-decorator="decorators.course_name"
+            @change="onCourseNameChange"
           />
         </st-form-item>
       </a-col>
     </a-row>
-    <!-- <a-row :gutter="8">
+    <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="适用范围" required>
           <input type="hidden" v-decorator="decorators.scope_application" />
-          <st-select @change="onCourseTypeChange" />
+          <a-select @change="onCourseTypeChange" placeholder="请选择适用范围">
+            <a-select-option
+              v-for="item in rangeList"
+              :key="item.id"
+              :value="item.id"
+            >
+              {{ item.setting_name }}
+            </a-select-option>
+          </a-select>
         </st-form-item>
       </a-col>
-    </a-row> -->
+    </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="开班时间" required>
           <a-range-picker
+            :disabledDate="disabledDate"
             :showTime="{ format: 'HH:mm' }"
             format="YYYY-MM-DD HH:mm"
             v-decorator="decorators.date"
@@ -33,17 +43,28 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="人数限制" required>
-          <st-input-number v-decorator="decorators.num_min" style="width:100px">
-            <template slot="addonAfter">
-              人
-            </template>
-          </st-input-number>
+          <a-form-item>
+            <st-input-number
+              v-decorator="decorators.num_min"
+              style="width:50px;display:inline"
+            >
+              <template slot="addonAfter">
+                人
+              </template>
+            </st-input-number>
+          </a-form-item>
+          <a-form-item>
+            <st-input-number
+              v-decorator="decorators.num_max"
+              style="width:50px;display:inline"
+            >
+              <template slot="addonAfter">
+                人
+              </template>
+            </st-input-number>
+          </a-form-item>
+
           ~
-          <st-input-number v-decorator="decorators.num_max" style="width:100px">
-            <template slot="addonAfter">
-              人
-            </template>
-          </st-input-number>
         </st-form-item>
       </a-col>
     </a-row>
@@ -61,16 +82,13 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="请假限制" required>
-          <a-radio-group
-            :options="sellTypeOptions"
-            v-decorator="decorators.is_leave"
-          >
+          <a-radio-group v-decorator="decorators.is_leave">
             <a-radio
-              v-for="(item, index) in personalCourseEnums.sell_type.value"
+              v-for="(item, index) in isAllowLeave"
               :key="index"
-              :value="index"
+              :value="item.value"
             >
-              {{ item }}
+              {{ item.label }}
             </a-radio>
           </a-radio-group>
         </st-form-item>
@@ -150,12 +168,14 @@ export default {
     const user = this.userService
     return {
       loading: this.addService.loading$,
+      rangeList: this.addService.rangeList$,
+      isAllowLeave: this.addService.isAllowLeave$,
       personalCourseEnums: user.personalCourseEnums$
     }
   },
   components: {},
   created() {
-    console.log(this.ruleOptions)
+    this.addService.getCourseGroupRangeList()
   },
   data(vm) {
     const form = this.$stForm.create()
@@ -169,9 +189,11 @@ export default {
   methods: {
     save(e) {
       e.preventDefault()
-      this.form.validateFields().then(() => {
-        const data = this.form.getFieldsValue()
-        this.addService.addGroup(data).subscribe(res => {
+      this.form.validate().then(values => {
+        values.course_begin_time = values.date[0].format('YYYY-MM-DD HH:mm')
+        values.course_end_time = values.date[1].format('YYYY-MM-DD HH:mm')
+        delete values.date
+        this.addService.addGroup(values).subscribe(res => {
           this.messageService.success({
             content: '提交成功'
           })
@@ -196,6 +218,11 @@ export default {
     },
     onCourseNameChange(e) {
       this.$emit('onCourseNameChange', e.target.value)
+    },
+    disabledDate(current) {
+      return (
+        current && current.format('YYYY-MM-DD') < moment().format('YYYY-MM-DD')
+      )
     }
   }
 }

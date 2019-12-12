@@ -24,9 +24,9 @@
         </st-form-item>
         <st-form-item label="开班时间" required>
           <a-range-picker
-            :disabledDate="disabledDate"
             :showTime="{ format: 'HH:mm' }"
             format="YYYY-MM-DD HH:mm"
+            :disabledDate="disabledDate"
             v-decorator="decorators.scope_application"
           ></a-range-picker>
         </st-form-item>
@@ -100,20 +100,7 @@ export default {
       fileList: []
     }
   },
-  computed: {
-    sellTypeOptions() {
-      const sellType = this.personalCourseEnums.sell_type.value
-      const options = []
-      for (let i in sellType) {
-        options.push({
-          label: sellType[i],
-          value: +i,
-          disabled: +i === 2
-        })
-      }
-      return options
-    }
-  },
+  computed: {},
   watch: {
     courseName(val) {
       this.form.setFieldsValue({
@@ -126,6 +113,7 @@ export default {
       })
     }
   },
+  created() {},
   mounted() {
     this.$nextTick(() => {
       this.form.setFieldsValue({
@@ -181,6 +169,11 @@ export default {
     },
     onSingleReserveChange() {
       this.singleReserve = +!this.singleReserve
+    },
+    disabledDate(current) {
+      return (
+        current && current.format('YYYY-MM-DD') < moment().format('YYYY-MM-DD')
+      )
     }
   }
 }

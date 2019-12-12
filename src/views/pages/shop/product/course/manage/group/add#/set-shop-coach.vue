@@ -1,40 +1,37 @@
 <template>
   <st-form :form="form" class="page-shop-container">
-    <a-row :gutter="10">
-      <a-col :lg="10" :xs="10" :offset="1">
-        <st-form-item label="课程名称">
-          <a-input placeholder="课程名称" disabled v-model="courseName" />
-        </st-form-item>
-        <st-form-item label="负责人">
-          <a-select placeholder="请输入负责人"></a-select>
-        </st-form-item>
-        <st-form-item>
-          <template slot="label">
-            上课{{ $c('coach') }}
-            <st-help-tooltip id="TSCPC001" />
-          </template>
-          <div class="page-shop-coach-container-coach">
-            <input type="hidden" v-decorator="decorators.coachIds" />
-            <select-coach
-              :shopIds="shopIds"
-              @change="onSelectCoachChange"
-            ></select-coach>
-          </div>
-        </st-form-item>
-      </a-col>
-    </a-row>
-    <a-row :gutter="10">
-      <a-col :lg="10" :xs="10" :offset="1">
-        <st-form-item labelFix>
-          <st-button class="mg-r16" @click="save" :loading="loading.setShop">
-            上一步
-          </st-button>
-          <st-button type="primary" @click="save" :loading="loading.setShop">
-            保存，开始设置售卖信息
-          </st-button>
-        </st-form-item>
-      </a-col>
-    </a-row>
+    <st-form-item label="课程名称">
+      <a-input
+        placeholder="课程名称"
+        disabled
+        v-decorator="decorators.course_name"
+      />
+    </st-form-item>
+    <st-form-item label="负责人">
+      <a-select placeholder="请输入负责人"></a-select>
+    </st-form-item>
+    <st-form-item>
+      <template slot="label">
+        上课{{ $c('coach') }}
+        <st-help-tooltip id="TSCPC001" />
+      </template>
+      <div class="page-shop-coach-container-coach">
+        <input type="hidden" v-decorator="decorators.coach_ids" />
+        <select-coach
+          :shopIds="shopIds"
+          @change="onSelectCoachChange"
+        ></select-coach>
+      </div>
+    </st-form-item>
+
+    <st-form-item labelFix>
+      <st-button class="mg-r16" @click="save" :loading="loading.setShop">
+        上一步
+      </st-button>
+      <st-button type="primary" @click="save" :loading="loading.setShop">
+        保存，开始设置售卖信息
+      </st-button>
+    </st-form-item>
   </st-form>
 </template>
 <script>
@@ -74,6 +71,7 @@ export default {
       default: 0
     }
   },
+  created() {},
   watch: {
     courseName(val) {
       this.form.setFieldsValue({
@@ -106,10 +104,9 @@ export default {
   methods: {
     save(e) {
       e.preventDefault()
-      this.form.validateFields().then(() => {
-        const data = this.form.getFieldsValue()
-        data.course_id = this.courseId
-        this.addService.setCoach(data).subscribe(() => {
+      this.form.validateFields().then(values => {
+        values.course_id = this.courseId
+        this.addService.setCoach(values).subscribe(() => {
           this.messageService.success({
             content: '提交成功'
           })

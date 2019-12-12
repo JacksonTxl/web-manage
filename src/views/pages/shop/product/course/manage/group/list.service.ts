@@ -6,6 +6,7 @@ import { CourseGroupApi } from '@/api/v1/course/group'
 import { AuthService } from '@/services/auth.service'
 import { RedirectService } from '@/services/redirect.service'
 import { CourseApi } from '@/api/v1/special/course'
+import { UserService } from '@/services/user.service'
 
 @Injectable()
 export class ListService implements Controller {
@@ -14,6 +15,9 @@ export class ListService implements Controller {
   // 业务状态
   list$ = new State([])
   page$ = new State({})
+  status$ = this.userService.getOptions$('small_course.class_status', {
+    addAll: true
+  })
 
   auth$ = this.authService.authMap$({
     add: true
@@ -21,7 +25,8 @@ export class ListService implements Controller {
   constructor(
     private courseApi: CourseApi,
     private courseGroupApi: CourseGroupApi,
-    private authService: AuthService
+    private authService: AuthService,
+    private userService: UserService
   ) {}
 
   getList(params: any) {
@@ -37,7 +42,7 @@ export class ListService implements Controller {
     return forkJoin(this.getList(query))
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    // return this.init(to.meta.query)
+    return this.init(to.meta.query)
   }
   // beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
   //   this.initOptions().subscribe(() => {

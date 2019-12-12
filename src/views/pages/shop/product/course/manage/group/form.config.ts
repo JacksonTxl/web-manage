@@ -5,7 +5,7 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           required: true,
-          message: '请输入'
+          message: '请输入请输入1~30个字的课程名称'
         },
         {
           pattern: pattern.CN_EN_NUM('1-30'),
@@ -49,22 +49,10 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           required: true,
-          message: '请输入用户名'
-        },
-        {
-          pattern: pattern.CN_EN_NUM('1-15'),
-          message: '请输入1-15个字符'
+          message: '请输入总课时'
         }
       ]
     },
-    coachIds: {
-      rules: [
-        {
-          // required: true,
-          message: '请输入用户名'
-        }
-      ]
-    }
     // img_type: {
     //   rules: [
     //     {
@@ -73,6 +61,9 @@ export const ruleOptions = (vm: any) => {
     //       pattern: pattern.MOBILE
     //     }
     //   ]
-    // }
+    // },
+    image: {},
+    description: {},
+    coach_ids: {}
   }
 }

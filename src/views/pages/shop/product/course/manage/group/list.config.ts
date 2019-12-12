@@ -2,7 +2,7 @@ export const columns = (vm: any) => {
   return [
     {
       title: '小班课名称',
-      dataIndex: 'course_name'
+      dataIndex: 'category_name'
     },
     {
       title: '类型',

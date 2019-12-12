@@ -2,7 +2,7 @@
   <st-panel :class="b()" app>
     <div slot="title">
       <st-input-search
-        placeholder="团课名称"
+        placeholder="小班课名称"
         v-model="$searchQuery.course_name"
         @search="onSearchCourseName"
       />
@@ -20,13 +20,13 @@
           style="width: 160px"
           @change="onChange"
         >
-          <!-- <a-select-option
-            v-for="category in categoryList"
-            :key="category.id"
-            :value="category.id"
+          <a-select-option
+            v-for="item in status"
+            :key="item.value"
+            :value="item.value"
           >
-            {{ category.setting_name }}
-          </a-select-option> -->
+            {{ item.label }}
+          </a-select-option>
         </a-select>
       </a-col>
     </a-row>
@@ -56,7 +56,8 @@ export default {
       list: this.listService.list$,
       page: this.listService.page$,
       auth: this.listService.auth$,
-      loading: this.listService.loading$
+      loading: this.listService.loading$,
+      status: this.listService.status$
     }
   },
   bem: {
@@ -78,7 +79,9 @@ export default {
       this.$router.push({ name: 'shop-product-course-manage-team-add' })
     },
     onSearchCourseName(val) {
-      this.$router.push({ query: { course_name: this.course_name } })
+      this.$router.push({
+        query: { course_name: this.$searchQuery.course_name }
+      })
     },
     onChange() {
       this.$router.push({ query: this.$searchQuery })
