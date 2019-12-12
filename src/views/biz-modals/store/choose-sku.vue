@@ -21,6 +21,7 @@
 </template>
 <script>
 export default {
+  name: 'modalStoreChooseSku',
   data() {
     return {
       show: false,

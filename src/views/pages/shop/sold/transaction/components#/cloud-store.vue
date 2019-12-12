@@ -58,10 +58,10 @@
             <span>￥240</span>
           </div>
           <div class="button">
-            <st-button>
+            <st-button @click="onCreateOrder">
               创建订单
             </st-button>
-            <st-button type="primary">
+            <st-button type="primary" @click="onPay">
               立即支付
             </st-button>
           </div>
@@ -91,7 +91,7 @@
                     </template>
                     <template slot="action">
                       <st-table-actions sytle="width: 120px">
-                        <a>
+                        <a @click="payCallBack">
                           删除
                         </a>
                       </st-table-actions>
@@ -173,12 +173,18 @@ import tableMixin from '@/mixins/table.mixin'
 // import { ListService } from './list.service'
 import { columns } from './cloud-store.config'
 import StoreChooseSku from '@/views/biz-modals/store/choose-sku'
+import StoreOrderTip from '@/views/biz-modals/store/order-tip'
+import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
 export default {
   name: 'shopSoldTransactionCloud',
   bem: {
     basic: 'shop-sold-transaction-cloud'
   },
-  modals: { StoreChooseSku },
+  modals: {
+    StoreChooseSku,
+    StoreOrderTip,
+    SoldDealGathering
+  },
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators({})
@@ -187,7 +193,7 @@ export default {
       decorators,
       memberList: [],
       saleList: [],
-      list: [{}, {}]
+      list: [{ id: 1 }, { id: 2 }]
     }
   },
   methods: {
@@ -207,6 +213,62 @@ export default {
           }
         }
       })
+    },
+    // 创建订单
+    onCreateOrder() {
+      this.$modalRouter.push({
+        name: 'store-order-tip',
+        props: {
+          type: 'create',
+          message: '订单创建成功'
+        },
+        on: {
+          success: res => {
+            console.log(res)
+          }
+        }
+      })
+    },
+    // 立即支付
+    onPay() {
+      this.$modalRouter.push({
+        name: 'sold-deal-gathering',
+        props: {
+          order_id: 327187807404143,
+          type: 'cloud'
+        },
+        on: {
+          success: res => {
+            this.payCallBack()
+            console.log(res)
+          }
+        }
+      })
+    },
+    // 收款完提示
+    payCallBack() {
+      this.$modalRouter.push({
+        name: 'store-order-tip',
+        props: {
+          type: 'pay',
+          message: '收款成功'
+        },
+        on: {
+          success: res => {
+            if (res.type === 'PrintOrder') {
+              this.printOrder(327187807404143)
+            }
+            console.log(res)
+          }
+        }
+      })
+    },
+    printOrder(order_id) {
+      window.open(
+        '/ticket/gathering-print?id=' + order_id,
+        '_blank',
+        'width=800,height=600'
+      )
     }
   },
   // serviceInject() {
