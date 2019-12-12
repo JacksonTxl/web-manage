@@ -13,14 +13,14 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    // scope_application: {
-    //   rules: [
-    //     {
-    //       required: true,
-    //       message: '请输入'
-    //     }
-    //   ]
-    // },
+    scope_application: {
+      rules: [
+        {
+          required: true,
+          message: '请选择范围'
+        }
+      ]
+    },
     date: {
       rules: [
         {
@@ -62,8 +62,58 @@ export const ruleOptions = (vm: any) => {
     //     }
     //   ]
     // },
+    is_leave: {
+      initialValue: 0,
+      rules: [
+        {
+          required: true,
+          message: '请输入请假限制'
+        }
+      ]
+    },
+    leave_hours: {},
+    leave_limit: {},
     image: {},
     description: {},
-    coach_ids: {}
+    coach_ids: {
+      rules: [
+        {
+          required: true,
+          message: '请选择教练'
+        }
+      ]
+    },
+    staff_id: {
+      rules: [
+        {
+          required: true,
+          message: '请选择负责人'
+        }
+      ]
+    },
+    apply_date: {
+      rules: [
+        {
+          required: true,
+          message: '请选择时间'
+        }
+      ]
+    },
+    is_allow_transfer: {},
+    transfer_num: {},
+    transfer_type: {
+      initialValue: 1
+    },
+    sales_price: {
+      rules: [
+        {
+          required: true,
+          message: '请填写售卖价格'
+        }
+      ]
+    },
+    sell_type: {
+      initialValue: -1
+    }
   }
 }

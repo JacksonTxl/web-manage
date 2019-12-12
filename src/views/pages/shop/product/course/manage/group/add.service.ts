@@ -4,14 +4,19 @@ import { tap, map } from 'rxjs/operators'
 import { CourseGroupApi } from '@/api/v1/course/group'
 import { Controller, ServiceRoute, Injectable } from 'vue-service-app'
 import { UserService } from '@/services/user.service'
+import { forkJoin } from 'rxjs'
 
 @Injectable()
 export class AddService {
   loading$ = new State({})
   rangeList$ = new State({})
   list$ = new State({})
+  staffList$ = new State({})
   page$ = new State({})
   isAllowLeave$ = this.userService.getOptions$('small_course.is_allow_leave')
+  unitList$ = this.userService.getOptions$('deposit_card.transfer_unit')
+  sellType$ = this.userService.getOptions$('setting.sell_type')
+
   constructor(
     private courseApi: CourseGroupApi,
     private userService: UserService
@@ -29,14 +34,26 @@ export class AddService {
     return this.courseApi.setPrice(params)
   }
   getCourseGroupRangeList(params: any) {
-    params.size = 30
     return this.courseApi.getCourseGroupRangeList(params).pipe(
       tap(res => {
         this.rangeList$.commit(() => res.list)
       })
     )
   }
+  getCourseStaffList(params: any) {
+    return this.courseApi.getCourseStaffList(params).pipe(
+      tap(res => {
+        this.staffList$.commit(() => res.list)
+      })
+    )
+  }
+  init(params: any) {
+    return forkJoin(
+      this.getCourseGroupRangeList(params),
+      this.getCourseStaffList(params)
+    )
+  }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    return this.getCourseGroupRangeList(to.meta.query)
+    return this.init(to.meta.query)
   }
 }

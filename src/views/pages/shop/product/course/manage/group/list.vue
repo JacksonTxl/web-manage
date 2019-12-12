@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     goAddGroup() {
-      this.$router.push({ path: './add' })
+      this.$router.push({ path: './add-select' })
     },
     onClickAddCourse() {
       this.$router.push({ name: 'shop-product-course-manage-team-add' })

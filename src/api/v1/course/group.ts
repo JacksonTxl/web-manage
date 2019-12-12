@@ -27,4 +27,7 @@ export class CourseGroupApi extends Api {
   getCourseGroupRangeList(params: any) {
     return this.http.get('/v1/setting/course/scope', { params })
   }
+  getCourseStaffList(params: any) {
+    return this.http.get('/v1/staff/shop', { params })
+  }
 }

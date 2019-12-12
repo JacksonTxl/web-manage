@@ -15,8 +15,11 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="适用范围" required>
-          <input type="hidden" v-decorator="decorators.scope_application" />
-          <a-select @change="onCourseTypeChange" placeholder="请选择适用范围">
+          <a-select
+            @change="onCourseTypeChange"
+            v-decorator="decorators.scope_application"
+            placeholder="请选择适用范围"
+          >
             <a-select-option
               v-for="item in rangeList"
               :key="item.id"
@@ -43,28 +46,23 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="人数限制" required>
-          <a-form-item>
-            <st-input-number
-              v-decorator="decorators.num_min"
-              style="width:50px;display:inline"
-            >
-              <template slot="addonAfter">
-                人
-              </template>
-            </st-input-number>
-          </a-form-item>
-          <a-form-item>
-            <st-input-number
-              v-decorator="decorators.num_max"
-              style="width:50px;display:inline"
-            >
-              <template slot="addonAfter">
-                人
-              </template>
-            </st-input-number>
-          </a-form-item>
-
-          ~
+          <div :class="b('num-limit')">
+            <a-form-item class="page-a-form">
+              <st-input-number v-decorator="decorators.num_min">
+                <template slot="addonAfter">
+                  人
+                </template>
+              </st-input-number>
+            </a-form-item>
+            <span>~</span>
+            <a-form-item class="page-a-form">
+              <st-input-number v-decorator="decorators.num_max">
+                <template slot="addonAfter">
+                  人
+                </template>
+              </st-input-number>
+            </a-form-item>
+          </div>
         </st-form-item>
       </a-col>
     </a-row>
@@ -82,7 +80,10 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="请假限制" required>
-          <a-radio-group v-decorator="decorators.is_leave">
+          <a-radio-group
+            v-decorator="decorators.is_leave"
+            @change="onLimitChange"
+          >
             <a-radio
               v-for="(item, index) in isAllowLeave"
               :key="index"
@@ -91,6 +92,30 @@
               {{ item.label }}
             </a-radio>
           </a-radio-group>
+          <div v-show="isShowLeaveContent">
+            <a-form-item>
+              <span>允许请假时间,请假前</span>
+              <st-input-number
+                v-decorator="decorators.leave_hours"
+                style="width:100px"
+              >
+                <template slot="addonAfter">
+                  节
+                </template>
+              </st-input-number>
+            </a-form-item>
+            <a-form-item>
+              <span>请假上限节数</span>
+              <st-input-number
+                v-decorator="decorators.leave_limit"
+                style="width:100px"
+              >
+                <template slot="addonAfter">
+                  节
+                </template>
+              </st-input-number>
+            </a-form-item>
+          </div>
         </st-form-item>
       </a-col>
     </a-row>
@@ -155,7 +180,7 @@ import { ruleOptions } from '../form.config'
 import { PatternService } from '@/services/pattern.service'
 
 export default {
-  name: 'create-personal-course',
+  name: 'create-group-course',
   serviceInject() {
     return {
       addService: AddService,
@@ -165,25 +190,25 @@ export default {
     }
   },
   rxState() {
-    const user = this.userService
     return {
       loading: this.addService.loading$,
       rangeList: this.addService.rangeList$,
-      isAllowLeave: this.addService.isAllowLeave$,
-      personalCourseEnums: user.personalCourseEnums$
+      isAllowLeave: this.addService.isAllowLeave$
     }
   },
-  components: {},
-  created() {
-    this.addService.getCourseGroupRangeList()
+  bem: {
+    b: 'create-group-course'
   },
+  components: {},
+  created() {},
   data(vm) {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
       form,
       decorators,
-      fileList: []
+      fileList: [],
+      isShowLeaveContent: false
     }
   },
   methods: {
@@ -192,6 +217,7 @@ export default {
       this.form.validate().then(values => {
         values.course_begin_time = values.date[0].format('YYYY-MM-DD HH:mm')
         values.course_end_time = values.date[1].format('YYYY-MM-DD HH:mm')
+        values.small_course_type = this.$route.query.type
         delete values.date
         this.addService.addGroup(values).subscribe(res => {
           this.messageService.success({
@@ -205,6 +231,9 @@ export default {
       this.form.setFieldsValue({
         image: fileList[0]
       })
+    },
+    onLimitChange(e) {
+      this.isShowLeaveContent = e.target.value === 1
     },
     onCourseTypeChange(category_id) {
       this.form.setFieldsValue({

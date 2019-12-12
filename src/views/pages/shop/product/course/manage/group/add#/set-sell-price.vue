@@ -11,41 +11,70 @@
           />
         </st-form-item>
         <st-form-item label="转让设置">
-          <a-input
-            placeholder="转让设置"
-            v-decorator="decorators.course_name"
-          />
+          <div>
+            <a-checkbox
+              style="display:inline"
+              v-decorator="decorators.is_allow_transfer"
+            ></a-checkbox>
+            <span>支持转让</span>
+            <st-input-number
+              style="width:250px"
+              placeholder="请输入"
+              v-decorator="decorators.transfer_num"
+            >
+              <a-select
+                v-model="decorators.transfer_type"
+                slot="addonAfter"
+                style="width: 60px"
+              >
+                <a-select-option
+                  v-for="(item, index) in unitList"
+                  :value="item.value"
+                  :key="index"
+                >
+                  {{ item.label }}
+                </a-select-option>
+              </a-select>
+            </st-input-number>
+          </div>
         </st-form-item>
         <st-form-item label="售卖方式">
-          <a-input
-            placeholder="售卖方式"
-            v-decorator="decorators.course_name"
-          />
+          <a-radio-group v-model="decorators.sell_type">
+            <a-radio
+              v-for="(item, index) in sellType"
+              :value="item.value"
+              :key="index"
+            >
+              {{ item.label }}
+            </a-radio>
+          </a-radio-group>
         </st-form-item>
-        <st-form-item label="开班时间" required>
+        <st-form-item label="报名时间" required>
           <a-range-picker
             :showTime="{ format: 'HH:mm' }"
             format="YYYY-MM-DD HH:mm"
             :disabledDate="disabledDate"
-            v-decorator="decorators.scope_application"
+            v-decorator="decorators.apply_date"
           ></a-range-picker>
         </st-form-item>
         <st-form-item label="售卖价格" required>
-          <a-input
-            placeholder="支持输入1~30个字的课程名称"
-            maxlength="30"
-            v-decorator="decorators.course_name"
-          />
+          <a-form-item>
+            <st-input-number v-decorator="decorators.sales_price">
+              <template slot="addonAfter">
+                元
+              </template>
+            </st-input-number>
+          </a-form-item>
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="10">
       <a-col :lg="10" :xs="10" :offset="1">
         <st-form-item labelFix>
-          <st-button class="mg-r16" @click="save" :loading="loading.setShop">
+          <st-button class="mg-r16" @click="save(0)" :loading="loading.setShop">
             保存
           </st-button>
-          <st-button type="primary" @click="save" :loading="loading.setShop">
+          <st-button type="primary" @click="save(1)" :loading="loading.setShop">
             保存并发布
           </st-button>
         </st-form-item>
@@ -74,10 +103,10 @@ export default {
     }
   },
   rxState() {
-    const user = this.userService
     return {
       loading: this.addService.loading$,
-      personalCourseEnums: user.personalCourseEnums$
+      unitList: this.addService.unitList$,
+      sellType: this.addService.sellType$
     }
   },
   components: {},
@@ -122,14 +151,17 @@ export default {
     })
   },
   methods: {
-    save(e) {
-      e.preventDefault()
-      const data = this.getData()
-      this.form.validateFields().then(() => {
-        if (!this.inputCheck()) {
-          return
-        }
-        this.addService.setPrice(data).subscribe(this.onSaveSuccess)
+    save(para) {
+      this.form.validateFields().then(values => {
+        values.course_id = this.courseId
+        values.apply_begin_time = values.apply_date[0].format(
+          'YYYY-MM-DD HH:mm'
+        )
+        values.apply_end_time = values.apply_date[1].format('YYYY-MM-DD HH:mm')
+        values.is_allow_transfer = values.is_allow_transfer ? 1 : 0
+        values.is_release = para
+        delete values.apply_date
+        this.addService.setPrice(values).subscribe(this.onSaveSuccess)
       })
     },
     onSaveSuccess() {
@@ -140,30 +172,7 @@ export default {
         name: 'shop-product-course-manage-group-list'
       })
     },
-    inputCheck() {
-      if (this.singleReserve) {
-        if (!this.singlePrice.length) {
-          this.messageService.error({
-            content: '请输入单节预约价格'
-          })
-          return
-        }
-      }
-      if (!this.gradientService.check(this.priceGradient)) {
-        return false
-      }
-      return true
-    },
-    getData() {
-      const data = this.form.getFieldsValue()
-      data.course_id = this.courseId
-      data.price_gradient = this.priceGradient
-      data.single_reserve = +this.singleReserve
-      if (data.single_reserve) {
-        data.single_price = this.singlePrice
-      }
-      return data
-    },
+
     onPriceGradientChange(priceGradient) {
       this.priceGradient = priceGradient
     },

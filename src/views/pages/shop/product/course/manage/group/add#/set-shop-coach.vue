@@ -8,7 +8,15 @@
       />
     </st-form-item>
     <st-form-item label="负责人">
-      <a-select placeholder="请输入负责人"></a-select>
+      <a-select placeholder="请输入负责人" v-decorator="decorators.staff_id">
+        <a-select-option
+          v-for="item in staffList"
+          :key="item.id"
+          :value="item.id"
+        >
+          {{ item.nickname }}
+        </a-select-option>
+      </a-select>
     </st-form-item>
     <st-form-item>
       <template slot="label">
@@ -55,7 +63,7 @@ export default {
   rxState() {
     return {
       loading: this.addService.loading$,
-      personalCourseEnums: this.userService.personalCourseEnums$
+      staffList: this.addService.staffList$
     }
   },
   components: {
