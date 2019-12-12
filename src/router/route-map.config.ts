@@ -11,6 +11,10 @@ export const routeMapConfig = {
   'common-export'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '导出记录'
   },
+  'common-notify'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '消息中心'
+    routeConfig.meta.tabs = ['common-notify-inform', 'common-notify-notice']
+  },
   'brand-product-course-personal-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教课'
     routeConfig.meta.tabs = [
