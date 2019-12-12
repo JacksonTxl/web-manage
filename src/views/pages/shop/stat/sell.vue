@@ -5,7 +5,7 @@
         <div :class="bPage('button-wapper')" class="mg-r8">
           <st-button
             type="primary"
-            v-if="showTable === 'all'"
+            v-if="showTable === 'all' && auth.export_all"
             v-export-excel="{
               type: 'sale/summary',
               query: $searchQuery
@@ -14,7 +14,7 @@
             全部导出
           </st-button>
           <st-button
-            v-else
+            v-else-if="auth.export_staff"
             type="primary"
             v-export-excel="{
               type: 'sale/staff',

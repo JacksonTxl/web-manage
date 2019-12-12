@@ -31,6 +31,7 @@
       <div :class="bPage('button-wapper')">
         <st-button
           type="primary"
+          v-if="auth$.export"
           v-export-excel="{
             type: 'revenue/shop',
             query: $searchQuery
@@ -79,8 +80,15 @@ export default {
     }
   },
   rxState() {
-    const { loading$, list$, page$, todayInfo$, total$ } = this.revenueService
-    return { loading$, list$, page$, todayInfo$, total$ }
+    const {
+      loading$,
+      list$,
+      page$,
+      todayInfo$,
+      total$,
+      auth$
+    } = this.revenueService
+    return { loading$, list$, page$, todayInfo$, total$, auth$ }
   },
   data() {
     return {
