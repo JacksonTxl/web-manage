@@ -2,10 +2,10 @@
   <div :class="bPage()">
     <div class="mg-b16" :class="bPage('count-action')">
       <div :class="bPage('left')">
-        <!-- TODO: <st-button type="primary" class="shop-member-list-button">批量导出</st-button> -->
         <div :class="bPage('button-wapper')">
           <st-button
             type="primary"
+            v-if="au"
             v-export-excel="{
               type: 'follow/shop',
               query: $searchQuery
@@ -80,7 +80,14 @@ export default {
     }
   },
   rxState() {
-    const { loading$, list$, page$, totalInfo$, total$ } = this.followService
+    const {
+      loading$,
+      list$,
+      page$,
+      totalInfo$,
+      total$,
+      auth$
+    } = this.followService
     return {
       loading$,
       list$,

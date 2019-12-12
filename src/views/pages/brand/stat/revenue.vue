@@ -71,6 +71,7 @@
         <div :class="bHeader('button-wapper')">
           <st-button
             type="primary"
+            v-if="auth.export"
             v-export-excel="{
               type: 'revenue/brand',
               query: $searchQuery
