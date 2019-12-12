@@ -27,6 +27,8 @@ export class ListService implements Controller {
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    return this.getProductList(to.meta.query)
+    if (to.meta.query.product_type !== 4) {
+      return this.getProductList(to.meta.query)
+    }
   }
 }

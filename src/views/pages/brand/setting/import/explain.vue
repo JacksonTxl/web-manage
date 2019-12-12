@@ -26,7 +26,7 @@
       <p>
         4、请在导入前阅读
         <a href="https://help.styd.cn/" target="__blank">帮助中心导入文档</a>
-        ，避免出现数据导入错误。点击跳转至帮助中心。
+        ，避免出现数据导入错误。
       </p>
     </a-row>
     <st-container type="2" class="bg-gray">

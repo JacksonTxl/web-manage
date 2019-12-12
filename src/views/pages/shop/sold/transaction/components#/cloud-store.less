@@ -1,0 +1,118 @@
+.shop-sold-transaction-cloud {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  &__list {
+    width: calc(100% - 532px);
+    min-height: 100vh;
+    border-right: 1px solid @divider;
+  }
+  &__head {
+    padding: 18px 24px;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+  &__title {
+    line-height: 32px;
+    .c(@title);
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0;
+  }
+  &__table {
+    margin-top: 22px;
+  }
+  &__buycar {
+    width: 532px;
+    min-height: 100vh;
+    .st-mina-panel {
+      min-height: 100vh;
+    }
+    .st-mina-panel__actions {
+      background: #f7f9fc;
+    }
+    .title {
+      .c(@title);
+      font-weight: bold;
+      font-size: 16px;
+      margin: 0;
+    }
+    .st-textarea {
+      height: 148px;
+    }
+    .divider-line {
+      height: 1px;
+      background: @divider;
+    }
+  }
+  &__padding {
+    .ant-form-item-control-wrapper {
+      padding-left: 0;
+    }
+  }
+  &__footer {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    .price {
+      .fz(12px);
+      .c(@text-light);
+      span {
+        vertical-align: baseline;
+      }
+      > span:nth-of-type(2) {
+        .fz(20px);
+        .c(@error-color);
+      }
+    }
+    .ant-btn-primary {
+      margin-left: 16px;
+    }
+  }
+  &__product {
+    overflow: hidden;
+    height: 630px;
+    padding: 0 16px;
+    overflow-y: scroll;
+    li {
+      float: left;
+      border: 1px solid @divider;
+      width: 196px;
+      height: 270px;
+      margin: 0 8px;
+      margin-bottom: 16px;
+      img {
+        width: 194px;
+        height: 172px;
+        display: block;
+      }
+      .good-name {
+        padding: 12px;
+        padding-bottom: 8px;
+        span {
+          line-height: 22px;
+          color: #252a2e;
+          font-size: 14px;
+        }
+      }
+      .good-price {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 12px;
+        span {
+          vertical-align: bottom;
+          &:first-child {
+            .fz(18px);
+            .c(@error-color);
+          }
+          &:last-child {
+            .fz(12px);
+            .c(@text-light);
+            margin-top: 6px;
+          }
+        }
+      }
+    }
+  }
+}

@@ -45,10 +45,16 @@
           <a-menu-item v-if="auth.departmentAdd" @click="addTreeNode">
             新增
           </a-menu-item>
-          <a-menu-item v-if="item.id !== 0" @click="editTreeNode">
+          <a-menu-item
+            v-if="auth.departmentEdit && item.id !== 0"
+            @click="editTreeNode"
+          >
             编辑
           </a-menu-item>
-          <a-menu-item v-if="item.id !== 0" @click="deleteDepartment(item)">
+          <a-menu-item
+            v-if="auth.departmentDel && item.id !== 0"
+            @click="deleteDepartment(item)"
+          >
             删除
           </a-menu-item>
         </st-more-dropdown>
@@ -59,7 +65,7 @@
           class="tree-input  mg-r6"
           v-model="addValue"
         ></a-input>
-        <a href="javascript:;" class="mg-r8" @click.stop="addDepartment(item)">
+        <a class="mg-r8" @click.stop="addDepartment(item)">
           保存
         </a>
         <span @click.stop="cancelAdd">
