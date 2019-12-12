@@ -13,6 +13,7 @@
       </div>
       <ul :class="basic('product')">
         <li
+          @click="onSku(record)"
           v-for="(item, index) in [
             '',
             '',
@@ -88,9 +89,9 @@
                         :defaultValue="record.numbers"
                       />
                     </template>
-                    <template slot="action" slot-scope="customRender, record">
+                    <template slot="action">
                       <st-table-actions sytle="width: 120px">
-                        <a @click="onSku(record)">
+                        <a>
                           删除
                         </a>
                       </st-table-actions>
@@ -101,7 +102,37 @@
                   <div class="divider-line"></div>
                 </st-form-item>
                 <st-form-item label="购买会员">
-                  <a-input placeholder="请输入会员姓名"></a-input>
+                  <a-select
+                    showSearch
+                    allowClear
+                    placeholder="输入手机号或会员名搜索"
+                    :defaultActiveFirstOption="false"
+                    :showArrow="false"
+                    :filterOption="false"
+                  >
+                    <template slot="notFoundContent">
+                      <div>
+                        暂无此会员，
+                        <span :class="basic('add-vpi')">添加新会员？</span>
+                      </div>
+                    </template>
+                    <a-select-option
+                      v-for="(item, index) in memberList"
+                      :value="item.id"
+                      :key="index"
+                    >
+                      <span
+                        v-html="
+                          `${item.member_name} ${item.mobile}`.replace(
+                            new RegExp(memberSearchText, 'g'),
+                            `\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`
+                          )
+                        "
+                      >
+                        {{ item.member_name }} {{ item.mobile }}
+                      </span>
+                    </a-select-option>
+                  </a-select>
                 </st-form-item>
                 <st-form-item label="优惠券">
                   -50 >
@@ -154,6 +185,7 @@ export default {
     return {
       form,
       decorators,
+      memberList: [],
       saleList: [],
       list: [{}, {}]
     }
