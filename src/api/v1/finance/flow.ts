@@ -45,6 +45,12 @@ export class FlowApi extends Api {
       query
     })
   }
+  /**
+   * 获取流水的支付列表
+   */
+  getPaymentMethodList() {
+    return this.http.get(`/v1/finance/flow/payment/method`)
+  }
 }
 export interface GetListInput {
   reserve_type: number
