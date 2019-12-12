@@ -4,8 +4,8 @@
       <div :class="bHeard('left')">
         <!-- TODO: <st-button type="primary" class="shop-member-list-button">批量导出</st-button> -->
         <a-radio-group :value="showTable" @change="handleSizeChange">
-          <a-radio-button value="all">汇总</a-radio-button>
-          <a-radio-button value="staff">员工</a-radio-button>
+          <a-radio-button value="all" v-if="auth.summary">汇总</a-radio-button>
+          <a-radio-button value="staff" v-if="auth.staff">员工</a-radio-button>
         </a-radio-group>
       </div>
       <div :class="bHeard('right')">
@@ -59,7 +59,9 @@
       <template v-slot:performance_amount="record">
         <st-total-item
           @click.native="onCLickPerformanceAmount"
-          :item="record.item"
+          :unit="record.unit"
+          :label="record.label"
+          :value="record.value"
         ></st-total-item>
       </template>
     </st-total>
@@ -153,7 +155,8 @@ export default {
       departmentList: this.sellService.departmentList$,
       staffList: this.sellService.staffList$,
       page: this.sellService.page$,
-      total$: this.sellService.total$
+      total$: this.sellService.total$,
+      auth: this.sellService.auth$
     }
   },
   data() {
@@ -176,7 +179,7 @@ export default {
     }
   },
   created() {
-    this.showTable = this.$searchQuery.showTable
+    this.showTable = this.auth.summary ? 'all' : 'staff'
   },
   methods: {
     onCLickPerformanceAmount() {

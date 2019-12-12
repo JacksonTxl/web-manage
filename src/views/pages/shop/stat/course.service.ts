@@ -14,8 +14,10 @@ export class CourseService {
   total$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({
-    export_all: 'shop:stat:class_reports|list_summary',
-    export_coach: 'shop:stat:class_reports|list_coach'
+    summary: 'shop:stat:class_reports|list_summary',
+    coach: 'shop:stat:class_reports|list_coach',
+    export_all: 'shop:stat:class_reports|export_summary',
+    export_coach: 'shop:stat:class_reports|export_coach'
   })
   authTabs$ = this.authService.getAuthTabs$('shop-stat-course')
   constructor(

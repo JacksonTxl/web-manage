@@ -397,7 +397,7 @@
 import { ShelfService } from './shelf.service'
 import { UserService } from '@/services/user.service'
 import { cloneDeep } from 'lodash-es'
-import { RuleConfig } from '@/constants/rule'
+import { PatternService } from '@/services/pattern.service'
 import ShopHourPicker from '@/views/biz-components/shop-hour-picker/shop-hour-picker'
 import { ruleOptions, shopColumns, admissionTimeList } from './shelf.config'
 import { SHOP_MEMBER } from '@/constants/card/shop-member'
@@ -411,7 +411,7 @@ export default {
   },
   serviceInject() {
     return {
-      rules: RuleConfig,
+      pattern: PatternService,
       userService: UserService,
       shelfService: ShelfService
     }
@@ -451,7 +451,9 @@ export default {
     priceList: {
       deep: true,
       handler() {
-        let b = this.priceValidataArray.every(i => this.rules.number.test(i))
+        let b = this.priceValidataArray.every(i =>
+          this.pattern.NUM_FLOAT(1).test(i)
+        )
         b && this.checkedPrice()
       }
     },
@@ -547,7 +549,9 @@ export default {
         this.priceHelpText = ''
         return false
       }
-      let b = this.priceValidataArray.every(i => this.rules.number.test(i))
+      let b = this.priceValidataArray.every(i =>
+        this.pattern.NUM_FLOAT(1).test(i)
+      )
       this.priceHelpText = b ? '' : '请输入价格'
     },
     // 开卡方式change

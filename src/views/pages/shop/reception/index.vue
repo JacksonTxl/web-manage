@@ -152,7 +152,7 @@
               placeholder="上传人脸"
               @change="photoChange"
               :list="photoList"
-              v-else
+              v-if="auth.editFace && isSelectMember"
             ></face-upload>
           </div>
           <div :class="reception('set-info')" v-if="!isEntry">
