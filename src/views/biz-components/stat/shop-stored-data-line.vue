@@ -24,7 +24,7 @@ export default {
     },
     height: {
       type: Number,
-      default: 330
+      default: 343
     },
     // 使用的字段key值数组
     fields: {
