@@ -117,8 +117,8 @@
                     <st-t3 style="margin-top:32px">类目营收占比</st-t3>
                     <shop-stored-data-revenue-ring
                       :data="dataRingss"
-                      :padding="[60, 60, 38, 0]"
-                      style="width: 337px;"
+                      :padding="[60, '30%', 38, 0]"
+                      style="width: 100%;"
                     ></shop-stored-data-revenue-ring>
                   </div>
                 </div>
