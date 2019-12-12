@@ -1555,10 +1555,11 @@ export const routeMapConfig = {
   'shop-store-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '云店列表' // 暂时这样未确定
     routeConfig.queryOptions = {
-      page: { type: Number, default: 1 },
+      category_id: { type: Number, default: -1 },
+      current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
-      activity_name: { type: String, default: '' },
-      activity_status: { type: Number, default: -1 }
+      product_name: { type: String, default: '' },
+      shelves_status: { type: Number, default: -1 }
     }
   },
   ...tplConfigs

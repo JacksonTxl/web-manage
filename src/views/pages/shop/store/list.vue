@@ -35,14 +35,9 @@
         />
       </div>
       <div :class="basic('content')">
-        <st-table
-          rowKey="id"
-          :columns="columns"
-          :dataSource="list"
-          :isExpand="true"
-        ></st-table>
-        <template slot="action" slot-scope="text, record">
-          <st-table-actions sytle="width: 120px">
+        <st-table :columns="columns" :dataSource="list" isExpand />
+        <!-- <template slot="action" slot-scope="text, record">
+           <st-table-actions sytle="width: 120px">
             <a @click="onUpShelf(record)">
               上架
             </a>
@@ -56,7 +51,7 @@
               删除
             </a>
           </st-table-actions>
-        </template>
+        </template> -->
       </div>
     </st-panel>
   </st-panel-layout>
@@ -96,7 +91,7 @@ export default {
           group_success_total: '10',
           children: [
             {
-              id: '2',
+              id: '1',
               activity_name: '子级列表',
               product_type: '娱乐',
               support_sales: '线下',
@@ -104,48 +99,6 @@ export default {
               activity_state: '10',
               group_total: '90',
               group_success_total: '10'
-            },
-            {
-              id: '5',
-              activity_name: '子级列表',
-              product_type: '娱乐',
-              support_sales: '线下',
-              activity_time: '以上架',
-              activity_state: '60',
-              group_total: '90',
-              group_success_total: '30'
-            }
-          ]
-        },
-        {
-          id: '3',
-          activity_name: '父级列表',
-          product_type: '娱乐',
-          support_sales: '线下',
-          activity_time: '以上架',
-          activity_state: '10',
-          group_total: '90',
-          group_success_total: '10',
-          children: [
-            {
-              id: '9',
-              activity_name: '子级列表',
-              product_type: '娱乐',
-              support_sales: '线下',
-              activity_time: '以上架',
-              activity_state: '10',
-              group_total: '90',
-              group_success_total: '10'
-            },
-            {
-              id: '6',
-              activity_name: '子级列表',
-              product_type: '娱乐',
-              support_sales: '线下',
-              activity_time: '以上架',
-              activity_state: '60',
-              group_total: '90',
-              group_success_total: '30'
             }
           ]
         }
