@@ -18,7 +18,7 @@
     </a-tabs>
     <div class="action">
       <div class="mg-r16">
-        <DatePicker></DatePicker>
+        <date-picker></date-picker>
       </div>
     </div>
   </div>
