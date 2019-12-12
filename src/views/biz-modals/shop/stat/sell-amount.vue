@@ -115,7 +115,8 @@ export default {
         staff_id: -1,
         department_id: -1,
         current_page: 1,
-        size: 999
+        // TODO: 后端翻页
+        size: 99999
       }
     }
   },
@@ -166,6 +167,7 @@ export default {
       const query = this.type === 'total' ? this.totalQuery : this.query
       if (changeType === 'changeDepartment') {
         this.pageParams.staff_id = -1
+        query.staff_id = -1
         this.sellAmountervice.getDepartmentStaffList(query).subscribe()
       }
       this.sellAmountervice.getSellAmountList(query).subscribe()
@@ -179,9 +181,10 @@ export default {
     },
     init() {
       this.pageParams.staff_id = this.record.staff_id || -1
+      this.pageParams.department_id = this.record.department_id || -1
       this.pageParams.stat_date = this.record.stat_date
       const query = this.type === 'total' ? this.totalQuery : this.query
-      this.sellAmountervice.init({ ...this.query }).subscribe()
+      this.sellAmountervice.init({ ...query }).subscribe()
     }
   },
   mounted() {

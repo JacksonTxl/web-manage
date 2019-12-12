@@ -18,6 +18,10 @@ export class SellService {
   loading$ = new State({})
   total$ = new State({})
   authTabs$ = this.authService.getAuthTabs$('shop-stat-sell')
+  auth$ = this.authService.authMap$({
+    summary: 'shop:stat:saler_reports|list_summary',
+    staff: 'shop:stat:saler_reports|list_staff'
+  })
   constructor(private StatApi: StatApi, private authService: AuthService) {}
   @Effect()
   getsellList(query: OrderShopListQuery) {
@@ -35,6 +39,7 @@ export class SellService {
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+        this.total$.commit(() => res.total)
       })
     )
   }

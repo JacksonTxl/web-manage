@@ -68,7 +68,12 @@ class VueServiceApp {
     }
     walkRoutes(this.routerOptions.routes)
 
-    this.router = new ServiceRouter(this.routerOptions)
+    this.router = new ServiceRouter(this.routerOptions, {
+      maxRedirect: {
+        count: 150,
+        duration: 3000
+      }
+    })
   }
   /**
    * router Provider

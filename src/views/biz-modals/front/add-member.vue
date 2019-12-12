@@ -29,7 +29,7 @@
 </template>
 <script>
 import { AddMemberService } from './add-member.service'
-import { RuleConfig } from '@/constants/rule'
+import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from './add-member.config'
 export default {
   name: 'ModalShopFrontAddMember',
@@ -38,7 +38,7 @@ export default {
   },
   serviceInject() {
     return {
-      rules: RuleConfig,
+      pattern: PatternService,
       addMemberService: AddMemberService
     }
   },

@@ -10,7 +10,6 @@ export const columns = () => {
       title: '金额（元）',
       titleTotal: '流水总金额（元）',
       dataIndex: 'price',
-      scopedSlots: { customRender: 'price' },
       sorter: true
     },
     {

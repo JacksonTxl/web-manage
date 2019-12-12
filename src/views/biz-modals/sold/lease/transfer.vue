@@ -139,7 +139,7 @@
             </div>
           </st-form-item>
           <st-form-item label="手续费" labelGutter="12px" type="text">
-            {{ info.transfer }}
+            {{ info.transfer_num }}元
           </st-form-item>
           <st-form-item label="减免金额" labelGutter="12px">
             <st-input-number

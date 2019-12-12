@@ -3,8 +3,10 @@
     <section class="mg-b16" :class="bHeard()">
       <div :class="bHeard('left')">
         <a-radio-group :value="showTable" @change="handleSizeChange">
-          <a-radio-button value="all">汇总</a-radio-button>
-          <a-radio-button value="coach">{{ $c('coach') }}</a-radio-button>
+          <a-radio-button value="all" v-if="auth.summary">汇总</a-radio-button>
+          <a-radio-button value="coach" v-if="auth.coach">
+            {{ $c('coach') }}
+          </a-radio-button>
         </a-radio-group>
         <st-button
           v-if="auth.export_all"
@@ -76,13 +78,33 @@
       <template v-slot:personal_checkin_amount="record">
         <st-total-item
           @click.native="onCLickPersonalCheckinAmount"
-          :item="record.item"
+          :unit="record.unit"
+          :label="record.label"
+          :value="record.value"
         ></st-total-item>
       </template>
       <template v-slot:team_checkin_amount="record">
         <st-total-item
           @click.native="onCLickTeamCheckinAmount"
-          :item="record.item"
+          :unit="record.unit"
+          :label="record.label"
+          :value="record.value"
+        ></st-total-item>
+      </template>
+      <template v-slot:personal_course_num="record">
+        <st-total-item
+          @click.native="onCLickPersonalNum"
+          :unit="record.unit"
+          :label="record.label"
+          :value="record.value"
+        ></st-total-item>
+      </template>
+      <template v-slot:team_course_num="record">
+        <st-total-item
+          @click.native="onCLickTeamNum"
+          :unit="record.unit"
+          :label="record.label"
+          :value="record.value"
         ></st-total-item>
       </template>
     </st-total>
@@ -189,13 +211,16 @@ export default {
       return [
         { id: -1, name: `全部${vm.$c('coach')}` },
         ...this.coachList.filter(item => {
-          return this.$searchQuery.department_id === item.department_id
+          item.department_id = Array.isArray(item.department_id)
+            ? item.department_id
+            : [item.department_id]
+          return item.department_id.includes(this.$searchQuery.department_id)
         })
       ]
     }
   },
   created() {
-    this.showTable = this.$searchQuery.showTable
+    this.showTable = this.auth.summary ? 'all' : 'staff'
   },
   methods: {
     onCLickPersonalCheckinAmount() {
@@ -210,6 +235,22 @@ export default {
       console.log('你点击了+ onCLickTeamCheckinAmount')
       this.$modalRouter.push({
         name: 'shop-stat-team-consume',
+        props: {
+          type: 'total'
+        }
+      })
+    },
+    onCLickPersonalNum() {
+      this.$modalRouter.push({
+        name: 'shop-stat-personal-course',
+        props: {
+          type: 'total'
+        }
+      })
+    },
+    onCLickTeamNum() {
+      this.$modalRouter.push({
+        name: 'shop-stat-team-course',
         props: {
           type: 'total'
         }
