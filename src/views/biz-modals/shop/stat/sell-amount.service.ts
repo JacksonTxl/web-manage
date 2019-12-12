@@ -15,7 +15,7 @@ export class SellAmountService {
   page$ = new State({})
   courseTypeList$ = this.userService.getOptions$('reserve.reserve_type')
   auth$ = this.authService.authMap$({
-    export: 'shop:stat:cashier_reports|batch_export'
+    export: 'shop:stat:saler_reports|export_day'
   })
   constructor(
     private statApi: StatApi,

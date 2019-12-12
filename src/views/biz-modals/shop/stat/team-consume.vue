@@ -59,7 +59,7 @@
         v-if="auth$.export"
         v-export-excel="{
           type: 'sale',
-          query: query
+          query: type === 'total' ? totalQuery : query
         }"
       >
         全部导出

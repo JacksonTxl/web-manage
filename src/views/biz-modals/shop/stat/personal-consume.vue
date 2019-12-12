@@ -68,7 +68,7 @@
         v-if="auth$.export"
         v-export-excel="{
           type: 'shop/personal/course/checkin',
-          query: query
+          query: type === 'total' ? totalQuery : query
         }"
       >
         全部导出

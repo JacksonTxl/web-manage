@@ -65,7 +65,6 @@
       </span>
     </st-table>
     <div slot="footer">
-      khjgfxjhsgj
       <st-button
         type="primary"
         v-if="auth$.export"
