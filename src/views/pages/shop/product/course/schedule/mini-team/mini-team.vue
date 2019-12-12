@@ -101,7 +101,7 @@ export default {
     // 排课-批量修改
     onClickScheduleInBatch() {
       this.$router.push({
-        path: '/shop/product/course/schedule/mini-team/inbatch-add',
+        path: '/shop/product/course/mini-schedule/inbatch-add',
         query: {
           // activity_id: this.stepForm.activity_id
         }
