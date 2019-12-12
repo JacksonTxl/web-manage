@@ -43,9 +43,9 @@
           </div>
           <div :class="basic('revenue_trend')">
             <a-row>
-              <a-col :span="16">
+              <a-col :span="16" style="padding-right: 5px;">
                 <div>
-                  <st-t3 style="margin-bottom: 35px; margin-top:32px">
+                  <st-t3 style="margin-bottom: 35px; margin-top:20px">
                     {{ wholenavTitle }}
                   </st-t3>
                   <shop-stored-data-line
@@ -62,7 +62,9 @@
                         :data="dataRing"
                         style="width: 100%;"
                         :height="
-                          wholeNavcom === 'brand-user-avg-bar' ? '325' : '332'
+                          wholeNavcom === 'brand-user-avg-bar'
+                            ? height325
+                            : height332
                         "
                       ></component>
                     </template>
@@ -72,7 +74,9 @@
                         :data="dataRing"
                         style="width: 100%;"
                         :height="
-                          wholeNavcom === 'brand-user-avg-bar' ? '325' : '332'
+                          wholeNavcom === 'brand-user-avg-bar'
+                            ? height325
+                            : height332
                         "
                       ></component>
                     </template>
@@ -167,6 +171,8 @@ export default {
   },
   data() {
     return {
+      height325: 325,
+      height332: 332,
       wholenavTitle: '营收金额(元)',
       wholenavIndex: 0,
       wholeNavcom: 'shop-stored-data-ring',
@@ -231,28 +237,29 @@ export default {
         { name: '潜在会员2', value: '2020.0' },
         { name: '潜在会员3', value: '2020.0' },
         { name: '潜在会员4', value: '2020.0' },
+        { name: '潜在会员5', value: '2020.0' },
+        { name: '潜在会员6', value: '2020.0' },
+        { name: '潜在会员7', value: '2020.0' },
+        { name: '潜在会员8', value: '2020.0' },
+        { name: '潜在会员9', value: '2020.0' },
         { name: '正式会员', value: '200' }
       ],
       salesList: {
         title: ['排名', '商品', '销量(件)'],
         data: [
           {
-            name: '王颖',
             age: 18,
             sex: '女'
           },
           {
-            name: '崔庆',
             age: 18,
             sex: '男'
           },
           {
-            name: '崔庆',
             age: 18,
             sex: '男'
           },
           {
-            name: '崔庆',
             age: 18,
             sex: '男'
           },
@@ -266,7 +273,7 @@ export default {
       courseDaily: [
         {
           date: '12-03',
-          总营收: 1
+          总营收: 10
         },
         {
           date: '12-04',
