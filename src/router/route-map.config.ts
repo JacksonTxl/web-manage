@@ -764,7 +764,7 @@ export const routeMapConfig = {
   },
   'brand-finance-flow-expenditure'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '支出流水-汇总'
-    // routeConfig.meta.auth = 'brand_shop:flow:expenditure|tab'
+    routeConfig.meta.auth = 'brand:flow:expenditure|summary_list'
     routeConfig.queryOptions = {
       shop_id: { type: Number, default: -1 },
       current_page: { type: Number, default: 1 },
@@ -775,7 +775,7 @@ export const routeMapConfig = {
   },
   'brand-finance-flow-expenditure-detail'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '支出流水-明细'
-    // routeConfig.meta.auth = 'brand_shop:flow:expenditure|tab'
+    routeConfig.meta.auth = 'brand:flow:expenditure|detail_list'
     routeConfig.queryOptions = {
       shop_id: { type: Number, default: -1 },
       search_number: { type: String, default: '' },
@@ -789,7 +789,7 @@ export const routeMapConfig = {
   },
   'brand-finance-flow-income'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '收入流水-汇总'
-    // routeConfig.meta.auth = 'brand_shop:flow:income|tab'
+    routeConfig.meta.auth = 'brand:flow:income|summary_list'
     routeConfig.queryOptions = {
       shop_id: { type: Number, default: -1 },
       current_page: { type: Number, default: 1 },
@@ -800,7 +800,7 @@ export const routeMapConfig = {
   },
   'brand-finance-flow-income-detail'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '收入流水-明细'
-    // routeConfig.meta.auth = 'brand_shop:flow:income|tab'
+    routeConfig.meta.auth = 'brand:flow:income|detail_list'
     routeConfig.queryOptions = {
       shop_id: { type: Number, default: -1 },
       pay_channel: { type: Number, default: -1 },
