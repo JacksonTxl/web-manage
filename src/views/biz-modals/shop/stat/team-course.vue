@@ -54,12 +54,13 @@
       page-mode="client"
     ></st-table>
     <div slot="footer">
+      <!-- TODO: 合计弹窗导出暂时不做 下个迭代提醒后端 -->
       <st-button
         type="primary"
-        v-if="auth$.export"
+        v-if="auth$.export && type !== 'total'"
         v-export-excel="{
           type: 'shop/team/course',
-          query: type === 'total' ? totalQuery : query
+          query: query
         }"
       >
         全部导出
