@@ -68,10 +68,7 @@
       <st-button
         type="primary"
         v-if="auth$.export"
-        v-export-excel="{
-          type: '/sale',
-          query: query
-        }"
+        v-export-excel="exportParams"
       >
         全部导出
       </st-button>
@@ -135,6 +132,12 @@ export default {
   },
   computed: {
     columns,
+    exportParams() {
+      const type = 'sale'
+      return this.type === 'total'
+        ? { type: `${type}/total`, query: this.totalQuery }
+        : { type, query: this.query }
+    },
     showTable() {
       return this.$searchQuery.showTable || 'all'
     },
