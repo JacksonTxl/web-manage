@@ -65,7 +65,7 @@
     <div slot="footer">
       <st-button
         type="primary"
-        v-if="auth$.export"
+        v-if="auth$.export && type !== 'total'"
         v-export-excel="{
           type: 'shop/personal/course/checkin',
           query: query
@@ -126,7 +126,8 @@ export default {
       coach_id: -1,
       course_id: -1,
       current_page: 1,
-      size: 999
+      // TODO: 后端翻页
+      size: 99999
     }
   },
   computed: {
@@ -139,15 +140,19 @@ export default {
       delete query.showTable
       delete query.current_page
       delete query.size
-      return {
+      query = {
         course_type: this.course_type,
         current_page: this.current_page,
         size: this.size,
-        coach_id: this.coach_id,
+
         course_id: this.course_id,
         type: '/total',
         ...query
       }
+      if (this.showTable === 'all') {
+        query.coach_id = this.coach_id
+      }
+      return query
     },
     query() {
       return {

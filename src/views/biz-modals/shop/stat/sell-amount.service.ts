@@ -24,15 +24,15 @@ export class SellAmountService {
   ) {}
 
   @Effect()
-  getSellAmountList(params: any) {
-    return this.statApi.getSellAmount(params).pipe(
+  getSellAmountList(query: any) {
+    return this.statApi.getSellAmount(query).pipe(
       tap((res: any) => {
         this.amountList$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })
     )
   }
-  getDepartmentStaffList(params: any) {
+  getDepartmentStaffList() {
     return this.statApi.getDepartmentStaffList().pipe(
       tap((res: any) => {
         this.modalStaffList$.commit(() => {
@@ -46,7 +46,7 @@ export class SellAmountService {
   }
   init(query: any) {
     return forkJoin(
-      this.getDepartmentStaffList(query),
+      this.getDepartmentStaffList(),
       this.getSellAmountList(query)
     )
   }

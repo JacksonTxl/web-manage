@@ -94,9 +94,8 @@ export default {
   },
   methods: {
     onChangeGetFile({ image, editor }) {
-      editor.setContent(this.value)
+      editor.insertContent(`<img src="${image.url}">`)
       this.$emit('ready', editor)
-      this.$emit('image-change', image)
     }
   },
   mounted() {
@@ -146,21 +145,18 @@ export default {
             })
           },
           init_instance_callback(editor) {
-            /**
-             * TODO: 图片上传
-             */
-            // const editorToolbarEl = document.querySelector('.tox-toolbar')
-            // let ele = document.createElement('div')
-            // ele.id = 'editorImageUpload'
-            // editorToolbarEl.appendChild(ele)
-            // new Vue({
-            //   components: {
-            //     EditorImage
-            //   },
-            //   render: h => (
-            //     <editor-image editor={editor} onChange={ctx.onChangeGetFile} />
-            //   )
-            // }).$mount('#editorImageUpload')
+            const editorToolbarEl = document.querySelector('.tox-toolbar')
+            let ele = document.createElement('div')
+            ele.id = 'editorImageUpload'
+            editorToolbarEl.appendChild(ele)
+            new Vue({
+              components: {
+                EditorImage
+              },
+              render: h => (
+                <editor-image editor={editor} onChange={ctx.onChangeGetFile} />
+              )
+            }).$mount('#editorImageUpload')
             editor.setContent(ctx.value)
             ctx.$emit('ready', editor)
           }

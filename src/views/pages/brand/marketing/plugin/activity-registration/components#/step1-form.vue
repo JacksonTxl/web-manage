@@ -55,11 +55,7 @@
           ></st-input-number>
         </st-form-item>
         <st-form-item label="活动详情" required>
-          <st-editor
-            @image-change="getImageUrl"
-            @input="onChangeEditor"
-            v-model="content"
-          ></st-editor>
+          <st-editor @input="onChangeEditor" v-model="content"></st-editor>
           <div class="color-danger" v-if="isEditor">请输入活动详情</div>
         </st-form-item>
         <div v-di-view="{ name: 'step', show }">
@@ -165,13 +161,6 @@ export default {
   },
   methods: {
     moment,
-    /**
-     * TODO: 富文本上传图片
-     */
-    getImageUrl(imageUrl) {
-      const imgEl = `<img src='${imageUrl.url}' width='400' height='400'>`
-      this.content = this.content + imgEl
-    },
     onChangeEditor() {
       this.isEditor = this.content.length === 0
       return this.content.length === 0

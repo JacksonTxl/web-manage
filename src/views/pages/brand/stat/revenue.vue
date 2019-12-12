@@ -165,8 +165,8 @@ export default {
       sliderOptions: {
         autoplay: false,
         navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev'
+          nextEl: '.swiper-revenue-button-next',
+          prevEl: '.swiper-revenue-button-prev'
         },
         slidesPerView: 6,
         centeredSlides: false,

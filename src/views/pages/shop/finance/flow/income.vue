@@ -61,7 +61,7 @@
       :class="bPage('total')"
       :indexs="columns"
       :dataSource="total$"
-      class="pd-x24"
+      class="mg-t16 pd-x24"
       hasTitle
     ></st-total>
     <st-table
