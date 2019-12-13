@@ -53,42 +53,39 @@
       class="mg-t16 pd-x24"
       hasTitle
     ></st-total>
-    <st-table
-      class="mg-t12"
-      :columns="columns"
-      :scroll="{ x: 1400 }"
-      :rowKey="record => record.flow_id"
-      :page="page$"
-      @change="onTableChange"
-      :dataSource="list$"
-    >
-      <span
-        slot="price"
-        :class="{ 'color-danger': +text < 0 }"
-        slot-scope="text"
+    <st-container type="2">
+      <st-table
+        :columns="columns"
+        :scroll="{ x: 1400 }"
+        :rowKey="record => record.flow_id"
+        :page="page$"
+        @change="onTableChange"
+        :dataSource="list$"
       >
-        {{ text }}
-      </span>
-      <span slot="flow_type" slot-scope="text">{{ text.name }}</span>
-      <st-overflow-text
-        title="备注"
-        maxWidth="200px"
-        slot="remark"
-        slot-scope="text"
-        :value="text"
-      />
+        <span slot="price" :class="{ price__red: +text < 0 }" slot-scope="text">
+          {{ text }}
+        </span>
+        <span slot="flow_type" slot-scope="text">{{ text.name }}</span>
+        <st-overflow-text
+          title="备注"
+          maxWidth="200px"
+          slot="remark"
+          slot-scope="text"
+          :value="text"
+        />
 
-      <div slot="action" slot-scope="text, record">
-        <st-table-actions>
-          <a
-            v-if="record.auth['brand_shop:flow:income|reverse']"
-            @click="onClickFlowChargeAgainst(record)"
-          >
-            流水冲销
-          </a>
-        </st-table-actions>
-      </div>
-    </st-table>
+        <div slot="action" slot-scope="text, record">
+          <st-table-actions>
+            <a
+              v-if="record.auth['brand_shop:flow:income|reverse']"
+              @click="onClickFlowChargeAgainst(record)"
+            >
+              流水冲销
+            </a>
+          </st-table-actions>
+        </div>
+      </st-table>
+    </st-container>
   </div>
 </template>
 <script>
