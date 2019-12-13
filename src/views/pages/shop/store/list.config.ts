@@ -27,13 +27,6 @@ export const columns = (vm: any) => {
     {
       title: '库存',
       dataIndex: 'group_success_total'
-    },
-    {
-      title: '操作',
-      dataIndex: 'action',
-      width: 140,
-      fixed: 'right',
-      scopedSlots: { customRender: 'action' }
     }
   ]
 }

@@ -23,6 +23,10 @@
                 </span>
               </a-input>
             </st-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="8">
+          <a-col :span="10">
             <st-form-item label="商品分类" required>
               <a-select
                 showSearch
@@ -38,6 +42,20 @@
                 </a-select-option>
               </a-select>
             </st-form-item>
+          </a-col>
+          <a-col :span="6" :class="basic('class--manage')">
+            <a
+              v-modal-link="{
+                name: 'store-class-manage',
+                props: { shopList: 1 }
+              }"
+            >
+              分类管理
+            </a>
+          </a-col>
+        </a-row>
+        <a-row :gutter="8">
+          <a-col :span="16">
             <st-form-item label="商品图片" required>
               <ul>
                 <li
@@ -47,24 +65,23 @@
                 >
                   <img
                     :data-src="item.image_url | imgFilter({ w: 1000 })"
-                    :src="item.image_url | imgFilter({ w: 240, h: 135 })"
-                    width="240"
-                    height="135"
+                    :src="item.image_url | imgFilter({ w: 126, h: 126 })"
+                    width="126"
+                    height="126"
                     alt="商品图片"
                   />
                 </li>
               </ul>
               <st-image-upload
-                width="220px"
-                height="140px"
+                width="126px"
+                height="126px"
                 :list="fileList"
                 @change="onShareChangeGetImage"
                 :numLimit="5"
                 placeholder="上传图片"
               >
                 <template v-slot:description>
-                  <p>请上传jpg、png格式的图片</p>
-                  <p>大小不超过2M，建议尺寸16:9</p>
+                  <p>建议尺寸为750像素×750像素</p>
                 </template>
               </st-image-upload>
               <div class="color-danger" v-if="isImgError">请上传商品图片</div>
@@ -93,6 +110,10 @@
               ></st-editor>
               <div class="color-danger" v-if="isEditor">请输入活动详情</div>
             </st-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="8">
+          <a-col :span="16">
             <st-form-item label="规格设置" required>
               <a-radio-group v-model="isMore">
                 <a-radio :value="1">单规格</a-radio>
@@ -180,10 +201,12 @@
 <script>
 import { ruleOptions, skuColumns } from './add.config'
 import StEditor from '@/views/biz-components/editor/editor'
+import StoreClassManage from '@/views/biz-modals/store/class-manage.vue'
 export default {
   bem: {
     basic: 'shop-store-add'
   },
+  modals: { StoreClassManage },
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)

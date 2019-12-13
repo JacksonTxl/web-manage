@@ -42,6 +42,13 @@ export class InfoService implements Controller {
                 name: 'shop-finance-order-info-commodity-info',
                 query: { id }
               }
+            },
+            {
+              label: '配送方式',
+              route: {
+                name: 'shop-finance-order-info-delivery-mode',
+                query: { id }
+              }
             }
           ]
           if (res.info.order_status === 4) {

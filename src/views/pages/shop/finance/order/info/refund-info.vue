@@ -32,10 +32,12 @@
           </st-info>
         </a-col>
       </a-row>
+      <st-table :dataSource="list" :columns="columns"></st-table>
     </st-panel>
   </section>
 </template>
 <script>
+import { refundColumns } from './commodity-info.config'
 import { RefundInfoService } from './refund-info.service'
 export default {
   name: 'PageShopFinanceOrderInfoRefundInfo',
@@ -50,7 +52,21 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      columns: refundColumns,
+      list: [
+        {
+          product_name: '铁鸿基',
+          product_num: '1',
+          refund_id: '238758723',
+          refund_time: '2019-11-12 22：22：22',
+          refund_price: '345',
+          action: '铁鸿基',
+          refund_reason: '买多了',
+          refund_mode: '线上微信'
+        }
+      ]
+    }
   },
   methods: {}
 }

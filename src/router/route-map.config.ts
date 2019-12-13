@@ -1582,17 +1582,21 @@ export const routeMapConfig = {
   'shop-store-stock-list-search'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '库存查询'
     routeConfig.queryOptions = {
-      // page: { type: Number, default: 1 },
-      // size: { type: Number, default: 20 },
-      // card_type: { type: Number, default: -1 },
-      // publish_channel: { type: Number, default: -1 },
-      card_name: { type: String, default: '' }
-      // sell_status: { type: Number, default: -1 },
-      // shelf_status: { type: Number, default: -1 }
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      product_name: { type: String, default: '' }
     }
   },
   'shop-store-stock-list-detail'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '出入库明细'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      product_id: { type: Number, default: -1 },
+      stock_flow: { type: Number, default: -1 },
+      start_time: { type: String, default: '' },
+      end_time: { type: String, default: '' }
+    }
   },
   'shop-store-order-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '发货管理'
@@ -1623,10 +1627,10 @@ export const routeMapConfig = {
   'shop-store-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '云店列表' // 暂时这样未确定
     routeConfig.queryOptions = {
-      page: { type: Number, default: 1 },
+      current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
-      activity_name: { type: String, default: '' },
-      activity_status: { type: Number, default: -1 }
+      product_name: { type: String, default: '' },
+      shelves_status: { type: Number, default: -1 }
     }
   },
   ...tplConfigs
