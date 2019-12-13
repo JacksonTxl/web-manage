@@ -1,6 +1,9 @@
 <template>
-  <div :class="bPage()">
+  <div :class="b()">
     <st-search-panel :class="bSearch()">
+      <st-search-panel-item label="查询门店：">
+        <shop-select v-model="$searchQuery.shop_id" class="mg-r12" />
+      </st-search-panel-item>
       <st-search-panel-item label="收银方式：">
         <a-checkbox @change="onCheckAllChange" :checked="checkAll">
           全部
@@ -13,13 +16,14 @@
       </st-search-panel-item>
       <st-search-panel-item label="流水金额：">
         <st-input-number
-          class="amount__input mg-r8"
+          class="amount__input"
           :min="0"
           :max="99999"
           :step="1"
           :precision="0"
           float
           v-model="$searchQuery.start_amount"
+          placeholder="请输入金额范围"
         ></st-input-number>
         至
         <st-input-number
@@ -27,11 +31,12 @@
           :max="99999"
           :precision="0"
           float
-          class="amount__input mg-l8"
+          class="amount__input"
           v-model="$searchQuery.end_amount"
+          placeholder="请输入金额范围"
         ></st-input-number>
       </st-search-panel-item>
-      <st-search-panel-item label="创建时间：">
+      <st-search-panel-item label="查询日期：">
         <st-range-picker :disabledDays="180" v-model="date" class="value" />
       </st-search-panel-item>
 
@@ -46,59 +51,55 @@
         <st-button class="mg-l8" @click="onReset">重置</st-button>
       </div>
     </st-search-panel>
-    <st-total
-      :class="bPage('total')"
-      :indexs="totalColumns"
-      :dataSource="total$"
-      class="mg-t16 pd-x24"
-      hasTitle
-    ></st-total>
-    <st-container type="2">
-      <st-table
-        :columns="columns"
-        :scroll="{ x: 1400 }"
-        :rowKey="record => record.flow_id"
-        :page="page$"
-        @change="onTableChange"
-        :dataSource="list$"
+    <st-table
+      :columns="columns"
+      :scroll="{ x: 1400 }"
+      :rowKey="record => record.flow_id"
+      :page="page$"
+      @change="onTableChange"
+      :dataSource="list$"
+    >
+      <span
+        slot="price"
+        :class="{ 'color-danger': +text < 0 }"
+        slot-scope="text"
       >
-        <span slot="price" :class="{ price__red: +text < 0 }" slot-scope="text">
-          {{ text }}
-        </span>
-        <span slot="flow_type" slot-scope="text">{{ text.name }}</span>
-        <st-overflow-text
-          title="备注"
-          maxWidth="200px"
-          slot="remark"
-          slot-scope="text"
-          :value="text"
-        />
+        {{ text }}
+      </span>
+      <span slot="flow_type" slot-scope="text">{{ text.name }}</span>
+      <st-overflow-text
+        title="备注"
+        maxWidth="200px"
+        slot="remark"
+        slot-scope="text"
+        :value="text"
+      />
 
-        <div slot="action" slot-scope="text, record">
-          <st-table-actions>
-            <a
-              v-if="record.auth['brand_shop:flow:income|reverse']"
-              @click="onClickFlowChargeAgainst(record)"
-            >
-              流水冲销
-            </a>
-          </st-table-actions>
-        </div>
-      </st-table>
-    </st-container>
+      <div slot="action" slot-scope="text, record">
+        <st-table-actions>
+          <a
+            v-if="record.auth['shop:flow:income|reverse']"
+            @click="onClickFlowChargeAgainst(record)"
+          >
+            流水冲销
+          </a>
+        </st-table-actions>
+      </div>
+    </st-table>
   </div>
 </template>
 <script>
 import tableMixin from '@/mixins/table.mixin'
-import { IncomeService } from './income.service'
-import { columns, totalColumns } from './income.config.ts'
+import { IncomeDetailService } from './income-detail.service'
+import { columns } from './income-detail.config'
 import ShopFinanceFlow from '@/views/biz-modals/shop/finance/flow'
+import ShopSelect from '@/views/biz-components/shop-select'
 import { cloneDeep } from 'lodash-es'
 export default {
   name: 'FinanceFlowIncome',
   mixins: [tableMixin],
   bem: {
-    bPage: 'page-shop-flow-income',
+    b: 'page-brand-flow-income',
     bSearch: 'search'
   },
   modals: {
@@ -106,16 +107,15 @@ export default {
   },
   serviceInject() {
     return {
-      service: IncomeService
+      service: IncomeDetailService
     }
   },
   rxState() {
-    const { loading$, page$, list$, payType$, total$ } = this.service
+    const { loading$, page$, list$, payType$ } = this.service
     return {
       loading$,
       page$,
       list$,
-      total$,
       payType$
     }
   },
@@ -128,18 +128,27 @@ export default {
     }
   },
   computed: {
-    columns,
-    totalColumns
+    columns
   },
   mounted() {
-    this.setSearchDate()
+    this.setSearchData()
+  },
+  components: {
+    ShopSelect
   },
   methods: {
-    setSearchDate() {
+    setSearchData() {
       if (!this.$searchQuery.start_date) return
       const start = moment(this.$searchQuery.start_date)
       const end = moment(this.$searchQuery.end_date)
       this.date = [start, end]
+      if (!this.$searchQuery.pay_channel) {
+        return
+      }
+      this.checkedList = this.$searchQuery.pay_channel.map(item => +item)
+      if (this.$searchQuery.pay_channel.length === this.payType$.length) {
+        this.checkAll = true
+      }
     },
     onChangePayType(checkedList) {
       this.indeterminate =
@@ -156,7 +165,6 @@ export default {
       })
     },
     onClickFlowChargeAgainst(record) {
-      console.log(record)
       this.$modalRouter.push({
         name: 'shop-finance-flow',
         props: {
@@ -185,6 +193,7 @@ export default {
     },
     onReset() {
       this.checkedList = []
+      this.checkAll = false
       this.date = [null, null]
       this.onSearchReset()
     }
