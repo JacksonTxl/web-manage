@@ -133,10 +133,7 @@ export default {
   },
   computed: {
     isBind() {
-      return (
-        this.info.account_phone_encrypt &&
-        this.info.account_phone_encrypt.length === 4
-      )
+      return !this.info.account_phone_encrypt
     }
   },
   mounted() {

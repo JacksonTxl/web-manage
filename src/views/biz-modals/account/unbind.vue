@@ -1,11 +1,6 @@
 <template>
   <st-modal :title="modalTitle" v-model="show" size="small">
-    <div
-      v-if="
-        account.account_phone_encrypt &&
-          account.account_phone_encrypt.length === 4
-      "
-    >
+    <div v-if="!account.account_phone_encrypt">
       账户没有绑定手机号
     </div>
     <div v-else>
@@ -40,10 +35,7 @@
       </st-button>
       <st-button
         type="primary"
-        v-if="
-          account.account_phone_encrypt &&
-            account.account_phone_encrypt.length === 4
-        "
+        v-if="!account.account_phone_encrypt"
         @click="show = false"
       >
         确认

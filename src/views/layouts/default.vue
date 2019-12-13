@@ -151,7 +151,10 @@
               <p class="layout-default-body__name">{{ user.name }}</p>
               <p class="layout-default-body__mobile">{{ user.mobile }}</p>
             </div>
-            <a-menu class="layout-default-body__menu">
+            <a-menu
+              class="layout-default-body__menu"
+              style="height:100px;overflow:auto"
+            >
               <!-- <a-menu-item class="layout-default-body__options">
                   <st-icon type="safety"></st-icon>
                   <span>账号安全</span>
