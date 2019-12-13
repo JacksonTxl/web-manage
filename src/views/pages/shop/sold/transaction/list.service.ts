@@ -27,11 +27,6 @@ export class ListService {
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    if (to.meta.query.product_type !== 4) {
-      return this.getProductList(to.meta.query)
-    }
+    return this.getProductList(to.meta.query)
   }
-  // beforeEach(to: ServiceRoute, from: ServiceRoute) {
-  //   return this.getProductList(to.meta.query)
-  // }
 }

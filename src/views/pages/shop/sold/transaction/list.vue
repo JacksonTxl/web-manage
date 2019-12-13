@@ -17,9 +17,7 @@
         :key="item.value"
       ></st-tab-pane>
     </st-tabs> -->
-    <cloud-store v-if="$searchQuery.product_type === 4"></cloud-store>
     <st-table
-      v-else
       :page="page"
       :class="basic('table')"
       rowKey="id"
@@ -54,16 +52,12 @@ import SoldDealSaleCourse from '@/views/biz-modals/sold/deal/sale-course'
 import SoldDealSaleDepositCard from '@/views/biz-modals/sold/deal/sale-deposit-card'
 import SoldDealSaleMemberCard from '@/views/biz-modals/sold/deal/sale-member-card'
 import SoldDealSalePersonalCourse from '@/views/biz-modals/sold/deal/sale-personal-course'
-import CloudStore from './components#/cloud-store'
 export default {
   name: 'PageShopSoldLease',
   mixins: [tableMixin],
   bem: {
     basic: 'page-shop-sold',
     sale: 'page-shop-sold-sale'
-  },
-  components: {
-    CloudStore
   },
   modals: {
     SoldDealGatheringTip,
