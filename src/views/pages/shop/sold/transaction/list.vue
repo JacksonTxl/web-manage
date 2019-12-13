@@ -1,6 +1,6 @@
 <template>
   <st-panel initial app :class="basic()">
-    <!-- <st-input-search
+    <st-input-search
       v-model="$searchQuery.product_name"
       @search="onSearch"
       placeholder="请输入商品名查找"
@@ -16,12 +16,8 @@
         :tab="item.label"
         :key="item.value"
       ></st-tab-pane>
-<<<<<<< HEAD
     </st-tabs>
     <cloud-store v-if="$searchQuery.product_type === 4"></cloud-store>
-=======
-    </st-tabs> -->
->>>>>>> a0d8e0d1c... feat: 售出交易签单进行tab拆分
     <st-table
       v-else
       :page="page"
