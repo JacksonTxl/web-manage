@@ -138,7 +138,7 @@ export default {
     },
     onChangePayType(checkedList) {
       this.indeterminate =
-        !!checkedList.length && checkedList.length < this.payType$.length
+        checkedList.length && checkedList.length < this.payType$.length
       this.checkAll = checkedList.length === this.payType$.length
     },
     onCheckAllChange(e) {
