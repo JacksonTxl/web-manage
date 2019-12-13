@@ -37,7 +37,7 @@
         ></st-input-number>
       </st-search-panel-item>
       <st-search-panel-item label="查询日期：">
-        <st-range-picker :disabledDays="180" v-model="date" class="value" />
+        <st-range-picker :disabledDays="90" v-model="date" class="value" />
       </st-search-panel-item>
 
       <div slot="button">
