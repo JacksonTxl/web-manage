@@ -167,11 +167,13 @@
           </st-info>
         </a-col>
       </a-row>
+      <st-table :dataSource="list" :columns="columns"></st-table>
     </st-panel>
   </section>
 </template>
 <script>
 import { CommodityInfoService } from './commodity-info.service'
+import { columns } from './commodity-info.config'
 export default {
   name: 'PageShopFinanceOrderInfoCommodityInfo',
   serviceInject() {
@@ -186,7 +188,17 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      columns: columns,
+      list: [
+        {
+          product_type: '2',
+          product_name: '铁鸿基',
+          product_num: '1',
+          member_info: '北研门店'
+        }
+      ]
+    }
   },
   methods: {}
 }

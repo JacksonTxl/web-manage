@@ -4,19 +4,17 @@
       <a-row :gutter="24">
         <a-col :span="9">
           <st-info>
-            <st-info-item label="退款ID">{{ info.order_id }}</st-info-item>
+            <st-info-item label="退款ID">32597</st-info-item>
             <st-info-item label="快递单号">
-              {{ info.operator_name }}100002000300
+              100002000300
             </st-info-item>
           </st-info>
         </a-col>
         <a-col :span="9">
           <st-info>
-            <st-info-item label="快递公司">
-              {{ info.refund.refund_time }}顺丰
-            </st-info-item>
+            <st-info-item label="快递公司">顺丰</st-info-item>
             <st-info-item label="发货状态">
-              {{ info.refund.refund_reason }}待发货/待收货/已收货
+              待发货/待收货/已收货
             </st-info-item>
           </st-info>
         </a-col>

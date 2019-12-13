@@ -99,6 +99,152 @@ export default {
               activity_state: '10',
               group_total: '90',
               group_success_total: '10'
+            },
+            {
+              id: '3',
+              activity_name: '子级列表',
+              product_type: '娱乐',
+              support_sales: '线下',
+              activity_time: '以上架',
+              activity_state: '10',
+              group_total: '90',
+              group_success_total: '10'
+            },
+            {
+              id: '4',
+              activity_name: '子级列表',
+              product_type: '娱乐',
+              support_sales: '线下',
+              activity_time: '以上架',
+              activity_state: '10',
+              group_total: '90',
+              group_success_total: '10'
+            }
+          ]
+        },
+        {
+          id: '1',
+          activity_name: '父级列表',
+          product_type: '娱乐',
+          support_sales: '线下',
+          activity_time: '以上架',
+          activity_state: '10',
+          group_total: '90',
+          group_success_total: '10',
+          children: [
+            {
+              id: '1',
+              activity_name: '子级列表',
+              product_type: '娱乐',
+              support_sales: '线下',
+              activity_time: '以上架',
+              activity_state: '10',
+              group_total: '90',
+              group_success_total: '10'
+            },
+            {
+              id: '3',
+              activity_name: '子级列表',
+              product_type: '娱乐',
+              support_sales: '线下',
+              activity_time: '以上架',
+              activity_state: '10',
+              group_total: '90',
+              group_success_total: '10'
+            },
+            {
+              id: '4',
+              activity_name: '子级列表',
+              product_type: '娱乐',
+              support_sales: '线下',
+              activity_time: '以上架',
+              activity_state: '10',
+              group_total: '90',
+              group_success_total: '10'
+            }
+          ]
+        },
+        {
+          id: '1',
+          activity_name: '父级列表',
+          product_type: '娱乐',
+          support_sales: '线下',
+          activity_time: '以上架',
+          activity_state: '10',
+          group_total: '90',
+          group_success_total: '10',
+          children: [
+            {
+              id: '1',
+              activity_name: '子级列表',
+              product_type: '娱乐',
+              support_sales: '线下',
+              activity_time: '以上架',
+              activity_state: '10',
+              group_total: '90',
+              group_success_total: '10'
+            },
+            {
+              id: '3',
+              activity_name: '子级列表',
+              product_type: '娱乐',
+              support_sales: '线下',
+              activity_time: '以上架',
+              activity_state: '10',
+              group_total: '90',
+              group_success_total: '10'
+            },
+            {
+              id: '4',
+              activity_name: '子级列表',
+              product_type: '娱乐',
+              support_sales: '线下',
+              activity_time: '以上架',
+              activity_state: '10',
+              group_total: '90',
+              group_success_total: '10'
+            }
+          ]
+        },
+        {
+          id: '1',
+          activity_name: '父级列表',
+          product_type: '娱乐',
+          support_sales: '线下',
+          activity_time: '以上架',
+          activity_state: '10',
+          group_total: '90',
+          group_success_total: '10',
+          children: [
+            {
+              id: '1',
+              activity_name: '子级列表',
+              product_type: '娱乐',
+              support_sales: '线下',
+              activity_time: '以上架',
+              activity_state: '10',
+              group_total: '90',
+              group_success_total: '10'
+            },
+            {
+              id: '3',
+              activity_name: '子级列表',
+              product_type: '娱乐',
+              support_sales: '线下',
+              activity_time: '以上架',
+              activity_state: '10',
+              group_total: '90',
+              group_success_total: '10'
+            },
+            {
+              id: '4',
+              activity_name: '子级列表',
+              product_type: '娱乐',
+              support_sales: '线下',
+              activity_time: '以上架',
+              activity_state: '10',
+              group_total: '90',
+              group_success_total: '10'
             }
           ]
         }
