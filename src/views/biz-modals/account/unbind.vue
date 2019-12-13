@@ -1,5 +1,5 @@
 <template>
-  <st-modal :title="modalTitle" v-model="show" size="small">
+  <st-modal title="解绑手机号" v-model="show" size="small">
     <div v-if="!account.account_phone_encrypt">
       账户没有绑定手机号
     </div>
@@ -76,11 +76,6 @@ export default {
   components: {
     NoCaptcha,
     InputPhoneCode
-  },
-  computed: {
-    modalTitle() {
-      return '解绑手机号'
-    }
   },
   mounted() {
     this.unbindService.fetchUserInfo().subscribe()

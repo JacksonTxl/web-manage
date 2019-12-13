@@ -38,7 +38,6 @@
         </st-form-item>
         <st-form-item label="短信验证码" class="mg-b0">
           <input-phone-code
-            class="test"
             size="default"
             v-decorator="decorators.captcha"
             @click="onClickCaptcha"
@@ -95,7 +94,7 @@
         alt="success"
         :class="b('success-img')"
       />
-      <div :class="b('success-text')" class="mg-t16 mg-b16">密码更新成功</div>
+      <div :class="b('success-text')">密码更新成功</div>
       <st-button pill type="primary" @click="goLogin">立即登陆</st-button>
     </div>
   </st-modal>
