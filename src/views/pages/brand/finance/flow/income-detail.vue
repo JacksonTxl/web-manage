@@ -121,9 +121,9 @@ export default {
   },
   data() {
     return {
-      checkedList: [],
+      checkedList: this.payType$.map(item => item.value),
       indeterminate: false,
-      checkAll: false,
+      checkAll: true,
       date: []
     }
   },
@@ -138,16 +138,18 @@ export default {
   },
   methods: {
     setSearchData() {
-      if (!this.$searchQuery.start_date) return
-      const start = moment(this.$searchQuery.start_date)
-      const end = moment(this.$searchQuery.end_date)
-      this.date = [start, end]
-      if (!this.$searchQuery.pay_channel) {
-        return
+      if (this.$searchQuery.start_date) {
+        const start = moment(this.$searchQuery.start_date)
+        const end = moment(this.$searchQuery.end_date)
+        this.date = [start, end]
       }
-      this.checkedList = this.$searchQuery.pay_channel.map(item => +item)
-      if (this.$searchQuery.pay_channel.length === this.payType$.length) {
-        this.checkAll = true
+      if (this.$searchQuery.pay_channel) {
+        this.$searchQuery.pay_channel = [...this.$searchQuery.pay_channel]
+        this.checkedList = this.$searchQuery.pay_channel.map(item => +item)
+        this.checkAll = false
+        if (this.$searchQuery.pay_channel.length === this.payType$.length) {
+          this.checkAll = true
+        }
       }
     },
     onChangePayType(checkedList) {
