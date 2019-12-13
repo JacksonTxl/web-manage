@@ -1,0 +1,38 @@
+.modals-choose-sku {
+  .good-message {
+    img {
+      width: 88px;
+      height: 88px;
+      display: inline-block;
+      vertical-align: top;
+    }
+    div {
+      display: inline-block;
+      vertical-align: top;
+      margin-left: 12px;
+      span {
+        display: block;
+        .fz(14px);
+        line-height: 20px;
+        margin-top: 9px;
+        &:nth-of-type(1) {
+          .c(@error-color);
+          .fz(18px);
+        }
+        &:nth-of-type(2) {
+          .c(@text-light);
+        }
+        &:nth-of-type(3) {
+          .c(@text);
+        }
+      }
+    }
+  }
+  .good-item {
+    margin-top: 24px;
+    .item-label {
+      margin-right: 24px;
+      .c(@title);
+    }
+  }
+}

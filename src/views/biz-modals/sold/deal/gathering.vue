@@ -8,7 +8,7 @@
   >
     <div :class="gathering('content')">
       <a-row :class="gathering('info')">
-        <a-col :span="13" class="mg-b36">
+        <a-col :span="13" class="mg-b36" v-if="type !== 'cloud'">
           <st-info>
             <st-info-item label="订单号">{{ info.order_id }}</st-info-item>
             <st-info-item class="mg-b0" label="下单时间">
@@ -16,7 +16,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="11" class="mg-b36">
+        <a-col :span="11" class="mg-b36" v-if="type !== 'cloud'">
           <st-info>
             <st-info-item label="下单人">{{ info.operate_name }}</st-info-item>
             <st-info-item class="mg-b0" label="销售">
@@ -65,7 +65,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="24" class="mg-b36">
+        <a-col :span="24" class="mg-b36" v-if="type !== 'cloud'">
           <st-info>
             <st-info-item class="mg-b0" label="备注">
               {{ info.description }}
@@ -127,6 +127,12 @@
                 {{ item.card_name }}--{{ item.now_amount }}元
               </a-select-option>
             </a-select>
+          </st-form-item>
+          <st-form-item label="备注" class="mg-b16" v-if="type === 'cloud'">
+            <a-textarea
+              placeholder="请填写备注"
+              style="height:90px;"
+            ></a-textarea>
           </st-form-item>
         </div>
       </st-form>
