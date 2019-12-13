@@ -163,8 +163,19 @@ import BuyNumber from './components#/buy-number'
 import ShopStoredDataRing from '@/views/biz-components/stat/shop-stored-data-ring'
 import ShopStoredDataRevenueRing from '@/views/biz-components/stat/shop-stored-data-revenue-ring'
 import BrandUserAvgBar from '@/views/biz-components/stat/brand-user-avg-bar'
+import { DataService } from './data.service'
 
 export default {
+  serviceInject() {
+    return {
+      dataService: DataService
+    }
+  },
+  rxState() {
+    return {
+      dataProfile: this.dataService.dataProfile$
+    }
+  },
   bem: {
     basic: 'shop-stored-data',
     salesCategory: 'sales-category'
