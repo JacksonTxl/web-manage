@@ -1,6 +1,6 @@
 <template>
   <st-panel initial app :class="basic()">
-    <st-input-search
+    <!-- <st-input-search
       v-model="$searchQuery.product_name"
       @search="onSearch"
       placeholder="请输入商品名查找"
@@ -16,7 +16,7 @@
         :tab="item.label"
         :key="item.value"
       ></st-tab-pane>
-    </st-tabs>
+    </st-tabs> -->
     <cloud-store v-if="$searchQuery.product_type === 4"></cloud-store>
     <st-table
       v-else
@@ -332,12 +332,6 @@ export default {
       this.$searchQuery.size = pagination.pageSize
       this.getList()
     }
-  },
-  mounted() {
-    this.productTypes.push({
-      label: '云店',
-      value: 4
-    })
   }
 }
 </script>
