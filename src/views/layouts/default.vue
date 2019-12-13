@@ -99,9 +99,14 @@
       </div>
       <div class="layout-default-body__personal">
         <!-- 消息通知 -->
-        <!-- <a-badge :count="100">
-          <a href="#" class="head-example"></a>
-        </a-badge> -->
+        <a-badge :count="100">
+          <a
+            @click="onClickNotify"
+            class="layout-default-body__notify font-number"
+          >
+            <st-icon type="down"></st-icon>
+          </a>
+        </a-badge>
         <!-- 九宫格 -->
         <a-dropdown :trigger="['hover']" placement="bottomRight">
           <div class="layout-default-body__avatar">
@@ -263,6 +268,9 @@ export default {
     }
   },
   methods: {
+    onClickNotify() {
+      this.$router.push({ name: 'common-notify' })
+    },
     switchShop() {
       this.isShowSwitchShop = !this.isShowSwitchShop
     },

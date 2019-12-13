@@ -30,10 +30,10 @@ import { InformService } from './inform.service'
 import tableMixin from '@/mixins/table.mixin'
 
 export default {
-  name: 'NotifyInform',
+  name: 'NotifyNotice',
   mixins: [tableMixin],
   bem: {
-    b: 'page-notify-inform'
+    b: 'page-notify-Notice'
   },
   serviceInject() {
     return {

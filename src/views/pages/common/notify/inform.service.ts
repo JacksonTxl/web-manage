@@ -1,17 +1,18 @@
+import { State, Effect } from 'rx-state'
+import { NotifyApi } from './../../../../api/v1/notify'
 import { Injectable } from 'vue-service-app'
+import { tap } from 'rxjs/operators'
 
 @Injectable()
 export class InformService {
-  constructor() {}
   loading$ = new State({})
-  list$ = new State([])
+  list$ = new State([{}])
   page$ = new State({})
-  constructor(private excelApi: ExcelApi) {}
-  @Effect()
-  getLogList(query: any) {
-    return this.excelApi.getLogList(query).pipe(
-      then((res: any) => {
-        this.list$.commit(() => res.list)
+  constructor(private api: NotifyApi) {}
+  getList(query: any) {
+    return this.api.getInformList(query).pipe(
+      tap((res: any) => {
+        this.list$.commit(() => [res.list])
         this.page$.commit(() => res.page)
       })
     )
