@@ -30,17 +30,19 @@
 import Calendar from '@/views/biz-components/schedule/calendar'
 import { TeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/team/service#/schedule.service'
 import ScheduleTeamAddCourseBatch from '@/views/biz-modals/schedule/team/add-course-batch'
-import ScheduleTeamAddCourse from '@/views/biz-modals/schedule/team/add-course'
-import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
-import ScheduleTeamReserveInfo from '@/views/biz-modals/schedule/team/reserve-info'
+
+// 添加排期
+import ScheduleMiniTeamAddCourse from '@/views/biz-modals/schedule/mini-team/add-course'
+// 详情
+import ScheduleMiniTeamReserveInfo from '@/views/biz-modals/schedule/mini-team/reserve-info'
+
 import { MiniTeamService } from './mini-team.service'
 export default {
   name: 'TeamSchedule',
   modals: {
     ScheduleTeamAddCourseBatch,
-    ScheduleTeamAddCourse,
-    ScheduleTeamCopySchedule,
-    ScheduleTeamReserveInfo
+    ScheduleMiniTeamAddCourse,
+    ScheduleMiniTeamReserveInfo
   },
   serviceInject() {
     return {
@@ -69,11 +71,11 @@ export default {
     onMouseLeave() {
       console.log('onMouseLeave')
     },
-    // 添加团课排期
+    // 添加课程排期 - 弹出详情
     onAddSchedule(date) {
       console.log(date)
       this.$modalRouter.push({
-        name: 'schedule-team-add-course',
+        name: 'schedule-mini-team-reserve-info',
         props: { time: date },
         on: {
           ok: res => {
@@ -87,7 +89,7 @@ export default {
     onDetail(info) {
       console.log(info)
       this.$modalRouter.push({
-        name: 'schedule-team-reserve-info',
+        name: 'schedule-mini-team-reserve-info',
         props: {
           id: info.id
         },

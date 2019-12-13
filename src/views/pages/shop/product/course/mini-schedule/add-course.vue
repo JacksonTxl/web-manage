@@ -6,10 +6,10 @@
     title="添加课程"
   >
     <!-- <a @click="hide" slot="content">添加</a> -->
-    <div :class="b('wrapper')" @click="hide" slot="content">
-      <span :class="b('head-close')">X</span>
+    <div :class="b('wrapper')" slot="content">
+      <span :class="b('head-close')" @click="hide">X</span>
       <div class="add-course-conent">
-        <st-form>
+        <st-form labelWidth="68px">
           <st-form-item label="添加课程" required class="mg-t12">
             <a-input
               v-decorator="[
@@ -25,8 +25,20 @@
               placeholder="请输入课程包名称"
             />
           </st-form-item>
-          <st-form-item required label="时间" :class="b('select__date')">
-            <a-range-picker @change="onChangeRangePicker"></a-range-picker>
+          <st-form-item label="预约日期" required>
+            <a-date-picker
+              @change="onChangeDatePick"
+              style="width:100%"
+              :disabledDate="disabledDate"
+            />
+          </st-form-item>
+          <st-form-item label="预约时间" required>
+            <a-time-picker
+              format="HH:mm"
+              :disabledMinutes="disabledMinutes"
+              style="width:100%"
+              :disabledHours="disabledHours"
+            />
           </st-form-item>
           <st-form-item label="场地" required>
             <a-select placeholder="请选择场地" v-model="coachId">
@@ -54,7 +66,7 @@
       </div>
       <div class="footer">
         <div :class="b('save-schedule-btn')">
-          <st-button>
+          <st-button @click="hide">
             取消
           </st-button>
           <st-button type="primary" class="mg-l12">
@@ -93,7 +105,7 @@ export default {
     },
     hide() {
       console.log(111)
-      this.weekList[0].show = false
+      this.item.show = false
     },
     // 增加课程
     addCourse() {},

@@ -25,53 +25,97 @@
         </st-form-item>
       </st-form>
       <div :class="b('schedule')">
-        <st-container v-for="(scheduleItem, i) in scheduleList" :key="i">
-          <st-form labelWidth="80px">
-            <st-form-item required label="上课周期" :class="b('select__date')">
-              <a-range-picker @change="onChangeRangePicker"></a-range-picker>
-            </st-form-item>
-          </st-form>
-          <div :class="b('schedule__table')">
-            <div
-              :class="b('schedule__item')"
-              v-for="(item, index) in weekList"
-              :key="index"
-            >
-              <st-t4 class="mg-b12">{{ item.date }}</st-t4>
+        <div v-if="scheduleId == 1">
+          <st-container v-for="(scheduleItem, i) in scheduleList" :key="i">
+            <st-form labelWidth="80px">
+              <st-form-item
+                required
+                label="上课周期"
+                :class="b('select__date')"
+              >
+                <a-range-picker @change="onChangeRangePicker"></a-range-picker>
+              </st-form-item>
+            </st-form>
+            <div :class="b('schedule__table')">
               <div
-                :class="b('schedule__card')"
-                v-for="cardItem in scheduleItem.scheduleInfo[item.item]"
-                :key="cardItem.id"
+                :class="b('schedule__item')"
+                v-for="(item, index) in weekList"
+                :key="index"
+              >
+                <st-t4 class="mg-b12">{{ item.date }}</st-t4>
+                <div
+                  :class="b('schedule__card')"
+                  v-for="cardItem in scheduleItem.scheduleInfo[item.item]"
+                  :key="cardItem.id"
+                >
+                  <span class="time">
+                    <st-icon type="timer"></st-icon>
+                    {{ cardItem.start_time }}-{{ cardItem.end_time }}
+                  </span>
+                  <st-t3 class="course__name">{{ cardItem.course_name }}</st-t3>
+                  <p class="course__coach">
+                    {{ $c('coach') }}：
+                    <span>{{ cardItem.coach_name }}</span>
+                  </p>
+                  <p class="course__scene">
+                    场地：
+                    <span>{{ cardItem.court_site_name }}</span>
+                  </p>
+                </div>
+                <add-course :item="item"></add-course>
+              </div>
+            </div>
+            <div :class="b('schedule__tips')">
+              即：上课时间为
+              <span class="schedule__tips-date">2019/7/11~2019/7/18</span>
+              <span class="schedule__tips-time">每周一9: 00,</span>
+              共
+              <span class="schedule__tips-num">8</span>
+              节
+            </div>
+          </st-container>
+          <div :class="b('add-schedule-btn')">
+            <a v-if="addScheduleFlag" @click="addScheduleWeek">新增上课周期</a>
+            <span v-else>新增上课周期</span>
+          </div>
+        </div>
+        <div v-else>
+          <st-container v-for="(scheduleItem, i) in scheduleList" :key="i">
+            <st-form labelWidth="80px">
+              <st-form-item
+                required
+                label="上课周期"
+                :class="b('select__date')"
+              >
+                <span>2019/7/11~2019/9/12</span>
+              </st-form-item>
+            </st-form>
+            <div :class="b('schedule__table-custom')">
+              <div
+                :class="b('schedule__item-custom')"
+                v-for="(item, index) in weekList"
+                :key="index"
               >
                 <span class="time">
                   <st-icon type="timer"></st-icon>
-                  {{ cardItem.start_time }}-{{ cardItem.end_time }}
+                  <!-- {{ cardItem.start_time }}-{{ cardItem.end_time }} -->
+                  2019-12-12 11:30 ~ 13:00
                 </span>
-                <st-t3 class="course__name">{{ cardItem.course_name }}</st-t3>
-                <p class="course__coach">
-                  {{ $c('coach') }}：
-                  <span>{{ cardItem.coach_name }}</span>
-                </p>
-                <p class="course__scene">
-                  场地：
-                  <span>{{ cardItem.court_site_name }}</span>
-                </p>
+                <st-t3 class="course__name">高强度有氧进阶 4级</st-t3>
+                <div class="course-message">
+                  <p class="course__coach">
+                    {{ $c('coach') }}：
+                    <span>狼狼</span>
+                  </p>
+                  <p class="course__scene mg-l16">
+                    场地：
+                    <span>VIP场地</span>
+                  </p>
+                </div>
               </div>
-              <add-course :item="item"></add-course>
+              <add-course :item="weekList[0]"></add-course>
             </div>
-          </div>
-          <div :class="b('schedule__tips')">
-            即：上课时间为
-            <span class="schedule__tips-date">2019/7/11~2019/7/18</span>
-            <span class="schedule__tips-time">每周一9: 00,</span>
-            共
-            <span class="schedule__tips-num">8</span>
-            节
-          </div>
-        </st-container>
-        <div :class="b('add-schedule-btn')">
-          <a v-if="addScheduleFlag" @click="addScheduleWeek">新增上课周期</a>
-          <span v-else>新增上课周期</span>
+          </st-container>
         </div>
         <div :class="b('save-schedule-btn')">
           <st-button>
@@ -110,7 +154,7 @@ export default {
   data() {
     return {
       coachId: undefined,
-      scheduleId: undefined,
+      scheduleId: '1',
       addScheduleFlag: true,
       start: '',
       end: '',

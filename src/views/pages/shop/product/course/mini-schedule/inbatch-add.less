@@ -1,11 +1,11 @@
 .page-shop-schedule-inbatch-add {
-  padding: 0 64px 24px 64px;
+  padding: 36px 0 24px 0;
   .st-container--type-1 {
     display: flex;
     flex-direction: column;
     padding: 0;
-    height: 520px;
-    min-width: 1064px;
+    min-height: 520px;
+    margin-bottom: 20px;
   }
   &__head {
     .ant-form-item-control-wrapper {
@@ -28,7 +28,7 @@
   }
   &__schedule__item {
     flex: 1;
-    padding: 20px 15px;
+    padding: 20px 10px;
     .course__coach {
       margin-bottom: 0px;
     }
@@ -40,13 +40,15 @@
     background-color: @white;
   }
   &__schedule__item:nth-child(2n-1) {
-    background-color: #fafafa;
+    background-color: #f7f9fc;
   }
-  &__schedule__card {
+  &__schedule__card,
+  &__schedule__table-custom {
     box-shadow: 0px 0px 10px 0px rgba(56, 62, 68, 0.1);
     border-radius: 4px;
     padding: 12px 10px;
     margin-bottom: 12px;
+    line-height: 20px;
     color: #9bacb9;
     font-size: 12px;
     .course__name {
@@ -60,6 +62,13 @@
       color: #9bacb9;
     }
   }
+  &__schedule__table-custom {
+    .course-message {
+      p {
+        display: inline-block;
+      }
+    }
+  }
   &__schedule__tips {
     height: 38px;
     line-height: 38px;
@@ -70,6 +79,24 @@
     .schedule__tips-num {
       color: #3f66f6;
     }
+  }
+  &__schedule__table-custom {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    margin-bottom: 0;
+    background-color: #f7f9fc;
+    border-radius: 0;
+  }
+  &__schedule__item-custom {
+    height: 93px;
+    line-height: 25px;
+    padding: 12px;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0px 0px 10px 0px rgba(56, 62, 68, 0.1);
+    border-radius: 4px;
+    margin-bottom: 8px;
   }
   &__add-schedule-btn {
     margin-top: 16px;
