@@ -4,8 +4,8 @@
       <div :class="bHeard('left')">
         <!-- TODO: <st-button type="primary" class="shop-member-list-button">批量导出</st-button> -->
         <a-radio-group :value="showTable" @change="handleSizeChange">
-          <a-radio-button value="all">汇总</a-radio-button>
-          <a-radio-button value="staff">员工</a-radio-button>
+          <a-radio-button value="all" v-if="auth.summary">汇总</a-radio-button>
+          <a-radio-button value="staff" v-if="auth.staff">员工</a-radio-button>
         </a-radio-group>
       </div>
       <div :class="bHeard('right')">
@@ -50,9 +50,25 @@
         <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
       </div>
     </section>
+    <st-total
+      :class="bPage('total')"
+      :indexs="columns"
+      :dataSource="total$"
+      hasTitle
+    >
+      <template v-slot:performance_amount="record">
+        <st-total-item
+          @click.native="onCLickPerformanceAmount"
+          :unit="record.unit"
+          :label="record.label"
+          :value="record.value"
+        ></st-total-item>
+      </template>
+    </st-total>
     <st-table
       :page="page"
       :scroll="{ x: 2300 }"
+      class="mg-t12"
       @change="onTableChange"
       :loading="loading.init"
       :columns="columns"
@@ -138,7 +154,9 @@ export default {
       list: this.sellService.list$,
       departmentList: this.sellService.departmentList$,
       staffList: this.sellService.staffList$,
-      page: this.sellService.page$
+      page: this.sellService.page$,
+      total$: this.sellService.total$,
+      auth: this.sellService.auth$
     }
   },
   data() {
@@ -161,9 +179,17 @@ export default {
     }
   },
   created() {
-    this.showTable = this.$searchQuery.showTable
+    this.showTable = this.auth.summary ? 'all' : 'staff'
   },
   methods: {
+    onCLickPerformanceAmount() {
+      this.$modalRouter.push({
+        name: 'shop-stat-sell-amount',
+        props: {
+          type: 'total'
+        }
+      })
+    },
     getSellTotalAmount(record) {
       this.$modalRouter.push({
         name: 'shop-stat-sell-amount',

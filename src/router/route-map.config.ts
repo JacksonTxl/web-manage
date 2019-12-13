@@ -1187,6 +1187,7 @@ export const routeMapConfig = {
   },
   'brand-setting-sms-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '短信列表'
+    routeConfig.meta.auth = 'brand_shop:message:sms|list'
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       current_page: { type: Number, default: 1 },
@@ -1199,6 +1200,7 @@ export const routeMapConfig = {
   },
   'brand-setting-sms-pay'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '短信充值'
+    routeConfig.meta.auth = 'brand_shop:message:sms|charge_list'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
@@ -1206,6 +1208,7 @@ export const routeMapConfig = {
   },
   'brand-setting-sms-notice'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '通知模版'
+    routeConfig.meta.auth = 'brand_shop:message:notify|list'
   },
   'shop-stat'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '数据统计'
@@ -1219,7 +1222,7 @@ export const routeMapConfig = {
   },
   'shop-finance-flow-expenditure'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '支出流水'
-    // routeConfig.meta.auth = 'brand_shop:flow:expenditure|tab'
+    routeConfig.meta.auth = 'shop:flow:expenditure|detail_list'
     routeConfig.queryOptions = {
       search_number: { type: String },
       start_amount: { type: String },
@@ -1232,7 +1235,7 @@ export const routeMapConfig = {
   },
   'shop-finance-flow-income'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '收入流水'
-    // routeConfig.meta.auth = 'brand_shop:flow:income|tab'
+    routeConfig.meta.auth = 'shop:flow:income|detail_list'
     routeConfig.queryOptions = {
       search_number: { type: String },
       current_page: { type: Number, default: 1 },

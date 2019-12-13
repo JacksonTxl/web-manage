@@ -66,7 +66,14 @@
         </div>
       </header>
       <main :class="bPage('mian')" class="mg-t16">
+        <st-total
+          :class="bPage('total')"
+          :indexs="columns"
+          :dataSource="total$"
+          hasTitle
+        ></st-total>
         <st-table
+          class="mg-t16"
           :loading="loading$.getList"
           :columns="columns"
           :scroll="{ x: 800 }"
@@ -98,6 +105,7 @@ export default {
     const {
       list$,
       page$,
+      total$,
       auth$,
       loading$,
       soldChartData$,
@@ -110,6 +118,7 @@ export default {
     return {
       list$,
       page$,
+      total$,
       auth$,
       loading$,
       soldChartData$,

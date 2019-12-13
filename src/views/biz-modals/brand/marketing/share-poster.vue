@@ -11,7 +11,7 @@
           size="large"
           class="mg-r8"
           :class="basic('button')"
-          @click="downloadPoster"
+          @click="downloadFile(url, 'poster.png')"
         >
           {{ button }}
         </st-button>
@@ -22,7 +22,7 @@
           icon="download"
           size="large"
           :class="basic('button')"
-          @click="downloadQrCode"
+          @click="downloadFile(shsInfo.url, 'qrcode.png')"
         >
           下载小程序码
         </st-button>
@@ -76,19 +76,28 @@ export default {
     })
   },
   methods: {
-    downloadPoster() {
-      const a = document.createElement('a')
-      a.href = this.url
-      a.target = '_blank'
-      a.download = 'poster.png'
-      a.click()
+    downloadFile(url, filename = '') {
+      fetch(url, {
+        headers: new Headers({
+          Origin: location.origin
+        }),
+        mode: 'cors'
+      })
+        .then(res => res.blob())
+        .then(blob => {
+          const blobUrl = window.URL.createObjectURL(blob)
+          this.download(blobUrl, filename)
+          window.URL.revokeObjectURL(blobUrl)
+        })
     },
-    downloadQrCode() {
+    download(blobUrl, filename) {
       const a = document.createElement('a')
-      a.href = this.shsInfo.qrcode_url
+      a.href = blobUrl
       a.target = '_blank'
-      a.download = 'qrcode.png'
+      a.download = filename
+      document.body.appendChild(a)
       a.click()
+      a.remove()
     }
   }
 }

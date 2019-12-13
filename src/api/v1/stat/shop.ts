@@ -37,26 +37,41 @@ export class StatApi {
   getCheckinModalCoachAndCourseList(query: any) {
     return this.http.get('/v1/stat/course/shop/course/checkin/coach', { query })
   }
-  getPersonalCourse(query: PersonalCourseQuery) {
-    return this.http.get('/v1/stat/course/shop/personal/course', {
-      query
-    })
+  getPersonalCourse(query: any) {
+    return this.http.get(
+      `/v1/stat/course/shop/personal/course${query.type || ''}`,
+      {
+        query
+      }
+    )
   }
-  getPersonalConsume(query: PersonalConsumeQuery) {
-    return this.http.get('/v1/stat/course/shop/personal/course/checkin', {
-      query
-    })
+  getPersonalConsume(query: any) {
+    return this.http.get(
+      `/v1/stat/course/shop/personal/course/checkin${query.type || ''}`,
+      {
+        query
+      }
+    )
   }
-  getTeamCourse(query: TeamCourseQuery) {
-    return this.http.get('/v1/stat/course/shop/team/course', { query })
+
+  getTeamCourse(query: any) {
+    return this.http.get(
+      `/v1/stat/course/shop/team/course${query.type || ''}`,
+      {
+        query
+      }
+    )
   }
-  getTeamConsume(query: TeamConsumeQuery) {
-    return this.http.get('/v1/stat/course/shop/team/course/checkin', {
-      query
-    })
+  getTeamConsume(query: any) {
+    return this.http.get(
+      `/v1/stat/course/shop/team/course/checkin${query.type || ''}`,
+      {
+        query
+      }
+    )
   }
   getSellAmount(query: any) {
-    return this.http.get('/v1/stat/sale', {
+    return this.http.get(`/v1/stat/sale${query.type || ''}`, {
       query
     })
   }

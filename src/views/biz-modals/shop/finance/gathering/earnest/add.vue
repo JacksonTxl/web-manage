@@ -105,7 +105,7 @@
           </st-form-item>
         </div>
         <div>
-          <st-form-item label="销售人员" required>
+          <st-form-item label="销售人员">
             <a-select
               v-decorator="decorators.sale_id"
               placeholder="选择签单的工作人员"

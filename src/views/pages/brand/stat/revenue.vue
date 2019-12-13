@@ -50,10 +50,16 @@
               </div>
             </swiper-slide>
           </swiper>
-          <div class="swiper-button-prev" slot="button-prev">
+          <div
+            class="swiper-revenue-button-prev swiper-button-prev"
+            slot="button-prev"
+          >
             <st-icon type="arrow-left" class="arrow-left" />
           </div>
-          <div class="swiper-button-next" slot="button-next">
+          <div
+            class="swiper-revenue-button-next swiper-button-next"
+            slot="button-next"
+          >
             <st-icon type="arrow-right1" class="arrow-right1" />
           </div>
         </div>
@@ -75,6 +81,13 @@
           ></st-recent-radio-group>
         </div>
       </header>
+      <st-total
+        class="mg-t16"
+        :class="b('total')"
+        :indexs="columns"
+        :dataSource="total"
+        hasTitle
+      ></st-total>
       <st-table
         :loading="loading.getList"
         :columns="columns"
@@ -113,6 +126,7 @@ export default {
     return {
       list: this.revenueService.list$,
       page: this.revenueService.page$,
+      total: this.revenueService.total$,
       auth: this.revenueService.auth$,
       dataRing: this.revenueService.dataRing$,
       dataLine: this.revenueService.dataLine$,
@@ -140,8 +154,8 @@ export default {
       sliderOptions: {
         autoplay: false,
         navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev'
+          nextEl: '.swiper-revenue-button-next',
+          prevEl: '.swiper-revenue-button-prev'
         },
         slidesPerView: 6,
         centeredSlides: false,

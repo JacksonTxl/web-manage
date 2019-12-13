@@ -72,6 +72,7 @@ import { columns } from './sell-amount.config'
 import tableMixin from '@/mixins/table.mixin'
 import { SellAmountService } from './sell-amount.service'
 import { COURSE_TYPE } from '@/constants/stat/course'
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'SellAmount',
   mixins: [tableMixin],
@@ -99,8 +100,11 @@ export default {
   props: {
     record: {
       type: Object,
-      default: () => {}
-    }
+      default: () => {
+        return {}
+      }
+    },
+    type: String
   },
   data() {
     return {
@@ -111,7 +115,8 @@ export default {
         staff_id: -1,
         department_id: -1,
         current_page: 1,
-        size: 999
+        // TODO: 后端翻页
+        size: 99999
       }
     }
   },
@@ -119,6 +124,20 @@ export default {
     columns,
     showTable() {
       return this.$searchQuery.showTable || 'all'
+    },
+    totalQuery() {
+      let query = cloneDeep(this.$searchQuery)
+      delete query.showTable
+      delete query.current_page
+      delete query.size
+      return {
+        ...query,
+        current_page: this.pageParams.current_page,
+        size: this.pageParams.size,
+        staff_id: this.pageParams.staff_id,
+        department_id: this.pageParams.department_id,
+        type: '/total'
+      }
     },
     query() {
       return {
@@ -145,11 +164,13 @@ export default {
         this.pageParams.size = evt.pageSize
         this.pageParams.current_page = evt.current
       }
+      const query = this.type === 'total' ? this.totalQuery : this.query
       if (changeType === 'changeDepartment') {
         this.pageParams.staff_id = -1
-        this.sellAmountervice.getDepartmentStaffList(this.query).subscribe()
+        query.staff_id = -1
+        this.sellAmountervice.getDepartmentStaffList(query).subscribe()
       }
-      this.sellAmountervice.getSellAmountList(this.query).subscribe()
+      this.sellAmountervice.getSellAmountList(query).subscribe()
     },
     filterOption(input, option) {
       return (
@@ -160,8 +181,10 @@ export default {
     },
     init() {
       this.pageParams.staff_id = this.record.staff_id || -1
+      this.pageParams.department_id = this.record.department_id || -1
       this.pageParams.stat_date = this.record.stat_date
-      this.sellAmountervice.init({ ...this.query }).subscribe()
+      const query = this.type === 'total' ? this.totalQuery : this.query
+      this.sellAmountervice.init({ ...query }).subscribe()
     }
   },
   mounted() {

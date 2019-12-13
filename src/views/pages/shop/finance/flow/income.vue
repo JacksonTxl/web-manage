@@ -46,7 +46,15 @@
         <st-button class="mg-l8" @click="onReset">重置</st-button>
       </div>
     </st-search-panel>
+    <st-total
+      :class="bPage('total')"
+      :indexs="totalColumns"
+      :dataSource="total$"
+      class="mg-t16 pd-x24"
+      hasTitle
+    ></st-total>
     <st-table
+      class="mg-t12"
       :columns="columns"
       :scroll="{ x: 1400 }"
       :rowKey="record => record.flow_id"
@@ -86,7 +94,7 @@
 <script>
 import tableMixin from '@/mixins/table.mixin'
 import { IncomeService } from './income.service'
-import { columns } from './income.config.ts'
+import { columns, totalColumns } from './income.config.ts'
 import ShopFinanceFlow from '@/views/biz-modals/shop/finance/flow'
 import { cloneDeep } from 'lodash-es'
 export default {
@@ -105,11 +113,12 @@ export default {
     }
   },
   rxState() {
-    const { loading$, page$, list$, payType$ } = this.service
+    const { loading$, page$, list$, payType$, total$ } = this.service
     return {
       loading$,
       page$,
       list$,
+      total$,
       payType$
     }
   },
@@ -122,7 +131,8 @@ export default {
     }
   },
   computed: {
-    columns
+    columns,
+    totalColumns
   },
   mounted() {
     this.setSearchDate()

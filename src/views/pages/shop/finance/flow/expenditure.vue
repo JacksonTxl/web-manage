@@ -48,6 +48,13 @@
         </div>
       </st-search-panel>
     </div>
+    <st-total
+      :class="bPage('total')"
+      :indexs="columns"
+      :dataSource="total$"
+      class="pd-x24"
+      hasTitle
+    ></st-total>
     <st-table
       :columns="columns"
       :scroll="{ x: 1400 }"
@@ -77,7 +84,7 @@
 <script>
 import tableMixin from '@/mixins/table.mixin'
 import { ExpenditureService } from './expenditure.service'
-import { columns } from './expenditure.config.ts'
+import { columns, totalColumns } from './expenditure.config.ts'
 export default {
   name: 'FinanceFlowExpenditure',
   mixins: [tableMixin],
@@ -91,11 +98,12 @@ export default {
     }
   },
   rxState() {
-    const { loading$, page$, list$, payType$ } = this.service
+    const { loading$, page$, list$, payType$, total$ } = this.service
     return {
       loading$,
       page$,
       list$,
+      total$,
       payType$
     }
   },
@@ -108,7 +116,8 @@ export default {
     }
   },
   computed: {
-    columns
+    columns,
+    totalColumns
   },
   mounted() {
     this.setSearchDate()
