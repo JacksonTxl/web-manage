@@ -30,4 +30,19 @@ export class CourseGroupApi extends Api {
   getCourseStaffList(params: any) {
     return this.http.get('/v1/staff/shop', { params })
   }
+  /*
+   * 删除小班课
+   */
+  deleteGroup(params: any) {
+    return this.http.get('/v1/course/small-course/' + params)
+  }
+  /*
+   * 小班课立即成班
+   */
+  beGroup(params: any) {
+    return this.http.put('/v1/course/small-course/class-immediately/' + params)
+  }
+  getGroupCourseInfo(params: any) {
+    return this.http.get('/v1/course/small-course/' + params)
+  }
 }

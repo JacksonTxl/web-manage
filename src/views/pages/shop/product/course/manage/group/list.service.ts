@@ -38,6 +38,12 @@ export class ListService implements Controller {
       })
     )
   }
+  deleteGroup(params: any) {
+    return this.courseGroupApi.deleteGroup(params)
+  }
+  beGroup(params: any) {
+    return this.courseGroupApi.beGroup(params)
+  }
   init(query: any) {
     return forkJoin(this.getList(query))
   }

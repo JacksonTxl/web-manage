@@ -38,7 +38,34 @@
       :columns="columns"
       @change="onTableChange"
       :page="page"
-    ></st-table>
+    >
+      <template slot="action" slot-scope="text, record">
+        <st-table-actions>
+          <a @click="onGoDetail(record)">
+            详情
+          </a>
+          <a @click="onGoEdit(record)">
+            编辑
+          </a>
+          <a @click="onBeGroup(record)">
+            立即成班
+          </a>
+          <a @click="onGoOrder()">
+            去退款
+          </a>
+          <a>
+            <st-popconfirm
+              :title="
+                '一旦删除则无法恢复，确认删除' + record.category_name + '？'
+              "
+              @confirm="onDelGroup(record)"
+            >
+              删除
+            </st-popconfirm>
+          </a>
+        </st-table-actions>
+      </template>
+    </st-table>
   </st-panel>
 </template>
 <script>
@@ -86,9 +113,36 @@ export default {
     onChange() {
       this.$router.push({ query: this.$searchQuery })
     },
-    deleteCourse(course) {
-      this.listService.deleteCourse(course.id).subscribe(() => {
+    onDelGroup(course) {
+      this.listService.deleteGroup(course.course_id).subscribe(() => {
         this.$router.reload()
+      })
+    },
+    onGoOrder() {
+      this.$router.push({
+        path: '/shop/stat/order',
+        query: this.$searchQuery
+      })
+    },
+    onBeGroup(course) {
+      this.listService.beGroup(course.course_id).subscribe(() => {
+        this.$router.reload()
+      })
+    },
+    onGoDetail(course) {
+      this.$router.push({
+        path: './info',
+        query: {
+          courseId: course.course_id
+        }
+      })
+    },
+    onGoEdit(course) {
+      this.$router.push({
+        path: './edit',
+        query: {
+          id: course.course_id
+        }
       })
     }
   }
