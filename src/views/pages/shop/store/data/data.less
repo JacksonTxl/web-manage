@@ -112,6 +112,10 @@
     &__sales_box {
       background: #fff;
 
+      .ant-row {
+        overflow: hidden;
+      }
+
       .st-container--type-2 {
         padding: 15px 24px;
       }
@@ -144,7 +148,15 @@
       .bg-white {
         display: flex;
         justify-content: space-between;
+        overflow: hidden;
         border-bottom: 1px solid rgba(233, 233, 233, 1);
+
+        .date-picker {
+          flex: 1;
+          text-align: right;
+          white-space: nowrap;
+          padding-left: 20px;
+        }
       }
 
       .category {
