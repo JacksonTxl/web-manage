@@ -45,13 +45,13 @@
     </div>
     <st-hr></st-hr>
     <!-- 候补预约 -->
-    <st-t4>候补预约</st-t4>
+    <!-- <st-t4>候补预约</st-t4>
     <div class="st-des">
       {{
         info.alternate_reserve | enumFilter('setting.alternate_reserve')
       }}侯补预约，当报名用户取消预约时， 自动按候补顺序为用户进行补位预约
     </div>
-    <st-hr></st-hr>
+    <st-hr></st-hr> -->
     <!-- 预约上限 -->
     <st-t4>预约上限</st-t4>
     <div class="st-des">
