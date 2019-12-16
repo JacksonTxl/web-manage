@@ -115,7 +115,7 @@ export default {
   },
   computed: {},
   created() {
-    this.flowService.init(this.id, this.order_id).subscribe()
+    this.flowService.init(this.id).subscribe()
   },
   methods: {
     moment,
