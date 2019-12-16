@@ -32,6 +32,15 @@ export interface CategoryQuery {
   current_page: number
   size: number
 }
+export interface DtoreBoard {
+  date_type: string
+  date: string
+}
+export interface StoreList {
+  category_id: number
+  product_name: string
+  shelves_status: number
+}
 export class StoreApi extends Api {
   /**
    * 新建商品
@@ -67,7 +76,19 @@ export class StoreApi extends Api {
    * 编辑分类
    */
   editCategory(id: number, params: { category_name: string }) {
-    return this.http.put(`/v1/store/product/category/${id}`, {
+    return this.http.put(`/v1/store/product/category/${id}`, { params })
+  }
+  /**
+   * 数据概况
+   */
+  dataProfile() {
+    return this.http.get('/v1/store/data_profile')
+  }
+  /**
+   * 整体看板
+   */
+  storeBoard(params: DtoreBoard) {
+    return this.http.get('/v1/store/board', {
       params
     })
   }
@@ -84,5 +105,11 @@ export class StoreApi extends Api {
    */
   delCategory(id: number) {
     return this.http.get(`/v1/store/product/category/${id}`)
+  }
+  /**
+   * 商品列表
+   */
+  getList(query: StoreList) {
+    return this.http.get(`/v1/store/product/1`, { query })
   }
 }

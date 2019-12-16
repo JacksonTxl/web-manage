@@ -1,25 +1,68 @@
 <template>
   <div :class="basic()">
     <st-panel-layout :class="basic('main')">
+      <!-- 云店概览 -->
       <st-panel class="mg-t16" title="云店概览">
         <div slot="actions">
-          <span class="st-refresh-btn__date">
-            最近更新时间：2019-04-02 12:38
-          </span>
+          <st-refresh-btn :action="refresh"></st-refresh-btn>
         </div>
         <ul :class="basic('header_content')">
           <li v-for="(item, index) in headerInfo" :key="index">
             <img :src="item.icon" />
             <div>
-              <div>{{ item.title }}</div>
-              <div>{{ item.sum }}</div>
-              <div>{{ item.yesterday }}</div>
+              <div>
+                {{ item.title }}
+              </div>
+              <div>
+                <i-count-up
+                  :endVal="
+                    dataProfile.today[headerTitleItem[index]]
+                      ? dataProfile.today[headerTitleItem[index]]
+                      : 0
+                  "
+                  :options="{
+                    decimalPlaces: (dataProfile.today[headerTitleItem[index]]
+                      ? dataProfile.today[headerTitleItem[index]]
+                      : 0
+                    )
+                      .toString()
+                      .includes('.')
+                      ? 2
+                      : 0,
+                    decimal: '.'
+                  }"
+                />
+              </div>
+              <div>
+                昨日:
+                <i-count-up
+                  :endVal="
+                    dataProfile.yesterday[headerTitleItem[index]]
+                      ? dataProfile.yesterday[headerTitleItem[index]]
+                      : 0
+                  "
+                  :options="{
+                    decimalPlaces: (dataProfile.yesterday[
+                      headerTitleItem[index]
+                    ]
+                      ? dataProfile.yesterday[headerTitleItem[index]]
+                      : 0
+                    )
+                      .toString()
+                      .includes('.')
+                      ? 2
+                      : 0,
+                    decimal: '.',
+                    prefix: ''
+                  }"
+                />
+              </div>
             </div>
           </li>
         </ul>
       </st-panel>
+      <!-- 整体看板 -->
       <section>
-        <!-- 整体看板 -->
         <st-panel class="mg-t16" title="整体看板">
           <div slot="actions">
             <date-picker></date-picker>
@@ -43,9 +86,9 @@
           </div>
           <div :class="basic('revenue_trend')">
             <a-row>
-              <a-col :span="16" style="padding-right: 5px;">
+              <a-col :span="16">
                 <div>
-                  <st-t3 style="margin-bottom: 35px; margin-top:20px">
+                  <st-t3>
                     {{ wholenavTitle }}
                   </st-t3>
                   <shop-stored-data-line
@@ -54,7 +97,7 @@
                 </div>
               </a-col>
               <a-col :span="8">
-                <div style="width:90%;margin-top: 20px; margin-left: 10%;">
+                <div class="ring">
                   <whole-tabls @change="onChangeTabs">
                     <template v-slot:user>
                       <component
@@ -115,13 +158,13 @@
                 <div :class="salesCategory('category_box')">
                   <st-container class="bg-white" type="2">
                     <st-t3>类目分析</st-t3>
-                    <date-picker></date-picker>
+                    <date-picker class="date-picker"></date-picker>
                   </st-container>
-                  <div style="margin:0 24px">
-                    <st-t3 style="margin-top:32px">类目营收占比</st-t3>
+                  <div class="category">
+                    <st-t3>类目营收占比</st-t3>
                     <shop-stored-data-revenue-ring
                       :data="dataRingss"
-                      :padding="[60, '30%', 38, 0]"
+                      :padding="[60, '50%', 38, 0]"
                       style="width: 100%;"
                     ></shop-stored-data-revenue-ring>
                   </div>
@@ -146,14 +189,6 @@
   </div>
 </template>
 <script>
-import IconStoredOrder from '@/assets/img/shop/stored/data/icon-stored-order.png'
-import IconStoredTransaction from '@/assets/img/shop/stored/data/icon-stored-transaction.png'
-import IconStoredRevenue from '@/assets/img/shop/stored/data/icon-stored-revenue.png'
-import IconStoredPassenger from '@/assets/img/shop/stored/data/icon-stored-passenger.png'
-import topIconUser from '@/assets/img/shop/stored/data/icon_top_revenue.png'
-import topIconOrder from '@/assets/img/shop/stored/data/icon_top_order.png'
-import topIconGuest from '@/assets/img/shop/stored/data/icon_top_guest.png'
-import topIconMember from '@/assets/img/shop/stored/data/icon_top_member.png'
 import ShopStoredDataLine from '@/views/biz-components/stat/shop-stored-data-line'
 import WholeTabls from './components#/whole-tabls'
 import BuyConsumptionTables from './components#/buy-consumption-tables'
@@ -163,8 +198,29 @@ import BuyNumber from './components#/buy-number'
 import ShopStoredDataRing from '@/views/biz-components/stat/shop-stored-data-ring'
 import ShopStoredDataRevenueRing from '@/views/biz-components/stat/shop-stored-data-revenue-ring'
 import BrandUserAvgBar from '@/views/biz-components/stat/brand-user-avg-bar'
-
+import { DataService } from './data.service'
+import { forEach } from 'lodash-es'
+import {
+  headerInfo,
+  wholeNav,
+  dataRing,
+  dataRingss,
+  salesList,
+  headerTitleItem,
+  courseDaily
+} from './data.config.ts'
 export default {
+  serviceInject() {
+    return {
+      dataService: DataService
+    }
+  },
+  rxState() {
+    return {
+      dataProfile: this.dataService.dataProfile$,
+      storeBoard: this.dataService.storeBoard$
+    }
+  },
   bem: {
     basic: 'shop-stored-data',
     salesCategory: 'sales-category'
@@ -176,122 +232,13 @@ export default {
       wholenavTitle: '营收金额(元)',
       wholenavIndex: 0,
       wholeNavcom: 'shop-stored-data-ring',
-      headerInfo: [
-        {
-          icon: topIconUser,
-          title: '营收金额(元)',
-          sum: '8,233,000',
-          yesterday: '昨日:3,897'
-        },
-        {
-          icon: topIconOrder,
-          title: '订单数(单)',
-          sum: '8,233,000',
-          yesterday: '昨日:3,897'
-        },
-        {
-          icon: topIconMember,
-          title: '营收金额(元)',
-          sum: '8,233,000',
-          yesterday: '昨日:3,897'
-        },
-        {
-          icon: topIconGuest,
-          title: '客单价(元)',
-          sum: '8,233,000',
-          yesterday: '昨日:3,897'
-        }
-      ],
-      wholeNav: [
-        {
-          icon: IconStoredRevenue,
-          title: '营收金额(元)',
-          num: '1,122'
-        },
-        {
-          icon: IconStoredOrder,
-          title: '订单数(单)',
-          num: '1,122'
-        },
-        {
-          icon: IconStoredTransaction,
-          title: '交易会员数(人)',
-          num: '1,122'
-        },
-        {
-          icon: IconStoredPassenger,
-          title: '客单价(元)',
-          num: '1,122'
-        }
-      ],
-      dataRing: [
-        { name: '商家后台', value: '2020.0' },
-        { name: '小程序', value: '200' }
-      ],
-      dataRings: [
-        { name: '潜在会员', value: '2020.0' },
-        { name: '正式会员', value: '200' }
-      ],
-      dataRingss: [
-        { name: '潜在会员1', value: '2020.0' },
-        { name: '潜在会员2', value: '2020.0' },
-        { name: '潜在会员3', value: '2020.0' },
-        { name: '潜在会员4', value: '2020.0' },
-        { name: '潜在会员5', value: '2020.0' },
-        { name: '潜在会员6', value: '2020.0' },
-        { name: '潜在会员7', value: '2020.0' },
-        { name: '潜在会员8', value: '2020.0' },
-        { name: '潜在会员9', value: '2020.0' },
-        { name: '正式会员', value: '200' }
-      ],
-      salesList: {
-        title: ['排名', '商品', '销量(件)'],
-        data: [
-          {
-            age: 18,
-            sex: '女'
-          },
-          {
-            age: 18,
-            sex: '男'
-          },
-          {
-            age: 18,
-            sex: '男'
-          },
-          {
-            age: 18,
-            sex: '男'
-          },
-          {
-            name: 1,
-            age: 1,
-            sex: 1
-          }
-        ]
-      },
-      courseDaily: [
-        {
-          date: '12-03',
-          总营收: 10
-        },
-        {
-          date: '12-04',
-          总营收: 0
-        },
-        {
-          date: '12-08',
-          总营收: 0
-        },
-        {
-          date: '12-09',
-          总营收: 0
-        },
-        {
-          date: '12-10',
-          总营收: 0
-        }
-      ]
+      headerTitleItem,
+      headerInfo,
+      wholeNav,
+      dataRing,
+      dataRingss,
+      salesList,
+      courseDaily
     }
   },
   components: {
@@ -305,9 +252,31 @@ export default {
     ShopStoredDataRevenueRing,
     BrandUserAvgBar
   },
+  mounted() {
+    this.wholenavFilter(this.storeBoard)
+  },
   methods: {
+    // 整体看板数据处理
+    wholenavFilter(data) {
+      console.log(data)
+      let titles = [
+        'revenue_amount',
+        'order_count',
+        'transaction_member',
+        'customer_price'
+      ]
+      let field = ['amount', 'count', 'count', 'price']
+      this.wholeNav.forEach((item, index) => {
+        let dataInfo = data[titles[index]][field[index]]
+        console.log(this.wholenavIndex)
+        item.num = dataInfo
+      })
+    },
     onChangeTabs(query) {
       console.log(query)
+    },
+    refresh() {
+      return this.dataService.getDataProfile(this.chartTodayShop)
     },
     change() {},
     wholenavFun(index, item) {
