@@ -33,7 +33,11 @@
                 label="上课周期"
                 :class="b('select__date')"
               >
-                <a-range-picker @change="onChangeRangePicker"></a-range-picker>
+                <a-range-picker
+                  @change="onChangeRangePicker"
+                  v-model="pickerList[i]"
+                  :disabledDate="disabledEndDate"
+                ></a-range-picker>
               </st-form-item>
             </st-form>
             <div :class="b('schedule__table')">
@@ -121,7 +125,7 @@
           <st-button>
             保存
           </st-button>
-          <st-button type="primary" class="mg-l12">
+          <st-button type="primary" @click="onClickSaveSchedule" class="mg-l12">
             完成排课
           </st-button>
         </div>
@@ -155,9 +159,11 @@ export default {
     return {
       coachId: undefined,
       scheduleId: '1',
-      addScheduleFlag: true,
-      start: '',
-      end: '',
+      start_date: '2019-12-16',
+      end_date: '2019-12-23',
+      picker_start_date: '2019-12-16',
+      picker_end_date: '2019-12-23',
+      pickerList: [],
       weekList: [
         { item: 'date1', date: '周一', show: false },
         { item: 'date2', date: '周二' },
@@ -230,13 +236,27 @@ export default {
       console.log(newVal)
     }
   },
+  computed: {
+    addScheduleFlag() {
+      console.log(this.end_date)
+
+      return this.end_date != this.picker_end_date
+    }
+  },
   created() {
-    console.log(this.scheduleList[0].scheduleInfo['date1'])
+    // console.log(this.scheduleList[0].scheduleInfo['date1'])
+    // this.pickerList[0] = moment(this.start_date)
+    // this.pickerList[1] = moment(this.end_date)
+    this.pickerList.push([moment(this.start_date), moment(this.end_date)])
   },
   methods: {
-    onChangeRangePicker(val) {
-      this.start = val[0].format('YYYY-MM-DD').valueOf()
-      this.end = val[1].format('YYYY-MM-DD').valueOf()
+    onChangeRangePicker(val, dateString) {
+      this.picker_start_date = val[0].format('YYYY-MM-DD').valueOf()
+      this.picker_end_date = val[1].format('YYYY-MM-DD').valueOf()
+      console.log(this.picker_end_date)
+    },
+    disabledEndDate(current) {
+      return current && current > moment(this.end_date).valueOf()
     },
     hide() {
       console.log(111)
@@ -246,7 +266,28 @@ export default {
     addCourse() {},
     // 新增周期排课
     addScheduleWeek() {
+      this.pickerList.push([
+        moment(
+          moment(this.picker_end_date)
+            .add(1, 'days')
+            .valueOf()
+        ),
+        moment(this.end_date)
+      ])
       this.scheduleList.push({ scheduleInfo: {} })
+    },
+    onClickSaveSchedule() {
+      this.$router.push({
+        path: '/shop/product/course/mini-schedule/inbatch-info',
+        query: {
+          schedule_id: this.scheduleId
+        }
+        // on: {
+        //   ok: res => {
+        //     this.onScheduleChange()
+        //   }
+        // }
+      })
     }
     // save() {
     //   let reqdata = {

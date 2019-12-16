@@ -3,10 +3,10 @@
     trigger="click"
     overlayClassName="modal-shop-mini-add-course"
     v-model="item.show"
+    placement="bottom"
     title="添加课程"
   >
-    <!-- <a @click="hide" slot="content">添加</a> -->
-    <div :class="b('wrapper')" slot="content">
+    <template :class="b('wrapper')" slot="content">
       <span :class="b('head-close')" @click="hide">X</span>
       <div class="add-course-conent">
         <st-form labelWidth="68px">
@@ -30,6 +30,7 @@
               @change="onChangeDatePick"
               style="width:100%"
               :disabledDate="disabledDate"
+              v-decorator="decorators.start_days"
             />
           </st-form-item>
           <st-form-item label="预约时间" required>
@@ -38,10 +39,15 @@
               :disabledMinutes="disabledMinutes"
               style="width:100%"
               :disabledHours="disabledHours"
+              v-decorator="decorators.start_time"
             />
           </st-form-item>
           <st-form-item label="场地" required>
-            <a-select placeholder="请选择场地" v-model="coachId">
+            <a-select
+              placeholder="请选择场地"
+              v-model="coachId"
+              v-decorator="decorators.court_id"
+            >
               <a-select-option
                 v-for="coach in {}"
                 :key="coach.id"
@@ -52,7 +58,11 @@
             </a-select>
           </st-form-item>
           <st-form-item label="教练" required>
-            <a-select placeholder="请选择教练" v-model="coachId">
+            <a-select
+              placeholder="请选择教练"
+              v-model="coachId"
+              v-decorator="decorators.course_id"
+            >
               <a-select-option
                 v-for="coach in {}"
                 :key="coach.id"
@@ -69,12 +79,12 @@
           <st-button @click="hide">
             取消
           </st-button>
-          <st-button type="primary" class="mg-l12">
+          <st-button type="primary" class="mg-l12" @click="onSubmit">
             提交
           </st-button>
         </div>
       </div>
-    </div>
+    </template>
     <st-button block type="dashed" icon="add" @click="addCourse('team')">
       添加课程
     </st-button>
@@ -82,6 +92,8 @@
 </template>
 
 <script>
+import { ruleOptions } from './add-course.config'
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'AddScheduleInBatch',
   bem: {
@@ -93,8 +105,12 @@ export default {
   },
   watch: {},
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
-      coachId: ''
+      coachId: '',
+      form,
+      decorators
     }
   },
   created() {},
@@ -109,9 +125,22 @@ export default {
     },
     // 增加课程
     addCourse() {},
-    // 新增周期排课
-    addScheduleWeek() {
-      this.scheduleList.push({ scheduleInfo: {} })
+    onSubmit() {
+      this.form.validate().then(values => {
+        const form = cloneDeep(values)
+        console.log(form)
+        // form.start_time = form.start_time.format('YYYY-MM-DD HH:mm')
+        // if (form.court_id) {
+        //   form.court_site_id = +form.court_id[1]
+        //   form.court_id = +form.court_id[0]
+        // }
+        // form.course_fee = form.course_fee
+        // form.limit_num = form.limit_num
+        // this.teamScheduleScheduleService.add(form).subscribe(() => {
+        //   this.$emit('ok')
+        //   this.show = false
+        // })
+      })
     },
     save() {
       let reqdata = {

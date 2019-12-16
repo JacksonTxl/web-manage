@@ -1,12 +1,12 @@
 import { AuthService } from '@/services/auth.service'
 import {
-  TeamScheduleScheduleApi,
+  MiniTeamScheduleScheduleApi,
   AddScheduleInput,
   UpdateScheduleInput,
   CopyScheduleInput,
   GetScheduleListQuery,
   GetScheduleTableQuery
-} from '@/api/v1/schedule/team/schedule'
+} from '@/api/v1/schedule/mini-team/schedule'
 import { Injectable } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state'
 import { tap, pluck } from 'rxjs/operators'
@@ -17,14 +17,14 @@ export interface SetState {
   scheduleTable: any[]
 }
 @Injectable()
-export class TeamScheduleScheduleService {
+export class MiniTeamScheduleScheduleService {
   state$: State<SetState>
   scheduleTeamCourseList$: Computed<any>
   scheduleTable$: Computed<any>
   refresh$: Computed<any>
   loading$ = new State({})
   constructor(
-    private scheduleApi: TeamScheduleScheduleApi,
+    private scheduleApi: MiniTeamScheduleScheduleApi,
     private authService: AuthService,
     private msg: MessageService
   ) {

@@ -122,7 +122,7 @@
       >
         <a-select-option :value="-1">全部课程</a-select-option>
         <a-select-option
-          v-for="course in courseOptions"
+          v-for="course in courseMiniOptions"
           :key="course.id"
           :value="course.id"
         >
@@ -138,7 +138,7 @@
       >
         <a-select-option :value="-1">全部{{ $c('coach') }}</a-select-option>
         <a-select-option
-          v-for="coach in coachOptions"
+          v-for="coach in coachMiniTeamOptions"
           :key="coach.id"
           :value="coach.id"
         >
@@ -154,6 +154,7 @@
 import { TeamScheduleCommonService } from './schedule/team/service#/common.service'
 import { PersonalScheduleCommonService } from './schedule/personal/service#/common.service'
 import { PersonalTeamScheduleCommonService } from './schedule/personal-team/service#/common.service'
+import { MiniTeamScheduleCommonService } from './schedule/mini-team/service#/common.service'
 import { ScheduleService } from './schedule.service'
 import ScheduleTeamEditSchedule from '@/views/biz-modals/schedule/team/edit-course'
 export default {
@@ -166,13 +167,15 @@ export default {
       scheduleService: ScheduleService,
       teamScheduleCommonService: TeamScheduleCommonService,
       personalScheduleCommonService: PersonalScheduleCommonService,
-      personalTeamScheduleCommonService: PersonalTeamScheduleCommonService
+      personalTeamScheduleCommonService: PersonalTeamScheduleCommonService,
+      miniTeamScheduleCommonService: MiniTeamScheduleCommonService
     }
   },
   rxState() {
     const tss = this.teamScheduleCommonService
     const pscs = this.personalScheduleCommonService
     const ptscs = this.personalTeamScheduleCommonService
+    const mtsc = this.miniTeamScheduleCommonService
     return {
       coachOptions: tss.coachOptions$,
       courseOptions: tss.courseOptions$,
@@ -181,6 +184,8 @@ export default {
       coachPersonalOptions: pscs.coachOptions$,
       courseCoachOptions: pscs.courseCoachOptions$,
       coachPersonalTeamOptions: ptscs.coachOptions$,
+      courseMiniOptions: mtsc.courseMiniOptions$,
+      coachMiniTeamOptions: mtsc.coachMiniOptions$,
       authTabs: this.scheduleService.authTabs$
     }
   },

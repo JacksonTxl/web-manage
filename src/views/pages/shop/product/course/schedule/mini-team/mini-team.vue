@@ -28,8 +28,7 @@
 
 <script>
 import Calendar from '@/views/biz-components/schedule/calendar'
-import { TeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/team/service#/schedule.service'
-import ScheduleTeamAddCourseBatch from '@/views/biz-modals/schedule/team/add-course-batch'
+import { MiniTeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/mini-team/service#/schedule.service'
 
 // 添加排期
 import ScheduleMiniTeamAddCourse from '@/views/biz-modals/schedule/mini-team/add-course'
@@ -40,32 +39,48 @@ import { MiniTeamService } from './mini-team.service'
 export default {
   name: 'TeamSchedule',
   modals: {
-    ScheduleTeamAddCourseBatch,
     ScheduleMiniTeamAddCourse,
     ScheduleMiniTeamReserveInfo
   },
   serviceInject() {
     return {
-      teamSchduleService: TeamScheduleScheduleService,
+      miniTeamSchduleService: MiniTeamScheduleScheduleService,
       service: MiniTeamService
     }
   },
   rxState() {
     return {
       auth: this.service.auth$,
-      cardList: this.teamSchduleService.scheduleTeamCourseList$
+      cardList: this.miniTeamSchduleService.scheduleTeamCourseList$
     }
   },
   components: {
     Calendar
   },
   data() {
-    return {}
+    return {
+      cardList: [
+        {
+          id: 2,
+          start_date: '2019-12-18',
+          start_time: '04:12',
+          end_time: '04:12',
+          course_name: '小班课测试',
+          current_course_name: '小班课测试',
+          reserved_num: 1,
+          coach_name: '姓名2',
+          court_site_name: '场地'
+        }
+      ]
+    }
   },
   computed: {
     startDate() {
       return this.$searchQuery.start_date || moment().format('YYYY-MM-DD')
     }
+  },
+  created() {
+    console.log(this.cardList)
   },
   methods: {
     onMouseLeave() {
