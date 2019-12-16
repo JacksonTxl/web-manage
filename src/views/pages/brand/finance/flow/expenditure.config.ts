@@ -29,7 +29,7 @@ export const columns = () => {
       align: 'right'
     },
     {
-      title: '银行转账',
+      title: '银行转账退款',
       dataIndex: 'bank_transfer_amount',
       align: 'right'
     },
@@ -45,7 +45,7 @@ export const columns = () => {
       align: 'right'
     },
     {
-      title: '支出总金额',
+      title: '总支出金额',
       dataIndex: 'total_amount',
       align: 'right'
     }
