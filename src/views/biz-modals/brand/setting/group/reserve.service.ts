@@ -11,6 +11,7 @@ export class GroupReserveSettingService {
   cancelReserves$ = this.userService.getOptions$('setting.cancel_reserve')
   signTimes$ = this.userService.getOptions$('setting.sign_time')
   autoSignLimits$ = this.userService.getOptions$('setting.auto_sign_limit')
+  absenteeismLimit$ = this.userService.getOptions$('setting.absenteeism_limit')
   constructor(
     private reserveSettingApi: GroupReserveSettingApi,
     private userService: UserService

@@ -1,28 +1,41 @@
 <template>
   <st-panel app initial>
-    <div>上课门店:共{{}}名教练</div>
+    <div class="mg-b8">上课门店:共{{}}名教练</div>
     <st-table
       :columns="basicColumns()"
       rowKey="id"
+      :pagination="null"
       :dataSource="groupInfo.coaches"
     ></st-table>
-    <div>
-      <span>转让设置：</span>
-      <span></span>
-      <span>请假设置：</span>
-      <span></span>
-      <span>售卖渠道：</span>
-      <span>{{}}</span>
+    <div :class="b('column')">
+      <div :class="b('item')">
+        <span :class="b('item-label')">转让设置：</span>
+        <span :class="b('item-value')"></span>
+      </div>
+      <div :class="b('item')">
+        <span :class="b('item-label')">请假设置：</span>
+        <span :class="b('item-value')"></span>
+      </div>
+      <div :class="b('item')">
+        <span :class="b('item-label')">售卖渠道：</span>
+        <span :class="b('item-value')">{{}}</span>
+      </div>
     </div>
-    <div>
-      <span>报名时间：</span>
-      <span>{{ groupInfo.course_time }}</span>
-      <span>售价：</span>
-      <span>{{ groupInfo.sales_price }}</span>
+    <div :class="b('column')">
+      <div :class="b('item')">
+        <span :class="b('item-label')">报名时间：</span>
+        <span :class="b('item-value')">{{ groupInfo.course_time }}</span>
+      </div>
+      <div :class="b('item')">
+        <span :class="b('item-label')">售价：</span>
+        <span :class="b('item-value')">{{ groupInfo.sales_price }}</span>
+      </div>
     </div>
-    <div>
-      <span>详细介绍：</span>
-      <div>{{ groupInfo.description }}</div>
+    <div class="mg-t24">
+      <span :class="b('item-label')">详细介绍：</span>
+      <st-container class="mg-t8">
+        {{ groupInfo.description }}
+      </st-container>
     </div>
   </st-panel>
 </template>
@@ -40,6 +53,9 @@ export default {
     return {
       groupInfo: this.basicService.groupInfo$
     }
+  },
+  bem: {
+    b: 'product-course-manage-group-info-basic'
   },
   data() {
     return {

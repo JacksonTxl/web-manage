@@ -111,7 +111,7 @@
               v-model="info.absenteeism_limit"
             >
               <a-select-option
-                v-for="(item, index) in signTimes"
+                v-for="(item, index) in absenteeismLimit"
                 :key="+index"
                 :value="+item.value"
               >
@@ -142,6 +142,7 @@ export default {
       reserveRanges: this.settingService.reserveRanges$,
       cancelReserves: this.settingService.cancelReserves$,
       signTimes: this.settingService.signTimes$,
+      absenteeismLimit: this.settingService.absenteeismLimit$,
       autoSignLimits: this.settingService.autoSignLimits$
     }
   },
