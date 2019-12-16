@@ -1,10 +1,6 @@
 <template>
-  <div>
-    <a-select
-      defaultValue="date"
-      style="width: 76px;margin-right:12px"
-      @change="handleChange"
-    >
+  <div :class="basic()">
+    <a-select defaultValue="date" @change="handleChange">
       <a-select-option value="date">日</a-select-option>
       <a-select-option value="week">周</a-select-option>
       <a-select-option value="month">月</a-select-option>
@@ -16,6 +12,9 @@
 </template>
 <script>
 export default {
+  bem: {
+    basic: 'shop-stored-data-picker'
+  },
   methods: {
     onChange(query) {
       console.log(query)

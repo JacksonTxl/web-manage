@@ -1,6 +1,7 @@
 <template>
   <div :class="basic()">
     <st-panel-layout :class="basic('main')">
+      <!-- 云店概览 -->
       <st-panel class="mg-t16" title="云店概览">
         <div slot="actions">
           <st-refresh-btn :action="refresh"></st-refresh-btn>
@@ -9,12 +10,25 @@
           <li v-for="(item, index) in headerInfo" :key="index">
             <img :src="item.icon" />
             <div>
-              <div>{{ item.title }}</div>
+              <div>
+                {{ item.title }}
+              </div>
               <div>
                 <i-count-up
-                  :endVal="item.sum"
+                  :endVal="
+                    dataProfile.today[headerTitleItem[index]]
+                      ? dataProfile.today[headerTitleItem[index]]
+                      : 0
+                  "
                   :options="{
-                    decimalPlaces: item.sum.toString().includes('.') ? 2 : 0,
+                    decimalPlaces: (dataProfile.today[headerTitleItem[index]]
+                      ? dataProfile.today[headerTitleItem[index]]
+                      : 0
+                    )
+                      .toString()
+                      .includes('.')
+                      ? 2
+                      : 0,
                     decimal: '.'
                   }"
                 />
@@ -22,9 +36,22 @@
               <div>
                 昨日:
                 <i-count-up
-                  :endVal="item.yesterday"
+                  :endVal="
+                    dataProfile.yesterday[headerTitleItem[index]]
+                      ? dataProfile.yesterday[headerTitleItem[index]]
+                      : 0
+                  "
                   :options="{
-                    decimalPlaces: item.sum.toString().includes('.') ? 2 : 0,
+                    decimalPlaces: (dataProfile.yesterday[
+                      headerTitleItem[index]
+                    ]
+                      ? dataProfile.yesterday[headerTitleItem[index]]
+                      : 0
+                    )
+                      .toString()
+                      .includes('.')
+                      ? 2
+                      : 0,
                     decimal: '.',
                     prefix: ''
                   }"
@@ -34,8 +61,8 @@
           </li>
         </ul>
       </st-panel>
+      <!-- 整体看板 -->
       <section>
-        <!-- 整体看板 -->
         <st-panel class="mg-t16" title="整体看板">
           <div slot="actions">
             <date-picker></date-picker>
@@ -131,13 +158,13 @@
                 <div :class="salesCategory('category_box')">
                   <st-container class="bg-white" type="2">
                     <st-t3>类目分析</st-t3>
-                    <date-picker></date-picker>
+                    <date-picker class="date-picker"></date-picker>
                   </st-container>
                   <div class="category">
                     <st-t3>类目营收占比</st-t3>
                     <shop-stored-data-revenue-ring
                       :data="dataRingss"
-                      :padding="[60, '30%', 38, 0]"
+                      :padding="[60, '50%', 38, 0]"
                       style="width: 100%;"
                     ></shop-stored-data-revenue-ring>
                   </div>
@@ -172,12 +199,14 @@ import ShopStoredDataRing from '@/views/biz-components/stat/shop-stored-data-rin
 import ShopStoredDataRevenueRing from '@/views/biz-components/stat/shop-stored-data-revenue-ring'
 import BrandUserAvgBar from '@/views/biz-components/stat/brand-user-avg-bar'
 import { DataService } from './data.service'
+import { forEach } from 'lodash-es'
 import {
   headerInfo,
   wholeNav,
   dataRing,
   dataRingss,
   salesList,
+  headerTitleItem,
   courseDaily
 } from './data.config.ts'
 export default {
@@ -188,7 +217,8 @@ export default {
   },
   rxState() {
     return {
-      dataProfile: this.dataService.dataProfile$
+      dataProfile: this.dataService.dataProfile$,
+      storeBoard: this.dataService.storeBoard$
     }
   },
   bem: {
@@ -202,6 +232,7 @@ export default {
       wholenavTitle: '营收金额(元)',
       wholenavIndex: 0,
       wholeNavcom: 'shop-stored-data-ring',
+      headerTitleItem,
       headerInfo,
       wholeNav,
       dataRing,
@@ -221,12 +252,31 @@ export default {
     ShopStoredDataRevenueRing,
     BrandUserAvgBar
   },
+  mounted() {
+    this.wholenavFilter(this.storeBoard)
+  },
   methods: {
+    // 整体看板数据处理
+    wholenavFilter(data) {
+      console.log(data)
+      let titles = [
+        'revenue_amount',
+        'order_count',
+        'transaction_member',
+        'customer_price'
+      ]
+      let field = ['amount', 'count', 'count', 'price']
+      this.wholeNav.forEach((item, index) => {
+        let dataInfo = data[titles[index]][field[index]]
+        console.log(this.wholenavIndex)
+        item.num = dataInfo
+      })
+    },
     onChangeTabs(query) {
       console.log(query)
     },
     refresh() {
-      return this.dataService.getDataProfile()
+      return this.dataService.getDataProfile(this.chartTodayShop)
     },
     change() {},
     wholenavFun(index, item) {

@@ -1,4 +1,9 @@
 import { Api } from '@/api/api'
+
+export interface DtoreBoard {
+  date_type: string
+  date: string
+}
 export interface StoreList {
   category_id: number
   product_name: string
@@ -10,6 +15,14 @@ export class StoreApi extends Api {
    */
   dataProfile() {
     return this.http.get('/v1/store/data_profile')
+  }
+  /**
+   * 整体看板
+   */
+  storeBoard(params: DtoreBoard) {
+    return this.http.get('/v1/store/board', {
+      params
+    })
   }
   /**
    * 商品列表
