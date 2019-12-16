@@ -35,23 +35,24 @@
         />
       </div>
       <div :class="basic('content')">
-        <st-table :columns="columns" :dataSource="list" isExpand />
-        <!-- <template slot="action" slot-scope="text, record">
-           <st-table-actions sytle="width: 120px">
-            <a @click="onUpShelf(record)">
-              上架
-            </a>
-            <a @click="onEdit(record)">
-              编辑
-            </a>
-            <a @click="onStopShelf(record)">
-              下架
-            </a>
-            <a @click="onDel(record)">
-              删除
-            </a>
-          </st-table-actions>
-        </template> -->
+        <st-table :columns="columns" :dataSource="list" isExpand>
+          <template slot="action" slot-scope="text, record">
+            <st-table-actions sytle="width: 120px">
+              <a @click="onUpShelf(record)">
+                上架
+              </a>
+              <a @click="onEdit(record)">
+                编辑
+              </a>
+              <a @click="onStopShelf(record)">
+                下架
+              </a>
+              <a @click="onDel(record)">
+                删除
+              </a>
+            </st-table-actions>
+          </template>
+        </st-table>
       </div>
     </st-panel>
   </st-panel-layout>
@@ -60,11 +61,24 @@
 <script>
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
+import { ListService } from './list.service'
 export default {
   mixins: [tableMixin],
   name: 'PageShopStoredList',
   bem: {
     basic: 'page-shop-stored-list'
+  },
+  serviceInject() {
+    return {
+      listService: ListService
+    }
+  },
+  rxState() {
+    return {
+      list: this.listService.list$,
+      page: this.listService.page$,
+      loading: this.listService.loading$
+    }
   },
   data(vm) {
     return {
@@ -78,177 +92,7 @@ export default {
       goodsSortType: {
         value: { 1: '上衣', 3: '裙子', 4: '马丁靴' }
       },
-      columns: columns(vm),
-      list: [
-        {
-          id: '1',
-          activity_name: '父级列表',
-          product_type: '娱乐',
-          support_sales: '线下',
-          activity_time: '以上架',
-          activity_state: '10',
-          group_total: '90',
-          group_success_total: '10',
-          children: [
-            {
-              id: '1',
-              activity_name: '子级列表',
-              product_type: '娱乐',
-              support_sales: '线下',
-              activity_time: '以上架',
-              activity_state: '10',
-              group_total: '90',
-              group_success_total: '10'
-            },
-            {
-              id: '3',
-              activity_name: '子级列表',
-              product_type: '娱乐',
-              support_sales: '线下',
-              activity_time: '以上架',
-              activity_state: '10',
-              group_total: '90',
-              group_success_total: '10'
-            },
-            {
-              id: '4',
-              activity_name: '子级列表',
-              product_type: '娱乐',
-              support_sales: '线下',
-              activity_time: '以上架',
-              activity_state: '10',
-              group_total: '90',
-              group_success_total: '10'
-            }
-          ]
-        },
-        {
-          id: '1',
-          activity_name: '父级列表',
-          product_type: '娱乐',
-          support_sales: '线下',
-          activity_time: '以上架',
-          activity_state: '10',
-          group_total: '90',
-          group_success_total: '10',
-          children: [
-            {
-              id: '1',
-              activity_name: '子级列表',
-              product_type: '娱乐',
-              support_sales: '线下',
-              activity_time: '以上架',
-              activity_state: '10',
-              group_total: '90',
-              group_success_total: '10'
-            },
-            {
-              id: '3',
-              activity_name: '子级列表',
-              product_type: '娱乐',
-              support_sales: '线下',
-              activity_time: '以上架',
-              activity_state: '10',
-              group_total: '90',
-              group_success_total: '10'
-            },
-            {
-              id: '4',
-              activity_name: '子级列表',
-              product_type: '娱乐',
-              support_sales: '线下',
-              activity_time: '以上架',
-              activity_state: '10',
-              group_total: '90',
-              group_success_total: '10'
-            }
-          ]
-        },
-        {
-          id: '1',
-          activity_name: '父级列表',
-          product_type: '娱乐',
-          support_sales: '线下',
-          activity_time: '以上架',
-          activity_state: '10',
-          group_total: '90',
-          group_success_total: '10',
-          children: [
-            {
-              id: '1',
-              activity_name: '子级列表',
-              product_type: '娱乐',
-              support_sales: '线下',
-              activity_time: '以上架',
-              activity_state: '10',
-              group_total: '90',
-              group_success_total: '10'
-            },
-            {
-              id: '3',
-              activity_name: '子级列表',
-              product_type: '娱乐',
-              support_sales: '线下',
-              activity_time: '以上架',
-              activity_state: '10',
-              group_total: '90',
-              group_success_total: '10'
-            },
-            {
-              id: '4',
-              activity_name: '子级列表',
-              product_type: '娱乐',
-              support_sales: '线下',
-              activity_time: '以上架',
-              activity_state: '10',
-              group_total: '90',
-              group_success_total: '10'
-            }
-          ]
-        },
-        {
-          id: '1',
-          activity_name: '父级列表',
-          product_type: '娱乐',
-          support_sales: '线下',
-          activity_time: '以上架',
-          activity_state: '10',
-          group_total: '90',
-          group_success_total: '10',
-          children: [
-            {
-              id: '1',
-              activity_name: '子级列表',
-              product_type: '娱乐',
-              support_sales: '线下',
-              activity_time: '以上架',
-              activity_state: '10',
-              group_total: '90',
-              group_success_total: '10'
-            },
-            {
-              id: '3',
-              activity_name: '子级列表',
-              product_type: '娱乐',
-              support_sales: '线下',
-              activity_time: '以上架',
-              activity_state: '10',
-              group_total: '90',
-              group_success_total: '10'
-            },
-            {
-              id: '4',
-              activity_name: '子级列表',
-              product_type: '娱乐',
-              support_sales: '线下',
-              activity_time: '以上架',
-              activity_state: '10',
-              group_total: '90',
-              group_success_total: '10'
-            }
-          ]
-        }
-      ]
+      columns: columns(vm)
     }
   },
   computed: {

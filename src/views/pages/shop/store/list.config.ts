@@ -2,31 +2,38 @@ export const columns = (vm: any) => {
   return [
     {
       title: '商品名称',
-      dataIndex: 'activity_name'
+      dataIndex: 'product_name'
     },
     {
       title: '商品分类',
-      dataIndex: 'product_type'
+      dataIndex: 'category_name'
     },
     {
       title: '销售渠道',
-      dataIndex: 'support_sales'
+      dataIndex: 'sale_type'
     },
     {
       title: '上架状态',
-      dataIndex: 'activity_time'
+      dataIndex: 'shelves_status'
     },
     {
       title: '销量',
-      dataIndex: 'activity_state'
+      dataIndex: 'sales_volume'
     },
     {
       title: '单价',
-      dataIndex: 'group_total'
+      dataIndex: 'selling_price'
     },
     {
       title: '库存',
-      dataIndex: 'group_success_total'
+      dataIndex: 'stock_amount'
+    },
+    {
+      title: '操作',
+      dataIndex: 'action',
+      width: 140,
+      fixed: 'right',
+      scopedSlots: { customRender: 'action' }
     }
   ]
 }

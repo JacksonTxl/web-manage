@@ -4,6 +4,11 @@ export interface DtoreBoard {
   date_type: string
   date: string
 }
+export interface StoreList {
+  category_id: number
+  product_name: string
+  shelves_status: number
+}
 export class StoreApi extends Api {
   /**
    * 数据概况
@@ -18,5 +23,11 @@ export class StoreApi extends Api {
     return this.http.get('/v1/store/board', {
       params
     })
+  }
+  /**
+   * 商品列表
+   */
+  getList(query: StoreList) {
+    return this.http.get(`/v1/store/product/1`, { query })
   }
 }
