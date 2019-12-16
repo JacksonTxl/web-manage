@@ -163,6 +163,13 @@
                   </a>
               </a-menu-item>-->
               <!-- <a-menu-divider/> -->
+              <!-- <a-menu-item
+                @click="onClickBind"
+                class="layout-default-body__options"
+              >
+                <st-icon type="notify-config" color="#000000"></st-icon>
+                <span>通知设置</span>
+              </a-menu-item> -->
               <a-menu-item
                 @click="onClickBind"
                 class="layout-default-body__options"
