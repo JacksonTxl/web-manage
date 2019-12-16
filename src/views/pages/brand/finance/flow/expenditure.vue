@@ -27,7 +27,7 @@
       @change="onTableChange"
       :dataSource="list$"
     >
-      <span slot="internal_amount">
+      <span slot="internalTitle">
         内部结转退款
         <st-help-tooltip id="TBFES001" />
       </span>
