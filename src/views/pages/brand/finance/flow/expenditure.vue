@@ -77,6 +77,11 @@ export default {
   mounted() {
     this.setSearchDate()
   },
+  watch: {
+    $searchQuery() {
+      this.setSearchData()
+    }
+  },
   components: {
     ShopSelect
   },

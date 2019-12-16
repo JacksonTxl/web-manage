@@ -133,6 +133,11 @@ export default {
   mounted() {
     this.setSearchData()
   },
+  watch: {
+    $searchQuery() {
+      this.setSearchData()
+    }
+  },
   components: {
     ShopSelect
   },
