@@ -18,6 +18,6 @@ export class SearchService implements Controller {
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    this.getList({ product_name: '', page: 1, size: 20 })
+    // return this.getList({ product_name: '', page: 1, size: 20 })
   }
 }

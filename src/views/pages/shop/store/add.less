@@ -9,8 +9,32 @@
     border: 1px solid #cdd4df;
     padding-top: 24px;
     margin-bottom: 24px;
+    &-del {
+      float: right;
+      margin-right: 24px;
+    }
+    &-icon {
+      color: @primary-color;
+      margin-right: 4px;
+    }
+    &-text {
+      color: @text-color-secondary;
+      cursor: pointer;
+    }
+    &-add {
+      color: @primary-color;
+      margin-left: 16px;
+    }
   }
   &__class--manage {
     line-height: 32px;
+  }
+}
+.test_item {
+  display: none;
+}
+.test:hover {
+  .test_item {
+    display: inline-block;
   }
 }
