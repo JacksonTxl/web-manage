@@ -11,17 +11,22 @@ export default function exportExcelDirective(el: HTMLElement, val: any) {
     Modal.confirm({
       title: '是否确认导出?',
       onOk: function() {
-        exportService.export(val.value.type, val.value.query).subscribe(() => {
-          Modal.success({
-            title: '提交成功',
-            content(h: any) {
-              return h('div', {}, [
-                '点击',
-                h('a', { attrs: { href: '/common/export' } }, '导出中心'),
-                '可查看导出进度并进行下载操作'
-              ])
-            }
-          })
+        return new Promise((resolve, reject) => {
+          exportService
+            .export(val.value.type, val.value.query)
+            .subscribe(() => {
+              resolve()
+              Modal.success({
+                title: '提交成功',
+                content(h: any) {
+                  return h('div', {}, [
+                    '点击',
+                    h('a', { attrs: { href: '/common/export' } }, '导出中心'),
+                    '可查看导出进度并进行下载操作'
+                  ])
+                }
+              })
+            })
         })
       }
     })

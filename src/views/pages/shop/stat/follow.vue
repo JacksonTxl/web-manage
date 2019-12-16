@@ -2,10 +2,10 @@
   <div :class="bPage()">
     <div class="mg-b16" :class="bPage('count-action')">
       <div :class="bPage('left')">
-        <div :class="bPage('button-wapper')">
+        <!-- <div :class="bPage('button-wapper')">
           <st-button
             type="primary"
-            v-if="au"
+            v-if="auth$.export"
             v-export-excel="{
               type: 'follow/shop',
               query: $searchQuery
@@ -13,7 +13,7 @@
           >
             全部导出
           </st-button>
-        </div>
+        </div> -->
         <a-radio-group :value="showTable" @change="handleSizeChange">
           <a-radio-button value="all">日期</a-radio-button>
           <a-radio-button value="staff">员工</a-radio-button>

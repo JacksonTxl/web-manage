@@ -24,12 +24,16 @@
             全部导出
           </st-button>
         </div>
-        <a-radio-group :value="showTable" @change="handleSizeChange">
+      </div>
+      <div :class="bHeard('right')">
+        <a-radio-group
+          class="mg-r12"
+          :value="showTable"
+          @change="handleSizeChange"
+        >
           <a-radio-button value="all" v-if="auth.summary">汇总</a-radio-button>
           <a-radio-button value="staff" v-if="auth.staff">员工</a-radio-button>
         </a-radio-group>
-      </div>
-      <div :class="bHeard('right')">
         <div v-if="showTable === 'staff'">
           <a-select
             class="mg-r8"
