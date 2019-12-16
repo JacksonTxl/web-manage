@@ -226,7 +226,7 @@ export default {
       console.log(query)
     },
     refresh() {
-      return () => {}
+      return this.dataService.getDataProfile()
     },
     change() {},
     wholenavFun(index, item) {
