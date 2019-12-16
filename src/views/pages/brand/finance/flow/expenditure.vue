@@ -75,7 +75,7 @@ export default {
     columns
   },
   mounted() {
-    this.setSearchDate()
+    this.setSearchData()
   },
   watch: {
     $searchQuery() {
@@ -86,7 +86,7 @@ export default {
     ShopSelect
   },
   methods: {
-    setSearchDate() {
+    setSearchData() {
       if (!this.$searchQuery.start_date) return
       const start = moment(this.$searchQuery.start_date)
       const end = moment(this.$searchQuery.end_date)
