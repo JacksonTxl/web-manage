@@ -3,9 +3,7 @@
     <st-panel-layout :class="basic('main')">
       <st-panel class="mg-t16" title="云店概览">
         <div slot="actions">
-          <span class="st-refresh-btn__date">
-            最近更新时间：2019-04-02 12:38
-          </span>
+          <st-refresh-btn :action="refresh"></st-refresh-btn>
         </div>
         <ul :class="basic('header_content')">
           <li v-for="(item, index) in headerInfo" :key="index">
@@ -226,6 +224,9 @@ export default {
   methods: {
     onChangeTabs(query) {
       console.log(query)
+    },
+    refresh() {
+      return () => {}
     },
     change() {},
     wholenavFun(index, item) {
