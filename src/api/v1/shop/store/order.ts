@@ -40,7 +40,7 @@ export class OrderApi extends Api {
    * 核销待核销订单
    */
   verificationAction(params: VerificationParams) {
-    return this.http.put(`/v1/order/write_off${params.id}`)
+    return this.http.put(`/v1/order/write_off/${params.id}`)
   }
   /**
    * 待发货订单发货
