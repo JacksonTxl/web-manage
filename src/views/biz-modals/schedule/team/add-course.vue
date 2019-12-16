@@ -62,6 +62,7 @@
         <st-input-number
           placeholder="请输入单节预约价格"
           v-decorator="decorators.course_fee"
+          float
         >
           <span slot="addonAfter" class="addon-width">元/节</span>
         </st-input-number>
