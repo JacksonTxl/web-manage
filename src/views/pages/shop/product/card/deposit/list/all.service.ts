@@ -11,7 +11,7 @@ export class AllService implements Controller {
   page$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({
-    add: 'brand_shop:product:deposit_card|add'
+    add: 'shop:product:deposit_card|add'
   })
   publishChannel$ = this.userService
     .getOptions$('deposit_card.publish_channel')
@@ -43,6 +43,9 @@ export class AllService implements Controller {
   }
   deleteCard(id: string) {
     return this.cardApi.setCardsDelete(id, 'shop', 'deposit')
+  }
+  setCardShelfDown(id: string) {
+    return this.cardApi.setCardsShelfDown(id, 'shop', 'deposit')
   }
   beforeEach(to: ServiceRoute) {
     return this.getList(to.meta.query)

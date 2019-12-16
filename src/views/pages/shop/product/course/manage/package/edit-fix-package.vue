@@ -57,7 +57,6 @@
                         :class="{
                           hide: !(teamCourseListIsShow && packageData.is_team)
                         }"
-                        href="javascript:void(0)"
                       >
                         配置上课范围&nbsp;&nbsp;
                         <st-icon class="icon-12" type="down-small" />
@@ -1120,13 +1119,22 @@ export default {
           })
           this.packageData.personal_range = []
           this.personalCourseList.forEach(i => {
+            let arr = cloneDeep(i.coachGradeList)
+            if (
+              i.coachGradeList &&
+              i.coachGradeList.length > 0 &&
+              i.coachGradeList[0].id
+            ) {
+              arr = i.coachGradeList.map(coachItem => coachItem.id)
+            }
             this.packageData.personal_range.push({
               course_id: i.course_id,
               personal_times: i.personal_times,
               personal_unit_price: i.personal_unit_price,
-              coach_level: cloneDeep(i.coachGradeList)
+              coach_level: arr
             })
           })
+          this.packageData.album_id = this.packageInfo.album_id // 这个给后端快捷找到相册使用，前端不需要处理使用
           this.editPackageService
             .editPackage(this.packageData)
             .subscribe(res => {

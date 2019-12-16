@@ -139,7 +139,17 @@
             </div>
           </st-form-item>
           <st-form-item label="手续费" labelGutter="12px" type="text">
-            {{ info.transfer }}
+            {{ info.transfer_num }}元
+          </st-form-item>
+          <st-form-item label="减免金额" labelGutter="12px">
+            <st-input-number
+              :float="true"
+              v-decorator="decorators.handling_fee_reduce"
+              placeholder="请输入减免金额"
+              :max="info.transfer_num"
+            >
+              <span slot="addonAfter">元</span>
+            </st-input-number>
           </st-form-item>
           <st-form-item label="支付方式" required labelGutter="12px">
             <a-select
@@ -240,7 +250,8 @@ export default {
                 sale_range: this.info.sale_range.type,
                 remain_amount: values.remainPrice,
                 contract_number: values.contractNumber,
-                pay_channel: +values.payType
+                pay_channel: +values.payType,
+                handling_fee_reduce: values.handling_fee_reduce
               },
               this.id,
               this.type

@@ -50,6 +50,12 @@ export const cardItem = () => {
       title: '到期日期',
       dataIndex: 'end_time',
       key: 'end_time'
+    },
+    {
+      title: '成员',
+      dataIndex: 'members',
+      key: 'members',
+      scopedSlots: { customRender: 'members' }
     }
   ]
 }

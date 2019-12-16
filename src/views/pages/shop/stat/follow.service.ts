@@ -10,6 +10,7 @@ export class FollowService implements Controller {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
+  total$ = new State({})
   totalInfo$ = new State([])
   authTabs$ = this.authService.getAuthTabs$('shop-stat-follow')
   constructor(
@@ -23,6 +24,7 @@ export class FollowService implements Controller {
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+        this.total$.commit(() => res.total)
       })
     )
   }

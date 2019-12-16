@@ -54,7 +54,9 @@
                     <td class="tg-c">
                       <a-checkbox @change="teamCheckboxChange" />
                     </td>
-                    <td class="rightline white-nowrap">团体课程</td>
+                    <td class="rightline white-nowrap">
+                      团体课程
+                    </td>
                     <td></td>
                     <td>{{ teamCourseTotalObject.team_times }}节</td>
                     <td>{{ teamCourseTotalObject.total }}元</td>
@@ -77,10 +79,14 @@
                     class="bg-row-odd team-course-list-content"
                     v-if="teamCourseListIsShow && packageData.is_team"
                   >
-                    <td class="rightline" colspan="2"></td>
+                    <td
+                      class="rightline"
+                      style="background-color:#fff"
+                      colspan="2"
+                    ></td>
                     <td class="team-course-table" colspan="4">
                       <div :class="add('team-course-table')">
-                        <table>
+                        <st-form-table>
                           <colgroup>
                             <col style="width:5%;" />
                             <col style="width:20%;" />
@@ -115,7 +121,7 @@
                                 <p
                                   v-if="!teamCourseList.length"
                                   class="bg-row-even"
-                                  style="margin: 0;text-align:center;padding: 8px 0;"
+                                  style="margin: 0;text-align:center;"
                                 >
                                   无数据
                                 </p>
@@ -267,11 +273,11 @@
                               </td>
                             </tr>
                           </tbody>
-                        </table>
+                        </st-form-table>
                       </div>
                     </td>
                   </tr>
-                  <tr class="bg-row-even checkbox topline">
+                  <tr class="bg-row-top checkbox topline">
                     <td class="tg-c">
                       <a-checkbox @change="personalCheckboxChange" />
                     </td>
@@ -342,7 +348,7 @@
                                 <p
                                   v-if="!personalCourseList.length"
                                   class="bg-row-even"
-                                  style="margin: 0;text-align:center;padding: 8px 0;"
+                                  style="margin: 0;text-align:center;"
                                 >
                                   无数据
                                 </p>

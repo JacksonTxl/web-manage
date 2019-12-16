@@ -33,6 +33,7 @@
             <st-info-item label="会员姓名">
               {{ depositTransferInfo.member_name }}
             </st-info-item>
+
             <st-info-item label="手机号">
               {{ depositTransferInfo.mobile }}
             </st-info-item>
@@ -67,6 +68,9 @@
             <st-info-item label="卡名">
               {{ memberTransferInfo.card_name }}
             </st-info-item>
+            <st-info-item label="卡成员" v-if="isFamilyCard">
+              {{ memberTransferInfo.card_member }}
+            </st-info-item>
             <st-info-item label="当前额度">
               {{ memberTransferInfo.remain_amount }}
             </st-info-item>
@@ -89,6 +93,7 @@
             <st-info-item label="会员姓名">
               {{ memberTransferInfo.member_name }}
             </st-info-item>
+
             <st-info-item label="手机号">
               {{ memberTransferInfo.mobile }}
             </st-info-item>
@@ -278,6 +283,16 @@
           >
             {{ memberTransferInfo.poundage }}元
           </st-form-item>
+          <st-form-item label="减免金额" labelGutter="12px">
+            <st-input-number
+              float
+              v-decorator="decorators.handling_fee_reduce"
+              placeholder="请输入减免金额"
+              :max="reduceMax"
+            >
+              <span slot="addonAfter">元</span>
+            </st-input-number>
+          </st-form-item>
           <st-form-item label="支付方式" required labelGutter="12px">
             <a-select
               v-decorator="decorators.payType"
@@ -359,6 +374,14 @@ export default {
         this.memberTransferInfo.sale_range ||
         {}
       )
+    },
+    isFamilyCard() {
+      return this.memberTransferInfo.card_number_type === 2
+    },
+    reduceMax() {
+      return this.isMember
+        ? this.memberTransferInfo.poundage
+        : this.depositTransferInfo.poundage
     }
   },
   props: ['id', 'type'],
@@ -411,7 +434,8 @@ export default {
                 remain_price: +values.remainPrice,
                 contract_number: values.contractNumber,
                 pay_channel: +values.payType,
-                contract_type: +sold_type
+                contract_type: +sold_type,
+                handling_fee_reduce: values.handling_fee_reduce
               },
               this.id,
               this.type

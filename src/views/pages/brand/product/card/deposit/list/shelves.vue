@@ -106,7 +106,7 @@
       <div slot="action" slot-scope="text, record">
         <st-table-actions>
           <router-link
-            v-if="record.auth['brand_shop:product:deposit_card|get']"
+            v-if="record.auth['brand:product:deposit_card|get']"
             :to="{
               path: `/brand/product/card/deposit/info`,
               query: { id: record.id }
@@ -115,7 +115,7 @@
             详情
           </router-link>
           <a
-            v-if="record.auth['brand_shop:product:deposit_card|down']"
+            v-if="record.auth['brand:product:deposit_card|down']"
             @click="onShelfDown(record)"
           >
             下架

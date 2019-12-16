@@ -2,6 +2,7 @@ import SoldCardRenewalMember from '@/views/biz-modals/sold/card/renewal-member'
 import SoldCardUpgradeMember from '@/views/biz-modals/sold/card/upgrade-member'
 import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
 import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
+import SoldDealChangeMember from '@/views/biz-modals/sold/deal/change-member'
 
 const useCardActions = () => {
   return {
@@ -9,7 +10,8 @@ const useCardActions = () => {
       SoldCardRenewalMember,
       SoldCardUpgradeMember,
       SoldDealGatheringTip,
-      SoldDealGathering
+      SoldDealGathering,
+      SoldDealChangeMember
     },
     methods: {
       upgradeCard(record) {
@@ -30,7 +32,13 @@ const useCardActions = () => {
                   needPay: true
                 }
                 let orderSuccessRes = await this.createdGatheringTip(props)
-                this.tipCallBack(res.orderId, 'member', orderSuccessRes.type)
+                this.tipCallBack(
+                  res.orderId,
+                  'member',
+                  orderSuccessRes.type,
+                  res.soldId,
+                  res.isFamilyCard
+                )
               } else if (res.type === 'createPay') {
                 // 创建订单成功 并且到支付页面
                 let props = {
@@ -38,7 +46,13 @@ const useCardActions = () => {
                   type: 'member'
                 }
                 let payOrderRes = await this.createdOrderPay(props)
-                this.payCallBack(res.orderId, 'member', payOrderRes.type)
+                this.payCallBack(
+                  res.orderId,
+                  'member',
+                  payOrderRes.type,
+                  res.soldId,
+                  res.isFamilyCard
+                )
               }
             }
           }
@@ -62,7 +76,13 @@ const useCardActions = () => {
                   needPay: true
                 }
                 let orderSuccessRes = await this.createdGatheringTip(props)
-                this.tipCallBack(res.orderId, 'member', orderSuccessRes.type)
+                this.tipCallBack(
+                  res.orderId,
+                  'member',
+                  orderSuccessRes.type,
+                  res.soldId,
+                  res.isFamilyCard
+                )
               } else if (res.type === 'createPay') {
                 // 创建订单成功 并且到支付页面
                 let props = {
@@ -70,8 +90,29 @@ const useCardActions = () => {
                   type: 'member'
                 }
                 let payOrderRes = await this.createdOrderPay(props)
-                this.payCallBack(res.orderId, 'member', payOrderRes.type)
+                console.log(res)
+                this.payCallBack(
+                  res.orderId,
+                  'member',
+                  payOrderRes.type,
+                  res.soldId,
+                  res.isFamilyCard
+                )
               }
+            }
+          }
+        })
+      },
+      // 变更成员
+      onChangeMember(record) {
+        this.$modalRouter.push({
+          name: 'sold-deal-change-member',
+          props: {
+            id: record.id
+          },
+          on: {
+            success: () => {
+              this.$emit('refresh')
             }
           }
         })
@@ -89,19 +130,24 @@ const useCardActions = () => {
         })
       },
       // 订单收款回调
-      async payCallBack(orderId, modalType, callBackType) {
+      async payCallBack(
+        orderId,
+        modalType,
+        callBackType,
+        soldId,
+        isFamilyCard
+      ) {
         switch (callBackType) {
           case 'cancel':
-            // this.$router.reload()
-            // this.onSearch()
             this.$emit('refresh')
             break
           case 'pay':
             this.createdGatheringTip({
               message: '收款成功',
-              order_id: orderId
+              order_id: orderId,
+              isFamilyCard
             }).then(res => {
-              this.tipCallBack(orderId, modalType, res.type)
+              this.tipCallBack(orderId, modalType, res.type, soldId)
             })
             break
         }
@@ -119,7 +165,13 @@ const useCardActions = () => {
         })
       },
       // 提示框回调，gathering-tip
-      async tipCallBack(orderId, modalType, callBackType) {
+      async tipCallBack(
+        orderId,
+        modalType,
+        callBackType,
+        soldId,
+        isFamilyCard
+      ) {
         switch (callBackType) {
           case 'cancel':
             // this.$router.reload()
@@ -129,6 +181,9 @@ const useCardActions = () => {
             this.$emit('refresh')
             this.createdOrderPrint(orderId)
             break
+          case 'PrintOrder':
+            this.printOrder(orderId)
+            break
           case 'ViewOrder':
             this.$emit('refresh')
             this.createdOrderViewOrder(orderId)
@@ -136,11 +191,30 @@ const useCardActions = () => {
           case 'Pay':
             this.createdOrderPay({ order_id: orderId, type: modalType }).then(
               res => {
-                this.payCallBack(orderId, modalType, res.type)
+                this.payCallBack(
+                  orderId,
+                  modalType,
+                  res.type,
+                  soldId,
+                  isFamilyCard
+                )
               }
             )
             break
+          case 'ChangeMember':
+            this.onChangeMember({
+              id: soldId
+            })
+            break
         }
+      },
+      // 打印小票
+      printOrder(order_id) {
+        window.open(
+          '/ticket/gathering-print?id=' + order_id,
+          '_blank',
+          'width=800,height=600'
+        )
       },
       // 打印合同
       createdOrderPrint(order_id) {

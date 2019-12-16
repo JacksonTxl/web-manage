@@ -1,0 +1,50 @@
+@media print {
+  * {
+    text-shadow: none !important;
+    background: 0 0 !important;
+    box-shadow: none !important;
+    page-break-before: auto;
+  }
+  body {
+    width: 100%;
+    margin: 0;
+    font-size: 16px;
+    color: #000;
+    font-family: '微软雅黑' !important;
+  }
+}
+.extra-gathering-ticket-preview {
+  width: 63mm;
+  color: #000;
+  padding: 8px;
+  background: #fff;
+
+  &__section {
+    padding: 16px 0 0 0;
+    font-size: 14px;
+    border-bottom: 2px dotted #231815;
+    &-item {
+      display: flex;
+      justify-content: space-between;
+      span:first-child {
+        min-width: 69px;
+        white-space: nowrap;
+      }
+      span:last-child {
+        word-break: break-all;
+      }
+    }
+    &-title {
+      margin-top: 16px;
+      font-size: 28px;
+      font-weight: 500;
+    }
+    &-subtitle {
+      display: inline-block;
+      margin-bottom: 22px;
+      font-size: 18px;
+      font-weight: 500;
+      word-break: break-all;
+    }
+  }
+}

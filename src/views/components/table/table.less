@@ -1,4 +1,12 @@
 .st-table {
+  .st-expand-row-icon {
+    .c(#9bacb9);
+  }
+  // .ant-table-row-level-0 {
+  //   + .ant-table-row-level-1 {
+  //     background: inherit;
+  //   }
+  // }
   .ant-table-thead > tr > th {
     .bg(@table-bg-color-thead-second);
     .c(rgba(94, 106, 127, 1));
@@ -19,7 +27,6 @@
       padding-left: 16px;
     }
   }
-
   .ant-table-row {
     &:nth-child(even) {
       .bg(@table-bg-color-row-2);
@@ -40,5 +47,17 @@
     font-size: 14px;
     font-weight: 400;
     line-height: 22px;
+  }
+}
+
+.st-table--expand {
+  tr[data-row-key^='even'] {
+    background: #fff !important;
+  }
+  tr[data-row-key^='odd'] {
+    background: #fafafa !important;
+  }
+  .ant-table-row-level-0 + .ant-table-row-level-1 {
+    box-shadow: inset 0px 8px 24px -8px #e1e1e1;
   }
 }

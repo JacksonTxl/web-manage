@@ -44,10 +44,16 @@
           />
           <st-recent-radio-group
             @change="onChangeDataDays"
-            :value="query"
           ></st-recent-radio-group>
         </div>
       </header>
+      <st-total
+        class="mg-t16"
+        :class="b('total')"
+        :indexs="columns"
+        :dataSource="total"
+        hasTitle
+      ></st-total>
       <st-table
         :loading="loading.getList"
         :columns="columns"
@@ -83,6 +89,7 @@ export default {
     return {
       list: this.orderService.list$,
       page: this.orderService.page$,
+      total: this.orderService.total$,
       auth: this.orderService.auth$,
       chartData: this.orderService.chartData$,
       loading: this.orderService.loading$

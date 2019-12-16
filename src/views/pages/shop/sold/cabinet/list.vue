@@ -281,6 +281,9 @@ export default {
         case 'Print':
           this.toContract({ order_id: orderId })
           break
+        case 'PrintOrder':
+          this.printOrder(orderId)
+          break
         case 'ViewOrder':
           this.createdOrderViewOrder(orderId)
           break
@@ -292,6 +295,14 @@ export default {
           )
           break
       }
+    },
+    // 打印小票
+    printOrder(order_id) {
+      window.open(
+        '/ticket/gathering-print?id=' + order_id,
+        '_blank',
+        'width=800,height=600'
+      )
     },
     // 转让
     onTransfer(record) {

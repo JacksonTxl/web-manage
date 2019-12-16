@@ -17,6 +17,7 @@ export class RevenueService {
   dataRing$ = new State([])
   list$ = new State([])
   page$ = new State({})
+  total$ = new State({})
 
   auth$ = this.authService.authMap$({
     export: 'brand_shop:stat:revenue_reports|batch_export'
@@ -72,6 +73,7 @@ export class RevenueService {
       tap(res => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+        this.total$.commit(() => res.total)
       })
     )
   }

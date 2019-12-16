@@ -41,7 +41,6 @@ export default {
     onInput() {
       if (this.$attrs.value.length > this.maxLength) {
         // this.dvalue = this.$attrs.value.substr(0, 15)
-        // debugger
       }
     }
   }

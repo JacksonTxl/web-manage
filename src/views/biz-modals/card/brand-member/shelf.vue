@@ -4,6 +4,7 @@
     v-model="show"
     wrapClassName="modal-card-batch-shelves"
     width="668px"
+    :loading="firstLoading"
   >
     <section :class="shelves('content')">
       <div :class="shelves('info')" class="mg-b24">
@@ -386,7 +387,7 @@
               class="mg-b16"
               :class="shelves('tree-search')"
               @search="onTreeSearch"
-              placeholder="Search"
+              placeholder="请输入场地名称查询"
             />
             <a-tree
               checkable
@@ -435,7 +436,7 @@
 <script>
 import { ShelfService } from './shelf.service'
 import { cloneDeep } from 'lodash-es'
-import { RuleConfig } from '@/constants/rule'
+import { PatternService } from '@/services/pattern.service'
 import ShopHourPicker from '@/views/biz-components/shop-hour-picker/shop-hour-picker'
 import { ruleOptions, shopColumns, admissionTimeList } from './shelf.config'
 import { BRAND_MEMBER } from '@/constants/card/brand-member'
@@ -449,7 +450,7 @@ export default {
   },
   serviceInject() {
     return {
-      rules: RuleConfig,
+      pattern: PatternService,
       shelfService: ShelfService
     }
   },
@@ -529,7 +530,9 @@ export default {
     priceList: {
       deep: true,
       handler() {
-        let b = this.priceValidataArray.every(i => this.rules.number.test(i))
+        let b = this.priceValidataArray.every(i =>
+          this.pattern.NUM_FLOAT(1).test(i)
+        )
         b && this.checkedPrice()
       }
     },
@@ -549,6 +552,7 @@ export default {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
+      firstLoading: false,
       BRAND_MEMBER,
       form,
       decorators,
@@ -626,7 +630,9 @@ export default {
         this.priceHelpText = ''
         return false
       }
-      let b = this.priceValidataArray.every(i => this.rules.number.test(i))
+      let b = this.priceValidataArray.every(i =>
+        this.pattern.NUM_FLOAT(1).test(i)
+      )
       this.priceHelpText = b ? '' : '请输入价格'
     },
     // 开卡方式change
@@ -749,7 +755,10 @@ export default {
     }
   },
   created() {
-    this.shelfService.getInfo(this.id).subscribe()
+    this.firstLoading = true
+    this.shelfService.getInfo(this.id).subscribe(res => {
+      this.firstLoading = false
+    })
   }
 }
 </script>

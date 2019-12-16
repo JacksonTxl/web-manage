@@ -306,6 +306,16 @@
           <st-form-item label="手续费" labelGutter="12px">
             {{ poundage }}元
           </st-form-item>
+          <st-form-item label="减免金额" labelGutter="12px">
+            <st-input-number
+              :float="true"
+              v-decorator="decorators.handling_fee_reduce"
+              placeholder="请输入减免金额"
+              :max="poundage"
+            >
+              <span slot="addonAfter">元</span>
+            </st-input-number>
+          </st-form-item>
           <st-form-item label="支付方式" required labelGutter="12px">
             <a-select
               v-decorator="decorators.payType"
@@ -454,7 +464,8 @@ export default {
                 remain_price: +values.remainPrice,
                 contract_number: values.contractNumber,
                 frozen_pay_type: +values.payType,
-                sold_type: +sold_type
+                sold_type: +sold_type,
+                handling_fee_reduce: values.handling_fee_reduce
               },
               this.id,
               this.type

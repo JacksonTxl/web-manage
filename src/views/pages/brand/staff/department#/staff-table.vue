@@ -14,21 +14,21 @@
       <div slot="action" slot-scope="text, record">
         <st-table-actions>
           <a
-            v-if="record.auth['brand_shop:staff:staff|get']"
+            v-if="record.auth['brand:staff:staff|get']"
             @click="staffInfo(record)"
           >
             详情
           </a>
           <a
             href="javascript: void(0)"
-            v-if="record.auth['brand_shop:staff:staff|edit']"
+            v-if="record.auth['brand:staff:staff|edit']"
             @click="editStaff(record.id)"
           >
             编辑
           </a>
           <a
             href="javascript: void(0)"
-            v-if="record.auth['brand_shop:staff:staff|bind_card']"
+            v-if="record.auth['brand:staff:staff|bind_card']"
             v-modal-link="{
               name: 'staff-bind-entity-card',
               props: { staff: record }
@@ -38,7 +38,7 @@
           </a>
           <a
             href="javascript: void(0)"
-            v-if="record.auth['brand_shop:staff:staff|rebind_card']"
+            v-if="record.auth['brand:staff:staff|rebind_card']"
             v-modal-link="{
               name: 'staff-bind-entity-card',
               props: { staff: record }
@@ -48,21 +48,21 @@
           </a>
           <a
             href="javascript: void(0)"
-            v-if="record.auth['brand_shop:staff:staff|position']"
+            v-if="record.auth['brand:staff:staff|position']"
             @click="staffPositionChange(record)"
           >
             职位变更
           </a>
           <a
             href="javascript: void(0)"
-            v-if="record.auth['brand_shop:staff:staff|leave']"
+            v-if="record.auth['brand:staff:staff|leave']"
             @click="staffLeave(record)"
           >
             离职
           </a>
           <a
             href="javascript: void(0)"
-            v-if="record.auth['brand_shop:staff:staff|reinstate']"
+            v-if="record.auth['brand:staff:staff|reinstate']"
             v-modal-link="{
               name: 'staff-reinstatement',
               props: { staff: record }
@@ -72,7 +72,7 @@
           </a>
           <a
             href="javascript: void(0)"
-            v-if="record.auth['brand_shop:staff:account|save']"
+            v-if="record.auth['brand:staff:account|save']"
             v-modal-link="{
               name: 'staff-re-password',
               props: { staff: record }
@@ -82,7 +82,7 @@
           </a>
           <a
             href="javascript: void(0)"
-            v-if="record.auth['brand_shop:staff:staff|salary']"
+            v-if="record.auth['brand:staff:staff|salary']"
             v-modal-link="{
               name: 'staff-salary-account-setting',
               props: { staff: record }
@@ -91,7 +91,7 @@
             设置薪资账户
           </a>
           <a
-            v-if="record.auth['brand_shop:staff:staff|del']"
+            v-if="record.auth['brand:staff:staff|del']"
             @click="onClickDelete(record)"
           >
             删除

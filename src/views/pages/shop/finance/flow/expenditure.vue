@@ -48,6 +48,13 @@
         </div>
       </st-search-panel>
     </div>
+    <st-total
+      :class="bPage('total')"
+      :indexs="columns"
+      :dataSource="total$"
+      class="pd-x24"
+      hasTitle
+    ></st-total>
     <st-table
       :columns="columns"
       :scroll="{ x: 1400 }"
@@ -56,7 +63,11 @@
       @change="onTableChange"
       :dataSource="list$"
     >
-      <span slot="price" :class="{ price__red: +text < 0 }" slot-scope="text">
+      <span
+        slot="price"
+        :class="{ 'color-danger': +text < 0 }"
+        slot-scope="text"
+      >
         {{ text }}
       </span>
       <span slot="flow_type" slot-scope="text">{{ text.name }}</span>
@@ -73,7 +84,7 @@
 <script>
 import tableMixin from '@/mixins/table.mixin'
 import { ExpenditureService } from './expenditure.service'
-import { columns } from './expenditure.config.ts'
+import { columns, totalColumns } from './expenditure.config.ts'
 export default {
   name: 'FinanceFlowExpenditure',
   mixins: [tableMixin],
@@ -87,11 +98,12 @@ export default {
     }
   },
   rxState() {
-    const { loading$, page$, list$, payType$ } = this.service
+    const { loading$, page$, list$, payType$, total$ } = this.service
     return {
       loading$,
       page$,
       list$,
+      total$,
       payType$
     }
   },
@@ -104,7 +116,8 @@ export default {
     }
   },
   computed: {
-    columns
+    columns,
+    totalColumns
   },
   mounted() {
     this.setSearchDate()
@@ -118,7 +131,7 @@ export default {
     },
     onChangePayType(checkedList) {
       this.indeterminate =
-        !!checkedList.length && checkedList.length < this.payType$.length
+        checkedList.length && checkedList.length < this.payType$.length
       this.checkAll = checkedList.length === this.payType$.length
     },
     onCheckAllChange(e) {

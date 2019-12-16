@@ -20,7 +20,7 @@ export const routeMapConfig = {
   },
   'brand-product-course-personal-list-shop'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '门店私教课程库'
-    routeConfig.meta.auth = 'brand_shop:product:personal_course|shop_list'
+    routeConfig.meta.auth = 'brand:product:personal_course|shop_list'
     routeConfig.queryOptions = {
       shop_id: { type: Number, default: -1 },
       category_id: { type: Number, default: -1 },
@@ -45,7 +45,7 @@ export const routeMapConfig = {
   },
   'brand-product-course-team-list-shop'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '门店团体课程库'
-    routeConfig.meta.auth = 'brand_shop:product:team_course|shop_list'
+    routeConfig.meta.auth = 'brand:product:team_course|shop_list'
     routeConfig.queryOptions = {
       shop_id: { type: Number, default: -1 },
       category_id: { type: Number, default: -1 },
@@ -390,7 +390,7 @@ export const routeMapConfig = {
   },
   'brand-setting-app-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '课程'
-    routeConfig.meta.auth = 'brand_shop:course:course_setting|tab'
+    routeConfig.meta.auth = 'brand:course:course_setting|tab'
     routeConfig.meta.tabs = [
       'brand-setting-app-course-category',
       'brand-setting-app-course-training-aim'
@@ -422,7 +422,7 @@ export const routeMapConfig = {
   },
   'shop-product-card-member-list-shelves'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '门店上架卡项'
-    routeConfig.meta.auth = 'brand_shop:product:member_card|shop_list'
+    routeConfig.meta.auth = 'shop:product:member_card|shop_list'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -433,7 +433,7 @@ export const routeMapConfig = {
   },
   'shop-product-card-member-list-all'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '全部{{$c("member_card")}}项'
-    routeConfig.meta.auth = 'brand_shop:product:member_card|all_list'
+    routeConfig.meta.auth = 'shop:product:member_card|all_list'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -453,7 +453,7 @@ export const routeMapConfig = {
   },
   'shop-product-card-deposit-list-shelves'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '门店上架储值卡'
-    routeConfig.meta.auth = 'brand_shop:product:deposit_card|shop_list'
+    routeConfig.meta.auth = 'shop:product:deposit_card|shop_list'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -463,7 +463,7 @@ export const routeMapConfig = {
   },
   'shop-product-card-deposit-list-all'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '全部储值卡'
-    routeConfig.meta.auth = 'brand_shop:product:deposit_card|all_list'
+    routeConfig.meta.auth = 'shop:product:deposit_card|all_list'
     routeConfig.queryOptions = {
       sell_status: { type: Number, default: -1 },
       publish_channel: { type: Number, default: -1 },
@@ -481,7 +481,7 @@ export const routeMapConfig = {
   },
   'brand-product-card-deposit-list-shelves'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '门店上架储值卡'
-    routeConfig.meta.auth = 'brand_shop:product:deposit_card|shop_list'
+    routeConfig.meta.auth = 'brand:product:deposit_card|shop_list'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -492,7 +492,7 @@ export const routeMapConfig = {
   },
   'brand-product-card-deposit-list-all'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '全部储值卡项'
-    routeConfig.meta.auth = 'brand_shop:product:deposit_card|all_list'
+    routeConfig.meta.auth = 'brand:product:deposit_card|all_list'
     routeConfig.queryOptions = {
       sell_status: { type: Number, default: -1 },
       publish_channel: { type: Number, default: -1 },
@@ -510,7 +510,7 @@ export const routeMapConfig = {
   },
   'brand-product-card-member-list-shelves'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '门店上架卡项'
-    routeConfig.meta.auth = 'brand_shop:product:member_card|shop_list'
+    routeConfig.meta.auth = 'brand:product:member_card|shop_list'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -522,7 +522,7 @@ export const routeMapConfig = {
   },
   'brand-product-card-member-list-all'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '全部{{$c("member_card")}}项'
-    routeConfig.meta.auth = 'brand_shop:product:member_card|all_list'
+    routeConfig.meta.auth = 'brand:product:member_card|all_list'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -544,7 +544,7 @@ export const routeMapConfig = {
   },
   'brand-product-card-member-number-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '{{$c("member_card")}}详情'
-    routeConfig.meta.auth = 'brand_shop:product:member_card|get'
+    routeConfig.meta.auth = 'brand:product:member_card|get'
   },
   'brand-dashboard-club'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '首页'
@@ -557,23 +557,46 @@ export const routeMapConfig = {
   },
   'brand-product-card-member-number-edit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑{{$c("member_card")}}'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
   },
   'brand-product-card-member-add-select'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '{{$c("member_card")}}'
   },
   'brand-product-card-member-period-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增{{$c("member_card")}}'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
+  },
+  'brand-product-card-member-period-edit'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '编辑{{$c("member_card")}}'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
   },
   'brand-product-card-member-number-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增次卡'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
   },
   'brand-product-card-member-period-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '{{$c("member_card")}}详情'
-    routeConfig.meta.auth = 'brand_shop:product:member_card|get'
+    routeConfig.meta.auth = 'brand:product:member_card|get'
   },
   'brand-product-card-deposit-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '储值卡详情'
-    routeConfig.meta.auth = 'brand_shop:product:deposit_card|get'
+    routeConfig.meta.auth = 'brand:product:deposit_card|get'
   },
   'brand-product-card-deposit-edit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑储值卡'
@@ -598,6 +621,12 @@ export const routeMapConfig = {
   },
   'brand-staff-department'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工管理'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      shop_id: { type: Number, default: -1 },
+      work_status: { type: Number, default: -1 }
+    }
   },
   'brand-staff-info-basic'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
@@ -724,6 +753,67 @@ export const routeMapConfig = {
   'brand-setting-contract-edit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '合同编辑'
   },
+  'brand-finance-flow'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '收支流水'
+    routeConfig.meta.tabs = [
+      'brand-finance-flow-income',
+      'brand-finance-flow-income-detail',
+      'brand-finance-flow-expenditure',
+      'brand-finance-flow-expenditure-detail'
+    ]
+  },
+  'brand-finance-flow-expenditure'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '支出流水-汇总'
+    routeConfig.meta.auth = 'brand:flow:expenditure|summary_list'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: -1 },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' }
+    }
+  },
+  'brand-finance-flow-expenditure-detail'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '支出流水-明细'
+    routeConfig.meta.auth = 'brand:flow:expenditure|detail_list'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: -1 },
+      search_number: { type: String, default: '' },
+      start_amount: { type: String, default: '' },
+      end_amount: { type: String, default: '' },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' }
+    }
+  },
+  'brand-finance-flow-income'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '收入流水-汇总'
+    routeConfig.meta.auth = 'brand:flow:income|summary_list'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: -1 },
+      current_page: { type: Number, default: 1 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'brand-finance-flow-income-detail'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '收入流水-明细'
+    routeConfig.meta.auth = 'brand:flow:income|detail_list'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: -1 },
+      pay_channel: { type: Number, default: -1 },
+      search_number: { type: String, default: '' },
+      current_page: { type: Number, default: 1 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' },
+      start_amount: { type: String, default: '' },
+      end_amount: { type: String, default: '' },
+      size: { type: Number, default: 20 }
+    }
+  },
+
   'shop-dashboard-shop'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '概览'
   },
@@ -917,13 +1007,37 @@ export const routeMapConfig = {
   },
   'shop-product-card-member-period-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增期限卡'
-  },
-  'shop-product-card-member-number-add'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '新增次卡'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
   },
   'shop-product-card-member-period-edit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑{{$c("member_card")}}'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
   },
+  'shop-product-card-member-number-add'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '新增次卡'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
+  },
+  'shop-product-card-member-number-edit'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '编辑次卡'
+    routeConfig.queryOptions = {
+      type: {
+        type: String
+      }
+    }
+  },
+
   'shop-product-card-deposit-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增储值卡'
   },
@@ -1073,6 +1187,7 @@ export const routeMapConfig = {
   },
   'brand-setting-sms-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '短信列表'
+    routeConfig.meta.auth = 'brand_shop:message:sms|list'
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       current_page: { type: Number, default: 1 },
@@ -1085,6 +1200,7 @@ export const routeMapConfig = {
   },
   'brand-setting-sms-pay'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '短信充值'
+    routeConfig.meta.auth = 'brand_shop:message:sms|charge_list'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
@@ -1092,6 +1208,7 @@ export const routeMapConfig = {
   },
   'brand-setting-sms-notice'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '通知模版'
+    routeConfig.meta.auth = 'brand_shop:message:notify|list'
   },
   'shop-stat'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '数据统计'
@@ -1105,7 +1222,7 @@ export const routeMapConfig = {
   },
   'shop-finance-flow-expenditure'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '支出流水'
-    // routeConfig.meta.auth = 'brand_shop:flow:expenditure|tab'
+    routeConfig.meta.auth = 'shop:flow:expenditure|detail_list'
     routeConfig.queryOptions = {
       search_number: { type: String },
       start_amount: { type: String },
@@ -1118,7 +1235,7 @@ export const routeMapConfig = {
   },
   'shop-finance-flow-income'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '收入流水'
-    // routeConfig.meta.auth = 'brand_shop:flow:income|tab'
+    routeConfig.meta.auth = 'shop:flow:income|detail_list'
     routeConfig.queryOptions = {
       search_number: { type: String },
       current_page: { type: Number, default: 1 },

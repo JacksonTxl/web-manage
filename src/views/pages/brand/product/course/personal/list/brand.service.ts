@@ -19,7 +19,7 @@ export class BrandService implements Controller {
   supportShopList$ = new State([])
   supportCoachList$ = new State([])
   auth$ = this.authService.authMap$({
-    add: 'brand_shop:product:personal_course|add'
+    add: 'brand:product:personal_course|add'
   })
   constructor(
     private personalApi: BrandPersonalCourseApi,

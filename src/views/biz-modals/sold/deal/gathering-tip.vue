@@ -14,13 +14,18 @@
         打印合同
       </st-button>
       <st-button @click="viewOrder">查看订单</st-button>
+      <st-button @click="printOrder" type="primary" v-if="auth.print">
+        打印小票
+      </st-button>
       <st-button @click="goPay" v-if="needPay">去支付</st-button>
+      <st-button @click="changeMember" v-if="isFamilyCard">变更成员</st-button>
     </div>
   </st-modal>
 </template>
 
 <script>
 import { UserService } from '@/services/user.service'
+import { GatheringTipService } from './gathering-tip.service'
 export default {
   name: 'ModalSoldDealGatheringTip',
   bem: {
@@ -33,12 +38,14 @@ export default {
   },
   serviceInject() {
     return {
-      userService: UserService
+      userService: UserService,
+      gatheringTipService: GatheringTipService
     }
   },
   rxState() {
     return {
-      isBrandStudio: this.userService.isBrandStudio$
+      isBrandStudio: this.userService.isBrandStudio$,
+      auth: this.gatheringTipService.auth$
     }
   },
   props: {
@@ -46,7 +53,8 @@ export default {
     type: String,
     member_id: Number, // 会员id
     message: String,
-    needPay: Boolean // true 需要支付按钮 false 不需要
+    needPay: Boolean, // true 需要支付按钮 false 不需要
+    isFamilyCard: Boolean // true 需要展示变更成员按钮 false 不需要
   },
   methods: {
     print() {
@@ -54,6 +62,13 @@ export default {
       this.$emit('success', {
         orderId: this.order_id,
         type: 'Print'
+      })
+    },
+    printOrder() {
+      this.show = false
+      this.$emit('success', {
+        orderId: this.order_id,
+        type: 'PrintOrder'
       })
     },
     viewOrder() {
@@ -76,6 +91,14 @@ export default {
       this.$emit('success', {
         orderId: this.order_id,
         type: 'cancel'
+      })
+    },
+    // 变更成员
+    changeMember() {
+      this.show = false
+      this.$emit('success', {
+        orderId: this.order_id,
+        type: 'ChangeMember'
       })
     }
   }

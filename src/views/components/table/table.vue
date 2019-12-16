@@ -1,5 +1,17 @@
 <script>
 import { merge, omit, map } from 'lodash-es'
+function addKey(dataSource) {
+  for (let i in dataSource) {
+    dataSource[i].key = i % 2 ? `odd-${i}` : `even-${i}`
+    if (dataSource[i].children) {
+      for (let j in dataSource[i].children) {
+        dataSource[i].children[j].key = `${dataSource[i].key}-${j}`
+      }
+    }
+  }
+  // console.log(dataSource)
+  return dataSource
+}
 export default {
   name: 'StTable',
   props: {
@@ -30,6 +42,14 @@ export default {
     pageMode: {
       type: String,
       default: 'server'
+    },
+    isExpand: {
+      type: Boolean,
+      default: false
+    },
+    simplePage: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {
@@ -43,7 +63,9 @@ export default {
     return {
       pageSize: 20,
       total: 0,
-      current: 1
+      current: 1,
+      isChildren: false,
+      count: 1
     }
   },
   computed: {
@@ -52,15 +74,34 @@ export default {
         emptyText: <st-no-data />
       }
     },
+    tableDataSource() {
+      let dataSource = []
+      let isChildren = false
+      this.dataSource.forEach(ele => {
+        if (Array.isArray(ele.children)) {
+          isChildren = Array.isArray(ele.children)
+        }
+      })
+      // 有子表定义key
+      if (isChildren) {
+        dataSource = addKey(this.dataSource)
+      }
+      return dataSource.length > 0 ? dataSource : this.dataSource
+    },
+    defaultPageSize() {
+      return this.simplePage ? 10 : 20
+    },
     tablePagination: {
       get() {
         if (this.pagination === false || this.page === false) {
           return false
         }
+        const pageSize =
+          this.pageMode === 'client' ? this.pageSize : this.defaultPageSize
         let _p = merge(
           {
             current: this.current,
-            pageSize: this.pageSize,
+            pageSize,
             total: this.total,
             showTotal: function(total, range) {
               return `共${total}条`
@@ -77,13 +118,16 @@ export default {
         )
         if (this.page) {
           if (this.page.size) {
-            _p.pageSize = +this.page.size || 20
+            _p.pageSize = +this.page.size || this.defaultPageSize
           }
           if (this.page.current_page) {
             _p.current = +this.page.current_page || 1
           }
           if (this.page.total_counts) {
             _p.total = +this.page.total_counts || 0
+          }
+          if (this.simplePage) {
+            _p.simple = true
           }
         }
         return _p
@@ -106,15 +150,37 @@ export default {
       return map(this.$slots, (vnode, slot) => (
         <template slot={slot}>{vnode}</template>
       ))
+    },
+    CustomExpandIcon(props) {
+      let text = ''
+      let className = 'st-expand-row-icon'
+      if (props.record.children && props.record.children.length) {
+        const type = props.expanded ? 'table-up' : 'table-down'
+        text = <st-icon type={type} />
+        className = 'st-expand-row-icon mg-r8'
+      }
+      return (
+        <span
+          class={className}
+          onClick={e => props.onExpand(props.record, e)}
+          style={{ cursor: 'pointer' }}
+        >
+          {text}
+        </span>
+      )
     }
   },
   render(h) {
-    const props = {
+    let props = {
       pagination: this.tablePagination,
       locale: this.locale,
-      dataSource: this.dataSource,
+      dataSource: this.tableDataSource,
       scroll: this.dataSource.length >= 1 ? this.scroll : {},
       ...this.$attrs
+    }
+    // 判断是否是父子表格
+    if (this.isExpand) {
+      props.expandIcon = this.CustomExpandIcon
     }
     const ce = this.alertSelection.onReset
       ? h('div', { class: 'st-table-wapper' }, [
@@ -147,7 +213,7 @@ export default {
           h(
             'a-table',
             {
-              class: 'st-table',
+              class: ['st-table', this.isExpand ? 'st-table--expand' : ''],
               props,
               on: {
                 change: this.onChange
@@ -161,7 +227,7 @@ export default {
       : h(
           'a-table',
           {
-            class: 'st-table',
+            class: ['st-table', this.isExpand ? 'st-table--expand' : ''],
             props,
             on: {
               change: this.onChange

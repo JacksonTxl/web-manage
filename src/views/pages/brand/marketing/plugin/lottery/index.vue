@@ -4,12 +4,12 @@
     <st-panel app>
       <div :class="bPage('action')" class="mg-b16">
         <div>
-          <router-link to="./add">
+          <router-link to="./add" v-if="auth.add">
             <st-button type="primary" icon="add" class="mg-r16">
               新建活动
             </st-button>
           </router-link>
-          <router-link to="./checkin">
+          <router-link to="./checkin" v-if="auth.destory">
             <st-button type="default">核销兑换码</st-button>
           </router-link>
         </div>
@@ -160,7 +160,8 @@ export default {
       page: this.indexService.page$,
       loading: this.indexService.loading$,
       info: this.indexService.info$,
-      status: this.indexService.status$
+      status: this.indexService.status$,
+      auth: this.indexService.auth$
     }
   },
   components: {

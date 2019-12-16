@@ -11,15 +11,8 @@
       placeholder="全部员工状态"
       v-model="$searchQuery.work_status"
       @change="onSingleSearch('work_status', $event)"
-    >
-      <a-select-option
-        v-for="status in workStatus"
-        :value="status.id"
-        :key="status.id"
-      >
-        {{ status.name }}
-      </a-select-option>
-    </a-select>
+      :options="workStatus"
+    />
     <st-input-search
       class="filter-staff__item"
       placeholder="搜索员工"
@@ -43,7 +36,7 @@ export default {
   },
   rxState() {
     return {
-      staffEnums: this.userService.staffEnums$
+      staffEnums: this.userService.getOptions$('staff.work_status')
     }
   },
   components: {
@@ -51,27 +44,13 @@ export default {
   },
   computed: {
     workStatus() {
-      return [
-        { id: -1, name: '全部员工状态' },
-        ...this.computedList('work_status')
-      ]
+      return [{ value: -1, label: '全部员工状态' }, ...this.staffEnums]
     }
   },
   data() {
     return {}
   },
   methods: {
-    computedList(key) {
-      let arr = []
-      let value = this.staffEnums[key].value
-      for (let key in value) {
-        arr.push({
-          id: key,
-          name: value[key]
-        })
-      }
-      return arr
-    },
     // 员工状态
     onChooseStaffStatus(e) {
       this.searchData.staff_status = e

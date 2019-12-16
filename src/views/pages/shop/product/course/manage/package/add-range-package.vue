@@ -101,10 +101,14 @@
                     class="bg-row-odd team-course-list-content"
                     v-if="teamCourseListIsShow && packageData.is_team"
                   >
-                    <td class="rightline" colspan="2"></td>
+                    <td
+                      class="rightline"
+                      colspan="2"
+                      style="background-color:#fff"
+                    ></td>
                     <td class="team-course-table" colspan="4">
                       <div :class="add('team-course-table')">
-                        <table>
+                        <st-form-table>
                           <colgroup>
                             <col style="width:5%;" />
                             <col style="width:81%;" />
@@ -132,8 +136,7 @@
                               <td colspan="3">
                                 <p
                                   v-if="!teamCourseList.length"
-                                  class="bg-row-even"
-                                  style="margin: 0;text-align:center;padding: 8px 0;"
+                                  style="margin: 0;text-align:center;"
                                 >
                                   无数据
                                 </p>
@@ -199,11 +202,11 @@
                               </td>
                             </tr>
                           </tbody>
-                        </table>
+                        </st-form-table>
                       </div>
                     </td>
                   </tr>
-                  <tr class="bg-row-even checkbox topline">
+                  <tr class="bg-row-top checkbox">
                     <td class="tg-c">
                       <a-checkbox @change="personalCheckboxChange" />
                     </td>
@@ -257,10 +260,14 @@
                     class="bg-row-even personal-course-list-content"
                     v-if="personalCourseListIsShow && packageData.is_personal"
                   >
-                    <td class="rightline" colspan="2"></td>
+                    <td
+                      class="rightline"
+                      colspan="2"
+                      style="background-color:#fafafa"
+                    ></td>
                     <td class="personal-course-table" colspan="4">
                       <div :class="add('personal-course-table')">
-                        <table>
+                        <st-form-table>
                           <colgroup>
                             <col style="width:5%;" />
                             <col style="width:29%;" />
@@ -292,8 +299,7 @@
                               <td colspan="5">
                                 <p
                                   v-if="!personalCourseList.length"
-                                  class="bg-row-even"
-                                  style="margin: 0;text-align:center;padding: 8px 0;"
+                                  style="margin: 0;text-align:center;"
                                 >
                                   无数据
                                 </p>
@@ -472,7 +478,7 @@
                               </td>
                             </tr>
                           </tbody>
-                        </table>
+                        </st-form-table>
                       </div>
                     </td>
                   </tr>
@@ -856,37 +862,40 @@ export default {
     save() {
       this.course_validator()
       this.image_validator()
-      this.form.validateFieldsAndScroll((err, values) => {
-        if (!err && !this.courseIsNone && !this.imageIsNone) {
-          this.packageData.course_name = values.course_name
-          this.packageData.price = values.price
-          this.packageData.valid_time = values.valid_time
-          this.packageData.frozen_days = values.frozen_days
-          this.packageData.transfer_rate = this.packageData.is_allow_transfer
-            ? +values.transfer_rate
-            : undefined
-          this.packageData.start_time = `${this.start_time.format(
-            'YYYY-MM-DD'
-          )}`
-          this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')}`
-          this.packageData.team_range = []
-          this.teamCourseList.forEach(i => {
-            this.packageData.team_range.push(i.course_id)
-          })
-          this.packageData.personal_range = []
-          this.personalCourseList.forEach(i => {
-            this.packageData.personal_range.push({
-              course_id: i.course_id,
-              coach_level: cloneDeep(i.coachGradeList)
+      this.form.validateFieldsAndScroll(
+        { scroll: { offsetTop: 80 } },
+        (err, values) => {
+          if (!err && !this.courseIsNone && !this.imageIsNone) {
+            this.packageData.course_name = values.course_name
+            this.packageData.price = values.price
+            this.packageData.valid_time = values.valid_time
+            this.packageData.frozen_days = values.frozen_days
+            this.packageData.transfer_rate = this.packageData.is_allow_transfer
+              ? +values.transfer_rate
+              : undefined
+            this.packageData.start_time = `${this.start_time.format(
+              'YYYY-MM-DD'
+            )}`
+            this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')}`
+            this.packageData.team_range = []
+            this.teamCourseList.forEach(i => {
+              this.packageData.team_range.push(i.course_id)
             })
-          })
-          this.addPackageService.add(this.packageData).subscribe(res => {
-            this.$router.push({
-              path: '/shop/product/course/manage/package/list'
+            this.packageData.personal_range = []
+            this.personalCourseList.forEach(i => {
+              this.packageData.personal_range.push({
+                course_id: i.course_id,
+                coach_level: cloneDeep(i.coachGradeList)
+              })
             })
-          })
+            this.addPackageService.add(this.packageData).subscribe(res => {
+              this.$router.push({
+                path: '/shop/product/course/manage/package/list'
+              })
+            })
+          }
         }
-      })
+      )
     },
     // 保存并上架
     onsale() {

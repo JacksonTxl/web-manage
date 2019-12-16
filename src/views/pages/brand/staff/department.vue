@@ -136,7 +136,10 @@ export default {
       })
     },
     getDepartment(item = 0) {
+      this.$searchQuery.shop_id = -1
+      this.$searchQuery.work_status = -1
       this.$searchQuery.department_id = item
+      this.$searchQuery.keyword = ''
       this.$router.push({ query: this.$searchQuery })
     },
     selectedRow(ids) {

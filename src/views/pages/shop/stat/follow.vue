@@ -16,7 +16,7 @@
       <a-row :class="bPage('income-row')">
         <div :class="bPage('income-detail')">
           <swiper :options="sliderOptions">
-            <swiper-slide v-for="(item, index) in totalInfo.list" :key="index">
+            <swiper-slide v-for="(item, index) in totalInfo$.list" :key="index">
               <div :class="bPage('income')">
                 <p :class="bPage('income-label')">{{ item.label }}</p>
                 <p :class="bPage('income-value')">{{ item.value }}</p>
@@ -34,13 +34,20 @@
     </div>
     <!-- :alertSelection="{ onReset: onSelectionReset }" -->
     <!-- :rowSelection="{ selectedRowKeys, onChange: onSelectionChange }" -->
+    <!-- <st-total
+      :class="bPage('total')"
+      :indexs="columns"
+      :dataSource="total$"
+      hasTitle
+    ></st-total> -->
     <st-table
-      :page="page"
+      :page="page$"
+      class="mg-t12"
       @change="onTableChange"
-      :loading="loading.getFollowShopList"
+      :loading="loading$.getFollowShopList"
       :columns="columns"
       :scroll="{ x: 1800 }"
-      :dataSource="list"
+      :dataSource="list$"
       rowKey="id"
     ></st-table>
   </div>
@@ -62,11 +69,13 @@ export default {
     }
   },
   rxState() {
+    const { loading$, list$, page$, totalInfo$, total$ } = this.followService
     return {
-      loading: this.followService.loading$,
-      list: this.followService.list$,
-      page: this.followService.page$,
-      totalInfo: this.followService.totalInfo$
+      loading$,
+      list$,
+      page$,
+      totalInfo$,
+      total$
     }
   },
   data() {

@@ -33,6 +33,7 @@ export const ruleOptions = (vm: any) => {
     },
     payType: {
       rules: [{ required: true, message: '请选择支付方式' }]
-    }
+    },
+    handling_fee_reduce: {}
   }
 }

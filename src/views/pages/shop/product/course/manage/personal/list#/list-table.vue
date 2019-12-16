@@ -37,7 +37,7 @@
 
     <div slot="course_name" slot-scope="course_name, record">
       <router-link
-        v-if="record.auth['brand_shop:product:personal_course|get']"
+        v-if="record.auth['shop:product:personal_course|get']"
         class="mg-r8"
         :to="{
           name: 'shop-product-course-manage-personal-info',
@@ -73,7 +73,7 @@
       <st-table-actions>
         <router-link
           class="mg-r8"
-          v-if="record.auth['brand_shop:product:personal_course|get']"
+          v-if="record.auth['shop:product:personal_course|get']"
           :to="{
             name: 'shop-product-course-manage-personal-info',
             query: { id: record.course_id }
@@ -82,7 +82,7 @@
           详情
         </router-link>
         <router-link
-          v-if="record.auth['brand_shop:product:personal_course|edit']"
+          v-if="record.auth['shop:product:personal_course|edit']"
           :to="{
             name: 'shop-product-course-manage-personal-edit',
             query: { id: record.course_id }
@@ -92,7 +92,7 @@
         </router-link>
         <a
           href="javascript:;"
-          v-if="record.auth['brand_shop:product:personal_course|del']"
+          v-if="record.auth['shop:product:personal_course|del']"
         >
           <st-popconfirm
             :title="'一旦删除则无法恢复，确认删除' + record.course_name + '？'"

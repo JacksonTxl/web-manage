@@ -33,6 +33,33 @@
             </p>
           </a-col>
         </a-row>
+        <a-row :gutter="8" v-if="isFamilyCard">
+          <a-col :lg="23">
+            <st-form-item
+              class="page-content-card-admission-range mg-t4"
+              required
+            >
+              <template slot="label">
+                支持入场人数
+                <st-help-tooltip id="TBMCDC001" />
+              </template>
+              <a-select
+                v-decorator="decorators.support_member_num"
+                :disabled="isShelfCard"
+                placeholder="请选择入场人数"
+                class="page-content-card-input"
+              >
+                <a-select-option
+                  v-for="(item, index) in supportMemberNums"
+                  :key="index"
+                  :value="item.value"
+                >
+                  {{ item.label }}
+                </a-select-option>
+              </a-select>
+            </st-form-item>
+          </a-col>
+        </a-row>
         <a-row :gutter="8">
           <a-col :lg="23">
             <st-form-item class="mg-b16" label="支持入场门店">
@@ -200,7 +227,7 @@
               </span>
               <a-form-item class="page-a-form">
                 <a-date-picker
-                  :disabled="startTimeIsDisabled"
+                  :disabled="isShelfCard"
                   :disabledDate="disabledStartDate"
                   v-decorator="decorators.start_time"
                   format="YYYY-MM-DD"
@@ -291,7 +318,11 @@
               required
               :help="cardBgValidatorText"
             >
-              <card-bg-radio @change="onCardBgChange" v-model="cardBg" />
+              <card-bg-radio
+                @change="onCardBgChange"
+                v-model="cardBg"
+                :isFamilyCard="isFamilyCard"
+              />
             </st-form-item>
           </a-col>
         </a-row>
@@ -329,7 +360,7 @@
 <script>
 import { UserService } from '@/services/user.service'
 import moment from 'moment'
-import { RuleConfig } from '@/constants/rule'
+import { PatternService } from '@/services/pattern.service'
 import { cloneDeep, remove } from 'lodash-es'
 import { EditService } from './edit.service'
 import MemberCard from '@/views/biz-components/h5/pages/member-card'
@@ -352,7 +383,7 @@ export default {
   },
   serviceInject() {
     return {
-      rules: RuleConfig,
+      pattern: PatternService,
       editService: EditService,
       userService: UserService
     }
@@ -368,7 +399,8 @@ export default {
       supportSales: this.editService.supportSales$,
       unit: this.editService.unit$,
       sellType: this.editService.sellType$,
-      isShelfCard: this.editService.isShelfCard$
+      isShelfCard: this.editService.isShelfCard$,
+      supportMemberNums: this.editService.supportMemberNums$
     }
   },
   bem: {
@@ -492,6 +524,11 @@ export default {
         end_time: moment(this.cardInfo.end_time * 1000),
         transferNum: this.cardInfo.transfer_num
       })
+      if (this.isFamilyCard) {
+        this.form.setFieldsValue({
+          support_member_num: this.cardInfo.support_member_num
+        })
+      }
       this.startTimeIsDisabled =
         this.cardInfo.start_time * 1000 <
           moment()
@@ -534,7 +571,9 @@ export default {
           this.editService
             .editCard({
               id: this.cardInfo.card_id,
-              card_type: CARD_TYPE.PERIOD,
+              card_type: this.isFamilyCard
+                ? CARD_TYPE.MORE_PERIOD
+                : CARD_TYPE.PERIOD,
               card_name: values.card_name,
               start_time: `${this.startTime.format('YYYY-MM-DD')}`,
               end_time: `${this.endTime.format('YYYY-MM-DD')}`,
@@ -545,7 +584,10 @@ export default {
               card_introduction: this.cardIntroduction,
               card_contents: this.cardContents,
               card_bg: this.cardBg,
-              price_gradient
+              price_gradient,
+              support_member_num: this.isFamilyCard
+                ? values.support_member_num
+                : 1
             })
             .subscribe(res => {
               // 编辑成功
@@ -667,7 +709,7 @@ export default {
         this.rallyPriceIsOk = false
       } else {
         this.rallyPriceIsOk = this.priceValidateRuleText.every(i =>
-          this.rules.number.test(i)
+          this.pattern.NUM_FLOAT(1).test(i)
         )
       }
     },
@@ -741,6 +783,10 @@ export default {
     // 转让设置的max
     transferMax() {
       return this.transferUnit === UNIT.PERCENT ? 100 : 999999.9
+    },
+    // 是否是多人卡
+    isFamilyCard() {
+      return this.$searchQuery.type === 'family-card'
     }
   }
 }

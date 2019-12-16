@@ -65,7 +65,7 @@
     <div slot="footer">
       <st-button
         type="primary"
-        v-if="auth$.export"
+        v-if="auth$.export && type !== 'total'"
         v-export-excel="{
           type: 'shop/personal/course/checkin',
           query: query
@@ -80,6 +80,7 @@
 import { columns } from './personal-consume.config'
 import { PersonalConsumeService } from './personal-consume.service'
 import { COURSE_TYPE } from '@/constants/stat/course'
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'PersonalConsume',
   serviceInject() {
@@ -110,8 +111,11 @@ export default {
   props: {
     record: {
       type: Object,
-      default: () => {}
-    }
+      default: () => {
+        return {}
+      }
+    },
+    type: String
   },
   data() {
     return {
@@ -120,7 +124,10 @@ export default {
       consumeList: [],
       course_type: COURSE_TYPE.PERSONAL,
       coach_id: -1,
-      course_id: -1
+      course_id: -1,
+      current_page: 1,
+      // TODO: 后端翻页
+      size: 99999
     }
   },
   computed: {
@@ -128,14 +135,33 @@ export default {
     showTable() {
       return this.$searchQuery.showTable || 'all'
     },
+    totalQuery() {
+      let query = cloneDeep(this.$searchQuery)
+      delete query.showTable
+      delete query.current_page
+      delete query.size
+      query = {
+        course_type: this.course_type,
+        current_page: this.current_page,
+        size: this.size,
+
+        course_id: this.course_id,
+        type: '/total',
+        ...query
+      }
+      if (this.showTable === 'all') {
+        query.coach_id = this.coach_id
+      }
+      return query
+    },
     query() {
       return {
         stat_date: this.stat_date,
         course_type: this.course_type,
         coach_id: this.coach_id,
         course_id: this.course_id,
-        current_page: 1,
-        size: 999
+        current_page: this.current_page,
+        size: this.size
       }
     },
     courseTypeList() {
@@ -152,14 +178,16 @@ export default {
       this.init()
     },
     getConsumeList() {
-      this.personalConsumeService.getConsumeList(this.query).subscribe()
+      const query = this.type === 'total' ? this.totalQuery : this.query
+      this.personalConsumeService.getConsumeList(query).subscribe()
     },
     init() {
       const course_type = this.course_type
       this.coach_id = this.record.coach_id || -1
       this.stat_date = this.record.stat_date
+      const query = this.type === 'total' ? this.totalQuery : this.query
       this.personalConsumeService
-        .init({ course_type }, { ...this.query })
+        .init({ course_type }, { ...query })
         .subscribe()
     },
     filterOption(input, option) {

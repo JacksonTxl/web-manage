@@ -1,6 +1,6 @@
 <template>
   <st-modal
-    title="导入"
+    :title="importTitle"
     size="small"
     v-model="show"
     wrapClassName="modal-brand-setting-import"
@@ -54,7 +54,7 @@
 import { ImportService } from './import.service'
 import { MessageService } from '@/services/message.service'
 import { OssService } from '@/services/oss.service'
-import { IMPORT } from '@/constants/setting/import'
+import { IMPORT, IMPORT_TEXT } from '@/constants/setting/import'
 export default {
   name: 'ModalBrandSettingImport',
   bem: {
@@ -101,6 +101,9 @@ export default {
         this.IMPORT.SOLD_LEASE
       ]
       return types.includes(this.type)
+    },
+    importTitle() {
+      return IMPORT_TEXT(this)[this.type]
     }
   },
   methods: {

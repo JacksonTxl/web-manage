@@ -12,7 +12,7 @@
     <template slot="course_name" slot-scope="text, record">
       <a
         href="javascript:;"
-        v-if="record.auth['brand_shop:product:team_course|get']"
+        v-if="record.auth['shop:product:team_course|get']"
         @click="onClickCourseInfo(record.id)"
       >
         {{ text }}
@@ -29,7 +29,7 @@
       <st-table-actions>
         <a
           href="javascript:;"
-          v-if="record.auth['brand_shop:product:team_course|get']"
+          v-if="record.auth['shop:product:team_course|get']"
           class="mg-r8"
           @click="onClickCourseInfo(record.id)"
         >
@@ -37,13 +37,13 @@
         </a>
         <a
           href="javascript:;"
-          v-if="record.auth['brand_shop:product:team_course|edit']"
+          v-if="record.auth['shop:product:team_course|edit']"
           @click="onClickEditCourseInfo(record.id)"
         >
           编辑
         </a>
 
-        <a v-if="record.auth['brand_shop:product:team_course|del']">
+        <a v-if="record.auth['shop:product:team_course|del']">
           <st-popconfirm
             :title="'一旦删除则无法恢复，确认删除' + record.course_name + '？'"
             @confirm="onConfirmDeleteCourse(record)"

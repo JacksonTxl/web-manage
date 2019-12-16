@@ -152,7 +152,7 @@
               placeholder="上传人脸"
               @change="photoChange"
               :list="photoList"
-              v-else
+              v-if="auth.editFace && isSelectMember"
             ></face-upload>
           </div>
           <div :class="reception('set-info')" v-if="!isEntry">
@@ -852,6 +852,9 @@ export default {
         this.selectMemberInfo = cloneDeep(res.info)
         this.indexService.getEntranceOptionList(id).subscribe()
         this.indexService.getCabinetList(id).subscribe(() => {
+          if (this.selectMemberInfo.cabinet.type === 2) {
+            this.cabinetList.unshift(this.selectMemberInfo.cabinet)
+          }
           this.stCabinetList =
             this.selectMemberInfo.cabinet && this.selectMemberInfo.cabinet.id
               ? [...this.cabinetList]
