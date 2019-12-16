@@ -1,73 +1,43 @@
-export const shopColumns = [
+export const basicColumns = vm => [
   {
-    title: '省',
-    dataIndex: 'province_name',
-    width: '20%',
-    scopedSlots: { customRender: 'name' }
+    title: '教练',
+    dataIndex: 'nickname'
   },
   {
-    title: '市',
-    dataIndex: 'city_name',
-    width: '20%'
-  },
-  {
-    title: '区',
-    dataIndex: 'district_name'
-  },
-  {
-    title: '门店名称',
-    dataIndex: 'shop_name'
-  }
-]
-export const coachColumns = vm => [
-  {
-    title: vm.$c('coach'),
-    dataIndex: 'name',
-    sorter: true,
-    width: '20%',
-    scopedSlots: { customRender: 'name' }
-  },
-  {
-    title: `${vm.$c('coach')}等级`,
-    dataIndex: 'gender',
-    filters: [
-      { text: 'Male', value: 'male' },
-      { text: 'Female', value: 'female' }
-    ],
-    width: '20%'
+    title: '教练等级',
+    dataIndex: 'level_name'
   },
   {
     title: '在职状态',
-    dataIndex: 'email'
+    dataIndex: 'nature_work'
   }
 ]
-export const priceConfigColumns = [
+export const classColumns = vm => [
   {
-    title: '价格等级',
-    dataIndex: 'name',
-    sorter: true,
-    width: '20%',
-    scopedSlots: { customRender: 'name' }
+    title: '学员',
+    dataIndex: 'user_name'
   },
   {
-    title: '售卖梯度（节）',
-    dataIndex: 'gender',
-    filters: [
-      { text: 'Male', value: 'male' },
-      { text: 'Female', value: 'female' }
-    ],
-    width: '20%'
+    title: '联系电话',
+    dataIndex: 'phone'
   },
   {
-    title: '售卖价格（元/节）',
-    dataIndex: 'email'
+    title: '购买课时',
+    dataIndex: 'buy_class_hours'
   },
   {
-    title: '转让手续费',
-    dataIndex: 'email'
+    title: '请假课时',
+    scopedSlots: { customRender: 'leave_class_hours' },
+    dataIndex: 'leave_class_hours'
   },
   {
-    title: '是否在线购买',
-    dataIndex: 'email'
+    title: '旷课',
+    scopedSlots: { customRender: 'truancy_class_hours' },
+    dataIndex: 'truancy_class_hours'
+  },
+  {
+    title: '已签到课时',
+    scopedSlots: { customRender: 'sign_class_hours' },
+    dataIndex: 'sign_class_hours'
   }
 ]

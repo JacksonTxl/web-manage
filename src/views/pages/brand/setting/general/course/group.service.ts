@@ -7,8 +7,7 @@ import { forkJoin } from 'rxjs'
 
 @Injectable()
 export class GroupService {
-  state$: State<any>
-  resData$: Computed<object>
+  reserveInfo$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({
     priceGet: 'brand:setting:course_price_reserve_setting|tab',
@@ -18,25 +17,15 @@ export class GroupService {
   constructor(
     private reserveSettingApi: GroupReserveSettingApi,
     private authService: AuthService
-  ) {
-    this.state$ = new State({
-      resData: {}
-    })
-    this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
-  }
+  ) {}
   getInfo() {
-    return this.reserveSettingApi.getInfo()
-  }
-  init() {
-    return forkJoin(this.getInfo()).pipe(
-      tap(res => {
-        this.state$.commit(state => {
-          state.resData = res
-        })
+    return this.reserveSettingApi.getInfo().pipe(
+      tap((res: any) => {
+        this.reserveInfo$.commit(() => res.info)
       })
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    return this.init()
+    return this.getInfo()
   }
 }

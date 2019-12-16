@@ -53,15 +53,13 @@
         />
       </div>
     </div>
-    <st-panel app :class="bb()" :tabs="tabs"></st-panel>
+    <st-panel app :tabs="tabs">
+      <div slot="actions"></div>
+      <router-view></router-view>
+    </st-panel>
   </st-panel-layout>
 </template>
 <script>
-import {
-  shopColumns,
-  coachColumns,
-  priceConfigColumns
-} from './info#table.config'
 import { InfoService } from './info.service'
 export default {
   bem: {
@@ -81,26 +79,25 @@ export default {
     }
   },
   computed: {
-    coachColumns,
     image() {
       return this.groupCourseInfo.image.image_key
     }
   },
   data() {
     return {
-      shopColumns,
-      priceConfigColumns,
       tabs: [
         {
-          label: '用户资料',
+          label: '基础信息',
           route: {
-            name: 'shop-member-info-basic'
+            name: 'shop-product-course-manage-group-info-basic',
+            query: { courseId: this.$searchQuery.courseId }
           }
         },
         {
-          label: '员工跟进',
+          label: '班级信息',
           route: {
-            name: 'shop-member-info-follow-history'
+            name: 'shop-product-course-manage-group-info-class',
+            query: { courseId: this.$searchQuery.courseId }
           }
         }
       ]

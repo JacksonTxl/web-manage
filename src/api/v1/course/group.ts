@@ -45,4 +45,13 @@ export class CourseGroupApi extends Api {
   getGroupCourseInfo(params: any) {
     return this.http.get('/v1/course/small-course/' + params)
   }
+  getGroupClassInfo(params: any) {
+    return this.http.get('/v1/course/small-course/class/' + params)
+  }
+  getCourseGroupClassUserInfo(params: any) {
+    return this.http.get(
+      '/v1/course/small-course/class-user-info/' + params.id,
+      { params }
+    )
+  }
 }

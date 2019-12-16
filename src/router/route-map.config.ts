@@ -922,6 +922,12 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
+  'shop-product-course-manage-group-info-basic'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '小班课详情'
+  },
+  'shop-product-course-manage-group-info-class'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '小班课详情'
+  },
   'shop-product-course-manage-team-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '团体课'
     routeConfig.queryOptions = {

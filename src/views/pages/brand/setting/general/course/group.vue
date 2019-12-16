@@ -1,60 +1,14 @@
 <template>
   <div style="min-height: 70vh">
-    <!-- 私教课程定价设置 -->
-    <section v-if="auth.priceGet">
-      <a-row>
-        <a-col :span="16"><st-t2>私教课程定价设置</st-t2></a-col>
-        <a-col :span="8" class="ta-r">
-          <st-info-action
-            icon="edit"
-            text="编辑"
-            v-if="auth.priceEdit"
-            @click="onEditPricingSetting"
-          />
-        </a-col>
-      </a-row>
-
-      <!-- 私教课程定价设置 -->
-      <st-t4 class="mg-t24">私教课程定价设置</st-t4>
-      <!-- 教练统一定价 -->
-      <div class="st-des" v-if="pricingInfo.price_model === 1">
-        {{ $c('coach') }}统一定价（每一个私教课程，所授课的{{
-          $c('coach')
-        }}的课程售出价格一致）
-      </div>
-      <!-- 教练分级定价 -->
-      <div class="st-des" v-if="pricingInfo.price_model === 2">
-        {{ $c('coach') }}分级定价（每一个私教课程，按{{
-          $c('coach')
-        }}等级进行差异化定价）
-      </div>
-      <st-hr></st-hr>
-      <!-- 私教课程售卖模式 -->
-      <st-t4>私教课程售卖模式</st-t4>
-      <!-- 教练谈单模式 -->
-      <div class="st-des" v-if="pricingInfo.sale_model === 1">
-        {{ $c('coach') }}谈单模式（ 1.设置课程最低课时费和最高课时费
-        2.超过售卖价格范围时，不支持购买 3.不支持在用户端直接购买私教课 ）
-      </div>
-      <!-- 统一标价模式 -->
-      <div class="st-des" v-if="pricingInfo.sale_model === 2">
-        统一标价模式（ 1.设置课程的固定课时费 2. 支持用户在用户端在线购买 ）
-      </div>
-      <st-hr></st-hr>
-    </section>
-
-    <!-- 这个地方按照产品需求先隐藏 -->
-    <!-- 私教课程预约设置 -->
     <section>
       <a-row>
-        <a-col :span="16"><st-t2>私教课程预约设置</st-t2></a-col>
+        <a-col :span="16"><st-t2>小班课程预约设置</st-t2></a-col>
         <a-col :span="8" class="ta-r">
           <st-info-action
             icon="edit"
             text="编辑"
-            v-if="auth.reserveEdit"
             v-modal-link="{
-              name: 'brand-setting-personal-reserve',
+              name: 'brand-setting-group-reserve',
               on: {
                 change: onChange
               }
@@ -62,7 +16,6 @@
           />
         </a-col>
       </a-row>
-      <!-- 私教课程定价模式 -->
       <st-t4 class="mg-t24">预约范围</st-t4>
       <div class="st-des">
         用户可预约{{
@@ -73,7 +26,6 @@
         }}以内的私教课程，员工代预约不受此限制
       </div>
       <st-hr></st-hr>
-      <!-- 取消预约 -->
       <st-t4>取消预约设置</st-t4>
       <div class="st-des">
         允许用户在私教课程开始前{{
@@ -81,7 +33,6 @@
         }}取消预约，员工代取消不受此限制
       </div>
       <st-hr></st-hr>
-      <!-- 预约提醒 -->
       <st-t4>预约提醒</st-t4>
       <div class="st-des">
         在课程开始前{{
@@ -89,13 +40,18 @@
         }}提醒用户上课
       </div>
       <st-hr></st-hr>
-      <!-- 签到方式 -->
       <st-t4>签到方式</st-t4>
       <div class="st-des">
         {{ reserveInfo.is_sign ? '支持' : '不支持' }}用户自主签到
       </div>
       <st-hr></st-hr>
-      <!-- 签到时间 -->
+      <st-t4>签到条件</st-t4>
+      <div class="st-des">
+        当天{{
+          reserveInfo.is_sign_entrance ? '必须有' : '可以没有'
+        }}入场记录(PC不受此条件限制)
+      </div>
+      <st-hr></st-hr>
       <st-t4>签到时间</st-t4>
       <div class="st-des">
         开课后{{
@@ -103,10 +59,19 @@
         }}允许签到
       </div>
       <st-hr></st-hr>
-      <!-- 自动签到 -->
-      <st-t4>自动签到</st-t4>
+      <st-t4>旷课判断</st-t4>
       <div class="st-des">
-        {{ reserveInfo.is_auto_sign ? '支持' : '不支持' }}系统自动签到
+        课程结束后{{
+          reserveInfo.absenteeism_limit
+            | enumFilter('setting.absenteeism_limit')
+        }}内,未签到
+      </div>
+      <st-hr></st-hr>
+      <st-t4>上课通知</st-t4>
+      <div class="st-des">
+        课程开始前{{
+          reserveInfo.sign_time | enumFilter('setting.sign_time')
+        }}通知签到
       </div>
     </section>
   </div>
@@ -115,13 +80,12 @@
 import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
 import { GroupService } from './group.service'
-import BrandSettingPersonalPriceModel from '@/views/biz-modals/brand/setting/personal/price-model'
-import BrandSettingPersonalReserve from '@/views/biz-modals/brand/setting/personal/reserve'
+import BrandSettingGroupReserve from '@/views/biz-modals/brand/setting/group/reserve'
 export default {
   serviceInject() {
     return {
       userService: UserService,
-      GroupService: GroupService
+      groupService: GroupService
     }
   },
   rxState() {
@@ -130,58 +94,17 @@ export default {
     return {
       loading: groupService.loading$,
       settingEnums: user.settingEnums$,
-      resData: groupService.resData$,
+      reserveInfo: groupService.reserveInfo$,
       auth: groupService.auth$
     }
   },
   modals: {
-    BrandSettingPersonalPriceModel,
-    BrandSettingPersonalReserve
+    BrandSettingGroupReserve
   },
-  computed: {
-    pricingInfo() {
-      return this.resData[0]
-    },
-    reserveInfo() {
-      return this.resData[1].info
-    }
-  },
+  created() {},
   methods: {
     onChange() {
       this.$router.push({})
-    },
-    onEditPricingSetting() {
-      const isChanged = this.pricingInfo.is_changed
-      const that = this
-      const msg = this.pricingInfo.changed_desc
-      if (isChanged) {
-        this.$confirm({
-          title: '',
-          content: msg,
-          okText: '保持切换',
-          cancelText: '放弃切换',
-          /**
-           * 保持切换
-           */
-          onOk() {},
-          /**
-           * 放弃切换
-           */
-          onCancel() {
-            that.groupService.del().subscribe(that.onChange)
-          }
-        })
-      } else {
-        this.showPricingSettingModal()
-      }
-    },
-    showPricingSettingModal() {
-      this.$modalRouter.push({
-        name: 'brand-setting-personal-price-model',
-        on: {
-          change: this.onChange
-        }
-      })
     }
   }
 }
