@@ -1,17 +1,5 @@
 window.cdnUtils = {
   config: {
-    dev: {
-      map: {
-        ali: ['https://pdev1.styd.cn/', 'https://pdev2.styd.cn/'],
-        huawei: ['https://pdev-hw.styd.cn/']
-      }
-    },
-    test: {
-      map: {
-        ali: ['https://pdev1.styd.cn/', 'https://pdev2.styd.cn/'],
-        huawei: ['https://pdev-hw.styd.cn/']
-      }
-    },
     pre: {
       map: {
         ali: ['https://ppre1.styd.cn/', 'https://ppre2.styd.cn/', 'https://ppre3.styd.cn/', 'https://ppre4.styd.cn/'],
@@ -79,12 +67,7 @@ window.cdnUtils = {
    * 配置了就使用，没配置就不使用
    */
   isUseCdn: function() {
-    // TODO:// 用于测试 test 环境，上线前要修改
-    var env = this.getEnv()
-    if (env === 'pre') {
-      return true
-    }
-    return this.config[env] && (location.search.match(/is_use_cdn=([^&])/) || [])[1] === '1'
+    return this.config[this.getEnv()]
   },
   /**
    * 读取 localStorage
