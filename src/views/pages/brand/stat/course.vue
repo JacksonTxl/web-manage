@@ -52,18 +52,7 @@
     <st-hr />
     <div :class="bPage('section')">
       <header :class="bHeader('header')">
-        <div :class="bHeader('button-wapper')">
-          <st-button
-            type="primary"
-            v-if="auth$.export"
-            v-export-excel="{
-              type: 'course/brand',
-              query: $searchQuery
-            }"
-          >
-            全部导出
-          </st-button>
-        </div>
+        <st-t3 :class="bHeader('title')"></st-t3>
         <div :class="bHeader('actions')">
           <shop-select
             v-model="$searchQuery.shop_id"
