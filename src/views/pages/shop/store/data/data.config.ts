@@ -7,30 +7,28 @@ import topIconOrder from '@/assets/img/shop/stored/data/icon_top_order.png'
 import topIconGuest from '@/assets/img/shop/stored/data/icon_top_guest.png'
 import topIconMember from '@/assets/img/shop/stored/data/icon_top_member.png'
 
+export const headerTitleItem = [
+  'total_price',
+  'order_num',
+  'trade_member_num',
+  'per_ticket_sales'
+]
 export const headerInfo = [
   {
     icon: topIconUser,
-    title: '营收金额(元)',
-    sum: 8888.888,
-    yesterday: 8888.888
+    title: '营收金额(元)'
   },
   {
     icon: topIconOrder,
-    title: '订单数(单)',
-    sum: 8888,
-    yesterday: 8888.888
+    title: '订单数(单)'
   },
   {
     icon: topIconMember,
-    title: '营收金额(元)',
-    sum: 8888.888,
-    yesterday: 8888.888
+    title: '营收金额(元)'
   },
   {
     icon: topIconGuest,
-    title: '客单价(元)',
-    sum: 8888.888,
-    yesterday: 8888.888
+    title: '客单价(元)'
   }
 ]
 export const wholeNav = [
