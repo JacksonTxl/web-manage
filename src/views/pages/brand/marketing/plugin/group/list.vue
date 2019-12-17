@@ -125,9 +125,9 @@
           :scroll="{ x: 400 }"
           :dataSource="shopList"
           :pagination="{
-            current_page: shopPage.current_page,
+            current: shopPage.current_page,
             total: shopPage.total_counts,
-            size: shopPage.size
+            pageSize: shopPage.size
           }"
         >
           <template slot="action" slot-scope="text, record">
@@ -286,6 +286,7 @@ export default {
     },
     // 门店分页
     onShopTableChange(data) {
+      console.log(data)
       this.onGeneralize({
         id: this.groupId,
         size: data.pageSize,
