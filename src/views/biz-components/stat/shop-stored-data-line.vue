@@ -45,6 +45,10 @@ export default {
         'rgba(135,35,51,.4)',
         'rgba(152,219,35,.4)'
       ]
+    },
+    unit: {
+      type: String,
+      default: '元'
     }
   },
   computed: {
@@ -125,7 +129,7 @@ export default {
         .tooltip('name*value', (name, value) => {
           return {
             name,
-            value: value + '人'
+            value: value + this.unit
           }
         })
         .shape('smooth')

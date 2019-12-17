@@ -62,7 +62,6 @@
         </ul>
       </st-panel>
       <!-- 整体看板 -->
-      {{ filterLine(storeBoard, wholenavTitle) }}
       <section>
         <st-panel class="mg-t16" title="整体看板">
           <div slot="actions">
@@ -94,6 +93,7 @@
                   </st-t3>
                   <shop-stored-data-line
                     :data="filterLine(storeBoard, wholenavTitle)"
+                    :unit="wholenavTitle[wholenavTitle.length - 2]"
                   ></shop-stored-data-line>
                 </div>
               </a-col>
