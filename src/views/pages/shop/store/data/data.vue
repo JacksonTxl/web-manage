@@ -6,7 +6,7 @@
         <div slot="actions">
           <st-refresh-btn :action="refresh"></st-refresh-btn>
         </div>
-        <ul :class="basic('header_content')">
+        <ul :class="basic('header-content')">
           <li v-for="(item, index) in headerInfo" :key="index">
             <img :src="item.icon" />
             <div>
@@ -70,8 +70,8 @@
           <div :class="basic('whole')">
             <div
               :class="[
-                basic('whole_item'),
-                wholenavIndex === index ? basic('whole_item_active') : ''
+                basic('whole-item'),
+                wholenavIndex === index ? basic('whole-item-active') : ''
               ]"
               v-for="(item, index) in wholeNav"
               :key="index"
@@ -81,10 +81,10 @@
                 {{ item.title }}
                 <img :src="item.icon" />
               </div>
-              <div :class="basic('whole_item_text')">{{ item.num }}</div>
+              <div :class="basic('whole-item-text')">{{ item.num }}</div>
             </div>
           </div>
-          <div :class="basic('revenue_trend')">
+          <div :class="basic('revenue-trend')">
             <a-row>
               <a-col :span="16">
                 <div>
@@ -131,14 +131,14 @@
         </st-panel>
         <!-- 销售分析 类目分析-->
         <div :class="salesCategory()">
-          <div :class="salesCategory('sales_box')">
+          <div :class="salesCategory('sales-box')">
             <a-row>
               <a-col :span="16">
                 <st-container class="bg-white" type="2">
                   <st-t3>销售分析</st-t3>
                   <date-picker></date-picker>
                 </st-container>
-                <div :class="salesCategory('sales_TOP5')">
+                <div :class="salesCategory('sales-TOP5')">
                   <div style="flex:1">
                     <sales-analysis
                       title="销量TOP5"
@@ -155,7 +155,7 @@
                 </div>
               </a-col>
               <a-col :span="8">
-                <div :class="salesCategory('category_box')">
+                <div :class="salesCategory('category-box')">
                   <st-container class="bg-white" type="2">
                     <st-t3>类目分析</st-t3>
                     <date-picker class="date-picker"></date-picker>

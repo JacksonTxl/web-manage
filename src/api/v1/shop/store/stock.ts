@@ -27,24 +27,24 @@ export class StockApi extends Api {
   /**
    * 库存列表
    */
-  stockList(params: ListParams) {
-    return this.http.get('/v1/stock/list', {
-      params
+  stockList(query: ListParams) {
+    return this.http.get('/v1/store/stock/list', {
+      query
     })
   }
   /**
    * 出入库明细列表
    */
-  stockDetailList(params: DetailParams) {
-    return this.http.get('/v1/stock/turnover', {
-      params
+  stockDetailList(query: DetailParams) {
+    return this.http.get('/v1/store/stock/turnover', {
+      query
     })
   }
   /**
    * 商品入库
    */
   stockWarehouse(params: WarehouseParams) {
-    return this.http.get('/v1/stock/warehouse', {
+    return this.http.get('/v1/store/stock/warehouse', {
       params
     })
   }
@@ -52,7 +52,7 @@ export class StockApi extends Api {
    * 商品出库
    */
   stockOutbound(params: WarehouseParams) {
-    return this.http.get('/v1/stock/outbound', {
+    return this.http.get('/v1/store/stock/outbound', {
       params
     })
   }

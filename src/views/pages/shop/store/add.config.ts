@@ -3,106 +3,50 @@ export const ruleOptions = (vm: any) => {
   const pattern = vm.pattern
   return {
     // 活动名称
-    activity_name: {
+    product_name: {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
             if (!value) {
-              return '请填写活动名称'
+              return '请填写商品名称'
             }
             if (!value.match(pattern.CN_EN_NUM_SPACE('1-30'))) {
-              return '请输入活动名称，支持格式长度1~30中英文'
+              return '请输入商品名称，支持格式长度1~30中英文'
             }
           }
         }
       ]
     },
     // 参团人数
-    group_sum: {
+    category_id: {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
             if (!value) {
-              return '请填写参团人数'
-            }
-            if (value > 100) {
-              return '参团人数不能超过100，请重新输入'
-            }
-            if (value < 2) {
-              return '参团人数不能少于2，请重新输入'
+              return '请选择商品分类'
             }
           }
         }
       ]
     },
-    // 拼团有效期
-    valid_time: {
+    // 配送方式
+    delivery_type: {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
             if (!value) {
-              return '请填写拼团有效期'
-            }
-            if (value > 720) {
-              return '拼团有效期不能超过720，请重新输入'
-            }
-            if (value < 2) {
-              return '拼团有效期不能少于2，请重新输入'
+              return '请选择配送方式'
             }
           }
         }
       ]
     },
-    // 活动库存
-    stock_total: {
+    sale_type: {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
             if (!value) {
-              return '请填写活动库存'
-            }
-            if (value > 999999) {
-              return '活动库存不能超过999999，请重新输入'
-            }
-            if (
-              vm.ACTIVITY_STATUS &&
-              vm.activityState > vm.ACTIVITY_STATUS.PUBLISHER &&
-              value < vm.info.stock_total
-            ) {
-              return '活动库存只能增加不可减少'
-            }
-          }
-        }
-      ]
-    },
-    activity_time: {
-      rules: [
-        {
-          validator: (field: any, value: any, values: any) => {
-            if (!value) {
-              return '请填写活动时间'
-            }
-            if (
-              vm.ACTIVITY_STATUS &&
-              vm.activityState > vm.ACTIVITY_STATUS.PUBLISHER &&
-              moment(value[1]).valueOf() < moment(vm.info.end_time).valueOf()
-            ) {
-              return '活动时间只能延长不可缩短'
-            }
-          }
-        }
-      ]
-    },
-    published_time: {
-      rules: [
-        {
-          validator: (field: any, value: any, values: any) => {
-            if (
-              vm.$children[0].ACTIVITY_STATUS.TIMING ===
-                vm.$children[0].activityState &&
-              !value
-            ) {
-              return '请选择发布时间'
+              return '请选择售卖方式'
             }
           }
         }
@@ -115,40 +59,27 @@ export const skuColumns = (vm: any) => {
   let list = [
     {
       title: '划线价',
-      dataIndex: 'a_price'
-    },
-    {
-      title: '划线价',
-      dataIndex: 'b_price'
-    },
-    {
-      title: '划线价',
-      dataIndex: 'c_price'
-    },
-    {
-      title: '划线价',
       dataIndex: 'false_price',
-      width: 140,
-      fixed: 'right',
+      width: 208,
       slots: { title: 'false_price' },
       scopedSlots: { customRender: 'false_price' }
     },
     {
       title: '售价',
       dataIndex: 'price',
-      width: 140,
-      fixed: 'right',
+      width: 208,
       slots: { title: 'price' },
       scopedSlots: { customRender: 'price' }
     },
     {
       title: '库存',
       dataIndex: 'stock',
-      width: 140,
-      fixed: 'right',
+      width: 208,
       slots: { title: 'stock' },
       scopedSlots: { customRender: 'stock' }
     }
   ]
+  list = vm.sku.concat(list)
+  console.log(list, '================')
   return list
 }

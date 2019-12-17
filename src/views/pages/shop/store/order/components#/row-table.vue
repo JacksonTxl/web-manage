@@ -1,7 +1,7 @@
 <template>
   <div :class="basic()">
     <st-table
-      :page="1"
+      :page="page"
       :class="basic('table')"
       rowKey="id"
       :columns="columns"
@@ -18,9 +18,9 @@
           <span>￥{{ item.price }}</span>
         </li>
       </ul>
-      <div slot="action">
+      <div slot="action" slot-scope="customRender, record">
         <st-table-actions>
-          <a>
+          <a @click="clickFn(record)">
             {{ actionText }}
           </a>
         </st-table-actions>
@@ -45,11 +45,19 @@ export default {
     },
     actionText: {
       type: String
+    },
+    page: {
+      default: 1
     }
   },
   data() {
     return {
       list: []
+    }
+  },
+  methods: {
+    clickFn(val) {
+      this.$emit('clicks', val)
     }
   }
 }

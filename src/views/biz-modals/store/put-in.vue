@@ -38,7 +38,10 @@ export default {
     }
   },
   data() {
-    return { show: false, tableData: [{ group_price: '' }] }
+    return {
+      show: false,
+      tableData: [{ group_price: '' }]
+    }
   },
   props: {
     isOut: {

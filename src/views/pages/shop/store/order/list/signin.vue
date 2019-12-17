@@ -1,9 +1,9 @@
 <template>
   <div>
     <st-input-search
-      v-model="$searchQuery.card_name"
+      v-model="$searchQuery.search_where"
       v-di-view="{ name: SHOP_STORE_ORDER_KEYWORDS_SEARCH }"
-      @search="onKeywordsSearch('card_name', $event)"
+      @search="onKeywordsSearch('search_where', $event)"
       placeholder="请输入订单编号、会员姓名或手机号查找"
       maxlength="50"
     />
@@ -14,10 +14,23 @@
 import RowTable from '../components#/row-table.vue'
 import { columns } from './signin.config'
 import { SHOP_STORE_ORDER_KEYWORDS_SEARCH } from '@/constants/events'
+import { SigninService } from './signin.service'
+import tableMixin from '@/mixins/table.mixin'
 export default {
   name: 'signin',
   components: {
     RowTable
+  },
+  mixins: [tableMixin],
+  serviceInject() {
+    return { SigninService: SigninService }
+  },
+  rxState() {
+    return {
+      tableData: this.SigninService.list$,
+      page: this.SigninService.page$,
+      loading: this.SigninService.loading$
+    }
   },
   computed: {
     columns
