@@ -10,6 +10,7 @@ export class DetailService implements Controller {
   constructor(private stockApi: StockApi) {}
   @Effect()
   getList(params: DetailParams) {
+    console.log('进来了啊啊啊啊啊')
     return this.stockApi.stockDetailList(params).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
@@ -18,13 +19,6 @@ export class DetailService implements Controller {
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    this.getList({
-      product_id: -1,
-      stock_flow: -1,
-      start_time: '',
-      end_time: '',
-      page: 1,
-      size: 20
-    })
+    // return this.getList(to.meta.query)
   }
 }

@@ -1,16 +1,16 @@
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
-import { ListParams, StockApi } from '@/api/v1/shop/store/stock'
+import { OrderListParams, OrderApi } from '@/api/v1/shop/store/order'
 @Injectable()
-export class SearchService implements Controller {
+export class ShipmentsService implements Controller {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
-  constructor(private stockApi: StockApi) {}
+  constructor(private OrderApi: OrderApi) {}
   @Effect()
-  getList(params: ListParams) {
-    return this.stockApi.stockList(params).pipe(
+  getList(params: OrderListParams) {
+    return this.OrderApi.orderList(params).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
@@ -18,6 +18,7 @@ export class SearchService implements Controller {
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    // return this.getList({ product_name: '', page: 1, size: 20 })
+    console.log(to.meta.query)
+    this.getList(to.meta.query)
   }
 }

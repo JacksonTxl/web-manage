@@ -45,7 +45,7 @@
           >
             出库
           </a>
-          <a>
+          <a @click="goDetail(record)">
             明细
           </a>
         </st-table-actions>
@@ -69,6 +69,7 @@ export default {
   rxState() {
     return {
       // tableData: this.searchService.list$
+      loading: this.addService.loading$
     }
   },
   mixins: [tableMixin],
@@ -138,10 +139,18 @@ export default {
         let item = this.tableData.filter(stock => stock.sku_id === id)[0]
         list.push(item)
       })
-      console.log(list, '==============list')
       this.$modalRouter.push({
         name: 'store-put-in',
         props: { skuList: list, isOut }
+      })
+    },
+    goDetail(product) {
+      this.$router.push({
+        path: './detail',
+        query: {
+          product_id: product.product_id,
+          page: 1
+        }
       })
     }
   }
