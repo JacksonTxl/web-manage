@@ -36,6 +36,9 @@
         <st-form-item label="当前手机号" label-auto>
           <label>{{ info.account_phone }}</label>
         </st-form-item>
+        <st-form-item class="mg-b0" label-fix label="滑块验证">
+          <no-captcha id="get-phone-code"></no-captcha>
+        </st-form-item>
         <st-form-item label="短信验证码" class="mg-b0">
           <input-phone-code
             size="default"
@@ -108,6 +111,7 @@ import { NoCaptchaService } from '@/services/no-captcha.service'
 import InputPhoneCode from '@/views/biz-components/input-phone-code/input-phone-code'
 import { MessageService } from '@/services/message.service'
 import { cloneDeep } from 'lodash-es'
+import NoCaptcha from '@/views/biz-components/no-captcha'
 
 export default {
   bem: {
@@ -128,6 +132,7 @@ export default {
     }
   },
   components: {
+    NoCaptcha,
     InputPhoneCode
   },
   computed: {

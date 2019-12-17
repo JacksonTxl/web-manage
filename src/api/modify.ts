@@ -26,6 +26,7 @@ export class ModifyApi extends Api {
     return this.http.post('/v1/staff/bind/reset/pwd', { params })
   }
   getCaptcha(params: any) {
-    return this.http.post('/login/captcha/phone', { params })
+    const ignoreCodes = [60154, 60155, 60052]
+    return this.http.post('/login/captcha/phone', { params, ignoreCodes })
   }
 }
