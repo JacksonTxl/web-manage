@@ -78,21 +78,7 @@ export class StoreApi extends Api {
   editCategory(id: number, params: { category_name: string }) {
     return this.http.put(`/v1/store/product/category/${id}`, { params })
   }
-  /**
-   * 数据概况
-   */
-  dataProfile() {
-    return this.http.get('/v1/store/data_profile')
-  }
-  /**
-   * 整体看板
-   */
-  storeBoard(params: DtoreBoard) {
-    return this.http.get('/v1/store/board', {
-      params
-    })
-  }
-  /**
+  /*
    * 分类列表
    */
   categoryList(query: CategoryQuery) {
@@ -111,5 +97,35 @@ export class StoreApi extends Api {
    */
   getList(query: StoreList) {
     return this.http.get(`/v1/store/product/1`, { query })
+  }
+  /**
+   * 数据概况
+   */
+  dataProfile() {
+    return this.http.get('/v1/store/data_profile')
+  }
+  /**
+   * 整体看板
+   */
+  storeBoard(params: DtoreBoard) {
+    return this.http.get('/v1/store/board', {
+      params
+    })
+  }
+  /**
+   * 类目支付排行
+   */
+  storeSaleList(params: DtoreBoard) {
+    return this.http.get('/v1/store/sale_list', {
+      params
+    })
+  }
+  /**
+   * 商品销售榜
+   */
+  storeCategoryRank(params: DtoreBoard) {
+    return this.http.get('/v1/store/category_rank', {
+      params
+    })
   }
 }

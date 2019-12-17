@@ -3,11 +3,11 @@
     <st-t3>{{ title }}</st-t3>
     <div :class="basic('list')">
       <ul>
-        <li v-for="(item, index) in salesList.title" :key="index">
+        <li v-for="(item, index) in salesTitle" :key="index">
           {{ item }}
         </li>
       </ul>
-      <ul v-for="(item, index) in salesList.data" :key="index">
+      <ul v-for="(item, index) in salesList" :key="index">
         <li>
           <img
             v-if="index < 3"
@@ -21,8 +21,8 @@
           />
           <span style="margin-left:12px" v-else>{{ index + 1 }}</span>
         </li>
-        <li>{{ item.age }}</li>
-        <li>{{ item.sex }}</li>
+        <li>{{ item.product_name }}</li>
+        <li>{{ item.sale ? item.sale : item.revenue }}</li>
       </ul>
     </div>
   </div>
@@ -40,10 +40,16 @@ export default {
       type: String,
       default: '销量TOP5'
     },
-    salesList: {
-      type: Object,
+    salesTitle: {
+      type: Array,
       default: () => {
-        return {}
+        return []
+      }
+    },
+    salesList: {
+      type: [Array, Object],
+      default: () => {
+        return []
       }
     }
   },
