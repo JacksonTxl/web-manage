@@ -89,11 +89,13 @@
               <a-col :span="16">
                 <div>
                   <st-t3>
-                    {{ wholenavTitle }}
+                    {{ wholeNav[wholenavIndex].title }}
                   </st-t3>
                   <shop-stored-data-line
-                    :data="filterLine(storeBoard, wholenavTitle)"
-                    :unit="wholenavTitle | filterCompany"
+                    :data="
+                      filterLine(storeBoard, wholeNav[wholenavIndex].title)
+                    "
+                    :unit="wholeNav[wholenavIndex].title | filterCompany"
                   ></shop-stored-data-line>
                 </div>
               </a-col>
@@ -104,10 +106,8 @@
                       <component
                         v-bind:is="wholeNavcom"
                         :guideName="filterOrderMemberTitle()"
-                        :unit="wholenavTitle | filterCompany"
-                        :data="
-                          filterMember(storeBoard, 0, 'order', wholenavTitle)
-                        "
+                        :unit="wholeNav[wholenavIndex].title | filterCompany"
+                        :data="orderMember(storeBoard, 0, 'order')"
                         style="width: 100%;"
                         :height="
                           wholeNavcom === 'brand-user-avg-bar'
@@ -120,10 +120,8 @@
                       <component
                         v-bind:is="wholeNavcom"
                         :guideName="filterOrderMemberTitle()"
-                        :unit="wholenavTitle | filterCompany(1)"
-                        :data="
-                          filterMember(storeBoard, 0, 'member', wholenavTitle)
-                        "
+                        :unit="wholeNav[wholenavIndex].title | filterCompany(1)"
+                        :data="orderMember(storeBoard, 0, 'member')"
                         style="width: 100%;"
                         :height="
                           wholeNavcom === 'brand-user-avg-bar'
@@ -215,7 +213,6 @@ import ShopStoredDataRing from '@/views/biz-components/stat/shop-stored-data-rin
 import ShopStoredDataRevenueRing from '@/views/biz-components/stat/shop-stored-data-revenue-ring'
 import BrandUserAvgBar from '@/views/biz-components/stat/shop-stored-data-avg-bar'
 import { DataService } from './data.service'
-import { forEach } from 'lodash-es'
 import {
   headerInfo,
   wholeNav,
@@ -245,13 +242,12 @@ export default {
     return {
       height325: 325,
       height332: 332,
-      wholenavTitle: '营收金额(元)',
       wholenavIndex: 0,
       wholeNavcom: 'shop-stored-data-ring',
-      headerTitleItem,
       headerInfo,
       wholeNav,
       categoryRevenue,
+      headerTitleItem,
       fieldNav
     }
   },
@@ -280,60 +276,49 @@ export default {
     // 整体看板订单/会员折线图
     filterLine(data, type) {
       let fieldInfo = ['amount', 'count', 'count', 'price']
-      return this.switchFunc(data, this.fieldNav, fieldInfo, this.wholenavIndex)
-    },
-    switchFunc(data, fieldNav, fieldInfo, index) {
-      return data[fieldNav[index]].trend.map(item => {
+      return data[this.fieldNav[this.wholenavIndex]].trend.map(item => {
         return {
           date: item.date,
-          amount: item[fieldInfo[index]]
+          amount: item[fieldInfo[this.wholenavIndex]]
         }
       })
     },
     // 整体看板订单/会员
-    filterMember(value, flag, that, wholenavTitle) {
+    orderMember(value, flag, that) {
       let fieldInfo = [
         'value',
         'count',
         ['amount', 'count'],
         ['amount', 'count']
       ]
-      if (this.wholenavIndex < 2) {
-        return value[this.fieldNav[this.wholenavIndex]].source[that].map(
-          item => {
-            return {
-              name: item.type,
-              value: item[fieldInfo[this.wholenavIndex]]
-            }
-          }
-        )
-      } else {
-        if (that === 'order') {
-          return value[this.fieldNav[this.wholenavIndex]].source[that].map(
-            item => {
-              return {
-                name: item.type,
-                value: item[fieldInfo[this.wholenavIndex][0]]
-              }
-            }
-          )
-        } else {
-          return value[this.fieldNav[this.wholenavIndex]].source[that].map(
-            item => {
-              return {
-                name: item.type,
-                value: item[fieldInfo[this.wholenavIndex][1]]
-              }
-            }
-          )
+      let filterOrderMemberData = [
+        value,
+        this.fieldNav,
+        this.wholenavIndex,
+        that,
+        this.wholenavIndex < 2
+          ? fieldInfo[this.wholenavIndex]
+          : that === 'order'
+          ? fieldInfo[this.wholenavIndex][0]
+          : fieldInfo[this.wholenavIndex][1]
+      ]
+      return this.filterOrderMember(...filterOrderMemberData)
+    },
+    filterOrderMember(value, fieldNav, wholenavIndex, that, type) {
+      return value[fieldNav[wholenavIndex]].source[that].map(item => {
+        return {
+          name: item.type,
+          value: item[type]
         }
-      }
+      })
     },
     // 订单来源/会员身份标题
     filterOrderMemberTitle() {
       let title = ['营收金额(元)', '订单数(单)']
-      if (title.find(item => item === this.wholenavTitle)) {
-        if (this.wholenavTitle === title[0]) {
+      if (
+        title.find(item => item === this.wholeNav[this.wholenavIndex].title)
+      ) {
+        if (this.wholeNav[this.wholenavIndex].title === title[0]) {
           return '总营收'
         } else {
           return '订单数'
@@ -342,7 +327,6 @@ export default {
     },
     // 整体看板数据处理
     wholenavFilter(data) {
-      console.log(data)
       let titles = [
         'revenue_amount',
         'order_count',
@@ -352,7 +336,6 @@ export default {
       let field = ['amount', 'count', 'count', 'price']
       this.wholeNav.forEach((item, index) => {
         let dataInfo = data[titles[index]][field[index]]
-        console.log(this.wholenavIndex)
         item.num = dataInfo
       })
     },
@@ -375,7 +358,6 @@ export default {
     change() {},
     wholenavFun(index, item) {
       this.wholenavIndex = index
-      this.wholenavTitle = item.title
       if (index > 1) {
         this.wholeNavcom = 'brand-user-avg-bar'
       } else {
