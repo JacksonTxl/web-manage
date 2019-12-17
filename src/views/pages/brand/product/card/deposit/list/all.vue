@@ -1,12 +1,13 @@
 <template>
   <div :class="all()">
-    <st-input-search
-      v-model="$searchQuery.card_name"
-      v-di-view="{ name: BRAND_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH }"
-      @search="onKeywordsSearch('card_name', $event)"
-      placeholder="请输入储值卡名称搜索"
-      maxlength="50"
-    />
+    <portal to="BRAND_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH">
+      <st-input-search
+        v-model="$searchQuery.card_name"
+        @search="onKeywordsSearch('card_name', $event)"
+        placeholder="请输入储值卡名称搜索"
+        maxlength="50"
+      />
+    </portal>
     <div :class="all('search')">
       <router-link v-if="auth.add" to="../add">
         <st-button type="primary" icon="add">新增储值卡</st-button>
@@ -184,7 +185,6 @@
 <script>
 import { AllService } from './all.service'
 import { columns } from './all.config.ts'
-import { BRAND_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH } from '@/constants/events'
 import tableMixin from '@/mixins/table.mixin'
 import CardBrandDepositRecoverSale from '@/views/biz-modals/card/brand-deposit/recover-sale'
 import CardBrandDepositShopTable from '@/views/biz-modals/card/brand-deposit/shop-table'
@@ -224,8 +224,7 @@ export default {
     return {
       SUPPORT_SALES,
       CONSUMPTION_RANGE,
-      SELL_STATUS,
-      BRAND_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH
+      SELL_STATUS
     }
   },
   computed: {
