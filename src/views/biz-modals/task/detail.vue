@@ -3,7 +3,7 @@
     title="任务明细"
     v-model="show"
     :footer="null"
-    wrapClassName="modal-task-detail"
+    wrapClassName="scroll-modal"
     style="min-width: 600px"
   >
     <st-table
@@ -53,6 +53,7 @@ export default {
     }
   },
   created() {
+    console.log(this.list)
     this.getDetailList({
       task_id: this.task_id,
       popup_type: this.popup_type,
