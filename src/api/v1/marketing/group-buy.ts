@@ -144,7 +144,6 @@ export class GroupBuyApi extends Api {
    * 拼团结束
    */
   getShopList(query: ShopList, id: number) {
-    console.log(id)
     return this.http.get(`/v1/plugin/group_buy/shop/${id}`, { query })
   }
 }
