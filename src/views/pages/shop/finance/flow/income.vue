@@ -48,49 +48,50 @@
     </st-search-panel>
     <st-total
       :class="bPage('total')"
-      :indexs="columns"
+      :indexs="totalColumns"
       :dataSource="total$"
       class="mg-t16 pd-x24"
       hasTitle
     ></st-total>
-    <st-table
-      class="mg-t12"
-      :columns="columns"
-      :scroll="{ x: 1400 }"
-      :rowKey="record => record.flow_id"
-      :page="page$"
-      @change="onTableChange"
-      :dataSource="list$"
-    >
-      <span slot="price" :class="{ price__red: +text < 0 }" slot-scope="text">
-        {{ text }}
-      </span>
-      <span slot="flow_type" slot-scope="text">{{ text.name }}</span>
-      <st-overflow-text
-        title="备注"
-        maxWidth="200px"
-        slot="remark"
-        slot-scope="text"
-        :value="text"
-      />
+    <st-container type="2">
+      <st-table
+        :columns="columns"
+        :scroll="{ x: 1400 }"
+        :rowKey="record => record.flow_id"
+        :page="page$"
+        @change="onTableChange"
+        :dataSource="list$"
+      >
+        <span slot="price" :class="{ price__red: +text < 0 }" slot-scope="text">
+          {{ text }}
+        </span>
+        <span slot="flow_type" slot-scope="text">{{ text.name }}</span>
+        <st-overflow-text
+          title="备注"
+          maxWidth="200px"
+          slot="remark"
+          slot-scope="text"
+          :value="text"
+        />
 
-      <div slot="action" slot-scope="text, record">
-        <st-table-actions>
-          <a
-            v-if="record.auth['brand_shop:flow:income|reverse']"
-            @click="onClickFlowChargeAgainst(record)"
-          >
-            流水冲销
-          </a>
-        </st-table-actions>
-      </div>
-    </st-table>
+        <div slot="action" slot-scope="text, record">
+          <st-table-actions>
+            <a
+              v-if="record.auth['brand_shop:flow:income|reverse']"
+              @click="onClickFlowChargeAgainst(record)"
+            >
+              流水冲销
+            </a>
+          </st-table-actions>
+        </div>
+      </st-table>
+    </st-container>
   </div>
 </template>
 <script>
 import tableMixin from '@/mixins/table.mixin'
 import { IncomeService } from './income.service'
-import { columns } from './income.config.ts'
+import { columns, totalColumns } from './income.config.ts'
 import ShopFinanceFlow from '@/views/biz-modals/shop/finance/flow'
 import { cloneDeep } from 'lodash-es'
 export default {
@@ -127,7 +128,8 @@ export default {
     }
   },
   computed: {
-    columns
+    columns,
+    totalColumns
   },
   mounted() {
     this.setSearchDate()
@@ -141,7 +143,7 @@ export default {
     },
     onChangePayType(checkedList) {
       this.indeterminate =
-        !!checkedList.length && checkedList.length < this.payType$.length
+        checkedList.length && checkedList.length < this.payType$.length
       this.checkAll = checkedList.length === this.payType$.length
     },
     onCheckAllChange(e) {

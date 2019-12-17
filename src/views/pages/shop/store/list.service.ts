@@ -26,12 +26,12 @@ export class ListService implements Controller {
       })
     )
   }
-  // stopGroup(id: number) {
-  //   return this.storeApi.stopGroupList(id).pipe(tap((res: any) => {}))
-  // }
-  // releaseGroup(id: number) {
-  //   return this.storeApi.releaseGroupList(id).pipe(tap((res: any) => {}))
-  // }
+  delproduct(id: number) {
+    return this.storeApi.delProduct(id).pipe(tap((res: any) => {}))
+  }
+  onShelf(id: number) {
+    return this.storeApi.onShelf(id).pipe(tap((res: any) => {}))
+  }
   // getSharePosterInfo(params: { id: number }) {
   //   return this.storeApi.getPosterInfo(params).pipe(
   //     tap((res: any) => {
