@@ -44,6 +44,10 @@ export default {
     unit: {
       type: String,
       default: '单'
+    },
+    guideName: {
+      type: String,
+      default: '订单数'
     }
   },
   methods: {
@@ -94,7 +98,11 @@ export default {
             `<li class="g2-legend-list-item item-{index} {checked}" data-color="{originColor}" data-value="{originValue}">` +
             `<i class="g2-legend-marker" style="background-color:{color};"></i>` +
             `<span class="g2-legend-text">${name}</span>` +
-            `<span class="g2-legend-money">¥ 4,544</span>` +
+            `<span class="g2-legend-money">
+              ${this.unit === '元' ? '¥' : ''}
+              ${this.data[index].value}
+              ${this.unit}
+            </span>` +
             `</li>`
           )
         }
@@ -111,7 +119,7 @@ export default {
             `<div class='guide-title'><span class='guide-value'>${sum}</span><span class='guide-unit'>${
               this.unit
             }</span></div>` +
-            `<div class='guide-name'>订单数</div>` +
+            `<div class='guide-name'>${this.guideName}</div>` +
             `</div>`
           )
         }
