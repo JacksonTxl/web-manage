@@ -59,24 +59,24 @@ export const skuColumns = (vm: any) => {
   let list = [
     {
       title: '划线价',
-      dataIndex: 'false_price',
+      dataIndex: 'market_price',
       width: 208,
-      slots: { title: 'false_price' },
-      scopedSlots: { customRender: 'false_price' }
+      slots: { title: 'market_price' },
+      scopedSlots: { customRender: 'market_price' }
     },
     {
       title: '售价',
-      dataIndex: 'price',
+      dataIndex: 'selling_price',
       width: 208,
-      slots: { title: 'price' },
-      scopedSlots: { customRender: 'price' }
+      slots: { title: 'selling_price' },
+      scopedSlots: { customRender: 'selling_price' }
     },
     {
       title: '库存',
-      dataIndex: 'stock',
+      dataIndex: 'stock_amount',
       width: 208,
-      slots: { title: 'stock' },
-      scopedSlots: { customRender: 'stock' }
+      slots: { title: 'stock_amount' },
+      scopedSlots: { customRender: 'stock_amount' }
     }
   ]
   list = vm.sku.concat(list)
