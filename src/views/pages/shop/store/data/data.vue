@@ -6,7 +6,7 @@
         <div slot="actions">
           <st-refresh-btn :action="refresh"></st-refresh-btn>
         </div>
-        <ul :class="basic('header_content')">
+        <ul :class="basic('header-content')">
           <li v-for="(item, index) in headerInfo" :key="index">
             <img :src="item.icon" />
             <div>
@@ -70,8 +70,8 @@
           <div :class="basic('whole')">
             <div
               :class="[
-                basic('whole_item'),
-                wholenavIndex === index ? basic('whole_item_active') : ''
+                basic('whole-item'),
+                wholenavIndex === index ? basic('whole-item-active') : ''
               ]"
               v-for="(item, index) in wholeNav"
               :key="index"
@@ -81,18 +81,21 @@
                 {{ item.title }}
                 <img :src="item.icon" />
               </div>
-              <div :class="basic('whole_item_text')">{{ item.num }}</div>
+              <div :class="basic('whole-item-text')">{{ item.num }}</div>
             </div>
           </div>
-          <div :class="basic('revenue_trend')">
+          <div :class="basic('revenue-trend')">
             <a-row>
               <a-col :span="16">
                 <div>
                   <st-t3>
-                    {{ wholenavTitle }}
+                    {{ wholeNav[wholenavIndex].title }}
                   </st-t3>
                   <shop-stored-data-line
-                    :data="courseDaily"
+                    :data="
+                      filterLine(storeBoard, wholeNav[wholenavIndex].title)
+                    "
+                    :unit="wholeNav[wholenavIndex].title | filterCompany"
                   ></shop-stored-data-line>
                 </div>
               </a-col>
@@ -102,7 +105,9 @@
                     <template v-slot:user>
                       <component
                         v-bind:is="wholeNavcom"
-                        :data="dataRing"
+                        :guideName="filterOrderMemberTitle()"
+                        :unit="wholeNav[wholenavIndex].title | filterCompany"
+                        :data="orderMember(storeBoard, 0, 'order')"
                         style="width: 100%;"
                         :height="
                           wholeNavcom === 'brand-user-avg-bar'
@@ -114,7 +119,9 @@
                     <template v-slot:marketing>
                       <component
                         v-bind:is="wholeNavcom"
-                        :data="dataRing"
+                        :guideName="filterOrderMemberTitle()"
+                        :unit="wholeNav[wholenavIndex].title | filterCompany(1)"
+                        :data="orderMember(storeBoard, 0, 'member')"
                         style="width: 100%;"
                         :height="
                           wholeNavcom === 'brand-user-avg-bar'
@@ -131,31 +138,37 @@
         </st-panel>
         <!-- 销售分析 类目分析-->
         <div :class="salesCategory()">
-          <div :class="salesCategory('sales_box')">
+          <div :class="salesCategory('sales-box')">
             <a-row>
               <a-col :span="16">
                 <st-container class="bg-white" type="2">
                   <st-t3>销售分析</st-t3>
                   <date-picker></date-picker>
                 </st-container>
-                <div :class="salesCategory('sales_TOP5')">
-                  <div style="flex:1">
-                    <sales-analysis
-                      title="销量TOP5"
-                      :salesList="salesList"
-                    ></sales-analysis>
-                  </div>
+                <div :class="salesCategory('sales-TOP5')">
+                  <a-col :span="12">
+                    <div style="flex:1">
+                      <sales-analysis
+                        title="销量TOP5"
+                        :salesTitle="['排名', '商品', '销量(件)']"
+                        :salesList="storeSaleList.sales_rank"
+                      ></sales-analysis>
+                    </div>
+                  </a-col>
                   <div class="hr"></div>
-                  <div style="flex:1">
-                    <sales-analysis
-                      title="营收TOP5"
-                      :salesList="salesList"
-                    ></sales-analysis>
-                  </div>
+                  <a-col :span="12">
+                    <div style="flex:1">
+                      <sales-analysis
+                        title="营收TOP5"
+                        :salesTitle="['排名', '商品', '营收(元)']"
+                        :salesList="storeSaleList.revenue_rank"
+                      ></sales-analysis>
+                    </div>
+                  </a-col>
                 </div>
               </a-col>
               <a-col :span="8">
-                <div :class="salesCategory('category_box')">
+                <div :class="salesCategory('category-box')">
                   <st-container class="bg-white" type="2">
                     <st-t3>类目分析</st-t3>
                     <date-picker class="date-picker"></date-picker>
@@ -163,7 +176,8 @@
                   <div class="category">
                     <st-t3>类目营收占比</st-t3>
                     <shop-stored-data-revenue-ring
-                      :data="dataRingss"
+                      :data="categoryRevenue"
+                      :sum="storeCategoryRank.total_revenue"
                       :padding="[60, '50%', 38, 0]"
                       style="width: 100%;"
                     ></shop-stored-data-revenue-ring>
@@ -197,17 +211,14 @@ import SalesAnalysis from './components#/sales-analysis'
 import BuyNumber from './components#/buy-number'
 import ShopStoredDataRing from '@/views/biz-components/stat/shop-stored-data-ring'
 import ShopStoredDataRevenueRing from '@/views/biz-components/stat/shop-stored-data-revenue-ring'
-import BrandUserAvgBar from '@/views/biz-components/stat/brand-user-avg-bar'
+import BrandUserAvgBar from '@/views/biz-components/stat/shop-stored-data-avg-bar'
 import { DataService } from './data.service'
-import { forEach } from 'lodash-es'
 import {
   headerInfo,
   wholeNav,
-  dataRing,
-  dataRingss,
-  salesList,
+  categoryRevenue,
   headerTitleItem,
-  courseDaily
+  fieldNav
 } from './data.config.ts'
 export default {
   serviceInject() {
@@ -218,7 +229,9 @@ export default {
   rxState() {
     return {
       dataProfile: this.dataService.dataProfile$,
-      storeBoard: this.dataService.storeBoard$
+      storeBoard: this.dataService.storeBoard$,
+      storeSaleList: this.dataService.storeSaleList$,
+      storeCategoryRank: this.dataService.storeCategoryRank$
     }
   },
   bem: {
@@ -229,16 +242,13 @@ export default {
     return {
       height325: 325,
       height332: 332,
-      wholenavTitle: '营收金额(元)',
       wholenavIndex: 0,
       wholeNavcom: 'shop-stored-data-ring',
-      headerTitleItem,
       headerInfo,
       wholeNav,
-      dataRing,
-      dataRingss,
-      salesList,
-      courseDaily
+      categoryRevenue,
+      headerTitleItem,
+      fieldNav
     }
   },
   components: {
@@ -252,13 +262,71 @@ export default {
     ShopStoredDataRevenueRing,
     BrandUserAvgBar
   },
+  filters: {
+    // 整体看板单位
+    filterCompany(value) {
+      return value[value.indexOf('(') + 1]
+    }
+  },
   mounted() {
     this.wholenavFilter(this.storeBoard)
+    this.storeCategoryRankFilter(this.storeCategoryRank)
   },
   methods: {
+    // 整体看板订单/会员折线图
+    filterLine(data, type) {
+      let fieldInfo = ['amount', 'count', 'count', 'price']
+      return data[this.fieldNav[this.wholenavIndex]].trend.map(item => {
+        return {
+          date: item.date,
+          amount: item[fieldInfo[this.wholenavIndex]]
+        }
+      })
+    },
+    // 整体看板订单/会员
+    orderMember(value, flag, that) {
+      let fieldInfo = [
+        'value',
+        'count',
+        ['amount', 'count'],
+        ['amount', 'count']
+      ]
+      let filterOrderMemberData = [
+        value,
+        this.fieldNav,
+        this.wholenavIndex,
+        that,
+        this.wholenavIndex < 2
+          ? fieldInfo[this.wholenavIndex]
+          : that === 'order'
+          ? fieldInfo[this.wholenavIndex][0]
+          : fieldInfo[this.wholenavIndex][1]
+      ]
+      return this.filterOrderMember(...filterOrderMemberData)
+    },
+    filterOrderMember(value, fieldNav, wholenavIndex, that, type) {
+      return value[fieldNav[wholenavIndex]].source[that].map(item => {
+        return {
+          name: item.type,
+          value: item[type]
+        }
+      })
+    },
+    // 订单来源/会员身份标题
+    filterOrderMemberTitle() {
+      let title = ['营收金额(元)', '订单数(单)']
+      if (
+        title.find(item => item === this.wholeNav[this.wholenavIndex].title)
+      ) {
+        if (this.wholeNav[this.wholenavIndex].title === title[0]) {
+          return '总营收'
+        } else {
+          return '订单数'
+        }
+      }
+    },
     // 整体看板数据处理
     wholenavFilter(data) {
-      console.log(data)
       let titles = [
         'revenue_amount',
         'order_count',
@@ -268,10 +336,19 @@ export default {
       let field = ['amount', 'count', 'count', 'price']
       this.wholeNav.forEach((item, index) => {
         let dataInfo = data[titles[index]][field[index]]
-        console.log(this.wholenavIndex)
         item.num = dataInfo
       })
     },
+    // 类目分析数据处理
+    storeCategoryRankFilter(data) {
+      this.categoryRevenue = data.category_list.map(item => {
+        return {
+          name: item.category_name,
+          value: item.amount
+        }
+      })
+    },
+
     onChangeTabs(query) {
       console.log(query)
     },
@@ -281,7 +358,6 @@ export default {
     change() {},
     wholenavFun(index, item) {
       this.wholenavIndex = index
-      this.wholenavTitle = item.title
       if (index > 1) {
         this.wholeNavcom = 'brand-user-avg-bar'
       } else {

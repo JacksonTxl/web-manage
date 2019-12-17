@@ -1,9 +1,9 @@
 <template>
   <div :class="basic()">
     <st-input-search
-      v-model="$searchQuery.card_name"
+      v-model="$searchQuery.search_where"
       v-di-view="{ name: SHOP_STORE_ORDER_KEYWORDS_SEARCH }"
-      @search="onKeywordsSearch('card_name', $event)"
+      @search="onKeywordsSearch('search_where', $event)"
       placeholder="请输入订单编号、会员姓名或手机号查找"
       maxlength="50"
     />
@@ -11,6 +11,7 @@
       :columns="columns"
       :listData="list"
       actionText="发货"
+      @clicks="sendGoods"
     ></row-table>
   </div>
 </template>
@@ -18,6 +19,9 @@
 import RowTable from '../components#/row-table.vue'
 import { columns } from './shipments.config'
 import { SHOP_STORE_ORDER_KEYWORDS_SEARCH } from '@/constants/events'
+import { ShipmentsService } from './shipments.service'
+import tableMixin from '@/mixins/table.mixin'
+import StoreDeliverGood from '@/views/biz-modals/store/deliver-good'
 export default {
   name: 'shipments',
   components: {
@@ -25,6 +29,20 @@ export default {
   },
   bem: {
     basic: 'page-order-shipments'
+  },
+  modals: {
+    StoreDeliverGood
+  },
+  mixins: [tableMixin],
+  serviceInject() {
+    return { ShipmentsService: ShipmentsService }
+  },
+  rxState() {
+    return {
+      tableData: this.ShipmentsService.list$,
+      page: this.ShipmentsService.page$,
+      loading: this.ShipmentsService.loading$
+    }
   },
   data() {
     return {
@@ -80,6 +98,22 @@ export default {
   },
   mounted() {
     // console.log(this.list)
+  },
+  methods: {
+    sendGoods(val) {
+      console.log(val)
+      this.$modalRouter.push({
+        name: 'store-deliver-good',
+        props: {
+          id: 1
+        },
+        on: {
+          success: res => {
+            this.$router.reload()
+          }
+        }
+      })
+    }
   },
   computed: {
     columns

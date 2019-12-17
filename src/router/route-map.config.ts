@@ -1669,19 +1669,27 @@ export const routeMapConfig = {
   'shop-store-order-list-shipments'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '待发货订单'
     routeConfig.queryOptions = {
-      card_name: { type: String, default: '' }
+      type: { type: Number, default: 1 },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      search_where: { type: String, default: '' }
     }
   },
   'shop-store-order-list-signin'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '待签收订单'
     routeConfig.queryOptions = {
-      card_name: { type: String, default: '' }
+      type: { type: Number, default: 2 },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      search_where: { type: String, default: '' }
     }
   },
   'shop-store-order-list-verification'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '待核销订单'
     routeConfig.queryOptions = {
-      card_name: { type: String, default: '' }
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      search_where: { type: String, default: '' }
     }
   },
   'shop-store-list'(routeConfig: RouteConfig) {
