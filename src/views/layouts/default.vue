@@ -151,10 +151,7 @@
               <p class="layout-default-body__name">{{ user.name }}</p>
               <p class="layout-default-body__mobile">{{ user.mobile }}</p>
             </div>
-            <a-menu
-              class="layout-default-body__menu"
-              style="height:100px;overflow:auto"
-            >
+            <a-menu class="layout-default-body__menu">
               <!-- <a-menu-item class="layout-default-body__options">
                   <st-icon type="safety"></st-icon>
                   <span>账号安全</span>
@@ -180,13 +177,13 @@
                 <st-icon type="modify" color="#000000"></st-icon>
                 <span>修改密码</span>
               </a-menu-item>
-              <a-menu-item
+              <!-- <a-menu-item
                 @click="onClickUnbind"
                 class="layout-default-body__options"
               >
                 <st-icon type="bind-phone" color="#000000"></st-icon>
                 <span>解绑手机号</span>
-              </a-menu-item>
+              </a-menu-item> -->
               <a-menu-item
                 @click="onClickLogout"
                 class="layout-default-body__options"

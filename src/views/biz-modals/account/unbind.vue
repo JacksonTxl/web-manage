@@ -16,7 +16,7 @@
         <st-form-item class="mg-b0" label-fix label="滑块验证">
           <no-captcha id="change-phone"></no-captcha>
         </st-form-item>
-        <st-form-item label="短信验证码" class="mg-b0">
+        <st-form-item label="短信验证码" class="mg-b4">
           <input-phone-code
             class="test"
             size="default"

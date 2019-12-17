@@ -212,7 +212,6 @@ export default {
           repwd: values.repwd
         }
         this.modifyService.resetPass(para).subscribe(res => {
-          this.messageService.success({ content: '修改成功' })
           this.isShowFooter = false
           this.isShowSuccess = true
         })
@@ -221,7 +220,9 @@ export default {
     endCount() {
       this.isCountTime = false
     },
-    goLogin() {}
+    goLogin() {
+      location.href = location.origin + '/account/login'
+    }
   }
 }
 </script>
