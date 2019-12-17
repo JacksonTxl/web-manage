@@ -10,10 +10,16 @@ export class FlowApi extends Api {
     })
   }
   /**
-   * 获取收入流水 -- 品牌
+   * 获取收入流水明细 -- 品牌
    */
   getIncomeList(query: GetListInput) {
     return this.http.get('/v1/finance/flow/income/detail', { query })
+  }
+  /**
+   * 获取收入流水汇总 -- 品牌
+   */
+  getIncomeSummaryList(query: any) {
+    return this.http.get('/v1/finance/flow/income/summary', { query })
   }
   /**
    * 获取支出流水 -- 门店
@@ -30,6 +36,20 @@ export class FlowApi extends Api {
     return this.http.get('/v1/finance/flow/expenditure/detail', {
       query
     })
+  }
+  /**
+   * 获取支出流水汇总 -- 品牌
+   */
+  getExpenditureSummaryList(query: any) {
+    return this.http.get('/v1/finance/flow/expenditure/summary', {
+      query
+    })
+  }
+  /**
+   * 获取流水的支付列表
+   */
+  getPaymentMethodList() {
+    return this.http.get(`/v1/finance/flow/payment/method`)
   }
 }
 export interface GetListInput {
