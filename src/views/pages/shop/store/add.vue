@@ -332,7 +332,10 @@ export default {
     }
   },
   mounted() {
-    this.isEdit = this.$route.id
+    this.isEdit = this.$route.query.id
+    if (this.isEditor) {
+      // 获取详情
+    }
   },
   methods: {
     onSubmit() {
@@ -354,6 +357,19 @@ export default {
             path: './list'
           })
         })
+      })
+    },
+    goodDetail() {
+      this.addService.goodsDetail(this.$route.query.id).subscribe(res => {
+        this.form.setFieldsValue({
+          product_name: res.product_name,
+          category_id: res.category_id,
+          delivery_type: res.delivery_type,
+          sale_type: res.sale_type
+        })
+        this.imgList = res.product_images
+        this.content = res.product_intro
+        this.shelves_status = res.shelves_status
       })
     },
     // 为了同步字数
