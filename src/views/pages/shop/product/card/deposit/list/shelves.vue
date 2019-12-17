@@ -1,12 +1,13 @@
 <template>
   <div :class="shelves()">
-    <st-input-search
-      v-model="$searchQuery.card_name"
-      v-di-view="{ name: SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH }"
-      @search="onKeywordsSearch('card_name', $event)"
-      :placeholder="`请输入${$c('member_card')}名称查找`"
-      maxlength="50"
-    />
+    <portal to="SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH">
+      <st-input-search
+        v-model="$searchQuery.card_name"
+        @search="onKeywordsSearch('card_name', $event)"
+        :placeholder="`请输入${$c('member_card')}名称查找`"
+        maxlength="50"
+      />
+    </portal>
     <div :class="shelves('search')">
       <a-select
         :class="shelves('search__select')"
@@ -96,7 +97,6 @@ import { ShelvesService } from './shelves.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './shelves.config.ts'
 import CardShopDepositShopTable from '@/views/biz-modals/card/shop-deposit/shop-table'
-import { SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH } from '@/constants/events'
 import { CONSUMPTION_RANGE } from '@/constants/card/deposit'
 export default {
   mixins: [tableMixin],
@@ -123,8 +123,7 @@ export default {
   },
   data() {
     return {
-      CONSUMPTION_RANGE,
-      SHOP_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH
+      CONSUMPTION_RANGE
     }
   },
   computed: {

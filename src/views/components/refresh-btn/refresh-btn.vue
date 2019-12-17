@@ -26,9 +26,6 @@ export default {
     }
   },
   props: {
-    date: {
-      type: String
-    },
     action: {
       type: Function
     },

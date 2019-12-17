@@ -49,9 +49,10 @@
         ></step3-form>
       </div>
     </div>
-    <div slot="actions">
-      <di-view name="step"></di-view>
-    </div>
+    <portal-target
+      slot="actions"
+      name="BRAND_MARKETING_ACTIVITY_FORM_ACTIONS"
+    ></portal-target>
   </st-mina-panel>
 </template>
 <script>

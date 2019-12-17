@@ -88,10 +88,7 @@
       </draggable>
     </div>
 
-    <div
-      v-di-view="{ name: 'step', show }"
-      :class="pComponents('button-group')"
-    >
+    <portal to="BRAND_MARKETING_ACTIVITY_FORM_ACTIONS" v-if="show">
       <st-button class="mg-r8" @click="onClickBack">
         上一步
       </st-button>
@@ -101,7 +98,7 @@
       <st-button @click="onClickRelease" type="primary">
         发布
       </st-button>
-    </div>
+    </portal>
   </div>
 </template>
 <script>
