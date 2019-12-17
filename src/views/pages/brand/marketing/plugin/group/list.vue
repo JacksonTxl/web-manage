@@ -280,14 +280,15 @@ export default {
     },
     // 选择门店
     onGeneralize(record) {
-      this.modalShow = true
       this.groupId = record.id
       this.listService
         .getShopList(record.id, {
           size: record.size || 20,
           current_page: record.current_page || 1
         })
-        .subscribe(res => {})
+        .subscribe(res => {
+          this.modalShow = true
+        })
     },
     // 门店分页
     onShopTableChange(data) {
