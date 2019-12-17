@@ -13,12 +13,6 @@ export class ExportService {
   ) {}
   @Effect()
   export(path: string, params: any) {
-    return this.excelApi.export(path, params).pipe(
-      then(() => {
-        this.messageService.success({
-          content: '提交成功'
-        })
-      })
-    )
+    return this.excelApi.export(path, params)
   }
 }
