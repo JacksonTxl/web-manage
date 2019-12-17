@@ -115,14 +115,19 @@
           </template>
         </st-table>
       </div>
-      <st-modal v-model="modalShow" :footer="null" :title="title">
+      <st-modal
+        v-model="modalShow"
+        :footer="null"
+        :title="title"
+        wrapClassName="scroll-modal"
+      >
         <st-table
           :page="shopPage"
           rowKey="id"
           :loading="loading[`getShopList`]"
           :columns="shopListColumns"
           @change="onShopTableChange"
-          :scroll="{ x: 400 }"
+          :scroll="{ y: 230, x: 600 }"
           :dataSource="shopList"
           :pagination="{
             current: shopPage.current_page,
