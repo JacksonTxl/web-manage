@@ -117,13 +117,13 @@
       </div>
       <st-modal v-model="modalShow" :footer="null" :title="title">
         <st-table
-          :page="shoppage"
+          :page="shopPage"
           rowKey="id"
           :loading="loading[`getShopList`]"
-          :columns="shoplistcolumns"
+          :columns="shopListColumns"
           @change="onTableChange"
           :scroll="{ x: 400 }"
-          :dataSource="shoplist"
+          :dataSource="shopList"
         >
           <template slot="action" slot-scope="text, record">
             <st-table-actions sytle="width: 80px">
@@ -142,7 +142,7 @@ import { UserService } from '@/services/user.service'
 import { ListService } from './list.service'
 import MarkteingPluginTitle from '../../components#/marketing-title'
 import tableMixin from '@/mixins/table.mixin'
-import { columns, shoplistcolumns } from './list.config'
+import { columns, shopListColumns } from './list.config'
 import { TYPE } from '@/constants/marketing/plugin'
 import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
 import useShare from '@/hooks/marketing/share.hook'
@@ -172,8 +172,8 @@ export default {
       auth: this.listService.auth$,
       info: this.listService.info$,
       groupBuyEnums: this.userService.groupBuyEnums$,
-      shoplist: this.listService.shoplist$,
-      shoppage: this.listService.shoppage$,
+      shopList: this.listService.shopList$,
+      shopPage: this.listService.shopPage$,
       isAuth: this.listService.isAuth$
     }
   },
@@ -188,7 +188,7 @@ export default {
       activityName: '',
       activityStatus: -1,
       columns: columns,
-      shoplistcolumns: shoplistcolumns,
+      shopListColumns: shopListColumns,
       modalShow: false, // 控制选择门店
       title: '选择门店',
       groupId: ''
