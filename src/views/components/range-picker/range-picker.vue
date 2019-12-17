@@ -127,8 +127,11 @@ export default {
         return (
           moment(this.startValue)
             .add(+this.disabledDays, 'days')
-            .valueOf() < newEndValue.valueOf() ||
-          moment(this.startValue).valueOf() > newEndValue.valueOf()
+            .format('YYYY-MM-DD')
+            .valueOf() < newEndValue.format('YYYY-MM-DD').valueOf() ||
+          moment(this.startValue)
+            .format('YYYY-MM-DD')
+            .valueOf() > newEndValue.format('YYYY-MM-DD').valueOf()
         )
       }
       return moment(this.startValue).valueOf() > newEndValue.valueOf()

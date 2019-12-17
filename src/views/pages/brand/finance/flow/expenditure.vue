@@ -5,7 +5,7 @@
         <shop-select v-model="$searchQuery.shop_id" class="mg-r12" />
       </st-search-panel-item>
       <st-search-panel-item label="查询日期：">
-        <st-range-picker :disabledDays="90" v-model="date" class="value" />
+        <st-range-picker :disabledDays="180" v-model="date" class="value" />
       </st-search-panel-item>
 
       <div slot="button">
@@ -27,7 +27,7 @@
       @change="onTableChange"
       :dataSource="list$"
     >
-      <span slot="internal_amount">
+      <span slot="internalTitle">
         内部结转退款
         <st-help-tooltip id="TBFES001" />
       </span>
@@ -75,7 +75,7 @@ export default {
     columns
   },
   mounted() {
-    this.setSearchDate()
+    this.setSearchData()
   },
   watch: {
     $searchQuery() {
@@ -86,7 +86,7 @@ export default {
     ShopSelect
   },
   methods: {
-    setSearchDate() {
+    setSearchData() {
       if (!this.$searchQuery.start_date) return
       const start = moment(this.$searchQuery.start_date)
       const end = moment(this.$searchQuery.end_date)

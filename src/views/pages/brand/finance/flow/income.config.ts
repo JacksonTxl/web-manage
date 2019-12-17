@@ -39,9 +39,9 @@ export const columns = () => {
       align: 'right'
     },
     {
-      title: '内部结转',
+      titleTotal: '内部结转',
       dataIndex: 'internal_amount',
-      slot: { title: 'internal_amount' },
+      slots: { title: 'internal_amount' },
       align: 'right'
     },
     {
