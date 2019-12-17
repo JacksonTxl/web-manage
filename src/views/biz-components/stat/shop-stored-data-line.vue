@@ -29,7 +29,7 @@ export default {
     // 使用的字段key值数组
     fields: {
       type: Array,
-      default: () => ['总营收']
+      default: () => ['amount']
     },
     // 颜色数组
     colors: {

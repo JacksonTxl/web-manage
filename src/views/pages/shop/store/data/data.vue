@@ -62,6 +62,7 @@
         </ul>
       </st-panel>
       <!-- 整体看板 -->
+      {{ filterLine(storeBoard, wholenavTitle) }}
       <section>
         <st-panel class="mg-t16" title="整体看板">
           <div slot="actions">
@@ -92,7 +93,7 @@
                     {{ wholenavTitle }}
                   </st-t3>
                   <shop-stored-data-line
-                    :data="courseDaily"
+                    :data="filterLine(storeBoard, wholenavTitle)"
                   ></shop-stored-data-line>
                 </div>
               </a-col>
@@ -102,7 +103,11 @@
                     <template v-slot:user>
                       <component
                         v-bind:is="wholeNavcom"
-                        :data="dataRing"
+                        :guideName="filterOrderMemberTitle()"
+                        :unit="wholenavTitle | filterCompany"
+                        :data="
+                          filterMember(storeBoard, 0, 'order', wholenavTitle)
+                        "
                         style="width: 100%;"
                         :height="
                           wholeNavcom === 'brand-user-avg-bar'
@@ -114,7 +119,11 @@
                     <template v-slot:marketing>
                       <component
                         v-bind:is="wholeNavcom"
-                        :data="dataRing"
+                        :guideName="filterOrderMemberTitle()"
+                        :unit="wholenavTitle | filterCompany(1)"
+                        :data="
+                          filterMember(storeBoard, 0, 'member', wholenavTitle)
+                        "
                         style="width: 100%;"
                         :height="
                           wholeNavcom === 'brand-user-avg-bar'
@@ -139,19 +148,25 @@
                   <date-picker></date-picker>
                 </st-container>
                 <div :class="salesCategory('sales-TOP5')">
-                  <div style="flex:1">
-                    <sales-analysis
-                      title="销量TOP5"
-                      :salesList="salesList"
-                    ></sales-analysis>
-                  </div>
+                  <a-col :span="12">
+                    <div style="flex:1">
+                      <sales-analysis
+                        title="销量TOP5"
+                        :salesTitle="['排名', '商品', '销量(件)']"
+                        :salesList="storeSaleList.sales_rank"
+                      ></sales-analysis>
+                    </div>
+                  </a-col>
                   <div class="hr"></div>
-                  <div style="flex:1">
-                    <sales-analysis
-                      title="营收TOP5"
-                      :salesList="salesList"
-                    ></sales-analysis>
-                  </div>
+                  <a-col :span="12">
+                    <div style="flex:1">
+                      <sales-analysis
+                        title="营收TOP5"
+                        :salesTitle="['排名', '商品', '营收(元)']"
+                        :salesList="storeSaleList.revenue_rank"
+                      ></sales-analysis>
+                    </div>
+                  </a-col>
                 </div>
               </a-col>
               <a-col :span="8">
@@ -163,7 +178,8 @@
                   <div class="category">
                     <st-t3>类目营收占比</st-t3>
                     <shop-stored-data-revenue-ring
-                      :data="dataRingss"
+                      :data="categoryRevenue"
+                      :sum="storeCategoryRank.total_revenue"
                       :padding="[60, '50%', 38, 0]"
                       style="width: 100%;"
                     ></shop-stored-data-revenue-ring>
@@ -197,14 +213,14 @@ import SalesAnalysis from './components#/sales-analysis'
 import BuyNumber from './components#/buy-number'
 import ShopStoredDataRing from '@/views/biz-components/stat/shop-stored-data-ring'
 import ShopStoredDataRevenueRing from '@/views/biz-components/stat/shop-stored-data-revenue-ring'
-import BrandUserAvgBar from '@/views/biz-components/stat/brand-user-avg-bar'
+import BrandUserAvgBar from '@/views/biz-components/stat/shop-stored-data-avg-bar'
 import { DataService } from './data.service'
 import { forEach } from 'lodash-es'
 import {
   headerInfo,
   wholeNav,
-  dataRing,
-  dataRingss,
+  moneyOrder,
+  categoryRevenue,
   salesList,
   headerTitleItem,
   courseDaily
@@ -218,7 +234,9 @@ export default {
   rxState() {
     return {
       dataProfile: this.dataService.dataProfile$,
-      storeBoard: this.dataService.storeBoard$
+      storeBoard: this.dataService.storeBoard$,
+      storeSaleList: this.dataService.storeSaleList$,
+      storeCategoryRank: this.dataService.storeCategoryRank$
     }
   },
   bem: {
@@ -235,8 +253,8 @@ export default {
       headerTitleItem,
       headerInfo,
       wholeNav,
-      dataRing,
-      dataRingss,
+      moneyOrder,
+      categoryRevenue,
       salesList,
       courseDaily
     }
@@ -252,10 +270,105 @@ export default {
     ShopStoredDataRevenueRing,
     BrandUserAvgBar
   },
+  filters: {
+    // 整体看板单位
+    filterCompany(value) {
+      return value[value.indexOf('(') + 1]
+    }
+  },
   mounted() {
     this.wholenavFilter(this.storeBoard)
+    this.storeCategoryRankFilter(this.storeCategoryRank)
   },
   methods: {
+    // 整体看板订单/会员折线图
+    filterLine(data, type) {
+      let fieldNav = [
+        'revenue_amount',
+        'order_count',
+        'transaction_member',
+        'customer_price'
+      ]
+      let fieldInfo = ['amount', 'count', 'count', 'price']
+      if (type === '营收金额(元)') {
+        return this.switchFunc(data, fieldNav, fieldInfo, 0)
+      } else if (type === '订单数(单) ') {
+        return this.switchFunc(data, fieldNav, fieldInfo, 1)
+      } else if (type === '交易会员数(人)') {
+        return this.switchFunc(data, fieldNav, fieldInfo, 2)
+      } else {
+        return this.switchFunc(data, fieldNav, fieldInfo, 3)
+      }
+    },
+    switchFunc(data, fieldNav, fieldInfo, index) {
+      return data[fieldNav[index]].trend.map(item => {
+        return {
+          date: item.date,
+          amount: item[fieldInfo[index]]
+        }
+      })
+    },
+    // 整体看板订单/会员
+    filterMember(value, flag, that, wholenavTitle) {
+      if (wholenavTitle === '营收金额(元)') {
+        return value.revenue_amount.source[that].map(item => {
+          return {
+            name: item.type,
+            value: item.value
+          }
+        })
+      } else if (wholenavTitle === '订单数(单)') {
+        return value.order_count.source[that].map(item => {
+          return {
+            name: item.type,
+            value: item.count
+          }
+        })
+      } else if (wholenavTitle === '交易会员数(人)') {
+        if (that === 'order') {
+          return value.transaction_member.source[that].map(item => {
+            return {
+              name: item.type,
+              value: item.amount
+            }
+          })
+        } else {
+          return value.transaction_member.source[that].map(item => {
+            return {
+              name: item.type,
+              value: item.count
+            }
+          })
+        }
+      } else {
+        if (that === 'order') {
+          return value.customer_price.source[that].map(item => {
+            return {
+              name: item.type,
+              value: item.amount
+            }
+          })
+        } else {
+          return value.customer_price.source[that].map(item => {
+            return {
+              name: item.type,
+              value: item.count
+            }
+          })
+        }
+      }
+    },
+    // 订单来源/会员身份标题
+    filterOrderMemberTitle() {
+      let title = ['营收金额(元)', '订单数(单)']
+      if (title.find(item => item === this.wholenavTitle)) {
+        if (this.wholenavTitle === title[0]) {
+          return '总营收'
+        } else {
+          return '订单数'
+        }
+      }
+    },
     // 整体看板数据处理
     wholenavFilter(data) {
       console.log(data)
@@ -272,6 +385,17 @@ export default {
         item.num = dataInfo
       })
     },
+    // 类目分析数据处理
+    storeCategoryRankFilter(data) {
+      console.log(data)
+      this.categoryRevenue = data.category_list.map(item => {
+        return {
+          name: item.category_name,
+          value: item.amount
+        }
+      })
+    },
+
     onChangeTabs(query) {
       console.log(query)
     },

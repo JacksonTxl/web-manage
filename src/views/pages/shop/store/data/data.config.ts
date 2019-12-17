@@ -53,71 +53,37 @@ export const wholeNav = [
     num: '1,122'
   }
 ]
-export const dataRing = [
+export const moneyOrder = [
   { name: '商家后台', value: '2020.0' },
   { name: '小程序', value: '200' }
 ]
-export const dataRings = [
+export const moneyOeders = [
   { name: '潜在会员', value: '2020.0' },
   { name: '正式会员', value: '200' }
 ]
-export const dataRingss = [
-  { name: '潜在会员1', value: '2020.0' },
-  { name: '潜在会员2', value: '2020.0' },
-  { name: '潜在会员3', value: '2020.0' },
-  { name: '潜在会员4', value: '2020.0' },
-  { name: '潜在会员5', value: '2020.0' },
-  { name: '潜在会员6', value: '2020.0' },
-  { name: '潜在会员7', value: '2020.0' },
-  { name: '潜在会员8', value: '2020.0' },
-  { name: '潜在会员9', value: '2020.0' },
-  { name: '正式会员', value: '200' }
-]
+export const categoryRevenue = []
 export const salesList = {
-  title: ['排名', '商品', '销量(件)'],
-  data: [
-    {
-      age: 18,
-      sex: '女'
-    },
-    {
-      age: 18,
-      sex: '男'
-    },
-    {
-      age: 18,
-      sex: '男'
-    },
-    {
-      age: 18,
-      sex: '男'
-    },
-    {
-      name: 1,
-      age: 1,
-      sex: 1
-    }
-  ]
+  title: ['排名', '商品', '销量(件)']
 }
 export const courseDaily = [
   {
     date: '12-03',
-    总营收: 10
+    amount: 10
   },
   {
     date: '12-04',
-    总营收: 0
+    amount: 0
   },
   {
     date: '12-08',
-    总营收: 0
+    amount: 0
   },
   {
     date: '12-09',
-    总营收: 0
+    amount: 0
   },
   {
     date: '12-10',
-    总营收: 0
+    amount: 0
   }
 ]
