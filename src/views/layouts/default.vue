@@ -219,6 +219,7 @@ import { entries } from './default#/fast-entry.config'
 import FastEntryMiniProgram from '@/views/biz-modals/fast-entry/mini-program'
 import FastEntryHousekeeper from '@/views/biz-modals/fast-entry/housekeeper'
 import CommonNotifyConfig from '@/views/biz-modals/common/notify/config'
+import CommonNotifyActivity from '@/views/biz-modals/common/notify/activity'
 import AccountBind from '@/views/biz-modals/account/bind'
 import { UdeskService } from '@/services/udesk.service'
 
@@ -258,6 +259,7 @@ export default {
     FastEntryMiniProgram,
     FastEntryHousekeeper,
     CommonNotifyConfig,
+    CommonNotifyActivity,
     AccountBind
   },
   computed: {
@@ -275,6 +277,9 @@ export default {
     siderMenuTip() {
       return this.isThemeStudio ? '工作室版' : '俱乐部版'
     }
+  },
+  created() {
+    this.$modalRouter.push({ name: 'common-notify-activity' })
   },
   methods: {
     onClickNotifyConfig() {

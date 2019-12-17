@@ -12,8 +12,26 @@ export class NoticeService {
   getList(query: any) {
     return this.api.getNoticeList(query).pipe(
       tap((res: any) => {
-        this.list$.commit(() => res.list)
-        this.page$.commit(() => res.page)
+        this.list$.commit(() => {
+          return [
+            {
+              id: 1111111111,
+              send_time: '2011-11-11 11:11',
+              notify_type: '入场通知',
+              sub_notify_type: '硬件入场',
+              shop_name: 'sb门店',
+              content: '内容'
+            }
+          ]
+        })
+        this.page$.commit(() => {
+          return {
+            total_counts: 102,
+            total_pages: 6,
+            current_page: 1,
+            size: 20
+          }
+        })
       })
     )
   }
