@@ -61,16 +61,12 @@
             placeholder="请输入新密码"
             :validStatus="validStatus"
             :strength="strength"
-          ></input-pwd-strength>
-          <!-- <a-input
-            type="password"
-            v-decorator="decorators.pwd"
-            placeholder="请输入新密码"
             size="default"
-          ></a-input> -->
+          ></input-pwd-strength>
         </st-form-item>
         <st-form-item label="确认新密码" required>
           <a-input
+            :maxLength="15"
             type="password"
             v-decorator="decorators.repwd"
             placeholder="请输入确认新密码"
