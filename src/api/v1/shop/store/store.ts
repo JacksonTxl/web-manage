@@ -30,4 +30,16 @@ export class StoreApi extends Api {
   getList(query: StoreList) {
     return this.http.get(`/v1/store/product/1`, { query })
   }
+  /**
+   * 删除商品
+   */
+  delProduct(id: number) {
+    return this.http.delete(`/v1/store/product/${id}`)
+  }
+  /**
+   * 上下架商品
+   */
+  onShelf(id: number) {
+    return this.http.put(`/v1/store/product/${id}`)
+  }
 }

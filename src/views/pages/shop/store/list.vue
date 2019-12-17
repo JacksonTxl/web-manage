@@ -35,16 +35,22 @@
         />
       </div>
       <div :class="basic('content')">
-        <st-table :columns="columns" :dataSource="list" isExpand>
+        <st-table
+          :page="page"
+          :columns="columns"
+          :dataSource="list"
+          @change="onTableChange"
+          isExpand
+        >
           <template slot="action" slot-scope="text, record">
             <st-table-actions sytle="width: 120px">
-              <a @click="onUpShelf(record)">
+              <a @click="onShelf(record)">
                 上架
               </a>
               <a @click="onEdit(record)">
                 编辑
               </a>
-              <a @click="onStopShelf(record)">
+              <a @click="onShelf(record)">
                 下架
               </a>
               <a @click="onDel(record)">
@@ -115,60 +121,35 @@ export default {
     console.log(this.allUpShelfStatus)
   },
   methods: {
-    rowClassName(record, index) {
-      let id = record && record.id
-      let has = this.showList.includes(id)
-      let className = ''
-      if (index % 2 !== 0) {
-        className = has ? 'evengb shadow' : 'evengb'
-      } else {
-        className = has ? 'shadow' : ''
-      }
-      if (record && record.children) {
-        Color = className
-        return className
-      } else {
-        let name = Color
-        return name.indexOf('shadow') === -1 ? name : name.replace('shadow', '')
-      }
-    },
-    onShow(list) {
-      this.showList = list
-      this.rowClassName()
-    },
-    onshow() {
-      console.log('时间触发')
-    },
-    onTableChange() {
-      console.log(1)
-    },
     // 新建商品
     onAddGoods() {
-      console.log(1)
+      this.$router.push({
+        path: './add'
+      })
     },
-    // 上架
-    onUpShelf() {
-      console.log('上架')
+    // 上下架
+    onShelf(record) {
+      this.listService.onShelf(record.id).subscribe(res => {
+        this.$router.record()
+      })
     },
-    // 下架
-    onStopShelf() {
-      console.log('下架')
-    },
-    onDel() {
-      let that = this
+    onDel(record) {
       this.$confirm({
         title: '提示',
         content: '确定停止该活动吗？活动停止后，未成团订单将自动关闭并退款。',
-        onOk() {
-          that.listService.stopGroup(record.id).subscribe(res => {
-            that.$router.reload()
+        onOk: () => {
+          this.listService.delproduct(record.id).subscribe(res => {
+            this.$router.reload()
           })
         },
         onCancel() {}
       })
     },
-    onEdit() {
-      console.log('编辑')
+    onEdit(record) {
+      this.$router.push({
+        path: './add',
+        query: { id: record.id }
+      })
     }
   }
 }
