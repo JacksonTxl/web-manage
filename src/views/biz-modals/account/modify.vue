@@ -6,7 +6,9 @@
       }}修改密码，为确认是您本人操作，请完成身份验证
       <span v-if="isBind">
         您当前暂未绑定手机号码，无法使用手机验证修改密码，
-        <a href="">去绑定</a>
+        <a @click="goBind">
+          去绑定
+        </a>
       </span>
       <div :class="b('item')" class="mg-t16">
         密码验证方式
@@ -112,6 +114,7 @@ import InputPhoneCode from '@/views/biz-components/input-phone-code/input-phone-
 import { MessageService } from '@/services/message.service'
 import { cloneDeep } from 'lodash-es'
 import NoCaptcha from '@/views/biz-components/no-captcha'
+import AccountBind from '@/views/biz-modals/account/bind'
 
 export default {
   bem: {
@@ -134,6 +137,9 @@ export default {
   components: {
     NoCaptcha,
     InputPhoneCode
+  },
+  modals: {
+    AccountBind
   },
   computed: {
     isBind() {
@@ -158,6 +164,14 @@ export default {
     }
   },
   methods: {
+    goBind() {
+      this.show = false
+      this.$modalRouter.push({
+        name: 'account-bind',
+        props: {},
+        on: {}
+      })
+    },
     checkPass() {
       this.isShowFooter = true
       this.isShowPass = true
