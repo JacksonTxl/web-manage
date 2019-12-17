@@ -25,6 +25,22 @@ export class StoreApi extends Api {
     })
   }
   /**
+   * 类目支付排行
+   */
+  storeSaleList(params: DtoreBoard) {
+    return this.http.get('/v1/store/sale_list', {
+      params
+    })
+  }
+  /**
+   * 商品销售榜
+   */
+  storeCategoryRank(params: DtoreBoard) {
+    return this.http.get('/v1/store/category_rank', {
+      params
+    })
+  }
+  /**
    * 商品列表
    */
   getList(query: StoreList) {
