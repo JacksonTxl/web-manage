@@ -21,7 +21,14 @@
         <div :class="recognition('space')">
           <a-spin :spinning="isLoading" :class="recognition('loading')">
             <div :class="recognition('img')">
-              <img :src="userImgSrc" v-show="userImgSrc" />
+              <!-- <img :src="userImgSrc" v-show="userImgSrc" /> -->
+              <div
+                class="user-img-src"
+                v-show="userImgSrc"
+                :style="{
+                  backgroundImage: 'url(' + userImgSrc + ')'
+                }"
+              ></div>
               <video
                 ref="video"
                 width="270"
@@ -73,6 +80,7 @@ import { OssService } from '@/services/oss.service'
 import { AppConfig } from '@/constants/config'
 import { MessageService } from '@/services/message.service'
 import { RecognitionService } from './recognition.service'
+import BrowserType from './recognition-browser'
 
 export default {
   bem: {
@@ -115,7 +123,11 @@ export default {
       userImgSrc: '',
       confirmLoading: false,
       openCameraError: false, // 开启摄像头失败
-      isLoading: false
+      isLoading: false,
+      picWidth: 270,
+      picHeight: 270,
+      canvasCardContext: '',
+      canvasCard: ''
     }
   },
   watch: {
@@ -140,6 +152,14 @@ export default {
     imageUrl() {
       return this.props.image_url
     }
+  },
+  created() {
+    const browserV = BrowserType()
+    console.log(browserV)
+    if (browserV === 'FF') {
+      this.picHeight = 202
+    }
+    this.createOutCanvas()
   },
   mounted() {
     this.$nextTick(() => {
@@ -223,6 +243,17 @@ export default {
           }
         })
     },
+    createOutCanvas() {
+      this.canvasCard = document.createElement('canvas')
+      this.canvasCard.style.opacity = 0
+      this.canvasCard.width = this.picWidth
+      this.canvasCard.height = this.picHeight
+      this.canvasCard.style.width = this.picWidth + 'px'
+      this.canvasCard.style.height = this.picHeight + 'px'
+      this.canvasCardContext = this.canvasCard.getContext('2d')
+      this.canvasCardContext.fillStyle = '#ffffff'
+      this.canvasCardContext.fillRect(0, 0, this.picWidth, this.picHeight)
+    },
     // 拍照
     handlerTakePhoto(index = 0) {
       // 如果已有用户头像,则对数组操作,去除当前数据
@@ -234,8 +265,22 @@ export default {
       // 如果未拍照,显示为拍照,点击拍照
       let context = this.canvasElm.getContext('2d')
       let video = this.$refs.video
-      context.drawImage(video, 0, 0, 270, 270)
-      this.userImgSrc = this.canvasElm.toDataURL('image/png')
+      context.drawImage(video, 0, 0, this.picWidth, this.picHeight)
+      //const imgSrc = this.canvasElm.toDataURL('image/png')
+      console.log(this.canvasCardContext)
+      this.canvasCardContext.drawImage(
+        this.canvasElm,
+        0,
+        0,
+        this.picWidth,
+        this.picHeight,
+        0,
+        0,
+        this.picWidth,
+        this.picHeight
+      )
+      //this.userImgSrc = this.canvasElm.toDataURL('image/png')
+      this.userImgSrc = this.canvasCard.toDataURL('image/png')
     },
     // 开启摄像头
     openCamera() {
@@ -263,8 +308,8 @@ export default {
       }
       let constraints = {
         video: {
-          width: 270,
-          height: 270
+          width: this.picWidth,
+          height: this.picHeight
         }
       }
       this.isLoading = true
