@@ -100,12 +100,12 @@
       <div class="layout-default-body__personal">
         <!-- 消息通知 -->
         <a-badge :count="100">
-          <a
+          <span
             @click="onClickNotify"
             class="layout-default-body__notify font-number"
           >
-            <st-icon type="down"></st-icon>
-          </a>
+            <st-icon type="notify" size="22px" color="#9BACB9"></st-icon>
+          </span>
         </a-badge>
         <!-- 九宫格 -->
         <a-dropdown :trigger="['hover']" placement="bottomRight">
@@ -168,15 +168,8 @@
                   </a>
               </a-menu-item>-->
               <!-- <a-menu-divider/> -->
-              <!-- <a-menu-item
-                @click="onClickBind"
-                class="layout-default-body__options"
-              >
-                <st-icon type="notify-config" color="#000000"></st-icon>
-                <span>通知设置</span>
-              </a-menu-item> -->
               <a-menu-item
-                @click="onClickBind"
+                @click="onClickNotifyConfig"
                 class="layout-default-body__options"
               >
                 <st-icon type="notify-config" color="#000000"></st-icon>
@@ -225,6 +218,7 @@ import { TitleService } from '@/services/title.service'
 import { entries } from './default#/fast-entry.config'
 import FastEntryMiniProgram from '@/views/biz-modals/fast-entry/mini-program'
 import FastEntryHousekeeper from '@/views/biz-modals/fast-entry/housekeeper'
+import CommonNotifyConfig from '@/views/biz-modals/common/notify/config'
 import AccountBind from '@/views/biz-modals/account/bind'
 import { UdeskService } from '@/services/udesk.service'
 
@@ -263,6 +257,7 @@ export default {
   modals: {
     FastEntryMiniProgram,
     FastEntryHousekeeper,
+    CommonNotifyConfig,
     AccountBind
   },
   computed: {
@@ -282,6 +277,9 @@ export default {
     }
   },
   methods: {
+    onClickNotifyConfig() {
+      this.$modalRouter.push({ name: 'common-notify-config' })
+    },
     onClickNotify() {
       this.$router.push({ name: 'common-notify' })
     },

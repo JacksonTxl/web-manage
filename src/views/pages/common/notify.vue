@@ -18,7 +18,7 @@ export default {
     return {
       authTabs: [
         { label: '通知列表', route: { name: 'common-notify-inform' } },
-        { label: '公告列表', route: { name: 'common-notify-a' } }
+        { label: '公告列表', route: { name: 'common-notify-notice' } }
       ]
     }
   },
