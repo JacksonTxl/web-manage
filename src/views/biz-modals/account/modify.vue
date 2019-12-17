@@ -55,12 +55,19 @@
 
       <div v-if="!isShowTel && !isShowPass && isShowFooter">
         <st-form-item label="新密码" required>
-          <a-input
+          <input-pwd-strength
+            max-length="15"
+            v-decorator="decorators.pwd"
+            placeholder="请输入新密码"
+            :validStatus="validStatus"
+            :strength="strength"
+          ></input-pwd-strength>
+          <!-- <a-input
             type="password"
             v-decorator="decorators.pwd"
             placeholder="请输入新密码"
             size="default"
-          ></a-input>
+          ></a-input> -->
         </st-form-item>
         <st-form-item label="确认新密码" required>
           <a-input
@@ -115,6 +122,7 @@ import { MessageService } from '@/services/message.service'
 import { cloneDeep } from 'lodash-es'
 import NoCaptcha from '@/views/biz-components/no-captcha'
 import AccountBind from '@/views/biz-modals/account/bind'
+import InputPwdStrength from '@/views/biz-components/input-pwd-strength/input-pwd-strength'
 
 export default {
   bem: {
@@ -136,7 +144,8 @@ export default {
   },
   components: {
     NoCaptcha,
-    InputPhoneCode
+    InputPhoneCode,
+    InputPwdStrength
   },
   modals: {
     AccountBind
@@ -160,7 +169,8 @@ export default {
       isShowFooter: false,
       isShowTel: false,
       isShowPass: false,
-      isShowSuccess: false
+      isShowSuccess: false,
+      validStatus: 0
     }
   },
   methods: {
