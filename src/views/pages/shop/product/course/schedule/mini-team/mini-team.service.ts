@@ -23,8 +23,8 @@ export class MiniTeamService implements Controller {
   }
   beforeRouteEnter(to: ServiceRoute, form: ServiceRoute) {
     return forkJoin(
-      this.commonService.getCoachList(),
-      this.commonService.getCourseList()
+      this.commonService.getCoachList()
+      //this.commonService.getCourseList()
     )
   }
 }

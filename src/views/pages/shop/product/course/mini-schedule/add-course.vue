@@ -29,16 +29,13 @@
             <a-date-picker
               @change="onChangeDatePick"
               style="width:100%"
-              :disabledDate="disabledDate"
               v-decorator="decorators.start_days"
             />
           </st-form-item>
           <st-form-item label="预约时间" required>
             <a-time-picker
               format="HH:mm"
-              :disabledMinutes="disabledMinutes"
               style="width:100%"
-              :disabledHours="disabledHours"
               v-decorator="decorators.start_time"
             />
           </st-form-item>
@@ -115,7 +112,7 @@ export default {
   },
   created() {},
   methods: {
-    onChangeRangePicker(val) {
+    onChangeDatePick(val) {
       this.start = val[0].format('YYYY-MM-DD').valueOf()
       this.end = val[1].format('YYYY-MM-DD').valueOf()
     },

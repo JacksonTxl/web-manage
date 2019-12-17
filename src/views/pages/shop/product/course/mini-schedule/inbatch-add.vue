@@ -49,21 +49,23 @@
                 <st-t4 class="mg-b12">{{ item.date }}</st-t4>
                 <div
                   :class="b('schedule__card')"
-                  v-for="cardItem in scheduleItem.scheduleInfo[item.item]"
-                  :key="cardItem.id"
+                  v-for="cardItem in filterDate[i][item.week]"
+                  :key="cardItem.coach_id"
                 >
                   <span class="time">
                     <st-icon type="timer"></st-icon>
                     {{ cardItem.start_time }}-{{ cardItem.end_time }}
                   </span>
-                  <st-t3 class="course__name">{{ cardItem.course_name }}</st-t3>
+                  <st-t3 class="course__name">
+                    {{ cardItem.current_course_name }}
+                  </st-t3>
                   <p class="course__coach">
                     {{ $c('coach') }}：
                     <span>{{ cardItem.coach_name }}</span>
                   </p>
                   <p class="course__scene">
                     场地：
-                    <span>{{ cardItem.court_site_name }}</span>
+                    <span>{{ cardItem.court_name }}</span>
                   </p>
                 </div>
                 <add-course :item="item"></add-course>
@@ -165,68 +167,40 @@ export default {
       picker_end_date: '2019-12-23',
       pickerList: [],
       weekList: [
-        { item: 'date1', date: '周一', show: false },
-        { item: 'date2', date: '周二' },
-        { item: 'date3', date: '周三' },
-        { item: 'date4', date: '周四' },
-        { item: 'date5', date: '周五' },
-        { item: 'date6', date: '周六' },
-        { item: 'date7', date: '周日' }
+        { week: 1, date: '周一' },
+        { week: 2, date: '周二' },
+        { week: 3, date: '周三' },
+        { week: 4, date: '周四' },
+        { week: 5, date: '周五' },
+        { week: 6, date: '周六' },
+        { week: 7, date: '周日' }
       ],
+      filterDate: {},
       scheduleList: [
         {
-          time_type: 1,
-          scheduleInfo: {
-            date1: [
-              {
-                id: 1,
-                start_date: '2019-05-15',
-                start_time: '04:12',
-                end_time: '04:12',
-                course_name: '小班课测试',
-                current_course_name: '小班课测试',
-                reserved_num: 1,
-                coach_name: '姓名2',
-                court_site_name: '场地',
-                show: false
-              },
-              {
-                id: 2,
-                start_date: '2019-05-15',
-                start_time: '04:12',
-                end_time: '04:12',
-                course_name: '小班课测试',
-                current_course_name: '小班课测试',
-                reserved_num: 1,
-                coach_name: '姓名2',
-                court_site_name: '场地'
-              }
-            ],
-            date2: [
-              {
-                id: 1,
-                start_date: '2019-05-15',
-                start_time: '04:12',
-                end_time: '04:12',
-                course_name: '小班课测试',
-                current_course_name: '小班课测试',
-                reserved_num: 1,
-                coach_name: '姓名2',
-                court_site_name: '场地'
-              },
-              {
-                id: 2,
-                start_date: '2019-05-15',
-                start_time: '04:12',
-                end_time: '04:12',
-                course_name: '小班课测试',
-                current_course_name: '小班课测试',
-                reserved_num: 1,
-                coach_name: '姓名2',
-                court_site_name: '场地'
-              }
-            ]
-          }
+          cycle_begin_date: '2019-12-11',
+          cycle_end_date: '2019-12-19',
+          cycle_id: 111,
+          course_time: [
+            {
+              week: 1,
+              list: [
+                // {
+                //   schedule_id: 1111,
+                //   course_id: 1,
+                //   coach_id: 1,
+                //   court_id: 1,
+                //   week: 5,
+                //   current_course_name: '当前课程名称',
+                //   start_time: '09:00:00',
+                //   end_time: '10:00:00',
+                //   coach_name: 'xxx',
+                //   court_name: 'VIP场地',
+                //   show: false
+                // }
+              ]
+            }
+          ]
         }
       ]
     }
@@ -248,6 +222,7 @@ export default {
     // this.pickerList[0] = moment(this.start_date)
     // this.pickerList[1] = moment(this.end_date)
     this.pickerList.push([moment(this.start_date), moment(this.end_date)])
+    this.filterDateList(this.scheduleList)
   },
   methods: {
     onChangeRangePicker(val, dateString) {
@@ -256,11 +231,28 @@ export default {
       console.log(this.picker_end_date)
     },
     disabledEndDate(current) {
-      return current && current > moment(this.end_date).valueOf()
+      return (
+        (current && current > moment(this.end_date).valueOf()) ||
+        current < moment(this.start_date).valueOf()
+      )
     },
     hide() {
-      console.log(111)
       this.weekList[0].show = false
+    },
+    filterDateList(dateList) {
+      let list = []
+      let listItemCard
+      dateList.forEach((item, index) => {
+        item.course_time.forEach((item, index) => {
+          listItemCard = {}
+          if (!listItemCard[item.week]) {
+            listItemCard[item.week] = item.list
+          }
+        })
+        list.push(listItemCard)
+      })
+      console.log(list)
+      this.filterDate = list
     },
     // 增加课程
     addCourse() {},
@@ -274,7 +266,10 @@ export default {
         ),
         moment(this.end_date)
       ])
-      this.scheduleList.push({ scheduleInfo: {} })
+      let item = {}
+      item.course_time = []
+      this.scheduleList.push(item)
+      this.filterDateList(this.scheduleList)
     },
     onClickSaveSchedule() {
       this.$router.push({
