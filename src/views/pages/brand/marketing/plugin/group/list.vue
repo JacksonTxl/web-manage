@@ -121,9 +121,14 @@
           rowKey="id"
           :loading="loading[`getShopList`]"
           :columns="shopListColumns"
-          @change="onTableChange"
+          @change="onShopTableChange"
           :scroll="{ x: 400 }"
           :dataSource="shopList"
+          :pagination="{
+            current_page: shopPage.current_page,
+            total: shopPage.total_counts,
+            size: shopPage.size
+          }"
         >
           <template slot="action" slot-scope="text, record">
             <st-table-actions sytle="width: 80px">
@@ -216,6 +221,7 @@ export default {
     }
   },
   methods: {
+    // 选择门店推广
     onSelect(record) {
       this.listService
         .getSharePosterInfo(this.groupId, { shop_id: record.id })
@@ -267,12 +273,23 @@ export default {
         query: { id: record.id }
       })
     },
-    // 推广
+    // 选择门店
     onGeneralize(record) {
       this.modalShow = true
       this.groupId = record.id
-      this.listService.getShopList(record.id).subscribe(res => {
-        this.$router.reload()
+      this.listService
+        .getShopList(record.id, {
+          size: record.size || 20,
+          current_page: record.current_page || 1
+        })
+        .subscribe(res => {})
+    },
+    // 门店分页
+    onShopTableChange(data) {
+      this.onGeneralize({
+        id: this.groupId,
+        size: data.pageSize,
+        current_page: data.current
       })
     },
     // 编辑列表
