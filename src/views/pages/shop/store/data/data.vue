@@ -93,7 +93,7 @@
                   </st-t3>
                   <shop-stored-data-line
                     :data="filterLine(storeBoard, wholenavTitle)"
-                    :unit="wholenavTitle[wholenavTitle.length - 2]"
+                    :unit="wholenavTitle | filterCompany"
                   ></shop-stored-data-line>
                 </div>
               </a-col>
@@ -219,11 +219,9 @@ import { forEach } from 'lodash-es'
 import {
   headerInfo,
   wholeNav,
-  moneyOrder,
   categoryRevenue,
-  salesList,
   headerTitleItem,
-  courseDaily
+  fieldNav
 } from './data.config.ts'
 export default {
   serviceInject() {
@@ -253,10 +251,8 @@ export default {
       headerTitleItem,
       headerInfo,
       wholeNav,
-      moneyOrder,
       categoryRevenue,
-      salesList,
-      courseDaily
+      fieldNav
     }
   },
   components: {
@@ -283,22 +279,8 @@ export default {
   methods: {
     // 整体看板订单/会员折线图
     filterLine(data, type) {
-      let fieldNav = [
-        'revenue_amount',
-        'order_count',
-        'transaction_member',
-        'customer_price'
-      ]
       let fieldInfo = ['amount', 'count', 'count', 'price']
-      if (type === '营收金额(元)') {
-        return this.switchFunc(data, fieldNav, fieldInfo, 0)
-      } else if (type === '订单数(单) ') {
-        return this.switchFunc(data, fieldNav, fieldInfo, 1)
-      } else if (type === '交易会员数(人)') {
-        return this.switchFunc(data, fieldNav, fieldInfo, 2)
-      } else {
-        return this.switchFunc(data, fieldNav, fieldInfo, 3)
-      }
+      return this.switchFunc(data, this.fieldNav, fieldInfo, this.wholenavIndex)
     },
     switchFunc(data, fieldNav, fieldInfo, index) {
       return data[fieldNav[index]].trend.map(item => {
@@ -310,51 +292,40 @@ export default {
     },
     // 整体看板订单/会员
     filterMember(value, flag, that, wholenavTitle) {
-      if (wholenavTitle === '营收金额(元)') {
-        return value.revenue_amount.source[that].map(item => {
-          return {
-            name: item.type,
-            value: item.value
-          }
-        })
-      } else if (wholenavTitle === '订单数(单)') {
-        return value.order_count.source[that].map(item => {
-          return {
-            name: item.type,
-            value: item.count
-          }
-        })
-      } else if (wholenavTitle === '交易会员数(人)') {
-        if (that === 'order') {
-          return value.transaction_member.source[that].map(item => {
+      let fieldInfo = [
+        'value',
+        'count',
+        ['amount', 'count'],
+        ['amount', 'count']
+      ]
+      if (this.wholenavIndex < 2) {
+        return value[this.fieldNav[this.wholenavIndex]].source[that].map(
+          item => {
             return {
               name: item.type,
-              value: item.amount
+              value: item[fieldInfo[this.wholenavIndex]]
             }
-          })
-        } else {
-          return value.transaction_member.source[that].map(item => {
-            return {
-              name: item.type,
-              value: item.count
-            }
-          })
-        }
+          }
+        )
       } else {
         if (that === 'order') {
-          return value.customer_price.source[that].map(item => {
-            return {
-              name: item.type,
-              value: item.amount
+          return value[this.fieldNav[this.wholenavIndex]].source[that].map(
+            item => {
+              return {
+                name: item.type,
+                value: item[fieldInfo[this.wholenavIndex][0]]
+              }
             }
-          })
+          )
         } else {
-          return value.customer_price.source[that].map(item => {
-            return {
-              name: item.type,
-              value: item.count
+          return value[this.fieldNav[this.wholenavIndex]].source[that].map(
+            item => {
+              return {
+                name: item.type,
+                value: item[fieldInfo[this.wholenavIndex][1]]
+              }
             }
-          })
+          )
         }
       }
     },
@@ -387,7 +358,6 @@ export default {
     },
     // 类目分析数据处理
     storeCategoryRankFilter(data) {
-      console.log(data)
       this.categoryRevenue = data.category_list.map(item => {
         return {
           name: item.category_name,
