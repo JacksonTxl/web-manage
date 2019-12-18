@@ -60,7 +60,7 @@
             class="swiper-revenue-button-next swiper-button-next"
             slot="button-next"
           >
-            <st-icon type="arrow-right1" class="arrow-right1" />
+            <st-icon type="arrow-right" class="arrow-right" />
           </div>
         </div>
       </a-row>

@@ -22,7 +22,7 @@
           icon="download"
           size="large"
           :class="basic('button')"
-          @click="downloadFile(shsInfo.url, 'qrcode.png')"
+          @click="downloadFile(shsInfo.qrcode_url, 'qrcode.png')"
         >
           下载小程序码
         </st-button>

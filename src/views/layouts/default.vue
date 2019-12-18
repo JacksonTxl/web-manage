@@ -23,7 +23,7 @@
         >
           <span>{{ shop.name }}</span>
           <st-icon
-            type="arrow-right"
+            type="arrow-arc-right"
             class="layout-default-sider__arrow"
           ></st-icon>
         </div>
@@ -49,7 +49,7 @@
         >
           <span>{{ brand.name }}</span>
           <st-icon
-            type="arrow-right"
+            type="arrow-arc-right"
             class="layout-default-sider__arrow"
           ></st-icon>
         </div>
