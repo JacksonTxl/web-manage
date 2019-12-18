@@ -1,7 +1,7 @@
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
-import { StoreApi, DtoreBoard } from '@/api/v1/shop/store/store'
+import { StoreApi, DtoreBoard, MemberAnalysis } from '@/api/v1/shop/store/store'
 import { anyAll } from '@/operators'
 @Injectable()
 export class DataService implements Controller {
@@ -53,7 +53,7 @@ export class DataService implements Controller {
   }
   @Effect()
   // 【门店】用户分析
-  getStoreMemberAnalysis(query: DtoreBoard) {
+  getStoreMemberAnalysis(query: MemberAnalysis) {
     return this.stockApi.storeMemberAnalysis(query).pipe(
       tap((res: any) => {
         console.log(res)
@@ -67,7 +67,7 @@ export class DataService implements Controller {
       this.getStoreBoard({ date_type: '', date: '' }),
       this.getStoreSaleList({ date_type: '', date: '' }),
       this.getStoreCategoryRank({ date_type: '', date: '' }),
-      this.getStoreMemberAnalysis({ date_type: '', date: '' })
+      this.getStoreMemberAnalysis({ date_type: '', date: '', choose_type: 1 })
     )
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
