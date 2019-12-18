@@ -88,24 +88,15 @@
           maxlength="50"
         />
       </div>
-      <template v-if="list.length > 1">
-        <a-table
-          rowKey="id"
-          :columns="columns"
-          :scroll="{ x: 1240 }"
-          :dataSource="list"
-          :rowClassName="rowClassName"
-          @expandedRowsChange="onShow"
-        ></a-table>
-      </template>
-      <template v-else>
-        <a-table
-          id="atable_no_data"
-          rowKey="id"
-          :columns="columns"
-          :dataSource="list"
-        ></a-table>
-      </template>
+      <st-table
+        rowKey="id"
+        :page="page"
+        :columns="columns"
+        :scroll="{ x: 1240 }"
+        :dataSource="list"
+        @change="onTableChange"
+        isExpand
+      ></st-table>
     </st-panel>
   </st-panel-layout>
 </template>

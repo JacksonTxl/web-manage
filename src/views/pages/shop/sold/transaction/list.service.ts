@@ -10,6 +10,8 @@ export class ListService {
   page$ = new State({})
   loading$ = new State({})
   auth$ = new State({})
+  memberList$ = new State({})
+  saleList$ = new State({})
   productTypes$ = this.userService.getOptions$('transaction.product_type')
   constructor(
     private transactionApi: TransactionApi,
@@ -23,6 +25,21 @@ export class ListService {
         res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+      })
+    )
+  }
+  @Effect()
+  getMember(member: string, type: number) {
+    return this.transactionApi.getMemberList(member, type).pipe(
+      tap((res: any) => {
+        this.memberList$.commit(() => res.list)
+      })
+    )
+  }
+  getSaleList() {
+    return this.transactionApi.getTransactionSaleList().pipe(
+      tap((res: any) => {
+        this.saleList$.commit(() => res.list)
       })
     )
   }

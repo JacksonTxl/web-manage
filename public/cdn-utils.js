@@ -1,17 +1,5 @@
 window.cdnUtils = {
   config: {
-    dev: {
-      map: {
-        ali: ['https://pdev1.styd.cn/', 'https://pdev2.styd.cn/'],
-        huawei: ['https://pdev-hw.styd.cn/']
-      }
-    },
-    test: {
-      map: {
-        ali: ['https://pdev1.styd.cn/', 'https://pdev2.styd.cn/'],
-        huawei: ['https://pdev-hw.styd.cn/']
-      }
-    },
     pre: {
       map: {
         ali: ['https://ppre1.styd.cn/', 'https://ppre2.styd.cn/', 'https://ppre3.styd.cn/', 'https://ppre4.styd.cn/'],
@@ -79,12 +67,7 @@ window.cdnUtils = {
    * 配置了就使用，没配置就不使用
    */
   isUseCdn: function() {
-    // TODO:// 用于测试 test 环境，上线前要修改
-    var env = this.getEnv()
-    if (env === 'pre') {
-      return true
-    }
-    return this.config[env] && (location.search.match(/is_use_cdn=([^&])/) || [])[1] === '1'
+    return this.config[this.getEnv()]
   },
   /**
    * 读取 localStorage
@@ -161,17 +144,17 @@ window.cdnUtils = {
       domains.forEach(function(domain) {
         var task = new Promise(function(taskResolve, taskReject) {
           var img = new Image()
-          img.src = `${domain}img/sample.gif`
+          img.src = domain + 'img/cdn/sample.gif?t=' + +new Date()
           img.onload = function() {
-            console.log(`${domain} success`)
+            console.log(domain + ' success')
             successedDomains.push(domain)
             taskResolve(domain)
           }
           img.onerror = function() {
-            console.warn(`${domain} error`)
+            console.warn(domain, 'error')
             that.collectErrors(domain)
             failedDomains.push(domain)
-            taskReject(new Error(`${domain} error`))
+            taskReject(new Error(domain + ' error'))
           }
         })
         .catch(function(e) {})
@@ -240,7 +223,7 @@ window.cdnUtils = {
     })
   },
   collectErrors(domain) {
-    let cdnErrors = this.get('cdnErrors') || {}
+    var cdnErrors = this.get('cdnErrors') || {}
     cdnErrors[domain] = Date()
     this.set('cdnErrors',cdnErrors)
   }

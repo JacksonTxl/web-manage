@@ -37,6 +37,7 @@
           :key="index"
         >
           <img
+            class="goods-img"
             src="https://img.cdn.xinchanedu.com/uploadImg/aix/2019/Aug/1565149862022.jpg"
             alt=""
           />
@@ -46,6 +47,10 @@
           <div class="good-price">
             <span>￥100-300</span>
             <span>库存：31件</span>
+          </div>
+          <div class="product-mask">
+            <img src="@/assets/img/icon-buy-car.png" alt="" />
+            <p>添加至购物车</p>
           </div>
         </li>
       </ul>
@@ -109,11 +114,16 @@
                     :defaultActiveFirstOption="false"
                     :showArrow="false"
                     :filterOption="false"
+                    v-decorator="decorators.memberId"
+                    @search="onMemberSearch"
+                    @change="onMemberChange"
                   >
                     <template slot="notFoundContent">
                       <div>
                         暂无此会员，
-                        <span :class="basic('add-vpi')">添加新会员？</span>
+                        <span :class="basic('add-vpi')" @click="addMember">
+                          添加新会员？
+                        </span>
                       </div>
                     </template>
                     <a-select-option
@@ -134,8 +144,43 @@
                     </a-select-option>
                   </a-select>
                 </st-form-item>
-                <st-form-item label="优惠券">
-                  -50 >
+                <st-form-item :class="basic('discounts')" label="优惠券">
+                  <div>
+                    <div :class="basic('discounts-total')">
+                      <span>{{ couponText }}</span>
+                      <a-dropdown
+                        v-model="couponDropdownVisible"
+                        :disabled="couponList.length === 0"
+                        :class="basic({ disabled: couponList.length === 0 })"
+                        placement="bottomRight"
+                        :getPopupContainer="trigger => trigger.parentNode"
+                        :trigger="['click']"
+                      >
+                        <div :class="basic('discounts-promotion')">
+                          <span>{{ couponList.length }}张可用优惠券</span>
+                          <a-icon type="right" />
+                        </div>
+                        <a-radio-group
+                          v-model="selectCoupon"
+                          @change="onSelectCouponChange"
+                          :class="basic('dropdown')"
+                          slot="overlay"
+                        >
+                          <a-menu>
+                            <a-menu-item
+                              @click="onSelectCoupon"
+                              :key="index"
+                              v-for="(item, index) in couponList"
+                            >
+                              <a-radio :value="item">
+                                {{ item.name }}{{ item.price }}
+                              </a-radio>
+                            </a-menu-item>
+                          </a-menu>
+                        </a-radio-group>
+                      </a-dropdown>
+                    </div>
+                  </div>
                 </st-form-item>
                 <st-form-item label="减免">
                   <st-input-number :float="true" placeholder="请输入减免金额">
@@ -170,10 +215,14 @@
 
 <script>
 import tableMixin from '@/mixins/table.mixin'
-import { columns } from './store.config'
+import { columns, ruleOptions } from './store.config'
 import StoreChooseSku from '@/views/biz-modals/store/choose-sku'
 import StoreOrderTip from '@/views/biz-modals/store/order-tip'
 import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
+import SoldDealAddMember from '@/views/biz-modals/sold/deal/add-member'
+import { ListService } from './list.service'
+import { PatternService } from '@/services/pattern.service'
+import { values } from 'lodash-es'
 export default {
   name: 'shopSoldTransactionCloud',
   bem: {
@@ -182,18 +231,44 @@ export default {
   modals: {
     StoreChooseSku,
     StoreOrderTip,
-    SoldDealGathering
+    SoldDealGathering,
+    SoldDealAddMember
+  },
+  serviceInject() {
+    return {
+      listService: ListService,
+      pattern: PatternService
+    }
+  },
+  rxState() {
+    return {
+      loading: this.listService.loading$,
+      memberList: this.listService.memberList$,
+      saleList: this.listService.saleList$
+    }
   },
   data() {
     const form = this.$stForm.create()
-    const decorators = form.decorators({})
+    const decorators = form.decorators(ruleOptions)
     return {
       form,
       decorators,
-      memberList: [],
+      memberSearchText: '', // 搜索会员value
+      couponText: '未选择优惠券', // 选择的优惠券名
+      couponDropdownVisible: false,
+      selectCoupon: '',
+      couponList: [
+        {
+          name: '1',
+          price: 30
+        }
+      ],
       saleList: [],
       list: [{ id: 1 }, { id: 2 }]
     }
+  },
+  mounted() {
+    this.listService.getSaleList().subscribe(res => {})
   },
   methods: {
     onSearch() {
@@ -215,18 +290,21 @@ export default {
     },
     // 创建订单
     onCreateOrder() {
-      this.$modalRouter.push({
-        name: 'store-order-tip',
-        props: {
-          type: 'create',
-          message: '订单创建成功'
-        },
-        on: {
-          success: res => {
-            console.log(res)
-          }
-        }
+      this.form.validate().then(values => {
+        console.log(values)
       })
+      // this.$modalRouter.push({
+      //   name: 'store-order-tip',
+      //   props: {
+      //     type: 'create',
+      //     message: '订单创建成功'
+      //   },
+      //   on: {
+      //     success: res => {
+      //       console.log(res)
+      //     }
+      //   }
+      // })
     },
     // 立即支付
     onPay() {
@@ -262,28 +340,58 @@ export default {
         }
       })
     },
+    // 小票打印
     printOrder(order_id) {
       window.open(
         '/ticket/gathering-print?id=' + order_id,
         '_blank',
         'width=800,height=600'
       )
+    },
+    // 添加会员
+    addMember() {
+      this.$modalRouter.push({
+        name: 'sold-deal-add-member',
+        on: {
+          success: res => {
+            this.onMemberSearch(res.name, res.id)
+            this.onMemberChange(res.id)
+          }
+        }
+      })
+    },
+    // 会员搜索
+    onMemberSearch(data, memberId) {
+      this.memberSearchText = data
+      if (data === '') {
+        this.listService.memberList$.commit(() => [])
+        this.form.resetFields(['memberId'])
+      } else {
+        this.listService.getMember(data, 1).subscribe(res => {
+          if (!res.list.length) {
+            this.form.resetFields(['memberId'])
+          }
+          if (memberId) {
+            this.form.setFieldsValue({
+              memberId
+            })
+          }
+        })
+      }
+    },
+    // 选择会员
+    onMemberChange(data) {
+      console.log(data, 2222222)
+    },
+    onSelectCouponChange(event) {
+      let price = this.couponList.filter(o => o.id === event.target.value.id)[0]
+        .price
+      this.couponText = `${price}元`
+    },
+    onSelectCoupon() {
+      this.couponDropdownVisible = false
     }
   },
-  // serviceInject() {
-  //   return {
-  //     listService: ListService
-  //   }
-  // }
-  // rxState() {
-  //   return {
-  //     list: this.listService.list$,
-  //     page: this.listService.page$,
-  //     loading: this.listService.loading$,
-  //     productTypes: this.listService.productTypes$,
-  //     auth: this.listService.auth$
-  //   }
-  // }
   computed: {
     columns
   }
