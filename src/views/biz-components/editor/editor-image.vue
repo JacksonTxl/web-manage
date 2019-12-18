@@ -46,7 +46,9 @@ export default {
       const MAX_SIZE = 2
       const isLimit = file.size / 1024 / 1024 < MAX_SIZE
       if (!isLimit) {
-        this.messageService.error({ content: `上传图片最大不能超过${MAX_SIZE}M` })
+        this.messageService.error({
+          content: `上传图片最大不能超过${MAX_SIZE}M`
+        })
       }
       return isLimit
     }

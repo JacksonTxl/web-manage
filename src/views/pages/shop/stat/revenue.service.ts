@@ -11,6 +11,9 @@ export class RevenueService implements Controller {
   loading$ = new State({})
   todayInfo$ = new State([])
   total$ = new State({})
+  auth$ = this.authService.authMap$({
+    export: 'brand_shop:stat:revenue_reports|batch_export'
+  })
   authTabs$ = this.authService.getAuthTabs$('shop-stat-revenue')
   constructor(
     private StatApi: StatApi,

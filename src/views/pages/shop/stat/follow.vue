@@ -80,7 +80,14 @@ export default {
     }
   },
   rxState() {
-    const { loading$, list$, page$, totalInfo$, total$ } = this.followService
+    const {
+      loading$,
+      list$,
+      page$,
+      totalInfo$,
+      total$,
+      auth$
+    } = this.followService
     return {
       loading$,
       list$,
