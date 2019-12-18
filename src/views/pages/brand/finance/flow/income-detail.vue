@@ -37,7 +37,7 @@
         ></st-input-number>
       </st-search-panel-item>
       <st-search-panel-item label="查询日期：">
-        <st-range-picker :disabledDays="90" v-model="date" class="value" />
+        <st-range-picker :disabledDays="180" v-model="date" class="value" />
       </st-search-panel-item>
 
       <div slot="button">
@@ -121,9 +121,9 @@ export default {
   },
   data() {
     return {
-      checkedList: this.payType$.map(item => item.value),
+      checkedList: [],
       indeterminate: false,
-      checkAll: true,
+      checkAll: false,
       date: []
     }
   },
@@ -133,28 +133,21 @@ export default {
   mounted() {
     this.setSearchData()
   },
-  watch: {
-    $searchQuery() {
-      this.setSearchData()
-    }
-  },
   components: {
     ShopSelect
   },
   methods: {
     setSearchData() {
-      if (this.$searchQuery.start_date) {
-        const start = moment(this.$searchQuery.start_date)
-        const end = moment(this.$searchQuery.end_date)
-        this.date = [start, end]
+      if (!this.$searchQuery.start_date) return
+      const start = moment(this.$searchQuery.start_date)
+      const end = moment(this.$searchQuery.end_date)
+      this.date = [start, end]
+      if (!this.$searchQuery.pay_channel) {
+        return
       }
-      if (this.$searchQuery.pay_channel) {
-        this.$searchQuery.pay_channel = [...this.$searchQuery.pay_channel]
-        this.checkedList = this.$searchQuery.pay_channel.map(item => +item)
-        this.checkAll = false
-        if (this.$searchQuery.pay_channel.length === this.payType$.length) {
-          this.checkAll = true
-        }
+      this.checkedList = this.$searchQuery.pay_channel.map(item => +item)
+      if (this.$searchQuery.pay_channel.length === this.payType$.length) {
+        this.checkAll = true
       }
     },
     onChangePayType(checkedList) {

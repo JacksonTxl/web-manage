@@ -3,15 +3,14 @@
     title="任务明细"
     v-model="show"
     :footer="null"
-    wrapClassName="modal-task-detail"
-    style="min-width: 600px"
+    wrapClassName="scroll-modal"
   >
     <st-table
       rowKey="id"
       :loading="loading.getDetailList"
       :dataSource="list"
       :columns="columns"
-      :scroll="{ y: 230, x: 600 }"
+      :scroll="{ y: 230 }"
       @change="onPageChange"
       :page="page"
       :simplePage="true"

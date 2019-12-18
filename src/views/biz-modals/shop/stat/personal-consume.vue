@@ -65,11 +65,8 @@
     <div slot="footer">
       <st-button
         type="primary"
-        v-if="auth$.export && type !== 'total'"
-        v-export-excel="{
-          type: 'shop/personal/course/checkin',
-          query: query
-        }"
+        v-if="auth$.export"
+        v-export-excel="exportParams"
       >
         全部导出
       </st-button>
@@ -134,6 +131,12 @@ export default {
     columns,
     showTable() {
       return this.$searchQuery.showTable || 'all'
+    },
+    exportParams() {
+      const type = 'shop/personal/course/checkin'
+      return this.type === 'total'
+        ? { type: `${type}/total`, query: this.totalQuery }
+        : { type, query: this.query }
     },
     totalQuery() {
       let query = cloneDeep(this.$searchQuery)
