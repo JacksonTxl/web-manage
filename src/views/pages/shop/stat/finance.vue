@@ -2,7 +2,18 @@
   <div :class="bPage()">
     <section class="mg-b16" :class="bHeard()">
       <div :class="bHeard('left')">
-        <!-- TODO: <st-button type="primary" class="shop-member-list-button">批量导出</st-button> -->
+        <div :class="bPage('button-wapper')">
+          <st-button
+            type="primary"
+            v-if="auth$.export"
+            v-export-excel="{
+              type: 'finance/shop',
+              query: $searchQuery
+            }"
+          >
+            全部导出
+          </st-button>
+        </div>
       </div>
       <div :class="bHeard('right')">
         <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
@@ -42,8 +53,8 @@ export default {
     }
   },
   rxState() {
-    const { total$, page$, list$, loading$ } = this.financeService
-    return { total$, page$, list$, loading$ }
+    const { total$, page$, list$, loading$, auth$ } = this.financeService
+    return { total$, page$, list$, loading$, auth$ }
   },
   data() {
     return {}

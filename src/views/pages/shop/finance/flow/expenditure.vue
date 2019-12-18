@@ -48,6 +48,17 @@
         </div>
       </st-search-panel>
     </div>
+    <div :class="bPage('button-wapper')" class="pd-x24 mg-t24">
+      <st-button
+        type="primary"
+        v-export-excel="{
+          type: 'finance/flow/shop/expenditure/detail',
+          query: $searchQuery
+        }"
+      >
+        全部导出
+      </st-button>
+    </div>
     <st-total
       :class="bPage('total')"
       :indexs="columns"
@@ -55,28 +66,30 @@
       class="pd-x24"
       hasTitle
     ></st-total>
-    <st-container type="2">
-      <st-table
-        :columns="columns"
-        :scroll="{ x: 1400 }"
-        :rowKey="record => record.flow_id"
-        :page="page$"
-        @change="onTableChange"
-        :dataSource="list$"
+    <st-table
+      :columns="columns"
+      :scroll="{ x: 1400 }"
+      :rowKey="record => record.flow_id"
+      :page="page$"
+      @change="onTableChange"
+      :dataSource="list$"
+    >
+      <span
+        slot="price"
+        :class="{ 'color-danger': +text < 0 }"
+        slot-scope="text"
       >
-        <span slot="price" :class="{ price__red: +text < 0 }" slot-scope="text">
-          {{ text }}
-        </span>
-        <span slot="flow_type" slot-scope="text">{{ text.name }}</span>
-        <st-overflow-text
-          title="备注"
-          maxWidth="200px"
-          slot="remark"
-          slot-scope="text"
-          :vlaue="text"
-        />
-      </st-table>
-    </st-container>
+        {{ text }}
+      </span>
+      <span slot="flow_type" slot-scope="text">{{ text.name }}</span>
+      <st-overflow-text
+        title="备注"
+        maxWidth="200px"
+        slot="remark"
+        slot-scope="text"
+        :vlaue="text"
+      />
+    </st-table>
   </st-panel>
 </template>
 <script>
