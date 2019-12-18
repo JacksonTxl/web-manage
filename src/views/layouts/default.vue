@@ -156,21 +156,21 @@
                 @click="onClickBind"
                 class="layout-default-body__options"
               >
-                <st-icon type="bind-phone"></st-icon>
+                <st-icon type="bind-phone" size="16px"></st-icon>
                 <span>绑定手机号</span>
               </a-menu-item>
               <a-menu-item
                 @click="onClickModifyPass"
                 class="layout-default-body__options"
               >
-                <st-icon type="modify"></st-icon>
+                <st-icon type="modify" size="16px"></st-icon>
                 <span>修改密码</span>
               </a-menu-item>
               <a-menu-item
                 @click="onClickLogout"
                 class="layout-default-body__options"
               >
-                <st-icon type="logout"></st-icon>
+                <st-icon type="logout" size="16px"></st-icon>
                 <span>退出</span>
               </a-menu-item>
             </a-menu>
