@@ -128,4 +128,12 @@ export class StoreApi extends Api {
       params
     })
   }
+  /**
+   * 【门店】用户分析
+   */
+  storeMemberAnalysis(params: DtoreBoard) {
+    return this.http.get('/v1/store/member_analysis', {
+      params
+    })
+  }
 }

@@ -5,23 +5,21 @@
         <div :class="basic('left')">
           <sales-analysis
             title="购买次数TOP5"
-            :salesList="salesList"
+            :salesTitle="['排名', '用户', '购买数(次)']"
+            :salesList="data.top_rank | filterDataTOP5"
           ></sales-analysis>
         </div>
       </a-col>
       <a-col :span="16">
         <div :class="basic('right')">
-          <st-t3>{{ title }}</st-t3>
+          <st-t3>{{ title[flag - 0] }}</st-t3>
           <div class="radio-group">
             <a-radio-group @change="onChange" v-model="value">
               <a-radio :value="1">客户数</a-radio>
               <a-radio :value="2">支付金额</a-radio>
             </a-radio-group>
           </div>
-          <shop-entry-bar
-            v-if="inoutTime.length"
-            :data="value === 1 ? inoutTime : inoutTimes"
-          ></shop-entry-bar>
+          <shop-entry-bar :data="filterBuyNumInfo"></shop-entry-bar>
         </div>
       </a-col>
     </a-row>
@@ -39,62 +37,56 @@ export default {
     SalesAnalysis,
     ShopEntryBar
   },
-  data() {
-    return {
-      title: '购买次数分布图',
-      value: 1,
-      inoutTime: [
-        { name: '购买1次', value: 128 },
-        { name: '购买2次', value: 132 },
-        { name: '购买3次', value: 132 },
-        { name: '购买4次', value: 132 },
-        { name: '购买4次以上', value: 132 }
-      ],
-      inoutTimes: [
-        { name: '0~50元', value: 128 },
-        { name: '50~100元', value: 132 },
-        { name: '100~500元', value: 132 },
-        { name: '505~1000元', value: 132 },
-        { name: '1000元以上', value: 132 }
-      ],
-      salesList: {
-        title: ['排名', '用户', '购买数(次)'],
-        data: [
-          {
-            name: '王颖',
-            age: 18,
-            sex: '女'
-          },
-          {
-            name: '崔庆',
-            age: 18,
-            sex: '男'
-          },
-          {
-            name: '崔庆',
-            age: 18,
-            sex: '男'
-          },
-          {
-            name: '崔庆',
-            age: 18,
-            sex: '男'
-          },
-          {
-            name: 1,
-            age: 1,
-            sex: 1
-          }
-        ]
+  props: {
+    flag: {
+      type: Boolean
+    },
+    data: {
+      type: Object,
+      default: () => {
+        return {}
       }
     }
   },
+  filters: {
+    filterDataTOP5(value) {
+      return value.map(item => {
+        return {
+          product_name: item.member_name,
+          sale: item.sum
+        }
+      })
+    }
+  },
+  data() {
+    return {
+      title: ['消费金额分布图', '购买次数分布图'],
+      filterBuyNumInfo: [],
+      value: 1
+    }
+  },
+  created() {
+    this.onChange()
+  },
   methods: {
     onChange() {
-      if (this.value === 1) {
-        this.title = '购买次数分布图'
+      this.filterBuyNum(this.value)
+    },
+    filterBuyNum(value) {
+      if (value === 1) {
+        this.filterBuyNumInfo = this.data.top_scatter.map(item => {
+          return {
+            name: item.scatter_type,
+            value: item.sum
+          }
+        })
       } else {
-        this.title = '消费金额分布图'
+        this.filterBuyNumInfo = this.data.top_scatter.map(item => {
+          return {
+            name: item.scatter_type,
+            value: item.amount_sum
+          }
+        })
       }
     }
   }

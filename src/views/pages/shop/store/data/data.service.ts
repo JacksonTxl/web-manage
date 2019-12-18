@@ -9,6 +9,7 @@ export class DataService implements Controller {
   storeBoard$ = new State({})
   storeSaleList$ = new State({})
   storeCategoryRank$ = new State({})
+  storeMemberAnalysis$ = new State({})
   constructor(private stockApi: StoreApi) {}
   @Effect()
   // 数据概况
@@ -51,12 +52,22 @@ export class DataService implements Controller {
     )
   }
   @Effect()
+  // 【门店】用户分析
+  getStoreMemberAnalysis(query: DtoreBoard) {
+    return this.stockApi.storeMemberAnalysis(query).pipe(
+      tap((res: any) => {
+        console.log(res)
+        this.storeMemberAnalysis$.commit(() => res)
+      })
+    )
+  }
   init() {
     return anyAll(
       this.getDataProfile(),
       this.getStoreBoard({ date_type: '', date: '' }),
       this.getStoreSaleList({ date_type: '', date: '' }),
-      this.getStoreCategoryRank({ date_type: '', date: '' })
+      this.getStoreCategoryRank({ date_type: '', date: '' }),
+      this.getStoreMemberAnalysis({ date_type: '', date: '' })
     )
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {

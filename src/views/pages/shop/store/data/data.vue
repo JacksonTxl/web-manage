@@ -191,10 +191,13 @@
         <div class="buy-consumption">
           <buy-consumption-tables @change="onChangeTabs">
             <template v-slot:user>
-              <buy-number></buy-number>
+              <buy-number :flag="true" :data="storeMemberAnalysis"></buy-number>
             </template>
             <template v-slot:marketing>
-              <buy-number></buy-number>
+              <buy-number
+                :flag="false"
+                :data="storeMemberAnalysis"
+              ></buy-number>
             </template>
           </buy-consumption-tables>
         </div>
@@ -231,7 +234,8 @@ export default {
       dataProfile: this.dataService.dataProfile$,
       storeBoard: this.dataService.storeBoard$,
       storeSaleList: this.dataService.storeSaleList$,
-      storeCategoryRank: this.dataService.storeCategoryRank$
+      storeCategoryRank: this.dataService.storeCategoryRank$,
+      storeMemberAnalysis: this.dataService.storeMemberAnalysis$
     }
   },
   bem: {
