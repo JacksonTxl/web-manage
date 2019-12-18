@@ -92,7 +92,7 @@
 import { ruleOptions } from './add-course.config'
 import { cloneDeep } from 'lodash-es'
 export default {
-  name: 'ModalShopMiniAddCourse',
+  name: 'ModalShopMiniAddourse',
   bem: {
     b: 'modal-shop-mini-add-course'
   },

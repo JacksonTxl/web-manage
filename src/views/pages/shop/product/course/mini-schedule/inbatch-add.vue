@@ -167,6 +167,7 @@ export default {
       picker_start_date: '2019-12-16',
       picker_end_date: '2019-12-23',
       pickerList: [],
+      disabledDate: [],
       weekList: [
         { week: 1, date: '周一' },
         { week: 2, date: '周二' },

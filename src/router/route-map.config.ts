@@ -393,7 +393,8 @@ export const routeMapConfig = {
     routeConfig.meta.auth = 'brand:course:course_setting|tab'
     routeConfig.meta.tabs = [
       'brand-setting-app-course-category',
-      'brand-setting-app-course-training-aim'
+      'brand-setting-app-course-training-aim',
+      'brand-setting-app-course-group-range'
     ]
   },
   'brand-setting-app-staff'(routeConfig: RouteConfig) {
@@ -407,6 +408,10 @@ export const routeMapConfig = {
   },
   'brand-setting-app-course-training-aim'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '训练目的'
+    routeConfig.meta.auth = 'brand_shop:course:training_aim|list'
+  },
+  'brand-setting-app-course-group-range'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '小班课适用范围'
     routeConfig.meta.auth = 'brand_shop:course:training_aim|list'
   },
   'brand-setting-app-staff-skillful'(routeConfig: RouteConfig) {
@@ -705,7 +710,8 @@ export const routeMapConfig = {
     routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|tab'
     routeConfig.meta.tabs = [
       'brand-setting-general-course-personal',
-      'brand-setting-general-course-team'
+      'brand-setting-general-course-team',
+      'brand-setting-general-course-group'
     ]
   },
   'brand-setting-general-course-personal'(routeConfig: RouteConfig) {
@@ -714,6 +720,10 @@ export const routeMapConfig = {
   },
   'brand-setting-general-course-team'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '团课设置'
+    routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|tab'
+  },
+  'brand-setting-general-course-group'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '小班课设置'
     routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|tab'
   },
   'brand-setting-general-pay-type'(routeConfig: RouteConfig) {
@@ -919,6 +929,21 @@ export const routeMapConfig = {
   'shop-product-course-mini-schedule-inbatch-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '小班课排期'
     routeConfig.meta.parentRouteName = 'shop-product-course-schedule'
+  },
+  'shop-product-course-manage-group-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '小班课'
+    routeConfig.queryOptions = {
+      course_status: { type: Number, default: -1 },
+      course_name: { type: String, default: '' },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-product-course-manage-group-info-basic'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '小班课详情'
+  },
+  'shop-product-course-manage-group-info-class'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '小班课详情'
   },
   'shop-product-course-manage-team-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '团体课'

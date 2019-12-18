@@ -32,6 +32,32 @@ export class CourseApi extends Api {
   deleteCourseCategory(params: DeleteCourseCategoryInput) {
     return this.http.delete(`${url}/${params.id}`)
   }
+  /**
+   * 获取小班课范围列表
+   */
+  getCourseGroupRangeList(params: any) {
+    return this.http.get('v1/setting/course/scope', { params })
+  }
+  /**
+   * 添加小班课范围
+   */
+  addCourseRange(params: any) {
+    return this.http.post('v1/setting/course/scope', { params })
+  }
+  /**
+   * 编辑小班课范围
+   */
+  editCourseRange(params: any) {
+    return this.http.put('v1/setting/course/scope/' + params.id, {
+      params
+    })
+  }
+  /**
+   * 删除课程范围
+   */
+  deleteCourseRange(params: any) {
+    return this.http.delete('/v1/setting/course/scope/' + params)
+  }
 }
 
 export interface GetCourseCategoryListInput {
