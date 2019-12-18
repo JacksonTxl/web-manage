@@ -25,7 +25,7 @@
         <st-form-item label="当前账户" label-auto>
           <label>{{ info.account_name }}</label>
         </st-form-item>
-        <st-form-item label="当前密码" required>
+        <st-form-item label="当前密码" required class="mg-b0">
           <a-input
             type="password"
             v-decorator="decorators.password"
