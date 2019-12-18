@@ -288,54 +288,79 @@ export default {
         }
       })
     },
-    // 创建订单
-    onCreateOrder() {
-      this.form.validate().then(values => {
-        console.log(values)
+    // 生成订单号
+    createOrderNum() {
+      return new Promise((resolve, reject) => {
+        this.form.validate().then(values => {
+          resolve(values)
+        })
       })
-      // this.$modalRouter.push({
-      //   name: 'store-order-tip',
-      //   props: {
-      //     type: 'create',
-      //     message: '订单创建成功'
-      //   },
-      //   on: {
-      //     success: res => {
-      //       console.log(res)
-      //     }
-      //   }
-      // })
+    },
+    // 创建订单
+    async onCreateOrder() {
+      let orderId = await this.createOrderNum()
+      this.payCallBack(
+        {
+          type: 'create',
+          message: '订单创建成功'
+        },
+        orderId
+      )
     },
     // 立即支付
-    onPay() {
+    async onPay(orderId) {
+      if (!orderId) {
+        orderId = await this.createOrderNum()
+      }
       this.$modalRouter.push({
         name: 'sold-deal-gathering',
         props: {
-          order_id: 327187807404143,
+          order_id: orderId,
           type: 'cloud'
         },
         on: {
           success: res => {
-            this.payCallBack()
-            console.log(res)
+            this.payCallBack(
+              {
+                type: 'pay',
+                message: '收款成功'
+              },
+              orderId
+            )
           }
         }
       })
     },
+    // 订单收款modal
+    createdOrderPay(props) {
+      return new Promise((resolve, reject) => {
+        this.$modalRouter.push({
+          name: 'sold-deal-gathering',
+          props,
+          on: {
+            success: resolve
+          }
+        })
+      })
+    },
     // 收款完提示
-    payCallBack() {
+    payCallBack(props, orderId) {
       this.$modalRouter.push({
         name: 'store-order-tip',
-        props: {
-          type: 'pay',
-          message: '收款成功'
-        },
+        props,
         on: {
           success: res => {
-            if (res.type === 'PrintOrder') {
-              this.printOrder(327187807404143)
+            switch (res.type) {
+              case 'PrintOrder':
+                this.printOrder(orderId)
+                break
+              case 'ViewOrder':
+                this.createdOrderViewOrder(orderId)
+                break
+              case 'Pay':
+                this.onPay(orderId)
+                break
             }
-            console.log(res)
           }
         }
       })
@@ -347,6 +372,15 @@ export default {
         '_blank',
         'width=800,height=600'
       )
+    },
+    // 查看订单
+    createdOrderViewOrder(order_id) {
+      this.$router.push({
+        name: 'shop-finance-order-info-collection-details',
+        query: {
+          id: order_id
+        }
+      })
     },
     // 添加会员
     addMember() {
