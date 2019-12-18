@@ -20,7 +20,7 @@
           </span>
           <span :class="b('item-label')">教练：</span>
           <span :class="b('item-value')">
-            {{ item.class_info.coach_name }}：
+            {{ item.class_info.coach_name }}
           </span>
         </div>
       </div>
@@ -45,7 +45,7 @@
           </span>
           <span :class="b('item-label')">教练：</span>
           <span :class="b('item-value')">
-            {{ item.class_info.coach_name }}：
+            {{ item.class_info.coach_name }}
           </span>
         </div>
       </div>

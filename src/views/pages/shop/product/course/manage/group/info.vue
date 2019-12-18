@@ -1,34 +1,61 @@
 <template>
   <st-panel-layout class="page-team-info">
-    <div class="header mg-b24">
+    <div :class="b('title-action')">
+      <st-t3 :class="b('title')">
+        {{ groupCourseHeaderInfo.course_name }}
+      </st-t3>
+      <div>
+        <st-button type="primary" @click="onGoEdit">编辑</st-button>
+        <a-dropdown type="primary" class="mg-r24 mg-l16">
+          <a-menu slot="overlay">
+            <a-menu-item key="1" @click="onGoOrder()">
+              去退款
+            </a-menu-item>
+            <a-menu-item key="2">立即成班</a-menu-item>
+            <a-menu-item key="2">
+              <st-popconfirm
+                :title="
+                  '一旦删除则无法恢复，确认删除' +
+                    groupCourseHeaderInfo.course_name +
+                    '？'
+                "
+                @confirm="onDelGroup()"
+              >
+                删除
+              </st-popconfirm>
+            </a-menu-item>
+            <a-menu-item key="2">发布</a-menu-item>
+          </a-menu>
+          <a-button>
+            更多
+            <a-icon type="down" />
+          </a-button>
+        </a-dropdown>
+      </div>
+    </div>
+    <div class="mg-b24 header">
       <div :class="b('left')" class="mg-r24">
-        <st-t3 class="mg-b16">
-          {{ groupCourseInfo.course_name }}
-          <!-- <span v-if="groupCourseInfo.course_category.name">
-            （{{ groupCourseInfo.course_category.name }}）
-          </span> -->
-        </st-t3>
         <div :class="b('tip')">
           <div class="item">
             <span class="label">开班时间:</span>
-            <span class="value">{{ groupCourseInfo.course_time }}</span>
+            <span class="value">{{ groupCourseHeaderInfo.course_time }}</span>
           </div>
           <div class="item">
             <span class="label ">报名人数:</span>
-            <span class="value">{{ groupCourseInfo.apply_num }}人</span>
+            <span class="value">{{ groupCourseHeaderInfo.apply_num }}人</span>
           </div>
         </div>
         <div :class="b('tip')">
           <div class="item">
             <span class="label">人数限制:</span>
-            <span class="value">{{ groupCourseInfo.num_limit }}</span>
+            <span class="value">{{ groupCourseHeaderInfo.num_limit }}</span>
           </div>
           <div class="item">
             <span class="label ">适用范围:</span>
             <span
               class="value"
               :key="item.id"
-              v-for="item in groupCourseInfo.scope_application"
+              v-for="item in groupCourseHeaderInfo.scope_application"
             >
               {{ item.name }}
             </span>
@@ -37,19 +64,19 @@
         <div :class="b('tip')">
           <div class="item">
             <span class="label">负责人:</span>
-            <span class="value">{{ groupCourseInfo.charge_person }}</span>
+            <span class="value">{{ groupCourseHeaderInfo.charge_person }}</span>
           </div>
           <div class="item">
             <span class="label ">总课时:</span>
-            <span class="value">{{ groupCourseInfo.num_limit }}</span>
+            <span class="value">{{ groupCourseHeaderInfo.num_limit }}</span>
           </div>
         </div>
       </div>
-      <div class="page-team-header__right" v-viewer="{ url: 'data-src' }">
+      <div :class="b('right')" v-viewer="{ url: 'data-src' }">
         <img
           :src="image | imgFilter({ w: 560, h: 320, type: 'course' })"
           :data-src="image | imgFilter({ w: 1000, type: 'course' })"
-          :alt="groupCourseInfo.course_name"
+          :alt="groupCourseHeaderInfo.course_name"
         />
       </div>
     </div>
@@ -63,9 +90,7 @@
 import { InfoService } from './info.service'
 export default {
   bem: {
-    b: 'header',
-    bb: 'body',
-    bAdv: 'page-dashboard-adv'
+    b: 'page-group-course-info'
   },
   name: 'TeamCourseInfo',
   serviceInject() {
@@ -75,12 +100,14 @@ export default {
   },
   rxState() {
     return {
-      groupCourseInfo: this.infoService.groupCourseInfo$
+      groupCourseHeaderInfo: this.infoService.groupCourseHeaderInfo$
     }
   },
   computed: {
     image() {
-      return this.groupCourseInfo.image.image_key
+      return (
+        this.groupCourseHeaderInfo && this.groupCourseHeaderInfo.image.image_key
+      )
     }
   },
   data() {
@@ -101,6 +128,36 @@ export default {
           }
         }
       ]
+    }
+  },
+  methods: {
+    onGoOrder() {
+      this.$router.push({
+        path: '/shop/stat/order',
+        query: this.$searchQuery
+      })
+    },
+    onGoEdit() {
+      this.$router.push({
+        path: '/shop/product/course/manage/group/edit',
+        query: {
+          id: this.groupCourseHeaderInfo.course_id
+        }
+      })
+    },
+    onBeGroup() {
+      this.infoService
+        .beGroup(this.groupCourseHeaderInfo.course_id)
+        .subscribe(() => {
+          this.$router.reload()
+        })
+    },
+    onDelGroup() {
+      this.infoService
+        .deleteGroup(this.groupCourseHeaderInfo.course_id)
+        .subscribe(() => {
+          this.$router.reload()
+        })
     }
   }
 }

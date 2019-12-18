@@ -9,8 +9,7 @@
         <a
           v-modal-link="{
             name: 'course-group-class-leave',
-            props: { type: 1, memberId: record.member_id },
-            on: { done: onModalTest }
+            props: { type: 1, memberId: record.member_id }
           }"
         >
           {{ record.leave_class_hours }}
@@ -20,8 +19,7 @@
         <a
           v-modal-link="{
             name: 'course-group-class-truancy',
-            props: { type: 2, memberId: record.member_id },
-            on: { done: onModalTest }
+            props: { type: 2, memberId: record.member_id }
           }"
         >
           {{ record.truancy_class_hours }}
@@ -31,8 +29,7 @@
         <a
           v-modal-link="{
             name: 'course-group-class-sign',
-            props: { type: 3, memberId: record.member_id },
-            on: { done: onModalTest }
+            props: { type: 3, memberId: record.member_id }
           }"
         >
           {{ record.sign_class_hours }}

@@ -4,21 +4,26 @@
     <st-table
       :columns="basicColumns()"
       rowKey="id"
-      :pagination="null"
       :dataSource="groupInfo.coaches"
     ></st-table>
     <div :class="b('column')">
       <div :class="b('item')">
         <span :class="b('item-label')">转让设置：</span>
-        <span :class="b('item-value')"></span>
+        <span :class="b('item-value')">
+          {{ groupInfo.is_allow_transfer ? '支持转让' : '不支持转让' }}
+        </span>
       </div>
       <div :class="b('item')">
         <span :class="b('item-label')">请假设置：</span>
-        <span :class="b('item-value')"></span>
+        <span :class="b('item-value')">
+          {{ groupInfo.is_leave | enumFilter('small_course.is_allow_leave') }}
+        </span>
       </div>
       <div :class="b('item')">
         <span :class="b('item-label')">售卖渠道：</span>
-        <span :class="b('item-value')">{{}}</span>
+        <span :class="b('item-value')">
+          {{ groupInfo.sell_type | enumFilter('setting.sell_type') }}
+        </span>
       </div>
     </div>
     <div :class="b('column')">

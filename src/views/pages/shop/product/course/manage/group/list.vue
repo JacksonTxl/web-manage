@@ -131,7 +131,7 @@ export default {
     },
     onGoDetail(course) {
       this.$router.push({
-        path: './info',
+        path: './info/basic',
         query: {
           courseId: course.course_id
         }
