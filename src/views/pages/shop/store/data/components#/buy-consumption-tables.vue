@@ -1,6 +1,6 @@
 <template>
   <div :class="basic()">
-    <a-tabs :defaultActiveKey="key">
+    <a-tabs :defaultActiveKey="key" @change="recentChange">
       <a-tab-pane key="user">
         <template slot="tab">
           购买次数
@@ -40,6 +40,7 @@ export default {
   },
   methods: {
     recentChange(query) {
+      console.log(111111, query)
       this.$emit('change', query)
     }
   }

@@ -36,6 +36,11 @@ export interface DtoreBoard {
   date_type: string
   date: string
 }
+export interface MemberAnalysis {
+  date_type: string
+  date: string
+  choose_type: number
+}
 export interface StoreList {
   category_id: number
   product_name: string
@@ -129,6 +134,14 @@ export class StoreApi extends Api {
     })
   }
   /**
+   * 【门店】用户分析
+   */
+  storeMemberAnalysis(params: MemberAnalysis) {
+    return this.http.get('/v1/store/member_analysis', {
+      params
+    })
+  }
+  /*
    * 删除商品
    */
   delProduct(id: number) {
