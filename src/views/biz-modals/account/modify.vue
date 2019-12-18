@@ -6,7 +6,9 @@
       }}修改密码，为确认是您本人操作，请完成身份验证
       <span v-if="isBind">
         您当前暂未绑定手机号码，无法使用手机验证修改密码，
-        <a href="">去绑定</a>
+        <a @click="goBind">
+          去绑定
+        </a>
       </span>
       <div :class="b('item')" class="mg-t16">
         密码验证方式
@@ -20,10 +22,10 @@
     </div>
     <st-form :form="form" labelWidth="88px" labelGutter="16px">
       <div v-if="isShowPass">
-        <st-form-item label="当前账户" label-auto>
+        <st-form-item label="当前账户" label-auto :class="b('text-item')">
           <label>{{ info.account_name }}</label>
         </st-form-item>
-        <st-form-item label="当前密码" required>
+        <st-form-item label="当前密码" required class="mg-b0">
           <a-input
             type="password"
             v-decorator="decorators.password"
@@ -35,6 +37,9 @@
       <div v-if="isShowTel">
         <st-form-item label="当前手机号" label-auto>
           <label>{{ info.account_phone }}</label>
+        </st-form-item>
+        <st-form-item class="mg-b0" label-fix label="滑块验证">
+          <no-captcha id="get-phone-code"></no-captcha>
         </st-form-item>
         <st-form-item label="短信验证码" class="mg-b0">
           <input-phone-code
@@ -50,15 +55,18 @@
 
       <div v-if="!isShowTel && !isShowPass && isShowFooter">
         <st-form-item label="新密码" required>
-          <a-input
-            type="password"
+          <input-pwd-strength
+            max-length="15"
             v-decorator="decorators.pwd"
             placeholder="请输入新密码"
+            :validStatus="validStatus"
+            :strength="strength"
             size="default"
-          ></a-input>
+          ></input-pwd-strength>
         </st-form-item>
         <st-form-item label="确认新密码" required>
           <a-input
+            :maxLength="15"
             type="password"
             v-decorator="decorators.repwd"
             placeholder="请输入确认新密码"
@@ -108,6 +116,9 @@ import { NoCaptchaService } from '@/services/no-captcha.service'
 import InputPhoneCode from '@/views/biz-components/input-phone-code/input-phone-code'
 import { MessageService } from '@/services/message.service'
 import { cloneDeep } from 'lodash-es'
+import NoCaptcha from '@/views/biz-components/no-captcha'
+import AccountBind from '@/views/biz-modals/account/bind'
+import InputPwdStrength from '@/views/biz-components/input-pwd-strength/input-pwd-strength'
 
 export default {
   bem: {
@@ -128,7 +139,12 @@ export default {
     }
   },
   components: {
-    InputPhoneCode
+    NoCaptcha,
+    InputPhoneCode,
+    InputPwdStrength
+  },
+  modals: {
+    AccountBind
   },
   computed: {
     isBind() {
@@ -149,10 +165,19 @@ export default {
       isShowFooter: false,
       isShowTel: false,
       isShowPass: false,
-      isShowSuccess: false
+      isShowSuccess: false,
+      validStatus: 0
     }
   },
   methods: {
+    goBind() {
+      this.show = false
+      this.$modalRouter.push({
+        name: 'account-bind',
+        props: {},
+        on: {}
+      })
+    },
     checkPass() {
       this.isShowFooter = true
       this.isShowPass = true
