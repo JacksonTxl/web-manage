@@ -47,28 +47,30 @@
                 :key="index"
               >
                 <st-t4 class="mg-b12">{{ item.date }}</st-t4>
-                <div
-                  :class="b('schedule__card')"
-                  v-for="cardItem in filterDate[i][item.week]"
-                  :key="cardItem.coach_id"
-                >
-                  <span class="time">
-                    <st-icon type="timer"></st-icon>
-                    {{ cardItem.start_time }}-{{ cardItem.end_time }}
-                  </span>
-                  <st-t3 class="course__name">
-                    {{ cardItem.current_course_name }}
-                  </st-t3>
-                  <p class="course__coach">
-                    {{ $c('coach') }}：
-                    <span>{{ cardItem.coach_name }}</span>
-                  </p>
-                  <p class="course__scene">
-                    场地：
-                    <span>{{ cardItem.court_name }}</span>
-                  </p>
+                <div v-if="filterDate[i][item.week][0].week">
+                  <div
+                    :class="b('schedule__card')"
+                    v-for="cardItem in filterDate[i][item.week]"
+                    :key="cardItem.coach_id"
+                  >
+                    <span class="time">
+                      <st-icon type="timer"></st-icon>
+                      {{ cardItem.start_time }}-{{ cardItem.end_time }}
+                    </span>
+                    <st-t3 class="course__name">
+                      {{ cardItem.current_course_name }}
+                    </st-t3>
+                    <p class="course__coach">
+                      {{ $c('coach') }}：
+                      <span>{{ cardItem.coach_name }}</span>
+                    </p>
+                    <p class="course__scene">
+                      场地：
+                      <span>{{ cardItem.court_name }}</span>
+                    </p>
+                  </div>
                 </div>
-                <add-course :item="item"></add-course>
+                <add-course :item="filterDate[i][item.week]"></add-course>
               </div>
             </div>
             <div :class="b('schedule__tips')">
@@ -156,7 +158,6 @@ export default {
   //     coachOptions: this.commonService.coachInBatchOptions$
   //   }
   // },
-  // [[{}, {}], [{}, {}]]
   data() {
     return {
       coachId: undefined,
@@ -178,26 +179,100 @@ export default {
       filterDate: {},
       scheduleList: [
         {
-          cycle_begin_date: '2019-12-11',
-          cycle_end_date: '2019-12-19',
+          cycle_begin_date: '2019-12-11 00:09:00',
+          cycle_end_date: '2019-12-19 00:18:00',
           cycle_id: 111,
           course_time: [
             {
               week: 1,
               list: [
-                // {
-                //   schedule_id: 1111,
-                //   course_id: 1,
-                //   coach_id: 1,
-                //   court_id: 1,
-                //   week: 5,
-                //   current_course_name: '当前课程名称',
-                //   start_time: '09:00:00',
-                //   end_time: '10:00:00',
-                //   coach_name: 'xxx',
-                //   court_name: 'VIP场地',
-                //   show: false
-                // }
+                {
+                  schedule_id: 1111,
+                  course_id: 1,
+                  coach_id: 1,
+                  court_id: 1,
+                  week: 1,
+                  current_course_name: '当前课程名称',
+                  start_time: '2019-01-01 09:00:00',
+                  end_time: '2019-01-01 10:00:00',
+                  show: false
+                },
+                {
+                  schedule_id: 1111,
+                  course_id: 1,
+                  coach_id: 1,
+                  court_id: 1,
+                  week: 1,
+                  start_time: '2019-01-01 09:00:00',
+                  end_time: '2019-01-01 10:00:00',
+                  show: false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          cycle_begin_date: '2019-12-11 00:09:00',
+          cycle_end_date: '2019-12-19 00:18:00',
+          cycle_id: 111,
+          course_time: [
+            {
+              week: 2,
+              list: [
+                {
+                  schedule_id: 1111,
+                  course_id: 1,
+                  coach_id: 1,
+                  court_id: 1,
+                  week: 2,
+                  current_course_name: '当前课程名称',
+                  start_time: '2019-01-01 09:00:00',
+                  end_time: '2019-01-01 10:00:00',
+                  show: false
+                },
+                {
+                  schedule_id: 1111,
+                  course_id: 1,
+                  coach_id: 1,
+                  court_id: 1,
+                  week: 2,
+                  start_time: '2019-01-01 09:00:00',
+                  end_time: '2019-01-01 10:00:00',
+                  show: false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          cycle_begin_date: '2019-12-11 00:09:00',
+          cycle_end_date: '2019-12-19 00:18:00',
+          cycle_id: 111,
+          course_time: [
+            {
+              week: 5,
+              list: [
+                {
+                  schedule_id: 1111,
+                  course_id: 1,
+                  coach_id: 1,
+                  court_id: 1,
+                  week: 5,
+                  current_course_name: '当前课程名称',
+                  start_time: '2019-01-01 09:00:00',
+                  end_time: '2019-01-01 10:00:00',
+                  show: false
+                },
+                {
+                  schedule_id: 1111,
+                  course_id: 1,
+                  coach_id: 1,
+                  court_id: 1,
+                  week: 5,
+                  start_time: '2019-01-01 09:00:00',
+                  end_time: '2019-01-01 10:00:00',
+                  show: false
+                }
               ]
             }
           ]
@@ -212,8 +287,6 @@ export default {
   },
   computed: {
     addScheduleFlag() {
-      console.log(this.end_date)
-
       return this.end_date != this.picker_end_date
     }
   },
@@ -245,8 +318,19 @@ export default {
       dateList.forEach((item, index) => {
         item.course_time.forEach((item, index) => {
           listItemCard = {}
-          if (!listItemCard[item.week]) {
-            listItemCard[item.week] = item.list
+          if (item.week) {
+            if (!listItemCard[item.week]) {
+              listItemCard[item.week] = item.list
+              listItemCard[item.week][0].show = false
+            }
+          }
+          for (let i = 1; i <= 7; i++) {
+            if (!listItemCard[i]) {
+              listItemCard[i] = []
+              let item = {}
+              item.show = false
+              listItemCard[i].push(item)
+            }
           }
         })
         list.push(listItemCard)

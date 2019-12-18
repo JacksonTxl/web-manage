@@ -2,7 +2,7 @@
   <a-popover
     trigger="click"
     overlayClassName="modal-shop-mini-add-course"
-    v-model="item.show"
+    v-model="item[0].show"
     placement="bottom"
     title="添加课程"
   >
@@ -92,13 +92,13 @@
 import { ruleOptions } from './add-course.config'
 import { cloneDeep } from 'lodash-es'
 export default {
-  name: 'AddScheduleInBatch',
+  name: 'ModalShopMiniAddCourse',
   bem: {
     b: 'modal-shop-mini-add-course'
   },
   props: {
-    item: Object,
-    default: {}
+    item: Array,
+    default: []
   },
   watch: {},
   data() {
@@ -110,15 +110,16 @@ export default {
       decorators
     }
   },
-  created() {},
+  created() {
+    console.log(this.item)
+  },
   methods: {
     onChangeDatePick(val) {
       this.start = val[0].format('YYYY-MM-DD').valueOf()
       this.end = val[1].format('YYYY-MM-DD').valueOf()
     },
     hide() {
-      console.log(111)
-      this.item.show = false
+      this.item[0].show = false
     },
     // 增加课程
     addCourse() {},
