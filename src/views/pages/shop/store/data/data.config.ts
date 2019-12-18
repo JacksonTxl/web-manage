@@ -1,11 +1,11 @@
-import IconStoredOrder from '@/assets/img/shop/stored/data/icon-stored-order.png'
-import IconStoredTransaction from '@/assets/img/shop/stored/data/icon-stored-transaction.png'
-import IconStoredRevenue from '@/assets/img/shop/stored/data/icon-stored-revenue.png'
-import IconStoredPassenger from '@/assets/img/shop/stored/data/icon-stored-passenger.png'
-import topIconUser from '@/assets/img/shop/stored/data/icon_top_revenue.png'
-import topIconOrder from '@/assets/img/shop/stored/data/icon_top_order.png'
-import topIconGuest from '@/assets/img/shop/stored/data/icon_top_guest.png'
-import topIconMember from '@/assets/img/shop/stored/data/icon_top_member.png'
+import IconStoreOrder from '@/assets/img/shop/store/data/icon-store-order.png'
+import IconStoreTransaction from '@/assets/img/shop/store/data/icon-store-transaction.png'
+import IconStoreRevenue from '@/assets/img/shop/store/data/icon-store-revenue.png'
+import IconStorePassenger from '@/assets/img/shop/store/data/icon-store-passenger.png'
+import topIconUser from '@/assets/img/shop/store/data/icon_top_revenue.png'
+import topIconOrder from '@/assets/img/shop/store/data/icon_top_order.png'
+import topIconGuest from '@/assets/img/shop/store/data/icon_top_guest.png'
+import topIconMember from '@/assets/img/shop/store/data/icon_top_member.png'
 
 export const headerTitleItem = [
   'total_price',
@@ -33,19 +33,19 @@ export const headerInfo = [
 ]
 export const wholeNav = [
   {
-    icon: IconStoredRevenue,
+    icon: IconStoreRevenue,
     title: '营收金额(元)'
   },
   {
-    icon: IconStoredOrder,
+    icon: IconStoreOrder,
     title: '订单数(单)'
   },
   {
-    icon: IconStoredTransaction,
+    icon: IconStoreTransaction,
     title: '交易会员数(人)'
   },
   {
-    icon: IconStoredPassenger,
+    icon: IconStorePassenger,
     title: '客单价(元)'
   }
 ]

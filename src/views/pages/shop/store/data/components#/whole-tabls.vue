@@ -21,7 +21,7 @@
 <script>
 export default {
   bem: {
-    basic: 'shop-stored-data-whole-tabls'
+    basic: 'shop-store-data-whole-tabls'
   },
   data() {
     return {

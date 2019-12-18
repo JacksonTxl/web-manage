@@ -2,7 +2,7 @@
   <div :class="search()">
     <st-input-search
       v-model="$searchQuery.product_name"
-      v-di-view="{ name: SHOP_STORED_STOCK_KEYWORDS_SEARCH }"
+      v-di-view="{ name: SHOP_STORE_STOCK_KEYWORDS_SEARCH }"
       @search="onKeywordsSearch('product_name', $event)"
       :placeholder="`请输入商品名称`"
       maxlength="50"
@@ -54,7 +54,7 @@
   </div>
 </template>
 <script>
-import { SHOP_STORED_STOCK_KEYWORDS_SEARCH } from '@/constants/events'
+import { SHOP_STORE_STOCK_KEYWORDS_SEARCH } from '@/constants/events'
 import { searchColumns } from './search.config.ts'
 import StorePutIn from '@/views/biz-modals/store/put-in'
 import tableMixin from '@/mixins/table.mixin'
@@ -76,7 +76,7 @@ export default {
   data() {
     return {
       searchColumns,
-      SHOP_STORED_STOCK_KEYWORDS_SEARCH,
+      SHOP_STORE_STOCK_KEYWORDS_SEARCH,
       name: '',
       tableData: [
         {

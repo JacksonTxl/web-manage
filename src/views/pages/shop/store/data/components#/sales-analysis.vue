@@ -28,12 +28,12 @@
   </div>
 </template>
 <script>
-import IconOneRanking from '@/assets/img/shop/stored/data/icon-one-ranking.png'
-import IconTwoRanking from '@/assets/img/shop/stored/data/icon-two-ranking.png'
-import IconThreeRanking from '@/assets/img/shop/stored/data/icon-three-ranking.png'
+import IconOneRanking from '@/assets/img/shop/store/data/icon-one-ranking.png'
+import IconTwoRanking from '@/assets/img/shop/store/data/icon-two-ranking.png'
+import IconThreeRanking from '@/assets/img/shop/store/data/icon-three-ranking.png'
 export default {
   bem: {
-    basic: 'shop-stored-data-sales-analysis'
+    basic: 'shop-store-data-sales-analysis'
   },
   props: {
     title: {

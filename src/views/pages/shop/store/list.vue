@@ -70,9 +70,9 @@ import { columns } from './list.config'
 import { ListService } from './list.service'
 export default {
   mixins: [tableMixin],
-  name: 'PageShopStoredList',
+  name: 'PageShopStoreList',
   bem: {
-    basic: 'page-shop-stored-list'
+    basic: 'page-shop-store-list'
   },
   serviceInject() {
     return {
