@@ -28,18 +28,9 @@
       </a-row>
     </div>
     <div class="mg-b16" :class="bPage('count-action')">
-      <div :class="bPage('button-wapper')">
-        <st-button
-          type="primary"
-          v-if="auth$.export"
-          v-export-excel="{
-            type: 'revenue/shop',
-            query: $searchQuery
-          }"
-        >
-          全部导出
-        </st-button>
-      </div>
+      <span>
+        <!-- <st-button type="primary" class="shop-member-list-button">批量导出</st-button> -->
+      </span>
       <span>
         <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
       </span>
@@ -80,15 +71,8 @@ export default {
     }
   },
   rxState() {
-    const {
-      loading$,
-      list$,
-      page$,
-      todayInfo$,
-      total$,
-      auth$
-    } = this.revenueService
-    return { loading$, list$, page$, todayInfo$, total$, auth$ }
+    const { loading$, list$, page$, todayInfo$, total$ } = this.revenueService
+    return { loading$, list$, page$, todayInfo$, total$ }
   },
   data() {
     return {

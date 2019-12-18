@@ -1,6 +1,6 @@
 <template>
   <st-panel :class="b()" app initial :tabs="authTabs">
-    <div slot="actions">
+    <div slot="actions" v-if="isShowSearch">
       <st-input-search
         placeholder="请输入流水号或订单号查找"
         v-model="$searchQuery.search_number"
@@ -32,6 +32,14 @@ export default {
   },
   data() {
     return {}
+  },
+  computed: {
+    isShowSearch() {
+      return [
+        'brand-finance-flow-income-detail',
+        'brand-finance-flow-expenditure-detail'
+      ].includes(this.$route.name)
+    }
   }
 }
 </script>

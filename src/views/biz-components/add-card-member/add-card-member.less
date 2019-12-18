@@ -3,18 +3,6 @@
     padding: 8px 0 !important;
     position: relative;
   }
-  &__search-section {
-    background: #ffffff;
-    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
-    border-radius: 4px;
-    padding: 12px;
-    color: #252a2e;
-    width: 100%;
-    z-index: 5000;
-    position: absolute;
-    top: 45px;
-    transition: all 0.4s ease;
-  }
   &__search-list {
     max-height: 200px;
     overflow: auto;
@@ -34,4 +22,10 @@
   .global-highlight-color {
     .c(@link-color);
   }
+}
+.change-member-popover {
+  padding-top: 5px;
+}
+.change-member-popover .ant-popover-arrow {
+  display: none;
 }

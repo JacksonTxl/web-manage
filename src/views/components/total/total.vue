@@ -6,40 +6,40 @@
         <st-t3 :class="b('t3')">合计</st-t3>
       </slot>
     </div>
-    <div :class="[b('content'), !hasTitle ? b('content--full') : '']">
-      <div
-        v-if="showData.length > 6"
-        :class="prevClass"
-        class="swiper-total-button-prev swiper-button-prev"
-        slot="button-prev"
-      >
-        <st-icon type="arrow-left" class="arrow-left" />
-      </div>
-      <div :class="b('item')">
-        <swiper :options="sliderOptions" ref="swiperTotal">
-          <swiper-slide
-            v-for="(item, index) in showData"
-            :class="{ 'st-total-item__active': item.slotName }"
-            :key="index"
-          >
-            <slot :name="item.slotName" v-bind="item">
-              <st-total-item
-                :unit="item.unit"
-                :label="item.label"
-                :value="item.value"
-              ></st-total-item>
-            </slot>
-          </swiper-slide>
-        </swiper>
-      </div>
+    <div :class="b('content-wapper')">
+      <div :class="[b('content'), !hasTitle ? b('content--full') : '']">
+        <div
+          v-if="showData.length > 6"
+          class="swiper-total-button-prev swiper-button-prev"
+          slot="button-prev"
+        >
+          <st-icon type="arrow-left" class="arrow-left" />
+        </div>
+        <div :class="b('item')">
+          <swiper :options="sliderOptions" ref="swiperTotal">
+            <swiper-slide
+              v-for="(item, index) in showData"
+              :class="{ 'st-total-item__active': item.slotName }"
+              :key="index"
+            >
+              <slot :name="item.slotName" v-bind="item">
+                <st-total-item
+                  :unit="item.unit"
+                  :label="item.label"
+                  :value="item.value"
+                ></st-total-item>
+              </slot>
+            </swiper-slide>
+          </swiper>
+        </div>
 
-      <div
-        v-if="showData.length > 6"
-        :class="nextClass"
-        class="swiper-total-button-next swiper-button-next"
-        slot="button-next"
-      >
-        <st-icon type="arrow-right1" class="arrow-right1" />
+        <div
+          v-if="showData.length > 6"
+          class="swiper-total-button-next swiper-button-next"
+          slot="button-next"
+        >
+          <st-icon type="arrow-right1" class="arrow-right1" />
+        </div>
       </div>
     </div>
   </div>
