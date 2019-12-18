@@ -11,7 +11,7 @@
       :loading="loading.getDetailList"
       :dataSource="list"
       :columns="columns"
-      :scroll="{ y: 230, x: 600 }"
+      :scroll="{ x: 600, y: 230 }"
       @change="onPageChange"
       :page="page"
       :simplePage="true"
