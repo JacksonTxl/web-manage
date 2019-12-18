@@ -48,6 +48,7 @@
 <script>
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
+import moment from 'moment'
 export default {
   name: 'StTotal',
   bem: {
@@ -87,16 +88,26 @@ export default {
         })
       }
       return templateData
-    }
-  },
-  data() {
-    return {
-      sliderOptions: {
+    },
+    timestamp() {
+      return moment().valueOf()
+    },
+    prevClass() {
+      return `swiper-${this.timestamp}-button-next`
+    },
+    nextClass() {
+      return `swiper-${this.timestamp}-button-prev`
+    },
+    navigationButtons() {
+      return {
+        nextEl: `.${this.nextClass}`,
+        prevEl: `.${this.prevClass}`
+      }
+    },
+    sliderOptions() {
+      return {
         autoplay: false,
-        navigation: {
-          nextEl: '.swiper-total-button-next',
-          prevEl: '.swiper-total-button-prev'
-        },
+        navigation: { ...this.navigationButtons },
         // Default parameters
         slidesPerView: 6,
         breakpoints: {
