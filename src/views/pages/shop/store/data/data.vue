@@ -65,7 +65,7 @@
       <section>
         <st-panel class="mg-t16" title="整体看板">
           <div slot="actions">
-            <date-picker></date-picker>
+            <date-picker @timesFn="wholeTimesFn"></date-picker>
           </div>
           <div :class="basic('whole')">
             <div
@@ -143,7 +143,7 @@
               <a-col :span="16">
                 <st-container class="bg-white" type="2">
                   <st-t3>销售分析</st-t3>
-                  <date-picker></date-picker>
+                  <date-picker @timesFn="saleTimesFn"></date-picker>
                 </st-container>
                 <div :class="salesCategory('sales-TOP5')">
                   <a-col :span="12">
@@ -171,7 +171,10 @@
                 <div :class="salesCategory('category-box')">
                   <st-container class="bg-white" type="2">
                     <st-t3>类目分析</st-t3>
-                    <date-picker class="date-picker"></date-picker>
+                    <date-picker
+                      @timesFn="categoryTimesFn"
+                      class="date-picker"
+                    ></date-picker>
                   </st-container>
                   <div class="category">
                     <st-t3>类目营收占比</st-t3>
@@ -189,7 +192,10 @@
         </div>
         <!-- 购买次数 消费金额 -->
         <div class="buy-consumption">
-          <buy-consumption-tables @change="onChangeTabs">
+          <buy-consumption-tables
+            @change="onChangeTabs"
+            @timesFn="userAnalysisTimesFn"
+          >
             <template v-slot:user>
               <buy-number :flag="true" :data="storeMemberAnalysis"></buy-number>
             </template>
@@ -206,6 +212,7 @@
   </div>
 </template>
 <script>
+import moment from 'moment'
 import ShopStoreDataLine from '@/views/biz-components/stat/shop-store-data-line'
 import WholeTabls from './components#/whole-tabls'
 import BuyConsumptionTables from './components#/buy-consumption-tables'
@@ -252,7 +259,12 @@ export default {
       wholeNav,
       categoryRevenue,
       headerTitleItem,
-      fieldNav
+      fieldNav,
+      tabsObjData: {
+        choose_type: 1,
+        date_type: 1,
+        date: null
+      }
     }
   },
   components: {
@@ -277,6 +289,24 @@ export default {
     this.storeCategoryRankFilter(this.storeCategoryRank)
   },
   methods: {
+    // 整体看板时间
+    wholeTimesFn(value) {
+      this.dataService.getStoreBoard(value).subscribe()
+    },
+    // 销售分析时间
+    saleTimesFn(value) {
+      this.dataService.getStoreSaleList(value).subscribe()
+    },
+    // 类目分析时间
+    categoryTimesFn(value) {
+      this.dataService.getStoreCategoryRank(value).subscribe()
+    },
+    // 购买次数/消费金额时间
+    userAnalysisTimesFn(value) {
+      this.tabsObjData.date_type = value.date_type
+      this.tabsObjData.date = value.date
+      this.dataService.getStoreMemberAnalysis(this.tabsObjData).subscribe()
+    },
     // 整体看板订单/会员折线图
     filterLine(data, type) {
       let fieldInfo = ['amount', 'count', 'count', 'price']
@@ -354,7 +384,13 @@ export default {
     },
 
     onChangeTabs(query) {
-      console.log(query)
+      this.tabsObjData.choose_type = query
+      this.tabsObjData.date = this.tabsObjData.date
+        ? this.tabsObjData.date
+        : moment()
+            .endOf('day')
+            .format('YYYY-MM-DD') + ''
+      this.dataService.getStoreMemberAnalysis(this.tabsObjData).subscribe()
     },
     refresh() {
       return this.dataService.getDataProfile(this.chartTodayShop)

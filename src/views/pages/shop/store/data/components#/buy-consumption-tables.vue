@@ -1,14 +1,14 @@
 <template>
   <div :class="basic()">
     <a-tabs :defaultActiveKey="key" @change="recentChange">
-      <a-tab-pane key="user">
+      <a-tab-pane key="1">
         <template slot="tab">
           购买次数
           <slot name="userTitle"></slot>
         </template>
         <slot name="user"></slot>
       </a-tab-pane>
-      <a-tab-pane key="marketing" forceRender>
+      <a-tab-pane key="2" forceRender>
         <template slot="tab">
           消费金额
           <slot name="marketingTitle"></slot>
@@ -18,7 +18,7 @@
     </a-tabs>
     <div class="action">
       <div class="mg-r16">
-        <date-picker></date-picker>
+        <date-picker @timesFn="userAnalysis"></date-picker>
       </div>
     </div>
   </div>
@@ -35,12 +35,14 @@ export default {
   },
   data() {
     return {
-      key: 'user'
+      key: '1'
     }
   },
   methods: {
     recentChange(query) {
-      console.log(111111, query)
+      this.$emit('change', query - 0)
+    },
+    userAnalysis(query) {
       this.$emit('change', query)
     }
   }

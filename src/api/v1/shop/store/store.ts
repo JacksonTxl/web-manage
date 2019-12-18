@@ -33,11 +33,11 @@ export interface CategoryQuery {
   size: number
 }
 export interface DtoreBoard {
-  date_type: string
+  date_type: number
   date: string
 }
 export interface MemberAnalysis {
-  date_type: string
+  date_type: number
   date: string
   choose_type: number
 }

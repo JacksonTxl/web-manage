@@ -3,6 +3,11 @@ import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { StoreApi, DtoreBoard, MemberAnalysis } from '@/api/v1/shop/store/store'
 import { anyAll } from '@/operators'
+import moment from 'moment'
+let times =
+  moment()
+    .endOf('day')
+    .format('YYYY-MM-DD') + ''
 @Injectable()
 export class DataService implements Controller {
   dataProfile$ = new State({})
@@ -26,7 +31,6 @@ export class DataService implements Controller {
   getStoreBoard(query: DtoreBoard) {
     return this.stockApi.storeBoard(query).pipe(
       tap((res: any) => {
-        console.log(res)
         this.storeBoard$.commit(() => res)
       })
     )
@@ -36,7 +40,6 @@ export class DataService implements Controller {
   getStoreSaleList(query: DtoreBoard) {
     return this.stockApi.storeSaleList(query).pipe(
       tap((res: any) => {
-        console.log(res)
         this.storeSaleList$.commit(() => res)
       })
     )
@@ -46,7 +49,6 @@ export class DataService implements Controller {
   getStoreCategoryRank(query: DtoreBoard) {
     return this.stockApi.storeCategoryRank(query).pipe(
       tap((res: any) => {
-        console.log(res)
         this.storeCategoryRank$.commit(() => res)
       })
     )
@@ -54,9 +56,9 @@ export class DataService implements Controller {
   @Effect()
   // 【门店】用户分析
   getStoreMemberAnalysis(query: MemberAnalysis) {
+    console.log(query)
     return this.stockApi.storeMemberAnalysis(query).pipe(
       tap((res: any) => {
-        console.log(res)
         this.storeMemberAnalysis$.commit(() => res)
       })
     )
@@ -64,10 +66,23 @@ export class DataService implements Controller {
   init() {
     return anyAll(
       this.getDataProfile(),
-      this.getStoreBoard({ date_type: '', date: '' }),
-      this.getStoreSaleList({ date_type: '', date: '' }),
-      this.getStoreCategoryRank({ date_type: '', date: '' }),
-      this.getStoreMemberAnalysis({ date_type: '', date: '', choose_type: 1 })
+      this.getStoreBoard({
+        date_type: 1,
+        date: times
+      }),
+      this.getStoreSaleList({
+        date_type: 1,
+        date: times
+      }),
+      this.getStoreCategoryRank({
+        date_type: 1,
+        date: times
+      }),
+      this.getStoreMemberAnalysis({
+        date_type: 1,
+        date: times,
+        choose_type: 1
+      })
     )
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
