@@ -28,7 +28,7 @@ import DatePicker from './date-picker'
 
 export default {
   bem: {
-    basic: 'shop-stored-data-buy-consumption-tables'
+    basic: 'shop-store-data-buy-consumption-tables'
   },
   components: {
     DatePicker

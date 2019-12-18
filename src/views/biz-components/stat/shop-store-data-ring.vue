@@ -1,5 +1,5 @@
 <template>
-  <div class="shop-stored-data-ring"></div>
+  <div class="shop-store-data-ring"></div>
 </template>
 
 <script>

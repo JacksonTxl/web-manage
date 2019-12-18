@@ -13,7 +13,7 @@
 <script>
 export default {
   bem: {
-    basic: 'shop-stored-data-picker'
+    basic: 'shop-store-data-picker'
   },
   methods: {
     onChange(query) {

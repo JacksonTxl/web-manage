@@ -31,7 +31,7 @@ import ShopEntryBar from '@/views/biz-components/stat/shop-entry-bar'
 
 export default {
   bem: {
-    basic: 'shop-stored-data-buy-number'
+    basic: 'shop-store-data-buy-number'
   },
   components: {
     SalesAnalysis,

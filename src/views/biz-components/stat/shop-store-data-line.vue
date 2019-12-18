@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="shop-stored-data-line"></div>
+    <div class="shop-store-data-line"></div>
   </div>
 </template>
 

@@ -91,12 +91,12 @@
                   <st-t3>
                     {{ wholeNav[wholenavIndex].title }}
                   </st-t3>
-                  <shop-stored-data-line
+                  <shop-store-data-line
                     :data="
                       filterLine(storeBoard, wholeNav[wholenavIndex].title)
                     "
                     :unit="wholeNav[wholenavIndex].title | filterCompany"
-                  ></shop-stored-data-line>
+                  ></shop-store-data-line>
                 </div>
               </a-col>
               <a-col :span="8">
@@ -175,12 +175,12 @@
                   </st-container>
                   <div class="category">
                     <st-t3>类目营收占比</st-t3>
-                    <shop-stored-data-revenue-ring
+                    <shop-store-data-revenue-ring
                       :data="categoryRevenue"
                       :sum="storeCategoryRank.total_revenue"
                       :padding="[60, '50%', 38, 0]"
                       style="width: 100%;"
-                    ></shop-stored-data-revenue-ring>
+                    ></shop-store-data-revenue-ring>
                   </div>
                 </div>
               </a-col>
@@ -206,15 +206,15 @@
   </div>
 </template>
 <script>
-import ShopStoredDataLine from '@/views/biz-components/stat/shop-stored-data-line'
+import ShopStoreDataLine from '@/views/biz-components/stat/shop-store-data-line'
 import WholeTabls from './components#/whole-tabls'
 import BuyConsumptionTables from './components#/buy-consumption-tables'
 import DatePicker from './components#/date-picker'
 import SalesAnalysis from './components#/sales-analysis'
 import BuyNumber from './components#/buy-number'
-import ShopStoredDataRing from '@/views/biz-components/stat/shop-stored-data-ring'
-import ShopStoredDataRevenueRing from '@/views/biz-components/stat/shop-stored-data-revenue-ring'
-import BrandUserAvgBar from '@/views/biz-components/stat/shop-stored-data-avg-bar'
+import ShopStoreDataRing from '@/views/biz-components/stat/shop-store-data-ring'
+import ShopStoreDataRevenueRing from '@/views/biz-components/stat/shop-store-data-revenue-ring'
+import BrandUserAvgBar from '@/views/biz-components/stat/shop-store-data-avg-bar'
 import { DataService } from './data.service'
 import {
   headerInfo,
@@ -239,7 +239,7 @@ export default {
     }
   },
   bem: {
-    basic: 'shop-stored-data',
+    basic: 'shop-store-data',
     salesCategory: 'sales-category'
   },
   data() {
@@ -247,7 +247,7 @@ export default {
       height325: 325,
       height332: 332,
       wholenavIndex: 0,
-      wholeNavcom: 'shop-stored-data-ring',
+      wholeNavcom: 'shop-store-data-ring',
       headerInfo,
       wholeNav,
       categoryRevenue,
@@ -256,14 +256,14 @@ export default {
     }
   },
   components: {
-    ShopStoredDataLine,
+    ShopStoreDataLine,
     DatePicker,
     WholeTabls,
     BuyConsumptionTables,
     SalesAnalysis,
     BuyNumber,
-    ShopStoredDataRing,
-    ShopStoredDataRevenueRing,
+    ShopStoreDataRing,
+    ShopStoreDataRevenueRing,
     BrandUserAvgBar
   },
   filters: {
@@ -365,7 +365,7 @@ export default {
       if (index > 1) {
         this.wholeNavcom = 'brand-user-avg-bar'
       } else {
-        this.wholeNavcom = 'shop-stored-data-ring'
+        this.wholeNavcom = 'shop-store-data-ring'
       }
     }
   }
