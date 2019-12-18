@@ -22,7 +22,7 @@
     </div>
     <st-form :form="form" labelWidth="88px" labelGutter="16px">
       <div v-if="isShowPass">
-        <st-form-item label="当前账户" label-auto>
+        <st-form-item label="当前账户" label-auto :class="b('text-item')">
           <label>{{ info.account_name }}</label>
         </st-form-item>
         <st-form-item label="当前密码" required class="mg-b0">
