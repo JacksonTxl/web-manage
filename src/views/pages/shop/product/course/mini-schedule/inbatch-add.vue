@@ -70,7 +70,10 @@
                     </p>
                   </div>
                 </div>
-                <add-course :item="filterDate[i][item.week]"></add-course>
+                <add-course
+                  @addCourse="pushCourseInfo"
+                  :item="filterDate[i][item.week]"
+                ></add-course>
               </div>
             </div>
             <div :class="b('schedule__tips')">
@@ -310,9 +313,6 @@ export default {
         current < moment(this.start_date).valueOf()
       )
     },
-    hide() {
-      this.weekList[0].show = false
-    },
     filterDateList(dateList) {
       let list = []
       let listItemCard
@@ -340,7 +340,9 @@ export default {
       this.filterDate = list
     },
     // 增加课程
-    addCourse() {},
+    pushCourseInfo(item) {
+      console.log(item)
+    },
     // 新增周期排课
     addScheduleWeek() {
       this.pickerList.push([

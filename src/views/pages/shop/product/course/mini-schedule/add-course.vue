@@ -9,25 +9,23 @@
     <template :class="b('wrapper')" slot="content">
       <span :class="b('head-close')" @click="hide">X</span>
       <div class="add-course-conent">
-        <st-form labelWidth="68px">
+        <st-form labelWidth="68px" :form="form">
           <st-form-item label="添加课程" required class="mg-t12">
-            <a-input
-              v-decorator="[
-                'course_name',
-                {
-                  rules: [
-                    { required: true, message: '请输入课程包名称' },
-                    { min: 2, message: '最少2个字符' },
-                    { max: 30, message: '最多30个字符' }
-                  ]
-                }
-              ]"
-              placeholder="请输入课程包名称"
-            />
+            <a-select
+              placeholder="请选择课程"
+              v-decorator="decorators.course_id"
+            >
+              <a-select-option
+                v-for="course in courseOptions"
+                :key="course.id"
+                :value="course.id"
+              >
+                {{ course.course_name }}
+              </a-select-option>
+            </a-select>
           </st-form-item>
           <st-form-item label="预约日期" required>
             <a-date-picker
-              @change="onChangeDatePick"
               style="width:100%"
               v-decorator="decorators.start_days"
             />
@@ -40,28 +38,20 @@
             />
           </st-form-item>
           <st-form-item label="场地" required>
-            <a-select
+            <a-cascader
               placeholder="请选择场地"
-              v-model="coachId"
+              :options="courtOptions"
+              :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
               v-decorator="decorators.court_id"
-            >
-              <a-select-option
-                v-for="coach in {}"
-                :key="coach.id"
-                :value="coach.id"
-              >
-                {{ coach.staff_name }}
-              </a-select-option>
-            </a-select>
+            />
           </st-form-item>
           <st-form-item label="教练" required>
             <a-select
               placeholder="请选择教练"
-              v-model="coachId"
-              v-decorator="decorators.course_id"
+              v-decorator="decorators.coach_id"
             >
               <a-select-option
-                v-for="coach in {}"
+                v-for="coach in coachOptions"
                 :key="coach.id"
                 :value="coach.id"
               >
@@ -107,17 +97,74 @@ export default {
     return {
       coachId: '',
       form,
-      decorators
+      decorators,
+      // mock
+      courseOptions: [
+        {
+          id: 19,
+          course_name: 'aaaaa'
+        },
+        {
+          id: 25,
+          course_name: 'kkkkkkkk'
+        },
+        {
+          id: 34,
+          course_name: 'test_course'
+        }
+      ],
+      coachOptions: [
+        {
+          id: 1,
+          staff_name: '姓名1'
+        },
+        {
+          id: 67,
+          staff_name: '姓名67'
+        }
+      ],
+      courtOptions: [
+        {
+          id: 1,
+          name: '啊啊啊啊啊',
+          seat: [
+            {
+              id: 3,
+              name: '模板一'
+            },
+            {
+              id: 6,
+              name: '模板二'
+            },
+            {
+              id: 7,
+              name: '模板二'
+            }
+          ]
+        },
+        {
+          id: 2,
+          name: '动感打王赛康车阿萨德',
+          seat: [
+            {
+              id: 2,
+              name: '22222222'
+            }
+          ]
+        },
+        {
+          id: 3,
+          name: '动感打车'
+        },
+        {
+          id: 4,
+          name: '跑步机'
+        }
+      ]
     }
   },
-  created() {
-    console.log(this.item)
-  },
+  created() {},
   methods: {
-    onChangeDatePick(val) {
-      this.start = val[0].format('YYYY-MM-DD').valueOf()
-      this.end = val[1].format('YYYY-MM-DD').valueOf()
-    },
     hide() {
       this.item[0].show = false
     },
@@ -126,14 +173,16 @@ export default {
     onSubmit() {
       this.form.validate().then(values => {
         const form = cloneDeep(values)
+        form.start_days = form.start_days.format('YYYY-MM-DD')
+        form.start_time = form.start_time.format('HH:mm')
         console.log(form)
-        // form.start_time = form.start_time.format('YYYY-MM-DD HH:mm')
-        // if (form.court_id) {
-        //   form.court_site_id = +form.court_id[1]
-        //   form.court_id = +form.court_id[0]
-        // }
-        // form.course_fee = form.course_fee
-        // form.limit_num = form.limit_num
+        if (form.court_id) {
+          form.court_site_id = +form.court_id[1]
+          form.court_id = +form.court_id[0]
+        }
+        this.$emit('addCourse', form)
+        this.hide()
+        // 调用冲突验证接口
         // this.teamScheduleScheduleService.add(form).subscribe(() => {
         //   this.$emit('ok')
         //   this.show = false
