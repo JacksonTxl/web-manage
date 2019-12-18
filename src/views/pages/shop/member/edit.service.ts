@@ -5,6 +5,7 @@ import { Store } from '@/services/store'
 import { MemberApi } from '@/api/v1/member'
 import { UpdateMemberEdit } from '../../../../api/v1/member'
 import { forkJoin } from 'rxjs'
+import { UserService } from '@/services/user.service'
 
 interface EditState {
   info: Object
@@ -19,7 +20,10 @@ export class EditService extends Store<EditState> {
   countryInfo$: Computed<Object>
   nations$: Computed<Object>
   countryList$: Computed<Object>
-  constructor(protected memberApi: MemberApi) {
+  constructor(
+    protected memberApi: MemberApi,
+    private userService: UserService
+  ) {
     super()
     this.state$ = new State({
       info: {},
@@ -30,6 +34,8 @@ export class EditService extends Store<EditState> {
     this.nations$ = new Computed(this.state$.pipe(pluck('nations')))
     this.countryList$ = new Computed(this.state$.pipe(pluck('countryList')))
   }
+  minorsType$ = this.userService.getOptions$('small_course.minors_type')
+  parentType$ = this.userService.getOptions$('small_course.parent_type')
   getMemberEdit(id: number) {
     return this.memberApi.getMemberEdit(id).pipe(
       tap(res => {

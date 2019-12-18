@@ -3,16 +3,28 @@
     <st-form :form="form" @submit="save" class="page-add-container">
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <!-- <st-form-item label="门店">
-            <a-input :disabled="true" v-decorator="rules.md"/>
-          </st-form-item> -->
           <st-form-item label="姓名" required>
             <a-input
               placeholder="支持中英文,不超过15个字"
               v-decorator="rules.member_name"
-            />
+            >
+              <a-select
+                @change="minorsChange"
+                v-decorator="rules.is_minors"
+                slot="addonAfter"
+                style="width: 60px"
+              >
+                <a-select-option
+                  v-for="(item, index) in minorsType"
+                  :value="item.value"
+                  :key="index"
+                >
+                  {{ item.label }}
+                </a-select-option>
+              </a-select>
+            </a-input>
           </st-form-item>
-          <st-form-item label="手机号" required>
+          <st-form-item label="手机号" required v-if="!isShowParent">
             <a-input-group compact>
               <a-select style="width:30%" v-model="country_prefix">
                 <a-select-option
@@ -30,6 +42,65 @@
               />
             </a-input-group>
           </st-form-item>
+          <st-form-item label="家长手机号" v-if="isShowParent" required>
+            <a-input-group compact>
+              <a-select style="width:30%" v-model="country_prefix">
+                <a-select-option
+                  :value="code.code_id"
+                  v-for="code in countryList.code_list"
+                  :key="code.code_id"
+                >
+                  +{{ code.phone_code }}
+                </a-select-option>
+              </a-select>
+              <a-input
+                style="width:70%"
+                placeholder="请输入手机号"
+                v-decorator="rules.parent_mobile"
+              />
+            </a-input-group>
+          </st-form-item>
+          <st-form-item label="家长姓名" v-if="isShowParent" required>
+            <a-input
+              placeholder="支持中英文,不超过15个字"
+              v-decorator="rules.parent_username"
+            >
+              <a-select
+                v-decorator="rules.parent_user_role"
+                slot="addonAfter"
+                style="width: 60px"
+              >
+                <a-select-option
+                  v-for="(item, index) in parentType"
+                  :value="item.value"
+                  :key="index"
+                >
+                  {{ item.label }}
+                </a-select-option>
+              </a-select>
+            </a-input>
+          </st-form-item>
+        </a-col>
+        <a-col :lg="10" :xs="22" :offset="1">
+          <st-form-item label="用户人脸">
+            <face-upload
+              width="264px"
+              height="264px"
+              :list="faceList"
+              placeholder="会员人脸信息"
+            ></face-upload>
+          </st-form-item>
+        </a-col>
+      </a-row>
+
+      <a-row :gutter="8">
+        <a-col :offset="1" :lg="22">
+          <st-hr></st-hr>
+        </a-col>
+      </a-row>
+
+      <a-row :gutter="8">
+        <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="来源类别">
             <a-select
               placeholder="请选择来源类别"
@@ -71,27 +142,6 @@
               </template>
             </a-select>
           </st-form-item>
-        </a-col>
-        <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="用户人脸">
-            <face-upload
-              width="264px"
-              height="264px"
-              :list="faceList"
-              placeholder="会员人脸信息"
-            ></face-upload>
-          </st-form-item>
-        </a-col>
-      </a-row>
-
-      <a-row :gutter="8">
-        <a-col :offset="1" :lg="22">
-          <st-hr></st-hr>
-        </a-col>
-      </a-row>
-
-      <a-row :gutter="8">
-        <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="性别">
             <a-radio-group v-decorator="rules.sex">
               <a-radio
@@ -298,13 +348,16 @@ export default {
       memberEnums: this.userService.memberEnums$,
       countryInfo: this.addService.countryInfo$,
       nations: this.addService.nations$,
-      countryList: this.addService.countryList$
+      countryList: this.addService.countryList$,
+      minorsType: this.addService.minorsType$,
+      parentType: this.addService.parentType$
     }
   },
   data() {
     return {
       form: this.$form.createForm(this),
       dateinit: '',
+      isShowParent: false,
       rules: {
         md: ['md'],
         member_name: [
@@ -370,7 +423,43 @@ export default {
           }
         ],
         cascader: ['cascader'],
-        living_address: ['living_address']
+        living_address: ['living_address'],
+        is_minors: [
+          'is_minors',
+          {
+            rules: [
+              {
+                required: true
+              }
+            ],
+            initialValue: 0
+          }
+        ],
+        parent_username: [
+          'parent_username',
+          {
+            rules: [
+              {
+                required: true,
+                message: '用户名支持1-15位中英文数字',
+                pattern: this.pattern.CN_EN_NUM_SPACE('1-15')
+              }
+            ]
+          }
+        ],
+        parent_mobile: [
+          'parent_mobile',
+          {
+            rules: [
+              {
+                required: true,
+                message: '请输入手机号',
+                pattern: this.pattern.MOBILE
+              }
+            ]
+          }
+        ],
+        parent_user_role: ['parent_user_role', { initialValue: 1 }]
       },
       options: [],
       fieldNames: { label: 'name', value: 'id', children: 'children' },
@@ -407,6 +496,9 @@ export default {
     onChangCategory(event) {
       this.source_category = event
     },
+    minorsChange(val) {
+      this.isShowParent = val
+    },
     chooseType(e) {
       let { tip1, tip2 } = {
         tip1: '请输入身份证号码',
@@ -417,6 +509,7 @@ export default {
     save(e) {
       e.preventDefault()
       this.form.validateFields().then(values => {
+        console.log(values)
         const cascader = values.cascader || []
         if (values.cascader && values.cascader.length > 0) {
           const cascader_name = this.getDistrictInfo(values.cascader)
