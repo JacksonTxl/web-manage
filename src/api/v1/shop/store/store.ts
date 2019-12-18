@@ -87,7 +87,7 @@ export class StoreApi extends Api {
     })
   }
   /**
-   * 分类列表
+   * 删除分类
    */
   delCategory(id: number) {
     return this.http.get(`/v1/store/product/category/${id}`)
@@ -127,5 +127,17 @@ export class StoreApi extends Api {
     return this.http.get('/v1/store/category_rank', {
       params
     })
+  }
+  /**
+   * 删除商品
+   */
+  delProduct(id: number) {
+    return this.http.delete(`/v1/store/product/${id}`)
+  }
+  /**
+   * 上下架商品
+   */
+  onShelf(id: number) {
+    return this.http.put(`/v1/store/product/${id}`)
   }
 }

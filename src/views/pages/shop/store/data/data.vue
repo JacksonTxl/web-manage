@@ -89,11 +89,13 @@
               <a-col :span="16">
                 <div>
                   <st-t3>
-                    {{ wholenavTitle }}
+                    {{ wholeNav[wholenavIndex].title }}
                   </st-t3>
                   <shop-stored-data-line
-                    :data="filterLine(storeBoard, wholenavTitle)"
-                    :unit="wholenavTitle[wholenavTitle.length - 2]"
+                    :data="
+                      filterLine(storeBoard, wholeNav[wholenavIndex].title)
+                    "
+                    :unit="wholeNav[wholenavIndex].title | filterCompany"
                   ></shop-stored-data-line>
                 </div>
               </a-col>
@@ -104,10 +106,8 @@
                       <component
                         v-bind:is="wholeNavcom"
                         :guideName="filterOrderMemberTitle()"
-                        :unit="wholenavTitle | filterCompany"
-                        :data="
-                          filterMember(storeBoard, 0, 'order', wholenavTitle)
-                        "
+                        :unit="wholeNav[wholenavIndex].title | filterCompany"
+                        :data="orderMember(storeBoard, 0, 'order')"
                         style="width: 100%;"
                         :height="
                           wholeNavcom === 'brand-user-avg-bar'
@@ -120,10 +120,8 @@
                       <component
                         v-bind:is="wholeNavcom"
                         :guideName="filterOrderMemberTitle()"
-                        :unit="wholenavTitle | filterCompany(1)"
-                        :data="
-                          filterMember(storeBoard, 0, 'member', wholenavTitle)
-                        "
+                        :unit="wholeNav[wholenavIndex].title | filterCompany(1)"
+                        :data="orderMember(storeBoard, 0, 'member')"
                         style="width: 100%;"
                         :height="
                           wholeNavcom === 'brand-user-avg-bar'
@@ -215,15 +213,12 @@ import ShopStoredDataRing from '@/views/biz-components/stat/shop-stored-data-rin
 import ShopStoredDataRevenueRing from '@/views/biz-components/stat/shop-stored-data-revenue-ring'
 import BrandUserAvgBar from '@/views/biz-components/stat/shop-stored-data-avg-bar'
 import { DataService } from './data.service'
-import { forEach } from 'lodash-es'
 import {
   headerInfo,
   wholeNav,
-  moneyOrder,
   categoryRevenue,
-  salesList,
   headerTitleItem,
-  courseDaily
+  fieldNav
 } from './data.config.ts'
 export default {
   serviceInject() {
@@ -247,16 +242,13 @@ export default {
     return {
       height325: 325,
       height332: 332,
-      wholenavTitle: '营收金额(元)',
       wholenavIndex: 0,
       wholeNavcom: 'shop-stored-data-ring',
-      headerTitleItem,
       headerInfo,
       wholeNav,
-      moneyOrder,
       categoryRevenue,
-      salesList,
-      courseDaily
+      headerTitleItem,
+      fieldNav
     }
   },
   components: {
@@ -283,86 +275,50 @@ export default {
   methods: {
     // 整体看板订单/会员折线图
     filterLine(data, type) {
-      let fieldNav = [
-        'revenue_amount',
-        'order_count',
-        'transaction_member',
-        'customer_price'
-      ]
       let fieldInfo = ['amount', 'count', 'count', 'price']
-      if (type === '营收金额(元)') {
-        return this.switchFunc(data, fieldNav, fieldInfo, 0)
-      } else if (type === '订单数(单) ') {
-        return this.switchFunc(data, fieldNav, fieldInfo, 1)
-      } else if (type === '交易会员数(人)') {
-        return this.switchFunc(data, fieldNav, fieldInfo, 2)
-      } else {
-        return this.switchFunc(data, fieldNav, fieldInfo, 3)
-      }
-    },
-    switchFunc(data, fieldNav, fieldInfo, index) {
-      return data[fieldNav[index]].trend.map(item => {
+      return data[this.fieldNav[this.wholenavIndex]].trend.map(item => {
         return {
           date: item.date,
-          amount: item[fieldInfo[index]]
+          amount: item[fieldInfo[this.wholenavIndex]]
         }
       })
     },
     // 整体看板订单/会员
-    filterMember(value, flag, that, wholenavTitle) {
-      if (wholenavTitle === '营收金额(元)') {
-        return value.revenue_amount.source[that].map(item => {
-          return {
-            name: item.type,
-            value: item.value
-          }
-        })
-      } else if (wholenavTitle === '订单数(单)') {
-        return value.order_count.source[that].map(item => {
-          return {
-            name: item.type,
-            value: item.count
-          }
-        })
-      } else if (wholenavTitle === '交易会员数(人)') {
-        if (that === 'order') {
-          return value.transaction_member.source[that].map(item => {
-            return {
-              name: item.type,
-              value: item.amount
-            }
-          })
-        } else {
-          return value.transaction_member.source[that].map(item => {
-            return {
-              name: item.type,
-              value: item.count
-            }
-          })
+    orderMember(value, flag, that) {
+      let fieldInfo = [
+        'value',
+        'count',
+        ['amount', 'count'],
+        ['amount', 'count']
+      ]
+      let filterOrderMemberData = [
+        value,
+        this.fieldNav,
+        this.wholenavIndex,
+        that,
+        this.wholenavIndex < 2
+          ? fieldInfo[this.wholenavIndex]
+          : that === 'order'
+          ? fieldInfo[this.wholenavIndex][0]
+          : fieldInfo[this.wholenavIndex][1]
+      ]
+      return this.filterOrderMember(...filterOrderMemberData)
+    },
+    filterOrderMember(value, fieldNav, wholenavIndex, that, type) {
+      return value[fieldNav[wholenavIndex]].source[that].map(item => {
+        return {
+          name: item.type,
+          value: item[type]
         }
-      } else {
-        if (that === 'order') {
-          return value.customer_price.source[that].map(item => {
-            return {
-              name: item.type,
-              value: item.amount
-            }
-          })
-        } else {
-          return value.customer_price.source[that].map(item => {
-            return {
-              name: item.type,
-              value: item.count
-            }
-          })
-        }
-      }
+      })
     },
     // 订单来源/会员身份标题
     filterOrderMemberTitle() {
       let title = ['营收金额(元)', '订单数(单)']
-      if (title.find(item => item === this.wholenavTitle)) {
-        if (this.wholenavTitle === title[0]) {
+      if (
+        title.find(item => item === this.wholeNav[this.wholenavIndex].title)
+      ) {
+        if (this.wholeNav[this.wholenavIndex].title === title[0]) {
           return '总营收'
         } else {
           return '订单数'
@@ -371,7 +327,6 @@ export default {
     },
     // 整体看板数据处理
     wholenavFilter(data) {
-      console.log(data)
       let titles = [
         'revenue_amount',
         'order_count',
@@ -381,13 +336,11 @@ export default {
       let field = ['amount', 'count', 'count', 'price']
       this.wholeNav.forEach((item, index) => {
         let dataInfo = data[titles[index]][field[index]]
-        console.log(this.wholenavIndex)
         item.num = dataInfo
       })
     },
     // 类目分析数据处理
     storeCategoryRankFilter(data) {
-      console.log(data)
       this.categoryRevenue = data.category_list.map(item => {
         return {
           name: item.category_name,
@@ -405,7 +358,6 @@ export default {
     change() {},
     wholenavFun(index, item) {
       this.wholenavIndex = index
-      this.wholenavTitle = item.title
       if (index > 1) {
         this.wholeNavcom = 'brand-user-avg-bar'
       } else {

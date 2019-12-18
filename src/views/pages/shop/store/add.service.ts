@@ -14,6 +14,10 @@ export class AddService implements Controller {
   editGoods(id: number, params: EditParams) {
     return this.StoreApi.editGoods(id, params).pipe(tap((res: any) => {}))
   }
+  @Effect()
+  goodsDetail(id: number) {
+    return this.StoreApi.goodsDetail(id).pipe(tap((res: any) => {}))
+  }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     // return this.getList(to.meta.query)
   }
