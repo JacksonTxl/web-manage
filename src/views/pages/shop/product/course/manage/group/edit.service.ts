@@ -26,7 +26,7 @@ export class EditService {
   getCourseEditInfo(params: any) {
     return this.courseApi.getCourseEditInfo(params).pipe(
       tap(res => {
-        this.info$.commit(() => res.info)
+        this.info$.commit(() => res)
       })
     )
   }

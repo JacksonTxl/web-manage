@@ -325,6 +325,10 @@ export default {
           personal_course: {
             value: 0,
             name: '私教课'
+          },
+          small_course: {
+            value: 0,
+            name: '小班课'
           }
         },
         order_type: {
@@ -437,6 +441,9 @@ export default {
       if (this.info.course_type.personal_course) {
         course_type.personal_course = 0
       }
+      if (this.info.course_type.small_course) {
+        course_type.small_course = 0
+      }
 
       if (this.info.order_type.advance) {
         order_type.advance = 0
@@ -471,6 +478,11 @@ export default {
       if (this.info.course_type.personal_course) {
         course_type.personal_course = this.params.course_type.personal_course
           .value
+          ? 1
+          : 0
+      }
+      if (this.info.course_type.small_course) {
+        course_type.small_course = this.params.course_type.small_course.value
           ? 1
           : 0
       }

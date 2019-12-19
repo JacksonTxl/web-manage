@@ -1,10 +1,10 @@
 <template>
   <st-panel app initial>
-    <div class="mg-b8">上课门店:共{{}}名教练</div>
+    <div class="mg-b8">上课门店:共{{ groupInfo.coaches.count }}名教练</div>
     <st-table
       :columns="basicColumns()"
       rowKey="id"
-      :dataSource="groupInfo.coaches"
+      :dataSource="groupInfo.coache && groupInfo.coache.list"
     ></st-table>
     <div :class="b('column')">
       <div :class="b('item')">
@@ -38,7 +38,7 @@
     </div>
     <div class="mg-t24">
       <span :class="b('item-label')">详细介绍：</span>
-      <st-container class="mg-t8">
+      <st-container class="mg-t8" v-if="groupInfo.description">
         {{ groupInfo.description }}
       </st-container>
     </div>

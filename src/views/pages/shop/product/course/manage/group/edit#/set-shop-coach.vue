@@ -77,9 +77,18 @@ export default {
     courseId: {
       type: Number,
       default: 0
+    },
+    info: {
+      type: Object,
+      default() {
+        return {}
+      }
     }
   },
   created() {},
+  mounted() {
+    this.setFieldsValue()
+  },
   watch: {
     courseName(val) {
       this.form.setFieldsValue({
@@ -128,19 +137,11 @@ export default {
       })
     },
     setFieldsValue() {
-      const info = this.info
+      const info = this.info.coach
       this.form.setFieldsValue({
         course_name: info.course_name,
-        course_category: info.course_category,
-        train_aim: info.train_aim,
-        duration: info.duration,
-        is_online_sale: info.is_online_sale,
-        price: info.price,
-        effective_unit: info.effective_unit,
-        image: info.image,
-        description: info.description
+        coach_ids: info.coach_ids
       })
-      this.fileList = [this.info.image]
     },
     getData() {
       const data = this.form.getFieldsValue()

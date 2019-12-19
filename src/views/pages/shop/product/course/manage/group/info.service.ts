@@ -7,8 +7,7 @@ export class InfoService {
   groupCourseHeaderInfo$ = new State({})
   constructor(private groupApi: CourseGroupApi) {}
   getGroupCourseHeaderInfo(courseId: string) {
-    // TODO： 换接口
-    return this.groupApi.getGroupCourseInfo(courseId).pipe(
+    return this.groupApi.getGroupCourseHeaderInfo(courseId).pipe(
       tap(res => {
         this.groupCourseHeaderInfo$.commit(() => res)
       })

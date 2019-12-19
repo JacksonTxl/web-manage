@@ -39,15 +39,15 @@
           </div>
         </st-form-item>
         <st-form-item label="售卖方式">
-          <a-radio-group v-model="decorators.sell_type">
-            <a-radio
+          <a-checkbox-group v-model="decorators.sell_type">
+            <a-checkbox
               v-for="(item, index) in sellType"
               :value="item.value"
               :key="index"
             >
               {{ item.label }}
-            </a-radio>
-          </a-radio-group>
+            </a-checkbox>
+          </a-checkbox-group>
         </st-form-item>
         <st-form-item label="报名时间" required>
           <a-range-picker
@@ -118,6 +118,12 @@ export default {
     courseId: {
       type: Number,
       default: 0
+    },
+    info: {
+      type: Object,
+      default() {
+        return {}
+      }
     }
   },
   data(vm) {
@@ -144,13 +150,22 @@ export default {
   },
   created() {},
   mounted() {
-    this.$nextTick(() => {
-      this.form.setFieldsValue({
-        course_name: this.course_name
-      })
-    })
+    this.setFieldsValue()
   },
   methods: {
+    setFieldsValue() {
+      const info = this.info.price
+      this.form.setFieldsValue({
+        course_name: info.course_name,
+        is_allow_transfer: info.is_allow_transfer,
+        transfer_num: info.transfer_num,
+        sell_type: info.sell_type,
+        apply_date: info.apply_begin_time
+          ? [moment(info.apply_begin_time), moment(info.apply_end_time)]
+          : [],
+        sales_price: info.sales_price
+      })
+    },
     save(para) {
       this.form.validateFields().then(values => {
         values.course_id = this.courseId

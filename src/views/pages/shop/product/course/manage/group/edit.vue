@@ -36,9 +36,9 @@
   </st-panel>
 </template>
 <script>
-import CreateGroupCourse from './add#/create-group-course'
-import SetShopCoach from './add#/set-shop-coach'
-import SetSellPrice from './add#/set-sell-price'
+import CreateGroupCourse from './edit#/create-group-course'
+import SetShopCoach from './edit#/set-shop-coach'
+import SetSellPrice from './edit#/set-sell-price'
 import { EditService } from './edit.service'
 
 export default {

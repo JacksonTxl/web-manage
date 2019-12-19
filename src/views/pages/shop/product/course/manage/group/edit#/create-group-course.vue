@@ -6,6 +6,7 @@
           <a-input
             placeholder="支持输入1~30个字的课程名称"
             maxlength="30"
+            disabled
             v-decorator="decorators.course_name"
             @change="onCourseNameChange"
           />
@@ -17,6 +18,7 @@
         <st-form-item label="适用范围" required>
           <a-select
             @change="onCourseTypeChange"
+            mode="multiple"
             v-decorator="decorators.scope_application"
             placeholder="请选择适用范围"
           >
@@ -173,7 +175,7 @@
 </template>
 
 <script>
-import { AddService } from '../add.service'
+import { EditService } from '../edit.service'
 import { MessageService } from '@/services/message.service'
 import { UserService } from '@/services/user.service'
 import { ruleOptions } from '../form.config'
@@ -183,7 +185,7 @@ export default {
   name: 'create-group-course',
   serviceInject() {
     return {
-      addService: AddService,
+      editService: EditService,
       messageService: MessageService,
       userService: UserService,
       pattern: PatternService
@@ -191,9 +193,17 @@ export default {
   },
   rxState() {
     return {
-      loading: this.addService.loading$,
-      rangeList: this.addService.rangeList$,
-      isAllowLeave: this.addService.isAllowLeave$
+      loading: this.editService.loading$,
+      rangeList: this.editService.rangeList$,
+      isAllowLeave: this.editService.isAllowLeave$
+    }
+  },
+  props: {
+    info: {
+      type: Object,
+      default() {
+        return {}
+      }
     }
   },
   bem: {
@@ -220,7 +230,9 @@ export default {
       this.form.setFieldsValue({
         course_name: info.course_name,
         scope_application: info.scope_application,
-        date: info.date,
+        date: info.course_begin_time
+          ? [moment(info.course_begin_time), moment(info.course_end_time)]
+          : [],
         num_min: info.num_min,
         num_max: info.num_max,
         course_times: info.course_times,

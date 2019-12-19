@@ -17,6 +17,7 @@
         <st-form-item label="适用范围" required>
           <a-select
             @change="onCourseTypeChange"
+            mode="multiple"
             v-decorator="decorators.scope_application"
             placeholder="请选择适用范围"
           >

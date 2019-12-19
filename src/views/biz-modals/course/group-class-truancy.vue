@@ -1,5 +1,5 @@
 <template>
-  <st-modal title="请假情况" :footer="null" v-model="show">
+  <st-modal title="旷课情况" :footer="null" v-model="show">
     <div :class="b('left')">
       <div :class="b('item')" class="bg-gray">
         旷课课程
@@ -36,16 +36,20 @@
         :key="index"
       >
         <div :class="b('item-title')">
-          {{ item.class_info.course_name }}
+          {{ item.make_up_info.course_name }}
         </div>
         <div>
           <span :class="b('item-label')">时间：</span>
           <span :class="b('item-value')" class="mg-r16">
-            {{ item.class_info.time }}
+            {{ item.make_up_info.time }}
           </span>
           <span :class="b('item-label')">教练：</span>
           <span :class="b('item-value')">
-            {{ item.class_info.coach_name }}
+            {{ item.make_up_info.coach_name }}
+          </span>
+          <span :class="b('item-label')">状态：</span>
+          <span :class="b('item-value')">
+            {{ item.make_up_info.sign_status ? '已签到' : '未签到' }}
           </span>
         </div>
       </div>
@@ -85,7 +89,6 @@ export default {
         member_id: this.memberId,
         class_type: this.type
       }
-      console.log(para)
       return this.groupUserClassTruancyService
         .getCourseGroupClassUserInfo(para)
         .subscribe(res => {

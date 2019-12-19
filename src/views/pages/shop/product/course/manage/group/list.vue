@@ -44,16 +44,42 @@
           <a @click="onGoDetail(record)">
             详情
           </a>
-          <a @click="onGoEdit(record)">
+          <a
+            @click="onGoEdit(record)"
+            v-if="
+              groupCourseHeaderInfo.class_status !==
+                CLASS_STATUS.CLASS_FAILED ||
+                groupCourseHeaderInfo.class_status !== CLASS_STATUS.CLASS_END
+            "
+          >
             编辑
           </a>
-          <a @click="onBeGroup(record)">
+          <a
+            @click="onBeGroup(record)"
+            v-if="
+              groupCourseHeaderInfo.class_status ===
+                CLASS_STATUS.SIGNING_UNCLASSED
+            "
+          >
             立即成班
           </a>
-          <a @click="onGoOrder()">
+          <a
+            @click="onGoOrder()"
+            v-if="
+              groupCourseHeaderInfo.class_status === CLASS_STATUS.CLASS_FAILED
+            "
+          >
             去退款
           </a>
-          <a>
+          <a
+            v-if="
+              groupCourseHeaderInfo.class_status === CLASS_STATUS.UNPUBLISH ||
+                groupCourseHeaderInfo.class_status ===
+                  CLASS_STATUS.PUBLISH_UNSTARTED ||
+                groupCourseHeaderInfo.class_status ===
+                  CLASS_STATUS.SIGNING_UNCLASSED
+            "
+          >
             <st-popconfirm
               :title="
                 '一旦删除则无法恢复，确认删除' + record.category_name + '？'
@@ -71,6 +97,8 @@
 <script>
 import { ListService } from './list.service'
 import { columns } from './list.config'
+import { CLASS_STATUS } from '@/constants/course/group'
+
 export default {
   name: 'GroupCourseList',
   serviceInject() {
@@ -92,6 +120,7 @@ export default {
   },
   data() {
     return {
+      CLASS_STATUS
       // columns
     }
   },

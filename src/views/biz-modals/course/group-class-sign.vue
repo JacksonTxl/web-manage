@@ -1,53 +1,19 @@
 <template>
-  <st-modal title="旷课情况" :footer="null" v-model="show">
-    <div :class="b('left')">
-      <div :class="b('item')" class="bg-gray">
-        旷课课程
-      </div>
-      <div
-        :class="b('item')"
-        type="2"
-        v-for="(item, index) in list"
-        :key="index"
-      >
-        <div :class="b('item-title')">
-          {{ item.class_info.course_name }}
-        </div>
-        <div>
-          <span :class="b('item-label')">时间：</span>
-          <span :class="b('item-value')" class="mg-r16">
-            {{ item.class_info.time }}
-          </span>
-          <span :class="b('item-label')">教练：</span>
-          <span :class="b('item-value')">
-            {{ item.class_info.coach_name }}
-          </span>
-        </div>
-      </div>
+  <st-modal title="签到课程" :footer="null" v-model="show">
+    <div :class="b('item')" class="bg-gray">
+      请假课程
     </div>
-    <div :class="b('right')">
-      <div :class="b('item')" class="bg-gray">
-        补课信息
+    <div :class="b('item')" type="2" v-for="(item, index) in list" :key="index">
+      <div :class="b('item-title')">
+        {{ item.class_info.course_name }}
       </div>
-      <div
-        :class="b('item')"
-        type="2"
-        v-for="(item, index) in list"
-        :key="index"
-      >
-        <div :class="b('item-title')">
-          {{ item.class_info.course_name }}
-        </div>
-        <div>
-          <span :class="b('item-label')">时间：</span>
-          <span :class="b('item-value')" class="mg-r16">
-            {{ item.class_info.time }}
-          </span>
-          <span :class="b('item-label')">教练：</span>
-          <span :class="b('item-value')">
-            {{ item.class_info.coach_name }}
-          </span>
-        </div>
+      <div>
+        <span :class="b('item-label')">时间：</span>
+        <span :class="b('item-value')" class="mg-r16">
+          {{ item.class_info.time }}
+        </span>
+        <span :class="b('item-label')">教练：</span>
+        <span :class="b('item-value')">{{ item.class_info.coach_name }}</span>
       </div>
     </div>
   </st-modal>
@@ -88,7 +54,9 @@ export default {
       return this.groupUserClassSignService
         .getCourseGroupClassUserInfo(para)
         .subscribe(res => {
-          this.list = res.list
+          this.list = res.list.filter(item => {
+            return item.class_type === 1
+          })
         })
     }
   },

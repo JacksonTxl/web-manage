@@ -5,14 +5,47 @@
         {{ groupCourseHeaderInfo.course_name }}
       </st-t3>
       <div>
-        <st-button type="primary" @click="onGoEdit">编辑</st-button>
+        <st-button
+          type="primary"
+          @click="onGoEdit"
+          v-if="
+            groupCourseHeaderInfo.class_status !== CLASS_STATUS.CLASS_FAILED ||
+              groupCourseHeaderInfo.class_status !== CLASS_STATUS.CLASS_END
+          "
+        >
+          编辑
+        </st-button>
         <a-dropdown type="primary" class="mg-r24 mg-l16">
           <a-menu slot="overlay">
-            <a-menu-item key="1" @click="onGoOrder()">
+            <a-menu-item
+              key="1"
+              @click="onGoOrder()"
+              v-if="
+                groupCourseHeaderInfo.class_status === CLASS_STATUS.CLASS_FAILED
+              "
+            >
               去退款
             </a-menu-item>
-            <a-menu-item key="2">立即成班</a-menu-item>
-            <a-menu-item key="2">
+            <a-menu-item
+              key="2"
+              @click="onBeGroup"
+              v-if="
+                groupCourseHeaderInfo.class_status ===
+                  CLASS_STATUS.SIGNING_UNCLASSED
+              "
+            >
+              立即成班
+            </a-menu-item>
+            <a-menu-item
+              key="2"
+              v-if="
+                groupCourseHeaderInfo.class_status === CLASS_STATUS.UNPUBLISH ||
+                  groupCourseHeaderInfo.class_status ===
+                    CLASS_STATUS.PUBLISH_UNSTARTED ||
+                  groupCourseHeaderInfo.class_status ===
+                    CLASS_STATUS.SIGNING_UNCLASSED
+              "
+            >
               <st-popconfirm
                 :title="
                   '一旦删除则无法恢复，确认删除' +
@@ -24,7 +57,9 @@
                 删除
               </st-popconfirm>
             </a-menu-item>
-            <a-menu-item key="2">发布</a-menu-item>
+            <a-menu-item key="2" v-if="CLASS_STATUS.UNPUBLISH">
+              发布
+            </a-menu-item>
           </a-menu>
           <a-button>
             更多
@@ -88,6 +123,7 @@
 </template>
 <script>
 import { InfoService } from './info.service'
+import { CLASS_STATUS } from '@/constants/course/group'
 export default {
   bem: {
     b: 'page-group-course-info'
@@ -112,6 +148,7 @@ export default {
   },
   data() {
     return {
+      CLASS_STATUS,
       tabs: [
         {
           label: '基础信息',
