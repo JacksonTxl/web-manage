@@ -5,7 +5,7 @@ import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
 import { UserService } from '@/services/user.service'
 @Injectable()
-export class ListService implements Controller {
+export class ListService {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
@@ -25,8 +25,5 @@ export class ListService implements Controller {
         this.page$.commit(() => res.page)
       })
     )
-  }
-  beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    return this.getProductList(to.meta.query)
   }
 }

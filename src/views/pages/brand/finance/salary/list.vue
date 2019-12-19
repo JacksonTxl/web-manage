@@ -1,131 +1,207 @@
 <template>
-  <st-panel app>
-    <div slot="title">
-      <st-input-search
-        placeholder="可输入姓名、手机号、卡号"
-        @search="onSearch"
-      />
-    </div>
-    <a-row :gutter="8">
-      <a-col :lg="17">
-        <st-button
-          type="primary"
-          @click="onExportList"
-          :disabled="selectedRowKeys.length > 0 ? false : true"
-        >
-          批量导出
-        </st-button>
-      </a-col>
-      <a-col :lg="7" style="text-align: right;">
+  <st-panel-layout :class="b()">
+    <st-panel app>
+      <div :class="b('action')">
         <a-select
-          style="width: 160px; "
-          class="mg-r8"
-          :defaultValue="-1"
+          placeholder="请选择部门"
+          v-model="$searchQuery.department_id"
+          :class="b('select')"
+          @change="onSingleSearch('department_id', $event)"
+        >
+          <a-select-option :value="-1">
+            全部
+          </a-select-option>
+          <a-select-option
+            v-for="(item, index) of department"
+            :key="index"
+            :value="item.id"
+          >
+            {{ item.name }}
+          </a-select-option>
+        </a-select>
+        <a-select
           placeholder="请选择门店"
-          @change="onChooseDepartment"
+          v-model="$searchQuery.shop_id"
+          @change="onSingleSearch('shop_id', $event)"
+          :class="b('select')"
         >
-          <a-select-option :value="1">部门1</a-select-option>
-          <a-select-option :value="3">部门2</a-select-option>
-          <a-select-option :value="2">部门3</a-select-option>
-          <a-select-option :value="-1">全部部门</a-select-option>
+          <a-select-option :value="-1">
+            全部
+          </a-select-option>
+          <a-select-option
+            v-for="(item, index) of shopList"
+            :key="index"
+            :value="item.shop_id"
+          >
+            {{ item.shop_name }}
+          </a-select-option>
         </a-select>
-        <a-select
-          style="width: 160px"
-          placeholder="请选择"
-          @change="onChooseStores"
-        >
-          <a-select-option :value="1">门店1</a-select-option>
-          <a-select-option :value="2">门店2</a-select-option>
-        </a-select>
-      </a-col>
-    </a-row>
-    <a-row :gutter="8" class="mg-t8">
+        <!-- <a-range-picker
+          :class="[bDate('range'), b('range')]"
+          :placeholder="['开始月份', '结束月份']"
+          format="YYYY-MM"
+          :mode="['month', 'month']"
+          @change="change"
+          @panelChange="panelChange"
+          v-model="monthRange"
+        /> -->
+        <a-month-picker
+          @change="change"
+          v-model="start_month"
+          placeholder="开始月份"
+          :class="b('range')"
+          :disabledDate="disabledStartDate"
+        />
+        ~
+        <a-month-picker
+          @change="change"
+          v-model="end_month"
+          placeholder="结束月份"
+          :class="b('range')"
+          :disabledDate="disabledEndDate"
+        />
+
+        <st-input-search
+          :class="b('search')"
+          v-model="$searchQuery.search"
+          @search="onKeywordsSearch('search', $event)"
+          placeholder="请输入工号、员工姓名或手机号查找"
+        ></st-input-search>
+      </div>
+
       <st-table
-        :rowSelection="{
-          selectedRowKeys: selectedRowKeys,
-          onChange: onSelectChange
-        }"
+        :page="page"
+        @change="onTableChange"
+        :loading="loading.getList"
         :columns="columns"
         :dataSource="list"
-        :scroll="{ x: 1500 }"
-        :pagination="pagination"
-        @change="pageChange"
+        rowKey="id"
       >
-        <template slot="i" slot-scope="text, record">
+        <template slot="shop" slot-scope="text, record">
+          <a
+            v-if="text.count > 1"
+            v-modal-link="{
+              name: 'brand-finance-staff-shop',
+              props: {
+                id: record.id
+              }
+            }"
+          >
+            共{{ text.count }}家门店
+          </a>
+          <span v-else>
+            {{ text.name }}
+          </span>
+        </template>
+        <template slot="sales_commission" slot-scope="text, record">
           <a
             v-modal-link="{
-              name: 'finance-sale-commission',
-              props: { record: record }
+              name: 'brand-finance-sale-commission',
+              props: {
+                id: record.id
+              }
             }"
           >
             {{ text }}
           </a>
         </template>
-        <template slot="o" slot-scope="text, record">
+        <template slot="course_commission" slot-scope="text, record">
           <a
             v-modal-link="{
-              name: 'finance-class-commission',
-              props: { record: record }
+              name: 'brand-finance-class-commission',
+              props: {
+                id: record.id
+              }
             }"
           >
             {{ text }}
           </a>
         </template>
       </st-table>
-    </a-row>
-  </st-panel>
+    </st-panel>
+  </st-panel-layout>
 </template>
-
 <script>
+import { ListService } from './list.service'
 import { columns } from './list.config.ts'
-import FinanceClassCommission from '@/views/biz-modals/finance/class-commission'
-import FinanceSaleCommission from '@/views/biz-modals/finance/sale-commission'
+import tableMixin from '@/mixins/table.mixin'
+import { UserService } from '@/services/user.service'
+import BrandFinanceClassCommission from '@/views/biz-modals/brand/finance/class-commission'
+import BrandFinanceSaleCommission from '@/views/biz-modals/brand/finance/sale-commission'
+import BrandFinanceStaffShop from '@/views/biz-modals/brand/finance/staff-shop'
+import moment from 'moment'
 export default {
-  modals: {
-    FinanceClassCommission,
-    FinanceSaleCommission
-  },
+  name: 'BrandFinanceSalary',
+  mixins: [tableMixin],
   data() {
     return {
-      columns,
-      selectedRowKeys: [],
-      pagination: {},
-      list: [
-        {
-          id: 1,
-          q: '201901',
-          w: '1号',
-          e: '超人',
-          r: `私教${this.$c('coach')}、销售`,
-          t: '部门1',
-          y: '上海体验店',
-          u: '11923',
-          i: '12332',
-          o: '12323',
-          p: '1233'
-        }
-      ]
+      monthRange: [],
+      start_month: null,
+      end_month: null
+    }
+  },
+  bem: {
+    b: 'page-brand-finance-salary',
+    bDate: 'st-recent-radio-group'
+  },
+  modals: {
+    BrandFinanceClassCommission,
+    BrandFinanceSaleCommission,
+    BrandFinanceStaffShop
+  },
+  serviceInject() {
+    return {
+      listService: ListService,
+      userService: UserService
+    }
+  },
+  rxState() {
+    return {
+      list: this.listService.list$,
+      page: this.listService.page$,
+      loading: this.listService.loading$,
+      info: this.listService.info$,
+      department: this.listService.department$,
+      shopList: this.userService.shopList$,
+      auth: this.listService.auth$
+    }
+  },
+  computed: {
+    columns
+  },
+  mounted() {
+    this.setQueryParams()
+  },
+  watch: {
+    $searchQuery() {
+      this.setQueryParams()
     }
   },
   methods: {
-    onSearch(e) {
-      console.log('搜索', e)
+    setQueryParams() {
+      this.start_month = null
+      this.end_month = null
+      if (this.$searchQuery.start_month && this.$searchQuery.end_month) {
+        this.start_month = moment(this.$searchQuery.start_month)
+        this.end_month = moment(this.$searchQuery.end_month)
+      }
     },
-    onChooseDepartment(e) {
-      console.log('选择部门', e)
+    change() {
+      if (this.start_month && this.end_month) {
+        this.$searchQuery.start_month = this.start_month.format('YYYY-MM')
+        this.$searchQuery.end_month = this.end_month.format('YYYY-MM')
+        this.onSearch()
+      }
     },
-    onChooseStores(e) {
-      console.log('选择门店', e)
+    disabledStartDate(current) {
+      if (this.end_month) {
+        return current && current > this.end_month
+      }
+      return false
     },
-    onSelectChange(index, itemdata) {
-      this.selectedRowKeys = index
-    },
-    pageChange(pagination, filters, sorter) {
-      console.log('pagination', pagination)
-      console.log('filters', filters)
-      console.log('sorter', sorter)
-    },
-    onExportList() {}
+    disabledEndDate(current) {
+      return current && current < this.start_month
+    }
   }
 }
 </script>

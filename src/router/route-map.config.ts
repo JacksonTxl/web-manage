@@ -1,3 +1,4 @@
+import { stringify } from 'qs'
 import { findLast } from 'lodash-es'
 import moment from 'moment'
 import { RouteConfig } from '@/types/app'
@@ -324,8 +325,70 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
-  'shop-sold-transaction-list'(routeConfig: RouteConfig) {
+  'shop-sold-transaction'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '交易签单'
+    routeConfig.meta.tabs = [
+      'shop-sold-transaction-member',
+      'shop-sold-transaction-deposit',
+      'shop-sold-transaction-personal',
+      'shop-sold-transaction-package',
+      'shop-sold-transaction-lease',
+      'shop-sold-transaction-store'
+    ]
+  },
+  'shop-sold-transaction-member'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '{{$c("member_card")}}'
+    routeConfig.meta.auth = 'shop:sold:transaction|member_card_list'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      product_name: { type: String, default: '' },
+      product_type: { type: Number, default: 1 }
+    }
+  },
+  'shop-sold-transaction-personal'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '私教课'
+    routeConfig.meta.auth = 'shop:sold:transaction|personal_course_list'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      product_name: { type: String, default: '' },
+      product_type: { type: Number, default: 1 }
+    }
+  },
+  'shop-sold-transaction-package'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '课程包'
+    routeConfig.meta.auth = 'shop:sold:transaction|package_course_list'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      product_name: { type: String, default: '' },
+      product_type: { type: Number, default: 1 }
+    }
+  },
+  'shop-sold-transaction-store'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '云店'
+    routeConfig.meta.auth = 'shop:sold:transaction|cloud_product_list'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      product_name: { type: String, default: '' },
+      product_type: { type: Number, default: 1 }
+    }
+  },
+  'shop-sold-transaction-deposit'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '储值卡'
+    routeConfig.meta.auth = 'shop:sold:transaction|deposit_card_list'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      product_name: { type: String, default: '' },
+      product_type: { type: Number, default: 1 }
+    }
+  },
+  'shop-sold-transaction-lease'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '租赁柜'
+    routeConfig.meta.auth = 'shop:sold:transaction|cabinet_list'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -676,6 +739,16 @@ export const routeMapConfig = {
   },
   'brand-finance-salary-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '薪资报表'
+    routeConfig.meta.auth = 'brand:salary:reports|list'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      shop_id: { type: Number, default: -1 },
+      department_id: { type: Number, default: -1 },
+      search: { type: String, default: '' },
+      start_month: { type: String, default: '' },
+      end_month: { type: String, default: '' }
+    }
   },
   'brand-finance-salary-template'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '薪资模板'

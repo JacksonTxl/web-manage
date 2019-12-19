@@ -11,6 +11,7 @@ export const enum PRODUCT_TYPE {
   MEMBER_CARD = 1, // 会员卡
   DEPOSIT_CARD = 2, // 储值卡
   PERSONAL_COURSE = 3, // 私教课
+  STORE = 4, // 云店
   PACKAGE = 5, // 课程包
   CABINET = 6 // 租赁柜
 }
