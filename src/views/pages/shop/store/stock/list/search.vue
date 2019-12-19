@@ -1,12 +1,14 @@
 <template>
   <div :class="search()">
-    <st-input-search
-      v-model="$searchQuery.product_name"
-      v-di-view="{ name: SHOP_STORE_STOCK_KEYWORDS_SEARCH }"
-      @search="onKeywordsSearch('product_name', $event)"
-      :placeholder="`请输入商品名称`"
-      maxlength="50"
-    />
+    <portal to="SHOP_STORE_STOCK_KEYWORDS_SEARCH">
+      <st-input-search
+        v-model="$searchQuery.product_name"
+        @search="onKeywordsSearch('product_name', $event)"
+        :placeholder="`请输入商品名称`"
+        maxlength="50"
+      />
+    </portal>
+
     <div :class="search('btn')">
       <st-button
         type="primary"
@@ -54,7 +56,6 @@
   </div>
 </template>
 <script>
-import { SHOP_STORE_STOCK_KEYWORDS_SEARCH } from '@/constants/events'
 import { searchColumns } from './search.config.ts'
 import StorePutIn from '@/views/biz-modals/store/put-in'
 import tableMixin from '@/mixins/table.mixin'
@@ -69,14 +70,13 @@ export default {
   rxState() {
     return {
       // tableData: this.searchService.list$
-      loading: this.addService.loading$
+      loading: this.searchService.loading$
     }
   },
   mixins: [tableMixin],
   data() {
     return {
       searchColumns,
-      SHOP_STORE_STOCK_KEYWORDS_SEARCH,
       name: '',
       tableData: [
         {
