@@ -123,7 +123,7 @@ export class GroupBuyApi extends Api {
     return this.http.get(`/v1/plugin/group_buy/stop/${id}`)
   }
   /**
-   * 拼团发布id
+   * 拼团发布idid
    */
   releaseGroupList(id: number) {
     return this.http.get(`/v1/plugin/group_buy/release/${id}`)

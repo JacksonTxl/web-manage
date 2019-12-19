@@ -91,7 +91,7 @@
             设置薪资账户
           </a>
           <a
-            v-if="record.auth['brand_shop:staff:staff|del']"
+            v-if="record.auth['brand:staff:staff|del']"
             @click="onClickDelete(record)"
           >
             删除

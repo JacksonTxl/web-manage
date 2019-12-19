@@ -21,7 +21,7 @@ export class ListService implements Controller {
     // 记得设置鉴权
     add: 'brand:activity:group_buy|add'
   })
-
+  // brand$ = this.userService.brand$  需要
   constructor(
     private groupBuyApi: GroupBuyApi,
     private authService: AuthService
