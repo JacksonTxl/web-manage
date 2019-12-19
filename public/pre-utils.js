@@ -279,4 +279,6 @@ window.preUtils = {
   }
 }
 
-preUtils.init()
+try {
+  preUtils.init()
+} catch (e) {}
