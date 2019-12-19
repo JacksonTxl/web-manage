@@ -58,21 +58,7 @@ export default {
     Calendar
   },
   data() {
-    return {
-      cardList: [
-        {
-          id: 2,
-          start_date: '2019-12-18',
-          start_time: '04:12',
-          end_time: '04:12',
-          course_name: '小班课测试',
-          current_course_name: '小班课测试',
-          reserved_num: 1,
-          coach_name: '姓名2',
-          court_site_name: '场地'
-        }
-      ]
-    }
+    return {}
   },
   computed: {
     startDate() {
@@ -86,11 +72,11 @@ export default {
     onMouseLeave() {
       console.log('onMouseLeave')
     },
-    // 添加课程排期 - 弹出详情
+    // 添加课程排期
     onAddSchedule(date) {
       console.log(date)
       this.$modalRouter.push({
-        name: 'schedule-mini-team-reserve-info',
+        name: 'schedule-mini-team-add-course',
         props: { time: date },
         on: {
           ok: res => {
@@ -132,7 +118,7 @@ export default {
     // 进入表格模式
     onGetTable() {
       this.$router.push({
-        name: 'shop-product-course-schedule-team-team-table',
+        name: 'shop-product-course-schedule-mini-team-mini-team-table',
         query: this.$searchQuery
       })
     },

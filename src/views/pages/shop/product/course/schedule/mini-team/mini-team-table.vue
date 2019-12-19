@@ -6,18 +6,15 @@
     >
       <div class="title__left">
         <st-button
-          v-modal-link="{ name: 'schedule-team-add-course-batch' }"
-          class="mg-r12"
           type="primary"
+          class="mg-r12"
+          @click="onClickScheduleInBatch"
           v-if="auth.addBatch"
         >
-          批量排期
+          排课
         </st-button>
-        <st-button
-          v-if="auth.copy"
-          v-modal-link="{ name: 'schedule-team-copy-schedule' }"
-        >
-          复制排期
+        <st-button @click="onClickScheduleInBatch" v-if="auth.addBatch">
+          批量修改
         </st-button>
       </div>
       <div class="title__center">
@@ -115,7 +112,7 @@
 </template>
 
 <script>
-import { TeamScheduleScheduleService } from '../team/service#/schedule.service'
+import { MiniTeamScheduleScheduleService } from '../mini-team/service#/schedule.service'
 import ScheduleTeamAddCourseBatch from '@/views/biz-modals/schedule/team/add-course-batch'
 import ScheduleTeamAddCourse from '@/views/biz-modals/schedule/team/add-course'
 import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
@@ -132,14 +129,14 @@ export default {
   },
   serviceInject() {
     return {
-      teamScheduleScheduleService: TeamScheduleScheduleService,
+      miniTeamScheduleScheduleService: MiniTeamScheduleScheduleService,
       service: MiniTeamTableService
     }
   },
   rxState() {
     return {
       auth: this.service.auth$,
-      scheduleTable: this.teamScheduleScheduleService.scheduleTable$
+      scheduleTable: this.miniTeamScheduleScheduleService.scheduleTable$
     }
   },
   data() {
@@ -168,6 +165,20 @@ export default {
     onScheduleChange() {
       this.$router.push({ query: this.$searchQuery })
     },
+    // 排课-批量修改
+    onClickScheduleInBatch() {
+      this.$router.push({
+        path: '/shop/product/course/mini-schedule/inbatch-add',
+        query: {
+          // activity_id: this.stepForm.activity_id
+        }
+        // on: {
+        //   ok: res => {
+        //     this.onScheduleChange()
+        //   }
+        // }
+      })
+    },
     // 添加团课排期
     onAddSchedule(date) {
       this.$modalRouter.push({
@@ -182,7 +193,7 @@ export default {
     },
     onClickSkipSchedule() {
       this.$router.push({
-        name: 'shop-product-course-schedule-team',
+        name: 'shop-product-course-schedule-mini-team',
         query: this.$searchQuery
       })
     },

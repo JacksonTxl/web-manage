@@ -20,13 +20,19 @@ export class MiniTeamScheduleCommonApi extends Api {
    * 获取课程列表
    */
   getCourseList() {
-    return this.http.get('v1/course/small-course/courses')
+    return this.http.get('/v1/course/small/course')
   }
   /**
    * 获取教练列表
    */
   getCoachList() {
     return this.http.get('/v1/schedule/team/shop/coach')
+  }
+  /**
+   * 获取场地列表
+   */
+  getCourtList() {
+    return this.http.get('/v1/schedule/team/shop/court')
   }
   /**
    *

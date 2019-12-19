@@ -3,7 +3,6 @@ import {
   MiniTeamScheduleScheduleApi,
   AddScheduleInput,
   UpdateScheduleInput,
-  CopyScheduleInput,
   GetScheduleListQuery,
   GetScheduleTableQuery
 } from '@/api/v1/schedule/mini-team/schedule'
@@ -44,7 +43,7 @@ export class MiniTeamScheduleScheduleService {
   /**
    *
    * @param params
-   * 获取团体课排期列表
+   * 获取小班课排期列表
    */
   @Effect()
   getList(query: GetScheduleListQuery) {
@@ -77,12 +76,13 @@ export class MiniTeamScheduleScheduleService {
   /**
    *
    * @param params
-   * 获取团体课排期表格
+   * 获取小班课排期表格
    */
   getTable(query: GetScheduleTableQuery) {
-    return this.scheduleApi.getTable({ size: 999, ...query }).pipe(
+    console.log('getTable')
+    return this.scheduleApi.getList({ size: 999, ...query }).pipe(
       tap(res => {
-        res = this.authService.filter(res)
+        //res = this.authService.filter(res)
         this.state$.commit(state => {
           state.scheduleTable = []
           const dateList = Array.from(
@@ -106,7 +106,7 @@ export class MiniTeamScheduleScheduleService {
   /**
    *
    * @param params
-   * 新增团体课排期
+   * 新增小班课排期
    */
   @Effect()
   add(params: AddScheduleInput) {
@@ -121,19 +121,6 @@ export class MiniTeamScheduleScheduleService {
     return this.scheduleApi.addScheduleInBatch(params).pipe(
       tap(res => {
         this.msg.success({ content: '批量添加成功' })
-      })
-    )
-  }
-  /**
-   *
-   * @param params
-   * 复制团体课排期
-   */
-  @Effect()
-  copy(params: CopyScheduleInput) {
-    return this.scheduleApi.copy(params).pipe(
-      tap(res => {
-        this.msg.success({ content: '复制成功' })
       })
     )
   }

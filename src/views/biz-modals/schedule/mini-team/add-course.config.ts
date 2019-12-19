@@ -20,26 +20,11 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    court_id: {},
-    limit_num: {
-      rules: [
-        {
-          validator: (field: any, value: any, values: any) => {
-            if (!value) {
-              return '请填写人数'
-            }
-            if (value > 999) {
-              return '上课人数不能超过999个'
-            }
-          }
-        }
-      ]
-    },
-    course_fee: {
+    court_id: {
       rules: [
         {
           required: true,
-          message: '请填写课时费'
+          message: '请选择场地'
         }
       ]
     }

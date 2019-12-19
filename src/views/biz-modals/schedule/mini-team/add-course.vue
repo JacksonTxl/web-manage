@@ -1,6 +1,6 @@
 <template>
   <st-modal title="新增课程排期" v-model="show" width="484px">
-    <st-form :form="form" labelAuto>
+    <st-form :form="form" labelWidth="40px" labelAuto>
       <st-form-item label="时间" required>
         <a-date-picker
           style="width: 100%"
@@ -13,11 +13,15 @@
         </a-date-picker>
       </st-form-item>
       <st-form-item label="课程" required>
-        <a-select placeholder="请选择课程" v-decorator="decorators.course_id">
+        <a-select
+          placeholder="请选择课程"
+          @change="onChange"
+          v-decorator="decorators.course_id"
+        >
           <a-select-option
-            v-for="course in courseOptions"
-            :key="course.id"
-            :value="course.id"
+            v-for="course in courseMiniOptions"
+            :key="course.course_id"
+            :value="course.course_id"
           >
             {{ course.course_name }}
           </a-select-option>
@@ -29,7 +33,7 @@
           v-decorator="decorators.coach_id"
         >
           <a-select-option
-            v-for="coach in coachOptions"
+            v-for="coach in coachMiniOptions"
             :key="coach.id"
             :value="coach.id"
           >
@@ -37,7 +41,7 @@
           </a-select-option>
         </a-select>
       </st-form-item>
-      <st-form-item label="场地">
+      <st-form-item label="场地" required class="mg-b0">
         <a-cascader
           placeholder="请选择场地"
           :options="courtOptions"
@@ -45,27 +49,9 @@
           v-decorator="decorators.court_id"
         />
       </st-form-item>
-      <st-form-item label="人数" required>
-        <a-input-search
-          placeholder="请输入人数"
-          v-decorator="decorators.limit_num"
-          type="number"
-        >
-          <a-button slot="enterButton">人</a-button>
-        </a-input-search>
-      </st-form-item>
-      <st-form-item label="课时费" required class="mg-b0">
-        <a-input-search
-          placeholder="请输入课时费"
-          v-decorator="decorators.course_fee"
-          type="number"
-        >
-          <a-button slot="enterButton">元/节</a-button>
-        </a-input-search>
-      </st-form-item>
     </st-form>
     <template slot="footer">
-      <st-button @click="onClick">批量设置</st-button>
+      <st-button @click="onClick">取消</st-button>
       <st-button type="primary" :loading="loading.add" @click="onSubmit">
         提交
       </st-button>
@@ -75,29 +61,23 @@
 
 <script>
 import { cloneDeep } from 'lodash-es'
-import { TeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/team/service#/schedule.service'
-import { TeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/team/service#/common.service'
-import { TeamService } from '@/views/pages/shop/product/course/schedule/team/team.service'
-import ScheduleTeamAddCourseBatch from '@/views/biz-modals/schedule/team/add-course-batch'
+import { MiniTeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/mini-team/service#/schedule.service'
+import { MiniTeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/mini-team/service#/common.service'
 import { ruleOptions } from './add-course.config'
 export default {
   name: 'AddCourseSchedule',
-  modals: {
-    ScheduleTeamAddCourseBatch
-  },
   serviceInject() {
     return {
-      teamScheduleCommomService: TeamScheduleCommonService,
-      teamScheduleScheduleService: TeamScheduleScheduleService,
-      teamService: TeamService
+      miniTeamScheduleScheduleService: MiniTeamScheduleScheduleService,
+      miniTeamScheduleCommonService: MiniTeamScheduleCommonService
     }
   },
   rxState() {
-    const tss = this.teamScheduleCommomService
+    const tss = this.miniTeamScheduleCommonService
     return {
-      loading: this.teamScheduleScheduleService.loading$,
-      coachOptions: tss.coachOptions$,
-      courseOptions: tss.courseOptions$,
+      loading: this.miniTeamScheduleScheduleService.loading$,
+      coachMiniOptions: tss.coachMiniOptions$,
+      courseMiniOptions: tss.courseMiniOptions$,
       courtOptions: tss.courtOptions$
     }
   },
@@ -107,7 +87,8 @@ export default {
     return {
       form,
       decorators,
-      show: false
+      show: false,
+      courseItem: ''
     }
   },
   props: {
@@ -119,6 +100,10 @@ export default {
     }
   },
   methods: {
+    onChange(value) {
+      // 这里是否需要遍历查找对应的course信息
+      console.log(value)
+    },
     onSubmit() {
       this.form.validate().then(values => {
         const form = cloneDeep(values)
@@ -127,9 +112,9 @@ export default {
           form.court_site_id = +form.court_id[1]
           form.court_id = +form.court_id[0]
         }
-        form.course_fee = form.course_fee
-        form.limit_num = form.limit_num
-        this.teamScheduleScheduleService.add(form).subscribe(() => {
+        // 提交
+        console.log(form)
+        this.miniTeamScheduleScheduleService.add(form).subscribe(() => {
           this.$emit('ok')
           this.show = false
         })
@@ -137,14 +122,14 @@ export default {
     },
     onClick() {
       this.show = false
-      this.$modalRouter.push({
-        name: 'schedule-team-add-course-batch',
-        on: {
-          ok: res => {
-            this.onScheduleChange()
-          }
-        }
-      })
+      // this.$modalRouter.push({
+      //   name: 'schedule-team-add-course-batch',
+      //   on: {
+      //     ok: res => {
+      //       this.onScheduleChange()
+      //     }
+      //   }
+      // })
     },
     onScheduleChange() {
       this.$router.push({ query: this.$searchQuery })

@@ -19,12 +19,13 @@ export class MiniTeamService implements Controller {
   ) {}
 
   beforeEach(to: ServiceRoute, form: ServiceRoute) {
-    //return this.scheduleService.getList(to.meta.query)
+    return this.scheduleService.getList(to.meta.query)
   }
   beforeRouteEnter(to: ServiceRoute, form: ServiceRoute) {
     return forkJoin(
-      this.commonService.getCoachList()
-      //this.commonService.getCourseList()
+      this.commonService.getCoachList(),
+      this.commonService.getCourseList(),
+      this.commonService.getCourtList()
     )
   }
 }

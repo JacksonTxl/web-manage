@@ -5,21 +5,21 @@ import { Api } from '@/api/api'
  * @export
  * @class ScheduleApi
  * @extends {Api}
- * 团体课排期接口
+ * 小班课排期接口
  */
 export class MiniTeamScheduleScheduleApi extends Api {
   /**
    *
    * @param params
-   * 获取团体课排期列表
+   * 获取小班课排期列表
    */
   getList(query: GetScheduleListQuery) {
-    return this.http.get('/v1/schedule/small-course/list', { query })
+    return this.http.get('/v1/schedule/small/list', { query })
   }
   /**
    *
    * @param params
-   * 获取团体课排期表格
+   * 获取小班课排期表格
    */
   getTable(query: GetScheduleTableQuery) {
     return this.http.get('/v1/schedule/team/shop/table', { query })
@@ -27,21 +27,13 @@ export class MiniTeamScheduleScheduleApi extends Api {
   /**
    *
    * @param params
-   * 新增团体课排期
+   * 新增小班课排期
    */
   add(params: AddScheduleInput) {
-    return this.http.post('/v1/schedule/team/shop', { params })
+    return this.http.post('/v1/schedule/small', { params })
   }
   addScheduleInBatch(params: AddScheduleInput[]) {
     return this.http.post('/v1/schedule/team/shop/batch', { params })
-  }
-  /**
-   *
-   * @param params
-   * 复制团体课排期
-   */
-  copy(params: CopyScheduleInput) {
-    return this.http.post('/v1/schedule/team/shop/copy', { params })
   }
   /**
    *
@@ -110,11 +102,8 @@ export interface GetScheduleTableQuery {
 export interface AddScheduleInput {
   course_id: number // 课程ID
   court_id: number // 场地id
-  court_site_id: number // 座位模版Id
   coach_id: number // 教练ID
   start_time: string // 开始时间 精确到秒
-  limit_num: number // 上课人数
-  course_fee: number // 课时费
 }
 /**
  * 新增团体课程排期request数据
@@ -128,13 +117,4 @@ export interface UpdateScheduleInput {
   start_time: string // 开始时间 精确到秒
   limit_num: number // 上课人数
   course_fee: number // 课时费
-}
-/**
- * 复制团体课排期数据
- */
-export interface CopyScheduleInput {
-  copy_start_time: string // 复制开始时间
-  copy_end_time: string // 复制结束时间
-  apply_start_time: string // 应用开始时间
-  apply_end_time: string // 应用结束时间
 }

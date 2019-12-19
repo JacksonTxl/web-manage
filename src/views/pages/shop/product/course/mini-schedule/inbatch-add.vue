@@ -200,8 +200,7 @@ export default {
                   week: 1,
                   current_course_name: '当前课程名称',
                   start_time: '2019-01-01 09:00:00',
-                  end_time: '2019-01-01 10:00:00',
-                  show: false
+                  end_time: '2019-01-01 10:00:00'
                 },
                 {
                   schedule_id: 1111,
@@ -225,8 +224,7 @@ export default {
                   week: 1,
                   current_course_name: '当前课程名称',
                   start_time: '2019-01-01 09:00:00',
-                  end_time: '2019-01-01 10:00:00',
-                  show: false
+                  end_time: '2019-01-01 10:00:00'
                 },
                 {
                   schedule_id: 1111,
@@ -274,9 +272,6 @@ export default {
         if (PickerIndex === index) {
           return
         } else {
-          console.log(date[0])
-          console.log(item[0])
-          console.log(date[0] >= item[0])
           if (
             (date[0] >= item[0] && date[0] <= item[1]) ||
             (date[1] >= item[0] && date[1] <= item[1])
@@ -336,7 +331,8 @@ export default {
         week: week,
         current_course_name: courseMessage.course_id,
         start_time: '2019-01-01 09:00:00',
-        end_time: '2019-01-01 10:00:00'
+        end_time: '2019-01-01 10:00:00',
+        show: false
       }
       if (!this.scheduleList[cycleIndex].course_time.length) {
         console.log('批次是否有数据')
@@ -347,24 +343,24 @@ export default {
         )
         return
       }
+      let findWeekFlag = false
       this.scheduleList[cycleIndex].course_time.forEach((item, index) => {
         if (item.week === week) {
           console.log('匹配对应的周几')
+          findWeekFlag = true
           item.list.push(courseItem)
           this.filterDateList(this.scheduleList)
-        } else if (
-          item.week !== week &&
-          index === this.scheduleList[cycleIndex].course_time.length - 1
-        ) {
-          console.log('无对应周几，添加一个周几列')
-          this.createCourseWeek(
-            week,
-            courseItem,
-            this.scheduleList[cycleIndex].course_time
-          )
-          console.log(this.scheduleList)
         }
       })
+      if (!findWeekFlag) {
+        console.log('无对应周几，添加一个周几列')
+        this.createCourseWeek(
+          week,
+          courseItem,
+          this.scheduleList[cycleIndex].course_time
+        )
+        console.log(this.scheduleList)
+      }
     },
     // 新增周期排课
     addScheduleWeek() {

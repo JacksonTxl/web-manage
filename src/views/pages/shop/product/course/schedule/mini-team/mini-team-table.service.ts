@@ -1,7 +1,7 @@
-import { TeamScheduleScheduleService as ScheduleService } from './service#/schedule.service'
+import { MiniTeamScheduleScheduleService as ScheduleService } from './service#/schedule.service'
 import { Controller, Injectable, ServiceRoute } from 'vue-service-app'
 import { forkJoin } from 'rxjs'
-import { TeamScheduleCommonService as CommonService } from './service#/common.service'
+import { MiniTeamScheduleCommonService as CommonService } from './service#/common.service'
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()
@@ -20,8 +20,7 @@ export class MiniTeamTableService implements Controller {
   initOptions() {
     return forkJoin(
       this.commonService.getCoachList(),
-      this.commonService.getCourseList(),
-      this.commonService.getCourtList()
+      this.commonService.getCourseList()
     )
   }
   beforeEach(to: ServiceRoute, form: ServiceRoute) {

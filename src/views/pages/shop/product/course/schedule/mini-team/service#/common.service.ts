@@ -103,6 +103,20 @@ export class MiniTeamScheduleCommonService {
   /**
    *
    * @param query
+   * 获取场地Options
+   */
+  getCourtList() {
+    return this.commonApi.getCourtList().pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.courtOptions = res.list
+        })
+      })
+    )
+  }
+  /**
+   *
+   * @param query
    * 获取消费方式Options
    */
   getConsumeList(query: ConsumeQuery) {
