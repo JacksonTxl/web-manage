@@ -384,7 +384,7 @@ export default {
     },
 
     onChangeTabs(query) {
-      this.tabsObjData.choose_type = query
+      this.tabsObjData = Object.assign(this.tabsObjData, query)
       this.tabsObjData.date = this.tabsObjData.date
         ? this.tabsObjData.date
         : moment()

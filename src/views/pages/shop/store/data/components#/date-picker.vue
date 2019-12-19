@@ -9,13 +9,20 @@
       v-if="selectValue === '1'"
       :disabledDate="disabledDate"
       @change="onChange"
+      :defaultValue="moment(defaultValue)"
     />
     <a-week-picker
       v-else-if="selectValue === '2'"
       :disabledDate="disabledDate"
+      :defaultValue="moment(defaultValue)"
       @change="onChange"
     />
-    <a-month-picker v-else @change="onChange" :disabledDate="disabledDate" />
+    <a-month-picker
+      :defaultValue="moment(defaultValue)"
+      v-else
+      @change="onChange"
+      :disabledDate="disabledDate"
+    />
   </div>
 </template>
 <script>
@@ -26,7 +33,7 @@ export default {
   },
   methods: {
     disabledDate(current) {
-      return current && current > moment().endOf('day')
+      return current && current > moment(this.defaultValue)
     },
     onChange(date, dateString) {
       if (this.selectValue === '2') {
@@ -43,8 +50,16 @@ export default {
   },
   data() {
     return {
-      selectValue: '1'
+      moment,
+      selectValue: '1',
+      defaultValue:
+        moment()
+          .subtract(1, 'days')
+          .format('YYYY-MM-DD') + ''
     }
+  },
+  created() {
+    console.log('defaultValue', this.defaultValue)
   }
 }
 </script>

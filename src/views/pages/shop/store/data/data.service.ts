@@ -6,7 +6,7 @@ import { anyAll } from '@/operators'
 import moment from 'moment'
 let times =
   moment()
-    .endOf('day')
+    .subtract(1, 'days')
     .format('YYYY-MM-DD') + ''
 @Injectable()
 export class DataService implements Controller {
@@ -21,7 +21,6 @@ export class DataService implements Controller {
   getDataProfile() {
     return this.stockApi.dataProfile().pipe(
       tap((res: any) => {
-        console.log(res)
         this.dataProfile$.commit(() => res)
       })
     )
@@ -29,6 +28,7 @@ export class DataService implements Controller {
   @Effect()
   // 整体看板
   getStoreBoard(query: DtoreBoard) {
+    console.log(query)
     return this.stockApi.storeBoard(query).pipe(
       tap((res: any) => {
         this.storeBoard$.commit(() => res)
@@ -38,6 +38,7 @@ export class DataService implements Controller {
   @Effect()
   // 类目支付排行
   getStoreSaleList(query: DtoreBoard) {
+    console.log(query)
     return this.stockApi.storeSaleList(query).pipe(
       tap((res: any) => {
         this.storeSaleList$.commit(() => res)
@@ -47,6 +48,7 @@ export class DataService implements Controller {
   @Effect()
   // 商品销售榜
   getStoreCategoryRank(query: DtoreBoard) {
+    console.log(query)
     return this.stockApi.storeCategoryRank(query).pipe(
       tap((res: any) => {
         this.storeCategoryRank$.commit(() => res)
