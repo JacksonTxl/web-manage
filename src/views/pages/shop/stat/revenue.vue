@@ -22,15 +22,24 @@
             class="swiper-r-button-next swiper-button-next"
             slot="button-next"
           >
-            <st-icon type="arrow-right1" class="arrow-right1" />
+            <st-icon type="arrow-right" class="arrow-right" />
           </div>
         </div>
       </a-row>
     </div>
     <div class="mg-b16" :class="bPage('count-action')">
-      <span>
-        <!-- <st-button type="primary" class="shop-member-list-button">批量导出</st-button> -->
-      </span>
+      <div :class="bPage('button-wapper')">
+        <st-button
+          type="primary"
+          v-if="auth$.export"
+          v-export-excel="{
+            type: 'revenue/shop',
+            query: $searchQuery
+          }"
+        >
+          全部导出
+        </st-button>
+      </div>
       <span>
         <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
       </span>
@@ -71,8 +80,15 @@ export default {
     }
   },
   rxState() {
-    const { loading$, list$, page$, todayInfo$, total$ } = this.revenueService
-    return { loading$, list$, page$, todayInfo$, total$ }
+    const {
+      loading$,
+      list$,
+      page$,
+      todayInfo$,
+      total$,
+      auth$
+    } = this.revenueService
+    return { loading$, list$, page$, todayInfo$, total$, auth$ }
   },
   data() {
     return {

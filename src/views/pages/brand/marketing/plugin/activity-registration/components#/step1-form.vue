@@ -58,11 +58,11 @@
           <st-editor @input="onChangeEditor" v-model="content"></st-editor>
           <div class="color-danger" v-if="isEditor">请输入活动详情</div>
         </st-form-item>
-        <div v-di-view="{ name: 'step', show }">
+        <portal to="BRAND_MARKETING_ACTIVITY_FORM_ACTIONS" v-if="show">
           <st-button type="primary" @click="onSubmit">
             下一步
           </st-button>
-        </div>
+        </portal>
       </st-form>
     </a-col>
     <a-col :xl="10"></a-col>
