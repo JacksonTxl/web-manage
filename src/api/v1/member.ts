@@ -448,6 +448,9 @@ export class MemberApi extends Api {
   changeUserType(params: any) {
     return this.http.put(`/v1/member/minors/${params.id}`, { params })
   }
+  getParentInfoByPhone(query: any) {
+    return this.http.get(`/v1/member/get_member_by_mobile`, { query })
+  }
 }
 export interface EditFaceParams {
   image_face: object

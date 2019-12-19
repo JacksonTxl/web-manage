@@ -56,6 +56,7 @@
               <a-input
                 style="width:70%"
                 placeholder="请输入手机号"
+                @change="getParentInfo"
                 v-decorator="rules.parent_mobile"
               />
             </a-input-group>
@@ -63,6 +64,7 @@
           <st-form-item label="家长姓名" v-if="isShowParent" required>
             <a-input
               placeholder="支持中英文,不超过15个字"
+              :disabled="isEditParent"
               v-decorator="rules.parent_username"
             >
               <a-select
@@ -358,6 +360,7 @@ export default {
       form: this.$form.createForm(this),
       dateinit: '',
       isShowParent: false,
+      isEditParent: false,
       rules: {
         md: ['md'],
         member_name: [
@@ -498,6 +501,26 @@ export default {
     },
     minorsChange(val) {
       this.isShowParent = val
+    },
+    getParentInfo(e) {
+      if (e.target.value.length === 11) {
+        this.getParentInfoByPhone(e.target.value)
+      }
+    },
+    getParentInfoByPhone(phone) {
+      let query = {
+        mobile: phone
+      }
+      return this.addService.getParentInfoByPhone(query).subscribe(res => {
+        if (res.exists) {
+          this.isEditParent = true
+          this.form.setFieldsValue({
+            parent_username: res.info.member_name
+          })
+        } else {
+          this.isEditParent = false
+        }
+      })
     },
     chooseType(e) {
       let { tip1, tip2 } = {

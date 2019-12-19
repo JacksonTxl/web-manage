@@ -1,10 +1,11 @@
 <template>
-  <st-modal
-    title="变更用户类型"
-    @ok="save"
-    v-model="show"
-    wrapClassName="shop-binding-card"
-  >
+  <st-modal @ok="save" v-model="show" wrapClassName="shop-binding-card">
+    <div slot="title">
+      <span>
+        变更用户类型
+        <st-help-tooltip id="TSCMT001" />
+      </span>
+    </div>
     <st-form :form="form" @submit="save" labelWidth="67px">
       <st-form-item label="姓名">
         <a-input

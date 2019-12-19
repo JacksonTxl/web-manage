@@ -27,14 +27,24 @@
             <st-t2>
               {{ info.member_name }}
               <st-icon
-                v-if="info.sex === 1"
+                v-if="basicInfo.sex === 1 && !basicInfo.is_minors"
                 :type="'female'"
                 :style="'color:#FF5E41'"
               />
               <st-icon
-                v-if="info.sex === 2"
+                v-if="basicInfo.sex === 2 && !basicInfo.is_minors"
                 :type="'male'"
                 :style="'color:#3F66F6'"
+              />
+              <st-icon
+                v-if="basicInfo.is_minors && basicInfo.sex.id === 1"
+                type="user-type"
+                color="#FF5E41"
+              />
+              <st-icon
+                v-if="basicInfo.is_minors && basicInfo.sex.id === 2"
+                type="user-type"
+                color="#3F66F6"
               />
             </st-t2>
             <div class="shop-member-info-title-pannel__info__phone">

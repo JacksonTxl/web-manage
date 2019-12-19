@@ -213,12 +213,12 @@
         {{ record.member_name }}
         <st-icon
           type="user-type"
-          v-if="record.sex === 0 && record.is_minors"
+          v-if="record.sex === 2 && record.is_minors"
           color="#3F66F6"
         />
         <st-icon
           type="user-type"
-          v-if="record.sex && record.is_minors"
+          v-if="record.sex === 1 && record.is_minors"
           color="#FF5E41"
         />
       </div>
