@@ -24,7 +24,7 @@
               </a-select>
             </a-input>
           </st-form-item>
-          <st-form-item label="手机号" required v-if="!isShowParent">
+          <st-form-item label="手机号" required v-show="!isShowParent">
             <a-input-group compact>
               <a-select style="width:30%" v-model="country_prefix">
                 <a-select-option
@@ -42,7 +42,7 @@
               />
             </a-input-group>
           </st-form-item>
-          <st-form-item label="家长手机号" v-if="isShowParent" required>
+          <st-form-item label="家长手机号" v-show="isShowParent" required>
             <a-input-group compact>
               <a-select style="width:30%" v-model="country_prefix">
                 <a-select-option
@@ -60,7 +60,7 @@
               />
             </a-input-group>
           </st-form-item>
-          <st-form-item label="家长姓名" v-if="isShowParent" required>
+          <st-form-item label="家长姓名" v-show="isShowParent" required>
             <a-input
               placeholder="支持中英文,不超过15个字"
               v-decorator="rules.parent_username"
@@ -355,14 +355,15 @@ export default {
   rxState() {
     return {
       info: this.editService.info$,
+      parent_info: this.editService.parent_info$,
       loading: this.editService.loading$,
       memberEnums: this.userService.memberEnums$,
       staffEnums: this.userService.staffEnums$,
       countryInfo: this.editService.countryInfo$,
       nations: this.editService.nations$,
       countryList: this.editService.countryList$,
-      minorsType: this.addService.minorsType$,
-      parentType: this.addService.parentType$
+      minorsType: this.editService.minorsType$,
+      parentType: this.editService.parentType$
     }
   },
   filters: {
@@ -567,7 +568,8 @@ export default {
         district_name: district[0] ? district[0].name : ''
       }
     },
-    setEditInfo(obj) {
+    setEditInfo(obj, parent_info) {
+      this.isShowParent = !!obj.is_minors
       const cascader = []
       if (obj.province_id) {
         cascader.push(obj.province_id)
@@ -604,8 +606,8 @@ export default {
         country_prefix: +obj.country_prefix || undefined,
         living_address: obj.living_address,
         is_minors: obj.is_minors,
-        parent_username: obj.parent_username,
-        parent_mobile: obj.parent_mobile,
+        parent_username: parent_info.username,
+        parent_mobile: parent_info.mobile,
         parent_user_role: obj.parent_user_role
       })
       this.country_prefix = +obj.country_prefix || undefined
@@ -629,7 +631,7 @@ export default {
     }
     this.editService.serviceInit(this.$searchQuery.id).subscribe(res => {
       setTimeout(() => {
-        this.setEditInfo(this.info)
+        this.setEditInfo(this.info, this.parent_info)
         this.form.validateFields()
       })
     })

@@ -445,6 +445,9 @@ export class MemberApi extends Api {
   getFollowRecordList(id: number) {
     return this.http.get(`/v1/member/follow/axis/${id}`)
   }
+  changeUserType(params: any) {
+    return this.http.put(`/v1/member/minors/${params.id}`, { params })
+  }
 }
 export interface EditFaceParams {
   image_face: object

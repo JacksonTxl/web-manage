@@ -119,6 +119,12 @@
                 >
                   {{ params.course_type.personal_course.name }}
                 </st-checkbox>
+                <st-checkbox
+                  v-if="params.course_type.small_course"
+                  v-model="params.course_type.small_course.value"
+                >
+                  {{ params.course_type.small_course.name }}
+                </st-checkbox>
               </span>
             </div>
             <div class="mg-b16" v-if="Object.keys(info.receiver).length > 0">
