@@ -4,6 +4,7 @@ import { StatApi } from '@/api/v1/stat/shop'
 import { Effect, State } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
+import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class SellAmountService {
@@ -13,8 +14,14 @@ export class SellAmountService {
   loading$ = new State({})
   page$ = new State({})
   courseTypeList$ = this.userService.getOptions$('reserve.reserve_type')
-
-  constructor(private statApi: StatApi, private userService: UserService) {}
+  auth$ = this.authService.authMap$({
+    export: 'shop:stat:saler_reports|export_day'
+  })
+  constructor(
+    private statApi: StatApi,
+    private userService: UserService,
+    private authService: AuthService
+  ) {}
 
   @Effect()
   getSellAmountList(query: any) {
