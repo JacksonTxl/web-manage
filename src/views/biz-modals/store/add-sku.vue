@@ -25,6 +25,14 @@ export default {
       pattern: PatternService
     }
   },
+  props: {
+    list: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    }
+  },
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
@@ -36,8 +44,12 @@ export default {
   },
   methods: {
     handleSubmit(e) {
-      e.preventDefault()
       this.form.validate().then(values => {
+        const isSame = this.list.some(item => item === values.sku_name)
+        if (isSame) {
+          this.message.warn({ content: '相同的规格项不可重复添加' })
+          return
+        }
         this.$emit('success', values.sku_name)
         this.message.success({ content: '添加成功' })
         this.show = false

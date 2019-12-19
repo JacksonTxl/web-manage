@@ -125,11 +125,16 @@
                 v-for="(item, index) in skuList"
                 :key="index"
               >
-                <st-form-item label="规格项名称">
+                <st-form-item
+                  label="规格项名称"
+                  :help="nameError"
+                  :validateStatus="isNameError ? 'error' : ''"
+                >
                   <a-input
                     v-model="item.spec_name"
                     placeholder="请输入规格项名称"
                     style="width: 220px"
+                    @change="skuName(index, $event)"
                   ></a-input>
                   <span :class="basic('sku--item-del')" @click="delSku()">
                     <st-icon
@@ -151,6 +156,7 @@
                     placeholder="请添加规格设置"
                     :defaultValue="item.spec_item_name"
                     style="width: 220px"
+                    :open="false"
                     @change="handleChange(index, $event)"
                   ></a-select>
                   <a :class="basic('sku--item-add')" @click="addSkuItem(index)">
@@ -305,7 +311,9 @@ export default {
       fileList: [], // 商品图片组件中
       imgList: [], //上传的图片
       isImgError: false,
-      shelves_status: 1
+      shelves_status: 1,
+      nameError: '',
+      isNameError: false
     }
   },
   components: {
@@ -339,25 +347,61 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.form.validate().then(values => {
-        let data = {}
-        data = {
-          product_images: this.imgList, // 商品图片
-          product_intro: this.content, // 商品介绍
-          product_sku: this.tableData, // 规格设置
-          shelves_status: this.shelves_status, // 上架状态
-          product_name: values.product_name, // 商品名称
-          category_id: values.category_id, // 分类id
-          delivery_type: values.delivery_type, // 配送方式
-          sale_type: values.sale_type // 售卖方式
+      // this.form.validate().then(values => {
+      let data = {}
+      let product_sku = []
+      this.tableData.forEach((item, index) => {
+        let skuItem = {}
+        skuItem.market_price = item.market_price
+        skuItem.selling_price = item.selling_price
+        skuItem.stock_amount = item.stock_amount
+        skuItem.spec_arr = []
+        if (this.skuList.length > 0) {
+          skuItem.spec_arr.push({
+            spec_name: this.skuList[0].spec_name,
+            spec_item_name: item['0']
+          })
         }
-        console.log(data, '-----参数')
+        if (this.skuList.length > 1) {
+          skuItem.spec_arr.push({
+            spec_name: this.skuList[1].spec_name,
+            spec_item_name: item['1']
+          })
+        }
+        if (this.skuList.length > 2) {
+          skuItem.spec_arr.push({
+            spec_name: this.skuList[2].spec_name,
+            spec_item_name: item['2']
+          })
+        }
+        product_sku.push(skuItem)
+      })
+      data = {
+        product_images: this.imgList, // 商品图片
+        product_intro: this.content, // 商品介绍
+        product_sku: product_sku, // 规格设置
+        shelves_status: this.shelves_status // 上架状态
+        // product_name: values.product_name, // 商品名称
+        // category_id: values.category_id, // 分类id
+        // delivery_type: values.delivery_type, // 配送方式
+        // sale_type: values.sale_type // 售卖方式
+      }
+      console.log(data, '-----参数')
+      return
+      if (this.$route.query.id) {
+        this.addService.editGoods(this.$route.query.id, data).subscribe(res => {
+          this.$router.push({
+            path: './list'
+          })
+        })
+      } else {
         this.addService.addGoods(data).subscribe(res => {
           this.$router.push({
             path: './list'
           })
         })
-      })
+      }
+      // })
     },
     goodDetail() {
       this.addService.goodsDetail(this.$route.query.id).subscribe(res => {
@@ -379,9 +423,22 @@ export default {
     addSku() {
       this.skuList.push({ spec_name: '', spec_item_name: [] })
     },
+    skuName(index, e) {
+      // let list = JSON.parse(JSON.stringify(this.skuList)).splice(index, 1)
+      // console.log(index, e.target.value, list, 'e============--')
+      // const isSame = list.some(item => item.spec_name === e.target.value)
+      // if (isSame) {
+      //   this.nameError = '规格项名称不可相同'
+      //   this.isNameError = true
+      // } else {
+      //   this.nameError = ''
+      //   this.isNameError = false
+      // }
+    },
     addSkuItem(index) {
       this.$modalRouter.push({
         name: 'store-add-sku',
+        props: { list: this.skuList[index].spec_item_name },
         on: {
           success: result => {
             this.skuList[index].spec_item_name.push(result)
@@ -399,6 +456,14 @@ export default {
       this.skuList.splice(index, 1)
       if (!this.skuList.lenght) {
         this.isMore = 1
+        this.tableData = [
+          {
+            market_price: '',
+            selling_price: '',
+            stock_amount: '',
+            key: parseInt(Math.random() * 999999).toString()
+          }
+        ]
       }
     },
     getImageUrl(imageUrl) {
@@ -448,6 +513,7 @@ export default {
         o.key = parseInt(Math.random() * 999999).toString()
       })
       this.tableData = list
+      console.log(this.tableData, 'tableDatatableData')
     },
     openClass() {
       this.$modalRouter.push({
