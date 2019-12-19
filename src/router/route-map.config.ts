@@ -939,6 +939,12 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
+  'shop-product-course-manage-group-add'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '添加小班课'
+  },
+  'shop-product-course-manage-group-edit'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '编辑小班课'
+  },
   'shop-product-course-manage-group-info-basic'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '小班课详情'
   },

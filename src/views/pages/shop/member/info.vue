@@ -38,7 +38,18 @@
               />
             </st-t2>
             <div class="shop-member-info-title-pannel__info__phone">
-              <div>
+              <div v-if="basicInfo.is_minors">
+                <span class="mg-r8">
+                  家长：
+                  <span>{{ parentInfo.username }}</span>
+                </span>
+                <span class="line"></span>
+                <span>
+                  手机号：
+                  <span>{{ parentInfo.mobile }}</span>
+                </span>
+              </div>
+              <div v-else>
                 手机号：
                 <span>{{ info.mobile }}</span>
               </div>
@@ -199,6 +210,8 @@ export default {
   rxState() {
     return {
       info: this.infoService.info$,
+      basicInfo: this.infoService.basicInfo$,
+      parentInfo: this.infoService.parentInfo$,
       auth: this.infoService.auth$,
       authCommon: this.infoService.authCommon$
     }

@@ -1,5 +1,27 @@
 .page-group-course-info {
+  &__tip {
+    width: 100%;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    .item {
+      width: 50%;
+    }
+  }
+  &__title {
+    display: block;
+    padding: 24px;
+  }
+  &__title-action {
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e6e9ef;
+  }
+
   .label {
+    width: 80px;
     .c(rgba(0, 0, 0, 0.85));
     .mg-r(8px);
   }
@@ -7,28 +29,8 @@
     .c(rgba(0, 0, 0, 0.65));
     .mg-t(16px);
   }
-}
-
-.page-group-header {
-  display: flex;
-  justify-content: space-between;
   &__left {
-    .course-detail-item {
-      display: flex;
-      &__left {
-        .mg-r(130px);
-      }
-      &__content {
-        font-size: 14px;
-        color: rgba(0, 0, 0, 0.45);
-        line-height: 22px;
-      }
-      &__tip {
-        .fz(12px);
-        .c(rgba(0, 0, 0, 0.65));
-        .lh(20px);
-      }
-    }
+    flex: 1;
   }
   &__right {
     flex: none;

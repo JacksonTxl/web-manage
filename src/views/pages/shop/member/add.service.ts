@@ -5,6 +5,7 @@ import { Store } from '@/services/store'
 import { MemberApi } from '@/api/v1/member'
 import { StaffApi } from '../../../../api/v1/staff'
 import { AddUserParams } from '../../../../api/v1/member'
+import { UserService } from '@/services/user.service'
 
 interface AddState {
   countryInfo: Object
@@ -17,7 +18,11 @@ export class AddService extends Store<AddState> {
   countryInfo$: Computed<Object>
   nations$: Computed<Object>
   countryList$: Computed<Object>
-  constructor(protected memberApi: MemberApi, protected staffApi: StaffApi) {
+  constructor(
+    protected memberApi: MemberApi,
+    protected staffApi: StaffApi,
+    private userService: UserService
+  ) {
     super()
     this.state$ = new State({
       info: {},
@@ -28,6 +33,8 @@ export class AddService extends Store<AddState> {
     this.nations$ = new Computed(this.state$.pipe(pluck('nations')))
     this.countryList$ = new Computed(this.state$.pipe(pluck('countryList')))
   }
+  minorsType$ = this.userService.getOptions$('small_course.minors_type')
+  parentType$ = this.userService.getOptions$('small_course.parent_type')
 
   getCountryCodes() {
     return this.staffApi.getCountryCodes().pipe(

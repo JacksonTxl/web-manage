@@ -3,11 +3,13 @@ import { State } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { MemberApi, EditFaceParams } from '@/api/v1/member'
 import { AuthService } from '@/services/auth.service'
+import { forkJoin } from 'rxjs'
 
 @Injectable()
 export class InfoService implements Controller {
   info$ = new State({})
   basicInfo$ = new State({})
+  parentInfo$ = new State({})
   auth$ = new State({})
   authCommon$ = this.authService.authMap$({
     add: 'shop:member:member|tag',
@@ -27,6 +29,7 @@ export class InfoService implements Controller {
     return this.cardsApi.getBasicInfo(id).pipe(
       tap(res => {
         this.basicInfo$.commit(() => res.basic_info)
+        this.parentInfo$.commit(() => res.parent_info)
       })
     )
   }
@@ -43,8 +46,11 @@ export class InfoService implements Controller {
   editFace(id: number, params: EditFaceParams) {
     return this.cardsApi.updateUserFace(id, params)
   }
+  init(id: any) {
+    return forkJoin(this.getBasicInfo(id), this.getHeaderInfo(id))
+  }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     const { id } = to.meta.query
-    return this.getHeaderInfo(id)
+    return this.init(id)
   }
 }

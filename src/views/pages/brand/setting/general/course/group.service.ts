@@ -10,7 +10,7 @@ export class GroupService {
   reserveInfo$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({
-    reserveEdit: 'brand:setting:group_course_reserve_setting|edit'
+    reserveEdit: 'brand:setting:small_course_reserve_setting|edit'
   })
   constructor(
     private reserveSettingApi: GroupReserveSettingApi,

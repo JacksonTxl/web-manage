@@ -13,7 +13,7 @@
           {{ item.class_info.time }}
         </span>
         <span :class="b('item-label')">教练：</span>
-        <span :class="b('item-value')">{{ item.class_info.coach_name }}：</span>
+        <span :class="b('item-value')">{{ item.class_info.coach_name }}</span>
       </div>
     </div>
   </st-modal>

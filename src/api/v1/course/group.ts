@@ -43,12 +43,18 @@ export class CourseGroupApi extends Api {
   getGroupCourseInfo(params: any) {
     return this.http.get('/v1/course/small/' + params)
   }
+  getGroupCourseHeaderInfo(params: any) {
+    return this.http.get('/v1/course/small/heads/' + params)
+  }
   getGroupClassInfo(params: any) {
     return this.http.get('/v1/course/small/class/' + params)
   }
-  getCourseGroupClassUserInfo(params: any) {
-    return this.http.get('/v1/course/small/class_user_info/' + params.id, {
-      params
+  getCourseGroupClassUserInfo(query: any) {
+    return this.http.get(`/v1/course/small/class_user_info/${query.id}`, {
+      query
     })
+  }
+  getCourseEditInfo(query: any) {
+    return this.http.get(`/v1/course/small/edit/${query.id}`)
   }
 }
