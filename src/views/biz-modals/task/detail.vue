@@ -52,6 +52,7 @@ export default {
     }
   },
   created() {
+    console.log(this.list)
     this.getDetailList({
       task_id: this.task_id,
       popup_type: this.popup_type,
