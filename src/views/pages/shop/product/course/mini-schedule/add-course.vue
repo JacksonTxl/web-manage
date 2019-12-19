@@ -87,10 +87,26 @@ export default {
     b: 'modal-shop-mini-add-course'
   },
   props: {
-    item: Array,
-    default: []
+    item: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+    cycleIndex: {
+      type: Number,
+      default: 0
+    },
+    week: {
+      type: Number,
+      default: 1
+    }
   },
-  watch: {},
+  watch: {
+    item(newVal) {
+      //console.log(newVal)
+    }
+  },
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
@@ -163,7 +179,10 @@ export default {
       ]
     }
   },
-  created() {},
+  created() {
+    // console.log(this.cycleIndex)
+    // console.log(this.week)
+  },
   methods: {
     hide() {
       this.item[0].show = false
@@ -175,13 +194,13 @@ export default {
         const form = cloneDeep(values)
         form.start_days = form.start_days.format('YYYY-MM-DD')
         form.start_time = form.start_time.format('HH:mm')
-        console.log(form)
+        // console.log(form)
         if (form.court_id) {
           form.court_site_id = +form.court_id[1]
           form.court_id = +form.court_id[0]
         }
-        this.$emit('addCourse', form)
-        this.hide()
+        this.$emit('addCourse', form, this.cycleIndex, this.week)
+        this.item[0].show = false
         // 调用冲突验证接口
         // this.teamScheduleScheduleService.add(form).subscribe(() => {
         //   this.$emit('ok')
