@@ -9,6 +9,9 @@ export class ListService implements Controller {
   page$ = new State({})
   loading$ = new State({})
   info$ = new State({})
+  shopList$ = new State([])
+  shopPage$ = new State({})
+  isAuth$ = new State({})
   auth$ = this.authService.authMap$({
     // 记得设置鉴权
     add: 'brand:activity:group_buy|add'
@@ -38,6 +41,16 @@ export class ListService implements Controller {
     return this.groupBuyApi.getPosterInfo(params).pipe(
       tap((res: any) => {
         this.info$.commit(() => res.info)
+        this.isAuth$.commit(() => res.is_auth)
+      })
+    )
+  }
+  @Effect()
+  getShopList(id: number, query: ShopList) {
+    return this.groupBuyApi.getShopList(query, id).pipe(
+      tap((res: any) => {
+        this.shopList$.commit(() => res.list)
+        this.shopPage$.commit(() => res.page)
       })
     )
   }

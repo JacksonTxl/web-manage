@@ -132,4 +132,10 @@ export class GroupBuyApi extends Api {
   getGroupBuyDataTop(query: number) {
     return this.http.get(`/v1/plugin/group_buy/data_top/${query}`)
   }
+  /**
+   * 拼团结束
+   */
+  getShopList(query: ShopList, id: number) {
+    return this.http.get(`/v1/plugin/group_buy/shop/${id}`, { query })
+  }
 }

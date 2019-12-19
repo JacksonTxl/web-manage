@@ -35,6 +35,7 @@
 
         <div
           v-if="showData.length > 6"
+          :class="nextClass"
           class="swiper-total-button-next swiper-button-next"
           slot="button-next"
         >
