@@ -88,7 +88,7 @@
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
             <a
-              v-if="record.auth['brand_shop:flow:income|reverse']"
+              v-if="record.auth['shop:flow:income|reverse']"
               @click="onClickFlowChargeAgainst(record)"
             >
               流水冲销
