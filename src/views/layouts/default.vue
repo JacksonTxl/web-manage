@@ -188,6 +188,7 @@
       </article>
     </main>
     <switch-shop v-model="isShowSwitchShop"></switch-shop>
+    <st-udesk-btn v-show="isShowUdeskBtn" />
   </div>
 </template>
 <script>
@@ -206,12 +207,14 @@ import AccountBind from '@/views/biz-modals/account/bind'
 import AccountUnbind from '@/views/biz-modals/account/unbind'
 import AccountModify from '@/views/biz-modals/account/modify'
 import { UdeskService } from '@/services/udesk.service'
+import StUdeskBtn from '@/views/biz-components/udesk-btn/udesk-btn'
 
 export default {
   name: 'SaasLayout',
   components: {
     DefaultSiderMenu,
-    SwitchShop
+    SwitchShop,
+    StUdeskBtn
   },
   serviceInject() {
     return {
@@ -229,7 +232,8 @@ export default {
       theme: this.userService.theme$,
       title: this.titleService.title$,
       urlData: this.userService.urlData$,
-      isThemeStudio: this.userService.isThemeStudio$
+      isThemeStudio: this.userService.isThemeStudio$,
+      isShowUdeskBtn: this.udeskService.isShowUdeskBtn$
     }
   },
   data() {
@@ -381,7 +385,8 @@ export default {
         })
       }
       if (item.open_program === 'udesk') {
-        this.udeskService.showUdesk({ openDialog: true })
+        this.udeskService.setIsShowUdeskBtn(true)
+        this.udeskService.show()
       }
     }
   }
