@@ -12,7 +12,7 @@
       </template>
       <div slot="action" slot-scope="text, record">
         <a
-          v-if="record.auth['brand_shop:flow:income|reverse']"
+          v-if="record.auth['shop:flow:income|reverse']"
           @click="onFlowReversal(record)"
         >
           流水冲销
