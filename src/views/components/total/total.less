@@ -17,6 +17,9 @@
     .pd(16px 24px);
     .bg(rgba(227, 233, 255, 0.8));
   }
+  &__content-wapper {
+    overflow: hidden;
+  }
   &__t3 {
     .mg-t(8px);
     .lh(24px);
@@ -45,8 +48,6 @@
   &__content {
     position: relative;
     border-radius: 0 4px 4px 0;
-    width: calc(100% - 104px);
-    float: right;
     .bg(#f5f7ff);
     .pd(0 16px);
     div.swiper-button-prev {
@@ -65,6 +66,7 @@
     }
     &--full {
       width: 100%;
+      .bg(#fff);
     }
   }
 }

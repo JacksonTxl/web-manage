@@ -2,7 +2,18 @@
   <div :class="bPage()">
     <div class="mg-b16" :class="bPage('count-action')">
       <div :class="bPage('left')">
-        <!-- TODO: <st-button type="primary" class="shop-member-list-button">批量导出</st-button> -->
+        <!-- <div :class="bPage('button-wapper')">
+          <st-button
+            type="primary"
+            v-if="auth$.export"
+            v-export-excel="{
+              type: 'follow/shop',
+              query: $searchQuery
+            }"
+          >
+            全部导出
+          </st-button>
+        </div> -->
         <a-radio-group :value="showTable" @change="handleSizeChange">
           <a-radio-button value="all">日期</a-radio-button>
           <a-radio-button value="staff">员工</a-radio-button>
@@ -27,7 +38,7 @@
             <st-icon type="arrow-left" class="arrow-left" />
           </div>
           <div class="swiper-button-next" slot="button-next">
-            <st-icon type="arrow-right1" class="arrow-right1" />
+            <st-icon type="arrow-right" class="arrow-right" />
           </div>
         </div>
       </a-row>
@@ -69,7 +80,14 @@ export default {
     }
   },
   rxState() {
-    const { loading$, list$, page$, totalInfo$, total$ } = this.followService
+    const {
+      loading$,
+      list$,
+      page$,
+      totalInfo$,
+      total$,
+      auth$
+    } = this.followService
     return {
       loading$,
       list$,

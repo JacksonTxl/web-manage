@@ -1,13 +1,13 @@
 <template>
   <div :class="basic()">
-    <div v-di-view="{ name: 'SHOP_SOLD_COURSE_LIST_SEARCH' }">
+    <portal to="SHOP_SOLD_COURSE_LIST_SEARCH">
       <st-input-search
         v-model="$searchQuery.search"
         @search="onKeywordsSearch('search', $event)"
-        placeholder="请输入私教课名、合同编号、会员姓名或手机号查找"
-        style="width:372px"
+        placeholder="请输入课程包名、合同编号、会员姓名或手机号查找"
+        style="width:400px"
       />
-    </div>
+    </portal>
 
     <st-search-panel @search="onSearchNative" @reset="onSearchResetNative">
       <st-search-panel-item label="课程状态：">

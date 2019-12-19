@@ -1,4 +1,4 @@
-window.cdnUtils = {
+window.preUtils = {
   config: {
     pre: {
       map: {
@@ -24,6 +24,10 @@ window.cdnUtils = {
    */
   vendors: [],
   init: function() {
+    this.browser.init()
+    if (typeof Promise === 'undefined') {
+      return
+    }
     this.initMaps()
     this.initVendors()
     this.setCdn()
@@ -157,12 +161,12 @@ window.cdnUtils = {
             taskReject(new Error(domain + ' error'))
           }
         })
-        .catch(function(e) {})
+        ['catch'](function(e) {})
         tasks.push(task)
       })
       Promise.all(tasks)
-        .catch(function(e) {})
-        .finally(function() {
+        ['catch'](function(e) {})
+        ['finally'](function() {
           if (successedDomains.length) {
             resolve(successedDomains)
           } else {
@@ -222,11 +226,57 @@ window.cdnUtils = {
       that.includeStatics()
     })
   },
-  collectErrors(domain) {
+  collectErrors: function(domain) {
     var cdnErrors = this.get('cdnErrors') || {}
     cdnErrors[domain] = Date()
     this.set('cdnErrors',cdnErrors)
+  },
+  /**
+   * 浏览器版本测试，不兼容的版本给出提示
+   */
+  browser: {
+    init: function() {
+      if (this.isNeedUpdateBrowser()) {
+        this.updateTipLayer.open()
+        this.eventBind()
+      }
+    },
+    /**
+     * 判断是否支持当前浏览器
+     * @return {boolean}
+     */
+    isNeedUpdateBrowser: function() {
+      return /(MSIE|Trident)/i.test(navigator.userAgent) || typeof Promise === 'undefined'
+    },
+    eventBind: function() {
+      var that = this
+      document.getElementById('browser-update-tip-layer__close').onclick = function() {
+        that.updateTipLayer.close()
+      }
+    },
+    updateTipLayer: {
+      open: function() {
+        var layer = document.getElementById('browser-update-tip-layer')
+        if (layer) {
+          layer.style.visibility = 'visible'
+          return
+        }
+        layer = document.createElement('div')
+        layer.innerHTML =
+          '<div id="browser-update-tip-layer" style="position: fixed; width: 100%; height: 100%; left: 0; top: 0; background: rgb(0, 0, 0); z-index: 999999">' +
+          '<div style="width: 484px; height: 250px; position: absolute; left: 50%; top: 50%; margin-top: -125px ; margin-left: -242px; text-align: center; background: url(https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/browser-update-tip%402x.png); background-repeat: no-repeat; background-size: 100%; box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, .2);filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src=https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/browser-update-tip%402x.png,sizingMethod=scale);">' +
+          '<p style="font-size: 20px; font-weight: 500; color: #252A2E; margin: 120px 0 12px 0">检测到浏览器版本过低！</p>' +
+          '<p style="font-size: 14px; color: #3E4D5C">您当前浏览器版本存在安全风险，建议使用浏览器：谷歌 Chrome</p>' +
+          '<div id="browser-update-tip-layer__close" style="width: 40px; height: 40px; cursor: pointer; position: absolute; right: 0; top: 0;"></div>'
+        '</div>' +
+        '</div>'
+        document.body.appendChild(layer)
+      },
+      close: function() {
+        document.getElementById('browser-update-tip-layer').style.visibility = 'hidden'
+      }
+    }
   }
 }
 
-cdnUtils.init()
+preUtils.init()
