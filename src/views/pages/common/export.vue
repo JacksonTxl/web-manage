@@ -12,9 +12,15 @@
         {{ source }}
       </template>
       <template slot="operate_status" slot-scope="status">
-        <a-badge v-if="status.id === STATUS.SUCCESS" status="success"></a-badge>
-        <a-badge v-if="status.id === STATUS.FAIL" status="error"></a-badge>
-        {{ status.name }}
+        <st-text
+          :status="{
+            success: status.id === STATUS.SUCCESS,
+            error: status.id === STATUS.FAIL,
+            primary: status.id === STATUS.PROCESS
+          }"
+        >
+          {{ status.name }}
+        </st-text>
       </template>
       <template slot="operate_type" slot-scope="type">
         {{ type }}

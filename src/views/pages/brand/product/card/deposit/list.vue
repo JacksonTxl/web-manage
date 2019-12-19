@@ -1,16 +1,15 @@
 <template>
   <st-panel app :tabs="authTabs">
-    <di-view
+    <portal-target
       slot="actions"
-      :name="BRAND_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH"
-    />
+      name="BRAND_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH"
+    ></portal-target>
     <router-view></router-view>
   </st-panel>
 </template>
 
 <script>
 import { ListService } from './list.service'
-import { BRAND_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH } from '@/constants/events'
 
 export default {
   name: 'PageBrandProductDeposit',
@@ -22,11 +21,6 @@ export default {
   rxState() {
     return {
       authTabs: this.listService.authTabs$
-    }
-  },
-  data() {
-    return {
-      BRAND_PRODUCT_CARD_DEPOSIT_KEYWORDS_SEARCH
     }
   }
 }

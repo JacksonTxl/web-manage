@@ -115,6 +115,35 @@
           </template>
         </st-table>
       </div>
+      <st-modal
+        v-model="modalShow"
+        :footer="null"
+        :title="title"
+        wrapClassName="scroll-modal"
+      >
+        <st-table
+          :page="shopPage"
+          rowKey="id"
+          :loading="loading[`getShopList`]"
+          :columns="shopListColumns"
+          @change="onShopTableChange"
+          :scroll="{ y: 230, x: 600 }"
+          :dataSource="shopList"
+          :pagination="{
+            current: shopPage.current_page,
+            total: shopPage.total_counts,
+            pageSize: shopPage.size
+          }"
+        >
+          <template slot="action" slot-scope="text, record">
+            <st-table-actions sytle="width: 80px">
+              <a @click="onSelect(record)">
+                选择
+              </a>
+            </st-table-actions>
+          </template>
+        </st-table>
+      </st-modal>
     </st-panel>
   </st-panel-layout>
 </template>
@@ -123,7 +152,7 @@ import { UserService } from '@/services/user.service'
 import { ListService } from './list.service'
 import MarkteingPluginTitle from '../../components#/marketing-title'
 import tableMixin from '@/mixins/table.mixin'
-import { columns } from './list.config'
+import { columns, shopListColumns } from './list.config'
 import { TYPE } from '@/constants/marketing/plugin'
 import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
 import useShare from '@/hooks/marketing/share.hook'
@@ -152,7 +181,10 @@ export default {
       loading: this.listService.loading$,
       auth: this.listService.auth$,
       info: this.listService.info$,
-      groupBuyEnums: this.userService.groupBuyEnums$
+      groupBuyEnums: this.userService.groupBuyEnums$,
+      shopList: this.listService.shopList$,
+      shopPage: this.listService.shopPage$,
+      isAuth: this.listService.isAuth$
     }
   },
   hooks() {
@@ -165,7 +197,11 @@ export default {
       TYPE,
       activityName: '',
       activityStatus: -1,
-      columns: columns(vm)
+      columns: columns,
+      shopListColumns: shopListColumns,
+      modalShow: false, // 控制选择门店
+      title: '选择门店',
+      groupId: ''
     }
   },
   computed: {
@@ -192,6 +228,30 @@ export default {
     }
   },
   methods: {
+    // 选择门店推广
+    onSelect(record) {
+      this.listService
+        .getSharePosterInfo(this.groupId, { shop_id: record.id })
+        .subscribe(res => {
+          this.modalShow = false
+          let isAuth = this.isAuth
+          const shsInfo = {
+            person_num: this.info.group_sum,
+            name: this.info.product_name,
+            qrcode_url: this.info.qrcode_base,
+            logo: this.info.brand_logo,
+            brand_name: this.info.brand_name,
+            price: this.info.price,
+            image: this.info.product_logo
+          }
+          this.share.poster({
+            isAuth,
+            shsInfo,
+            hasQrCodeBtn: true,
+            shsPath: '/saas-mina/groupbuy'
+          })
+        })
+    },
     // 设置状态&名称
     setSearchData() {
       let { activity_name, activity_status } = this.$searchQuery
@@ -220,25 +280,25 @@ export default {
         query: { id: record.id }
       })
     },
-    // 推广
+    // 选择门店
     onGeneralize(record) {
-      this.listService.getSharePosterInfo({ id: record.id }).subscribe(res => {
-        let isAuth = 1
-        const shsInfo = {
-          person_num: this.info.group_sum,
-          name: this.info.product_name,
-          qrcode_url: this.info.qrcode_base,
-          logo: this.info.brand_logo,
-          brand_name: this.info.brand_name,
-          price: this.info.price,
-          image: this.info.product_logo
-        }
-        this.share.poster({
-          isAuth,
-          shsInfo,
-          hasQrCodeBtn: true,
-          shsPath: '/saas-mina/groupbuy'
+      this.groupId = record.id
+      this.listService
+        .getShopList(record.id, {
+          size: record.size || 20,
+          current_page: record.current_page || 1
         })
+        .subscribe(res => {
+          this.modalShow = true
+        })
+    },
+    // 门店分页
+    onShopTableChange(data) {
+      console.log(data)
+      this.onGeneralize({
+        id: this.groupId,
+        size: data.pageSize,
+        current_page: data.current
       })
     },
     // 编辑列表

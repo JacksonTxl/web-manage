@@ -3,15 +3,14 @@
     title="任务明细"
     v-model="show"
     :footer="null"
-    wrapClassName="modal-task-detail"
-    style="min-width: 600px"
+    wrapClassName="scroll-modal"
   >
     <st-table
       rowKey="id"
       :loading="loading.getDetailList"
       :dataSource="list"
       :columns="columns"
-      :scroll="{ y: 230, x: 600 }"
+      :scroll="{ x: 600, y: 230 }"
       @change="onPageChange"
       :page="page"
       :simplePage="true"
@@ -53,6 +52,7 @@ export default {
     }
   },
   created() {
+    console.log(this.list)
     this.getDetailList({
       task_id: this.task_id,
       popup_type: this.popup_type,

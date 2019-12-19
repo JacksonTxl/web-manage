@@ -1,12 +1,13 @@
 <template>
   <div :class="all()">
-    <st-input-search
-      v-model="$searchQuery.card_name"
-      v-di-view="{ name: BRAND_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH }"
-      @search="onKeywordsSearch('card_name', $event)"
-      :placeholder="`请输入${$c('member_card')}名称查找`"
-      maxlength="50"
-    />
+    <portal to="BRAND_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH">
+      <st-input-search
+        v-model="$searchQuery.card_name"
+        @search="onKeywordsSearch('card_name', $event)"
+        :placeholder="`请输入${$c('member_card')}名称查找`"
+        maxlength="50"
+      />
+    </portal>
     <div :class="all('search')">
       <router-link v-if="auth.add" to="../add-select">
         <st-button type="primary" icon="add">
@@ -217,7 +218,6 @@ import CardBrandMemberRecoverSale from '@/views/biz-modals/card/brand-member/rec
 import CardBrandMemberShelf from '@/views/biz-modals/card/brand-member/shelf'
 import CardBrandMemberShopTable from '@/views/biz-modals/card/brand-member/shop-table'
 import CardBrandMemberStopSale from '@/views/biz-modals/card/brand-member/stop-sale'
-import { BRAND_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH } from '@/constants/events'
 import {
   ADMISSION_RANGE,
   SUPPORT_SALES,
@@ -253,7 +253,6 @@ export default {
   },
   data() {
     return {
-      BRAND_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH,
       CARD_TYPE,
       ADMISSION_RANGE,
       SUPPORT_SALES,

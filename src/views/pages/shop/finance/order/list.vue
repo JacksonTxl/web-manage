@@ -30,7 +30,7 @@
       </div>
       <st-table
         :scroll="{ x: 2100 }"
-        rowKey="id"
+        isExpand
         :columns="columns"
         :page="page"
         @change="onTableChange"
@@ -45,40 +45,33 @@
         </template>
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
-            <a
-              v-if="record.auth['brand_shop:order:order|pay']"
-              @click="onGathering(record)"
-            >
+            <!-- v-if="record.auth['brand_shop:order:order|pay']" -->
+            <a @click="onGathering(record)">
               收款
             </a>
-            <a
-              v-if="record.auth['brand_shop:order:order|cancel']"
-              @click="onCancel(record)"
-            >
+            <!-- v-if="record.auth['brand_shop:order:order|cancel']" -->
+
+            <a @click="onCancel(record)">
               取消
             </a>
-            <a
-              v-if="record.auth['brand_shop:order:order|get']"
-              @click="onOrderInfo(record)"
-            >
+            <!-- v-if="record.auth['brand_shop:order:order|get']" -->
+
+            <a @click="onOrderInfo(record)">
               详情
             </a>
-            <a
-              v-if="record.auth['brand_shop:order:order|refund']"
-              @click="onRefund(record)"
-            >
+            <!-- v-if="record.auth['brand_shop:order:order|refund']" -->
+
+            <a @click="onRefund(record)">
               退款
             </a>
-            <a
-              v-if="record.auth['brand_shop:order:order|split']"
-              @click="onSplit(record)"
-            >
+            <!-- v-if="record.auth['brand_shop:order:order|split']" -->
+
+            <a @click="onSplit(record)">
               业绩拆分
             </a>
-            <a
-              v-if="record.auth['shop:order:order|print']"
-              @click="printOrder(record.id)"
-            >
+            <!-- v-if="record.auth['shop:order:order|print']" -->
+
+            <a @click="printOrder(record.id)">
               打印小票
             </a>
           </st-table-actions>

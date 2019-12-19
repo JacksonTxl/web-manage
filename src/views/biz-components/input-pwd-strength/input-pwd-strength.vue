@@ -10,7 +10,7 @@
         </div>
       </template>
       <a-input
-        size="large"
+        :size="size"
         type="password"
         :class="b('input')"
         :placeholder="placeholder"
@@ -58,6 +58,10 @@ export default {
     strength: {
       type: String,
       default: () => '' // 1 weak 2 middle 3 strong
+    },
+    size: {
+      type: String,
+      default: 'large'
     }
   },
   computed: {

@@ -868,6 +868,7 @@ export const routeMapConfig = {
     routeConfig.meta.auth = 'brand:flow:income|detail_list'
     routeConfig.queryOptions = {
       shop_id: { type: Number, default: -1 },
+      pay_channel: { type: Number, default: -1 },
       search_number: { type: String, default: '' },
       current_page: { type: Number, default: 1 },
       start_date: { type: String, default: '' },
@@ -1303,8 +1304,6 @@ export const routeMapConfig = {
     routeConfig.queryOptions = {
       search_number: { type: String },
       current_page: { type: Number, default: 1 },
-      start_date: { type: String, default: '' },
-      end_date: { type: String, default: '' },
       start_amount: { type: String },
       end_amount: { type: String },
       size: { type: Number, default: 20 }
@@ -1315,9 +1314,7 @@ export const routeMapConfig = {
     routeConfig.queryOptions = {
       recently_day: { type: Number, default: 7 },
       current_page: { type: Number, default: 1 },
-      size: { type: Number, default: 20 },
-      start_date: { type: String, default: '' },
-      end_date: { type: String, default: '' }
+      size: { type: Number, default: 20 }
     }
   },
   'shop-stat-follow'(routeConfig: RouteConfig) {
@@ -1326,9 +1323,7 @@ export const routeMapConfig = {
       showTable: { type: String, default: 'all' },
       recently_day: { type: Number, default: 7 },
       current_page: { type: Number, default: 1 },
-      size: { type: Number, default: 20 },
-      start_date: { type: String, default: '' },
-      end_date: { type: String, default: '' }
+      size: { type: Number, default: 20 }
     }
   },
   'shop-stat-order'(routeConfig: RouteConfig) {
@@ -1346,8 +1341,6 @@ export const routeMapConfig = {
       recently_day: { type: Number, default: 7 },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
-      start_date: { type: String, default: '' },
-      end_date: { type: String, default: '' },
       department_id: { type: Number, default: -1 },
       coach_id: { type: Number, default: -1 }
     }
@@ -1359,8 +1352,6 @@ export const routeMapConfig = {
       recently_day: { type: Number, default: 7 },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
-      start_date: { type: String, default: '' },
-      end_date: { type: String, default: '' },
       department_id: { type: Number, default: -1 },
       staff_id: { type: Number, default: -1 }
     }
@@ -1370,9 +1361,7 @@ export const routeMapConfig = {
     routeConfig.queryOptions = {
       recently_day: { type: Number, default: 7 },
       current_page: { type: Number, default: 1 },
-      size: { type: Number, default: 20 },
-      start_date: { type: String, default: '' },
-      end_date: { type: String, default: '' }
+      size: { type: Number, default: 20 }
     }
   },
   'brand-stat'(routeConfig: RouteConfig) {

@@ -53,7 +53,7 @@ export default {
   rxState() {
     return {
       // tableData: this.detailService.list$
-      loading: this.addService.loading$
+      loading: this.detailService.loading$
     }
   },
   mixins: [tableMixin],

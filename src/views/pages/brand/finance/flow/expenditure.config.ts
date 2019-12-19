@@ -9,43 +9,48 @@ export const columns = () => {
       dataIndex: 'shop_name'
     },
     {
-      title: '微信（线上）退款',
+      title: '微信（线上）',
       dataIndex: 'online_wechat_amount',
       align: 'right'
     },
     {
-      title: '微信（线下）退款',
+      title: '微信（线下）',
       dataIndex: 'offline_wechat_amount',
       align: 'right'
     },
     {
-      title: '支付宝（线下）退款',
+      title: '支付宝（线下）',
       dataIndex: 'offline_ailipay_amount',
       align: 'right'
     },
     {
-      title: '现金退款',
+      title: '线下POS',
+      dataIndex: 'offline_pos_amount',
+      align: 'right'
+    },
+    {
+      title: '现金',
       dataIndex: 'cash_amount',
       align: 'right'
     },
     {
-      title: '银行转账退款',
+      title: '银行转账',
       dataIndex: 'bank_transfer_amount',
       align: 'right'
     },
     {
-      titleTotal: '内部结转退款',
+      title: '内部结转',
       dataIndex: 'internal_amount',
-      slots: { title: 'internalTitle' },
+      slot: { title: 'internal_amount' },
       align: 'right'
     },
     {
-      title: '其它退款',
+      title: '其它',
       dataIndex: 'other_amount',
       align: 'right'
     },
     {
-      title: '总支出金额',
+      title: '总收银金额',
       dataIndex: 'total_amount',
       align: 'right'
     }
