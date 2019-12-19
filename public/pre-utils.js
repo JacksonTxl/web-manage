@@ -25,6 +25,9 @@ window.preUtils = {
   vendors: [],
   init: function() {
     this.browser.init()
+    if (typeof Promise === 'undefined') {
+      return
+    }
     this.initMaps()
     this.initVendors()
     this.setCdn()
