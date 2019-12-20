@@ -116,9 +116,13 @@
                 <a-radio :value="1">单规格</a-radio>
                 <a-radio :value="2">多规格</a-radio>
               </a-radio-group>
-              <div :class="basic('sku--add')" v-if="isMore === 2">
+              <div
+                :class="basic('sku--add')"
+                v-if="isMore === 2 && !isEditMode"
+                @click="addSku"
+              >
                 <a-icon type="plus" :class="basic('sku--add-icon')" />
-                <span @click="addSku">添加规格项</span>
+                <span>添加规格项</span>
               </div>
               <div
                 :class="basic('sku--item')"
@@ -282,6 +286,16 @@ export default {
     }
   },
   modals: { StoreClassManage, StoreAddSku },
+  props: {
+    isEditMode: {
+      type: Boolean,
+      default: false
+    },
+    info: {
+      type: Object,
+      default: () => {}
+    }
+  },
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
@@ -307,7 +321,7 @@ export default {
       ],
       skuList: [],
       content: '', // 详情内容，蒋浩说加style
-      isEditor: false, // 是否显示详情提示
+      isEditor: false,
       fileList: [], // 商品图片组件中
       imgList: [], //上传的图片
       isImgError: false,
@@ -340,12 +354,12 @@ export default {
     }
   },
   mounted() {
-    this.isEdit = this.$route.query.id
-    if (this.isEditor) {
-      // 获取详情
+    if (this.isEditMode) {
+      this.goodDetail()
     }
   },
   methods: {
+    // 保存
     onSubmit() {
       // this.form.validate().then(values => {
       let data = {}
@@ -404,16 +418,22 @@ export default {
       // })
     },
     goodDetail() {
-      this.addService.goodsDetail(this.$route.query.id).subscribe(res => {
-        this.form.setFieldsValue({
-          product_name: res.product_name,
-          category_id: res.category_id,
-          delivery_type: res.delivery_type,
-          sale_type: res.sale_type
+      this.form.setFieldsValue({
+        product_name: this.info.product_name,
+        category_id: this.info.category_id,
+        delivery_type: this.info.delivery_type,
+        sale_type: this.info.sale_type
+      })
+      this.imgList = this.info.product_images
+      this.content = this.info.product_intro
+      this.shelves_status = this.info.shelves_status
+      this.skuList = []
+      this.info.all_spec.forEach(item => {
+        let list = []
+        item.spec_item_name.forEach(it => {
+          list.push(item.spec_item_name)
         })
-        this.imgList = res.product_images
-        this.content = res.product_intro
-        this.shelves_status = res.shelves_status
+        skuList.push({ spec_name: item.spec_name, spec_item_name: list })
       })
     },
     // 为了同步字数
@@ -527,6 +547,7 @@ export default {
       })
     },
     changeMore() {
+      this.skuList = []
       this.tableData = [
         {
           market_price: '',
