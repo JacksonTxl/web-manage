@@ -60,6 +60,7 @@
         <a-select
           v-decorator="decorators.basic_salary"
           placeholder="请选择底薪模版"
+          allowClear
         >
           <a-select-option
             :value="+item.id"
@@ -75,6 +76,7 @@
         <a-select
           v-decorator="decorators.sale_percentage"
           placeholder="请选择薪资模板"
+          allowClear
         >
           <a-select-option
             :value="+item.id"
@@ -91,6 +93,7 @@
           v-decorator="decorators.course_percentage"
           placeholder="请选择课程模板"
           v-show="isSalaryCourse"
+          allowClear
         >
           <a-select-option
             :value="+item.id"
