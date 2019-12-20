@@ -9,6 +9,11 @@ export interface MemberListInput {
   member: string
   escape_member_id?: number
 }
+export interface ProductType {
+  specs_id: number
+  product_num: number
+  product_id: number
+}
 export interface TransactionPriceInput {
   product_id: number
   product_type: number
@@ -20,12 +25,25 @@ export interface TransactionPriceInput {
   member_id?: number
   surplus_amount?: string
   special_amount?: number
+  product_info?: ProductType[]
 }
 export interface TransactionListInput {
   page?: number
   size?: number
   product_name?: string
   product_type: number
+}
+export interface ProductInfoParams {
+  product_id: number
+  spec_id: number
+  unit_price?: number
+  product_count?: number
+  product_name?: string
+  rule_name?: string
+}
+export interface CouponParams {
+  product_info: ProductInfoParams[]
+  member_id: number
 }
 export class TransactionApi extends Api {
   /**
@@ -161,6 +179,36 @@ export class TransactionApi extends Api {
   getMemberPaymentList(query: { member_id?: number; product_type: number }) {
     return this.http.get(`/v1/order/transaction/member/payment/method`, {
       query
+    })
+  }
+  /**
+   * 交易签单-云店-商品列表
+   */
+  getStoreProductList(query: { product_name: string }) {
+    return this.http.get(`/v1/finance/order/product_list`, {
+      query
+    })
+  }
+  /**
+   * 交易签单-云店-确实收款时获取订单详情
+   */
+  getOrderInfo(id: string) {
+    return this.http.get(`/v1/order/transaction/member/${id}`)
+  }
+  /**
+   * 交易签单-云店-优惠券列表
+   */
+  getCouponList(params: CouponParams) {
+    return this.http.get(`/v1/order/transaction/cloud_product/coupon`, {
+      params
+    })
+  }
+  /**
+   * 交易签单-云店-创建订单
+   */
+  postStoreOrderNum(params: ProductInfoParams) {
+    return this.http.post(`/v1/order/transaction/cloud_product`, {
+      params
     })
   }
 }
