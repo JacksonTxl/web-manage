@@ -13,7 +13,8 @@ export const columns = (vm: any) => {
     {
       title: '签单商品',
       dataIndex: 'product_name',
-      width: '200px'
+      width: '200px',
+      scopedSlots: { customRender: 'product_name' }
     },
     {
       title: '会员姓名',

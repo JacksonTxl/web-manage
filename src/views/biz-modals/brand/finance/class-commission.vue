@@ -33,7 +33,7 @@
       :simplePage="true"
       :page="page"
       :class="list.length > 0 ? 'st-scroll-data' : ''"
-    />
+    ></st-table>
   </st-modal>
 </template>
 <script>

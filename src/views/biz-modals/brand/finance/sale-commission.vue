@@ -24,7 +24,15 @@
       simplePage
       :page="page"
       :class="list.length > 0 ? 'st-scroll-data' : ''"
-    />
+    >
+      <template slot="product_name" slot-scope="text, record">
+        <st-overflow-text
+          title="签单商品"
+          :value="record.product_name"
+          maxWidth="100px"
+        ></st-overflow-text>
+      </template>
+    </st-table>
   </st-modal>
 </template>
 <script>
