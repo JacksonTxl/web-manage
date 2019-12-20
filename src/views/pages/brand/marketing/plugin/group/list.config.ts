@@ -43,7 +43,7 @@ export const columns = [
   }
 ]
 
-export const shoplistcolumns = [
+export const shopListColumns = [
   {
     title: '省',
     dataIndex: 'province_name',

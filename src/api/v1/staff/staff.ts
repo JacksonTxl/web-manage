@@ -27,7 +27,7 @@ export class ShopStaffApi extends Api {
     return this.http.get(`/v1/department`)
   }
   // 搜搜部门列表
-  searchDepartment(query: any) {
+  searchDepartment(query?: any) {
     return this.http.get(`/v1/department/search`, { query })
   }
   /**

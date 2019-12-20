@@ -227,6 +227,10 @@ export default {
           item.course_fee = +item.course_fee
           return item
         })
+      if (!data.length) {
+        this.msg.error({ content: '请填写排期！' })
+        return
+      }
       this.scheduleService
         .addScheduleInBatch(data)
         .subscribe(this.onSubmitSuccess)

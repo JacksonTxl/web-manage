@@ -46,7 +46,7 @@
             >
               <template slot="label">
                 支持入场人数
-                <st-help-tooltip id="TBMCDC001" />
+                <st-help-tooltip id="TBMCDC003" />
               </template>
               <a-select
                 v-decorator="decorators.support_member_num"

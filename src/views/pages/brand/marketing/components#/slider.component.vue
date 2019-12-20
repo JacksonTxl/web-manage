@@ -138,7 +138,7 @@ export default {
       item.activity_id = [item.activity_type, item.activity_id]
       const tree = new Tree(this.actList)
       if (index !== 0 && !tree.findNodeById(item.activity_id[1])) {
-        const node = tree.findNodeById(item.activity_type) || {}
+        const node = tree.findNodeById(item.activity_type) || []
         let tmpArrChild = {
           activity_name: item.activity_name,
           activity_type: item.activity_type,

@@ -1,6 +1,6 @@
 <template>
   <st-panel initial app :class="basic()">
-    <st-input-search
+    <!-- <st-input-search
       v-model="$searchQuery.product_name"
       @search="onSearch"
       placeholder="请输入商品名查找"
@@ -16,7 +16,7 @@
         :tab="item.label"
         :key="item.value"
       ></st-tab-pane>
-    </st-tabs>
+    </st-tabs> -->
     <st-table
       :page="page"
       :class="basic('table')"
@@ -29,7 +29,7 @@
       <div slot="action" slot-scope="text, record">
         <st-table-actions>
           <a
-            v-if="record.auth['shop:product:product|order']"
+            v-if="record.auth['shop:sold:transaction|order']"
             @click="onTransaction(record)"
           >
             签单
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { PRODUCT_TYPE } from '@/constants/sold/transaction'
 import { ListService } from './list.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
@@ -67,6 +68,17 @@ export default {
     SoldDealSaleMemberCard,
     SoldDealSalePersonalCourse
   },
+  props: {
+    product_type: {
+      type: Number,
+      default: 1
+    }
+  },
+  data() {
+    return {
+      PRODUCT_TYPE
+    }
+  },
   serviceInject() {
     return {
       listService: ListService
@@ -84,26 +96,35 @@ export default {
   computed: {
     columns
   },
+  mounted() {
+    this.$searchQuery.product_type = this.product_type
+    this.getList()
+  },
+  watch: {
+    $searchQuery() {
+      this.getList()
+    }
+  },
   methods: {
     getList() {
-      this.$router.reload()
+      this.listService.getProductList(this.$searchQuery).subscribe()
     },
     // 签单
     onTransaction(record) {
       switch (this.$searchQuery.product_type) {
-        case 1:
+        case this.PRODUCT_TYPE.MEMBER_CARD:
           this.onMember(record)
           break
-        case 2:
+        case this.PRODUCT_TYPE.DEPOSIT_CARD:
           this.onDeposit(record)
           break
-        case 3:
+        case this.PRODUCT_TYPE.PERSONAL_COURSE:
           this.onPersonalCourse(record)
           break
-        case 5:
+        case this.PRODUCT_TYPE.PACKAGE:
           this.onPackage(record)
           break
-        case 6:
+        case this.PRODUCT_TYPE.CABINET:
           this.onCabinet(record)
           break
       }
@@ -290,22 +311,20 @@ export default {
         }
       })
     },
-    onTabSearch(val) {
-      this.$router.push({
-        query: {
-          ...this.$searchQuery,
-          product_name: '',
-          current_page: 1,
-          product_type: val
-        }
-      })
-    },
+    // onTabSearch(val) {
+    //   this.$router.push({
+    //     query: {
+    //       ...this.$searchQuery,
+    //       product_name: '',
+    //       current_page: 1,
+    //       product_type: val
+    //     }
+    //   })
+    // },
     onTableChange(pagination) {
       this.$searchQuery.current_page = pagination.current
       this.$searchQuery.size = pagination.pageSize
-      this.$router.push({
-        query: this.$searchQuery
-      })
+      this.getList()
     }
   }
 }

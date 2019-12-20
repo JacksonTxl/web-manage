@@ -115,15 +115,25 @@
           </template>
         </st-table>
       </div>
-      <st-modal v-model="modalShow" :footer="null" :title="title">
+      <st-modal
+        v-model="modalShow"
+        :footer="null"
+        :title="title"
+        wrapClassName="scroll-modal"
+      >
         <st-table
-          :page="shoppage"
+          :page="shopPage"
           rowKey="id"
           :loading="loading[`getShopList`]"
-          :columns="shoplistcolumns"
-          @change="onTableChange"
-          :scroll="{ x: 400 }"
-          :dataSource="shoplist"
+          :columns="shopListColumns"
+          @change="onShopTableChange"
+          :scroll="{ y: 230, x: 600 }"
+          :dataSource="shopList"
+          :pagination="{
+            current: shopPage.current_page,
+            total: shopPage.total_counts,
+            pageSize: shopPage.size
+          }"
         >
           <template slot="action" slot-scope="text, record">
             <st-table-actions sytle="width: 80px">
@@ -142,7 +152,7 @@ import { UserService } from '@/services/user.service'
 import { ListService } from './list.service'
 import MarkteingPluginTitle from '../../components#/marketing-title'
 import tableMixin from '@/mixins/table.mixin'
-import { columns, shoplistcolumns } from './list.config'
+import { columns, shopListColumns } from './list.config'
 import { TYPE } from '@/constants/marketing/plugin'
 import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
 import useShare from '@/hooks/marketing/share.hook'
@@ -172,8 +182,8 @@ export default {
       auth: this.listService.auth$,
       info: this.listService.info$,
       groupBuyEnums: this.userService.groupBuyEnums$,
-      shoplist: this.listService.shoplist$,
-      shoppage: this.listService.shoppage$,
+      shopList: this.listService.shopList$,
+      shopPage: this.listService.shopPage$,
       isAuth: this.listService.isAuth$
     }
   },
@@ -182,13 +192,13 @@ export default {
       share: useShare()
     }
   },
-  data() {
+  data(vm) {
     return {
       TYPE,
       activityName: '',
       activityStatus: -1,
       columns: columns,
-      shoplistcolumns: shoplistcolumns,
+      shopListColumns: shopListColumns,
       modalShow: false, // 控制选择门店
       title: '选择门店',
       groupId: ''
@@ -209,6 +219,8 @@ export default {
   },
   mounted() {
     this.setSearchData()
+    console.log(this.listService)
+    console.log(this.auth)
   },
   watch: {
     query(newVal) {
@@ -216,6 +228,7 @@ export default {
     }
   },
   methods: {
+    // 选择门店推广
     onSelect(record) {
       this.listService
         .getSharePosterInfo(this.groupId, { shop_id: record.id })
@@ -267,28 +280,58 @@ export default {
         query: { id: record.id }
       })
     },
-    // 推广
+    // 选择门店
     onGeneralize(record) {
-      this.modalShow = true
       this.groupId = record.id
-      this.listService.getShopList(record.id).subscribe(res => {
-        this.$router.reload()
+      this.listService
+        .getShopList(record.id, {
+          size: record.size || 20,
+          current_page: record.current_page || 1
+        })
+        .subscribe(res => {
+          this.modalShow = true
+        })
+    },
+    // 门店分页
+    onShopTableChange(data) {
+      console.log(data)
+      this.onGeneralize({
+        id: this.groupId,
+        size: data.pageSize,
+        current_page: data.current
       })
     },
     // 编辑列表
     onEdit(record) {
       let typeId = record.product_type.id
       let id = record.id
-      let pushUrl = [
-        './edit-member',
-        './edit-deposit',
-        './edit-personal',
-        './edit-package-course'
-      ]
-      this.$router.push({
-        path: pushUrl[typeId - 1],
-        query: { id: id }
-      })
+      switch (typeId) {
+        case 3:
+          this.$router.push({
+            path: './edit-personal',
+            query: { id: id }
+          })
+          break
+        case 2:
+          this.$router.push({
+            path: './edit-deposit',
+            query: { id: id }
+          })
+          break
+        case 1:
+          this.$router.push({
+            path: './edit-member',
+            query: { id: id }
+          })
+          break
+        case 4:
+          this.$router.push({
+            path: './edit-package-course',
+            query: { id: id }
+          })
+          break
+        default:
+      }
     },
     // 结束活动
     onStop(record) {
