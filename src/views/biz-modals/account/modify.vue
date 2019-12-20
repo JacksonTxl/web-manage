@@ -103,7 +103,7 @@
         :class="b('success-img')"
       />
       <div :class="b('success-text')">密码更新成功</div>
-      <st-button pill type="primary" @click="goLogin">立即登陆</st-button>
+      <st-button pill type="primary" @click="goLogin">立即登录</st-button>
     </div>
   </st-modal>
 </template>
