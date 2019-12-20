@@ -519,6 +519,9 @@ export default {
           })
         } else {
           this.isEditParent = false
+          this.form.setFieldsValue({
+            parent_username: ''
+          })
         }
       })
     },

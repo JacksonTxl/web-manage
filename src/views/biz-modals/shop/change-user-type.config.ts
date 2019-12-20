@@ -42,7 +42,8 @@ export const ruleOptions = (vm: any) => {
           required: true,
           message: '请选择身份'
         }
-      ]
+      ],
+      initialValue: 1
     }
   }
 }

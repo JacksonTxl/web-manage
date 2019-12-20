@@ -15,7 +15,7 @@
               <a-input
                 placeholder="请输入适用范围"
                 v-decorator="decorators.setting_name"
-                maxlength="20"
+                maxlength="14"
               ></a-input>
             </st-form-item>
           </a-col>
