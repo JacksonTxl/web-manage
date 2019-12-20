@@ -52,6 +52,7 @@
                     :class="b('schedule__card')"
                     v-for="cardItem in filterDate[i][item.week]"
                     :key="cardItem.coach_id"
+                    @click="onEditCourseSchedule(cardItem, pickerList[i])"
                   >
                     <span class="time">
                       <st-icon type="timer"></st-icon>
@@ -80,10 +81,14 @@
             </div>
             <div :class="b('schedule__tips')">
               即：上课时间为
-              <span class="schedule__tips-date">2019/7/11~2019/7/18</span>
-              <span class="schedule__tips-time">每周一9: 00,</span>
+              <span class="schedule__tips-date">
+                {{ pickerList[i][0].format('YYYY/MM/DD').valueOf() }}~{{
+                  pickerList[i][1].format('YYYY/MM/DD').valueOf()
+                }}
+              </span>
+              <span class="schedule__tips-time">{{ tipsText[i] }}</span>
               共
-              <span class="schedule__tips-num">8</span>
+              <span class="schedule__tips-num">{{ tipsCourseNum[i] }}</span>
               节
             </div>
           </st-container>
@@ -145,24 +150,26 @@
 
 <script>
 import AddCourse from './add-course'
-
+import { MiniTeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/mini-team/service#/schedule.service'
+import { InbatchAddService } from './inbatch-add.service'
+import ScheduleMiniTeamEditCourse from '@/views/biz-modals/schedule/mini-team/edit-course'
 export default {
   name: 'AddScheduleInBatch',
   bem: {
     b: 'page-shop-schedule-inbatch-add'
   },
-  // serviceInject() {
-  //   return {
-  //     commonService: PersonalScheduleCommonService,
-  //     scheduleService: PersonalScheduleScheduleService
-  //   }
-  // },
-  // rxState() {
-  //   return {
-  //     loading: this.scheduleService.loading$,
-  //     coachOptions: this.commonService.coachInBatchOptions$
-  //   }
-  // },
+  modals: {
+    ScheduleMiniTeamEditCourse
+  },
+  serviceInject() {
+    return {
+      inbatchAddService: InbatchAddService,
+      miniTeamScheduleScheduleService: MiniTeamScheduleScheduleService
+    }
+  },
+  rxState() {
+    return {}
+  },
   data() {
     return {
       coachId: undefined,
@@ -173,6 +180,8 @@ export default {
       picker_end_date: '2019-12-30',
       pickerList: [],
       disabledDate: [],
+      tipsText: [],
+      tipsCourseNum: [],
       weekList: [
         { weekId: 'week1', week: 1, date: '周一' },
         { weekId: 'week2', week: 2, date: '周二' },
@@ -259,14 +268,16 @@ export default {
     // console.log(this.scheduleList[0].scheduleInfo['date1'])
     // this.pickerList[0] = moment(this.start_date)
     // this.pickerList[1] = moment(this.end_date)
+    console.log(this.miniTeamInbatchAddService)
     this.pickerList.push([moment(this.start_date), moment(this.end_date)])
     this.filterDateList(this.scheduleList)
   },
   methods: {
     onChangeRangePicker(date, dateString, PickerIndex) {
-      this.picker_start_date = date[0].format('YYYY-MM-DD').valueOf()
+      // this.picker_start_date = date[0].format('YYYY-MM-DD').valueOf()
       this.picker_end_date = date[1].format('YYYY-MM-DD').valueOf()
       //console.log(this.pickerList)
+      let pickerFlag = false
       this.pickerList.forEach((item, index) => {
         console.log(item)
         if (PickerIndex === index) {
@@ -277,10 +288,16 @@ export default {
             (date[1] >= item[0] && date[1] <= item[1])
           ) {
             console.log('时间有交叉')
+            pickerFlag = true
             return false
           }
         }
       })
+      if (!pickerFlag) {
+        this.pickerList[PickerIndex][0] = date[0]
+        this.pickerList[PickerIndex][1] = date[1]
+      }
+      console.log(this.pickerList)
     },
     disabledEndDate(current) {
       return (
@@ -288,14 +305,26 @@ export default {
         current < moment(this.start_date).valueOf()
       )
     },
+    getScheduleTips(index, text, courseNum) {
+      this.tipsText[index] = text
+      this.tipsCourseNum[index] = courseNum
+    },
     filterDateList(dateList) {
       let list = []
-      dateList.forEach((item, index) => {
+      dateList.forEach((item, dateIndex) => {
         let listItemCard = {} //批次的大的集合对象
+        let courseNum = 0
+        let text = ''
         item.course_time.forEach((item, index) => {
           if (item.week) {
             // console.log(item.week)
             // console.log(item.list)
+            courseNum += item.list.length
+            text += this.weekList[item.week - 1].date
+            item.list.forEach((item, index) => {
+              text += item.start_time + ','
+            })
+            this.getScheduleTips(dateIndex, text, courseNum)
             listItemCard[item.week] = item.list
             listItemCard[item.week][0].show = false
           }
@@ -362,6 +391,28 @@ export default {
         console.log(this.scheduleList)
       }
     },
+    // 冲突检验
+    checkCourseSchedule() {
+      // this.miniTeamScheduleScheduleService.add(form).subscribe(() => {
+      //   this.$emit('ok')
+      //   this.show = false
+      // })
+    },
+    // 修改课程排期
+    onEditCourseSchedule(item, date) {
+      console.log(item)
+      console.log(date)
+      this.$modalRouter.push({
+        name: 'schedule-mini-team-edit-course',
+        props: { item, date },
+        on: {
+          // ok: res => {
+          //   console.log('ok')
+          //   this.onScheduleChange()
+          // }
+        }
+      })
+    },
     // 新增周期排课
     addScheduleWeek() {
       this.pickerList.push([
@@ -373,8 +424,7 @@ export default {
         moment(this.end_date)
       ])
       this.picker_end_date = this.end_date
-
-      console.log(this.picker_end_date)
+      console.log(this.pickerList)
       let item = {}
       item.course_time = []
       this.scheduleList.push(item)

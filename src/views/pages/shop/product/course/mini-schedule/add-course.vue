@@ -2,7 +2,7 @@
   <a-popover
     trigger="click"
     overlayClassName="modal-shop-mini-add-course"
-    v-model="item[0].show"
+    v-model="showFlag"
     placement="bottom"
     title="添加课程"
   >
@@ -16,9 +16,9 @@
               v-decorator="decorators.course_id"
             >
               <a-select-option
-                v-for="course in courseOptions"
-                :key="course.id"
-                :value="course.id"
+                v-for="course in courseMiniOptions"
+                :key="course.course_id"
+                :value="course.course_id"
               >
                 {{ course.course_name }}
               </a-select-option>
@@ -51,7 +51,7 @@
               v-decorator="decorators.coach_id"
             >
               <a-select-option
-                v-for="coach in coachOptions"
+                v-for="coach in coachMiniOptions"
                 :key="coach.id"
                 :value="coach.id"
               >
@@ -79,12 +79,29 @@
 </template>
 
 <script>
+import { MiniTeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/mini-team/service#/schedule.service'
+import { MiniTeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/mini-team/service#/common.service'
 import { ruleOptions } from './add-course.config'
 import { cloneDeep } from 'lodash-es'
 export default {
   name: 'ModalShopMiniAddCourse',
   bem: {
     b: 'modal-shop-mini-add-course'
+  },
+  serviceInject() {
+    return {
+      miniTeamScheduleScheduleService: MiniTeamScheduleScheduleService,
+      miniTeamScheduleCommonService: MiniTeamScheduleCommonService
+    }
+  },
+  rxState() {
+    const tss = this.miniTeamScheduleCommonService
+    return {
+      loading: this.miniTeamScheduleScheduleService.loading$,
+      coachMiniOptions: tss.coachMiniOptions$,
+      courseMiniOptions: tss.courseMiniOptions$,
+      courtOptions: tss.courtOptions$
+    }
   },
   props: {
     item: {
@@ -102,11 +119,6 @@ export default {
       default: 1
     }
   },
-  watch: {
-    item(newVal) {
-      //console.log(newVal)
-    }
-  },
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
@@ -114,78 +126,15 @@ export default {
       coachId: '',
       form,
       decorators,
-      // mock
-      courseOptions: [
-        {
-          id: 19,
-          course_name: 'aaaaa'
-        },
-        {
-          id: 25,
-          course_name: 'kkkkkkkk'
-        },
-        {
-          id: 34,
-          course_name: 'test_course'
-        }
-      ],
-      coachOptions: [
-        {
-          id: 1,
-          staff_name: '姓名1'
-        },
-        {
-          id: 67,
-          staff_name: '姓名67'
-        }
-      ],
-      courtOptions: [
-        {
-          id: 1,
-          name: '啊啊啊啊啊',
-          seat: [
-            {
-              id: 3,
-              name: '模板一'
-            },
-            {
-              id: 6,
-              name: '模板二'
-            },
-            {
-              id: 7,
-              name: '模板二'
-            }
-          ]
-        },
-        {
-          id: 2,
-          name: '动感打王赛康车阿萨德',
-          seat: [
-            {
-              id: 2,
-              name: '22222222'
-            }
-          ]
-        },
-        {
-          id: 3,
-          name: '动感打车'
-        },
-        {
-          id: 4,
-          name: '跑步机'
-        }
-      ]
+      showFlag: false
     }
   },
   created() {
-    // console.log(this.cycleIndex)
-    // console.log(this.week)
+    this.showFlag = this.item[0].show
   },
   methods: {
     hide() {
-      this.item[0].show = false
+      this.showFlag = false
     },
     // 增加课程
     addCourse() {},
@@ -200,12 +149,7 @@ export default {
           form.court_id = +form.court_id[0]
         }
         this.$emit('addCourse', form, this.cycleIndex, this.week)
-        this.item[0].show = false
-        // 调用冲突验证接口
-        // this.teamScheduleScheduleService.add(form).subscribe(() => {
-        //   this.$emit('ok')
-        //   this.show = false
-        // })
+        this.showFlag = false
       })
     },
     save() {
