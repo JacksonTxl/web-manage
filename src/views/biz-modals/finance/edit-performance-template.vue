@@ -179,10 +179,26 @@
                     <tr :key="index">
                       <template v-if="item.isEdit">
                         <td>
-                          <a-input v-model="item.range_min" />
+                          <st-input-number
+                            :float="true"
+                            :min="0"
+                            :max="999.9"
+                            placeholder="请输入月销售额"
+                            v-model="item.range_min"
+                          />
                         </td>
                         <td>
-                          <a-input v-model="item.royalty_num" />
+                          <st-input-number
+                            :float="true"
+                            :min="0"
+                            :max="
+                              performance_mode == PERFORMANCE.PERFORMANCE_MODE_1
+                                ? 100
+                                : 999999
+                            "
+                            placeholder="请输入提成"
+                            v-model="item.royalty_num"
+                          />
                         </td>
                       </template>
                       <template v-else>
@@ -335,6 +351,7 @@ export default {
         this.message.warning({ content: '请填写完整' })
         return
       }
+
       range_min = parseFloat(range_min).toFixed(1)
       royalty_num = parseFloat(royalty_num).toFixed(1)
       const arr = this.data.filter(item => item.range_min === range_min)

@@ -195,10 +195,26 @@
                     <tr :key="index">
                       <template v-if="item.isEdit">
                         <td>
-                          <a-input v-model="item.range_min" />
+                          <a-input
+                            :float="true"
+                            :min="0"
+                            :max="999.9"
+                            placeholder="请输入月销售额"
+                            v-model="item.range_min"
+                          />
                         </td>
                         <td>
-                          <a-input v-model="item.royalty_num" />
+                          <a-input
+                            :float="true"
+                            :min="0"
+                            :max="
+                              performance_mode == PERFORMANCE.PERFORMANCE_MODE_1
+                                ? 100
+                                : 999999
+                            "
+                            placeholder="请输入提成"
+                            v-model="item.royalty_num"
+                          />
                         </td>
                       </template>
                       <template v-else>
