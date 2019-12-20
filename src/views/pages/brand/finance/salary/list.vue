@@ -130,6 +130,7 @@ import BrandFinanceClassCommission from '@/views/biz-modals/brand/finance/class-
 import BrandFinanceSaleCommission from '@/views/biz-modals/brand/finance/sale-commission'
 import BrandFinanceStaffShop from '@/views/biz-modals/brand/finance/staff-shop'
 import moment from 'moment'
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'BrandFinanceSalary',
   mixins: [tableMixin],
@@ -195,7 +196,9 @@ export default {
     },
     disabledStartDate(current) {
       if (this.end_month) {
-        return current && current > this.end_month
+        const startMonth = cloneDeep(current).startOf('month')
+        const endMonth = cloneDeep(this.end_month).startOf('month')
+        return startMonth > endMonth
       }
       return false
     },
