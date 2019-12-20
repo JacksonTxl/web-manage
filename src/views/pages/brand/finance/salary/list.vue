@@ -193,6 +193,11 @@ export default {
         this.$searchQuery.end_month = this.end_month.format('YYYY-MM')
         this.onSearch()
       }
+      if (!this.start_month && !this.end_month) {
+        this.$searchQuery.start_month = ''
+        this.$searchQuery.end_month = ''
+        this.onSearch()
+      }
     },
     disabledStartDate(current) {
       if (this.end_month) {
