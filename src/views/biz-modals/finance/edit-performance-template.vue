@@ -352,16 +352,19 @@ export default {
       }
       if (this.performance_type == this.PERFORMANCE.PERFORMANCE_TYPE_3) {
         range_min = parseInt(range_min)
-        royalty_num = parseInt(royalty_num)
       } else {
         range_min = parseFloat(range_min).toFixed(1)
-        royalty_num = parseFloat(royalty_num).toFixed(1)
       }
-      const arr = this.data.filter(item => item.range_min === range_min)
-      if (arr.length > 1) {
+      royalty_num = parseFloat(royalty_num).toFixed(1)
+      const arr = this.data.filter(
+        (item, index) => item.range_min === range_min && index !== e
+      )
+      if (arr.length > 0) {
         this.message.warning({ content: '月销售额不能重复' })
         return
       }
+      this.data[e].range_min = range_min
+      this.data[e].royalty_num = royalty_num
       delete this.data[e].range_min_bak
       delete this.data[e].royalty_num_bak
       this.data[e].isEdit = false
@@ -390,11 +393,11 @@ export default {
       }
       if (this.performance_type == this.PERFORMANCE.PERFORMANCE_TYPE_3) {
         range_min = parseInt(range_min)
-        royalty_num = parseInt(royalty_num)
       } else {
         range_min = parseFloat(range_min).toFixed(1)
-        royalty_num = parseFloat(royalty_num).toFixed(1)
       }
+      royalty_num = parseInt(royalty_num)
+
       const arr = this.data.filter(item => item.range_min === range_min)
       if (arr.length > 0) {
         this.message.warning({ content: '月销售额不能重复' })
