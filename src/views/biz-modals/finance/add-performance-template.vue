@@ -2,7 +2,7 @@
   <st-modal title="新增业绩模板" v-model="show" @ok="handleSubmit">
     <st-form
       :form="form"
-      labelWidth="100px"
+      labelWidth="102px"
       @submit="handleSubmit"
       class="modal-add-perfromance-contaner"
     >
