@@ -15,14 +15,14 @@
               {{ index + 1 }}、 {{ item }}
             </li>
           </ul>
-          <span v-else>{{ value }}</span>
+          <span v-else>{{ showValue }}</span>
         </slot>
       </template>
       <slot>
         {{ showValue }}
       </slot>
     </a-popover>
-    <span v-show="!isPopover">{{ value }}</span>
+    <span v-show="!isPopover">{{ showValue }}</span>
   </span>
 </template>
 <script>
@@ -56,10 +56,7 @@ export default {
       return width > +this.maxWidth.replace('px', '')
     },
     showValue() {
-      if (Array.isArray(this.value)) {
-        return this.value.join(',')
-      }
-      return this.value
+      return this.value.toString()
     }
   }
 }
