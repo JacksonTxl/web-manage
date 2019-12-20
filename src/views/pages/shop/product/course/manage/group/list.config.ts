@@ -11,7 +11,7 @@ export const columns = (vm: any) => {
     {
       title: '排课情况',
       align: 'right',
-      dataIndex: 'course_arrangement'
+      scopedSlots: { customRender: 'course_arrangement' }
     },
     {
       title: '报名时间',

@@ -18,10 +18,18 @@
           <a-select
             @change="onCourseTypeChange"
             mode="multiple"
+            maxTagCount="3"
             v-decorator="decorators.scope_application"
             placeholder="请选择适用范围"
           >
+            <a-select-option :value="-1" v-if="rangeList.length === 0">
+              <span class="color-text-light">尚未设置,</span>
+              <router-link to="/brand/setting/app/course/group-range">
+                去设置
+              </router-link>
+            </a-select-option>
             <a-select-option
+              v-else
               v-for="item in rangeList"
               :key="item.id"
               :value="item.id"

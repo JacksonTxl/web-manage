@@ -61,7 +61,7 @@
               发布
             </a-menu-item>
           </a-menu>
-          <a-button>
+          <a-button type="primary">
             更多
             <a-icon type="down" />
           </a-button>

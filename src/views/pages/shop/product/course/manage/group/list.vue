@@ -39,6 +39,9 @@
       @change="onTableChange"
       :page="page"
     >
+      <a slot="course_arrangement" slot-scope="text, record">
+        {{ record.course_arrangement }}
+      </a>
       <template slot="action" slot-scope="text, record">
         <st-table-actions>
           <a @click="onGoDetail(record)">
@@ -47,37 +50,29 @@
           <a
             @click="onGoEdit(record)"
             v-if="
-              groupCourseHeaderInfo.class_status !==
-                CLASS_STATUS.CLASS_FAILED ||
-                groupCourseHeaderInfo.class_status !== CLASS_STATUS.CLASS_END
+              record.course_status !== CLASS_STATUS.CLASS_FAILED ||
+                record.course_status !== CLASS_STATUS.CLASS_END
             "
           >
             编辑
           </a>
           <a
             @click="onBeGroup(record)"
-            v-if="
-              groupCourseHeaderInfo.class_status ===
-                CLASS_STATUS.SIGNING_UNCLASSED
-            "
+            v-if="record.course_status === CLASS_STATUS.SIGNING_UNCLASSED"
           >
             立即成班
           </a>
           <a
             @click="onGoOrder()"
-            v-if="
-              groupCourseHeaderInfo.class_status === CLASS_STATUS.CLASS_FAILED
-            "
+            v-if="record.course_status === CLASS_STATUS.CLASS_FAILED"
           >
             去退款
           </a>
           <a
             v-if="
-              groupCourseHeaderInfo.class_status === CLASS_STATUS.UNPUBLISH ||
-                groupCourseHeaderInfo.class_status ===
-                  CLASS_STATUS.PUBLISH_UNSTARTED ||
-                groupCourseHeaderInfo.class_status ===
-                  CLASS_STATUS.SIGNING_UNCLASSED
+              record.course_status === CLASS_STATUS.UNPUBLISH ||
+                record.course_status === CLASS_STATUS.PUBLISH_UNSTARTED ||
+                record.course_status === CLASS_STATUS.SIGNING_UNCLASSED
             "
           >
             <st-popconfirm
