@@ -139,13 +139,13 @@
       <a-row :gutter="12" class="mg-t12">
         <a-col :span="12">
           <st-container class="bg-white" type="2">
-            <st-t3 style="margin-bottom:20px">客单价</st-t3>
+            <st-t3 style="margin-bottom:20px">客单价（近90天）</st-t3>
             <brand-user-avg-bar :data="avg" :height="302"></brand-user-avg-bar>
           </st-container>
         </a-col>
         <a-col :span="12">
           <st-container class="bg-white" type="2">
-            <st-t3 style="margin-bottom:20px">用户活跃分析</st-t3>
+            <st-t3 style="margin-bottom:20px">用户活跃分析（近90天）</st-t3>
             <brand-user-ring :data="entry" :height="302"></brand-user-ring>
           </st-container>
         </a-col>

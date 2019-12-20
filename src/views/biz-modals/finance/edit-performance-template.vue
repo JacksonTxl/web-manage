@@ -304,8 +304,17 @@ export default {
       }
     },
     submitEdit(e) {
+      let range_min = this.data[e].range_min
+      let royalty_num = this.data[e].royalty_num
       if (!this.data[e].range_min || !this.data[e].royalty_num) {
         this.message.warning({ content: '请填写完整' })
+        return
+      }
+      range_min = parseFloat(range_min).toFixed(1)
+      royalty_num = parseFloat(royalty_num).toFixed(1)
+      const arr = this.data.filter(item => item.range_min === range_min)
+      if (arr.length > 0) {
+        this.message.warning({ content: '月销售额不能重复' })
         return
       }
       this.data[e].isEdit = false
@@ -324,6 +333,13 @@ export default {
       let { range_min, royalty_num } = this.gradients
       if (!range_min || !royalty_num) {
         this.message.warning({ content: '请填写完整' })
+        return
+      }
+      range_min = parseFloat(range_min).toFixed(1)
+      royalty_num = parseFloat(royalty_num).toFixed(1)
+      const arr = this.data.filter(item => item.range_min === range_min)
+      if (arr.length > 0) {
+        this.message.warning({ content: '月销售额不能重复' })
         return
       }
       this.data.push({

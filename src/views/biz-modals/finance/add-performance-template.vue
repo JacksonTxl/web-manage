@@ -309,6 +309,13 @@ export default {
         this.message.warning({ content: '请填写完整' })
         return
       }
+      range_min = parseFloat(range_min).toFixed(1)
+      royalty_num = parseFloat(royalty_num).toFixed(1)
+      const arr = this.data.filter(item => item.range_min === range_min)
+      if (arr.length > 0) {
+        this.message.warning({ content: '月销售额不能重复' })
+        return
+      }
       this.data.push({
         id: 0,
         range_min,
