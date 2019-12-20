@@ -45,6 +45,8 @@ export interface StoreList {
   category_id: number
   product_name: string
   shelves_status: number
+  current_page: number
+  size: number
 }
 export class StoreApi extends Api {
   /**
@@ -101,7 +103,7 @@ export class StoreApi extends Api {
    * 商品列表
    */
   getList(query: StoreList) {
-    return this.http.get(`/v1/store/product/1`, { query })
+    return this.http.get(`/v1/store/product`, { query })
   }
   /**
    * 数据概况
