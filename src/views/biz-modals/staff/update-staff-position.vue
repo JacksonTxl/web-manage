@@ -71,7 +71,7 @@
           </a-select-option>
         </a-select>
       </st-form-item>
-      <st-form-item label=" ">
+      <st-form-item label-fix>
         <a-select
           v-decorator="decorators.sale_percentage"
           placeholder="请选择薪资模板"
@@ -86,7 +86,7 @@
           </a-select-option>
         </a-select>
       </st-form-item>
-      <st-form-item label=" ">
+      <st-form-item label-fix>
         <a-select
           v-decorator="decorators.course_percentage"
           placeholder="请选择课程模板"

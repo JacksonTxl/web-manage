@@ -303,17 +303,34 @@ export default {
       }
     },
     submitEdit(e) {
+      let range_min = this.data[e].range_min
+      let royalty_num = this.data[e].royalty_num
       if (!this.data[e].range_min || !this.data[e].royalty_num) {
         this.message.warning({ content: '请填写完整' })
         return
       }
+      range_min = parseFloat(range_min).toFixed(1)
+      royalty_num = parseFloat(royalty_num).toFixed(1)
+      const arr = this.data.filter(item => item.range_min === range_min)
+      if (arr.length > 1) {
+        this.message.warning({ content: '月销售额不能重复' })
+        return
+      }
+      delete this.data[e].range_min_bak
+      delete this.data[e].royalty_num_bak
       this.data[e].isEdit = false
     },
     cancelEdit(e) {
       this.data[e].isEdit = false
+      this.data[e].range_min = this.data[e].range_min_bak
+      this.data[e].royalty_num = this.data[e].royalty_num_bak
+      delete this.data[e].range_min_bak
+      delete this.data[e].royalty_num_bak
     },
     editPerformanceNum(e) {
       this.data[e].isEdit = true
+      this.data[e].range_min_bak = this.data[e].range_min
+      this.data[e].royalty_num_bak = this.data[e].royalty_num
     },
     deletePerformanceNum(e) {
       this.data.splice(e, 1)
