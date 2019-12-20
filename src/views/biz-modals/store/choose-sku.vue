@@ -39,10 +39,13 @@ export default {
   methods: {
     onSubmit() {
       this.$emit('success', {
-        type: 'pay'
+        product_id: 1,
+        product_name: '商品名',
+        sku: '卡其色 M 108-120斤',
+        count: 1,
+        price: 30.9
       })
       this.show = false
-      console.log('点击了确定')
     }
   }
 }
