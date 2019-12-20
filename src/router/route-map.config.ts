@@ -1691,5 +1691,11 @@ export const routeMapConfig = {
       category_id: { type: Number, default: -1 }
     }
   },
+  'shop-store-add'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '新建商品'
+  },
+  'shop-store-edit'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '编辑商品'
+  },
   ...tplConfigs
 }

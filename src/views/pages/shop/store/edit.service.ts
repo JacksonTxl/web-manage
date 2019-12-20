@@ -3,15 +3,19 @@ import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { AddParams, EditParams, StoreApi } from '@/api/v1/shop/store/store'
 @Injectable()
-export class AddService {
+export class EditService implements Controller {
   loading$ = new State({})
+  info$ = new State({})
   constructor(private StoreApi: StoreApi) {}
   @Effect()
-  addGoods(params: AddParams) {
-    return this.StoreApi.addGoods(params).pipe(tap((res: any) => {}))
+  goodsDetail(id: number) {
+    return this.StoreApi.goodsDetail(id).pipe(
+      tap((res: any) => {
+        this.info$.commit(() => res.info)
+      })
+    )
   }
-  @Effect()
-  editGoods(id: number, params: EditParams) {
-    return this.StoreApi.editGoods(id, params).pipe(tap((res: any) => {}))
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    // return this.getList(to.meta.query)
   }
 }
