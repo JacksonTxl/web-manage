@@ -8,6 +8,9 @@
     <div :class="b('total')">
       <label :class="b('num')">{{ info.sale_price }}</label>
       <label :class="b('calc')">{{ info.royalty_price }}</label>
+      <label :class="b('tip')" v-if="info.royalty_mode_exist === 2">
+        （该员工当月未设置提成模板）
+      </label>
     </div>
     <st-table
       rowKey="id"
