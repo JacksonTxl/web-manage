@@ -1,28 +1,24 @@
 export const columns = () => [
   {
-    key: 1,
     title: '商品名称',
-    dataIndex: 'name',
-    scopedSlots: { customRender: 'name' }
+    dataIndex: 'product_name',
+    scopedSlots: { customRender: 'product_name' }
   },
   {
-    key: 2,
     title: '数量',
-    dataIndex: 'numbers',
-    scopedSlots: { customRender: 'numbers' }
+    dataIndex: 'count',
+    scopedSlots: { customRender: 'count' }
   },
   {
-    key: 3,
     title: '单价',
-    dataIndex: ''
+    dataIndex: 'price'
   },
   {
-    key: 4,
     title: '小计',
-    dataIndex: ''
+    dataIndex: 'priceSum',
+    scopedSlots: { customRender: 'priceSum' }
   },
   {
-    key: 5,
     title: '操作',
     dataIndex: 'action',
     scopedSlots: { customRender: 'action' }

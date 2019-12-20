@@ -16,7 +16,7 @@
     line-height: 32px;
     .c(@title);
     font-weight: bold;
-    font-size: 16px;
+    .fz(16px);
     margin: 0;
   }
   &__table {
@@ -34,7 +34,7 @@
     .title {
       .c(@title);
       font-weight: bold;
-      font-size: 16px;
+      .fz(16px);
       margin: 0;
     }
     .st-textarea {
@@ -114,10 +114,11 @@
       }
       .good-name {
         padding: 12px;
+        height: 64px;
         padding-bottom: 8px;
         span {
           line-height: 22px;
-          color: #252a2e;
+          .c(@title);
           font-size: 14px;
         }
       }
@@ -138,6 +139,18 @@
           }
         }
       }
+    }
+  }
+  &__no-product {
+    img {
+      display: block;
+      margin: 0 auto;
+      margin-top: 30px;
+    }
+    p {
+      text-align: center;
+      .c(@text-light);
+      margin-top: 16px;
     }
   }
   &__add-vpi {
