@@ -7,7 +7,11 @@
         v-decorator="decorators.course_name"
       />
     </st-form-item>
-    <st-form-item label="负责人">
+    <st-form-item>
+      <template slot="label">
+        负责人
+        <st-help-tooltip id="TSXBK003" />
+      </template>
       <a-select placeholder="请输入负责人" v-decorator="decorators.staff_id">
         <a-select-option
           v-for="item in staffList"
@@ -21,7 +25,7 @@
     <st-form-item>
       <template slot="label">
         上课{{ $c('coach') }}
-        <st-help-tooltip id="TSCPC001" />
+        <st-help-tooltip id="TSXBK004" />
       </template>
       <div class="page-shop-coach-container-coach">
         <input type="hidden" v-decorator="decorators.coach_ids" />

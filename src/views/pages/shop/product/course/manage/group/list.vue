@@ -165,7 +165,8 @@ export default {
       this.$router.push({
         path: './edit',
         query: {
-          id: course.course_id
+          id: course.course_id,
+          type: course.small_course_type
         }
       })
     }

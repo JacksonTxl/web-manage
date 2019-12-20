@@ -23,7 +23,7 @@
               v-decorator="decorators.transfer_num"
             >
               <a-select
-                v-model="decorators.transfer_type"
+                v-decorator="decorators.transfer_type"
                 slot="addonAfter"
                 style="width: 60px"
               >
@@ -39,15 +39,15 @@
           </div>
         </st-form-item>
         <st-form-item label="售卖方式">
-          <a-radio-group v-model="decorators.sell_type">
-            <a-radio
+          <a-checkbox-group v-decorator="decorators.sell_type">
+            <a-checkbox
               v-for="(item, index) in sellType"
               :value="item.value"
               :key="index"
             >
               {{ item.label }}
-            </a-radio>
-          </a-radio-group>
+            </a-checkbox>
+          </a-checkbox-group>
         </st-form-item>
         <st-form-item label="报名时间" required>
           <a-range-picker

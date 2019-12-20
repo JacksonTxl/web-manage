@@ -73,6 +73,7 @@ export const ruleOptions = (vm: any) => {
     },
     leave_hours: {},
     leave_limit: {},
+    appointment_rights: {},
     image: {},
     description: {},
     coach_ids: {
@@ -113,7 +114,12 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     sell_type: {
-      initialValue: -1
+      rules: [
+        {
+          required: true,
+          message: '请选择售卖方式'
+        }
+      ]
     }
   }
 }

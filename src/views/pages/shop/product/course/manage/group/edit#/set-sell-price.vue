@@ -23,7 +23,7 @@
               v-decorator="decorators.transfer_num"
             >
               <a-select
-                v-model="decorators.transfer_type"
+                v-decorator="decorators.transfer_type"
                 slot="addonAfter"
                 style="width: 60px"
               >
@@ -39,7 +39,7 @@
           </div>
         </st-form-item>
         <st-form-item label="售卖方式">
-          <a-checkbox-group v-model="decorators.sell_type">
+          <a-checkbox-group v-decorator="decorators.sell_type">
             <a-checkbox
               v-for="(item, index) in sellType"
               :value="item.value"

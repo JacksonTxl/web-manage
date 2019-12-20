@@ -47,7 +47,11 @@
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="人数限制" required>
+        <st-form-item required>
+          <template slot="label">
+            人数限制
+            <st-help-tooltip id="TSXBK001" />
+          </template>
           <div :class="b('num-limit')">
             <a-form-item class="page-a-form">
               <st-input-number v-decorator="decorators.num_min">
@@ -71,7 +75,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="总课时" required>
-          <st-input-number v-decorator="decorators.course_times">
+          <st-input-number v-decorator="decorators.course_times" :max="99999">
             <template slot="addonAfter">
               节
             </template>
@@ -79,9 +83,14 @@
         </st-form-item>
       </a-col>
     </a-row>
-    <a-row :gutter="8">
+    <!-- 固定约课有的表单 -->
+    <a-row :gutter="8" v-show="$route.query.type === '1'">
       <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="请假限制" required>
+        <st-form-item required>
+          <template slot="label">
+            请假限制
+            <st-help-tooltip id="TSXBK002" />
+          </template>
           <a-radio-group
             v-decorator="decorators.is_leave"
             @change="onLimitChange"
@@ -94,37 +103,41 @@
               {{ item.label }}
             </a-radio>
           </a-radio-group>
-          <div v-show="isShowLeaveContent">
+          <st-pop-container
+            offset="122px"
+            class="mg-t8"
+            v-show="isShowLeaveContent"
+          >
             <a-form-item>
-              <span>允许请假时间,请假前</span>
+              <span class="mg-r8">允许请假时间,请假前</span>
               <st-input-number
                 v-decorator="decorators.leave_hours"
-                style="width:100px"
+                style="width:128px"
               >
                 <template slot="addonAfter">
-                  节
+                  h
                 </template>
               </st-input-number>
             </a-form-item>
             <a-form-item>
-              <span>请假上限节数</span>
+              <span class="mg-r8">请假上限节数</span>
               <st-input-number
                 v-decorator="decorators.leave_limit"
-                style="width:100px"
+                style="width:178px"
               >
                 <template slot="addonAfter">
                   节
                 </template>
               </st-input-number>
             </a-form-item>
-          </div>
+          </st-pop-container>
         </st-form-item>
       </a-col>
     </a-row>
 
-    <a-row :gutter="8">
+    <a-row :gutter="8" v-show="$route.query.type === '1'">
       <a-col :lg="22" :xs="22" :offset="1">
-        <st-form-item label="图片">
+        <st-form-item label="背景图" required>
           <div class="page-upload-container">
             <st-image-upload
               :list="fileList"
@@ -147,6 +160,29 @@
               </div>
             </div>
           </div>
+        </st-form-item>
+      </a-col>
+    </a-row>
+    <!-- 自主约课有的表单内容 -->
+    <a-row :gutter="8" v-show="$route.query.type === '2'">
+      <a-col :lg="10" :xs="22" :offset="1">
+        <st-form-item label="约课规则" required>
+          每周最大约课节数
+          <st-input-number
+            style="width:100px"
+            v-decorator="decorators.appointment_rights"
+          >
+            <template slot="addonAfter">
+              节
+            </template>
+          </st-input-number>
+        </st-form-item>
+      </a-col>
+    </a-row>
+    <a-row :gutter="8" v-show="$route.query.type === '2'">
+      <a-col :lg="22" :xs="22" :offset="1">
+        <st-form-item label="背景图" required>
+          <card-bg-radio @change="onCardBgChange" v-model="bg_image" />
         </st-form-item>
       </a-col>
     </a-row>
@@ -180,6 +216,7 @@ import { MessageService } from '@/services/message.service'
 import { UserService } from '@/services/user.service'
 import { ruleOptions } from '../form.config'
 import { PatternService } from '@/services/pattern.service'
+import CardBgRadio from '@/views/biz-components/card-bg-radio/card-bg-radio'
 
 export default {
   name: 'create-group-course',
@@ -209,7 +246,7 @@ export default {
   bem: {
     b: 'create-group-course'
   },
-  components: {},
+  components: { CardBgRadio },
   created() {},
   mounted() {
     this.setFieldsValue()
@@ -221,6 +258,12 @@ export default {
       form,
       decorators,
       fileList: [],
+      bg_image: {
+        image_id: 0,
+        // image_key: this.cardBgList[0].image_key,
+        image_url: '',
+        index: 1
+      },
       isShowLeaveContent: false
     }
   },
@@ -252,6 +295,8 @@ export default {
         values.course_begin_time = values.date[0].format('YYYY-MM-DD HH:mm')
         values.course_end_time = values.date[1].format('YYYY-MM-DD HH:mm')
         values.small_course_type = this.$route.query.type
+        values.img_type = this.bg_image.index
+        values.image = this.bg_image.image
         delete values.date
         this.addService.addGroup(values).subscribe(res => {
           this.messageService.success({
@@ -278,6 +323,9 @@ export default {
       this.form.setFieldsValue({
         train_aim
       })
+    },
+    onCardBgChange(e) {
+      this.cardBgValidatorText = ''
     },
     onCourseNameChange(e) {
       this.$emit('onCourseNameChange', e.target.value)
