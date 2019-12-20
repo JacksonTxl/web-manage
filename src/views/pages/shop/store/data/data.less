@@ -46,11 +46,16 @@
           padding: 8px 0;
           color: #252a2e;
           font-size: 26px;
+          font-weight: bold;
         }
 
         div:nth-child(3) {
           color: #7f93a3;
           font-size: 18px;
+
+          span {
+            font-weight: bold;
+          }
         }
       }
     }
@@ -89,6 +94,10 @@
     border: 1px solid transparent;
     box-shadow: 0px 1px 10px 1px rgba(0, 0, 0, 0.05);
     border-radius: 2px;
+
+    div:nth-child(1) {
+      font-weight: 500;
+    }
 
     img {
       width: 16px;
@@ -203,6 +212,12 @@
         margin-top: 20px;
         margin-left: 10%;
       }
+    }
+  }
+
+  &__revenue-trend {
+    .ant-tabs-bar {
+      border-bottom: 1px solid transparent;
     }
   }
 }
