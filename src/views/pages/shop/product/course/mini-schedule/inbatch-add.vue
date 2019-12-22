@@ -50,13 +50,15 @@
                 <div v-if="filterDate[i][item.week][0].week">
                   <div
                     :class="b('schedule__card')"
-                    v-for="cardItem in filterDate[i][item.week]"
+                    v-for="(cardItem, index) in filterDate[i][item.week]"
                     :key="cardItem.coach_id"
-                    @click="onEditCourseSchedule(cardItem, pickerList[i])"
+                    @click="onEditCourseSchedule(cardItem, i, index)"
                   >
                     <span class="time">
                       <st-icon type="timer"></st-icon>
-                      {{ cardItem.start_time }}-{{ cardItem.end_time }}
+                      {{ moment(cardItem.start_time).format('HH:mm') }}-{{
+                        moment(cardItem.end_time).format('HH:mm')
+                      }}
                     </span>
                     <st-t3 class="course__name">
                       {{ cardItem.current_course_name }}
@@ -76,6 +78,7 @@
                   :item="filterDate[i][item.week]"
                   :cycleIndex="i"
                   :week="item.week"
+                  :scheduleId="scheduleId"
                 ></add-course>
               </div>
             </div>
@@ -149,6 +152,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import AddCourse from './add-course'
 import { MiniTeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/mini-team/service#/schedule.service'
 import { InbatchAddService } from './inbatch-add.service'
@@ -172,6 +176,7 @@ export default {
   },
   data() {
     return {
+      moment: moment,
       coachId: undefined,
       scheduleId: '1',
       start_date: '2019-12-16',
@@ -204,18 +209,22 @@ export default {
                 {
                   schedule_id: 1111,
                   course_id: 1,
-                  coach_id: 1,
-                  court_id: 1,
+                  coach_id: 53705630613549,
+                  court_id: {
+                    children: [{ id: 232748355223619, name: '54e' }],
+                    id: 181184018055233,
+                    name: '测试VIP区域'
+                  },
                   week: 1,
                   current_course_name: '当前课程名称',
-                  start_time: '2019-01-01 09:00:00',
+                  start_time: '2019-12-17 09:00:00',
                   end_time: '2019-01-01 10:00:00'
                 },
                 {
                   schedule_id: 1111,
                   course_id: 2,
                   coach_id: 2,
-                  court_id: 2,
+                  court_id: 181184018055233,
                   week: 1,
                   start_time: '2019-01-01 09:00:00',
                   end_time: '2019-01-01 10:00:00'
@@ -228,9 +237,9 @@ export default {
                 {
                   schedule_id: 1111,
                   course_id: 1,
-                  coach_id: 1,
+                  coach_id: 3,
                   court_id: 1,
-                  week: 1,
+                  week: 2,
                   current_course_name: '当前课程名称',
                   start_time: '2019-01-01 09:00:00',
                   end_time: '2019-01-01 10:00:00'
@@ -240,7 +249,7 @@ export default {
                   course_id: 2,
                   coach_id: 2,
                   court_id: 2,
-                  week: 1,
+                  week: 2,
                   start_time: '2019-01-01 09:00:00',
                   end_time: '2019-01-01 10:00:00'
                 }
@@ -268,7 +277,6 @@ export default {
     // console.log(this.scheduleList[0].scheduleInfo['date1'])
     // this.pickerList[0] = moment(this.start_date)
     // this.pickerList[1] = moment(this.end_date)
-    console.log(this.miniTeamInbatchAddService)
     this.pickerList.push([moment(this.start_date), moment(this.end_date)])
     this.filterDateList(this.scheduleList)
   },
@@ -351,6 +359,7 @@ export default {
       courseTime.push(courseWeek)
       this.filterDateList(this.scheduleList)
     },
+    // 这里的添加的课程数据也应该是后端返回的，因为前端不知道课程的时间
     pushCourseInfo(courseMessage, cycleIndex, week) {
       let courseItem = {
         schedule_id: 1111,
@@ -359,8 +368,8 @@ export default {
         court_id: courseMessage.court_id,
         week: week,
         current_course_name: courseMessage.course_id,
-        start_time: '2019-01-01 09:00:00',
-        end_time: '2019-01-01 10:00:00',
+        start_time: '2019-12-17 09:00:00',
+        end_time: '2019-12-17 10:00:00',
         show: false
       }
       if (!this.scheduleList[cycleIndex].course_time.length) {
@@ -398,18 +407,23 @@ export default {
       //   this.show = false
       // })
     },
-    // 修改课程排期
-    onEditCourseSchedule(item, date) {
+    // 修改课程排期回显 - 修改根据定位当前课程数据结构
+    onEditCourseSchedule(item, cycleIndex, positionIndex) {
       console.log(item)
-      console.log(date)
+      console.log(positionIndex)
       this.$modalRouter.push({
         name: 'schedule-mini-team-edit-course',
-        props: { item, date },
+        props: { item, cycleIndex, positionIndex },
         on: {
-          // ok: res => {
-          //   console.log('ok')
-          //   this.onScheduleChange()
-          // }
+          editCourse: (cycleIndex, week, positionIndex) => {
+            console.log('editCourse')
+            console.log(cycleIndex)
+            console.log(week)
+            console.log(positionIndex)
+            let weekItem = this.scheduleList[cycleIndex].week[positionIndex]
+            weekItem.start_time = item.start_time
+            this.filterDateList(this.scheduleList)
+          }
         }
       })
     },
@@ -434,7 +448,8 @@ export default {
       this.$router.push({
         path: '/shop/product/course/mini-schedule/inbatch-info',
         query: {
-          schedule_id: this.scheduleId
+          schedule_id: this.scheduleId,
+          courseScheduleList: this.scheduleList
         }
         // on: {
         //   ok: res => {
@@ -442,23 +457,11 @@ export default {
         //   }
         // }
       })
+    },
+    formatTime(time) {
+      let t = moment(time).format('HH:mm')
+      console.log(t)
     }
-    // save() {
-    //   let reqdata = {
-    //     id: this.coachId,
-    //     schedule_start_time: this.start,
-    //     schedule_end_time: this.end,
-    //     scheduleInfo: this.scheduleInfo
-    //   }
-    //   this.scheduleService.addScheduleInBatch(reqdata).subscribe(() => {
-    //     this.show = false
-    //     this.$router.push({
-    //       query: {
-    //         ...this.$searchQuery
-    //       }
-    //     })
-    //   })
-    // }
   },
   components: {
     AddCourse

@@ -7,14 +7,14 @@
     v-model="show"
   >
     <a-row :gutter="24" class="modal-reserved-info">
-      <a-col :lg="12">
+      <a-col :lg="16">
         <st-info>
           <st-info-item label="课程名称">
             {{ reserveInfo.coach_name }}
           </st-info-item>
         </st-info>
       </a-col>
-      <a-col :lg="12">
+      <a-col :lg="8">
         <st-info>
           <st-info-item :label="`上课${$c('coach')}`">
             {{ reserveInfo.coach_name }}
@@ -182,32 +182,22 @@
         </tbody>
       </st-form-table>
     </st-container>
-
-    <div class="mg-t24 ta-r">
-      <a-popconfirm
-        v-if="
+    <!-- v-if="
           infoAuth &&
             infoAuth['shop:schedule:personal_team_course_schedule|del']
-        "
-        @confirm="cancelSchedule"
-        okText="确认"
-        cancelText="取消"
-      >
+        "        v-if="
+          infoAuth &&
+            infoAuth['shop:schedule:personal_team_course_schedule|edit']
+        " -->
+    <div class="mg-t24 ta-r">
+      <a-popconfirm @confirm="cancelSchedule" okText="确认" cancelText="取消">
         <div slot="title">
           是否取消课程？
           <div class="color-danger">将发送消息通知已报名用户并发起自动退款</div>
         </div>
         <st-button>取消课程</st-button>
       </a-popconfirm>
-      <st-button
-        v-if="
-          infoAuth &&
-            infoAuth['shop:schedule:personal_team_course_schedule|edit']
-        "
-        class="mg-l8"
-        type="primary"
-        @click="updateSchedule"
-      >
+      <st-button class="mg-l8" type="primary" @click="updateSchedule">
         修改课程
       </st-button>
     </div>
@@ -220,12 +210,13 @@ import { MessageService } from '@/services/message.service'
 import { PersonalTeamScheduleCommonService as CommonService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/common.service'
 import { PersonalTeamScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/reserve.service'
 import { PersonalTeamScheduleScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/schedule.service'
-import SchedulePersonalTeamEdit from '@/views/biz-modals/schedule/personal-team/edit'
+import ScheduleMiniTeamReservedCourse from '@/views/biz-modals/schedule/mini-team/reserved-course'
+
 import { columns } from './reserve-info.config'
 export default {
   name: 'ReserveInfo',
   modals: {
-    SchedulePersonalTeamEdit
+    ScheduleMiniTeamReservedCourse
   },
   serviceInject() {
     return {
@@ -350,7 +341,7 @@ export default {
     updateSchedule() {
       this.show = false
       this.$modalRouter.push({
-        name: 'schedule-personal-team-edit',
+        name: 'schedule-mini-team-reserved-course',
         props: {
           info: this.reserveInfo
         },

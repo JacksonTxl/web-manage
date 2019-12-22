@@ -1,6 +1,9 @@
 <template>
-  <st-modal title="编辑课程" v-model="show" width="484px">
-    <st-form :form="form" labelWidth="40px" labelAuto>
+  <st-modal title="编辑课程排期" v-model="show" width="484px">
+    <st-form :form="form" labelWidth="70px" labelAuto>
+      <st-form-item label="已约">
+        <span>{{}}</span>
+      </st-form-item>
       <st-form-item label="日期" required v-if="!scheduleId">
         <a-date-picker
           style="width:100%"
@@ -50,13 +53,16 @@
           </a-select-option>
         </a-select>
       </st-form-item>
-      <st-form-item label="场地" required class="mg-b0">
+      <st-form-item label="场地" required>
         <a-cascader
           placeholder="请选择场地"
           :options="courtOptions"
           :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
           v-decorator="decorators.court_id"
         />
+      </st-form-item>
+      <st-form-item label="排课名称" required class="mg-b0">
+        <a-input placeholder="请输入" v-decorator="decorators.name" />
       </st-form-item>
     </st-form>
     <template slot="footer">

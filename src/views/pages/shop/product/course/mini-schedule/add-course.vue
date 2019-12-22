@@ -24,7 +24,7 @@
               </a-select-option>
             </a-select>
           </st-form-item>
-          <st-form-item label="预约日期" required>
+          <st-form-item label="预约日期" required v-if="!scheduleId">
             <a-date-picker
               style="width:100%"
               v-decorator="decorators.start_days"
@@ -72,7 +72,7 @@
         </div>
       </div>
     </template>
-    <st-button block type="dashed" icon="add" @click="addCourse('team')">
+    <st-button block type="dashed" icon="add">
       添加课程
     </st-button>
   </a-popover>
@@ -117,6 +117,10 @@ export default {
     week: {
       type: Number,
       default: 1
+    },
+    scheduleId: {
+      type: String,
+      default: '1'
     }
   },
   data() {
@@ -136,12 +140,12 @@ export default {
     hide() {
       this.showFlag = false
     },
-    // 增加课程
-    addCourse() {},
     onSubmit() {
       this.form.validate().then(values => {
         const form = cloneDeep(values)
-        form.start_days = form.start_days.format('YYYY-MM-DD')
+        if (!this.scheduleId) {
+          form.start_days = form.start_days.format('YYYY-MM-DD')
+        }
         form.start_time = form.start_time.format('HH:mm')
         // console.log(form)
         if (form.court_id) {

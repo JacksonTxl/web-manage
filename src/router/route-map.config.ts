@@ -926,10 +926,10 @@ export const routeMapConfig = {
       coach_id: { type: Number, default: -1 }
     }
   },
-  // 'shop-product-course-mini-schedule-inbatch-add'(routeConfig: RouteConfig) {
-  //   routeConfig.meta.title = '小班课排期'
-  //   // routeConfig.meta.parentRouteName = 'shop-product-course-schedule-mini-team'
-  // },
+  'shop-product-course-mini-schedule-inbatch-add'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '小班课排期'
+    routeConfig.meta.parentRouteName = 'shop-product-course-schedule-mini-team'
+  },
   'shop-product-course-manage-group-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '小班课'
     routeConfig.queryOptions = {
