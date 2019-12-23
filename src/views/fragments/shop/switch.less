@@ -12,26 +12,34 @@
   &.ant-drawer-open {
     left: 200px;
   }
-  .drawer-switch-shop {
-    &__body {
-    }
+  .ant-drawer-wrapper-body {
+    height: auto !important;
   }
 }
 .drawer-switch-shop {
-  &__to-brand {
+  .header {
+    .pos-f;
+    .w(340px);
+    .pd(20px 24px 16px);
     .bg(@white);
-    .pos-a;
-    bottom: 0;
-    left: 0;
-    .w(100%);
-    .ta-c;
-    .pd(20px);
-    border-top: 1px solid #e9e9e9;
+    .z(89);
+    top: 0;
+    box-shadow: 0 2px 8px 0 rgba(@black, 0.2);
+    &__title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .mg-b(20px);
+    }
+  }
+  .body {
+    .mg-t(90px);
+    .h(calc(100vh - 114px));
+    overflow: auto;
   }
 }
 .drawer-shops {
   .lh(1.5);
-  .pd-b(60px);
   &__item {
     .pd(14px 24px);
     min-height: 92px;
