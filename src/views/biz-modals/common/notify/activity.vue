@@ -4,7 +4,9 @@
       <st-icon type="arrow-left" class="arrow-left-out" />
       <swiper :options="sliderOptions">
         <swiper-slide v-for="(item, index) in showData" :key="index">
-          <img :src="item.src" alt="" width="728" height="400" />
+          <div class="swiper-zoom-container">
+            <img :src="item.src" alt="" width="728" height="400" />
+          </div>
         </swiper-slide>
         <div
           class="swiper-pagination swiper-pagination-h"
@@ -42,6 +44,7 @@ export default {
   computed: {
     sliderOptions() {
       return {
+        zoom: true,
         navigation: {
           nextEl: '.swiper-notify-button-next',
           prevEl: '.swiper-notify-button-prev'
@@ -50,10 +53,10 @@ export default {
           el: '.swiper-pagination-h',
           clickable: true
         },
-        autoplay: {
-          delay: 2500,
-          disableOnInteraction: false
-        },
+        // autoplay: {
+        //   delay: 2500,
+        //   disableOnInteraction: false
+        // },
         spaceBetween: 30,
         centeredSlides: true
       }
