@@ -3,7 +3,7 @@ import { State, Computed } from 'rx-state'
 import { UserService } from '@/services/user.service'
 import { AuthService } from '@/services/auth.service'
 @Injectable()
-export class InbatchInfoService {
+export class SubmitCourseService {
   scheduleList$ = new State({})
   auth$ = this.authService.authMap$({
     add: 'shop:schedule:personal_course_schedule|add',
@@ -15,7 +15,7 @@ export class InbatchInfoService {
   ) {}
 
   beforeEach(to: ServiceRoute) {
-    console.log(to)
-    this.scheduleList$.commit(() => to.query.courseScheduleList)
+    // console.log(to)
+    // this.scheduleList$.commit(() => to.query.courseScheduleList)
   }
 }

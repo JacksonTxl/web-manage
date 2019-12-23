@@ -1,15 +1,15 @@
 <template>
   <st-panel>
     <div :class="b()">
-      <st-form :class="b('head')" labelWidth="80px">
+      <st-form :class="b('head')" labelWidth="80px" :form="form">
         <st-form-item label="小班课名称" required>
-          <a-select placeholder="请选择" v-model="coachId">
+          <a-select placeholder="请选择" v-decorator="decorators.course_id">
             <a-select-option
-              v-for="coach in {}"
-              :key="coach.id"
-              :value="coach.id"
+              v-for="course in courseSmallCourseOptions"
+              :key="course.course_id"
+              :value="course.course_id"
             >
-              {{ coach.staff_name }}
+              {{ course.course_name }}
             </a-select-option>
           </a-select>
         </st-form-item>
@@ -101,7 +101,7 @@
           </div>
         </div>
         <div v-else>
-          <st-container v-for="(scheduleItem, i) in scheduleList" :key="i">
+          <st-container>
             <st-form labelWidth="80px">
               <st-form-item
                 required
@@ -114,33 +114,35 @@
             <div :class="b('schedule__table-custom')">
               <div
                 :class="b('schedule__item-custom')"
-                v-for="(item, index) in weekList"
-                :key="index"
+                v-for="item in customizeScheduleList"
+                :key="item.coach_id"
               >
                 <span class="time">
                   <st-icon type="timer"></st-icon>
                   <!-- {{ cardItem.start_time }}-{{ cardItem.end_time }} -->
                   2019-12-12 11:30 ~ 13:00
                 </span>
-                <st-t3 class="course__name">高强度有氧进阶 4级</st-t3>
+                <st-t3 class="course__name">
+                  {{ item.current_course_name }}
+                </st-t3>
                 <div class="course-message">
                   <p class="course__coach">
                     {{ $c('coach') }}：
-                    <span>狼狼</span>
+                    <span>{{ item.coach_name }}</span>
                   </p>
                   <p class="course__scene mg-l16">
                     场地：
-                    <span>VIP场地</span>
+                    <span>{{ item.court_name }}</span>
                   </p>
                 </div>
               </div>
-              <add-course :item="weekList[0]"></add-course>
+              <add-course :customizeShow="customizeShow"></add-course>
             </div>
           </st-container>
         </div>
         <div :class="b('save-schedule-btn')">
-          <st-button>
-            保存
+          <st-button @click="onClickGoBack">
+            取消
           </st-button>
           <st-button type="primary" @click="onClickSaveSchedule" class="mg-l12">
             完成排课
@@ -155,28 +157,41 @@
 import moment from 'moment'
 import AddCourse from './add-course'
 import { SmallCourseScheduleService } from '@/views/pages/shop/product/course/schedule/small-course/service#/schedule.service'
+import { SmallCourseScheduleCommonService } from '@/views/pages/shop/product/course/schedule/small-course/service#/common.service'
 import { InbatchAddService } from './inbatch-add.service'
 import ScheduleSmallCourseEditCourse from '@/views/biz-modals/schedule/small-course/edit-course'
+import ScheduleSmallCourseSubmitCourse from '@/views/biz-modals/schedule/small-course/submit-course'
+import { ruleOptions } from './inbatch-add.config'
 export default {
   name: 'AddScheduleInBatch',
   bem: {
     b: 'page-shop-schedule-inbatch-add'
   },
   modals: {
-    ScheduleSmallCourseEditCourse
+    ScheduleSmallCourseEditCourse,
+    ScheduleSmallCourseSubmitCourse
   },
   serviceInject() {
     return {
       inbatchAddService: InbatchAddService,
-      smallCourseScheduleService: SmallCourseScheduleService
+      smallCourseScheduleService: SmallCourseScheduleService,
+      smallCourseScheduleCommonService: SmallCourseScheduleCommonService
     }
   },
   rxState() {
-    return {}
+    const scsc = this.smallCourseScheduleCommonService
+    return {
+      courseSmallCourseOptions: scsc.courseSmallCourseOptions$
+    }
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       moment: moment,
+      customizeShow: false,
       coachId: undefined,
       scheduleId: '1',
       start_date: '2019-12-16',
@@ -257,12 +272,32 @@ export default {
             }
           ]
         }
+      ],
+      customizeScheduleList: [
+        {
+          schedule_id: 1111,
+          course_id: 1,
+          coach_id: 1,
+          court_id: 1,
+          week: 1,
+          current_course_name: '当前课程名称',
+          start_time: '2019-01-01 09:00:00',
+          end_time: '2019-01-01 10:00:00'
+        },
+        {
+          schedule_id: 2222,
+          course_id: 2,
+          coach_id: 2,
+          court_id: 2,
+          start_time: '2019-01-01 09:00:00',
+          end_time: '2019-01-01 10:00:00'
+        }
       ]
     }
   },
   watch: {
     scheduleId(newVal) {
-      console.log(newVal)
+      //console.log(newVal)
     }
     // scheduleList(newVal) {
     //   this.filterDateList(newVal)
@@ -445,11 +480,30 @@ export default {
       this.filterDateList(this.scheduleList)
     },
     onClickSaveSchedule() {
+      const courseScheduleList = this.scheduleList
+      console.log(courseScheduleList)
+      this.$modalRouter.push({
+        name: 'schedule-small-course-submit-course',
+        props: { scheduleList: courseScheduleList },
+        on: {
+          // editCourse: (cycleIndex, week, positionIndex) => {
+          // }
+        }
+      })
+    },
+    onClickGoBack() {
+      let weekOfday = moment().format('E')
+      let start_date = moment()
+        .subtract(weekOfday - 1, 'days')
+        .format('YYYY-MM-DD')
+      let end_date = moment()
+        .add(7 - weekOfday, 'days')
+        .format('YYYY-MM-DD')
       this.$router.push({
-        path: '/shop/product/course/mini-schedule/inbatch-info',
+        path: '/shop/product/course/schedule/small-course/small-course',
         query: {
-          schedule_id: this.scheduleId,
-          courseScheduleList: this.scheduleList
+          start_date,
+          end_date
         }
         // on: {
         //   ok: res => {

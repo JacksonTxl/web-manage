@@ -16,7 +16,7 @@
               v-decorator="decorators.course_id"
             >
               <a-select-option
-                v-for="course in courseSamllCourseOptions"
+                v-for="course in courseSmallCourseOptions"
                 :key="course.course_id"
                 :value="course.course_id"
               >
@@ -51,7 +51,7 @@
               v-decorator="decorators.coach_id"
             >
               <a-select-option
-                v-for="coach in coachSamllCourseOptions"
+                v-for="coach in coachSmallCourseOptions"
                 :key="coach.id"
                 :value="coach.id"
               >
@@ -95,20 +95,24 @@ export default {
     }
   },
   rxState() {
-    const tss = this.smallCourseScheduleCommonService
+    const scsc = this.smallCourseScheduleCommonService
     return {
       loading: this.smallCourseScheduleService.loading$,
-      coachSamllCourseOptions: tss.coachSamllCourseOptions$,
-      courseSamllCourseOptions: tss.courseSamllCourseOptions$,
-      courtOptions: tss.courtOptions$
+      coachSmallCourseOptions: scsc.coachSmallCourseOptions$,
+      courseSmallCourseOptions: scsc.courseSmallCourseOptions$,
+      courtOptions: scsc.courtOptions$
     }
   },
   props: {
     item: {
       type: Array,
       default() {
-        return []
+        return [{}]
       }
+    },
+    customizeShow: {
+      type: Boolean,
+      default: false
     },
     cycleIndex: {
       type: Number,
@@ -134,7 +138,7 @@ export default {
     }
   },
   created() {
-    this.showFlag = this.item[0].show
+    this.showFlag = this.item[0].show || this.customizeShow
   },
   methods: {
     hide() {

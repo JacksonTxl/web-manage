@@ -12,7 +12,7 @@
         <st-button>
           取消
         </st-button>
-        <st-button type="primary" class="mg-l12">
+        <st-button type="primary" class="mg-l112">
           完成
         </st-button>
       </div>
@@ -33,45 +33,28 @@ export default {
       inbatchInfoService: InbatchInfoService
     }
   },
-  // rxState() {
-  //   return {
-  //     loading: this.scheduleService.loading$,
-  //     coachOptions: this.commonService.coachInBatchOptions$
-  //   }
-  // },
-  // [[{}, {}], [{}, {}]]
-  data() {
+  rxState() {
     return {
-      coachId: undefined,
-      scheduleId: '1',
-      start_date: '2019/12/16',
-      end_date: '2019/12/23',
-      picker_start_date: '',
-      picker_end_date: '',
-      copyDefaulValue: []
+      scheduleList: this.inbatchInfoService.scheduleList$
     }
   },
+  data() {
+    return {}
+  },
+  created() {
+    console.log(this.scheduleList)
+  },
   methods: {
-    hide() {
-      console.log(111)
-      this.weekList[0].show = false
+    save() {
+      // this.InbatchInfoService.addScheduleInBatch(reqdata).subscribe(() => {
+      //   this.show = false
+      //   this.$router.push({
+      //     query: {
+      //       ...this.$searchQuery
+      //     }
+      //   })
+      // })
     }
-    // save() {
-    //   let reqdata = {
-    //     id: this.coachId,
-    //     schedule_start_time: this.start,
-    //     schedule_end_time: this.end,
-    //     scheduleInfo: this.scheduleInfo
-    //   }
-    //   this.scheduleService.addScheduleInBatch(reqdata).subscribe(() => {
-    //     this.show = false
-    //     this.$router.push({
-    //       query: {
-    //         ...this.$searchQuery
-    //       }
-    //     })
-    //   })
-    // }
   }
 }
 </script>

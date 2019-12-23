@@ -44,14 +44,14 @@ export default {
   },
   serviceInject() {
     return {
-      SmallCourseScheduleScheduleService: SmallCourseScheduleScheduleService,
-      service: MiniTeamService
+      smallCourseScheduleService: SmallCourseScheduleService,
+      service: SmallCourseService
     }
   },
   rxState() {
     return {
       auth: this.service.auth$,
-      cardList: this.SmallCourseScheduleService.scheduleTeamCourseList$
+      cardList: this.smallCourseScheduleService.scheduleTeamCourseList$
     }
   },
   components: {
@@ -76,7 +76,7 @@ export default {
     onAddSchedule(date) {
       console.log(date)
       this.$modalRouter.push({
-        name: 'schedule-mini-team-add-course',
+        name: 'schedule-small-course-add-course',
         props: { time: date },
         on: {
           ok: res => {
