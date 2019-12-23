@@ -1,11 +1,13 @@
 <script>
 import { merge, omit, map } from 'lodash-es'
-function addKey(dataSource) {
+function addOddEvenKey(dataSource) {
   for (let i in dataSource) {
-    dataSource[i].key = i % 2 ? `odd-${i}` : `even-${i}`
+    dataSource[i]._oddEvenKey = i % 2 ? `even-${i}` : `odd-${i}`
     if (dataSource[i].children) {
       for (let j in dataSource[i].children) {
-        dataSource[i].children[j].key = `${dataSource[i].key}-${j}`
+        dataSource[i].children[j]._oddEvenKey = `${
+          dataSource[i]._oddEvenKey
+        }-${j}`
       }
     }
   }
@@ -43,10 +45,6 @@ export default {
       type: String,
       default: 'server'
     },
-    isExpand: {
-      type: Boolean,
-      default: false
-    },
     simplePage: {
       type: Boolean,
       default: false
@@ -64,7 +62,6 @@ export default {
       pageSize: 20,
       total: 0,
       current: 1,
-      isChildren: false,
       count: 1
     }
   },
@@ -75,18 +72,8 @@ export default {
       }
     },
     tableDataSource() {
-      let dataSource = []
-      let isChildren = false
-      this.dataSource.forEach(ele => {
-        if (Array.isArray(ele.children)) {
-          isChildren = Array.isArray(ele.children)
-        }
-      })
-      // 有子表定义key
-      if (isChildren && this.isExpand) {
-        dataSource = addKey(this.dataSource)
-      }
-      return dataSource.length > 0 ? dataSource : this.dataSource
+      addOddEvenKey(this.dataSource)
+      return this.dataSource
     },
     defaultPageSize() {
       return this.simplePage ? 10 : 20
@@ -151,6 +138,7 @@ export default {
         <template slot={slot}>{vnode}</template>
       ))
     },
+    // 在有children的情况下显示自定义图标
     CustomExpandIcon(props) {
       let text = ''
       let className = 'st-expand-row-icon'
@@ -168,6 +156,9 @@ export default {
           {text}
         </span>
       )
+    },
+    rowClassName(record) {
+      return record._oddEvenKey
     }
   },
   render(h) {
@@ -176,12 +167,11 @@ export default {
       locale: this.locale,
       dataSource: this.tableDataSource,
       scroll: this.dataSource.length >= 1 ? this.scroll : {},
+      rowClassName: this.rowClassName,
       ...this.$attrs
     }
     // 判断是否是父子表格
-    if (this.isExpand) {
-      props.expandIcon = this.CustomExpandIcon
-    }
+    props.expandIcon = this.CustomExpandIcon
     const ce = this.alertSelection.onReset
       ? h('div', { class: 'st-table-wapper' }, [
           h('a-alert', {
@@ -213,7 +203,7 @@ export default {
           h(
             'a-table',
             {
-              class: ['st-table', this.isExpand ? 'st-table--expand' : ''],
+              class: ['st-table'],
               props,
               on: {
                 change: this.onChange
@@ -227,7 +217,7 @@ export default {
       : h(
           'a-table',
           {
-            class: ['st-table', this.isExpand ? 'st-table--expand' : ''],
+            class: ['st-table'],
             props,
             on: {
               change: this.onChange

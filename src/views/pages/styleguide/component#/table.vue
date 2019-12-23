@@ -59,7 +59,6 @@
       <st-table
         :columns="childrenColumns"
         :dataSource="dataSourceChildren"
-        isExpand
       ></st-table>
     </dl>
   </div>

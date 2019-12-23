@@ -56,7 +56,7 @@ export default {
       return width > +this.maxWidth.replace('px', '')
     },
     showValue() {
-      return this.value.toString()
+      return this.value ? this.value.toString() : this.value
     }
   }
 }
