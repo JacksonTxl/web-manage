@@ -54,7 +54,7 @@
             <st-form-item label="商品图片" required>
               <ul>
                 <li
-                  class="mg-r12 mg-t12"
+                  :class="['mg-r12', 'mg-t12', basic('img')]"
                   v-for="(item, index) in imgList"
                   :key="index"
                 >
@@ -68,6 +68,7 @@
                 </li>
               </ul>
               <st-image-upload
+                class="mg-r12"
                 width="126px"
                 height="126px"
                 :list="fileList"
@@ -83,14 +84,14 @@
             </st-form-item>
             <st-form-item label="配送方式" required>
               <a-checkbox-group v-decorator="decorators.delivery_type">
-                <a-checkbox value="1">到店自提</a-checkbox>
-                <a-checkbox value="2">快递发货</a-checkbox>
+                <a-checkbox :value="1">到店自提</a-checkbox>
+                <a-checkbox :value="2">快递发货</a-checkbox>
               </a-checkbox-group>
             </st-form-item>
             <st-form-item label="售卖方式" required>
               <a-checkbox-group v-decorator="decorators.sale_type">
-                <a-checkbox value="1">线上</a-checkbox>
-                <a-checkbox value="2">线下</a-checkbox>
+                <a-checkbox :value="1">线上</a-checkbox>
+                <a-checkbox :value="2">线下</a-checkbox>
               </a-checkbox-group>
             </st-form-item>
           </a-col>
@@ -158,7 +159,7 @@
                   <a-select
                     mode="multiple"
                     placeholder="请添加规格设置"
-                    :defaultValue="item.spec_item_name"
+                    v-model="item.spec_item_name"
                     style="width: 220px"
                     :open="false"
                     @change="handleChange(index, $event)"
@@ -180,7 +181,7 @@
                     slot="market_price"
                     slot-scope="customRender, record"
                   >
-                    <div class="test">
+                    <div :class="basic('apply')">
                       <st-input-number
                         v-model="record.market_price"
                         :float="true"
@@ -192,7 +193,7 @@
                       </st-input-number>
                       <a
                         style="margin-left: 8px"
-                        class="test_item"
+                        :class="basic('apply--all')"
                         v-if="isMore === 2"
                         @click="allApply('market_price', record.market_price)"
                       >
@@ -204,7 +205,7 @@
                     slot="selling_price"
                     slot-scope="customRender, record"
                   >
-                    <div class="test">
+                    <div :class="basic('apply')">
                       <st-input-number
                         v-model="record.selling_price"
                         :float="true"
@@ -216,7 +217,7 @@
                       </st-input-number>
                       <a
                         style="margin-left: 8px"
-                        class="test_item"
+                        :class="basic('apply--all')"
                         v-if="isMore === 2"
                         @click="allApply('selling_price', record.selling_price)"
                       >
@@ -228,14 +229,14 @@
                     slot="stock_amount"
                     slot-scope="customRender, record"
                   >
-                    <div class="test">
+                    <div :class="basic('apply')">
                       <st-input-number
                         v-model="record.stock_amount"
                         style="width:110px;"
                       ></st-input-number>
                       <a
                         style="margin-left: 8px"
-                        class="test_item"
+                        :class="basic('apply--all')"
                         v-if="isMore === 2"
                         @click="allApply('stock_amount', record.stock_amount)"
                       >
@@ -506,11 +507,13 @@ export default {
       })
     },
     goodDetail() {
+      console.log(this.info, '====info')
       this.form.setFieldsValue({
         product_name: this.info.product_name,
         category_id: this.info.category_id,
-        delivery_type: this.info.delivery_type,
-        sale_type: this.info.sale_type
+        delivery_type:
+          this.info.delivery_type === 3 ? [1, 2] : [this.info.delivery_type],
+        sale_type: this.info.sale_type === 3 ? [1, 2] : [this.info.sale_type]
       })
       this.imgList = this.info.product_images
       this.content = this.info.product_intro
@@ -518,10 +521,10 @@ export default {
       this.skuList = []
       this.info.all_spec.forEach(item => {
         let list = []
-        item.spec_item_name.forEach(it => {
-          list.push(item.spec_item_name)
+        item.spec_item_arr.forEach(it => {
+          list.push(it.spec_item_name)
         })
-        skuList.push({ spec_name: item.spec_name, spec_item_name: list })
+        this.skuList.push({ spec_name: item.spec_name, spec_item_name: list })
       })
       let tableData = []
       this.info.product_sku.forEach((item, index) => {
@@ -531,8 +534,9 @@ export default {
         tableItem.stock_amount = item.stock_amount
         tableItem.sku_id = item.sku_id
         tableItem.is_update = 0
+        tableItem.key = parseInt(Math.random() * 999999).toString()
         item.spec_arr.forEach((item, index) => {
-          tableItem[index] = spec_item_name
+          tableItem[index] = item.spec_item_name
         })
         tableData.push(tableItem)
       })
