@@ -6,12 +6,12 @@ export const columns = () => [
   },
   {
     title: '数量',
-    dataIndex: 'count',
-    scopedSlots: { customRender: 'count' }
+    dataIndex: 'stock_amount',
+    scopedSlots: { customRender: 'stock_amount' }
   },
   {
     title: '单价',
-    dataIndex: 'price'
+    dataIndex: 'selling_price'
   },
   {
     title: '小计',
