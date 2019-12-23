@@ -122,7 +122,8 @@ export const routeMapConfig = {
     routeConfig.meta.title = '售课管理'
     routeConfig.meta.tabs = [
       'shop-sold-course-list-personal',
-      'shop-sold-course-list-package'
+      'shop-sold-course-list-package',
+      'shop-sold-course-list-small-course'
     ]
   },
   'shop-sold-card-list-member'(routeConfig: RouteConfig) {
@@ -184,6 +185,18 @@ export const routeMapConfig = {
       start_time: { type: String, default: '' },
       end_time: { type: String, default: '' },
       page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-sold-course-list-small-course'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '小班课'
+    // routeConfig.meta.auth = 'shop:sold:sold_package_course|list'
+    routeConfig.queryOptions = {
+      search: { type: String, default: '' },
+      course_status: { type: Number, default: -1 },
+      start_time: { type: String, default: '' },
+      end_time: { type: String, default: '' },
+      current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
   },
