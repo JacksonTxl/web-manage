@@ -353,7 +353,7 @@ export const routeMapConfig = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       product_name: { type: String, default: '' },
-      product_type: { type: Number, default: 1 }
+      product_type: { type: Number, default: 3 }
     }
   },
   'shop-sold-transaction-package'(routeConfig: RouteConfig) {
@@ -363,7 +363,7 @@ export const routeMapConfig = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       product_name: { type: String, default: '' },
-      product_type: { type: Number, default: 1 }
+      product_type: { type: Number, default: 5 }
     }
   },
   'shop-sold-transaction-store'(routeConfig: RouteConfig) {
@@ -373,7 +373,7 @@ export const routeMapConfig = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       product_name: { type: String, default: '' },
-      product_type: { type: Number, default: 1 }
+      product_type: { type: Number, default: 4 }
     }
   },
   'shop-sold-transaction-deposit'(routeConfig: RouteConfig) {
@@ -383,7 +383,7 @@ export const routeMapConfig = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       product_name: { type: String, default: '' },
-      product_type: { type: Number, default: 1 }
+      product_type: { type: Number, default: 2 }
     }
   },
   'shop-sold-transaction-lease'(routeConfig: RouteConfig) {
@@ -393,7 +393,7 @@ export const routeMapConfig = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       product_name: { type: String, default: '' },
-      product_type: { type: Number, default: 1 }
+      product_type: { type: Number, default: 6 }
     }
   },
   // 订单列表

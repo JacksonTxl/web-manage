@@ -6,11 +6,13 @@
     wrapClassName="scroll-modal"
   >
     <div :class="b('total')">
-      <label :class="b('num')">{{ info.sale_price }}</label>
-      <label :class="b('calc')">{{ info.royalty_price }}</label>
-      <label :class="b('tip')" v-if="info.royalty_mode_exist === 2">
-        （该员工当月未设置提成模板）
-      </label>
+      <div :class="b('num')">{{ info.sale_price }}</div>
+      <div :class="b('num')">
+        {{ info.royalty_price }}
+        <label :class="b('tip')" v-if="info.royalty_mode_exist === 2">
+          （该员工当月未设置提成模板）
+        </label>
+      </div>
     </div>
     <st-table
       rowKey="id"
@@ -22,7 +24,15 @@
       simplePage
       :page="page"
       :class="list.length > 0 ? 'st-scroll-data' : ''"
-    />
+    >
+      <template slot="product_name" slot-scope="text, record">
+        <st-overflow-text
+          title="签单商品"
+          :value="record.product_name"
+          maxWidth="100px"
+        ></st-overflow-text>
+      </template>
+    </st-table>
   </st-modal>
 </template>
 <script>

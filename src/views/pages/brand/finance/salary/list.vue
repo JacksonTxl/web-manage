@@ -130,6 +130,7 @@ import BrandFinanceClassCommission from '@/views/biz-modals/brand/finance/class-
 import BrandFinanceSaleCommission from '@/views/biz-modals/brand/finance/sale-commission'
 import BrandFinanceStaffShop from '@/views/biz-modals/brand/finance/staff-shop'
 import moment from 'moment'
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'BrandFinanceSalary',
   mixins: [tableMixin],
@@ -192,15 +193,33 @@ export default {
         this.$searchQuery.end_month = this.end_month.format('YYYY-MM')
         this.onSearch()
       }
+      if (!this.start_month && !this.end_month) {
+        this.$searchQuery.start_month = ''
+        this.$searchQuery.end_month = ''
+        this.onSearch()
+      }
     },
     disabledStartDate(current) {
       if (this.end_month) {
-        return current && current > this.end_month
+        const startMonth = cloneDeep(current).startOf('month')
+        const endMonth = cloneDeep(this.end_month).startOf('month')
+        return (
+          startMonth > cloneDeep(this.end_month).startOf('month') ||
+          startMonth <= endMonth.subtract(12, 'M')
+        )
       }
       return false
     },
     disabledEndDate(current) {
-      return current && current < this.start_month
+      if (this.start_month) {
+        const startMonth = cloneDeep(this.start_month).startOf('month')
+        const endMonth = cloneDeep(current).startOf('month')
+        return (
+          endMonth < cloneDeep(this.start_month).startOf('month') ||
+          endMonth >= startMonth.add(1, 'y')
+        )
+      }
+      return false
     }
   }
 }

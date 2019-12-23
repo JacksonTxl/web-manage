@@ -6,11 +6,13 @@
     wrapClassName="scroll-modal"
   >
     <div :class="b('total')">
-      <label :class="b('num')">{{ info.checkin_amount }}</label>
-      <label :class="b('calc')">{{ info.royalty_price }}</label>
-      <label :class="b('tip')" v-if="info.royalty_mode_exist === 2">
-        （该员工当月未设置提成模板）
-      </label>
+      <div :class="b('num')">{{ info.checkin_amount }}</div>
+      <div :class="b('num')">
+        {{ info.royalty_price }}
+        <label :class="b('tip')" v-if="info.royalty_mode_exist === 2">
+          （该员工当月未设置提成模板）
+        </label>
+      </div>
     </div>
     <div class="mg-b16">
       <a-select
@@ -31,7 +33,7 @@
       :simplePage="true"
       :page="page"
       :class="list.length > 0 ? 'st-scroll-data' : ''"
-    />
+    ></st-table>
   </st-modal>
 </template>
 <script>
