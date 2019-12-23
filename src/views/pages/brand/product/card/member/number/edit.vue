@@ -1,5 +1,8 @@
 <template>
-  <st-mina-panel class="page-brand-basic-card page-brand-edit-number-card">
+  <st-mina-panel
+    responsivePreview
+    class="page-brand-basic-card page-brand-edit-number-card"
+  >
     <h5-container slot="preview" fixed>
       <template v-slot:title>
         购卡
