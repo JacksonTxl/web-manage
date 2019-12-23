@@ -1,6 +1,9 @@
 <template>
   <st-panel app :tabs="authTabs">
-    <di-view slot="actions" :name="SHOP_STORE_ORDER_KEYWORDS_SEARCH" />
+    <portal-target
+      slot="actions"
+      name="SHOP_STORE_ORDER_KEYWORDS_SEARCH"
+    ></portal-target>
     <router-view></router-view>
   </st-panel>
 </template>

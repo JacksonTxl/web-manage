@@ -6,54 +6,34 @@
         <st-input-search
           style="width: 291px"
           v-model="$searchQuery.product_name"
-          @search="onSearch"
+          @search="getList"
           placeholder="请输入商品名查找"
           :class="basic('search')"
         />
       </div>
-      <ul :class="basic('product')">
-        <li
-          @click="onSku(record)"
-          v-for="(item, index) in [
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            ''
-          ]"
-          :key="index"
-        >
-          <img
-            class="goods-img"
-            src="https://img.cdn.xinchanedu.com/uploadImg/aix/2019/Aug/1565149862022.jpg"
-            alt=""
-          />
+      <ul :class="basic('product')" v-if="storeProductList1.length">
+        <li v-for="(item, index) in storeProductList1" :key="index">
+          <img class="goods-img" :src="item.img" alt="" />
           <div class="good-name">
-            <span>大苏打撒旦艰苦拉萨建档立卡首都卡拉就是</span>
+            <span>{{ item.product_name }}</span>
           </div>
           <div class="good-price">
-            <span>￥100-300</span>
-            <span>库存：31件</span>
+            <span>￥{{ item.min_price }}-{{ item.max_price }}</span>
+            <span>库存：{{ item.count }}件</span>
           </div>
-          <div class="product-mask">
+          <div class="product-mask" @click="onSku(item.id)">
             <img src="@/assets/img/icon-buy-car.png" alt="" />
             <p>添加至购物车</p>
           </div>
         </li>
       </ul>
+      <div :class="basic('no-product')" v-else>
+        <img
+          width="150"
+          src="https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/placeholder-nodata.png"
+        />
+        <p>暂无数据</p>
+      </div>
     </div>
     <div :class="basic('buycar')">
       <st-mina-panel app>
@@ -79,24 +59,30 @@
                 <st-form-item :class="basic('padding')">
                   <st-table
                     :class="basic('table')"
-                    rowKey="id"
+                    rowKey="product_id"
                     :pagination="false"
                     :columns="columns"
-                    :dataSource="list"
+                    :dataSource="buyCar"
                   >
                     <template slot="name" slot-scope="customRender, record">
                       <div>{{ record.name }}</div>
                     </template>
-                    <template slot="numbers" slot-scope="customRender, record">
+                    <template slot="count" slot-scope="customRender, record">
                       <a-input-number
                         :min="1"
                         :max="100000"
-                        :defaultValue="record.numbers"
+                        v-model="record.count"
                       />
                     </template>
-                    <template slot="action">
+                    <template slot="priceSum" slot-scope="customRender, record">
+                      {{ (record.count * record.price).toFixed(1) }}
+                    </template>
+                    <template
+                      slot="action"
+                      slot-scope="customRender, record, index"
+                    >
                       <st-table-actions sytle="width: 120px">
-                        <a @click="payCallBack">
+                        <a @click="onDelBuyCar(index)">
                           删除
                         </a>
                       </st-table-actions>
@@ -244,7 +230,8 @@ export default {
     return {
       loading: this.listService.loading$,
       memberList: this.listService.memberList$,
-      saleList: this.listService.saleList$
+      saleList: this.listService.saleList$,
+      storeProductList: this.listService.storeProductList$
     }
   },
   data() {
@@ -263,16 +250,28 @@ export default {
           price: 30
         }
       ],
-      saleList: [],
-      list: [{ id: 1 }, { id: 2 }]
+      buyCar: [],
+      storeProductList1: [
+        {
+          product_name: '商品名',
+          img: '',
+          min_price: 100,
+          max_price: 200,
+          count: 40
+        }
+      ]
     }
   },
   mounted() {
-    this.listService.getSaleList().subscribe(res => {})
+    this.getList()
+    this.listService.getSaleList().subscribe()
   },
   methods: {
-    onSearch() {
-      console.log('3')
+    // 获取商品列表
+    getList() {
+      this.listService
+        .getStoreProductList(this.$searchQuery.product_name)
+        .subscribe()
     },
     // 会员卡签单
     onSku(record) {
@@ -283,10 +282,14 @@ export default {
         },
         on: {
           success: result => {
-            console.log('sss')
+            this.buyCar.push(result)
           }
         }
       })
+    },
+    // 删除购物车商品
+    onDelBuyCar(i) {
+      this.buyCar.splice(i, 1)
     },
     // 生成订单号
     createOrderNum() {

@@ -1,12 +1,13 @@
 <template>
   <div>
-    <st-input-search
-      v-model="$searchQuery.search_where"
-      v-di-view="{ name: SHOP_STORE_ORDER_KEYWORDS_SEARCH }"
-      @search="onKeywordsSearch('search_where', $event)"
-      placeholder="请输入订单编号、会员姓名或手机号查找"
-      maxlength="50"
-    />
+    <portal to="SHOP_STORE_ORDER_KEYWORDS_SEARCH">
+      <st-input-search
+        v-model="$searchQuery.search_where"
+        @search="onKeywordsSearch('search_where', $event)"
+        placeholder="请输入订单编号、会员姓名或手机号查找"
+        maxlength="50"
+      />
+    </portal>
     <row-table :columns="columns" :listData="list"></row-table>
   </div>
 </template>

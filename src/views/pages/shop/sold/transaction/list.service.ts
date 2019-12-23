@@ -12,6 +12,7 @@ export class ListService {
   auth$ = new State({})
   memberList$ = new State({})
   saleList$ = new State({})
+  storeProductList$ = new State({})
   productTypes$ = this.userService.getOptions$('transaction.product_type')
   constructor(
     private transactionApi: TransactionApi,
@@ -28,6 +29,9 @@ export class ListService {
       })
     )
   }
+  /**
+   * 根据手机号或姓名查找会员
+   */
   @Effect()
   getMember(member: string, type: number) {
     return this.transactionApi.getMemberList(member, type).pipe(
@@ -36,6 +40,9 @@ export class ListService {
       })
     )
   }
+  /**
+   * 销售成员获取
+   */
   getSaleList() {
     return this.transactionApi.getTransactionSaleList().pipe(
       tap((res: any) => {
@@ -43,7 +50,19 @@ export class ListService {
       })
     )
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    return this.getProductList(to.meta.query)
+  /**
+   * 云店获取商品列表
+   */
+  @Effect()
+  getStoreProductList(productName: string) {
+    return this.transactionApi
+      .getStoreProductList({
+        product_name: productName
+      })
+      .pipe(
+        tap((res: any) => {
+          this.storeProductList$.commit(() => res.data.list)
+        })
+      )
   }
 }
