@@ -10,7 +10,7 @@
     </portal>
     <row-table
       :columns="columns"
-      :listData="list"
+      :listData="tableData"
       actionText="核销"
       @clicks="confirm"
     ></row-table>
@@ -42,53 +42,7 @@ export default {
   },
   data() {
     return {
-      name: '',
-      list: [
-        {
-          childrens: [
-            {
-              name: 'aaaadsad的撒大建设靠大家阿里斯顿拉萨机了',
-              num: 2,
-              price: 12.04
-            },
-            {
-              name: 'bbb'
-            }
-          ],
-          ren: '胡歌',
-          phone: '15635295211',
-          adress: '北京',
-          time: '2019'
-        },
-        {
-          childrens: [
-            {
-              name: 'aaaa'
-            },
-            {
-              name: 'bbb'
-            },
-            {
-              name: 'ccc'
-            }
-          ],
-          ren: '胡歌',
-          phone: '15635295211',
-          adress: '北京',
-          time: '2019'
-        },
-        {
-          childrens: [
-            {
-              name: 'aaaa'
-            }
-          ],
-          ren: '胡歌',
-          phone: '15635295211',
-          adress: '北京',
-          time: '2019'
-        }
-      ]
+      name: ''
     }
   },
   methods: {
@@ -97,6 +51,9 @@ export default {
         this.$router.reload()
       })
     }
+  },
+  mounted() {
+    this.VerificationService.getList().subscribe()
   }
 }
 </script>
