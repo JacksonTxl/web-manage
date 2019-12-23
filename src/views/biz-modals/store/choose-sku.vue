@@ -30,14 +30,9 @@ export default {
     return {
       show: false,
       value1: 'Apple',
-      plainOptions: [
-        { label: 'Apple', value: 'Apple' },
-        { label: 'Pear', value: 'Pear' },
-        { label: 'Orange', value: 'Orange' }
-      ],
       productInfo: {
         stock_amount: 0
-      },
+      }, // 规格选择完的商品信息
       allSpec: [
         {
           spec_id: 1,
@@ -75,22 +70,22 @@ export default {
             }
           ]
         }
-      ],
+      ], // 规格信息
       specItemId: [],
       allSpecInfo: [
         {
           spec_arr: [
             {
               spec_id: 1,
-              spec_name: '',
+              spec_name: '颜色',
               spec_item_id: 11,
-              spec_item_name: ''
+              spec_item_name: '红色'
             },
             {
-              spec_id: 1,
-              spec_name: '',
+              spec_id: 2,
+              spec_name: '内存',
               spec_item_id: 21,
-              spec_item_name: ''
+              spec_item_name: '16G'
             }
           ],
           stock_amount: 10
@@ -99,21 +94,37 @@ export default {
           spec_arr: [
             {
               spec_id: 1,
-              spec_name: '',
+              spec_name: '颜色',
               spec_item_id: 11,
-              spec_item_name: ''
+              spec_item_name: '红色'
             },
             {
-              spec_id: 1,
-              spec_name: '',
+              spec_id: 2,
+              spec_name: '内存',
               spec_item_id: 22,
-              spec_item_name: ''
+              spec_item_name: '32G'
             }
           ],
           stock_amount: 20
+        },
+        {
+          spec_arr: [
+            {
+              spec_id: 1,
+              spec_name: '颜色',
+              spec_item_id: 11,
+              spec_item_name: '红色'
+            },
+            {
+              spec_id: 2,
+              spec_name: '内存',
+              spec_item_id: 23,
+              spec_item_name: '64G'
+            }
+          ],
+          stock_amount: 30
         }
-      ],
-      allSpecs: ''
+      ] // 规格内容信息
     }
   },
   bem: {
