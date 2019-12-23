@@ -24,7 +24,7 @@ export const headerInfo = [
   },
   {
     icon: topIconMember,
-    title: '营收金额(元)'
+    title: '交易会员数(人)'
   },
   {
     icon: topIconGuest,
