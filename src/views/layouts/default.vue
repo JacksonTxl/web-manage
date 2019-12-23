@@ -111,29 +111,8 @@
               color="#9BACB9"
             ></st-icon>
           </div>
-          <div slot="overlay" class="layout-fast-entry">
-            <a-menu class="layout-fast-entry__wrapper">
-              <a-menu-item
-                v-for="(item, id) in urlData"
-                :key="id"
-                class="layout-fast-entry__item"
-                :class="
-                  !item.enable
-                    ? 'layout-fast-entry__disabled'
-                    : 'layout-fast-entry__activity'
-                "
-                @click="goToPage(item)"
-                :disabled="!item.enable"
-              >
-                <div class="fast-entry__pic">
-                  <img
-                    :src="item.enable ? item.icon : item.disable_icon"
-                    :alt="item.text"
-                  />
-                </div>
-                <div class="layout-fast-entry__text">{{ item.text }}</div>
-              </a-menu-item>
-            </a-menu>
+          <div slot="overlay">
+            <fast-entry />
           </div>
         </a-dropdown>
 
@@ -200,13 +179,11 @@ import { find } from 'lodash-es'
 import { UserService } from '@/services/user.service'
 import { TokenService } from '@/services/token.service'
 import { TitleService } from '@/services/title.service'
-import { entries } from './default#/fast-entry.config'
-import FastEntryMiniProgram from '@/views/biz-modals/fast-entry/mini-program'
-import FastEntryHousekeeper from '@/views/biz-modals/fast-entry/housekeeper'
 import AccountBind from '@/views/biz-modals/account/bind'
 import AccountUnbind from '@/views/biz-modals/account/unbind'
 import AccountModify from '@/views/biz-modals/account/modify'
 import { UdeskService } from '@/services/udesk.service'
+import FastEntry from './default#/fast-entry'
 import StUdeskBtn from '@/views/biz-components/udesk-btn/udesk-btn'
 
 export default {
@@ -214,6 +191,7 @@ export default {
   components: {
     DefaultSiderMenu,
     SwitchShop,
+    FastEntry,
     StUdeskBtn
   },
   serviceInject() {
@@ -231,7 +209,6 @@ export default {
       shop: this.userService.shop$,
       theme: this.userService.theme$,
       title: this.titleService.title$,
-      urlData: this.userService.urlData$,
       isThemeStudio: this.userService.isThemeStudio$,
       isShowUdeskBtn: this.udeskService.isShowUdeskBtn$
     }
@@ -239,13 +216,10 @@ export default {
   data() {
     return {
       isShowSwitchShop: false,
-      menuObj: {},
-      entries
+      menuObj: {}
     }
   },
   modals: {
-    FastEntryMiniProgram,
-    FastEntryHousekeeper,
     AccountBind,
     AccountUnbind,
     AccountModify
@@ -272,23 +246,17 @@ export default {
     },
     onClickBind() {
       this.$modalRouter.push({
-        name: 'account-bind',
-        props: {},
-        on: {}
+        name: 'account-bind'
       })
     },
     onClickUnbind() {
       this.$modalRouter.push({
-        name: 'account-unbind',
-        props: {},
-        on: {}
+        name: 'account-unbind'
       })
     },
     onClickModifyPass() {
       this.$modalRouter.push({
-        name: 'account-modify',
-        props: {},
-        on: {}
+        name: 'account-modify'
       })
     },
     onClickLogout() {
@@ -354,40 +322,6 @@ export default {
        * 切换路由时关闭切换门店 drawer
        */
       this.isShowSwitchShop = false
-    },
-    goToPage(item) {
-      if (item.url) {
-        window.open(item.url)
-        return
-      }
-      if (item.open_program === 'mini_program') {
-        const urlData = item
-        this.$modalRouter.push({
-          name: 'fast-entry-mini-program',
-          props: {
-            urlData
-          },
-          on: {}
-        })
-        return
-      }
-      if (item.open_program === 'house_keeper') {
-        this.$modalRouter.push({
-          name: 'fast-entry-housekeeper',
-          props: {},
-          on: {}
-        })
-        return
-      }
-      if (item.open_program === 'export') {
-        this.$router.push({
-          path: '/common/export'
-        })
-      }
-      if (item.open_program === 'udesk') {
-        this.udeskService.setIsShowUdeskBtn(true)
-        this.udeskService.show()
-      }
     }
   }
 }
