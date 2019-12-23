@@ -1,5 +1,5 @@
 <template>
-  <st-form :form="form" @submit.prevent="sumbitBasicData">
+  <st-form :form="form">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="员工头像">
@@ -245,11 +245,6 @@ export default {
     saveAndGoNext(e) {
       this.form.validate().then(values => {
         this.submit(values, 1)
-      })
-    },
-    sumbitBasicData(e) {
-      this.form.validate().then(values => {
-        this.submit(values)
       })
     },
     /**

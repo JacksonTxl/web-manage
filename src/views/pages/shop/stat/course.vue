@@ -222,7 +222,10 @@ export default {
     }
   },
   created() {
-    this.showTable = this.auth.summary ? 'all' : 'staff'
+    this.showTable =
+      this.auth.summary && this.$searchQuery.showTable === 'all'
+        ? 'all'
+        : 'coach'
   },
   methods: {
     onCLickPersonalCheckinAmount() {

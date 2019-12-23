@@ -7,7 +7,7 @@ export const ruleOptions = (vm: any) => {
         {
           required: true,
           pattern: pattern.CN_EN_NUM_SPACE('1-15'),
-          message: '请输入模板名称'
+          message: '请输入正确模板名称'
         }
       ]
     },
@@ -16,7 +16,7 @@ export const ruleOptions = (vm: any) => {
         {
           required: true,
           pattern: pattern.NUM_POINT('1-6'),
-          message: '请输入月底薪'
+          message: '请输入正确月底薪'
         }
       ]
     }

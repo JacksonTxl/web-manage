@@ -192,7 +192,7 @@ export default {
       share: useShare()
     }
   },
-  data() {
+  data(vm) {
     return {
       TYPE,
       activityName: '',
@@ -219,6 +219,8 @@ export default {
   },
   mounted() {
     this.setSearchData()
+    console.log(this.listService)
+    console.log(this.auth)
   },
   watch: {
     query(newVal) {
@@ -303,16 +305,33 @@ export default {
     onEdit(record) {
       let typeId = record.product_type.id
       let id = record.id
-      let pushUrl = [
-        './edit-member',
-        './edit-deposit',
-        './edit-personal',
-        './edit-package-course'
-      ]
-      this.$router.push({
-        path: pushUrl[typeId - 1],
-        query: { id: id }
-      })
+      switch (typeId) {
+        case 3:
+          this.$router.push({
+            path: './edit-personal',
+            query: { id: id }
+          })
+          break
+        case 2:
+          this.$router.push({
+            path: './edit-deposit',
+            query: { id: id }
+          })
+          break
+        case 1:
+          this.$router.push({
+            path: './edit-member',
+            query: { id: id }
+          })
+          break
+        case 4:
+          this.$router.push({
+            path: './edit-package-course',
+            query: { id: id }
+          })
+          break
+        default:
+      }
     },
     // 结束活动
     onStop(record) {

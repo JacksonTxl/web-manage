@@ -4,7 +4,6 @@
     v-model="show"
     :footer="null"
     wrapClassName="scroll-modal"
-    style="min-width: 600px"
   >
     <st-table
       rowKey="id"
