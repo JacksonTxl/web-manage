@@ -53,7 +53,31 @@
               <span class="info-text">31010319900101000</span>
             </div>
           </a-col>
-          <a-col :span="24" v-if="info.is_member_address">
+          <a-col :span="8" v-if="info.is_parent_name">
+            <div class="info-item">
+              <label class="info-label">家长姓名：</label>
+              <span class="info-text">{{ info.parent_name }}</span>
+            </div>
+          </a-col>
+          <a-col :span="8" v-if="info.is_parent_mobile">
+            <div class="info-item">
+              <label class="info-label">家长联系方式：</label>
+              <span class="info-text">{{ info.parent_mobile }}</span>
+            </div>
+          </a-col>
+          <a-col :span="8" v-if="info.is_parent_rule">
+            <div class="info-item">
+              <label class="info-label">家长身份：</label>
+              <span class="info-text">{{ info.parent_rule }}</span>
+            </div>
+          </a-col>
+          <a-col :span="12" v-if="info.is_parent_id_card">
+            <div class="info-item">
+              <label class="info-label">家长身份证号：</label>
+              <span class="info-text">{{ info.parent_id_card }}</span>
+            </div>
+          </a-col>
+          <a-col :span="12" v-if="info.is_member_address">
             <div class="info-item">
               <label class="info-label">家庭住址：</label>
               <span class="info-text">上海市黄浦区南京西路X号</span>
@@ -240,6 +264,18 @@ export default {
       CONTRACT_TYPE,
       today: moment()
     }
+  },
+  created() {
+    // mock 数据  页面的数据为什么是前端写死的!!!
+    console.log(this.info)
+    // this.info.is_parent_name = 1
+    // this.info.is_parent_mobile = 1
+    // this.info.is_parent_id_card = 1
+    // this.info.is_parent_rule = 1
+    this.info.parent_name = 'panda'
+    this.info.parent_mobile = 15711099936
+    this.info.parent_id_card = 31231231231321312
+    this.info.parent_rule = '爸爸'
   },
   computed: {
     showAllTh() {

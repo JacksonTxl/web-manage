@@ -889,7 +889,8 @@ export const routeMapConfig = {
     routeConfig.meta.tabs = [
       'shop-product-course-schedule-team',
       'shop-product-course-schedule-personal',
-      'shop-product-course-schedule-personal-team'
+      'shop-product-course-schedule-personal-team',
+      'shop-product-course-schedule-small-course'
     ]
   },
   'shop-product-course-schedule-team'(routeConfig: RouteConfig) {
@@ -926,7 +927,24 @@ export const routeMapConfig = {
       coach_id: { type: Number, default: -1 }
     }
   },
-  'shop-product-course-manage-group-list'(routeConfig: RouteConfig) {
+  'shop-product-course-schedule-small-course'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '小班课'
+    routeConfig.queryOptions = {
+      coach_id: { type: Number, default: -1 }
+    }
+  },
+  'shop-product-course-schedule-small-course-table'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '小班课'
+    routeConfig.queryOptions = {
+      coach_id: { type: Number, default: -1 }
+    }
+  },
+  'shop-product-course-mini-schedule-inbatch-add'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '小班课排期'
+    routeConfig.meta.parentRouteName =
+      'shop-product-course-schedule-small-course'
+  },
+  'shop-product-course-manage-small-course-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '小班课'
     routeConfig.queryOptions = {
       course_status: { type: Number, default: -1 },
@@ -935,16 +953,20 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
-  'shop-product-course-manage-group-add'(routeConfig: RouteConfig) {
+  'shop-product-course-manage-small-course-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '添加小班课'
   },
-  'shop-product-course-manage-group-edit'(routeConfig: RouteConfig) {
+  'shop-product-course-manage-small-course-edit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑小班课'
   },
-  'shop-product-course-manage-group-info-basic'(routeConfig: RouteConfig) {
+  'shop-product-course-manage-small-course-info-basic'(
+    routeConfig: RouteConfig
+  ) {
     routeConfig.meta.title = '小班课详情'
   },
-  'shop-product-course-manage-group-info-class'(routeConfig: RouteConfig) {
+  'shop-product-course-manage-small-course-info-class'(
+    routeConfig: RouteConfig
+  ) {
     routeConfig.meta.title = '小班课详情'
   },
   'shop-product-course-manage-team-list'(routeConfig: RouteConfig) {

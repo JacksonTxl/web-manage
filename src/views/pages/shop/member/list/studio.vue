@@ -147,10 +147,7 @@
           >
             详情
           </a>
-          <a
-            v-if="record.auth['shop:member:member|edit']"
-            @click="edit(record)"
-          >
+          <a @click="edit(record)">
             编辑
           </a>
           <a

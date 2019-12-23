@@ -37,6 +37,7 @@
             <st-info-item label="购买会员">
               {{ info.member_name }} {{ info.member_mobile }}
             </st-info-item>
+            <st-info-item label="家长">{{ infoParents }}</st-info-item>
             <st-info-item label="下单人">{{ info.operator_name }}</st-info-item>
             <st-info-item label="下单时间">
               {{ info.created_time }}
@@ -115,7 +116,21 @@ export default {
       ORDER_PRODUCT_TYPE
     }
   },
-  computed: {},
+  created() {
+    this.info.parents = { name: '家长', mobile: 1399032421340 }
+    //this.info.parents = '--'
+  },
+  computed: {
+    infoParents() {
+      let parentsMess = ''
+      if (typeof this.info.parents === 'object') {
+        parentsMess = `${this.info.parents.name} (${this.info.parents.mobile})`
+      } else {
+        parentsMess = this.info.parents
+      }
+      return parentsMess
+    }
+  },
   methods: {
     // 订单收款modal
     createdOrderPay() {

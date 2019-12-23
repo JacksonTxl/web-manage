@@ -12,7 +12,7 @@
           </st-button>
         </div>
         <st-t4>全局设置</st-t4>
-        <st-form class="mg-t24" labelWidth="56px" labelGutter="16px">
+        <st-form class="mg-t24" labelWidth="88px" labelGutter="16px">
           <st-form-item label="合同标题">
             <a-textarea
               v-model="info.contract_title"
@@ -101,6 +101,30 @@
             :class="bSider('form-item', { switch: true })"
           >
             <st-switch v-model="info.is_member_card"></st-switch>
+          </st-form-item>
+          <st-form-item
+            label="家长姓名"
+            :class="bSider('form-item', { switch: true })"
+          >
+            <st-switch v-model="info.is_parent_name"></st-switch>
+          </st-form-item>
+          <st-form-item
+            label="家长手机号"
+            :class="bSider('form-item', { switch: true })"
+          >
+            <st-switch v-model="info.is_parent_mobile"></st-switch>
+          </st-form-item>
+          <st-form-item
+            label="家长身份"
+            :class="bSider('form-item', { switch: true })"
+          >
+            <st-switch v-model="info.is_parent_rule"></st-switch>
+          </st-form-item>
+          <st-form-item
+            label="家长身份证号"
+            :class="bSider('form-item', { switch: true })"
+          >
+            <st-switch v-model="info.is_parent_id_card"></st-switch>
           </st-form-item>
           <st-form-item
             label="性别"
@@ -215,6 +239,13 @@ export default {
       loading: edit.loading$,
       settingEnums: this.user.settingEnums$
     }
+  },
+  created() {
+    // mock 数据 还需要联调确认
+    this.info.is_parent_name = 1
+    this.info.is_parent_mobile = 1
+    this.info.is_parent_id_card = 1
+    this.info.is_parent_rule = 1
   },
   methods: {
     onCodeDone() {

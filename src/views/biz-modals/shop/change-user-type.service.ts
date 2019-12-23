@@ -6,10 +6,13 @@ import { UserService } from '@/services/user.service'
 @Injectable()
 export class ChangeUserTypeService {
   loading$ = new State({})
-  constructor(private cardsApi: MemberApi, private userService: UserService) {}
+  constructor(private memberApi: MemberApi, private userService: UserService) {}
   minorsType$ = this.userService.getOptions$('small_course.minors_type')
   parentType$ = this.userService.getOptions$('small_course.parent_type')
   changeUserType(params: any) {
-    return this.cardsApi.changeUserType(params)
+    return this.memberApi.changeUserType(params)
+  }
+  getParentInfoByPhone(params: any) {
+    return this.memberApi.getParentInfoByPhone(params)
   }
 }
