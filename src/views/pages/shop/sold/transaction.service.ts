@@ -10,15 +10,4 @@ export class TransactionService {
     private redirectService: RedirectService,
     private authService: AuthService
   ) {}
-  // beforeEach(to: ServiceRoute, from: ServiceRoute) {
-  //   console.log(to)
-  //   if (to.name === 'shop-sold-transaction-member') {
-  //     return this.redirectService.redirect({
-  //       locateRouteName: 'shop-sold-transaction-member',
-  //       redirectRoute: {
-  //         name: 'shop-sold-transaction-list'
-  //       }
-  //     })
-  //   }
-  // }
 }

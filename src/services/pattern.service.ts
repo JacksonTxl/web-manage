@@ -75,9 +75,6 @@ export class PatternService {
      * 图片类型
      */
     IMG: '^(image\\/png|image\\/jpg|image\\/jpeg)$'
-    /**
-     * 数字
-     */
   }
   /**
    * 校验参数 len

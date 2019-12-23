@@ -83,7 +83,7 @@ export default {
         }
       })
       // 有子表定义key
-      if (isChildren) {
+      if (isChildren && this.isExpand) {
         dataSource = addKey(this.dataSource)
       }
       return dataSource.length > 0 ? dataSource : this.dataSource

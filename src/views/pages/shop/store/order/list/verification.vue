@@ -19,7 +19,6 @@
 <script>
 import RowTable from '../components#/row-table.vue'
 import { columns } from './verification.config'
-import { SHOP_STORE_ORDER_KEYWORDS_SEARCH } from '@/constants/events'
 import { VerificationService } from './verification.service'
 import tableMixin from '@/mixins/table.mixin'
 export default {
@@ -43,7 +42,6 @@ export default {
   },
   data() {
     return {
-      SHOP_STORE_ORDER_KEYWORDS_SEARCH,
       name: '',
       list: [
         {

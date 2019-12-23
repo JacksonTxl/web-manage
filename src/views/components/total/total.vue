@@ -10,6 +10,7 @@
       <div :class="[b('content'), !hasTitle ? b('content--full') : '']">
         <div
           v-if="showData.length > 6"
+          :class="prevClass"
           class="swiper-total-button-prev swiper-button-prev"
           slot="button-prev"
         >
@@ -94,10 +95,10 @@ export default {
       return moment().valueOf()
     },
     prevClass() {
-      return `swiper-${this.timestamp}-button-next`
+      return `swiper-${this.timestamp}-button-prev`
     },
     nextClass() {
-      return `swiper-${this.timestamp}-button-prev`
+      return `swiper-${this.timestamp}-button-next`
     },
     navigationButtons() {
       return {
