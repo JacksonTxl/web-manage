@@ -19,7 +19,6 @@
 <script>
 import RowTable from '../components#/row-table.vue'
 import { columns } from './shipments.config'
-import { SHOP_STORE_ORDER_KEYWORDS_SEARCH } from '@/constants/events'
 import { ShipmentsService } from './shipments.service'
 import tableMixin from '@/mixins/table.mixin'
 import StoreDeliverGood from '@/views/biz-modals/store/deliver-good'
@@ -47,7 +46,6 @@ export default {
   },
   data() {
     return {
-      SHOP_STORE_ORDER_KEYWORDS_SEARCH,
       name: '',
       list: [
         {
