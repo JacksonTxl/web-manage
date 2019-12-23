@@ -1,7 +1,7 @@
 import { Controller, Injectable, ServiceRoute } from 'vue-service-app'
 import { RedirectService } from '@/services/redirect.service'
 @Injectable()
-export class GroupService implements Controller {
+export class SmallCourseService implements Controller {
   constructor(private redirectService: RedirectService) {}
   beforeEach() {
     return this.redirectService.redirect({
