@@ -8,10 +8,9 @@ import { State, Computed } from 'rx-state'
 import { SmallCourseApi } from '@/api/v1/sold/small-course'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
-import { combineLatest } from 'rxjs'
 @Injectable()
 export class InfoService implements Controller {
-  personalInfo$ = new State({})
+  info$ = new State({})
   id = ''
   loading$ = new State({})
   auth$ = new State({})
@@ -27,7 +26,7 @@ export class InfoService implements Controller {
     return this.smallCourseApi.getSmallCourseInfo(id).pipe(
       tap((res: any) => {
         res = this.authService.filter(res, 'auth')
-        this.personalInfo$.commit(() => res.info)
+        this.info$.commit(() => res.info)
         this.auth$.commit(() => res.auth)
       })
     )

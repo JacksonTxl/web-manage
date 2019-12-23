@@ -26,36 +26,36 @@
         <a-col :span="9">
           <st-info>
             <st-info-item label="课程名称">
-              {{ personalInfo.course_name }}
+              {{ info.course_name }}
             </st-info-item>
-            <st-info-item label="类型">{{ personalInfo.type }}</st-info-item>
+            <st-info-item label="类型">{{ info.type }}</st-info-item>
             <st-info-item label="剩余课时">
-              {{ personalInfo.remain_course_num }}节
+              {{ info.remain_course_num }}节
             </st-info-item>
             <st-info-item label="购买课时">
-              {{ personalInfo.init_course_num }}节
+              {{ info.init_course_num }}节
             </st-info-item>
             <st-info-item label="班级时间">
-              {{ personalInfo.buy_time }} 至 {{ personalInfo.end_time }}
+              {{ info.buy_time }} 至 {{ info.end_time }}
             </st-info-item>
           </st-info>
         </a-col>
         <a-col :span="9">
           <st-info>
             <st-info-item label="所属会员">
-              {{ personalInfo.member_name }}
+              {{ info.member_name }}
             </st-info-item>
             <st-info-item label="家长手机号">
-              {{ personalInfo.mobile }}
+              {{ info.mobile }}
             </st-info-item>
             <st-info-item :label="`家长姓名`">
-              {{ personalInfo.coach_name }}
+              {{ info.coach_name }}
             </st-info-item>
             <st-info-item label="订单号">
-              {{ personalInfo.order_id }}
+              {{ info.order_id }}
             </st-info-item>
             <st-info-item label="合同编号">
-              {{ personalInfo.contract_number }}
+              {{ info.contract_number }}
             </st-info-item>
           </st-info>
         </a-col>
@@ -63,41 +63,33 @@
           <st-info>
             <st-info-item label="允许转让">
               {{
-                personalInfo.is_transferable
-                  | enumFilter('sold_common.is_transferable')
+                info.is_transferable | enumFilter('sold_common.is_transferable')
               }}
             </st-info-item>
             <st-info-item label="转让手续费">
-              {{ personalInfo.transfer_num
+              {{ info.transfer_num
               }}{{
-                personalInfo.transfer_unit
-                  | enumFilter('package_course.transfer_unit')
+                info.transfer_unit | enumFilter('package_course.transfer_unit')
               }}
             </st-info-item>
             <st-info-item label="当前状态">
-              {{
-                personalInfo.course_status
-                  | enumFilter('sold_common.course_status')
-              }}
+              {{ info.course_status | enumFilter('sold_common.course_status') }}
             </st-info-item>
             <st-info-item label="订单状态">
-              {{
-                personalInfo.order_status
-                  | enumFilter('sold_common.order_status')
-              }}
+              {{ info.order_status | enumFilter('sold_common.order_status') }}
             </st-info-item>
           </st-info>
         </a-col>
         <a-col :span="24">
           <st-info>
             <st-info-item label="备注" class="mg-b0">
-              {{ personalInfo.description || '无' }}
+              {{ info.description || '无' }}
             </st-info-item>
           </st-info>
         </a-col>
       </a-row>
     </st-panel>
-    <st-panel app class="mg-t12" :tabs="pageAuthTabs">
+    <st-panel app class="mg-t12" :tabs="authTabs">
       <router-view></router-view>
     </st-panel>
   </st-panel-layout>
@@ -134,7 +126,7 @@ export default {
   },
   rxState() {
     return {
-      personalInfo: this.infoService.personalInfo$,
+      info: this.infoService.info$,
       pageAuthTabs: this.infoService.pageAuthTabs$,
       auth: this.infoService.auth$
     }
@@ -155,7 +147,7 @@ export default {
       this.$modalRouter.push({
         name: 'sold-course-surplus-personal',
         props: {
-          courseData: this.personalInfo
+          courseData: this.info
         },
         on: {
           success: () => {
@@ -166,7 +158,7 @@ export default {
     },
     // 跳转合同
     toContract() {
-      let record = this.personalInfo
+      let record = this.info
       let url = `${window.location.origin}/common/contract-preview?id=${
         record.order_id
       }`
@@ -178,15 +170,13 @@ export default {
         name: 'sold-course-freeze',
         props: {
           type: 'personal',
-          id: this.personalInfo.id,
-          courseName: this.personalInfo.course_name,
-          courseNum: this.personalInfo.remain_course_num,
-          courseEndTime: moment(this.personalInfo.end_time * 1000),
-          time: `${moment(this.personalInfo.buy_time * 1000).format(
+          id: this.info.id,
+          courseName: this.info.course_name,
+          courseNum: this.info.remain_course_num,
+          courseEndTime: moment(this.info.end_time * 1000),
+          time: `${moment(this.info.buy_time * 1000).format(
             'YYYY-MM-DD HH:mm'
-          )} 至 ${moment(this.personalInfo.end_time * 1000).format(
-            'YYYY-MM-DD HH:mm'
-          )}`
+          )} 至 ${moment(this.info.end_time * 1000).format('YYYY-MM-DD HH:mm')}`
         },
         on: {
           success: () => {
@@ -217,7 +207,7 @@ export default {
         name: 'sold-course-transfer',
         props: {
           type: 'personal',
-          id: this.personalInfo.id
+          id: this.info.id
         },
         on: {
           success: () => {
@@ -232,7 +222,7 @@ export default {
         name: 'sold-course-refund',
         props: {
           type: 'personal',
-          id: this.personalInfo.id
+          id: this.info.id
         },
         on: {
           success: () => {
@@ -246,7 +236,7 @@ export default {
       this.$modalRouter.push({
         name: 'sold-course-coach',
         props: {
-          record: this.personalInfo
+          record: this.info
         },
         on: {
           success: () => {
@@ -261,7 +251,7 @@ export default {
         name: 'sold-course-activated',
         props: {
           type: 'personal',
-          id: this.personalInfo.id
+          id: this.info.id
         },
         on: {
           success: () => {
@@ -276,7 +266,7 @@ export default {
         name: 'sold-course-lease',
         props: {
           type: 'personal',
-          id: this.personalInfo.id
+          id: this.info.id
         },
         on: {
           success: () => {
