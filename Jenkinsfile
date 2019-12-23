@@ -16,7 +16,7 @@ pipeline {
     stage('Build') {
       /** master 分支不参与自动构建 */
       when {
-        expression { BRANCH_NAME ==~ /(feat|fix|dev|test).*/}
+        expression { BRANCH_NAME ==~ /(feat|fix|dev|test|hotfix).*/}
       }
       steps {
         sh 'make build'
@@ -24,7 +24,7 @@ pipeline {
     }
     stage('to=dev') {
       when {
-        expression { BRANCH_NAME ==~ /(feat|fix|dev|test).*/}
+        expression { BRANCH_NAME ==~ /(feat|fix|dev|test|hotfix).*/}
       }
       steps {
         sh 'make rsync to=saas-dev'
@@ -36,7 +36,7 @@ pipeline {
     }
     stage('to=test') {
       when {
-        expression { BRANCH_NAME ==~ /(feat|fix|dev|test).*/}
+        expression { BRANCH_NAME ==~ /(feat|fix|dev|test|hotfix).*/}
       }
       steps {
         sh 'make rsync to=saas-test'
