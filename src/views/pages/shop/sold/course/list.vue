@@ -1,7 +1,9 @@
 <template>
   <st-panel app initial :tabs="authTabs">
-    <di-view slot="actions" name="SHOP_SOLD_COURSE_LIST_SEARCH"></di-view>
-
+    <portal-target
+      slot="actions"
+      name="SHOP_SOLD_COURSE_LIST_SEARCH"
+    ></portal-target>
     <router-view></router-view>
   </st-panel>
 </template>

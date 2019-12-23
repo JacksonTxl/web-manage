@@ -8,6 +8,7 @@ export const columns = (vm: any) => {
     {
       title: `${vm.$c('member_card')}客单价(元)`,
       dataIndex: 'member_card_avg',
+
       align: 'right'
     },
     {
@@ -18,6 +19,7 @@ export const columns = (vm: any) => {
     {
       title: '私教课客单价(元)',
       dataIndex: 'personal_course_avg',
+
       align: 'right'
     },
     {
@@ -27,6 +29,7 @@ export const columns = (vm: any) => {
     },
     {
       title: '团体课客单价(元)',
+
       dataIndex: 'team_course_avg',
       align: 'right'
     },
@@ -37,6 +40,7 @@ export const columns = (vm: any) => {
     },
     {
       title: '储值卡客单价(元)',
+
       dataIndex: 'deposit_card_avg',
       align: 'right'
     },
@@ -57,6 +61,7 @@ export const columns = (vm: any) => {
     },
     {
       title: '云店客单价(元)',
+
       dataIndex: 'shop_avg',
       align: 'right'
     },

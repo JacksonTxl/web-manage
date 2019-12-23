@@ -14,7 +14,9 @@
         打印合同
       </st-button>
       <st-button @click="viewOrder">查看订单</st-button>
-      <st-button @click="printOrder" type="primary">打印小票</st-button>
+      <st-button @click="printOrder" type="primary" v-if="auth.print">
+        打印小票
+      </st-button>
       <st-button @click="goPay" v-if="needPay">去支付</st-button>
       <st-button @click="changeMember" v-if="isFamilyCard">变更成员</st-button>
     </div>
@@ -23,6 +25,7 @@
 
 <script>
 import { UserService } from '@/services/user.service'
+import { GatheringTipService } from './gathering-tip.service'
 export default {
   name: 'ModalSoldDealGatheringTip',
   bem: {
@@ -35,12 +38,14 @@ export default {
   },
   serviceInject() {
     return {
-      userService: UserService
+      userService: UserService,
+      gatheringTipService: GatheringTipService
     }
   },
   rxState() {
     return {
-      isBrandStudio: this.userService.isBrandStudio$
+      isBrandStudio: this.userService.isBrandStudio$,
+      auth: this.gatheringTipService.auth$
     }
   },
   props: {

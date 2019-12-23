@@ -102,7 +102,7 @@
         />
       </a-col>
     </a-row>
-    <a-row class="mg-t8">
+    <a-row class="mg-t16">
       <st-table
         :rowSelection="{
           selectedRowKeys: selectedRowKeys,

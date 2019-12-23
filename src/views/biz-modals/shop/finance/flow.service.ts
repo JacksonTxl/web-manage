@@ -2,6 +2,7 @@ import { Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { OrderApi, FlowParams } from '@/api/v1/finance/order'
 import { TransactionApi } from '@/api/v1/sold/transaction'
+import { FlowApi } from '@/api/v1/finance/flow'
 import { tap } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
 
@@ -12,7 +13,8 @@ export class FlowService {
   paymentMethodList$ = new State({})
   constructor(
     private orderApi: OrderApi,
-    private transactionApi: TransactionApi
+    private transactionApi: TransactionApi,
+    private flowApi: FlowApi
   ) {}
   getDetail(id: string) {
     return this.orderApi.getFlowDetail(id).pipe(
@@ -21,16 +23,24 @@ export class FlowService {
       })
     )
   }
+  // @Effect()
+  // getPaymentMethodList(order_id: number) {
+  //   return this.transactionApi.getPaymentMethodList(order_id, true).pipe(
+  //     tap((res: any) => {
+  //       this.paymentMethodList$.commit(() => res.list)
+  //     })
+  //   )
+  // }
   @Effect()
-  getPaymentMethodList(order_id: number) {
-    return this.transactionApi.getPaymentMethodList(order_id, true).pipe(
+  getPaymentMethodList() {
+    return this.flowApi.getPaymentMethodList().pipe(
       tap((res: any) => {
         this.paymentMethodList$.commit(() => res.list)
       })
     )
   }
-  init(id: string, order_id: number) {
-    return forkJoin(this.getDetail(id), this.getPaymentMethodList(order_id))
+  init(id: string) {
+    return forkJoin(this.getDetail(id), this.getPaymentMethodList())
   }
   @Effect()
   orderFlow(params: FlowParams) {

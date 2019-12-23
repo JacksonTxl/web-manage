@@ -23,7 +23,7 @@
         >
           <span>{{ shop.name }}</span>
           <st-icon
-            type="arrow-right"
+            type="arrow-arc-right"
             class="layout-default-sider__arrow"
           ></st-icon>
         </div>
@@ -49,7 +49,7 @@
         >
           <span>{{ brand.name }}</span>
           <st-icon
-            type="arrow-right"
+            type="arrow-arc-right"
             class="layout-default-sider__arrow"
           ></st-icon>
         </div>
@@ -152,29 +152,25 @@
               <p class="layout-default-body__mobile">{{ user.mobile }}</p>
             </div>
             <a-menu class="layout-default-body__menu">
-              <!-- <a-menu-item class="layout-default-body__options">
-                  <st-icon type="safety"></st-icon>
-                  <span>账号安全</span>
-              </a-menu-item>-->
-              <!-- <a-menu-item class="layout-default-body__options">
-                  <a v-modal-link="{ name: 'brand-switch' }">
-                    <st-icon type="switch"></st-icon>
-                    <span>切换品牌</span>
-                  </a>
-              </a-menu-item>-->
-              <!-- <a-menu-divider/> -->
               <a-menu-item
                 @click="onClickBind"
                 class="layout-default-body__options"
               >
-                <st-icon type="bind-phone" color="#000000"></st-icon>
+                <st-icon type="bind-phone" size="16px"></st-icon>
                 <span>绑定手机号</span>
+              </a-menu-item>
+              <a-menu-item
+                @click="onClickModifyPass"
+                class="layout-default-body__options"
+              >
+                <st-icon type="modify" size="16px"></st-icon>
+                <span>修改密码</span>
               </a-menu-item>
               <a-menu-item
                 @click="onClickLogout"
                 class="layout-default-body__options"
               >
-                <st-icon type="logout"></st-icon>
+                <st-icon type="logout" size="16px"></st-icon>
                 <span>退出</span>
               </a-menu-item>
             </a-menu>
@@ -192,6 +188,7 @@
       </article>
     </main>
     <switch-shop v-model="isShowSwitchShop"></switch-shop>
+    <st-udesk-btn v-show="isShowUdeskBtn" />
   </div>
 </template>
 <script>
@@ -207,13 +204,17 @@ import { entries } from './default#/fast-entry.config'
 import FastEntryMiniProgram from '@/views/biz-modals/fast-entry/mini-program'
 import FastEntryHousekeeper from '@/views/biz-modals/fast-entry/housekeeper'
 import AccountBind from '@/views/biz-modals/account/bind'
+import AccountUnbind from '@/views/biz-modals/account/unbind'
+import AccountModify from '@/views/biz-modals/account/modify'
 import { UdeskService } from '@/services/udesk.service'
+import StUdeskBtn from '@/views/biz-components/udesk-btn/udesk-btn'
 
 export default {
   name: 'SaasLayout',
   components: {
     DefaultSiderMenu,
-    SwitchShop
+    SwitchShop,
+    StUdeskBtn
   },
   serviceInject() {
     return {
@@ -231,7 +232,8 @@ export default {
       theme: this.userService.theme$,
       title: this.titleService.title$,
       urlData: this.userService.urlData$,
-      isThemeStudio: this.userService.isThemeStudio$
+      isThemeStudio: this.userService.isThemeStudio$,
+      isShowUdeskBtn: this.udeskService.isShowUdeskBtn$
     }
   },
   data() {
@@ -244,7 +246,9 @@ export default {
   modals: {
     FastEntryMiniProgram,
     FastEntryHousekeeper,
-    AccountBind
+    AccountBind,
+    AccountUnbind,
+    AccountModify
   },
   computed: {
     breadCrumbs() {
@@ -269,6 +273,20 @@ export default {
     onClickBind() {
       this.$modalRouter.push({
         name: 'account-bind',
+        props: {},
+        on: {}
+      })
+    },
+    onClickUnbind() {
+      this.$modalRouter.push({
+        name: 'account-unbind',
+        props: {},
+        on: {}
+      })
+    },
+    onClickModifyPass() {
+      this.$modalRouter.push({
+        name: 'account-modify',
         props: {},
         on: {}
       })
@@ -367,7 +385,8 @@ export default {
         })
       }
       if (item.open_program === 'udesk') {
-        this.udeskService.showUdesk({ openDialog: true })
+        this.udeskService.setIsShowUdeskBtn(true)
+        this.udeskService.show()
       }
     }
   }

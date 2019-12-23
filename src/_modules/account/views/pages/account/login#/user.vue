@@ -15,6 +15,11 @@
           placeholder="请输入密码"
           v-decorator="decorators.password"
         />
+        <a-input
+          type="password"
+          autocomplete="new-password"
+          style="display: none"
+        />
       </st-form-item>
       <st-form-item class="mg-b0">
         <no-captcha></no-captcha>

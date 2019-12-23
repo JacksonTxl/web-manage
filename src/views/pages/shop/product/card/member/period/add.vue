@@ -1,5 +1,8 @@
 <template>
-  <st-mina-panel class="page-shop-basic-card page-shop-add-period-card">
+  <st-mina-panel
+    responsivePreview
+    class="page-shop-basic-card page-shop-add-period-card"
+  >
     <h5-container slot="preview" fixed>
       <template v-slot:title>
         购卡
@@ -46,7 +49,7 @@
             >
               <template slot="label">
                 支持入场人数
-                <st-help-tooltip id="TBMCDC001" />
+                <st-help-tooltip id="TBMCDC003" />
               </template>
               <a-select
                 v-decorator="decorators.support_member_num"
@@ -352,7 +355,7 @@
 <script>
 import { UserService } from '@/services/user.service'
 import moment from 'moment'
-import { RuleConfig } from '@/constants/rule'
+import { PatternService } from '@/services/pattern.service'
 import { cloneDeep, remove } from 'lodash-es'
 import { AddService } from './add.service'
 import MemberCard from '@/views/biz-components/h5/pages/member-card'
@@ -372,7 +375,7 @@ export default {
   },
   serviceInject() {
     return {
-      rules: RuleConfig,
+      pattern: PatternService,
       addService: AddService,
       userService: UserService
     }
@@ -642,7 +645,7 @@ export default {
         this.rallyPriceIsOk = false
       } else {
         this.rallyPriceIsOk = this.priceValidateRuleText.every(i =>
-          this.rules.number.test(i)
+          this.pattern.NUM_FLOAT(1).test(i)
         )
       }
     },

@@ -25,17 +25,19 @@
     </div>
     <st-hr />
     <div :class="b('section')">
-      <!-- <a-row class="mg-b16">
-        <a-col :span="4" :class="b('title')"> -->
-      <!-- TODO: 本期不实现 -->
-      <!-- <st-button type="primary" class="shop-member-list-button" v-if="auth.export">
-            批量导出
-          </st-button> -->
-      <!-- </a-col>
-        <a-col :span="20" :class="b('actions')"></a-col>
-      </a-row> -->
       <header :class="bHeader('header')">
-        <st-t3 :class="bHeader('title')"></st-t3>
+        <div :class="bHeader('button-wapper')">
+          <st-button
+            type="primary"
+            v-if="auth.export"
+            v-export-excel="{
+              type: 'order/brand',
+              query: $searchQuery
+            }"
+          >
+            全部导出
+          </st-button>
+        </div>
         <div :class="bHeader('actions')">
           <shop-select
             v-model="$searchQuery.shop_id"
@@ -44,10 +46,16 @@
           />
           <st-recent-radio-group
             @change="onChangeDataDays"
-            :value="query"
           ></st-recent-radio-group>
         </div>
       </header>
+      <st-total
+        class="mg-t16"
+        :class="b('total')"
+        :indexs="columns"
+        :dataSource="total"
+        hasTitle
+      ></st-total>
       <st-table
         :loading="loading.getList"
         :columns="columns"
@@ -83,6 +91,7 @@ export default {
     return {
       list: this.orderService.list$,
       page: this.orderService.page$,
+      total: this.orderService.total$,
       auth: this.orderService.auth$,
       chartData: this.orderService.chartData$,
       loading: this.orderService.loading$

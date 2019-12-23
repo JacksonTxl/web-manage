@@ -41,6 +41,14 @@ export interface GroupData {
   group_status: number
   search_where: string
 }
+// size=20&current_page=1
+export interface ShopList {
+  size: number
+  current_page: number
+}
+export interface GetPoster {
+  shop_id: number
+}
 export class GroupBuyApi extends Api {
   /**
    * 新增拼团活动
@@ -123,13 +131,19 @@ export class GroupBuyApi extends Api {
   /**
    * 获取推广海报
    */
-  getPosterInfo(params: { id: number }) {
-    return this.http.get(`/v1/plugin/group_buy/spread/${params.id}`)
+  getPosterInfo(id: number, query: GetPoster) {
+    return this.http.get(`/v1/plugin/group_buy/spread/${id}`, { query })
   }
   /**
    * 获取数据top
    */
   getGroupBuyDataTop(query: number) {
     return this.http.get(`/v1/plugin/group_buy/data_top/${query}`)
+  }
+  /**
+   * 拼团结束
+   */
+  getShopList(query: ShopList, id: number) {
+    return this.http.get(`/v1/plugin/group_buy/shop/${id}`, { query })
   }
 }

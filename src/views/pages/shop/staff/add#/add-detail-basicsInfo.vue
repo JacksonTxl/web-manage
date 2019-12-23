@@ -347,10 +347,9 @@ export default {
   },
   methods: {
     onChangeGetAvatar(imageFiles) {
-      cloneDeep
       this.fileList = cloneDeep(imageFiles)
     },
-    onChangeGetFace() {
+    onChangeGetFace(imageFiles) {
       this.faceList = cloneDeep(imageFiles)
     },
     validatorPassword(rule, value, callback) {

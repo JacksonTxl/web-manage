@@ -246,13 +246,16 @@ export default {
         course_price: team.course_price,
         pay_amount: team.pay_amount
       })
-      data.push({
-        key: 1,
-        course_name: personal.course_name,
-        course_num: personal.course_num,
-        course_price: personal.course_price,
-        pay_amount: personal.pay_amount
-      })
+      if (personal.course_name) {
+        data.push({
+          key: 1,
+          course_name: personal.course_name,
+          course_num: personal.course_num,
+          course_price: personal.course_price,
+          pay_amount: personal.pay_amount
+        })
+      }
+
       return data
     },
     // 范围内课程团体课

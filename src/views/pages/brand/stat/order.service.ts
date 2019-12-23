@@ -14,6 +14,7 @@ export class OrderService {
   chartData$ = new State<object[]>([])
   list$ = new State([])
   page$ = new State({})
+  total$ = new State({})
   loading$ = new State({})
 
   auth$ = this.authService.authMap$({
@@ -68,6 +69,7 @@ export class OrderService {
       tap(res => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+        this.total$.commit(() => res.total)
       })
     )
   }

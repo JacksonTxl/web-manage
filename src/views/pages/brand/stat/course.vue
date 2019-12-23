@@ -52,7 +52,18 @@
     <st-hr />
     <div :class="bPage('section')">
       <header :class="bHeader('header')">
-        <st-t3 :class="bHeader('title')"></st-t3>
+        <div :class="bHeader('button-wapper')">
+          <st-button
+            type="primary"
+            v-if="auth$.export"
+            v-export-excel="{
+              type: 'course/brand',
+              query: $searchQuery
+            }"
+          >
+            全部导出
+          </st-button>
+        </div>
         <div :class="bHeader('actions')">
           <shop-select
             v-model="$searchQuery.shop_id"
@@ -66,7 +77,14 @@
         </div>
       </header>
       <main :class="bPage('mian')" class="mg-t16">
+        <st-total
+          :class="bPage('total')"
+          :indexs="columns"
+          :dataSource="total$"
+          hasTitle
+        ></st-total>
         <st-table
+          class="mg-t16"
           :loading="loading$.getList"
           :columns="columns"
           :scroll="{ x: 800 }"
@@ -98,6 +116,7 @@ export default {
     const {
       list$,
       page$,
+      total$,
       auth$,
       loading$,
       soldChartData$,
@@ -110,6 +129,7 @@ export default {
     return {
       list$,
       page$,
+      total$,
       auth$,
       loading$,
       soldChartData$,

@@ -15,15 +15,9 @@
   </a-input>
 </template>
 <script>
-import { RuleConfig } from '@/constants/rule'
 import { isNumber } from 'lodash-es'
 export default {
   name: 'StInputNumber',
-  serviceInject() {
-    return {
-      rules: RuleConfig
-    }
-  },
   bem: {
     input: 'st-input-number'
   },
@@ -91,11 +85,7 @@ export default {
         case undefined:
         case '':
         case '.':
-          if (this.number) {
-            this.number = this.min > this.number ? this.min : this.number
-          } else {
-            this.number = ''
-          }
+          this.number = ''
           this.triggerChange()
           this.$emit('blur', `${this.number}`)
           break
@@ -119,8 +109,9 @@ export default {
     },
     numberChange(e) {
       // 控制不能输入非数字
+      const PATTERN_NUMBER = /^(\d+(\.\d?)?|\.\d?)$/ // 包含小数的数字  匹配 1.1 / 1. / .1 三种形式
       if (
-        !this.rules.number.test(e.target.value) &&
+        !PATTERN_NUMBER.test(e.target.value) &&
         e.target.value !== '' &&
         e.target.value !== '.'
       ) {

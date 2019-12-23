@@ -22,8 +22,8 @@ export class PersonalConsumeService {
     private authService: AuthService
   ) {}
   @Effect()
-  getConsumeList(params: any) {
-    return this.statApi.getPersonalConsume(params).pipe(
+  getConsumeList(query: any) {
+    return this.statApi.getPersonalConsume(query).pipe(
       tap((res: any) => {
         this.consumeList$.commit(() => res.list)
         this.page$.commit(() => res.page)

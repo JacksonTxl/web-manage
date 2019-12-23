@@ -35,19 +35,22 @@ module.exports = {
       entry: 'src/_modules/app/index.ts',
       template: 'src/_modules/app/index.html',
       filename: 'index.html',
-      chunks: ['chunk-vendors', 'chunk-common', 'runtime~app', 'app']
+      chunks: ['chunk-vendors', 'chunk-common', 'runtime~app', 'app'],
+      inject: false
     },
     account: {
       entry: 'src/_modules/account/index.ts',
       template: 'src/_modules/account/index.html',
       filename: 'account/index.html',
-      chunks: ['chunk-vendors', 'chunk-common', 'runtime~account', 'account']
+      chunks: ['chunk-vendors', 'chunk-common', 'runtime~account', 'account'],
+      inject: false
     },
     ticket: {
       entry: 'src/_modules/ticket/index.ts',
       template: 'src/_modules/ticket/index.html',
       filename: 'ticket/index.html',
-      chunks: ['chunk-vendors', 'chunk-common', 'runtime~ticket', 'ticket']
+      chunks: ['chunk-vendors', 'chunk-common', 'runtime~ticket', 'ticket'],
+      inject: false
     }
   },
   lintOnSave: false,

@@ -1,3 +1,4 @@
+import { AuthService } from '@/services/auth.service'
 import { FlowApi, GetListInput } from './../../../../../api/v1/finance/flow'
 import { UserService } from '@/services/user.service'
 import { Controller, ServiceRoute, Injectable } from 'vue-service-app'
@@ -11,16 +12,26 @@ export class IncomeService implements Controller {
   loading$ = new State({})
   page$ = new State({})
   list$ = new State([])
+  total$ = new State({})
   payType$ = this.userService.getOptions$('finance.pay_channel')
 
-  constructor(private userService: UserService, private api: FlowApi) {}
-
+  constructor(
+    private userService: UserService,
+    private api: FlowApi,
+    private authService: AuthService
+  ) {}
+  // SET_TOTAL(total) {
+  //   let totalData = total
+  //   for()
+  // }
   @Effect()
   getList(params: GetListInput) {
     return this.api.getIncomeListInShop(params).pipe(
       tap((res: any) => {
+        res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+        this.total$.commit(() => res.total)
       })
     )
   }

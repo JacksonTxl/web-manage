@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" media="print" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Ticket</title>
+    <script>
+    var htmlWebpackPlugin = <%= JSON.stringify(htmlWebpackPlugin) %>;
+    </script>
   </head>
   <body id="body">
     <div id="app"></div>
+    <script src="<%= BASE_URL %>pre-utils.js?t=<%= +new Date() %>"></script>
   </body>
 </html>

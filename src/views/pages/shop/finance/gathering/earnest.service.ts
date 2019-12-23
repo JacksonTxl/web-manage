@@ -11,7 +11,7 @@ export class EarnestService implements Controller {
   page$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({
-    add: 'shop:product:product|order'
+    add: 'shop:temporary_payment:bargin|add'
   })
   useStatus$ = this.userService.getOptions$('advance_fee.use_status', {
     addAll: true

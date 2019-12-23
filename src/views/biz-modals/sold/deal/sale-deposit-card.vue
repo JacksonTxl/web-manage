@@ -133,7 +133,8 @@
           <st-form-item class="mg-b12" label="商品价格">
             {{ info.sell_price }}元
           </st-form-item>
-          <st-form-item :class="sale('discounts')" label="优惠券">
+          <!-- NOTE: 功能没有实现完全所以先去掉 -->
+          <!-- <st-form-item :class="sale('discounts')" label="优惠券">
             <div>
               <div :class="sale('discounts-total')">
                 <span>{{ couponText }}</span>
@@ -170,7 +171,7 @@
                 </a-dropdown>
               </div>
             </div>
-          </st-form-item>
+          </st-form-item> -->
           <st-form-item :class="sale('discounts')" label="定金抵扣">
             <div>
               <div :class="sale('discounts-total')">

@@ -26,13 +26,13 @@
       <div :class="course('all-table')">
         <st-form-table>
           <colgroup>
-            <col style="width:26%;" />
-            <col style="width:22%;" />
-            <col style="width:31%;" />
-            <col style="width:21%;" />
+            <col style="width:25%;" />
+            <col style="width:23%;" />
+            <col style="width:33%;" />
+            <col style="width:16%;" />
           </colgroup>
           <tr class="bg-thead">
-            <th class="pl-24">课程类别</th>
+            <th class="pl-9">课程类别</th>
             <th>课程类型</th>
             <th>课程名称</th>
             <th>操作</th>
@@ -53,7 +53,7 @@
                     }"
                     :key="item.course_id"
                   >
-                    <div class="pl-24">{{ item.course_category }}</div>
+                    <div class="pl-9">{{ item.course_category }}</div>
                     <div>{{ item.course_type }}</div>
                     <div>
                       <st-overflow-text
@@ -93,13 +93,13 @@
       <div :class="course('select-table')">
         <st-form-table>
           <colgroup>
-            <col style="width:26%;" />
-            <col style="width:22%;" />
-            <col style="width:31%;" />
-            <col style="width:21%;" />
+            <col style="width:25%;" />
+            <col style="width:23%;" />
+            <col style="width:33%;" />
+            <col style="width:16%;" />
           </colgroup>
           <tr class="bg-thead">
-            <th class="pl-24">课程类别</th>
+            <th class="pl-9">课程类别</th>
             <th>课程类型</th>
             <th>课程名称</th>
             <th>操作</th>
@@ -120,7 +120,7 @@
                     }"
                     :key="item.course_id"
                   >
-                    <div class="pl-24">{{ item.course_category }}</div>
+                    <div class="pl-9">{{ item.course_category }}</div>
                     <div>{{ item.course_type }}</div>
                     <div>
                       <st-overflow-text

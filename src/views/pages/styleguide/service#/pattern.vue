@@ -30,6 +30,12 @@
       <st-form-item label="NUM" required>
         <a-input placeholder="2-6位，整数" v-decorator="rules.num" />
       </st-form-item>
+      <st-form-item label="NUM_FLOAT" required>
+        <a-input
+          placeholder="浮点数，以最多包含一位小数为例"
+          v-decorator="rules.floatNum"
+        />
+      </st-form-item>
       <st-form-item label="MOBILE" required>
         <a-input placeholder="手机号" v-decorator="rules.mobile" />
       </st-form-item>

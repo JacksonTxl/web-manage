@@ -8,7 +8,7 @@ export const ruleOptions = (vm: any) => {
             if (value === undefined || value === '') {
               return '请填写储值卡名称'
             }
-            if (value && !vm.rules.card_name.test(value)) {
+            if (value && !vm.pattern.CN_EN_NUM_SPACE('1-30').test(value)) {
               return '输入的储值卡名称格式错误，请重新输入'
             }
           }
@@ -22,7 +22,7 @@ export const ruleOptions = (vm: any) => {
             if (value === undefined || value === '') {
               return '请填写储值金额'
             }
-            if (value && !vm.rules.number.test(value)) {
+            if (value && !vm.pattern.NUM_FLOAT(1).test(value)) {
               return '输入的储值金额格式错误，请重新输入'
             }
           }
@@ -36,7 +36,7 @@ export const ruleOptions = (vm: any) => {
             if (value === undefined || value === '') {
               return '请填写售卖价格'
             }
-            if (value && !vm.rules.number.test(value)) {
+            if (value && !vm.pattern.NUM_FLOAT(1).test(value)) {
               return '输入的售卖价格格式错误，请重新输入'
             }
           }
@@ -50,7 +50,7 @@ export const ruleOptions = (vm: any) => {
             if (value === undefined || value === '') {
               return '请填写期限'
             }
-            if (value && !vm.rules.number.test(value)) {
+            if (value && !vm.pattern.NUM_FLOAT(1).test(value)) {
               return '输入的期限格式错误，请重新输入'
             }
           }

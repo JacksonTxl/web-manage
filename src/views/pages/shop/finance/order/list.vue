@@ -75,7 +75,10 @@
             >
               业绩拆分
             </a>
-            <a @click="printOrder(record.id)">
+            <a
+              v-if="record.auth['shop:order:order|print']"
+              @click="printOrder(record.id)"
+            >
               打印小票
             </a>
           </st-table-actions>

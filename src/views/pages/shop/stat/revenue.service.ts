@@ -10,6 +10,10 @@ export class RevenueService implements Controller {
   page$ = new State({})
   loading$ = new State({})
   todayInfo$ = new State([])
+  total$ = new State({})
+  auth$ = this.authService.authMap$({
+    export: 'brand_shop:stat:revenue_reports|batch_export'
+  })
   authTabs$ = this.authService.getAuthTabs$('shop-stat-revenue')
   constructor(
     private StatApi: StatApi,
@@ -22,6 +26,7 @@ export class RevenueService implements Controller {
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+        this.total$.commit(() => res.total)
       })
     )
   }
