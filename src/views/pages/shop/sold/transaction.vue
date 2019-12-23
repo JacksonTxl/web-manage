@@ -26,6 +26,11 @@ export default {
     return {
       authTabs: this.transactionService.authTabs$
     }
+  },
+  computed: {
+    isShowSearch() {
+      return !this.authTabs.includes('shop-sold-transaction-store')
+    }
   }
 }
 </script>

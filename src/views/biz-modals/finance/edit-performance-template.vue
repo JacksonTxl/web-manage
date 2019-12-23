@@ -150,10 +150,12 @@
                   <tr v-if="data.length < 5">
                     <td>
                       <st-input-number
-                        :float="true"
+                        :float="
+                          performance_type != PERFORMANCE.PERFORMANCE_TYPE_3
+                        "
                         :min="0"
                         :max="999.9"
-                        placeholder="请输入月销售额"
+                        :placeholder="placeholderGradient"
                         v-model="gradients.range_min"
                       />
                     </td>
@@ -162,11 +164,12 @@
                         :float="true"
                         :min="0"
                         :max="
+                          isChooseks &&
                           performance_mode == PERFORMANCE.PERFORMANCE_MODE_1
                             ? 100
                             : 999999
                         "
-                        placeholder="请输入提成"
+                        :placeholder="placeholderGradientFee"
                         v-model="gradients.royalty_num"
                       />
                     </td>
@@ -179,10 +182,29 @@
                     <tr :key="index">
                       <template v-if="item.isEdit">
                         <td>
-                          <a-input v-model="item.range_min" />
+                          <st-input-number
+                            :float="
+                              performance_type != PERFORMANCE.PERFORMANCE_TYPE_3
+                            "
+                            :min="0"
+                            :max="999.9"
+                            :placeholder="placeholderGradient"
+                            v-model="item.range_min"
+                          />
                         </td>
                         <td>
-                          <a-input v-model="item.royalty_num" />
+                          <st-input-number
+                            :float="true"
+                            :min="0"
+                            :max="
+                              isChooseks &&
+                              performance_mode == PERFORMANCE.PERFORMANCE_MODE_1
+                                ? 100
+                                : 999999
+                            "
+                            :placeholder="placeholderGradientFee"
+                            v-model="item.royalty_num"
+                          />
                         </td>
                       </template>
                       <template v-else>
@@ -274,6 +296,38 @@ export default {
   props: {
     id: Number
   },
+  computed: {
+    placeholderGradient() {
+      if (this.performance_type == this.PERFORMANCE.PERFORMANCE_TYPE_1) {
+        return '请输入月销售额'
+      }
+      if (this.performance_type == this.PERFORMANCE.PERFORMANCE_TYPE_2) {
+        return '请输入月课时价值'
+      }
+      if (this.performance_type == this.PERFORMANCE.PERFORMANCE_TYPE_3) {
+        return '请输入月课时数'
+      }
+      return '请输入'
+    },
+    errorMessageTip() {
+      if (this.performance_type == this.PERFORMANCE.PERFORMANCE_TYPE_1) {
+        return '月销售额不能重复'
+      }
+      if (this.performance_type == this.PERFORMANCE.PERFORMANCE_TYPE_2) {
+        return '月课时价值不能重复'
+      }
+      if (this.performance_type == this.PERFORMANCE.PERFORMANCE_TYPE_3) {
+        return '月课时数不能重复'
+      }
+      return '请输入'
+    },
+    placeholderGradientFee() {
+      if (this.performance_type == this.PERFORMANCE.PERFORMANCE_TYPE_3) {
+        return '请输入课时费'
+      }
+      return '请输入月销售额'
+    }
+  },
   mounted() {
     this.service.getInfo(this.id).subscribe(res => {
       this.infodata = res.info
@@ -304,17 +358,42 @@ export default {
       }
     },
     submitEdit(e) {
+      let range_min = this.data[e].range_min
+      let royalty_num = this.data[e].royalty_num
       if (!this.data[e].range_min || !this.data[e].royalty_num) {
         this.message.warning({ content: '请填写完整' })
         return
       }
+      if (this.performance_type == this.PERFORMANCE.PERFORMANCE_TYPE_3) {
+        range_min = parseInt(range_min)
+      } else {
+        range_min = parseFloat(range_min).toFixed(1)
+      }
+      royalty_num = parseFloat(royalty_num).toFixed(1)
+      const arr = this.data.filter(
+        (item, index) => item.range_min === range_min && index !== e
+      )
+      if (arr.length > 0) {
+        this.message.warning({ content: this.errorMessageTip })
+        return
+      }
+      this.data[e].range_min = range_min
+      this.data[e].royalty_num = royalty_num
+      delete this.data[e].range_min_bak
+      delete this.data[e].royalty_num_bak
       this.data[e].isEdit = false
     },
     cancelEdit(e) {
       this.data[e].isEdit = false
+      this.data[e].range_min = this.data[e].range_min_bak
+      this.data[e].royalty_num = this.data[e].royalty_num_bak
+      delete this.data[e].range_min_bak
+      delete this.data[e].royalty_num_bak
     },
     editPerformanceNum(e) {
       this.data[e].isEdit = true
+      this.data[e].range_min_bak = this.data[e].range_min
+      this.data[e].royalty_num_bak = this.data[e].royalty_num
     },
     deletePerformanceNum(e) {
       this.data.splice(e, 1)
@@ -324,6 +403,18 @@ export default {
       let { range_min, royalty_num } = this.gradients
       if (!range_min || !royalty_num) {
         this.message.warning({ content: '请填写完整' })
+        return
+      }
+      if (this.performance_type == this.PERFORMANCE.PERFORMANCE_TYPE_3) {
+        range_min = parseInt(range_min)
+      } else {
+        range_min = parseFloat(range_min).toFixed(1)
+      }
+      royalty_num = parseInt(royalty_num)
+
+      const arr = this.data.filter(item => item.range_min === range_min)
+      if (arr.length > 0) {
+        this.message.warning({ content: this.errorMessageTip })
         return
       }
       this.data.push({

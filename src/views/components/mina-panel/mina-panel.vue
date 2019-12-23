@@ -1,6 +1,6 @@
 <template>
-  <div :class="b({ initial })">
-    <div v-if="$slots.preview" :class="b('preview')">
+  <div :class="b({ initial, 'responsive-preview': responsivePreview })">
+    <div v-if="isShowPreview" :class="b('preview')">
       <slot name="preview"></slot>
     </div>
     <a-row>
@@ -28,6 +28,10 @@ export default {
   name: 'StMinaPanel',
   props: {
     initial: {
+      type: Boolean,
+      default: false
+    },
+    responsivePreview: {
       type: Boolean,
       default: false
     }
@@ -59,6 +63,9 @@ export default {
     }
   },
   computed: {
+    isShowPreview() {
+      return this.$slots.preview
+    },
     actionStyle() {
       if (!this.isActionFixed) {
         return {}
@@ -71,10 +78,12 @@ export default {
     if (this.footerEl) {
       this.handleActionsPosition()
       window.addEventListener('scroll', this.handleActionsPosition, false)
+      window.addEventListener('resize', this.handleActionsPosition, false)
     }
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleActionsPosition, false)
+    window.removeEventListener('resize', this.handleActionsPosition, false)
   }
 }
 </script>

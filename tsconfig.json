@@ -26,7 +26,7 @@
     "src/**/*.vue",
     "src/**/*.png",
     "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "tests/**/*.tsx", "src/views/pages/brand/finance/salary/.config.ts"
   ],
   "exclude": ["node_modules", "vue-service-app", "rx-state"]
 }

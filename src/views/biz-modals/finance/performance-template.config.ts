@@ -1,7 +1,7 @@
 export const ruleOptions = (vm: any) => {
   return {
     template_name: {
-      rules: [{ required: true, message: '请输入模板名称', max: 15 }]
+      rules: [{ required: true, message: '请输入正确模板名称', max: 15 }]
     },
     performance_type: {
       initialValue: 1,
