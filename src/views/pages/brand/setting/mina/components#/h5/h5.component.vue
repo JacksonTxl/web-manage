@@ -121,9 +121,8 @@
             </div>
           </div>
           <div v-if="index === 3">
-            <p>推荐小班课</p>
             <swiper :options="swiperOption">
-              <swiper-slide v-for="(li, index) in recommend2" :key="index">
+              <swiper-slide v-for="(li, index) in recommend4" :key="index">
                 <img :src="li" />
               </swiper-slide>
             </swiper>
@@ -153,6 +152,11 @@ import course5 from '@/assets/img/brand/setting/mina/course5.png'
 import course6 from '@/assets/img/brand/setting/mina/course6.png'
 import course7 from '@/assets/img/brand/setting/mina/course7.png'
 import course8 from '@/assets/img/brand/setting/mina/course8.png'
+import small1 from '@/assets/img/brand/setting/mina/small1.png'
+import small2 from '@/assets/img/brand/setting/mina/small2.png'
+import small3 from '@/assets/img/brand/setting/mina/small3.png'
+import small4 from '@/assets/img/brand/setting/mina/small4.png'
+import small5 from '@/assets/img/brand/setting/mina/small5.png'
 import coursepack1 from '@/assets/img/brand/setting/mina/coursepack1.png'
 import coursepack2 from '@/assets/img/brand/setting/mina/coursepack2.png'
 import coursepack3 from '@/assets/img/brand/setting/mina/coursepack3.png'
@@ -218,6 +222,7 @@ export default {
       recommend1: [],
       recommend2: [],
       recommend3: [],
+      recommend4: [],
       sliderOptions: {
         autoplay: {
           delay: 1500,
@@ -247,6 +252,7 @@ export default {
     ]
     this.recommend2 = this.recommend1.slice(0).reverse()
     this.recommend3 = [coursepack1, coursepack2, coursepack3, coursepack4]
+    this.recommend4 = [small1, small2, small3, small4, small5]
   },
   methods: {
     imageFilter(key, opts) {
