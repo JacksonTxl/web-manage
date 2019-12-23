@@ -1,9 +1,9 @@
 import { Injectable } from 'vue-service-app'
-import { CourseGroupApi } from '@/api/v1/course/group'
+import { CourseGroupApi } from '@/api/v1/course/small_course'
 import { Effect, State } from 'rx-state'
 
 @Injectable()
-export class GroupUserClassSignService {
+export class GroupUserClassTruancyService {
   courseTypeList$ = new State({})
   loading$ = new State({})
   constructor(private courseGroupApi: CourseGroupApi) {}

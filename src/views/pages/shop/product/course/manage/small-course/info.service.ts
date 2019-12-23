@@ -1,7 +1,7 @@
 import { State, Computed } from 'rx-state'
 import { Controller, ServiceRoute, Injectable } from 'vue-service-app'
 import { tap, pluck } from 'rxjs/operators'
-import { CourseGroupApi } from '@/api/v1/course/group'
+import { CourseGroupApi } from '@/api/v1/course/small_course'
 @Injectable()
 export class InfoService {
   groupCourseHeaderInfo$ = new State({})
@@ -18,6 +18,9 @@ export class InfoService {
   }
   beGroup(params: any) {
     return this.groupApi.beGroup(params)
+  }
+  publish(params: any) {
+    return this.groupApi.publish(params)
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     const courseId = to.query.courseId as string

@@ -1,7 +1,7 @@
 import { State, Computed } from 'rx-state'
 import { Controller, ServiceRoute, Injectable } from 'vue-service-app'
 import { tap, pluck } from 'rxjs/operators'
-import { CourseGroupApi } from '@/api/v1/course/group'
+import { CourseGroupApi } from '@/api/v1/course/small_course'
 @Injectable()
 export class BasicService {
   groupInfo$ = new State({})

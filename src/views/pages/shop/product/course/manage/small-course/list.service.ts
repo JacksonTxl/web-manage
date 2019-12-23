@@ -2,7 +2,7 @@ import { Controller, ServiceRoute, Injectable } from 'vue-service-app'
 import { State } from 'rx-state'
 import { tap, map } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
-import { CourseGroupApi } from '@/api/v1/course/group'
+import { CourseGroupApi } from '@/api/v1/course/small_course'
 import { AuthService } from '@/services/auth.service'
 import { RedirectService } from '@/services/redirect.service'
 import { CourseApi } from '@/api/v1/special/course'
@@ -32,7 +32,7 @@ export class ListService implements Controller {
   getList(params: any) {
     return this.courseGroupApi.getList(params).pipe(
       tap(res => {
-        res = this.authService.filter(res)
+        // res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })

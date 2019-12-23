@@ -42,6 +42,12 @@
       <a slot="course_arrangement" slot-scope="text, record">
         {{ record.course_arrangement }}
       </a>
+      <span slot="small_course_type" slot-scope="text, record">
+        {{ record.small_course_type ? '固定排课' : '自主排课' }}
+      </span>
+      <span slot="course_status" slot-scope="text, record">
+        {{ record.class_status | enumFilter('small_course.class_status') }}
+      </span>
       <template slot="action" slot-scope="text, record">
         <st-table-actions>
           <a @click="onGoDetail(record)">
@@ -92,7 +98,7 @@
 <script>
 import { ListService } from './list.service'
 import { columns } from './list.config'
-import { CLASS_STATUS } from '@/constants/course/group'
+import { CLASS_STATUS } from '@/constants/course/small-course'
 
 export default {
   name: 'GroupCourseList',
@@ -125,9 +131,6 @@ export default {
   methods: {
     goAddGroup() {
       this.$router.push({ path: './add-select' })
-    },
-    onClickAddCourse() {
-      this.$router.push({ name: 'shop-product-course-manage-team-add' })
     },
     onSearchCourseName(val) {
       this.$router.push({

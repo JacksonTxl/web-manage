@@ -19,9 +19,9 @@
   </st-modal>
 </template>
 <script>
-import { GroupUserClassSignService } from './group-class-sign.service'
+import { GroupUserClassSignService } from './small-course-sign.service'
 export default {
-  name: 'GroupClass',
+  name: 'SmallCourseSign',
   bem: {
     b: 'modal-course-group-class'
   },

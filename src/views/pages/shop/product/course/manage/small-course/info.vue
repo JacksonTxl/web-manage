@@ -57,7 +57,11 @@
                 删除
               </st-popconfirm>
             </a-menu-item>
-            <a-menu-item key="2" v-if="CLASS_STATUS.UNPUBLISH">
+            <a-menu-item
+              key="2"
+              v-if="CLASS_STATUS.UNPUBLISH"
+              @click="onPublish"
+            >
               发布
             </a-menu-item>
           </a-menu>
@@ -123,7 +127,7 @@
 </template>
 <script>
 import { InfoService } from './info.service'
-import { CLASS_STATUS } from '@/constants/course/group'
+import { CLASS_STATUS } from '@/constants/course/small-course'
 export default {
   bem: {
     b: 'page-group-course-info'
@@ -153,14 +157,14 @@ export default {
         {
           label: '基础信息',
           route: {
-            name: 'shop-product-course-manage-group-info-basic',
+            name: 'shop-product-course-manage-small-course-info-basic',
             query: { courseId: this.$searchQuery.courseId }
           }
         },
         {
           label: '班级信息',
           route: {
-            name: 'shop-product-course-manage-group-info-class',
+            name: 'shop-product-course-manage-small-course-info-class',
             query: { courseId: this.$searchQuery.courseId }
           }
         }
@@ -176,7 +180,7 @@ export default {
     },
     onGoEdit() {
       this.$router.push({
-        path: '/shop/product/course/manage/group/edit',
+        path: '/shop/product/course/manage/small-course/edit',
         query: {
           id: this.groupCourseHeaderInfo.course_id
         }
@@ -192,6 +196,13 @@ export default {
     onDelGroup() {
       this.infoService
         .deleteGroup(this.groupCourseHeaderInfo.course_id)
+        .subscribe(() => {
+          this.$router.reload()
+        })
+    },
+    onPublish() {
+      this.infoService
+        .publish(this.groupCourseHeaderInfo.course_id)
         .subscribe(() => {
           this.$router.reload()
         })

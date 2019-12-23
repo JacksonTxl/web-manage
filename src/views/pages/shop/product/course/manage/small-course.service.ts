@@ -5,9 +5,9 @@ export class GroupService implements Controller {
   constructor(private redirectService: RedirectService) {}
   beforeEach() {
     return this.redirectService.redirect({
-      locateRouteName: 'shop-product-course-manage-group',
+      locateRouteName: 'shop-product-course-manage-small-course',
       redirectRoute: {
-        name: 'shop-product-course-manage-group-list'
+        name: 'shop-product-course-manage-small-course-list'
       }
     })
   }

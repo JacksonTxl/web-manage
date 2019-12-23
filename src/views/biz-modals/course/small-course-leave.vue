@@ -1,8 +1,8 @@
 <template>
-  <st-modal title="旷课情况" :footer="null" v-model="show">
+  <st-modal title="请假情况" :footer="null" v-model="show">
     <div :class="b('left')">
       <div :class="b('item')" class="bg-gray">
-        旷课课程
+        请假课程
       </div>
       <div
         :class="b('item')"
@@ -57,15 +57,15 @@
   </st-modal>
 </template>
 <script>
-import { GroupUserClassTruancyService } from './group-class-truancy.service'
+import { GroupUserClassLeaveService } from './small-course-leave.service'
 export default {
-  name: 'GroupClass',
+  name: 'SmallCourseLeave',
   bem: {
     b: 'modal-course-group-class'
   },
   serviceInject() {
     return {
-      groupUserClassTruancyService: GroupUserClassTruancyService
+      groupUserClassLeaveService: GroupUserClassLeaveService
     }
   },
   data() {
@@ -89,7 +89,7 @@ export default {
         member_id: this.memberId,
         class_type: this.type
       }
-      return this.groupUserClassTruancyService
+      return this.groupUserClassLeaveService
         .getCourseGroupClassUserInfo(para)
         .subscribe(res => {
           this.list = res.list

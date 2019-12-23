@@ -8,7 +8,7 @@
       <div slot="leave_class_hours" slot-scope="text, record">
         <a
           v-modal-link="{
-            name: 'course-group-class-leave',
+            name: 'course-small-course-leave',
             props: { type: 1, memberId: record.member_id }
           }"
         >
@@ -18,7 +18,7 @@
       <div slot="truancy_class_hours" slot-scope="text, record">
         <a
           v-modal-link="{
-            name: 'course-group-class-truancy',
+            name: 'course-small-course-truancy',
             props: { type: 2, memberId: record.member_id }
           }"
         >
@@ -28,7 +28,7 @@
       <div slot="sign_class_hours" slot-scope="text, record">
         <a
           v-modal-link="{
-            name: 'course-group-class-sign',
+            name: 'course-small-course-sign',
             props: { type: 3, memberId: record.member_id }
           }"
         >
@@ -41,9 +41,9 @@
 <script>
 import { classColumns } from '../info#table.config'
 import { ClassService } from './class.service'
-import CourseGroupClassLeave from '@/views/biz-modals/course/group-class-leave'
-import CourseGroupClassTruancy from '@/views/biz-modals/course/group-class-truancy'
-import CourseGroupClassSign from '@/views/biz-modals/course/group-class-sign'
+import CourseSmallCourseLeave from '@/views/biz-modals/course/small-course-leave'
+import CourseSmallCourseTruancy from '@/views/biz-modals/course/small-course-truancy'
+import CourseSmallCourseSign from '@/views/biz-modals/course/small-course-sign'
 
 export default {
   name: 'GroupCourseClassInfo',
@@ -58,9 +58,9 @@ export default {
     }
   },
   modals: {
-    CourseGroupClassLeave,
-    CourseGroupClassTruancy,
-    CourseGroupClassSign
+    CourseSmallCourseLeave,
+    CourseSmallCourseTruancy,
+    CourseSmallCourseSign
   },
   data() {
     return {

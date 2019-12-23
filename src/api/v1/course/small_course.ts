@@ -57,4 +57,10 @@ export class CourseGroupApi extends Api {
   getCourseEditInfo(query: any) {
     return this.http.get(`/v1/course/small/edit/${query.id}`)
   }
+  /*
+   * 小班课发布
+   */
+  publish(params: any) {
+    return this.http.put('/v1/course/small/release/' + params)
+  }
 }
