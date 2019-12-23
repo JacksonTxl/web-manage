@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import { SHOP_STORE_ORDER_KEYWORDS_SEARCH } from '@/constants/events'
 import { ListService } from './list.service'
 export default {
   serviceInject() {
@@ -22,9 +21,6 @@ export default {
       authTabs: this.listService.authTabs$
     }
   },
-  mounted() {},
-  data() {
-    return { SHOP_STORE_ORDER_KEYWORDS_SEARCH }
-  }
+  mounted() {}
 }
 </script>
