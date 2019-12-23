@@ -28,7 +28,7 @@
 
 <script>
 import Calendar from '@/views/biz-components/schedule/calendar'
-import { SmallCourseScheduleService } from '@/views/pages/shop/product/course/schedule/small-course/service#/schedule.service'
+import { SmallCourseScheduleService } from './service#/schedule.service'
 
 // 添加排期
 import ScheduleSmallCourseAddCourse from '@/views/biz-modals/schedule/small-course/add-course'
@@ -51,7 +51,7 @@ export default {
   rxState() {
     return {
       auth: this.service.auth$,
-      cardList: this.smallCourseScheduleService.scheduleTeamCourseList$
+      cardList: this.smallCourseScheduleService.scheduleSmallCourseList$
     }
   },
   components: {
@@ -90,7 +90,7 @@ export default {
     onDetail(info) {
       console.log(info)
       this.$modalRouter.push({
-        name: 'schedule-mini-team-reserve-info',
+        name: 'schedule-small-course-reserve-info',
         props: {
           id: info.id
         },
@@ -118,7 +118,7 @@ export default {
     // 进入表格模式
     onGetTable() {
       this.$router.push({
-        name: 'shop-product-course-schedule-mini-team-mini-team-table',
+        name: 'shop-product-course-schedule-small-course-small-course-table',
         query: this.$searchQuery
       })
     },

@@ -211,12 +211,14 @@ import { PersonalTeamScheduleCommonService as CommonService } from '@/views/page
 import { PersonalTeamScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/reserve.service'
 import { PersonalTeamScheduleScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/schedule.service'
 import ScheduleSmallCourseReservedCourse from '@/views/biz-modals/schedule/small-course/reserved-course'
+import ScheduleSmallCourseRemedialCourse from '@/views/biz-modals/schedule/small-course/remedial-course'
 
 import { columns } from './reserve-info.config'
 export default {
   name: 'ReserveInfo',
   modals: {
-    ScheduleSmallCourseReservedCourse
+    ScheduleSmallCourseReservedCourse,
+    ScheduleSmallCourseRemedialCourse
   },
   serviceInject() {
     return {
@@ -298,6 +300,19 @@ export default {
       this.consumeId = obj.id
     },
     addReserve() {
+      // 暂时添加补课
+      // this.show = false
+      // this.$modalRouter.push({
+      //   name: 'schedule-small-course-remedial-course',
+      //   props: {
+      //     info: this.reserveInfo
+      //   },
+      //   on: {
+      //     ok: () => {
+      //       this.$router.push({ query: this.$searchQuery })
+      //     }
+      //   }
+      // })
       const form = {
         schedule_id: this.id,
         member_id: this.memberId,

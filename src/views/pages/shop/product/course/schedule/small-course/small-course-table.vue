@@ -193,7 +193,7 @@ export default {
     },
     onClickSkipSchedule() {
       this.$router.push({
-        name: 'shop-product-course-schedule-mini-team',
+        name: 'shop-product-course-schedule-small-course',
         query: this.$searchQuery
       })
     },

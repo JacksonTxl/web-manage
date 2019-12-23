@@ -12,13 +12,13 @@ import { tap, pluck } from 'rxjs/operators'
 import { MessageService } from '@/services/message.service'
 
 export interface SetState {
-  scheduleTeamCourseList: any[]
+  scheduleSmallCourseList: any[]
   scheduleTable: any[]
 }
 @Injectable()
 export class SmallCourseScheduleService {
   state$: State<SetState>
-  scheduleTeamCourseList$: Computed<any>
+  scheduleSmallCourseList$: Computed<any>
   scheduleTable$: Computed<any>
   refresh$: Computed<any>
   loading$ = new State({})
@@ -28,16 +28,16 @@ export class SmallCourseScheduleService {
     private msg: MessageService
   ) {
     this.state$ = new State({
-      scheduleTeamCourseList: [],
+      scheduleSmallCourseList: [],
       scheduleTable: [],
       refresh: 0
     })
-    this.scheduleTeamCourseList$ = new Computed(
-      this.state$.pipe(pluck('scheduleTeamCourseList'))
+    this.scheduleSmallCourseList$ = new Computed(
+      this.state$.pipe(pluck('scheduleSmallCourseList'))
     )
     this.scheduleTable$ = new Computed(this.state$.pipe(pluck('scheduleTable')))
     this.refresh$ = new Computed(
-      this.state$.pipe(pluck('scheduleTeamCourseList'))
+      this.state$.pipe(pluck('scheduleSmallCourseList'))
     )
   }
   /**
@@ -51,7 +51,7 @@ export class SmallCourseScheduleService {
       tap(res => {
         res = this.authService.filter(res)
         this.state$.commit(state => {
-          state.scheduleTeamCourseList = res.list
+          state.scheduleSmallCourseList = res.list
           // .map((item: any) => {
           //   let end_date = ''
           //   if (moment(`${item.start_date} ${item.start_time}`).valueOf() >= moment(`${item.start_date} ${item.end_time}`).valueOf()) {
