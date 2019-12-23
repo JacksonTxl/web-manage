@@ -1,4 +1,7 @@
 .shop-store-add {
+  &__img {
+    float: left;
+  }
   &__sku--add {
     border: 1px dashed #cdd4df;
     text-align: center;
@@ -29,12 +32,12 @@
   &__class--manage {
     line-height: 32px;
   }
-}
-.test_item {
-  display: none;
-}
-.test:hover {
-  .test_item {
-    display: inline-block;
+  &__apply--all {
+    display: none;
+  }
+  &__apply:hover {
+    .shop-store-add__apply--all {
+      display: inline-block;
+    }
   }
 }
