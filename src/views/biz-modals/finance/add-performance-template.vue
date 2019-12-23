@@ -307,6 +307,18 @@ export default {
       }
       return '请输入'
     },
+    errorMessageTip() {
+      if (this.performance_type == this.PERFORMANCE.PERFORMANCE_TYPE_1) {
+        return '月销售额不能重复'
+      }
+      if (this.performance_type == this.PERFORMANCE.PERFORMANCE_TYPE_2) {
+        return '月课时价值不能重复'
+      }
+      if (this.performance_type == this.PERFORMANCE.PERFORMANCE_TYPE_3) {
+        return '月课时数不能重复'
+      }
+      return '请输入'
+    },
     placeholderGradientFee() {
       if (this.performance_type == this.PERFORMANCE.PERFORMANCE_TYPE_3) {
         return '请输入课时费'
@@ -339,11 +351,15 @@ export default {
         range_min = parseFloat(range_min).toFixed(1)
       }
       royalty_num = parseFloat(royalty_num).toFixed(1)
-      const arr = this.data.filter(item => item.range_min === range_min)
-      if (arr.length > 1) {
-        this.message.warning({ content: '月销售额不能重复' })
+      const arr = this.data.filter(
+        (item, index) => item.range_min === range_min && index !== e
+      )
+      if (arr.length > 0) {
+        this.message.warning({ content: this.errorMessageTip })
         return
       }
+      this.data[e].range_min = range_min
+      this.data[e].royalty_num = royalty_num
       delete this.data[e].range_min_bak
       delete this.data[e].royalty_num_bak
       this.data[e].isEdit = false
@@ -378,7 +394,7 @@ export default {
       royalty_num = parseFloat(royalty_num).toFixed(1)
       const arr = this.data.filter(item => item.range_min === range_min)
       if (arr.length > 0) {
-        this.message.warning({ content: '月销售额不能重复' })
+        this.message.warning({ content: this.errorMessageTip })
         return
       }
       this.data.push({
