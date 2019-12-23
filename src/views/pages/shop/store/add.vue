@@ -2,7 +2,7 @@
   <st-mina-panel app>
     <div slot="actions">
       <!-- :loading="confirmLoading"  -->
-      <st-button type="primary" @click="onSubmit">
+      <st-button type="primary" :loading="loading.addGoods" @click="onSubmit">
         保 存
       </st-button>
     </div>
@@ -34,11 +34,11 @@
                 placeholder="请选择"
               >
                 <a-select-option
-                  :value="item.id"
+                  :value="item.category_id"
                   v-for="(item, index) in classList"
                   :key="index"
                 >
-                  {{ item.name }}
+                  {{ item.category_name }}
                 </a-select-option>
               </a-select>
             </st-form-item>
@@ -68,11 +68,12 @@
                 </li>
               </ul>
               <st-image-upload
-                class="mg-r12"
+                class="mg-t12"
                 width="126px"
                 height="126px"
+                g
                 :list="fileList"
-                @change="onShareChangeGetImage"
+                @change="getImage"
                 :numLimit="5"
                 placeholder="上传图片"
               >
@@ -283,7 +284,8 @@ export default {
   },
   rxState() {
     return {
-      loading: this.addService.loading$
+      loading: this.addService.loading$,
+      classList: this.addService.list$
     }
   },
   modals: { StoreClassManage, StoreAddSku },
@@ -305,12 +307,6 @@ export default {
       decorators,
       isEdit: false,
       name: '', // 商品名称
-      classList: [
-        // 分类列表
-        { name: '1', id: 1 },
-        { name: '2', id: 2 },
-        { name: '3', id: 3 }
-      ],
       isMore: 1, // 是否是多规格
       tableData: [
         {
@@ -427,11 +423,12 @@ export default {
         product_images: this.imgList, // 商品图片
         product_intro: this.content, // 商品介绍
         product_sku: product_sku, // 规格设置
-        shelves_status: this.shelves_status // 上架状态
-        // product_name: values.product_name, // 商品名称
-        // category_id: values.category_id, // 分类id
-        // delivery_type: values.delivery_type, // 配送方式
-        // sale_type: values.sale_type // 售卖方式
+        shelves_status: this.shelves_status, // 上架状态
+        product_name: values.product_name, // 商品名称
+        category_id: values.category_id, // 分类id
+        delivery_type:
+          values.delivery_type.length === 2 ? -1 : values.delivery_type[0], // 配送方式
+        sale_type: values.sale_type.length === 2 ? -1 : values.sale_type[0] // 售卖方式
       }
       console.log(data, '-----参数')
       this.addService.addGoods(data).subscribe(res => {
@@ -593,6 +590,7 @@ export default {
       }
     },
     getImageUrl(imageUrl) {
+      g
       const imgEl = `<img src='${imageUrl.url}' width='400' height='400'>`
       this.content = this.content + imgEl
     },
@@ -600,7 +598,8 @@ export default {
       this.isEditor = this.content.length === 0
       return this.content.length === 0
     },
-    onShareChangeGetImage(data) {
+    getImage(data) {
+      console.log(data, '这是图片返回的数据')
       this.imgList.push({
         image_id: data[0].image_id,
         image_key: data[0].image_key,
