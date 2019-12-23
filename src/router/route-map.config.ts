@@ -931,7 +931,7 @@ export const routeMapConfig = {
     routeConfig.meta.parentRouteName =
       'shop-product-course-schedule-small-course'
   },
-  'shop-product-course-manage-group-list'(routeConfig: RouteConfig) {
+  'shop-product-course-manage-small-course-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '小班课'
     routeConfig.queryOptions = {
       course_status: { type: Number, default: -1 },
@@ -940,16 +940,20 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
-  'shop-product-course-manage-group-add'(routeConfig: RouteConfig) {
+  'shop-product-course-manage-small-course-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '添加小班课'
   },
-  'shop-product-course-manage-group-edit'(routeConfig: RouteConfig) {
+  'shop-product-course-manage-small-course-edit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑小班课'
   },
-  'shop-product-course-manage-group-info-basic'(routeConfig: RouteConfig) {
+  'shop-product-course-manage-small-course-info-basic'(
+    routeConfig: RouteConfig
+  ) {
     routeConfig.meta.title = '小班课详情'
   },
-  'shop-product-course-manage-group-info-class'(routeConfig: RouteConfig) {
+  'shop-product-course-manage-small-course-info-class'(
+    routeConfig: RouteConfig
+  ) {
     routeConfig.meta.title = '小班课详情'
   },
   'shop-product-course-manage-team-list'(routeConfig: RouteConfig) {

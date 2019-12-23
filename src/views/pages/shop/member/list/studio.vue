@@ -127,14 +127,17 @@
         </span>
       </div>
       <div slot="member_name" slot-scope="text, record">
-        <a
-          href="javascript:;"
-          v-if="record.auth['shop:member:member|get']"
-          @click="infoFunc(record)"
-        >
-          {{ text }}
-        </a>
-        <span v-else>{{ text }}</span>
+        {{ record.member_name }}
+        <st-icon
+          type="user-type"
+          v-if="record.sex === 2 && record.is_minors"
+          color="#3F66F6"
+        />
+        <st-icon
+          type="user-type"
+          v-if="record.sex === 1 && record.is_minors"
+          color="#FF5E41"
+        />
       </div>
       <div slot="action" slot-scope="text, record">
         <st-table-actions>
@@ -144,10 +147,7 @@
           >
             详情
           </a>
-          <a
-            v-if="record.auth['shop:member:member|edit']"
-            @click="edit(record)"
-          >
+          <a @click="edit(record)">
             编辑
           </a>
           <a
@@ -213,6 +213,10 @@
           >
             解除微信绑定
           </a>
+          <!-- TODO: 权限 -->
+          <a @click="onChangeUserType(record)">
+            变更用户类型
+          </a>
         </st-table-actions>
       </div>
     </st-table>
@@ -229,6 +233,7 @@ import ShopAddLable from '@/views/biz-modals/shop/add-lable'
 import ShopBindingEntityCard from '@/views/biz-modals/shop/binding-entity-card'
 import ShopDistributionCoach from '@/views/biz-modals/shop/distribution-coach'
 import ShopDistributionSale from '@/views/biz-modals/shop/distribution-sale'
+import ShopChangeUserType from '@/views/biz-modals/shop/change-user-type'
 import ShopFrozen from '@/views/biz-modals/shop/frozen'
 import ShopMissingCard from '@/views/biz-modals/shop/missing-card'
 export default {
@@ -240,7 +245,8 @@ export default {
     ShopDistributionCoach,
     ShopDistributionSale,
     ShopFrozen,
-    ShopMissingCard
+    ShopMissingCard,
+    ShopChangeUserType
   },
   serviceInject() {
     return {
@@ -370,6 +376,19 @@ export default {
             })
         },
         onCancel() {}
+      })
+    },
+    onChangeUserType(record) {
+      this.$modalRouter.push({
+        name: 'shop-change-user-type',
+        props: {
+          info: record
+        },
+        on: {
+          success: () => {
+            this.refeshPage()
+          }
+        }
       })
     },
     edit(record) {

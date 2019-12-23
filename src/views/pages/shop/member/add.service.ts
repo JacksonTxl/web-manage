@@ -17,6 +17,7 @@ export class AddService extends Store<AddState> {
   state$: State<AddState>
   countryInfo$: Computed<Object>
   nations$: Computed<Object>
+  parent_info$: Computed<Object>
   countryList$: Computed<Object>
   constructor(
     protected memberApi: MemberApi,
@@ -27,11 +28,13 @@ export class AddService extends Store<AddState> {
     this.state$ = new State({
       info: {},
       countryInfo: [],
-      countryList: []
+      countryList: [],
+      parent_info: {}
     })
     this.countryInfo$ = new Computed(this.state$.pipe(pluck('countryInfo')))
     this.nations$ = new Computed(this.state$.pipe(pluck('nations')))
     this.countryList$ = new Computed(this.state$.pipe(pluck('countryList')))
+    this.parent_info$ = new Computed(this.state$.pipe(pluck('parent_info')))
   }
   minorsType$ = this.userService.getOptions$('small_course.minors_type')
   parentType$ = this.userService.getOptions$('small_course.parent_type')
@@ -63,7 +66,9 @@ export class AddService extends Store<AddState> {
       })
     )
   }
-
+  getParentInfoByPhone(params: any) {
+    return this.memberApi.getParentInfoByPhone(params)
+  }
   addUser(params: AddUserParams) {
     return this.memberApi.addUser(params)
   }
