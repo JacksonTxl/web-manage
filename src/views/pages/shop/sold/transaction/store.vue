@@ -250,7 +250,6 @@ export default {
           price: 30
         }
       ],
-      saleList: [],
       buyCar: [],
       storeProductList1: [
         {

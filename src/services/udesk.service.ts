@@ -1,4 +1,3 @@
-import { anyAll } from '@/operators'
 import { State } from 'rx-state'
 import { Injectable } from 'vue-service-app'
 import { HttpService } from './http.service'
@@ -11,8 +10,10 @@ import { AppConfig } from '@/constants/config'
 @Injectable()
 export class UdeskService {
   customer$ = new State<any>({})
+  isShowUdeskBtn$ = new State(true)
+  loading$ = new State(false)
+  isCreated = false
   constructor(private http: HttpService, private appConfig: AppConfig) {}
-
   fetchUdeskCustomerInfo() {
     return this.http.get('/udesk').pipe(
       tap((res: any) => {
@@ -47,32 +48,58 @@ export class UdeskService {
         link: `${config.link}`,
         customer,
         onReady: () => {
-          resolve()
+          setTimeout(() => {
+            resolve()
+          }, 300)
         }
       })
     })
   }
-  hiddenUdesk() {
-    let udesk: any = document.getElementById('udesk_container')
-    if (udesk) {
-      udesk.style = 'display: none'
-    }
+  setIsShowUdeskBtn(val: boolean) {
+    this.isShowUdeskBtn$.commit(() => val)
+  }
+  setLoading(val: boolean) {
+    this.loading$.commit(() => val)
   }
   /**
-   *
-   * @param params openDialog 是否展示窗口
+   * 打开 udesk 对话面板
+   * 如果 udesk 实例尚未创建，先创建再打开
+   * @return {promise}
    */
-  showUdesk(params = { openDialog: false }) {
-    let udeskEl: any = document.getElementById('udesk_container')
-    console.log(udeskEl)
-    if (udeskEl) {
-      udeskEl.style = 'display: block'
-      if (params.openDialog) {
-        let udesk_btn: any = document.getElementById('udesk_btn')
-        let ev = document.createEvent('MouseEvent')
-        ev.initEvent('click', false, false)
-        udesk_btn.children[0].dispatchEvent(ev)
-      }
+  show() {
+    if (this.loading$.snapshot()) {
+      return
     }
+    return new Promise(resolve => {
+      if (!this.isCreated) {
+        this.setLoading(true)
+        /**
+         * 获取udesk 校验参数
+         */
+        this.fetchUdeskCustomerInfo().subscribe(() => {
+          /**
+           * 实例化 udesk
+           */
+          this.create().then(() => {
+            this.isCreated = true
+            this.setLoading(false)
+            // @ts-ignore
+            ud('showPanel')
+            resolve()
+          })
+        })
+      } else {
+        // @ts-ignore
+        ud('showPanel')
+        resolve()
+      }
+    })
+  }
+  /**
+   * 隐藏 udesk 面板
+   */
+  hide() {
+    // @ts-ignore
+    ud('hidePanel')
   }
 }

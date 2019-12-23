@@ -354,6 +354,30 @@ export default {
     }
   },
   mounted() {
+    let arrP = [
+      {
+        spec_id: 1,
+        spec_name: '颜色',
+        spec_item_arr: [
+          { spec_item_id: 1, spec_item_name: '蓝色' },
+          { spec_item_id: 2, spec_item_name: '黄色' },
+          { spec_item_id: 3, spec_item_name: '红色' }
+        ]
+      },
+      {
+        spec_id: 2,
+        spec_name: '尺码',
+        spec_item_arr: [
+          { spec_item_id: 4, spec_item_name: 's' },
+          { spec_item_id: 5, spec_item_name: 'm' },
+          { spec_item_id: 6, spec_item_name: 'l' }
+        ]
+      }
+    ]
+    let arrC = [
+      { spec_name: '颜色', spec_item_name: ['蓝色', '黄色', '红色'] },
+      { spec_name: '尺码', spec_item_name: ['s', 'm', 'l', 'xl'] }
+    ]
     if (this.isEditMode) {
       this.goodDetail()
     }
@@ -361,7 +385,15 @@ export default {
   methods: {
     // 保存
     onSubmit() {
-      // this.form.validate().then(values => {
+      this.form.validate().then(values => {
+        if (this.isEditMode) {
+          this.editGoodOld(values)
+        } else {
+          this.addGoodNew(values)
+        }
+      })
+    },
+    addGoodNew(values) {
       let data = {}
       let product_sku = []
       this.tableData.forEach((item, index) => {
@@ -401,21 +433,77 @@ export default {
         // sale_type: values.sale_type // 售卖方式
       }
       console.log(data, '-----参数')
-      return
-      if (this.$route.query.id) {
-        this.addService.editGoods(this.$route.query.id, data).subscribe(res => {
-          this.$router.push({
-            path: './list'
-          })
+      this.addService.addGoods(data).subscribe(res => {
+        this.$router.push({
+          path: './list'
         })
-      } else {
-        this.addService.addGoods(data).subscribe(res => {
-          this.$router.push({
-            path: './list'
+      })
+    },
+    editGoodOld(values) {
+      let data = {}
+      let product_sku = []
+      this.tableData.forEach((item, index) => {
+        let skuItem = {}
+        skuItem.market_price = item.market_price
+        skuItem.selling_price = item.selling_price
+        skuItem.stock_amount = item.stock_amount
+        if (item.sku_id) {
+          skuItem.is_update = item.is_update
+        }
+        skuItem.spec_arr = []
+        if (this.skuList.length > 0) {
+          let sku = {}
+          this.info.all_spec[0].spec_item_arr.forEach(spec => {
+            if (spec === item['0']) {
+              sku.spec_item_id = spec.spec_item_id
+              sku.spec_id = spec.spec_item_id
+            }
           })
-        })
+          sku.spec_name = this.skuList[0].spec_name
+          sku.spec_item_name = item['0']
+          skuItem.spec_arr.push(sku)
+        }
+        if (this.skuList.length > 1) {
+          let sku = {}
+          this.info.all_spec[1].spec_item_arr.forEach(spec => {
+            if (spec === item['1']) {
+              sku.spec_item_id = spec.spec_item_id
+              sku.spec_id = spec.spec_item_id
+            }
+          })
+          sku.spec_name = this.skuList[1].spec_name
+          sku.spec_item_name = item['1']
+          skuItem.spec_arr.push(sku)
+        }
+        if (this.skuList.length > 2) {
+          let sku = {}
+          this.info.all_spec[2].spec_item_arr.forEach(spec => {
+            if (spec === item['2']) {
+              sku.spec_item_id = spec.spec_item_id
+              sku.spec_id = spec.spec_item_id
+            }
+          })
+          sku.spec_name = this.skuList[2].spec_name
+          sku.spec_item_name = item['2']
+          skuItem.spec_arr.push(sku)
+        }
+        product_sku.push(skuItem)
+      })
+      data = {
+        product_images: this.imgList, // 商品图片
+        product_intro: this.content, // 商品介绍
+        product_sku: product_sku, // 规格设置
+        shelves_status: this.shelves_status, // 上架状态
+        product_name: values.product_name, // 商品名称
+        category_id: values.category_id, // 分类id
+        delivery_type: values.delivery_type, // 配送方式
+        sale_type: values.sale_type // 售卖方式
       }
-      // })
+      this.addService.editGoods(this.$route.query.id, data).subscribe(res => {
+        this.$router.push({
+          path: './list'
+        })
+      })
     },
     goodDetail() {
       this.form.setFieldsValue({
@@ -435,6 +523,20 @@ export default {
         })
         skuList.push({ spec_name: item.spec_name, spec_item_name: list })
       })
+      let tableData = []
+      this.info.product_sku.forEach((item, index) => {
+        let tableItem = {}
+        tableItem.market_price = item.market_price
+        tableItem.selling_price = item.selling_price
+        tableItem.stock_amount = item.stock_amount
+        tableItem.sku_id = item.sku_id
+        tableItem.is_update = 0
+        item.spec_arr.forEach((item, index) => {
+          tableItem[index] = spec_item_name
+        })
+        tableData.push(tableItem)
+      })
+      this.tableData = tableData
     },
     // 为了同步字数
     changeName(e) {
