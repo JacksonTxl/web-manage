@@ -185,7 +185,7 @@ export default {
           components: {
             StHelpTooltip
           },
-          render: h => <st-help-tooltip id="TBDAC001" />
+          render: h => <st-help-tooltip id="TBDAC003" />
         }).$mount('#axis-0')
         new Vue({
           components: {
@@ -197,7 +197,7 @@ export default {
           components: {
             StHelpTooltip
           },
-          render: h => <st-help-tooltip id="TBDAC003" />
+          render: h => <st-help-tooltip id="TBDAC001" />
         }).$mount('#axis-2')
       }
     }

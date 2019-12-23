@@ -27,7 +27,7 @@ export default {
     },
     padding: {
       type: Array,
-      default: () => [30, 80, 30, 0]
+      default: () => [50, 80, 30, 'auto']
     },
     colors: {
       type: Array,
@@ -105,6 +105,20 @@ export default {
             </span>` +
             `</li>`
           )
+        },
+        onHover: ev => {
+          // 总计为 0 是执行hover
+          // if (this.total === 0) return
+          const $s = this.$el.querySelector.bind(this.$el)
+          const name = ev.item.value
+          const row = this.dv.findRow({ name })
+          const shapes = ev.shapes
+          const geom = ev.geom
+          const legend = ev.currentTarget
+          // 选中对应单元
+          this.total !== 0 && geom.setShapesActived(shapes)
+          $s('.guide-value').textContent = row.value
+          $s('.guide-name').textContent = row.name
         }
       })
       // 辅助 html。
@@ -147,8 +161,6 @@ export default {
 
       this.chart.render()
 
-      this.changeData()
-
       const $s = this.$el.querySelector.bind(this.$el)
 
       this.chart.on('interval:mouseenter', e => {
@@ -176,20 +188,6 @@ export default {
           el.addEventListener('mouseenter', mouseHandler, false)
         })
       })
-    },
-    changeData() {
-      new Vue({
-        components: {
-          StHelpTooltip
-        },
-        render: h => <st-help-tooltip id="TBDAR002" />
-      }).$mount('#legend-1')
-      new Vue({
-        components: {
-          StHelpTooltip
-        },
-        render: h => <st-help-tooltip id="TBDAR001" />
-      }).$mount('#legend-5')
     }
   },
   beforeDestroy() {

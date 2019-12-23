@@ -1,6 +1,10 @@
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
-import { TransactionApi, TransactionListInput } from '@/api/v1/sold/transaction'
+import {
+  TransactionApi,
+  TransactionListInput,
+  ProductInfoParams
+} from '@/api/v1/sold/transaction'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
 import { UserService } from '@/services/user.service'
@@ -64,5 +68,12 @@ export class ListService {
           this.storeProductList$.commit(() => res.data.list)
         })
       )
+  }
+  /**
+   * 云店创建订单
+   */
+  @Effect()
+  createOrder(params: ProductInfoParams) {
+    return this.transactionApi.postStoreOrderNum(params)
   }
 }

@@ -45,8 +45,6 @@ export interface StoreList {
   category_id: number
   product_name: string
   shelves_status: number
-  current_page: number
-  size: number
 }
 export class StoreApi extends Api {
   /**
