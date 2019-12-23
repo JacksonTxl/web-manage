@@ -99,11 +99,8 @@
       </div>
       <div class="layout-default-body__personal">
         <!-- 消息通知 -->
-        <a-badge :count="100">
-          <span
-            @click="onClickNotify"
-            class="layout-default-body__notify font-number"
-          >
+        <a-badge class="layout-default-body__notify" :count="100">
+          <span @click="onClickNotify" class="font-number">
             <st-icon type="notify" size="22px" color="#9BACB9"></st-icon>
           </span>
         </a-badge>

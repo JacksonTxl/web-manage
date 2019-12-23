@@ -1,6 +1,6 @@
 import { State, Effect } from 'rx-state'
 import { NotifyApi } from './../../../../api/v1/notify'
-import { Injectable } from 'vue-service-app'
+import { Injectable, ServiceRoute } from 'vue-service-app'
 import { tap } from 'rxjs/operators'
 
 @Injectable()
@@ -12,9 +12,12 @@ export class InformService {
   getList(query: any) {
     return this.api.getInformList(query).pipe(
       tap((res: any) => {
-        this.list$.commit(() => [res.list])
+        this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })
     )
+  }
+  beforeEach(to: ServiceRoute) {
+    // return this.getList(to.meta.query)
   }
 }
