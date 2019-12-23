@@ -1,14 +1,26 @@
 <template>
   <a-drawer
-    title="切换门店"
     placement="left"
     width="340"
     wrapClassName="drawer-switch-shop-wrap"
     :visible="visible"
+    :closable="closable"
     @close="onClose"
   >
     <div class="drawer-switch-shop">
-      <section class="mg-l24 mg-r24 drawer-switch-shop__header">
+      <section class="header" :class="{ 'header--show': isShowShadow }">
+        <div class="header__title">
+          <st-t3>切换门店</st-t3>
+          <st-button
+            v-if="isShop"
+            pill
+            type="primary"
+            icon="entry"
+            @click="switchBackToBrand"
+          >
+            进入品牌
+          </st-button>
+        </div>
         <st-input-search
           placeholder="搜索门店"
           width="100%"
@@ -17,7 +29,7 @@
           @change="onChange"
         />
       </section>
-      <section class="mg-t24 drawer-switch-shop__body">
+      <section class="body">
         <a-spin :spinning="!!loading.switchShop">
           <ul class="drawer-shops" v-if="list.length">
             <li
@@ -42,19 +54,13 @@
           <st-no-data text="空空如也~" v-else />
         </a-spin>
       </section>
-      <section v-if="isShop">
-        <a
-          class="drawer-switch-shop__to-brand st-link-secondary"
-          @click="switchBackToBrand"
-        >
-          返回品牌
-        </a>
-      </section>
     </div>
   </a-drawer>
 </template>
 
 <script>
+import { fromEvent } from 'rxjs'
+import { tap, debounceTime } from 'rxjs/operators'
 import { MessageService } from '@/services/message.service'
 import { SwitchService } from './switch.service'
 import { UserService } from '@/services/user.service'
@@ -82,9 +88,17 @@ export default {
   },
   data() {
     return {
+      /**
+       * Drawer 是否可见
+       */
       visible: false,
+      /**
+       * 是否显示右上角的关闭按钮
+       */
+      closable: false,
       keyword: '',
-      list: []
+      list: [],
+      isShowShadow: false
     }
   },
   props: {
@@ -122,7 +136,7 @@ export default {
       let { shopList } = this
       const list = []
       shopList.forEach(item => {
-        if (item.shop_name.includes(this.keyword)) {
+        if (item.shop_name.toLowerCase().includes(this.keyword.toLowerCase())) {
           list.push(item)
         }
       })

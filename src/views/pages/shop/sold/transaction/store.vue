@@ -64,18 +64,28 @@
                     :columns="columns"
                     :dataSource="buyCar"
                   >
-                    <template slot="name" slot-scope="customRender, record">
-                      <div>{{ record.name }}</div>
+                    <template
+                      slot="product_name"
+                      slot-scope="customRender, record"
+                    >
+                      <div>
+                        {{ record.product_name }}({{ record.rule_name }})
+                      </div>
                     </template>
-                    <template slot="count" slot-scope="customRender, record">
+                    <template
+                      slot="stock_amount"
+                      slot-scope="customRender, record"
+                    >
                       <a-input-number
                         :min="1"
-                        :max="100000"
-                        v-model="record.count"
+                        :max="record.stock_amount"
+                        v-model="record.product_count"
                       />
                     </template>
                     <template slot="priceSum" slot-scope="customRender, record">
-                      {{ (record.count * record.price).toFixed(1) }}
+                      {{
+                        (record.product_count * record.unit_price).toFixed(1)
+                      }}
                     </template>
                     <template
                       slot="action"
@@ -169,7 +179,11 @@
                   </div>
                 </st-form-item>
                 <st-form-item label="减免">
-                  <st-input-number :float="true" placeholder="请输入减免金额">
+                  <st-input-number
+                    :float="true"
+                    v-model="reducePrice"
+                    placeholder="请输入减免金额"
+                  >
                     <span slot="addonAfter">元</span>
                   </st-input-number>
                 </st-form-item>
@@ -177,6 +191,7 @@
                   <a-select placeholder="请选择销售名字">
                     <a-select-option
                       v-for="(item, index) in saleList"
+                      v-decorator="decorators.saleName"
                       :key="index"
                       :value="item.id"
                     >
@@ -186,6 +201,7 @@
                 </st-form-item>
                 <st-form-item label="备注">
                   <a-textarea
+                    v-model="description"
                     placeholder="请填写备注"
                     class="st-textarea"
                   ></a-textarea>
@@ -244,10 +260,18 @@ export default {
       couponText: '未选择优惠券', // 选择的优惠券名
       couponDropdownVisible: false,
       selectCoupon: '',
+      reducePrice: null,
+      description: '',
       couponList: [
         {
           name: '1',
-          price: 30
+          price: 30,
+          id: 1
+        },
+        {
+          name: '2',
+          price: 60,
+          id: 2
         }
       ],
       buyCar: [],
@@ -273,7 +297,7 @@ export default {
         .getStoreProductList(this.$searchQuery.product_name)
         .subscribe()
     },
-    // 会员卡签单
+    // 添加购物车
     onSku(record) {
       this.$modalRouter.push({
         name: 'store-choose-sku',
@@ -283,6 +307,7 @@ export default {
         on: {
           success: result => {
             this.buyCar.push(result)
+            console.log(this.buyCar)
           }
         }
       })
@@ -295,7 +320,21 @@ export default {
     createOrderNum() {
       return new Promise((resolve, reject) => {
         this.form.validate().then(values => {
-          resolve(values)
+          this.listService
+            .createOrder({
+              member_id: values.memberId,
+              coupon_id: this.selectCoupon.id,
+              sale_id: values.saleName,
+              reduce_price: this.reducePrice || 0,
+              description: this.description,
+              product_info: this.buyCar
+            })
+            .subscribe(result => {
+              resolve(result.info.order_id)
+            })
+          // console.log(values)
+          // resolve(values)
+          console.log(this.selectCoupon)
         })
       })
     },
