@@ -30,11 +30,13 @@ export const columns = (vm: any) => {
       dataIndex: 'apply_num'
     },
     {
-      title: '成班条件',
+      // title: '成班条件',
+      slots: { title: 'class_conditions' },
       dataIndex: 'class_conditions'
     },
     {
-      title: '状态',
+      // title: '状态',
+      slots: { title: 'course_status' },
       scopedSlots: { customRender: 'course_status' }
     },
     {
