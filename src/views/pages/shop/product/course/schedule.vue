@@ -109,8 +109,10 @@
     <div
       slot="actions"
       v-if="
-        routeName === 'shop-product-course-schedule-mini-team-mini-team' ||
-          routeName === 'shop-product-course-schedule-mini-team-mini-team-table'
+        routeName ===
+          'shop-product-course-schedule-small-course-small-course' ||
+          routeName ===
+            'shop-product-course-schedule-small-course-small-course-table'
       "
     >
       <a-select
@@ -122,7 +124,7 @@
       >
         <a-select-option :value="-1">全部课程</a-select-option>
         <a-select-option
-          v-for="course in courseMiniOptions"
+          v-for="course in courseSmallCourseOptions"
           :key="course.id"
           :value="course.id"
         >
@@ -138,7 +140,7 @@
       >
         <a-select-option :value="-1">全部{{ $c('coach') }}</a-select-option>
         <a-select-option
-          v-for="coach in coachMiniTeamOptions"
+          v-for="coach in coachSmallCourseOptions"
           :key="coach.id"
           :value="coach.id"
         >
@@ -154,7 +156,7 @@
 import { TeamScheduleCommonService } from './schedule/team/service#/common.service'
 import { PersonalScheduleCommonService } from './schedule/personal/service#/common.service'
 import { PersonalTeamScheduleCommonService } from './schedule/personal-team/service#/common.service'
-import { MiniTeamScheduleCommonService } from './schedule/mini-team/service#/common.service'
+import { SmallCourseScheduleCommonService } from './schedule/small-course/service#/common.service'
 import { ScheduleService } from './schedule.service'
 import ScheduleTeamEditSchedule from '@/views/biz-modals/schedule/team/edit-course'
 export default {
@@ -168,14 +170,14 @@ export default {
       teamScheduleCommonService: TeamScheduleCommonService,
       personalScheduleCommonService: PersonalScheduleCommonService,
       personalTeamScheduleCommonService: PersonalTeamScheduleCommonService,
-      miniTeamScheduleCommonService: MiniTeamScheduleCommonService
+      smallCourseScheduleCommonService: SmallCourseScheduleCommonService
     }
   },
   rxState() {
     const tss = this.teamScheduleCommonService
     const pscs = this.personalScheduleCommonService
     const ptscs = this.personalTeamScheduleCommonService
-    const mtsc = this.miniTeamScheduleCommonService
+    const scsc = this.smallCourseScheduleCommonService
     return {
       coachOptions: tss.coachOptions$,
       courseOptions: tss.courseOptions$,
@@ -184,8 +186,8 @@ export default {
       coachPersonalOptions: pscs.coachOptions$,
       courseCoachOptions: pscs.courseCoachOptions$,
       coachPersonalTeamOptions: ptscs.coachOptions$,
-      courseMiniOptions: mtsc.courseMiniOptions$,
-      coachMiniTeamOptions: mtsc.coachMiniOptions$,
+      courseSmallCourseOptions: scsc.courseSmallCourseOptions$,
+      coachSmallCourseOptions: scsc.coachSmallCourseOptions$,
       authTabs: this.scheduleService.authTabs$
     }
   },

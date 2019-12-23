@@ -1,7 +1,7 @@
 import { AuthService } from '@/services/auth.service'
 import { Controller, Injectable, ServiceRoute } from 'vue-service-app'
 import { forkJoin } from 'rxjs'
-import { MiniTeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/mini-team/service#/common.service'
+import { SmallCourseScheduleCommonService } from '@/views/pages/shop/product/course/schedule/small-course/service#/common.service'
 
 @Injectable()
 export class InbatchAddService implements Controller {
@@ -10,15 +10,15 @@ export class InbatchAddService implements Controller {
   })
 
   constructor(
-    private miniTeamScheduleCommonService: MiniTeamScheduleCommonService,
+    private smallCourseScheduleCommonService: SmallCourseScheduleCommonService,
     private authService: AuthService
   ) {}
 
   init() {
     return forkJoin(
-      this.miniTeamScheduleCommonService.getCoachList(),
-      this.miniTeamScheduleCommonService.getCourseList(),
-      this.miniTeamScheduleCommonService.getCourtList()
+      this.smallCourseScheduleCommonService.getCoachList(),
+      this.smallCourseScheduleCommonService.getCourseList(),
+      this.smallCourseScheduleCommonService.getCourtList()
     )
   }
   beforeRouteEnter() {

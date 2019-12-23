@@ -1,15 +1,15 @@
 import {
-  MiniTeamScheduleCommonApi,
+  SmallCourseScheduleCommonApi,
   ConsumeQuery
-} from '@/api/v1/schedule/mini-team/common'
+} from '@/api/v1/schedule/small-course/common'
 import { Injectable } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { tap, pluck } from 'rxjs/operators'
 import { MessageService } from '@/services/message.service'
 
 export interface SetState {
-  courseMiniOptions: any[]
-  coachMiniOptions: any[]
+  courseSmallCourseOptions: any[]
+  coachSmallCourseOptions: any[]
   memberOptions: any[]
   courtOptions: any[]
   unUsedSeatOptions: any[]
@@ -17,10 +17,10 @@ export interface SetState {
   consumeOptions: any[]
 }
 @Injectable()
-export class MiniTeamScheduleCommonService {
+export class SmallCourseScheduleCommonService {
   state$: State<SetState>
-  courseMiniOptions$: Computed<any[]>
-  coachMiniOptions$: Computed<any[]>
+  courseSmallCourseOptions$: Computed<any[]>
+  coachSmallCourseOptions$: Computed<any[]>
   memberOptions$: Computed<any[]>
   courtOptions$: Computed<any[]>
   unUsedSeatOptions$: Computed<any[]>
@@ -28,12 +28,12 @@ export class MiniTeamScheduleCommonService {
   consumeOptions$: Computed<any[]>
 
   constructor(
-    private commonApi: MiniTeamScheduleCommonApi,
+    private commonApi: SmallCourseScheduleCommonApi,
     private msg: MessageService
   ) {
     this.state$ = new State({
-      courseMiniOptions: [],
-      coachMiniOptions: [],
+      courseSmallCourseOptions: [],
+      coachSmallCourseOptions: [],
       unUsedSeatOptions: [],
       unUsedSeatCourtOptions: [],
       memberOptions: [],
@@ -49,11 +49,11 @@ export class MiniTeamScheduleCommonService {
     this.unUsedSeatCourtOptions$ = new Computed(
       this.state$.pipe(pluck('unUsedSeatCourtOptions'))
     )
-    this.courseMiniOptions$ = new Computed(
-      this.state$.pipe(pluck('courseMiniOptions'))
+    this.courseSmallCourseOptions$ = new Computed(
+      this.state$.pipe(pluck('courseSmallCourseOptions'))
     )
-    this.coachMiniOptions$ = new Computed(
-      this.state$.pipe(pluck('coachMiniOptions'))
+    this.coachSmallCourseOptions$ = new Computed(
+      this.state$.pipe(pluck('coachSmallCourseOptions'))
     )
     this.memberOptions$ = new Computed(this.state$.pipe(pluck('memberOptions')))
     this.courtOptions$ = new Computed(this.state$.pipe(pluck('courtOptions')))
@@ -81,7 +81,7 @@ export class MiniTeamScheduleCommonService {
     return this.commonApi.getCourseList().pipe(
       tap(res => {
         this.state$.commit(state => {
-          state.courseMiniOptions = res.list
+          state.courseSmallCourseOptions = res.list
         })
       })
     )
@@ -95,7 +95,7 @@ export class MiniTeamScheduleCommonService {
     return this.commonApi.getCoachList().pipe(
       tap(res => {
         this.state$.commit(state => {
-          state.coachMiniOptions = res.list
+          state.coachSmallCourseOptions = res.list
         })
       })
     )

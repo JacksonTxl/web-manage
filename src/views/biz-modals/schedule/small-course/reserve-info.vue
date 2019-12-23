@@ -210,13 +210,13 @@ import { MessageService } from '@/services/message.service'
 import { PersonalTeamScheduleCommonService as CommonService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/common.service'
 import { PersonalTeamScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/reserve.service'
 import { PersonalTeamScheduleScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/schedule.service'
-import ScheduleMiniTeamReservedCourse from '@/views/biz-modals/schedule/mini-team/reserved-course'
+import ScheduleSmallCourseReservedCourse from '@/views/biz-modals/schedule/small-course/reserved-course'
 
 import { columns } from './reserve-info.config'
 export default {
   name: 'ReserveInfo',
   modals: {
-    ScheduleMiniTeamReservedCourse
+    ScheduleSmallCourseReservedCourse
   },
   serviceInject() {
     return {
@@ -341,7 +341,7 @@ export default {
     updateSchedule() {
       this.show = false
       this.$modalRouter.push({
-        name: 'schedule-mini-team-reserved-course',
+        name: 'schedule-small-course-reserved-course',
         props: {
           info: this.reserveInfo
         },

@@ -2,7 +2,7 @@ import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { RedirectService } from '@/services/redirect.service'
 import moment from 'moment'
 @Injectable()
-export class MiniTeamService implements Controller {
+export class SmallCourseService implements Controller {
   constructor(private redirectService: RedirectService) {}
   beforeEach() {
     let weekOfday: any = moment().format('E')
@@ -13,9 +13,9 @@ export class MiniTeamService implements Controller {
       .add(7 - weekOfday, 'days')
       .format('YYYY-MM-DD')
     return this.redirectService.redirect({
-      locateRouteName: 'shop-product-course-schedule-mini-team',
+      locateRouteName: 'shop-product-course-schedule-small-course',
       redirectRoute: {
-        name: 'shop-product-course-schedule-mini-team-mini-team',
+        name: 'shop-product-course-schedule-small-course-small-course',
         query: { start_date, end_date }
       }
     })

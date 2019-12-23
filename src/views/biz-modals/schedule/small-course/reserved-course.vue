@@ -1,6 +1,9 @@
 <template>
-  <st-modal title="编辑课程" v-model="show" width="484px">
-    <st-form :form="form" labelWidth="40px" labelAuto>
+  <st-modal title="编辑课程排期" v-model="show" width="484px">
+    <st-form :form="form" labelWidth="70px" labelAuto>
+      <st-form-item label="已约">
+        <span>{{}}</span>
+      </st-form-item>
       <st-form-item label="日期" required v-if="!scheduleId">
         <a-date-picker
           style="width:100%"
@@ -28,7 +31,7 @@
           v-decorator="decorators.course_id"
         >
           <a-select-option
-            v-for="course in courseMiniOptions"
+            v-for="course in courseSmallCourseOptions"
             :key="course.course_id"
             :value="course.course_id"
           >
@@ -42,7 +45,7 @@
           v-decorator="decorators.coach_id"
         >
           <a-select-option
-            v-for="coach in coachMiniOptions"
+            v-for="coach in coachSmallCourseOptions"
             :key="coach.id"
             :value="coach.id"
           >
@@ -50,13 +53,16 @@
           </a-select-option>
         </a-select>
       </st-form-item>
-      <st-form-item label="场地" required class="mg-b0">
+      <st-form-item label="场地" required>
         <a-cascader
           placeholder="请选择场地"
           :options="courtOptions"
           :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
           v-decorator="decorators.court_id"
         />
+      </st-form-item>
+      <st-form-item label="排课名称" required class="mg-b0">
+        <a-input placeholder="请输入" v-decorator="decorators.name" />
       </st-form-item>
     </st-form>
     <template slot="footer">
@@ -70,23 +76,23 @@
 
 <script>
 import { cloneDeep } from 'lodash-es'
-import { MiniTeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/mini-team/service#/schedule.service'
-import { MiniTeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/mini-team/service#/common.service'
+import { SmallCourseScheduleService } from '@/views/pages/shop/product/course/schedule/small-course/service#/schedule.service'
+import { SmallCourseScheduleCommonService } from '@/views/pages/shop/product/course/schedule/small-course/service#/common.service'
 import { ruleOptions } from './add-course.config'
 export default {
   name: 'AddCourseSchedule',
   serviceInject() {
     return {
-      miniTeamScheduleScheduleService: MiniTeamScheduleScheduleService,
-      miniTeamScheduleCommonService: MiniTeamScheduleCommonService
+      smallCourseScheduleService: SmallCourseScheduleService,
+      smallCourseScheduleCommonService: SmallCourseScheduleCommonService
     }
   },
   rxState() {
-    const tss = this.miniTeamScheduleCommonService
+    const tss = this.smallCourseScheduleCommonService
     return {
-      loading: this.miniTeamScheduleScheduleService.loading$,
-      coachMiniOptions: tss.coachMiniOptions$,
-      courseMiniOptions: tss.courseMiniOptions$,
+      loading: this.smallCourseScheduleService.loading$,
+      coachSmallCourseOptions: tss.coachSmallCourseOptions$,
+      courseSmallCourseOptions: tss.courseSmallCourseOptions$,
       courtOptions: tss.courtOptions$
     }
   },

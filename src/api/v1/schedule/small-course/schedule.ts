@@ -7,7 +7,7 @@ import { Api } from '@/api/api'
  * @extends {Api}
  * 小班课排期接口
  */
-export class MiniTeamScheduleScheduleApi extends Api {
+export class SmallCourseScheduleApi extends Api {
   /**
    *
    * @param params

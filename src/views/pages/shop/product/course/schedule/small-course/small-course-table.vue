@@ -112,13 +112,13 @@
 </template>
 
 <script>
-import { MiniTeamScheduleScheduleService } from '../mini-team/service#/schedule.service'
+import { SmallCourseScheduleService } from '../small-course/service#/schedule.service'
 import ScheduleTeamAddCourseBatch from '@/views/biz-modals/schedule/team/add-course-batch'
 import ScheduleTeamAddCourse from '@/views/biz-modals/schedule/team/add-course'
 import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
 import date from '@/views/biz-components/schedule/date#/date-component.vue'
 import ScheduleTeamReserveInfo from '@/views/biz-modals/schedule/team/reserve-info'
-import { MiniTeamTableService } from './mini-team-table.service'
+import { SmallCourseTableService } from './small-course-table.service'
 export default {
   name: 'ScheduleTeamTable',
   modals: {
@@ -129,14 +129,14 @@ export default {
   },
   serviceInject() {
     return {
-      miniTeamScheduleScheduleService: MiniTeamScheduleScheduleService,
-      service: MiniTeamTableService
+      smallCourseScheduleService: SmallCourseScheduleService,
+      service: SmallCourseTableService
     }
   },
   rxState() {
     return {
       auth: this.service.auth$,
-      scheduleTable: this.miniTeamScheduleScheduleService.scheduleTable$
+      scheduleTable: this.smallCourseScheduleService.scheduleTable$
     }
   },
   data() {

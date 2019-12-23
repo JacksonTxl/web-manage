@@ -16,7 +16,7 @@
               v-decorator="decorators.course_id"
             >
               <a-select-option
-                v-for="course in courseMiniOptions"
+                v-for="course in courseSamllCourseOptions"
                 :key="course.course_id"
                 :value="course.course_id"
               >
@@ -51,7 +51,7 @@
               v-decorator="decorators.coach_id"
             >
               <a-select-option
-                v-for="coach in coachMiniOptions"
+                v-for="coach in coachSamllCourseOptions"
                 :key="coach.id"
                 :value="coach.id"
               >
@@ -79,8 +79,8 @@
 </template>
 
 <script>
-import { MiniTeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/mini-team/service#/schedule.service'
-import { MiniTeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/mini-team/service#/common.service'
+import { SmallCourseScheduleService } from '@/views/pages/shop/product/course/schedule/small-course/service#/schedule.service'
+import { SmallCourseScheduleCommonService } from '@/views/pages/shop/product/course/schedule/small-course/service#/common.service'
 import { ruleOptions } from './add-course.config'
 import { cloneDeep } from 'lodash-es'
 export default {
@@ -90,16 +90,16 @@ export default {
   },
   serviceInject() {
     return {
-      miniTeamScheduleScheduleService: MiniTeamScheduleScheduleService,
-      miniTeamScheduleCommonService: MiniTeamScheduleCommonService
+      smallCourseScheduleService: SmallCourseScheduleService,
+      smallCourseScheduleCommonService: SmallCourseScheduleCommonService
     }
   },
   rxState() {
-    const tss = this.miniTeamScheduleCommonService
+    const tss = this.smallCourseScheduleCommonService
     return {
-      loading: this.miniTeamScheduleScheduleService.loading$,
-      coachMiniOptions: tss.coachMiniOptions$,
-      courseMiniOptions: tss.courseMiniOptions$,
+      loading: this.smallCourseScheduleService.loading$,
+      coachSamllCourseOptions: tss.coachSamllCourseOptions$,
+      courseSamllCourseOptions: tss.courseSamllCourseOptions$,
       courtOptions: tss.courtOptions$
     }
   },

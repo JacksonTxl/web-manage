@@ -154,21 +154,21 @@
 <script>
 import moment from 'moment'
 import AddCourse from './add-course'
-import { MiniTeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/mini-team/service#/schedule.service'
+import { SmallCourseScheduleService } from '@/views/pages/shop/product/course/schedule/small-course/service#/schedule.service'
 import { InbatchAddService } from './inbatch-add.service'
-import ScheduleMiniTeamEditCourse from '@/views/biz-modals/schedule/mini-team/edit-course'
+import ScheduleSmallCourseEditCourse from '@/views/biz-modals/schedule/small-course/edit-course'
 export default {
   name: 'AddScheduleInBatch',
   bem: {
     b: 'page-shop-schedule-inbatch-add'
   },
   modals: {
-    ScheduleMiniTeamEditCourse
+    ScheduleSmallCourseEditCourse
   },
   serviceInject() {
     return {
       inbatchAddService: InbatchAddService,
-      miniTeamScheduleScheduleService: MiniTeamScheduleScheduleService
+      smallCourseScheduleService: SmallCourseScheduleService
     }
   },
   rxState() {
@@ -412,7 +412,7 @@ export default {
       console.log(item)
       console.log(positionIndex)
       this.$modalRouter.push({
-        name: 'schedule-mini-team-edit-course',
+        name: 'schedule-small-course-edit-course',
         props: { item, cycleIndex, positionIndex },
         on: {
           editCourse: (cycleIndex, week, positionIndex) => {

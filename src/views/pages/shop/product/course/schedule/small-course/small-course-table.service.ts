@@ -1,11 +1,11 @@
-import { MiniTeamScheduleScheduleService as ScheduleService } from './service#/schedule.service'
+import { SmallCourseScheduleService as ScheduleService } from './service#/schedule.service'
 import { Controller, Injectable, ServiceRoute } from 'vue-service-app'
 import { forkJoin } from 'rxjs'
-import { MiniTeamScheduleCommonService as CommonService } from './service#/common.service'
+import { SmallCourseScheduleCommonService as CommonService } from './service#/common.service'
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()
-export class MiniTeamTableService implements Controller {
+export class SmallCourseTableService implements Controller {
   auth$ = this.authService.authMap$({
     add: 'shop:schedule:team_course_schedule|add',
     addBatch: 'shop:schedule:team_course_schedule|batch_add',

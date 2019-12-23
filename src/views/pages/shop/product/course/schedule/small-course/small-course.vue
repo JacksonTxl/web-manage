@@ -28,30 +28,30 @@
 
 <script>
 import Calendar from '@/views/biz-components/schedule/calendar'
-import { MiniTeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/mini-team/service#/schedule.service'
+import { SmallCourseScheduleService } from '@/views/pages/shop/product/course/schedule/small-course/service#/schedule.service'
 
 // 添加排期
-import ScheduleMiniTeamAddCourse from '@/views/biz-modals/schedule/mini-team/add-course'
+import ScheduleSmallCourseAddCourse from '@/views/biz-modals/schedule/small-course/add-course'
 // 详情
-import ScheduleMiniTeamReserveInfo from '@/views/biz-modals/schedule/mini-team/reserve-info'
+import ScheduleSmallCourseReserveInfo from '@/views/biz-modals/schedule/small-course/reserve-info'
 
-import { MiniTeamService } from './mini-team.service'
+import { SmallCourseService } from './small-course.service'
 export default {
-  name: 'TeamSchedule',
+  name: 'SmallCourseSchedule',
   modals: {
-    ScheduleMiniTeamAddCourse,
-    ScheduleMiniTeamReserveInfo
+    ScheduleSmallCourseAddCourse,
+    ScheduleSmallCourseReserveInfo
   },
   serviceInject() {
     return {
-      miniTeamSchduleService: MiniTeamScheduleScheduleService,
+      SmallCourseScheduleScheduleService: SmallCourseScheduleScheduleService,
       service: MiniTeamService
     }
   },
   rxState() {
     return {
       auth: this.service.auth$,
-      cardList: this.miniTeamSchduleService.scheduleTeamCourseList$
+      cardList: this.SmallCourseScheduleService.scheduleTeamCourseList$
     }
   },
   components: {
