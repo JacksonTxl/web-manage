@@ -147,7 +147,7 @@ export default {
     },
     onEdit(record) {
       this.$router.push({
-        path: './add',
+        path: './edit',
         query: { id: record.id }
       })
     }
