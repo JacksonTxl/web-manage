@@ -79,7 +79,7 @@ export default {
       let isChildren = false
       this.dataSource.forEach(ele => {
         if (Array.isArray(ele.children)) {
-          isChildren = Array.isArray(ele.children)
+          isChildren = Array.isArray(ele.children) && ele.children.length
         }
       })
       // 有子表定义key
