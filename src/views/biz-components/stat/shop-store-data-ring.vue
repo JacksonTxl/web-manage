@@ -27,7 +27,7 @@ export default {
     },
     padding: {
       type: Array,
-      default: () => [30, 80, 30, 0]
+      default: () => [50, 80, 30, 'auto']
     },
     colors: {
       type: Array,
