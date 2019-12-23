@@ -12,13 +12,10 @@
         </st-form-item>
         <st-form-item label="转让设置">
           <div>
-            <a-checkbox
-              style="display:inline"
-              v-decorator="decorators.is_allow_transfer"
-            ></a-checkbox>
-            <span>支持转让</span>
+            <a-checkbox v-decorator="decorators.is_allow_transfer"></a-checkbox>
+            <span class="mg-r16">支持转让</span>
             <st-input-number
-              style="width:250px"
+              style="width:282px"
               placeholder="请输入"
               v-decorator="decorators.transfer_num"
             >
@@ -44,6 +41,7 @@
               v-for="(item, index) in sellType"
               :value="item.value"
               :key="index"
+              class="mg-r16"
             >
               {{ item.label }}
             </a-checkbox>
@@ -54,17 +52,16 @@
             :showTime="{ format: 'HH:mm' }"
             format="YYYY-MM-DD HH:mm"
             :disabledDate="disabledDate"
+            style="width:100%"
             v-decorator="decorators.apply_date"
           ></a-range-picker>
         </st-form-item>
         <st-form-item label="售卖价格" required>
-          <a-form-item>
-            <st-input-number v-decorator="decorators.sales_price">
-              <template slot="addonAfter">
-                元
-              </template>
-            </st-input-number>
-          </a-form-item>
+          <st-input-number v-decorator="decorators.sales_price">
+            <template slot="addonAfter">
+              元
+            </template>
+          </st-input-number>
         </st-form-item>
       </a-col>
     </a-row>

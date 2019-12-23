@@ -84,7 +84,7 @@
       </a-col>
     </a-row>
     <!-- 固定约课有的表单 -->
-    <a-row :gutter="8" v-show="$route.query.type === '1'">
+    <a-row :gutter="8" v-show="isShowLimitContent">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item required>
           <template slot="label">
@@ -135,7 +135,7 @@
       </a-col>
     </a-row>
 
-    <a-row :gutter="8" v-show="$route.query.type === '1'">
+    <a-row :gutter="8" v-show="isShowLimitContent">
       <a-col :lg="22" :xs="22" :offset="1">
         <st-form-item label="背景图" required>
           <div class="page-upload-container">
@@ -164,7 +164,7 @@
       </a-col>
     </a-row>
     <!-- 自主约课有的表单内容 -->
-    <a-row :gutter="8" v-show="$route.query.type === '2'">
+    <a-row :gutter="8" v-show="!isShowLimitContent">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="约课规则" required>
           每周最大约课节数
@@ -179,10 +179,14 @@
         </st-form-item>
       </a-col>
     </a-row>
-    <a-row :gutter="8" v-show="$route.query.type === '2'">
+    <a-row :gutter="8" v-show="!isShowLimitContent">
       <a-col :lg="22" :xs="22" :offset="1">
         <st-form-item label="背景图" required>
-          <card-bg-radio @change="onCardBgChange" v-model="bg_image" />
+          <card-bg-radio
+            isSmallCourse
+            @change="onCardBgChange"
+            v-model="bg_image"
+          />
         </st-form-item>
       </a-col>
     </a-row>
@@ -249,6 +253,7 @@ export default {
   components: { CardBgRadio },
   created() {},
   mounted() {
+    this.isShowLimitContent = this.$route.query.type === '1'
     this.setFieldsValue()
   },
   data(vm) {
@@ -264,7 +269,8 @@ export default {
         image_url: '',
         index: 1
       },
-      isShowLeaveContent: false
+      isShowLeaveContent: false,
+      isShowLimitContent: false
     }
   },
   methods: {

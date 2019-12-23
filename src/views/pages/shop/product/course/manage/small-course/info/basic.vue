@@ -1,6 +1,8 @@
 <template>
   <st-panel app initial>
-    <div class="mg-b8">上课门店:共{{ groupInfo.coaches.count }}名教练</div>
+    <div class="mg-b8">
+      上课门店:共{{ groupInfo.coaches.count }}名{{ $c('coach') }}
+    </div>
     <st-table
       :columns="basicColumns()"
       rowKey="id"

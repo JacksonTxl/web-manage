@@ -64,7 +64,8 @@ export default {
   },
   rxState() {
     return {
-      memberCard: this.userService.memberCardEnums$
+      memberCard: this.userService.memberCardEnums$,
+      smallCourse: this.userService.smallCourseEnums$
     }
   },
   created() {
@@ -90,6 +91,8 @@ export default {
       cropperModal: {},
       card_bg_list: this.isFamilyCard
         ? this.memberCard.family_card_bg_list.value
+        : this.isSmallCourse
+        ? this.smallCourse.small_bg_list.value
         : this.memberCard.card_bg_list.value,
       // 备份
       list: [],
@@ -146,6 +149,10 @@ export default {
       }
     },
     isFamilyCard: {
+      type: Boolean,
+      default: false
+    },
+    isSmallCourse: {
       type: Boolean,
       default: false
     }
