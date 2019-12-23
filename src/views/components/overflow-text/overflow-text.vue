@@ -12,7 +12,7 @@
         <slot>
           <ul v-if="isArray">
             <li class="mg-t8" v-for="(item, index) in value" :key="index">
-              {{ index + 1 }}、 {{ item }}
+              {{ item }}
             </li>
           </ul>
           <span v-else>{{ showValue }}</span>
