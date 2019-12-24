@@ -10,7 +10,7 @@
       <a-col :lg="16">
         <st-info>
           <st-info-item label="课程名称">
-            {{ reserveInfo.coach_name }}
+            {{ reserveInfo.course_name }}
           </st-info-item>
         </st-info>
       </a-col>
@@ -26,21 +26,21 @@
       <a-col :lg="8">
         <st-info>
           <st-info-item label="上课日期">
-            {{ reserveInfo.course_name }}
+            {{ reserveInfo.start_date }}
           </st-info-item>
         </st-info>
       </a-col>
       <a-col :lg="8">
         <st-info>
           <st-info-item label="上课时间">
-            {{ reserveInfo.course_name }}
+            {{ reserveInfo.start_time }}
           </st-info-item>
         </st-info>
       </a-col>
       <a-col :lg="8">
         <st-info>
           <st-info-item label="预约人数">
-            <!-- {{ reserveInfo.reserve.length }} -->
+            {{ reserveInfo.reserved_num }}
           </st-info-item>
         </st-info>
       </a-col>
@@ -49,7 +49,7 @@
       <a-col :lg="24">
         <st-info>
           <st-info-item label="最大人数">
-            <!-- {{ reserveInfo.reserve.length }} -->
+            {{ reserveInfo.reserve_max }}
           </st-info-item>
         </st-info>
       </a-col>
@@ -62,7 +62,7 @@
           </tr>
         </thead>
         <tbody v-if="!loading.add">
-          <tr>
+          <tr v-if="reserveInfo.small_course_type === 2">
             <td class="st-form-table__add">
               <a-select
                 slot="member"
@@ -120,19 +120,19 @@
                 </a-select-opt-group>
               </a-select>
             </td>
-            <td v-if="reserveInfo.reserve_status === 1">未签到</td>
-            <td v-if="reserveInfo.reserve_status === 2">已签到</td>
-            <td v-if="reserveInfo.reserve_status === 3">旷课</td>
-            <td v-if="reserveInfo.reserve_status === 4">请假已补课</td>
-            <td v-if="reserveInfo.reserve_status === 5">请假未补课</td>
+            <td>--</td>
             <td>
               <a href="javascript:;" @click="addReserve">添加预约</a>
             </td>
           </tr>
           <tr v-for="(item, index) in reserveList" :key="index">
-            <td>{{ item.member }}</td>
-            <td>{{ item.consume_name }}</td>
-            <td>{{ item.is_checkin_name }}</td>
+            <td>{{ item.member_name }}</td>
+            <td>{{ item.course_name }}</td>
+            <td v-if="reserveInfo.reserve_status === 1">未签到</td>
+            <td v-if="reserveInfo.reserve_status === 2">已签到</td>
+            <td v-if="reserveInfo.reserve_status === 3">旷课</td>
+            <td v-if="reserveInfo.reserve_status === 4">请假已补课</td>
+            <td v-if="reserveInfo.reserve_status === 5">请假未补课</td>
             <td>
               <div
                 v-if="
@@ -152,7 +152,7 @@
                 >
                   签到
                 </a>
-                \
+                <a-divider type="vertical"></a-divider>
                 <a
                   href="javascript:;"
                   @click="check(item.id)"
@@ -181,7 +181,7 @@
                 >
                   签到
                 </a>
-                \
+                <a-divider type="vertical"></a-divider>
                 <a
                   href="javascript:;"
                   @click="check(item.id)"
@@ -222,7 +222,7 @@
                 >
                   补签到
                 </a>
-                \
+                <a-divider type="vertical"></a-divider>
                 <a
                   href="javascript:;"
                   @click="check(item.id)"

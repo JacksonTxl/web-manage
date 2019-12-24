@@ -52,8 +52,19 @@
                     :class="b('schedule__card')"
                     v-for="(cardItem, index) in filterDate[i][item.week]"
                     :key="cardItem.coach_id"
-                    @click="onEditCourseSchedule(cardItem, i, index)"
                   >
+                    <div class="eidt-current-course-btns">
+                      <st-icon
+                        type="edit"
+                        class="edit-course-btn"
+                        @click="onEditCourseSchedule(cardItem, i, index)"
+                      ></st-icon>
+                      <st-icon
+                        type="delete"
+                        class="delete-course-btn"
+                        @click="onDeleteCourseSchedule(cardItem, i, index)"
+                      ></st-icon>
+                    </div>
                     <span class="time">
                       <st-icon type="timer"></st-icon>
                       {{ moment(cardItem.start_time).format('HH:mm') }}-{{
@@ -442,7 +453,7 @@ export default {
       //   this.show = false
       // })
     },
-    // 修改课程排期回显 - 修改根据定位当前课程数据结构
+    // 修改课程排期回显 - 修改根据定位当前课程数据结构 - svgclick事件不能触发
     onEditCourseSchedule(item, cycleIndex, positionIndex) {
       console.log(item)
       console.log(positionIndex)
@@ -461,6 +472,11 @@ export default {
           }
         }
       })
+    },
+    // 删除课程
+    onDeleteCourseSchedule(item, cycleIndex, positionIndex) {
+      this.scheduleList[cycleIndex].item.week.splice(positionIndex, 1)
+      this.filterDateList(this.scheduleList)
     },
     // 新增周期排课
     addScheduleWeek() {

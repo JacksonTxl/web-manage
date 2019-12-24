@@ -63,6 +63,41 @@
       color: #9bacb9;
     }
   }
+  &__schedule__card {
+    position: relative;
+    &:hover {
+      border: 1px solid #3f66f6;
+      .eidt-current-course-btns {
+        display: block;
+      }
+    }
+  }
+  .eidt-current-course-btns {
+    display: none;
+    position: absolute;
+    top: 12px;
+    right: 0px;
+    width: 48px;
+    height: 20px;
+    line-height: 18px;
+    text-align: right;
+    color: #3f66f6;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.5) 0%,
+      rgba(255, 255, 255, 1) 100%
+    );
+    .edit-course-btn,
+    .delete-course-btn {
+      cursor: pointer;
+    }
+    .edit-course-btn {
+      margin-right: 5px;
+    }
+    .delete-course-btn {
+      margin-right: 3px;
+    }
+  }
   &__schedule__table-custom {
     .course-message {
       p {
