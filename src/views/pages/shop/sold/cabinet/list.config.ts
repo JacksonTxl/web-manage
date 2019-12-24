@@ -2,6 +2,8 @@ export const columns = () => [
   {
     title: '租赁柜号',
     dataIndex: 'serial_num',
+    fixed: 'left',
+    width: 100,
     scopedSlots: { customRender: 'serial_num' }
   },
   {
