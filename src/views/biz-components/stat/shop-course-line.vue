@@ -51,39 +51,6 @@ export default {
       ]
     }
   },
-  data() {
-    return {
-      data2: [
-        {
-          date: '09-25',
-          私教预约人数: 0,
-          私教签到人数: 13,
-          团体课排课人数: 0
-        },
-        {
-          date: '09-26',
-          私教预约人数: 250,
-          私教签到人数: 250,
-          团体课排课人数: 20
-        },
-        {
-          date: '10-08',
-          私教预约人数: 17,
-          私教签到人数: 3,
-          团体课排课人数: 0
-        },
-        {
-          date: '12-04',
-          私教预约人数: 17,
-          私教签到人数: 3,
-          团体课排课人数: 808
-        }
-      ]
-    }
-  },
-  created() {
-    console.log(this.data)
-  },
   computed: {
     colorMap() {
       return this.fields.reduce((res, field, idx) => {
