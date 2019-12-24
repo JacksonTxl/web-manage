@@ -77,12 +77,15 @@
       :class="{ 'layout-default-body__header--schedule': isSchedule }"
     >
       <div class="layout-default-body__location">
-        <template v-if="title">
-          <h2>{{ title }}</h2>
-          <span class="layout-default-body__line"></span>
-        </template>
-        <a-breadcrumb separator="-">
-          <a-breadcrumb-item>
+        <a-breadcrumb>
+          <img
+            slot="separator"
+            src="~@/assets/img/separator.png"
+            alt="separator"
+            width="4px"
+            class="layout-default-body__bread-separator"
+          />
+          <a-breadcrumb-item class="layout-default-body__bread-home">
             <router-link to="/">
               <st-icon type="home" class="layout-default-body__icon" />
             </router-link>
