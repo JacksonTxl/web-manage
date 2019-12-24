@@ -98,6 +98,12 @@
               {{ b.label }}
             </span>
           </a-breadcrumb-item>
+          <a-breadcrumb-item
+            v-if="title"
+            class="layout-default-body__breadtext layout-default-body__breadtext--title"
+          >
+            <span>{{ title }}</span>
+          </a-breadcrumb-item>
         </a-breadcrumb>
       </div>
       <div class="layout-default-body__personal">
