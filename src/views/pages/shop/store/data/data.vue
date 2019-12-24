@@ -330,11 +330,7 @@ export default {
         this.fieldNav,
         this.wholenavIndex,
         that,
-        this.wholenavIndex < 2
-          ? fieldInfo[this.wholenavIndex]
-          : that === 'order'
-          ? fieldInfo[this.wholenavIndex][0]
-          : fieldInfo[this.wholenavIndex][1]
+        'value'
       ]
       return this.filterOrderMember(...filterOrderMemberData)
     },
