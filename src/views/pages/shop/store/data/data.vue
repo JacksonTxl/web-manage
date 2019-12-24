@@ -95,6 +95,7 @@
                     :data="
                       filterLine(storeBoard, wholeNav[wholenavIndex].title)
                     "
+                    :tooltipKey="wholeNav[wholenavIndex].title"
                     :unit="wholeNav[wholenavIndex].title | filterCompany"
                   ></shop-store-data-line>
                 </div>
