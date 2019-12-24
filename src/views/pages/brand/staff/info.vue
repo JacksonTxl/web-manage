@@ -140,7 +140,7 @@ export default {
           if: this.auth['brand:staff:staff|rebind_card']
         },
         {
-          text: '职位变更',
+          text: '职位和薪资变更',
           click: this.openModalPosition,
           if: this.auth['brand:staff:staff|position']
         },
