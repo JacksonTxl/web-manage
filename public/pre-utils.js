@@ -1,14 +1,30 @@
 window.preUtils = {
   config: {
+    test: {
+      map: {
+        ali: ['https://pdev1.styd.cn', 'https://pdev2.styd.cn'],
+        huawei: ['https://pdev-hw.styd.cn']
+      }
+    },
     pre: {
       map: {
-        ali: ['https://ppre1.styd.cn/', 'https://ppre2.styd.cn/', 'https://ppre3.styd.cn/', 'https://ppre4.styd.cn/'],
+        ali: [
+          'https://ppre1.styd.cn/',
+          'https://ppre2.styd.cn/',
+          'https://ppre3.styd.cn/',
+          'https://ppre4.styd.cn/'
+        ],
         huawei: ['https://ppre-hw.styd.cn/']
       }
     },
     prod: {
       map: {
-        ali: ['https://p1.styd.cn/', 'https://p2.styd.cn/', 'https://p3.styd.cn/', 'https://p4.styd.cn/'],
+        ali: [
+          'https://p1.styd.cn/',
+          'https://p2.styd.cn/',
+          'https://p3.styd.cn/',
+          'https://p4.styd.cn/'
+        ],
         huawei: ['https://p-hw.styd.cn/']
       }
     }
@@ -59,12 +75,14 @@ window.preUtils = {
    * @return {string} dev/test/pre/prod
    */
   getEnv: function() {
-    return ({
+    return (
+      {
         'saas.dev.styd.cn': 'dev',
         'saas.test.styd.cn': 'test',
         'saas.pre.styd.cn': 'pre',
         'pro.styd.cn': 'prod'
-    })[location.hostname] || 'dev'
+      }[location.hostname] || 'dev'
+    )
   },
   /**
    * 运行时环境下是否启用 cdn
@@ -107,13 +125,14 @@ window.preUtils = {
     var injectPosition = 'body'
     for (var i in files) {
       var publicPath = publicPaths[i % publicPaths.length] || this.map.source[0]
-      var filePath = publicPath + files[i].substr(htmlWebpackPlugin.files.publicPath.length)
+      var filePath =
+        publicPath + files[i].substr(htmlWebpackPlugin.files.publicPath.length)
       var tag
       switch (type) {
         case 'css':
           tag = document.createElement('link')
           tag.href = filePath
-          tag.rel = "stylesheet"
+          tag.rel = 'stylesheet'
           injectPosition = 'head'
           break
         case 'js':
@@ -160,8 +179,7 @@ window.preUtils = {
             failedDomains.push(domain)
             taskReject(new Error(domain + ' error'))
           }
-        })
-        ['catch'](function(e) {})
+        })['catch'](function(e) {})
         tasks.push(task)
       })
       Promise.all(tasks)
@@ -188,7 +206,7 @@ window.preUtils = {
     _publicPaths = _publicPaths.sort()
     publicPaths.forEach(function(publicPath, index) {
       if (publicPath !== _publicPaths[index]) {
-        return ret = true
+        return (ret = true)
       }
     })
     return ret
@@ -229,7 +247,7 @@ window.preUtils = {
   collectErrors: function(domain) {
     var cdnErrors = this.get('cdnErrors') || {}
     cdnErrors[domain] = Date()
-    this.set('cdnErrors',cdnErrors)
+    this.set('cdnErrors', cdnErrors)
   },
   /**
    * 浏览器版本测试，不兼容的版本给出提示
@@ -246,11 +264,16 @@ window.preUtils = {
      * @return {boolean}
      */
     isNeedUpdateBrowser: function() {
-      return /(MSIE|Trident)/i.test(navigator.userAgent) || typeof Promise === 'undefined'
+      return (
+        /(MSIE|Trident)/i.test(navigator.userAgent) ||
+        typeof Promise === 'undefined'
+      )
     },
     eventBind: function() {
       var that = this
-      document.getElementById('browser-update-tip-layer__close').onclick = function() {
+      document.getElementById(
+        'browser-update-tip-layer__close'
+      ).onclick = function() {
         that.updateTipLayer.close()
       }
     },
@@ -268,12 +291,12 @@ window.preUtils = {
           '<p style="font-size: 20px; font-weight: 500; color: #252A2E; margin: 120px 0 12px 0">检测到浏览器版本过低！</p>' +
           '<p style="font-size: 14px; color: #3E4D5C">您当前浏览器版本存在安全风险，建议使用浏览器：谷歌 Chrome</p>' +
           '<div id="browser-update-tip-layer__close" style="width: 40px; height: 40px; cursor: pointer; position: absolute; right: 0; top: 0;"></div>'
-        '</div>' +
-        '</div>'
+        '</div>' + '</div>'
         document.body.appendChild(layer)
       },
       close: function() {
-        document.getElementById('browser-update-tip-layer').style.visibility = 'hidden'
+        document.getElementById('browser-update-tip-layer').style.visibility =
+          'hidden'
       }
     }
   }
