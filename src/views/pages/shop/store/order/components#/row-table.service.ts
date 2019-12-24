@@ -4,10 +4,11 @@ import { tap } from 'rxjs/operators'
 import {
   ListParams,
   VerificationParams,
-  OrderApi
+  OrderApi,
+  OrderListParams
 } from '@/api/v1/shop/store/order'
 @Injectable()
-export class VerificationService implements Controller {
+export class RowTableService implements Controller {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
@@ -22,12 +23,21 @@ export class VerificationService implements Controller {
       })
     )
   }
+  // 获取待发货和待签收订单
+  @Effect()
+  getOrderList(params: OrderListParams) {
+    return this.OrderApi.orderList(params).pipe(
+      tap((res: any) => {
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
+      })
+    )
+  }
   // 核销操作
   verificationGood(params: VerificationParams) {
     return this.OrderApi.verificationAction(params).pipe(tap((res: any) => {}))
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     console.log(to.meta.query)
-    this.getList(to.meta.query)
   }
 }
