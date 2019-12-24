@@ -19,6 +19,6 @@ export class DetailService implements Controller {
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    // return this.getList(to.meta.query)
+    return this.getList(to.meta.query)
   }
 }

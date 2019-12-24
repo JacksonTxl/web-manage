@@ -39,8 +39,7 @@ export default {
   },
   data() {
     return {
-      show: false,
-      tableData: [{ group_price: '' }]
+      show: false
     }
   },
   props: {
@@ -59,10 +58,12 @@ export default {
   methods: {
     onSubmit() {
       if (this.isOut) {
+        console.log('这是出库参数', this.skuList)
         this.putInService.stockOutbound(this.skuList).subscribe(res => {
           this.show = false
         })
       } else {
+        console.log('这是入库参数', this.skuList)
         this.putInService.stockWarehouse(this.skuList).subscribe(res => {
           this.show = false
         })

@@ -52,13 +52,13 @@ export default {
   },
   rxState() {
     return {
-      // tableData: this.detailService.list$
+      tableData: this.detailService.list$,
       loading: this.detailService.loading$
     }
   },
   mixins: [tableMixin],
   data() {
-    return { detailColumns, tableData: [], chooseGood: -1, stockType: -1 }
+    return { detailColumns, chooseGood: -1, stockType: -1 }
   },
   methods: {
     onChange(e) {},
