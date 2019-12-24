@@ -87,7 +87,7 @@
           class="mg-t16"
           :loading="loading$.getList"
           :columns="columns"
-          :scroll="{ x: 800 }"
+          :scroll="{ x: 1200 }"
           rowKey="stat_date"
           :page="page$"
           @change="onTableChange"

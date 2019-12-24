@@ -11,6 +11,9 @@ export const columns = () => {
       titleTotal: '流水总金额（元）',
       scopedSlots: { customRender: 'price' },
       dataIndex: 'price',
+      fixed: 'left',
+      width: 120,
+      align: 'right',
       sorter: true
     },
     {

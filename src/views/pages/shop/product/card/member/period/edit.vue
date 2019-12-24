@@ -751,7 +751,7 @@ export default {
       let text = []
       this.rallyPriceList.forEach(i => {
         Object.keys(i).forEach(o => {
-          if (o !== 'key' && o !== 'time') {
+          if (o !== 'key' && o !== 'time' && o !== '$_oddEvenKey') {
             text.push(i[o])
           } else if (o === 'time') {
             text.push(i[o].num)
