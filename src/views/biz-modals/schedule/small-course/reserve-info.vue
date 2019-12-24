@@ -79,7 +79,7 @@
               >
                 <a-select-option
                   v-for="member in memberOptions"
-                  :key="member.member_id"
+                  :key="member.id"
                 >
                   <div class="st-form-table__add-option">
                     <span
@@ -120,7 +120,11 @@
                 </a-select-opt-group>
               </a-select>
             </td>
-            <td>未签到</td>
+            <td v-if="reserveInfo.reserve_status === 1">未签到</td>
+            <td v-if="reserveInfo.reserve_status === 2">已签到</td>
+            <td v-if="reserveInfo.reserve_status === 3">旷课</td>
+            <td v-if="reserveInfo.reserve_status === 4">请假已补课</td>
+            <td v-if="reserveInfo.reserve_status === 5">请假未补课</td>
             <td>
               <a href="javascript:;" @click="addReserve">添加预约</a>
             </td>
@@ -130,7 +134,12 @@
             <td>{{ item.consume_name }}</td>
             <td>{{ item.is_checkin_name }}</td>
             <td>
-              <div>
+              <div
+                v-if="
+                  reserveInfo.small_course_type === 1 &&
+                    reserveInfo.reserve_status === 1
+                "
+              >
                 <a
                   class="mg-r8"
                   href="javascript:;"
@@ -143,6 +152,36 @@
                 >
                   签到
                 </a>
+                \
+                <a
+                  href="javascript:;"
+                  @click="check(item.id)"
+                  v-if="
+                    item.auth['shop:reserve:personal_team_course_reserve|del']
+                  "
+                >
+                  请假
+                </a>
+              </div>
+              <div
+                v-if="
+                  reserveInfo.small_course_type === 2 &&
+                    reserveInfo.reserve_status === 1
+                "
+              >
+                <a
+                  class="mg-r8"
+                  href="javascript:;"
+                  @click="cancelReserve(item.id)"
+                  v-if="
+                    item.auth[
+                      'shop:reserve:personal_team_course_reserve|checkin'
+                    ]
+                  "
+                >
+                  签到
+                </a>
+                \
                 <a
                   href="javascript:;"
                   @click="check(item.id)"
@@ -153,7 +192,24 @@
                   取消预约
                 </a>
               </div>
-              <div>
+              <div
+                v-if="
+                  (reserveInfo.small_course_type === 1 &&
+                    reserveInfo.reserve_status === 2) ||
+                    (reserveInfo.small_course_type === 2 &&
+                      reserveInfo.reserve_status === 2)
+                "
+              >
+                --
+              </div>
+              <div
+                v-if="
+                  (reserveInfo.small_course_type === 1 &&
+                    reserveInfo.reserve_status === 3) ||
+                    (reserveInfo.small_course_type === 2 &&
+                      reserveInfo.reserve_status === 3)
+                "
+              >
                 <a
                   class="mg-r8"
                   href="javascript:;"
@@ -166,6 +222,7 @@
                 >
                   补签到
                 </a>
+                \
                 <a
                   href="javascript:;"
                   @click="check(item.id)"
@@ -176,7 +233,38 @@
                   补课
                 </a>
               </div>
-              <div>--</div>
+              <div
+                v-if="
+                  reserveInfo.small_course_type === 1 &&
+                    reserveInfo.reserve_status === 4
+                "
+              >
+                <a
+                  href="javascript:;"
+                  @click="check(item.id)"
+                  v-if="
+                    item.auth['shop:reserve:personal_team_course_reserve|del']
+                  "
+                >
+                  补课
+                </a>
+              </div>
+              <div
+                v-if="
+                  reserveInfo.small_course_type === 1 &&
+                    reserveInfo.reserve_status === 5
+                "
+              >
+                <a
+                  href="javascript:;"
+                  @click="check(item.id)"
+                  v-if="
+                    item.auth['shop:reserve:personal_team_course_reserve|del']
+                  "
+                >
+                  查看补课
+                </a>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -205,14 +293,11 @@
 </template>
 
 <script>
-import { switchMap } from 'rxjs/operators'
-import { MessageService } from '@/services/message.service'
-import { PersonalTeamScheduleCommonService as CommonService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/common.service'
-import { PersonalTeamScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/reserve.service'
-import { PersonalTeamScheduleScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/schedule.service'
+import { SmallCourseScheduleCommonService as CommonService } from '@/views/pages/shop/product/course/schedule/small-course/service#/common.service'
+import { SmallCourseScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/small-course/service#/reserve.service'
+import { SmallCourseScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/small-course/service#/schedule.service'
 import ScheduleSmallCourseReservedCourse from '@/views/biz-modals/schedule/small-course/reserved-course'
 import ScheduleSmallCourseRemedialCourse from '@/views/biz-modals/schedule/small-course/remedial-course'
-
 import { columns } from './reserve-info.config'
 export default {
   name: 'ReserveInfo',
@@ -224,8 +309,7 @@ export default {
     return {
       commonService: CommonService,
       reserveService: ReserveService,
-      scheduleService: ScheduleService,
-      messageService: MessageService
+      scheduleService: ScheduleService
     }
   },
   rxState() {

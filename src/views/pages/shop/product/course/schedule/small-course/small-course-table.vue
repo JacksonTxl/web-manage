@@ -112,20 +112,16 @@
 </template>
 
 <script>
-import { SmallCourseScheduleService } from '../small-course/service#/schedule.service'
-import ScheduleTeamAddCourseBatch from '@/views/biz-modals/schedule/team/add-course-batch'
-import ScheduleTeamAddCourse from '@/views/biz-modals/schedule/team/add-course'
-import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
+import { SmallCourseScheduleService } from './service#/schedule.service'
+import ScheduleSmallCourseAddCourse from '@/views/biz-modals/schedule/small-course/add-course'
 import date from '@/views/biz-components/schedule/date#/date-component.vue'
-import ScheduleTeamReserveInfo from '@/views/biz-modals/schedule/team/reserve-info'
+import SmallCourseReserveInfo from '@/views/biz-modals/schedule/small-course/reserve-info'
 import { SmallCourseTableService } from './small-course-table.service'
 export default {
   name: 'ScheduleTeamTable',
   modals: {
-    ScheduleTeamAddCourseBatch,
-    ScheduleTeamAddCourse,
-    ScheduleTeamCopySchedule,
-    ScheduleTeamReserveInfo
+    ScheduleSmallCourseAddCourse,
+    SmallCourseReserveInfo
   },
   serviceInject() {
     return {

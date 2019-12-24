@@ -15,7 +15,6 @@ export class InbatchInfoService {
   ) {}
 
   beforeEach(to: ServiceRoute) {
-    console.log(to)
     this.scheduleList$.commit(() => to.query.courseScheduleList)
   }
 }

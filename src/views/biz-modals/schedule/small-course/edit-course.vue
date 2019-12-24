@@ -84,7 +84,7 @@ export default {
   rxState() {
     const tss = this.smallCourseScheduleCommonService
     return {
-      loading: this.SmallCourseScheduleService.loading$,
+      loading: this.smallCourseScheduleService.loading$,
       coachSmallCourseOptions: tss.coachSmallCourseOptions$,
       courseSmallCourseOptions: tss.courseSmallCourseOptions$,
       courtOptions: tss.courtOptions$

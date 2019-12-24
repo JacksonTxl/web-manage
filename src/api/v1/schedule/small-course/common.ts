@@ -14,7 +14,7 @@ export class SmallCourseScheduleCommonApi extends Api {
    * 获取消费方式列表
    */
   getConsumeList(query: GetScheduleConsumeInput) {
-    return this.http.get('/v1/schedule/team/shop/consume', { query })
+    return this.http.get('/v1/schedule/small_course/shop/consume', { query })
   }
   /**
    * 获取课程列表
@@ -37,10 +37,10 @@ export class SmallCourseScheduleCommonApi extends Api {
   /**
    *
    * @param params
-   * 会员搜索 按照会员名
+   * 会员搜索 按照会员名列表
    */
   getMemberList(query: GetMemberInput) {
-    return this.http.get('/v1/schedule/team/shop/member', { query })
+    return this.http.get('/v1/schedule/small_course/shop/member', { query })
   }
 }
 export interface ConsumeQuery {

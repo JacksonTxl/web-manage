@@ -79,7 +79,7 @@ export class PersonalTeamScheduleReserveService {
           res = this.authService.filter(res, 'auth')
           state.reserveInfo = res.info
           state.infoAuth = res.auth
-          state.reserveList = res.info.reserve
+          state.reserveList = res.list
         })
       })
     )
