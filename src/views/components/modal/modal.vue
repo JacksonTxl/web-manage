@@ -12,7 +12,7 @@
       ].join(' ')
     "
   >
-    <div class="st-modal__close">
+    <div class="st-modal__close" @click="close">
       <st-icon type="modal-close"></st-icon>
     </div>
     <slot name="title" slot="title"></slot>
