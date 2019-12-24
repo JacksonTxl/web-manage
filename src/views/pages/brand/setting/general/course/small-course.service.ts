@@ -6,7 +6,7 @@ import { AuthService } from '@/services/auth.service'
 import { forkJoin } from 'rxjs'
 
 @Injectable()
-export class GroupService {
+export class SmallCourseService {
   reserveInfo$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({

@@ -5,7 +5,7 @@ import { CourseApi, DeleteCourseCategoryInput } from '@/api/v1/setting/course'
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()
-export class GroupRangeService implements Controller {
+export class SmallCourseRangeService implements Controller {
   resData$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({
