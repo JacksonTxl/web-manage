@@ -44,7 +44,7 @@ export default {
       this.$modalRouter.push({
         name: 'store-deliver-good',
         props: {
-          id: 1
+          id: val.is
         },
         on: {
           success: res => {
