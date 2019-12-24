@@ -88,7 +88,7 @@
               props: { staff: record }
             }"
           >
-            设置薪资账户
+            设置提现账户
           </a>
           <a
             v-if="record.auth['brand_shop:staff:staff|del']"
