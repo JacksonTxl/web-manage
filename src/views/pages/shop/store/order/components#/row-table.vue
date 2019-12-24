@@ -1,21 +1,23 @@
 <template>
   <div :class="basic()">
     <st-table
+      :loading="loading.getList"
       :page="page"
       :class="basic('table')"
       rowKey="id"
       :columns="columns"
-      :dataSource="listData"
+      @change="onTableChange"
+      :dataSource="tableData"
     >
       <ul
-        slot="childrens"
+        slot="product"
         slot-scope="customRender, record"
         :class="basic('sku')"
       >
-        <li v-for="(item, index) in record.childrens" :key="index">
-          <span>{{ item.name }}</span>
-          <span>x{{ item.num }}</span>
-          <span>￥{{ item.price }}</span>
+        <li v-for="(item, index) in record.product" :key="index">
+          <span>{{ item.product_name }}</span>
+          <span>x{{ item.product_count }}</span>
+          <span>￥{{ item.unit_price }}</span>
         </li>
       </ul>
       <div slot="action" slot-scope="customRender, record">
@@ -30,9 +32,20 @@
 </template>
 <script>
 import tableMixin from '@/mixins/table.mixin'
+import { RowTableService } from './row-table.service'
 export default {
   name: 'rowtable',
   mixins: [tableMixin],
+  serviceInject() {
+    return { RowTableService: RowTableService }
+  },
+  rxState() {
+    return {
+      tableData: this.RowTableService.list$,
+      page: this.RowTableService.page$,
+      loading: this.RowTableService.loading$
+    }
+  },
   bem: {
     basic: 'page-order-row-table'
   },
@@ -46,8 +59,9 @@ export default {
     actionText: {
       type: String
     },
-    page: {
-      default: 1
+    type: {
+      type: Number,
+      default: 2
     }
   },
   data() {
@@ -58,6 +72,15 @@ export default {
   methods: {
     clickFn(val) {
       this.$emit('clicks', val)
+    },
+    onTableChange(pagination) {
+      this.$searchQuery.current_page = pagination.current
+      this.$searchQuery.size = pagination.pageSize
+      if (this.type === 1) {
+        this.RowTableService.getList(this.$searchQuery).subscribe()
+      } else {
+        this.RowTableService.getOrderList(this.$searchQuery).subscribe()
+      }
     }
   }
 }

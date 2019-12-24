@@ -14,11 +14,11 @@
         ></st-input-number>
       </template>
       <template slot="remark" slot-scope="customRender, record">
-        <st-input-number
+        <a-input
           v-model="record.remark"
           :float="true"
           style="width:110px;"
-        ></st-input-number>
+        ></a-input>
       </template>
     </st-table>
   </st-modal>
@@ -58,15 +58,19 @@ export default {
   methods: {
     onSubmit() {
       if (this.isOut) {
-        console.log('这是出库参数', this.skuList)
-        this.putInService.stockOutbound(this.skuList).subscribe(res => {
-          this.show = false
-        })
+        this.putInService
+          .stockOutbound({ stock: this.skuList })
+          .subscribe(res => {
+            this.show = false
+            this.$router.reload()
+          })
       } else {
-        console.log('这是入库参数', this.skuList)
-        this.putInService.stockWarehouse(this.skuList).subscribe(res => {
-          this.show = false
-        })
+        this.putInService
+          .stockWarehouse({ stock: this.skuList })
+          .subscribe(res => {
+            this.show = false
+            this.$router.reload()
+          })
       }
       this.show = false
     }

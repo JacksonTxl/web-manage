@@ -44,7 +44,7 @@ export class StockApi extends Api {
    * 商品入库
    */
   stockWarehouse(params: WarehouseParams) {
-    return this.http.get('/v1/store/stock/warehouse', {
+    return this.http.post('/v1/store/stock/warehouse', {
       params
     })
   }
@@ -52,7 +52,7 @@ export class StockApi extends Api {
    * 商品出库
    */
   stockOutbound(params: WarehouseParams) {
-    return this.http.get('/v1/store/stock/outbound', {
+    return this.http.post('/v1/store/stock/outbound', {
       params
     })
   }
