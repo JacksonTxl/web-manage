@@ -645,12 +645,9 @@ export default {
       if (!this.priceValidateRuleText.length) {
         this.rallyPriceIsOk = false
       } else {
-        console.log(this.priceValidateRuleText)
         this.rallyPriceIsOk = this.priceValidateRuleText.every(i => {
-          console.log(i, this.pattern.NUM_FLOAT(1).test(i))
           return this.pattern.NUM_FLOAT(1).test(i)
         })
-        console.log(this.rallyPriceIsOk)
       }
     },
     onCardBgChange(e) {
@@ -685,7 +682,7 @@ export default {
       let text = []
       this.rallyPriceList.forEach(i => {
         Object.keys(i).forEach(o => {
-          if (o !== 'key' && o !== 'time') {
+          if (o !== 'key' && o !== 'time' && o !== '$_oddEvenKey') {
             text.push(i[o])
           } else if (o === 'time') {
             text.push(i[o].num)
