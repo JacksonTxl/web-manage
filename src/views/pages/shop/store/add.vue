@@ -2,7 +2,7 @@
   <st-mina-panel app>
     <div slot="actions">
       <!-- :loading="confirmLoading"  -->
-      <st-button type="primary" @click="onSubmit">
+      <st-button type="primary" :loading="loading.addGoods" @click="onSubmit">
         保 存
       </st-button>
     </div>
@@ -34,11 +34,11 @@
                 placeholder="请选择"
               >
                 <a-select-option
-                  :value="item.id"
+                  :value="item.category_id"
                   v-for="(item, index) in classList"
                   :key="index"
                 >
-                  {{ item.name }}
+                  {{ item.category_name }}
                 </a-select-option>
               </a-select>
             </st-form-item>
@@ -54,7 +54,7 @@
             <st-form-item label="商品图片" required>
               <ul>
                 <li
-                  class="mg-r12 mg-t12"
+                  :class="['mg-r12', 'mg-t12', basic('img')]"
                   v-for="(item, index) in imgList"
                   :key="index"
                 >
@@ -68,10 +68,12 @@
                 </li>
               </ul>
               <st-image-upload
+                class="mg-t12"
                 width="126px"
                 height="126px"
+                g
                 :list="fileList"
-                @change="onShareChangeGetImage"
+                @change="getImage"
                 :numLimit="5"
                 placeholder="上传图片"
               >
@@ -83,14 +85,14 @@
             </st-form-item>
             <st-form-item label="配送方式" required>
               <a-checkbox-group v-decorator="decorators.delivery_type">
-                <a-checkbox value="1">到店自提</a-checkbox>
-                <a-checkbox value="2">快递发货</a-checkbox>
+                <a-checkbox :value="1">到店自提</a-checkbox>
+                <a-checkbox :value="2">快递发货</a-checkbox>
               </a-checkbox-group>
             </st-form-item>
             <st-form-item label="售卖方式" required>
               <a-checkbox-group v-decorator="decorators.sale_type">
-                <a-checkbox value="1">线上</a-checkbox>
-                <a-checkbox value="2">线下</a-checkbox>
+                <a-checkbox :value="1">线上</a-checkbox>
+                <a-checkbox :value="2">线下</a-checkbox>
               </a-checkbox-group>
             </st-form-item>
           </a-col>
@@ -158,7 +160,7 @@
                   <a-select
                     mode="multiple"
                     placeholder="请添加规格设置"
-                    :defaultValue="item.spec_item_name"
+                    v-model="item.spec_item_name"
                     style="width: 220px"
                     :open="false"
                     @change="handleChange(index, $event)"
@@ -180,7 +182,7 @@
                     slot="market_price"
                     slot-scope="customRender, record"
                   >
-                    <div class="test">
+                    <div :class="basic('apply')">
                       <st-input-number
                         v-model="record.market_price"
                         :float="true"
@@ -192,7 +194,7 @@
                       </st-input-number>
                       <a
                         style="margin-left: 8px"
-                        class="test_item"
+                        :class="basic('apply--all')"
                         v-if="isMore === 2"
                         @click="allApply('market_price', record.market_price)"
                       >
@@ -204,7 +206,7 @@
                     slot="selling_price"
                     slot-scope="customRender, record"
                   >
-                    <div class="test">
+                    <div :class="basic('apply')">
                       <st-input-number
                         v-model="record.selling_price"
                         :float="true"
@@ -216,7 +218,7 @@
                       </st-input-number>
                       <a
                         style="margin-left: 8px"
-                        class="test_item"
+                        :class="basic('apply--all')"
                         v-if="isMore === 2"
                         @click="allApply('selling_price', record.selling_price)"
                       >
@@ -228,14 +230,14 @@
                     slot="stock_amount"
                     slot-scope="customRender, record"
                   >
-                    <div class="test">
+                    <div :class="basic('apply')">
                       <st-input-number
                         v-model="record.stock_amount"
                         style="width:110px;"
                       ></st-input-number>
                       <a
                         style="margin-left: 8px"
-                        class="test_item"
+                        :class="basic('apply--all')"
                         v-if="isMore === 2"
                         @click="allApply('stock_amount', record.stock_amount)"
                       >
@@ -282,7 +284,8 @@ export default {
   },
   rxState() {
     return {
-      loading: this.addService.loading$
+      loading: this.addService.loading$,
+      classList: this.addService.list$
     }
   },
   modals: { StoreClassManage, StoreAddSku },
@@ -304,12 +307,6 @@ export default {
       decorators,
       isEdit: false,
       name: '', // 商品名称
-      classList: [
-        // 分类列表
-        { name: '1', id: 1 },
-        { name: '2', id: 2 },
-        { name: '3', id: 3 }
-      ],
       isMore: 1, // 是否是多规格
       tableData: [
         {
@@ -426,11 +423,12 @@ export default {
         product_images: this.imgList, // 商品图片
         product_intro: this.content, // 商品介绍
         product_sku: product_sku, // 规格设置
-        shelves_status: this.shelves_status // 上架状态
-        // product_name: values.product_name, // 商品名称
-        // category_id: values.category_id, // 分类id
-        // delivery_type: values.delivery_type, // 配送方式
-        // sale_type: values.sale_type // 售卖方式
+        shelves_status: this.shelves_status, // 上架状态
+        product_name: values.product_name, // 商品名称
+        category_id: values.category_id, // 分类id
+        delivery_type:
+          values.delivery_type.length === 2 ? -1 : values.delivery_type[0], // 配送方式
+        sale_type: values.sale_type.length === 2 ? -1 : values.sale_type[0] // 售卖方式
       }
       console.log(data, '-----参数')
       this.addService.addGoods(data).subscribe(res => {
@@ -506,11 +504,13 @@ export default {
       })
     },
     goodDetail() {
+      console.log(this.info, '====info')
       this.form.setFieldsValue({
         product_name: this.info.product_name,
         category_id: this.info.category_id,
-        delivery_type: this.info.delivery_type,
-        sale_type: this.info.sale_type
+        delivery_type:
+          this.info.delivery_type === 3 ? [1, 2] : [this.info.delivery_type],
+        sale_type: this.info.sale_type === 3 ? [1, 2] : [this.info.sale_type]
       })
       this.imgList = this.info.product_images
       this.content = this.info.product_intro
@@ -518,10 +518,10 @@ export default {
       this.skuList = []
       this.info.all_spec.forEach(item => {
         let list = []
-        item.spec_item_name.forEach(it => {
-          list.push(item.spec_item_name)
+        item.spec_item_arr.forEach(it => {
+          list.push(it.spec_item_name)
         })
-        skuList.push({ spec_name: item.spec_name, spec_item_name: list })
+        this.skuList.push({ spec_name: item.spec_name, spec_item_name: list })
       })
       let tableData = []
       this.info.product_sku.forEach((item, index) => {
@@ -531,8 +531,9 @@ export default {
         tableItem.stock_amount = item.stock_amount
         tableItem.sku_id = item.sku_id
         tableItem.is_update = 0
+        tableItem.key = parseInt(Math.random() * 999999).toString()
         item.spec_arr.forEach((item, index) => {
-          tableItem[index] = spec_item_name
+          tableItem[index] = item.spec_item_name
         })
         tableData.push(tableItem)
       })
@@ -589,6 +590,7 @@ export default {
       }
     },
     getImageUrl(imageUrl) {
+      g
       const imgEl = `<img src='${imageUrl.url}' width='400' height='400'>`
       this.content = this.content + imgEl
     },
@@ -596,7 +598,8 @@ export default {
       this.isEditor = this.content.length === 0
       return this.content.length === 0
     },
-    onShareChangeGetImage(data) {
+    getImage(data) {
+      console.log(data, '这是图片返回的数据')
       this.imgList.push({
         image_id: data[0].image_id,
         image_key: data[0].image_key,

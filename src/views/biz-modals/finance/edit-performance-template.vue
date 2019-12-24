@@ -164,6 +164,7 @@
                         :float="true"
                         :min="0"
                         :max="
+                          isChooseks &&
                           performance_mode == PERFORMANCE.PERFORMANCE_MODE_1
                             ? 100
                             : 999999
@@ -196,6 +197,7 @@
                             :float="true"
                             :min="0"
                             :max="
+                              isChooseks &&
                               performance_mode == PERFORMANCE.PERFORMANCE_MODE_1
                                 ? 100
                                 : 999999

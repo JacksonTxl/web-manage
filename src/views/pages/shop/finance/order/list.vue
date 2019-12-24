@@ -30,12 +30,12 @@
       </div>
       <st-table
         :scroll="{ x: 2100 }"
-        isExpand
         :columns="columns"
         :page="page"
         @change="onTableChange"
         :dataSource="list"
         :loading="loading.getList"
+        isExpand
       >
         <template slot="order_status" slot-scope="text">
           {{ text | enumFilter('finance.order_status') }}

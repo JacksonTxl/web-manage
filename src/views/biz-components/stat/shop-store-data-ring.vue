@@ -27,7 +27,7 @@ export default {
     },
     padding: {
       type: Array,
-      default: () => [30, 80, 30, 0]
+      default: () => [50, 80, 30, 'auto']
     },
     colors: {
       type: Array,
@@ -161,8 +161,6 @@ export default {
 
       this.chart.render()
 
-      this.changeData()
-
       const $s = this.$el.querySelector.bind(this.$el)
 
       this.chart.on('interval:mouseenter', e => {
@@ -190,20 +188,6 @@ export default {
           el.addEventListener('mouseenter', mouseHandler, false)
         })
       })
-    },
-    changeData() {
-      new Vue({
-        components: {
-          StHelpTooltip
-        },
-        render: h => <st-help-tooltip id="TBDAR002" />
-      }).$mount('#legend-1')
-      new Vue({
-        components: {
-          StHelpTooltip
-        },
-        render: h => <st-help-tooltip id="TBDAR001" />
-      }).$mount('#legend-5')
     }
   },
   beforeDestroy() {

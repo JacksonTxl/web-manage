@@ -24,7 +24,7 @@ export class OrderApi extends Api {
    * 核销订单列表
    */
   verificationList(params: ListParams) {
-    return this.http.get('/v1/finance/order/write_off', {
+    return this.http.get('/v1/store/write_off', {
       params
     })
   }
@@ -32,7 +32,7 @@ export class OrderApi extends Api {
    * 发货和签收订单列表
    */
   orderList(params: OrderListParams) {
-    return this.http.get('/v1/finance/order/logistics', {
+    return this.http.get('/v1/store/logistics', {
       params
     })
   }

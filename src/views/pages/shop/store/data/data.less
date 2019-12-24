@@ -1,5 +1,4 @@
 .shop-store-data {
-  display: flex;
   height: 100%;
 
   &__main {
@@ -160,6 +159,12 @@
         overflow: hidden;
         border-bottom: 1px solid rgba(233, 233, 233, 1);
 
+        .st-title {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
         .date-picker {
           flex: 1;
           text-align: right;
@@ -201,8 +206,8 @@
       padding-right: 5px;
 
       .st-title--t3 {
-        margin-bottom: 35px;
-        margin-top: 20px;
+        margin-bottom: 25px;
+        margin-top: 35px;
       }
     }
 
