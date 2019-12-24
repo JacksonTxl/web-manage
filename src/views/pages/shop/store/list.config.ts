@@ -14,7 +14,7 @@ export const columns = (vm: any) => {
     },
     {
       title: '上架状态',
-      dataIndex: 'shelves_status'
+      dataIndex: 'product_shelves'
     },
     {
       title: '销量',

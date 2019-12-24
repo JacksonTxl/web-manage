@@ -147,4 +147,10 @@ export class StoreApi extends Api {
   onShelf(id: number) {
     return this.http.put(`/v1/store/product/${id}`)
   }
+  /**
+   * 商品分类列表
+   */
+  getCategory() {
+    return this.http.get(`/v1/store/product/category`)
+  }
 }

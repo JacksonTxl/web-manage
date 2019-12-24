@@ -31,6 +31,10 @@ export default {
       type: Array,
       default: () => ['amount']
     },
+    // 使用字段提示标题
+    tooltipKey: {
+      type: String
+    },
     // 颜色数组
     colors: {
       type: Array,
@@ -128,7 +132,7 @@ export default {
         })
         .tooltip('name*value', (name, value) => {
           return {
-            name,
+            name: this.tooltipKey,
             value: value + this.unit
           }
         })
