@@ -1,11 +1,11 @@
 window.preUtils = {
   config: {
-    test: {
-      map: {
-        ali: ['https://pdev1.styd.cn/', 'https://pdev2.styd.cn/'],
-        huawei: []
-      }
-    },
+    // test: {
+    //   map: {
+    //     ali: ['https://pdev1.styd.cn/', 'https://pdev2.styd.cn/'],
+    //     huawei: []
+    //   }
+    // },
     pre: {
       map: {
         ali: [
