@@ -520,10 +520,12 @@ export default {
       this.skuList = []
       this.info.all_spec.forEach(item => {
         let list = []
-        item.spec_item_arr.forEach(it => {
-          list.push(it.spec_item_name)
-        })
-        this.skuList.push({ spec_name: item.spec_name, spec_item_name: list })
+        if (item.spec_item_arr) {
+          item.spec_item_arr.forEach(it => {
+            list.push(it.spec_item_name)
+          })
+          this.skuList.push({ spec_name: item.spec_name, spec_item_name: list })
+        }
       })
       let tableData = []
       this.info.product_sku.forEach((item, index) => {
