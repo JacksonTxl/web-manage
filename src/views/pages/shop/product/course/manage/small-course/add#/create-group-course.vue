@@ -59,7 +59,6 @@
             人数限制
             <st-help-tooltip id="TSXBK001" />
           </template>
-
           <div :class="b('num-limit')">
             <a-form-item class="page-a-form">
               <st-input-number v-decorator="decorators.num_min">
@@ -190,7 +189,11 @@
     <a-row :gutter="8" v-show="$route.query.type === '2'">
       <a-col :lg="22" :xs="22" :offset="1">
         <st-form-item label="背景图" required>
-          <card-bg-radio @change="onCardBgChange" v-model="bg_image" />
+          <card-bg-radio
+            isSmallCourse
+            @change="onCardBgChange"
+            v-model="bg_image"
+          />
         </st-form-item>
       </a-col>
     </a-row>

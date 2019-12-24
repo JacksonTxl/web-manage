@@ -119,7 +119,8 @@ export const ruleOptions = (vm: any) => {
           required: true,
           message: '请选择售卖方式'
         }
-      ]
+      ],
+      initialValue: [2]
     }
   }
 }

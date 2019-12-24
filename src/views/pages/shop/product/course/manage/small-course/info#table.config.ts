@@ -1,4 +1,4 @@
-export const basicColumns = vm => [
+export const basicColumns = (vm: any) => [
   {
     title: '教练',
     dataIndex: 'nickname'
@@ -12,7 +12,7 @@ export const basicColumns = vm => [
     dataIndex: 'nature_work'
   }
 ]
-export const classColumns = vm => [
+export const classColumns = (vm: any) => [
   {
     title: '学员',
     dataIndex: 'user_name'
