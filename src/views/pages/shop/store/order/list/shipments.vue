@@ -3,14 +3,13 @@
     <portal to="SHOP_STORE_ORDER_KEYWORDS_SEARCH">
       <st-input-search
         v-model="$searchQuery.search_where"
-        @search="onKeywordsSearch('search_where', $event)"
+        @search="getListData"
         placeholder="请输入订单编号、会员姓名或手机号查找"
         maxlength="50"
       />
     </portal>
     <row-table
       :columns="columns"
-      :listData="tableData"
       actionText="发货"
       @clicks="sendGoods"
     ></row-table>
@@ -19,8 +18,7 @@
 <script>
 import RowTable from '../components#/row-table.vue'
 import { columns } from './shipments.config'
-import { ShipmentsService } from './shipments.service'
-import tableMixin from '@/mixins/table.mixin'
+import { RowTableService } from '../components#/row-table.service'
 import StoreDeliverGood from '@/views/biz-modals/store/deliver-good'
 export default {
   name: 'shipments',
@@ -33,26 +31,14 @@ export default {
   modals: {
     StoreDeliverGood
   },
-  mixins: [tableMixin],
   serviceInject() {
-    return { ShipmentsService: ShipmentsService }
-  },
-  rxState() {
-    return {
-      tableData: this.ShipmentsService.list$,
-      page: this.ShipmentsService.page$,
-      loading: this.ShipmentsService.loading$
-    }
-  },
-  data() {
-    return {
-      name: ''
-    }
-  },
-  mounted() {
-    // console.log(this.list)
+    return { RowTableService: RowTableService }
   },
   methods: {
+    // 获取发货订单列表
+    getListData() {
+      this.RowTableService.getOrderList(this.$searchQuery).subscribe()
+    },
     sendGoods(val) {
       console.log(val)
       this.$modalRouter.push({
@@ -67,6 +53,9 @@ export default {
         }
       })
     }
+  },
+  mounted() {
+    this.getListData()
   },
   computed: {
     columns

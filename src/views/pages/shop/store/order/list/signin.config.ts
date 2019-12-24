@@ -1,36 +1,36 @@
 export const columns = () => [
   {
     title: '商品',
-    dataIndex: 'childrens',
+    dataIndex: 'product',
     width: 330,
-    scopedSlots: { customRender: 'childrens' }
+    scopedSlots: { customRender: 'product' }
   },
   {
     title: '收货人',
-    dataIndex: 'ren'
+    dataIndex: 'member_name'
   },
   {
     title: '手机号',
-    dataIndex: 'phone'
+    dataIndex: 'mobile'
   },
   {
     title: '收货地址',
-    dataIndex: 'adress'
+    dataIndex: 'receiving_address'
   },
   {
     title: '创建时间',
-    dataIndex: 'times'
+    dataIndex: 'created_time'
   },
   {
     title: '订单编号',
-    dataIndex: ''
+    dataIndex: 'id'
   },
   {
     title: '快递公司',
-    dataIndex: ''
+    dataIndex: 'express_company'
   },
   {
     title: '快递单号',
-    dataIndex: ''
+    dataIndex: 'express_number'
   }
 ]
