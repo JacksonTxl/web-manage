@@ -156,8 +156,7 @@
                       ></sales-analysis>
                     </div>
                   </a-col>
-                  <div class="hr"></div>
-                  <a-col :span="12">
+                  <a-col :span="12" class="hr">
                     <div style="flex:1">
                       <sales-analysis
                         title="营收TOP5"
