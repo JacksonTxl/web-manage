@@ -160,7 +160,7 @@ export default {
           if: this.auth['brand:staff:staff:account|save']
         },
         {
-          text: '设置薪资账户',
+          text: '设置提现账户',
           click: this.openModalSalary,
           if: this.auth['brand:staff:staff|salary']
         }
