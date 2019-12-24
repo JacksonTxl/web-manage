@@ -95,6 +95,7 @@
                     :data="
                       filterLine(storeBoard, wholeNav[wholenavIndex].title)
                     "
+                    :tooltipKey="wholeNav[wholenavIndex].title"
                     :unit="wholeNav[wholenavIndex].title | filterCompany"
                   ></shop-store-data-line>
                 </div>
@@ -155,8 +156,7 @@
                       ></sales-analysis>
                     </div>
                   </a-col>
-                  <div class="hr"></div>
-                  <a-col :span="12">
+                  <a-col :span="12" class="hr">
                     <div style="flex:1">
                       <sales-analysis
                         title="营收TOP5"

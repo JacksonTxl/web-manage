@@ -46,33 +46,59 @@
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
             <!-- v-if="record.auth['brand_shop:order:order|pay']" -->
-            <a @click="onGathering(record)">
+            <a
+              @click="onGathering(record)"
+              v-if="record.auth['brand_shop:order:order|pay']"
+            >
               收款
             </a>
             <!-- v-if="record.auth['brand_shop:order:order|cancel']" -->
 
-            <a @click="onCancel(record)">
+            <a
+              @click="onCancel(record)"
+              v-if="record.auth['brand_shop:order:order|cancel']"
+            >
               取消
             </a>
             <!-- v-if="record.auth['brand_shop:order:order|get']" -->
 
-            <a @click="onOrderInfo(record)">
+            <a
+              @click="onOrderInfo(record)"
+              v-if="record.auth['brand_shop:order:order|get']"
+            >
               详情
             </a>
             <!-- v-if="record.auth['brand_shop:order:order|refund']" -->
 
-            <a @click="onRefund(record)">
+            <a
+              @click="onRefund(record)"
+              v-if="record.auth['brand_shop:order:order|refund']"
+            >
               退款
             </a>
             <!-- v-if="record.auth['brand_shop:order:order|split']" -->
 
-            <a @click="onSplit(record)">
+            <a
+              @click="onSplit(record)"
+              v-if="record.auth['brand_shop:order:order|split']"
+            >
               业绩拆分
             </a>
             <!-- v-if="record.auth['shop:order:order|print']" -->
 
-            <a @click="printOrder(record.id)">
+            <a
+              @click="printOrder(record.id)"
+              v-if="record.auth['shop:order:order|print']"
+            >
               打印小票
+            </a>
+            <!-- v-if="record.children && record.children.auth" -->
+
+            <a
+              @click="onChildredRefund(record.children.id)"
+              v-if="record.isChild"
+            >
+              子订单退款
             </a>
           </st-table-actions>
         </div>
@@ -122,6 +148,14 @@ export default {
   },
   mounted() {
     this.setSearchData()
+
+    this.list.forEach(item => {
+      if (item.children.length) {
+        item.children.forEach(it => {
+          it.isChild = true
+        })
+      }
+    })
     console.log(this.list)
   },
   watch: {
@@ -141,6 +175,9 @@ export default {
     }
   },
   methods: {
+    onChildredRefund(record) {
+      console.log(record)
+    },
     // 打印小票
     printOrder(order_id) {
       window.open(

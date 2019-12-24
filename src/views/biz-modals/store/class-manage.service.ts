@@ -1,35 +1,31 @@
-import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
+import { Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
-import { CategoryQuery, StoreApi } from '@/api/v1/shop/store/store'
+import { StoreApi } from '@/api/v1/shop/store/store'
 @Injectable()
-export class ClassManageService implements Controller {
+export class ClassManageService {
   list$ = new State([])
-  page$ = new State({})
   loading$ = new State({})
-  constructor(private stockApi: StoreApi) {}
+  constructor(private storeApi: StoreApi) {}
   @Effect()
-  getList(query: CategoryQuery) {
-    return this.stockApi.categoryList(query).pipe(
+  getList() {
+    return this.storeApi.categoryList().pipe(
       tap((res: any) => {
+        res.list.map((item: any) => (item.isEdit = false))
         this.list$.commit(() => res.list)
-        this.page$.commit(() => res.page)
       })
     )
   }
   @Effect()
   addClass(params: { category_name: string }) {
-    return this.stockApi.addCategory(params).pipe(tap(() => {}))
+    return this.storeApi.addCategory(params).pipe(tap(() => {}))
   }
   @Effect()
   editClass(id: number, params: { category_name: string }) {
-    return this.stockApi.editCategory(id, params).pipe(tap(() => {}))
+    return this.storeApi.editCategory(id, params).pipe(tap(() => {}))
   }
   @Effect()
   delClass(id: number) {
-    return this.stockApi.delCategory(id).pipe(tap(() => {}))
-  }
-  beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    // return this.getList(to.meta.query)
+    return this.storeApi.delCategory(id).pipe(tap(() => {}))
   }
 }

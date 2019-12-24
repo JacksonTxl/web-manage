@@ -45,26 +45,29 @@ export default {
   },
   rxState() {
     return {
-      // tableData: this.searchService.list$
+      tableData: this.classManageService.list$,
       loading: this.classManageService.loading$
     }
   },
   data() {
     return {
       show: false,
-      tableData: [
-        { category_name: '营养补给', category_id: 1, isEdit: false },
-        { category_name: '营养补给222', category_id: 2, isEdit: false }
-      ],
+      // tableData: [
+      //   { category_name: '营养补给', category_id: 1, isEdit: false },
+      //   { category_name: '营养补给222', category_id: 2, isEdit: false }
+      // ],
       oldTableData: [
         { category_name: '营养补给', category_id: 1 },
         { category_name: '营养补给222', category_id: 2 }
       ]
     }
   },
+  mounted() {
+    this.classManageService.getList().subscribe()
+  },
   methods: {
     onSubmit() {
-      console.log('点击了确定')
+      this.show = false
       this.$emit('success', this.tableData)
     },
     addClass() {

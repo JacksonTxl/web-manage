@@ -28,10 +28,6 @@ export interface EditParams {
   product_sku: AddSku[]
   shelves_status: number
 }
-export interface CategoryQuery {
-  current_page: number
-  size: number
-}
 export interface DtoreBoard {
   date_type: number
   date: string
@@ -86,10 +82,8 @@ export class StoreApi extends Api {
   /*
    * 分类列表
    */
-  categoryList(query: CategoryQuery) {
-    return this.http.get(`/v1/store/product/category`, {
-      query
-    })
+  categoryList() {
+    return this.http.get(`/v1/store/product/category`)
   }
   /**
    * 删除分类
@@ -152,5 +146,11 @@ export class StoreApi extends Api {
    */
   onShelf(id: number) {
     return this.http.put(`/v1/store/product/${id}`)
+  }
+  /**
+   * 商品分类列表
+   */
+  getCategory() {
+    return this.http.get(`/v1/store/product/category`)
   }
 }
