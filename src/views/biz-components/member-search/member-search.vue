@@ -30,33 +30,89 @@
             {{ item.member_name }} {{ item.mobile }}
           </span>
         </a-select-option>
+        <a-select-option
+          :key="-1"
+          disabled
+          v-if="!memberList$.length && memberSearchText !== ''"
+        >
+          查无此会员，
+          <a @click="onAddMember">添加新会员？</a>
+        </a-select-option>
+        <span slot="suffixIcon">未成年</span>
       </a-select>
-      <p v-if="!memberList$.length && memberSearchText !== ''" class="mg-b0">
-        查无此会员，
-        <a @click="onAddMember">添加新会员？</a>
-      </p>
     </st-form-item>
-    <st-form-item v-if="!searchMemberIsShow" label="会员姓名" required>
-      <a-input
-        v-decorator="decorators[memberName]"
-        placeholder="请输入会员姓名"
-      ></a-input>
-    </st-form-item>
-    <st-form-item v-if="!searchMemberIsShow" label="手机号" required>
-      <a-input
-        v-decorator="decorators[memberMobile]"
-        placeholder="请输入手机号"
-      ></a-input>
-      <p class="mg-b0">
-        <a @click="onCancelMember">取消添加</a>
-      </p>
-    </st-form-item>
+    <template v-if="!searchMemberIsShow">
+      <st-form-item label="姓名" required>
+        <a-input v-decorator="decorators[memberName]" placeholder="请输入姓名">
+          <a-select
+            slot="addonAfter"
+            style="width: 100px"
+            v-decorator="decorators[isMinors]"
+            @change="onChangeModel"
+          >
+            <a-select-option :value="0">成年人</a-select-option>
+            <a-select-option :value="1">未成年人</a-select-option>
+          </a-select>
+        </a-input>
+      </st-form-item>
+      <st-form-item label="手机号" required v-if="personModel === 0">
+        <input-phone
+          size="default"
+          v-decorator="decorators[memberMobile]"
+          placeholder="请输入手机号"
+        ></input-phone>
+        <!-- <a-input
+          v-decorator="decorators[memberMobile]"
+          placeholder="请输入手机号"
+        ></a-input> -->
+        <p class="mg-b0">
+          <a @click="onCancelMember">取消添加</a>
+        </p>
+      </st-form-item>
+      <st-form-item label="家长手机号" required v-if="personModel === 1">
+        <input-phone
+          size="default"
+          v-decorator="decorators[parentMobile]"
+          placeholder="请输入手机号"
+        ></input-phone>
+        <!-- <a-input
+          v-decorator="decorators[parentMobile]"
+          placeholder="请输入家长手机号"
+        ></a-input> -->
+      </st-form-item>
+      <st-form-item label="家长姓名" required v-if="personModel === 1">
+        <a-input
+          v-decorator="decorators[parentName]"
+          placeholder="请输入家长姓名"
+        >
+          <a-select
+            slot="addonAfter"
+            style="width: 80px"
+            v-decorator="decorators[parentUserRole]"
+          >
+            <a-select-option
+              :value="item.value"
+              v-for="(item, index) in parent_types"
+              :key="index"
+            >
+              {{ item.label }}
+            </a-select-option>
+          </a-select>
+        </a-input>
+        <p class="mg-b0">
+          <a @click="onCancelMember">取消添加</a>
+        </p>
+      </st-form-item>
+    </template>
   </div>
 </template>
 
 <script>
 import { MemberSearchService } from './member-search.service'
 import { merge } from 'lodash-es'
+import { ruleOptions } from './member-search.config'
+import { PatternService } from '@/services/pattern.service'
+import InputPhone from '@/views/biz-components/input-phone/input-phone'
 export default {
   model: {
     event: 'change'
@@ -70,15 +126,15 @@ export default {
     },
     label: {
       type: String,
-      default: '预定会员'
+      default: '购买会员'
     },
     /**
      * 会员查询类型 transaction |
      */
     type: {
       type: String,
-      default: 'transaction',
-      required: true
+      default: 'transaction'
+      // required: true
     },
     placeholder: {
       type: String,
@@ -100,20 +156,23 @@ export default {
   },
   serviceInject() {
     return {
-      memberSearchService: MemberSearchService
+      memberSearchService: MemberSearchService,
+      pattern: PatternService
     }
   },
   rxState() {
     const { memberList$, loading$ } = this.memberSearchService
     return {
       memberList$,
-      loading$
+      loading$,
+      parent_types: this.memberSearchService.parent_types$
     }
   },
   data() {
     return {
       memberSearchText: '',
-      searchMemberIsShow: true
+      searchMemberIsShow: true,
+      personModel: 0
     }
   },
   computed: {
@@ -122,7 +181,11 @@ export default {
         {
           member_id: 'member_id',
           mobile: 'mobile',
-          member_name: 'member_name'
+          member_name: 'member_name',
+          parent_name: 'parent_name',
+          is_minors: 'is_minors',
+          parent_mobile: 'parent_mobile',
+          parent_user_role: 'parent_user_role'
         },
         this.fields
       )
@@ -135,9 +198,24 @@ export default {
     },
     memberName() {
       return this.usedFields.member_name
+    },
+    parentName() {
+      return this.usedFields.parent_name
+    },
+    isMinors() {
+      return this.usedFields.is_minors
+    },
+    parentMobile() {
+      return this.usedFields.parent_mobile
+    },
+    parentUserRole() {
+      return this.usedFields.parent_user_role
     }
   },
   methods: {
+    onChangeModel(val) {
+      this.personModel = val
+    },
     // 搜索会员
     onMemberSearch(data) {
       this.memberSearchText = data
@@ -167,6 +245,12 @@ export default {
         this.form.resetFields([this.memberId])
       }
     })
+  },
+  // mounted() {
+  //   this.form.decorators(ruleOptions)
+  // },
+  components: {
+    InputPhone
   }
 }
 </script>

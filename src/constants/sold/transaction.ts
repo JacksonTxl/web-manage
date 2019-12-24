@@ -14,5 +14,5 @@ export const enum PRODUCT_TYPE {
   STORE = 4, // 云店
   PACKAGE = 5, // 课程包
   CABINET = 6, // 租赁柜
-  SMALL_COURSE = 7 // 租赁柜
+  SMALL_COURSE = 7 // 小班课
 }

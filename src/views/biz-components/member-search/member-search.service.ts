@@ -1,3 +1,4 @@
+import { UserService } from '@/services/user.service'
 import { Injectable } from 'vue-service-app'
 import { TransactionApi } from '@/api/v1/sold/transaction'
 import { Effect, State, Action, Computed } from 'rx-state'
@@ -18,8 +19,11 @@ export class MemberSearchService {
       )
     )
   )
-
-  constructor(private transactionApi: TransactionApi) {}
+  parent_types$ = this.userService.getOptions$('small_course.parent_type')
+  constructor(
+    private transactionApi: TransactionApi,
+    private userService: UserService
+  ) {}
   SET_TYPE(type: string) {
     this.type$.commit(() => type)
   }
