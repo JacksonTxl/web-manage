@@ -3,8 +3,8 @@ export class CourseGroupApi extends Api {
   /**
    *小班课列表
    */
-  getList(params: any) {
-    return this.http.get('/v1/course/small/list', { params })
+  getList(query: any) {
+    return this.http.get('/v1/course/small/list', { query })
   }
   addGroup(params: any) {
     return this.http.post('/v1/course/small', { params })

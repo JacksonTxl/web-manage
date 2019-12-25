@@ -222,7 +222,9 @@ export default {
     b: 'create-group-course'
   },
   components: { CardBgRadio },
-  created() {},
+  created() {
+    this.$emit('onCourseNameChange', this.info.info.course_name)
+  },
   mounted() {
     this.isShowLimitContent = this.$route.query.type === '1'
     this.setFieldsValue()
@@ -233,10 +235,9 @@ export default {
     return {
       form,
       decorators,
-      fileList: [],
       bg_image: {
         image_id: 0,
-        // image_key: this.cardBgList[0].image_key,
+        image_key: '',
         image_url: '',
         index: 1
       },
@@ -256,17 +257,18 @@ export default {
         num_min: info.num_min,
         num_max: info.num_max,
         course_times: info.course_times,
-        is_leave: this.$route.query.type === '1' ? info.is_leave : undefined,
-        leave_hours:
-          this.$route.query.type === '1' ? info.leave_hours : undefined,
-        leave_limit:
-          this.$route.query.type === '1' ? info.leave_limit : undefined,
+        is_leave: this.isShowLimitContent ? info.is_leave : undefined,
+        leave_hours: this.isShowLimitContent ? info.leave_hours : undefined,
+        leave_limit: this.isShowLimitContent ? info.leave_limit : undefined,
         image: info.image,
         description: info.description
       })
-      if (info.image.image_key) {
-        this.fileList = [info.image]
+      this.bg_image.index = info.img_type
+      if (info.img_type === 3) {
+        this.bg_image = info.image
+        this.bg_image.index = 0
       }
+      this.isShowLeaveContent = this.isShowLimitContent && info.is_leave === 1
     },
     save(e) {
       e.preventDefault()
@@ -276,6 +278,7 @@ export default {
         values.course_end_time = values.date[1].format('YYYY-MM-DD HH:mm')
         values.small_course_type = this.$route.query.type
         values.image = this.bg_image
+        values.img_type = this.bg_image.index
         if (this.bg_image.index === 0) {
           values.img_type = 3
         }
@@ -286,11 +289,6 @@ export default {
           })
           this.$emit('goNext', res.course_id)
         })
-      })
-    },
-    onImgChange(fileList) {
-      this.form.setFieldsValue({
-        image: fileList[0]
       })
     },
     onLimitChange(e) {

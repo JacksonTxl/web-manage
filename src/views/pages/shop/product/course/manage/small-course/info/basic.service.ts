@@ -9,7 +9,7 @@ export class BasicService {
   getGroupCourseInfo(courseId: string) {
     return this.groupApi.getGroupCourseInfo(courseId).pipe(
       tap(res => {
-        this.groupInfo$.commit(() => res)
+        this.groupInfo$.commit(() => res.info)
       })
     )
   }

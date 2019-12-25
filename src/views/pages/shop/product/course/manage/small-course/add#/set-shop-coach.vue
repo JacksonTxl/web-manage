@@ -47,7 +47,11 @@
     <a-row :gutter="10">
       <a-col :lg="10" :xs="10" :offset="1">
         <st-form-item labelFix>
-          <st-button class="mg-r16" @click="save" :loading="loading.setShop">
+          <st-button
+            class="mg-r16"
+            @click="onClickBack"
+            :loading="loading.setShop"
+          >
             上一步
           </st-button>
           <st-button type="primary" @click="save" :loading="loading.setShop">
@@ -137,6 +141,9 @@ export default {
           this.$emit('goNext')
         })
       })
+    },
+    onClickBack() {
+      this.$emit('back', 0)
     },
     onSelectCoachChange(coachIds) {
       this.form.setFieldsValue({

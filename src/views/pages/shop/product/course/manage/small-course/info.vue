@@ -182,7 +182,8 @@ export default {
       this.$router.push({
         path: '/shop/product/course/manage/small-course/edit',
         query: {
-          id: this.groupCourseHeaderInfo.course_id
+          id: this.groupCourseHeaderInfo.course_id,
+          type: this.groupCourseHeaderInfo.small_course_type
         }
       })
     },

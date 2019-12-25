@@ -569,6 +569,7 @@ export default {
     },
     setEditInfo(obj) {
       this.isShowParent = !!obj.is_minors
+      console.log(!!obj.is_minors)
       const cascader = []
       if (obj.province_id) {
         cascader.push(obj.province_id)

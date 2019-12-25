@@ -40,11 +40,15 @@
       @change="onTableChange"
       :page="page"
     >
-      <a slot="course_arrangement" slot-scope="text, record">
+      <a
+        slot="course_arrangement"
+        slot-scope="text, record"
+        @click="goSchedule"
+      >
         {{ record.course_arrangement }}
       </a>
       <span slot="small_course_type" slot-scope="text, record">
-        {{ record.small_course_type ? '固定排课' : '自主排课' }}
+        {{ record.small_course_type === 1 ? '固定排课' : '自主排课' }}
       </span>
       <span slot="course_status" slot-scope="text, record">
         {{ record.class_status | enumFilter('small_course.class_status') }}
@@ -108,9 +112,11 @@
 import { ListService } from './list.service'
 import { columns } from './list.config'
 import { CLASS_STATUS } from '@/constants/course/small-course'
+import tableMixin from '@/mixins/table.mixin'
 
 export default {
   name: 'GroupCourseList',
+  mixins: [tableMixin],
   serviceInject() {
     return {
       listService: ListService
@@ -140,6 +146,9 @@ export default {
   methods: {
     goAddGroup() {
       this.$router.push({ path: './add-select' })
+    },
+    goSchedule() {
+      this.$router.push({ path: 'shop-product-course-schedule-small-course' })
     },
     onSearchCourseName(val) {
       this.$router.push({
