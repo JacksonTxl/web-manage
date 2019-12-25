@@ -47,7 +47,7 @@ pipeline {
     }
     stage('to=pre') {
       when {
-        expression { BRANCH_NAME ==~ /(feat|fix|dev|test|hotfix|master).*/}
+        expression { BRANCH_NAME ==~ /(master).*/}
       }
       steps {
         sh 'make rsync to=saas-pre'
