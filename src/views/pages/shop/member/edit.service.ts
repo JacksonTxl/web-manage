@@ -9,7 +9,6 @@ import { UserService } from '@/services/user.service'
 
 interface EditState {
   info: Object
-  parent_info: Object
   countryInfo: Object
   nations: Object
   countryList: Object
@@ -18,7 +17,6 @@ interface EditState {
 export class EditService extends Store<EditState> {
   state$: State<EditState>
   info$: Computed<Object>
-  parent_info$: Computed<Object>
   countryInfo$: Computed<Object>
   nations$: Computed<Object>
   countryList$: Computed<Object>
@@ -29,11 +27,9 @@ export class EditService extends Store<EditState> {
     super()
     this.state$ = new State({
       info: {},
-      parent_info: {},
       countryInfo: []
     })
     this.info$ = new Computed(this.state$.pipe(pluck('info')))
-    this.parent_info$ = new Computed(this.state$.pipe(pluck('parent_info')))
     this.countryInfo$ = new Computed(this.state$.pipe(pluck('countryInfo')))
     this.nations$ = new Computed(this.state$.pipe(pluck('nations')))
     this.countryList$ = new Computed(this.state$.pipe(pluck('countryList')))
@@ -45,7 +41,6 @@ export class EditService extends Store<EditState> {
       tap(res => {
         this.state$.commit(state => {
           state.info = res.info
-          state.parent_info = res.parent_info
         })
       })
     )

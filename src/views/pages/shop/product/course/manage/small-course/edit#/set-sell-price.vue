@@ -184,7 +184,7 @@ export default {
         content: '提交成功'
       })
       this.$router.push({
-        name: 'shop-product-course-manage-group-list'
+        name: 'shop-product-course-manage-small-course-list'
       })
     },
 

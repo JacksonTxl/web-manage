@@ -8,7 +8,8 @@ export const ruleOptions = (vm: any) => {
           required: true,
           message: '请选择用户类型'
         }
-      ]
+      ],
+      initialValue: 0
     },
     mobile: {
       rules: [

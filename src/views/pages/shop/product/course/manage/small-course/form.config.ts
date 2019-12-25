@@ -63,13 +63,7 @@ export const ruleOptions = (vm: any) => {
     //   ]
     // },
     is_leave: {
-      initialValue: 0,
-      rules: [
-        {
-          required: true,
-          message: '请输入请假限制'
-        }
-      ]
+      initialValue: 0
     },
     leave_hours: {},
     leave_limit: {},

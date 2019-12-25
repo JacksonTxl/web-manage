@@ -31,8 +31,8 @@ export class EditService {
     )
   }
   @Effect()
-  addGroup(params: any) {
-    return this.courseApi.addGroup(params)
+  editGroup(params: any) {
+    return this.courseApi.editGroup(params)
   }
   @Effect()
   setCoach(params: any) {
