@@ -164,11 +164,7 @@
     <a-row :gutter="8">
       <a-col :lg="22" :xs="22" :offset="1">
         <st-form-item label="背景图" required>
-          <card-bg-radio
-            isSmallCourse
-            @change="onCardBgChange"
-            v-model="bg_image"
-          />
+          <card-bg-radio isSmallCourse v-model="bg_image" />
         </st-form-item>
       </a-col>
     </a-row>
@@ -241,7 +237,6 @@ export default {
         image_url: '',
         index: 1
       },
-      cardBgValidatorText: '',
       isShowLeaveContent: false
     }
   },
@@ -252,9 +247,9 @@ export default {
         values.course_begin_time = values.date[0].format('YYYY-MM-DD HH:mm')
         values.course_end_time = values.date[1].format('YYYY-MM-DD HH:mm')
         values.small_course_type = this.$route.query.type
-        values.img_type = this.bg_image.index
-        if (this.$route.query.type === '2') {
-          values.image = this.bg_image.image
+        values.image = this.bg_image
+        if (this.bg_image.index === 0) {
+          values.img_type = 3
         }
         delete values.date
         this.addService.addGroup(values).subscribe(res => {
@@ -263,11 +258,6 @@ export default {
           })
           this.$emit('goNext', res.course_id)
         })
-      })
-    },
-    onImgChange(fileList) {
-      this.form.setFieldsValue({
-        image: fileList[0]
       })
     },
     onLimitChange(e) {
@@ -282,9 +272,6 @@ export default {
       this.form.setFieldsValue({
         train_aim
       })
-    },
-    onCardBgChange(e) {
-      this.cardBgValidatorText = ''
     },
     onCourseNameChange(e) {
       this.$emit('onCourseNameChange', e.target.value)

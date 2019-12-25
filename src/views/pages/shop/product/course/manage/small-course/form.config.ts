@@ -53,15 +53,6 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    // img_type: {
-    //   rules: [
-    //     {
-    //       required: true,
-    //       message: '手机号格式错误',
-    //       pattern: pattern.MOBILE
-    //     }
-    //   ]
-    // },
     is_leave: {
       initialValue: 0
     },
