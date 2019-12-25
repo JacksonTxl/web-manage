@@ -79,7 +79,11 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="总课时" required>
-          <st-input-number v-decorator="decorators.course_times" :max="99999">
+          <st-input-number
+            v-decorator="decorators.course_times"
+            :min="1"
+            :max="99999"
+          >
             <template slot="addonAfter">
               节
             </template>
@@ -116,6 +120,8 @@
               <span class="mg-r8">允许请假时间,请假前</span>
               <st-input-number
                 v-decorator="decorators.leave_hours"
+                :min="1"
+                :max="72"
                 style="width:128px"
               >
                 <template slot="addonAfter">
@@ -126,6 +132,7 @@
             <a-form-item>
               <span class="mg-r8">请假上限节数</span>
               <st-input-number
+                :min="1"
                 v-decorator="decorators.leave_limit"
                 style="width:178px"
               >
@@ -145,6 +152,7 @@
           每周最大约课节数
           <st-input-number
             style="width:100px"
+            :min="1"
             v-decorator="decorators.appointment_rights"
           >
             <template slot="addonAfter">
@@ -224,6 +232,7 @@ export default {
   components: { CardBgRadio },
   created() {
     this.$emit('onCourseNameChange', this.info.info.course_name)
+    this.$emit('onCourseIdChange', this.info.info.course_id)
   },
   mounted() {
     this.isShowLimitContent = this.$route.query.type === '1'
@@ -260,6 +269,9 @@ export default {
         is_leave: this.isShowLimitContent ? info.is_leave : undefined,
         leave_hours: this.isShowLimitContent ? info.leave_hours : undefined,
         leave_limit: this.isShowLimitContent ? info.leave_limit : undefined,
+        appointment_rights: !this.isShowLimitContent
+          ? info.appointment_rights
+          : undefined,
         image: info.image,
         description: info.description
       })
