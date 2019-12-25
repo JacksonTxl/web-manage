@@ -108,9 +108,11 @@
 import { ListService } from './list.service'
 import { columns } from './list.config'
 import { CLASS_STATUS } from '@/constants/course/small-course'
+import tableMixin from '@/mixins/table.mixin'
 
 export default {
   name: 'GroupCourseList',
+  mixins: [tableMixin],
   serviceInject() {
     return {
       listService: ListService

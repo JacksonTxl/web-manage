@@ -248,6 +248,7 @@ export default {
         values.course_end_time = values.date[1].format('YYYY-MM-DD HH:mm')
         values.small_course_type = this.$route.query.type
         values.image = this.bg_image
+        values.img_type = this.bg_image.index
         if (this.bg_image.index === 0) {
           values.img_type = 3
         }

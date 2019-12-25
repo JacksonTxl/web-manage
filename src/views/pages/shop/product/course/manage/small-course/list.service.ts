@@ -4,8 +4,6 @@ import { tap, map } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
 import { CourseGroupApi } from '@/api/v1/course/small_course'
 import { AuthService } from '@/services/auth.service'
-import { RedirectService } from '@/services/redirect.service'
-import { CourseApi } from '@/api/v1/special/course'
 import { UserService } from '@/services/user.service'
 
 @Injectable()
@@ -23,7 +21,6 @@ export class ListService implements Controller {
     add: true
   })
   constructor(
-    private courseApi: CourseApi,
     private courseGroupApi: CourseGroupApi,
     private authService: AuthService,
     private userService: UserService
@@ -44,8 +41,8 @@ export class ListService implements Controller {
   beGroup(params: any) {
     return this.courseGroupApi.beGroup(params)
   }
-  init(query: any) {
-    return forkJoin(this.getList(query))
+  init(params: any) {
+    return forkJoin(this.getList(params))
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.init(to.meta.query)
