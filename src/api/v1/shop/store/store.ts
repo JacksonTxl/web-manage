@@ -89,7 +89,7 @@ export class StoreApi extends Api {
    * 删除分类
    */
   delCategory(id: number) {
-    return this.http.get(`/v1/store/product/category/${id}`)
+    return this.http.post(`/v1/store/product/category/${id}`)
   }
   /**
    * 商品列表
