@@ -37,7 +37,7 @@
           <div class="page-shop-coach-container-coach">
             <input type="hidden" v-decorator="decorators.coach_ids" />
             <select-coach
-              :shopIds="shopIds"
+              :coachIds="info.coach.coach_ids"
               @change="onSelectCoachChange"
             ></select-coach>
           </div>
@@ -59,7 +59,7 @@
   </st-form>
 </template>
 <script>
-import { AddService } from '../add.service'
+import { EditService } from '../edit.service'
 import { MessageService } from '@/services/message.service'
 import { UserService } from '@/services/user.service'
 import { ruleOptions } from '../form.config'
@@ -70,7 +70,7 @@ export default {
   name: 'SetShopCoach',
   serviceInject() {
     return {
-      addService: AddService,
+      editService: EditService,
       messageService: MessageService,
       userService: UserService,
       pattern: PatternService
@@ -78,8 +78,8 @@ export default {
   },
   rxState() {
     return {
-      loading: this.addService.loading$,
-      staffList: this.addService.staffList$
+      loading: this.editService.loading$,
+      staffList: this.editService.staffList$
     }
   },
   components: {
@@ -123,7 +123,6 @@ export default {
     return {
       form,
       decorators,
-      shopIds: [],
       fileList: []
     }
   },
@@ -139,7 +138,7 @@ export default {
       e.preventDefault()
       this.form.validateFields().then(values => {
         values.course_id = this.courseId
-        this.addService.setCoach(values).subscribe(() => {
+        this.editService.setCoach(values).subscribe(() => {
           this.messageService.success({
             content: '提交成功'
           })
@@ -156,6 +155,7 @@ export default {
       const info = this.info.coach
       this.form.setFieldsValue({
         course_name: info.course_name,
+        staff_id: info.staff_id,
         coach_ids: info.coach_ids
       })
     },

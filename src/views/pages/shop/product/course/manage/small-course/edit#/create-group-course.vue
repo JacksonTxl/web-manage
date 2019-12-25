@@ -260,11 +260,11 @@ export default {
         num_min: info.num_min,
         num_max: info.num_max,
         course_times: info.course_times,
-        is_leave: this.$route.query.type === '1' ? info.is_leave : 'undefined',
+        is_leave: this.$route.query.type === '1' ? info.is_leave : undefined,
         leave_hours:
-          this.$route.query.type === '1' ? info.leave_hours : 'undefined',
+          this.$route.query.type === '1' ? info.leave_hours : undefined,
         leave_limit:
-          this.$route.query.type === '1' ? info.leave_limit : 'undefined',
+          this.$route.query.type === '1' ? info.leave_limit : undefined,
         image: info.image,
         description: info.description
       })
@@ -281,9 +281,6 @@ export default {
         values.small_course_type = this.$route.query.type
         values.img_type = this.bg_image.index
         values.image = this.bg_image.image
-        //  values.is_leave = info.is_leave,
-        // values.leave_hours: info.leave_hours,
-        // values.leave_limit: info.leave_limit,
         delete values.date
         this.editService.editGroup(values).subscribe(res => {
           this.messageService.success({
