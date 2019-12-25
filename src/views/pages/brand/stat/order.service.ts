@@ -1,16 +1,16 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state/src'
-import { pluck, tap } from 'rxjs/operators'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
+import { State, Effect } from 'rx-state/src'
+import { tap } from 'rxjs/operators'
 import {
   OrderApi,
   OrderChartParams,
   OrderDataParams
 } from '@/api/v1/stat/order'
-import { forkJoin } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
 import { UserService } from '@/services/user.service'
+
 @Injectable()
-export class OrderService {
+export class OrderService implements Controller {
   chartData$ = new State<object[]>([])
   list$ = new State([])
   page$ = new State({})

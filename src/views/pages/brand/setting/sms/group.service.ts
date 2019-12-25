@@ -1,7 +1,6 @@
 import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import {
   GroupApi,
   GroupListQuery,
@@ -10,10 +9,8 @@ import {
 import { UserService } from '@/services/user.service'
 import { forkJoin } from 'rxjs'
 
-interface SetState {}
 @Injectable()
-export class GroupService {
-  state$: State<SetState>
+export class GroupService implements Controller {
   groupList$ = new State([])
   groupPage$ = new State([])
   templateList$ = new State([])
@@ -22,9 +19,7 @@ export class GroupService {
   notifyType$ = this.userService.getOptions$('setting.notify_type')
   sendStatus$ = this.userService.getOptions$('setting.send_status')
 
-  constructor(private GroupApi: GroupApi, private userService: UserService) {
-    this.state$ = new State({})
-  }
+  constructor(private GroupApi: GroupApi, private userService: UserService) {}
   @Effect()
   getGroupList(query: GroupListQuery) {
     return this.GroupApi.getGroupList(query).pipe(

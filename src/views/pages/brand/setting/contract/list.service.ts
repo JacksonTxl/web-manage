@@ -1,9 +1,8 @@
-import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
+import { Injectable, Controller } from 'vue-service-app'
 import { ContractApi } from '@/api/v1/setting/contract'
 import { forkJoin } from 'rxjs'
-import { tap, pluck } from 'rxjs/operators'
-import { Store } from '@/services/store'
-import { State, Computed } from 'rx-state'
+import { tap } from 'rxjs/operators'
+import { State } from 'rx-state'
 import { AuthService } from '@/services/auth.service'
 
 interface ListState {
@@ -12,24 +11,16 @@ interface ListState {
 
 @Injectable()
 export class ListService implements Controller {
-  state$: State<ListState>
-  list$: Computed<any[]>
+  list$ = new State([])
   auth$ = this.authService.authMap$({
     edit: 'brand:contract:contract_tpl|edit'
   })
   constructor(
     private contractApi: ContractApi,
     private authService: AuthService
-  ) {
-    this.state$ = new State({
-      list: []
-    })
-    this.list$ = new Computed(this.state$.pipe(pluck('list')))
-  }
+  ) {}
   SET_LIST(list: any[]) {
-    this.state$.commit(state => {
-      state.list = list
-    })
+    this.list$.commit(() => list)
   }
   getList() {
     return this.contractApi.getList().pipe(
@@ -41,7 +32,7 @@ export class ListService implements Controller {
   init() {
     return forkJoin(this.getList())
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+  beforeRouteEnter() {
     return this.init()
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { anyAll } from '@/operators'
 import { StatApi } from '@/api/v1/stat/shop'
 import { MemberApi, SaleQuery, CoachQuery } from '@/api/v1/member'

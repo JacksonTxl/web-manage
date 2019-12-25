@@ -1,18 +1,13 @@
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { UserService } from '@/services/user.service'
 import { AuthService } from '@/services/auth.service'
 import { forkJoin } from 'rxjs'
+import { HareWareApi, GetAreaListQuery } from '@/api/v1/setting/hardware'
 
-import {
-  HareWareApi,
-  GetAreaListQuery,
-  GetBlackListQuery
-} from '@/api/v1/setting/hardware'
 @Injectable()
-export class ListService {
+export class ListService implements Controller {
   list$ = new State([])
   info$ = new State({})
   page$ = new State([])

@@ -1,51 +1,24 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect, Action } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
+import { State } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { MemberApi } from '@/api/v1/member'
 import { forkJoin } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
 
-interface FollowHistoryInfoState {
-  followHistoryInfo: any
-  followInfo: any
-}
 @Injectable()
-export class FollowHistoryService extends Store<FollowHistoryInfoState> {
-  state$: State<FollowHistoryInfoState>
-  followHistoryInfo$: Computed<string>
-  followInfo$: Computed<string>
+export class FollowHistoryService implements Controller {
+  followHistoryInfo$ = new State({})
+  followInfo$ = new State({})
   auth$ = this.authService.authMap$({
     add: 'shop:member:member_record|add'
   })
-  constructor(private memberApi: MemberApi, private authService: AuthService) {
-    super()
-    this.state$ = new State({
-      followHistoryInfo: {},
-      followInfo: {}
-    })
-    this.followHistoryInfo$ = new Computed(
-      this.state$.pipe(pluck('followHistoryInfo'))
-    )
-    this.followInfo$ = new Computed(this.state$.pipe(pluck('followInfo')))
-  }
-  SET_FOLLOW_HISTORY_INFO(followHistoryInfo: FollowHistoryInfoState) {
-    console.log(followHistoryInfo)
-    this.state$.commit(state => {
-      state.followHistoryInfo = followHistoryInfo
-    })
-  }
-  SET_FOLLOW_INFO(followInfo: FollowHistoryInfoState) {
-    this.state$.commit(state => {
-      state.followInfo = followInfo
-    })
-  }
+  constructor(private memberApi: MemberApi, private authService: AuthService) {}
   getListInfo(id: any) {
     return this.memberApi.getMemberFollowRecord(id).pipe(
       tap(res => {
         console.log(res, '获取数据')
         res = this.authService.filter(res)
-        this.SET_FOLLOW_HISTORY_INFO(res)
+        this.followHistoryInfo$.commit(() => res)
       })
     )
   }
@@ -53,15 +26,14 @@ export class FollowHistoryService extends Store<FollowHistoryInfoState> {
     return this.memberApi.getMemberFollow(id).pipe(
       tap(res => {
         console.log(res, '获取数据')
-
-        this.SET_FOLLOW_INFO(res)
+        this.followInfo$.commit(() => res)
       })
     )
   }
   init(id: string) {
     return forkJoin(this.getListInfo(id), this.getFollowInfo(id))
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.init(to.meta.query.id).subscribe(() => next())
+  beforeRouteEnter(to: ServiceRoute) {
+    return this.init(to.meta.query.id)
   }
 }

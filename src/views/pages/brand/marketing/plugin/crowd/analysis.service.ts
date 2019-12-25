@@ -1,6 +1,6 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect, Action } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
+import { State } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { CrowdAPI } from '@/api/v1/crowd'
 
 @Injectable()

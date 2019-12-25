@@ -1,19 +1,15 @@
 import { PersonalScheduleCommonService } from './schedule/personal/service#/common.service'
 import { PersonalScheduleScheduleService } from './schedule/personal/service#/schedule.service'
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
+import { State } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
 import moment from 'moment'
 import { UserService } from '@/services/user.service'
 import { AuthService } from '@/services/auth.service'
-interface SetState {
-  scheduleTime: any[]
-  scheduleList: any[]
-}
+
 @Injectable()
-export class PersonalTableService {
+export class PersonalTableService implements Controller {
   scheduleList$ = new State([])
   scheduleColumns$ = new State([])
   scheduleTime$ = new State([])

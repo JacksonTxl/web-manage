@@ -13,6 +13,8 @@ import { ShopApi, GetShopBasicInput } from '@/api/v1/shop'
 export class AddService {
   loading$ = new State({})
   info$ = new State({})
+  couponTypeOptions$ = this.userService.getOptions$('coupon.coupon_type')
+  isShopRangeOptions$ = this.userService.getOptions$('coupon.is_shop_range')
   product_ranges$ = this.userService.getOptions$('coupon.product_range')
   constructor(
     private marketingApi: MarketingApi,
