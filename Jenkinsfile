@@ -13,20 +13,12 @@ pipeline {
         sh 'tree -du -L 4'
       }
     }
-    stage('Build') {
-      /** master 分支不参与自动构建 */
-      when {
-        expression { BRANCH_NAME ==~ /(feat|fix|dev|test|hotfix).*/}
-      }
-      steps {
-        sh 'make build'
-      }
-    }
     stage('to=dev') {
       when {
         expression { BRANCH_NAME ==~ /(feat|fix|dev|test|hotfix).*/}
       }
       steps {
+        sh 'make build'
         sh 'make rsync to=saas-dev'
         sh 'make release to=saas-dev'
         sh 'make rsync-branch to=saas-dev'
@@ -39,6 +31,7 @@ pipeline {
         expression { BRANCH_NAME ==~ /(feat|fix|dev|test|hotfix).*/}
       }
       steps {
+        sh 'make build'
         sh 'make rsync to=saas-test'
         sh 'make release to=saas-test'
         sh 'make rsync-branch to=saas-test'
@@ -46,22 +39,19 @@ pipeline {
         echo "https://saas.test.styd.cn"
       }
     }
-    // stage('prod-Build') {
-    //   when {
-    //     expression { BRANCH_NAME ==~ /(master).*/}
-    //   }
-    //   steps {
-    //     sh 'make build'
-    //   }
-    // }
-    // stage('to=prod') {
-    //   when {
-    //     expression { BRANCH_NAME ==~ /(master).*/}
-    //   }
-    //   steps {
-    //     sh 'make rsync to=saas-nginx-m'
-    //   }
-    // }
+    stage('to=pre') {
+      when {
+        expression { BRANCH_NAME ==~ /(feat|fix|dev|test|hotfix|master).*/}
+      }
+      steps {
+        sh 'make build'
+        sh 'make rsync to=saas-pre'
+        sh 'make release to=saas-pre'
+        sh 'make rsync-branch to=saas-pre'
+        sh 'make release-branch to=saas-pre'
+        echo "https://saas.pre.styd.cn"
+      }
+    }
   }
   post {
     always {
