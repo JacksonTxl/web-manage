@@ -3,6 +3,8 @@ export const columns = (vm: any) => {
   return [
     {
       title: '用户姓名',
+      width: 140,
+      fixed: 'left',
       dataIndex: 'member_name',
       scopedSlots: { customRender: 'member_name' }
     },
@@ -39,8 +41,6 @@ export const columns = (vm: any) => {
     {
       title: '报名信息',
       dataIndex: 'registration_info',
-      width: 140,
-      fixed: 'right',
       scopedSlots: { customRender: 'registration_info' }
     },
     {

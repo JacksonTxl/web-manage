@@ -74,30 +74,28 @@
         }}
       </template>
       <template slot="shelf_status" slot-scope="text, record">
-        {{ text | enumFilter('package_course.shelf_status') }}
-        <a-tooltip
-          placement="top"
-          v-if="
-            record.shelf_status === 1 && Date.now() < record.start_time * 1000
-          "
+        <st-text
+          :status="{
+            success: record.shelf_status === 1,
+            error: record.shelf_status === 2,
+            warning: record.shelf_status === 3
+          }"
         >
-          <template slot="title">
-            <span>暂未开始售卖</span>
-          </template>
-          <span><st-icon type="help" /></span>
-        </a-tooltip>
-        <a-tooltip
-          placement="top"
-          v-if="
-            record.shelf_status === 1 && Date.now() > record.end_time * 1000
-          "
-        >
-          <template slot="title">
-            <span>支持售卖到期</span>
-          </template>
-          <span><st-icon type="help" /></span>
-        </a-tooltip>
+          {{ text | enumFilter('package_course.shelf_status') }}
+        </st-text>
+        <st-help-popover v-if="record.shelf_status === 1">
+          <span slot="title">说明</span>
+          <span slot="content">
+            <template v-if="Date.now() < record.start_time * 1000">
+              暂未开始售卖
+            </template>
+            <template v-if="Date.now() > record.end_time * 1000">
+              支持售卖到期
+            </template>
+          </span>
+        </st-help-popover>
       </template>
+
       <div slot="action" slot-scope="text, record">
         <st-table-actions>
           <a
