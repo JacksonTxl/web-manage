@@ -50,6 +50,7 @@
       <st-form :form="form" labelWidth="88px">
         <div :class="sale('sale')">
           <member-search
+            v-if="info.sale_range"
             :form="form"
             :memberInfo="memberInfo"
             :saleRangeType="info.sale_range.type"

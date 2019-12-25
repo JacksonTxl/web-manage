@@ -1,13 +1,13 @@
 <template>
   <div :class="basic()">
-    <div v-di-view="{ name: 'SHOP_SOLD_COURSE_LIST_SEARCH' }">
+    <portal to="SHOP_SOLD_COURSE_LIST_SEARCH">
       <st-input-search
         v-model="$searchQuery.search"
         @search="onKeywordsSearch('search', $event)"
-        placeholder="请输入小班课名称、合同编号、会员姓名或手机号查找"
-        style="width:372px"
+        placeholder="请输入小班课名、合同编号、会员姓名或手机号查找"
+        style="width:400px"
       />
-    </div>
+    </portal>
     <st-search-panel @search="onSearchNative" @reset="onSearchResetNative">
       <st-search-panel-item label="课程状态：">
         <st-search-radio
@@ -51,11 +51,20 @@
               <a @click="onDetail(record)">
                 详情
               </a>
-              <a @click="onTransfer(record)">
+              <a
+                @click="
+                  smallCourseActions.onTrasnfer({
+                    id: record.id
+                  })
+                "
+              >
                 转让
               </a>
               <a @click="onRefund(record)">
                 退款
+              </a>
+              <a @click="toContract(record)">
+                换班
               </a>
               <a @click="toContract(record)">
                 查看合同
@@ -70,37 +79,39 @@
 <script>
 import moment from 'moment'
 import { cloneDeep, filter } from 'lodash-es'
-import { PersonalService } from './personal.service'
+import { SmallCourseService } from './small-course.service'
 import tableMixin from '@/mixins/table.mixin'
-import { columns } from './personal.config'
-import SoldCourseRefund from '@/views/biz-modals/sold/course/refund'
-import SoldCourseTransfer from '@/views/biz-modals/sold/course/transfer'
-import SoldCourseLease from '@/views/biz-modals/sold/course/lease'
-import SoldCourseExtendDay from '@/views/biz-modals/sold/course/extend-day'
+import { columns } from './small-course.config'
+import useSmallCourseActions from '@/hooks/shop/sold-small-course-actions.hook'
+
 export default {
   name: 'PageShopSoldCoursePersonalList',
   mixins: [tableMixin],
   bem: {
     basic: 'page-shop-sold'
   },
-  modals: {
-    SoldCourseRefund,
-    SoldCourseTransfer,
-    SoldCourseLease,
-    SoldCourseExtendDay
-  },
   serviceInject() {
     return {
-      personalService: PersonalService
+      smallCourseService: SmallCourseService
     }
   },
   rxState() {
     return {
-      loading: this.personalService.loading$,
-      list: this.personalService.list$,
-      page: this.personalService.page$,
-      courseStatus: this.personalService.courseStatus$,
-      auth: this.personalService.auth$
+      loading: this.smallCourseService.loading$,
+      list: this.smallCourseService.list$,
+      page: this.smallCourseService.page$,
+      courseStatus: this.smallCourseService.courseStatus$,
+      auth: this.smallCourseService.auth$
+    }
+  },
+  beforeCreate() {
+    this.smallCourseActions.$on('refresh', val => {
+      this.$router.reload()
+    })
+  },
+  hooks() {
+    return {
+      smallCourseActions: useSmallCourseActions()
     }
   },
   data() {
@@ -147,21 +158,6 @@ export default {
     },
     // moment
     moment,
-    // 转让
-    onTransfer(record) {
-      this.$modalRouter.push({
-        name: 'sold-course-transfer',
-        props: {
-          type: 'personal',
-          id: record.id
-        },
-        on: {
-          success: () => {
-            this.$router.reload()
-          }
-        }
-      })
-    },
     // 跳转合同
     toContract(record) {
       let url = `${window.location.origin}/common/contract-preview?id=${
@@ -187,7 +183,7 @@ export default {
     // 详情
     onDetail(record) {
       this.$router.push({
-        path: `/shop/sold/course/info/personal/info/operation-record`,
+        path: `/shop/sold/course/info/small-course/info/operation-record`,
         query: { id: record.id }
       })
     }

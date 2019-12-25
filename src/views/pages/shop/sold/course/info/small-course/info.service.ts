@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  Controller,
-  ServiceRoute,
-  ServiceRouter
-} from 'vue-service-app'
+import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { SmallCourseApi } from '@/api/v1/sold/small-course'
 import { tap } from 'rxjs/operators'
@@ -15,12 +10,11 @@ export class InfoService implements Controller {
   loading$ = new State({})
   auth$ = new State({})
   authTabs$ = this.authService.getAuthTabs$(
-    'shop-sold-course-info-personal-info'
+    'shop-sold-course-info-small-course-info'
   )
   constructor(
     private smallCourseApi: SmallCourseApi,
-    private authService: AuthService,
-    private router: ServiceRouter
+    private authService: AuthService
   ) {}
   getInfo(id: string) {
     return this.smallCourseApi.getSmallCourseInfo(id).pipe(
