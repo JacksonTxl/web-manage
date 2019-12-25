@@ -1,64 +1,28 @@
 import { Injectable } from 'vue-service-app'
-import { State, Computed } from 'rx-state'
-import { tap, pluck, debounceTime } from 'rxjs/operators'
+import { State } from 'rx-state'
+import { tap, debounceTime } from 'rxjs/operators'
 import {
   PersonalCommonApi,
   MemberListQuery,
   Consume
 } from '@/api/v1/schedule/personal/common'
 
-export interface SetState {
-  courseOptions: any[]
-  coachOptions: any[]
-  memberOptions: any[]
-  courtOptions: any[]
-  consumeOptions: any[]
-  courseCoachOptions: any[]
-  timeOptions: any[]
-  dateOptions: any[]
-  coachInBatchOptions: any[]
-}
 export interface Staff {
   id: number
   staff_name: String
 }
 @Injectable()
 export class PersonalScheduleCommonService {
-  state$: State<SetState>
-  courseOptions$: Computed<any[]>
-  coachOptions$: Computed<any[]>
-  memberOptions$: Computed<any[]>
-  consumeOptions$: Computed<any[]>
-  dateOptions$: Computed<any[]>
-  timeOptions$: Computed<any[]>
-  courseCoachOptions$: Computed<any[]>
-  coachInBatchOptions$: Computed<Staff[]>
+  courseOptions$ = new State([])
+  coachOptions$ = new State([])
+  memberOptions$ = new State([])
+  consumeOptions$ = new State([])
+  dateOptions$ = new State([])
+  timeOptions$ = new State({})
+  courseCoachOptions$ = new State([])
+  coachInBatchOptions$ = new State<Staff[]>([])
 
-  constructor(private commonApi: PersonalCommonApi) {
-    this.state$ = new State({
-      courseOptions: [],
-      coachOptions: [],
-      memberOptions: [],
-      consumeOptions: [],
-      courseCoachOptions: [],
-      timeOptions: [],
-      dateOptions: []
-    })
-    this.consumeOptions$ = new Computed(
-      this.state$.pipe(pluck('consumeOptions'))
-    )
-    this.courseOptions$ = new Computed(this.state$.pipe(pluck('courseOptions')))
-    this.coachOptions$ = new Computed(this.state$.pipe(pluck('coachOptions')))
-    this.memberOptions$ = new Computed(this.state$.pipe(pluck('memberOptions')))
-    this.courseCoachOptions$ = new Computed(
-      this.state$.pipe(pluck('courseCoachOptions'))
-    )
-    this.dateOptions$ = new Computed(this.state$.pipe(pluck('dateOptions')))
-    this.timeOptions$ = new Computed(this.state$.pipe(pluck('timeOptions')))
-    this.coachInBatchOptions$ = new Computed(
-      this.state$.pipe(pluck('coachInBatchOptions'))
-    )
-  }
+  constructor(private commonApi: PersonalCommonApi) {}
   /**
    *
    * @param query
@@ -68,18 +32,14 @@ export class PersonalScheduleCommonService {
     return this.commonApi.getMemberList(query).pipe(
       debounceTime(800),
       tap(res => {
-        this.state$.commit(state => {
-          state.memberOptions = res.list
-        })
+        this.memberOptions$.commit(() => res.list)
       })
     )
   }
   getCourseCoachList(id: any) {
     return this.commonApi.getCourseCoachList(id).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.courseCoachOptions = res.list
-        })
+        this.courseCoachOptions$.commit(() => res.list)
       })
     )
   }
@@ -91,9 +51,7 @@ export class PersonalScheduleCommonService {
   getCourseList(params: Consume) {
     return this.commonApi.getCourseList(params).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.courseOptions = res.list
-        })
+        this.courseOptions$.commit(() => res.list)
       })
     )
   }
@@ -105,18 +63,14 @@ export class PersonalScheduleCommonService {
   getCoachList() {
     return this.commonApi.getCoachList({ is_batch: 0 }).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.coachOptions = res.list
-        })
+        this.coachOptions$.commit(() => res.list)
       })
     )
   }
   getCoachListInBatch() {
     return this.commonApi.getCoachListInBatch({ is_batch: 1 }).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.coachInBatchOptions = res.list
-        })
+        this.coachInBatchOptions$.commit(() => res.list)
       })
     )
   }
@@ -128,15 +82,14 @@ export class PersonalScheduleCommonService {
   getConsumeList(query: string) {
     return this.commonApi.getConsumeList(query).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.consumeOptions = res.list.map((ele: any) => {
-            ele.children = ele.children.map((item: any) => {
-              item.consume_type = ele.id
-              return item
-            })
-            return ele
+        const _options = res.list.map((ele: any) => {
+          ele.children = ele.children.map((item: any) => {
+            item.consume_type = ele.id
+            return item
           })
+          return ele
         })
+        this.consumeOptions$.commit(() => _options)
       })
     )
   }
@@ -148,9 +101,7 @@ export class PersonalScheduleCommonService {
   getDateList(query: any) {
     return this.commonApi.getDateList(query).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.dateOptions = res.list
-        })
+        this.dateOptions$.commit(() => res.list)
       })
     )
   }
@@ -162,9 +113,7 @@ export class PersonalScheduleCommonService {
   getTimeList(query: any) {
     return this.commonApi.getTimeList(query).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.timeOptions = res.info
-        })
+        this.timeOptions$.commit(() => res.info)
       })
     )
   }

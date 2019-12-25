@@ -1,13 +1,11 @@
 import { Injectable } from 'vue-service-app'
-import { Effect } from 'rx-state'
-import { Store } from '@/services/store'
+import { Effect, State } from 'rx-state'
 import { CourseApi } from '@/api/v1/special/course'
 
 @Injectable()
-export class SelectCourseCategoryService extends Store<any> {
-  constructor(private courseApi: CourseApi) {
-    super()
-  }
+export class SelectCourseCategoryService {
+  loading$ = new State({})
+  constructor(private courseApi: CourseApi) {}
   @Effect()
   getCourseCategoryList() {
     return this.courseApi.getCourseCategoryList()

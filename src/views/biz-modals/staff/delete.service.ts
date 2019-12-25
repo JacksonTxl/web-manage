@@ -1,7 +1,6 @@
 import { Injectable } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { tap, pluck } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { State } from 'rx-state'
+import { tap } from 'rxjs/operators'
 
 import { StaffApi } from '@/api/v1/staff'
 import { MessageService } from '@/services/message.service'

@@ -1,6 +1,6 @@
 import { Injectable } from 'vue-service-app'
-import { State, Effect, Computed } from 'rx-state'
-import { tap, pluck } from 'rxjs/operators'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import {
   PersonalTeamScheduleReserveApi,
   AddReserveInput,
@@ -9,18 +9,11 @@ import {
 import { AuthService } from '@/services/auth.service'
 import { MessageService } from '@/services/message.service'
 
-export interface SetState {
-  reserveInfo: any
-  reserveList: any[]
-  auth: object
-  infoAuth: any
-}
 @Injectable()
 export class PersonalTeamScheduleReserveService {
-  state$: State<SetState>
-  reserveInfo$: Computed<any>
-  reserveList$: Computed<any>
-  infoAuth$: Computed<any>
+  reserveInfo$ = new State({})
+  reserveList$ = new State([])
+  infoAuth$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({
     add: 'shop:reserve:personal_team_course_reserve|add',
@@ -32,14 +25,7 @@ export class PersonalTeamScheduleReserveService {
     private reserveApi: PersonalTeamScheduleReserveApi,
     private authService: AuthService,
     private msg: MessageService
-  ) {
-    this.state$ = new State({
-      reserveInfo: []
-    })
-    this.reserveInfo$ = new Computed(this.state$.pipe(pluck('reserveInfo')))
-    this.reserveList$ = new Computed(this.state$.pipe(pluck('reserveList')))
-    this.infoAuth$ = new Computed(this.state$.pipe(pluck('infoAuth')))
-  }
+  ) {}
   /**
    *
    * @param params
@@ -74,13 +60,11 @@ export class PersonalTeamScheduleReserveService {
   getInfo(id: string) {
     return this.reserveApi.getInfo(id).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          res = this.authService.filter(res, 'info.reserve')
-          res = this.authService.filter(res, 'auth')
-          state.reserveInfo = res.info
-          state.infoAuth = res.auth
-          state.reserveList = res.info.reserve
-        })
+        res = this.authService.filter(res, 'info.reserve')
+        res = this.authService.filter(res, 'auth')
+        this.reserveInfo$.commit(() => res.info)
+        this.infoAuth$.commit(() => res.auth)
+        this.reserveList$.commit(() => res.info.reserve)
       })
     )
   }

@@ -1,6 +1,6 @@
 import { Injectable } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import {
   LongTermCabinetApi,
   UpdateInput
@@ -10,25 +10,17 @@ import { UserService } from '@/services/user.service'
 @Injectable()
 export class EditLongTermService {
   loading$ = new State({})
-  state$: State<any>
-  resData$: Computed<Object>
+  resData$ = new State({})
   transferUnits$ = this.userService.getOptions$('cabinet.transfer_unit')
   useStatus$ = this.userService.getOptions$('cabinet.use_status')
   constructor(
     private cabinetApi: LongTermCabinetApi,
     private userService: UserService
-  ) {
-    this.state$ = new State({
-      resData: {}
-    })
-    this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
-  }
+  ) {}
   getUpdateInfo(id: number) {
     return this.cabinetApi.getUpdateInfo(id).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.resData = res
-        })
+        this.resData$.commit(() => res)
       })
     )
   }

@@ -1,13 +1,9 @@
 import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
+import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { StaffApi } from '@/api/v1/staff'
 import { AuthService } from '@/services/auth.service'
 
-interface SetState {
-  info: object
-  auth: object
-}
 @Injectable()
 export class InfoService implements Controller {
   info$ = new State({})

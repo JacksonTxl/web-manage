@@ -1,7 +1,6 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
+import { State } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import {
   SkillfulApi,
   GetSkillfulListInput,
@@ -10,7 +9,7 @@ import {
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()
-export class SkillfulService {
+export class SkillfulService implements Controller {
   resData$ = new State({})
   auth$ = this.authService.authMap$({
     add: 'brand_shop:coach:good_at|add'

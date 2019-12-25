@@ -6,53 +6,40 @@ import {
 } from 'vue-service-app'
 import { ContractApi, ContractInput } from '@/api/v1/setting/contract'
 import { forkJoin } from 'rxjs'
-import { tap, pluck } from 'rxjs/operators'
-import { State, log, Computed, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
+import { State, Effect } from 'rx-state'
 import { SN_GENERATE_RULE } from '@/constants/setting/contract'
 
 @Injectable()
 export class EditService implements Controller {
-  state$: State<any>
-  info$: Computed<any>
-  lawContent$: Computed<string>
-  codeRules$: Computed<any[]>
-  codeDemo$: Computed<string>
+  info$ = new State({})
+  codeRules$ = new State([])
+  codeDemo$ = new State('')
+  lawContent$ = new State('')
   loading$ = new State({})
-  constructor(private contractApi: ContractApi, private router: ServiceRouter) {
-    this.state$ = new State({
-      info: {},
-      lawContent: '',
-      codeRules: [],
-      codeDemo: '',
-      loading: false
-    })
-    this.info$ = new Computed(this.state$.pipe(pluck('info')))
-    this.lawContent$ = new Computed(this.state$.pipe(pluck('lawContent')))
-    this.codeRules$ = new Computed(this.state$.pipe(pluck('codeRules')))
-    this.codeDemo$ = new Computed(this.state$.pipe(pluck('codeDemo')))
-  }
+  constructor(
+    private contractApi: ContractApi,
+    private router: ServiceRouter
+  ) {}
   SET_CODE(ruleList: any[], codeDemo: string) {
-    this.state$.commit(state => {
-      state.codeDemo = codeDemo
-      state.codeRules = ruleList.map(rule => {
-        if (rule.sn_generate_rule === SN_GENERATE_RULE.RANDOM) {
-          rule._value = 'RANDOM'
-        }
-        if (rule.sn_generate_rule === SN_GENERATE_RULE.FIXED) {
-          rule._value = rule.sn_generate_value
-        }
-        return rule
-      })
+    this.codeDemo$.commit(() => codeDemo)
+    const finalRuleList = ruleList.map(rule => {
+      if (rule.sn_generate_rule === SN_GENERATE_RULE.RANDOM) {
+        rule._value = 'RANDOM'
+      }
+      if (rule.sn_generate_rule === SN_GENERATE_RULE.FIXED) {
+        rule._value = rule.sn_generate_value
+      }
+      return rule
     })
+    this.codeRules$.commit(() => finalRuleList)
   }
   @Effect()
   getInfo() {
     const id = this.router.to.meta.query.id
     return this.contractApi.getInfo(id).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.info = res.info
-        })
+        this.info$.commit(() => res.info)
       })
     )
   }
@@ -70,9 +57,7 @@ export class EditService implements Controller {
     const id = this.router.to.meta.query.id
     return this.contractApi.getConstitutionInfo(id).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.lawContent = res.info.brand_law_content || ''
-        })
+        this.lawContent$.commit(() => res.info.brand_law_content || '')
       })
     )
   }
