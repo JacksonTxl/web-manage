@@ -99,11 +99,7 @@
       </div>
       <div class="layout-default-body__personal">
         <!-- 消息通知 -->
-        <a-badge class="layout-default-body__notify" :count="100">
-          <span @click="onClickNotify" class="font-number">
-            <st-icon type="notify" size="22px" color="#9BACB9"></st-icon>
-          </span>
-        </a-badge>
+        <default-notify></default-notify>
         <!-- 九宫格 -->
         <a-dropdown :trigger="['hover']" placement="bottomRight">
           <div class="layout-default-body__avatar">
@@ -206,6 +202,7 @@
 <script>
 import DefaultSiderMenu from './default#/sider-menu.vue'
 import DefaultSkeleton from './default#/skeleton.vue'
+import DefaultNotify from './default#/notify.vue'
 import SwitchShop from '@/views/fragments/shop/switch'
 import routes from '@/router/routes'
 import { find } from 'lodash-es'
@@ -224,7 +221,8 @@ export default {
   name: 'SaasLayout',
   components: {
     DefaultSiderMenu,
-    SwitchShop
+    SwitchShop,
+    DefaultNotify
   },
   serviceInject() {
     return {
@@ -281,9 +279,6 @@ export default {
   methods: {
     onClickNotifyConfig() {
       this.$modalRouter.push({ name: 'common-notify-config' })
-    },
-    onClickNotify() {
-      this.$router.push({ name: 'common-notify' })
     },
     switchShop() {
       this.isShowSwitchShop = !this.isShowSwitchShop

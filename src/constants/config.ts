@@ -159,4 +159,5 @@ export class AppConfig {
     link: 'https://styd.udesk.cn/im_client/?web_plugin_id=101681',
     config_link: 'https://assets-cli.udesk.cn/im_client/js/udeskApi.js'
   }
+  WEB_SOCKET_DOMAIN = 'wss://api-saas-dev.styd.cn/ws'
 }

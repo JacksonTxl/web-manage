@@ -7,8 +7,20 @@
           :options="[{ lable: '都是', value: 'aa' }]"
         />
       </st-search-panel-item>
-      <st-search-panel-item label="购买时间：">
-        <st-range-picker :disabledDays="180" v-model="date" />
+      <st-search-panel-item label="二级分类：">
+        <st-search-radio
+          v-model="$searchQuery.is_valid"
+          :options="[{ lable: '都是', value: 'aa' }]"
+        />
+      </st-search-panel-item>
+      <st-search-panel-item label="通知名单：">
+        <shop-select
+          class="mg-r8"
+          style="width: 160px"
+          :defaultValue="-1"
+          v-model="$searchQuery.shop_id"
+          @change="onSingleSearch('shop_id', $event)"
+        ></shop-select>
       </st-search-panel-item>
     </st-search-panel>
 
@@ -25,6 +37,7 @@
 </template>
 
 <script>
+import ShopSelect from '@/views/biz-components/shop-select'
 import { columns } from './inform.config'
 import { InformService } from './inform.service'
 import tableMixin from '@/mixins/table.mixin'
@@ -39,6 +52,9 @@ export default {
     return {
       service: InformService
     }
+  },
+  components: {
+    ShopSelect
   },
   rxState() {
     const { list$, page$, loading$ } = this.service
