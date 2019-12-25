@@ -42,6 +42,9 @@ export interface StoreList {
   product_name: string
   shelves_status: number
 }
+export interface ShelvesStatus {
+  shelves_status: number
+}
 export class StoreApi extends Api {
   /**
    * 新建商品
@@ -144,8 +147,8 @@ export class StoreApi extends Api {
   /**
    * 上下架商品
    */
-  onShelf(id: number) {
-    return this.http.put(`/v1/store/product/${id}`)
+  onShelf(id: number, params: ShelvesStatus) {
+    return this.http.put(`/v1/store/product/${id}`, { params })
   }
   /**
    * 商品分类列表

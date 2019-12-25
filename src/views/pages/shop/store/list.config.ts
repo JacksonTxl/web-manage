@@ -10,11 +10,11 @@ export const columns = (vm: any) => {
     },
     {
       title: '销售渠道',
-      dataIndex: 'sale_type'
+      dataIndex: 'sale_type_name'
     },
     {
       title: '上架状态',
-      dataIndex: 'product_shelves'
+      dataIndex: 'product_shelves_name'
     },
     {
       title: '销量',

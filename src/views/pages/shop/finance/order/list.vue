@@ -146,23 +146,16 @@ export default {
   computed: {
     columns
   },
-  mounted() {
-    this.setSearchData()
-
-    this.list.forEach(item => {
-      if (item.children.length) {
-        item.children.forEach(it => {
-          it.isChild = true
-        })
-      }
-    })
-    console.log(this.list)
-  },
   watch: {
     $searchQuery() {
       this.setSearchData()
     }
   },
+  mounted() {
+    this.setSearchData()
+    console.log(this.changeList)
+  },
+
   data() {
     return {
       ORDER_PRODUCT_TYPE,
