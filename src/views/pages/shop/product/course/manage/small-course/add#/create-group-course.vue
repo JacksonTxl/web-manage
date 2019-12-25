@@ -230,10 +230,9 @@ export default {
     return {
       form,
       decorators,
-      fileList: [],
       bg_image: {
         image_id: 0,
-        // image_key: this.cardBgList[0].image_key,
+        image_key: '',
         image_url: '',
         index: 1
       },

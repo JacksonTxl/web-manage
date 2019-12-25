@@ -20,6 +20,7 @@
       @onCourseNameChange="onCourseNameChange"
     />
     <set-shop-coach
+      @back="onBack"
       v-show="currentIndex === 1"
       :courseName="courseName"
       :info="info"
@@ -92,6 +93,9 @@ export default {
     },
     onCourseNameChange(courseName) {
       this.courseName = courseName
+    },
+    onBack(step) {
+      this.currentIndex = step
     }
   }
 }
