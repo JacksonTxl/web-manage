@@ -346,7 +346,8 @@ export const routeMapConfig = {
       'shop-sold-transaction-personal',
       'shop-sold-transaction-package',
       'shop-sold-transaction-lease',
-      'shop-sold-transaction-store'
+      'shop-sold-transaction-store',
+      'shop-sold-transaction-small-course'
     ]
   },
   'shop-sold-transaction-member'(routeConfig: RouteConfig) {
@@ -402,6 +403,16 @@ export const routeMapConfig = {
   'shop-sold-transaction-lease'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '租赁柜'
     routeConfig.meta.auth = 'shop:sold:transaction|cabinet_list'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      product_name: { type: String, default: '' },
+      product_type: { type: Number, default: 6 }
+    }
+  },
+  'shop-sold-transaction-small-course'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '小班课'
+    // routeConfig.meta.auth = 'shop:sold:transaction|cabinet_list'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
