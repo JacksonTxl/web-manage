@@ -328,7 +328,7 @@ export default {
         },
         on: {
           success: result => {
-            this.saleCallBack(result, 'small_course')
+            this.saleCallBack(result, 'small_course_order/detail')
           }
         }
       })

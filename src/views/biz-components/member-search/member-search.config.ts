@@ -77,7 +77,7 @@ export const ruleOptions = (vm: any) => {
       rules: []
     },
     parent_user_role: {
-      initialValue: 0,
+      initialValue: 1,
       rules: []
     }
   }

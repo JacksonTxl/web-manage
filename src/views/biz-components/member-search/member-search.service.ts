@@ -11,11 +11,11 @@ export class MemberSearchService {
   memberList$ = new State([])
   loading$ = new State({})
   type$ = new State('')
-  getMemberAction$ = new Action<string>(action$ =>
+  getMemberAction$ = new Action<object>(action$ =>
     action$.pipe(
       debounceTime(500),
-      switchMap(searchText =>
-        this.getMemberRequest(searchText).pipe(catchError(() => EMPTY))
+      switchMap((params: any) =>
+        this.getMemberRequest(params).pipe(catchError(() => EMPTY))
       )
     )
   )
@@ -30,8 +30,8 @@ export class MemberSearchService {
   RESET_LIST() {
     this.memberList$.commit(() => [])
   }
-  getTransactionMember(member: string, type: number) {
-    return this.transactionApi.getMemberList(member, type).pipe(
+  getTransactionMember(params: any) {
+    return this.transactionApi.getMemberList(params.member, params.type).pipe(
       then((res: any) => {
         this.memberList$.commit(() => res.list)
         return res.list
@@ -39,15 +39,18 @@ export class MemberSearchService {
     )
   }
   @Effect()
-  getMemberRequest(searchText: string) {
+  getMemberRequest(params: any) {
     switch (this.type$.snapshot()) {
       case 'transaction':
-        return this.getTransactionMember(searchText, 1)
+        return this.getTransactionMember(params)
       default:
         throw new Error('member-search.service should pass type')
     }
   }
-  getMember(searchText: string) {
-    this.getMemberAction$.dispatch(searchText)
+  getMember(member: string, type: number) {
+    this.getMemberAction$.dispatch({
+      member,
+      type
+    })
   }
 }

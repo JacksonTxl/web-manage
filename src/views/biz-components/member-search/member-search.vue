@@ -12,6 +12,8 @@
         :showArrow="false"
         suffixIcon="add"
         @search="onMemberSearch"
+        @select="onSelectMember"
+        @change="onChangeMember"
         notFoundContent="无搜索结果"
       >
         <a-select-option
@@ -41,6 +43,17 @@
         <span slot="suffixIcon">未成年</span>
       </a-select>
     </st-form-item>
+    <template v-if="selectInfo && selectInfo.is_minors === 1">
+      <st-form-item label="家长手机号" required>
+        <label>{{ selectInfo.parent_mobile }}</label>
+      </st-form-item>
+      <st-form-item label="家长姓名" required>
+        <label>
+          {{ selectInfo.parent_name }}({{ selectInfo.parent_user_role }})
+        </label>
+      </st-form-item>
+    </template>
+
     <template v-if="!searchMemberIsShow">
       <st-form-item label="姓名" required>
         <a-input v-decorator="decorators[memberName]" placeholder="请输入姓名">
@@ -61,10 +74,6 @@
           v-decorator="decorators[memberMobile]"
           placeholder="请输入手机号"
         ></input-phone>
-        <!-- <a-input
-          v-decorator="decorators[memberMobile]"
-          placeholder="请输入手机号"
-        ></a-input> -->
         <p class="mg-b0">
           <a @click="onCancelMember">取消添加</a>
         </p>
@@ -75,10 +84,6 @@
           v-decorator="decorators[parentMobile]"
           placeholder="请输入手机号"
         ></input-phone>
-        <!-- <a-input
-          v-decorator="decorators[parentMobile]"
-          placeholder="请输入家长手机号"
-        ></a-input> -->
       </st-form-item>
       <st-form-item label="家长姓名" required v-if="personModel === 1">
         <a-input
@@ -145,13 +150,24 @@ export default {
       type: Object,
       required: true
     },
-    decorators: {
-      type: Object,
-      required: true
-    },
     fields: {
       type: Object,
       default: () => ({})
+    },
+    // 回填会员填写信息
+    memberInfo: {
+      type: Object
+      // default: () => {
+      //   return {
+      //     member_id: 110676207534127,
+      //     member_name: '张飞123222',
+      //     member_mobile: 19134752085
+      //   }
+      // }
+    },
+    saleRangeType: {
+      type: Number,
+      default: 1
     }
   },
   serviceInject() {
@@ -168,14 +184,20 @@ export default {
       parent_types: this.memberSearchService.parent_types$
     }
   },
+
   data() {
     return {
       memberSearchText: '',
       searchMemberIsShow: true,
-      personModel: 0
+      personModel: 0,
+      selectInfo: {}
     }
   },
   computed: {
+    ruleOptions,
+    decorators() {
+      return this.form.addDecorators(this.ruleOptions)
+    },
     usedFields() {
       return merge(
         {
@@ -213,19 +235,37 @@ export default {
     }
   },
   methods: {
+    onSelectMember(val) {
+      this.selectInfo = this.memberList$.filter(item => item.id === val)[0]
+    },
+    onChangeMember(val) {
+      this.$emit('change', val)
+    },
     onChangeModel(val) {
       this.personModel = val
     },
     // 搜索会员
     onMemberSearch(data) {
       this.memberSearchText = data
-      this.$emit('change', data)
       if (data === '') {
         this.memberSearchService.RESET_LIST()
         this.form.resetFields([this.memberId])
         this.$emit('change:list', [])
       } else {
-        this.memberSearchService.getMember(data)
+        this.memberSearchService.getMember(data, this.saleRangeType)
+        this.memberSearchService.getMemberAction$.subscribe(list => {
+          if (!list.length) {
+            this.form.resetFields([this.memberId])
+            this.$onChangeMember(data)
+          } else {
+            if (this.memberInfo) {
+              this.form.setFieldsValue({
+                [this.memberId]: this.memberInfo.member_id
+              })
+              this.onChangeMember(this.memberInfo.member_id)
+            }
+          }
+        })
       }
     },
     // 切换添加会员
@@ -237,18 +277,18 @@ export default {
       this.form.resetFields([this.memberId, this.memberName, this.memberMobile])
     }
   },
-  created() {
+  mounted() {
     this.memberSearchService.SET_TYPE(this.type)
-    this.memberSearchService.getMemberAction$.subscribe(list => {
-      this.$emit('change:list', list)
-      if (!list.length) {
-        this.form.resetFields([this.memberId])
-      }
-    })
+    if (this.memberInfo) {
+      this.onMemberSearch(this.memberInfo.member_name)
+    } else {
+      this.memberSearchService.getMemberAction$.subscribe(list => {
+        if (!list.length) {
+          this.form.resetFields([this.memberId])
+        }
+      })
+    }
   },
-  // mounted() {
-  //   this.form.decorators(ruleOptions)
-  // },
   components: {
     InputPhone
   }

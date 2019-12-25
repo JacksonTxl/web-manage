@@ -64,14 +64,7 @@ export class SaleSmallCourseService {
         })
       )
   }
-  @Effect()
-  getMember(member: string, type: number) {
-    return this.transactionApi.getMemberList(member, type).pipe(
-      tap((res: any) => {
-        this.memberList$.commit(() => res.list)
-      })
-    )
-  }
+
   @Effect()
   getCodeNumber(type: string) {
     return this.contractApi.getCodeNumber(type)
@@ -89,31 +82,12 @@ export class SaleSmallCourseService {
   }
   getCouponList(params: MemberCouponParams) {
     return this.transactionApi
-      .getTransactionCouponList(params, 'personal')
+      .getTransactionCouponList(params, 'small-course')
       .pipe(
         tap((res: any) => {
           this.couponList$.commit(() => res.list)
         })
       )
-  }
-  getCoachList(level: number, id: string) {
-    return this.transactionApi.getTransactionCoachList(level, id).pipe(
-      tap((res: any) => {
-        this.coachList$.commit(() => res.list)
-      })
-    )
-  }
-  @Effect()
-  getPersonalPriceInfo(params: {
-    id: number
-    buy_num: number
-    coach_level_id: number
-  }) {
-    return this.transactionApi.getPersonalCoursePrice(params).pipe(
-      tap((res: any) => {
-        this.personalPrice$.commit(() => res.info)
-      })
-    )
   }
   @Effect()
   serviceInit(id: string) {
@@ -121,11 +95,11 @@ export class SaleSmallCourseService {
   }
   @Effect()
   setTransactionOrder(params: any) {
-    return this.transactionApi.setTransaction(params, 'personal')
+    return this.transactionApi.setTransaction(params, 'small_course')
   }
   @Effect()
   setTransactionPay(params: any) {
-    return this.transactionApi.setTransaction(params, 'personal')
+    return this.transactionApi.setTransaction(params, 'small_course')
   }
   @Effect()
   getPrice(params: TransactionPriceInput) {
