@@ -1,16 +1,13 @@
 import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { MemberApi } from '@/api/v1/member'
 import { AuthService } from '@/services/auth.service'
 import { UserService } from '@/services/user.service'
 
 @Injectable()
 export class StudioService implements Controller {
-  // 业务状态
-  state$ = new State({})
   loading$ = new State({})
-  memberListInfo$: Computed<string>
   list$ = new State({})
   page$ = new State({})
   memberLevel$ = this.userService.getOptions$('member.member_level', {
@@ -34,14 +31,7 @@ export class StudioService implements Controller {
     private memberApi: MemberApi,
     private authService: AuthService,
     private userService: UserService
-  ) {
-    this.state$ = new State({
-      memberListInfo: {}
-    })
-    this.memberListInfo$ = new Computed(
-      this.state$.pipe(pluck('memberListInfo'))
-    )
-  }
+  ) {}
   @Effect()
   getListInfo(paramsObj: any) {
     return this.memberApi.getMember(paramsObj).pipe(

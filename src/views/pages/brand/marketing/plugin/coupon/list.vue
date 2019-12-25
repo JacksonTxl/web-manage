@@ -141,26 +141,13 @@ export default {
       loading: this.listService.loading$,
       info: this.listService.info$,
       brand: this.listService.brand$,
-      couponEnums: this.userService.couponEnums$,
-      auth: this.listService.auth$
+      auth: this.listService.auth$,
+      productType: this.listService.productType$
     }
   },
   hooks() {
     return {
       share: useShare()
-    }
-  },
-  computed: {
-    coupon_status() {
-      return (this.couponEnums && this.couponEnums.coupon_status) || []
-    },
-    productType() {
-      let list = []
-      Object.entries(this.coupon_status.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      // return list
-      return [{ value: -1, label: '全部状态' }, ...list]
     }
   },
   data(vm) {

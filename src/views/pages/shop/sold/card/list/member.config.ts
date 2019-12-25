@@ -2,6 +2,8 @@ export const columns = () => [
   {
     title: '卡名',
     dataIndex: 'card_name',
+    fixed: 'left',
+    width: 180,
     scopedSlots: { customRender: 'card_name' }
   },
   {

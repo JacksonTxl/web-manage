@@ -1,6 +1,8 @@
 export const columns = vm => [
   {
     title: '上课场馆',
+    fixed: 'left',
+    width: 200,
     dataIndex: 'shop_name'
     // sorter: (a, b) => a.name.length - b.name.length
   },
@@ -11,7 +13,6 @@ export const columns = vm => [
   {
     title: '课程名称',
     dataIndex: 'course_name',
-    width: 200,
     scopedSlots: { customRender: 'course_name' }
   },
   {

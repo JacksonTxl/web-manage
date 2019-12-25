@@ -71,13 +71,7 @@
         <!-- <st-form-item label="预约提醒">
           <div>
             <span>在课程开始前</span>
-            <a-select class="mg-l8" style="width: 100px" v-model="info.reserve_remind">
-              <a-select-option
-                v-for="(item, index) in settingEnums.reserve_remind.value"
-                :key="+index"
-                :value="+index"
-              >{{item}}
-              </a-select-option>
+            <a-select class="mg-l8" style="width: 100px" v-model="info.reserve_remind" :options="reserveReminds">
             </a-select>
             <span class="mg-l8" >提醒用户上课</span>
           </div>
@@ -160,7 +154,8 @@ export default {
       reserveRanges: this.settingService.reserveRanges$,
       cancelReserves: this.settingService.cancelReserves$,
       signTimes: this.settingService.signTimes$,
-      autoSignLimits: this.settingService.autoSignLimits$
+      autoSignLimits: this.settingService.autoSignLimits$,
+      reserveReminds: this.settingService.reserveReminds$
     }
   },
   data() {

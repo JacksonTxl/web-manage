@@ -380,8 +380,7 @@ export default {
       packageTransferInfo: this.transferService.packageTransferInfo$,
       timeScope: this.transferService.timeScope$,
       personalCourseInfo: this.transferService.personalCourseInfo$,
-      memberPaymentlist: this.transferService.memberPaymentlist$,
-      sold: this.userService.soldEnums$
+      memberPaymentlist: this.transferService.memberPaymentlist$
     }
   },
   computed: {
@@ -448,33 +447,31 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          let sold_type = this.isPackage
-            ? this.packageTransferInfo.sold_type
-            : this.isPersonal
-            ? this.personalCourseInfo.sold_type
-            : '1'
-          this.transferService
-            .editCourseTransfer(
-              {
-                member_id: +values.memberId,
-                member_name: values.memberName,
-                mobile: values.memberMobile,
-                remain_price: +values.remainPrice,
-                contract_number: values.contractNumber,
-                frozen_pay_type: +values.payType,
-                sold_type: +sold_type,
-                handling_fee_reduce: values.handling_fee_reduce
-              },
-              this.id,
-              this.type
-            )
-            .subscribe(res => {
-              this.$emit('success')
-              this.show = false
-            })
-        }
+      this.form.validate().then(values => {
+        let sold_type = this.isPackage
+          ? this.packageTransferInfo.sold_type
+          : this.isPersonal
+          ? this.personalCourseInfo.sold_type
+          : '1'
+        this.transferService
+          .editCourseTransfer(
+            {
+              member_id: +values.memberId,
+              member_name: values.memberName,
+              mobile: values.memberMobile,
+              remain_price: +values.remainPrice,
+              contract_number: values.contractNumber,
+              frozen_pay_type: +values.payType,
+              sold_type: +sold_type,
+              handling_fee_reduce: values.handling_fee_reduce
+            },
+            this.id,
+            this.type
+          )
+          .subscribe(res => {
+            this.$emit('success')
+            this.show = false
+          })
       })
     },
     // 切换添加会员

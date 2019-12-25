@@ -19,8 +19,8 @@ export const toKFilter = v => {
   if (v >= T1 && v) {
     return (v / T1).toFixed(1).replace('.0', '') + 'k'
   }
-  if (v >= 0) {
-    return v
+  if (v >= 0 && String(v).indexOf('.') + 1) {
+    return v.toFixed(1)
   }
 }
 

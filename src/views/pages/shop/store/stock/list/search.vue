@@ -69,7 +69,7 @@ export default {
   },
   rxState() {
     return {
-      // tableData: this.searchService.list$
+      tableData: this.searchService.list$,
       loading: this.searchService.loading$
     }
   },
@@ -78,53 +78,6 @@ export default {
     return {
       searchColumns,
       name: '',
-      tableData: [
-        {
-          product_id: '11',
-          product_name: '11',
-          category_name: '11',
-          amount: '11',
-          use_amount: '11',
-          sku_name: '11',
-          sku_id: '11'
-        },
-        {
-          product_id: '22',
-          product_name: '22',
-          category_name: '22',
-          amount: '22',
-          use_amount: '22',
-          sku_name: '22',
-          sku_id: '22'
-        },
-        {
-          product_id: '33',
-          product_name: '33',
-          category_name: '33',
-          amount: '33',
-          use_amount: '33',
-          sku_name: '33',
-          sku_id: '33'
-        },
-        {
-          product_id: '44',
-          product_name: '44',
-          category_name: '44',
-          amount: '44',
-          use_amount: '44',
-          sku_name: '44',
-          sku_id: '44'
-        },
-        {
-          product_id: '55',
-          product_name: '55',
-          category_name: '55',
-          amount: '55',
-          use_amount: '55',
-          sku_name: '55',
-          sku_id: '55'
-        }
-      ],
       selectedRowKeys: []
     }
   },
@@ -141,7 +94,14 @@ export default {
       })
       this.$modalRouter.push({
         name: 'store-put-in',
-        props: { skuList: list, isOut }
+        props: { skuList: list, isOut },
+        on: {
+          success: res => {
+            console.log('进来了success', res)
+            // this.selectedRowKeys = []
+            // this.$router.reload()
+          }
+        }
       })
     },
     goDetail(product) {

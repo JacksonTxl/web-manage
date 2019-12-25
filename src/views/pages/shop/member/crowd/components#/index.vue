@@ -71,7 +71,7 @@
         <div style=" padding: 32px 28px 0 32px;">
           <div class="shop-member-crowd-index-box__item">
             <img
-              src="../../../../../../assets/img/shop_crowd_expire.png"
+              src="~@/assets/img/shop_crowd_expire.png"
               class="shop-member-crowd-index-box__img"
             />
             <div class="shop-member-crowd-index-box__info">

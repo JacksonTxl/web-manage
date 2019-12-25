@@ -34,7 +34,12 @@
         :columns="detailColumns"
         :dataSource="tableData"
         :scroll="{ x: 1800 }"
-      ></st-table>
+        rowKey="id"
+      >
+        <template slot="stock_flow" slot-scope="text, record">
+          <div>{{ record.stock_flow.doc }}</div>
+        </template>
+      </st-table>
     </div>
   </div>
 </template>
@@ -52,13 +57,13 @@ export default {
   },
   rxState() {
     return {
-      // tableData: this.detailService.list$
+      tableData: this.detailService.list$,
       loading: this.detailService.loading$
     }
   },
   mixins: [tableMixin],
   data() {
-    return { detailColumns, tableData: [], chooseGood: -1, stockType: -1 }
+    return { detailColumns, chooseGood: -1, stockType: -1 }
   },
   methods: {
     onChange(e) {},

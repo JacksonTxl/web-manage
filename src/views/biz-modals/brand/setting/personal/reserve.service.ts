@@ -14,6 +14,7 @@ export class PersonalReserveSettingService {
   cancelReserves$ = this.userService.getOptions$('setting.cancel_reserve')
   signTimes$ = this.userService.getOptions$('setting.sign_time')
   autoSignLimits$ = this.userService.getOptions$('setting.auto_sign_limit')
+  reserveReminds$ = this.userService.getOptions$('setting.reserve_remind')
   constructor(
     private reserveSettingApi: PersonReserveSettingApi,
     private userService: UserService

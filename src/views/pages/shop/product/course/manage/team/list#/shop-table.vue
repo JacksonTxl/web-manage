@@ -5,7 +5,7 @@
     :columns="columns"
     :page="page"
     :dataSource="list"
-    :scroll="{ x: 1440 }"
+    :scroll="{ x: 1280 }"
     :loading="loading.getList"
     @change="onTableChange"
   >

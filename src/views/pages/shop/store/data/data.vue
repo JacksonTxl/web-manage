@@ -106,10 +106,17 @@
                     <template v-slot:user>
                       <component
                         v-bind:is="wholeNavcom"
-                        :guideName="filterOrderMemberTitle()"
                         :unit="wholeNav[wholenavIndex].title | filterCompany"
                         :data="orderMember(storeBoard, 0, 'order')"
+                        :name="filterOrderMemberTitle()"
                         style="width: 100%;"
+                        :total="
+                          orderMember(storeBoard, 0, 'order').reduce(
+                            (item1, item2) => {
+                              return Number(item1.value) + Number(item2.value)
+                            }
+                          )
+                        "
                         :height="
                           wholeNavcom === 'brand-user-avg-bar'
                             ? height325
@@ -120,9 +127,16 @@
                     <template v-slot:marketing>
                       <component
                         v-bind:is="wholeNavcom"
-                        :guideName="filterOrderMemberTitle()"
+                        :name="filterOrderMemberTitle()"
                         :unit="wholeNav[wholenavIndex].title | filterCompany(1)"
                         :data="orderMember(storeBoard, 0, 'member')"
+                        :total="
+                          orderMember(storeBoard, 0, 'member').reduce(
+                            (item1, item2) => {
+                              return Number(item1.value) + Number(item2.value)
+                            }
+                          )
+                        "
                         style="width: 100%;"
                         :height="
                           wholeNavcom === 'brand-user-avg-bar'
@@ -180,8 +194,10 @@
                     <st-t3>类目营收占比</st-t3>
                     <shop-store-data-revenue-ring
                       :data="categoryRevenue"
-                      :sum="storeCategoryRank.total_revenue"
+                      :total="storeCategoryRank.total_revenue"
                       :padding="[60, '50%', 38, 0]"
+                      name="总营收"
+                      height="280"
                       style="width: 100%;"
                     ></shop-store-data-revenue-ring>
                   </div>
@@ -330,11 +346,7 @@ export default {
         this.fieldNav,
         this.wholenavIndex,
         that,
-        this.wholenavIndex < 2
-          ? fieldInfo[this.wholenavIndex]
-          : that === 'order'
-          ? fieldInfo[this.wholenavIndex][0]
-          : fieldInfo[this.wholenavIndex][1]
+        'value'
       ]
       return this.filterOrderMember(...filterOrderMemberData)
     },

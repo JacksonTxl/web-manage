@@ -73,13 +73,8 @@
             <span>在课程开始前</span>
             <a-select class="mg-l8" style="width: 100px"
               v-model="info.reserve_remind"
+              :options="reserve_remind"
             >
-              <a-select-option
-                v-for="(item, index) in settingEnums.reserve_remind.value"
-                :key="+index"
-                :value="+index"
-              >{{item}}
-              </a-select-option>
             </a-select>
             <span class="mg-l8" >提醒用户上课</span>
           </div>
@@ -285,7 +280,8 @@ export default {
       limit_num: this.reserveService.limit_num$,
       cancel_reserve: this.reserveService.cancel_reserve$,
       reserve_range: this.reserveService.reserve_range$,
-      reserve_start: this.reserveService.reserve_start$
+      reserve_start: this.reserveService.reserve_start$,
+      reserve_remind: this.reserveService.reserve_remind$
     }
   },
   data() {

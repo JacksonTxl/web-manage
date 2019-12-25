@@ -324,7 +324,9 @@ export default {
       isImgError: false,
       shelves_status: 1,
       nameError: '',
-      isNameError: false
+      isNameError: false,
+      product_images_del: [],
+      product_images_add: []
     }
   },
   components: {
@@ -395,8 +397,8 @@ export default {
       let product_sku = []
       this.tableData.forEach((item, index) => {
         let skuItem = {}
-        skuItem.market_price = item.market_price
-        skuItem.selling_price = item.selling_price
+        skuItem.market_price = item.market_price * 100
+        skuItem.selling_price = item.selling_price * 100
         skuItem.stock_amount = item.stock_amount
         skuItem.spec_arr = []
         if (this.skuList.length > 0) {
@@ -442,8 +444,8 @@ export default {
       let product_sku = []
       this.tableData.forEach((item, index) => {
         let skuItem = {}
-        skuItem.market_price = item.market_price
-        skuItem.selling_price = item.selling_price
+        skuItem.market_price = item.market_price * 100
+        skuItem.selling_price = item.selling_price * 100
         skuItem.stock_amount = item.stock_amount
         if (item.sku_id) {
           skuItem.is_update = item.is_update
@@ -518,10 +520,12 @@ export default {
       this.skuList = []
       this.info.all_spec.forEach(item => {
         let list = []
-        item.spec_item_arr.forEach(it => {
-          list.push(it.spec_item_name)
-        })
-        this.skuList.push({ spec_name: item.spec_name, spec_item_name: list })
+        if (item.spec_item_arr) {
+          item.spec_item_arr.forEach(it => {
+            list.push(it.spec_item_name)
+          })
+          this.skuList.push({ spec_name: item.spec_name, spec_item_name: list })
+        }
       })
       let tableData = []
       this.info.product_sku.forEach((item, index) => {
@@ -559,6 +563,10 @@ export default {
       // }
     },
     addSkuItem(index) {
+      if (this.skuList.length >= 10) {
+        this.message.warning({ content: '规格项最多可以设置10个' })
+        return
+      }
       this.$modalRouter.push({
         name: 'store-add-sku',
         props: { list: this.skuList[index].spec_item_name },

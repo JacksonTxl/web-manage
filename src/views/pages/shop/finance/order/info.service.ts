@@ -1,32 +1,22 @@
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
-import { State, Effect, Computed } from 'rx-state'
+import { State, Effect } from 'rx-state'
 import { OrderApi } from '@/api/v1/finance/order'
-import { tap, pluck } from 'rxjs/operators'
+import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
-import { RedirectService } from '@/services/redirect.service'
 
 @Injectable()
 export class InfoService implements Controller {
-  info$: Computed<any>
+  info$ = new State({})
   tabs$ = new State([])
-  auth$: Computed<object>
-  state$: State<any>
-  constructor(private orderApi: OrderApi, private authService: AuthService) {
-    this.state$ = new State({
-      auth: {}
-    })
-    this.info$ = new Computed(this.state$.pipe(pluck('info')))
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
-  }
+  auth$ = new State({})
+  constructor(private orderApi: OrderApi, private authService: AuthService) {}
   @Effect()
   getInfo(id: string) {
     return this.orderApi.getOrderInfo(id).pipe(
       tap((res: any) => {
         res = this.authService.filter(res, 'auth')
-        this.state$.commit(state => {
-          state.info = res.info
-          state.auth = res.auth
-        })
+        this.auth$.commit(() => res.auth)
+        this.info$.commit(() => res.info)
         this.tabs$.commit(() => {
           const tabs = [
             {
