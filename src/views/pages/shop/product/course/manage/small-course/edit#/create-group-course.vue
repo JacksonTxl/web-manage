@@ -54,7 +54,7 @@
           </template>
           <div :class="b('num-limit')">
             <a-form-item class="page-a-form">
-              <st-input-number v-decorator="decorators.num_min">
+              <st-input-number v-decorator="decorators.num_min" :min="1">
                 <template slot="addonAfter">
                   人
                 </template>
@@ -62,7 +62,11 @@
             </a-form-item>
             <span>~</span>
             <a-form-item class="page-a-form">
-              <st-input-number v-decorator="decorators.num_max">
+              <st-input-number
+                v-decorator="decorators.num_max"
+                :min="1"
+                :max="50"
+              >
                 <template slot="addonAfter">
                   人
                 </template>
@@ -134,35 +138,6 @@
         </st-form-item>
       </a-col>
     </a-row>
-
-    <a-row :gutter="8" v-show="isShowLimitContent">
-      <a-col :lg="22" :xs="22" :offset="1">
-        <st-form-item label="背景图" required>
-          <div class="page-upload-container">
-            <st-image-upload
-              :list="fileList"
-              @change="onImgChange"
-            ></st-image-upload>
-            <input type="hidden" v-decorator="decorators.image" />
-            <div class="page-course-photo-des mg-l16">
-              <div class="page-course-item">
-                <div class="page-course-item-tip">1.</div>
-                <div class="page-course-item-cont">
-                  图片格式必须为：png,bmp,
-                  jpeg,jpg,gif,建议使用png格式图片，以保存最佳效果
-                </div>
-              </div>
-              <div class="page-course-item">
-                <div class="page-course-item-tip">2.</div>
-                <div class="page-course-item-cont">
-                  建议尺寸为750px * 422px， 不可大于2M
-                </div>
-              </div>
-            </div>
-          </div>
-        </st-form-item>
-      </a-col>
-    </a-row>
     <!-- 自主约课有的表单内容 -->
     <a-row :gutter="8" v-show="!isShowLimitContent">
       <a-col :lg="10" :xs="22" :offset="1">
@@ -179,14 +154,10 @@
         </st-form-item>
       </a-col>
     </a-row>
-    <a-row :gutter="8" v-show="!isShowLimitContent">
+    <a-row :gutter="8">
       <a-col :lg="22" :xs="22" :offset="1">
         <st-form-item label="背景图" required>
-          <card-bg-radio
-            isSmallCourse
-            @change="onCardBgChange"
-            v-model="bg_image"
-          />
+          <card-bg-radio isSmallCourse v-model="bg_image" />
         </st-form-item>
       </a-col>
     </a-row>
@@ -285,9 +256,11 @@ export default {
         num_min: info.num_min,
         num_max: info.num_max,
         course_times: info.course_times,
-        is_leave: info.is_leave,
-        leave_hours: info.leave_hours,
-        leave_limit: info.leave_limit,
+        is_leave: this.$route.query.type === '1' ? info.is_leave : undefined,
+        leave_hours:
+          this.$route.query.type === '1' ? info.leave_hours : undefined,
+        leave_limit:
+          this.$route.query.type === '1' ? info.leave_limit : undefined,
         image: info.image,
         description: info.description
       })
@@ -298,13 +271,16 @@ export default {
     save(e) {
       e.preventDefault()
       this.form.validate().then(values => {
+        values.id = this.info.info.course_id
         values.course_begin_time = values.date[0].format('YYYY-MM-DD HH:mm')
         values.course_end_time = values.date[1].format('YYYY-MM-DD HH:mm')
         values.small_course_type = this.$route.query.type
-        values.img_type = this.bg_image.index
-        values.image = this.bg_image.image
+        values.image = this.bg_image
+        if (this.bg_image.index === 0) {
+          values.img_type = 3
+        }
         delete values.date
-        this.addService.addGroup(values).subscribe(res => {
+        this.editService.editGroup(values).subscribe(res => {
           this.messageService.success({
             content: '提交成功'
           })
@@ -329,9 +305,6 @@ export default {
       this.form.setFieldsValue({
         train_aim
       })
-    },
-    onCardBgChange(e) {
-      this.cardBgValidatorText = ''
     },
     onCourseNameChange(e) {
       this.$emit('onCourseNameChange', e.target.value)

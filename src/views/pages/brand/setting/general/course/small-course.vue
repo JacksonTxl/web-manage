@@ -9,7 +9,7 @@
             text="编辑"
             v-if="auth.reserveEdit"
             v-modal-link="{
-              name: 'brand-setting-group-reserve',
+              name: 'brand-setting-small-course-reserve',
               on: {
                 change: onChange
               }
@@ -82,27 +82,27 @@
 <script>
 import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
-import { GroupService } from './group.service'
-import BrandSettingGroupReserve from '@/views/biz-modals/brand/setting/group/reserve'
+import { SmallCourseService } from './small-course.service'
+import BrandSettingSmallCourseReserve from '@/views/biz-modals/brand/setting/small-course/reserve'
 export default {
   serviceInject() {
     return {
       userService: UserService,
-      groupService: GroupService
+      smallCourseService: SmallCourseService
     }
   },
   rxState() {
     const user = this.userService
-    const groupService = this.groupService
+    const smallCourseService = this.smallCourseService
     return {
-      loading: groupService.loading$,
+      loading: smallCourseService.loading$,
       settingEnums: user.settingEnums$,
-      reserveInfo: groupService.reserveInfo$,
-      auth: groupService.auth$
+      reserveInfo: smallCourseService.reserveInfo$,
+      auth: smallCourseService.auth$
     }
   },
   modals: {
-    BrandSettingGroupReserve
+    BrandSettingSmallCourseReserve
   },
   created() {},
   methods: {

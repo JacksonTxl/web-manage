@@ -355,7 +355,6 @@ export default {
   rxState() {
     return {
       info: this.editService.info$,
-      parent_info: this.editService.parent_info$,
       loading: this.editService.loading$,
       memberEnums: this.userService.memberEnums$,
       staffEnums: this.userService.staffEnums$,
@@ -568,7 +567,7 @@ export default {
         district_name: district[0] ? district[0].name : ''
       }
     },
-    setEditInfo(obj, parent_info) {
+    setEditInfo(obj) {
       this.isShowParent = !!obj.is_minors
       const cascader = []
       if (obj.province_id) {
@@ -606,8 +605,8 @@ export default {
         country_prefix: +obj.country_prefix || undefined,
         living_address: obj.living_address,
         is_minors: obj.is_minors,
-        parent_username: parent_info.username,
-        parent_mobile: parent_info.mobile,
+        parent_username: obj.parent_info.username,
+        parent_mobile: obj.parent_info.mobile,
         parent_user_role: obj.parent_user_role
       })
       this.country_prefix = +obj.country_prefix || undefined
@@ -631,7 +630,7 @@ export default {
     }
     this.editService.serviceInit(this.$searchQuery.id).subscribe(res => {
       setTimeout(() => {
-        this.setEditInfo(this.info, this.parent_info)
+        this.setEditInfo(this.info)
         this.form.validateFields()
       })
     })

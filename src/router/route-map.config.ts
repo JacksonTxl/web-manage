@@ -481,7 +481,7 @@ export const routeMapConfig = {
     routeConfig.meta.tabs = [
       'brand-setting-app-course-category',
       'brand-setting-app-course-training-aim',
-      'brand-setting-app-course-group-range'
+      'brand-setting-app-course-small-course-range'
     ]
   },
   'brand-setting-app-staff'(routeConfig: RouteConfig) {
@@ -497,7 +497,7 @@ export const routeMapConfig = {
     routeConfig.meta.title = '训练目的'
     routeConfig.meta.auth = 'brand_shop:course:training_aim|list'
   },
-  'brand-setting-app-course-group-range'(routeConfig: RouteConfig) {
+  'brand-setting-app-course-small-course-range'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '小班课适用范围'
     routeConfig.meta.auth = 'brand_shop:course:training_aim|list'
   },
@@ -808,7 +808,7 @@ export const routeMapConfig = {
     routeConfig.meta.tabs = [
       'brand-setting-general-course-personal',
       'brand-setting-general-course-team',
-      'brand-setting-general-course-group'
+      'brand-setting-general-course-small-course'
     ]
   },
   'brand-setting-general-course-personal'(routeConfig: RouteConfig) {
@@ -819,7 +819,7 @@ export const routeMapConfig = {
     routeConfig.meta.title = '团课设置'
     routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|tab'
   },
-  'brand-setting-general-course-group'(routeConfig: RouteConfig) {
+  'brand-setting-general-course-small-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '小班课设置'
     routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|tab'
   },

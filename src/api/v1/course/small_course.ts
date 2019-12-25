@@ -9,6 +9,9 @@ export class CourseGroupApi extends Api {
   addGroup(params: any) {
     return this.http.post('/v1/course/small', { params })
   }
+  editGroup(params: any) {
+    return this.http.put('/v1/course/small/' + params.id, { params })
+  }
   setCoach(params: any) {
     return this.http.put('/v1/course/small/set_coach/' + params.course_id, {
       params

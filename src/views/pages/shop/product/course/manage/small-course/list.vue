@@ -178,7 +178,7 @@ export default {
         path: './edit',
         query: {
           id: course.course_id,
-          type: course.small_course_type
+          type: course.small_course_type + ''
         }
       })
     }

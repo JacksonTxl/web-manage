@@ -83,7 +83,7 @@
   </st-form>
 </template>
 <script>
-import { AddService } from '../add.service'
+import { EditService } from '../edit.service'
 import { MessageService } from '@/services/message.service'
 import { UserService } from '@/services/user.service'
 import { remove } from 'lodash-es'
@@ -95,7 +95,7 @@ export default {
   name: 'SetSellPrice',
   serviceInject() {
     return {
-      addService: AddService,
+      editService: EditService,
       messageService: MessageService,
       userService: UserService,
       gradientService: GradientService,
@@ -104,9 +104,9 @@ export default {
   },
   rxState() {
     return {
-      loading: this.addService.loading$,
-      unitList: this.addService.unitList$,
-      sellType: this.addService.sellType$
+      loading: this.editService.loading$,
+      unitList: this.editService.unitList$,
+      sellType: this.editService.sellType$
     }
   },
   components: {},
@@ -176,7 +176,7 @@ export default {
         values.is_allow_transfer = values.is_allow_transfer ? 1 : 0
         values.is_release = para
         delete values.apply_date
-        this.addService.setPrice(values).subscribe(this.onSaveSuccess)
+        this.editService.setPrice(values).subscribe(this.onSaveSuccess)
       })
     },
     onSaveSuccess() {
@@ -184,7 +184,7 @@ export default {
         content: '提交成功'
       })
       this.$router.push({
-        name: 'shop-product-course-manage-group-list'
+        name: 'shop-product-course-manage-small-course-list'
       })
     },
 

@@ -68,23 +68,23 @@
   </div>
 </template>
 <script>
-import { columns } from './group-range.config'
-import { GroupRangeService } from './group-range.service'
+import { columns } from './small-course-range.config'
+import { SmallCourseRangeService } from './small-course-range.service'
 import { MessageService } from '@/services/message.service'
 import CourseRangeAdd from '@/views/biz-modals/course-range/add'
 import CourseRangeEdit from '@/views/biz-modals/course-range/edit'
 export default {
   serviceInject() {
     return {
-      groupRangeService: GroupRangeService,
+      smallCourseRangeService: SmallCourseRangeService,
       messageService: MessageService
     }
   },
   rxState() {
     return {
-      resData: this.groupRangeService.resData$,
-      loading: this.groupRangeService.loading$,
-      auth: this.groupRangeService.auth$
+      resData: this.smallCourseRangeService.resData$,
+      loading: this.smallCourseRangeService.loading$,
+      auth: this.smallCourseRangeService.auth$
     }
   },
   modals: {
@@ -96,7 +96,7 @@ export default {
   },
   methods: {
     onDelete(id) {
-      this.groupRangeService.deleteCourseRange(id).subscribe(() => {
+      this.smallCourseRangeService.deleteCourseRange(id).subscribe(() => {
         this.messageService.success({
           content: '删除成功'
         })
