@@ -14,10 +14,11 @@
 <script>
 import { UserService } from '@/services/user.service'
 import { SgService } from './sg.service'
-import Controller from '@/mixins/controller'
 
 export default {
-  mixins: [Controller(SgService)],
+  serviceProviders() {
+    return [SgService]
+  },
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators({

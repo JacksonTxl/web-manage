@@ -1,15 +1,13 @@
-import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
-import { tap, pluck } from 'rxjs/operators'
-import { State, Computed, Effect } from 'rx-state'
-import { Store } from '@/services/store'
+import { Injectable } from 'vue-service-app'
+import { tap } from 'rxjs/operators'
+import { State } from 'rx-state'
 import { TemporaryCabinetApi } from '@/api/v1/setting/cabinet/temporary'
 import { LongTermCabinetApi } from '@/api/v1/setting/cabinet/long-term'
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class CabinetListService {
-  state$: State<any>
-  resData$: Computed<object>
+  resData$ = new State({})
   auth$ = this.authService.authMap$({
     edit: 'shop:cabinet:cabinet|edit'
   })
@@ -17,20 +15,13 @@ export class CabinetListService {
     private temporaryCabinetApi: TemporaryCabinetApi,
     private longTermCabinetApi: LongTermCabinetApi,
     private authService: AuthService
-  ) {
-    this.state$ = new State({
-      resData: {}
-    })
-    this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
-  }
+  ) {}
   getList(type: string, id: number) {
     const cabinetApi =
       type === 'long-term' ? this.longTermCabinetApi : this.temporaryCabinetApi
     return cabinetApi.getList(id).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.resData = res
-        })
+        this.resData$.commit(() => res)
       })
     )
   }

@@ -1,6 +1,6 @@
 import { Injectable } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { tap, pluck } from 'rxjs/operators'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import {
   CabinetAreaApi,
   AddInput,
@@ -11,14 +11,8 @@ import {
 @Injectable()
 export class CabinetAreaService {
   loading$ = new State({})
-  state$: State<any>
-  list$: Computed<object[]>
-  constructor(private areaApi: CabinetAreaApi) {
-    this.state$ = new State({
-      list: []
-    })
-    this.list$ = new Computed(this.state$.pipe(pluck('list')))
-  }
+  list$ = new State([])
+  constructor(private areaApi: CabinetAreaApi) {}
   @Effect()
   add(params: AddInput) {
     return this.areaApi.add(params)
@@ -35,9 +29,7 @@ export class CabinetAreaService {
   getList() {
     return this.areaApi.getList().pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.list = res.list
-        })
+        this.list$.commit(() => res.list)
       })
     )
   }

@@ -201,7 +201,7 @@
                   props: { staff: record }
                 }"
               >
-                职位变更
+                职位和薪资变更
               </a>
               <a
                 href="javascript: void(0)"
@@ -211,7 +211,7 @@
                   props: { staff: record }
                 }"
               >
-                设置薪资账户
+                设置提现账户
               </a>
               <a
                 href="javascript: void(0)"

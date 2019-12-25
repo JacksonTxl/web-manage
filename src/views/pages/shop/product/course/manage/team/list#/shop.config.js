@@ -2,6 +2,8 @@ export const columns = [
   {
     title: '团课名称',
     dataIndex: 'course_name',
+    fixed: 'left',
+    width: 180,
     scopedSlots: { customRender: 'course_name' }
   },
   {

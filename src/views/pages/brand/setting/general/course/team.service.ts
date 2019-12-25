@@ -1,17 +1,12 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { Injectable } from 'vue-service-app'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { TeamReserveSettingApi } from '@/api/v1/setting/course/team/reserve'
 import { AuthService } from '@/services/auth.service'
 
-interface ListState {
-  resData: object
-}
 @Injectable()
 export class TeamService {
-  state$: State<ListState>
-  resData$: Computed<object>
+  resData$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({
     get: 'brand:setting:course_price_reserve_setting|tab',
@@ -20,25 +15,16 @@ export class TeamService {
   constructor(
     private reserveSettingApi: TeamReserveSettingApi,
     private authService: AuthService
-  ) {
-    this.state$ = new State({
-      resData: {}
-    })
-    this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
-  }
+  ) {}
   @Effect()
   getInfo() {
     return this.reserveSettingApi.getInfo().pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.resData = res
-        })
+        this.resData$.commit(() => res)
       })
     )
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getInfo().subscribe(next, () => {
-      next(false)
-    })
+  beforeEach() {
+    return this.getInfo()
   }
 }

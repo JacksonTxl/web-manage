@@ -51,7 +51,7 @@
             v-if="record.auth['brand:staff:staff|position']"
             @click="staffPositionChange(record)"
           >
-            职位变更
+            职位和薪资变更
           </a>
           <a
             href="javascript: void(0)"
@@ -88,7 +88,7 @@
               props: { staff: record }
             }"
           >
-            设置薪资账户
+            设置提现账户
           </a>
           <a
             v-if="record.auth['brand_shop:staff:staff|del']"

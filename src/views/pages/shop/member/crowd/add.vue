@@ -71,6 +71,9 @@
             type="primary"
             style="margin-right:16px;width:102px"
             @click="conserve"
+            :loading="
+              loading.setCrowdBrandField || loading.updateCrowdBrandCrowd
+            "
           >
             保存
           </st-button>
@@ -118,6 +121,7 @@ export default {
   },
   rxState() {
     return {
+      loading: this.addService.loading$,
       crowdInfo: this.addService.crowdInfo$
     }
   },
@@ -351,7 +355,7 @@ export default {
           }
           if (this.$searchQuery.id) {
             this.addService
-              .getCrowdBrandCrowd(this.$searchQuery.id, obj)
+              .updateCrowdBrandCrowd(this.$searchQuery.id, obj)
               .subscribe(status => {
                 this.$router.push({ name: 'shop-member-crowd-index' })
               })

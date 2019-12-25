@@ -22,6 +22,7 @@ export class ReserveService {
   cancel_reserve$ = this.userService.getOptions$('setting.cancel_reserve')
   reserve_range$ = this.userService.getOptions$('setting.reserve_range')
   reserve_start$ = this.userService.getOptions$('setting.reserve_start')
+  reserve_remind$ = this.userService.getOptions$('setting.reserve_remind')
   constructor(
     protected reserveSettingApi: TeamReserveSettingApi,
     private userService: UserService

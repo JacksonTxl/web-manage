@@ -1,33 +1,22 @@
 import { UserService } from '@/services/user.service'
 import { Injectable } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { MemberApi } from '@/api/v1/member'
 
 @Injectable()
 export class FrozenService {
   loading$ = new State({})
-  state$: State<any>
-  info$: Computed<string>
-  list$: Computed<any>
+  list$ = new State([])
   staffList$ = new State([])
   payMethodList$ = this.userService.getOptions$('member.pay_method')
   hasTransferFeeList$ = this.userService.getOptions$('member.has_transferFee')
-  constructor(private memberApi: MemberApi, private userService: UserService) {
-    this.state$ = new State({
-      list: [],
-      info: {}
-    })
-    this.info$ = new Computed(this.state$.pipe(pluck('info')))
-    this.list$ = new Computed(this.state$.pipe(pluck('list')))
-  }
-
+  constructor(private memberApi: MemberApi, private userService: UserService) {}
+  @Effect()
   getMemberBuy(data: any) {
     return this.memberApi.getMemberFreeze(data).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.list = res.list
-        })
+        this.list$.commit(() => res.list)
       })
     )
   }
@@ -39,6 +28,7 @@ export class FrozenService {
       })
     )
   }
+  @Effect()
   getMemberTransfer(data: any) {
     return this.memberApi.getAddMemberFreeze(data)
   }
