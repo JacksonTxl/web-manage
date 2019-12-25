@@ -5,12 +5,9 @@ import {
   GetBlackListSelectQuery,
   PostBlackListParams
 } from '@/api/v1/setting/hardware'
-import { State, Computed, Effect } from 'rx-state'
-import { tap, switchMap } from 'rxjs/operators'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
 
-interface CardsTableModelState {
-  lableInfo: any
-}
 @Injectable()
 export class BlackService {
   loading$ = new State({})

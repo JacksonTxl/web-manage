@@ -1,8 +1,10 @@
 <template>
   <st-modal
     title="冻结"
-    :footer="null"
     v-model="show"
+    @ok="save"
+    :loading="loading.getMemberBuy"
+    :confirmLoading="loading.getMemberTransfer"
     wrapClassName="modal-shop-frozen"
   >
     <st-form :form="form" labelWidth="80px">
@@ -149,7 +151,7 @@
           </st-form-item>
         </a-col>
       </a-row> -->
-      <a-row :gutter="8">
+      <!-- <a-row :gutter="8">
         <a-col :lg="24">
           <st-form-item
             class="mg-l24"
@@ -165,7 +167,7 @@
             </st-button>
           </st-form-item>
         </a-col>
-      </a-row>
+      </a-row> -->
     </st-form>
   </st-modal>
 </template>

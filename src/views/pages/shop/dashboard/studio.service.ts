@@ -1,6 +1,6 @@
-import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
-import { State, Computed } from 'rx-state/src'
-import { pluck, tap } from 'rxjs/operators'
+import { Injectable, Controller } from 'vue-service-app'
+import { State } from 'rx-state/src'
+import { tap } from 'rxjs/operators'
 import {
   OverviewApi,
   Version,

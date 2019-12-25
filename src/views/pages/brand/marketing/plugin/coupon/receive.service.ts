@@ -1,9 +1,8 @@
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
-import { State, Effect, Computed } from 'rx-state'
+import { State, Effect } from 'rx-state'
 import { MarketingApi } from '@/api/v1/marketing/marketing'
-import { tap, pluck } from 'rxjs/operators'
+import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
-import { Store } from '@/services/store'
 
 export interface SetState {}
 
