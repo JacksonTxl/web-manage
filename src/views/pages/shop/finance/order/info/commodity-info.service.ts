@@ -1,6 +1,6 @@
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
-import { State, Effect, Computed } from 'rx-state'
-import { tap, pluck } from 'rxjs/operators'
+import { State, Effect, computed } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { OrderApi } from '@/api/v1/finance/order'
 import { InfoService } from '../info.service'
 
@@ -8,9 +8,9 @@ import { InfoService } from '../info.service'
 export class CommodityInfoService implements Controller {
   info$ = new State({})
   loading$ = new State({})
-  product_type$ = new Computed(
-    this.infoService.info$.pipe(pluck('product_type'))
-  )
+  product_type$ = computed((info: any) => info.product_type, [
+    this.infoService.info$
+  ])
   constructor(private orderApi: OrderApi, private infoService: InfoService) {}
   @Effect()
   getCommodityInfo(id: string) {

@@ -4,12 +4,6 @@ import { tap } from 'rxjs/operators'
 import { StaffApi, PutStaffBrandRestartInput } from '@/api/v1/staff'
 import { MessageService } from '@/services/message.service'
 
-interface SetState {
-  positionInfo: object
-  staffEnums: object
-  coachLevelList: object[]
-  conditionDeleteInfo: object
-}
 @Injectable()
 export class ReinstatementService {
   constructor(protected staffApi: StaffApi, private msg: MessageService) {}

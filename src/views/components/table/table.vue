@@ -2,11 +2,11 @@
 import { merge, omit, map } from 'lodash-es'
 function addOddEvenKey(dataSource) {
   for (let i in dataSource) {
-    dataSource[i]._oddEvenKey = i % 2 ? `even-${i}` : `odd-${i}`
+    dataSource[i].$_oddEvenKey = i % 2 ? `even-${i}` : `odd-${i}`
     if (dataSource[i].children) {
       for (let j in dataSource[i].children) {
-        dataSource[i].children[j]._oddEvenKey = `${
-          dataSource[i]._oddEvenKey
+        dataSource[i].children[j].$_oddEvenKey = `${
+          dataSource[i].$_oddEvenKey
         }-${j}`
       }
     }
@@ -158,7 +158,7 @@ export default {
       )
     },
     rowClassName(record) {
-      return record._oddEvenKey
+      return record.$_oddEvenKey
     }
   },
   render(h) {

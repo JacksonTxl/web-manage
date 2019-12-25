@@ -1,22 +1,17 @@
 import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { SmsApi, SmsListQuery } from '@/api/v1/setting/sms/sms'
 import { UserService } from '@/services/user.service'
-interface SetState {}
 @Injectable()
-export class ListService {
-  state$: State<SetState>
+export class ListService implements Controller {
   list$ = new State([])
   page$ = new State([])
   loading$ = new State({})
   notifyType$ = this.userService.getOptions$('setting.notify_type')
   sendStatus$ = this.userService.getOptions$('setting.send_status')
 
-  constructor(private SmsApi: SmsApi, private userService: UserService) {
-    this.state$ = new State({})
-  }
+  constructor(private SmsApi: SmsApi, private userService: UserService) {}
   @Effect()
   getSmsList(query: SmsListQuery) {
     return this.SmsApi.getSmsList(query).pipe(

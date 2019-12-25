@@ -136,7 +136,7 @@
         </a-col>
       </a-row>
     </st-panel>
-    <st-panel app class="mg-t12" :tabs="pageAuthTabs">
+    <st-panel app class="mg-t12" :tabs="authTabs">
       <!-- TODO: 消费记录尚未实现 -->
       <!-- {
           label: '消费记录',
@@ -175,7 +175,7 @@ export default {
   rxState() {
     return {
       packageInfo: this.infoService.packageInfo$,
-      pageAuthTabs: this.infoService.pageAuthTabs$,
+      authTabs: this.infoService.authTabs$,
       auth: this.infoService.auth$
     }
   },

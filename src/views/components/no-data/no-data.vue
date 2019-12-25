@@ -1,7 +1,7 @@
 <template>
-  <div class="mg-y24 ta-c">
-    <img width="150" :src="img" />
-    <p class="mg-t16">{{ text }}</p>
+  <div class="st-no-data">
+    <img width="90" :src="img" />
+    <p class="st-no-data__text">{{ text }}</p>
   </div>
 </template>
 <script>
@@ -21,7 +21,7 @@ export default {
     img() {
       return {
         '1':
-          'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/placeholder-nodata.png'
+          'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/no-data.png'
       }[this.type]
     }
   }

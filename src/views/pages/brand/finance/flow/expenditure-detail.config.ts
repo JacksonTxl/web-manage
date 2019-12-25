@@ -9,6 +9,9 @@ export const columns = () => {
     {
       title: '金额（元）',
       dataIndex: 'price',
+      fixed: 'left',
+      width: 120,
+      align: 'right',
       scopedSlots: { customRender: 'price' },
       sorter: true
     },

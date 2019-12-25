@@ -1,26 +1,18 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
+import { Injectable } from 'vue-service-app'
+import { State } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { ShopStaffApi, PutStaffBindBankInput } from '@/api/v1/staff/staff'
 import { MessageService } from '@/services/message.service'
 
 @Injectable()
 export class SalaryAccountSettingService {
   loading$ = new State({})
-  state$: State<any>
-  accountInfo$: Computed<any>
-  constructor(protected staffApi: ShopStaffApi, private msg: MessageService) {
-    this.state$ = new State({
-      accountInfo: {}
-    })
-    this.accountInfo$ = new Computed(this.state$.pipe(pluck('accountInfo')))
-  }
+  accountInfo$ = new State({})
+  constructor(protected staffApi: ShopStaffApi, private msg: MessageService) {}
   getBankInfo(id: string) {
     return this.staffApi.getBankInfo(id).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.accountInfo = res.bank
-        })
+        this.accountInfo$.commit(() => res.bank)
       })
     )
   }
