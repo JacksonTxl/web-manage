@@ -18,7 +18,7 @@ export class WsService {
     payload: {}
   }
   // 设置心跳时间
-  private pingTimeout = 2000
+  private pingTimeout = 15000
   open$ = new State({})
   count$ = new State(0)
   constructor(private notificationService: NotificationService) {
@@ -54,8 +54,8 @@ export class WsService {
           title: msg.payload.title,
           content: msg.payload.content
         }
-        // new Notification(msg.payload.title, { body: msg.payload.content })
-        this.notificationService.info(config)
+        new Notification(msg.payload.title, { body: msg.payload.content })
+        // this.notificationService.info(config)
       },
       (err: any) => console.warn('webSocket err', err),
       () => console.log('complete')

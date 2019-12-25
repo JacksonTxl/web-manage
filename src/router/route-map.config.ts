@@ -16,6 +16,13 @@ export const routeMapConfig = {
     routeConfig.meta.title = '消息中心'
     routeConfig.meta.tabs = ['common-notify-inform', 'common-notify-notice']
   },
+  'common-notify-inform'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '通知列表'
+    routeConfig.queryOptions = {
+      notify_type: { type: Number, default: -1 },
+      sub_notify_type: { type: Number, default: -1 }
+    }
+  },
   'brand-product-course-personal-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教课'
     routeConfig.meta.tabs = [

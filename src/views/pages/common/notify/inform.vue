@@ -3,14 +3,14 @@
     <st-search-panel @search="onSearchNative" @reset="onSearchReset">
       <st-search-panel-item label="储值卡状态：">
         <st-search-radio
-          v-model="$searchQuery.is_valid"
-          :options="[{ lable: '都是', value: 'aa' }]"
+          v-model="$searchQuery.notify_type"
+          :options="noticeTypeLevel1Options"
         />
       </st-search-panel-item>
       <st-search-panel-item label="二级分类：">
         <st-search-radio
           v-model="$searchQuery.is_valid"
-          :options="[{ lable: '都是', value: 'aa' }]"
+          :options="noticeTypeLevel2Options"
         />
       </st-search-panel-item>
       <st-search-panel-item label="通知名单：">
@@ -57,8 +57,8 @@ export default {
     ShopSelect
   },
   rxState() {
-    const { list$, page$, loading$ } = this.service
-    return { list$, page$, loading$ }
+    const { list$, page$, loading$, noticeTypeOptions$ } = this.service
+    return { list$, page$, loading$, noticeTypeOptions$ }
   },
   data() {
     return {
@@ -66,7 +66,24 @@ export default {
     }
   },
   computed: {
-    columns
+    columns,
+    noticeTypeLevel1Options() {
+      return this.noticeTypeOptions$.map(item => {
+        return {
+          label: item.value,
+          value: item.key
+        }
+      })
+    },
+    noticeTypeLevel2Options() {
+      const options = []
+      for (let item of this.noticeTypeOptions$) {
+        if (item.value === this.$searchQuery.notify_type) {
+          return [...item]
+        }
+      }
+      return options
+    }
   },
   methods: {
     onSearchNative() {

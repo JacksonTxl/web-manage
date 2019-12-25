@@ -8,6 +8,7 @@ export class InformService {
   loading$ = new State({})
   list$ = new State([{}])
   page$ = new State({})
+  noticeTypeOptions$ = new State([])
   constructor(private api: NotifyApi) {}
   getList(query: any) {
     return this.api.getInformList(query).pipe(
@@ -16,6 +17,19 @@ export class InformService {
         this.page$.commit(() => res.page)
       })
     )
+  }
+  getNoticeEnum() {
+    return this.api.getNoticeEnum().pipe(
+      tap((res: any) => {
+        this.noticeTypeOptions$.commit(() => [
+          { value: '全部', key: -1 },
+          ...res.list
+        ])
+      })
+    )
+  }
+  beforeRouteEnter() {
+    return this.getNoticeEnum()
   }
   beforeEach(to: ServiceRoute) {
     return this.getList(to.meta.query)

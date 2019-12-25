@@ -9,8 +9,8 @@ export class NotifyApi extends Api {
   getAnnouncementInfo(query: any) {
     return this.http.get(`v1/brand/announcement/${query.id}`, { query })
   }
-  getNoticeEnum(query: GetInformListQuery) {
-    return this.http.get(`/v1/notice/enum`, { query })
+  getNoticeEnum() {
+    return this.http.get(`/v1/notice/enum`)
   }
   getAnnouncementEnum(query: GetInformListQuery) {
     return this.http.get(`/v1/announcement/enum`, { query })

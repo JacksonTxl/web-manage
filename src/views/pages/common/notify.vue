@@ -1,6 +1,5 @@
 <template>
   <st-panel :class="bPage()" app initial :tabs="authTabs">
-    <di-view name="INFORM" slot="prepend"></di-view>
     <router-view></router-view>
   </st-panel>
 </template>

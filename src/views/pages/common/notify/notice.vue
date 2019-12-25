@@ -4,13 +4,13 @@
       <st-search-panel-item label="通知类型：">
         <st-search-radio
           v-model="$searchQuery.is_valid"
-          :options="[{ lable: '都是', value: 'aa' }]"
+          :options="[{ label: '都是', value: 'aa' }]"
         />
       </st-search-panel-item>
       <st-search-panel-item label="二级分类：">
         <st-search-radio
           v-model="$searchQuery.is_valid"
-          :options="[{ lable: '都是', value: 'aa' }]"
+          :options="[{ label: '都是', value: 'aa' }]"
         />
       </st-search-panel-item>
       <st-search-panel-item label="通知门店：">
