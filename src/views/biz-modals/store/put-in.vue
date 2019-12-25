@@ -61,15 +61,18 @@ export default {
         this.putInService
           .stockOutbound({ stock: this.skuList })
           .subscribe(res => {
+            this.$emit('success')
             this.show = false
-            this.$router.reload()
+            // this.$router.reload()
           })
       } else {
         this.putInService
           .stockWarehouse({ stock: this.skuList })
           .subscribe(res => {
+            console.log('数据请求回来了')
+            this.$emit('success', res)
             this.show = false
-            this.$router.reload()
+            // this.$router.reload()
           })
       }
       this.show = false
