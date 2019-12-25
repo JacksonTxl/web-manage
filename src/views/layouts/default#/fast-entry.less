@@ -1,0 +1,54 @@
+/**
+* 九宫格
+*/
+.layout-fast-entry {
+  .pos-r;
+  top: -24px;
+  .s(310px, 344px);
+  .bg(@white);
+  padding: 30px 15px 10px 15px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15) !important;
+  border-radius: 4px;
+  .clearfix;
+
+  &__item {
+    .fl-l;
+    .s(33.33%, 33.33%) !important;
+    .mg-b(0) !important;
+    .ta-c;
+    .fz(12px) !important;
+    .c(@title);
+    transition: 0.3s;
+  }
+
+  &__pic {
+    display: flex;
+    justify-content: center;
+    .h(50px);
+    margin-bottom: 10px;
+
+    &-img {
+      .d-b;
+      .s(45px, 45px);
+    }
+  }
+
+  &__text {
+    line-height: 15px;
+  }
+
+  &__activity {
+    &:hover {
+      transform: translateY(-4px);
+    }
+  }
+
+  .ant-menu-vertical .ant-menu-item,
+  .ant-menu-vertical .ant-menu-item:not(:last-child) {
+    margin-bottom: 0;
+  }
+
+  .ant-menu-item-selected {
+    .bg(@white) !important;
+  }
+}

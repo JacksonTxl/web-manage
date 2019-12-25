@@ -1,14 +1,14 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state/src'
-import { pluck, tap } from 'rxjs/operators'
+import { State, Effect } from 'rx-state/src'
+import { tap } from 'rxjs/operators'
 import {
   RevenueApi,
   RevenueChartParams,
   RevenueDataParams
 } from '@/api/v1/stat/revenue'
-import { forkJoin } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
 import { UserService } from '@/services/user.service'
+
 @Injectable()
 export class RevenueService {
   loading$ = new State({})

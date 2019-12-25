@@ -16,6 +16,9 @@ export class ListService implements Controller {
     add: 'brand:activity:coupon|add'
   })
   brand$ = this.userService.brand$
+  productType$ = this.userService.getOptions$('coupon.coupon_status', {
+    addAll: '全部状态'
+  })
   constructor(
     private marketingApi: MarketingApi,
     private couponApi: CouponApi,

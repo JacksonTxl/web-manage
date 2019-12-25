@@ -2,11 +2,15 @@ export const columns = (vm: any) => [
   {
     title: '人脸',
     dataIndex: 'image_face',
+    fixed: 'left',
+    width: 40,
     scopedSlots: { customRender: 'image_face' }
   },
   {
     title: '姓名',
     dataIndex: 'member_name',
+    fixed: 'left',
+    width: 100,
     scopedSlots: { customRender: 'member_name' }
   },
   { title: '手机号', dataIndex: 'mobile' },

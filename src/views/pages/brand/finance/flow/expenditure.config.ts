@@ -2,10 +2,14 @@ export const columns = () => {
   return [
     {
       title: '查询日期',
+      fixed: 'left',
+      width: 150,
       dataIndex: 'stat_date'
     },
     {
       title: '门店名称',
+      fixed: 'left',
+      width: 160,
       dataIndex: 'shop_name'
     },
     {

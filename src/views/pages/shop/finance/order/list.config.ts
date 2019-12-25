@@ -3,6 +3,8 @@ export const columns = () => {
     {
       title: '订单编号',
       dataIndex: 'id',
+      fixed: 'left',
+      width: 150,
       scopedSlots: { customRender: 'id' }
     },
     {

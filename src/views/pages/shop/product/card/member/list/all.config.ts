@@ -7,6 +7,7 @@ export const columns = (vm: any) => {
     {
       title: `${vm.$c('member_card')}名称`,
       dataIndex: 'card_name',
+      fixed: 'left',
       width: 200,
       scopedSlots: { customRender: 'card_name' }
     },

@@ -1,11 +1,16 @@
 export const columns = () => [
   {
-    title: `定金金额（元）`,
-    dataIndex: 'price'
+    title: '姓名',
+    dataIndex: 'member_name',
+    fixed: 'left',
+    width: 120
   },
   {
-    title: '姓名',
-    dataIndex: 'member_name'
+    title: `定金金额(元)`,
+    dataIndex: 'price',
+    fixed: 'left',
+    width: 120,
+    align: 'right'
   },
   {
     title: '手机号',

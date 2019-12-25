@@ -89,6 +89,7 @@
                     priceValidateStatus === 'error'
                 }"
               >
+                {{ rallyPriceValidText }}
                 <st-table
                   :columns="priceColumns"
                   :dataSource="rallyPriceList"
@@ -644,9 +645,9 @@ export default {
       if (!this.priceValidateRuleText.length) {
         this.rallyPriceIsOk = false
       } else {
-        this.rallyPriceIsOk = this.priceValidateRuleText.every(i =>
-          this.pattern.NUM_FLOAT(1).test(i)
-        )
+        this.rallyPriceIsOk = this.priceValidateRuleText.every(i => {
+          return this.pattern.NUM_FLOAT(1).test(i)
+        })
       }
     },
     onCardBgChange(e) {
@@ -681,7 +682,7 @@ export default {
       let text = []
       this.rallyPriceList.forEach(i => {
         Object.keys(i).forEach(o => {
-          if (o !== 'key' && o !== 'time') {
+          if (o !== 'key' && o !== 'time' && o !== '$_oddEvenKey') {
             text.push(i[o])
           } else if (o === 'time') {
             text.push(i[o].num)

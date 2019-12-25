@@ -64,7 +64,12 @@ export default {
   },
   rxState() {
     return {
-      memberCard: this.userService.memberCardEnums$
+      memberCardBgList: this.userService.getOptions$(
+        'member_card.card_bg_list'
+      ),
+      familyCardBgList: this.userService.getOptions$(
+        'member_card.family_card_bg_list'
+      )
     }
   },
   created() {
@@ -89,8 +94,8 @@ export default {
       // 截图参数对象
       cropperModal: {},
       card_bg_list: this.isFamilyCard
-        ? this.memberCard.family_card_bg_list.value
-        : this.memberCard.card_bg_list.value,
+        ? this.familyCardBgList
+        : this.memberCardBgList,
       // 备份
       list: [],
       // radioIndex
@@ -98,8 +103,8 @@ export default {
       // 选择的cardBg
       cardBg: {
         image_id: 0,
-        image_key: this.memberCard.card_bg_list.value[0].image_key,
-        image_url: this.memberCard.card_bg_list.value[0].image_url,
+        image_key: this.memberCardBgList[0].image_key,
+        image_url: this.memberCardBgList[0].image_url,
         index: 1
       },
       // 自定义cardBg
