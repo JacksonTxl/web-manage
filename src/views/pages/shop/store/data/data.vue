@@ -131,7 +131,7 @@
                         :unit="wholeNav[wholenavIndex].title | filterCompany(1)"
                         :data="orderMember(storeBoard, 0, 'member')"
                         :total="
-                          orderMember(storeBoard, 0, 'order').reduce(
+                          orderMember(storeBoard, 0, 'member').reduce(
                             (item1, item2) => {
                               return Number(item1.value) + Number(item2.value)
                             }
