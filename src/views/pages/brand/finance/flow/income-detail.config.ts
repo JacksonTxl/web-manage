@@ -2,21 +2,21 @@ export const columns = () => {
   return [
     {
       title: '流水号',
-      dataIndex: 'flow_id'
+      dataIndex: 'flow_id',
+      fixed: 'left',
+      width: 160
     },
     {
       title: '金额（元）',
       dataIndex: 'price',
+      fixed: 'left',
+      width: 120,
       scopedSlots: { customRender: 'price' },
       align: 'right'
     },
     {
       title: '收银方式',
       dataIndex: 'pay_channel'
-    },
-    {
-      title: '收银门店',
-      dataIndex: 'shop_name'
     },
     {
       title: '类型',

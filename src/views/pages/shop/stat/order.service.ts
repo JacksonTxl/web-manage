@@ -10,6 +10,9 @@ export class OrderService implements Controller {
   total$ = new State({})
   loading$ = new State({})
   authTabs$ = this.authService.getAuthTabs$('shop-stat-revenue')
+  auth$ = this.authService.authMap$({
+    export: 'brand_shop:stat:order_reports|batch_export'
+  })
   constructor(private StatApi: StatApi, private authService: AuthService) {}
   @Effect()
   getOrderShopList(query: OrderShopListQuery) {

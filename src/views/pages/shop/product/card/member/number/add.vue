@@ -1,5 +1,8 @@
 <template>
-  <st-mina-panel class="page-shop-basic-card page-shop-add-number-card">
+  <st-mina-panel
+    responsivePreview
+    class="page-shop-basic-card page-shop-add-number-card"
+  >
     <h5-container slot="preview" fixed>
       <template v-slot:title>
         购卡
@@ -42,7 +45,7 @@
             >
               <template slot="label">
                 支持入场人数
-                <st-help-tooltip id="TBMCDC001" />
+                <st-help-tooltip id="TBMCDC003" />
               </template>
               <a-select
                 v-decorator="decorators.support_member_num"
@@ -682,7 +685,7 @@ export default {
       let text = []
       this.rallyPriceList.forEach(i => {
         Object.keys(i).forEach(o => {
-          if (o !== 'key' && o !== 'time') {
+          if (o !== 'key' && o !== 'time' && o !== '$_oddEvenKey') {
             text.push(i[o])
           } else if (o === 'time') {
             text.push(i[o].num)

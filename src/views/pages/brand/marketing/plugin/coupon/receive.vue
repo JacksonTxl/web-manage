@@ -92,18 +92,7 @@ export default {
       page: this.receiveService.page$,
       loading: this.receiveService.loading$,
       info: this.receiveService.info$,
-      couponEnums: this.userService.couponEnums$,
       auth: this.receiveService.auth$
-    }
-  },
-  computed: {
-    couponStatus() {
-      let list = []
-      if (!this.couponEnums.coupon_status) return list
-      Object.entries(this.couponEnums.coupon_status.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return [{ value: -1, label: '优惠券状态' }, ...list]
     }
   },
   data() {

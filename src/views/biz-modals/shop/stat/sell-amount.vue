@@ -3,7 +3,6 @@
     wrapClassName="modal-stat-sell-amount"
     title="总销售业绩"
     width="1150px"
-    :footer="null"
     v-model="show"
     :loading="loading.init"
   >
@@ -65,6 +64,15 @@
         <st-help-tooltip id="TSSR007" />
       </span>
     </st-table>
+    <div slot="footer">
+      <st-button
+        type="primary"
+        v-if="auth$.export"
+        v-export-excel="exportParams"
+      >
+        全部导出
+      </st-button>
+    </div>
   </st-modal>
 </template>
 <script>
@@ -85,11 +93,13 @@ export default {
     let {
       amountList$,
       page$,
+      auth$,
       loading$,
       modalDepartmentList$,
       modalStaffList$
     } = this.sellAmountervice
     return {
+      auth$,
       page: page$,
       amountList: amountList$,
       loading: loading$,
@@ -122,6 +132,12 @@ export default {
   },
   computed: {
     columns,
+    exportParams() {
+      const type = 'sale'
+      return this.type === 'total'
+        ? { type: `${type}/total`, query: this.totalQuery }
+        : { type, query: this.query }
+    },
     showTable() {
       return this.$searchQuery.showTable || 'all'
     },
@@ -180,9 +196,14 @@ export default {
       )
     },
     init() {
-      this.pageParams.staff_id = this.record.staff_id || -1
-      this.pageParams.department_id = this.record.department_id || -1
-      this.pageParams.stat_date = this.record.stat_date
+      if (this.record.staff_id) {
+        this.pageParams.staff_id = this.record.staff_id || -1
+        this.pageParams.department_id = this.record.department_id || -1
+        this.pageParams.stat_date = this.record.stat_date
+      } else {
+        this.pageParams.staff_id = this.$searchQuery.staff_id || -1
+        this.pageParams.department_id = this.$searchQuery.department_id || -1
+      }
       const query = this.type === 'total' ? this.totalQuery : this.query
       this.sellAmountervice.init({ ...query }).subscribe()
     }

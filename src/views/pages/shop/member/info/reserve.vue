@@ -34,7 +34,7 @@
     </a-row>
     <st-table
       class="mg-t16"
-      rowKey=""
+      rowKey="id"
       :columns="cardItem"
       :dataSource="cardsListInfo"
       :scroll="{ x: 1750 }"
@@ -96,6 +96,7 @@
     <st-table
       class="mg-t16"
       :columns="course"
+      rowKey="id"
       :dataSource="courseListInfo"
       :page="coursePage"
       @change="coursePageChange"
@@ -173,7 +174,7 @@ export default {
   },
   methods: {
     memberInfo(record) {
-      const arr = record.members
+      const arr = record.members || []
       let familyInfo = ''
       if (record.card_number_type === 2) {
         familyInfo = `卡成员：${arr

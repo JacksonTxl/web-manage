@@ -1,5 +1,5 @@
 <template>
-  <st-modal v-model="show" title="导出失败原因">
+  <st-modal v-model="show" @ok="show = false" title="导出失败原因">
     {{ reason }}
   </st-modal>
 </template>

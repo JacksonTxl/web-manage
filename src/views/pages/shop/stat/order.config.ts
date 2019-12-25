@@ -3,6 +3,7 @@ export const columns = (vm: any) => {
     {
       title: '日期',
       width: '150px',
+      fixed: 'left',
       dataIndex: 'stat_date'
     },
     {

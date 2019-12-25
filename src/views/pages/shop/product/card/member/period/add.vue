@@ -1,5 +1,8 @@
 <template>
-  <st-mina-panel class="page-shop-basic-card page-shop-add-period-card">
+  <st-mina-panel
+    responsivePreview
+    class="page-shop-basic-card page-shop-add-period-card"
+  >
     <h5-container slot="preview" fixed>
       <template v-slot:title>
         购卡
@@ -46,7 +49,7 @@
             >
               <template slot="label">
                 支持入场人数
-                <st-help-tooltip id="TBMCDC001" />
+                <st-help-tooltip id="TBMCDC003" />
               </template>
               <a-select
                 v-decorator="decorators.support_member_num"
@@ -86,6 +89,7 @@
                     priceValidateStatus === 'error'
                 }"
               >
+                {{ rallyPriceValidText }}
                 <st-table
                   :columns="priceColumns"
                   :dataSource="rallyPriceList"
@@ -641,9 +645,9 @@ export default {
       if (!this.priceValidateRuleText.length) {
         this.rallyPriceIsOk = false
       } else {
-        this.rallyPriceIsOk = this.priceValidateRuleText.every(i =>
-          this.pattern.NUM_FLOAT(1).test(i)
-        )
+        this.rallyPriceIsOk = this.priceValidateRuleText.every(i => {
+          return this.pattern.NUM_FLOAT(1).test(i)
+        })
       }
     },
     onCardBgChange(e) {
@@ -678,7 +682,7 @@ export default {
       let text = []
       this.rallyPriceList.forEach(i => {
         Object.keys(i).forEach(o => {
-          if (o !== 'key' && o !== 'time') {
+          if (o !== 'key' && o !== 'time' && o !== '$_oddEvenKey') {
             text.push(i[o])
           } else if (o === 'time') {
             text.push(i[o].num)

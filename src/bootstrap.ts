@@ -18,7 +18,7 @@ import ICountUp from 'vue-countup-v2'
 // @ts-ignore
 import Viewer from 'v-viewer'
 import VueServiceApp from 'vue-service-app'
-import VueDiView from 'vue-di-view'
+import PortalVue from 'portal-vue'
 
 import container from './container'
 import i18n from '@/i18n'
@@ -38,10 +38,11 @@ Vue.use(VueServiceApp, container)
 Vue.use(Scrollbar)
 Vue.use(VueRxState)
 Vue.use(Antd)
+// https://www.npmjs.com/package/v-viewer
 Vue.use(Viewer)
 Vue.use(VueBemHelper)
-// @ts-ignore
-Vue.use(VueDiView)
+// https://portal-vue.linusb.org/
+Vue.use(PortalVue)
 // @ts-ignore
 Vue.use(VueStForm)
 Vue.use(VueStyleguide)

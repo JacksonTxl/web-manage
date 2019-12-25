@@ -65,7 +65,7 @@
         </template>
       </tbody>
     </st-form-table>
-    <div v-di-view="{ name: 'step', show }">
+    <portal to="BRAND_MARKETING_ACTIVITY_FORM_ACTIONS" v-if="show">
       <st-button @click="onClickBack">
         上一步
       </st-button>
@@ -76,7 +76,7 @@
       >
         下一步
       </st-button>
-    </div>
+    </portal>
   </div>
 </template>
 <script>

@@ -2,13 +2,38 @@
   <div :class="bPage()">
     <section class="mg-b16" :class="bHeard()">
       <div :class="bHeard('left')">
-        <!-- TODO: <st-button type="primary" class="shop-member-list-button">批量导出</st-button> -->
-        <a-radio-group :value="showTable" @change="handleSizeChange">
+        <div :class="bPage('button-wapper')" class="mg-r8">
+          <st-button
+            type="primary"
+            v-if="showTable === 'all' && auth.export_all"
+            v-export-excel="{
+              type: 'sale/summary',
+              query: $searchQuery
+            }"
+          >
+            全部导出
+          </st-button>
+          <st-button
+            v-else-if="auth.export_staff"
+            type="primary"
+            v-export-excel="{
+              type: 'sale/staff',
+              query: $searchQuery
+            }"
+          >
+            全部导出
+          </st-button>
+        </div>
+      </div>
+      <div :class="bHeard('right')">
+        <a-radio-group
+          class="mg-r12"
+          :value="showTable"
+          @change="handleSizeChange"
+        >
           <a-radio-button value="all" v-if="auth.summary">汇总</a-radio-button>
           <a-radio-button value="staff" v-if="auth.staff">员工</a-radio-button>
         </a-radio-group>
-      </div>
-      <div :class="bHeard('right')">
         <div v-if="showTable === 'staff'">
           <a-select
             class="mg-r8"
@@ -179,7 +204,10 @@ export default {
     }
   },
   created() {
-    this.showTable = this.auth.summary ? 'all' : 'staff'
+    this.showTable =
+      this.auth.summary && this.$searchQuery.showTable === 'all'
+        ? 'all'
+        : 'staff'
   },
   methods: {
     onCLickPerformanceAmount() {

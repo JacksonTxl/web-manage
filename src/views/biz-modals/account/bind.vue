@@ -3,6 +3,9 @@
     <st-form :form="form" labelWidth="88px" labelGutter="16px">
       <st-form-item label="当前手机号" label-auto v-if="info.bind_mobile">
         <label>{{ info.bind_mobile }}</label>
+        <a @click="onClickUnbind">
+          解绑
+        </a>
       </st-form-item>
       <st-form-item label="绑定手机号" required>
         <input-phone
@@ -48,6 +51,7 @@ import InputPhone from '@/views/biz-components/input-phone/input-phone'
 import InputPhoneCode from '@/views/biz-components/input-phone-code/input-phone-code'
 import { MessageService } from '@/services/message.service'
 import { cloneDeep } from 'lodash-es'
+import AccountUnbind from '@/views/biz-modals/account/unbind'
 
 export default {
   serviceInject() {
@@ -69,6 +73,9 @@ export default {
     InputPhone,
     InputPhoneCode
   },
+  modals: {
+    AccountUnbind
+  },
   computed: {
     modalTitle() {
       return this.info.bind_mobile ? '更改绑定手机号' : '绑定手机号'
@@ -88,6 +95,14 @@ export default {
     }
   },
   methods: {
+    onClickUnbind() {
+      this.show = false
+      this.$modalRouter.push({
+        name: 'account-unbind',
+        props: {},
+        on: {}
+      })
+    },
     onClickCaptcha() {
       this.form.validate(['country_phone']).then(values => {
         const { country_phone } = values

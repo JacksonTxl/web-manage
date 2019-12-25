@@ -1,5 +1,8 @@
 <template>
-  <st-mina-panel class="page-brand-basic-card page-brand-edit-period-card">
+  <st-mina-panel
+    responsivePreview
+    class="page-brand-basic-card page-brand-edit-period-card"
+  >
     <h5-container fixed slot="preview">
       <template v-slot:title>
         购卡
@@ -44,7 +47,7 @@
             >
               <template slot="label">
                 支持入场人数
-                <st-help-tooltip id="TBMCDC001" />
+                <st-help-tooltip id="TBMCDC003" />
               </template>
               <a-select
                 v-decorator="decorators.cardData.support_member_num"

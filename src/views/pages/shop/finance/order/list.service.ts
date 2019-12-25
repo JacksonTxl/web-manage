@@ -1,8 +1,8 @@
 import { UserService } from '@/services/user.service'
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
-import { State, Effect, Computed } from 'rx-state'
+import { State, Effect } from 'rx-state'
 import { OrderApi, OrderParams } from '@/api/v1/finance/order'
-import { tap, pluck } from 'rxjs/operators'
+import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()

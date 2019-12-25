@@ -77,12 +77,15 @@
       :class="{ 'layout-default-body__header--schedule': isSchedule }"
     >
       <div class="layout-default-body__location">
-        <template v-if="title">
-          <h2>{{ title }}</h2>
-          <span class="layout-default-body__line"></span>
-        </template>
-        <a-breadcrumb separator="-">
-          <a-breadcrumb-item>
+        <a-breadcrumb>
+          <img
+            slot="separator"
+            src="~@/assets/img/separator.png"
+            alt="separator"
+            width="4px"
+            class="layout-default-body__bread-separator"
+          />
+          <a-breadcrumb-item class="layout-default-body__bread-home">
             <router-link to="/">
               <st-icon type="home" class="layout-default-body__icon" />
             </router-link>
@@ -94,6 +97,12 @@
             <span v-if="!b.route.name" class="layout-default-body__breadtext">
               {{ b.label }}
             </span>
+          </a-breadcrumb-item>
+          <a-breadcrumb-item
+            v-if="title"
+            class="layout-default-body__breadtext layout-default-body__breadtext--title"
+          >
+            <span>{{ title }}</span>
           </a-breadcrumb-item>
         </a-breadcrumb>
       </div>
@@ -109,29 +118,8 @@
               color="#9BACB9"
             ></st-icon>
           </div>
-          <div slot="overlay" class="layout-fast-entry">
-            <a-menu class="layout-fast-entry__wrapper">
-              <a-menu-item
-                v-for="(item, id) in urlData"
-                :key="id"
-                class="layout-fast-entry__item"
-                :class="
-                  !item.enable
-                    ? 'layout-fast-entry__disabled'
-                    : 'layout-fast-entry__activity'
-                "
-                @click="goToPage(item)"
-                :disabled="!item.enable"
-              >
-                <div class="fast-entry__pic">
-                  <img
-                    :src="item.enable ? item.icon : item.disable_icon"
-                    :alt="item.text"
-                  />
-                </div>
-                <div class="layout-fast-entry__text">{{ item.text }}</div>
-              </a-menu-item>
-            </a-menu>
+          <div slot="overlay">
+            <fast-entry />
           </div>
         </a-dropdown>
 
@@ -172,14 +160,21 @@
                 @click="onClickBind"
                 class="layout-default-body__options"
               >
-                <st-icon type="bind-phone" color="#000000"></st-icon>
+                <st-icon type="bind-phone" size="16px"></st-icon>
                 <span>绑定手机号</span>
+              </a-menu-item>
+              <a-menu-item
+                @click="onClickModifyPass"
+                class="layout-default-body__options"
+              >
+                <st-icon type="modify" size="16px"></st-icon>
+                <span>修改密码</span>
               </a-menu-item>
               <a-menu-item
                 @click="onClickLogout"
                 class="layout-default-body__options"
               >
-                <st-icon type="logout"></st-icon>
+                <st-icon type="logout" size="16px"></st-icon>
                 <span>退出</span>
               </a-menu-item>
             </a-menu>
@@ -197,6 +192,7 @@
       </article>
     </main>
     <switch-shop v-model="isShowSwitchShop"></switch-shop>
+    <st-udesk-btn v-show="isShowUdeskBtn" />
   </div>
 </template>
 <script>
@@ -215,14 +211,20 @@ import FastEntryHousekeeper from '@/views/biz-modals/fast-entry/housekeeper'
 import CommonNotifyConfig from '@/views/biz-modals/common/notify/config'
 import CommonNotifyActivity from '@/views/biz-modals/common/notify/activity'
 import AccountBind from '@/views/biz-modals/account/bind'
+import AccountUnbind from '@/views/biz-modals/account/unbind'
+import AccountModify from '@/views/biz-modals/account/modify'
 import { UdeskService } from '@/services/udesk.service'
+import FastEntry from './default#/fast-entry'
+import StUdeskBtn from '@/views/biz-components/udesk-btn/udesk-btn'
 
 export default {
   name: 'SaasLayout',
   components: {
     DefaultSiderMenu,
     SwitchShop,
-    DefaultNotify
+    DefaultNotify,
+    FastEntry,
+    StUdeskBtn
   },
   serviceInject() {
     return {
@@ -239,15 +241,14 @@ export default {
       shop: this.userService.shop$,
       theme: this.userService.theme$,
       title: this.titleService.title$,
-      urlData: this.userService.urlData$,
-      isThemeStudio: this.userService.isThemeStudio$
+      isThemeStudio: this.userService.isThemeStudio$,
+      isShowUdeskBtn: this.udeskService.isShowUdeskBtn$
     }
   },
   data() {
     return {
       isShowSwitchShop: false,
-      menuObj: {},
-      entries
+      menuObj: {}
     }
   },
   modals: {
@@ -255,7 +256,9 @@ export default {
     FastEntryHousekeeper,
     CommonNotifyConfig,
     CommonNotifyActivity,
-    AccountBind
+    AccountBind,
+    AccountUnbind,
+    AccountModify
   },
   computed: {
     breadCrumbs() {
@@ -285,9 +288,17 @@ export default {
     },
     onClickBind() {
       this.$modalRouter.push({
-        name: 'account-bind',
-        props: {},
-        on: {}
+        name: 'account-bind'
+      })
+    },
+    onClickUnbind() {
+      this.$modalRouter.push({
+        name: 'account-unbind'
+      })
+    },
+    onClickModifyPass() {
+      this.$modalRouter.push({
+        name: 'account-modify'
       })
     },
     onClickLogout() {
@@ -353,39 +364,6 @@ export default {
        * 切换路由时关闭切换门店 drawer
        */
       this.isShowSwitchShop = false
-    },
-    goToPage(item) {
-      if (item.url) {
-        window.open(item.url)
-        return
-      }
-      if (item.open_program === 'mini_program') {
-        const urlData = item
-        this.$modalRouter.push({
-          name: 'fast-entry-mini-program',
-          props: {
-            urlData
-          },
-          on: {}
-        })
-        return
-      }
-      if (item.open_program === 'house_keeper') {
-        this.$modalRouter.push({
-          name: 'fast-entry-housekeeper',
-          props: {},
-          on: {}
-        })
-        return
-      }
-      if (item.open_program === 'export') {
-        this.$router.push({
-          path: '/common/export'
-        })
-      }
-      if (item.open_program === 'udesk') {
-        this.udeskService.showUdesk({ openDialog: true })
-      }
     }
   }
 }

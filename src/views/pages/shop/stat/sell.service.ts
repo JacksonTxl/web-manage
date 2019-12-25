@@ -20,7 +20,9 @@ export class SellService {
   authTabs$ = this.authService.getAuthTabs$('shop-stat-sell')
   auth$ = this.authService.authMap$({
     summary: 'shop:stat:saler_reports|list_summary',
-    staff: 'shop:stat:saler_reports|list_staff'
+    staff: 'shop:stat:saler_reports|list_staff',
+    export_all: 'shop:stat:saler_reports|export_summary',
+    export_staff: 'shop:stat:saler_reports|export_staff'
   })
   constructor(private StatApi: StatApi, private authService: AuthService) {}
   @Effect()

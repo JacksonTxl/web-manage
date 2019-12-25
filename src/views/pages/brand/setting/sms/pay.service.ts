@@ -1,22 +1,17 @@
 import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import {
   PayApi,
   PostSmsSignParams,
   GetSmsPayInfoQuery
 } from '@/api/v1/setting/sms/pay'
-interface SetState {}
 @Injectable()
 export class PayService implements Controller {
-  state$: State<SetState>
   info$ = new State([])
   page$ = new State([])
   loading$ = new State({})
-  constructor(private PayApi: PayApi) {
-    this.state$ = new State({})
-  }
+  constructor(private PayApi: PayApi) {}
   @Effect()
   getSmsPayInfo(query: GetSmsPayInfoQuery) {
     return this.PayApi.getSmsPayInfo(query).pipe(

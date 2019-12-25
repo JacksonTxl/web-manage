@@ -2,7 +2,7 @@ import { Injectable, Dictionary, ServiceRouter } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { tap, map } from 'rxjs/operators'
 import { AuthApi } from '@/api/v1/common/auth'
-import { get, set, forEach } from 'lodash-es'
+import { get, set, forEach, pick } from 'lodash-es'
 import { NProgressService } from './nprogress.service'
 import { NotificationService } from './notification.service'
 import { UserService } from './user.service'
@@ -10,6 +10,13 @@ import { UserService } from './user.service'
 interface DataState {
   list?: any[]
   [propName: string]: any
+}
+
+interface AuthTabConfig {
+  /**
+   * 需要附加的query参数字段数组
+   */
+  withQuery: string[]
 }
 
 @Injectable()
@@ -122,8 +129,14 @@ export class AuthService {
   /**
    * 通过路由名称获取授权的tabs数组对象
    * @param routeName 路由名称
+   * @param AuthTabConfig 选项
    */
-  getAuthTabs$(routeName: string) {
+  getAuthTabs$(
+    routeName: string,
+    config: AuthTabConfig = {
+      withQuery: []
+    }
+  ) {
     return new Computed(
       this.authedTabMap$.pipe(
         map(authMap => {
@@ -134,6 +147,12 @@ export class AuthService {
             })
           }
           return authMap[routeName]
+        }),
+        map(authTabs => {
+          return authTabs.map((tab: any) => {
+            tab.route.query = pick(this.router.to.query, config.withQuery)
+            return tab
+          })
         })
       )
     )

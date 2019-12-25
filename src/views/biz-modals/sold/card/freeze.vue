@@ -124,7 +124,6 @@ export default {
     return {
       freezeInfo: this.freezeService.freezeInfo$,
       loading: this.freezeService.loading$,
-      sold: this.userService.soldEnums$,
       memberPaymentlist: this.freezeService.memberPaymentlist$
     }
   },

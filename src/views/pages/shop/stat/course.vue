@@ -2,16 +2,9 @@
   <div :class="bPage()">
     <section class="mg-b16" :class="bHeard()">
       <div :class="bHeard('left')">
-        <a-radio-group :value="showTable" @change="handleSizeChange">
-          <a-radio-button value="all" v-if="auth.summary">汇总</a-radio-button>
-          <a-radio-button value="coach" v-if="auth.coach">
-            {{ $c('coach') }}
-          </a-radio-button>
-        </a-radio-group>
         <st-button
           v-if="auth.export_all"
           v-show="showTable === 'all'"
-          class="mg-l8"
           type="primary"
           v-export-excel="{ type: 'course/shop', query: $searchQuery }"
         >
@@ -21,13 +14,22 @@
           type="primary"
           v-if="auth.export_coach"
           v-show="showTable === 'coach'"
-          class="mg-l8"
           v-export-excel="{ type: 'shop/coach', query: $searchQuery }"
         >
           全部导出
         </st-button>
       </div>
       <div :class="bHeard('right')">
+        <a-radio-group
+          class="mg-r12"
+          :value="showTable"
+          @change="handleSizeChange"
+        >
+          <a-radio-button value="all" v-if="auth.summary">汇总</a-radio-button>
+          <a-radio-button value="coach" v-if="auth.coach">
+            {{ $c('coach') }}
+          </a-radio-button>
+        </a-radio-group>
         <div v-if="showTable === 'coach'">
           <a-select
             class="mg-r8"
@@ -220,7 +222,10 @@ export default {
     }
   },
   created() {
-    this.showTable = this.auth.summary ? 'all' : 'staff'
+    this.showTable =
+      this.auth.summary && this.$searchQuery.showTable === 'all'
+        ? 'all'
+        : 'coach'
   },
   methods: {
     onCLickPersonalCheckinAmount() {

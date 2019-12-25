@@ -1,13 +1,13 @@
 <template>
   <div :class="basic()">
-    <div v-di-view="{ name: 'SHOP_SOLD_CARD_LIST_ACTIONS' }">
+    <portal to="SHOP_SOLD_CARD_LIST_ACTIONS">
       <st-input-search
         v-model="$searchQuery.search"
         @search="onKeywordsSearch('search', $event)"
         placeholder="请输入卡名、合同编号、会员姓名或手机号查找"
-        style="width:360px"
+        style="width:380px"
       />
-    </div>
+    </portal>
     <st-search-panel @search="onSearchNative" @reset="onSearchResetNative">
       <st-search-panel-item :label="`${$c('member_card')}类型：`">
         <st-search-radio
@@ -106,6 +106,9 @@
           :dataSource="list"
           :scroll="{ x: 1800 }"
         >
+          <template slot="card_name" slot-scope="text">
+            <st-overflow-text :value="text" maxWidth="180px"></st-overflow-text>
+          </template>
           <template slot="remain_amount" slot-scope="text, record">
             {{ text }}{{ record.unit | enumFilter('sold_common.unit') }}
           </template>

@@ -51,11 +51,7 @@ export class AppInfoGuard implements RouteGuard {
   private fetchOptionalReqs() {
     return anyAll(
       // 获取无效的tooltips列表
-      this.userService.fetchInvalidTooltips(),
-      // 获取九宫格的小程序码url
-      this.userService.fetchCodeUrl(),
-      // 获取udesk 校验参数
-      this.udeskService.fetchUdeskCustomerInfo()
+      this.userService.fetchInvalidTooltips()
     ).pipe(
       then(() => {
         this.nprogressService.SET_TEXT('全部数据加载完毕')

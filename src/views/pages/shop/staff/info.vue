@@ -143,7 +143,7 @@ export default {
           if: this.auth['shop:staff:staff|rebind_card']
         },
         {
-          text: '职位变更',
+          text: '职位和薪资变更',
           click: this.openModalPosition,
           if: this.auth['shop:staff:staff|position']
         },
@@ -163,7 +163,7 @@ export default {
           if: this.auth['shop:staff:account|save']
         },
         {
-          text: '设置薪资账户',
+          text: '设置提现账户',
           click: this.openModalSalary,
           if: this.auth['shop:staff:staff|salary']
         },

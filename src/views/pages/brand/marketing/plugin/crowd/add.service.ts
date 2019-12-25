@@ -1,13 +1,13 @@
 import { TitleService } from '@/services/title.service'
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect, Action } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { CrowdAPI } from '@/api/v1/crowd'
 import { forkJoin } from 'rxjs'
 
 @Injectable()
-export class AddService {
+export class AddService implements Controller {
+  loading$ = new State({})
   crowdInfo$ = new State({})
   constructor(private crowdAPI: CrowdAPI, private titleService: TitleService) {}
   // 获取列表
@@ -18,6 +18,7 @@ export class AddService {
       })
     )
   }
+  @Effect()
   // 新增
   setCrowdBrandField(params: any) {
     return this.crowdAPI.setCrowdBrandField(params)
@@ -26,9 +27,10 @@ export class AddService {
   getCrowdBrand(params: string) {
     return this.crowdAPI.getCrowdBrand(params)
   }
+  @Effect()
   // 编辑
-  getCrowdBrandCrowd(id: string, params: any) {
-    return this.crowdAPI.getCrowdBrandCrowd(id, params)
+  updateCrowdBrandCrowd(id: string, params: any) {
+    return this.crowdAPI.updateCrowdBrandCrowd(id, params)
   }
   init() {
     return forkJoin(this.getListInfo())
