@@ -257,11 +257,9 @@ export default {
         num_min: info.num_min,
         num_max: info.num_max,
         course_times: info.course_times,
-        is_leave: this.$route.query.type === '1' ? info.is_leave : undefined,
-        leave_hours:
-          this.$route.query.type === '1' ? info.leave_hours : undefined,
-        leave_limit:
-          this.$route.query.type === '1' ? info.leave_limit : undefined,
+        is_leave: this.isShowLimitContent ? info.is_leave : undefined,
+        leave_hours: this.isShowLimitContent ? info.leave_hours : undefined,
+        leave_limit: this.isShowLimitContent ? info.leave_limit : undefined,
         image: info.image,
         description: info.description
       })
@@ -270,6 +268,7 @@ export default {
         this.bg_image = info.image
         this.bg_image.index = 0
       }
+      this.isShowLeaveContent = this.isShowLimitContent && info.is_leave === 1
     },
     save(e) {
       e.preventDefault()
