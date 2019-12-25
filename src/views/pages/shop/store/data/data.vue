@@ -196,6 +196,7 @@
                       :data="categoryRevenue"
                       :total="storeCategoryRank.total_revenue"
                       :padding="[60, '50%', 38, 0]"
+                      name="总营收"
                       height="280"
                       style="width: 100%;"
                     ></shop-store-data-revenue-ring>

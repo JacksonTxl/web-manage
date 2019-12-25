@@ -56,7 +56,7 @@ export default {
     },
     unit: {
       type: String,
-      default: '节'
+      default: '元'
     },
     options: {
       type: Object,
