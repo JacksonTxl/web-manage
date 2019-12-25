@@ -84,7 +84,6 @@
           {{ text | enumFilter('package_course.shelf_status') }}
         </st-text>
         <st-help-popover v-if="record.shelf_status === 1">
-          <span slot="title">说明</span>
           <span slot="content">
             <template v-if="Date.now() < record.start_time * 1000">
               暂未开始售卖

@@ -66,9 +66,8 @@
                 {{ record.activity_state.name }}
               </st-text>
               <st-help-popover v-if="record.activity_state.published_time">
-                <span slot="title">发布时间：</span>
                 <span slot="content">
-                  {{ record.activity_state.published_time }}
+                  发布时间：{{ record.activity_state.published_time }}
                 </span>
               </st-help-popover>
             </span>
