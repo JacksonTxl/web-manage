@@ -2,14 +2,13 @@ import { State, Effect } from 'rx-state'
 import { NotifyApi } from './../../../../api/v1/notify'
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { tap } from 'rxjs/operators'
-import { WsService } from '@/services/ws.service'
 
 @Injectable()
 export class NoticeService {
   loading$ = new State({})
   list$ = new State([])
   page$ = new State({})
-  constructor(private api: NotifyApi, private wsService: WsService) {}
+  constructor(private api: NotifyApi) {}
   getList(query: any) {
     return this.api.getNoticeList(query).pipe(
       tap((res: any) => {
@@ -19,7 +18,6 @@ export class NoticeService {
     )
   }
   beforeEach(to: ServiceRoute) {
-    // return this.getList(to.meta.query)
-    this.wsService.init()
+    return this.getList(to.meta.query)
   }
 }
