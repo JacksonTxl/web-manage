@@ -18,6 +18,6 @@ export class InformService {
     )
   }
   beforeEach(to: ServiceRoute) {
-    // return this.getList(to.meta.query)
+    return this.getList(to.meta.query)
   }
 }

@@ -7,12 +7,8 @@
     v-on="$listeners"
     :overlayStyle="{ maxWidth }"
   >
-    <div :class="b('title')" slot="title">
-      <slot name="title"></slot>
-    </div>
-    <div :class="b('content')" slot="content">
-      <slot name="content"></slot>
-    </div>
+    <slot :class="b('title')" slot="title" name="title"></slot>
+    <slot :class="b('content')" slot="content" name="content"></slot>
     <a-icon :class="b('icon')" type="info-circle"></a-icon>
   </a-popover>
 </template>
