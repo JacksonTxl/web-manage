@@ -6,7 +6,7 @@
     <st-table
       :columns="basicColumns()"
       rowKey="id"
-      :dataSource="groupInfo.coache && groupInfo.coache.list"
+      :dataSource="groupInfo.coaches && groupInfo.coaches.list"
     ></st-table>
     <div :class="b('column')">
       <div :class="b('item')">
@@ -31,7 +31,7 @@
     <div :class="b('column')">
       <div :class="b('item')">
         <span :class="b('item-label')">报名时间：</span>
-        <span :class="b('item-value')">{{ groupInfo.course_time }}</span>
+        <span :class="b('item-value')">{{ groupInfo.apply_time }}</span>
       </div>
       <div :class="b('item')">
         <span :class="b('item-label')">售价：</span>
