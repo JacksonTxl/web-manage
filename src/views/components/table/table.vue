@@ -48,6 +48,10 @@ export default {
     simplePage: {
       type: Boolean,
       default: false
+    },
+    stripe: {
+      type: Boolean,
+      default: true
     }
   },
   watch: {
@@ -158,7 +162,11 @@ export default {
       )
     },
     rowClassName(record) {
-      return record.$_oddEvenKey
+      if (this.stripe) {
+        return record.$_oddEvenKey
+      } else {
+        return ''
+      }
     }
   },
   render(h) {
@@ -170,8 +178,8 @@ export default {
       rowClassName: this.rowClassName,
       ...this.$attrs
     }
-    // 判断是否是父子表格
-    props.expandIcon = this.CustomExpandIcon
+    // 判断是否是父子表格 先去掉 自定义图标和自定义expandedRowRender冲突
+    // props.expandIcon = this.CustomExpandIcon
     const ce = this.alertSelection.onReset
       ? h('div', { class: 'st-table-wapper' }, [
           h('a-alert', {
