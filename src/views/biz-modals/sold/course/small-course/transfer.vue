@@ -10,52 +10,38 @@
         <a-col :span="13">
           <st-info>
             <st-info-item label="课程名称">
-              {{ packageTransferInfo.course_name }}
+              {{ info.course_name }}
             </st-info-item>
             <st-info-item label="到期日期">
-              {{
-                moment(packageTransferInfo.course_end_time * 1000).format(
-                  'YYYY-MM-DD HH:mm'
-                )
-              }}
+              {{ moment(info.end_time * 1000).format('YYYY-MM-DD HH:mm') }}
             </st-info-item>
             <st-info-item label="实付金额">
-              {{ packageTransferInfo.pay_price }}
+              {{ info.pay_price }}
             </st-info-item>
-            <st-info-item
-              label="转让手续费"
-              v-if="packageTransferInfo.transfer_unit"
-            >
-              {{ packageTransferInfo.transfer_num
+            <st-info-item label="转让手续费" v-if="info.transfer_unit">
+              {{ info.transfer_num
               }}{{
-                packageTransferInfo.transfer_unit
-                  | enumFilter('package_course.transfer_unit')
+                info.transfer_unit | enumFilter('package_course.transfer_unit')
               }}
             </st-info-item>
-            <st-info-item
-              label="订单状态"
-              v-if="packageTransferInfo.order_status"
-            >
-              {{
-                packageTransferInfo.order_status
-                  | enumFilter('sold_common.order_status')
-              }}
+            <st-info-item label="订单状态" v-if="info.order_status">
+              {{ info.order_status | enumFilter('sold_common.order_status') }}
             </st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
           <st-info>
             <st-info-item label="会员姓名">
-              {{ packageTransferInfo.member_name }}
+              {{ info.member_name }}
             </st-info-item>
             <st-info-item label="手机号">
-              {{ packageTransferInfo.mobile }}
+              {{ info.mobile }}
             </st-info-item>
             <st-info-item label="销售人员">
-              {{ packageTransferInfo.staff_name }}
+              {{ info.staff_name }}
             </st-info-item>
             <st-info-item label="订单号">
-              {{ packageTransferInfo.order_id }}
+              {{ info.order_id }}
             </st-info-item>
           </st-info>
         </a-col>

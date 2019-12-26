@@ -99,6 +99,7 @@
 </template>
 <script>
 import { InfoService } from './info.service'
+import useSmallCourseActions from '@/hooks/shop/sold-small-course-actions.hook'
 
 export default {
   name: 'PageShopSoldSmallCourseInfo',
@@ -117,6 +118,16 @@ export default {
       auth: this.infoService.auth$
     }
   },
+  beforeCreate() {
+    this.smallCourseActions.$on('refresh', val => {
+      this.$router.reload()
+    })
+  },
+  hooks() {
+    return {
+      smallCourseActions: useSmallCourseActions()
+    }
+  },
   methods: {
     // 跳转合同
     toContract() {
@@ -126,7 +137,11 @@ export default {
       }`
       window.open(url)
     },
-    onTransfer() {},
+    onTransfer() {
+      this.smallCourseActions.onTrasnfer({
+        id: this.$searchQuery.id
+      })
+    },
     onRefund() {}
   }
 }
