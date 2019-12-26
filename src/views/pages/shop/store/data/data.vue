@@ -17,12 +17,12 @@
                 <i-count-up
                   :endVal="
                     dataProfile.today[headerTitleItem[index]]
-                      ? dataProfile.today[headerTitleItem[index]]
+                      ? Number(dataProfile.today[headerTitleItem[index]])
                       : 0
                   "
                   :options="{
                     decimalPlaces: (dataProfile.today[headerTitleItem[index]]
-                      ? dataProfile.today[headerTitleItem[index]]
+                      ? Number(dataProfile.today[headerTitleItem[index]])
                       : 0
                     )
                       .toString()
@@ -38,14 +38,14 @@
                 <i-count-up
                   :endVal="
                     dataProfile.yesterday[headerTitleItem[index]]
-                      ? dataProfile.yesterday[headerTitleItem[index]]
+                      ? Number(dataProfile.yesterday[headerTitleItem[index]])
                       : 0
                   "
                   :options="{
                     decimalPlaces: (dataProfile.yesterday[
                       headerTitleItem[index]
                     ]
-                      ? dataProfile.yesterday[headerTitleItem[index]]
+                      ? Number(dataProfile.yesterday[headerTitleItem[index]])
                       : 0
                     )
                       .toString()
@@ -104,12 +104,19 @@
                     {{ wholeNav[wholenavIndex].title }}
                   </st-t3>
                   <shop-store-data-line
+                    v-if="
+                      filterLine(storeBoard, wholeNav[wholenavIndex].title)
+                        .length
+                    "
                     :data="
                       filterLine(storeBoard, wholeNav[wholenavIndex].title)
                     "
                     :tooltipKey="wholeNav[wholenavIndex].title"
                     :unit="wholeNav[wholenavIndex].title | filterCompany"
                   ></shop-store-data-line>
+                  <div v-else :class="basic('entry-store-img')">
+                    <img :src="inoutNumImg" />
+                  </div>
                 </div>
               </a-col>
               <a-col :span="8">
@@ -118,6 +125,7 @@
                     <template v-slot:user>
                       <component
                         v-bind:is="wholeNavcom"
+                        v-if="orderMember(storeBoard, 0, 'member').length"
                         :unit="wholeNav[wholenavIndex].title | filterCompany"
                         :data="orderMember(storeBoard, 0, 'order')"
                         :name="filterOrderMemberTitle()"
@@ -139,6 +147,7 @@
                     <template v-slot:marketing>
                       <component
                         v-bind:is="wholeNavcom"
+                        v-if="orderMember(storeBoard, 0, 'member').length"
                         :name="filterOrderMemberTitle()"
                         :unit="wholeNav[wholenavIndex].title | filterCompany(1)"
                         :data="orderMember(storeBoard, 0, 'member')"
@@ -294,6 +303,7 @@ export default {
       wholenavIndex: 0,
       pieImg,
       inoutNumImg,
+      storeDataLine: false,
       wholeNavcom: 'shop-store-data-ring',
       headerInfo,
       wholeNav,
@@ -350,12 +360,22 @@ export default {
     // 整体看板订单/会员折线图
     filterLine(data, type) {
       let fieldInfo = ['amount', 'count', 'count', 'price']
-      return data[this.fieldNav[this.wholenavIndex]].trend.map(item => {
-        return {
-          date: item.date,
-          amount: item[fieldInfo[this.wholenavIndex]]
-        }
-      })
+      console.log(
+        data[this.fieldNav[this.wholenavIndex]].trend.length,
+        'asdasdasdasdasd'
+      )
+      if (data[this.fieldNav[this.wholenavIndex]].trend.length) {
+        this.storeDataLine = true
+        return data[this.fieldNav[this.wholenavIndex]].trend.map(item => {
+          return {
+            date: item.date,
+            amount: item[fieldInfo[this.wholenavIndex]]
+          }
+        })
+      } else {
+        this.storeDataLine = false
+        return []
+      }
     },
     // 整体看板订单/会员
     orderMember(value, flag, that) {
@@ -375,12 +395,16 @@ export default {
       return this.filterOrderMember(...filterOrderMemberData)
     },
     filterOrderMember(value, fieldNav, wholenavIndex, that, type) {
-      return value[fieldNav[wholenavIndex]].source[that].map(item => {
-        return {
-          name: item.type,
-          value: item[type]
-        }
-      })
+      if (!Array.isArray(value[fieldNav[wholenavIndex]].source)) {
+        return value[fieldNav[wholenavIndex]].source[that].map(item => {
+          return {
+            name: item.type,
+            value: item[type]
+          }
+        })
+      } else {
+        return []
+      }
     },
     // 订单来源/会员身份标题
     filterOrderMemberTitle() {
