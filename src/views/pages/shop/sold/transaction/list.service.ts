@@ -19,6 +19,9 @@ export class ListService {
   memberList$ = new State({})
   saleList$ = new State({})
   storeProductList$ = new State({})
+  currentPrice$ = new State('0')
+  actualAmount$ = new State('0')
+  couponList$ = new State({})
   productTypes$ = this.userService.getOptions$('transaction.product_type')
   constructor(
     private transactionApi: TransactionApi,
@@ -81,13 +84,22 @@ export class ListService {
    * 云店价格计算
    */
   getStorePrice(params: TransactionPriceInput) {
-    return this.transactionApi.getTransactionPrice(params).pipe(tap(() => {}))
+    return this.transactionApi.getTransactionPrice(params).pipe(
+      tap(res => {
+        this.currentPrice$.commit(() => res.info.price)
+        this.actualAmount$.commit(() => res.info.actual_amount)
+      })
+    )
   }
   /**
    * 获取可用优惠券
    */
   getUseCoupon(query: CouponParams) {
-    return this.transactionApi.getCouponList(query).pipe(tap(() => {}))
+    return this.transactionApi.getCouponList(query).pipe(
+      tap(res => {
+        this.couponList$.commit(() => res.list)
+      })
+    )
   }
   /**
    * 云店创建订单
