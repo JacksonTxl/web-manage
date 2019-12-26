@@ -33,6 +33,11 @@ export class OrderService implements Controller {
         const arr = [
           { group: '云店', 成单数量: data.shop.num, 客单价: data.shop.avg },
           {
+            group: '小班课',
+            成单数量: data.small_course.num,
+            客单价: data.small_course.avg
+          },
+          {
             group: '课程包',
             成单数量: data.package_course.num,
             客单价: data.package_course.avg

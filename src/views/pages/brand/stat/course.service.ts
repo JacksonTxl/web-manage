@@ -42,6 +42,11 @@ export class CourseService {
           name: '团体课售课',
           value: saleCourse.sale_team_num,
           percent: saleCourse.sale_team_percentage
+        },
+        {
+          name: '小班课售课',
+          value: saleCourse.sale_small_num,
+          percent: saleCourse.sale_small_percentage
         }
       ]
     })
@@ -58,6 +63,11 @@ export class CourseService {
         name: '团体课消课',
         value: checkInCourse.team_checkin_num,
         percent: checkInCourse.team_checkin_percentage
+      },
+      {
+        name: '小班课售课',
+        value: checkInCourse.small_checkin_num,
+        percent: checkInCourse.small_checkin_percentage
       }
     ])
     this.checkInCourseTotal$.commit(() => checkInCourse.total_checkin_num)
@@ -73,6 +83,11 @@ export class CourseService {
         name: '团体课未消课',
         value: notCheckInCourse.team_not_checkin_num,
         percent: notCheckInCourse.team_not_checkin_percentage
+      },
+      {
+        name: '小班课未消课',
+        value: notCheckInCourse.small_not_checkin_num,
+        percent: notCheckInCourse.small_not_checkin_percentage
       }
     ])
     this.notCheckInCourseTotal$.commit(

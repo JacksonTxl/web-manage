@@ -113,7 +113,7 @@
     <st-table
       class="mg-t12"
       :page="page"
-      :scroll="{ x: 1800 }"
+      :scroll="{ x: 2200 }"
       @change="onTableChange"
       :loading="loading.init"
       :columns="columns"
@@ -152,12 +152,32 @@
       >
         {{ text }}
       </a>
+      <a
+        slot="small_course_num"
+        slot-scope="text, record"
+        @click="getSmallCourse(record)"
+        v-if="text !== 0"
+      >
+        {{ text }}
+      </a>
+      <span v-else>{{ text }}</span>
+      <a
+        slot="small_checkin_amount"
+        slot-scope="text, record"
+        @click="getSmallConsume(record)"
+      >
+        {{ text }}
+      </a>
       <span slot="personalTitle">
         私教消课价值（元)
         <st-help-tooltip id="TSCR001" />
       </span>
       <span slot="teamTitle">
         团课消课价值（元）
+        <st-help-tooltip id="TSCR002" />
+      </span>
+      <span slot="smallTitle">
+        小班课消课价值（元)
         <st-help-tooltip id="TSCR002" />
       </span>
     </st-table>
@@ -292,6 +312,12 @@ export default {
           record
         }
       })
+    },
+    getSmallCourse() {
+      console.log('d')
+    },
+    getSmallConsume() {
+      console.log('d')
     },
     onChangeCoach(value) {
       this.onMultiSearch({ coach_id: value })

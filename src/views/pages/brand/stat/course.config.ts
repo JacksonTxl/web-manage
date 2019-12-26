@@ -22,6 +22,11 @@ export const columns = (vm: any) => [
     dataIndex: 'team_course_num'
   },
   {
+    title: '小班课售课节数',
+    align: 'right',
+    dataIndex: 'small_course_num'
+  },
+  {
     title: '消课总节数',
     align: 'right',
     dataIndex: 'checkin_total_num'
@@ -35,5 +40,10 @@ export const columns = (vm: any) => [
     title: '团课消课节数',
     align: 'right',
     dataIndex: 'team_checkin_num'
+  },
+  {
+    title: '小班课消课节数',
+    align: 'right',
+    dataIndex: 'small_checkin_num'
   }
 ]

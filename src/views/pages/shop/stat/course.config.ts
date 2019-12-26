@@ -66,6 +66,39 @@ export const allColumns = (vm: any) => {
       slots: { title: 'teamTitle' },
       scopedSlots: { customRender: 'team_checkin_amount' },
       align: 'right'
+    },
+    {
+      title: '上课节数（小班课）',
+      dataIndex: 'small_course_num',
+      scopedSlots: { customRender: 'small_course_num' },
+      align: 'right'
+    },
+    {
+      title: `上课${vm.$c('coach')}数（小班课）`,
+      dataIndex: 'small_coach_num',
+      align: 'right'
+    },
+    {
+      title: '可约人数（小班课）',
+      dataIndex: 'small_can_reserve_num',
+      align: 'right'
+    },
+    {
+      title: '预约人数（小班课）',
+      dataIndex: 'small_reserved_num',
+      align: 'right'
+    },
+    {
+      title: '签到人数（小班课）',
+      dataIndex: 'small_checkin_num',
+      align: 'right'
+    },
+    {
+      dataIndex: 'small_checkin_amount',
+      titleTotal: '小班课消课价值（元）',
+      slots: { title: 'smallTitle' },
+      scopedSlots: { customRender: 'small_checkin_amount' },
+      align: 'right'
     }
   ]
 }

@@ -40,6 +40,17 @@ export const columns = (vm: any) => {
       align: 'right'
     },
     {
+      title: '小班课客单价(元)',
+
+      dataIndex: 'small_course_avg',
+      align: 'right'
+    },
+    {
+      title: '小班课成单数',
+      dataIndex: 'small_course_num',
+      align: 'right'
+    },
+    {
       title: '储值卡客单价(元)',
 
       dataIndex: 'deposit_card_avg',
