@@ -42,7 +42,7 @@ export interface ProductInfoParams {
   rule_name?: string
 }
 export interface CouponParams {
-  product_info: ProductInfoParams[]
+  product_info: string
   member_id: number
 }
 export class TransactionApi extends Api {
