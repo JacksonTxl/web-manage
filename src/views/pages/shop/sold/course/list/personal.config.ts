@@ -7,9 +7,11 @@ export const columns = (vm: any) => [
     scopedSlots: { customRender: 'course_name' }
   },
   {
-    title: '合同编号',
-    dataIndex: 'contract_number',
-    scopedSlots: { customRender: 'contract_number' }
+    title: '状态',
+    fixed: 'left',
+    width: 100,
+    dataIndex: 'course_status',
+    scopedSlots: { customRender: 'course_status' }
   },
   {
     title: '剩余课时',
@@ -37,11 +39,6 @@ export const columns = (vm: any) => [
     scopedSlots: { customRender: 'mobile' }
   },
   {
-    title: '状态',
-    dataIndex: 'course_status',
-    scopedSlots: { customRender: 'course_status' }
-  },
-  {
     title: '到期日期',
     dataIndex: 'end_time',
     scopedSlots: { customRender: 'end_time' }
@@ -60,6 +57,11 @@ export const columns = (vm: any) => [
     title: '销售人员',
     dataIndex: 'staff_name',
     scopedSlots: { customRender: 'staff_name' }
+  },
+  {
+    title: '合同编号',
+    dataIndex: 'contract_number',
+    scopedSlots: { customRender: 'contract_number' }
   },
   {
     title: '操作',
