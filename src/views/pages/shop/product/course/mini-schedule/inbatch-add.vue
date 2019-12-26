@@ -66,9 +66,11 @@
                 </div>
                 <add-course
                   @addCourse="pushCourseInfo"
+                  @addCustomCourse="pushCustomCourseInfo"
                   :item="filterDate[i][item.week]"
                   :cycleIndex="i"
                   :week="item.week"
+                  :cycle="pickerList[i]"
                   :scheduleId="scheduleId"
                 ></add-course>
               </div>
@@ -105,9 +107,17 @@
             <div :class="b('schedule__table-custom')">
               <div
                 :class="b('schedule__item-custom')"
-                v-for="item in customizeScheduleList"
+                v-for="(item, index) in customizeScheduleList"
                 :key="item.coach_id"
               >
+                <div class="eidt-current-course-btns">
+                  <a href="javascript:;" @click="onEditCustomSchedule(index)">
+                    <st-icon type="edit" class="edit-course-btn"></st-icon>
+                  </a>
+                  <a href="javascript:;" @click="onDeleteCustomSchedule(index)">
+                    <st-icon type="delete" class="delete-course-btn"></st-icon>
+                  </a>
+                </div>
                 <span class="time">
                   <st-icon type="timer"></st-icon>
                   <!-- {{ cardItem.start_time }}-{{ cardItem.end_time }} -->
@@ -281,7 +291,9 @@ export default {
           week: 1,
           current_course_name: '当前课程名称',
           start_time: '2019-01-01 09:00:00',
-          end_time: '2019-01-01 10:00:00'
+          end_time: '2019-01-01 10:00:00',
+          coach_name: '张张',
+          court_name: '测试VIP区域'
         },
         {
           schedule_id: 2222,
@@ -289,14 +301,11 @@ export default {
           coach_id: 2,
           court_id: 2,
           start_time: '2019-01-01 09:00:00',
-          end_time: '2019-01-01 10:00:00'
+          end_time: '2019-01-01 10:00:00',
+          coach_name: '张张',
+          court_name: '测试VIP区域'
         }
       ]
-    }
-  },
-  watch: {
-    scheduleId(newVal) {
-      //console.log(newVal)
     }
   },
   computed: {
@@ -305,9 +314,6 @@ export default {
     }
   },
   created() {
-    // console.log(this.scheduleList[0].scheduleInfo['date1'])
-    // this.pickerList[0] = moment(this.start_date)
-    // this.pickerList[1] = moment(this.end_date)
     this.pickerList.push([moment(this.start_date), moment(this.end_date)])
     this.filterDateList(this.scheduleList)
   },
@@ -356,8 +362,6 @@ export default {
         let text = ''
         item.course_time.forEach((item, index) => {
           if (item.week) {
-            // console.log(item.week)
-            // console.log(item.list)
             courseNum += item.list.length
             text += this.weekList[item.week - 1].date
             item.list.forEach((item, index) => {
@@ -392,18 +396,22 @@ export default {
       courseTime.push(courseWeek)
       this.filterDateList(this.scheduleList)
     },
-    // 这里的添加的课程数据也应该是后端返回的，因为前端不知道课程的时间
-    pushCourseInfo(courseMessage, cycleIndex, week) {
+    // conflict需要每个都绑定 - 自定义逻辑
+    pushCourseInfo(cycleIndex, conflict, info, list) {
       let courseItem = {
-        schedule_id: 1111,
-        course_id: courseMessage.course_id,
-        coach_id: courseMessage.coach_id,
-        court_id: courseMessage.court_id,
-        week: week,
-        current_course_name: courseMessage.course_id,
-        start_time: '2019-12-17 09:00:00',
-        end_time: '2019-12-17 10:00:00',
+        schedule_id: this.schedule_id,
+        course_id: info.course_id,
+        coach_id: info.coach_id,
+        court_id: info.court_id,
+        week: info.week,
+        current_course_name: info.courseMessage,
+        start_time: info.start_time,
+        end_time: info.end_time,
         show: false
+      }
+      if (conflict) {
+        this.conflict = conflict
+        this.conflictList = list
       }
       if (!this.scheduleList[cycleIndex].course_time.length) {
         console.log('批次是否有数据')
@@ -433,42 +441,31 @@ export default {
         console.log(this.scheduleList)
       }
     },
-    // 冲突检验
-    checkCourseSchedule() {
-      // this.miniTeamScheduleScheduleService.add(form).subscribe(() => {
-      //   this.$emit('ok')
-      //   this.show = false
-      // })
-    },
+    pushCustomCourseInfo() {},
     // 编辑课程
     onEditCourseSchedule(item, cycleIndex, positionIndex) {
+      const cycle = this.pickerList[cycleIndex]
       this.$modalRouter.push({
         name: 'schedule-small-course-edit-course',
-        props: { item, cycleIndex, positionIndex },
+        props: { item, cycleIndex, cycle, positionIndex },
         on: {
-          editCourse: (
-            cycleIndex,
-            week,
-            positionIndex,
-            conflict,
-            info,
-            list
-          ) => {
-            if (!conflict) {
-              this.scheduleList[cycleIndex].course_time.forEach(
-                (dayItems, index) => {
-                  if (dayItems.week === item.week) {
-                    let weekItem = dayItems.list[positionIndex]
-                    ;(weekItem.start_time = info.start_time),
-                      (weekItem.current_course_name = info.current_course_name),
-                      (weekItem.coach_name = info.coach_name),
-                      (weekItem.court_name = info.court_name)
-                    this.filterDateList(this.scheduleList)
-                    return
-                  }
+          editCourse: (cycleIndex, positionIndex, conflict, info, list) => {
+            this.scheduleList[cycleIndex].course_time.forEach(
+              (dayItems, index) => {
+                if (dayItems.week === info.week) {
+                  let weekItem = dayItems.list[positionIndex]
+                  ;(weekItem.start_time = info.start_time),
+                    (weekItem.current_course_name = info.current_course_name),
+                    (weekItem.coach_name = info.coach_name),
+                    (weekItem.court_name = info.court_name)
+                  this.filterDateList(this.scheduleList)
+                  return
                 }
-              )
-            } else {
+              }
+            )
+            if (conflict) {
+              this.conflict = conflict
+              this.conflictList = list
             }
           }
         }
@@ -476,13 +473,9 @@ export default {
     },
     // 删除课程
     onDeleteCourseSchedule(item, cycleIndex, positionIndex) {
-      console.log(item)
-      console.log(cycleIndex)
-      console.log(positionIndex)
       this.scheduleList[cycleIndex].course_time.forEach((dayItems, index) => {
         if (dayItems.week === item.week) {
           dayItems.list.splice(positionIndex, 1)
-          console.log(dayItems.list)
           if (dayItems.list.length === 0) {
             this.scheduleList[cycleIndex].course_time.splice(index, 1)
           }
@@ -490,6 +483,9 @@ export default {
           return
         }
       })
+    },
+    onEditCustomSchedule(index) {
+      this.customizeScheduleList[index]
     },
     // 新增周期排课
     addScheduleWeek() {

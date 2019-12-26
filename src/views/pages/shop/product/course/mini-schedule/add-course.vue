@@ -128,6 +128,12 @@ export default {
       type: Number,
       default: 0
     },
+    cycle: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
     week: {
       type: Number,
       default: 1
@@ -170,24 +176,19 @@ export default {
       })
     },
     onChangeCourt(data) {
-      console.log(this.courtOptions)
-      console.log(data)
       this.courtOptions.forEach((item, index) => {
-        if (data[1]) {
-          console.log(item)
-          item.children.forEach((item, index) => {
-            if (item.id === data[1]) {
-              this.params.court_site_name = item.name
-            }
-          })
-        }
         if (item.id === data[0]) {
+          if (data[1]) {
+            item.children.forEach((childrenItem, index) => {
+              if (childrenItem.id === data[1]) {
+                this.params.court_site_name = childrenItem.name
+              }
+            })
+          }
           this.params.coach_name = item.name
         }
-        //return
+        return
       })
-      console.log(this.params.coach_name)
-      console.log(this.params.court_site_name)
     },
     // disabledDateTime() {
     //   const allTime = this.range(0, 24)
@@ -202,29 +203,38 @@ export default {
     // },
     onSubmit() {
       this.form.validate().then(values => {
-        console.log(form.court_id)
         const form = cloneDeep(values)
         if (this.scheduleId === 2) {
           form.start_days = form.start_days.format('YYYY-MM-DD')
         }
         form.start_time = form.start_time.format('HH:mm')
         form.end_time = form.end_time.format('HH:mm')
-        if (form.court_id) {
-          form.court_site_id = +form.court_id[1]
-          form.court_id = +form.court_id[0]
-        }
+        form.court_id = values.court_id[0]
+        form.court_site_id = values.court_id[1]
+        form.week = this.week
+        form.cycle_start_date = this.cycle[0].format('YYYY-MM-DD').valueOf()
+        form.cycle_end_date = this.cycle[1].format('YYYY-MM-DD').valueOf()
         const verifyParams = Object.assign(this.params, form)
-        this.miniTeamScheduleScheduleService
+        console.log(verifyParams)
+        this.smallCourseScheduleService
           .conflict(verifyParams)
           .subscribe(res => {
-            this.$emit(
-              'addCourse',
-              this.cycleIndex,
-              this.week,
-              res.data.conflict,
-              res.data.info,
-              res.data.list
-            )
+            if (this.scheduleId === 1) {
+              this.$emit(
+                'addCourse',
+                this.cycleIndex,
+                res.data.conflict,
+                res.data.info,
+                res.data.list
+              )
+            } else {
+              this.$emit(
+                'addCustomCourse',
+                res.data.conflict,
+                res.data.info,
+                res.data.list
+              )
+            }
             this.showFlag = false
           })
       })
