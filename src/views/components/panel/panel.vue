@@ -5,7 +5,8 @@
       {
         'st-panel--app': app,
         'st-panel--tabs': tabs,
-        'st-panel--initial': initial
+        'st-panel--initial': initial,
+        'st-panel--app-with-full-height': appWithFullHeight
       }
     ]"
   >
@@ -62,6 +63,10 @@ export default {
     initial: {
       type: Boolean,
       default: false
+    },
+    appWithFullHeight: {
+      type: Boolean,
+      defualt: true
     }
   },
   methods: {
