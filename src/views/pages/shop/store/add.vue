@@ -285,8 +285,7 @@ export default {
   },
   rxState() {
     return {
-      loading: this.addService.loading$,
-      classList: this.addService.list$
+      loading: this.addService.loading$
     }
   },
   modals: { StoreClassManage, StoreAddSku },
@@ -327,7 +326,8 @@ export default {
       nameError: '',
       isNameError: false,
       product_images_del: [],
-      product_images_add: []
+      product_images_add: [],
+      classList: []
     }
   },
   components: {
@@ -354,6 +354,9 @@ export default {
     }
   },
   mounted() {
+    this.addService.getList().subscribe(res => {
+      this.classList = res.list
+    })
     let arrP = [
       {
         spec_id: 1,
