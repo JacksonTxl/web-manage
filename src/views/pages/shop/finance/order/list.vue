@@ -35,7 +35,6 @@
         @change="onTableChange"
         :dataSource="list"
         :loading="loading.getList"
-        isExpand
       >
         <template slot="order_status" slot-scope="text">
           {{ text | enumFilter('finance.order_status') }}
@@ -46,26 +45,17 @@
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
             <!-- v-if="record.auth['brand_shop:order:order|pay']" -->
-            <a
-              @click="onGathering(record)"
-              v-if="record.auth['brand_shop:order:order|pay']"
-            >
+            <a @click="onGathering(record)">
               收款
             </a>
             <!-- v-if="record.auth['brand_shop:order:order|cancel']" -->
 
-            <a
-              @click="onCancel(record)"
-              v-if="record.auth['brand_shop:order:order|cancel']"
-            >
+            <a @click="onCancel(record)">
               取消
             </a>
             <!-- v-if="record.auth['brand_shop:order:order|get']" -->
 
-            <a
-              @click="onOrderInfo(record)"
-              v-if="record.auth['brand_shop:order:order|get']"
-            >
+            <a @click="onOrderInfo(record)">
               详情
             </a>
             <!-- v-if="record.auth['brand_shop:order:order|refund']" -->
@@ -94,10 +84,7 @@
             </a>
             <!-- v-if="record.children && record.children.auth" -->
 
-            <a
-              @click="onChildredRefund(record.children.id)"
-              v-if="record.isChild"
-            >
+            <a @click="onChildredRefund(record)" v-if="record.is_children">
               子订单退款
             </a>
           </st-table-actions>
@@ -168,8 +155,24 @@ export default {
     }
   },
   methods: {
+    // 子订单退款
     onChildredRefund(record) {
       console.log(record)
+      const props = { id: record.id }
+      console.log(props)
+      // if (record.product_type === this.ORDER_PRODUCT_TYPE.EARNEST) {
+      //   props.goodsInvalid = true
+      // }
+      this.$modalRouter.push({
+        name: 'shop-finance-refund',
+        props,
+        on: {
+          success: result => {
+            console.log('退款成功!')
+            this.$router.reload()
+          }
+        }
+      })
     },
     // 打印小票
     printOrder(order_id) {

@@ -32,13 +32,6 @@ export class InfoService implements Controller {
                 name: 'shop-finance-order-info-commodity-info',
                 query: { id }
               }
-            },
-            {
-              label: '配送方式',
-              route: {
-                name: 'shop-finance-order-info-delivery-mode',
-                query: { id }
-              }
             }
           ]
           if (res.info.order_status === 4) {
@@ -46,6 +39,15 @@ export class InfoService implements Controller {
               label: '退款信息',
               route: {
                 name: 'shop-finance-order-info-refund-info',
+                query: { id }
+              }
+            })
+          }
+          if (res.info.order_status === 12) {
+            tabs.push({
+              label: '配送方式',
+              route: {
+                name: 'shop-finance-order-info-delivery-mode',
                 query: { id }
               }
             })
