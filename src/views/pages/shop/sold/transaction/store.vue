@@ -76,7 +76,7 @@
                       <a-input-number
                         :min="1"
                         :max="record.stock_amount"
-                        @change="getPrice"
+                        @change="onMemberChange"
                         v-model="record.nums"
                       />
                     </template>
@@ -94,7 +94,7 @@
                       </st-table-actions>
                     </template>
                   </st-table>
-                  <div :class="basic('all-price')">
+                  <div :class="basic('all-price')" v-if="buyCar.length">
                     总额：￥{{ actualAmount }}
                   </div>
                 </st-form-item>
@@ -111,7 +111,7 @@
                     :filterOption="false"
                     v-decorator="decorators.memberId"
                     @search="onMemberSearch"
-                    @change="getPrice"
+                    @change="onMemberChange"
                   >
                     <template slot="notFoundContent">
                       <div>
@@ -303,7 +303,7 @@ export default {
               success: result => {
                 result.product_id = record
                 this.buyCar.push(result)
-                console.log(this.buyCar)
+                this.onMemberChange()
               }
             }
           })
@@ -317,14 +317,14 @@ export default {
             unit_price: res.product_sku[0].selling_price,
             stock_amount: res.product_sku[0].stock_amount
           })
+          this.onMemberChange()
         }
-        this.getPrice()
-        this.getUseCouponList()
       })
     },
     // 删除购物车商品
     onDelBuyCar(i) {
       this.buyCar.splice(i, 1)
+      this.onMemberChange()
     },
     // 生成订单号
     createOrderNum() {
@@ -342,8 +342,6 @@ export default {
             .subscribe(result => {
               resolve(result.info.order_id)
             })
-          // console.log(values)
-          // resolve(values)
           console.log(this.selectCoupon)
         })
       })
@@ -469,6 +467,7 @@ export default {
       let price = this.couponList.filter(o => o.id === event.target.value.id)[0]
         .price
       this.couponText = `${price}元`
+      this.getPrice()
     },
     // 优惠券处理
     onSelectCoupon() {
@@ -497,6 +496,7 @@ export default {
     // 获取可用优惠券
     getUseCouponList() {
       let productInfo = []
+      const memberId = this.form.getFieldValue('memberId')
       this.buyCar.forEach(val => {
         productInfo.push({
           product_id: val.product_id,
@@ -507,9 +507,14 @@ export default {
       this.listService
         .getUseCoupon({
           product_info: JSON.stringify(productInfo),
-          member_id: ''
+          member_id: memberId
         })
         .subscribe()
+    },
+    // 同时获取价格和优惠券列表
+    onMemberChange() {
+      this.getPrice()
+      this.getUseCouponList()
     }
   },
   computed: {

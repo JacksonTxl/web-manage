@@ -28,7 +28,6 @@ export class DataService implements Controller {
   @Effect()
   // 整体看板
   getStoreBoard(query: DtoreBoard) {
-    console.log(query)
     return this.stockApi.storeBoard(query).pipe(
       tap((res: any) => {
         this.storeBoard$.commit(() => res)
@@ -38,7 +37,6 @@ export class DataService implements Controller {
   @Effect()
   // 类目支付排行
   getStoreSaleList(query: DtoreBoard) {
-    console.log(query)
     return this.stockApi.storeSaleList(query).pipe(
       tap((res: any) => {
         this.storeSaleList$.commit(() => res)
@@ -48,7 +46,6 @@ export class DataService implements Controller {
   @Effect()
   // 商品销售榜
   getStoreCategoryRank(query: DtoreBoard) {
-    console.log(query)
     return this.stockApi.storeCategoryRank(query).pipe(
       tap((res: any) => {
         this.storeCategoryRank$.commit(() => res)
@@ -58,7 +55,6 @@ export class DataService implements Controller {
   @Effect()
   // 【门店】用户分析
   getStoreMemberAnalysis(query: MemberAnalysis) {
-    console.log(query)
     return this.stockApi.storeMemberAnalysis(query).pipe(
       tap((res: any) => {
         this.storeMemberAnalysis$.commit(() => res)

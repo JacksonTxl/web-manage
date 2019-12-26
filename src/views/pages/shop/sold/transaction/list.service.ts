@@ -87,7 +87,7 @@ export class ListService {
     return this.transactionApi.getTransactionPrice(params).pipe(
       tap(res => {
         this.currentPrice$.commit(() => res.info.price)
-        this.actualAmount$.commit(() => res.info.actual_amount)
+        this.actualAmount$.commit(() => res.info.product_amount)
       })
     )
   }
