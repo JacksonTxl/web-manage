@@ -48,6 +48,9 @@ export const ruleOptions = (vm: any) => {
           }
         }
       ]
+    },
+    saleName: {
+      rules: [{ required: true, message: '请选择销售人员' }]
     }
   }
 }

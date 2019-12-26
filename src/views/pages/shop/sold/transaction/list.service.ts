@@ -3,7 +3,7 @@ import { State, Effect } from 'rx-state'
 import {
   TransactionApi,
   TransactionListInput,
-  ProductInfoParams,
+  CreateOrderInput,
   TransactionPriceInput,
   CouponParams
 } from '@/api/v1/sold/transaction'
@@ -105,7 +105,7 @@ export class ListService {
    * 云店创建订单
    */
   @Effect()
-  createOrder(params: ProductInfoParams) {
+  createOrder(params: CreateOrderInput) {
     return this.transactionApi.postStoreOrderNum(params)
   }
 }

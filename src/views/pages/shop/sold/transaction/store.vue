@@ -37,10 +37,14 @@
             <span>￥{{ currentPrice }}</span>
           </div>
           <div class="button">
-            <st-button @click="onCreateOrder">
+            <st-button @click="onCreateOrder" :loading="loading.createOrder">
               创建订单
             </st-button>
-            <st-button type="primary" @click="onPay">
+            <st-button
+              type="primary"
+              @click="onPay"
+              :loading="loading.createOrder"
+            >
               立即支付
             </st-button>
           </div>
@@ -193,7 +197,6 @@
                       v-for="(item, index) in saleList"
                       v-decorator="decorators.saleName"
                       :key="index"
-                      :value="item.id"
                     >
                       {{ item.staff_name }}
                     </a-select-option>
@@ -474,9 +477,9 @@ export default {
       this.couponDropdownVisible = false
     },
     // 价格计算
-    getPrice() {
+    getPrice(cardId) {
       let productInfo = []
-      const memberId = this.form.getFieldValue('memberId')
+      const memberId = cardId ? cardId : this.form.getFieldValue('memberId')
       this.buyCar.forEach(val => {
         productInfo.push({
           sku_id: val.sku_id,
@@ -494,9 +497,9 @@ export default {
         .subscribe()
     },
     // 获取可用优惠券
-    getUseCouponList() {
+    getUseCouponList(cardId) {
       let productInfo = []
-      const memberId = this.form.getFieldValue('memberId')
+      const memberId = cardId ? cardId : this.form.getFieldValue('memberId')
       this.buyCar.forEach(val => {
         productInfo.push({
           product_id: val.product_id,
@@ -512,9 +515,9 @@ export default {
         .subscribe()
     },
     // 同时获取价格和优惠券列表
-    onMemberChange() {
-      this.getPrice()
-      this.getUseCouponList()
+    onMemberChange(data) {
+      this.getPrice(data)
+      this.getUseCouponList(data)
     }
   },
   computed: {

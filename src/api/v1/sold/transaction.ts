@@ -10,9 +10,8 @@ export interface MemberListInput {
   escape_member_id?: number
 }
 export interface ProductType {
-  specs_id: number
-  product_num: number
-  product_id: number
+  sku_id: number
+  nums: number
 }
 export interface TransactionPriceInput {
   product_id?: number
@@ -40,6 +39,14 @@ export interface ProductInfoParams {
   product_count?: number
   product_name?: string
   rule_name?: string
+}
+export interface CreateOrderInput {
+  member_id: number
+  coupon_id: string
+  sale_id: string
+  reduce_price: number
+  description: string
+  sku_info: ProductInfoParams[]
 }
 export interface CouponParams {
   product_info: string
@@ -212,7 +219,7 @@ export class TransactionApi extends Api {
   /**
    * 交易签单-云店-创建订单
    */
-  postStoreOrderNum(params: ProductInfoParams) {
+  postStoreOrderNum(params: CreateOrderInput) {
     return this.http.post(`/v1/order/transaction/cloud_product`, {
       params
     })
