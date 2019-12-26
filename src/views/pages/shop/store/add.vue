@@ -504,6 +504,8 @@ export default {
           values.delivery_type.lenght === 2 ? -1 : values.delivery_type[0], // 配送方式
         sale_type: values.sale_type.lenght === 2 ? -1 : values.sale_type[0] // 售卖方式
       }
+      console.log(values.delivery_type, '这是编辑的参数')
+      console.log(values.sale_type, '这是售卖方式')
       this.addService.editGoods(this.$route.query.id, data).subscribe(res => {
         this.$router.push({
           path: './list'
