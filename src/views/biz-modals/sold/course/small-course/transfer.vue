@@ -34,7 +34,15 @@
             <st-info-item label="会员姓名">
               {{ info.member_name }}
             </st-info-item>
-            <st-info-item label="手机号">
+            <template v-if="info.is_minors === 1">
+              <st-info-item label="家长手机号">
+                {{ info.parent_mobile }}
+              </st-info-item>
+              <st-info-item label="家长姓名">
+                {{ info.parent_name }}({{ info.parent_user_role }})
+              </st-info-item>
+            </template>
+            <st-info-item label="手机号" v-else>
               {{ info.mobile }}
             </st-info-item>
             <st-info-item label="销售人员">
@@ -50,7 +58,7 @@
       <st-form :form="form" labelWidth="88px">
         <div :class="transfer('transfer')">
           <member-search :form="form" label="转让会员"></member-search>
-          <st-form-item required labelGutter="12px">
+          <st-form-item required>
             <template slot="label">
               剩余价值
               <st-help-tooltip id="TSMC004" />
@@ -66,7 +74,7 @@
               </template>
             </st-input-number>
           </st-form-item>
-          <st-form-item required labelGutter="12px">
+          <st-form-item required>
             <template slot="label">
               合同编号
               <st-help-tooltip id="TSSD001" />
@@ -85,10 +93,8 @@
               </auto-contract-btn>
             </div>
           </st-form-item>
-          <st-form-item label="手续费" labelGutter="12px">
-            {{ poundage }}元
-          </st-form-item>
-          <st-form-item label="减免金额" labelGutter="12px">
+          <st-form-item label="手续费">{{ poundage }}元</st-form-item>
+          <st-form-item label="减免金额">
             <st-input-number
               :float="true"
               v-decorator="decorators.handling_fee_reduce"
@@ -98,7 +104,7 @@
               <span slot="addonAfter">元</span>
             </st-input-number>
           </st-form-item>
-          <st-form-item label="支付方式" required labelGutter="12px">
+          <st-form-item label="支付方式" required>
             <a-select
               v-decorator="decorators.payType"
               placeholder="选择支付方式"
@@ -139,10 +145,7 @@ import MemberSearch from '@/views/biz-components/member-search/member-search'
 export default {
   name: 'ModalSoldCourseSmallCourseTransfer',
   bem: {
-    transfer: 'modal-sold-course-small-course-transfer'
-  },
-  components: {
-    autoContractBtn
+    transfer: 'modal-sold-course-transfer'
   },
   serviceProviders() {
     return [TransferService]
@@ -161,6 +164,7 @@ export default {
     }
   },
   components: {
+    autoContractBtn,
     MemberSearch
   },
   props: ['id'],
@@ -188,6 +192,7 @@ export default {
     })
   },
   methods: {
+    moment,
     onSubmit() {
       this.form.validate().then(values => {
         this.transferService

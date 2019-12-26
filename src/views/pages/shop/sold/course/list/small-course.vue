@@ -63,7 +63,13 @@
               <a @click="onRefund(record)">
                 退款
               </a>
-              <a @click="toContract(record)">
+              <a
+                @click="
+                  smallCourseActions.onChangeSmallCourse({
+                    id: record.id
+                  })
+                "
+              >
                 换班
               </a>
               <a @click="toContract(record)">

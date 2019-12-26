@@ -46,4 +46,28 @@ export class SmallCourseApi extends Api {
       params
     })
   }
+  /**
+   * 售出小班课换班回显
+   */
+  getSmallCourseChange(id: string) {
+    return this.http.get(`/v1/sold/course/small_course/displace/${id}`)
+  }
+  /**
+   * 售出小班课可选列表
+   */
+  getSmallCourseSelectList(keywords: string) {
+    return this.http.get(`/v1/order/transaction/small_course/select`, {
+      query: {
+        keywords
+      }
+    })
+  }
+  /**
+   * 售出小班课换班
+   */
+  changeSmallCourse(params: any, id: string) {
+    return this.http.put(`/v1/sold/course/small_course/displace/${id}`, {
+      params
+    })
+  }
 }

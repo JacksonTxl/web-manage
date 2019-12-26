@@ -12,38 +12,59 @@
       <a-row :class="sale('info')">
         <a-col :span="13">
           <st-info>
-            <st-info-item label="小班课名称">{{ info.card_name }}</st-info-item>
+            <st-info-item label="小班课名称">
+              {{ info.course_name }}
+            </st-info-item>
             <st-info-item label="结束日期">
-              {{ info.remain_amount }}
+              {{ moment(info.end_time).format('YYYY-MM-DD HH:MM:SS') }}
             </st-info-item>
-            <st-info-item label="实付金额">{{ info.init_amount }}</st-info-item>
+            <st-info-item label="实付金额">{{ info.pay_price }}元</st-info-item>
             <st-info-item label="转让手续费">
-              {{ info.gift_amount }}
+              {{ info.transfer_num
+              }}{{
+                info.transfer_unit | enumFilter('package_course.transfer_unit')
+              }}
             </st-info-item>
-            <st-info-item label="开班条件">{{ info.pay_price }}</st-info-item>
-            <st-info-item label="上课方式">{{ info.end_time }}</st-info-item>
-            <st-info-item label="总课时">{{ info.end_time }}</st-info-item>
-            <st-info-item label="排课状态">{{ info.end_time }}</st-info-item>
+            <st-info-item label="开班条件">
+              {{ info.num_min }}~{{ info.num_max }}人
+            </st-info-item>
+
+            <st-info-item label="总课时">
+              {{ info.course_times }}节
+            </st-info-item>
+            <st-info-item label="排课状态">
+              {{ info.is_schedule }}
+            </st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
           <st-info>
             <st-info-item label="会员名称">{{ info.member_name }}</st-info-item>
-            <st-info-item label="会员手机号" v-if="isFamilyCard">
-              {{ info.card_member }}
+            <template v-if="info.is_minors === 1">
+              <st-info-item label="家长手机号">
+                {{ info.parent_mobile }}
+              </st-info-item>
+              <st-info-item label="家长姓名">
+                {{ info.parent_name }}({{ info.parent_user_role }})
+              </st-info-item>
+            </template>
+            <st-info-item label="手机号" v-else>
+              {{ info.mobile }}
             </st-info-item>
-            <st-info-item label="联系人">{{ info.mobile }}</st-info-item>
+            <st-info-item label="销售人员">{{ info.staff_name }}</st-info-item>
             <st-info-item label="订单号">{{ info.order_id }}</st-info-item>
             <st-info-item label="订单状态">
               {{ info.order_status }}
             </st-info-item>
-            <st-info-item label="销售人员">{{ info.staff_name }}</st-info-item>
+            <st-info-item label="上课方式">
+              {{ info.course_type_name }}
+            </st-info-item>
           </st-info>
         </a-col>
       </a-row>
       <st-form :form="form" labelWidth="88px">
         <div :class="sale('sale')">
-          <st-form-item :label="$c('member_card')" required labelGutter="12px">
+          <st-form-item label="小班课" required labelGutter="12px">
             <a-select
               showSearch
               allowClear
@@ -51,26 +72,26 @@
               :defaultActiveFirstOption="false"
               :showArrow="false"
               :filterOption="false"
-              @change="onSelectCardChange"
-              v-decorator="decorators.memberCardId"
-              @search="onCardSearch"
+              @change="onSelectCourseChange"
+              v-decorator="decorators.course_id"
+              @search="onSearch"
               notFoundContent="无搜索结果"
             >
               <a-select-option
-                v-for="(item, index) in cardList"
-                :value="+item.id"
+                v-for="(item, index) in smallCourseList"
+                :value="+item.course_id"
                 :key="index"
               >
-                {{ item.card_name }}
+                {{ item.course_name }}
               </a-select-option>
             </a-select>
           </st-form-item>
           <st-form-item labelGutter="12px" label="购买课时" required>
             <st-input-number
               class="input-number"
-              :min="1"
-              :max="selectSpecsItem.card_amount"
-              v-decorator="decorators.card_amount"
+              :min="selectItem.num_min"
+              :max="selectItem.num_max"
+              v-decorator="decorators.course_num"
               placeholder="请输入购买课时"
               :disabled="isAmountDisabled"
             >
@@ -81,14 +102,10 @@
           </st-form-item>
           <st-form-item labelGutter="12px" label="有效时间">
             {{
-              moment(upgradeCardInfo.server_time * 1000).format(
-                'YYYY-MM-DD HH:mm'
-              )
+              moment(selectItem.server_time * 1000).format('YYYY-MM-DD HH:mm')
             }}&nbsp;至&nbsp;
             {{
-              moment(upgradeCardInfo.server_time * 1000)
-                .add(getValidTime, 'd')
-                .format('YYYY-MM-DD HH:mm')
+              moment(selectItem.server_time * 1000).format('YYYY-MM-DD HH:mm')
             }}
           </st-form-item>
           <st-form-item labelGutter="12px" required>
@@ -98,7 +115,7 @@
             </template>
             <div :class="sale('contract')">
               <a-input
-                v-decorator="decorators.contractNumber"
+                v-decorator="decorators.contract_number"
                 placeholder="请输入合同编号"
               ></a-input>
               <auto-contract-btn
@@ -111,7 +128,7 @@
             </div>
           </st-form-item>
           <st-form-item labelGutter="12px" class="mg-b12" label="商品价格">
-            {{ cardPrice }}元
+            {{ priceInfo }}元
           </st-form-item>
           <st-form-item labelGutter="12px" required>
             <template slot="label">
@@ -120,7 +137,7 @@
             </template>
             <st-input-number
               @change="onSurplusPriceChange"
-              v-decorator="decorators.surplusPrice"
+              v-decorator="decorators.old_course_price"
               :float="true"
               :max="+info.pay_price"
               placeholder="请输入原小班课可以抵扣的剩余价值金额"
@@ -269,7 +286,7 @@
       <div :class="sale('footer')">
         <div class="price">
           <span>{{ priceInfo }}元</span>
-          <span>订单总额：{{ cardPrice }}元</span>
+          <span>订单总额：{{ selectItem.price }}元</span>
         </div>
         <div class="button">
           <st-button @click="onCreateOrder" :loading="loading.upgrade">
@@ -303,21 +320,22 @@ export default {
     autoContractBtn
   },
   serviceProviders() {
-    return [UpgradeMemberService]
+    return [ChangeService]
   },
   serviceInject() {
     return {
-      upgradeMemberService: UpgradeMemberService
+      changeService: ChangeService
     }
   },
   rxState() {
     return {
-      info: this.upgradeMemberService.info$,
-      couponList: this.upgradeMemberService.couponList$,
-      advanceList: this.upgradeMemberService.advanceList$,
-      priceInfo: this.upgradeMemberService.priceInfo$,
-      saleList: this.upgradeMemberService.saleList$,
-      loading: this.upgradeMemberService.loading$
+      info: this.changeService.info$,
+      smallCourseList: this.changeService.smallCourseList$,
+      couponList: this.changeService.couponList$,
+      advanceList: this.changeService.advanceList$,
+      priceInfo: this.changeService.priceInfo$,
+      saleList: this.changeService.saleList$,
+      loading: this.changeService.loading$
     }
   },
   props: ['id'],
@@ -328,31 +346,13 @@ export default {
       form,
       decorators,
       show: false,
-      // 会员卡列表
-      cardList: [],
-      cardLists: {},
+      // 小班课列表
+      smallCourseList: [],
       // 选择的卡
-      selectCardItem: {},
-      // 选择的卡的详情
-      upgradeCardInfo: {},
-      upgradeCardsInfo: {},
-      // 规格
-      selectSpecs: null,
-      // 选择的规格
-      selectSpecsItem: {},
-      // 初始额度可编辑
-      isAmountDisabled: true,
-      getValidTime: 0,
-      // 开卡方式
-      selectOpenType: null,
-      // 有效时间
-      startTime: null,
-      endTime: '-',
-      // 购买赠送
-      giftAmount: '',
+      selectItem: {},
       // 商品金额
-      cardPrice: '0',
-      // 原卡折扣
+      smallCoursePrice: '0',
+      // 原小班课折扣
       surplusPrice: '',
       // 优惠
       couponDropdownVisible: false,
@@ -371,13 +371,8 @@ export default {
     }
   },
   computed: {
-    // 是否未选择卡
-    selectCardIsNone() {
-      return !this.selectCardItem.id
-    },
-    // 卡跟规格，用来判断规格是否切换了，因为有可能不同的卡有同一个规格，但是同卡同规格是不会出现的
-    cardAndSpecs() {
-      return `${this.selectCardItem.id || ''}-${this.selectSpecsItem.id || ''}`
+    isAmountDisabled() {
+      return false
     },
     // 小计判断
     orderAmountText() {
@@ -385,33 +380,18 @@ export default {
     },
     // 计算小计用
     priceOB() {
-      return `${this.selectSpecs}-
-              ${this.selectAdvance}-
+      return `${this.selectAdvance}-
               ${this.reduceAmount}-
               ${this.selectCoupon}-
               ${this.surplusPrice}`
-    },
-    isFamilyCard() {
-      return this.info.card_number_type === 2
     }
   },
   watch: {
-    cardAndSpecs(newVal, oldVal) {
-      // 先重围优惠券
-      this.resetCoupon()
-      if (!this.upgradeCardInfo.id || !this.selectSpecsItem.id) return
-      this.upgradeMemberService.couponAction$.dispatch({
-        member_id: this.info.member_id,
-        card_id: this.upgradeCardInfo.id,
-        specs_id: this.selectSpecsItem.id
-      })
-    },
     // 计算小计
     priceOB() {
       this.getPrice({
         product_id: this.selectCardItem.id,
         product_type: this.info.contract_type,
-        specs_id: +this.selectSpecs,
         advance_id: this.selectAdvance === -1 ? '' : this.selectAdvance,
         reduce_amount: +this.reduceAmount,
         coupon_id: this.selectCoupon === -1 ? '' : this.selectCoupon,
@@ -421,158 +401,43 @@ export default {
     }
   },
   created() {
-    this.upgradeMemberService.serviceInit(this.id).subscribe()
+    this.changeService.serviceInit(this.id).subscribe()
+    this.changeService.getSmallCourseList('').subscribe()
   },
   methods: {
     moment,
-    // 搜索会员卡
-    onCardSearch(data) {
+    // 搜索小班课
+    onSearch(data) {
       if (data === '') {
-        this.cardList = []
+        this.smallCourseList.commit(() => [])
       } else {
-        // 判断之前是否请求过
-        if (!this.cardLists[data]) {
-          this.upgradeMemberService
-            .getCardList(data, this.info.card_number_type)
-            .subscribe(res => {
-              // 缓存请求结果
-              this.cardLists[data] = cloneDeep(res.list)
-              this.cardList = cloneDeep(res.list)
-            })
-        } else {
-          // 取缓存
-          this.cardList = cloneDeep(this.cardLists[data])
-        }
+        this.changeService.getSmallCourseList(data).subscribe()
       }
     },
     // 重置规格/开卡方式/有效时间/商品金额/购买赠送/表单重置
     resetData() {
-      // 规格
-      this.selectSpecs = null
-      this.selectSpecsItem = {}
-      // 开卡方式
-      this.selectOpenType = null
-      // 有效时间
-      this.startTime = null
-      this.endTime = '-'
       // 商品金额
-      this.cardPrice = '0'
-      // 购买赠送
-      this.giftAmount = ''
+      this.coursePrice = '0'
       this.form.resetFields()
     },
-    onSelectCardChange(data) {
+    onSelectCourseChange(data) {
       if (data) {
-        // 选择了卡
-        this.selectCardItem = cloneDeep(
-          this.cardList.filter(i => i.id === data)[0]
-        )
-        // 获取选择的卡的详情
-        this.getUpgradeCardInfo(data)
+        this.selectItem = this.smallCourseList.filter(
+          item => item.course_id === data
+        )[0]
       } else {
-        // 清空了选择的卡
-        this.selectCardItem = {}
+        // 清空
+        this.selectItem = {}
         this.resetData()
       }
     },
-    getUpgradeCardInfo(id) {
-      // 判断之前是否请求过
-      if (!this.upgradeCardsInfo[id]) {
-        // 缓存请求结果
-        this.upgradeMemberService.getUpgradeCardInfo(id).subscribe(res => {
-          this.upgradeCardsInfo[id] = cloneDeep(res.info)
-          this.upgradeCardInfo = cloneDeep(res.info)
-          // 设置默认规格
-          this.selectSpecs = this.upgradeCardInfo.specs[0].id
-          this.selectSpecsItem = cloneDeep(this.upgradeCardInfo.specs[0])
-          // 设置默认开卡方式
-          this.selectOpenType = this.upgradeCardInfo.open_type[0].id
-          // 设置初始额度
-          this.form.setFieldsValue({
-            card_amount: this.selectSpecsItem.card_amount
-          })
-          this.getValidTime = this.selectSpecsItem.card_amount
-          this.form.validate(['card_amount'])
-          // 设置默认卡价格
-          this.cardPrice = this.upgradeCardInfo.specs[0].price
-        })
-      } else {
-        // 取缓存
-        this.upgradeCardInfo = cloneDeep(this.upgradeCardsInfo[id])
-        // 设置默认规格
-        this.selectSpecs = this.upgradeCardInfo.specs[0].id
-        this.selectSpecsItem = cloneDeep(this.upgradeCardInfo.specs[0])
-        // 设置默认开卡方式
-        this.selectOpenType = this.upgradeCardInfo.open_type[0].id
-        // 设置初始额度
-        this.form.setFieldsValue({
-          card_amount: this.selectSpecsItem.card_amount
-        })
-        this.form.validate(['card_amount'])
-        this.getValidTime = this.selectSpecsItem.card_amount
-        // 设置默认卡价格
-        this.cardPrice = this.upgradeCardInfo.specs[0].price
-      }
-    },
-    // 规格
-    onSpecsChange(data) {
-      this.selectSpecsItem = cloneDeep(
-        this.upgradeCardInfo.specs.filter(i => i.id === data.target.value)[0]
-      )
-      this.cardPrice = this.upgradeCardInfo.specs.filter(
-        i => i.id === data.target.value
-      )[0].price
-      // 重置选择的开始时间
-      this.form.resetFields(['startTime'])
-      this.endTime = '-'
-      this.form.setFieldsValue({
-        card_amount: this.selectSpecsItem.card_amount
-      })
-      this.form.validate(['card_amount'])
-    },
-    // 开卡方式
-    onOpenTypeChange(data) {
-      // 重置选择的开始时间
-      this.form.resetFields(['startTime'])
-      this.endTime = '-'
-    },
-    onClickAmountConfirm() {
-      const val = this.form.getFieldValue('card_amount')
-      this.isAmountDisabled = true
-      this.form.setFieldsValue({
-        card_amount: val
-      })
-      if (this.startTime) {
-        this.endTime = this.startTime.add(val, 'd').format('YYYY-MM-DD HH:mm')
-      }
-      this.getValidTime = val
-    },
-    onClickAmountEdit() {
-      const val = this.form.getFieldValue('card_amount')
-      this.isAmountDisabled = false
-      this.form.setFieldsValue({
-        card_amount: val
-      })
-      this.form.validate(['card_amount'])
-    },
-    // 有效时间
-    disabledStartDate(startTime) {
-      return startTime.valueOf() < this.upgradeCardInfo.server_time * 1000
-    },
-    onStartTimeChange(data) {
-      this.startTime = cloneDeep(data)
-      let s = cloneDeep(data)
-      // let dayScope = this.selectSpecsItem.card_amount
-      let dayScope = this.form.getFieldValue('card_amount')
-      this.endTime = s.add(dayScope, 'd').format('YYYY-MM-DD HH:mm')
-    },
     // 合同
     onCodeNumber() {
-      this.upgradeMemberService
+      this.changeService
         .getCodeNumber(`${this.info.contract_type}`)
         .subscribe(res => {
           this.form.setFieldsValue({
-            contractNumber: res.info.code
+            contract_number: res.info.code
           })
         })
     },
@@ -598,7 +463,7 @@ export default {
       })
     },
     resetCoupon() {
-      this.upgradeMemberService.resetCouponList()
+      this.changeService.resetCouponList()
       this.couponText = '未选择优惠券'
       this.couponAmount = ''
       this.selectCoupon = ''
@@ -621,90 +486,86 @@ export default {
       })
     },
     resetAdvance() {
-      this.upgradeMemberService.resetAdvanceList()
+      this.changeService.resetAdvanceList()
       this.advanceText = '未选择定金'
       this.advanceAmount = ''
       this.selectAdvance = ''
     },
     // 计算实付金额
     getPrice(params) {
-      this.upgradeMemberService.priceAction$.dispatch(params)
+      this.changeService.priceAction$.dispatch(params)
     },
     onCreateOrder() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          this.upgradeMemberService
-            .upgrade(
-              {
-                product_id: +values.memberCardId,
-                contract_number: values.contractNumber,
-                rule_id: +this.selectSpecs,
-                surplus_price: +values.surplusPrice,
-                valid_start_time: moment(values.startTime).format(
-                  'YYYY-MM-DD HH:mm'
-                ),
-                open_card_type: +this.selectOpenType,
-                user_coupon_id: this.selectCoupon,
-                advance_id: this.selectAdvance,
-                reduce_price: +this.reduceAmount,
-                description: this.description,
-                staff_sale_id: +values.saleName,
-                gift_amount: +this.giftAmount,
-                init_amount: values.card_amount
-              },
-              this.id
-            )
-            .subscribe(res => {
-              this.show = false
-              this.$emit('success', {
-                type: 'create',
-                orderId: res.info.order_id,
-                soldId: res.info.sold_id,
-                isFamilyCard: this.isFamilyCard
-              })
+      this.form.validate().then(values => {
+        this.changeService
+          .upgrade(
+            {
+              product_id: +values.memberCardId,
+              contract_number: values.contractNumber,
+              rule_id: +this.selectSpecs,
+              surplus_price: +values.surplusPrice,
+              valid_start_time: moment(values.startTime).format(
+                'YYYY-MM-DD HH:mm'
+              ),
+              open_card_type: +this.selectOpenType,
+              user_coupon_id: this.selectCoupon,
+              advance_id: this.selectAdvance,
+              reduce_price: +this.reduceAmount,
+              description: this.description,
+              staff_sale_id: +values.saleName,
+              gift_amount: +this.giftAmount,
+              init_amount: values.card_amount
+            },
+            this.id
+          )
+          .subscribe(res => {
+            this.show = false
+            this.$emit('success', {
+              type: 'create',
+              orderId: res.info.order_id,
+              soldId: res.info.sold_id,
+              isFamilyCard: this.isFamilyCard
             })
-        }
+          })
       })
     },
     onPay() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          this.upgradeMemberService
-            .upgrade(
-              {
-                product_id: +values.memberCardId,
-                contract_number: values.contractNumber,
-                rule_id: +this.selectSpecs,
-                surplus_price: +values.surplusPrice,
-                valid_start_time: moment(values.startTime).format(
-                  'YYYY-MM-DD HH:mm'
-                ),
-                open_card_type: +this.selectOpenType,
-                user_coupon_id: this.selectCoupon,
-                advance_id: this.selectAdvance,
-                reduce_price: +this.reduceAmount,
-                description: this.description,
-                staff_sale_id: +values.saleName,
-                gift_amount: +this.giftAmount,
-                init_amount: values.card_amount
-              },
-              this.id
-            )
-            .subscribe(res => {
-              this.show = false
-              this.$emit('success', {
-                type: 'createPay',
-                orderId: res.info.order_id,
-                soldId: res.info.sold_id,
-                isFamilyCard: this.isFamilyCard
-              })
+      this.form.validate().then(values => {
+        this.changeService
+          .upgrade(
+            {
+              product_id: +values.memberCardId,
+              contract_number: values.contractNumber,
+              rule_id: +this.selectSpecs,
+              surplus_price: +values.surplusPrice,
+              valid_start_time: moment(values.startTime).format(
+                'YYYY-MM-DD HH:mm'
+              ),
+              open_card_type: +this.selectOpenType,
+              user_coupon_id: this.selectCoupon,
+              advance_id: this.selectAdvance,
+              reduce_price: +this.reduceAmount,
+              description: this.description,
+              staff_sale_id: +values.saleName,
+              gift_amount: +this.giftAmount,
+              init_amount: values.card_amount
+            },
+            this.id
+          )
+          .subscribe(res => {
+            this.show = false
+            this.$emit('success', {
+              type: 'createPay',
+              orderId: res.info.order_id,
+              soldId: res.info.sold_id,
+              isFamilyCard: this.isFamilyCard
             })
-        }
+          })
       })
     },
     onCancel() {
-      this.upgradeMemberService.resetCouponList()
-      this.upgradeMemberService.resetAdvanceList()
+      this.changeService.resetCouponList()
+      this.changeService.resetAdvanceList()
     }
   }
 }

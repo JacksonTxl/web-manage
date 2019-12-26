@@ -1,6 +1,6 @@
+import { SmallCourseApi } from '@/api/v1/sold/small-course'
 import { Injectable } from 'vue-service-app'
 import { State, Effect, Action } from 'rx-state'
-import { CardApi } from '@/api/v1/sold/cards'
 import { tap, debounceTime, switchMap, catchError } from 'rxjs/operators'
 import { forkJoin, EMPTY } from 'rxjs'
 import { ContractApi } from '@/api/v1/setting/contract'
@@ -14,7 +14,7 @@ import {
 export class ChangeService {
   info$ = new State({})
   loading$ = new State({})
-  couponAction$: Action<any>
+  smallCourseList$ = new State([])
   couponList$ = new State([])
   saleList$ = new State([])
   advanceList$ = new State([])
@@ -22,20 +22,9 @@ export class ChangeService {
   priceInfo$ = new State('0')
   constructor(
     private contractApi: ContractApi,
-    private cardApi: CardApi,
+    private smallCourseApi: SmallCourseApi,
     private transactionApi: TransactionApi
   ) {
-    this.couponAction$ = new Action(data$ => {
-      return data$.pipe(
-        debounceTime(200),
-        switchMap((params: MemberCouponParams) =>
-          this.getCouponList(params).pipe(catchError(() => EMPTY))
-        ),
-        tap(res => {
-          this.couponList$.commit(() => res.list)
-        })
-      )
-    })
     this.priceAction$ = new Action(data$ => {
       return data$.pipe(
         debounceTime(200),
@@ -49,7 +38,7 @@ export class ChangeService {
     })
   }
   getInfo(id: string) {
-    return this.cardApi.getCardUpgradeInfo(id).pipe(
+    return this.smallCourseApi.getSmallCourseChange(id).pipe(
       tap((res: any) => {
         this.info$.commit(() => res.info)
       })
@@ -71,25 +60,21 @@ export class ChangeService {
     )
   }
   @Effect()
-  getCardList(search?: string, card_number_type?: number) {
-    return this.cardApi.getCardUpgradeList(search, card_number_type)
+  getSmallCourseList(search: string) {
+    return this.smallCourseApi.getSmallCourseSelectList(search).pipe(
+      tap((res: any) => {
+        this.smallCourseList$.commit(() => res.list)
+      })
+    )
   }
   @Effect()
   getCodeNumber(id: string) {
     return this.contractApi.getCodeNumber(id)
   }
-  // 获取升级的卡的信息，规格等
-  @Effect()
-  getUpgradeCardInfo(id: string) {
-    return this.transactionApi.getTransactionInfo(id, 'member/card')
-  }
   // 优惠券列表
   @Effect()
   getCouponList(query: MemberCouponParams) {
     return this.transactionApi.getTransactionCouponList(query, 'member')
-  }
-  resetCouponList() {
-    this.couponList$.commit(() => [])
   }
   // 定金
   @Effect()
@@ -100,9 +85,6 @@ export class ChangeService {
       })
     )
   }
-  resetAdvanceList() {
-    this.advanceList$.commit(() => [])
-  }
   // 小计
   @Effect()
   getPrice(params: TransactionPriceInput) {
@@ -110,12 +92,12 @@ export class ChangeService {
   }
   // 下单
   @Effect()
-  upgrade(params: any, id: string) {
-    return this.cardApi.setCardUpgrade(params, id)
+  changeSmallCourse(params: any, id: string) {
+    return this.smallCourseApi.changeSmallCourse(params, id)
   }
   // 下单并支付
   @Effect()
-  upgradePay(params: any, id: string) {
-    return this.cardApi.setCardUpgrade(params, id)
+  changeSmallCoursePay(params: any, id: string) {
+    return this.smallCourseApi.changeSmallCourse(params, id)
   }
 }
