@@ -15,7 +15,7 @@ export interface ProductType {
   product_id: number
 }
 export interface TransactionPriceInput {
-  product_id: number
+  product_id?: number
   product_type: number
   product_num?: number
   specs_id?: number
@@ -204,9 +204,9 @@ export class TransactionApi extends Api {
   /**
    * 交易签单-云店-优惠券列表
    */
-  getCouponList(params: CouponParams) {
+  getCouponList(query: CouponParams) {
     return this.http.get(`/v1/order/transaction/cloud_product/coupon`, {
-      params
+      query
     })
   }
   /**
