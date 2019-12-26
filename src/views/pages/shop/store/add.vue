@@ -114,7 +114,11 @@
             :span="skuList.length === 3 ? 24 : skuList.length === 2 ? 20 : 16"
           >
             <st-form-item label="规格设置" required>
-              <a-radio-group v-model="isMore" @change="changeMore">
+              <a-radio-group
+                v-model="isMore"
+                @change="changeMore"
+                :disabled="isEditMode"
+              >
                 <a-radio :value="1">单规格</a-radio>
                 <a-radio :value="2">多规格</a-radio>
               </a-radio-group>
@@ -187,6 +191,7 @@
                         v-model="record.market_price"
                         :float="true"
                         style="width:110px;"
+                        @change="record.is_update = 1"
                       >
                         <template slot="addonAfter">
                           元
@@ -211,6 +216,7 @@
                         v-model="record.selling_price"
                         :float="true"
                         style="width:110px;"
+                        @change="record.is_update = 1"
                       >
                         <template slot="addonAfter">
                           元
@@ -453,12 +459,14 @@ export default {
         skuItem.stock_amount = item.stock_amount
         if (item.sku_id) {
           skuItem.is_update = item.is_update
+          skuItem.sku_id = item.sku_id
         }
         skuItem.spec_arr = []
         if (this.skuList.length > 0) {
           let sku = {}
           this.info.all_spec[0].spec_item_arr.forEach(spec => {
-            if (spec === item['0']) {
+            console.log(spec, item, '==============规格id添加')
+            if (spec.spec_item_name === item['0']) {
               sku.spec_item_id = spec.spec_item_id
               sku.spec_id = spec.spec_item_id
             }
@@ -470,7 +478,7 @@ export default {
         if (this.skuList.length > 1) {
           let sku = {}
           this.info.all_spec[1].spec_item_arr.forEach(spec => {
-            if (spec === item['1']) {
+            if (spec.spec_item_name === item['1']) {
               sku.spec_item_id = spec.spec_item_id
               sku.spec_id = spec.spec_item_id
             }
@@ -482,7 +490,7 @@ export default {
         if (this.skuList.length > 2) {
           let sku = {}
           this.info.all_spec[2].spec_item_arr.forEach(spec => {
-            if (spec === item['2']) {
+            if (spec.spec_item_name === item['2']) {
               sku.spec_item_id = spec.spec_item_id
               sku.spec_id = spec.spec_item_id
             }
@@ -504,8 +512,7 @@ export default {
           values.delivery_type.lenght === 2 ? -1 : values.delivery_type[0], // 配送方式
         sale_type: values.sale_type.lenght === 2 ? -1 : values.sale_type[0] // 售卖方式
       }
-      console.log(values.delivery_type, '这是编辑的参数')
-      console.log(values.sale_type, '这是售卖方式')
+      console.log(data, '这是编辑提交的参数')
       this.addService.editGoods(this.$route.query.id, data).subscribe(res => {
         this.$router.push({
           path: './list'
