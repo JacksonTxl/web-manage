@@ -44,7 +44,7 @@ export class CourseService {
           percent: saleCourse.sale_team_percentage
         },
         {
-          name: '小班课售课',
+          name: `${this.userService.c('small_course')}售课`,
           value: saleCourse.sale_small_num,
           percent: saleCourse.sale_small_percentage
         }
@@ -65,7 +65,7 @@ export class CourseService {
         percent: checkInCourse.team_checkin_percentage
       },
       {
-        name: '小班课售课',
+        name: `${this.userService.c('small_course')}售课`,
         value: checkInCourse.small_checkin_num,
         percent: checkInCourse.small_checkin_percentage
       }
@@ -85,7 +85,7 @@ export class CourseService {
         percent: notCheckInCourse.team_not_checkin_percentage
       },
       {
-        name: '小班课未消课',
+        name: `${this.userService.c('small_course')}未消课`,
         value: notCheckInCourse.small_not_checkin_num,
         percent: notCheckInCourse.small_not_checkin_percentage
       }

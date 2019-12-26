@@ -60,12 +60,12 @@ export const allColumns = (vm: any) => {
       align: 'right'
     },
     {
-      title: '小班课购买节数',
+      title: `${vm.$c('small_course')}购买节数`,
       dataIndex: 'small_course_num',
       align: 'right'
     },
     {
-      title: '小班课购买金额（元）',
+      title: `${vm.$c('small_course')}购买金额（元)`,
       dataIndex: 'small_course_amount',
       align: 'right'
     },

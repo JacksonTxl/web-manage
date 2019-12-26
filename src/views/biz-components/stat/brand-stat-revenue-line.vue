@@ -28,13 +28,14 @@ export default {
       type: Array,
       default() {
         const member_card = this.$c('member_card')
+        const small_course = this.$c('small_course ')
         return [
           member_card,
           '私教课',
           '团体课',
           // '储值卡',
           '课程包',
-          '小班课',
+          small_course,
           '云店',
           // '定金',
           // '押金',

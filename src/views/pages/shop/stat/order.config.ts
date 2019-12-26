@@ -40,13 +40,13 @@ export const columns = (vm: any) => {
       align: 'right'
     },
     {
-      title: '小班课客单价(元)',
+      title: `${vm.$c('small_course')}客单价(元)`,
 
       dataIndex: 'small_course_avg',
       align: 'right'
     },
     {
-      title: '小班课成单数',
+      title: `${vm.$c('small_course')}成单数`,
       dataIndex: 'small_course_num',
       align: 'right'
     },

@@ -177,8 +177,8 @@
         <st-help-tooltip id="TSCR002" />
       </span>
       <span slot="smallTitle">
-        小班课消课价值（元)
-        <st-help-tooltip id="TSCR002" />
+        {{$c('small_course')}消课价值（元)
+        <st-help-tooltip id="TSCR003" />
       </span>
     </st-table>
   </div>

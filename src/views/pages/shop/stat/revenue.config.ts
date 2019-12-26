@@ -34,7 +34,7 @@ export const columns = (vm: any) => {
       align: 'right'
     },
     {
-      title: '小班课营收(元)',
+      title: `${vm.$c('small_course')}营收(元)`,
       dataIndex: 'small_course_amount',
 
       align: 'right'

@@ -33,7 +33,7 @@ export class OrderService implements Controller {
         const arr = [
           { group: '云店', 成单数量: data.shop.num, 客单价: data.shop.avg },
           {
-            group: '小班课',
+            group: this.userService.c('small_course'),
             成单数量: data.small_course.num,
             客单价: data.small_course.avg
           },

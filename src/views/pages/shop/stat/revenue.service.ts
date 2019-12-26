@@ -56,7 +56,7 @@ export class RevenueService implements Controller {
             value: data.package_course_amount || 0
           },
           {
-            label: '小班课营收(元)',
+            label: `${this.userService.c('small_course')}营收(元)`,
             value: data.small_course_amount || 0
           },
           {
