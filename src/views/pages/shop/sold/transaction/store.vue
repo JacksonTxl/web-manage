@@ -324,6 +324,7 @@ export default {
     // 删除购物车商品
     onDelBuyCar(i) {
       this.buyCar.splice(i, 1)
+      this.onMemberChange()
     },
     // 生成订单号
     createOrderNum() {
@@ -466,6 +467,7 @@ export default {
       let price = this.couponList.filter(o => o.id === event.target.value.id)[0]
         .price
       this.couponText = `${price}元`
+      this.getPrice()
     },
     // 优惠券处理
     onSelectCoupon() {
@@ -494,6 +496,7 @@ export default {
     // 获取可用优惠券
     getUseCouponList() {
       let productInfo = []
+      const memberId = this.form.getFieldValue('memberId')
       this.buyCar.forEach(val => {
         productInfo.push({
           product_id: val.product_id,
@@ -504,7 +507,7 @@ export default {
       this.listService
         .getUseCoupon({
           product_info: JSON.stringify(productInfo),
-          member_id: ''
+          member_id: memberId
         })
         .subscribe()
     },
