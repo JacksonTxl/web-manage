@@ -116,7 +116,15 @@
             {{ text }}{{ record.unit | enumFilter('sold_common.unit') }}
           </template>
           <template slot="card_status" slot-scope="text">
-            {{ text | enumFilter('sold_common.card_status') }}
+            <st-text
+              :status="{
+                success: text === 1,
+                error: text === 2,
+                warning: text === 3
+              }"
+            >
+              {{ text | enumFilter('sold_common.card_status') }}
+            </st-text>
           </template>
           <template slot="end_time" slot-scope="text">
             {{ text }}
