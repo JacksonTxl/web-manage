@@ -94,7 +94,14 @@ export default {
       })
       this.$modalRouter.push({
         name: 'store-put-in',
-        props: { skuList: list, isOut }
+        props: { skuList: list, isOut },
+        on: {
+          success: () => {
+            console.log('进来了success')
+            this.selectedRowKeys = []
+            this.$router.reload()
+          }
+        }
       })
     },
     goDetail(product) {

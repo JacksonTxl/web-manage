@@ -210,8 +210,7 @@ export default {
       loading: this.transferService.loading$,
       memberList: this.transferService.memberList$,
       info: this.transferService.info$,
-      payList: this.transferService.payList$,
-      sold: this.userService.soldEnums$
+      payList: this.transferService.payList$
     }
   },
   props: ['id', 'type'],
@@ -238,29 +237,27 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          this.transferService
-            .setTransaction(
-              {
-                id: this.id,
-                transferee_member_id: +values.memberId,
-                member_name: values.memberName,
-                mobile: +values.memberMobile,
-                sale_range: this.info.sale_range.type,
-                remain_amount: values.remainPrice,
-                contract_number: values.contractNumber,
-                pay_channel: +values.payType,
-                handling_fee_reduce: values.handling_fee_reduce
-              },
-              this.id,
-              this.type
-            )
-            .subscribe(res => {
-              this.$emit('success')
-              this.show = false
-            })
-        }
+      this.form.validate().then(values => {
+        this.transferService
+          .setTransaction(
+            {
+              id: this.id,
+              transferee_member_id: +values.memberId,
+              member_name: values.memberName,
+              mobile: +values.memberMobile,
+              sale_range: this.info.sale_range.type,
+              remain_amount: values.remainPrice,
+              contract_number: values.contractNumber,
+              pay_channel: +values.payType,
+              handling_fee_reduce: values.handling_fee_reduce
+            },
+            this.id,
+            this.type
+          )
+          .subscribe(res => {
+            this.$emit('success')
+            this.show = false
+          })
       })
     },
     // 切换添加会员

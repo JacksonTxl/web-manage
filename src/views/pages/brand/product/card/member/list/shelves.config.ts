@@ -9,6 +9,8 @@ export const columns = (vm: any) => {
     {
       title: '售卖门店',
       dataIndex: 'shop_name',
+      fixed: 'left',
+      width: 180,
       scopedSlots: { customRender: 'shop_name' },
       sorter: true
     },

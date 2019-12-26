@@ -125,7 +125,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.shelfStatus)
+    console.log(this.cloudStore)
   },
   methods: {
     // 设置状态&名称
@@ -142,9 +142,14 @@ export default {
     },
     // 上下架
     onShelf(record) {
-      this.listService.onShelf(record.product_id).subscribe(res => {
-        this.$router.reload()
-      })
+      console.log(record)
+      let status = record.product_shelves === 1 ? 2 : 1
+      console.log(status)
+      this.listService
+        .onShelf(record.product_id, { shelves_status: status })
+        .subscribe(res => {
+          this.$router.reload()
+        })
     },
     onDel(record) {
       this.$confirm({

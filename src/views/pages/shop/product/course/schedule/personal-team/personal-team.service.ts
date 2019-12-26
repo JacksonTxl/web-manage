@@ -1,9 +1,9 @@
 import { Controller, Injectable, ServiceRoute } from 'vue-service-app'
-import { forkJoin, timer } from 'rxjs'
+import { forkJoin } from 'rxjs'
 import { PersonalTeamScheduleScheduleService } from './service#/schedule.service'
 import { PersonalTeamScheduleCommonService } from './service#/common.service'
 import { AuthService } from '@/services/auth.service'
-import { State, Computed } from 'rx-state'
+import { State } from 'rx-state'
 
 @Injectable()
 export class PersonalTeamService implements Controller {

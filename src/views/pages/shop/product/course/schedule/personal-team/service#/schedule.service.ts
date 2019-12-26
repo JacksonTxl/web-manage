@@ -1,6 +1,6 @@
-import { Controller, Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Effect, Computed } from 'rx-state'
-import { tap, pluck } from 'rxjs/operators'
+import { Injectable } from 'vue-service-app'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import {
   PersonalTeamScheduleScheduleApi,
   AddScheduleInput,
@@ -11,16 +11,10 @@ import {
 import { AuthService } from '@/services/auth.service'
 import { MessageService } from '@/services/message.service'
 
-export interface SetState {
-  courseList: any[]
-  scheduleTable: any[]
-  auth$: object
-}
 @Injectable()
 export class PersonalTeamScheduleScheduleService {
-  state$: State<SetState>
-  courseList$: Computed<any>
-  scheduleTable$: Computed<any>
+  courseList$ = new State([])
+  scheduleTable$ = new State({})
   auth$ = this.authService.authMap$({
     add: 'shop:schedule:personal_team_course_schedule|add',
     addBatch: 'shop:schedule:personal_team_course_schedule|batch_add',
@@ -30,14 +24,7 @@ export class PersonalTeamScheduleScheduleService {
     private scheduleApi: PersonalTeamScheduleScheduleApi,
     private authService: AuthService,
     private msg: MessageService
-  ) {
-    this.state$ = new State({
-      courseList: [],
-      scheduleTable: []
-    })
-    this.courseList$ = new Computed(this.state$.pipe(pluck('courseList')))
-    this.scheduleTable$ = new Computed(this.state$.pipe(pluck('scheduleTable')))
-  }
+  ) {}
   /**
    *
    * @param params
@@ -47,9 +34,7 @@ export class PersonalTeamScheduleScheduleService {
   getList(query: GetScheduleListQuery) {
     return this.scheduleApi.getList(query).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.courseList = res.list
-        })
+        this.courseList$.commit(() => res.list)
       })
     )
   }
@@ -62,23 +47,22 @@ export class PersonalTeamScheduleScheduleService {
   getTable(query: any) {
     return this.scheduleApi.getTable({ size: 999, ...query }).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.scheduleTable = []
-          const dateList = Array.from(
-            new Set(res.list.map((item: any) => item.start_date))
-          )
-          dateList.forEach((ele: any) => {
-            let temp: any[] = []
-            let daySchedule: any = { date: ele, data: [] }
-            res.list.forEach((item: any) => {
-              if (item.start_date === ele) {
-                temp.push(item)
-              }
-            })
-            daySchedule.data = temp
-            state.scheduleTable.push(daySchedule)
+        const _table = [] as any[]
+        const dateList = Array.from(
+          new Set(res.list.map((item: any) => item.start_date))
+        )
+        dateList.forEach((ele: any) => {
+          let temp: any[] = []
+          let daySchedule: any = { date: ele, data: [] }
+          res.list.forEach((item: any) => {
+            if (item.start_date === ele) {
+              temp.push(item)
+            }
           })
+          daySchedule.data = temp
+          _table.push(daySchedule)
         })
+        this.scheduleTable$.commit(() => _table)
       })
     )
   }

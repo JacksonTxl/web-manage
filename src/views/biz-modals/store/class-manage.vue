@@ -9,7 +9,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr v-if="tableData.length <= 10">
             <td colspan="3" class="st-form-table__add">
               <st-button type="dashed" icon="add" block @click="addClass">
                 添加
@@ -45,27 +45,28 @@ export default {
   },
   rxState() {
     return {
-      tableData: this.classManageService.list$,
+      // tableData: this.classManageService.list$,
       loading: this.classManageService.loading$
     }
   },
   data() {
     return {
       show: false,
-      // tableData: [
-      //   { category_name: '营养补给', category_id: 1, isEdit: false },
-      //   { category_name: '营养补给222', category_id: 2, isEdit: false }
-      // ],
-      oldTableData: [
-        { category_name: '营养补给', category_id: 1 },
-        { category_name: '营养补给222', category_id: 2 }
-      ]
+      tableData: [],
+      oldTableData: []
     }
   },
   mounted() {
-    this.classManageService.getList().subscribe()
+    this.getList()
   },
   methods: {
+    getList() {
+      this.classManageService.getList().subscribe(res => {
+        res.list.map(item => (item.isEdit = false))
+        this.tableData = res.list
+        this.oldTableData = JSON.parse(JSON.stringify(res.list))
+      })
+    },
     onSubmit() {
       this.show = false
       this.$emit('success', this.tableData)
@@ -106,8 +107,9 @@ export default {
     },
     delHandle(item, index) {
       this.classManageService.delClass(item.category_id).subscribe(res => {
-        this.tableData.slice(index, 1)
-        this.oldTableData.slice(index, 1)
+        // this.tableData.slice(index, 1)
+        // this.oldTableData.slice(index, 1)
+        this.getList()
       })
     }
   }

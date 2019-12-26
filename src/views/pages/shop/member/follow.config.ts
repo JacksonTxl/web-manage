@@ -1,16 +1,22 @@
 export const columns = (vm: any) => [
   {
     title: '日期',
-    dataIndex: 'created_time'
+    dataIndex: 'created_time',
+    fixed: 'left',
+    width: 160
   },
   {
     title: '录入人',
     dataIndex: 'operator',
-    scopedSlots: { customRender: 'operator' }
+    scopedSlots: { customRender: 'operator' },
+    fixed: 'left',
+    width: 120
   },
   {
     title: '跟进客户',
     dataIndex: 'member',
+    fixed: 'left',
+    width: 120,
     scopedSlots: { customRender: 'member' }
   },
   {
@@ -50,6 +56,7 @@ export const columns = (vm: any) => [
   {
     dataIndex: 'follow_num',
     slots: { title: 'contentTitle' },
+    align: 'right',
     width: '143px'
   },
   {

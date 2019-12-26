@@ -3,6 +3,8 @@ export const columns = (vm: any) => {
   return [
     {
       title: '优惠券名称',
+      fixed: 'left',
+      width: 180,
       dataIndex: 'coupon_name',
       scopedSlots: { customRender: 'coupon_name' }
     },

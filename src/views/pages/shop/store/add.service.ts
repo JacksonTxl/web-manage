@@ -19,8 +19,8 @@ export class AddService implements Controller {
   getList() {
     return this.storeApi.categoryList().pipe(
       tap((res: any) => {
-        console.log('请求了分类', res)
-        this.list$.commit(() => res.list)
+        // console.log('请求了分类', res)
+        // this.list$.commit(() => res.list)
       })
     )
   }

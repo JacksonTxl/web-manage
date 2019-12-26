@@ -61,18 +61,17 @@ export default {
         this.putInService
           .stockOutbound({ stock: this.skuList })
           .subscribe(res => {
+            this.$emit('success')
             this.show = false
-            this.$router.reload()
           })
       } else {
         this.putInService
           .stockWarehouse({ stock: this.skuList })
           .subscribe(res => {
             this.show = false
-            this.$router.reload()
+            this.$emit('success')
           })
       }
-      this.show = false
     }
   }
 }

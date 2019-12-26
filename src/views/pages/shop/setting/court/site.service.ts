@@ -1,24 +1,13 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { AreaSeatApi, AddInput, UpdateInput } from '@/api/v1/shop/area_seat'
 
 @Injectable()
 export class SiteService {
   loading$ = new State({})
-  state$: State<any>
-  resData$: Computed<object>
-  constructor(private areaSeatApi: AreaSeatApi) {
-    this.state$ = new State({
-      resData: {}
-    })
-    this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
-  }
-  protected SET_STATE(data: object) {
-    this.state$.commit(state => {
-      state.resData = data
-    })
-  }
+  resData$ = new State({})
+  constructor(private areaSeatApi: AreaSeatApi) {}
   @Effect()
   add(params: AddInput) {
     return this.areaSeatApi.add(params)
@@ -31,7 +20,7 @@ export class SiteService {
   getInfo(id: number) {
     return this.areaSeatApi.getInfo(id).pipe(
       tap(res => {
-        this.SET_STATE(res)
+        this.resData$.commit(() => res)
       })
     )
   }

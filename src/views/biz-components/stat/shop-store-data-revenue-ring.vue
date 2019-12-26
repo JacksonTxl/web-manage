@@ -6,28 +6,41 @@
 import { Chart } from '@antv/g2'
 import { View } from 'st-data-set'
 import chartMixin from './mixin'
-import Vue from 'vue'
-import StHelpTooltip from '@/views/components/help-tooltip/help-tooltip'
 import { decimalFilter } from './filters'
 
 export default {
+  name: 'BrandStatCourseRing',
   mixins: [chartMixin],
+  data() {
+    return {
+      intervalStack: {},
+      resize: -99
+    }
+  },
   props: {
-    /**
-     * @example
-     * [{name:'图例1',value:123}]
-     */
     data: {
       type: Array,
       default: () => []
     },
     height: {
+      type: [Number || String],
+      default: 198
+    },
+    name: {
+      type: String,
+      default: ''
+    },
+    tooltipId: {
+      type: String,
+      default: ''
+    },
+    total: {
       type: Number,
-      default: 280
+      default: 0
     },
     padding: {
       type: Array,
-      default: () => [30, 80, 38, 0]
+      default: () => [50, 80, 30, 'auto']
     },
     colors: {
       type: Array,
@@ -45,15 +58,32 @@ export default {
       type: String,
       default: '元'
     },
-    sum: {
-      type: [String, Number],
-      default: ''
+    options: {
+      type: Object,
+      default: () => {
+        return {
+          height: 198,
+          totalName: '',
+          color: ['#4679F9', '#894BFF'],
+          totalCount: 0,
+          unit: ''
+        }
+      }
+    }
+  },
+  computed: {
+    dataSource() {
+      //传入的总计为0时，多一个环形图为0的灰色环形图
+      if (this.total === 0) {
+        return [...this.data, { name: 'empty', value: 1 }]
+      }
+      return this.data
     }
   },
   methods: {
     initDv() {
       this.dv = new View()
-      this.dv.source(this.data)
+      this.dv.source(this.dataSource)
       this.dv.transform({
         type: 'map',
         callback(row) {
@@ -63,44 +93,89 @@ export default {
       })
     },
     initChart() {
-      this.chart = new Chart({
-        container: this.$el, // 对应图表的 DOM 容器，可以传入该 DOM 的 id 或者直接传入容器的 HTML 节点对象
-        forceFit: true, // 当 forceFit: true 时宽度配置不生效
-        padding: this.padding, // 设置图表的内边距
-        height: this.height // 指定图表的高度
-      })
-      // 数据源数据，标准的 JSON 数组或者 DataSet.View 对象
+      // chart初始化实例
+      this.getChartInstance()
+      // 加载数据
       this.chart.source(this.dv, {
         value: {
-          // formatter鼠标移入提示信息
           formatter: v => v + this.unit
         }
       })
-      // coord 设置坐标系类型，同时允许进行各种坐标系变换，默认为笛卡尔坐标系。
-      // theta 一种半径固定的极坐标系，常用于饼图。
+      // 设置坐标系
+      this.setCoord()
+      // 设置提示信息
+      this.setTooltip()
+      // 设置图例
+      this.setLegend()
+      // 设置复制元素
+      this.setGuideHtml()
+      // 设置渲染环形图
+      this.getintervalStack()
+    },
+    getintervalStack() {
+      // 环形图初始化
+      this.intervalStack = this.chart
+        .intervalStack()
+        .style({
+          fillOpacity: 1,
+          cursor: 'pointer'
+        })
+        .tooltip('name*value', function(item, percent, a) {
+          return {
+            name: item,
+            value: percent
+          }
+        })
+        .position('value')
+        .color('name', [...this.colors, '#e9edf2'])
+        .select(false)
+        .active({
+          style: {
+            fillOpacity: 1,
+            lineWidth: 8
+          }
+        })
+      this.chart.render()
+      // 自定义监听环形图事件
+      this.chartEvent()
+    },
+    getChartInstance() {
+      this.chart = new Chart({
+        container: this.$el,
+        forceFit: true,
+        padding: this.padding,
+        height: this.height
+      })
+    },
+    setTooltip() {
+      this.chart.tooltip({
+        showTitle: false,
+        itemTpl: `<li class="tooltip-item-{name}">
+                    <span style="background-color:{color};" class="g2-tooltip-marker"></span>
+                    {name}
+                    <span class="st-g2-tooltip-value">| {value}</span>
+                  </li>`
+      })
+    },
+    setCoord() {
       this.chart.coord('theta', {
-        // // 空心圆的半径，值范围为 0 至 1
         innerRadius: 0.65
       })
-      // legend 配置图表图例。
+    },
+    setLegend() {
       this.chart.legend({
-        // 图表位置
         position: 'right-center',
-        // 针对分类类型图例，用于开启是否使用 HTML 渲染图例，默认为 false，true 表示使用 HTML 渲染图例。这种情况下不要使用 'legend-item:click' 建议使用  onClick
         useHtml: true,
-        // 当 useHtml 为 true 时生效，用于指定生成图例的图例项 HTML 模板
         itemTpl: (name, color, checked, index) => {
-          return (
-            // `<li class="g2-legend-list-item item-{index} {checked}" data-color="{originColor}" data-value="{originValue}">` +
-            // `<i class="g2-legend-marker" style="background-color:{color};"></i>` +
-            // `<span class="g2-legend-text">${name}&nbsp;<span id='legend-{index}'></span></span>` +
-            // `</li>`
-            `<li class="g2-legend-list-item item-{index} {checked}" data-color="{originColor}" data-value="{originValue}">` +
-            `<i class="g2-legend-marker" style="background-color:{color};"></i>` +
-            `<span class="g2-legend-text">${name}</span>` +
-            `<span class="g2-legend-money">¥${this.data[index].value}</span>` +
-            `</li>`
-          )
+          const row = this.dv.findRow({ name })
+          const value = row.value
+          return `<li class="g2-legend-list-item item-{originValue} item-{index} {checked}" data-color="{originColor}" data-value="{originValue}">
+                    <i class="g2-legend-marker" style="background-color:{color};"></i>
+                    <span class="g2-legend-text "g2-legend-text">${name}</span>
+                    <div class='legend-right mg-l12'>
+                      <span class='legend-percent g2-legend-money'>¥${value}</span>
+                    </div>
+                  </li>`
         },
         onHover: ev => {
           // 总计为 0 是执行hover
@@ -113,82 +188,71 @@ export default {
           const legend = ev.currentTarget
           // 选中对应单元
           this.total !== 0 && geom.setShapesActived(shapes)
+          legend.addEventListener('mouseleave', () => {
+            this.resetTotal()
+          })
           $s('.guide-value').textContent = row.value
-          $s('.guide-name').textContent = row.name
+          $s('.guide-name-text').textContent = row.name
         }
       })
-      // 辅助 html。
+    },
+    setGuideHtml() {
+      // 总计的自定义DOM
       this.chart.guide().html({
-        // // html 的中心位置
         position: ['50%', '50%'],
-        //
         html: () => {
-          let sum = this.sum ? this.sum : decimalFilter(this.dv.sum('value'))
-          return (
-            `<div class='guide'>` +
-            `<div class='guide-title'><span class='guide-value'>${sum}</span><span class='guide-unit'>${
-              this.unit
-            }</span></div>` +
-            `<div class='guide-name'>总营收</div>` +
-            `</div>`
-          )
+          this.resize = Math.random()
+          return `<div class='guide'>
+                    <div class='guide-name'>
+                      <span class="guide-name-text">${this.name}</span>
+                    </div>
+                    <div class='guide-title'>
+                      <span class='guide-value'>${this.total}</span>
+                      <span class='guide-unit'>${this.unit}</span>
+                    </div>
+                  </div>`
         }
       })
-      // 图表的 tooltip 配置，G2 图表的 tooltip 使用 html 渲染。
-      this.chart.tooltip({
-        showTitle: false
-      })
-
-      this.chart
-        .intervalStack()
-        .style({
-          fillOpacity: 1,
-          cursor: 'pointer'
-        })
-        .position('value')
-        .color('name', this.colors)
-        .select(false)
-        .active({
-          style: {
-            fillOpacity: 1,
-            lineWidth: 8
-          }
-        })
-
-      this.chart.render()
-
+    },
+    resetTotal() {
       const $s = this.$el.querySelector.bind(this.$el)
-
-      this.chart.on('interval:mouseenter', e => {
-        const origin = e.data._origin
-        $s('.guide-value').textContent = origin.value
-        $s('.guide-name').textContent = origin.name
-      })
-
-      const legendListItems = [
-        ...this.$el.querySelectorAll('.g2-legend-list-item')
-      ]
-
-      const vm = this
-      vm.offMouseHandlers = []
-      const mouseHandler = function() {
-        const name = this.dataset.value
-        const row = vm.dv.findRow({ name })
-        $s('.guide-value').textContent = row.value
-        $s('.guide-name').textContent = row.name
+      $s('.guide-value').textContent = this.total
+      $s('.guide-name-text').textContent = this.name
+    },
+    setUnit(e) {
+      const $s = this.$el.querySelector.bind(this.$el)
+      // 当环形图总计都是零的时候隐藏tooltip
+      if (e.data._origin.name === 'empty') {
+        $s('.g2-tooltip').setAttribute('style', 'display: none')
+        return
       }
+      const origin = e.data._origin
+      const shapes = e.shapes
+      const geom = e.geom
 
-      legendListItems.forEach(el => {
-        el.addEventListener('mouseenter', mouseHandler, false)
-        this.offMouseHandlers.push(() => {
-          el.addEventListener('mouseenter', mouseHandler, false)
-        })
+      $s('.guide-value').textContent = origin.value
+      $s('.guide-name-text').textContent = origin.name
+    },
+    chartEvent() {
+      // 鼠标进入环形显示相关的值
+      this.chart.on('interval:mouseenter', ev => {
+        const shape = ev.shape
+        const origin = ev.data._origin
+        if (origin.name === 'empty') {
+          this.intervalStack.clearActivedShapes(shape)
+        }
+        this.setUnit(ev)
+      })
+      // 鼠标离开显示总值
+      this.chart.on('interval:mouseleave', e => {
+        this.resetTotal()
       })
     }
   },
   beforeDestroy() {
     if (this.chart) {
-      this.offMouseHandlers.forEach(fn => fn())
+      // 注销图形所有事件
+      this.chart.off()
     }
   }
 }
