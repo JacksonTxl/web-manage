@@ -210,7 +210,7 @@
 import { UserService } from '@/services/user.service'
 import { TitleService } from '@/services/title.service'
 import moment from 'moment'
-import { cloneDeep, remove, lodashFind } from 'lodash-es'
+import { cloneDeep, remove, find as lodashFind } from 'lodash-es'
 import { AddService } from './add.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import H5Container from '@/views/biz-components/h5/h5-container'
