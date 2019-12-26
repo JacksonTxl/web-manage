@@ -1,39 +1,25 @@
-import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
-import { State, Computed, Effect, Action } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { Injectable, Controller } from 'vue-service-app'
+import { State } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { CrowdAPI } from '@/api/v1/crowd'
 import { forkJoin } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
 
-interface CrowdIndexState {
-  crowdIndexInfo: any
-}
 @Injectable()
-export class IndexService extends Store<CrowdIndexState> implements Controller {
-  state$: State<CrowdIndexState>
-  crowdIndexInfo$: Computed<string>
+export class IndexService implements Controller {
+  loading$ = new State({})
+  crowdIndexInfo$ = new State({})
   auth$ = this.authService.authMap$({
     add: 'shop:member:crowd|add'
   })
-  constructor(private crowdAPI: CrowdAPI, private authService: AuthService) {
-    super()
-    this.state$ = new State({
-      crowdIndexInfo: {}
-    })
-    this.crowdIndexInfo$ = new Computed(
-      this.state$.pipe(pluck('crowdIndexInfo'))
-    )
-  }
+  constructor(private crowdAPI: CrowdAPI, private authService: AuthService) {}
 
   // 获取列表
   getListInfo() {
     return this.crowdAPI.getCrowdShopIndex().pipe(
       tap(res => {
         res = this.authService.filter(res, 'info.list')
-        this.state$.commit(state => {
-          state.crowdIndexInfo = res
-        })
+        this.crowdIndexInfo$.commit(() => res)
       })
     )
   }
@@ -43,7 +29,7 @@ export class IndexService extends Store<CrowdIndexState> implements Controller {
   init() {
     return forkJoin(this.getListInfo())
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+  beforeEach() {
     return this.init()
   }
 }

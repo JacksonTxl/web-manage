@@ -124,7 +124,6 @@ export default {
     return {
       loading: this.freezeService.loading$,
       info: this.freezeService.info$,
-      sold: this.userService.soldEnums$,
       memberPaymentlist: this.freezeService.memberPaymentlist$
     }
   },
@@ -190,26 +189,24 @@ export default {
       this.form.resetFields(['payType'])
     },
     onSubmit() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          this.freezeService
-            .freeze(
-              {
-                start_time: moment(this.info.start_time).format(
-                  'YYYY-MM-DD HH:mm'
-                ),
-                end_time: values.endTime.format('YYYY-MM-DD HH:mm'),
-                frozen_fee: this.frozen_fee,
-                frozen_pay_type: values.payType
-              },
-              this.id,
-              this.type
-            )
-            .subscribe(res => {
-              this.show = false
-              this.$emit('success')
-            })
-        }
+      this.form.validate().then(values => {
+        this.freezeService
+          .freeze(
+            {
+              start_time: moment(this.info.start_time).format(
+                'YYYY-MM-DD HH:mm'
+              ),
+              end_time: values.endTime.format('YYYY-MM-DD HH:mm'),
+              frozen_fee: this.frozen_fee,
+              frozen_pay_type: values.payType
+            },
+            this.id,
+            this.type
+          )
+          .subscribe(res => {
+            this.show = false
+            this.$emit('success')
+          })
       })
     }
   }

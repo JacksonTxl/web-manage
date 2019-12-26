@@ -55,11 +55,11 @@
       </span>
       <span slot="class_conditions">
         成班条件
-        <st-help-tooltip id="TSCRM001" />
+        <!-- <st-help-tooltip id="TSCRM001" /> -->
       </span>
       <span slot="course_status">
         状态
-        <st-help-tooltip id="TSCRM001" />
+        <!-- <st-help-tooltip id="TSCRM001" /> -->
       </span>
       <template slot="action" slot-scope="text, record">
         <st-table-actions>
@@ -143,7 +143,6 @@ export default {
   data() {
     return {
       CLASS_STATUS
-      // columns
     }
   },
   computed: {

@@ -8,39 +8,21 @@ import {
   GetScheduleTableQuery
 } from '@/api/v1/schedule/team/schedule'
 import { Injectable } from 'vue-service-app'
-import { State, Effect, Computed } from 'rx-state'
+import { State, Effect } from 'rx-state'
 import { tap, pluck } from 'rxjs/operators'
 import { MessageService } from '@/services/message.service'
 
-export interface SetState {
-  scheduleTeamCourseList: any[]
-  scheduleTable: any[]
-}
 @Injectable()
 export class TeamScheduleScheduleService {
-  state$: State<SetState>
-  scheduleTeamCourseList$: Computed<any>
-  scheduleTable$: Computed<any>
-  refresh$: Computed<any>
+  scheduleTeamCourseList$ = new State([])
+  scheduleTable$ = new State([])
+  refresh$ = new State(0)
   loading$ = new State({})
   constructor(
     private scheduleApi: TeamScheduleScheduleApi,
     private authService: AuthService,
     private msg: MessageService
-  ) {
-    this.state$ = new State({
-      scheduleTeamCourseList: [],
-      scheduleTable: [],
-      refresh: 0
-    })
-    this.scheduleTeamCourseList$ = new Computed(
-      this.state$.pipe(pluck('scheduleTeamCourseList'))
-    )
-    this.scheduleTable$ = new Computed(this.state$.pipe(pluck('scheduleTable')))
-    this.refresh$ = new Computed(
-      this.state$.pipe(pluck('scheduleTeamCourseList'))
-    )
-  }
+  ) {}
   /**
    *
    * @param params
@@ -51,28 +33,27 @@ export class TeamScheduleScheduleService {
     return this.scheduleApi.getList(query).pipe(
       tap(res => {
         res = this.authService.filter(res)
-        this.state$.commit(state => {
-          state.scheduleTeamCourseList = res.list
-          // .map((item: any) => {
-          //   let end_date = ''
-          //   if (moment(`${item.start_date} ${item.start_time}`).valueOf() >= moment(`${item.start_date} ${item.end_time}`).valueOf()) {
-          //     item.plusOne = '+1'
-          //     end_date = moment(moment(`${item.start_date} ${item.start_time}`).valueOf() + 24 * 60 * 60 * 1000).format('YYYY-MM-DD').valueOf()
-          //   } else {
-          //     end_date = item.start_date
-          //   }
-          //   return { // add new event data
-          //     title: item.course_name,
-          //     groupId: JSON.stringify(item),
-          //     id: item.id,
-          //     auth: item.auth,
-          //     start: `${item.start_date} ${item.start_time}`,
-          //     end: `${end_date} ${item.end_time}`
-          //   }
-          // })
-        })
+        this.scheduleTeamCourseList$.commit(() => res.list)
       })
     )
+  }
+  SET_SCHEDULE_TABLE(resList: any[]) {
+    const _table = [] as any[]
+    const dateList = Array.from(
+      new Set(resList.map((item: any) => item.start_date))
+    )
+    dateList.forEach((ele: any) => {
+      let temp: any[] = []
+      let daySchedule: any = { date: ele, data: [] }
+      resList.forEach((item: any) => {
+        if (item.start_date === ele) {
+          temp.push(item)
+        }
+      })
+      daySchedule.data = temp
+      _table.push(daySchedule)
+    })
+    this.scheduleTable$.commit(() => _table)
   }
   /**
    *
@@ -83,23 +64,7 @@ export class TeamScheduleScheduleService {
     return this.scheduleApi.getTable({ size: 999, ...query }).pipe(
       tap(res => {
         res = this.authService.filter(res)
-        this.state$.commit(state => {
-          state.scheduleTable = []
-          const dateList = Array.from(
-            new Set(res.list.map((item: any) => item.start_date))
-          )
-          dateList.forEach((ele: any) => {
-            let temp: any[] = []
-            let daySchedule: any = { date: ele, data: [] }
-            res.list.forEach((item: any) => {
-              if (item.start_date === ele) {
-                temp.push(item)
-              }
-            })
-            daySchedule.data = temp
-            state.scheduleTable.push(daySchedule)
-          })
-        })
+        this.SET_SCHEDULE_TABLE(res.list)
       })
     )
   }

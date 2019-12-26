@@ -1,7 +1,7 @@
 import { UserService } from '@/services/user.service'
 import { Injectable } from 'vue-service-app'
 import { TransactionApi } from '@/api/v1/sold/transaction'
-import { Effect, State, Action, Computed } from 'rx-state'
+import { Effect, State, Action } from 'rx-state'
 import { then } from '@/operators'
 import { debounceTime, switchMap, catchError } from 'rxjs/operators'
 import { EMPTY } from 'rxjs'

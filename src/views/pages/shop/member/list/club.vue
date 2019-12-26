@@ -236,9 +236,11 @@
           v-if="record.auth['shop:member:member|get']"
           @click="infoFunc(record)"
         >
-          {{ text }}
+          <st-overflow-text :value="text" maxWidth="100px"></st-overflow-text>
         </a>
-        <span v-else>{{ text }}</span>
+        <span v-else>
+          <st-overflow-text :value="text" maxWidth="100px"></st-overflow-text>
+        </span>
       </div>
       <div slot="salesman_protect_day" slot-scope="text, record">
         <span class="mg-r4">{{ record.salesman_protect_day }}</span>

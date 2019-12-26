@@ -1,5 +1,5 @@
 import { Injectable } from 'vue-service-app'
-import { State, Computed, computed, log } from 'rx-state'
+import { State, Computed, computed } from 'rx-state'
 import { tap, pluck, map } from 'rxjs/operators'
 import { ConstApi } from '@/api/const'
 import { MenuApi } from '@/api/v1/common/menu'
@@ -7,7 +7,6 @@ import { StaffApi } from '@/api/v1/staff'
 import { TooltipApi } from '@/api/v1/admin/tooltip'
 import { get, reduce, isPlainObject, mapValues } from 'lodash-es'
 import { ShopApi } from '@/api/v1/shop'
-import { IconUrlApi } from '@/api/v1/brand/getIconList'
 import { Dictionary } from 'lodash'
 import Vue from 'vue'
 interface User {
@@ -147,14 +146,12 @@ export class UserService {
   groupBuyEnums$ = new Computed<ModuleEnums>(
     this.enums$.pipe(pluck('group_buy'))
   )
-  urlData$ = new State({})
   constructor(
     private constApi: ConstApi,
     private menuApi: MenuApi,
     private staffApi: StaffApi,
     private tooltipApi: TooltipApi,
-    private shopApi: ShopApi,
-    private iconUrlApi: IconUrlApi
+    private shopApi: ShopApi
   ) {}
   SET_USER(staff: any) {
     const info = staff.info
@@ -234,13 +231,6 @@ export class UserService {
     return this.shopApi.getShopList().pipe(
       tap(res => {
         this.SET_SHOP_LIST(res)
-      })
-    )
-  }
-  fetchCodeUrl() {
-    return this.iconUrlApi.getIconList().pipe(
-      tap(res => {
-        this.urlData$.commit(() => res.list)
       })
     )
   }

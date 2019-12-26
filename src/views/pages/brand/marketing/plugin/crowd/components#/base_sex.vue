@@ -7,7 +7,8 @@
       v-model="value.getData.base_sex"
       @change="onChange"
     >
-      <a-radio :value="item" v-for="(item, index) in sexOptions" :key="index">
+      <!-- 使用{name:'男',value:1} 作为绑定的模型 -->
+      <a-radio :value="item" v-for="item in sexOptions" :key="item.value">
         {{ item.name }}
       </a-radio>
     </a-radio-group>
@@ -16,6 +17,8 @@
 <script>
 import titleInfo from './title-info.vue'
 import { UserService } from '@/services/user.service'
+import { find as lodashFind } from 'lodash-es'
+import { map } from 'rxjs/operators'
 export default {
   serviceInject() {
     return {
@@ -24,22 +27,20 @@ export default {
   },
   rxState() {
     return {
-      staffEnums: this.userService.staffEnums$
-    }
-  },
-  computed: {
-    sexOptions() {
-      let list = []
-      if (!this.staffEnums.sex) return list
-      Object.entries(this.staffEnums.sex.value).forEach(o => {
-        list.push({ value: +o[0], name: o[1] })
-      })
-      return list
+      sexOptions: this.userService.getOptions$('staff.sex').pipe(
+        // 后端需要{name:'男',value:1} 格式
+        map(options =>
+          options.map(item => {
+            item.name = item.label
+            return item
+          })
+        )
+      )
     }
   },
   model: {
     type: 'value',
-    event: 'dataChangge'
+    event: 'dataChange'
   },
   props: {
     value: Object
@@ -58,7 +59,7 @@ export default {
   methods: {
     onChange(event) {
       this.value.getData.base_sex = event.target.value
-      this.$emit('dataChangge', this.value)
+      this.$emit('dataChange', this.value)
     }
   },
   mounted() {

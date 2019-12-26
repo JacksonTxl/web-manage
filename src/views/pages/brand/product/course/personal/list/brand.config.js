@@ -1,13 +1,14 @@
 export const columns = vm => [
   {
-    title: '课程类型',
-    dataIndex: 'category_name'
-  },
-  {
     title: '课程名称',
     dataIndex: 'course_name',
+    fixed: 'left',
     width: 200,
     scopedSlots: { customRender: 'course_name' }
+  },
+  {
+    title: '课程类型',
+    dataIndex: 'category_name'
   },
   {
     title: '时长（分钟）',

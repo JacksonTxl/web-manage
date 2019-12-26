@@ -1,16 +1,12 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect, Action } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { CrowdAPI } from '@/api/v1/crowd'
 import { forkJoin } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
 
-interface CrowdIndexState {
-  crowdIndexInfo: any
-}
 @Injectable()
-export class IndexService {
+export class IndexService implements Controller {
   crowdIndexInfo$ = new State({})
   crowdIndexList$ = new State([])
   loading$ = new State({})

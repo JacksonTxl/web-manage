@@ -1,8 +1,8 @@
 import { Injectable } from 'vue-service-app'
 import { ShopStaffApi } from '@/api/v1/staff/staff'
-import { tap, pluck } from 'rxjs/operators'
+import { tap } from 'rxjs/operators'
 import { MessageService } from '@/services/message.service'
-import { State, Computed } from 'rx-state'
+import { State } from 'rx-state'
 
 export interface SetState {
   list: object[]
@@ -11,25 +11,14 @@ export interface SetState {
 
 @Injectable()
 export class LeaveStoreService {
-  state$: State<SetState>
-  list$: Computed<object[]>
-  operate$: Computed<number>
-  constructor(private api: ShopStaffApi, private message: MessageService) {
-    this.state$ = new State({
-      list: [],
-      operate: 0
-    })
-
-    this.list$ = new Computed(this.state$.pipe(pluck('list')))
-    this.operate$ = new Computed(this.state$.pipe(pluck('operate')))
-  }
+  list$ = new State([])
+  operate$ = new State(0)
+  constructor(private api: ShopStaffApi, private message: MessageService) {}
   getInfo(id: string) {
     return this.api.getLeaveStoreInfo(id).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.list = res.list
-          state.operate = res.operate
-        })
+        this.list$.commit(() => res.list)
+        this.operate$.commit(() => res.operate)
       })
     )
   }
