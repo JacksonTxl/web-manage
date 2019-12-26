@@ -3,7 +3,9 @@ import { State, Effect } from 'rx-state'
 import {
   TransactionApi,
   TransactionListInput,
-  ProductInfoParams
+  ProductInfoParams,
+  TransactionPriceInput,
+  CouponParams
 } from '@/api/v1/sold/transaction'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
@@ -72,9 +74,20 @@ export class ListService {
   /**
    * 云店
    */
-  @Effect()
   getGoodsDetail(id: number) {
     return this.transactionApi.goodsDetail(id).pipe(tap(() => {}))
+  }
+  /**
+   * 云店价格计算
+   */
+  getStorePrice(params: TransactionPriceInput) {
+    return this.transactionApi.getTransactionPrice(params).pipe(tap(() => {}))
+  }
+  /**
+   * 获取可用优惠券
+   */
+  getUseCoupon(query: CouponParams) {
+    return this.transactionApi.getCouponList(query).pipe(tap(() => {}))
   }
   /**
    * 云店创建订单

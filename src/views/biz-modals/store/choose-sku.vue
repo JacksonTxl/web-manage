@@ -38,9 +38,8 @@ export default {
   data() {
     return {
       show: false,
-      value1: 'Apple',
       productInfo: {
-        product_id: 1, // 商品id
+        product_id: '', // 商品id
         product_name: '商品名', // 商品名称
         rule_name: '', // 规格信息
         unit_price: 0, // 单价
@@ -48,107 +47,7 @@ export default {
         nums: 1,
         sku_id: '' // 规格id
       }, // 规格选择完的商品信息
-      allSpec: [
-        {
-          spec_id: 1,
-          spec_name: '颜色',
-          spec_item_arr: [
-            {
-              spec_item_id: 11,
-              spec_item_name: '红色'
-            },
-            {
-              spec_item_id: 12,
-              spec_item_name: '蓝色'
-            },
-            {
-              spec_item_id: 13,
-              spec_item_name: '黄色'
-            }
-          ]
-        },
-        {
-          spec_id: 2,
-          spec_name: '内存',
-          spec_item_arr: [
-            {
-              spec_item_id: 21,
-              spec_item_name: '16G'
-            },
-            {
-              spec_item_id: 22,
-              spec_item_name: '32G'
-            },
-            {
-              spec_item_id: 23,
-              spec_item_name: '64G'
-            }
-          ]
-        }
-      ], // 规格信息
-      specItemId: [], // 规格值id
-      allSpecInfo: [
-        {
-          spec_arr: [
-            {
-              spec_id: 1,
-              spec_name: '颜色',
-              spec_item_id: 11,
-              spec_item_name: '红色'
-            },
-            {
-              spec_id: 2,
-              spec_name: '内存',
-              spec_item_id: 21,
-              spec_item_name: '16G'
-            }
-          ],
-          stock_amount: 10,
-          market_price: 21,
-          selling_price: 30,
-          sku_id: 111
-        },
-        {
-          spec_arr: [
-            {
-              spec_id: 1,
-              spec_name: '颜色',
-              spec_item_id: 11,
-              spec_item_name: '红色'
-            },
-            {
-              spec_id: 2,
-              spec_name: '内存',
-              spec_item_id: 22,
-              spec_item_name: '32G'
-            }
-          ],
-          stock_amount: 20,
-          market_price: 21,
-          selling_price: 380,
-          sku_id: 112
-        },
-        {
-          spec_arr: [
-            {
-              spec_id: 1,
-              spec_name: '颜色',
-              spec_item_id: 11,
-              spec_item_name: '红色'
-            },
-            {
-              spec_id: 2,
-              spec_name: '内存',
-              spec_item_id: 23,
-              spec_item_name: '64G'
-            }
-          ],
-          stock_amount: 30,
-          market_price: 61,
-          selling_price: 230,
-          sku_id: 113
-        }
-      ] // 规格内容信息
+      specItemId: [] // 规格值id
     }
   },
   bem: {
@@ -208,10 +107,6 @@ export default {
     }
   },
   created() {
-    // this.allSpec = this.data.all_spec
-    // this.allSpecInfo = this.data.product_sku
-    console.log(this.productData)
-    console.log(this.productData.product_sku)
     this.changeData()
   }
 }

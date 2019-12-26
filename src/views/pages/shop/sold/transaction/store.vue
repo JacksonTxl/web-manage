@@ -76,6 +76,7 @@
                       <a-input-number
                         :min="1"
                         :max="record.stock_amount"
+                        @change="getPrice"
                         v-model="record.nums"
                       />
                     </template>
@@ -322,6 +323,8 @@ export default {
             stock_amount: res.product_sku[0].stock_amount
           })
         }
+        this.getPrice()
+        this.getUseCouponList()
       })
     },
     // 删除购物车商品
@@ -480,6 +483,47 @@ export default {
     // 优惠券处理
     onSelectCoupon() {
       this.couponDropdownVisible = false
+    },
+    // 价格计算
+    getPrice() {
+      let productInfo = []
+      this.buyCar.forEach(val => {
+        productInfo.push({
+          sku_id: val.sku_id,
+          nums: val.nums
+        })
+      })
+      this.listService
+        .getStorePrice({
+          product_type: 8,
+          reduce_amount: '',
+          coupon_id: '',
+          member_id: '',
+          product_info: productInfo
+        })
+        .subscribe(res => {
+          console.log(res)
+        })
+    },
+    // 获取可用优惠券
+    getUseCouponList() {
+      let productInfo = []
+      this.buyCar.forEach(val => {
+        productInfo.push({
+          product_id: val.product_id,
+          sku_id: val.sku_id,
+          nums: val.nums
+        })
+      })
+      this.listService
+        .getUseCoupon({
+          product_info: productInfo,
+          member_id: ''
+        })
+        .subscribe(res => {
+          console.log(res)
+        })
+      console.log(this.productInfo)
     }
   },
   computed: {

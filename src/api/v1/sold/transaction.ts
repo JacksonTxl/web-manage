@@ -15,7 +15,7 @@ export interface ProductType {
   product_id: number
 }
 export interface TransactionPriceInput {
-  product_id: number
+  product_id?: number
   product_type: number
   product_num?: number
   specs_id?: number
