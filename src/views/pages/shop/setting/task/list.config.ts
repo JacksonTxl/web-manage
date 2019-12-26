@@ -2,6 +2,8 @@ export const columns = () => {
   return [
     {
       title: '时间',
+      fixed: 'left',
+      width: 160,
       dataIndex: 'task_time'
     },
     {
@@ -24,16 +26,19 @@ export const columns = () => {
     },
     {
       title: '总数',
+      align: 'right',
       dataIndex: 'total_num',
       scopedSlots: { customRender: 'total_num' }
     },
     {
       title: '成功数',
+      align: 'right',
       dataIndex: 'success_num',
       scopedSlots: { customRender: 'success_num' }
     },
     {
       title: '失败数',
+      align: 'right',
       dataIndex: 'fail_num',
       scopedSlots: { customRender: 'fail_num' }
     },

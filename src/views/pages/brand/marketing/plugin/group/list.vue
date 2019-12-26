@@ -58,24 +58,30 @@
                 record.activity_state && record.activity_state.published_time
               "
             >
-              <a-popover
-                v-if="record.activity_state.published_time"
-                trigger="click"
-                placement="topLeft"
-                :overlayStyle="{ width: '300px' }"
+              <st-text
+                :status="{
+                  warning: record.activity_state.id === 1
+                }"
               >
-                <template slot="content">
-                  <span>发布时间：</span>
-                  <span>{{ record.activity_state.published_time }}</span>
-                </template>
-                <span>
-                  {{ record.activity_state.name }}
-                  <a-icon type="exclamation-circle" />
+                {{ record.activity_state.name }}
+              </st-text>
+              <st-help-popover v-if="record.activity_state.published_time">
+                <span slot="content">
+                  发布时间：{{ record.activity_state.published_time }}
                 </span>
-              </a-popover>
+              </st-help-popover>
             </span>
             <span v-else>
-              {{ record.activity_state.name }}
+              <st-text
+                :status="{
+                  warning: record.activity_state.id === 1,
+                  default: record.activity_state.id === 2,
+                  success: record.activity_state.id === 3,
+                  error: record.activity_state.id === 4
+                }"
+              >
+                {{ record.activity_state.name }}
+              </st-text>
             </span>
           </template>
           <!-- 做权限点判断 -->
