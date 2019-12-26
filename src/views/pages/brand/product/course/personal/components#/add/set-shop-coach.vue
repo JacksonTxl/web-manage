@@ -39,7 +39,6 @@
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="22" :xs="22" :offset="1">
-        {{ $c('coach') }}
         <st-form-item>
           <template slot="label">
             上课{{ $c('coach') }}
