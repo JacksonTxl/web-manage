@@ -1,5 +1,5 @@
 <script>
-import { merge, omit, map } from 'lodash-es'
+import { merge, omit, map, forEach } from 'lodash-es'
 function addOddEvenKey(dataSource) {
   for (let i in dataSource) {
     dataSource[i].$_oddEvenKey = i % 2 ? `even-${i}` : `odd-${i}`
@@ -9,9 +9,12 @@ function addOddEvenKey(dataSource) {
           dataSource[i].$_oddEvenKey
         }-${j}`
       }
+      if (dataSource[i].children.length) {
+        // 实际使用$_children来显示展开图标，因为没有元素时不需要展开
+        dataSource[i].$_children = dataSource[i].children
+      }
     }
   }
-  // console.log(dataSource)
   return dataSource
 }
 export default {
@@ -48,6 +51,10 @@ export default {
     simplePage: {
       type: Boolean,
       default: false
+    },
+    stripe: {
+      type: Boolean,
+      default: true
     }
   },
   watch: {
@@ -139,26 +146,30 @@ export default {
       ))
     },
     // 在有children的情况下显示自定义图标
-    CustomExpandIcon(props) {
-      let text = ''
-      let className = 'st-expand-row-icon'
-      if (props.record.children && props.record.children.length) {
-        const type = props.expanded ? 'table-up' : 'table-down'
-        text = <st-icon type={type} />
-        className = 'st-expand-row-icon mg-r8'
-      }
-      return (
-        <span
-          class={className}
-          onClick={e => props.onExpand(props.record, e)}
-          style={{ cursor: 'pointer' }}
-        >
-          {text}
-        </span>
-      )
-    },
+    // CustomExpandIcon(props) {
+    //   let text = ''
+    //   let className = 'st-expand-row-icon'
+    //   if (props.record.children && props.record.children.length) {
+    //     const type = props.expanded ? 'table-up' : 'table-down'
+    //     text = <st-icon type={type} />
+    //     className = 'st-expand-row-icon mg-r8'
+    //   }
+    //   return (
+    //     <span
+    //       class={className}
+    //       onClick={e => props.onExpand(props.record, e)}
+    //       style={{ cursor: 'pointer' }}
+    //     >
+    //       {text}
+    //     </span>
+    //   )
+    // },
     rowClassName(record) {
-      return record.$_oddEvenKey
+      if (this.stripe) {
+        return record.$_oddEvenKey
+      } else {
+        return ''
+      }
     }
   },
   render(h) {
@@ -168,10 +179,11 @@ export default {
       dataSource: this.tableDataSource,
       scroll: this.dataSource.length >= 1 ? this.scroll : {},
       rowClassName: this.rowClassName,
+      childrenColumnName: '$_children',
       ...this.$attrs
     }
-    // 判断是否是父子表格
-    props.expandIcon = this.CustomExpandIcon
+    // 判断是否是父子表格 先去掉 自定义图标和自定义expandedRowRender冲突
+    // props.expandIcon = this.CustomExpandIcon
     const ce = this.alertSelection.onReset
       ? h('div', { class: 'st-table-wapper' }, [
           h('a-alert', {
