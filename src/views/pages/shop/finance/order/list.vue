@@ -68,10 +68,7 @@
             </a>
             <!-- v-if="record.auth['brand_shop:order:order|split']" -->
 
-            <a
-              @click="onSplit(record)"
-              v-if="record.auth['brand_shop:order:order|split']"
-            >
+            <a @click="onSplit(record)">
               业绩拆分
             </a>
             <!-- v-if="record.auth['shop:order:order|print']" -->

@@ -82,7 +82,9 @@ export class OrderApi extends Api {
    * 业绩拆分
    */
   split(params: SplitParams) {
-    return this.http.post(`/v1/finance/order/split`, { params: { ...params } })
+    return this.http.post(`/v1/finance/order/split`, {
+      params: { ...params }
+    })
   }
   /**
    * 订单收款明细（流水列表）
@@ -115,5 +117,11 @@ export class OrderApi extends Api {
    */
   gatheringTicketInfo(orderId: number) {
     return this.http.get(`/v1/finance/order/ticket/${orderId}`)
+  }
+  /**
+   * 配送方式
+   */
+  getDelivery(id: number) {
+    return this.http.get(`/v1/finance/order/shipping/${id}`)
   }
 }

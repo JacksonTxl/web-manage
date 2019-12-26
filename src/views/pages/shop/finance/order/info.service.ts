@@ -43,7 +43,7 @@ export class InfoService implements Controller {
               }
             })
           }
-          if (res.info.order_status === 12) {
+          if (res.info.product_type === 12) {
             tabs.push({
               label: '配送方式',
               route: {
