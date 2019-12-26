@@ -4,7 +4,10 @@ export const ruleOptions = (vm: any) => {
       rules: [{ required: true, message: '请选择预约日期' }]
     },
     start_time: {
-      rules: [{ required: true, message: '请选择预约时间' }]
+      rules: [{ required: true, message: '请选择开始时间' }]
+    },
+    end_time: {
+      rules: [{ required: true, message: '请选择结束时间' }]
     },
     course_id: {
       rules: [

@@ -13,6 +13,7 @@
           <st-form-item label="添加课程" required class="mg-t12">
             <a-select
               placeholder="请选择课程"
+              @change="onChangeCourse"
               v-decorator="decorators.course_id"
             >
               <a-select-option
@@ -24,22 +25,25 @@
               </a-select-option>
             </a-select>
           </st-form-item>
-          <st-form-item label="预约日期" required v-if="scheduleId === 2">
+          <st-form-item label="日期" required v-if="scheduleId === 2">
             <a-date-picker
               style="width:100%"
               v-decorator="decorators.start_days"
             />
           </st-form-item>
-          <st-form-item label="预约时间" required>
-            <a-range-picker
-              :showTime="{ format: 'HH:mm' }"
-              format="YYYY-MM-DD HH:mm"
-            ></a-range-picker>
-            <!-- <a-time-picker
+          <st-form-item label="开始时间" required>
+            <a-time-picker
               format="HH:mm"
               style="width:100%"
               v-decorator="decorators.start_time"
-            /> -->
+            />
+          </st-form-item>
+          <st-form-item label="结束时间" required>
+            <a-time-picker
+              format="HH:mm"
+              style="width:100%"
+              v-decorator="decorators.end_time"
+            />
           </st-form-item>
           <st-form-item label="场地" required>
             <a-cascader
@@ -47,11 +51,13 @@
               :options="courtOptions"
               :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
               v-decorator="decorators.court_id"
+              @change="onChangeCourt"
             />
           </st-form-item>
           <st-form-item label="教练" required>
             <a-select
               placeholder="请选择教练"
+              @change="onChangeCoach"
               v-decorator="decorators.coach_id"
             >
               <a-select-option
@@ -138,7 +144,8 @@ export default {
       coachId: '',
       form,
       decorators,
-      showFlag: false
+      showFlag: false,
+      params: {}
     }
   },
   created() {
@@ -148,20 +155,78 @@ export default {
     hide() {
       this.showFlag = false
     },
+    onChangeCourse(value) {
+      this.courseSmallCourseOptions.forEach((item, index) => {
+        if (item.course_id === value) {
+          this.params.course_name = item.course_name
+        }
+      })
+    },
+    onChangeCoach(value) {
+      this.coachSmallCourseOptions.forEach((item, index) => {
+        if (item.coach_id === value) {
+          this.params.coach_name = item.coach_name
+        }
+      })
+    },
+    onChangeCourt(data) {
+      console.log(this.courtOptions)
+      console.log(data)
+      this.courtOptions.forEach((item, index) => {
+        if (data[1]) {
+          console.log(item)
+          item.children.forEach((item, index) => {
+            if (item.id === data[1]) {
+              this.params.court_site_name = item.name
+            }
+          })
+        }
+        if (item.id === data[0]) {
+          this.params.coach_name = item.name
+        }
+        //return
+      })
+      console.log(this.params.coach_name)
+      console.log(this.params.court_site_name)
+    },
+    // disabledDateTime() {
+    //   const allTime = this.range(0, 24)
+    //   console.log(allTime)
+    //   return {
+    //     disabledHours: () => this.range(0, 24).splice(4, 20),
+    //     disabledMinutes: () => this.range(30, 60)
+    //   }
+    // },
+    // disabledHours() {
+    //   return this.range(0, 24).splice(4, 20)
+    // },
     onSubmit() {
       this.form.validate().then(values => {
+        console.log(form.court_id)
         const form = cloneDeep(values)
-        if (!this.scheduleId) {
+        if (this.scheduleId === 2) {
           form.start_days = form.start_days.format('YYYY-MM-DD')
         }
         form.start_time = form.start_time.format('HH:mm')
-        // console.log(form)
+        form.end_time = form.end_time.format('HH:mm')
         if (form.court_id) {
           form.court_site_id = +form.court_id[1]
           form.court_id = +form.court_id[0]
         }
-        this.$emit('addCourse', form, this.cycleIndex, this.week)
-        this.showFlag = false
+        const verifyParams = Object.assign(this.params, form)
+        this.miniTeamScheduleScheduleService
+          .conflict(verifyParams)
+          .subscribe(res => {
+            this.$emit(
+              'addCourse',
+              this.cycleIndex,
+              this.week,
+              res.data.conflict,
+              res.data.info,
+              res.data.list
+            )
+            this.showFlag = false
+          })
       })
     },
     save() {

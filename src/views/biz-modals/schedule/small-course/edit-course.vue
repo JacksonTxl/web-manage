@@ -39,6 +39,7 @@
       <st-form-item :label="$c('coach')" required>
         <a-select
           :placeholder="`请选择${$c('coach')}`"
+          @change="onChangeCoach"
           v-decorator="decorators.coach_id"
         >
           <a-select-option
@@ -148,14 +149,14 @@ export default {
   },
   methods: {
     onChangeCourse(value) {
-      this.courseSmallCourseOptions.each((item, index) => {
+      this.courseSmallCourseOptions.forEach((item, index) => {
         if (item.course_id === value) {
           this.params.course_name = item.course_name
         }
       })
     },
     onChangeCoach(value) {
-      this.coachSmallCourseOptions.each((item, index) => {
+      this.coachSmallCourseOptions.forEach((item, index) => {
         if (item.coach_id === value) {
           this.params.coach_name = item.coach_name
         }
@@ -164,7 +165,7 @@ export default {
     onChangeCourt(data) {
       console.log(this.courtOptions)
       console.log(data)
-      this.courtOptions.each((item, index) => {
+      this.courtOptions.forEach((item, index) => {
         if (item.coach_id === value) {
           this.params.coach_name = item.coach_name
         }
