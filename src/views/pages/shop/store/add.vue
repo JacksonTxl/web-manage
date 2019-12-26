@@ -501,8 +501,8 @@ export default {
         product_name: values.product_name, // 商品名称
         category_id: values.category_id, // 分类id
         delivery_type:
-          values.delivery_type.lenght === 2 ? 3 : values.delivery_type[0], // 配送方式
-        sale_type: values.sale_type.lenght === 2 ? 3 : values.sale_type[0] // 售卖方式
+          values.delivery_type.lenght === 2 ? -1 : values.delivery_type[0], // 配送方式
+        sale_type: values.sale_type.lenght === 2 ? -1 : values.sale_type[0] // 售卖方式
       }
       this.addService.editGoods(this.$route.query.id, data).subscribe(res => {
         this.$router.push({
@@ -516,8 +516,8 @@ export default {
         product_name: this.info.product_name,
         category_id: this.info.category_id,
         delivery_type:
-          this.info.delivery_type === 3 ? [1, 2] : [this.info.delivery_type],
-        sale_type: this.info.sale_type === 3 ? [1, 2] : [this.info.sale_type]
+          this.info.delivery_type === -1 ? [1, 2] : [this.info.delivery_type],
+        sale_type: this.info.sale_type === -1 ? [1, 2] : [this.info.sale_type]
       })
       this.imgList = this.info.product_images
       this.content = this.info.product_intro
