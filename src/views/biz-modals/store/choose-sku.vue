@@ -12,7 +12,11 @@
           <span>已选：{{ productInfo.rule_name }}</span>
         </div>
       </div>
-      <div class="good-item" v-for="(item, index) in allSpec" :key="index">
+      <div
+        class="good-item"
+        v-for="(item, index) in this.productData.all_spec"
+        :key="index"
+      >
         <span class="item-label">{{ item.spec_name }}</span>
         <a-radio-group
           :options="item.spec_item_arr"
@@ -26,18 +30,23 @@
 <script>
 export default {
   name: 'modalStoreChooseSku',
+  props: {
+    productData: {
+      type: Object
+    }
+  },
   data() {
     return {
       show: false,
       value1: 'Apple',
       productInfo: {
-        product_id: 1,
-        product_name: '商品名',
-        rule_name: '',
-        unit_price: 0,
-        stock_amount: 0,
-        product_count: 1,
-        spec_id: ''
+        product_id: 1, // 商品id
+        product_name: '商品名', // 商品名称
+        rule_name: '', // 规格信息
+        unit_price: 0, // 单价
+        stock_amount: 0, // 库存
+        nums: 1,
+        sku_id: '' // 规格id
       }, // 规格选择完的商品信息
       allSpec: [
         {
@@ -152,7 +161,7 @@ export default {
     },
     // 对后台返回的数据转换
     changeData() {
-      this.allSpec.forEach(element => {
+      this.productData.all_spec.forEach(element => {
         let items = JSON.parse(JSON.stringify(element.spec_item_arr))
         element.spec_item_arr = []
         items.forEach(val => {
@@ -164,13 +173,15 @@ export default {
         element.itemVal = items[0].spec_item_id
         this.specItemId.push(element.itemVal)
       })
-      this.allSpec = JSON.parse(JSON.stringify(this.allSpec))
+      this.productData.all_spec = JSON.parse(
+        JSON.stringify(this.productData.all_spec)
+      )
       this.outPutProductInfo()
     },
     // 输出选择规格后对应的信息
     outPutProductInfo() {
-      for (let i = 0; i < this.allSpecInfo.length; i++) {
-        let values = this.allSpecInfo[i]
+      for (let i = 0; i < this.productData.product_sku.length; i++) {
+        let values = this.productData.product_sku[i]
         let skuId1 = ''
         let skuInfo = ''
         values.spec_arr.forEach(val => {
@@ -182,7 +193,7 @@ export default {
           this.productInfo.stock_amount = values.stock_amount
           this.productInfo.rule_name = skuInfo
           this.productInfo.unit_price = values.selling_price
-          this.productInfo.spec_id = values.sku_id
+          this.productInfo.sku_id = values.sku_id
           return
         }
       }
@@ -190,13 +201,17 @@ export default {
     // 规格改变后获取对应数据
     changeSku() {
       this.specItemId = []
-      this.allSpec.forEach(item => {
+      this.productData.all_spec.forEach(item => {
         this.specItemId.push(item.itemVal)
       })
       this.outPutProductInfo()
     }
   },
   created() {
+    // this.allSpec = this.data.all_spec
+    // this.allSpecInfo = this.data.product_sku
+    console.log(this.productData)
+    console.log(this.productData.product_sku)
     this.changeData()
   }
 }

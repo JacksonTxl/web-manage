@@ -1,10 +1,10 @@
 .shop-sold-transaction-cloud {
-  display: flex;
-  justify-content: space-between;
+  overflow: hidden;
   &__list {
     width: calc(100% - 532px);
     min-height: 100vh;
     border-right: 1px solid @divider;
+    float: left;
   }
   &__head {
     padding: 18px 24px;
@@ -25,6 +25,7 @@
   &__buycar {
     width: 532px;
     min-height: 100vh;
+    float: left;
     .st-mina-panel {
       min-height: 100vh;
     }
@@ -120,6 +121,10 @@
           line-height: 22px;
           .c(@title);
           font-size: 14px;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          overflow: hidden;
         }
       }
       .good-price {
@@ -131,6 +136,11 @@
           &:first-child {
             .fz(18px);
             .c(@error-color);
+            height: 28px;
+            overflow: hidden;
+            max-width: 100px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
           &:last-child {
             .fz(12px);
@@ -139,18 +149,6 @@
           }
         }
       }
-    }
-  }
-  &__no-product {
-    img {
-      display: block;
-      margin: 0 auto;
-      margin-top: 30px;
-    }
-    p {
-      text-align: center;
-      .c(@text-light);
-      margin-top: 16px;
     }
   }
   &__add-vpi {
