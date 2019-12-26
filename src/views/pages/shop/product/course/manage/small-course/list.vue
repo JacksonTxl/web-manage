@@ -72,34 +72,22 @@
           <a
             v-if="record.auth['shop:product:small_class_course|edit']"
             @click="onGoEdit(record)"
-            v-show="
-              record.course_status !== CLASS_STATUS.CLASS_FAILED ||
-                record.course_status !== CLASS_STATUS.CLASS_END
-            "
           >
             编辑
           </a>
           <a
             v-if="record.auth['shop:product:small_class_course|finish']"
             @click="onBeGroup(record)"
-            v-show="record.course_status === CLASS_STATUS.SIGNING_UNCLASSED"
           >
             立即成班
           </a>
           <a
+            v-if="record.auth['shop:product:small_class_course|refund']"
             @click="onGoOrder()"
-            v-show="record.course_status === CLASS_STATUS.CLASS_FAILED"
           >
             去退款
           </a>
-          <a
-            v-if="record.auth['shop:product:small_class_course|del']"
-            v-show="
-              record.course_status === CLASS_STATUS.UNPUBLISH ||
-                record.course_status === CLASS_STATUS.PUBLISH_UNSTARTED ||
-                record.course_status === CLASS_STATUS.SIGNING_UNCLASSED
-            "
-          >
+          <a v-if="record.auth['shop:product:small_class_course|del']">
             <st-popconfirm
               :title="
                 '一旦删除则无法恢复，确认删除' + record.category_name + '？'

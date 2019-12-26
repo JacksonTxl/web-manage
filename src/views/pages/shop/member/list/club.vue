@@ -213,12 +213,12 @@
         {{ record.member_name }}
         <st-icon
           type="user-type"
-          v-if="record.sex === 2 && record.is_minors"
+          v-if="record.sex === SEX.BOY && record.is_minors"
           color="#3F66F6"
         />
         <st-icon
           type="user-type"
-          v-if="record.sex === 1 && record.is_minors"
+          v-if="record.sex === SEX.GIRL && record.is_minors"
           color="#FF5E41"
         />
       </div>
@@ -381,6 +381,7 @@ import ShopChangeUserType from '@/views/biz-modals/shop/change-user-type'
 import ShopFrozen from '@/views/biz-modals/shop/frozen'
 import ShopMissingCard from '@/views/biz-modals/shop/missing-card'
 import { MessageService } from '@/services/message.service'
+import { SEX } from '@/constants/member/info'
 
 export default {
   name: 'ShopMemberListClub',
@@ -424,7 +425,8 @@ export default {
       consumption: [],
       selectDataList: [],
       selectedRowKeys: [],
-      selectedRows: []
+      selectedRows: [],
+      SEX
     }
   },
   computed: {

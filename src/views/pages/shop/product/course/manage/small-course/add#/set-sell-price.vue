@@ -2,7 +2,10 @@
   <st-form :form="form" class="page-set-sell-price" labelWidth="100px">
     <a-row :gutter="8">
       <a-col :lg="10" :offset="1">
-        <st-form-item label="课程名称">
+        <st-form-item>
+          <template slot="label">
+            {{ $c('small_course') }} 名称
+          </template>
           <a-input
             placeholder="课程名称"
             disabled

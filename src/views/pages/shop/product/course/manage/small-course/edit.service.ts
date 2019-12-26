@@ -1,5 +1,5 @@
 import { Effect, State } from 'rx-state'
-import { tap, map } from 'rxjs/operators'
+import { tap } from 'rxjs/operators'
 import { CourseGroupApi } from '@/api/v1/course/small_course'
 import { ServiceRoute, Injectable } from 'vue-service-app'
 import { UserService } from '@/services/user.service'

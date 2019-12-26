@@ -5,47 +5,18 @@
         {{ groupCourseHeaderInfo.course_name }}
       </st-t3>
       <div>
-        <st-button
-          type="primary"
-          @click="onGoEdit"
-          v-if="
-            groupCourseHeaderInfo.class_status !== CLASS_STATUS.CLASS_FAILED ||
-              groupCourseHeaderInfo.class_status !== CLASS_STATUS.CLASS_END
-          "
-        >
+        <st-button type="primary" @click="onGoEdit" v-if="auth.edit">
           编辑
         </st-button>
         <a-dropdown type="primary" class="mg-r24 mg-l16">
           <a-menu slot="overlay">
-            <a-menu-item
-              key="1"
-              @click="onGoOrder()"
-              v-if="
-                groupCourseHeaderInfo.class_status === CLASS_STATUS.CLASS_FAILED
-              "
-            >
+            <a-menu-item key="1" v-if="auth.refund" @click="onGoOrder()">
               去退款
             </a-menu-item>
-            <a-menu-item
-              key="2"
-              @click="onBeGroup"
-              v-if="
-                groupCourseHeaderInfo.class_status ===
-                  CLASS_STATUS.SIGNING_UNCLASSED
-              "
-            >
+            <a-menu-item key="2" v-if="auth.finish" @click="onBeGroup">
               立即成班
             </a-menu-item>
-            <a-menu-item
-              key="2"
-              v-if="
-                groupCourseHeaderInfo.class_status === CLASS_STATUS.UNPUBLISH ||
-                  groupCourseHeaderInfo.class_status ===
-                    CLASS_STATUS.PUBLISH_UNSTARTED ||
-                  groupCourseHeaderInfo.class_status ===
-                    CLASS_STATUS.SIGNING_UNCLASSED
-              "
-            >
+            <a-menu-item key="2" v-if="auth.del">
               <st-popconfirm
                 :title="
                   '一旦删除则无法恢复，确认删除' +
@@ -57,11 +28,7 @@
                 删除
               </st-popconfirm>
             </a-menu-item>
-            <a-menu-item
-              key="2"
-              v-if="CLASS_STATUS.UNPUBLISH"
-              @click="onPublish"
-            >
+            <a-menu-item key="2" v-if="auth.publish" @click="onPublish">
               发布
             </a-menu-item>
           </a-menu>
@@ -140,7 +107,8 @@ export default {
   },
   rxState() {
     return {
-      groupCourseHeaderInfo: this.infoService.groupCourseHeaderInfo$
+      groupCourseHeaderInfo: this.infoService.groupCourseHeaderInfo$,
+      auth: this.infoService.auth$
     }
   },
   computed: {
