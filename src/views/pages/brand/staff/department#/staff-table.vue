@@ -99,10 +99,14 @@
         </st-table-actions>
       </div>
       <div slot="work_status" slot-scope="work_status">
-        <a-badge
-          :status="work_status.id == WORK_STATUS.WORKING ? 'success' : 'error'"
-        />
-        {{ work_status.name }}
+        <st-text
+          :status="{
+            success: work_status.id === 1,
+            error: work_status.id === 2
+          }"
+        >
+          {{ work_status.name }}
+        </st-text>
       </div>
       <div slot="shop" slot-scope="shop">
         <a

@@ -8,7 +8,6 @@ export const columns = () => {
     {
       title: '手机号',
       dataIndex: 'mobile',
-      align: 'right',
       scopedSlots: { customRender: 'mobile' }
     },
     {
