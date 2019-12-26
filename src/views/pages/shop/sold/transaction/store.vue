@@ -256,7 +256,7 @@ export default {
       memberSearchText: '', // 搜索会员value
       couponText: '未选择优惠券', // 选择的优惠券名
       couponDropdownVisible: false,
-      selectCoupon: '',
+      selectCoupon: '', // 优惠券选择的信息
       reducePrice: null,
       description: '',
       couponList: [
@@ -487,6 +487,7 @@ export default {
     // 价格计算
     getPrice() {
       let productInfo = []
+      const memberId = this.form.getFieldValue('memberId')
       this.buyCar.forEach(val => {
         productInfo.push({
           sku_id: val.sku_id,
@@ -496,10 +497,10 @@ export default {
       this.listService
         .getStorePrice({
           product_type: 8,
-          reduce_amount: '',
-          coupon_id: '',
-          member_id: '',
-          product_info: productInfo
+          reduce_amount: this.reducePrice || undefined,
+          coupon_id: this.selectCoupon.id || undefined,
+          member_id: memberId || undefined,
+          product_info: productInfo.length ? productInfo : undefined
         })
         .subscribe(res => {
           console.log(res)
