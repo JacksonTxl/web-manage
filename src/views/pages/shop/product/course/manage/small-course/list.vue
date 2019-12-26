@@ -63,12 +63,16 @@
       </span>
       <template slot="action" slot-scope="text, record">
         <st-table-actions>
-          <a @click="onGoDetail(record)">
+          <a
+            @click="onGoDetail(record)"
+            v-if="record.auth['shop:product:small_class_course|get']"
+          >
             详情
           </a>
           <a
+            v-if="record.auth['shop:product:small_class_course|edit']"
             @click="onGoEdit(record)"
-            v-if="
+            v-show="
               record.course_status !== CLASS_STATUS.CLASS_FAILED ||
                 record.course_status !== CLASS_STATUS.CLASS_END
             "
@@ -76,19 +80,21 @@
             编辑
           </a>
           <a
+            v-if="record.auth['shop:product:small_class_course|finish']"
             @click="onBeGroup(record)"
-            v-if="record.course_status === CLASS_STATUS.SIGNING_UNCLASSED"
+            v-show="record.course_status === CLASS_STATUS.SIGNING_UNCLASSED"
           >
             立即成班
           </a>
           <a
             @click="onGoOrder()"
-            v-if="record.course_status === CLASS_STATUS.CLASS_FAILED"
+            v-show="record.course_status === CLASS_STATUS.CLASS_FAILED"
           >
             去退款
           </a>
           <a
-            v-if="
+            v-if="record.auth['shop:product:small_class_course|del']"
+            v-show="
               record.course_status === CLASS_STATUS.UNPUBLISH ||
                 record.course_status === CLASS_STATUS.PUBLISH_UNSTARTED ||
                 record.course_status === CLASS_STATUS.SIGNING_UNCLASSED

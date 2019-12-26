@@ -353,8 +353,10 @@
           >
             解除微信绑定
           </a>
-          <!-- TODO: 权限 -->
-          <a @click="onChangeUserType(record)">
+          <a
+            v-if="record.auth['shop:member:member|change_type']"
+            @click="onChangeUserType(record)"
+          >
             变更用户类型
           </a>
         </st-table-actions>

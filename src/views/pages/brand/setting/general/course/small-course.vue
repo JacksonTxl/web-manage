@@ -1,5 +1,5 @@
 <template>
-  <div style="min-height: 70vh">
+  <div v-if="auth.get">
     <section>
       <a-row>
         <a-col :span="16"><st-t2>小班课程预约设置</st-t2></a-col>
@@ -7,7 +7,7 @@
           <st-info-action
             icon="edit"
             text="编辑"
-            v-if="auth.reserveEdit"
+            v-if="auth.edit"
             v-modal-link="{
               name: 'brand-setting-small-course-reserve',
               on: {
