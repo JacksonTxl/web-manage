@@ -12,7 +12,7 @@ const intercept = (arr, insert) => {
   return _res
 }
 
-const MAX = 3
+const MAX = 2
 
 export default {
   name: 'StTableActions',
