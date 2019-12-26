@@ -39,6 +39,12 @@ export class SmallCourseScheduleReserveApi extends Api {
   del(id: string) {
     return this.http.put(`/v1/schedule/small_course/shop/cancel/${id}`)
   }
+  /**
+   * 添加补课
+   */
+  remedial(id: string) {
+    return this.http.post(`/v1/schedule/small_course/shop/make_up/add/${id}`)
+  }
 }
 export interface AddReserveInput {
   schedule_id: number

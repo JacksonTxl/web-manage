@@ -53,35 +53,15 @@
                     v-for="(cardItem, index) in filterDate[i][item.week]"
                     :key="cardItem.coach_id"
                   >
-                    <div class="eidt-current-course-btns">
-                      <st-icon
-                        type="edit"
-                        class="edit-course-btn"
-                        @click="onEditCourseSchedule(cardItem, i, index)"
-                      ></st-icon>
-                      <st-icon
-                        type="delete"
-                        class="delete-course-btn"
-                        @click="onDeleteCourseSchedule(cardItem, i, index)"
-                      ></st-icon>
-                    </div>
-                    <span class="time">
-                      <st-icon type="timer"></st-icon>
-                      {{ moment(cardItem.start_time).format('HH:mm') }}-{{
-                        moment(cardItem.end_time).format('HH:mm')
-                      }}
-                    </span>
-                    <st-t3 class="course__name">
-                      {{ cardItem.current_course_name }}
-                    </st-t3>
-                    <p class="course__coach">
-                      {{ $c('coach') }}：
-                      <span>{{ cardItem.coach_name }}</span>
-                    </p>
-                    <p class="course__scene">
-                      场地：
-                      <span>{{ cardItem.court_name }}</span>
-                    </p>
+                    <course-card-popover
+                      :conflictList="conflictList"
+                      :conflict="conflict"
+                      :cardItem="cardItem"
+                      @onEditCourse="onEditCourseSchedule(cardItem, i, index)"
+                      @onDeleteCourse="
+                        onDeleteCourseSchedule(cardItem, i, index)
+                      "
+                    ></course-card-popover>
                   </div>
                 </div>
                 <add-course
@@ -167,6 +147,7 @@
 <script>
 import moment from 'moment'
 import AddCourse from './add-course'
+import CourseCardPopover from './course-card-popover'
 import { SmallCourseScheduleService } from '@/views/pages/shop/product/course/schedule/small-course/service#/schedule.service'
 import { SmallCourseScheduleCommonService } from '@/views/pages/shop/product/course/schedule/small-course/service#/common.service'
 import { InbatchAddService } from './inbatch-add.service'
@@ -199,6 +180,7 @@ export default {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
+      showList: false,
       form,
       decorators,
       moment: moment,
@@ -213,6 +195,8 @@ export default {
       disabledDate: [],
       tipsText: [],
       tipsCourseNum: [],
+      conflict: 0,
+      conflictList: [],
       weekList: [
         { weekId: 'week1', week: 1, date: '周一' },
         { weekId: 'week2', week: 2, date: '周二' },
@@ -244,7 +228,9 @@ export default {
                   week: 1,
                   current_course_name: '当前课程名称',
                   start_time: '2019-12-17 09:00:00',
-                  end_time: '2019-01-01 10:00:00'
+                  end_time: '2019-01-01 10:00:00',
+                  coach_name: '张张',
+                  court_name: '测试VIP区域'
                 },
                 {
                   schedule_id: 1111,
@@ -253,7 +239,9 @@ export default {
                   court_id: 181184018055233,
                   week: 1,
                   start_time: '2019-01-01 09:00:00',
-                  end_time: '2019-01-01 10:00:00'
+                  end_time: '2019-01-01 10:00:00',
+                  coach_name: '张张',
+                  court_name: '测试VIP区域'
                 }
               ]
             },
@@ -310,9 +298,6 @@ export default {
     scheduleId(newVal) {
       //console.log(newVal)
     }
-    // scheduleList(newVal) {
-    //   this.filterDateList(newVal)
-    // }
   },
   computed: {
     addScheduleFlag() {
@@ -376,6 +361,7 @@ export default {
             courseNum += item.list.length
             text += this.weekList[item.week - 1].date
             item.list.forEach((item, index) => {
+              item.showList = false
               text += item.start_time + ','
             })
             this.getScheduleTips(dateIndex, text, courseNum)
@@ -394,6 +380,7 @@ export default {
         list.push(listItemCard)
       })
       console.log(list)
+      console.log(dateList)
       this.filterDate = list
     },
     // 增加课程
@@ -453,30 +440,56 @@ export default {
       //   this.show = false
       // })
     },
-    // 修改课程排期回显 - 修改根据定位当前课程数据结构 - svgclick事件不能触发
+    // 编辑课程
     onEditCourseSchedule(item, cycleIndex, positionIndex) {
-      console.log(item)
-      console.log(positionIndex)
       this.$modalRouter.push({
         name: 'schedule-small-course-edit-course',
         props: { item, cycleIndex, positionIndex },
         on: {
-          editCourse: (cycleIndex, week, positionIndex) => {
-            console.log('editCourse')
-            console.log(cycleIndex)
-            console.log(week)
-            console.log(positionIndex)
-            let weekItem = this.scheduleList[cycleIndex].week[positionIndex]
-            weekItem.start_time = item.start_time
-            this.filterDateList(this.scheduleList)
+          editCourse: (
+            cycleIndex,
+            week,
+            positionIndex,
+            conflict,
+            info,
+            list
+          ) => {
+            if (!conflict) {
+              this.scheduleList[cycleIndex].course_time.forEach(
+                (dayItems, index) => {
+                  if (dayItems.week === item.week) {
+                    let weekItem = dayItems.list[positionIndex]
+                    ;(weekItem.start_time = info.start_time),
+                      (weekItem.current_course_name = info.current_course_name),
+                      (weekItem.coach_name = info.coach_name),
+                      (weekItem.court_name = info.court_name)
+                    this.filterDateList(this.scheduleList)
+                    return
+                  }
+                }
+              )
+            } else {
+            }
           }
         }
       })
     },
     // 删除课程
     onDeleteCourseSchedule(item, cycleIndex, positionIndex) {
-      this.scheduleList[cycleIndex].item.week.splice(positionIndex, 1)
-      this.filterDateList(this.scheduleList)
+      console.log(item)
+      console.log(cycleIndex)
+      console.log(positionIndex)
+      this.scheduleList[cycleIndex].course_time.forEach((dayItems, index) => {
+        if (dayItems.week === item.week) {
+          dayItems.list.splice(positionIndex, 1)
+          console.log(dayItems.list)
+          if (dayItems.list.length === 0) {
+            this.scheduleList[cycleIndex].course_time.splice(index, 1)
+          }
+          this.filterDateList(this.scheduleList)
+          return
+        }
+      })
     },
     // 新增周期排课
     addScheduleWeek() {
@@ -534,7 +547,8 @@ export default {
     }
   },
   components: {
-    AddCourse
+    AddCourse,
+    CourseCardPopover
   }
 }
 </script>

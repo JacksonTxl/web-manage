@@ -56,7 +56,7 @@ export class SmallCourseScheduleReserveService {
   /**
    *
    * @param params
-   * 团体课签到消费
+   * 小班课签到
    */
   check(params: CheckInput) {
     return this.reserveApi.check(params).pipe(
@@ -91,6 +91,16 @@ export class SmallCourseScheduleReserveService {
     return this.reserveApi.del(id).pipe(
       tap(res => {
         this.msg.success({ content: '取消预约成功' })
+      })
+    )
+  }
+  /**
+   * 添加补课
+   */
+  remedial(id: string) {
+    return this.reserveApi.remedial(id).pipe(
+      tap(res => {
+        this.msg.success({ content: '补课成功' })
       })
     )
   }

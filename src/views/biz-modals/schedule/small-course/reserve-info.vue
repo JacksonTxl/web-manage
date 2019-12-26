@@ -1,12 +1,13 @@
 <template>
   <st-modal
-    class="modal-reserved"
+    wrapClassName="modal-reserved-info"
     title="预约详情"
     @ok="save"
     :footer="null"
     v-model="show"
+    width="700px"
   >
-    <a-row :gutter="24" class="modal-reserved-info">
+    <a-row :gutter="24">
       <a-col :lg="16">
         <st-info>
           <st-info-item label="课程名称">
@@ -128,76 +129,46 @@
           <tr v-for="(item, index) in reserveList" :key="index">
             <td>{{ item.member_name }}</td>
             <td>{{ item.course_name }}</td>
-            <td v-if="reserveInfo.reserve_status === 1">未签到</td>
-            <td v-if="reserveInfo.reserve_status === 2">已签到</td>
-            <td v-if="reserveInfo.reserve_status === 3">旷课</td>
-            <td v-if="reserveInfo.reserve_status === 4">请假已补课</td>
-            <td v-if="reserveInfo.reserve_status === 5">请假未补课</td>
+            <td v-if="item.reserve_status === 1">未签到</td>
+            <td v-if="item.reserve_status === 2">已签到</td>
+            <td v-if="item.reserve_status === 3">旷课</td>
+            <td v-if="item.reserve_status === 4">请假已补课</td>
+            <td v-if="item.reserve_status === 5">请假未补课</td>
             <td>
               <div
                 v-if="
                   reserveInfo.small_course_type === 1 &&
-                    reserveInfo.reserve_status === 1
+                    item.reserve_status === 1
                 "
               >
-                <a
-                  class="mg-r8"
-                  href="javascript:;"
-                  @click="cancelReserve(item.id)"
-                  v-if="
-                    item.auth[
-                      'shop:reserve:personal_team_course_reserve|checkin'
-                    ]
-                  "
-                >
+                <a href="javascript:;" @click="cancelReserve(item.id)">
                   签到
                 </a>
                 <a-divider type="vertical"></a-divider>
-                <a
-                  href="javascript:;"
-                  @click="check(item.id)"
-                  v-if="
-                    item.auth['shop:reserve:personal_team_course_reserve|del']
-                  "
-                >
+                <a href="javascript:;" @click="check(item.id)">
                   请假
                 </a>
               </div>
               <div
                 v-if="
                   reserveInfo.small_course_type === 2 &&
-                    reserveInfo.reserve_status === 1
+                    item.reserve_status === 1
                 "
               >
-                <a
-                  class="mg-r8"
-                  href="javascript:;"
-                  @click="cancelReserve(item.id)"
-                  v-if="
-                    item.auth[
-                      'shop:reserve:personal_team_course_reserve|checkin'
-                    ]
-                  "
-                >
+                <a href="javascript:;" @click="cancelReserve(item.id)">
                   签到
                 </a>
                 <a-divider type="vertical"></a-divider>
-                <a
-                  href="javascript:;"
-                  @click="check(item.id)"
-                  v-if="
-                    item.auth['shop:reserve:personal_team_course_reserve|del']
-                  "
-                >
+                <a href="javascript:;" @click="check(item.id)">
                   取消预约
                 </a>
               </div>
               <div
                 v-if="
                   (reserveInfo.small_course_type === 1 &&
-                    reserveInfo.reserve_status === 2) ||
+                    item.reserve_status === 2) ||
                     (reserveInfo.small_course_type === 2 &&
-                      reserveInfo.reserve_status === 2)
+                      item.reserve_status === 2)
                 "
               >
                 --
@@ -205,63 +176,36 @@
               <div
                 v-if="
                   (reserveInfo.small_course_type === 1 &&
-                    reserveInfo.reserve_status === 3) ||
+                    item.reserve_status === 3) ||
                     (reserveInfo.small_course_type === 2 &&
-                      reserveInfo.reserve_status === 3)
+                      item.reserve_status === 3)
                 "
               >
-                <a
-                  class="mg-r8"
-                  href="javascript:;"
-                  @click="cancelReserve(item.id)"
-                  v-if="
-                    item.auth[
-                      'shop:reserve:personal_team_course_reserve|checkin'
-                    ]
-                  "
-                >
+                <a href="javascript:;" @click="cancelReserve(item.id)">
                   补签到
                 </a>
                 <a-divider type="vertical"></a-divider>
-                <a
-                  href="javascript:;"
-                  @click="check(item.id)"
-                  v-if="
-                    item.auth['shop:reserve:personal_team_course_reserve|del']
-                  "
-                >
+                <a href="javascript:;" @click="check(item.id)">
                   补课
                 </a>
               </div>
               <div
                 v-if="
                   reserveInfo.small_course_type === 1 &&
-                    reserveInfo.reserve_status === 4
+                    item.reserve_status === 4
                 "
               >
-                <a
-                  href="javascript:;"
-                  @click="check(item.id)"
-                  v-if="
-                    item.auth['shop:reserve:personal_team_course_reserve|del']
-                  "
-                >
+                <a href="javascript:;" @click="check(item.id)">
                   补课
                 </a>
               </div>
               <div
                 v-if="
                   reserveInfo.small_course_type === 1 &&
-                    reserveInfo.reserve_status === 5
+                    item.reserve_status === 5
                 "
               >
-                <a
-                  href="javascript:;"
-                  @click="check(item.id)"
-                  v-if="
-                    item.auth['shop:reserve:personal_team_course_reserve|del']
-                  "
-                >
+                <a href="javascript:;" @click="check(item.id)">
                   查看补课
                 </a>
               </div>
@@ -384,19 +328,6 @@ export default {
       this.consumeId = obj.id
     },
     addReserve() {
-      // 暂时添加补课
-      // this.show = false
-      // this.$modalRouter.push({
-      //   name: 'schedule-small-course-remedial-course',
-      //   props: {
-      //     info: this.reserveInfo
-      //   },
-      //   on: {
-      //     ok: () => {
-      //       this.$router.push({ query: this.$searchQuery })
-      //     }
-      //   }
-      // })
       const form = {
         schedule_id: this.id,
         member_id: this.memberId,
@@ -441,6 +372,21 @@ export default {
       this.show = false
       this.$modalRouter.push({
         name: 'schedule-small-course-reserved-course',
+        props: {
+          info: this.reserveInfo
+        },
+        on: {
+          ok: () => {
+            this.$router.push({ query: this.$searchQuery })
+          }
+        }
+      })
+    },
+    // 添加补课
+    remedialCourse() {
+      this.show = false
+      this.$modalRouter.push({
+        name: 'schedule-small-course-remedial-course',
         props: {
           info: this.reserveInfo
         },

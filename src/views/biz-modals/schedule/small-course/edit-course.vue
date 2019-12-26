@@ -24,7 +24,7 @@
       <st-form-item label="课程" required>
         <a-select
           placeholder="请选择课程"
-          @change="onChange"
+          @change="onChangeCourse"
           v-decorator="decorators.course_id"
         >
           <a-select-option
@@ -56,6 +56,7 @@
           :options="courtOptions"
           :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
           v-decorator="decorators.court_id"
+          @change="onChangeCourt"
         />
       </st-form-item>
     </st-form>
@@ -97,7 +98,8 @@ export default {
       form,
       decorators,
       show: false,
-      courseItem: ''
+      courseItem: '',
+      params: {}
     }
   },
   props: {
@@ -145,9 +147,28 @@ export default {
     }
   },
   methods: {
-    onChange(value) {
-      // 这里是否需要遍历查找对应的course信息
-      console.log(value)
+    onChangeCourse(value) {
+      this.courseSmallCourseOptions.each((item, index) => {
+        if (item.course_id === value) {
+          this.params.course_name = item.course_name
+        }
+      })
+    },
+    onChangeCoach(value) {
+      this.coachSmallCourseOptions.each((item, index) => {
+        if (item.coach_id === value) {
+          this.params.coach_name = item.coach_name
+        }
+      })
+    },
+    onChangeCourt(data) {
+      console.log(this.courtOptions)
+      console.log(data)
+      this.courtOptions.each((item, index) => {
+        if (item.coach_id === value) {
+          this.params.coach_name = item.coach_name
+        }
+      })
     },
     onSubmit() {
       this.form.validate().then(values => {
@@ -160,31 +181,26 @@ export default {
           form.court_site_id = +form.court_id[1]
           form.court_id = +form.court_id[0]
         }
-        // 提交 效验课程冲突
         console.log(form)
-        this.$emit(
-          'editCourse',
-          this.cycleIndex,
-          this.item.week,
-          this.positionIndex
-        )
-        this.show = false
-        // this.miniTeamScheduleScheduleService.add(form).subscribe(() => {
-        //   this.$emit('editCourse')
-        //   this.show = false
-        // })
+        const verifyParams = Object.assign(this.params, form)
+        this.miniTeamScheduleScheduleService
+          .conflict(verifyParams)
+          .subscribe(res => {
+            this.$emit(
+              'editCourse',
+              this.cycleIndex,
+              this.item.week,
+              this.positionIndex,
+              res.data.conflict,
+              res.data.info,
+              res.data.list
+            )
+            this.show = false
+          })
       })
     },
     onClick() {
       this.show = false
-      // this.$modalRouter.push({
-      //   name: 'schedule-team-add-course-batch',
-      //   on: {
-      //     ok: res => {
-      //       this.onScheduleChange()
-      //     }
-      //   }
-      // })
     },
     onScheduleChange() {
       this.$router.push({ query: this.$searchQuery })
