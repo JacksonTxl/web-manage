@@ -27,13 +27,14 @@ export class OrderService implements Controller {
   ) {}
   // 获取营收统计图信息
   getChart(query: OrderChartParams) {
+    const small_course = this.userService.c('small_course')
     return this.orderApi.getChart(query).pipe(
       tap(res => {
         const data = res.info
         const arr = [
           { group: '云店', 成单数量: data.shop.num, 客单价: data.shop.avg },
           {
-            group: this.userService.c('small_course'),
+            group: small_course,
             成单数量: data.small_course.num,
             客单价: data.small_course.avg
           },
