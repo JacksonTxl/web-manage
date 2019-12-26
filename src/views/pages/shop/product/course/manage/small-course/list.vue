@@ -87,6 +87,7 @@
             立即成班
           </a>
           <a
+            v-if="record.auth['shop:product:small_class_course|refund']"
             @click="onGoOrder()"
             v-show="record.course_status === CLASS_STATUS.CLASS_FAILED"
           >

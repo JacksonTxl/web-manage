@@ -47,16 +47,4 @@ export class ListService implements Controller {
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.init(to.meta.query)
   }
-  // beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-  //   this.initOptions().subscribe(() => {
-  //     console.log(to.name)
-  //     if (to.name === 'brand-product-course-group-list') {
-  //       next({
-  //         name: 'brand-product-course-group-list-brand'
-  //       })
-  //     } else {
-  //       next()
-  //     }
-  //   })
-  // }
 }

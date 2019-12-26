@@ -8,7 +8,8 @@
         <st-button
           type="primary"
           @click="onGoEdit"
-          v-if="
+          v-if="auth.edit"
+          v-show="
             groupCourseHeaderInfo.class_status !== CLASS_STATUS.CLASS_FAILED ||
               groupCourseHeaderInfo.class_status !== CLASS_STATUS.CLASS_END
           "
@@ -19,8 +20,9 @@
           <a-menu slot="overlay">
             <a-menu-item
               key="1"
+              v-if="auth.refund"
               @click="onGoOrder()"
-              v-if="
+              v-show="
                 groupCourseHeaderInfo.class_status === CLASS_STATUS.CLASS_FAILED
               "
             >
@@ -28,8 +30,9 @@
             </a-menu-item>
             <a-menu-item
               key="2"
+              v-if="auth.finish"
               @click="onBeGroup"
-              v-if="
+              v-show="
                 groupCourseHeaderInfo.class_status ===
                   CLASS_STATUS.SIGNING_UNCLASSED
               "
@@ -38,7 +41,8 @@
             </a-menu-item>
             <a-menu-item
               key="2"
-              v-if="
+              v-if="auth.del"
+              v-show="
                 groupCourseHeaderInfo.class_status === CLASS_STATUS.UNPUBLISH ||
                   groupCourseHeaderInfo.class_status ===
                     CLASS_STATUS.PUBLISH_UNSTARTED ||
@@ -59,7 +63,8 @@
             </a-menu-item>
             <a-menu-item
               key="2"
-              v-if="CLASS_STATUS.UNPUBLISH"
+              v-if="auth.publish"
+              v-show="CLASS_STATUS.UNPUBLISH"
               @click="onPublish"
             >
               发布
