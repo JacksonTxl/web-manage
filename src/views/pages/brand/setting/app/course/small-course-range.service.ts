@@ -9,7 +9,9 @@ export class SmallCourseRangeService implements Controller {
   resData$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({
-    add: 'brand_shop:course:course_scope|add'
+    add: 'brand_shop:course:course_scope|add',
+    edit: 'brand_shop:course:course_scope|edit',
+    del: 'brand_shop:course:course_scope|del'
   })
   constructor(private authService: AuthService, private courseApi: CourseApi) {}
   @Effect()

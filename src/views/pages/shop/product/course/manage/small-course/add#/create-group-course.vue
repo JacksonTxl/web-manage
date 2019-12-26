@@ -86,7 +86,11 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="总课时" required>
-          <st-input-number v-decorator="decorators.course_times">
+          <st-input-number
+            v-decorator="decorators.course_times"
+            :min="1"
+            :max="99999"
+          >
             <template slot="addonAfter">
               节
             </template>
@@ -122,6 +126,8 @@
             <a-form-item>
               <span class="mg-r8">允许请假时间,请假前</span>
               <st-input-number
+                :min="1"
+                :max="72"
                 v-decorator="decorators.leave_hours"
                 style="width:128px"
               >
@@ -133,6 +139,7 @@
             <a-form-item>
               <span class="mg-r8">请假上限节数</span>
               <st-input-number
+                :min="1"
                 v-decorator="decorators.leave_limit"
                 style="width:178px"
               >

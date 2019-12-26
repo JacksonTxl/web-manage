@@ -10,7 +10,8 @@ export class SmallCourseService {
   reserveInfo$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({
-    reserveEdit: 'brand:setting:small_course_reserve_setting|edit'
+    edit: 'brand:setting:small_course_reserve_setting|edit',
+    get: 'brand:setting:small_course_reserve_setting|get'
   })
   constructor(
     private reserveSettingApi: GroupReserveSettingApi,

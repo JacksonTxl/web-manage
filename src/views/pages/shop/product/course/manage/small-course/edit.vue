@@ -18,6 +18,7 @@
       @goNext="goNext"
       :info="info"
       @onCourseNameChange="onCourseNameChange"
+      @onCourseIdChange="onCourseIdChange"
     />
     <set-shop-coach
       @back="onBack"
@@ -93,6 +94,9 @@ export default {
     },
     onCourseNameChange(courseName) {
       this.courseName = courseName
+    },
+    onCourseIdChange(courseId) {
+      this.courseId = courseId
     },
     onBack(step) {
       this.currentIndex = step

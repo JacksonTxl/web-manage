@@ -1,11 +1,11 @@
 export const basicColumns = (vm: any) => [
   {
     title: '教练',
-    dataIndex: 'nickname'
+    dataIndex: 'name'
   },
   {
     title: '教练等级',
-    dataIndex: 'level_name'
+    dataIndex: 'level'
   },
   {
     title: '在职状态',

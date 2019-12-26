@@ -88,7 +88,7 @@ export const ruleOptions = (vm: any) => {
     is_allow_transfer: {},
     transfer_num: {},
     transfer_type: {
-      initialValue: 1
+      initialValue: 2
     },
     sales_price: {
       rules: [
