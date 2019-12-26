@@ -21,19 +21,19 @@ export default {
   bem: {
     add: 'page-shop-add-select-package'
   },
-  data() {
+  data(vm) {
     return {
       cardTypeList: [
         {
           bg: require('@/assets/img/bg-course-group-limit.png'),
-          title: '固定小班课',
+          title: `固定${vm.$c('small_course')}`,
           describe: '上课时间已固定，需按照时间上课。',
           url: 'shop-product-course-manage-small-course-add',
           type: '1'
         },
         {
           bg: require('@/assets/img/bg-course-group-unlimit.png'),
-          title: '自主约课小班课',
+          title: `自主约课${vm.$c('small_course')}`,
           describe: '上课时间未固定，需会员自行选课。',
           url: 'shop-product-course-manage-small-course-add',
           type: '2'

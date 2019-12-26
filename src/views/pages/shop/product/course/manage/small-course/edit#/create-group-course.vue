@@ -2,7 +2,10 @@
   <st-form :form="form" class="page-create-container" labelWidth="130px">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="小班课名称" required>
+        <st-form-item required>
+          <template slot="label">
+            {{ $c('small_course') }}名称
+          </template>
           <a-input
             placeholder="支持输入1~30个字的课程名称"
             maxlength="30"
