@@ -2,7 +2,7 @@
   <st-modal
     title="新增课程排期"
     v-model="show"
-    width="484px"
+    size="small"
     wrapClassName="modal-shop-team-add-course"
   >
     <st-form :form="form" labelAuto>
@@ -61,6 +61,7 @@
       <st-form-item label="单节预约价格" required class="mg-b0">
         <st-input-number
           placeholder="请输入单节预约价格"
+          float
           v-decorator="decorators.course_fee"
         >
           <span slot="addonAfter" class="addon-width">元/节</span>
@@ -124,6 +125,7 @@ export default {
   methods: {
     onSubmit() {
       this.form.validate().then(values => {
+        console.log(values)
         const form = cloneDeep(values)
         form.start_time = form.start_time.format('YYYY-MM-DD HH:mm')
         if (form.court_id) {

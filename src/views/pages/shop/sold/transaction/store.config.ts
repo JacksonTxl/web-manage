@@ -11,7 +11,7 @@ export const columns = () => [
   },
   {
     title: '单价',
-    dataIndex: 'selling_price'
+    dataIndex: 'unit_price'
   },
   {
     title: '小计',

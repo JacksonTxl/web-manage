@@ -7,23 +7,36 @@
           {{ item }}
         </li>
       </ul>
-      <ul v-for="(item, index) in salesList" :key="index">
-        <li>
-          <img
-            v-if="index < 3"
-            :src="
-              index
-                ? index === 1
-                  ? IconTwoRanking
-                  : IconThreeRanking
-                : IconOneRanking
-            "
-          />
-          <span style="margin-left:12px" v-else>{{ index + 1 }}</span>
-        </li>
-        <li>{{ item.product_name }}</li>
-        <li>{{ item.sale ? item.sale : item.revenue }}</li>
-      </ul>
+      <template v-if="salesList.length">
+        <ul v-for="(item, index) in salesList" :key="index">
+          <li>
+            <img
+              v-if="index < 3"
+              :src="
+                index
+                  ? index === 1
+                    ? IconTwoRanking
+                    : IconThreeRanking
+                  : IconOneRanking
+              "
+            />
+            <span style="margin-left:12px" v-else>{{ index + 1 }}</span>
+          </li>
+          <li>
+            {{ nameFilter(item.product_name, nameLength) }}
+          </li>
+          <li>
+            {{
+              item.sale
+                ? (item.sale + '').replace(/\d{1,3}(?=(\d{3})+$)/g, '$&,')
+                : (item.revenue + '').replace(/\d{1,3}(?=(\d{3})+$)/g, '$&,')
+            }}
+          </li>
+        </ul>
+      </template>
+      <template v-else>
+        暂无数据
+      </template>
     </div>
   </div>
 </template>
@@ -51,6 +64,10 @@ export default {
       default: () => {
         return []
       }
+    },
+    nameLength: {
+      type: [String, Number],
+      default: 4
     }
   },
   data() {
@@ -58,6 +75,14 @@ export default {
       IconOneRanking,
       IconTwoRanking,
       IconThreeRanking
+    }
+  },
+
+  methods: {
+    nameFilter(value, nameLength) {
+      return value.length > nameLength
+        ? `${value.slice(0, nameLength)}...`
+        : value
     }
   }
 }

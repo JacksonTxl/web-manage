@@ -5,6 +5,7 @@
         <div :class="basic('left')">
           <sales-analysis
             title="购买次数TOP5"
+            nameLength="4"
             :salesTitle="['排名', '用户', '购买数(次)']"
             :salesList="data.top_rank | filterDataTOP5"
           ></sales-analysis>
@@ -74,17 +75,17 @@ export default {
     },
     filterBuyNum(value) {
       if (value === 1) {
-        this.filterBuyNumInfo = this.data.top_scatter.map(item => {
+        this.filterBuyNumInfo = this.data.top_scatter.slice(0, 5).map(item => {
           return {
             name: item.scatter_type,
             value: item.sum
           }
         })
       } else {
-        this.filterBuyNumInfo = this.data.top_scatter.map(item => {
+        this.filterBuyNumInfo = this.data.top_scatter.slice(5, 10).map(item => {
           return {
             name: item.scatter_type,
-            value: item.amount_sum
+            value: item.sum
           }
         })
       }
