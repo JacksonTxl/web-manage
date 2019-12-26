@@ -35,7 +35,7 @@
         </ul>
       </template>
       <template v-else>
-        暂无数据
+        <st-no-data></st-no-data>
       </template>
     </div>
   </div>

@@ -79,10 +79,11 @@ export const skuColumns = (vm: any) => {
       scopedSlots: { customRender: 'stock_amount' }
     }
   ]
-  if (vm.isEditMode) {
-    list.slice(list.length - 1, 1)
-  }
   list = vm.sku.concat(list)
   console.log(list, '================')
+  if (vm.isEditMode) {
+    console.log('进来删除了')
+    list.pop()
+  }
   return list
 }
