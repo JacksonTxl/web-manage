@@ -61,6 +61,19 @@
         :dataSource="dataSourceChildren"
       ></st-table>
     </dl>
+    <dl>
+      <dt>
+        去除条纹样式
+      </dt>
+      <dd>
+        [stripe=false]
+      </dd>
+      <st-table
+        :columns="childrenColumns"
+        :stripe="false"
+        :dataSource="dataSourceChildren"
+      ></st-table>
+    </dl>
   </div>
 </template>
 <script>
