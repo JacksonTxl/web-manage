@@ -14,7 +14,7 @@ export class TeamScheduleCommonService {
   coachOptions$ = new State([])
   memberOptions$ = new State([])
   courtOptions$ = new State([])
-  unUsedSeatOptions = new State([])
+  unUsedSeatOptions$ = new State([])
   unUsedSeatCourtOptions$ = new State([])
   consumeOptions$ = new State([])
 
@@ -94,7 +94,7 @@ export class TeamScheduleCommonService {
           if (item === -1) item = '无座位'
           return { id: index, name: item }
         })
-        this.unUsedSeatOptions.commit(() => _options)
+        this.unUsedSeatOptions$.commit(() => _options)
       })
     )
   }
