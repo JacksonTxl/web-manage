@@ -1,11 +1,7 @@
 <template>
   <section class="st-sold-log-table">
     <st-table
-      :pagination="{
-        current: $searchQuery.page,
-        total: page.total_counts,
-        pageSize: $searchQuery.size
-      }"
+      :page="page"
       :columns="columns"
       @change="onTableChange"
       :loading="loading.getList"

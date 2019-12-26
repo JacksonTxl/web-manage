@@ -201,6 +201,33 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
+  'shop-sold-course-info-small-course-info'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '小班课详情'
+    routeConfig.meta.tabs = [
+      'shop-sold-course-info-small-course-info-operation-record',
+      'shop-sold-course-info-small-course-info-usage-log'
+    ]
+  },
+  'shop-sold-course-info-small-course-info-usage-log'(
+    routeConfig: RouteConfig
+  ) {
+    routeConfig.meta.title = '使用记录'
+    routeConfig.meta.parentRouteName = 'shop-sold-course-info-small-course-info'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-sold-course-info-small-course-info-operation-record'(
+    routeConfig: RouteConfig
+  ) {
+    routeConfig.meta.title = '操作日志'
+    routeConfig.meta.parentRouteName = 'shop-sold-course-info-small-course-info'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
   'shop-sold-course-info-package-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '课程包详情'
     routeConfig.meta.tabs = [

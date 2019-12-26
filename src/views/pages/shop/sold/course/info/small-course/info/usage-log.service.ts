@@ -1,16 +1,15 @@
 import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State } from 'rx-state'
-import { CourseApi } from '@/api/v1/sold/course'
+import { SmallCourseApi } from '@/api/v1/sold/small-course'
 import { tap } from 'rxjs/operators'
-import { SoldService } from '@/services/sold.service'
 @Injectable()
 export class UsageLogService implements Controller {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
-  constructor(private courseApi: CourseApi, private soldService: SoldService) {}
-  getList(query: any, type: string) {
-    return this.courseApi.getCardsUsageLog(query, type).pipe(
+  constructor(private smallCourseApi: SmallCourseApi) {}
+  getList(query: any) {
+    return this.smallCourseApi.getSmallCourseUsageLog(query).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
@@ -18,6 +17,6 @@ export class UsageLogService implements Controller {
     )
   }
   beforeEach(to: ServiceRoute) {
-    return this.getList(to.meta.query, 'personal')
+    return this.getList(to.meta.query)
   }
 }
