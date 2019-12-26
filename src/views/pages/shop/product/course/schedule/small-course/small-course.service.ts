@@ -23,7 +23,7 @@ export class SmallCourseService implements Controller {
   beforeRouteEnter(to: ServiceRoute, form: ServiceRoute) {
     return forkJoin(
       this.commonService.getCoachList(),
-      this.commonService.getCourseList(),
+      this.commonService.getCourseList(''),
       this.commonService.getCourtList()
     )
   }

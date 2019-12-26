@@ -65,8 +65,8 @@ export class SmallCourseScheduleCommonService {
    * @param query
    * 获取课程Options
    */
-  getCourseList() {
-    return this.commonApi.getCourseList().pipe(
+  getCourseList(query: any) {
+    return this.commonApi.getCourseList(query).pipe(
       tap(res => {
         this.state$.commit(state => {
           state.courseSmallCourseOptions = res.list

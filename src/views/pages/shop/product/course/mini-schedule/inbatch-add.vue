@@ -2,7 +2,7 @@
   <st-panel>
     <div :class="b()">
       <st-form :class="b('head')" labelWidth="80px" :form="form">
-        <st-form-item label="小班课名称" required>
+        <st-form-item :label="`${$c('small_course')}`" required>
           <a-select placeholder="请选择" v-decorator="decorators.course_id">
             <a-select-option
               v-for="course in courseSmallCourseOptions"
@@ -15,10 +15,10 @@
         </st-form-item>
         <st-form-item required label="排课方式">
           <a-select placeholder="请选择" v-model="scheduleId">
-            <a-select-option key="1" value="1">
+            <a-select-option :key="1" :value="1">
               周排课方式
             </a-select-option>
-            <a-select-option key="0" value="0">
+            <a-select-option :key="2" :value="2">
               自定义排课方式
             </a-select-option>
           </a-select>
@@ -186,7 +186,7 @@ export default {
       moment: moment,
       customizeShow: false,
       coachId: undefined,
-      scheduleId: '1',
+      scheduleId: 1,
       start_date: '2019-12-16',
       end_date: '2019-12-30',
       picker_start_date: '2019-12-16',

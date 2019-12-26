@@ -915,24 +915,24 @@ export const routeMapConfig = {
     }
   },
   'shop-product-course-schedule-small-course'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '小班课'
+    routeConfig.meta.title = '{{$c("small_course")}}'
     routeConfig.queryOptions = {
       coach_id: { type: Number }
     }
   },
   'shop-product-course-schedule-small-course-table'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '小班课'
+    routeConfig.meta.title = '{{$c("small_course")}}'
     routeConfig.queryOptions = {
       coach_id: { type: Number, default: -1 }
     }
   },
   'shop-product-course-mini-schedule-inbatch-add'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '小班课排期'
+    routeConfig.meta.title = '{{$c("small_course")}}排期'
     routeConfig.meta.parentRouteName =
       'shop-product-course-schedule-small-course'
   },
   'shop-product-course-mini-schedule-inbatch-info'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '小班课排期'
+    routeConfig.meta.title = '{{$c("small_course")}}排期'
     routeConfig.meta.parentRouteName =
       'shop-product-course-schedule-small-course'
   },

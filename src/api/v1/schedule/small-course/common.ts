@@ -17,10 +17,11 @@ export class SmallCourseScheduleCommonApi extends Api {
     return this.http.get('/v1/schedule/small_course/shop/consume', { query })
   }
   /**
+   * @param query
    * 获取课程列表
    */
-  getCourseList() {
-    return this.http.get('/v1/course/small/course')
+  getCourseList(query: any) {
+    return this.http.get('/v1/course/small/course', { query })
   }
   /**
    * 获取教练列表

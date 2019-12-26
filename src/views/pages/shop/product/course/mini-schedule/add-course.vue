@@ -24,18 +24,22 @@
               </a-select-option>
             </a-select>
           </st-form-item>
-          <st-form-item label="预约日期" required v-if="!scheduleId">
+          <st-form-item label="预约日期" required v-if="scheduleId === 2">
             <a-date-picker
               style="width:100%"
               v-decorator="decorators.start_days"
             />
           </st-form-item>
           <st-form-item label="预约时间" required>
-            <a-time-picker
+            <a-range-picker
+              :showTime="{ format: 'HH:mm' }"
+              format="YYYY-MM-DD HH:mm"
+            ></a-range-picker>
+            <!-- <a-time-picker
               format="HH:mm"
               style="width:100%"
               v-decorator="decorators.start_time"
-            />
+            /> -->
           </st-form-item>
           <st-form-item label="场地" required>
             <a-cascader
@@ -123,8 +127,8 @@ export default {
       default: 1
     },
     scheduleId: {
-      type: String,
-      default: '1'
+      type: Number,
+      default: 1
     }
   },
   data() {
