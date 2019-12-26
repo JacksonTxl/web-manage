@@ -56,4 +56,10 @@ export class StockApi extends Api {
       params
     })
   }
+  /**
+   * 商品列表（出入库明细下拉框）
+   */
+  productList() {
+    return this.http.get('/v1/store/product/search/list')
+  }
 }

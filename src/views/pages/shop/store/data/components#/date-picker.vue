@@ -57,9 +57,6 @@ export default {
           .subtract(1, 'days')
           .format('YYYY-MM-DD') + ''
     }
-  },
-  created() {
-    console.log('defaultValue', this.defaultValue)
   }
 }
 </script>

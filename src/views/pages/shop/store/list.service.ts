@@ -13,9 +13,9 @@ export class ListService implements Controller {
   loading$ = new State({})
   info$ = new State({})
   goodsList$ = new State({})
-  // useStatus$ = this.userService.getOptions$('cloud_store.use_status', {
-  //   addAll: true
-  // })
+  shelvesStatus$ = this.userService.getOptions$('cloud_store.shelves_status', {
+    addAll: true
+  })
   // auth$ = this.authService.authMap$({
   //   // 记得设置鉴权
   //   add: 'brand:activity:group_buy|add'
@@ -27,7 +27,6 @@ export class ListService implements Controller {
   getList(params: StoreList) {
     return this.storeApi.getList(params).pipe(
       tap((res: any) => {
-        console.log(res)
         // res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
@@ -38,7 +37,6 @@ export class ListService implements Controller {
   getGoodsCategory() {
     return this.storeApi.getCategory().pipe(
       tap((res: any) => {
-        console.log(res)
         this.goodsList$.commit(() => res.list)
       })
     )

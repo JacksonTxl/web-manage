@@ -135,7 +135,6 @@ export class StoreApi extends Api {
    * 【门店】用户分析
    */
   storeMemberAnalysis(query: MemberAnalysis) {
-    console.log(query, '【门店】用户分析')
     return this.http.get('/v1/store/member_analysis', {
       query
     })

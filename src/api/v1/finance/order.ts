@@ -11,7 +11,7 @@ export interface OrderParams {
 }
 
 export interface RefundParams {
-  order_sub_id: number
+  order_id: number
   refund_money: number
   reason: number
   pay_channel: string
@@ -59,10 +59,12 @@ export class OrderApi extends Api {
     return this.http.get(`/v1/finance/order/refund_info/${orderId}`)
   }
   /**
-   * 退款
+   * 主订单退款
    */
   orderRefund(params: RefundParams) {
-    return this.http.post(`/v1/finance/order/refund`, { params: { ...params } })
+    return this.http.post(`/v1/finance/order/refund_all`, {
+      params: { ...params }
+    })
   }
   /**
    * 销售员列表
@@ -80,7 +82,9 @@ export class OrderApi extends Api {
    * 业绩拆分
    */
   split(params: SplitParams) {
-    return this.http.post(`/v1/finance/order/split`, { params: { ...params } })
+    return this.http.post(`/v1/finance/order/split`, {
+      params: { ...params }
+    })
   }
   /**
    * 订单收款明细（流水列表）
@@ -113,5 +117,11 @@ export class OrderApi extends Api {
    */
   gatheringTicketInfo(orderId: number) {
     return this.http.get(`/v1/finance/order/ticket/${orderId}`)
+  }
+  /**
+   * 配送方式
+   */
+  getDelivery(id: number) {
+    return this.http.get(`/v1/finance/order/shipping/${id}`)
   }
 }
