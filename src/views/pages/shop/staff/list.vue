@@ -141,10 +141,14 @@
           <span>{{ text.name }}</span>
         </template>
         <template slot="work_status" slot-scope="text">
-          <div class="page-staff-list-work_status">
-            <a-badge :status="text.name === '在职' ? 'success' : 'error'" />
+          <st-text
+            :status="{
+              success: text.id === 1,
+              error: text.id === 2
+            }"
+          >
             {{ text.name }}
-          </div>
+          </st-text>
         </template>
         <template slot="action" slot-scope="text, record">
           <st-table-actions>

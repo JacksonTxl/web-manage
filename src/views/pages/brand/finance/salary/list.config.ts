@@ -2,15 +2,19 @@ export const columns = () => {
   return [
     {
       title: '结算月份',
+      fixed: 'left',
+      width: 120,
       dataIndex: 'settle_month'
+    },
+    {
+      title: '员工姓名',
+      fixed: 'left',
+      width: 160,
+      dataIndex: 'staff_name'
     },
     {
       title: '工号',
       dataIndex: 'staff_num'
-    },
-    {
-      title: '员工姓名',
-      dataIndex: 'staff_name'
     },
     {
       title: '员工身份',
@@ -28,26 +32,26 @@ export const columns = () => {
     {
       title: '底薪',
       dataIndex: 'salary_basic',
-      textAlign: 'right'
+      align: 'right'
     },
     {
       title: '销售提成',
       dataIndex: 'sales_commission',
       scopedSlots: { customRender: 'sales_commission' },
-      textAlign: 'right',
+      align: 'right',
       sorter: true
     },
     {
       title: '上课提成',
       dataIndex: 'course_commission',
       scopedSlots: { customRender: 'course_commission' },
-      textAlign: 'right',
+      align: 'right',
       sorter: true
     },
     {
       title: '结算薪资',
       dataIndex: 'settle_salary',
-      textAlign: 'right',
+      align: 'right',
       sorter: true
     }
   ]

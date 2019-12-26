@@ -91,7 +91,7 @@
         <div slot="sell_price" slot-scope="sell_price">
           <span>{{ sell_price }}</span>
         </div>
-        <div slot="is_available" slot-scope="is_available">
+        <!-- <div slot="is_available" slot-scope="is_available">
           <span>
             <a-badge
               :status="
@@ -100,7 +100,7 @@
             />
             {{ is_available | enumFilter('personal_course.is_available') }}
           </span>
-        </div>
+        </div> -->
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
             <router-link
