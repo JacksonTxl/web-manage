@@ -89,12 +89,6 @@ export default {
       default() {
         return {}
       }
-    },
-    conflict: {
-      type: Number,
-      default: () => {
-        return 0
-      }
     }
   },
   data() {
@@ -120,6 +114,8 @@ export default {
   },
   created() {
     this.showFlag = this.cardItem.show
+    this.conflict = this.cardItem.conflict
+    this.conflictList = this.cardItem.conflictList
     console.log(this.conflict)
   },
   methods: {

@@ -54,8 +54,6 @@
                     :key="cardItem.coach_id"
                   >
                     <course-card-popover
-                      :conflictList="conflictList"
-                      :conflict="conflict"
                       :cardItem="cardItem"
                       @onEditCourse="onEditCourseSchedule(cardItem, i, index)"
                       @onDeleteCourse="
@@ -111,7 +109,10 @@
                 :key="item.coach_id"
               >
                 <div class="eidt-current-course-btns">
-                  <a href="javascript:;" @click="onEditCustomSchedule(index)">
+                  <a
+                    href="javascript:;"
+                    @click="onEditCustomSchedule(item, index)"
+                  >
                     <st-icon type="edit" class="edit-course-btn"></st-icon>
                   </a>
                   <a href="javascript:;" @click="onDeleteCustomSchedule(index)">
@@ -205,8 +206,6 @@ export default {
       disabledDate: [],
       tipsText: [],
       tipsCourseNum: [],
-      conflict: 0,
-      conflictList: [],
       weekList: [
         { weekId: 'week1', week: 1, date: '周一' },
         { weekId: 'week2', week: 2, date: '周二' },
@@ -365,7 +364,11 @@ export default {
             courseNum += item.list.length
             text += this.weekList[item.week - 1].date
             item.list.forEach((item, index) => {
-              item.showList = false
+              item.show = false
+              if (!item.conflict) {
+                item.conflict = 0
+                item.conflictList = []
+              }
               text += item.start_time + ','
             })
             this.getScheduleTips(dateIndex, text, courseNum)
@@ -407,11 +410,8 @@ export default {
         current_course_name: info.courseMessage,
         start_time: info.start_time,
         end_time: info.end_time,
-        show: false
-      }
-      if (conflict) {
-        this.conflict = conflict
-        this.conflictList = list
+        conflict: conflict,
+        conflictList: list
       }
       if (!this.scheduleList[cycleIndex].course_time.length) {
         console.log('批次是否有数据')
@@ -441,7 +441,21 @@ export default {
         console.log(this.scheduleList)
       }
     },
-    pushCustomCourseInfo() {},
+    pushCustomCourseInfo(conflict, info, list) {
+      let courseItem = {
+        schedule_id: this.schedule_id,
+        course_id: info.course_id,
+        coach_id: info.coach_id,
+        court_id: info.court_id,
+        week: info.week,
+        current_course_name: info.courseMessage,
+        start_time: info.start_time,
+        end_time: info.end_time,
+        conflict: conflict,
+        conflictList: list
+      }
+      this.customizeScheduleList.push(courseItem)
+    },
     // 编辑课程
     onEditCourseSchedule(item, cycleIndex, positionIndex) {
       const cycle = this.pickerList[cycleIndex]
@@ -457,16 +471,14 @@ export default {
                   ;(weekItem.start_time = info.start_time),
                     (weekItem.current_course_name = info.current_course_name),
                     (weekItem.coach_name = info.coach_name),
-                    (weekItem.court_name = info.court_name)
+                    (weekItem.court_name = info.court_name),
+                    (weekItem.conflict = conflict)
+                  weekItem.conflictList = list
                   this.filterDateList(this.scheduleList)
                   return
                 }
               }
             )
-            if (conflict) {
-              this.conflict = conflict
-              this.conflictList = list
-            }
           }
         }
       })
@@ -484,8 +496,29 @@ export default {
         }
       })
     },
-    onEditCustomSchedule(index) {
-      this.customizeScheduleList[index]
+    onDeleteCustomSchedule(index) {
+      this.customizeScheduleList.splice(index, 1)
+    },
+    onEditCustomSchedule(initem, positionIndexdex) {
+      this.$modalRouter.push({
+        name: 'schedule-small-course-edit-course',
+        props: { item, positionIndex },
+        on: {
+          editCourse: (cycleIndex, positionIndex, conflict, info, list) => {
+            ;(this.customizeScheduleList[positionIndex].start_time =
+              info.start_time),
+              (this.customizeScheduleList[positionIndex].current_course_name =
+                info.current_course_name),
+              (this.customizeScheduleList[positionIndex].coach_name =
+                info.coach_name),
+              (this.customizeScheduleList[positionIndex].court_name =
+                info.court_name),
+              (this.customizeScheduleList[positionIndex].conflict = conflict)
+            this.customizeScheduleList[positionIndex].conflictList = list
+            return
+          }
+        }
+      })
     },
     // 新增周期排课
     addScheduleWeek() {
