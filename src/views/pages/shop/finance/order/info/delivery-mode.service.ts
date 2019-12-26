@@ -9,9 +9,10 @@ export class DeliveryModeService implements Controller {
   loading$ = new State({})
   constructor(private orderApi: OrderApi) {}
   @Effect()
-  getInfo(id: string) {
-    return this.orderApi.getDetail(id).pipe(
+  getInfo(id: number) {
+    return this.orderApi.getDelivery(id).pipe(
       tap((res: any) => {
+        console.log(res)
         this.info$.commit(() => res.info)
       })
     )

@@ -46,12 +46,15 @@
               :span="li.span"
             >
               <!-- <img v-if="li.image_url" :src="li.image_url | imgFilter"> -->
+              <!-- 不要去除url()这里的单引号，会引起图片不更新 -->
               <div
                 v-if="li.image_url"
                 :class="h5('event-img')"
                 :style="{
-                  backgroundImage:
-                    'url(' + imageFilter(li.image_url, { w: 300, h: 170 }) + ')'
+                  backgroundImage: `url('${imageFilter(li.image_url, {
+                    w: 300,
+                    h: 170
+                  })}')`
                 }"
               ></div>
               <div v-else class="img"></div>
