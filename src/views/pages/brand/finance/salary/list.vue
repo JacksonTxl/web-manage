@@ -71,6 +71,7 @@
 
       <st-table
         :page="page"
+        :scroll="{ x: 1440 }"
         @change="onTableChange"
         :loading="loading.getList"
         :columns="columns"

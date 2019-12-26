@@ -7,6 +7,7 @@ import { Chart } from '@antv/g2'
 import { View } from 'st-data-set'
 import chartMixin from './mixin'
 import { decimalFilter } from './filters'
+import { isEmpty } from 'lodash-es'
 
 export default {
   mixins: [chartMixin],
@@ -21,17 +22,34 @@ export default {
     },
     colors: {
       type: Array,
-      default: () => ['#5C57FE', '#6332D1', '#009DFF', '#00D0F0', '#FFE679']
+      default: () => [
+        '#5C57FE',
+        '#6332D1',
+        '#009DFF',
+        '#00D0F0',
+        '#FFE679',
+        '#aFa679'
+      ]
     },
     unit: {
       type: String,
       default: '人'
     }
   },
+  computed: {
+    dataSource() {
+      if (this.data.length === 0) return this.data
+      const isEmpty = this.data
+        .map(item => item.value)
+        .reduce((value, total) => value + total)
+      const emptyItem = { name: 'empty', value: 1 }
+      return !isEmpty ? [...this.data, emptyItem] : this.data
+    }
+  },
   methods: {
     initDv() {
       this.dv = new View()
-      this.dv.source(this.data)
+      this.dv.source(this.dataSource)
       this.dv
         .transform({
           type: 'map',
@@ -80,6 +98,20 @@ export default {
             `</div>` +
             `</li>`
           )
+        },
+        onHover: ev => {
+          // 总计为 0 是执行hover
+
+          const $s = this.$el.querySelector.bind(this.$el)
+          const name = ev.item.value
+          const row = this.dv.findRow({ name })
+          const shapes = ev.shapes
+          const geom = ev.geom
+          const legend = ev.currentTarget
+          // 选中对应单元
+          row.value && geom.setShapesActived(shapes)
+          $s('.guide-value').textContent = row.value
+          $s('.guide-name').textContent = row.name
         }
       })
       this.chart.guide().html({
@@ -96,71 +128,6 @@ export default {
           )
         }
       })
-
-      this.chart.guide().arc({
-        start: (xScales, yScales) => {
-          if (this.dv.sum('value') === 0) {
-            this.hoverable = false
-            return ['22%', '50%']
-          }
-          return []
-        },
-        end: (xScales, yScales) => {
-          if (this.dv.sum('value') === 0) {
-            this.hoverable = false
-            return ['78%', '50%']
-          }
-          return []
-        },
-        style: {
-          lineWidth: 0,
-          fill: '#E9EDF2',
-          fillOpacity: 1,
-          stroke: '#ccc'
-        }
-      })
-      this.chart.guide().arc({
-        start: (xScales, yScales) => {
-          if (this.dv.sum('value') === 0) {
-            this.hoverable = false
-            return ['78%', '50%']
-          }
-          return []
-        },
-        end: (xScales, yScales) => {
-          if (this.dv.sum('value') === 0) {
-            this.hoverable = false
-            return ['22%', '50%']
-          }
-          return []
-        },
-        style: {
-          lineWidth: 0,
-          fill: '#E9EDF2',
-          fillOpacity: 1,
-          stroke: '#ccc'
-        }
-      })
-      this.chart.guide().arc({
-        start: ['30%', '50%'],
-        end: ['70%', '50%'],
-        style: {
-          lineWidth: 0,
-          fill: '#fff',
-          fillOpacity: 1,
-          stroke: '#ccc'
-        }
-      })
-      this.chart.guide().arc({
-        start: ['70%', '50%'],
-        end: ['30%', '50%'],
-        style: {
-          lineWidth: 0,
-          fill: '#fff',
-          fillOpacity: 1,
-          stroke: '#ccc'
-        }
-      })
       this.chart.tooltip({
         showTitle: false
       })
@@ -172,7 +139,7 @@ export default {
           cursor: 'pointer'
         })
         .position('value')
-        .color('name', this.colors)
+        .color('name', [...this.colors, '#e9edf2'])
         .select(false)
         .active({
           style: {
@@ -184,40 +151,30 @@ export default {
       this.chart.render()
 
       const shapes = interval.getShapes()
-      const firstShape = shapes[0]
-      interval.setShapesActived(firstShape)
+      // 默认显示第一个 当有empty时第一个为零 不需要
+      if (origin.name === 'empty') {
+        const firstShape = shapes[0]
+        interval.setShapesActived(firstShape)
+      }
 
       const $s = this.$el.querySelector.bind(this.$el)
 
       this.chart.on('interval:mouseenter', e => {
+        const shape = e.shape
         const origin = e.data._origin
+        if (origin.name === 'empty') {
+          this.intervalStack.clearActivedShapes(shape)
+          return
+        }
         $s('.guide-value').textContent = origin.value
         $s('.guide-name').textContent = origin.name
-      })
-      const legendListItems = [
-        ...this.$el.querySelectorAll('.g2-legend-list-item')
-      ]
-
-      const vm = this
-      vm.offMouseHandlers = []
-      const mouseHandler = function() {
-        const name = this.dataset.value
-        const row = vm.dv.findRow({ name })
-        $s('.guide-value').textContent = row.value
-        $s('.guide-name').textContent = row.name
-      }
-
-      legendListItems.forEach(el => {
-        el.addEventListener('mouseenter', mouseHandler, false)
-        this.offMouseHandlers.push(() => {
-          el.addEventListener('mouseenter', mouseHandler, false)
-        })
       })
     }
   },
   beforeDestroy() {
     if (this.chart) {
-      this.offMouseHandlers.forEach(fn => fn())
+      // 注销图形所有事件
+      this.chart.off()
     }
   }
 }

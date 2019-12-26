@@ -87,8 +87,14 @@
       </template>
       <!-- 系统状态 -->
       <template slot="is_valid" slot-scope="text">
-        <a-badge :status="text === 1 ? 'success' : 'error'" />
-        {{ text | enumFilter('shop.is_valid') }}
+        <st-text
+          :status="{
+            success: text === 1,
+            error: text === 0
+          }"
+        >
+          {{ text | enumFilter('shop.is_valid') }}
+        </st-text>
       </template>
       <!-- 系统使用到期时间 -->
       <template slot="expire_time" slot-scope="text">

@@ -2,12 +2,15 @@ export const dateColumns = (vm: any) => {
   return [
     {
       title: '日期',
-      dataIndex: 'stat_date'
+      dataIndex: 'stat_date',
+      fixed: 'left',
+      width: 150
     },
     {
       title: '员工',
       dataIndex: 'staff_name',
-      width: '180px'
+      fixed: 'left',
+      width: 180
     },
     {
       title: '每日跟进总数',

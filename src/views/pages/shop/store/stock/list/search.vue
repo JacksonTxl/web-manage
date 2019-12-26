@@ -96,10 +96,10 @@ export default {
         name: 'store-put-in',
         props: { skuList: list, isOut },
         on: {
-          success: res => {
-            console.log('进来了success', res)
-            // this.selectedRowKeys = []
-            // this.$router.reload()
+          success: () => {
+            console.log('进来了success')
+            this.selectedRowKeys = []
+            this.$router.reload()
           }
         }
       })

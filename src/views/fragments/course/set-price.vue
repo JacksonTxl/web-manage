@@ -122,16 +122,8 @@
                           v-model="
                             priceGradientRecord.prices[index].transfer_unit
                           "
-                        >
-                          <a-select-option
-                            v-for="(item, index) in personalCourseEnums
-                              .transfer_unit.value"
-                            :key="index"
-                            :value="+index"
-                          >
-                            {{ item }}
-                          </a-select-option>
-                        </a-select>
+                          :options="personalCourseTransferUnitOptions"
+                        ></a-select>
                       </template>
                     </st-input-number>
                   </td>
@@ -163,7 +155,9 @@ export default {
   },
   rxState() {
     return {
-      personalCourseEnums: this.userService.personalCourseEnums$,
+      personalCourseTransferUnitOptions: this.userService.getOptions$(
+        'personal_course.transfer_unit'
+      ),
       brand: this.userService.brand$
     }
   },

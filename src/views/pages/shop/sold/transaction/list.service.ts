@@ -65,9 +65,16 @@ export class ListService {
       })
       .pipe(
         tap((res: any) => {
-          this.storeProductList$.commit(() => res.data.list)
+          this.storeProductList$.commit(() => res.list)
         })
       )
+  }
+  /**
+   * 云店
+   */
+  @Effect()
+  getGoodsDetail(id: number) {
+    return this.transactionApi.goodsDetail(id).pipe(tap(() => {}))
   }
   /**
    * 云店创建订单

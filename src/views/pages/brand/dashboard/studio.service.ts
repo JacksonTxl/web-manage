@@ -128,10 +128,10 @@ export class StudioService implements Controller {
       tap(res => {
         this.entry$.commit(() => [
           { name: '0次百分比', value: res.info.level_0_num },
-          { name: '1-3次人数', value: res.info.level_1_num },
-          { name: '4-5次人数', value: res.info.level_2_num },
-          { name: '6-10次人数', value: res.info.level_3_num },
-          { name: '11-15次人数', value: res.info.level_4_num },
+          { name: '1-4次人数', value: res.info.level_1_num },
+          { name: '5-8次人数', value: res.info.level_2_num },
+          { name: '9-12次人数', value: res.info.level_3_num },
+          { name: '13-16次人数', value: res.info.level_4_num },
           { name: '16+次人数', value: res.info.level_5_num }
         ])
       })

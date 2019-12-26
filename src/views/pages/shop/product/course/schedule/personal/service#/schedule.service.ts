@@ -1,45 +1,56 @@
 import {
   PersonalScheduleListQuery,
-  GetScheduleListInput,
   UpdateScheduleInput,
   AddScheduleInBatchInput,
   AddScheduleInput,
   CopyInput
 } from '@/api/v1/schedule/personal/schedule'
 import { Injectable } from 'vue-service-app'
-import { State, Effect, Computed } from 'rx-state'
-import { tap, pluck, switchMap } from 'rxjs/operators'
+import { State, Effect } from 'rx-state'
+import { tap, switchMap } from 'rxjs/operators'
 import { PersonalScheduleApi } from '@/api/v1/schedule/personal/schedule'
 import { MessageService } from '@/services/message.service'
 import moment from 'moment'
-export interface SetState {
-  scheduleTeamCourseList: any[]
-  scheduleTable: any[]
-}
+
 @Injectable()
 export class PersonalScheduleScheduleService {
-  state$: State<SetState>
-  scheduleTeamCourseList$: Computed<any>
-  scheduleTable$: Computed<any>
-  refresh$: Computed<any>
+  scheduleTeamCourseList$ = new State([])
+  scheduleTable$ = new State([])
+  refresh$ = new State(0)
   loading$ = new State({})
 
   constructor(
     private scheduleApi: PersonalScheduleApi,
     private msg: MessageService
-  ) {
-    this.state$ = new State({
-      scheduleTeamCourseList: [],
-      scheduleTable: [],
-      refresh: 0
+  ) {}
+  SET_SCHEDULE_TEAM_COURSE_LIST(resList: any[] = []) {
+    const _list = resList.map((item: any) => {
+      let end_date = ''
+      if (
+        moment(`${item.start_date} ${item.start_time}`).valueOf() >=
+        moment(`${item.start_date} ${item.end_time}`).valueOf()
+      ) {
+        item.plusOne = '+1'
+        end_date = moment(
+          moment(`${item.start_date} ${item.start_time}`).valueOf() +
+            24 * 60 * 60 * 1000
+        )
+          .format('YYYY-MM-DD')
+          .valueOf()
+      } else {
+        end_date = item.start_date
+      }
+      return {
+        // add new event data
+        title: item.course_name,
+        groupId: JSON.stringify(item),
+        id: item.id,
+        start: `${item.start_date} ${item.start_time}`,
+        end: `${end_date} ${item.end_time}`
+      }
     })
-    this.scheduleTeamCourseList$ = new Computed(
-      this.state$.pipe(pluck('scheduleTeamCourseList'))
-    )
-    this.scheduleTable$ = new Computed(this.state$.pipe(pluck('scheduleTable')))
-    this.refresh$ = new Computed(
-      this.state$.pipe(pluck('scheduleTeamCourseList'))
-    )
+
+    this.scheduleTeamCourseList$.commit(() => _list)
   }
   /**
    *
@@ -50,33 +61,7 @@ export class PersonalScheduleScheduleService {
   getList(query: PersonalScheduleListQuery) {
     return this.scheduleApi.getList(query).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.scheduleTeamCourseList = res.list.map((item: any) => {
-            let end_date = ''
-            if (
-              moment(`${item.start_date} ${item.start_time}`).valueOf() >=
-              moment(`${item.start_date} ${item.end_time}`).valueOf()
-            ) {
-              item.plusOne = '+1'
-              end_date = moment(
-                moment(`${item.start_date} ${item.start_time}`).valueOf() +
-                  24 * 60 * 60 * 1000
-              )
-                .format('YYYY-MM-DD')
-                .valueOf()
-            } else {
-              end_date = item.start_date
-            }
-            return {
-              // add new event data
-              title: item.course_name,
-              groupId: JSON.stringify(item),
-              id: item.id,
-              start: `${item.start_date} ${item.start_time}`,
-              end: `${end_date} ${item.end_time}`
-            }
-          })
-        })
+        this.SET_SCHEDULE_TEAM_COURSE_LIST(res.list)
       })
     )
   }
@@ -88,9 +73,7 @@ export class PersonalScheduleScheduleService {
   getTable(query: PersonalScheduleListQuery) {
     return this.scheduleApi.getTable(query).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.scheduleTable = res.list
-        })
+        this.scheduleTable$.commit(() => res.list)
       })
     )
   }

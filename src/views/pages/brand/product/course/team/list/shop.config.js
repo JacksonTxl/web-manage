@@ -1,7 +1,9 @@
 export const columns = [
   {
     title: '售卖场馆',
-    dataIndex: 'shop_name'
+    dataIndex: 'shop_name',
+    fixed: 'left',
+    width: 200
   },
   {
     title: '课程类型',

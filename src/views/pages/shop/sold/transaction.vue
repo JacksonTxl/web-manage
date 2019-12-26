@@ -2,6 +2,7 @@
   <st-panel app initial :tabs="authTabs">
     <div slot="actions">
       <st-input-search
+        v-if="$searchQuery.product_type !== 4"
         placeholder="请输入商品名查找"
         v-model="$searchQuery.product_name"
         @search="onKeywordsSearch('product_name', $event)"

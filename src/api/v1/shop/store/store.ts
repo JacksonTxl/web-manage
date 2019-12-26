@@ -42,6 +42,9 @@ export interface StoreList {
   product_name: string
   shelves_status: number
 }
+export interface ShelvesStatus {
+  shelves_status: number
+}
 export class StoreApi extends Api {
   /**
    * 新建商品
@@ -89,7 +92,7 @@ export class StoreApi extends Api {
    * 删除分类
    */
   delCategory(id: number) {
-    return this.http.post(`/v1/store/product/category/${id}`)
+    return this.http.delete(`/v1/store/product/category/${id}`)
   }
   /**
    * 商品列表
@@ -146,8 +149,8 @@ export class StoreApi extends Api {
   /**
    * 上下架商品
    */
-  onShelf(id: number) {
-    return this.http.put(`/v1/store/product/${id}`)
+  onShelf(id: number, params: ShelvesStatus) {
+    return this.http.put(`/v1/store/product/${id}`, { params })
   }
   /**
    * 商品分类列表

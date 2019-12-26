@@ -2,11 +2,15 @@ export const columns = () => {
   return [
     {
       title: '流水号',
-      dataIndex: 'flow_id'
+      dataIndex: 'flow_id',
+      fixed: 'left',
+      width: 160
     },
     {
       title: '金额（元）',
       dataIndex: 'price',
+      fixed: 'left',
+      width: 120,
       scopedSlots: { customRender: 'price' },
       align: 'right'
     },

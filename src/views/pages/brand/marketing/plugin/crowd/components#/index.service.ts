@@ -1,36 +1,18 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect, Action } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { State } from 'rx-state'
 import { CrowdAPI } from '@/api/v1/crowd'
-import { forkJoin } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
 
-interface CrowdIndexState {
-  crowdIndexInfo: any
-}
 @Injectable()
-export class IndexService extends Store<CrowdIndexState> {
-  state$: State<CrowdIndexState>
-  crowdIndexInfo$: Computed<string>
+export class IndexService {
+  crowdIndexInfo$ = new State({})
   auth$ = this.authService.authMap$({
     // analyst: 'shop:member:crowd|analyst',  //NOTE: 权限点人群分析去掉
     export: 'brand:member:crowd|export'
   })
-  constructor(private crowdAPI: CrowdAPI, private authService: AuthService) {
-    super()
-    this.state$ = new State({
-      crowdIndexInfo: {}
-    })
-    this.crowdIndexInfo$ = new Computed(
-      this.state$.pipe(pluck('crowdIndexInfo'))
-    )
-  }
-  SET_CARDS_LIST_INFO(crowdIndexInfo: CrowdIndexState) {
-    console.log(crowdIndexInfo)
-    this.state$.commit(state => {
-      state.crowdIndexInfo = crowdIndexInfo
-    })
+  constructor(private crowdAPI: CrowdAPI, private authService: AuthService) {}
+  SET_CARDS_LIST_INFO(crowdIndexInfo: any) {
+    this.crowdIndexInfo$.commit(() => crowdIndexInfo)
   }
   // 获取列表
 

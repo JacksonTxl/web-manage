@@ -3,6 +3,7 @@
     :title="importTitle"
     size="small"
     v-model="show"
+    :confirmLoading="loading.uploadFile"
     wrapClassName="modal-brand-setting-import"
     @ok="onSubmit"
   >
@@ -69,7 +70,9 @@ export default {
     }
   },
   rxState() {
-    return {}
+    return {
+      loading: this.importService.loading$
+    }
   },
   props: {
     type: {
