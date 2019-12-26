@@ -92,7 +92,7 @@ export class StoreApi extends Api {
    * 删除分类
    */
   delCategory(id: number) {
-    return this.http.post(`/v1/store/product/category/${id}`)
+    return this.http.delete(`/v1/store/product/category/${id}`)
   }
   /**
    * 商品列表
@@ -109,33 +109,34 @@ export class StoreApi extends Api {
   /**
    * 整体看板
    */
-  storeBoard(params: DtoreBoard) {
+  storeBoard(query: DtoreBoard) {
+    console.log(query, '整体看板')
     return this.http.get('/v1/store/board', {
-      params
+      query
     })
   }
   /**
    * 类目支付排行
    */
-  storeSaleList(params: DtoreBoard) {
+  storeSaleList(query: DtoreBoard) {
     return this.http.get('/v1/store/sale_list', {
-      params
+      query
     })
   }
   /**
    * 商品销售榜
    */
-  storeCategoryRank(params: DtoreBoard) {
+  storeCategoryRank(query: DtoreBoard) {
     return this.http.get('/v1/store/category_rank', {
-      params
+      query
     })
   }
   /**
    * 【门店】用户分析
    */
-  storeMemberAnalysis(params: MemberAnalysis) {
+  storeMemberAnalysis(query: MemberAnalysis) {
     return this.http.get('/v1/store/member_analysis', {
-      params
+      query
     })
   }
   /*

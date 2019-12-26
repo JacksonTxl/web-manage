@@ -114,7 +114,11 @@
             :span="skuList.length === 3 ? 24 : skuList.length === 2 ? 20 : 16"
           >
             <st-form-item label="规格设置" required>
-              <a-radio-group v-model="isMore" @change="changeMore">
+              <a-radio-group
+                v-model="isMore"
+                @change="changeMore"
+                :disabled="isEditMode"
+              >
                 <a-radio :value="1">单规格</a-radio>
                 <a-radio :value="2">多规格</a-radio>
               </a-radio-group>
@@ -187,6 +191,7 @@
                         v-model="record.market_price"
                         :float="true"
                         style="width:110px;"
+                        @change="record.is_update = 1"
                       >
                         <template slot="addonAfter">
                           元
@@ -211,6 +216,7 @@
                         v-model="record.selling_price"
                         :float="true"
                         style="width:110px;"
+                        @change="record.is_update = 1"
                       >
                         <template slot="addonAfter">
                           元
@@ -234,6 +240,7 @@
                       <st-input-number
                         v-model="record.stock_amount"
                         style="width:110px;"
+                        :disabled="isEditMode"
                       ></st-input-number>
                       <a
                         style="margin-left: 8px"
@@ -284,8 +291,7 @@ export default {
   },
   rxState() {
     return {
-      loading: this.addService.loading$,
-      classList: this.addService.list$
+      loading: this.addService.loading$
     }
   },
   modals: { StoreClassManage, StoreAddSku },
@@ -326,7 +332,8 @@ export default {
       nameError: '',
       isNameError: false,
       product_images_del: [],
-      product_images_add: []
+      product_images_add: [],
+      classList: []
     }
   },
   components: {
@@ -353,6 +360,9 @@ export default {
     }
   },
   mounted() {
+    this.addService.getList().subscribe(res => {
+      this.classList = res.list
+    })
     let arrP = [
       {
         spec_id: 1,
@@ -397,8 +407,8 @@ export default {
       let product_sku = []
       this.tableData.forEach((item, index) => {
         let skuItem = {}
-        skuItem.market_price = item.market_price * 100
-        skuItem.selling_price = item.selling_price * 100
+        skuItem.market_price = item.market_price
+        skuItem.selling_price = item.selling_price
         skuItem.stock_amount = item.stock_amount
         skuItem.spec_arr = []
         if (this.skuList.length > 0) {
@@ -444,17 +454,19 @@ export default {
       let product_sku = []
       this.tableData.forEach((item, index) => {
         let skuItem = {}
-        skuItem.market_price = item.market_price * 100
-        skuItem.selling_price = item.selling_price * 100
+        skuItem.market_price = item.market_price
+        skuItem.selling_price = item.selling_price
         skuItem.stock_amount = item.stock_amount
         if (item.sku_id) {
           skuItem.is_update = item.is_update
+          skuItem.sku_id = item.sku_id
         }
         skuItem.spec_arr = []
         if (this.skuList.length > 0) {
           let sku = {}
           this.info.all_spec[0].spec_item_arr.forEach(spec => {
-            if (spec === item['0']) {
+            console.log(spec, item, '==============规格id添加')
+            if (spec.spec_item_name === item['0']) {
               sku.spec_item_id = spec.spec_item_id
               sku.spec_id = spec.spec_item_id
             }
@@ -466,7 +478,7 @@ export default {
         if (this.skuList.length > 1) {
           let sku = {}
           this.info.all_spec[1].spec_item_arr.forEach(spec => {
-            if (spec === item['1']) {
+            if (spec.spec_item_name === item['1']) {
               sku.spec_item_id = spec.spec_item_id
               sku.spec_id = spec.spec_item_id
             }
@@ -478,7 +490,7 @@ export default {
         if (this.skuList.length > 2) {
           let sku = {}
           this.info.all_spec[2].spec_item_arr.forEach(spec => {
-            if (spec === item['2']) {
+            if (spec.spec_item_name === item['2']) {
               sku.spec_item_id = spec.spec_item_id
               sku.spec_id = spec.spec_item_id
             }
@@ -496,9 +508,11 @@ export default {
         shelves_status: this.shelves_status, // 上架状态
         product_name: values.product_name, // 商品名称
         category_id: values.category_id, // 分类id
-        delivery_type: values.delivery_type, // 配送方式
-        sale_type: values.sale_type // 售卖方式
+        delivery_type:
+          values.delivery_type.lenght === 2 ? -1 : values.delivery_type[0], // 配送方式
+        sale_type: values.sale_type.lenght === 2 ? -1 : values.sale_type[0] // 售卖方式
       }
+      console.log(data, '这是编辑提交的参数')
       this.addService.editGoods(this.$route.query.id, data).subscribe(res => {
         this.$router.push({
           path: './list'
@@ -511,22 +525,27 @@ export default {
         product_name: this.info.product_name,
         category_id: this.info.category_id,
         delivery_type:
-          this.info.delivery_type === 3 ? [1, 2] : [this.info.delivery_type],
-        sale_type: this.info.sale_type === 3 ? [1, 2] : [this.info.sale_type]
+          this.info.delivery_type === -1 ? [1, 2] : [this.info.delivery_type],
+        sale_type: this.info.sale_type === -1 ? [1, 2] : [this.info.sale_type]
       })
       this.imgList = this.info.product_images
       this.content = this.info.product_intro
       this.shelves_status = this.info.shelves_status
       this.skuList = []
-      this.info.all_spec.forEach(item => {
-        let list = []
-        if (item.spec_item_arr) {
-          item.spec_item_arr.forEach(it => {
-            list.push(it.spec_item_name)
-          })
-          this.skuList.push({ spec_name: item.spec_name, spec_item_name: list })
-        }
-      })
+      if (this.info.all_spec) {
+        this.info.all_spec.forEach(item => {
+          let list = []
+          if (item.spec_item_arr) {
+            item.spec_item_arr.forEach(it => {
+              list.push(it.spec_item_name)
+            })
+            this.skuList.push({
+              spec_name: item.spec_name,
+              spec_item_name: list
+            })
+          }
+        })
+      }
       let tableData = []
       this.info.product_sku.forEach((item, index) => {
         let tableItem = {}
@@ -536,9 +555,12 @@ export default {
         tableItem.sku_id = item.sku_id
         tableItem.is_update = 0
         tableItem.key = parseInt(Math.random() * 999999).toString()
-        item.spec_arr.forEach((item, index) => {
-          tableItem[index] = item.spec_item_name
-        })
+        if (item.spec_arr) {
+          item.spec_arr.forEach((item, index) => {
+            tableItem[index] = item.spec_item_name
+          })
+        }
+
         tableData.push(tableItem)
       })
       this.tableData = tableData

@@ -1,5 +1,5 @@
 <template>
-  <div :class="basic()">
+  <st-panel :class="basic()" :loading="loading.getStoreProductList">
     <div :class="basic('list')">
       <div :class="basic('head')">
         <p :class="basic('title')">查看商品</p>
@@ -11,15 +11,15 @@
           :class="basic('search')"
         />
       </div>
-      <ul :class="basic('product')" v-if="storeProductList1.length">
-        <li v-for="(item, index) in storeProductList1" :key="index">
+      <ul :class="basic('product')" v-if="storeProductList.length">
+        <li v-for="(item, index) in storeProductList" :key="index">
           <img class="goods-img" :src="item.img" alt="" />
           <div class="good-name">
             <span>{{ item.product_name }}</span>
           </div>
           <div class="good-price">
             <span>￥{{ item.min_price }}-{{ item.max_price }}</span>
-            <span>库存：{{ item.count }}件</span>
+            <span>库存:{{ item.count }}件</span>
           </div>
           <div class="product-mask" @click="onSku(item.id)">
             <img src="@/assets/img/icon-buy-car.png" alt="" />
@@ -27,20 +27,14 @@
           </div>
         </li>
       </ul>
-      <div :class="basic('no-product')" v-else>
-        <img
-          width="150"
-          src="https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/placeholder-nodata.png"
-        />
-        <p>暂无数据</p>
-      </div>
+      <st-no-data v-else></st-no-data>
     </div>
     <div :class="basic('buycar')">
       <st-mina-panel app>
         <div slot="actions" :class="basic('footer')">
           <div class="price">
-            <span>共2件商品 合计：</span>
-            <span>￥240</span>
+            <span>共{{ buyCar.length }}件商品 合计：</span>
+            <span>￥{{ currentPrice }}</span>
           </div>
           <div class="button">
             <st-button @click="onCreateOrder">
@@ -69,7 +63,10 @@
                       slot-scope="customRender, record"
                     >
                       <div>
-                        {{ record.product_name }}({{ record.rule_name }})
+                        {{ record.product_name }}
+                        <span v-if="record.rule_name">
+                          ({{ record.rule_name }})
+                        </span>
                       </div>
                     </template>
                     <template
@@ -79,13 +76,12 @@
                       <a-input-number
                         :min="1"
                         :max="record.stock_amount"
-                        v-model="record.product_count"
+                        @change="onMemberChange"
+                        v-model="record.nums"
                       />
                     </template>
                     <template slot="priceSum" slot-scope="customRender, record">
-                      {{
-                        (record.product_count * record.unit_price).toFixed(1)
-                      }}
+                      {{ (record.nums * record.unit_price).toFixed(1) }}
                     </template>
                     <template
                       slot="action"
@@ -98,6 +94,9 @@
                       </st-table-actions>
                     </template>
                   </st-table>
+                  <div :class="basic('all-price')" v-if="buyCar.length">
+                    总额：￥{{ actualAmount }}
+                  </div>
                 </st-form-item>
                 <st-form-item :class="basic('padding')">
                   <div class="divider-line"></div>
@@ -181,6 +180,7 @@
                 <st-form-item label="减免">
                   <st-input-number
                     :float="true"
+                    @input="getPrice"
                     v-model="reducePrice"
                     placeholder="请输入减免金额"
                   >
@@ -212,7 +212,7 @@
         </div>
       </st-mina-panel>
     </div>
-  </div>
+  </st-panel>
 </template>
 
 <script>
@@ -224,7 +224,7 @@ import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
 import SoldDealAddMember from '@/views/biz-modals/sold/deal/add-member'
 import { ListService } from './list.service'
 import { PatternService } from '@/services/pattern.service'
-import { values } from 'lodash-es'
+import { PRODUCT_TYPE } from '@/constants/sold/transaction'
 export default {
   name: 'shopSoldTransactionCloud',
   bem: {
@@ -247,7 +247,10 @@ export default {
       loading: this.listService.loading$,
       memberList: this.listService.memberList$,
       saleList: this.listService.saleList$,
-      storeProductList: this.listService.storeProductList$
+      storeProductList: this.listService.storeProductList$,
+      currentPrice: this.listService.currentPrice$,
+      actualAmount: this.listService.actualAmount$,
+      couponList: this.listService.couponList$
     }
   },
   data() {
@@ -256,24 +259,13 @@ export default {
     return {
       form,
       decorators,
+      PRODUCT_TYPE,
       memberSearchText: '', // 搜索会员value
       couponText: '未选择优惠券', // 选择的优惠券名
       couponDropdownVisible: false,
-      selectCoupon: '',
+      selectCoupon: '', // 优惠券选择的信息
       reducePrice: null,
       description: '',
-      couponList: [
-        {
-          name: '1',
-          price: 30,
-          id: 1
-        },
-        {
-          name: '2',
-          price: 60,
-          id: 2
-        }
-      ],
       buyCar: [],
       storeProductList1: [
         {
@@ -287,6 +279,7 @@ export default {
     }
   },
   mounted() {
+    this.$searchQuery.product_type = PRODUCT_TYPE.STORE
     this.getList()
     this.listService.getSaleList().subscribe()
   },
@@ -299,22 +292,39 @@ export default {
     },
     // 添加购物车
     onSku(record) {
-      this.$modalRouter.push({
-        name: 'store-choose-sku',
-        props: {
-          id: ''
-        },
-        on: {
-          success: result => {
-            this.buyCar.push(result)
-            console.log(this.buyCar)
-          }
+      this.listService.getGoodsDetail(record).subscribe(res => {
+        if (res.all_spec) {
+          this.$modalRouter.push({
+            name: 'store-choose-sku',
+            props: {
+              productData: res
+            },
+            on: {
+              success: result => {
+                result.product_id = record
+                this.buyCar.push(result)
+                this.onMemberChange()
+              }
+            }
+          })
+        } else {
+          this.buyCar.push({
+            sku_id: res.product_sku[0].sku_id,
+            product_id: record,
+            nums: 1,
+            rule_name: '',
+            product_name: res.product_name,
+            unit_price: res.product_sku[0].selling_price,
+            stock_amount: res.product_sku[0].stock_amount
+          })
+          this.onMemberChange()
         }
       })
     },
     // 删除购物车商品
     onDelBuyCar(i) {
       this.buyCar.splice(i, 1)
+      this.onMemberChange()
     },
     // 生成订单号
     createOrderNum() {
@@ -332,8 +342,6 @@ export default {
             .subscribe(result => {
               resolve(result.info.order_id)
             })
-          // console.log(values)
-          // resolve(values)
           console.log(this.selectCoupon)
         })
       })
@@ -431,7 +439,6 @@ export default {
         on: {
           success: res => {
             this.onMemberSearch(res.name, res.id)
-            this.onMemberChange(res.id)
           }
         }
       })
@@ -455,17 +462,59 @@ export default {
         })
       }
     },
-    // 选择会员
-    onMemberChange(data) {
-      console.log(data, 2222222)
-    },
+    // 优惠券处理
     onSelectCouponChange(event) {
       let price = this.couponList.filter(o => o.id === event.target.value.id)[0]
         .price
       this.couponText = `${price}元`
+      this.getPrice()
     },
+    // 优惠券处理
     onSelectCoupon() {
       this.couponDropdownVisible = false
+    },
+    // 价格计算
+    getPrice() {
+      let productInfo = []
+      const memberId = this.form.getFieldValue('memberId')
+      this.buyCar.forEach(val => {
+        productInfo.push({
+          sku_id: val.sku_id,
+          nums: val.nums
+        })
+      })
+      this.listService
+        .getStorePrice({
+          product_type: 8,
+          reduce_amount: this.reducePrice || undefined,
+          coupon_id: this.selectCoupon.id || undefined,
+          member_id: memberId || undefined,
+          product_info: productInfo.length ? productInfo : undefined
+        })
+        .subscribe()
+    },
+    // 获取可用优惠券
+    getUseCouponList() {
+      let productInfo = []
+      const memberId = this.form.getFieldValue('memberId')
+      this.buyCar.forEach(val => {
+        productInfo.push({
+          product_id: val.product_id,
+          sku_id: val.sku_id,
+          nums: val.nums
+        })
+      })
+      this.listService
+        .getUseCoupon({
+          product_info: JSON.stringify(productInfo),
+          member_id: memberId
+        })
+        .subscribe()
+    },
+    // 同时获取价格和优惠券列表
+    onMemberChange() {
+      this.getPrice()
+      this.getUseCouponList()
     }
   },
   computed: {

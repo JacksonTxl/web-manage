@@ -81,5 +81,9 @@ export const skuColumns = (vm: any) => {
   ]
   list = vm.sku.concat(list)
   console.log(list, '================')
+  if (vm.isEditMode) {
+    console.log('进来删除了')
+    list.pop()
+  }
   return list
 }

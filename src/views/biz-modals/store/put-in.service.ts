@@ -8,9 +8,10 @@ export class PutInService {
   constructor(private stockApi: StockApi) {}
   @Effect()
   stockWarehouse(params: WarehouseParams) {
-    return this.stockApi.stockWarehouse(params).pipe(tap((res: any) => {}))
+    return this.stockApi.stockWarehouse(params)
   }
+  @Effect()
   stockOutbound(params: WarehouseParams) {
-    return this.stockApi.stockOutbound(params).pipe(tap((res: any) => {}))
+    return this.stockApi.stockOutbound(params)
   }
 }

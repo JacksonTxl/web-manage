@@ -50,9 +50,10 @@
 
         div:nth-child(3) {
           color: #7f93a3;
-          font-size: 18px;
+          font-size: 14px;
 
           span {
+            font-size: 18px;
             font-weight: bold;
           }
         }
@@ -96,6 +97,7 @@
 
     div:nth-child(1) {
       font-weight: 500;
+      color: #3e4d5c;
     }
 
     img {
@@ -112,6 +114,10 @@
   &__whole-item-text {
     font-weight: bold;
     font-size: 24px;
+
+    span {
+      color: #252a2e;
+    }
   }
 
   .sales-category {
@@ -175,6 +181,7 @@
 
       .category {
         margin: 0 24px;
+        height: 334px;
 
         .st-title--t3 {
           margin-top: 32px;
@@ -224,5 +231,24 @@
     .ant-tabs-bar {
       border-bottom: 1px solid transparent;
     }
+  }
+
+  &__entry-pie-img {
+    text-align: center;
+
+    img {
+      height: 240px;
+      margin-top: 35px;
+    }
+  }
+
+  &__entry-store-img {
+    img {
+      width: 100%;
+    }
+  }
+
+  .st-no-data {
+    margin-top: 70px;
   }
 }

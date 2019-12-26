@@ -144,29 +144,24 @@
       </template>
       <!-- 售卖状态 -->
       <template slot="sell_status" slot-scope="text, record">
-        <a-badge
-          :status="text.id === SELL_STATUS.CAN_SELL ? 'success' : 'error'"
-        />
-        {{ text.name }}
-        <a-popover
-          v-if="record.stop_sale"
-          :title="
-            `操作人:${record.stop_sale.operator_name}  操作时间:${
-              record.stop_sale.stop_time
-            }`
-          "
-          trigger="click"
-          placement="bottomRight"
-          :overlayStyle="{ width: '336px' }"
+        <st-text
+          :status="{
+            success: text.id === 1,
+            error: text.id === 2
+          }"
         >
-          <template slot="content">
-            <p>{{ record.stop_sale.stop_reason }}</p>
-          </template>
-          <a-icon
-            type="exclamation-circle"
-            v-if="text.id === SELL_STATUS.NO_SELL"
-          />
-        </a-popover>
+          {{ text.name }}
+        </st-text>
+        <st-help-popover v-if="text.id === SELL_STATUS.NO_SELL">
+          <span slot="title">
+            操作人：{{ record.stop_sale.operator_name }} 操作时间：{{
+              record.stop_sale.stop_time
+            }}
+          </span>
+          <span slot="content">
+            {{ record.stop_sale.stop_reason }}
+          </span>
+        </st-help-popover>
       </template>
       <!-- 操作 -->
       <div slot="action" slot-scope="text, record">

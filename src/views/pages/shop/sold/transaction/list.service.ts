@@ -3,7 +3,9 @@ import { State, Effect } from 'rx-state'
 import {
   TransactionApi,
   TransactionListInput,
-  ProductInfoParams
+  ProductInfoParams,
+  TransactionPriceInput,
+  CouponParams
 } from '@/api/v1/sold/transaction'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
@@ -17,6 +19,9 @@ export class ListService {
   memberList$ = new State({})
   saleList$ = new State({})
   storeProductList$ = new State({})
+  currentPrice$ = new State('0')
+  actualAmount$ = new State('0')
+  couponList$ = new State({})
   productTypes$ = this.userService.getOptions$('transaction.product_type')
   constructor(
     private transactionApi: TransactionApi,
@@ -65,9 +70,36 @@ export class ListService {
       })
       .pipe(
         tap((res: any) => {
-          this.storeProductList$.commit(() => res.data.list)
+          this.storeProductList$.commit(() => res.list)
         })
       )
+  }
+  /**
+   * 云店
+   */
+  getGoodsDetail(id: number) {
+    return this.transactionApi.goodsDetail(id).pipe(tap(() => {}))
+  }
+  /**
+   * 云店价格计算
+   */
+  getStorePrice(params: TransactionPriceInput) {
+    return this.transactionApi.getTransactionPrice(params).pipe(
+      tap(res => {
+        this.currentPrice$.commit(() => res.info.price)
+        this.actualAmount$.commit(() => res.info.product_amount)
+      })
+    )
+  }
+  /**
+   * 获取可用优惠券
+   */
+  getUseCoupon(query: CouponParams) {
+    return this.transactionApi.getCouponList(query).pipe(
+      tap(res => {
+        this.couponList$.commit(() => res.list)
+      })
+    )
   }
   /**
    * 云店创建订单

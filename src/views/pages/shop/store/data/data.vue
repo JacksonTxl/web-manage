@@ -17,12 +17,12 @@
                 <i-count-up
                   :endVal="
                     dataProfile.today[headerTitleItem[index]]
-                      ? dataProfile.today[headerTitleItem[index]]
+                      ? Number(dataProfile.today[headerTitleItem[index]])
                       : 0
                   "
                   :options="{
                     decimalPlaces: (dataProfile.today[headerTitleItem[index]]
-                      ? dataProfile.today[headerTitleItem[index]]
+                      ? Number(dataProfile.today[headerTitleItem[index]])
                       : 0
                     )
                       .toString()
@@ -38,14 +38,14 @@
                 <i-count-up
                   :endVal="
                     dataProfile.yesterday[headerTitleItem[index]]
-                      ? dataProfile.yesterday[headerTitleItem[index]]
+                      ? Number(dataProfile.yesterday[headerTitleItem[index]])
                       : 0
                   "
                   :options="{
                     decimalPlaces: (dataProfile.yesterday[
                       headerTitleItem[index]
                     ]
-                      ? dataProfile.yesterday[headerTitleItem[index]]
+                      ? Number(dataProfile.yesterday[headerTitleItem[index]])
                       : 0
                     )
                       .toString()
@@ -81,7 +81,19 @@
                 {{ item.title }}
                 <img :src="item.icon" />
               </div>
-              <div :class="basic('whole-item-text')">{{ item.num }}</div>
+              <div :class="basic('whole-item-text')">
+                <i-count-up
+                  :endVal="item.num ? Number(item.num) : 0"
+                  :options="{
+                    decimalPlaces: (item.num ? item.num : 0)
+                      .toString()
+                      .includes('.')
+                      ? 2
+                      : 0,
+                    decimal: '.'
+                  }"
+                />
+              </div>
             </div>
           </div>
           <div :class="basic('revenue-trend')">
@@ -92,12 +104,19 @@
                     {{ wholeNav[wholenavIndex].title }}
                   </st-t3>
                   <shop-store-data-line
+                    v-if="
+                      filterLine(storeBoard, wholeNav[wholenavIndex].title)
+                        .length
+                    "
                     :data="
                       filterLine(storeBoard, wholeNav[wholenavIndex].title)
                     "
                     :tooltipKey="wholeNav[wholenavIndex].title"
                     :unit="wholeNav[wholenavIndex].title | filterCompany"
                   ></shop-store-data-line>
+                  <div v-else :class="basic('entry-store-img')">
+                    <img :src="inoutNumImg" />
+                  </div>
                 </div>
               </a-col>
               <a-col :span="8">
@@ -106,6 +125,7 @@
                     <template v-slot:user>
                       <component
                         v-bind:is="wholeNavcom"
+                        v-if="orderMember(storeBoard, 0, 'member').length"
                         :unit="wholeNav[wholenavIndex].title | filterCompany"
                         :data="orderMember(storeBoard, 0, 'order')"
                         :name="filterOrderMemberTitle()"
@@ -127,6 +147,7 @@
                     <template v-slot:marketing>
                       <component
                         v-bind:is="wholeNavcom"
+                        v-if="orderMember(storeBoard, 0, 'member').length"
                         :name="filterOrderMemberTitle()"
                         :unit="wholeNav[wholenavIndex].title | filterCompany(1)"
                         :data="orderMember(storeBoard, 0, 'member')"
@@ -166,6 +187,7 @@
                       <sales-analysis
                         title="销量TOP5"
                         :salesTitle="['排名', '商品', '销量(件)']"
+                        nameLength="6"
                         :salesList="storeSaleList.sales_rank"
                       ></sales-analysis>
                     </div>
@@ -175,6 +197,7 @@
                       <sales-analysis
                         title="营收TOP5"
                         :salesTitle="['排名', '商品', '营收(元)']"
+                        nameLength="6"
                         :salesList="storeSaleList.revenue_rank"
                       ></sales-analysis>
                     </div>
@@ -199,7 +222,11 @@
                       name="总营收"
                       height="280"
                       style="width: 100%;"
+                      v-if="categoryRevenue.length"
                     ></shop-store-data-revenue-ring>
+                    <div :class="basic('entry-pie-img')">
+                      <img :src="pieImg" />
+                    </div>
                   </div>
                 </div>
               </a-col>
@@ -228,6 +255,10 @@
   </div>
 </template>
 <script>
+// 饼图
+import pieImg from '@/assets/img/shop/dashboard/pie.png'
+// 折线
+import inoutNumImg from '@/assets/img/shop/dashboard/inoutNum.png'
 import moment from 'moment'
 import ShopStoreDataLine from '@/views/biz-components/stat/shop-store-data-line'
 import WholeTabls from './components#/whole-tabls'
@@ -270,6 +301,9 @@ export default {
       height325: 325,
       height332: 332,
       wholenavIndex: 0,
+      pieImg,
+      inoutNumImg,
+      storeDataLine: false,
       wholeNavcom: 'shop-store-data-ring',
       headerInfo,
       wholeNav,
@@ -326,12 +360,22 @@ export default {
     // 整体看板订单/会员折线图
     filterLine(data, type) {
       let fieldInfo = ['amount', 'count', 'count', 'price']
-      return data[this.fieldNav[this.wholenavIndex]].trend.map(item => {
-        return {
-          date: item.date,
-          amount: item[fieldInfo[this.wholenavIndex]]
-        }
-      })
+      console.log(
+        data[this.fieldNav[this.wholenavIndex]].trend.length,
+        'asdasdasdasdasd'
+      )
+      if (data[this.fieldNav[this.wholenavIndex]].trend.length) {
+        this.storeDataLine = true
+        return data[this.fieldNav[this.wholenavIndex]].trend.map(item => {
+          return {
+            date: item.date,
+            amount: item[fieldInfo[this.wholenavIndex]]
+          }
+        })
+      } else {
+        this.storeDataLine = false
+        return []
+      }
     },
     // 整体看板订单/会员
     orderMember(value, flag, that) {
@@ -351,12 +395,16 @@ export default {
       return this.filterOrderMember(...filterOrderMemberData)
     },
     filterOrderMember(value, fieldNav, wholenavIndex, that, type) {
-      return value[fieldNav[wholenavIndex]].source[that].map(item => {
-        return {
-          name: item.type,
-          value: item[type]
-        }
-      })
+      if (!Array.isArray(value[fieldNav[wholenavIndex]].source)) {
+        return value[fieldNav[wholenavIndex]].source[that].map(item => {
+          return {
+            name: item.type,
+            value: item[type]
+          }
+        })
+      } else {
+        return []
+      }
     },
     // 订单来源/会员身份标题
     filterOrderMemberTitle() {
@@ -396,7 +444,8 @@ export default {
     },
 
     onChangeTabs(query) {
-      this.tabsObjData = Object.assign(this.tabsObjData, query)
+      console.log(query)
+      this.tabsObjData = Object.assign(this.tabsObjData, { choose_type: query })
       this.tabsObjData.date = this.tabsObjData.date
         ? this.tabsObjData.date
         : moment()
