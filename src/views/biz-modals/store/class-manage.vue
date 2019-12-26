@@ -9,7 +9,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-if="tableData.length <= 10">
+          <tr v-if="tableData.length < 10">
             <td colspan="3" class="st-form-table__add">
               <st-button type="dashed" icon="add" block @click="addClass">
                 添加
@@ -19,7 +19,8 @@
           <tr v-for="(item, index) in tableData" :key="index">
             <td style="padding-left: 42px" v-if="item.isEdit">
               <a-input
-                style="width: 278px"
+                style="width: 150px"
+                maxlength="6"
                 v-model="item.category_name"
               ></a-input>
             </td>
@@ -104,11 +105,13 @@ export default {
     },
     cancelHandle(item, index) {
       item = this.oldTableData[index]
+      if (!item.category_name) {
+        this.tableData.splice(index, 1)
+        this.oldTableData.splice(index, 1)
+      }
     },
     delHandle(item, index) {
       this.classManageService.delClass(item.category_id).subscribe(res => {
-        // this.tableData.slice(index, 1)
-        // this.oldTableData.slice(index, 1)
         this.getList()
       })
     }

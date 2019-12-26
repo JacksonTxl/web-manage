@@ -33,8 +33,8 @@
       <st-mina-panel app>
         <div slot="actions" :class="basic('footer')">
           <div class="price">
-            <span>共2件商品 合计：</span>
-            <span>￥240</span>
+            <span>共{{ buyCar.length }}件商品 合计：</span>
+            <span>￥{{ currentPrice }}</span>
           </div>
           <div class="button">
             <st-button @click="onCreateOrder">
@@ -94,6 +94,9 @@
                       </st-table-actions>
                     </template>
                   </st-table>
+                  <div :class="basic('all-price')">
+                    总额：￥{{ actualAmount }}
+                  </div>
                 </st-form-item>
                 <st-form-item :class="basic('padding')">
                   <div class="divider-line"></div>
@@ -108,7 +111,7 @@
                     :filterOption="false"
                     v-decorator="decorators.memberId"
                     @search="onMemberSearch"
-                    @change="onMemberChange"
+                    @change="getPrice"
                   >
                     <template slot="notFoundContent">
                       <div>
@@ -177,6 +180,7 @@
                 <st-form-item label="减免">
                   <st-input-number
                     :float="true"
+                    @input="getPrice"
                     v-model="reducePrice"
                     placeholder="请输入减免金额"
                   >
@@ -243,7 +247,10 @@ export default {
       loading: this.listService.loading$,
       memberList: this.listService.memberList$,
       saleList: this.listService.saleList$,
-      storeProductList: this.listService.storeProductList$
+      storeProductList: this.listService.storeProductList$,
+      currentPrice: this.listService.currentPrice$,
+      actualAmount: this.listService.actualAmount$,
+      couponList: this.listService.couponList$
     }
   },
   data() {
@@ -259,18 +266,6 @@ export default {
       selectCoupon: '', // 优惠券选择的信息
       reducePrice: null,
       description: '',
-      couponList: [
-        {
-          name: '1',
-          price: 30,
-          id: 1
-        },
-        {
-          name: '2',
-          price: 60,
-          id: 2
-        }
-      ],
       buyCar: [],
       storeProductList1: [
         {
@@ -446,7 +441,6 @@ export default {
         on: {
           success: res => {
             this.onMemberSearch(res.name, res.id)
-            this.onMemberChange(res.id)
           }
         }
       })
@@ -469,10 +463,6 @@ export default {
           }
         })
       }
-    },
-    // 选择会员
-    onMemberChange(data) {
-      console.log(data, 2222222)
     },
     // 优惠券处理
     onSelectCouponChange(event) {
@@ -502,9 +492,7 @@ export default {
           member_id: memberId || undefined,
           product_info: productInfo.length ? productInfo : undefined
         })
-        .subscribe(res => {
-          console.log(res)
-        })
+        .subscribe()
     },
     // 获取可用优惠券
     getUseCouponList() {
@@ -518,13 +506,10 @@ export default {
       })
       this.listService
         .getUseCoupon({
-          product_info: productInfo,
+          product_info: JSON.stringify(productInfo),
           member_id: ''
         })
-        .subscribe(res => {
-          console.log(res)
-        })
-      console.log(this.productInfo)
+        .subscribe()
     }
   },
   computed: {
