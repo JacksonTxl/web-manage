@@ -127,7 +127,16 @@
         </span>
       </div>
       <div slot="member_name" slot-scope="text, record">
-        {{ record.member_name }}
+        <a
+          href="javascript:;"
+          v-if="record.auth['shop:member:member|get']"
+          @click="infoFunc(record)"
+        >
+          <st-overflow-text :value="text" maxWidth="100px"></st-overflow-text>
+        </a>
+        <span v-else>
+          <st-overflow-text :value="text" maxWidth="100px"></st-overflow-text>
+        </span>
         <st-icon
           type="user-type"
           v-if="record.sex === 2 && record.is_minors"

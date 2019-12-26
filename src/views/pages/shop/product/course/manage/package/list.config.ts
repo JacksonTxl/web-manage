@@ -2,6 +2,8 @@ export const columns = () => {
   return [
     {
       title: '课程包名称',
+      fixed: 'left',
+      width: 180,
       dataIndex: 'course_name'
     },
     {

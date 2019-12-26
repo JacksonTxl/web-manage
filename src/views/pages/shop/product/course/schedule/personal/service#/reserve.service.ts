@@ -1,8 +1,8 @@
 import { UpdateInput } from '@/api/v1/schedule/personal/reserve'
 
 import { Injectable } from 'vue-service-app'
-import { State, Effect, Computed } from 'rx-state'
-import { tap, pluck } from 'rxjs/operators'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import {
   PersonalReserveApi,
   AddInput,
@@ -10,14 +10,7 @@ import {
 } from '@/api/v1/schedule/personal/reserve'
 import { AuthService } from '@/services/auth.service'
 import { MessageService } from '@/services/message.service'
-export interface SetState {
-  reserveInfo: any
-  reserveList: any[]
-  reserveTable: any[]
-  infoAuth: any
-  reserveUpdateInfo: any[]
-  reserveListTable: any[]
-}
+
 @Injectable()
 export class PersonalScheduleReserveService {
   // loading
@@ -25,13 +18,13 @@ export class PersonalScheduleReserveService {
   // 业务状态
   list$ = new State([])
   page$ = new State({})
-  state$: State<SetState>
-  reserveInfo$: Computed<any>
+
+  reserveInfo$ = new State({})
   reserveTable$ = new State([])
-  reserveList$: Computed<any>
-  reserveUpdateInfo$: Computed<any>
-  reserveListTable$: Computed<any>
-  infoAuth$: Computed<any>
+  reserveList$ = new State({})
+  reserveUpdateInfo$ = new State({})
+  reserveListTable$ = new State({})
+  infoAuth$ = new State({})
   auth$ = this.authService.authMap$({
     edit: 'shop:reserve:personal_course_reserve|edit',
     add: 'shop:reserve:personal_course_reserve|add',
@@ -42,25 +35,7 @@ export class PersonalScheduleReserveService {
     private reserveApi: PersonalReserveApi,
     private authService: AuthService,
     private msg: MessageService
-  ) {
-    this.state$ = new State({
-      infoAuth: {},
-      reserveUpdateInfo: {},
-      reserveInfo: [],
-      reserveListTable: [],
-      reserveList: [],
-      reserveTable: []
-    })
-    this.infoAuth$ = new Computed(this.state$.pipe(pluck('infoAuth')))
-    this.reserveList$ = new Computed(this.state$.pipe(pluck('reserveList')))
-    this.reserveInfo$ = new Computed(this.state$.pipe(pluck('reserveInfo')))
-    this.reserveListTable$ = new Computed(
-      this.state$.pipe(pluck('reserveListTable'))
-    )
-    this.reserveUpdateInfo$ = new Computed(
-      this.state$.pipe(pluck('reserveUpdateInfo'))
-    )
-  }
+  ) {}
   /**
    *
    * @param params
@@ -107,20 +82,16 @@ export class PersonalScheduleReserveService {
   getInfo(id: string) {
     return this.reserveApi.getInfo(id).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.infoAuth = res.auth
-          state.reserveInfo = res.info
-          state.reserveList = res.info.reserve
-        })
+        this.infoAuth$.commit(() => res.auth)
+        this.reserveInfo$.commit(() => res.info)
+        this.reserveList$.commit(() => res.info.reserve)
       })
     )
   }
   getUpdateInfo(id: any) {
     return this.reserveApi.getUpdateInfo(id).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.reserveUpdateInfo = res.info
-        })
+        this.reserveUpdateInfo$.commit(() => res.info)
       })
     )
   }
@@ -144,9 +115,7 @@ export class PersonalScheduleReserveService {
     return this.reserveApi.getList(query).pipe(
       tap(res => {
         res = this.authService.filter(res)
-        this.reserveTable$.commit(state => {
-          return res.list
-        })
+        this.reserveTable$.commit(() => res.list)
 
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)

@@ -1,6 +1,8 @@
 export const columns = [
   {
     title: '活动名称',
+    width: 180,
+    fixed: 'left',
     dataIndex: 'activity_name'
   },
   {
@@ -19,19 +21,23 @@ export const columns = [
   },
   {
     title: '活动状态',
+    width: 120,
     dataIndex: 'activity_state',
     scopedSlots: { customRender: 'activity_state' }
   },
   {
     title: '开团人次',
+    align: 'right',
     dataIndex: 'group_total'
   },
   {
     title: '成团订单',
+    align: 'right',
     dataIndex: 'group_success_total'
   },
   {
     title: '剩余活动库存',
+    align: 'right',
     dataIndex: 'stock_remaining'
   },
   {

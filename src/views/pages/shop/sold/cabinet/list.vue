@@ -35,16 +35,15 @@
         :dataSource="list"
       >
         <template slot="lease_status" slot-scope="record">
-          <a-badge
-            :status="
-              record.id === 1
-                ? 'success'
-                : record.id === 2
-                ? 'error'
-                : 'warning'
-            "
-            :text="record.name"
-          />
+          <st-text
+            :status="{
+              success: record.id === 1,
+              error: record.id === 2,
+              warning: record.id === 3
+            }"
+          >
+            {{ record.name }}
+          </st-text>
         </template>
         <div slot="action" slot-scope="text, record">
           <st-table-actions>

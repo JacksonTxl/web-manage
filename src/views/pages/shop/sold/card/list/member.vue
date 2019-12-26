@@ -106,6 +106,9 @@
           :dataSource="list"
           :scroll="{ x: 1800 }"
         >
+          <template slot="card_name" slot-scope="text">
+            <st-overflow-text :value="text" maxWidth="180px"></st-overflow-text>
+          </template>
           <template slot="remain_amount" slot-scope="text, record">
             {{ text }}{{ record.unit | enumFilter('sold_common.unit') }}
           </template>

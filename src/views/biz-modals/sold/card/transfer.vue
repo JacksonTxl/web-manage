@@ -354,8 +354,7 @@ export default {
       depositTransferInfo: this.transferService.depositTransferInfo$,
       memberTransferInfo: this.transferService.memberTransferInfo$,
       timeScope: this.transferService.timeScope$,
-      payList: this.transferService.payList$,
-      sold: this.userService.soldEnums$
+      payList: this.transferService.payList$
     }
   },
   computed: {
@@ -414,37 +413,36 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.form.validate((error, values) => {
+      this.form.validate().then(values => {
         let sold_type = this.isDeposit
           ? this.depositTransferInfo.contract_type
           : this.isMember
           ? this.memberTransferInfo.contract_type
           : '1'
-        if (!error) {
-          let start_time = this.isMember
-            ? values.startTime.format('YYYY-MM-DD HH:mm')
-            : null
-          this.transferService
-            .editCardTransfer(
-              {
-                start_time,
-                transferee_member_id: +values.memberId,
-                member_name: values.memberName,
-                mobile: values.memberMobile,
-                remain_price: +values.remainPrice,
-                contract_number: values.contractNumber,
-                pay_channel: +values.payType,
-                contract_type: +sold_type,
-                handling_fee_reduce: values.handling_fee_reduce
-              },
-              this.id,
-              this.type
-            )
-            .subscribe(res => {
-              this.$emit('success')
-              this.show = false
-            })
-        }
+
+        let start_time = this.isMember
+          ? values.startTime.format('YYYY-MM-DD HH:mm')
+          : null
+        this.transferService
+          .editCardTransfer(
+            {
+              start_time,
+              transferee_member_id: +values.memberId,
+              member_name: values.memberName,
+              mobile: values.memberMobile,
+              remain_price: +values.remainPrice,
+              contract_number: values.contractNumber,
+              pay_channel: +values.payType,
+              contract_type: +sold_type,
+              handling_fee_reduce: values.handling_fee_reduce
+            },
+            this.id,
+            this.type
+          )
+          .subscribe(res => {
+            this.$emit('success')
+            this.show = false
+          })
       })
     },
     // 切换添加会员

@@ -1,41 +1,25 @@
-import { UserService } from '@/services/user.service'
-import { CoachLevelApi } from '@/api/v1/setting/coach/level'
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { Injectable } from 'vue-service-app'
+import { State } from 'rx-state'
+import { tap } from 'rxjs/operators'
 
-import { StaffApi, PutStaffBrandQuitInput } from '@/api/v1/staff'
-import { forkJoin } from 'rxjs'
+import { StaffApi } from '@/api/v1/staff'
 
 interface SetState {
   shopOptions: object[]
 }
-interface GetOptionsInput {
-  func: any
-  payload?: any
-  callback?: any
-}
+
 @Injectable()
-export class CommonService extends Store<SetState> {
-  state$: State<SetState>
-  shopOptions$: Computed<object[]>
-  constructor(protected staffApi: StaffApi) {
-    super()
-    this.state$ = new State({
-      shopOptions: []
-    })
-    this.shopOptions$ = new Computed(this.state$.pipe(pluck('shopOptions')))
-  }
+export class CommonService {
+  loading$ = new State({})
+  shopOptions$ = new State([])
+  constructor(protected staffApi: StaffApi) {}
   /**
    * 获取门店列表 options
    */
-  private getShopList() {
+  getShopList() {
     return this.staffApi.getShopList().pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.shopOptions = res.shops
-        })
+        this.shopOptions$.commit(() => res.shops)
       })
     )
   }

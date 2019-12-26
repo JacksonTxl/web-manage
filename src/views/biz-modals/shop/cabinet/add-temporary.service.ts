@@ -1,5 +1,4 @@
 import { Injectable } from 'vue-service-app'
-import { Store } from '@/services/store'
 import {
   TemporaryCabinetApi,
   AddInput

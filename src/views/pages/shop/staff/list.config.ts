@@ -10,9 +10,7 @@ export const columns = () => {
     {
       title: '昵称',
       dataIndex: 'nickname',
-      key: 'nickname',
-      fixed: 'left',
-      width: 100
+      key: 'nickname'
     },
     { title: '手机号', dataIndex: 'mobile', key: 'mobile' },
     {

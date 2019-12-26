@@ -141,10 +141,14 @@
           <span>{{ text.name }}</span>
         </template>
         <template slot="work_status" slot-scope="text">
-          <div class="page-staff-list-work_status">
-            <a-badge :status="text.name === '在职' ? 'success' : 'error'" />
+          <st-text
+            :status="{
+              success: text.id === 1,
+              error: text.id === 2
+            }"
+          >
             {{ text.name }}
-          </div>
+          </st-text>
         </template>
         <template slot="action" slot-scope="text, record">
           <st-table-actions>
@@ -201,7 +205,7 @@
                   props: { staff: record }
                 }"
               >
-                职位变更
+                职位和薪资变更
               </a>
               <a
                 href="javascript: void(0)"
@@ -211,7 +215,7 @@
                   props: { staff: record }
                 }"
               >
-                设置薪资账户
+                设置提现账户
               </a>
               <a
                 href="javascript: void(0)"
