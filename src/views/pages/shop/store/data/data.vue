@@ -81,7 +81,19 @@
                 {{ item.title }}
                 <img :src="item.icon" />
               </div>
-              <div :class="basic('whole-item-text')">{{ item.num }}</div>
+              <div :class="basic('whole-item-text')">
+                <i-count-up
+                  :endVal="item.num ? Number(item.num) : 0"
+                  :options="{
+                    decimalPlaces: (item.num ? item.num : 0)
+                      .toString()
+                      .includes('.')
+                      ? 2
+                      : 0,
+                    decimal: '.'
+                  }"
+                />
+              </div>
             </div>
           </div>
           <div :class="basic('revenue-trend')">
@@ -166,6 +178,7 @@
                       <sales-analysis
                         title="销量TOP5"
                         :salesTitle="['排名', '商品', '销量(件)']"
+                        nameLength="6"
                         :salesList="storeSaleList.sales_rank"
                       ></sales-analysis>
                     </div>
@@ -175,6 +188,7 @@
                       <sales-analysis
                         title="营收TOP5"
                         :salesTitle="['排名', '商品', '营收(元)']"
+                        nameLength="6"
                         :salesList="storeSaleList.revenue_rank"
                       ></sales-analysis>
                     </div>
@@ -199,7 +213,11 @@
                       name="总营收"
                       height="280"
                       style="width: 100%;"
+                      v-if="categoryRevenue.length"
                     ></shop-store-data-revenue-ring>
+                    <div :class="basic('entry-pie-img')">
+                      <img :src="pieImg" />
+                    </div>
                   </div>
                 </div>
               </a-col>
@@ -228,6 +246,10 @@
   </div>
 </template>
 <script>
+// 饼图
+import pieImg from '@/assets/img/shop/dashboard/pie.png'
+// 折线
+import inoutNumImg from '@/assets/img/shop/dashboard/inoutNum.png'
 import moment from 'moment'
 import ShopStoreDataLine from '@/views/biz-components/stat/shop-store-data-line'
 import WholeTabls from './components#/whole-tabls'
@@ -270,6 +292,8 @@ export default {
       height325: 325,
       height332: 332,
       wholenavIndex: 0,
+      pieImg,
+      inoutNumImg,
       wholeNavcom: 'shop-store-data-ring',
       headerInfo,
       wholeNav,
@@ -396,7 +420,8 @@ export default {
     },
 
     onChangeTabs(query) {
-      this.tabsObjData = Object.assign(this.tabsObjData, query)
+      console.log(query)
+      this.tabsObjData = Object.assign(this.tabsObjData, { choose_type: query })
       this.tabsObjData.date = this.tabsObjData.date
         ? this.tabsObjData.date
         : moment()

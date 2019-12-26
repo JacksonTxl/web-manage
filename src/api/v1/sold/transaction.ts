@@ -15,7 +15,7 @@ export interface ProductType {
   product_id: number
 }
 export interface TransactionPriceInput {
-  product_id: number
+  product_id?: number
   product_type: number
   product_num?: number
   specs_id?: number
@@ -185,9 +185,15 @@ export class TransactionApi extends Api {
    * 交易签单-云店-商品列表
    */
   getStoreProductList(query: { product_name: string }) {
-    return this.http.get(`/v1/finance/order/product_list`, {
+    return this.http.get(`/v1/store/product/name_search_list`, {
       query
     })
+  }
+  /**
+   * 交易签单-云店-商品详情
+   */
+  goodsDetail(id: number) {
+    return this.http.get(`/v1/store/product/${id}`)
   }
   /**
    * 交易签单-云店-确实收款时获取订单详情

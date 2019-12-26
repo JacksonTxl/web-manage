@@ -165,7 +165,9 @@ export default {
                     <i class="g2-legend-marker" style="background-color:{color};"></i>
                     <span class="g2-legend-text">${name}</span>
                     <div class='legend-right mg-l12'>
-                      <span class='legend-percent'>${value}${this.unit}</span>
+                      <span class='legend-percent'>${this.thousandBit(value)}${
+            this.unit
+          }</span>
                     </div>
                   </li>`
         },
@@ -183,7 +185,7 @@ export default {
           legend.addEventListener('mouseleave', () => {
             this.resetTotal()
           })
-          $s('.guide-value').textContent = row.value
+          $s('.guide-value').textContent = this.thousandBit(row.value)
           $s('.guide-name-text').textContent = row.name
         }
       })
@@ -195,12 +197,14 @@ export default {
         html: () => {
           this.resize = Math.random()
           return `<div class='guide'>
+                    <div class='guide-title'>
+                      <span class='guide-value'>${this.thousandBit(
+                        this.total
+                      )}</span>
+                      <span class='guide-unit'>${this.unit}</span>
+                    </div>
                     <div class='guide-name'>
                       <span class="guide-name-text">${this.name}</span>
-                    </div>
-                    <div class='guide-title'>
-                      <span class='guide-value'>${this.total}</span>
-                      <span class='guide-unit'>${this.unit}</span>
                     </div>
                   </div>`
         }
@@ -208,7 +212,7 @@ export default {
     },
     resetTotal() {
       const $s = this.$el.querySelector.bind(this.$el)
-      $s('.guide-value').textContent = this.total
+      $s('.guide-value').textContent = this.thousandBit(this.total)
       $s('.guide-name-text').textContent = this.name
     },
     setUnit(e) {
@@ -222,7 +226,7 @@ export default {
       const shapes = e.shapes
       const geom = e.geom
 
-      $s('.guide-value').textContent = origin.value
+      $s('.guide-value').textContent = this.thousandBit(origin.value)
       $s('.guide-name-text').textContent = origin.name
     },
     chartEvent() {
@@ -239,6 +243,9 @@ export default {
       this.chart.on('interval:mouseleave', e => {
         this.resetTotal()
       })
+    },
+    thousandBit(value) {
+      return (value + '').replace(/\d{1,3}(?=(\d{3})+$)/g, '$&,')
     }
   },
   beforeDestroy() {

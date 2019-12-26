@@ -12,7 +12,11 @@
           <span>已选：{{ productInfo.rule_name }}</span>
         </div>
       </div>
-      <div class="good-item" v-for="(item, index) in allSpec" :key="index">
+      <div
+        class="good-item"
+        v-for="(item, index) in this.productData.all_spec"
+        :key="index"
+      >
         <span class="item-label">{{ item.spec_name }}</span>
         <a-radio-group
           :options="item.spec_item_arr"
@@ -26,120 +30,24 @@
 <script>
 export default {
   name: 'modalStoreChooseSku',
+  props: {
+    productData: {
+      type: Object
+    }
+  },
   data() {
     return {
       show: false,
-      value1: 'Apple',
       productInfo: {
-        product_id: 1,
-        product_name: '商品名',
-        rule_name: '',
-        unit_price: 0,
-        stock_amount: 0,
-        product_count: 1,
-        spec_id: ''
+        product_id: '', // 商品id
+        product_name: '商品名', // 商品名称
+        rule_name: '', // 规格信息
+        unit_price: 0, // 单价
+        stock_amount: 0, // 库存
+        nums: 1,
+        sku_id: '' // 规格id
       }, // 规格选择完的商品信息
-      allSpec: [
-        {
-          spec_id: 1,
-          spec_name: '颜色',
-          spec_item_arr: [
-            {
-              spec_item_id: 11,
-              spec_item_name: '红色'
-            },
-            {
-              spec_item_id: 12,
-              spec_item_name: '蓝色'
-            },
-            {
-              spec_item_id: 13,
-              spec_item_name: '黄色'
-            }
-          ]
-        },
-        {
-          spec_id: 2,
-          spec_name: '内存',
-          spec_item_arr: [
-            {
-              spec_item_id: 21,
-              spec_item_name: '16G'
-            },
-            {
-              spec_item_id: 22,
-              spec_item_name: '32G'
-            },
-            {
-              spec_item_id: 23,
-              spec_item_name: '64G'
-            }
-          ]
-        }
-      ], // 规格信息
-      specItemId: [], // 规格值id
-      allSpecInfo: [
-        {
-          spec_arr: [
-            {
-              spec_id: 1,
-              spec_name: '颜色',
-              spec_item_id: 11,
-              spec_item_name: '红色'
-            },
-            {
-              spec_id: 2,
-              spec_name: '内存',
-              spec_item_id: 21,
-              spec_item_name: '16G'
-            }
-          ],
-          stock_amount: 10,
-          market_price: 21,
-          selling_price: 30,
-          sku_id: 111
-        },
-        {
-          spec_arr: [
-            {
-              spec_id: 1,
-              spec_name: '颜色',
-              spec_item_id: 11,
-              spec_item_name: '红色'
-            },
-            {
-              spec_id: 2,
-              spec_name: '内存',
-              spec_item_id: 22,
-              spec_item_name: '32G'
-            }
-          ],
-          stock_amount: 20,
-          market_price: 21,
-          selling_price: 380,
-          sku_id: 112
-        },
-        {
-          spec_arr: [
-            {
-              spec_id: 1,
-              spec_name: '颜色',
-              spec_item_id: 11,
-              spec_item_name: '红色'
-            },
-            {
-              spec_id: 2,
-              spec_name: '内存',
-              spec_item_id: 23,
-              spec_item_name: '64G'
-            }
-          ],
-          stock_amount: 30,
-          market_price: 61,
-          selling_price: 230,
-          sku_id: 113
-        }
-      ] // 规格内容信息
+      specItemId: [] // 规格值id
     }
   },
   bem: {
@@ -152,7 +60,7 @@ export default {
     },
     // 对后台返回的数据转换
     changeData() {
-      this.allSpec.forEach(element => {
+      this.productData.all_spec.forEach(element => {
         let items = JSON.parse(JSON.stringify(element.spec_item_arr))
         element.spec_item_arr = []
         items.forEach(val => {
@@ -164,13 +72,15 @@ export default {
         element.itemVal = items[0].spec_item_id
         this.specItemId.push(element.itemVal)
       })
-      this.allSpec = JSON.parse(JSON.stringify(this.allSpec))
+      this.productData.all_spec = JSON.parse(
+        JSON.stringify(this.productData.all_spec)
+      )
       this.outPutProductInfo()
     },
     // 输出选择规格后对应的信息
     outPutProductInfo() {
-      for (let i = 0; i < this.allSpecInfo.length; i++) {
-        let values = this.allSpecInfo[i]
+      for (let i = 0; i < this.productData.product_sku.length; i++) {
+        let values = this.productData.product_sku[i]
         let skuId1 = ''
         let skuInfo = ''
         values.spec_arr.forEach(val => {
@@ -182,7 +92,7 @@ export default {
           this.productInfo.stock_amount = values.stock_amount
           this.productInfo.rule_name = skuInfo
           this.productInfo.unit_price = values.selling_price
-          this.productInfo.spec_id = values.sku_id
+          this.productInfo.sku_id = values.sku_id
           return
         }
       }
@@ -190,7 +100,7 @@ export default {
     // 规格改变后获取对应数据
     changeSku() {
       this.specItemId = []
-      this.allSpec.forEach(item => {
+      this.productData.all_spec.forEach(item => {
         this.specItemId.push(item.itemVal)
       })
       this.outPutProductInfo()
