@@ -26,7 +26,7 @@
           </st-form-item>
           <st-form-item label="手机号" required v-if="!isShowParent">
             <a-input-group compact>
-              <a-select style="width:30%" v-model="country_prefix">
+              <a-select style="width:30%" v-decorator="rules.country_prefix">
                 <a-select-option
                   :value="code.code_id"
                   v-for="code in countryList.code_list"
@@ -44,7 +44,7 @@
           </st-form-item>
           <st-form-item label="家长手机号" v-if="isShowParent" required>
             <a-input-group compact>
-              <a-select style="width:30%" v-model="country_prefix">
+              <a-select style="width:30%" v-decorator="rules.country_prefix">
                 <a-select-option
                   :value="code.code_id"
                   v-for="code in countryList.code_list"
@@ -535,7 +535,6 @@ export default {
     save(e) {
       e.preventDefault()
       this.form.validateFields().then(values => {
-        console.log(values)
         const cascader = values.cascader || []
         if (values.cascader && values.cascader.length > 0) {
           const cascader_name = this.getDistrictInfo(values.cascader)
@@ -546,8 +545,6 @@ export default {
           values.district_id = values.cascader[2]
           values.district_name = cascader_name.district_name
         }
-        // 手机前缀
-        values.country_prefix = this.country_prefix
         values.image_face = this.faceList[0] || {}
         values.height = values.height || undefined
         values.weight = values.weight || undefined
