@@ -43,7 +43,7 @@ export default {
     SetShopCoach, // 设置上课门店及教练
     SetSellPrice // 设置售卖价格
   },
-  data() {
+  data(vm) {
     return {
       currentIndex: 0,
       courseId: 0,
@@ -54,7 +54,7 @@ export default {
           key: 0
         },
         {
-          title: '教练信息',
+          title: `${vm.$c('coach')}信息`,
           key: 1
         },
         {

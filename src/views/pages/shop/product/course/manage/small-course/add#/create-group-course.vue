@@ -191,7 +191,7 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
           <st-button type="primary" @click="save" :loading="loading.addGroup">
-            保存，开始设置教练信息
+            保存，开始设置{{ $c('coach') }}信息
           </st-button>
         </st-form-item>
       </a-col>

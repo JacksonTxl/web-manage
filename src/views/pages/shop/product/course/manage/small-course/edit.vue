@@ -59,7 +59,7 @@ export default {
       info: this.editService.info$
     }
   },
-  data() {
+  data(vm) {
     return {
       currentIndex: 0,
       courseId: 0,
@@ -70,7 +70,7 @@ export default {
           key: 0
         },
         {
-          title: '教练信息',
+          title: `${vm.$c('coach')}信息`,
           key: 1
         },
         {
