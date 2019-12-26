@@ -27,6 +27,11 @@ export const columns = (vm: any) => [
     dataIndex: 'team_course_amount'
   },
   {
+    title: '小班课营收(元)',
+    align: 'right',
+    dataIndex: 'small_course_amount'
+  },
+  {
     title: '课程包营收(元)',
     align: 'right',
     dataIndex: 'package_course_amount'
