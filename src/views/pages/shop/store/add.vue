@@ -71,7 +71,7 @@
                 class="mg-t12"
                 width="126px"
                 height="126px"
-                g
+                :cropperModal="cropperModal"
                 :list="fileList"
                 @change="getImage"
                 :numLimit="5"
@@ -85,14 +85,24 @@
             </st-form-item>
             <st-form-item label="配送方式" required>
               <a-checkbox-group v-decorator="decorators.delivery_type">
-                <a-checkbox :value="1">到店自提</a-checkbox>
-                <a-checkbox :value="2">快递发货</a-checkbox>
+                <a-checkbox
+                  :value="item.value"
+                  v-for="item in shippingMode"
+                  :key="item.value"
+                >
+                  {{ item.label }}
+                </a-checkbox>
               </a-checkbox-group>
             </st-form-item>
             <st-form-item label="售卖方式" required>
               <a-checkbox-group v-decorator="decorators.sale_type">
-                <a-checkbox :value="1">线上</a-checkbox>
-                <a-checkbox :value="2">线下</a-checkbox>
+                <a-checkbox
+                  :value="item.value"
+                  v-for="item in saleType"
+                  :key="item.value"
+                >
+                  {{ item.label }}
+                </a-checkbox>
               </a-checkbox-group>
             </st-form-item>
           </a-col>
@@ -124,7 +134,7 @@
               </a-radio-group>
               <div
                 :class="basic('sku--add')"
-                v-if="isMore === 2 && !isEditMode"
+                v-if="isMore === 2 && !isEditMode && skuList.length <= 3"
                 @click="addSku"
               >
                 <a-icon type="plus" :class="basic('sku--add-icon')" />
@@ -143,6 +153,7 @@
                   <a-input
                     v-model="item.spec_name"
                     placeholder="请输入规格项名称"
+                    :disabled="isEditMode"
                     style="width: 220px"
                     @change="skuName(index, $event)"
                   ></a-input>
@@ -279,6 +290,7 @@ import { PatternService } from '@/services/pattern.service'
 import { AddService } from './add.service.ts'
 import StoreAddSku from '@/views/biz-modals/store/add-sku'
 import { result } from 'lodash-es'
+import { UserService } from '@/services/user.service'
 export default {
   bem: {
     basic: 'shop-store-add'
@@ -286,12 +298,15 @@ export default {
   serviceInject() {
     return {
       pattern: PatternService,
-      addService: AddService
+      addService: AddService,
+      userService: UserService
     }
   },
   rxState() {
     return {
-      loading: this.addService.loading$
+      loading: this.addService.loading$,
+      saleType: this.userService.getOptions$('cloud_store.sale_type'),
+      shippingMode: this.userService.getOptions$('cloud_store.shipping_mode')
     }
   },
   modals: { StoreClassManage, StoreAddSku },
@@ -311,6 +326,11 @@ export default {
     return {
       form,
       decorators,
+      cropperModal: {
+        cropper: {
+          aspectRatio: 1
+        }
+      },
       isEdit: false,
       name: '', // 商品名称
       isMore: 1, // 是否是多规格
@@ -354,39 +374,13 @@ export default {
     }
   },
   watch: {
-    content(newValue, oldValue) {
-      // this.$set(this.formInfo, 'content', newValue)
-      // this.$emit('change', this.formInfo)
-    }
+    // content(newValue, oldValue) {
+    // }
   },
   mounted() {
     this.addService.getList().subscribe(res => {
       this.classList = res.list
     })
-    let arrP = [
-      {
-        spec_id: 1,
-        spec_name: '颜色',
-        spec_item_arr: [
-          { spec_item_id: 1, spec_item_name: '蓝色' },
-          { spec_item_id: 2, spec_item_name: '黄色' },
-          { spec_item_id: 3, spec_item_name: '红色' }
-        ]
-      },
-      {
-        spec_id: 2,
-        spec_name: '尺码',
-        spec_item_arr: [
-          { spec_item_id: 4, spec_item_name: 's' },
-          { spec_item_id: 5, spec_item_name: 'm' },
-          { spec_item_id: 6, spec_item_name: 'l' }
-        ]
-      }
-    ]
-    let arrC = [
-      { spec_name: '颜色', spec_item_name: ['蓝色', '黄色', '红色'] },
-      { spec_name: '尺码', spec_item_name: ['s', 'm', 'l', 'xl'] }
-    ]
     if (this.isEditMode) {
       this.goodDetail()
     }
@@ -439,8 +433,13 @@ export default {
         product_name: values.product_name, // 商品名称
         category_id: values.category_id, // 分类id
         delivery_type:
-          values.delivery_type.length === 2 ? -1 : values.delivery_type[0], // 配送方式
-        sale_type: values.sale_type.length === 2 ? -1 : values.sale_type[0] // 售卖方式
+          values.delivery_type.length === this.shippingMode.length
+            ? -1
+            : values.delivery_type[0], // 配送方式
+        sale_type:
+          values.sale_type.length === this.saleType.length
+            ? -1
+            : values.sale_type[0] // 售卖方式
       }
       console.log(data, '-----参数')
       this.addService.addGoods(data).subscribe(res => {
@@ -509,8 +508,13 @@ export default {
         product_name: values.product_name, // 商品名称
         category_id: values.category_id, // 分类id
         delivery_type:
-          values.delivery_type.lenght === 2 ? -1 : values.delivery_type[0], // 配送方式
-        sale_type: values.sale_type.lenght === 2 ? -1 : values.sale_type[0] // 售卖方式
+          values.delivery_type.lenght === this.shippingMode.length
+            ? -1
+            : values.delivery_type[0], // 配送方式
+        sale_type:
+          values.sale_type.lenght === this.saleType.length
+            ? -1
+            : values.sale_type[0] // 售卖方式
       }
       console.log(data, '这是编辑提交的参数')
       this.addService.editGoods(this.$route.query.id, data).subscribe(res => {
@@ -525,8 +529,13 @@ export default {
         product_name: this.info.product_name,
         category_id: this.info.category_id,
         delivery_type:
-          this.info.delivery_type === -1 ? [1, 2] : [this.info.delivery_type],
-        sale_type: this.info.sale_type === -1 ? [1, 2] : [this.info.sale_type]
+          this.info.delivery_type === -1
+            ? this.shippingMode.map(item => item.value)
+            : [this.info.delivery_type],
+        sale_type:
+          this.info.sale_type === -1
+            ? this.saleType.map(item => item.value)
+            : [this.info.sale_type]
       })
       this.imgList = this.info.product_images
       this.content = this.info.product_intro
