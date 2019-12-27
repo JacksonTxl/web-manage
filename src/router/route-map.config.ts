@@ -1639,7 +1639,7 @@ export const routeMapConfig = {
   'shop-store-stock-list-search'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '库存查询'
     routeConfig.queryOptions = {
-      page: { type: Number, default: 1 },
+      current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       product_name: { type: String, default: '' }
     }
@@ -1647,7 +1647,7 @@ export const routeMapConfig = {
   'shop-store-stock-list-detail'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '出入库明细'
     routeConfig.queryOptions = {
-      page: { type: Number, default: 1 },
+      current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       product_id: { type: Number, default: -1 },
       stock_flow: { type: Number, default: -1 },
@@ -1665,8 +1665,8 @@ export const routeMapConfig = {
   },
   'shop-store-order-list-shipments'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '待发货订单'
+    // routeConfig.meta.auth = 'brand_shop:cloud_store:order|stay_deliver_goods'
     routeConfig.queryOptions = {
-      type: { type: Number, default: 1 },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       search_where: { type: String, default: '' }
@@ -1674,8 +1674,8 @@ export const routeMapConfig = {
   },
   'shop-store-order-list-signin'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '待签收订单'
+    // routeConfig.meta.auth = 'brand_shop:cloud_store:order|stay_delivers'
     routeConfig.queryOptions = {
-      type: { type: Number, default: 2 },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       search_where: { type: String, default: '' }
@@ -1683,6 +1683,7 @@ export const routeMapConfig = {
   },
   'shop-store-order-list-verification'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '待核销订单'
+    // routeConfig.meta.auth = 'brand_shop:cloud_store:order|stay_verification'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },

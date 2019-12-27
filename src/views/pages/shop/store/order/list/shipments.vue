@@ -11,6 +11,7 @@
     <row-table
       :columns="columns"
       actionText="发货"
+      :type="2"
       @clicks="sendGoods"
     ></row-table>
   </div>
@@ -37,7 +38,7 @@ export default {
   methods: {
     // 获取发货订单列表
     getListData() {
-      this.RowTableService.getOrderList(this.$searchQuery).subscribe()
+      this.RowTableService.getDeliverList(this.$searchQuery).subscribe()
     },
     sendGoods(val) {
       console.log(val)

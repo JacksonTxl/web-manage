@@ -200,7 +200,7 @@ export default {
         this.refundService
           .orderRefund(
             {
-              order_sub_id: this.info.order_sub_id,
+              order_id: this.info.order_id,
               refund_money: +values.refundPrice,
               reason: this.getRefundReason,
               pay_channel: +this.frozenPayType,

@@ -7,10 +7,13 @@
         @change="onSingleSearch('product_id', $event)"
         placeholder="请选择商品"
       >
-        <a-select-option :value="-1">商品111</a-select-option>
-        <a-select-option :value="2">商品222</a-select-option>
-        <a-select-option :value="3">商品333</a-select-option>
-        <a-select-option :value="4">商品444</a-select-option>
+        <a-select-option
+          :value="item.id"
+          v-for="item in productList"
+          :key="item.id"
+        >
+          {{ item.product_name }}
+        </a-select-option>
       </a-select>
       <a-select
         :class="detail('search-select')"
@@ -18,9 +21,13 @@
         @change="onSingleSearch('stock_flow', $event)"
         placeholder="出入库类型"
       >
-        <a-select-option :value="-1">类型11</a-select-option>
-        <a-select-option :value="2">类型22</a-select-option>
-        <a-select-option :value="3">类型33</a-select-option>
+        <a-select-option
+          :value="item.value"
+          v-for="item in stockFlow"
+          :key="item.value"
+        >
+          {{ item.label }}
+        </a-select-option>
       </a-select>
       <a-range-picker
         @change="onChooseDate"
@@ -33,8 +40,10 @@
       <st-table
         :columns="detailColumns"
         :dataSource="tableData"
+        :page="page"
         :scroll="{ x: 1800 }"
         rowKey="id"
+        @change="onTableChange"
       >
         <template slot="stock_flow" slot-scope="text, record">
           <div>{{ record.stock_flow.doc }}</div>
@@ -48,17 +57,21 @@ import { detailColumns } from './detail.config.ts'
 import { DetailService } from './detail.service'
 import tableMixin from '@/mixins/table.mixin'
 import moment from 'moment'
+import { UserService } from '@/services/user.service'
 export default {
   bem: {
     detail: 'page-shop-store-stock-list-detail'
   },
   serviceInject() {
-    return { detailService: DetailService }
+    return { detailService: DetailService, userService: UserService }
   },
   rxState() {
     return {
       tableData: this.detailService.list$,
-      loading: this.detailService.loading$
+      loading: this.detailService.loading$,
+      page: this.detailService.page$,
+      productList: this.detailService.productList$,
+      stockFlow: this.userService.getOptions$('cloud_store.stock_flow')
     }
   },
   mixins: [tableMixin],

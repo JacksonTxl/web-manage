@@ -4,8 +4,7 @@ import { tap } from 'rxjs/operators'
 import {
   ListParams,
   VerificationParams,
-  OrderApi,
-  OrderListParams
+  OrderApi
 } from '@/api/v1/shop/store/order'
 @Injectable()
 export class RowTableService implements Controller {
@@ -23,10 +22,20 @@ export class RowTableService implements Controller {
       })
     )
   }
-  // 获取待发货和待签收订单
+  // 待签收订单
   @Effect()
-  getOrderList(params: OrderListParams) {
-    return this.OrderApi.orderList(params).pipe(
+  getLogisticsList(params: ListParams) {
+    return this.OrderApi.LogisticsList(params).pipe(
+      tap((res: any) => {
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
+      })
+    )
+  }
+  // 待发货订单
+  @Effect()
+  getDeliverList(params: ListParams) {
+    return this.OrderApi.DeliverList(params).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)

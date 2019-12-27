@@ -14,6 +14,7 @@ export class RefundService {
   getDetail(id: string) {
     return this.orderApi.getDetail(id).pipe(
       tap((res: any) => {
+        console.log(res.info, '退款消息')
         this.info$.commit(() => res.info)
       })
     )

@@ -23,10 +23,12 @@
       :columns="searchColumns"
       :dataSource="tableData"
       :scroll="{ x: 1200 }"
+      :page="page"
       :rowSelection="{
         onChange: onChange,
         selectedRowKeys: selectedRowKeys
       }"
+      @change="onTableChange"
       rowKey="sku_id"
     >
       <template slot="action" slot-scope="text, record">
@@ -70,7 +72,8 @@ export default {
   rxState() {
     return {
       tableData: this.searchService.list$,
-      loading: this.searchService.loading$
+      loading: this.searchService.loading$,
+      page: this.searchService.page$
     }
   },
   mixins: [tableMixin],

@@ -37,10 +37,14 @@
             <span>￥{{ currentPrice }}</span>
           </div>
           <div class="button">
-            <st-button @click="onCreateOrder">
+            <st-button @click="onCreateOrder" :loading="loading.createOrder">
               创建订单
             </st-button>
-            <st-button type="primary" @click="onPay">
+            <st-button
+              type="primary"
+              @click="onPayOrder(null)"
+              :loading="loading.createOrderPay"
+            >
               立即支付
             </st-button>
           </div>
@@ -188,10 +192,12 @@
                   </st-input-number>
                 </st-form-item>
                 <st-form-item label="销售">
-                  <a-select placeholder="请选择销售名字">
+                  <a-select
+                    v-decorator="decorators.saleName"
+                    placeholder="请选择销售名字"
+                  >
                     <a-select-option
                       v-for="(item, index) in saleList"
-                      v-decorator="decorators.saleName"
                       :key="index"
                       :value="item.id"
                     >
@@ -279,8 +285,9 @@ export default {
     }
   },
   mounted() {
-    this.$searchQuery.product_type = PRODUCT_TYPE.STORE
     this.getList()
+    this.$searchQuery.product_type = PRODUCT_TYPE.STORE
+    this.getUseCouponList()
     this.listService.getSaleList().subscribe()
   },
   methods: {
@@ -327,28 +334,34 @@ export default {
       this.onMemberChange()
     },
     // 生成订单号
-    createOrderNum() {
+    createOrderNum(type) {
       return new Promise((resolve, reject) => {
         this.form.validate().then(values => {
-          this.listService
-            .createOrder({
-              member_id: values.memberId,
-              coupon_id: this.selectCoupon.id,
-              sale_id: values.saleName,
-              reduce_price: this.reducePrice || 0,
-              description: this.description,
-              product_info: this.buyCar
-            })
-            .subscribe(result => {
+          let params = {
+            member_id: values.memberId,
+            coupon_id: this.selectCoupon.id,
+            sale_id: values.saleName,
+            reduce_price: this.reducePrice || 0,
+            description: this.description,
+            sale_range: 1,
+            order_amount: this.currentPrice,
+            product_info: this.buyCar
+          }
+          if (type === 1) {
+            this.listService.createOrder(params).subscribe(result => {
               resolve(result.info.order_id)
             })
-          console.log(this.selectCoupon)
+          } else {
+            this.listService.createOrderPay(params).subscribe(result => {
+              resolve(result.info.order_id)
+            })
+          }
         })
       })
     },
     // 创建订单
     async onCreateOrder() {
-      let orderId = await this.createOrderNum()
+      let orderId = await this.createOrderNum(1)
       this.payCallBack(
         {
           type: 'create',
@@ -358,9 +371,9 @@ export default {
       )
     },
     // 立即支付
-    async onPay(orderId) {
+    async onPayOrder(orderId) {
       if (!orderId) {
-        orderId = await this.createOrderNum()
+        orderId = await this.createOrderNum(2)
       }
       this.$modalRouter.push({
         name: 'sold-deal-gathering',
@@ -408,7 +421,7 @@ export default {
                 this.createdOrderViewOrder(orderId)
                 break
               case 'Pay':
-                this.onPay(orderId)
+                this.onPayOrder(orderId)
                 break
             }
           }
@@ -474,9 +487,9 @@ export default {
       this.couponDropdownVisible = false
     },
     // 价格计算
-    getPrice() {
+    getPrice(cardId) {
       let productInfo = []
-      const memberId = this.form.getFieldValue('memberId')
+      const memberId = cardId ? cardId : this.form.getFieldValue('memberId')
       this.buyCar.forEach(val => {
         productInfo.push({
           sku_id: val.sku_id,
@@ -494,9 +507,9 @@ export default {
         .subscribe()
     },
     // 获取可用优惠券
-    getUseCouponList() {
+    getUseCouponList(cardId) {
       let productInfo = []
-      const memberId = this.form.getFieldValue('memberId')
+      const memberId = cardId ? cardId : this.form.getFieldValue('memberId')
       this.buyCar.forEach(val => {
         productInfo.push({
           product_id: val.product_id,
@@ -512,9 +525,9 @@ export default {
         .subscribe()
     },
     // 同时获取价格和优惠券列表
-    onMemberChange() {
-      this.getPrice()
-      this.getUseCouponList()
+    onMemberChange(data) {
+      this.getPrice(data)
+      this.getUseCouponList(data)
     }
   },
   computed: {

@@ -1,13 +1,13 @@
 <template>
   <div :class="basic()">
     <st-table
-      :loading="loading.getList"
       :page="page"
       :class="basic('table')"
       rowKey="id"
+      :loading="loading.getList"
       :columns="columns"
       @change="onTableChange"
-      :dataSource="tableData"
+      :dataSource="list"
     >
       <ul
         slot="product"
@@ -49,6 +49,11 @@ export default {
   bem: {
     basic: 'page-order-row-table'
   },
+  data() {
+    return {
+      list: []
+    }
+  },
   props: {
     listData: {
       type: Array
@@ -61,12 +66,7 @@ export default {
     },
     type: {
       type: Number,
-      default: 2
-    }
-  },
-  data() {
-    return {
-      list: []
+      default: 1
     }
   },
   methods: {
@@ -76,10 +76,16 @@ export default {
     onTableChange(pagination) {
       this.$searchQuery.current_page = pagination.current
       this.$searchQuery.size = pagination.pageSize
-      if (this.type === 1) {
-        this.RowTableService.getList(this.$searchQuery).subscribe()
-      } else {
-        this.RowTableService.getOrderList(this.$searchQuery).subscribe()
+      switch (this.type) {
+        case 1:
+          this.RowTableService.getList(this.$searchQuery).subscribe()
+          break
+        case 2:
+          this.RowTableService.getLogisticsList(this.$searchQuery).subscribe()
+          break
+        case 3:
+          this.RowTableService.getDeliverList(this.$searchQuery).subscribe()
+          break
       }
     }
   }

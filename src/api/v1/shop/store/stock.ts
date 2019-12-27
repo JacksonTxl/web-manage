@@ -1,7 +1,7 @@
 import { Api } from '@/api/api'
 export interface ListParams {
   product_name: string
-  page: number
+  current_page: number
   size: number
 }
 export interface DetailParams {
@@ -9,7 +9,7 @@ export interface DetailParams {
   stock_flow: number
   start_time: string
   end_time: string
-  page: number
+  current_page: number
   size: number
 }
 export interface StockInfo {
@@ -55,5 +55,11 @@ export class StockApi extends Api {
     return this.http.post('/v1/store/stock/outbound', {
       params
     })
+  }
+  /**
+   * 商品列表（出入库明细下拉框）
+   */
+  productList() {
+    return this.http.get('/v1/store/product/search/list')
   }
 }
