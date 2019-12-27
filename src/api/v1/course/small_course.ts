@@ -35,7 +35,7 @@ export class CourseGroupApi extends Api {
    * 删除小班课
    */
   deleteGroup(params: any) {
-    return this.http.get('/v1/course/small/' + params)
+    return this.http.delete('/v1/course/small/' + params)
   }
   /*
    * 小班课立即成班
