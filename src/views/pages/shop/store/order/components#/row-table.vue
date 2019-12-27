@@ -7,7 +7,7 @@
       :loading="loading.getList"
       :columns="columns"
       @change="onTableChange"
-      :dataSource="list"
+      :dataSource="tableData"
     >
       <ul
         slot="product"

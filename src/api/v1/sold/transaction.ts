@@ -47,6 +47,8 @@ export interface CreateOrderInput {
   reduce_price: number
   description: string
   order_amount: number
+  sale_range: number
+  shipping_mode: number
   sku_info: ProductInfoParams[]
 }
 export interface CouponParams {
@@ -207,7 +209,7 @@ export class TransactionApi extends Api {
    * 交易签单-云店-确实收款时获取订单详情
    */
   getOrderInfo(id: string) {
-    return this.http.get(`/v1/order/transaction/member/${id}`)
+    return this.http.get(`/v1/order/transaction/cloud_store/${id}`)
   }
   /**
    * 交易签单-云店-优惠券列表
