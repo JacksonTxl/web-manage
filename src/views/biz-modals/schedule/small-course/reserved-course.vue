@@ -4,25 +4,27 @@
       <st-form-item label="已约">
         <span>{{}}</span>
       </st-form-item>
-      <st-form-item label="日期" required v-if="!scheduleId">
+      <st-form-item label="日期" required v-if="scheduleId === 1">
         <a-date-picker
           style="width:100%"
-          :showTime="{ format: 'YYYY-MM-DD' }"
           format="YYYY-MM-DD"
           v-decorator="decorators.start_days"
           :disabledHours="disabledHours"
         />
       </st-form-item>
-      <st-form-item label="时间" required>
+      <st-form-item label="开始时间" required>
         <a-time-picker
-          style="width: 100%"
-          placeholder="请选择时间"
-          :showTime="{ format: 'HH:mm' }"
           format="HH:mm"
+          style="width:100%"
           v-decorator="decorators.start_time"
-        >
-          <a-icon slot="suffixIcon" type="clock-circle" />
-        </a-time-picker>
+        />
+      </st-form-item>
+      <st-form-item label="结束时间" required>
+        <a-time-picker
+          format="HH:mm"
+          style="width:100%"
+          v-decorator="decorators.end_time"
+        />
       </st-form-item>
       <st-form-item label="课程" required>
         <a-select
@@ -126,8 +128,8 @@ export default {
       }
     },
     scheduleId: {
-      type: String,
-      default: '0'
+      type: Number,
+      default: 2
     }
   },
   created() {

@@ -373,7 +373,8 @@ export default {
       this.$modalRouter.push({
         name: 'schedule-small-course-reserved-course',
         props: {
-          info: this.reserveInfo
+          item: this.reserveInfo,
+          scheduleId: 1
         },
         on: {
           ok: () => {

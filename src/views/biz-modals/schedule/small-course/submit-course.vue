@@ -15,19 +15,24 @@
       <st-t3 class="submit-tips-text">验证成功</st-t3>
       <p class="submit-item">
         <span>总课时：</span>
-        8节
+        {{ courseInfo.course_times }}节
       </p>
       <p class="submit-item mg-b8">
         <span>总排课：</span>
-        19节
+        {{ totalCourseNum }}节
       </p>
-      <p class="mg-b24">固定排课，已自动为您去掉后11节</p>
+      <p
+        class="mg-b24"
+        v-if="courseInfo.small_course_type === 1 && invalidNum > 0"
+      >
+        固定排课，已自动为您去掉后{{ invalidNum }}节
+      </p>
       <div class="save-schedule-btn">
         <st-button @click="cancelSchedule">
           取消排课
         </st-button>
         <st-button type="primary" class="mg-l12">
-          完成排课
+          确认
         </st-button>
       </div>
     </div>
@@ -36,43 +41,79 @@
 
 <script>
 import { SubmitCourseService } from './submit-course.service'
+import { SmallCourseScheduleService } from '@/views/pages/shop/product/course/schedule/small-course/service#/schedule.service'
 export default {
   name: 'SubmitCourse',
   serviceInject() {
     return {
-      submitCourseService: SubmitCourseService
+      submitCourseService: SubmitCourseService,
+      smallCourseScheduleService: SmallCourseScheduleService
     }
   },
   rxState() {
     return {}
   },
   props: {
-    scheduleList: Array,
-    default: () => {
-      return []
+    scheduleList: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
+    courseInfo: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
+    courseNum: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    }
+  },
+  computed: {
+    invalidNum() {
+      return this.totalCourseNum - this.courseInfo.course_times
     }
   },
   data() {
     return {
-      show: false
+      show: false,
+      totalCourseNum: 0
     }
   },
   created() {
     console.log(this.scheduleList)
+    this.courseNum.forEach((item, index) => {
+      this.totalCourseNum += item
+    })
   },
   methods: {
     cancelSchedule() {
       this.show = false
     },
     save() {
-      // this.InbatchInfoService.addScheduleInBatch(reqdata).subscribe(() => {
-      //   this.show = false
-      //   this.$router.push({
-      //     query: {
-      //       ...this.$searchQuery
-      //     }
-      //   })
-      // })
+      this.smallCourseScheduleService
+        .addScheduleInBatch(this.scheduleList)
+        .subscribe(() => {
+          this.show = false
+          let weekOfday = moment().format('E')
+          let start_date = moment()
+            .subtract(weekOfday - 1, 'days')
+            .format('YYYY-MM-DD')
+          let end_date = moment()
+            .add(7 - weekOfday, 'days')
+            .format('YYYY-MM-DD')
+          this.$router.push({
+            path: '/shop/product/course/schedule/small-course/small-course',
+            query: {
+              start_date,
+              end_date
+            }
+          })
+        })
     }
   }
 }

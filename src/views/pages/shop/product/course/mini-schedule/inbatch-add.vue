@@ -3,7 +3,11 @@
     <div :class="b()">
       <st-form :class="b('head')" labelWidth="80px" :form="form">
         <st-form-item :label="`${$c('small_course')}`" required>
-          <a-select placeholder="请选择" v-decorator="decorators.course_id">
+          <a-select
+            placeholder="请选择"
+            @change="onChangeCourse"
+            v-decorator="decorators.course_id"
+          >
             <a-select-option
               v-for="course in courseSmallCourseOptions"
               :key="course.course_id"
@@ -73,7 +77,7 @@
                 ></add-course>
               </div>
             </div>
-            <div :class="b('schedule__tips')">
+            <div :class="b('schedule__tips')" v-if="pickerList.length">
               即：上课时间为
               <span class="schedule__tips-date">
                 {{ pickerList[i][0].format('YYYY/MM/DD').valueOf() }}~{{
@@ -206,6 +210,7 @@ export default {
       disabledDate: [],
       tipsText: [],
       tipsCourseNum: [],
+      smallCourseInfo: '',
       weekList: [
         { weekId: 'week1', week: 1, date: '周一' },
         { weekId: 'week2', week: 2, date: '周二' },
@@ -313,10 +318,41 @@ export default {
     }
   },
   created() {
-    this.pickerList.push([moment(this.start_date), moment(this.end_date)])
     this.filterDateList(this.scheduleList)
+    this.pickerList.push([
+      moment(this.smallCourseInfo.course_begin_time),
+      moment(this.smallCourseInfo.course_end_time)
+    ])
   },
   methods: {
+    dealScheduleDate() {
+      this.scheduleList.forEach((item, index) => {
+        this.pickerList.push([moment(), moment()])
+      })
+    },
+    onChangeCourse(value) {
+      this.courseSmallCourseOptions.forEach((item, index) => {
+        if (item.course_id === value) {
+          this.smallCourseInfo = item
+        }
+      })
+      // 用回显数据判断是新增还是编辑   如果编辑的时候全删除了课程算什么类型？
+      if (
+        this.scheduleList.length &&
+        this.smallCourseInfo.small_course_type === 1
+      ) {
+        this.dealScheduleDate(this.scheduleList)
+        this.filterDateList(this.scheduleList)
+      } else if (
+        !this.scheduleList.length &&
+        this.smallCourseInfo.small_course_type === 1
+      ) {
+        this.pickerList.push([
+          moment(this.smallCourseInfo.course_begin_time),
+          moment(this.smallCourseInfo.course_end_time)
+        ])
+      }
+    },
     onChangeRangePicker(date, dateString, PickerIndex) {
       // this.picker_start_date = date[0].format('YYYY-MM-DD').valueOf()
       this.picker_end_date = date[1].format('YYYY-MM-DD').valueOf()
@@ -340,6 +376,12 @@ export default {
       if (!pickerFlag) {
         this.pickerList[PickerIndex][0] = date[0]
         this.pickerList[PickerIndex][1] = date[1]
+        this.scheduleList[PickerIndex].cycle_begin_date = date[0]
+          .format('YYYY-MM-DD')
+          .valueOf()
+        this.scheduleList[PickerIndex].cycle_end_date = date[1]
+          .format('YYYY-MM-DD')
+          .valueOf()
       }
       console.log(this.pickerList)
     },
@@ -390,6 +432,12 @@ export default {
       console.log(dateList)
       this.filterDate = list
     },
+    onSubmit() {
+      console.log(123)
+      this.form.validate().then(values => {
+        console.log(values)
+      })
+    },
     // 增加课程
     createCourseWeek(week, courseItem, courseTime) {
       let courseWeek = {}
@@ -399,8 +447,9 @@ export default {
       courseTime.push(courseWeek)
       this.filterDateList(this.scheduleList)
     },
-    // conflict需要每个都绑定 - 自定义逻辑
     pushCourseInfo(cycleIndex, conflict, info, list) {
+      console.log(456)
+      this.onSubmit()
       let courseItem = {
         schedule_id: this.schedule_id,
         course_id: info.course_id,
@@ -539,10 +588,15 @@ export default {
     },
     onClickSaveSchedule() {
       const courseScheduleList = this.scheduleList
-      console.log(courseScheduleList)
+      const smallCourseInfo = this.smallCourseInfo
+      const courseNum = this.tipsCourseNum
       this.$modalRouter.push({
         name: 'schedule-small-course-submit-course',
-        props: { scheduleList: courseScheduleList },
+        props: {
+          scheduleList: courseScheduleList,
+          courseInfo: smallCourseInfo,
+          courseNum: courseNum
+        },
         on: {
           // editCourse: (cycleIndex, week, positionIndex) => {
           // }
@@ -563,11 +617,6 @@ export default {
           start_date,
           end_date
         }
-        // on: {
-        //   ok: res => {
-        //     this.onScheduleChange()
-        //   }
-        // }
       })
     },
     formatTime(time) {

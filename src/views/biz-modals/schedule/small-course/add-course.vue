@@ -1,16 +1,22 @@
 <template>
-  <st-modal title="新增课程排期" v-model="show" width="484px">
-    <st-form :form="form" labelWidth="40px" labelAuto>
-      <st-form-item label="时间" required>
-        <a-date-picker
-          style="width: 100%"
-          placeholder="请选择时间"
-          :showTime="{ format: 'HH:mm' }"
-          format="YYYY-MM-DD HH:mm"
-          v-decorator="decorators.start_time"
-        >
-          <a-icon slot="suffixIcon" type="clock-circle" />
-        </a-date-picker>
+  <st-modal title="新增课程排期" v-model="show" width="520px">
+    <st-form :form="form" labelWidth="72px" labelAuto>
+      <st-form-item label="日期" required>
+        <a-date-picker style="width:100%" v-decorator="decorators.start_days" />
+      </st-form-item>
+      <st-form-item label="开始时间" required>
+        <a-time-picker
+          format="HH:mm"
+          style="width:100%"
+          v-decorator="decorators.start_days"
+        />
+      </st-form-item>
+      <st-form-item label="结束时间" required>
+        <a-time-picker
+          format="HH:mm"
+          style="width:100%"
+          v-decorator="decorators.end_time"
+        />
       </st-form-item>
       <st-form-item label="课程" required>
         <a-select
@@ -41,13 +47,16 @@
           </a-select-option>
         </a-select>
       </st-form-item>
-      <st-form-item label="场地" required class="mg-b0">
+      <st-form-item label="场地" required>
         <a-cascader
           placeholder="请选择场地"
           :options="courtOptions"
           :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
           v-decorator="decorators.court_id"
         />
+      </st-form-item>
+      <st-form-item label="排课名称" required class="mg-b0">
+        <a-input placeholder="请输入" v-decorator="decorators.course_name" />
       </st-form-item>
     </st-form>
     <template slot="footer">

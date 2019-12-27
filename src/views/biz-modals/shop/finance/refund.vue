@@ -136,6 +136,7 @@
 import moment from 'moment'
 import { RefundService } from './refund.service'
 import { ruleOptions } from './refund.config'
+const SMALL_COURSE_TYPE = 6
 export default {
   name: 'ModalShopFinanceOrderRefund',
   bem: {
@@ -151,10 +152,11 @@ export default {
       info: this.refundService.info$,
       refundChannels: this.refundService.refundChannels$,
       refundReasons: this.refundService.refundReasons$,
+      refundReasonsSmallCourse: this.refundService.refundReasonsSmallCourse$,
       loading: this.refundService.loading$
     }
   },
-  props: ['id', 'goodsInvalid'],
+  props: ['id', 'goodsInvalid', 'type'],
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
@@ -170,7 +172,10 @@ export default {
   },
   computed: {
     refundReasonsChange() {
-      let arr = this.refundReasons
+      let arr
+      this.type === SMALL_COURSE_TYPE
+        ? (arr = this.refundReasonsSmallCourse)
+        : (arr = this.refundReasons)
       if (this.goodsInvalid) {
         arr.shift()
       }
@@ -191,6 +196,8 @@ export default {
     }
   },
   created() {
+    console.log(this.refundReasons)
+    console.log(this.type)
     this.refundService.getDetail(this.id).subscribe()
   },
   methods: {

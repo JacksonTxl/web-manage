@@ -88,21 +88,9 @@
                 <span class="label">预约：</span>
                 <span class="value">{{ info.reserved_num }}人</span>
               </div>
-              <div>
-                <span class="label">可约：</span>
-                <span class="value">{{ info.reserve_max }}人</span>
-              </div>
             </div>
           </a-col>
-          <a-col
-            :lg="2"
-            :offset="7"
-            class="action"
-            v-modal-link="{
-              name: 'schedule-team-reserve-info',
-              props: { id: info.id }
-            }"
-          >
+          <a-col :lg="2" :offset="7" class="action" @click="onDetail(info)">
             <a href="#">查看详情</a>
           </a-col>
         </a-row>
@@ -115,13 +103,13 @@
 import { SmallCourseScheduleService } from './service#/schedule.service'
 import ScheduleSmallCourseAddCourse from '@/views/biz-modals/schedule/small-course/add-course'
 import date from '@/views/biz-components/schedule/date#/date-component.vue'
-import SmallCourseReserveInfo from '@/views/biz-modals/schedule/small-course/reserve-info'
+import ScheduleSmallCourseReserveInfo from '@/views/biz-modals/schedule/small-course/reserve-info'
 import { SmallCourseTableService } from './small-course-table.service'
 export default {
-  name: 'ScheduleTeamTable',
+  name: 'ScheduleSmallCourseTable',
   modals: {
     ScheduleSmallCourseAddCourse,
-    SmallCourseReserveInfo
+    ScheduleSmallCourseReserveInfo
   },
   serviceInject() {
     return {
@@ -161,6 +149,33 @@ export default {
     onScheduleChange() {
       this.$router.push({ query: this.$searchQuery })
     },
+    // 查看详情
+    onDetail(info) {
+      console.log(info)
+      this.$modalRouter.push({
+        name: 'schedule-small-course-reserve-info',
+        props: {
+          id: info.id
+        },
+        on: {
+          ok: res => {
+            this.onScheduleChange()
+          }
+        }
+      })
+    },
+    // 添加小班课排期
+    onAddSchedule(date) {
+      this.$modalRouter.push({
+        name: 'schedule-small-course-add-course',
+        props: { time: moment(date) },
+        on: {
+          ok: res => {
+            this.onScheduleChange()
+          }
+        }
+      })
+    },
     // 排课-批量修改
     onClickScheduleInBatch() {
       this.$router.push({
@@ -173,18 +188,6 @@ export default {
         //     this.onScheduleChange()
         //   }
         // }
-      })
-    },
-    // 添加团课排期
-    onAddSchedule(date) {
-      this.$modalRouter.push({
-        name: 'schedule-team-add-course',
-        props: { time: moment(date) },
-        on: {
-          ok: res => {
-            this.onScheduleChange()
-          }
-        }
       })
     },
     onClickSkipSchedule() {

@@ -116,8 +116,13 @@ export class SmallCourseScheduleService {
       })
     )
   }
+  /**
+   *
+   * @param params
+   * 批量新增周期小班课排期
+   */
   @Effect()
-  addScheduleInBatch(params: AddScheduleInput[]) {
+  addScheduleInBatch(params: any) {
     return this.scheduleApi.addScheduleInBatch(params).pipe(
       tap(res => {
         this.msg.success({ content: '批量添加成功' })
@@ -148,7 +153,7 @@ export class SmallCourseScheduleService {
   /**
    *
    * @param params
-   * 取消团体课排期
+   * 取消小课排期
    */
   del(id: string) {
     return this.scheduleApi.del(id).pipe(
