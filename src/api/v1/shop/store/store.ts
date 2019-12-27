@@ -110,7 +110,6 @@ export class StoreApi extends Api {
    * 整体看板
    */
   storeBoard(query: DtoreBoard) {
-    console.log(query, '整体看板')
     return this.http.get('/v1/store/board', {
       query
     })
