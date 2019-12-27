@@ -13,7 +13,7 @@
     />
     <a-week-picker
       v-else-if="selectValue === '2'"
-      :disabledDate="disabledDate"
+      :disabledDate="disabledWeek"
       :defaultValue="moment(defaultValue)"
       @change="onChange"
     />
@@ -21,7 +21,7 @@
       :defaultValue="moment(defaultValue)"
       v-else
       @change="onChange"
-      :disabledDate="disabledDate"
+      :disabledDate="disabledMonth"
     />
   </div>
 </template>
@@ -33,7 +33,33 @@ export default {
   },
   methods: {
     disabledDate(current) {
-      return current && current > moment(this.defaultValue)
+      let start = this.defaultValue.split('-')
+      start[1] =
+        start[1] - 4 > 0 ? start[1] - 4 : (start[0] - 1, start[1] + 12 - 4)
+      start.join('-')
+      return (
+        (current && current > moment(this.defaultValue)) ||
+        current < moment(start)
+      )
+    },
+    disabledWeek(current) {
+      let start = this.defaultValue.split('-')
+      start[1] =
+        start[1] - 7 > 0 ? start[1] - 7 : (start[0] - 1, start[1] + 12 - 7)
+      start.join('-')
+      return (
+        (current && current > moment(this.defaultValue)) ||
+        current < moment(start)
+      )
+    },
+    disabledMonth(current) {
+      let start = this.defaultValue.split('-')
+      start[0] = start[0] - 1
+      start.join('-')
+      return (
+        (current && current > moment(this.defaultValue)) ||
+        current < moment(start.join('-'))
+      )
     },
     onChange(date, dateString) {
       if (this.selectValue === '2') {

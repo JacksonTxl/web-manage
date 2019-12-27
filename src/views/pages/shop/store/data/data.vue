@@ -115,7 +115,10 @@
                     :unit="wholeNav[wholenavIndex].title | filterCompany"
                   ></shop-store-data-line>
                   <div v-else :class="basic('entry-store-img')">
-                    <img :src="inoutNumImg" />
+                    <img
+                      :src="inoutNumImg"
+                      style="margin-top: 7px;height:343px"
+                    />
                   </div>
                 </div>
               </a-col>
@@ -143,6 +146,20 @@
                             : height332
                         "
                       ></component>
+                      <div v-else :class="basic('entry-store-img')">
+                        <img
+                          :src="inoutNumImg"
+                          :style="{
+                            height:
+                              wholeNavcom === 'brand-user-avg-bar'
+                                ? '343px'
+                                : height332 + 'px'
+                          }"
+                          class="order-member-inoutNumImg"
+                          v-if="wholeNavcom === 'brand-user-avg-bar'"
+                        />
+                        <img :src="pieImg" v-else class="order-member-pieImg" />
+                      </div>
                     </template>
                     <template v-slot:marketing>
                       <component
@@ -165,6 +182,20 @@
                             : height332
                         "
                       ></component>
+                      <div v-else :class="basic('entry-store-img')">
+                        <img
+                          :src="inoutNumImg"
+                          :style="{
+                            height:
+                              wholeNavcom === 'brand-user-avg-bar'
+                                ? '343px'
+                                : height332 + 'px'
+                          }"
+                          v-if="wholeNavcom === 'brand-user-avg-bar'"
+                          class="order-member-inoutNumImg"
+                        />
+                        <img :src="pieImg" v-else class="order-member-pieImg" />
+                      </div>
                     </template>
                   </whole-tabls>
                 </div>
@@ -355,15 +386,12 @@ export default {
     userAnalysisTimesFn(value) {
       this.tabsObjData.date_type = value.date_type
       this.tabsObjData.date = value.date
+      console.log(this.tabsObjData)
       this.dataService.getStoreMemberAnalysis(this.tabsObjData).subscribe()
     },
     // 整体看板订单/会员折线图
     filterLine(data, type) {
       let fieldInfo = ['amount', 'count', 'count', 'price']
-      console.log(
-        data[this.fieldNav[this.wholenavIndex]].trend.length,
-        'asdasdasdasdasd'
-      )
       if (data[this.fieldNav[this.wholenavIndex]].trend.length) {
         this.storeDataLine = true
         return data[this.fieldNav[this.wholenavIndex]].trend.map(item => {
@@ -444,13 +472,13 @@ export default {
     },
 
     onChangeTabs(query) {
-      console.log(query)
       this.tabsObjData = Object.assign(this.tabsObjData, { choose_type: query })
       this.tabsObjData.date = this.tabsObjData.date
         ? this.tabsObjData.date
         : moment()
             .endOf('day')
             .format('YYYY-MM-DD') + ''
+      console.log(this.tabsObjData)
       this.dataService.getStoreMemberAnalysis(this.tabsObjData).subscribe()
     },
     refresh() {
