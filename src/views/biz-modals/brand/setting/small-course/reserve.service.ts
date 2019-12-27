@@ -6,12 +6,13 @@ import { UserService } from '@/services/user.service'
 @Injectable()
 export class GroupReserveSettingService {
   loading$ = new State({})
-  reserveStarts$ = this.userService.getOptions$('setting.reserve_start')
-  reserveRanges$ = this.userService.getOptions$('setting.reserve_range')
-  cancelReserves$ = this.userService.getOptions$('setting.cancel_reserve')
-  signTimes$ = this.userService.getOptions$('setting.sign_time')
-  autoSignLimits$ = this.userService.getOptions$('setting.auto_sign_limit')
-  absenteeismLimit$ = this.userService.getOptions$('setting.absenteeism_limit')
+  reserveStarts$ = this.userService.getOptions$('small_course.reserve_start')
+  reserveRanges$ = this.userService.getOptions$('small_course.reserve_range')
+  cancelReserves$ = this.userService.getOptions$('small_course.cancel_reserve')
+  signTimes$ = this.userService.getOptions$('small_course.sign_time')
+  absenteeismLimit$ = this.userService.getOptions$(
+    'small_course.absenteeism_limit'
+  )
   constructor(
     private reserveSettingApi: GroupReserveSettingApi,
     private userService: UserService

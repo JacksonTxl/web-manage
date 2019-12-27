@@ -5,18 +5,47 @@
         {{ groupCourseHeaderInfo.course_name }}
       </st-t3>
       <div>
-        <st-button type="primary" @click="onGoEdit" v-if="auth.edit">
+        <st-button
+          type="primary"
+          @click="onGoEdit"
+          v-if="
+            groupCourseHeaderInfo.auth['shop:product:small_class_course|edit']
+          "
+        >
           编辑
         </st-button>
         <a-dropdown type="primary" class="mg-r24 mg-l16">
           <a-menu slot="overlay">
-            <a-menu-item key="1" v-if="auth.refund" @click="onGoOrder()">
+            <a-menu-item
+              key="1"
+              v-if="
+                groupCourseHeaderInfo.auth[
+                  'shop:product:small_class_course|refund'
+                ]
+              "
+              @click="onGoOrder()"
+            >
               去退款
             </a-menu-item>
-            <a-menu-item key="2" v-if="auth.finish" @click="onBeGroup">
+            <a-menu-item
+              key="2"
+              v-if="
+                groupCourseHeaderInfo.auth[
+                  'shop:product:small_class_course|finish'
+                ]
+              "
+              @click="onBeGroup"
+            >
               立即成班
             </a-menu-item>
-            <a-menu-item key="2" v-if="auth.del">
+            <a-menu-item
+              key="2"
+              v-if="
+                groupCourseHeaderInfo.auth[
+                  'shop:product:small_class_course|del'
+                ]
+              "
+            >
               <st-popconfirm
                 :title="
                   '一旦删除则无法恢复，确认删除' +
@@ -28,7 +57,15 @@
                 删除
               </st-popconfirm>
             </a-menu-item>
-            <a-menu-item key="2" v-if="auth.publish" @click="onPublish">
+            <a-menu-item
+              key="2"
+              v-if="
+                groupCourseHeaderInfo.auth[
+                  'shop:product:small_class_course|publish'
+                ]
+              "
+              @click="onPublish"
+            >
               发布
             </a-menu-item>
           </a-menu>
@@ -99,7 +136,7 @@ export default {
   bem: {
     b: 'page-group-course-info'
   },
-  name: 'TeamCourseInfo',
+  name: 'SmallCourseInfo',
   serviceInject() {
     return {
       infoService: InfoService
@@ -107,8 +144,7 @@ export default {
   },
   rxState() {
     return {
-      groupCourseHeaderInfo: this.infoService.groupCourseHeaderInfo$,
-      auth: this.infoService.auth$
+      groupCourseHeaderInfo: this.infoService.groupCourseHeaderInfo$
     }
   },
   computed: {

@@ -6,6 +6,8 @@
     <st-table
       :columns="basicColumns()"
       rowKey="id"
+      :page="page"
+      @change="onTableChange"
       :dataSource="groupInfo.coaches && groupInfo.coaches.list"
     ></st-table>
     <div :class="b('column')">
@@ -41,7 +43,7 @@
     <div class="mg-t24">
       <span :class="b('item-label')">详细介绍：</span>
       <st-container class="mg-t8" v-if="groupInfo.description">
-        {{ groupInfo.description }}
+        <div v-html="groupInfo.description">{{ groupInfo.description }}</div>
       </st-container>
     </div>
   </st-panel>
@@ -50,7 +52,7 @@
 import { basicColumns } from '../info#table.config'
 import { BasicService } from './basic.service'
 export default {
-  name: 'GroupCourseInfo',
+  name: 'SmallCourseBasicInfo',
   serviceInject() {
     return {
       basicService: BasicService
@@ -66,7 +68,15 @@ export default {
   },
   data() {
     return {
-      basicColumns
+      basicColumns,
+      page: {} // 前端分页
+    }
+  },
+  methods: {
+    onTableChange(pagination, filters, sorter) {
+      this.page = pagination
+      this.page.current_page = pagination.current
+      this.page.size = pagination.pageSize
     }
   }
 }

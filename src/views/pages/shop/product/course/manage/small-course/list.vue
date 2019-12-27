@@ -16,7 +16,7 @@
       <a-col :span="16" class="ta-r">
         <a-select
           class="mg-r8"
-          v-model="$searchQuery.course_status"
+          v-model="$searchQuery.class_status"
           style="width: 160px"
           @change="onChange"
         >
@@ -109,7 +109,7 @@ import { CLASS_STATUS } from '@/constants/course/small-course'
 import tableMixin from '@/mixins/table.mixin'
 
 export default {
-  name: 'GroupCourseList',
+  name: 'SmallCourseList',
   mixins: [tableMixin],
   serviceInject() {
     return {
@@ -120,7 +120,6 @@ export default {
     return {
       list: this.listService.list$,
       page: this.listService.page$,
-      auth: this.listService.auth$,
       loading: this.listService.loading$,
       status: this.listService.status$
     }

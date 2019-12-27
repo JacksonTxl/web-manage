@@ -142,8 +142,7 @@ export default {
       reserveRanges: this.settingService.reserveRanges$,
       cancelReserves: this.settingService.cancelReserves$,
       signTimes: this.settingService.signTimes$,
-      absenteeismLimit: this.settingService.absenteeismLimit$,
-      autoSignLimits: this.settingService.autoSignLimits$
+      absenteeismLimit: this.settingService.absenteeismLimit$
     }
   },
   data() {

@@ -1120,7 +1120,7 @@ export const routeMapConfig = {
     routeConfig.meta.title = '小班课'
     routeConfig.meta.auth = 'shop:product:small_class_course|list'
     routeConfig.queryOptions = {
-      course_status: { type: Number, default: -1 },
+      class_status: { type: Number, default: -1 },
       course_name: { type: String, default: '' },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }

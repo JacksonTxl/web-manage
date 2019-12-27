@@ -166,7 +166,6 @@ export default {
       })
     }
   },
-  created() {},
   mounted() {
     this.setFieldsValue()
   },

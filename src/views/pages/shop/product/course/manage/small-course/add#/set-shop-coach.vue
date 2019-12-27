@@ -39,10 +39,7 @@
           </template>
           <div class="page-shop-coach-container-coach">
             <input type="hidden" v-decorator="decorators.coach_ids" />
-            <select-coach
-              :shopIds="shopIds"
-              @change="onSelectCoachChange"
-            ></select-coach>
+            <select-coach @change="onSelectCoachChange"></select-coach>
           </div>
         </st-form-item>
       </a-col>
@@ -98,7 +95,6 @@ export default {
       default: 0
     }
   },
-  created() {},
   watch: {
     courseName(val) {
       this.form.setFieldsValue({
@@ -116,9 +112,7 @@ export default {
     const decorators = form.decorators(ruleOptions)
     return {
       form,
-      decorators,
-      shopIds: [],
-      fileList: []
+      decorators
     }
   },
   watch: {
@@ -163,11 +157,6 @@ export default {
         description: info.description
       })
       this.fileList = [this.info.image]
-    },
-    getData() {
-      const data = this.form.getFieldsValue()
-      data.course_id = +this.$searchQuery.id
-      return data
     }
   }
 }

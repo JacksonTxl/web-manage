@@ -125,8 +125,7 @@ export default {
     const decorators = form.decorators(ruleOptions)
     return {
       form,
-      decorators,
-      fileList: []
+      decorators
     }
   },
   watch: {
@@ -164,11 +163,6 @@ export default {
         staff_id: info.staff_id,
         coach_ids: info.coach_ids
       })
-    },
-    getData() {
-      const data = this.form.getFieldsValue()
-      data.course_id = +this.$searchQuery.id
-      return data
     }
   }
 }
