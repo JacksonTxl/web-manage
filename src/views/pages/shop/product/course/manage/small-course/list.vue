@@ -16,7 +16,7 @@
       <a-col :span="16" class="ta-r">
         <a-select
           class="mg-r8"
-          v-model="$searchQuery.course_status"
+          v-model="$searchQuery.class_status"
           style="width: 160px"
           @change="onChange"
         >
