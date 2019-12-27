@@ -40,8 +40,10 @@
       <st-table
         :columns="detailColumns"
         :dataSource="tableData"
+        :page="page"
         :scroll="{ x: 1800 }"
         rowKey="id"
+        @change="onTableChange"
       >
         <template slot="stock_flow" slot-scope="text, record">
           <div>{{ record.stock_flow.doc }}</div>
@@ -67,6 +69,7 @@ export default {
     return {
       tableData: this.detailService.list$,
       loading: this.detailService.loading$,
+      page: this.detailService.page$,
       productList: this.detailService.productList$,
       stockFlow: this.userService.getOptions$('cloud_store.stock_flow')
     }

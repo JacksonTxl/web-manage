@@ -1,5 +1,5 @@
 <template>
-  <st-mina-panel app initial>
+  <st-mina-panel app>
     <div slot="actions">
       <!-- :loading="confirmLoading"  -->
       <st-button type="primary" :loading="loading.addGoods" @click="onSubmit">
@@ -75,10 +75,11 @@
                 :list="fileList"
                 @change="getImage"
                 :numLimit="5"
+                :sizeLimit="2"
                 placeholder="上传图片"
               >
                 <template v-slot:description>
-                  <p>建议尺寸为750像素×750像素</p>
+                  <p>建议尺寸为750px×750px</p>
                 </template>
               </st-image-upload>
               <div class="color-danger" v-if="isImgError">请上传商品图片</div>
@@ -159,7 +160,11 @@
                     style="width: 220px"
                     @blur="skuName(index, $event)"
                   ></a-input>
-                  <span :class="basic('sku--item-del')" @click="delSku()">
+                  <span
+                    :class="basic('sku--item-del')"
+                    @click="delSku()"
+                    v-if="isEditMode"
+                  >
                     <st-icon
                       type="delete"
                       :class="basic('sku--item-icon')"
@@ -466,7 +471,7 @@ export default {
           this.info.all_spec[0].spec_item_arr.forEach(spec => {
             if (spec.spec_item_name === item['0']) {
               sku.spec_item_id = spec.spec_item_id
-              sku.spec_id = spec.spec_item_id
+              sku.spec_id = this.info.all_spec[0].spec_id
             }
           })
           sku.spec_name = this.skuList[0].spec_name
@@ -478,7 +483,7 @@ export default {
           this.info.all_spec[1].spec_item_arr.forEach(spec => {
             if (spec.spec_item_name === item['1']) {
               sku.spec_item_id = spec.spec_item_id
-              sku.spec_id = spec.spec_item_id
+              sku.spec_id = this.info.all_spec[1].spec_id
             }
           })
           sku.spec_name = this.skuList[1].spec_name
@@ -490,7 +495,7 @@ export default {
           this.info.all_spec[2].spec_item_arr.forEach(spec => {
             if (spec.spec_item_name === item['2']) {
               sku.spec_item_id = spec.spec_item_id
-              sku.spec_id = spec.spec_item_id
+              sku.spec_id = this.info.all_spec[2].spec_id
             }
           })
           sku.spec_name = this.skuList[2].spec_name
