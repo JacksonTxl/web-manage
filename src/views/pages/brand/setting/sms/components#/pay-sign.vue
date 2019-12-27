@@ -4,9 +4,13 @@
       <div class="mg-b8">[短信签名]</div>
       <span>{{ signVal }}</span>
       <div class="ta-r mg-t16">
-        <span class="color-primary" @click="goSetting(1)">
+        <a
+          href="javascript:void(0)"
+          class="color-primary"
+          @click="goSetting(1)"
+        >
           去设置
-        </span>
+        </a>
       </div>
     </div>
     <div :class="bComponent('setting')" v-if="isShowSmsSetting">
@@ -17,8 +21,16 @@
         placeholder="请设置短信签名"
       />
       <div class="ta-r">
-        <span class="mg-r8 color-primary" @click="goSetting(0)">取消</span>
-        <span class="color-primary" @click="saveSign">保存</span>
+        <a
+          href="javascript:void(0)"
+          class="mg-r8 color-primary"
+          @click="goSetting(0)"
+        >
+          取消
+        </a>
+        <a href="javascript:void(0)" class="color-primary" @click="saveSign">
+          保存
+        </a>
       </div>
     </div>
   </div>
