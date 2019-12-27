@@ -14,7 +14,7 @@ export class InformService {
     return this.api.getInformList(query).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
-        this.page$.commit(() => res.page)
+        // this.page$.commit(() => res.page)
       })
     )
   }

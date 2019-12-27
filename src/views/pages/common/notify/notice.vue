@@ -1,20 +1,11 @@
 <template>
   <div :class="b()">
-    <st-search-panel @search="onSearchNative" @reset="onSearchReset">
+    <st-search-panel @search="onSearch" @reset="onSearchReset">
       <st-search-panel-item label="通知类型：">
         <st-search-radio
-          v-model="$searchQuery.is_valid"
-          :options="[{ label: '都是', value: 'aa' }]"
+          v-model="$searchQuery.notify_type"
+          :options="noticeTypeOptions$"
         />
-      </st-search-panel-item>
-      <st-search-panel-item label="二级分类：">
-        <st-search-radio
-          v-model="$searchQuery.is_valid"
-          :options="[{ label: '都是', value: 'aa' }]"
-        />
-      </st-search-panel-item>
-      <st-search-panel-item label="通知门店：">
-        <a-select></a-select>
       </st-search-panel-item>
     </st-search-panel>
 
@@ -31,8 +22,8 @@
 </template>
 
 <script>
-import { columns } from './inform.config'
-import { InformService } from './inform.service'
+import { columns } from './notice.config'
+import { NoticeService } from './notice.service'
 import tableMixin from '@/mixins/table.mixin'
 
 export default {
@@ -43,12 +34,12 @@ export default {
   },
   serviceInject() {
     return {
-      service: InformService
+      service: NoticeService
     }
   },
   rxState() {
-    const { list$, page$, loading$ } = this.service
-    return { list$, page$, loading$ }
+    const { list$, page$, loading$, noticeTypeOptions$ } = this.service
+    return { list$, page$, loading$, noticeTypeOptions$ }
   },
   data() {
     return {
@@ -57,14 +48,6 @@ export default {
   },
   computed: {
     columns
-  },
-  methods: {
-    onSearchNative() {
-      console.log('onser')
-    },
-    onSearchReset() {
-      console.log('cds')
-    }
   }
 }
 </script>

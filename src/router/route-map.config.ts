@@ -24,6 +24,14 @@ export const routeMapConfig = {
       shop_id: { type: Number, default: -1 }
     }
   },
+  'common-notify-notice'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '通知列表'
+    routeConfig.queryOptions = {
+      notify_type: { type: Number, default: -1 },
+      sub_notify_type: { type: Number, default: -1 },
+      shop_id: { type: Number, default: -1 }
+    }
+  },
   'brand-product-course-personal-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教课'
     routeConfig.meta.tabs = [

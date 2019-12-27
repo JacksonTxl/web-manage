@@ -1,7 +1,7 @@
 <template>
   <div :class="b()">
     <st-search-panel @search="onSearch" @reset="onSearchReset">
-      <st-search-panel-item label="储值卡状态：">
+      <st-search-panel-item label="通知类型：">
         <st-search-radio
           v-model="$searchQuery.notify_type"
           :options="noticeTypeLevel1Options"
@@ -30,7 +30,6 @@
       :columns="columns"
       :dataSource="list$"
       :loading="loading$.getList"
-      :page="page$"
     ></st-table>
   </div>
 </template>

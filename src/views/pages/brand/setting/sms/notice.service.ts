@@ -33,7 +33,7 @@ export class NoticeService {
       tap(res => {
         this.roleList$.commit(() =>
           res.list.map((item: any) => {
-            return { label: item.name, value: item.id }
+            return { label: item.name, value: `${item.id}` }
           })
         )
       })

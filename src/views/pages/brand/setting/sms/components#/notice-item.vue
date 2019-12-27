@@ -1,5 +1,6 @@
 <template>
   <div :class="bComponent()">
+    {{ params }}
     <div :class="bComponent('title')">{{ info.title }}</div>
     <div :class="bComponent('content')">
       <div :class="bComponent('text')">{{ info.notify_time.name }}</div>
@@ -407,7 +408,9 @@ export default {
     this.params.notify_number = this.info.notify_number
     this.params.msg_preffix = this.info.msg_preffix
     this.params.msg_suffix = this.info.msg_suffix
-    this.params.custom_phone = this.info.custom_phone.join(' ')
+    if (this.info.notify_sub_type.value !== 24) {
+      this.params.custom_phone = this.info.custom_phone.join(' ')
+    }
     this.params.notify_mode = {
       sms: this.info.notify_mode.sms && this.info.notify_mode.sms.value,
       app: this.info.notify_mode.app && this.info.notify_mode.app.value,

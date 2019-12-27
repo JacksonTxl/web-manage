@@ -14,20 +14,18 @@ export class NoticeService {
     return this.api.getNoticeList(query).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
-        this.page$.commit(() => res.page)
+        this.page$.commit(() => [])
       })
     )
   }
   getNoticeEnum() {
     return this.api.getAnnouncementEnum().pipe(
       tap((res: any) => {
-        let subTypes: any[] = []
-        res.list.forEach((item: any) => {
-          subTypes = [...subTypes, ...item.sub_type]
-        })
         this.noticeTypeOptions$.commit(() => [
-          { value: '全部', key: -1, sub_type: subTypes },
-          ...res.list
+          { label: '全部', value: -1 },
+          ...res.list.map((item: any) => {
+            return { label: item.value, value: item.key }
+          })
         ])
       })
     )
