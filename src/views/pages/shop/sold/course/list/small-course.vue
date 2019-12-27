@@ -47,11 +47,14 @@
           </template>
           <div slot="action" slot-scope="text, record">
             <st-table-actions>
-              <!-- v-if="record.auth['shop:sold:sold_personal_course|get']" -->
-              <a @click="onDetail(record)">
+              <a
+                v-if="record.auth['shop:sold:sold_small_class_course|get']"
+                @click="onDetail(record)"
+              >
                 详情
               </a>
               <a
+                v-if="record.auth['shop:sold:sold_small_class_course|transfer']"
                 @click="
                   smallCourseActions.onTrasnfer({
                     id: record.id
@@ -60,6 +63,7 @@
               >
                 转让
               </a>
+              <!-- v-if="record.auth['shop:sold:sold_personal_course|get']" -->
               <a
                 @click="
                   smallCourseActions.onRefund({
@@ -70,6 +74,7 @@
                 退款
               </a>
               <a
+                v-if="record.auth['shop:sold:sold_small_class_course|exchange']"
                 @click="
                   smallCourseActions.onChangeSmallCourse({
                     id: record.id
@@ -78,7 +83,14 @@
               >
                 换班
               </a>
-              <a @click="toContract(record)">
+              <a
+                v-if="
+                  record.auth[
+                    'shop:sold:sold_small_class_course|export_contract'
+                  ]
+                "
+                @click="toContract(record)"
+              >
                 查看合同
               </a>
             </st-table-actions>
