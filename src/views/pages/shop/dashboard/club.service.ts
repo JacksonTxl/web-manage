@@ -44,11 +44,13 @@ export class ClubService implements Controller {
         const data = res.info
         let lineData: any = []
         const member_card = this.userService.c('member_card')
+        const small_course = this.userService.c('small_course')
         this.revenueSummary$.commit(() => [
           { name: member_card, value: data.summary.member_card_amount },
           { name: '私教课', value: data.summary.personal_course_amount },
           { name: '团体课', value: data.summary.team_course_amount },
           { name: '课程包', value: data.summary.package_course_amount },
+          { name: small_course, value: data.summary.small_course_amount },
           { name: '云店', value: data.summary.shop_amount },
           { name: '其他', value: data.summary.other_amount }
         ])
@@ -65,6 +67,7 @@ export class ClubService implements Controller {
             总营收: Number(data.daily.total_amount[key])
           }
           chartItem[member_card] = Number(data.daily.member_card_amount[key])
+          chartItem[small_course] = Number(data.daily.small_course_amount[key])
           lineData.push(chartItem)
         }
         console.log('营收趋势', lineData)
@@ -73,16 +76,12 @@ export class ClubService implements Controller {
     )
   }
   getCourse(params: RevenueParams) {
+    const small_course = this.userService.c('small_course')
     return this.overviewApi.getCourse(params).pipe(
       tap(res => {
         const data = res.info
         let lineData: any = []
-        // courseSummary = [
-        //   { type: '私教课', 售课数: data.summary.sale_personal_num, 消课数: data.summary.personal_checkin_num },
-        //   { type: '团体课', 售课数: data.summary.sale_team_num, 消课数: data.summary.team_checkin_num },
-        //   { type: '合计', 售课数: data.summary.sale_total_num, 消课数: data.summary.checkin_total_num }
-        // ]
-        this.courseSummary$.commit(() => [
+        let courseSummary: any = [
           {
             group: '未消课',
             团体课: data.summary.team_uncheckin_num,
@@ -98,7 +97,12 @@ export class ClubService implements Controller {
             团体课: data.summary.sale_team_num,
             私教课: data.summary.sale_personal_num
           }
-        ])
+        ]
+        courseSummary = courseSummary.map((item: any) => {
+          item[small_course] = data.summary.sale_personal_num
+          return item
+        })
+        this.courseSummary$.commit(() => courseSummary)
         for (let key in data.daily.personal_reserved_num) {
           let chartItem = {
             date: key,

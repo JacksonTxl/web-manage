@@ -25,6 +25,7 @@
             name="总售课数"
             :height="198"
             tooltipId="TBDAC001"
+            :colors="ringColor"
             :total="soldChartTotal$"
             :data="soldChartData$"
           />
@@ -33,6 +34,7 @@
           <brand-statistics-course-ring
             name="总消课数"
             :height="198"
+            :colors="ringColor"
             tooltipId="TBDAC002"
             :total="checkInCourseTotal$"
             :data="checkInChartData$"
@@ -42,6 +44,7 @@
           <brand-statistics-course-ring
             name="未消课节数"
             :height="198"
+            :colors="ringColor"
             tooltipId="TBDAC003"
             :total="notCheckInCourseTotal$"
             :data="notCheckInChartData$"
@@ -153,6 +156,7 @@ export default {
         start_date: undefined,
         end_date: undefined
       },
+      ringColor: ['#4679F9', '#894BFF', '#ff4Baa'],
       dataParam: {
         shop_id: -1,
         day: 7

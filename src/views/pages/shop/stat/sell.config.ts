@@ -40,7 +40,7 @@ export const allColumns = (vm: any) => {
     },
     // {
     //   dataIndex: 'team_course_num',
-    //   align: 'right',
+    //   align: 'right'
     //   slots: { title: 'teamTitle' },
     //   scopedSlots: { customRender: 'team_course_num' }
     // },
@@ -57,6 +57,16 @@ export const allColumns = (vm: any) => {
     {
       title: '课程包购买金额（元）',
       dataIndex: 'package_course_amount',
+      align: 'right'
+    },
+    {
+      title: `${vm.$c('small_course')}购买节数`,
+      dataIndex: 'small_course_num',
+      align: 'right'
+    },
+    {
+      title: `${vm.$c('small_course')}购买金额（元)`,
+      dataIndex: 'small_course_amount',
       align: 'right'
     },
     {

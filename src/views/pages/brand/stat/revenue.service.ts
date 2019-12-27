@@ -35,12 +35,14 @@ export class RevenueService {
         const chartData: any = []
         let chartRing: any = []
         const member_card = this.userService.c('member_card')
+        const small_course = this.userService.c('small_course')
         data.advance_fee.items.forEach((item: any, idx: number) => {
           const chartItem: any = {
             date: item.date,
             私教课: data.personal_course.items[idx].amount,
             团体课: data.team_course.items[idx].amount,
             课程包: data.package_course.items[idx].amount,
+            small_course: data.small_course.items[idx].amount,
             云店: data.shop.items[idx].amount,
             其它: data.other.items[idx].amount
             // 储值卡: data.deposit_card.items[idx].amount,
@@ -55,6 +57,7 @@ export class RevenueService {
           { name: '私教课', value: data.personal_course.total_amount },
           { name: '团体课', value: data.team_course.total_amount },
           { name: '课程包', value: data.package_course.total_amount },
+          { name: small_course, value: data.small_course.total_amount },
           { name: '云店', value: data.shop.total_amount },
           { name: '其它', value: data.other.total_amount }
         ]
@@ -102,6 +105,10 @@ export class RevenueService {
           {
             label: '课程包营收(元)',
             value: data.package_course_amount || 0
+          },
+          {
+            label: `${this.userService.c('small_course')}营收(元)`,
+            value: data.small_course_amount || 0
           },
           {
             label: '云店营收(元)',
