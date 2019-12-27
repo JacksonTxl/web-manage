@@ -41,3 +41,17 @@ export const classColumns = (vm: any) => [
     dataIndex: 'sign_class_hours'
   }
 ]
+export const classEndColumns = (vm: any) => [
+  {
+    title: '学员',
+    dataIndex: 'user_name'
+  },
+  {
+    title: '联系电话',
+    dataIndex: 'phone'
+  },
+  {
+    title: '备注',
+    dataIndex: 'remark'
+  }
+]

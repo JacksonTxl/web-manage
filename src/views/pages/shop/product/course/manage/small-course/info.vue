@@ -126,14 +126,20 @@ export default {
           label: '基础信息',
           route: {
             name: 'shop-product-course-manage-small-course-info-basic',
-            query: { courseId: this.$searchQuery.courseId }
+            query: {
+              courseId: this.$searchQuery.courseId,
+              status: this.groupCourseHeaderInfo.class_status
+            }
           }
         },
         {
           label: '班级信息',
           route: {
             name: 'shop-product-course-manage-small-course-info-class',
-            query: { courseId: this.$searchQuery.courseId }
+            query: {
+              courseId: this.$searchQuery.courseId,
+              status: this.groupCourseHeaderInfo.class_status
+            }
           }
         }
       ]
