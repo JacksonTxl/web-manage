@@ -1,5 +1,5 @@
 import { Controller, ServiceRoute, Injectable } from 'vue-service-app'
-import { State } from 'rx-state'
+import { State, Effect } from 'rx-state'
 import { tap, map } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
 import { CourseGroupApi } from '@/api/v1/course/small_course'
@@ -8,9 +8,7 @@ import { UserService } from '@/services/user.service'
 
 @Injectable()
 export class ListService implements Controller {
-  // loading
   loading$ = new State({})
-  // 业务状态
   list$ = new State([])
   page$ = new State({})
   status$ = this.userService.getOptions$('small_course.class_status', {
@@ -25,7 +23,7 @@ export class ListService implements Controller {
     private authService: AuthService,
     private userService: UserService
   ) {}
-
+  @Effect()
   getList(params: any) {
     return this.courseGroupApi.getList(params).pipe(
       tap(res => {

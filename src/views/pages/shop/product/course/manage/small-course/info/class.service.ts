@@ -1,11 +1,13 @@
-import { State, Computed } from 'rx-state'
-import { Controller, ServiceRoute, Injectable } from 'vue-service-app'
-import { tap, pluck } from 'rxjs/operators'
+import { State, Effect } from 'rx-state'
+import { ServiceRoute, Injectable } from 'vue-service-app'
+import { tap } from 'rxjs/operators'
 import { CourseGroupApi } from '@/api/v1/course/small_course'
 @Injectable()
 export class ClassService {
   groupClassList$ = new State({})
+  loading$ = new State({})
   constructor(private groupApi: CourseGroupApi) {}
+  @Effect()
   getGroupClassInfo(courseId: string) {
     return this.groupApi.getGroupClassInfo(courseId).pipe(
       tap(res => {

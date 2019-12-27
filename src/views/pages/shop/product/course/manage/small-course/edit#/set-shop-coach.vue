@@ -50,14 +50,10 @@
     <a-row :gutter="10">
       <a-col :lg="10" :xs="10" :offset="1">
         <st-form-item labelFix>
-          <st-button
-            class="mg-r16"
-            @click="onClickBack"
-            :loading="loading.setShop"
-          >
+          <st-button class="mg-r16" @click="onClickBack">
             上一步
           </st-button>
-          <st-button type="primary" @click="save" :loading="loading.setShop">
+          <st-button type="primary" @click="save" :loading="loading.setCoach">
             保存，开始设置售卖信息
           </st-button>
         </st-form-item>

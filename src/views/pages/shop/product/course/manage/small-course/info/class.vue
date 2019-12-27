@@ -2,7 +2,8 @@
   <st-panel app initial>
     <st-table
       :columns="classColumns()"
-      rowKey="id"
+      rowKey="member_id"
+      :loading="loading.getGroupClassInfo"
       :dataSource="groupClassList"
     >
       <div slot="leave_class_hours" slot-scope="text, record">
@@ -54,7 +55,8 @@ export default {
   },
   rxState() {
     return {
-      groupClassList: this.classService.groupClassList$
+      groupClassList: this.classService.groupClassList$,
+      loading: this.classService.loading$
     }
   },
   modals: {
