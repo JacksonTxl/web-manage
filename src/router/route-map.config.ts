@@ -1639,7 +1639,7 @@ export const routeMapConfig = {
   'shop-store-stock-list-search'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '库存查询'
     routeConfig.queryOptions = {
-      page: { type: Number, default: 1 },
+      current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       product_name: { type: String, default: '' }
     }
@@ -1647,7 +1647,7 @@ export const routeMapConfig = {
   'shop-store-stock-list-detail'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '出入库明细'
     routeConfig.queryOptions = {
-      page: { type: Number, default: 1 },
+      current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       product_id: { type: Number, default: -1 },
       stock_flow: { type: Number, default: -1 },

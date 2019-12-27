@@ -43,7 +43,7 @@ export default {
       this.$emit('change', query - 0)
     },
     userAnalysis(query) {
-      this.$emit('change', query)
+      this.$emit('timesFn', query)
     }
   }
 }
