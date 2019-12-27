@@ -5,8 +5,7 @@
       placeholder="请输入租赁柜号、合同编号、会员姓名或手机号查找"
       v-model="$searchQuery.search"
       @search="onKeywordsSearch('search', $event)"
-      :class="basic('search')"
-      style="width:372px"
+      style="width:400px"
     />
     <st-search-panel @search="onSearchNative" @reset="onSearchReset">
       <st-search-panel-item label="租赁状态：">
