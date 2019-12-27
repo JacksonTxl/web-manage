@@ -17,7 +17,7 @@
         :key="item.value"
       ></st-tab-pane>
     </st-tabs> -->
-    <st-button @click="onSmallCourse({ id: 334313812459620 })">
+    <st-button @click="onSmallCourse({ id: 346066487148584 })">
       添加小班课
     </st-button>
     <st-table
