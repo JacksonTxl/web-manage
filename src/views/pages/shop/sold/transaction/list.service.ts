@@ -108,4 +108,8 @@ export class ListService {
   createOrder(params: CreateOrderInput) {
     return this.transactionApi.postStoreOrderNum(params)
   }
+  @Effect()
+  createOrderPay(params: CreateOrderInput) {
+    return this.transactionApi.postStoreOrderNum(params)
+  }
 }
