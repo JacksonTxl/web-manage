@@ -80,10 +80,18 @@
     <a-row :gutter="10">
       <a-col :lg="10" :xs="10" :offset="1">
         <st-form-item labelFix>
-          <st-button class="mg-r16" @click="save(0)" :loading="loading.setShop">
+          <st-button
+            class="mg-r16"
+            @click="save(0)"
+            :loading="loading.setPrice"
+          >
             保存
           </st-button>
-          <st-button type="primary" @click="save(1)" :loading="loading.setShop">
+          <st-button
+            type="primary"
+            @click="save(1)"
+            :loading="loading.setPrice"
+          >
             保存并发布
           </st-button>
         </st-form-item>

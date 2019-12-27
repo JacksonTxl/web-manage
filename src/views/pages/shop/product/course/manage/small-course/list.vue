@@ -32,7 +32,7 @@
     </a-row>
 
     <st-table
-      rowKey="id"
+      rowKey="course_id"
       :loading="loading.getList"
       :dataSource="list"
       :columns="columns"
@@ -90,7 +90,7 @@
           <a v-if="record.auth['shop:product:small_class_course|del']">
             <st-popconfirm
               :title="
-                '一旦删除则无法恢复，确认删除' + record.category_name + '？'
+                '一旦删除则无法恢复，确认删除' + record.course_name + '？'
               "
               @confirm="onDelGroup(record)"
             >
