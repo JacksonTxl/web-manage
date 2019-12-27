@@ -34,9 +34,9 @@ export interface TransactionListInput {
 }
 export interface ProductInfoParams {
   product_id: number
-  spec_id: number
+  sku_id: number
   unit_price?: number
-  product_count?: number
+  nums?: number
   product_name?: string
   rule_name?: string
 }
@@ -46,6 +46,7 @@ export interface CreateOrderInput {
   sale_id: string
   reduce_price: number
   description: string
+  order_amount: number
   sku_info: ProductInfoParams[]
 }
 export interface CouponParams {

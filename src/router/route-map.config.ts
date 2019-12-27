@@ -1665,6 +1665,7 @@ export const routeMapConfig = {
   },
   'shop-store-order-list-shipments'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '待发货订单'
+    // routeConfig.meta.auth = 'brand_shop:cloud_store:order|stay_deliver_goods'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -1673,6 +1674,7 @@ export const routeMapConfig = {
   },
   'shop-store-order-list-signin'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '待签收订单'
+    // routeConfig.meta.auth = 'brand_shop:cloud_store:order|stay_delivers'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -1681,6 +1683,7 @@ export const routeMapConfig = {
   },
   'shop-store-order-list-verification'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '待核销订单'
+    // routeConfig.meta.auth = 'brand_shop:cloud_store:order|stay_verification'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
