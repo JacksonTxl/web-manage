@@ -1,9 +1,5 @@
 <template>
-  <st-modal
-    v-model="show"
-    @cancel="onCancel"
-    wrapClassName="modal-sold-deal-sale"
-  >
+  <st-modal v-model="show" wrapClassName="modal-sold-deal-sale">
     <template slot="title">
       换班
       <st-help-tooltip id="TSMC002" placement="right" />
@@ -62,7 +58,7 @@
           </st-info>
         </a-col>
       </a-row>
-      <st-form :form="form" labelWidth="88px">
+      <st-form :form="form" labelWidth="100px">
         <div :class="sale('sale')">
           <st-form-item label="小班课" required labelGutter="12px">
             <a-select
@@ -101,12 +97,7 @@
             </st-input-number>
           </st-form-item>
           <st-form-item labelGutter="12px" label="有效时间">
-            {{
-              moment(selectItem.server_time * 1000).format('YYYY-MM-DD HH:mm')
-            }}&nbsp;至&nbsp;
-            {{
-              moment(selectItem.server_time * 1000).format('YYYY-MM-DD HH:mm')
-            }}
+            {{ validTime }}
           </st-form-item>
           <st-form-item labelGutter="12px" required>
             <template slot="label">
@@ -286,7 +277,7 @@
       <div :class="sale('footer')">
         <div class="price">
           <span>{{ priceInfo }}元</span>
-          <span>订单总额：{{ selectItem.price }}元</span>
+          <span>订单总额：{{ selectItem.course_price || 0 }}元</span>
         </div>
         <div class="button">
           <st-button @click="onCreateOrder" :loading="loading.upgrade">
@@ -372,7 +363,18 @@ export default {
   },
   computed: {
     isAmountDisabled() {
-      return false
+      // 1 固定排课 2自主排课
+      return this.selectItem.course_type === 1
+    },
+    validTime() {
+      if (this.selectItem.course_begin_time) {
+        return (
+          this.selectItem.course_begin_time +
+          '至' +
+          this.selectItem.course_end_time
+        )
+      }
+      return '无'
     },
     // 小计判断
     orderAmountText() {
@@ -380,7 +382,8 @@ export default {
     },
     // 计算小计用
     priceOB() {
-      return `${this.selectAdvance}-
+      return `${this.selectItem.course_id}-
+              ${this.selectAdvance}-
               ${this.reduceAmount}-
               ${this.selectCoupon}-
               ${this.surplusPrice}`
@@ -390,7 +393,7 @@ export default {
     // 计算小计
     priceOB() {
       this.getPrice({
-        product_id: this.selectCardItem.id,
+        product_id: this.selectItem.course_id,
         product_type: this.info.contract_type,
         advance_id: this.selectAdvance === -1 ? '' : this.selectAdvance,
         reduce_amount: +this.reduceAmount,
@@ -402,7 +405,6 @@ export default {
   },
   created() {
     this.changeService.serviceInit(this.id).subscribe()
-    this.changeService.getSmallCourseList('').subscribe()
   },
   methods: {
     moment,
@@ -425,6 +427,9 @@ export default {
         this.selectItem = this.smallCourseList.filter(
           item => item.course_id === data
         )[0]
+        this.form.setFieldsValue({
+          course_num: this.selectItem.buy_num
+        })
       } else {
         // 清空
         this.selectItem = {}
@@ -498,23 +503,18 @@ export default {
     onCreateOrder() {
       this.form.validate().then(values => {
         this.changeService
-          .upgrade(
+          .changeSmallCourse(
             {
-              product_id: +values.memberCardId,
-              contract_number: values.contractNumber,
-              rule_id: +this.selectSpecs,
-              surplus_price: +values.surplusPrice,
-              valid_start_time: moment(values.startTime).format(
-                'YYYY-MM-DD HH:mm'
-              ),
-              open_card_type: +this.selectOpenType,
-              user_coupon_id: this.selectCoupon,
-              advance_id: this.selectAdvance,
+              course_id: values.course_id,
+              course_num: values.course_num,
+              contract_number: values.contract_number,
+              old_course_price: +values.old_course_price,
+              coupon_id: this.selectCoupon || undefined,
+              advance_id: this.selectAdvance || undefined,
               reduce_price: +this.reduceAmount,
-              description: this.description,
-              staff_sale_id: +values.saleName,
-              gift_amount: +this.giftAmount,
-              init_amount: values.card_amount
+              order_price: +this.priceInfo,
+              sales_id: +values.saleName,
+              remarks: this.description
             },
             this.id
           )
@@ -522,9 +522,7 @@ export default {
             this.show = false
             this.$emit('success', {
               type: 'create',
-              orderId: res.info.order_id,
-              soldId: res.info.sold_id,
-              isFamilyCard: this.isFamilyCard
+              orderId: res.info.order_id
             })
           })
       })
@@ -532,23 +530,18 @@ export default {
     onPay() {
       this.form.validate().then(values => {
         this.changeService
-          .upgrade(
+          .changeSmallCoursePay(
             {
-              product_id: +values.memberCardId,
-              contract_number: values.contractNumber,
-              rule_id: +this.selectSpecs,
-              surplus_price: +values.surplusPrice,
-              valid_start_time: moment(values.startTime).format(
-                'YYYY-MM-DD HH:mm'
-              ),
-              open_card_type: +this.selectOpenType,
-              user_coupon_id: this.selectCoupon,
-              advance_id: this.selectAdvance,
+              course_id: values.course_id,
+              course_num: values.course_num,
+              contract_number: values.contract_number,
+              old_course_price: +values.old_course_price,
+              coupon_id: this.selectCoupon || undefined,
+              advance_id: this.selectAdvance || undefined,
               reduce_price: +this.reduceAmount,
-              description: this.description,
-              staff_sale_id: +values.saleName,
-              gift_amount: +this.giftAmount,
-              init_amount: values.card_amount
+              order_price: +this.priceInfo,
+              sales_id: +values.saleName,
+              remarks: this.description
             },
             this.id
           )
@@ -556,16 +549,10 @@ export default {
             this.show = false
             this.$emit('success', {
               type: 'createPay',
-              orderId: res.info.order_id,
-              soldId: res.info.sold_id,
-              isFamilyCard: this.isFamilyCard
+              orderId: res.info.order_id
             })
           })
       })
-    },
-    onCancel() {
-      this.changeService.resetCouponList()
-      this.changeService.resetAdvanceList()
     }
   }
 }

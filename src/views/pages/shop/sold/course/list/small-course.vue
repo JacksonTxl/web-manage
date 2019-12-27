@@ -60,7 +60,13 @@
               >
                 转让
               </a>
-              <a @click="onRefund(record)">
+              <a
+                @click="
+                  smallCourseActions.onRefund({
+                    id: record.id
+                  })
+                "
+              >
                 退款
               </a>
               <a
@@ -170,21 +176,6 @@ export default {
         record.order_id
       }`
       window.open(url)
-    },
-    // 退款
-    onRefund(record) {
-      this.$modalRouter.push({
-        name: 'sold-course-refund',
-        props: {
-          type: 'personal',
-          id: record.id
-        },
-        on: {
-          success: () => {
-            this.$router.reload()
-          }
-        }
-      })
     },
     // 详情
     onDetail(record) {

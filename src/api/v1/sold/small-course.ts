@@ -70,4 +70,18 @@ export class SmallCourseApi extends Api {
       params
     })
   }
+  /**
+   * 售出小班课退款回显
+   */
+  getRefundSmallCourseInfo(id: string) {
+    return this.http.get(`/v1/sold/course/small_course/refund/${id}`)
+  }
+  /**
+   * 售出小班课退款
+   */
+  smallCourseRefund(params: any, id: string) {
+    return this.http.put(`/v1/sold/course/small_course/refund/${id}`, {
+      params
+    })
+  }
 }

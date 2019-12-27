@@ -82,7 +82,7 @@ export class SaleSmallCourseService {
   }
   getCouponList(params: MemberCouponParams) {
     return this.transactionApi
-      .getTransactionCouponList(params, 'small-course')
+      .getTransactionCouponList(params, 'small_course')
       .pipe(
         tap((res: any) => {
           this.couponList$.commit(() => res.list)
