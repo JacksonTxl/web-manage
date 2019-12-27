@@ -70,6 +70,12 @@
                       :class="basic('img--del-text')"
                       @click="delImg(item, index)"
                     >
+                      <st-icon
+                        type="delete"
+                        :class="basic('sku--item-icon')"
+                        style="font-size: 14px"
+                        color="#fff"
+                      ></st-icon>
                       删除
                     </span>
                   </div>
@@ -158,8 +164,8 @@
               >
                 <st-form-item
                   label="规格项名称"
-                  :help="nameError"
-                  :validateStatus="isNameError ? 'error' : ''"
+                  :help="item.isNameErr ? '请正确填写规格项' : ''"
+                  :validateStatus="item.isNameErr ? 'error' : ''"
                 >
                   <a-input
                     v-model="item.spec_name"
@@ -167,7 +173,6 @@
                     :disabled="isEditMode"
                     maxlength="20"
                     style="width: 220px"
-                    @blur="skuName(index, $event)"
                   ></a-input>
                   <span
                     :class="basic('sku--item-del')"
@@ -184,20 +189,38 @@
                     </span>
                   </span>
                 </st-form-item>
-                <st-form-item label="规格项设置">
-                  <a-select
+                <st-form-item
+                  label="规格项设置"
+                  :help="item.isErr ? '请正确填写规格' : ''"
+                  :validateStatus="item.isErr ? 'error' : ''"
+                >
+                  <!-- <a-select
                     mode="multiple"
                     placeholder="请添加规格设置"
                     v-model="item.spec_item_name"
                     style="width: 220px"
                     :open="false"
                     @change="handleChange(index, $event)"
-                  ></a-select>
+                  ></a-select> -->
+                  <span
+                    v-for="(sku, i) in item.spec_item_name"
+                    :key="i"
+                    :class="basic('sku--tag')"
+                  >
+                    {{ sku }}
+                    <a-icon type="close" @click="delSkuItem(index, i)" />
+                  </span>
                   <a :class="basic('sku--item-add')" @click="addSkuItem(index)">
                     添加规格
                   </a>
                 </st-form-item>
               </div>
+            </st-form-item>
+            <st-form-item
+              label-fix
+              :help="tableTips"
+              :validateStatus="tableErr ? 'error' : ''"
+            >
               <st-container>
                 <st-table
                   rowKey="key"
@@ -345,7 +368,14 @@ export default {
       },
       name: '', // 商品名称
       isMore: 1, // 是否是多规格
-      tableData: [],
+      tableData: [
+        {
+          market_price: '',
+          selling_price: '',
+          stock_amount: '',
+          key: parseInt(Math.random() * 999999).toString()
+        }
+      ],
       skuList: [],
       content: '',
       isEditor: false,
@@ -353,11 +383,11 @@ export default {
       imgList: [], //上传的图片
       isImgError: false,
       shelves_status: 1,
-      nameError: '',
-      isNameError: false,
       product_images_del: [],
       product_images_add: [],
-      classList: []
+      classList: [],
+      tableErr: false,
+      tableTips: ''
     }
   },
   components: {
@@ -393,9 +423,34 @@ export default {
     // 保存
     onSubmit() {
       let isReturn = false
+      let tableError = false
       if (!this.imgList.length) {
         this.isReturn = true
         this.isImgError = true
+      }
+      this.skuList.forEach(item => {
+        item.isErr = false
+        item.isNameErr = false
+        if (!item.spec_item_name.length) {
+          item.isErr = true
+          isReturn = true
+        }
+        if (!item.spec_name) {
+          item.isNameErr = true
+          isReturn = true
+        }
+      })
+      this.tableData.forEach(item => {
+        if (!item.market_price || !item.selling_price) {
+          tableError = true
+          this.tableTips = '请正确填写表格'
+          this.tableErr = true
+          isReturn = true
+        }
+      })
+      if (!tableError) {
+        this.tableTips = ''
+        this.tableErr = false
       }
       this.form.validate().then(values => {
         if (this.isEditMode) {
@@ -561,7 +616,9 @@ export default {
             })
             this.skuList.push({
               spec_name: item.spec_name,
-              spec_item_name: list
+              spec_item_name: list,
+              isErr: false,
+              isNameErr: false
             })
           }
         })
@@ -596,19 +653,12 @@ export default {
       this.imgList.splice(index, 1)
     },
     addSku() {
-      this.skuList.push({ spec_name: '', spec_item_name: [] })
-    },
-    skuName(index, e) {
-      // let list = JSON.parse(JSON.stringify(this.skuList)).splice(index, 1)
-      // console.log(index, e.target.value, list, 'e============--')
-      // const isSame = list.some(item => item.spec_name === e.target.value)
-      // if (isSame) {
-      //   this.nameError = '规格项名称不可相同'
-      //   this.isNameError = true
-      // } else {
-      //   this.nameError = ''
-      //   this.isNameError = false
-      // }
+      this.skuList.push({
+        spec_name: '',
+        spec_item_name: [],
+        isErr: false,
+        isNameErr: false
+      })
     },
     addSkuItem(index) {
       if (this.skuList.length >= 10) {
@@ -627,8 +677,13 @@ export default {
       })
     },
     // 改变规格
-    handleChange(index, event) {
-      this.skuList[index].spec_item_name = event
+    // handleChange(index, event) {
+    //   this.skuList[index].spec_item_name = event
+    //   this.changeTable()
+    // },
+    delSkuItem(index, i) {
+      console.log('删除规格了！！！！！', this.skuList)
+      this.skuList[index].spec_item_name.splice(i, 1)
       this.changeTable()
     },
     delSku(index) {
