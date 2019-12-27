@@ -27,32 +27,21 @@ export default {
   },
   methods: {
     disabledDate(current) {
-      let start = this.defaultValue.split('-')
-      start[1] =
-        start[1] - 4 > 0 ? start[1] - 4 : (start[0] - 1, start[1] + 12 - 4)
-      start.join('-')
       return (
         (current && current > moment(this.defaultValue)) ||
-        current < moment(start)
+        current < moment(moment().subtract(3, 'months'))
       )
     },
     disabledWeek(current) {
-      let start = this.defaultValue.split('-')
-      start[1] =
-        start[1] - 7 > 0 ? start[1] - 7 : (start[0] - 1, start[1] + 12 - 7)
-      start.join('-')
       return (
-        (current && current > moment(this.defaultValue)) ||
-        current < moment(start)
+        (current && current >= moment(new Date() - 3600 * 24 * 1000)) ||
+        current < moment(moment().subtract(6, 'months'))
       )
     },
     disabledMonth(current) {
-      let start = this.defaultValue.split('-')
-      start[0] = start[0] - 1
-      start.join('-')
       return (
-        (current && current > moment(this.defaultValue)) ||
-        current < moment(start.join('-'))
+        (current && current > moment().add(0, 'month')) ||
+        current < moment(moment().subtract(12, 'months'))
       )
     },
     onChange(date, dateString) {
