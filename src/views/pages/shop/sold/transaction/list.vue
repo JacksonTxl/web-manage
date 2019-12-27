@@ -1,22 +1,5 @@
 <template>
   <st-panel initial app :class="basic()">
-    <!-- <st-input-search
-      v-model="$searchQuery.product_name"
-      @search="onSearch"
-      placeholder="请输入商品名查找"
-      :class="basic('search')"
-    />
-    <st-tabs
-      :class="basic('tab')"
-      :activeKey="$searchQuery.product_type"
-      @change="onTabSearch"
-    >
-      <st-tab-pane
-        v-for="item in productTypes"
-        :tab="item.label"
-        :key="item.value"
-      ></st-tab-pane>
-    </st-tabs> -->
     <st-button @click="onSmallCourse({ id: 346066487148584 })">
       添加小班课
     </st-button>
