@@ -1,13 +1,13 @@
 <template>
   <div :class="basic()">
     <st-table
-      :loading="loading.getList"
       :page="page"
       :class="basic('table')"
       rowKey="id"
+      :loading="loading.getList"
       :columns="columns"
       @change="onTableChange"
-      :dataSource="tableData"
+      :dataSource="list"
     >
       <ul
         slot="product"
@@ -48,6 +48,11 @@ export default {
   },
   bem: {
     basic: 'page-order-row-table'
+  },
+  data() {
+    return {
+      list: []
+    }
   },
   props: {
     listData: {

@@ -343,6 +343,8 @@ export default {
             sale_id: values.saleName,
             reduce_price: this.reducePrice || 0,
             description: this.description,
+            sale_range: 1,
+            order_amount: this.currentPrice,
             product_info: this.buyCar
           }
           if (type === 1) {
