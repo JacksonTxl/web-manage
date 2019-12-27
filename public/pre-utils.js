@@ -162,6 +162,12 @@ window.preUtils = {
       var tasks = []
       var successedDomains = []
       var failedDomains = []
+      /**
+       * 如果 vendor 为源站，即所有 cdn 都不可用的情况，直接返回源站
+       */
+      if (vendor === 'source') {
+        return resolve(domains)
+      }
       domains.forEach(function(domain) {
         var task = new Promise(function(taskResolve, taskReject) {
           var img = new Image()
@@ -180,12 +186,6 @@ window.preUtils = {
             that.collectErrors(domain)
             failedDomains.push(domain)
             taskReject(new Error(domain + ' error'))
-          }
-          /**
-           * 如果 vendor 为源站，即所有 cdn 都不可用的情况，直接返回源站
-           */
-          if (vendor === 'source') {
-            return resolve(domains)
           }
         })['catch'](function(e) {})
         tasks.push(task)
