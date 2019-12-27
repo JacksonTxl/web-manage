@@ -38,7 +38,14 @@
           :scroll="{ x: 1800 }"
         >
           <template slot="is_valid" slot-scope="text">
-            {{ text | enumFilter('sold_common.is_valid') }}
+            <st-text
+              :status="{
+                success: text === 1,
+                error: text === 2
+              }"
+            >
+              {{ text | enumFilter('sold_common.is_valid') }}
+            </st-text>
           </template>
           <template slot="end_time" slot-scope="text">
             {{ text }}

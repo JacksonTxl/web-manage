@@ -67,6 +67,7 @@
         <a-input-search
           placeholder="请输入课时费"
           :disabled="disabled"
+          float
           v-decorator="decorators.course_fee"
         >
           <a-button slot="enterButton">元/节</a-button>
