@@ -371,7 +371,6 @@ export default {
     // 立即支付
     async onPayOrder(orderId) {
       if (!orderId) {
-        console.log(orderId)
         orderId = await this.createOrderNum(2)
       }
       this.$modalRouter.push({

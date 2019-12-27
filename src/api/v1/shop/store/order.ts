@@ -5,12 +5,6 @@ export interface ListParams {
   size: number
   search_where: string | number
 }
-export interface OrderListParams {
-  type: number
-  current_page: number
-  size: number
-  search_where: string | number
-}
 export interface VerificationParams {
   id: number
 }
@@ -29,10 +23,18 @@ export class OrderApi extends Api {
     })
   }
   /**
-   * 发货和签收订单列表
+   * 签收订单列表
    */
-  orderList(query: OrderListParams) {
+  LogisticsList(query: ListParams) {
     return this.http.get(`/v1/store/logistics`, {
+      query
+    })
+  }
+  /**
+   * 发货订单列表
+   */
+  DeliverList(query: ListParams) {
+    return this.http.get(`/v1/store/stay_deliver`, {
       query
     })
   }

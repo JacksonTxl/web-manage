@@ -8,7 +8,7 @@
         maxlength="50"
       />
     </portal>
-    <row-table :columns="columns"></row-table>
+    <row-table :columns="columns" :type="3"></row-table>
   </div>
 </template>
 <script>
@@ -26,7 +26,7 @@ export default {
   methods: {
     // 获取签收订单列表
     getListData() {
-      this.RowTableService.getOrderList(this.$searchQuery).subscribe()
+      this.RowTableService.getLogisticsList(this.$searchQuery).subscribe()
     }
   },
   mounted() {
