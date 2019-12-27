@@ -206,15 +206,29 @@ export default {
         this.miniTeamScheduleScheduleService
           .conflict(verifyParams)
           .subscribe(res => {
-            this.$emit(
-              'editCourse',
-              this.cycleIndex,
-              this.positionIndex,
-              res.data.conflict,
-              res.data.info,
-              res.data.list
-            )
-            this.show = false
+            if (this.scheduleId === 1) {
+              this.$emit(
+                'editCourse',
+                this.cycleIndex,
+                this.positionIndex,
+                res.data.conflict,
+                res.data.info,
+                res.data.list
+              )
+              this.show = false
+            } else {
+              if (res.data.conflict === 1) {
+                this.msg.error({ content: '排期内容有冲突，请重新选择' })
+              } else {
+                this.$emit(
+                  'editCourse',
+                  res.data.conflict,
+                  res.data.info,
+                  res.data.list
+                )
+                this.showFlag = false
+              }
+            }
           })
       })
     },

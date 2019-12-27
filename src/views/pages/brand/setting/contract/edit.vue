@@ -240,13 +240,6 @@ export default {
       settingEnums: this.user.settingEnums$
     }
   },
-  created() {
-    // mock 数据 还需要联调确认
-    this.info.is_parent_name = 1
-    this.info.is_parent_mobile = 1
-    this.info.is_parent_id_card = 1
-    this.info.is_parent_rule = 1
-  },
   methods: {
     onCodeDone() {
       this.editService.getCodeInfo().subscribe()
@@ -265,6 +258,7 @@ export default {
       }
     },
     onUpdateContract() {
+      console.log(this.info)
       this.editService.updateContract(this.info).subscribe(() => {
         this.message.success({
           content: '保存合同模版成功！'

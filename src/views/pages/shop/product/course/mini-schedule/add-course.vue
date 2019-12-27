@@ -227,15 +227,21 @@ export default {
                 res.data.info,
                 res.data.list
               )
+              this.showFlag = false
             } else {
-              this.$emit(
-                'addCustomCourse',
-                res.data.conflict,
-                res.data.info,
-                res.data.list
-              )
+              if (res.data.conflict === 1) {
+                // this.msg.success({ content: '取消成功' })
+                this.msg.error({ content: '排期内容有冲突，请重新选择' })
+              } else {
+                this.$emit(
+                  'addCustomCourse',
+                  res.data.conflict,
+                  res.data.info,
+                  res.data.list
+                )
+                this.showFlag = false
+              }
             }
-            this.showFlag = false
           })
       })
     },

@@ -443,11 +443,9 @@ export default {
     },
     pushCustomCourseInfo(conflict, info, list) {
       let courseItem = {
-        schedule_id: this.schedule_id,
         course_id: info.course_id,
         coach_id: info.coach_id,
         court_id: info.court_id,
-        week: info.week,
         current_course_name: info.courseMessage,
         start_time: info.start_time,
         end_time: info.end_time,
@@ -468,12 +466,13 @@ export default {
               (dayItems, index) => {
                 if (dayItems.week === info.week) {
                   let weekItem = dayItems.list[positionIndex]
-                  ;(weekItem.start_time = info.start_time),
-                    (weekItem.current_course_name = info.current_course_name),
-                    (weekItem.coach_name = info.coach_name),
-                    (weekItem.court_name = info.court_name),
-                    (weekItem.conflict = conflict)
-                  weekItem.conflictList = list
+                  dayItems.list[positionIndex] = info
+                  // ;(weekItem.start_time = info.start_time),
+                  //   (weekItem.current_course_name = info.current_course_name),
+                  //   (weekItem.coach_name = info.coach_name),
+                  //   (weekItem.court_name = info.court_name),
+                  dayItems.list[positionIndex].conflictList = list
+                  dayItems.list[positionIndex].conflict = conflict
                   this.filterDateList(this.scheduleList)
                   return
                 }
@@ -505,16 +504,17 @@ export default {
         props: { item, positionIndex },
         on: {
           editCourse: (cycleIndex, positionIndex, conflict, info, list) => {
-            ;(this.customizeScheduleList[positionIndex].start_time =
-              info.start_time),
-              (this.customizeScheduleList[positionIndex].current_course_name =
-                info.current_course_name),
-              (this.customizeScheduleList[positionIndex].coach_name =
-                info.coach_name),
-              (this.customizeScheduleList[positionIndex].court_name =
-                info.court_name),
-              (this.customizeScheduleList[positionIndex].conflict = conflict)
+            this.customizeScheduleList[positionIndex] = info
+            // ;(this.customizeScheduleList[positionIndex].start_time =
+            //   info.start_time),
+            //   (this.customizeScheduleList[positionIndex].current_course_name =
+            //     info.current_course_name),
+            //   (this.customizeScheduleList[positionIndex].coach_name =
+            //     info.coach_name),
+            //   (this.customizeScheduleList[positionIndex].court_name =
+            //     info.court_name),
             this.customizeScheduleList[positionIndex].conflictList = list
+            this.customizeScheduleList[positionIndex].conflict = conflict
             return
           }
         }

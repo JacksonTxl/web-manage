@@ -90,19 +90,6 @@ export default {
       auth: this.listService.auth$
     }
   },
-  created() {
-    // mock 数据 还需要联调确认
-    const item = {
-      contract_describe:
-        '用户支付了一笔定金，针对某一笔定金可查看或打印所支付的定金合同',
-      contract_title: '小班课',
-      contract_type: 7,
-      id: 7,
-      is_initialize_status: 0
-    }
-    this.list.push(item)
-    // mock 数据 end
-  },
   methods: {
     isInitial(item) {
       return !!item.is_initialize_status
