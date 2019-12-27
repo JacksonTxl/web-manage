@@ -4,7 +4,13 @@
       :page="page"
       :class="basic('table')"
       rowKey="id"
-      :loading="loading.getList"
+      :loading="
+        type === 1
+          ? loading.getList
+          : type === 2
+          ? loading.getLogisticsList
+          : loading.getDeliverList
+      "
       :columns="columns"
       @change="onTableChange"
       :dataSource="tableData"
@@ -22,7 +28,18 @@
       </ul>
       <div slot="action" slot-scope="customRender, record">
         <st-table-actions>
-          <a @click="clickFn(record)">
+          <a
+            @click="clickFn(record)"
+            v-if="record.auth['shop:cloud_store:order|write_off'] && type === 1"
+          >
+            {{ actionText }}
+          </a>
+          <a
+            @click="clickFn(record)"
+            v-if="
+              record.auth['shop:cloud_store:order|deliver_goods'] && type === 2
+            "
+          >
             {{ actionText }}
           </a>
         </st-table-actions>

@@ -353,7 +353,7 @@ export default {
             description: this.description,
             sale_range: 1,
             shipping_mode: 1,
-            order_amount: this.actualAmount,
+            order_amount: this.currentPrice,
             sku_info: this.buyCar
           }
           if (type === 1) {
