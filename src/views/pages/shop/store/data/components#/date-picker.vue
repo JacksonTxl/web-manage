@@ -14,15 +14,9 @@
     <a-week-picker
       v-else-if="selectValue === '2'"
       :disabledDate="disabledWeek"
-      :defaultValue="moment(defaultValue)"
       @change="onChange"
     />
-    <a-month-picker
-      :defaultValue="moment(defaultValue)"
-      v-else
-      @change="onChange"
-      :disabledDate="disabledMonth"
-    />
+    <a-month-picker v-else @change="onChange" :disabledDate="disabledMonth" />
   </div>
 </template>
 <script>
@@ -65,10 +59,11 @@ export default {
       if (this.selectValue === '2') {
         dateString = dateString.slice(0, dateString.length - 1)
       }
-      this.$emit('timesFn', {
+      let propData = {
         date: dateString,
         date_type: this.selectValue - 0
-      })
+      }
+      this.$emit('timesFn', propData)
     },
     handleChange(e) {
       this.selectValue = e

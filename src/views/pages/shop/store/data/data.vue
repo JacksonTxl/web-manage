@@ -124,7 +124,7 @@
               </a-col>
               <a-col :span="8">
                 <div class="ring">
-                  <whole-tabls @change="onChangeTabs">
+                  <whole-tabls>
                     <template v-slot:user>
                       <component
                         v-bind:is="wholeNavcom"
@@ -386,7 +386,6 @@ export default {
     userAnalysisTimesFn(value) {
       this.tabsObjData.date_type = value.date_type
       this.tabsObjData.date = value.date
-      console.log(this.tabsObjData)
       this.dataService.getStoreMemberAnalysis(this.tabsObjData).subscribe()
     },
     // 整体看板订单/会员折线图
@@ -478,7 +477,6 @@ export default {
         : moment()
             .endOf('day')
             .format('YYYY-MM-DD') + ''
-      console.log(this.tabsObjData)
       this.dataService.getStoreMemberAnalysis(this.tabsObjData).subscribe()
     },
     refresh() {
