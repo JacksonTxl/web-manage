@@ -1,6 +1,6 @@
 <template>
   <div :class="b()">
-    <st-search-panel @search="onSearchNative" @reset="onSearchReset">
+    <st-search-panel @search="onSearch" @reset="onSearchReset">
       <st-search-panel-item label="储值卡状态：">
         <st-search-radio
           v-model="$searchQuery.notify_type"
@@ -9,7 +9,7 @@
       </st-search-panel-item>
       <st-search-panel-item label="二级分类：">
         <st-search-radio
-          v-model="$searchQuery.is_valid"
+          v-model="$searchQuery.sub_notify_type"
           :options="noticeTypeLevel2Options"
         />
       </st-search-panel-item>
@@ -19,7 +19,6 @@
           style="width: 160px"
           :defaultValue="-1"
           v-model="$searchQuery.shop_id"
-          @change="onSingleSearch('shop_id', $event)"
         ></shop-select>
       </st-search-panel-item>
     </st-search-panel>
@@ -57,8 +56,8 @@ export default {
     ShopSelect
   },
   rxState() {
-    const { list$, page$, loading$, noticeTypeOptions$ } = this.service
-    return { list$, page$, loading$, noticeTypeOptions$ }
+    const { list$, page$, loading$, informTypeOptions$ } = this.service
+    return { list$, page$, loading$, informTypeOptions$ }
   },
   data() {
     return {
@@ -68,7 +67,7 @@ export default {
   computed: {
     columns,
     noticeTypeLevel1Options() {
-      return this.noticeTypeOptions$.map(item => {
+      return this.informTypeOptions$.map(item => {
         return {
           label: item.value,
           value: item.key
@@ -76,21 +75,21 @@ export default {
       })
     },
     noticeTypeLevel2Options() {
-      const options = []
-      for (let item of this.noticeTypeOptions$) {
-        if (item.value === this.$searchQuery.notify_type) {
-          return [...item]
+      let options = []
+      for (let item of this.informTypeOptions$) {
+        if (item.key === this.$searchQuery.notify_type) {
+          options = [
+            { label: '全部', value: -1 },
+            ...item.sub_type.map(item => {
+              return {
+                label: item.value,
+                value: item.key
+              }
+            })
+          ]
         }
       }
       return options
-    }
-  },
-  methods: {
-    onSearchNative() {
-      console.log('onser')
-    },
-    onSearchReset() {
-      console.log('cds')
     }
   }
 }

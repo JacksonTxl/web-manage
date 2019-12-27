@@ -20,7 +20,8 @@ export const routeMapConfig = {
     routeConfig.meta.title = '通知列表'
     routeConfig.queryOptions = {
       notify_type: { type: Number, default: -1 },
-      sub_notify_type: { type: Number, default: -1 }
+      sub_notify_type: { type: Number, default: -1 },
+      shop_id: { type: Number, default: -1 }
     }
   },
   'brand-product-course-personal-list'(routeConfig: RouteConfig) {

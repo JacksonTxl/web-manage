@@ -6,28 +6,49 @@
     width="370px"
     :footer="null"
   >
-    <div :class="b('item')">
-      <span>硬件入场通知弹窗</span>
-      <st-switch v-model="notifyConfig.is_member_mobile"></st-switch>
-    </div>
-    <div :class="b('item')" class="mg-t24">
-      <span>任务通知弹窗</span>
-      <st-switch v-model="notifyConfig.is_member_mobile"></st-switch>
+    <div :class="b('item')" v-for="item in notifyTypes$" :key="item.key">
+      <span>{{ item.name }}</span>
+      <st-switch
+        v-model="item.is_open"
+        @change="onChangeSetConfig()"
+      ></st-switch>
     </div>
   </st-modal>
 </template>
 
 <script>
+import { ConfigService } from './config.service'
 export default {
   name: 'ModalNotifyConfig',
   bem: {
     b: 'modal-notify-config'
   },
+  serviceInject() {
+    return {
+      service: ConfigService
+    }
+  },
+  rxState() {
+    const { notifyTypes$ } = this.service
+    return { notifyTypes$ }
+  },
   data() {
     return {
-      show: false,
-      notifyConfig: {}
+      show: false
     }
+  },
+  methods: {
+    onChangeSetConfig() {
+      // 更新通知设置
+      this.service.updateNoticeSetting(this.notifyTypes$).subscribe()
+    },
+    init() {
+      // 获取通知设置回显
+      this.service.getNoticeSettingInfo().subscribe()
+    }
+  },
+  created() {
+    this.init()
   }
 }
 </script>

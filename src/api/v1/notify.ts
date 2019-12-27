@@ -12,17 +12,17 @@ export class NotifyApi extends Api {
   getNoticeEnum() {
     return this.http.get(`/v1/notice/enum`)
   }
-  getAnnouncementEnum(query: GetInformListQuery) {
-    return this.http.get(`/v1/announcement/enum`, { query })
+  getAnnouncementEnum() {
+    return this.http.get(`/v1/announcement/enum`)
   }
-  getNoticeSettingInfo(query: GetInformListQuery) {
-    return this.http.get(`/v1/notice/pc/setting`, { query })
+  getNoticeSettingInfo() {
+    return this.http.get(`/v1/notice/pc/setting`)
   }
   updateNoticeSetting(params: any) {
-    return this.http.get(`/v1/notice/pc/setting`, { params })
+    return this.http.put(`/v1/notice/pc/setting`, { params })
   }
-  getNewAnnouncement(query: any) {
-    return this.http.get(`/v1/brand/new/announcement`, { query })
+  getNewAnnouncement(query?: any) {
+    return this.http.get(`/v1/announcement/pc/new`, { query })
   }
 }
 export interface GetNoticeListQuery {

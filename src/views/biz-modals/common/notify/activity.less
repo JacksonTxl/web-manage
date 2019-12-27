@@ -1,4 +1,24 @@
 .modal-activity {
+  .st-modal__body {
+    position: relative;
+  }
+  .ant-modal-body {
+    overflow: inherit !important;
+  }
+  &__arrow-left,
+  &__arrow-right {
+    position: absolute;
+    top: 50%;
+    z-index: 9999;
+    .c(#fff);
+    background: rgba(0, 0, 0, 0.4);
+  }
+  &__arrow-left {
+    left: -40px;
+  }
+  &__arrow-right {
+    right: -40px;
+  }
   &__notify-img {
     .h(400px);
     position: relative;

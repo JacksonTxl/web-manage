@@ -8,7 +8,7 @@ export class InformService {
   loading$ = new State({})
   list$ = new State([{}])
   page$ = new State({})
-  noticeTypeOptions$ = new State([])
+  informTypeOptions$ = new State([])
   constructor(private api: NotifyApi) {}
   getList(query: any) {
     return this.api.getInformList(query).pipe(
@@ -21,8 +21,12 @@ export class InformService {
   getNoticeEnum() {
     return this.api.getNoticeEnum().pipe(
       tap((res: any) => {
-        this.noticeTypeOptions$.commit(() => [
-          { value: '全部', key: -1 },
+        let subTypes: any[] = []
+        res.list.forEach((item: any) => {
+          subTypes = [...subTypes, ...item.sub_type]
+        })
+        this.informTypeOptions$.commit(() => [
+          { value: '全部', key: -1, sub_type: subTypes },
           ...res.list
         ])
       })

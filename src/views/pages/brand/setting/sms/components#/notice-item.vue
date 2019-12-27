@@ -149,12 +149,14 @@
                   {{ params.receiver.custom.name }}
                 </st-checkbox>
               </span>
-              <a-input
-                style="width:44%"
-                v-show="isShowPhone"
-                v-model="params.custom_phone"
-                placeholder="请输入手机号码，多个用逗号分隔"
-              />
+              <slot name="custom" :params="params">
+                <a-input
+                  style="width:44%"
+                  v-show="isShowPhone"
+                  v-model="params.custom_phone"
+                  placeholder="请输入手机号码，多个用逗号分隔"
+                />
+              </slot>
             </div>
 
             <div class="mg-b16" v-if="Object.keys(info.order_type).length > 0">
@@ -493,12 +495,19 @@ export default {
       if (this.info.receiver.seller) {
         receiver.seller = this.params.receiver.seller.value ? 1 : 0
       }
-      const para = Object.assign({}, this.params, {
-        id: this.info.id,
-        custom_phone:
+      let custom_phone = []
+      if (Array.isArray(this.params.custom_phone)) {
+        custom_phone = this.params.custom_phone
+      } else {
+        custom_phone =
           this.params.custom_phone.length > 0
             ? this.params.custom_phone.split(',')
-            : [],
+            : []
+      }
+
+      const para = Object.assign({}, this.params, {
+        id: this.info.id,
+        custom_phone,
         order_type,
         receiver,
         course_type
