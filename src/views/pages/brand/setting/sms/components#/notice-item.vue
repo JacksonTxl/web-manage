@@ -154,6 +154,12 @@
                 >
                   {{ params.receiver.custom.name }}
                 </st-checkbox>
+                <st-checkbox
+                  v-if="params.receiver.leader"
+                  v-model="params.receiver.leader.value"
+                >
+                  {{ params.receiver.leader.name }}
+                </st-checkbox>
               </span>
               <a-input
                 style="width:44%"
@@ -247,7 +253,7 @@
                 />
                 天提醒，每日早7点推送
               </span>
-              <span v-if="info.notify_sub_type.value === 14">
+              <!-- <span v-if="info.notify_sub_type.value === 14">
                 会员课程剩余
                 <a-input
                   v-model="params.notify_number"
@@ -261,7 +267,7 @@
                   type="number"
                 />
                 天时提醒，每日早7点推送
-              </span>
+              </span> -->
               <span
                 v-if="
                   info.notify_sub_type.value !== 6 &&
@@ -365,6 +371,10 @@ export default {
           custom: {
             value: 0,
             name: '自定义'
+          },
+          leader: {
+            value: 0,
+            name: '负责人'
           }
         },
         notify_time: '',
@@ -467,6 +477,9 @@ export default {
       if (this.info.receiver.custom) {
         receiver.custom = 0
       }
+      if (this.info.receiver.leader) {
+        receiver.leader = 0
+      }
       if (this.info.receiver.seller) {
         receiver.seller = 0
       }
@@ -507,6 +520,9 @@ export default {
       }
       if (this.info.receiver.custom) {
         receiver.custom = this.params.receiver.custom.value ? 1 : 0
+      }
+      if (this.info.receiver.leader) {
+        receiver.leader = this.params.receiver.leader.value ? 1 : 0
       }
       if (this.info.receiver.seller) {
         receiver.seller = this.params.receiver.seller.value ? 1 : 0
