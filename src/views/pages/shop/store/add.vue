@@ -1,5 +1,5 @@
 <template>
-  <st-mina-panel app>
+  <st-mina-panel app initial>
     <div slot="actions">
       <!-- :loading="confirmLoading"  -->
       <st-button type="primary" :loading="loading.addGoods" @click="onSubmit">
@@ -31,7 +31,7 @@
               <a-select
                 showSearch
                 v-decorator="decorators.category_id"
-                placeholder="请选择"
+                placeholder="请选择分类"
               >
                 <a-select-option
                   :value="item.category_id"
@@ -123,6 +123,7 @@
           <a-col
             :span="skuList.length === 3 ? 24 : skuList.length === 2 ? 20 : 16"
           >
+            <!-- <a-col :span="10"> -->
             <st-form-item label="规格设置" required>
               <a-radio-group
                 v-model="isMore"
@@ -154,8 +155,9 @@
                     v-model="item.spec_name"
                     placeholder="请输入规格项名称"
                     :disabled="isEditMode"
+                    maxlength="20"
                     style="width: 220px"
-                    @change="skuName(index, $event)"
+                    @blur="skuName(index, $event)"
                   ></a-input>
                   <span :class="basic('sku--item-del')" @click="delSku()">
                     <st-icon
@@ -191,7 +193,6 @@
                   :columns="skuColumns"
                   :dataSource="tableData"
                   :pagination="false"
-                  :scroll="{ x: 800 }"
                 >
                   <template
                     slot="market_price"
@@ -441,7 +442,6 @@ export default {
             ? -1
             : values.sale_type[0] // 售卖方式
       }
-      console.log(data, '-----参数')
       this.addService.addGoods(data).subscribe(res => {
         this.$router.push({
           path: './list'
@@ -464,7 +464,6 @@ export default {
         if (this.skuList.length > 0) {
           let sku = {}
           this.info.all_spec[0].spec_item_arr.forEach(spec => {
-            console.log(spec, item, '==============规格id添加')
             if (spec.spec_item_name === item['0']) {
               sku.spec_item_id = spec.spec_item_id
               sku.spec_id = spec.spec_item_id
@@ -516,7 +515,6 @@ export default {
             ? -1
             : values.sale_type[0] // 售卖方式
       }
-      console.log(data, '这是编辑提交的参数')
       this.addService.editGoods(this.$route.query.id, data).subscribe(res => {
         this.$router.push({
           path: './list'
@@ -524,7 +522,6 @@ export default {
       })
     },
     goodDetail() {
-      console.log(this.info, '====info')
       this.form.setFieldsValue({
         product_name: this.info.product_name,
         category_id: this.info.category_id,
