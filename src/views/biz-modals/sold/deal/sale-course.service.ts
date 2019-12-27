@@ -13,7 +13,6 @@ import { forkJoin, EMPTY, Observable } from 'rxjs'
 export class SaleCourseService {
   loading$ = new State({})
   info$ = new State({})
-  memberList$ = new State({})
   saleList$ = new State({})
   couponList$ = new State([])
   currentPriceAction$: Action<any>
@@ -44,14 +43,6 @@ export class SaleCourseService {
     return this.transactionApi.getTransactionInfo(id, 'package/course').pipe(
       tap((res: any) => {
         this.info$.commit(() => res.info)
-      })
-    )
-  }
-  @Effect()
-  getMember(member: string, type: number) {
-    return this.transactionApi.getMemberList(member, type).pipe(
-      tap((res: any) => {
-        this.memberList$.commit(() => res.list)
       })
     )
   }

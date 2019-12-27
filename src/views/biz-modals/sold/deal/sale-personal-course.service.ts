@@ -6,7 +6,6 @@ import {
   TransactionPriceInput
 } from '@/api/v1/sold/transaction'
 import { ContractApi } from '@/api/v1/setting/contract'
-import { ShopPersonalCourseApi } from '@/api/v1/course/personal/shop'
 import { forkJoin, EMPTY, Observable } from 'rxjs'
 import { tap, switchMap, catchError, debounceTime } from 'rxjs/operators'
 
@@ -18,7 +17,6 @@ export class SalePersonalCourseService {
   priceInfo$ = new State('0')
   orderAmountPriceAction$: Action<any>
   orderAmountPrice$ = new State('0')
-  memberList$ = new State({})
   saleList$ = new State({})
   couponList$ = new State([])
   coachList$ = new State({})
@@ -26,7 +24,6 @@ export class SalePersonalCourseService {
 
   constructor(
     private contractApi: ContractApi,
-    private memberApi: ShopPersonalCourseApi,
     private transactionApi: TransactionApi
   ) {
     this.priceAction$ = new Action(data$ => {
@@ -59,14 +56,6 @@ export class SalePersonalCourseService {
     return this.transactionApi.getTransactionInfo(id, 'personal/course').pipe(
       tap((res: any) => {
         this.info$.commit(() => res.info)
-      })
-    )
-  }
-  @Effect()
-  getMember(member: string, type: number) {
-    return this.transactionApi.getMemberList(member, type).pipe(
-      tap((res: any) => {
-        this.memberList$.commit(() => res.list)
       })
     )
   }

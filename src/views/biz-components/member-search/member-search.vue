@@ -1,6 +1,11 @@
 <template>
   <div>
-    <st-form-item v-if="searchMemberIsShow" :label="label" required>
+    <st-form-item
+      v-if="searchMemberIsShow"
+      :label="label"
+      required
+      v-bind="$attrs"
+    >
       <a-select
         style="width:100%"
         showSearch
@@ -23,13 +28,13 @@
         >
           <span
             v-html="
-              `${item.member_name} ${item.mobile}`.replace(
+              `${selectItemLabel(item)}`.replace(
                 new RegExp(memberSearchText, 'g'),
                 `\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`
               )
             "
           >
-            {{ item.member_name }} {{ item.mobile }}
+            {{ selectItemLabel(item) }}
           </span>
         </a-select-option>
         <a-select-option
@@ -44,10 +49,10 @@
       </a-select>
     </st-form-item>
     <template v-if="selectInfo && selectInfo.is_minors === 1">
-      <st-form-item label="家长手机号" required>
+      <st-form-item label="家长手机号" required v-bind="$attrs">
         <label>{{ selectInfo.parent_mobile }}</label>
       </st-form-item>
-      <st-form-item label="家长姓名" required>
+      <st-form-item label="家长姓名" required v-bind="$attrs">
         <label>
           {{ selectInfo.parent_name }}({{ selectInfo.parent_user_role }})
         </label>
@@ -55,7 +60,7 @@
     </template>
 
     <template v-if="!searchMemberIsShow">
-      <st-form-item label="姓名" required>
+      <st-form-item label="姓名" required v-bind="$attrs">
         <a-input v-decorator="decorators[memberName]" placeholder="请输入姓名">
           <a-select
             slot="addonAfter"
@@ -68,7 +73,12 @@
           </a-select>
         </a-input>
       </st-form-item>
-      <st-form-item label="手机号" required v-if="personModel === 0">
+      <st-form-item
+        label="手机号"
+        required
+        v-if="personModel === 0"
+        v-bind="$attrs"
+      >
         <input-phone
           size="default"
           v-decorator="decorators[memberMobile]"
@@ -78,14 +88,24 @@
           <a @click="onCancelMember">取消添加</a>
         </p>
       </st-form-item>
-      <st-form-item label="家长手机号" required v-if="personModel === 1">
+      <st-form-item
+        label="家长手机号"
+        required
+        v-if="personModel === 1"
+        v-bind="$attrs"
+      >
         <input-phone
           size="default"
           v-decorator="decorators[parentMobile]"
           placeholder="请输入手机号"
         ></input-phone>
       </st-form-item>
-      <st-form-item label="家长姓名" required v-if="personModel === 1">
+      <st-form-item
+        label="家长姓名"
+        required
+        v-if="personModel === 1"
+        v-bind="$attrs"
+      >
         <a-input
           v-decorator="decorators[parentName]"
           placeholder="请输入家长姓名"
@@ -235,6 +255,14 @@ export default {
     }
   },
   methods: {
+    selectItemLabel(item) {
+      if (item.is_minors === 1) {
+        return `${item.member_name}(未成年) ${item.parent_mobile}(${
+          item.parent_user_role
+        })`
+      }
+      return `${item.member_name} ${item.mobile}`
+    },
     onSelectMember(val) {
       this.selectInfo = this.memberList$.filter(item => item.id === val)[0]
     },

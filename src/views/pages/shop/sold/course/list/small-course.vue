@@ -63,8 +63,9 @@
               >
                 转让
               </a>
-              <!-- v-if="record.auth['shop:sold:sold_personal_course|get']" -->
+
               <a
+                v-if="record.auth['shop:product:small_class_course|refund']"
                 @click="
                   smallCourseActions.onRefund({
                     id: record.id

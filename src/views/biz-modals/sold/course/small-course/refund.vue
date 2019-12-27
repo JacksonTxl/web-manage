@@ -162,7 +162,7 @@ export default {
       form,
       decorators,
       show: true,
-      refundReason: 2,
+      refundReason: 1,
       frozenPayType: this.refundChannelSaas[0].value,
       description: ''
     }

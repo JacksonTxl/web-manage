@@ -405,7 +405,6 @@ export default {
         })
     },
     onCancel() {
-      this.saleSmallCourseService.memberList$.commit(() => [])
       this.resetAdvance()
     },
     onSelectAdvanceChange(data) {

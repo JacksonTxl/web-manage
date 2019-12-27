@@ -20,7 +20,7 @@
               click: onChangeSmallCourse
             },
             {
-              //if: auth['brand_shop:order:order|refund'],
+              if: auth['shop:product:small_class_course|refund'],
               text: '退款',
               click: onRefund
             }

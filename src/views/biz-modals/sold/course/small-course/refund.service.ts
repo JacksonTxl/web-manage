@@ -11,7 +11,9 @@ export class RefundService {
   refundChannelSaas$ = this.userService.getOptions$(
     'sold_common.refund_channel_saas'
   )
-  refundReasons$ = this.userService.getOptions$('sold_common.refund_reason')
+  refundReasons$ = this.userService.getOptions$(
+    'sold_common.refund_reason_small_course'
+  )
   constructor(
     private smallCourseApi: SmallCourseApi,
     private userService: UserService
