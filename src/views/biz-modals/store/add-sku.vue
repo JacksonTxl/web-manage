@@ -6,6 +6,7 @@
           <st-form-item label="规格名称" required>
             <a-input
               placeholder="请输规格名称"
+              maxlength="20"
               v-decorator="decorators.sku_name"
             />
           </st-form-item>
