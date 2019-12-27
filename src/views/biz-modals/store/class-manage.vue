@@ -104,10 +104,12 @@ export default {
       item.isEdit = true
     },
     cancelHandle(item, index) {
-      item = this.oldTableData[index]
+      // item = this.oldTableData[index]
       if (!item.category_name) {
         this.tableData.splice(index, 1)
         this.oldTableData.splice(index, 1)
+      } else {
+        item.isEdit = false
       }
     },
     delHandle(item, index) {

@@ -34,6 +34,7 @@
       <template slot="action" slot-scope="text, record">
         <st-table-actions sytle="width: 120px">
           <a
+            v-if="record.auth['brand_shop:cloud_store:stock|list']"
             v-modal-link="{
               name: 'store-put-in',
               props: { skuList: [record] }
