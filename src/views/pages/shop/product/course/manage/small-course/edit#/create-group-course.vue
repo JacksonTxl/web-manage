@@ -175,12 +175,7 @@
     <a-row :gutter="8">
       <a-col :xxl="10" :lg="14" :xs="22" :offset="1">
         <st-form-item label="课程介绍">
-          <st-textarea
-            v-decorator="decorators.description"
-            :autosize="{ minRows: 10, maxRows: 16 }"
-            placeholder="填写点什么吧"
-            maxlength="500"
-          />
+          <st-editor @input="onChangeEditor" v-model="content"></st-editor>
         </st-form-item>
       </a-col>
     </a-row>
@@ -203,6 +198,7 @@ import { UserService } from '@/services/user.service'
 import { ruleOptions } from '../form.config'
 import { PatternService } from '@/services/pattern.service'
 import CardBgRadio from '@/views/biz-components/card-bg-radio/card-bg-radio'
+import StEditor from '@/views/biz-components/editor/editor'
 
 export default {
   name: 'create-group-course',
@@ -232,7 +228,7 @@ export default {
   bem: {
     b: 'create-group-course'
   },
-  components: { CardBgRadio },
+  components: { CardBgRadio, StEditor },
   created() {
     this.$emit('onCourseNameChange', this.info.info.course_name)
     this.$emit('onCourseIdChange', this.info.info.course_id)
@@ -253,11 +249,15 @@ export default {
         image_url: '',
         index: 1
       },
+      content: '',
       isShowLeaveContent: false,
       isShowLimitContent: false
     }
   },
   methods: {
+    onChangeEditor() {
+      return this.content.length === 0
+    },
     setFieldsValue() {
       const info = this.info.info
       this.form.setFieldsValue({
@@ -275,9 +275,9 @@ export default {
         appointment_rights: !this.isShowLimitContent
           ? info.appointment_rights
           : undefined,
-        image: info.image,
-        description: info.description
+        image: info.image
       })
+      this.content = info.description
       this.bg_image.index = info.img_type
       if (info.img_type === 3) {
         this.bg_image = info.image
@@ -294,6 +294,7 @@ export default {
         values.small_course_type = this.$route.query.type
         values.image = this.bg_image
         values.img_type = this.bg_image.index
+        values.description = this.content
         if (this.bg_image.index === 0) {
           values.img_type = 3
         }
@@ -312,11 +313,6 @@ export default {
     onCourseTypeChange(category_id) {
       this.form.setFieldsValue({
         category_id
-      })
-    },
-    onTrainingAimChange(train_aim) {
-      this.form.setFieldsValue({
-        train_aim
       })
     },
     onCourseNameChange(e) {

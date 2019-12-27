@@ -60,7 +60,7 @@ export const ruleOptions = (vm: any) => {
     leave_limit: {},
     appointment_rights: {},
     image: {},
-    description: {},
+    // description: {},
     coach_ids: {
       rules: [
         {
