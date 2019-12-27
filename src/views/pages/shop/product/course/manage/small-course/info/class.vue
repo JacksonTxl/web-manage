@@ -18,6 +18,7 @@
       "
       rowKey="member_id"
       :loading="loading.getGroupClassInfo"
+      @change="onTableChange"
       :dataSource="groupClassList"
     >
       <div slot="leave_class_hours" slot-scope="text, record">
@@ -62,7 +63,7 @@ import CourseSmallCourseSign from '@/views/biz-modals/course/small-course-sign'
 import { CLASS_STATUS } from '@/constants/course/small-course'
 
 export default {
-  name: 'GroupCourseClassInfo',
+  name: 'SmallCourseClassInfo',
   serviceInject() {
     return {
       classService: ClassService

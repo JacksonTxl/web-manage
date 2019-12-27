@@ -47,6 +47,7 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="开班时间" required>
           <a-range-picker
+            style="width:100%"
             :disabledDate="disabledDate"
             :showTime="{ format: 'HH:mm' }"
             format="YYYY-MM-DD HH:mm"
@@ -126,7 +127,7 @@
             class="mg-t8"
             v-show="isShowLeaveContent"
           >
-            <a-form-item>
+            <div class="mg-b8">
               <span class="mg-r8">允许请假时间,请假前</span>
               <st-input-number
                 :min="1"
@@ -138,8 +139,8 @@
                   h
                 </template>
               </st-input-number>
-            </a-form-item>
-            <a-form-item>
+            </div>
+            <div>
               <span class="mg-r8">请假上限节数</span>
               <st-input-number
                 :min="1"
@@ -150,7 +151,7 @@
                   节
                 </template>
               </st-input-number>
-            </a-form-item>
+            </div>
           </st-pop-container>
         </st-form-item>
       </a-col>
