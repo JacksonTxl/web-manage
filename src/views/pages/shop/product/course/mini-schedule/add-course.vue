@@ -82,7 +82,7 @@
         </div>
       </div>
     </template>
-    <st-button block type="dashed" icon="add">
+    <st-button block type="dashed" icon="add" :disabled="DisabledAddCourseBtn">
       添加课程
     </st-button>
   </a-popover>
@@ -124,6 +124,14 @@ export default {
       type: Boolean,
       default: false
     },
+    disabledCustomBtn: {
+      type: Boolean,
+      default: true
+    },
+    disabledAddCourseBtn: {
+      type: Boolean,
+      default: true
+    },
     cycleIndex: {
       type: Number,
       default: 0
@@ -152,6 +160,13 @@ export default {
       decorators,
       showFlag: false,
       params: {}
+    }
+  },
+  computed: {
+    DisabledAddCourseBtn() {
+      return this.scheduleId === 1
+        ? this.disabledAddCourseBtn
+        : this.disabledCustomBtn
     }
   },
   created() {

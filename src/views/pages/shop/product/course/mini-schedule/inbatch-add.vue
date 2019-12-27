@@ -70,6 +70,7 @@
                   @addCourse="pushCourseInfo"
                   @addCustomCourse="pushCustomCourseInfo"
                   :item="filterDate[i][item.week]"
+                  :disabledAddCourseBtn="disabledAddCourseBtn"
                   :cycleIndex="i"
                   :week="item.week"
                   :cycle="pickerList[i]"
@@ -142,7 +143,10 @@
                   </p>
                 </div>
               </div>
-              <add-course :customizeShow="customizeShow"></add-course>
+              <add-course
+                :customizeShow="customizeShow"
+                :disabledCustomBtn="disabledCustomBtn"
+              ></add-course>
             </div>
           </st-container>
         </div>
@@ -200,6 +204,8 @@ export default {
       decorators,
       moment: moment,
       customizeShow: false,
+      disabledAddCourseBtn: true,
+      disabledCustomBtn: true,
       coachId: undefined,
       scheduleId: 1,
       start_date: '2019-12-16',
@@ -317,17 +323,23 @@ export default {
       return !(this.end_date === this.picker_end_date)
     }
   },
+  watch: {
+    // filterDate(newVal) {
+    //   console.log(newVal)
+    // },
+    // deep: true
+  },
   created() {
     this.filterDateList(this.scheduleList)
-    this.pickerList.push([
-      moment(this.smallCourseInfo.course_begin_time),
-      moment(this.smallCourseInfo.course_end_time)
-    ])
+    this.pickerList.push([moment(), moment()])
   },
   methods: {
     dealScheduleDate() {
       this.scheduleList.forEach((item, index) => {
-        this.pickerList.push([moment(), moment()])
+        this.pickerList[index] = [
+          moment(item.cycle_begin_date),
+          moment(item.cycle_end_date)
+        ]
       })
     },
     onChangeCourse(value) {
@@ -336,22 +348,24 @@ export default {
           this.smallCourseInfo = item
         }
       })
-      // 用回显数据判断是新增还是编辑   如果编辑的时候全删除了课程算什么类型？
+      // 用回显数据判断是新增还是编辑
       if (
         this.scheduleList.length &&
         this.smallCourseInfo.small_course_type === 1
       ) {
         this.dealScheduleDate(this.scheduleList)
-        this.filterDateList(this.scheduleList)
       } else if (
         !this.scheduleList.length &&
         this.smallCourseInfo.small_course_type === 1
       ) {
-        this.pickerList.push([
+        this.pickerList[0] = [
           moment(this.smallCourseInfo.course_begin_time),
           moment(this.smallCourseInfo.course_end_time)
-        ])
+        ]
       }
+      console.log(this.smallCourseInfo)
+      this.disabledAddCourseBtn = false
+      this.filterDateList(this.scheduleList)
     },
     onChangeRangePicker(date, dateString, PickerIndex) {
       // this.picker_start_date = date[0].format('YYYY-MM-DD').valueOf()
@@ -431,12 +445,13 @@ export default {
       console.log(list)
       console.log(dateList)
       this.filterDate = list
-    },
-    onSubmit() {
-      console.log(123)
-      this.form.validate().then(values => {
-        console.log(values)
-      })
+      // if (this.disabledAddCourseBtn) {
+      //   this.filterDate = list
+      // } else {
+      //   this.$nextTick(function() {
+      //     this.filterDate = list
+      //   })
+      // }
     },
     // 增加课程
     createCourseWeek(week, courseItem, courseTime) {
@@ -448,8 +463,6 @@ export default {
       this.filterDateList(this.scheduleList)
     },
     pushCourseInfo(cycleIndex, conflict, info, list) {
-      console.log(456)
-      this.onSubmit()
       let courseItem = {
         schedule_id: this.schedule_id,
         course_id: info.course_id,
