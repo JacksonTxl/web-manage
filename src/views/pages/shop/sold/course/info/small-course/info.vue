@@ -5,14 +5,19 @@
         <st-btn-actions
           :options="[
             {
-              //if: auth['shop:sold:sold_personal_course|export_contract'],
+              if: auth['shop:sold:sold_small_class_course|export_contract'],
               text: '查看合同',
               click: toContract
             },
             {
-              //if: auth['shop:sold:sold_personal_course|transfer'],
+              if: auth['shop:sold:sold_small_class_course|transfer'],
               text: '转让',
               click: onTransfer
+            },
+            {
+              if: auth['shop:sold:sold_small_class_course|exchange'],
+              text: '换班',
+              click: onChangeSmallCourse
             },
             {
               //if: auth['brand_shop:order:order|refund'],
@@ -142,7 +147,16 @@ export default {
         id: this.$searchQuery.id
       })
     },
-    onRefund() {}
+    onChangeSmallCourse() {
+      this.smallCourseActions.onChangeSmallCourse({
+        id: this.$searchQuery.id
+      })
+    },
+    onRefund() {
+      this.smallCourseActions.onRefund({
+        id: this.$searchQuery.id
+      })
+    }
   }
 }
 </script>
