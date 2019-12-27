@@ -45,14 +45,16 @@ export default {
       )
     },
     onChange(date, dateString) {
-      if (this.selectValue === '2') {
-        dateString = dateString.slice(0, dateString.length - 1)
+      if (dateString) {
+        if (this.selectValue === '2') {
+          dateString = dateString.slice(0, dateString.length - 1)
+        }
+        let propData = {
+          date: dateString,
+          date_type: this.selectValue - 0
+        }
+        this.$emit('timesFn', propData)
       }
-      let propData = {
-        date: dateString,
-        date_type: this.selectValue - 0
-      }
-      this.$emit('timesFn', propData)
     },
     handleChange(e) {
       this.selectValue = e
