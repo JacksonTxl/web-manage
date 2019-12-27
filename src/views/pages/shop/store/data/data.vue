@@ -117,7 +117,7 @@
                   <div v-else :class="basic('entry-store-img')">
                     <img
                       :src="inoutNumImg"
-                      style="margin-top: 7px;height:343px"
+                      :class="basic('entry-store-img-line')"
                     />
                   </div>
                 </div>
