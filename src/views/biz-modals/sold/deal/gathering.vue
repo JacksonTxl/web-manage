@@ -185,11 +185,17 @@ export default {
   // 订单id，签单类型
   props: ['order_id', 'type'],
   created() {
-    this.gatheringService
-      .getPaymentInfo(this.order_id, this.type)
-      .subscribe(result => {
+    if (this.type === 'cloud') {
+      this.gatheringService.getPayOrderInfo(this.order_id).subscribe(result => {
         this.gatheringService.getPaymentMethodList(this.order_id).subscribe()
       })
+    } else {
+      this.gatheringService
+        .getPaymentInfo(this.order_id, this.type)
+        .subscribe(result => {
+          this.gatheringService.getPaymentMethodList(this.order_id).subscribe()
+        })
+    }
   },
   filters: {
     dealMaxNumber: value => {

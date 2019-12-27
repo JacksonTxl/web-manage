@@ -231,6 +231,7 @@ import SoldDealAddMember from '@/views/biz-modals/sold/deal/add-member'
 import { ListService } from './list.service'
 import { PatternService } from '@/services/pattern.service'
 import { PRODUCT_TYPE } from '@/constants/sold/transaction'
+import { MessageService } from '@/services/message.service'
 export default {
   name: 'shopSoldTransactionCloud',
   bem: {
@@ -245,7 +246,8 @@ export default {
   serviceInject() {
     return {
       listService: ListService,
-      pattern: PatternService
+      pattern: PatternService,
+      messageService: MessageService
     }
   },
   rxState() {
@@ -336,6 +338,12 @@ export default {
     // 生成订单号
     createOrderNum(type) {
       return new Promise((resolve, reject) => {
+        if (!this.buyCar.length) {
+          this.messageService.warning({
+            content: '购物车为空，请添加商品到购物车'
+          })
+          return
+        }
         this.form.validate().then(values => {
           let params = {
             member_id: values.memberId,
@@ -344,16 +352,17 @@ export default {
             reduce_price: this.reducePrice || 0,
             description: this.description,
             sale_range: 1,
-            order_amount: this.currentPrice,
-            product_info: this.buyCar
+            shipping_mode: 1,
+            order_amount: this.actualAmount,
+            sku_info: this.buyCar
           }
           if (type === 1) {
             this.listService.createOrder(params).subscribe(result => {
-              resolve(result.info.order_id)
+              resolve(result.info.order_id.order_id)
             })
           } else {
             this.listService.createOrderPay(params).subscribe(result => {
-              resolve(result.info.order_id)
+              resolve(result.info.order_id.order_id)
             })
           }
         })
