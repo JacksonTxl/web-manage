@@ -1,7 +1,6 @@
 <template>
   <st-modal
     wrapClassName="modal-submit-course"
-    @ok="save"
     :footer="null"
     v-model="show"
     width="504px"
@@ -31,7 +30,7 @@
         <st-button @click="cancelSchedule">
           取消排课
         </st-button>
-        <st-button type="primary" class="mg-l12">
+        <st-button type="primary" class="mg-l12" @click="save">
           确认
         </st-button>
       </div>
@@ -71,6 +70,12 @@ export default {
       default: () => {
         return []
       }
+    },
+    cycle_type: {
+      type: Number,
+      default: () => {
+        return 1
+      }
     }
   },
   computed: {
@@ -95,25 +100,37 @@ export default {
       this.show = false
     },
     save() {
-      this.smallCourseScheduleService
-        .addScheduleInBatch(this.scheduleList)
-        .subscribe(() => {
-          this.show = false
-          let weekOfday = moment().format('E')
-          let start_date = moment()
-            .subtract(weekOfday - 1, 'days')
-            .format('YYYY-MM-DD')
-          let end_date = moment()
-            .add(7 - weekOfday, 'days')
-            .format('YYYY-MM-DD')
-          this.$router.push({
-            path: '/shop/product/course/schedule/small-course/small-course',
-            query: {
-              start_date,
-              end_date
-            }
+      console.log(this.cycle_type)
+      if (this.cycle_type) {
+        this.smallCourseScheduleService
+          .addScheduleInBatch(this.scheduleList)
+          .subscribe(() => {
+            this.show = false
+            let weekOfday = moment().format('E')
+            let start_date = moment()
+              .subtract(weekOfday - 1, 'days')
+              .format('YYYY-MM-DD')
+            let end_date = moment()
+              .add(7 - weekOfday, 'days')
+              .format('YYYY-MM-DD')
+            this.$router.push({
+              path: '/shop/product/course/schedule/small-course/small-course',
+              query: {
+                start_date,
+                end_date
+              }
+            })
           })
-        })
+      } else {
+        const scheduleList = {
+          list: this.scheduleList
+        }
+        this.smallCourseScheduleService
+          .addScheduleInBatchCustom(scheduleList)
+          .subscribe(() => {
+            console.log('提交成功')
+          })
+      }
     }
   }
 }

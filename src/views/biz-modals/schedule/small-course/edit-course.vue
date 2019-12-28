@@ -16,7 +16,7 @@
           </a-select-option>
         </a-select>
       </st-form-item>
-      <st-form-item label="日期" required v-if="scheduleId === 2">
+      <st-form-item label="日期" required v-if="!cycle_type">
         <a-date-picker
           style="width:100%"
           :showTime="{ format: 'YYYY-MM-DD' }"
@@ -131,9 +131,9 @@ export default {
         return 0
       }
     },
-    scheduleId: {
-      type: String,
-      default: '0'
+    cycle_type: {
+      type: Number,
+      default: 0
     }
   },
   created() {},
@@ -150,7 +150,7 @@ export default {
       start_time: moment(item.start_time),
       end_time: moment(item.end_time)
     })
-    if (this.scheduleId === 2) {
+    if (!this.cycle_type) {
       this.form.setFieldsValue({ start_days: time })
     }
     this.onChangeCourse(item.course_id)
@@ -191,7 +191,7 @@ export default {
       this.form.validate().then(values => {
         console.log(values)
         const form = cloneDeep(values)
-        if (this.scheduleId === 2) {
+        if (!this.cycle_type) {
           form.start_days = form.start_days.format('YYYY-MM-DD')
         }
         form.start_time = form.start_time.format('HH:mm')
@@ -206,7 +206,7 @@ export default {
         this.miniTeamScheduleScheduleService
           .conflict(verifyParams)
           .subscribe(res => {
-            if (this.scheduleId === 1) {
+            if (this.cycle_type === 1) {
               this.$emit(
                 'editCourse',
                 this.cycleIndex,

@@ -29,7 +29,7 @@ export class SmallCourseScheduleApi extends Api {
    * @param params
    * 新增小班课排期
    */
-  add(params: AddScheduleInput) {
+  add(params: any) {
     return this.http.post('/v1/schedule/small', { params })
   }
   /**
@@ -45,8 +45,16 @@ export class SmallCourseScheduleApi extends Api {
    * @param params
    * 批量新增自主小班课排期
    */
-  addScheduleInBatchCustom(params: AddScheduleInput[]) {
+  addScheduleInBatchCustom(params: any) {
     return this.http.post('/v1/schedule/small/customize', { params })
+  }
+  /**
+   *
+   * @param params
+   * 批量编辑回显
+   */
+  editScheduleInBatch(query: any) {
+    return this.http.get('/v1/schedule/small/list/edit', { query })
   }
   /**
    *

@@ -5,10 +5,12 @@ export const ruleOptions = (vm: any) => {
       initialValue: vm.time
     },
     start_time: {
-      rules: [{ required: true, message: '请选择开始时间' }]
+      rules: [{ required: true, message: '请选择开始时间' }],
+      initialValue: vm.time
     },
     end_time: {
-      rules: [{ required: true, message: '请选择结束时间' }]
+      rules: [{ required: true, message: '请选择结束时间' }],
+      initialValue: vm.time
     },
     course_id: {
       rules: [
@@ -34,7 +36,7 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    course_name: {
+    current_course_name: {
       rules: [{ required: true, message: '请输入课程名称' }]
     }
   }

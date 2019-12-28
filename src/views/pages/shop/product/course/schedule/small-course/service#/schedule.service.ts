@@ -109,7 +109,7 @@ export class SmallCourseScheduleService {
    * 新增小班课排期
    */
   @Effect()
-  add(params: AddScheduleInput) {
+  add(params: any) {
     return this.scheduleApi.add(params).pipe(
       tap(res => {
         this.msg.success({ content: '添加成功' })
@@ -128,6 +128,28 @@ export class SmallCourseScheduleService {
         this.msg.success({ content: '批量添加成功' })
       })
     )
+  }
+  /**
+   *
+   * @param params
+   * 批量新增自定义小班课排期
+   */
+  @Effect()
+  addScheduleInBatchCustom(params: any) {
+    return this.scheduleApi.addScheduleInBatchCustom(params).pipe(
+      tap(res => {
+        this.msg.success({ content: '批量添加成功' })
+      })
+    )
+  }
+  /**
+   *
+   * @param params
+   * 批量编辑回显
+   */
+  @Effect()
+  editScheduleInBatch(params: any) {
+    return this.scheduleApi.editScheduleInBatch(params)
   }
   /**
    *

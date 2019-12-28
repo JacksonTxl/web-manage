@@ -8,7 +8,7 @@
         <a-time-picker
           format="HH:mm"
           style="width:100%"
-          v-decorator="decorators.start_days"
+          v-decorator="decorators.start_time"
         />
       </st-form-item>
       <st-form-item label="结束时间" required>
@@ -56,7 +56,10 @@
         />
       </st-form-item>
       <st-form-item label="排课名称" required class="mg-b0">
-        <a-input placeholder="请输入" v-decorator="decorators.course_name" />
+        <a-input
+          placeholder="请输入"
+          v-decorator="decorators.current_course_name"
+        />
       </st-form-item>
     </st-form>
     <template slot="footer">
@@ -110,22 +113,27 @@ export default {
   },
   methods: {
     onChange(value) {
-      // 这里是否需要遍历查找对应的course信息
       console.log(value)
     },
     onSubmit() {
       this.form.validate().then(values => {
         const form = cloneDeep(values)
-        form.start_time = form.start_time.format('YYYY-MM-DD HH:mm')
+        console.log(values)
+        const start_days = values.start_days.format('YYYY-MM-DD')
+        const start_time = values.start_time.format('HH:mm')
+        const end_time = values.end_time.format('HH:mm')
+        form.start_time = start_days + ' ' + start_time
+        form.end_time = start_days + ' ' + end_time
         if (form.court_id) {
           form.court_site_id = +form.court_id[1]
           form.court_id = +form.court_id[0]
         }
         // 提交
         console.log(form)
-        this.miniTeamScheduleScheduleService.add(form).subscribe(() => {
+        this.smallCourseScheduleService.add(form).subscribe(() => {
           this.$emit('ok')
           this.show = false
+          this.onScheduleChange()
         })
       })
     },

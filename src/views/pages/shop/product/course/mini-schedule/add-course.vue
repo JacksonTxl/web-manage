@@ -25,7 +25,7 @@
               </a-select-option>
             </a-select>
           </st-form-item>
-          <st-form-item label="日期" required v-if="scheduleId === 2">
+          <st-form-item label="日期" required v-if="!cycle_type">
             <a-date-picker
               style="width:100%"
               v-decorator="decorators.start_days"
@@ -82,7 +82,7 @@
         </div>
       </div>
     </template>
-    <st-button block type="dashed" icon="add" :disabled="DisabledAddCourseBtn">
+    <st-button block type="dashed" icon="add">
       添加课程
     </st-button>
   </a-popover>
@@ -146,7 +146,7 @@ export default {
       type: Number,
       default: 1
     },
-    scheduleId: {
+    cycle_type: {
       type: Number,
       default: 1
     }
@@ -164,7 +164,7 @@ export default {
   },
   computed: {
     DisabledAddCourseBtn() {
-      return this.scheduleId === 1
+      return this.cycle_type === 1
         ? this.disabledAddCourseBtn
         : this.disabledCustomBtn
     }
@@ -185,8 +185,8 @@ export default {
     },
     onChangeCoach(value) {
       this.coachSmallCourseOptions.forEach((item, index) => {
-        if (item.coach_id === value) {
-          this.params.coach_name = item.coach_name
+        if (item.id === value) {
+          this.params.coach_name = item.staff_name
         }
       })
     },
@@ -200,7 +200,7 @@ export default {
               }
             })
           }
-          this.params.coach_name = item.name
+          this.params.court_name = item.name
         }
         return
       })
@@ -219,45 +219,58 @@ export default {
     onSubmit() {
       this.form.validate().then(values => {
         const form = cloneDeep(values)
-        if (this.scheduleId === 2) {
-          form.start_days = form.start_days.format('YYYY-MM-DD')
+        if (!this.cycle_type) {
+          const start_days = values.start_days.format('YYYY-MM-DD')
+          const start_time = values.start_time.format('HH:mm')
+          const end_time = values.end_time.format('HH:mm')
+          form.start_time = start_days + ' ' + start_time
+          form.end_time = start_days + ' ' + end_time
+        } else {
+          form.start_time = values.start_time.format('HH:mm')
+          form.end_time = values.end_time.format('HH:mm')
         }
-        form.start_time = form.start_time.format('HH:mm')
-        form.end_time = form.end_time.format('HH:mm')
         form.court_id = values.court_id[0]
         form.court_site_id = values.court_id[1]
         form.week = this.week
-        form.cycle_start_date = this.cycle[0].format('YYYY-MM-DD').valueOf()
-        form.cycle_end_date = this.cycle[1].format('YYYY-MM-DD').valueOf()
+        // form.cycle_start_date = this.cycle[0].format('YYYY-MM-DD').valueOf()
+        // form.cycle_end_date = this.cycle[1].format('YYYY-MM-DD').valueOf()
         const verifyParams = Object.assign(this.params, form)
         console.log(verifyParams)
-        this.smallCourseScheduleService
-          .conflict(verifyParams)
-          .subscribe(res => {
-            if (this.scheduleId === 1) {
-              this.$emit(
-                'addCourse',
-                this.cycleIndex,
-                res.data.conflict,
-                res.data.info,
-                res.data.list
-              )
-              this.showFlag = false
-            } else {
-              if (res.data.conflict === 1) {
-                // this.msg.success({ content: '取消成功' })
-                this.msg.error({ content: '排期内容有冲突，请重新选择' })
-              } else {
-                this.$emit(
-                  'addCustomCourse',
-                  res.data.conflict,
-                  res.data.info,
-                  res.data.list
-                )
-                this.showFlag = false
-              }
-            }
-          })
+
+        // 自主约课跳过验证
+        this.$emit('addCustomCourse', 0, verifyParams, [])
+        this.showFlag = false
+
+        //   this.smallCourseScheduleService.add(verifyParams).subscribe(res => {
+        //     console.log('添加成功')
+        //   })
+        //   // this.smallCourseScheduleService
+        //   //   .conflict(verifyParams)
+        //   //   .subscribe(res => {
+        //   //     if (this.cycle_type === 1) {
+        //   //       this.$emit(
+        //   //         'addCourse',
+        //   //         this.cycleIndex,
+        //   //         res.data.conflict,
+        //   //         res.data.info,
+        //   //         res.data.list
+        //   //       )
+        //   //       this.showFlag = false
+        //   //     } else {
+        //   //       if (res.data.conflict === 1) {
+        //   //         // this.msg.success({ content: '取消成功' })
+        //   //         this.msg.error({ content: '排期内容有冲突，请重新选择' })
+        //   //       } else {
+        //   //         this.$emit(
+        //   //           'addCustomCourse',
+        //   //           res.data.conflict,
+        //   //           res.data.info,
+        //   //           res.data.list
+        //   //         )
+        //   //         this.showFlag = false
+        //   //       }
+        //   //     }
+        //   //   })
       })
     },
     save() {

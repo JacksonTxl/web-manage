@@ -18,18 +18,18 @@
           </a-select>
         </st-form-item>
         <st-form-item required label="排课方式">
-          <a-select placeholder="请选择" v-model="scheduleId">
+          <a-select placeholder="请选择" v-model="cycle_type">
             <a-select-option :key="1" :value="1">
               周排课方式
             </a-select-option>
-            <a-select-option :key="2" :value="2">
+            <a-select-option :key="0" :value="0">
               自定义排课方式
             </a-select-option>
           </a-select>
         </st-form-item>
       </st-form>
       <div :class="b('schedule')">
-        <div v-if="scheduleId == 1">
+        <div v-if="cycle_type == 1">
           <st-container v-for="(scheduleItem, i) in scheduleList" :key="i">
             <st-form labelWidth="80px">
               <st-form-item
@@ -68,13 +68,12 @@
                 </div>
                 <add-course
                   @addCourse="pushCourseInfo"
-                  @addCustomCourse="pushCustomCourseInfo"
                   :item="filterDate[i][item.week]"
                   :disabledAddCourseBtn="disabledAddCourseBtn"
                   :cycleIndex="i"
                   :week="item.week"
                   :cycle="pickerList[i]"
-                  :scheduleId="scheduleId"
+                  :cycle_type="cycle_type"
                 ></add-course>
               </div>
             </div>
@@ -104,14 +103,18 @@
                 label="上课周期"
                 :class="b('select__date')"
               >
-                <span>2019/7/11~2019/9/12</span>
+                <span>
+                  {{ pickerList[0][0].format('YYYY/MM/DD').valueOf() }}~{{
+                    pickerList[0][1].format('YYYY/MM/DD').valueOf()
+                  }}
+                </span>
               </st-form-item>
             </st-form>
             <div :class="b('schedule__table-custom')">
               <div
                 :class="b('schedule__item-custom')"
                 v-for="(item, index) in customizeScheduleList"
-                :key="item.coach_id"
+                :key="index"
               >
                 <div class="eidt-current-course-btns">
                   <a
@@ -126,11 +129,10 @@
                 </div>
                 <span class="time">
                   <st-icon type="timer"></st-icon>
-                  <!-- {{ cardItem.start_time }}-{{ cardItem.end_time }} -->
-                  2019-12-12 11:30 ~ 13:00
+                  {{ item.start_time }}-{{ item.end_time }}
                 </span>
                 <st-t3 class="course__name">
-                  {{ item.current_course_name }}
+                  {{ item.course_name }}
                 </st-t3>
                 <div class="course-message">
                   <p class="course__coach">
@@ -146,6 +148,8 @@
               <add-course
                 :customizeShow="customizeShow"
                 :disabledCustomBtn="disabledCustomBtn"
+                @addCustomCourse="pushCustomCourseInfo"
+                :cycle_type="cycle_type"
               ></add-course>
             </div>
           </st-container>
@@ -207,7 +211,7 @@ export default {
       disabledAddCourseBtn: true,
       disabledCustomBtn: true,
       coachId: undefined,
-      scheduleId: 1,
+      cycle_type: 1,
       start_date: '2019-12-16',
       end_date: '2019-12-30',
       picker_start_date: '2019-12-16',
@@ -292,30 +296,7 @@ export default {
           ]
         }
       ],
-      customizeScheduleList: [
-        {
-          schedule_id: 1111,
-          course_id: 1,
-          coach_id: 1,
-          court_id: 1,
-          week: 1,
-          current_course_name: '当前课程名称',
-          start_time: '2019-01-01 09:00:00',
-          end_time: '2019-01-01 10:00:00',
-          coach_name: '张张',
-          court_name: '测试VIP区域'
-        },
-        {
-          schedule_id: 2222,
-          course_id: 2,
-          coach_id: 2,
-          court_id: 2,
-          start_time: '2019-01-01 09:00:00',
-          end_time: '2019-01-01 10:00:00',
-          coach_name: '张张',
-          court_name: '测试VIP区域'
-        }
-      ]
+      customizeScheduleList: []
     }
   },
   computed: {
@@ -348,6 +329,15 @@ export default {
           this.smallCourseInfo = item
         }
       })
+      const params = {
+        course_id: value,
+        cycle_type: 1
+      }
+      this.smallCourseScheduleService
+        .editScheduleInBatch(params)
+        .subscribe(res => {
+          console.log(res)
+        })
       // 用回显数据判断是新增还是编辑
       if (
         this.scheduleList.length &&
@@ -362,9 +352,15 @@ export default {
           moment(this.smallCourseInfo.course_begin_time),
           moment(this.smallCourseInfo.course_end_time)
         ]
+      } else if (this.smallCourseInfo.small_course_type === 2) {
+        this.pickerList[0] = [
+          moment(this.smallCourseInfo.course_begin_time),
+          moment(this.smallCourseInfo.course_end_time)
+        ]
       }
       console.log(this.smallCourseInfo)
       this.disabledAddCourseBtn = false
+      this.disabledCustomBtn = false
       this.filterDateList(this.scheduleList)
     },
     onChangeRangePicker(date, dateString, PickerIndex) {
@@ -504,10 +500,15 @@ export default {
       }
     },
     pushCustomCourseInfo(conflict, info, list) {
+      console.log(info)
       let courseItem = {
         course_id: info.course_id,
         coach_id: info.coach_id,
         court_id: info.court_id,
+        court_site_id: info.court_site_id,
+        course_name: info.course_name,
+        coach_name: info.coach_name,
+        court_name: info.court_name,
         current_course_name: info.courseMessage,
         start_time: info.start_time,
         end_time: info.end_time,
@@ -519,9 +520,10 @@ export default {
     // 编辑课程
     onEditCourseSchedule(item, cycleIndex, positionIndex) {
       const cycle = this.pickerList[cycleIndex]
+      const cycle_type = this.cycle_type
       this.$modalRouter.push({
         name: 'schedule-small-course-edit-course',
-        props: { item, cycleIndex, cycle, positionIndex },
+        props: { item, cycleIndex, cycle, positionIndex, cycle_type },
         on: {
           editCourse: (cycleIndex, positionIndex, conflict, info, list) => {
             this.scheduleList[cycleIndex].course_time.forEach(
@@ -600,14 +602,21 @@ export default {
       this.filterDateList(this.scheduleList)
     },
     onClickSaveSchedule() {
+      let courseList
+      if (this.cycle_type === 0) {
+        courseList = this.customizeScheduleList
+      }
       const courseScheduleList = this.scheduleList
       const smallCourseInfo = this.smallCourseInfo
       const courseNum = this.tipsCourseNum
+      const cycle_type = this.cycle_type
+      console.log(smallCourseInfo)
       this.$modalRouter.push({
         name: 'schedule-small-course-submit-course',
         props: {
-          scheduleList: courseScheduleList,
+          scheduleList: courseList,
           courseInfo: smallCourseInfo,
+          cycle_type: cycle_type,
           courseNum: courseNum
         },
         on: {

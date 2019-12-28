@@ -94,9 +94,9 @@ export default {
         return 0
       }
     },
-    scheduleId: {
-      type: String,
-      default: '0'
+    cycle_type: {
+      type: Number,
+      default: 0
     }
   },
   created() {
@@ -115,7 +115,7 @@ export default {
       court_id: court_item,
       start_time: time
     })
-    if (!this.scheduleId) {
+    if (!this.cycle_type) {
       this.form.setFieldsValue({ start_days: time })
     }
   },
