@@ -178,7 +178,7 @@
               {{ info.product_type }}
             </st-info-item>
             <st-info-item label="开班时间">
-              {{ info.samll_course_date_range }}
+              {{ info.course_begin_time }}~{{ info.course_end_time }}
             </st-info-item>
           </st-info>
         </a-col>

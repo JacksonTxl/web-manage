@@ -17,7 +17,9 @@ export class InbatchAddService implements Controller {
   init() {
     return forkJoin(
       this.smallCourseScheduleCommonService.getCoachList(),
-      this.smallCourseScheduleCommonService.getCourseList(),
+      this.smallCourseScheduleCommonService.getCourseList({
+        schedule_status: 1
+      }),
       this.smallCourseScheduleCommonService.getCourtList()
     )
   }

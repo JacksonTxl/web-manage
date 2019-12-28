@@ -2,10 +2,10 @@ import { Injectable } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state'
 import { tap, pluck } from 'rxjs/operators'
 import {
-  TeamScheduleReserveApi,
+  SmallCourseScheduleReserveApi,
   AddReserveInput,
   CheckInput
-} from '@/api/v1/schedule/team/reserve'
+} from '@/api/v1/schedule/small-course/reserve'
 import { AuthService } from '@/services/auth.service'
 import { MessageService } from '@/services/message.service'
 export interface SetState {
@@ -14,18 +14,19 @@ export interface SetState {
   infoAuth: any
 }
 @Injectable()
-export class TeamScheduleReserveService {
+export class SmallCourseScheduleReserveService {
   state$: State<SetState>
   infoAuth$: Computed<any>
   reserveInfo$: Computed<any>
   reserveList$: Computed<any[]>
+  loading$ = new State({})
   auth$ = this.authService.authMap$({
     add: 'shop:reserve:team_course_reserve|add',
     cancel: 'shop:reserve:team_course_reserve|del',
     checkIn: 'shop:reserve:team_course_reserve|checkin'
   })
   constructor(
-    private reserveApi: TeamScheduleReserveApi,
+    private reserveApi: SmallCourseScheduleReserveApi,
     private authService: AuthService,
     private msg: MessageService
   ) {
@@ -55,7 +56,7 @@ export class TeamScheduleReserveService {
   /**
    *
    * @param params
-   * 团体课签到消费
+   * 小班课签到
    */
   check(params: CheckInput) {
     return this.reserveApi.check(params).pipe(
@@ -90,6 +91,16 @@ export class TeamScheduleReserveService {
     return this.reserveApi.del(id).pipe(
       tap(res => {
         this.msg.success({ content: '取消预约成功' })
+      })
+    )
+  }
+  /**
+   * 添加补课
+   */
+  remedial(id: string) {
+    return this.reserveApi.remedial(id).pipe(
+      tap(res => {
+        this.msg.success({ content: '补课成功' })
       })
     )
   }

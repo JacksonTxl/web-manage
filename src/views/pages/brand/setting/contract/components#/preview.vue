@@ -103,6 +103,13 @@
             <th>商品名称</th>
             <th>小计</th>
           </tr>
+          <tr v-if="showSmallCourseTh">
+            <th>商品名称</th>
+            <th>购买课时</th>
+            <th>价格</th>
+            <th>优惠</th>
+            <th>小计</th>
+          </tr>
         </thead>
         <tbody>
           <tr v-if="info.contract_type === CONTRACT_TYPE.MEMBER_CARD">
@@ -138,6 +145,13 @@
           </tr>
           <tr v-if="info.contract_type === CONTRACT_TYPE.MONEY">
             <td>定金200元</td>
+            <td>9600.00元</td>
+          </tr>
+          <tr v-if="info.contract_type === CONTRACT_TYPE.SMALL_COURSE">
+            <td>{{ $c('small_course') }}</td>
+            <td>8</td>
+            <td>10000.00元</td>
+            <td>400.00元</td>
             <td>9600.00元</td>
           </tr>
         </tbody>
@@ -293,6 +307,14 @@ export default {
     showSomeTh() {
       switch (this.info.contract_type) {
         case CONTRACT_TYPE.MONEY:
+          return true
+        default:
+          return false
+      }
+    },
+    showSmallCourseTh() {
+      switch (this.info.contract_type) {
+        case CONTRACT_TYPE.SMALL_COURSE:
           return true
         default:
           return false

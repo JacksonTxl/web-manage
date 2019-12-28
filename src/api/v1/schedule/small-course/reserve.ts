@@ -6,16 +6,16 @@ import { Api } from '@/api/api'
  * @export
  * @class ScheduleApi
  * @extends {Api}
- * 团体课排期接口
+ * 小班课排期接口
  */
-export class TeamScheduleReserveApi extends Api {
+export class SmallCourseScheduleReserveApi extends Api {
   /**
    *
    * @param params
    * 添加预约
    */
   add(params: AddReserveInput) {
-    return this.http.post('/v1/schedule/team/shop/reserve', { params })
+    return this.http.post('/v1/schedule/small_course/shop/reserve', { params })
   }
   /**
    *
@@ -23,7 +23,7 @@ export class TeamScheduleReserveApi extends Api {
    * 团体课签到消费
    */
   check(params: CheckInput) {
-    return this.http.put('/v1/schedule/team/shop/check', { params })
+    return this.http.put('/v1/schedule/small_course/shop/check', { params })
   }
   /**
    *
@@ -31,13 +31,19 @@ export class TeamScheduleReserveApi extends Api {
    * 获取预约详情
    */
   getInfo(id: string) {
-    return this.http.get(`/v1/schedule/team/shop/${id}`)
+    return this.http.get(`/v1/schedule/small_course/shop/${id}`)
   }
   /**
    * 取消预约
    */
   del(id: string) {
-    return this.http.put(`/v1/schedule/team/shop/cancel/${id}`)
+    return this.http.put(`/v1/schedule/small_course/shop/cancel/${id}`)
+  }
+  /**
+   * 添加补课
+   */
+  remedial(id: string) {
+    return this.http.post(`/v1/schedule/small_course/shop/make_up/add/${id}`)
   }
 }
 export interface AddReserveInput {

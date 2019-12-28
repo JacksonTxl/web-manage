@@ -12,8 +12,6 @@ export interface SetState {
   coachSmallCourseOptions: any[]
   memberOptions: any[]
   courtOptions: any[]
-  unUsedSeatOptions: any[]
-  unUsedSeatCourtOptions: any[]
   consumeOptions: any[]
 }
 @Injectable()
@@ -23,8 +21,6 @@ export class SmallCourseScheduleCommonService {
   coachSmallCourseOptions$: Computed<any[]>
   memberOptions$: Computed<any[]>
   courtOptions$: Computed<any[]>
-  unUsedSeatOptions$: Computed<any[]>
-  unUsedSeatCourtOptions$: Computed<any[]>
   consumeOptions$: Computed<any[]>
 
   constructor(
@@ -34,20 +30,12 @@ export class SmallCourseScheduleCommonService {
     this.state$ = new State({
       courseSmallCourseOptions: [],
       coachSmallCourseOptions: [],
-      unUsedSeatOptions: [],
-      unUsedSeatCourtOptions: [],
       memberOptions: [],
       consumeOptions: [],
       courtOptions: []
     })
     this.consumeOptions$ = new Computed(
       this.state$.pipe(pluck('consumeOptions'))
-    )
-    this.unUsedSeatOptions$ = new Computed(
-      this.state$.pipe(pluck('unUsedSeatOptions'))
-    )
-    this.unUsedSeatCourtOptions$ = new Computed(
-      this.state$.pipe(pluck('unUsedSeatCourtOptions'))
     )
     this.courseSmallCourseOptions$ = new Computed(
       this.state$.pipe(pluck('courseSmallCourseOptions'))
@@ -77,8 +65,8 @@ export class SmallCourseScheduleCommonService {
    * @param query
    * 获取课程Options
    */
-  getCourseList() {
-    return this.commonApi.getCourseList().pipe(
+  getCourseList(query: any) {
+    return this.commonApi.getCourseList(query).pipe(
       tap(res => {
         this.state$.commit(state => {
           state.courseSmallCourseOptions = res.list
@@ -128,6 +116,7 @@ export class SmallCourseScheduleCommonService {
               item.consume_type = ele.id
               return item
             })
+            console.log(ele)
             return ele
           })
         })

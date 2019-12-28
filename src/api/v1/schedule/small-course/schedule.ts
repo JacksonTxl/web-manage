@@ -11,37 +11,50 @@ export class SmallCourseScheduleApi extends Api {
   /**
    *
    * @param params
-   * 获取小班课排期列表
+   * 获取小班课排期表格
    */
   getList(query: GetScheduleListQuery) {
-    return this.http.get('/v1/schedule/small/list', { query })
+    return this.http.get('/v1/schedule/small/shop/table', { query })
   }
   /**
    *
    * @param params
-   * 获取小班课排期表格
+   * 获取小班课排期列表
    */
   getTable(query: GetScheduleTableQuery) {
-    return this.http.get('/v1/schedule/team/shop/table', { query })
+    return this.http.get('/v1/schedule/small/shop/list', { query })
   }
   /**
    *
    * @param params
    * 新增小班课排期
    */
-  add(params: AddScheduleInput) {
+  add(params: any) {
     return this.http.post('/v1/schedule/small', { params })
-  }
-  addScheduleInBatch(params: AddScheduleInput[]) {
-    return this.http.post('/v1/schedule/team/shop/batch', { params })
   }
   /**
    *
    * @param params
-   * 获取团体课排期列表
+   * 批量新增周期小班课排期
    */
-  getScheduleById(id: string) {
-    return this.http.get(`/v1/schedule/team/shop/${id}`)
+  addScheduleInBatch(params: any) {
+    return this.http.post('/v1/schedule/small/cycle', { params })
+  }
+  /**
+   *
+   * @param params
+   * 批量新增自主小班课排期
+   */
+  addScheduleInBatchCustom(params: any) {
+    return this.http.post('/v1/schedule/small/customize', { params })
+  }
+  /**
+   *
+   * @param params
+   * 批量编辑回显
+   */
+  editScheduleInBatch(query: any) {
+    return this.http.get('/v1/schedule/small/list/edit', { query })
   }
   /**
    *
@@ -62,15 +75,21 @@ export class SmallCourseScheduleApi extends Api {
   /**
    *
    * @param params
-   * 取消团体课排期
+   * 取消小班课排期
    */
   del(id: string) {
     return this.http.put(`/v1/schedule/team/shop/schedule/${id}`)
   }
+  /**
+   *
+   * @param params
+   * 验证排课冲突
+   */
+  conflict(params: any) {
+    return this.http.put(`/v1/schedule/small/verify_conflict/${params}`)
+  }
 }
-/**
- * 获取团体课排期列表
- */
+
 export interface GetScheduleListQuery {
   is_paginate?: number // 是否分页 0 不分页 1 分页 默认0
   size?: number // 分页大小

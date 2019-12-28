@@ -1,32 +1,16 @@
 <template>
-  <st-modal title="编辑课程排期" v-model="show" width="484px">
+  <st-modal title="补课" v-model="show" width="484px">
     <st-form :form="form" labelWidth="70px" labelAuto>
-      <st-form-item label="已约">
+      <st-form-item label="会员名" required>
         <span>{{}}</span>
       </st-form-item>
-      <st-form-item label="日期" required v-if="scheduleId === 1">
-        <a-date-picker
-          style="width:100%"
-          format="YYYY-MM-DD"
-          v-decorator="decorators.start_days"
-          :disabledHours="disabledHours"
-        />
+      <st-form-item label="缺课班名" required>
+        跆拳道
       </st-form-item>
-      <st-form-item label="开始时间" required>
-        <a-time-picker
-          format="HH:mm"
-          style="width:100%"
-          v-decorator="decorators.start_time"
-        />
+      <st-form-item label="适应范围" required>
+        黑带
       </st-form-item>
-      <st-form-item label="结束时间" required>
-        <a-time-picker
-          format="HH:mm"
-          style="width:100%"
-          v-decorator="decorators.end_time"
-        />
-      </st-form-item>
-      <st-form-item label="课程" required>
+      <st-form-item label="补课课程" required>
         <a-select
           placeholder="请选择课程"
           @change="onChange"
@@ -41,30 +25,13 @@
           </a-select-option>
         </a-select>
       </st-form-item>
-      <st-form-item :label="$c('coach')" required>
-        <a-select
-          :placeholder="`请选择${$c('coach')}`"
-          v-decorator="decorators.coach_id"
-        >
-          <a-select-option
-            v-for="coach in coachSmallCourseOptions"
-            :key="coach.id"
-            :value="coach.id"
-          >
-            {{ coach.staff_name }}
-          </a-select-option>
-        </a-select>
-      </st-form-item>
-      <st-form-item label="场地" required>
-        <a-cascader
-          placeholder="请选择场地"
-          :options="courtOptions"
-          :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
-          v-decorator="decorators.court_id"
+      <st-form-item label="日期" required>
+        <a-date-picker
+          style="width:100%"
+          :showTime="{ format: 'YYYY-MM-DD HH:mm' }"
+          format="YYYY-MM-DD HH:mm"
+          v-decorator="decorators.start_days"
         />
-      </st-form-item>
-      <st-form-item label="排课名称" required class="mg-b0">
-        <a-input placeholder="请输入" v-decorator="decorators.name" />
       </st-form-item>
     </st-form>
     <template slot="footer">
@@ -80,9 +47,9 @@
 import { cloneDeep } from 'lodash-es'
 import { SmallCourseScheduleService } from '@/views/pages/shop/product/course/schedule/small-course/service#/schedule.service'
 import { SmallCourseScheduleCommonService } from '@/views/pages/shop/product/course/schedule/small-course/service#/common.service'
-import { ruleOptions } from './add-course.config'
+import { ruleOptions } from './remedial-course.config'
 export default {
-  name: 'AddCourseSchedule',
+  name: 'RemedialCourse',
   serviceInject() {
     return {
       smallCourseScheduleService: SmallCourseScheduleService,
@@ -127,9 +94,9 @@ export default {
         return 0
       }
     },
-    scheduleId: {
+    cycle_type: {
       type: Number,
-      default: 2
+      default: 0
     }
   },
   created() {
@@ -148,7 +115,7 @@ export default {
       court_id: court_item,
       start_time: time
     })
-    if (!this.scheduleId) {
+    if (!this.cycle_type) {
       this.form.setFieldsValue({ start_days: time })
     }
   },
@@ -160,10 +127,7 @@ export default {
     onSubmit() {
       this.form.validate().then(values => {
         const form = cloneDeep(values)
-        if (!this.scheduleId) {
-          form.start_days = form.start_days.format('YYYY-MM-DD')
-        }
-        form.start_time = form.start_time.format('HH:mm')
+        form.start_days = form.start_days.format('YYYY-MM-DD')
         if (form.court_id) {
           form.court_site_id = +form.court_id[1]
           form.court_id = +form.court_id[0]
