@@ -7,8 +7,8 @@ export class NotifyApi extends Api {
     return this.http.get(`/v1/notice/pc`, { query })
   }
   // 获取公告详情
-  getAnnouncementInfo(id: any) {
-    return this.http.get(`v1/brand/announcement/${id}`)
+  getAnnouncementInfo(query: any) {
+    return this.http.get(`/v1/announcement/detail`, { query })
   }
   getNoticeEnum() {
     return this.http.get(`/v1/notice/enum`)
@@ -22,8 +22,11 @@ export class NotifyApi extends Api {
   updateNoticeSetting(params: any) {
     return this.http.put(`/v1/notice/pc/setting`, { params })
   }
+  getNewAnnouncementActivity(query?: any) {
+    return this.http.get(`/v1/announcement/activity/new`, { query })
+  }
   getNewAnnouncement(query?: any) {
-    return this.http.get(`/v1/announcement/pc/new`, { query })
+    return this.http.get(`/v1/announcement/system/new`, { query })
   }
 }
 export interface GetNoticeListQuery {

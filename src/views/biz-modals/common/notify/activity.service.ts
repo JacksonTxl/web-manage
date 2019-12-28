@@ -10,7 +10,7 @@ export class ActivityService {
   loading$ = new State({})
   constructor(private api: NotifyApi, private msg: MessageService) {}
   getNoticeList() {
-    return this.api.getNewAnnouncement().pipe(
+    return this.api.getNewAnnouncementActivity().pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
       })

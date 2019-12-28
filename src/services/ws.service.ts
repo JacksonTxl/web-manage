@@ -1,3 +1,4 @@
+import { UserService } from '@/services/user.service'
 import { AppConfig } from '@/constants/config'
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket'
 let appConfig = new AppConfig()
@@ -5,7 +6,6 @@ import Cookie from 'js-cookie'
 import { State } from 'rx-state/src'
 import { NotificationService } from './notification.service'
 import { Injectable } from 'vue-service-app'
-import { tap } from 'rxjs/operators'
 const uuidV1 = require('uuid/v1')
 @Injectable()
 export class WsService {
@@ -21,9 +21,13 @@ export class WsService {
   private pingTimeout = 15000
   open$ = new State({})
   count$ = new State(0)
-  constructor(private notificationService: NotificationService) {
+  constructor(
+    private notificationService: NotificationService,
+    private userService: UserService
+  ) {
     //
   }
+  user$ = this.userService.user$
   private getWebsocketInstance(query: any) {
     return (this.ws = webSocket({
       url: `${appConfig.WEB_SOCKET_DOMAIN}?app-id=${query.appId}&token=${
@@ -41,6 +45,7 @@ export class WsService {
   }
   public init(query: any) {
     this.getWebsocketInstance({ token: this.token, appId: 10000 })
+    console.log('getWebsocketInstance', this.user$.value.avatar)
     this.message()
     this.setHeartBeat()
   }

@@ -36,12 +36,16 @@
 import { columns } from './notice.config'
 import { NoticeService } from './notice.service'
 import tableMixin from '@/mixins/table.mixin'
+import CommonNotifyInfo from '@/views/biz-modals/common/notify/info'
 
 export default {
   name: 'NotifyNotice',
   mixins: [tableMixin],
   bem: {
     b: 'page-notify-Notice'
+  },
+  modals: {
+    CommonNotifyInfo
   },
   serviceInject() {
     return {
@@ -62,9 +66,10 @@ export default {
   },
   methods: {
     onClickDetail(record) {
-      this.$router.push({
-        name: 'common-notify-notice-info',
-        query: { id: record.id }
+      console.log(record)
+      this.$modalRouter.push({
+        name: 'common-notify-info',
+        props: { record }
       })
     }
   }

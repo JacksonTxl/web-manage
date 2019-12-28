@@ -12,7 +12,7 @@ export default {
     }
   },
   rxState() {
-    const { info$ } = this.service
+    const { info$, shop$ } = this.service
     return { info$ }
   }
 }

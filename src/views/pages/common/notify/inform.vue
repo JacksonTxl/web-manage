@@ -38,10 +38,7 @@
         {{ record.sub_notify_type.value }}
       </template>
       <template slot="content" slot-scope="text, record">
-        <st-overflow-text
-          maxWidth="250px"
-          :value="record.sub_notify_type.value"
-        />
+        <st-overflow-text maxWidth="250px" :value="record.content" />
       </template>
       <template slot="actions" slot-scope="text, record">
         <st-table-actions>
@@ -71,6 +68,14 @@ export default {
       service: InformService
     }
   },
+  watch: {
+    // 当一级类型变化则二级分类重置
+    '$searchQuery.notify_type'(oldValue, newValue) {
+      if (oldValue !== newValue) {
+        this.$searchQuery.sub_notify_type = -1
+      }
+    }
+  },
   components: {
     ShopSelect
   },
@@ -85,6 +90,14 @@ export default {
   },
   computed: {
     columns,
+    routerNameSet() {
+      return {
+        'shop-reception-entrance': [1, 2],
+        'shop-reception-reserve': [3, 4, 5],
+        'shop-finance-order-list': [6, 7, 8, 9],
+        'shop-member-list-studio': [10, 11, 12, 13, 14, 15, 16]
+      }
+    },
     noticeTypeLevel1Options() {
       return this.informTypeOptions$.map(item => {
         return {
@@ -114,6 +127,16 @@ export default {
   methods: {
     onClickDetail(record) {
       console.log(record)
+      for (let key in this.routerNameSet) {
+        console.log(key)
+        console.log(
+          this.routerNameSet[key].includes(record.sub_notify_type.key)
+        )
+        console.log('this.routerNameSet[key]', this.routerNameSet[key])
+        if (this.routerNameSet[key].includes(record.sub_notify_type.key)) {
+          this.$router.push({ name: key })
+        }
+      }
     }
   }
 }
