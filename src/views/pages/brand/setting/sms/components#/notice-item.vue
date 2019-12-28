@@ -1,6 +1,5 @@
 <template>
   <div :class="bComponent()">
-    {{ params }}
     <div :class="bComponent('title')">{{ info.title }}</div>
     <div :class="bComponent('content')">
       <div :class="bComponent('text')">{{ info.notify_time.name }}</div>
@@ -150,14 +149,16 @@
                   {{ params.receiver.custom.name }}
                 </st-checkbox>
               </span>
-              <slot name="custom" :params="params">
-                <a-input
-                  style="width:44%"
-                  v-show="isShowPhone"
-                  v-model="params.custom_phone"
-                  placeholder="请输入手机号码，多个用逗号分隔"
-                />
-              </slot>
+              <span v-show="isShowPhone">
+                <slot name="custom" :params="params">
+                  <a-input
+                    style="width:44%"
+                    v-show="isShowPhone"
+                    v-model="params.custom_phone"
+                    placeholder="请输入手机号码，多个用逗号分隔"
+                  />
+                </slot>
+              </span>
             </div>
 
             <div class="mg-b16" v-if="Object.keys(info.order_type).length > 0">
@@ -408,6 +409,7 @@ export default {
     this.params.notify_number = this.info.notify_number
     this.params.msg_preffix = this.info.msg_preffix
     this.params.msg_suffix = this.info.msg_suffix
+    this.params.custom_phone = this.info.custom_phone
     if (this.info.notify_sub_type.value !== 24) {
       this.params.custom_phone = this.info.custom_phone.join(' ')
     }

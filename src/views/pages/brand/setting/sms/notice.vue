@@ -37,9 +37,15 @@
           :key="index"
         >
           <notice-item @editInfo="save" :info="item">
-            <template v-slot:custom="slotProps">
+            <template
+              v-if="
+                item.notify_sub_type.value === 24 ||
+                  item.notify_sub_type.value === 23
+              "
+              v-slot:custom="slotProps"
+            >
               <a-select
-                style="width: 300px"
+                style="width:44%"
                 mode="multiple"
                 :options="roleList$"
                 v-model="slotProps.params.custom_phone"

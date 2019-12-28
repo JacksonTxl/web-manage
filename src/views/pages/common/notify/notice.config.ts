@@ -8,6 +8,7 @@ export const columns = () => {
     {
       title: '公告类型',
       dataIndex: 'notify_type',
+      scopedSlots: { customRender: 'notify_type' },
       width: 250
     },
     {
@@ -18,6 +19,7 @@ export const columns = () => {
     {
       title: '操作',
       dataIndex: 'actions',
+      scopedSlots: { customRender: 'actions' },
       width: 250
     }
   ]

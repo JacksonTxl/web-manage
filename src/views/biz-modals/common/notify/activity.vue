@@ -1,38 +1,28 @@
 <template>
-  <st-modal :wrapClassName="b()" v-model="show" width="728px" :footer="null">
-    <div :class="b('arrow-left')" @click="onClickLeft">
-      <st-icon type="arrow-left" class="arrow-left-out" />
-    </div>
-    <div :class="b('notify-img')">
-      {{ list$ }}
-      <swiper :options="sliderOptions">
-        <swiper-slide v-for="(item, index) in showData" :key="index">
-          <div>
-            <img :src="item.src" alt="" width="728" height="400" />
-          </div>
-        </swiper-slide>
-        <div
-          class="swiper-pagination swiper-pagination-h"
-          slot="pagination"
-        ></div>
-        <div
-          class="swiper-notify-button-prev swiper-button-prev"
-          slot="button-prev"
-        >
-          <st-icon type="arrow-left" color="#fff" class="arrow-left" />
-        </div>
-        <div
-          class="swiper-notify-button-next swiper-button-next"
-          slot="button-next"
-        >
-          <st-icon type="arrow-right" color="#fff" class="arrow-right" />
-        </div>
-      </swiper>
-    </div>
-    <div :class="b('arrow-right')" @click="onClickRight">
-      <st-icon type="arrow-right" class="arrow-left-out" />
-    </div>
-  </st-modal>
+  <div>
+    <st-modal :wrapClassName="b()" v-model="show" width="728px" :footer="null">
+      <div :class="b('arrow-left')" @click="onClickLeft">
+        <st-icon type="arrow-left" class="arrow-left-out" />
+      </div>
+      <div :class="b('notify-img')">
+        {{ list$ }}
+        <swiper :options="sliderOptions" ref="swiper">
+          <swiper-slide v-for="(item, index) in showData" :key="index">
+            <div>
+              <img :src="item.src" alt="" width="728" height="400" />
+            </div>
+          </swiper-slide>
+          <div
+            class="swiper-pagination swiper-pagination-h"
+            slot="pagination"
+          ></div>
+        </swiper>
+      </div>
+      <div :class="b('arrow-right')" @click="onClickRight">
+        <st-icon type="arrow-right" class="arrow-left-out" />
+      </div>
+    </st-modal>
+  </div>
 </template>
 
 <script>
@@ -62,18 +52,14 @@ export default {
   computed: {
     sliderOptions() {
       return {
-        navigation: {
-          nextEl: '.swiper-notify-button-next',
-          prevEl: '.swiper-notify-button-prev'
-        },
         pagination: {
           el: '.swiper-pagination-h',
           clickable: true
         },
-        // autoplay: {
-        //   delay: 2500,
-        //   disableOnInteraction: false
-        // },
+        autoplay: {
+          delay: 5000,
+          disableOnInteraction: false
+        },
         spaceBetween: 30,
         centeredSlides: true
       }
@@ -96,12 +82,10 @@ export default {
   },
   methods: {
     onClickLeft() {
-      const $s = this.$el.querySelector.bind(this.$el)
-      console.log(this)
-      $s('.swiper-notify-button-prev').onClick()
+      this.$refs.swiper.swiper.slidePrev()
     },
     onClickRight() {
-      this.$el.querySelector('.swiper-notify-button-next').onClick()
+      this.$refs.swiper.swiper.slideNext()
     }
   },
   created() {

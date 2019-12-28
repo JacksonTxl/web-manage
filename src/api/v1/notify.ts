@@ -1,12 +1,13 @@
 import { Api } from '../api'
 export class NotifyApi extends Api {
   getNoticeList(query: GetNoticeListQuery) {
-    return this.http.get(`/v1/notice/pc`, { query })
-  }
-  getInformList(query: GetInformListQuery) {
     return this.http.get(`/v1/announcement/pc`, { query })
   }
-  getAnnouncementInfo(query: any) {
+  getInformList(query: GetInformListQuery) {
+    return this.http.get(`/v1/notice/pc`, { query })
+  }
+  // 获取公告详情
+  getAnnouncementInfo(id: any) {
     return this.http.get(`v1/brand/announcement/${query.id}`, { query })
   }
   getNoticeEnum() {

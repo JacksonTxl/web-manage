@@ -30,7 +30,27 @@
       :columns="columns"
       :dataSource="list$"
       :loading="loading$.getList"
-    ></st-table>
+    >
+      <template slot="notify_type" slot-scope="text, record">
+        {{ record.notify_type.value }}
+      </template>
+      <template slot="sub_notify_type" slot-scope="text, record">
+        {{ record.sub_notify_type.value }}
+      </template>
+      <template slot="content" slot-scope="text, record">
+        <st-overflow-text
+          maxWidth="250px"
+          :value="record.sub_notify_type.value"
+        />
+      </template>
+      <template slot="actions" slot-scope="text, record">
+        <st-table-actions>
+          <a @click="onClickDetail(record)">
+            查看
+          </a>
+        </st-table-actions>
+      </template>
+    </st-table>
   </div>
 </template>
 
@@ -89,6 +109,11 @@ export default {
         }
       }
       return options
+    }
+  },
+  methods: {
+    onClickDetail(record) {
+      console.log(record)
     }
   }
 }

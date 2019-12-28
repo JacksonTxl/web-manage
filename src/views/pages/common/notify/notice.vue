@@ -17,7 +17,18 @@
       :dataSource="list$"
       :loading="loading$.getList"
       :page="page$"
-    ></st-table>
+    >
+      <template slot="notify_type" slot-scope="text, record">
+        {{ record.notify_type.value }}
+      </template>
+      <template slot="actions" slot-scope="text, record">
+        <st-table-actions>
+          <a @click="onClickDetail(record)">
+            查看
+          </a>
+        </st-table-actions>
+      </template>
+    </st-table>
   </div>
 </template>
 
@@ -48,6 +59,14 @@ export default {
   },
   computed: {
     columns
+  },
+  methods: {
+    onClickDetail(record) {
+      this.$router.push({
+        name: 'common-notify-notice-info',
+        query: { id: record.id }
+      })
+    }
   }
 }
 </script>
