@@ -10,6 +10,10 @@ export class RevenueService implements Controller {
   page$ = new State({})
   loading$ = new State({})
   todayInfo$ = new State([])
+  total$ = new State({})
+  auth$ = this.authService.authMap$({
+    export: 'brand_shop:stat:revenue_reports|batch_export'
+  })
   authTabs$ = this.authService.getAuthTabs$('shop-stat-revenue')
   constructor(
     private StatApi: StatApi,
@@ -22,6 +26,7 @@ export class RevenueService implements Controller {
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+        this.total$.commit(() => res.total)
       })
     )
   }
@@ -49,6 +54,10 @@ export class RevenueService implements Controller {
           {
             label: '课程包营收(元)',
             value: data.package_course_amount || 0
+          },
+          {
+            label: `${this.userService.c('small_course')}营收(元)`,
+            value: data.small_course_amount || 0
           },
           {
             label: '云店营收(元)',

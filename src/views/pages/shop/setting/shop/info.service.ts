@@ -3,13 +3,17 @@ import { State } from 'rx-state/src'
 import { ShopApi } from '@/api/v1/shop'
 import { tap } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
+import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class InfoService implements Controller {
   info$ = new State({})
   serviceList$ = new State([])
   loading$ = new State({})
-  constructor(private shopApi: ShopApi) {}
+  auth$ = this.authService.authMap$({
+    edit: 'shop:shop:shop|edit'
+  })
+  constructor(private shopApi: ShopApi, private authService: AuthService) {}
   getInfo() {
     return this.shopApi.getShopSettingInfo().pipe(
       tap((res: any) => {

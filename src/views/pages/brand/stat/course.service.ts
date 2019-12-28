@@ -1,14 +1,14 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state/src'
-import { pluck, tap } from 'rxjs/operators'
+import { State, Effect } from 'rx-state/src'
+import { tap } from 'rxjs/operators'
 import {
   CourseApi,
   CourseChartParams,
   CourseDataParams
 } from '@/api/v1/stat/course'
-import { forkJoin } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
 import { UserService } from '@/services/user.service'
+
 @Injectable()
 export class CourseService {
   soldChartData$ = new State<object[]>([])
@@ -16,13 +16,14 @@ export class CourseService {
   notCheckInChartData$ = new State<object[]>([])
   list$ = new State([])
   page$ = new State({})
+  total$ = new State({})
   loading$ = new State({})
   soldChartTotal$ = new State(0)
   checkInCourseTotal$ = new State(0)
   notCheckInCourseTotal$ = new State(0)
 
   auth$ = this.authService.authMap$({
-    export: 'brand:stat:order_reports|batch_export'
+    export: 'brand:stat:course|batch_export'
   })
   constructor(
     private api: CourseApi,
@@ -41,6 +42,11 @@ export class CourseService {
           name: '团体课售课',
           value: saleCourse.sale_team_num,
           percent: saleCourse.sale_team_percentage
+        },
+        {
+          name: `${this.userService.c('small_course')}售课`,
+          value: saleCourse.sale_small_num,
+          percent: saleCourse.sale_small_percentage
         }
       ]
     })
@@ -57,6 +63,11 @@ export class CourseService {
         name: '团体课消课',
         value: checkInCourse.team_checkin_num,
         percent: checkInCourse.team_checkin_percentage
+      },
+      {
+        name: `${this.userService.c('small_course')}售课`,
+        value: checkInCourse.small_checkin_num,
+        percent: checkInCourse.small_checkin_percentage
       }
     ])
     this.checkInCourseTotal$.commit(() => checkInCourse.total_checkin_num)
@@ -72,6 +83,11 @@ export class CourseService {
         name: '团体课未消课',
         value: notCheckInCourse.team_not_checkin_num,
         percent: notCheckInCourse.team_not_checkin_percentage
+      },
+      {
+        name: `${this.userService.c('small_course')}未消课`,
+        value: notCheckInCourse.small_not_checkin_num,
+        percent: notCheckInCourse.small_not_checkin_percentage
       }
     ])
     this.notCheckInCourseTotal$.commit(
@@ -96,6 +112,7 @@ export class CourseService {
       tap(res => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+        this.total$.commit(() => res.total)
       })
     )
   }

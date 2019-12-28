@@ -2,7 +2,10 @@
   <st-form :form="form" class="page-create-container" labelWidth="130px">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="小班课名称" required>
+        <st-form-item required>
+          <template slot="label">
+            {{ $c('small_course') }}名称
+          </template>
           <a-input
             placeholder="支持输入1~30个字的课程名称"
             maxlength="30"
@@ -44,6 +47,7 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="开班时间" required>
           <a-range-picker
+            style="width:100%"
             :disabledDate="disabledDate"
             :showTime="{ format: 'HH:mm' }"
             format="YYYY-MM-DD HH:mm"
@@ -59,10 +63,9 @@
             人数限制
             <st-help-tooltip id="TSXBK001" />
           </template>
-
           <div :class="b('num-limit')">
             <a-form-item class="page-a-form">
-              <st-input-number v-decorator="decorators.num_min">
+              <st-input-number v-decorator="decorators.num_min" :min="1">
                 <template slot="addonAfter">
                   人
                 </template>
@@ -70,7 +73,11 @@
             </a-form-item>
             <span>~</span>
             <a-form-item class="page-a-form">
-              <st-input-number v-decorator="decorators.num_max">
+              <st-input-number
+                v-decorator="decorators.num_max"
+                :min="1"
+                :max="50"
+              >
                 <template slot="addonAfter">
                   人
                 </template>
@@ -83,7 +90,11 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="总课时" required>
-          <st-input-number v-decorator="decorators.course_times">
+          <st-input-number
+            v-decorator="decorators.course_times"
+            :min="1"
+            :max="99999"
+          >
             <template slot="addonAfter">
               节
             </template>
@@ -116,9 +127,11 @@
             class="mg-t8"
             v-show="isShowLeaveContent"
           >
-            <a-form-item>
+            <div class="mg-b8">
               <span class="mg-r8">允许请假时间,请假前</span>
               <st-input-number
+                :min="1"
+                :max="72"
                 v-decorator="decorators.leave_hours"
                 style="width:128px"
               >
@@ -126,10 +139,11 @@
                   h
                 </template>
               </st-input-number>
-            </a-form-item>
-            <a-form-item>
+            </div>
+            <div>
               <span class="mg-r8">请假上限节数</span>
               <st-input-number
+                :min="1"
                 v-decorator="decorators.leave_limit"
                 style="width:178px"
               >
@@ -137,37 +151,8 @@
                   节
                 </template>
               </st-input-number>
-            </a-form-item>
-          </st-pop-container>
-        </st-form-item>
-      </a-col>
-    </a-row>
-
-    <a-row :gutter="8" v-show="$route.query.type === '1'">
-      <a-col :lg="22" :xs="22" :offset="1">
-        <st-form-item label="背景图" required>
-          <div class="page-upload-container">
-            <st-image-upload
-              :list="fileList"
-              @change="onImgChange"
-            ></st-image-upload>
-            <input type="hidden" v-decorator="decorators.image" />
-            <div class="page-course-photo-des mg-l16">
-              <div class="page-course-item">
-                <div class="page-course-item-tip">1.</div>
-                <div class="page-course-item-cont">
-                  图片格式必须为：png,bmp,
-                  jpeg,jpg,gif,建议使用png格式图片，以保存最佳效果
-                </div>
-              </div>
-              <div class="page-course-item">
-                <div class="page-course-item-tip">2.</div>
-                <div class="page-course-item-cont">
-                  建议尺寸为750px * 422px， 不可大于2M
-                </div>
-              </div>
             </div>
-          </div>
+          </st-pop-container>
         </st-form-item>
       </a-col>
     </a-row>
@@ -187,22 +172,17 @@
         </st-form-item>
       </a-col>
     </a-row>
-    <a-row :gutter="8" v-show="$route.query.type === '2'">
+    <a-row :gutter="8">
       <a-col :lg="22" :xs="22" :offset="1">
         <st-form-item label="背景图" required>
-          <card-bg-radio @change="onCardBgChange" v-model="bg_image" />
+          <card-bg-radio isSmallCourse v-model="bg_image" />
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :xxl="10" :lg="14" :xs="22" :offset="1">
         <st-form-item label="课程介绍">
-          <st-textarea
-            v-decorator="decorators.description"
-            :autosize="{ minRows: 10, maxRows: 16 }"
-            placeholder="填写点什么吧"
-            maxlength="500"
-          />
+          <st-editor @input="onChangeEditor" v-model="content"></st-editor>
         </st-form-item>
       </a-col>
     </a-row>
@@ -210,7 +190,7 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
           <st-button type="primary" @click="save" :loading="loading.addGroup">
-            保存，开始设置教练信息
+            保存，开始设置{{ $c('coach') }}信息
           </st-button>
         </st-form-item>
       </a-col>
@@ -225,6 +205,7 @@ import { UserService } from '@/services/user.service'
 import { ruleOptions } from '../form.config'
 import { PatternService } from '@/services/pattern.service'
 import CardBgRadio from '@/views/biz-components/card-bg-radio/card-bg-radio'
+import StEditor from '@/views/biz-components/editor/editor'
 
 export default {
   name: 'create-group-course',
@@ -247,7 +228,8 @@ export default {
     b: 'create-group-course'
   },
   components: {
-    CardBgRadio
+    CardBgRadio,
+    StEditor
   },
   created() {},
   data(vm) {
@@ -256,28 +238,32 @@ export default {
     return {
       form,
       decorators,
-      fileList: [],
       bg_image: {
         image_id: 0,
-        // image_key: this.cardBgList[0].image_key,
+        image_key: '',
         image_url: '',
         index: 1
       },
-      cardBgValidatorText: '',
+      content: '',
       isShowLeaveContent: false
     }
   },
   methods: {
+    onChangeEditor() {
+      return this.content.length === 0
+    },
     save(e) {
       e.preventDefault()
-      // TODO:图片枚举 传值
-      console.log(this.bg_image)
       this.form.validate().then(values => {
         values.course_begin_time = values.date[0].format('YYYY-MM-DD HH:mm')
         values.course_end_time = values.date[1].format('YYYY-MM-DD HH:mm')
         values.small_course_type = this.$route.query.type
+        values.image = this.bg_image
         values.img_type = this.bg_image.index
-        values.image = this.bg_image.image
+        values.description = this.content
+        if (this.bg_image.index === 0) {
+          values.img_type = 3
+        }
         delete values.date
         this.addService.addGroup(values).subscribe(res => {
           this.messageService.success({
@@ -287,11 +273,6 @@ export default {
         })
       })
     },
-    onImgChange(fileList) {
-      this.form.setFieldsValue({
-        image: fileList[0]
-      })
-    },
     onLimitChange(e) {
       this.isShowLeaveContent = e.target.value === 1
     },
@@ -299,14 +280,6 @@ export default {
       this.form.setFieldsValue({
         category_id
       })
-    },
-    onTrainingAimChange(train_aim) {
-      this.form.setFieldsValue({
-        train_aim
-      })
-    },
-    onCardBgChange(e) {
-      this.cardBgValidatorText = ''
     },
     onCourseNameChange(e) {
       this.$emit('onCourseNameChange', e.target.value)

@@ -3,7 +3,6 @@
     wrapClassName="modal-stat-sell-amount"
     title="总销售业绩"
     width="1150px"
-    :footer="null"
     v-model="show"
     :loading="loading.init"
   >
@@ -60,11 +59,23 @@
       <span slot="sale_price" slot-scope="text">
         {{ text }}
       </span>
+      <span slot="product_name" slot-scope="text">
+        <st-overflow-text :value="text" maxWidth="120px"></st-overflow-text>
+      </span>
       <span slot="saleTitle">
         业绩金额
         <st-help-tooltip id="TSSR007" />
       </span>
     </st-table>
+    <div slot="footer">
+      <st-button
+        type="primary"
+        v-if="auth$.export"
+        v-export-excel="exportParams"
+      >
+        全部导出
+      </st-button>
+    </div>
   </st-modal>
 </template>
 <script>
@@ -72,6 +83,7 @@ import { columns } from './sell-amount.config'
 import tableMixin from '@/mixins/table.mixin'
 import { SellAmountService } from './sell-amount.service'
 import { COURSE_TYPE } from '@/constants/stat/course'
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'SellAmount',
   mixins: [tableMixin],
@@ -84,11 +96,13 @@ export default {
     let {
       amountList$,
       page$,
+      auth$,
       loading$,
       modalDepartmentList$,
       modalStaffList$
     } = this.sellAmountervice
     return {
+      auth$,
       page: page$,
       amountList: amountList$,
       loading: loading$,
@@ -99,8 +113,11 @@ export default {
   props: {
     record: {
       type: Object,
-      default: () => {}
-    }
+      default: () => {
+        return {}
+      }
+    },
+    type: String
   },
   data() {
     return {
@@ -111,14 +128,35 @@ export default {
         staff_id: -1,
         department_id: -1,
         current_page: 1,
-        size: 999
+        // TODO: 后端翻页
+        size: 99999
       }
     }
   },
   computed: {
     columns,
+    exportParams() {
+      const type = 'sale'
+      return this.type === 'total'
+        ? { type: `${type}/total`, query: this.totalQuery }
+        : { type, query: this.query }
+    },
     showTable() {
       return this.$searchQuery.showTable || 'all'
+    },
+    totalQuery() {
+      let query = cloneDeep(this.$searchQuery)
+      delete query.showTable
+      delete query.current_page
+      delete query.size
+      return {
+        ...query,
+        current_page: this.pageParams.current_page,
+        size: this.pageParams.size,
+        staff_id: this.pageParams.staff_id,
+        department_id: this.pageParams.department_id,
+        type: '/total'
+      }
     },
     query() {
       return {
@@ -145,11 +183,13 @@ export default {
         this.pageParams.size = evt.pageSize
         this.pageParams.current_page = evt.current
       }
+      const query = this.type === 'total' ? this.totalQuery : this.query
       if (changeType === 'changeDepartment') {
         this.pageParams.staff_id = -1
-        this.sellAmountervice.getDepartmentStaffList(this.query).subscribe()
+        query.staff_id = -1
+        this.sellAmountervice.getDepartmentStaffList(query).subscribe()
       }
-      this.sellAmountervice.getSellAmountList(this.query).subscribe()
+      this.sellAmountervice.getSellAmountList(query).subscribe()
     },
     filterOption(input, option) {
       return (
@@ -159,9 +199,16 @@ export default {
       )
     },
     init() {
-      this.pageParams.staff_id = this.record.staff_id || -1
-      this.pageParams.stat_date = this.record.stat_date
-      this.sellAmountervice.init({ ...this.query }).subscribe()
+      if (this.record.staff_id) {
+        this.pageParams.staff_id = this.record.staff_id || -1
+        this.pageParams.department_id = this.record.department_id || -1
+        this.pageParams.stat_date = this.record.stat_date
+      } else {
+        this.pageParams.staff_id = this.$searchQuery.staff_id || -1
+        this.pageParams.department_id = this.$searchQuery.department_id || -1
+      }
+      const query = this.type === 'total' ? this.totalQuery : this.query
+      this.sellAmountervice.init({ ...query }).subscribe()
     }
   },
   mounted() {

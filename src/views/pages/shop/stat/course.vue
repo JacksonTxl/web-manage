@@ -2,14 +2,9 @@
   <div :class="bPage()">
     <section class="mg-b16" :class="bHeard()">
       <div :class="bHeard('left')">
-        <a-radio-group :value="showTable" @change="handleSizeChange">
-          <a-radio-button value="all">汇总</a-radio-button>
-          <a-radio-button value="coach">{{ $c('coach') }}</a-radio-button>
-        </a-radio-group>
         <st-button
           v-if="auth.export_all"
           v-show="showTable === 'all'"
-          class="mg-l8"
           type="primary"
           v-export-excel="{ type: 'course/shop', query: $searchQuery }"
         >
@@ -19,13 +14,22 @@
           type="primary"
           v-if="auth.export_coach"
           v-show="showTable === 'coach'"
-          class="mg-l8"
           v-export-excel="{ type: 'shop/coach', query: $searchQuery }"
         >
           全部导出
         </st-button>
       </div>
       <div :class="bHeard('right')">
+        <a-radio-group
+          class="mg-r12"
+          :value="showTable"
+          @change="handleSizeChange"
+        >
+          <a-radio-button value="all" v-if="auth.summary">汇总</a-radio-button>
+          <a-radio-button value="coach" v-if="auth.coach">
+            {{ $c('coach') }}
+          </a-radio-button>
+        </a-radio-group>
         <div v-if="showTable === 'coach'">
           <a-select
             class="mg-r8"
@@ -67,9 +71,49 @@
         <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
       </div>
     </section>
+    <st-total
+      :class="bPage('total')"
+      :indexs="columns"
+      :dataSource="total$"
+      hasTitle
+    >
+      <template v-slot:personal_checkin_amount="record">
+        <st-total-item
+          @click.native="onCLickPersonalCheckinAmount"
+          :unit="record.unit"
+          :label="record.label"
+          :value="record.value"
+        ></st-total-item>
+      </template>
+      <template v-slot:team_checkin_amount="record">
+        <st-total-item
+          @click.native="onCLickTeamCheckinAmount"
+          :unit="record.unit"
+          :label="record.label"
+          :value="record.value"
+        ></st-total-item>
+      </template>
+      <template v-slot:personal_course_num="record">
+        <st-total-item
+          @click.native="onCLickPersonalNum"
+          :unit="record.unit"
+          :label="record.label"
+          :value="record.value"
+        ></st-total-item>
+      </template>
+      <template v-slot:team_course_num="record">
+        <st-total-item
+          @click.native="onCLickTeamNum"
+          :unit="record.unit"
+          :label="record.label"
+          :value="record.value"
+        ></st-total-item>
+      </template>
+    </st-total>
     <st-table
+      class="mg-t12"
       :page="page"
-      :scroll="{ x: 1800 }"
+      :scroll="{ x: 2200 }"
       @change="onTableChange"
       :loading="loading.init"
       :columns="columns"
@@ -108,6 +152,22 @@
       >
         {{ text }}
       </a>
+      <a
+        slot="small_course_num"
+        slot-scope="text, record"
+        @click="getSmallCourse(record)"
+        v-if="text !== 0"
+      >
+        {{ text }}
+      </a>
+      <span v-else>{{ text }}</span>
+      <a
+        slot="small_checkin_amount"
+        slot-scope="text, record"
+        @click="getSmallConsume(record)"
+      >
+        {{ text }}
+      </a>
       <span slot="personalTitle">
         私教消课价值（元)
         <st-help-tooltip id="TSCR001" />
@@ -115,6 +175,10 @@
       <span slot="teamTitle">
         团课消课价值（元）
         <st-help-tooltip id="TSCR002" />
+      </span>
+      <span slot="smallTitle">
+        {{$c('small_course')}消课价值（元)
+        <st-help-tooltip id="TSCR003" />
       </span>
     </st-table>
   </div>
@@ -148,6 +212,7 @@ export default {
     return {
       loading: this.courseService.loading$,
       list: this.courseService.list$,
+      total$: this.courseService.total$,
       departmentList: this.courseService.departmentList$,
       coachList: this.courseService.coachList$,
       page: this.courseService.page$,
@@ -168,15 +233,54 @@ export default {
       return [
         { id: -1, name: `全部${vm.$c('coach')}` },
         ...this.coachList.filter(item => {
-          return this.$searchQuery.department_id === item.department_id
+          item.department_id = Array.isArray(item.department_id)
+            ? item.department_id
+            : [item.department_id]
+          return item.department_id.includes(this.$searchQuery.department_id)
         })
       ]
     }
   },
   created() {
-    this.showTable = this.$searchQuery.showTable
+    this.showTable =
+      this.auth.summary && this.$searchQuery.showTable === 'all'
+        ? 'all'
+        : 'coach'
   },
   methods: {
+    onCLickPersonalCheckinAmount() {
+      this.$modalRouter.push({
+        name: 'shop-stat-personal-consume',
+        props: {
+          type: 'total'
+        }
+      })
+    },
+    onCLickTeamCheckinAmount() {
+      console.log('你点击了+ onCLickTeamCheckinAmount')
+      this.$modalRouter.push({
+        name: 'shop-stat-team-consume',
+        props: {
+          type: 'total'
+        }
+      })
+    },
+    onCLickPersonalNum() {
+      this.$modalRouter.push({
+        name: 'shop-stat-personal-course',
+        props: {
+          type: 'total'
+        }
+      })
+    },
+    onCLickTeamNum() {
+      this.$modalRouter.push({
+        name: 'shop-stat-team-course',
+        props: {
+          type: 'total'
+        }
+      })
+    },
     getPersonalCourse(record) {
       this.$modalRouter.push({
         name: 'shop-stat-personal-course',
@@ -208,6 +312,12 @@ export default {
           record
         }
       })
+    },
+    getSmallCourse() {
+      console.log('d')
+    },
+    getSmallConsume() {
+      console.log('d')
     },
     onChangeCoach(value) {
       this.onMultiSearch({ coach_id: value })

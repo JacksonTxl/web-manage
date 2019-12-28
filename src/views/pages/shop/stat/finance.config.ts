@@ -18,6 +18,7 @@ export const columns = () => {
     },
     {
       title: '线下微信(元)',
+
       dataIndex: 'offline_wechat_amount',
       align: 'right'
     },

@@ -44,16 +44,16 @@
       align-items: center;
       > div {
         &:nth-of-type(1) {
-          width: 26%;
+          width: 25%;
         }
         &:nth-of-type(2) {
-          width: 22%;
+          width: 25%;
         }
         &:nth-of-type(3) {
-          width: 31%;
+          width: 34%;
         }
         &:nth-of-type(4) {
-          width: 21%;
+          width: 15%;
         }
       }
     }
@@ -67,13 +67,11 @@
     }
   }
   .bg-thead {
-    height: 56px;
+    height: 48px;
     .bg(@table-bg-color-thead-second);
-    border-bottom: 1px solid @border-color;
   }
   .table-item {
     height: 48px;
-    border-bottom: 1px solid @border-color;
   }
   .bg-row-odd {
     .bg(@table-bg-color-row-1);
@@ -81,7 +79,10 @@
   .bg-row-even {
     .bg(@table-bg-color-row-2);
   }
-  .pl-24 {
-    padding-left: 24px;
+  .pl-9 {
+    padding-left: 9px;
+  }
+  .st-form-table tbody > tr > td:first-child {
+    padding: 0px;
   }
 }

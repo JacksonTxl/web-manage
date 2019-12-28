@@ -3,11 +3,14 @@ export class CourseGroupApi extends Api {
   /**
    *小班课列表
    */
-  getList(params: any) {
-    return this.http.get('/v1/course/small/list', { params })
+  getList(query: any) {
+    return this.http.get('/v1/course/small/list', { query })
   }
   addGroup(params: any) {
     return this.http.post('/v1/course/small', { params })
+  }
+  editGroup(params: any) {
+    return this.http.put('/v1/course/small/' + params.id, { params })
   }
   setCoach(params: any) {
     return this.http.put('/v1/course/small/set_coach/' + params.course_id, {
@@ -32,7 +35,7 @@ export class CourseGroupApi extends Api {
    * 删除小班课
    */
   deleteGroup(params: any) {
-    return this.http.get('/v1/course/small/' + params)
+    return this.http.delete('/v1/course/small/' + params)
   }
   /*
    * 小班课立即成班

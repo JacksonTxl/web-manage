@@ -1,5 +1,8 @@
 <template>
-  <st-mina-panel class="page-brand-basic-card page-brand-edit-period-card">
+  <st-mina-panel
+    responsivePreview
+    class="page-brand-basic-card page-brand-edit-period-card"
+  >
     <h5-container fixed slot="preview">
       <template v-slot:title>
         购卡
@@ -44,7 +47,7 @@
             >
               <template slot="label">
                 支持入场人数
-                <st-help-tooltip id="TBMCDC001" />
+                <st-help-tooltip id="TBMCDC003" />
               </template>
               <a-select
                 v-decorator="decorators.cardData.support_member_num"
@@ -636,7 +639,7 @@
 <script>
 import { UserService } from '@/services/user.service'
 import moment from 'moment'
-import { RuleConfig } from '@/constants/rule'
+import { PatternService } from '@/services/pattern.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import { cloneDeep, remove } from 'lodash-es'
 import { EditService } from './edit.service'
@@ -660,7 +663,7 @@ export default {
   mixins: [h5mixin],
   serviceInject() {
     return {
-      rules: RuleConfig,
+      pattern: PatternService,
       editService: EditService,
       userService: UserService
     }
@@ -1125,7 +1128,9 @@ export default {
           ? 'brandPriceValidataArray'
           : 'shopPriceValidataArray'
       let validata = this[fnName].length
-        ? this[fnName].every(i => this.rules.number.test(i.split('-')[1]))
+        ? this[fnName].every(i =>
+            this.pattern.NUM_FLOAT(1).test(i.split('-')[1])
+          )
         : false
       this.priceValidatorText = validata ? '' : '请输入正确的价格'
     },

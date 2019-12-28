@@ -9,7 +9,6 @@ import { forkJoin } from 'rxjs'
 export class InfoService implements Controller {
   info$ = new State({})
   basicInfo$ = new State({})
-  parentInfo$ = new State({})
   auth$ = new State({})
   authCommon$ = this.authService.authMap$({
     add: 'shop:member:member|tag',
@@ -29,7 +28,6 @@ export class InfoService implements Controller {
     return this.cardsApi.getBasicInfo(id).pipe(
       tap(res => {
         this.basicInfo$.commit(() => res.basic_info)
-        this.parentInfo$.commit(() => res.parent_info)
       })
     )
   }

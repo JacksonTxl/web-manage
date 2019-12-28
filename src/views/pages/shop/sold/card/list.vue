@@ -1,6 +1,9 @@
 <template>
   <st-panel app initial :tabs="authTabs">
-    <di-view slot="actions" name="SHOP_SOLD_CARD_LIST_ACTIONS"></di-view>
+    <portal-target
+      slot="actions"
+      name="SHOP_SOLD_CARD_LIST_ACTIONS"
+    ></portal-target>
     <router-view></router-view>
   </st-panel>
 </template>

@@ -133,7 +133,7 @@
         </a-col>
       </a-row>
     </st-panel>
-    <st-panel app class="mg-t12" :tabs="pageAuthTabs">
+    <st-panel app class="mg-t12" :tabs="authTabs">
       <!-- TODO：暂不开放，预留代码 -->
       <!-- {
           label: '消费记录',
@@ -179,17 +179,8 @@ export default {
   rxState() {
     return {
       personalInfo: this.infoService.personalInfo$,
-      pageAuthTabs: this.infoService.pageAuthTabs$,
+      authTabs: this.infoService.authTabs$,
       auth: this.infoService.auth$
-    }
-  },
-  computed: {
-    showMore() {
-      return (
-        this.auth['shop:sold:sold_personal_course|course_num'] ||
-        this.auth['shop:sold:sold_personal_course|transfer'] ||
-        this.auth['brand_shop:order:order|refund']
-      )
     }
   },
   methods: {

@@ -2,10 +2,12 @@
   .st-expand-row-icon {
     .c(#9bacb9);
   }
-  .ant-table-row-level-0 {
-    + .ant-table-row-level-1 {
-      background: inherit;
-    }
+
+  tr[class*='even'] {
+    background: #fafafa !important;
+  }
+  .ant-table-row-level-0 + .ant-table-row-level-1 {
+    box-shadow: inset 0px 12px 12px -12px #e1e1e1;
   }
   .ant-table-thead > tr > th {
     .bg(@table-bg-color-thead-second);
@@ -25,12 +27,6 @@
     padding: 8px 12px;
     &:first-child {
       padding-left: 16px;
-    }
-  }
-
-  .ant-table-row {
-    &:nth-child(even) {
-      .bg(@table-bg-color-row-2);
     }
   }
   .ant-table-pagination.ant-pagination {

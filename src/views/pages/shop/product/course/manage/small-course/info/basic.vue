@@ -1,10 +1,14 @@
 <template>
   <st-panel app initial>
-    <div class="mg-b8">上课门店:共{{ groupInfo.coaches.count }}名教练</div>
+    <div class="mg-b8">
+      上课门店:共{{ groupInfo.coaches.count }}名{{ $c('coach') }}
+    </div>
     <st-table
       :columns="basicColumns()"
       rowKey="id"
-      :dataSource="groupInfo.coache && groupInfo.coache.list"
+      :page="page"
+      @change="onTableChange"
+      :dataSource="groupInfo.coaches && groupInfo.coaches.list"
     ></st-table>
     <div :class="b('column')">
       <div :class="b('item')">
@@ -29,7 +33,7 @@
     <div :class="b('column')">
       <div :class="b('item')">
         <span :class="b('item-label')">报名时间：</span>
-        <span :class="b('item-value')">{{ groupInfo.course_time }}</span>
+        <span :class="b('item-value')">{{ groupInfo.apply_time }}</span>
       </div>
       <div :class="b('item')">
         <span :class="b('item-label')">售价：</span>
@@ -39,7 +43,7 @@
     <div class="mg-t24">
       <span :class="b('item-label')">详细介绍：</span>
       <st-container class="mg-t8" v-if="groupInfo.description">
-        {{ groupInfo.description }}
+        <div v-html="groupInfo.description">{{ groupInfo.description }}</div>
       </st-container>
     </div>
   </st-panel>
@@ -48,7 +52,7 @@
 import { basicColumns } from '../info#table.config'
 import { BasicService } from './basic.service'
 export default {
-  name: 'GroupCourseInfo',
+  name: 'SmallCourseBasicInfo',
   serviceInject() {
     return {
       basicService: BasicService
@@ -64,7 +68,15 @@ export default {
   },
   data() {
     return {
-      basicColumns
+      basicColumns,
+      page: {} // 前端分页
+    }
+  },
+  methods: {
+    onTableChange(pagination, filters, sorter) {
+      this.page = pagination
+      this.page.current_page = pagination.current
+      this.page.size = pagination.pageSize
     }
   }
 }

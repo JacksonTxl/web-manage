@@ -6,7 +6,7 @@ import { UdeskService } from '@/services/udesk.service'
 import { forkJoin } from 'rxjs'
 import { Injectable, RouteGuard } from 'vue-service-app'
 import { anyAll, then } from '@/operators'
-
+import { CdnService } from '@/services/cdn.service'
 /**
  * 获取全局应用信息
  */
@@ -18,7 +18,8 @@ export class AppInfoGuard implements RouteGuard {
     private authService: AuthService,
     private regionService: RegionService,
     private udeskService: UdeskService,
-    private nprogressService: NProgressService
+    private nprogressService: NProgressService,
+    private cdnService: CdnService
   ) {}
   /**
    *  单点故障接口
@@ -40,6 +41,7 @@ export class AppInfoGuard implements RouteGuard {
     ).pipe(
       then(() => {
         this.nprogressService.SET_TEXT('核心数据加载完毕')
+        this.cdnService.uploadError()
       })
     )
   }
@@ -49,11 +51,7 @@ export class AppInfoGuard implements RouteGuard {
   private fetchOptionalReqs() {
     return anyAll(
       // 获取无效的tooltips列表
-      this.userService.fetchInvalidTooltips(),
-      // 获取九宫格的小程序码url
-      this.userService.fetchCodeUrl(),
-      // 获取udesk 校验参数
-      this.udeskService.fetchUdeskCustomerInfo()
+      this.userService.fetchInvalidTooltips()
     ).pipe(
       then(() => {
         this.nprogressService.SET_TEXT('全部数据加载完毕')

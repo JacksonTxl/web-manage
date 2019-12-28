@@ -58,7 +58,7 @@ export class PatternService {
      * 包含手机号和座机号
      */
     TEL:
-      '^(((\\+\\d{2}-)?0\\d{2,3}-\\d{7,8})|((\\+\\d{2}-)?(\\d{2,3}-)?([1][3,4,5,7,8,9][0-9]\\d{8})))$',
+      '^(((\\+\\d{2}-)?0\\d{2,3}-\\d{7,8})|((\\+\\d{2}-)?(\\d{2,3}-)?([1][0-9]{10})))$',
     /**
      * 手机号
      */
@@ -75,9 +75,6 @@ export class PatternService {
      * 图片类型
      */
     IMG: '^(image\\/png|image\\/jpg|image\\/jpeg)$'
-    /**
-     * 数字
-     */
   }
   /**
    * 校验参数 len
@@ -160,6 +157,13 @@ export class PatternService {
    */
   NUM_POINT(len: string = this.DEFAULT_LEN) {
     return this.createPattern('NUM_POINT', len)
+  }
+  /**
+   * 浮点数，最多支持 decimal 位小数
+   * @param decimal
+   */
+  NUM_FLOAT(decimal: number = 1) {
+    return new RegExp(`^\\d+(\.\\d{1,${decimal}})?$`)
   }
   /**
    * 中文、英文、数字，不含标点符号

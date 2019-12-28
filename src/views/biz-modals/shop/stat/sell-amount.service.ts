@@ -4,6 +4,7 @@ import { StatApi } from '@/api/v1/stat/shop'
 import { Effect, State } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
+import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class SellAmountService {
@@ -13,19 +14,25 @@ export class SellAmountService {
   loading$ = new State({})
   page$ = new State({})
   courseTypeList$ = this.userService.getOptions$('reserve.reserve_type')
-
-  constructor(private statApi: StatApi, private userService: UserService) {}
+  auth$ = this.authService.authMap$({
+    export: 'shop:stat:saler_reports|export_day'
+  })
+  constructor(
+    private statApi: StatApi,
+    private userService: UserService,
+    private authService: AuthService
+  ) {}
 
   @Effect()
-  getSellAmountList(params: any) {
-    return this.statApi.getSellAmount(params).pipe(
+  getSellAmountList(query: any) {
+    return this.statApi.getSellAmount(query).pipe(
       tap((res: any) => {
         this.amountList$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })
     )
   }
-  getDepartmentStaffList(params: any) {
+  getDepartmentStaffList() {
     return this.statApi.getDepartmentStaffList().pipe(
       tap((res: any) => {
         this.modalStaffList$.commit(() => {
@@ -39,7 +46,7 @@ export class SellAmountService {
   }
   init(query: any) {
     return forkJoin(
-      this.getDepartmentStaffList(query),
+      this.getDepartmentStaffList(),
       this.getSellAmountList(query)
     )
   }

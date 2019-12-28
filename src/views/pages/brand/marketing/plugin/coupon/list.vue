@@ -73,17 +73,6 @@
           </template>
           <template slot="put_status" slot-scope="text">
             <span>{{ text | putStatusFilter }}</span>
-            <template slot="put_status" slot-scope="text, record">
-              <st-text
-                :status="{
-                  error: record.put_status === 2,
-                  success: record.put_status === 1,
-                  default: record.put_status === 3
-                }"
-              >
-                {{ text | putStatusFilter }}
-              </st-text>
-            </template>
           </template>
           <template slot="action" slot-scope="text, record">
             <st-table-actions sytle="width: 120px">
@@ -141,26 +130,13 @@ export default {
       loading: this.listService.loading$,
       info: this.listService.info$,
       brand: this.listService.brand$,
-      couponEnums: this.userService.couponEnums$,
-      auth: this.listService.auth$
+      auth: this.listService.auth$,
+      productType: this.listService.productType$
     }
   },
   hooks() {
     return {
       share: useShare()
-    }
-  },
-  computed: {
-    coupon_status() {
-      return (this.couponEnums && this.couponEnums.coupon_status) || []
-    },
-    productType() {
-      let list = []
-      Object.entries(this.coupon_status.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      // return list
-      return [{ value: -1, label: '全部状态' }, ...list]
     }
   },
   data(vm) {
@@ -231,6 +207,7 @@ export default {
       })
     }
   },
+  // FIXME: 改用枚举
   filters: {
     couponTypeFilter(val) {
       switch (val) {

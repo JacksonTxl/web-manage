@@ -1,5 +1,10 @@
 <template>
-  <st-modal title="新增课程排期" v-model="show" size="small">
+  <st-modal
+    title="新增课程排期"
+    v-model="show"
+    size="small"
+    wrapClassName="modal-shop-personal-team-add"
+  >
     <st-form :form="form" labelWidth="54px" labelAuto>
       <st-form-item label="时间" required>
         <a-date-picker
@@ -41,7 +46,7 @@
           <a-button slot="enterButton">人</a-button>
         </a-input-search>
       </st-form-item>
-      <st-form-item label="课时费" required class="mg-b0">
+      <st-form-item label="单节预约价格" required class="mg-b0">
         <a-input-search v-decorator="decorators.course_fee" type="number">
           <a-button slot="enterButton">元/节</a-button>
         </a-input-search>

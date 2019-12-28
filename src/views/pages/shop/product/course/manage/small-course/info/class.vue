@@ -1,8 +1,24 @@
 <template>
   <st-panel app initial>
+    <st-no-data
+      v-if="
+        $route.query.status === CLASS_STATUS.UNPUBLISH ||
+          $route.query.status === CLASS_STATUS.PUBLISH_UNSTARTED
+      "
+    />
     <st-table
-      :columns="classColumns()"
-      rowKey="id"
+      v-if="
+        $route.query.status !== CLASS_STATUS.UNPUBLISH &&
+          $route.query.status !== CLASS_STATUS.PUBLISH_UNSTARTED
+      "
+      :columns="
+        CLASS_STATUS.CLASSED || CLASS_STATUS.CLASS_END
+          ? classColumns()
+          : classEndColumns()
+      "
+      rowKey="member_id"
+      :loading="loading.getGroupClassInfo"
+      @change="onTableChange"
       :dataSource="groupClassList"
     >
       <div slot="leave_class_hours" slot-scope="text, record">
@@ -39,14 +55,15 @@
   </st-panel>
 </template>
 <script>
-import { classColumns } from '../info#table.config'
+import { classColumns, classEndColumns } from '../info#table.config'
 import { ClassService } from './class.service'
 import CourseSmallCourseLeave from '@/views/biz-modals/course/small-course-leave'
 import CourseSmallCourseTruancy from '@/views/biz-modals/course/small-course-truancy'
 import CourseSmallCourseSign from '@/views/biz-modals/course/small-course-sign'
+import { CLASS_STATUS } from '@/constants/course/small-course'
 
 export default {
-  name: 'GroupCourseClassInfo',
+  name: 'SmallCourseClassInfo',
   serviceInject() {
     return {
       classService: ClassService
@@ -54,7 +71,8 @@ export default {
   },
   rxState() {
     return {
-      groupClassList: this.classService.groupClassList$
+      groupClassList: this.classService.groupClassList$,
+      loading: this.classService.loading$
     }
   },
   modals: {
@@ -64,7 +82,9 @@ export default {
   },
   data() {
     return {
-      classColumns
+      classColumns,
+      classEndColumns,
+      CLASS_STATUS
     }
   }
 }

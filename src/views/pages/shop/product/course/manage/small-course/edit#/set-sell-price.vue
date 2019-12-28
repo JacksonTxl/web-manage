@@ -2,8 +2,10 @@
   <st-form :form="form" class="page-set-sell-price" labelWidth="100px">
     <a-row :gutter="8">
       <a-col :lg="10" :offset="1">
-        <!-- 课程名称 -->
-        <st-form-item label="课程名称">
+        <st-form-item>
+          <template slot="label">
+            {{ $c('small_course') }}名称
+          </template>
           <a-input
             placeholder="课程名称"
             disabled
@@ -14,12 +16,15 @@
           <div>
             <a-checkbox
               style="display:inline"
+              @change="transferChange"
               v-decorator="decorators.is_allow_transfer"
             ></a-checkbox>
-            <span>支持转让</span>
+            <span class="mg-r16">支持转让</span>
             <st-input-number
-              style="width:250px"
+              v-show="isShowTransfer"
+              style="width:282px"
               placeholder="请输入"
+              :min="1"
               v-decorator="decorators.transfer_num"
             >
               <a-select
@@ -43,6 +48,7 @@
             <a-checkbox
               v-for="(item, index) in sellType"
               :value="item.value"
+              class="mg-r16"
               :key="index"
             >
               {{ item.label }}
@@ -53,28 +59,40 @@
           <a-range-picker
             :showTime="{ format: 'HH:mm' }"
             format="YYYY-MM-DD HH:mm"
+            style="width:100%"
             :disabledDate="disabledDate"
             v-decorator="decorators.apply_date"
           ></a-range-picker>
         </st-form-item>
         <st-form-item label="售卖价格" required>
-          <a-form-item>
-            <st-input-number v-decorator="decorators.sales_price">
-              <template slot="addonAfter">
-                元
-              </template>
-            </st-input-number>
-          </a-form-item>
+          <st-input-number
+            v-decorator="decorators.sales_price"
+            :min="0"
+            :max="999999.9"
+            float
+          >
+            <template slot="addonAfter">
+              元
+            </template>
+          </st-input-number>
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="10">
       <a-col :lg="10" :xs="10" :offset="1">
         <st-form-item labelFix>
-          <st-button class="mg-r16" @click="save(0)" :loading="loading.setShop">
+          <st-button
+            class="mg-r16"
+            @click="save(0)"
+            :loading="loading.setPrice"
+          >
             保存
           </st-button>
-          <st-button type="primary" @click="save(1)" :loading="loading.setShop">
+          <st-button
+            type="primary"
+            @click="save(1)"
+            :loading="loading.setPrice"
+          >
             保存并发布
           </st-button>
         </st-form-item>
@@ -83,7 +101,7 @@
   </st-form>
 </template>
 <script>
-import { AddService } from '../add.service'
+import { EditService } from '../edit.service'
 import { MessageService } from '@/services/message.service'
 import { UserService } from '@/services/user.service'
 import { remove } from 'lodash-es'
@@ -95,7 +113,7 @@ export default {
   name: 'SetSellPrice',
   serviceInject() {
     return {
-      addService: AddService,
+      editService: EditService,
       messageService: MessageService,
       userService: UserService,
       gradientService: GradientService,
@@ -104,9 +122,9 @@ export default {
   },
   rxState() {
     return {
-      loading: this.addService.loading$,
-      unitList: this.addService.unitList$,
-      sellType: this.addService.sellType$
+      loading: this.editService.loading$,
+      unitList: this.editService.unitList$,
+      sellType: this.editService.sellType$
     }
   },
   components: {},
@@ -132,7 +150,7 @@ export default {
     return {
       form,
       decorators,
-      fileList: []
+      isShowTransfer: false
     }
   },
   computed: {},
@@ -148,7 +166,6 @@ export default {
       })
     }
   },
-  created() {},
   mounted() {
     this.setFieldsValue()
   },
@@ -175,8 +192,12 @@ export default {
         values.apply_end_time = values.apply_date[1].format('YYYY-MM-DD HH:mm')
         values.is_allow_transfer = values.is_allow_transfer ? 1 : 0
         values.is_release = para
+        if (values.is_allow_transfer === 0) {
+          values.transfer_type = undefined
+          values.transfer_num = undefined
+        }
         delete values.apply_date
-        this.addService.setPrice(values).subscribe(this.onSaveSuccess)
+        this.editService.setPrice(values).subscribe(this.onSaveSuccess)
       })
     },
     onSaveSuccess() {
@@ -184,15 +205,11 @@ export default {
         content: '提交成功'
       })
       this.$router.push({
-        name: 'shop-product-course-manage-group-list'
+        name: 'shop-product-course-manage-small-course-list'
       })
     },
-
-    onPriceGradientChange(priceGradient) {
-      this.priceGradient = priceGradient
-    },
-    onSingleReserveChange() {
-      this.singleReserve = +!this.singleReserve
+    transferChange(e) {
+      this.isShowTransfer = e.target.checked
     },
     disabledDate(current) {
       return (

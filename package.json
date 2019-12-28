@@ -44,6 +44,7 @@
     "nprogress": "^0.2.0",
     "offline-js": "^0.7.19",
     "perfect-scrollbar": "^1.4.0",
+    "portal-vue": "^2.1.6",
     "qs": "^6.6.0",
     "rgb-hex": "^2.1.0",
     "rxjs": "^6.4.0",
@@ -61,7 +62,7 @@
     "vue-router": "3.0.7",
     "vue-router-multiguard": "^1.0.3",
     "vue-router-plus": "0.3.2",
-    "vue-st-form": "0.0.8",
+    "vue-st-form": "0.1.0",
     "vuedraggable": "^2.19.2",
     "webpack": "^4.41.1"
   },

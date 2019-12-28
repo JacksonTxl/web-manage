@@ -194,7 +194,7 @@ export default {
         home: /dashboard/,
         setting: /brand-setting|shop-setting/,
         sold: /shop-sold/,
-        finance: /shop-finance/,
+        finance: /shop-finance|brand-finance/,
         course: /shop-product-course/,
         card: /shop-product-card/,
         department: /brand-staff/,

@@ -97,6 +97,7 @@
       top: 64px;
       &__header {
         .bg(@brand-color);
+        min-width: 410px;
         &:after {
           background-image: linear-gradient(
             180deg,
@@ -140,7 +141,10 @@
         }
       }
       &__breadtext {
-        .c(@white);
+        .c(darken(#fff, 30));
+        &.layout-default-body__breadtext--title {
+          .c(#fff);
+        }
       }
     }
   }

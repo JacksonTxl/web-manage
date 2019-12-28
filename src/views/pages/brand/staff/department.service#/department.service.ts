@@ -1,28 +1,16 @@
-import {
-  UpdateDepartmentInput,
-  DelDepartmentInput
-} from './../../../../../api/v1/staff'
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap, switchMap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { UpdateDepartmentInput, DelDepartmentInput } from '@/api/v1/staff'
+import { Injectable } from 'vue-service-app'
+import { State } from 'rx-state'
+import { tap, switchMap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
 
 import { StaffApi, AddDepartmentInput } from '@/api/v1/staff'
 import { MessageService } from '@/services/message.service'
 
-interface SetState {
-  departmentList: object[]
-}
-interface GetOptionsInput {
-  func: any
-  payload?: any
-  callback?: any
-}
 @Injectable()
-export class DepartmentService extends Store<SetState> {
-  state$: State<SetState>
-  departmentList$: Computed<object[]>
+export class DepartmentService {
+  loading$ = new State({})
+  departmentList$ = new State([])
   auth$ = this.authService.authMap$({
     departmentAdd: 'brand:auth:department|add',
     departmentDel: 'brand:auth:department|del',
@@ -32,22 +20,12 @@ export class DepartmentService extends Store<SetState> {
     protected staffApi: StaffApi,
     private msg: MessageService,
     private authService: AuthService
-  ) {
-    super()
-    this.state$ = new State({
-      departmentList: []
-    })
-    this.departmentList$ = new Computed(
-      this.state$.pipe(pluck('departmentList'))
-    )
-  }
+  ) {}
   getDepartmentList() {
     return this.staffApi.getDepartmentList().pipe(
       tap(res => {
         res = this.authService.filter(res)
-        this.state$.commit(state => {
-          state.departmentList = res.department
-        })
+        this.departmentList$.commit(() => res.department)
       })
     )
   }

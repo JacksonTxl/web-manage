@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import { SubmitCourseService } from './submit-course.service'
 import { SmallCourseScheduleService } from '@/views/pages/shop/product/course/schedule/small-course/service#/schedule.service'
 export default {
   name: 'SubmitCourse',

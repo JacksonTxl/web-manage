@@ -36,7 +36,7 @@
           <st-info-item label="上课日期">
             {{ reserveInfo.start_date }}
           </st-info-item>
-          <st-info-item label="预约人数">
+          <st-info-item label="预约人数" v-if="reserveInfo.reserve">
             {{ reserveInfo.reserve.length }}
           </st-info-item>
         </st-info>
@@ -110,7 +110,9 @@
             </td>
             <td>未签到</td>
             <td>
-              <a href="javascript:;" @click="addReserve">添加预约</a>
+              <a v-if="auth.add" @click="addReserve">
+                添加预约
+              </a>
             </td>
           </tr>
           <tr v-for="(item, index) in reserveList" :key="index">

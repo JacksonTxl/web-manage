@@ -1,19 +1,20 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state/src'
-import { pluck, tap } from 'rxjs/operators'
+import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
+import { State, Effect } from 'rx-state/src'
+import { tap } from 'rxjs/operators'
 import {
   OrderApi,
   OrderChartParams,
   OrderDataParams
 } from '@/api/v1/stat/order'
-import { forkJoin } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
 import { UserService } from '@/services/user.service'
+
 @Injectable()
-export class OrderService {
+export class OrderService implements Controller {
   chartData$ = new State<object[]>([])
   list$ = new State([])
   page$ = new State({})
+  total$ = new State({})
   loading$ = new State({})
 
   auth$ = this.authService.authMap$({
@@ -26,11 +27,17 @@ export class OrderService {
   ) {}
   // 获取营收统计图信息
   getChart(query: OrderChartParams) {
+    const small_course = this.userService.c('small_course')
     return this.orderApi.getChart(query).pipe(
       tap(res => {
         const data = res.info
         const arr = [
           { group: '云店', 成单数量: data.shop.num, 客单价: data.shop.avg },
+          {
+            group: small_course,
+            成单数量: data.small_course.num,
+            客单价: data.small_course.avg
+          },
           {
             group: '课程包',
             成单数量: data.package_course.num,
@@ -68,6 +75,7 @@ export class OrderService {
       tap(res => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+        this.total$.commit(() => res.total)
       })
     )
   }

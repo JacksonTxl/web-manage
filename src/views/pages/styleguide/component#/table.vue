@@ -49,11 +49,102 @@
         page-mode="client"
       ></st-table>
     </dl>
+    <dl>
+      <dt>
+        父子表格
+      </dt>
+      <dd>
+        props新增一个字段 优化展开收起图表，当没有chilren字段的时候图表不显示
+      </dd>
+      <st-table
+        :columns="childrenColumns"
+        :dataSource="dataSourceChildren"
+      ></st-table>
+    </dl>
+    <dl>
+      <dt>
+        去除条纹样式
+      </dt>
+      <dd>
+        [stripe=false]
+      </dd>
+      <st-table
+        :columns="childrenColumns"
+        :stripe="false"
+        :dataSource="dataSourceChildren"
+      ></st-table>
+    </dl>
   </div>
 </template>
 <script>
 import tableMixin from '@/mixins/table.mixin'
 const tableData = new Array(60).fill(1).map((item, i) => ({ id: i, name: i }))
+const childrenColumns = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name'
+  },
+  {
+    title: 'Age',
+    dataIndex: 'age',
+    key: 'age',
+    width: '12%'
+  },
+  {
+    title: 'Address',
+    dataIndex: 'address',
+    width: '30%',
+    key: 'address'
+  }
+]
+
+const dataSourceChildren = [
+  {
+    key: 1,
+    name: 'John Brown sr.',
+    age: 60,
+    address: 'New York No. 1 Lake Park',
+    children: [
+      {
+        key: 11,
+        name: 'John Brown',
+        age: 42,
+        address: 'New York No. 2 Lake Park'
+      }
+    ]
+  },
+  {
+    key: 2,
+    name: 'Joe Black',
+    age: 32,
+    address: 'Sidney No. 1 Lake Park',
+    children: [
+      {
+        key: 11,
+        name: 'Johnss Brown',
+        age: 42,
+        address: 'New York No. 2 Lake Park'
+      }
+    ]
+  }
+]
+
+const rowSelection = {
+  onChange: (selectedRowKeys, selectedRows) => {
+    console.log(
+      `selectedRowKeys: ${selectedRowKeys}`,
+      'selectedRows: ',
+      selectedRows
+    )
+  },
+  onSelect: (record, selected, selectedRows) => {
+    console.log(record, selected, selectedRows)
+  },
+  onSelectAll: (selected, selectedRows, changeRows) => {
+    console.log(selected, selectedRows, changeRows)
+  }
+}
 export default {
   mixins: [tableMixin],
   serviceInject() {
@@ -64,6 +155,9 @@ export default {
   },
   data() {
     return {
+      dataSourceChildren,
+      childrenColumns,
+      rowSelection,
       tableData,
       page: {
         current_page: 1,

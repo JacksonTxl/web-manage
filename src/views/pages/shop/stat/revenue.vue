@@ -1,42 +1,64 @@
 <template>
   <div :class="bPage()">
     <div :class="bPage('count')">
-      <st-refresh-btn :date="todayInfo.time" :action="refresh" />
+      <st-refresh-btn :date="todayInfo$.time" :action="refresh" />
       <a-row :class="bPage('income-row')">
         <div :class="bPage('income-detail')">
           <swiper :options="sliderOptions">
-            <swiper-slide v-for="(item, index) in todayInfo.res" :key="index">
+            <swiper-slide v-for="(item, index) in todayInfo$.res" :key="index">
               <div :class="bPage('income')">
                 <p :class="bPage('income-label')">{{ item.label }}</p>
                 <p :class="bPage('income-value')">{{ item.value }}</p>
               </div>
             </swiper-slide>
           </swiper>
-          <div class="swiper-button-prev" slot="button-prev">
+          <div
+            class="swiper-r-button-prev swiper-button-prev"
+            slot="button-prev"
+          >
             <st-icon type="arrow-left" class="arrow-left" />
           </div>
-          <div class="swiper-button-next" slot="button-next">
-            <st-icon type="arrow-right1" class="arrow-right1" />
+          <div
+            class="swiper-r-button-next swiper-button-next"
+            slot="button-next"
+          >
+            <st-icon type="arrow-right" class="arrow-right" />
           </div>
         </div>
       </a-row>
     </div>
     <div class="mg-b16" :class="bPage('count-action')">
-      <span>
-        <!-- <st-button type="primary" class="shop-member-list-button">批量导出</st-button> -->
-      </span>
+      <div :class="bPage('button-wapper')">
+        <st-button
+          type="primary"
+          v-if="auth$.export"
+          v-export-excel="{
+            type: 'revenue/shop',
+            query: $searchQuery
+          }"
+        >
+          全部导出
+        </st-button>
+      </div>
       <span>
         <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
       </span>
     </div>
     <!-- :alertSelection="{ onReset: onSelectionReset }" -->
     <!-- :rowSelection="{ selectedRowKeys, onChange: onSelectionChange }" -->
+    <st-total
+      :class="bPage('total')"
+      :indexs="columns"
+      :dataSource="total$"
+      hasTitle
+    ></st-total>
     <st-table
-      :page="page"
+      :page="page$"
       @change="onTableChange"
-      :loading="loading.getRevenueShopList"
+      class="mg-t12"
+      :loading="loading$.getRevenueShopList"
       :columns="columns"
-      :dataSource="list"
+      :dataSource="list$"
       rowKey="id"
     ></st-table>
   </div>
@@ -58,20 +80,23 @@ export default {
     }
   },
   rxState() {
-    return {
-      loading: this.revenueService.loading$,
-      list: this.revenueService.list$,
-      page: this.revenueService.page$,
-      todayInfo: this.revenueService.todayInfo$
-    }
+    const {
+      loading$,
+      list$,
+      page$,
+      todayInfo$,
+      total$,
+      auth$
+    } = this.revenueService
+    return { loading$, list$, page$, todayInfo$, total$, auth$ }
   },
   data() {
     return {
       sliderOptions: {
         autoplay: false,
         navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev'
+          nextEl: '.swiper-r-button-next',
+          prevEl: '.swiper-r-button-prev'
         },
         slidesPerView: 6,
         centeredSlides: false,

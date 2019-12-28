@@ -25,6 +25,7 @@
             name="总售课数"
             :height="198"
             tooltipId="TBDAC001"
+            :colors="ringColor"
             :total="soldChartTotal$"
             :data="soldChartData$"
           />
@@ -33,6 +34,7 @@
           <brand-statistics-course-ring
             name="总消课数"
             :height="198"
+            :colors="ringColor"
             tooltipId="TBDAC002"
             :total="checkInCourseTotal$"
             :data="checkInChartData$"
@@ -42,6 +44,7 @@
           <brand-statistics-course-ring
             name="未消课节数"
             :height="198"
+            :colors="ringColor"
             tooltipId="TBDAC003"
             :total="notCheckInCourseTotal$"
             :data="notCheckInChartData$"
@@ -52,7 +55,18 @@
     <st-hr />
     <div :class="bPage('section')">
       <header :class="bHeader('header')">
-        <st-t3 :class="bHeader('title')"></st-t3>
+        <div :class="bHeader('button-wapper')">
+          <st-button
+            type="primary"
+            v-if="auth$.export"
+            v-export-excel="{
+              type: 'course/brand',
+              query: $searchQuery
+            }"
+          >
+            全部导出
+          </st-button>
+        </div>
         <div :class="bHeader('actions')">
           <shop-select
             v-model="$searchQuery.shop_id"
@@ -66,10 +80,17 @@
         </div>
       </header>
       <main :class="bPage('mian')" class="mg-t16">
+        <st-total
+          :class="bPage('total')"
+          :indexs="columns"
+          :dataSource="total$"
+          hasTitle
+        ></st-total>
         <st-table
+          class="mg-t16"
           :loading="loading$.getList"
           :columns="columns"
-          :scroll="{ x: 800 }"
+          :scroll="{ x: 1200 }"
           rowKey="stat_date"
           :page="page$"
           @change="onTableChange"
@@ -98,6 +119,7 @@ export default {
     const {
       list$,
       page$,
+      total$,
       auth$,
       loading$,
       soldChartData$,
@@ -110,6 +132,7 @@ export default {
     return {
       list$,
       page$,
+      total$,
       auth$,
       loading$,
       soldChartData$,
@@ -133,6 +156,7 @@ export default {
         start_date: undefined,
         end_date: undefined
       },
+      ringColor: ['#4679F9', '#894BFF', '#ff4Baa'],
       dataParam: {
         shop_id: -1,
         day: 7

@@ -1,12 +1,13 @@
 <template>
   <div :class="all()">
-    <st-input-search
-      v-model="$searchQuery.card_name"
-      v-di-view="{ name: SHOP_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH }"
-      @search="onKeywordsSearch('card_name', $event)"
-      :placeholder="`请输入${$c('member_card')}名称查找`"
-      maxlength="50"
-    />
+    <portal to="SHOP_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH">
+      <st-input-search
+        v-model="$searchQuery.card_name"
+        @search="onKeywordsSearch('card_name', $event)"
+        :placeholder="`请输入${$c('member_card')}名称查找`"
+        maxlength="50"
+      />
+    </portal>
     <div :class="all('search')">
       <router-link v-if="auth.add" to="../add-select">
         <st-button type="primary" icon="add">
@@ -143,29 +144,24 @@
       </template>
       <!-- 售卖状态 -->
       <template slot="sell_status" slot-scope="text, record">
-        <a-badge
-          :status="text.id === SELL_STATUS.CAN_SELL ? 'success' : 'error'"
-        />
-        {{ text.name }}
-        <a-popover
-          v-if="record.stop_sale"
-          :title="
-            `操作人:${record.stop_sale.operator_name}  操作时间:${
-              record.stop_sale.stop_time
-            }`
-          "
-          trigger="click"
-          placement="bottomRight"
-          :overlayStyle="{ width: '336px' }"
+        <st-text
+          :status="{
+            success: text.id === 1,
+            error: text.id === 2
+          }"
         >
-          <template slot="content">
-            <p>{{ record.stop_sale.stop_reason }}</p>
-          </template>
-          <a-icon
-            type="exclamation-circle"
-            v-if="text.id === SELL_STATUS.NO_SELL"
-          />
-        </a-popover>
+          {{ text.name }}
+        </st-text>
+        <st-help-popover v-if="text.id === SELL_STATUS.NO_SELL">
+          <span slot="title">
+            操作人：{{ record.stop_sale.operator_name }} 操作时间：{{
+              record.stop_sale.stop_time
+            }}
+          </span>
+          <span slot="content">
+            {{ record.stop_sale.stop_reason }}
+          </span>
+        </st-help-popover>
       </template>
       <!-- 操作 -->
       <div slot="action" slot-scope="text, record">
@@ -224,7 +220,6 @@ import CardShopMemberRecoverSale from '@/views/biz-modals/card/shop-member/recov
 import CardShopMemberShelf from '@/views/biz-modals/card/shop-member/shelf'
 import CardShopMemberShopTable from '@/views/biz-modals/card/shop-member/shop-table'
 import CardShopMemberStopSale from '@/views/biz-modals/card/shop-member/stop-sale'
-import { SHOP_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH } from '@/constants/events'
 import {
   ADMISSION_RANGE,
   SUPPORT_SALES,
@@ -269,8 +264,7 @@ export default {
       ADMISSION_RANGE,
       SUPPORT_SALES,
       SELL_STATUS,
-      PUBLISH_CHANNEL,
-      SHOP_PRODUCT_CARD_MEMBER_KEYWORDS_SEARCH
+      PUBLISH_CHANNEL
     }
   },
   methods: {

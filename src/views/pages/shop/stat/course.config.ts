@@ -29,6 +29,7 @@ export const allColumns = (vm: any) => {
     },
     {
       dataIndex: 'personal_checkin_amount',
+      titleTotal: '私教消课价值（元)',
       slots: { title: 'personalTitle' },
       scopedSlots: { customRender: 'personal_checkin_amount' },
       align: 'right'
@@ -61,8 +62,42 @@ export const allColumns = (vm: any) => {
     },
     {
       dataIndex: 'team_checkin_amount',
+      titleTotal: '团课消课价值（元）',
       slots: { title: 'teamTitle' },
       scopedSlots: { customRender: 'team_checkin_amount' },
+      align: 'right'
+    },
+    {
+      title: `上课节数（${vm.$c('small_course')}）`,
+      dataIndex: 'small_course_num',
+      scopedSlots: { customRender: 'small_course_num' },
+      align: 'right'
+    },
+    {
+      title: `上课${vm.$c('coach')}数（${vm.$c('coach')}）`,
+      dataIndex: 'small_coach_num',
+      align: 'right'
+    },
+    {
+      title: `可约人数（${vm.$c('small_course')}）`,
+      dataIndex: 'small_can_reserve_num',
+      align: 'right'
+    },
+    {
+      title: `预约人数（${vm.$c('small_course')}）`,
+      dataIndex: 'small_reserved_num',
+      align: 'right'
+    },
+    {
+      title: `签到人数（${vm.$c('small_course')}）`,
+      dataIndex: 'small_checkin_num',
+      align: 'right'
+    },
+    {
+      dataIndex: 'small_checkin_amount',
+      titleTotal: `${vm.$c('small_course')}消课价值（元)`,
+      slots: { title: 'smallTitle' },
+      scopedSlots: { customRender: 'small_checkin_amount' },
       align: 'right'
     }
   ]
@@ -105,6 +140,7 @@ export const coachColumns = (vm: any) => {
     },
     {
       dataIndex: 'personal_checkin_amount',
+      titleTotal: '私教消课价值（元)',
       slots: { title: 'personalTitle' },
       scopedSlots: { customRender: 'personal_checkin_amount' },
       align: 'right'
@@ -132,6 +168,7 @@ export const coachColumns = (vm: any) => {
     },
     {
       dataIndex: 'team_checkin_amount',
+      titleTotal: '团课消课价值（元）',
       slots: { title: 'teamTitle' },
       scopedSlots: { customRender: 'team_checkin_amount' },
       align: 'right'

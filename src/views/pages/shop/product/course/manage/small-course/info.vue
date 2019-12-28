@@ -9,8 +9,7 @@
           type="primary"
           @click="onGoEdit"
           v-if="
-            groupCourseHeaderInfo.class_status !== CLASS_STATUS.CLASS_FAILED ||
-              groupCourseHeaderInfo.class_status !== CLASS_STATUS.CLASS_END
+            groupCourseHeaderInfo.auth['shop:product:small_class_course|edit']
           "
         >
           编辑
@@ -19,31 +18,32 @@
           <a-menu slot="overlay">
             <a-menu-item
               key="1"
-              @click="onGoOrder()"
               v-if="
-                groupCourseHeaderInfo.class_status === CLASS_STATUS.CLASS_FAILED
+                groupCourseHeaderInfo.auth[
+                  'shop:product:small_class_course|refund'
+                ]
               "
+              @click="onGoOrder()"
             >
               去退款
             </a-menu-item>
             <a-menu-item
               key="2"
-              @click="onBeGroup"
               v-if="
-                groupCourseHeaderInfo.class_status ===
-                  CLASS_STATUS.SIGNING_UNCLASSED
+                groupCourseHeaderInfo.auth[
+                  'shop:product:small_class_course|finish'
+                ]
               "
+              @click="onBeGroup"
             >
               立即成班
             </a-menu-item>
             <a-menu-item
               key="2"
               v-if="
-                groupCourseHeaderInfo.class_status === CLASS_STATUS.UNPUBLISH ||
-                  groupCourseHeaderInfo.class_status ===
-                    CLASS_STATUS.PUBLISH_UNSTARTED ||
-                  groupCourseHeaderInfo.class_status ===
-                    CLASS_STATUS.SIGNING_UNCLASSED
+                groupCourseHeaderInfo.auth[
+                  'shop:product:small_class_course|del'
+                ]
               "
             >
               <st-popconfirm
@@ -59,7 +59,11 @@
             </a-menu-item>
             <a-menu-item
               key="2"
-              v-if="CLASS_STATUS.UNPUBLISH"
+              v-if="
+                groupCourseHeaderInfo.auth[
+                  'shop:product:small_class_course|publish'
+                ]
+              "
               @click="onPublish"
             >
               发布
@@ -132,7 +136,7 @@ export default {
   bem: {
     b: 'page-group-course-info'
   },
-  name: 'TeamCourseInfo',
+  name: 'SmallCourseInfo',
   serviceInject() {
     return {
       infoService: InfoService
@@ -158,14 +162,20 @@ export default {
           label: '基础信息',
           route: {
             name: 'shop-product-course-manage-small-course-info-basic',
-            query: { courseId: this.$searchQuery.courseId }
+            query: {
+              courseId: this.$searchQuery.courseId,
+              status: this.groupCourseHeaderInfo.class_status
+            }
           }
         },
         {
           label: '班级信息',
           route: {
             name: 'shop-product-course-manage-small-course-info-class',
-            query: { courseId: this.$searchQuery.courseId }
+            query: {
+              courseId: this.$searchQuery.courseId,
+              status: this.groupCourseHeaderInfo.class_status
+            }
           }
         }
       ]
@@ -182,7 +192,8 @@ export default {
       this.$router.push({
         path: '/shop/product/course/manage/small-course/edit',
         query: {
-          id: this.groupCourseHeaderInfo.course_id
+          id: this.groupCourseHeaderInfo.course_id,
+          type: this.groupCourseHeaderInfo.small_course_type
         }
       })
     },

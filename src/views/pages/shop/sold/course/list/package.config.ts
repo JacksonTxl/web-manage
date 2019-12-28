@@ -2,17 +2,21 @@ export const columns = () => [
   {
     title: '课程包名',
     dataIndex: 'course_name',
+    fixed: 'left',
+    width: 180,
     scopedSlots: { customRender: 'course_name' }
+  },
+  {
+    title: '状态',
+    fixed: 'left',
+    width: 100,
+    dataIndex: 'course_status',
+    scopedSlots: { customRender: 'course_status' }
   },
   {
     title: '课程包类型',
     dataIndex: 'package_type',
     scopedSlots: { customRender: 'package_type' }
-  },
-  {
-    title: '合同编号',
-    dataIndex: 'contract_number',
-    scopedSlots: { customRender: 'contract_number' }
   },
   {
     title: '购买总课时',
@@ -35,11 +39,6 @@ export const columns = () => [
     scopedSlots: { customRender: 'mobile' }
   },
   {
-    title: '状态',
-    dataIndex: 'course_status',
-    scopedSlots: { customRender: 'course_status' }
-  },
-  {
     title: '到期日期',
     dataIndex: 'course_end_time',
     scopedSlots: { customRender: 'course_end_time' }
@@ -53,6 +52,11 @@ export const columns = () => [
     title: '销售人员',
     dataIndex: 'staff_name',
     scopedSlots: { customRender: 'staff_name' }
+  },
+  {
+    title: '合同编号',
+    dataIndex: 'contract_number',
+    scopedSlots: { customRender: 'contract_number' }
   },
   {
     title: '操作',

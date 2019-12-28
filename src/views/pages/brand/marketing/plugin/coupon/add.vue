@@ -44,18 +44,18 @@
       <st-form :form="form" labelWidth="118px">
         <a-row :gutter="8">
           <a-col :lg="24">
-            <st-form-item required v-if="couponEnums.coupon_type">
+            <st-form-item required v-if="couponTypeOptions.length">
               <template slot="label">
                 优惠券类型
                 <st-help-tooltip id="TBYHQ001" />
               </template>
               <a-radio-group v-model="couponType" :disabled="isEditMode">
                 <a-radio-button
-                  v-for="(item, index) in couponEnums.coupon_type.value"
-                  :value="index"
-                  :key="index"
+                  v-for="item in couponTypeOptions"
+                  :value="item.value"
+                  :key="item.value"
                 >
-                  {{ item }}
+                  {{ item.label }}
                 </a-radio-button>
               </a-radio-group>
             </st-form-item>
@@ -98,28 +98,21 @@
                 mode="multiple"
                 placeholder="请选择类目"
                 :class="basic('select')"
-              >
-                <a-select-option
-                  v-for="(item, index) in product_ranges"
-                  :key="index"
-                  :value="item.value"
-                >
-                  {{ item.label }}
-                </a-select-option>
-              </a-select>
+                :options="product_ranges"
+              ></a-select>
             </st-form-item>
             <st-form-item label="可用门店" required>
               <a-radio-group
                 v-model="showShopRange"
                 :disabled="isEditMode"
-                v-if="couponEnums.is_shop_range.value.length > 1"
+                v-if="isShopRangeOptions.length > 1"
               >
                 <a-radio
-                  v-for="(item, index) in couponEnums.is_shop_range.value"
-                  :value="index"
-                  :key="index"
+                  v-for="item in isShopRangeOptions"
+                  :value="item.value"
+                  :key="item.value"
                 >
-                  {{ item }}
+                  {{ item.label }}
                 </a-radio>
               </a-radio-group>
               <select-shop
@@ -217,7 +210,7 @@
 import { UserService } from '@/services/user.service'
 import { TitleService } from '@/services/title.service'
 import moment from 'moment'
-import { cloneDeep, remove } from 'lodash-es'
+import { cloneDeep, remove, find as lodashFind } from 'lodash-es'
 import { AddService } from './add.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import H5Container from '@/views/biz-components/h5/h5-container'
@@ -234,8 +227,8 @@ export default {
   rxState() {
     return {
       loading: this.addService.loading$,
-      // info: this.addService.info$,
-      couponEnums: this.userService.couponEnums$,
+      couponTypeOptions: this.addService.couponTypeOptions$,
+      isShopRangeOptions: this.addService.isShopRangeOptions$,
       product_ranges: this.addService.product_ranges$
     }
   },
@@ -297,8 +290,8 @@ export default {
         .format('YYYY年MM月DD日 23:59')
     },
     getRange() {
-      let ranges = this.rangeIds.map(item => {
-        return this.couponEnums.product_range.value[item]
+      let ranges = this.rangeIds.map(id => {
+        return lodashFind(this.product_ranges, { value: id }).label
       })
       return ranges
     },

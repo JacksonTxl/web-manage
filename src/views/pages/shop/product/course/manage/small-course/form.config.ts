@@ -53,29 +53,14 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    // img_type: {
-    //   rules: [
-    //     {
-    //       required: true,
-    //       message: '手机号格式错误',
-    //       pattern: pattern.MOBILE
-    //     }
-    //   ]
-    // },
     is_leave: {
-      initialValue: 0,
-      rules: [
-        {
-          required: true,
-          message: '请输入请假限制'
-        }
-      ]
+      initialValue: 0
     },
     leave_hours: {},
     leave_limit: {},
     appointment_rights: {},
     image: {},
-    description: {},
+    // description: {},
     coach_ids: {
       rules: [
         {
@@ -103,7 +88,7 @@ export const ruleOptions = (vm: any) => {
     is_allow_transfer: {},
     transfer_num: {},
     transfer_type: {
-      initialValue: 1
+      initialValue: 2
     },
     sales_price: {
       rules: [
@@ -119,7 +104,8 @@ export const ruleOptions = (vm: any) => {
           required: true,
           message: '请选择售卖方式'
         }
-      ]
+      ],
+      initialValue: [2]
     }
   }
 }

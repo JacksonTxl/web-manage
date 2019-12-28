@@ -136,7 +136,7 @@
         </a-col>
       </a-row>
     </st-panel>
-    <st-panel app class="mg-t12" :tabs="pageAuthTabs">
+    <st-panel app class="mg-t12" :tabs="authTabs">
       <!-- TODO: 消费记录尚未实现 -->
       <!-- {
           label: '消费记录',
@@ -175,7 +175,7 @@ export default {
   rxState() {
     return {
       packageInfo: this.infoService.packageInfo$,
-      pageAuthTabs: this.infoService.pageAuthTabs$,
+      authTabs: this.infoService.authTabs$,
       auth: this.infoService.auth$
     }
   },
@@ -246,13 +246,16 @@ export default {
         course_price: team.course_price,
         pay_amount: team.pay_amount
       })
-      data.push({
-        key: 1,
-        course_name: personal.course_name,
-        course_num: personal.course_num,
-        course_price: personal.course_price,
-        pay_amount: personal.pay_amount
-      })
+      if (personal.course_name) {
+        data.push({
+          key: 1,
+          course_name: personal.course_name,
+          course_num: personal.course_num,
+          course_price: personal.course_price,
+          pay_amount: personal.pay_amount
+        })
+      }
+
       return data
     },
     // 范围内课程团体课

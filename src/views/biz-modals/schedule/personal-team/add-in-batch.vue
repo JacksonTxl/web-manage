@@ -31,7 +31,7 @@
       </span>
       <span slot="courseFeeTitle" class="modal-table-title">
         <i class="color-danger mg-r8">*</i>
-        课时费
+        单节预约价格
       </span>
       <template slot="start_time" slot-scope="text, record">
         <a-date-picker
@@ -227,6 +227,10 @@ export default {
           item.course_fee = +item.course_fee
           return item
         })
+      if (!data.length) {
+        this.msg.error({ content: '请填写排期！' })
+        return
+      }
       this.scheduleService
         .addScheduleInBatch(data)
         .subscribe(this.onSubmitSuccess)

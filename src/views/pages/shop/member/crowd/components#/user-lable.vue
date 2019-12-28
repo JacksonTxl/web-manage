@@ -62,7 +62,7 @@ export default {
     this.userLableService.getShopList().subscribe(res => {
       this.shopList = res.list.map(item => {
         return {
-          name: item.tag_name,
+          name: item.name,
           value: item.id
         }
       })

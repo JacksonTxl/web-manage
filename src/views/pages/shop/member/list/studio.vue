@@ -127,15 +127,24 @@
         </span>
       </div>
       <div slot="member_name" slot-scope="text, record">
-        {{ record.member_name }}
+        <a
+          href="javascript:;"
+          v-if="record.auth['shop:member:member|get']"
+          @click="infoFunc(record)"
+        >
+          <st-overflow-text :value="text" maxWidth="100px"></st-overflow-text>
+        </a>
+        <span v-else>
+          <st-overflow-text :value="text" maxWidth="100px"></st-overflow-text>
+        </span>
         <st-icon
           type="user-type"
-          v-if="record.sex === 2 && record.is_minors"
+          v-if="record.sex === SEX.BOY && record.is_minors"
           color="#3F66F6"
         />
         <st-icon
           type="user-type"
-          v-if="record.sex === 1 && record.is_minors"
+          v-if="record.sex === SEX.GIRL && record.is_minors"
           color="#FF5E41"
         />
       </div>
@@ -213,8 +222,10 @@
           >
             解除微信绑定
           </a>
-          <!-- TODO: 权限 -->
-          <a @click="onChangeUserType(record)">
+          <a
+            v-if="record.auth['shop:member:member|change_type']"
+            @click="onChangeUserType(record)"
+          >
             变更用户类型
           </a>
         </st-table-actions>
@@ -236,6 +247,7 @@ import ShopDistributionSale from '@/views/biz-modals/shop/distribution-sale'
 import ShopChangeUserType from '@/views/biz-modals/shop/change-user-type'
 import ShopFrozen from '@/views/biz-modals/shop/frozen'
 import ShopMissingCard from '@/views/biz-modals/shop/missing-card'
+import { SEX } from '@/constants/member/info'
 export default {
   name: 'ShopMemberListStudio',
   mixins: [tableMixin],
@@ -275,7 +287,8 @@ export default {
       selectedRowKeys: [],
       selectedRows: [],
       date: [],
-      memberDate: []
+      memberDate: [],
+      SEX
     }
   },
   computed: {

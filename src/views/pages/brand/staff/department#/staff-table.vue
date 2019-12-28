@@ -51,7 +51,7 @@
             v-if="record.auth['brand:staff:staff|position']"
             @click="staffPositionChange(record)"
           >
-            职位变更
+            职位和薪资变更
           </a>
           <a
             href="javascript: void(0)"
@@ -88,10 +88,10 @@
               props: { staff: record }
             }"
           >
-            设置薪资账户
+            设置提现账户
           </a>
           <a
-            v-if="record.auth['brand:staff:staff|del']"
+            v-if="record.auth['brand_shop:staff:staff|del']"
             @click="onClickDelete(record)"
           >
             删除
@@ -99,10 +99,14 @@
         </st-table-actions>
       </div>
       <div slot="work_status" slot-scope="work_status">
-        <a-badge
-          :status="work_status.id == WORK_STATUS.WORKING ? 'success' : 'error'"
-        />
-        {{ work_status.name }}
+        <st-text
+          :status="{
+            success: work_status.id === 1,
+            error: work_status.id === 2
+          }"
+        >
+          {{ work_status.name }}
+        </st-text>
       </div>
       <div slot="shop" slot-scope="shop">
         <a

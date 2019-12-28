@@ -1,6 +1,7 @@
+import { UserService } from '@/services/user.service'
 import { Injectable } from 'vue-service-app'
 import { TransactionApi } from '@/api/v1/sold/transaction'
-import { Effect, State, Action, Computed } from 'rx-state'
+import { Effect, State, Action } from 'rx-state'
 import { then } from '@/operators'
 import { debounceTime, switchMap, catchError } from 'rxjs/operators'
 import { EMPTY } from 'rxjs'
@@ -10,24 +11,27 @@ export class MemberSearchService {
   memberList$ = new State([])
   loading$ = new State({})
   type$ = new State('')
-  getMemberAction$ = new Action<string>(action$ =>
+  getMemberAction$ = new Action<object>(action$ =>
     action$.pipe(
       debounceTime(500),
-      switchMap(searchText =>
-        this.getMemberRequest(searchText).pipe(catchError(() => EMPTY))
+      switchMap((params: any) =>
+        this.getMemberRequest(params).pipe(catchError(() => EMPTY))
       )
     )
   )
-
-  constructor(private transactionApi: TransactionApi) {}
+  parent_types$ = this.userService.getOptions$('small_course.parent_type')
+  constructor(
+    private transactionApi: TransactionApi,
+    private userService: UserService
+  ) {}
   SET_TYPE(type: string) {
     this.type$.commit(() => type)
   }
   RESET_LIST() {
     this.memberList$.commit(() => [])
   }
-  getTransactionMember(member: string, type: number) {
-    return this.transactionApi.getMemberList(member, type).pipe(
+  getTransactionMember(params: any) {
+    return this.transactionApi.getMemberList(params.member, params.type).pipe(
       then((res: any) => {
         this.memberList$.commit(() => res.list)
         return res.list
@@ -35,15 +39,18 @@ export class MemberSearchService {
     )
   }
   @Effect()
-  getMemberRequest(searchText: string) {
+  getMemberRequest(params: any) {
     switch (this.type$.snapshot()) {
       case 'transaction':
-        return this.getTransactionMember(searchText, 1)
+        return this.getTransactionMember(params)
       default:
         throw new Error('member-search.service should pass type')
     }
   }
-  getMember(searchText: string) {
-    this.getMemberAction$.dispatch(searchText)
+  getMember(member: string, type: number) {
+    this.getMemberAction$.dispatch({
+      member,
+      type
+    })
   }
 }

@@ -16,7 +16,7 @@
       <a-col :span="16" class="ta-r">
         <a-select
           class="mg-r8"
-          v-model="$searchQuery.course_status"
+          v-model="$searchQuery.class_status"
           style="width: 160px"
           @change="onChange"
         >
@@ -32,7 +32,7 @@
     </a-row>
 
     <st-table
-      rowKey="id"
+      rowKey="course_id"
       :loading="loading.getList"
       :dataSource="list"
       :columns="columns"
@@ -40,59 +40,57 @@
       @change="onTableChange"
       :page="page"
     >
-      <a slot="course_arrangement" slot-scope="text, record">
+      <a
+        slot="course_arrangement"
+        slot-scope="text, record"
+        @click="goSchedule"
+      >
         {{ record.course_arrangement }}
       </a>
       <span slot="small_course_type" slot-scope="text, record">
-        {{ record.small_course_type ? '固定排课' : '自主排课' }}
+        {{ record.small_course_type === 1 ? '固定排课' : '自主排课' }}
       </span>
       <span slot="course_status" slot-scope="text, record">
         {{ record.class_status | enumFilter('small_course.class_status') }}
       </span>
       <span slot="class_conditions">
         成班条件
-        <st-help-tooltip id="TSCRM001" />
+        <!-- <st-help-tooltip id="TSCRM001" /> -->
       </span>
       <span slot="course_status">
         状态
-        <st-help-tooltip id="TSCRM001" />
+        <!-- <st-help-tooltip id="TSCRM001" /> -->
       </span>
       <template slot="action" slot-scope="text, record">
         <st-table-actions>
-          <a @click="onGoDetail(record)">
+          <a
+            @click="onGoDetail(record)"
+            v-if="record.auth['shop:product:small_class_course|get']"
+          >
             详情
           </a>
           <a
+            v-if="record.auth['shop:product:small_class_course|edit']"
             @click="onGoEdit(record)"
-            v-if="
-              record.course_status !== CLASS_STATUS.CLASS_FAILED ||
-                record.course_status !== CLASS_STATUS.CLASS_END
-            "
           >
             编辑
           </a>
           <a
+            v-if="record.auth['shop:product:small_class_course|finish']"
             @click="onBeGroup(record)"
-            v-if="record.course_status === CLASS_STATUS.SIGNING_UNCLASSED"
           >
             立即成班
           </a>
           <a
+            v-if="record.auth['shop:product:small_class_course|refund']"
             @click="onGoOrder()"
-            v-if="record.course_status === CLASS_STATUS.CLASS_FAILED"
           >
             去退款
           </a>
-          <a
-            v-if="
-              record.course_status === CLASS_STATUS.UNPUBLISH ||
-                record.course_status === CLASS_STATUS.PUBLISH_UNSTARTED ||
-                record.course_status === CLASS_STATUS.SIGNING_UNCLASSED
-            "
-          >
+          <a v-if="record.auth['shop:product:small_class_course|del']">
             <st-popconfirm
               :title="
-                '一旦删除则无法恢复，确认删除' + record.category_name + '？'
+                '一旦删除则无法恢复，确认删除' + record.course_name + '？'
               "
               @confirm="onDelGroup(record)"
             >
@@ -108,9 +106,11 @@
 import { ListService } from './list.service'
 import { columns } from './list.config'
 import { CLASS_STATUS } from '@/constants/course/small-course'
+import tableMixin from '@/mixins/table.mixin'
 
 export default {
-  name: 'GroupCourseList',
+  name: 'SmallCourseList',
+  mixins: [tableMixin],
   serviceInject() {
     return {
       listService: ListService
@@ -120,7 +120,6 @@ export default {
     return {
       list: this.listService.list$,
       page: this.listService.page$,
-      auth: this.listService.auth$,
       loading: this.listService.loading$,
       status: this.listService.status$
     }
@@ -131,7 +130,6 @@ export default {
   data() {
     return {
       CLASS_STATUS
-      // columns
     }
   },
   computed: {
@@ -140,6 +138,9 @@ export default {
   methods: {
     goAddGroup() {
       this.$router.push({ path: './add-select' })
+    },
+    goSchedule() {
+      this.$router.push({ path: 'shop-product-course-schedule-small-course' })
     },
     onSearchCourseName(val) {
       this.$router.push({
@@ -178,7 +179,7 @@ export default {
         path: './edit',
         query: {
           id: course.course_id,
-          type: course.small_course_type
+          type: course.small_course_type + ''
         }
       })
     }

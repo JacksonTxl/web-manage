@@ -152,7 +152,6 @@
 </template>
 <script>
 import { UserService } from '@/services/user.service'
-import { RuleConfig } from '@/constants/rule'
 import { EditService } from './edit.service'
 import { PatternService } from '@/services/pattern.service'
 import { cloneDeep } from 'lodash-es'
@@ -171,7 +170,6 @@ export default {
   serviceInject() {
     return {
       pattern: PatternService,
-      rules: RuleConfig,
       editService: EditService,
       userService: UserService
     }
@@ -355,7 +353,7 @@ export default {
       if (value === undefined || !value) {
         // eslint-disable-next-line
         callback('请填写门店名称')
-      } else if (value && !this.rules.shop_name.test(value)) {
+      } else if (value && !this.pattern.CN_EN_NUM_SPACE('1-20').test(value)) {
         // eslint-disable-next-line
         callback('支持中英文、数字,不超过20个字')
       } else {

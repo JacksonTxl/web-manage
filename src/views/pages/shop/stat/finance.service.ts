@@ -8,7 +8,11 @@ export class FinanceService {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
+  total$ = new State({})
   authTabs$ = this.authService.getAuthTabs$('shop-stat-finance')
+  auth$ = this.authService.authMap$({
+    export: 'shop:stat:cashier_reports|batch_export'
+  })
   constructor(private StatApi: StatApi, private authService: AuthService) {}
   @Effect()
   getFinanceShopList(query: OrderShopListQuery) {
@@ -16,6 +20,7 @@ export class FinanceService {
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+        this.total$.commit(() => res.total)
       })
     )
   }

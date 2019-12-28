@@ -71,11 +71,11 @@
             </template>
             <a-radio-group v-model="refundReason">
               <a-radio
-                v-for="(item, index) in Object.keys(sold.refund_reason.value)"
-                :key="index"
-                :value="+item"
+                v-for="item in refundReasons"
+                :key="item.value"
+                :value="+item.value"
               >
-                {{ sold.refund_reason.value[item] }}
+                {{ item.label }}
               </a-radio>
             </a-radio-group>
           </st-form-item>
@@ -94,13 +94,11 @@
           <st-form-item label="退款方式" class="mg-b16" required>
             <a-radio-group v-model="frozenPayType">
               <a-radio
-                v-for="(item, index) in Object.keys(
-                  sold.refund_channel_saas.value
-                )"
-                :key="index"
-                :value="+item"
+                v-for="item in refundChannelSaas"
+                :key="item.value"
+                :value="+item.value"
               >
-                {{ sold.refund_channel_saas.value[item] }}
+                {{ item.label }}
               </a-radio>
             </a-radio-group>
           </st-form-item>
@@ -146,7 +144,8 @@ export default {
   rxState() {
     return {
       info: this.refundService.info$,
-      sold: this.userService.soldEnums$,
+      refundReasons: this.refundService.refundReasons$,
+      refundChannelSaas: this.refundService.refundChannelSaas$,
       loading: this.refundService.loading$
     }
   },
@@ -170,27 +169,25 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          this.refundService
-            .refund(
-              {
-                sold_id: this.id,
-                sub_order_id: this.info.sub_order_id,
-                product_type: 10,
-                refund_price: +values.refundPrice || 0,
-                refund_reason: +this.refundReason,
-                refund_channel: +this.frozenPayType,
-                description: this.description
-              },
-              this.id,
-              this.type
-            )
-            .subscribe(res => {
-              this.$emit('success')
-              this.show = false
-            })
-        }
+      this.form.validate().then(values => {
+        this.refundService
+          .refund(
+            {
+              sold_id: this.id,
+              sub_order_id: this.info.sub_order_id,
+              product_type: 10,
+              refund_price: +values.refundPrice || 0,
+              refund_reason: +this.refundReason,
+              refund_channel: +this.frozenPayType,
+              description: this.description
+            },
+            this.id,
+            this.type
+          )
+          .subscribe(res => {
+            this.$emit('success')
+            this.show = false
+          })
       })
     }
   }

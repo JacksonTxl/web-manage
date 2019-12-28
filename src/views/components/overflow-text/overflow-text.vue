@@ -12,17 +12,17 @@
         <slot>
           <ul v-if="isArray">
             <li class="mg-t8" v-for="(item, index) in value" :key="index">
-              {{ index + 1 }}、 {{ item }}
+              {{ item }}
             </li>
           </ul>
-          <span v-else>{{ value }}</span>
+          <span v-else>{{ showValue }}</span>
         </slot>
       </template>
       <slot>
         {{ showValue }}
       </slot>
     </a-popover>
-    <span v-show="!isPopover">{{ value }}</span>
+    <span v-show="!isPopover">{{ showValue }}</span>
   </span>
 </template>
 <script>
@@ -53,16 +53,10 @@ export default {
       width = document.querySelector('.getTextWidth').offsetWidth
       document.querySelector('.getTextWidth').remove()
 
-      console.log(width)
-      console.log(+this.maxWidth.replace('px', ''))
-      console.log(width > +this.maxWidth.replace('px', ''))
       return width > +this.maxWidth.replace('px', '')
     },
     showValue() {
-      if (Array.isArray(this.value)) {
-        return this.value.join(',')
-      }
-      return this.value
+      return this.value ? this.value.toString() : this.value
     }
   }
 }

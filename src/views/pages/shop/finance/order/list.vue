@@ -30,12 +30,12 @@
       </div>
       <st-table
         :scroll="{ x: 2100 }"
-        rowKey="id"
         :columns="columns"
         :page="page"
         @change="onTableChange"
         :dataSource="list"
         :loading="loading.getList"
+        isExpand
       >
         <template slot="order_status" slot-scope="text">
           {{ text | enumFilter('finance.order_status') }}
@@ -75,7 +75,10 @@
             >
               业绩拆分
             </a>
-            <a @click="printOrder(record.id)">
+            <a
+              v-if="record.auth['shop:order:order|print']"
+              @click="printOrder(record.id)"
+            >
               打印小票
             </a>
           </st-table-actions>

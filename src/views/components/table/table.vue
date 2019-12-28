@@ -1,5 +1,22 @@
 <script>
-import { merge, omit, map } from 'lodash-es'
+import { merge, omit, map, forEach } from 'lodash-es'
+function addOddEvenKey(dataSource) {
+  for (let i in dataSource) {
+    dataSource[i].$_oddEvenKey = i % 2 ? `even-${i}` : `odd-${i}`
+    if (dataSource[i].children) {
+      for (let j in dataSource[i].children) {
+        dataSource[i].children[j].$_oddEvenKey = `${
+          dataSource[i].$_oddEvenKey
+        }-${j}`
+      }
+      if (dataSource[i].children.length) {
+        // 实际使用$_children来显示展开图标，因为没有元素时不需要展开
+        dataSource[i].$_children = dataSource[i].children
+      }
+    }
+  }
+  return dataSource
+}
 export default {
   name: 'StTable',
   props: {
@@ -31,13 +48,13 @@ export default {
       type: String,
       default: 'server'
     },
-    isExpand: {
-      type: Boolean,
-      default: false
-    },
     simplePage: {
       type: Boolean,
       default: false
+    },
+    stripe: {
+      type: Boolean,
+      default: true
     }
   },
   watch: {
@@ -51,7 +68,8 @@ export default {
     return {
       pageSize: 20,
       total: 0,
-      current: 1
+      current: 1,
+      count: 1
     }
   },
   computed: {
@@ -59,6 +77,10 @@ export default {
       return {
         emptyText: <st-no-data />
       }
+    },
+    tableDataSource() {
+      addOddEvenKey(this.dataSource)
+      return this.dataSource
     },
     defaultPageSize() {
       return this.simplePage ? 10 : 20
@@ -68,10 +90,12 @@ export default {
         if (this.pagination === false || this.page === false) {
           return false
         }
+        const pageSize =
+          this.pageMode === 'client' ? this.pageSize : this.defaultPageSize
         let _p = merge(
           {
             current: this.current,
-            pageSize: this.defaultPageSize,
+            pageSize,
             total: this.total,
             showTotal: function(total, range) {
               return `共${total}条`
@@ -100,7 +124,6 @@ export default {
             _p.simple = true
           }
         }
-        console.log(_p)
         return _p
       }
     }
@@ -122,35 +145,45 @@ export default {
         <template slot={slot}>{vnode}</template>
       ))
     },
-    CustomExpandIcon(props) {
-      let text
-      if (props.record.children && props.record.children.length) {
-        const type = props.expanded ? 'table-up' : 'table-down'
-        text = <st-icon type={type} />
+    // 在有children的情况下显示自定义图标
+    // CustomExpandIcon(props) {
+    //   let text = ''
+    //   let className = 'st-expand-row-icon'
+    //   if (props.record.children && props.record.children.length) {
+    //     const type = props.expanded ? 'table-up' : 'table-down'
+    //     text = <st-icon type={type} />
+    //     className = 'st-expand-row-icon mg-r8'
+    //   }
+    //   return (
+    //     <span
+    //       class={className}
+    //       onClick={e => props.onExpand(props.record, e)}
+    //       style={{ cursor: 'pointer' }}
+    //     >
+    //       {text}
+    //     </span>
+    //   )
+    // },
+    rowClassName(record) {
+      if (this.stripe) {
+        return record.$_oddEvenKey
+      } else {
+        return ''
       }
-      return (
-        <span
-          class="st-expand-row-icon mg-r8"
-          onClick={e => props.onExpand(props.record, e)}
-          style={{ cursor: 'pointer' }}
-        >
-          {text}
-        </span>
-      )
     }
   },
   render(h) {
     let props = {
       pagination: this.tablePagination,
       locale: this.locale,
-      dataSource: this.dataSource,
+      dataSource: this.tableDataSource,
       scroll: this.dataSource.length >= 1 ? this.scroll : {},
+      rowClassName: this.rowClassName,
+      childrenColumnName: '$_children',
       ...this.$attrs
     }
-    // 判断是否是父子表格
-    if (this.isExpand) {
-      this.props.expandIcon = this.CustomExpandIcon
-    }
+    // 判断是否是父子表格 先去掉 自定义图标和自定义expandedRowRender冲突
+    // props.expandIcon = this.CustomExpandIcon
     const ce = this.alertSelection.onReset
       ? h('div', { class: 'st-table-wapper' }, [
           h('a-alert', {
@@ -182,7 +215,7 @@ export default {
           h(
             'a-table',
             {
-              class: 'st-table',
+              class: ['st-table'],
               props,
               on: {
                 change: this.onChange
@@ -196,7 +229,7 @@ export default {
       : h(
           'a-table',
           {
-            class: 'st-table',
+            class: ['st-table'],
             props,
             on: {
               change: this.onChange

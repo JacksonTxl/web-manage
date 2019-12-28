@@ -44,7 +44,7 @@
           </st-form-item>
           <st-form-item label="家长手机号" v-show="isShowParent" required>
             <a-input-group compact>
-              <a-select style="width:30%" v-model="country_prefix">
+              <a-select style="width:30%" v-decorator="rules.country_prefix">
                 <a-select-option
                   :value="code.code_id"
                   v-for="code in countryList.code_list"
@@ -355,7 +355,6 @@ export default {
   rxState() {
     return {
       info: this.editService.info$,
-      parent_info: this.editService.parent_info$,
       loading: this.editService.loading$,
       memberEnums: this.userService.memberEnums$,
       staffEnums: this.userService.staffEnums$,
@@ -541,7 +540,6 @@ export default {
           // 人脸信息
           values.image_face = this.faceList[0] || {}
           // 手机前缀
-          values.country_prefix = this.country_prefix
           values.height = values.height || undefined
           values.weight = values.weight || undefined
           values.album_id = this.info.album_id // 这个给后端快捷找到相册使用，前端不需要处理使用
@@ -568,8 +566,9 @@ export default {
         district_name: district[0] ? district[0].name : ''
       }
     },
-    setEditInfo(obj, parent_info) {
+    setEditInfo(obj) {
       this.isShowParent = !!obj.is_minors
+      console.log(!!obj.is_minors)
       const cascader = []
       if (obj.province_id) {
         cascader.push(obj.province_id)
@@ -606,11 +605,10 @@ export default {
         country_prefix: +obj.country_prefix || undefined,
         living_address: obj.living_address,
         is_minors: obj.is_minors,
-        parent_username: parent_info.username,
-        parent_mobile: parent_info.mobile,
+        parent_username: obj.parent_info.username,
+        parent_mobile: obj.parent_info.mobile,
         parent_user_role: obj.parent_user_role
       })
-      this.country_prefix = +obj.country_prefix || undefined
       this.id = obj.id
       if (obj.image_face && obj.image_face.image_id) {
         this.faceList = [obj.image_face]
@@ -631,7 +629,7 @@ export default {
     }
     this.editService.serviceInit(this.$searchQuery.id).subscribe(res => {
       setTimeout(() => {
-        this.setEditInfo(this.info, this.parent_info)
+        this.setEditInfo(this.info)
         this.form.validateFields()
       })
     })

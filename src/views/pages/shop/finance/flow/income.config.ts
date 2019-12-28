@@ -2,11 +2,17 @@ export const columns = () => {
   return [
     {
       title: '流水号',
-      dataIndex: 'flow_id'
+      dataIndex: 'flow_id',
+      fixed: 'left',
+      width: 160
     },
     {
       title: '金额（元）',
+      titleTotal: '流水总金额（元）',
       dataIndex: 'price',
+      fixed: 'left',
+      width: 120,
+      align: 'right',
       scopedSlots: { customRender: 'price' },
       sorter: true
     },
@@ -44,6 +50,17 @@ export const columns = () => {
       fixed: 'right',
       width: 140,
       scopedSlots: { customRender: 'action' }
+    }
+  ]
+}
+
+export const totalColumns = () => {
+  return [
+    {
+      title: '金额（元）',
+      titleTotal: '流水总金额（元）',
+      dataIndex: 'price',
+      sorter: true
     }
   ]
 }

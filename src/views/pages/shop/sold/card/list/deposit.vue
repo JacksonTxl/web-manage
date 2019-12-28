@@ -1,13 +1,13 @@
 <template>
   <div :class="basic()">
-    <div v-di-view="{ name: 'SHOP_SOLD_CARD_LIST_ACTIONS' }">
+    <portal to="SHOP_SOLD_CARD_LIST_ACTIONS">
       <st-input-search
         v-model="$searchQuery.search"
         @search="onKeywordsSearch('search', $event)"
         placeholder="请输入卡名、合同编号、会员姓名或手机号查找"
-        style="width:360px"
+        style="width:380px"
       />
-    </div>
+    </portal>
 
     <st-search-panel @search="onSearchNative" @reset="onSearchReset">
       <st-search-panel-item label="储值卡状态：">
@@ -38,7 +38,14 @@
           :scroll="{ x: 1800 }"
         >
           <template slot="is_valid" slot-scope="text">
-            {{ text | enumFilter('sold_common.is_valid') }}
+            <st-text
+              :status="{
+                success: text === 1,
+                error: text === 2
+              }"
+            >
+              {{ text | enumFilter('sold_common.is_valid') }}
+            </st-text>
           </template>
           <template slot="end_time" slot-scope="text">
             {{ text }}
