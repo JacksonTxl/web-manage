@@ -40,7 +40,11 @@
         <a-select-option
           :key="-1"
           disabled
-          v-if="!memberList$.length && memberSearchText !== ''"
+          v-if="
+            saleRangeType === 1 &&
+              !memberList$.length &&
+              memberSearchText !== ''
+          "
         >
           查无此会员，
           <a @click="onAddMember">添加新会员？</a>

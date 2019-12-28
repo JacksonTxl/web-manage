@@ -144,6 +144,7 @@
       <st-form :form="form" labelWidth="88px" enctype="multipart/form-data">
         <div :class="transfer('transfer')">
           <member-search
+            :saleRangeType="2"
             labelGutter="12px"
             :form="form"
             type="transfer"
