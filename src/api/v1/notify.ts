@@ -8,7 +8,7 @@ export class NotifyApi extends Api {
   }
   // 获取公告详情
   getAnnouncementInfo(id: any) {
-    return this.http.get(`v1/brand/announcement/${query.id}`, { query })
+    return this.http.get(`v1/brand/announcement/${id}`)
   }
   getNoticeEnum() {
     return this.http.get(`/v1/notice/enum`)
