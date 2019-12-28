@@ -397,7 +397,7 @@ export default {
             {
               member_id: +values.member_id,
               member_name: values.member_name,
-              mobile: values.mobile,
+              mobile: values.mobile ? values.mobile.phone : undefined,
               remain_price: +values.remainPrice,
               contract_number: values.contractNumber,
               frozen_pay_type: +values.payType,
