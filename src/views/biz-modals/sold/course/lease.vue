@@ -29,7 +29,15 @@
             <st-info-item label="会员姓名">
               {{ info$.member_name }}
             </st-info-item>
-            <st-info-item label="手机号">
+            <template v-if="info$.is_minors === 1">
+              <st-info-item label="家长手机号">
+                {{ info$.parent_mobile }}
+              </st-info-item>
+              <st-info-item label="家长姓名">
+                {{ info$.parent_name }}
+              </st-info-item>
+            </template>
+            <st-info-item label="手机号" v-else>
               {{ info$.mobile }}
             </st-info-item>
             <st-info-item label="订单号">
