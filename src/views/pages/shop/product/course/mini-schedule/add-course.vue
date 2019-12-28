@@ -11,19 +11,10 @@
       <div class="add-course-conent">
         <st-form labelWidth="68px" :form="form">
           <st-form-item label="添加课程" required class="mg-t12">
-            <a-select
-              placeholder="请选择课程"
-              @change="onChangeCourse"
-              v-decorator="decorators.course_id"
-            >
-              <a-select-option
-                v-for="course in courseSmallCourseOptions"
-                :key="course.course_id"
-                :value="course.course_id"
-              >
-                {{ course.course_name }}
-              </a-select-option>
-            </a-select>
+            <a-input
+              placeholder="请输入"
+              v-decorator="decorators.current_course_name"
+            />
           </st-form-item>
           <st-form-item label="日期" required v-if="!cycle_type">
             <a-date-picker
@@ -175,13 +166,6 @@ export default {
   methods: {
     hide() {
       this.showFlag = false
-    },
-    onChangeCourse(value) {
-      this.courseSmallCourseOptions.forEach((item, index) => {
-        if (item.course_id === value) {
-          this.params.course_name = item.course_name
-        }
-      })
     },
     onChangeCoach(value) {
       this.coachSmallCourseOptions.forEach((item, index) => {

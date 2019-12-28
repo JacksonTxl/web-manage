@@ -44,7 +44,6 @@ export default {
   name: 'SubmitCourse',
   serviceInject() {
     return {
-      submitCourseService: SubmitCourseService,
       smallCourseScheduleService: SmallCourseScheduleService
     }
   },
@@ -121,7 +120,9 @@ export default {
             })
           })
       } else {
+        console.log(this.courseInfo.course_id)
         const scheduleList = {
+          course_id: this.courseInfo.course_id,
           list: this.scheduleList
         }
         this.smallCourseScheduleService

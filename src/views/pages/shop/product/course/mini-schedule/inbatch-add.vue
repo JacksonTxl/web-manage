@@ -132,7 +132,7 @@
                   {{ item.start_time }}-{{ item.end_time }}
                 </span>
                 <st-t3 class="course__name">
-                  {{ item.course_name }}
+                  {{ item.current_course_name }}
                 </st-t3>
                 <div class="course-message">
                   <p class="course__coach">
@@ -506,10 +506,9 @@ export default {
         coach_id: info.coach_id,
         court_id: info.court_id,
         court_site_id: info.court_site_id,
-        course_name: info.course_name,
         coach_name: info.coach_name,
         court_name: info.court_name,
-        current_course_name: info.courseMessage,
+        current_course_name: info.current_course_name,
         start_time: info.start_time,
         end_time: info.end_time,
         conflict: conflict,
