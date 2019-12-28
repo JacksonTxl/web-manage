@@ -171,7 +171,7 @@
         <router-view></router-view>
         <!-- <default-skeleton></default-skeleton> -->
         <footer class="layout-default-body__footer">
-          Copyright &#169; 2015-2019 三体云智能科技有限公司
+          <copyright />
         </footer>
       </article>
     </main>
@@ -194,6 +194,7 @@ import AccountModify from '@/views/biz-modals/account/modify'
 import { UdeskService } from '@/services/udesk.service'
 import FastEntry from './default#/fast-entry'
 import StUdeskBtn from '@/views/biz-components/udesk-btn/udesk-btn'
+import Copyright from '@/views/biz-components/copyright/copyright'
 
 export default {
   name: 'SaasLayout',
@@ -201,7 +202,8 @@ export default {
     DefaultSiderMenu,
     SwitchShop,
     FastEntry,
-    StUdeskBtn
+    StUdeskBtn,
+    Copyright
   },
   serviceInject() {
     return {
