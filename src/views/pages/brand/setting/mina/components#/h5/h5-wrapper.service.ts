@@ -14,6 +14,7 @@ import { forkJoin } from 'rxjs'
 @Injectable()
 export class H5WrapperService {
   actionInfo$ = new State([]) // 功能菜单
+  checkedInfo$ = new State([]) // 勾选菜单
   coach$ = new State([]) // 教练风采
   coachInfo$ = new State([]) // 教练风采详情
   courseInfo$ = new State([]) // 推荐课程
@@ -30,6 +31,7 @@ export class H5WrapperService {
     index === 5 && this.courseInfo$.commit(() => data)
     index === 6 && this.menuInfo$.commit(() => data)
     index === 4 && this.coach$.commit(() => data)
+    index === 8 && this.checkedInfo$.commit(() => data)
   }
   getH5Info(params: H5Query) {
     return this.settingMinaApi.getH5Info(params).pipe(
