@@ -154,7 +154,7 @@ export default {
       default: '购买会员'
     },
     /**
-     * 会员查询类型 transaction |
+     * 会员查询类型 transaction | transfer
      */
     type: {
       type: String,
@@ -284,7 +284,7 @@ export default {
         this.memberSearchService.getMemberAction$.subscribe(list => {
           if (!list.length) {
             this.form.resetFields([this.memberId])
-            this.$onChangeMember(data)
+            this.onChangeMember(data)
           } else {
             if (this.memberInfo) {
               this.form.setFieldsValue({

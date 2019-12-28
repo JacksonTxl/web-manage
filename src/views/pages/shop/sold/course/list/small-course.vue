@@ -65,7 +65,7 @@
               </a>
 
               <a
-                v-if="record.auth['shop:product:small_class_course|refund']"
+                v-if="record.auth['brand_shop:order:order|refund']"
                 @click="
                   smallCourseActions.onRefund({
                     id: record.id

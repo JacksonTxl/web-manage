@@ -38,11 +38,21 @@ export class MemberSearchService {
       })
     )
   }
+  getTransfer(params: any) {
+    return this.transactionApi.getTransactionMemeberList(params).pipe(
+      then((res: any) => {
+        this.memberList$.commit(() => res.list)
+        return res.list
+      })
+    )
+  }
   @Effect()
   getMemberRequest(params: any) {
     switch (this.type$.snapshot()) {
       case 'transaction':
         return this.getTransactionMember(params)
+      case 'transfer':
+        return this.getTransfer(params)
       default:
         throw new Error('member-search.service should pass type')
     }
