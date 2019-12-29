@@ -18,7 +18,11 @@
           </a-select>
         </st-form-item>
         <st-form-item required label="排课方式">
-          <a-select placeholder="请选择" v-model="cycle_type">
+          <a-select
+            placeholder="请选择"
+            @change="onChangeScheduleType"
+            v-model="cycle_type"
+          >
             <a-select-option :key="1" :value="1">
               周排课方式
             </a-select-option>
@@ -55,7 +59,7 @@
                   <div
                     :class="b('schedule__card')"
                     v-for="(cardItem, index) in filterDate[i][item.week]"
-                    :key="cardItem.coach_id"
+                    :key="index"
                   >
                     <course-card-popover
                       :cardItem="cardItem"
@@ -74,6 +78,7 @@
                   :week="item.week"
                   :cycle="pickerList[i]"
                   :cycle_type="cycle_type"
+                  :courseInfo="smallCourseInfo"
                 ></add-course>
               </div>
             </div>
@@ -149,7 +154,9 @@
                 :customizeShow="customizeShow"
                 :disabledCustomBtn="disabledCustomBtn"
                 @addCustomCourse="pushCustomCourseInfo"
+                :cycle="pickerList[0]"
                 :cycle_type="cycle_type"
+                :courseInfo="smallCourseInfo"
               ></add-course>
             </div>
           </st-container>
@@ -220,7 +227,7 @@ export default {
       disabledDate: [],
       tipsText: [],
       tipsCourseNum: [],
-      smallCourseInfo: '',
+      smallCourseInfo: {},
       weekList: [
         { weekId: 'week1', week: 1, date: '周一' },
         { weekId: 'week2', week: 2, date: '周二' },
@@ -233,67 +240,7 @@ export default {
       filterDate: {},
       scheduleList: [
         {
-          cycle_begin_date: '2019-12-11 00:09:00',
-          cycle_end_date: '2019-12-19 00:18:00',
-          cycle_id: 111,
-          course_time: [
-            {
-              week: 1,
-              list: [
-                {
-                  schedule_id: 1111,
-                  course_id: 1,
-                  coach_id: 53705630613549,
-                  court_id: {
-                    children: [{ id: 232748355223619, name: '54e' }],
-                    id: 181184018055233,
-                    name: '测试VIP区域'
-                  },
-                  week: 1,
-                  current_course_name: '当前课程名称',
-                  start_time: '2019-12-17 09:00:00',
-                  end_time: '2019-01-01 10:00:00',
-                  coach_name: '张张',
-                  court_name: '测试VIP区域'
-                },
-                {
-                  schedule_id: 1111,
-                  course_id: 2,
-                  coach_id: 2,
-                  court_id: 181184018055233,
-                  week: 1,
-                  start_time: '2019-01-01 09:00:00',
-                  end_time: '2019-01-01 10:00:00',
-                  coach_name: '张张',
-                  court_name: '测试VIP区域'
-                }
-              ]
-            },
-            {
-              week: 2,
-              list: [
-                {
-                  schedule_id: 1111,
-                  course_id: 1,
-                  coach_id: 3,
-                  court_id: 1,
-                  week: 2,
-                  current_course_name: '当前课程名称',
-                  start_time: '2019-01-01 09:00:00',
-                  end_time: '2019-01-01 10:00:00'
-                },
-                {
-                  schedule_id: 1111,
-                  course_id: 2,
-                  coach_id: 2,
-                  court_id: 2,
-                  week: 2,
-                  start_time: '2019-01-01 09:00:00',
-                  end_time: '2019-01-01 10:00:00'
-                }
-              ]
-            }
-          ]
+          course_time: []
         }
       ],
       customizeScheduleList: []
@@ -323,45 +270,63 @@ export default {
         ]
       })
     },
+    initScheduleDate() {
+      this.pickerList[0] = [
+        moment(this.smallCourseInfo.course_begin_time),
+        moment(this.smallCourseInfo.course_end_time)
+      ]
+      this.addCycleScheduleTime()
+    },
+    addCycleScheduleTime() {
+      this.pickerList.forEach((item, index) => {
+        this.scheduleList[index].cycle_begin_date = item[0]
+          .format('YYYY-MM-DD')
+          .valueOf()
+        this.scheduleList[index].cycle_end_date = item[1]
+          .format('YYYY-MM-DD')
+          .valueOf()
+      })
+    },
     onChangeCourse(value) {
       this.courseSmallCourseOptions.forEach((item, index) => {
         if (item.course_id === value) {
           this.smallCourseInfo = item
         }
       })
+      console.log(this.smallCourseInfo)
       const params = {
-        course_id: value,
-        cycle_type: 1
+        course_id: value
       }
       this.smallCourseScheduleService
         .editScheduleInBatch(params)
         .subscribe(res => {
           console.log(res)
+          // 用回显数据判断是新增还是编辑
+          if (res.is_cycle === 1) {
+          }
+          if (res.list.length && res.is_cycle === 1) {
+            this.scheduleList = res.list
+            this.dealScheduleDate(this.scheduleList)
+            this.filterDateList(this.scheduleList)
+          } else if (!res.list.length && res.is_cycle === 1) {
+            this.initScheduleDate()
+            //this.filterDateList(this.scheduleList)
+          } else if (res.is_cycle === 0) {
+            this.initScheduleDate()
+            this.cycle_type = res.is_cycle
+            this.customizeScheduleList = res.list
+            console.log(this.customizeScheduleList)
+          }
+          this.disabledAddCourseBtn = false
+          this.disabledCustomBtn = false
         })
-      // 用回显数据判断是新增还是编辑
-      if (
-        this.scheduleList.length &&
-        this.smallCourseInfo.small_course_type === 1
-      ) {
+    },
+    onChangeScheduleType(value) {
+      if (!value || (!this.scheduleList[0].course_time.length && value === 1)) {
+        this.initScheduleDate()
+      } else {
         this.dealScheduleDate(this.scheduleList)
-      } else if (
-        !this.scheduleList.length &&
-        this.smallCourseInfo.small_course_type === 1
-      ) {
-        this.pickerList[0] = [
-          moment(this.smallCourseInfo.course_begin_time),
-          moment(this.smallCourseInfo.course_end_time)
-        ]
-      } else if (this.smallCourseInfo.small_course_type === 2) {
-        this.pickerList[0] = [
-          moment(this.smallCourseInfo.course_begin_time),
-          moment(this.smallCourseInfo.course_end_time)
-        ]
       }
-      console.log(this.smallCourseInfo)
-      this.disabledAddCourseBtn = false
-      this.disabledCustomBtn = false
-      this.filterDateList(this.scheduleList)
     },
     onChangeRangePicker(date, dateString, PickerIndex) {
       // this.picker_start_date = date[0].format('YYYY-MM-DD').valueOf()
@@ -450,31 +415,24 @@ export default {
       // }
     },
     // 增加课程
-    createCourseWeek(week, courseItem, courseTime) {
+    createCourseWeek(courseItem, courseTime) {
       let courseWeek = {}
-      courseWeek.week = week
+      courseWeek.week = courseItem.week
       courseWeek.list = []
       courseWeek.list.push(courseItem)
       courseTime.push(courseWeek)
       this.filterDateList(this.scheduleList)
     },
     pushCourseInfo(cycleIndex, conflict, info, list) {
-      let courseItem = {
-        schedule_id: this.schedule_id,
-        course_id: info.course_id,
-        coach_id: info.coach_id,
-        court_id: info.court_id,
-        week: info.week,
-        current_course_name: info.courseMessage,
-        start_time: info.start_time,
-        end_time: info.end_time,
-        conflict: conflict,
-        conflictList: list
-      }
+      console.log('增加周期性课程排期')
+      console.log(info)
+      let courseItem = info
+      courseItem.court_site_id = info.court_site_id || 'none'
+      courseItem.conflict = conflict
+      courseItem.conflictList = list
       if (!this.scheduleList[cycleIndex].course_time.length) {
-        console.log('批次是否有数据')
+        console.log('批次没有数据')
         this.createCourseWeek(
-          week,
           courseItem,
           this.scheduleList[cycleIndex].course_time
         )
@@ -482,7 +440,7 @@ export default {
       }
       let findWeekFlag = false
       this.scheduleList[cycleIndex].course_time.forEach((item, index) => {
-        if (item.week === week) {
+        if (item.week === courseItem.week) {
           console.log('匹配对应的周几')
           findWeekFlag = true
           item.list.push(courseItem)
@@ -492,48 +450,39 @@ export default {
       if (!findWeekFlag) {
         console.log('无对应周几，添加一个周几列')
         this.createCourseWeek(
-          week,
           courseItem,
           this.scheduleList[cycleIndex].course_time
         )
         console.log(this.scheduleList)
       }
     },
-    pushCustomCourseInfo(conflict, info, list) {
+    pushCustomCourseInfo(info) {
       console.log(info)
-      let courseItem = {
-        course_id: info.course_id,
-        coach_id: info.coach_id,
-        court_id: info.court_id,
-        court_site_id: info.court_site_id,
-        coach_name: info.coach_name,
-        court_name: info.court_name,
-        current_course_name: info.current_course_name,
-        start_time: info.start_time,
-        end_time: info.end_time,
-        conflict: conflict,
-        conflictList: list
-      }
-      this.customizeScheduleList.push(courseItem)
+      this.customizeScheduleList.push(info)
     },
     // 编辑课程
     onEditCourseSchedule(item, cycleIndex, positionIndex) {
       const cycle = this.pickerList[cycleIndex]
       const cycle_type = this.cycle_type
+      const courseInfo = this.smallCourseInfo
       this.$modalRouter.push({
         name: 'schedule-small-course-edit-course',
-        props: { item, cycleIndex, cycle, positionIndex, cycle_type },
+        props: {
+          item,
+          cycleIndex,
+          cycle,
+          positionIndex,
+          cycle_type,
+          courseInfo
+        },
         on: {
           editCourse: (cycleIndex, positionIndex, conflict, info, list) => {
+            console.log('周期排课')
+            console.log(info)
             this.scheduleList[cycleIndex].course_time.forEach(
               (dayItems, index) => {
                 if (dayItems.week === info.week) {
-                  let weekItem = dayItems.list[positionIndex]
                   dayItems.list[positionIndex] = info
-                  // ;(weekItem.start_time = info.start_time),
-                  //   (weekItem.current_course_name = info.current_course_name),
-                  //   (weekItem.coach_name = info.coach_name),
-                  //   (weekItem.court_name = info.court_name),
                   dayItems.list[positionIndex].conflictList = list
                   dayItems.list[positionIndex].conflict = conflict
                   this.filterDateList(this.scheduleList)
@@ -541,6 +490,24 @@ export default {
                 }
               }
             )
+          }
+        }
+      })
+    },
+    onEditCustomSchedule(item, positionIndex) {
+      const cycle = this.pickerList[0]
+      const cycle_type = this.cycle_type
+      const courseInfo = this.smallCourseInfo
+      this.$modalRouter.push({
+        name: 'schedule-small-course-edit-course',
+        props: { item, cycle, positionIndex, cycle_type, courseInfo },
+        on: {
+          editCourse: (positionIndex, info) => {
+            console.log('自主排课')
+            console.log(info)
+            this.customizeScheduleList.splice(positionIndex, 1, info)
+            console.log(this.customizeScheduleList)
+            return
           }
         }
       })
@@ -561,28 +528,6 @@ export default {
     onDeleteCustomSchedule(index) {
       this.customizeScheduleList.splice(index, 1)
     },
-    onEditCustomSchedule(initem, positionIndexdex) {
-      this.$modalRouter.push({
-        name: 'schedule-small-course-edit-course',
-        props: { item, positionIndex },
-        on: {
-          editCourse: (cycleIndex, positionIndex, conflict, info, list) => {
-            this.customizeScheduleList[positionIndex] = info
-            // ;(this.customizeScheduleList[positionIndex].start_time =
-            //   info.start_time),
-            //   (this.customizeScheduleList[positionIndex].current_course_name =
-            //     info.current_course_name),
-            //   (this.customizeScheduleList[positionIndex].coach_name =
-            //     info.coach_name),
-            //   (this.customizeScheduleList[positionIndex].court_name =
-            //     info.court_name),
-            this.customizeScheduleList[positionIndex].conflictList = list
-            this.customizeScheduleList[positionIndex].conflict = conflict
-            return
-          }
-        }
-      })
-    },
     // 新增周期排课
     addScheduleWeek() {
       this.pickerList.push([
@@ -599,13 +544,15 @@ export default {
       item.course_time = []
       this.scheduleList.push(item)
       this.filterDateList(this.scheduleList)
+      this.addCycleScheduleTime()
     },
     onClickSaveSchedule() {
       let courseList
       if (this.cycle_type === 0) {
         courseList = this.customizeScheduleList
+      } else {
+        courseList = this.scheduleList
       }
-      const courseScheduleList = this.scheduleList
       const smallCourseInfo = this.smallCourseInfo
       const courseNum = this.tipsCourseNum
       const cycle_type = this.cycle_type

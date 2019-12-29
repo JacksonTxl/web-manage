@@ -65,9 +65,6 @@ export default {
       return this.$searchQuery.start_date || moment().format('YYYY-MM-DD')
     }
   },
-  created() {
-    console.log(this.cardList)
-  },
   methods: {
     onMouseLeave() {
       console.log('onMouseLeave')

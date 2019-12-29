@@ -38,7 +38,9 @@ export class SmallCourseScheduleApi extends Api {
    * 批量新增周期小班课排期
    */
   addScheduleInBatch(params: any) {
-    return this.http.post('/v1/schedule/small/cycle', { params })
+    return this.http.post(`/v1/schedule/small/cycle/${params.id}?mock=1`, {
+      params
+    })
   }
   /**
    *
@@ -86,7 +88,7 @@ export class SmallCourseScheduleApi extends Api {
    * 验证排课冲突
    */
   conflict(params: any) {
-    return this.http.put(`/v1/schedule/small/verify_conflict/${params}`)
+    return this.http.put(`/v1/schedule/small/verify_conflict`, { params })
   }
 }
 

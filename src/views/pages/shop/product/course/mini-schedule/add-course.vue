@@ -73,7 +73,7 @@
         </div>
       </div>
     </template>
-    <st-button block type="dashed" icon="add">
+    <st-button block type="dashed" icon="add" :disabled="DisabledAddCourseBtn">
       添加课程
     </st-button>
   </a-popover>
@@ -82,6 +82,7 @@
 <script>
 import { SmallCourseScheduleService } from '@/views/pages/shop/product/course/schedule/small-course/service#/schedule.service'
 import { SmallCourseScheduleCommonService } from '@/views/pages/shop/product/course/schedule/small-course/service#/common.service'
+import { MessageService } from '@/services/message.service'
 import { ruleOptions } from './add-course.config'
 import { cloneDeep } from 'lodash-es'
 export default {
@@ -92,7 +93,8 @@ export default {
   serviceInject() {
     return {
       smallCourseScheduleService: SmallCourseScheduleService,
-      smallCourseScheduleCommonService: SmallCourseScheduleCommonService
+      smallCourseScheduleCommonService: SmallCourseScheduleCommonService,
+      msg: MessageService
     }
   },
   rxState() {
@@ -135,11 +137,17 @@ export default {
     },
     week: {
       type: Number,
-      default: 1
+      default: 0
     },
     cycle_type: {
       type: Number,
       default: 1
+    },
+    courseInfo: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   },
   data() {
@@ -150,7 +158,9 @@ export default {
       form,
       decorators,
       showFlag: false,
-      params: {}
+      params: {},
+      cycle_begin_date: '',
+      cycle_end_date: ''
     }
   },
   computed: {
@@ -162,6 +172,8 @@ export default {
   },
   created() {
     this.showFlag = this.item[0].show || this.customizeShow
+    this.cycle_begin_date = this.cycle[0].format('YYYY-MM-DD')
+    this.cycle_end_date = this.cycle[1].format('YYYY-MM-DD')
   },
   methods: {
     hide() {
@@ -177,14 +189,14 @@ export default {
     onChangeCourt(data) {
       this.courtOptions.forEach((item, index) => {
         if (item.id === data[0]) {
-          if (data[1]) {
+          this.params.court_name = item.name
+          if (data[1] && data[1] != 'none') {
             item.children.forEach((childrenItem, index) => {
               if (childrenItem.id === data[1]) {
-                this.params.court_site_name = childrenItem.name
+                this.params.court_name = `${item.name} / ${childrenItem.name}`
               }
             })
           }
-          this.params.court_name = item.name
         }
         return
       })
@@ -216,61 +228,33 @@ export default {
         form.court_id = values.court_id[0]
         form.court_site_id = values.court_id[1]
         form.week = this.week
-        // form.cycle_start_date = this.cycle[0].format('YYYY-MM-DD').valueOf()
-        // form.cycle_end_date = this.cycle[1].format('YYYY-MM-DD').valueOf()
+        form.cycle_start_date = this.cycle_begin_date
+        form.cycle_end_date = this.cycle_end_date
+        form.course_id = this.courseInfo.course_id
         const verifyParams = Object.assign(this.params, form)
         console.log(verifyParams)
-
-        // 自主约课跳过验证
-        this.$emit('addCustomCourse', 0, verifyParams, [])
-        this.showFlag = false
-
-        //   this.smallCourseScheduleService.add(verifyParams).subscribe(res => {
-        //     console.log('添加成功')
-        //   })
-        //   // this.smallCourseScheduleService
-        //   //   .conflict(verifyParams)
-        //   //   .subscribe(res => {
-        //   //     if (this.cycle_type === 1) {
-        //   //       this.$emit(
-        //   //         'addCourse',
-        //   //         this.cycleIndex,
-        //   //         res.data.conflict,
-        //   //         res.data.info,
-        //   //         res.data.list
-        //   //       )
-        //   //       this.showFlag = false
-        //   //     } else {
-        //   //       if (res.data.conflict === 1) {
-        //   //         // this.msg.success({ content: '取消成功' })
-        //   //         this.msg.error({ content: '排期内容有冲突，请重新选择' })
-        //   //       } else {
-        //   //         this.$emit(
-        //   //           'addCustomCourse',
-        //   //           res.data.conflict,
-        //   //           res.data.info,
-        //   //           res.data.list
-        //   //         )
-        //   //         this.showFlag = false
-        //   //       }
-        //   //     }
-        //   //   })
-      })
-    },
-    save() {
-      let reqdata = {
-        id: this.coachId,
-        schedule_start_time: this.start,
-        schedule_end_time: this.end,
-        scheduleInfo: this.scheduleInfo
-      }
-      this.scheduleService.addScheduleInBatch(reqdata).subscribe(() => {
-        this.show = false
-        this.$router.push({
-          query: {
-            ...this.$searchQuery
-          }
-        })
+        console.log(this.cycle_type)
+        this.smallCourseScheduleService
+          .conflict(verifyParams)
+          .subscribe(res => {
+            if (this.cycle_type === 1) {
+              this.$emit(
+                'addCourse',
+                this.cycleIndex,
+                res.conflict,
+                verifyParams,
+                res.data.list
+              )
+              this.showFlag = false
+            } else {
+              if (res.conflict === 1) {
+                this.msg.error({ content: '排期内容有冲突，请重新选择' })
+              } else {
+                this.$emit('addCustomCourse', verifyParams)
+                this.showFlag = false
+              }
+            }
+          })
       })
     }
   }

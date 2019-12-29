@@ -88,7 +88,6 @@ export default {
     }
   },
   created() {
-    console.log(this.scheduleList)
     this.courseNum.forEach((item, index) => {
       this.totalCourseNum += item
     })
@@ -99,7 +98,10 @@ export default {
     },
     save() {
       console.log(this.cycle_type)
+      console.log(this.scheduleList)
+      console.log(this.courseInfo)
       if (this.cycle_type) {
+        this.scheduleList.id = this.courseInfo.course_id
         this.smallCourseScheduleService
           .addScheduleInBatch(this.scheduleList)
           .subscribe(() => {

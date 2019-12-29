@@ -16,7 +16,7 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           required: true,
-          message: '请选择课程'
+          message: '请输入课程'
         }
       ]
     },
