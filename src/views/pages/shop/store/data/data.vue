@@ -128,7 +128,7 @@
               </a-col>
               <a-col :span="8">
                 <div class="ring">
-                  <whole-tabls>
+                  <whole-table>
                     <template v-slot:user>
                       <component
                         v-bind:is="wholeNavcom"
@@ -209,7 +209,7 @@
                         />
                       </div>
                     </template>
-                  </whole-tabls>
+                  </whole-table>
                 </div>
               </a-col>
             </a-row>
@@ -304,7 +304,7 @@ import pieImg from '@/assets/img/shop/dashboard/pie.png'
 import inoutNumImg from '@/assets/img/shop/dashboard/inoutNum.png'
 import moment from 'moment'
 import ShopStoreDataLine from '@/views/biz-components/stat/shop-store-data-line'
-import WholeTabls from './components#/whole-tabls'
+import WholeTable from './components#/whole-table'
 import BuyConsumptionTables from './components#/buy-consumption-tables'
 import DatePicker from './components#/date-picker'
 import SalesAnalysis from './components#/sales-analysis'
@@ -364,7 +364,7 @@ export default {
   components: {
     ShopStoreDataLine,
     DatePicker,
-    WholeTabls,
+    WholeTable,
     BuyConsumptionTables,
     SalesAnalysis,
     BuyNumber,
