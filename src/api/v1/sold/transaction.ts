@@ -40,21 +40,6 @@ export interface ProductInfoParams {
   product_name?: string
   rule_name?: string
 }
-export interface CreateOrderInput {
-  member_id: number
-  coupon_id: string
-  sale_id: string
-  reduce_price: number
-  description: string
-  order_amount: number
-  sale_range: number
-  shipping_mode: number
-  sku_info: ProductInfoParams[]
-}
-export interface CouponParams {
-  product_info: string
-  member_id: number
-}
 export class TransactionApi extends Api {
   /**
    * 签单列表
@@ -204,27 +189,5 @@ export class TransactionApi extends Api {
    */
   goodsDetail(id: number) {
     return this.http.get(`/v1/store/product/${id}`)
-  }
-  /**
-   * 交易签单-云店-确实收款时获取订单详情
-   */
-  getOrderInfo(id: string) {
-    return this.http.get(`/v1/order/transaction/cloud_store/${id}`)
-  }
-  /**
-   * 交易签单-云店-优惠券列表
-   */
-  getCouponList(query: CouponParams) {
-    return this.http.get(`/v1/order/transaction/cloud_product/coupon`, {
-      query
-    })
-  }
-  /**
-   * 交易签单-云店-创建订单
-   */
-  postStoreOrderNum(params: CreateOrderInput) {
-    return this.http.post(`/v1/order/transaction/cloud_product`, {
-      params
-    })
   }
 }

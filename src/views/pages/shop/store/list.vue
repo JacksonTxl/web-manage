@@ -1,86 +1,84 @@
 <template>
-  <st-panel-layout>
-    <st-panel app :class="basic()">
-      <div :class="basic('search')">
-        <div :class="basic('add')">
-          <st-button
-            icon="add"
-            type="primary"
-            @click="onAddGoods"
-            v-if="auth.add"
-          >
-            新增商品
-          </st-button>
-        </div>
-        <a-select
-          :class="basic('select')"
-          v-model="categoryId"
-          placeholder="商品分类"
-          @change="onSingleSearch('category_id', $event)"
-          style="width: 130px"
+  <st-panel app :class="basic()">
+    <div :class="basic('search')">
+      <div :class="basic('add')">
+        <st-button
+          icon="add"
+          type="primary"
+          @click="onAddGoods"
+          v-if="auth.add"
         >
-          <a-select-option v-for="item in goods_sort" :key="item.value">
-            {{ item.label }}
-          </a-select-option>
-        </a-select>
-        <a-select
-          :class="basic('select')"
-          v-model="shelvesStatus"
-          placeholder="所有上架状态"
-          @change="onSingleSearch('shelves_status', $event)"
-          style="width: 130px;margin: 0 12px;"
-        >
-          <a-select-option v-for="item in cloudStore" :key="item.value">
-            {{ item.label }}
-          </a-select-option>
-        </a-select>
-        <st-input-search
-          v-model="goodsName"
-          placeholder="请输入商品名称"
-          maxlength="50"
-          @search="onSingleSearch('product_name', $event)"
-        />
+          新增商品
+        </st-button>
       </div>
-      <div :class="basic('content')">
-        <st-table
-          rowKey="product_id"
-          :page="page"
-          :columns="columns"
-          :dataSource="list"
-          @change="onTableChange"
-        >
-          <template slot="action" slot-scope="text, record">
-            <st-table-actions sytle="width: 120px">
-              <a
-                @click="onShelf(record)"
-                v-if="record.auth['shop:cloud_store:goods|up']"
-              >
-                上架
-              </a>
-              <a
-                @click="onEdit(record)"
-                v-if="record.auth['shop:cloud_store:goods|edit']"
-              >
-                编辑
-              </a>
-              <a
-                @click="onShelf(record)"
-                v-if="record.auth['shop:cloud_store:goods|down']"
-              >
-                下架
-              </a>
-              <a
-                @click="onDel(record)"
-                v-if="record.auth['shop:cloud_store:goods|del']"
-              >
-                删除
-              </a>
-            </st-table-actions>
-          </template>
-        </st-table>
-      </div>
-    </st-panel>
-  </st-panel-layout>
+      <a-select
+        :class="basic('select')"
+        v-model="categoryId"
+        placeholder="商品分类"
+        @change="onSingleSearch('category_id', $event)"
+        style="width: 130px"
+      >
+        <a-select-option v-for="item in goods_sort" :key="item.value">
+          {{ item.label }}
+        </a-select-option>
+      </a-select>
+      <a-select
+        :class="basic('select')"
+        v-model="shelvesStatus"
+        placeholder="所有上架状态"
+        @change="onSingleSearch('shelves_status', $event)"
+        style="width: 130px;margin: 0 12px;"
+      >
+        <a-select-option v-for="item in cloudStore" :key="item.value">
+          {{ item.label }}
+        </a-select-option>
+      </a-select>
+      <st-input-search
+        v-model="goodsName"
+        placeholder="请输入商品名称"
+        maxlength="50"
+        @search="onSingleSearch('product_name', $event)"
+      />
+    </div>
+    <div :class="basic('content')">
+      <st-table
+        rowKey="product_id"
+        :page="page"
+        :columns="columns"
+        :dataSource="list"
+        @change="onTableChange"
+      >
+        <template slot="action" slot-scope="text, record">
+          <st-table-actions sytle="width: 120px">
+            <a
+              @click="onShelf(record)"
+              v-if="record.auth['shop:cloud_store:goods|up']"
+            >
+              上架
+            </a>
+            <a
+              @click="onEdit(record)"
+              v-if="record.auth['shop:cloud_store:goods|edit']"
+            >
+              编辑
+            </a>
+            <a
+              @click="onShelf(record)"
+              v-if="record.auth['shop:cloud_store:goods|down']"
+            >
+              下架
+            </a>
+            <a
+              @click="onDel(record)"
+              v-if="record.auth['shop:cloud_store:goods|del']"
+            >
+              删除
+            </a>
+          </st-table-actions>
+        </template>
+      </st-table>
+    </div>
+  </st-panel>
 </template>
 
 <script>

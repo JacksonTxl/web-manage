@@ -77,7 +77,7 @@
           @change="onSingleSearch('group_status', $event)"
           style="width: 130px"
         >
-          <a-select-option v-for="item in groupType" :key="item.value">
+          <a-select-option v-for="item in groupStatusEnums" :key="item.value">
             {{ item.label }}
           </a-select-option>
         </a-select>
@@ -95,7 +95,6 @@
         :scroll="{ x: 1240 }"
         :dataSource="list"
         @change="onTableChange"
-        isExpand
       ></st-table>
     </st-panel>
   </st-panel-layout>
@@ -127,7 +126,7 @@ export default {
       collect: this.dataService.collect$,
       loading: this.dataService.loading$,
       info: this.dataService.info$,
-      groupBuyDataEnums: this.userService.groupBuyEnums$
+      groupStatusEnums: this.dataService.groupStatusEnums$
     }
   },
   data() {
@@ -137,21 +136,6 @@ export default {
       searchWhere: '',
       groupStatus: -1,
       columns
-    }
-  },
-
-  computed: {
-    group_status() {
-      return (
-        (this.groupBuyDataEnums && this.groupBuyDataEnums.group_status) || []
-      )
-    },
-    groupType() {
-      let list = []
-      Object.entries(this.group_status.value).forEach(item => {
-        list.push({ value: +item[0], label: item[1] })
-      })
-      return [{ value: -1, label: '全部状态' }, ...list]
     }
   },
   watch: {

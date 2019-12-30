@@ -33,10 +33,11 @@
         </a-col>
       </a-row>
       <st-table
-        v-if="info.refund.list.length > 0"
+        v-else
         :dataSource="info.refund.list"
         :columns="columns"
         :page="false"
+        rowKey="id"
       ></st-table>
     </st-panel>
   </section>
@@ -53,7 +54,8 @@ export default {
   },
   rxState() {
     return {
-      info: this.refundInfoService.info$
+      info: this.refundInfoService.info$,
+      loading: this.refundInfoService.loading$
     }
   },
   data() {
@@ -62,7 +64,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.info.refund.list.length)
+    console.log(this.loading)
   },
   methods: {}
 }
