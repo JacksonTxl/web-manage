@@ -30,8 +30,9 @@ export default {
       this.$emit('success')
     },
     onCancel() {
-      this.show = false
-      this.$emit('success')
+      // this.show = false
+      // this.$emit('success')
+      console.log(info)
     }
   }
 }

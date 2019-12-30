@@ -295,8 +295,12 @@ export default {
         name: 'common-notify-system',
         props: { info: this.systemList$[this.systemListLength] },
         on: {
+          // 模态窗动画400ms
           success: res => {
-            this.onSuccess()
+            setTimeout(() => {
+              console.log('3000')
+              this.onSuccess()
+            }, 400)
           }
         }
       })
