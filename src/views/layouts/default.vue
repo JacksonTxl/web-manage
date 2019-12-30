@@ -283,8 +283,20 @@ export default {
       return this.isThemeStudio ? '工作室版' : '俱乐部版'
     }
   },
-  created() {
-    this.onSuccess()
+  watch: {
+    systemList$(newValue, oldValue) {
+      if (newValue.length === 0) {
+        if (this.activityList$.length > 0) {
+          this.$modalRouter.push({
+            name: 'common-notify-activity',
+            props: { list: this.activityList$ }
+          })
+        }
+        return
+      }
+      if (newValue.length === 0) return
+      this.onSuccess()
+    }
   },
   methods: {
     onSuccess() {
@@ -302,6 +314,12 @@ export default {
         on: {
           // 模态窗动画400ms
           success: res => {
+            setTimeout(() => {
+              this.systemListLength++
+              this.onSuccess()
+            }, 400)
+          },
+          cancel: res => {
             setTimeout(() => {
               this.systemListLength++
               this.onSuccess()

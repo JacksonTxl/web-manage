@@ -3,13 +3,20 @@ import { State } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
 import { NoticeApi, PutNoticeParams } from '@/api/v1/setting/sms/notice'
+import { UserService } from '@/services/user.service'
 @Injectable()
 export class NoticeService {
   memberList$ = new State([])
   shopList$ = new State([])
   roleList$ = new State([])
+  consumeType$ = this.userService.getOptions$('setting.consume_type')
+  entranceType$ = this.userService.getOptions$('setting.entrance_type')
   authTabs$ = this.authService.getAuthTabs$('brand-setting-sms-notice')
-  constructor(private noticeApi: NoticeApi, private authService: AuthService) {}
+  constructor(
+    private noticeApi: NoticeApi,
+    private authService: AuthService,
+    private userService: UserService
+  ) {}
   SET_MEMBER_LIST(list: any) {
     this.memberList$.commit(() =>
       list.filter(({ notify_type }: any) => notify_type.value === 1)

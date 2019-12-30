@@ -5,12 +5,18 @@
     @ok="onOk"
     @cancel="onCancel"
     @change="onCancel"
+    :backgroundImgae="
+      info.image_key ||
+        'http://sports.gtimg.com/shequ/duc2TvpEgSRpS2A8tEIc2eueTPusgmpzYZWUKu4mZqGmbfMR2HQRaibyapBpazeKh/0/0'
+    "
     width="640px"
     :footer="null"
   >
     <div :class="b('info')">
-      <st-t3 :class="b(title)">{{ info.title }}</st-t3>
-      <div :class="b('content')" class="mg-t16">{{ info.contnet }}</div>
+      <st-t3 :class="b('title')">{{ info.title || '还没数据' }}</st-t3>
+      <div :class="b('content')" class="mg-t16">
+        {{ info.contnet || '还没数据' }}
+      </div>
       <div :class="b('button-wapper')">
         <st-button type="primary" class="mg-t24" @click="onOk">
           我知道了
@@ -49,9 +55,9 @@ export default {
       this.show = false
       this.$emit('success')
     },
-    onCancel() {
-      this.show = false
-      this.$emit('success')
+    onCancel(show) {
+      this.show = show
+      this.$emit('cancel')
     }
   }
 }

@@ -121,6 +121,26 @@
                 </st-checkbox>
               </span>
             </div>
+            <div class="mg-b16">
+              <span class="color-title mg-r24">消息类型</span>
+              <span
+                class="mg-r16"
+                v-for="(item, index) in consumeTypeString"
+                :key="index"
+              >
+                {{ item }}
+              </span>
+            </div>
+            <div class="mg-b16">
+              <span class="color-title mg-r24">入场方式</span>
+              <span
+                class="mg-r16"
+                v-for="(item, index) in entranceTypeString"
+                :key="index"
+              >
+                {{ item }}
+              </span>
+            </div>
             <div class="mg-b16" v-if="Object.keys(info.receiver).length > 0">
               <span class="color-title">接收人员</span>
               <span class=" mg-l16 inlineblock">
@@ -283,6 +303,7 @@
 <script>
 import { UserService } from '@/services/user.service'
 import BrandSettingSmsNotice from '@/views/biz-modals/brand/setting/sms/notice'
+import { NoticeService } from '../notice.service'
 const componentName = 'notice-item'
 export default {
   name: 'NoticeItem',
@@ -291,13 +312,17 @@ export default {
   },
   serviceInject() {
     return {
-      userService: UserService
+      userService: UserService,
+      noticeService: NoticeService
     }
   },
   rxState() {
     const user = this.userService
+    const { consumeType$, entranceType$ } = this.noticeService
     return {
-      settingEnums: user.settingEnums$
+      settingEnums: user.settingEnums$,
+      consumeType$,
+      entranceType$
     }
   },
   modals: {
@@ -378,6 +403,12 @@ export default {
     }
   },
   computed: {
+    consumeTypeString() {
+      return this.consumeType$.map(item => item.label)
+    },
+    entranceTypeString() {
+      return this.entranceType$.map(item => item.label)
+    },
     notifyRule() {
       let list = []
       if (!this.settingEnums.notify_rule) return list
@@ -410,7 +441,8 @@ export default {
     this.params.msg_preffix = this.info.msg_preffix
     this.params.msg_suffix = this.info.msg_suffix
     this.params.custom_phone = this.info.custom_phone
-    if (this.info.notify_sub_type.value !== 24) {
+    const isJoin = [24, 23]
+    if (!isJoin.includes(this.info.notify_sub_type.value)) {
       this.params.custom_phone = this.info.custom_phone.join(' ')
     }
     this.params.notify_mode = {
