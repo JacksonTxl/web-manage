@@ -48,7 +48,7 @@ export class OrderApi extends Api {
    * 待发货订单发货
    */
   sendAction(params: SendParams) {
-    return this.http.put(`/v1/order/send_product`, {
+    return this.http.post(`/v1/store/send_product`, {
       params
     })
   }

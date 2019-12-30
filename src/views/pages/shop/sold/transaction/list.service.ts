@@ -3,9 +3,8 @@ import { State, Effect } from 'rx-state'
 import {
   TransactionApi,
   TransactionListInput,
-  CreateOrderInput,
   TransactionPriceInput,
-  CouponParams
+  MemberCouponParams
 } from '@/api/v1/sold/transaction'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
@@ -94,22 +93,27 @@ export class ListService {
   /**
    * 获取可用优惠券
    */
-  getUseCoupon(query: CouponParams) {
-    return this.transactionApi.getCouponList(query).pipe(
-      tap(res => {
-        this.couponList$.commit(() => res.list)
-      })
-    )
+  getUseCoupon(params: MemberCouponParams) {
+    return this.transactionApi
+      .getTransactionCouponList(params, 'cloud_product')
+      .pipe(
+        tap(res => {
+          this.couponList$.commit(() => res.list)
+        })
+      )
   }
   /**
    * 云店创建订单
    */
   @Effect()
-  createOrder(params: CreateOrderInput) {
-    return this.transactionApi.postStoreOrderNum(params)
+  createOrder(params: any) {
+    return this.transactionApi.setTransaction(params, 'cloud_product')
   }
+  /**
+   * 云店支付创建订单
+   */
   @Effect()
-  createOrderPay(params: CreateOrderInput) {
-    return this.transactionApi.postStoreOrderNum(params)
+  createOrderPay(params: any) {
+    return this.transactionApi.setTransaction(params, 'cloud_product')
   }
 }
