@@ -20,43 +20,41 @@
     justify-content: space-between;
   }
 
-  &__header-content {
+  .header-content {
     display: flex;
     padding: 0 64px;
     height: 157px;
 
-    li {
+    &__item {
       flex: 1;
       display: flex;
       align-items: center;
+    }
 
-      img {
-        width: 58px;
-        height: 58px;
-        margin-right: 30px;
-      }
+    &__item-icon {
+      width: 58px;
+      height: 58px;
+      margin-right: 30px;
+    }
 
-      div {
-        div:nth-child(1) {
-          color: @text-color-secondary;
-        }
+    &__item-title {
+      color: @text-color-secondary;
+    }
 
-        div:nth-child(2) {
-          padding: 8px 0;
-          color: @heading-color;
-          font-size: 26px;
-          font-weight: bold;
-        }
+    &__day-money {
+      padding: 8px 0;
+      color: @heading-color;
+      font-size: 26px;
+      font-weight: bold;
+    }
 
-        div:nth-child(3) {
-          color: #7f93a3;
-          font-size: 14px;
+    &__yesterday-money {
+      color: #7f93a3;
+      font-size: 14px;
 
-          span {
-            font-size: 18px;
-            font-weight: bold;
-          }
-        }
+      span {
+        font-size: 18px;
+        font-weight: bold;
       }
     }
   }
@@ -94,17 +92,17 @@
     border: 1px solid transparent;
     box-shadow: 0px 1px 10px 1px rgba(0, 0, 0, 0.05);
     border-radius: 2px;
+  }
 
-    div:nth-child(1) {
-      font-weight: 500;
-      color: #3e4d5c;
-    }
+  &__whole-item-icon {
+    width: 16px;
+    height: 16px;
+    margin-left: 8px;
+  }
 
-    img {
-      width: 16px;
-      height: 16px;
-      margin-left: 8px;
-    }
+  &__whole-item-title {
+    font-weight: 500;
+    color: @text-color;
   }
 
   &__whole-item-active {
@@ -121,7 +119,7 @@
   }
 
   .sales-category {
-    margin-top: 12px;
+    margin-top: 16px;
 
     &__sales-box {
       background: @white;
@@ -192,16 +190,12 @@
 
   .buy-consumption {
     background: @white;
-    margin-top: 12px;
+    margin-top: 16px;
   }
 
   .ant-tabs-tab {
     height: 64px;
     line-height: 40px;
-  }
-
-  .mg-r16 {
-    margin-top: 10px;
   }
 
   .st-title--t3 {
@@ -249,11 +243,11 @@
       width: 100%;
     }
 
-    .order-member-inoutNumImg {
+    .order-member-inout-img {
       height: 343px;
     }
 
-    .order-member-pieImg {
+    .order-member-pie-img {
       width: 60%;
       margin-top: 7%;
     }

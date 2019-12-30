@@ -3,6 +3,8 @@ import { GroupBuyApi, GroupData } from '@/api/v1/marketing/group-buy'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
+import { UserService } from '@/services/user.service'
+
 @Injectable()
 export class DataService implements Controller {
   list$ = new State([])
@@ -10,7 +12,13 @@ export class DataService implements Controller {
   loading$ = new State({})
   collect$ = new State([])
   info$ = new State({})
-  constructor(private groupBuyApi: GroupBuyApi) {}
+  groupStatusEnums$ = this.userService.getOptions$('group_buy.group_status', {
+    addAll: true
+  })
+  constructor(
+    private groupBuyApi: GroupBuyApi,
+    private userService: UserService
+  ) {}
   @Effect()
   getData(params: GroupData) {
     return this.groupBuyApi.getData(params).pipe(
