@@ -305,11 +305,11 @@ export default {
         this.settingService[fn]({
           activity_status: this.openStatus ? 1 : 2,
           // 邀请人
-          inviter_coupon_id: this.inviteeCoupon.id,
-          inviter_coupon_num: +this.inviteeCouponNum,
+          inviter_coupon_id: this.inviterCoupon.id,
+          inviter_coupon_num: +this.inviterCouponNum,
           // 被邀请人
-          invitee_coupon_id: this.inviterCoupon.id,
-          invitee_coupon_num: +this.inviterCouponNum,
+          invitee_coupon_id: this.inviteeCoupon.id,
+          invitee_coupon_num: +this.inviteeCouponNum,
           invite_poster: this.invite_poster
         }).subscribe(() => {
           this.$router.push({
