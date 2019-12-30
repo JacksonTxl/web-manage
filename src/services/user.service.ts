@@ -1,6 +1,7 @@
 import { Injectable } from 'vue-service-app'
+import { Subject } from 'rxjs'
 import { State, Computed, computed } from 'rx-state'
-import { tap, pluck, map } from 'rxjs/operators'
+import { tap, pluck, map, publish } from 'rxjs/operators'
 import { ConstApi } from '@/api/const'
 import { MenuApi } from '@/api/v1/common/menu'
 import { StaffApi } from '@/api/v1/staff'
@@ -9,6 +10,7 @@ import { get, reduce, isPlainObject, mapValues } from 'lodash-es'
 import { ShopApi } from '@/api/v1/shop'
 import { Dictionary } from 'lodash'
 import Vue from 'vue'
+let sub = new Subject()
 interface User {
   id?: string
   name?: string
@@ -223,6 +225,11 @@ export class UserService {
         this.SET_INVALID_TOOLTIP(res)
       })
     )
+  }
+  init() {
+    this.shopList$.subscribe(() => {
+      console.log(sub.observers.length)
+    })
   }
   fetchShopList() {
     return this.shopApi.getShopList().pipe(
