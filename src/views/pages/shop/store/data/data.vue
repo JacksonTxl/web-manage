@@ -6,14 +6,18 @@
         <div slot="actions">
           <st-refresh-btn :action="refresh"></st-refresh-btn>
         </div>
-        <ul :class="basic('header-content')">
-          <li v-for="(item, index) in headerInfo" :key="index">
-            <img :src="item.icon" />
+        <ul :class="headerContent()">
+          <li
+            v-for="(item, index) in headerInfo"
+            :key="index"
+            :class="headerContent('item')"
+          >
+            <img :src="item.icon" :class="headerContent('item-icon')" />
             <div>
-              <div>
+              <div :class="headerContent('item-title')">
                 {{ item.title }}
               </div>
-              <div>
+              <div :class="headerContent('day-money')">
                 <i-count-up
                   :endVal="
                     dataProfile.today[headerTitleItem[index]]
@@ -33,7 +37,7 @@
                   }"
                 />
               </div>
-              <div>
+              <div :class="headerContent('yesterday-money')">
                 昨日:
                 <i-count-up
                   :endVal="
@@ -77,9 +81,9 @@
               :key="index"
               @click="wholenavFun(index, item)"
             >
-              <div>
+              <div :class="basic('whole-item-title')">
                 {{ item.title }}
-                <img :src="item.icon" />
+                <img :class="basic('whole-item-icon')" :src="item.icon" />
               </div>
               <div :class="basic('whole-item-text')">
                 <i-count-up
@@ -155,10 +159,14 @@
                                 ? '343px'
                                 : height332 + 'px'
                           }"
-                          class="order-member-inoutNumImg"
+                          class="order-member-inout-img"
                           v-if="wholeNavcom === 'brand-user-avg-bar'"
                         />
-                        <img :src="pieImg" v-else class="order-member-pieImg" />
+                        <img
+                          :src="pieImg"
+                          v-else
+                          class="order-member-pie-img"
+                        />
                       </div>
                     </template>
                     <template v-slot:marketing>
@@ -192,9 +200,13 @@
                                 : height332 + 'px'
                           }"
                           v-if="wholeNavcom === 'brand-user-avg-bar'"
-                          class="order-member-inoutNumImg"
+                          class="order-member-inout-img"
                         />
-                        <img :src="pieImg" v-else class="order-member-pieImg" />
+                        <img
+                          :src="pieImg"
+                          v-else
+                          class="order-member-pie-img"
+                        />
                       </div>
                     </template>
                   </whole-tabls>
@@ -325,7 +337,8 @@ export default {
   },
   bem: {
     basic: 'shop-store-data',
-    salesCategory: 'sales-category'
+    salesCategory: 'sales-category',
+    headerContent: 'header-content'
   },
   data() {
     return {

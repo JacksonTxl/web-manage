@@ -10,23 +10,14 @@
       <template v-if="salesList.length">
         <ul v-for="(item, index) in salesList" :key="index">
           <li>
-            <img
-              v-if="index < 3"
-              :src="
-                index
-                  ? index === 1
-                    ? IconTwoRanking
-                    : IconThreeRanking
-                  : IconOneRanking
-              "
-            />
+            <img v-if="index < 3" :src="imgIcon[index]" />
             <span style="margin-left:12px" v-else>{{ index + 1 }}</span>
           </li>
           <li>
             {{ nameFilter(item.product_name, nameLength) }}
           </li>
           <li>
-            {{ item.sale ? thousandBit(12345.01) : thousandBit(item.revenue) }}
+            {{ item.sale ? thousandBit(item.sale) : thousandBit(item.revenue) }}
           </li>
         </ul>
       </template>
@@ -71,6 +62,16 @@ export default {
       IconOneRanking,
       IconTwoRanking,
       IconThreeRanking
+    }
+  },
+  computed: {
+    imgIcon() {
+      let iconArr = [
+        this.IconThreeRanking,
+        this.IconTwoRanking,
+        this.IconOneRanking
+      ]
+      return iconArr
     }
   },
   methods: {
