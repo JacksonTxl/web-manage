@@ -29,11 +29,12 @@
         <!-- <st-button type="primary" v-if="auth.export" :disabled="isSelectedDisabled">批量导出</st-button> -->
       </div>
       <st-table
-        :scroll="{ x: 2100 }"
+        :scroll="{ x: 3000 }"
         :columns="columns"
         :page="page"
         @change="onTableChange"
         :dataSource="list"
+        rowKey="id"
         :loading="loading.getList"
         rowKey="id"
       >
