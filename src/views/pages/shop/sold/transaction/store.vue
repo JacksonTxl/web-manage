@@ -388,7 +388,7 @@ export default {
         name: 'sold-deal-gathering',
         props: {
           order_id: orderId,
-          type: 'cloud'
+          type: 'cloud_store'
         },
         on: {
           success: res => {
