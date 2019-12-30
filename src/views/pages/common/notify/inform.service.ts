@@ -22,12 +22,12 @@ export class InformService {
   getNoticeEnum() {
     return this.api.getNoticeEnum().pipe(
       tap((res: any) => {
-        let subTypes: any[] = []
+        let children: any[] = []
         res.list.forEach((item: any) => {
-          subTypes = [...subTypes, ...item.sub_type]
+          children = [...children, ...item.children]
         })
         this.informTypeOptions$.commit(() => [
-          { value: '全部', key: -1, sub_type: subTypes },
+          { name: '全部', id: -1, children },
           ...res.list
         ])
       })

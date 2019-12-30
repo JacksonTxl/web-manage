@@ -33,10 +33,10 @@
       :page="page$"
     >
       <template slot="notify_type" slot-scope="text, record">
-        {{ record.notify_type.value }}
+        {{ record.notify_type.name }}
       </template>
       <template slot="sub_notify_type" slot-scope="text, record">
-        {{ record.sub_notify_type.value }}
+        {{ record.sub_notify_type.name }}
       </template>
       <template slot="content" slot-scope="text, record">
         <st-overflow-text maxWidth="250px" :value="record.content" />
@@ -102,21 +102,21 @@ export default {
     noticeTypeLevel1Options() {
       return this.informTypeOptions$.map(item => {
         return {
-          label: item.value,
-          value: item.key
+          label: item.name,
+          value: item.id
         }
       })
     },
     noticeTypeLevel2Options() {
       let options = []
       for (let item of this.informTypeOptions$) {
-        if (item.key === this.$searchQuery.notify_type) {
+        if (item.id === this.$searchQuery.notify_type) {
           options = [
             { label: '全部', value: -1 },
-            ...item.sub_type.map(item => {
+            ...item.children.map(item => {
               return {
-                label: item.value,
-                value: item.key
+                label: item.name,
+                value: item.id
               }
             })
           ]

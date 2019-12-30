@@ -25,7 +25,7 @@ export class NoticeService {
         this.noticeTypeOptions$.commit(() => [
           { label: '全部', value: -1 },
           ...res.list.map((item: any) => {
-            return { label: item.value, value: item.key }
+            return { label: item.name, value: item.id }
           })
         ])
       })

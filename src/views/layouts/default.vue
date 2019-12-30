@@ -289,7 +289,13 @@ export default {
   methods: {
     onSuccess() {
       const len = this.systemList$.length
-      if (this.systemListLength === len) return
+      if (this.systemListLength === len) {
+        this.$modalRouter.push({
+          name: 'common-notify-activity',
+          props: { list: this.activityList$ }
+        })
+        return
+      }
       this.systemListLength++
       this.$modalRouter.push({
         name: 'common-notify-system',

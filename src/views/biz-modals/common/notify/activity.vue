@@ -4,8 +4,8 @@
       <div :class="b('arrow-left')" @click="onClickLeft">
         <st-icon type="arrow-left" class="arrow-left-out" />
       </div>
+      {{ list }}
       <div :class="b('notify-img')">
-        {{ list$ }}
         <swiper :options="sliderOptions" ref="swiper">
           <swiper-slide v-for="(item, index) in showData" :key="index">
             <div>
@@ -38,16 +38,8 @@ export default {
     swiper,
     swiperSlide
   },
-  serviceInject() {
-    return {
-      service: ActivityService
-    }
-  },
-  rxState() {
-    const { list$ } = this.service
-    return {
-      list$
-    }
+  props: {
+    list: Object
   },
   computed: {
     sliderOptions() {

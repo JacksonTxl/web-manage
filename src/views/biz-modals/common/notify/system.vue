@@ -1,20 +1,26 @@
 <template>
   <st-modal
-    :class="b()"
+    :wrapClassName="b()"
     v-model="show"
     @ok="onOk"
     @cancel="onCancel"
-    width="728px"
+    width="640px"
+    :footer="null"
   >
-    系统公告
+    <div :class="b('info')">
+      fdwefeaf{{ info }}
+      <st-t3>标题</st-t3>
+      <div :class="b('content')">内容</div>
+      <st-button type="primary">我知道了</st-button>
+    </div>
   </st-modal>
 </template>
 
 <script>
 export default {
-  name: 'ModalNotice',
+  name: 'ModalNoticeSystem',
   bem: {
-    b: 'modal-notice'
+    b: 'modal-notice-system'
   },
   data() {
     return {
