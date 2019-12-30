@@ -190,8 +190,8 @@ export const routeMapConfig = {
     }
   },
   'shop-sold-course-list-small-course'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '小班课'
-    // routeConfig.meta.auth = 'shop:sold:sold_package_course|list'
+    routeConfig.meta.title = '{{$c("small_course")}}'
+    routeConfig.meta.auth = 'shop:product:small_class_course|list'
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       course_status: { type: Number, default: -1 },
@@ -202,7 +202,7 @@ export const routeMapConfig = {
     }
   },
   'shop-sold-course-info-small-course-info'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '小班课详情'
+    routeConfig.meta.title = '{{$c("small_course")}}详情'
     routeConfig.meta.tabs = [
       'shop-sold-course-info-small-course-info-operation-record',
       'shop-sold-course-info-small-course-info-usage-log'

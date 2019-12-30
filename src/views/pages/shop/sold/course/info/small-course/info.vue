@@ -1,6 +1,6 @@
 <template>
   <st-panel-layout :class="basic()">
-    <st-panel title="小班课详情">
+    <st-panel :title="`${$c('small_course')}详情`">
       <div slot="actions">
         <st-btn-actions
           :options="[

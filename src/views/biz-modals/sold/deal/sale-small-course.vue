@@ -60,6 +60,7 @@
             <st-input-number
               placeholder="请输入购买课时"
               v-decorator="decorators.course_num"
+              :disabled="isDisabledBuyNum"
               :max="amountMax"
               :min="amountMin"
             >
@@ -246,6 +247,7 @@ import { ruleOptions } from './sale-small-course.config'
 import { UserService } from '@/services/user.service'
 import autoContractBtn from '@/views/biz-components/contract/auto-contract-btn.vue'
 import MemberSearch from '@/views/biz-components/member-search/member-search'
+import { COURSE_TYPE } from '@/constants/course/small-course'
 export default {
   name: 'ModalSoldDealSaleMemberCard',
   bem: {
@@ -289,6 +291,7 @@ export default {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
+      COURSE_TYPE,
       form,
       decorators,
       show: false,
@@ -330,6 +333,11 @@ export default {
     this.saleSmallCourseService.serviceInit(this.id).subscribe(result => {
       this.getPrice()
       this.getOrderPrice()
+      if (this.isDisabledBuyNum) {
+        this.form.setFieldsValue({
+          course_num: this.info.buy_num
+        })
+      }
     })
   },
   computed: {
@@ -344,16 +352,19 @@ export default {
       return this.priceInfo < 0 ? '小计不能为负' : ''
     },
     amountMax() {
-      if (this.info.course_type === 1) {
+      if (this.info.course_type === this.COURSE_TYPE.FIXED_COURSE) {
         return this.info.buy_num || 0
       }
       return this.info.num_max || 0
     },
     amountMin() {
-      if (this.info.course_type === 1) {
+      if (this.info.course_type === this.COURSE_TYPE.FIXED_COURSE) {
         return this.info.buy_num || 0
       }
       return this.info.num_min || 0
+    },
+    isDisabledBuyNum() {
+      return this.info.course_type === this.COURSE_TYPE.FIXED_COURSE
     }
   },
   methods: {
@@ -433,7 +444,8 @@ export default {
         product_num: this.form.getFieldValue('course_num'),
         coupon_id: coupon ? coupon.id : undefined,
         advance_id: advanceId,
-        reduce_amount: reduce
+        reduce_amount: reduce,
+        member_id: this.form.getFieldValue('member_id')
       })
     },
     // 获取订单总额

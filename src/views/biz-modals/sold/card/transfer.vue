@@ -33,7 +33,9 @@
             <st-info-item label="会员姓名">
               {{ depositTransferInfo.member_name }}
             </st-info-item>
-            <template v-if="depositTransferInfo.is_minors === 1">
+            <template
+              v-if="depositTransferInfo.is_minors === COURSE_TYPE.FIXED_COURSE"
+            >
               <st-info-item label="家长手机号">
                 {{ depositTransferInfo.parent_mobile }}
               </st-info-item>
@@ -101,7 +103,9 @@
               {{ memberTransferInfo.member_name }}
             </st-info-item>
 
-            <template v-if="memberTransferInfo.is_minors === 1">
+            <template
+              v-if="memberTransferInfo.is_minors === COURSE_TYPE.FIXED_COURSE"
+            >
               <st-info-item label="家长手机号">
                 {{ memberTransferInfo.parent_mobile }}
               </st-info-item>
@@ -278,6 +282,7 @@ import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from './transfer.config'
 import autoContractBtn from '@/views/biz-components/contract/auto-contract-btn.vue'
 import MemberSearch from '@/views/biz-components/member-search/member-search'
+import { COURSE_TYPE } from '@/constants/course/small-course'
 export default {
   name: 'ModalSoldCardTransfer',
   components: {
@@ -336,6 +341,7 @@ export default {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
+      COURSE_TYPE,
       form,
       decorators,
       show: false,
@@ -374,6 +380,7 @@ export default {
               transferee_member_id: +values.member_id,
               member_name: values.member_name,
               mobile: values.mobile ? values.mobile.phone : undefined,
+              country_prefix: values.mobile ? values.mobile.code_id : undefined,
               remain_price: +values.remainPrice,
               contract_number: values.contractNumber,
               pay_channel: +values.payType,
