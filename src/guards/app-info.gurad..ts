@@ -32,8 +32,6 @@ export class AppInfoGuard implements RouteGuard {
       this.userService.fetchMenuData(),
       // 获取全局枚举
       this.userService.fetchEnums(),
-      // 获取全局城市数据
-      this.regionService.getRegions(),
       // 获取全局切换门店列表数据
       this.userService.fetchShopList()
     ).pipe(
