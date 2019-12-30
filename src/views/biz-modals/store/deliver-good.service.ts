@@ -6,6 +6,6 @@ import { tap } from 'rxjs/operators'
 export class DeliverGoodService {
   constructor(private orderApi: OrderApi) {}
   sendOption(params: SendParams) {
-    return this.orderApi.sendAction(params).pipe(tap((res: any) => {}))
+    return this.orderApi.sendAction(params)
   }
 }

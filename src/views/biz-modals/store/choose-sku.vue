@@ -30,6 +30,7 @@
   </st-modal>
 </template>
 <script>
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'modalStoreChooseSku',
   props: {
@@ -64,7 +65,7 @@ export default {
     // 对后台返回的数据转换
     changeData() {
       this.productData.all_spec.forEach(element => {
-        let items = JSON.parse(JSON.stringify(element.spec_item_arr))
+        let items = cloneDeep(element.spec_item_arr)
         element.spec_item_arr = []
         items.forEach(val => {
           element.spec_item_arr.push({
@@ -75,9 +76,7 @@ export default {
         element.itemVal = items[0].spec_item_id
         this.specItemId.push(element.itemVal)
       })
-      this.productData.all_spec = JSON.parse(
-        JSON.stringify(this.productData.all_spec)
-      )
+      this.productData.all_spec = cloneDeep(this.productData.all_spec)
       this.outPutProductInfo()
     },
     // 输出选择规格后对应的信息
