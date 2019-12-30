@@ -8,8 +8,8 @@
         type === 1
           ? loading.getList
           : type === 2
-          ? loading.getLogisticsList
-          : loading.getDeliverList
+          ? loading.getDeliverList
+          : loading.getLogisticsList
       "
       :columns="columns"
       @change="onTableChange"
@@ -26,18 +26,18 @@
           <span>￥{{ item.unit_price }}</span>
         </li>
       </ul>
-      <div slot="action" slot-scope="customRender, record">
+      <div slot="action" slot-scope="customRender, record" v-if="type !== 3">
         <st-table-actions>
           <a
             @click="clickFn(record)"
-            v-if="record.auth['shop:cloud_store:order|write_off'] && type === 1"
+            v-if="type === 1 && record.auth['shop:cloud_store:order|write_off']"
           >
             {{ actionText }}
           </a>
           <a
             @click="clickFn(record)"
             v-if="
-              record.auth['shop:cloud_store:order|deliver_goods'] && type === 2
+              type === 2 && record.auth['shop:cloud_store:order|deliver_goods']
             "
           >
             {{ actionText }}
@@ -86,6 +86,9 @@ export default {
       default: 1
     }
   },
+  created() {
+    this.tableData = []
+  },
   methods: {
     clickFn(val) {
       this.$emit('clicks', val)
@@ -98,13 +101,16 @@ export default {
           this.RowTableService.getList(this.$searchQuery).subscribe()
           break
         case 2:
-          this.RowTableService.getLogisticsList(this.$searchQuery).subscribe()
+          this.RowTableService.getDeliverList(this.$searchQuery).subscribe()
           break
         case 3:
-          this.RowTableService.getDeliverList(this.$searchQuery).subscribe()
+          this.RowTableService.getLogisticsList(this.$searchQuery).subscribe()
           break
       }
     }
+  },
+  mounted() {
+    console.log(this.type)
   }
 }
 </script>
