@@ -11,13 +11,16 @@
 
     <div :class="search('btn')">
       <st-button
+        v-if="auth.warehousing"
         type="primary"
         :class="search('btn--in')"
         @click="moreIn(false)"
       >
         批量入库
       </st-button>
-      <st-button type="primary" @click="moreIn(true)">批量出库</st-button>
+      <st-button type="primary" @click="moreIn(true)" v-if="auth.retrieval">
+        批量出库
+      </st-button>
     </div>
     <st-table
       :columns="searchColumns"
@@ -34,6 +37,7 @@
       <template slot="action" slot-scope="text, record">
         <st-table-actions sytle="width: 120px">
           <a
+            v-if="record.auth['brand_shop:cloud_store:stock|warehousing']"
             v-modal-link="{
               name: 'store-put-in',
               props: { skuList: [record] }
@@ -42,6 +46,7 @@
             入库
           </a>
           <a
+            v-if="record.auth['brand_shop:cloud_store:stock|retrieval']"
             v-modal-link="{
               name: 'store-put-in',
               props: { isOut: true, skuList: [record] }
@@ -49,7 +54,10 @@
           >
             出库
           </a>
-          <a @click="goDetail(record)">
+          <a
+            v-if="record.auth['brand_shop:cloud_store:stock|one_goods_obvious']"
+            @click="goDetail(record)"
+          >
             明细
           </a>
         </st-table-actions>
@@ -73,7 +81,8 @@ export default {
     return {
       tableData: this.searchService.list$,
       loading: this.searchService.loading$,
-      page: this.searchService.page$
+      page: this.searchService.page$,
+      auth: this.searchService.auth$
     }
   },
   mixins: [tableMixin],

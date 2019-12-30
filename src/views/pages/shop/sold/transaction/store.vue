@@ -80,7 +80,7 @@
                       <a-input-number
                         :min="1"
                         :max="record.stock_amount"
-                        @change="onMemberChange"
+                        @change="onMemberChange(0)"
                         v-model="record.nums"
                       />
                     </template>
@@ -184,7 +184,7 @@
                 <st-form-item label="减免">
                   <st-input-number
                     :float="true"
-                    @input="getPrice"
+                    @input="getPrice(0)"
                     v-model="reducePrice"
                     placeholder="请输入减免金额"
                   >
@@ -289,7 +289,7 @@ export default {
   mounted() {
     this.getList()
     this.$searchQuery.product_type = PRODUCT_TYPE.STORE
-    this.getUseCouponList()
+    this.getUseCouponList(0)
     this.listService.getSaleList().subscribe()
   },
   methods: {
@@ -312,7 +312,7 @@ export default {
               success: result => {
                 result.product_id = record
                 this.buyCar.push(result)
-                this.onMemberChange()
+                this.onMemberChange(0)
               }
             }
           })
@@ -326,14 +326,14 @@ export default {
             unit_price: res.product_sku[0].selling_price,
             stock_amount: res.product_sku[0].stock_amount
           })
-          this.onMemberChange()
+          this.onMemberChange(0)
         }
       })
     },
     // 删除购物车商品
     onDelBuyCar(i) {
       this.buyCar.splice(i, 1)
-      this.onMemberChange()
+      this.onMemberChange(0)
     },
     // 生成订单号
     createOrderNum(type) {
@@ -353,7 +353,7 @@ export default {
             description: this.description,
             sale_range: 1,
             shipping_mode: 1,
-            order_amount: this.actualAmount,
+            order_amount: this.currentPrice,
             sku_info: this.buyCar
           }
           if (type === 1) {
@@ -489,7 +489,7 @@ export default {
       let price = this.couponList.filter(o => o.id === event.target.value.id)[0]
         .price
       this.couponText = `${price}元`
-      this.getPrice()
+      this.getPrice(0)
     },
     // 优惠券处理
     onSelectCoupon() {

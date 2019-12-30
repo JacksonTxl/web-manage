@@ -1,6 +1,41 @@
 .shop-store-add {
   &__img {
     float: left;
+    position: relative;
+    &--del {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      box-sizing: border-box;
+      padding-right: 12px;
+      width: 100%;
+      height: 32px;
+      background-color: rgba(0, 0, 0, 0.65);
+      color: #ffffff;
+      text-align: right;
+      font-size: 12px;
+      display: none;
+      &-text {
+        cursor: pointer;
+      }
+    }
+    &:hover {
+      .shop-store-add__img--del {
+        display: block;
+      }
+    }
+  }
+  &__sku--tag {
+    display: inline-block;
+    border: 1px solid #cdd4df;
+    color: #3e44d5c;
+    height: 22px;
+    line-height: 20px;
+    font-size: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 0 4px;
+    margin-right: 8px;
   }
   &__sku--add {
     border: 1px dashed #cdd4df;

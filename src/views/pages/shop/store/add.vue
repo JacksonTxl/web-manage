@@ -65,9 +65,24 @@
                     height="126"
                     alt="商品图片"
                   />
+                  <div :class="basic('img--del')">
+                    <span
+                      :class="basic('img--del-text')"
+                      @click="delImg(item, index)"
+                    >
+                      <st-icon
+                        type="delete"
+                        :class="basic('sku--item-icon')"
+                        style="font-size: 14px"
+                        color="#fff"
+                      ></st-icon>
+                      删除
+                    </span>
+                  </div>
                 </li>
               </ul>
               <st-image-upload
+                v-if="imgList.length < 5"
                 class="mg-t12"
                 width="126px"
                 height="126px"
@@ -79,7 +94,7 @@
                 placeholder="上传图片"
               >
                 <template v-slot:description>
-                  <p>建议尺寸为750px×750px</p>
+                  <p>建议尺寸为750像素×750像素</p>
                 </template>
               </st-image-upload>
               <div class="color-danger" v-if="isImgError">请上传商品图片</div>
@@ -136,7 +151,7 @@
               </a-radio-group>
               <div
                 :class="basic('sku--add')"
-                v-if="isMore === 2 && !isEditMode && skuList.length <= 3"
+                v-if="isMore === 2 && !isEditMode && skuList.length < 3"
                 @click="addSku"
               >
                 <a-icon type="plus" :class="basic('sku--add-icon')" />
@@ -149,8 +164,8 @@
               >
                 <st-form-item
                   label="规格项名称"
-                  :help="nameError"
-                  :validateStatus="isNameError ? 'error' : ''"
+                  :help="item.isNameErr ? '请正确填写规格项' : ''"
+                  :validateStatus="item.isNameErr ? 'error' : ''"
                 >
                   <a-input
                     v-model="item.spec_name"
@@ -158,40 +173,54 @@
                     :disabled="isEditMode"
                     maxlength="20"
                     style="width: 220px"
-                    @blur="skuName(index, $event)"
                   ></a-input>
                   <span
                     :class="basic('sku--item-del')"
-                    @click="delSku()"
-                    v-if="isEditMode"
+                    @click="delSku(index)"
+                    v-if="!isEditMode"
                   >
                     <st-icon
                       type="delete"
                       :class="basic('sku--item-icon')"
                       color="#3F66F6"
                     ></st-icon>
-                    <span
-                      :class="basic('sku--item-text')"
-                      @click="delSku(index)"
-                    >
+                    <span :class="basic('sku--item-text')">
                       删除
                     </span>
                   </span>
                 </st-form-item>
-                <st-form-item label="规格项设置">
-                  <a-select
+                <st-form-item
+                  label="规格项设置"
+                  :help="item.isErr ? '请正确填写规格' : ''"
+                  :validateStatus="item.isErr ? 'error' : ''"
+                >
+                  <!-- <a-select
                     mode="multiple"
                     placeholder="请添加规格设置"
                     v-model="item.spec_item_name"
                     style="width: 220px"
                     :open="false"
                     @change="handleChange(index, $event)"
-                  ></a-select>
+                  ></a-select> -->
+                  <span
+                    v-for="(sku, i) in item.spec_item_name"
+                    :key="i"
+                    :class="basic('sku--tag')"
+                  >
+                    {{ sku }}
+                    <a-icon type="close" @click="delSkuItem(index, i)" />
+                  </span>
                   <a :class="basic('sku--item-add')" @click="addSkuItem(index)">
                     添加规格
                   </a>
                 </st-form-item>
               </div>
+            </st-form-item>
+            <st-form-item
+              label-fix
+              :help="tableTips"
+              :validateStatus="tableErr ? 'error' : ''"
+            >
               <st-container>
                 <st-table
                   rowKey="key"
@@ -217,7 +246,7 @@
                       <a
                         style="margin-left: 8px"
                         :class="basic('apply--all')"
-                        v-if="isMore === 2"
+                        v-if="isMore === 2 && tableData.length > 1"
                         @click="allApply('market_price', record.market_price)"
                       >
                         批量应用
@@ -242,7 +271,7 @@
                       <a
                         style="margin-left: 8px"
                         :class="basic('apply--all')"
-                        v-if="isMore === 2"
+                        v-if="isMore === 2 && tableData.length > 1"
                         @click="allApply('selling_price', record.selling_price)"
                       >
                         批量应用
@@ -262,7 +291,7 @@
                       <a
                         style="margin-left: 8px"
                         :class="basic('apply--all')"
-                        v-if="isMore === 2"
+                        v-if="isMore === 2 && tableData.length > 1"
                         @click="allApply('stock_amount', record.stock_amount)"
                       >
                         批量应用
@@ -337,7 +366,6 @@ export default {
           aspectRatio: 1
         }
       },
-      isEdit: false,
       name: '', // 商品名称
       isMore: 1, // 是否是多规格
       tableData: [
@@ -349,17 +377,17 @@ export default {
         }
       ],
       skuList: [],
-      content: '', // 详情内容，蒋浩说加style
+      content: '',
       isEditor: false,
       fileList: [], // 商品图片组件中
       imgList: [], //上传的图片
       isImgError: false,
       shelves_status: 1,
-      nameError: '',
-      isNameError: false,
       product_images_del: [],
       product_images_add: [],
-      classList: []
+      classList: [],
+      tableErr: false,
+      tableTips: ''
     }
   },
   components: {
@@ -394,6 +422,36 @@ export default {
   methods: {
     // 保存
     onSubmit() {
+      let isReturn = false
+      let tableError = false
+      if (!this.imgList.length) {
+        this.isReturn = true
+        this.isImgError = true
+      }
+      this.skuList.forEach(item => {
+        item.isErr = false
+        item.isNameErr = false
+        if (!item.spec_item_name.length) {
+          item.isErr = true
+          isReturn = true
+        }
+        if (!item.spec_name) {
+          item.isNameErr = true
+          isReturn = true
+        }
+      })
+      this.tableData.forEach(item => {
+        if (!item.market_price || !item.selling_price) {
+          tableError = true
+          this.tableTips = '请正确填写表格'
+          this.tableErr = true
+          isReturn = true
+        }
+      })
+      if (!tableError) {
+        this.tableTips = ''
+        this.tableErr = false
+      }
       this.form.validate().then(values => {
         if (this.isEditMode) {
           this.editGoodOld(values)
@@ -401,6 +459,9 @@ export default {
           this.addGoodNew(values)
         }
       })
+      if (isReturn) {
+        return
+      }
     },
     addGoodNew(values) {
       let data = {}
@@ -469,9 +530,9 @@ export default {
         if (this.skuList.length > 0) {
           let sku = {}
           this.info.all_spec[0].spec_item_arr.forEach(spec => {
+            sku.spec_id = this.info.all_spec[0].spec_id
             if (spec.spec_item_name === item['0']) {
               sku.spec_item_id = spec.spec_item_id
-              sku.spec_id = this.info.all_spec[0].spec_id
             }
           })
           sku.spec_name = this.skuList[0].spec_name
@@ -481,9 +542,9 @@ export default {
         if (this.skuList.length > 1) {
           let sku = {}
           this.info.all_spec[1].spec_item_arr.forEach(spec => {
+            sku.spec_id = this.info.all_spec[1].spec_id
             if (spec.spec_item_name === item['1']) {
               sku.spec_item_id = spec.spec_item_id
-              sku.spec_id = this.info.all_spec[1].spec_id
             }
           })
           sku.spec_name = this.skuList[1].spec_name
@@ -493,9 +554,9 @@ export default {
         if (this.skuList.length > 2) {
           let sku = {}
           this.info.all_spec[2].spec_item_arr.forEach(spec => {
+            sku.spec_id = this.info.all_spec[2].spec_id
             if (spec.spec_item_name === item['2']) {
               sku.spec_item_id = spec.spec_item_id
-              sku.spec_id = this.info.all_spec[2].spec_id
             }
           })
           sku.spec_name = this.skuList[2].spec_name
@@ -505,7 +566,8 @@ export default {
         product_sku.push(skuItem)
       })
       data = {
-        product_images: this.imgList, // 商品图片
+        product_images_del: this.product_images_del, // 商品图片
+        product_images_add: this.product_images_add, // 商品图片
         product_intro: this.content, // 商品介绍
         product_sku: product_sku, // 规格设置
         shelves_status: this.shelves_status, // 上架状态
@@ -539,6 +601,8 @@ export default {
             ? this.saleType.map(item => item.value)
             : [this.info.sale_type]
       })
+      this.name = this.info.product_name
+      this.isMore = this.info.all_spec ? 2 : 1
       this.imgList = this.info.product_images
       this.content = this.info.product_intro
       this.shelves_status = this.info.shelves_status
@@ -552,7 +616,9 @@ export default {
             })
             this.skuList.push({
               spec_name: item.spec_name,
-              spec_item_name: list
+              spec_item_name: list,
+              isErr: false,
+              isNameErr: false
             })
           }
         })
@@ -580,20 +646,19 @@ export default {
     changeName(e) {
       this.name = e.target.value
     },
-    addSku() {
-      this.skuList.push({ spec_name: '', spec_item_name: [] })
+    delImg(item, index) {
+      if (this.isEditMode && item.image_id) {
+        this.product_images_del.push(item.image_id)
+      }
+      this.imgList.splice(index, 1)
     },
-    skuName(index, e) {
-      // let list = JSON.parse(JSON.stringify(this.skuList)).splice(index, 1)
-      // console.log(index, e.target.value, list, 'e============--')
-      // const isSame = list.some(item => item.spec_name === e.target.value)
-      // if (isSame) {
-      //   this.nameError = '规格项名称不可相同'
-      //   this.isNameError = true
-      // } else {
-      //   this.nameError = ''
-      //   this.isNameError = false
-      // }
+    addSku() {
+      this.skuList.push({
+        spec_name: '',
+        spec_item_name: [],
+        isErr: false,
+        isNameErr: false
+      })
     },
     addSkuItem(index) {
       if (this.skuList.length >= 10) {
@@ -612,8 +677,13 @@ export default {
       })
     },
     // 改变规格
-    handleChange(index, event) {
-      this.skuList[index].spec_item_name = event
+    // handleChange(index, event) {
+    //   this.skuList[index].spec_item_name = event
+    //   this.changeTable()
+    // },
+    delSkuItem(index, i) {
+      console.log('删除规格了！！！！！', this.skuList)
+      this.skuList[index].spec_item_name.splice(i, 1)
       this.changeTable()
     },
     delSku(index) {
@@ -631,7 +701,6 @@ export default {
       }
     },
     getImageUrl(imageUrl) {
-      g
       const imgEl = `<img src='${imageUrl.url}' width='400' height='400'>`
       this.content = this.content + imgEl
     },
@@ -640,18 +709,18 @@ export default {
       return this.content.length === 0
     },
     getImage(data) {
-      console.log(data, '这是图片返回的数据')
-      this.imgList.push({
+      let img = {
         image_id: data[0].image_id,
         image_key: data[0].image_key,
         image_url: data[0].image_url,
         is_cover: 0
-      })
+      }
+      this.imgList.push(img)
+      if (this.isEditMode) {
+        this.product_images_add.push(img)
+      }
+      this.isImgError = false
       this.fileList = []
-    },
-    // 删除图片
-    onDelete(index) {
-      this.imgList.splice(index, 1)
     },
     // 规格发生改变时列表数据相应改变
     changeTable() {
@@ -687,7 +756,9 @@ export default {
         props: { shopList: 1 },
         on: {
           success: res => {
-            this.classList = res
+            this.addService.getList().subscribe(res => {
+              this.classList = res.list
+            })
           }
         }
       })
