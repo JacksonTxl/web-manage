@@ -195,30 +195,7 @@ export default {
   },
   data() {
     return {
-      columns: columns,
-      list: [
-        {
-          product_type_name: '2',
-          product_name: '铁鸿基',
-          rule_name: '黑色',
-          product_count: '1',
-          shop_name: '北研门店'
-        },
-        {
-          product_type_name: '2',
-          product_name: '铁鸿基',
-          rule_name: '黑色',
-          product_count: '1',
-          shop_name: '北研门店'
-        },
-        {
-          product_type_name: '2',
-          product_name: '铁鸿基',
-          rule_name: '黑色',
-          product_count: '1',
-          shop_name: '北研门店'
-        }
-      ]
+      columns: columns
     }
   },
   methods: {}
