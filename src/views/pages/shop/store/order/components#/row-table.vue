@@ -21,9 +21,9 @@
         :class="basic('sku')"
       >
         <li v-for="(item, index) in record.product" :key="index">
-          <span>{{ item.product_name }}</span>
-          <span>x{{ item.product_count }}</span>
-          <span>￥{{ item.unit_price }}</span>
+          <span :class="basic('product-name')">{{ item.product_name }}</span>
+          <span :class="basic('product-count')">x{{ item.product_count }}</span>
+          <span :class="basic('unit-price')">￥{{ item.unit_price }}</span>
         </li>
       </ul>
       <div slot="action" slot-scope="customRender, record" v-if="type !== 3">
