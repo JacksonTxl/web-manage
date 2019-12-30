@@ -57,7 +57,7 @@
         </st-form-item>
       </a-col>
     </a-row>
-    <a-row :gutter="8">
+    <a-row :gutter="8" style="height:56px;overflow:hidden">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item required>
           <template slot="label">
