@@ -7,7 +7,7 @@
             <st-info-item label="配送方式">
               {{ info.shipping_mode_name }}
             </st-info-item>
-            <st-info-item label="快递单号" V-if="info.shipping_sn != ''">
+            <st-info-item label="快递单号" v-if="info.shipping_sn != ''">
               {{ info.shipping_sn }}
             </st-info-item>
           </st-info>
