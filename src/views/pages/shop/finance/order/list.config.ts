@@ -4,7 +4,7 @@ export const columns = () => {
       title: '订单编号',
       dataIndex: 'id',
       fixed: 'left',
-      width: 150,
+      width: 220,
       scopedSlots: { customRender: 'id' }
     },
     {

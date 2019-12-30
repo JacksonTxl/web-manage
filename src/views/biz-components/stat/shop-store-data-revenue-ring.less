@@ -27,7 +27,7 @@
   .g2-legend-text {
     display: inline-block;
     width: 64px;
-    color: #3e4d5c;
+    .c(@text-color);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -39,7 +39,7 @@
   }
 
   .guide-title {
-    color: #252a2e;
+    color: @heading-color;
     margin-bottom: 8px;
   }
 
@@ -58,7 +58,7 @@
   .guide-name {
     font-size: 14px;
     line-height: 22px;
-    color: #9bacb9;
+    color: @text-color-secondary;
   }
 
   .g2-legend-list-item {
@@ -75,6 +75,6 @@
   }
 
   .legend-percent {
-    color: #252a2e;
+    color: @heading-color;
   }
 }

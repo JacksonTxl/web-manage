@@ -31,7 +31,13 @@ export interface FlowParams {
   pay_channel: number
   flow_time: string
 }
-
+export interface ChlidRefundParams {
+  order_sub_id: number
+  refund_money: number
+  reason: number
+  pay_channel: string
+  description: string
+}
 export class OrderApi extends Api {
   /**
    * 获取订单列表
@@ -63,7 +69,7 @@ export class OrderApi extends Api {
    */
   orderRefund(params: RefundParams) {
     return this.http.post(`/v1/finance/order/refund_all`, {
-      params: { ...params }
+      params: { params }
     })
   }
   /**
@@ -83,7 +89,7 @@ export class OrderApi extends Api {
    */
   split(params: SplitParams) {
     return this.http.post(`/v1/finance/order/split`, {
-      params: { ...params }
+      params: { params }
     })
   }
   /**
@@ -123,5 +129,25 @@ export class OrderApi extends Api {
    */
   getDelivery(id: number) {
     return this.http.get(`/v1/finance/order/shipping/${id}`)
+  }
+  /**
+   * 商品信息
+   */
+  getGoodsInfo(id: number) {
+    return this.http.get(`/v1/finance/order/product/${id}`)
+  }
+  /**
+   * 子订单回显信息
+   */
+  getChildInfo(id: number) {
+    return this.http.get(`/v1/finance/order/sub_order_refund_info/${id}`)
+  }
+  /**
+   * 子订单退款
+   */
+  orderChildRefund(params: ChlidRefundParams) {
+    return this.http.post(`/v1/finance/order/refund`, {
+      params: { params }
+    })
   }
 }

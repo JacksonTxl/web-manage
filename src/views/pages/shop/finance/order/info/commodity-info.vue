@@ -167,7 +167,13 @@
           </st-info>
         </a-col>
       </a-row>
-      <st-table :dataSource="list" :columns="columns"></st-table>
+      <st-table
+        v-if="product_type === 12"
+        :dataSource="info"
+        :columns="columns"
+        :stripe="false"
+        :page="false"
+      ></st-table>
     </st-panel>
   </section>
 </template>
@@ -189,15 +195,7 @@ export default {
   },
   data() {
     return {
-      columns: columns,
-      list: [
-        {
-          product_type: '2',
-          product_name: '铁鸿基',
-          product_num: '1',
-          member_info: '北研门店'
-        }
-      ]
+      columns: columns
     }
   },
   methods: {}

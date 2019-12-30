@@ -38,12 +38,12 @@
 
       div {
         div:nth-child(1) {
-          color: #9bacb9;
+          color: @text-color-secondary;
         }
 
         div:nth-child(2) {
           padding: 8px 0;
-          color: #252a2e;
+          color: @heading-color;
           font-size: 26px;
           font-weight: bold;
         }
@@ -108,7 +108,7 @@
   }
 
   &__whole-item-active {
-    border: 1px solid #3f66f6;
+    border: 1px solid @primary-color;
   }
 
   &__whole-item-text {
@@ -116,7 +116,7 @@
     font-size: 24px;
 
     span {
-      color: #252a2e;
+      color: @heading-color;
     }
   }
 
@@ -124,7 +124,7 @@
     margin-top: 12px;
 
     &__sales-box {
-      background: #fff;
+      background: @white;
 
       .ant-row {
         overflow: hidden;
@@ -150,7 +150,7 @@
       display: flex;
 
       div {
-        background: #fff;
+        background: @white;
       }
     }
 
@@ -191,7 +191,7 @@
   }
 
   .buy-consumption {
-    background: #fff;
+    background: @white;
     margin-top: 12px;
   }
 

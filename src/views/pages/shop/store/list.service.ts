@@ -16,18 +16,20 @@ export class ListService implements Controller {
   shelvesStatus$ = this.userService.getOptions$('cloud_store.shelves_status', {
     addAll: true
   })
-  // auth$ = this.authService.authMap$({
-  //   // 记得设置鉴权
-  //   add: 'brand:activity:group_buy|add'
-  // })
-  // brand$ = this.userService.brand$  需要
-
-  constructor(private storeApi: StoreApi, private userService: UserService) {}
+  auth$ = this.authService.authMap$({
+    // 记得设置鉴权
+    add: 'shop:cloud_store:goods|add'
+  })
+  constructor(
+    private storeApi: StoreApi,
+    private userService: UserService,
+    private authService: AuthService
+  ) {}
   @Effect()
   getList(params: StoreList) {
     return this.storeApi.getList(params).pipe(
       tap((res: any) => {
-        // res = this.authService.filter(res)
+        res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })
@@ -48,13 +50,6 @@ export class ListService implements Controller {
     console.log(id, params)
     return this.storeApi.onShelf(id, params).pipe(tap((res: any) => {}))
   }
-  // getSharePosterInfo(params: { id: number }) {
-  //   return this.storeApi.getPosterInfo(params).pipe(
-  //     tap((res: any) => {
-  //       this.info$.commit(() => res.info)
-  //     })
-  //   )
-  // }
   init(params: any) {
     console.log(this.userService)
     return forkJoin(this.getList(params), this.getGoodsCategory())

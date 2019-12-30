@@ -3,8 +3,12 @@
     <st-panel app :class="basic()">
       <div :class="basic('search')">
         <div :class="basic('add')">
-          <!--做权限-->
-          <st-button icon="add" type="primary" @click="onAddGoods">
+          <st-button
+            icon="add"
+            type="primary"
+            @click="onAddGoods"
+            v-if="auth.add"
+          >
             新增商品
           </st-button>
         </div>
@@ -39,6 +43,7 @@
       </div>
       <div :class="basic('content')">
         <st-table
+          rowKey="product_id"
           :page="page"
           :columns="columns"
           :dataSource="list"
@@ -46,16 +51,28 @@
         >
           <template slot="action" slot-scope="text, record">
             <st-table-actions sytle="width: 120px">
-              <a @click="onShelf(record)">
+              <a
+                @click="onShelf(record)"
+                v-if="record.auth['shop:cloud_store:goods|up']"
+              >
                 上架
               </a>
-              <a @click="onEdit(record)">
+              <a
+                @click="onEdit(record)"
+                v-if="record.auth['shop:cloud_store:goods|edit']"
+              >
                 编辑
               </a>
-              <a @click="onShelf(record)">
+              <a
+                @click="onShelf(record)"
+                v-if="record.auth['shop:cloud_store:goods|down']"
+              >
                 下架
               </a>
-              <a @click="onDel(record)">
+              <a
+                @click="onDel(record)"
+                v-if="record.auth['shop:cloud_store:goods|del']"
+              >
                 删除
               </a>
             </st-table-actions>
@@ -89,7 +106,8 @@ export default {
       page: this.listService.page$,
       loading: this.listService.loading$,
       goodsList: this.listService.goodsList$,
-      cloudStore: this.listService.shelvesStatus$
+      cloudStore: this.listService.shelvesStatus$,
+      auth: this.listService.auth$
     }
   },
   data(vm) {
@@ -111,6 +129,7 @@ export default {
   },
   mounted() {
     this.setSearchData()
+    console.log(this.auth)
   },
   watch: {
     query(newVal) {
@@ -133,7 +152,6 @@ export default {
     },
     // 上下架
     onShelf(record) {
-      console.log(record)
       let status = record.product_shelves === 1 ? 2 : 1
       this.listService
         .onShelf(record.product_id, { shelves_status: status })

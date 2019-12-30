@@ -165,6 +165,7 @@ export default {
     setLegend() {
       this.chart.legend({
         position: 'right-center',
+        clickable: false,
         useHtml: true,
         itemTpl: (name, color, checked, index) => {
           const row = this.dv.findRow({ name })
