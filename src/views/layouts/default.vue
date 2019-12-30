@@ -296,7 +296,6 @@ export default {
         })
         return
       }
-      this.systemListLength++
       this.$modalRouter.push({
         name: 'common-notify-system',
         props: { info: this.systemList$[this.systemListLength] },
@@ -304,7 +303,7 @@ export default {
           // 模态窗动画400ms
           success: res => {
             setTimeout(() => {
-              console.log('3000')
+              this.systemListLength++
               this.onSuccess()
             }, 400)
           }

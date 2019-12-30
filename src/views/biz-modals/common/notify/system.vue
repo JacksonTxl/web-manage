@@ -4,6 +4,7 @@
     v-model="show"
     @ok="onOk"
     @cancel="onCancel"
+    @change="onCancel"
     width="640px"
     :footer="null"
   >
@@ -11,7 +12,7 @@
       fdwefeaf{{ info }}
       <st-t3>标题</st-t3>
       <div :class="b('content')">内容</div>
-      <st-button type="primary">我知道了</st-button>
+      <st-button type="primary" @click="onOk">我知道了</st-button>
     </div>
   </st-modal>
 </template>
@@ -36,8 +37,8 @@ export default {
       this.$emit('success')
     },
     onCancel() {
-      // this.show = false
-      // this.$emit('success')
+      this.show = false
+      this.$emit('success')
       console.log(info)
     }
   }
