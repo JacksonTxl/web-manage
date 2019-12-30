@@ -21,7 +21,7 @@
       <template slot="notify_type" slot-scope="text, record">
         {{ record.notify_type.name }}
       </template>
-      <template slot="title" slot-scope="text">
+      <template slot="st-title" slot-scope="text">
         <st-overflow-text maxWidth="250px" :value="text" />
       </template>
       <template slot="actions" slot-scope="text, record">

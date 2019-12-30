@@ -8,9 +8,7 @@
       <span :class="b('item-type')" class="mg-r8">{{ info$.notify_type }}</span>
       <span :class="b('item-time')">{{ info$.send_time }}</span>
     </div>
-    <div :class="b('content')" class="mg-t24">
-      {{ info$.content }}
-    </div>
+    <div :class="b('content')" class="mg-t24" v-html="info$.content"></div>
   </st-modal>
 </template>
 

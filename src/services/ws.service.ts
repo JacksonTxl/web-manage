@@ -45,7 +45,6 @@ export class WsService {
   }
   public init(query: any) {
     this.getWebsocketInstance({ token: this.token, appId: 10000 })
-    console.log('getWebsocketInstance', this.user$.value.avatar)
     this.message()
     this.setHeartBeat()
   }
@@ -57,10 +56,11 @@ export class WsService {
         this.count$.commit(() => this.count)
         const config = {
           title: msg.payload.title,
-          content: msg.payload.content
+          content: msg.payload.content,
+          icon: this.user$.value.avatar,
+          duration: 1000
         }
-        new Notification(msg.payload.title, { body: msg.payload.content })
-        // this.notificationService.info(config)
+        this.notificationService.open(config)
       },
       (err: any) => console.warn('webSocket err', err),
       () => console.log('complete')

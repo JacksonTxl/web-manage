@@ -14,7 +14,7 @@ export const columns = () => {
     {
       title: '公告标题',
       dataIndex: 'title',
-      scopedSlots: { customRender: 'title' },
+      scopedSlots: { customRender: 'st-title' },
       width: 250
     },
     {
