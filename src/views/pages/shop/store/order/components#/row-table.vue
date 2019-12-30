@@ -54,13 +54,13 @@ export default {
   name: 'rowtable',
   mixins: [tableMixin],
   serviceInject() {
-    return { RowTableService: RowTableService }
+    return { rowTableService: RowTableService }
   },
   rxState() {
     return {
-      tableData: this.RowTableService.list$,
-      page: this.RowTableService.page$,
-      loading: this.RowTableService.loading$
+      tableData: this.rowTableService.list$,
+      page: this.rowTableService.page$,
+      loading: this.rowTableService.loading$
     }
   },
   bem: {
@@ -98,19 +98,16 @@ export default {
       this.$searchQuery.size = pagination.pageSize
       switch (this.type) {
         case 1:
-          this.RowTableService.getList(this.$searchQuery).subscribe()
+          this.rowTableService.getList(this.$searchQuery).subscribe()
           break
         case 2:
-          this.RowTableService.getDeliverList(this.$searchQuery).subscribe()
+          this.rowTableService.getDeliverList(this.$searchQuery).subscribe()
           break
         case 3:
-          this.RowTableService.getLogisticsList(this.$searchQuery).subscribe()
+          this.rowTableService.getLogisticsList(this.$searchQuery).subscribe()
           break
       }
     }
-  },
-  mounted() {
-    console.log(this.type)
   }
 }
 </script>

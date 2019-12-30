@@ -11,11 +11,11 @@ export class RowTableService implements Controller {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
-  constructor(private OrderApi: OrderApi) {}
+  constructor(private orderApi: OrderApi) {}
   // 获取核销列表
   @Effect()
   getList(params: ListParams) {
-    return this.OrderApi.verificationList(params).pipe(
+    return this.orderApi.verificationList(params).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
@@ -25,7 +25,7 @@ export class RowTableService implements Controller {
   // 待发货订单
   @Effect()
   getDeliverList(params: ListParams) {
-    return this.OrderApi.DeliverList(params).pipe(
+    return this.orderApi.DeliverList(params).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
@@ -35,7 +35,7 @@ export class RowTableService implements Controller {
   // 待签收订单
   @Effect()
   getLogisticsList(params: ListParams) {
-    return this.OrderApi.LogisticsList(params).pipe(
+    return this.orderApi.LogisticsList(params).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
@@ -44,7 +44,7 @@ export class RowTableService implements Controller {
   }
   // 核销操作
   verificationGood(params: VerificationParams) {
-    return this.OrderApi.verificationAction(params).pipe(tap((res: any) => {}))
+    return this.orderApi.verificationAction(params).pipe(tap((res: any) => {}))
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     console.log(to.meta.query)

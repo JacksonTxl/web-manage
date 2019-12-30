@@ -33,15 +33,14 @@ export default {
     StoreDeliverGood
   },
   serviceInject() {
-    return { RowTableService: RowTableService }
+    return { rowTableService: RowTableService }
   },
   methods: {
     // 获取发货订单列表
     getListData() {
-      this.RowTableService.getDeliverList(this.$searchQuery).subscribe()
+      this.rowTableService.getDeliverList(this.$searchQuery).subscribe()
     },
     sendGoods(val) {
-      console.log(val)
       this.$modalRouter.push({
         name: 'store-deliver-good',
         props: {
