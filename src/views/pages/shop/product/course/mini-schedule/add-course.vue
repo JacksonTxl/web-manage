@@ -10,13 +10,13 @@
       <span :class="b('head-close')" @click="hide">X</span>
       <div class="add-course-conent">
         <st-form labelWidth="68px" :form="form">
-          <st-form-item label="添加课程" required class="mg-t12">
+          <st-form-item label="排课名称" required class="mg-t12">
             <a-input
               placeholder="请输入"
               v-decorator="decorators.current_course_name"
             />
           </st-form-item>
-          <st-form-item label="日期" required v-if="!cycle_type">
+          <st-form-item label="日期" required v-if="cycle_type === 2">
             <a-date-picker
               style="width:100%"
               v-decorator="decorators.start_days"
@@ -190,7 +190,7 @@ export default {
       this.courtOptions.forEach((item, index) => {
         if (item.id === data[0]) {
           this.params.court_name = item.name
-          if (data[1] && data[1] != 'none') {
+          if (data[1]) {
             item.children.forEach((childrenItem, index) => {
               if (childrenItem.id === data[1]) {
                 this.params.court_name = `${item.name} / ${childrenItem.name}`
@@ -237,6 +237,8 @@ export default {
         this.smallCourseScheduleService
           .conflict(verifyParams)
           .subscribe(res => {
+            console.log('查看冲突验证结果')
+            console.log(res)
             if (this.cycle_type === 1) {
               this.$emit(
                 'addCourse',

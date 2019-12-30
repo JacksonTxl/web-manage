@@ -26,7 +26,7 @@
             <a-select-option :key="1" :value="1">
               周排课方式
             </a-select-option>
-            <a-select-option :key="0" :value="0">
+            <a-select-option :key="2" :value="2">
               自定义排课方式
             </a-select-option>
           </a-select>
@@ -55,7 +55,12 @@
                 :key="item.weekId"
               >
                 <st-t4 class="mg-b12">{{ item.date }}</st-t4>
-                <div v-if="filterDate[i][item.week][0].week">
+                <div
+                  v-if="
+                    filterDate[i][item.week][0].week ||
+                      filterDate[i][item.week][0].week == 0
+                  "
+                >
                   <div
                     :class="b('schedule__card')"
                     v-for="(cardItem, index) in filterDate[i][item.week]"
@@ -218,6 +223,7 @@ export default {
       disabledAddCourseBtn: true,
       disabledCustomBtn: true,
       coachId: undefined,
+      editScheduleCycleFlag: false,
       cycle_type: 1,
       start_date: '2019-12-16',
       end_date: '2019-12-30',
@@ -235,7 +241,7 @@ export default {
         { weekId: 'week4', week: 4, date: '周四' },
         { weekId: 'week5', week: 5, date: '周五' },
         { weekId: 'week6', week: 6, date: '周六' },
-        { weekId: 'week7', week: 7, date: '周日' }
+        { weekId: 'week0', week: 0, date: '周日' }
       ],
       filterDate: {},
       scheduleList: [
@@ -302,27 +308,38 @@ export default {
         .subscribe(res => {
           console.log(res)
           // 用回显数据判断是新增还是编辑
-          if (res.is_cycle === 1) {
-          }
-          if (res.list.length && res.is_cycle === 1) {
-            this.scheduleList = res.list
-            this.dealScheduleDate(this.scheduleList)
-            this.filterDateList(this.scheduleList)
-          } else if (!res.list.length && res.is_cycle === 1) {
-            this.initScheduleDate()
-            //this.filterDateList(this.scheduleList)
-          } else if (res.is_cycle === 0) {
-            this.initScheduleDate()
-            this.cycle_type = res.is_cycle
-            this.customizeScheduleList = res.list
-            console.log(this.customizeScheduleList)
-          }
           this.disabledAddCourseBtn = false
           this.disabledCustomBtn = false
+          if (res.list.length && res.cycle_type === 1) {
+            console.log('周期有数据')
+            this.scheduleList = res.list
+            this.editScheduleCycleFlag = true
+            this.dealScheduleDate(this.scheduleList)
+            this.filterDateList(this.scheduleList)
+          } else if (!res.list.length && res.cycle_type === 1) {
+            console.log('周期无数据')
+            this.initScheduleDate()
+            //this.filterDateList(this.scheduleList)
+          } else if (res.cycle_type === 2) {
+            console.log('自主')
+            if (res.list.length) {
+              this.editScheduleCycleFlag = true
+            }
+            this.initScheduleDate()
+            this.cycle_type = res.cycle_type
+            this.customizeScheduleList = res.list
+            console.log(this.customizeScheduleList)
+          } else if (!res.list.length && res.cycle_type === 0) {
+            console.log('无数据无类型')
+            this.initScheduleDate()
+          }
         })
     },
     onChangeScheduleType(value) {
-      if (!value || (!this.scheduleList[0].course_time.length && value === 1)) {
+      if (
+        value === 2 ||
+        (!this.scheduleList[0].course_time.length && value === 1)
+      ) {
         this.initScheduleDate()
       } else {
         this.dealScheduleDate(this.scheduleList)
@@ -379,7 +396,11 @@ export default {
         item.course_time.forEach((item, index) => {
           if (item.week) {
             courseNum += item.list.length
-            text += this.weekList[item.week - 1].date
+            if (item.week == 0) {
+              text += this.weekList[this.weekList.length - 1].date
+            } else {
+              text += this.weekList[item.week - 1].date
+            }
             item.list.forEach((item, index) => {
               item.show = false
               if (!item.conflict) {
@@ -393,7 +414,7 @@ export default {
             listItemCard[item.week][0].show = false
           }
         })
-        for (let i = 1; i <= 7; i++) {
+        for (let i = 0; i <= 6; i++) {
           if (!listItemCard[i]) {
             listItemCard[i] = []
             let item = {}
@@ -406,13 +427,6 @@ export default {
       console.log(list)
       console.log(dateList)
       this.filterDate = list
-      // if (this.disabledAddCourseBtn) {
-      //   this.filterDate = list
-      // } else {
-      //   this.$nextTick(function() {
-      //     this.filterDate = list
-      //   })
-      // }
     },
     // 增加课程
     createCourseWeek(courseItem, courseTime) {
@@ -427,7 +441,7 @@ export default {
       console.log('增加周期性课程排期')
       console.log(info)
       let courseItem = info
-      courseItem.court_site_id = info.court_site_id || 'none'
+      courseItem.court_site_id = info.court_site_id || 0
       courseItem.conflict = conflict
       courseItem.conflictList = list
       if (!this.scheduleList[cycleIndex].course_time.length) {
@@ -440,7 +454,7 @@ export default {
       }
       let findWeekFlag = false
       this.scheduleList[cycleIndex].course_time.forEach((item, index) => {
-        if (item.week === courseItem.week) {
+        if (item.week == courseItem.week) {
           console.log('匹配对应的周几')
           findWeekFlag = true
           item.list.push(courseItem)
@@ -481,7 +495,7 @@ export default {
             console.log(info)
             this.scheduleList[cycleIndex].course_time.forEach(
               (dayItems, index) => {
-                if (dayItems.week === info.week) {
+                if (dayItems.week == info.week) {
                   dayItems.list[positionIndex] = info
                   dayItems.list[positionIndex].conflictList = list
                   dayItems.list[positionIndex].conflict = conflict
@@ -548,7 +562,7 @@ export default {
     },
     onClickSaveSchedule() {
       let courseList
-      if (this.cycle_type === 0) {
+      if (this.cycle_type === 2) {
         courseList = this.customizeScheduleList
       } else {
         courseList = this.scheduleList
@@ -556,6 +570,7 @@ export default {
       const smallCourseInfo = this.smallCourseInfo
       const courseNum = this.tipsCourseNum
       const cycle_type = this.cycle_type
+      const editScheduleCycleFlag = this.editScheduleCycleFlag
       console.log(smallCourseInfo)
       this.$modalRouter.push({
         name: 'schedule-small-course-submit-course',
@@ -563,7 +578,8 @@ export default {
           scheduleList: courseList,
           courseInfo: smallCourseInfo,
           cycle_type: cycle_type,
-          courseNum: courseNum
+          courseNum: courseNum,
+          editScheduleCycleFlag: editScheduleCycleFlag
         },
         on: {
           // editCourse: (cycleIndex, week, positionIndex) => {

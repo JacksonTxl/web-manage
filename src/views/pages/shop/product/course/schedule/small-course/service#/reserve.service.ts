@@ -58,8 +58,8 @@ export class SmallCourseScheduleReserveService {
    * @param params
    * 小班课签到
    */
-  check(params: CheckInput) {
-    return this.reserveApi.check(params).pipe(
+  check(id: any) {
+    return this.reserveApi.check(id).pipe(
       tap(res => {
         this.msg.success({ content: '签到消费成功' })
       })
@@ -85,23 +85,49 @@ export class SmallCourseScheduleReserveService {
     )
   }
   /**
-   * 取消预约
+   * 取消排期
    */
-  del(id: string) {
-    return this.reserveApi.del(id).pipe(
+  cancel(id: string) {
+    return this.reserveApi.cancel(id).pipe(
       tap(res => {
-        this.msg.success({ content: '取消预约成功' })
+        this.msg.success({ content: '取消排课成功' })
       })
     )
   }
   /**
    * 添加补课
    */
-  remedial(id: string) {
+  remedial(id: any) {
     return this.reserveApi.remedial(id).pipe(
+      tap(res => {
+        this.msg.success({ content: '添加成功' })
+      })
+    )
+  }
+  /**
+   * 补签到
+   */
+  checkSign(id: any) {
+    return this.reserveApi.checkSign(id).pipe(
       tap(res => {
         this.msg.success({ content: '补课成功' })
       })
     )
+  }
+  /**
+   * 请假 msg
+   */
+  leave(id: any) {
+    return this.reserveApi.leave(id).pipe(
+      tap(res => {
+        this.msg.success({ content: '请假成功' })
+      })
+    )
+  }
+  /**
+   * 查看补课
+   */
+  message(id: any) {
+    return this.reserveApi.msg(id)
   }
 }

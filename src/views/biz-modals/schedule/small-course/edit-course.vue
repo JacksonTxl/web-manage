@@ -10,7 +10,6 @@
       <st-form-item label="日期" required v-if="!cycle_type">
         <a-date-picker
           style="width:100%"
-          :showTime="{ format: 'YYYY-MM-DD' }"
           format="YYYY-MM-DD"
           v-decorator="decorators.start_days"
         />
@@ -147,7 +146,7 @@ export default {
       coach_id: item.coach_id,
       court_id: court_item
     })
-    if (!this.cycle_type) {
+    if (this.cycle_type === 2) {
       console.log(this.cycle_type)
       console.log(time)
       this.form.setFieldsValue({
@@ -176,7 +175,7 @@ export default {
       this.courtOptions.forEach((item, index) => {
         if (item.id === data[0]) {
           this.params.court_name = item.name
-          if (data[1] && data[1] != 'none') {
+          if (data[1]) {
             item.children.forEach((childrenItem, index) => {
               if (childrenItem.id === data[1]) {
                 this.params.court_name = `${item.name} / ${childrenItem.name}`

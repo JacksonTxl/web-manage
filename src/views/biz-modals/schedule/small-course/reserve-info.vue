@@ -141,11 +141,11 @@
                     item.reserve_status === 1
                 "
               >
-                <a href="javascript:;" @click="cancelReserve(item.id)">
+                <a href="javascript:;" @click="check(item.reserve_id)">
                   签到
                 </a>
                 <a-divider type="vertical"></a-divider>
-                <a href="javascript:;" @click="check(item.id)">
+                <a href="javascript:;" @click="leave(item.reserve_id)">
                   请假
                 </a>
               </div>
@@ -155,11 +155,11 @@
                     item.reserve_status === 1
                 "
               >
-                <a href="javascript:;" @click="cancelReserve(item.id)">
+                <a href="javascript:;" @click="check(item.reserve_id)">
                   签到
                 </a>
                 <a-divider type="vertical"></a-divider>
-                <a href="javascript:;" @click="check(item.id)">
+                <a href="javascript:;" @click="del(item.reserve_id)">
                   取消预约
                 </a>
               </div>
@@ -181,11 +181,11 @@
                       item.reserve_status === 3)
                 "
               >
-                <a href="javascript:;" @click="cancelReserve(item.id)">
+                <a href="javascript:;" @click="checkSign(item.reserve_id)">
                   补签到
                 </a>
                 <a-divider type="vertical"></a-divider>
-                <a href="javascript:;" @click="check(item.id)">
+                <a href="javascript:;" @click="remedialCourse(item)">
                   补课
                 </a>
               </div>
@@ -195,8 +195,8 @@
                     item.reserve_status === 4
                 "
               >
-                <a href="javascript:;" @click="check(item.id)">
-                  补课
+                <a href="javascript:;" @click="message(item.reserve_id)">
+                  查看补课
                 </a>
               </div>
               <div
@@ -205,8 +205,8 @@
                     item.reserve_status === 5
                 "
               >
-                <a href="javascript:;" @click="check(item.id)">
-                  查看补课
+                <a href="javascript:;" @click="remedialCourse(item)">
+                  补课
                 </a>
               </div>
             </td>
@@ -225,7 +225,7 @@
       <a-popconfirm @confirm="cancelSchedule" okText="确认" cancelText="取消">
         <div slot="title">
           是否取消课程？
-          <div class="color-danger">将发送消息通知已报名用户并发起自动退款</div>
+          <div class="color-danger">将发送消息通知已报名用户</div>
         </div>
         <st-button>取消课程</st-button>
       </a-popconfirm>
@@ -327,6 +327,10 @@ export default {
       this.consumeType = obj.consume_type
       this.consumeId = obj.id
     },
+    // 补签到
+    checkSign(id) {
+      this.reserveService.checkSign(id).subscribe(this.getReserveInfo)
+    },
     addReserve() {
       const form = {
         schedule_id: this.id,
@@ -339,12 +343,9 @@ export default {
     cancelReserve(id) {
       this.reserveService.cancel(id).subscribe(this.onCancelReserveSuccess)
     },
+    // 签到
     check(id) {
-      const params = {
-        id,
-        checkin_method: 4
-      }
-      this.reserveService.check(params).subscribe(this.onCheckSuccess)
+      this.reserveService.check(id).subscribe(this.onCheckSuccess)
     },
     edit(key) {
       const newData = [...this.data]
@@ -365,16 +366,16 @@ export default {
         this.cacheData = newData.map(item => ({ ...item }))
       }
     },
+    // 取消排期
     cancelSchedule() {
-      this.scheduleService.del(this.id).subscribe(this.onDelScheduleScuccess)
+      this.scheduleService.cancel(this.id).subscribe(this.onDelScheduleScuccess)
     },
     updateSchedule() {
       this.show = false
       this.$modalRouter.push({
         name: 'schedule-small-course-reserved-course',
         props: {
-          item: this.reserveInfo,
-          scheduleId: 1
+          item: this.reserveInfo
         },
         on: {
           ok: () => {
@@ -398,6 +399,18 @@ export default {
         }
       })
     },
+    // 取消预约
+    del(id) {
+      this.scheduleService.del(id).subscribe(this.onDelScheduleScuccess)
+    },
+    // 请假
+    leave(id) {
+      this.scheduleService.leave(id).subscribe(this.getReserveInfo)
+    },
+    // 查看补课
+    message(id) {
+      this.scheduleService.message(id)
+    },
     getReserveInfo() {
       this.reserveService.getInfo(this.id).subscribe()
     },
@@ -413,6 +426,7 @@ export default {
       this.getReserveInfo()
     },
     onDelScheduleScuccess() {
+      console.log('取消课程!')
       this.$router.push({ query: this.$searchQuery })
       this.show = false
     }
