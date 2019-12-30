@@ -170,7 +170,8 @@ export default {
       this.$router.push({
         path: './info/basic',
         query: {
-          courseId: course.course_id
+          courseId: course.course_id,
+          status: course.class_status
         }
       })
     },

@@ -15,7 +15,8 @@ export const basicColumns = (vm: any) => [
 export const classColumns = (vm: any) => [
   {
     title: '学员',
-    dataIndex: 'user_name'
+    // dataIndex: 'user_name',
+    scopedSlots: { customRender: 'user_name' }
   },
   {
     title: '联系电话',
@@ -44,7 +45,8 @@ export const classColumns = (vm: any) => [
 export const classEndColumns = (vm: any) => [
   {
     title: '学员',
-    dataIndex: 'user_name'
+    // dataIndex: 'user_name',
+    scopedSlots: { customRender: 'user_name' }
   },
   {
     title: '联系电话',
