@@ -50,7 +50,6 @@ export const wholeNav = [
   }
 ]
 export const moneyOeders = []
-export const categoryRevenue = []
 export const fieldNav = [
   'revenue_amount',
   'order_count',
