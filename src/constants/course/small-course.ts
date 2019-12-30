@@ -7,3 +7,7 @@ export enum CLASS_STATUS {
   CLASSED = 6,
   CLASS_END = 7
 }
+export enum COURSE_TYPE {
+  FIXED_COURSE = 1, //  固定排课
+  AUTO_COURSE = 2
+}
