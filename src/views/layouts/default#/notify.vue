@@ -8,6 +8,7 @@
 
 <script>
 import { WsService } from '@/services/ws.service'
+import { NotifyService } from './notify.service'
 export default {
   name: 'NotifyCenter',
   methods: {
@@ -17,7 +18,8 @@ export default {
   },
   serviceInject() {
     return {
-      wsService: WsService
+      wsService: WsService,
+      service: NotifyService
     }
   },
   rxState() {
@@ -28,6 +30,7 @@ export default {
   },
   created() {
     this.wsService.init()
+    this.service.init().subscribe()
   }
 }
 </script>

@@ -209,12 +209,14 @@ import FastEntryMiniProgram from '@/views/biz-modals/fast-entry/mini-program'
 import FastEntryHousekeeper from '@/views/biz-modals/fast-entry/housekeeper'
 import CommonNotifyConfig from '@/views/biz-modals/common/notify/config'
 import CommonNotifyActivity from '@/views/biz-modals/common/notify/activity'
+import CommonNotifySystem from '@/views/biz-modals/common/notify/system'
 import AccountBind from '@/views/biz-modals/account/bind'
 import AccountUnbind from '@/views/biz-modals/account/unbind'
 import AccountModify from '@/views/biz-modals/account/modify'
 import { UdeskService } from '@/services/udesk.service'
 import FastEntry from './default#/fast-entry'
 import StUdeskBtn from '@/views/biz-components/udesk-btn/udesk-btn'
+import { NotifyService } from './default#/notify.service'
 
 export default {
   name: 'SaasLayout',
@@ -230,11 +232,15 @@ export default {
       userService: UserService,
       tokenService: TokenService,
       titleService: TitleService,
-      udeskService: UdeskService
+      udeskService: UdeskService,
+      notifyService: NotifyService
     }
   },
   rxState() {
+    const { systemList$, activityList$ } = this.notifyService
     return {
+      systemList$,
+      activityList$,
       user: this.userService.user$,
       brand: this.userService.brand$,
       shop: this.userService.shop$,
@@ -247,6 +253,7 @@ export default {
   data() {
     return {
       isShowSwitchShop: false,
+      systemListLength: 0,
       menuObj: {}
     }
   },
@@ -255,6 +262,7 @@ export default {
     FastEntryHousekeeper,
     CommonNotifyConfig,
     CommonNotifyActivity,
+    CommonNotifySystem,
     AccountBind,
     AccountUnbind,
     AccountModify
@@ -276,9 +284,23 @@ export default {
     }
   },
   created() {
-    this.$modalRouter.push({ name: 'common-notify-activity' })
+    this.onSuccess()
   },
   methods: {
+    onSuccess() {
+      const len = this.systemList$.length
+      if (this.systemListLength === len) return
+      this.systemListLength++
+      this.$modalRouter.push({
+        name: 'common-notify-system',
+        props: { info: this.systemList$[this.systemListLength] },
+        on: {
+          success: res => {
+            this.onSuccess()
+          }
+        }
+      })
+    },
     onClickNotifyConfig() {
       this.$modalRouter.push({ name: 'common-notify-config' })
     },

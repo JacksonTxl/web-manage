@@ -10,11 +10,12 @@ export class InformService {
   page$ = new State({})
   informTypeOptions$ = new State([])
   constructor(private api: NotifyApi) {}
+  @Effect()
   getList(query: any) {
     return this.api.getInformList(query).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
-        // this.page$.commit(() => res.page)
+        this.page$.commit(() => res.page)
       })
     )
   }

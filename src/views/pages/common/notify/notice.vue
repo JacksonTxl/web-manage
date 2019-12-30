@@ -21,6 +21,9 @@
       <template slot="notify_type" slot-scope="text, record">
         {{ record.notify_type.value }}
       </template>
+      <template slot="title" slot-scope="text">
+        <st-overflow-text maxWidth="250px" :value="text" />
+      </template>
       <template slot="actions" slot-scope="text, record">
         <st-table-actions>
           <a @click="onClickDetail(record)">

@@ -1,5 +1,11 @@
 <template>
-  <st-modal :class="b()" v-model="show" width="728px" :footer="null">
+  <st-modal
+    :class="b()"
+    v-model="show"
+    @ok="onOk"
+    @cancel="onCancel"
+    width="728px"
+  >
     系统公告
   </st-modal>
 </template>
@@ -12,8 +18,20 @@ export default {
   },
   data() {
     return {
-      show: false,
-      notifyConfig: {}
+      show: false
+    }
+  },
+  props: {
+    info: Object
+  },
+  methods: {
+    onOk() {
+      this.show = false
+      this.$emit('success')
+    },
+    onCancel() {
+      this.show = false
+      this.$emit('success')
     }
   }
 }

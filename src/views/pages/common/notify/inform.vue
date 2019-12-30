@@ -30,6 +30,7 @@
       :columns="columns"
       :dataSource="list$"
       :loading="loading$.getList"
+      :page="page$"
     >
       <template slot="notify_type" slot-scope="text, record">
         {{ record.notify_type.value }}

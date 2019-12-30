@@ -10,11 +10,12 @@ export class NoticeService {
   page$ = new State({})
   noticeTypeOptions$ = new State({})
   constructor(private api: NotifyApi) {}
+  @Effect()
   getList(query: any) {
     return this.api.getNoticeList(query).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
-        this.page$.commit(() => [])
+        this.page$.commit(() => res.page)
       })
     )
   }

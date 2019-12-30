@@ -25,7 +25,7 @@ export class NotifyApi extends Api {
   getNewAnnouncementActivity(query?: any) {
     return this.http.get(`/v1/announcement/activity/new`, { query })
   }
-  getNewAnnouncement(query?: any) {
+  getNewAnnouncementSystem(query?: any) {
     return this.http.get(`/v1/announcement/system/new`, { query })
   }
 }
