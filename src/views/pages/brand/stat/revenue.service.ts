@@ -55,7 +55,6 @@ export class RevenueService {
           { name: '私教课', value: data.personal_course.total_amount },
           { name: '团体课', value: data.team_course.total_amount },
           { name: '课程包', value: data.package_course.total_amount },
-          { name: '课程包', value: data.small_course.total_amount },
           { name: '云店', value: data.shop.total_amount },
           { name: '其它', value: data.other.total_amount }
         ]
@@ -103,10 +102,6 @@ export class RevenueService {
           {
             label: '课程包营收(元)',
             value: data.package_course_amount || 0
-          },
-          {
-            label: '小班课营收(元)',
-            value: data.small_course_amount || 0
           },
           {
             label: '云店营收(元)',

@@ -27,12 +27,6 @@ export const columns = () => {
       dataIndex: 'content',
       scopedSlots: { customRender: 'content' },
       width: 250
-    },
-    {
-      title: '操作',
-      dataIndex: 'actions',
-      scopedSlots: { customRender: 'actions' },
-      width: 80
     }
   ]
 }

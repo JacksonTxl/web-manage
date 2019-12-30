@@ -9,10 +9,13 @@
     :footer="null"
   >
     <div :class="b('info')">
-      fdwefeaf{{ info }}
-      <st-t3>标题</st-t3>
-      <div :class="b('content')">内容</div>
-      <st-button type="primary" @click="onOk">我知道了</st-button>
+      <st-t3 :class="b(title)">{{ info.title }}</st-t3>
+      <div :class="b('content')" class="mg-t16">{{ info.contnet }}</div>
+      <div :class="b('button-wapper')">
+        <st-button type="primary" class="mg-t24" @click="onOk">
+          我知道了
+        </st-button>
+      </div>
     </div>
   </st-modal>
 </template>
@@ -29,7 +32,17 @@ export default {
     }
   },
   props: {
-    info: Object
+    info: {
+      type: Object,
+      default: () => {
+        return {
+          title: '还没',
+          image_key:
+            'http://sports.gtimg.com/shequ/duc2TvpEgSRpS2A8tEIc2eueTPusgmpzYZWUKu4mZqGmbfMR2HQRaibyapBpazeKh/0/0',
+          contnet: '还没'
+        }
+      }
+    }
   },
   methods: {
     onOk() {
@@ -39,7 +52,6 @@ export default {
     onCancel() {
       this.show = false
       this.$emit('success')
-      console.log(info)
     }
   }
 }
