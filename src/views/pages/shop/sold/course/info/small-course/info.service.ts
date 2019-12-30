@@ -10,7 +10,8 @@ export class InfoService implements Controller {
   loading$ = new State({})
   auth$ = new State({})
   authTabs$ = this.authService.getAuthTabs$(
-    'shop-sold-course-info-small-course-info'
+    'shop-sold-course-info-small-course-info',
+    { withQuery: ['id'] }
   )
   constructor(
     private smallCourseApi: SmallCourseApi,

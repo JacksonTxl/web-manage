@@ -1,6 +1,6 @@
 export const columns = (vm: any) => [
   {
-    title: '小班课名称',
+    title: `${vm.$c('small_course')}名称`,
     dataIndex: 'course_name'
   },
   {
