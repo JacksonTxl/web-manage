@@ -4,12 +4,13 @@
       <div :class="b('arrow-left')" @click="onClickLeft">
         <st-icon type="arrow-left" class="arrow-left-out" />
       </div>
-      {{ list }}
       <div :class="b('notify-img')">
         <swiper :options="sliderOptions" ref="swiper">
-          <swiper-slide v-for="(item, index) in showData" :key="index">
+          <swiper-slide v-for="(item, index) in list" :key="index">
             <div>
-              <img :src="item.src" alt="" width="728" height="400" />
+              <a :href="item.announcement_link" target="_blank">
+                <img :src="item.image_key" alt="" width="728" height="400" />
+              </a>
             </div>
           </swiper-slide>
           <div
