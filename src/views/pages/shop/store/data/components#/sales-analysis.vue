@@ -26,11 +26,7 @@
             {{ nameFilter(item.product_name, nameLength) }}
           </li>
           <li>
-            {{
-              item.sale
-                ? (item.sale + '').replace(/\d{1,3}(?=(\d{3})+$)/g, '$&,')
-                : (item.revenue + '').replace(/\d{1,3}(?=(\d{3})+$)/g, '$&,')
-            }}
+            {{ item.sale ? thousandBit(12345.01) : thousandBit(item.revenue) }}
           </li>
         </ul>
       </template>
@@ -77,12 +73,17 @@ export default {
       IconThreeRanking
     }
   },
-
   methods: {
     nameFilter(value, nameLength) {
-      return value.length > nameLength
+      return value && value.length > nameLength
         ? `${value.slice(0, nameLength)}...`
         : value
+    },
+    thousandBit(value) {
+      let valueArr = (value + '').split('.')
+      return `${valueArr[0].replace(/\d{1,3}(?=(\d{3})+$)/g, '$&,')}${
+        valueArr[1] ? '.' + valueArr[1] : ''
+      }`
     }
   }
 }

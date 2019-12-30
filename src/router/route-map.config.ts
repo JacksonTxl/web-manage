@@ -1638,6 +1638,7 @@ export const routeMapConfig = {
   },
   'shop-store-stock-list-search'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '库存查询'
+    // routeConfig.meta.auth = 'brand_shop:cloud_store:stock|list'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -1646,6 +1647,7 @@ export const routeMapConfig = {
   },
   'shop-store-stock-list-detail'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '出入库明细'
+    // routeConfig.meta.auth = 'brand_shop:cloud_store:stock|access_storage_obvious'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },

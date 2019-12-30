@@ -4,7 +4,7 @@
       <a-col :span="8">
         <div :class="basic('left')">
           <sales-analysis
-            title="购买次数TOP5"
+            :title="titleLeft[flag - 0]"
             nameLength="4"
             :salesTitle="['排名', '用户', '购买数(次)']"
             :salesList="data.top_rank | filterDataTOP5"
@@ -13,7 +13,7 @@
       </a-col>
       <a-col :span="16">
         <div :class="basic('right')">
-          <st-t3>{{ title[flag - 0] }}</st-t3>
+          <st-t3>{{ titleRight[flag - 0] }}</st-t3>
           <div class="radio-group">
             <a-radio-group @change="onChange" v-model="value">
               <a-radio :value="1">客户数</a-radio>
@@ -61,7 +61,8 @@ export default {
   },
   data() {
     return {
-      title: ['消费金额分布图', '购买次数分布图'],
+      titleRight: ['消费金额分布图', '购买次数分布图'],
+      titleLeft: ['消费金额TOP5', '购买次数TOP5'],
       filterBuyNumInfo: [],
       value: 1
     }

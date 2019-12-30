@@ -35,7 +35,7 @@ export default {
       default: ''
     },
     total: {
-      type: Number,
+      type: [Number, String],
       default: 0
     },
     padding: {
@@ -253,7 +253,10 @@ export default {
       })
     },
     thousandBit(value) {
-      return (value + '').replace(/\d{1,3}(?=(\d{3})+$)/g, '$&,')
+      let valueArr = (value + '').split('.')
+      return `${valueArr[0].replace(/\d{1,3}(?=(\d{3})+$)/g, '$&,')}${
+        valueArr[1] ? '.' + valueArr[1] : ''
+      }`
     }
   },
   beforeDestroy() {
