@@ -58,7 +58,11 @@
           </template>
           <div :class="b('num-limit')">
             <a-form-item class="page-a-form">
-              <st-input-number v-decorator="decorators.num_min" :min="1">
+              <st-input-number
+                v-decorator="decorators.num_min"
+                :min="1"
+                :max="49"
+              >
                 <template slot="addonAfter">
                   人
                 </template>

@@ -52,6 +52,7 @@
             :showTime="{ format: 'HH:mm' }"
             format="YYYY-MM-DD HH:mm"
             v-decorator="decorators.date"
+            @change="setDate"
           ></a-range-picker>
         </st-form-item>
       </a-col>
@@ -65,7 +66,11 @@
           </template>
           <div :class="b('num-limit')">
             <a-form-item class="page-a-form">
-              <st-input-number v-decorator="decorators.num_min" :min="1">
+              <st-input-number
+                v-decorator="decorators.num_min"
+                :min="1"
+                :max="49"
+              >
                 <template slot="addonAfter">
                   人
                 </template>
@@ -251,6 +256,11 @@ export default {
   methods: {
     onChangeEditor() {
       return this.content.length === 0
+    },
+    setDate(val, string) {
+      this.form.setFieldsValue({
+        date: [val[0].add('30', 'minutes'), val[1].add('30', 'minutes')]
+      })
     },
     save(e) {
       e.preventDefault()

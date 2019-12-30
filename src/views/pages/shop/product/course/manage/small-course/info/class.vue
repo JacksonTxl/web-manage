@@ -76,9 +76,11 @@ import CourseSmallCourseTruancy from '@/views/biz-modals/course/small-course-tru
 import CourseSmallCourseSign from '@/views/biz-modals/course/small-course-sign'
 import { CLASS_STATUS } from '@/constants/course/small-course'
 import { SEX } from '@/constants/member/info'
+import tableMixin from '@/mixins/table.mixin'
 
 export default {
   name: 'SmallCourseClassInfo',
+  mixins: [tableMixin],
   serviceInject() {
     return {
       classService: ClassService
