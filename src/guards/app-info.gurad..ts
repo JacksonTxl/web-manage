@@ -35,9 +35,9 @@ export class AppInfoGuard implements RouteGuard {
       // 获取全局枚举
       this.userService.fetchEnums(),
       // 获取全局城市数据
-      this.regionService.getRegions()
+      this.regionService.getRegions(),
       // 获取全局切换门店列表数据
-      // this.userService.fetchShopList()
+      this.userService.fetchShopList()
     ).pipe(
       then(() => {
         this.nprogressService.SET_TEXT('核心数据加载完毕')
@@ -66,7 +66,6 @@ export class AppInfoGuard implements RouteGuard {
     )
   }
   beforeRouteEnter() {
-    this.userService.init()
     if (this.firstBootstrap) {
       return this.fetchAppReqs()
     }
