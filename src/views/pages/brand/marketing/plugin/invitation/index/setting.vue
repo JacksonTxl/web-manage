@@ -13,7 +13,7 @@
           每邀请1人成功购买卡项或课程（成功支付）
         </st-form-item>
         <template v-if="!isOpen">
-          <st-form-item label="邀请人奖励1" required :help="inviterHelpText">
+          <st-form-item label="邀请人奖励" required :help="inviterHelpText">
             <div :class="inviation('coupon')">
               <span class="mg-r8">可获得</span>
               <st-input-number
@@ -45,7 +45,7 @@
               </template>
             </div>
           </st-form-item>
-          <st-form-item label="被邀请人奖励1" required :help="inviteeHelpText">
+          <st-form-item label="被邀请人奖励" required :help="inviteeHelpText">
             <div :class="inviation('coupon')">
               <span class="mg-r8">可获得</span>
               <st-input-number
@@ -79,7 +79,7 @@
           </st-form-item>
         </template>
         <template v-else>
-          <st-form-item label="邀请人奖励2" required :help="inviterHelpText">
+          <st-form-item label="邀请人奖励" required :help="inviterHelpText">
             <div :class="inviation('coupon')">
               <span class="mg-r8">可获得</span>
               <st-input-number
@@ -100,7 +100,7 @@
               />
             </div>
           </st-form-item>
-          <st-form-item label="被邀请人奖励2" required :help="inviteeHelpText">
+          <st-form-item label="被邀请人奖励" required :help="inviteeHelpText">
             <div :class="inviation('coupon')">
               <span class="mg-r8">可获得</span>
               <st-input-number
