@@ -45,44 +45,50 @@
         </template>
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
-            <!-- v-if="record.auth['brand_shop:order:order|pay']" -->
-            <a @click="onGathering(record)">
+            <a
+              @click="onGathering(record)"
+              v-if="record.auth['brand_shop:order:order|pay']"
+            >
               收款
             </a>
-            <!-- v-if="record.auth['brand_shop:order:order|cancel']" -->
-
-            <a @click="onCancel(record)">
+            <a
+              @click="onCancel(record)"
+              v-if="record.auth['brand_shop:order:order|cancel']"
+            >
               取消
             </a>
-            <!-- v-if="record.auth['brand_shop:order:order|get']" -->
-
-            <a @click="onOrderInfo(record)">
+            <a
+              @click="onOrderInfo(record)"
+              v-if="record.auth['brand_shop:order:order|get']"
+            >
               详情
             </a>
-            <!-- v-if="record.auth['brand_shop:order:order|refund']" -->
-
             <a
               @click="onRefund(record)"
               v-if="record.auth['brand_shop:order:order|refund']"
             >
               退款
             </a>
-            <!-- v-if="record.auth['brand_shop:order:order|split']" -->
-
-            <a @click="onSplit(record)">
+            <a
+              @click="onSplit(record)"
+              v-if="record.auth['brand_shop:order:order|split']"
+            >
               业绩拆分
             </a>
-            <!-- v-if="record.auth['shop:order:order|print']" -->
-
             <a
               @click="printOrder(record.id)"
               v-if="record.auth['shop:order:order|print']"
             >
               打印小票
             </a>
-            <!-- v-if="record.children && record.children.auth" -->
 
-            <a @click="onChildredRefund(record)" v-if="record.is_children">
+            <a
+              @click="onChildredRefund(record)"
+              v-if="
+                record.is_children &&
+                  record.auth['brand_shop:order:order|chlidren_refund']
+              "
+            >
               子订单退款
             </a>
           </st-table-actions>
@@ -138,7 +144,6 @@ export default {
   },
   mounted() {
     this.setSearchData()
-    console.log(this.changeList)
   },
 
   data() {
@@ -156,7 +161,7 @@ export default {
     // 子订单退款
     onChildredRefund(record) {
       console.log(record)
-      const props = { id: record.id }
+      const props = { id: record.id, type: 'ChildInfo' }
       console.log(props)
       // if (record.product_type === this.ORDER_PRODUCT_TYPE.EARNEST) {
       //   props.goodsInvalid = true
@@ -202,6 +207,7 @@ export default {
     },
     // 收款
     onGathering(record) {
+      console.log(record.product_type)
       console.log(this.productType(record.product_type))
       this.$modalRouter.push({
         name: 'sold-deal-gathering',
@@ -261,8 +267,9 @@ export default {
     },
     // 退款
     onRefund(record) {
-      const props = { id: record.id }
+      const props = { id: record.id, type: 'Detail' }
       if (record.product_type === this.ORDER_PRODUCT_TYPE.EARNEST) {
+        // 这里的枚举值是8 8是代表定金的嘛？
         props.goodsInvalid = true
       }
       this.$modalRouter.push({
@@ -300,7 +307,7 @@ export default {
     },
     productType(type) {
       let name = ''
-      // 1-会员卡 2-私教课 3-团体课 4-课程包 5-储值卡 6-小班课 7-手续费 8-定金 9-押金 10-储物柜
+      // 1-会员卡 2-私教课 3-团体课 4-课程包 5-储值卡 6-小班课 7-手续费 8-定金 9-押金 10-储物柜 12-云店
       switch (type) {
         case 1:
           name = 'member'
@@ -331,6 +338,9 @@ export default {
           break
         case 10:
           name = 'cabinet_order'
+          break
+        case 12:
+          name = 'cloud_store'
           break
       }
       return name

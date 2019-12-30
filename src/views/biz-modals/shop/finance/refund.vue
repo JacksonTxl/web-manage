@@ -8,7 +8,13 @@
       <a-row :class="refund('info')">
         <a-col :span="13" class="mg-b36">
           <st-info>
-            <st-info-item label="订单号">{{ info.order_id }}</st-info-item>
+            <st-info-item label="订单号" v-if="info.order_id">
+              {{ info.order_id }}
+            </st-info-item>
+            <!-- 此条展示为子订单id  -->
+            <st-info-item label="订单号" v-if="info.id">
+              {{ info.id }}
+            </st-info-item>
             <st-info-item class="mg-b0" label="下单时间">
               {{ info.created_time }}
             </st-info-item>
@@ -123,7 +129,7 @@
       </span>
       <st-button
         @click="onSubmit"
-        :loading="loading.orderRefund"
+        :loading="loading.orderRefund || loading.getChildInfo"
         type="primary"
       >
         确认提交
@@ -154,7 +160,7 @@ export default {
       loading: this.refundService.loading$
     }
   },
-  props: ['id', 'goodsInvalid'],
+  props: ['id', 'goodsInvalid', 'type'],
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
@@ -191,28 +197,37 @@ export default {
     }
   },
   created() {
-    this.refundService.getDetail(this.id).subscribe()
+    this.refundService[`get${this.type}`](this.id).subscribe()
   },
   methods: {
     moment,
     onSubmit() {
       this.form.validate().then(values => {
-        this.refundService
-          .orderRefund(
-            {
-              order_id: this.info.order_id,
-              refund_money: +values.refundPrice,
-              reason: this.getRefundReason,
-              pay_channel: +this.frozenPayType,
-              description: this.description
-            },
-            this.id,
-            this.type
-          )
-          .subscribe(res => {
-            this.$emit('success')
-            this.show = false
-          })
+        let parmas = {
+          order_id: this.info.order_id || this.info.id,
+          refund_money: +values.refundPrice,
+          reason: this.getRefundReason,
+          pay_channel: +this.frozenPayType,
+          description: this.description
+        }
+        console.log(parmas)
+        if (this.info.is_sub) {
+          let childParmas = { ...parmas, order_sub_id: this.info.id }
+
+          this.refundService
+            .orderChildRefund(childParmas, this.id, this.type)
+            .subscribe(res => {
+              this.$emit('success')
+              this.show = false
+            })
+        } else {
+          this.refundService
+            .orderRefund(parmas, this.id, this.type)
+            .subscribe(res => {
+              this.$emit('success')
+              this.show = false
+            })
+        }
       })
     }
   }

@@ -16,7 +16,16 @@ export class CommodityInfoService implements Controller {
   getCommodityInfo(id: string) {
     return this.orderApi.getCommodityInfo(id).pipe(
       tap((res: any) => {
-        this.info$.commit(() => res.info)
+        this.info$.commit(() => res.info.product_list)
+      })
+    )
+  }
+  @Effect()
+  getGoodsInfo(id: number) {
+    return this.orderApi.getGoodsInfo(id).pipe(
+      tap((res: any) => {
+        console.log(res)
+        this.info$.commit(() => res.info.product_list)
       })
     )
   }
