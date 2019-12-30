@@ -2,7 +2,6 @@ import { UserService } from '@/services/user.service'
 import { AuthService } from '@/services/auth.service'
 import { RegionService } from '@/services/region.service'
 import { NProgressService } from '@/services/nprogress.service'
-import { UdeskService } from '@/services/udesk.service'
 import { forkJoin } from 'rxjs'
 import { Injectable, RouteGuard } from 'vue-service-app'
 import { anyAll, then } from '@/operators'
@@ -17,7 +16,6 @@ export class AppInfoGuard implements RouteGuard {
     private userService: UserService,
     private authService: AuthService,
     private regionService: RegionService,
-    private udeskService: UdeskService,
     private nprogressService: NProgressService,
     private cdnService: CdnService
   ) {}
