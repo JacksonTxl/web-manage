@@ -259,13 +259,13 @@
                   <div class="category">
                     <st-t3>类目营收占比</st-t3>
                     <shop-store-data-revenue-ring
-                      :data="categoryRevenue"
+                      :data="storeCategoryRank.category_list"
                       :total="storeCategoryRank.total_revenue"
                       :padding="[60, '50%', 38, 0]"
                       name="总营收"
                       height="280"
                       style="width: 100%;"
-                      v-if="categoryRevenue.length"
+                      v-if="storeCategoryRank.category_list.length"
                     ></shop-store-data-revenue-ring>
                     <div :class="basic('entry-pie-img')">
                       <img :src="pieImg" />
@@ -316,7 +316,6 @@ import { DataService } from './data.service'
 import {
   headerInfo,
   wholeNav,
-  categoryRevenue,
   headerTitleItem,
   fieldNav
 } from './data.config.ts'
@@ -347,11 +346,9 @@ export default {
       wholenavIndex: 0,
       pieImg,
       inoutNumImg,
-      storeDataLine: false,
       wholeNavcom: 'shop-store-data-ring',
       headerInfo,
       wholeNav,
-      categoryRevenue,
       headerTitleItem,
       fieldNav,
       tabsObjData: {
@@ -380,7 +377,6 @@ export default {
   },
   mounted() {
     this.wholenavFilter(this.storeBoard)
-    this.storeCategoryRankFilter(this.storeCategoryRank)
   },
   methods: {
     // 整体看板时间
@@ -393,9 +389,7 @@ export default {
     },
     // 类目分析时间
     categoryTimesFn(value) {
-      this.dataService.getStoreCategoryRank(value).subscribe(res => {
-        this.storeCategoryRankFilter(res)
-      })
+      this.dataService.getStoreCategoryRank(value).subscribe()
     },
     // 购买次数/消费金额时间
     userAnalysisTimesFn(value) {
@@ -407,7 +401,6 @@ export default {
     filterLine(data, type) {
       let fieldInfo = ['amount', 'count', 'count', 'price']
       if (data[this.fieldNav[this.wholenavIndex]].trend.length) {
-        this.storeDataLine = true
         return data[this.fieldNav[this.wholenavIndex]].trend.map(item => {
           return {
             date: item.date,
@@ -415,7 +408,6 @@ export default {
           }
         })
       } else {
-        this.storeDataLine = false
         return []
       }
     },
@@ -475,16 +467,6 @@ export default {
         item.num = dataInfo
       })
     },
-    // 类目分析数据处理
-    storeCategoryRankFilter(data) {
-      this.categoryRevenue = data.category_list.map(item => {
-        return {
-          name: item.category_name,
-          value: item.amount
-        }
-      })
-    },
-
     onChangeTabs(query) {
       this.tabsObjData = Object.assign(this.tabsObjData, { choose_type: query })
       this.tabsObjData.date = this.tabsObjData.date

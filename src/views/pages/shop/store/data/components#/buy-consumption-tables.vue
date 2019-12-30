@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     recentChange(query) {
-      this.$emit('change', query - 0)
+      this.$emit('change', Number(query))
     },
     userAnalysis(query) {
       this.$emit('timesFn', query)
