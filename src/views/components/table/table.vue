@@ -180,6 +180,7 @@ export default {
       scroll: this.dataSource.length >= 1 ? this.scroll : {},
       rowClassName: this.rowClassName,
       childrenColumnName: '$_children',
+      indentSize: 16,
       ...this.$attrs
     }
     // 判断是否是父子表格 先去掉 自定义图标和自定义expandedRowRender冲突
