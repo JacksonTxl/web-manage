@@ -20,7 +20,6 @@ export default {
     return {
       authTabs: this.listService.authTabs$
     }
-  },
-  mounted() {}
+  }
 }
 </script>
