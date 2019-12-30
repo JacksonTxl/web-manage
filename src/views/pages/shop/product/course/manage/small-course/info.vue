@@ -100,7 +100,7 @@
               :key="item.id"
               v-for="item in groupCourseHeaderInfo.scope_application"
             >
-              {{ item.name }}
+              {{ item.setting_name }}
             </span>
           </div>
         </div>

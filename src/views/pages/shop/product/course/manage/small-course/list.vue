@@ -140,7 +140,9 @@ export default {
       this.$router.push({ path: './add-select' })
     },
     goSchedule() {
-      this.$router.push({ path: 'shop-product-course-schedule-small-course' })
+      this.$router.push({
+        path: '/shop/product/course/schedule/small-course'
+      })
     },
     onSearchCourseName(val) {
       this.$router.push({
@@ -170,7 +172,8 @@ export default {
       this.$router.push({
         path: './info/basic',
         query: {
-          courseId: course.course_id
+          courseId: course.course_id,
+          status: course.class_status
         }
       })
     },
