@@ -2,7 +2,7 @@
   <st-modal
     title="添加会员"
     v-model="show"
-    width="484px"
+    size="small"
     wrapClassName="modal-sold-deal-add-member"
   >
     <st-form :form="form" labelWidth="66px">

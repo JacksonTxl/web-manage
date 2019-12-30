@@ -21,12 +21,12 @@ export default {
     RowTable
   },
   serviceInject() {
-    return { RowTableService: RowTableService }
+    return { rowTableService: RowTableService }
   },
   methods: {
     // 获取签收订单列表
     getListData() {
-      this.RowTableService.getLogisticsList(this.$searchQuery).subscribe()
+      this.rowTableService.getLogisticsList(this.$searchQuery).subscribe()
     }
   },
   mounted() {

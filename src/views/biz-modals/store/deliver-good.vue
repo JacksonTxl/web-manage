@@ -33,19 +33,21 @@ export default {
     }
   },
   serviceInject() {
-    return { DeliverGoodService: DeliverGoodService }
+    return { deliverGoodService: DeliverGoodService }
   },
   methods: {
     onSubmit() {
       this.form.validate().then(values => {
-        this.DeliverGoodService.sendOption({
-          express_company: values.expressCompany,
-          express_number: values.expressNumber,
-          id: this.id
-        }).subscribe(res => {
-          this.show = false
-          this.$emit('success')
-        })
+        this.deliverGoodService
+          .sendOption({
+            express_company: values.expressCompany,
+            express_number: values.expressNumber,
+            id: this.id
+          })
+          .subscribe(res => {
+            this.show = false
+            this.$emit('success')
+          })
       })
     }
   }

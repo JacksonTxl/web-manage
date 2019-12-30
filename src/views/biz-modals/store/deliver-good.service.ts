@@ -4,8 +4,8 @@ import { tap } from 'rxjs/operators'
 
 @Injectable()
 export class DeliverGoodService {
-  constructor(private OrderApi: OrderApi) {}
+  constructor(private orderApi: OrderApi) {}
   sendOption(params: SendParams) {
-    return this.OrderApi.sendAction(params).pipe(tap((res: any) => {}))
+    return this.orderApi.sendAction(params)
   }
 }
