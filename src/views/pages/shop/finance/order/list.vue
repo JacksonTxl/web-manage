@@ -36,7 +36,6 @@
         :dataSource="list"
         rowKey="id"
         :loading="loading.getList"
-        rowKey="id"
       >
         <template slot="order_status" slot-scope="text">
           {{ text | enumFilter('finance.order_status') }}
