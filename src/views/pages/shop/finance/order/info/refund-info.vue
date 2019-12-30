@@ -1,7 +1,7 @@
 <template>
   <section class="pd-24">
     <st-panel>
-      <a-row :gutter="24">
+      <a-row :gutter="24" v-if="info.refund.list.length === 0">
         <a-col :span="9">
           <st-info>
             <st-info-item label="退款ID">{{ info.order_id }}</st-info-item>
@@ -32,7 +32,12 @@
           </st-info>
         </a-col>
       </a-row>
-      <st-table :dataSource="list" :columns="columns"></st-table>
+      <st-table
+        v-if="info.refund.list.length > 0"
+        :dataSource="info.refund.list"
+        :columns="columns"
+        :page="false"
+      ></st-table>
     </st-panel>
   </section>
 </template>
@@ -67,6 +72,9 @@ export default {
         }
       ]
     }
+  },
+  mounted() {
+    console.log(this.info.refund.list.length)
   },
   methods: {}
 }

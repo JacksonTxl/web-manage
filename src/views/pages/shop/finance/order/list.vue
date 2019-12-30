@@ -60,10 +60,7 @@
             </a>
             <!-- v-if="record.auth['brand_shop:order:order|refund']" -->
 
-            <a
-              @click="onRefund(record)"
-              v-if="record.auth['brand_shop:order:order|refund']"
-            >
+            <a @click="onRefund(record)">
               退款
             </a>
             <!-- v-if="record.auth['brand_shop:order:order|split']" -->
@@ -201,6 +198,7 @@ export default {
     },
     // 收款
     onGathering(record) {
+      console.log(record.product_type)
       console.log(this.productType(record.product_type))
       this.$modalRouter.push({
         name: 'sold-deal-gathering',
@@ -262,6 +260,7 @@ export default {
     onRefund(record) {
       const props = { id: record.id }
       if (record.product_type === this.ORDER_PRODUCT_TYPE.EARNEST) {
+        // 这里的枚举值是8 8是代表定金的嘛？
         props.goodsInvalid = true
       }
       this.$modalRouter.push({
@@ -299,7 +298,7 @@ export default {
     },
     productType(type) {
       let name = ''
-      // 1-会员卡 2-私教课 3-团体课 4-课程包 5-储值卡 6-小班课 7-手续费 8-定金 9-押金 10-储物柜
+      // 1-会员卡 2-私教课 3-团体课 4-课程包 5-储值卡 6-小班课 7-手续费 8-定金 9-押金 10-储物柜 12-云店
       switch (type) {
         case 1:
           name = 'member'
@@ -330,6 +329,9 @@ export default {
           break
         case 10:
           name = 'cabinet_order'
+          break
+        case 12:
+          name = 'cloud_store'
           break
       }
       return name

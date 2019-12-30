@@ -39,6 +39,7 @@
       </div>
       <div :class="basic('content')">
         <st-table
+          rowKey="product_id"
           :page="page"
           :columns="columns"
           :dataSource="list"
