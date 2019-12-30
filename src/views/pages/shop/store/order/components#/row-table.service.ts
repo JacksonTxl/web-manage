@@ -22,20 +22,20 @@ export class RowTableService implements Controller {
       })
     )
   }
-  // 待签收订单
+  // 待发货订单
   @Effect()
-  getLogisticsList(params: ListParams) {
-    return this.OrderApi.LogisticsList(params).pipe(
+  getDeliverList(params: ListParams) {
+    return this.OrderApi.DeliverList(params).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })
     )
   }
-  // 待发货订单
+  // 待签收订单
   @Effect()
-  getDeliverList(params: ListParams) {
-    return this.OrderApi.DeliverList(params).pipe(
+  getLogisticsList(params: ListParams) {
+    return this.OrderApi.LogisticsList(params).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
