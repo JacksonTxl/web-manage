@@ -380,7 +380,9 @@ export default {
     },
     // 类目分析时间
     categoryTimesFn(value) {
-      this.dataService.getStoreCategoryRank(value).subscribe()
+      this.dataService.getStoreCategoryRank(value).subscribe(res => {
+        this.storeCategoryRankFilter(res)
+      })
     },
     // 购买次数/消费金额时间
     userAnalysisTimesFn(value) {
