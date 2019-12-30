@@ -1122,7 +1122,7 @@ export const routeMapConfig = {
       'shop-product-course-schedule-small-course'
   },
   'shop-product-course-manage-small-course-list'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '小班课'
+    routeConfig.meta.title = '{{$c("small_course")}}'
     routeConfig.meta.auth = 'shop:product:small_class_course|list'
     routeConfig.queryOptions = {
       class_status: { type: Number, default: -1 },
@@ -1132,23 +1132,23 @@ export const routeMapConfig = {
     }
   },
   'shop-product-course-manage-small-course-add'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '添加小班课'
+    routeConfig.meta.title = '添加{{$c("small_course")}}'
     routeConfig.meta.auth = 'shop:product:small_class_course|add'
   },
   'shop-product-course-manage-small-course-edit'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '编辑小班课'
+    routeConfig.meta.title = '编辑{{$c("small_course")}}'
     routeConfig.meta.auth = 'shop:product:small_class_course|edit'
   },
   'shop-product-course-manage-small-course-info-basic'(
     routeConfig: RouteConfig
   ) {
-    routeConfig.meta.title = '小班课详情'
+    routeConfig.meta.title = '{{$c("small_course")}}详情'
     routeConfig.meta.auth = 'shop:product:small_class_course|get'
   },
   'shop-product-course-manage-small-course-info-class'(
     routeConfig: RouteConfig
   ) {
-    routeConfig.meta.title = '小班课详情'
+    routeConfig.meta.title = '{{$c("small_course")}}详情'
     routeConfig.meta.auth = 'shop:product:small_class_course|get'
   },
   'shop-product-course-manage-team-list'(routeConfig: RouteConfig) {
