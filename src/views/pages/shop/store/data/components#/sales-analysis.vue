@@ -80,7 +80,7 @@ export default {
 
   methods: {
     nameFilter(value, nameLength) {
-      return value.length > nameLength
+      return value && value.length > nameLength
         ? `${value.slice(0, nameLength)}...`
         : value
     }

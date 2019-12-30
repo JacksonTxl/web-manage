@@ -35,7 +35,7 @@ export default {
       default: ''
     },
     total: {
-      type: Number,
+      type: [Number, String],
       default: 0
     },
     padding: {
