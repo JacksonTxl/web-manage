@@ -373,7 +373,7 @@ export default {
               start_time,
               transferee_member_id: +values.member_id,
               member_name: values.member_name,
-              mobile: values.mobile,
+              mobile: values.mobile ? values.mobile.phone : undefined,
               remain_price: +values.remainPrice,
               contract_number: values.contractNumber,
               pay_channel: +values.payType,
