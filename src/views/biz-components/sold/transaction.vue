@@ -12,6 +12,7 @@ import SoldDealSalePersonalCourse from '@/views/biz-modals/sold/deal/sale-person
 import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
 import { PRODUCT_TYPE } from '@/constants/sold/transaction'
 import { OssService } from '@/services/oss.service'
+import SoldDealSaleSmallCourse from '@/views/biz-modals/sold/deal/sale-small-course'
 export default {
   name: 'SoldTransaction',
   props: {},
@@ -22,7 +23,8 @@ export default {
     SoldDealSaleDepositCard,
     SoldDealSaleMemberCard,
     SoldDealSalePersonalCourse,
-    SoldDealGatheringTip
+    SoldDealGatheringTip,
+    SoldDealSaleSmallCourse
   },
   serviceInject() {
     return {
@@ -136,6 +138,9 @@ export default {
           break
         case this.PRODUCT_TYPE.CABINET:
           this.onCabinet(record)
+          break
+        case this.PRODUCT_TYPE.SMALL_COURSE:
+          this.onSmallCourse(record)
           break
       }
     },
@@ -262,6 +267,25 @@ export default {
         on: {
           success: result => {
             this.saleCallBack(result, 'personal')
+          }
+        }
+      })
+    },
+    // 小班课签单
+    onSmallCourse(record) {
+      this.$modalRouter.push({
+        name: 'sold-deal-sale-small-course',
+        props: {
+          id: `${record.id}`,
+          memberInfo: {
+            member_id: record.member_id,
+            member_name: record.member_name,
+            member_mobile: record.member_mobile
+          }
+        },
+        on: {
+          success: result => {
+            this.saleCallBack(result, 'small_course_order/detail')
           }
         }
       })

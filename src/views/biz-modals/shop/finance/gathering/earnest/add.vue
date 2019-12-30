@@ -9,58 +9,7 @@
     <div>
       <st-form :form="form" labelWidth="88px">
         <div>
-          <st-form-item v-if="searchMemberIsShow" label="预定会员" required>
-            <a-select
-              showSearch
-              allowClear
-              placeholder="输入手机号或会员名搜索"
-              :defaultActiveFirstOption="false"
-              :showArrow="false"
-              :filterOption="false"
-              v-decorator="decorators.member_id"
-              @search="onMemberSearch"
-              notFoundContent="无搜索结果"
-            >
-              <a-select-option
-                v-for="(item, index) in memberList"
-                :value="item.id"
-                :key="index"
-              >
-                <span
-                  v-html="
-                    `${item.member_name} ${item.mobile}`.replace(
-                      new RegExp(memberSearchText, 'g'),
-                      `\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`
-                    )
-                  "
-                >
-                  {{ item.member_name }} {{ item.mobile }}
-                </span>
-              </a-select-option>
-            </a-select>
-            <p
-              v-if="!memberList.length && memberSearchText !== ''"
-              class="mg-b0"
-            >
-              查无此会员，
-              <a @click="onAddMember">添加新会员？</a>
-            </p>
-          </st-form-item>
-          <st-form-item v-if="!searchMemberIsShow" label="会员姓名" required>
-            <a-input
-              v-decorator="decorators.member_name"
-              placeholder="请输入会员姓名"
-            ></a-input>
-          </st-form-item>
-          <st-form-item v-if="!searchMemberIsShow" label="手机号" required>
-            <a-input
-              v-decorator="decorators.mobile"
-              placeholder="请输入手机号"
-            ></a-input>
-            <p class="mg-b0">
-              <a @click="onCancelMember">取消添加</a>
-            </p>
-          </st-form-item>
+          <member-search :form="form" :saleRangeType="1"></member-search>
           <st-form-item label="定金金额" required>
             <st-input-number
               :min="1"
@@ -155,13 +104,15 @@ import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from './add.config'
 import { CODE_NUMBER } from '@/constants/sold/transaction'
 import autoContractBtn from '@/views/biz-components/contract/auto-contract-btn.vue'
+import MemberSearch from '@/views/biz-components/member-search/member-search'
 export default {
-  name: 'ModalSoldDealSaleMemberCard',
+  name: 'ModalShopFinanceGatheringEarnest',
   bem: {
     sale: 'modal-sold-deal-sale'
   },
   components: {
-    autoContractBtn
+    autoContractBtn,
+    MemberSearch
   },
   serviceProviders() {
     return [AddService]
@@ -180,7 +131,6 @@ export default {
       paymentMethodList: this.addService.paymentMethodList$
     }
   },
-  props: {},
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
@@ -189,9 +139,6 @@ export default {
       form,
       decorators,
       show: false,
-      // 搜索会员
-      memberSearchText: '',
-      searchMemberIsShow: true,
       money: 0
     }
   },
@@ -201,29 +148,6 @@ export default {
   methods: {
     changeMoney(event) {
       this.money = event
-    },
-    // 搜索会员
-    onMemberSearch(data) {
-      this.memberSearchText = data
-      if (data === '') {
-        this.addService.memberList$.commit(() => [])
-        this.form.resetFields(['member_id'])
-      } else {
-        this.addService.getMember(data, 1).subscribe(res => {
-          if (!res.list.length) {
-            this.form.resetFields(['member_id'])
-          }
-        })
-      }
-    },
-    // 切换添加会员
-    onAddMember() {
-      this.searchMemberIsShow = false
-      this.form.resetFields(['member_id', 'member_name', 'member_mobile'])
-    },
-    onCancelMember() {
-      this.searchMemberIsShow = true
-      this.form.resetFields(['member_id', 'member_name', 'member_mobile'])
     },
     onCodeNumber() {
       this.addService.getCodeNumber(this.CODE_NUMBER.EARNEST).subscribe(res => {
@@ -237,13 +161,27 @@ export default {
     },
     onSubmit() {
       this.form.validate().then(values => {
-        this.addService.addEarnest(values).subscribe(result => {
-          this.$emit('success', {
-            type: 'create',
-            orderId: result.info.order_id
+        this.addService
+          .addEarnest({
+            ...values,
+            mobile: values.mobile ? values.mobile.phone : undefined,
+            is_minors: values.is_minors,
+            parent_name: values.parent_name,
+            parent_mobile: values.parent_mobile
+              ? values.parent_mobile.phone
+              : undefined,
+            parent_country_prefix: values.parent_mobile
+              ? values.parent_mobile.code_id
+              : undefined,
+            parent_user_role: values.parent_user_role
           })
-          this.show = false
-        })
+          .subscribe(result => {
+            this.$emit('success', {
+              type: 'create',
+              orderId: result.info.order_id
+            })
+            this.show = false
+          })
       })
     }
   }
