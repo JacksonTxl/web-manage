@@ -35,6 +35,7 @@
         @change="onTableChange"
         :dataSource="list"
         :loading="loading.getList"
+        rowKey="id"
       >
         <template slot="order_status" slot-scope="text">
           {{ text | enumFilter('finance.order_status') }}
@@ -44,41 +45,50 @@
         </template>
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
-            <!-- v-if="record.auth['brand_shop:order:order|pay']" -->
-            <a @click="onGathering(record)">
+            <a
+              @click="onGathering(record)"
+              v-if="record.auth['brand_shop:order:order|pay']"
+            >
               收款
             </a>
-            <!-- v-if="record.auth['brand_shop:order:order|cancel']" -->
-
-            <a @click="onCancel(record)">
+            <a
+              @click="onCancel(record)"
+              v-if="record.auth['brand_shop:order:order|cancel']"
+            >
               取消
             </a>
-            <!-- v-if="record.auth['brand_shop:order:order|get']" -->
-
-            <a @click="onOrderInfo(record)">
+            <a
+              @click="onOrderInfo(record)"
+              v-if="record.auth['brand_shop:order:order|get']"
+            >
               详情
             </a>
-            <!-- v-if="record.auth['brand_shop:order:order|refund']" -->
-
-            <a @click="onRefund(record)">
+            <a
+              @click="onRefund(record)"
+              v-if="record.auth['brand_shop:order:order|refund']"
+            >
               退款
             </a>
-            <!-- v-if="record.auth['brand_shop:order:order|split']" -->
-
-            <a @click="onSplit(record)">
+            <a
+              @click="onSplit(record)"
+              v-if="record.auth['brand_shop:order:order|split']"
+            >
               业绩拆分
             </a>
-            <!-- v-if="record.auth['shop:order:order|print']" -->
-
             <a
               @click="printOrder(record.id)"
               v-if="record.auth['shop:order:order|print']"
             >
               打印小票
             </a>
-            <!-- v-if="record.children && record.children.auth" -->
 
-            <a @click="onChildredRefund(record)" v-if="record.is_children">
+            <a
+              @click="onChildredRefund(record)"
+              v-if="
+                record.is_children &&
+                  record.auth['brand_shop:order:order|chlidren_refund']
+              "
+            >
               子订单退款
             </a>
           </st-table-actions>
@@ -134,7 +144,6 @@ export default {
   },
   mounted() {
     this.setSearchData()
-    console.log(this.changeList)
   },
 
   data() {
@@ -152,7 +161,7 @@ export default {
     // 子订单退款
     onChildredRefund(record) {
       console.log(record)
-      const props = { id: record.id }
+      const props = { id: record.id, type: 'ChildInfo' }
       console.log(props)
       // if (record.product_type === this.ORDER_PRODUCT_TYPE.EARNEST) {
       //   props.goodsInvalid = true
@@ -258,7 +267,7 @@ export default {
     },
     // 退款
     onRefund(record) {
-      const props = { id: record.id }
+      const props = { id: record.id, type: 'Detail' }
       if (record.product_type === this.ORDER_PRODUCT_TYPE.EARNEST) {
         // 这里的枚举值是8 8是代表定金的嘛？
         props.goodsInvalid = true

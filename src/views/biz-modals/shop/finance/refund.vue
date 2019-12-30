@@ -11,10 +11,10 @@
             <st-info-item label="订单号" v-if="info.order_id">
               {{ info.order_id }}
             </st-info-item>
+            <!-- 此条展示为子订单id  -->
             <st-info-item label="订单号" v-if="info.id">
               {{ info.id }}
             </st-info-item>
-            <!-- 此条展示为子订单id  -->
             <st-info-item class="mg-b0" label="下单时间">
               {{ info.created_time }}
             </st-info-item>
@@ -160,7 +160,7 @@ export default {
       loading: this.refundService.loading$
     }
   },
-  props: ['id', 'goodsInvalid'],
+  props: ['id', 'goodsInvalid', 'type'],
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
@@ -197,8 +197,7 @@ export default {
     }
   },
   created() {
-    this.refundService.getDetail(this.id).subscribe()
-    this.refundService.getChildInfo(this.id).subscribe()
+    this.refundService[`get${this.type}`](this.id).subscribe()
   },
   methods: {
     moment,

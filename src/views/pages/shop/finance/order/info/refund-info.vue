@@ -58,19 +58,7 @@ export default {
   },
   data() {
     return {
-      columns: refundColumns,
-      list: [
-        {
-          product_name: '铁鸿基',
-          product_num: '1',
-          refund_id: '238758723',
-          refund_time: '2019-11-12 22：22：22',
-          refund_price: '345',
-          action: '铁鸿基',
-          refund_reason: '买多了',
-          refund_mode: '线上微信'
-        }
-      ]
+      columns: refundColumns
     }
   },
   mounted() {

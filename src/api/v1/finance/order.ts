@@ -69,7 +69,7 @@ export class OrderApi extends Api {
    */
   orderRefund(params: RefundParams) {
     return this.http.post(`/v1/finance/order/refund_all`, {
-      params: { ...params }
+      params: { params }
     })
   }
   /**
@@ -89,7 +89,7 @@ export class OrderApi extends Api {
    */
   split(params: SplitParams) {
     return this.http.post(`/v1/finance/order/split`, {
-      params: { ...params }
+      params: { params }
     })
   }
   /**
@@ -147,7 +147,7 @@ export class OrderApi extends Api {
    */
   orderChildRefund(params: ChlidRefundParams) {
     return this.http.post(`/v1/finance/order/refund`, {
-      params: { ...params }
+      params: { params }
     })
   }
 }
