@@ -12,7 +12,8 @@
           curStatus !== CLASS_STATUS.PUBLISH_UNSTARTED
       "
       :columns="
-        CLASS_STATUS.CLASSED || CLASS_STATUS.CLASS_END
+        curStatus === CLASS_STATUS.CLASSED ||
+        curStatus === CLASS_STATUS.CLASS_END
           ? classColumns()
           : classEndColumns()
       "
