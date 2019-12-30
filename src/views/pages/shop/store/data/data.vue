@@ -214,7 +214,7 @@
                 </st-container>
                 <div :class="salesCategory('sales-TOP5')">
                   <a-col :span="12">
-                    <div style="flex:1">
+                    <div>
                       <sales-analysis
                         title="销量TOP5"
                         :salesTitle="['排名', '商品', '销量(件)']"
@@ -224,7 +224,7 @@
                     </div>
                   </a-col>
                   <a-col :span="12" class="hr">
-                    <div style="flex:1">
+                    <div>
                       <sales-analysis
                         title="营收TOP5"
                         :salesTitle="['排名', '商品', '营收(元)']"
