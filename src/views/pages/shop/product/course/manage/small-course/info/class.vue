@@ -2,14 +2,14 @@
   <st-panel app initial>
     <st-no-data
       v-if="
-        $route.query.status === CLASS_STATUS.UNPUBLISH ||
-          $route.query.status === CLASS_STATUS.PUBLISH_UNSTARTED
+        curStatus === CLASS_STATUS.UNPUBLISH ||
+          curStatus === CLASS_STATUS.PUBLISH_UNSTARTED
       "
     />
     <st-table
       v-if="
-        $route.query.status !== CLASS_STATUS.UNPUBLISH &&
-          $route.query.status !== CLASS_STATUS.PUBLISH_UNSTARTED
+        curStatus !== CLASS_STATUS.UNPUBLISH &&
+          curStatus !== CLASS_STATUS.PUBLISH_UNSTARTED
       "
       :columns="
         CLASS_STATUS.CLASSED || CLASS_STATUS.CLASS_END
@@ -21,6 +21,19 @@
       @change="onTableChange"
       :dataSource="groupClassList"
     >
+      <div slot="user_name" slot-scope="text, record">
+        <span>{{ record.user_name }}</span>
+        <st-icon
+          type="user-type"
+          v-if="record.sex === SEX.BOY && record.is_minors"
+          color="#3F66F6"
+        />
+        <st-icon
+          type="user-type"
+          v-if="record.sex === SEX.GIRL && record.is_minors"
+          color="#FF5E41"
+        />
+      </div>
       <div slot="leave_class_hours" slot-scope="text, record">
         <a
           v-modal-link="{
@@ -61,6 +74,7 @@ import CourseSmallCourseLeave from '@/views/biz-modals/course/small-course-leave
 import CourseSmallCourseTruancy from '@/views/biz-modals/course/small-course-truancy'
 import CourseSmallCourseSign from '@/views/biz-modals/course/small-course-sign'
 import { CLASS_STATUS } from '@/constants/course/small-course'
+import { SEX } from '@/constants/member/info'
 
 export default {
   name: 'SmallCourseClassInfo',
@@ -84,8 +98,13 @@ export default {
     return {
       classColumns,
       classEndColumns,
-      CLASS_STATUS
+      CLASS_STATUS,
+      SEX,
+      curStatus: 0
     }
+  },
+  created() {
+    this.curStatus = this.curStatus - 0
   }
 }
 </script>
