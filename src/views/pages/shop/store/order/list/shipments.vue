@@ -48,7 +48,7 @@ export default {
         },
         on: {
           success: res => {
-            this.$router.reload()
+            this.getListData()
           }
         }
       })

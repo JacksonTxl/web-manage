@@ -274,22 +274,12 @@ export default {
       selectCoupon: '', // 优惠券选择的信息
       reducePrice: null,
       description: '',
-      buyCar: [],
-      storeProductList1: [
-        {
-          product_name: '商品名',
-          img: '',
-          min_price: 100,
-          max_price: 200,
-          count: 40
-        }
-      ]
+      buyCar: []
     }
   },
   mounted() {
     this.getList()
     this.$searchQuery.product_type = PRODUCT_TYPE.STORE
-    this.getUseCouponList(0)
     this.listService.getSaleList().subscribe()
   },
   methods: {
@@ -526,12 +516,10 @@ export default {
           nums: val.nums
         })
       })
-      this.listService
-        .getUseCoupon({
-          product_info: JSON.stringify(productInfo),
-          member_id: memberId
-        })
-        .subscribe()
+      this.listService.getUseCoupon({
+        product_info: JSON.stringify(productInfo),
+        member_id: memberId
+      })
     },
     // 同时获取价格和优惠券列表
     onMemberChange(data) {
