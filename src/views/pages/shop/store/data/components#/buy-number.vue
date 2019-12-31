@@ -6,7 +6,7 @@
           <sales-analysis
             :title="titleLeft[flag - 0]"
             nameLength="4"
-            :salesTitle="['排名', '用户', '购买数(次)']"
+            :salesTitle="['排名', '用户', flag ? '购买数(次)' : '消费金额(元)']"
             :salesList="data.top_rank | filterDataTOP5"
           ></sales-analysis>
         </div>
@@ -20,7 +20,10 @@
               <a-radio :value="2">支付金额</a-radio>
             </a-radio-group>
           </div>
-          <shop-entry-bar :data="filterBuyNumInfo"></shop-entry-bar>
+          <shop-entry-bar
+            :data="filterBuyNumInfo"
+            :uitl="value === 2 ? '元' : '人'"
+          ></shop-entry-bar>
         </div>
       </a-col>
     </a-row>
@@ -71,7 +74,7 @@ export default {
     this.onChange()
   },
   methods: {
-    onChange() {
+    onChange(e) {
       this.filterBuyNum(this.value)
     },
     filterBuyNum(value) {

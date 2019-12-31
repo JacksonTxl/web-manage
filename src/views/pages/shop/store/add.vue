@@ -97,6 +97,7 @@
                   <p>建议尺寸为750像素×750像素</p>
                 </template>
               </st-image-upload>
+              <div>可上传5张图片</div>
               <div class="color-danger" v-if="isImgError">请上传商品图片</div>
             </st-form-item>
             <st-form-item label="配送方式" required>
