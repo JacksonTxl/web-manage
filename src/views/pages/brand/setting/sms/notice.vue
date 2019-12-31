@@ -13,7 +13,7 @@
         </div>
         <div
           :class="bItem('table-tr')"
-          v-for="(item, index) in memberList"
+          v-for="(item, index) in memberList$"
           :key="index"
         >
           <notice-item @editInfo="save" :info="item"></notice-item>
@@ -33,10 +33,25 @@
         </div>
         <div
           :class="bItem('table-tr')"
-          v-for="(item, index) in shopList"
+          v-for="(item, index) in shopList$"
           :key="index"
         >
-          <notice-item @editInfo="save" :info="item"></notice-item>
+          <notice-item @editInfo="save" :info="item">
+            <template
+              v-if="
+                item.notify_sub_type.value === 24 ||
+                  item.notify_sub_type.value === 23
+              "
+              v-slot:custom="slotProps"
+            >
+              <a-select
+                style="width:44%"
+                mode="multiple"
+                :options="roleList$"
+                v-model="slotProps.params.custom_phone"
+              ></a-select>
+            </template>
+          </notice-item>
         </div>
       </div>
     </div>
@@ -49,6 +64,7 @@ import NoticeItem from './components#/notice-item'
 const pageName = 'page-setting-sms-notice'
 
 export default {
+  name: 'NoticeConfig',
   bem: {
     bPage: pageName,
     bItem: `${pageName}-item`
@@ -59,37 +75,21 @@ export default {
     }
   },
   rxState() {
-    return {
-      list: this.noticeService.list$
-    }
-  },
-  data() {
-    return {
-      memberList: [],
-      shopList: []
-    }
+    const { memberList$, roleList$, shopList$ } = this.noticeService
+    return { memberList$, roleList$, shopList$ }
   },
   computed: {
     thsMember,
     thsShop
   },
-  created() {
-    this.getNoticeList()
-  },
+
   methods: {
     onSearch() {},
     save(para) {
       this.putNotice(para)
     },
     getNoticeList() {
-      return this.noticeService.getNoticeList().subscribe(res => {
-        this.memberList = this.list.filter(
-          ({ notify_type }) => notify_type.value === 1
-        )
-        this.shopList = this.list.filter(
-          ({ notify_type }) => notify_type.value === 2
-        )
-      })
+      return this.noticeService.getNoticeList().subscribe()
     },
     putNotice(para) {
       return this.noticeService.putNotice({ ...para }).subscribe(res => {

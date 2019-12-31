@@ -108,9 +108,7 @@
       </div>
       <div class="layout-default-body__personal">
         <!-- 消息通知 -->
-        <!-- <a-badge :count="100">
-          <a href="#" class="head-example"></a>
-        </a-badge> -->
+        <default-notify></default-notify>
         <!-- 九宫格 -->
         <a-dropdown :trigger="['hover']" placement="bottomRight">
           <div class="layout-default-body__avatar">
@@ -140,6 +138,24 @@
               <p class="layout-default-body__mobile">{{ user.mobile }}</p>
             </div>
             <a-menu class="layout-default-body__menu">
+              <!-- <a-menu-item class="layout-default-body__options">
+                  <st-icon type="safety"></st-icon>
+                  <span>账号安全</span>
+              </a-menu-item>-->
+              <!-- <a-menu-item class="layout-default-body__options">
+                  <a v-modal-link="{ name: 'brand-switch' }">
+                    <st-icon type="switch"></st-icon>
+                    <span>切换品牌</span>
+                  </a>
+              </a-menu-item>-->
+              <!-- <a-menu-divider/> -->
+              <a-menu-item
+                @click="onClickNotifyConfig"
+                class="layout-default-body__options"
+              >
+                <st-icon type="notify-config" color="#000000"></st-icon>
+                <span>通知设置</span>
+              </a-menu-item>
               <a-menu-item
                 @click="onClickBind"
                 class="layout-default-body__options"
@@ -182,12 +198,18 @@
 <script>
 import DefaultSiderMenu from './default#/sider-menu.vue'
 import DefaultSkeleton from './default#/skeleton.vue'
+import DefaultNotify from './default#/notify.vue'
 import SwitchShop from '@/views/fragments/shop/switch'
 import routes from '@/router/routes'
 import { find } from 'lodash-es'
 import { UserService } from '@/services/user.service'
 import { TokenService } from '@/services/token.service'
 import { TitleService } from '@/services/title.service'
+import FastEntryMiniProgram from '@/views/biz-modals/fast-entry/mini-program'
+import FastEntryHousekeeper from '@/views/biz-modals/fast-entry/housekeeper'
+import CommonNotifyConfig from '@/views/biz-modals/common/notify/config'
+import CommonNotifyActivity from '@/views/biz-modals/common/notify/activity'
+import CommonNotifySystem from '@/views/biz-modals/common/notify/system'
 import AccountBind from '@/views/biz-modals/account/bind'
 import AccountUnbind from '@/views/biz-modals/account/unbind'
 import AccountModify from '@/views/biz-modals/account/modify'
@@ -195,12 +217,14 @@ import { UdeskService } from '@/services/udesk.service'
 import FastEntry from './default#/fast-entry'
 import StUdeskBtn from '@/views/biz-components/udesk-btn/udesk-btn'
 import Copyright from '@/views/biz-components/copyright/copyright'
+import { NotifyService } from './default#/notify.service'
 
 export default {
   name: 'SaasLayout',
   components: {
     DefaultSiderMenu,
     SwitchShop,
+    DefaultNotify,
     FastEntry,
     StUdeskBtn,
     Copyright
@@ -210,11 +234,15 @@ export default {
       userService: UserService,
       tokenService: TokenService,
       titleService: TitleService,
-      udeskService: UdeskService
+      udeskService: UdeskService,
+      notifyService: NotifyService
     }
   },
   rxState() {
+    const { systemList$, activityList$ } = this.notifyService
     return {
+      systemList$,
+      activityList$,
       user: this.userService.user$,
       brand: this.userService.brand$,
       shop: this.userService.shop$,
@@ -227,10 +255,16 @@ export default {
   data() {
     return {
       isShowSwitchShop: false,
+      systemListLength: 0,
       menuObj: {}
     }
   },
   modals: {
+    FastEntryMiniProgram,
+    FastEntryHousekeeper,
+    CommonNotifyConfig,
+    CommonNotifyActivity,
+    CommonNotifySystem,
     AccountBind,
     AccountUnbind,
     AccountModify
@@ -251,7 +285,54 @@ export default {
       return this.isThemeStudio ? '工作室版' : '俱乐部版'
     }
   },
+  watch: {
+    systemList$(newValue, oldValue) {
+      if (newValue.length === 0) {
+        if (this.activityList$.length > 0) {
+          this.$modalRouter.push({
+            name: 'common-notify-activity',
+            props: { list: this.activityList$ }
+          })
+        }
+        return
+      }
+      if (newValue.length === 0) return
+      this.onSuccess()
+    }
+  },
   methods: {
+    onSuccess() {
+      const len = this.systemList$.length
+      if (this.systemListLength === len) {
+        this.$modalRouter.push({
+          name: 'common-notify-activity',
+          props: { list: this.activityList$ }
+        })
+        return
+      }
+      this.$modalRouter.push({
+        name: 'common-notify-system',
+        props: { info: this.systemList$[this.systemListLength] },
+        on: {
+          // 模态窗动画400ms
+          success: res => {
+            setTimeout(() => {
+              this.systemListLength++
+              this.onSuccess()
+            }, 400)
+          },
+          cancel: res => {
+            setTimeout(() => {
+              this.systemListLength++
+              this.onSuccess()
+            }, 400)
+          }
+        }
+      })
+    },
+    onClickNotifyConfig() {
+      this.$modalRouter.push({ name: 'common-notify-config' })
+    },
     switchShop() {
       this.isShowSwitchShop = !this.isShowSwitchShop
     },

@@ -15,3 +15,7 @@ export const enum TMPL_TYPES {
   CUSTOM = 2,
   PERSONAL = 1
 }
+export const enum NOTIFY_TYPES {
+  MEMBER = 1,
+  SHOP = 2
+}
