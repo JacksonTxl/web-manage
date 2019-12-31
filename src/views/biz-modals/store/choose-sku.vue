@@ -2,10 +2,7 @@
   <st-modal title="规格选择" @ok="onSubmit" v-model="show" width="540px">
     <div :class="basic()">
       <div :class="info()">
-        <img
-          src="https://img.cdn.xinchanedu.com/uploadImg/aix/2019/Aug/1565149862022.jpg"
-          alt=""
-        />
+        <img :src="productData.product_images[0].image_url" alt="" />
         <div :class="info('content')">
           <span :class="info('price')">￥{{ productInfo.unit_price }}</span>
           <span :class="info('amount')">
@@ -109,6 +106,7 @@ export default {
     }
   },
   created() {
+    console.log(this.productData)
     this.changeData()
   }
 }
