@@ -47,6 +47,7 @@
               <a-select
                 style="width:44%"
                 mode="multiple"
+                placeholder="点击选择角色"
                 :options="roleList$"
                 v-model="slotProps.params.custom_phone"
               ></a-select>

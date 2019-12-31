@@ -121,7 +121,7 @@
                 </st-checkbox>
               </span>
             </div>
-            <div class="mg-b16">
+            <div class="mg-b16" v-if="24 === info.notify_sub_type.value">
               <span class="color-title mg-r24">消息类型</span>
               <span
                 class="mg-r16"
@@ -131,7 +131,7 @@
                 {{ item }}
               </span>
             </div>
-            <div class="mg-b16">
+            <div class="mg-b16" v-if="24 === info.notify_sub_type.value">
               <span class="color-title mg-r24">入场方式</span>
               <span
                 class="mg-r16"
