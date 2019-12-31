@@ -10,11 +10,19 @@
     <div :class="gatheringTip('content')">
       <st-icon type="success" class="img" color="#52c41a" />
       <p>{{ message }}</p>
-      <st-button v-if="!isBrandStudio" type="primary" @click="print">
+      <st-button
+        v-if="!isBrandStudio && needContract"
+        type="primary"
+        @click="print"
+      >
         打印合同
       </st-button>
       <st-button @click="viewOrder">查看订单</st-button>
-      <st-button @click="printOrder" type="primary" v-if="auth.print">
+      <st-button
+        @click="printOrder"
+        type="primary"
+        v-if="auth.print && needTicket"
+      >
         打印小票
       </st-button>
       <st-button @click="goPay" v-if="needPay">去支付</st-button>
@@ -54,7 +62,15 @@ export default {
     member_id: Number, // 会员id
     message: String,
     needPay: Boolean, // true 需要支付按钮 false 不需要
-    isFamilyCard: Boolean // true 需要展示变更成员按钮 false 不需要
+    isFamilyCard: Boolean, // true 需要展示变更成员按钮 false 不需要
+    needContract: {
+      type: Boolean,
+      default: true
+    },
+    needTicket: {
+      type: Boolean,
+      default: true
+    }
   },
   methods: {
     print() {

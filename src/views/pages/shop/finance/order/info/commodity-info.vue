@@ -73,6 +73,34 @@
           </st-info>
         </a-col>
       </a-row>
+      <!-- 场地预约 -->
+      <a-row :gutter="24" v-if="product_type === 13">
+        <a-col :span="9">
+          <st-info>
+            <st-info-item label="门店">
+              {{ info.shop_name }}
+            </st-info-item>
+            <st-info-item label="预约日期">
+              {{ info.reserve_day }}
+            </st-info-item>
+            <st-info-item label="场地时间">
+              <div
+                v-for="(item, index) in info.reserve_venues_site"
+                :key="index"
+              >
+                {{ `${item.site_name} ${item.time_start}~${item.time_end}` }}
+              </div>
+            </st-info-item>
+          </st-info>
+        </a-col>
+        <a-col :span="9">
+          <st-info>
+            <st-info-item label="场馆">
+              {{ info.venues_name }}
+            </st-info-item>
+          </st-info>
+        </a-col>
+      </a-row>
       <!-- 私教课 -->
       <a-row :gutter="24" v-if="product_type === 2">
         <a-col :span="9">
