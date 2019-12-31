@@ -17,7 +17,7 @@
           <tr v-if="tableData.length < 10">
             <td colspan="3" class="st-form-table__add">
               <st-button type="dashed" icon="add" block @click="addClass">
-                添加
+                添加（{{ tableData.length }}/10）
               </st-button>
             </td>
           </tr>
@@ -31,11 +31,15 @@
             </td>
             <td style="padding-left: 42px" v-else>{{ item.category_name }}</td>
             <td>
-              <a @click="saveHandle(item, index)" v-if="item.isEdit">保存</a>
-              <a @click="editHandle(item, index)" v-else>编辑</a>
-              |
-              <a @click="cancelHandle(item, index)" v-if="item.isEdit">取消</a>
-              <a @click="delHandle(item, index)" v-else>删除</a>
+              <st-table-actions>
+                <a @click="saveHandle(item, index)" v-if="item.isEdit">保存</a>
+                <a @click="editHandle(item, index)" v-else>编辑</a>
+                |
+                <a @click="cancelHandle(item, index)" v-if="item.isEdit">
+                  取消
+                </a>
+                <a @click="delHandle(item, index)" v-else>删除</a>
+              </st-table-actions>
             </td>
           </tr>
         </tbody>
