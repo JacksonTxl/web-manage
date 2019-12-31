@@ -3,7 +3,28 @@ import { NotificationService } from './notification.service'
 @Injectable()
 export class NoCaptchaService {
   constructor(private notification: NotificationService) {}
+  isCreated = false
   init(opts: any = {}) {
+    if (!this.isCreated) {
+      this.create().then(() => {
+        this.initNvcOpt(opts)
+      })
+    } else {
+      this.initNvcOpt(opts)
+    }
+  }
+  create() {
+    return new Promise(resolve => {
+      const script = document.createElement('script')
+      script.src = '//g.alicdn.com/sd/nvc/1.1.112/guide.js'
+      script.onload = () => {
+        this.isCreated = true
+        resolve()
+      }
+      document.body.appendChild(script)
+    })
+  }
+  initNvcOpt(opts: any = {}) {
     //无痕配置 && 滑动验证、刮刮卡、问答验证码通用配置
     // @ts-ignore
     window.NVC_Opt = {

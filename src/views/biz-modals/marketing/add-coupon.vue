@@ -1,9 +1,7 @@
 <template>
   <st-modal
     title="选择优惠券"
-    size="small"
     v-model="show"
-    width="668px"
     wrapClassName="modal-marketing-add-coupon"
   >
     <div :class="add('content')">
