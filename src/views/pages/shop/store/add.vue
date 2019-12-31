@@ -208,7 +208,11 @@
                     :class="basic('sku--tag')"
                   >
                     {{ sku }}
-                    <a-icon type="close" @click="delSkuItem(index, i)" />
+                    <a-icon
+                      type="close"
+                      @click="delSkuItem(index, i)"
+                      v-if="isEditMode ? item.spec_item_name.length > 1 : true"
+                    />
                   </span>
                   <a :class="basic('sku--item-add')" @click="addSkuItem(index)">
                     添加规格
@@ -682,6 +686,9 @@ export default {
     //   this.changeTable()
     // },
     delSkuItem(index, i) {
+      // if (this.isEditMode && this.skuList[index].spec_item_name.length === 1) {
+
+      // }
       this.skuList[index].spec_item_name.splice(i, 1)
       this.changeTable()
     },
