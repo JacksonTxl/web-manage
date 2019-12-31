@@ -1,29 +1,27 @@
 <template>
-  <div>
-    <st-modal :wrapClassName="b()" v-model="show" width="728px" :footer="null">
-      <div :class="b('arrow-left')" @click="onClickLeft">
-        <st-icon type="arrow-left" class="arrow-left-out" />
-      </div>
-      <div :class="b('notify-img')">
-        <swiper :options="sliderOptions" ref="swiper">
-          <swiper-slide v-for="(item, index) in list" :key="index">
-            <div>
-              <a :href="item.announcement_link" target="_blank">
-                <img :src="item.image_key" alt="" width="728" height="400" />
-              </a>
-            </div>
-          </swiper-slide>
-          <div
-            class="swiper-pagination swiper-pagination-h"
-            slot="pagination"
-          ></div>
-        </swiper>
-      </div>
-      <div :class="b('arrow-right')" @click="onClickRight">
-        <st-icon type="arrow-right" class="arrow-left-out" />
-      </div>
-    </st-modal>
-  </div>
+  <st-modal :wrapClassName="b()" v-model="show" width="728px" :footer="null">
+    <div :class="b('arrow-left')" @click="onClickLeft">
+      <st-icon type="arrow-left" class="arrow-left-out" />
+    </div>
+    <div :class="b('notify-img')">
+      <swiper :options="sliderOptions" ref="swiper">
+        <swiper-slide v-for="(item, index) in list" :key="index">
+          <div>
+            <a :href="item.announcement_link" target="_blank">
+              <img :src="item.image_key" alt="" width="728" height="400" />
+            </a>
+          </div>
+        </swiper-slide>
+        <div
+          class="swiper-pagination swiper-pagination-h"
+          slot="pagination"
+        ></div>
+      </swiper>
+    </div>
+    <div :class="b('arrow-right')" @click="onClickRight">
+      <st-icon type="arrow-right" class="arrow-left-out" />
+    </div>
+  </st-modal>
 </template>
 
 <script>
@@ -33,7 +31,7 @@ import { ActivityService } from './activity.service'
 export default {
   name: 'ModalActivity',
   bem: {
-    b: 'modal-activity'
+    b: 'modal-common-notify-activity'
   },
   components: {
     swiper,

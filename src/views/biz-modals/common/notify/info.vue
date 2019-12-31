@@ -18,7 +18,7 @@ import { InfoService } from './info.service'
 export default {
   name: 'ModalNoticeDetail',
   bem: {
-    b: 'modal-notice-detail'
+    b: 'modal-common-notify-info'
   },
   serviceInject() {
     return {

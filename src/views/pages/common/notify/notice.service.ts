@@ -1,5 +1,5 @@
 import { State, Effect } from 'rx-state'
-import { NotifyApi } from './../../../../api/v1/notify'
+import { NotifyApi } from '@/api/v1/notify'
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { tap } from 'rxjs/operators'
 
