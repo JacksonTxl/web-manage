@@ -67,9 +67,9 @@ export default {
   computed: {
     imgIcon() {
       let iconArr = [
-        this.IconThreeRanking,
+        this.IconOneRanking,
         this.IconTwoRanking,
-        this.IconOneRanking
+        this.IconThreeRanking
       ]
       return iconArr
     }
