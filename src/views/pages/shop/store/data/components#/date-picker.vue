@@ -1,18 +1,22 @@
 <template>
   <div :class="basic()">
-    <a-select defaultValue="1" @change="handleChange">
-      <a-select-option value="1">日</a-select-option>
-      <a-select-option value="2">周</a-select-option>
-      <a-select-option value="3">月</a-select-option>
+    <a-select :defaultValue="dateType[0].value" @change="handleChange">
+      <a-select-option
+        v-for="(item, index) in dateType"
+        :key="index"
+        :value="item.value"
+      >
+        {{ item.label }}
+      </a-select-option>
     </a-select>
     <a-date-picker
-      v-if="selectValue === '1'"
+      v-if="selectValue === 1"
       :disabledDate="disabledDate"
       @change="onChange"
       :defaultValue="moment(defaultValue)"
     />
     <a-week-picker
-      v-else-if="selectValue === '2'"
+      v-else-if="selectValue === 2"
       :disabledDate="disabledWeek"
       @change="onChange"
     />
@@ -21,9 +25,20 @@
 </template>
 <script>
 import moment from 'moment'
+import { UserService } from '@/services/user.service'
 export default {
   bem: {
     basic: 'shop-store-data-picker'
+  },
+  serviceInject() {
+    return {
+      userService: UserService
+    }
+  },
+  rxState() {
+    return {
+      dateType: this.userService.getOptions$('cloud_store.date_type')
+    }
   },
   methods: {
     disabledDate(current) {
@@ -46,7 +61,7 @@ export default {
     },
     onChange(date, dateString) {
       if (dateString) {
-        if (this.selectValue === '2') {
+        if (this.selectValue === 2) {
           dateString = dateString.slice(0, dateString.length - 1)
         }
         let propData = {
