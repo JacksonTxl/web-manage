@@ -11,7 +11,7 @@ export const columns = (vm: any) => {
       scopedSlots: { customRender: 'category_name' }
     },
     {
-      title: '销售渠道',
+      title: '售卖方式',
       dataIndex: 'sale_type_name',
       scopedSlots: { customRender: 'sale_type_name' }
     },
