@@ -291,7 +291,7 @@ export default {
     this.$searchQuery.product_type = PRODUCT_TYPE.STORE
     this.listService.couponList$.commit(() => [])
     this.getUseCouponList(0)
-    this.listService.getSaleList()
+    this.listService.getSaleList().subscribe()
   },
   methods: {
     // 获取商品列表
@@ -497,16 +497,18 @@ export default {
       this.buyCar.forEach(val => {
         productInfo.push({
           sku_id: val.sku_id,
-          nums: val.nums
+          nums: val.nums || 0
         })
       })
-      this.listService.getStorePrice({
-        product_type: 8,
-        reduce_amount: this.reducePrice || undefined,
-        coupon_id: this.selectCoupon.id || undefined,
-        member_id: memberId || undefined,
-        product_info: productInfo.length ? productInfo : undefined
-      })
+      this.listService
+        .getStorePrice({
+          product_type: 8,
+          reduce_amount: this.reducePrice || undefined,
+          coupon_id: this.selectCoupon.id || undefined,
+          member_id: memberId || undefined,
+          product_info: productInfo.length ? productInfo : undefined
+        })
+        .subscribe()
     },
     // 获取可用优惠券
     getUseCouponList(cardId) {
@@ -516,13 +518,15 @@ export default {
         productInfo.push({
           product_id: val.product_id,
           sku_id: val.sku_id,
-          nums: val.nums
+          nums: val.nums || 0
         })
       })
-      this.listService.getUseCoupon({
-        product_info: JSON.stringify(productInfo),
-        member_id: memberId
-      })
+      this.listService
+        .getUseCoupon({
+          product_info: JSON.stringify(productInfo),
+          member_id: memberId
+        })
+        .subscribe()
     },
     // 同时获取价格和优惠券列表
     onMemberChange(data) {
