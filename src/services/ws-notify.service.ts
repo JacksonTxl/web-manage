@@ -8,7 +8,7 @@ import { NotificationService } from './notification.service'
 import { Injectable } from 'vue-service-app'
 const uuidV1 = require('uuid/v1')
 @Injectable()
-export class WsService {
+export class WsNotifyService {
   private ws: any
   private token = Cookie.get('saas-token')
   private count = 0
@@ -33,7 +33,6 @@ export class WsService {
       url: `${appConfig.WEB_SOCKET_DOMAIN}?app-id=${query.appId}&token=${
         query.token
       }`,
-      // url: `wss://echo.websocket.org/`,
       openObserver: this.open$
     }))
   }

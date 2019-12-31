@@ -21,7 +21,7 @@ import { ConfigService } from './config.service'
 export default {
   name: 'ModalNotifyConfig',
   bem: {
-    b: 'modal-notify-config'
+    b: 'modal-common-notify-config'
   },
   serviceInject() {
     return {

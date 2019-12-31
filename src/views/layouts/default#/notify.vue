@@ -1,5 +1,5 @@
 <template>
-  <a-badge class="layout-default-body__notify" :count="count$">
+  <a-badge class="layout-default-body__notify cur-p" :count="count$">
     <span @click="onClickNotify" class="font-number">
       <st-icon type="notify" size="22px" color="#9BACB9"></st-icon>
     </span>
@@ -7,7 +7,6 @@
 </template>
 
 <script>
-import { WsService } from '@/services/ws.service'
 import { NotifyService } from './notify.service'
 export default {
   name: 'NotifyCenter',
@@ -18,18 +17,17 @@ export default {
   },
   serviceInject() {
     return {
-      wsService: WsService,
       service: NotifyService
     }
   },
   rxState() {
-    const { count$ } = this.wsService
+    const { count$ } = this.service
     return {
       count$
     }
   },
   created() {
-    this.wsService.init()
+    this.service.initWs()
     this.service.init().subscribe()
   }
 }
