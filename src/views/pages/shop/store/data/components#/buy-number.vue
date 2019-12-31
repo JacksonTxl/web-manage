@@ -27,6 +27,7 @@
         </div>
       </a-col>
     </a-row>
+    {{ data }}
   </div>
 </template>
 <script>
@@ -93,6 +94,14 @@ export default {
           }
         })
       }
+    }
+  },
+  watch: {
+    data: {
+      handler() {
+        this.filterBuyNum(this.value)
+      },
+      deep: true
     }
   }
 }
