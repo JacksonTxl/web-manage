@@ -22,7 +22,7 @@
           </div>
           <shop-entry-bar
             :data="filterBuyNumInfo"
-            :uitl="value === 2 ? '元' : '次'"
+            :uitl="value === 2 ? '元' : '人'"
           ></shop-entry-bar>
         </div>
       </a-col>
