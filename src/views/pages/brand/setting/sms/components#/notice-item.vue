@@ -169,7 +169,7 @@
                   {{ params.receiver.custom.name }}
                 </st-checkbox>
               </span>
-              <span v-show="isShowPhone">
+              <span v-if="isShowPhone">
                 <slot name="custom" :params="params">
                   <a-input
                     style="width:44%"
