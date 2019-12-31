@@ -72,6 +72,12 @@ export default {
       }
     },
     handleChange(e) {
+      if (e === 1) {
+        this.$emit('timesFn', {
+          date: this.defaultValue,
+          date_type: this.selectValue - 0
+        })
+      }
       this.selectValue = e
     }
   },

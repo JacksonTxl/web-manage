@@ -74,24 +74,26 @@
                     </span>
                   </div>
                 </li>
+                <li :class="basic('img')">
+                  <st-image-upload
+                    v-if="imgList.length < 5"
+                    class="mg-t12"
+                    width="126px"
+                    height="126px"
+                    :cropperModal="cropperModal"
+                    :list="fileList"
+                    @change="getImage"
+                    :numLimit="5"
+                    :sizeLimit="2"
+                    placeholder="上传图片"
+                  >
+                    <template v-slot:description>
+                      <p>建议尺寸为750像素×750像素</p>
+                    </template>
+                  </st-image-upload>
+                  <div :class="basic('img--tip')">可上传5张商品图片</div>
+                </li>
               </ul>
-              <st-image-upload
-                v-if="imgList.length < 5"
-                class="mg-t12"
-                width="126px"
-                height="126px"
-                :cropperModal="cropperModal"
-                :list="fileList"
-                @change="getImage"
-                :numLimit="5"
-                :sizeLimit="2"
-                placeholder="上传图片"
-              >
-                <template v-slot:description>
-                  <p>建议尺寸为750像素×750像素</p>
-                </template>
-              </st-image-upload>
-              <div :class="basic('img--tip')">可上传5张商品图片</div>
               <div class="color-danger" v-if="isImgError">请上传商品图片</div>
             </st-form-item>
             <st-form-item label="配送方式" required>
@@ -100,6 +102,7 @@
                   :value="item.value"
                   v-for="item in shippingMode"
                   :key="item.value"
+                  style="margin-right: 16px"
                 >
                   {{ item.label }}
                 </a-checkbox>
@@ -111,6 +114,7 @@
                   :value="item.value"
                   v-for="item in saleType"
                   :key="item.value"
+                  style="margin-right: 16px"
                 >
                   {{ item.label }}
                 </a-checkbox>
@@ -131,9 +135,7 @@
           </a-col>
         </a-row>
         <a-row :gutter="8">
-          <a-col
-            :span="skuList.length === 3 ? 24 : skuList.length === 2 ? 20 : 18"
-          >
+          <a-col :span="20">
             <!-- <a-col :span="10"> -->
             <st-form-item label="规格设置" required>
               <a-radio-group
@@ -153,7 +155,11 @@
                 <span>添加规格项（{{ skuList.length }}/3）</span>
               </div>
               <div
-                :class="basic('sku--item')"
+                :class="
+                  index === skuList.length - 1
+                    ? `${basic('sku--item')} ${basic('sku--last')}`
+                    : basic('sku--item')
+                "
                 v-for="(item, index) in skuList"
                 :key="index"
               >
