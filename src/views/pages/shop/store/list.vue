@@ -68,15 +68,18 @@
             >
               下架
             </a>
-            <st-popconfirm
-              v-if="record.auth['shop:cloud_store:goods|del']"
-              @confirm="stopTask(record)"
+            <!-- <st-popconfirm
+
+              @confirm=""
               title="确认要删除么？"
+            > -->
+            <a
+              v-if="record.auth['shop:cloud_store:goods|del']"
+              @click="onDel(record)"
             >
-              <a>
-                删除
-              </a>
-            </st-popconfirm>
+              删除
+            </a>
+            <!-- </st-popconfirm> -->
           </st-table-actions>
         </template>
       </st-table>
@@ -154,11 +157,18 @@ export default {
     // 上下架
     onShelf(record) {
       let status = record.product_shelves === 1 ? 2 : 1
-      this.listService
-        .onShelf(record.product_id, { shelves_status: status })
-        .subscribe(res => {
-          this.$router.reload()
-        })
+      this.$confirm({
+        title: '提示',
+        content: '确定下架该活动吗？',
+        onOk: () => {
+          this.listService
+            .onShelf(record.product_id, { shelves_status: status })
+            .subscribe(res => {
+              this.$router.reload()
+            })
+        },
+        onCancel() {}
+      })
     },
     onDel(record) {
       this.$confirm({

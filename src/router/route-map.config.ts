@@ -1638,7 +1638,7 @@ export const routeMapConfig = {
   },
   'shop-store-stock-list-search'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '库存查询'
-    // routeConfig.meta.auth = 'brand_shop:cloud_store:stock|list'
+    routeConfig.meta.auth = 'shop:cloud_store:stock|list'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -1647,7 +1647,7 @@ export const routeMapConfig = {
   },
   'shop-store-stock-list-detail'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '出入库明细'
-    // routeConfig.meta.auth = 'brand_shop:cloud_store:stock|access_storage_obvious'
+    routeConfig.meta.auth = 'shop:cloud_store:stock|access_storage_obvious'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -1693,7 +1693,8 @@ export const routeMapConfig = {
     }
   },
   'shop-store-list'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '云店列表' // 暂时这样未确定
+    routeConfig.meta.title = '云店列表'
+    routeConfig.meta.auth = 'shop:cloud_store:goods|list'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
