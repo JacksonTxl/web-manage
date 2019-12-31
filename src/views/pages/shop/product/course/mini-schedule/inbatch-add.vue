@@ -225,10 +225,10 @@ export default {
       coachId: undefined,
       editScheduleCycleFlag: false,
       cycle_type: 1,
-      start_date: '2019-12-16',
-      end_date: '2019-12-30',
-      picker_start_date: '2019-12-16',
-      picker_end_date: '2019-12-30',
+      start_date: '',
+      end_date: '',
+      picker_start_date: '',
+      picker_end_date: '',
       pickerList: [],
       disabledDate: [],
       tipsText: [],
@@ -256,12 +256,6 @@ export default {
     addScheduleFlag() {
       return !(this.end_date === this.picker_end_date)
     }
-  },
-  watch: {
-    // filterDate(newVal) {
-    //   console.log(newVal)
-    // },
-    // deep: true
   },
   created() {
     this.filterDateList(this.scheduleList)
@@ -319,7 +313,6 @@ export default {
           } else if (!res.list.length && res.cycle_type === 1) {
             console.log('周期无数据')
             this.initScheduleDate()
-            //this.filterDateList(this.scheduleList)
           } else if (res.cycle_type === 2) {
             console.log('自主')
             if (res.list.length) {
@@ -346,7 +339,6 @@ export default {
       }
     },
     onChangeRangePicker(date, dateString, PickerIndex) {
-      // this.picker_start_date = date[0].format('YYYY-MM-DD').valueOf()
       this.picker_end_date = date[1].format('YYYY-MM-DD').valueOf()
       //console.log(this.pickerList)
       let pickerFlag = false
@@ -602,10 +594,6 @@ export default {
           end_date
         }
       })
-    },
-    formatTime(time) {
-      let t = moment(time).format('HH:mm')
-      console.log(t)
     }
   },
   components: {

@@ -47,7 +47,7 @@
             </template>
             <template v-else>
               <st-info-item label="手机号">
-                {{ info.mobile }}
+                {{ info.member_mobile }}
               </st-info-item>
             </template>
             <st-info-item label="下单人">{{ info.operator_name }}</st-info-item>

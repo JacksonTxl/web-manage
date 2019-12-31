@@ -35,17 +35,6 @@
               <span class="info-text">{{ info.member_name }}</span>
             </div>
           </a-col>
-          <a-col
-            :span="8"
-            v-if="
-              info.contract_setting && info.contract_setting.is_member_mobile
-            "
-          >
-            <div class="info-item">
-              <label class="info-label">联系方式：</label>
-              <span class="info-text">{{ info.mobile }}</span>
-            </div>
-          </a-col>
           <!-- <a-col :span="8" v-if="info.contract_setting.is_member_card">
             <div class="info-item">
               <label class="info-label">{{ $c('member_card') }}号：</label>
@@ -96,6 +85,63 @@
               <span class="info-text">{{ info.living_address }}</span>
             </div>
           </a-col>
+          <template v-if="info.is_minors === 1">
+            <a-col
+              :span="12"
+              v-if="info.contract_setting && info.is_parent_id_card"
+            >
+              <div class="info-item">
+                <label class="info-label">家长身份证：</label>
+                <span class="info-text">{{ info.parent_id_card }}</span>
+              </div>
+            </a-col>
+            <a-col
+              :span="8"
+              v-if="
+                info.contract_setting && info.contract_setting.is_parent_name
+              "
+            >
+              <div class="info-item">
+                <label class="info-label">家长姓名：</label>
+                <span class="info-text">{{ info.parent_name }}</span>
+              </div>
+            </a-col>
+            <a-col
+              :span="8"
+              v-if="
+                info.contract_setting && info.contract_setting.is_parent_mobile
+              "
+            >
+              <div class="info-item">
+                <label class="info-label">家长联系方式：</label>
+                <span class="info-text">{{ info.parent_mobile }}</span>
+              </div>
+            </a-col>
+            <a-col
+              :span="8"
+              v-if="
+                info.contract_setting && info.contract_setting.is_parent_rule
+              "
+            >
+              <div class="info-item">
+                <label class="info-label">家长身份：</label>
+                <span class="info-text">{{ info.parent_rule }}</span>
+              </div>
+            </a-col>
+          </template>
+          <template v-else>
+            <a-col
+              :span="8"
+              v-if="
+                info.contract_setting && info.contract_setting.is_member_mobile
+              "
+            >
+              <div class="info-item">
+                <label class="info-label">联系方式：</label>
+                <span class="info-text">{{ info.mobile }}</span>
+              </div>
+            </a-col>
+          </template>
         </a-row>
       </div>
       <div
@@ -167,10 +213,10 @@
           </tr>
           <tr v-if="info.contract_type === CONTRACT_TYPE.SMALL_COURSE">
             <td>{{ $c('small_course') }}</td>
-            <td>8</td>
-            <td>10000.00元</td>
-            <td>400.00元</td>
-            <td>9600.00元</td>
+            <td>{{ info.course_num }}</td>
+            <td>{{ info.price }}</td>
+            <td>{{ info.discount }}元</td>
+            <td>{{ info.total_amount }}元</td>
           </tr>
         </tbody>
       </st-form-table>
