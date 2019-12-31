@@ -77,7 +77,10 @@
               业绩拆分
             </a>
             <a
-              v-if="record.auth['shop:order:order|print']"
+              v-if="
+                record.auth['shop:order:order|print'] &&
+                  record.product_type !== 13
+              "
               @click="printOrder(record.id)"
             >
               打印小票
@@ -242,6 +245,9 @@ export default {
       if (record.product_type === this.ORDER_PRODUCT_TYPE.EARNEST) {
         props.goodsInvalid = true
       }
+      if (record.product_type === this.ORDER_PRODUCT_TYPE.VENUES) {
+        props.isVenues = true
+      }
       this.$modalRouter.push({
         name: 'shop-finance-refund',
         props,
@@ -277,7 +283,7 @@ export default {
     },
     productType(type) {
       let name = ''
-      // 1-会员卡 2-私教课 3-团体课 4-课程包 5-储值卡 6-小班课 7-手续费 8-定金 9-押金 10-储物柜
+      // 1-会员卡 2-私教课 3-团体课 4-课程包 5-储值卡 6-小班课 7-手续费 8-定金 9-押金 10-储物柜 13-场地预约
       switch (type) {
         case 1:
           name = 'member'
@@ -309,6 +315,8 @@ export default {
         case 10:
           name = 'cabinet_order'
           break
+        case 13:
+          name = 'venues'
       }
       return name
     }

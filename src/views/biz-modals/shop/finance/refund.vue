@@ -154,7 +154,7 @@ export default {
       loading: this.refundService.loading$
     }
   },
-  props: ['id', 'goodsInvalid'],
+  props: ['id', 'goodsInvalid', 'isVenues'],
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
@@ -174,11 +174,18 @@ export default {
       if (this.goodsInvalid) {
         arr.shift()
       }
+      /**
+       * 场地预约退款原因过滤
+       */
+      const reason = this.info.refund_reason
+      if (this.isVenues && reason) {
+        arr = arr.filter(item => reason.indexOf(item.value) > -1)
+      }
       return arr
     },
     getRefundReason: {
       get: function() {
-        if (!this.updateReasonFlag) {
+        if (!this.updateReasonFlag && !this.isVenues) {
           // 客户要求退款退货（此商品变为无效）
           return 2
         }

@@ -26,17 +26,56 @@
         </a-col>
         <a-col :span="13" class="mg-b36">
           <st-info>
-            <st-info-item label="场馆">{{ info.shop_name }}</st-info-item>
+            <st-info-item label="门店" v-if="type === 'venues'">
+              {{ info.shop_name }}
+            </st-info-item>
+            <st-info-item label="场馆" v-else>
+              {{ info.shop_name }}
+            </st-info-item>
             <st-info-item label="用户">
               {{ info.member_name }}&nbsp;{{ info.member_mobile }}
             </st-info-item>
-            <st-info-item class="mg-b0" label="购买">
+            <st-info-item
+              class="mg-b0 white-nowrap"
+              label="购买"
+              v-if="type === 'venues'"
+            >
+              <!-- <div v-for="(item, index) in info.venues_site" :key="index">
+                {{
+                  `场地时间${index++} ${item.site_name} ${item.time_start}~${
+                    item.time_end
+                  } 金额：&yen;${item.price}元`
+                }}
+              </div> -->
+              <st-overflow-text
+                title="购买"
+                max-width="180px"
+                :value="
+                  info.venues_site &&
+                    info.venues_site.map(
+                      item =>
+                        `${item.site_name} ${item.time_start}~${
+                          item.time_end
+                        } 金额：&yen;${item.price}元`
+                    )
+                "
+              ></st-overflow-text>
+            </st-info-item>
+            <st-info-item class="mg-b0" label="购买" v-else>
               {{ info.rule_name }}
             </st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11" class="mg-b36">
-          <st-info>
+          <st-info v-if="type === 'venues'">
+            <st-info-item label="场馆">
+              {{ info.venues_name }}
+            </st-info-item>
+            <st-info-item class="mg-b0" label="预约日期">
+              {{ info.reserve_day }}
+            </st-info-item>
+          </st-info>
+          <st-info v-else>
             <st-info-item label="定金抵扣">
               {{ info.advance_amount }}
             </st-info-item>
@@ -79,12 +118,20 @@
             labelWidth="120px"
             label="已收金额/未收金额"
             class="mg-b16"
+            v-if="type !== 'venues'"
           >
             <span class="total">
               {{ info.payed_amount }}/{{ info.remain_amount }}
             </span>
           </st-form-item>
-          <st-form-item class="mg-b16" label="支付金额" required>
+          <st-form-item
+            class="mg-b16"
+            label="支付金额"
+            v-if="type === 'venues'"
+          >
+            {{ info.actual_amount }}
+          </st-form-item>
+          <st-form-item class="mg-b16" label="支付金额" required v-else>
             <st-input-number
               :float="true"
               :max="info.remain_amount | dealMaxNumber"
@@ -206,6 +253,9 @@ export default {
         values.order_id = this.order_id
         values.payment_type = values.payment_method.payment_type
         delete values.payment_method
+        if (this.type === 'venues') {
+          values.price = this.info.order_price
+        }
         this.gatheringService.payTransaction(values).subscribe(result => {
           this.$emit('success', {
             type: 'pay'

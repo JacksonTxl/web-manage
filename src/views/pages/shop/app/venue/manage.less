@@ -1,0 +1,65 @@
+.shop-app-venue-manage {
+  display: flex;
+  height: 100%;
+  margin: -24px;
+  &__left {
+    width: 266px;
+    height: calc(100vh - 144px);
+    background: rgba(247, 249, 252, 1);
+    position: relative;
+    font-size: 12px;
+    padding-top: 24px;
+    h4 {
+      margin-bottom: 16px;
+      padding: 0 16px;
+    }
+    &__add {
+      border: 1px solid rgba(205, 212, 223, 1);
+      border-radius: 4px;
+      margin: 16px 20px;
+      padding: 4px 0;
+      line-height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(62, 77, 92, 1);
+      cursor: pointer;
+      .st-icon {
+        margin-right: 3px;
+      }
+    }
+    &__item {
+      height: 36px;
+      padding: 0 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1px;
+      color: rgba(0, 0, 0, 0.85);
+      cursor: pointer;
+      &:hover {
+        background: @white;
+      }
+      &.active {
+        background: @white;
+        &:hover {
+          background: @white;
+        }
+      }
+    }
+  }
+  &__right {
+    flex: 1;
+    height: 100%;
+    background: rgba(255, 255, 255, 1);
+    header {
+      display: flex;
+      justify-content: space-between;
+      background: rgba(247, 249, 252, 1);
+      border-radius: 4px;
+      padding: 13px 40px;
+      span {
+      }
+    }
+  }
+}

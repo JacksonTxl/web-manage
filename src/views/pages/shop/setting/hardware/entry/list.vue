@@ -78,6 +78,9 @@
           <div slot="leave_limit" slot-scope="text, record">
             {{ record.leave_limit || '-' }}
           </div>
+          <div slot="area_type" slot-scope="text, record">
+            {{ record.area_type.name }}
+          </div>
           <div slot="action" slot-scope="text, record">
             <st-table-actions>
               <a

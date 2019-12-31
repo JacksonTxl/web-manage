@@ -11,18 +11,21 @@
       <template slot="content">
         <slot>
           <ul v-if="isArray">
-            <li class="mg-t8" v-for="(item, index) in value" :key="index">
-              {{ item }}
-            </li>
+            <li
+              class="mg-t8"
+              v-for="(item, index) in value"
+              :key="index"
+              v-html="item"
+            ></li>
           </ul>
-          <span v-else>{{ showValue }}</span>
+          <span v-else v-html="showValue"></span>
         </slot>
       </template>
       <slot>
-        {{ showValue }}
+        <span v-html="showValue"></span>
       </slot>
     </a-popover>
-    <span v-show="!isPopover">{{ showValue }}</span>
+    <span v-show="!isPopover" v-html="showValue"></span>
   </span>
 </template>
 <script>
