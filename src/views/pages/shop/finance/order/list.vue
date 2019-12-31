@@ -93,7 +93,7 @@
               @click="onChildredRefund(record)"
               v-if="
                 record.is_children &&
-                  record.auth['brand_shop:order:order|chlidren_refund']
+                  record.auth['brand_shop:order:order|children_refund']
               "
             >
               子订单退款

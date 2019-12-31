@@ -10,7 +10,6 @@ export const detailColumns = [
   {
     title: '出入库类型',
     dataIndex: 'stock_flow',
-    slots: { title: 'stock_flow' },
     scopedSlots: { customRender: 'stock_flow' }
   },
   {
@@ -31,6 +30,9 @@ export const detailColumns = [
   },
   {
     title: '备注',
-    dataIndex: 'remark'
+    dataIndex: 'remark',
+    width: '300px',
+    slots: { title: 'remark' },
+    scopedSlots: { customRender: 'remark' }
   }
 ]
