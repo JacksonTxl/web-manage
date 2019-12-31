@@ -136,6 +136,7 @@
             <a-textarea
               placeholder="请填写备注"
               style="height:90px;"
+              v-model="description"
             ></a-textarea>
           </st-form-item>
         </div>
@@ -183,7 +184,8 @@ export default {
       form,
       decorators,
       show: false,
-      selectPayValues: 0
+      selectPayValues: 0,
+      description: ''
     }
   },
   // 订单id，签单类型
@@ -215,6 +217,7 @@ export default {
       this.form.validate().then(values => {
         values.order_id = this.order_id
         values.payment_type = values.payment_method.payment_type
+        values.description = this.description || undefined
         delete values.payment_method
         this.gatheringService.payTransaction(values).subscribe(result => {
           this.$emit('success', {

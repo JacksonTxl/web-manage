@@ -37,7 +37,7 @@ export default {
     // 核销订单
     confirm(val) {
       this.rowTableService.verificationGood({ id: val.id }).subscribe(res => {
-        this.$router.reload()
+        this.getListData()
       })
     },
     // 获取核销订单列表

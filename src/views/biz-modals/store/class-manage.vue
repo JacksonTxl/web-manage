@@ -1,7 +1,12 @@
 <template>
-  <st-modal title="分类管理" @ok="onSubmit" v-model="show">
+  <st-modal
+    :loading="loading.tableData"
+    title="分类管理"
+    @ok="onSubmit"
+    v-model="show"
+  >
     <st-container>
-      <st-form-table hoverable>
+      <st-form-table>
         <thead>
           <tr>
             <th style="padding-left: 42px">分类名称</th>

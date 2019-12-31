@@ -34,7 +34,7 @@ export class InfoService implements Controller {
               }
             }
           ]
-          if (res.info.order_status === 4) {
+          if (res.info.order_status === 4 || res.info.order_status === 5) {
             tabs.push({
               label: '退款信息',
               route: {
