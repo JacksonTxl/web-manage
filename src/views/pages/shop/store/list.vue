@@ -68,12 +68,15 @@
             >
               下架
             </a>
-            <a
-              @click="onDel(record)"
+            <st-popconfirm
               v-if="record.auth['shop:cloud_store:goods|del']"
+              @confirm="stopTask(record)"
+              title="确认要删除么？"
             >
-              删除
-            </a>
+              <a>
+                删除
+              </a>
+            </st-popconfirm>
           </st-table-actions>
         </template>
       </st-table>

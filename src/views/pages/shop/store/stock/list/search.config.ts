@@ -1,28 +1,23 @@
 export const searchColumns = [
   {
     title: '商品名称',
-    dataIndex: 'product_name',
-    align: 'left'
+    dataIndex: 'product_name'
   },
   {
     title: '商品分类',
-    dataIndex: 'category_name',
-    align: 'left'
+    dataIndex: 'category_name'
   },
   {
     title: '实际库存',
-    dataIndex: 'amount',
-    align: 'left'
+    dataIndex: 'amount'
   },
   {
     title: '可用库存',
-    dataIndex: 'use_amount',
-    align: 'left'
+    dataIndex: 'use_amount'
   },
   {
     title: '操作',
     dataIndex: 'action',
-    align: 'left',
     width: 140,
     fixed: 'right',
     scopedSlots: { customRender: 'action' }

@@ -18,7 +18,7 @@
       >
         批量入库
       </st-button>
-      <st-button type="primary" @click="moreIn(true)" v-if="auth.retrieval">
+      <st-button type="primary" @click="moreIn(true)">
         批量出库
       </st-button>
     </div>
@@ -37,7 +37,7 @@
       <template slot="action" slot-scope="text, record">
         <st-table-actions sytle="width: 120px">
           <a
-            v-if="record.auth['brand_shop:cloud_store:stock|warehousing']"
+            v-if="record.auth['shop:cloud_store:stock|warehousing']"
             v-modal-link="{
               name: 'store-put-in',
               props: { skuList: [record] }
@@ -46,7 +46,7 @@
             入库
           </a>
           <a
-            v-if="record.auth['brand_shop:cloud_store:stock|retrieval']"
+            v-if="record.auth['shop:cloud_store:stock|retrieval']"
             v-modal-link="{
               name: 'store-put-in',
               props: { isOut: true, skuList: [record] }
@@ -55,7 +55,7 @@
             出库
           </a>
           <a
-            v-if="record.auth['brand_shop:cloud_store:stock|one_goods_obvious']"
+            v-if="record.auth['shop:cloud_store:stock|one_goods_obvious']"
             @click="goDetail(record)"
           >
             明细
@@ -125,6 +125,9 @@ export default {
         }
       })
     }
+  },
+  mounted() {
+    console.log(this.auth)
   }
 }
 </script>
