@@ -4,6 +4,7 @@ import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
 import { NoticeApi, PutNoticeParams } from '@/api/v1/setting/sms/notice'
 import { UserService } from '@/services/user.service'
+import { NOTIFY_TYPES } from '@/constants/setting/sms'
 @Injectable()
 export class NoticeService {
   memberList$ = new State([])
@@ -19,12 +20,16 @@ export class NoticeService {
   ) {}
   SET_MEMBER_LIST(list: any) {
     this.memberList$.commit(() =>
-      list.filter(({ notify_type }: any) => notify_type.value === 1)
+      list.filter(
+        ({ notify_type }: any) => notify_type.value === NOTIFY_TYPES.MEMBER
+      )
     )
   }
   SET_SHOP_LIST(list: any) {
     this.shopList$.commit(() =>
-      list.filter(({ notify_type }: any) => notify_type.value === 2)
+      list.filter(
+        ({ notify_type }: any) => notify_type.value === NOTIFY_TYPES.SHOP
+      )
     )
   }
   getNoticeList() {
