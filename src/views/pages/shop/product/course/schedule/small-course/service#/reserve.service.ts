@@ -97,8 +97,8 @@ export class SmallCourseScheduleReserveService {
   /**
    * 添加补课
    */
-  remedial(id: any) {
-    return this.reserveApi.remedial(id).pipe(
+  remedial(params: any) {
+    return this.reserveApi.remedial(params).pipe(
       tap(res => {
         this.msg.success({ content: '添加成功' })
       })
@@ -134,6 +134,10 @@ export class SmallCourseScheduleReserveService {
    * 补课回显
    */
   courseInfo(id: any) {
-    return this.reserveApi.msg(id)
+    return this.reserveApi.courseInfo(id)
+  }
+  // 补课列表
+  courseList() {
+    return this.reserveApi.courseList()
   }
 }

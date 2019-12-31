@@ -185,7 +185,10 @@
                   补签到
                 </a>
                 <a-divider type="vertical"></a-divider>
-                <a href="javascript:;" @click="remedialCourse(item)">
+                <a
+                  href="javascript:;"
+                  @click="remedialCourse(item.reserve_id, reserveInfo.id)"
+                >
                   补课
                 </a>
               </div>
@@ -205,7 +208,33 @@
                     item.reserve_status === 5
                 "
               >
-                <a href="javascript:;" @click="remedialCourse(item)">
+                <a
+                  href="javascript:;"
+                  @click="remedialCourse(item.reserve_id, reserveInfo.id)"
+                >
+                  补课
+                </a>
+              </div>
+              <div
+                v-if="
+                  reserveInfo.small_course_type === 2 &&
+                    item.reserve_status === 6
+                "
+              >
+                <a href="javascript:;" @click="message(item.reserve_id)">
+                  查看补课
+                </a>
+              </div>
+              <div
+                v-if="
+                  reserveInfo.small_course_type === 1 &&
+                    item.reserve_status === 5
+                "
+              >
+                <a
+                  href="javascript:;"
+                  @click="remedialCourse(item.reserve_id, reserveInfo.id)"
+                >
                   补课
                 </a>
               </div>
@@ -385,33 +414,47 @@ export default {
       })
     },
     // 补课回显
-
-    // 添加补课
-    remedialCourse() {
-      this.show = false
-      this.$modalRouter.push({
-        name: 'schedule-small-course-remedial-course',
-        props: {
-          info: this.reserveInfo
-        },
-        on: {
-          ok: () => {
-            this.$router.push({ query: this.$searchQuery })
+    remedialCourse(reserve_id, id) {
+      this.reserveService.courseInfo(reserve_id).subscribe(res => {
+        this.$modalRouter.push({
+          name: 'schedule-small-course-remedial-course',
+          props: {
+            info: res.info,
+            id: id
+          },
+          on: {
+            ok: () => {
+              this.$router.push({ query: this.$searchQuery })
+            }
           }
-        }
+        })
       })
+      this.show = false
     },
     // 取消预约
     del(id) {
-      this.scheduleService.del(id).subscribe(this.onDelScheduleScuccess)
+      this.reserveService.del(id).subscribe(this.onDelScheduleScuccess)
     },
     // 请假
     leave(id) {
-      this.scheduleService.leave(id).subscribe(this.getReserveInfo)
+      this.reserveService.leave(id).subscribe(this.getReserveInfo)
     },
     // 查看补课
     message(id) {
-      this.scheduleService.message(id)
+      this.reserveService.message(id).subscribe(res => {
+        this.$modalRouter.push({
+          name: 'schedule-small-course-remedial-info',
+          props: {
+            info: res.info,
+            id: id
+          },
+          on: {
+            ok: () => {
+              this.$router.push({ query: this.$searchQuery })
+            }
+          }
+        })
+      })
     },
     getReserveInfo() {
       this.reserveService.getInfo(this.id).subscribe()

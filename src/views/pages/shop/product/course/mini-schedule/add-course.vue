@@ -174,6 +174,7 @@ export default {
     this.showFlag = this.item[0].show || this.customizeShow
     this.cycle_begin_date = this.cycle[0].format('YYYY-MM-DD')
     this.cycle_end_date = this.cycle[1].format('YYYY-MM-DD')
+    console.log(this.cycle)
   },
   methods: {
     hide() {
@@ -193,9 +194,11 @@ export default {
           if (data[1]) {
             item.children.forEach((childrenItem, index) => {
               if (childrenItem.id === data[1]) {
-                this.params.court_name = `${item.name} / ${childrenItem.name}`
+                this.params.court_site_name = childrenItem.name
               }
             })
+          } else {
+            this.params.court_site_name = 'none'
           }
         }
         return
@@ -212,6 +215,7 @@ export default {
     // disabledHours() {
     //   return this.range(0, 24).splice(4, 20)
     // },
+    // this.params.court_name = `${item.name} / ${childrenItem.name}`
     onSubmit() {
       this.form.validate().then(values => {
         const form = cloneDeep(values)
@@ -226,16 +230,21 @@ export default {
           form.end_time = values.end_time.format('HH:mm')
         }
         form.court_id = values.court_id[0]
-        form.court_site_id = values.court_id[1]
+        form.court_site_id = values.court_id[1] || 0
         form.week = this.week
-        form.cycle_start_date = this.cycle_begin_date
-        form.cycle_end_date = this.cycle_end_date
+        form.cycle_begin_date = this.cycle[0].format('YYYY-MM-DD')
+        form.cycle_end_date = this.cycle[1].format('YYYY-MM-DD')
         form.course_id = this.courseInfo.course_id
         const verifyParams = Object.assign(this.params, form)
         console.log(verifyParams)
         console.log(this.cycle_type)
         if (this.cycle_type === 1) {
-          this.$emit('addCourse', this.cycleIndex, 0, verifyParams, [])
+          this.smallCourseScheduleService
+            .addScheduleInBatch(verifyParams)
+            .subscribe(res => {
+              console.log(res)
+            })
+          //this.$emit('addCourse', this.cycleIndex, 0, verifyParams, [])
           this.showFlag = false
         } else {
           // if (res.conflict === 1) {
@@ -245,12 +254,6 @@ export default {
           this.showFlag = false
           // }
         }
-        // this.smallCourseScheduleService
-        //   .conflict(verifyParams)
-        //   .subscribe(res => {
-        //     console.log('查看冲突验证结果')
-        //     console.log(res)
-        //   })
       })
     }
   }

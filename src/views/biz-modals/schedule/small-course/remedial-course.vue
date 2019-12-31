@@ -2,24 +2,24 @@
   <st-modal title="补课" v-model="show" width="484px">
     <st-form :form="form" labelWidth="70px" labelAuto>
       <st-form-item label="会员名" required>
-        <span>{{}}</span>
+        <span>{{ info.member_name }}</span>
       </st-form-item>
       <st-form-item label="缺课班名" required>
-        {{ info.course_name }}
+        {{ info.lack_course_name }}
       </st-form-item>
       <st-form-item label="适应范围" required>
-        黑带
+        {{ scopeApplication }}
       </st-form-item>
       <st-form-item label="补课课程" required>
         <a-select
           placeholder="请选择课程"
-          @change="onChange"
+          @change="onChangeCourse"
           v-decorator="decorators.course_id"
         >
           <a-select-option
-            v-for="course in courseSmallCourseOptions"
-            :key="course.course_id"
-            :value="course.course_id"
+            v-for="course in courseOptions"
+            :key="course.id"
+            :value="course.id"
           >
             {{ course.course_name }}
           </a-select-option>
@@ -31,6 +31,7 @@
           :showTime="{ format: 'YYYY-MM-DD HH:mm' }"
           format="YYYY-MM-DD HH:mm"
           v-decorator="decorators.start_days"
+          :disabled="disabled"
         />
       </st-form-item>
     </st-form>
@@ -46,23 +47,20 @@
 <script>
 import { cloneDeep } from 'lodash-es'
 import { SmallCourseScheduleService } from '@/views/pages/shop/product/course/schedule/small-course/service#/schedule.service'
-import { SmallCourseScheduleCommonService } from '@/views/pages/shop/product/course/schedule/small-course/service#/common.service'
+import { SmallCourseScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/small-course/service#/reserve.service'
 import { ruleOptions } from './remedial-course.config'
 export default {
   name: 'RemedialCourse',
   serviceInject() {
     return {
       smallCourseScheduleService: SmallCourseScheduleService,
-      smallCourseScheduleCommonService: SmallCourseScheduleCommonService
+      reserveService: ReserveService
     }
   },
   rxState() {
     const tss = this.smallCourseScheduleCommonService
     return {
-      loading: this.smallCourseScheduleService.loading$,
-      coachSmallCourseOptions: tss.coachSmallCourseOptions$,
-      courseSmallCourseOptions: tss.courseSmallCourseOptions$,
-      courtOptions: tss.courtOptions$
+      loading: this.smallCourseScheduleService.loading$
     }
   },
   data() {
@@ -72,7 +70,9 @@ export default {
       form,
       decorators,
       show: false,
-      courseItem: ''
+      disabled: true,
+      courseOptions: [],
+      smallCourseInfo: ''
     }
   },
   props: {
@@ -81,59 +81,56 @@ export default {
       default: () => {
         return {}
       }
+    },
+    id: {
+      type: Number
+    }
+  },
+  computed: {
+    scopeApplication() {
+      let scopeName = ''
+      this.info.scope_application.forEach((item, index) => {
+        scopeName += item += ' '
+      })
+      return scopeName
     }
   },
   created() {
     console.log(this.info)
-  },
-  mounted() {
-    const item = this.item
-    const court_item = [item.court_id.id, item.court_id.children.id]
-    const time = moment(item.start_time)
-    this.form.setFieldsValue({
-      course_id: item.course_id,
-      coach_id: item.coach_id,
-      court_id: court_item,
-      start_time: time
+    this.reserveService.courseList().subscribe(res => {
+      this.courseOptions = res.list
     })
-    if (!this.cycle_type) {
-      this.form.setFieldsValue({ start_days: time })
-    }
   },
+  mounted() {},
   methods: {
+    onChangeCourse(value) {
+      this.courseOptions.forEach((item, index) => {
+        if (item.id === value) {
+          this.smallCourseInfo = item
+          console.log(item)
+          const day = item.start_date
+          const time = item.start_time
+          const start_days = moment(`${day} ${time}`)
+          this.form.setFieldsValue({
+            start_days: start_days
+          })
+        }
+      })
+    },
     onSubmit() {
       this.form.validate().then(values => {
-        const form = cloneDeep(values)
-        form.start_days = form.start_days.format('YYYY-MM-DD')
-        if (form.court_id) {
-          form.court_site_id = +form.court_id[1]
-          form.court_id = +form.court_id[0]
-        }
-        // 提交 效验课程冲突
-        console.log(form)
-        this.$emit(
-          'editCourse',
-          this.cycleIndex,
-          this.item.week,
-          this.positionIndex
-        )
         this.show = false
-        // this.miniTeamScheduleScheduleService.add(form).subscribe(() => {
-        //   this.$emit('editCourse')
-        //   this.show = false
-        // })
+        const params = {}
+        params.schedule_id = this.id
+        params.reserve_id = this.info.id
+        params.member_id = this.info.member_id
+        params.consume_id = this.info.consume_id
+        console.log(params)
+        this.reserveService.remedial(params).subscribe()
       })
     },
     onClick() {
       this.show = false
-      // this.$modalRouter.push({
-      //   name: 'schedule-team-add-course-batch',
-      //   on: {
-      //     ok: res => {
-      //       this.onScheduleChange()
-      //     }
-      //   }
-      // })
     },
     onScheduleChange() {
       this.$router.push({ query: this.$searchQuery })

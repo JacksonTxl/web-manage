@@ -22,6 +22,7 @@
             placeholder="请选择"
             @change="onChangeScheduleType"
             v-model="cycle_type"
+            :disabled="selectCycleType"
           >
             <a-select-option :key="1" :value="1">
               周排课方式
@@ -225,6 +226,7 @@ export default {
       coachId: undefined,
       editScheduleCycleFlag: false,
       cycle_type: 1,
+      selectCycleType: false,
       start_date: '',
       end_date: '',
       picker_start_date: '',
@@ -263,30 +265,32 @@ export default {
   },
   methods: {
     dealScheduleDate() {
+      this.pickerList = []
       this.scheduleList.forEach((item, index) => {
-        this.pickerList[index] = [
+        this.pickerList.push([
           moment(item.cycle_begin_date),
           moment(item.cycle_end_date)
-        ]
+        ])
       })
     },
     initScheduleDate() {
-      this.pickerList[0] = [
+      this.pickerList = []
+      this.pickerList.push([
         moment(this.smallCourseInfo.course_begin_time),
         moment(this.smallCourseInfo.course_end_time)
-      ]
-      this.addCycleScheduleTime()
+      ])
+      //this.addCycleScheduleTime()
     },
-    addCycleScheduleTime() {
-      this.pickerList.forEach((item, index) => {
-        this.scheduleList[index].cycle_begin_date = item[0]
-          .format('YYYY-MM-DD')
-          .valueOf()
-        this.scheduleList[index].cycle_end_date = item[1]
-          .format('YYYY-MM-DD')
-          .valueOf()
-      })
-    },
+    // addCycleScheduleTime() {
+    //   this.pickerList.forEach((item, index) => {
+    //     this.scheduleList[index].cycle_begin_date = item[0]
+    //       .format('YYYY-MM-DD')
+    //       .valueOf()
+    //     this.scheduleList[index].cycle_end_date = item[1]
+    //       .format('YYYY-MM-DD')
+    //       .valueOf()
+    //   })
+    // },
     onChangeCourse(value) {
       this.courseSmallCourseOptions.forEach((item, index) => {
         if (item.course_id === value) {
@@ -358,14 +362,7 @@ export default {
         }
       })
       if (!pickerFlag) {
-        this.pickerList[PickerIndex][0] = date[0]
-        this.pickerList[PickerIndex][1] = date[1]
-        this.scheduleList[PickerIndex].cycle_begin_date = date[0]
-          .format('YYYY-MM-DD')
-          .valueOf()
-        this.scheduleList[PickerIndex].cycle_end_date = date[1]
-          .format('YYYY-MM-DD')
-          .valueOf()
+        this.pickerList.splice(PickerIndex, 1, [date[0], date[1]])
       }
       console.log(this.pickerList)
     },
@@ -463,6 +460,7 @@ export default {
       }
     },
     pushCustomCourseInfo(info) {
+      console.log('增加自主课程排期')
       console.log(info)
       this.customizeScheduleList.push(info)
     },
@@ -550,7 +548,7 @@ export default {
       item.course_time = []
       this.scheduleList.push(item)
       this.filterDateList(this.scheduleList)
-      this.addCycleScheduleTime()
+      //this.addCycleScheduleTime()
     },
     onClickSaveSchedule() {
       let courseList

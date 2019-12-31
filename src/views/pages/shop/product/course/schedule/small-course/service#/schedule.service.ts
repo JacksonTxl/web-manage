@@ -125,7 +125,10 @@ export class SmallCourseScheduleService {
   addScheduleInBatch(params: any) {
     return this.scheduleApi.addScheduleInBatch(params).pipe(
       tap(res => {
-        this.msg.success({ content: '批量添加成功' })
+        console.log(res)
+        if (!res.conflict) {
+          this.msg.success({ content: '批量添加成功' })
+        }
       })
     )
   }

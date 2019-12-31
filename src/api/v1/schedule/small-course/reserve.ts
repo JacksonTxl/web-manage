@@ -43,7 +43,7 @@ export class SmallCourseScheduleReserveApi extends Api {
    * 添加补课
    */
   remedial(params: any) {
-    return this.http.post(`/v1/schedule/small_course/shop/make_up/add/`, {
+    return this.http.post(`/v1/schedule/small_course/shop/make_up/add`, {
       params
     })
   }
@@ -68,14 +68,14 @@ export class SmallCourseScheduleReserveApi extends Api {
   /**
    * 补课课程
    */
-  courseList(id: any) {
+  courseList() {
     return this.http.get('/v1/schedule/small_course/shop/make_up/list')
   }
   /**
    * 补课回显
    */
   courseInfo(id: any) {
-    return this.http.get(`/v1/schedule/small_course/shop/make_up/info${id}`)
+    return this.http.get(`/v1/schedule/small_course/shop/make_up/info?id=${id}`)
   }
 }
 export interface AddReserveInput {

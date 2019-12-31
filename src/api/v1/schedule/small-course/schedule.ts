@@ -39,7 +39,7 @@ export class SmallCourseScheduleApi extends Api {
    */
   addScheduleInBatch(params: any) {
     console.log('调用新增周期排课接口')
-    return this.http.post(`/v1/schedule/small/cycle/${params.id}`, {
+    return this.http.post(`/v1/schedule/small/cycle`, {
       params
     })
   }
