@@ -99,7 +99,7 @@
                   record.auth['brand_shop:order:order|children_refund']
               "
             >
-              子订单退款
+              退款
             </a>
           </st-table-actions>
         </div>
