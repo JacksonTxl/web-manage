@@ -453,15 +453,15 @@ export default {
         this.tableErr = false
       }
       this.form.validate().then(values => {
+        if (isReturn) {
+          return
+        }
         if (this.isEditMode) {
           this.editGoodOld(values)
         } else {
           this.addGoodNew(values)
         }
       })
-      if (isReturn) {
-        return
-      }
     },
     addGoodNew(values) {
       let data = {}
@@ -567,7 +567,7 @@ export default {
       })
       data = {
         product_images_del: this.product_images_del, // 商品图片
-        product_images_add: this.product_images_add, // 商品图片
+        product_images_add: this.imgList.filter(item => item.isNew), // 商品图片
         product_intro: this.content, // 商品介绍
         product_sku: product_sku, // 规格设置
         shelves_status: this.shelves_status, // 上架状态
@@ -682,7 +682,6 @@ export default {
     //   this.changeTable()
     // },
     delSkuItem(index, i) {
-      console.log('删除规格了！！！！！', this.skuList)
       this.skuList[index].spec_item_name.splice(i, 1)
       this.changeTable()
     },
@@ -717,7 +716,8 @@ export default {
       }
       this.imgList.push(img)
       if (this.isEditMode) {
-        this.product_images_add.push(img)
+        // this.product_images_add.push(img)
+        img.isNew = true
       }
       this.isImgError = false
       this.fileList = []
