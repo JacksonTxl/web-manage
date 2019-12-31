@@ -116,7 +116,7 @@
                       filterLine(storeBoard, wholeNav[wholenavIndex].title)
                     "
                     :tooltipKey="wholeNav[wholenavIndex].title"
-                    :unit="wholeNav[wholenavIndex].title | filterCompany"
+                    :unit="wholeNav[wholenavIndex].unit"
                   ></shop-store-data-line>
                   <div v-else :class="basic('entry-store-img')">
                     <img
@@ -133,7 +133,7 @@
                       <component
                         v-bind:is="wholeNavcom"
                         v-if="orderMember(storeBoard, 0, 'member').length"
-                        :unit="wholeNav[wholenavIndex].title | filterCompany"
+                        :unit="wholeNav[wholenavIndex].unit"
                         :data="orderMember(storeBoard, 0, 'order')"
                         :name="filterOrderMemberTitle()"
                         style="width: 100%;"
@@ -174,7 +174,7 @@
                         v-bind:is="wholeNavcom"
                         v-if="orderMember(storeBoard, 0, 'member').length"
                         :name="filterOrderMemberTitle()"
-                        :unit="wholeNav[wholenavIndex].title | filterCompany(1)"
+                        :unit="wholeNav[wholenavIndex].unit"
                         :data="orderMember(storeBoard, 0, 'member')"
                         :total="
                           orderMember(storeBoard, 0, 'member').reduce(
@@ -369,14 +369,11 @@ export default {
     ShopStoreDataRevenueRing,
     BrandUserAvgBar
   },
-  filters: {
-    // 整体看板单位
-    filterCompany(value) {
-      return value[value.indexOf('(') + 1]
-    }
-  },
   mounted() {
-    this.wholenavFilter(this.storeBoard)
+    this.$nextTick(() => {
+      console.log(this.storeBoard)
+      this.wholenavFilter()
+    })
   },
   methods: {
     // 整体看板时间
@@ -454,7 +451,7 @@ export default {
       }
     },
     // 整体看板数据处理
-    wholenavFilter(data) {
+    wholenavFilter() {
       let titles = [
         'revenue_amount',
         'order_count',
@@ -462,9 +459,12 @@ export default {
         'customer_price'
       ]
       let field = ['amount', 'count', 'count', 'price']
+      let data = this.storeBoard
       this.wholeNav.forEach((item, index) => {
         let dataInfo = data[titles[index]][field[index]]
-        item.num = dataInfo
+        this.$set(item, 'num', dataInfo)
+        // item.num = dataInfo
+        item.unit = data[titles[index]].unit
       })
     },
     onChangeTabs(query) {
