@@ -208,7 +208,11 @@
                     :class="basic('sku--tag')"
                   >
                     {{ sku }}
-                    <a-icon type="close" @click="delSkuItem(index, i)" />
+                    <a-icon
+                      type="close"
+                      @click="delSkuItem(index, i)"
+                      v-if="isEditMode ? item.spec_item_name.length > 1 : true"
+                    />
                   </span>
                   <a :class="basic('sku--item-add')" @click="addSkuItem(index)">
                     添加规格
@@ -574,11 +578,11 @@ export default {
         product_name: values.product_name, // 商品名称
         category_id: values.category_id, // 分类id
         delivery_type:
-          values.delivery_type.lenght === this.shippingMode.length
+          values.delivery_type.length === this.shippingMode.length
             ? -1
             : values.delivery_type[0], // 配送方式
         sale_type:
-          values.sale_type.lenght === this.saleType.length
+          values.sale_type.length === this.saleType.length
             ? -1
             : values.sale_type[0] // 售卖方式
       }
@@ -682,12 +686,15 @@ export default {
     //   this.changeTable()
     // },
     delSkuItem(index, i) {
+      // if (this.isEditMode && this.skuList[index].spec_item_name.length === 1) {
+
+      // }
       this.skuList[index].spec_item_name.splice(i, 1)
       this.changeTable()
     },
     delSku(index) {
       this.skuList.splice(index, 1)
-      if (!this.skuList.lenght) {
+      if (!this.skuList.length) {
         this.isMore = 1
         this.tableData = [
           {

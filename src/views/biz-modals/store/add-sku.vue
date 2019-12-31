@@ -1,6 +1,6 @@
 <template>
   <st-modal title="新增规格" v-model="show" @ok="handleSubmit" size="small">
-    <st-form :form="form" labelWidth="67px" @submit="handleSubmit">
+    <st-form :form="form" labelWidth="67px">
       <st-form-item label="规格名称" required>
         <a-input
           placeholder="请输规格名称"
