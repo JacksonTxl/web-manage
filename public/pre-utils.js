@@ -2,7 +2,7 @@ window.preUtils = {
   config: {
     test: {
       map: {
-        ali: ['https://ptest1.styd.cn/', 'https://ptest1.styd.cn/'],
+        ali: ['https://ptest1.styd.cn/', 'https://ptest2.styd.cn/'],
         huawei: ['https://ptest-hw.styd.cn']
       }
     },
@@ -39,6 +39,10 @@ window.preUtils = {
    * example ['ali', 'huawei', 'souce']
    */
   vendors: [],
+  /**
+   * 设置 cdn 阈值
+   */
+  threshold: 1024,
   init: function() {
     this.browser.init()
     if (typeof Promise === 'undefined') {
@@ -168,8 +172,12 @@ window.preUtils = {
         var task = new Promise(function(taskResolve, taskReject) {
           var img = new Image()
           img.src = domain + 'img/cdn/sample.gif?t=' + +new Date()
+          clearTimeout(this['timer_' + domain])
+          this['timer_' + domain] = setTimeout(function() {
+            return taskReject(new Error(domain + ' error: timeout(' + that.threshold + ')'))
+          }, that.threshold)
           img.onload = function() {
-            console.log(domain + ' success')
+            // console.log(domain + ' success')
             successedDomains.push(domain)
             taskResolve(domain)
           }

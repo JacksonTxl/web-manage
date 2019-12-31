@@ -12,7 +12,7 @@
   </st-modal>
 </template>
 <script>
-import { MapService } from './map.service.ts'
+import { QqMapService } from '@/services/qq-map.service'
 import { AppConfig } from '@/constants/config'
 export default {
   bem: {
@@ -22,7 +22,7 @@ export default {
   serviceInject() {
     return {
       appConfig: AppConfig,
-      mapService: MapService
+      qqMapService: QqMapService
     }
   },
   props: {
@@ -41,43 +41,10 @@ export default {
     }
   },
   mounted() {
-    this.initMap()
-  },
-  methods: {
-    // 实例化地图
-    initMap() {
-      let center = new qq.maps.LatLng(this.lat, this.lng)
-      this.mapObject = new qq.maps.Map(
-        document.getElementById('mapcontainer'),
-        {
-          center,
-          zoom: 13,
-          disableDefaultUI: true
-        }
-      )
-      this.resetMap(center)
-    },
-    // 重置地图
-    resetMap(position) {
-      let anchor = new qq.maps.Point(8, 16)
-      let size = new qq.maps.Size(16, 16)
-      let origin = new qq.maps.Point(0, 0)
-      let icon = new qq.maps.MarkerImage(
-        require('@/assets/img/map_location.png'),
-        size,
-        origin,
-        anchor,
-        size
-      )
-      this.markerObject && this.markerObject.setMap(null)
-      this.markerObject = new qq.maps.Marker({
-        position,
-        icon: icon,
-        animation: qq.maps.MarkerAnimation.DROP,
-        map: this.mapObject
-      })
-      this.mapObject.panTo(position)
-    }
+    this.qqMapService.init({
+      lat: this.lat,
+      lng: this.lng
+    })
   }
 }
 </script>

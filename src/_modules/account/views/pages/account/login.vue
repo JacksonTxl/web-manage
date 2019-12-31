@@ -95,7 +95,7 @@
         三体云动Pro&nbsp;·&nbsp;用智能让世界更健康
       </p>
       <p class="page-login-footer__text page-login-footer__copyright">
-        Copyright &#169; 2015-2019 三体云智能科技有限公司
+        <copyright />
       </p>
     </div>
   </div>
@@ -110,6 +110,7 @@ import user from './login#/user'
 import bind from './login#/bind'
 import { NoCaptchaService } from '@/services/no-captcha.service'
 import { throwError } from 'rxjs'
+import Copyright from '@/views/biz-components/copyright/copyright'
 
 export default {
   name: 'Login',
@@ -144,7 +145,8 @@ export default {
   components: {
     LoginMobile: mobile,
     LoginBind: bind,
-    LoginUser: user
+    LoginUser: user,
+    Copyright
   },
   rxState() {
     return {
