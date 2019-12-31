@@ -124,7 +124,7 @@ export default {
   },
   data() {
     return {
-      loginType: 'user',
+      loginType: '',
       typeNames: {
         weibo: '微博登录',
         qq: 'qq登录',
@@ -157,6 +157,8 @@ export default {
   mounted() {
     if (this.isBind) {
       this.loginType = 'bind'
+    } else {
+      this.loginType = 'user'
     }
   },
   computed: {
