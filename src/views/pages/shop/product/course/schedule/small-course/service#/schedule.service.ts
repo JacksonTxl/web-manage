@@ -132,11 +132,37 @@ export class SmallCourseScheduleService {
   /**
    *
    * @param params
+   * 批量编辑增加周期小班课排期
+   */
+  @Effect()
+  addScheduleInBatchs(params: any) {
+    return this.scheduleApi.addScheduleInBatchs(params).pipe(
+      tap(res => {
+        this.msg.success({ content: '批量添加成功' })
+      })
+    )
+  }
+  /**
+   *
+   * @param params
    * 批量新增自定义小班课排期
    */
   @Effect()
   addScheduleInBatchCustom(params: any) {
     return this.scheduleApi.addScheduleInBatchCustom(params).pipe(
+      tap(res => {
+        this.msg.success({ content: '批量添加成功' })
+      })
+    )
+  }
+  /**
+   *
+   * @param params
+   * 批量新增自定义小班课排期
+   */
+  @Effect()
+  addScheduleInBatchCustoms(params: any) {
+    return this.scheduleApi.addScheduleInBatchCustoms(params).pipe(
       tap(res => {
         this.msg.success({ content: '批量添加成功' })
       })
@@ -154,7 +180,7 @@ export class SmallCourseScheduleService {
   /**
    *
    * @param params
-   * 编辑课程排期
+   * 编辑单个课程排期
    */
   @Effect()
   update(params: UpdateScheduleInput) {
@@ -189,7 +215,7 @@ export class SmallCourseScheduleService {
    * @param params
    * 验证课程排期
    */
-  conflict(params: any) {
-    return this.scheduleApi.conflict(params)
+  conflict() {
+    return { conflict: 1 }
   }
 }

@@ -36,7 +36,7 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    course_name: {
+    current_course_name: {
       rules: [{ required: true, message: '请输入课程名称' }]
     }
   }

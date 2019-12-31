@@ -1,7 +1,6 @@
 <template>
   <div>
     <a-popover
-      trigger="click"
       title="冲突排期"
       overlayClassName="samll-course-course-card-popover"
       v-model="showFlag"
@@ -13,8 +12,8 @@
           :pagination="false"
           :columns="columns"
           :scroll="{ x: 680 }"
-          :dataSource="list"
-          rowKey="id"
+          :dataSource="conflictList"
+          rowKey="index"
         ></st-table>
       </template>
       <div :class="[bS('wrapper'), bS('wrapper-conflict')]">
@@ -28,9 +27,7 @@
         </div>
         <span class="time">
           <st-icon type="timer"></st-icon>
-          {{ moment(cardItem.start_time).format('HH:mm') }}-{{
-            moment(cardItem.end_time).format('HH:mm')
-          }}
+          {{ cardItem.start_time }}-{{ cardItem.end_time }}
         </span>
         <st-t3 class="course__name">
           {{ cardItem.current_course_name }}
@@ -56,9 +53,7 @@
       </div>
       <span class="time">
         <st-icon type="timer"></st-icon>
-        {{ moment(cardItem.start_time).format('HH:mm') }}-{{
-          moment(cardItem.end_time).format('HH:mm')
-        }}
+        {{ cardItem.start_time }}-{{ cardItem.end_time }}
       </span>
       <st-t3 class="course__name">
         {{ cardItem.current_course_name }}
@@ -96,20 +91,8 @@ export default {
       moment: moment,
       showFlag: false,
       columns: dateColumns(this),
-      list: [
-        {
-          conflict_time: '冲突时间',
-          course_name: '课程名称',
-          coach_name: '教练名称',
-          court_name: '场地名称'
-        },
-        {
-          conflict_time: '冲突时间',
-          course_name: '课程名称',
-          coach_name: '教练名称',
-          court_name: '场地名称'
-        }
-      ]
+      conflict: 0,
+      conflictList: []
     }
   },
   created() {
@@ -117,6 +100,7 @@ export default {
     this.conflict = this.cardItem.conflict
     this.conflictList = this.cardItem.conflictList
     console.log(this.conflict)
+    console.log(this.conflictList)
   },
   methods: {
     hide() {

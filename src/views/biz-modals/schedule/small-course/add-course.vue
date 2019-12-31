@@ -21,7 +21,7 @@
       <st-form-item label="课程" required>
         <a-select
           placeholder="请选择课程"
-          @change="onChange"
+          @change="onChangeCourse"
           v-decorator="decorators.course_id"
         >
           <a-select-option
@@ -100,7 +100,8 @@ export default {
       form,
       decorators,
       show: false,
-      courseItem: ''
+      courseItem: '',
+      smallCourseInfo: {}
     }
   },
   props: {
@@ -112,8 +113,13 @@ export default {
     }
   },
   methods: {
-    onChange(value) {
-      console.log(value)
+    onChangeCourse(value) {
+      this.courseSmallCourseOptions.forEach((item, index) => {
+        if (item.course_id === value) {
+          this.smallCourseInfo = item
+          console.log(item)
+        }
+      })
     },
     onSubmit() {
       this.form.validate().then(values => {
@@ -124,32 +130,33 @@ export default {
         const end_time = values.end_time.format('HH:mm')
         form.start_time = start_days + ' ' + start_time
         form.end_time = start_days + ' ' + end_time
+        form.cycle_start_date = this.smallCourseInfo.course_begin_time
+        form.cycle_end_date = this.smallCourseInfo.course_end_time
         if (form.court_id) {
           form.court_site_id = +form.court_id[1]
           form.court_id = +form.court_id[0]
         }
         // 提交
         console.log(form)
+        // this.smallCourseScheduleService.conflict(form).subscribe(res => {
+        //   if (res.conflict === 1) {
+        //     this.msg.error({ content: '排期内容有冲突，请重新选择' })
+        //   } else {
+        //   }
+        // })
         this.smallCourseScheduleService.add(form).subscribe(() => {
           this.$emit('ok')
           this.show = false
           this.onScheduleChange()
         })
+        this.showFlag = false
       })
-    },
-    onClick() {
-      this.show = false
-      // this.$modalRouter.push({
-      //   name: 'schedule-team-add-course-batch',
-      //   on: {
-      //     ok: res => {
-      //       this.onScheduleChange()
-      //     }
-      //   }
-      // })
     },
     onScheduleChange() {
       this.$router.push({ query: this.$searchQuery })
+    },
+    onClick() {
+      this.showFlag = false
     }
   }
 }

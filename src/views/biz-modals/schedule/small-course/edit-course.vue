@@ -1,28 +1,17 @@
 <template>
   <st-modal title="编辑课程" v-model="show" width="520px">
-    <st-form :form="form" labelWidth="40px" labelAuto>
-      <st-form-item label="课程" required>
-        <a-select
-          placeholder="请选择课程"
-          @change="onChangeCourse"
-          v-decorator="decorators.course_id"
-        >
-          <a-select-option
-            v-for="course in courseSmallCourseOptions"
-            :key="course.course_id"
-            :value="course.course_id"
-          >
-            {{ course.course_name }}
-          </a-select-option>
-        </a-select>
+    <st-form :form="form" labelWidth="72px" labelAuto>
+      <st-form-item label="排课名称" required>
+        <a-input
+          placeholder="请输入"
+          v-decorator="decorators.current_course_name"
+        />
       </st-form-item>
       <st-form-item label="日期" required v-if="!cycle_type">
         <a-date-picker
           style="width:100%"
-          :showTime="{ format: 'YYYY-MM-DD' }"
           format="YYYY-MM-DD"
           v-decorator="decorators.start_days"
-          :disabledHours="disabledHours"
         />
       </st-form-item>
       <st-form-item label="开始时间" required>
@@ -91,7 +80,6 @@ export default {
     return {
       loading: this.smallCourseScheduleService.loading$,
       coachSmallCourseOptions: tss.coachSmallCourseOptions$,
-      courseSmallCourseOptions: tss.courseSmallCourseOptions$,
       courtOptions: tss.courtOptions$
     }
   },
@@ -103,7 +91,9 @@ export default {
       decorators,
       show: false,
       courseItem: '',
-      params: {}
+      params: {},
+      cycle_begin_date: '',
+      cycle_end_date: ''
     }
   },
   props: {
@@ -134,55 +124,64 @@ export default {
     cycle_type: {
       type: Number,
       default: 0
+    },
+    courseInfo: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   },
   created() {},
   mounted() {
-    // start_day 无法setValue -- 课程的结束时间是否需要传递
-    const item = this.item
+    const item = cloneDeep(this.item)
     console.log(item)
-    const court_item = [item.court_id.id, item.court_id.children.id]
-    const time = moment(item.start_time)
+    console.log(this.cycle)
+    this.cycle_begin_date = this.cycle[0].format('YYYY-MM-DD')
+    this.cycle_end_date = this.cycle[1].format('YYYY-MM-DD')
+    const court_item = [item.court_id, item.court_site_id]
+    const time = moment(item.start_date)
     this.form.setFieldsValue({
-      course_id: item.course_id,
+      current_course_name: item.current_course_name,
       coach_id: item.coach_id,
-      court_id: court_item,
-      start_time: moment(item.start_time),
-      end_time: moment(item.end_time)
+      court_id: court_item
     })
-    if (!this.cycle_type) {
-      this.form.setFieldsValue({ start_days: time })
+    if (this.cycle_type === 2) {
+      console.log(this.cycle_type)
+      console.log(time)
+      this.form.setFieldsValue({
+        start_time: moment(`${this.item.start_date} ${this.item.start_time}`),
+        end_time: moment(`${this.item.start_date} ${this.item.end_time}`),
+        start_days: time
+      })
+    } else {
+      this.form.setFieldsValue({
+        start_time: moment(`${this.cycle_begin_date} ${this.item.start_time}`),
+        end_time: moment(`${this.cycle_end_date} ${this.item.end_time}`)
+      })
     }
-    this.onChangeCourse(item.course_id)
     this.onChangeCoach(item.coach_id)
-    this.onChangeCourt(item.court_item)
+    this.onChangeCourt(court_item)
   },
   methods: {
-    onChangeCourse(value) {
-      this.courseSmallCourseOptions.forEach((item, index) => {
-        if (item.course_id === value) {
-          this.params.course_name = item.course_name
-        }
-      })
-    },
     onChangeCoach(value) {
       this.coachSmallCourseOptions.forEach((item, index) => {
-        if (item.coach_id === value) {
-          this.params.coach_name = item.coach_name
+        if (item.id === value) {
+          this.params.coach_name = item.staff_name
         }
       })
     },
     onChangeCourt(data) {
       this.courtOptions.forEach((item, index) => {
         if (item.id === data[0]) {
+          this.params.court_name = item.name
           if (data[1]) {
             item.children.forEach((childrenItem, index) => {
               if (childrenItem.id === data[1]) {
-                this.params.court_site_name = childrenItem.name
+                this.params.court_name = `${item.name} / ${childrenItem.name}`
               }
             })
           }
-          this.params.coach_name = item.name
         }
         return
       })
@@ -192,44 +191,46 @@ export default {
         console.log(values)
         const form = cloneDeep(values)
         if (!this.cycle_type) {
-          form.start_days = form.start_days.format('YYYY-MM-DD')
+          const start_days = values.start_days.format('YYYY-MM-DD')
+          const start_time = values.start_time.format('HH:mm')
+          const end_time = values.end_time.format('HH:mm')
+          form.start_time = start_days + ' ' + start_time
+          form.end_time = start_days + ' ' + end_time
+        } else {
+          form.start_time = form.start_time.format('HH:mm')
+          form.end_time = form.end_time.format('HH:mm')
         }
-        form.start_time = form.start_time.format('HH:mm')
-        form.end_time = form.end_time.format('HH:mm')
         form.court_id = values.court_id[0]
         form.court_site_id = values.court_id[1]
         form.week = this.item.week
-        form.cycle_start_date = this.cycle[0].format('YYYY-MM-DD').valueOf()
-        form.cycle_end_date = this.cycle[1].format('YYYY-MM-DD').valueOf()
+        form.cycle_start_date = this.cycle_begin_date
+        form.cycle_end_date = this.cycle_end_date
+        form.course_id = this.courseInfo.course_id
         const verifyParams = Object.assign(this.params, form)
         console.log(verifyParams)
-        this.miniTeamScheduleScheduleService
-          .conflict(verifyParams)
-          .subscribe(res => {
-            if (this.cycle_type === 1) {
-              this.$emit(
-                'editCourse',
-                this.cycleIndex,
-                this.positionIndex,
-                res.data.conflict,
-                res.data.info,
-                res.data.list
-              )
-              this.show = false
-            } else {
-              if (res.data.conflict === 1) {
-                this.msg.error({ content: '排期内容有冲突，请重新选择' })
-              } else {
-                this.$emit(
-                  'editCourse',
-                  res.data.conflict,
-                  res.data.info,
-                  res.data.list
-                )
-                this.showFlag = false
-              }
-            }
-          })
+        // this.smallCourseScheduleService
+        //   .conflict(verifyParams)
+        //   .subscribe(res => {
+        //     console.log(res)
+        //   })
+        if (this.cycle_type === 1) {
+          this.$emit(
+            'editCourse',
+            this.cycleIndex,
+            this.positionIndex,
+            res.conflict,
+            verifyParams,
+            res.data.list
+          )
+          this.show = false
+        } else {
+          if (res.conflict === 1) {
+            this.msg.error({ content: '排期内容有冲突，请重新选择' })
+          } else {
+            this.$emit('editCourse', this.positionIndex, verifyParams)
+            this.show = false
+          }
+        }
       })
     },
     onClick() {

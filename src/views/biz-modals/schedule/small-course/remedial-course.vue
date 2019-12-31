@@ -5,7 +5,7 @@
         <span>{{}}</span>
       </st-form-item>
       <st-form-item label="缺课班名" required>
-        跆拳道
+        {{ info.course_name }}
       </st-form-item>
       <st-form-item label="适应范围" required>
         黑带
@@ -25,7 +25,7 @@
           </a-select-option>
         </a-select>
       </st-form-item>
-      <st-form-item label="日期" required>
+      <st-form-item label="日期" required class="mg-b0">
         <a-date-picker
           style="width:100%"
           :showTime="{ format: 'YYYY-MM-DD HH:mm' }"
@@ -76,36 +76,17 @@ export default {
     }
   },
   props: {
-    item: {
+    info: {
       type: Object,
       default: () => {
         return {}
       }
-    },
-    cycleIndex: {
-      type: Number,
-      default: () => {
-        return 0
-      }
-    },
-    positionIndex: {
-      type: Number,
-      default: () => {
-        return 0
-      }
-    },
-    cycle_type: {
-      type: Number,
-      default: 0
     }
   },
   created() {
-    console.log(this.item)
-    console.log(this.item.week)
-    console.log(this.positionIndex)
+    console.log(this.info)
   },
   mounted() {
-    // start_day 无法setValue -- 课程的结束时间是否需要传递
     const item = this.item
     const court_item = [item.court_id.id, item.court_id.children.id]
     const time = moment(item.start_time)
@@ -120,10 +101,6 @@ export default {
     }
   },
   methods: {
-    onChange(value) {
-      // 这里是否需要遍历查找对应的course信息
-      console.log(value)
-    },
     onSubmit() {
       this.form.validate().then(values => {
         const form = cloneDeep(values)

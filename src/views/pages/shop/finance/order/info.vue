@@ -37,7 +37,19 @@
             <st-info-item label="购买会员">
               {{ info.member_name }} {{ info.member_mobile }}
             </st-info-item>
-            <st-info-item label="家长">{{ infoParents }}</st-info-item>
+            <template v-if="info.is_minors === 1">
+              <st-info-item label="家长手机号">
+                {{ info.parent_mobile }}
+              </st-info-item>
+              <st-info-item :label="`家长姓名`">
+                {{ info.parent_name }}({{ info.parent_user_role }})
+              </st-info-item>
+            </template>
+            <template v-else>
+              <st-info-item label="手机号">
+                {{ info.member_mobile }}
+              </st-info-item>
+            </template>
             <st-info-item label="下单人">{{ info.operator_name }}</st-info-item>
             <st-info-item label="下单时间">
               {{ info.created_time }}
@@ -115,10 +127,6 @@ export default {
     return {
       ORDER_PRODUCT_TYPE
     }
-  },
-  created() {
-    // this.info.parents = { name: '家长', mobile: 1399032421340 }
-    //this.info.parents = '--'
   },
   computed: {
     infoParents() {

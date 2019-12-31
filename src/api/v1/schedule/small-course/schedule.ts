@@ -38,7 +38,21 @@ export class SmallCourseScheduleApi extends Api {
    * 批量新增周期小班课排期
    */
   addScheduleInBatch(params: any) {
-    return this.http.post('/v1/schedule/small/cycle', { params })
+    console.log('调用新增周期排课接口')
+    return this.http.post(`/v1/schedule/small/cycle/${params.id}`, {
+      params
+    })
+  }
+  /**
+   *
+   * @param params
+   * 批量编辑增加周期小班课排期
+   */
+  addScheduleInBatchs(params: any) {
+    console.log('调用新增周期排课接口')
+    return this.http.put(`/v1/schedule/small/cycle/${params.id}`, {
+      params
+    })
   }
   /**
    *
@@ -47,6 +61,14 @@ export class SmallCourseScheduleApi extends Api {
    */
   addScheduleInBatchCustom(params: any) {
     return this.http.post('/v1/schedule/small/customize', { params })
+  }
+  /**
+   *
+   * @param params
+   * 批量编辑新增自主小班课排期
+   */
+  addScheduleInBatchCustoms(params: any) {
+    return this.http.put('/v1/schedule/small/customize', { params })
   }
   /**
    *
@@ -67,10 +89,10 @@ export class SmallCourseScheduleApi extends Api {
   /**
    *
    * @param params
-   * 编辑课程排期
+   * 编辑单个课程排期
    */
   update(params: UpdateScheduleInput) {
-    return this.http.put(`/v1/schedule/team/shop/${params.id}`, { params })
+    return this.http.put(`/v1/schedule/small/${params.id}`, { params })
   }
   /**
    *
@@ -78,7 +100,7 @@ export class SmallCourseScheduleApi extends Api {
    * 取消小班课排期
    */
   del(id: string) {
-    return this.http.put(`/v1/schedule/team/shop/schedule/${id}`)
+    return this.http.put(`/v1/schedule/small_course/cancel/${id}`)
   }
   /**
    *
@@ -86,7 +108,7 @@ export class SmallCourseScheduleApi extends Api {
    * 验证排课冲突
    */
   conflict(params: any) {
-    return this.http.put(`/v1/schedule/small/verify_conflict/${params}`)
+    return this.http.put(`/v1/schedule/small/verify_conflict`, { params })
   }
 }
 
