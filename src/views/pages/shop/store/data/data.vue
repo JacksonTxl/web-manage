@@ -475,8 +475,9 @@ export default {
       this.tabsObjData.date = this.tabsObjData.date
         ? this.tabsObjData.date
         : moment()
-            .endOf('day')
+            .subtract(1, 'days')
             .format('YYYY-MM-DD') + ''
+      console.log(this.tabsObjData)
       this.dataService.getStoreMemberAnalysis(this.tabsObjData).subscribe()
     },
     refresh() {
