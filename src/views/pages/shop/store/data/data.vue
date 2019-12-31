@@ -18,7 +18,8 @@
                 {{ item.title }}
               </div>
               <div :class="headerContent('day-money')">
-                <i-count-up
+                <span>{{ dataProfile.today[headerTitleItem[index]] }}</span>
+                <!-- <i-count-up
                   :endVal="
                     dataProfile.today[headerTitleItem[index]]
                       ? Number(dataProfile.today[headerTitleItem[index]])
@@ -35,11 +36,12 @@
                       : 0,
                     decimal: '.'
                   }"
-                />
+                /> -->
               </div>
               <div :class="headerContent('yesterday-money')">
                 昨日:
-                <i-count-up
+                <span>{{ dataProfile.yesterday[headerTitleItem[index]] }}</span>
+                <!-- <i-count-up
                   :endVal="
                     dataProfile.yesterday[headerTitleItem[index]]
                       ? Number(dataProfile.yesterday[headerTitleItem[index]])
@@ -59,7 +61,7 @@
                     decimal: '.',
                     prefix: ''
                   }"
-                />
+                /> -->
               </div>
             </div>
           </li>
@@ -86,17 +88,18 @@
                 <img :class="basic('whole-item-icon')" :src="item.icon" />
               </div>
               <div :class="basic('whole-item-text')">
-                <i-count-up
+                <span>{{ item.num }}</span>
+                <!-- <i-count-up
                   :endVal="item.num ? Number(item.num) : 0"
                   :options="{
                     decimalPlaces: (item.num ? item.num : 0)
                       .toString()
                       .includes('.')
-                      ? 2
+                      ? 1
                       : 0,
                     decimal: '.'
                   }"
-                />
+                /> -->
               </div>
             </div>
           </div>
