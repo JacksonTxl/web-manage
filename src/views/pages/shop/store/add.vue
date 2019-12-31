@@ -70,12 +70,6 @@
                       :class="basic('img--del-text')"
                       @click="delImg(item, index)"
                     >
-                      <st-icon
-                        type="delete"
-                        :class="basic('sku--item-icon')"
-                        style="font-size: 14px"
-                        color="#fff"
-                      ></st-icon>
                       删除
                     </span>
                   </div>
@@ -97,7 +91,7 @@
                   <p>建议尺寸为750像素×750像素</p>
                 </template>
               </st-image-upload>
-              <div>可上传5张图片</div>
+              <div :class="basic('img--tip')">可上传5张商品图片</div>
               <div class="color-danger" v-if="isImgError">请上传商品图片</div>
             </st-form-item>
             <st-form-item label="配送方式" required>
@@ -138,7 +132,7 @@
         </a-row>
         <a-row :gutter="8">
           <a-col
-            :span="skuList.length === 3 ? 24 : skuList.length === 2 ? 20 : 16"
+            :span="skuList.length === 3 ? 24 : skuList.length === 2 ? 20 : 18"
           >
             <!-- <a-col :span="10"> -->
             <st-form-item label="规格设置" required>
@@ -156,7 +150,7 @@
                 @click="addSku"
               >
                 <a-icon type="plus" :class="basic('sku--add-icon')" />
-                <span>添加规格项</span>
+                <span>添加规格项（{{ skuList.length }}/3）</span>
               </div>
               <div
                 :class="basic('sku--item')"
@@ -195,14 +189,6 @@
                   :help="item.isErr ? '请正确填写规格' : ''"
                   :validateStatus="item.isErr ? 'error' : ''"
                 >
-                  <!-- <a-select
-                    mode="multiple"
-                    placeholder="请添加规格设置"
-                    v-model="item.spec_item_name"
-                    style="width: 220px"
-                    :open="false"
-                    @change="handleChange(index, $event)"
-                  ></a-select> -->
                   <span
                     v-for="(sku, i) in item.spec_item_name"
                     :key="i"
@@ -215,7 +201,11 @@
                       v-if="isEditMode ? item.spec_item_name.length > 1 : true"
                     />
                   </span>
-                  <a :class="basic('sku--item-add')" @click="addSkuItem(index)">
+                  <a
+                    :class="basic('sku--item-add')"
+                    @click="addSkuItem(index)"
+                    v-if="item.spec_item_name.length <= 10"
+                  >
                     添加规格
                   </a>
                 </st-form-item>
@@ -666,10 +656,6 @@ export default {
       })
     },
     addSkuItem(index) {
-      if (this.skuList.length >= 10) {
-        this.message.warning({ content: '规格项最多可以设置10个' })
-        return
-      }
       this.$modalRouter.push({
         name: 'store-add-sku',
         props: { list: this.skuList[index].spec_item_name },
@@ -681,15 +667,8 @@ export default {
         }
       })
     },
-    // 改变规格
-    // handleChange(index, event) {
-    //   this.skuList[index].spec_item_name = event
-    //   this.changeTable()
-    // },
-    delSkuItem(index, i) {
-      // if (this.isEditMode && this.skuList[index].spec_item_name.length === 1) {
 
-      // }
+    delSkuItem(index, i) {
       this.skuList[index].spec_item_name.splice(i, 1)
       this.changeTable()
     },
@@ -724,7 +703,6 @@ export default {
       }
       this.imgList.push(img)
       if (this.isEditMode) {
-        // this.product_images_add.push(img)
         img.isNew = true
       }
       this.isImgError = false
