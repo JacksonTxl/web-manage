@@ -1,0 +1,45 @@
+.modals-choose-sku {
+  .good-message {
+    img {
+      width: 88px;
+      height: 88px;
+      display: inline-block;
+      vertical-align: top;
+    }
+    &__content {
+      display: inline-block;
+      width: 76%;
+      vertical-align: top;
+      margin-left: 12px;
+      span {
+        display: block;
+        line-height: 20px;
+        margin-top: 9px;
+      }
+    }
+    &__price {
+      .c(@error-color);
+      .fz(18px);
+    }
+    &__amount {
+      .c(@text-light);
+      .fz(14px);
+    }
+    &__rule {
+      width: auto;
+      height: 20px;
+      .c(@text);
+      .fz(14px);
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+  &__good-item {
+    margin-top: 24px;
+  }
+  &__label {
+    margin-right: 24px;
+    .c(@title);
+  }
+}

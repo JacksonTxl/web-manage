@@ -167,11 +167,20 @@
           </st-info>
         </a-col>
       </a-row>
+      <st-table
+        v-if="product_type === 12"
+        :dataSource="info"
+        :columns="columns"
+        :stripe="false"
+        :page="false"
+        rowKey="id"
+      ></st-table>
     </st-panel>
   </section>
 </template>
 <script>
 import { CommodityInfoService } from './commodity-info.service'
+import { columns } from './commodity-info.config'
 export default {
   name: 'PageShopFinanceOrderInfoCommodityInfo',
   serviceInject() {
@@ -186,7 +195,9 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      columns: columns
+    }
   },
   methods: {}
 }

@@ -8,7 +8,7 @@
   >
     <div :class="gathering('content')">
       <a-row :class="gathering('info')">
-        <a-col :span="13" class="mg-b36">
+        <a-col :span="13" class="mg-b36" v-if="type !== 'cloud_store'">
           <st-info>
             <st-info-item label="订单号">{{ info.order_id }}</st-info-item>
             <st-info-item class="mg-b0" label="下单时间">
@@ -16,7 +16,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="11" class="mg-b36">
+        <a-col :span="11" class="mg-b36" v-if="type !== 'cloud_store'">
           <st-info>
             <st-info-item label="下单人">{{ info.operate_name }}</st-info-item>
             <st-info-item class="mg-b0" label="销售">
@@ -65,7 +65,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="24" class="mg-b36">
+        <a-col :span="24" class="mg-b36" v-if="type !== 'cloud_store'">
           <st-info>
             <st-info-item class="mg-b0" label="备注">
               {{ info.description }}
@@ -128,6 +128,17 @@
               </a-select-option>
             </a-select>
           </st-form-item>
+          <st-form-item
+            label="备注"
+            class="mg-b16"
+            v-if="type === 'cloud_store'"
+          >
+            <a-textarea
+              placeholder="请填写备注"
+              style="height:90px;"
+              v-model="description"
+            ></a-textarea>
+          </st-form-item>
         </div>
       </st-form>
     </div>
@@ -173,7 +184,8 @@ export default {
       form,
       decorators,
       show: false,
-      selectPayValues: 0
+      selectPayValues: 0,
+      description: ''
     }
   },
   // 订单id，签单类型
@@ -205,6 +217,7 @@ export default {
       this.form.validate().then(values => {
         values.order_id = this.order_id
         values.payment_type = values.payment_method.payment_type
+        values.description = this.description || undefined
         delete values.payment_method
         this.gatheringService.payTransaction(values).subscribe(result => {
           this.$emit('success', {

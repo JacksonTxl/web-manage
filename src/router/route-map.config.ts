@@ -1629,5 +1629,85 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
+  'shop-store-stock-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '库存管理'
+    routeConfig.meta.tabs = [
+      'shop-store-stock-list-search',
+      'shop-store-stock-list-detail'
+    ]
+  },
+  'shop-store-stock-list-search'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '库存查询'
+    routeConfig.meta.auth = 'shop:cloud_store:stock|list'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      product_name: { type: String, default: '' }
+    }
+  },
+  'shop-store-stock-list-detail'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '出入库明细'
+    routeConfig.meta.auth = 'shop:cloud_store:stock|access_storage_obvious'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      product_id: { type: Number, default: -1 },
+      stock_flow: { type: Number, default: -1 },
+      start_time: { type: String, default: '' },
+      end_time: { type: String, default: '' }
+    }
+  },
+  'shop-store-order-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '发货管理'
+    routeConfig.meta.tabs = [
+      'shop-store-order-list-verification',
+      'shop-store-order-list-shipments',
+      'shop-store-order-list-signin'
+    ]
+  },
+  'shop-store-order-list-shipments'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '待发货订单'
+    routeConfig.meta.auth = 'shop:cloud_store:order|stay_deliver_goods'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      search_where: { type: String, default: '' }
+    }
+  },
+  'shop-store-order-list-signin'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '待签收订单'
+    routeConfig.meta.auth = 'shop:cloud_store:order|stay_delivers'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      search_where: { type: String, default: '' }
+    }
+  },
+  'shop-store-order-list-verification'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '待核销订单'
+    routeConfig.meta.auth = 'shop:cloud_store:order|stay_verification'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      search_where: { type: String, default: '' }
+    }
+  },
+  'shop-store-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '云店列表'
+    routeConfig.meta.auth = 'shop:cloud_store:goods|list'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      product_name: { type: String, default: '' },
+      shelves_status: { type: Number, default: -1 },
+      category_id: { type: Number, default: -1 }
+    }
+  },
+  'shop-store-add'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '新建商品'
+  },
+  'shop-store-edit'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '编辑商品'
+  },
   ...tplConfigs
 }

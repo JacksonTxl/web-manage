@@ -198,7 +198,8 @@ export default {
         course: /shop-product-course/,
         card: /shop-product-card/,
         department: /brand-staff/,
-        statement: /shop-stat/
+        statement: /shop-stat/,
+        store: /shop-store/
       }
       if (!rulesMap.hasOwnProperty(icon)) {
         rule = new RegExp(icon)

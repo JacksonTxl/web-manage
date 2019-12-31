@@ -9,8 +9,12 @@ export interface MemberListInput {
   member: string
   escape_member_id?: number
 }
+export interface ProductType {
+  sku_id: number
+  nums: number
+}
 export interface TransactionPriceInput {
-  product_id: number
+  product_id?: number
   product_type: number
   product_num?: number
   specs_id?: number
@@ -20,12 +24,21 @@ export interface TransactionPriceInput {
   member_id?: number
   surplus_amount?: string
   special_amount?: number
+  product_info?: ProductType[]
 }
 export interface TransactionListInput {
   page?: number
   size?: number
   product_name?: string
   product_type: number
+}
+export interface ProductInfoParams {
+  product_id: number
+  sku_id: number
+  unit_price?: number
+  nums?: number
+  product_name?: string
+  rule_name?: string
 }
 export class TransactionApi extends Api {
   /**
@@ -162,5 +175,19 @@ export class TransactionApi extends Api {
     return this.http.get(`/v1/order/transaction/member/payment/method`, {
       query
     })
+  }
+  /**
+   * 交易签单-云店-商品列表
+   */
+  getStoreProductList(query: { product_name: string }) {
+    return this.http.get(`/v1/store/product/name_search_list`, {
+      query
+    })
+  }
+  /**
+   * 交易签单-云店-商品详情
+   */
+  goodsDetail(id: number) {
+    return this.http.get(`/v1/store/product/${id}`)
   }
 }

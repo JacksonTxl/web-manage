@@ -81,6 +81,10 @@ export default {
       default: ''
     }
   },
+  model: {
+    prop: 'value',
+    event: 'change'
+  },
   serviceInject() {
     return {
       appConfig: AppConfig,
@@ -135,14 +139,15 @@ export default {
             editor.on('change keyup undo redo', value => {
               const currentContent = editor.getContent()
               ctx.$emit('input', currentContent)
+              ctx.$emit('change', currentContent)
             })
-            editorEvents.forEach(key => {
-              if (ctx.$listeners[key]) {
-                editor.on(key, e => {
-                  ctx.$emit(key, e, editor)
-                })
-              }
-            })
+            // editorEvents.forEach(key => {
+            //   if (ctx.$listeners[key]) {
+            //     editor.on(key, e => {
+            //       ctx.$emit(key, e, editor)
+            //     })
+            //   }
+            // })
           },
           init_instance_callback(editor) {
             const editorToolbarEl = document.querySelector('.tox-toolbar')

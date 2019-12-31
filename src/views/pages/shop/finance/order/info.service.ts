@@ -34,11 +34,20 @@ export class InfoService implements Controller {
               }
             }
           ]
-          if (res.info.order_status === 4) {
+          if (res.info.order_status === 4 || res.info.order_status === 5) {
             tabs.push({
               label: '退款信息',
               route: {
                 name: 'shop-finance-order-info-refund-info',
+                query: { id }
+              }
+            })
+          }
+          if (res.info.product_type === 12) {
+            tabs.push({
+              label: '配送方式',
+              route: {
+                name: 'shop-finance-order-info-delivery-mode',
                 query: { id }
               }
             })
