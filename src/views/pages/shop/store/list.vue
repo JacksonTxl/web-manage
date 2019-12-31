@@ -51,12 +51,6 @@
         <template slot="action" slot-scope="text, record">
           <st-table-actions sytle="width: 120px">
             <a
-              @click="onShelf(record)"
-              v-if="record.auth['shop:cloud_store:goods|up']"
-            >
-              上架
-            </a>
-            <a
               @click="onEdit(record)"
               v-if="record.auth['shop:cloud_store:goods|edit']"
             >
@@ -64,22 +58,23 @@
             </a>
             <a
               @click="onShelf(record)"
+              v-if="record.auth['shop:cloud_store:goods|up']"
+            >
+              上架
+            </a>
+
+            <a
+              @click="onShelf(record)"
               v-if="record.auth['shop:cloud_store:goods|down']"
             >
               下架
             </a>
-            <!-- <st-popconfirm
-
-              @confirm=""
-              title="确认要删除么？"
-            > -->
             <a
               v-if="record.auth['shop:cloud_store:goods|del']"
               @click="onDel(record)"
             >
               删除
             </a>
-            <!-- </st-popconfirm> -->
           </st-table-actions>
         </template>
       </st-table>

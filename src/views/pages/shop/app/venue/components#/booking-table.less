@@ -1,0 +1,66 @@
+.page-shop-app-venue-booking-table {
+  &__top {
+    white-space: nowrap;
+    overflow: hidden;
+    margin-left: 44px;
+    &__item {
+      display: inline-block;
+      width: 110px;
+      text-align: center;
+      font-weight: bolder;
+      line-height: 20px;
+      font-size: 12px;
+    }
+  }
+  &__left {
+    float: left;
+    margin-right: 16px;
+    height: 400px;
+    overflow: hidden;
+    &__item {
+      margin-bottom: 20px;
+      font-size: 12px;
+      line-height: 20px;
+      color: #9bacb9;
+    }
+  }
+  &__content {
+    margin-top: 8px;
+    display: flex;
+    position: relative;
+    height: 400px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    &__column {
+      width: 110px;
+      flex: none;
+    }
+    &__row {
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      &-action {
+        cursor: pointer;
+        transition: color 0.3s, background-color 0.3s, border-color 0.3s;
+        &.act {
+          color: #fff;
+          background-color: #3f66f6;
+          border: 1px solid #3f66f6;
+        }
+      }
+      &-reserved {
+        background-color: #ffa100;
+        color: #fff;
+      }
+      &-unreserve {
+        background-color: #fafafa;
+        color: #9bacb9;
+        border: none;
+      }
+    }
+    .st-no-data {
+      margin: 50px auto;
+      color: #9bacb9;
+    }
+  }
+}

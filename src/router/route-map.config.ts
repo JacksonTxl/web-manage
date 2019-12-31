@@ -886,7 +886,70 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
-
+  'brand-app-index'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '应用中心'
+  },
+  'brand-app-venue'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '场地预约'
+    routeConfig.meta.tabs = [
+      'brand-app-venue-data',
+      'brand-app-venue-basic-setting',
+      'brand-app-venue-notice-tpl'
+    ]
+  },
+  'brand-app-venue-data'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '数据'
+    routeConfig.meta.auth = 'brand:application:venues_reserve|list'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: -1 },
+      day: { type: String, default: '' },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'brand-app-venue-basic-setting'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '基础设置'
+    routeConfig.meta.auth = 'brand:application:venues_reserve|basic_setting'
+  },
+  'brand-app-venue-notice-tpl'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '通知模板'
+    routeConfig.meta.auth = 'brand:application:venues_reserve|basic_template'
+  },
+  'shop-app-venue'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '场地预约'
+    routeConfig.meta.tabs = [
+      'shop-app-venue-manage',
+      'shop-app-venue-record',
+      'shop-app-venue-booking'
+    ]
+  },
+  'shop-app-venue-manage'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '场地管理'
+    routeConfig.meta.auth = 'shop:product:venues|list'
+  },
+  'shop-app-venue-manage-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '场地管理'
+  },
+  'shop-app-venue-manage-add'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '新建场馆'
+  },
+  'shop-app-venue-setting-add'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '高级设置'
+  },
+  'shop-app-venue-record'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '预约记录'
+    routeConfig.meta.auth = 'shop:reserve:venues_reserve|log'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-app-venue-booking'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '代预约'
+    routeConfig.meta.auth = 'shop:reserve:venues_reserve|list'
+  },
   'shop-dashboard-shop'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '概览'
   },
