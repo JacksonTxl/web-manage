@@ -92,7 +92,7 @@
                     decimalPlaces: (item.num ? item.num : 0)
                       .toString()
                       .includes('.')
-                      ? 2
+                      ? 1
                       : 0,
                     decimal: '.'
                   }"
