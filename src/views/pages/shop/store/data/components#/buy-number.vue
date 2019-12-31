@@ -20,10 +20,7 @@
               <a-radio :value="2">支付金额</a-radio>
             </a-radio-group>
           </div>
-          <shop-entry-bar
-            :data="filterBuyNumInfo"
-            :uitl="value === 2 ? '元' : '人'"
-          ></shop-entry-bar>
+          <shop-entry-bar :data="filterBuyNumInfo"></shop-entry-bar>
         </div>
       </a-col>
     </a-row>
