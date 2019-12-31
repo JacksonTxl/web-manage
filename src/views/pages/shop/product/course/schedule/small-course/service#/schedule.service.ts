@@ -138,10 +138,12 @@ export class SmallCourseScheduleService {
    * 批量编辑增加周期小班课排期
    */
   @Effect()
-  addScheduleInBatchs(params: any) {
-    return this.scheduleApi.addScheduleInBatchs(params).pipe(
+  editScheduleInBatchs(params: any) {
+    return this.scheduleApi.editScheduleInBatchs(params).pipe(
       tap(res => {
-        this.msg.success({ content: '批量添加成功' })
+        if (!res.conflict) {
+          this.msg.success({ content: '批量添加成功' })
+        }
       })
     )
   }
@@ -161,11 +163,11 @@ export class SmallCourseScheduleService {
   /**
    *
    * @param params
-   * 批量新增自定义小班课排期
+   * 批量编辑新增自定义小班课排期
    */
   @Effect()
-  addScheduleInBatchCustoms(params: any) {
-    return this.scheduleApi.addScheduleInBatchCustoms(params).pipe(
+  editScheduleInBatchCustoms(params: any) {
+    return this.scheduleApi.editScheduleInBatchCustoms(params).pipe(
       tap(res => {
         this.msg.success({ content: '批量添加成功' })
       })
@@ -177,8 +179,8 @@ export class SmallCourseScheduleService {
    * 批量编辑回显
    */
   @Effect()
-  editScheduleInBatch(params: any) {
-    return this.scheduleApi.editScheduleInBatch(params)
+  getScheduleInBatch(params: any) {
+    return this.scheduleApi.getScheduleInBatch(params)
   }
   /**
    *

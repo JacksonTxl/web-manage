@@ -148,6 +148,12 @@ export default {
       default: () => {
         return {}
       }
+    },
+    editScheduleCycleFlag: {
+      type: Boolean,
+      default: () => {
+        return false
+      }
     }
   },
   data() {
@@ -172,8 +178,6 @@ export default {
   },
   created() {
     this.showFlag = this.item[0].show || this.customizeShow
-    this.cycle_begin_date = this.cycle[0].format('YYYY-MM-DD')
-    this.cycle_end_date = this.cycle[1].format('YYYY-MM-DD')
     console.log(this.cycle)
   },
   methods: {
@@ -216,10 +220,54 @@ export default {
     //   return this.range(0, 24).splice(4, 20)
     // },
     // this.params.court_name = `${item.name} / ${childrenItem.name}`
+    addCourse(cycleIndex, conflict, params, list) {
+      this.$emit('addCourse', cycleIndex, conflict, params, list)
+      this.showFlag = false
+    },
+    addCustomCourse(params) {
+      this.$emit('addCustomCourse', params)
+      this.showFlag = false
+    },
+    addSchedule(verifyParams) {
+      this.smallCourseScheduleService
+        .addScheduleInBatch(verifyParams)
+        .subscribe(res => {
+          console.log(res)
+          this.addCourse(this.cycleIndex, res.conflict, verifyParams, res.list)
+        })
+    },
+    editSchedule(verifyParams) {
+      this.smallCourseScheduleService
+        .editScheduleInBatchs(verifyParams)
+        .subscribe(res => {
+          console.log(res)
+          this.addCourse(this.cycleIndex, res.conflict, verifyParams, res.list)
+        })
+    },
+    addScheduleCustom(verifyParams) {
+      this.smallCourseScheduleService
+        .addScheduleInBatchCustom(verifyParams)
+        .subscribe(res => {
+          console.log(res)
+          if (!res.conflict) {
+            this.$emit('addCustomCourse', verifyParams)
+          }
+        })
+    },
+    editScheduleCustom(verifyParams) {
+      this.smallCourseScheduleService
+        .editScheduleInBatchCustoms(verifyParams)
+        .subscribe(res => {
+          console.log(res)
+          if (!res.conflict) {
+            this.$emit('addCustomCourse', verifyParams)
+          }
+        })
+    },
     onSubmit() {
       this.form.validate().then(values => {
         const form = cloneDeep(values)
-        if (!this.cycle_type) {
+        if (this.cycle_type === 2) {
           const start_days = values.start_days.format('YYYY-MM-DD')
           const start_time = values.start_time.format('HH:mm')
           const end_time = values.end_time.format('HH:mm')
@@ -239,20 +287,17 @@ export default {
         console.log(verifyParams)
         console.log(this.cycle_type)
         if (this.cycle_type === 1) {
-          this.smallCourseScheduleService
-            .addScheduleInBatch(verifyParams)
-            .subscribe(res => {
-              console.log(res)
-            })
-          //this.$emit('addCourse', this.cycleIndex, 0, verifyParams, [])
-          this.showFlag = false
+          if (this.editScheduleCycleFlag) {
+            this.addSchedule(verifyParams)
+          } else {
+            this.editSchedule(verifyParams)
+          }
         } else {
-          // if (res.conflict === 1) {
-          //   this.msg.error({ content: '排期内容有冲突，请重新选择' })
-          // } else {
-          this.$emit('addCustomCourse', verifyParams)
-          this.showFlag = false
-          // }
+          if (this.editScheduleCycleFlag) {
+            this.addScheduleCustom(verifyParams)
+          } else {
+            this.editScheduleCustom(verifyParams)
+          }
         }
       })
     }

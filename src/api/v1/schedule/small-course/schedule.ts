@@ -48,7 +48,7 @@ export class SmallCourseScheduleApi extends Api {
    * @param params
    * 批量编辑增加周期小班课排期
    */
-  addScheduleInBatchs(params: any) {
+  editScheduleInBatchs(params: any) {
     console.log('调用新增周期排课接口')
     return this.http.put(`/v1/schedule/small/cycle/${params.id}`, {
       params
@@ -67,7 +67,7 @@ export class SmallCourseScheduleApi extends Api {
    * @param params
    * 批量编辑新增自主小班课排期
    */
-  addScheduleInBatchCustoms(params: any) {
+  editScheduleInBatchCustoms(params: any) {
     return this.http.put('/v1/schedule/small/customize', { params })
   }
   /**
@@ -75,7 +75,7 @@ export class SmallCourseScheduleApi extends Api {
    * @param params
    * 批量编辑回显
    */
-  editScheduleInBatch(query: any) {
+  getScheduleInBatch(query: any) {
     return this.http.get('/v1/schedule/small/list/edit', { query })
   }
   /**

@@ -137,8 +137,6 @@ export default {
     const item = cloneDeep(this.item)
     console.log(item)
     console.log(this.cycle)
-    this.cycle_begin_date = this.cycle[0].format('YYYY-MM-DD')
-    this.cycle_end_date = this.cycle[1].format('YYYY-MM-DD')
     const court_item = [item.court_id, item.court_site_id]
     const time = moment(item.start_date)
     this.form.setFieldsValue({
@@ -178,19 +176,54 @@ export default {
           if (data[1]) {
             item.children.forEach((childrenItem, index) => {
               if (childrenItem.id === data[1]) {
-                this.params.court_name = `${item.name} / ${childrenItem.name}`
+                this.params.court_site_name = childrenItem.name
               }
             })
+          } else {
+            this.params.court_site_name = 'none'
           }
         }
         return
       })
     },
+    addCourse(cycleIndex, conflict, params, list) {
+      this.$emit(
+        'addCourse',
+        cycleIndex,
+        this.positionIndex,
+        conflict,
+        params,
+        list
+      )
+      this.show = false
+    },
+    addCustomCourse(params) {
+      this.$emit('addCustomCourse', this.positionIndex, params)
+      this.show = false
+    },
+    editSchedule(verifyParams) {
+      this.smallCourseScheduleService
+        .editScheduleInBatchs(verifyParams)
+        .subscribe(res => {
+          console.log(res)
+          this.addCourse(this.cycleIndex, res.conflict, verifyParams, res.list)
+        })
+    },
+    editScheduleCustom(verifyParams) {
+      this.smallCourseScheduleService
+        .editScheduleInBatchCustoms(verifyParams)
+        .subscribe(res => {
+          console.log(res)
+          if (!res.conflict) {
+            this.$emit('addCustomCourse', verifyParams)
+          }
+        })
+    },
     onSubmit() {
       this.form.validate().then(values => {
         console.log(values)
         const form = cloneDeep(values)
-        if (!this.cycle_type) {
+        if (this.cycle_type === 2) {
           const start_days = values.start_days.format('YYYY-MM-DD')
           const start_time = values.start_time.format('HH:mm')
           const end_time = values.end_time.format('HH:mm')
@@ -203,33 +236,14 @@ export default {
         form.court_id = values.court_id[0]
         form.court_site_id = values.court_id[1]
         form.week = this.item.week
-        form.cycle_start_date = this.cycle_begin_date
-        form.cycle_end_date = this.cycle_end_date
+        form.cycle_begin_date = this.cycle[0].format('YYYY-MM-DD')
+        form.cycle_end_date = this.cycle[1].format('YYYY-MM-DD')
         form.course_id = this.courseInfo.course_id
         const verifyParams = Object.assign(this.params, form)
-        console.log(verifyParams)
-        // this.smallCourseScheduleService
-        //   .conflict(verifyParams)
-        //   .subscribe(res => {
-        //     console.log(res)
-        //   })
         if (this.cycle_type === 1) {
-          this.$emit(
-            'editCourse',
-            this.cycleIndex,
-            this.positionIndex,
-            res.conflict,
-            verifyParams,
-            res.data.list
-          )
-          this.show = false
+          this.editSchedule(verifyParams)
         } else {
-          if (res.conflict === 1) {
-            this.msg.error({ content: '排期内容有冲突，请重新选择' })
-          } else {
-            this.$emit('editCourse', this.positionIndex, verifyParams)
-            this.show = false
-          }
+          this.editScheduleCustom(verifyParams)
         }
       })
     },
