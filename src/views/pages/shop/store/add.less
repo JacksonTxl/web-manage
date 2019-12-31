@@ -4,6 +4,8 @@
     position: relative;
     &--tip {
       color: #9bacb9;
+      width: 126px;
+      text-align: center;
     }
     &--del {
       position: absolute;
@@ -42,13 +44,13 @@
   &__sku--add {
     border: 1px dashed #cdd4df;
     text-align: center;
-    margin-bottom: 24px;
+    margin-top: 32px;
     height: 32px;
   }
   &__sku--item {
     border: 1px solid #cdd4df;
     padding-top: 24px;
-    margin-bottom: 24px;
+    margin-top: 24px;
     &-del {
       float: right;
       margin-right: 24px;
@@ -65,6 +67,9 @@
       color: @primary-color;
       margin-left: 16px;
     }
+  }
+  &__sku--last {
+    margin-bottom: 0;
   }
   &__class--manage {
     line-height: 32px;
