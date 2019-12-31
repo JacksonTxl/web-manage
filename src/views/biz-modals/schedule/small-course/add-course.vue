@@ -138,18 +138,18 @@ export default {
         }
         // 提交
         console.log(form)
-        this.smallCourseScheduleService.conflict(form).subscribe(res => {
-          if (res.conflict === 1) {
-            this.msg.error({ content: '排期内容有冲突，请重新选择' })
-          } else {
-            this.smallCourseScheduleService.add(form).subscribe(() => {
-              this.$emit('ok')
-              this.show = false
-              this.onScheduleChange()
-            })
-            this.showFlag = false
-          }
+        // this.smallCourseScheduleService.conflict(form).subscribe(res => {
+        //   if (res.conflict === 1) {
+        //     this.msg.error({ content: '排期内容有冲突，请重新选择' })
+        //   } else {
+        //   }
+        // })
+        this.smallCourseScheduleService.add(form).subscribe(() => {
+          this.$emit('ok')
+          this.show = false
+          this.onScheduleChange()
         })
+        this.showFlag = false
       })
     },
     onScheduleChange() {

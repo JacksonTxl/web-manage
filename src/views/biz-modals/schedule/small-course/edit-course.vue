@@ -208,29 +208,29 @@ export default {
         form.course_id = this.courseInfo.course_id
         const verifyParams = Object.assign(this.params, form)
         console.log(verifyParams)
-        this.smallCourseScheduleService
-          .conflict(verifyParams)
-          .subscribe(res => {
-            console.log(res)
-            if (this.cycle_type === 1) {
-              this.$emit(
-                'editCourse',
-                this.cycleIndex,
-                this.positionIndex,
-                res.conflict,
-                verifyParams,
-                res.data.list
-              )
-              this.show = false
-            } else {
-              if (res.conflict === 1) {
-                this.msg.error({ content: '排期内容有冲突，请重新选择' })
-              } else {
-                this.$emit('editCourse', this.positionIndex, verifyParams)
-                this.show = false
-              }
-            }
-          })
+        // this.smallCourseScheduleService
+        //   .conflict(verifyParams)
+        //   .subscribe(res => {
+        //     console.log(res)
+        //   })
+        if (this.cycle_type === 1) {
+          this.$emit(
+            'editCourse',
+            this.cycleIndex,
+            this.positionIndex,
+            res.conflict,
+            verifyParams,
+            res.data.list
+          )
+          this.show = false
+        } else {
+          if (res.conflict === 1) {
+            this.msg.error({ content: '排期内容有冲突，请重新选择' })
+          } else {
+            this.$emit('editCourse', this.positionIndex, verifyParams)
+            this.show = false
+          }
+        }
       })
     },
     onClick() {

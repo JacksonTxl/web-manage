@@ -130,4 +130,10 @@ export class SmallCourseScheduleReserveService {
   message(id: any) {
     return this.reserveApi.msg(id)
   }
+  /**
+   * 补课回显
+   */
+  courseInfo(id: any) {
+    return this.reserveApi.msg(id)
+  }
 }

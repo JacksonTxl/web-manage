@@ -234,29 +234,23 @@ export default {
         const verifyParams = Object.assign(this.params, form)
         console.log(verifyParams)
         console.log(this.cycle_type)
-        this.smallCourseScheduleService
-          .conflict(verifyParams)
-          .subscribe(res => {
-            console.log('查看冲突验证结果')
-            console.log(res)
-            if (this.cycle_type === 1) {
-              this.$emit(
-                'addCourse',
-                this.cycleIndex,
-                res.conflict,
-                verifyParams,
-                res.data.list
-              )
-              this.showFlag = false
-            } else {
-              if (res.conflict === 1) {
-                this.msg.error({ content: '排期内容有冲突，请重新选择' })
-              } else {
-                this.$emit('addCustomCourse', verifyParams)
-                this.showFlag = false
-              }
-            }
-          })
+        if (this.cycle_type === 1) {
+          this.$emit('addCourse', this.cycleIndex, 0, verifyParams, [])
+          this.showFlag = false
+        } else {
+          // if (res.conflict === 1) {
+          //   this.msg.error({ content: '排期内容有冲突，请重新选择' })
+          // } else {
+          this.$emit('addCustomCourse', verifyParams)
+          this.showFlag = false
+          // }
+        }
+        // this.smallCourseScheduleService
+        //   .conflict(verifyParams)
+        //   .subscribe(res => {
+        //     console.log('查看冲突验证结果')
+        //     console.log(res)
+        //   })
       })
     }
   }

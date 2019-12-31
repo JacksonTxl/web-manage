@@ -215,7 +215,7 @@ export class SmallCourseScheduleService {
    * @param params
    * 验证课程排期
    */
-  conflict(params: any) {
-    return this.scheduleApi.conflict(params)
+  conflict() {
+    return { conflict: 1 }
   }
 }
