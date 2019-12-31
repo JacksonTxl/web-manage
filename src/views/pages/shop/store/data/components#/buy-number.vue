@@ -27,7 +27,6 @@
         </div>
       </a-col>
     </a-row>
-    {{ data }}
   </div>
 </template>
 <script>
