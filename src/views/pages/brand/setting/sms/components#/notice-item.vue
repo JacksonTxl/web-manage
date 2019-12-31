@@ -10,7 +10,7 @@
       <div
         :class="bComponent('text')"
         style="padding-left:0"
-        v-if="info.notify_type.value === 1"
+        v-if="info.notify_type.value === NOTIFY_TYPES.MEMBER"
       >
         <st-switch
           @change="save"
@@ -33,7 +33,7 @@
       <div
         :class="bComponent('text')"
         style="padding-left:0"
-        v-if="info.notify_type.value === 2"
+        v-if="info.notify_type.value === NOTIFY_TYPES.SHOP"
       >
         <st-switch @change="save" v-model="params.notify_mode.app"></st-switch>
       </div>
@@ -86,14 +86,14 @@
               <span class="mg-r8 color-title">发送内容</span>
               <span :class="bComponent('text-right')">
                 <a-input
-                  v-if="info.notify_type.value === 1"
+                  v-if="info.notify_type.value === NOTIFY_TYPES.MEMBER"
                   :class="bComponent('column-input')"
                   v-model="params.msg_preffix"
                   placeholder="请输入"
                 ></a-input>
                 <span>{{ info.content }}</span>
                 <a-input
-                  v-if="info.notify_type.value === 1"
+                  v-if="info.notify_type.value === NOTIFY_TYPES.MEMBER"
                   :class="bComponent('column-input')"
                   v-model="params.msg_suffix"
                   placeholder="请输入"
@@ -121,7 +121,13 @@
                 </st-checkbox>
               </span>
             </div>
-            <div class="mg-b16" v-if="24 === info.notify_sub_type.value">
+            <div
+              class="mg-b16"
+              v-if="
+                NOTIFY_SHOP_SUB_TYPE.MEMBER_ENTRANCE_SUCCESS ===
+                  info.notify_sub_type.value
+              "
+            >
               <span class="color-title mg-r24">消息类型</span>
               <span
                 class="mg-r16"
@@ -131,7 +137,13 @@
                 {{ item }}
               </span>
             </div>
-            <div class="mg-b16" v-if="24 === info.notify_sub_type.value">
+            <div
+              class="mg-b16"
+              v-if="
+                NOTIFY_SHOP_SUB_TYPE.MEMBER_ENTRANCE_SUCCESS ===
+                  info.notify_sub_type.value
+              "
+            >
               <span class="color-title mg-r24">入场方式</span>
               <span
                 class="mg-r16"
@@ -214,8 +226,9 @@
               <span class="color-title mg-r8">发送规则</span>
               <span
                 v-if="
-                  info.notify_type.value === 1 &&
-                    info.notify_sub_type.value === 4
+                  info.notify_type.value === NOTIFY_TYPES.MEMBER &&
+                    info.notify_sub_type.value ===
+                      NOTIFY_MEMBER_SUB_TYPE.RESERVE_EXPIRE
                 "
               >
                 课程开始前
@@ -233,8 +246,9 @@
 
               <a-radio-group
                 v-if="
-                  info.notify_type.value === 1 &&
-                    info.notify_sub_type.value === 6
+                  info.notify_type.value === NOTIFY_TYPES.MEMBER &&
+                    info.notify_sub_type.value ===
+                      NOTIFY_MEMBER_SUB_TYPE.GOODS_EXPIRE
                 "
                 v-model="params.notify_time"
                 class="mg-b16"
@@ -304,6 +318,11 @@
 import { UserService } from '@/services/user.service'
 import BrandSettingSmsNotice from '@/views/biz-modals/brand/setting/sms/notice'
 import { NoticeService } from '../notice.service'
+import {
+  NOTIFY_TYPES,
+  NOTIFY_MEMBER_SUB_TYPE,
+  NOTIFY_SHOP_SUB_TYPE
+} from '@/constants/setting/sms'
 const componentName = 'notice-item'
 export default {
   name: 'NoticeItem',
@@ -333,6 +352,9 @@ export default {
       isShowContent: 0,
       isShowPre: 0,
       isShowEdit: 0,
+      NOTIFY_TYPES,
+      NOTIFY_MEMBER_SUB_TYPE,
+      NOTIFY_SHOP_SUB_TYPE,
       isShowPhone: false, // 默认不展示输入手机号
       rule: {},
       params: {
@@ -441,7 +463,10 @@ export default {
     this.params.msg_preffix = this.info.msg_preffix
     this.params.msg_suffix = this.info.msg_suffix
     this.params.custom_phone = this.info.custom_phone
-    const isJoin = [24, 23]
+    const isJoin = [
+      NOTIFY_SHOP_SUB_TYPE.MEMBER_ENTRANCE_SUCCESS,
+      NOTIFY_SHOP_SUB_TYPE.BATCH_OPERATE
+    ]
     if (!isJoin.includes(this.info.notify_sub_type.value)) {
       this.params.custom_phone = this.info.custom_phone.join(' ')
     }

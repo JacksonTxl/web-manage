@@ -38,7 +38,7 @@ export default {
     swiperSlide
   },
   props: {
-    list: Object
+    list: Array
   },
   computed: {
     sliderOptions() {
@@ -78,9 +78,6 @@ export default {
     onClickRight() {
       this.$refs.swiper.swiper.slideNext()
     }
-  },
-  created() {
-    this.service.getNoticeList().subscribe()
   }
 }
 </script>

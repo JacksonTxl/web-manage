@@ -54,10 +54,6 @@ export default {
     onOk() {
       this.show = false
       this.$emit('success')
-    },
-    onCancel(show) {
-      this.show = show
-      this.$emit('cancel')
     }
   }
 }
