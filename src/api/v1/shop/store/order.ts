@@ -52,4 +52,10 @@ export class OrderApi extends Api {
       params
     })
   }
+  /**
+   * 物流查询
+   */
+  getLogisticsCompany(query: { name: string }) {
+    return this.http.get(`/v1/store/logistics_company`, { query })
+  }
 }

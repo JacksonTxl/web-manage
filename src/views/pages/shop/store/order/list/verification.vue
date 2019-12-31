@@ -31,18 +31,18 @@ export default {
     columns
   },
   serviceInject() {
-    return { RowTableService: RowTableService }
+    return { rowTableService: RowTableService }
   },
   methods: {
     // 核销订单
     confirm(val) {
-      this.RowTableService.verificationGood({ id: val.id }).subscribe(res => {
-        this.$router.reload()
+      this.rowTableService.verificationGood({ id: val.id }).subscribe(res => {
+        this.getListData()
       })
     },
     // 获取核销订单列表
     getListData() {
-      this.RowTableService.getList(this.$searchQuery).subscribe()
+      this.rowTableService.getList(this.$searchQuery).subscribe()
     }
   },
   mounted() {

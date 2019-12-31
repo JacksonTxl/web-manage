@@ -1,23 +1,25 @@
 <template>
   <st-modal title="规格选择" @ok="onSubmit" v-model="show" width="540px">
     <div :class="basic()">
-      <div class="good-message">
+      <div :class="info()">
         <img
           src="https://img.cdn.xinchanedu.com/uploadImg/aix/2019/Aug/1565149862022.jpg"
           alt=""
         />
-        <div>
-          <span>￥{{ productInfo.unit_price }}</span>
-          <span>库存{{ productInfo.stock_amount }}件</span>
-          <span>已选：{{ productInfo.rule_name }}</span>
+        <div :class="info('content')">
+          <span :class="info('price')">￥{{ productInfo.unit_price }}</span>
+          <span :class="info('amount')">
+            库存{{ productInfo.stock_amount }}件
+          </span>
+          <span :class="info('rule')">已选：{{ productInfo.rule_name }}</span>
         </div>
       </div>
       <div
-        class="good-item"
+        :class="basic('good-item')"
         v-for="(item, index) in this.productData.all_spec"
         :key="index"
       >
-        <span class="item-label">{{ item.spec_name }}</span>
+        <span :class="basic('label')">{{ item.spec_name }}</span>
         <a-radio-group
           :options="item.spec_item_arr"
           v-model="item.itemVal"
@@ -28,6 +30,7 @@
   </st-modal>
 </template>
 <script>
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'modalStoreChooseSku',
   props: {
@@ -51,7 +54,8 @@ export default {
     }
   },
   bem: {
-    basic: 'modals-choose-sku'
+    basic: 'modals-choose-sku',
+    info: 'good-message'
   },
   methods: {
     onSubmit() {
@@ -61,7 +65,7 @@ export default {
     // 对后台返回的数据转换
     changeData() {
       this.productData.all_spec.forEach(element => {
-        let items = JSON.parse(JSON.stringify(element.spec_item_arr))
+        let items = cloneDeep(element.spec_item_arr)
         element.spec_item_arr = []
         items.forEach(val => {
           element.spec_item_arr.push({
@@ -72,9 +76,7 @@ export default {
         element.itemVal = items[0].spec_item_id
         this.specItemId.push(element.itemVal)
       })
-      this.productData.all_spec = JSON.parse(
-        JSON.stringify(this.productData.all_spec)
-      )
+      this.productData.all_spec = cloneDeep(this.productData.all_spec)
       this.outPutProductInfo()
     },
     // 输出选择规格后对应的信息

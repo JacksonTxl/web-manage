@@ -1,17 +1,13 @@
 <template>
   <st-modal title="新增规格" v-model="show" @ok="handleSubmit" size="small">
     <st-form :form="form" labelWidth="67px" @submit="handleSubmit">
-      <a-row :gutter="8">
-        <a-col :lg="24">
-          <st-form-item label="规格名称" required>
-            <a-input
-              placeholder="请输规格名称"
-              maxlength="20"
-              v-decorator="decorators.sku_name"
-            />
-          </st-form-item>
-        </a-col>
-      </a-row>
+      <st-form-item label="规格名称" required>
+        <a-input
+          placeholder="请输规格名称"
+          maxlength="20"
+          v-decorator="decorators.sku_name"
+        />
+      </st-form-item>
     </st-form>
   </st-modal>
 </template>

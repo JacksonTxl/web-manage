@@ -6,14 +6,18 @@
         <div slot="actions">
           <st-refresh-btn :action="refresh"></st-refresh-btn>
         </div>
-        <ul :class="basic('header-content')">
-          <li v-for="(item, index) in headerInfo" :key="index">
-            <img :src="item.icon" />
+        <ul :class="headerContent()">
+          <li
+            v-for="(item, index) in headerInfo"
+            :key="index"
+            :class="headerContent('item')"
+          >
+            <img :src="item.icon" :class="headerContent('item-icon')" />
             <div>
-              <div>
+              <div :class="headerContent('item-title')">
                 {{ item.title }}
               </div>
-              <div>
+              <div :class="headerContent('day-money')">
                 <i-count-up
                   :endVal="
                     dataProfile.today[headerTitleItem[index]]
@@ -33,7 +37,7 @@
                   }"
                 />
               </div>
-              <div>
+              <div :class="headerContent('yesterday-money')">
                 昨日:
                 <i-count-up
                   :endVal="
@@ -77,9 +81,9 @@
               :key="index"
               @click="wholenavFun(index, item)"
             >
-              <div>
+              <div :class="basic('whole-item-title')">
                 {{ item.title }}
-                <img :src="item.icon" />
+                <img :class="basic('whole-item-icon')" :src="item.icon" />
               </div>
               <div :class="basic('whole-item-text')">
                 <i-count-up
@@ -124,7 +128,7 @@
               </a-col>
               <a-col :span="8">
                 <div class="ring">
-                  <whole-tabls>
+                  <whole-table>
                     <template v-slot:user>
                       <component
                         v-bind:is="wholeNavcom"
@@ -155,10 +159,14 @@
                                 ? '343px'
                                 : height332 + 'px'
                           }"
-                          class="order-member-inoutNumImg"
+                          class="order-member-inout-img"
                           v-if="wholeNavcom === 'brand-user-avg-bar'"
                         />
-                        <img :src="pieImg" v-else class="order-member-pieImg" />
+                        <img
+                          :src="pieImg"
+                          v-else
+                          class="order-member-pie-img"
+                        />
                       </div>
                     </template>
                     <template v-slot:marketing>
@@ -192,12 +200,16 @@
                                 : height332 + 'px'
                           }"
                           v-if="wholeNavcom === 'brand-user-avg-bar'"
-                          class="order-member-inoutNumImg"
+                          class="order-member-inout-img"
                         />
-                        <img :src="pieImg" v-else class="order-member-pieImg" />
+                        <img
+                          :src="pieImg"
+                          v-else
+                          class="order-member-pie-img"
+                        />
                       </div>
                     </template>
-                  </whole-tabls>
+                  </whole-table>
                 </div>
               </a-col>
             </a-row>
@@ -247,13 +259,13 @@
                   <div class="category">
                     <st-t3>类目营收占比</st-t3>
                     <shop-store-data-revenue-ring
-                      :data="categoryRevenue"
+                      :data="storeCategoryRank.category_list"
                       :total="storeCategoryRank.total_revenue"
                       :padding="[60, '50%', 38, 0]"
                       name="总营收"
                       height="280"
                       style="width: 100%;"
-                      v-if="categoryRevenue.length"
+                      v-if="storeCategoryRank.category_list.length"
                     ></shop-store-data-revenue-ring>
                     <div :class="basic('entry-pie-img')">
                       <img :src="pieImg" />
@@ -292,7 +304,7 @@ import pieImg from '@/assets/img/shop/dashboard/pie.png'
 import inoutNumImg from '@/assets/img/shop/dashboard/inoutNum.png'
 import moment from 'moment'
 import ShopStoreDataLine from '@/views/biz-components/stat/shop-store-data-line'
-import WholeTabls from './components#/whole-tabls'
+import WholeTable from './components#/whole-table'
 import BuyConsumptionTables from './components#/buy-consumption-tables'
 import DatePicker from './components#/date-picker'
 import SalesAnalysis from './components#/sales-analysis'
@@ -304,7 +316,6 @@ import { DataService } from './data.service'
 import {
   headerInfo,
   wholeNav,
-  categoryRevenue,
   headerTitleItem,
   fieldNav
 } from './data.config.ts'
@@ -325,7 +336,8 @@ export default {
   },
   bem: {
     basic: 'shop-store-data',
-    salesCategory: 'sales-category'
+    salesCategory: 'sales-category',
+    headerContent: 'header-content'
   },
   data() {
     return {
@@ -334,11 +346,9 @@ export default {
       wholenavIndex: 0,
       pieImg,
       inoutNumImg,
-      storeDataLine: false,
       wholeNavcom: 'shop-store-data-ring',
       headerInfo,
       wholeNav,
-      categoryRevenue,
       headerTitleItem,
       fieldNav,
       tabsObjData: {
@@ -351,7 +361,7 @@ export default {
   components: {
     ShopStoreDataLine,
     DatePicker,
-    WholeTabls,
+    WholeTable,
     BuyConsumptionTables,
     SalesAnalysis,
     BuyNumber,
@@ -367,7 +377,6 @@ export default {
   },
   mounted() {
     this.wholenavFilter(this.storeBoard)
-    this.storeCategoryRankFilter(this.storeCategoryRank)
   },
   methods: {
     // 整体看板时间
@@ -380,9 +389,7 @@ export default {
     },
     // 类目分析时间
     categoryTimesFn(value) {
-      this.dataService.getStoreCategoryRank(value).subscribe(res => {
-        this.storeCategoryRankFilter(res)
-      })
+      this.dataService.getStoreCategoryRank(value).subscribe()
     },
     // 购买次数/消费金额时间
     userAnalysisTimesFn(value) {
@@ -394,7 +401,6 @@ export default {
     filterLine(data, type) {
       let fieldInfo = ['amount', 'count', 'count', 'price']
       if (data[this.fieldNav[this.wholenavIndex]].trend.length) {
-        this.storeDataLine = true
         return data[this.fieldNav[this.wholenavIndex]].trend.map(item => {
           return {
             date: item.date,
@@ -402,7 +408,6 @@ export default {
           }
         })
       } else {
-        this.storeDataLine = false
         return []
       }
     },
@@ -462,16 +467,6 @@ export default {
         item.num = dataInfo
       })
     },
-    // 类目分析数据处理
-    storeCategoryRankFilter(data) {
-      this.categoryRevenue = data.category_list.map(item => {
-        return {
-          name: item.category_name,
-          value: item.amount
-        }
-      })
-    },
-
     onChangeTabs(query) {
       this.tabsObjData = Object.assign(this.tabsObjData, { choose_type: query })
       this.tabsObjData.date = this.tabsObjData.date
