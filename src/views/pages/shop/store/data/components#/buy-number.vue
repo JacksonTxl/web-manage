@@ -94,6 +94,14 @@ export default {
         })
       }
     }
+  },
+  watch: {
+    data: {
+      handler() {
+        this.filterBuyNum(this.value)
+      },
+      deep: true
+    }
   }
 }
 </script>
