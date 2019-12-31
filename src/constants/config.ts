@@ -45,6 +45,9 @@ export class AppConfig {
    * 当前开发使用的页面模式 brand | shop
    */
   PAGE_ENV = process.env.PAGE_ENV
+  get HOST_IS_LOCAL() {
+    return process.env.NODE_ENV === 'development'
+  }
   // 域名dev环境
   get HOST_IS_DEV() {
     return location.hostname.includes('dev')
@@ -159,5 +162,21 @@ export class AppConfig {
     link: 'https://styd.udesk.cn/im_client/?web_plugin_id=101681',
     config_link: 'https://assets-cli.udesk.cn/im_client/js/udeskApi.js'
   }
-  WEB_SOCKET_DOMAIN = 'wss://api-saas-dev.styd.cn/ws'
+  get WEB_SOCKET_DOMAIN() {
+    if (this.HOST_IS_LOCAL || this.HOST_IS_DEV) {
+      return 'wss://api-saas-dev.styd.cn/ws'
+    }
+
+    if (this.HOST_IS_TEST) {
+      return 'wss://api-saas-test.styd.cn/ws'
+    }
+
+    if (this.HOST_IS_PRE) {
+      return 'wss://api-saas-pre.styd.cn/ws'
+    }
+
+    if (this.HOST_IS_PROD) {
+      return 'wss://api-saas.styd.cn/ws'
+    }
+  }
 }
