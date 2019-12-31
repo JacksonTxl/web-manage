@@ -15,7 +15,7 @@
         </div>
         <div class="stat-shop-entry-bar__value">
           {{ item.value }}
-          <span class="stat-shop-entry-bar__uitl">{{ uitl }}</span>
+          <span v-if="uitl" class="stat-shop-entry-bar__uitl">{{ uitl }}</span>
         </div>
       </div>
     </div>
