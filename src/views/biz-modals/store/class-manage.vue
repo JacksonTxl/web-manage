@@ -55,13 +55,13 @@
 </template>
 <script>
 import { ClassManageService } from './class-manage.service'
+import { cloneDeep } from 'lodash-es'
 export default {
   serviceInject() {
     return { classManageService: ClassManageService }
   },
   rxState() {
     return {
-      // tableData: this.classManageService.list$,
       loading: this.classManageService.loading$
     }
   },
@@ -80,7 +80,7 @@ export default {
       this.classManageService.getList().subscribe(res => {
         res.list.map(item => (item.isEdit = false))
         this.tableData = res.list
-        this.oldTableData = JSON.parse(JSON.stringify(res.list))
+        this.oldTableData = cloneDeep(res.list)
       })
     },
     onSubmit() {
@@ -119,7 +119,6 @@ export default {
       item.isEdit = true
     },
     cancelHandle(item, index) {
-      // item = this.oldTableData[index]
       if (!item.category_name) {
         this.tableData.splice(index, 1)
         this.oldTableData.splice(index, 1)

@@ -5,7 +5,7 @@
         v-model="$searchQuery.product_name"
         @search="onKeywordsSearch('product_name', $event)"
         :placeholder="`请输入商品名称`"
-        maxlength="50"
+        maxlength="30"
       />
     </portal>
 
@@ -109,7 +109,6 @@ export default {
         props: { skuList: list, isOut },
         on: {
           success: () => {
-            console.log('进来了success')
             this.selectedRowKeys = []
             this.$router.reload()
           }
@@ -125,9 +124,6 @@ export default {
         }
       })
     }
-  },
-  mounted() {
-    console.log(this.auth)
   }
 }
 </script>
