@@ -8,6 +8,7 @@
     }
     &__content {
       display: inline-block;
+      width: 76%;
       vertical-align: top;
       margin-left: 12px;
       span {
@@ -25,8 +26,13 @@
       .fz(14px);
     }
     &__rule {
+      width: auto;
+      height: 20px;
       .c(@text);
       .fz(14px);
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
   }
   &__good-item {
