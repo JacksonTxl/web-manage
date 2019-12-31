@@ -10,13 +10,13 @@
       </a-select-option>
     </a-select>
     <a-date-picker
-      v-if="selectValue === 1"
+      v-if="Number(selectValue) === 1"
       :disabledDate="disabledDate"
       @change="onChange"
       :defaultValue="moment(defaultValue)"
     />
     <a-week-picker
-      v-else-if="selectValue === 2"
+      v-else-if="Number(selectValue) === 2"
       :disabledDate="disabledWeek"
       @change="onChange"
     />
@@ -78,7 +78,7 @@ export default {
   data() {
     return {
       moment,
-      selectValue: '1',
+      selectValue: 1,
       defaultValue:
         moment()
           .subtract(1, 'days')
