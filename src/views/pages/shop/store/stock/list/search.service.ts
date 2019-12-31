@@ -10,8 +10,8 @@ export class SearchService implements Controller {
   loading$ = new State({})
   auth$ = this.authService.authMap$({
     // 记得设置鉴权
-    warehousing: 'brand_shop:cloud_store:stock|batch_warehousing',
-    retrieval: 'brand_shop:cloud_store:stock|batch_retrieval'
+    warehousing: 'shop:cloud_store:stock|batch_warehousing',
+    retrieval: 'shop:cloud_store:stock|batch_retrieval'
   })
   constructor(private stockApi: StockApi, private authService: AuthService) {}
   @Effect()
