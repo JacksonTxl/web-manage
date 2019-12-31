@@ -122,10 +122,6 @@ export class AppConfig {
    */
   QQ_MAP_KEY = 'ZEGBZ-46CK6-6NCSC-M63GX-L7JGJ-XWB2D'
   /**
-   * map location key
-   */
-  QQ_LOCATION_KEY = 'OMWBZ-VTT3X-ZS34Z-7GDQ6-S6QTJ-ZVBWS'
-  /**
    * 日期时间格式
    */
   get DATE_FORMAT() {

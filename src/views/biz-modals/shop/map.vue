@@ -76,7 +76,7 @@
 </template>
 <script>
 import { RegionService } from '../../../services/region.service'
-import { MapService } from './map.service.ts'
+import { QqMapService } from '@/services/qq-map.service'
 import { AppConfig } from '@/constants/config'
 import { findIndex, cloneDeep } from 'lodash-es'
 export default {
@@ -88,7 +88,7 @@ export default {
     return {
       regionService: RegionService,
       appConfig: AppConfig,
-      mapService: MapService
+      qqMapService: QqMapService
     }
   },
   computed: {
@@ -198,7 +198,7 @@ export default {
       this.st_city = cloneDeep(this.city)
       this.st_district = cloneDeep(this.district)
       if (this.isAdd) {
-        this.mapService
+        this.qqMapService
           .getLocation(
             `https://apis.map.qq.com/ws/location/v1/ip?output=jsonp&key=${
               this.appConfig.QQ_MAP_KEY
@@ -234,8 +234,10 @@ export default {
               }
             }
             // 实例化map
-            this.initMap()
-            this.initSearch({ location: this.selectCity })
+            const { lat, lng } = this.locationData.location
+            this.qqMapService.init({ lat, lng }).then(() => {
+              this.initSearch({ location: this.selectCity })
+            })
           })
       } else {
         this.selectData.province = cloneDeep(this.st_province)
@@ -249,8 +251,10 @@ export default {
           }
         }
         // 实例化map
-        this.initMap()
-        this.initSearch({ location: this.selectCity })
+        const { lat, lng } = this.locationData.location
+        this.qqMapService.init({ lat, lng }).then(() => {
+          this.initSearch({ location: this.selectCity })
+        })
       }
     },
     getRegions() {
@@ -292,22 +296,6 @@ export default {
       this.selectData.address = this.st_address = ''
       this.selectData.lat = ''
       this.selectData.lng = ''
-    },
-    // 实例化地图
-    initMap() {
-      let center = new qq.maps.LatLng(
-        this.locationData.location.lat,
-        this.locationData.location.lng
-      )
-      this.mapObject = new qq.maps.Map(
-        document.getElementById('mapcontainer'),
-        {
-          center,
-          zoom: 13,
-          disableDefaultUI: true
-        }
-      )
-      this.resetMap(center)
     },
     // 实例化检索服务
     initSearch({ location }) {
@@ -358,30 +346,9 @@ export default {
       this.searchText = data.name
       this.selectData.address = this.st_address = data.address
       let position = new qq.maps.LatLng(data.latLng.lat, data.latLng.lng)
-      this.resetMap(position)
+      this.qqMapService.resetMap(position)
       this.selectData.lat = String(data.latLng.lat)
       this.selectData.lng = String(data.latLng.lng)
-    },
-    // 重置地图
-    resetMap(position) {
-      let anchor = new qq.maps.Point(8, 16)
-      let size = new qq.maps.Size(16, 16)
-      let origin = new qq.maps.Point(0, 0)
-      let icon = new qq.maps.MarkerImage(
-        require('@/assets/img/map_location.png'),
-        size,
-        origin,
-        anchor,
-        size
-      )
-      this.markerObject && this.markerObject.setMap(null)
-      this.markerObject = new qq.maps.Marker({
-        position,
-        icon: icon,
-        animation: qq.maps.MarkerAnimation.DROP,
-        map: this.mapObject
-      })
-      this.mapObject.panTo(position)
     },
     searchInput() {
       this.latlngIsOk = true
@@ -398,7 +365,7 @@ export default {
         } else if (!this.addressIsOk) {
           this.errorText = '请输入详细地址!'
         } else {
-          this.mapService
+          this.qqMapService
             .getLocation(
               `https://apis.map.qq.com/ws/geocoder/v1/?location=${
                 this.selectData.lat
