@@ -51,7 +51,7 @@
         </div>
         <p class="title">购物车</p>
         <div>
-          <st-form :form="form" labelWidth="56px">
+          <st-form :form="form" labelWidth="66px">
             <a-row :gutter="8">
               <a-col :span="30">
                 <st-form-item :class="basic('padding')">
@@ -105,7 +105,7 @@
                 <st-form-item :class="basic('padding')">
                   <div class="divider-line"></div>
                 </st-form-item>
-                <st-form-item label="购买会员">
+                <st-form-item label="购买会员" required>
                   <a-select
                     showSearch
                     allowClear
@@ -291,7 +291,7 @@ export default {
     this.$searchQuery.product_type = PRODUCT_TYPE.STORE
     this.listService.couponList$.commit(() => [])
     this.getUseCouponList(0)
-    this.listService.getSaleList().subscribe()
+    this.listService.getSaleList()
   },
   methods: {
     // 获取商品列表
@@ -339,12 +339,6 @@ export default {
     // 生成订单号
     createOrderNum(type) {
       return new Promise((resolve, reject) => {
-        if (!this.buyCar.length) {
-          this.messageService.warning({
-            content: '购物车为空，请添加商品到购物车'
-          })
-          return
-        }
         this.form.validate().then(values => {
           let params = {
             member_id: values.memberId,
@@ -506,15 +500,13 @@ export default {
           nums: val.nums
         })
       })
-      this.listService
-        .getStorePrice({
-          product_type: 8,
-          reduce_amount: this.reducePrice || undefined,
-          coupon_id: this.selectCoupon.id || undefined,
-          member_id: memberId || undefined,
-          product_info: productInfo.length ? productInfo : undefined
-        })
-        .subscribe()
+      this.listService.getStorePrice({
+        product_type: 8,
+        reduce_amount: this.reducePrice || undefined,
+        coupon_id: this.selectCoupon.id || undefined,
+        member_id: memberId || undefined,
+        product_info: productInfo.length ? productInfo : undefined
+      })
     },
     // 获取可用优惠券
     getUseCouponList(cardId) {
@@ -527,12 +519,10 @@ export default {
           nums: val.nums
         })
       })
-      this.listService
-        .getUseCoupon({
-          product_info: JSON.stringify(productInfo),
-          member_id: memberId
-        })
-        .subscribe()
+      this.listService.getUseCoupon({
+        product_info: JSON.stringify(productInfo),
+        member_id: memberId
+      })
     },
     // 同时获取价格和优惠券列表
     onMemberChange(data) {

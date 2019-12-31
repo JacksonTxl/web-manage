@@ -48,10 +48,6 @@ export const refundColumns = [
     dataIndex: 'staff_name'
   },
   {
-    title: '退款时间',
-    dataIndex: 'refund_time'
-  },
-  {
     title: '退款方式',
     dataIndex: 'pay_channel'
   },

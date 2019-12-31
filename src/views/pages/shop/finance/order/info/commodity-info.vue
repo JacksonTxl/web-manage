@@ -173,6 +173,7 @@
         :columns="columns"
         :stripe="false"
         :page="false"
+        rowKey="id"
       ></st-table>
     </st-panel>
   </section>
