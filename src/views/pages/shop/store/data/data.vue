@@ -408,7 +408,7 @@ export default {
         return data[this.fieldNav[this.wholenavIndex]].trend.map(item => {
           return {
             date: item.date,
-            amount: item[fieldInfo[this.wholenavIndex]]
+            amount: Number(item[fieldInfo[this.wholenavIndex]])
           }
         })
       } else {
@@ -437,7 +437,7 @@ export default {
         return value[fieldNav[wholenavIndex]].source[that].map(item => {
           return {
             name: item.type,
-            value: item[type]
+            value: Number(item[type])
           }
         })
       } else {
