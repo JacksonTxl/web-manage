@@ -191,6 +191,7 @@ import { SmallCourseScheduleCommonService } from '@/views/pages/shop/product/cou
 import { InbatchAddService } from './inbatch-add.service'
 import ScheduleSmallCourseEditCourse from '@/views/biz-modals/schedule/small-course/edit-course'
 import ScheduleSmallCourseSubmitCourse from '@/views/biz-modals/schedule/small-course/submit-course'
+import { MessageService } from '@/services/message.service'
 import { ruleOptions } from './inbatch-add.config'
 export default {
   name: 'AddScheduleInBatch',
@@ -205,7 +206,8 @@ export default {
     return {
       inbatchAddService: InbatchAddService,
       smallCourseScheduleService: SmallCourseScheduleService,
-      smallCourseScheduleCommonService: SmallCourseScheduleCommonService
+      smallCourseScheduleCommonService: SmallCourseScheduleCommonService,
+      msg: MessageService
     }
   },
   rxState() {
@@ -261,9 +263,7 @@ export default {
       return !(this.end_date === this.picker_end_date)
     },
     disabledChangeScheduleType() {
-      return (
-        this.cycle_type === 1 && this.scheduleList[0].course_time.length > 0
-      )
+      return this.cycle_type === 1
     }
   },
   created() {
@@ -342,6 +342,7 @@ export default {
         })
     },
     initScheduleList(list, type) {
+      this.cycle_type = type
       if (list.length && type === 1) {
         console.log('周期有数据')
         this.scheduleList = list
@@ -357,7 +358,6 @@ export default {
           this.editScheduleCycleFlag = true
         }
         this.initScheduleDate()
-        this.cycle_type = type
         this.customizeScheduleList = list
         console.log(this.customizeScheduleList)
       } else if (!list.length && type === 0) {
@@ -379,13 +379,30 @@ export default {
             (date[1] >= item[0] && date[1] <= item[1])
           ) {
             console.log('时间有交叉')
+            this.msg.error({ content: '排课周期时间不能有交叉重叠！' })
             pickerFlag = true
             return false
           }
         }
       })
+      // 还是要添加是否有数据的判断
       if (!pickerFlag) {
-        this.pickerList.splice(PickerIndex, 1, [date[0], date[1]])
+        if (this.cycle_type === 1) {
+          this.$confirm({
+            title: '提示',
+            content: `修改后会清空当前周期下的已有小班课排期，请确认修改`,
+            onCancel: () => {
+              const oldDate = this.pickerList[PickerIndex]
+              this.pickerList.splice(PickerIndex, 1, oldDate)
+            },
+            onOk: () => {
+              this.pickerList.splice(PickerIndex, 1, [date[0], date[1]])
+              // 调用批量删除的接口and清空本地数据
+              this.scheduleList[PickerIndex].course_time = []
+              this.filterDateList(this.scheduleList)
+            }
+          })
+        }
       }
       console.log(this.pickerList)
     },
@@ -469,6 +486,10 @@ export default {
         if (item.week == courseItem.week) {
           console.log('匹配对应的周几')
           findWeekFlag = true
+          if (tem.list.length >= 100) {
+            this.msg.error({ content: '单日排课不得超过100节！' })
+            return
+          }
           item.list.push(courseItem)
           this.filterDateList(this.scheduleList)
         }
@@ -539,21 +560,25 @@ export default {
         }
       })
     },
-    // 删除课程
+    // 取消排期 -- 这边针对排期，那边是课程？
     onDeleteCourseSchedule(item, cycleIndex, positionIndex) {
-      this.scheduleList[cycleIndex].course_time.forEach((dayItems, index) => {
-        if (dayItems.week === item.week) {
-          dayItems.list.splice(positionIndex, 1)
-          if (dayItems.list.length === 0) {
-            this.scheduleList[cycleIndex].course_time.splice(index, 1)
+      this.scheduleService.cancel(this.id).subscribe(res => {
+        this.scheduleList[cycleIndex].course_time.forEach((dayItems, index) => {
+          if (dayItems.week === item.week) {
+            dayItems.list.splice(positionIndex, 1)
+            if (dayItems.list.length === 0) {
+              this.scheduleList[cycleIndex].course_time.splice(index, 1)
+            }
+            this.filterDateList(this.scheduleList)
+            return
           }
-          this.filterDateList(this.scheduleList)
-          return
-        }
+        })
       })
     },
     onDeleteCustomSchedule(index) {
-      this.customizeScheduleList.splice(index, 1)
+      this.scheduleService.cancel(this.id).subscribe(res => {
+        this.customizeScheduleList.splice(index, 1)
+      })
     },
     // 新增周期排课
     addScheduleWeek() {

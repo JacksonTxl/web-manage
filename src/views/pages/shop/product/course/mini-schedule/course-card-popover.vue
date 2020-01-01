@@ -99,8 +99,6 @@ export default {
     this.showFlag = this.cardItem.show
     this.conflict = this.cardItem.conflict
     this.conflictList = this.cardItem.conflictList
-    console.log(this.conflict)
-    console.log(this.conflictList)
   },
   methods: {
     hide() {

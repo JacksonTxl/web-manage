@@ -132,7 +132,11 @@ export default {
       }
     }
   },
-  created() {},
+  created() {
+    const cycleDate = this.cycle
+    this.cycle_begin_date = cycleDate[0].format('YYYY-MM-DD')
+    this.cycle_end_date = cycleDate[1].format('YYYY-MM-DD')
+  },
   mounted() {
     const item = cloneDeep(this.item)
     console.log(item)

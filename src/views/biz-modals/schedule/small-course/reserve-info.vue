@@ -198,9 +198,37 @@
                     item.reserve_status === 4
                 "
               >
-                <a href="javascript:;" @click="message(item.reserve_id)">
-                  查看补课
-                </a>
+                <a-popover
+                  trigger="click"
+                  overlayClassName="samll-course-message-popover"
+                >
+                  <template slot="content">
+                    <div class="small-course-message">
+                      <div class="small-course-title  small-course-item">
+                        {{ courseMessage.course_name }}
+                      </div>
+                      <div class="small-course-days small-course-item">
+                        <span>时间</span>
+                        {{ courseMessage.course_time }}
+                      </div>
+                      <div class="small-course-coach small-course-item">
+                        <span>{{ $c('coach') }}</span>
+                        {{ courseMessage.staff_name }}
+                      </div>
+                      <div class="small-course-court small-course-item">
+                        <span>场地</span>
+                        {{ courseMessage.court_name }}
+                      </div>
+                      <div class="small-course-status small-course-item">
+                        <span>状态</span>
+                        {{ courseMessage.status }}
+                      </div>
+                    </div>
+                  </template>
+                  <a href="javascript:;" @mouseenter="message(item.reserve_id)">
+                    查看补课
+                  </a>
+                </a-popover>
               </div>
               <div
                 v-if="
@@ -442,18 +470,7 @@ export default {
     // 查看补课
     message(id) {
       this.reserveService.message(id).subscribe(res => {
-        this.$modalRouter.push({
-          name: 'schedule-small-course-remedial-info',
-          props: {
-            info: res.info,
-            id: id
-          },
-          on: {
-            ok: () => {
-              this.$router.push({ query: this.$searchQuery })
-            }
-          }
-        })
+        this.courseMessage = res.data.info
       })
     },
     getReserveInfo() {

@@ -23,11 +23,7 @@ export class InbatchAddService implements Controller {
       this.smallCourseScheduleCommonService.getCourtList()
     )
   }
-  beforeRouteEnter() {
-    console.log('beforeRouteEnter')
-  }
   beforeEach(to: ServiceRoute, form: ServiceRoute) {
-    console.log(123)
     return this.init()
   }
 }

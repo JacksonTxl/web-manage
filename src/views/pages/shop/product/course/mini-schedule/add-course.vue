@@ -178,7 +178,6 @@ export default {
   },
   created() {
     this.showFlag = this.item[0].show || this.customizeShow
-    console.log(this.cycle)
   },
   methods: {
     hide() {
@@ -286,14 +285,15 @@ export default {
         const verifyParams = Object.assign(this.params, form)
         console.log(verifyParams)
         console.log(this.cycle_type)
+        console.log()
         if (this.cycle_type === 1) {
-          if (this.editScheduleCycleFlag) {
+          if (!this.editScheduleCycleFlag) {
             this.addSchedule(verifyParams)
           } else {
             this.editSchedule(verifyParams)
           }
         } else {
-          if (this.editScheduleCycleFlag) {
+          if (!this.editScheduleCycleFlag) {
             this.addScheduleCustom(verifyParams)
           } else {
             this.editScheduleCustom(verifyParams)
@@ -303,4 +303,13 @@ export default {
     }
   }
 }
+// 约课没有测完
+// 排课接口对接
+// 前端的课程数量限制
+// 更改周期后清空当前周期的所有数据 - 批量清空的接口
+// 课程发布状态的icon
+// 目前新增和保存的具体含义(1.添加成功后的编辑调新增还是保存，添加一节之后继续添加调新增还是编辑)
+// 删除按钮功能的确认
+// 权限接入
+// 代码整理
 </script>
