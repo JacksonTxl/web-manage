@@ -1,7 +1,6 @@
 <template>
   <st-mina-panel app>
     <div slot="actions">
-      <!-- :loading="confirmLoading"  -->
       <st-button type="primary" :loading="loading.addGoods" @click="onSubmit">
         保 存
       </st-button>
@@ -327,6 +326,7 @@ import { AddService } from './add.service.ts'
 import StoreAddSku from '@/views/biz-modals/store/add-sku'
 import { result } from 'lodash-es'
 import { UserService } from '@/services/user.service'
+import { cloneDeep } from 'lodash-es'
 export default {
   bem: {
     basic: 'shop-store-add'
@@ -407,10 +407,6 @@ export default {
       })
       return list
     }
-  },
-  watch: {
-    // content(newValue, oldValue) {
-    // }
   },
   mounted() {
     this.addService.getList().subscribe(res => {
@@ -717,23 +713,29 @@ export default {
     // 规格发生改变时列表数据相应改变
     changeTable() {
       let list = []
-      this.skuList[0].spec_item_name.forEach((item, index) => {
+      let skuList = []
+      this.skuList.forEach((item, index) => {
+        if (item.spec_item_name.length !== 0) {
+          skuList.push(item)
+        }
+      })
+      skuList[0].spec_item_name.forEach((item, index) => {
         let skuItem = { market_price: '', selling_price: '', stock_amount: '' }
         skuItem['0'] = item
-        if (this.skuList[1] && this.skuList[1].spec_item_name.length) {
-          this.skuList[1].spec_item_name.forEach((ite, inde) => {
+        if (skuList[1] && skuList[1].spec_item_name.length) {
+          skuList[1].spec_item_name.forEach((ite, inde) => {
             skuItem['1'] = ite
-            if (this.skuList[2] && this.skuList[2].spec_item_name.length) {
-              this.skuList[2].spec_item_name.forEach((it, ind) => {
+            if (skuList[2] && skuList[2].spec_item_name.length) {
+              skuList[2].spec_item_name.forEach((it, ind) => {
                 skuItem['2'] = it
-                list.push(JSON.parse(JSON.stringify(skuItem)))
+                list.push(cloneDeep(skuItem))
               })
             } else {
-              list.push(JSON.parse(JSON.stringify(skuItem)))
+              list.push(cloneDeep(skuItem))
             }
           })
         } else {
-          list.push(JSON.parse(JSON.stringify(skuItem)))
+          list.push(cloneDeep(skuItem))
         }
       })
       list.forEach(o => {
