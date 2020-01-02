@@ -190,7 +190,6 @@ import { SmallCourseScheduleService } from '@/views/pages/shop/product/course/sc
 import { SmallCourseScheduleCommonService } from '@/views/pages/shop/product/course/schedule/small-course/service#/common.service'
 import { InbatchAddService } from './inbatch-add.service'
 import ScheduleSmallCourseEditCourse from '@/views/biz-modals/schedule/small-course/edit-course'
-import ScheduleSmallCourseSubmitCourse from '@/views/biz-modals/schedule/small-course/submit-course'
 import { MessageService } from '@/services/message.service'
 import { ruleOptions } from './inbatch-add.config'
 export default {
@@ -199,8 +198,7 @@ export default {
     b: 'page-shop-schedule-inbatch-add'
   },
   modals: {
-    ScheduleSmallCourseEditCourse,
-    ScheduleSmallCourseSubmitCourse
+    ScheduleSmallCourseEditCourse
   },
   serviceInject() {
     return {
@@ -263,7 +261,9 @@ export default {
       return !(this.end_date === this.picker_end_date)
     },
     disabledChangeScheduleType() {
-      return this.cycle_type === 1
+      return (
+        this.cycle_type === 1 && this.scheduleList[0].course_time.length > 0
+      )
     }
   },
   created() {
@@ -342,21 +342,19 @@ export default {
         })
     },
     initScheduleList(list, type) {
-      this.cycle_type = type
       if (list.length && type === 1) {
         console.log('周期有数据')
+        this.cycle_type = type
         this.scheduleList = list
-        this.editScheduleCycleFlag = true
         this.dealScheduleDate(this.scheduleList)
         this.filterDateList(this.scheduleList)
       } else if (!list.length && type === 1) {
         console.log('周期无数据')
+        this.cycle_type = type
         this.initScheduleDate()
       } else if (type === 2) {
         console.log('自主')
-        if (list.length) {
-          this.editScheduleCycleFlag = true
-        }
+        this.cycle_type = type
         this.initScheduleDate()
         this.customizeScheduleList = list
         console.log(this.customizeScheduleList)
@@ -560,20 +558,19 @@ export default {
         }
       })
     },
-    // 取消排期 -- 这边针对排期，那边是课程？
     onDeleteCourseSchedule(item, cycleIndex, positionIndex) {
-      this.scheduleService.cancel(this.id).subscribe(res => {
-        this.scheduleList[cycleIndex].course_time.forEach((dayItems, index) => {
-          if (dayItems.week === item.week) {
-            dayItems.list.splice(positionIndex, 1)
-            if (dayItems.list.length === 0) {
-              this.scheduleList[cycleIndex].course_time.splice(index, 1)
-            }
-            this.filterDateList(this.scheduleList)
-            return
+      // this.scheduleService.cancel(this.id).subscribe(res => {
+      this.scheduleList[cycleIndex].course_time.forEach((dayItems, index) => {
+        if (dayItems.week === item.week) {
+          dayItems.list.splice(positionIndex, 1)
+          if (dayItems.list.length === 0) {
+            this.scheduleList[cycleIndex].course_time.splice(index, 1)
           }
-        })
+          this.filterDateList(this.scheduleList)
+          return
+        }
       })
+      // })
     },
     onDeleteCustomSchedule(index) {
       this.scheduleService.cancel(this.id).subscribe(res => {
@@ -596,34 +593,17 @@ export default {
       item.course_time = []
       this.scheduleList.push(item)
       this.filterDateList(this.scheduleList)
-      //this.addCycleScheduleTime()
     },
     onClickSaveSchedule() {
-      let courseList
+      const smallCourseInfo = this.smallCourseInfo
+      console.log(smallCourseInfo)
       if (this.cycle_type === 2) {
         courseList = this.customizeScheduleList
       } else {
-        courseList = this.scheduleList
+        this.smallCourseScheduleService
+          .save(smallCourseInfo.course_id)
+          .subscribe()
       }
-      const smallCourseInfo = this.smallCourseInfo
-      const courseNum = this.tipsCourseNum
-      const cycle_type = this.cycle_type
-      const editScheduleCycleFlag = this.editScheduleCycleFlag
-      console.log(smallCourseInfo)
-      this.$modalRouter.push({
-        name: 'schedule-small-course-submit-course',
-        props: {
-          scheduleList: courseList,
-          courseInfo: smallCourseInfo,
-          cycle_type: cycle_type,
-          courseNum: courseNum,
-          editScheduleCycleFlag: editScheduleCycleFlag
-        },
-        on: {
-          // editCourse: (cycleIndex, week, positionIndex) => {
-          // }
-        }
-      })
     },
     onClickGoBack() {
       let weekOfday = moment().format('E')

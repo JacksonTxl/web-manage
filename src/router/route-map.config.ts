@@ -525,7 +525,7 @@ export const routeMapConfig = {
     routeConfig.meta.auth = 'brand_shop:course:training_aim|list'
   },
   'brand-setting-app-course-small-course-range'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '小班课适用范围'
+    routeConfig.meta.title = '{{$c("small_course")}}适用范围'
     routeConfig.meta.auth = 'brand_shop:course:course_scope|list'
   },
   'brand-setting-app-staff-skillful'(routeConfig: RouteConfig) {
@@ -847,7 +847,7 @@ export const routeMapConfig = {
     routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|tab'
   },
   'brand-setting-general-course-small-course'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '小班课设置'
+    routeConfig.meta.title = '{{$c("small_course")}}设置'
     routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|tab'
   },
   'brand-setting-general-pay-type'(routeConfig: RouteConfig) {

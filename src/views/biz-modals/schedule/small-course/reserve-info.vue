@@ -198,37 +198,9 @@
                     item.reserve_status === 4
                 "
               >
-                <a-popover
-                  trigger="click"
-                  overlayClassName="samll-course-message-popover"
-                >
-                  <template slot="content">
-                    <div class="small-course-message">
-                      <div class="small-course-title  small-course-item">
-                        {{ courseMessage.course_name }}
-                      </div>
-                      <div class="small-course-days small-course-item">
-                        <span>时间</span>
-                        {{ courseMessage.course_time }}
-                      </div>
-                      <div class="small-course-coach small-course-item">
-                        <span>{{ $c('coach') }}</span>
-                        {{ courseMessage.staff_name }}
-                      </div>
-                      <div class="small-course-court small-course-item">
-                        <span>场地</span>
-                        {{ courseMessage.court_name }}
-                      </div>
-                      <div class="small-course-status small-course-item">
-                        <span>状态</span>
-                        {{ courseMessage.status }}
-                      </div>
-                    </div>
-                  </template>
-                  <a href="javascript:;" @mouseenter="message(item.reserve_id)">
-                    查看补课
-                  </a>
-                </a-popover>
+                <a @click="message(item.reserve_id)">
+                  查看补课
+                </a>
               </div>
               <div
                 v-if="
@@ -251,19 +223,6 @@
               >
                 <a href="javascript:;" @click="message(item.reserve_id)">
                   查看补课
-                </a>
-              </div>
-              <div
-                v-if="
-                  reserveInfo.small_course_type === 1 &&
-                    item.reserve_status === 5
-                "
-              >
-                <a
-                  href="javascript:;"
-                  @click="remedialCourse(item.reserve_id, reserveInfo.id)"
-                >
-                  补课
                 </a>
               </div>
             </td>
@@ -299,12 +258,14 @@ import { SmallCourseScheduleReserveService as ReserveService } from '@/views/pag
 import { SmallCourseScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/small-course/service#/schedule.service'
 import ScheduleSmallCourseReservedCourse from '@/views/biz-modals/schedule/small-course/reserved-course'
 import ScheduleSmallCourseRemedialCourse from '@/views/biz-modals/schedule/small-course/remedial-course'
+import ScheduleSmallCourseRemedialInfo from '@/views/biz-modals/schedule/small-course/remedial-info'
 import { columns } from './reserve-info.config'
 export default {
   name: 'ReserveInfo',
   modals: {
     ScheduleSmallCourseReservedCourse,
-    ScheduleSmallCourseRemedialCourse
+    ScheduleSmallCourseRemedialCourse,
+    ScheduleSmallCourseRemedialInfo
   },
   serviceInject() {
     return {
@@ -459,6 +420,20 @@ export default {
       })
       this.show = false
     },
+    // 查看补课
+    message(id) {
+      this.reserveService.message(id).subscribe(res => {
+        console.log(res)
+        this.courseMessage = res.data.info
+        this.$modalRouter.push({
+          name: 'schedule-small-course-remedial-info',
+          props: {
+            info: courseMessage
+          }
+        })
+        this.show = false
+      })
+    },
     // 取消预约
     del(id) {
       this.reserveService.del(id).subscribe(this.onDelScheduleScuccess)
@@ -466,12 +441,6 @@ export default {
     // 请假
     leave(id) {
       this.reserveService.leave(id).subscribe(this.getReserveInfo)
-    },
-    // 查看补课
-    message(id) {
-      this.reserveService.message(id).subscribe(res => {
-        this.courseMessage = res.data.info
-      })
     },
     getReserveInfo() {
       this.reserveService.getInfo(this.id).subscribe()

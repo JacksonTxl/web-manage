@@ -201,6 +201,18 @@ export class SmallCourseScheduleService {
   /**
    *
    * @param params
+   * 周期保存发布
+   */
+  save(id: string) {
+    return this.scheduleApi.save(id).pipe(
+      tap(res => {
+        this.msg.success({ content: '发布成功' })
+      })
+    )
+  }
+  /**
+   *
+   * @param params
    * 验证课程排期
    */
   conflict() {

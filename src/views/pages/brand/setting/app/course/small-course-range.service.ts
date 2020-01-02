@@ -23,8 +23,8 @@ export class SmallCourseRangeService implements Controller {
       })
     )
   }
-  deleteCourseRange(params: DeleteCourseCategoryInput) {
-    return this.courseApi.deleteCourseRange(params)
+  deleteCourseRange(id: string) {
+    return this.courseApi.deleteCourseRange(id)
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.getCourseGroupRangeList(to.meta.query)

@@ -35,28 +35,35 @@ export class CourseApi extends Api {
   /**
    * 获取小班课范围列表
    */
-  getCourseGroupRangeList(params: any) {
-    return this.http.get('v1/setting/course/scope', { params })
+  getCourseGroupRangeList(query: {}) {
+    return this.http.get('/v1/setting/course/scope', {
+      query: Object.assign(
+        {
+          size: 100
+        },
+        query
+      )
+    })
   }
   /**
    * 添加小班课范围
    */
   addCourseRange(params: any) {
-    return this.http.post('v1/setting/course/scope', { params })
+    return this.http.post('/v1/setting/course/scope', { params })
   }
   /**
    * 编辑小班课范围
    */
   editCourseRange(params: any) {
-    return this.http.put('v1/setting/course/scope/' + params.id, {
+    return this.http.put('/v1/setting/course/scope/' + params.id, {
       params
     })
   }
   /**
    * 删除课程范围
    */
-  deleteCourseRange(params: any) {
-    return this.http.delete('/v1/setting/course/scope/' + params)
+  deleteCourseRange(id: string) {
+    return this.http.delete('/v1/setting/course/scope/' + id)
   }
 }
 

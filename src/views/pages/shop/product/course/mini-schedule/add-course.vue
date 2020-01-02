@@ -235,27 +235,9 @@ export default {
           this.addCourse(this.cycleIndex, res.conflict, verifyParams, res.list)
         })
     },
-    editSchedule(verifyParams) {
-      this.smallCourseScheduleService
-        .editScheduleInBatchs(verifyParams)
-        .subscribe(res => {
-          console.log(res)
-          this.addCourse(this.cycleIndex, res.conflict, verifyParams, res.list)
-        })
-    },
     addScheduleCustom(verifyParams) {
       this.smallCourseScheduleService
         .addScheduleInBatchCustom(verifyParams)
-        .subscribe(res => {
-          console.log(res)
-          if (!res.conflict) {
-            this.$emit('addCustomCourse', verifyParams)
-          }
-        })
-    },
-    editScheduleCustom(verifyParams) {
-      this.smallCourseScheduleService
-        .editScheduleInBatchCustoms(verifyParams)
         .subscribe(res => {
           console.log(res)
           if (!res.conflict) {
@@ -285,19 +267,11 @@ export default {
         const verifyParams = Object.assign(this.params, form)
         console.log(verifyParams)
         console.log(this.cycle_type)
-        console.log()
+        console.log(this.editScheduleCycleFlag)
         if (this.cycle_type === 1) {
-          if (!this.editScheduleCycleFlag) {
-            this.addSchedule(verifyParams)
-          } else {
-            this.editSchedule(verifyParams)
-          }
+          this.addSchedule(verifyParams)
         } else {
-          if (!this.editScheduleCycleFlag) {
-            this.addScheduleCustom(verifyParams)
-          } else {
-            this.editScheduleCustom(verifyParams)
-          }
+          this.addScheduleCustom(verifyParams)
         }
       })
     }

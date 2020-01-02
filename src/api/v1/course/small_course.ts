@@ -25,8 +25,8 @@ export class CourseGroupApi extends Api {
   /*
    * 获取小班课范围列表
    */
-  getCourseGroupRangeList(params: any) {
-    return this.http.get('/v1/setting/course/scope', { params })
+  getCourseGroupRangeList() {
+    return this.http.get('/v1/setting/course/scope')
   }
   getCourseStaffList(params: any) {
     return this.http.get('/v1/staff/shop', { params })
@@ -34,23 +34,23 @@ export class CourseGroupApi extends Api {
   /*
    * 删除小班课
    */
-  deleteGroup(params: any) {
-    return this.http.delete('/v1/course/small/' + params)
+  deleteGroup(id: string) {
+    return this.http.delete('/v1/course/small/' + id)
   }
   /*
    * 小班课立即成班
    */
-  beGroup(params: any) {
-    return this.http.put('/v1/course/small/class_immediately/' + params)
+  beGroup(id: string) {
+    return this.http.put('/v1/course/small/class_immediately/' + id)
   }
-  getGroupCourseInfo(params: any) {
-    return this.http.get('/v1/course/small/basic_info/' + params)
+  getGroupCourseInfo(id: string) {
+    return this.http.get('/v1/course/small/basic_info/' + id)
   }
-  getGroupCourseHeaderInfo(params: any) {
-    return this.http.get('/v1/course/small/heads/' + params)
+  getGroupCourseHeaderInfo(id: string) {
+    return this.http.get('/v1/course/small/heads/' + id)
   }
-  getGroupClassInfo(params: any) {
-    return this.http.get('/v1/course/small/class/' + params)
+  getGroupClassInfo(id: string) {
+    return this.http.get('/v1/course/small/class/' + id)
   }
   getCourseGroupClassUserInfo(query: any) {
     return this.http.get(`/v1/course/small/class_user_info/${query.id}`, {
@@ -63,7 +63,7 @@ export class CourseGroupApi extends Api {
   /*
    * 小班课发布
    */
-  publish(params: any) {
-    return this.http.put('/v1/course/small/release/' + params)
+  publish(id: any) {
+    return this.http.put('/v1/course/small/release/' + id)
   }
 }
