@@ -8,7 +8,7 @@
       <a-row :class="sale('info')">
         <a-col :span="13">
           <st-info>
-            <st-info-item label="小班课名称">
+            <st-info-item :label="`${$c('small_course')}名称`">
               {{ info.course_name }}
             </st-info-item>
             <st-info-item label="结束日期">
@@ -36,7 +36,7 @@
         <a-col :span="11">
           <st-info>
             <st-info-item label="会员名称">{{ info.member_name }}</st-info-item>
-            <template v-if="info.is_minors === 1">
+            <template v-if="info.is_minors === PERSON_TYPE.CHILD">
               <st-info-item label="家长手机号">
                 {{ info.parent_mobile }}
               </st-info-item>
@@ -60,11 +60,11 @@
       </a-row>
       <st-form :form="form" labelWidth="100px">
         <div :class="sale('sale')">
-          <st-form-item label="小班课" required labelGutter="12px">
+          <st-form-item :label="$c('small_course')" required labelGutter="12px">
             <a-select
               showSearch
               allowClear
-              :placeholder="`输入小班课名搜索`"
+              :placeholder="`输入${$c('small_course')}名搜索`"
               :defaultActiveFirstOption="false"
               :showArrow="false"
               :filterOption="false"
@@ -301,6 +301,7 @@ import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
 import { ruleOptions } from './change.config'
 import autoContractBtn from '@/views/biz-components/contract/auto-contract-btn.vue'
+import { PERSON_TYPE, COURSE_TYPE } from '@/constants/course/small-course'
 import moment from 'moment'
 export default {
   name: 'ModalSoldUpgradeMemberCard',
@@ -334,6 +335,8 @@ export default {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
+      PERSON_TYPE,
+      COURSE_TYPE,
       form,
       decorators,
       show: false,
@@ -364,7 +367,7 @@ export default {
   computed: {
     isAmountDisabled() {
       // 1 固定排课 2自主排课
-      return this.selectItem.course_type === 1
+      return this.selectItem.course_type === this.COURSE_TYPE.FIXED_COURSE
     },
     validTime() {
       if (this.selectItem.course_begin_time) {

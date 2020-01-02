@@ -48,7 +48,9 @@
             <st-info-item label="会员姓名">
               {{ packageTransferInfo.member_name }}
             </st-info-item>
-            <template v-if="packageTransferInfo.is_minors === 1">
+            <template
+              v-if="packageTransferInfo.is_minors === PERSON_TYPE.CHILD"
+            >
               <st-info-item label="家长手机号">
                 {{ packageTransferInfo.parent_mobile }}
               </st-info-item>
@@ -100,7 +102,7 @@
             <st-info-item label="会员姓名">
               {{ personalCourseInfo.member_name }}
             </st-info-item>
-            <template v-if="personalCourseInfo.is_minors === 1">
+            <template v-if="personalCourseInfo.is_minors === PERSON_TYPE.CHILD">
               <st-info-item label="家长手机号">
                 {{ personalCourseInfo.parent_mobile }}
               </st-info-item>
@@ -288,6 +290,7 @@ import { OPERATION_TYPES } from '@/constants/sold/operations'
 import { ruleOptions } from './transfer.config'
 import autoContractBtn from '@/views/biz-components/contract/auto-contract-btn.vue'
 import MemberSearch from '@/views/biz-components/member-search/member-search'
+import { PERSON_TYPE } from '@/constants/course/small-course'
 export default {
   name: 'ModalSoldCourseTransfer',
   bem: {
@@ -338,6 +341,7 @@ export default {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
+      PERSON_TYPE,
       form,
       decorators,
       OPERATION_TYPES,

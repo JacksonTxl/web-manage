@@ -491,20 +491,6 @@ export default {
       this.advanceList = []
       this.advanceText = '未选择定金'
     },
-    // 切换添加会员
-    onAddMember() {
-      this.searchMemberIsShow = false
-      this.form.resetFields(['member_id', 'member_name', 'mobile'])
-    },
-    // 切换添加会员
-    onShowMemberChildren() {
-      this.searchMemberChildrenIsShow = false
-      this.form.resetFields([
-        'memberChildrenId',
-        'memberChildrenName',
-        'memberChildrenMobile'
-      ])
-    },
     onCodeNumber() {
       this.saleMemberCardService
         .getCodeNumber(this.info.contract_type)
