@@ -1,7 +1,15 @@
 export const ruleOptions = (vm: any) => {
   return {
     name: {
-      rules: [{ required: true, message: '请输入用户姓名' }]
+      rules: [
+        {
+          validator: (filed: any, value: any, values: any) => {
+            if (!value || !value.match(vm.pattern.CN_EN_NUM_SPACE('1-15'))) {
+              return '请输入会员姓名，支持格式长度1~15中英文'
+            }
+          }
+        }
+      ]
     },
     mobile: {
       rules: [
