@@ -290,7 +290,7 @@ export default {
       this.list = list
     },
     generateCropperOptions(li) {
-      const width = li.span === 24 ? 620 : 327
+      const width = li.span === 24 ? 670 : 327
       const height = 120
       return {
         title: '活动图片裁剪',
