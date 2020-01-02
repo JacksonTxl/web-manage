@@ -494,7 +494,7 @@ export default {
         if (item.week == courseItem.week) {
           console.log('匹配对应的周几')
           findWeekFlag = true
-          if (tem.list.length >= 100) {
+          if (item.list.length >= 100) {
             this.msg.error({ content: '单日排课不得超过100节！' })
             return
           }
