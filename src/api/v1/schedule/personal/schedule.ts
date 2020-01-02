@@ -20,8 +20,8 @@ export class PersonalScheduleApi extends Api {
       params
     })
   }
-  copy(params: CopyInput) {
-    return this.http.put(`/v1/schedule/personal/copy/${params.id}`)
+  copy(id: string, params: any) {
+    return this.http.put(`/v1/schedule/personal/copy/${id}`, { params })
   }
   delInBatch(params: any) {
     return this.http.post(`/v1/schedule/personal/batch/delete`, { params })

@@ -141,10 +141,12 @@ export default {
       })
     },
     onClickCopySchedule() {
-      this.scheduleService.copy({ id: this.id || 108 }).subscribe(res => {
-        this.show = false
-        this.$router.push({ query: this.$searchQuery })
-      })
+      this.scheduleService
+        .copy(this.id, { start_date: this.start, end_date: this.end })
+        .subscribe(res => {
+          this.show = false
+          this.$router.push({ query: this.$searchQuery })
+        })
     },
     initScheduleInfo() {
       const weekOfday = moment(this.start, 'YYYY-MM-DD').format('E')

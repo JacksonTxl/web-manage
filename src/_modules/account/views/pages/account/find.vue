@@ -57,7 +57,7 @@
           isBindAccount ? bFooter('copyright--active') : bFooter('copyright')
         "
       >
-        Copyright &#169; 2015-2019 三体云智能科技有限公司
+        <copyright />
       </p>
     </footer>
   </div>
@@ -70,6 +70,7 @@ import FindAccountStep from './find#/step'
 import { NoCaptchaService } from '@/services/no-captcha.service'
 import { throwError } from 'rxjs'
 import { IS_BIND } from '@/constants/account'
+import Copyright from '@/views/biz-components/copyright/copyright'
 
 export default {
   name: 'Login',
@@ -93,7 +94,8 @@ export default {
   },
   components: {
     FindAccount,
-    FindAccountStep
+    FindAccountStep,
+    Copyright
   },
   rxState() {
     return {
