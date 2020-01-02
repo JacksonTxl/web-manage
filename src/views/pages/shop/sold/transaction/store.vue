@@ -117,7 +117,10 @@
                     @search="onMemberSearch"
                     @change="onMemberChange"
                   >
-                    <template slot="notFoundContent">
+                    <template
+                      slot="notFoundContent"
+                      v-if="!memberList.length && memberSearchText !== ''"
+                    >
                       <div>
                         暂无此会员，
                         <span :class="basic('add-vpi')" @click="addMember">
