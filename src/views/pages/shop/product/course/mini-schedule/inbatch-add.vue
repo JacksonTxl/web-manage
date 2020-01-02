@@ -275,7 +275,6 @@ export default {
   created() {
     this.filterDateList(this.scheduleList)
     this.pickerList.push([moment(), moment()])
-    console.log(DELETE_TYPE)
   },
   methods: {
     dealScheduleDate() {
@@ -319,6 +318,7 @@ export default {
           course_time: []
         }
       ]
+      this.filterDateList(this.scheduleList)
       this.getScheduleInBatch()
     },
     onChangeScheduleType(value) {
@@ -572,6 +572,13 @@ export default {
       console.log(item)
       console.log(cycleIndex)
       // 这里需要一个所有的排期id参数！！ 封装一个promise方法可以减少一次判断
+      if (
+        (!this.customizeScheduleList.length && this.cycle_type === 2) ||
+        (!this.scheduleList.length && this.cycle_type === 1)
+      ) {
+        this.onClickGoBack()
+        return
+      }
       if (this.cycle_type === 1) {
         let params = {}
         if (del_type === DELETE_TYPE.SINGLE) {
@@ -642,7 +649,9 @@ export default {
       const smallCourseInfo = this.smallCourseInfo
       console.log(smallCourseInfo)
       if (this.cycle_type === 2) {
-        courseList = this.customizeScheduleList
+        this.smallCourseScheduleService
+          .saveCustom(smallCourseInfo.course_id)
+          .subscribe()
       } else {
         this.smallCourseScheduleService
           .save(smallCourseInfo.course_id)

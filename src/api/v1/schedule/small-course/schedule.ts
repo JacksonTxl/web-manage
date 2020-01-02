@@ -105,11 +105,20 @@ export class SmallCourseScheduleApi extends Api {
   /**
    *
    * @param params
-   * 发布小班课排期
+   * 发布小班课周期排期
    */
   save(id: string) {
     console.log('发布班课')
     return this.http.put(`/v1/schedule/small/release/${id}`)
+  }
+  /**
+   *
+   * @param params
+   * 发布小班课自定义排期
+   */
+  saveCustom(id: string) {
+    console.log('发布自定义班课')
+    return this.http.put(`/v1/schedule/small/customize/${id}`)
   }
   /**
    *

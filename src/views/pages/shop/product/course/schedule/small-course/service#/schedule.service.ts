@@ -211,6 +211,18 @@ export class SmallCourseScheduleService {
     )
   }
   /**
+   *
+   * @param params
+   * 自定义保存发布
+   */
+  saveCustom(id: string) {
+    return this.scheduleApi.saveCustom(id).pipe(
+      tap(res => {
+        this.msg.success({ content: '发布成功' })
+      })
+    )
+  }
+  /**
    * 取消周期单节排期
    */
   cancel(id: string) {
