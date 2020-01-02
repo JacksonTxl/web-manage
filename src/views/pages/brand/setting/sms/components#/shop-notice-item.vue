@@ -338,7 +338,7 @@ export default {
         receiver.seller = this.params.receiver.seller.value ? 1 : 0
       }
       if (this.info.receiver.operator) {
-        receiver.operator = this.params.receiver.seller.value ? 1 : 0
+        receiver.operator = this.params.receiver.operator.value ? 1 : 0
       }
       let custom_phone = []
       if (Array.isArray(this.params.custom_phone)) {
