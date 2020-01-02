@@ -16,7 +16,7 @@
           v-for="(item, index) in memberList"
           :key="index"
         >
-          <notice-item @editInfo="save" :info="item"></notice-item>
+          <notice-item @editInfo="save" :info="item" :auth="auth"></notice-item>
         </div>
       </div>
     </div>
@@ -36,7 +36,7 @@
           v-for="(item, index) in shopList"
           :key="index"
         >
-          <notice-item @editInfo="save" :info="item"></notice-item>
+          <notice-item @editInfo="save" :info="item" :auth="auth"></notice-item>
         </div>
       </div>
     </div>
@@ -61,7 +61,8 @@ export default {
   },
   rxState() {
     return {
-      list: this.noticeService.list$
+      list: this.noticeService.list$,
+      auth: this.noticeService.auth$
     }
   },
   data() {
