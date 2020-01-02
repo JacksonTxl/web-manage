@@ -147,7 +147,7 @@
             <!-- 发送规则 start -->
           </div>
           <div :class="bComponent('text')" style="padding-left:0">
-            <span class="btn color-primary mg-r12" @click="isShowEdit = 1">
+            <span class="btn color-primary mg-r12" @click="isShowEdit = 0">
               取消
             </span>
             <span class="btn color-primary" @click="save">保存</span>

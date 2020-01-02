@@ -9,14 +9,17 @@
     <div :class="b('info')">
       <div :class="b('info-header')">
         <img
-          src="https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/10000/2020-01-02/fhdsja___31695faaace9___.png"
+          :src="
+            info.image_key ||
+              'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/10000/2020-01-02/fhdsja___31695faaace9___.png'
+          "
           alt=""
         />
       </div>
       <div :class="b('info-content')">
         <st-t3 :class="b('title')">{{ info.title || '还没数据' }}</st-t3>
         <div :class="b('content')" class="mg-t16">
-          {{ info.contnet || '还没数据' }}
+          {{ info.content || '还没数据' }}
         </div>
         <div :class="b('button-wapper')">
           <st-button type="primary" class="mg-t24" @click="onOk">
