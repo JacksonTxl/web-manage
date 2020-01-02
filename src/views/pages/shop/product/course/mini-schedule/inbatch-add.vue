@@ -71,7 +71,12 @@
                       :cardItem="cardItem"
                       @onEditCourse="onEditCourseSchedule(cardItem, i, index)"
                       @onDeleteCourse="
-                        onDeleteCourseSchedule(cardItem, i, index)
+                        onDeleteCourseSchedule(
+                          DELETE_TYPE.SINGLE,
+                          cardItem,
+                          i,
+                          index
+                        )
                       "
                     ></course-card-popover>
                   </div>
@@ -135,7 +140,7 @@
                   >
                     <st-icon type="edit" class="edit-course-btn"></st-icon>
                   </a>
-                  <a href="javascript:;" @click="onDeleteCustomSchedule(index)">
+                  <a @click="onDeleteCustomSchedule(item, index)">
                     <st-icon type="delete" class="delete-course-btn"></st-icon>
                   </a>
                 </div>
@@ -170,7 +175,7 @@
           </st-container>
         </div>
         <div :class="b('save-schedule-btn')">
-          <st-button @click="onClickGoBack">
+          <st-button @click="onDeleteCourseSchedule">
             取消
           </st-button>
           <st-button type="primary" @click="onClickSaveSchedule" class="mg-l12">
@@ -191,6 +196,7 @@ import { SmallCourseScheduleCommonService } from '@/views/pages/shop/product/cou
 import { InbatchAddService } from './inbatch-add.service'
 import ScheduleSmallCourseEditCourse from '@/views/biz-modals/schedule/small-course/edit-course'
 import { MessageService } from '@/services/message.service'
+import { DELETE_TYPE } from '@/constants/stat/course'
 import { ruleOptions } from './inbatch-add.config'
 export default {
   name: 'AddScheduleInBatch',
@@ -269,6 +275,7 @@ export default {
   created() {
     this.filterDateList(this.scheduleList)
     this.pickerList.push([moment(), moment()])
+    console.log(DELETE_TYPE)
   },
   methods: {
     dealScheduleDate() {
@@ -396,8 +403,11 @@ export default {
             onOk: () => {
               this.pickerList.splice(PickerIndex, 1, [date[0], date[1]])
               // 调用批量删除的接口and清空本地数据
-              this.scheduleList[PickerIndex].course_time = []
-              this.filterDateList(this.scheduleList)
+              this.onDeleteCourseSchedule(
+                DELETE_TYPE.CYCLE,
+                'none',
+                PickerIndex
+              )
             }
           })
         }
@@ -558,22 +568,56 @@ export default {
         }
       })
     },
-    onDeleteCourseSchedule(item, cycleIndex, positionIndex) {
-      // this.scheduleService.cancel(this.id).subscribe(res => {
-      this.scheduleList[cycleIndex].course_time.forEach((dayItems, index) => {
-        if (dayItems.week === item.week) {
-          dayItems.list.splice(positionIndex, 1)
-          if (dayItems.list.length === 0) {
-            this.scheduleList[cycleIndex].course_time.splice(index, 1)
-          }
-          this.filterDateList(this.scheduleList)
-          return
+    onDeleteCourseSchedule(del_type, item, cycleIndex, positionIndex) {
+      console.log(item)
+      console.log(cycleIndex)
+      // 这里需要一个所有的排期id参数！！ 封装一个promise方法可以减少一次判断
+      if (this.cycle_type === 1) {
+        let params = {}
+        if (del_type === DELETE_TYPE.SINGLE) {
+          params = item
+        } else if (del_type === DELETE_TYPE.CYCLE) {
+          const cycleDate = this.pickerList[cycleIndex]
+          params.cycle_begin_date = moment(cycleDate[0])
+          params.cycle_end_date = moment(cycleDate[1])
+          params.course_id = this.smallCourseInfo.course_id
+          params.schedule_id = []
+        } else {
+          params.course_id = this.smallCourseInfo.course_id
+          params.schedule_id = []
         }
-      })
-      // })
+        item.del_type = del_type
+        this.scheduleService.cancelCycleSingle(item).subscribe(res => {
+          if (del_type === DELETE_TYPE.SINGLE) {
+            this.scheduleList[cycleIndex].course_time.forEach(
+              (dayItems, index) => {
+                if (dayItems.week === item.week) {
+                  dayItems.list.splice(positionIndex, 1)
+                  if (dayItems.list.length === 0) {
+                    this.scheduleList[cycleIndex].course_time.splice(index, 1)
+                  }
+                  this.filterDateList(this.scheduleList)
+                  return
+                }
+              }
+            )
+          } else if (del_type === DELETE_TYPE.CYCLE) {
+            this.scheduleList[cycleIndex].course_time = []
+            this.pickerList.splice(cycleIndex, 1)
+            this.filterDateList(this.scheduleList)
+          } else {
+            this.onClickGoBack()
+          }
+        })
+      } else if (this.cycle_type === 2) {
+        this.scheduleService.cancelCustomAll(item).subscribe(res => {
+          this.onClickGoBack()
+        })
+      }
     },
-    onDeleteCustomSchedule(index) {
-      this.scheduleService.cancel(this.id).subscribe(res => {
+    // 自主约课删除
+    onDeleteCustomSchedule(item, index) {
+      this.scheduleService.cancel(item.id).subscribe(res => {
         this.customizeScheduleList.splice(index, 1)
       })
     },

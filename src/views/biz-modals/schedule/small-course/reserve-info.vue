@@ -413,7 +413,7 @@ export default {
           },
           on: {
             ok: () => {
-              this.$router.push({ query: this.$searchQuery })
+              this.$router.reload()
             }
           }
         })
@@ -424,11 +424,10 @@ export default {
     message(id) {
       this.reserveService.message(id).subscribe(res => {
         console.log(res)
-        this.courseMessage = res.data.info
         this.$modalRouter.push({
           name: 'schedule-small-course-remedial-info',
           props: {
-            info: courseMessage
+            info: res.info
           }
         })
         this.show = false

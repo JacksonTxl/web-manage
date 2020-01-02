@@ -12,3 +12,17 @@ export enum COURSE_TYPE {
    */
   TEAM = 3
 }
+export enum DELETE_TYPE {
+  /**
+   * 单个排期
+   */
+  SINGLE = 1,
+  /**
+   * 周期排期
+   */
+  CYCLE = 2,
+  /**
+   * 所有排期
+   */
+  ALL_CYCLE = 3
+}

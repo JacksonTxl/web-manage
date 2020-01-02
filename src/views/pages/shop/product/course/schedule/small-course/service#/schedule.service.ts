@@ -211,11 +211,23 @@ export class SmallCourseScheduleService {
     )
   }
   /**
-   *
-   * @param params
-   * 验证课程排期
+   * 取消周期单节排期
    */
-  conflict() {
-    return { conflict: 1 }
+  cancel(id: string) {
+    return this.scheduleApi.cancelCycleSingle(id).pipe(
+      tap(res => {
+        this.msg.success({ content: '取消排课成功' })
+      })
+    )
+  }
+  /**
+   * 取消自主所有排期
+   */
+  cancelCustomAll(id: string) {
+    return this.scheduleApi.cancelCustomAll(id).pipe(
+      tap(res => {
+        this.msg.success({ content: '取消排课成功' })
+      })
+    )
   }
 }
