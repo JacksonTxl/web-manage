@@ -34,7 +34,7 @@
               {{ depositTransferInfo.member_name }}
             </st-info-item>
             <template
-              v-if="depositTransferInfo.is_minors === COURSE_TYPE.FIXED_COURSE"
+              v-if="depositTransferInfo.is_minors === PERSON_TYPE.CHILD"
             >
               <st-info-item label="家长手机号">
                 {{ depositTransferInfo.parent_mobile }}
@@ -103,9 +103,7 @@
               {{ memberTransferInfo.member_name }}
             </st-info-item>
 
-            <template
-              v-if="memberTransferInfo.is_minors === COURSE_TYPE.FIXED_COURSE"
-            >
+            <template v-if="memberTransferInfo.is_minors === PERSON_TYPE.CHILD">
               <st-info-item label="家长手机号">
                 {{ memberTransferInfo.parent_mobile }}
               </st-info-item>
@@ -282,7 +280,7 @@ import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from './transfer.config'
 import autoContractBtn from '@/views/biz-components/contract/auto-contract-btn.vue'
 import MemberSearch from '@/views/biz-components/member-search/member-search'
-import { COURSE_TYPE } from '@/constants/course/small-course'
+import { PERSON_TYPE } from '@/constants/course/small-course'
 export default {
   name: 'ModalSoldCardTransfer',
   components: {
@@ -341,7 +339,7 @@ export default {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
-      COURSE_TYPE,
+      PERSON_TYPE,
       form,
       decorators,
       show: false,

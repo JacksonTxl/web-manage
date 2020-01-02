@@ -29,7 +29,7 @@
             <st-info-item label="会员姓名">
               {{ info$.member_name }}
             </st-info-item>
-            <template v-if="info$.is_minors === 1">
+            <template v-if="info$.is_minors === PERSON_TYPE.CHILD">
               <st-info-item label="家长手机号">
                 {{ info$.parent_mobile }}
               </st-info-item>
@@ -82,6 +82,7 @@
 <script>
 import { LeaseService } from './lease.service'
 import { ruleOptions } from './lease.config'
+import { PERSON_TYPE } from '@/constants/course/small-course'
 import moment from 'moment'
 export default {
   name: 'ModalSoldCourseActivated',
@@ -110,6 +111,7 @@ export default {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
+      PERSON_TYPE,
       moment,
       form,
       decorators,

@@ -34,7 +34,7 @@
             <st-info-item label="会员姓名">
               {{ info.member_name }}
             </st-info-item>
-            <template v-if="info.is_minors === COURSE_TYPE.FIXED_COURSE">
+            <template v-if="info.is_minors === PERSON_TYPE.CHILD">
               <st-info-item label="家长手机号">
                 {{ info.parent_mobile }}
               </st-info-item>
@@ -142,7 +142,7 @@ import { OPERATION_TYPES } from '@/constants/sold/operations'
 import { ruleOptions } from './transfer.config'
 import autoContractBtn from '@/views/biz-components/contract/auto-contract-btn.vue'
 import MemberSearch from '@/views/biz-components/member-search/member-search'
-import { COURSE_TYPE } from '@/constants/course/small-course'
+import { PERSON_TYPE } from '@/constants/course/small-course'
 export default {
   name: 'ModalSoldCourseSmallCourseTransfer',
   bem: {
@@ -173,7 +173,7 @@ export default {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
-      COURSE_TYPE,
+      PERSON_TYPE,
       form,
       decorators,
       OPERATION_TYPES,

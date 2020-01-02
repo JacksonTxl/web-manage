@@ -11,3 +11,7 @@ export enum COURSE_TYPE {
   FIXED_COURSE = 1, //  固定排课
   AUTO_COURSE = 2
 }
+export enum PERSON_TYPE {
+  CHILD = 1, //  未成年
+  ADULT = 0
+}

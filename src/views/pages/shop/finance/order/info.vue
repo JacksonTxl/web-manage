@@ -37,7 +37,7 @@
             <st-info-item label="购买会员">
               {{ info.member_name }} {{ info.member_mobile }}
             </st-info-item>
-            <template v-if="info.is_minors === 1">
+            <template v-if="info.is_minors === PERSON_TYPE.CHILD">
               <st-info-item label="家长手机号">
                 {{ info.parent_mobile }}
               </st-info-item>
@@ -100,6 +100,7 @@ import ShopFinanceRefund from '@/views/biz-modals/shop/finance/refund'
 import ShopFinanceSplit from '@/views/biz-modals/shop/finance/split'
 import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
 import { ORDER_PRODUCT_TYPE } from '@/constants/finance/order'
+import { PERSON_TYPE } from '@/constants/course/small-course'
 export default {
   name: 'PageShopFinanceOrderInfo',
   bem: {
@@ -125,7 +126,8 @@ export default {
   },
   data() {
     return {
-      ORDER_PRODUCT_TYPE
+      ORDER_PRODUCT_TYPE,
+      PERSON_TYPE
     }
   },
   computed: {
