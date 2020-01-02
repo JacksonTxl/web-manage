@@ -190,7 +190,6 @@ import { SmallCourseScheduleService } from '@/views/pages/shop/product/course/sc
 import { SmallCourseScheduleCommonService } from '@/views/pages/shop/product/course/schedule/small-course/service#/common.service'
 import { InbatchAddService } from './inbatch-add.service'
 import ScheduleSmallCourseEditCourse from '@/views/biz-modals/schedule/small-course/edit-course'
-import ScheduleSmallCourseSubmitCourse from '@/views/biz-modals/schedule/small-course/submit-course'
 import { MessageService } from '@/services/message.service'
 import { ruleOptions } from './inbatch-add.config'
 export default {
@@ -199,8 +198,7 @@ export default {
     b: 'page-shop-schedule-inbatch-add'
   },
   modals: {
-    ScheduleSmallCourseEditCourse,
-    ScheduleSmallCourseSubmitCourse
+    ScheduleSmallCourseEditCourse
   },
   serviceInject() {
     return {
@@ -561,18 +559,18 @@ export default {
       })
     },
     onDeleteCourseSchedule(item, cycleIndex, positionIndex) {
-      this.scheduleService.cancel(this.id).subscribe(res => {
-        this.scheduleList[cycleIndex].course_time.forEach((dayItems, index) => {
-          if (dayItems.week === item.week) {
-            dayItems.list.splice(positionIndex, 1)
-            if (dayItems.list.length === 0) {
-              this.scheduleList[cycleIndex].course_time.splice(index, 1)
-            }
-            this.filterDateList(this.scheduleList)
-            return
+      // this.scheduleService.cancel(this.id).subscribe(res => {
+      this.scheduleList[cycleIndex].course_time.forEach((dayItems, index) => {
+        if (dayItems.week === item.week) {
+          dayItems.list.splice(positionIndex, 1)
+          if (dayItems.list.length === 0) {
+            this.scheduleList[cycleIndex].course_time.splice(index, 1)
           }
-        })
+          this.filterDateList(this.scheduleList)
+          return
+        }
       })
+      // })
     },
     onDeleteCustomSchedule(index) {
       this.scheduleService.cancel(this.id).subscribe(res => {
@@ -595,7 +593,6 @@ export default {
       item.course_time = []
       this.scheduleList.push(item)
       this.filterDateList(this.scheduleList)
-      //this.addCycleScheduleTime()
     },
     onClickSaveSchedule() {
       const smallCourseInfo = this.smallCourseInfo
