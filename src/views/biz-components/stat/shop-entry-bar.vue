@@ -37,9 +37,15 @@ export default {
     }
   },
   methods: {
+    makeProgressWidth(item) {
+      if (this.maxValue <= 0) {
+        return 0
+      }
+      return (item.value / this.maxValue) * 100
+    },
     progressStyle(item) {
       return {
-        width: `${(item.value / this.maxValue) * 100}%`
+        width: `${this.makeProgressWidth(item)}%`
       }
     }
   }
