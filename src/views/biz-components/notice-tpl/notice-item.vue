@@ -5,18 +5,23 @@
       <div :class="tpl('text')">{{ info.notify_time.name }}</div>
       <div :class="tpl('text')">{{ info.notify_type.name }}</div>
       <div :class="tpl('text')" style="padding-left:0">
-        <st-switch @change="save" v-model="params.notify_mode.sms"></st-switch>
+        <st-switch
+          @change="save"
+          v-if="auth.sms"
+          v-model="params.notify_mode.sms"
+        ></st-switch>
       </div>
       <div :class="tpl('text')" style="padding-left:0">
         <st-switch
-          v-if="info.notify_type.value === typeMap['app']"
+          v-if="info.notify_type.value === typeMap['app'] && auth.app"
           @change="save"
           v-model="params.notify_mode.app"
         ></st-switch>
         <st-switch
           v-if="
             info.notify_type.value === typeMap['mini_programs'] &&
-              params.notify_mode.mini_programs > -1
+              params.notify_mode.mini_programs > -1 &&
+              auth.mina
           "
           @change="save"
           v-model="params.notify_mode.mini_programs"
@@ -62,7 +67,11 @@
             <span :class="tpl('text-right')">{{ info.preview }}</span>
           </div>
           <div :class="tpl('text')" style="padding-left:0">
-            <span class="color-primary cursor-pointer" @click="showEdit">
+            <span
+              class="color-primary cursor-pointer"
+              @click="showEdit"
+              v-if="auth.edit"
+            >
               编辑
             </span>
           </div>
@@ -386,6 +395,17 @@ export default {
     info: {
       type: Object,
       default: () => {}
+    },
+    auth: {
+      type: Object,
+      default: () => {
+        return {
+          sms: true,
+          app: true,
+          mina: true,
+          edit: true
+        }
+      }
     }
   },
   computed: {
