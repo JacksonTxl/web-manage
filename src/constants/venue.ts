@@ -27,3 +27,7 @@ export const enum AREA_STATUS {
   ON = 1,
   OFF = 2
 }
+export const enum CAN_RESERVE {
+  YES = 1,
+  NO = 2
+}

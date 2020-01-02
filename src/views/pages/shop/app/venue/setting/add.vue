@@ -104,7 +104,7 @@
         </st-form-item>
       </st-form-item>
       <st-form-item label="预约状态" required>
-        <st-checkbox v-decorator="decorators.can_reserve">
+        <st-checkbox v-model="can_reserve">
           不可预约
         </st-checkbox>
       </st-form-item>
@@ -145,67 +145,7 @@ import { cloneDeep } from 'lodash-es'
 import { AddService } from './add.service'
 import { ruleOptions } from './add.config'
 import { MessageService } from '@/services/message.service'
-import { PatternService } from '@/services/pattern.service'
-const timeEnums = [
-  {
-    label: '不限制',
-    value: 1
-  },
-  {
-    label: '指定日期',
-    value: 2
-  }
-]
-const cyclicEnums = [
-  {
-    label: '每天',
-    value: 1
-  },
-  {
-    label: '自定义',
-    value: 2
-  }
-]
-const priorityEnums = [
-  {
-    label: '置顶',
-    value: 1
-  },
-  {
-    label: '置底',
-    value: 2
-  }
-]
-const weeks = [
-  {
-    label: '周一',
-    value: 1
-  },
-  {
-    label: '周二',
-    value: 2
-  },
-  {
-    label: '周三',
-    value: 3
-  },
-  {
-    label: '周四',
-    value: 4
-  },
-  {
-    label: '周五',
-    value: 5
-  },
-  {
-    label: '周六',
-    value: 6
-  },
-  {
-    label: '周日',
-    value: 7
-  }
-]
+import { CAN_RESERVE } from '@/constants/venue'
 export default {
   name: 'AddRole',
   bem: {
@@ -214,14 +154,17 @@ export default {
   serviceInject() {
     return {
       addService: AddService,
-      messageService: MessageService,
-      pattern: PatternService
+      messageService: MessageService
     }
   },
   rxState() {
     return {
       sites: this.addService.sites$,
-      harfEnums: this.addService.harfEnums$
+      harfEnums: this.addService.harfEnums$,
+      timeEnums: this.addService.timeEnums$,
+      cyclicEnums: this.addService.cyclicEnums$,
+      priorityEnums: this.addService.priorityEnums$,
+      weeks: this.addService.weeks$
     }
   },
   data() {
@@ -230,15 +173,12 @@ export default {
     return {
       form,
       decorators,
-      timeEnums,
-      cyclicEnums,
-      priorityEnums,
-      weeks,
       timeLimit: 1,
       start_time: null,
       end_time: null,
       endOpen: false,
-      cyclicType: 1
+      cyclicType: 1,
+      can_reserve: 0
     }
   },
   methods: {
@@ -252,6 +192,9 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
+          values.can_reserve = this.can_reserve
+            ? CAN_RESERVE.NO
+            : CAN_RESERVE.YES
           const data = {
             venues_id: this.$searchQuery.venues_id,
             site_ids: this.sites.map(item => item.id),

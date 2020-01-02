@@ -131,12 +131,7 @@ export class HttpService {
     return delete$
   }
   private makeRequestUrl(url: string, options: RequestOptions = {}) {
-    let requestUrl = ''
-    if (/^\/mock/.test(url)) {
-      requestUrl = url
-    } else {
-      requestUrl = this.appConfig.API_BASE + url
-    }
+    let requestUrl = this.appConfig.API_BASE + url
     const { query } = options
     if (query && Object.keys(query)) {
       requestUrl = requestUrl + '?' + qs.stringify(query)

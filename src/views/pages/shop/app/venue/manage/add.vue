@@ -154,7 +154,12 @@ export default {
         if (!err) {
           this.addService.add(values).subscribe(() => {
             this.messageService.success({ content: '添加成功' })
-            this.$router.push({ name: 'shop-app-venue-manage' })
+            this.$router.push({
+              name: 'shop-app-venue-manage-list',
+              query: {
+                id: this.$searchQuery.id
+              }
+            })
           })
         }
       })

@@ -39,7 +39,7 @@
               {{ item.open_time }}
             </td>
             <td>
-              {{ item.can_reserve }}
+              {{ item.can_reserve | enumFilter('venues_reserve.can_reserve') }}
             </td>
             <td>
               {{ item.price }}
