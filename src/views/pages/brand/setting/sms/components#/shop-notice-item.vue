@@ -276,7 +276,7 @@ export default {
   methods: {
     save() {
       // 课程类型：团课， 私教课
-      let course_type = { team_course: 0, personal_course: 0 }
+      let course_type = {}
       // 订单类型
       let order_type = {}
       let receiver = {}

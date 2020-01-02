@@ -28,6 +28,7 @@ export class NotifyService {
   count$ = new State(0)
   systemList$ = new State({})
   activityList$ = new State({})
+  notReadNum$ = new State(0)
   loading$ = new State({})
   constructor(
     private api: NotifyApi,
@@ -89,6 +90,7 @@ export class NotifyService {
         if (msg.msg_type === 2) return
         this.count++
         this.count$.commit(() => this.count)
+        this.notReadNum$.commit(() => msg.not_read_num)
         const config = {
           title: msg.payload.title,
           content: msg.payload.content,
