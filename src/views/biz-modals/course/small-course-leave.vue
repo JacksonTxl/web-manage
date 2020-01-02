@@ -49,7 +49,9 @@
           </span>
           <span :class="b('item-label')">状态：</span>
           <span :class="b('item-value')">
-            {{ item.make_up_info.sign_status ? '已签到' : '未签到' }}
+            {{
+              item.make_up_info.sign_status | enumFilter('reserve.is_checkin')
+            }}
           </span>
         </div>
       </div>

@@ -253,7 +253,12 @@
                 />
                 天提醒，每日早7点推送
               </span>
-              <!-- <span v-if="info.notify_sub_type.value === 14">
+              <span
+                v-if="
+                  info.notify_type.value === 2 &&
+                    info.notify_sub_type.value === 14
+                "
+              >
                 会员课程剩余
                 <a-input
                   v-model="params.notify_number"
@@ -267,7 +272,7 @@
                   type="number"
                 />
                 天时提醒，每日早7点推送
-              </span> -->
+              </span>
               <span
                 v-if="
                   info.notify_sub_type.value !== 6 &&
