@@ -28,7 +28,7 @@
 
 <script>
 import Calendar from '@/views/biz-components/schedule/calendar'
-import { SmallCourseScheduleService } from '@/views/pages/shop/product/course/schedule/small-course/service#/schedule.service'
+import { SmallCourseScheduleService } from './service#/schedule.service'
 
 // 添加排期
 import ScheduleSmallCourseAddCourse from '@/views/biz-modals/schedule/small-course/add-course'
@@ -44,14 +44,14 @@ export default {
   },
   serviceInject() {
     return {
-      SmallCourseScheduleScheduleService: SmallCourseScheduleScheduleService,
-      service: MiniTeamService
+      smallCourseScheduleService: SmallCourseScheduleService,
+      service: SmallCourseService
     }
   },
   rxState() {
     return {
       auth: this.service.auth$,
-      cardList: this.SmallCourseScheduleService.scheduleTeamCourseList$
+      cardList: this.smallCourseScheduleService.scheduleSmallCourseList$
     }
   },
   components: {
@@ -65,9 +65,6 @@ export default {
       return this.$searchQuery.start_date || moment().format('YYYY-MM-DD')
     }
   },
-  created() {
-    console.log(this.cardList)
-  },
   methods: {
     onMouseLeave() {
       console.log('onMouseLeave')
@@ -76,7 +73,7 @@ export default {
     onAddSchedule(date) {
       console.log(date)
       this.$modalRouter.push({
-        name: 'schedule-mini-team-add-course',
+        name: 'schedule-small-course-add-course',
         props: { time: date },
         on: {
           ok: res => {
@@ -90,7 +87,7 @@ export default {
     onDetail(info) {
       console.log(info)
       this.$modalRouter.push({
-        name: 'schedule-mini-team-reserve-info',
+        name: 'schedule-small-course-reserve-info',
         props: {
           id: info.id
         },
@@ -118,7 +115,7 @@ export default {
     // 进入表格模式
     onGetTable() {
       this.$router.push({
-        name: 'shop-product-course-schedule-mini-team-mini-team-table',
+        name: 'shop-product-course-schedule-small-course-small-course-table',
         query: this.$searchQuery
       })
     },

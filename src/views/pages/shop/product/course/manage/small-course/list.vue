@@ -48,7 +48,10 @@
         {{ record.course_arrangement }}
       </a>
       <span slot="small_course_type" slot-scope="text, record">
-        {{ record.small_course_type === 1 ? '固定排课' : '自主排课' }}
+        {{
+          record.small_course_type
+            | enumFilter('small_course.small_course_type')
+        }}
       </span>
       <span slot="course_status" slot-scope="text, record">
         {{ record.class_status | enumFilter('small_course.class_status') }}
@@ -140,7 +143,9 @@ export default {
       this.$router.push({ path: './add-select' })
     },
     goSchedule() {
-      this.$router.push({ path: 'shop-product-course-schedule-small-course' })
+      this.$router.push({
+        path: '/shop/product/course/schedule/small-course'
+      })
     },
     onSearchCourseName(val) {
       this.$router.push({
@@ -170,7 +175,8 @@ export default {
       this.$router.push({
         path: './info/basic',
         query: {
-          courseId: course.course_id
+          courseId: course.course_id,
+          status: course.class_status
         }
       })
     },

@@ -10,31 +10,30 @@
       <span :class="b('head-close')" @click="hide">X</span>
       <div class="add-course-conent">
         <st-form labelWidth="68px" :form="form">
-          <st-form-item label="添加课程" required class="mg-t12">
-            <a-select
-              placeholder="请选择课程"
-              v-decorator="decorators.course_id"
-            >
-              <a-select-option
-                v-for="course in courseSamllCourseOptions"
-                :key="course.course_id"
-                :value="course.course_id"
-              >
-                {{ course.course_name }}
-              </a-select-option>
-            </a-select>
+          <st-form-item label="排课名称" required class="mg-t12">
+            <a-input
+              placeholder="请输入"
+              v-decorator="decorators.current_course_name"
+            />
           </st-form-item>
-          <st-form-item label="预约日期" required v-if="!scheduleId">
+          <st-form-item label="日期" required v-if="cycle_type === 2">
             <a-date-picker
               style="width:100%"
               v-decorator="decorators.start_days"
             />
           </st-form-item>
-          <st-form-item label="预约时间" required>
+          <st-form-item label="开始时间" required>
             <a-time-picker
               format="HH:mm"
               style="width:100%"
               v-decorator="decorators.start_time"
+            />
+          </st-form-item>
+          <st-form-item label="结束时间" required>
+            <a-time-picker
+              format="HH:mm"
+              style="width:100%"
+              v-decorator="decorators.end_time"
             />
           </st-form-item>
           <st-form-item label="场地" required>
@@ -43,15 +42,17 @@
               :options="courtOptions"
               :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
               v-decorator="decorators.court_id"
+              @change="onChangeCourt"
             />
           </st-form-item>
           <st-form-item label="教练" required>
             <a-select
               placeholder="请选择教练"
+              @change="onChangeCoach"
               v-decorator="decorators.coach_id"
             >
               <a-select-option
-                v-for="coach in coachSamllCourseOptions"
+                v-for="coach in coachSmallCourseOptions"
                 :key="coach.id"
                 :value="coach.id"
               >
@@ -72,7 +73,7 @@
         </div>
       </div>
     </template>
-    <st-button block type="dashed" icon="add">
+    <st-button block type="dashed" icon="add" :disabled="DisabledAddCourseBtn">
       添加课程
     </st-button>
   </a-popover>
@@ -81,6 +82,7 @@
 <script>
 import { SmallCourseScheduleService } from '@/views/pages/shop/product/course/schedule/small-course/service#/schedule.service'
 import { SmallCourseScheduleCommonService } from '@/views/pages/shop/product/course/schedule/small-course/service#/common.service'
+import { MessageService } from '@/services/message.service'
 import { ruleOptions } from './add-course.config'
 import { cloneDeep } from 'lodash-es'
 export default {
@@ -91,36 +93,67 @@ export default {
   serviceInject() {
     return {
       smallCourseScheduleService: SmallCourseScheduleService,
-      smallCourseScheduleCommonService: SmallCourseScheduleCommonService
+      smallCourseScheduleCommonService: SmallCourseScheduleCommonService,
+      msg: MessageService
     }
   },
   rxState() {
-    const tss = this.smallCourseScheduleCommonService
+    const scsc = this.smallCourseScheduleCommonService
     return {
       loading: this.smallCourseScheduleService.loading$,
-      coachSamllCourseOptions: tss.coachSamllCourseOptions$,
-      courseSamllCourseOptions: tss.courseSamllCourseOptions$,
-      courtOptions: tss.courtOptions$
+      coachSmallCourseOptions: scsc.coachSmallCourseOptions$,
+      courseSmallCourseOptions: scsc.courseSmallCourseOptions$,
+      courtOptions: scsc.courtOptions$
     }
   },
   props: {
     item: {
       type: Array,
       default() {
-        return []
+        return [{}]
       }
+    },
+    customizeShow: {
+      type: Boolean,
+      default: false
+    },
+    disabledCustomBtn: {
+      type: Boolean,
+      default: true
+    },
+    disabledAddCourseBtn: {
+      type: Boolean,
+      default: true
     },
     cycleIndex: {
       type: Number,
       default: 0
     },
+    cycle: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
     week: {
+      type: Number,
+      default: 0
+    },
+    cycle_type: {
       type: Number,
       default: 1
     },
-    scheduleId: {
-      type: String,
-      default: '1'
+    courseInfo: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
+    editScheduleCycleFlag: {
+      type: Boolean,
+      default: () => {
+        return false
+      }
     }
   },
   data() {
@@ -130,48 +163,127 @@ export default {
       coachId: '',
       form,
       decorators,
-      showFlag: false
+      showFlag: false,
+      params: {},
+      cycle_begin_date: '',
+      cycle_end_date: ''
+    }
+  },
+  computed: {
+    DisabledAddCourseBtn() {
+      return this.cycle_type === 1
+        ? this.disabledAddCourseBtn
+        : this.disabledCustomBtn
     }
   },
   created() {
-    this.showFlag = this.item[0].show
+    this.showFlag = this.item[0].show || this.customizeShow
   },
   methods: {
     hide() {
       this.showFlag = false
     },
+    onChangeCoach(value) {
+      this.coachSmallCourseOptions.forEach((item, index) => {
+        if (item.id === value) {
+          this.params.coach_name = item.staff_name
+        }
+      })
+    },
+    onChangeCourt(data) {
+      this.courtOptions.forEach((item, index) => {
+        if (item.id === data[0]) {
+          this.params.court_name = item.name
+          if (data[1]) {
+            item.children.forEach((childrenItem, index) => {
+              if (childrenItem.id === data[1]) {
+                this.params.court_site_name = childrenItem.name
+              }
+            })
+          } else {
+            this.params.court_site_name = 'none'
+          }
+        }
+        return
+      })
+    },
+    // disabledDateTime() {
+    //   const allTime = this.range(0, 24)
+    //   console.log(allTime)
+    //   return {
+    //     disabledHours: () => this.range(0, 24).splice(4, 20),
+    //     disabledMinutes: () => this.range(30, 60)
+    //   }
+    // },
+    // disabledHours() {
+    //   return this.range(0, 24).splice(4, 20)
+    // },
+    // this.params.court_name = `${item.name} / ${childrenItem.name}`
+    addCourse(cycleIndex, conflict, params, list) {
+      this.$emit('addCourse', cycleIndex, conflict, params, list)
+      this.showFlag = false
+    },
+    addCustomCourse(params) {
+      this.$emit('addCustomCourse', params)
+      this.showFlag = false
+    },
+    addSchedule(verifyParams) {
+      this.smallCourseScheduleService
+        .addScheduleInBatch(verifyParams)
+        .subscribe(res => {
+          console.log(res)
+          this.addCourse(this.cycleIndex, res.conflict, verifyParams, res.list)
+        })
+    },
+    addScheduleCustom(verifyParams) {
+      this.smallCourseScheduleService
+        .addScheduleInBatchCustom(verifyParams)
+        .subscribe(res => {
+          console.log(res)
+          if (!res.conflict) {
+            this.$emit('addCustomCourse', verifyParams)
+          }
+        })
+    },
     onSubmit() {
       this.form.validate().then(values => {
         const form = cloneDeep(values)
-        if (!this.scheduleId) {
-          form.start_days = form.start_days.format('YYYY-MM-DD')
+        if (this.cycle_type === 2) {
+          const start_days = values.start_days.format('YYYY-MM-DD')
+          const start_time = values.start_time.format('HH:mm')
+          const end_time = values.end_time.format('HH:mm')
+          form.start_time = start_days + ' ' + start_time
+          form.end_time = start_days + ' ' + end_time
+        } else {
+          form.start_time = values.start_time.format('HH:mm')
+          form.end_time = values.end_time.format('HH:mm')
         }
-        form.start_time = form.start_time.format('HH:mm')
-        // console.log(form)
-        if (form.court_id) {
-          form.court_site_id = +form.court_id[1]
-          form.court_id = +form.court_id[0]
+        form.court_id = values.court_id[0]
+        form.court_site_id = values.court_id[1] || 0
+        form.week = this.week
+        form.cycle_begin_date = this.cycle[0].format('YYYY-MM-DD')
+        form.cycle_end_date = this.cycle[1].format('YYYY-MM-DD')
+        form.course_id = this.courseInfo.course_id
+        const verifyParams = Object.assign(this.params, form)
+        console.log(verifyParams)
+        console.log(this.cycle_type)
+        console.log(this.editScheduleCycleFlag)
+        if (this.cycle_type === 1) {
+          this.addSchedule(verifyParams)
+        } else {
+          this.addScheduleCustom(verifyParams)
         }
-        this.$emit('addCourse', form, this.cycleIndex, this.week)
-        this.showFlag = false
-      })
-    },
-    save() {
-      let reqdata = {
-        id: this.coachId,
-        schedule_start_time: this.start,
-        schedule_end_time: this.end,
-        scheduleInfo: this.scheduleInfo
-      }
-      this.scheduleService.addScheduleInBatch(reqdata).subscribe(() => {
-        this.show = false
-        this.$router.push({
-          query: {
-            ...this.$searchQuery
-          }
-        })
       })
     }
   }
 }
+// 约课没有测完
+// 排课接口对接
+// 前端的课程数量限制
+// 更改周期后清空当前周期的所有数据 - 批量清空的接口
+// 课程发布状态的icon
+// 目前新增和保存的具体含义(1.添加成功后的编辑调新增还是保存，添加一节之后继续添加调新增还是编辑)
+// 删除按钮功能的确认
+// 权限接入
+// 代码整理
 </script>

@@ -1,12 +1,14 @@
 <template>
   <st-modal
-    title="小班课预约设置"
     class="modal-personal-order-setting"
     v-model="show"
     @ok="save"
     @cancel="cancel"
     :confirmLoading="loading.editInfo"
   >
+    <template slot="title">
+      {{ $c('small_course') }}预约设置
+    </template>
     <div>
       <st-form :form="form" labelWidth="56px">
         <!-- 预约范围 -->

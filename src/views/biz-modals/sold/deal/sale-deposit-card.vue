@@ -399,7 +399,7 @@ export default {
           .setTransaction({
             member_id: +values.member_id,
             member_name: values.member_name,
-            mobile: values.mobile,
+            mobile: values.mobile ? values.mobile.phone : undefined,
             deposit_card_id: +this.id,
             contract_number: values.contractNumber,
             advance_id:
@@ -435,7 +435,7 @@ export default {
           .setTransactionPay({
             member_id: +values.member_id,
             member_name: values.member_name,
-            mobile: values.mobile,
+            mobile: values.mobile ? values.mobile.phone : undefined,
             deposit_card_id: +this.id,
             contract_number: values.contractNumber,
             advance_id:

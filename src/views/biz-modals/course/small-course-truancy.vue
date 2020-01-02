@@ -5,21 +5,21 @@
         旷课课程
       </div>
       <div
-        :class="b('item')"
+        :class="b('bitem')"
         type="2"
         v-for="(item, index) in list"
         :key="index"
       >
-        <div :class="b('item-title')">
+        <div :class="b('title')">
           {{ item.class_info.course_name }}
         </div>
         <div>
-          <span :class="b('item-label')">时间：</span>
-          <span :class="b('item-value')" class="mg-r16">
+          <span :class="b('label')">时间：</span>
+          <span :class="b('value')" class="mg-r16">
             {{ item.class_info.time }}
           </span>
-          <span :class="b('item-label')">教练：</span>
-          <span :class="b('item-value')">
+          <span :class="b('label')">教练：</span>
+          <span :class="b('value')">
             {{ item.class_info.coach_name }}
           </span>
         </div>
@@ -30,26 +30,28 @@
         补课信息
       </div>
       <div
-        :class="b('item')"
+        :class="b('bitem')"
         type="2"
         v-for="(item, index) in list"
         :key="index"
       >
-        <div :class="b('item-title')">
+        <div :class="b('title')">
           {{ item.make_up_info.course_name }}
         </div>
         <div>
-          <span :class="b('item-label')">时间：</span>
-          <span :class="b('item-value')" class="mg-r16">
+          <span :class="b('label')">时间：</span>
+          <span :class="b('value')" class="mg-r16">
             {{ item.make_up_info.time }}
           </span>
-          <span :class="b('item-label')">教练：</span>
-          <span :class="b('item-value')">
+          <span :class="b('label')">教练：</span>
+          <span :class="b('value')">
             {{ item.make_up_info.coach_name }}
           </span>
-          <span :class="b('item-label')">状态：</span>
-          <span :class="b('item-value')">
-            {{ item.make_up_info.sign_status ? '已签到' : '未签到' }}
+          <span :class="b('label')">状态：</span>
+          <span :class="b('value')">
+            {{
+              item.make_up_info.sign_status | enumFilter('reserve.is_checkin')
+            }}
           </span>
         </div>
       </div>
@@ -61,7 +63,8 @@ import { GroupUserClassTruancyService } from './small-course-truancy.service'
 export default {
   name: 'SmallCourseTruancy',
   bem: {
-    b: 'modal-course-group-class'
+    b: 'modal-course-group-class',
+    bitem: 'modal-course-group-class-item'
   },
   serviceInject() {
     return {

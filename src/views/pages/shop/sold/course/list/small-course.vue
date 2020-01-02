@@ -4,7 +4,9 @@
       <st-input-search
         v-model="$searchQuery.search"
         @search="onKeywordsSearch('search', $event)"
-        placeholder="请输入小班课名、合同编号、会员姓名或手机号查找"
+        :placeholder="
+          `请输入${$c('small_course')}名、合同编号、会员姓名或手机号查找`
+        "
         style="width:400px"
       />
     </portal>
@@ -65,7 +67,7 @@
               </a>
 
               <a
-                v-if="record.auth['shop:product:small_class_course|refund']"
+                v-if="record.auth['brand_shop:order:order|refund']"
                 @click="
                   smallCourseActions.onRefund({
                     id: record.id

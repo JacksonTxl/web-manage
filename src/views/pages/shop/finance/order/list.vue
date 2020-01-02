@@ -29,11 +29,12 @@
         <!-- <st-button type="primary" v-if="auth.export" :disabled="isSelectedDisabled">批量导出</st-button> -->
       </div>
       <st-table
-        :scroll="{ x: 2100 }"
+        :scroll="{ x: 3000 }"
         :columns="columns"
         :page="page"
         @change="onTableChange"
         :dataSource="list"
+        rowKey="id"
         :loading="loading.getList"
         isExpand
       >
@@ -237,7 +238,7 @@ export default {
     },
     // 退款
     onRefund(record) {
-      const props = { id: record.id }
+      const props = { id: record.id, type: record.product_type }
       if (record.product_type === this.ORDER_PRODUCT_TYPE.EARNEST) {
         props.goodsInvalid = true
       }

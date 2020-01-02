@@ -1,5 +1,6 @@
 export const ruleOptions = (vm: any) => {
   const pattern = vm.pattern
+  console.log(vm.form)
   return {
     course_name: {
       rules: [
@@ -42,6 +43,13 @@ export const ruleOptions = (vm: any) => {
         {
           required: true,
           message: '请输入报名人数上限'
+        },
+        {
+          validator: (field: any, value: any, values: any) => {
+            if (parseInt(value, 10) < parseInt(values.num_min, 10)) {
+              return '报名人数上限不能小于报名人数下限'
+            }
+          }
         }
       ]
     },

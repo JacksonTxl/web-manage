@@ -119,8 +119,8 @@ export class PersonalScheduleScheduleService {
       })
     )
   }
-  copy(params: CopyInput) {
-    return this.scheduleApi.copy(params).pipe(
+  copy(id: string, params: any) {
+    return this.scheduleApi.copy(id, params).pipe(
       tap(res => {
         this.msg.success({ content: '复制成功' })
       })

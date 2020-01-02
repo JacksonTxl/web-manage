@@ -1,20 +1,17 @@
 export const ruleOptions = (vm: any) => {
   return {
     start_days: {
-      rules: [{ required: true, message: '日期不能为空' }],
+      rules: [{ required: true, message: '请选择预约日期' }],
       initialValue: vm.time
     },
     start_time: {
-      rules: [{ required: true, message: '时间不能为空' }],
-      initialValue: vm.time
+      rules: [{ required: true, message: '请选择开始时间' }]
     },
-    course_id: {
-      rules: [
-        {
-          required: true,
-          message: '请选择课程'
-        }
-      ]
+    end_time: {
+      rules: [{ required: true, message: '请选择结束时间' }]
+    },
+    current_course_name: {
+      rules: [{ required: true, message: '请输入课程名称' }]
     },
     coach_id: {
       rules: [

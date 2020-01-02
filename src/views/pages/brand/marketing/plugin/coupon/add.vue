@@ -179,7 +179,7 @@
                 不可与其它优惠同享
               </st-checkbox>
             </st-form-item>
-            <st-form-item label="每人限领" required v-if="couponType === '1'">
+            <st-form-item label="每人限领" required v-if="couponType === 1">
               <a-radio-group
                 :disabled="isEditMode"
                 v-decorator="decorators.is_limit"
@@ -244,7 +244,7 @@ export default {
       // isEditMode: false,
       // form: this.$form.createForm(this),
       // 优惠类型
-      couponType: '1',
+      couponType: 1,
       // 优惠范围
       showProductRange: '2',
       // 门店范围
@@ -305,7 +305,7 @@ export default {
       this.form.setFieldsValue({ is_limit: 2 })
     },
     setFieldsValue() {
-      this.couponType = this.info.coupon_type.id + ''
+      this.couponType = this.info.coupon_type.id
       this.showProductRange = this.info.is_product_range + ''
       this.showShopRange = this.info.is_shop_range + ''
       this.shopIds = this.info.shop_ids

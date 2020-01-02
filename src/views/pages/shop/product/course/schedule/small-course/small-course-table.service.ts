@@ -20,7 +20,7 @@ export class SmallCourseTableService implements Controller {
   initOptions() {
     return forkJoin(
       this.commonService.getCoachList(),
-      this.commonService.getCourseList()
+      this.commonService.getCourseList('')
     )
   }
   beforeEach(to: ServiceRoute, form: ServiceRoute) {

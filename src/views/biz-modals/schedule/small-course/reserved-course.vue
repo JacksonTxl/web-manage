@@ -2,32 +2,33 @@
   <st-modal title="编辑课程排期" v-model="show" width="484px">
     <st-form :form="form" labelWidth="70px" labelAuto>
       <st-form-item label="已约">
-        <span>{{}}</span>
+        <span>{{ item.reserved_num }}</span>
       </st-form-item>
-      <st-form-item label="日期" required v-if="!scheduleId">
+      <st-form-item label="日期" required>
         <a-date-picker
           style="width:100%"
-          :showTime="{ format: 'YYYY-MM-DD' }"
           format="YYYY-MM-DD"
           v-decorator="decorators.start_days"
-          :disabledHours="disabledHours"
         />
       </st-form-item>
-      <st-form-item label="时间" required>
+      <st-form-item label="开始时间" required>
         <a-time-picker
-          style="width: 100%"
-          placeholder="请选择时间"
-          :showTime="{ format: 'HH:mm' }"
           format="HH:mm"
+          style="width:100%"
           v-decorator="decorators.start_time"
-        >
-          <a-icon slot="suffixIcon" type="clock-circle" />
-        </a-time-picker>
+        />
+      </st-form-item>
+      <st-form-item label="结束时间" required>
+        <a-time-picker
+          format="HH:mm"
+          style="width:100%"
+          v-decorator="decorators.end_time"
+        />
       </st-form-item>
       <st-form-item label="课程" required>
         <a-select
           placeholder="请选择课程"
-          @change="onChange"
+          @change="onChangeCourse"
           v-decorator="decorators.course_id"
         >
           <a-select-option
@@ -62,7 +63,10 @@
         />
       </st-form-item>
       <st-form-item label="排课名称" required class="mg-b0">
-        <a-input placeholder="请输入" v-decorator="decorators.name" />
+        <a-input
+          placeholder="请输入"
+          v-decorator="decorators.current_course_name"
+        />
       </st-form-item>
     </st-form>
     <template slot="footer">
@@ -103,7 +107,8 @@ export default {
       form,
       decorators,
       show: false,
-      courseItem: ''
+      courseItem: '',
+      smallCourseInfo: {}
     }
   },
   props: {
@@ -112,73 +117,65 @@ export default {
       default: () => {
         return {}
       }
-    },
-    cycleIndex: {
-      type: Number,
-      default: () => {
-        return 0
-      }
-    },
-    positionIndex: {
-      type: Number,
-      default: () => {
-        return 0
-      }
-    },
-    scheduleId: {
-      type: String,
-      default: '0'
     }
   },
   created() {
     console.log(this.item)
-    console.log(this.item.week)
-    console.log(this.positionIndex)
   },
   mounted() {
-    // start_day 无法setValue -- 课程的结束时间是否需要传递
-    const item = this.item
-    const court_item = [item.court_id.id, item.court_id.children.id]
-    const time = moment(item.start_time)
+    const item = cloneDeep(this.item)
+    const court_item = [item.court_id, item.court_site_id]
+    const time = moment(item.start_date)
     this.form.setFieldsValue({
       course_id: item.course_id,
       coach_id: item.coach_id,
       court_id: court_item,
-      start_time: time
+      current_course_name: item.current_course_name
     })
-    if (!this.scheduleId) {
-      this.form.setFieldsValue({ start_days: time })
-    }
+    this.form.setFieldsValue({
+      start_time: moment(`${this.item.start_date} ${this.item.start_time}`),
+      end_time: moment(`${this.item.start_date} ${this.item.end_time}`),
+      start_days: time
+    })
   },
   methods: {
-    onChange(value) {
-      // 这里是否需要遍历查找对应的course信息
-      console.log(value)
+    onChangeCourse(value) {
+      this.courseSmallCourseOptions.forEach((item, index) => {
+        if (item.course_id === value) {
+          this.smallCourseInfo = item
+          console.log(item)
+        }
+      })
     },
     onSubmit() {
       this.form.validate().then(values => {
         const form = cloneDeep(values)
-        if (!this.scheduleId) {
-          form.start_days = form.start_days.format('YYYY-MM-DD')
-        }
-        form.start_time = form.start_time.format('HH:mm')
+        console.log(values)
+        const start_days = values.start_days.format('YYYY-MM-DD')
+        const start_time = values.start_time.format('HH:mm')
+        const end_time = values.end_time.format('HH:mm')
+        form.start_time = start_days + ' ' + start_time
+        form.end_time = start_days + ' ' + end_time
+        form.cycle_start_date = this.smallCourseInfo.course_begin_time
+        form.cycle_end_date = this.smallCourseInfo.course_end_time
+        form.id = this.item.id
         if (form.court_id) {
           form.court_site_id = +form.court_id[1]
           form.court_id = +form.court_id[0]
         }
-        // 提交 效验课程冲突
+        // 提交
         console.log(form)
-        this.$emit(
-          'editCourse',
-          this.cycleIndex,
-          this.item.week,
-          this.positionIndex
-        )
-        this.show = false
-        // this.miniTeamScheduleScheduleService.add(form).subscribe(() => {
-        //   this.$emit('editCourse')
-        //   this.show = false
-        // })
+        this.smallCourseScheduleService.conflict(form).subscribe(res => {
+          if (res.conflict === 1) {
+            this.msg.error({ content: '排期内容有冲突，请重新选择' })
+          } else {
+            this.smallCourseScheduleService.update(form).subscribe(() => {
+              this.show = false
+              this.onScheduleChange()
+            })
+            this.showFlag = false
+          }
+        })
       })
     },
     onClick() {

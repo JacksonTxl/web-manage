@@ -1,0 +1,73 @@
+.samll-course-course-card-popover {
+  padding-top: 0;
+  .ant-popover-title {
+    padding: 6px 16px 6px;
+  }
+  .ant-popover-arrow {
+    display: none;
+  }
+}
+.course-card-schedule {
+  &__wrapper {
+    box-shadow: 0px 0px 10px 0px rgba(56, 62, 68, 0.1);
+    border-radius: 4px;
+    padding: 12px 10px;
+    margin-bottom: 12px;
+    line-height: 20px;
+    color: #9bacb9;
+    background-color: @white;
+    font-size: 12px;
+    .course__name {
+      font-weight: 500;
+      color: rgba(37, 42, 46, 1);
+    }
+    span {
+      color: #3e4d5c;
+    }
+    .time {
+      color: #9bacb9;
+    }
+    position: relative;
+    &:hover {
+      border: 1px solid #3f66f6;
+      .eidt-current-course-btns {
+        display: block;
+      }
+    }
+  }
+  &__wrapper-conflict {
+    border: 1px solid rgba(255, 94, 65, 0.3);
+    &:hover {
+      border: 1px solid rgba(255, 94, 65, 1);
+      .eidt-current-course-btns {
+        display: block;
+      }
+    }
+  }
+}
+.eidt-current-course-btns {
+  display: none;
+  position: absolute;
+  top: 12px;
+  right: 0px;
+  width: 48px;
+  height: 20px;
+  line-height: 18px;
+  text-align: right;
+  color: #3f66f6;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  .edit-course-btn,
+  .delete-course-btn {
+    cursor: pointer;
+  }
+  .edit-course-btn {
+    margin-right: 5px;
+  }
+  .delete-course-btn {
+    margin-right: 3px;
+  }
+}

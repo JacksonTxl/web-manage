@@ -8,8 +8,7 @@ import { SmallCourseScheduleCommonService as CommonService } from './service#/co
 export class SmallCourseService implements Controller {
   auth$ = this.authService.authMap$({
     add: 'shop:schedule:team_course_schedule|add',
-    addBatch: 'shop:schedule:team_course_schedule|batch_add',
-    copy: 'shop:schedule:team_course_schedule|copy'
+    addBatch: 'shop:schedule:team_course_schedule|batch_add'
   })
 
   constructor(
@@ -24,7 +23,7 @@ export class SmallCourseService implements Controller {
   beforeRouteEnter(to: ServiceRoute, form: ServiceRoute) {
     return forkJoin(
       this.commonService.getCoachList(),
-      this.commonService.getCourseList(),
+      this.commonService.getCourseList(''),
       this.commonService.getCourtList()
     )
   }

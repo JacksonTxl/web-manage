@@ -491,20 +491,6 @@ export default {
       this.advanceList = []
       this.advanceText = '未选择定金'
     },
-    // 切换添加会员
-    onAddMember() {
-      this.searchMemberIsShow = false
-      this.form.resetFields(['member_id', 'member_name', 'mobile'])
-    },
-    // 切换添加会员
-    onShowMemberChildren() {
-      this.searchMemberChildrenIsShow = false
-      this.form.resetFields([
-        'memberChildrenId',
-        'memberChildrenName',
-        'memberChildrenMobile'
-      ])
-    },
     onCodeNumber() {
       this.saleMemberCardService
         .getCodeNumber(this.info.contract_type)
@@ -553,7 +539,7 @@ export default {
           .setTransactionOrder({
             member_id: values.member_id,
             member_name: values.member_name,
-            mobile: values.mobile,
+            mobile: values.mobile ? values.mobile.phone : undefined,
             product_id: this.id,
             contract_number: values.contractNumber,
             specs_id: values.specs.id,
@@ -600,7 +586,7 @@ export default {
           .setTransactionPay({
             member_id: values.member_id,
             member_name: values.member_name,
-            mobile: values.mobile,
+            mobile: values.mobile ? values.mobile.phone : undefined,
             product_id: this.id,
             contract_number: values.contractNumber,
             specs_id: values.specs.id,

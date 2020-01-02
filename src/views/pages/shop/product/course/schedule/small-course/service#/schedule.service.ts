@@ -12,13 +12,13 @@ import { tap, pluck } from 'rxjs/operators'
 import { MessageService } from '@/services/message.service'
 
 export interface SetState {
-  scheduleTeamCourseList: any[]
+  scheduleSmallCourseList: any[]
   scheduleTable: any[]
 }
 @Injectable()
 export class SmallCourseScheduleService {
   state$: State<SetState>
-  scheduleTeamCourseList$: Computed<any>
+  scheduleSmallCourseList$: Computed<any>
   scheduleTable$: Computed<any>
   refresh$: Computed<any>
   loading$ = new State({})
@@ -28,16 +28,16 @@ export class SmallCourseScheduleService {
     private msg: MessageService
   ) {
     this.state$ = new State({
-      scheduleTeamCourseList: [],
+      scheduleSmallCourseList: [],
       scheduleTable: [],
       refresh: 0
     })
-    this.scheduleTeamCourseList$ = new Computed(
-      this.state$.pipe(pluck('scheduleTeamCourseList'))
+    this.scheduleSmallCourseList$ = new Computed(
+      this.state$.pipe(pluck('scheduleSmallCourseList'))
     )
     this.scheduleTable$ = new Computed(this.state$.pipe(pluck('scheduleTable')))
     this.refresh$ = new Computed(
-      this.state$.pipe(pluck('scheduleTeamCourseList'))
+      this.state$.pipe(pluck('scheduleSmallCourseList'))
     )
   }
   /**
@@ -51,24 +51,7 @@ export class SmallCourseScheduleService {
       tap(res => {
         res = this.authService.filter(res)
         this.state$.commit(state => {
-          state.scheduleTeamCourseList = res.list
-          // .map((item: any) => {
-          //   let end_date = ''
-          //   if (moment(`${item.start_date} ${item.start_time}`).valueOf() >= moment(`${item.start_date} ${item.end_time}`).valueOf()) {
-          //     item.plusOne = '+1'
-          //     end_date = moment(moment(`${item.start_date} ${item.start_time}`).valueOf() + 24 * 60 * 60 * 1000).format('YYYY-MM-DD').valueOf()
-          //   } else {
-          //     end_date = item.start_date
-          //   }
-          //   return { // add new event data
-          //     title: item.course_name,
-          //     groupId: JSON.stringify(item),
-          //     id: item.id,
-          //     auth: item.auth,
-          //     start: `${item.start_date} ${item.start_time}`,
-          //     end: `${end_date} ${item.end_time}`
-          //   }
-          // })
+          state.scheduleSmallCourseList = res.list
         })
       })
     )
@@ -109,16 +92,52 @@ export class SmallCourseScheduleService {
    * 新增小班课排期
    */
   @Effect()
-  add(params: AddScheduleInput) {
+  add(params: any) {
     return this.scheduleApi.add(params).pipe(
       tap(res => {
         this.msg.success({ content: '添加成功' })
       })
     )
   }
+  /**
+   *
+   * @param params
+   * 批量新增周期小班课排期
+   */
   @Effect()
-  addScheduleInBatch(params: AddScheduleInput[]) {
+  addScheduleInBatch(params: any) {
     return this.scheduleApi.addScheduleInBatch(params).pipe(
+      tap(res => {
+        console.log(res)
+        if (!res.conflict) {
+          this.msg.success({ content: '批量添加成功' })
+        }
+      })
+    )
+  }
+  /**
+   *
+   * @param params
+   * 批量编辑增加周期小班课排期
+   */
+  @Effect()
+  editScheduleInBatchs(params: any) {
+    return this.scheduleApi.editScheduleInBatchs(params).pipe(
+      tap(res => {
+        if (!res.conflict) {
+          this.msg.success({ content: '批量添加成功' })
+        }
+      })
+    )
+  }
+  /**
+   *
+   * @param params
+   * 批量新增自定义小班课排期
+   */
+  @Effect()
+  addScheduleInBatchCustom(params: any) {
+    return this.scheduleApi.addScheduleInBatchCustom(params).pipe(
       tap(res => {
         this.msg.success({ content: '批量添加成功' })
       })
@@ -127,7 +146,29 @@ export class SmallCourseScheduleService {
   /**
    *
    * @param params
-   * 编辑课程排期
+   * 批量编辑新增自定义小班课排期
+   */
+  @Effect()
+  editScheduleInBatchCustoms(params: any) {
+    return this.scheduleApi.editScheduleInBatchCustoms(params).pipe(
+      tap(res => {
+        this.msg.success({ content: '批量添加成功' })
+      })
+    )
+  }
+  /**
+   *
+   * @param params
+   * 批量编辑回显
+   */
+  @Effect()
+  getScheduleInBatch(params: any) {
+    return this.scheduleApi.getScheduleInBatch(params)
+  }
+  /**
+   *
+   * @param params
+   * 编辑单个课程排期
    */
   @Effect()
   update(params: UpdateScheduleInput) {
@@ -148,7 +189,7 @@ export class SmallCourseScheduleService {
   /**
    *
    * @param params
-   * 取消团体课排期
+   * 取消小课排期
    */
   del(id: string) {
     return this.scheduleApi.del(id).pipe(
@@ -156,5 +197,25 @@ export class SmallCourseScheduleService {
         this.msg.success({ content: '取消成功' })
       })
     )
+  }
+  /**
+   *
+   * @param params
+   * 周期保存发布
+   */
+  save(id: string) {
+    return this.scheduleApi.save(id).pipe(
+      tap(res => {
+        this.msg.success({ content: '发布成功' })
+      })
+    )
+  }
+  /**
+   *
+   * @param params
+   * 验证课程排期
+   */
+  conflict() {
+    return { conflict: 1 }
   }
 }

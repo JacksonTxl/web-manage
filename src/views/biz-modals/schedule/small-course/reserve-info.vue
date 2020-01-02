@@ -1,16 +1,17 @@
 <template>
   <st-modal
-    class="modal-reserved"
+    wrapClassName="modal-reserved-info"
     title="预约详情"
     @ok="save"
     :footer="null"
     v-model="show"
+    width="700px"
   >
-    <a-row :gutter="24" class="modal-reserved-info">
+    <a-row :gutter="24">
       <a-col :lg="16">
         <st-info>
           <st-info-item label="课程名称">
-            {{ reserveInfo.coach_name }}
+            {{ reserveInfo.course_name }}
           </st-info-item>
         </st-info>
       </a-col>
@@ -26,21 +27,21 @@
       <a-col :lg="8">
         <st-info>
           <st-info-item label="上课日期">
-            {{ reserveInfo.course_name }}
+            {{ reserveInfo.start_date }}
           </st-info-item>
         </st-info>
       </a-col>
       <a-col :lg="8">
         <st-info>
           <st-info-item label="上课时间">
-            {{ reserveInfo.course_name }}
+            {{ reserveInfo.start_time }}
           </st-info-item>
         </st-info>
       </a-col>
       <a-col :lg="8">
         <st-info>
           <st-info-item label="预约人数">
-            <!-- {{ reserveInfo.reserve.length }} -->
+            {{ reserveInfo.reserved_num }}
           </st-info-item>
         </st-info>
       </a-col>
@@ -49,7 +50,7 @@
       <a-col :lg="24">
         <st-info>
           <st-info-item label="最大人数">
-            <!-- {{ reserveInfo.reserve.length }} -->
+            {{ reserveInfo.reserve_max }}
           </st-info-item>
         </st-info>
       </a-col>
@@ -62,7 +63,7 @@
           </tr>
         </thead>
         <tbody v-if="!loading.add">
-          <tr>
+          <tr v-if="reserveInfo.small_course_type === 2">
             <td class="st-form-table__add">
               <a-select
                 slot="member"
@@ -79,7 +80,7 @@
               >
                 <a-select-option
                   v-for="member in memberOptions"
-                  :key="member.member_id"
+                  :key="member.id"
                 >
                   <div class="st-form-table__add-option">
                     <span
@@ -120,63 +121,110 @@
                 </a-select-opt-group>
               </a-select>
             </td>
-            <td>未签到</td>
+            <td>--</td>
             <td>
               <a href="javascript:;" @click="addReserve">添加预约</a>
             </td>
           </tr>
           <tr v-for="(item, index) in reserveList" :key="index">
-            <td>{{ item.member }}</td>
-            <td>{{ item.consume_name }}</td>
-            <td>{{ item.is_checkin_name }}</td>
+            <td>{{ item.member_name }}</td>
+            <td>{{ item.course_name }}</td>
+            <td v-if="item.reserve_status === 1">未签到</td>
+            <td v-if="item.reserve_status === 2">已签到</td>
+            <td v-if="item.reserve_status === 3">旷课</td>
+            <td v-if="item.reserve_status === 4">请假已补课</td>
+            <td v-if="item.reserve_status === 5">请假未补课</td>
             <td>
-              <div>
-                <a
-                  class="mg-r8"
-                  href="javascript:;"
-                  @click="cancelReserve(item.id)"
-                  v-if="
-                    item.auth[
-                      'shop:reserve:personal_team_course_reserve|checkin'
-                    ]
-                  "
-                >
+              <div
+                v-if="
+                  reserveInfo.small_course_type === 1 &&
+                    item.reserve_status === 1
+                "
+              >
+                <a href="javascript:;" @click="check(item.reserve_id)">
                   签到
                 </a>
-                <a
-                  href="javascript:;"
-                  @click="check(item.id)"
-                  v-if="
-                    item.auth['shop:reserve:personal_team_course_reserve|del']
-                  "
-                >
+                <a-divider type="vertical"></a-divider>
+                <a href="javascript:;" @click="leave(item.reserve_id)">
+                  请假
+                </a>
+              </div>
+              <div
+                v-if="
+                  reserveInfo.small_course_type === 2 &&
+                    item.reserve_status === 1
+                "
+              >
+                <a href="javascript:;" @click="check(item.reserve_id)">
+                  签到
+                </a>
+                <a-divider type="vertical"></a-divider>
+                <a href="javascript:;" @click="del(item.reserve_id)">
                   取消预约
                 </a>
               </div>
-              <div>
-                <a
-                  class="mg-r8"
-                  href="javascript:;"
-                  @click="cancelReserve(item.id)"
-                  v-if="
-                    item.auth[
-                      'shop:reserve:personal_team_course_reserve|checkin'
-                    ]
-                  "
-                >
+              <div
+                v-if="
+                  (reserveInfo.small_course_type === 1 &&
+                    item.reserve_status === 2) ||
+                    (reserveInfo.small_course_type === 2 &&
+                      item.reserve_status === 2)
+                "
+              >
+                --
+              </div>
+              <div
+                v-if="
+                  (reserveInfo.small_course_type === 1 &&
+                    item.reserve_status === 3) ||
+                    (reserveInfo.small_course_type === 2 &&
+                      item.reserve_status === 3)
+                "
+              >
+                <a href="javascript:;" @click="checkSign(item.reserve_id)">
                   补签到
                 </a>
+                <a-divider type="vertical"></a-divider>
                 <a
                   href="javascript:;"
-                  @click="check(item.id)"
-                  v-if="
-                    item.auth['shop:reserve:personal_team_course_reserve|del']
-                  "
+                  @click="remedialCourse(item.reserve_id, reserveInfo.id)"
                 >
                   补课
                 </a>
               </div>
-              <div>--</div>
+              <div
+                v-if="
+                  reserveInfo.small_course_type === 1 &&
+                    item.reserve_status === 4
+                "
+              >
+                <a @click="message(item.reserve_id)">
+                  查看补课
+                </a>
+              </div>
+              <div
+                v-if="
+                  reserveInfo.small_course_type === 1 &&
+                    item.reserve_status === 5
+                "
+              >
+                <a
+                  href="javascript:;"
+                  @click="remedialCourse(item.reserve_id, reserveInfo.id)"
+                >
+                  补课
+                </a>
+              </div>
+              <div
+                v-if="
+                  reserveInfo.small_course_type === 2 &&
+                    item.reserve_status === 6
+                "
+              >
+                <a href="javascript:;" @click="message(item.reserve_id)">
+                  查看补课
+                </a>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -193,7 +241,7 @@
       <a-popconfirm @confirm="cancelSchedule" okText="确认" cancelText="取消">
         <div slot="title">
           是否取消课程？
-          <div class="color-danger">将发送消息通知已报名用户并发起自动退款</div>
+          <div class="color-danger">将发送消息通知已报名用户</div>
         </div>
         <st-button>取消课程</st-button>
       </a-popconfirm>
@@ -205,25 +253,25 @@
 </template>
 
 <script>
-import { switchMap } from 'rxjs/operators'
-import { MessageService } from '@/services/message.service'
-import { PersonalTeamScheduleCommonService as CommonService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/common.service'
-import { PersonalTeamScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/reserve.service'
-import { PersonalTeamScheduleScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/schedule.service'
+import { SmallCourseScheduleCommonService as CommonService } from '@/views/pages/shop/product/course/schedule/small-course/service#/common.service'
+import { SmallCourseScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/small-course/service#/reserve.service'
+import { SmallCourseScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/small-course/service#/schedule.service'
 import ScheduleSmallCourseReservedCourse from '@/views/biz-modals/schedule/small-course/reserved-course'
-
+import ScheduleSmallCourseRemedialCourse from '@/views/biz-modals/schedule/small-course/remedial-course'
+import ScheduleSmallCourseRemedialInfo from '@/views/biz-modals/schedule/small-course/remedial-info'
 import { columns } from './reserve-info.config'
 export default {
   name: 'ReserveInfo',
   modals: {
-    ScheduleSmallCourseReservedCourse
+    ScheduleSmallCourseReservedCourse,
+    ScheduleSmallCourseRemedialCourse,
+    ScheduleSmallCourseRemedialInfo
   },
   serviceInject() {
     return {
       commonService: CommonService,
       reserveService: ReserveService,
-      scheduleService: ScheduleService,
-      messageService: MessageService
+      scheduleService: ScheduleService
     }
   },
   rxState() {
@@ -297,6 +345,10 @@ export default {
       this.consumeType = obj.consume_type
       this.consumeId = obj.id
     },
+    // 补签到
+    checkSign(id) {
+      this.reserveService.checkSign(id).subscribe(this.getReserveInfo)
+    },
     addReserve() {
       const form = {
         schedule_id: this.id,
@@ -309,12 +361,9 @@ export default {
     cancelReserve(id) {
       this.reserveService.cancel(id).subscribe(this.onCancelReserveSuccess)
     },
+    // 签到
     check(id) {
-      const params = {
-        id,
-        checkin_method: 4
-      }
-      this.reserveService.check(params).subscribe(this.onCheckSuccess)
+      this.reserveService.check(id).subscribe(this.onCheckSuccess)
     },
     edit(key) {
       const newData = [...this.data]
@@ -335,15 +384,16 @@ export default {
         this.cacheData = newData.map(item => ({ ...item }))
       }
     },
+    // 取消排期
     cancelSchedule() {
-      this.scheduleService.del(this.id).subscribe(this.onDelScheduleScuccess)
+      this.scheduleService.cancel(this.id).subscribe(this.onDelScheduleScuccess)
     },
     updateSchedule() {
       this.show = false
       this.$modalRouter.push({
         name: 'schedule-small-course-reserved-course',
         props: {
-          info: this.reserveInfo
+          item: this.reserveInfo
         },
         on: {
           ok: () => {
@@ -351,6 +401,46 @@ export default {
           }
         }
       })
+    },
+    // 补课回显
+    remedialCourse(reserve_id, id) {
+      this.reserveService.courseInfo(reserve_id).subscribe(res => {
+        this.$modalRouter.push({
+          name: 'schedule-small-course-remedial-course',
+          props: {
+            info: res.info,
+            id: id
+          },
+          on: {
+            ok: () => {
+              this.$router.push({ query: this.$searchQuery })
+            }
+          }
+        })
+      })
+      this.show = false
+    },
+    // 查看补课
+    message(id) {
+      this.reserveService.message(id).subscribe(res => {
+        console.log(res)
+        this.courseMessage = res.data.info
+        this.$modalRouter.push({
+          name: 'schedule-small-course-remedial-info',
+          props: {
+            info: courseMessage
+          }
+        })
+        this.show = false
+      })
+    },
+    // 取消预约
+    del(id) {
+      this.reserveService.del(id).subscribe(this.onDelScheduleScuccess)
+    },
+    // 请假
+    leave(id) {
+      this.reserveService.leave(id).subscribe(this.getReserveInfo)
     },
     getReserveInfo() {
       this.reserveService.getInfo(this.id).subscribe()
@@ -367,6 +457,7 @@ export default {
       this.getReserveInfo()
     },
     onDelScheduleScuccess() {
+      console.log('取消课程!')
       this.$router.push({ query: this.$searchQuery })
       this.show = false
     }

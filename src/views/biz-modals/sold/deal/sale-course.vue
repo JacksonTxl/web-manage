@@ -400,7 +400,7 @@ export default {
           .setTransactionOrder({
             member_id: values.member_id,
             member_name: values.member_name,
-            mobile: values.mobile,
+            mobile: values.mobile ? values.mobile.phone : undefined,
             package_id: this.id,
             contract_number: values.contractNumber,
             coupon_id: this.selectCoupon.id,
@@ -436,7 +436,7 @@ export default {
           .setTransactionPay({
             member_id: values.member_id,
             member_name: values.member_name,
-            mobile: values.mobile,
+            mobile: values.mobile ? values.mobile.phone : undefined,
             package_id: this.id,
             contract_number: values.contractNumber,
             coupon_id: this.selectCoupon.id,

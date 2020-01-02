@@ -17,15 +17,13 @@ export class InbatchAddService implements Controller {
   init() {
     return forkJoin(
       this.smallCourseScheduleCommonService.getCoachList(),
-      this.smallCourseScheduleCommonService.getCourseList(),
+      this.smallCourseScheduleCommonService.getCourseList({
+        schedule_status: 1
+      }),
       this.smallCourseScheduleCommonService.getCourtList()
     )
   }
-  beforeRouteEnter() {
-    console.log('beforeRouteEnter')
-  }
   beforeEach(to: ServiceRoute, form: ServiceRoute) {
-    console.log(123)
     return this.init()
   }
 }

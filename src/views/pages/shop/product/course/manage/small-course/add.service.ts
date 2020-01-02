@@ -32,8 +32,8 @@ export class AddService {
   setPrice(params: any) {
     return this.courseApi.setPrice(params)
   }
-  getCourseGroupRangeList(params: any) {
-    return this.courseApi.getCourseGroupRangeList(params).pipe(
+  getCourseGroupRangeList() {
+    return this.courseApi.getCourseGroupRangeList().pipe(
       tap(res => {
         this.rangeList$.commit(() => res.list)
       })
@@ -48,7 +48,7 @@ export class AddService {
   }
   init(params: any) {
     return forkJoin(
-      this.getCourseGroupRangeList(params),
+      this.getCourseGroupRangeList(),
       this.getCourseStaffList(params)
     )
   }

@@ -6,24 +6,24 @@ import { Api } from '@/api/api'
  * @export
  * @class ScheduleApi
  * @extends {Api}
- * 团体课排期接口
+ * 小班课排期接口
  */
-export class TeamScheduleReserveApi extends Api {
+export class SmallCourseScheduleReserveApi extends Api {
   /**
    *
    * @param params
    * 添加预约
    */
   add(params: AddReserveInput) {
-    return this.http.post('/v1/schedule/team/shop/reserve', { params })
+    return this.http.post('/v1/schedule/small_course/shop/reserve', { params })
   }
   /**
    *
    * @param params
-   * 团体课签到消费
+   * 小班课签到消费
    */
-  check(params: CheckInput) {
-    return this.http.put('/v1/schedule/team/shop/check', { params })
+  check(id: any) {
+    return this.http.put(`/v1/schedule/small_course/shop/check/${id}`)
   }
   /**
    *
@@ -31,13 +31,51 @@ export class TeamScheduleReserveApi extends Api {
    * 获取预约详情
    */
   getInfo(id: string) {
-    return this.http.get(`/v1/schedule/team/shop/${id}`)
+    return this.http.get(`/v1/schedule/small_course/shop/${id}`)
   }
   /**
-   * 取消预约
+   * 取消排期
    */
-  del(id: string) {
-    return this.http.put(`/v1/schedule/team/shop/cancel/${id}`)
+  cancel(id: string) {
+    return this.http.put(`/v1/schedule/small_course/shop/cancel/${id}`)
+  }
+  /**
+   * 添加补课
+   */
+  remedial(params: any) {
+    return this.http.post(`/v1/schedule/small_course/shop/make_up/add`, {
+      params
+    })
+  }
+  /**
+   * 补签到
+   */
+  checkSign(id: string) {
+    return this.http.put(`/v1/schedule/small_course/shop/make_up/check/${id}`)
+  }
+  /**
+   * 请假
+   */
+  leave(id: string) {
+    return this.http.put(`/v1/schedule/small_course/shop/leave/${id}`)
+  }
+  /**
+   * 查看补课
+   */
+  msg(id: any) {
+    return this.http.get(`/v1/schedule/small_course/shop/make_up/msg/${id}`)
+  }
+  /**
+   * 补课课程
+   */
+  courseList() {
+    return this.http.get('/v1/schedule/small_course/shop/make_up/list')
+  }
+  /**
+   * 补课回显
+   */
+  courseInfo(id: any) {
+    return this.http.get(`/v1/schedule/small_course/shop/make_up/info?id=${id}`)
   }
 }
 export interface AddReserveInput {

@@ -14,7 +14,7 @@
       <div :class="b('item')">
         <span :class="b('item-label')">转让设置：</span>
         <span :class="b('item-value')">
-          {{ groupInfo.is_allow_transfer ? '支持转让' : '不支持转让' }}
+          {{ is_allow_transfer }}
         </span>
       </div>
       <div :class="b('item')">
@@ -70,6 +70,11 @@ export default {
     return {
       basicColumns,
       page: {} // 前端分页
+    }
+  },
+  computed: {
+    is_allow_transfer() {
+      return this.groupInfo.is_allow_transfer ? '支持转让' : '不支持转让'
     }
   },
   methods: {

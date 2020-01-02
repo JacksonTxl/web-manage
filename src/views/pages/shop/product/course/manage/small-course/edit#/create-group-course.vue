@@ -49,7 +49,7 @@
         </st-form-item>
       </a-col>
     </a-row>
-    <a-row :gutter="8">
+    <a-row :gutter="8" style="height:56px;overflow:hidden">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item required>
           <template slot="label">
@@ -58,7 +58,11 @@
           </template>
           <div :class="b('num-limit')">
             <a-form-item class="page-a-form">
-              <st-input-number v-decorator="decorators.num_min" :min="1">
+              <st-input-number
+                v-decorator="decorators.num_min"
+                :min="1"
+                :max="49"
+              >
                 <template slot="addonAfter">
                   人
                 </template>

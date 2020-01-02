@@ -25,8 +25,12 @@
           <div :class="h5('header-title')">此处显示门店名称</div>
           <div :class="h5('header-subtitle')">此处显示门店地址</div>
         </div>
-        <div :class="h5('action')">
-          <div v-for="(li, index) in actionInfo" class="action-li" :key="index">
+        <div :class="[h5('action'), checkedClass]">
+          <div
+            v-for="(li, index) in checkedInfo"
+            class="action-li"
+            :key="index"
+          >
             <img :src="li.image_url | imgFilter({ w: 56, h: 56 })" />
             <p>{{ li.title }}</p>
           </div>
@@ -155,11 +159,11 @@ import course5 from '@/assets/img/brand/setting/mina/course5.png'
 import course6 from '@/assets/img/brand/setting/mina/course6.png'
 import course7 from '@/assets/img/brand/setting/mina/course7.png'
 import course8 from '@/assets/img/brand/setting/mina/course8.png'
-import small1 from '@/assets/img/brand/setting/mina/small1.png'
-import small2 from '@/assets/img/brand/setting/mina/small2.png'
-import small3 from '@/assets/img/brand/setting/mina/small3.png'
-import small4 from '@/assets/img/brand/setting/mina/small4.png'
-import small5 from '@/assets/img/brand/setting/mina/small5.png'
+import small1 from '@/assets/img/brand/setting/mina/small_course_1.png'
+import small2 from '@/assets/img/brand/setting/mina/small_course_2.png'
+import small3 from '@/assets/img/brand/setting/mina/small_course_3.png'
+import small4 from '@/assets/img/brand/setting/mina/small_course_4.png'
+import small5 from '@/assets/img/brand/setting/mina/small_course_5.png'
 import coursepack1 from '@/assets/img/brand/setting/mina/coursepack1.png'
 import coursepack2 from '@/assets/img/brand/setting/mina/coursepack2.png'
 import coursepack3 from '@/assets/img/brand/setting/mina/coursepack3.png'
@@ -190,6 +194,7 @@ export default {
   rxState() {
     return {
       actionInfo: this.h5WrapperService.actionInfo$,
+      checkedInfo: this.h5WrapperService.checkedInfo$,
       coachInfo: this.h5WrapperService.coachInfo$,
       coach: this.h5WrapperService.coach$,
       courseInfo: this.h5WrapperService.courseInfo$,
@@ -197,6 +202,14 @@ export default {
       sliderInfo: this.h5WrapperService.sliderInfo$,
       eventInfo: this.h5WrapperService.eventInfo$,
       brand: this.userService.brand$
+    }
+  },
+  watch: {
+    checkedInfo: {
+      deep: true,
+      handler(newVal) {
+        this.checkedClass = `h5-component__action--${newVal.length}`
+      }
     }
   },
   props: {
@@ -239,7 +252,8 @@ export default {
       coachOption: {
         spaceBetween: 6,
         slidesPerView: 2.4
-      }
+      },
+      checkedClass: 'checked'
     }
   },
   created() {
