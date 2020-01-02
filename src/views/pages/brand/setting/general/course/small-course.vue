@@ -2,7 +2,9 @@
   <div v-if="auth.get">
     <section>
       <a-row>
-        <a-col :span="16"><st-t2>小班课程预约设置</st-t2></a-col>
+        <a-col :span="16">
+          <st-t2>{{ $c('small_course') }}预约设置</st-t2>
+        </a-col>
         <a-col :span="8" class="ta-r">
           <st-info-action
             icon="edit"
@@ -44,15 +46,11 @@
       </div>
       <st-hr></st-hr>
       <st-t4>签到方式</st-t4>
-      <div class="st-des">
-        {{ reserveInfo.is_sign ? '支持' : '不支持' }}用户自主签到
-      </div>
+      <div class="st-des">{{ is_sign }}用户自主签到</div>
       <st-hr></st-hr>
       <st-t4>签到条件</st-t4>
       <div class="st-des">
-        当天{{
-          reserveInfo.is_sign_entrance ? '必须有' : '可以没有'
-        }}入场记录(PC不受此条件限制)
+        当天{{ is_sign_entrance }}入场记录(PC不受此条件限制)
       </div>
       <st-hr></st-hr>
       <st-t4>签到时间</st-t4>
@@ -104,7 +102,14 @@ export default {
   modals: {
     BrandSettingSmallCourseReserve
   },
-  created() {},
+  computed: {
+    is_sign() {
+      return this.reserveInfo.is_sign ? '支持' : '不支持'
+    },
+    is_sign_entrance() {
+      return this.reserveInfo.is_sign_entrance ? '必须有' : '可以没有'
+    }
+  },
   methods: {
     onChange() {
       this.$router.push({})
