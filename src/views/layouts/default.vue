@@ -304,13 +304,12 @@ export default {
     onSuccess() {
       const len = this.systemList$.length
       if (this.systemListLength === len) {
-        // if (this.activityList$.length > 0) {
-        // }
-        this.$modalRouter.push({
-          name: 'common-notify-activity',
-          props: { list: this.activityList$ }
-        })
-
+        if (this.activityList$.length > 0) {
+          this.$modalRouter.push({
+            name: 'common-notify-activity',
+            props: { list: this.activityList$ }
+          })
+        }
         return
       }
       this.$modalRouter.push({

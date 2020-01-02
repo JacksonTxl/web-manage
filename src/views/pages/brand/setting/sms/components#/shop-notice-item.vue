@@ -4,11 +4,18 @@
     <div :class="bComponent('content')">
       <div :class="bComponent('text')">{{ info.notify_time.name }}</div>
       <div :class="bComponent('text')">{{ info.notify_type.name }}</div>
-      <div :class="bComponent('text')" style="padding-left:0">
+      <div
+        :class="bComponent('text')"
+        v-if="params.notify_mode.sms"
+        style="padding-left:0"
+      >
         <st-switch @change="save" v-model="params.notify_mode.sms"></st-switch>
       </div>
       <div :class="bComponent('text')" style="padding-left:0">
         <st-switch @change="save" v-model="params.notify_mode.app"></st-switch>
+      </div>
+      <div :class="bComponent('text')" style="padding-left:0">
+        <st-switch @change="save" v-model="params.notify_mode.pc"></st-switch>
       </div>
       <div
         v-show="

@@ -9,8 +9,8 @@ export class InfoService {
   info$ = new State([{}])
   brand$ = this.userService.brand$
   constructor(private api: NotifyApi, private userService: UserService) {}
-  getAnnouncementInfo(id: any) {
-    return this.api.getAnnouncementInfo(id).pipe(
+  getAnnouncementInfo(query: any) {
+    return this.api.getAnnouncementInfo(query).pipe(
       tap(res => {
         this.info$.commit(() => res.info)
       })

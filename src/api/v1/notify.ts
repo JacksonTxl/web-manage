@@ -28,6 +28,9 @@ export class NotifyApi extends Api {
   getNewAnnouncementSystem(query?: any) {
     return this.http.get(`/v1/announcement/system/new`, { query })
   }
+  getNoticePcUnread() {
+    return this.http.get(`/v1/notice/pc/unread`)
+  }
 }
 export interface GetNoticeListQuery {
   notify_type?: number

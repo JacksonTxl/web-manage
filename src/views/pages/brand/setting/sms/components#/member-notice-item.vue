@@ -27,6 +27,9 @@
           预览
         </span>
       </div>
+      <div :class="bComponent('text')" style="padding-left:0">
+        <st-switch @change="save" v-model="params.notify_mode.pc"></st-switch>
+      </div>
       <!-- text 卡片头部 end -->
 
       <div
@@ -161,6 +164,7 @@ export default {
       this.params.notify_mode = {
         sms: this.info.notify_mode.sms && this.info.notify_mode.sms.value,
         app: this.info.notify_mode.app && this.info.notify_mode.app.value,
+        pc: this.info.notify_mode.pc && this.info.notify_mode.pc.value,
         mini_programs:
           this.info.notify_mode.mini_programs &&
           this.info.notify_mode.mini_programs.value
