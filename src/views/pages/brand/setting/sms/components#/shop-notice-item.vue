@@ -159,33 +159,12 @@
   </div>
 </template>
 <script>
-import { UserService } from '@/services/user.service'
-import BrandSettingSmsNotice from '@/views/biz-modals/brand/setting/sms/notice'
-import { NoticeService } from '../notice.service'
 import { NOTIFY_SHOP_SUB_TYPE } from '@/constants/setting/sms'
 const componentName = 'notice-item'
 export default {
   name: 'NoticeItem',
   bem: {
     bComponent: componentName
-  },
-  serviceInject() {
-    return {
-      userService: UserService,
-      noticeService: NoticeService
-    }
-  },
-  rxState() {
-    const user = this.userService
-    const { consumeType$, entranceType$ } = this.noticeService
-    return {
-      settingEnums: user.settingEnums$,
-      consumeType$,
-      entranceType$
-    }
-  },
-  modals: {
-    BrandSettingSmsNotice
   },
   data() {
     return {
