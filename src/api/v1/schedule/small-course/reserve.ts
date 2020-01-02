@@ -45,7 +45,7 @@ export class SmallCourseScheduleReserveApi extends Api {
    * 取消排期
    */
   cancel(id: string) {
-    return this.http.put(`/v1/schedule/small_course/shop/cancel/${id}`)
+    return this.http.put(`/v1/schedule/small/cancel/${id}`)
   }
   /**
    * 添加补课

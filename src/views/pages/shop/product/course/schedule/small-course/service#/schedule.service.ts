@@ -233,6 +233,16 @@ export class SmallCourseScheduleService {
     )
   }
   /**
+   * 取消自主单个排期
+   */
+  cancelCustom(id: string) {
+    return this.scheduleApi.cancelCustom(id).pipe(
+      tap(res => {
+        this.msg.success({ content: '取消排课成功' })
+      })
+    )
+  }
+  /**
    * 取消自主所有排期
    */
   cancelCustomAll(id: string) {

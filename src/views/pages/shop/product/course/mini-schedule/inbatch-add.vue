@@ -267,9 +267,8 @@ export default {
       return !(this.end_date === this.picker_end_date)
     },
     disabledChangeScheduleType() {
-      return (
-        this.cycle_type === 1 && this.scheduleList[0].course_time.length > 0
-      )
+      // 如果清空数据不转化，还要在第一次添加之后加一个标志位
+      return this.cycle_type === 2 && this.customizeScheduleList.length > 0
     }
   },
   created() {
@@ -292,18 +291,7 @@ export default {
         moment(this.smallCourseInfo.course_begin_time),
         moment(this.smallCourseInfo.course_end_time)
       ])
-      //this.addCycleScheduleTime()
     },
-    // addCycleScheduleTime() {
-    //   this.pickerList.forEach((item, index) => {
-    //     this.scheduleList[index].cycle_begin_date = item[0]
-    //       .format('YYYY-MM-DD')
-    //       .valueOf()
-    //     this.scheduleList[index].cycle_end_date = item[1]
-    //       .format('YYYY-MM-DD')
-    //       .valueOf()
-    //   })
-    // },
     onChangeCourse(value) {
       this.courseSmallCourseOptions.forEach((item, index) => {
         if (item.course_id === value) {
@@ -311,6 +299,8 @@ export default {
         }
       })
       console.log(this.smallCourseInfo)
+      this.start_date = this.smallCourseInfo.course_begin_time
+      this.end_date = this.smallCourseInfo.course_end_time
       this.courseId = value
       this.customizeScheduleList = []
       this.scheduleList = [
@@ -319,25 +309,21 @@ export default {
         }
       ]
       this.filterDateList(this.scheduleList)
-      this.getScheduleInBatch()
+      const params = {}
+      params.course_id = this.courseId
+      this.getScheduleInBatch(params)
     },
     onChangeScheduleType(value) {
-      if (
-        value === 2 ||
-        (!this.scheduleList[0].course_time.length && value === 1)
-      ) {
-        this.initScheduleDate()
-      } else {
-        this.dealScheduleDate(this.scheduleList)
-      }
+      console.log('更改类型值' + value)
+      this.initScheduleDate()
       this.customizeScheduleList = []
-      this.getScheduleInBatch()
-    },
-    getScheduleInBatch() {
       const params = {
         course_id: this.courseId,
-        cycle_type: this.cycle_type
+        cycle_type: value
       }
+      this.getScheduleInBatch(params)
+    },
+    getScheduleInBatch(params) {
       this.smallCourseScheduleService
         .getScheduleInBatch(params)
         .subscribe(res => {
@@ -385,6 +371,8 @@ export default {
           ) {
             console.log('时间有交叉')
             this.msg.error({ content: '排课周期时间不能有交叉重叠！' })
+            const oldDate = this.pickerList[PickerIndex]
+            this.pickerList.splice(PickerIndex, 1, oldDate)
             pickerFlag = true
             return false
           }
@@ -401,11 +389,10 @@ export default {
               this.pickerList.splice(PickerIndex, 1, oldDate)
             },
             onOk: () => {
-              this.pickerList.splice(PickerIndex, 1, [date[0], date[1]])
               // 调用批量删除的接口and清空本地数据
               this.onDeleteCourseSchedule(
                 DELETE_TYPE.CYCLE,
-                'none',
+                [date[0], date[1]],
                 PickerIndex
               )
             }
@@ -569,6 +556,7 @@ export default {
       })
     },
     onDeleteCourseSchedule(del_type, item, cycleIndex, positionIndex) {
+      console.log(del_type)
       console.log(item)
       console.log(cycleIndex)
       // 这里需要一个所有的排期id参数！！ 封装一个promise方法可以减少一次判断
@@ -593,7 +581,7 @@ export default {
           params.course_id = this.smallCourseInfo.course_id
           params.schedule_id = []
         }
-        item.del_type = del_type
+        params.del_type = del_type
         this.scheduleService.cancelCycleSingle(item).subscribe(res => {
           if (del_type === DELETE_TYPE.SINGLE) {
             this.scheduleList[cycleIndex].course_time.forEach(
@@ -610,7 +598,7 @@ export default {
             )
           } else if (del_type === DELETE_TYPE.CYCLE) {
             this.scheduleList[cycleIndex].course_time = []
-            this.pickerList.splice(cycleIndex, 1)
+            this.pickerList.splice(cycleIndex, 1, item)
             this.filterDateList(this.scheduleList)
           } else {
             this.onClickGoBack()
@@ -624,18 +612,16 @@ export default {
     },
     // 自主约课删除
     onDeleteCustomSchedule(item, index) {
-      this.scheduleService.cancel(item.id).subscribe(res => {
+      this.scheduleService.cancelCustom(item.id).subscribe(res => {
         this.customizeScheduleList.splice(index, 1)
       })
     },
     // 新增周期排课
     addScheduleWeek() {
       this.pickerList.push([
-        moment(
-          moment(this.picker_end_date)
-            .add(1, 'days')
-            .valueOf()
-        ),
+        moment(this.picker_end_date)
+          .add(1, 'days')
+          .valueOf(),
         moment(this.end_date)
       ])
       this.picker_end_date = this.end_date

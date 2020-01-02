@@ -140,6 +140,16 @@ export class SmallCourseScheduleApi extends Api {
       params
     })
   }
+  /**
+   *
+   * @param params
+   * 删除自主单个排期
+   */
+  cancelCustom(params: any) {
+    return this.http.delete(`/v1/schedule/small/cancel/${params.course_id}`, {
+      params
+    })
+  }
 }
 
 export interface GetScheduleListQuery {
