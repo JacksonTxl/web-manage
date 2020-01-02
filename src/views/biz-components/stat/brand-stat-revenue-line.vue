@@ -9,6 +9,7 @@ import { Chart } from '@antv/g2'
 import chartMixin from './mixin'
 
 export default {
+  name: 'BrandStatRevenueLine',
   mixins: [chartMixin],
   props: {
     /**
@@ -28,7 +29,7 @@ export default {
       type: Array,
       default() {
         const member_card = this.$c('member_card')
-        const small_course = this.$c('small_course ')
+        const small_course = this.$c('small_course')
         return [
           member_card,
           '私教课',

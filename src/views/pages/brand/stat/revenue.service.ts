@@ -42,7 +42,6 @@ export class RevenueService {
             私教课: data.personal_course.items[idx].amount,
             团体课: data.team_course.items[idx].amount,
             课程包: data.package_course.items[idx].amount,
-            small_course: data.small_course.items[idx].amount,
             云店: data.shop.items[idx].amount,
             其它: data.other.items[idx].amount
             // 储值卡: data.deposit_card.items[idx].amount,
@@ -50,6 +49,7 @@ export class RevenueService {
             // 押金: data.cash_pledge.items[idx].amount,
           }
           chartItem[member_card] = data.member_card.items[idx].amount
+          chartItem[small_course] = data.small_course.items[idx].amount
           chartData.push(chartItem)
         })
         chartRing = [
