@@ -99,9 +99,7 @@ export default {
     },
     info: {
       type: Object,
-      default() {
-        return {}
-      }
+      default: () => {}
     }
   },
   created() {},

@@ -1,22 +1,9 @@
 <template>
   <st-panel app initial>
-    <st-no-data
-      v-if="
-        curStatus === CLASS_STATUS.UNPUBLISH ||
-          curStatus === CLASS_STATUS.PUBLISH_UNSTARTED
-      "
-    />
+    <st-no-data v-if="isShowNoData" />
     <st-table
-      v-if="
-        curStatus !== CLASS_STATUS.UNPUBLISH &&
-          curStatus !== CLASS_STATUS.PUBLISH_UNSTARTED
-      "
-      :columns="
-        curStatus === CLASS_STATUS.CLASSED ||
-        curStatus === CLASS_STATUS.CLASS_END
-          ? classColumns()
-          : classEndColumns()
-      "
+      v-else
+      :columns="isShowNormalColumns ? classColumns() : classEndColumns()"
       rowKey="member_id"
       :loading="loading.getGroupClassInfo"
       @change="onTableChange"
@@ -108,6 +95,20 @@ export default {
   },
   created() {
     this.curStatus = this.curStatus - 0
+  },
+  computed: {
+    isShowNoData() {
+      return (
+        this.curStatus === this.CLASS_STATUS.UNPUBLISH ||
+        this.curStatus === this.CLASS_STATUS.PUBLISH_UNSTARTED
+      )
+    },
+    isShowNormalColumns() {
+      return (
+        this.curStatus === this.CLASS_STATUS.CLASSED ||
+        this.curStatus === this.CLASS_STATUS.CLASS_END
+      )
+    }
   }
 }
 </script>
