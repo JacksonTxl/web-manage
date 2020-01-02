@@ -279,6 +279,7 @@ export default {
       let course_type = {}
       // 订单类型
       let order_type = {}
+      // 接收人
       let receiver = {}
       if (this.info.course_type.team_course) {
         course_type.team_course = this.params.course_type.team_course.value
