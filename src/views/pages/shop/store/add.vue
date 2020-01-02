@@ -91,7 +91,7 @@
                     placeholder="上传图片"
                   >
                     <template v-slot:description>
-                      <p>建议尺寸为750像素×750像素</p>
+                      <p>建议尺寸为750像素*750像素</p>
                     </template>
                   </st-image-upload>
                   <div :class="basic('img--tip')">可上传5张商品图片</div>

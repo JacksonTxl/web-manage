@@ -43,6 +43,7 @@
     <div :class="basic('content')">
       <st-table
         rowKey="product_id"
+        :scroll="{ x: 1200 }"
         :page="page"
         :columns="columns"
         :dataSource="list"
