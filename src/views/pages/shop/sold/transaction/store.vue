@@ -1,37 +1,11 @@
 <template>
   <st-panel :class="basic()" :loading="loading.getStoreProductList">
-    <div :class="basic('list')">
-      <div :class="basic('head')">
-        <p :class="basic('title')">查看商品</p>
-        <st-input-search
-          style="width: 291px"
-          v-model="$searchQuery.product_name"
-          @search="getList"
-          placeholder="请输入商品名查找"
-          :class="basic('search')"
-        />
-      </div>
-      <ul :class="basic('product')" v-if="storeProductList.length">
-        <li v-for="(item, index) in storeProductList" :key="index">
-          <img class="goods-img" :src="item.img" alt="" />
-          <div class="good-name">
-            <span>{{ item.product_name }}</span>
-          </div>
-          <div class="good-price">
-            <span>￥{{ item.min_price }}-{{ item.max_price }}</span>
-            <span>库存:{{ item.count }}件</span>
-          </div>
-          <div class="product-mask" @click="onSku(item.id)">
-            <img src="@/assets/img/icon-buy-car.png" alt="" />
-            <p>添加至购物车</p>
-          </div>
-        </li>
-      </ul>
-      <st-no-data v-else></st-no-data>
-    </div>
-    <div :class="basic('buycar')">
-      <st-mina-panel app>
-        <div slot="actions" :class="basic('footer')">
+    <st-mina-panel app>
+      <div slot="actions" :class="basic('footer')">
+        <div :class="basic('footer-page')">
+          <st-pagination :page="productPage" class="mg-t8" />
+        </div>
+        <div :class="basic('footer-action')">
           <div class="price">
             <span>共{{ buyCar.length }}件商品 合计：</span>
             <span>￥{{ currentPrice }}</span>
@@ -49,6 +23,37 @@
             </st-button>
           </div>
         </div>
+      </div>
+      <div :class="basic('list')">
+        <div :class="basic('head')">
+          <p :class="basic('title')">查看商品</p>
+          <st-input-search
+            style="width: 291px"
+            v-model="$searchQuery.product_name"
+            @search="getList"
+            placeholder="请输入商品名查找"
+            :class="basic('search')"
+          />
+        </div>
+        <ul :class="basic('product')" v-if="storeProductList.length">
+          <li v-for="(item, index) in storeProductList" :key="index">
+            <img class="goods-img" :src="item.img" alt="" />
+            <div class="good-name">
+              <span>{{ item.product_name }}</span>
+            </div>
+            <div class="good-price">
+              <span>￥{{ item.min_price }}-{{ item.max_price }}</span>
+              <span>库存:{{ item.count }}件</span>
+            </div>
+            <div class="product-mask" @click="onSku(item.id)">
+              <img src="@/assets/img/icon-buy-car.png" alt="" />
+              <p>添加至购物车</p>
+            </div>
+          </li>
+        </ul>
+        <st-no-data v-else></st-no-data>
+      </div>
+      <div :class="basic('buycar')">
         <p class="title">购物车</p>
         <div>
           <st-form :form="form" labelWidth="66px">
@@ -60,6 +65,7 @@
                     rowKey="product_id"
                     :pagination="false"
                     :columns="columns"
+                    :scroll="{ y: 320 }"
                     :dataSource="buyCar"
                   >
                     <template
@@ -221,8 +227,8 @@
             </a-row>
           </st-form>
         </div>
-      </st-mina-panel>
-    </div>
+      </div>
+    </st-mina-panel>
   </st-panel>
 </template>
 
@@ -280,15 +286,12 @@ export default {
       reducePrice: null,
       description: '',
       buyCar: [],
-      storeProductList1: [
-        {
-          product_name: '商品名',
-          img: '',
-          min_price: 100,
-          max_price: 200,
-          count: 40
-        }
-      ]
+      productPage: {
+        current_page: 1,
+        size: 20,
+        total_counts: 100,
+        total_pages: 5
+      }
     }
   },
   mounted() {
@@ -316,25 +319,62 @@ export default {
             },
             on: {
               success: result => {
+                let state = this.buyCarJudge(result.sku_id, result.stock_amount)
+                if (state === 1) {
+                  return
+                }
                 result.product_id = record
-                this.buyCar.push(result)
+                if (state !== 2) {
+                  this.buyCar.push(result)
+                }
                 this.onMemberChange(0)
               }
             }
           })
         } else {
-          this.buyCar.push({
-            sku_id: res.product_sku[0].sku_id,
-            product_id: record,
-            nums: 1,
-            rule_name: '',
-            product_name: res.product_name,
-            unit_price: res.product_sku[0].selling_price,
-            stock_amount: res.product_sku[0].stock_amount
-          })
+          let state = this.buyCarJudge(
+            res.product_sku[0].sku_id,
+            res.product_sku[0].stock_amount
+          )
+          if (state === 1) {
+            return
+          }
+          if (state !== 2) {
+            this.buyCar.push({
+              sku_id: res.product_sku[0].sku_id,
+              product_id: record,
+              nums: 1,
+              rule_name: '',
+              product_name: res.product_name,
+              unit_price: res.product_sku[0].selling_price,
+              stock_amount: res.product_sku[0].stock_amount
+            })
+          }
           this.onMemberChange(0)
         }
       })
+    },
+    buyCarJudge(id, number) {
+      if (!number) {
+        this.messageService.warning({ content: '商品库存不足' })
+        return 1
+      }
+      for (let i = 0; i < this.buyCar.length; i++) {
+        let val = this.buyCar[i]
+        if (val.sku_id === id) {
+          if (val.nums >= number) {
+            this.messageService.warning({ content: '商品库存不足' })
+            return 1
+          } else {
+            val.nums = val.nums + 1
+            return 2
+          }
+        }
+      }
+      if (this.buyCar.length >= 20) {
+        this.messageService.warning({ content: '购物车已满' })
+        return 1
+      }
     },
     // 删除购物车商品
     onDelBuyCar(i) {
