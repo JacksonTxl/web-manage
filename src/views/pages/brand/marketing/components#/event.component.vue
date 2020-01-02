@@ -20,7 +20,7 @@
               @change="imageUploadChange($event, index)"
               width="100%"
               height="85px"
-              :filterOptions="fillWidth"
+              :filterOptions="generateFilteroptions(li)"
               :list="li.image_url ? [li] : li.filelist"
               :sizeLimit="5"
               placeholder="添加活动图片"
@@ -112,10 +112,7 @@ export default {
       filelist: [],
       link: '',
       number: 0,
-      span: 24,
-      fillWidth: {
-        w: 300
-      }
+      span: 24
     }
   },
   created() {
@@ -289,12 +286,22 @@ export default {
       }
       this.list = list
     },
+    calImgSize(li) {
+      const w = li.span === 24 ? 670 : 327
+      const h = 120
+      return {
+        w,
+        h
+      }
+    },
+    generateFilteroptions(li) {
+      return this.calImgSize(li)
+    },
     generateCropperOptions(li) {
-      const width = li.span === 24 ? 670 : 327
-      const height = 120
+      const { w, h } = this.calImgSize(li)
       return {
         title: '活动图片裁剪',
-        cropper: { aspectRatio: width / height }
+        cropper: { aspectRatio: w / h }
       }
     }
   }
