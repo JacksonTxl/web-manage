@@ -16,7 +16,6 @@ export class ClassService {
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    const courseId = to.query.courseId as string
-    return this.getGroupClassInfo(courseId)
+    return this.getGroupClassInfo(to.meta.query.courseId)
   }
 }

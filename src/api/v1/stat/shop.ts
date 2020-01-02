@@ -1,3 +1,4 @@
+import { SmallCourseApi } from './../sold/small-course'
 import { HttpService } from '@/services/http.service'
 import { AppConfig } from '@/constants/config'
 import { Injectable } from 'vue-service-app'
@@ -65,6 +66,22 @@ export class StatApi {
   getTeamConsume(query: any) {
     return this.http.get(
       `/v1/stat/course/shop/team/course/checkin${query.type || ''}`,
+      {
+        query
+      }
+    )
+  }
+  getSmallCourse(query: any) {
+    return this.http.get(
+      `/v1/stat/course/shop/small/course${query.type || ''}`,
+      {
+        query
+      }
+    )
+  }
+  getSmallConsume(query: any) {
+    return this.http.get(
+      `/v1/stat/course/shop/small/course/checkin${query.type || ''}`,
       {
         query
       }

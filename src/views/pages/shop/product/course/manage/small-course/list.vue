@@ -48,7 +48,10 @@
         {{ record.course_arrangement }}
       </a>
       <span slot="small_course_type" slot-scope="text, record">
-        {{ record.small_course_type === 1 ? '固定排课' : '自主排课' }}
+        {{
+          record.small_course_type
+            | enumFilter('small_course.small_course_type')
+        }}
       </span>
       <span slot="course_status" slot-scope="text, record">
         {{ record.class_status | enumFilter('small_course.class_status') }}

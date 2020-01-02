@@ -177,7 +177,7 @@
         <st-help-tooltip id="TSCR002" />
       </span>
       <span slot="smallTitle">
-        {{$c('small_course')}消课价值（元)
+        {{ smallCourseText }}
         <st-help-tooltip id="TSCR003" />
       </span>
     </st-table>
@@ -225,6 +225,9 @@ export default {
     }
   },
   computed: {
+    smallCourseText(vm) {
+      return `${vm.$c('small_course')}消课价值（元)`
+    },
     columns(vm) {
       return this.showTable === 'all' ? allColumns(vm) : coachColumns(vm)
     },
@@ -257,9 +260,16 @@ export default {
       })
     },
     onCLickTeamCheckinAmount() {
-      console.log('你点击了+ onCLickTeamCheckinAmount')
       this.$modalRouter.push({
         name: 'shop-stat-team-consume',
+        props: {
+          type: 'total'
+        }
+      })
+    },
+    onCLickSmallCheckinAmount() {
+      this.$modalRouter.push({
+        name: 'shop-stat-Small-consume',
         props: {
           type: 'total'
         }
@@ -276,6 +286,14 @@ export default {
     onCLickTeamNum() {
       this.$modalRouter.push({
         name: 'shop-stat-team-course',
+        props: {
+          type: 'total'
+        }
+      })
+    },
+    onCLickSmallNum() {
+      this.$modalRouter.push({
+        name: 'shop-stat-small-course',
         props: {
           type: 'total'
         }
@@ -307,17 +325,27 @@ export default {
     },
     getTeamConsume(record) {
       this.$modalRouter.push({
-        name: 'shop-stat-team-consume',
+        name: 'shop-stat-small-consume',
         props: {
           record
         }
       })
     },
-    getSmallCourse() {
-      console.log('d')
+    getSmallCourse(record) {
+      this.$modalRouter.push({
+        name: 'shop-stat-small-course',
+        props: {
+          record
+        }
+      })
     },
-    getSmallConsume() {
-      console.log('d')
+    getSmallConsume(record) {
+      this.$modalRouter.push({
+        name: 'shop-stat-small-consume',
+        props: {
+          record
+        }
+      })
     },
     onChangeCoach(value) {
       this.onMultiSearch({ coach_id: value })
