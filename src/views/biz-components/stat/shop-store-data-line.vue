@@ -99,6 +99,9 @@ export default {
           formatter: toKFilter
         }
       })
+      this.chart.scale('value', {
+        min: 0
+      })
       this.chart.axis('date', {
         label: {
           textStyle: {
@@ -126,9 +129,9 @@ export default {
       this.chart
         .line()
         .style('name', {
-          shadowColor: name => this.shadowColorMap[name],
-          shadowBlur: 20,
-          shadowOffsetY: 4
+          shadowColor: name => this.shadowColorMap[name]
+          // shadowBlur: 20,
+          // shadowOffsetY: 4
         })
         .tooltip('name*value', (name, value) => {
           return {
