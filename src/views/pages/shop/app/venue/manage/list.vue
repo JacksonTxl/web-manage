@@ -121,11 +121,14 @@ export default {
   data() {
     return {
       columns,
-      SITE_STATUS,
-      venuesId: +this.$searchQuery.id
+      SITE_STATUS
     }
   },
-  computed: {},
+  computed: {
+    venuesId() {
+      return +this.$searchQuery.id
+    }
+  },
   methods: {
     addSites() {
       this.$modalRouter.push({

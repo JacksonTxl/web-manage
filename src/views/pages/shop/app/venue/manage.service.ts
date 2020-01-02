@@ -56,6 +56,16 @@ export class ManageService implements Controller {
     })
   }
   beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.redirect(to, from, next)
+    console.log('beforeRouteUpdate', from.name)
+    if (
+      from.name === 'shop-app-venue-manage-add' ||
+      from.name === 'shop-app-venue-manage-edit'
+    ) {
+      this.getVenueList().subscribe(() => {
+        this.redirect(to, from, next)
+      })
+    } else {
+      this.redirect(to, from, next)
+    }
   }
 }

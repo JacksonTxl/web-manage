@@ -116,9 +116,9 @@ export default {
     }
   },
   created() {
-    if (this.venueList.length) {
-      this.venueInfo = this.venueList[0]
-    }
+    // if (this.venueList.length) {
+    //   this.venueInfo = this.venueList[0]
+    // }
   },
   methods: {
     clickVenue(venue, e) {
@@ -172,7 +172,10 @@ export default {
     },
     onCLickAddVenue() {
       this.$router.push({
-        name: 'shop-app-venue-manage-add'
+        name: 'shop-app-venue-manage-add',
+        query: {
+          id: this.$searchQuery.id
+        }
       })
     },
     onChange() {

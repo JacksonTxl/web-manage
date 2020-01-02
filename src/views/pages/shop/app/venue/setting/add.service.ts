@@ -10,11 +10,10 @@ export class AddService {
   info$ = new State({})
   sites$ = new State([])
   harfEnums$ = this.userService.getOptions$('venues_reserve.reserve_half_time')
-  // timeEnums$ = this.userService.getOptions$('')
-  timeEnums$ = new State([
-    { label: '半小时', value: 1 },
-    { label: '一小时', value: 2 }
-  ])
+  timeEnums$ = this.userService.getOptions$('venues_reserve.time_limit_type')
+  cyclicEnums$ = this.userService.getOptions$('venues_reserve.cyclic_type')
+  priorityEnums$ = this.userService.getOptions$('venues_reserve.weight')
+  weeks$ = this.userService.getOptions$('venues_reserve.week_day')
   constructor(
     private venueApi: VenueApi,
     private userService: UserService,
