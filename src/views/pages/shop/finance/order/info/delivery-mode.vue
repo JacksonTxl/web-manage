@@ -17,7 +17,7 @@
             <st-info-item label="快递公司" v-if="info.company_name != ''">
               {{ info.company_name }}
             </st-info-item>
-            <st-info-item label="发货状态">
+            <st-info-item label="发货状态" v-if="info.product_status !== 0">
               {{ info.product_status_name }}
             </st-info-item>
           </st-info>

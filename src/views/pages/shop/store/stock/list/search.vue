@@ -14,11 +14,11 @@
         v-if="auth.warehousing"
         type="primary"
         :class="search('btn--in')"
-        @click="moreIn(false)"
+        @click="moreIn()"
       >
         批量入库
       </st-button>
-      <st-button type="primary" @click="moreIn(true)">
+      <st-button type="primary" @click="moreOut()">
         批量出库
       </st-button>
     </div>
@@ -34,23 +34,21 @@
       @change="onTableChange"
       rowKey="sku_id"
     >
+      <template slot="product_name" slot-scope="text, record">
+        {{ record.product_name }}
+        <span v-if="record.sku_name">（{{ record.sku_name }}）</span>
+      </template>
       <template slot="action" slot-scope="text, record">
         <st-table-actions sytle="width: 120px">
           <a
             v-if="record.auth['shop:cloud_store:stock|warehousing']"
-            v-modal-link="{
-              name: 'store-put-in',
-              props: { skuList: [record] }
-            }"
+            @click="moreIn(record)"
           >
             入库
           </a>
           <a
             v-if="record.auth['shop:cloud_store:stock|retrieval']"
-            v-modal-link="{
-              name: 'store-put-out',
-              props: { skuList: [record] }
-            }"
+            @click="moreOut(record)"
           >
             出库
           </a>
@@ -111,26 +109,28 @@ export default {
         on: {
           success: () => {
             this.selectedRowKeys = []
-            console.log('刷新了')
-            // this.$router.reload()
+            this.$router.reload()
           }
         }
       })
     },
-    moreOut() {
+    moreOut(record) {
       let list = []
-      this.selectedRowKeys.forEach(id => {
-        let item = this.tableData.filter(stock => stock.sku_id === id)[0]
-        list.push(item)
-      })
+      if (record) {
+        list = [record]
+      } else {
+        this.selectedRowKeys.forEach(id => {
+          let item = this.tableData.filter(stock => stock.sku_id === id)[0]
+          list.push(item)
+        })
+      }
       this.$modalRouter.push({
         name: 'store-put-out',
         props: { skuList: list },
         on: {
           success: () => {
-            console.log('刷新了')
             this.selectedRowKeys = []
-            // this.$router.reload()
+            this.$router.reload()
           }
         }
       })

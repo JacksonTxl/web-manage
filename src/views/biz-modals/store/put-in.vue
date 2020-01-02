@@ -1,5 +1,10 @@
 <template>
-  <st-modal title="入库" @ok="onSubmit" v-model="show">
+  <st-modal
+    title="入库"
+    @ok="onSubmit"
+    v-model="show"
+    :loading="loading.stockWarehouse"
+  >
     <st-table
       :columns="columns"
       :dataSource="skuList"

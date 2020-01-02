@@ -1,5 +1,10 @@
 <template>
-  <st-modal title="出库" @ok="onSubmit" v-model="show">
+  <st-modal
+    title="出库"
+    @ok="onSubmit"
+    v-model="show"
+    :loading="loading.stockOutbound"
+  >
     <st-table
       :columns="columns"
       :dataSource="skuList"
@@ -53,10 +58,10 @@ export default {
   },
   methods: {
     onSubmit() {
+      this.$emit('success')
       this.putOutService
         .stockOutbound({ stock: this.skuList })
         .subscribe(res => {
-          console.log('1111111111====')
           this.$emit('success')
           this.show = false
         })
