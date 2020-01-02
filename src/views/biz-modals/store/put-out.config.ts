@@ -8,7 +8,7 @@ export const columns = [
     dataIndex: 'use_amount'
   },
   {
-    title: '入库数',
+    title: '出库数',
     dataIndex: 'stock_amount',
     slots: { title: 'stock_amount' },
     scopedSlots: { customRender: 'stock_amount' }

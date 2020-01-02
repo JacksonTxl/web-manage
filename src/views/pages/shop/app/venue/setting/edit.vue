@@ -104,9 +104,9 @@
         </st-form-item>
       </st-form-item>
       <st-form-item label="预约状态" required>
-        <a-checkbox v-decorator="decorators.can_reserve">
+        <st-checkbox v-model="can_reserve">
           不可预约
-        </a-checkbox>
+        </st-checkbox>
       </st-form-item>
       <st-form-item label="预约价格" required>
         <st-input-number
@@ -147,66 +147,7 @@ import { EditService } from './edit.service'
 import { ruleOptions } from './add.config'
 import { MessageService } from '@/services/message.service'
 import { PatternService } from '@/services/pattern.service'
-const timeEnums = [
-  {
-    label: '不限制',
-    value: 1
-  },
-  {
-    label: '指定日期',
-    value: 2
-  }
-]
-const cyclicEnums = [
-  {
-    label: '每天',
-    value: 1
-  },
-  {
-    label: '自定义',
-    value: 2
-  }
-]
-const priorityEnums = [
-  {
-    label: '置顶',
-    value: 1
-  },
-  {
-    label: '置底',
-    value: 2
-  }
-]
-const weeks = [
-  {
-    label: '周一',
-    value: 1
-  },
-  {
-    label: '周二',
-    value: 2
-  },
-  {
-    label: '周三',
-    value: 3
-  },
-  {
-    label: '周四',
-    value: 4
-  },
-  {
-    label: '周五',
-    value: 5
-  },
-  {
-    label: '周六',
-    value: 6
-  },
-  {
-    label: '周日',
-    value: 7
-  }
-]
+import { CAN_RESERVE } from '@/constants/venue'
 export default {
   name: 'AddRole',
   bem: {
@@ -223,7 +164,11 @@ export default {
     return {
       sites: this.editService.sites$,
       info: this.editService.info$,
-      harfEnums: this.editService.harfEnums$
+      harfEnums: this.editService.harfEnums$,
+      timeEnums: this.editService.timeEnums$,
+      cyclicEnums: this.editService.cyclicEnums$,
+      priorityEnums: this.editService.priorityEnums$,
+      weeks: this.editService.weeks$
     }
   },
   data() {
@@ -232,19 +177,17 @@ export default {
     return {
       form,
       decorators,
-      timeEnums,
-      cyclicEnums,
-      priorityEnums,
-      weeks,
       timeLimit: 1,
       start_time: null,
       end_time: null,
       endOpen: false,
-      cyclicType: 1
+      cyclicType: 1,
+      can_reserve: 0
     }
   },
   mounted() {
     this.form.setFieldsValue({ ...this.info })
+    this.can_reserve = this.info.can_reserve === CAN_RESERVE.YES ? 0 : 1
   },
   methods: {
     timeLimitChange(e) {
@@ -257,6 +200,9 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
+          values.can_reserve = this.can_reserve
+            ? CAN_RESERVE.NO
+            : CAN_RESERVE.YES
           const data = {
             settings_id: this.$searchQuery.settings_id,
             site_id: this.sites[0].id,

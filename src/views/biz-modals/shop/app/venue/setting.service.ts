@@ -27,7 +27,7 @@ export class SettingService {
     return this.venueApi.orderSettings(params)
   }
   deleteSetting(query: SettingDelQuery) {
-    return this.venueApi.deleteSetting(query)
+    return this.venueApi.delSetting(query)
   }
   getList(query: SettingsQuery) {
     return this.venueApi.getSettings(query).pipe(

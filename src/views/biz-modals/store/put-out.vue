@@ -1,5 +1,5 @@
 <template>
-  <st-modal title="入库" @ok="onSubmit" v-model="show">
+  <st-modal title="出库" @ok="onSubmit" v-model="show">
     <st-table
       :columns="columns"
       :dataSource="skuList"
@@ -24,17 +24,17 @@
   </st-modal>
 </template>
 <script>
-import { columns } from './put-in.config.ts'
-import { PutInService } from './put-in.service.ts'
+import { columns } from './put-out.config.ts'
+import { PutOutService } from './put-out.service.ts'
 export default {
   serviceInject() {
     return {
-      putInService: PutInService
+      putOutService: PutOutService
     }
   },
   rxState() {
     return {
-      loading: this.putInService.loading$
+      loading: this.putOutService.loading$
     }
   },
   data() {
@@ -53,8 +53,8 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.putInService
-        .stockWarehouse({ stock: this.skuList })
+      this.putOutService
+        .stockOutbound({ stock: this.skuList })
         .subscribe(res => {
           console.log('1111111111====')
           this.$emit('success')

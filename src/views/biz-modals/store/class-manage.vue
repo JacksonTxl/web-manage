@@ -1,6 +1,14 @@
 <template>
   <st-modal
-    :loading="loading.tableData"
+    :loading="
+      loadingStatus === 1
+        ? loading.getList
+        : loadingStatus === 2
+        ? loading.addClass
+        : loadingStatus === 3
+        ? loading.delClass
+        : loading.editClass
+    "
     title="分类管理"
     @ok="onSubmit"
     v-model="show"
@@ -69,7 +77,8 @@ export default {
     return {
       show: false,
       tableData: [],
-      oldTableData: []
+      oldTableData: [],
+      loadingStatus: 1 // 1: 获取列表，2：新增分类，3删除分类，4编辑分类
     }
   },
   mounted() {
@@ -77,6 +86,7 @@ export default {
   },
   methods: {
     getList() {
+      this.loadingStatus = 1
       this.classManageService.getList().subscribe(res => {
         res.list.map(item => (item.isEdit = false))
         this.tableData = res.list
@@ -98,6 +108,7 @@ export default {
     saveHandle(item, index) {
       // 新建分类
       if (item.isNew) {
+        this.loadingStatus = 2
         this.classManageService
           .addClass({ category_name: item.category_name })
           .subscribe(res => {
@@ -106,6 +117,7 @@ export default {
             this.oldTableData[index] = item
           })
       } else {
+        this.loadingStatus = 4
         //  编辑分类
         this.classManageService
           .editClass(item.category_id, { category_name: item.category_name })
@@ -127,6 +139,7 @@ export default {
       }
     },
     delHandle(item, index) {
+      this.loadingStatus = 3
       this.classManageService.delClass(item.category_id).subscribe(res => {
         this.getList()
       })

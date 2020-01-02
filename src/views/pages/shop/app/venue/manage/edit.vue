@@ -173,7 +173,12 @@ export default {
           }
           this.editService.edit(postData).subscribe(() => {
             this.messageService.success({ content: '编辑成功' })
-            this.$router.push({ name: 'shop-app-venue-manage' })
+            this.$router.push({
+              name: 'shop-app-venue-manage-list',
+              query: {
+                id: this.$searchQuery.id
+              }
+            })
           })
         }
       })

@@ -186,6 +186,7 @@
                     :float="true"
                     @input="getPrice(0)"
                     v-model="reducePrice"
+                    maxlength="12"
                     placeholder="请输入减免金额"
                   >
                     <span slot="addonAfter">元</span>
@@ -208,6 +209,7 @@
                 <st-form-item label="备注">
                   <a-textarea
                     v-model="description"
+                    maxlength="200"
                     placeholder="请填写备注"
                     class="st-textarea"
                   ></a-textarea>
@@ -396,18 +398,6 @@ export default {
             )
           }
         }
-      })
-    },
-    // 订单收款modal
-    createdOrderPay(props) {
-      return new Promise((resolve, reject) => {
-        this.$modalRouter.push({
-          name: 'sold-deal-gathering',
-          props,
-          on: {
-            success: resolve
-          }
-        })
       })
     },
     // 收款完提示

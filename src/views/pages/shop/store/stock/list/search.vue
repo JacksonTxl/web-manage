@@ -48,8 +48,8 @@
           <a
             v-if="record.auth['shop:cloud_store:stock|retrieval']"
             v-modal-link="{
-              name: 'store-put-in',
-              props: { isOut: true, skuList: [record] }
+              name: 'store-put-out',
+              props: { skuList: [record] }
             }"
           >
             出库
@@ -68,6 +68,7 @@
 <script>
 import { searchColumns } from './search.config.ts'
 import StorePutIn from '@/views/biz-modals/store/put-in'
+import StorePutOut from '@/views/biz-modals/store/put-out'
 import tableMixin from '@/mixins/table.mixin'
 import { SearchService } from './search.service'
 export default {
@@ -93,12 +94,12 @@ export default {
       selectedRowKeys: []
     }
   },
-  modals: { StorePutIn },
+  modals: { StorePutIn, StorePutOut },
   methods: {
     onChange(e) {
       this.selectedRowKeys = e
     },
-    moreIn(isOut) {
+    moreIn() {
       let list = []
       this.selectedRowKeys.forEach(id => {
         let item = this.tableData.filter(stock => stock.sku_id === id)[0]
@@ -106,11 +107,30 @@ export default {
       })
       this.$modalRouter.push({
         name: 'store-put-in',
-        props: { skuList: list, isOut },
+        props: { skuList: list },
         on: {
           success: () => {
             this.selectedRowKeys = []
-            this.$router.reload()
+            console.log('刷新了')
+            // this.$router.reload()
+          }
+        }
+      })
+    },
+    moreOut() {
+      let list = []
+      this.selectedRowKeys.forEach(id => {
+        let item = this.tableData.filter(stock => stock.sku_id === id)[0]
+        list.push(item)
+      })
+      this.$modalRouter.push({
+        name: 'store-put-out',
+        props: { skuList: list },
+        on: {
+          success: () => {
+            console.log('刷新了')
+            this.selectedRowKeys = []
+            // this.$router.reload()
           }
         }
       })
