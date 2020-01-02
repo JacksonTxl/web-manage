@@ -25,6 +25,7 @@
               :sizeLimit="5"
               placeholder="添加活动图片"
               :numLimit="1"
+              :cropperModal="generateCropperOptions(li)"
             >
               <a-icon
                 type="plus-circle"
@@ -287,6 +288,14 @@ export default {
         }
       }
       this.list = list
+    },
+    generateCropperOptions(li) {
+      const width = li.span === 24 ? 620 : 327
+      const height = 120
+      return {
+        title: '活动图片裁剪',
+        cropper: { aspectRatio: width / height }
+      }
     }
   }
 }
