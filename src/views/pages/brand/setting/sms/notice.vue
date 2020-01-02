@@ -16,7 +16,7 @@
           v-for="(item, index) in memberList$"
           :key="index"
         >
-          <notice-item @editInfo="save" :info="item"></notice-item>
+          <member-notice-item @editInfo="save" :info="item" />
         </div>
       </div>
     </div>
@@ -36,7 +36,84 @@
           v-for="(item, index) in shopList$"
           :key="index"
         >
-          <notice-item @editInfo="save" :info="item">
+          <shop-notice-item @editInfo="save" :info="item">
+            <!-- 自定义内容 start -->
+            <template
+              v-if="
+                NOTIFY_SHOP_SUB_TYPE.MEMBER_ENTRANCE_SUCCESS ===
+                  item.notify_sub_type.value
+              "
+              v-slot:content-self="slotProps"
+            >
+              <div class="mg-b16">
+                <span class="color-title mg-r24">消息类型</span>
+                <span
+                  class="mg-r16"
+                  v-for="(item, index) in consumeTypeString"
+                  :key="index"
+                >
+                  {{ item }}
+                </span>
+              </div>
+
+              <div class="mg-b16">
+                <span class="color-title mg-r24">入场方式</span>
+                <span
+                  class="mg-r16"
+                  v-for="(item, index) in entranceTypeString"
+                  :key="index"
+                >
+                  {{ item }}
+                </span>
+              </div>
+            </template>
+            <!-- 自定义内容 start -->
+
+            <!-- 自定义发送规则 start -->
+            <template
+              v-if="
+                NOTIFY_SHOP_SUB_TYPE.MEMBER_ENTRANCE_SUCCESS ===
+                  item.notify_sub_type.value
+              "
+              v-slot:send-role="slotProps"
+            >
+              <span
+                v-if="
+                  item.notify_sub_type.value === 10 ||
+                    item.notify_sub_type.value === 12
+                "
+              >
+                {{
+                  item.notify_sub_type.value === 10
+                    ? '客保到期前'
+                    : '会员流失前'
+                }}
+                <a-input
+                  v-model="params.notify_time"
+                  style="width:80px"
+                  type="number"
+                />
+                天提醒，每日早7点推送
+              </span>
+              <span v-if="item.notify_sub_type.value === 14">
+                会员课程剩余
+                <a-input
+                  v-model="params.notify_number"
+                  style="width:80px"
+                  type="number"
+                />
+                次时，或会员课程有效期剩余
+                <a-input
+                  v-model="params.notify_time"
+                  style="width:80px"
+                  type="number"
+                />
+                天时提醒，每日早7点推送
+              </span>
+            </template>
+            <!-- 自定义发送规则 start -->
+
+            <!-- 接收人员 选择角色 start -->
             <template
               v-if="
                 item.notify_sub_type.value === 24 ||
@@ -52,7 +129,8 @@
                 v-model="slotProps.params.custom_phone"
               ></a-select>
             </template>
-          </notice-item>
+            <!-- 接收人员 选择角色 end -->
+          </shop-notice-item>
         </div>
       </div>
     </div>
@@ -61,7 +139,13 @@
 <script>
 import { NoticeService } from './notice.service'
 import { thsMember, thsShop } from './notice.config'
-import NoticeItem from './components#/notice-item'
+import MemberNoticeItem from './components#/member-notice-item'
+import ShopNoticeItem from './components#/shop-notice-item'
+import {
+  NOTIFY_TYPES,
+  NOTIFY_MEMBER_SUB_TYPE,
+  NOTIFY_SHOP_SUB_TYPE
+} from '@/constants/setting/sms'
 const pageName = 'page-setting-sms-notice'
 
 export default {
@@ -75,13 +159,32 @@ export default {
       noticeService: NoticeService
     }
   },
+  data() {
+    return {
+      NOTIFY_TYPES,
+      NOTIFY_MEMBER_SUB_TYPE,
+      NOTIFY_SHOP_SUB_TYPE
+    }
+  },
   rxState() {
-    const { memberList$, roleList$, shopList$ } = this.noticeService
-    return { memberList$, roleList$, shopList$ }
+    const {
+      memberList$,
+      roleList$,
+      shopList$,
+      consumeType$,
+      entranceType$
+    } = this.noticeService
+    return { memberList$, roleList$, shopList$, consumeType$, entranceType$ }
   },
   computed: {
     thsMember,
-    thsShop
+    thsShop,
+    consumeTypeString() {
+      return this.consumeType$.map(item => item.label)
+    },
+    entranceTypeString() {
+      return this.entranceType$.map(item => item.label)
+    }
   },
 
   methods: {
@@ -100,7 +203,8 @@ export default {
     }
   },
   components: {
-    NoticeItem
+    MemberNoticeItem,
+    ShopNoticeItem
   }
 }
 </script>

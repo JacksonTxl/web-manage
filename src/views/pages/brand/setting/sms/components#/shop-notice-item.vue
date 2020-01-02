@@ -10,7 +10,7 @@
       <div
         :class="bComponent('text')"
         style="padding-left:0"
-        v-if="info.notify_type.value === 1"
+        v-if="info.notify_type.value === NOTIFY_TYPES.MEMBER"
       >
         <st-switch
           @change="save"
@@ -33,7 +33,7 @@
       <div
         :class="bComponent('text')"
         style="padding-left:0"
-        v-if="info.notify_type.value === 2"
+        v-if="info.notify_type.value === NOTIFY_TYPES.SHOP"
       >
         <st-switch @change="save" v-model="params.notify_mode.app"></st-switch>
       </div>
@@ -82,199 +82,96 @@
         </div>
         <div :class="bComponent('column')" v-show="isShowEdit">
           <div class="width75" :class="bComponent('text')">
-            <div class="mg-b16" v-if="info.preview">
-              <span class="mg-r8 color-title">发送内容</span>
-              <span :class="bComponent('text-right')">
-                <a-input
-                  v-if="info.notify_type.value === 1"
-                  :class="bComponent('column-input')"
-                  v-model="params.msg_preffix"
-                  placeholder="请输入"
-                ></a-input>
-                <span>{{ info.content }}</span>
-                <a-input
-                  v-if="info.notify_type.value === 1"
-                  :class="bComponent('column-input')"
-                  v-model="params.msg_suffix"
-                  placeholder="请输入"
-                ></a-input>
-              </span>
-            </div>
-            <div class="mg-b16" v-if="info.preview">
-              <span class="mg-r8 color-title">预览内容</span>
-              <span :class="bComponent('text-right')">{{ info.preview }}</span>
-            </div>
+            <template v-if="info.preview">
+              <div class="mg-b16">
+                <span class="mg-r8 color-title">预览内容</span>
+                <span :class="bComponent('text-right')">
+                  {{ info.preview }}
+                </span>
+              </div>
+            </template>
+
+            <!-- 课程类型 start -->
             <div class="mg-b16" v-if="Object.keys(info.course_type).length > 0">
               <span class="color-title">课程类型</span>
-              <span class="mg-l16 inlineblock">
-                <st-checkbox
-                  v-if="params.course_type.team_course"
-                  v-model="params.course_type.team_course.value"
-                >
-                  {{ params.course_type.team_course.name }}
-                </st-checkbox>
-                <st-checkbox
-                  v-if="params.course_type.personal_course"
-                  v-model="params.course_type.personal_course.value"
-                >
-                  {{ params.course_type.personal_course.name }}
+              <span
+                v-for="(item, key) of params.course_type"
+                :key="key"
+                class="mg-l16 inlineblock"
+              >
+                <st-checkbox v-model="params.course_type[key].value">
+                  {{ item.name }}
                 </st-checkbox>
               </span>
             </div>
-            <div class="mg-b16">
-              <span class="color-title">消息类型</span>
-            </div>
-            <div class="mg-b16">
-              <span class="color-title">入场方式</span>
-            </div>
+            <!-- 课程类型 end -->
+
+            <!-- 接收人员 start -->
             <div class="mg-b16" v-if="Object.keys(info.receiver).length > 0">
               <span class="color-title">接收人员</span>
-              <span class=" mg-l16 inlineblock">
-                <st-checkbox
-                  v-if="params.receiver.seller"
-                  v-model="params.receiver.seller.value"
+              <template v-for="(item, key) of params.receiver">
+                <span
+                  class="mg-l16 inlineblock"
+                  :key="key"
+                  v-if="key !== 'custom'"
                 >
-                  {{ params.receiver.seller.name }}
-                </st-checkbox>
-                <st-checkbox
-                  v-if="params.receiver.coach"
-                  v-model="params.receiver.coach.value"
-                >
-                  {{ params.receiver.coach.name }}
-                </st-checkbox>
-                <st-checkbox
-                  v-if="params.receiver.member"
-                  v-model="params.receiver.member.value"
-                >
-                  {{ params.receiver.member.name }}
-                </st-checkbox>
-                <st-checkbox
-                  v-if="params.receiver.custom"
-                  v-model="params.receiver.custom.value"
-                >
-                  {{ params.receiver.custom.name }}
-                </st-checkbox>
-              </span>
-              <span v-show="isShowPhone">
-                <slot name="custom" :params="params">
-                  <a-input
-                    style="width:44%"
-                    v-show="isShowPhone"
-                    v-model="params.custom_phone"
-                    placeholder="请输入手机号码，多个用逗号分隔"
-                  />
-                </slot>
-              </span>
+                  <st-checkbox v-model="params.receiver[key].value">
+                    {{ item.name }}
+                  </st-checkbox>
+                </span>
+              </template>
+              <!-- 自定义 本来可以是直接拿后端数据v-for出来但是自定义有可能第二个 自定义应该是最后一个start -->
+              <template>
+                <span class="mg-l16 inlineblock">
+                  <st-checkbox
+                    v-if="params.receiver.custom"
+                    v-model="params.receiver.custom.value"
+                  >
+                    {{ params.receiver.custom.name }}
+                  </st-checkbox>
+                </span>
+                <span v-if="isShowPhone">
+                  <!-- 这个slot 门店通知现在是选择角色 其他都是选择手机号码 为了自定义 本来产品想改成都是选择角色但是现在为了兼容老数据只能两种都保存TODO: 以后可能会改 20191231 -->
+                  <slot name="custom" :params="params">
+                    <a-input
+                      style="width:44%"
+                      v-show="isShowPhone"
+                      v-model="params.custom_phone"
+                      placeholder="请输入手机号码，多个用逗号分隔"
+                    />
+                  </slot>
+                </span>
+              </template>
+              <!-- 自定义 end -->
             </div>
+            <!-- 接收人员 end -->
 
+            <!-- 订单类型 start -->
             <div class="mg-b16" v-if="Object.keys(info.order_type).length > 0">
               <span class="color-title">订单类型</span>
-              <span class="mg-l16 inlineblock">
-                <st-checkbox
-                  v-if="params.order_type.advance"
-                  v-model="params.order_type.advance.value"
-                >
-                  {{ params.order_type.advance.name }}
-                </st-checkbox>
-                <st-checkbox
-                  v-if="params.order_type.deposit"
-                  v-model="params.order_type.deposit.value"
-                >
-                  {{ params.order_type.deposit.name }}
-                </st-checkbox>
-                <st-checkbox
-                  v-if="params.order_type.product"
-                  v-model="params.order_type.product.value"
-                >
-                  {{ params.order_type.product.name }}
-                </st-checkbox>
-                <st-checkbox
-                  v-if="params.order_type.poundage"
-                  v-model="params.order_type.poundage.value"
-                >
-                  {{ params.order_type.poundage.name }}
+              <span
+                v-for="(item, key) of params.order_type"
+                :key="key"
+                class="mg-l16 inlineblock"
+              >
+                <st-checkbox v-model="params.order_type[key].value">
+                  {{ item.name }}
                 </st-checkbox>
               </span>
             </div>
+            <!-- 订单类型 end -->
+
+            <slot name="content-self"></slot>
+            <!-- 发送规则 start -->
             <div>
               <span class="color-title mg-r8">发送规则</span>
-              <span
-                v-if="
-                  info.notify_type.value === 1 &&
-                    info.notify_sub_type.value === 4
-                "
-              >
-                课程开始前
-                <a-select v-model="params.notify_time" style="width:100px">
-                  <a-select-option
-                    v-for="(item, index) in notifyHour"
-                    :key="index"
-                    :value="item.value"
-                  >
-                    {{ item.label }}
-                  </a-select-option>
-                </a-select>
-                发送
-              </span>
-
-              <a-radio-group
-                v-if="
-                  info.notify_type.value === 1 &&
-                    info.notify_sub_type.value === 6
-                "
-                v-model="params.notify_time"
-                class="mg-b16"
-              >
-                <a-radio
-                  v-for="(item, index) in notifyRule"
-                  :key="index"
-                  :value="item.value"
-                >
-                  {{ item.label }}
-                </a-radio>
-              </a-radio-group>
-              <span
-                v-if="
-                  info.notify_sub_type.value === 10 ||
-                    info.notify_sub_type.value === 12
-                "
-              >
-                {{
-                  info.notify_sub_type.value === 10
-                    ? '客保到期前'
-                    : '会员流失前'
-                }}
-                <a-input
-                  v-model="params.notify_time"
-                  style="width:80px"
-                  type="number"
-                />
-                天提醒，每日早7点推送
-              </span>
-              <span v-if="info.notify_sub_type.value === 14">
-                会员课程剩余
-                <a-input
-                  v-model="params.notify_number"
-                  style="width:80px"
-                  type="number"
-                />
-                次时，或会员课程有效期剩余
-                <a-input
-                  v-model="params.notify_time"
-                  style="width:80px"
-                  type="number"
-                />
-                天时提醒，每日早7点推送
-              </span>
-              <span
-                v-if="
-                  info.notify_sub_type.value !== 6 &&
-                    info.notify_sub_type.value !== 4
-                "
-              >
-                {{ info.notify_time.name }}
-              </span>
+              <slot name="send-rule">
+                <span>
+                  {{ info.notify_time.name }}
+                </span>
+              </slot>
             </div>
+            <!-- 发送规则 start -->
           </div>
           <div :class="bComponent('text')" style="padding-left:0">
             <span class="btn color-primary mg-r12" @click="cancel">取消</span>
@@ -290,6 +187,11 @@
 import { UserService } from '@/services/user.service'
 import BrandSettingSmsNotice from '@/views/biz-modals/brand/setting/sms/notice'
 import { NoticeService } from '../notice.service'
+import {
+  NOTIFY_TYPES,
+  NOTIFY_MEMBER_SUB_TYPE,
+  NOTIFY_SHOP_SUB_TYPE
+} from '@/constants/setting/sms'
 const componentName = 'notice-item'
 export default {
   name: 'NoticeItem',
@@ -319,6 +221,9 @@ export default {
       isShowContent: 0,
       isShowPre: 0,
       isShowEdit: 0,
+      NOTIFY_TYPES,
+      NOTIFY_MEMBER_SUB_TYPE,
+      NOTIFY_SHOP_SUB_TYPE,
       isShowPhone: false, // 默认不展示输入手机号
       rule: {},
       params: {
@@ -364,6 +269,10 @@ export default {
             name: '会员'
           },
           seller: {
+            value: 0,
+            name: '销售'
+          },
+          operator: {
             value: 0,
             name: '销售'
           },
@@ -427,7 +336,11 @@ export default {
     this.params.msg_preffix = this.info.msg_preffix
     this.params.msg_suffix = this.info.msg_suffix
     this.params.custom_phone = this.info.custom_phone
-    if (this.info.notify_sub_type.value !== 24) {
+    const isJoin = [
+      NOTIFY_SHOP_SUB_TYPE.MEMBER_ENTRANCE_SUCCESS,
+      NOTIFY_SHOP_SUB_TYPE.BATCH_OPERATE
+    ]
+    if (!isJoin.includes(this.info.notify_sub_type.value)) {
       this.params.custom_phone = this.info.custom_phone.join(' ')
     }
     this.params.notify_mode = {
@@ -481,6 +394,9 @@ export default {
       if (this.info.receiver.seller) {
         receiver.seller = 0
       }
+      if (this.info.receiver.operator) {
+        receiver.operator = 0
+      }
       if (this.info.course_type.team_course) {
         course_type.team_course = this.params.course_type.team_course.value
           ? 1
@@ -516,6 +432,9 @@ export default {
       }
       if (this.info.receiver.seller) {
         receiver.seller = this.params.receiver.seller.value ? 1 : 0
+      }
+      if (this.info.receiver.operator) {
+        receiver.operator = this.params.receiver.seller.value ? 1 : 0
       }
       let custom_phone = []
       if (Array.isArray(this.params.custom_phone)) {
