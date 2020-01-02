@@ -115,7 +115,11 @@ export class AppConfig {
     // 是否允许拖动图片
     movable: false,
     // The minimum width of the crop box
-    minCropBoxWidth: 100
+    minCropBoxWidth: 100,
+    /**
+     * A number between 0 and 1. Define the automatic cropping area size (percentage).
+     */
+    autoCropArea: 1
   }
   /**
    * map key
