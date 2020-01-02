@@ -12,6 +12,8 @@ export class NoticeService {
   roleList$ = new State([])
   consumeType$ = this.userService.getOptions$('setting.consume_type')
   entranceType$ = this.userService.getOptions$('setting.entrance_type')
+  notifyRule$ = this.userService.getOptions$('setting.notify_rule')
+  notifyTimeHour$ = this.userService.getOptions$('setting.notify_time_hour')
   authTabs$ = this.authService.getAuthTabs$('brand-setting-sms-notice')
   constructor(
     private noticeApi: NoticeApi,

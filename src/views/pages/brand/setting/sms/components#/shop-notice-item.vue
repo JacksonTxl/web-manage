@@ -7,34 +7,7 @@
       <div :class="bComponent('text')" style="padding-left:0">
         <st-switch @change="save" v-model="params.notify_mode.sms"></st-switch>
       </div>
-      <div
-        :class="bComponent('text')"
-        style="padding-left:0"
-        v-if="info.notify_type.value === NOTIFY_TYPES.MEMBER"
-      >
-        <st-switch
-          @change="save"
-          v-model="params.notify_mode.mini_programs"
-        ></st-switch>
-        <span
-          class="color-primary mg-l12 cursor-pointer"
-          v-show="params.notify_mode.mini_programs"
-          type="primary"
-          v-modal-link="{
-            name: 'brand-setting-sms-notice',
-            props: {
-              img: info.img_url
-            }
-          }"
-        >
-          预览
-        </span>
-      </div>
-      <div
-        :class="bComponent('text')"
-        style="padding-left:0"
-        v-if="info.notify_type.value === NOTIFY_TYPES.SHOP"
-      >
+      <div :class="bComponent('text')" style="padding-left:0">
         <st-switch @change="save" v-model="params.notify_mode.app"></st-switch>
       </div>
       <div
@@ -51,7 +24,7 @@
             <span :class="bComponent('text-right')">{{ info.preview }}</span>
           </div>
           <div :class="bComponent('text')" style="padding-left:0">
-            <span class="color-primary cursor-pointer" @click="showEdit">
+            <span class="color-primary cursor-pointer" @click="isShowEdit = 1">
               编辑
             </span>
           </div>
@@ -161,11 +134,11 @@
             </div>
             <!-- 订单类型 end -->
 
-            <slot name="content-self"></slot>
+            <slot name="content-self" :params="params"></slot>
             <!-- 发送规则 start -->
             <div>
               <span class="color-title mg-r8">发送规则</span>
-              <slot name="send-rule">
+              <slot name="sendRule" :params="params">
                 <span>
                   {{ info.notify_time.name }}
                 </span>
@@ -174,7 +147,9 @@
             <!-- 发送规则 start -->
           </div>
           <div :class="bComponent('text')" style="padding-left:0">
-            <span class="btn color-primary mg-r12" @click="cancel">取消</span>
+            <span class="btn color-primary mg-r12" @click="isShowEdit = 1">
+              取消
+            </span>
             <span class="btn color-primary" @click="save">保存</span>
           </div>
         </div>
@@ -187,11 +162,7 @@
 import { UserService } from '@/services/user.service'
 import BrandSettingSmsNotice from '@/views/biz-modals/brand/setting/sms/notice'
 import { NoticeService } from '../notice.service'
-import {
-  NOTIFY_TYPES,
-  NOTIFY_MEMBER_SUB_TYPE,
-  NOTIFY_SHOP_SUB_TYPE
-} from '@/constants/setting/sms'
+import { NOTIFY_SHOP_SUB_TYPE } from '@/constants/setting/sms'
 const componentName = 'notice-item'
 export default {
   name: 'NoticeItem',
@@ -218,14 +189,9 @@ export default {
   },
   data() {
     return {
-      isShowContent: 0,
-      isShowPre: 0,
       isShowEdit: 0,
-      NOTIFY_TYPES,
-      NOTIFY_MEMBER_SUB_TYPE,
       NOTIFY_SHOP_SUB_TYPE,
       isShowPhone: false, // 默认不展示输入手机号
-      rule: {},
       params: {
         id: '',
         msg_suffix: '',
@@ -297,30 +263,6 @@ export default {
       default: () => {}
     }
   },
-  computed: {
-    consumeTypeString() {
-      return this.consumeType$.map(item => item.label)
-    },
-    entranceTypeString() {
-      return this.entranceType$.map(item => item.label)
-    },
-    notifyRule() {
-      let list = []
-      if (!this.settingEnums.notify_rule) return list
-      Object.entries(this.settingEnums.notify_rule.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    },
-    notifyHour() {
-      let list = []
-      if (!this.settingEnums.notify_time_hour) return list
-      Object.entries(this.settingEnums.notify_time_hour.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    }
-  },
   created() {
     if (Object.keys(this.info.order_type).length > 0) {
       this.params.order_type = this.info.order_type
@@ -336,6 +278,7 @@ export default {
     this.params.msg_preffix = this.info.msg_preffix
     this.params.msg_suffix = this.info.msg_suffix
     this.params.custom_phone = this.info.custom_phone
+    // TODO: 这里暂时只有 状态23 24选择角色 其他的选择手机号而且是字符串，以后产品打算改为选择角色
     const isJoin = [
       NOTIFY_SHOP_SUB_TYPE.MEMBER_ENTRANCE_SUCCESS,
       NOTIFY_SHOP_SUB_TYPE.BATCH_OPERATE
@@ -352,51 +295,12 @@ export default {
     }
   },
   methods: {
-    showEdit() {
-      this.isShowEdit = 1
-    },
-    cancel() {
-      this.isShowEdit = 0
-    },
     save() {
-      let course_type = {}
+      // 课程类型：团课， 私教课
+      let course_type = { team_course: 0, personal_course: 0 }
+      // 订单类型
       let order_type = {}
       let receiver = {}
-      if (this.info.course_type.team_course) {
-        course_type.team_course = 0
-      }
-      if (this.info.course_type.personal_course) {
-        course_type.personal_course = 0
-      }
-
-      if (this.info.order_type.advance) {
-        order_type.advance = 0
-      }
-      if (this.info.order_type.deposit) {
-        order_type.deposit = 0
-      }
-      if (this.info.order_type.product) {
-        order_type.product = 0
-      }
-      if (this.info.order_type.poundage) {
-        order_type.poundage = 0
-      }
-
-      if (this.info.receiver.coach) {
-        receiver.coach = 0
-      }
-      if (this.info.receiver.member) {
-        receiver.member = 0
-      }
-      if (this.info.receiver.custom) {
-        receiver.custom = 0
-      }
-      if (this.info.receiver.seller) {
-        receiver.seller = 0
-      }
-      if (this.info.receiver.operator) {
-        receiver.operator = 0
-      }
       if (this.info.course_type.team_course) {
         course_type.team_course = this.params.course_type.team_course.value
           ? 1

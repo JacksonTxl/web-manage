@@ -16,7 +16,57 @@
           v-for="(item, index) in memberList$"
           :key="index"
         >
-          <member-notice-item @editInfo="save" :info="item" />
+          <member-notice-item @editInfo="save" :info="item">
+            <!-- 预约到期提醒 需要设置时间 start-->
+            <template
+              v-slot:notify-time="slotProps"
+              v-if="
+                info.notify_sub_type.value ===
+                  NOTIFY_MEMBER_SUB_TYPE.RESERVE_EXPIRE
+              "
+            >
+              <span>
+                课程开始前
+                <a-select
+                  v-model="slotProps.params.notify_time"
+                  style="width:100px"
+                >
+                  <a-select-option
+                    v-for="(item, index) in notifyTimeHour$"
+                    :key="index"
+                    :value="item.value"
+                  >
+                    {{ item.label }}
+                  </a-select-option>
+                </a-select>
+                发送
+              </span>
+            </template>
+            <!-- 预约到期提醒 需要设置时间 end-->
+
+            <!-- 购买商品到期通知 是radio -->
+            <template
+              v-slot:notify-time="slotProps"
+              v-if="
+                item.notify_sub_type.value ===
+                  NOTIFY_MEMBER_SUB_TYPE.GOODS_EXPIRE
+              "
+            >
+              <a-radio-group
+                v-model="slotProps.params.notify_time"
+                class="mg-b16"
+              >
+                <a-radio
+                  v-for="(item, index) in notifyRule$"
+                  :key="index"
+                  :value="item.value"
+                >
+                  {{ item.label }}
+                </a-radio>
+              </a-radio-group>
+            </template>
+            <!-- 购买商品到期通知 是radio end-->
+          </member-notice-item>
         </div>
       </div>
     </div>
@@ -72,52 +122,64 @@
             <!-- 自定义发送规则 start -->
             <template
               v-if="
-                NOTIFY_SHOP_SUB_TYPE.MEMBER_ENTRANCE_SUCCESS ===
-                  item.notify_sub_type.value
+                [
+                  NOTIFY_SHOP_SUB_TYPE.MEMBER_COURSE_EXPIRE_DUE,
+                  NOTIFY_SHOP_SUB_TYPE.MEMBER_EXPIRE_DUE,
+                  NOTIFY_SHOP_SUB_TYPE.MEMBER_FLOW_DUE
+                ].includes(item.notify_sub_type.value)
               "
-              v-slot:send-role="slotProps"
+              v-slot:sendRule="slotProps"
             >
               <span
                 v-if="
-                  item.notify_sub_type.value === 10 ||
-                    item.notify_sub_type.value === 12
+                  [
+                    NOTIFY_SHOP_SUB_TYPE.MEMBER_EXPIRE_DUE,
+                    NOTIFY_SHOP_SUB_TYPE.MEMBER_FLOW_DUE
+                  ].includes(item.notify_sub_type.value)
                 "
               >
                 {{
-                  item.notify_sub_type.value === 10
+                  NOTIFY_SHOP_SUB_TYPE.MEMBER_EXPIRE_DUE === 10
                     ? '客保到期前'
                     : '会员流失前'
                 }}
                 <a-input
-                  v-model="params.notify_time"
+                  v-model="slotProps.params.notify_time"
                   style="width:80px"
                   type="number"
                 />
                 天提醒，每日早7点推送
               </span>
-              <span v-if="item.notify_sub_type.value === 14">
+              <span
+                v-if="
+                  NOTIFY_SHOP_SUB_TYPE.MEMBER_COURSE_EXPIRE_DUE ===
+                    item.notify_sub_type.value
+                "
+              >
                 会员课程剩余
                 <a-input
-                  v-model="params.notify_number"
+                  v-model="slotProps.params.notify_number"
                   style="width:80px"
                   type="number"
                 />
                 次时，或会员课程有效期剩余
                 <a-input
-                  v-model="params.notify_time"
+                  v-model="slotProps.params.notify_time"
                   style="width:80px"
                   type="number"
                 />
                 天时提醒，每日早7点推送
               </span>
             </template>
-            <!-- 自定义发送规则 start -->
+            <!-- 自定义发送规则 end -->
 
             <!-- 接收人员 选择角色 start -->
             <template
               v-if="
-                item.notify_sub_type.value === 24 ||
-                  item.notify_sub_type.value === 23
+                item.notify_sub_type.value ===
+                  NOTIFY_SHOP_SUB_TYPE.MEMBER_ENTRANCE_SUCCESS ||
+                  item.notify_sub_type.value ===
+                    NOTIFY_SHOP_SUB_TYPE.BATCH_OPERATE
               "
               v-slot:custom="slotProps"
             >
@@ -172,9 +234,17 @@ export default {
       roleList$,
       shopList$,
       consumeType$,
-      entranceType$
+      entranceType$,
+      notifyRule$
     } = this.noticeService
-    return { memberList$, roleList$, shopList$, consumeType$, entranceType$ }
+    return {
+      memberList$,
+      roleList$,
+      shopList$,
+      consumeType$,
+      entranceType$,
+      notifyRule$
+    }
   },
   computed: {
     thsMember,
