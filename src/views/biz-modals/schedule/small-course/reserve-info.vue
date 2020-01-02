@@ -253,19 +253,6 @@
                   查看补课
                 </a>
               </div>
-              <div
-                v-if="
-                  reserveInfo.small_course_type === 1 &&
-                    item.reserve_status === 5
-                "
-              >
-                <a
-                  href="javascript:;"
-                  @click="remedialCourse(item.reserve_id, reserveInfo.id)"
-                >
-                  补课
-                </a>
-              </div>
             </td>
           </tr>
         </tbody>
@@ -470,6 +457,7 @@ export default {
     // 查看补课
     message(id) {
       this.reserveService.message(id).subscribe(res => {
+        console.log(res)
         this.courseMessage = res.data.info
       })
     },

@@ -285,7 +285,7 @@ export default {
         const verifyParams = Object.assign(this.params, form)
         console.log(verifyParams)
         console.log(this.cycle_type)
-        console.log()
+        console.log(this.editScheduleCycleFlag)
         if (this.cycle_type === 1) {
           if (!this.editScheduleCycleFlag) {
             this.addSchedule(verifyParams)

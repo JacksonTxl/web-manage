@@ -50,7 +50,7 @@ export class SmallCourseScheduleApi extends Api {
    */
   editScheduleInBatchs(params: any) {
     console.log('调用新增周期排课接口')
-    return this.http.put(`/v1/schedule/small/cycle/${params.id}`, {
+    return this.http.put(`/v1/schedule/small/cycle/${params.course_id}`, {
       params
     })
   }
@@ -101,6 +101,15 @@ export class SmallCourseScheduleApi extends Api {
    */
   del(id: string) {
     return this.http.put(`/v1/schedule/small_course/cancel/${id}`)
+  }
+  /**
+   *
+   * @param params
+   * 发布小班课排期
+   */
+  save(id: string) {
+    console.log('发布班课')
+    return this.http.put(`/v1/schedule/small/release/${id}`)
   }
   /**
    *
