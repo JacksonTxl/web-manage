@@ -58,7 +58,7 @@ export const subColumns = [
   },
   {
     title: '操作',
-    width: 260,
+    width: 230,
     scopedSlots: { customRender: 'action' }
   }
 ]
