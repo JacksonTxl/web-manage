@@ -44,8 +44,8 @@ export const ruleOptions = (vm: any) => {
         {
           validator: (field: any, value: any, values: any) => {
             if (value) {
-              if (value < 1 || value > 9) {
-                return '单次最少连续预约场次>0且<10'
+              if (value < 1 || value > 10) {
+                return '单次最少连续预约场次>0且<=10'
               }
             }
           }
@@ -57,8 +57,8 @@ export const ruleOptions = (vm: any) => {
         {
           validator: (field: any, value: any, values: any) => {
             if (value) {
-              if (value < 1 || value > 29) {
-                return '每个人一天最多可预约最大预约场次 >0且<30'
+              if (value < 1 || value > 30) {
+                return '每个人一天最多可预约最大预约场次 >0且<=30'
               }
             }
           }
