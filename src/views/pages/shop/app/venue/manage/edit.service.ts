@@ -24,7 +24,7 @@ export class EditService {
   }
 
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    let { id } = to.query as any
-    return this.getInfo({ id: id })
+    let { area_id } = to.query as any
+    return this.getInfo({ id: area_id })
   }
 }
