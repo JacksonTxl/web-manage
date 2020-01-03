@@ -6,7 +6,7 @@ export const columns = (vm: any) => {
     },
     {
       title: '区域类型',
-      dataIndex: 'area_type'
+      scopedSlots: { customRender: 'area_type' }
     },
     {
       title: '通行人员',

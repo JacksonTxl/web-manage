@@ -3,21 +3,24 @@ import 'perfect-scrollbar/css/perfect-scrollbar.css'
 
 export default {
   install(Vue) {
-    const el_scrollBar = (el, wheelPropagation) => {
+    const el_scrollBar = (el, options) => {
       if (el._perfect_scrollbar_ instanceof PerfectScrollbar) {
         el._perfect_scrollbar_.update()
       } else {
         el._perfect_scrollbar_ = new PerfectScrollbar(el, {
-          suppressScrollX: true,
-          wheelPropagation
+          suppressScrollX: options.suppressScrollX,
+          wheelPropagation: options.wheelPropagation
         })
       }
     }
 
     Vue.directive('scrollBar', {
       inserted(el, binding, vnode) {
-        let wheelPropagation =
+        let options = {}
+        options.wheelPropagation =
           binding.value === undefined ? true : !binding.value.stopPropagation
+        options.suppressScrollX =
+          binding.value === undefined ? true : !!binding.value.suppressScrollX
         const rules = ['fixed', 'absolute', 'relative']
         if (!rules.includes(window.getComputedStyle(el, null).position)) {
           console.error(
@@ -26,18 +29,21 @@ export default {
             )}`
           )
         }
-        el_scrollBar(el, wheelPropagation)
+        el_scrollBar(el, options)
       },
       componentUpdated(el, binding, vnode, oldVnode) {
-        let wheelPropagation =
+        let options = {}
+        options.wheelPropagation =
           binding.value === undefined ? true : !binding.value.stopPropagation
+        options.suppressScrollX =
+          binding.value === undefined ? true : !!binding.value.suppressScrollX
         try {
           vnode.context.$nextTick(() => {
-            el_scrollBar(el, wheelPropagation)
+            el_scrollBar(el, options)
           })
         } catch (error) {
           console.error(error)
-          el_scrollBar(el, wheelPropagation)
+          el_scrollBar(el, options)
         }
       }
     })

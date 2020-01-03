@@ -146,6 +146,7 @@ export class UserService {
   groupBuyEnums$ = new Computed<ModuleEnums>(
     this.enums$.pipe(pluck('group_buy'))
   )
+  urlData$ = new State({})
   constructor(
     private constApi: ConstApi,
     private menuApi: MenuApi,

@@ -36,7 +36,6 @@
         :dataSource="list"
         rowKey="id"
         :loading="loading.getList"
-        isExpand
       >
         <template slot="order_status" slot-scope="text">
           {{ text | enumFilter('finance.order_status') }}
@@ -46,41 +45,61 @@
         </template>
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
+            <!--  -->
             <a
-              v-if="record.auth['brand_shop:order:order|pay']"
               @click="onGathering(record)"
+              v-if="record.auth['brand_shop:order:order|pay']"
             >
               收款
             </a>
+            <!--  -->
             <a
-              v-if="record.auth['brand_shop:order:order|cancel']"
               @click="onCancel(record)"
+              v-if="record.auth['brand_shop:order:order|cancel']"
             >
               取消
             </a>
+            <!--   -->
             <a
-              v-if="record.auth['brand_shop:order:order|get']"
               @click="onOrderInfo(record)"
+              v-if="record.auth['brand_shop:order:order|get']"
             >
               详情
             </a>
+
+            <!--  -->
             <a
-              v-if="record.auth['brand_shop:order:order|refund']"
               @click="onRefund(record)"
+              v-if="record.auth['brand_shop:order:order|refund']"
             >
               退款
             </a>
+            <!--  -->
             <a
-              v-if="record.auth['brand_shop:order:order|split']"
               @click="onSplit(record)"
+              v-if="record.auth['brand_shop:order:order|split']"
             >
               业绩拆分
             </a>
+            <!--  -->
             <a
-              v-if="record.auth['shop:order:order|print']"
               @click="printOrder(record.id)"
+              v-if="
+                record.auth['shop:order:order|print'] &&
+                  record.product_type !== 13
+              "
             >
               打印小票
+            </a>
+            <!--   -->
+            <a
+              @click="onChildredRefund(record)"
+              v-if="
+                record.is_children &&
+                  record.auth['brand_shop:order:order|children_refund']
+              "
+            >
+              退款
             </a>
           </st-table-actions>
         </div>
@@ -128,15 +147,15 @@ export default {
   computed: {
     columns
   },
-  mounted() {
-    this.setSearchData()
-    console.log(this.list)
-  },
   watch: {
     $searchQuery() {
       this.setSearchData()
     }
   },
+  mounted() {
+    this.setSearchData()
+  },
+
   data() {
     return {
       ORDER_PRODUCT_TYPE,
@@ -149,6 +168,25 @@ export default {
     }
   },
   methods: {
+    // 子订单退款
+    onChildredRefund(record) {
+      console.log(record)
+      const props = { id: record.id, type: 'ChildInfo' }
+      console.log(props)
+      // if (record.product_type === this.ORDER_PRODUCT_TYPE.EARNEST) {
+      //   props.goodsInvalid = true
+      // }
+      this.$modalRouter.push({
+        name: 'shop-finance-refund',
+        props,
+        on: {
+          success: result => {
+            console.log('退款成功!')
+            this.$router.reload()
+          }
+        }
+      })
+    },
     // 打印小票
     printOrder(order_id) {
       window.open(
@@ -179,6 +217,7 @@ export default {
     },
     // 收款
     onGathering(record) {
+      console.log(record.product_type)
       console.log(this.productType(record.product_type))
       this.$modalRouter.push({
         name: 'sold-deal-gathering',
@@ -239,8 +278,13 @@ export default {
     // 退款
     onRefund(record) {
       const props = { id: record.id, type: record.product_type }
+      // const props = { id: record.id, type: 'Detail' } 北京研发冲突代码
       if (record.product_type === this.ORDER_PRODUCT_TYPE.EARNEST) {
+        // 这里的枚举值是8 8是代表定金的嘛？
         props.goodsInvalid = true
+      }
+      if (record.product_type === this.ORDER_PRODUCT_TYPE.VENUES) {
+        props.isVenues = true
       }
       this.$modalRouter.push({
         name: 'shop-finance-refund',
@@ -277,7 +321,7 @@ export default {
     },
     productType(type) {
       let name = ''
-      // 1-会员卡 2-私教课 3-团体课 4-课程包 5-储值卡 6-小班课 7-手续费 8-定金 9-押金 10-储物柜
+      // 1-会员卡 2-私教课 3-团体课 4-课程包 5-储值卡 6-小班课 7-手续费 8-定金 9-押金 10-储物柜 12-云店 13-场地预约
       switch (type) {
         case 1:
           name = 'member'
@@ -309,6 +353,11 @@ export default {
         case 10:
           name = 'cabinet_order'
           break
+        case 12:
+          name = 'cloud_store'
+          break
+        case 13:
+          name = 'venues'
       }
       return name
     }
