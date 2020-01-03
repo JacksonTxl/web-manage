@@ -175,10 +175,9 @@ export default {
     },
     onGoOrder(course) {
       this.$router.push({
-        path: '/shop/finance/order/list',
+        path: '/shop/sold/course/list/small-course',
         query: {
-          course_id: course.course_id,
-          product_type: 6
+          course_id: course.course_id
         }
       })
     },
