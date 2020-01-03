@@ -5,7 +5,7 @@
     @ok="save"
     :footer="null"
     v-model="show"
-    width="700px"
+    width="710px"
   >
     <a-row :gutter="24">
       <a-col :lg="16">
@@ -123,7 +123,7 @@
             </td>
             <td>--</td>
             <td>
-              <a href="javascript:;" @click="addReserve">添加预约</a>
+              <a @click="addReserve">添加预约</a>
             </td>
           </tr>
           <tr v-for="(item, index) in reserveList" :key="index">
@@ -145,7 +145,7 @@
                   签到
                 </a>
                 <a-divider type="vertical"></a-divider>
-                <a href="javascript:;" @click="leave(item.reserve_id)">
+                <a @click="leave(item.reserve_id)">
                   请假
                 </a>
               </div>
@@ -159,7 +159,7 @@
                   签到
                 </a>
                 <a-divider type="vertical"></a-divider>
-                <a href="javascript:;" @click="del(item.reserve_id)">
+                <a @click="del(item.reserve_id)">
                   取消预约
                 </a>
               </div>
@@ -181,14 +181,11 @@
                       item.reserve_status === 3)
                 "
               >
-                <a href="javascript:;" @click="checkSign(item.reserve_id)">
+                <a @click="checkSign(item.reserve_id)">
                   补签到
                 </a>
                 <a-divider type="vertical"></a-divider>
-                <a
-                  href="javascript:;"
-                  @click="remedialCourse(item.reserve_id, reserveInfo.id)"
-                >
+                <a @click="remedialCourse(item.reserve_id, reserveInfo.id)">
                   补课
                 </a>
               </div>
@@ -350,13 +347,13 @@ export default {
       this.reserveService.checkSign(id).subscribe(this.getReserveInfo)
     },
     addReserve() {
-      const form = {
+      const params = {
         schedule_id: this.id,
         member_id: this.memberId,
         consume_type: this.consumeType,
         consume_id: this.consumeId
       }
-      this.reserveService.add(form).subscribe(this.onAddReserveSuccess)
+      this.reserveService.add(params).subscribe(this.onAddReserveSuccess)
     },
     cancelReserve(id) {
       this.reserveService.cancel(id).subscribe(this.onCancelReserveSuccess)
@@ -413,7 +410,7 @@ export default {
           },
           on: {
             ok: () => {
-              this.$router.push({ query: this.$searchQuery })
+              this.$router.reload()
             }
           }
         })
@@ -424,11 +421,10 @@ export default {
     message(id) {
       this.reserveService.message(id).subscribe(res => {
         console.log(res)
-        this.courseMessage = res.data.info
         this.$modalRouter.push({
           name: 'schedule-small-course-remedial-info',
           props: {
-            info: courseMessage
+            info: res.info
           }
         })
         this.show = false
@@ -458,7 +454,7 @@ export default {
     },
     onDelScheduleScuccess() {
       console.log('取消课程!')
-      this.$router.push({ query: this.$searchQuery })
+      this.$router.reload()
       this.show = false
     }
   }

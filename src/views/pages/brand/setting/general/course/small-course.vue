@@ -46,11 +46,17 @@
       </div>
       <st-hr></st-hr>
       <st-t4>签到方式</st-t4>
-      <div class="st-des">{{ is_sign }}用户自主签到</div>
+      <div class="st-des">
+        {{ reserveInfo.is_sign ? IS_SIGN.YES : IS_SIGN.NO }}用户自主签到
+      </div>
       <st-hr></st-hr>
       <st-t4>签到条件</st-t4>
       <div class="st-des">
-        当天{{ is_sign_entrance }}入场记录(PC不受此条件限制)
+        当天{{
+          reserveInfo.is_sign_entrance
+            ? IS_SIGN_ENTRANCE.YES
+            : IS_SIGN_ENTRANCE.NO
+        }}入场记录(PC不受此条件限制)
       </div>
       <st-hr></st-hr>
       <st-t4>签到时间</st-t4>
@@ -82,6 +88,7 @@ import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
 import { SmallCourseService } from './small-course.service'
 import BrandSettingSmallCourseReserve from '@/views/biz-modals/brand/setting/small-course/reserve'
+import { IS_SIGN, IS_SIGN_ENTRANCE } from '@/constants/course/small-course'
 export default {
   serviceInject() {
     return {
@@ -102,12 +109,10 @@ export default {
   modals: {
     BrandSettingSmallCourseReserve
   },
-  computed: {
-    is_sign() {
-      return this.reserveInfo.is_sign ? '支持' : '不支持'
-    },
-    is_sign_entrance() {
-      return this.reserveInfo.is_sign_entrance ? '必须有' : '可以没有'
+  data() {
+    return {
+      IS_SIGN,
+      IS_SIGN_ENTRANCE
     }
   },
   methods: {

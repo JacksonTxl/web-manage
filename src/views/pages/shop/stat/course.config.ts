@@ -79,11 +79,6 @@ export const allColumns = (vm: any) => {
       align: 'right'
     },
     {
-      title: `可约人数（${vm.$c('small_course')}）`,
-      dataIndex: 'small_can_reserve_num',
-      align: 'right'
-    },
-    {
       title: `预约人数（${vm.$c('small_course')}）`,
       dataIndex: 'small_reserved_num',
       align: 'right'

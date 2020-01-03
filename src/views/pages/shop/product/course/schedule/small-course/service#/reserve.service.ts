@@ -48,7 +48,21 @@ export class SmallCourseScheduleReserveService {
     return this.reserveApi.add(params).pipe(
       tap(res => {
         this.msg.success({
-          content: '添加预约成功！！！'
+          content: '添加预约成功'
+        })
+      })
+    )
+  }
+  /**
+   *
+   * @param params
+   * 取消预约
+   */
+  del(id: any) {
+    return this.reserveApi.del(id).pipe(
+      tap(res => {
+        this.msg.success({
+          content: '取消预约成功'
         })
       })
     )
@@ -110,12 +124,12 @@ export class SmallCourseScheduleReserveService {
   checkSign(id: any) {
     return this.reserveApi.checkSign(id).pipe(
       tap(res => {
-        this.msg.success({ content: '补课成功' })
+        this.msg.success({ content: '补签到成功' })
       })
     )
   }
   /**
-   * 请假 msg
+   * 请假
    */
   leave(id: any) {
     return this.reserveApi.leave(id).pipe(
