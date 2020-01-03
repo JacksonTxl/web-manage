@@ -238,7 +238,7 @@ export default {
     },
     // 退款
     onRefund(record) {
-      const props = { id: record.id }
+      const props = { id: record.id, type: record.product_type }
       if (record.product_type === this.ORDER_PRODUCT_TYPE.EARNEST) {
         props.goodsInvalid = true
       }

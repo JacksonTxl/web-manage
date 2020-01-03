@@ -34,78 +34,14 @@
       </a-row>
       <st-form :form="form" labelWidth="88px">
         <div :class="sale('sale')">
-          <st-form-item
+          <member-search
             labelGutter="12px"
-            v-if="searchMemberIsShow"
-            label="购买会员"
-            required
-          >
-            <a-select
-              showSearch
-              allowClear
-              placeholder="输入手机号或会员名搜索"
-              :defaultActiveFirstOption="false"
-              :showArrow="false"
-              :filterOption="false"
-              v-decorator="decorators.memberId"
-              @search="onMemberSearch"
-              @change="onMemberChange"
-              notFoundContent="无搜索结果"
-            >
-              <a-select-option
-                v-for="(item, index) in memberList"
-                :value="item.id"
-                :key="index"
-              >
-                <span
-                  v-html="
-                    `${item.member_name} ${item.mobile}`.replace(
-                      new RegExp(memberSearchText, 'g'),
-                      `\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`
-                    )
-                  "
-                >
-                  {{ item.member_name }} {{ item.mobile }}
-                </span>
-              </a-select-option>
-            </a-select>
-            <p
-              v-if="
-                !memberList.length &&
-                  memberSearchText !== '' &&
-                  +info.sale_range.type === 1
-              "
-              class="add-text"
-            >
-              查无此会员，
-              <span @click="onAddMember">添加新会员？</span>
-            </p>
-          </st-form-item>
-          <st-form-item
-            labelGutter="12px"
-            v-if="!searchMemberIsShow"
-            label="会员姓名"
-            required
-          >
-            <a-input
-              v-decorator="decorators.memberName"
-              placeholder="请输入会员姓名"
-            ></a-input>
-          </st-form-item>
-          <st-form-item
-            labelGutter="12px"
-            v-if="!searchMemberIsShow"
-            label="手机号"
-            required
-          >
-            <a-input
-              v-decorator="decorators.memberMobile"
-              placeholder="请输入手机号"
-            ></a-input>
-            <p class="add-text">
-              <span @click="onCancelMember">取消添加</span>
-            </p>
-          </st-form-item>
+            v-if="info.sale_range"
+            :form="form"
+            :memberInfo="memberInfo"
+            :saleRangeType="info.sale_range.type"
+            @change="onMemberChange"
+          ></member-search>
           <st-form-item
             v-if="cabinetList"
             labelGutter="12px"
@@ -306,16 +242,17 @@ import { SaleCabinetService } from './sale-cabinet.service'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
 import { PatternService } from '@/services/pattern.service'
-import { UserService } from '@/services/user.service'
 import { ruleOptions } from './sale-cabinet.config'
 import autoContractBtn from '@/views/biz-components/contract/auto-contract-btn.vue'
+import MemberSearch from '@/views/biz-components/member-search/member-search'
 export default {
   name: 'ModalSoldDealSaleCabinet',
   bem: {
     sale: 'modal-sold-deal-sale'
   },
   components: {
-    autoContractBtn
+    autoContractBtn,
+    MemberSearch
   },
   serviceProviders() {
     return [SaleCabinetService]
@@ -323,7 +260,6 @@ export default {
   serviceInject() {
     return {
       saleCabinetService: SaleCabinetService,
-      userService: UserService,
       pattern: PatternService
     }
   },
@@ -358,9 +294,6 @@ export default {
       form,
       decorators,
       show: false,
-      // 搜索会员
-      memberSearchText: '',
-      searchMemberIsShow: true,
       // 租赁柜
       cabinetFieldNames: {
         label: 'name',
@@ -387,9 +320,6 @@ export default {
     this.saleCabinetService.currentPrice$.commit(() => 0)
     this.saleCabinetService.init(this.id, this.areaId).subscribe(res => {
       this.startTime = cloneDeep(moment(res[0].info.start_time))
-      if (this.memberInfo) {
-        this.onMemberSearch(this.memberInfo.member_name)
-      }
     })
   },
   computed: {
@@ -431,30 +361,6 @@ export default {
     }
   },
   methods: {
-    // 搜索会员
-    onMemberSearch(data) {
-      this.memberSearchText = data
-      if (data === '') {
-        this.saleCabinetService.memberList$.commit(() => [])
-        this.form.resetFields(['memberId'])
-      } else {
-        this.saleCabinetService
-          .getMember(data, this.info.sale_range.type)
-          .subscribe(res => {
-            if (!res.list.length) {
-              this.resetAdvance()
-              this.form.resetFields(['memberId'])
-            } else {
-              if (this.memberInfo) {
-                this.form.setFieldsValue({
-                  memberId: this.memberInfo.member_id
-                })
-                this.onMemberChange(this.memberInfo.member_id)
-              }
-            }
-          })
-      }
-    },
     onMemberChange(data) {
       if (!data) {
         this.resetAdvance()
@@ -470,16 +376,6 @@ export default {
       this.advanceText = '未选择定金'
       this.advanceAmount = ''
       this.selectAdvance = ''
-    },
-    // 切换添加会员
-    onAddMember() {
-      this.searchMemberIsShow = false
-      this.form.resetFields(['memberId', 'memberName', 'memberMobile'])
-      this.resetAdvance()
-    },
-    onCancelMember() {
-      this.searchMemberIsShow = true
-      this.form.resetFields(['memberId', 'memberName', 'memberMobile'])
     },
     onCabinetChange(data) {
       this.cabinetId = data[1]
@@ -548,7 +444,7 @@ export default {
     },
     // 获取当前价钱
     getPrice(advance, reduce) {
-      const memberId = this.form.getFieldValue('memberId')
+      const memberId = this.form.getFieldValue('member_id')
       this.saleCabinetService.currentPriceAction$.dispatch({
         product_id: this.cabinetId,
         product_type: this.info.contract_type,
@@ -580,12 +476,21 @@ export default {
               this.selectAdvance === -1 ? undefined : this.selectAdvance,
             reduce_amount,
             order_amount: this.currentPrice,
-            member_id: +values.memberId,
-            member_name: values.memberName,
-            mobile: values.memberMobile,
+            member_id: +values.member_id,
+            member_name: values.member_name,
+            mobile: values.mobile ? values.mobile.phone : undefined,
             sale_id: +values.saleName,
             description: this.description,
-            sale_range: +this.info.sale_range.type
+            sale_range: +this.info.sale_range.type,
+            is_minors: values.is_minors,
+            parent_name: values.parent_name,
+            parent_mobile: values.parent_mobile
+              ? values.parent_mobile.phone
+              : undefined,
+            parent_country_prefix: values.parent_mobile
+              ? values.parent_mobile.code_id
+              : undefined,
+            parent_user_role: values.parent_user_role
           })
           .subscribe(res => {
             this.show = false
@@ -610,12 +515,21 @@ export default {
               this.selectAdvance === -1 ? undefined : this.selectAdvance,
             reduce_amount,
             order_amount: this.currentPrice,
-            member_id: +values.memberId,
-            member_name: values.memberName,
-            mobile: values.memberMobile,
+            member_id: +values.member_id,
+            member_name: values.member_name,
+            mobile: values.mobile ? values.mobile.phone : undefined,
             sale_id: +values.saleName,
             description: this.description,
-            sale_range: +this.info.sale_range.type
+            sale_range: +this.info.sale_range.type,
+            is_minors: values.is_minors,
+            parent_name: values.parent_name,
+            parent_mobile: values.parent_mobile
+              ? values.parent_mobile.phone
+              : undefined,
+            parent_country_prefix: values.parent_mobile
+              ? values.parent_mobile.code_id
+              : undefined,
+            parent_user_role: values.parent_user_role
           })
           .subscribe(res => {
             this.show = false

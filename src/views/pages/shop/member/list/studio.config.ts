@@ -13,7 +13,10 @@ export const columns = (vm: any) => [
     width: 100,
     scopedSlots: { customRender: 'member_name' }
   },
-  { title: '手机号', dataIndex: 'mobile' },
+  {
+    title: '手机号',
+    dataIndex: 'mobile'
+  },
   {
     title: '用户等级',
     dataIndex: 'member_level',

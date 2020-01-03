@@ -8,6 +8,7 @@ export const columns = () => {
     {
       title: '签单商品',
       dataIndex: 'product_name',
+      scopedSlots: { customRender: 'product_name' },
       width: '18%'
     },
     {

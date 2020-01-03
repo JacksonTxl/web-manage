@@ -27,18 +27,39 @@
             <st-t2>
               {{ info.member_name }}
               <st-icon
-                v-if="info.sex === 1"
+                v-if="basicInfo.sex === 1 && !basicInfo.is_minors"
                 :type="'female'"
                 :style="'color:#FF5E41'"
               />
               <st-icon
-                v-if="info.sex === 2"
+                v-if="basicInfo.sex === 2 && !basicInfo.is_minors"
                 :type="'male'"
                 :style="'color:#3F66F6'"
               />
+              <st-icon
+                v-if="basicInfo.is_minors && basicInfo.sex.id === 1"
+                type="user-type"
+                color="#FF5E41"
+              />
+              <st-icon
+                v-if="basicInfo.is_minors && basicInfo.sex.id === 2"
+                type="user-type"
+                color="#3F66F6"
+              />
             </st-t2>
             <div class="shop-member-info-title-pannel__info__phone">
-              <div>
+              <div v-if="basicInfo.is_minors">
+                <span class="mg-r8">
+                  家长：
+                  <span>{{ basicInfo.parent_info.username }}</span>
+                </span>
+                <span class="line"></span>
+                <span>
+                  手机号：
+                  <span>{{ basicInfo.parent_info.mobile }}</span>
+                </span>
+              </div>
+              <div v-else>
                 手机号：
                 <span>{{ info.mobile }}</span>
               </div>
@@ -199,6 +220,7 @@ export default {
   rxState() {
     return {
       info: this.infoService.info$,
+      basicInfo: this.infoService.basicInfo$,
       auth: this.infoService.auth$,
       authCommon: this.infoService.authCommon$
     }

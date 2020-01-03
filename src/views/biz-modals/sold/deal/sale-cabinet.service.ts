@@ -15,7 +15,6 @@ export class SaleCabinetService {
   info$ = new State({})
   saleList$ = new State([])
   cabinetList$ = new State([])
-  memberList$ = new State([])
   loading$ = new State({})
   currentPriceAction$: Action<any>
   currentPrice$ = new State('0')
@@ -98,15 +97,6 @@ export class SaleCabinetService {
     )
   }
 
-  // 获取会员列表
-  @Effect()
-  getMember(member: string, type: number) {
-    return this.transactionApi.getMemberList(member, type).pipe(
-      tap((res: any) => {
-        this.memberList$.commit(() => res.list)
-      })
-    )
-  }
   // 获取定金列表
   @Effect()
   getAdvanceList(id: string | number) {

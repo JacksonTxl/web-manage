@@ -117,6 +117,9 @@ export class UserService {
   memberCardEnums$ = new Computed<ModuleEnums>(
     this.enums$.pipe(pluck('member_card'))
   )
+  smallCourseEnums$ = new Computed<ModuleEnums>(
+    this.enums$.pipe(pluck('small_course'))
+  )
   personalCourseEnums$ = new Computed<ModuleEnums>(
     this.enums$.pipe(pluck('personal_course'))
   )

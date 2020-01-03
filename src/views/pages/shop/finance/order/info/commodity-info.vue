@@ -167,6 +167,30 @@
           </st-info>
         </a-col>
       </a-row>
+      <!-- 小班课 -->
+      <a-row :gutter="24" v-if="product_type === 6">
+        <a-col :span="9">
+          <st-info>
+            <st-info-item label="商品名称">
+              {{ info.product_name }}
+            </st-info-item>
+            <st-info-item label="商品类型">
+              {{ info.product_type }}
+            </st-info-item>
+            <st-info-item label="开班时间">
+              {{ info.course_begin_time }}~{{ info.course_end_time }}
+            </st-info-item>
+          </st-info>
+        </a-col>
+        <a-col :span="9">
+          <st-info>
+            <st-info-item label="允许转让">{{ info.is_transfer }}</st-info-item>
+            <st-info-item label="转让手续费">
+              {{ info.transfer_fee }}
+            </st-info-item>
+          </st-info>
+        </a-col>
+      </a-row>
     </st-panel>
   </section>
 </template>
