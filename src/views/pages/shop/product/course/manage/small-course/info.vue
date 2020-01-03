@@ -187,7 +187,7 @@ export default {
         path: '/shop/finance/order/list',
         query: {
           course_id: this.groupCourseHeaderInfo.course_id,
-          course_type: this.groupCourseHeaderInfo.small_course_type
+          product_type: 6
         }
       })
     },
