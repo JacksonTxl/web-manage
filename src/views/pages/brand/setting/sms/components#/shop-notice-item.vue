@@ -28,7 +28,6 @@
         <st-switch @change="save" v-model="params.notify_mode.app"></st-switch>
       </div>
       <div :class="[bComponent('text'), bShop('text')]" style="padding-left:0">
-        {{ params.notify_mode.pc }}
         <st-switch
           @change="save"
           v-model="params.notify_mode.pc"
