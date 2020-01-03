@@ -184,8 +184,11 @@ export default {
   methods: {
     onGoOrder() {
       this.$router.push({
-        path: '/shop/stat/order',
-        query: this.$searchQuery
+        path: '/shop/finance/order/list',
+        query: {
+          course_id: this.groupCourseHeaderInfo.course_id,
+          course_type: this.groupCourseHeaderInfo.small_course_type
+        }
       })
     },
     onGoEdit() {

@@ -173,10 +173,13 @@ export default {
         this.$router.reload()
       })
     },
-    onGoOrder() {
+    onGoOrder(course) {
       this.$router.push({
-        path: '/shop/stat/order',
-        query: this.$searchQuery
+        path: '/shop/finance/order/list',
+        query: {
+          course_id: course.course_id,
+          course_type: course.small_course_type
+        }
       })
     },
     onBeGroup(course) {
