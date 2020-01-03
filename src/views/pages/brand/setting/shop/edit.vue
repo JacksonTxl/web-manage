@@ -178,8 +178,7 @@ export default {
     return {
       serviceList: this.editService.serviceList$,
       shopInfo: this.editService.shopInfo$,
-      editLoading: this.editService.loading$,
-      shop: this.userService.shopEnums$
+      editLoading: this.editService.loading$
     }
   },
   mounted() {
