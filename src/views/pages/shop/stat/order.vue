@@ -1,25 +1,24 @@
 <template>
-  <div :class="bPage()">
+  <st-panel app>
     <div :class="bPage('count')"></div>
-    <div class="mg-b16" :class="bPage('count-action')">
-      <div :class="bPage('button-wapper')">
-        <st-button
-          type="primary"
-          v-if="auth$.export"
-          v-export-excel="{
-            type: 'order/shop',
-            query: $searchQuery
-          }"
-        >
-          全部导出
-        </st-button>
-      </div>
-      <span>
-        <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
-      </span>
-    </div>
+    <st-table-header-section>
+      <st-button
+        type="primary"
+        v-if="auth$.export"
+        v-export-excel="{
+          type: 'order/shop',
+          query: $searchQuery
+        }"
+      >
+        全部导出
+      </st-button>
+      <st-recent-radio-group
+        slot="actions"
+        @change="recentChange"
+      ></st-recent-radio-group>
+    </st-table-header-section>
     <st-total
-      :class="bPage('total')"
+      class="mg-t16"
       :indexs="columns"
       :dataSource="total$"
       hasTitle
@@ -34,7 +33,7 @@
       :dataSource="list$"
       rowKey="id"
     ></st-table>
-  </div>
+  </st-panel>
 </template>
 <script>
 import { OrderService } from './order.service'
