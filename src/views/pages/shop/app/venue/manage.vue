@@ -30,11 +30,20 @@
                 删除场馆
               </st-popconfirm>
             </a-menu-item>
-            <a-menu-item
-              @click="onClickSwitchVenue(venue)"
-              v-if="venue.auth['shop:product:venues|switch']"
-            >
-              {{ venue.area_status === AREA_STATUS.OFF ? '开启' : '关闭' }}场馆
+            <a-menu-item v-if="venue.auth['shop:product:venues|switch']">
+              <span
+                @click="onClickSwitchVenue(venue)"
+                v-if="venue.area_status === AREA_STATUS.OFF"
+              >
+                开启场馆
+              </span>
+              <st-popconfirm
+                v-if="venue.area_status === AREA_STATUS.ON"
+                :title="'确认关闭场馆？'"
+                @confirm="onClickSwitchVenue(venue)"
+              >
+                关闭场馆
+              </st-popconfirm>
             </a-menu-item>
           </st-more-dropdown>
         </li>
