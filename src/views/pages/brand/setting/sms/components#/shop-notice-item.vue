@@ -9,13 +9,30 @@
         v-if="params.notify_mode.sms"
         style="padding-left:0"
       >
-        <st-switch @change="save" v-model="params.notify_mode.sms"></st-switch>
+        <span
+          v-if="
+            NOTIFY_SHOP_SUB_TYPE.MEMBER_ENTRANCE_SUCCESS ===
+              info.notify_sub_type.value
+          "
+        >
+          暂不支持
+        </span>
+        <st-switch
+          @change="save"
+          v-model="params.notify_mode.sms"
+          v-else
+        ></st-switch>
       </div>
       <div :class="bComponent('text')" style="padding-left:0">
         <st-switch @change="save" v-model="params.notify_mode.app"></st-switch>
       </div>
       <div :class="bComponent('text')" style="padding-left:0">
-        <st-switch @change="save" v-model="params.notify_mode.pc"></st-switch>
+        <st-switch
+          @change="save"
+          v-model="params.notify_mode.pc"
+          v-if="isPc"
+        ></st-switch>
+        <span v-else>暂不支持</span>
       </div>
       <div
         v-show="
@@ -172,6 +189,14 @@ export default {
   name: 'NoticeItem',
   bem: {
     bComponent: componentName
+  },
+  computed: {
+    isPc() {
+      return [
+        this.NOTIFY_SHOP_SUB_TYPE.MEMBER_ENTRANCE_SUCCESS,
+        this.NOTIFY_SHOP_SUB_TYPE.BATCH_OPERATE
+      ].includes(this.info.notify_sub_type.value)
+    }
   },
   data() {
     return {
