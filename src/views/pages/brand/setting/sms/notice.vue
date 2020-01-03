@@ -143,7 +143,8 @@
                 "
               >
                 {{
-                  NOTIFY_SHOP_SUB_TYPE.MEMBER_EXPIRE_DUE === 10
+                  NOTIFY_SHOP_SUB_TYPE.MEMBER_EXPIRE_DUE ===
+                  item.notify_sub_type.value
                     ? '客保到期前'
                     : '会员流失前'
                 }}

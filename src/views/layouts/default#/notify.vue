@@ -1,5 +1,8 @@
 <template>
-  <a-badge class="layout-default-body__notify cur-p" :count="notReadNum$">
+  <a-badge
+    class="layout-default-body__notify cursor-pointer"
+    :count="notReadNum$"
+  >
     <span @click="onClickNotify" class="font-number">
       <st-icon type="notify" size="22px" color="#9BACB9"></st-icon>
     </span>

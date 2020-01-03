@@ -59,16 +59,7 @@ export default {
   data() {
     return {
       show: true,
-      notifyConfig: {},
-      showData: [
-        {
-          src: 'https://b-gold-cdn.xitu.io/v3/static/img/frontend.1dae74a.png'
-        },
-        {
-          src: 'https://b-gold-cdn.xitu.io/v3/static/img/frontend.1dae74a.png'
-        },
-        { src: 'https://b-gold-cdn.xitu.io/v3/static/img/frontend.1dae74a.png' }
-      ]
+      notifyConfig: {}
     }
   },
   methods: {
