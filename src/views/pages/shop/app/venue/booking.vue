@@ -1,0 +1,428 @@
+<template>
+  <div :class="b()">
+    <div :class="b('right')">
+      <st-t2>代预约</st-t2>
+      <st-table
+        :class="right('table')"
+        :columns="columns"
+        :dataSource="selectedList"
+        rowKey="id"
+        :pagination="false"
+        :scroll="{ y: 148 }"
+      >
+        <div slot="action" slot-scope="text, record">
+          <st-table-actions>
+            <a @click="deleteRow(record)">
+              删除
+            </a>
+          </st-table-actions>
+        </div>
+      </st-table>
+      <div :class="right('sum')">{{ `总额：¥${sum}` }}</div>
+      <st-hr></st-hr>
+      <st-form :form="form" labelWidth="88px">
+        <member-search
+          label="购买会员"
+          :form="form"
+          :decorators="decorators"
+          :fields="{ member_id: 'member_id' }"
+          type="transaction"
+        ></member-search>
+        <st-form-item label="减免">
+          <st-input-number
+            :float="true"
+            v-model="reduce_price"
+            placeholder="请输入减免金额"
+          >
+            <span slot="addonAfter">元</span>
+          </st-input-number>
+        </st-form-item>
+        <st-form-item label="备注" class="mg-b0">
+          <a-textarea
+            placeholder="请填写备注"
+            v-decorator="decorators.description"
+            :autosize="{ minRows: 4, maxRows: 6 }"
+          />
+        </st-form-item>
+      </st-form>
+      <div :class="right('footer', { fixed: isActionFixed })">
+        <div class="price">
+          <span>共{{ selectedList.length }}件商品&nbsp;合计：</span>
+          <span class="font-number">&yen;{{ finalAmount }}</span>
+        </div>
+        <div class="button">
+          <st-button
+            v-if="auth.reserve"
+            @click="onCreateOrder"
+            :loading="loading.createOrder"
+          >
+            预约
+          </st-button>
+          <st-button
+            v-if="auth.pay"
+            type="primary"
+            @click="onPay"
+            :loading="loading.createPay"
+          >
+            预约并收款
+          </st-button>
+        </div>
+      </div>
+    </div>
+    <div :class="b('left')" id="booking-left">
+      <a-radio-group
+        :value="query.venues_id"
+        id="booking-left-venue"
+        @change="selectHandler"
+      >
+        <a-radio-button
+          v-for="(item, index) in venueList"
+          :key="index"
+          :value="item.venues_id"
+        >
+          {{ item.venues_name }}
+        </a-radio-button>
+      </a-radio-group>
+      <div :class="calendar()" id="booking-left-calendar">
+        <swiper :options="sliderOptions">
+          <swiper-slide v-for="(item, index) in calendarData" :key="index">
+            <div
+              :class="[calendar('date'), { act: pickedIndex === index }]"
+              @click="pickDate(item, index)"
+            >
+              <div :class="calendar('week')">{{ item.week }}</div>
+              <div :class="calendar('day')">{{ item.day }}</div>
+            </div>
+          </swiper-slide>
+        </swiper>
+        <div
+          class="swiper-button-prev swiper-booking-button-prev"
+          slot="button-prev"
+        >
+          <div :class="calendar('icon')">
+            <st-icon type="arrow-left" class="arrow-left" />
+          </div>
+        </div>
+
+        <div
+          class="swiper-button-next swiper-booking-button-next"
+          slot="button-next"
+        >
+          <div :class="calendar('icon')">
+            <st-icon type="arrow-right" class="arrow-right" />
+          </div>
+        </div>
+      </div>
+
+      <div :class="list()">
+        <booking-table
+          ref="bookingTable"
+          :data="bookingList"
+          :siteX="siteX"
+          :siteY="siteY"
+          :selectedData="selectedList"
+          @change="getSelectedList"
+        ></booking-table>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import { BookingService } from './booking.service'
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import 'swiper/dist/css/swiper.css'
+import moment from 'moment'
+import bookingTable from './components#/booking-table'
+import memberSearch from '@/views/biz-components/member-search/member-search'
+import { ruleOptions } from './booking.config'
+import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
+import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
+export default {
+  name: 'PageShopAppVenueBooking',
+  bem: {
+    b: 'page-shop-app-venue-booking',
+    calendar: 'page-shop-app-venue-booking__calendar',
+    list: 'page-shop-app-venue-booking__list',
+    right: 'page-shop-app-venue-booking__right'
+  },
+  serviceInject() {
+    return {
+      bookingService: BookingService
+    }
+  },
+  rxState() {
+    return {
+      venueList: this.bookingService.venueList$,
+      loading: this.bookingService.loading$,
+      auth: this.bookingService.auth$
+    }
+  },
+  modals: {
+    SoldDealGatheringTip,
+    SoldDealGathering
+  },
+  components: {
+    swiper,
+    swiperSlide,
+    bookingTable,
+    memberSearch
+  },
+  data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
+    return {
+      sum: 0,
+      finalAmount: 0,
+      reduce_price: '',
+      form,
+      decorators,
+      selectedList: [],
+      columns: [
+        { title: '已选场次', dataIndex: 'site_name' },
+        { title: '时段', dataIndex: 'start_time', width: 120 },
+        { title: '价格', dataIndex: 'price', width: 120 },
+        {
+          title: '操作',
+          width: 80,
+          scopedSlots: { customRender: 'action' }
+        }
+      ],
+      sliderOptions: {
+        autoplay: false,
+        navigation: {
+          nextEl: '.swiper-booking-button-next',
+          prevEl: '.swiper-booking-button-prev'
+        },
+        slidesPerView: 7,
+        slidesPerGroup: 7,
+        centeredSlides: false,
+        normalizeSlideIndex: false
+      },
+      calendarData: [],
+      query: {
+        venues_id: '',
+        page: 1,
+        size: 100,
+        reserve_day: ''
+      },
+      pickedIndex: 0,
+      bookingList: [],
+      siteX: [],
+      siteY: [],
+      footerEl: null,
+      isActionFixed: true
+    }
+  },
+  created() {
+    this.calendarData = Array(28)
+      .fill()
+      .map((item, index) => {
+        return {
+          week: moment()
+            .add(index, 'days')
+            .format('ddd'),
+          date: moment()
+            .add(index, 'days')
+            .format('YYYY-MM-DD'),
+          day: moment()
+            .add(index, 'days')
+            .format('MM/DD')
+        }
+      })
+    this.query.venues_id = this.venueList[0].venues_id
+    this.pickDate(this.calendarData[0], 0)
+  },
+  watch: {
+    reduce_price(val) {
+      this.calcPrice()
+    }
+  },
+  mounted() {
+    this.footerEl = document.querySelector('.layout-default-body__footer')
+    if (this.footerEl) {
+      this.handleActionsPosition()
+      window.addEventListener('scroll', this.handleActionsPosition, false)
+      window.addEventListener('resize', this.handleActionsPosition, false)
+    }
+  },
+  methods: {
+    handleActionsPosition() {
+      const rect = this.footerEl.getBoundingClientRect()
+      const minaMain = document
+        .querySelector('.page-shop-app-venue-booking__right')
+        .getBoundingClientRect()
+      // 视窗内
+      if (rect.top < window.innerHeight) {
+        this.isActionFixed = false
+      } else {
+        this.isActionFixed = true
+      }
+    },
+    createdOrderPay(props) {
+      this.$modalRouter.push({
+        name: 'sold-deal-gathering',
+        props,
+        on: {
+          success: res => {
+            this.payCallBack(props.order_id, res.type)
+          },
+          cancel: () => {
+            this.$router.reload()
+          }
+        }
+      })
+    },
+    payCallBack(orderId, callBackType) {
+      switch (callBackType) {
+        case 'cancel':
+          this.$router.reload()
+          break
+        case 'pay':
+          this.createdGatheringTip({
+            message: '收款成功',
+            order_id: orderId,
+            needPay: false,
+            needContract: false,
+            needTicket: false
+          })
+          break
+      }
+    },
+    tipCallBack({ orderId, type }) {
+      switch (type) {
+        case 'cancel':
+          this.$router.reload()
+          break
+        case 'ViewOrder':
+          this.createdOrderViewOrder(orderId)
+          break
+        case 'Pay':
+          this.createdOrderPay({ order_id: orderId, type: 'venues' })
+          break
+      }
+    },
+    createdGatheringTip(props) {
+      this.$modalRouter.push({
+        name: 'sold-deal-gathering-tip',
+        props,
+        on: {
+          success: this.tipCallBack
+        }
+      })
+    },
+    createdOrderViewOrder(order_id) {
+      this.$router.push({
+        name: 'shop-finance-order-info-collection-details',
+        query: {
+          id: order_id
+        }
+      })
+    },
+    createOrder() {
+      return new Promise((resolve, reject) => {
+        this.form.validate().then(values => {
+          const venues_data = this.selectedList.map(item => {
+            return {
+              time_start: item.start_time,
+              time_end: item.end_time,
+              venues_site_id: +item.id.replace(/\-.*/, ''),
+              price: item.price,
+              venues_site_name: item.site_name
+            }
+          })
+          this.bookingService
+            .createOrder({
+              venues_id: this.query.venues_id,
+              venues_name: this.query.venues_name,
+              reduce_price: this.reduce_price,
+              actual_amount: this.finalAmount,
+              order_amount: this.sum,
+              reserve_day: this.query.reserve_day,
+              venues_data: venues_data,
+              ...values
+            })
+            .subscribe(result => {
+              resolve(result)
+            })
+        })
+      })
+    },
+    onCreateOrder() {
+      this.createOrder().then(result => {
+        const props = {
+          order_id: result.info.order_id,
+          message: '订单创建成功',
+          needPay: true,
+          needContract: false,
+          needTicket: false
+        }
+        this.createdGatheringTip(props)
+      })
+    },
+    onPay() {
+      this.createOrder().then(result => {
+        this.createdOrderPay({
+          order_id: result.info.order_id,
+          type: 'venues'
+        })
+      })
+    },
+    deleteRow(row) {
+      let index
+      this.selectedList.forEach((item, inx) => {
+        if (item.id === row.id) {
+          index = inx
+        }
+      })
+      this.$refs.bookingTable.deleteRow(index)
+    },
+    calcPrice() {
+      const list = this.selectedList
+      const venues_site_time = list.map(item => {
+        return {
+          start_time: item.start_time,
+          end_time: item.end_time,
+          site_id: +item.id.replace(/\-.*/, '')
+        }
+      })
+      const params = {
+        venues_id: this.query.venues_id,
+        date: this.query.reserve_day,
+        reduce_price: this.reduce_price || 0,
+        venues_site_time
+      }
+      this.bookingService.calcPrice(params).subscribe(res => {
+        this.sum = res.total_price
+        this.finalAmount = res.price
+      })
+    },
+    getSelectedList(list) {
+      this.selectedList = list
+      if (list.length === 0) {
+        this.sum = 0
+        this.finalAmount = 0
+        return
+      }
+      this.calcPrice()
+    },
+    pickDate(dateObj, index) {
+      this.calendarData.forEach(item => (item.ispick = false))
+      this.pickedIndex = index
+      this.query.reserve_day = dateObj.date
+      this.getList()
+    },
+    selectHandler(e) {
+      this.query.venues_id = e.target.value
+      this.getList()
+    },
+    getList() {
+      this.bookingService.getBookingList(this.query).subscribe(res => {
+        this.$refs.bookingTable.deleteAll()
+        this.bookingList = res.list
+        this.siteX = res.site_x
+        this.siteY = res.site_y
+      })
+    }
+  }
+}
+</script>

@@ -15,3 +15,10 @@ export const enum TMPL_TYPES {
   CUSTOM = 2,
   PERSONAL = 1
 }
+
+export const enum NOTIFY_TYPE {
+  /**
+   * 场地预约
+   */
+  VENUE = 1
+}

@@ -77,7 +77,7 @@
           @change="onSingleSearch('group_status', $event)"
           style="width: 130px"
         >
-          <a-select-option v-for="item in groupType" :key="item.value">
+          <a-select-option v-for="item in groupStatusEnums" :key="item.value">
             {{ item.label }}
           </a-select-option>
         </a-select>
@@ -88,24 +88,14 @@
           maxlength="50"
         />
       </div>
-      <template v-if="list.length > 1">
-        <a-table
-          rowKey="id"
-          :columns="columns"
-          :scroll="{ x: 1240 }"
-          :dataSource="list"
-          :rowClassName="rowClassName"
-          @expandedRowsChange="onShow"
-        ></a-table>
-      </template>
-      <template v-else>
-        <a-table
-          id="atable_no_data"
-          rowKey="id"
-          :columns="columns"
-          :dataSource="list"
-        ></a-table>
-      </template>
+      <st-table
+        rowKey="id"
+        :page="page"
+        :columns="columns"
+        :scroll="{ x: 1240 }"
+        :dataSource="list"
+        @change="onTableChange"
+      ></st-table>
     </st-panel>
   </st-panel-layout>
 </template>
@@ -136,7 +126,7 @@ export default {
       collect: this.dataService.collect$,
       loading: this.dataService.loading$,
       info: this.dataService.info$,
-      groupBuyDataEnums: this.userService.groupBuyEnums$
+      groupStatusEnums: this.dataService.groupStatusEnums$
     }
   },
   data() {
@@ -146,21 +136,6 @@ export default {
       searchWhere: '',
       groupStatus: -1,
       columns
-    }
-  },
-
-  computed: {
-    group_status() {
-      return (
-        (this.groupBuyDataEnums && this.groupBuyDataEnums.group_status) || []
-      )
-    },
-    groupType() {
-      let list = []
-      Object.entries(this.group_status.value).forEach(item => {
-        list.push({ value: +item[0], label: item[1] })
-      })
-      return [{ value: -1, label: '全部状态' }, ...list]
     }
   },
   watch: {

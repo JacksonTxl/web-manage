@@ -1,0 +1,62 @@
+.components-notice-tpl-item {
+  .w(100%);
+
+  &__title {
+    display: inline-block;
+    .w(190px);
+    .h(100%);
+    padding: 16px 24px;
+    vertical-align: top;
+  }
+
+  &__content {
+    display: inline-block;
+    width: calc(~'100% - 190px');
+    border-left: 1px solid rgba(230, 233, 239, 1);
+  }
+
+  &__column-input {
+    width: 300px;
+    border: none;
+    border-bottom: 1px solid #cdd4df;
+    border-radius: 0;
+  }
+
+  &__text {
+    display: inline-block;
+    width: 25%;
+    .h(100%);
+    padding: 16px 24px;
+    vertical-align: top;
+    text-align: left;
+    .btn {
+      cursor: pointer;
+    }
+  }
+  &__text-right {
+    line-height: 36px;
+  }
+  .width75 {
+    width: 75%;
+  }
+  .shadow {
+    .w(100%);
+    height: 12px;
+    position: relative;
+    background: linear-gradient(
+      360deg,
+      rgba(250, 250, 250, 0) 0%,
+      #f6f6f6 100%
+    );
+  }
+  .shadow-bottom {
+    .w(100%);
+    height: 12px;
+    position: relative;
+    background: linear-gradient(
+      360deg,
+      #f6f6f6 0%,
+      rgba(250, 250, 250, 0) 100%
+    );
+  }
+}
