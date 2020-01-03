@@ -103,8 +103,14 @@ export const ruleOptions = (vm: any) => {
     id_number: {
       rules: [
         {
-          message: '请填写正确的身份证号',
-          pattern: pattern.ID
+          validator: (field: any, value: any, values: any) => {
+            if (vm.id_type === 1 && !pattern.ID.test(value)) {
+              return '请填写正确的身份证号'
+            }
+            if (vm.id_type === 2 && !pattern.ID.test(value)) {
+              return '请填写正确的护照号码'
+            }
+          }
         }
       ]
     },
