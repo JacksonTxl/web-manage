@@ -180,7 +180,10 @@
     <a-row :gutter="8">
       <a-col :xxl="10" :lg="14" :xs="22" :offset="1">
         <st-form-item label="课程介绍">
-          <st-editor @input="onChangeEditor" v-model="content"></st-editor>
+          <st-editor
+            v-decorator="decorators.description"
+            @ready="onInitEditor"
+          ></st-editor>
         </st-form-item>
       </a-col>
     </a-row>
@@ -240,7 +243,6 @@ export default {
   },
   mounted() {
     this.isShowLimitContent = this.$route.query.type === '1'
-    this.setFieldsValue()
   },
   data(vm) {
     const form = this.$stForm.create()
@@ -260,6 +262,9 @@ export default {
     }
   },
   methods: {
+    onInitEditor() {
+      this.$nextTick(this.setFieldsValue())
+    },
     onChangeEditor() {
       return this.content.length === 0
     },
@@ -281,8 +286,8 @@ export default {
           ? info.appointment_rights
           : undefined,
         image: info.image
+        // content: info.description
       })
-      this.content = info.description
       this.bg_image.index = info.img_type
       if (info.img_type === 3) {
         this.bg_image = info.image
@@ -299,7 +304,6 @@ export default {
         values.small_course_type = this.$route.query.type
         values.image = this.bg_image
         values.img_type = this.bg_image.index
-        values.description = this.content
         if (this.bg_image.index === 0) {
           values.img_type = 3
         }
