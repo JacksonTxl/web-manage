@@ -107,21 +107,6 @@ export class UserService {
   // 禁用的 tooltips
   invalidTooltips$ = new State([])
 
-  // TODO: 枚举 后面要删
-  staffEnums$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('staff')))
-  accountEnums$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('account')))
-  depositCardEnums$ = new Computed<ModuleEnums>(
-    this.enums$.pipe(pluck('deposit_card'))
-  )
-  memberEnums$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('member')))
-  memberCardEnums$ = new Computed<ModuleEnums>(
-    this.enums$.pipe(pluck('member_card'))
-  )
-  personalCourseEnums$ = new Computed<ModuleEnums>(
-    this.enums$.pipe(pluck('personal_course'))
-  )
-  shopEnums$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('shop')))
-
   urlData$ = new State({})
   constructor(
     private constApi: ConstApi,
