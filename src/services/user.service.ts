@@ -121,28 +121,7 @@ export class UserService {
     this.enums$.pipe(pluck('personal_course'))
   )
   shopEnums$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('shop')))
-  settingEnums$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('setting')))
-  teamCourseEnums$ = new Computed<ModuleEnums>(
-    this.enums$.pipe(pluck('team_course'))
-  )
-  packageCourseEnums$ = new Computed<ModuleEnums>(
-    this.enums$.pipe(pluck('package_course'))
-  )
-  reserveEnums$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('reserve')))
-  shopMemberEnums$ = new Computed<ModuleEnums>(
-    this.enums$.pipe(pluck('shop_member'))
-  )
-  finance$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('finance')))
-  crowdEnums$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('crowd')))
-  soldEnums$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('sold_common')))
-  couponEnums$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('coupon')))
-  pluginEnums$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('plugin')))
-  transactionEnums$ = new Computed<ModuleEnums>(
-    this.enums$.pipe(pluck('transaction'))
-  )
-  groupBuyEnums$ = new Computed<ModuleEnums>(
-    this.enums$.pipe(pluck('group_buy'))
-  )
+
   urlData$ = new State({})
   constructor(
     private constApi: ConstApi,
@@ -232,7 +211,7 @@ export class UserService {
       })
     )
   }
-  private getOptions(enums: any, key: string) {
+  private getOptions(enums: any, key: string, labelField = 'label') {
     const enumObj = get(enums, key)
     if (!enumObj) {
       return []
@@ -245,7 +224,7 @@ export class UserService {
           }
           return res.concat([
             {
-              label: item,
+              [labelField]: item,
               value: +index
             }
           ])
@@ -264,15 +243,19 @@ export class UserService {
     key: string,
     options: {
       addAll?: boolean | string
+      labelField?: string
     } = {}
   ): Computed<{ label: string; value: number }[]> {
     return computed(
       (enums: any) => {
-        let opts = this.getOptions(enums, key)
+        let opts = this.getOptions(enums, key, options.labelField)
         if (options.addAll) {
           const allLabel = options.addAll === true ? '全部' : options.addAll
-          opts = [{ value: -1, label: allLabel }].concat(opts)
+          opts = [
+            { value: -1, [options.labelField || 'label']: allLabel }
+          ].concat(opts)
         }
+        console.log(opts)
         return opts
       },
       [this.enums$]

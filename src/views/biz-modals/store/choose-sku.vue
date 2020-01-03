@@ -106,7 +106,7 @@ export default {
     }
   },
   created() {
-    console.log(this.productData)
+    this.productInfo.product_name = this.productData.product_name
     this.changeData()
   }
 }

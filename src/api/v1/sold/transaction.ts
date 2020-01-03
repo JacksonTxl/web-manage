@@ -179,7 +179,7 @@ export class TransactionApi extends Api {
   /**
    * 交易签单-云店-商品列表
    */
-  getStoreProductList(query: { product_name: string }) {
+  getStoreProductList(query: TransactionListInput) {
     return this.http.get(`/v1/store/product/name_search_list`, {
       query
     })

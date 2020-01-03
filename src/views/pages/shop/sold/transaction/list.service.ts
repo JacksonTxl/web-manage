@@ -21,6 +21,7 @@ export class ListService {
   currentPrice$ = new State('0')
   actualAmount$ = new State('0')
   couponList$ = new State({})
+  productPage$ = new State({})
   productTypes$ = this.userService.getOptions$('transaction.product_type')
   constructor(
     private transactionApi: TransactionApi,
@@ -62,16 +63,13 @@ export class ListService {
    * 云店获取商品列表
    */
   @Effect()
-  getStoreProductList(productName: string) {
-    return this.transactionApi
-      .getStoreProductList({
-        product_name: productName
+  getStoreProductList(params: TransactionListInput) {
+    return this.transactionApi.getStoreProductList(params).pipe(
+      tap((res: any) => {
+        this.storeProductList$.commit(() => res.list)
+        this.productPage$.commit(() => res.page)
       })
-      .pipe(
-        tap((res: any) => {
-          this.storeProductList$.commit(() => res.list)
-        })
-      )
+    )
   }
   /**
    * 云店
