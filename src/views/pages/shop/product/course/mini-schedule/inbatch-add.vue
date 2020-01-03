@@ -48,6 +48,10 @@
                   :disabledDate="disabledEndDate"
                 ></a-range-picker>
               </st-form-item>
+              <div :class="b('delete')" @click="onDeleteCycleSchedule(i)">
+                <st-icon type="delete" class="delete-course-btn"></st-icon>
+                删除排期
+              </div>
             </st-form>
             <div :class="b('schedule__table')">
               <div
@@ -175,7 +179,7 @@
           </st-container>
         </div>
         <div :class="b('save-schedule-btn')">
-          <st-button @click="onDeleteCourseSchedule">
+          <st-button @click="onDeleteScheduleAll">
             取消
           </st-button>
           <st-button type="primary" @click="onClickSaveSchedule" class="mg-l12">
@@ -243,6 +247,7 @@ export default {
       disabledDate: [],
       tipsText: [],
       tipsCourseNum: [],
+      scheduleIdList: [],
       smallCourseInfo: {},
       weekList: [
         { weekId: 'week1', week: 1, date: '周一' },
@@ -555,7 +560,7 @@ export default {
         }
       })
     },
-    onDeleteCourseSchedule(del_type, item, cycleIndex, positionIndex) {
+    onDeleteCourseSchedule(del_type, item, cycleIndex) {
       console.log(del_type)
       console.log(item)
       console.log(cycleIndex)
@@ -582,7 +587,9 @@ export default {
           params.schedule_id = []
         }
         params.del_type = del_type
-        this.scheduleService.cancelCycleSingle(item).subscribe(res => {
+        console.log('删除周期排课')
+        console.log(params)
+        this.smallCourseScheduleService.cancelCycle(params).subscribe(res => {
           if (del_type === DELETE_TYPE.SINGLE) {
             this.scheduleList[cycleIndex].course_time.forEach(
               (dayItems, index) => {
@@ -605,16 +612,65 @@ export default {
           }
         })
       } else if (this.cycle_type === 2) {
-        this.scheduleService.cancelCustomAll(item).subscribe(res => {
-          this.onClickGoBack()
+        const params = []
+        this.customizeScheduleList.forEach((item, index) => {
+          params.push(item.id)
         })
+        this.smallCourseScheduleService
+          .cancelCustomAll(params)
+          .subscribe(res => {
+            this.onClickGoBack()
+          })
       }
     },
-    // 自主约课删除
+    // 删除周期整个批次
+    onDeleteCycleSchedule(index) {
+      let params = {}
+      const cycleDate = this.pickerList[cycleIndex]
+      params.cycle_begin_date = moment(cycleDate[0])
+      params.cycle_end_date = moment(cycleDate[1])
+      params.course_id = this.smallCourseInfo.course_id
+      params.schedule_id = []
+      params.del_type = DELETE_TYPE.CYCLE
+      this.smallCourseScheduleService.cancelCycle(params).subscribe(res => {
+        this.scheduleList.splice(index, 1)
+        this.pickerList.splice(index, 1)
+        //this.filterDateList(this.scheduleList)
+      })
+    },
+    // 自主约课单个删除
     onDeleteCustomSchedule(item, index) {
-      this.scheduleService.cancelCustom(item.id).subscribe(res => {
+      console.log(item)
+      console.log('自主删除单个' + item.id)
+      this.smallCourseScheduleService.cancelCustom(item.id).subscribe(res => {
         this.customizeScheduleList.splice(index, 1)
       })
+    },
+    // 取消删除所有未发布
+    onDeleteScheduleAll() {
+      if (this.cycle_type === 1) {
+        this.smallCourseScheduleService
+          .cancelCustomAll(params)
+          .subscribe(res => {
+            this.onClickGoBack()
+          })
+      } else if (this.cycle_type === 2) {
+        const params = {}
+        params.course_id = this.smallCourseInfo.course_id
+        params.list = []
+        this.customizeScheduleList.forEach((item, index) => {
+          params.list.push(item.id)
+        })
+        console.log(params)
+        console.log('自主删除所有')
+        this.smallCourseScheduleService
+          .cancelCustomAll(params)
+          .subscribe(res => {
+            this.onClickGoBack()
+          })
+      } else {
+        this.onClickGoBack()
+      }
     },
     // 新增周期排课
     addScheduleWeek() {

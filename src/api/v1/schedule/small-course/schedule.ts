@@ -60,7 +60,7 @@ export class SmallCourseScheduleApi extends Api {
    * 批量新增自主小班课排期
    */
   addScheduleInBatchCustom(params: any) {
-    return this.http.post('/v1/schedule/small/customize', { params })
+    return this.http.post('/v1/schedule/small/customize/add', { params })
   }
   /**
    *
@@ -68,7 +68,7 @@ export class SmallCourseScheduleApi extends Api {
    * 批量编辑新增自主小班课排期
    */
   editScheduleInBatchCustoms(params: any) {
-    return this.http.put('/v1/schedule/small/customize', { params })
+    return this.http.put(`/v1/schedule/small/${params.id}`, { params })
   }
   /**
    *
@@ -125,8 +125,8 @@ export class SmallCourseScheduleApi extends Api {
    * @param params
    * 删除周期排期
    */
-  cancelCycleSingle(params: any) {
-    return this.http.delete(`/v1/schedule/small/cycle/${params.course_id}`, {
+  cancelCycle(params: any) {
+    return this.http.post(`/v1/schedule/small/delete_cycle`, {
       params
     })
   }
@@ -136,7 +136,7 @@ export class SmallCourseScheduleApi extends Api {
    * 删除自主全部排期
    */
   cancelCustomAll(params: any) {
-    return this.http.delete(`/v1/schedule/small/cycle/${params.course_id}`, {
+    return this.http.put(`/v1/schedule/small/cycle/${params.course_id}`, {
       params
     })
   }
@@ -145,10 +145,8 @@ export class SmallCourseScheduleApi extends Api {
    * @param params
    * 删除自主单个排期
    */
-  cancelCustom(params: any) {
-    return this.http.delete(`/v1/schedule/small/cancel/${params.course_id}`, {
-      params
-    })
+  cancelCustom(id: any) {
+    return this.http.put(`/v1/schedule/small/cancel/${id}`)
   }
 }
 

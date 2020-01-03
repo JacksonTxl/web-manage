@@ -139,7 +139,9 @@ export class SmallCourseScheduleService {
   addScheduleInBatchCustom(params: any) {
     return this.scheduleApi.addScheduleInBatchCustom(params).pipe(
       tap(res => {
-        this.msg.success({ content: '批量添加成功' })
+        if (!res.conflict) {
+          this.msg.success({ content: '批量添加成功' })
+        }
       })
     )
   }
@@ -225,8 +227,8 @@ export class SmallCourseScheduleService {
   /**
    * 取消周期单节排期
    */
-  cancel(id: string) {
-    return this.scheduleApi.cancelCycleSingle(id).pipe(
+  cancelCycle(params: any) {
+    return this.scheduleApi.cancelCycle(params).pipe(
       tap(res => {
         this.msg.success({ content: '取消排课成功' })
       })
@@ -245,8 +247,8 @@ export class SmallCourseScheduleService {
   /**
    * 取消自主所有排期
    */
-  cancelCustomAll(id: string) {
-    return this.scheduleApi.cancelCustomAll(id).pipe(
+  cancelCustomAll(params: string) {
+    return this.scheduleApi.cancelCustomAll(params).pipe(
       tap(res => {
         this.msg.success({ content: '取消排课成功' })
       })

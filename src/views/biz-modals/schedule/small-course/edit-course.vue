@@ -7,7 +7,7 @@
           v-decorator="decorators.current_course_name"
         />
       </st-form-item>
-      <st-form-item label="日期" required v-if="!cycle_type">
+      <st-form-item label="日期" required v-if="cycle_type === 2">
         <a-date-picker
           style="width:100%"
           format="YYYY-MM-DD"
@@ -219,7 +219,7 @@ export default {
         .subscribe(res => {
           console.log(res)
           if (!res.conflict) {
-            this.$emit('addCustomCourse', verifyParams)
+            this.addCustomCourse(verifyParams)
           }
         })
     },
@@ -242,8 +242,11 @@ export default {
         form.week = this.item.week
         form.cycle_begin_date = this.cycle[0].format('YYYY-MM-DD')
         form.cycle_end_date = this.cycle[1].format('YYYY-MM-DD')
+        form.id = this.item.id
         form.course_id = this.courseInfo.course_id
         const verifyParams = Object.assign(this.params, form)
+        console.log('提交参数')
+        console.log(verifyParams)
         if (this.cycle_type === 1) {
           this.editSchedule(verifyParams)
         } else {
