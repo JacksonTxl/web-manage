@@ -86,11 +86,9 @@ export default {
     }
   },
   rxState() {
-    const user = this.userService
     return {
       info: this.manageService.info$,
       systemInfo: this.manageService.systemInfo$,
-      settingEnums: user.settingEnums$,
       loading: this.manageService.loading$,
       venueList: this.manageService.venueList$,
       auth: this.manageService.auth$
@@ -186,24 +184,6 @@ export default {
         query: {
           type: 'edit'
         }
-      })
-    },
-    onSave() {
-      if (!this.inputCheck()) {
-        return
-      }
-      const info = this.info
-      const params = {
-        brand_name: info.brand_name,
-        album_id: info.album_id,
-        description: info.description
-      }
-      this.manageService.update(params).subscribe(() => {
-        this.messageService.success({
-          content: '保存成功'
-        })
-        this.$router.push({})
-        this.userService.fetchStaffInfo().subscribe()
       })
     },
     onCancel() {

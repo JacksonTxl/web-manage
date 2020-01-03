@@ -23,7 +23,7 @@
           添加
         </a>
         <a-menu slot="overlay">
-          <a-menu-item v-for="(item, key, index) in sourceOptions" :key="index">
+          <a-menu-item v-for="(item, key, index) in crowdEnums" :key="index">
             <a @click="dropdownFunc(item, index)">{{ item.name }}</a>
           </a-menu-item>
         </a-menu>
@@ -46,7 +46,9 @@ export default {
   },
   rxState() {
     return {
-      crowdEnums: this.userService.crowdEnums$
+      crowdEnums: this.userService.getOptions$('crowd.crowd_source_channel', {
+        labelField: 'name'
+      })
     }
   },
   model: {
@@ -65,17 +67,10 @@ export default {
         title: '来源方式',
         info: '选择来源方式为以下范围的用户'
       },
-      sourceOptions: [],
       tags: []
     }
   },
   created() {
-    let list = []
-    if (!this.crowdEnums.crowd_source_channel) return list
-    Object.entries(this.crowdEnums.crowd_source_channel.value).forEach(o => {
-      list.push({ value: +o[0], name: o[1] })
-    })
-    this.sourceOptions = list
     if (this.value.getData.source_channel.length > 0) {
       this.tags = cloneDeep(this.value.getData.source_channel)
     }
