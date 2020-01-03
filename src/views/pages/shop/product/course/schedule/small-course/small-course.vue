@@ -101,15 +101,7 @@ export default {
     // 排课-批量修改
     onClickScheduleInBatch() {
       this.$router.push({
-        path: '/shop/product/course/mini-schedule/inbatch-add',
-        query: {
-          // activity_id: this.stepForm.activity_id
-        }
-        // on: {
-        //   ok: res => {
-        //     this.onScheduleChange()
-        //   }
-        // }
+        path: '/shop/product/course/mini-schedule/inbatch-add'
       })
     },
     // 进入表格模式

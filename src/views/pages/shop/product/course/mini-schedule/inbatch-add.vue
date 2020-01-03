@@ -614,6 +614,14 @@ export default {
     },
     // 取消删除所有未发布
     onDeleteScheduleAll() {
+      if (
+        (this.cycle_type === 1 &&
+          this.scheduleList[0].course_time.length <= 0) ||
+        (this.cycle_type === 2 && this.customizeScheduleList <= 0)
+      ) {
+        this.onClickGoBack()
+        return
+      }
       if (this.cycle_type === 1) {
         console.log('删除周期所有')
         let params = {}
