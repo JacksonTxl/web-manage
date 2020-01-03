@@ -8,8 +8,8 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           required: true,
-          pattern: pattern.CN_EN_NUM_SPACE('1-20'),
-          message: '1-20个字，支持中英文、数字'
+          pattern: pattern.CN_EN_NUM_SPACE('1-14'),
+          message: '1-14个字，支持中英文、数字'
         }
       ]
     }

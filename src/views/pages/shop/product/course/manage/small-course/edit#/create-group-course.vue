@@ -237,12 +237,10 @@ export default {
     b: 'create-group-course'
   },
   components: { CardBgRadio, StEditor },
-  created() {
-    this.$emit('onCourseNameChange', this.info.info.course_name)
-    this.$emit('onCourseIdChange', this.info.info.course_id)
-  },
   mounted() {
     this.isShowLimitContent = this.$route.query.type === '1'
+    this.$emit('onCourseNameChange', this.info.info.course_name)
+    this.$emit('onCourseIdChange', this.info.info.course_id)
   },
   data(vm) {
     const form = this.$stForm.create()
