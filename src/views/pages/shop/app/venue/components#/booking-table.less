@@ -38,14 +38,19 @@
       height: 40px;
       line-height: 40px;
       text-align: center;
-      border: 1px solid rgba(0, 0, 0, 0.05);
+      border-right: 1px solid rgba(0, 0, 0, 0.05);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      .tov-e();
+      padding: 0 20px;
       &-action {
         cursor: pointer;
-        transition: color 0.3s, background-color 0.3s, border-color 0.3s;
+        transition: color 0.3s, background-color 0.3s, border-right-color 0.3s,
+          border-bottom-color 0.3s, border 0.3s;
         &.act {
           color: #fff;
           background-color: #3f66f6;
-          border: 1px solid #3f66f6;
+          border-right-color: #3f66f6;
+          border-bottom-color: #3f66f6;
         }
       }
       &-reserved {
