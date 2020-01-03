@@ -5,7 +5,7 @@ import { AuthService } from '@/services/auth.service'
 import { tap } from 'rxjs/operators'
 @Injectable()
 export class NotifyService {
-  authTabs$ = new State() // this.authService.getAuthTabs$('common-notify')
+  authTabs$ = new State([]) // this.authService.getAuthTabs$('common-notify')
   info$ = new State({})
   constructor(private authService: AuthService, private api: NotifyApi) {}
   getNoticePcUnread() {
