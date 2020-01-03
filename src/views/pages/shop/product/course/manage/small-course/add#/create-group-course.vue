@@ -249,14 +249,10 @@ export default {
         image_url: '',
         index: 1
       },
-      content: '',
       isShowLeaveContent: false
     }
   },
   methods: {
-    onChangeEditor() {
-      return this.content.length === 0
-    },
     setDate(val, string) {
       this.form.setFieldsValue({
         date: [val[0].add('30', 'minutes'), val[1].add('30', 'minutes')]
@@ -270,7 +266,6 @@ export default {
         values.small_course_type = this.$route.query.type
         values.image = this.bg_image
         values.img_type = this.bg_image.index
-        values.description = this.content
         if (this.bg_image.index === 0) {
           values.img_type = 3
         }

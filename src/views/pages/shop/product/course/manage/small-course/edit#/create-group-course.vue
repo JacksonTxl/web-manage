@@ -256,7 +256,6 @@ export default {
         image_url: '',
         index: 1
       },
-      content: '',
       isShowLeaveContent: false,
       isShowLimitContent: false
     }
@@ -264,9 +263,6 @@ export default {
   methods: {
     onInitEditor() {
       this.$nextTick(this.setFieldsValue())
-    },
-    onChangeEditor() {
-      return this.content.length === 0
     },
     setFieldsValue() {
       const info = this.info.info
@@ -286,7 +282,6 @@ export default {
           ? info.appointment_rights
           : undefined,
         image: info.image
-        // content: info.description
       })
       this.bg_image.index = info.img_type
       if (info.img_type === 3) {
