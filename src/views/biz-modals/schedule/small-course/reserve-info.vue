@@ -383,7 +383,9 @@ export default {
     },
     // 取消排期
     cancelSchedule() {
-      this.scheduleService.cancel(this.id).subscribe(this.onDelScheduleScuccess)
+      this.scheduleService
+        .cancelCustom(this.id)
+        .subscribe(this.onDelScheduleScuccess)
     },
     updateSchedule() {
       this.show = false

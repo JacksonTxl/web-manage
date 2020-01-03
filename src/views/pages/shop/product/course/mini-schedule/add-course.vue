@@ -241,7 +241,8 @@ export default {
         .subscribe(res => {
           console.log(res)
           if (!res.conflict) {
-            this.$emit('addCustomCourse', verifyParams)
+            verifyParams.id = res.schedule_id
+            this.addCustomCourse(verifyParams)
           }
         })
     },
