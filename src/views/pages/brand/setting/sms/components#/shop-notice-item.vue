@@ -4,11 +4,7 @@
     <div :class="bComponent('content')">
       <div :class="bComponent('text')">{{ info.notify_time.name }}</div>
       <div :class="bComponent('text')">{{ info.notify_type.name }}</div>
-      <div
-        :class="bComponent('text')"
-        v-if="params.notify_mode.sms"
-        style="padding-left:0"
-      >
+      <div :class="bComponent('text')" style="padding-left:0">
         <span
           v-if="
             NOTIFY_SHOP_SUB_TYPE.MEMBER_ENTRANCE_SUCCESS ===
@@ -32,13 +28,13 @@
           v-model="params.notify_mode.pc"
           v-if="isPc"
         ></st-switch>
-        <span v-else>暂不支持</span>
+        <span :class="bComponent('button')" v-else>暂不支持</span>
       </div>
       <div
         v-show="
           params.notify_mode.sms ||
             params.notify_mode.app ||
-            params.notify_mode.mini_programs
+            params.notify_mode.pc
         "
       >
         <div class="shadow"></div>
