@@ -3,7 +3,7 @@
     <st-mina-panel app>
       <div slot="actions" :class="basic('footer')">
         <div :class="basic('footer-page')">
-          <st-pagination :page="productPage" class="mg-t8" />
+          <st-pagination :page="productPage" @change="onChange" class="mg-t8" />
         </div>
         <div :class="basic('footer-action')">
           <div class="price">
@@ -57,174 +57,164 @@
         <p class="title">购物车</p>
         <div>
           <st-form :form="form" labelWidth="66px">
-            <a-row :gutter="8">
-              <a-col :span="30">
-                <st-form-item :class="basic('padding')">
-                  <st-table
-                    :class="basic('table')"
-                    rowKey="product_id"
-                    :pagination="false"
-                    :columns="columns"
-                    :scroll="{ y: 320 }"
-                    :dataSource="buyCar"
-                  >
-                    <template
-                      slot="product_name"
-                      slot-scope="customRender, record"
-                    >
-                      <div>
-                        {{ record.product_name }}
-                        <span v-if="record.rule_name">
-                          ({{ record.rule_name }})
-                        </span>
-                      </div>
-                    </template>
-                    <template
-                      slot="stock_amount"
-                      slot-scope="customRender, record"
-                    >
-                      <a-input-number
-                        :min="1"
-                        :max="record.stock_amount"
-                        @change="onMemberChange(0)"
-                        v-model="record.nums"
-                      />
-                    </template>
-                    <template slot="priceSum" slot-scope="customRender, record">
-                      {{ (record.nums * record.unit_price).toFixed(1) }}
-                    </template>
-                    <template
-                      slot="action"
-                      slot-scope="customRender, record, index"
-                    >
-                      <st-table-actions sytle="width: 120px">
-                        <a @click="onDelBuyCar(index)">
-                          删除
-                        </a>
-                      </st-table-actions>
-                    </template>
-                  </st-table>
-                  <div :class="basic('all-price')" v-if="buyCar.length">
-                    总额：￥{{ actualAmount }}
-                  </div>
-                </st-form-item>
-                <st-form-item :class="basic('padding')">
-                  <div class="divider-line"></div>
-                </st-form-item>
-                <st-form-item label="购买会员" required>
-                  <a-select
-                    showSearch
-                    allowClear
-                    placeholder="输入手机号或会员名搜索"
-                    :defaultActiveFirstOption="false"
-                    :showArrow="false"
-                    :filterOption="false"
-                    v-decorator="decorators.memberId"
-                    @search="onMemberSearch"
-                    @change="onMemberChange"
-                  >
-                    <template
-                      slot="notFoundContent"
-                      v-if="!memberList.length && memberSearchText !== ''"
-                    >
-                      <div>
-                        暂无此会员，
-                        <span :class="basic('add-vpi')" @click="addMember">
-                          添加新会员？
-                        </span>
-                      </div>
-                    </template>
-                    <a-select-option
-                      v-for="(item, index) in memberList"
-                      :value="item.id"
-                      :key="index"
-                    >
-                      <span
-                        v-html="
-                          `${item.member_name} ${item.mobile}`.replace(
-                            new RegExp(memberSearchText, 'g'),
-                            `\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`
-                          )
-                        "
-                      >
-                        {{ item.member_name }} {{ item.mobile }}
-                      </span>
-                    </a-select-option>
-                  </a-select>
-                </st-form-item>
-                <st-form-item :class="basic('discounts')" label="优惠券">
+            <st-form-item :class="basic('padding')">
+              <st-table
+                :class="basic('table')"
+                rowKey="sku_id"
+                :pagination="false"
+                :columns="columns"
+                :scroll="{ y: 320 }"
+                :dataSource="buyCar"
+              >
+                <template slot="product_name" slot-scope="customRender, record">
                   <div>
-                    <div :class="basic('discounts-total')">
-                      <span>{{ couponText }}</span>
-                      <a-dropdown
-                        v-model="couponDropdownVisible"
-                        :disabled="couponList.length === 0"
-                        :class="basic({ disabled: couponList.length === 0 })"
-                        placement="bottomRight"
-                        :getPopupContainer="trigger => trigger.parentNode"
-                        :trigger="['click']"
-                      >
-                        <div :class="basic('discounts-promotion')">
-                          <span>{{ couponList.length }}张可用优惠券</span>
-                          <a-icon type="right" />
-                        </div>
-                        <a-radio-group
-                          v-model="selectCoupon"
-                          @change="onSelectCouponChange"
-                          :class="basic('dropdown')"
-                          slot="overlay"
-                        >
-                          <a-menu>
-                            <a-menu-item
-                              @click="onSelectCoupon"
-                              :key="index"
-                              v-for="(item, index) in couponList"
-                            >
-                              <a-radio :value="item">
-                                {{ item.name }}{{ item.price }}
-                              </a-radio>
-                            </a-menu-item>
-                          </a-menu>
-                        </a-radio-group>
-                      </a-dropdown>
-                    </div>
+                    {{ record.product_name }}
+                    <span v-if="record.rule_name">
+                      ({{ record.rule_name }})
+                    </span>
                   </div>
-                </st-form-item>
-                <st-form-item label="减免">
-                  <st-input-number
-                    :float="true"
-                    @input="getPrice(0)"
-                    v-model="reducePrice"
-                    maxlength="12"
-                    placeholder="请输入减免金额"
+                </template>
+                <template slot="stock_amount" slot-scope="customRender, record">
+                  <a-input-number
+                    :min="1"
+                    :max="record.stock_amount"
+                    @change="onMemberChange(0)"
+                    v-model="record.nums"
+                  />
+                </template>
+                <template slot="priceSum" slot-scope="customRender, record">
+                  {{ (record.nums * record.unit_price).toFixed(1) }}
+                </template>
+                <template
+                  slot="action"
+                  slot-scope="customRender, record, index"
+                >
+                  <st-table-actions sytle="width: 120px">
+                    <a @click="onDelBuyCar(index)">
+                      删除
+                    </a>
+                  </st-table-actions>
+                </template>
+              </st-table>
+              <div :class="basic('all-price')" v-if="buyCar.length">
+                总额：￥{{ actualAmount }}
+              </div>
+            </st-form-item>
+            <st-form-item :class="basic('padding')">
+              <div class="divider-line"></div>
+            </st-form-item>
+            <st-form-item label="购买会员" required>
+              <a-select
+                showSearch
+                allowClear
+                placeholder="输入手机号或会员名搜索"
+                :defaultActiveFirstOption="false"
+                :showArrow="false"
+                :filterOption="false"
+                v-decorator="decorators.memberId"
+                @search="onMemberSearch"
+                @change="onMemberChange"
+              >
+                <template
+                  slot="notFoundContent"
+                  v-if="!memberList.length && memberSearchText !== ''"
+                >
+                  <div>
+                    暂无此会员，
+                    <span :class="basic('add-vpi')" @click="addMember">
+                      添加新会员？
+                    </span>
+                  </div>
+                </template>
+                <a-select-option
+                  v-for="(item, index) in memberList"
+                  :value="item.id"
+                  :key="index"
+                >
+                  <span
+                    v-html="
+                      `${item.member_name} ${item.mobile}`.replace(
+                        new RegExp(memberSearchText, 'g'),
+                        `\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`
+                      )
+                    "
                   >
-                    <span slot="addonAfter">元</span>
-                  </st-input-number>
-                </st-form-item>
-                <st-form-item label="销售">
-                  <a-select
-                    v-decorator="decorators.saleName"
-                    placeholder="请选择销售名字"
+                    {{ item.member_name }} {{ item.mobile }}
+                  </span>
+                </a-select-option>
+              </a-select>
+            </st-form-item>
+            <st-form-item :class="basic('discounts')" label="优惠券">
+              <div>
+                <div :class="basic('discounts-total')">
+                  <span>{{ couponText }}</span>
+                  <a-dropdown
+                    v-model="couponDropdownVisible"
+                    :disabled="couponList.length === 0"
+                    :class="basic({ disabled: couponList.length === 0 })"
+                    placement="bottomRight"
+                    :getPopupContainer="trigger => trigger.parentNode"
+                    :trigger="['click']"
                   >
-                    <a-select-option
-                      v-for="(item, index) in saleList"
-                      :key="index"
-                      :value="item.id"
+                    <div :class="basic('discounts-promotion')">
+                      <span>{{ couponList.length }}张可用优惠券</span>
+                      <a-icon type="right" />
+                    </div>
+                    <a-radio-group
+                      v-model="selectCoupon"
+                      @change="onSelectCouponChange"
+                      :class="basic('dropdown')"
+                      slot="overlay"
                     >
-                      {{ item.staff_name }}
-                    </a-select-option>
-                  </a-select>
-                </st-form-item>
-                <st-form-item label="备注">
-                  <a-textarea
-                    v-model="description"
-                    maxlength="200"
-                    placeholder="请填写备注"
-                    class="st-textarea"
-                  ></a-textarea>
-                </st-form-item>
-              </a-col>
-            </a-row>
+                      <a-menu>
+                        <a-menu-item
+                          @click="onSelectCoupon"
+                          :key="index"
+                          v-for="(item, index) in couponList"
+                        >
+                          <a-radio :value="item">
+                            {{ item.name }}{{ item.price }}
+                          </a-radio>
+                        </a-menu-item>
+                      </a-menu>
+                    </a-radio-group>
+                  </a-dropdown>
+                </div>
+              </div>
+            </st-form-item>
+            <st-form-item label="减免">
+              <st-input-number
+                :float="true"
+                @input="getPrice(0)"
+                v-model="reducePrice"
+                maxlength="12"
+                placeholder="请输入减免金额"
+              >
+                <span slot="addonAfter">元</span>
+              </st-input-number>
+            </st-form-item>
+            <st-form-item label="销售">
+              <a-select
+                v-decorator="decorators.saleName"
+                placeholder="请选择销售名字"
+              >
+                <a-select-option
+                  v-for="(item, index) in saleList"
+                  :key="index"
+                  :value="item.id"
+                >
+                  {{ item.staff_name }}
+                </a-select-option>
+              </a-select>
+            </st-form-item>
+            <st-form-item label="备注">
+              <a-textarea
+                v-model="description"
+                maxlength="200"
+                placeholder="请填写备注"
+                class="st-textarea"
+              ></a-textarea>
+            </st-form-item>
           </st-form>
         </div>
       </div>
@@ -269,7 +259,8 @@ export default {
       storeProductList: this.listService.storeProductList$,
       currentPrice: this.listService.currentPrice$,
       actualAmount: this.listService.actualAmount$,
-      couponList: this.listService.couponList$
+      couponList: this.listService.couponList$,
+      productPage: this.listService.productPage$
     }
   },
   data() {
@@ -285,13 +276,7 @@ export default {
       selectCoupon: '', // 优惠券选择的信息
       reducePrice: null,
       description: '',
-      buyCar: [],
-      productPage: {
-        current_page: 1,
-        size: 20,
-        total_counts: 100,
-        total_pages: 5
-      }
+      buyCar: []
     }
   },
   mounted() {
@@ -304,9 +289,7 @@ export default {
   methods: {
     // 获取商品列表
     getList() {
-      this.listService
-        .getStoreProductList(this.$searchQuery.product_name)
-        .subscribe()
+      this.listService.getStoreProductList(this.$searchQuery).subscribe()
     },
     // 添加购物车
     onSku(record) {
@@ -319,6 +302,7 @@ export default {
             },
             on: {
               success: result => {
+                console.log(result, '弹窗回来')
                 let state = this.buyCarJudge(result.sku_id, result.stock_amount)
                 if (state === 1) {
                   return
@@ -565,6 +549,11 @@ export default {
     onMemberChange(data) {
       this.getPrice(data)
       this.getUseCouponList(data)
+    },
+    onChange(pagination) {
+      this.$searchQuery.current_page = pagination.current
+      this.$searchQuery.size = pagination.pageSize
+      this.getList()
     }
   },
   computed: {
