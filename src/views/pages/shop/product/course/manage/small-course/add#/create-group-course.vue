@@ -187,7 +187,7 @@
     <a-row :gutter="8">
       <a-col :xxl="10" :lg="14" :xs="22" :offset="1">
         <st-form-item label="课程介绍">
-          <st-editor @input="onChangeEditor" v-model="content"></st-editor>
+          <st-editor v-decorator="decorators.description"></st-editor>
         </st-form-item>
       </a-col>
     </a-row>

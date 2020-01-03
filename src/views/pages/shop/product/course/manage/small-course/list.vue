@@ -85,6 +85,12 @@
             立即成班
           </a>
           <a
+            v-if="record.auth['shop:product:small_class_course|publish']"
+            @click="onPublish(record)"
+          >
+            发布
+          </a>
+          <a
             v-if="record.auth['shop:product:small_class_course|refund']"
             @click="onGoOrder()"
           >
@@ -157,6 +163,11 @@ export default {
     },
     onDelGroup(course) {
       this.listService.deleteGroup(course.course_id).subscribe(() => {
+        this.$router.reload()
+      })
+    },
+    onPublish(course) {
+      this.listService.publish(course.course_id).subscribe(() => {
         this.$router.reload()
       })
     },
