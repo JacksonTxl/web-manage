@@ -302,7 +302,6 @@ export default {
             },
             on: {
               success: result => {
-                console.log(result, '弹窗回来')
                 let state = this.buyCarJudge(result.sku_id, result.stock_amount)
                 if (state === 1) {
                   return
