@@ -30,7 +30,7 @@
           <st-input-search
             style="width: 291px"
             v-model="$searchQuery.product_name"
-            @search="getList"
+            @search="onKeywordsSearch('product_name', $event)"
             placeholder="请输入商品名查找"
             :class="basic('search')"
           />
@@ -235,6 +235,7 @@ import { PRODUCT_TYPE } from '@/constants/sold/transaction'
 import { MessageService } from '@/services/message.service'
 export default {
   name: 'shopSoldTransactionCloud',
+  mixins: [tableMixin],
   bem: {
     basic: 'shop-sold-transaction-cloud'
   },
@@ -277,6 +278,12 @@ export default {
       reducePrice: null,
       description: '',
       buyCar: []
+    }
+  },
+  watch: {
+    $searchQuery() {
+      this.productPage = {}
+      this.getList()
     }
   },
   mounted() {

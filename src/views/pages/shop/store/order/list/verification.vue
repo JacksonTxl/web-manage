@@ -3,7 +3,7 @@
     <portal to="SHOP_STORE_ORDER_KEYWORDS_SEARCH">
       <st-input-search
         v-model="$searchQuery.search_where"
-        @search="getListData"
+        @search="getListData(1)"
         placeholder="请输入订单编号、会员姓名或手机号查找"
         maxlength="50"
       />
@@ -41,7 +41,10 @@ export default {
       })
     },
     // 获取核销订单列表
-    getListData() {
+    getListData(page) {
+      if (page === 1) {
+        this.$searchQuery.current_page = page
+      }
       this.rowTableService.getList(this.$searchQuery).subscribe()
     }
   },
