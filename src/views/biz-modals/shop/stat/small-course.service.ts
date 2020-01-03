@@ -5,9 +5,10 @@ import { Effect, State } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
+import { anyAll } from '@/operators'
 
 @Injectable()
-export class TeamCourseService {
+export class SmallCourseService {
   courseList$ = new State([])
   modalCourseList$ = new State([])
   modalCoachList$ = new State([])
@@ -46,7 +47,7 @@ export class TeamCourseService {
     )
   }
   init(querySelect: any, queryTable: any) {
-    return forkJoin(
+    return anyAll(
       this.getCourseModalCoachAndCourseList(querySelect),
       this.getCourseList(queryTable)
     )

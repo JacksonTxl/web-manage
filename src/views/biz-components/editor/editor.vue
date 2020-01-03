@@ -93,6 +93,7 @@ export default {
   },
   computed: {
     editorId() {
+      console.log(this)
       return 'st-editor-' + this._uid
     }
   },
@@ -100,6 +101,19 @@ export default {
     onChangeGetFile({ image, editor }) {
       editor.insertContent(`<img src="${image.url}">`)
       this.$emit('ready', editor)
+    }
+  },
+  data() {
+    return {
+      editor: null
+    }
+  },
+  watch: {
+    value(newVal) {
+      console.log(newVal, this.editor)
+      if (this.editor) {
+        this.editor.setContent(newVal)
+      }
     }
   },
   mounted() {
@@ -110,6 +124,7 @@ export default {
       )
       .then(() => {
         const ctx = this
+        window.tinyMCE.remove()
         window.tinyMCE.init({
           selector: '.' + this.editorId,
           language: 'zh_CN',
@@ -129,7 +144,6 @@ export default {
           // 图片上传
           images_upload_handler: function(blobInfo, success, failure) {
             let formData = new FormData()
-            console.log(blobInfo.filename())
             formData.append('img', blobInfo.blob())
             ctx.$modalRouter.push({
               name: 'face-recognition'
@@ -163,6 +177,9 @@ export default {
               )
             }).$mount('#editorImageUpload')
             editor.setContent(ctx.value)
+            if (editor) {
+              ctx.editor = editor
+            }
             ctx.$emit('ready', editor)
           }
         })

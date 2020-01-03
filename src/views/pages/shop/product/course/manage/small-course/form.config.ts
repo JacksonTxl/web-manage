@@ -1,6 +1,6 @@
 export const ruleOptions = (vm: any) => {
   const pattern = vm.pattern
-  console.log(vm.form)
+  console.log(vm)
   return {
     course_name: {
       rules: [
@@ -114,6 +114,9 @@ export const ruleOptions = (vm: any) => {
         }
       ],
       initialValue: [2]
+    },
+    description: {
+      initialValue: vm.info ? vm.info.info.description : ''
     }
   }
 }

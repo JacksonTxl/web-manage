@@ -1,7 +1,7 @@
 <template>
   <st-modal
     wrapClassName="modal-stat-team-course"
-    title="上课节数(团)"
+    :title="modalTitle"
     width="960px"
     v-model="show"
   >
@@ -70,14 +70,14 @@
 </template>
 <script>
 import { columns } from './team-course.config'
-import { TeamCourseService } from './team-course.service'
+import { SmallCourseService } from './small-course.service'
 import { COURSE_TYPE } from '@/constants/stat/course'
 import { cloneDeep } from 'lodash-es'
 export default {
-  name: 'TeamCourse',
+  name: 'SmallCourse',
   serviceInject() {
     return {
-      teamCourseService: TeamCourseService
+      service: SmallCourseService
     }
   },
   rxState() {
@@ -88,7 +88,7 @@ export default {
       modalCoachList$,
       modalCourseList$,
       auth$
-    } = this.teamCourseService
+    } = this.service
     return {
       modalCoachList$,
       modalCourseList$,
@@ -112,7 +112,7 @@ export default {
       show: false,
       consumeList: [],
       stat_date: '',
-      course_type: COURSE_TYPE.TEAM,
+      course_type: COURSE_TYPE.SMALL,
       coach_id: -1,
       course_id: -1,
       current_page: 1,
@@ -122,6 +122,9 @@ export default {
   },
   computed: {
     columns,
+    modalTitle() {
+      return `上课节数(${this.$c('small_course')})`
+    },
     showTable() {
       return this.$searchQuery.showTable || 'all'
     },
@@ -158,7 +161,7 @@ export default {
   methods: {
     getCourseList() {
       const query = this.type === 'total' ? this.totalQuery : this.query
-      this.teamCourseService.getCourseList(query).subscribe()
+      this.service.getCourseList(query).subscribe()
     },
     filterOption(input, option) {
       return (
@@ -171,8 +174,8 @@ export default {
       this.coach_id = this.record.coach_id || -1
       this.stat_date = this.record.stat_date
       const query = this.type === 'total' ? this.totalQuery : this.query
-      this.teamCourseService
-        .init({ course_type: COURSE_TYPE.TEAM }, { ...query })
+      this.service
+        .init({ course_type: COURSE_TYPE.SMALL }, { ...query })
         .subscribe()
     }
   },

@@ -180,7 +180,10 @@
     <a-row :gutter="8">
       <a-col :xxl="10" :lg="14" :xs="22" :offset="1">
         <st-form-item label="课程介绍">
-          <st-editor @input="onChangeEditor" v-model="content"></st-editor>
+          <st-editor
+            v-decorator="decorators.description"
+            @ready="onInitEditor"
+          ></st-editor>
         </st-form-item>
       </a-col>
     </a-row>
@@ -234,13 +237,10 @@ export default {
     b: 'create-group-course'
   },
   components: { CardBgRadio, StEditor },
-  created() {
-    this.$emit('onCourseNameChange', this.info.info.course_name)
-    this.$emit('onCourseIdChange', this.info.info.course_id)
-  },
   mounted() {
     this.isShowLimitContent = this.$route.query.type === '1'
-    this.setFieldsValue()
+    this.$emit('onCourseNameChange', this.info.info.course_name)
+    this.$emit('onCourseIdChange', this.info.info.course_id)
   },
   data(vm) {
     const form = this.$stForm.create()
@@ -254,14 +254,13 @@ export default {
         image_url: '',
         index: 1
       },
-      content: '',
       isShowLeaveContent: false,
       isShowLimitContent: false
     }
   },
   methods: {
-    onChangeEditor() {
-      return this.content.length === 0
+    onInitEditor() {
+      this.$nextTick(this.setFieldsValue())
     },
     setFieldsValue() {
       const info = this.info.info
@@ -282,7 +281,6 @@ export default {
           : undefined,
         image: info.image
       })
-      this.content = info.description
       this.bg_image.index = info.img_type
       if (info.img_type === 3) {
         this.bg_image = info.image
@@ -299,7 +297,6 @@ export default {
         values.small_course_type = this.$route.query.type
         values.image = this.bg_image
         values.img_type = this.bg_image.index
-        values.description = this.content
         if (this.bg_image.index === 0) {
           values.img_type = 3
         }

@@ -35,6 +35,9 @@ export class ListService implements Controller {
   beGroup(params: any) {
     return this.courseGroupApi.beGroup(params)
   }
+  publish(params: any) {
+    return this.courseGroupApi.publish(params)
+  }
   init(params: any) {
     return forkJoin(this.getList(params))
   }

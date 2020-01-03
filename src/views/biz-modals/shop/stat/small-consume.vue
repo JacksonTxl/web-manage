@@ -1,7 +1,7 @@
 <template>
   <st-modal
     wrapClassName="modal-stat-team-course"
-    title="消课价值(团)"
+    :title="modalTitle"
     width="960px"
     v-model="show"
   >
@@ -66,14 +66,14 @@
 </template>
 <script>
 import { columns } from './team-consume.config'
-import { TeamConsumeService } from './team-consume.service'
+import { SmallConsumeService } from './small-consume.service'
 import { COURSE_TYPE } from '@/constants/stat/course'
 import { cloneDeep } from 'lodash-es'
 export default {
   name: 'ModalTeamConsume',
   serviceInject() {
     return {
-      teamConsumeService: TeamConsumeService
+      service: SmallConsumeService
     }
   },
   rxState() {
@@ -84,7 +84,7 @@ export default {
       modalCoachList$,
       modalCourseList$,
       auth$
-    } = this.teamConsumeService
+    } = this.service
     return {
       modalCoachList$,
       modalCourseList$,
@@ -118,6 +118,9 @@ export default {
   },
   computed: {
     columns,
+    modalTitle() {
+      return `消课价值(${this.$c('small_course')})`
+    },
     showTable() {
       return this.$searchQuery.showTable || 'all'
     },
@@ -159,7 +162,7 @@ export default {
   methods: {
     getConsumeList() {
       const query = this.type === 'total' ? this.totalQuery : this.query
-      this.teamConsumeService.getConsumeList(query).subscribe()
+      this.service.getConsumeList(query).subscribe()
     },
     filterOption(input, option) {
       return (
@@ -172,8 +175,8 @@ export default {
       this.coach_id = this.record.coach_id || -1
       this.stat_date = this.record.stat_date
       const query = this.type === 'total' ? this.totalQuery : this.query
-      this.teamConsumeService
-        .init({ course_type: COURSE_TYPE.TEAM }, { ...query })
+      this.service
+        .init({ course_type: COURSE_TYPE.SMALL }, { ...query })
         .subscribe()
     }
   },

@@ -39,7 +39,7 @@
               立即成班
             </a-menu-item>
             <a-menu-item
-              key="2"
+              key="3"
               v-if="
                 groupCourseHeaderInfo.auth[
                   'shop:product:small_class_course|del'
@@ -58,7 +58,7 @@
               </st-popconfirm>
             </a-menu-item>
             <a-menu-item
-              key="2"
+              key="4"
               v-if="
                 groupCourseHeaderInfo.auth[
                   'shop:product:small_class_course|publish'
@@ -208,7 +208,9 @@ export default {
       this.infoService
         .deleteGroup(this.groupCourseHeaderInfo.course_id)
         .subscribe(() => {
-          this.$router.reload()
+          this.$router.push({
+            path: '/shop/product/course/manage/small-course/list'
+          })
         })
     },
     onPublish() {
