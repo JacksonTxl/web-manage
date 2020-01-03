@@ -1,7 +1,7 @@
 import { State } from 'rx-state'
 import { ServiceRoute, Injectable } from 'vue-service-app'
 import { tap, pluck } from 'rxjs/operators'
-import { CourseGroupApi } from '@/api/v1/course/small_course'
+import { CourseGroupApi } from '@/api/v1/course/small-course'
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()

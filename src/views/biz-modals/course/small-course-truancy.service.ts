@@ -1,5 +1,5 @@
 import { Injectable } from 'vue-service-app'
-import { CourseGroupApi } from '@/api/v1/course/small_course'
+import { CourseGroupApi } from '@/api/v1/course/small-course'
 import { Effect, State } from 'rx-state'
 
 @Injectable()

@@ -2,7 +2,7 @@ import { Controller, ServiceRoute, Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap, map } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
-import { CourseGroupApi } from '@/api/v1/course/small_course'
+import { CourseGroupApi } from '@/api/v1/course/small-course'
 import { AuthService } from '@/services/auth.service'
 import { UserService } from '@/services/user.service'
 
