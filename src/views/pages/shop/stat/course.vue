@@ -93,6 +93,14 @@
           :value="record.value"
         ></st-total-item>
       </template>
+      <template v-slot:small_checkin_amount="record">
+        <st-total-item
+          @click.native="onCLickSmallCheckinAmount"
+          :unit="record.unit"
+          :label="record.label"
+          :value="record.value"
+        ></st-total-item>
+      </template>
       <template v-slot:personal_course_num="record">
         <st-total-item
           @click.native="onCLickPersonalNum"
@@ -104,6 +112,14 @@
       <template v-slot:team_course_num="record">
         <st-total-item
           @click.native="onCLickTeamNum"
+          :unit="record.unit"
+          :label="record.label"
+          :value="record.value"
+        ></st-total-item>
+      </template>
+      <template v-slot:small_course_num="record">
+        <st-total-item
+          @click.native="onCLickSmallNum"
           :unit="record.unit"
           :label="record.label"
           :value="record.value"
@@ -190,6 +206,8 @@ import ShopStatPersonalCourse from '@/views/biz-modals/shop/stat/personal-course
 import ShopStatPersonalConsume from '@/views/biz-modals/shop/stat/personal-consume'
 import ShopStatTeamCourse from '@/views/biz-modals/shop/stat/team-course'
 import ShopStatTeamConsume from '@/views/biz-modals/shop/stat/team-consume'
+import ShopStatSmallCourse from '@/views/biz-modals/shop/stat/small-course'
+import ShopStatSmallConsume from '@/views/biz-modals/shop/stat/small-consume'
 import { allColumns, coachColumns } from './course.config.ts'
 export default {
   mixins: [tableMixin],
@@ -201,7 +219,9 @@ export default {
     ShopStatPersonalCourse,
     ShopStatPersonalConsume,
     ShopStatTeamCourse,
-    ShopStatTeamConsume
+    ShopStatTeamConsume,
+    ShopStatSmallCourse,
+    ShopStatSmallConsume
   },
   serviceInject() {
     return {

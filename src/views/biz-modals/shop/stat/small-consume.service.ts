@@ -5,9 +5,10 @@ import { Injectable } from 'vue-service-app'
 import { Effect, State } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
+import { anyAll } from '@/operators'
 
 @Injectable()
-export class TeamConsumeService {
+export class SmallConsumeService {
   consumeList$ = new State([])
   modalCourseList$ = new State([])
   modalCoachList$ = new State([])
@@ -46,7 +47,7 @@ export class TeamConsumeService {
     )
   }
   init(querySelect: any, queryTable: any) {
-    return forkJoin(
+    return anyAll(
       this.getCheckinModalCoachAndCourseList(querySelect),
       this.getConsumeList(queryTable)
     )
