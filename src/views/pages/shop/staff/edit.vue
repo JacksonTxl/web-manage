@@ -15,7 +15,6 @@
     </a-row>
     <edit-basic-info
       v-if="currentIndex == 0"
-      :enums="staffEnums"
       :data="staffInfo"
       @updateStaffInfo="updateStaffInfo"
       @gonext="gonext"
@@ -23,7 +22,6 @@
     <edit-detailed-info
       v-else-if="currentIndex == 1"
       :isPrivateCoach="isPrivateCoach"
-      :enums="staffEnums"
       :data="staffInfo"
       @updateStaffInfo="updateStaffInfo"
       @back="onBack"
@@ -31,7 +29,6 @@
     />
     <edit-coach-info
       v-else-if="currentIndex == 2 && isPrivateCoach"
-      :enums="staffEnums"
       :data="staffInfo"
       :staffSpecialty="staffSpecialty"
       @back="onBack"
@@ -63,7 +60,6 @@ export default {
   },
   rxState() {
     return {
-      staffEnums: this.userService.staffEnums$,
       staffInfo: this.services.staffInfo$,
       staffSpecialty: this.services.staffSpecialty$
     }

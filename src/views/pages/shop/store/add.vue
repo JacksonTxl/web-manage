@@ -312,8 +312,13 @@
           <a-col :span="10">
             <st-form-item label="上架状态" required>
               <a-radio-group v-model="shelves_status">
-                <a-radio :value="1">立即上架</a-radio>
-                <a-radio :value="2">暂不上架</a-radio>
+                <a-radio
+                  :value="item.value"
+                  v-for="item in shelvesStatus"
+                  :key="item.value"
+                >
+                  {{ item.label }}
+                </a-radio>
               </a-radio-group>
             </st-form-item>
           </a-col>
@@ -347,7 +352,10 @@ export default {
     return {
       loading: this.addService.loading$,
       saleType: this.userService.getOptions$('cloud_store.sale_type'),
-      shippingMode: this.userService.getOptions$('cloud_store.shipping_mode')
+      shippingMode: this.userService.getOptions$('cloud_store.shipping_mode'),
+      shelvesStatus: this.userService.getOptions$(
+        'cloud_store.edit_shelves_status'
+      )
     }
   },
   modals: { StoreClassManage, StoreAddSku },

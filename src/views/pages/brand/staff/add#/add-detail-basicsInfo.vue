@@ -103,11 +103,11 @@
           >
             <a-select slot="addonBefore" style="width: 100px" v-model="id_type">
               <a-select-option
-                v-for="(item, key) in enums.id_type.value"
-                :key="item"
-                :value="+key"
+                v-for="(item, index) in id_types"
+                :key="index"
+                :value="+item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
           </a-input>
@@ -133,11 +133,11 @@
             @change="getIsCoach"
           >
             <a-checkbox
-              v-for="(item, key) in enums.identity.value"
-              :key="key"
-              :value="+key"
+              v-for="(item, index) in identitys"
+              :key="index"
+              :value="+item.value"
             >
-              {{ item }}
+              {{ item.label }}
             </a-checkbox>
           </a-checkbox-group>
         </st-form-item>
@@ -154,9 +154,9 @@
         </st-form-item>
         <st-form-item label="工作性质">
           <a-select placeholder="请选择" v-decorator="decorators.nature_work">
-            <template v-for="(item, key) in enums.nature_work.value">
-              <a-select-option :key="key" :value="+key">
-                {{ item }}
+            <template v-for="(item, index) in nature_works">
+              <a-select-option :key="index" :value="+item.value">
+                {{ item.label }}
               </a-select-option>
             </template>
           </a-select>
@@ -291,7 +291,9 @@ export default {
     return {
       codeList: this.addService.codeList$,
       roleList: this.addService.roleList$,
-      enums: this.userService.staffEnums$
+      id_types: this.userService.getOptions$('staff.id_type'),
+      identitys: this.userService.getOptions$('staff.identity'),
+      nature_works: this.userService.getOptions$('staff.nature_work')
     }
   },
   data(vm) {
