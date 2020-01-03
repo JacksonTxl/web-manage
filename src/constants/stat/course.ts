@@ -10,7 +10,11 @@ export enum COURSE_TYPE {
   /**
    * 团课
    */
-  TEAM = 3
+  TEAM = 3,
+  /**
+   * 团课
+   */
+  SMALL = 5
 }
 export enum DELETE_TYPE {
   /**
