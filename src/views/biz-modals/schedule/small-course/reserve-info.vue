@@ -324,7 +324,7 @@ export default {
       this.keyword = value
       this.commonService
         .getMemberList({
-          member_name: value
+          member: value
         })
         .subscribe()
     },

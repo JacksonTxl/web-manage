@@ -614,17 +614,18 @@ export default {
     },
     // 顶部删除周期整个批次
     onDeleteCycleSchedule(index) {
+      if (this.scheduleList.length <= 1) {
+        return
+      }
       let params = {}
       const cycleDate = this.pickerList[cycleIndex]
       params.cycle_start_date = moment(cycleDate[0])
       params.cycle_end_date = moment(cycleDate[1])
       params.course_id = this.smallCourseInfo.course_id
-      params.schedule_id = []
       params.del_type = DELETE_TYPE.CYCLE
       this.smallCourseScheduleService.cancelCycle(params).subscribe(res => {
         this.scheduleList.splice(index, 1)
         this.pickerList.splice(index, 1)
-        //this.filterDateList(this.scheduleList)
       })
     },
     // 自主约课单个删除
