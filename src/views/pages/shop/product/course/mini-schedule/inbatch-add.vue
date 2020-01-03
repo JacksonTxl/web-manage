@@ -285,11 +285,18 @@ export default {
       })
     },
     initScheduleDate() {
+      const smallCourseInfo = this.smallCourseInfo
       this.pickerList = []
       this.pickerList.push([
-        moment(this.smallCourseInfo.course_begin_time),
-        moment(this.smallCourseInfo.course_end_time)
+        moment(smallCourseInfo.course_begin_time),
+        moment(smallCourseInfo.course_end_time)
       ])
+      this.end_date = moment(smallCourseInfo.course_end_time).format(
+        'YYYY-MM-DD'
+      )
+      this.picker_end_date = moment(smallCourseInfo.course_end_time).format(
+        'YYYY-MM-DD'
+      )
     },
     onChangeCourse(value) {
       this.courseSmallCourseOptions.forEach((item, index) => {
@@ -297,6 +304,7 @@ export default {
           this.smallCourseInfo = item
         }
       })
+      console.log('课程信息')
       console.log(this.smallCourseInfo)
       this.start_date = this.smallCourseInfo.course_begin_time
       this.end_date = this.smallCourseInfo.course_end_time
@@ -307,6 +315,7 @@ export default {
           course_time: []
         }
       ]
+      this.initScheduleDate()
       this.filterDateList(this.scheduleList)
       const params = {}
       params.course_id = this.courseId
@@ -446,8 +455,8 @@ export default {
         }
         list.push(listItemCard)
       })
-      console.log(list)
-      console.log(dateList)
+      // console.log(list)
+      // console.log(dateList)
       this.filterDate = list
     },
     // 增加课程
@@ -497,8 +506,6 @@ export default {
       }
     },
     pushCustomCourseInfo(info) {
-      console.log('增加自主课程排期')
-      console.log(info)
       this.customizeScheduleList.push(info)
     },
     // 编辑课程
@@ -518,8 +525,6 @@ export default {
         },
         on: {
           editCourse: (cycleIndex, positionIndex, conflict, info, list) => {
-            console.log('周期排课')
-            console.log(info)
             this.scheduleList[cycleIndex].course_time.forEach(
               (dayItems, index) => {
                 if (dayItems.week == info.week) {
@@ -544,10 +549,7 @@ export default {
         props: { item, cycle, positionIndex, cycle_type, courseInfo },
         on: {
           editCourse: (positionIndex, info) => {
-            console.log('自主排课')
-            console.log(info)
             this.customizeScheduleList.splice(positionIndex, 1, info)
-            console.log(this.customizeScheduleList)
             return
           }
         }
@@ -555,25 +557,9 @@ export default {
     },
     onDeleteCourseSchedule(item, cycleIndex, positionIndex) {
       console.log('删除周期的单个排期')
-      console.log(item)
-      console.log(cycleIndex)
-      // 这里需要一个所有的排期id参数！！ 封装一个promise方法可以减少一次判断
       let params = {}
-      // if (del_type === DELETE_TYPE.SINGLE) {
-      //   params = item
-      // } else if (del_type === DELETE_TYPE.CYCLE) {
-      //   const cycleDate = this.pickerList[cycleIndex]
-      //   params.cycle_start_date = moment(cycleDate[0])
-      //   params.cycle_end_date = moment(cycleDate[1])
-      //   params.course_id = this.smallCourseInfo.course_id
-      //   params.schedule_id = []
-      // } else {
-      //   params.course_id = this.smallCourseInfo.course_id
-      //   params.schedule_id = []
-      // }
       params = item
       params.del_type = DELETE_TYPE.SINGLE
-      console.log('删除周期排课')
       console.log(params)
       this.smallCourseScheduleService.cancelCycle(params).subscribe(res => {
         this.scheduleList[cycleIndex].course_time.forEach((dayItems, index) => {
@@ -586,20 +572,10 @@ export default {
             return
           }
         })
-        // } else if (del_type === DELETE_TYPE.CYCLE) {
-        //   this.scheduleList[cycleIndex].course_time = []
-        //   this.pickerList.splice(cycleIndex, 1, item)
-        //   this.filterDateList(this.scheduleList)
-        // } else {
-        //   this.onClickGoBack()
-        // }
       })
     },
     // 删除周期单个批次内容
     onDeleteCourseScheduleCycle(dateList, cycleIndex) {
-      console.log('删除周期单个批次内容')
-      console.log(dateList)
-      console.log(cycleIndex)
       let params = {}
       const cycleDate = this.pickerList[cycleIndex]
       params.cycle_start_date = moment(cycleDate[0])

@@ -225,7 +225,7 @@ export class SmallCourseScheduleService {
     )
   }
   /**
-   * 取消周期单节排期
+   * 取消周期排期
    */
   cancelCycle(params: any) {
     return this.scheduleApi.cancelCycle(params).pipe(

@@ -141,13 +141,13 @@ export class SmallCourseScheduleReserveService {
   /**
    * 查看补课
    */
-  message(id: any) {
+  message(id: string) {
     return this.reserveApi.msg(id)
   }
   /**
    * 补课回显
    */
-  courseInfo(id: any) {
+  courseInfo(id: string) {
     return this.reserveApi.courseInfo(id)
   }
   // 补课列表
