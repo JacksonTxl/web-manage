@@ -92,7 +92,7 @@ export default {
       show: false,
       courseItem: '',
       params: {},
-      cycle_begin_date: '',
+      cycle_start_date: '',
       cycle_end_date: ''
     }
   },
@@ -134,7 +134,7 @@ export default {
   },
   created() {
     const cycleDate = this.cycle
-    this.cycle_begin_date = cycleDate[0].format('YYYY-MM-DD')
+    this.cycle_start_date = cycleDate[0].format('YYYY-MM-DD')
     this.cycle_end_date = cycleDate[1].format('YYYY-MM-DD')
   },
   mounted() {
@@ -158,8 +158,8 @@ export default {
       })
     } else {
       this.form.setFieldsValue({
-        start_time: moment(`${this.cycle_begin_date} ${this.item.start_time}`),
-        end_time: moment(`${this.cycle_end_date} ${this.item.end_time}`)
+        start_time: moment(`${this.cycle_start_date} ${this.item.start_time}`),
+        end_time: moment(`${this.cycle_start_date} ${this.item.end_time}`)
       })
     }
     this.onChangeCoach(item.coach_id)
@@ -240,7 +240,7 @@ export default {
         form.court_id = values.court_id[0]
         form.court_site_id = values.court_id[1]
         form.week = this.item.week
-        form.cycle_begin_date = this.cycle[0].format('YYYY-MM-DD')
+        form.cycle_start_date = this.cycle[0].format('YYYY-MM-DD')
         form.cycle_end_date = this.cycle[1].format('YYYY-MM-DD')
         form.id = this.item.id
         form.course_id = this.courseInfo.course_id

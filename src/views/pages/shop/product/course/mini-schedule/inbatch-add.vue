@@ -75,12 +75,7 @@
                       :cardItem="cardItem"
                       @onEditCourse="onEditCourseSchedule(cardItem, i, index)"
                       @onDeleteCourse="
-                        onDeleteCourseSchedule(
-                          DELETE_TYPE.SINGLE,
-                          cardItem,
-                          i,
-                          index
-                        )
+                        onDeleteCourseSchedule(cardItem, i, index)
                       "
                     ></course-card-popover>
                   </div>
@@ -272,7 +267,6 @@ export default {
       return !(this.end_date === this.picker_end_date)
     },
     disabledChangeScheduleType() {
-      // 如果清空数据不转化，还要在第一次添加之后加一个标志位
       return this.cycle_type === 2 && this.customizeScheduleList.length > 0
     }
   },
@@ -285,7 +279,7 @@ export default {
       this.pickerList = []
       this.scheduleList.forEach((item, index) => {
         this.pickerList.push([
-          moment(item.cycle_begin_date),
+          moment(item.cycle_start_date),
           moment(item.cycle_end_date)
         ])
       })
@@ -385,7 +379,10 @@ export default {
       })
       // 还是要添加是否有数据的判断
       if (!pickerFlag) {
-        if (this.cycle_type === 1) {
+        if (
+          this.cycle_type === 1 &&
+          this.scheduleList[PickerIndex].course_time.length > 0
+        ) {
           this.$confirm({
             title: '提示',
             content: `修改后会清空当前周期下的已有小班课排期，请确认修改`,
@@ -395,11 +392,7 @@ export default {
             },
             onOk: () => {
               // 调用批量删除的接口and清空本地数据
-              this.onDeleteCourseSchedule(
-                DELETE_TYPE.CYCLE,
-                [date[0], date[1]],
-                PickerIndex
-              )
+              this.onDeleteCourseScheduleCycle([date[0], date[1]], PickerIndex)
             }
           })
         }
@@ -560,74 +553,70 @@ export default {
         }
       })
     },
-    onDeleteCourseSchedule(del_type, item, cycleIndex) {
-      console.log(del_type)
+    onDeleteCourseSchedule(item, cycleIndex, positionIndex) {
+      console.log('删除周期的单个排期')
       console.log(item)
       console.log(cycleIndex)
       // 这里需要一个所有的排期id参数！！ 封装一个promise方法可以减少一次判断
-      if (
-        (!this.customizeScheduleList.length && this.cycle_type === 2) ||
-        (!this.scheduleList.length && this.cycle_type === 1)
-      ) {
-        this.onClickGoBack()
-        return
-      }
-      if (this.cycle_type === 1) {
-        let params = {}
-        if (del_type === DELETE_TYPE.SINGLE) {
-          params = item
-        } else if (del_type === DELETE_TYPE.CYCLE) {
-          const cycleDate = this.pickerList[cycleIndex]
-          params.cycle_begin_date = moment(cycleDate[0])
-          params.cycle_end_date = moment(cycleDate[1])
-          params.course_id = this.smallCourseInfo.course_id
-          params.schedule_id = []
-        } else {
-          params.course_id = this.smallCourseInfo.course_id
-          params.schedule_id = []
-        }
-        params.del_type = del_type
-        console.log('删除周期排课')
-        console.log(params)
-        this.smallCourseScheduleService.cancelCycle(params).subscribe(res => {
-          if (del_type === DELETE_TYPE.SINGLE) {
-            this.scheduleList[cycleIndex].course_time.forEach(
-              (dayItems, index) => {
-                if (dayItems.week === item.week) {
-                  dayItems.list.splice(positionIndex, 1)
-                  if (dayItems.list.length === 0) {
-                    this.scheduleList[cycleIndex].course_time.splice(index, 1)
-                  }
-                  this.filterDateList(this.scheduleList)
-                  return
-                }
-              }
-            )
-          } else if (del_type === DELETE_TYPE.CYCLE) {
-            this.scheduleList[cycleIndex].course_time = []
-            this.pickerList.splice(cycleIndex, 1, item)
+      let params = {}
+      // if (del_type === DELETE_TYPE.SINGLE) {
+      //   params = item
+      // } else if (del_type === DELETE_TYPE.CYCLE) {
+      //   const cycleDate = this.pickerList[cycleIndex]
+      //   params.cycle_start_date = moment(cycleDate[0])
+      //   params.cycle_end_date = moment(cycleDate[1])
+      //   params.course_id = this.smallCourseInfo.course_id
+      //   params.schedule_id = []
+      // } else {
+      //   params.course_id = this.smallCourseInfo.course_id
+      //   params.schedule_id = []
+      // }
+      params = item
+      params.del_type = DELETE_TYPE.SINGLE
+      console.log('删除周期排课')
+      console.log(params)
+      this.smallCourseScheduleService.cancelCycle(params).subscribe(res => {
+        this.scheduleList[cycleIndex].course_time.forEach((dayItems, index) => {
+          if (dayItems.week === item.week) {
+            dayItems.list.splice(positionIndex, 1)
+            if (dayItems.list.length === 0) {
+              this.scheduleList[cycleIndex].course_time.splice(index, 1)
+            }
             this.filterDateList(this.scheduleList)
-          } else {
-            this.onClickGoBack()
+            return
           }
         })
-      } else if (this.cycle_type === 2) {
-        const params = []
-        this.customizeScheduleList.forEach((item, index) => {
-          params.push(item.id)
-        })
-        this.smallCourseScheduleService
-          .cancelCustomAll(params)
-          .subscribe(res => {
-            this.onClickGoBack()
-          })
-      }
+        // } else if (del_type === DELETE_TYPE.CYCLE) {
+        //   this.scheduleList[cycleIndex].course_time = []
+        //   this.pickerList.splice(cycleIndex, 1, item)
+        //   this.filterDateList(this.scheduleList)
+        // } else {
+        //   this.onClickGoBack()
+        // }
+      })
     },
-    // 删除周期整个批次
+    // 删除周期单个批次内容
+    onDeleteCourseScheduleCycle(dateList, cycleIndex) {
+      console.log('删除周期单个批次内容')
+      console.log(dateList)
+      console.log(cycleIndex)
+      let params = {}
+      const cycleDate = this.pickerList[cycleIndex]
+      params.cycle_start_date = moment(cycleDate[0])
+      params.cycle_end_date = moment(cycleDate[1])
+      params.course_id = this.smallCourseInfo.course_id
+      params.del_type = DELETE_TYPE.CYCLE
+      this.smallCourseScheduleService.cancelCycle(params).subscribe(res => {
+        this.scheduleList[cycleIndex].course_time = []
+        this.pickerList.splice(cycleIndex, 1, dateList)
+        this.filterDateList(this.scheduleList)
+      })
+    },
+    // 顶部删除周期整个批次
     onDeleteCycleSchedule(index) {
       let params = {}
       const cycleDate = this.pickerList[cycleIndex]
-      params.cycle_begin_date = moment(cycleDate[0])
+      params.cycle_start_date = moment(cycleDate[0])
       params.cycle_end_date = moment(cycleDate[1])
       params.course_id = this.smallCourseInfo.course_id
       params.schedule_id = []
@@ -649,11 +638,13 @@ export default {
     // 取消删除所有未发布
     onDeleteScheduleAll() {
       if (this.cycle_type === 1) {
-        this.smallCourseScheduleService
-          .cancelCustomAll(params)
-          .subscribe(res => {
-            this.onClickGoBack()
-          })
+        console.log('删除周期所有')
+        let params = {}
+        params.course_id = this.smallCourseInfo.course_id
+        params.del_type = DELETE_TYPE.ALL_CYCLE
+        this.smallCourseScheduleService.cancelCycle(params).subscribe(res => {
+          this.onClickGoBack()
+        })
       } else if (this.cycle_type === 2) {
         const params = {}
         params.course_id = this.smallCourseInfo.course_id

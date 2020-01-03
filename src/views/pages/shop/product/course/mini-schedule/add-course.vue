@@ -165,7 +165,7 @@ export default {
       decorators,
       showFlag: false,
       params: {},
-      cycle_begin_date: '',
+      cycle_start_date: '',
       cycle_end_date: ''
     }
   },
@@ -262,7 +262,7 @@ export default {
         form.court_id = values.court_id[0]
         form.court_site_id = values.court_id[1] || 0
         form.week = this.week
-        form.cycle_begin_date = this.cycle[0].format('YYYY-MM-DD')
+        form.cycle_start_date = this.cycle[0].format('YYYY-MM-DD')
         form.cycle_end_date = this.cycle[1].format('YYYY-MM-DD')
         form.course_id = this.courseInfo.course_id
         const verifyParams = Object.assign(this.params, form)
