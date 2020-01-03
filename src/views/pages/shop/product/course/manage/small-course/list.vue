@@ -159,7 +159,9 @@ export default {
       })
     },
     onChange() {
-      this.$router.push({ query: this.$searchQuery })
+      this.$router.push({
+        query: { current_page: 1, class_status: this.$searchQuery.class_status }
+      })
     },
     onDelGroup(course) {
       this.listService.deleteGroup(course.course_id).subscribe(() => {
