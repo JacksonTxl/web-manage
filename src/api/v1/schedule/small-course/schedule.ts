@@ -116,9 +116,12 @@ export class SmallCourseScheduleApi extends Api {
    * @param params
    * 发布小班课自定义排期
    */
-  saveCustom(id: string) {
+  saveCustom(params: any) {
     console.log('发布自定义班课')
-    return this.http.put(`/v1/schedule/small/customize/${id}`)
+    return this.http.put(
+      `/v1/schedule/small/customize/release/${params.course_id}`,
+      { params }
+    )
   }
   /**
    *
@@ -136,10 +139,12 @@ export class SmallCourseScheduleApi extends Api {
    * 删除自主全部排期
    */
   cancelCustomAll(params: any) {
-    return this.http.put(`/v1/schedule/small/cycle/${params.course_id}`, {
-      params
-    })
+    return this.http.put(
+      `/v1/schedule/small/customize/delete/${params.course_id}`,
+      { params }
+    )
   }
+
   /**
    *
    * @param params

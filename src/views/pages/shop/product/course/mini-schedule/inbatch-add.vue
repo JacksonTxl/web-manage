@@ -657,9 +657,9 @@ export default {
       } else if (this.cycle_type === 2) {
         const params = {}
         params.course_id = this.smallCourseInfo.course_id
-        params.list = []
+        params.schedule_ids = []
         this.customizeScheduleList.forEach((item, index) => {
-          params.list.push(item.id)
+          params.schedule_ids.push(item.id)
         })
         console.log(params)
         console.log('自主删除所有')
@@ -691,9 +691,13 @@ export default {
       const smallCourseInfo = this.smallCourseInfo
       console.log(smallCourseInfo)
       if (this.cycle_type === 2) {
-        this.smallCourseScheduleService
-          .saveCustom(smallCourseInfo.course_id)
-          .subscribe()
+        const params = {}
+        params.course_id = this.smallCourseInfo.course_id
+        params.schedule_ids = []
+        this.customizeScheduleList.forEach((item, index) => {
+          params.schedule_ids.push(item.id)
+        })
+        this.smallCourseScheduleService.saveCustom(params).subscribe()
       } else {
         this.smallCourseScheduleService
           .save(smallCourseInfo.course_id)

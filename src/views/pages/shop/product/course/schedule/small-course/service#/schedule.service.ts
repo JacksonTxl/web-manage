@@ -217,8 +217,8 @@ export class SmallCourseScheduleService {
    * @param params
    * 自定义保存发布
    */
-  saveCustom(id: string) {
-    return this.scheduleApi.saveCustom(id).pipe(
+  saveCustom(params: any) {
+    return this.scheduleApi.saveCustom(params).pipe(
       tap(res => {
         this.msg.success({ content: '发布成功' })
       })
