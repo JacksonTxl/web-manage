@@ -27,7 +27,6 @@
 <script>
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
-import { ActivityService } from './activity.service'
 export default {
   name: 'ModalActivity',
   bem: {

@@ -320,6 +320,7 @@ export default {
           success: res => {
             setTimeout(() => {
               this.systemListLength++
+              this.notifyService.setRead().subscribe()
               this.onSuccess()
             }, 400)
           },

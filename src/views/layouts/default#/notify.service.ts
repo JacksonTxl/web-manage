@@ -76,6 +76,9 @@ export class NotifyService {
       })
     )
   }
+  setRead() {
+    this.api.setRead()
+  }
   init() {
     return anyAll(this.getActivityList(), this.getSystemList())
   }

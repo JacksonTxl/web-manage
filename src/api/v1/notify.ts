@@ -31,6 +31,9 @@ export class NotifyApi extends Api {
   getNoticePcUnread() {
     return this.http.get(`/v1/notice/pc/unread`)
   }
+  setRead() {
+    return this.http.put(`/v1/notice/announcement/read`)
+  }
 }
 export interface GetNoticeListQuery {
   notify_type?: number
