@@ -95,6 +95,7 @@
             <!-- 发送内容 end -->
 
             <slot name="notify-time" :params="params">
+              <span class="color-title mg-r8">发送规则</span>
               <span>
                 {{ info.notify_time.name }}
               </span>
@@ -160,8 +161,6 @@ export default {
 
       this.params.notify_mode = {
         sms: this.info.notify_mode.sms && this.info.notify_mode.sms.value,
-        app: this.info.notify_mode.app && this.info.notify_mode.app.value,
-        pc: this.info.notify_mode.pc && this.info.notify_mode.pc.value,
         mini_programs:
           this.info.notify_mode.mini_programs &&
           this.info.notify_mode.mini_programs.value

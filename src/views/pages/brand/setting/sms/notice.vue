@@ -48,11 +48,35 @@
             <template
               v-slot:notify-time="slotProps"
               v-if="
-                item.notify_sub_type.value ===
-                  NOTIFY_MEMBER_SUB_TYPE.GOODS_EXPIRE
+                [
+                  NOTIFY_MEMBER_SUB_TYPE.GOODS_EXPIRE,
+                  NOTIFY_MEMBER_SUB_TYPE.RESERVE_EXPIRE
+                ].includes(item.notify_sub_type.value)
               "
             >
+              <span
+                v-if="
+                  NOTIFY_MEMBER_SUB_TYPE.RESERVE_EXPIRE ===
+                    item.notify_sub_type.value
+                "
+              >
+                课程开始前
+                <a-select v-model="params.notify_time" style="width:100px">
+                  <a-select-option
+                    v-for="(item, index) in notifyHour"
+                    :key="index"
+                    :value="item.value"
+                  >
+                    {{ item.label }}
+                  </a-select-option>
+                </a-select>
+                发送
+              </span>
               <a-radio-group
+                v-if="
+                  NOTIFY_MEMBER_SUB_TYPE.GOODS_EXPIRE ===
+                    item.notify_sub_type.value
+                "
                 v-model="slotProps.params.notify_time"
                 class="mg-b16"
               >

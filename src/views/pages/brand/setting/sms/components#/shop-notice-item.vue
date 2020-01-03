@@ -89,6 +89,24 @@
           <div class="width80" :class="[bComponent('text'), bShop('text')]">
             <template v-if="info.preview">
               <div class="mg-b16">
+                <span class="mg-r8 color-title">发送内容</span>
+                <span :class="bComponent('text-right')">
+                  <a-input
+                    v-if="info.notify_type.value === 1"
+                    :class="bComponent('column-input')"
+                    v-model="params.msg_preffix"
+                    placeholder="请输入"
+                  ></a-input>
+                  <span>{{ info.content }}</span>
+                  <a-input
+                    v-if="info.notify_type.value === 1"
+                    :class="bComponent('column-input')"
+                    v-model="params.msg_suffix"
+                    placeholder="请输入"
+                  ></a-input>
+                </span>
+              </div>
+              <div class="mg-b16">
                 <span class="mg-r8 color-title">预览内容</span>
                 <span :class="bComponent('text-right')">
                   {{ info.preview }}
@@ -312,9 +330,7 @@ export default {
     this.params.notify_mode = {
       sms: this.info.notify_mode.sms && this.info.notify_mode.sms.value,
       app: this.info.notify_mode.app && this.info.notify_mode.app.value,
-      mini_programs:
-        this.info.notify_mode.mini_programs &&
-        this.info.notify_mode.mini_programs.value
+      pc: this.info.notify_mode.pc && this.info.notify_mode.pc.value
     }
   },
   methods: {
