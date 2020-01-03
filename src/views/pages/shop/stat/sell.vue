@@ -1,158 +1,164 @@
 <template>
-  <div :class="bPage()">
-    <section class="mg-b16" :class="bHeard()">
-      <div :class="bHeard('left')">
-        <div :class="bPage('button-wapper')" class="mg-r8">
-          <st-button
-            type="primary"
-            v-if="showTable === 'all' && auth.export_all"
-            v-export-excel="{
-              type: 'sale/summary',
-              query: $searchQuery
-            }"
-          >
-            全部导出
-          </st-button>
-          <st-button
-            v-else-if="auth.export_staff"
-            type="primary"
-            v-export-excel="{
-              type: 'sale/staff',
-              query: $searchQuery
-            }"
-          >
-            全部导出
-          </st-button>
-        </div>
-      </div>
-      <div :class="bHeard('right')">
-        <a-radio-group
-          class="mg-r12"
-          :value="showTable"
-          @change="handleSizeChange"
-        >
-          <a-radio-button value="all" v-if="auth.summary">汇总</a-radio-button>
-          <a-radio-button value="staff" v-if="auth.staff">员工</a-radio-button>
-        </a-radio-group>
-        <div v-if="showTable === 'staff'">
-          <a-select
-            class="mg-r8"
-            placeholder="请选择部门"
-            optionFilterProp="children"
-            style="width: 200px"
-            @change="onChangeDepartment"
-            v-model="$searchQuery.department_id"
-            :filterOption="filterOption"
-          >
-            <a-select-option
-              :value="+department.id"
-              v-for="department in departmentList"
-              :key="department.id"
+  <st-panel app>
+    <div :class="bPage()">
+      <section class="mg-b16" :class="bHeard()">
+        <div :class="bHeard('left')">
+          <div :class="bPage('button-wapper')" class="mg-r8">
+            <st-button
+              type="primary"
+              v-if="showTable === 'all' && auth.export_all"
+              v-export-excel="{
+                type: 'sale/summary',
+                query: $searchQuery
+              }"
             >
-              {{ department.name }}
-            </a-select-option>
-          </a-select>
-          <a-select
-            showSearch
-            placeholder="所有销售"
-            optionFilterProp="children"
-            class="mg-r8"
-            style="width: 200px"
-            @change="onChangeStaff"
-            v-model="$searchQuery.staff_id"
-            :filterOption="filterOption"
-          >
-            <a-select-option
-              :value="+staff.id"
-              v-for="staff in staffListFilter"
-              :key="staff.id"
+              全部导出
+            </st-button>
+            <st-button
+              v-else-if="auth.export_staff"
+              type="primary"
+              v-export-excel="{
+                type: 'sale/staff',
+                query: $searchQuery
+              }"
             >
-              {{ staff.name }}
-            </a-select-option>
-          </a-select>
+              全部导出
+            </st-button>
+          </div>
         </div>
+        <div :class="bHeard('right')">
+          <a-radio-group
+            class="mg-r12"
+            :value="showTable"
+            @change="handleSizeChange"
+          >
+            <a-radio-button value="all" v-if="auth.summary">
+              汇总
+            </a-radio-button>
+            <a-radio-button value="staff" v-if="auth.staff">
+              员工
+            </a-radio-button>
+          </a-radio-group>
+          <div v-if="showTable === 'staff'">
+            <a-select
+              class="mg-r8"
+              placeholder="请选择部门"
+              optionFilterProp="children"
+              style="width: 200px"
+              @change="onChangeDepartment"
+              v-model="$searchQuery.department_id"
+              :filterOption="filterOption"
+            >
+              <a-select-option
+                :value="+department.id"
+                v-for="department in departmentList"
+                :key="department.id"
+              >
+                {{ department.name }}
+              </a-select-option>
+            </a-select>
+            <a-select
+              showSearch
+              placeholder="所有销售"
+              optionFilterProp="children"
+              class="mg-r8"
+              style="width: 200px"
+              @change="onChangeStaff"
+              v-model="$searchQuery.staff_id"
+              :filterOption="filterOption"
+            >
+              <a-select-option
+                :value="+staff.id"
+                v-for="staff in staffListFilter"
+                :key="staff.id"
+              >
+                {{ staff.name }}
+              </a-select-option>
+            </a-select>
+          </div>
 
-        <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
-      </div>
-    </section>
-    <st-total
-      :class="bPage('total')"
-      :indexs="columns"
-      :dataSource="total$"
-      hasTitle
-    >
-      <template v-slot:performance_amount="record">
-        <st-total-item
-          @click.native="onCLickPerformanceAmount"
-          :unit="record.unit"
-          :label="record.label"
-          :value="record.value"
-        ></st-total-item>
-      </template>
-    </st-total>
-    <st-table
-      :page="page"
-      :scroll="{ x: 2300 }"
-      class="mg-t12"
-      @change="onTableChange"
-      :loading="loading.init"
-      :columns="columns"
-      :dataSource="list"
-      rowKey="id"
-    >
-      <span slot="member_card_num" slot-scope="text">
-        {{ text }}
-      </span>
-      <span slot="deposit_card_num" slot-scope="text">
-        {{ text }}
-      </span>
-      <span slot="deposit_card_num" slot-scope="text">
-        {{ text }}
-      </span>
-      <span slot="team_course_num" slot-scope="text">
-        {{ text }}
-      </span>
-      <span slot="total_course_num" slot-scope="text">
-        {{ text }}
-      </span>
-      <span slot="other_amount" slot-scope="text">
-        {{ text }}
-      </span>
-      <a
-        slot="performance_amount"
-        @click="getSellTotalAmount(record)"
-        slot-scope="text, record"
-        v-if="text !== 0"
+          <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
+        </div>
+      </section>
+      <st-total
+        :class="bPage('total')"
+        :indexs="columns"
+        :dataSource="total$"
+        hasTitle
       >
-        {{ text }}
-      </a>
-      <span v-else>{{ text }}</span>
-      <span slot="memberTitle">
-        {{ $c('member_card') }}成单数
-        <st-help-tooltip id="TSSR001" />
-      </span>
-      <span slot="depositTitle">
-        储值卡成单数
-        <st-help-tooltip id="TSSR002" />
-      </span>
-      <!-- <span slot="teamTitle">
+        <template v-slot:performance_amount="record">
+          <st-total-item
+            @click.native="onCLickPerformanceAmount"
+            :unit="record.unit"
+            :label="record.label"
+            :value="record.value"
+          ></st-total-item>
+        </template>
+      </st-total>
+      <st-table
+        :page="page"
+        :scroll="{ x: 2300 }"
+        class="mg-t12"
+        @change="onTableChange"
+        :loading="loading.init"
+        :columns="columns"
+        :dataSource="list"
+        rowKey="id"
+      >
+        <span slot="member_card_num" slot-scope="text">
+          {{ text }}
+        </span>
+        <span slot="deposit_card_num" slot-scope="text">
+          {{ text }}
+        </span>
+        <span slot="deposit_card_num" slot-scope="text">
+          {{ text }}
+        </span>
+        <span slot="team_course_num" slot-scope="text">
+          {{ text }}
+        </span>
+        <span slot="total_course_num" slot-scope="text">
+          {{ text }}
+        </span>
+        <span slot="other_amount" slot-scope="text">
+          {{ text }}
+        </span>
+        <a
+          slot="performance_amount"
+          @click="getSellTotalAmount(record)"
+          slot-scope="text, record"
+          v-if="text !== 0"
+        >
+          {{ text }}
+        </a>
+        <span v-else>{{ text }}</span>
+        <span slot="memberTitle">
+          {{ $c('member_card') }}成单数
+          <st-help-tooltip id="TSSR001" />
+        </span>
+        <span slot="depositTitle">
+          储值卡成单数
+          <st-help-tooltip id="TSSR002" />
+        </span>
+        <!-- <span slot="teamTitle">
         团课购买节数
         <st-help-tooltip id="TSSR003" />
       </span> -->
-      <span slot="totalTitle">
-        总购课节数
-        <st-help-tooltip id="TSSR004" />
-      </span>
-      <span slot="otherTitle">
-        其它销售金额（元）
-        <st-help-tooltip id="TSSR005" />
-      </span>
-      <span slot="performanceTitle">
-        总销售业绩（元）
-        <st-help-tooltip id="TSSR006" />
-      </span>
-    </st-table>
-  </div>
+        <span slot="totalTitle">
+          总购课节数
+          <st-help-tooltip id="TSSR004" />
+        </span>
+        <span slot="otherTitle">
+          其它销售金额（元）
+          <st-help-tooltip id="TSSR005" />
+        </span>
+        <span slot="performanceTitle">
+          总销售业绩（元）
+          <st-help-tooltip id="TSSR006" />
+        </span>
+      </st-table>
+    </div>
+  </st-panel>
 </template>
 <script>
 import { SellService } from './sell.service'
