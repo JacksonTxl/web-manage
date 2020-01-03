@@ -85,6 +85,12 @@
             立即成班
           </a>
           <a
+            v-if="record.auth['shop:product:small_class_course|publish']"
+            @click="onPublish(record)"
+          >
+            发布
+          </a>
+          <a
             v-if="record.auth['shop:product:small_class_course|refund']"
             @click="onGoOrder()"
           >
@@ -153,10 +159,17 @@ export default {
       })
     },
     onChange() {
-      this.$router.push({ query: this.$searchQuery })
+      this.$router.push({
+        query: { current_page: 1, class_status: this.$searchQuery.class_status }
+      })
     },
     onDelGroup(course) {
       this.listService.deleteGroup(course.course_id).subscribe(() => {
+        this.$router.reload()
+      })
+    },
+    onPublish(course) {
+      this.listService.publish(course.course_id).subscribe(() => {
         this.$router.reload()
       })
     },
