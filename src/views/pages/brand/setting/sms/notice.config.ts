@@ -14,9 +14,6 @@ export const thsMember = () => {
     },
     {
       title: '小程序推送状态'
-    },
-    {
-      title: '电脑端消息弹窗'
     }
   ]
 }

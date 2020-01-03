@@ -27,9 +27,6 @@
           预览
         </span>
       </div>
-      <div :class="bComponent('text')" style="padding-left:0">
-        <st-switch @change="save" v-model="params.notify_mode.pc"></st-switch>
-      </div>
       <!-- text 卡片头部 end -->
 
       <div

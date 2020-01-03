@@ -76,7 +76,11 @@
         <div :class="bItem('table-title')">
           <div :class="bItem('table-th')">模板标题</div>
           <div class="th-wrap">
-            <div class="th" v-for="(item, index) in thsShop" :key="index">
+            <div
+              class="th shop-th"
+              v-for="(item, index) in thsShop"
+              :key="index"
+            >
               {{ item.title }}
             </div>
           </div>

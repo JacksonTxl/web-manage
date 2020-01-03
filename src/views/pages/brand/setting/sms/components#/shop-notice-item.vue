@@ -1,17 +1,22 @@
 <template>
-  <div :class="bComponent()">
+  <div :class="[bComponent(), bShop()]">
     <div :class="bComponent('title')">{{ info.title }}</div>
-    <div :class="bComponent('content')">
-      <div :class="bComponent('text')">{{ info.notify_time.name }}</div>
-      <div :class="bComponent('text')">{{ info.notify_type.name }}</div>
-      <div :class="bComponent('text')" style="padding-left:0">
+    <div :class="[bComponent('content'), bShop('content')]">
+      <div :class="[bComponent('text'), bShop('text')]">
+        {{ info.notify_time.name }}
+      </div>
+      <div :class="[bComponent('text'), bShop('text')]">
+        {{ info.notify_type.name }}
+      </div>
+      <div :class="[bComponent('text'), bShop('text')]" style="padding-left:0">
         <span
+          :class="bComponent('button-disabled')"
           v-if="
             NOTIFY_SHOP_SUB_TYPE.MEMBER_ENTRANCE_SUCCESS ===
               info.notify_sub_type.value
           "
         >
-          暂不支持
+          --
         </span>
         <st-switch
           @change="save"
@@ -19,16 +24,17 @@
           v-else
         ></st-switch>
       </div>
-      <div :class="bComponent('text')" style="padding-left:0">
+      <div :class="[bComponent('text'), bShop('text')]" style="padding-left:0">
         <st-switch @change="save" v-model="params.notify_mode.app"></st-switch>
       </div>
-      <div :class="bComponent('text')" style="padding-left:0">
+      <div :class="[bComponent('text'), bShop('text')]" style="padding-left:0">
+        {{ params.notify_mode.pc }}
         <st-switch
           @change="save"
           v-model="params.notify_mode.pc"
           v-if="isPc"
         ></st-switch>
-        <span :class="bComponent('button')" v-else>暂不支持</span>
+        <span :class="bComponent('button-disabled')" v-else>--</span>
       </div>
       <div
         v-show="
@@ -39,34 +45,41 @@
       >
         <div class="shadow"></div>
         <div :class="bComponent('column')" v-show="!isShowEdit">
-          <div class="width75" :class="bComponent('text')" v-if="info.preview">
+          <div
+            class="width80"
+            :class="[bComponent('text'), bShop('text')]"
+            v-if="info.preview"
+          >
             <span class="color-title mg-r8">预览内容:</span>
             <span :class="bComponent('text-right')">{{ info.preview }}</span>
           </div>
-          <div :class="bComponent('text')" style="padding-left:0">
+          <div
+            :class="[bComponent('text'), bShop('text')]"
+            style="padding-left:0"
+          >
             <span class="color-primary cursor-pointer" @click="isShowEdit = 1">
               编辑
             </span>
           </div>
           <div
-            class="width75"
-            :class="bComponent('text')"
+            class="width80"
+            :class="[bComponent('text'), bShop('text')]"
             v-if="info.receiver_description"
           >
             <span class="color-title">接收人员:</span>
             <span class="mg-l8">{{ info.receiver_description }}</span>
           </div>
           <div
-            class="width75"
-            :class="bComponent('text')"
+            class="width80"
+            :class="[bComponent('text'), bShop('text')]"
             v-if="info.course_type_description"
           >
             <span class="color-title">课程类型:</span>
             <span class="mg-l8">{{ info.course_type_description }}</span>
           </div>
           <div
-            class="width75"
-            :class="bComponent('text')"
+            class="width80"
+            :class="[bComponent('text'), bShop('text')]"
             v-if="info.order_type_description"
           >
             <span class="color-title">订单类型:</span>
@@ -74,7 +87,7 @@
           </div>
         </div>
         <div :class="bComponent('column')" v-show="isShowEdit">
-          <div class="width75" :class="bComponent('text')">
+          <div class="width80" :class="[bComponent('text'), bShop('text')]">
             <template v-if="info.preview">
               <div class="mg-b16">
                 <span class="mg-r8 color-title">预览内容</span>
@@ -166,7 +179,10 @@
             </div>
             <!-- 发送规则 start -->
           </div>
-          <div :class="bComponent('text')" style="padding-left:0">
+          <div
+            :class="[bComponent('text'), bShop('text')]"
+            style="padding-left:0"
+          >
             <span class="btn color-primary mg-r12" @click="isShowEdit = 0">
               取消
             </span>
@@ -184,7 +200,8 @@ const componentName = 'notice-item'
 export default {
   name: 'NoticeItem',
   bem: {
-    bComponent: componentName
+    bComponent: componentName,
+    bShop: `shop-${componentName}`
   },
   computed: {
     isPc() {
