@@ -345,6 +345,14 @@
         .c(#6c7e8c);
       }
     }
+    &__notify {
+      padding: 4px;
+      cursor: pointer;
+      .ant-badge-count {
+        background: #ff5e41;
+        box-shadow: 0 0 0 0;
+      }
+    }
     &__header {
       position: fixed;
       display: flex;
@@ -484,7 +492,6 @@
       flex: 1;
       z-index: 1;
       position: relative;
-      padding-bottom: 16px;
       &::after {
         content: '';
         position: fixed;
@@ -505,4 +512,20 @@
 }
 .layout-fast-entry_icon:hover {
   color: #5e6a7f !important;
+}
+.st-notify-open {
+  .pd(12px);
+  .ant-notification-notice-content {
+    .h(96px);
+  }
+  .ant-notification-notice-message,
+  .ant-notification-notice-description {
+    margin-left: 108px;
+  }
+  .ant-notification-notice-icon {
+    .s(96px, 96px);
+    img {
+      .s(100%, 100%);
+    }
+  }
 }
