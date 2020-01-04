@@ -4,77 +4,7 @@
       <st-t3 :class="b('title')">
         {{ groupCourseHeaderInfo.course_name }}
       </st-t3>
-      <div>
-        <st-button
-          type="primary"
-          @click="onGoEdit"
-          v-if="
-            groupCourseHeaderInfo.auth['shop:product:small_class_course|edit']
-          "
-        >
-          编辑
-        </st-button>
-        <a-dropdown type="primary" class="mg-r24 mg-l16">
-          <a-menu slot="overlay">
-            <a-menu-item
-              key="1"
-              v-if="
-                groupCourseHeaderInfo.auth[
-                  'shop:product:small_class_course|refund'
-                ]
-              "
-              @click="onGoOrder()"
-            >
-              去退款
-            </a-menu-item>
-            <a-menu-item
-              key="2"
-              v-if="
-                groupCourseHeaderInfo.auth[
-                  'shop:product:small_class_course|finish'
-                ]
-              "
-              @click="onBeGroup"
-            >
-              立即成班
-            </a-menu-item>
-            <a-menu-item
-              key="3"
-              v-if="
-                groupCourseHeaderInfo.auth[
-                  'shop:product:small_class_course|del'
-                ]
-              "
-            >
-              <st-popconfirm
-                :title="
-                  '一旦删除则无法恢复，确认删除' +
-                    groupCourseHeaderInfo.course_name +
-                    '？'
-                "
-                @confirm="onDelGroup()"
-              >
-                删除
-              </st-popconfirm>
-            </a-menu-item>
-            <a-menu-item
-              key="4"
-              v-if="
-                groupCourseHeaderInfo.auth[
-                  'shop:product:small_class_course|publish'
-                ]
-              "
-              @click="onPublish"
-            >
-              发布
-            </a-menu-item>
-          </a-menu>
-          <a-button type="primary">
-            更多
-            <a-icon type="down" />
-          </a-button>
-        </a-dropdown>
-      </div>
+      <st-btn-actions :options="btnOptions"></st-btn-actions>
     </div>
     <div class="mg-b24 header">
       <div :class="b('left')" class="mg-r24">
@@ -152,6 +82,45 @@ export default {
       return (
         this.groupCourseHeaderInfo && this.groupCourseHeaderInfo.image.image_key
       )
+    },
+    btnOptions() {
+      return [
+        {
+          text: '编辑',
+          click: this.onGoEdit,
+          if: this.groupCourseHeaderInfo.auth[
+            'shop:product:small_class_course|edit'
+          ]
+        },
+        {
+          text: '去退款',
+          click: this.onGoOrder,
+          if: this.groupCourseHeaderInfo.auth[
+            'shop:product:small_class_course|refund'
+          ]
+        },
+        {
+          text: '立即成班',
+          click: this.onBeGroup,
+          if: this.groupCourseHeaderInfo.auth[
+            'shop:product:small_class_course|finish'
+          ]
+        },
+        {
+          text: '删除',
+          click: this.onDelGroup,
+          if: this.groupCourseHeaderInfo.auth[
+            'shop:product:small_class_course|del'
+          ]
+        },
+        {
+          text: '发布',
+          click: this.onPublish,
+          if: this.groupCourseHeaderInfo.auth[
+            'shop:product:small_class_course|publish'
+          ]
+        }
+      ]
     }
   },
   data() {
