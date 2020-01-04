@@ -13,7 +13,7 @@ export class AnalysisService {
   getListInfo(id: string) {
     return this.crowdAPI.getCrowdShopAnalysis(id).pipe(
       tap(res => {
-        this.loading$.commit(() => res)
+        this.analysisInfo$.commit(() => res)
       })
     )
   }

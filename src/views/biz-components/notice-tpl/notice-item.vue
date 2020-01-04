@@ -5,18 +5,23 @@
       <div :class="tpl('text')">{{ info.notify_time.name }}</div>
       <div :class="tpl('text')">{{ info.notify_type.name }}</div>
       <div :class="tpl('text')" style="padding-left:0">
-        <st-switch @change="save" v-model="params.notify_mode.sms"></st-switch>
+        <st-switch
+          @change="save"
+          v-if="auth.sms"
+          v-model="params.notify_mode.sms"
+        ></st-switch>
       </div>
       <div :class="tpl('text')" style="padding-left:0">
         <st-switch
-          v-if="info.notify_type.value === typeMap['app']"
+          v-if="info.notify_type.value === typeMap['app'] && auth.app"
           @change="save"
           v-model="params.notify_mode.app"
         ></st-switch>
         <st-switch
           v-if="
             info.notify_type.value === typeMap['mini_programs'] &&
-              params.notify_mode.mini_programs > -1
+              params.notify_mode.mini_programs > -1 &&
+              auth.mina
           "
           @change="save"
           v-model="params.notify_mode.mini_programs"
@@ -62,7 +67,11 @@
             <span :class="tpl('text-right')">{{ info.preview }}</span>
           </div>
           <div :class="tpl('text')" style="padding-left:0">
-            <span class="color-primary cursor-pointer" @click="showEdit">
+            <span
+              class="color-primary cursor-pointer"
+              @click="showEdit"
+              v-if="auth.edit"
+            >
               编辑
             </span>
           </div>
@@ -302,9 +311,9 @@ export default {
     }
   },
   rxState() {
-    const user = this.userService
     return {
-      settingEnums: user.settingEnums$
+      notifyRule: this.userService.getOptions$('setting.notify_rule'),
+      notifyHour: this.userService.getOptions$('setting.notify_time_hour')
     }
   },
   modals: {
@@ -386,24 +395,17 @@ export default {
     info: {
       type: Object,
       default: () => {}
-    }
-  },
-  computed: {
-    notifyRule() {
-      let list = []
-      if (!this.settingEnums.notify_rule) return list
-      Object.entries(this.settingEnums.notify_rule.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
     },
-    notifyHour() {
-      let list = []
-      if (!this.settingEnums.notify_time_hour) return list
-      Object.entries(this.settingEnums.notify_time_hour.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
+    auth: {
+      type: Object,
+      default: () => {
+        return {
+          sms: true,
+          app: true,
+          mina: true,
+          edit: true
+        }
+      }
     }
   },
   created() {

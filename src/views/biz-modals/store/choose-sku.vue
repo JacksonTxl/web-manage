@@ -88,7 +88,7 @@ export default {
         })
         let skuId2 = this.specItemId.join('')
         if (skuId1 === skuId2) {
-          this.productInfo.stock_amount = values.stock_amount
+          this.productInfo.stock_amount = values.stock_amount || 0
           this.productInfo.rule_name = skuInfo
           this.productInfo.unit_price = values.selling_price
           this.productInfo.sku_id = values.sku_id
@@ -106,7 +106,7 @@ export default {
     }
   },
   created() {
-    console.log(this.productData)
+    this.productInfo.product_name = this.productData.product_name
     this.changeData()
   }
 }

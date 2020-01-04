@@ -41,7 +41,7 @@ export class VenueApi extends Api {
   orderSettings(params: OrderParams) {
     return this.http.post(`/v1/venues/site/order/settings`, { params })
   }
-  deleteSetting(query: SettingDelQuery) {
+  delSetting(query: SettingDelQuery) {
     return this.http.get(`/v1/venues/site/settings/delete`, { query })
   }
   addSetting(params: SettingParams) {

@@ -16,7 +16,9 @@ export class CommodityInfoService implements Controller {
   getCommodityInfo(id: string) {
     return this.orderApi.getCommodityInfo(id).pipe(
       tap((res: any) => {
-        this.info$.commit(() => res.info.product_list)
+        this.info$.commit(() =>
+          res.info.product_list ? res.info.product_list : res.info
+        )
       })
     )
   }

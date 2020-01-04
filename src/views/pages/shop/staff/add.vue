@@ -14,7 +14,6 @@
     </a-row>
     <staff-detail-basics
       v-if="currentIndex == 0"
-      :enums="staffEnums"
       :codeList="codeList"
       :roleList="roleList"
       @addStep="addCoachInfo"
@@ -25,20 +24,17 @@
 
 <script>
 import StaffDetailBasics from './add#/add-detail-basicsInfo'
-import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
 import { AddService } from './add.service'
 export default {
   serviceInject() {
     return {
-      userService: UserService,
       messageService: MessageService,
       addService: AddService
     }
   },
   rxState() {
     return {
-      staffEnums: this.userService.staffEnums$,
       codeList: this.addService.codeList$,
       roleList: this.addService.roleList$
     }
@@ -46,9 +42,6 @@ export default {
   name: 'addDetail',
   components: {
     StaffDetailBasics
-  },
-  mounted() {
-    // console.log(this.staffEnums)
   },
   bem: {
     b: 'page-add-staff',

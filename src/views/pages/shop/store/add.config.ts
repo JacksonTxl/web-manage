@@ -22,6 +22,9 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
+            if (!vm.classList.some((item: any) => item.category_id === value)) {
+              value = ''
+            }
             if (!value) {
               return '请选择商品分类'
             }

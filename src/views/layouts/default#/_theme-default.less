@@ -335,7 +335,7 @@
     left: 200px;
     right: 0;
     top: 80px;
-    bottom: 16px;
+    bottom: 0;
     display: flex;
     flex-direction: column;
     padding: 0 16px;
@@ -343,6 +343,14 @@
       .c(#9bacb9);
       &:hover {
         .c(#6c7e8c);
+      }
+    }
+    &__notify {
+      padding: 4px;
+      cursor: pointer;
+      .ant-badge-count {
+        background: #ff5e41;
+        box-shadow: 0 0 0 0;
       }
     }
     &__header {
@@ -495,17 +503,6 @@
         z-index: -1;
       }
     }
-    &__footer {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      transform: translateY(100%);
-      text-align: center;
-      .fz(12px);
-      .c(rgba(0, 0, 0, 0.45));
-      .pd-tb(24px);
-    }
   }
 }
 // 九宫格
@@ -515,4 +512,20 @@
 }
 .layout-fast-entry_icon:hover {
   color: #5e6a7f !important;
+}
+.st-notify-open {
+  .pd(12px);
+  .ant-notification-notice-content {
+    .h(96px);
+  }
+  .ant-notification-notice-message,
+  .ant-notification-notice-description {
+    margin-left: 108px;
+  }
+  .ant-notification-notice-icon {
+    .s(96px, 96px);
+    img {
+      .s(100%, 100%);
+    }
+  }
 }

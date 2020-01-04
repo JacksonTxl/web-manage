@@ -18,7 +18,7 @@
       </p>
       <p>
         <span style="color:rgba(37,42,46,1)">appid：</span>
-        {{ info.key }}
+        {{ info.appid }}
       </p>
     </div>
     <div class="mch-tip">
@@ -31,7 +31,7 @@
     </div>
     <template slot="footer">
       <st-button type="primary" @click="toSetMch">
-        {{ params.mina_info.is_mch === 1 ? '重新配置' : '立刻配置' }}
+        {{ params.mina_info.is_mch === 1 ? '重新配置' : '立即配置' }}
       </st-button>
     </template>
   </st-modal>

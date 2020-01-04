@@ -9,10 +9,7 @@ export class AddService {
   info$ = new State({})
   harfEnums$ = this.userService.getOptions$('venues_reserve.reserve_half_time')
   oneEnums$ = this.userService.getOptions$('venues_reserve.reserve_one_time')
-  timeEnums$ = new State([
-    { label: '半小时', value: 1 },
-    { label: '一小时', value: 2 }
-  ])
+  timeEnums$ = this.userService.getOptions$('venues_reserve.reserve_time')
   constructor(private venueApi: VenueApi, private userService: UserService) {}
   @Effect()
   add(params: VenueForm) {

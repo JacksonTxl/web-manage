@@ -1,5 +1,10 @@
 <template>
-  <st-modal :title="isOut ? '出库' : '入库'" @ok="onSubmit" v-model="show">
+  <st-modal
+    title="入库"
+    @ok="onSubmit"
+    v-model="show"
+    :loading="loading.stockWarehouse"
+  >
     <st-table
       :columns="columns"
       :dataSource="skuList"
@@ -39,14 +44,11 @@ export default {
   },
   data() {
     return {
-      show: false
+      show: false,
+      columns
     }
   },
   props: {
-    isOut: {
-      type: Boolean,
-      default: false
-    },
     skuList: {
       type: Array,
       default: () => {
@@ -54,24 +56,15 @@ export default {
       }
     }
   },
-  computed: { columns },
   methods: {
     onSubmit() {
-      if (this.isOut) {
-        this.putInService
-          .stockOutbound({ stock: this.skuList })
-          .subscribe(res => {
-            this.$emit('success')
-            this.show = false
-          })
-      } else {
-        this.putInService
-          .stockWarehouse({ stock: this.skuList })
-          .subscribe(res => {
-            this.show = false
-            this.$emit('success')
-          })
-      }
+      this.putInService
+        .stockWarehouse({ stock: this.skuList })
+        .subscribe(res => {
+          console.log('1111111111====')
+          this.$emit('success')
+          this.show = false
+        })
     }
   }
 }

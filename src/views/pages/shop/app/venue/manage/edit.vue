@@ -90,11 +90,10 @@
         </st-input-number>
       </st-form-item>
     </st-form>
-    <div class="page-role-info__btn">
+    <div :class="b('btn')">
       <st-button type="primary" @click="onClickSubmit" class="mg-r16">
         保存
       </st-button>
-      <st-button @click="onCancel">取消</st-button>
     </div>
   </div>
 </template>
@@ -159,9 +158,7 @@ export default {
         max_reserve_num: this.info.max_reserve_num,
         price: this.info.price
       })
-    },
-    onCancel() {
-      this.$router.go(-1)
+      this.perTime = this.info.per_time
     },
     onClickSubmit(e) {
       e.preventDefault()
@@ -173,7 +170,12 @@ export default {
           }
           this.editService.edit(postData).subscribe(() => {
             this.messageService.success({ content: '编辑成功' })
-            this.$router.push({ name: 'shop-app-venue-manage' })
+            this.$router.push({
+              name: 'shop-app-venue-manage-list',
+              query: {
+                id: this.info.venues_id
+              }
+            })
           })
         }
       })

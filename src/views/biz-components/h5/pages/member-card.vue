@@ -139,7 +139,7 @@
         v-for="(item, index) in data.consumerList"
         :key="index"
       >
-        {{ item }}
+        {{ item | enumFilter('deposit_card.consumer_type') }}
       </div>
     </div>
     <div

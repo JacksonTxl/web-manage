@@ -5,11 +5,12 @@
     @change="onChange"
     class="st-route-tabs"
   >
-    <a-tab-pane
-      v-for="tab in options"
-      :tab="tab.label"
-      :key="tab.route.name"
-    ></a-tab-pane>
+    <a-tab-pane v-for="tab in options" :key="tab.route.name">
+      <template slot="tab">
+        <a-badge dot v-if="tab.isBadge">{{ tab.label }}</a-badge>
+        <span v-else>{{ tab.label }}</span>
+      </template>
+    </a-tab-pane>
     <slot name="actions" slot="tabBarExtraContent"></slot>
   </a-tabs>
 </template>

@@ -8,7 +8,10 @@ export class StyleService {
   getSystemInfo() {
     const platform = navigator.platform
     let html: any = document.querySelector('html')
-    if (platform.indexOf('Win') > -1) {
+    if (
+      platform.indexOf('Win') > -1 &&
+      html.className.indexOf('Win-specific') < 0
+    ) {
       html.className += ' Win-specific'
     }
   }

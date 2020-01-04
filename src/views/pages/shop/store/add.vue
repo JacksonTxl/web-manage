@@ -1,7 +1,11 @@
 <template>
   <st-mina-panel app>
     <div slot="actions">
-      <st-button type="primary" :loading="loading.addGoods" @click="onSubmit">
+      <st-button
+        type="primary"
+        :loading="isEditMode ? loading.editGoods : loading.addGoods"
+        @click="onSubmit"
+      >
         保 存
       </st-button>
     </div>
@@ -34,8 +38,8 @@
               >
                 <a-select-option
                   :value="item.category_id"
-                  v-for="(item, index) in classList"
-                  :key="index"
+                  v-for="item in classList"
+                  :key="item.category_id"
                 >
                   {{ item.category_name }}
                 </a-select-option>
@@ -51,7 +55,7 @@
         <a-row :gutter="8">
           <a-col :span="16">
             <st-form-item label="商品图片" required>
-              <ul>
+              <ul :class="basic('img--container')">
                 <li
                   :class="['mg-r12', 'mg-t12', basic('img')]"
                   v-for="(item, index) in imgList"
@@ -87,7 +91,7 @@
                     placeholder="上传图片"
                   >
                     <template v-slot:description>
-                      <p>建议尺寸为750像素×750像素</p>
+                      <p>建议尺寸为750像素*750像素</p>
                     </template>
                   </st-image-upload>
                   <div :class="basic('img--tip')">可上传5张商品图片</div>
@@ -145,14 +149,15 @@
                 <a-radio :value="1">单规格</a-radio>
                 <a-radio :value="2">多规格</a-radio>
               </a-radio-group>
-              <div
+              <st-button
+                type="dashed"
                 :class="basic('sku--add')"
                 v-if="isMore === 2 && !isEditMode && skuList.length < 3"
                 @click="addSku"
               >
                 <a-icon type="plus" :class="basic('sku--add-icon')" />
                 <span>添加规格项（{{ skuList.length }}/3）</span>
-              </div>
+              </st-button>
               <div
                 :class="
                   index === skuList.length - 1
@@ -307,8 +312,13 @@
           <a-col :span="10">
             <st-form-item label="上架状态" required>
               <a-radio-group v-model="shelves_status">
-                <a-radio :value="1">立即上架</a-radio>
-                <a-radio :value="2">暂不上架</a-radio>
+                <a-radio
+                  :value="item.value"
+                  v-for="item in shelvesStatus"
+                  :key="item.value"
+                >
+                  {{ item.label }}
+                </a-radio>
               </a-radio-group>
             </st-form-item>
           </a-col>
@@ -342,7 +352,10 @@ export default {
     return {
       loading: this.addService.loading$,
       saleType: this.userService.getOptions$('cloud_store.sale_type'),
-      shippingMode: this.userService.getOptions$('cloud_store.shipping_mode')
+      shippingMode: this.userService.getOptions$('cloud_store.shipping_mode'),
+      shelvesStatus: this.userService.getOptions$(
+        'cloud_store.edit_shelves_status'
+      )
     }
   },
   modals: { StoreClassManage, StoreAddSku },
@@ -752,6 +765,10 @@ export default {
           success: res => {
             this.addService.getList().subscribe(res => {
               this.classList = res.list
+              let data = this.form.getFieldsValue()
+              if (!this.classList.some(item => item.id === data.category_id)) {
+                this.form.setFieldsValue({ category_id: '' })
+              }
             })
           }
         }

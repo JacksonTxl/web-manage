@@ -27,7 +27,15 @@
         :pagination="false"
       >
         <template slot="reserve_status" slot-scope="text">
-          {{ text | enumFilter('reserve.reserve_status') }}
+          <st-text
+            :status="{
+              success: text === 3,
+              error: text === 1 || text === 4,
+              warning: text === 2
+            }"
+          >
+            {{ text | enumFilter('venues_reserve.venues_reserve_status') }}
+          </st-text>
         </template>
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
@@ -44,10 +52,26 @@
         {{ text | enumFilter('finance.order_source') }}
       </template>
       <template slot="reserve_status" slot-scope="text">
-        {{ text | enumFilter('reserve.reserve_status') }}
+        <st-text
+          :status="{
+            success: text === 3,
+            error: text === 1 || text === 4,
+            warning: text === 2
+          }"
+        >
+          {{ text | enumFilter('venues_reserve.venues_reserve_status') }}
+        </st-text>
       </template>
       <template slot="pay_status" slot-scope="text">
-        {{ text | enumFilter('finance.pay_status') }}
+        <st-text
+          :status="{
+            success: text === 3,
+            error: text === 2,
+            warning: text === 1
+          }"
+        >
+          {{ text | enumFilter('finance.pay_status') }}
+        </st-text>
       </template>
       <div slot="action" slot-scope="text, record">
         <st-table-actions>
