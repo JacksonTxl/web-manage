@@ -10,10 +10,10 @@
           />
           <div class="shop-member-crowd-analysis-title__left-info">
             <st-t3 class="shop-member-crowd-analysis-title__info-title">
-              {{ analysisInfo.info.crowd_name }}
+              {{ info.crowd_name }}
             </st-t3>
             <st-t4 class="shop-member-crowd-analysis-title__info">
-              {{ analysisInfo.info.description }}
+              {{ info.description }}
             </st-t4>
           </div>
         </div>
@@ -23,7 +23,7 @@
             <st-help-tooltip id="TSRQ001" />
           </st-t4>
           <div class="shop-member-crowd-analysis-title__right-num">
-            {{ analysisInfo.info.num }}
+            {{ info.num }}
           </div>
         </div>
       </div>
@@ -61,12 +61,12 @@
             <div class="shop-member-crowd-analysis-title__right-num">
               {{
                 index === 0
-                  ? analysisInfo.info.entrance_num
+                  ? info.entrance_num
                   : index === 1
-                  ? analysisInfo.info.coupon_num
+                  ? info.coupon_num
                   : index === 2
-                  ? analysisInfo.info.trade_num
-                  : analysisInfo.info.course_num
+                  ? info.trade_num
+                  : info.course_num
               }}
             </div>
           </li>
@@ -89,7 +89,7 @@ export default {
   },
   rxState() {
     return {
-      analysisInfo: this.aService.analysisInfo$
+      info: this.aService.info$
     }
   },
   data() {
