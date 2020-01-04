@@ -8,11 +8,11 @@
       <a-row :class="refund('info')">
         <a-col :span="13" class="mg-b36">
           <st-info>
-            <st-info-item label="订单号" v-if="info.order_id">
+            <st-info-item label="订单号" v-if="isParent">
               {{ info.order_id }}
             </st-info-item>
             <!-- 此条展示为子订单id  -->
-            <st-info-item label="订单号" v-if="info.id">
+            <st-info-item label="订单号" v-else>
               {{ info.id }}
             </st-info-item>
             <st-info-item class="mg-b0" label="下单时间">
@@ -142,7 +142,7 @@
 import moment from 'moment'
 import { RefundService } from './refund.service'
 import { ruleOptions } from './refund.config'
-const SMALL_COURSE_TYPE = 6
+import { ORDER_PRODUCT_TYPE } from '@/constants/finance/order'
 export default {
   name: 'ModalShopFinanceOrderRefund',
   bem: {
@@ -162,11 +162,21 @@ export default {
       loading: this.refundService.loading$
     }
   },
-  props: ['id', 'goodsInvalid', 'type', 'isVenues'],
+  props: {
+    id: {
+      type: Number
+    },
+    isParent: {
+      type: Boolean,
+      default: true
+    },
+    product_type: [Number, String]
+  },
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
+      ORDER_PRODUCT_TYPE,
       form,
       decorators,
       show: false,
@@ -177,17 +187,20 @@ export default {
     }
   },
   computed: {
+    isVenues() {
+      return this.product_type === this.ORDER_PRODUCT_TYPE.VENUES
+    },
     refundReasonsChange() {
-      let arr
-      this.type === SMALL_COURSE_TYPE
-        ? (arr = this.refundReasonsSmallCourse)
-        : (arr = this.refundReasons)
-      if (this.goodsInvalid) {
+      let arr = this.refundReasons
+      // 小班课的退款原因
+      if (this.product_type === this.ORDER_PRODUCT_TYPE.SMALL_COURSE_TYPE) {
+        arr = this.refundReasonsSmallCourse
+      }
+      // 定金去掉第一个退款原因
+      if (this.product_type === this.ORDER_PRODUCT_TYPE.EARNEST) {
         arr.shift()
       }
-      /**
-       * 场地预约退款原因过滤
-       */
+      // 场地预约退款原因过滤
       const reason = this.info.refund_reason
       if (this.isVenues && reason) {
         arr = arr.filter(item => reason.indexOf(item.value) > -1)
@@ -209,10 +222,11 @@ export default {
     }
   },
   created() {
-    console.log(this.refundReasons)
-    console.log(this.type)
-    // this.refundService.getDetail(this.id).subscribe() 北研发冲突代码
-    this.refundService[`get${this.type}`](this.id).subscribe()
+    if (this.isParent) {
+      this.refundService.getDetail(this.id).subscribe()
+    } else {
+      this.refundService.getChildInfo(this.id).subscribe()
+    }
   },
   methods: {
     moment,
@@ -225,7 +239,6 @@ export default {
           pay_channel: +this.frozenPayType,
           description: this.description
         }
-        console.log(parmas)
         if (this.info.is_sub) {
           let childParmas = { ...parmas, order_sub_id: this.info.id }
 

@@ -170,18 +170,16 @@ export default {
   methods: {
     // 子订单退款
     onChildredRefund(record) {
-      console.log(record)
-      const props = { id: record.id, type: 'ChildInfo' }
-      console.log(props)
-      // if (record.product_type === this.ORDER_PRODUCT_TYPE.EARNEST) {
-      //   props.goodsInvalid = true
-      // }
+      const props = {
+        id: record.id,
+        isParent: false,
+        product_type: record.product_type
+      }
       this.$modalRouter.push({
         name: 'shop-finance-refund',
         props,
         on: {
           success: result => {
-            console.log('退款成功!')
             this.$router.reload()
           }
         }
@@ -217,8 +215,6 @@ export default {
     },
     // 收款
     onGathering(record) {
-      console.log(record.product_type)
-      console.log(this.productType(record.product_type))
       this.$modalRouter.push({
         name: 'sold-deal-gathering',
         props: {
@@ -228,19 +224,6 @@ export default {
         on: {
           success: () => {
             this.onSearch()
-            // this.$modalRouter.push({
-            //   name: 'sold-deal-gathering-tip',
-            //   props: {
-            //     order_id: record.id,
-            //     type: this.productType(record.product_type),
-            //     message: '收款成功'
-            //   },
-            //   on: {
-            //     success: () => {
-            //       console.log('success')
-            //     }
-            //   }
-            // })
           }
         }
       })
@@ -277,21 +260,16 @@ export default {
     },
     // 退款
     onRefund(record) {
-      const props = { id: record.id, type: record.product_type }
-      // const props = { id: record.id, type: 'Detail' } 北京研发冲突代码
-      if (record.product_type === this.ORDER_PRODUCT_TYPE.EARNEST) {
-        // 这里的枚举值是8 8是代表定金的嘛？
-        props.goodsInvalid = true
-      }
-      if (record.product_type === this.ORDER_PRODUCT_TYPE.VENUES) {
-        props.isVenues = true
+      const props = {
+        id: record.id,
+        isParent: true,
+        product_type: record.product_type
       }
       this.$modalRouter.push({
         name: 'shop-finance-refund',
         props,
         on: {
           success: result => {
-            console.log('退款成功!')
             this.$router.reload()
           }
         }
@@ -306,7 +284,6 @@ export default {
         },
         on: {
           success: result => {
-            console.log('业绩拆分成功!')
             this.$router.reload()
           }
         }

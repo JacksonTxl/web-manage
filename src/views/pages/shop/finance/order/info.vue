@@ -159,9 +159,9 @@ export default {
     },
     // 退款
     onRefund() {
-      const props = { id: this.$searchQuery.id }
-      if (this.info.product_type === this.ORDER_PRODUCT_TYPE.EARNEST) {
-        props.goodsInvalid = true
+      const props = {
+        id: this.$searchQuery.id,
+        product_type: this.info.product_type
       }
       this.$modalRouter.push({
         name: 'shop-finance-refund',
