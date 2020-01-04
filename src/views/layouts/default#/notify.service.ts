@@ -15,12 +15,14 @@ export class NotifyService {
   private ws: any
   private token = this.tokenService.token$.value
   private count = 0
-  private reqCount = 0
+  private errCount = 0
+  private realMessageCount = 0
   private timer = 0
+  private timerSetTimeout = 0
   private heartBeat = {
     msg_id: uuidV1(),
     msg_type: 2,
-    payload: {}
+    payload: { count: this.count }
   }
   // 设置心跳时间
   private pingTimeout = 15000
@@ -30,6 +32,7 @@ export class NotifyService {
   activityList$ = new State({})
   notReadNum$ = new State(0)
   loading$ = new State({})
+  messageArr: any[] = []
   constructor(
     private api: NotifyApi,
     private msg: MessageService,
@@ -43,7 +46,6 @@ export class NotifyService {
   user$ = this.userService.user$
 
   private getWebsocketInstance(query: any) {
-    console.log('token$', this.token)
     return (this.ws = webSocket({
       url: `${this.appConfig.WEB_SOCKET_DOMAIN}?app-id=${query.appId}&token=${
         query.token
@@ -54,11 +56,8 @@ export class NotifyService {
   setHeartBeat() {
     this.send(this.heartBeat)
     this.timer = setInterval(() => {
-      if (this.reqCount === 3) {
-        clearInterval(this.timer)
-      }
+      this.heartBeat.payload.count = this.count
       this.send(this.heartBeat)
-      this.reqCount++
     }, this.pingTimeout)
   }
 
@@ -82,7 +81,7 @@ export class NotifyService {
   init() {
     return anyAll(this.getActivityList(), this.getSystemList())
   }
-  public initWs(query: any) {
+  public initWs() {
     this.getWebsocketInstance({ token: this.token, appId: 10000 })
     this.message()
     this.setHeartBeat()
@@ -90,25 +89,52 @@ export class NotifyService {
   message() {
     this.ws.subscribe(
       (msg: any) => {
-        if (msg.msg_type === 2) return
         this.count++
         this.count$.commit(() => this.count)
+        if (msg.msg_type === 2) {
+          this.errCount = 0
+          return
+        }
+        // if (msg.msg_type === 1) {
+        //   this.realMessageCount++
+        //   if(this.realMessageCount < 3) {
+
+        //   }
+        // }
         this.notReadNum$.commit(() => msg.not_read_num)
         const config = {
           title: msg.payload.title,
           content: msg.payload.content,
           icon: this.user$.value.avatar,
-          duration: 1000
+          duration: 1000,
+          onClose: () => {
+            this.notificationService.open(config)
+          }
         }
-        this.notificationService.open(config)
+        this.messageArr.push(config)
       },
       (err: any) => {
-        clearInterval(this.timer)
+        this.reconnection(err)
       },
       () => {
+        console.log('comdsadasdsa')
         clearInterval(this.timer)
       }
     )
+  }
+  reconnection(err: any) {
+    console.log('ERR', err)
+    clearTimeout(this.timerSetTimeout)
+    this.errCount++
+    let rangeTime = this.errCount * 5000
+    this.timerSetTimeout = setTimeout(() => {
+      console.log(
+        `重连第${this.errCount}次, 重连时间${rangeTime / 1000}s, 正在重连...`,
+        '只重连三次'
+      )
+      this.errCount === 3 ? clearTimeout(this.timerSetTimeout) : this.initWs()
+    }, rangeTime)
+    this.errCount === 3 && console.log('websocket关闭连接')
   }
   send(content?: any) {
     this.ws.next(content || this.count)

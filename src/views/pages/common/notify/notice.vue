@@ -69,7 +69,6 @@ export default {
   },
   methods: {
     onClickDetail(record) {
-      console.log(record)
       this.$modalRouter.push({
         name: 'common-notify-info',
         props: { record }
