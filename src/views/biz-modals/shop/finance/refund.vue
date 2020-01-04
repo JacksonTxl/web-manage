@@ -171,7 +171,6 @@ export default {
     },
     product_type: [Number, String]
   },
-  // props: ['id', 'goodsInvalid', 'type', 'isVenues'],
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
