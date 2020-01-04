@@ -232,6 +232,7 @@ export default {
         .addScheduleInBatch(verifyParams)
         .subscribe(res => {
           console.log(res)
+          verifyParams.schedule_ids = res.schedule_ids
           this.addCourse(this.cycleIndex, res.conflict, verifyParams, res.list)
         })
     },

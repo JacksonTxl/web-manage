@@ -12,7 +12,7 @@
                 @change="minorsChange"
                 v-decorator="rules.is_minors"
                 slot="addonAfter"
-                style="width: 60px"
+                style="min-width: 60px"
               >
                 <a-select-option
                   v-for="(item, index) in minorsType"
@@ -70,7 +70,7 @@
               <a-select
                 v-decorator="rules.parent_user_role"
                 slot="addonAfter"
-                style="width: 60px"
+                style="min-width: 60px"
               >
                 <a-select-option
                   v-for="(item, index) in parentType"
