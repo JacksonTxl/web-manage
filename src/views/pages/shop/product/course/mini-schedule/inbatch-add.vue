@@ -323,6 +323,9 @@ export default {
     },
     onChangeScheduleType(value) {
       console.log('更改类型值' + value)
+      if (!this.courseId) {
+        return
+      }
       this.initScheduleDate()
       this.customizeScheduleList = []
       const params = {

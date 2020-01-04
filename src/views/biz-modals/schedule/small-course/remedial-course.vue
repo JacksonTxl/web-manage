@@ -14,7 +14,7 @@
         <a-select
           placeholder="请选择课程"
           @change="onChangeCourse"
-          v-decorator="decorators.course_id"
+          v-decorator="decorators.id"
         >
           <a-select-option
             v-for="course in courseOptions"
@@ -97,7 +97,7 @@ export default {
   },
   created() {
     console.log(this.info)
-    this.reserveService.courseList().subscribe(res => {
+    this.reserveService.courseList(this.id).subscribe(res => {
       this.courseOptions = res.list
     })
   },
@@ -121,7 +121,7 @@ export default {
       this.form.validate().then(values => {
         this.show = false
         const params = {}
-        params.schedule_id = this.id
+        params.schedule_id = values.id
         params.reserve_id = this.info.id
         params.member_id = this.info.member_id
         params.consume_id = this.info.consume_id
