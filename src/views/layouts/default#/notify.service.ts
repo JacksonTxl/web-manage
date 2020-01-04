@@ -95,26 +95,24 @@ export class NotifyService {
           this.errCount = 0
           return
         }
-        // if (msg.msg_type === 1) {
-        //   this.realMessageCount++
-        //   if(this.realMessageCount < 3) {
-
-        //   }
-        // }
         const maxLength = 3
-        // for(let )
         this.notReadNum$.commit(() => msg.not_read_num)
         const config = {
           title: msg.payload.title,
           content: msg.payload.content,
           icon: this.user$.value.avatar,
-          duration: 1000,
+          duration: 5,
           onClose: () => {
-            this.notificationService.open(config)
+            this.notificationService.open(this.messageArr[maxLength - 1])
           }
         }
-        this.notificationService.open(config)
-        this.messageArr.push(config)
+        if (this.messageArr.length >= maxLength) {
+          this.messageArr.shift()
+          this.messageArr.push(config)
+        } else {
+          this.notificationService.open(config)
+          this.messageArr.push(config)
+        }
       },
       (err: any) => {
         this.reconnection(err)
