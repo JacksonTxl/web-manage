@@ -204,6 +204,7 @@ export default {
     }
   },
   created() {
+    console.log(this.type)
     this.refundService[`get${this.type}`](this.id).subscribe()
   },
   methods: {

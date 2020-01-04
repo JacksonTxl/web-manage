@@ -134,7 +134,8 @@ export default {
     },
     // 退款
     onRefund() {
-      const props = { id: this.$searchQuery.id }
+      const props = { id: this.$searchQuery.id, type: 'Detail' }
+      //  const props = { id: record.id }
       if (this.info.product_type === this.ORDER_PRODUCT_TYPE.EARNEST) {
         props.goodsInvalid = true
       }

@@ -166,9 +166,10 @@ export default {
       })
     },
     onDel(record) {
+      console.log(record)
       this.$confirm({
         title: '提示',
-        content: '确定停止该活动吗？活动停止后，未成团订单将自动关闭并退款。',
+        content: `一旦删除则无法恢复，确定删除${record.product_name}？`,
         onOk: () => {
           this.listService.delproduct(record.product_id).subscribe(res => {
             this.$router.reload()
