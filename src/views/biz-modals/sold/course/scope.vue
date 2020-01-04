@@ -140,7 +140,7 @@
       </st-form-item>
       <st-form-item label="私教课程" class="mg-b0" required>
         <div :class="(add('personal-course-table'), add('course'))">
-          <table>
+          <table :class="add('course-table')">
             <colgroup>
               <col style="width:5%;" />
               <col style="width:29%;" />

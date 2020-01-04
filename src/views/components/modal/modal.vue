@@ -17,7 +17,7 @@
     </div>
     <slot name="title" slot="title"></slot>
     <slot name="prepend"></slot>
-    <div class="st-modal__body">
+    <div class="st-modal__body" :style="bodyStyle">
       <a-spin :spinning="loading">
         <slot></slot>
       </a-spin>
@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { defaults } from 'lodash-es'
 export default {
   name: 'StModal',
   model: {
@@ -50,12 +51,24 @@ export default {
       type: Boolean,
       default: false
     },
+    backgroundImgae: {
+      type: String,
+      default: ''
+    },
     maskClosable: {
       type: Boolean,
       default: true
     }
   },
   computed: {
+    bodyStyle() {
+      return this.backgroundImgae.length > 0
+        ? {
+            backgroundImage: `url(${this.backgroundImgae})`,
+            backgroundSize: '100% 100%'
+          }
+        : {}
+    },
     isFooterNull() {
       return this.$attrs.footer === false || this.$attrs.footer === null
     },
@@ -74,6 +87,7 @@ export default {
   methods: {
     close() {
       this.$emit('change', false)
+      this.$emit('cancel')
     },
     clickModal() {
       if (this.maskClosable) {

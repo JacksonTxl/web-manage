@@ -12,6 +12,26 @@ export const routeMapConfig = {
   'common-export'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '导出记录'
   },
+  'common-notify'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '消息中心'
+    routeConfig.meta.tabs = ['common-notify-inform', 'common-notify-notice']
+  },
+  'common-notify-inform'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '通知列表'
+    routeConfig.queryOptions = {
+      notify_type: { type: Number, default: -1 },
+      sub_notify_type: { type: Number, default: -1 },
+      shop_id: { type: Number, default: -1 }
+    }
+  },
+  'common-notify-notice'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '通知列表'
+    routeConfig.queryOptions = {
+      notify_type: { type: Number, default: -1 },
+      sub_notify_type: { type: Number, default: -1 },
+      shop_id: { type: Number, default: -1 }
+    }
+  },
   'brand-product-course-personal-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教课'
     routeConfig.meta.tabs = [
@@ -1407,8 +1427,22 @@ export const routeMapConfig = {
   },
   'shop-stat-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '上课报表'
+    routeConfig.meta.tabs = [
+      'shop-stat-course-summary',
+      'shop-stat-course-coach'
+    ]
+  },
+  'shop-stat-course-summary'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '汇总'
     routeConfig.queryOptions = {
-      showTable: { type: String, default: 'all' },
+      recently_day: { type: Number, default: 7 },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-stat-course-coach'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '教练'
+    routeConfig.queryOptions = {
       recently_day: { type: Number, default: 7 },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
