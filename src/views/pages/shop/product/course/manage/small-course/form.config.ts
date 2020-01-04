@@ -1,6 +1,5 @@
 export const ruleOptions = (vm: any) => {
   const pattern = vm.pattern
-  console.log(vm)
   return {
     course_name: {
       rules: [
@@ -93,7 +92,9 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    is_allow_transfer: {},
+    is_allow_transfer: {
+      initialValue: 1
+    },
     transfer_num: {},
     transfer_type: {
       initialValue: 2
