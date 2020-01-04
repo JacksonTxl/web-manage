@@ -10,7 +10,7 @@
     "dev": "cross-env NODE_OPTIONS=--max_old_space_size=8192 gulp dev",
     "dev:brand": "PAGE_ENV=brand gulp dev",
     "dev:shop": "PAGE_ENV=shop gulp dev",
-    "dev:test": "cross-env LOCAL_API_ENV=test gulp dev",
+    "dev:test": "cross-env LOCAL_API_ENV=test NODE_OPTIONS=--max_old_space_size=8192 gulp dev",
     "dev:test:brand": "cross-env LOCAL_API_ENV=test PAGE_ENV=brand gulp dev",
     "dev:test:shop": "cross-env LOCAL_API_ENV=test PAGE_ENV=shop gulp dev",
     "dev:pre": "cross-env LOCAL_API_ENV=pre gulp dev",
@@ -62,7 +62,7 @@
     "vue-router": "3.0.7",
     "vue-router-multiguard": "^1.0.3",
     "vue-router-plus": "0.3.3",
-    "vue-st-form": "0.0.8",
+    "vue-st-form": "0.1.0",
     "vuedraggable": "^2.19.2",
     "webpack": "^4.41.1"
   },

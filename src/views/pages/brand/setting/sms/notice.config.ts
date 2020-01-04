@@ -33,6 +33,9 @@ export const thsShop = () => {
     },
     {
       title: 'app推送状态'
+    },
+    {
+      title: 'pc消息弹窗'
     }
   ]
 }
