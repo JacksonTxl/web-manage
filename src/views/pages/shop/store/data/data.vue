@@ -88,7 +88,6 @@
                 </div>
               </a-col>
               <a-col :span="8">
-                {{ wholeNav[wholenavIndex].num }}
                 <div class="ring">
                   <whole-table>
                     <template v-slot:user>
