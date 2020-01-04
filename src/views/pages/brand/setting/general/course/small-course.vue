@@ -97,11 +97,9 @@ export default {
     }
   },
   rxState() {
-    const user = this.userService
     const smallCourseService = this.smallCourseService
     return {
       loading: smallCourseService.loading$,
-      settingEnums: user.settingEnums$,
       reserveInfo: smallCourseService.reserveInfo$,
       auth: smallCourseService.auth$
     }
