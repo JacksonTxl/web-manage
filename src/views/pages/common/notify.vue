@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     onChange() {
-      this.service.getNoticePcUnread.subscribe()
+      this.service.getNoticePcUnread().subscribe()
     }
   }
 }

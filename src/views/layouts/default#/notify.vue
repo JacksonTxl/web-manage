@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { NotifyService } from './notify.service'
+import { WsNotifyService } from './ws-notify.service'
 export default {
   name: 'NotifyCenter',
   methods: {
@@ -20,7 +20,7 @@ export default {
   },
   serviceInject() {
     return {
-      service: NotifyService
+      service: WsNotifyService
     }
   },
   rxState() {

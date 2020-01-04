@@ -1,3 +1,4 @@
+import { NotifyService } from './../notify.service'
 import { State, Effect } from 'rx-state'
 import { NotifyApi } from '@/api/v1/notify'
 import { Injectable, ServiceRoute } from 'vue-service-app'
@@ -9,13 +10,14 @@ export class NoticeService {
   list$ = new State([])
   page$ = new State({})
   noticeTypeOptions$ = new State({})
-  constructor(private api: NotifyApi) {}
+  constructor(private api: NotifyApi, private notifyService: NotifyService) {}
   @Effect()
   getList(query: any) {
     return this.api.getNoticeList(query).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+        this.notifyService.getNoticePcUnread().subscribe()
       })
     )
   }
