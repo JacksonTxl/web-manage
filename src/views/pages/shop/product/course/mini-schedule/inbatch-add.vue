@@ -102,7 +102,9 @@
               </span>
               <span class="schedule__tips-time">{{ tipsText[i] }}</span>
               共
-              <span class="schedule__tips-num">{{ tipsCourseNum[i] }}</span>
+              <span class="schedule__tips-num" v-if="tipsCourseNum[i]">
+                {{ tipsCourseNum[i].length }}
+              </span>
               节
             </div>
           </st-container>
@@ -195,6 +197,7 @@ import { SmallCourseScheduleService } from '@/views/pages/shop/product/course/sc
 import { SmallCourseScheduleCommonService } from '@/views/pages/shop/product/course/schedule/small-course/service#/common.service'
 import { InbatchAddService } from './inbatch-add.service'
 import ScheduleSmallCourseEditCourse from '@/views/biz-modals/schedule/small-course/edit-course'
+import ScheduleSmallCourseSubmitCourse from '@/views/biz-modals/schedule/small-course/submit-course'
 import { MessageService } from '@/services/message.service'
 import { DELETE_TYPE } from '@/constants/stat/course'
 import { ruleOptions } from './inbatch-add.config'
@@ -204,7 +207,8 @@ export default {
     b: 'page-shop-schedule-inbatch-add'
   },
   modals: {
-    ScheduleSmallCourseEditCourse
+    ScheduleSmallCourseEditCourse,
+    ScheduleSmallCourseSubmitCourse
   },
   serviceInject() {
     return {
@@ -421,17 +425,17 @@ export default {
     },
     getScheduleTips(index, text, courseNum) {
       this.tipsText[index] = text
-      this.tipsCourseNum[index] = courseNum
+      this.tipsCourseNum[index] = courseNum.split(',')
+      this.tipsCourseNum[index].pop()
     },
     filterDateList(dateList) {
       let list = []
       dateList.forEach((item, dateIndex) => {
         let listItemCard = {} //批次的大的集合对象
-        let courseNum = 0
+        let courseNum = ''
         let text = ''
         item.course_time.forEach((item, index) => {
           if (item.week) {
-            courseNum += item.list.length
             if (item.week == 0) {
               text += this.weekList[this.weekList.length - 1].date
             } else {
@@ -444,6 +448,7 @@ export default {
                 item.conflictList = []
               }
               text += item.start_time + ','
+              courseNum += item.schedule_ids + ','
             })
             this.getScheduleTips(dateIndex, text, courseNum)
             listItemCard[item.week] = item.list
@@ -461,7 +466,7 @@ export default {
         list.push(listItemCard)
       })
       // console.log(list)
-      // console.log(dateList)
+      console.log(dateList)
       this.filterDate = list
     },
     // 增加课程
@@ -678,22 +683,30 @@ export default {
       this.scheduleList.push(item)
       this.filterDateList(this.scheduleList)
     },
+    // 保存发布
     onClickSaveSchedule() {
-      const smallCourseInfo = this.smallCourseInfo
-      console.log(smallCourseInfo)
-      if (this.cycle_type === 2) {
-        const params = {}
-        params.course_id = this.smallCourseInfo.course_id
-        params.schedule_ids = []
-        this.customizeScheduleList.forEach((item, index) => {
-          params.schedule_ids.push(item.id)
+      if (
+        (this.cycle_type === 1 &&
+          this.scheduleList[0].course_time.length <= 0) ||
+        (this.cycle_type === 2 && this.customizeScheduleList <= 0)
+      ) {
+        this.msg.warning({
+          content: '请先添加排期'
         })
-        this.smallCourseScheduleService.saveCustom(params).subscribe()
-      } else {
-        this.smallCourseScheduleService
-          .save(smallCourseInfo.course_id)
-          .subscribe()
+        return
       }
+      const cycle_type = this.cycle_type
+      const courseInfo = this.smallCourseInfo
+      let scheduleList
+      if (cycle_type === 1) {
+        scheduleList = this.tipsCourseNum
+      } else {
+        scheduleList = this.customizeScheduleList
+      }
+      this.$modalRouter.push({
+        name: 'schedule-small-course-submit-course',
+        props: { scheduleList, cycle_type, courseInfo }
+      })
     },
     onClickGoBack() {
       let weekOfday = moment().format('E')

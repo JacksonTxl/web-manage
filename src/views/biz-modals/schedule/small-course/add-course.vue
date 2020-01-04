@@ -149,7 +149,7 @@ export default {
       })
     },
     onScheduleChange() {
-      this.$router.push({ query: this.$searchQuery })
+      this.$router.reload()
     },
     onClick() {
       this.show = false
