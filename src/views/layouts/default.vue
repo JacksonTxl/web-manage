@@ -185,10 +185,6 @@
     <main class="layout-default-body">
       <article class="layout-default-body__content">
         <router-view></router-view>
-        <!-- <default-skeleton></default-skeleton> -->
-        <footer class="layout-default-body__footer">
-          <copyright />
-        </footer>
       </article>
     </main>
     <switch-shop v-model="isShowSwitchShop"></switch-shop>
@@ -216,7 +212,6 @@ import AccountModify from '@/views/biz-modals/account/modify'
 import { UdeskService } from '@/services/udesk.service'
 import FastEntry from './default#/fast-entry'
 import StUdeskBtn from '@/views/biz-components/udesk-btn/udesk-btn'
-import Copyright from '@/views/biz-components/copyright/copyright'
 import { NotifyService } from './default#/notify.service'
 
 export default {
@@ -226,8 +221,7 @@ export default {
     SwitchShop,
     DefaultNotify,
     FastEntry,
-    StUdeskBtn,
-    Copyright
+    StUdeskBtn
   },
   serviceInject() {
     return {

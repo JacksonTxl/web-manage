@@ -87,6 +87,7 @@ export default {
   methods: {
     close() {
       this.$emit('change', false)
+      this.$emit('cancel')
     },
     clickModal() {
       if (this.maskClosable) {

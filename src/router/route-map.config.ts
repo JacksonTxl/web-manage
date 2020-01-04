@@ -1364,8 +1364,22 @@ export const routeMapConfig = {
   },
   'shop-stat-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '上课报表'
+    routeConfig.meta.tabs = [
+      'shop-stat-course-summary',
+      'shop-stat-course-coach'
+    ]
+  },
+  'shop-stat-course-summary'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '汇总'
     routeConfig.queryOptions = {
-      showTable: { type: String, default: 'all' },
+      recently_day: { type: Number, default: 7 },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-stat-course-coach'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '教练'
+    routeConfig.queryOptions = {
       recently_day: { type: Number, default: 7 },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
