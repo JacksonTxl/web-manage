@@ -627,31 +627,41 @@ export default {
         this.onClickGoBack()
         return
       }
-      if (this.cycle_type === 1) {
-        console.log('删除周期所有')
-        let params = {}
-        params.course_id = this.smallCourseInfo.course_id
-        params.del_type = DELETE_TYPE.ALL_CYCLE
-        this.smallCourseScheduleService.cancelCycle(params).subscribe(res => {
-          this.onClickGoBack()
-        })
-      } else if (this.cycle_type === 2) {
-        const params = {}
-        params.course_id = this.smallCourseInfo.course_id
-        params.schedule_ids = []
-        this.customizeScheduleList.forEach((item, index) => {
-          params.schedule_ids.push(item.id)
-        })
-        console.log(params)
-        console.log('自主删除所有')
-        this.smallCourseScheduleService
-          .cancelCustomAll(params)
-          .subscribe(res => {
+
+      this.$confirm({
+        title: '提示',
+        content: `取消后会清空当前课程下所有未发布的排期，请确认已完成排课`,
+        onCancel: () => {},
+        onOk: () => {
+          if (this.cycle_type === 1) {
+            console.log('删除周期所有')
+            let params = {}
+            params.course_id = this.smallCourseInfo.course_id
+            params.del_type = DELETE_TYPE.ALL_CYCLE
+            this.smallCourseScheduleService
+              .cancelCycle(params)
+              .subscribe(res => {
+                this.onClickGoBack()
+              })
+          } else if (this.cycle_type === 2) {
+            const params = {}
+            params.course_id = this.smallCourseInfo.course_id
+            params.schedule_ids = []
+            this.customizeScheduleList.forEach((item, index) => {
+              params.schedule_ids.push(item.id)
+            })
+            console.log(params)
+            console.log('自主删除所有')
+            this.smallCourseScheduleService
+              .cancelCustomAll(params)
+              .subscribe(res => {
+                this.onClickGoBack()
+              })
+          } else {
             this.onClickGoBack()
-          })
-      } else {
-        this.onClickGoBack()
-      }
+          }
+        }
+      })
     },
     // 新增周期排课
     addScheduleWeek() {
