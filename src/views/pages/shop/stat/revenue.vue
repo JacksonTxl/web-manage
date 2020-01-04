@@ -1,34 +1,37 @@
 <template>
-  <div :class="bPage()">
-    <div :class="bPage('count')">
-      <st-refresh-btn :date="todayInfo$.time" :action="refresh" />
-      <a-row :class="bPage('income-row')">
-        <div :class="bPage('income-detail')">
-          <swiper :options="sliderOptions">
-            <swiper-slide v-for="(item, index) in todayInfo$.res" :key="index">
-              <div :class="bPage('income')">
-                <p :class="bPage('income-label')">{{ item.label }}</p>
-                <p :class="bPage('income-value')">{{ item.value }}</p>
-              </div>
-            </swiper-slide>
-          </swiper>
-          <div
-            class="swiper-r-button-prev swiper-button-prev"
-            slot="button-prev"
-          >
-            <st-icon type="arrow-left" class="arrow-left" />
+  <st-panel app>
+    <div :class="bPage()">
+      <div :class="bPage('count')">
+        <st-refresh-btn :date="todayInfo$.time" :action="refresh" />
+        <a-row :class="bPage('income-row')">
+          <div :class="bPage('income-detail')">
+            <swiper :options="sliderOptions">
+              <swiper-slide
+                v-for="(item, index) in todayInfo$.res"
+                :key="index"
+              >
+                <div :class="bPage('income')">
+                  <p :class="bPage('income-label')">{{ item.label }}</p>
+                  <p :class="bPage('income-value')">{{ item.value }}</p>
+                </div>
+              </swiper-slide>
+            </swiper>
+            <div
+              class="swiper-r-button-prev swiper-button-prev"
+              slot="button-prev"
+            >
+              <st-icon type="arrow-left" class="arrow-left" />
+            </div>
+            <div
+              class="swiper-r-button-next swiper-button-next"
+              slot="button-next"
+            >
+              <st-icon type="arrow-right" class="arrow-right" />
+            </div>
           </div>
-          <div
-            class="swiper-r-button-next swiper-button-next"
-            slot="button-next"
-          >
-            <st-icon type="arrow-right" class="arrow-right" />
-          </div>
-        </div>
-      </a-row>
-    </div>
-    <div class="mg-b16" :class="bPage('count-action')">
-      <div :class="bPage('button-wapper')">
+        </a-row>
+      </div>
+      <st-table-header-section class="mg-b16">
         <st-button
           type="primary"
           v-if="auth$.export"
@@ -39,29 +42,30 @@
         >
           全部导出
         </st-button>
-      </div>
-      <span>
-        <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
-      </span>
+        <div slot="actions">
+          <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
+        </div>
+      </st-table-header-section>
+
+      <!-- :alertSelection="{ onReset: onSelectionReset }" -->
+      <!-- :rowSelection="{ selectedRowKeys, onChange: onSelectionChange }" -->
+      <st-total
+        :class="bPage('total')"
+        :indexs="columns"
+        :dataSource="total$"
+        hasTitle
+      ></st-total>
+      <st-table
+        :page="page$"
+        @change="onTableChange"
+        class="mg-t12"
+        :loading="loading$.getRevenueShopList"
+        :columns="columns"
+        :dataSource="list$"
+        rowKey="id"
+      ></st-table>
     </div>
-    <!-- :alertSelection="{ onReset: onSelectionReset }" -->
-    <!-- :rowSelection="{ selectedRowKeys, onChange: onSelectionChange }" -->
-    <st-total
-      :class="bPage('total')"
-      :indexs="columns"
-      :dataSource="total$"
-      hasTitle
-    ></st-total>
-    <st-table
-      :page="page$"
-      @change="onTableChange"
-      class="mg-t12"
-      :loading="loading$.getRevenueShopList"
-      :columns="columns"
-      :dataSource="list$"
-      rowKey="id"
-    ></st-table>
-  </div>
+  </st-panel>
 </template>
 <script>
 import { RevenueService } from './revenue.service'

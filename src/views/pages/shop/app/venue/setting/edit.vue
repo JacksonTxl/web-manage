@@ -1,137 +1,153 @@
 <template>
   <st-panel :class="b()" app>
     <st-form :form="form" :class="b('form')" labelWidth="120px">
-      <st-form-item label="场地">
-        <span :class="b('name')">
-          {{ sites.map(item => item.site_name).join('、') }}
-        </span>
-      </st-form-item>
-      <st-form-item label="日期" required>
-        <a-radio-group v-decorator="decorators.time_limit_type">
-          <a-radio
-            v-for="item in timeEnums"
-            :key="item.value"
-            :value="item.value"
-            @change="timeLimitChange"
+      <a-row :gutter="8">
+        <a-col :lg="14">
+          <st-form-item label="场地">
+            <span :class="b('name')">
+              {{ sites.map(item => item.site_name).join('、') }}
+            </span>
+          </st-form-item>
+          <st-form-item label="日期" required>
+            <a-radio-group v-decorator="decorators.time_limit_type">
+              <a-radio
+                v-for="item in timeEnums"
+                :key="item.value"
+                :value="item.value"
+                @change="timeLimitChange"
+              >
+                {{ item.label }}
+              </a-radio>
+            </a-radio-group>
+          </st-form-item>
+          <st-form-item
+            v-if="timeLimit === 2"
+            :labelFix="true"
+            labelWidth="120px"
           >
-            {{ item.label }}
-          </a-radio>
-        </a-radio-group>
-      </st-form-item>
-      <st-form-item v-if="timeLimit === 2" :labelFix="true" labelWidth="120px">
-        <div class="page-a-form">
-          <a-date-picker
-            :disabledDate="disabledStartDate"
-            v-decorator="decorators.time_limit_start"
-            format="YYYY-MM-DD"
-            placeholder="开始时间"
-            :showToday="false"
-            @openChange="handleStartOpenChange"
-            @change="start_time_change"
-          />
-        </div>
-        &nbsp;~&nbsp;
-        <div class="page-a-form">
-          <a-date-picker
-            :disabledDate="disabledEndDate"
-            v-decorator="decorators.time_limit_end"
-            format="YYYY-MM-DD"
-            placeholder="结束时间"
-            :showToday="false"
-            :open="endOpen"
-            @openChange="handleEndOpenChange"
-            @change="end_time_change"
-          />
-        </div>
-      </st-form-item>
-      <st-form-item label="循环设置" required>
-        <a-radio-group
-          v-decorator="decorators.cyclic_type"
-          @change="cyclicTypeChange"
-        >
-          <a-radio
-            v-for="item in cyclicEnums"
-            :key="item.value"
-            :value="item.value"
-          >
-            {{ item.label }}
-          </a-radio>
-        </a-radio-group>
-      </st-form-item>
-      <st-form-item v-if="cyclicType === 2" :labelFix="true" labelWidth="120px">
-        <a-checkbox-group v-decorator="decorators.week_day">
-          <a-checkbox
-            v-for="item in weeks"
-            :key="item.value"
-            :value="item.value"
-            class="mg-r8"
-          >
-            {{ item.label }}
-          </a-checkbox>
-        </a-checkbox-group>
-      </st-form-item>
-      <st-form-item :class="b('time')" label="可预约时间" required>
-        <st-form-item :class="b('inline-item')">
-          <a-select
-            v-decorator="decorators.open_time_start"
-            placeholder="开始时间"
-            class="page-content-card-input"
-          >
-            <a-select-option
-              v-for="(item, index) in harfEnums"
-              :key="index"
-              :value="item.value"
+            <div class="page-a-form">
+              <a-date-picker
+                :disabledDate="disabledStartDate"
+                v-decorator="decorators.time_limit_start"
+                format="YYYY-MM-DD"
+                placeholder="开始时间"
+                :showToday="false"
+                @openChange="handleStartOpenChange"
+                @change="start_time_change"
+              />
+            </div>
+            &nbsp;~&nbsp;
+            <div class="page-a-form">
+              <a-date-picker
+                :disabledDate="disabledEndDate"
+                v-decorator="decorators.time_limit_end"
+                format="YYYY-MM-DD"
+                placeholder="结束时间"
+                :showToday="false"
+                :open="endOpen"
+                @openChange="handleEndOpenChange"
+                @change="end_time_change"
+              />
+            </div>
+          </st-form-item>
+          <st-form-item label="循环设置" required>
+            <a-radio-group
+              v-decorator="decorators.cyclic_type"
+              @change="cyclicTypeChange"
             >
-              {{ item.label }}
-            </a-select-option>
-          </a-select>
-        </st-form-item>
-        &nbsp;~&nbsp;
-        <st-form-item :class="b('inline-item')">
-          <a-select
-            v-decorator="decorators.open_time_end"
-            placeholder="结束时间"
-            class="page-content-card-input"
+              <a-radio
+                v-for="item in cyclicEnums"
+                :key="item.value"
+                :value="item.value"
+              >
+                {{ item.label }}
+              </a-radio>
+            </a-radio-group>
+          </st-form-item>
+        </a-col>
+        <a-col :lg="24">
+          <st-form-item
+            v-if="cyclicType === 2"
+            :labelFix="true"
+            labelWidth="120px"
           >
-            <a-select-option
-              v-for="(item, index) in harfEnums"
-              :key="index"
-              :value="item.value"
+            <a-checkbox-group v-decorator="decorators.week_day">
+              <a-checkbox
+                v-for="item in weeks"
+                :key="item.value"
+                :value="item.value"
+                class="mg-r32"
+              >
+                {{ item.label }}
+              </a-checkbox>
+            </a-checkbox-group>
+          </st-form-item>
+        </a-col>
+        <a-col :lg="14">
+          <st-form-item :class="b('time')" label="可预约时间" required>
+            <st-form-item :class="b('inline-item')">
+              <a-select
+                v-decorator="decorators.open_time_start"
+                placeholder="开始时间"
+                class="page-content-card-input"
+              >
+                <a-select-option
+                  v-for="(item, index) in harfEnums"
+                  :key="index"
+                  :value="item.value"
+                >
+                  {{ item.label }}
+                </a-select-option>
+              </a-select>
+            </st-form-item>
+            &nbsp;~&nbsp;
+            <st-form-item :class="b('inline-item')">
+              <a-select
+                v-decorator="decorators.open_time_end"
+                placeholder="结束时间"
+                class="page-content-card-input"
+              >
+                <a-select-option
+                  v-for="(item, index) in harfEnums"
+                  :key="index"
+                  :value="item.value"
+                >
+                  {{ item.label }}
+                </a-select-option>
+              </a-select>
+            </st-form-item>
+          </st-form-item>
+          <st-form-item label="预约状态" required>
+            <st-checkbox v-model="can_reserve">
+              不可预约
+            </st-checkbox>
+          </st-form-item>
+          <st-form-item label="预约价格" required>
+            <st-input-number
+              v-decorator="decorators.price"
+              :float="true"
+              placeholder="请输入价格"
             >
-              {{ item.label }}
-            </a-select-option>
-          </a-select>
-        </st-form-item>
-      </st-form-item>
-      <st-form-item label="预约状态" required>
-        <st-checkbox v-model="can_reserve">
-          不可预约
-        </st-checkbox>
-      </st-form-item>
-      <st-form-item label="预约价格" required>
-        <st-input-number
-          v-decorator="decorators.price"
-          :float="true"
-          placeholder="请输入价格"
-        >
-          <template slot="addonAfter">
-            元
-          </template>
-        </st-input-number>
-      </st-form-item>
-      <st-form-item label="优先级" required>
-        <a-radio-group v-decorator="decorators.weight">
-          <a-radio
-            v-for="item in priorityEnums"
-            :key="item.value"
-            :value="item.value"
-          >
-            {{ item.label }}
-          </a-radio>
-        </a-radio-group>
-      </st-form-item>
+              <template slot="addonAfter">
+                元
+              </template>
+            </st-input-number>
+          </st-form-item>
+          <st-form-item label="优先级" required>
+            <a-radio-group v-decorator="decorators.weight">
+              <a-radio
+                v-for="item in priorityEnums"
+                :key="item.value"
+                :value="item.value"
+              >
+                {{ item.label }}
+              </a-radio>
+            </a-radio-group>
+          </st-form-item>
+        </a-col>
+      </a-row>
     </st-form>
-    <div class="page-role-info__btn">
+    <div :class="b('btn')">
       <st-button type="primary" @click="onClickSubmit" class="mg-r16">
         保存
       </st-button>
@@ -151,7 +167,7 @@ import { CAN_RESERVE } from '@/constants/venue'
 export default {
   name: 'AddRole',
   bem: {
-    b: 'page-shop-app-venue-setting-add'
+    b: 'page-shop-app-venue-setting-edit'
   },
   serviceInject() {
     return {

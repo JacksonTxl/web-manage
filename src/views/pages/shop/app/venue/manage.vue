@@ -8,16 +8,14 @@
       </div>
       <ul :class="left('tree')">
         <li
-          v-for="(venue, index) in venueList"
+          v-for="venue in venueList"
           :key="venue.id"
-          @click="clickVenue(venue, $event)"
-          :class="[left('item'), { active: index === 0 }]"
+          @click="clickVenue(venue)"
+          :class="[left('item'), { active: venue.active }]"
           :id="venue.id"
         >
           <span>{{ venue.venues_name }}</span>
-          <st-more-dropdown
-            :class="[left('opreation'), { active: index === 0 }]"
-          >
+          <st-more-dropdown :class="left('opreation')">
             <a-menu-item
               @click="onClickEditVenue(venue.id)"
               v-if="venue.auth['shop:product:venues|edit']"
@@ -32,11 +30,20 @@
                 删除场馆
               </st-popconfirm>
             </a-menu-item>
-            <a-menu-item
-              @click="onClickSwitchVenue(venue)"
-              v-if="venue.auth['shop:product:venues|switch']"
-            >
-              {{ venue.area_status === AREA_STATUS.OFF ? '开启' : '关闭' }}场馆
+            <a-menu-item v-if="venue.auth['shop:product:venues|switch']">
+              <span
+                @click="onClickSwitchVenue(venue)"
+                v-if="venue.area_status === AREA_STATUS.OFF"
+              >
+                开启场馆
+              </span>
+              <st-popconfirm
+                v-if="venue.area_status === AREA_STATUS.ON"
+                :title="'确认关闭场馆？'"
+                @confirm="onClickSwitchVenue(venue)"
+              >
+                关闭场馆
+              </st-popconfirm>
             </a-menu-item>
           </st-more-dropdown>
         </li>
@@ -86,11 +93,9 @@ export default {
     }
   },
   rxState() {
-    const user = this.userService
     return {
       info: this.manageService.info$,
       systemInfo: this.manageService.systemInfo$,
-      settingEnums: user.settingEnums$,
       loading: this.manageService.loading$,
       venueList: this.manageService.venueList$,
       auth: this.manageService.auth$
@@ -115,33 +120,34 @@ export default {
       return this.$searchQuery.type === 'edit'
     }
   },
+  updated() {
+    this.initActive()
+  },
   created() {
-    // if (this.venueList.length) {
-    //   this.venueInfo = this.venueList[0]
-    // }
+    this.initActive()
   },
   methods: {
-    clickVenue(venue, e) {
-      this.$nextTick().then(() => {
-        const itemClassName = 'shop-app-venue-manage__left__item',
-          opreationClassName = 'shop-app-venue-manage__left__opreation'
-        const doms = document.querySelectorAll(`.${itemClassName}`)
-        const Opreation = document.querySelectorAll(`.${opreationClassName}`)
-        Opreation.forEach(dom => {
-          dom.setAttribute('class', 'venue-opreation')
-        })
-        doms.forEach(dom => {
-          dom.setAttribute('class', `${itemClassName} pd-y8  pd-x16`)
-        })
-        e.currentTarget
-          .querySelector('.venue-opreation')
-          .setAttribute('class', `${opreationClassName} active`)
-        e.currentTarget.setAttribute(
-          'class',
-          `${itemClassName} active pd-y8  pd-x16`
-        )
-      })
+    initActive() {
+      if (!this.venueList.length) return
+      let id = +this.$searchQuery.id
+      let area_id = +this.$searchQuery.area_id
+      let index = -1
+      if (id) index = this.venueList.findIndex(item => item.venues_id === id)
+      if (area_id) index = this.venueList.findIndex(item => item.id === area_id)
+      if (index < 0) {
+        index = 0
+        this.clickVenue(this.venueList[index])
+        return
+      }
+      this.setActive(this.venueList[index])
+    },
+    setActive(venue) {
+      this.venueList.forEach(item => (item.active = false))
+      venue.active = true
       this.venueInfo = venue
+    },
+    clickVenue(venue) {
+      this.setActive(venue)
       this.$router.push({
         name: 'shop-app-venue-manage-list',
         query: { id: venue.venues_id }
@@ -162,7 +168,7 @@ export default {
     onClickEditVenue(id) {
       this.$router.push({
         name: 'shop-app-venue-manage-edit',
-        query: { id: id }
+        query: { area_id: id }
       })
     },
     onClickDelVenue(id) {
@@ -174,7 +180,7 @@ export default {
       this.$router.push({
         name: 'shop-app-venue-manage-add',
         query: {
-          id: this.$searchQuery.id
+          id: this.venueInfo.venues_id
         }
       })
     },
@@ -186,24 +192,6 @@ export default {
         query: {
           type: 'edit'
         }
-      })
-    },
-    onSave() {
-      if (!this.inputCheck()) {
-        return
-      }
-      const info = this.info
-      const params = {
-        brand_name: info.brand_name,
-        album_id: info.album_id,
-        description: info.description
-      }
-      this.manageService.update(params).subscribe(() => {
-        this.messageService.success({
-          content: '保存成功'
-        })
-        this.$router.push({})
-        this.userService.fetchStaffInfo().subscribe()
       })
     },
     onCancel() {

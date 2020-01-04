@@ -93,6 +93,7 @@
 import { UserService } from '@/services/user.service'
 import { treeToMap } from '@/utils/tree-to-map'
 import { find, remove, constant } from 'lodash-es'
+import { iconMap } from './sider-menu.config'
 export default {
   name: 'DefaultBrandSiderMenu',
   serviceInject() {
@@ -155,9 +156,6 @@ export default {
     // })
   },
   methods: {
-    onClickSubMenu() {
-      console.log('subMenu')
-    },
     init() {
       this.setOpenKeys()
     },
@@ -185,28 +183,14 @@ export default {
       return currentSiderMenu || {}
     },
     getMatchRule(menu) {
-      const { icon } = menu
-      let rule
+      let { icon } = menu
       /**
-       * 对一些特殊的icon做处理，比如dashboard用的是home 图标与路由的映射关系
+       * 对一些特殊的 icon 做处理，比如 dashboard 用的是 home, 建立起菜单 icon 与路由的映射关系
        */
-      const rulesMap = {
-        home: /dashboard/,
-        setting: /brand-setting|shop-setting/,
-        sold: /shop-sold/,
-        finance: /shop-finance|brand-finance/,
-        course: /shop-product-course/,
-        card: /shop-product-card/,
-        department: /brand-staff/,
-        statement: /shop-stat/,
-        store: /shop-store/
+      if (iconMap.hasOwnProperty(icon)) {
+        icon = iconMap[icon]
       }
-      if (!rulesMap.hasOwnProperty(icon)) {
-        rule = new RegExp(icon)
-      } else {
-        rule = rulesMap[icon]
-      }
-      return rule
+      return new RegExp(`^((brand|shop)-)?${icon}`)
     },
     findSelectedKey() {
       let selectedKey

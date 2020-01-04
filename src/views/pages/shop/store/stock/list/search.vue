@@ -97,12 +97,16 @@ export default {
     onChange(e) {
       this.selectedRowKeys = e
     },
-    moreIn() {
+    moreIn(record) {
       let list = []
-      this.selectedRowKeys.forEach(id => {
-        let item = this.tableData.filter(stock => stock.sku_id === id)[0]
-        list.push(item)
-      })
+      if (record) {
+        list = [record]
+      } else {
+        this.selectedRowKeys.forEach(id => {
+          let item = this.tableData.filter(stock => stock.sku_id === id)[0]
+          list.push(item)
+        })
+      }
       this.$modalRouter.push({
         name: 'store-put-in',
         props: { skuList: list },

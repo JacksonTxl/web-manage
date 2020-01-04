@@ -155,7 +155,7 @@ export default {
       let status = record.product_shelves === 1 ? 2 : 1
       this.$confirm({
         title: '提示',
-        content: '确定下架该活动吗？',
+        content: `确定${status === 1 ? '上架' : '下架'}该活动吗？`,
         onOk: () => {
           this.listService
             .onShelf(record.product_id, { shelves_status: status })

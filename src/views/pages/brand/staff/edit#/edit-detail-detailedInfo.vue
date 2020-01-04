@@ -11,11 +11,11 @@
         <st-form-item label="学历">
           <a-select placeholder="请选择" v-decorator="decorators.education">
             <a-select-option
-              v-for="(item, key) in enums.education.value"
-              :value="+key"
-              :key="key"
+              v-for="(item, index) in educations"
+              :value="+item.value"
+              :key="index"
             >
-              {{ item }}
+              {{ item.label }}
             </a-select-option>
           </a-select>
         </st-form-item>
@@ -25,11 +25,11 @@
         <st-form-item label="婚姻状况">
           <a-select placeholder="请选择" v-decorator="decorators.marry_status">
             <a-select-option
-              v-for="(item, key) in enums.marry_status.value"
-              :value="+key"
-              :key="key"
+              v-for="(item, index) in marry_status"
+              :value="+item.value"
+              :key="index"
             >
-              {{ item }}
+              {{ item.label }}
             </a-select-option>
           </a-select>
         </st-form-item>
@@ -59,11 +59,11 @@
             v-decorator="decorators.children_status"
           >
             <a-select-option
-              v-for="(item, key) in enums.children_status.value"
-              :value="+key"
-              :key="key"
+              v-for="(item, index) in children_status"
+              :value="+item.value"
+              :key="index"
             >
-              {{ item }}
+              {{ item.label }}
             </a-select-option>
           </a-select>
         </st-form-item>
@@ -117,19 +117,25 @@ import { RegionService } from '@/services/region.service'
 import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from '../staff-form.config.ts'
 import { cloneDeep } from 'lodash-es'
+import { UserService } from '@/services/user.service'
 
 export default {
   name: 'EditDetailDetailedInfo',
   serviceInject() {
     return {
       pattern: PatternService,
+      userService: UserService,
       region: RegionService
     }
   },
+  rxState() {
+    return {
+      children_status: this.userService.getOptions$('staff.children_status'),
+      educations: this.userService.getOptions$('staff.education'),
+      marry_status: this.userService.getOptions$('staff.marry_status')
+    }
+  },
   props: {
-    enums: {
-      type: Object
-    },
     data: {
       type: Object
     },

@@ -71,6 +71,7 @@ export class PatternService {
      * 身份证号
      */
     ID: '(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)',
+    ID_CARD: '^([a-zA-z]|[0-9]){5,17}$',
     /**
      * 图片类型
      */
@@ -209,6 +210,9 @@ export class PatternService {
   }
   get ID() {
     return new RegExp(this.PATTERN_MAP['ID'])
+  }
+  get ID_CARD() {
+    return new RegExp(this.PATTERN_MAP['ID_CARD'])
   }
   get IMG() {
     return new RegExp(this.PATTERN_MAP['IMG'])
