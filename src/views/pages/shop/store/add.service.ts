@@ -9,20 +9,15 @@ export class AddService implements Controller {
   constructor(private storeApi: StoreApi) {}
   @Effect()
   addGoods(params: AddParams) {
-    return this.storeApi.addGoods(params).pipe(tap((res: any) => {}))
+    return this.storeApi.addGoods(params)
   }
   @Effect()
   editGoods(id: number, params: EditParams) {
-    return this.storeApi.editGoods(id, params).pipe(tap((res: any) => {}))
+    return this.storeApi.editGoods(id, params)
   }
   @Effect()
   getList() {
-    return this.storeApi.categoryList().pipe(
-      tap((res: any) => {
-        // console.log('请求了分类', res)
-        // this.list$.commit(() => res.list)
-      })
-    )
+    return this.storeApi.categoryList()
   }
   beforeRouteEnter(to: ServiceRoute) {
     return this.getList()

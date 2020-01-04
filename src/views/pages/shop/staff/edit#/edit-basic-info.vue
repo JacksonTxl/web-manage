@@ -38,9 +38,9 @@
         </st-form-item>
         <st-form-item label="性别" required>
           <a-select placeholder="请选择" v-decorator="decorators.sex">
-            <template v-for="(item, key) in enums.sex.value">
-              <a-select-option :key="key" :value="+key">
-                {{ item }}
+            <template v-for="(item, index) in sexs">
+              <a-select-option :key="index" :value="+item.value">
+                {{ item.label }}
               </a-select-option>
             </template>
           </a-select>
@@ -75,15 +75,16 @@
           >
             <a-select
               slot="addonBefore"
+              @change="resetID"
               style="width: 100px;"
               v-model="id_type"
             >
               <a-select-option
-                v-for="(item, key) in enums.id_type.value"
-                :key="key"
-                :value="+key"
+                v-for="(item, index) in id_types"
+                :key="index"
+                :value="+item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
           </a-input>
@@ -108,9 +109,9 @@
         </st-form-item>
         <st-form-item label="工作性质">
           <a-select placeholder="请选择" v-decorator="decorators.nature_work">
-            <template v-for="(item, key) in enums.nature_work.value">
-              <a-select-option :key="key" :value="+key">
-                {{ item }}
+            <template v-for="(item, index) in nature_works">
+              <a-select-option :key="index" :value="+item.value">
+                {{ item.label }}
               </a-select-option>
             </template>
           </a-select>
@@ -184,6 +185,7 @@ import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from '../staff-form.config.ts'
 import FaceUpload from '@/views/biz-components/face-upload/face-upload'
 import { cloneDeep } from 'lodash-es'
+import { UserService } from '@/services/user.service'
 export default {
   name: 'EditBasicInfo',
   serviceInject() {
@@ -192,13 +194,17 @@ export default {
       appConfig: AppConfig,
       listservice: ListService,
       editservice: EditService,
-      message: MessageService
+      message: MessageService,
+      userService: UserService
     }
   },
   rxState() {
     return {
       roleList: this.editservice.roleList$,
-      codeList: this.editservice.codeList$
+      codeList: this.editservice.codeList$,
+      id_types: this.userService.getOptions$('staff.id_type'),
+      nature_works: this.userService.getOptions$('staff.nature_work'),
+      sexs: this.userService.getOptions$('staff.sex')
     }
   },
   components: {
@@ -207,9 +213,6 @@ export default {
     FaceUpload
   },
   props: {
-    enums: {
-      type: Object
-    },
     data: {
       type: Object
     }
@@ -233,6 +236,11 @@ export default {
     })
   },
   methods: {
+    resetID() {
+      this.form.setFieldsValue({
+        id_number: undefined
+      })
+    },
     onChangeGetAvatar(imageFiles) {
       this.fileList = cloneDeep(imageFiles)
     },
@@ -240,7 +248,6 @@ export default {
       this.faceList = cloneDeep(imageFiles)
     },
     roleChange(v) {
-      console.log(v)
       if (v && v.length > 10) v.pop()
     },
     onChange(value) {
@@ -250,7 +257,6 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
           this.submit(values, 1)
         }
       })

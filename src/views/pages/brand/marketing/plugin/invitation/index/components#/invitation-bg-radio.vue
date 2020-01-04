@@ -68,7 +68,7 @@ export default {
   },
   rxState() {
     return {
-      pluginEnums: this.userService.pluginEnums$
+      pluginEnums: this.userService.getOptions$('plugin.invite_poster')
     }
   },
   created() {
@@ -103,7 +103,7 @@ export default {
         maskUrl:
           'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-invitation-4.png'
       },
-      invite_poster: this.pluginEnums.invite_poster.value,
+      invite_poster: this.pluginEnums,
       // 备份
       list: [],
       // radioIndex
@@ -111,8 +111,8 @@ export default {
       // 选择的cardBg
       cardBg: {
         image_id: 0,
-        image_key: this.pluginEnums.invite_poster.value[0].image_key,
-        image_url: this.pluginEnums.invite_poster.value[0].image_url,
+        image_key: this.pluginEnums[0].image_key,
+        image_url: this.pluginEnums[0].image_url,
         index: 1
       },
       // 自定义cardBg

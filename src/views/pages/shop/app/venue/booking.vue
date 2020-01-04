@@ -246,6 +246,9 @@ export default {
     }
   },
   methods: {
+    resetPage() {
+      this.getList()
+    },
     handleActionsPosition() {
       const rect = this.footerEl.getBoundingClientRect()
       const minaMain = document
@@ -263,9 +266,11 @@ export default {
         name: 'sold-deal-gathering',
         props,
         on: {
-          success: this.payCallBack,
+          success: res => {
+            this.payCallBack(props.order_id, res.type)
+          },
           cancel: () => {
-            this.$router.reload()
+            this.resetPage()
           }
         }
       })
@@ -273,12 +278,15 @@ export default {
     payCallBack(orderId, callBackType) {
       switch (callBackType) {
         case 'cancel':
-          this.$router.reload()
+          this.resetPage()
           break
         case 'pay':
           this.createdGatheringTip({
             message: '收款成功',
-            order_id: orderId
+            order_id: orderId,
+            needPay: false,
+            needContract: false,
+            needTicket: false
           })
           break
       }
@@ -286,7 +294,7 @@ export default {
     tipCallBack({ orderId, type }) {
       switch (type) {
         case 'cancel':
-          this.$router.reload()
+          this.resetPage()
           break
         case 'ViewOrder':
           this.createdOrderViewOrder(orderId)
@@ -313,9 +321,9 @@ export default {
         }
       })
     },
-    onCreateOrder() {
-      this.form.validate((error, values) => {
-        if (!error) {
+    createOrder() {
+      return new Promise((resolve, reject) => {
+        this.form.validate().then(values => {
           const venues_data = this.selectedList.map(item => {
             return {
               time_start: item.start_time,
@@ -330,53 +338,36 @@ export default {
               venues_id: this.query.venues_id,
               venues_name: this.query.venues_name,
               reduce_price: this.reduce_price,
-              order_amount: this.finalAmount,
+              actual_amount: this.finalAmount,
+              order_amount: this.sum,
               reserve_day: this.query.reserve_day,
               venues_data: venues_data,
               ...values
             })
             .subscribe(result => {
-              const props = {
-                order_id: result.info.order_id,
-                message: '订单创建成功',
-                needPay: true,
-                needContract: false,
-                needTicket: false
-              }
-              this.createdGatheringTip(props)
+              resolve(result)
             })
+        })
+      })
+    },
+    onCreateOrder() {
+      this.createOrder().then(result => {
+        const props = {
+          order_id: result.info.order_id,
+          message: '订单创建成功',
+          needPay: true,
+          needContract: false,
+          needTicket: false
         }
+        this.createdGatheringTip(props)
       })
     },
     onPay() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          const venues_data = this.selectedList.map(item => {
-            return {
-              time_start: item.start_time,
-              time_end: item.end_time,
-              venues_site_id: +item.id.replace(/\-.*/, ''),
-              price: item.price,
-              venues_site_name: item.site_name
-            }
-          })
-          this.bookingService
-            .createOrder({
-              venues_id: this.query.venues_id,
-              venues_name: this.query.venues_name,
-              reduce_price: this.reduce_price,
-              order_amount: this.finalAmount,
-              reserve_day: this.query.reserve_day,
-              venues_data: venues_data,
-              ...values
-            })
-            .subscribe(result => {
-              this.createdOrderPay({
-                order_id: result.info.order_id,
-                type: 'venues'
-              })
-            })
-        }
+      this.createOrder().then(result => {
+        this.createdOrderPay({
+          order_id: result.info.order_id,
+          type: 'venues'
+        })
       })
     },
     deleteRow(row) {

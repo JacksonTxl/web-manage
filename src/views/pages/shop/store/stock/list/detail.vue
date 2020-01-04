@@ -41,7 +41,7 @@
         :columns="detailColumns"
         :dataSource="tableData"
         :page="page"
-        :scroll="{ x: 1800 }"
+        :scroll="{ x: 1100 }"
         rowKey="id"
         @change="onTableChange"
       >

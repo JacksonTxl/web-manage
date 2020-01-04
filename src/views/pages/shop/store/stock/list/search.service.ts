@@ -9,7 +9,6 @@ export class SearchService implements Controller {
   page$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({
-    // 记得设置鉴权
     warehousing: 'shop:cloud_store:stock|batch_warehousing',
     retrieval: 'shop:cloud_store:stock|batch_retrieval'
   })

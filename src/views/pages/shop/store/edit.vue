@@ -15,9 +15,6 @@ export default {
       info: this.editService.info$
     }
   },
-  mounted() {
-    console.log(this.info, '这是传过去的哈')
-  },
   components: {
     GoodAdd
   }

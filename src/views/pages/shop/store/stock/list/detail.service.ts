@@ -12,7 +12,6 @@ export class DetailService implements Controller {
   constructor(private stockApi: StockApi) {}
   @Effect()
   getList(params: DetailParams) {
-    console.log('进来了啊啊啊啊啊')
     return this.stockApi.stockDetailList(params).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)

@@ -131,12 +131,7 @@ export class HttpService {
     return delete$
   }
   private makeRequestUrl(url: string, options: RequestOptions = {}) {
-    let requestUrl = ''
-    if (/^\/mock/.test(url)) {
-      requestUrl = url
-    } else {
-      requestUrl = this.appConfig.API_BASE + url
-    }
+    let requestUrl = this.appConfig.API_BASE + url
     const { query } = options
     if (query && Object.keys(query)) {
       requestUrl = requestUrl + '?' + qs.stringify(query)
@@ -144,10 +139,14 @@ export class HttpService {
     return requestUrl
   }
   get appHeaders() {
+    const currentRoute = this.router.to
+    // TODO: 现在的添加几个单点接口的app_brand_id和app_shop_id还无法添加，因为时序问题
     return {
       token: this.tokenService.token$.snapshot(),
       'app-id': this.appConfig.API_APP_ID,
-      'app-version': this.appConfig.GIT_COMMIT
+      'app-version': this.appConfig.GIT_COMMIT,
+      'app-brand-id': currentRoute.query.app_brand_id || '',
+      'app-shop-id': currentRoute.query.app_shop_id || ''
     }
   }
   get appHeadersWithContentType() {

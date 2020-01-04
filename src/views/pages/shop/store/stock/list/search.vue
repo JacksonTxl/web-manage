@@ -5,7 +5,7 @@
         v-model="$searchQuery.product_name"
         @search="onKeywordsSearch('product_name', $event)"
         :placeholder="`请输入商品名称`"
-        maxlength="50"
+        maxlength="30"
       />
     </portal>
 
@@ -14,11 +14,11 @@
         v-if="auth.warehousing"
         type="primary"
         :class="search('btn--in')"
-        @click="moreIn(false)"
+        @click="moreIn()"
       >
         批量入库
       </st-button>
-      <st-button type="primary" @click="moreIn(true)">
+      <st-button type="primary" @click="moreOut()">
         批量出库
       </st-button>
     </div>
@@ -34,23 +34,21 @@
       @change="onTableChange"
       rowKey="sku_id"
     >
+      <template slot="product_name" slot-scope="text, record">
+        {{ record.product_name }}
+        <span v-if="record.sku_name">（{{ record.sku_name }}）</span>
+      </template>
       <template slot="action" slot-scope="text, record">
         <st-table-actions sytle="width: 120px">
           <a
             v-if="record.auth['shop:cloud_store:stock|warehousing']"
-            v-modal-link="{
-              name: 'store-put-in',
-              props: { skuList: [record] }
-            }"
+            @click="moreIn(record)"
           >
             入库
           </a>
           <a
             v-if="record.auth['shop:cloud_store:stock|retrieval']"
-            v-modal-link="{
-              name: 'store-put-in',
-              props: { isOut: true, skuList: [record] }
-            }"
+            @click="moreOut(record)"
           >
             出库
           </a>
@@ -68,6 +66,7 @@
 <script>
 import { searchColumns } from './search.config.ts'
 import StorePutIn from '@/views/biz-modals/store/put-in'
+import StorePutOut from '@/views/biz-modals/store/put-out'
 import tableMixin from '@/mixins/table.mixin'
 import { SearchService } from './search.service'
 export default {
@@ -93,23 +92,47 @@ export default {
       selectedRowKeys: []
     }
   },
-  modals: { StorePutIn },
+  modals: { StorePutIn, StorePutOut },
   methods: {
     onChange(e) {
       this.selectedRowKeys = e
     },
-    moreIn(isOut) {
+    moreIn(record) {
       let list = []
-      this.selectedRowKeys.forEach(id => {
-        let item = this.tableData.filter(stock => stock.sku_id === id)[0]
-        list.push(item)
-      })
+      if (record) {
+        list = [record]
+      } else {
+        this.selectedRowKeys.forEach(id => {
+          let item = this.tableData.filter(stock => stock.sku_id === id)[0]
+          list.push(item)
+        })
+      }
       this.$modalRouter.push({
         name: 'store-put-in',
-        props: { skuList: list, isOut },
+        props: { skuList: list },
         on: {
           success: () => {
-            console.log('进来了success')
+            this.selectedRowKeys = []
+            this.$router.reload()
+          }
+        }
+      })
+    },
+    moreOut(record) {
+      let list = []
+      if (record) {
+        list = [record]
+      } else {
+        this.selectedRowKeys.forEach(id => {
+          let item = this.tableData.filter(stock => stock.sku_id === id)[0]
+          list.push(item)
+        })
+      }
+      this.$modalRouter.push({
+        name: 'store-put-out',
+        props: { skuList: list },
+        on: {
+          success: () => {
             this.selectedRowKeys = []
             this.$router.reload()
           }
@@ -125,9 +148,6 @@ export default {
         }
       })
     }
-  },
-  mounted() {
-    console.log(this.auth)
   }
 }
 </script>

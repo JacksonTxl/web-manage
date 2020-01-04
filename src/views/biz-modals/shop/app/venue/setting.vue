@@ -1,73 +1,86 @@
 <template>
-  <st-modal title="高级设置" v-model="show" width="928px" :footer="null">
-    <st-form-table hoverable :isEmpty="false">
-      <thead>
-        <tr>
-          <th>优先级</th>
-          <th>生效日期</th>
-          <th>循环日期</th>
-          <th>时间段</th>
-          <th>状态</th>
-          <th>价格(元)</th>
-          <th style="width:160px">操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-if="list.length < 3 && auth.add">
-          <td colspan="7" class="st-form-table__add">
-            <st-button type="dashed" icon="add" block @click="addRow">
-              添加
-            </st-button>
-          </td>
-        </tr>
-
-        <template v-for="(item, index) in list">
-          <tr :key="index">
-            <td>
-              {{ item.weight }}
-            </td>
-            <td>
-              {{ item.time_limit }}
-            </td>
-            <td>
-              <span v-if="item.cyclic_type === 1">每天</span>
-              <span v-if="item.cyclic_type === 2">
-                {{ item.week_day | cycleFilter }}
-              </span>
-            </td>
-            <td>
-              {{ item.open_time }}
-            </td>
-            <td>
-              {{ item.can_reserve }}
-            </td>
-            <td>
-              {{ item.price }}
-            </td>
-            <td>
-              <template>
-                <a @click="editRow(item)" v-if="auth.edit">
-                  编辑
-                </a>
-                <a-divider type="vertical"></a-divider>
-                <a href="javascript:;" v-if="auth.del">
-                  <st-popconfirm
-                    :title="'一旦删除则无法恢复，确认删除？'"
-                    @confirm="delSetting(item)"
-                  >
-                    删除
-                  </st-popconfirm>
-                </a>
-                <a-divider type="vertical"></a-divider>
-                <a v-if="item.weight !== 1 && auth.top" @click="order(item)">
-                  置顶
-                </a>
-              </template>
+  <st-modal
+    title="高级设置"
+    v-model="show"
+    width="928px"
+    :footer="null"
+    wrapClassName="st-modal-shop-app-venue-setting"
+  >
+    <div class="border-box">
+      <st-form-table hoverable :isEmpty="false">
+        <thead>
+          <tr>
+            <th>优先级</th>
+            <th>生效日期</th>
+            <th>循环日期</th>
+            <th>时间段</th>
+            <th>状态</th>
+            <th>价格(元)</th>
+            <th style="width:160px">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-if="list.length < 3 && auth.add">
+            <td colspan="7" class="st-form-table__add">
+              <st-button type="dashed" icon="add" block @click="addRow">
+                添加
+              </st-button>
             </td>
           </tr>
-        </template>
-      </tbody>
-    </st-form-table>
+
+          <template v-for="(item, index) in list">
+            <tr :key="index">
+              <td>
+                {{ item.weight }}
+              </td>
+              <td>
+                {{ item.time_limit }}
+              </td>
+              <td>
+                <span v-if="item.cyclic_type === 1">每天</span>
+                <span v-if="item.cyclic_type === 2">
+                  {{ item.week_day | cycleFilter }}
+                </span>
+              </td>
+              <td>
+                {{ item.open_time }}
+              </td>
+              <td>
+                {{
+                  item.can_reserve | enumFilter('venues_reserve.can_reserve')
+                }}
+              </td>
+              <td>
+                {{ item.price }}
+              </td>
+              <td>
+                <template>
+                  <a @click="editRow(item)" v-if="auth.edit">
+                    编辑
+                  </a>
+                  <a-divider type="vertical"></a-divider>
+                  <a href="javascript:;" v-if="auth.del">
+                    <st-popconfirm
+                      :title="'一旦删除则无法恢复，确认删除？'"
+                      @confirm="delSetting(item)"
+                    >
+                      删除
+                    </st-popconfirm>
+                  </a>
+                  <a-divider type="vertical"></a-divider>
+                  <a v-if="item.weight !== 1 && auth.top" @click="order(item)">
+                    置顶
+                  </a>
+                </template>
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </st-form-table>
+    </div>
+    <p class="tips">
+      当多条高级设置时间有冲突，执行优先级高的设置内容。排序越高，优先级越高。
+    </p>
   </st-modal>
 </template>
 <script>

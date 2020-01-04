@@ -1,8 +1,11 @@
 <template>
   <st-mina-panel app>
     <div slot="actions">
-      <!-- :loading="confirmLoading"  -->
-      <st-button type="primary" :loading="loading.addGoods" @click="onSubmit">
+      <st-button
+        type="primary"
+        :loading="isEditMode ? loading.editGoods : loading.addGoods"
+        @click="onSubmit"
+      >
         保 存
       </st-button>
     </div>
@@ -35,8 +38,8 @@
               >
                 <a-select-option
                   :value="item.category_id"
-                  v-for="(item, index) in classList"
-                  :key="index"
+                  v-for="item in classList"
+                  :key="item.category_id"
                 >
                   {{ item.category_name }}
                 </a-select-option>
@@ -52,7 +55,7 @@
         <a-row :gutter="8">
           <a-col :span="16">
             <st-form-item label="商品图片" required>
-              <ul>
+              <ul :class="basic('img--container')">
                 <li
                   :class="['mg-r12', 'mg-t12', basic('img')]"
                   v-for="(item, index) in imgList"
@@ -88,7 +91,7 @@
                     placeholder="上传图片"
                   >
                     <template v-slot:description>
-                      <p>建议尺寸为750像素×750像素</p>
+                      <p>建议尺寸为750像素*750像素</p>
                     </template>
                   </st-image-upload>
                   <div :class="basic('img--tip')">可上传5张商品图片</div>
@@ -146,14 +149,15 @@
                 <a-radio :value="1">单规格</a-radio>
                 <a-radio :value="2">多规格</a-radio>
               </a-radio-group>
-              <div
+              <st-button
+                type="dashed"
                 :class="basic('sku--add')"
                 v-if="isMore === 2 && !isEditMode && skuList.length < 3"
                 @click="addSku"
               >
                 <a-icon type="plus" :class="basic('sku--add-icon')" />
                 <span>添加规格项（{{ skuList.length }}/3）</span>
-              </div>
+              </st-button>
               <div
                 :class="
                   index === skuList.length - 1
@@ -308,8 +312,13 @@
           <a-col :span="10">
             <st-form-item label="上架状态" required>
               <a-radio-group v-model="shelves_status">
-                <a-radio :value="1">立即上架</a-radio>
-                <a-radio :value="2">暂不上架</a-radio>
+                <a-radio
+                  :value="item.value"
+                  v-for="item in shelvesStatus"
+                  :key="item.value"
+                >
+                  {{ item.label }}
+                </a-radio>
               </a-radio-group>
             </st-form-item>
           </a-col>
@@ -327,6 +336,7 @@ import { AddService } from './add.service.ts'
 import StoreAddSku from '@/views/biz-modals/store/add-sku'
 import { result } from 'lodash-es'
 import { UserService } from '@/services/user.service'
+import { cloneDeep } from 'lodash-es'
 export default {
   bem: {
     basic: 'shop-store-add'
@@ -342,7 +352,10 @@ export default {
     return {
       loading: this.addService.loading$,
       saleType: this.userService.getOptions$('cloud_store.sale_type'),
-      shippingMode: this.userService.getOptions$('cloud_store.shipping_mode')
+      shippingMode: this.userService.getOptions$('cloud_store.shipping_mode'),
+      shelvesStatus: this.userService.getOptions$(
+        'cloud_store.edit_shelves_status'
+      )
     }
   },
   modals: { StoreClassManage, StoreAddSku },
@@ -407,10 +420,6 @@ export default {
       })
       return list
     }
-  },
-  watch: {
-    // content(newValue, oldValue) {
-    // }
   },
   mounted() {
     this.addService.getList().subscribe(res => {
@@ -717,23 +726,29 @@ export default {
     // 规格发生改变时列表数据相应改变
     changeTable() {
       let list = []
-      this.skuList[0].spec_item_name.forEach((item, index) => {
+      let skuList = []
+      this.skuList.forEach((item, index) => {
+        if (item.spec_item_name.length !== 0) {
+          skuList.push(item)
+        }
+      })
+      skuList[0].spec_item_name.forEach((item, index) => {
         let skuItem = { market_price: '', selling_price: '', stock_amount: '' }
         skuItem['0'] = item
-        if (this.skuList[1] && this.skuList[1].spec_item_name.length) {
-          this.skuList[1].spec_item_name.forEach((ite, inde) => {
+        if (skuList[1] && skuList[1].spec_item_name.length) {
+          skuList[1].spec_item_name.forEach((ite, inde) => {
             skuItem['1'] = ite
-            if (this.skuList[2] && this.skuList[2].spec_item_name.length) {
-              this.skuList[2].spec_item_name.forEach((it, ind) => {
+            if (skuList[2] && skuList[2].spec_item_name.length) {
+              skuList[2].spec_item_name.forEach((it, ind) => {
                 skuItem['2'] = it
-                list.push(JSON.parse(JSON.stringify(skuItem)))
+                list.push(cloneDeep(skuItem))
               })
             } else {
-              list.push(JSON.parse(JSON.stringify(skuItem)))
+              list.push(cloneDeep(skuItem))
             }
           })
         } else {
-          list.push(JSON.parse(JSON.stringify(skuItem)))
+          list.push(cloneDeep(skuItem))
         }
       })
       list.forEach(o => {
@@ -750,6 +765,10 @@ export default {
           success: res => {
             this.addService.getList().subscribe(res => {
               this.classList = res.list
+              let data = this.form.getFieldsValue()
+              if (!this.classList.some(item => item.id === data.category_id)) {
+                this.form.setFieldsValue({ category_id: '' })
+              }
             })
           }
         }

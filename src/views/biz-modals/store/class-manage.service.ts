@@ -10,29 +10,18 @@ export class ClassManageService {
   constructor(private storeApi: StoreApi, private msg: MessageService) {}
   @Effect()
   getList() {
-    return this.storeApi.categoryList().pipe(
-      tap((res: any) => {
-        // res.list.map((item: any) => (item.isEdit = false))
-        // this.list$.commit(() => res.list)
-      })
-    )
+    return this.storeApi.categoryList()
   }
   @Effect()
   addClass(params: { category_name: string }) {
-    return this.storeApi.addCategory(params).pipe(tap(() => {}))
+    return this.storeApi.addCategory(params)
   }
   @Effect()
   editClass(id: number, params: { category_name: string }) {
-    return this.storeApi.editCategory(id, params).pipe(tap(() => {}))
+    return this.storeApi.editCategory(id, params)
   }
   @Effect()
   delClass(id: number) {
-    return this.storeApi.delCategory(id).pipe(
-      tap(() => {
-        this.msg.success({
-          content: '删除成功！'
-        })
-      })
-    )
+    return this.storeApi.delCategory(id)
   }
 }

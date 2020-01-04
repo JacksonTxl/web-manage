@@ -112,7 +112,6 @@
   </div>
 </template>
 <script>
-import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
 import { PersonalService } from './personal.service'
 import BrandSettingPersonalPriceModel from '@/views/biz-modals/brand/setting/personal/price-model'
@@ -120,16 +119,13 @@ import BrandSettingPersonalReserve from '@/views/biz-modals/brand/setting/person
 export default {
   serviceInject() {
     return {
-      userService: UserService,
       personalService: PersonalService
     }
   },
   rxState() {
-    const user = this.userService
     const personalService = this.personalService
     return {
       loading: personalService.loading$,
-      settingEnums: user.settingEnums$,
       resData: personalService.resData$,
       auth: personalService.auth$
     }

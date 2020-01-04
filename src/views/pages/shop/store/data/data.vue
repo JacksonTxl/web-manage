@@ -18,50 +18,15 @@
                 {{ item.title }}
               </div>
               <div :class="headerContent('day-money')">
-                <span>{{ dataProfile.today[headerTitleItem[index]] }}</span>
-                <!-- <i-count-up
-                  :endVal="
-                    dataProfile.today[headerTitleItem[index]]
-                      ? Number(dataProfile.today[headerTitleItem[index]])
-                      : 0
-                  "
-                  :options="{
-                    decimalPlaces: (dataProfile.today[headerTitleItem[index]]
-                      ? Number(dataProfile.today[headerTitleItem[index]])
-                      : 0
-                    )
-                      .toString()
-                      .includes('.')
-                      ? 2
-                      : 0,
-                    decimal: '.'
-                  }"
-                /> -->
+                <span class="font-number">
+                  {{ dataProfile.today[headerTitleItem[index]] }}
+                </span>
               </div>
               <div :class="headerContent('yesterday-money')">
                 昨日:
-                <span>{{ dataProfile.yesterday[headerTitleItem[index]] }}</span>
-                <!-- <i-count-up
-                  :endVal="
-                    dataProfile.yesterday[headerTitleItem[index]]
-                      ? Number(dataProfile.yesterday[headerTitleItem[index]])
-                      : 0
-                  "
-                  :options="{
-                    decimalPlaces: (dataProfile.yesterday[
-                      headerTitleItem[index]
-                    ]
-                      ? Number(dataProfile.yesterday[headerTitleItem[index]])
-                      : 0
-                    )
-                      .toString()
-                      .includes('.')
-                      ? 2
-                      : 0,
-                    decimal: '.',
-                    prefix: ''
-                  }"
-                /> -->
+                <span class="font-number">
+                  {{ dataProfile.yesterday[headerTitleItem[index]] }}
+                </span>
               </div>
             </div>
           </li>
@@ -69,7 +34,11 @@
       </st-panel>
       <!-- 整体看板 -->
       <section>
-        <st-panel class="mg-t16" title="整体看板">
+        <st-panel
+          class="mg-t16"
+          title="整体看板"
+          :class="basic('integral-anban')"
+        >
           <div slot="actions">
             <date-picker @timesFn="wholeTimesFn"></date-picker>
           </div>
@@ -88,18 +57,7 @@
                 <img :class="basic('whole-item-icon')" :src="item.icon" />
               </div>
               <div :class="basic('whole-item-text')">
-                <span>{{ item.num }}</span>
-                <!-- <i-count-up
-                  :endVal="item.num ? Number(item.num) : 0"
-                  :options="{
-                    decimalPlaces: (item.num ? item.num : 0)
-                      .toString()
-                      .includes('.')
-                      ? 1
-                      : 0,
-                    decimal: '.'
-                  }"
-                /> -->
+                <span class="font-number">{{ item.num }}</span>
               </div>
             </div>
           </div>
@@ -404,7 +362,7 @@ export default {
         return data[this.fieldNav[this.wholenavIndex]].trend.map(item => {
           return {
             date: item.date,
-            amount: item[fieldInfo[this.wholenavIndex]]
+            amount: Number(item[fieldInfo[this.wholenavIndex]])
           }
         })
       } else {
@@ -433,7 +391,7 @@ export default {
         return value[fieldNav[wholenavIndex]].source[that].map(item => {
           return {
             name: item.type,
-            value: item[type]
+            value: Number(item[type])
           }
         })
       } else {

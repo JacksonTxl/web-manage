@@ -147,11 +147,11 @@
             </template>
             <a-radio-group v-model="shopData.shop_status">
               <a-radio
-                v-for="item in Object.entries(shop.shop_status_add.value)"
-                :key="+item[0]"
-                :value="+item[0]"
+                v-for="item in shop_status_add"
+                :key="+item.value"
+                :value="+item.value"
               >
-                {{ item[1] }}
+                {{ item.label }}
               </a-radio>
             </a-radio-group>
           </st-form-item>
@@ -232,7 +232,7 @@ export default {
     return {
       serviceList: this.addService.serviceList$,
       addLoading: this.addService.loading$,
-      shop: this.userService.shopEnums$,
+      shop_status_add: this.userService.getOptions$('shop.shop_status_add'),
       unusedShops: this.addService.unusedShops$
     }
   },

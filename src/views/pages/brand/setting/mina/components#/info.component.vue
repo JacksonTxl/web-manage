@@ -44,13 +44,13 @@
               {{ data.mina_info.is_mch === 1 ? '已配置' : '未配置' }}
 
               <a :class="info('a')" @click="resetMch">
-                {{ data.mina_info.is_mch === 1 ? '重新配置' : '立刻配置' }}
+                {{ data.mina_info.is_mch === 1 ? '重新配置' : '立即配置' }}
               </a>
             </st-info-item>
             <st-info-item label="微信授权">
               {{ data.is_auth | authFilter }}
               <a :class="info('a')" :href="data.auth_url" target="_blank">
-                {{ data.is_auth === 1 ? '重新授权' : '立刻授权' }}
+                {{ data.is_auth === 1 ? '重新授权' : '立即授权' }}
               </a>
             </st-info-item>
           </st-info>
@@ -150,10 +150,10 @@ export default {
       let btnMap = {
         0: '提交',
         1: '',
-        2: '重新提交',
-        3: '重新提交',
-        4: '重新提交',
-        5: '重新提交'
+        2: '升级版本',
+        3: '升级版本',
+        4: '升级版本',
+        5: '升级版本'
       }
       return btnMap[v]
     }

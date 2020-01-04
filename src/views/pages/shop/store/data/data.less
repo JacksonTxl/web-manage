@@ -1,6 +1,12 @@
 .shop-store-data {
   height: 100%;
 
+  &__integral-anban {
+    .ant-select-selection--single {
+      height: 33px;
+    }
+  }
+
   &__main {
     flex: 1;
   }
@@ -193,11 +199,6 @@
     margin-top: 16px;
   }
 
-  .ant-tabs-tab {
-    height: 64px;
-    line-height: 40px;
-  }
-
   .st-title--t3 {
     line-height: 32px;
   }
@@ -210,6 +211,9 @@
         margin-bottom: 25px;
         margin-top: 35px;
       }
+    }
+    .ant-tabs-nav-wrap {
+      margin-top: 8px;
     }
 
     .ant-col-8 {
@@ -262,5 +266,15 @@
 
   .st-no-data {
     margin-top: 70px;
+  }
+
+  .ant-tabs-nav-animated {
+    font-size: 16px;
+  }
+
+  .shop-store-data-whole-tabls {
+    .ant-tabs-nav-animated {
+      color: #252a2e;
+    }
   }
 }

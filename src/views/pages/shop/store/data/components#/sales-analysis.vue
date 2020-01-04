@@ -3,21 +3,39 @@
     <st-t3>{{ title }}</st-t3>
     <div :class="basic('list')">
       <ul>
-        <li v-for="(item, index) in salesTitle" :key="index">
-          {{ item }}
+        <li
+          v-for="(item, index) in salesTitle"
+          :key="index"
+          :class="
+            index === 2
+              ? 'list__title-three'
+              : index === 1
+              ? 'list_title_two'
+              : ''
+          "
+        >
+          <span>{{ item }}</span>
         </li>
       </ul>
       <template v-if="salesList.length">
         <ul v-for="(item, index) in salesList" :key="index">
           <li>
             <img v-if="index < 3" :src="imgIcon[index]" />
-            <span style="margin-left:12px" v-else>{{ index + 1 }}</span>
+            <span class="list__sales-list-one-order" v-else>
+              {{ index + 1 }}
+            </span>
           </li>
           <li>
-            {{ nameFilter(item.product_name, nameLength) }}
+            <span class="list__sales-list-two-name">
+              {{ nameFilter(item.product_name, nameLength) }}
+            </span>
           </li>
-          <li>
-            {{ item.sale ? thousandBit(item.sale) : thousandBit(item.revenue) }}
+          <li class="list__sales-list-three">
+            <span class="list__sales-list-three-num">
+              {{
+                item.sale ? thousandBit(item.sale) : thousandBit(item.revenue)
+              }}
+            </span>
           </li>
         </ul>
       </template>

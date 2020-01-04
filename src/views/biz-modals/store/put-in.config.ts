@@ -1,4 +1,4 @@
-export const columns = (vm: any) => [
+export const columns = [
   {
     title: '商品名称',
     dataIndex: 'product_name'
@@ -8,7 +8,7 @@ export const columns = (vm: any) => [
     dataIndex: 'use_amount'
   },
   {
-    title: vm.isOut ? '出库数' : '入库数',
+    title: '入库数',
     dataIndex: 'stock_amount',
     slots: { title: 'stock_amount' },
     scopedSlots: { customRender: 'stock_amount' }
