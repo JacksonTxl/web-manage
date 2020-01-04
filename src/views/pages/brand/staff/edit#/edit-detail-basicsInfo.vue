@@ -38,9 +38,9 @@
         </st-form-item>
         <st-form-item label="性别" required>
           <a-select placeholder="请选择" v-decorator="decorators.sex">
-            <template v-for="(item, key) in enums.sex.value">
-              <a-select-option :key="item" :value="+key">
-                {{ item }}
+            <template v-for="(item, index) in sexs">
+              <a-select-option :key="index" :value="+item.value">
+                {{ item.label }}
               </a-select-option>
             </template>
           </a-select>
@@ -76,11 +76,11 @@
           >
             <a-select slot="addonBefore" style="width: 100px" v-model="id_type">
               <a-select-option
-                v-for="(item, key) in enums.id_type.value"
-                :key="item"
-                :value="+key"
+                v-for="(item, index) in id_types"
+                :key="index"
+                :value="+item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
           </a-input>
@@ -106,9 +106,9 @@
         </st-form-item>
         <st-form-item label="工作性质">
           <a-select placeholder="请选择" v-decorator="decorators.nature_work">
-            <template v-for="(item, key) in enums.nature_work.value">
-              <a-select-option :key="key" :value="+key">
-                {{ item }}
+            <template v-for="(item, index) in nature_works">
+              <a-select-option :key="index" :value="+item.value">
+                {{ item.label }}
               </a-select-option>
             </template>
           </a-select>
@@ -176,25 +176,27 @@ import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from '../staff-form.config.ts'
 import FaceUpload from '@/views/biz-components/face-upload/face-upload'
 import { cloneDeep } from 'lodash-es'
+import { UserService } from '@/services/user.service'
 export default {
   name: 'EditBasicInfo',
   serviceInject() {
     return {
       rules: RuleConfig,
       pattern: PatternService,
-      editService: EditService
+      editService: EditService,
+      userService: UserService
     }
   },
   rxState() {
     return {
       roleList: this.editService.roleList$,
-      codeList: this.editService.codeList$
+      codeList: this.editService.codeList$,
+      id_types: this.userService.getOptions$('staff.id_type'),
+      sexs: this.userService.getOptions$('staff.sex'),
+      nature_works: this.userService.getOptions$('staff.nature_work')
     }
   },
   props: {
-    enums: {
-      type: Object
-    },
     data: {
       type: Object
     }

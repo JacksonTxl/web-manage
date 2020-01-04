@@ -90,11 +90,10 @@
         </st-input-number>
       </st-form-item>
     </st-form>
-    <div class="page-role-info__btn">
+    <div :class="b('btn')">
       <st-button type="primary" @click="onClickSubmit" class="mg-r16">
         保存
       </st-button>
-      <st-button @click="onCancel">取消</st-button>
     </div>
   </div>
 </template>
@@ -144,9 +143,6 @@ export default {
         open_time_start: undefined,
         open_time_end: undefined
       })
-    },
-    onCancel() {
-      this.$router.go(-1)
     },
     onClickSubmit(e) {
       e.preventDefault()

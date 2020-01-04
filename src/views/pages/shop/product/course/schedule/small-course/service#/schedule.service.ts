@@ -95,7 +95,11 @@ export class SmallCourseScheduleService {
   add(params: any) {
     return this.scheduleApi.add(params).pipe(
       tap(res => {
-        this.msg.success({ content: '添加成功' })
+        if (!res.conflict) {
+          this.msg.success({ content: '添加成功' })
+        } else {
+          this.msg.error({ content: '本节课程与已排课程有冲突' })
+        }
       })
     )
   }
@@ -111,6 +115,8 @@ export class SmallCourseScheduleService {
         console.log(res)
         if (!res.conflict) {
           this.msg.success({ content: '批量添加成功' })
+        } else {
+          this.msg.error({ content: '本节课程与已排课程有冲突' })
         }
       })
     )
@@ -126,6 +132,8 @@ export class SmallCourseScheduleService {
       tap(res => {
         if (!res.conflict) {
           this.msg.success({ content: '批量添加成功' })
+        } else {
+          this.msg.error({ content: '本节课程与已排课程有冲突' })
         }
       })
     )
@@ -141,6 +149,8 @@ export class SmallCourseScheduleService {
       tap(res => {
         if (!res.conflict) {
           this.msg.success({ content: '批量添加成功' })
+        } else {
+          this.msg.error({ content: '本节课程与已排课程有冲突' })
         }
       })
     )
@@ -154,7 +164,11 @@ export class SmallCourseScheduleService {
   editScheduleInBatchCustoms(params: any) {
     return this.scheduleApi.editScheduleInBatchCustoms(params).pipe(
       tap(res => {
-        this.msg.success({ content: '批量添加成功' })
+        if (!res.conflict) {
+          this.msg.success({ content: '批量添加成功' })
+        } else {
+          this.msg.error({ content: '本节课程与已排课程有冲突' })
+        }
       })
     )
   }

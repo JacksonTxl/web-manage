@@ -1,8 +1,9 @@
 <template>
-  <div :class="bPage()">
-    <div class="mg-b16" :class="bPage('count-action')">
-      <div :class="bPage('left')">
-        <!-- <div :class="bPage('button-wapper')">
+  <st-panel app>
+    <div :class="bPage()">
+      <div class="mg-b16" :class="bPage('count-action')">
+        <div :class="bPage('left')">
+          <!-- <div :class="bPage('button-wapper')">
           <st-button
             type="primary"
             v-if="auth$.export"
@@ -14,54 +15,58 @@
             全部导出
           </st-button>
         </div> -->
-        <a-radio-group :value="showTable" @change="handleSizeChange">
-          <a-radio-button value="all">日期</a-radio-button>
-          <a-radio-button value="staff">员工</a-radio-button>
-        </a-radio-group>
-      </div>
-      <span>
-        <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
-      </span>
-    </div>
-    <div :class="bPage('count')">
-      <a-row :class="bPage('income-row')">
-        <div :class="bPage('income-detail')">
-          <swiper :options="sliderOptions">
-            <swiper-slide v-for="(item, index) in totalInfo$.list" :key="index">
-              <div :class="bPage('income')">
-                <p :class="bPage('income-label')">{{ item.label }}</p>
-                <p :class="bPage('income-value')">{{ item.value }}</p>
-              </div>
-            </swiper-slide>
-          </swiper>
-          <div class="swiper-button-prev" slot="button-prev">
-            <st-icon type="arrow-left" class="arrow-left" />
-          </div>
-          <div class="swiper-button-next" slot="button-next">
-            <st-icon type="arrow-right" class="arrow-right" />
-          </div>
+          <a-radio-group :value="showTable" @change="handleSizeChange">
+            <a-radio-button value="all">日期</a-radio-button>
+            <a-radio-button value="staff">员工</a-radio-button>
+          </a-radio-group>
         </div>
-      </a-row>
-    </div>
-    <!-- :alertSelection="{ onReset: onSelectionReset }" -->
-    <!-- :rowSelection="{ selectedRowKeys, onChange: onSelectionChange }" -->
-    <!-- <st-total
+        <span>
+          <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
+        </span>
+      </div>
+      <div :class="bPage('count')">
+        <a-row :class="bPage('income-row')">
+          <div :class="bPage('income-detail')">
+            <swiper :options="sliderOptions">
+              <swiper-slide
+                v-for="(item, index) in totalInfo$.list"
+                :key="index"
+              >
+                <div :class="bPage('income')">
+                  <p :class="bPage('income-label')">{{ item.label }}</p>
+                  <p :class="bPage('income-value')">{{ item.value }}</p>
+                </div>
+              </swiper-slide>
+            </swiper>
+            <div class="swiper-button-prev" slot="button-prev">
+              <st-icon type="arrow-left" class="arrow-left" />
+            </div>
+            <div class="swiper-button-next" slot="button-next">
+              <st-icon type="arrow-right" class="arrow-right" />
+            </div>
+          </div>
+        </a-row>
+      </div>
+      <!-- :alertSelection="{ onReset: onSelectionReset }" -->
+      <!-- :rowSelection="{ selectedRowKeys, onChange: onSelectionChange }" -->
+      <!-- <st-total
       :class="bPage('total')"
       :indexs="columns"
       :dataSource="total$"
       hasTitle
     ></st-total> -->
-    <st-table
-      :page="page$"
-      class="mg-t12"
-      @change="onTableChange"
-      :loading="loading$.getFollowShopList"
-      :columns="columns"
-      :scroll="{ x: 1800 }"
-      :dataSource="list$"
-      rowKey="id"
-    ></st-table>
-  </div>
+      <st-table
+        :page="page$"
+        class="mg-t12"
+        @change="onTableChange"
+        :loading="loading$.getFollowShopList"
+        :columns="columns"
+        :scroll="{ x: 1800 }"
+        :dataSource="list$"
+        rowKey="id"
+      ></st-table>
+    </div>
+  </st-panel>
 </template>
 <script>
 import { FollowService } from './follow.service'

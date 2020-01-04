@@ -43,7 +43,7 @@
             :key="coach.id"
             :value="coach.id"
           >
-            {{ coach.staff_name }}
+            {{ coach.name }}
           </a-select-option>
         </a-select>
       </st-form-item>
@@ -88,7 +88,7 @@ export default {
     const tss = this.smallCourseScheduleCommonService
     return {
       loading: this.smallCourseScheduleService.loading$,
-      coachSmallCourseOptions: tss.coachSmallCourseOptions$,
+      coachSmallCourseOptions: tss.coachBindOptions$,
       courseSmallCourseOptions: tss.courseSmallCourseOptions$,
       courtOptions: tss.courtOptions$
     }
@@ -114,6 +114,7 @@ export default {
   },
   methods: {
     onChangeCourse(value) {
+      this.smallCourseScheduleCommonService.getBindCoachList(value).subscribe()
       this.courseSmallCourseOptions.forEach((item, index) => {
         if (item.course_id === value) {
           this.smallCourseInfo = item

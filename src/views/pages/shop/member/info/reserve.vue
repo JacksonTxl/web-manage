@@ -133,7 +133,10 @@ export default {
       cardPage: this.reserveService.cardPage$,
       courseListInfo: this.reserveService.courseListInfo$,
       coursePage: this.reserveService.coursePage$,
-      memberEnums: this.userService.memberEnums$
+      cardConsumeList: this.userService.getOptions$('member.card_consume_type'),
+      courseConsumeList: this.userService.getOptions$(
+        'member.course_consume_type'
+      )
     }
   },
   data() {
@@ -154,23 +157,7 @@ export default {
   computed: {
     cardItem,
     course,
-    leaseArk,
-    cardConsumeList() {
-      let list = []
-      if (!this.memberEnums.card_consume_type) return list
-      Object.entries(this.memberEnums.card_consume_type.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    },
-    courseConsumeList() {
-      let list = []
-      if (!this.memberEnums.course_consume_type) return list
-      Object.entries(this.memberEnums.course_consume_type.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    }
+    leaseArk
   },
   methods: {
     memberInfo(record) {

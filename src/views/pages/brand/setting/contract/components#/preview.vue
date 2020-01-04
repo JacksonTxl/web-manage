@@ -124,6 +124,7 @@
             <td>10000.00元</td>
             <td>400.00元</td>
             <td>9600.00元</td>
+            <td>9600.00元</td>
           </tr>
           <tr v-if="info.contract_type === CONTRACT_TYPE.PACKAGE">
             <td>综合课程训练</td>

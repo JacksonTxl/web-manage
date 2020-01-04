@@ -56,7 +56,7 @@
                 :key="coach.id"
                 :value="coach.id"
               >
-                {{ coach.staff_name }}
+                {{ coach.name }}
               </a-select-option>
             </a-select>
           </st-form-item>
@@ -101,7 +101,7 @@ export default {
     const scsc = this.smallCourseScheduleCommonService
     return {
       loading: this.smallCourseScheduleService.loading$,
-      coachSmallCourseOptions: scsc.coachSmallCourseOptions$,
+      coachSmallCourseOptions: scsc.coachBindOptions$,
       courseSmallCourseOptions: scsc.courseSmallCourseOptions$,
       courtOptions: scsc.courtOptions$
     }
@@ -186,7 +186,7 @@ export default {
     onChangeCoach(value) {
       this.coachSmallCourseOptions.forEach((item, index) => {
         if (item.id === value) {
-          this.params.coach_name = item.staff_name
+          this.params.coach_name = item.name
         }
       })
     },
@@ -278,13 +278,9 @@ export default {
     }
   }
 }
-// 约课没有测完
-// 排课接口对接
-// 前端的课程数量限制
-// 更改周期后清空当前周期的所有数据 - 批量清空的接口
-// 课程发布状态的icon
-// 目前新增和保存的具体含义(1.添加成功后的编辑调新增还是保存，添加一节之后继续添加调新增还是编辑)
-// 删除按钮功能的确认
+// 取消排课二次确认，限制条件完善
+// 完成排课的确认交互
 // 权限接入
 // 代码整理
+// 选择时间的约束
 </script>

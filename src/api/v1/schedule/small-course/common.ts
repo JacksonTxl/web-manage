@@ -43,6 +43,14 @@ export class SmallCourseScheduleCommonApi extends Api {
   getMemberList(query: GetMemberInput) {
     return this.http.get('/v1/schedule/small_course/shop/member', { query })
   }
+  /**
+   *
+   * @param params
+   * 获取绑定教练
+   */
+  getBindCoachList(id: string) {
+    return this.http.get(`/v1/course/small/coaches/${id}`)
+  }
 }
 export interface ConsumeQuery {
   course_id: number

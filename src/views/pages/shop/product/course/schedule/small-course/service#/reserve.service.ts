@@ -151,7 +151,7 @@ export class SmallCourseScheduleReserveService {
     return this.reserveApi.courseInfo(id)
   }
   // 补课列表
-  courseList() {
-    return this.reserveApi.courseList()
+  courseList(id: string) {
+    return this.reserveApi.courseList(id)
   }
 }

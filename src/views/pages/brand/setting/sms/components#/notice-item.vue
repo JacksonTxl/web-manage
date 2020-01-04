@@ -308,9 +308,9 @@ export default {
     }
   },
   rxState() {
-    const user = this.userService
     return {
-      settingEnums: user.settingEnums$
+      notifyRule: this.userService.getOptions$('setting.notify_rule'),
+      notifyHour: this.userService.getOptions$('setting.notify_time_hour')
     }
   },
   modals: {
@@ -396,24 +396,6 @@ export default {
     info: {
       type: Object,
       default: () => {}
-    }
-  },
-  computed: {
-    notifyRule() {
-      let list = []
-      if (!this.settingEnums.notify_rule) return list
-      Object.entries(this.settingEnums.notify_rule.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    },
-    notifyHour() {
-      let list = []
-      if (!this.settingEnums.notify_time_hour) return list
-      Object.entries(this.settingEnums.notify_time_hour.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
     }
   },
   created() {

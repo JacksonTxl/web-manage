@@ -7,7 +7,7 @@
     "build": "cross-env NODE_ENV=production gulp build && vue-cli-service build --report",
     "lint": "vue-cli-service lint",
     "ci": "npm run init && npm run build",
-    "dev": "gulp dev",
+    "dev": "cross-env NODE_OPTIONS=--max_old_space_size=8192 gulp dev",
     "dev:brand": "PAGE_ENV=brand gulp dev",
     "dev:shop": "PAGE_ENV=shop gulp dev",
     "dev:test": "cross-env LOCAL_API_ENV=test gulp dev",
