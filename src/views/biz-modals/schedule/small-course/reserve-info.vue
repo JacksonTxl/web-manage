@@ -402,13 +402,13 @@ export default {
       })
     },
     // 补课回显
-    remedialCourse(reserve_id, id) {
+    remedialCourse(reserve_id) {
       this.reserveService.courseInfo(reserve_id).subscribe(res => {
         this.$modalRouter.push({
           name: 'schedule-small-course-remedial-course',
           props: {
             info: res.info,
-            id: id
+            id: res.info.schedule_id
           },
           on: {
             ok: () => {

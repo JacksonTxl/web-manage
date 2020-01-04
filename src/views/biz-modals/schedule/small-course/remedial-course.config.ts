@@ -4,7 +4,7 @@ export const ruleOptions = (vm: any) => {
       rules: [{ required: true, message: '日期不能为空' }],
       initialValue: vm.time
     },
-    course_id: {
+    id: {
       rules: [
         {
           required: true,
