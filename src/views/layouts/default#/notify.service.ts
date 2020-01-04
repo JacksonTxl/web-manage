@@ -101,6 +101,8 @@ export class NotifyService {
 
         //   }
         // }
+        const maxLength = 3
+        // for(let )
         this.notReadNum$.commit(() => msg.not_read_num)
         const config = {
           title: msg.payload.title,
@@ -111,6 +113,7 @@ export class NotifyService {
             this.notificationService.open(config)
           }
         }
+        this.notificationService.open(config)
         this.messageArr.push(config)
       },
       (err: any) => {
