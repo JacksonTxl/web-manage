@@ -38,14 +38,7 @@ interface Shop {
   name?: string
   logo?: string
 }
-interface ModuleEnums {
-  [enumName: string]: {
-    description: string
-    value: {
-      [key: string]: string
-    }
-  }
-}
+
 /**
  * 用户的全局初始信息
  */
