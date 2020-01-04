@@ -169,7 +169,7 @@ export default {
         name: 'shop-finance-refund',
         props: {
           id: record.order_id,
-          goodsInvalid: true
+          product_type: record.product_type
         },
         on: {
           success: () => {

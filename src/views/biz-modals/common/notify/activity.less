@@ -1,0 +1,72 @@
+.modal-common-notify-activity {
+  .st-modal__body {
+    position: relative;
+  }
+  .st-modal__close {
+    z-index: 2;
+  }
+  .ant-modal-body {
+    overflow: inherit !important;
+  }
+  .swiper-pagination {
+    text-align: right;
+    padding-right: 16px;
+    .swiper-pagination-bullet-active,
+    .swiper-pagination-bullet {
+      background: #fff;
+      width: 8px;
+      height: 4px;
+      border-radius: 2px;
+      box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.2);
+      opacity: 1;
+    }
+    .swiper-pagination-bullet-active {
+      width: 16px;
+    }
+  }
+
+  &__arrow-left,
+  &__arrow-right {
+    position: absolute;
+    top: 50%;
+    z-index: 9999;
+    .c(#fff);
+    border-radius: 100%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(196, 196, 196, 0.4);
+  }
+  &__arrow-left {
+    left: -40px;
+  }
+  &__arrow-right {
+    right: -40px;
+  }
+  &__notify-img {
+    .h(400px);
+    position: relative;
+    .arrow-left-out {
+      position: absolute;
+      top: -18px;
+      left: -16px;
+    }
+    div.swiper-button-prev {
+      background-image: none;
+      outline: unset;
+      left: -16px;
+      z-index: 1;
+    }
+    div.swiper-button-next {
+      background-image: none;
+      outline: unset;
+      right: -16px;
+      z-index: 1;
+    }
+  }
+  .st-modal__body {
+    padding: 0;
+  }
+}
