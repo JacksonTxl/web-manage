@@ -1,3 +1,4 @@
+"use strict";
 window.preUtils = {
   config: {
     test: {
@@ -172,8 +173,8 @@ window.preUtils = {
         var task = new Promise(function(taskResolve, taskReject) {
           var img = new Image()
           img.src = domain + 'img/cdn/sample.gif?t=' + +new Date()
-          clearTimeout(this['timer_' + domain])
-          this['timer_' + domain] = setTimeout(function() {
+          clearTimeout(that['timer_' + domain])
+          that['timer_' + domain] = setTimeout(function() {
             return taskReject(new Error(domain + ' error: timeout(' + that.threshold + ')'))
           }, that.threshold)
           img.onload = function() {

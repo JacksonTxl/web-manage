@@ -1,3 +1,4 @@
+import { WsNotifyService } from '../../layouts/default#/ws-notify.service'
 import { State } from 'rx-state'
 import { NotifyApi } from '@/api/v1/notify'
 import { Injectable } from 'vue-service-app'
@@ -7,7 +8,11 @@ import { tap } from 'rxjs/operators'
 export class NotifyService {
   authTabs$ = new State([]) // this.authService.getAuthTabs$('common-notify')
   info$ = new State({})
-  constructor(private authService: AuthService, private api: NotifyApi) {}
+  constructor(
+    private authService: AuthService,
+    private api: NotifyApi,
+    private wsNotifyService: WsNotifyService
+  ) {}
   getNoticePcUnread() {
     return this.api.getNoticePcUnread().pipe(
       tap(res => {
@@ -24,11 +29,9 @@ export class NotifyService {
             isBadge: !!res.info.announcement
           }
         ]
+        this.wsNotifyService.notReadNum$.commit(() => res.info.total)
         this.authTabs$.commit(() => authTabs)
       })
     )
-  }
-  beforeEach() {
-    return this.getNoticePcUnread()
   }
 }

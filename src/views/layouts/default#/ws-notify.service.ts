@@ -1,4 +1,4 @@
-import { TokenService } from './../../../services/token.service'
+import { TokenService } from '../../../services/token.service'
 import { UserService } from '@/services/user.service'
 import { AppConfig } from '@/constants/config'
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket'
@@ -11,12 +11,11 @@ import { tap } from 'rxjs/operators'
 import { anyAll } from '@/operators'
 const uuidV1 = require('uuid/v1')
 @Injectable()
-export class NotifyService {
+export class WsNotifyService {
   private ws: any
   private token = this.tokenService.token$.value
   private count = 0
   private errCount = 0
-  private realMessageCount = 0
   private timer = 0
   private timerSetTimeout = 0
   private heartBeat = {
@@ -57,6 +56,7 @@ export class NotifyService {
     this.send(this.heartBeat)
     this.timer = setInterval(() => {
       this.heartBeat.payload.count = this.count
+      this.heartBeat.msg_id = uuidV1()
       this.send(this.heartBeat)
     }, this.pingTimeout)
   }
@@ -96,7 +96,8 @@ export class NotifyService {
           return
         }
         const maxLength = 3
-        this.notReadNum$.commit(() => msg.not_read_num)
+        console.log(msg)
+        this.notReadNum$.commit(() => msg.payload.not_read_num)
         const config = {
           title: msg.payload.title,
           content: msg.payload.content,
