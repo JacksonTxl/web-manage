@@ -13,35 +13,34 @@
           />
         </st-form-item>
         <st-form-item label="转让设置">
-          <div>
-            <a-checkbox
-              style="display:inline"
-              @change="transferChange"
-              v-decorator="decorators.is_allow_transfer"
-            ></a-checkbox>
-            <span class="mg-r16">支持转让</span>
-            <st-input-number
-              v-show="isShowTransfer"
-              style="width:282px"
-              placeholder="请输入"
-              :min="1"
-              v-decorator="decorators.transfer_num"
+          <st-checkbox
+            style="display:inline"
+            @change="transferChange"
+            v-decorator="decorators.is_allow_transfer"
+          ></st-checkbox>
+          <span class="mg-r16">支持转让</span>
+
+          <st-input-number
+            v-show="isShowTransfer"
+            style="width:282px"
+            placeholder="请输入"
+            :min="1"
+            v-decorator="decorators.transfer_num"
+          >
+            <a-select
+              v-decorator="decorators.transfer_type"
+              slot="addonAfter"
+              style="width: 60px"
             >
-              <a-select
-                v-decorator="decorators.transfer_type"
-                slot="addonAfter"
-                style="width: 60px"
+              <a-select-option
+                v-for="(item, index) in unitList"
+                :value="item.value"
+                :key="index"
               >
-                <a-select-option
-                  v-for="(item, index) in unitList"
-                  :value="item.value"
-                  :key="index"
-                >
-                  {{ item.label }}
-                </a-select-option>
-              </a-select>
-            </st-input-number>
-          </div>
+                {{ item.label }}
+              </a-select-option>
+            </a-select>
+          </st-input-number>
         </st-form-item>
         <st-form-item label="售卖方式">
           <a-checkbox-group v-decorator="decorators.sell_type">
@@ -182,6 +181,7 @@ export default {
           : [],
         sales_price: info.sales_price
       })
+      this.isShowTransfer = info.is_allow_transfer
     },
     save(para) {
       this.form.validateFields().then(values => {
@@ -208,8 +208,8 @@ export default {
         name: 'shop-product-course-manage-small-course-list'
       })
     },
-    transferChange(e) {
-      this.isShowTransfer = e.target.checked
+    transferChange(val) {
+      this.isShowTransfer = val
     },
     disabledDate(current) {
       return (

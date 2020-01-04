@@ -1,4 +1,5 @@
 export const enum ORDER_PRODUCT_TYPE {
+  SMALL_COURSE_TYPE = 6,
   EARNEST = 8,
   VENUES = 13
 }

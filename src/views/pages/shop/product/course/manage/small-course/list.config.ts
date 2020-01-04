@@ -2,7 +2,9 @@ export const columns = (vm: any) => {
   return [
     {
       title: `${vm.$c('small_course')}名称`,
-      dataIndex: 'course_name'
+      dataIndex: 'course_name',
+      fixed: 'left',
+      width: 160
     },
     {
       title: '类型',

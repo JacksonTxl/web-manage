@@ -5,9 +5,15 @@ export class NoticeApi extends Api {
   getNoticeList(query?: NoticeQuery) {
     return this.http.get('/v1/setting/sms/notice', { query })
   }
+  // 获取角色列表
+  getRoleList() {
+    return this.http.get(`/v1/common/role/roles`)
+  }
   // 通知模版编辑
   putNotice(params: PutNoticeParams) {
-    return this.http.put(`/v1/setting/sms/notice/${params.id}`, { params })
+    return this.http.put(`/v1/setting/sms/notice/${params.id}`, {
+      params
+    })
   }
 }
 

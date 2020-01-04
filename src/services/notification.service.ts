@@ -7,6 +7,7 @@ interface NotificationOptions {
   title: string | number
   content: string
   duration?: number
+  icon?: String
   key?: string
 }
 /**
@@ -50,6 +51,24 @@ export class NotificationService {
       message: config.title + '',
       description: config.content,
       duration: config.duration,
+      key: config.key
+    })
+  }
+  open(config: NotificationOptions) {
+    notification.open({
+      class: 'st-notify-open',
+      message: config.title + '',
+      description: config.content,
+      duration: config.duration,
+      icon: (h: any) => {
+        return h('img', {
+          attrs: {
+            src: config.icon,
+            width: '96',
+            height: '100%'
+          }
+        })
+      },
       key: config.key
     })
   }

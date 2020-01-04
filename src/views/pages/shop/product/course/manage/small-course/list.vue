@@ -57,7 +57,7 @@
         {{ record.class_status | enumFilter('small_course.class_status') }}
       </span>
       <span slot="class_conditions">
-        成班条件
+        成班条件(人)
         <!-- <st-help-tooltip id="TSCRM001" /> -->
       </span>
       <span slot="course_status">

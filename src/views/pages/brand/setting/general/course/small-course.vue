@@ -26,12 +26,12 @@
         }}
         到{{
           reserveInfo.reserve_range | enumFilter('small_course.reserve_range')
-        }}以内的私教课程，员工代预约不受此限制
+        }}以内的课程，员工代预约不受此限制
       </div>
       <st-hr></st-hr>
       <st-t4>取消预约设置</st-t4>
       <div class="st-des">
-        允许用户在私教课程开始前{{
+        允许用户在课程开始前{{
           reserveInfo.cancel_reserve
             | enumFilter('small_course.cancel_reserve')
         }}取消预约，员工代取消不受此限制
@@ -97,11 +97,9 @@ export default {
     }
   },
   rxState() {
-    const user = this.userService
     const smallCourseService = this.smallCourseService
     return {
       loading: smallCourseService.loading$,
-      settingEnums: user.settingEnums$,
       reserveInfo: smallCourseService.reserveInfo$,
       auth: smallCourseService.auth$
     }

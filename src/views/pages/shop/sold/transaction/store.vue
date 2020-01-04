@@ -42,7 +42,13 @@
               <span>{{ item.product_name }}</span>
             </div>
             <div class="good-price">
-              <span>￥{{ item.min_price }}-{{ item.max_price }}</span>
+              <span>
+                ￥{{
+                  item.min_price === item.max_price
+                    ? item.min_price
+                    : `${item.min_price}-${item.max_price}`
+                }}
+              </span>
               <span>库存:{{ item.count }}件</span>
             </div>
             <div class="product-mask" @click="onSku(item.id)">
