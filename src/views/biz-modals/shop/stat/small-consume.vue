@@ -30,7 +30,7 @@
           :placeholder="`请选择${$c('coach')}`"
           optionFilterProp="children"
           style="width: 200px"
-          v-if="showTable === 'all'"
+          v-if="showTable"
           v-model="coach_id"
           @change="getConsumeList"
           :filterOption="filterOption"
@@ -122,7 +122,7 @@ export default {
       return `消课价值(${this.$c('small_course')})`
     },
     showTable() {
-      return this.$searchQuery.showTable || 'all'
+      return this.$router.path.includes('stat/course/summary')
     },
     exportParams() {
       const type = 'shop/team/course'
@@ -144,7 +144,7 @@ export default {
         type: '/total',
         ...query
       }
-      if (this.showTable === 'all') {
+      if (this.showTable) {
         query.coach_id = this.coach_id
       }
       return query

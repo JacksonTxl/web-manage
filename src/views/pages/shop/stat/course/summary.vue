@@ -35,6 +35,14 @@
           :value="record.value"
         ></st-total-item>
       </template>
+      <template v-slot:small_checkin_amount="record">
+        <st-total-item
+          @click.native="onCLickSmallCheckinAmount"
+          :unit="record.unit"
+          :label="record.label"
+          :value="record.value"
+        ></st-total-item>
+      </template>
       <template v-slot:personal_course_num="record">
         <st-total-item
           @click.native="onCLickPersonalNum"
@@ -46,6 +54,14 @@
       <template v-slot:team_course_num="record">
         <st-total-item
           @click.native="onCLickTeamNum"
+          :unit="record.unit"
+          :label="record.label"
+          :value="record.value"
+        ></st-total-item>
+      </template>
+      <template v-slot:small_course_num="record">
+        <st-total-item
+          @click.native="onCLickSmallNum"
           :unit="record.unit"
           :label="record.label"
           :value="record.value"
@@ -94,6 +110,22 @@
       >
         {{ text }}
       </a>
+      <a
+        slot="small_course_num"
+        slot-scope="text, record"
+        @click="getSmallCourse(record)"
+        v-if="text !== 0"
+      >
+        {{ text }}
+      </a>
+      <span v-else>{{ text }}</span>
+      <a
+        slot="small_checkin_amount"
+        slot-scope="text, record"
+        @click="getSmallConsume(record)"
+      >
+        {{ text }}
+      </a>
       <span slot="personalTitle">
         私教消课价值（元)
         <st-help-tooltip id="TSCR001" />
@@ -101,6 +133,10 @@
       <span slot="teamTitle">
         团课消课价值（元）
         <st-help-tooltip id="TSCR002" />
+      </span>
+      <span slot="smallTitle">
+        {{ smallCourseText }}
+        <st-help-tooltip id="TSCR003" />
       </span>
     </st-table>
   </div>
@@ -112,6 +148,8 @@ import ShopStatPersonalCourse from '@/views/biz-modals/shop/stat/personal-course
 import ShopStatPersonalConsume from '@/views/biz-modals/shop/stat/personal-consume'
 import ShopStatTeamCourse from '@/views/biz-modals/shop/stat/team-course'
 import ShopStatTeamConsume from '@/views/biz-modals/shop/stat/team-consume'
+import ShopStatSmallCourse from '@/views/biz-modals/shop/stat/small-course'
+import ShopStatSmallConsume from '@/views/biz-modals/shop/stat/small-consume'
 import { columns } from './summary.config.ts'
 export default {
   mixins: [tableMixin],
@@ -123,7 +161,9 @@ export default {
     ShopStatPersonalCourse,
     ShopStatPersonalConsume,
     ShopStatTeamCourse,
-    ShopStatTeamConsume
+    ShopStatTeamConsume,
+    ShopStatSmallCourse,
+    ShopStatSmallConsume
   },
   serviceInject() {
     return {
@@ -140,7 +180,10 @@ export default {
     }
   },
   computed: {
-    columns
+    columns,
+    smallCourseText(vm) {
+      return `${vm.$c('small_course')}消课价值（元)`
+    }
   },
   methods: {
     onCLickPersonalCheckinAmount() {
@@ -160,6 +203,14 @@ export default {
         }
       })
     },
+    onCLickSmallCheckinAmount() {
+      this.$modalRouter.push({
+        name: 'shop-stat-small-consume',
+        props: {
+          type: 'total'
+        }
+      })
+    },
     onCLickPersonalNum() {
       this.$modalRouter.push({
         name: 'shop-stat-personal-course',
@@ -171,6 +222,14 @@ export default {
     onCLickTeamNum() {
       this.$modalRouter.push({
         name: 'shop-stat-team-course',
+        props: {
+          type: 'total'
+        }
+      })
+    },
+    onCLickSmallNum() {
+      this.$modalRouter.push({
+        name: 'shop-stat-small-course',
         props: {
           type: 'total'
         }
@@ -203,6 +262,22 @@ export default {
     getTeamConsume(record) {
       this.$modalRouter.push({
         name: 'shop-stat-team-consume',
+        props: {
+          record
+        }
+      })
+    },
+    getSmallCourse(record) {
+      this.$modalRouter.push({
+        name: 'shop-stat-small-course',
+        props: {
+          record
+        }
+      })
+    },
+    getSmallConsume(record) {
+      this.$modalRouter.push({
+        name: 'shop-stat-small-consume',
         props: {
           record
         }
