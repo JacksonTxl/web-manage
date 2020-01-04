@@ -44,7 +44,7 @@
               >
                 <a-range-picker
                   @change="onChangeRangePicker($event, $event, i)"
-                  v-model="pickerList[i]"
+                  :value="pickerList[i]"
                   :disabledDate="disabledEndDate"
                 ></a-range-picker>
               </st-form-item>

@@ -165,32 +165,17 @@ export default {
         }
         // 提交
         console.log(form)
-        this.smallCourseScheduleService.conflict(form).subscribe(res => {
-          if (res.conflict === 1) {
-            this.msg.error({ content: '排期内容有冲突，请重新选择' })
-          } else {
-            this.smallCourseScheduleService.update(form).subscribe(() => {
-              this.show = false
-              this.onScheduleChange()
-            })
-            this.showFlag = false
-          }
+        this.smallCourseScheduleService.update(form).subscribe(() => {
+          this.show = false
+          this.onScheduleChange()
         })
       })
     },
     onClick() {
       this.show = false
-      // this.$modalRouter.push({
-      //   name: 'schedule-team-add-course-batch',
-      //   on: {
-      //     ok: res => {
-      //       this.onScheduleChange()
-      //     }
-      //   }
-      // })
     },
     onScheduleChange() {
-      this.$router.push({ query: this.$searchQuery })
+      this.$router.reload()
     }
   }
 }
