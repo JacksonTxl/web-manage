@@ -103,7 +103,10 @@ export class NotifyService {
           icon: this.user$.value.avatar,
           duration: 5,
           onClose: () => {
-            this.notificationService.open(this.messageArr[maxLength - 1])
+            this.messageArr.shift()
+            this.notificationService.open(
+              this.messageArr[this.messageArr.length - 1]
+            )
           }
         }
         if (this.messageArr.length >= maxLength) {
