@@ -30,11 +30,6 @@ export class NotifyService {
           }
         ]
         this.wsNotifyService.notReadNum$.commit(() => res.info.total)
-        console.log(
-          'this.wsNotifyService.notReadNum$',
-          this.wsNotifyService.notReadNum$.value
-        )
-        console.log('res.total', res.total)
         this.authTabs$.commit(() => authTabs)
       })
     )

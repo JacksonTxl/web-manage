@@ -56,6 +56,7 @@ export class WsNotifyService {
     this.send(this.heartBeat)
     this.timer = setInterval(() => {
       this.heartBeat.payload.count = this.count
+      this.heartBeat.msg_id = uuidV1()
       this.send(this.heartBeat)
     }, this.pingTimeout)
   }
@@ -96,17 +97,24 @@ export class WsNotifyService {
         }
         const maxLength = 3
         console.log(msg)
-        this.notReadNum$.commit(() => msg.payload.not_read_num)
+        if (msg.msg_type === 1) {
+          this.notReadNum$.commit(() => msg.payload.not_read_num)
+        } else if (msg.msg_type === 3) {
+          this.notReadNum$.commit(() => msg.payload.total)
+          return
+        }
+
         const config = {
           title: msg.payload.title,
           content: msg.payload.content,
           icon: this.user$.value.avatar,
           duration: 5,
           onClose: () => {
-            this.messageArr.shift()
+            console.log('onCLose')
             this.notificationService.open(
               this.messageArr[this.messageArr.length - 1]
             )
+            this.messageArr.shift()
           }
         }
         if (this.messageArr.length >= maxLength) {

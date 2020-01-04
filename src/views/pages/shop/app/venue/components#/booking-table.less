@@ -3,6 +3,7 @@
     white-space: nowrap;
     overflow: hidden;
     margin-left: 44px;
+    height: 21px;
     &__item {
       display: inline-block;
       width: 110px;
@@ -25,11 +26,18 @@
     }
   }
   &__content {
-    margin-top: 8px;
-    display: flex;
     position: relative;
-    height: 400px;
+    margin-top: 8px;
     border: 1px solid rgba(0, 0, 0, 0.05);
+    border-right: 0;
+    margin-left: 44px;
+    &.no-border {
+      border-color: transparent;
+    }
+    &__scroll {
+      display: flex;
+      position: relative;
+    }
     &__column {
       width: 110px;
       flex: none;

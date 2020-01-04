@@ -10,44 +10,46 @@
         {{ item }}
       </div>
     </div>
-    <div
-      :class="content()"
-      id="booking-left-content"
-      v-scrollBar="{ suppressScrollX: false }"
-      @scroll="scrollHandler"
-    >
+    <div :class="[content(), { 'no-border': !data.length }]">
       <div
-        :class="content('column')"
-        v-for="(item, index) in data"
-        :key="index"
+        :class="content('scroll')"
+        id="booking-left-content"
+        v-scrollBar="{ suppressScrollX: false }"
+        @scroll="scrollHandler"
       >
-        <div v-for="(i, inx) in item.site_data" :key="inx">
-          <div
-            v-if="i.status === 2"
-            :class="[
-              content('row'),
-              content('row-action'),
-              { act: selectedId.includes(item.site_id + '-' + inx) }
-            ]"
-            @click="selectHandler(i, inx, item)"
-          >
-            ¥{{ i.price }}
-          </div>
-          <div
-            v-if="i.status === 3"
-            :class="[content('row'), content('row-reserved')]"
-          >
-            {{ i.member_name }}
-          </div>
-          <div
-            v-if="i.status === 1"
-            :class="[content('row'), content('row-unreserve')]"
-          >
-            不可约
+        <div
+          :class="content('column')"
+          v-for="(item, index) in data"
+          :key="index"
+        >
+          <div v-for="(i, inx) in item.site_data" :key="inx">
+            <div
+              v-if="i.status === 2"
+              :class="[
+                content('row'),
+                content('row-action'),
+                { act: selectedId.includes(item.site_id + '-' + inx) }
+              ]"
+              @click="selectHandler(i, inx, item)"
+            >
+              ¥{{ i.price }}
+            </div>
+            <div
+              v-if="i.status === 3"
+              :class="[content('row'), content('row-reserved')]"
+            >
+              {{ i.member_name }}
+            </div>
+            <div
+              v-if="i.status === 1"
+              :class="[content('row'), content('row-unreserve')]"
+            >
+              不可约
+            </div>
           </div>
         </div>
+        <st-no-data v-if="!data.length"></st-no-data>
       </div>
-      <st-no-data v-if="!data.length"></st-no-data>
     </div>
   </div>
 </template>
@@ -96,7 +98,7 @@ export default {
         left.offsetHeight -
         leftVenue.offsetHeight -
         leftCalendar.offsetHeight -
-        32 +
+        13 +
         'px'
       leftContent.style.height = height
       this.$refs.left.style.height = height

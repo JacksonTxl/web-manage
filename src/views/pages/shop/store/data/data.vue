@@ -98,13 +98,7 @@
                         :data="orderMember(storeBoard, 0, 'order')"
                         :name="filterOrderMemberTitle()"
                         style="width: 100%;"
-                        :total="
-                          orderMember(storeBoard, 0, 'order').reduce(
-                            (item1, item2) => {
-                              return Number(item1.value) + Number(item2.value)
-                            }
-                          )
-                        "
+                        :total="wholeNav[wholenavIndex].num"
                         :height="
                           wholeNavcom === 'brand-user-avg-bar'
                             ? height325
@@ -137,13 +131,7 @@
                         :name="filterOrderMemberTitle()"
                         :unit="wholeNav[wholenavIndex].unit"
                         :data="orderMember(storeBoard, 0, 'member')"
-                        :total="
-                          orderMember(storeBoard, 0, 'member').reduce(
-                            (item1, item2) => {
-                              return Number(item1.value) + Number(item2.value)
-                            }
-                          )
-                        "
+                        :total="wholeNav[wholenavIndex].num"
                         style="width: 100%;"
                         :height="
                           wholeNavcom === 'brand-user-avg-bar'
@@ -339,7 +327,9 @@ export default {
   methods: {
     // 整体看板时间
     wholeTimesFn(value) {
-      this.dataService.getStoreBoard(value).subscribe()
+      this.dataService.getStoreBoard(value).subscribe(res => {
+        this.wholenavFilter()
+      })
     },
     // 销售分析时间
     saleTimesFn(value) {
