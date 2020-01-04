@@ -201,7 +201,6 @@
 import ContractPreview from './components#/preview.vue'
 import { EditService } from './edit.service.ts'
 import { MessageService } from '@/services/message.service'
-import { UserService } from '@/services/user.service'
 import ContractConstitution from '@/views/biz-modals/contract/constitution'
 
 const pageName = 'page-setting-contract-edit'
@@ -222,8 +221,7 @@ export default {
   serviceInject() {
     return {
       editService: EditService,
-      message: MessageService,
-      user: UserService
+      message: MessageService
     }
   },
   rxState() {
@@ -236,8 +234,7 @@ export default {
       codeRules: edit.codeRules$,
       lawContent: edit.lawContent$,
       codeDemo: edit.codeDemo$,
-      loading: edit.loading$,
-      settingEnums: this.user.settingEnums$
+      loading: edit.loading$
     }
   },
   methods: {

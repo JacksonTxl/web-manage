@@ -27,13 +27,11 @@
         >
           <a-select-option :value="-1">全部分类</a-select-option>
           <a-select-option
-            v-for="(item, index) in Object.entries(
-              package_course.package_type.value
-            )"
+            v-for="(item, index) in package_types"
             :key="index"
-            :value="+item[0]"
+            :value="+item.value"
           >
-            {{ item[1] }}
+            {{ item.label }}
           </a-select-option>
         </a-select>
         <a-select
@@ -44,13 +42,11 @@
         >
           <a-select-option :value="-1">全部状态</a-select-option>
           <a-select-option
-            v-for="(item, index) in Object.entries(
-              package_course.shelf_status.value
-            )"
+            v-for="(item, index) in shelf_status"
             :key="index"
-            :value="+item[0]"
+            :value="+item.value"
           >
-            {{ item[1] }}
+            {{ item.label }}
           </a-select-option>
         </a-select>
       </div>
@@ -234,7 +230,10 @@ export default {
       list: this.listService.list$,
       page: this.listService.page$,
       loading: this.listService.loading$,
-      package_course: this.userService.packageCourseEnums$,
+      package_types: this.userService.getOptions$(
+        'package_course.package_type'
+      ),
+      shelf_status: this.userService.getOptions$('package_course.shelf_status'),
       auth: this.listService.auth$
     }
   },

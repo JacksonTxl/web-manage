@@ -24,17 +24,9 @@ export default {
   },
   rxState() {
     return {
-      staffEnums: this.userService.staffEnums$
-    }
-  },
-  computed: {
-    sexOptions() {
-      let list = []
-      if (!this.staffEnums.sex) return list
-      Object.entries(this.staffEnums.sex.value).forEach(o => {
-        list.push({ value: +o[0], name: o[1] })
+      sexOptions: this.userService.getOptions$('staff.sex', {
+        labelField: 'name'
       })
-      return list
     }
   },
   model: {

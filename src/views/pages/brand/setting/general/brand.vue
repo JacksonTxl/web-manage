@@ -117,11 +117,9 @@ export default {
     }
   },
   rxState() {
-    const user = this.userService
     return {
       brandInfo: this.brandService.brandInfo$,
       systemInfo: this.brandService.systemInfo$,
-      settingEnums: user.settingEnums$,
       loading: this.brandService.loading$
     }
   },

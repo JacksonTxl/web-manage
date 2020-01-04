@@ -48,7 +48,6 @@
 import { AddService } from '../add.service'
 import { MessageService } from '@/services/message.service'
 import SelectCoach from '@/views/fragments/coach/select-coach'
-import { UserService } from '@/services/user.service'
 import { RuleConfig } from '@/constants/course/rule'
 
 export default {
@@ -57,14 +56,12 @@ export default {
     return {
       addService: AddService,
       messageService: MessageService,
-      userService: UserService,
       ruleConfig: RuleConfig
     }
   },
   rxState() {
     return {
-      loading: this.addService.loading$,
-      personalCourseEnums: this.userService.personalCourseEnums$
+      loading: this.addService.loading$
     }
   },
   components: {

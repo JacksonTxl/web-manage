@@ -4,7 +4,7 @@
     <span style="margin-right:16px">选择等级</span>
     <a-checkbox-group v-model="value.getData.member_level">
       <a-checkbox
-        v-for="(item, index) in plainOptions"
+        v-for="(item, index) in shopMemberEnums"
         :value="item"
         :key="index"
       >
@@ -25,7 +25,10 @@ export default {
   },
   rxState() {
     return {
-      shopMemberEnums: this.userService.shopMemberEnums$
+      shopMemberEnums: this.userService.getOptions$(
+        'shop_member.member_level',
+        { labelField: 'name' }
+      )
     }
   },
   model: {
@@ -44,28 +47,19 @@ export default {
         title: '用户等级',
         info: '满足以下用户等级的用户'
       },
-      plainOptions: [],
       checkedList: []
     }
   },
   created() {
-    let list = []
-    if (!this.shopMemberEnums.member_level) return list
-    Object.entries(this.shopMemberEnums.member_level.value).forEach(o => {
-      list.push({ value: +o[0], name: o[1] })
-    })
-    this.plainOptions = list
     const arr = []
     this.value.getData.member_level.forEach(element => {
       arr.push(
-        list.filter(item => {
+        this.shopMemberEnums.filter(item => {
           return item.value === element.value
         })[0]
       )
     })
     this.value.getData.member_level = arr
-  },
-  methods: {},
-  mounted() {}
+  }
 }
 </script>

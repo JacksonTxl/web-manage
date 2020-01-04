@@ -6,39 +6,42 @@
     :okButtonProps="{ props: { disabled: !sites.length } }"
     v-model="show"
     width="668px"
+    wrapClassName="st-modal-shop-app-venue-add-site"
   >
-    <st-form-table hoverable :isEmpty="false">
-      <thead>
-        <tr>
-          <th>请批量设置场地名称</th>
-          <th style="width:120px">操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td colspan="2" class="st-form-table__add">
-            <st-button type="dashed" icon="add" block @click="addRow">
-              添加
-            </st-button>
-          </td>
-        </tr>
-
-        <template v-for="(item, index) in sites">
-          <tr :key="index">
-            <td>
-              <a-input v-model="item.name" style="width: 278px;"></a-input>
-            </td>
-            <td>
-              <template>
-                <a @click="delRow(index)">
-                  删除
-                </a>
-              </template>
+    <div class="border-box">
+      <st-form-table hoverable :isEmpty="false">
+        <thead>
+          <tr>
+            <th>请批量设置场地名称</th>
+            <th style="width:120px">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="2" class="st-form-table__add">
+              <st-button type="dashed" icon="add" block @click="addRow">
+                添加
+              </st-button>
             </td>
           </tr>
-        </template>
-      </tbody>
-    </st-form-table>
+
+          <template v-for="(item, index) in sites">
+            <tr :key="index">
+              <td>
+                <a-input v-model="item.name" style="width: 278px;"></a-input>
+              </td>
+              <td>
+                <template>
+                  <a @click="delRow(index)">
+                    删除
+                  </a>
+                </template>
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </st-form-table>
+    </div>
   </st-modal>
 </template>
 <script>

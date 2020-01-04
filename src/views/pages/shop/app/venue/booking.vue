@@ -246,6 +246,9 @@ export default {
     }
   },
   methods: {
+    resetPage() {
+      this.getList()
+    },
     handleActionsPosition() {
       const rect = this.footerEl.getBoundingClientRect()
       const minaMain = document
@@ -267,7 +270,7 @@ export default {
             this.payCallBack(props.order_id, res.type)
           },
           cancel: () => {
-            this.$router.reload()
+            this.resetPage()
           }
         }
       })
@@ -275,7 +278,7 @@ export default {
     payCallBack(orderId, callBackType) {
       switch (callBackType) {
         case 'cancel':
-          this.$router.reload()
+          this.resetPage()
           break
         case 'pay':
           this.createdGatheringTip({
@@ -291,7 +294,7 @@ export default {
     tipCallBack({ orderId, type }) {
       switch (type) {
         case 'cancel':
-          this.$router.reload()
+          this.resetPage()
           break
         case 'ViewOrder':
           this.createdOrderViewOrder(orderId)

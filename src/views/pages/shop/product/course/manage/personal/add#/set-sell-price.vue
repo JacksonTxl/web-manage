@@ -15,15 +15,7 @@
           <a-checkbox-group
             :options="sellTypeOptions"
             v-decorator="ruleConfig.sellType"
-          >
-            <a-checkbox
-              v-for="(item, index) in personalCourseEnums.sell_type.value"
-              :key="index"
-              :value="index"
-            >
-              {{ item }}
-            </a-checkbox>
-          </a-checkbox-group>
+          ></a-checkbox-group>
         </st-form-item>
         <!-- 课程有效期 -->
         <st-form-item>
@@ -107,7 +99,7 @@ export default {
     const user = this.userService
     return {
       loading: this.addService.loading$,
-      personalCourseEnums: user.personalCourseEnums$
+      sell_types: user.getOptions$('personal_course.sell_type')
     }
   },
   components: {
@@ -133,13 +125,13 @@ export default {
   },
   computed: {
     sellTypeOptions() {
-      const sellType = this.personalCourseEnums.sell_type.value
+      const sellType = this.sell_types
       const options = []
       for (let i in sellType) {
         options.push({
-          label: sellType[i],
-          value: +i,
-          disabled: +i === 2
+          label: sellType[i].label,
+          value: sellType[i].value,
+          disabled: sellType[i].value === 2
         })
       }
       return options
