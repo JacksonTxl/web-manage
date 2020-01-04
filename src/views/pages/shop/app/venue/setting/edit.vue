@@ -118,11 +118,20 @@
             </st-form-item>
           </st-form-item>
           <st-form-item label="预约状态" required>
-            <st-checkbox v-model="can_reserve">
-              不可预约
-            </st-checkbox>
+            <a-radio-group
+              v-decorator="decorators.can_reserve"
+              @change="onChange"
+            >
+              <a-radio
+                v-for="item in reserveEnums"
+                :key="item.value"
+                :value="item.value"
+              >
+                {{ item.label }}
+              </a-radio>
+            </a-radio-group>
           </st-form-item>
-          <st-form-item label="预约价格" required>
+          <st-form-item v-if="canReserve" label="预约价格" required>
             <st-input-number
               v-decorator="decorators.price"
               :float="true"
@@ -163,7 +172,7 @@ import { EditService } from './edit.service'
 import { ruleOptions } from './add.config'
 import { MessageService } from '@/services/message.service'
 import { PatternService } from '@/services/pattern.service'
-import { CAN_RESERVE } from '@/constants/venue'
+import { CAN_RESERVE, TIME_LIMIT_TYPE, CYCLIC_TYPE } from '@/constants/venue'
 export default {
   name: 'AddRole',
   bem: {
@@ -184,7 +193,8 @@ export default {
       timeEnums: this.editService.timeEnums$,
       cyclicEnums: this.editService.cyclicEnums$,
       priorityEnums: this.editService.priorityEnums$,
-      weeks: this.editService.weeks$
+      weeks: this.editService.weeks$,
+      reserveEnums: this.editService.reserveEnums$
     }
   },
   data() {
@@ -198,14 +208,42 @@ export default {
       end_time: null,
       endOpen: false,
       cyclicType: 1,
-      can_reserve: 0
+      canReserve: true
     }
   },
   mounted() {
-    this.form.setFieldsValue({ ...this.info })
-    this.can_reserve = this.info.can_reserve === CAN_RESERVE.YES ? 0 : 1
+    let info = this.info
+    this.timeLimit = info.time_limit_type
+    this.cyclicType = info.cyclic_type
+    this.$nextTick(() => {
+      info.time_limit_start = moment(info.time_limit_start * 1000)
+      info.time_limit_end = moment(info.time_limit_end * 1000)
+      this.form.setFieldsValue({
+        time_limit_type: info.time_limit_type,
+        cyclic_type: info.cyclic_type,
+        can_reserve: info.can_reserve,
+        price: info.price,
+        weight: info.weight,
+        open_time_start: info.open_time_start,
+        open_time_end: info.open_time_end
+      })
+      if (info.time_limit_type === TIME_LIMIT_TYPE.APPOINTED) {
+        this.form.setFieldsValue({
+          time_limit_start: info.time_limit_start,
+          time_limit_end: info.time_limit_end
+        })
+      }
+      if (info.cyclic_type === CYCLIC_TYPE.CUSTOM) {
+        this.form.setFieldsValue({
+          week_day: info.week_day
+        })
+      }
+    })
   },
   methods: {
+    onChange(e) {
+      this.canReserve = e.target.value === CAN_RESERVE.YES ? true : false
+    },
     timeLimitChange(e) {
       this.timeLimit = e.target.value
     },
@@ -214,21 +252,16 @@ export default {
     },
     onClickSubmit(e) {
       e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          values.can_reserve = this.can_reserve
-            ? CAN_RESERVE.NO
-            : CAN_RESERVE.YES
-          const data = {
-            settings_id: this.$searchQuery.settings_id,
-            site_id: this.sites[0].id,
-            ...values
-          }
-          this.editService.edit(data).subscribe(() => {
-            this.messageService.success({ content: '编辑成功' })
-            this.$router.push({ name: 'shop-app-venue-manage' })
-          })
+      this.form.validate().then(values => {
+        const data = {
+          settings_id: this.$searchQuery.settings_id,
+          site_id: this.sites[0].id,
+          ...values
         }
+        this.editService.edit(data).subscribe(() => {
+          this.messageService.success({ content: '编辑成功' })
+          this.$router.push({ name: 'shop-app-venue-manage' })
+        })
       })
     },
     disabledStartDate(startValue) {
