@@ -56,6 +56,7 @@ export class WsNotifyService {
     this.send(this.heartBeat)
     this.timer = setInterval(() => {
       this.heartBeat.payload.count = this.count
+      this.heartBeat.msg_id = uuidV1()
       this.send(this.heartBeat)
     }, this.pingTimeout)
   }
