@@ -14,6 +14,7 @@ export class AddService {
   cyclicEnums$ = this.userService.getOptions$('venues_reserve.cyclic_type')
   priorityEnums$ = this.userService.getOptions$('venues_reserve.weight')
   weeks$ = this.userService.getOptions$('venues_reserve.week_day')
+  reserveEnums$ = this.userService.getOptions$('venues_reserve.can_reserve')
   constructor(
     private venueApi: VenueApi,
     private userService: UserService,
