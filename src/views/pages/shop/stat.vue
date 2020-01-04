@@ -1,7 +1,5 @@
 <template>
-  <st-panel app>
-    <router-view></router-view>
-  </st-panel>
+  <router-view></router-view>
 </template>
 <script>
 import { StatService } from './stat.service'

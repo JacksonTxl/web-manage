@@ -1,11 +1,13 @@
 <template>
-  <div>Copyright &#169; {{ yearRange }} 三体云智能科技有限公司</div>
+  <div class="st-copyright">
+    <div>Copyright &#169; {{ yearRange }} 三体云智能科技有限公司</div>
+  </div>
 </template>
 
 <script>
 import { AppConfig } from '@/constants/config'
 export default {
-  name: 'Copyright',
+  name: 'StCopyright',
   serviceInject() {
     return {
       appConfig: AppConfig

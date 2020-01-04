@@ -103,6 +103,7 @@
             <a-select
               slot="addonBefore"
               style="width: 100px;"
+              @change="resetID"
               v-model="id_type"
             >
               <a-select-option
@@ -345,6 +346,11 @@ export default {
     })
   },
   methods: {
+    resetID() {
+      this.form.setFieldsValue({
+        id_number: undefined
+      })
+    },
     onChangeGetAvatar(imageFiles) {
       this.fileList = cloneDeep(imageFiles)
     },
