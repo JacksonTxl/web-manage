@@ -170,6 +170,9 @@
       <article class="layout-default-body__content">
         <router-view></router-view>
       </article>
+      <div class="layout-default-footer">
+        <copyright></copyright>
+      </div>
     </main>
     <switch-shop v-model="isShowSwitchShop"></switch-shop>
     <st-udesk-btn v-show="isShowUdeskBtn" />
@@ -190,6 +193,7 @@ import AccountModify from '@/views/biz-modals/account/modify'
 import { UdeskService } from '@/services/udesk.service'
 import FastEntry from './default#/fast-entry'
 import StUdeskBtn from '@/views/biz-components/udesk-btn/udesk-btn'
+import Copyright from '@/views/biz-components/copyright/copyright'
 
 export default {
   name: 'SaasLayout',
@@ -197,7 +201,8 @@ export default {
     DefaultSiderMenu,
     SwitchShop,
     FastEntry,
-    StUdeskBtn
+    StUdeskBtn,
+    Copyright
   },
   serviceInject() {
     return {
