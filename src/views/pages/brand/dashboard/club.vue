@@ -165,6 +165,7 @@ import CountCard from './components#/count-card'
 import FunnelVertical from '@/views/biz-components/stat/brand-funnel-vertical'
 import { ClubService } from './club.service'
 import SidebarComponent from './components#/sidebar.component'
+
 export default {
   name: 'Dashboard',
   serviceInject() {
