@@ -39,7 +39,7 @@
             :key="coach.id"
             :value="coach.id"
           >
-            {{ coach.staff_name }}
+            {{ coach.name }}
           </a-select-option>
         </a-select>
       </st-form-item>
@@ -79,7 +79,7 @@ export default {
     const tss = this.smallCourseScheduleCommonService
     return {
       loading: this.smallCourseScheduleService.loading$,
-      coachSmallCourseOptions: tss.coachSmallCourseOptions$,
+      coachSmallCourseOptions: tss.coachBindOptions$,
       courtOptions: tss.courtOptions$
     }
   },
@@ -133,6 +133,7 @@ export default {
     }
   },
   created() {
+    console.log(this.coachSmallCourseOptions)
     const cycleDate = this.cycle
     this.cycle_start_date = cycleDate[0].format('YYYY-MM-DD')
     this.cycle_end_date = cycleDate[1].format('YYYY-MM-DD')
@@ -169,7 +170,7 @@ export default {
     onChangeCoach(value) {
       this.coachSmallCourseOptions.forEach((item, index) => {
         if (item.id === value) {
-          this.params.coach_name = item.staff_name
+          this.params.coach_name = item.name
         }
       })
     },
@@ -190,9 +191,9 @@ export default {
         return
       })
     },
-    addCourse(cycleIndex, conflict, params, list) {
+    editCourse(cycleIndex, conflict, params, list) {
       this.$emit(
-        'addCourse',
+        'editCourse',
         cycleIndex,
         this.positionIndex,
         conflict,
@@ -201,8 +202,8 @@ export default {
       )
       this.show = false
     },
-    addCustomCourse(params) {
-      this.$emit('addCustomCourse', this.positionIndex, params)
+    editCustomCourse(params) {
+      this.$emit('editCustomCourse', this.positionIndex, params)
       this.show = false
     },
     editSchedule(verifyParams) {
@@ -210,7 +211,7 @@ export default {
         .editScheduleInBatchs(verifyParams)
         .subscribe(res => {
           console.log(res)
-          this.addCourse(this.cycleIndex, res.conflict, verifyParams, res.list)
+          this.editCourse(this.cycleIndex, res.conflict, verifyParams, res.list)
         })
     },
     editScheduleCustom(verifyParams) {
@@ -219,7 +220,7 @@ export default {
         .subscribe(res => {
           console.log(res)
           if (!res.conflict) {
-            this.addCustomCourse(verifyParams)
+            this.editCustomCourse(verifyParams)
           }
         })
     },
@@ -258,7 +259,7 @@ export default {
       this.show = false
     },
     onScheduleChange() {
-      this.$router.push({ query: this.$searchQuery })
+      this.$router.reload()
     }
   }
 }

@@ -145,7 +145,8 @@
                 </div>
                 <span class="time">
                   <st-icon type="timer"></st-icon>
-                  {{ item.start_time }}-{{ item.end_time }}
+                  {{ `${item.start_date} ${item.start_time}` }} -
+                  {{ `${item.start_date} ${item.end_time}` }}
                 </span>
                 <st-t3 class="course__name">
                   {{ item.current_course_name }}
@@ -320,6 +321,7 @@ export default {
       const params = {}
       params.course_id = this.courseId
       this.getScheduleInBatch(params)
+      this.smallCourseScheduleCommonService.getBindCoachList(value).subscribe()
     },
     onChangeScheduleType(value) {
       console.log('更改类型值' + value)
@@ -551,7 +553,7 @@ export default {
         name: 'schedule-small-course-edit-course',
         props: { item, cycle, positionIndex, cycle_type, courseInfo },
         on: {
-          editCourse: (positionIndex, info) => {
+          editCustomCourse: (positionIndex, info) => {
             this.customizeScheduleList.splice(positionIndex, 1, info)
             return
           }

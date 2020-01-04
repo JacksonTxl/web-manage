@@ -56,7 +56,7 @@
                 :key="coach.id"
                 :value="coach.id"
               >
-                {{ coach.staff_name }}
+                {{ coach.name }}
               </a-select-option>
             </a-select>
           </st-form-item>
@@ -101,7 +101,7 @@ export default {
     const scsc = this.smallCourseScheduleCommonService
     return {
       loading: this.smallCourseScheduleService.loading$,
-      coachSmallCourseOptions: scsc.coachSmallCourseOptions$,
+      coachSmallCourseOptions: scsc.coachBindOptions$,
       courseSmallCourseOptions: scsc.courseSmallCourseOptions$,
       courtOptions: scsc.courtOptions$
     }
@@ -186,7 +186,7 @@ export default {
     onChangeCoach(value) {
       this.coachSmallCourseOptions.forEach((item, index) => {
         if (item.id === value) {
-          this.params.coach_name = item.staff_name
+          this.params.coach_name = item.name
         }
       })
     },

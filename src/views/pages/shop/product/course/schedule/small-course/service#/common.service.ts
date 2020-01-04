@@ -13,6 +13,7 @@ export interface SetState {
   memberOptions: any[]
   courtOptions: any[]
   consumeOptions: any[]
+  coachBindOptions: any[]
 }
 @Injectable()
 export class SmallCourseScheduleCommonService {
@@ -22,6 +23,7 @@ export class SmallCourseScheduleCommonService {
   memberOptions$: Computed<any[]>
   courtOptions$: Computed<any[]>
   consumeOptions$: Computed<any[]>
+  coachBindOptions$: Computed<any[]>
 
   constructor(
     private commonApi: SmallCourseScheduleCommonApi,
@@ -32,7 +34,8 @@ export class SmallCourseScheduleCommonService {
       coachSmallCourseOptions: [],
       memberOptions: [],
       consumeOptions: [],
-      courtOptions: []
+      courtOptions: [],
+      coachBindOptions: []
     })
     this.consumeOptions$ = new Computed(
       this.state$.pipe(pluck('consumeOptions'))
@@ -42,6 +45,9 @@ export class SmallCourseScheduleCommonService {
     )
     this.coachSmallCourseOptions$ = new Computed(
       this.state$.pipe(pluck('coachSmallCourseOptions'))
+    )
+    this.coachBindOptions$ = new Computed(
+      this.state$.pipe(pluck('coachBindOptions'))
     )
     this.memberOptions$ = new Computed(this.state$.pipe(pluck('memberOptions')))
     this.courtOptions$ = new Computed(this.state$.pipe(pluck('courtOptions')))
@@ -84,6 +90,20 @@ export class SmallCourseScheduleCommonService {
       tap(res => {
         this.state$.commit(state => {
           state.coachSmallCourseOptions = res.list
+        })
+      })
+    )
+  }
+  /**
+   *
+   * @param query
+   * 获取绑定教练Options
+   */
+  getBindCoachList(id: string) {
+    return this.commonApi.getBindCoachList(id).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.coachBindOptions = res.list
         })
       })
     )
