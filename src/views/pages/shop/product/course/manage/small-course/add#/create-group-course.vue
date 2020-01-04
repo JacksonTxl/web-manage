@@ -27,7 +27,7 @@
           >
             <a-select-option :value="-1" v-if="rangeList.length === 0">
               <span class="color-text-light">尚未设置,</span>
-              <router-link to="/brand/setting/app/course/group-range">
+              <router-link to="/brand/setting/app/course/small-course-range">
                 去设置
               </router-link>
             </a-select-option>
