@@ -42,13 +42,13 @@
                 {{ item.label }}
               </a-select-option>
             </a-select>
-            <span class="mg-l8">以内的私教课程，员工代预约不受此限制</span>
+            <span class="mg-l8">以内的课程，员工代预约不受此限制</span>
           </div>
         </st-form-item>
         <!-- 取消预约 -->
         <st-form-item label="取消预约">
           <div>
-            <span>允许用户在私教课程开始前</span>
+            <span>允许用户在课程开始前</span>
             <a-select
               class="mg-l8"
               style="width: 100px"
