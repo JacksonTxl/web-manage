@@ -118,11 +118,20 @@
             </st-form-item>
           </st-form-item>
           <st-form-item label="预约状态" required>
-            <st-checkbox v-model="can_reserve">
-              不可预约
-            </st-checkbox>
+            <a-radio-group
+              v-decorator="decorators.can_reserve"
+              @change="onChange"
+            >
+              <a-radio
+                v-for="item in reserveEnums"
+                :key="item.value"
+                :value="item.value"
+              >
+                {{ item.label }}
+              </a-radio>
+            </a-radio-group>
           </st-form-item>
-          <st-form-item label="预约价格" required>
+          <st-form-item v-if="canReserve" label="预约价格" required>
             <st-input-number
               v-decorator="decorators.price"
               :float="true"
@@ -180,7 +189,8 @@ export default {
       timeEnums: this.addService.timeEnums$,
       cyclicEnums: this.addService.cyclicEnums$,
       priorityEnums: this.addService.priorityEnums$,
-      weeks: this.addService.weeks$
+      weeks: this.addService.weeks$,
+      reserveEnums: this.addService.reserveEnums$
     }
   },
   data() {
@@ -194,10 +204,13 @@ export default {
       end_time: null,
       endOpen: false,
       cyclicType: 1,
-      can_reserve: 0
+      canReserve: true
     }
   },
   methods: {
+    onChange(e) {
+      this.canReserve = e.target.value === CAN_RESERVE.YES ? true : false
+    },
     timeLimitChange(e) {
       this.timeLimit = e.target.value
     },
@@ -208,9 +221,6 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          values.can_reserve = this.can_reserve
-            ? CAN_RESERVE.NO
-            : CAN_RESERVE.YES
           const data = {
             venues_id: this.$searchQuery.venues_id,
             site_ids: this.sites.map(item => item.id),
