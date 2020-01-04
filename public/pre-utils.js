@@ -3,7 +3,7 @@ window.preUtils = {
     test: {
       map: {
         ali: ['https://ptest1.styd.cn/', 'https://ptest2.styd.cn/'],
-        huawei: ['https://ptest-hw.styd.cn']
+        huawei: ['https://ptest-hw.styd.cn/']
       }
     },
     pre: {
