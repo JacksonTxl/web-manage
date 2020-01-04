@@ -215,7 +215,7 @@ import AccountModify from '@/views/biz-modals/account/modify'
 import { UdeskService } from '@/services/udesk.service'
 import FastEntry from './default#/fast-entry'
 import StUdeskBtn from '@/views/biz-components/udesk-btn/udesk-btn'
-import { NotifyService } from './default#/notify.service'
+import { WsNotifyService } from './default#/ws-notify.service'
 import Copyright from '@/views/biz-components/copyright/copyright'
 
 export default {
@@ -234,11 +234,11 @@ export default {
       tokenService: TokenService,
       titleService: TitleService,
       udeskService: UdeskService,
-      notifyService: NotifyService
+      wsNotifyService: WsNotifyService
     }
   },
   rxState() {
-    const { systemList$, activityList$ } = this.notifyService
+    const { systemList$, activityList$ } = this.wsNotifyService
     return {
       systemList$,
       activityList$,
@@ -319,7 +319,7 @@ export default {
           success: res => {
             setTimeout(() => {
               this.systemListLength++
-              this.notifyService.setRead().subscribe()
+              this.wsNotifyService.setRead().subscribe()
               this.onSuccess()
             }, 400)
           },
