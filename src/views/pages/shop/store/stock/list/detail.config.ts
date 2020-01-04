@@ -1,7 +1,8 @@
 export const detailColumns = [
   {
     title: '商品名称',
-    dataIndex: 'product_name'
+    dataIndex: 'product_name',
+    scopedSlots: { customRender: 'product_name' }
   },
   {
     title: '商品分类',

@@ -339,7 +339,9 @@ export default {
   methods: {
     // 整体看板时间
     wholeTimesFn(value) {
-      this.dataService.getStoreBoard(value).subscribe()
+      this.dataService.getStoreBoard(value).subscribe(res => {
+        this.wholenavFilter()
+      })
     },
     // 销售分析时间
     saleTimesFn(value) {

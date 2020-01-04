@@ -99,11 +99,14 @@
               </ul>
               <div class="color-danger" v-if="isImgError">请上传商品图片</div>
             </st-form-item>
-            <st-form-item label="配送方式" required>
-              <a-checkbox-group v-decorator="decorators.delivery_type">
+            <st-form-item label="售卖方式" required>
+              <a-checkbox-group
+                v-decorator="decorators.sale_type"
+                @change="changeSale"
+              >
                 <a-checkbox
                   :value="item.value"
-                  v-for="item in shippingMode"
+                  v-for="item in saleType"
                   :key="item.value"
                   style="margin-right: 16px"
                 >
@@ -111,11 +114,12 @@
                 </a-checkbox>
               </a-checkbox-group>
             </st-form-item>
-            <st-form-item label="售卖方式" required>
-              <a-checkbox-group v-decorator="decorators.sale_type">
+            <st-form-item label="配送方式" required>
+              <a-checkbox-group v-decorator="decorators.delivery_type">
                 <a-checkbox
                   :value="item.value"
-                  v-for="item in saleType"
+                  :disabled="isChoose && item.value === 1"
+                  v-for="item in shippingMode"
                   :key="item.value"
                   style="margin-right: 16px"
                 >
@@ -401,7 +405,8 @@ export default {
       product_images_add: [],
       classList: [],
       tableErr: false,
-      tableTips: ''
+      tableTips: '',
+      isChoose: false
     }
   },
   components: {
@@ -430,6 +435,24 @@ export default {
     }
   },
   methods: {
+    changeSale(event) {
+      let type = this.form.getFieldValue('delivery_type')
+      let deliveryType = []
+      if (event.indexOf(1) !== -1) {
+        this.isChoose = true
+        if (type !== undefined) {
+          deliveryType = type
+        }
+        if (deliveryType.indexOf(1) === -1) {
+          deliveryType.push(1)
+          this.form.setFieldsValue({
+            delivery_type: deliveryType
+          })
+        }
+      } else {
+        this.isChoose = false
+      }
+    },
     // 保存
     onSubmit() {
       let isReturn = false

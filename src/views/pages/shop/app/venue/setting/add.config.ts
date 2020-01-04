@@ -52,12 +52,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     can_reserve: {
-      initialValue: 1,
-      rules: [
-        {
-          validator: (field: any, value: any, values: any) => {}
-        }
-      ]
+      initialValue: 1
     },
     weight: {
       initialValue: 1
