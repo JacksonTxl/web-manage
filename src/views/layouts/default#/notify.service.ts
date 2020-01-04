@@ -126,7 +126,7 @@ export class NotifyService {
     console.log('ERR', err)
     clearTimeout(this.timerSetTimeout)
     this.errCount++
-    let rangeTime = this.errCount * 5000
+    let rangeTime = 5000
     this.timerSetTimeout = setTimeout(() => {
       console.log(
         `重连第${this.errCount}次, 重连时间${rangeTime / 1000}s, 正在重连...`,
