@@ -315,6 +315,7 @@ export default {
       this.end_date = this.smallCourseInfo.course_end_time
       this.courseId = value
       this.customizeScheduleList = []
+      this.pickerList = []
       this.scheduleList = [
         {
           course_time: []
@@ -374,8 +375,8 @@ export default {
       }
     },
     onChangeRangePicker(date, dateString, PickerIndex) {
-      this.picker_end_date = date[1].format('YYYY-MM-DD').valueOf()
-      //console.log(this.pickerList)
+      this.picker_end_date = date[1].format('YYYY-MM-DD')
+      console.log(this.pickerList)
       let pickerFlag = false
       this.pickerList.forEach((item, index) => {
         console.log(item)
@@ -388,13 +389,12 @@ export default {
           ) {
             console.log('时间有交叉')
             this.msg.error({ content: '排课周期时间不能有交叉重叠！' })
-            const oldDate = this.pickerList[PickerIndex]
-            this.pickerList.splice(PickerIndex, 1, oldDate)
             pickerFlag = true
             return false
           }
         }
       })
+      console.log(this.pickerList)
       // 还是要添加是否有数据的判断
       if (!pickerFlag) {
         if (
@@ -587,9 +587,10 @@ export default {
     // 删除周期单个批次内容
     onDeleteCourseScheduleCycle(dateList, cycleIndex) {
       let params = {}
+      console.log(this.pickerList)
       const cycleDate = this.pickerList[cycleIndex]
-      params.cycle_start_date = moment(cycleDate[0])
-      params.cycle_end_date = moment(cycleDate[1])
+      params.cycle_start_date = moment(cycleDate[0]).format('YYYY-MM-DD')
+      params.cycle_end_date = moment(cycleDate[1]).format('YYYY-MM-DD')
       params.course_id = this.smallCourseInfo.course_id
       params.del_type = DELETE_TYPE.CYCLE
       this.smallCourseScheduleService.cancelCycle(params).subscribe(res => {
@@ -604,9 +605,10 @@ export default {
         return
       }
       let params = {}
+
       const cycleDate = this.pickerList[cycleIndex]
-      params.cycle_start_date = moment(cycleDate[0])
-      params.cycle_end_date = moment(cycleDate[1])
+      params.cycle_start_date = moment(cycleDate[0]).format('YYYY-MM-DD')
+      params.cycle_end_date = moment(cycleDate[1]).format('YYYY-MM-DD')
       params.course_id = this.smallCourseInfo.course_id
       params.del_type = DELETE_TYPE.CYCLE
       this.smallCourseScheduleService.cancelCycle(params).subscribe(res => {
@@ -670,10 +672,10 @@ export default {
     },
     // 新增周期排课
     addScheduleWeek() {
+      console.log(this.picker_end_date)
+      console.log(this.end_date)
       this.pickerList.push([
-        moment(this.picker_end_date)
-          .add(1, 'days')
-          .valueOf(),
+        moment(this.picker_end_date).add(1, 'days'),
         moment(this.end_date)
       ])
       this.picker_end_date = this.end_date

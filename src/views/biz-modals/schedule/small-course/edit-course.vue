@@ -245,6 +245,7 @@ export default {
         form.cycle_end_date = this.cycle[1].format('YYYY-MM-DD')
         form.id = this.item.id
         form.course_id = this.courseInfo.course_id
+        form.schedule_ids = this.item.schedule_ids
         const verifyParams = Object.assign(this.params, form)
         console.log('提交参数')
         console.log(verifyParams)
