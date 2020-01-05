@@ -31,6 +31,7 @@ import Calendar from '@/views/biz-components/schedule/calendar'
 import { TeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/team/service#/schedule.service'
 import ScheduleTeamAddCourseBatch from '@/views/biz-modals/schedule/team/add-course-batch'
 import ScheduleTeamCourseManage from '@/views/biz-modals/schedule/team/course-manage'
+import ScheduleTeamAddEditCourse from '@/views/biz-modals/schedule/team/add-edit-course'
 import ScheduleTeamAddCourse from '@/views/biz-modals/schedule/team/add-course'
 import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
 import ScheduleTeamReserveInfo from '@/views/biz-modals/schedule/team/reserve-info'
@@ -42,7 +43,8 @@ export default {
     ScheduleTeamAddCourse,
     ScheduleTeamCopySchedule,
     ScheduleTeamReserveInfo,
-    ScheduleTeamCourseManage
+    ScheduleTeamCourseManage,
+    ScheduleTeamAddEditCourse
   },
   serviceInject() {
     return {
@@ -110,14 +112,23 @@ export default {
       //     }
       //   }
       // })
+      // 打开课表管理
+      // this.$modalRouter.push({
+      //   name: 'schedule-team-course-manage',
+      //   on: {
+      //     success: res => {
+      //       console.log('弹窗确定')
+      //     },
+      //     add: res => {
+      //       console.log('添加课表')
+      //     }
+      //   }
+      // })
       this.$modalRouter.push({
-        name: 'schedule-team-course-manage',
+        name: 'schedule-team-add-edit-course',
         on: {
           success: res => {
-            console.log('弹窗确定')
-          },
-          add: res => {
-            console.log('添加课表')
+            console.log('新增课表')
           }
         }
       })
