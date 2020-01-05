@@ -474,7 +474,11 @@ export default {
         }
       })
       this.tableData.forEach(item => {
-        if (!item.market_price || !item.selling_price) {
+        if (
+          !item.market_price ||
+          !item.selling_price ||
+          (!this.isEditMode && !item.stock_amount)
+        ) {
           tableError = true
           this.tableTips = '请正确填写表格'
           this.tableErr = true
