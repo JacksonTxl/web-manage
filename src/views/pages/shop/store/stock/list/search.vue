@@ -107,6 +107,9 @@ export default {
           list.push(item)
         })
       }
+      list.forEach(item => {
+        item.remark = ''
+      })
       this.$modalRouter.push({
         name: 'store-put-in',
         props: { skuList: list },
@@ -128,6 +131,9 @@ export default {
           list.push(item)
         })
       }
+      list.forEach(item => {
+        item.remark = ''
+      })
       this.$modalRouter.push({
         name: 'store-put-out',
         props: { skuList: list },
