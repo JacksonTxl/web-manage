@@ -115,6 +115,9 @@ export default {
       ORDER_PRODUCT_TYPE
     }
   },
+  mounted() {
+    console.log(this.auth)
+  },
   computed: {},
   methods: {
     // 订单收款modal

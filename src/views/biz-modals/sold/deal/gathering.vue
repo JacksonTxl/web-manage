@@ -61,6 +61,33 @@
                 "
               ></st-overflow-text>
             </st-info-item>
+            <!-- 云店 -->
+            <st-info-item
+              class="mg-b0 white-nowrap"
+              label="购买"
+              v-if="type === 'cloud_store'"
+            >
+              <!-- <div v-for="(item, index) in info.venues_site" :key="index">
+                {{
+                  `场地时间${index++} ${item.site_name} ${item.time_start}~${
+                    item.time_end
+                  } 金额：&yen;${item.price}元`
+                }}
+              </div> -->
+              <st-overflow-text
+                title="购买"
+                max-width="180px"
+                :value="
+                  info.order_sub &&
+                    info.order_sub.map(
+                      item =>
+                        `${item.product_name} 规格（${item.rule_name}）*${
+                          item.product_count
+                        } 金额：&yen;${item.price}`
+                    )
+                "
+              ></st-overflow-text>
+            </st-info-item>
             <st-info-item class="mg-b0" label="购买" v-else>
               {{ info.rule_name }}
             </st-info-item>
