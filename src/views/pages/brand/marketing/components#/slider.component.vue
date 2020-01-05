@@ -132,13 +132,14 @@ export default {
     }
   },
   mounted() {
-    this.list = cloneDeep(this.sliderInfo)
-    this.actList = cloneDeep(this.activityList.list)
-    this.list.forEach((item, index) => {
+    let list = cloneDeep(this.sliderInfo)
+    let actList = cloneDeep(this.activityList.list)
+    list.forEach((item, index) => {
       item.activity_id = [item.activity_type, item.activity_id]
-      const tree = new Tree(this.actList)
+      const tree = new Tree(actList)
       if (index !== 0 && !tree.findNodeById(item.activity_id[1])) {
-        const node = tree.findNodeById(item.activity_type) || []
+        // const node = tree.findNodeById(item.activity_type) || {}
+        const node = actList.filter(act => act === item.activity_type) || {}
         let tmpArrChild = {
           activity_name: item.activity_name,
           activity_type: item.activity_type,
@@ -149,16 +150,21 @@ export default {
           product_type: item.product_type,
           product_template_id: item.product_template_id
         }
-        item.activity_type === 5
-          ? node.children.push(Object.assign(tmpArrChild, tmpProduct))
-          : node.children.push(tmpArrChild)
+        if (node.children) {
+          item.activity_type === 5
+            ? node.children.push(Object.assign(tmpArrChild, tmpProduct))
+            : node.children.push(tmpArrChild)
+        }
       }
     })
-    this.actList.forEach(item => {
+    this.list = list
+    actList.forEach(item => {
       if (!item.children.length) {
         item.disabled = true
       }
     })
+    this.actList = actList
+    console.log(actList, '这是actList')
   },
   watch: {
     list: {

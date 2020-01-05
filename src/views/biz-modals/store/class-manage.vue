@@ -131,10 +131,11 @@ export default {
       item.isEdit = true
     },
     cancelHandle(item, index) {
-      if (!item.category_name) {
+      if (!item.category_name || !item.category_id) {
         this.tableData.splice(index, 1)
         this.oldTableData.splice(index, 1)
       } else {
+        item.category_name = this.oldTableData[index].category_name
         item.isEdit = false
       }
     },
