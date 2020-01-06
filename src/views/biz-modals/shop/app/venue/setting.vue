@@ -68,7 +68,7 @@
                     </st-popconfirm>
                   </a>
                   <a-divider type="vertical"></a-divider>
-                  <a v-if="item.weight !== 1 && auth.top" @click="order(item)">
+                  <a v-if="item.weight !== 3 && auth.top" @click="order(item)">
                     置顶
                   </a>
                 </template>
