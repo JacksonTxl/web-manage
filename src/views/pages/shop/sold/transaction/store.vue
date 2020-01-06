@@ -352,14 +352,14 @@ export default {
     },
     buyCarJudge(id, number) {
       if (!number) {
-        this.messageService.warning({ content: '商品库存不足' })
+        this.messageService.warn({ content: '商品库存不足' })
         return 1
       }
       for (let i = 0; i < this.buyCar.length; i++) {
         let val = this.buyCar[i]
         if (val.sku_id === id) {
           if (val.nums >= number) {
-            this.messageService.warning({ content: '商品库存不足' })
+            this.messageService.warn({ content: '商品库存不足' })
             return 1
           } else {
             val.nums = val.nums + 1
@@ -368,7 +368,7 @@ export default {
         }
       }
       if (this.buyCar.length >= 20) {
-        this.messageService.warning({ content: '购物车已满' })
+        this.messageService.warn({ content: '购物车已满' })
         return 1
       }
     },

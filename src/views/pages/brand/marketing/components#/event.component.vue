@@ -119,22 +119,24 @@ export default {
     this.initList()
   },
   mounted() {
+    let actList = cloneDeep(this.activityList.list)
     if (this.eventInfo && this.eventInfo.length) {
       let number = this.eventInfo.length
       this.number = number
       this.list[number] = cloneDeep(this.eventInfo)
-      this.actList = cloneDeep(this.activityList.list)
       this.list[number].forEach(item => {
         item.activity_id = [item.activity_type, item.activity_id]
-        const tree = new Tree(this.actList, { name: 'activity_name' })
+        const tree = new Tree(actList, { name: 'activity_name' })
         if (this.number && !tree.findNodeById(item.activity_id[1])) {
           // 找到对应的父节点
-          const node = tree.findNodeById(item.activity_type) || {}
+          const node =
+            actList.filter(act => act.id === item.activity_type)[0] || {}
+          console.log(node, 'event====node')
           if (item.activity_type === 5 && node.children) {
             node.children.push({
               activity_name: item.activity_name,
               activity_type: item.activity_type,
-              id: item.activity_id,
+              id: item.activity_id[1],
               isover: true,
               product_type: item.product_type,
               product_template_id: item.product_template_id
@@ -143,7 +145,7 @@ export default {
             node.children.push({
               activity_name: item.activity_name,
               activity_type: item.activity_type,
-              id: item.activity_id,
+              id: item.activity_id[1],
               isover: true
             })
           }
@@ -151,13 +153,15 @@ export default {
       })
     } else {
       this.number = 0
-      this.actList = cloneDeep(this.activityList.list)
+      actList = cloneDeep(this.activityList.list)
     }
-    this.actList.forEach(item => {
+    actList.forEach(item => {
       if (!item.children.length) {
         item.disabled = true
       }
     })
+    this.actList = cloneDeep(actList)
+    console.log(this.actList, actList, 'eventList')
   },
   watch: {
     list: {
