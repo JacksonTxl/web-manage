@@ -76,6 +76,7 @@
                 :filterOption="false"
                 @search="onSearch"
                 @change="onChange"
+                v-model="showMemberName"
                 :notFoundContent="null"
               >
                 <a-select-option
@@ -101,6 +102,7 @@
                 placeholder="选择消费方式"
                 style="width: 280px"
                 :dropdownMatchSelectWidth="false"
+                v-model="showConsumeType"
                 @change="onChangeConsumeType"
               >
                 <a-select-opt-group
@@ -287,6 +289,8 @@ export default {
       consumeType: '',
       consumeId: '',
       consumeTypeId: '',
+      showConsumeType: '',
+      showMemberName: '',
       dataSource: [],
       keyword: '',
       show: false,
@@ -326,7 +330,9 @@ export default {
         .subscribe()
     },
     onChange(value) {
+      console.log(value)
       this.memberId = value
+      this.showConsumeType = ''
       this.commonService
         .getConsumeList({
           course_id: this.courseId,
@@ -396,7 +402,7 @@ export default {
         },
         on: {
           ok: () => {
-            this.$router.push({ query: this.$searchQuery })
+            this.$router.reload()
           }
         }
       })
@@ -441,12 +447,13 @@ export default {
       this.reserveService.leave(id).subscribe(this.getReserveInfo)
     },
     getReserveInfo() {
-      console.log('重置搜索')
       this.reserveService.getInfo(this.id).subscribe()
     },
     onAddReserveSuccess() {
       this.memberId = undefined
       this.consumeType = undefined
+      this.showConsumeType = ''
+      this.showMemberName = ''
       this.getReserveInfo()
     },
     onCancelReserveSuccess() {

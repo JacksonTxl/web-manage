@@ -147,8 +147,8 @@
                 </div>
                 <span class="time">
                   <st-icon type="timer"></st-icon>
-                  {{ `${item.start_date} ${item.start_time}` }} -
-                  {{ `${item.start_date} ${item.end_time}` }}
+                  {{ `${item.start_time}` }} -
+                  {{ `${item.end_time}` }}
                 </span>
                 <st-t3 class="course__name">
                   {{ item.current_course_name }}
@@ -339,9 +339,9 @@ export default {
         course_id: this.courseId,
         cycle_type: value
       }
-      this.getScheduleInBatch(params)
+      this.getScheduleInBatch(params, value)
     },
-    getScheduleInBatch(params) {
+    getScheduleInBatch(params, changeTyps) {
       this.smallCourseScheduleService
         .getScheduleInBatch(params)
         .subscribe(res => {
@@ -349,10 +349,17 @@ export default {
           // 用回显数据判断是新增还是编辑
           this.disabledAddCourseBtn = false
           this.disabledCustomBtn = false
-          this.initScheduleList(res.list, res.cycle_type)
+          console.log(changeTyps)
+          this.initScheduleList(res.list, res.cycle_type, changeTyps)
         })
     },
-    initScheduleList(list, type) {
+    initScheduleList(list, type, changeTyps) {
+      if (changeTyps) {
+        this.cycle_type = changeTyps
+        this.initScheduleDate()
+        this.customizeScheduleList = list
+        return
+      }
       if (list.length && type === 1) {
         console.log('周期有数据')
         this.cycle_type = type
