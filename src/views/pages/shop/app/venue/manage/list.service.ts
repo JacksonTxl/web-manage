@@ -20,11 +20,7 @@ export class ListService {
     addAll: 'shop:product:venues_site|batch_setting',
     addSite: 'shop:product:venues_site|add'
   })
-  constructor(
-    private userService: UserService,
-    private venueApi: VenueApi,
-    private authService: AuthService
-  ) {}
+  constructor(private venueApi: VenueApi, private authService: AuthService) {}
   @Effect()
   getList(query: SiteQuery) {
     return this.venueApi.getSiteList(query).pipe(

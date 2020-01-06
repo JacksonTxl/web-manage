@@ -54,7 +54,11 @@
         <portal to="SHOP_APP_VENUE_MANAGE">
           <header>
             <span>可预约时间：{{ venueInfo.reserve_time }}</span>
-            <span>每场时长：{{ venueInfo.per_time }}</span>
+            <span>
+              每场时长：{{
+                venueInfo.per_time | enumFilter('venues_reserve.reserve_time')
+              }}
+            </span>
             <span>默认价格：{{ venueInfo.price }}</span>
             <span>
               状态：{{
@@ -95,7 +99,6 @@ export default {
   rxState() {
     return {
       info: this.manageService.info$,
-      systemInfo: this.manageService.systemInfo$,
       loading: this.manageService.loading$,
       venueList: this.manageService.venueList$,
       auth: this.manageService.auth$
@@ -145,6 +148,7 @@ export default {
       this.venueList.forEach(item => (item.active = false))
       venue.active = true
       this.venueInfo = venue
+      this.manageService.setPerTime(venue.per_time)
     },
     clickVenue(venue) {
       this.setActive(venue)
@@ -173,7 +177,14 @@ export default {
     },
     onClickDelVenue(id) {
       this.manageService.delVenue({ id }).subscribe(() => {
-        this.manageService.getVenueList().subscribe()
+        this.manageService.getVenueList().subscribe(() => {
+          if (!this.venueList.length) {
+            this.venueInfo = {}
+            this.$router.push({
+              name: 'shop-app-venue-manage-list'
+            })
+          }
+        })
       })
     },
     onCLickAddVenue() {
@@ -182,36 +193,6 @@ export default {
         query: {
           id: this.venueInfo.venues_id
         }
-      })
-    },
-    onChange() {
-      this.$router.push({})
-    },
-    onEdit() {
-      this.$router.push({
-        query: {
-          type: 'edit'
-        }
-      })
-    },
-    onCancel() {
-      this.$router.push({
-        query: {}
-      })
-    },
-    inputCheck() {
-      const info = this.info
-      const brandName = info.brand_name
-      const { pattern } = this
-      if (!pattern.CN_EN_NUM_SPACE('1-20').test(brandName)) {
-        this.tip('品牌名称支持20字以内的中英文和数字')
-        return false
-      }
-      return true
-    },
-    tip(msg) {
-      this.messageService.error({
-        content: msg
       })
     }
   }
