@@ -40,6 +40,7 @@
           <div class="page-shop-coach-container-coach">
             <input type="hidden" v-decorator="decorators.coach_ids" />
             <select-coach
+              type="smallCourse"
               :coachIds="info.coach.coach_ids"
               @change="onSelectCoachChange"
             ></select-coach>

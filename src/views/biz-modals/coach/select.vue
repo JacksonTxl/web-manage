@@ -22,7 +22,7 @@
           :key="`${item.id}`"
           :value="item.id"
         >
-          {{ item.nickname }}
+          {{ item.nickname || item.staff_name }}
         </a-select-option>
       </a-select>
       <p class="color-text-light mg-t8">
@@ -66,6 +66,10 @@ export default {
       default() {
         return []
       }
+    },
+    type: {
+      type: String,
+      default: ''
     }
   },
   methods: {
@@ -78,15 +82,27 @@ export default {
       this.search('')
     },
     search() {
-      this.selectService
-        .getCoachSelect({
-          shop_ids: this.shopIds,
-          size: this.size,
-          keyword: this.keyword
-        })
-        .subscribe(res => {
-          this.list = res.coaches
-        })
+      if (this.type === 'smallCourse') {
+        this.selectService
+          .getSmallCourseCoachSelect({
+            shop_ids: this.shopIds,
+            size: this.size,
+            keyword: this.keyword
+          })
+          .subscribe(res => {
+            this.list = res.list
+          })
+      } else {
+        this.selectService
+          .getCoachSelect({
+            shop_ids: this.shopIds,
+            size: this.size,
+            keyword: this.keyword
+          })
+          .subscribe(res => {
+            this.list = res.coaches
+          })
+      }
     },
     onConfirmSelect() {
       this.show = false
