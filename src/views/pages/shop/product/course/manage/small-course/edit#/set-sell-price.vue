@@ -24,7 +24,8 @@
             v-show="isShowTransfer"
             style="width:282px"
             placeholder="请输入"
-            :min="1"
+            :min="0"
+            :float="true"
             v-decorator="decorators.transfer_num"
           >
             <a-select
@@ -67,6 +68,7 @@
           <st-input-number
             v-decorator="decorators.sales_price"
             :min="0"
+            placeholder="请输入售卖价格"
             :max="999999.9"
             float
           >
