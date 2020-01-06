@@ -10,7 +10,9 @@ export class BasicSettingService {
     'venues_reserve.venues_reserve_start'
   )
   reserveRanges$ = this.userService.getOptions$('setting.reserve_range')
-  cancelReserves$ = this.userService.getOptions$('setting.cancel_reserve')
+  cancelReserves$ = this.userService.getOptions$(
+    'venues_reserve.venues_cancel_limit'
+  )
   signTimes$ = this.userService.getOptions$('setting.sign_time')
   autoSignLimits$ = this.userService.getOptions$('setting.auto_sign_limit')
   constructor(private appApi: AppApi, private userService: UserService) {}
