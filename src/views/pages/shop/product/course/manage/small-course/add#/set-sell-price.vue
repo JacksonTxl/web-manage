@@ -67,7 +67,7 @@
         <st-form-item label="售卖价格" required>
           <st-input-number
             v-decorator="decorators.sales_price"
-            :min="0"
+            :min="1"
             placeholder="请输入售卖价格"
             :max="999999.9"
             float
