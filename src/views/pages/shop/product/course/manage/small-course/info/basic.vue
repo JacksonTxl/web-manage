@@ -25,8 +25,12 @@
       </div>
       <div :class="b('item')">
         <span :class="b('item-label')">售卖渠道：</span>
-        <span :class="b('item-value')">
-          {{ groupInfo.sell_type | enumFilter('setting.sell_type') }}
+        <span
+          :class="b('item-value')"
+          v-for="(item, index) in groupInfo.sell_type"
+          :key="index"
+        >
+          {{ item | enumFilter('setting.sell_type') }}
         </span>
       </div>
     </div>

@@ -24,12 +24,15 @@
             v-show="isShowTransfer"
             style="width:282px"
             placeholder="请输入"
-            :min="1"
+            :min="0"
+            :max="999999.9"
+            :float="true"
             v-decorator="decorators.transfer_num"
           >
             <a-select
               v-decorator="decorators.transfer_type"
               slot="addonAfter"
+              @change="setMax"
               style="width: 60px"
             >
               <a-select-option
@@ -66,7 +69,8 @@
         <st-form-item label="售卖价格" required>
           <st-input-number
             v-decorator="decorators.sales_price"
-            :min="0"
+            :min="1"
+            placeholder="请输入售卖价格"
             :max="999999.9"
             float
           >
@@ -173,6 +177,14 @@ export default {
     this.setFieldsValue()
   },
   methods: {
+    setMax(val) {
+      if (val === 2) {
+        this.max = 999999.9
+      } else {
+        this.max = 100
+      }
+      this.form.setFieldsValue({ transfer_num: undefined })
+    },
     setFieldsValue() {
       const info = this.info.price
       this.form.setFieldsValue({
@@ -180,6 +192,7 @@ export default {
         is_allow_transfer: info.is_allow_transfer,
         transfer_num: info.transfer_num,
         sell_type: info.sell_type,
+        transfer_type: info.transfer_type,
         apply_date: info.apply_begin_time
           ? [moment(info.apply_begin_time), moment(info.apply_end_time)]
           : [],

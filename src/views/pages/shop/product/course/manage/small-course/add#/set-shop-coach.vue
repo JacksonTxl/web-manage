@@ -39,7 +39,10 @@
           </template>
           <div class="page-shop-coach-container-coach">
             <input type="hidden" v-decorator="decorators.coach_ids" />
-            <select-coach @change="onSelectCoachChange"></select-coach>
+            <select-coach
+              type="smallCourse"
+              @change="onSelectCoachChange"
+            ></select-coach>
           </div>
         </st-form-item>
       </a-col>

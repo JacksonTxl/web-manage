@@ -92,7 +92,7 @@
           </a>
           <a
             v-if="record.auth['shop:product:small_class_course|refund']"
-            @click="onGoOrder()"
+            @click="onGoOrder(record)"
           >
             去退款
           </a>
