@@ -141,6 +141,7 @@ import memberSearch from '@/views/biz-components/member-search/member-search'
 import { ruleOptions, columns } from './booking.config'
 import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
 import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
+import { PatternService } from '@/services/pattern.service'
 export default {
   name: 'PageShopAppVenueBooking',
   bem: {
@@ -151,7 +152,8 @@ export default {
   },
   serviceInject() {
     return {
-      bookingService: BookingService
+      bookingService: BookingService,
+      pattern: PatternService
     }
   },
   rxState() {

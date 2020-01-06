@@ -6,7 +6,9 @@ import { UserService } from '@/services/user.service'
 @Injectable()
 export class BasicSettingService {
   loading$ = new State({})
-  reserveStarts$ = this.userService.getOptions$('setting.reserve_start')
+  reserveStarts$ = this.userService.getOptions$(
+    'venues_reserve.venues_reserve_start'
+  )
   reserveRanges$ = this.userService.getOptions$('setting.reserve_range')
   cancelReserves$ = this.userService.getOptions$('setting.cancel_reserve')
   signTimes$ = this.userService.getOptions$('setting.sign_time')

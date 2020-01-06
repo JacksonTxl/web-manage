@@ -41,6 +41,6 @@ export class ListService {
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     let { id } = to.query as any
-    return this.getList({ venues_id: id })
+    return this.getList({ venues_id: id, ...to.meta.query })
   }
 }
