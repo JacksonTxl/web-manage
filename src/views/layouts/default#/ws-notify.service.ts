@@ -1,3 +1,4 @@
+import { notification } from 'ant-design-vue'
 import { TokenService } from '../../../services/token.service'
 import { UserService } from '@/services/user.service'
 import { AppConfig } from '@/constants/config'
@@ -17,6 +18,7 @@ export class WsNotifyService {
   private count = 0
   private errCount = 0
   private timer = 0
+  private key = 0
   private timerSetTimeout = 0
   private heartBeat = {
     msg_id: uuidV1(),
@@ -86,6 +88,34 @@ export class WsNotifyService {
     this.message()
     this.setHeartBeat()
   }
+  private getMaMessage(msg: any, maxLength: number) {
+    const config = {
+      title: msg.payload.title,
+      content: (h: any) => {
+        return h(
+          'div',
+          { attrs: { class: 'st-ws-notice-description' } },
+          msg.payload.content
+        )
+      },
+      icon: this.user$.value.avatar,
+      duration: 5000,
+      onClose: () => {
+        const oldMessage = this.messageArr.shift()
+        this.notificationService.close(oldMessage.key)
+      },
+      key: uuidV1()
+    }
+    if (this.messageArr.length >= maxLength) {
+      const oldMessage = this.messageArr.shift()
+      this.notificationService.close(oldMessage.key)
+      this.notificationService.open(config)
+      this.messageArr.push(config)
+    } else {
+      this.notificationService.open(config)
+      this.messageArr.push(config)
+    }
+  }
   message() {
     this.ws.subscribe(
       (msg: any) => {
@@ -96,46 +126,23 @@ export class WsNotifyService {
           return
         }
         const maxLength = 3
-        console.log(msg)
         if (msg.msg_type === 1) {
           this.notReadNum$.commit(() => msg.payload.not_read_num)
         } else if (msg.msg_type === 3) {
           this.notReadNum$.commit(() => msg.payload.total)
           return
         }
-
-        const config = {
-          title: msg.payload.title,
-          content: msg.payload.content,
-          icon: this.user$.value.avatar,
-          duration: 5,
-          onClose: () => {
-            console.log('onCLose')
-            this.notificationService.open(
-              this.messageArr[this.messageArr.length - 1]
-            )
-            this.messageArr.shift()
-          }
-        }
-        if (this.messageArr.length >= maxLength) {
-          this.messageArr.shift()
-          this.messageArr.push(config)
-        } else {
-          this.notificationService.open(config)
-          this.messageArr.push(config)
-        }
+        this.getMaMessage(msg, maxLength)
       },
       (err: any) => {
         this.reconnection(err)
       },
       () => {
-        console.log('comdsadasdsa')
         clearInterval(this.timer)
       }
     )
   }
   reconnection(err: any) {
-    console.log('ERR', err)
     clearTimeout(this.timerSetTimeout)
     this.errCount++
     let rangeTime = 5000

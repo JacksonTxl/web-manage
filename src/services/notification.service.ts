@@ -5,9 +5,10 @@ import { notification } from 'ant-design-vue'
  */
 interface NotificationOptions {
   title: string | number
-  content: string
+  content: any
   duration?: number
   icon?: String
+  onClose?: Function
   key?: string
 }
 /**
@@ -60,6 +61,7 @@ export class NotificationService {
       message: config.title + '',
       description: config.content,
       duration: config.duration,
+      onClose: config.onClose,
       icon: (h: any) => {
         return h('img', {
           attrs: {
