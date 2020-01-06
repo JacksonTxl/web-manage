@@ -75,7 +75,7 @@ export default {
       if (e === 1) {
         this.$emit('timesFn', {
           date: this.defaultValue,
-          date_type: this.selectValue - 0
+          date_type: 1
         })
       }
       this.selectValue = e
