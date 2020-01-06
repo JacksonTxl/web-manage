@@ -224,6 +224,9 @@ export default {
       message: MessageService
     }
   },
+  created() {
+    console.log(this.info)
+  },
   rxState() {
     /**
      * @type {EditService}
@@ -255,7 +258,6 @@ export default {
       }
     },
     onUpdateContract() {
-      console.log(this.info)
       this.editService.updateContract(this.info).subscribe(() => {
         this.message.success({
           content: '保存合同模版成功！'

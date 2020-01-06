@@ -76,8 +76,12 @@ export class SmallCourseScheduleReserveApi extends Api {
   /**
    * 补课课程列表
    */
-  courseList(id: string) {
-    return this.http.get(`/v1/schedule/small_course/shop/make_up/list?id=${id}`)
+  courseList(params: any) {
+    return this.http.get(
+      `/v1/schedule/small_course/shop/make_up/list?id=${params.id}&course_id=${
+        params.course_id
+      }`
+    )
   }
   /**
    * 补课回显

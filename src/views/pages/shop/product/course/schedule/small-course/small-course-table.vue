@@ -152,7 +152,7 @@ export default {
     // 查看详情
     onDetail(info) {
       console.log(info)
-      if (!auth.getInfo) {
+      if (!this.auth.getInfo) {
         return
       }
       this.$modalRouter.push({
