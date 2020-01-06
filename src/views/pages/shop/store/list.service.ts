@@ -51,7 +51,6 @@ export class ListService implements Controller {
     return this.storeApi.onShelf(id, params).pipe(tap((res: any) => {}))
   }
   init(params: any) {
-    console.log(this.userService)
     return forkJoin(this.getList(params), this.getGoodsCategory())
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {

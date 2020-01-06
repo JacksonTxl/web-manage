@@ -64,9 +64,11 @@
                   info.product_list &&
                     info.product_list.map(
                       item =>
-                        `${item.product_name}${item.rule_name ? '规格：' : ''}${
-                          item.rule_name
-                        }*${item.product_count} 金额：&yen;${item.price}`
+                        `${item.product_name}&nbsp;${
+                          item.rule_name ? '规格：' : ''
+                        }${item.rule_name}*${item.product_count} 金额：&yen;${
+                          item.price
+                        }`
                     )
                 "
               ></st-overflow-text>
