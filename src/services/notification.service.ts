@@ -5,8 +5,10 @@ import { notification } from 'ant-design-vue'
  */
 interface NotificationOptions {
   title: string | number
-  content: string
+  content: any
   duration?: number
+  icon?: any
+  onClose?: any
   key?: string
 }
 /**
@@ -50,6 +52,28 @@ export class NotificationService {
       message: config.title + '',
       description: config.content,
       duration: config.duration,
+      key: config.key
+    })
+  }
+  open(config: NotificationOptions) {
+    notification.open({
+      class: 'st-notify-open',
+      message: config.title + '',
+      description: config.content,
+      duration: config.duration,
+      onClose: config.onClose,
+      icon: config.icon,
+      key: config.key
+    })
+  }
+  openNormal(config: NotificationOptions) {
+    notification.open({
+      class: 'st-notify-normal-open',
+      message: config.title + '',
+      description: config.content,
+      duration: config.duration,
+      onClose: config.onClose,
+      icon: config.icon,
       key: config.key
     })
   }

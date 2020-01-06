@@ -139,10 +139,14 @@ export class HttpService {
     return requestUrl
   }
   get appHeaders() {
+    const currentRoute = this.router.to
+    // TODO: 现在的添加几个单点接口的app_brand_id和app_shop_id还无法添加，因为时序问题
     return {
       token: this.tokenService.token$.snapshot(),
       'app-id': this.appConfig.API_APP_ID,
-      'app-version': this.appConfig.GIT_COMMIT
+      'app-version': this.appConfig.GIT_COMMIT,
+      'app-brand-id': currentRoute.query.app_brand_id || '',
+      'app-shop-id': currentRoute.query.app_shop_id || ''
     }
   }
   get appHeadersWithContentType() {

@@ -121,6 +121,12 @@
                 </st-checkbox>
               </span>
             </div>
+            <div class="mg-b16">
+              <span class="color-title">消息类型</span>
+            </div>
+            <div class="mg-b16">
+              <span class="color-title">入场方式</span>
+            </div>
             <div class="mg-b16" v-if="Object.keys(info.receiver).length > 0">
               <span class="color-title">接收人员</span>
               <span class=" mg-l16 inlineblock">
@@ -149,12 +155,16 @@
                   {{ params.receiver.custom.name }}
                 </st-checkbox>
               </span>
-              <a-input
-                style="width:44%"
-                v-show="isShowPhone"
-                v-model="params.custom_phone"
-                placeholder="请输入手机号码，多个用逗号分隔"
-              />
+              <span v-show="isShowPhone">
+                <slot name="custom" :params="params">
+                  <a-input
+                    style="width:44%"
+                    v-show="isShowPhone"
+                    v-model="params.custom_phone"
+                    placeholder="请输入手机号码，多个用逗号分隔"
+                  />
+                </slot>
+              </span>
             </div>
 
             <div class="mg-b16" v-if="Object.keys(info.order_type).length > 0">
@@ -279,6 +289,7 @@
 <script>
 import { UserService } from '@/services/user.service'
 import BrandSettingSmsNotice from '@/views/biz-modals/brand/setting/sms/notice'
+import { NoticeService } from '../notice.service'
 const componentName = 'notice-item'
 export default {
   name: 'NoticeItem',
@@ -287,13 +298,17 @@ export default {
   },
   serviceInject() {
     return {
-      userService: UserService
+      userService: UserService,
+      noticeService: NoticeService
     }
   },
   rxState() {
     const user = this.userService
+    const { consumeType$, entranceType$ } = this.noticeService
     return {
-      settingEnums: user.settingEnums$
+      settingEnums: user.settingEnums$,
+      consumeType$,
+      entranceType$
     }
   },
   modals: {
@@ -374,6 +389,12 @@ export default {
     }
   },
   computed: {
+    consumeTypeString() {
+      return this.consumeType$.map(item => item.label)
+    },
+    entranceTypeString() {
+      return this.entranceType$.map(item => item.label)
+    },
     notifyRule() {
       let list = []
       if (!this.settingEnums.notify_rule) return list
@@ -405,7 +426,10 @@ export default {
     this.params.notify_number = this.info.notify_number
     this.params.msg_preffix = this.info.msg_preffix
     this.params.msg_suffix = this.info.msg_suffix
-    this.params.custom_phone = this.info.custom_phone.join(' ')
+    this.params.custom_phone = this.info.custom_phone
+    if (this.info.notify_sub_type.value !== 24) {
+      this.params.custom_phone = this.info.custom_phone.join(' ')
+    }
     this.params.notify_mode = {
       sms: this.info.notify_mode.sms && this.info.notify_mode.sms.value,
       app: this.info.notify_mode.app && this.info.notify_mode.app.value,
@@ -425,38 +449,6 @@ export default {
       let course_type = {}
       let order_type = {}
       let receiver = {}
-      if (this.info.course_type.team_course) {
-        course_type.team_course = 0
-      }
-      if (this.info.course_type.personal_course) {
-        course_type.personal_course = 0
-      }
-
-      if (this.info.order_type.advance) {
-        order_type.advance = 0
-      }
-      if (this.info.order_type.deposit) {
-        order_type.deposit = 0
-      }
-      if (this.info.order_type.product) {
-        order_type.product = 0
-      }
-      if (this.info.order_type.poundage) {
-        order_type.poundage = 0
-      }
-
-      if (this.info.receiver.coach) {
-        receiver.coach = 0
-      }
-      if (this.info.receiver.member) {
-        receiver.member = 0
-      }
-      if (this.info.receiver.custom) {
-        receiver.custom = 0
-      }
-      if (this.info.receiver.seller) {
-        receiver.seller = 0
-      }
       if (this.info.course_type.team_course) {
         course_type.team_course = this.params.course_type.team_course.value
           ? 1
@@ -493,12 +485,19 @@ export default {
       if (this.info.receiver.seller) {
         receiver.seller = this.params.receiver.seller.value ? 1 : 0
       }
-      const para = Object.assign({}, this.params, {
-        id: this.info.id,
-        custom_phone:
+      let custom_phone = []
+      if (Array.isArray(this.params.custom_phone)) {
+        custom_phone = this.params.custom_phone
+      } else {
+        custom_phone =
           this.params.custom_phone.length > 0
             ? this.params.custom_phone.split(',')
-            : [],
+            : []
+      }
+
+      const para = Object.assign({}, this.params, {
+        id: this.info.id,
+        custom_phone,
         order_type,
         receiver,
         course_type

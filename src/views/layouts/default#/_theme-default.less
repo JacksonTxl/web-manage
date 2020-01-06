@@ -162,6 +162,13 @@
       .mg-l(6px);
       flex: 1;
       .mg-r(16px);
+      &:focus {
+        text-decoration: none;
+      }
+      &:hover {
+        .c(@defaultMenuHoverColor);
+        transition: all 0.5s;
+      }
     }
     a {
       .c(inherit);
@@ -335,7 +342,7 @@
     left: 200px;
     right: 0;
     top: 80px;
-    bottom: 16px;
+    bottom: 0;
     display: flex;
     flex-direction: column;
     padding: 0 16px;
@@ -343,6 +350,19 @@
       .c(#9bacb9);
       &:hover {
         .c(#6c7e8c);
+      }
+    }
+    &__notify {
+      padding: 4px;
+      cursor: pointer;
+      .ant-badge-count {
+        background: #ff5e41;
+        box-shadow: 0 0 0 0;
+      }
+      &:hover {
+        .st-icon {
+          color: #5e6a7f !important;
+        }
       }
     }
     &__header {
@@ -495,17 +515,6 @@
         z-index: -1;
       }
     }
-    &__footer {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      transform: translateY(100%);
-      text-align: center;
-      .fz(12px);
-      .c(rgba(0, 0, 0, 0.45));
-      .pd-tb(24px);
-    }
   }
 }
 // 九宫格
@@ -515,4 +524,78 @@
 }
 .layout-fast-entry_icon:hover {
   color: #5e6a7f !important;
+}
+.st-notify-open {
+  .pd(12px);
+  .ant-notification-notice-content {
+    .h(96px);
+  }
+  .ant-notification-notice-message {
+    font-size: 14px;
+  }
+  .ant-notification-notice-message,
+  .ant-notification-notice-description {
+    margin-left: 108px;
+  }
+  .ant-notification-notice-icon {
+    .s(96px, 96px);
+    img {
+      .s(100%, 100%);
+    }
+  }
+  .st-ws-notice-description {
+    .label,
+    .value,
+    &__content {
+      font-size: 12px;
+    }
+    .label {
+      .c(#a9b7c2);
+      flex: none;
+      width: 60px;
+    }
+    .value {
+      .c(#3e4d5c);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    &__content {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    &__coach,
+    &__member {
+      .value {
+        width: 48px;
+      }
+    }
+    &__detail,
+    &__cunsume,
+    &__coach,
+    &__member {
+      display: flex;
+    }
+  }
+}
+.st-notify-normal-open {
+  .pd(12px);
+  .ant-notification-notice-content {
+    .h(86px);
+  }
+  .ant-notification-notice-message {
+    .fz(14px);
+    .mg-b(8px);
+  }
+  .ant-notification-notice-description {
+    .fz(12px);
+    text-overflow: -o-ellipsis-lastline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
 }

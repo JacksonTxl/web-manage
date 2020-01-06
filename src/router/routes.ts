@@ -9,6 +9,7 @@ import { AppTabRedirectGuard } from '@/guards/app-tab-redirect.guard'
 import { UdeskGuard } from '@/guards/udesk.guard'
 import { AppTitleGuard } from '@/guards/app-title.guard'
 import { TrackGuard } from '@/guards/track.guard'
+import { AppInsertId } from '@/guards/app-insert-id'
 
 const routes: any[] = [
   {
@@ -53,6 +54,7 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
         AppInfoGuard,
         AppTitleGuard,
         AppTabRedirectGuard,
+        AppInsertId,
         UdeskGuard
       ]
       route.guards = appGuards

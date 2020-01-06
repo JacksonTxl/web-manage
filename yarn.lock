@@ -12728,20 +12728,20 @@ vue-router-multiguard@^1.0.3:
   resolved "https://registry.npm.taobao.org/vue-router-multiguard/download/vue-router-multiguard-1.0.3.tgz#f700991719b40642fb22d5dd0baed6777cfecfaa"
   integrity sha1-9wCZFxm0BkL7ItXdC67Wd3z+z6o=
 
-vue-router-plus@0.3.2:
-  version "0.3.2"
-  resolved "https://registry.npm.taobao.org/vue-router-plus/download/vue-router-plus-0.3.2.tgz#d1c1c714a5e5034e618141ca2c9a90e519feba4a"
-  integrity sha1-0cHHFKXlA05hgUHKLJqQ5Rn+uko=
+vue-router-plus@0.3.3:
+  version "0.3.3"
+  resolved "https://registry.npm.taobao.org/vue-router-plus/download/vue-router-plus-0.3.3.tgz#7451b49b8056a8a1fb7785fe31caeef15096c8bc"
+  integrity sha1-dFG0m4BWqKH7d4X+Mcru8VCWyLw=
 
 vue-router@3.0.7:
   version "3.0.7"
   resolved "https://registry.npm.taobao.org/vue-router/download/vue-router-3.0.7.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-router%2Fdownload%2Fvue-router-3.0.7.tgz#b36ca107b4acb8ff5bc4ff824584059c23fcb87b"
   integrity sha1-s2yhB7SsuP9bxP+CRYQFnCP8uHs=
 
-vue-st-form@0.0.8:
-  version "0.0.8"
-  resolved "https://registry.npm.taobao.org/vue-st-form/download/vue-st-form-0.0.8.tgz?cache=0&sync_timestamp=1575367338573&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-st-form%2Fdownload%2Fvue-st-form-0.0.8.tgz#a3da08d891ee0e4ee5a6d51e66059a01ee27f95a"
-  integrity sha1-o9oI2JHuDk7lptUeZgWaAe4n+Vo=
+vue-st-form@0.1.0:
+  version "0.1.0"
+  resolved "https://registry.npm.taobao.org/vue-st-form/download/vue-st-form-0.1.0.tgz#e549f864249b739b8582fce5b03d9d9bcbcc5551"
+  integrity sha1-5Un4ZCSbc5uFgvzlsD2dm8vMVVE=
 
 vue-style-loader@^4.1.0:
   version "4.1.2"

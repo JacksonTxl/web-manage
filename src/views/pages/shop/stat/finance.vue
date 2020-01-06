@@ -1,26 +1,24 @@
 <template>
-  <div :class="bPage()">
-    <section class="mg-b16" :class="bHeard()">
-      <div :class="bHeard('left')">
-        <div :class="bPage('button-wapper')">
-          <st-button
-            type="primary"
-            v-if="auth$.export"
-            v-export-excel="{
-              type: 'finance/shop',
-              query: $searchQuery
-            }"
-          >
-            全部导出
-          </st-button>
-        </div>
-      </div>
-      <div :class="bHeard('right')">
-        <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
-      </div>
-    </section>
+  <st-panel app>
+    <st-table-header-section>
+      <st-button
+        type="primary"
+        v-if="auth$.export"
+        v-export-excel="{
+          type: 'finance/shop',
+          query: $searchQuery
+        }"
+      >
+        全部导出
+      </st-button>
+      <st-recent-radio-group
+        slot="actions"
+        @change="recentChange"
+      ></st-recent-radio-group>
+    </st-table-header-section>
+
     <st-total
-      :class="bPage('total')"
+      class="mg-t16"
       :indexs="columns"
       :dataSource="total$"
       hasTitle
@@ -35,7 +33,7 @@
       :dataSource="list$"
       rowKey="id"
     ></st-table>
-  </div>
+  </st-panel>
 </template>
 <script>
 import { FinanceService } from './finance.service'
@@ -44,8 +42,7 @@ import { columns } from './finance.config.ts'
 export default {
   mixins: [tableMixin],
   bem: {
-    bPage: 'page-shop-stat-finance',
-    bHeard: 'header'
+    bPage: 'page-shop-stat-finance'
   },
   serviceInject() {
     return {
