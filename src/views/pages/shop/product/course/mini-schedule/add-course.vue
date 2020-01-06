@@ -201,7 +201,7 @@ export default {
               }
             })
           } else {
-            this.params.court_site_name = 'none'
+            this.params.court_site_name = ''
           }
         }
         return
@@ -279,9 +279,4 @@ export default {
     }
   }
 }
-// 取消排课二次确认，限制条件完善
-// 完成排课的确认交互
-// 权限接入
-// 代码整理
-// 选择时间的约束
 </script>

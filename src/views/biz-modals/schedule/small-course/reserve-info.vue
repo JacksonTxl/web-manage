@@ -292,11 +292,11 @@ export default {
       consumeType: '',
       consumeId: '',
       consumeTypeId: '',
-      siteNumIds: [],
       dataSource: [],
       keyword: '',
       show: false,
-      info: {}
+      info: {},
+      isAdd: true
     }
   },
   computed: {
@@ -310,6 +310,8 @@ export default {
   },
   created() {
     this.getReserveInfo()
+    console.log(this.reserveList)
+    console.log(this.reserveInfo)
   },
   methods: {
     keywordFilter(str) {
@@ -346,6 +348,7 @@ export default {
     checkSign(id) {
       this.reserveService.checkSign(id).subscribe(this.getReserveInfo)
     },
+    // 添加预约
     addReserve() {
       const params = {
         schedule_id: this.id,
@@ -353,7 +356,9 @@ export default {
         consume_type: this.consumeType,
         consume_id: this.consumeId
       }
-      this.reserveService.add(params).subscribe(this.onAddReserveSuccess)
+      this.reserveService.add(params).subscribe(res => {
+        this.onAddReserveSuccess()
+      })
     },
     cancelReserve(id) {
       this.reserveService.cancel(id).subscribe(this.onCancelReserveSuccess)
@@ -441,6 +446,7 @@ export default {
       this.reserveService.leave(id).subscribe(this.getReserveInfo)
     },
     getReserveInfo() {
+      console.log('重置搜索')
       this.reserveService.getInfo(this.id).subscribe()
     },
     onAddReserveSuccess() {

@@ -185,7 +185,7 @@ export default {
               }
             })
           } else {
-            this.params.court_site_name = 'none'
+            this.params.court_site_name = ''
           }
         }
         return

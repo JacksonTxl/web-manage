@@ -29,12 +29,8 @@
 <script>
 import Calendar from '@/views/biz-components/schedule/calendar'
 import { SmallCourseScheduleService } from './service#/schedule.service'
-
-// 添加排期
 import ScheduleSmallCourseAddCourse from '@/views/biz-modals/schedule/small-course/add-course'
-// 详情
 import ScheduleSmallCourseReserveInfo from '@/views/biz-modals/schedule/small-course/reserve-info'
-
 import { SmallCourseService } from './small-course.service'
 export default {
   name: 'SmallCourseSchedule',
@@ -111,9 +107,8 @@ export default {
         query: this.$searchQuery
       })
     },
-    // 刷新页面
     onScheduleChange() {
-      this.$router.push({ query: this.$searchQuery })
+      this.$router.reload()
     }
   }
 }
