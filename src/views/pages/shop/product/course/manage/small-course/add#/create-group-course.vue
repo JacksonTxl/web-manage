@@ -270,6 +270,12 @@ export default {
         values.img_type = this.bg_image.index
         if (this.bg_image.index === 0) {
           values.img_type = 3
+          if (!this.bg_image.image_url) {
+            this.messageService.error({
+              content: '请上传图片'
+            })
+            return
+          }
         }
         delete values.date
         this.addService.addGroup(values).subscribe(res => {
