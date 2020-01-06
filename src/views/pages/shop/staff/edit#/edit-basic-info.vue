@@ -255,19 +255,14 @@ export default {
     },
     goNext(e) {
       e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          this.submit(values, 1)
-        }
+      this.form.validate().then(values => {
+        this.submit(values, 1)
       })
     },
     save(e) {
       e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values)
-          this.submit(values)
-        }
+      this.form.validate().then(values => {
+        this.submit(values)
       })
     },
     /**
