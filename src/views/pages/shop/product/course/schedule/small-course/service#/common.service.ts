@@ -24,7 +24,6 @@ export class SmallCourseScheduleCommonService {
   courtOptions$: Computed<any[]>
   consumeOptions$: Computed<any[]>
   coachBindOptions$: Computed<any[]>
-
   constructor(
     private commonApi: SmallCourseScheduleCommonApi,
     private msg: MessageService
@@ -35,7 +34,8 @@ export class SmallCourseScheduleCommonService {
       memberOptions: [],
       consumeOptions: [],
       courtOptions: [],
-      coachBindOptions: []
+      coachBindOptions: [],
+      reserveStatusOptions: []
     })
     this.consumeOptions$ = new Computed(
       this.state$.pipe(pluck('consumeOptions'))
