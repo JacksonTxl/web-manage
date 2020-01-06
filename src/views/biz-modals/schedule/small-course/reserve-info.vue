@@ -123,19 +123,19 @@
             </td>
             <td>--</td>
             <td>
-              <a @click="addReserve">添加预约</a>
+              <a @click="addReserve" v-if="auth.add">
+                添加预约
+              </a>
             </td>
           </tr>
           <tr v-for="(item, index) in reserveList" :key="index">
             <td>{{ item.member_name }}</td>
             <td>{{ item.course_name }}</td>
-            <td v-if="item.reserve_status === 1">未签到</td>
-            <td v-if="item.reserve_status === 2">已签到</td>
-            <td v-if="item.reserve_status === 3 || item.reserve_status === 6">
-              旷课
+            <td>
+              {{
+                item.reserve_status | enumFilter('small_course.reserve_status')
+              }}
             </td>
-            <td v-if="item.reserve_status === 4">请假已补课</td>
-            <td v-if="item.reserve_status === 5">请假未补课</td>
             <td>
               <div
                 v-if="
@@ -143,11 +143,22 @@
                     item.reserve_status === 1
                 "
               >
-                <a href="javascript:;" @click="check(item.reserve_id)">
+                <a
+                  href="javascript:;"
+                  @click="check(item.reserve_id)"
+                  v-if="
+                    item.auth['shop:reserve:small_class_course_reserve|checkin']
+                  "
+                >
                   签到
                 </a>
                 <a-divider type="vertical"></a-divider>
-                <a @click="leave(item.reserve_id)">
+                <a
+                  @click="leave(item.reserve_id)"
+                  v-if="
+                    item.auth['shop:reserve:small_class_course_reserve|leave']
+                  "
+                >
                   请假
                 </a>
               </div>
@@ -157,11 +168,22 @@
                     item.reserve_status === 1
                 "
               >
-                <a href="javascript:;" @click="check(item.reserve_id)">
+                <a
+                  href="javascript:;"
+                  @click="check(item.reserve_id)"
+                  v-if="
+                    item.auth['shop:reserve:small_class_course_reserve|checkin']
+                  "
+                >
                   签到
                 </a>
                 <a-divider type="vertical"></a-divider>
-                <a @click="del(item.reserve_id)">
+                <a
+                  @click="del(item.reserve_id)"
+                  v-if="
+                    item.auth['shop:reserve:small_class_course_reserve|del']
+                  "
+                >
                   取消预约
                 </a>
               </div>
@@ -183,11 +205,25 @@
                       item.reserve_status === 3)
                 "
               >
-                <a @click="checkSign(item.reserve_id)">
+                <a
+                  @click="checkSign(item.reserve_id)"
+                  v-if="
+                    item.auth[
+                      'shop:reserve:small_class_course_reserve|supplement_checkin'
+                    ]
+                  "
+                >
                   补签到
                 </a>
                 <a-divider type="vertical"></a-divider>
-                <a @click="remedialCourse(item.reserve_id, reserveInfo.id)">
+                <a
+                  @click="remedialCourse(item.reserve_id, reserveInfo.id)"
+                  v-if="
+                    item.auth[
+                      'shop:reserve:small_class_course_reserve|supplement'
+                    ]
+                  "
+                >
                   补课
                 </a>
               </div>
@@ -197,7 +233,14 @@
                     item.reserve_status === 4
                 "
               >
-                <a @click="message(item.reserve_id)">
+                <a
+                  @click="message(item.reserve_id)"
+                  v-if="
+                    item.auth[
+                      'shop:reserve:small_class_course_reserve|get_supplement'
+                    ]
+                  "
+                >
                   查看补课
                 </a>
               </div>
@@ -210,6 +253,11 @@
                 <a
                   href="javascript:;"
                   @click="remedialCourse(item.reserve_id, reserveInfo.id)"
+                  v-if="
+                    item.auth[
+                      'shop:reserve:small_class_course_reserve|supplement'
+                    ]
+                  "
                 >
                   补课
                 </a>
@@ -220,7 +268,15 @@
                     item.reserve_status === 6
                 "
               >
-                <a href="javascript:;" @click="message(item.reserve_id)">
+                <a
+                  href="javascript:;"
+                  @click="message(item.reserve_id)"
+                  v-if="
+                    item.auth[
+                      'shop:reserve:small_class_course_reserve|get_supplement'
+                    ]
+                  "
+                >
                   查看补课
                 </a>
               </div>
@@ -229,22 +285,29 @@
         </tbody>
       </st-form-table>
     </st-container>
-    <!-- v-if="
-          infoAuth &&
-            infoAuth['shop:schedule:personal_team_course_schedule|del']
-        "        v-if="
-          infoAuth &&
-            infoAuth['shop:schedule:personal_team_course_schedule|edit']
-        " -->
     <div class="mg-t24 ta-r">
-      <a-popconfirm @confirm="cancelSchedule" okText="确认" cancelText="取消">
+      <a-popconfirm
+        v-if="
+          infoAuth && infoAuth['shop:schedule:small_class_course_schedule|del']
+        "
+        @confirm="cancelSchedule"
+        okText="确认"
+        cancelText="取消"
+      >
         <div slot="title">
           是否取消课程？
           <div class="color-danger">将发送消息通知已报名用户</div>
         </div>
         <st-button>取消课程</st-button>
       </a-popconfirm>
-      <st-button class="mg-l8" type="primary" @click="updateSchedule">
+      <st-button
+        class="mg-l8"
+        type="primary"
+        @click="updateSchedule"
+        v-if="
+          infoAuth && infoAuth['shop:schedule:small_class_course_schedule|edit']
+        "
+      >
         修改课程
       </st-button>
     </div>
@@ -258,6 +321,7 @@ import { SmallCourseScheduleService as ScheduleService } from '@/views/pages/sho
 import ScheduleSmallCourseReservedCourse from '@/views/biz-modals/schedule/small-course/reserved-course'
 import ScheduleSmallCourseRemedialCourse from '@/views/biz-modals/schedule/small-course/remedial-course'
 import ScheduleSmallCourseRemedialInfo from '@/views/biz-modals/schedule/small-course/remedial-info'
+import { RemedialCourseInfoService } from './remedial-info.service'
 import { columns } from './reserve-info.config'
 export default {
   name: 'ReserveInfo',
@@ -270,7 +334,8 @@ export default {
     return {
       commonService: CommonService,
       reserveService: ReserveService,
-      scheduleService: ScheduleService
+      scheduleService: ScheduleService,
+      remedialInfoService: RemedialCourseInfoService
     }
   },
   rxState() {
@@ -281,6 +346,7 @@ export default {
       consumeOptions: commonService.consumeOptions$,
       reserveList: this.reserveService.reserveList$,
       reserveInfo: this.reserveService.reserveInfo$,
+      reserveStatusOptions: this.remedialInfoService.reserveStatusOptions$,
       auth: this.reserveService.auth$,
       infoAuth: this.reserveService.infoAuth$
     }

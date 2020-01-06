@@ -1184,6 +1184,7 @@ export const routeMapConfig = {
   },
   'shop-product-course-schedule-small-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '{{$c("small_course")}}'
+    routeConfig.meta.auth = 'shop:schedule:small_class_course_schedule|list'
     routeConfig.queryOptions = {
       coach_id: { type: Number }
     }

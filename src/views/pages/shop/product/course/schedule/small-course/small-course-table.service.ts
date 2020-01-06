@@ -7,9 +7,9 @@ import { AuthService } from '@/services/auth.service'
 @Injectable()
 export class SmallCourseTableService implements Controller {
   auth$ = this.authService.authMap$({
-    add: 'shop:schedule:team_course_schedule|add',
-    addBatch: 'shop:schedule:team_course_schedule|batch_add',
-    copy: 'shop:schedule:team_course_schedule|copy'
+    add: 'shop:schedule:small_class_course_schedule|add',
+    eidt: 'shop:schedule:small_class_course_schedule|batch_edit',
+    getInfo: 'shop:schedule:small_class_course_schedule|get'
   })
   constructor(
     private commonService: CommonService,

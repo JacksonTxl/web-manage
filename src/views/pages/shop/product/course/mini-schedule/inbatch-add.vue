@@ -375,7 +375,6 @@ export default {
       }
     },
     onChangeRangePicker(date, dateString, PickerIndex) {
-      this.picker_end_date = date[1].format('YYYY-MM-DD')
       console.log(this.pickerList)
       let pickerFlag = false
       this.pickerList.forEach((item, index) => {
@@ -395,7 +394,6 @@ export default {
         }
       })
       console.log(this.pickerList)
-      // 还是要添加是否有数据的判断
       if (!pickerFlag) {
         if (
           this.cycle_type === 1 &&
@@ -413,6 +411,9 @@ export default {
               this.onDeleteCourseScheduleCycle([date[0], date[1]], PickerIndex)
             }
           })
+        } else {
+          this.picker_end_date = date[1].format('YYYY-MM-DD')
+          this.pickerList.splice(PickerIndex, 1, date)
         }
       }
       console.log(this.pickerList)
@@ -594,9 +595,11 @@ export default {
       params.course_id = this.smallCourseInfo.course_id
       params.del_type = DELETE_TYPE.CYCLE
       this.smallCourseScheduleService.cancelCycle(params).subscribe(res => {
+        this.picker_end_date = date[1].format('YYYY-MM-DD')
         this.scheduleList[cycleIndex].course_time = []
         this.pickerList.splice(cycleIndex, 1, dateList)
         this.filterDateList(this.scheduleList)
+        console.log('修改成功')
       })
     },
     // 顶部删除周期整个批次
@@ -604,8 +607,16 @@ export default {
       if (this.scheduleList.length <= 1) {
         return
       }
+      if (this.scheduleList[index].course_time.length <= 0) {
+        this.scheduleList.splice(index, 1)
+        this.pickerList.splice(index, 1)
+        this.picker_end_date = this.pickerList[
+          this.pickerList.length
+        ][1].format('YYYY-MM-DD')
+        console.log(this.picker_end_date)
+        return
+      }
       let params = {}
-
       const cycleDate = this.pickerList[cycleIndex]
       params.cycle_start_date = moment(cycleDate[0]).format('YYYY-MM-DD')
       params.cycle_end_date = moment(cycleDate[1]).format('YYYY-MM-DD')
@@ -614,6 +625,10 @@ export default {
       this.smallCourseScheduleService.cancelCycle(params).subscribe(res => {
         this.scheduleList.splice(index, 1)
         this.pickerList.splice(index, 1)
+        this.picker_end_date = this.pickerList[
+          this.pickerList.length
+        ][1].format('YYYY-MM-DD')
+        console.log(this.picker_end_date)
       })
     },
     // 自主约课单个删除
