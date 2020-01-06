@@ -1,7 +1,7 @@
 <template>
   <st-modal title="编辑课程" v-model="show" width="520px">
     <st-form :form="form" labelWidth="72px" labelAuto>
-      <st-form-item label="排课名称" required>
+      <st-form-item label="排课名称" class="mg-t12">
         <a-input
           placeholder="请输入"
           v-decorator="decorators.current_course_name"
@@ -66,7 +66,7 @@
 import { cloneDeep } from 'lodash-es'
 import { SmallCourseScheduleService } from '@/views/pages/shop/product/course/schedule/small-course/service#/schedule.service'
 import { SmallCourseScheduleCommonService } from '@/views/pages/shop/product/course/schedule/small-course/service#/common.service'
-import { ruleOptions } from './add-course.config'
+import { ruleOptions } from './edit-course.config'
 export default {
   name: 'AddCourseSchedule',
   serviceInject() {

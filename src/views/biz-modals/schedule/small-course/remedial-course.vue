@@ -10,10 +10,25 @@
       <st-form-item label="适应范围" required>
         {{ scopeApplication }}
       </st-form-item>
-      <st-form-item label="补课课程" required>
+      <st-form-item :label="`${$c('small_course')}`" required>
         <a-select
-          placeholder="请选择课程"
+          placeholder="选择课程"
           @change="onChangeCourse"
+          v-decorator="decorators.course_id"
+        >
+          <a-select-option
+            v-for="course in courseSmallCourseOptions"
+            :key="course.course_id"
+            :value="course.course_id"
+          >
+            {{ course.course_name }}
+          </a-select-option>
+        </a-select>
+      </st-form-item>
+      <st-form-item label="补课排期" required>
+        <a-select
+          placeholder="请选择排期"
+          @change="onChangeSchedules"
           v-decorator="decorators.id"
         >
           <a-select-option
@@ -48,19 +63,24 @@
 import { cloneDeep } from 'lodash-es'
 import { SmallCourseScheduleService } from '@/views/pages/shop/product/course/schedule/small-course/service#/schedule.service'
 import { SmallCourseScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/small-course/service#/reserve.service'
+import { RemedialCourseService } from './remedial-course.service'
+import { SmallCourseScheduleCommonService } from '@/views/pages/shop/product/course/schedule/small-course/service#/common.service'
 import { ruleOptions } from './remedial-course.config'
 export default {
   name: 'RemedialCourse',
   serviceInject() {
     return {
       smallCourseScheduleService: SmallCourseScheduleService,
-      reserveService: ReserveService
+      reserveService: ReserveService,
+      remedialCourseService: RemedialCourseService,
+      smallCourseScheduleCommonService: SmallCourseScheduleCommonService
     }
   },
   rxState() {
-    const tss = this.smallCourseScheduleCommonService
+    const scsc = this.smallCourseScheduleCommonService
     return {
-      loading: this.smallCourseScheduleService.loading$
+      loading: this.smallCourseScheduleService.loading$,
+      courseSmallCourseOptions: scsc.courseSmallCourseOptions$
     }
   },
   data() {
@@ -72,7 +92,8 @@ export default {
       show: false,
       disabled: true,
       courseOptions: [],
-      smallCourseInfo: ''
+      smallCourseInfo: '',
+      courseId: ''
     }
   },
   props: {
@@ -95,15 +116,19 @@ export default {
       return scopeName
     }
   },
-  created() {
-    console.log(this.info)
-    this.reserveService.courseList(this.id).subscribe(res => {
-      this.courseOptions = res.list
-    })
-  },
   mounted() {},
   methods: {
     onChangeCourse(value) {
+      this.courseId = value
+      const params = {
+        id: this.id,
+        course_id: value
+      }
+      this.reserveService.courseList(params).subscribe(res => {
+        this.courseOptions = res.list
+      })
+    },
+    onChangeSchedules(value) {
       this.courseOptions.forEach((item, index) => {
         if (item.id === value) {
           this.smallCourseInfo = item
@@ -133,7 +158,7 @@ export default {
       this.show = false
     },
     onScheduleChange() {
-      this.$router.push({ query: this.$searchQuery })
+      this.$router.reload()
     }
   }
 }

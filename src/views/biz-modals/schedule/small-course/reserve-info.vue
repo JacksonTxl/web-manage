@@ -143,22 +143,11 @@
                     item.reserve_status === 1
                 "
               >
-                <a
-                  href="javascript:;"
-                  @click="check(item.reserve_id)"
-                  v-if="
-                    item.auth['shop:reserve:small_class_course_reserve|checkin']
-                  "
-                >
+                <a @click="check(item.reserve_id)">
                   签到
                 </a>
                 <a-divider type="vertical"></a-divider>
-                <a
-                  @click="leave(item.reserve_id)"
-                  v-if="
-                    item.auth['shop:reserve:small_class_course_reserve|leave']
-                  "
-                >
+                <a @click="leave(item.reserve_id)">
                   请假
                 </a>
               </div>
@@ -168,22 +157,11 @@
                     item.reserve_status === 1
                 "
               >
-                <a
-                  href="javascript:;"
-                  @click="check(item.reserve_id)"
-                  v-if="
-                    item.auth['shop:reserve:small_class_course_reserve|checkin']
-                  "
-                >
+                <a @click="check(item.reserve_id)">
                   签到
                 </a>
                 <a-divider type="vertical"></a-divider>
-                <a
-                  @click="del(item.reserve_id)"
-                  v-if="
-                    item.auth['shop:reserve:small_class_course_reserve|del']
-                  "
-                >
+                <a @click="del(item.reserve_id)">
                   取消预约
                 </a>
               </div>
@@ -205,25 +183,11 @@
                       item.reserve_status === 3)
                 "
               >
-                <a
-                  @click="checkSign(item.reserve_id)"
-                  v-if="
-                    item.auth[
-                      'shop:reserve:small_class_course_reserve|supplement_checkin'
-                    ]
-                  "
-                >
+                <a @click="checkSign(item.reserve_id)">
                   补签到
                 </a>
                 <a-divider type="vertical"></a-divider>
-                <a
-                  @click="remedialCourse(item.reserve_id, reserveInfo.id)"
-                  v-if="
-                    item.auth[
-                      'shop:reserve:small_class_course_reserve|supplement'
-                    ]
-                  "
-                >
+                <a @click="remedialCourse(item.reserve_id, reserveInfo.id)">
                   补课
                 </a>
               </div>
@@ -233,14 +197,7 @@
                     item.reserve_status === 4
                 "
               >
-                <a
-                  @click="message(item.reserve_id)"
-                  v-if="
-                    item.auth[
-                      'shop:reserve:small_class_course_reserve|get_supplement'
-                    ]
-                  "
-                >
+                <a @click="message(item.reserve_id)">
                   查看补课
                 </a>
               </div>
@@ -250,15 +207,7 @@
                     item.reserve_status === 5
                 "
               >
-                <a
-                  href="javascript:;"
-                  @click="remedialCourse(item.reserve_id, reserveInfo.id)"
-                  v-if="
-                    item.auth[
-                      'shop:reserve:small_class_course_reserve|supplement'
-                    ]
-                  "
-                >
+                <a @click="remedialCourse(item.reserve_id, reserveInfo.id)">
                   补课
                 </a>
               </div>
@@ -268,15 +217,7 @@
                     item.reserve_status === 6
                 "
               >
-                <a
-                  href="javascript:;"
-                  @click="message(item.reserve_id)"
-                  v-if="
-                    item.auth[
-                      'shop:reserve:small_class_course_reserve|get_supplement'
-                    ]
-                  "
-                >
+                <a @click="message(item.reserve_id)">
                   查看补课
                 </a>
               </div>
@@ -286,28 +227,14 @@
       </st-form-table>
     </st-container>
     <div class="mg-t24 ta-r">
-      <a-popconfirm
-        v-if="
-          infoAuth && infoAuth['shop:schedule:small_class_course_schedule|del']
-        "
-        @confirm="cancelSchedule"
-        okText="确认"
-        cancelText="取消"
-      >
+      <a-popconfirm @confirm="cancelSchedule" okText="确认" cancelText="取消">
         <div slot="title">
           是否取消课程？
           <div class="color-danger">将发送消息通知已报名用户</div>
         </div>
         <st-button>取消课程</st-button>
       </a-popconfirm>
-      <st-button
-        class="mg-l8"
-        type="primary"
-        @click="updateSchedule"
-        v-if="
-          infoAuth && infoAuth['shop:schedule:small_class_course_schedule|edit']
-        "
-      >
+      <st-button class="mg-l8" type="primary" @click="updateSchedule">
         修改课程
       </st-button>
     </div>

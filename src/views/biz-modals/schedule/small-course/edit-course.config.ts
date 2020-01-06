@@ -11,7 +11,7 @@ export const ruleOptions = (vm: any) => {
       rules: [{ required: true, message: '请选择结束时间' }]
     },
     current_course_name: {
-      rules: [{ required: true, message: '请输入课程名称' }]
+      rules: [{ required: false, message: '请输入课程名称' }]
     },
     coach_id: {
       rules: [
