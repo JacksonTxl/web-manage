@@ -129,8 +129,8 @@ export default {
         const tree = new Tree(this.actList, { name: 'activity_name' })
         if (this.number && !tree.findNodeById(item.activity_id[1])) {
           // 找到对应的父节点
-          const node = tree.findNodeById(item.activity_type) || []
-          if (item.activity_type === 5) {
+          const node = tree.findNodeById(item.activity_type) || {}
+          if (item.activity_type === 5 && node.children) {
             node.children.push({
               activity_name: item.activity_name,
               activity_type: item.activity_type,
@@ -139,7 +139,7 @@ export default {
               product_type: item.product_type,
               product_template_id: item.product_template_id
             })
-          } else {
+          } else if (node.children) {
             node.children.push({
               activity_name: item.activity_name,
               activity_type: item.activity_type,

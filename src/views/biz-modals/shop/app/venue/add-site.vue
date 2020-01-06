@@ -88,7 +88,7 @@ export default {
         return item.name
       })
       if (!verify) {
-        this.messageService.warning({
+        this.messageService.warn({
           content: '输入的场馆名称格式错误，请重新输入'
         })
         return
