@@ -138,7 +138,7 @@ export default {
         info: []
       }
       if (this.setAction() < 2) {
-        this.messageService.warning({
+        this.messageService.warn({
           content: `最少添加两个功能入口`
         })
         return
@@ -150,7 +150,7 @@ export default {
       })
       let coachInfo = this.setCoashIDs()
       if (coachInfo.staff_id_list.length > 100) {
-        this.messageService.warning({
+        this.messageService.warn({
           content: `最多可以添加100个${this.$c('coach')}`
         })
         return
