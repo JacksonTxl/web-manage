@@ -131,7 +131,9 @@
             <td>{{ item.course_name }}</td>
             <td v-if="item.reserve_status === 1">未签到</td>
             <td v-if="item.reserve_status === 2">已签到</td>
-            <td v-if="item.reserve_status === 3">旷课</td>
+            <td v-if="item.reserve_status === 3 || item.reserve_status === 6">
+              旷课
+            </td>
             <td v-if="item.reserve_status === 4">请假已补课</td>
             <td v-if="item.reserve_status === 5">请假未补课</td>
             <td>
