@@ -162,6 +162,13 @@
       .mg-l(6px);
       flex: 1;
       .mg-r(16px);
+      &:focus {
+        text-decoration: none;
+      }
+      &:hover {
+        .c(@defaultMenuHoverColor);
+        transition: all 0.5s;
+      }
     }
     a {
       .c(inherit);
