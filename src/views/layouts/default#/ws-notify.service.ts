@@ -78,7 +78,7 @@ export class WsNotifyService {
     )
   }
   setRead() {
-    this.api.setRead()
+    return this.api.setRead()
   }
   init() {
     return anyAll(this.getActivityList(), this.getSystemList())
@@ -91,7 +91,6 @@ export class WsNotifyService {
   private getMaMessage(msg: any, maxLength: number) {
     const args = msg.payload.args
     const content = msg.payload.content
-    // const imgUrl = require('~@/assets/img/icon_setting_success.png')
     const config = {
       title: msg.payload.title,
       content: (h: any) => {
