@@ -19,9 +19,9 @@
           <member-notice-item @editInfo="save" :info="item">
             <!-- 预约到期提醒 需要设置时间 start-->
             <template
-              v-slot:notify-time="slotProps"
+              v-slot:notifyTime="slotProps"
               v-if="
-                info.notify_sub_type.value ===
+                item.notify_sub_type.value ===
                   NOTIFY_MEMBER_SUB_TYPE.RESERVE_EXPIRE
               "
             >
@@ -61,9 +61,12 @@
                 "
               >
                 课程开始前
-                <a-select v-model="params.notify_time" style="width:100px">
+                <a-select
+                  v-model="slotProps.params.notify_time"
+                  style="width:100px"
+                >
                   <a-select-option
-                    v-for="(item, index) in notifyHour"
+                    v-for="(item, index) in notifyTimeHour$"
                     :key="index"
                     :value="item.value"
                   >
@@ -264,6 +267,7 @@ export default {
       shopList$,
       consumeType$,
       entranceType$,
+      notifyTimeHour$,
       notifyRule$
     } = this.noticeService
     return {
@@ -272,6 +276,7 @@ export default {
       shopList$,
       consumeType$,
       entranceType$,
+      notifyTimeHour$,
       notifyRule$
     }
   },

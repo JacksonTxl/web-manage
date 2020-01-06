@@ -89,17 +89,87 @@ export class WsNotifyService {
     this.setHeartBeat()
   }
   private getMaMessage(msg: any, maxLength: number) {
+    const args = msg.payload.args
+    const content = msg.payload.content
+    // const imgUrl = require('~@/assets/img/icon_setting_success.png')
     const config = {
       title: msg.payload.title,
       content: (h: any) => {
-        return h(
-          'div',
-          { attrs: { class: 'st-ws-notice-description' } },
-          msg.payload.content
-        )
+        return msg.payload.msg_sub_type !== 8
+          ? h('div', { attrs: { class: 'st-ws-notice-description' } }, [
+              h(
+                'div',
+                {
+                  attrs: { class: 'st-ws-notice-description__content' }
+                },
+                content
+              )
+            ])
+          : h('div', { attrs: { class: 'st-ws-notice-description' } }, [
+              h(
+                'div',
+                {
+                  attrs: { class: 'st-ws-notice-description__content' }
+                },
+                `成功进入(${args.area_name})`
+              ),
+              h(
+                'div',
+                {
+                  attrs: { class: 'st-ws-notice-description__cunsume  mg-t8' }
+                },
+                [
+                  h('div', { attrs: { class: 'label' } }, '消费方式: '),
+                  h('div', { attrs: { class: 'value' } }, args.proof_name)
+                ]
+              ),
+              h(
+                'div',
+                { attrs: { class: 'st-ws-notice-description__detail mg-t8' } },
+                [
+                  h(
+                    'div',
+                    {
+                      attrs: { class: 'st-ws-notice-description__member mg-r8' }
+                    },
+                    [
+                      h('div', { attrs: { class: 'label' } }, '跟进会籍: '),
+                      h('div', { attrs: { class: 'value' } }, args.seller_name)
+                    ]
+                  ),
+                  h(
+                    'div',
+                    {
+                      attrs: { class: 'st-ws-notice-description__coach' }
+                    },
+                    [
+                      h('div', { attrs: { class: 'label' } }, '跟进教练: '),
+                      h('div', { attrs: { class: 'value' } }, args.coach_name)
+                    ]
+                  )
+                ]
+              )
+            ])
       },
-      icon: this.user$.value.avatar,
-      duration: 5000,
+      icon: (h: any) => {
+        return msg.payload.msg_sub_type !== 8
+          ? h('st-icon', {
+              attrs: {
+                type: 'success',
+                width: '22',
+                color: '#52C41A',
+                height: '100%'
+              }
+            })
+          : h('img', {
+              attrs: {
+                src: args.image_url,
+                width: '96',
+                height: '100%'
+              }
+            })
+      },
+      duration: 500,
       onClose: () => {
         const oldMessage = this.messageArr.shift()
         this.notificationService.close(oldMessage.key)
@@ -109,10 +179,14 @@ export class WsNotifyService {
     if (this.messageArr.length >= maxLength) {
       const oldMessage = this.messageArr.shift()
       this.notificationService.close(oldMessage.key)
-      this.notificationService.open(config)
+      msg.payload.msg_sub_type === 8
+        ? this.notificationService.open(config)
+        : this.notificationService.openNormal(config)
       this.messageArr.push(config)
     } else {
-      this.notificationService.open(config)
+      msg.payload.msg_sub_type === 8
+        ? this.notificationService.open(config)
+        : this.notificationService.openNormal(config)
       this.messageArr.push(config)
     }
   }

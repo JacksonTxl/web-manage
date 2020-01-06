@@ -4,7 +4,7 @@
     :count="notReadNum$"
   >
     <span @click="onClickNotify" class="font-number">
-      <st-icon type="notify" size="22px" color="#9BACB9"></st-icon>
+      <st-icon type="notify" size="20px" color="#9BACB9"></st-icon>
     </span>
   </a-badge>
 </template>

@@ -7,8 +7,8 @@ interface NotificationOptions {
   title: string | number
   content: any
   duration?: number
-  icon?: String
-  onClose?: Function
+  icon?: any
+  onClose?: any
   key?: string
 }
 /**
@@ -62,15 +62,18 @@ export class NotificationService {
       description: config.content,
       duration: config.duration,
       onClose: config.onClose,
-      icon: (h: any) => {
-        return h('img', {
-          attrs: {
-            src: config.icon,
-            width: '96',
-            height: '100%'
-          }
-        })
-      },
+      icon: config.icon,
+      key: config.key
+    })
+  }
+  openNormal(config: NotificationOptions) {
+    notification.open({
+      class: 'st-notify-normal-open',
+      message: config.title + '',
+      description: config.content,
+      duration: config.duration,
+      onClose: config.onClose,
+      icon: config.icon,
       key: config.key
     })
   }
