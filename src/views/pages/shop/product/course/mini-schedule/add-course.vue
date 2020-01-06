@@ -234,6 +234,7 @@ export default {
           console.log(res)
           verifyParams.schedule_ids = res.schedule_ids
           this.addCourse(this.cycleIndex, res.conflict, verifyParams, res.list)
+          this.resetForm()
         })
     },
     addScheduleCustom(verifyParams) {
@@ -244,8 +245,19 @@ export default {
           if (!res.conflict) {
             verifyParams.id = res.schedule_id
             this.addCustomCourse(verifyParams)
+            this.resetForm()
           }
         })
+    },
+    resetForm() {
+      this.form.setFieldsValue({
+        current_course_name: '',
+        coach_id: '',
+        court_id: '',
+        start_time: '',
+        end_time: '',
+        start_days: ''
+      })
     },
     onSubmit() {
       this.form.validate().then(values => {
