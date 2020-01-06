@@ -68,6 +68,9 @@ export default {
     onClickRight() {
       this.$refs.swiper.swiper.slideNext()
     }
+  },
+  created() {
+    this.$emit('success')
   }
 }
 </script>
