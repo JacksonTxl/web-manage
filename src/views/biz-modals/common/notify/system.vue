@@ -6,10 +6,12 @@
     width="640px"
     :footer="null"
   >
-    <div :class="b('info')">
-      <div :class="b('info-header')">
-        <img :src="info.image_key" alt="" />
-      </div>
+    <div
+      :class="b('info')"
+      :style="
+        `background: url(${info.image_key}) no-repeat;background-size: cover`
+      "
+    >
       <div :class="b('info-content')">
         <st-t3 :class="b('title')">{{ info.title }}</st-t3>
         <div :class="b('content')" class="mg-t16">
