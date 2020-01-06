@@ -52,7 +52,6 @@
             :showTime="{ format: 'HH:mm' }"
             format="YYYY-MM-DD HH:mm"
             v-decorator="decorators.date"
-            @change="setDate"
           ></a-range-picker>
         </st-form-item>
       </a-col>
@@ -236,7 +235,12 @@ export default {
     CardBgRadio,
     StEditor
   },
-  created() {},
+  mounted() {
+    const curTime = moment()
+    this.form.setFieldsValue({
+      date: [curTime.add('30', 'minutes'), curTime]
+    })
+  },
   data(vm) {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
@@ -253,11 +257,6 @@ export default {
     }
   },
   methods: {
-    setDate(val, string) {
-      this.form.setFieldsValue({
-        date: [val[0].add('30', 'minutes'), val[1].add('30', 'minutes')]
-      })
-    },
     save(e) {
       e.preventDefault()
       this.form.validate().then(values => {
