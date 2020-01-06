@@ -177,7 +177,7 @@ export default {
         return item.name
       })
       if (!verify) {
-        this.messageService.warning({ content: '场地名称不能为空' })
+        this.messageService.warn({ content: '场地名称不能为空' })
         return
       }
       let data = {

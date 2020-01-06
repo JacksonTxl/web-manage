@@ -246,7 +246,7 @@ export default {
         this.curPrizeType === this.PRIZE_TYPE.CUSTOM &&
         this.shopIds.length === 0
       ) {
-        this.messageService.warning({
+        this.messageService.warn({
           content: '请选择门店'
         })
         return
@@ -261,7 +261,7 @@ export default {
         value.prize_id = this.info ? this.info.prize_id : 0
         value.activity_prize_id = this.info ? this.info.activity_prize_id : 0
         if (this.curPrizeType === this.PRIZE_TYPE.DEFAULT && !value.coupon_id) {
-          this.messageService.warning({
+          this.messageService.warn({
             content: '请选择优惠券'
           })
           return

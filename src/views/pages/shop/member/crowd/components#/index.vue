@@ -234,7 +234,7 @@ export default {
   },
   methods: {
     newCrowd(data) {
-      this.messageService.warning({ content: data })
+      this.messageService.warn({ content: data })
     },
     exportFunc(id) {
       // this.aService.getListInfo(id).subscribe()
