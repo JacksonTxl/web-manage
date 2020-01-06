@@ -166,6 +166,10 @@ export default {
     }
   },
   mounted() {
+    const curTime = moment()
+    this.form.setFieldsValue({
+      apply_date: [curTime.add('30', 'minutes'), curTime]
+    })
     this.setFieldsValue()
   },
   methods: {

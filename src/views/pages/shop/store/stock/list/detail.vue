@@ -54,6 +54,10 @@
         <template slot="stock_flow" slot-scope="text, record">
           <div>{{ record.stock_flow.doc }}</div>
         </template>
+        <template slot="product_name" slot-scope="text, record">
+          {{ record.product_name }}
+          <span v-if="record.sku_name">（{{ record.sku_name }}）</span>
+        </template>
       </st-table>
     </div>
   </div>

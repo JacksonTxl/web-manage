@@ -7,7 +7,7 @@
   &__right {
     position: relative;
     width: 532px;
-    min-height: calc(100vh - 144px);
+    height: calc(100vh - 129px);
     float: right;
     border-left: 1px solid #e6e9ef;
     padding-left: 24px;
@@ -24,10 +24,17 @@
     &__sum {
       text-align: right;
       margin-top: 20px;
+      height: 21px;
+    }
+    &__top {
+      height: 100%;
+      overflow: auto;
+      margin-right: -24px;
+      padding-right: 24px;
     }
     &__footer {
       position: absolute;
-      width: 532px;
+      width: 531px;
       right: 0;
       bottom: 0;
       display: flex;
@@ -39,9 +46,6 @@
         .fz(12px);
         font-weight: 400;
         .c(@text-light);
-        span {
-          vertical-align: middle;
-        }
         > span:nth-of-type(2) {
           margin-right: 8px;
           .fz(20px);
@@ -50,10 +54,6 @@
       }
       .ant-btn-primary {
         margin-left: 16px;
-      }
-      &--fixed {
-        position: fixed;
-        right: 16px;
       }
     }
   }
@@ -87,8 +87,7 @@
     margin-left: -24px;
     padding-left: 24px;
     background: rgba(247, 249, 252, 1);
-    margin-bottom: -12px;
-    padding-bottom: 12px;
+    padding-bottom: 5px;
     padding-top: 20px;
   }
   .swiper-button-prev,

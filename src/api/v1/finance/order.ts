@@ -88,9 +88,7 @@ export class OrderApi extends Api {
    * 业绩拆分
    */
   split(params: SplitParams) {
-    return this.http.post(`/v1/finance/order/split`, {
-      params: { params }
-    })
+    return this.http.post(`/v1/finance/order/split`, { params })
   }
   /**
    * 订单收款明细（流水列表）
