@@ -192,6 +192,7 @@ export default {
         is_allow_transfer: info.is_allow_transfer,
         transfer_num: info.transfer_num,
         sell_type: info.sell_type,
+        transfer_type: info.transfer_type,
         apply_date: info.apply_begin_time
           ? [moment(info.apply_begin_time), moment(info.apply_end_time)]
           : [],
