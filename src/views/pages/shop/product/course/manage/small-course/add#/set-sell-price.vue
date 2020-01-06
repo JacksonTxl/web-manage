@@ -23,12 +23,13 @@
               v-show="isShowTransfer"
               style="width:282px"
               placeholder="请输入"
-              :min="1"
-              :max="999999.9"
+              :min="0"
+              :max="max"
               :float="true"
               v-decorator="decorators.transfer_num"
             >
               <a-select
+                @change="setMax"
                 v-decorator="decorators.transfer_type"
                 slot="addonAfter"
                 style="width: 60px"
@@ -146,7 +147,8 @@ export default {
     return {
       form,
       decorators,
-      isShowTransfer: false
+      isShowTransfer: false,
+      max: 999999.9
     }
   },
   computed: {},
@@ -175,6 +177,14 @@ export default {
     })
   },
   methods: {
+    setMax(val) {
+      if (val === 2) {
+        this.max = 999999.9
+      } else {
+        this.max = 100
+      }
+      this.form.setFieldsValue({ transfer_num: undefined })
+    },
     save(para) {
       this.form.validateFields().then(values => {
         values.course_id = this.courseId
