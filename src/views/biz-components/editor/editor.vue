@@ -108,14 +108,6 @@ export default {
       editor: null
     }
   },
-  watch: {
-    value(newVal) {
-      console.log(newVal, this.editor)
-      if (this.editor) {
-        this.editor.setContent(newVal)
-      }
-    }
-  },
   mounted() {
     this.importService
       .load(['tinymce/5.0.3/tinymce.min.js'])
