@@ -103,7 +103,9 @@ export default {
       if (this.cycle_type === 1) {
         this.smallCourseScheduleService
           .save(this.courseInfo.course_id)
-          .subscribe()
+          .subscribe(res => {
+            this.onClickGoBack()
+          })
       } else {
         const params = {}
         params.course_id = this.courseInfo.course_id
@@ -111,24 +113,28 @@ export default {
         this.scheduleList.forEach((item, index) => {
           params.schedule_ids.push(item.id)
         })
-        this.smallCourseScheduleService.saveCustom(params).subscribe()
+        this.smallCourseScheduleService.saveCustom(params).subscribe(res => {
+          this.onClickGoBack()
+        })
       }
+    },
+    onClickGoBack() {
+      this.show = false
+      let weekOfday = moment().format('E')
+      let start_date = moment()
+        .subtract(weekOfday - 1, 'days')
+        .format('YYYY-MM-DD')
+      let end_date = moment()
+        .add(7 - weekOfday, 'days')
+        .format('YYYY-MM-DD')
+      this.$router.push({
+        path: '/shop/product/course/schedule/small-course/small-course',
+        query: {
+          start_date,
+          end_date
+        }
+      })
     }
   }
 }
-// this.show = false
-// let weekOfday = moment().format('E')
-// let start_date = moment()
-//   .subtract(weekOfday - 1, 'days')
-//   .format('YYYY-MM-DD')
-// let end_date = moment()
-//   .add(7 - weekOfday, 'days')
-//   .format('YYYY-MM-DD')
-// this.$router.push({
-//   path: '/shop/product/course/schedule/small-course/small-course',
-//   query: {
-//     start_date,
-//     end_date
-//   }
-// })
 </script>
