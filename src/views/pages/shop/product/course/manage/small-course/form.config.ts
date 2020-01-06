@@ -34,6 +34,13 @@ export const ruleOptions = (vm: any) => {
         {
           required: true,
           message: '请输入报名人数下限'
+        },
+        {
+          validator: (field: any, value: any, values: any) => {
+            if (parseInt(value, 10) > parseInt(values.num_max, 10)) {
+              return '报名人数下限不能大于报名人数上限'
+            }
+          }
         }
       ]
     },

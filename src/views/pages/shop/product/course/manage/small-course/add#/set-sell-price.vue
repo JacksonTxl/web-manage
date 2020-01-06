@@ -161,6 +161,10 @@ export default {
   },
   created() {},
   mounted() {
+    const curTime = moment()
+    this.form.setFieldsValue({
+      apply_date: [curTime.add('30', 'minutes'), curTime]
+    })
     this.$nextTick(() => {
       this.form.setFieldsValue({
         course_name: this.course_name

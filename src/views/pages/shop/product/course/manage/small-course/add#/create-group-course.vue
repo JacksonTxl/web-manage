@@ -1,7 +1,7 @@
 <template>
   <st-form :form="form" class="page-create-container" labelWidth="130px">
     <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :lg="11" :xs="22">
         <st-form-item required>
           <template slot="label">
             {{ $c('small_course') }}名称
@@ -16,7 +16,7 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :lg="11" :xs="22">
         <st-form-item label="适用范围" required>
           <a-select
             @change="onCourseTypeChange"
@@ -44,7 +44,7 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :lg="11" :xs="22">
         <st-form-item label="开班时间" required>
           <a-range-picker
             style="width:100%"
@@ -57,7 +57,7 @@
       </a-col>
     </a-row>
     <a-row :gutter="8" style="height:56px;overflow:hidden">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :lg="11" :xs="22">
         <st-form-item required>
           <template slot="label">
             人数限制
@@ -66,6 +66,7 @@
           <div :class="b('num-limit')">
             <a-form-item class="page-a-form">
               <st-input-number
+                placeholder="请输入人数下限"
                 v-decorator="decorators.num_min"
                 :min="1"
                 :max="49"
@@ -78,6 +79,7 @@
             <span>~</span>
             <a-form-item class="page-a-form">
               <st-input-number
+                placeholder="请输入人数上限"
                 v-decorator="decorators.num_max"
                 :min="1"
                 :max="50"
@@ -92,9 +94,10 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :lg="11" :xs="22">
         <st-form-item label="总课时" required>
           <st-input-number
+            placeholder="请输入总课时"
             v-decorator="decorators.course_times"
             :min="1"
             :max="99999"
@@ -108,7 +111,7 @@
     </a-row>
     <!-- 固定约课有的表单 -->
     <a-row :gutter="8" v-show="$route.query.type === '1'">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :lg="11" :xs="22">
         <st-form-item label="请假限制" required>
           <template slot="label">
             请假限制
@@ -162,7 +165,7 @@
     </a-row>
     <!-- 自主约课有的表单内容 -->
     <a-row :gutter="8" v-show="$route.query.type === '2'">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :lg="11" :xs="22">
         <st-form-item label="约课规则" required>
           每周最大约课节数
           <st-input-number
@@ -177,21 +180,21 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :lg="22" :xs="22" :offset="1">
+      <a-col :lg="22" :xs="22">
         <st-form-item label="背景图" required>
           <card-bg-radio isSmallCourse v-model="bg_image" />
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :xxl="10" :lg="14" :xs="22" :offset="1">
+      <a-col :xxl="10" :lg="14" :xs="22">
         <st-form-item label="课程介绍">
           <st-editor v-decorator="decorators.description"></st-editor>
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :lg="11" :xs="22">
         <st-form-item labelFix>
           <st-button type="primary" @click="save" :loading="loading.addGroup">
             保存，开始设置{{ $c('coach') }}信息
