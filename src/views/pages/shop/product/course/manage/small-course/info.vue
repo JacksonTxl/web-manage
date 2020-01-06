@@ -176,13 +176,23 @@ export default {
         })
     },
     onDelGroup() {
-      this.infoService
-        .deleteGroup(this.groupCourseHeaderInfo.course_id)
-        .subscribe(() => {
-          this.$router.push({
-            path: '/shop/product/course/manage/small-course/list'
-          })
-        })
+      const that = this
+      this.$confirm({
+        title: '提示',
+        content: '一旦删除则无法恢复，确认删除吗',
+        okText: '确定',
+        cancelText: '取消',
+        onOk() {
+          that.infoService
+            .deleteGroup(that.groupCourseHeaderInfo.course_id)
+            .subscribe(() => {
+              that.$router.push({
+                path: '/shop/product/course/manage/small-course/list'
+              })
+            })
+        },
+        onCancel() {}
+      })
     },
     onPublish() {
       this.infoService
