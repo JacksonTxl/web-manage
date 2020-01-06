@@ -41,7 +41,7 @@
           </div>
           <div class="item">
             <span class="label ">总课时:</span>
-            <span class="value">{{ groupCourseHeaderInfo.num_limit }}</span>
+            <span class="value">{{ groupCourseHeaderInfo.course_times }}</span>
           </div>
         </div>
       </div>
