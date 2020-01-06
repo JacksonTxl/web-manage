@@ -24,7 +24,8 @@
             v-show="isShowTransfer"
             style="width:282px"
             placeholder="请输入"
-            :min="0"
+            :min="1"
+            :max="999999.9"
             :float="true"
             v-decorator="decorators.transfer_num"
           >
