@@ -33,6 +33,9 @@ export class EditService implements Controller {
       })
     )
   }
+  getParentInfoByPhone(params: any) {
+    return this.memberApi.getParentInfoByPhone(params)
+  }
   getCountryCodes() {
     return this.memberApi.getCountryCodes().pipe(
       tap(res => {

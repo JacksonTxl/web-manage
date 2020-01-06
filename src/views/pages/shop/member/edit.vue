@@ -56,6 +56,7 @@
               <a-input
                 style="width:70%"
                 placeholder="请输入手机号"
+                @change="getParentInfo"
                 v-decorator="rules.parent_mobile"
               />
             </a-input-group>
@@ -488,12 +489,41 @@ export default {
       fieldNames: { label: 'name', value: 'id', children: 'children' },
       faceList: [],
       country_prefix: 37,
-      source_category: -1
+      source_category: -1,
+      isEditParent: false
     }
   },
   methods: {
     minorsChange(val) {
       this.isShowParent = val
+      if (!val) {
+        this.form.setFieldsValue({
+          mobile: ''
+        })
+      }
+    },
+    getParentInfo(e) {
+      if (e.target.value.length === 11) {
+        this.getParentInfoByPhone(e.target.value)
+      }
+    },
+    getParentInfoByPhone(phone) {
+      let query = {
+        mobile: phone
+      }
+      return this.editService.getParentInfoByPhone(query).subscribe(res => {
+        if (res.exists) {
+          this.isEditParent = true
+          this.form.setFieldsValue({
+            parent_username: res.info.member_name
+          })
+        } else {
+          this.isEditParent = false
+          this.form.setFieldsValue({
+            parent_username: ''
+          })
+        }
+      })
     },
     height_validator(rule, value, callback) {
       if (value && (+value < 20 || +value > 250)) {
