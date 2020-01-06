@@ -37,14 +37,9 @@
                 :style="'color:#3F66F6'"
               />
               <st-icon
-                v-if="basicInfo.is_minors && basicInfo.sex.id === 1"
+                v-if="basicInfo.is_minors"
                 type="user-type"
-                color="#FF5E41"
-              />
-              <st-icon
-                v-if="basicInfo.is_minors && basicInfo.sex.id === 2"
-                type="user-type"
-                color="#3F66F6"
+                :color="basicInfo.sex.id === 1 ? '#FF5E41' : '#3F66F6'"
               />
             </st-t2>
             <div class="shop-member-info-title-pannel__info__phone">
