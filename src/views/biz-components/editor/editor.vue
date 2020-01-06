@@ -93,7 +93,6 @@ export default {
   },
   computed: {
     editorId() {
-      console.log(this)
       return 'st-editor-' + this._uid
     }
   },
@@ -101,11 +100,6 @@ export default {
     onChangeGetFile({ image, editor }) {
       editor.insertContent(`<img src="${image.url}">`)
       this.$emit('ready', editor)
-    }
-  },
-  data() {
-    return {
-      editor: null
     }
   },
   mounted() {
@@ -147,13 +141,6 @@ export default {
               ctx.$emit('input', currentContent)
               ctx.$emit('change', currentContent)
             })
-            // editorEvents.forEach(key => {
-            //   if (ctx.$listeners[key]) {
-            //     editor.on(key, e => {
-            //       ctx.$emit(key, e, editor)
-            //     })
-            //   }
-            // })
           },
           init_instance_callback(editor) {
             const editorToolbarEl = document.querySelector('.tox-toolbar')
@@ -169,9 +156,6 @@ export default {
               )
             }).$mount('#editorImageUpload')
             editor.setContent(ctx.value)
-            if (editor) {
-              ctx.editor = editor
-            }
             ctx.$emit('ready', editor)
           }
         })
