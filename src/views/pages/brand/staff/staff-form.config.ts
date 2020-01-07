@@ -102,11 +102,20 @@ export const ruleOptions = (vm: any) => {
       rules: [{ required: true, message: '请选择你的性别' }]
     },
     id_type: { initialValue: 1 },
+    /**
+     * TODO: 临时复制一下代码，待李月处理
+     */
     id_number: {
       rules: [
         {
-          message: '请填写正确的身份证号',
-          pattern: pattern.ID
+          validator: (field: any, value: any, values: any) => {
+            if (vm.id_type === 1 && value && !pattern.ID.test(value)) {
+              return '请填写正确的身份证号'
+            }
+            if (vm.id_type === 2 && value && !pattern.ID_CARD.test(value)) {
+              return '请填写正确的护照号码'
+            }
+          }
         }
       ]
     },

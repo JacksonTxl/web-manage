@@ -100,6 +100,9 @@ export const ruleOptions = (vm: any) => {
       rules: [{ required: true, message: '请选择你的性别' }]
     },
     id_type: { initialValue: 1 },
+    /**
+     * TODO: 临时处理一下，待李月处理
+     */
     id_number: {
       rules: [
         {
