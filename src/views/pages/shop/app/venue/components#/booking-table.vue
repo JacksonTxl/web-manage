@@ -63,9 +63,9 @@ export default {
   name: 'bookingTable',
   bem: {
     b: 'page-shop-app-venue-booking-table',
-    top: 'page-shop-app-venue-booking-table__top',
-    left: 'page-shop-app-venue-booking-table__left',
-    content: 'page-shop-app-venue-booking-table__content'
+    top: 'top',
+    left: 'left',
+    content: 'content'
   },
   props: {
     data: {
@@ -101,10 +101,9 @@ export default {
         left.offsetHeight -
         leftVenue.offsetHeight -
         leftCalendar.offsetHeight -
-        13 +
-        'px'
-      leftContent.style.height = height
-      this.$refs.left.style.height = height
+        13
+      leftContent.style.height = height + 'px'
+      this.$refs.left.style.height = height + 15 + 'px'
     },
     scrollHandler: throttle(function(e) {
       console.log(e)

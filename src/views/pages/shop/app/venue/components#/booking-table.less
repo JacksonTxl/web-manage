@@ -1,5 +1,5 @@
 .page-shop-app-venue-booking-table {
-  &__top {
+  .top {
     white-space: nowrap;
     overflow: hidden;
     margin-left: 44px;
@@ -13,19 +13,30 @@
       font-size: 12px;
     }
   }
-  &__left {
+  .left {
     float: left;
-    margin-right: 16px;
+    width: 44px;
     height: 400px;
     overflow: hidden;
     &__item {
+      position: relative;
       margin-bottom: 20px;
       font-size: 12px;
       line-height: 20px;
       color: #9bacb9;
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        width: 5px;
+        height: 1px;
+        background-color: rgba(0, 0, 0, 0.05);
+        right: 0;
+        top: 9px;
+      }
     }
   }
-  &__content {
+  .content {
     position: relative;
     margin-top: 8px;
     border: 1px solid rgba(0, 0, 0, 0.05);
@@ -41,6 +52,12 @@
     &__column {
       width: 110px;
       flex: none;
+      .content__row:last-child {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      }
+      .content__row:first-child {
+        border-top: none;
+      }
     }
     &__row {
       height: 40px;

@@ -39,7 +39,7 @@
         <span v-if="record.sku_name">（{{ record.sku_name }}）</span>
       </template>
       <template slot="action" slot-scope="text, record">
-        <st-table-actions sytle="width: 120px">
+        <st-table-actions>
           <a
             v-if="record.auth['shop:cloud_store:stock|warehousing']"
             @click="moreIn(record)"
@@ -112,7 +112,7 @@ export default {
       })
       this.$modalRouter.push({
         name: 'store-put-in',
-        props: { skuList: list },
+        props: { list: list },
         on: {
           success: () => {
             this.selectedRowKeys = []
@@ -136,7 +136,7 @@ export default {
       })
       this.$modalRouter.push({
         name: 'store-put-out',
-        props: { skuList: list },
+        props: { list: list },
         on: {
           success: () => {
             this.selectedRowKeys = []
