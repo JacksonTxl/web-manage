@@ -33,7 +33,8 @@
         :columns="columns"
         :page="page"
         @change="onTableChange"
-        :dataSource="list"
+        :dataSource="templist"
+        @expand="onExpand"
         rowKey="id"
         :loading="loading.getList"
         isExpand
@@ -126,13 +127,23 @@ export default {
     }
   },
   computed: {
-    columns
+    columns,
+    indexDataSource() {
+      let mapDataSource = {}
+      this.list.forEach(item => {
+        mapDataSource[item.id] = item
+      })
+      return mapDataSource
+    }
   },
   mounted() {
     this.setSearchData()
-    console.log(this.list)
+    this.templist = this.dataSource()
   },
   watch: {
+    list() {
+      this.templist = this.dataSource()
+    },
     $searchQuery() {
       this.setSearchData()
     }
@@ -145,10 +156,25 @@ export default {
       type: -1,
       start_date: null,
       end_date: null,
-      date: []
+      date: [],
+      templist: cloneDeep(this.list)
     }
   },
   methods: {
+    dataSource() {
+      const list = cloneDeep(this.list)
+      return list.map(item => {
+        item.children = item.children.length > 0 ? [item.children[0]] : []
+        return item
+      })
+    },
+    onExpand(expanded, record) {
+      this.templist.map((item, index) => {
+        if (record.id === item.id) {
+          this.$set(this.templist, index, this.indexDataSource[record.id])
+        }
+      })
+    },
     // 打印小票
     printOrder(order_id) {
       window.open(
@@ -179,7 +205,6 @@ export default {
     },
     // 收款
     onGathering(record) {
-      console.log(this.productType(record.product_type))
       this.$modalRouter.push({
         name: 'sold-deal-gathering',
         props: {
