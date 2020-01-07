@@ -43,7 +43,12 @@
             <st-info-item label="总课时">
               {{ info.course_times }}节
             </st-info-item>
-            <st-info-item label="排课状态">{{ info.online_sale }}</st-info-item>
+            <st-info-item label="排课状态" v-if="info.has_schedule">
+              {{ info.has_schedule.name }}
+              <a v-if="info.has_schedule.status" @click="onViewCourse">
+                已排课
+              </a>
+            </st-info-item>
           </st-info>
         </a-col>
       </a-row>
@@ -368,6 +373,15 @@ export default {
     }
   },
   methods: {
+    onViewCourse() {
+      this.$router.push({
+        path: '/shop/product/course/mini-schedule/inbatch-add',
+        query: {
+          course_id: this.id,
+          ...this.$searchQuery
+        }
+      })
+    },
     fetchCouponList(memberId) {
       const member_id = this.form.getFieldValue('member_id')
       const course_price = this.personalPrice.sell_price
