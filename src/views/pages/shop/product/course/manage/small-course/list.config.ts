@@ -3,16 +3,17 @@ export const columns = (vm: any) => {
     {
       title: `${vm.$c('small_course')}名称`,
       dataIndex: 'course_name',
-      fixed: 'left',
       width: 160
     },
     {
       title: '类型',
       dataIndex: 'small_course_type',
+      width: 100,
       scopedSlots: { customRender: 'small_course_type' }
     },
     {
       title: '排课情况',
+      width: 150,
       scopedSlots: { customRender: 'course_arrangement' }
     },
     {
@@ -28,20 +29,24 @@ export const columns = (vm: any) => {
     {
       title: '售价',
       dataIndex: 'sales_price',
+      width: 100,
       scopedSlots: { customRender: 'sales_price' }
     },
     {
       title: '报名人数',
+      width: 100,
       dataIndex: 'apply_num'
     },
     {
       // title: '成班条件',
       slots: { title: 'class_conditions' },
+      width: 100,
       dataIndex: 'class_conditions'
     },
     {
       // title: '状态',
       slots: { title: 'course_status' },
+      width: 100,
       scopedSlots: { customRender: 'course_status' }
     },
     {
