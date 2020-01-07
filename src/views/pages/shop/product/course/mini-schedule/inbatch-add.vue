@@ -11,7 +11,7 @@
             <a-select-option
               v-for="course in courseSmallCourseOptions"
               :key="course.course_id"
-              :value="course.course_id"
+              :value="+course.course_id"
             >
               {{ course.course_name }}
             </a-select-option>
@@ -304,6 +304,9 @@ export default {
       )
     },
     onChangeCourse(value) {
+      this.getCourseInfo(value)
+    },
+    getCourseInfo(value) {
       this.courseSmallCourseOptions.forEach((item, index) => {
         if (item.course_id === value) {
           this.smallCourseInfo = item
