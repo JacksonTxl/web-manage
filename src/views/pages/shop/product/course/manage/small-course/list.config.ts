@@ -17,11 +17,13 @@ export const columns = (vm: any) => {
     },
     {
       title: '报名时间',
-      dataIndex: 'apply_time'
+      dataIndex: 'apply_time',
+      width: 200
     },
     {
       title: '开班时间',
-      dataIndex: 'course_time'
+      dataIndex: 'course_time',
+      width: 200
     },
     {
       title: '售价',
@@ -44,7 +46,8 @@ export const columns = (vm: any) => {
     },
     {
       title: '负责人',
-      dataIndex: 'charge_person'
+      dataIndex: 'charge_person',
+      width: 150
     },
     {
       title: '操作',
