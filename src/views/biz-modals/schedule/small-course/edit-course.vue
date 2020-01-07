@@ -256,6 +256,36 @@ export default {
           }
         })
     },
+    addSchedule(verifyParams) {
+      this.smallCourseScheduleService
+        .addScheduleInBatch(verifyParams)
+        .subscribe(res => {
+          console.log(res)
+          if (!res.conflict) {
+            verifyParams.schedule_ids = res.schedule_ids
+          }
+          this.editCourse(this.cycleIndex, res.conflict, verifyParams, res.list)
+        })
+    },
+    addCourse(cycleIndex, conflict, params, list) {
+      this.$emit('addCourse', cycleIndex, conflict, params, list)
+      this.show = false
+    },
+    addScheduleCustom(verifyParams) {
+      this.smallCourseScheduleService
+        .addScheduleInBatchCustom(verifyParams)
+        .subscribe(res => {
+          console.log(res)
+          if (!res.conflict) {
+            verifyParams.id = res.schedule_id
+            this.addCustomCourse(verifyParams)
+          }
+        })
+    },
+    addCustomCourse(params) {
+      this.$emit('addCustomCourse', params)
+      this.show = false
+    },
     onSubmit() {
       this.form.validate().then(values => {
         console.log(values)
@@ -281,6 +311,17 @@ export default {
         const verifyParams = Object.assign(this.params, form)
         console.log('提交参数')
         console.log(verifyParams)
+        if (verifyParams.schedule_ids === undefined && this.cycle_type === 1) {
+          this.addSchedule(verifyParams)
+          return
+        }
+        if (
+          typeof verifyParams.schedule_ids == undefined &&
+          this.cycle_type === 2
+        ) {
+          this.addScheduleCustom(verifyParams)
+          return
+        }
         if (this.cycle_type === 1) {
           this.editSchedule(verifyParams)
         } else {
