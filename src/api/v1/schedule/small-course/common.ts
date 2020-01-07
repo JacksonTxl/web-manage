@@ -27,7 +27,7 @@ export class SmallCourseScheduleCommonApi extends Api {
    * 获取教练列表
    */
   getCoachList() {
-    return this.http.get('/v1/schedule/team/shop/coach')
+    return this.http.get('/v1/schedule/small/coaches')
   }
   /**
    * 获取场地列表
