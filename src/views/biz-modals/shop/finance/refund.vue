@@ -56,7 +56,6 @@
               {{ info.product_name }}
             </st-info-item>
             <st-info-item
-              class="mg-b0 white-nowrap"
               label="购买"
               v-if="info.order_type === 6 && !info.is_sub"
             >
