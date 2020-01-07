@@ -1,6 +1,21 @@
 <template>
   <st-modal title="新增课程排期" v-model="show" width="520px">
     <st-form :form="form" labelWidth="72px" labelAuto>
+      <st-form-item label="课程" required>
+        <a-select
+          placeholder="请选择课程"
+          @change="onChangeCourse"
+          v-decorator="decorators.course_id"
+        >
+          <a-select-option
+            v-for="course in courseSmallCourseOptions"
+            :key="course.course_id"
+            :value="course.course_id"
+          >
+            {{ course.course_name }}
+          </a-select-option>
+        </a-select>
+      </st-form-item>
       <st-form-item label="日期" required>
         <a-date-picker
           style="width:100%"
@@ -20,23 +35,9 @@
         <a-time-picker
           format="HH:mm"
           style="width:100%"
+          @change="changeEndTime"
           v-decorator="decorators.end_time"
         />
-      </st-form-item>
-      <st-form-item label="课程" required>
-        <a-select
-          placeholder="请选择课程"
-          @change="onChangeCourse"
-          v-decorator="decorators.course_id"
-        >
-          <a-select-option
-            v-for="course in courseSmallCourseOptions"
-            :key="course.course_id"
-            :value="course.course_id"
-          >
-            {{ course.course_name }}
-          </a-select-option>
-        </a-select>
       </st-form-item>
       <st-form-item :label="$c('coach')" required>
         <a-select
@@ -125,17 +126,16 @@ export default {
   methods: {
     changeStartDays(valus) {
       this.courseStartDate = valus.format('YYYY-MM-DD')
-      console.log(this.courseStartTime)
     },
     changeStartTime(valus) {
-      console.log(valus)
       this.startTime = moment(
         `${this.courseStartDate} ${valus.format('HH:mm')}`
       )
       console.log(this.startTime)
     },
-    changeendTime(valus) {
-      console.log(valus)
+    changeEndTime(valus) {
+      this.endTime = moment(`${this.courseStartDate} ${valus.format('HH:mm')}`)
+      console.log(this.endTime)
     },
     onChangeCourse(value) {
       this.smallCourseScheduleCommonService.getBindCoachList(value).subscribe()
