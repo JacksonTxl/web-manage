@@ -656,20 +656,20 @@ export default {
     },
     // 取消删除所有未发布
     onDeleteScheduleAll() {
-      if (this.cycle_type === 2 && this.customizeScheduleList <= 0) {
-        this.onClickGoBack()
-        return
-      } else if (this.cycle_type === 1) {
-        let hasCoursesFlag = false
+      let hasCoursesFlag = false
+      if (this.cycle_type === 2 && this.customizeScheduleList > 0) {
+        hasCoursesFlag = true
+      }
+      if (this.cycle_type === 1) {
         this.scheduleList.forEach((item, index) => {
           if (item.course_time.length > 0) {
             hasCoursesFlag = true
           }
-          if (!hasCoursesFlag) {
-            this.onClickGoBack()
-            return
-          }
         })
+      }
+      if (!hasCoursesFlag) {
+        this.onClickGoBack()
+        return
       } else {
         this.$confirm({
           title: '提示',
