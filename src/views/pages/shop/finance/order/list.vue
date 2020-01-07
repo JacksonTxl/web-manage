@@ -172,10 +172,6 @@ export default {
       console.log(expanded, record)
       this.templist.map((item, index) => {
         if (record.id === item.id) {
-          console.log(
-            'this.indexDataSource[record.id]',
-            this.indexDataSource[record.id].children
-          )
           this.$set(this.templist, index, this.indexDataSource[record.id])
         }
       })
