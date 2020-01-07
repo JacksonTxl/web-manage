@@ -169,7 +169,6 @@ export default {
       })
     },
     onExpand(expanded, record) {
-      console.log(expanded, record)
       this.templist.map((item, index) => {
         if (record.id === item.id) {
           this.$set(this.templist, index, this.indexDataSource[record.id])
@@ -206,7 +205,6 @@ export default {
     },
     // 收款
     onGathering(record) {
-      console.log(this.productType(record.product_type))
       this.$modalRouter.push({
         name: 'sold-deal-gathering',
         props: {
