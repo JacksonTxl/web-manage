@@ -279,14 +279,6 @@ export default {
     this.filterDateList(this.scheduleList)
     this.pickerList.push([moment(), moment()])
   },
-  mounted() {
-    let course_id = this.$searchQuery.course_id
-    console.log(course_id)
-    this.form.setFieldsValue({
-      course_id: +course_id
-    })
-    this.getCourseInfo(course_id)
-  },
   methods: {
     dealScheduleDate() {
       this.pickerList = []
