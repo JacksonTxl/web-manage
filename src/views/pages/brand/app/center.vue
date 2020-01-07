@@ -37,10 +37,10 @@ export default {
   name: 'BrandAppIndex',
   bem: {
     b: 'brand-app-index',
-    banner: 'brand-app-index__banner',
-    list: 'brand-app-index__list',
-    top: 'brand-app-index__list__top',
-    bottom: 'brand-app-index__list__bottom'
+    banner: 'banner',
+    list: 'list',
+    top: 'top',
+    bottom: 'bottom'
   },
   serviceInject() {
     return {

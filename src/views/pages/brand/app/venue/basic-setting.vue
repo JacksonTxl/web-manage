@@ -21,7 +21,8 @@
     <st-t4 class="mg-t24">预约范围</st-t4>
     <div class="st-des">
       用户可预约{{
-        info.venues_reserve_start | enumFilter('setting.reserve_start')
+        info.venues_reserve_start
+          | enumFilter('venues_reserve.venues_reserve_start')
       }}
       到{{
         info.venues_reserve_end | enumFilter('setting.reserve_range')
@@ -31,7 +32,8 @@
     <st-t4>取消预约</st-t4>
     <div class="st-des">
       允许用户在场地预约开始前{{
-        info.venues_cancel_limit | enumFilter('setting.cancel_reserve')
+        info.venues_cancel_limit
+          | enumFilter('venues_reserve.venues_cancel_limit')
       }}取消预约，员工代取消不受此限制
     </div>
     <st-hr></st-hr>
