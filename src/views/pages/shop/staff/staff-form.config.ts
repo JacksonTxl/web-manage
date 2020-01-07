@@ -104,10 +104,10 @@ export const ruleOptions = (vm: any) => {
       rules: [
         {
           validator: (field: any, value: any, values: any) => {
-            if (vm.id_type === 1 && !pattern.ID.test(value)) {
+            if (vm.id_type === 1 && value && !pattern.ID.test(value)) {
               return '请填写正确的身份证号'
             }
-            if (vm.id_type === 2 && !pattern.ID_CARD.test(value)) {
+            if (vm.id_type === 2 && value && !pattern.ID_CARD.test(value)) {
               return '请填写正确的护照号码'
             }
           }
