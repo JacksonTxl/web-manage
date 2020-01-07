@@ -86,7 +86,6 @@
           </st-table-actions>
         </div>
       </st-table>
-      {{ loading.getList }}
     </div>
   </st-panel>
 </template>
