@@ -322,7 +322,7 @@ export default {
           name = 'deposit'
           break
         case 6:
-          name = 'member'
+          name = 'small_course/detail'
           break
         case 7:
           name = 'advance'
