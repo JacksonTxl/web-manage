@@ -88,32 +88,34 @@
         </a-radio-button>
       </a-radio-group>
       <div :class="calendar()" id="booking-left-calendar">
-        <swiper :options="sliderOptions">
-          <swiper-slide v-for="(item, index) in calendarData" :key="index">
-            <div
-              :class="[calendar('date'), { act: pickedIndex === index }]"
-              @click="pickDate(item, index)"
-            >
-              <div :class="calendar('week')">{{ item.week }}</div>
-              <div :class="calendar('day')">{{ item.day }}</div>
+        <div :class="calendar('wrapper')">
+          <swiper :options="sliderOptions">
+            <swiper-slide v-for="(item, index) in calendarData" :key="index">
+              <div
+                :class="[calendar('date'), { act: pickedIndex === index }]"
+                @click="pickDate(item, index)"
+              >
+                <div :class="calendar('week')">{{ item.week }}</div>
+                <div :class="calendar('day')">{{ item.day }}</div>
+              </div>
+            </swiper-slide>
+          </swiper>
+          <div
+            class="swiper-button-prev swiper-booking-button-prev"
+            slot="button-prev"
+          >
+            <div :class="calendar('icon')">
+              <st-icon type="arrow-left" class="arrow-left" />
             </div>
-          </swiper-slide>
-        </swiper>
-        <div
-          class="swiper-button-prev swiper-booking-button-prev"
-          slot="button-prev"
-        >
-          <div :class="calendar('icon')">
-            <st-icon type="arrow-left" class="arrow-left" />
           </div>
-        </div>
 
-        <div
-          class="swiper-button-next swiper-booking-button-next"
-          slot="button-next"
-        >
-          <div :class="calendar('icon')">
-            <st-icon type="arrow-right" class="arrow-right" />
+          <div
+            class="swiper-button-next swiper-booking-button-next"
+            slot="button-next"
+          >
+            <div :class="calendar('icon')">
+              <st-icon type="arrow-right" class="arrow-right" />
+            </div>
           </div>
         </div>
       </div>
@@ -141,6 +143,7 @@ import memberSearch from '@/views/biz-components/member-search/member-search'
 import { ruleOptions, columns } from './booking.config'
 import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
 import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
+import { PatternService } from '@/services/pattern.service'
 export default {
   name: 'PageShopAppVenueBooking',
   bem: {
@@ -151,7 +154,8 @@ export default {
   },
   serviceInject() {
     return {
-      bookingService: BookingService
+      bookingService: BookingService,
+      pattern: PatternService
     }
   },
   rxState() {

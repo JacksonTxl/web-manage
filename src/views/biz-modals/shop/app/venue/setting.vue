@@ -15,7 +15,7 @@
             <th>循环日期</th>
             <th>时间段</th>
             <th>状态</th>
-            <th>价格(元)</th>
+            <th class="ta-r">价格(元)</th>
             <th style="width:160px">操作</th>
           </tr>
         </thead>
@@ -50,7 +50,7 @@
                   item.can_reserve | enumFilter('venues_reserve.can_reserve')
                 }}
               </td>
-              <td>
+              <td class="ta-r">
                 {{ item.price }}
               </td>
               <td>
@@ -68,7 +68,7 @@
                     </st-popconfirm>
                   </a>
                   <a-divider type="vertical"></a-divider>
-                  <a v-if="item.weight !== 1 && auth.top" @click="order(item)">
+                  <a v-if="item.weight !== 3 && auth.top" @click="order(item)">
                     置顶
                   </a>
                 </template>

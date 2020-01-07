@@ -52,11 +52,15 @@
             <st-info-item label="购买" v-if="info.order_type !== 6">
               {{ info.product_name }}
             </st-info-item>
+            <st-info-item label="购买" v-if="info.is_sub === 1">
+              {{ info.product_name }}
+            </st-info-item>
             <st-info-item
               class="mg-b0 white-nowrap"
               label="购买"
-              v-if="info.order_type === 6"
+              v-if="info.order_type === 6 && !info.is_sub"
             >
+              <!-- TODO:雄伟给返回 -->
               <st-overflow-text
                 title="购买"
                 max-width="180px"

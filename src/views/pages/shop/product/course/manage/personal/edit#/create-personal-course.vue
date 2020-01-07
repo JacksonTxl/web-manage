@@ -140,7 +140,7 @@ export default {
   },
   data() {
     return {
-      form: this.$form.createForm(this),
+      form: this.$stForm.create(),
       fileList: []
     }
   },
@@ -152,7 +152,7 @@ export default {
   methods: {
     save(e) {
       e.preventDefault()
-      this.form.validateFields().then(() => {
+      this.form.validate().then(() => {
         const data = this.getData()
         this.editService.updateCourse(data).subscribe(res => {
           this.messageService.success({

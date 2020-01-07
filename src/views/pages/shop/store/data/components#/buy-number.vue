@@ -76,17 +76,17 @@ export default {
     },
     filterBuyNum(value) {
       if (value === 1) {
-        this.filterBuyNumInfo = this.data.top_scatter.slice(0, 5).map(item => {
+        this.filterBuyNumInfo = this.data.top_scatter.map(item => {
           return {
             name: item.scatter_type,
             value: item.sum
           }
         })
       } else {
-        this.filterBuyNumInfo = this.data.top_scatter.slice(5, 10).map(item => {
+        this.filterBuyNumInfo = this.data.top_scatter.map(item => {
           return {
             name: item.scatter_type,
-            value: item.sum
+            value: item.price
           }
         })
       }

@@ -10,6 +10,7 @@ export class AddService {
   info$ = new State({})
   sites$ = new State([])
   harfEnums$ = this.userService.getOptions$('venues_reserve.reserve_half_time')
+  oneEnums$ = this.userService.getOptions$('venues_reserve.reserve_one_time')
   timeEnums$ = this.userService.getOptions$('venues_reserve.time_limit_type')
   cyclicEnums$ = this.userService.getOptions$('venues_reserve.cyclic_type')
   priorityEnums$ = this.userService.getOptions$('venues_reserve.weight')
