@@ -17,10 +17,16 @@
           {{ is_allow_transfer }}
         </span>
       </div>
-      <div :class="b('item')">
+      <div :class="b('item')" v-if="groupInfo.small_course_type === 1">
         <span :class="b('item-label')">请假设置：</span>
         <span :class="b('item-value')">
           {{ groupInfo.is_leave | enumFilter('small_course.is_allow_leave') }}
+        </span>
+      </div>
+      <div :class="b('item')" v-else>
+        <span :class="b('item-label')">约课权益：</span>
+        <span :class="b('item-value')">
+          {{ groupInfo.appointment_rights }}
         </span>
       </div>
       <div :class="b('item')">
@@ -47,7 +53,12 @@
     <div class="mg-t24">
       <span :class="b('item-label')">详细介绍：</span>
       <st-container class="mg-t8" v-if="groupInfo.description">
-        <div v-html="groupInfo.description">{{ groupInfo.description }}</div>
+        <div
+          style="max-height:500px;overflow:auto;"
+          v-html="groupInfo.description"
+        >
+          {{ groupInfo.description }}
+        </div>
       </st-container>
     </div>
   </st-panel>
