@@ -167,7 +167,7 @@ export default {
         path: '/shop/product/course/manage/small-course/edit',
         query: {
           id: this.groupCourseHeaderInfo.course_id,
-          type: this.groupCourseHeaderInfo.small_course_type
+          type: this.groupCourseHeaderInfo.small_course_type + ''
         }
       })
     },

@@ -135,7 +135,7 @@
             v-show="isShowLeaveContent"
           >
             <div class="mg-b8">
-              <span class="mg-r8">允许请假时间,请假前</span>
+              <span class="mg-r8">允许请假时间,上课前</span>
               <st-input-number
                 :min="1"
                 :max="72"
