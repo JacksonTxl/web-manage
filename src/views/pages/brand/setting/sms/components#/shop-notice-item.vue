@@ -362,7 +362,7 @@ export default {
       if (this.info.receiver.operator) {
         receiver.operator = this.params.receiver.operator.value ? 1 : 0
       }
-      custom_phone = this.params.custom_phone
+      const custom_phone = this.params.custom_phone
 
       const para = Object.assign({}, this.params, {
         id: this.info.id,
