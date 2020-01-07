@@ -18,7 +18,7 @@
     </a-tabs>
     <div class="action">
       <div class="mg-r16">
-        <date-picker @timesFn="userAnalysis"></date-picker>
+        <date-picker @onChange="userAnalysis"></date-picker>
       </div>
     </div>
   </div>
@@ -43,7 +43,7 @@ export default {
       this.$emit('change', Number(query))
     },
     userAnalysis(query) {
-      this.$emit('timesFn', query)
+      this.$emit('onChange', query)
     }
   }
 }

@@ -187,28 +187,24 @@ export default {
     },
     goNext(e) {
       e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          this.submit(values, 1)
-        }
+      this.form.validate().then(values => {
+        this.submit(values, 1)
       })
     },
     save(e) {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          let obj = this.filterProvinces(values.provinces)
-          let newData = Object.assign(values, obj)
-          newData.birthday &&
-            (newData.birthday = newData.birthday.format('YYYY-MM-DD'))
-          newData.graduation_time &&
-            (newData.graduation_time = newData.graduation_time.format(
-              'YYYY-MM-DD'
-            ))
-          delete newData.provinces
-          this.$emit('detailInfoSave', {
-            data: newData
-          })
-        }
+      this.form.validate().then(values => {
+        let obj = this.filterProvinces(values.provinces)
+        let newData = Object.assign(values, obj)
+        newData.birthday &&
+          (newData.birthday = newData.birthday.format('YYYY-MM-DD'))
+        newData.graduation_time &&
+          (newData.graduation_time = newData.graduation_time.format(
+            'YYYY-MM-DD'
+          ))
+        delete newData.provinces
+        this.$emit('detailInfoSave', {
+          data: newData
+        })
       })
     },
     submit(data, saveOrgoNext) {

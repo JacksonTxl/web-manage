@@ -163,11 +163,7 @@
                 <span>添加规格项（{{ skuList.length }}/3）</span>
               </st-button>
               <div
-                :class="
-                  index === skuList.length - 1
-                    ? `${basic('sku--item')} ${basic('sku--last')}`
-                    : basic('sku--item')
-                "
+                :class="skuItem()"
                 v-for="(item, index) in skuList"
                 :key="index"
               >
@@ -184,16 +180,16 @@
                     style="width: 220px"
                   ></a-input>
                   <span
-                    :class="basic('sku--item-del')"
+                    :class="skuItem('del')"
                     @click="delSku(index)"
                     v-if="!isEditMode"
                   >
                     <st-icon
                       type="delete"
-                      :class="basic('sku--item-icon')"
+                      :class="skuItem('icon')"
                       color="#3F66F6"
                     ></st-icon>
-                    <span :class="basic('sku--item-text')">
+                    <span :class="skuItem('text')">
                       删除
                     </span>
                   </span>
@@ -216,7 +212,7 @@
                     />
                   </span>
                   <a
-                    :class="basic('sku--item-add')"
+                    :class="skuItem('add')"
                     @click="addSkuItem(index)"
                     v-if="item.spec_item_name.length <= 10"
                   >
@@ -343,7 +339,8 @@ import { UserService } from '@/services/user.service'
 import { cloneDeep } from 'lodash-es'
 export default {
   bem: {
-    basic: 'shop-store-add'
+    basic: 'shop-store-add',
+    skuItem: 'sku-item'
   },
   serviceInject() {
     return {
