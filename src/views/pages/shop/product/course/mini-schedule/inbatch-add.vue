@@ -346,10 +346,8 @@ export default {
         .getScheduleInBatch(params)
         .subscribe(res => {
           console.log(res)
-          // 用回显数据判断是新增还是编辑
           this.disabledAddCourseBtn = false
           this.disabledCustomBtn = false
-          console.log(changeTyps)
           this.initScheduleList(res.list, res.cycle_type, changeTyps)
         })
     },
@@ -577,20 +575,13 @@ export default {
     },
     onDeleteCourseSchedule(item, cycleIndex, positionIndex) {
       console.log('删除周期的单个排期')
-      console.log(cycleIndex)
-      console.log(positionIndex)
-      console.log(positionIndex)
-      console.log(item)
       let params = {}
       params = item
       params.del_type = DELETE_TYPE.SINGLE
       console.log(params)
       this.smallCourseScheduleService.cancelCycle(params).subscribe(res => {
         this.scheduleList[cycleIndex].course_time.forEach((dayItems, index) => {
-          console.log(dayItems)
           if (dayItems.week == item.week) {
-            console.log('查找排期')
-
             dayItems.list.splice(positionIndex, 1)
             if (dayItems.list.length === 0) {
               this.scheduleList[cycleIndex].course_time.splice(index, 1)

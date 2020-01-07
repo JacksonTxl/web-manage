@@ -177,6 +177,8 @@ export default {
     }
   },
   created() {
+    console.log(this.cycle)
+    console.log(this.item)
     this.showFlag = this.item[0].show || this.customizeShow
   },
   methods: {
@@ -275,7 +277,6 @@ export default {
         const verifyParams = Object.assign(this.params, form)
         console.log(verifyParams)
         console.log(this.cycle_type)
-        console.log(this.editScheduleCycleFlag)
         if (this.cycle_type === 1) {
           this.addSchedule(verifyParams)
         } else {
