@@ -44,7 +44,14 @@
       rowKey="id"
     >
       <template slot="site_status" slot-scope="text">
-        {{ text | enumFilter('venues_reserve.venues_site_status') }}
+        <st-text
+          :status="{
+            success: text === 1,
+            error: text === 2
+          }"
+        >
+          {{ text | enumFilter('venues_reserve.venues_site_status') }}
+        </st-text>
       </template>
       <div slot="action" slot-scope="text, record">
         <st-table-actions>

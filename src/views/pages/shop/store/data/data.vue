@@ -98,7 +98,7 @@
                         :data="orderMember(storeBoard, 0, 'order')"
                         :name="filterOrderMemberTitle()"
                         style="width: 100%;"
-                        :total="wholeNav[wholenavIndex].num"
+                        :total="Number(wholeNav[wholenavIndex].num)"
                         :height="
                           wholeNavcom === 'brand-user-avg-bar'
                             ? height325
@@ -131,7 +131,7 @@
                         :name="filterOrderMemberTitle()"
                         :unit="wholeNav[wholenavIndex].unit"
                         :data="orderMember(storeBoard, 0, 'member')"
-                        :total="wholeNav[wholenavIndex].num"
+                        :total="Number(wholeNav[wholenavIndex].num)"
                         style="width: 100%;"
                         :height="
                           wholeNavcom === 'brand-user-avg-bar'
@@ -209,7 +209,7 @@
                     <st-t3>类目营收占比</st-t3>
                     <shop-store-data-revenue-ring
                       :data="storeCategoryRank.category_list"
-                      :total="storeCategoryRank.total_revenue"
+                      :total="Number(storeCategoryRank.total_revenue)"
                       :padding="[60, '50%', 38, 0]"
                       name="总营收"
                       height="280"

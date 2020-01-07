@@ -162,22 +162,20 @@ export default {
     },
     onClickSubmit(e) {
       e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          const postData = {
-            ...values,
-            id: this.info.id
-          }
-          this.editService.edit(postData).subscribe(() => {
-            this.messageService.success({ content: '编辑成功' })
-            this.$router.push({
-              name: 'shop-app-venue-manage-list',
-              query: {
-                id: this.info.venues_id
-              }
-            })
-          })
+      this.form.validate().then(values => {
+        const postData = {
+          ...values,
+          id: this.info.id
         }
+        this.editService.edit(postData).subscribe(() => {
+          this.messageService.success({ content: '编辑成功' })
+          this.$router.push({
+            name: 'shop-app-venue-manage-list',
+            query: {
+              id: this.info.venues_id
+            }
+          })
+        })
       })
     }
   }
