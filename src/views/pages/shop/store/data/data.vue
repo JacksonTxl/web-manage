@@ -98,13 +98,7 @@
                         :data="orderMember(storeBoard, 0, 'order')"
                         :name="filterOrderMemberTitle()"
                         style="width: 100%;"
-                        :total="
-                          orderMember(storeBoard, 0, 'order').reduce(
-                            (item1, item2) => {
-                              return Number(item1.value) + Number(item2.value)
-                            }
-                          )
-                        "
+                        :total="Number(wholeNav[wholenavIndex].num)"
                         :height="
                           wholeNavcom === 'brand-user-avg-bar'
                             ? height325
@@ -137,13 +131,7 @@
                         :name="filterOrderMemberTitle()"
                         :unit="wholeNav[wholenavIndex].unit"
                         :data="orderMember(storeBoard, 0, 'member')"
-                        :total="
-                          orderMember(storeBoard, 0, 'member').reduce(
-                            (item1, item2) => {
-                              return Number(item1.value) + Number(item2.value)
-                            }
-                          )
-                        "
+                        :total="Number(wholeNav[wholenavIndex].num)"
                         style="width: 100%;"
                         :height="
                           wholeNavcom === 'brand-user-avg-bar'
@@ -221,7 +209,7 @@
                     <st-t3>类目营收占比</st-t3>
                     <shop-store-data-revenue-ring
                       :data="storeCategoryRank.category_list"
-                      :total="storeCategoryRank.total_revenue"
+                      :total="Number(storeCategoryRank.total_revenue)"
                       :padding="[60, '50%', 38, 0]"
                       name="总营收"
                       height="280"
@@ -339,7 +327,9 @@ export default {
   methods: {
     // 整体看板时间
     wholeTimesFn(value) {
-      this.dataService.getStoreBoard(value).subscribe()
+      this.dataService.getStoreBoard(value).subscribe(res => {
+        this.wholenavFilter()
+      })
     },
     // 销售分析时间
     saleTimesFn(value) {

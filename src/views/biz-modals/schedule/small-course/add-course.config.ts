@@ -1,16 +1,37 @@
 export const ruleOptions = (vm: any) => {
   return {
     start_days: {
-      rules: [{ required: true, message: '时间不能为空' }],
-      initialValue: vm.time
+      rules: [{ required: true, message: '时间不能为空' }]
     },
     start_time: {
-      rules: [{ required: true, message: '请选择开始时间' }],
-      initialValue: vm.time
+      rules: [
+        { required: true, message: '请选择开始时间' },
+        {
+          validator: (filed: any, value: any, values: any) => {
+            if (value && value > values.end_time) {
+              return '开始时间不能大于结束时间'
+            }
+            if (value && value < vm.smallCourseInfo.course_begin_time) {
+              return '开始时间不能小于开班时间'
+            }
+          }
+        }
+      ]
     },
     end_time: {
-      rules: [{ required: true, message: '请选择结束时间' }],
-      initialValue: vm.time
+      rules: [
+        { required: true, message: '请选择结束时间' },
+        {
+          validator: (filed: any, value: any, values: any) => {
+            if (value && value < values.start_time) {
+              return '结束时间不能小于开始时间'
+            }
+            if (value && value > vm.smallCourseInfo.course_end_time) {
+              return '结束时间不能大于课程结束时间'
+            }
+          }
+        }
+      ]
     },
     course_id: {
       rules: [
@@ -37,7 +58,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     current_course_name: {
-      rules: [{ required: true, message: '请输入课程名称' }]
+      rules: [{ required: false, message: '请输入课程名称' }]
     }
   }
 }

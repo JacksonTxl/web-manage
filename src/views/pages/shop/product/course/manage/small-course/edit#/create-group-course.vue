@@ -1,7 +1,7 @@
 <template>
   <st-form :form="form" class="page-create-container" labelWidth="130px">
     <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :lg="11" :xs="22">
         <st-form-item required>
           <template slot="label">
             {{ $c('small_course') }}名称
@@ -17,7 +17,7 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :lg="11" :xs="22">
         <st-form-item label="适用范围" required>
           <a-select
             @change="onCourseTypeChange"
@@ -37,9 +37,10 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :lg="11" :xs="22">
         <st-form-item label="开班时间" required>
           <a-range-picker
+            :disabled="isDisabled"
             style="width:100%"
             :disabledDate="disabledDate"
             :showTime="{ format: 'HH:mm' }"
@@ -50,7 +51,7 @@
       </a-col>
     </a-row>
     <a-row :gutter="8" style="height:56px;overflow:hidden">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :lg="11" :xs="22">
         <st-form-item required>
           <template slot="label">
             人数限制
@@ -59,7 +60,9 @@
           <div :class="b('num-limit')">
             <a-form-item class="page-a-form">
               <st-input-number
+                placeholder="请输入人数下限"
                 v-decorator="decorators.num_min"
+                :disabled="isDisabled"
                 :min="1"
                 :max="49"
               >
@@ -71,6 +74,7 @@
             <span>~</span>
             <a-form-item class="page-a-form">
               <st-input-number
+                placeholder="请输入人数上限"
                 v-decorator="decorators.num_max"
                 :min="1"
                 :max="50"
@@ -85,9 +89,11 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :lg="11" :xs="22">
         <st-form-item label="总课时" required>
           <st-input-number
+            placeholder="请输入总课时"
+            :disabled="isDisabled"
             v-decorator="decorators.course_times"
             :min="1"
             :max="99999"
@@ -101,7 +107,7 @@
     </a-row>
     <!-- 固定约课有的表单 -->
     <a-row :gutter="8" v-show="isShowLimitContent">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :lg="11" :xs="22">
         <st-form-item required>
           <template slot="label">
             请假限制
@@ -125,7 +131,7 @@
             v-show="isShowLeaveContent"
           >
             <div class="mg-b8">
-              <span class="mg-r8">允许请假时间,请假前</span>
+              <span class="mg-r8">允许请假时间,上课前</span>
               <st-input-number
                 v-decorator="decorators.leave_hours"
                 :min="1"
@@ -155,7 +161,7 @@
     </a-row>
     <!-- 自主约课有的表单内容 -->
     <a-row :gutter="8" v-show="!isShowLimitContent">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :lg="11" :xs="22">
         <st-form-item label="约课规则" required>
           每周最大约课节数
           <st-input-number
@@ -171,14 +177,14 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :lg="22" :xs="22" :offset="1">
+      <a-col :lg="22" :xs="22">
         <st-form-item label="背景图" required>
           <card-bg-radio isSmallCourse v-model="bg_image" />
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :xxl="10" :lg="14" :xs="22" :offset="1">
+      <a-col :xxl="10" :lg="14" :xs="22">
         <st-form-item label="课程介绍">
           <st-editor
             v-decorator="decorators.description"
@@ -188,7 +194,7 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :lg="11" :xs="22">
         <st-form-item labelFix>
           <st-button type="primary" @click="save" :loading="loading.editGroup">
             保存，开始设置{{ $c('coach') }}信息
@@ -207,6 +213,7 @@ import { ruleOptions } from '../form.config'
 import { PatternService } from '@/services/pattern.service'
 import CardBgRadio from '@/views/biz-components/card-bg-radio/card-bg-radio'
 import StEditor from '@/views/biz-components/editor/editor'
+import { CLASS_STATUS } from '@/constants/course/small-course'
 
 export default {
   name: 'create-group-course',
@@ -237,6 +244,15 @@ export default {
     b: 'create-group-course'
   },
   components: { CardBgRadio, StEditor },
+  computed: {
+    isDisabled() {
+      return (
+        this.CLASS_STATUS.SIGNING_UNCLASSED === this.info.info.class_status ||
+        this.CLASS_STATUS.SIGNING_CLASSED === this.info.info.class_status ||
+        this.CLASS_STATUS.CLASSED === this.info.info.class_status
+      )
+    }
+  },
   mounted() {
     this.isShowLimitContent = this.$route.query.type === '1'
     this.$emit('onCourseNameChange', this.info.info.course_name)
@@ -255,7 +271,8 @@ export default {
         index: 1
       },
       isShowLeaveContent: false,
-      isShowLimitContent: false
+      isShowLimitContent: false,
+      CLASS_STATUS
     }
   },
   methods: {
@@ -299,6 +316,12 @@ export default {
         values.img_type = this.bg_image.index
         if (this.bg_image.index === 0) {
           values.img_type = 3
+          if (!this.bg_image.image_url) {
+            this.messageService.error({
+              content: '请上传图片'
+            })
+            return
+          }
         }
         delete values.date
         this.editService.editGroup(values).subscribe(res => {

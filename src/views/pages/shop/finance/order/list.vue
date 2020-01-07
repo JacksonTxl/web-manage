@@ -43,6 +43,12 @@
         <template slot="pay_status" slot-scope="text">
           {{ text | enumFilter('finance.pay_status') }}
         </template>
+        <template slot="member_mobile" slot-scope="text, record">
+          <span v-if="record.is_minors">
+            {{ record.parent_mobile }}({{ record.parent_user_role }})
+          </span>
+          <span v-else>{{ record.member_mobile }}</span>
+        </template>
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
             <!--  -->
@@ -52,36 +58,30 @@
             >
               收款
             </a>
-            <!--  -->
             <a
               @click="onCancel(record)"
               v-if="record.auth['brand_shop:order:order|cancel']"
             >
               取消
             </a>
-            <!--   -->
             <a
               @click="onOrderInfo(record)"
               v-if="record.auth['brand_shop:order:order|get']"
             >
               详情
             </a>
-
-            <!--  -->
             <a
               @click="onRefund(record)"
               v-if="record.auth['brand_shop:order:order|refund']"
             >
               退款
             </a>
-            <!--  -->
             <a
               @click="onSplit(record)"
               v-if="record.auth['brand_shop:order:order|split']"
             >
               业绩拆分
             </a>
-            <!--  -->
             <a
               @click="printOrder(record.id)"
               v-if="
@@ -91,7 +91,6 @@
             >
               打印小票
             </a>
-            <!--   -->
             <a
               @click="onChildredRefund(record)"
               v-if="
@@ -316,7 +315,7 @@ export default {
           name = 'deposit'
           break
         case 6:
-          name = 'member'
+          name = 'small_course_order/detail'
           break
         case 7:
           name = 'advance'

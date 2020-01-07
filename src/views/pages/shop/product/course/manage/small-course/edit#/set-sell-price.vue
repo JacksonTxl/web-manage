@@ -24,7 +24,9 @@
             v-show="isShowTransfer"
             style="width:282px"
             placeholder="请输入"
-            :min="1"
+            :min="0"
+            :max="999999.9"
+            :float="true"
             v-decorator="decorators.transfer_num"
           >
             <a-select
@@ -43,7 +45,10 @@
           </st-input-number>
         </st-form-item>
         <st-form-item label="售卖方式">
-          <a-checkbox-group v-decorator="decorators.sell_type">
+          <a-checkbox-group
+            v-decorator="decorators.sell_type"
+            :disabled="isDisabled"
+          >
             <a-checkbox
               v-for="(item, index) in sellType"
               :value="item.value"
@@ -56,6 +61,7 @@
         </st-form-item>
         <st-form-item label="报名时间" required>
           <a-range-picker
+            :disabled="isDisabled"
             :showTime="{ format: 'HH:mm' }"
             format="YYYY-MM-DD HH:mm"
             style="width:100%"
@@ -67,6 +73,8 @@
           <st-input-number
             v-decorator="decorators.sales_price"
             :min="0"
+            :disabled="isDisabled"
+            placeholder="请输入售卖价格"
             :max="999999.9"
             float
           >
@@ -107,6 +115,7 @@ import { remove } from 'lodash-es'
 import { ruleOptions } from '../form.config'
 import { GradientService } from '@/views/fragments/course/personal#/gradient.service'
 import { PatternService } from '@/services/pattern.service'
+import { CLASS_STATUS } from '@/constants/course/small-course'
 
 export default {
   name: 'SetSellPrice',
@@ -149,10 +158,19 @@ export default {
     return {
       form,
       decorators,
-      isShowTransfer: false
+      isShowTransfer: false,
+      CLASS_STATUS
     }
   },
-  computed: {},
+  computed: {
+    isDisabled() {
+      return (
+        this.CLASS_STATUS.SIGNING_UNCLASSED === this.info.info.class_status ||
+        this.CLASS_STATUS.SIGNING_CLASSED === this.info.info.class_status ||
+        this.CLASS_STATUS.CLASSED === this.info.info.class_status
+      )
+    }
+  },
   watch: {
     courseName(val) {
       this.form.setFieldsValue({
@@ -166,6 +184,10 @@ export default {
     }
   },
   mounted() {
+    const curTime = moment()
+    this.form.setFieldsValue({
+      apply_date: [curTime.add('30', 'minutes'), curTime]
+    })
     this.setFieldsValue()
   },
   methods: {
@@ -176,6 +198,7 @@ export default {
         is_allow_transfer: info.is_allow_transfer,
         transfer_num: info.transfer_num,
         sell_type: info.sell_type,
+        transfer_type: info.transfer_type,
         apply_date: info.apply_begin_time
           ? [moment(info.apply_begin_time), moment(info.apply_end_time)]
           : [],

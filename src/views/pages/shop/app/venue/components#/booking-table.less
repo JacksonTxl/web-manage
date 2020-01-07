@@ -1,8 +1,9 @@
 .page-shop-app-venue-booking-table {
-  &__top {
+  .top {
     white-space: nowrap;
     overflow: hidden;
     margin-left: 44px;
+    height: 21px;
     &__item {
       display: inline-block;
       width: 110px;
@@ -12,34 +13,58 @@
       font-size: 12px;
     }
   }
-  &__left {
+  .left {
     float: left;
-    margin-right: 16px;
+    width: 44px;
     height: 400px;
     overflow: hidden;
     &__item {
+      position: relative;
       margin-bottom: 20px;
       font-size: 12px;
       line-height: 20px;
       color: #9bacb9;
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        width: 5px;
+        height: 1px;
+        background-color: rgba(0, 0, 0, 0.05);
+        right: 0;
+        top: 9px;
+      }
     }
   }
-  &__content {
-    margin-top: 8px;
-    display: flex;
+  .content {
     position: relative;
-    height: 400px;
+    margin-top: 8px;
     border: 1px solid rgba(0, 0, 0, 0.05);
+    border-right: 0;
+    margin-left: 44px;
+    &.no-border {
+      border-color: transparent;
+    }
+    &__scroll {
+      display: flex;
+      position: relative;
+    }
     &__column {
       width: 110px;
       flex: none;
+      .content__row:last-child {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      }
+      .content__row:first-child {
+        border-top: none;
+      }
     }
     &__row {
       height: 40px;
       line-height: 40px;
       text-align: center;
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
       border-right: 1px solid rgba(0, 0, 0, 0.05);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
       .tov-e();
       padding: 0 20px;
       &-action {
@@ -60,7 +85,7 @@
       &-unreserve {
         background-color: #fafafa;
         color: #9bacb9;
-        border: none;
+        border-top-color: transparent;
       }
     }
     .st-no-data {

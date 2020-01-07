@@ -7,8 +7,9 @@ import { SmallCourseScheduleCommonService as CommonService } from './service#/co
 @Injectable()
 export class SmallCourseService implements Controller {
   auth$ = this.authService.authMap$({
-    add: 'shop:schedule:team_course_schedule|add',
-    addBatch: 'shop:schedule:team_course_schedule|batch_add'
+    add: 'shop:schedule:small_class_course_schedule|add',
+    eidt: 'shop:schedule:small_class_course_schedule|batch_edit',
+    getInfo: 'shop:schedule:small_class_course_schedule|get'
   })
 
   constructor(

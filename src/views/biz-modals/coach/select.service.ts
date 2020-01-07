@@ -6,4 +6,7 @@ export class SelectService {
   getCoachSelect(params: GetSelectCoachInput) {
     return this.coachApi.getCoachSelect(params)
   }
+  getSmallCourseCoachSelect(params: GetSelectCoachInput) {
+    return this.coachApi.getSmallCourseCoachSelect(params)
+  }
 }

@@ -43,7 +43,16 @@
             <st-info-item label="总课时">
               {{ info.course_times }}节
             </st-info-item>
-            <st-info-item label="排课状态">{{ info.online_sale }}</st-info-item>
+            <st-info-item label="排课状态" v-if="info.has_schedule">
+              {{ info.has_schedule.name }}
+              <a
+                v-if="info.has_schedule.status"
+                :href="onViewCourseHref"
+                target="_blank"
+              >
+                查看排期
+              </a>
+            </st-info-item>
           </st-info>
         </a-col>
       </a-row>
@@ -341,6 +350,11 @@ export default {
     })
   },
   computed: {
+    onViewCourseHref() {
+      return `/shop/product/course/schedule/small-course/small-course?app_brand_id=${
+        this.$searchQuery.app_brand_id
+      }&app_shop_id=${this.$searchQuery.app_shop_id}&course_id=${this.id}`
+    },
     courseBeginTime() {
       return (
         moment(this.info.course_begin_time).format('YYYY-MM-DD') +

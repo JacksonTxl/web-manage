@@ -6,7 +6,7 @@ export const dateColumns = (vm: any) => {
     },
     {
       title: '上课场地',
-      dataIndex: 'course_name'
+      dataIndex: 'court_name'
     },
     {
       title: '上课老师',
@@ -14,7 +14,7 @@ export const dateColumns = (vm: any) => {
     },
     {
       title: '课程',
-      dataIndex: 'court_name'
+      dataIndex: 'course_name'
     }
   ]
 }

@@ -100,7 +100,7 @@ export default {
   },
   methods: {
     newCrowd(data) {
-      this.messageService.warning({ content: data })
+      this.messageService.warn({ content: data })
     },
     onChange(pagination, filters, sorter) {
       console.log('params', pagination, filters, sorter, data)

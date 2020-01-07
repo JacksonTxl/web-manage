@@ -27,7 +27,24 @@ export const enum AREA_STATUS {
   ON = 1,
   OFF = 2
 }
+/**
+ * 是否可预约
+ */
 export const enum CAN_RESERVE {
   YES = 1,
   NO = 2
+}
+/**
+ * 日期限制
+ */
+export const enum TIME_LIMIT_TYPE {
+  UNLIMITED = 1,
+  APPOINTED = 2
+}
+/**
+ * 循环设置
+ */
+export const enum CYCLIC_TYPE {
+  EVERYDAY = 1,
+  CUSTOM = 2
 }

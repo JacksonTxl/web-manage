@@ -234,7 +234,7 @@ export default {
         this.$searchQuery.follow_start_num !== '' &&
         this.$searchQuery.follow_end_num !== ''
       ) {
-        this.messageService.warning({
+        this.messageService.warn({
           content: '最小跟进次数要小于最大跟进次数'
         })
         return

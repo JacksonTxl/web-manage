@@ -4,13 +4,31 @@ export const ruleOptions = (vm: any) => {
       rules: [{ required: true, message: '请选择预约日期' }]
     },
     start_time: {
-      rules: [{ required: true, message: '请选择开始时间' }]
+      rules: [
+        { required: true, message: '请选择开始时间' },
+        {
+          validator: (filed: any, value: any, values: any) => {
+            if (value && value > values.end_time) {
+              return '开始时间不能大于结束时间'
+            }
+          }
+        }
+      ]
     },
     end_time: {
-      rules: [{ required: true, message: '请选择结束时间' }]
+      rules: [
+        { required: true, message: '请选择结束时间' },
+        {
+          validator: (filed: any, value: any, values: any) => {
+            if (value && value < values.start_time) {
+              return '结束时间不能小于开始时间'
+            }
+          }
+        }
+      ]
     },
     current_course_name: {
-      rules: [{ required: true, message: '请输入课程名称' }]
+      rules: [{ required: false, message: '请输入课程名称' }]
     },
     coach_id: {
       rules: [

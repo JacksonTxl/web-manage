@@ -15,30 +15,24 @@ export interface SetState {
 }
 @Injectable()
 export class SmallCourseScheduleReserveService {
-  state$: State<SetState>
-  infoAuth$: Computed<any>
-  reserveInfo$: Computed<any>
-  reserveList$: Computed<any[]>
+  state$ = new State({})
+  reserveInfo$ = new State({})
+  reserveList$ = new State([])
+  infoAuth$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({
-    add: 'shop:reserve:team_course_reserve|add',
-    cancel: 'shop:reserve:team_course_reserve|del',
-    checkIn: 'shop:reserve:team_course_reserve|checkin'
+    leave: 'shop:reserve:small_class_course_reserve|leave',
+    remedial: 'shop:reserve:small_class_course_reserve|supplement',
+    getInfo: 'shop:reserve:small_class_course_reserve|get_supplement',
+    checkIn: 'shop:reserve:small_class_course_reserve|checkin',
+    againCheckIn: 'shop:reserve:small_class_course_reserve|supplement_checkin',
+    add: 'shop:reserve:small_class_course_reserve|add'
   })
   constructor(
     private reserveApi: SmallCourseScheduleReserveApi,
     private authService: AuthService,
     private msg: MessageService
-  ) {
-    this.state$ = new State({
-      reserveInfo: [],
-      reserveList: [],
-      infoAuth: {}
-    })
-    this.reserveInfo$ = new Computed(this.state$.pipe(pluck('reserveInfo')))
-    this.reserveList$ = new Computed(this.state$.pipe(pluck('reserveList')))
-    this.infoAuth$ = new Computed(this.state$.pipe(pluck('infoAuth')))
-  }
+  ) {}
   /**
    *
    * @param params
@@ -88,13 +82,12 @@ export class SmallCourseScheduleReserveService {
   getInfo(id: string) {
     return this.reserveApi.getInfo(id).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          res = this.authService.filter(res, 'list')
-          res = this.authService.filter(res, 'auth')
-          state.infoAuth = res.auth
-          state.reserveInfo = res.info
-          state.reserveList = res.list
-        })
+        console.log(res)
+        res = this.authService.filter(res, 'info.reserve')
+        res = this.authService.filter(res, 'auth')
+        this.reserveInfo$.commit(() => res.info)
+        this.infoAuth$.commit(() => res.auth)
+        this.reserveList$.commit(() => res.list)
       })
     )
   }
@@ -151,7 +144,7 @@ export class SmallCourseScheduleReserveService {
     return this.reserveApi.courseInfo(id)
   }
   // 补课列表
-  courseList(id: string) {
-    return this.reserveApi.courseList(id)
+  courseList(params: any) {
+    return this.reserveApi.courseList(params)
   }
 }

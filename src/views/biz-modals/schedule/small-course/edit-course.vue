@@ -1,7 +1,7 @@
 <template>
   <st-modal title="编辑课程" v-model="show" width="520px">
     <st-form :form="form" labelWidth="72px" labelAuto>
-      <st-form-item label="排课名称" required>
+      <st-form-item label="排课名称" class="mg-t12">
         <a-input
           placeholder="请输入"
           v-decorator="decorators.current_course_name"
@@ -14,17 +14,27 @@
           v-decorator="decorators.start_days"
         />
       </st-form-item>
-      <st-form-item label="开始时间" required>
+      <st-form-item
+        label="开始时间"
+        required
+        :validateStatus="compareTime ? 'error' : ''"
+      >
         <a-time-picker
           format="HH:mm"
           style="width:100%"
+          @change="changeStartTime"
           v-decorator="decorators.start_time"
         />
       </st-form-item>
-      <st-form-item label="结束时间" required>
+      <st-form-item
+        label="结束时间"
+        required
+        :validateStatus="compareTime ? 'error' : ''"
+      >
         <a-time-picker
           format="HH:mm"
           style="width:100%"
+          @change="changeEndTime"
           v-decorator="decorators.end_time"
         />
       </st-form-item>
@@ -66,7 +76,7 @@
 import { cloneDeep } from 'lodash-es'
 import { SmallCourseScheduleService } from '@/views/pages/shop/product/course/schedule/small-course/service#/schedule.service'
 import { SmallCourseScheduleCommonService } from '@/views/pages/shop/product/course/schedule/small-course/service#/common.service'
-import { ruleOptions } from './add-course.config'
+import { ruleOptions } from './edit-course.config'
 export default {
   name: 'AddCourseSchedule',
   serviceInject() {
@@ -83,6 +93,11 @@ export default {
       courtOptions: tss.courtOptions$
     }
   },
+  computed: {
+    compareTime() {
+      return this.startTime >= this.endTime ? true : ''
+    }
+  },
   data() {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
@@ -93,7 +108,9 @@ export default {
       courseItem: '',
       params: {},
       cycle_start_date: '',
-      cycle_end_date: ''
+      cycle_end_date: '',
+      startTime: '',
+      endTime: ''
     }
   },
   props: {
@@ -140,6 +157,9 @@ export default {
   },
   mounted() {
     const item = cloneDeep(this.item)
+    if (!item.court_site_id) {
+      item.court_site_id = undefined
+    }
     console.log(item)
     console.log(this.cycle)
     const court_item = [item.court_id, item.court_site_id]
@@ -149,24 +169,36 @@ export default {
       coach_id: item.coach_id,
       court_id: court_item
     })
+    let start_time, end_time
     if (this.cycle_type === 2) {
       console.log(this.cycle_type)
       console.log(time)
+      start_time = moment(`${this.item.start_date} ${this.item.start_time}`)
+      end_time = moment(`${this.item.start_date} ${this.item.end_time}`)
       this.form.setFieldsValue({
-        start_time: moment(`${this.item.start_date} ${this.item.start_time}`),
-        end_time: moment(`${this.item.start_date} ${this.item.end_time}`),
         start_days: time
       })
     } else {
-      this.form.setFieldsValue({
-        start_time: moment(`${this.cycle_start_date} ${this.item.start_time}`),
-        end_time: moment(`${this.cycle_start_date} ${this.item.end_time}`)
-      })
+      start_time = moment(`${this.cycle_start_date} ${this.item.start_time}`)
+      end_time = moment(`${this.cycle_start_date} ${this.item.end_time}`)
     }
+    this.form.setFieldsValue({
+      start_time: start_time,
+      end_time: end_time
+    })
+
+    this.startTime = start_time
+    this.endTime = end_time
     this.onChangeCoach(item.coach_id)
     this.onChangeCourt(court_item)
   },
   methods: {
+    changeStartTime(value) {
+      this.startTime = value
+    },
+    changeEndTime(value) {
+      this.endTime = value
+    },
     onChangeCoach(value) {
       this.coachSmallCourseOptions.forEach((item, index) => {
         if (item.id === value) {
@@ -185,7 +217,7 @@ export default {
               }
             })
           } else {
-            this.params.court_site_name = 'none'
+            this.params.court_site_name = ''
           }
         }
         return
@@ -224,6 +256,36 @@ export default {
           }
         })
     },
+    addSchedule(verifyParams) {
+      this.smallCourseScheduleService
+        .addScheduleInBatch(verifyParams)
+        .subscribe(res => {
+          console.log(res)
+          if (!res.conflict) {
+            verifyParams.schedule_ids = res.schedule_ids
+          }
+          this.editCourse(this.cycleIndex, res.conflict, verifyParams, res.list)
+        })
+    },
+    addCourse(cycleIndex, conflict, params, list) {
+      this.$emit('addCourse', cycleIndex, conflict, params, list)
+      this.show = false
+    },
+    addScheduleCustom(verifyParams) {
+      this.smallCourseScheduleService
+        .addScheduleInBatchCustom(verifyParams)
+        .subscribe(res => {
+          console.log(res)
+          if (!res.conflict) {
+            verifyParams.id = res.schedule_id
+            this.addCustomCourse(verifyParams)
+          }
+        })
+    },
+    addCustomCourse(params) {
+      this.$emit('addCustomCourse', params)
+      this.show = false
+    },
     onSubmit() {
       this.form.validate().then(values => {
         console.log(values)
@@ -245,9 +307,21 @@ export default {
         form.cycle_end_date = this.cycle[1].format('YYYY-MM-DD')
         form.id = this.item.id
         form.course_id = this.courseInfo.course_id
+        form.schedule_ids = this.item.schedule_ids
         const verifyParams = Object.assign(this.params, form)
         console.log('提交参数')
         console.log(verifyParams)
+        if (verifyParams.schedule_ids === undefined && this.cycle_type === 1) {
+          this.addSchedule(verifyParams)
+          return
+        }
+        if (
+          typeof verifyParams.schedule_ids == undefined &&
+          this.cycle_type === 2
+        ) {
+          this.addScheduleCustom(verifyParams)
+          return
+        }
         if (this.cycle_type === 1) {
           this.editSchedule(verifyParams)
         } else {

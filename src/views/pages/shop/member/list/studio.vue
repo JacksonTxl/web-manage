@@ -138,14 +138,9 @@
           <st-overflow-text :value="text" maxWidth="100px"></st-overflow-text>
         </span>
         <st-icon
+          v-if="record.is_minors"
           type="user-type"
-          v-if="record.sex === SEX.BOY && record.is_minors"
-          color="#3F66F6"
-        />
-        <st-icon
-          type="user-type"
-          v-if="record.sex === SEX.GIRL && record.is_minors"
-          color="#FF5E41"
+          :color="record.sex.id === SEX.GIRL ? '#FF5E41' : '#3F66F6'"
         />
       </div>
       <div slot="action" slot-scope="text, record">

@@ -3,6 +3,9 @@ export class CoachApi extends Api {
   getCoachSelect(params: GetSelectCoachInput) {
     return this.http.post('/v1/staff/coach/select', { params })
   }
+  getSmallCourseCoachSelect(params: GetSelectCoachInput) {
+    return this.http.get('/v1/schedule/team/shop/coach', { params })
+  }
   /**
    *
    */

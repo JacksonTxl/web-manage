@@ -10,7 +10,7 @@
       <span :class="b('head-close')" @click="hide">X</span>
       <div class="add-course-conent">
         <st-form labelWidth="68px" :form="form">
-          <st-form-item label="排课名称" required class="mg-t12">
+          <st-form-item label="排课名称" class="mg-t12">
             <a-input
               placeholder="请输入"
               v-decorator="decorators.current_course_name"
@@ -177,6 +177,8 @@ export default {
     }
   },
   created() {
+    console.log(this.cycle)
+    console.log(this.item)
     this.showFlag = this.item[0].show || this.customizeShow
   },
   methods: {
@@ -201,24 +203,12 @@ export default {
               }
             })
           } else {
-            this.params.court_site_name = 'none'
+            this.params.court_site_name = ''
           }
         }
         return
       })
     },
-    // disabledDateTime() {
-    //   const allTime = this.range(0, 24)
-    //   console.log(allTime)
-    //   return {
-    //     disabledHours: () => this.range(0, 24).splice(4, 20),
-    //     disabledMinutes: () => this.range(30, 60)
-    //   }
-    // },
-    // disabledHours() {
-    //   return this.range(0, 24).splice(4, 20)
-    // },
-    // this.params.court_name = `${item.name} / ${childrenItem.name}`
     addCourse(cycleIndex, conflict, params, list) {
       this.$emit('addCourse', cycleIndex, conflict, params, list)
       this.showFlag = false
@@ -232,8 +222,11 @@ export default {
         .addScheduleInBatch(verifyParams)
         .subscribe(res => {
           console.log(res)
-          verifyParams.schedule_ids = res.schedule_ids
+          if (!res.conflict) {
+            verifyParams.schedule_ids = res.schedule_ids
+          }
           this.addCourse(this.cycleIndex, res.conflict, verifyParams, res.list)
+          this.resetForm()
         })
     },
     addScheduleCustom(verifyParams) {
@@ -244,8 +237,23 @@ export default {
           if (!res.conflict) {
             verifyParams.id = res.schedule_id
             this.addCustomCourse(verifyParams)
+            this.resetForm()
           }
         })
+    },
+    resetForm() {
+      this.form.setFieldsValue({
+        current_course_name: '',
+        coach_id: '',
+        court_id: '',
+        start_time: '',
+        end_time: ''
+      })
+      if (this.cycle_type === 2) {
+        this.form.setFieldsValue({
+          start_days: ''
+        })
+      }
     },
     onSubmit() {
       this.form.validate().then(values => {
@@ -269,7 +277,6 @@ export default {
         const verifyParams = Object.assign(this.params, form)
         console.log(verifyParams)
         console.log(this.cycle_type)
-        console.log(this.editScheduleCycleFlag)
         if (this.cycle_type === 1) {
           this.addSchedule(verifyParams)
         } else {
@@ -279,9 +286,4 @@ export default {
     }
   }
 }
-// 取消排课二次确认，限制条件完善
-// 完成排课的确认交互
-// 权限接入
-// 代码整理
-// 选择时间的约束
 </script>

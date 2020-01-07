@@ -23,7 +23,9 @@
               v-show="isShowTransfer"
               style="width:282px"
               placeholder="请输入"
-              :min="1"
+              :min="0"
+              :max="999999.9"
+              :float="true"
               v-decorator="decorators.transfer_num"
             >
               <a-select
@@ -67,6 +69,7 @@
           <st-input-number
             v-decorator="decorators.sales_price"
             :min="0"
+            placeholder="请输入售卖价格"
             :max="999999.9"
             float
           >
@@ -161,6 +164,10 @@ export default {
   },
   created() {},
   mounted() {
+    const curTime = moment()
+    this.form.setFieldsValue({
+      apply_date: [curTime.add('30', 'minutes'), curTime]
+    })
     this.$nextTick(() => {
       this.form.setFieldsValue({
         course_name: this.course_name

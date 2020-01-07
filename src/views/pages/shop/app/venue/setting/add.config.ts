@@ -28,7 +28,17 @@ export const ruleOptions = (vm: any) => {
     cyclic_type: {
       initialValue: 1
     },
-    week_day: {},
+    week_day: {
+      rules: [
+        {
+          validator: (field: any, value: any, values: any) => {
+            if (!value) {
+              return '请选择自定义时间'
+            }
+          }
+        }
+      ]
+    },
     open_time_start: {
       rules: [
         {
@@ -52,12 +62,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     can_reserve: {
-      initialValue: 1,
-      rules: [
-        {
-          validator: (field: any, value: any, values: any) => {}
-        }
-      ]
+      initialValue: 1
     },
     weight: {
       initialValue: 1

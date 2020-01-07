@@ -212,14 +212,9 @@
       <div slot="member_name" slot-scope="text, record">
         {{ record.member_name }}
         <st-icon
+          v-if="record.is_minors"
           type="user-type"
-          v-if="record.sex === SEX.BOY && record.is_minors"
-          color="#3F66F6"
-        />
-        <st-icon
-          type="user-type"
-          v-if="record.sex === SEX.GIRL && record.is_minors"
-          color="#FF5E41"
+          :color="record.sex.id === SEX.GIRL ? '#FF5E41' : '#3F66F6'"
         />
       </div>
       <span slot="customSaleTitle">
@@ -448,10 +443,8 @@ export default {
     },
     // 查询
     onSearchNative() {
-      console.log(this.$searchQuery.follow_min)
-      console.log(this.$searchQuery.follow_max)
       if (this.$searchQuery.follow_min > this.$searchQuery.follow_max) {
-        this.messageService.warning({
+        this.messageService.warn({
           content: '最小跟进次数要小于最大跟进次数'
         })
         return

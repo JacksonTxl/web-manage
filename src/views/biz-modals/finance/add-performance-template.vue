@@ -344,7 +344,7 @@ export default {
       let range_min = this.data[e].range_min
       let royalty_num = this.data[e].royalty_num
       if (!this.data[e].range_min || !this.data[e].royalty_num) {
-        this.message.warning({ content: '请填写完整' })
+        this.message.warn({ content: '请填写完整' })
         return
       }
       if (this.performance_type == this.PERFORMANCE.PERFORMANCE_TYPE_3) {
@@ -357,7 +357,7 @@ export default {
         (item, index) => item.range_min === range_min && index !== e
       )
       if (arr.length > 0) {
-        this.message.warning({ content: this.errorMessageTip })
+        this.message.warn({ content: this.errorMessageTip })
         return
       }
       this.data[e].range_min = range_min
@@ -385,7 +385,7 @@ export default {
       // 加校验
       let { range_min, royalty_num } = this.gradients
       if (!range_min || !royalty_num) {
-        this.message.warning({ content: '请填写完整' })
+        this.message.warn({ content: '请填写完整' })
         return
       }
       if (this.performance_type == this.PERFORMANCE.PERFORMANCE_TYPE_3) {
@@ -396,7 +396,7 @@ export default {
       royalty_num = parseFloat(royalty_num).toFixed(1)
       const arr = this.data.filter(item => item.range_min === range_min)
       if (arr.length > 0) {
-        this.message.warning({ content: this.errorMessageTip })
+        this.message.warn({ content: this.errorMessageTip })
         return
       }
       this.data.push({

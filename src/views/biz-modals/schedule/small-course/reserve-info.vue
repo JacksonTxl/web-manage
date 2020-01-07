@@ -76,6 +76,7 @@
                 :filterOption="false"
                 @search="onSearch"
                 @change="onChange"
+                v-model="showMemberName"
                 :notFoundContent="null"
               >
                 <a-select-option
@@ -101,6 +102,7 @@
                 placeholder="选择消费方式"
                 style="width: 280px"
                 :dropdownMatchSelectWidth="false"
+                v-model="showConsumeType"
                 @change="onChangeConsumeType"
               >
                 <a-select-opt-group
@@ -123,17 +125,19 @@
             </td>
             <td>--</td>
             <td>
-              <a @click="addReserve">添加预约</a>
+              <a @click="addReserve" v-if="auth.add">
+                添加预约
+              </a>
             </td>
           </tr>
           <tr v-for="(item, index) in reserveList" :key="index">
             <td>{{ item.member_name }}</td>
             <td>{{ item.course_name }}</td>
-            <td v-if="item.reserve_status === 1">未签到</td>
-            <td v-if="item.reserve_status === 2">已签到</td>
-            <td v-if="item.reserve_status === 3">旷课</td>
-            <td v-if="item.reserve_status === 4">请假已补课</td>
-            <td v-if="item.reserve_status === 5">请假未补课</td>
+            <td>
+              {{
+                item.reserve_status | enumFilter('small_course.reserve_status')
+              }}
+            </td>
             <td>
               <div
                 v-if="
@@ -141,7 +145,7 @@
                     item.reserve_status === 1
                 "
               >
-                <a href="javascript:;" @click="check(item.reserve_id)">
+                <a @click="check(item.reserve_id)">
                   签到
                 </a>
                 <a-divider type="vertical"></a-divider>
@@ -155,7 +159,7 @@
                     item.reserve_status === 1
                 "
               >
-                <a href="javascript:;" @click="check(item.reserve_id)">
+                <a @click="check(item.reserve_id)">
                   签到
                 </a>
                 <a-divider type="vertical"></a-divider>
@@ -205,10 +209,7 @@
                     item.reserve_status === 5
                 "
               >
-                <a
-                  href="javascript:;"
-                  @click="remedialCourse(item.reserve_id, reserveInfo.id)"
-                >
+                <a @click="remedialCourse(item.reserve_id, reserveInfo.id)">
                   补课
                 </a>
               </div>
@@ -218,7 +219,7 @@
                     item.reserve_status === 6
                 "
               >
-                <a href="javascript:;" @click="message(item.reserve_id)">
+                <a @click="message(item.reserve_id)">
                   查看补课
                 </a>
               </div>
@@ -227,13 +228,6 @@
         </tbody>
       </st-form-table>
     </st-container>
-    <!-- v-if="
-          infoAuth &&
-            infoAuth['shop:schedule:personal_team_course_schedule|del']
-        "        v-if="
-          infoAuth &&
-            infoAuth['shop:schedule:personal_team_course_schedule|edit']
-        " -->
     <div class="mg-t24 ta-r">
       <a-popconfirm @confirm="cancelSchedule" okText="确认" cancelText="取消">
         <div slot="title">
@@ -256,6 +250,7 @@ import { SmallCourseScheduleService as ScheduleService } from '@/views/pages/sho
 import ScheduleSmallCourseReservedCourse from '@/views/biz-modals/schedule/small-course/reserved-course'
 import ScheduleSmallCourseRemedialCourse from '@/views/biz-modals/schedule/small-course/remedial-course'
 import ScheduleSmallCourseRemedialInfo from '@/views/biz-modals/schedule/small-course/remedial-info'
+import { RemedialCourseInfoService } from './remedial-info.service'
 import { columns } from './reserve-info.config'
 export default {
   name: 'ReserveInfo',
@@ -268,7 +263,8 @@ export default {
     return {
       commonService: CommonService,
       reserveService: ReserveService,
-      scheduleService: ScheduleService
+      scheduleService: ScheduleService,
+      remedialInfoService: RemedialCourseInfoService
     }
   },
   rxState() {
@@ -279,6 +275,7 @@ export default {
       consumeOptions: commonService.consumeOptions$,
       reserveList: this.reserveService.reserveList$,
       reserveInfo: this.reserveService.reserveInfo$,
+      reserveStatusOptions: this.remedialInfoService.reserveStatusOptions$,
       auth: this.reserveService.auth$,
       infoAuth: this.reserveService.infoAuth$
     }
@@ -292,11 +289,13 @@ export default {
       consumeType: '',
       consumeId: '',
       consumeTypeId: '',
-      siteNumIds: [],
+      showConsumeType: '',
+      showMemberName: '',
       dataSource: [],
       keyword: '',
       show: false,
-      info: {}
+      info: {},
+      isAdd: true
     }
   },
   computed: {
@@ -310,6 +309,8 @@ export default {
   },
   created() {
     this.getReserveInfo()
+    console.log(this.reserveList)
+    console.log(this.reserveInfo)
   },
   methods: {
     keywordFilter(str) {
@@ -329,7 +330,9 @@ export default {
         .subscribe()
     },
     onChange(value) {
+      console.log(value)
       this.memberId = value
+      this.showConsumeType = ''
       this.commonService
         .getConsumeList({
           course_id: this.courseId,
@@ -346,6 +349,7 @@ export default {
     checkSign(id) {
       this.reserveService.checkSign(id).subscribe(this.getReserveInfo)
     },
+    // 添加预约
     addReserve() {
       const params = {
         schedule_id: this.id,
@@ -353,7 +357,9 @@ export default {
         consume_type: this.consumeType,
         consume_id: this.consumeId
       }
-      this.reserveService.add(params).subscribe(this.onAddReserveSuccess)
+      this.reserveService.add(params).subscribe(res => {
+        this.onAddReserveSuccess()
+      })
     },
     cancelReserve(id) {
       this.reserveService.cancel(id).subscribe(this.onCancelReserveSuccess)
@@ -396,7 +402,7 @@ export default {
         },
         on: {
           ok: () => {
-            this.$router.push({ query: this.$searchQuery })
+            this.$router.reload()
           }
         }
       })
@@ -446,6 +452,8 @@ export default {
     onAddReserveSuccess() {
       this.memberId = undefined
       this.consumeType = undefined
+      this.showConsumeType = ''
+      this.showMemberName = ''
       this.getReserveInfo()
     },
     onCancelReserveSuccess() {

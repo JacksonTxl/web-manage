@@ -28,7 +28,9 @@
           </div>
           <div class="small-course-status">
             <span>状态</span>
-            {{ info.reserve_status }}
+            {{
+              info.reserve_status | enumFilter('small_course.reserve_status')
+            }}
           </div>
         </div>
       </div>
@@ -37,6 +39,7 @@
 </template>
 
 <script>
+import { RemedialCourseInfoService } from './remedial-info.service'
 export default {
   name: 'SubmitCourse',
   props: {
@@ -47,11 +50,20 @@ export default {
       }
     }
   },
+  serviceInject() {
+    return {
+      remedialInfoService: RemedialCourseInfoService
+    }
+  },
+  rxState() {
+    return {
+      reserveStatusOptions: this.remedialInfoService.reserveStatusOptions$
+    }
+  },
   data() {
     return {
       show: false
     }
-  },
-  methods: {}
+  }
 }
 </script>

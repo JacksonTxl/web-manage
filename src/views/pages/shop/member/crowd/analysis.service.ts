@@ -7,17 +7,16 @@ import { forkJoin } from 'rxjs'
 @Injectable()
 export class AnalysisService {
   loading$ = new State({})
-  analysisInfo$ = new State({})
+  info$ = new State({})
   constructor(private crowdAPI: CrowdAPI) {}
   // 获取列表
   getListInfo(id: string) {
     return this.crowdAPI.getCrowdShopAnalysis(id).pipe(
       tap(res => {
-        this.analysisInfo$.commit(() => res)
+        this.info$.commit(() => res.info)
       })
     )
   }
-
   init(id: string) {
     return forkJoin(this.getListInfo(id))
   }

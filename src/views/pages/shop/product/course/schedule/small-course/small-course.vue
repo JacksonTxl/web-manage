@@ -14,11 +14,11 @@
           type="primary"
           class="mg-r12"
           @click="onClickScheduleInBatch"
-          v-if="auth.addBatch"
+          v-if="auth.add"
         >
           排课
         </st-button>
-        <st-button @click="onClickScheduleInBatch" v-if="auth.addBatch">
+        <st-button @click="onClickScheduleInBatch" v-if="auth.eidt">
           批量修改
         </st-button>
       </div>
@@ -29,12 +29,8 @@
 <script>
 import Calendar from '@/views/biz-components/schedule/calendar'
 import { SmallCourseScheduleService } from './service#/schedule.service'
-
-// 添加排期
 import ScheduleSmallCourseAddCourse from '@/views/biz-modals/schedule/small-course/add-course'
-// 详情
 import ScheduleSmallCourseReserveInfo from '@/views/biz-modals/schedule/small-course/reserve-info'
-
 import { SmallCourseService } from './small-course.service'
 export default {
   name: 'SmallCourseSchedule',
@@ -86,6 +82,10 @@ export default {
     // 查看详情
     onDetail(info) {
       console.log(info)
+      console.log()
+      if (!this.auth.getInfo) {
+        return
+      }
       this.$modalRouter.push({
         name: 'schedule-small-course-reserve-info',
         props: {
@@ -111,9 +111,8 @@ export default {
         query: this.$searchQuery
       })
     },
-    // 刷新页面
     onScheduleChange() {
-      this.$router.push({ query: this.$searchQuery })
+      this.$router.reload()
     }
   }
 }

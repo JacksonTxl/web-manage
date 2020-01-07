@@ -36,7 +36,7 @@
       :loading="loading.getList"
       :dataSource="list"
       :columns="columns"
-      :scroll="{ x: 1800 }"
+      :scroll="{ x: 1700 }"
       @change="onTableChange"
       :page="page"
     >
@@ -52,6 +52,9 @@
           record.small_course_type
             | enumFilter('small_course.small_course_type')
         }}
+      </span>
+      <span slot="sales_price" slot-scope="text, record">
+        {{ record.sales_price }}
       </span>
       <span slot="course_status" slot-scope="text, record">
         {{ record.class_status | enumFilter('small_course.class_status') }}
@@ -92,7 +95,7 @@
           </a>
           <a
             v-if="record.auth['shop:product:small_class_course|refund']"
-            @click="onGoOrder()"
+            @click="onGoOrder(record)"
           >
             去退款
           </a>

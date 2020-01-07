@@ -1,51 +1,55 @@
 <template>
   <div :class="b()">
     <div :class="b('right')">
-      <st-t2>代预约</st-t2>
-      <st-table
-        :class="right('table')"
-        :columns="columns"
-        :dataSource="selectedList"
-        rowKey="id"
-        :pagination="false"
-        :scroll="{ y: 148 }"
-      >
-        <div slot="action" slot-scope="text, record">
-          <st-table-actions>
-            <a @click="deleteRow(record)">
-              删除
-            </a>
-          </st-table-actions>
+      <div :class="right('top')">
+        <st-t2>代预约</st-t2>
+        <st-table
+          :class="right('table')"
+          :columns="columns"
+          :dataSource="selectedList"
+          rowKey="id"
+          :pagination="false"
+          :scroll="{ y: 148 }"
+        >
+          <div slot="action" slot-scope="text, record">
+            <st-table-actions>
+              <a @click="deleteRow(record)">
+                删除
+              </a>
+            </st-table-actions>
+          </div>
+        </st-table>
+        <div :class="right('sum')">
+          <span v-if="sum">{{ `总额：¥${sum}` }}</span>
         </div>
-      </st-table>
-      <div :class="right('sum')">{{ `总额：¥${sum}` }}</div>
-      <st-hr></st-hr>
-      <st-form :form="form" labelWidth="88px">
-        <member-search
-          label="购买会员"
-          :form="form"
-          :decorators="decorators"
-          :fields="{ member_id: 'member_id' }"
-          type="transaction"
-        ></member-search>
-        <st-form-item label="减免">
-          <st-input-number
-            :float="true"
-            v-model="reduce_price"
-            placeholder="请输入减免金额"
-          >
-            <span slot="addonAfter">元</span>
-          </st-input-number>
-        </st-form-item>
-        <st-form-item label="备注" class="mg-b0">
-          <a-textarea
-            placeholder="请填写备注"
-            v-decorator="decorators.description"
-            :autosize="{ minRows: 4, maxRows: 6 }"
-          />
-        </st-form-item>
-      </st-form>
-      <div :class="right('footer', { fixed: isActionFixed })">
+        <st-hr></st-hr>
+        <st-form :form="form" labelWidth="88px">
+          <member-search
+            label="购买会员"
+            :form="form"
+            :decorators="decorators"
+            :fields="{ member_id: 'member_id' }"
+            type="transaction"
+          ></member-search>
+          <st-form-item label="减免">
+            <st-input-number
+              :float="true"
+              v-model="reduce_price"
+              placeholder="请输入减免金额"
+            >
+              <span slot="addonAfter">元</span>
+            </st-input-number>
+          </st-form-item>
+          <st-form-item label="备注" class="mg-b0">
+            <a-textarea
+              placeholder="请填写备注"
+              v-decorator="decorators.description"
+              :autosize="{ minRows: 4, maxRows: 6 }"
+            />
+          </st-form-item>
+        </st-form>
+      </div>
+      <div :class="right('footer')">
         <div class="price">
           <span>共{{ selectedList.length }}件商品&nbsp;合计：</span>
           <span class="font-number">&yen;{{ finalAmount }}</span>
@@ -84,32 +88,34 @@
         </a-radio-button>
       </a-radio-group>
       <div :class="calendar()" id="booking-left-calendar">
-        <swiper :options="sliderOptions">
-          <swiper-slide v-for="(item, index) in calendarData" :key="index">
-            <div
-              :class="[calendar('date'), { act: pickedIndex === index }]"
-              @click="pickDate(item, index)"
-            >
-              <div :class="calendar('week')">{{ item.week }}</div>
-              <div :class="calendar('day')">{{ item.day }}</div>
+        <div :class="calendar('wrapper')">
+          <swiper :options="sliderOptions">
+            <swiper-slide v-for="(item, index) in calendarData" :key="index">
+              <div
+                :class="[calendar('date'), { act: pickedIndex === index }]"
+                @click="pickDate(item, index)"
+              >
+                <div :class="calendar('week')">{{ item.week }}</div>
+                <div :class="calendar('day')">{{ item.day }}</div>
+              </div>
+            </swiper-slide>
+          </swiper>
+          <div
+            class="swiper-button-prev swiper-booking-button-prev"
+            slot="button-prev"
+          >
+            <div :class="calendar('icon')">
+              <st-icon type="arrow-left" class="arrow-left" />
             </div>
-          </swiper-slide>
-        </swiper>
-        <div
-          class="swiper-button-prev swiper-booking-button-prev"
-          slot="button-prev"
-        >
-          <div :class="calendar('icon')">
-            <st-icon type="arrow-left" class="arrow-left" />
           </div>
-        </div>
 
-        <div
-          class="swiper-button-next swiper-booking-button-next"
-          slot="button-next"
-        >
-          <div :class="calendar('icon')">
-            <st-icon type="arrow-right" class="arrow-right" />
+          <div
+            class="swiper-button-next swiper-booking-button-next"
+            slot="button-next"
+          >
+            <div :class="calendar('icon')">
+              <st-icon type="arrow-right" class="arrow-right" />
+            </div>
           </div>
         </div>
       </div>
@@ -134,9 +140,10 @@ import 'swiper/dist/css/swiper.css'
 import moment from 'moment'
 import bookingTable from './components#/booking-table'
 import memberSearch from '@/views/biz-components/member-search/member-search'
-import { ruleOptions } from './booking.config'
+import { ruleOptions, columns } from './booking.config'
 import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
 import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
+import { PatternService } from '@/services/pattern.service'
 export default {
   name: 'PageShopAppVenueBooking',
   bem: {
@@ -147,7 +154,8 @@ export default {
   },
   serviceInject() {
     return {
-      bookingService: BookingService
+      bookingService: BookingService,
+      pattern: PatternService
     }
   },
   rxState() {
@@ -177,16 +185,7 @@ export default {
       form,
       decorators,
       selectedList: [],
-      columns: [
-        { title: '已选场次', dataIndex: 'site_name' },
-        { title: '时段', dataIndex: 'start_time', width: 120 },
-        { title: '价格', dataIndex: 'price', width: 120 },
-        {
-          title: '操作',
-          width: 80,
-          scopedSlots: { customRender: 'action' }
-        }
-      ],
+      columns,
       sliderOptions: {
         autoplay: false,
         navigation: {
@@ -208,9 +207,7 @@ export default {
       pickedIndex: 0,
       bookingList: [],
       siteX: [],
-      siteY: [],
-      footerEl: null,
-      isActionFixed: true
+      siteY: []
     }
   },
   created() {
@@ -237,29 +234,11 @@ export default {
       this.calcPrice()
     }
   },
-  mounted() {
-    this.footerEl = document.querySelector('.layout-default-body__footer')
-    if (this.footerEl) {
-      this.handleActionsPosition()
-      window.addEventListener('scroll', this.handleActionsPosition, false)
-      window.addEventListener('resize', this.handleActionsPosition, false)
-    }
-  },
   methods: {
     resetPage() {
+      this.form.resetFields()
+      this.reduce_price = ''
       this.getList()
-    },
-    handleActionsPosition() {
-      const rect = this.footerEl.getBoundingClientRect()
-      const minaMain = document
-        .querySelector('.page-shop-app-venue-booking__right')
-        .getBoundingClientRect()
-      // 视窗内
-      if (rect.top < window.innerHeight) {
-        this.isActionFixed = false
-      } else {
-        this.isActionFixed = true
-      }
     },
     createdOrderPay(props) {
       this.$modalRouter.push({

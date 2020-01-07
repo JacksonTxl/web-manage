@@ -91,7 +91,7 @@
                     placeholder="上传图片"
                   >
                     <template v-slot:description>
-                      <p>建议尺寸为750像素*750像素</p>
+                      <p>建议尺寸为750px*750px</p>
                     </template>
                   </st-image-upload>
                   <div :class="basic('img--tip')">可上传5张商品图片</div>
@@ -99,11 +99,14 @@
               </ul>
               <div class="color-danger" v-if="isImgError">请上传商品图片</div>
             </st-form-item>
-            <st-form-item label="配送方式" required>
-              <a-checkbox-group v-decorator="decorators.delivery_type">
+            <st-form-item label="售卖方式" required>
+              <a-checkbox-group
+                v-decorator="decorators.sale_type"
+                @change="changeSale"
+              >
                 <a-checkbox
                   :value="item.value"
-                  v-for="item in shippingMode"
+                  v-for="item in saleType"
                   :key="item.value"
                   style="margin-right: 16px"
                 >
@@ -111,11 +114,12 @@
                 </a-checkbox>
               </a-checkbox-group>
             </st-form-item>
-            <st-form-item label="售卖方式" required>
-              <a-checkbox-group v-decorator="decorators.sale_type">
+            <st-form-item label="配送方式" required>
+              <a-checkbox-group v-decorator="decorators.delivery_type">
                 <a-checkbox
                   :value="item.value"
-                  v-for="item in saleType"
+                  :disabled="isChoose && item.value === 1"
+                  v-for="item in shippingMode"
                   :key="item.value"
                   style="margin-right: 16px"
                 >
@@ -159,11 +163,7 @@
                 <span>添加规格项（{{ skuList.length }}/3）</span>
               </st-button>
               <div
-                :class="
-                  index === skuList.length - 1
-                    ? `${basic('sku--item')} ${basic('sku--last')}`
-                    : basic('sku--item')
-                "
+                :class="skuItem()"
                 v-for="(item, index) in skuList"
                 :key="index"
               >
@@ -180,16 +180,16 @@
                     style="width: 220px"
                   ></a-input>
                   <span
-                    :class="basic('sku--item-del')"
+                    :class="skuItem('del')"
                     @click="delSku(index)"
                     v-if="!isEditMode"
                   >
                     <st-icon
                       type="delete"
-                      :class="basic('sku--item-icon')"
+                      :class="skuItem('icon')"
                       color="#3F66F6"
                     ></st-icon>
-                    <span :class="basic('sku--item-text')">
+                    <span :class="skuItem('text')">
                       删除
                     </span>
                   </span>
@@ -212,7 +212,7 @@
                     />
                   </span>
                   <a
-                    :class="basic('sku--item-add')"
+                    :class="skuItem('add')"
                     @click="addSkuItem(index)"
                     v-if="item.spec_item_name.length <= 10"
                   >
@@ -339,7 +339,8 @@ import { UserService } from '@/services/user.service'
 import { cloneDeep } from 'lodash-es'
 export default {
   bem: {
-    basic: 'shop-store-add'
+    basic: 'shop-store-add',
+    skuItem: 'sku-item'
   },
   serviceInject() {
     return {
@@ -401,7 +402,8 @@ export default {
       product_images_add: [],
       classList: [],
       tableErr: false,
-      tableTips: ''
+      tableTips: '',
+      isChoose: false
     }
   },
   components: {
@@ -430,6 +432,24 @@ export default {
     }
   },
   methods: {
+    changeSale(event) {
+      let type = this.form.getFieldValue('delivery_type')
+      let deliveryType = []
+      if (event.indexOf(1) !== -1) {
+        this.isChoose = true
+        if (type !== undefined) {
+          deliveryType = type
+        }
+        if (deliveryType.indexOf(1) === -1) {
+          deliveryType.push(1)
+          this.form.setFieldsValue({
+            delivery_type: deliveryType
+          })
+        }
+      } else {
+        this.isChoose = false
+      }
+    },
     // 保存
     onSubmit() {
       let isReturn = false
@@ -451,7 +471,11 @@ export default {
         }
       })
       this.tableData.forEach(item => {
-        if (!item.market_price || !item.selling_price) {
+        if (
+          !item.market_price ||
+          !item.selling_price ||
+          (!this.isEditMode && !item.stock_amount)
+        ) {
           tableError = true
           this.tableTips = '请正确填写表格'
           this.tableErr = true

@@ -55,7 +55,7 @@
           v-decorator="decorators.court_id"
         />
       </st-form-item>
-      <st-form-item label="排课名称" required class="mg-b0">
+      <st-form-item label="排课名称" class="mg-b0">
         <a-input
           placeholder="请输入"
           v-decorator="decorators.current_course_name"

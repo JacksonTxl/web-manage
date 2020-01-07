@@ -146,18 +146,22 @@ export default {
     },
     onClickSubmit(e) {
       e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          this.addService.add(values).subscribe(() => {
-            this.messageService.success({ content: '添加成功' })
+      this.form.validate().then(values => {
+        this.addService.add(values).subscribe(() => {
+          this.messageService.success({ content: '添加成功' })
+          if (this.$searchQuery.id) {
             this.$router.push({
               name: 'shop-app-venue-manage-list',
               query: {
                 id: this.$searchQuery.id
               }
             })
-          })
-        }
+          } else {
+            this.$router.push({
+              name: 'shop-app-venue-manage'
+            })
+          }
+        })
       })
     }
   }
