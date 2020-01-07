@@ -351,7 +351,7 @@ export default {
   },
   computed: {
     onViewCourseHref() {
-      return `/shop/product/course/schedule/small-course/small-course?app_brand_id=${
+      return `/shop/product/course/schedule/small-course?app_brand_id=${
         this.$searchQuery.app_brand_id
       }&app_shop_id=${this.$searchQuery.app_shop_id}&course_id=${this.id}`
     },
