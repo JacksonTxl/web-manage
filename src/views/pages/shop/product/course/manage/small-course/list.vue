@@ -36,7 +36,7 @@
       :loading="loading.getList"
       :dataSource="list"
       :columns="columns"
-      :scroll="{ x: 1800 }"
+      :scroll="{ x: 1400 }"
       @change="onTableChange"
       :page="page"
     >
@@ -54,7 +54,7 @@
         }}
       </span>
       <span slot="sales_price" slot-scope="text, record">
-        {{ record.sales_price === 0 ? '' : record.sales_price }}
+        {{ record.sales_price }}
       </span>
       <span slot="course_status" slot-scope="text, record">
         {{ record.class_status | enumFilter('small_course.class_status') }}
