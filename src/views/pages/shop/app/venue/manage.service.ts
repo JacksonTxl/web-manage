@@ -1,11 +1,15 @@
-import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
+import {
+  Injectable,
+  ServiceRoute,
+  Controller,
+  ServiceRouter
+} from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { BrandApi, UpdateInput } from '@/api/v1/setting/brand'
 import { VenueApi, VenueQuery, SwitchParams } from '@/api/v1/venue'
 import { get } from 'lodash-es'
 import { AuthService } from '@/services/auth.service'
-
 @Injectable()
 export class ManageService implements Controller {
   info$ = new State({})
@@ -18,7 +22,8 @@ export class ManageService implements Controller {
   constructor(
     private brandApi: BrandApi,
     private venueApi: VenueApi,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: ServiceRouter
   ) {}
   getVenueList() {
     return this.venueApi.getVenueList().pipe(
@@ -55,10 +60,14 @@ export class ManageService implements Controller {
       next()
     }
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    console.log('beforeRouteEnter')
+  beforeCreate() {
     this.getVenueList().subscribe(() => {
-      this.redirect(to, from, next)
+      this.router.push({
+        name: 'shop-app-venue-manage-list',
+        query: {
+          id: get(this.venueList$.snapshot(), '0.venues_id')
+        }
+      })
     })
   }
   beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
