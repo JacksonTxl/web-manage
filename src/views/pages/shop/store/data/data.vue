@@ -34,11 +34,7 @@
       </st-panel>
       <!-- 整体看板 -->
       <section>
-        <st-panel
-          class="mg-t16"
-          title="整体看板"
-          :class="basic('integral-anban')"
-        >
+        <st-panel class="mg-t16" title="整体看板">
           <div slot="actions">
             <date-picker @onChange="wholeTimesFn"></date-picker>
           </div>
