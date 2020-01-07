@@ -608,9 +608,11 @@ export default {
       params.course_id = this.smallCourseInfo.course_id
       params.del_type = DELETE_TYPE.CYCLE
       this.smallCourseScheduleService.cancelCycle(params).subscribe(res => {
-        this.picker_end_date = date[1].format('YYYY-MM-DD')
         this.scheduleList[cycleIndex].course_time = []
         this.pickerList.splice(cycleIndex, 1, dateList)
+        this.picker_end_date = this.pickerList[
+          this.pickerList.length - 1
+        ][1].format('YYYY-MM-DD')
         this.filterDateList(this.scheduleList)
         console.log('修改成功')
       })
@@ -624,7 +626,7 @@ export default {
         this.scheduleList.splice(cycleIndex, 1)
         this.pickerList.splice(cycleIndex, 1)
         this.picker_end_date = this.pickerList[
-          this.pickerList.length
+          this.pickerList.length - 1
         ][1].format('YYYY-MM-DD')
         console.log(this.picker_end_date)
         return
@@ -636,8 +638,11 @@ export default {
       params.course_id = this.smallCourseInfo.course_id
       params.del_type = DELETE_TYPE.CYCLE
       this.smallCourseScheduleService.cancelCycle(params).subscribe(res => {
+        console.log(this.pickerList)
         this.scheduleList.splice(cycleIndex, 1)
         this.pickerList.splice(cycleIndex, 1)
+        console.log(this.pickerList)
+        console.log(cycleIndex)
         this.picker_end_date = this.pickerList[
           this.pickerList.length - 1
         ][1].format('YYYY-MM-DD')
