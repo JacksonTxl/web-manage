@@ -91,19 +91,7 @@
               <div class="mg-b16">
                 <span class="color-title mg-r24">发送内容</span>
                 <span :class="bComponent('text-right')">
-                  <a-input
-                    v-if="info.notify_type.value === 1"
-                    :class="bComponent('column-input')"
-                    v-model="params.msg_preffix"
-                    placeholder="请输入"
-                  ></a-input>
-                  <span>{{ info.content }}</span>
-                  <a-input
-                    v-if="info.notify_type.value === 1"
-                    :class="bComponent('column-input')"
-                    v-model="params.msg_suffix"
-                    placeholder="请输入"
-                  ></a-input>
+                  {{ info.content }}
                 </span>
               </div>
               <div class="mg-b16">
@@ -141,7 +129,7 @@
               </template>
               <!-- 自定义 本来可以是直接拿后端数据v-for出来但是自定义有可能第二个 自定义应该是最后一个start -->
               <template>
-                <span class="mg-l16 inlineblock">
+                <span class="inlineblock">
                   <st-checkbox
                     v-if="params.receiver.custom"
                     v-model="params.receiver.custom.value"
@@ -167,11 +155,11 @@
 
             <!-- 订单类型 start -->
             <div class="mg-b16" v-if="Object.keys(info.order_type).length > 0">
-              <span class="color-title">订单类型</span>
+              <span class="color-title  mg-r24">订单类型</span>
               <span
                 v-for="(item, key) of params.order_type"
                 :key="key"
-                class="mg-l16 inlineblock"
+                class="inlineblock"
               >
                 <st-checkbox v-model="params.order_type[key].value">
                   {{ item.name }}
@@ -185,9 +173,7 @@
             <div>
               <span class="color-title mg-r24">发送规则</span>
               <slot name="sendRule" :params="params">
-                <span>
-                  {{ info.notify_time.name }}
-                </span>
+                <span>{{ info.notify_time.name }}</span>
               </slot>
             </div>
             <!-- 发送规则 start -->
@@ -376,15 +362,7 @@ export default {
       if (this.info.receiver.operator) {
         receiver.operator = this.params.receiver.operator.value ? 1 : 0
       }
-      let custom_phone = []
-      if (Array.isArray(this.params.custom_phone)) {
-        custom_phone = this.params.custom_phone
-      } else {
-        custom_phone =
-          this.params.custom_phone.length > 0
-            ? this.params.custom_phone.split(',')
-            : []
-      }
+      custom_phone = this.params.custom_phone
 
       const para = Object.assign({}, this.params, {
         id: this.info.id,

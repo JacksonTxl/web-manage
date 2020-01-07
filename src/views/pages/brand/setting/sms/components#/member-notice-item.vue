@@ -77,7 +77,9 @@
                     v-model="params.msg_preffix"
                     placeholder="请输入"
                   ></a-input>
-                  <span>{{ info.content }}</span>
+                  <span>
+                    {{ info.content }}
+                  </span>
                   <a-input
                     :class="bComponent('column-input')"
                     v-model="params.msg_suffix"
