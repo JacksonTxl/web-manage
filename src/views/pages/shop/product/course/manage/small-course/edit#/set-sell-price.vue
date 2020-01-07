@@ -32,7 +32,6 @@
             <a-select
               v-decorator="decorators.transfer_type"
               slot="addonAfter"
-              @change="setMax"
               style="width: 60px"
             >
               <a-select-option
@@ -192,14 +191,6 @@ export default {
     this.setFieldsValue()
   },
   methods: {
-    setMax(val) {
-      if (val === 2) {
-        this.max = 999999.9
-      } else {
-        this.max = 100
-      }
-      this.form.setFieldsValue({ transfer_num: undefined })
-    },
     setFieldsValue() {
       const info = this.info.price
       this.form.setFieldsValue({
