@@ -5,7 +5,7 @@
     width="60%"
     v-model="show"
     @ok="onSubmit"
-    :title="`${$c('member_card')}合同章程设置`"
+    :title="`${product_type}合同章程设置`"
   >
     <a-textarea
       :class="bModal('textarea')"
@@ -49,15 +49,26 @@ export default {
   },
   rxState() {
     return {
-      loading: this.constitutionService.loading$
+      loading: this.constitutionService.loading$,
+      productType: this.constitutionService.productType$
     }
   },
   created() {
     this.content = this.lawContent
+    console.log(this.productType)
   },
   computed: {
     contentLength() {
       return this.content.length
+    },
+    product_type() {
+      let title
+      this.productType.forEach((item, index) => {
+        if (item.value === this.id) {
+          title = item.label
+        }
+      })
+      return title
     }
   },
   methods: {
