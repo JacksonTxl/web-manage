@@ -613,13 +613,13 @@ export default {
       })
     },
     // 顶部删除周期整个批次
-    onDeleteCycleSchedule(index) {
+    onDeleteCycleSchedule(cycleIndex) {
       if (this.scheduleList.length <= 1) {
         return
       }
-      if (this.scheduleList[index].course_time.length <= 0) {
-        this.scheduleList.splice(index, 1)
-        this.pickerList.splice(index, 1)
+      if (this.scheduleList[cycleIndex].course_time.length <= 0) {
+        this.scheduleList.splice(cycleIndex, 1)
+        this.pickerList.splice(cycleIndex, 1)
         this.picker_end_date = this.pickerList[
           this.pickerList.length
         ][1].format('YYYY-MM-DD')
@@ -633,10 +633,10 @@ export default {
       params.course_id = this.smallCourseInfo.course_id
       params.del_type = DELETE_TYPE.CYCLE
       this.smallCourseScheduleService.cancelCycle(params).subscribe(res => {
-        this.scheduleList.splice(index, 1)
-        this.pickerList.splice(index, 1)
+        this.scheduleList.splice(cycleIndex, 1)
+        this.pickerList.splice(cycleIndex, 1)
         this.picker_end_date = this.pickerList[
-          this.pickerList.length
+          this.pickerList.length - 1
         ][1].format('YYYY-MM-DD')
         console.log(this.picker_end_date)
       })

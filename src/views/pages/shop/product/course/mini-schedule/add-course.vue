@@ -184,6 +184,7 @@ export default {
   methods: {
     hide() {
       this.showFlag = false
+      this.resetForm()
     },
     onChangeCoach(value) {
       this.coachSmallCourseOptions.forEach((item, index) => {
@@ -242,18 +243,7 @@ export default {
         })
     },
     resetForm() {
-      this.form.setFieldsValue({
-        current_course_name: '',
-        coach_id: '',
-        court_id: '',
-        start_time: '',
-        end_time: ''
-      })
-      if (this.cycle_type === 2) {
-        this.form.setFieldsValue({
-          start_days: ''
-        })
-      }
+      this.form.resetFields()
     },
     onSubmit() {
       this.form.validate().then(values => {
