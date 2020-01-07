@@ -45,7 +45,11 @@
             </st-info-item>
             <st-info-item label="排课状态" v-if="info.has_schedule">
               {{ info.has_schedule.name }}
-              <a v-if="info.has_schedule.status" @click="onViewCourse">
+              <a
+                v-if="info.has_schedule.status"
+                :href="onViewCourseHref"
+                target="_blank"
+              >
                 查看排期
               </a>
             </st-info-item>
@@ -346,6 +350,11 @@ export default {
     })
   },
   computed: {
+    onViewCourseHref() {
+      return `/shop/product/course/schedule/small-course/small-course?app_brand_id=${
+        this.$searchQuery.app_brand_id
+      }&app_shop_id=${this.$searchQuery.app_shop_id}&course_id=${this.id}`
+    },
     courseBeginTime() {
       return (
         moment(this.info.course_begin_time).format('YYYY-MM-DD') +
@@ -373,15 +382,6 @@ export default {
     }
   },
   methods: {
-    onViewCourse() {
-      this.$router.push({
-        path: '/shop/product/course/mini-schedule/inbatch-add',
-        query: {
-          course_id: this.id,
-          ...this.$searchQuery
-        }
-      })
-    },
     fetchCouponList(memberId) {
       const member_id = this.form.getFieldValue('member_id')
       const course_price = this.personalPrice.sell_price
