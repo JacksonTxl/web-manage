@@ -46,7 +46,7 @@
             <st-info-item label="排课状态" v-if="info.has_schedule">
               {{ info.has_schedule.name }}
               <a v-if="info.has_schedule.status" @click="onViewCourse">
-                已排课
+                查看排期
               </a>
             </st-info-item>
           </st-info>
