@@ -104,7 +104,7 @@ export class ClubService implements Controller {
         })
         this.courseSummary$.commit(() => courseSummary)
         for (let key in data.daily.personal_reserved_num) {
-          let chartItem = {
+          let chartItem: any = {
             date: key,
             私教课预约人数: data.daily.personal_reserved_num[key],
             私教课签到人数: data.daily.personal_checkin_num[key],
@@ -112,6 +112,9 @@ export class ClubService implements Controller {
             团体课预约人数: data.daily.team_reserved_num[key],
             团体课签到人数: data.daily.team_sigin_num[key]
           }
+          chartItem[`${small_course}预约人数`] =
+            data.daily.small_reserved_num[key]
+          chartItem[`${small_course}签到人数`] = data.daily.small_sigin_num[key]
           lineData.push(chartItem)
         }
         console.log('上课分析', lineData)
