@@ -37,9 +37,10 @@ export class ListService implements Controller {
 
   @Effect()
   getList(params: OrderParams) {
+    console.time('gitlist')
     return this.orderApi.getOrderList(params).pipe(
       tap((result: any) => {
-        result = this.authService.filter(result)
+        console.timeEnd('gitlist')
         this.list$.commit(() => result.list)
         this.page$.commit(() => result.page)
       })
