@@ -17,6 +17,7 @@ export class BookingService {
     reserve: 'shop:reserve:venues_reserve|add',
     pay: 'shop:reserve:venues_reserve|add_pay'
   })
+  hasNext$ = new State({})
   constructor(private venueApi: VenueApi, private authService: AuthService) {}
   getVenueList() {
     return this.venueApi.getVenueList({ status: AREA_STATUS.ON }).pipe(
@@ -25,8 +26,13 @@ export class BookingService {
       })
     )
   }
+  @Effect()
   getBookingList(query: BookingQuery) {
-    return this.venueApi.getBookingList(query).pipe()
+    return this.venueApi.getBookingList(query).pipe(
+      tap(res => {
+        this.hasNext$.commit(() => res.page.current_page < res.page.total_pages)
+      })
+    )
   }
   @Effect()
   createOrder(params: CreateOrderParams) {
