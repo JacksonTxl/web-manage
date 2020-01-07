@@ -53,6 +53,6 @@ export const refundColumns = [
   },
   {
     title: '备注',
-    dataIndex: 'remarks'
+    dataIndex: 'description'
   }
 ]

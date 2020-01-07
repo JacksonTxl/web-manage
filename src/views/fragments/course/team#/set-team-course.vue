@@ -221,7 +221,7 @@ export default {
       this.doSave(this.onSubmitSuccess)
     },
     doSave(callback) {
-      this.form.validateFields().then(() => {
+      this.form.validate().then(() => {
         const data = this.getData()
         this.courseService.setCourse(data).subscribe(res => {
           this.courseId = res.course_id

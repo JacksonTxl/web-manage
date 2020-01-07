@@ -414,7 +414,6 @@ export default {
               this.pickerList.splice(PickerIndex, 1, oldDate)
             },
             onOk: () => {
-              // 调用批量删除的接口and清空本地数据
               this.onDeleteCourseScheduleCycle([date[0], date[1]], PickerIndex)
             }
           })
@@ -543,12 +542,15 @@ export default {
         },
         on: {
           editCourse: (cycleIndex, positionIndex, conflict, info, list) => {
+            info.conflictList = list
+            info.conflict = conflict
             this.scheduleList[cycleIndex].course_time.forEach(
               (dayItems, index) => {
                 if (dayItems.week == info.week) {
-                  dayItems.list[positionIndex] = info
-                  dayItems.list[positionIndex].conflictList = list
-                  dayItems.list[positionIndex].conflict = conflict
+                  // dayItems.list[positionIndex] = info
+                  // dayItems.list[positionIndex].conflictList = list
+                  // dayItems.list[positionIndex].conflict = conflict
+                  dayItems.list.splice(positionIndex, 1, info)
                   this.filterDateList(this.scheduleList)
                   return
                 }
@@ -575,13 +577,20 @@ export default {
     },
     onDeleteCourseSchedule(item, cycleIndex, positionIndex) {
       console.log('删除周期的单个排期')
+      console.log(cycleIndex)
+      console.log(positionIndex)
+      console.log(positionIndex)
+      console.log(item)
       let params = {}
       params = item
       params.del_type = DELETE_TYPE.SINGLE
       console.log(params)
       this.smallCourseScheduleService.cancelCycle(params).subscribe(res => {
         this.scheduleList[cycleIndex].course_time.forEach((dayItems, index) => {
-          if (dayItems.week === item.week) {
+          console.log(dayItems)
+          if (dayItems.week == item.week) {
+            console.log('查找排期')
+
             dayItems.list.splice(positionIndex, 1)
             if (dayItems.list.length === 0) {
               this.scheduleList[cycleIndex].course_time.splice(index, 1)

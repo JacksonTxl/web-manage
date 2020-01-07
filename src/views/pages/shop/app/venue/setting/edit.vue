@@ -92,7 +92,7 @@
                 class="page-content-card-input"
               >
                 <a-select-option
-                  v-for="(item, index) in harfEnums"
+                  v-for="(item, index) in pertimeEnums[perTime]"
                   :key="index"
                   :value="item.value"
                 >
@@ -108,7 +108,7 @@
                 class="page-content-card-input"
               >
                 <a-select-option
-                  v-for="(item, index) in harfEnums"
+                  v-for="(item, index) in pertimeEnums[perTime]"
                   :key="index"
                   :value="item.value"
                 >
@@ -173,6 +173,7 @@ import { ruleOptions } from './add.config'
 import { MessageService } from '@/services/message.service'
 import { PatternService } from '@/services/pattern.service'
 import { CAN_RESERVE, TIME_LIMIT_TYPE, CYCLIC_TYPE } from '@/constants/venue'
+import { ManageService } from '../manage.service'
 export default {
   name: 'AddRole',
   bem: {
@@ -182,7 +183,8 @@ export default {
     return {
       editService: EditService,
       messageService: MessageService,
-      pattern: PatternService
+      pattern: PatternService,
+      manageService: ManageService
     }
   },
   rxState() {
@@ -190,11 +192,13 @@ export default {
       sites: this.editService.sites$,
       info: this.editService.info$,
       harfEnums: this.editService.harfEnums$,
+      oneEnums: this.editService.oneEnums$,
       timeEnums: this.editService.timeEnums$,
       cyclicEnums: this.editService.cyclicEnums$,
       priorityEnums: this.editService.priorityEnums$,
       weeks: this.editService.weeks$,
-      reserveEnums: this.editService.reserveEnums$
+      reserveEnums: this.editService.reserveEnums$,
+      perTime: this.manageService.perTime$
     }
   },
   data() {
@@ -208,13 +212,18 @@ export default {
       end_time: null,
       endOpen: false,
       cyclicType: 1,
-      canReserve: true
+      canReserve: true,
+      pertimeEnums: {
+        1: this.harfEnums,
+        2: this.oneEnums
+      }
     }
   },
   mounted() {
     let info = this.info
     this.timeLimit = info.time_limit_type
     this.cyclicType = info.cyclic_type
+    this.canReserve = info.can_reserve === CAN_RESERVE.YES ? true : false
     this.$nextTick(() => {
       info.time_limit_start = moment(info.time_limit_start * 1000)
       info.time_limit_end = moment(info.time_limit_end * 1000)

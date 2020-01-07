@@ -57,7 +57,6 @@ export const ruleOptions = (vm: any) => {
     }
   }
 }
-
 export const skuColumns = (vm: any) => {
   let list = [
     {
@@ -73,18 +72,17 @@ export const skuColumns = (vm: any) => {
       width: 208,
       slots: { title: 'selling_price' },
       scopedSlots: { customRender: 'selling_price' }
-    },
-    {
+    }
+  ]
+  list = vm.sku.concat(list)
+  if (!vm.isEditMode) {
+    list.push({
       title: '库存',
       dataIndex: 'stock_amount',
       width: 208,
       slots: { title: 'stock_amount' },
       scopedSlots: { customRender: 'stock_amount' }
-    }
-  ]
-  list = vm.sku.concat(list)
-  if (vm.isEditMode) {
-    list.pop()
+    })
   }
   return list
 }

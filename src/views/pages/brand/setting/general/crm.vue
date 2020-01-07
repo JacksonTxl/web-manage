@@ -312,7 +312,7 @@ export default {
         delete this.crmRule.sales_limit_num
       } else {
         if (!this.crmRule.sales_limit_num) {
-          this.messageService.warning({
+          this.messageService.warn({
             content: '请输入大于0的销售可跟进客户天数'
           })
           return
@@ -322,7 +322,7 @@ export default {
         delete this.crmRule.coach_limit_num
       } else {
         if (!this.crmRule.coach_limit_num) {
-          this.messageService.warning({
+          this.messageService.warn({
             content: '请输入大于0的教练可跟进客户天数'
           })
           return
@@ -332,7 +332,7 @@ export default {
         delete this.crmRule.sales_protect_days
       } else {
         if (!this.crmRule.sales_protect_days) {
-          this.messageService.warning({
+          this.messageService.warn({
             content: '请输入大于0的销售跟进客户保护天数'
           })
           return
@@ -345,7 +345,7 @@ export default {
           this.crmRule.sales_follow_rule === 3 &&
           !this.crmRule.sales_follow_days
         ) {
-          this.messageService.warning({
+          this.messageService.warn({
             content: '请输入大于0的跟进天数'
           })
           return
@@ -355,7 +355,7 @@ export default {
         delete this.crmRule.coach_protect_days
       } else {
         if (!this.crmRule.coach_protect_days) {
-          this.messageService.warning({
+          this.messageService.warn({
             content: '请输入大于0的教练跟进客户保护天数'
           })
           return
@@ -368,7 +368,7 @@ export default {
           this.crmRule.coach_follow_rule === 3 &&
           !this.crmRule.coach_follow_days
         ) {
-          this.messageService.warning({
+          this.messageService.warn({
             content: '请输入大于0的跟进天数'
           })
           return

@@ -207,18 +207,6 @@ export default {
         return
       })
     },
-    // disabledDateTime() {
-    //   const allTime = this.range(0, 24)
-    //   console.log(allTime)
-    //   return {
-    //     disabledHours: () => this.range(0, 24).splice(4, 20),
-    //     disabledMinutes: () => this.range(30, 60)
-    //   }
-    // },
-    // disabledHours() {
-    //   return this.range(0, 24).splice(4, 20)
-    // },
-    // this.params.court_name = `${item.name} / ${childrenItem.name}`
     addCourse(cycleIndex, conflict, params, list) {
       this.$emit('addCourse', cycleIndex, conflict, params, list)
       this.showFlag = false
@@ -232,7 +220,9 @@ export default {
         .addScheduleInBatch(verifyParams)
         .subscribe(res => {
           console.log(res)
-          verifyParams.schedule_ids = res.schedule_ids
+          if (!res.conflict) {
+            verifyParams.schedule_ids = res.schedule_ids
+          }
           this.addCourse(this.cycleIndex, res.conflict, verifyParams, res.list)
           this.resetForm()
         })

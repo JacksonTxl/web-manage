@@ -2,20 +2,16 @@ import { Injectable, Controller, ServiceRoute } from 'vue-service-app'
 import { State } from 'rx-state'
 import { SmallCourseApi } from '@/api/v1/sold/small-course'
 import { tap } from 'rxjs/operators'
-import { SoldService } from '@/services/sold.service'
 @Injectable()
 export class OperationRecordService implements Controller {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
-  constructor(
-    private smallCourseApi: SmallCourseApi,
-    private soldService: SoldService
-  ) {}
+  constructor(private smallCourseApi: SmallCourseApi) {}
   getList(query: any) {
     return this.smallCourseApi.getSmallCourseOperationInfo(query).pipe(
       tap((res: any) => {
-        this.list$.commit(() => this.soldService.dealData(res.list))
+        this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })
     )

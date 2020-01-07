@@ -5,14 +5,14 @@
       overlayClassName="samll-course-course-card-popover"
       v-model="showFlag"
       placement="bottom"
-      v-if="conflict"
+      v-if="cardItem.conflict"
     >
       <template slot="content">
         <st-table
           :pagination="false"
           :columns="columns"
           :scroll="{ x: 680 }"
-          :dataSource="conflictList"
+          :dataSource="cardItem.conflictList"
           rowKey="index"
         ></st-table>
       </template>
@@ -97,8 +97,6 @@ export default {
   },
   created() {
     this.showFlag = this.cardItem.show
-    this.conflict = this.cardItem.conflict
-    this.conflictList = this.cardItem.conflictList
   },
   methods: {
     hide() {
