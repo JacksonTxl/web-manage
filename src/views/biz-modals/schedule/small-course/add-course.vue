@@ -2,13 +2,18 @@
   <st-modal title="新增课程排期" v-model="show" width="520px">
     <st-form :form="form" labelWidth="72px" labelAuto>
       <st-form-item label="日期" required>
-        <a-date-picker style="width:100%" v-decorator="decorators.start_days" />
+        <a-date-picker
+          style="width:100%"
+          @change="changeStartDays"
+          v-decorator="decorators.start_days"
+        />
       </st-form-item>
       <st-form-item label="开始时间" required>
         <a-time-picker
           format="HH:mm"
           style="width:100%"
           v-decorator="decorators.start_time"
+          @change="changeStartTime"
         />
       </st-form-item>
       <st-form-item label="结束时间" required>
@@ -75,6 +80,7 @@
 import { cloneDeep } from 'lodash-es'
 import { SmallCourseScheduleService } from '@/views/pages/shop/product/course/schedule/small-course/service#/schedule.service'
 import { SmallCourseScheduleCommonService } from '@/views/pages/shop/product/course/schedule/small-course/service#/common.service'
+import moment from 'moment'
 import { ruleOptions } from './add-course.config'
 export default {
   name: 'AddCourseSchedule',
@@ -101,7 +107,11 @@ export default {
       decorators,
       show: false,
       courseItem: '',
-      smallCourseInfo: {}
+      moment: moment,
+      smallCourseInfo: {},
+      courseStartDate: '',
+      startTime: '',
+      endTime: ''
     }
   },
   props: {
@@ -113,6 +123,20 @@ export default {
     }
   },
   methods: {
+    changeStartDays(valus) {
+      this.courseStartDate = valus.format('YYYY-MM-DD')
+      console.log(this.courseStartTime)
+    },
+    changeStartTime(valus) {
+      console.log(valus)
+      this.startTime = moment(
+        `${this.courseStartDate} ${valus.format('HH:mm')}`
+      )
+      console.log(this.startTime)
+    },
+    changeendTime(valus) {
+      console.log(valus)
+    },
     onChangeCourse(value) {
       this.smallCourseScheduleCommonService.getBindCoachList(value).subscribe()
       this.courseSmallCourseOptions.forEach((item, index) => {

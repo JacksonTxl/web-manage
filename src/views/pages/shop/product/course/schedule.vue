@@ -125,8 +125,8 @@
         <a-select-option :value="-1">全部课程</a-select-option>
         <a-select-option
           v-for="course in courseSmallCourseOptions"
-          :key="course.course_id"
-          :value="course.course_id"
+          :key="+course.course_id"
+          :value="+course.course_id"
         >
           {{ course.course_name }}
         </a-select-option>
@@ -198,6 +198,9 @@ export default {
     routeName() {
       return this.$route.name
     }
+  },
+  mounted() {
+    this.$searchQuery.course_id = +this.$searchQuery.course_id
   },
   methods: {
     onChange() {
