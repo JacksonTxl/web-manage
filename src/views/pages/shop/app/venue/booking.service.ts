@@ -2,6 +2,7 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
+import { AREA_STATUS } from '@/constants/venue'
 import {
   VenueApi,
   BookingQuery,
@@ -18,7 +19,7 @@ export class BookingService {
   })
   constructor(private venueApi: VenueApi, private authService: AuthService) {}
   getVenueList() {
-    return this.venueApi.getVenueList().pipe(
+    return this.venueApi.getVenueList({ status: AREA_STATUS.ON }).pipe(
       tap(res => {
         this.venueList$.commit(() => res.list)
       })

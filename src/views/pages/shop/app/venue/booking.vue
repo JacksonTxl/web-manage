@@ -1,6 +1,6 @@
 <template>
   <div :class="b()">
-    <div :class="b('right')">
+    <div :class="right()">
       <div :class="right('top')">
         <st-t2>代预约</st-t2>
         <st-table
@@ -148,9 +148,9 @@ export default {
   name: 'PageShopAppVenueBooking',
   bem: {
     b: 'page-shop-app-venue-booking',
-    calendar: 'page-shop-app-venue-booking__calendar',
-    list: 'page-shop-app-venue-booking__list',
-    right: 'page-shop-app-venue-booking__right'
+    calendar: 'calendar',
+    list: 'list',
+    right: 'right'
   },
   serviceInject() {
     return {
