@@ -150,7 +150,6 @@ export default {
     }
   },
   created() {
-    console.log(this.coachSmallCourseOptions)
     const cycleDate = this.cycle
     this.cycle_start_date = cycleDate[0].format('YYYY-MM-DD')
     this.cycle_end_date = cycleDate[1].format('YYYY-MM-DD')
@@ -315,10 +314,7 @@ export default {
           this.addSchedule(verifyParams)
           return
         }
-        if (
-          typeof verifyParams.schedule_ids == undefined &&
-          this.cycle_type === 2
-        ) {
+        if (verifyParams.schedule_ids === undefined && this.cycle_type === 2) {
           this.addScheduleCustom(verifyParams)
           return
         }

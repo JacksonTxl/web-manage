@@ -270,6 +270,7 @@ export default {
         if (this.cycle_type === 1) {
           this.addSchedule(verifyParams)
         } else {
+          console.log(verifyParams)
           this.addScheduleCustom(verifyParams)
         }
       })

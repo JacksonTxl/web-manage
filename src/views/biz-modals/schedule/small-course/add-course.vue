@@ -131,11 +131,9 @@ export default {
       this.startTime = moment(
         `${this.courseStartDate} ${valus.format('HH:mm')}`
       )
-      console.log(this.startTime)
     },
     changeEndTime(valus) {
       this.endTime = moment(`${this.courseStartDate} ${valus.format('HH:mm')}`)
-      console.log(this.endTime)
     },
     onChangeCourse(value) {
       this.smallCourseScheduleCommonService.getBindCoachList(value).subscribe()

@@ -200,6 +200,7 @@ import ScheduleSmallCourseEditCourse from '@/views/biz-modals/schedule/small-cou
 import ScheduleSmallCourseSubmitCourse from '@/views/biz-modals/schedule/small-course/submit-course'
 import { MessageService } from '@/services/message.service'
 import { DELETE_TYPE } from '@/constants/stat/course'
+import { cloneDeep } from 'lodash-es'
 import { ruleOptions } from './inbatch-add.config'
 export default {
   name: 'AddScheduleInBatch',
@@ -524,7 +525,9 @@ export default {
       }
     },
     pushCustomCourseInfo(info) {
-      this.customizeScheduleList.push(info)
+      const courseInfo = cloneDeep(info)
+      this.customizeScheduleList.push(courseInfo)
+      console.log(this.customizeScheduleList)
     },
     // 编辑课程
     onEditCourseSchedule(item, cycleIndex, positionIndex) {
