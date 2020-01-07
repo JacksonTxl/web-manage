@@ -301,14 +301,6 @@ export default {
     this.params.msg_preffix = this.info.msg_preffix
     this.params.msg_suffix = this.info.msg_suffix
     this.params.custom_phone = this.info.custom_phone
-    // TODO: 这里暂时只有 状态23 24选择角色 其他的选择手机号而且是字符串，以后产品打算改为选择角色
-    const isJoin = [
-      NOTIFY_SHOP_SUB_TYPE.MEMBER_ENTRANCE_SUCCESS,
-      NOTIFY_SHOP_SUB_TYPE.BATCH_OPERATE
-    ]
-    if (!isJoin.includes(this.info.notify_sub_type.value)) {
-      this.params.custom_phone = this.info.custom_phone.join(' ')
-    }
     this.params.notify_mode = {
       sms: this.info.notify_mode.sms && this.info.notify_mode.sms.value,
       app: this.info.notify_mode.app && this.info.notify_mode.app.value,
