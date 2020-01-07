@@ -10,7 +10,7 @@
             index === 2
               ? 'list__title-three'
               : index === 1
-              ? 'list_title_two'
+              ? 'list__title-two'
               : ''
           "
         >
