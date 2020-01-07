@@ -40,7 +40,6 @@ export class ListService implements Controller {
     console.time('gitlist')
     return this.orderApi.getOrderList(params).pipe(
       tap((result: any) => {
-        console.timeEnd('gitlist')
         this.list$.commit(() => result.list)
         this.page$.commit(() => result.page)
       })
