@@ -10,7 +10,7 @@
       <span :class="b('head-close')" @click="hide">X</span>
       <div class="add-course-conent">
         <st-form labelWidth="68px" :form="form">
-          <st-form-item label="排课名称" required class="mg-t12">
+          <st-form-item label="排课名称" class="mg-t12">
             <a-input
               placeholder="请输入"
               v-decorator="decorators.current_course_name"
@@ -255,9 +255,13 @@ export default {
         coach_id: '',
         court_id: '',
         start_time: '',
-        end_time: '',
-        start_days: ''
+        end_time: ''
       })
+      if (this.cycle_type === 2) {
+        this.form.setFieldsValue({
+          start_days: ''
+        })
+      }
     },
     onSubmit() {
       this.form.validate().then(values => {

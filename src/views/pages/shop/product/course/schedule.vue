@@ -199,9 +199,6 @@ export default {
       return this.$route.name
     }
   },
-  created() {
-    // console.log(this.$route.name)
-  },
   methods: {
     onChange() {
       this.$router.push({ query: this.$searchQuery })

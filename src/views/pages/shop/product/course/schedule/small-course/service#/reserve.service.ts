@@ -21,9 +21,12 @@ export class SmallCourseScheduleReserveService {
   infoAuth$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({
-    add: 'shop:reserve:team_course_reserve|add',
-    cancel: 'shop:reserve:team_course_reserve|del',
-    checkIn: 'shop:reserve:team_course_reserve|checkin'
+    leave: 'shop:reserve:small_class_course_reserve|leave',
+    remedial: 'shop:reserve:small_class_course_reserve|supplement',
+    getInfo: 'shop:reserve:small_class_course_reserve|get_supplement',
+    checkIn: 'shop:reserve:small_class_course_reserve|checkin',
+    againCheckIn: 'shop:reserve:small_class_course_reserve|supplement_checkin',
+    add: 'shop:reserve:small_class_course_reserve|add'
   })
   constructor(
     private reserveApi: SmallCourseScheduleReserveApi,
@@ -141,7 +144,7 @@ export class SmallCourseScheduleReserveService {
     return this.reserveApi.courseInfo(id)
   }
   // 补课列表
-  courseList(id: string) {
-    return this.reserveApi.courseList(id)
+  courseList(params: any) {
+    return this.reserveApi.courseList(params)
   }
 }

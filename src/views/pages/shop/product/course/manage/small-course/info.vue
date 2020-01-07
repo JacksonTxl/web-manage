@@ -61,6 +61,8 @@
 </template>
 <script>
 import { InfoService } from './info.service'
+import { MessageService } from '@/services/message.service'
+
 import { CLASS_STATUS } from '@/constants/course/small-course'
 export default {
   bem: {
@@ -69,7 +71,8 @@ export default {
   name: 'SmallCourseInfo',
   serviceInject() {
     return {
-      infoService: InfoService
+      infoService: InfoService,
+      messageService: MessageService
     }
   },
   rxState() {
@@ -172,6 +175,7 @@ export default {
       this.infoService
         .beGroup(this.groupCourseHeaderInfo.course_id)
         .subscribe(() => {
+          this.messageService.success({ content: '状态已变更成功' })
           this.$router.reload()
         })
     },
@@ -198,6 +202,7 @@ export default {
       this.infoService
         .publish(this.groupCourseHeaderInfo.course_id)
         .subscribe(() => {
+          this.messageService.success({ content: '状态已变更成功' })
           this.$router.reload()
         })
     }

@@ -14,11 +14,11 @@
           type="primary"
           class="mg-r12"
           @click="onClickScheduleInBatch"
-          v-if="auth.addBatch"
+          v-if="auth.add"
         >
           排课
         </st-button>
-        <st-button @click="onClickScheduleInBatch" v-if="auth.addBatch">
+        <st-button @click="onClickScheduleInBatch" v-if="auth.eidt">
           批量修改
         </st-button>
       </div>
@@ -82,6 +82,10 @@ export default {
     // 查看详情
     onDetail(info) {
       console.log(info)
+      console.log()
+      if (!this.auth.getInfo) {
+        return
+      }
       this.$modalRouter.push({
         name: 'schedule-small-course-reserve-info',
         props: {
