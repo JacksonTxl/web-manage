@@ -36,7 +36,7 @@
       :loading="loading.getList"
       :dataSource="list"
       :columns="columns"
-      :scroll="{ x: 1400 }"
+      :scroll="{ x: 1700 }"
       @change="onTableChange"
       :page="page"
     >

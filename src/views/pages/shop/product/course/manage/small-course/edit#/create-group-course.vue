@@ -314,6 +314,10 @@ export default {
         values.small_course_type = this.$route.query.type
         values.image = this.bg_image
         values.img_type = this.bg_image.index
+        if (!this.isShowLeaveContent) {
+          delete values.leave_hours
+          delete values.leave_limit
+        }
         if (this.bg_image.index === 0) {
           values.img_type = 3
           if (!this.bg_image.image_url) {

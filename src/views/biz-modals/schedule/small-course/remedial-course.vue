@@ -116,7 +116,14 @@ export default {
       return scopeName
     }
   },
-  mounted() {},
+  created() {
+    console.log(123)
+    this.smallCourseScheduleCommonService
+      .getCourseList({
+        schedule_status: 1
+      })
+      .subscribe()
+  },
   methods: {
     onChangeCourse(value) {
       this.courseId = value

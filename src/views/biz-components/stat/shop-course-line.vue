@@ -27,18 +27,31 @@ export default {
     // 使用的字段key值数组
     fields: {
       type: Array,
-      default: () => [
-        '团体课可预约人数',
-        '团体课签到人数',
-        '团体课预约人数',
-        '私教课签到人数',
-        '私教课预约人数'
-      ]
+      default() {
+        const smallCourse = this.$c('small_course')
+        return [
+          '团体课可预约人数',
+          '团体课签到人数',
+          '团体课预约人数',
+          '私教课签到人数',
+          '私教课预约人数',
+          `${smallCourse}签到人数`,
+          `${smallCourse}预约人数`
+        ]
+      }
     },
     // 颜色数组
     colors: {
       type: Array,
-      default: () => ['#5095FC', '#6831D7', '#06DB8C', '#872333', '#98db23']
+      default: () => [
+        '#5095FC',
+        '#6831D7',
+        '#06DB8C',
+        '#872333',
+        '#98db23',
+        '#8f23f3',
+        '#9ddf33'
+      ]
     },
     shadowColors: {
       type: Array,
