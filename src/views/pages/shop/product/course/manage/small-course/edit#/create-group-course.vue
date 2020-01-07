@@ -40,6 +40,7 @@
       <a-col :lg="11" :xs="22">
         <st-form-item label="开班时间" required>
           <a-range-picker
+            :disabled="isDisabled"
             style="width:100%"
             :disabledDate="disabledDate"
             :showTime="{ format: 'HH:mm' }"
@@ -61,6 +62,7 @@
               <st-input-number
                 placeholder="请输入人数下限"
                 v-decorator="decorators.num_min"
+                :disabled="isDisabled"
                 :min="1"
                 :max="49"
               >
@@ -91,6 +93,7 @@
         <st-form-item label="总课时" required>
           <st-input-number
             placeholder="请输入总课时"
+            :disabled="isDisabled"
             v-decorator="decorators.course_times"
             :min="1"
             :max="99999"
@@ -210,6 +213,7 @@ import { ruleOptions } from '../form.config'
 import { PatternService } from '@/services/pattern.service'
 import CardBgRadio from '@/views/biz-components/card-bg-radio/card-bg-radio'
 import StEditor from '@/views/biz-components/editor/editor'
+import { CLASS_STATUS } from '@/constants/course/small-course'
 
 export default {
   name: 'create-group-course',
@@ -240,6 +244,15 @@ export default {
     b: 'create-group-course'
   },
   components: { CardBgRadio, StEditor },
+  computed: {
+    isDisabled() {
+      return (
+        this.CLASS_STATUS.SIGNING_UNCLASSED === this.info.info.class_status ||
+        this.CLASS_STATUS.SIGNING_CLASSED === this.info.info.class_status ||
+        this.CLASS_STATUS.CLASSED === this.info.info.class_status
+      )
+    }
+  },
   mounted() {
     this.isShowLimitContent = this.$route.query.type === '1'
     this.$emit('onCourseNameChange', this.info.info.course_name)
@@ -258,7 +271,8 @@ export default {
         index: 1
       },
       isShowLeaveContent: false,
-      isShowLimitContent: false
+      isShowLimitContent: false,
+      CLASS_STATUS
     }
   },
   methods: {
