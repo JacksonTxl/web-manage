@@ -129,6 +129,7 @@
                         :data="orderMember(storeBoard, 0, 'member')"
                         :total="Number(wholeNav[wholenavIndex].num)"
                         style="width: 100%;"
+                        :colors="['#4679F9', '#894BFF', '#009DFF']"
                         :height="
                           wholeNavcom === 'brand-user-avg-bar'
                             ? height325
