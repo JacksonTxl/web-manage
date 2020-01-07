@@ -365,7 +365,7 @@ export default {
     },
     onChangeConsumeType(val) {
       const obj = JSON.parse(val)
-      this.consumeType = obj.consume_type
+      this.consumeType = obj.consume_wtype
       this.consumeId = obj.id
     },
     onChangeSiteNumList(val) {
