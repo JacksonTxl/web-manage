@@ -53,6 +53,9 @@
             | enumFilter('small_course.small_course_type')
         }}
       </span>
+      <span slot="sales_price" slot-scope="text, record">
+        {{ record.sales_price === 0 ? '' : record.sales_price }}
+      </span>
       <span slot="course_status" slot-scope="text, record">
         {{ record.class_status | enumFilter('small_course.class_status') }}
       </span>

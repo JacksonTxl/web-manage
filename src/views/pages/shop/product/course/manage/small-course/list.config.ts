@@ -25,7 +25,8 @@ export const columns = (vm: any) => {
     },
     {
       title: '售价',
-      dataIndex: 'sales_price'
+      dataIndex: 'sales_price',
+      scopedSlots: { customRender: 'sales_price' }
     },
     {
       title: '报名人数',
