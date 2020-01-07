@@ -22,8 +22,9 @@
           v-for="(item, index) in data"
           :key="index"
         >
-          <div v-for="(i, inx) in item.site_data" :key="inx">
+          <template v-for="(i, inx) in item.site_data">
             <div
+              :key="inx"
               v-if="i.status === 2"
               :class="[
                 content('row'),
@@ -35,18 +36,20 @@
               ¥{{ i.price }}
             </div>
             <div
+              :key="inx"
               v-if="i.status === 3"
               :class="[content('row'), content('row-reserved')]"
             >
               {{ i.member_name }}
             </div>
             <div
+              :key="inx"
               v-if="i.status === 1"
               :class="[content('row'), content('row-unreserve')]"
             >
               不可约
             </div>
-          </div>
+          </template>
         </div>
         <st-no-data v-if="!data.length"></st-no-data>
       </div>
@@ -60,9 +63,9 @@ export default {
   name: 'bookingTable',
   bem: {
     b: 'page-shop-app-venue-booking-table',
-    top: 'page-shop-app-venue-booking-table__top',
-    left: 'page-shop-app-venue-booking-table__left',
-    content: 'page-shop-app-venue-booking-table__content'
+    top: 'top',
+    left: 'left',
+    content: 'content'
   },
   props: {
     data: {
@@ -98,10 +101,9 @@ export default {
         left.offsetHeight -
         leftVenue.offsetHeight -
         leftCalendar.offsetHeight -
-        13 +
-        'px'
-      leftContent.style.height = height
-      this.$refs.left.style.height = height
+        13
+      leftContent.style.height = height + 'px'
+      this.$refs.left.style.height = height + 15 + 'px'
     },
     scrollHandler: throttle(function(e) {
       console.log(e)

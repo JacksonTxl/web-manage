@@ -31,6 +31,7 @@
 <script>
 import { columns } from './put-out.config.ts'
 import { PutOutService } from './put-out.service.ts'
+import { cloneDeep } from 'lodash-es'
 export default {
   serviceInject() {
     return {
@@ -45,16 +46,21 @@ export default {
   data() {
     return {
       show: false,
-      columns
+      columns,
+      skuList: []
     }
   },
   props: {
-    skuList: {
+    list: {
       type: Array,
       default: () => {
         return []
       }
     }
+  },
+  mounted() {
+    console.log(this.list, 'list')
+    this.skuList = cloneDeep(this.list)
   },
   methods: {
     onSubmit() {

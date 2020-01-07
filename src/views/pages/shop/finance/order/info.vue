@@ -71,6 +71,9 @@
               {{ info.reduce_price }}
             </st-info-item>
             <st-info-item label="应收金额">{{ info.pay_price }}</st-info-item>
+            <st-info-item label="待收金额" v-if="info.product_type === 12">
+              {{ info.remainder_price }}
+            </st-info-item>
             <st-info-item label="支付状态">
               {{ info.pay_status | enumFilter('finance.pay_status') }}
             </st-info-item>
