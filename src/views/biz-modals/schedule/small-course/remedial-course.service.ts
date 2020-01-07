@@ -10,11 +10,13 @@ export class RemedialCourseService implements Controller {
   ) {}
 
   init() {
+    console.log(123)
     return this.smallCourseScheduleCommonService.getCourseList({
       schedule_status: 1
     })
   }
   beforeEach(to: ServiceRoute, form: ServiceRoute) {
+    console.log(456)
     return this.init()
   }
 }
