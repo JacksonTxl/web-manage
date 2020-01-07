@@ -48,7 +48,6 @@
         <st-overflow-text
           slot="remark"
           slot-scope="text"
-          max-width="300px"
           :value="text"
         ></st-overflow-text>
         <template slot="stock_flow" slot-scope="text, record">
