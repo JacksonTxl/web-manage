@@ -377,7 +377,6 @@ export default {
       this.buyCar.splice(i, 1)
       this.onMemberChange(0)
     },
-    // TODO: new promise
     // 生成订单号
     createOrderNum(type) {
       return new Promise((resolve, reject) => {
