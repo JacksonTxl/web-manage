@@ -500,6 +500,7 @@ export default {
     addGoodNew(values) {
       let data = {}
       let product_sku = []
+      let spec_name_arr = []
       this.tableData.forEach((item, index) => {
         let skuItem = {}
         skuItem.market_price = item.market_price
@@ -507,18 +508,21 @@ export default {
         skuItem.stock_amount = item.stock_amount
         skuItem.spec_arr = []
         if (this.skuList.length > 0) {
+          spec_name_arr.push(this.skuList[0].spec_name)
           skuItem.spec_arr.push({
             spec_name: this.skuList[0].spec_name,
             spec_item_name: item['0']
           })
         }
         if (this.skuList.length > 1) {
+          spec_name_arr.push(this.skuList[1].spec_name)
           skuItem.spec_arr.push({
             spec_name: this.skuList[1].spec_name,
             spec_item_name: item['1']
           })
         }
         if (this.skuList.length > 2) {
+          spec_name_arr.push(this.skuList[2].spec_name)
           skuItem.spec_arr.push({
             spec_name: this.skuList[2].spec_name,
             spec_item_name: item['2']
@@ -540,7 +544,8 @@ export default {
         sale_type:
           values.sale_type.length === this.saleType.length
             ? -1
-            : values.sale_type[0] // 售卖方式
+            : values.sale_type[0], // 售卖方式
+        spec_name_arr
       }
       this.addService.addGoods(data).subscribe(res => {
         this.$router.push({
