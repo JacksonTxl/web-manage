@@ -25,24 +25,36 @@
             style="object-fit: cover;"
             :src="li.image_url | imgFilter({ w: 482, h: 274 })"
           />
-          <div v-if="li.is_default === 1" :class="slider('default')">
-            默认门店头图
-            <span>（自动匹配店招图片）</span>
-          </div>
-          <st-form-item v-else labelWidth="46px" label="链接">
-            <a-cascader
-              :options="actList"
-              :allowClear="false"
-              v-model="li.activity_id"
-              placeholder="请输入链接的活动"
-              :fieldNames="{
-                label: 'activity_name',
-                value: 'id',
-                children: 'children'
-              }"
-              @change="onActSelect(li, $event)"
-            />
-          </st-form-item>
+          <a-row :class="slider('default-box')" :gutter="5">
+            <a-col :span="22">
+              <div v-if="li.is_default === 1" :class="slider('default')">
+                默认门店头图
+                <span>（自动匹配店招图片）</span>
+              </div>
+              <st-form-item v-else labelWidth="28px" label="链接">
+                <a-cascader
+                  :options="actList"
+                  :allowClear="false"
+                  v-model="li.activity_id"
+                  placeholder="请输入链接的活动"
+                  :fieldNames="{
+                    label: 'activity_name',
+                    value: 'id',
+                    children: 'children'
+                  }"
+                  @change="onActSelect(li, $event)"
+                />
+              </st-form-item>
+            </a-col>
+            <a-col :span="2">
+              <a-tooltip placement="top">
+                <template slot="title">
+                  <span>拖拽调整顺序</span>
+                </template>
+                <a-icon type="menu-unfold" class="tooltip-draggable" />
+              </a-tooltip>
+            </a-col>
+          </a-row>
         </div>
         <div :class="slider('addbox')" :span="8" v-if="list.length < 5">
           <div :class="slider('box')">
@@ -65,20 +77,22 @@
                 大小不超过5M，建议尺寸16:9
               </span>
             </st-image-upload>
-            <st-form-item labelWidth="46px" label="链接">
-              <a-cascader
-                :options="actList"
-                :allowClear="false"
-                v-model="addItem.activity_id"
-                placeholder="请输入链接的活动"
-                :fieldNames="{
-                  label: 'activity_name',
-                  value: 'id',
-                  children: 'children'
-                }"
-                @change="onAddSelect"
-              />
-            </st-form-item>
+            <div :class="slider('uploadtip-input')">
+              <st-form-item labelWidth="28px" label="链接">
+                <a-cascader
+                  :options="actList"
+                  :allowClear="false"
+                  v-model="addItem.activity_id"
+                  placeholder="请输入链接的活动"
+                  :fieldNames="{
+                    label: 'activity_name',
+                    value: 'id',
+                    children: 'children'
+                  }"
+                  @change="onAddSelect"
+                />
+              </st-form-item>
+            </div>
           </div>
         </div>
       </draggable>
