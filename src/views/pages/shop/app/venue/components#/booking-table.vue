@@ -95,15 +95,10 @@ export default {
     calcLeftHeight() {
       const left = document.getElementById('booking-left')
       const leftVenue = document.getElementById('booking-left-venue')
-      const leftCalendar = document.getElementById('booking-left-calendar')
       const leftContent = document.getElementById('booking-left-content')
-      const height =
-        left.offsetHeight -
-        leftVenue.offsetHeight -
-        leftCalendar.offsetHeight -
-        13
+      const height = left.offsetHeight - leftVenue.offsetHeight - 139
       leftContent.style.height = height + 'px'
-      this.$refs.left.style.height = height + 15 + 'px'
+      this.$refs.left.style.height = height + 22 + 'px'
     },
     scrollHandler: throttle(function(e) {
       console.log(e)
@@ -122,6 +117,15 @@ export default {
         this.$emit('nextPage')
       }
     }, 200),
+    resetScroll() {
+      let content = document.getElementById('booking-left-content')
+      let left = this.$refs.left
+      let top = this.$refs.top
+      content.scrollLeft = 0
+      content.scrollTop = 0
+      left.scrollTop = 0
+      top.scrollLeft = 0
+    },
     selectHandler(time, number, site) {
       let index = -1
       time.site_name = site.site_name
