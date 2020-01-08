@@ -33,8 +33,7 @@
         :columns="columns"
         :page="page"
         @change="onTableChange"
-        :dataSource="templist"
-        @expand="onExpand"
+        :dataSource="list"
         rowKey="id"
         :loading="loading.getList"
       >
@@ -145,23 +144,12 @@ export default {
     }
   },
   computed: {
-    columns,
-    indexDataSource() {
-      let mapDataSource = {}
-      this.list.forEach(item => {
-        mapDataSource[item.id] = item
-      })
-      return mapDataSource
-    }
+    columns
   },
   mounted() {
     this.setSearchData()
-    this.templist = this.dataSource()
   },
   watch: {
-    list() {
-      this.templist = this.dataSource()
-    },
     $searchQuery() {
       this.setSearchData()
     }
@@ -174,8 +162,7 @@ export default {
       type: -1,
       start_date: null,
       end_date: null,
-      date: [],
-      templist: cloneDeep(this.list)
+      date: []
     }
   },
   methods: {
@@ -193,21 +180,6 @@ export default {
           success: result => {
             this.$router.reload()
           }
-        }
-      })
-    },
-    // FIXME: 有待考察 bug：1011259
-    dataSource() {
-      const list = cloneDeep(this.list)
-      return list.map(item => {
-        item.children = item.children.length > 0 ? [item.children[0]] : []
-        return item
-      })
-    },
-    onExpand(expanded, record) {
-      this.templist.map((item, index) => {
-        if (record.id === item.id) {
-          this.$set(this.templist, index, this.indexDataSource[record.id])
         }
       })
     },
