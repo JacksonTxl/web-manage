@@ -9,7 +9,7 @@ export const ruleOptions = (vm: any) => {
         { required: true, message: '请选择开始时间' },
         {
           validator: (filed: any, value: any, values: any) => {
-            if (value > values.end_time) {
+            if (values.start_time > values.end_time) {
               return '开始时间不能大于结束时间'
             }
           }
@@ -21,7 +21,7 @@ export const ruleOptions = (vm: any) => {
         { required: true, message: '请选择结束时间' },
         {
           validator: (filed: any, value: any, values: any) => {
-            if (value < values.start_time) {
+            if (values.start_time > values.end_time) {
               return '结束时间不能小于开始时间'
             }
           }

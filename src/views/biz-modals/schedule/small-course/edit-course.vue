@@ -14,11 +14,7 @@
           v-decorator="decorators.start_days"
         />
       </st-form-item>
-      <st-form-item
-        label="开始时间"
-        required
-        :validateStatus="compareTime ? 'error' : ''"
-      >
+      <st-form-item label="开始时间" required>
         <a-time-picker
           format="HH:mm"
           style="width:100%"
@@ -26,11 +22,7 @@
           v-decorator="decorators.start_time"
         />
       </st-form-item>
-      <st-form-item
-        label="结束时间"
-        required
-        :validateStatus="compareTime ? 'error' : ''"
-      >
+      <st-form-item label="结束时间" required>
         <a-time-picker
           format="HH:mm"
           style="width:100%"
@@ -192,14 +184,14 @@ export default {
       this.startTime = value
       const endTime = this.form.getFieldValue('end_time')
       if (endTime) {
-        this.form.validate(['end_time'])
+        this.form.validate({ force: false, forceFields: ['end_time'] })
       }
     },
     changeEndTime(value) {
       this.endTime = value
       const startTime = this.form.getFieldValue('start_time')
       if (startTime) {
-        this.form.validate(['start_time'])
+        this.form.validate({ force: false, forceFields: ['start_time'] })
       }
     },
     onChangeCoach(value) {
