@@ -29,7 +29,7 @@
             <div
               class="img-wrap"
               :class="'run-item-' + index"
-              v-for="(item, index) in prizeList"
+              v-for="(item, index) in prizeListFilters"
               :key="index"
             >
               <img class="img" :src="item.prize.image_url" alt="奖品图片" />
@@ -580,6 +580,34 @@ export default {
   computed: {
     deleteBtnStatus() {
       return this.$searchQuery.activity_id && this.$searchQuery.status === 1
+    },
+    prizeListFilters(value) {
+      if (this.prizeList.length <= 2 || this.prizeList.length === 7) {
+        return this.prizeList
+      }
+      const orderArr = [
+        0,
+        1,
+        [0, 1, 2, -1, 0, 1, 2],
+        [0, -1, 1, -1, 2, -1, 3],
+        [0, -1, 1, -1, 2, 3, 4],
+        [0, 1, 2, -1, 3, 4, 5]
+      ]
+      return orderArr[this.prizeList.length - 1].map((item, index) => {
+        if (item > -1) {
+          return this.prizeList[item]
+        } else {
+          return {
+            prize: {
+              image_url:
+                this.notPrizeImgType === this.NOT_PRIZE_IMG_TYPE.CUSTOM
+                  ? this.notPrize.prize.image_url
+                  : this.lucky[0].image_url
+            },
+            prize_name: this.notPrize.prize_name
+          }
+        }
+      })
     }
   },
   methods: {
