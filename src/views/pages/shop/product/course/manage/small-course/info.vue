@@ -3,6 +3,13 @@
     <div :class="b('title-action')">
       <st-t3 :class="b('title')">
         {{ groupCourseHeaderInfo.course_name }}
+        <span class="mg-l8">
+          (
+          {{
+            groupCourseHeaderInfo.class_status
+              | enumFilter('small_course.class_status')
+          }})
+        </span>
       </st-t3>
       <st-btn-actions :options="btnOptions"></st-btn-actions>
     </div>

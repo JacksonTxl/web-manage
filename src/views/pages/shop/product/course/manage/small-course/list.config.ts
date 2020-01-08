@@ -14,18 +14,18 @@ export const columns = (vm: any) => {
     },
     {
       title: '排课情况',
-      width: 100,
+      width: 120,
       scopedSlots: { customRender: 'course_arrangement' }
     },
     {
       title: '报名时间',
       dataIndex: 'apply_time',
-      width: 160
+      width: 190
     },
     {
       title: '开班时间',
       dataIndex: 'course_time',
-      width: 160
+      width: 190
     },
     {
       title: '售价',
