@@ -45,7 +45,15 @@
           :dataSource="list"
         >
           <template slot="course_status" slot-scope="text">
-            {{ text | enumFilter('sold_common.course_status') }}
+            <st-text
+              :status="{
+                success: text === 1,
+                warning: text === 2,
+                error: text === 3
+              }"
+            >
+              {{ text | enumFilter('sold_common.course_status') }}
+            </st-text>
           </template>
           <div slot="action" slot-scope="text, record">
             <st-table-actions>
