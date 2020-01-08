@@ -508,27 +508,27 @@ export default {
         skuItem.stock_amount = item.stock_amount
         skuItem.spec_arr = []
         if (this.skuList.length > 0) {
-          spec_name_arr.push(this.skuList[0].spec_name)
           skuItem.spec_arr.push({
             spec_name: this.skuList[0].spec_name,
             spec_item_name: item['0']
           })
         }
         if (this.skuList.length > 1) {
-          spec_name_arr.push(this.skuList[1].spec_name)
           skuItem.spec_arr.push({
             spec_name: this.skuList[1].spec_name,
             spec_item_name: item['1']
           })
         }
         if (this.skuList.length > 2) {
-          spec_name_arr.push(this.skuList[2].spec_name)
           skuItem.spec_arr.push({
             spec_name: this.skuList[2].spec_name,
             spec_item_name: item['2']
           })
         }
         product_sku.push(skuItem)
+      })
+      this.skuList.forEach(item => {
+        spec_name_arr.push(item.spec_name)
       })
       data = {
         product_images: this.imgList, // 商品图片
