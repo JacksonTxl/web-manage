@@ -2,6 +2,7 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
+import { AREA_STATUS } from '@/constants/venue'
 import {
   VenueApi,
   BookingQuery,
@@ -16,16 +17,22 @@ export class BookingService {
     reserve: 'shop:reserve:venues_reserve|add',
     pay: 'shop:reserve:venues_reserve|add_pay'
   })
+  hasNext$ = new State({})
   constructor(private venueApi: VenueApi, private authService: AuthService) {}
   getVenueList() {
-    return this.venueApi.getVenueList().pipe(
+    return this.venueApi.getVenueList({ status: AREA_STATUS.ON }).pipe(
       tap(res => {
         this.venueList$.commit(() => res.list)
       })
     )
   }
+  @Effect()
   getBookingList(query: BookingQuery) {
-    return this.venueApi.getBookingList(query).pipe()
+    return this.venueApi.getBookingList(query).pipe(
+      tap(res => {
+        this.hasNext$.commit(() => res.page.current_page < res.page.total_pages)
+      })
+    )
   }
   @Effect()
   createOrder(params: CreateOrderParams) {

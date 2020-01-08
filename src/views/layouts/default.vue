@@ -290,7 +290,12 @@ export default {
         if (this.activityList$.length > 0) {
           this.$modalRouter.push({
             name: 'common-notify-activity',
-            props: { list: this.activityList$ }
+            props: { list: this.activityList$ },
+            on: {
+              success: res => {
+                this.wsNotifyService.setRead().subscribe()
+              }
+            }
           })
         }
         return
@@ -306,7 +311,12 @@ export default {
         if (this.activityList$.length > 0) {
           this.$modalRouter.push({
             name: 'common-notify-activity',
-            props: { list: this.activityList$ }
+            props: { list: this.activityList$ },
+            on: {
+              success: res => {
+                this.wsNotifyService.setRead().subscribe()
+              }
+            }
           })
         }
         return

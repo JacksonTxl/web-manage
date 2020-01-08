@@ -1,10 +1,13 @@
 .st-search-radio {
+  /**
+  * margin-bottom: -6px 抵消 .ant-radio-wrapper 的 margin-bottom: 6px
+  */
+  .mg-b(-6px);
   span.ant-radio + * {
     padding-left: 0;
   }
   &__label {
     display: inline-block;
-    width: 112px;
   }
   &__label-text {
     display: inline-block;
@@ -13,9 +16,14 @@
     border-radius: 4px;
     transition: all 0.3s;
     .bg(transparent);
+    .c(@heading-color);
     &:hover {
       .c(@primary-color);
     }
+  }
+  .ant-radio-wrapper {
+    .mg-r(4px);
+    .mg-b(6px);
   }
   .ant-radio-wrapper-checked {
     .st-search-radio__label-text {

@@ -76,13 +76,13 @@
           </st-form-item>
           <st-form-item
             label="支付方式"
-            :required="frozen_fee > 0"
+            v-if="frozen_fee > 0"
+            :required="true"
             labelGutter="12px"
           >
             <a-select
               v-decorator="decorators.pay_method"
               placeholder="选择支付方式"
-              :disabled="!(frozen_fee > 0)"
             >
               <a-select-option
                 v-for="(item, index) in memberPaymentlist"

@@ -129,6 +129,7 @@
                         :data="orderMember(storeBoard, 0, 'member')"
                         :total="Number(wholeNav[wholenavIndex].num)"
                         style="width: 100%;"
+                        :colors="['#4679F9', '#894BFF', '#009DFF']"
                         :height="
                           wholeNavcom === 'brand-user-avg-bar'
                             ? height325
@@ -164,12 +165,12 @@
         <div :class="salesCategory()">
           <div :class="salesCategory('sales-box')">
             <a-row>
-              <a-col :span="16">
+              <a-col :span="16" :class="salesCategory('sales-box__left')">
                 <st-container class="bg-white" type="2">
                   <st-t3>销售分析</st-t3>
                   <date-picker @onChange="saleTimesFn"></date-picker>
                 </st-container>
-                <div :class="salesCategory('sales-TOP5')">
+                <div :class="salesCategory('sales-top')">
                   <a-col :span="12">
                     <div>
                       <sales-analysis

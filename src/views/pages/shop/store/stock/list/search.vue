@@ -18,7 +18,7 @@
       >
         批量入库
       </st-button>
-      <st-button type="primary" @click="moreOut()">
+      <st-button type="primary" @click="moreOut()" v-if="auth.retrieval">
         批量出库
       </st-button>
     </div>
@@ -69,6 +69,7 @@ import StorePutIn from '@/views/biz-modals/store/put-in'
 import StorePutOut from '@/views/biz-modals/store/put-out'
 import tableMixin from '@/mixins/table.mixin'
 import { SearchService } from './search.service'
+import { find } from 'lodash-es'
 export default {
   bem: {
     search: 'page-shop-store-stock-list-search'
@@ -103,7 +104,9 @@ export default {
         list = [record]
       } else {
         this.selectedRowKeys.forEach(id => {
-          let item = this.tableData.filter(stock => stock.sku_id === id)[0]
+          let item = find(this.tableData, stock => {
+            return stock.sku_id === id
+          })
           list.push(item)
         })
       }
