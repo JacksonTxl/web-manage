@@ -177,7 +177,7 @@ export default {
       pagination: this.tablePagination,
       locale: this.locale,
       dataSource: this.tableDataSource,
-      scroll: this.dataSource.length >= 1 ? this.scroll : {},
+      scroll: this.tableDataSource.length >= 1 ? this.scroll : {},
       rowClassName: this.rowClassName,
       childrenColumnName: '$_children',
       indentSize: 16,
@@ -219,7 +219,8 @@ export default {
               class: ['st-table'],
               props,
               on: {
-                change: this.onChange
+                change: this.onChange,
+                ...this.$listeners
               },
               scopedSlots: this.$scopedSlots,
               slot: this.$slots
@@ -233,7 +234,8 @@ export default {
             class: ['st-table'],
             props,
             on: {
-              change: this.onChange
+              change: this.onChange,
+              ...this.$listeners
             },
             scopedSlots: this.$scopedSlots,
             slot: this.$slots

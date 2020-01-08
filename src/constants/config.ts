@@ -164,7 +164,7 @@ export class AppConfig {
   }
   get WEB_SOCKET_DOMAIN() {
     if (this.HOST_IS_LOCAL || this.HOST_IS_DEV) {
-      return 'wss://api-saas-test.styd.cn/ws'
+      return 'wss://api-saas-dev.styd.cn/ws'
     }
 
     if (this.HOST_IS_TEST) {

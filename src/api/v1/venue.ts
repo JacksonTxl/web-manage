@@ -1,7 +1,7 @@
 import { Api } from '../api'
 export class VenueApi extends Api {
-  getVenueList() {
-    return this.http.get(`/v1/venues/list`)
+  getVenueList(query?: VenueListQuery) {
+    return this.http.get(`/v1/venues/list`, { query })
   }
   getSiteList(query: SiteQuery) {
     return this.http.get(`/v1/venues/site`, { query })
@@ -193,4 +193,8 @@ export interface CreateOrderParams {
 export interface CancelReserveParams {
   order_id?: number
   sub_order_id?: number
+}
+
+export interface VenueListQuery {
+  status: number
 }

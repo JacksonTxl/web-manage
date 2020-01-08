@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { throttle } from 'lodash-es'
+import { throttle, debounce } from 'lodash-es'
 export default {
   name: 'bookingTable',
   bem: {
@@ -110,7 +110,18 @@ export default {
       const { scrollTop, scrollLeft } = e.target
       this.$refs.top.scroll(scrollLeft, 0)
       this.$refs.left.scroll(0, scrollTop)
+      this.emitNextPage(e)
     }, 33),
+    emitNextPage: debounce(function(e) {
+      const { target } = e
+      if (
+        Math.floor(target.scrollLeft) + target.clientWidth >
+        target.scrollWidth - 20
+      ) {
+        console.log('emit next page')
+        this.$emit('nextPage')
+      }
+    }, 200),
     selectHandler(time, number, site) {
       let index = -1
       time.site_name = site.site_name

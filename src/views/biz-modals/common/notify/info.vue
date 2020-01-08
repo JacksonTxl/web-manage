@@ -1,9 +1,9 @@
 <template>
-  <st-modal :class="b()" v-model="show" width="728px" :footer="null">
+  <st-modal :wrapClassName="b()" v-model="show" width="728px" :footer="null">
     <st-t2 :class="b('title')">{{ info$.title }}</st-t2>
     <div :class="b('item')" class="mg-t8">
       <span :class="b('item-img')" class="mg-r8">
-        <img :src="logo" alt="" />
+        <img src="~@/assets/img/notify_logo.png" alt="" />
       </span>
       <span :class="b('item-type')" class="mg-r8">{{ info$.notify_type }}</span>
       <span :class="b('item-time')">{{ info$.send_time }}</span>
@@ -34,7 +34,7 @@ export default {
   },
   computed: {
     logo() {
-      return this.brand$.logo
+      return '~@/assets/img/notify_logo.png'
     }
   },
   props: {

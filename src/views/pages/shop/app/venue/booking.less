@@ -1,21 +1,17 @@
 .page-shop-app-venue-booking {
-  @h: calc(100vh - 196px);
   &__left {
     margin-right: 508px;
     height: calc(100vh - 196px);
   }
-  &__right {
+  .right {
     position: relative;
     width: 532px;
     height: calc(100vh - 122px);
     float: right;
     border-left: 1px solid #e6e9ef;
-    padding-left: 24px;
+    padding: 24px 24px 64px;
     margin-top: -24px;
-    padding-top: 24px;
     margin-right: -24px;
-    padding-right: 24px;
-    padding-bottom: 64px;
     &__table {
       margin-top: 22px;
       height: 194px;
@@ -57,7 +53,7 @@
       }
     }
   }
-  &__calendar {
+  .calendar {
     position: relative;
     margin-left: -24px;
     padding: 0 14px;
@@ -79,19 +75,20 @@
     &__icon {
       height: 30px;
       width: 30px;
-      line-height: 24px;
+      line-height: 26px;
       border-radius: 6px;
       text-align: center;
       font-size: 10px;
       border: 1px solid #cdd4df;
     }
   }
-  &__list {
+  .list {
     margin-left: -24px;
     padding-left: 24px;
     background: rgba(247, 249, 252, 1);
-    padding-bottom: 12px;
+    padding-bottom: 8px;
     padding-top: 20px;
+    overflow: hidden;
   }
   .swiper-button-prev,
   .swiper-button-next {

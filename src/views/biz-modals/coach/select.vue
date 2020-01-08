@@ -82,27 +82,17 @@ export default {
       this.search('')
     },
     search() {
-      if (this.type === 'smallCourse') {
-        this.selectService
-          .getSmallCourseCoachSelect({
-            shop_ids: this.shopIds,
-            size: this.size,
-            keyword: this.keyword
-          })
-          .subscribe(res => {
-            this.list = res.list
-          })
-      } else {
-        this.selectService
-          .getCoachSelect({
-            shop_ids: this.shopIds,
-            size: this.size,
-            keyword: this.keyword
-          })
-          .subscribe(res => {
-            this.list = res.coaches
-          })
+      let para = {
+        shop_ids: this.shopIds,
+        size: this.size,
+        keyword: this.keyword
       }
+      if (this.type === 'smallCourse') {
+        para.course_type = 5
+      }
+      this.selectService.getCoachSelect(para).subscribe(res => {
+        this.list = res.coaches
+      })
     },
     onConfirmSelect() {
       this.show = false

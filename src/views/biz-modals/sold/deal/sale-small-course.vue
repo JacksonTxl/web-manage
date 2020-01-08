@@ -357,9 +357,9 @@ export default {
     },
     courseBeginTime() {
       return (
-        moment(this.info.course_begin_time).format('YYYY-MM-DD') +
+        moment(this.info.course_begin_time * 1000).format('YYYY-MM-DD HH:MM') +
         '~' +
-        moment(this.info.course_end_time).format('YYYY-MM-DD')
+        moment(this.info.course_end_time * 1000).format('YYYY-MM-DD HH:MM')
       )
     },
     orderAmountText() {

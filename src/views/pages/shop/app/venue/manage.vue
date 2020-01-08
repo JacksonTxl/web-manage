@@ -1,6 +1,6 @@
 <template>
   <div :class="manage()">
-    <div :class="manage('left')">
+    <div :class="left()">
       <st-t4>场馆列表</st-t4>
       <div :class="left('add')" v-if="auth.add" @click="onCLickAddVenue">
         <st-icon type="add"></st-icon>
@@ -49,7 +49,7 @@
         </li>
       </ul>
     </div>
-    <div :class="manage('right')">
+    <div :class="right()">
       <st-panel>
         <portal to="SHOP_APP_VENUE_MANAGE">
           <header>
@@ -85,8 +85,8 @@ const baseBem = 'shop-app-venue-manage'
 export default {
   bem: {
     manage: baseBem,
-    left: `${baseBem}__left`,
-    right: `${baseBem}__right`
+    left: 'left',
+    right: 'right'
   },
   serviceInject() {
     return {
