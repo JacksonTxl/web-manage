@@ -1,7 +1,7 @@
 <template>
   <st-modal title="新增课程排期" v-model="show" width="520px">
     <st-form :form="form" labelWidth="72px" labelAuto>
-      <st-form-item label="课程" required>
+      <st-form-item :label="$c('small_course')" required>
         <a-select
           placeholder="请选择课程"
           @change="onChangeCourse"
@@ -131,9 +131,17 @@ export default {
       this.startTime = moment(
         `${this.courseStartDate} ${valus.format('HH:mm')}`
       )
+      const endTime = this.form.getFieldValue('end_time')
+      if (endTime) {
+        this.form.validate(['end_time'])
+      }
     },
     changeEndTime(valus) {
       this.endTime = moment(`${this.courseStartDate} ${valus.format('HH:mm')}`)
+      const startTime = this.form.getFieldValue('start_time')
+      if (startTime) {
+        this.form.validate(['start_time'])
+      }
     },
     onChangeCourse(value) {
       this.smallCourseScheduleCommonService.getBindCoachList(value).subscribe()

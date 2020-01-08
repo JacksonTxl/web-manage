@@ -26,6 +26,7 @@
             <a-time-picker
               format="HH:mm"
               style="width:100%"
+              @change="onchangeStartTime"
               v-decorator="decorators.start_time"
             />
           </st-form-item>
@@ -33,6 +34,7 @@
             <a-time-picker
               format="HH:mm"
               style="width:100%"
+              @change="onchangeEndTime"
               v-decorator="decorators.end_time"
             />
           </st-form-item>
@@ -183,6 +185,18 @@ export default {
     hide() {
       this.showFlag = false
       this.resetForm()
+    },
+    onchangeStartTime(value) {
+      const endTime = this.form.getFieldValue('end_time')
+      if (endTime) {
+        this.form.validate(['end_time'])
+      }
+    },
+    onchangeEndTime(value) {
+      const startTime = this.form.getFieldValue('start_time')
+      if (startTime) {
+        this.form.validate(['start_time'])
+      }
     },
     onChangeCoach(value) {
       this.coachSmallCourseOptions.forEach((item, index) => {

@@ -147,8 +147,8 @@
                 </div>
                 <span class="time">
                   <st-icon type="timer"></st-icon>
-                  {{ `${item.start_time}` }} -
-                  {{ `${item.end_time}` }}
+                  {{ item.start_time }} -
+                  {{ item.end_time }}
                 </span>
                 <st-t3 class="course__name">
                   {{ item.current_course_name }}
@@ -625,10 +625,7 @@ export default {
         this.$confirm({
           title: '提示',
           content: `修改后会清空当前周期下的已有小班课排期，请确认修改`,
-          onCancel: () => {
-            const oldDate = this.pickerList[cycleIndex]
-            this.pickerList.splice(cycleIndex, 1, oldDate)
-          },
+          onCancel: () => {},
           onOk: () => {
             let params = {}
             const cycleDate = this.pickerList[cycleIndex]

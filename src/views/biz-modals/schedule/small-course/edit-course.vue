@@ -169,8 +169,8 @@ export default {
     if (this.cycle_type === 2) {
       console.log(this.cycle_type)
       console.log(time)
-      start_time = moment(`${this.item.start_date} ${this.item.start_time}`)
-      end_time = moment(`${this.item.start_date} ${this.item.end_time}`)
+      start_time = moment(this.item.start_time)
+      end_time = moment(this.item.end_time)
       this.form.setFieldsValue({
         start_days: time
       })
@@ -182,7 +182,6 @@ export default {
       start_time: start_time,
       end_time: end_time
     })
-
     this.startTime = start_time
     this.endTime = end_time
     this.onChangeCoach(item.coach_id)
@@ -191,9 +190,17 @@ export default {
   methods: {
     changeStartTime(value) {
       this.startTime = value
+      const endTime = this.form.getFieldValue('end_time')
+      if (endTime) {
+        this.form.validate(['end_time'])
+      }
     },
     changeEndTime(value) {
       this.endTime = value
+      const startTime = this.form.getFieldValue('start_time')
+      if (startTime) {
+        this.form.validate(['start_time'])
+      }
     },
     onChangeCoach(value) {
       this.coachSmallCourseOptions.forEach((item, index) => {
@@ -311,7 +318,7 @@ export default {
           this.addSchedule(verifyParams)
           return
         }
-        if (verifyParams.schedule_ids === undefined && this.cycle_type === 2) {
+        if (verifyParams.id === undefined && this.cycle_type === 2) {
           this.addScheduleCustom(verifyParams)
           return
         }

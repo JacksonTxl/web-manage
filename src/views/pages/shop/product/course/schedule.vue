@@ -201,6 +201,8 @@ export default {
   },
   mounted() {
     this.$searchQuery.course_id = +this.$searchQuery.course_id
+      ? +this.$searchQuery.course_id
+      : -1
   },
   methods: {
     onChange() {
