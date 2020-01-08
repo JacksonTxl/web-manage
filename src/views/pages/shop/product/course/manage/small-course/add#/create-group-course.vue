@@ -187,7 +187,7 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :xxl="10" :lg="14" :xs="22">
+      <a-col :xxl="10" :lg="18" :xs="22">
         <st-form-item label="课程介绍">
           <st-editor v-decorator="decorators.description"></st-editor>
         </st-form-item>

@@ -26,7 +26,7 @@ export default {
       cardTypeList: [
         {
           bg: require('@/assets/img/bg-course-group-limit.png'),
-          title: `固定${vm.$c('small_course')}`,
+          title: `固定排课${vm.$c('small_course')}`,
           describe: '上课时间已固定，需按照时间上课。',
           url: 'shop-product-course-manage-small-course-add',
           type: '1'

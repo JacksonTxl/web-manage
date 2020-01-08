@@ -9,28 +9,28 @@ export const columns = (vm: any) => {
     {
       title: '类型',
       dataIndex: 'small_course_type',
-      width: 150,
+      width: 100,
       scopedSlots: { customRender: 'small_course_type' }
     },
     {
       title: '排课情况',
-      width: 150,
+      width: 120,
       scopedSlots: { customRender: 'course_arrangement' }
     },
     {
       title: '报名时间',
       dataIndex: 'apply_time',
-      width: 250
+      width: 190
     },
     {
       title: '开班时间',
       dataIndex: 'course_time',
-      width: 250
+      width: 190
     },
     {
       title: '售价',
       dataIndex: 'sales_price',
-      width: 150,
+      width: 100,
       scopedSlots: { customRender: 'sales_price' }
     },
     {
@@ -41,7 +41,7 @@ export const columns = (vm: any) => {
     {
       // title: '成班条件',
       slots: { title: 'class_conditions' },
-      width: 100,
+      width: 120,
       dataIndex: 'class_conditions'
     },
     {

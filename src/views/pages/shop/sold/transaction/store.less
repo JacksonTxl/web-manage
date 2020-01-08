@@ -134,10 +134,7 @@
         line-height: 22px;
         .c(@title);
         font-size: 14px;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-        overflow: hidden;
+        .tov-l(2);
       }
     }
     &-price {
@@ -150,10 +147,8 @@
           .fz(18px);
           .c(@error-color);
           height: 28px;
-          overflow: hidden;
           max-width: 100px;
-          text-overflow: ellipsis;
-          white-space: nowrap;
+          .tov-e();
         }
         &:last-child {
           .fz(12px);

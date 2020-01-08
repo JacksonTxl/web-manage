@@ -50,7 +50,7 @@
                 </span>
                 <span class="line"></span>
                 <span>
-                  手机号：
+                  家长手机号：
                   <span>{{ basicInfo.parent_info.mobile }}</span>
                 </span>
               </div>

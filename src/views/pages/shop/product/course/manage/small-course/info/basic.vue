@@ -1,9 +1,10 @@
 <template>
-  <st-panel app initial>
+  <st-panel app initial :class="b()">
     <div class="mg-b8">
       上课门店:共{{ groupInfo.coaches.count }}名{{ $c('coach') }}
     </div>
     <st-table
+      class="table"
       :columns="basicColumns()"
       rowKey="id"
       :page="page"
@@ -26,7 +27,7 @@
       <div :class="b('item')" v-else>
         <span :class="b('item-label')">约课权益：</span>
         <span :class="b('item-value')">
-          {{ groupInfo.appointment_rights }}
+          每周最大约课{{ groupInfo.appointment_rights }}节
         </span>
       </div>
       <div :class="b('item')">
