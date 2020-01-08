@@ -451,11 +451,9 @@ export default {
     },
     getReserveInfo() {
       this.reserveService.getInfo(this.id).subscribe(res => {
-        this.reserveList.forEach((item, index) => {
-          if (item.reserve_status === 2) {
-            this.checked = true
-          }
-        })
+        if (this.reserveList.length) {
+          this.checked = true
+        }
       })
     },
     onAddReserveSuccess() {
