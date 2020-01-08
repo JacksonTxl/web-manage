@@ -9,6 +9,7 @@
           style="width:100%"
           format="YYYY-MM-DD"
           v-decorator="decorators.start_days"
+          :disabled="checked"
         />
       </st-form-item>
       <st-form-item label="开始时间" required>
@@ -17,6 +18,7 @@
           style="width:100%"
           @change="changeStartTime"
           v-decorator="decorators.start_time"
+          :disabled="checked"
         />
       </st-form-item>
       <st-form-item label="结束时间" required>
@@ -25,13 +27,15 @@
           style="width:100%"
           @change="changeEndTime"
           v-decorator="decorators.end_time"
+          :disabled="checked"
         />
       </st-form-item>
-      <st-form-item label="课程" required>
+      <st-form-item :label="$c('small_course')" required>
         <a-select
-          placeholder="请选择课程"
+          :placeholder="$c('small_course')"
           @change="onChangeCourse"
           v-decorator="decorators.course_id"
+          :disabled="checked"
         >
           <a-select-option
             v-for="course in courseSmallCourseOptions"
@@ -62,6 +66,7 @@
           :options="courtOptions"
           :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
           v-decorator="decorators.court_id"
+          :disabled="checked"
         />
       </st-form-item>
       <st-form-item label="排课名称" class="mg-b0">
@@ -119,11 +124,18 @@ export default {
       default: () => {
         return {}
       }
+    },
+    checked: {
+      type: Boolean,
+      default: () => {
+        return false
+      }
     }
   },
   created() {
     this.getBindCoachList(this.item.course_id)
     console.log(this.item)
+    console.log(this.checked)
   },
   mounted() {
     const item = cloneDeep(this.item)

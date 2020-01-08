@@ -1,7 +1,7 @@
 <template>
   <st-modal title="新增课程排期" v-model="show" width="520px">
     <st-form :form="form" labelWidth="72px" labelAuto>
-      <st-form-item label="课程" required>
+      <st-form-item :label="$c('small_course')" required>
         <a-select
           placeholder="请选择课程"
           @change="onChangeCourse"

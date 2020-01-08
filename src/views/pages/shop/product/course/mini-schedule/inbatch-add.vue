@@ -147,8 +147,8 @@
                 </div>
                 <span class="time">
                   <st-icon type="timer"></st-icon>
-                  {{ `${item.start_time}` }} -
-                  {{ `${item.end_time}` }}
+                  {{ item.start_time }} -
+                  {{ item.end_time }}
                 </span>
                 <st-t3 class="course__name">
                   {{ item.current_course_name }}

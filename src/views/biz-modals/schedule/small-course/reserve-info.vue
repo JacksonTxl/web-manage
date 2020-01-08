@@ -10,8 +10,8 @@
     <a-row :gutter="24">
       <a-col :lg="16">
         <st-info>
-          <st-info-item label="课程名称">
-            {{ reserveInfo.course_name }}
+          <st-info-item :label="$c('small_course')">
+            {{ reserveInfo.course_name }}.{{ reserveInfo.current_course_name }}
           </st-info-item>
         </st-info>
       </a-col>
@@ -34,7 +34,7 @@
       <a-col :lg="8">
         <st-info>
           <st-info-item label="上课时间">
-            {{ reserveInfo.start_time }}
+            {{ reserveInfo.start_time }} ~ {{ reserveInfo.end_time }}
           </st-info-item>
         </st-info>
       </a-col>
@@ -295,7 +295,8 @@ export default {
       keyword: '',
       show: false,
       info: {},
-      isAdd: true
+      isAdd: true,
+      checked: false
     }
   },
   computed: {
@@ -393,12 +394,14 @@ export default {
         .cancelCustom(this.id)
         .subscribe(this.onDelScheduleScuccess)
     },
+    // 修改课程
     updateSchedule() {
       this.show = false
       this.$modalRouter.push({
         name: 'schedule-small-course-reserved-course',
         props: {
-          item: this.reserveInfo
+          item: this.reserveInfo,
+          checked: this.checked
         },
         on: {
           ok: () => {
@@ -447,7 +450,13 @@ export default {
       this.reserveService.leave(id).subscribe(this.getReserveInfo)
     },
     getReserveInfo() {
-      this.reserveService.getInfo(this.id).subscribe()
+      this.reserveService.getInfo(this.id).subscribe(res => {
+        this.reserveList.forEach((item, index) => {
+          if (item.reserve_status === 2) {
+            this.checked = true
+          }
+        })
+      })
     },
     onAddReserveSuccess() {
       this.memberId = undefined
