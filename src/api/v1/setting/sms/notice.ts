@@ -2,8 +2,8 @@ import { Api } from '@/api/api'
 
 export class NoticeApi extends Api {
   // 通知模版列表
-  getNoticeList() {
-    return this.http.get('/v1/setting/sms/notice')
+  getNoticeList(query?: NoticeQuery) {
+    return this.http.get('/v1/setting/sms/notice', { query })
   }
   // 获取角色列表
   getRoleList() {
@@ -29,4 +29,8 @@ export interface PutNoticeParams {
   course_limit: number
   receiver_limit: number
   receivers: string
+}
+
+export interface NoticeQuery {
+  notify_type?: number
 }

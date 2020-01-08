@@ -13,7 +13,8 @@ export const columns = () => {
     },
     {
       title: '所属模块',
-      dataIndex: 'task_type'
+      dataIndex: 'task_type',
+      scopedSlots: { customRender: 'task_type' }
     },
     {
       title: '任务状态',

@@ -8,6 +8,7 @@ export interface OrderPaymentParams {
   price: string
   deposit_id: number
   pay_channel: number
+  description: string
 }
 
 @Injectable()

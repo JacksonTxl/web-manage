@@ -219,8 +219,8 @@ export default {
   rxState() {
     return {
       shopName: this.userService.shop$,
-      cardInfo: this.infoService.cardInfo$,
-      deposit_card: this.userService.depositCardEnums$
+      cardInfo: this.infoService.cardInfo$
+      // consumer_types: this.userService.getOptions$('deposit_card.consumer_type')
     }
   },
   data() {
@@ -253,10 +253,11 @@ export default {
     }
   },
   mounted() {
-    let consumerEnum = this.deposit_card.consumer_type.value
-    this.cardInfo.consumerList = this.cardInfo.consumer_type.map(
-      item => consumerEnum[item]
-    )
+    // let consumerEnum = this.consumer_types
+    this.cardInfo.consumerList = this.cardInfo.consumer_type
+    //  this.cardInfo.consumer_type.map(
+    //   item => consumerEnum.filter(i => i.value === item)[0].label
+    // )
   }
 }
 </script>

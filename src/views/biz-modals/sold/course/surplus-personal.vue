@@ -86,21 +86,19 @@ export default {
   methods: {
     moment,
     onSubmit() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          this.surplusService
-            .edit(
-              {
-                remain_course: +values.times,
-                description: values.description
-              },
-              this.courseData.id
-            )
-            .subscribe(() => {
-              this.show = false
-              this.$emit('success')
-            })
-        }
+      this.form.validate().then(values => {
+        this.surplusService
+          .edit(
+            {
+              remain_course: +values.times,
+              description: values.description
+            },
+            this.courseData.id
+          )
+          .subscribe(() => {
+            this.show = false
+            this.$emit('success')
+          })
       })
     }
   }

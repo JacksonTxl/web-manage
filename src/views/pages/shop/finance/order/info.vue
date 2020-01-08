@@ -58,6 +58,9 @@
               {{ info.reduce_price }}
             </st-info-item>
             <st-info-item label="应收金额">{{ info.pay_price }}</st-info-item>
+            <st-info-item label="待收金额" v-if="info.product_type === 12">
+              {{ info.remainder_price }}
+            </st-info-item>
             <st-info-item label="支付状态">
               {{ info.pay_status | enumFilter('finance.pay_status') }}
             </st-info-item>
@@ -115,6 +118,9 @@ export default {
       ORDER_PRODUCT_TYPE
     }
   },
+  mounted() {
+    console.log(this.auth)
+  },
   computed: {},
   methods: {
     // 订单收款modal
@@ -134,9 +140,9 @@ export default {
     },
     // 退款
     onRefund() {
-      const props = { id: this.$searchQuery.id }
-      if (this.info.product_type === this.ORDER_PRODUCT_TYPE.EARNEST) {
-        props.goodsInvalid = true
+      const props = {
+        id: this.$searchQuery.id,
+        product_type: this.info.product_type
       }
       this.$modalRouter.push({
         name: 'shop-finance-refund',
@@ -178,7 +184,7 @@ export default {
     },
     productType(type) {
       let name = ''
-      // 1-会员卡 2-私教课 3-团体课 4-课程包 5-储值卡 6-小班课 7-手续费 8-定金 9-押金 10-储物柜
+      // 1-会员卡 2-私教课 3-团体课 4-课程包 5-储值卡 6-小班课 7-手续费 8-定金 9-押金 10-储物柜 12-云店 13-场地预约
       switch (type) {
         case 1:
           name = 'member'
@@ -210,6 +216,11 @@ export default {
         case 10:
           name = 'cabinet_order'
           break
+        case 12:
+          name = 'cloud_store'
+          break
+        case 13:
+          name = 'venues'
       }
       return name
     }

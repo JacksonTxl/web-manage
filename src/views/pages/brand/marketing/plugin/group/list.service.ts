@@ -8,6 +8,8 @@ import {
 } from '@/api/v1/marketing/group-buy'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
+import { UserService } from '@/services/user.service'
+
 @Injectable()
 export class ListService implements Controller {
   list$ = new State([])
@@ -17,6 +19,9 @@ export class ListService implements Controller {
   shopList$ = new State([])
   shopPage$ = new State({})
   isAuth$ = new State({})
+  groupBuyEnums$ = this.userService.getOptions$('group_buy.activity_status', {
+    addAll: true
+  })
   auth$ = this.authService.authMap$({
     // 记得设置鉴权
     add: 'brand:activity:group_buy|add'
@@ -24,7 +29,8 @@ export class ListService implements Controller {
   // brand$ = this.userService.brand$  需要
   constructor(
     private groupBuyApi: GroupBuyApi,
-    private authService: AuthService
+    private authService: AuthService,
+    private userService: UserService
   ) {}
   @Effect()
   getList(params: GroupListParams) {

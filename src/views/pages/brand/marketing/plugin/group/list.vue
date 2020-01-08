@@ -15,7 +15,7 @@
           @change="onSingleSearch('activity_status', $event)"
           style="width: 160px"
         >
-          <a-select-option v-for="item in activityType" :key="item.value">
+          <a-select-option v-for="item in groupBuyEnums" :key="item.value">
             {{ item.label }}
           </a-select-option>
         </a-select>
@@ -187,7 +187,7 @@ export default {
       loading: this.listService.loading$,
       auth: this.listService.auth$,
       info: this.listService.info$,
-      groupBuyEnums: this.userService.groupBuyEnums$,
+      groupBuyEnums: this.listService.groupBuyEnums$,
       shopList: this.listService.shopList$,
       shopPage: this.listService.shopPage$,
       isAuth: this.listService.isAuth$
@@ -210,23 +210,9 @@ export default {
       groupId: ''
     }
   },
-  computed: {
-    //状态
-    activity_status() {
-      return (this.groupBuyEnums && this.groupBuyEnums.activity_status) || []
-    },
-    activityType() {
-      let list = []
-      Object.entries(this.activity_status.value).forEach(item => {
-        list.push({ value: +item[0], label: item[1] })
-      })
-      return [{ value: -1, label: '全部状态' }, ...list]
-    }
-  },
+  computed: {},
   mounted() {
     this.setSearchData()
-    console.log(this.listService)
-    console.log(this.auth)
   },
   watch: {
     query(newVal) {
