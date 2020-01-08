@@ -182,7 +182,6 @@ export default {
       start_time: start_time,
       end_time: end_time
     })
-
     this.startTime = start_time
     this.endTime = end_time
     this.onChangeCoach(item.coach_id)

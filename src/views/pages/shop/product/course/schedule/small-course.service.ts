@@ -13,11 +13,15 @@ export class SmallCourseService implements Controller {
       .add(7 - weekOfday, 'days')
       .format('YYYY-MM-DD')
     let course_id = to.meta.query.course_id
+    let params
+    course_id
+      ? (params = { start_date, end_date, course_id })
+      : (params = { start_date, end_date })
     return this.redirectService.redirect({
       locateRouteName: 'shop-product-course-schedule-small-course',
       redirectRoute: {
         name: 'shop-product-course-schedule-small-course-small-course',
-        query: { start_date, end_date, course_id }
+        query: params
       }
     })
   }

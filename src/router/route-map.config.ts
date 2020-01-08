@@ -1189,14 +1189,26 @@ export const routeMapConfig = {
   'shop-product-course-schedule-small-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '{{$c("small_course")}}'
     routeConfig.meta.auth = 'shop:schedule:small_class_course_schedule|list'
-    routeConfig.queryOptions = {
-      coach_id: { type: Number }
-    }
   },
   'shop-product-course-schedule-small-course-table'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '{{$c("small_course")}}'
+  },
+  'shop-product-course-schedule-small-course-small-course'(
+    routeConfig: RouteConfig
+  ) {
+    routeConfig.meta.title = '{{$c("small_course")}}'
     routeConfig.queryOptions = {
-      coach_id: { type: Number, default: -1 }
+      coach_id: { type: Number, default: -1 },
+      course_id: { type: Number, default: -1 }
+    }
+  },
+  'shop-product-course-schedule-small-course-small-course-table'(
+    routeConfig: RouteConfig
+  ) {
+    routeConfig.meta.title = '{{$c("small_course")}}'
+    routeConfig.queryOptions = {
+      coach_id: { type: Number, default: -1 },
+      course_id: { type: Number, default: -1 }
     }
   },
   'shop-product-course-mini-schedule-inbatch-add'(routeConfig: RouteConfig) {
