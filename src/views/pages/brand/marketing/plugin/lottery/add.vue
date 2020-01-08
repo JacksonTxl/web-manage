@@ -624,7 +624,9 @@ export default {
             'activity_base.activity_sub_name',
             'activity_rule.join_crowd_all',
             'activity_rule.draw_condition',
-            'activity_rule.draw_times_type'
+            'activity_rule.draw_times_type',
+            'activity_rule.per_times',
+            'activity_rule.total_times'
           ])
           .then(() => {
             this.currentIndex = para
