@@ -140,6 +140,7 @@
         <st-icon
           v-if="record.is_minors"
           type="user-type"
+          class="mg-l4"
           :color="record.sex.id === SEX.GIRL ? '#FF5E41' : '#3F66F6'"
         />
       </div>
