@@ -4,7 +4,7 @@ export const columns = [
     dataIndex: 'site_name'
   },
   {
-    title: '特殊设置',
+    title: '高级设置',
     dataIndex: 'site_settings_text'
   },
   {
