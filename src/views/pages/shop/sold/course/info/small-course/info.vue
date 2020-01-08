@@ -35,13 +35,13 @@
             </st-info-item>
             <st-info-item label="类型">{{ info.type }}</st-info-item>
             <st-info-item label="剩余课时">
-              {{ info.remain_course_num }}节
+              {{ info.last_course_num }}节
             </st-info-item>
             <st-info-item label="购买课时">
               {{ info.init_course_num }}节
             </st-info-item>
             <st-info-item label="班级时间">
-              {{ info.buy_time }} 至 {{ info.end_time }}
+              {{ info.course_begin_time }} 至 {{ info.course_end_time }}
             </st-info-item>
           </st-info>
         </a-col>
