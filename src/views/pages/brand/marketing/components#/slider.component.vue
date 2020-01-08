@@ -5,6 +5,7 @@
         :component-data="{ props: { gutter: 12 } }"
         v-model="list"
         :animation="200"
+        :class="slider('draggable-wrap')"
       >
         <div v-for="(li, index) in list" :key="index" :class="slider('box')">
           <div
