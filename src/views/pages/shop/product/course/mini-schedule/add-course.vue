@@ -177,8 +177,6 @@ export default {
     }
   },
   created() {
-    console.log(this.cycle)
-    console.log(this.item)
     this.showFlag = this.item[0].show || this.customizeShow
   },
   methods: {

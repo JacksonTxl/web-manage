@@ -156,9 +156,6 @@ export default {
   },
   mounted() {
     const item = cloneDeep(this.item)
-    if (!item.court_site_id) {
-      item.court_site_id = undefined
-    }
     console.log(item)
     console.log(this.cycle)
     const court_item = [item.court_id, item.court_site_id]

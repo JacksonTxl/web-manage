@@ -444,7 +444,7 @@ export default {
         let courseNum = ''
         let text = ''
         item.course_time.forEach((item, index) => {
-          if (item.week) {
+          if (item.week || item.week == 0) {
             if (item.week == 0) {
               text += this.weekList[this.weekList.length - 1].date
             } else {
@@ -474,17 +474,17 @@ export default {
         }
         list.push(listItemCard)
       })
-      // console.log(list)
+      console.log(list)
       console.log(dateList)
       this.filterDate = list
     },
     // 增加课程
-    createCourseWeek(courseItem, courseTime) {
+    createCourseWeek(courseItem, cycleIndex) {
       let courseWeek = {}
       courseWeek.week = courseItem.week
       courseWeek.list = []
       courseWeek.list.push(courseItem)
-      courseTime.push(courseWeek)
+      this.scheduleList[cycleIndex].course_time.push(courseWeek)
       this.filterDateList(this.scheduleList)
     },
     pushCourseInfo(cycleIndex, conflict, info, list) {
@@ -496,10 +496,7 @@ export default {
       courseItem.conflictList = list
       if (!this.scheduleList[cycleIndex].course_time.length) {
         console.log('批次没有数据')
-        this.createCourseWeek(
-          courseItem,
-          this.scheduleList[cycleIndex].course_time
-        )
+        this.createCourseWeek(courseItem, cycleIndex)
         return
       }
       let findWeekFlag = false
@@ -517,10 +514,7 @@ export default {
       })
       if (!findWeekFlag) {
         console.log('无对应周几，添加一个周几列')
-        this.createCourseWeek(
-          courseItem,
-          this.scheduleList[cycleIndex].course_time
-        )
+        this.createCourseWeek(courseItem, cycleIndex)
         console.log(this.scheduleList)
       }
     },
@@ -611,6 +605,7 @@ export default {
           this.pickerList.length - 1
         ][1].format('YYYY-MM-DD')
         this.filterDateList(this.scheduleList)
+        this.resetCourseNumTips('single', cycleIndex)
         console.log('修改成功')
       })
     },
@@ -625,26 +620,35 @@ export default {
         this.picker_end_date = this.pickerList[
           this.pickerList.length - 1
         ][1].format('YYYY-MM-DD')
-        console.log(this.picker_end_date)
         return
+      } else {
+        this.$confirm({
+          title: '提示',
+          content: `修改后会清空当前周期下的已有小班课排期，请确认修改`,
+          onCancel: () => {
+            const oldDate = this.pickerList[cycleIndex]
+            this.pickerList.splice(cycleIndex, 1, oldDate)
+          },
+          onOk: () => {
+            let params = {}
+            const cycleDate = this.pickerList[cycleIndex]
+            params.cycle_start_date = moment(cycleDate[0]).format('YYYY-MM-DD')
+            params.cycle_end_date = moment(cycleDate[1]).format('YYYY-MM-DD')
+            params.course_id = this.smallCourseInfo.course_id
+            params.del_type = DELETE_TYPE.CYCLE
+            this.smallCourseScheduleService
+              .cancelCycle(params)
+              .subscribe(res => {
+                this.scheduleList.splice(cycleIndex, 1)
+                this.pickerList.splice(cycleIndex, 1)
+                this.picker_end_date = this.pickerList[
+                  this.pickerList.length - 1
+                ][1].format('YYYY-MM-DD')
+              })
+            this.resetCourseNumTips('single', cycleIndex)
+          }
+        })
       }
-      let params = {}
-      const cycleDate = this.pickerList[cycleIndex]
-      params.cycle_start_date = moment(cycleDate[0]).format('YYYY-MM-DD')
-      params.cycle_end_date = moment(cycleDate[1]).format('YYYY-MM-DD')
-      params.course_id = this.smallCourseInfo.course_id
-      params.del_type = DELETE_TYPE.CYCLE
-      this.smallCourseScheduleService.cancelCycle(params).subscribe(res => {
-        console.log(this.pickerList)
-        this.scheduleList.splice(cycleIndex, 1)
-        this.pickerList.splice(cycleIndex, 1)
-        console.log(this.pickerList)
-        console.log(cycleIndex)
-        this.picker_end_date = this.pickerList[
-          this.pickerList.length - 1
-        ][1].format('YYYY-MM-DD')
-        console.log(this.picker_end_date)
-      })
     },
     // 自主约课单个删除
     onDeleteCustomSchedule(item, index) {
@@ -684,6 +688,7 @@ export default {
               this.smallCourseScheduleService
                 .cancelCycle(params)
                 .subscribe(res => {
+                  this.resetCourseNumTips('all')
                   this.onClickGoBack()
                 })
             } else if (this.cycle_type === 2) {
@@ -705,6 +710,13 @@ export default {
             }
           }
         })
+      }
+    },
+    resetCourseNumTips(type, index) {
+      if (type === 'all') {
+        this.tipsCourseNum.splice(0, this.tipsCourseNum.length)
+      } else {
+        this.tipsCourseNum.splice(index, 1)
       }
     },
     // 新增周期排课

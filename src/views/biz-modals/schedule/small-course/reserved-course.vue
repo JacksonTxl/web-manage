@@ -50,7 +50,7 @@
             :key="coach.id"
             :value="coach.id"
           >
-            {{ coach.staff_name }}
+            {{ coach.name }}
           </a-select-option>
         </a-select>
       </st-form-item>
@@ -62,7 +62,7 @@
           v-decorator="decorators.court_id"
         />
       </st-form-item>
-      <st-form-item label="排课名称" required class="mg-b0">
+      <st-form-item label="排课名称" class="mg-b0">
         <a-input
           placeholder="请输入"
           v-decorator="decorators.current_course_name"
@@ -82,7 +82,7 @@
 import { cloneDeep } from 'lodash-es'
 import { SmallCourseScheduleService } from '@/views/pages/shop/product/course/schedule/small-course/service#/schedule.service'
 import { SmallCourseScheduleCommonService } from '@/views/pages/shop/product/course/schedule/small-course/service#/common.service'
-import { ruleOptions } from './add-course.config'
+import { ruleOptions } from './reserved-course.config'
 export default {
   name: 'AddCourseSchedule',
   serviceInject() {
@@ -95,7 +95,7 @@ export default {
     const tss = this.smallCourseScheduleCommonService
     return {
       loading: this.smallCourseScheduleService.loading$,
-      coachSmallCourseOptions: tss.coachSmallCourseOptions$,
+      coachSmallCourseOptions: tss.coachBindOptions$,
       courseSmallCourseOptions: tss.courseSmallCourseOptions$,
       courtOptions: tss.courtOptions$
     }
@@ -120,11 +120,12 @@ export default {
     }
   },
   created() {
+    this.getBindCoachList(this.item.course_id)
     console.log(this.item)
   },
   mounted() {
     const item = cloneDeep(this.item)
-    const court_item = [item.court_id, item.court_site_id]
+    const court_item = [+item.court_id, +item.court_site_id]
     const time = moment(item.start_date)
     this.form.setFieldsValue({
       course_id: item.course_id,
@@ -140,12 +141,17 @@ export default {
   },
   methods: {
     onChangeCourse(value) {
+      this.getBindCoachList(value)
       this.courseSmallCourseOptions.forEach((item, index) => {
         if (item.course_id === value) {
           this.smallCourseInfo = item
-          console.log(item)
         }
       })
+    },
+    getBindCoachList(courseId) {
+      this.smallCourseScheduleCommonService
+        .getBindCoachList(courseId)
+        .subscribe()
     },
     onSubmit() {
       this.form.validate().then(values => {
