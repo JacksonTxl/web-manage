@@ -84,6 +84,15 @@
         >
           变更入场时段
         </st-button>
+        <st-button
+          v-if="auth.export"
+          type="primary"
+          class="mg-r8"
+          :disabled="selectedRowKeys.length < 1"
+          @click="onExport"
+        >
+          全部导出
+        </st-button>
       </div>
       <div>
         <st-table
@@ -294,6 +303,7 @@ export default {
   },
   mounted() {
     this.setSearchData()
+    console.log(this.auth)
   },
   watch: {
     query(newVal) {
@@ -512,6 +522,19 @@ export default {
     onClear() {
       this.selectedRowKeys = []
       this.selectedRows = []
+    },
+    // 导出数据
+    onExport() {
+      console.log(this.selectedRowKeys)
+      console.log(cloneDeep(this.$searchQuery))
+      this.$modalRouter.push({
+        name: 'sold-card-batch-export',
+        on: {
+          success: () => {
+            this.successTip()
+          }
+        }
+      })
     }
   }
 }
