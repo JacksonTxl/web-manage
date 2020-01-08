@@ -54,12 +54,14 @@
 </template>
 <script>
 import { CourseManageService } from './course-manage.service'
+import { TeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/team/service#/common.service'
 // import { MessageService } from '@/services/message.service'
 // import { PatternService } from '@/services/pattern.service'
 export default {
   serviceInject() {
     return {
-      courseManageService: CourseManageService
+      courseManageService: CourseManageService,
+      teamScheduleCommonService: TeamScheduleCommonService
     }
   },
   name: 'courseManageService',
