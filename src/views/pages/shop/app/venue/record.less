@@ -1,0 +1,44 @@
+.shop-app-venue-data {
+  &__search {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+  }
+  &__action {
+    display: flex;
+  }
+  .ant-table {
+    tr {
+      border-bottom: 1px solid #e6e9ef;
+    }
+    .ant-table-thead > tr > th {
+      font-weight: bolder;
+    }
+    .ant-table-tbody > tr > td {
+      padding: 10px 12px;
+    }
+    .ant-table-row:nth-child(even) {
+      background: inherit;
+    }
+  }
+  tr.ant-table-expanded-row td > .ant-table-wrapper {
+    margin: -8px -12px;
+    .ant-table-thead > tr > th {
+      background: inherit;
+    }
+    .ant-table-thead {
+      tr {
+        border-bottom: 1px solid #e6e9ef;
+      }
+    }
+    .ant-table-tbody {
+      tr {
+        border-bottom: 1px solid #e6e9ef;
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+}

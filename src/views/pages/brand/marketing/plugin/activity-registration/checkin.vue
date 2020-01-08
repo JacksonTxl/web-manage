@@ -93,7 +93,7 @@ export default {
   methods: {
     getList() {
       if (!this.keyword) {
-        this.message.warning({ content: '请输入内容' })
+        this.message.warn({ content: '请输入内容' })
         return
       }
       return this.service.getList({ keyword: this.keyword }).subscribe(res => {

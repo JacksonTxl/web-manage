@@ -163,23 +163,21 @@ export default {
       this.form.resetFields(['payType'])
     },
     onSubmit() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          this.freezeService
-            .freeze(
-              {
-                end_time: values.end_time.format('YYYY-MM-DD HH:mm'),
-                poundage: this.frozen_fee,
-                pay_method: values.pay_method,
-                member_id: this.freezeInfo.member_id
-              },
-              this.id
-            )
-            .subscribe(res => {
-              this.$emit('success')
-              this.show = false
-            })
-        }
+      this.form.validate().then(values => {
+        this.freezeService
+          .freeze(
+            {
+              end_time: values.end_time.format('YYYY-MM-DD HH:mm'),
+              poundage: this.frozen_fee,
+              pay_method: values.pay_method,
+              member_id: this.freezeInfo.member_id
+            },
+            this.id
+          )
+          .subscribe(res => {
+            this.$emit('success')
+            this.show = false
+          })
       })
     }
   }

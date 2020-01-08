@@ -9,7 +9,6 @@
     </section>
     <st-form labelWidth="66px" :form="form">
       <st-form-item label="工作性质">
-        <!-- {{ enums.nature_work.value }} -->
         <a-select
           placeholder="请选择"
           v-decorator="['nature_work', { initialValue: 1 }]"
@@ -24,7 +23,6 @@
         </a-select>
       </st-form-item>
       <st-form-item label="员工职能">
-        <!-- {{ enums.identity.value }} -->
         <a-select
           mode="multiple"
           placeholder="请选择"
@@ -82,27 +80,15 @@ export default {
   },
   data() {
     return {
-      form: this.$form.createForm(this)
+      form: this.$stForm.create()
     }
-  },
-  created() {
-    console.log('传入的', this.data)
-    // this.form.setFieldsValue({
-    //   // identity: this.data.identity,
-    //   // nature_work: this.data.nature_work
-
-    //    nature_work: 1,
-    //     identity: [1,2]
-    // })
   },
   methods: {
     onChange(e) {},
     onSubmit(e) {
       e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values)
-        }
+      this.form.validate().then(values => {
+        console.log('Received values of form: ', values)
       })
     }
   }

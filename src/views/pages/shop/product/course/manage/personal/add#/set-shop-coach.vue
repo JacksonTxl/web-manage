@@ -48,7 +48,6 @@
 import { AddService } from '../add.service'
 import { MessageService } from '@/services/message.service'
 import SelectCoach from '@/views/fragments/coach/select-coach'
-import { UserService } from '@/services/user.service'
 import { RuleConfig } from '@/constants/course/rule'
 
 export default {
@@ -57,14 +56,12 @@ export default {
     return {
       addService: AddService,
       messageService: MessageService,
-      userService: UserService,
       ruleConfig: RuleConfig
     }
   },
   rxState() {
     return {
-      loading: this.addService.loading$,
-      personalCourseEnums: this.userService.personalCourseEnums$
+      loading: this.addService.loading$
     }
   },
   components: {
@@ -94,14 +91,14 @@ export default {
   },
   data() {
     return {
-      form: this.$form.createForm(this),
+      form: this.$stForm.create(),
       shopIds: []
     }
   },
   methods: {
     save(e) {
       e.preventDefault()
-      this.form.validateFields().then(() => {
+      this.form.validate().then(() => {
         const data = this.form.getFieldsValue()
         data.course_id = this.courseId
         this.addService.setShop(data).subscribe(() => {

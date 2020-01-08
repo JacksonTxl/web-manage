@@ -8,7 +8,7 @@
   >
     <div :class="gathering('content')">
       <a-row :class="gathering('info')">
-        <a-col :span="13" class="mg-b36">
+        <a-col :span="13" class="mg-b36" v-if="type !== 'cloud_store'">
           <st-info>
             <st-info-item label="订单号">{{ info.order_id }}</st-info-item>
             <st-info-item class="mg-b0" label="下单时间">
@@ -16,7 +16,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="11" class="mg-b36">
+        <a-col :span="11" class="mg-b36" v-if="type !== 'cloud_store'">
           <st-info>
             <st-info-item label="下单人">{{ info.operate_name }}</st-info-item>
             <st-info-item class="mg-b0" label="销售">
@@ -26,17 +26,76 @@
         </a-col>
         <a-col :span="13" class="mg-b36">
           <st-info>
-            <st-info-item label="场馆">{{ info.shop_name }}</st-info-item>
+            <st-info-item label="门店" v-if="type === 'venues'">
+              {{ info.shop_name }}
+            </st-info-item>
+            <st-info-item label="场馆" v-else>
+              {{ info.shop_name }}
+            </st-info-item>
             <st-info-item label="用户">
               {{ info.member_name }}&nbsp;{{ info.member_mobile }}
             </st-info-item>
-            <st-info-item class="mg-b0" label="购买">
+            <st-info-item
+              class="mg-b0 white-nowrap"
+              label="购买"
+              v-if="type === 'venues'"
+            >
+              <!-- <div v-for="(item, index) in info.venues_site" :key="index">
+                {{
+                  `场地时间${index++} ${item.site_name} ${item.time_start}~${
+                    item.time_end
+                  } 金额：&yen;${item.price}元`
+                }}
+              </div> -->
+              <st-overflow-text
+                title="购买"
+                max-width="180px"
+                :value="
+                  info.venues_site &&
+                    info.venues_site.map(
+                      item =>
+                        `${item.site_name} ${item.time_start}~${
+                          item.time_end
+                        } 金额：&yen;${item.price}元`
+                    )
+                "
+              ></st-overflow-text>
+            </st-info-item>
+            <!-- 云店 -->
+            <st-info-item
+              class="mg-b0 white-nowrap"
+              label="购买"
+              v-else-if="type === 'cloud_store'"
+            >
+              <st-overflow-text
+                title="购买"
+                max-width="180px"
+                :value="
+                  info.order_sub &&
+                    info.order_sub.map(
+                      item =>
+                        `${item.product_name}${item.rule_name ? '规格：' : ''}${
+                          item.rule_name
+                        }*${item.product_count} 金额：&yen;${item.price}`
+                    )
+                "
+              ></st-overflow-text>
+            </st-info-item>
+            <st-info-item class="mg-b0" label="购买" v-else>
               {{ info.rule_name }}
             </st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11" class="mg-b36">
-          <st-info>
+          <st-info v-if="type === 'venues'">
+            <st-info-item label="场馆">
+              {{ info.venues_name }}
+            </st-info-item>
+            <st-info-item class="mg-b0" label="预约日期">
+              {{ info.reserve_day }}
+            </st-info-item>
+          </st-info>
+          <st-info v-else>
             <st-info-item label="定金抵扣">
               {{ info.advance_amount }}
             </st-info-item>
@@ -65,7 +124,7 @@
             </st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="24" class="mg-b36">
+        <a-col :span="24" class="mg-b36" v-if="type !== 'cloud_store'">
           <st-info>
             <st-info-item class="mg-b0" label="备注">
               {{ info.description }}
@@ -79,12 +138,20 @@
             labelWidth="120px"
             label="已收金额/未收金额"
             class="mg-b16"
+            v-if="type !== 'venues'"
           >
             <span class="total">
               {{ info.payed_amount }}/{{ info.remain_amount }}
             </span>
           </st-form-item>
-          <st-form-item class="mg-b16" label="支付金额" required>
+          <st-form-item
+            class="mg-b16"
+            label="支付金额"
+            v-if="type === 'venues'"
+          >
+            {{ info.actual_amount }}
+          </st-form-item>
+          <st-form-item class="mg-b16" label="支付金额" required v-else>
             <st-input-number
               :float="true"
               :max="info.remain_amount | dealMaxNumber"
@@ -127,6 +194,17 @@
                 {{ item.card_name }}--{{ item.now_amount }}元
               </a-select-option>
             </a-select>
+          </st-form-item>
+          <st-form-item
+            label="备注"
+            class="mg-b16"
+            v-if="type === 'cloud_store'"
+          >
+            <a-textarea
+              placeholder="请填写备注"
+              style="height:90px;"
+              v-model="description"
+            ></a-textarea>
           </st-form-item>
         </div>
       </st-form>
@@ -173,7 +251,8 @@ export default {
       form,
       decorators,
       show: false,
-      selectPayValues: 0
+      selectPayValues: 0,
+      description: ''
     }
   },
   // 订单id，签单类型
@@ -205,7 +284,11 @@ export default {
       this.form.validate().then(values => {
         values.order_id = this.order_id
         values.payment_type = values.payment_method.payment_type
+        values.description = this.description || undefined
         delete values.payment_method
+        if (this.type === 'venues') {
+          values.price = this.info.order_price
+        }
         this.gatheringService.payTransaction(values).subscribe(result => {
           this.$emit('success', {
             type: 'pay'

@@ -15,14 +15,6 @@ interface NotificationOptions {
  *
  */
 export class NotificationService {
-  warning(config: NotificationOptions) {
-    notification.warning({
-      message: config.title + '',
-      description: config.content,
-      duration: config.duration,
-      key: config.key
-    })
-  }
   success(config: NotificationOptions) {
     notification.success({
       message: config.title + '',
