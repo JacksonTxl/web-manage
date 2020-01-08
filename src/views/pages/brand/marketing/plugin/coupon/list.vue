@@ -45,6 +45,17 @@
             >
               {{ record.shop_list[0] }}
             </span>
+            <!-- 改为弹框start -->
+            <!-- <a
+              v-else
+              v-modal-link="{
+                name: 'card-shop-member-shop-table',
+                props: { id: record.id, type: 'Sale', title: '可用门店' }
+              }"
+            >
+              可用门店
+            </a> -->
+            <!-- 改为弹框end -->
             <a-popover placement="right" v-else>
               <template slot="content">
                 <p
@@ -58,7 +69,6 @@
               <template slot="title">
                 <span>可用门店</span>
               </template>
-              <!-- <a>{{text}}</a> -->
               <a>可用门店</a>
             </a-popover>
           </template>
@@ -110,12 +120,16 @@ import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
 import { TYPE } from '@/constants/marketing/plugin'
 import useShare from '@/hooks/marketing/share.hook'
+import CardShopMemberShopTable from '@/views/biz-modals/card/shop-member/shop-table'
 
 export default {
   name: 'PageBrandMarketingPluginCouponList',
   mixins: [tableMixin],
   bem: {
     basic: 'page-brand-plugin-coupon'
+  },
+  modals: {
+    CardShopMemberShopTable
   },
   serviceInject() {
     return {
