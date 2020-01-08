@@ -96,10 +96,7 @@
           <a-input placeholder="请输入邮箱" v-decorator="decorators.mail" />
         </st-form-item>
         <st-form-item label="证件">
-          <a-input
-            placeholder="请输入身份证号码"
-            v-decorator="decorators.id_number"
-          >
+          <a-input placeholder="请输入" v-decorator="decorators.id_number">
             <a-select
               slot="addonBefore"
               style="width: 100px;"

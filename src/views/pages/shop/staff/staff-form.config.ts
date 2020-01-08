@@ -100,9 +100,6 @@ export const ruleOptions = (vm: any) => {
       rules: [{ required: true, message: '请选择你的性别' }]
     },
     id_type: { initialValue: 1 },
-    /**
-     * TODO: 临时处理一下，待李月处理
-     */
     id_number: {
       rules: [
         {
@@ -110,7 +107,7 @@ export const ruleOptions = (vm: any) => {
             if (vm.id_type === 1 && value && !pattern.ID.test(value)) {
               return '请填写正确的身份证号'
             }
-            if (vm.id_type === 2 && value && !pattern.ID_CARD.test(value)) {
+            if (vm.id_type === 2 && value && !pattern.PASSPORT.test(value)) {
               return '请填写正确的护照号码'
             }
           }
