@@ -68,12 +68,12 @@ export default {
           date: dateString,
           date_type: this.selectValue - 0
         }
-        this.$emit('timesFn', propData)
+        this.$emit('onChange', propData)
       }
     },
     handleChange(e) {
       if (e === 1) {
-        this.$emit('timesFn', {
+        this.$emit('onChange', {
           date: this.defaultValue,
           date_type: 1
         })

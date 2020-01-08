@@ -1,6 +1,6 @@
 <template>
   <div :class="b()">
-    <div :class="b('right')">
+    <div :class="right()">
       <div :class="right('top')">
         <st-t2>代预约</st-t2>
         <st-table
@@ -121,14 +121,17 @@
       </div>
 
       <div :class="list()">
-        <booking-table
-          ref="bookingTable"
-          :data="bookingList"
-          :siteX="siteX"
-          :siteY="siteY"
-          :selectedData="selectedList"
-          @change="getSelectedList"
-        ></booking-table>
+        <a-spin :class="list('loading')" :spinning="loading.getBookingList">
+          <booking-table
+            ref="bookingTable"
+            :data="bookingList"
+            :siteX="siteX"
+            :siteY="siteY"
+            :selectedData="selectedList"
+            @change="getSelectedList"
+            @nextPage="onNextPage"
+          ></booking-table>
+        </a-spin>
       </div>
     </div>
   </div>
@@ -148,9 +151,9 @@ export default {
   name: 'PageShopAppVenueBooking',
   bem: {
     b: 'page-shop-app-venue-booking',
-    calendar: 'page-shop-app-venue-booking__calendar',
-    list: 'page-shop-app-venue-booking__list',
-    right: 'page-shop-app-venue-booking__right'
+    calendar: 'calendar',
+    list: 'list',
+    right: 'right'
   },
   serviceInject() {
     return {
@@ -162,7 +165,8 @@ export default {
     return {
       venueList: this.bookingService.venueList$,
       loading: this.bookingService.loading$,
-      auth: this.bookingService.auth$
+      auth: this.bookingService.auth$,
+      hasNext: this.bookingService.hasNext$
     }
   },
   modals: {
@@ -201,7 +205,7 @@ export default {
       query: {
         venues_id: '',
         page: 1,
-        size: 100,
+        size: 10,
         reserve_day: ''
       },
       pickedIndex: 0,
@@ -235,6 +239,15 @@ export default {
     }
   },
   methods: {
+    onNextPage() {
+      if (!this.hasNext) return
+      this.query.page++
+      this.bookingService.getBookingList(this.query).subscribe(res => {
+        this.bookingList = this.bookingList.concat(res.list)
+        this.siteX = this.siteX.concat(res.site_x)
+        this.siteY = res.site_y
+      })
+    },
     resetPage() {
       this.form.resetFields()
       this.reduce_price = ''

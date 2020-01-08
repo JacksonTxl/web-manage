@@ -1,12 +1,12 @@
 .brand-app-index {
-  &__banner {
+  .banner {
     .mg-b(12px);
     img {
       width: 100%;
       cursor: pointer;
     }
   }
-  &__list {
+  .list {
     display: flex;
     &__item {
       width: 32%;
@@ -17,28 +17,28 @@
         margin-right: calc(4% / 2);
       }
     }
-    &__top {
-      img {
-        width: 100%;
+  }
+  .top {
+    img {
+      width: 100%;
+    }
+  }
+  .bottom {
+    background-color: #fff;
+    padding: 16px 28px;
+    &__name {
+      font-size: 20px;
+      line-height: 20px;
+      font-weight: bolder;
+      &-sub {
+        font-size: 14px;
+        color: #9bacb9;
+        font-weight: normal;
       }
     }
-    &__bottom {
-      background-color: #fff;
-      padding: 16px 28px;
-      &__name {
-        font-size: 20px;
-        line-height: 20px;
-        font-weight: bolder;
-        &-sub {
-          font-size: 14px;
-          color: #9bacb9;
-          font-weight: normal;
-        }
-      }
-      &__title {
-        margin-top: 8px;
-        line-height: 22px;
-      }
+    &__title {
+      margin-top: 8px;
+      line-height: 22px;
     }
   }
 }

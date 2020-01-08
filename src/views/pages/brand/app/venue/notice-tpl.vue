@@ -1,18 +1,18 @@
 <template>
   <div :class="bPage()">
-    <div :class="bItem()">
+    <div>
       <st-t3 class="mg-b16">通知会员信息</st-t3>
-      <div :class="bItem('table')">
-        <div :class="bItem('table-title')">
-          <div :class="bItem('table-th')">模板标题</div>
-          <div class="th-wrap">
+      <div :class="bTable()">
+        <div :class="bTable('title')">
+          <div :class="bTable('th')">模板标题</div>
+          <div :class="bTable('th-wrap')">
             <div class="th" v-for="(item, index) in thsMember" :key="index">
               {{ item.title }}
             </div>
           </div>
         </div>
         <div
-          :class="bItem('table-tr')"
+          :class="bTable('tr')"
           v-for="(item, index) in memberList"
           :key="index"
         >
@@ -20,19 +20,19 @@
         </div>
       </div>
     </div>
-    <div :class="bItem()" class="mg-t24">
+    <div class="mg-t24">
       <st-t3 class="mg-b16">通知门店信息</st-t3>
-      <div :class="bItem('table')">
-        <div :class="bItem('table-title')">
-          <div :class="bItem('table-th')">模板标题</div>
-          <div class="th-wrap">
+      <div :class="bTable()">
+        <div :class="bTable('title')">
+          <div :class="bTable('th')">模板标题</div>
+          <div :class="bTable('th-wrap')">
             <div class="th" v-for="(item, index) in thsShop" :key="index">
               {{ item.title }}
             </div>
           </div>
         </div>
         <div
-          :class="bItem('table-tr')"
+          :class="bTable('tr')"
           v-for="(item, index) in shopList"
           :key="index"
         >
@@ -46,13 +46,13 @@
 import { NoticeTplService } from './notice-tpl.service'
 import { thsMember, thsShop } from './notice-tpl.config'
 import NoticeItem from '@/views/biz-components/notice-tpl/notice-item'
-const pageName = 'page-setting-sms-notice'
+const pageName = 'page-brand-app-venue-notice-tpl'
 
 export default {
   name: 'PageBrandAppVenueNoticeTpl',
   bem: {
     bPage: pageName,
-    bItem: `${pageName}-item`
+    bTable: 'venue-notice-table'
   },
   serviceInject() {
     return {

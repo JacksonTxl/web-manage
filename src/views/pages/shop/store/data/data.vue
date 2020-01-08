@@ -34,13 +34,9 @@
       </st-panel>
       <!-- 整体看板 -->
       <section>
-        <st-panel
-          class="mg-t16"
-          title="整体看板"
-          :class="basic('integral-anban')"
-        >
+        <st-panel class="mg-t16" title="整体看板">
           <div slot="actions">
-            <date-picker @timesFn="wholeTimesFn"></date-picker>
+            <date-picker @onChange="wholeTimesFn"></date-picker>
           </div>
           <div :class="basic('whole')">
             <div
@@ -89,7 +85,7 @@
               </a-col>
               <a-col :span="8">
                 <div class="ring">
-                  <whole-table>
+                  <whole-tabs>
                     <template v-slot:user>
                       <component
                         v-bind:is="wholeNavcom"
@@ -133,6 +129,7 @@
                         :data="orderMember(storeBoard, 0, 'member')"
                         :total="Number(wholeNav[wholenavIndex].num)"
                         style="width: 100%;"
+                        :colors="['#4679F9', '#894BFF', '#009DFF']"
                         :height="
                           wholeNavcom === 'brand-user-avg-bar'
                             ? height325
@@ -158,7 +155,7 @@
                         />
                       </div>
                     </template>
-                  </whole-table>
+                  </whole-tabs>
                 </div>
               </a-col>
             </a-row>
@@ -168,12 +165,12 @@
         <div :class="salesCategory()">
           <div :class="salesCategory('sales-box')">
             <a-row>
-              <a-col :span="16">
+              <a-col :span="16" :class="salesCategory('sales-box__left')">
                 <st-container class="bg-white" type="2">
                   <st-t3>销售分析</st-t3>
-                  <date-picker @timesFn="saleTimesFn"></date-picker>
+                  <date-picker @onChange="saleTimesFn"></date-picker>
                 </st-container>
-                <div :class="salesCategory('sales-TOP5')">
+                <div :class="salesCategory('sales-top')">
                   <a-col :span="12">
                     <div>
                       <sales-analysis
@@ -201,7 +198,7 @@
                   <st-container class="bg-white" type="2">
                     <st-t3>类目分析</st-t3>
                     <date-picker
-                      @timesFn="categoryTimesFn"
+                      @onChange="categoryTimesFn"
                       class="date-picker"
                     ></date-picker>
                   </st-container>
@@ -216,7 +213,7 @@
                       style="width: 100%;"
                       v-if="storeCategoryRank.category_list.length"
                     ></shop-store-data-revenue-ring>
-                    <div :class="basic('entry-pie-img')">
+                    <div :class="basic('entry-pie-img')" v-else>
                       <img :src="pieImg" />
                     </div>
                   </div>
@@ -229,7 +226,7 @@
         <div class="buy-consumption">
           <buy-consumption-tables
             @change="onChangeTabs"
-            @timesFn="userAnalysisTimesFn"
+            @onChange="userAnalysisTimesFn"
           >
             <template v-slot:user>
               <buy-number :flag="true" :data="storeMemberAnalysis"></buy-number>
@@ -253,7 +250,7 @@ import pieImg from '@/assets/img/shop/dashboard/pie.png'
 import inoutNumImg from '@/assets/img/shop/dashboard/inoutNum.png'
 import moment from 'moment'
 import ShopStoreDataLine from '@/views/biz-components/stat/shop-store-data-line'
-import WholeTable from './components#/whole-table'
+import WholeTabs from './components#/whole-tabs'
 import BuyConsumptionTables from './components#/buy-consumption-tables'
 import DatePicker from './components#/date-picker'
 import SalesAnalysis from './components#/sales-analysis'
@@ -310,7 +307,7 @@ export default {
   components: {
     ShopStoreDataLine,
     DatePicker,
-    WholeTable,
+    WholeTabs,
     BuyConsumptionTables,
     SalesAnalysis,
     BuyNumber,
@@ -320,7 +317,6 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      console.log(this.storeBoard)
       this.wholenavFilter()
     })
   },
@@ -361,12 +357,6 @@ export default {
     },
     // 整体看板订单/会员
     orderMember(value, flag, that) {
-      let fieldInfo = [
-        'value',
-        'count',
-        ['amount', 'count'],
-        ['amount', 'count']
-      ]
       let filterOrderMemberData = [
         value,
         this.fieldNav,
@@ -425,7 +415,6 @@ export default {
         : moment()
             .subtract(1, 'days')
             .format('YYYY-MM-DD') + ''
-      console.log(this.tabsObjData)
       this.dataService.getStoreMemberAnalysis(this.tabsObjData).subscribe()
     },
     refresh() {
