@@ -5,7 +5,7 @@ import { tap } from 'rxjs/operators'
 import { State, Effect } from 'rx-state'
 
 @Injectable()
-export class PrizeService implements Controller {
+export class PrizeService {
   list$ = new State({})
   page$ = new State({})
   loading$ = new State({})
