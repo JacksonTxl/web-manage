@@ -15,6 +15,7 @@
         <a-time-picker
           format="HH:mm"
           style="width:100%"
+          @change="changeStartTime"
           v-decorator="decorators.start_time"
         />
       </st-form-item>
@@ -22,6 +23,7 @@
         <a-time-picker
           format="HH:mm"
           style="width:100%"
+          @change="changeEndTime"
           v-decorator="decorators.end_time"
         />
       </st-form-item>
@@ -147,6 +149,18 @@ export default {
           this.smallCourseInfo = item
         }
       })
+    },
+    changeStartTime(valus) {
+      const endTime = this.form.getFieldValue('end_time')
+      if (endTime) {
+        this.form.validate(['end_time'])
+      }
+    },
+    changeEndTime(valus) {
+      const startTime = this.form.getFieldValue('start_time')
+      if (startTime) {
+        this.form.validate(['start_time'])
+      }
     },
     getBindCoachList(courseId) {
       this.smallCourseScheduleCommonService

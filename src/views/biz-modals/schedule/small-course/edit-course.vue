@@ -191,9 +191,17 @@ export default {
   methods: {
     changeStartTime(value) {
       this.startTime = value
+      const endTime = this.form.getFieldValue('end_time')
+      if (endTime) {
+        this.form.validate(['end_time'])
+      }
     },
     changeEndTime(value) {
       this.endTime = value
+      const startTime = this.form.getFieldValue('start_time')
+      if (startTime) {
+        this.form.validate(['start_time'])
+      }
     },
     onChangeCoach(value) {
       this.coachSmallCourseOptions.forEach((item, index) => {
