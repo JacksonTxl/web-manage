@@ -46,6 +46,8 @@
                   @change="onChangeRangePicker($event, $event, i)"
                   :value="pickerList[i]"
                   :disabledDate="disabledEndDate"
+                  :showTime="{ format: 'HH:mm' }"
+                  format="YYYY-MM-DD HH:mm"
                 ></a-range-picker>
               </st-form-item>
               <div :class="b('delete')" @click="onDeleteCycleSchedule(i)">
@@ -122,9 +124,8 @@
                 :class="b('select__date')"
               >
                 <span>
-                  {{ pickerList[0][0].format('YYYY/MM/DD').valueOf() }}~{{
-                    pickerList[0][1].format('YYYY/MM/DD').valueOf()
-                  }}
+                  {{ smallCourseInfo.course_begin_time }} ~
+                  {{ smallCourseInfo.course_end_time }}
                 </span>
               </st-form-item>
             </st-form>
@@ -358,7 +359,6 @@ export default {
     initScheduleList(list, type, changeTyps) {
       if (changeTyps) {
         this.cycle_type = changeTyps
-        this.initScheduleDate()
         this.customizeScheduleList = list
         return
       }
@@ -402,7 +402,6 @@ export default {
           }
         }
       })
-      console.log(this.pickerList)
       if (!pickerFlag) {
         if (
           this.cycle_type === 1 &&

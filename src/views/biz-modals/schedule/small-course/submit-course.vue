@@ -9,9 +9,9 @@
       <img
         class="submit-tips-pic"
         src="~@/assets/img/icon_setting_success.png"
-        alt="验证成功提示图片"
+        alt="排课成功提示图片"
       />
-      <st-t3 class="submit-tips-text">验证成功</st-t3>
+      <st-t3 class="submit-tips-text">排课成功</st-t3>
       <p class="submit-item">
         <span>总课时：</span>
         {{ courseInfo.course_times }}节

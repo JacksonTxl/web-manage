@@ -25,22 +25,19 @@
           </a-select-option>
         </a-select>
       </st-form-item>
-      <st-form-item label="补课排期" required>
-        <a-select
-          placeholder="请选择排期"
-          @change="onChangeSchedules"
-          v-decorator="decorators.id"
-        >
+      <st-form-item label="补课排期" required class="mg-b0">
+        <a-select placeholder="请选择排期" v-decorator="decorators.id">
           <a-select-option
             v-for="course in courseOptions"
             :key="course.id"
             :value="course.id"
           >
-            {{ course.course_name }}
+            {{ course.course_name }} {{ course.start_date }}
+            {{ course.start_time }}
           </a-select-option>
         </a-select>
       </st-form-item>
-      <st-form-item label="日期" required class="mg-b0">
+      <!-- <st-form-item label="日期" required class="mg-b0">
         <a-date-picker
           style="width:100%"
           :showTime="{ format: 'YYYY-MM-DD HH:mm' }"
@@ -48,7 +45,7 @@
           v-decorator="decorators.start_days"
           :disabled="disabled"
         />
-      </st-form-item>
+      </st-form-item> -->
     </st-form>
     <template slot="footer">
       <st-button @click="onClick">取消</st-button>
@@ -117,7 +114,6 @@ export default {
     }
   },
   created() {
-    console.log(123)
     this.smallCourseScheduleCommonService
       .getCourseList({
         schedule_status: 1
@@ -135,20 +131,20 @@ export default {
         this.courseOptions = res.list
       })
     },
-    onChangeSchedules(value) {
-      this.courseOptions.forEach((item, index) => {
-        if (item.id === value) {
-          this.smallCourseInfo = item
-          console.log(item)
-          const day = item.start_date
-          const time = item.start_time
-          const start_days = moment(`${day} ${time}`)
-          this.form.setFieldsValue({
-            start_days: start_days
-          })
-        }
-      })
-    },
+    // onChangeSchedules(value) {
+    //   this.courseOptions.forEach((item, index) => {
+    //     if (item.id === value) {
+    //       this.smallCourseInfo = item
+    //       console.log(item)
+    //       const day = item.start_date
+    //       const time = item.start_time
+    //       const start_days = moment(`${day} ${time}`)
+    //       this.form.setFieldsValue({
+    //         start_days: start_days
+    //       })
+    //     }
+    //   })
+    // },
     onSubmit() {
       this.form.validate().then(values => {
         this.show = false
