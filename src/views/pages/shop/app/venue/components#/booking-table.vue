@@ -24,7 +24,7 @@
         >
           <template v-for="(i, inx) in item.site_data">
             <div
-              :key="inx"
+              :key="item.site_id + '-' + reserve_day + '-' + inx"
               v-if="i.status === 2"
               :class="[
                 content('row'),
@@ -36,14 +36,14 @@
               ¥{{ i.price }}
             </div>
             <div
-              :key="inx"
+              :key="item.site_id + '-' + reserve_day + '-' + inx"
               v-if="i.status === 3"
               :class="[content('row'), content('row-reserved')]"
             >
               {{ i.member_name }}
             </div>
             <div
-              :key="inx"
+              :key="item.site_id + '-' + reserve_day + '-' + inx"
               v-if="i.status === 1"
               :class="[content('row'), content('row-unreserve')]"
             >
@@ -79,6 +79,10 @@ export default {
     siteY: {
       type: Array,
       default: () => []
+    },
+    reserve_day: {
+      type: String,
+      default: () => ''
     }
   },
   data() {
