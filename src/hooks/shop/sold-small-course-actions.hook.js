@@ -39,7 +39,7 @@ const useSmallCourseActions = () => {
                 // 创建订单成功
                 let props = {
                   order_id: res.orderId,
-                  type: 'small_course',
+                  type: 'small_course_order/detail',
                   message: '订单创建成功',
                   needPay: true
                 }
@@ -53,7 +53,7 @@ const useSmallCourseActions = () => {
                 // 创建订单成功 并且到支付页面
                 let props = {
                   order_id: res.orderId,
-                  type: 'small_course'
+                  type: 'small_course_order/detail'
                 }
                 let payOrderRes = await this.createdOrderPay(props)
                 this.payCallBack(res.orderId, 'small_course', payOrderRes.type)
