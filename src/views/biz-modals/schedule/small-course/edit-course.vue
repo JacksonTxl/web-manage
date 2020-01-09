@@ -186,7 +186,7 @@ export default {
       if (endTime) {
         setTimeout(() => {
           this.form.validate({ force: false, forceFields: ['end_time'] })
-        }, 500)
+        })
       }
     },
     changeEndTime(value) {
