@@ -348,7 +348,11 @@ export default {
     },
     disabledDate(current) {
       return (
-        current && current.format('YYYY-MM-DD') < moment().format('YYYY-MM-DD')
+        current &&
+        current.format('YYYY-MM-DD') <
+          moment()
+            .add(1, 'day')
+            .format('YYYY-MM-DD')
       )
     }
   }
