@@ -184,14 +184,18 @@ export default {
       this.startTime = value
       const endTime = this.form.getFieldValue('end_time')
       if (endTime) {
-        this.form.validate({ force: false, forceFields: ['end_time'] })
+        setTimeout(() => {
+          this.form.validate({ force: false, forceFields: ['end_time'] })
+        }, 500)
       }
     },
     changeEndTime(value) {
       this.endTime = value
       const startTime = this.form.getFieldValue('start_time')
       if (startTime) {
-        this.form.validate({ force: false, forceFields: ['start_time'] })
+        setTimeout(() => {
+          this.form.validate({ force: false, forceFields: ['start_time'] })
+        })
       }
     },
     onChangeCoach(value) {
