@@ -127,6 +127,7 @@
             :data="bookingList"
             :siteX="siteX"
             :siteY="siteY"
+            :query="query"
             :selectedData="selectedList"
             @change="getSelectedList"
             @nextPage="onNextPage"
@@ -214,7 +215,7 @@ export default {
       siteY: []
     }
   },
-  created() {
+  mounted() {
     this.calendarData = Array(28)
       .fill()
       .map((item, index) => {
@@ -404,11 +405,17 @@ export default {
       this.calendarData.forEach(item => (item.ispick = false))
       this.pickedIndex = index
       this.query.reserve_day = dateObj.date
+      this.resetPagination()
       this.getList()
     },
     selectHandler(e) {
       this.query.venues_id = e.target.value
+      this.resetPagination()
       this.getList()
+    },
+    resetPagination() {
+      this.query.page = 1
+      this.$refs.bookingTable.resetScroll()
     },
     getList() {
       this.bookingService.getBookingList(this.query).subscribe(res => {

@@ -15,6 +15,7 @@ export interface AddParams {
   product_intro: string
   product_sku: AddSku[]
   shelves_status: number
+  spec_name_arr: number[]
 }
 export interface EditParams {
   id: number

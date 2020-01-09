@@ -35,7 +35,7 @@ export class NoticeService {
     )
   }
   getNoticeList() {
-    return this.noticeApi.getNoticeList().pipe(
+    return this.noticeApi.getNoticeList('sms').pipe(
       tap((res: any) => {
         this.SET_SHOP_LIST(res.list)
         this.SET_MEMBER_LIST(res.list)
@@ -54,7 +54,7 @@ export class NoticeService {
     )
   }
   putNotice(params: PutNoticeParams) {
-    return this.noticeApi.putNotice(params).pipe(tap((res: any) => {}))
+    return this.noticeApi.putNotice('sms', params).pipe(tap((res: any) => {}))
   }
   beforeRouteEnter() {
     return this.getRoleList()

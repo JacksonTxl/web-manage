@@ -43,7 +43,7 @@
       <ul :class="bContent('day-group')" v-if="weeks.length === 1">
         <li
           class="day"
-          :class="item | currentDay"
+          :class="currentDay(item)"
           v-for="(item, index) in weeks"
           :key="item.week"
         >
