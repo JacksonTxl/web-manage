@@ -18,8 +18,8 @@
         >
           <a-select-option
             v-for="course in courseSmallCourseOptions"
-            :key="course.course_id"
-            :value="course.course_id"
+            :key="course.id"
+            :value="course.id"
           >
             {{ course.course_name }}
           </a-select-option>
@@ -28,12 +28,12 @@
       <st-form-item label="补课排期" required class="mg-b0">
         <a-select placeholder="请选择排期" v-decorator="decorators.id">
           <a-select-option
-            v-for="course in courseOptions"
-            :key="course.id"
-            :value="course.id"
+            v-for="schedule in scheduleOptions"
+            :key="schedule.id"
+            :value="schedule.id"
           >
-            {{ course.course_name }} {{ course.start_date }}
-            {{ course.start_time }}
+            {{ schedule.course_name }} {{ schedule.start_date }}
+            {{ schedule.start_time }}
           </a-select-option>
         </a-select>
       </st-form-item>
@@ -86,7 +86,8 @@ export default {
       decorators,
       show: false,
       disabled: true,
-      courseOptions: [],
+      scheduleOptions: [],
+      courseSmallCourseOptions: '',
       smallCourseInfo: '',
       courseId: ''
     }
@@ -108,12 +109,10 @@ export default {
     }
   },
   created() {
-    this.smallCourseScheduleCommonService
-      .getCourseList({
-        schedule_status: 1,
-        is_release: 1
-      })
-      .subscribe()
+    const member_id = this.info.member_id
+    this.reserveService.courseList(member_id).subscribe(res => {
+      this.courseSmallCourseOptions = res.list
+    })
   },
   methods: {
     onChangeCourse(value) {
@@ -122,8 +121,8 @@ export default {
         id: this.id,
         course_id: value
       }
-      this.reserveService.courseList(params).subscribe(res => {
-        this.courseOptions = res.list
+      this.reserveService.sheduleList(params).subscribe(res => {
+        this.scheduleOptions = res.list
       })
     },
     // onChangeSchedules(value) {
