@@ -49,8 +49,7 @@
           <a-range-picker
             style="width:100%"
             :disabledDate="disabledDate"
-            :showTime="{ format: 'HH:mm' }"
-            format="YYYY-MM-DD HH:mm"
+            format="YYYY-MM-DD"
             v-decorator="decorators.date"
           ></a-range-picker>
         </st-form-item>
@@ -238,12 +237,6 @@ export default {
     CardBgRadio,
     StEditor
   },
-  mounted() {
-    const curTime = moment()
-    this.form.setFieldsValue({
-      date: [curTime.add('30', 'minutes'), curTime]
-    })
-  },
   data(vm) {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
@@ -263,8 +256,8 @@ export default {
     save(e) {
       e.preventDefault()
       this.form.validate().then(values => {
-        values.course_begin_time = values.date[0].format('YYYY-MM-DD HH:mm')
-        values.course_end_time = values.date[1].format('YYYY-MM-DD HH:mm')
+        values.course_begin_time = values.date[0].format('YYYY-MM-DD')
+        values.course_end_time = values.date[1].format('YYYY-MM-DD')
         values.small_course_type = this.$route.query.type
         values.image = this.bg_image
         values.img_type = this.bg_image.index
@@ -303,7 +296,11 @@ export default {
     },
     disabledDate(current) {
       return (
-        current && current.format('YYYY-MM-DD') < moment().format('YYYY-MM-DD')
+        current &&
+        current.format('YYYY-MM-DD') <
+          moment()
+            .add(1, 'day')
+            .format('YYYY-MM-DD')
       )
     }
   }

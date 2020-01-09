@@ -31,12 +31,14 @@
           size="default"
           v-decorator="decorators.parent_mobile"
           placeholder="请输入手机号"
+          @change="onChangeParentMobile"
         ></input-phone>
       </st-form-item>
       <st-form-item label="家长姓名" required v-if="personModel === 1">
         <a-input
           v-decorator="decorators.parent_name"
           placeholder="请输入家长姓名"
+          :disabled="disabledParentMobile"
         >
           <a-select
             slot="addonAfter"
@@ -94,10 +96,31 @@ export default {
       form,
       decorators,
       show: false,
-      personModel: 0
+      personModel: 0,
+      disabledParentMobile: false
     }
   },
   methods: {
+    onChangeParentMobile(val) {
+      setTimeout(() => {
+        this.form.validate(['parent_mobile']).then(values => {
+          val.mobile = val.phone
+          this.addMemberService.getParentInfoByPhone(val).subscribe(res => {
+            if (res.exists) {
+              this.disabledParentMobile = true
+              this.form.setFieldsValue({
+                parent_name: res.info.member_name
+              })
+            } else {
+              this.disabledParentMobile = false
+              this.form.setFieldsValue({
+                parent_name: ''
+              })
+            }
+          })
+        })
+      })
+    },
     onChangeModel(val) {
       this.personModel = val
     },
@@ -108,7 +131,7 @@ export default {
             member_name: values.member_name,
             mobile: values.mobile ? values.mobile.phone : undefined,
             is_minors: values.is_minors,
-            parent_name: values.parent_name,
+            parent_username: values.parent_name,
             parent_mobile: values.parent_mobile
               ? values.parent_mobile.phone
               : undefined,

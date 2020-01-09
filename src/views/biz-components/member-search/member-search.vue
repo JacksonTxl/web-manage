@@ -102,6 +102,7 @@
           size="default"
           v-decorator="decorators[parentMobile]"
           placeholder="请输入手机号"
+          @change="onChangeParentMobile"
         ></input-phone>
       </st-form-item>
       <st-form-item
@@ -113,6 +114,7 @@
         <a-input
           v-decorator="decorators[parentName]"
           placeholder="请输入家长姓名"
+          :disabled="disabledParentMobile"
         >
           <a-select
             slot="addonAfter"
@@ -214,7 +216,8 @@ export default {
       memberSearchText: '',
       searchMemberIsShow: true,
       personModel: 0,
-      selectInfo: {}
+      selectInfo: {},
+      disabledParentMobile: false
     }
   },
   computed: {
@@ -259,6 +262,26 @@ export default {
     }
   },
   methods: {
+    onChangeParentMobile(val) {
+      setTimeout(() => {
+        this.form.validate(['parent_mobile']).then(values => {
+          val.mobile = val.phone
+          this.memberSearchService.getParentInfoByPhone(val).subscribe(res => {
+            if (res.exists) {
+              this.disabledParentMobile = true
+              this.form.setFieldsValue({
+                parent_name: res.info.member_name
+              })
+            } else {
+              this.disabledParentMobile = false
+              this.form.setFieldsValue({
+                parent_name: ''
+              })
+            }
+          })
+        })
+      })
+    },
     selectItemLabel(item) {
       if (item.is_minors === 1) {
         return `${item.member_name}(未成年) ${item.parent_mobile}(${

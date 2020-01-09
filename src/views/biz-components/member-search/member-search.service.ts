@@ -5,6 +5,7 @@ import { Effect, State, Action } from 'rx-state'
 import { then } from '@/operators'
 import { debounceTime, switchMap, catchError } from 'rxjs/operators'
 import { EMPTY } from 'rxjs'
+import { MemberApi } from '@/api/v1/member'
 
 @Injectable()
 export class MemberSearchService {
@@ -22,7 +23,8 @@ export class MemberSearchService {
   parent_types$ = this.userService.getOptions$('small_course.parent_type')
   constructor(
     private transactionApi: TransactionApi,
-    private userService: UserService
+    private userService: UserService,
+    private memberApi: MemberApi
   ) {}
   SET_TYPE(type: string) {
     this.type$.commit(() => type)
@@ -62,5 +64,8 @@ export class MemberSearchService {
       member,
       type
     })
+  }
+  getParentInfoByPhone(params: any) {
+    return this.memberApi.getParentInfoByPhone(params)
   }
 }

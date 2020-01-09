@@ -509,9 +509,11 @@ export default {
       this.isShowParent = val
     },
     getParentInfo(e) {
-      if (e.target.value.length === 11) {
-        this.getParentInfoByPhone(e.target.value)
-      }
+      setTimeout(() => {
+        this.form.validateFields(['parent_mobile']).then(values => {
+          this.getParentInfoByPhone(values.parent_mobile)
+        })
+      })
     },
     getParentInfoByPhone(phone) {
       let query = {

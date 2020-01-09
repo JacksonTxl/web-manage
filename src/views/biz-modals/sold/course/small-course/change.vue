@@ -58,7 +58,7 @@
           </st-info>
         </a-col>
       </a-row>
-      <st-form :form="form" labelWidth="100px">
+      <st-form :form="form" labelWidth="125px">
         <div :class="sale('sale')">
           <st-form-item :label="$c('small_course')" required labelGutter="12px">
             <a-select
@@ -119,11 +119,11 @@
             </div>
           </st-form-item>
           <st-form-item labelGutter="12px" class="mg-b12" label="商品价格">
-            {{ priceInfo }}元
+            {{ selectItem.course_price }}元
           </st-form-item>
           <st-form-item labelGutter="12px" required>
             <template slot="label">
-              原小班课抵扣
+              原{{ $c('small_course') }}抵扣
               <st-help-tooltip id="TSMC003" />
             </template>
             <st-input-number
@@ -131,7 +131,9 @@
               v-decorator="decorators.old_course_price"
               :float="true"
               :max="+info.pay_price"
-              placeholder="请输入原小班课可以抵扣的剩余价值金额"
+              :placeholder="
+                `请输入原${$c('small_course')}可以抵扣的剩余价值金额`
+              "
             >
               <span slot="addonAfter">元</span>
             </st-input-number>
