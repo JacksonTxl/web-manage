@@ -342,11 +342,9 @@ export default {
     this.saleSmallCourseService.serviceInit(this.id).subscribe(result => {
       this.getPrice()
       this.getOrderPrice()
-      if (this.isDisabledBuyNum) {
-        this.form.setFieldsValue({
-          course_num: this.info.buy_num
-        })
-      }
+      this.form.setFieldsValue({
+        course_num: this.info.buy_num
+      })
     })
   },
   computed: {
@@ -366,16 +364,16 @@ export default {
       return this.priceInfo < 0 ? '小计不能为负' : ''
     },
     amountMax() {
-      if (this.info.course_type === this.COURSE_TYPE.FIXED_COURSE) {
-        return this.info.buy_num || 0
-      }
-      return this.info.num_max || 0
+      // if (this.info.course_type === this.COURSE_TYPE.FIXED_COURSE) {
+      //   return this.info.buy_num || 0
+      // }
+      return this.info.buy_num || 1
     },
     amountMin() {
-      if (this.info.course_type === this.COURSE_TYPE.FIXED_COURSE) {
-        return this.info.buy_num || 0
-      }
-      return this.info.num_min || 0
+      // if (this.info.course_type === this.COURSE_TYPE.FIXED_COURSE) {
+      //   return this.info.buy_num || 0
+      // }
+      return 1
     },
     isDisabledBuyNum() {
       return this.info.course_type === this.COURSE_TYPE.FIXED_COURSE
