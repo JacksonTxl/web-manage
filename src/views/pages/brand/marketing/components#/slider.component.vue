@@ -51,7 +51,11 @@
                 <template slot="title">
                   <span>拖拽调整顺序</span>
                 </template>
-                <a-icon type="menu-unfold" class="tooltip-draggable" />
+                <img
+                  src="https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/plugin/icon_marketing-swiper.png"
+                  alt=""
+                  class="tooltip-draggable"
+                />
               </a-tooltip>
             </a-col>
           </a-row>
