@@ -308,8 +308,8 @@ export default {
       e.preventDefault()
       this.form.validate().then(values => {
         values.id = this.info.info.course_id
-        values.course_begin_time = values.date[0].format('YYYY-MM-DD HH:mm')
-        values.course_end_time = values.date[1].format('YYYY-MM-DD HH:mm')
+        values.course_begin_time = values.date[0].format('YYYY-MM-DD')
+        values.course_end_time = values.date[1].format('YYYY-MM-DD')
         values.small_course_type = this.$route.query.type
         values.image = this.bg_image
         values.img_type = this.bg_image.index
