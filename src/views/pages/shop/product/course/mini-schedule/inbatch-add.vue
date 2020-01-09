@@ -21,8 +21,7 @@
           <a-select
             placeholder="请选择"
             @change="onChangeScheduleType"
-            v-model="cycle_type"
-            :disabled="disabledChangeScheduleType"
+            v-model="select_cycle_type"
           >
             <a-select-option :key="1" :value="1">
               周排课方式
@@ -46,8 +45,7 @@
                   @change="onChangeRangePicker($event, $event, i)"
                   :value="pickerList[i]"
                   :disabledDate="disabledEndDate"
-                  :showTime="{ format: 'HH:mm' }"
-                  format="YYYY-MM-DD HH:mm"
+                  format="YYYY-MM-DD"
                 ></a-range-picker>
               </st-form-item>
               <div :class="b('delete')" @click="onDeleteCycleSchedule(i)">
@@ -241,6 +239,7 @@ export default {
       editScheduleCycleFlag: false,
       courseId: '',
       cycle_type: 1,
+      select_cycle_type: 1,
       start_date: '',
       end_date: '',
       picker_start_date: '',
@@ -272,10 +271,10 @@ export default {
   computed: {
     addScheduleFlag() {
       return !(this.end_date === this.picker_end_date)
-    },
-    disabledChangeScheduleType() {
-      return this.cycle_type === 2 && this.customizeScheduleList.length > 0
     }
+    // disabledChangeScheduleType() {
+    //   return this.cycle_type === 2 && this.customizeScheduleList.length > 0
+    // }
   },
   created() {
     this.filterDateList(this.scheduleList)
@@ -338,8 +337,6 @@ export default {
       if (!this.courseId) {
         return
       }
-      this.initScheduleDate()
-      this.customizeScheduleList = []
       const params = {
         course_id: this.courseId,
         cycle_type: value
@@ -347,39 +344,49 @@ export default {
       this.getScheduleInBatch(params, value)
     },
     getScheduleInBatch(params, changeTyps) {
-      this.smallCourseScheduleService
-        .getScheduleInBatch(params)
-        .subscribe(res => {
+      this.smallCourseScheduleService.getScheduleInBatch(params).subscribe(
+        res => {
           console.log(res)
+          if (changeTyps && this.cycle_type === 1) {
+            this.initScheduleDate()
+            this.customizeScheduleList = []
+          }
           this.disabledAddCourseBtn = false
           this.disabledCustomBtn = false
           this.initScheduleList(res.list, res.cycle_type, changeTyps)
-        })
+        },
+        err => {
+          this.select_cycle_type = 2
+          this.$warning({
+            title: '提示',
+            okText: '我知道了',
+            content: `已有排课信息，无法切换为周期排课，若需切换，请先删除排课信息`,
+            onOk: () => {}
+          })
+        }
+      )
     },
     initScheduleList(list, type, changeTyps) {
-      if (changeTyps) {
-        this.cycle_type = changeTyps
-        this.customizeScheduleList = list
-        return
-      }
-      if (list.length && type === 1) {
+      this.select_cycle_type = type
+      changeTyps ? (this.cycle_type = changeTyps) : (this.cycle_type = type)
+      if (list.length && this.cycle_type === 1) {
         console.log('周期有数据')
-        this.cycle_type = type
         this.scheduleList = list
         this.dealScheduleDate(this.scheduleList)
         this.filterDateList(this.scheduleList)
-      } else if (!list.length && type === 1) {
+      } else if (!list.length && this.cycle_type === 1) {
         console.log('周期无数据')
-        this.cycle_type = type
         this.initScheduleDate()
-      } else if (type === 2) {
+      } else if (this.cycle_type === 2) {
         console.log('自主')
-        this.cycle_type = type
+        this.select_cycle_type = 2
         this.initScheduleDate()
         this.customizeScheduleList = list
         console.log(this.customizeScheduleList)
-      } else if (!list.length && type === 0) {
+      } else if (!list.length && this.cycle_type === 0) {
         console.log('无数据无类型')
+        this.select_cycle_type = 1
+        this.cycle_type = 1
         this.initScheduleDate()
       }
     },

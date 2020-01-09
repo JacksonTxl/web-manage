@@ -159,8 +159,6 @@ export default {
     })
     let start_time, end_time
     if (this.cycle_type === 2) {
-      console.log(this.cycle_type)
-      console.log(time)
       start_time = moment(this.item.start_time)
       end_time = moment(this.item.end_time)
       this.form.setFieldsValue({
@@ -183,20 +181,9 @@ export default {
     changeStartTime(value) {
       this.startTime = value
       const endTime = this.form.getFieldValue('end_time')
-      if (endTime) {
-        setTimeout(() => {
-          this.form.validate({ force: false, forceFields: ['end_time'] })
-        })
-      }
     },
     changeEndTime(value) {
       this.endTime = value
-      const startTime = this.form.getFieldValue('start_time')
-      if (startTime) {
-        setTimeout(() => {
-          this.form.validate({ force: false, forceFields: ['start_time'] })
-        })
-      }
     },
     onChangeCoach(value) {
       this.coachSmallCourseOptions.forEach((item, index) => {
