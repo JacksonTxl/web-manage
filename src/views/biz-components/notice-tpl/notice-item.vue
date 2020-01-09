@@ -169,6 +169,12 @@
                   {{ params.receiver.member.name }}
                 </st-checkbox>
                 <st-checkbox
+                  v-if="params.receiver.leader"
+                  v-model="params.receiver.leader.value"
+                >
+                  {{ params.receiver.leader.name }}
+                </st-checkbox>
+                <st-checkbox
                   v-if="params.receiver.custom"
                   v-model="params.receiver.custom.value"
                 >
@@ -389,6 +395,10 @@ export default {
           custom: {
             value: 0,
             name: '自定义'
+          },
+          leader: {
+            value: 0,
+            name: '负责人'
           }
         },
         notify_time: '',
@@ -486,6 +496,9 @@ export default {
       if (this.info.receiver.seller) {
         receiver.seller = 0
       }
+      if (this.info.receiver.leader) {
+        receiver.leader = 0
+      }
       if (this.info.course_type.team_course) {
         course_type.team_course = this.params.course_type.team_course.value
           ? 1
@@ -526,6 +539,9 @@ export default {
       }
       if (this.info.receiver.seller) {
         receiver.seller = this.params.receiver.seller.value ? 1 : 0
+      }
+      if (this.info.receiver.leader) {
+        receiver.leader = this.params.receiver.leader.value ? 1 : 0
       }
       const para = Object.assign({}, this.params, {
         id: this.info.id,
