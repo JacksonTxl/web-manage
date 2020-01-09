@@ -140,7 +140,7 @@ export default {
       this.courseSmallCourseOptions.forEach((item, index) => {
         if (item.course_id === value) {
           this.smallCourseInfo = item
-          console.log(item)
+          console.log(this.smallCourseInfo)
         }
       })
     },

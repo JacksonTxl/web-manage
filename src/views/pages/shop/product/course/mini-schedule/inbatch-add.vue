@@ -48,7 +48,14 @@
                   format="YYYY-MM-DD"
                 ></a-range-picker>
               </st-form-item>
-              <div :class="b('delete')" @click="onDeleteCycleSchedule(i)">
+              <div
+                :class="
+                  scheduleList.length > 1
+                    ? [b('delete-btn'), b('delete')]
+                    : [b('delete-btn'), b('disabled-delete')]
+                "
+                @click="onDeleteCycleSchedule(i)"
+              >
                 <st-icon type="delete" class="delete-course-btn"></st-icon>
                 删除排期
               </div>
@@ -270,7 +277,7 @@ export default {
   },
   computed: {
     addScheduleFlag() {
-      return !(this.end_date === this.picker_end_date)
+      return this.end_date !== this.picker_end_date
     }
     // disabledChangeScheduleType() {
     //   return this.cycle_type === 2 && this.customizeScheduleList.length > 0
@@ -289,6 +296,9 @@ export default {
           moment(item.cycle_end_date)
         ])
       })
+      this.picker_end_date = this.scheduleList[
+        this.scheduleList.length - 1
+      ].cycle_end_date
     },
     initScheduleDate() {
       const smallCourseInfo = this.smallCourseInfo
@@ -325,7 +335,6 @@ export default {
           course_time: []
         }
       ]
-      this.initScheduleDate()
       this.filterDateList(this.scheduleList)
       const params = {}
       params.course_id = this.courseId
@@ -380,7 +389,6 @@ export default {
       } else if (this.cycle_type === 2) {
         console.log('自主')
         this.select_cycle_type = 2
-        this.initScheduleDate()
         this.customizeScheduleList = list
         console.log(this.customizeScheduleList)
       } else if (!list.length && this.cycle_type === 0) {
