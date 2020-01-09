@@ -49,8 +49,7 @@
           <a-range-picker
             style="width:100%"
             :disabledDate="disabledDate"
-            :showTime="{ format: 'HH:mm' }"
-            format="YYYY-MM-DD HH:mm"
+            format="YYYY-MM-DD"
             v-decorator="decorators.date"
           ></a-range-picker>
         </st-form-item>
@@ -238,12 +237,6 @@ export default {
     CardBgRadio,
     StEditor
   },
-  mounted() {
-    const curTime = moment()
-    this.form.setFieldsValue({
-      date: [curTime.add('30', 'minutes'), curTime]
-    })
-  },
   data(vm) {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
@@ -303,7 +296,11 @@ export default {
     },
     disabledDate(current) {
       return (
-        current && current.format('YYYY-MM-DD') < moment().format('YYYY-MM-DD')
+        current &&
+        current.format('YYYY-MM-DD') <
+          moment()
+            .add(1, 'day')
+            .format('YYYY-MM-DD')
       )
     }
   }
