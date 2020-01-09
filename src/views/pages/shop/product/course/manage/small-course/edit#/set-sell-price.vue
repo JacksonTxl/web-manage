@@ -1,7 +1,7 @@
 <template>
-  <st-form :form="form" class="page-set-sell-price" labelWidth="100px">
+  <st-form :form="form" class="page-set-sell-price" labelWidth="130px">
     <a-row :gutter="8">
-      <a-col :lg="10" :offset="1">
+      <a-col :lg="11">
         <st-form-item>
           <template slot="label">
             {{ $c('small_course') }}名称
@@ -86,7 +86,7 @@
       </a-col>
     </a-row>
     <a-row :gutter="10">
-      <a-col :lg="10" :xs="10" :offset="1">
+      <a-col :lg="11" :xs="10">
         <st-form-item labelFix>
           <st-button
             class="mg-r16"
