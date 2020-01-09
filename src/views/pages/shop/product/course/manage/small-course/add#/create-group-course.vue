@@ -49,8 +49,7 @@
           <a-range-picker
             style="width:100%"
             :disabledDate="disabledDate"
-            :showTime="{ format: 'HH:mm' }"
-            format="YYYY-MM-DD HH:mm"
+            format="YYYY-MM-DD"
             v-decorator="decorators.date"
           ></a-range-picker>
         </st-form-item>
@@ -237,12 +236,6 @@ export default {
   components: {
     CardBgRadio,
     StEditor
-  },
-  mounted() {
-    const curTime = moment()
-    this.form.setFieldsValue({
-      date: [curTime.add('30', 'minutes'), curTime]
-    })
   },
   data(vm) {
     const form = this.$stForm.create()

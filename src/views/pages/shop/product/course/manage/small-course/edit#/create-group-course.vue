@@ -43,8 +43,7 @@
             :disabled="isDisabled"
             style="width:100%"
             :disabledDate="disabledDate"
-            :showTime="{ format: 'HH:mm' }"
-            format="YYYY-MM-DD HH:mm"
+            format="YYYY-MM-DD"
             v-decorator="decorators.date"
           ></a-range-picker>
         </st-form-item>
