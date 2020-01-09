@@ -1,6 +1,6 @@
 import { UserService } from '@/services/user.service'
 import { Injectable } from 'vue-service-app'
-import { State, Effect } from 'rx-state'
+import { State, Effect, Action } from 'rx-state'
 import { MemberApi, AddUserParams } from '@/api/v1/member'
 
 @Injectable()
@@ -11,5 +11,8 @@ export class AddMemberService {
   @Effect()
   addMember(params: AddUserParams) {
     return this.memberApi.addUser(params)
+  }
+  getParentInfoByPhone(params: any) {
+    return this.memberApi.getParentInfoByPhone(params)
   }
 }

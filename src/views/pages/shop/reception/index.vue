@@ -583,6 +583,7 @@ import FaceUpload from '@/views/biz-components/face-upload/face-upload'
 import { summaryList, shortcutList } from './index.config'
 import { RECEPTION } from '@/constants/reception/reception'
 import FrontAddReserve from '@/views/biz-modals/front/add-reserve'
+import { enumFilter } from '../../../../filters/other.filters'
 
 export default {
   name: 'PageShopReception',
@@ -612,7 +613,8 @@ export default {
       page: this.indexService.page$,
       workNoteList: this.indexService.workNoteList$,
       workNoteDoneList: this.indexService.workNoteDoneList$,
-      loading: this.indexService.loading$
+      loading: this.indexService.loading$,
+      parent_types: this.indexService.parent_types$
     }
   },
   components: {
@@ -687,16 +689,16 @@ export default {
       return this.isSelectMember ? this.selectMemberInfo.mobile : '无'
     },
     isMinors() {
-      return this.isSelectMember && this.isSelectMember.is_minors === 1
+      return this.isSelectMember && this.selectMemberInfo.is_minors === 1
     },
     parentMobile() {
       return this.isMinors ? this.selectMemberInfo.parent_name : '无'
     },
     parentName() {
       return this.isMinors
-        ? `${this.selectMemberInfo.parent_name}(${
-            this.selectMemberInfo.parent_user_role
-          })`
+        ? `${this.selectMemberInfo.parent_name}(${this.filterParentUserRole({
+            parent_user_role: this.selectMemberInfo.parent_user_role
+          })})`
         : '无'
     },
     // 会员实体卡号
@@ -733,11 +735,15 @@ export default {
   methods: {
     selectItemLabel(item) {
       if (item.is_minors === 1) {
-        return `${item.member_name}(未成年) ${item.parent_mobile}(${
-          item.parent_user_role
-        })`
+        return `${item.member_name}(未成年) ${
+          item.parent_mobile
+        }(${this.filterParentUserRole(item)})`
       }
       return `${item.member_name} ${item.mobile}`
+    },
+    filterParentUserRole(item) {
+      return this.parent_types.filter(i => i.value === item.parent_user_role)[0]
+        .label
     },
     photoChange(list) {
       this.indexService
