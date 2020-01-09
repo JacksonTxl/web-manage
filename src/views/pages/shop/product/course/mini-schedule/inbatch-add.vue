@@ -174,7 +174,7 @@
                 :customizeShow="customizeShow"
                 :disabledCustomBtn="disabledCustomBtn"
                 @addCustomCourse="pushCustomCourseInfo"
-                :cycle="pickerList[0]"
+                :cycle="smallPickerList"
                 :cycle_type="cycle_type"
                 :courseInfo="smallCourseInfo"
                 :editScheduleCycleFlag="editScheduleCycleFlag"
@@ -251,6 +251,7 @@ export default {
       end_date: '',
       picker_start_date: '',
       picker_end_date: '',
+      smallPickerList: [],
       pickerList: [],
       disabledDate: [],
       tipsText: [],
@@ -327,6 +328,9 @@ export default {
       console.log(this.smallCourseInfo)
       this.start_date = this.smallCourseInfo.course_begin_time
       this.end_date = this.smallCourseInfo.course_end_time
+      const start_date = this.start_date
+      const end_date = this.end_date
+      this.smallPickerList = [moment(start_date), moment(end_date)]
       this.courseId = value
       this.customizeScheduleList = []
       this.pickerList = []
@@ -344,6 +348,7 @@ export default {
     onChangeScheduleType(value) {
       console.log('更改类型值' + value)
       if (!this.courseId) {
+        this.select_cycle_type = value
         return
       }
       const params = {
