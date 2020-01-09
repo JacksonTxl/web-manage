@@ -3,14 +3,14 @@
     <a-tabs :defaultActiveKey="key" @change="recentChange">
       <a-tab-pane key="1">
         <template slot="tab">
-          购买次数
+          <div>购买次数</div>
           <slot name="userTitle"></slot>
         </template>
         <slot name="user"></slot>
       </a-tab-pane>
       <a-tab-pane key="2" forceRender>
         <template slot="tab">
-          消费金额
+          <div>消费金额</div>
           <slot name="marketingTitle"></slot>
         </template>
         <slot name="marketing"></slot>

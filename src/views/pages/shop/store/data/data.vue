@@ -87,73 +87,25 @@
                 <div class="ring">
                   <whole-tabs>
                     <template v-slot:user>
-                      <component
-                        v-bind:is="wholeNavcom"
-                        v-if="orderMember(storeBoard, 0, 'member').length"
-                        :unit="wholeNav[wholenavIndex].unit"
-                        :data="orderMember(storeBoard, 0, 'order')"
-                        :name="filterOrderMemberTitle()"
-                        style="width: 100%;"
-                        :total="Number(wholeNav[wholenavIndex].num)"
-                        :height="
-                          wholeNavcom === 'brand-user-avg-bar'
-                            ? height325
-                            : height332
-                        "
-                      ></component>
-                      <div v-else :class="basic('entry-store-img')">
-                        <img
-                          :src="inoutNumImg"
-                          :style="{
-                            height:
-                              wholeNavcom === 'brand-user-avg-bar'
-                                ? '343px'
-                                : height332 + 'px'
-                          }"
-                          class="order-member-inout-img"
-                          v-if="wholeNavcom === 'brand-user-avg-bar'"
-                        />
-                        <img
-                          :src="pieImg"
-                          v-else
-                          class="order-member-pie-img"
-                        />
-                      </div>
+                      <whole-order-member
+                        :storeBoard="storeBoard"
+                        :wholeNav="wholeNav"
+                        :wholeNavcom="wholeNavcom"
+                        orderMemberFlag="order"
+                        :wholenavIndex="wholenavIndex"
+                        :fieldNav="fieldNav"
+                      ></whole-order-member>
                     </template>
                     <template v-slot:marketing>
-                      <component
-                        v-bind:is="wholeNavcom"
-                        v-if="orderMember(storeBoard, 0, 'member').length"
-                        :name="filterOrderMemberTitle()"
-                        :unit="wholeNav[wholenavIndex].unit"
-                        :data="orderMember(storeBoard, 0, 'member')"
-                        :total="Number(wholeNav[wholenavIndex].num)"
-                        style="width: 100%;"
+                      <whole-order-member
+                        :storeBoard="storeBoard"
+                        :wholeNav="wholeNav"
+                        :wholeNavcom="wholeNavcom"
+                        orderMemberFlag="member"
+                        :wholenavIndex="wholenavIndex"
+                        :fieldNav="fieldNav"
                         :colors="['#4679F9', '#894BFF', '#009DFF']"
-                        :height="
-                          wholeNavcom === 'brand-user-avg-bar'
-                            ? height325
-                            : height332
-                        "
-                      ></component>
-                      <div v-else :class="basic('entry-store-img')">
-                        <img
-                          :src="inoutNumImg"
-                          :style="{
-                            height:
-                              wholeNavcom === 'brand-user-avg-bar'
-                                ? '343px'
-                                : height332 + 'px'
-                          }"
-                          v-if="wholeNavcom === 'brand-user-avg-bar'"
-                          class="order-member-inout-img"
-                        />
-                        <img
-                          :src="pieImg"
-                          v-else
-                          class="order-member-pie-img"
-                        />
-                      </div>
+                      ></whole-order-member>
                     </template>
                   </whole-tabs>
                 </div>
@@ -255,9 +207,8 @@ import BuyConsumptionTables from './components#/buy-consumption-tables'
 import DatePicker from './components#/date-picker'
 import SalesAnalysis from './components#/sales-analysis'
 import BuyNumber from './components#/buy-number'
-import ShopStoreDataRing from '@/views/biz-components/stat/shop-store-data-ring'
+import WholeOrderMember from './components#/whole-order-member'
 import ShopStoreDataRevenueRing from '@/views/biz-components/stat/shop-store-data-revenue-ring'
-import BrandUserAvgBar from '@/views/biz-components/stat/shop-store-data-avg-bar'
 import { DataService } from './data.service'
 import {
   headerInfo,
@@ -287,8 +238,6 @@ export default {
   },
   data() {
     return {
-      height325: 325,
-      height332: 332,
       wholenavIndex: 0,
       pieImg,
       inoutNumImg,
@@ -311,9 +260,8 @@ export default {
     BuyConsumptionTables,
     SalesAnalysis,
     BuyNumber,
-    ShopStoreDataRing,
     ShopStoreDataRevenueRing,
-    BrandUserAvgBar
+    WholeOrderMember
   },
   mounted() {
     this.$nextTick(() => {
@@ -355,42 +303,6 @@ export default {
         return []
       }
     },
-    // 整体看板订单/会员
-    orderMember(value, flag, that) {
-      let filterOrderMemberData = [
-        value,
-        this.fieldNav,
-        this.wholenavIndex,
-        that,
-        'value'
-      ]
-      return this.filterOrderMember(...filterOrderMemberData)
-    },
-    filterOrderMember(value, fieldNav, wholenavIndex, that, type) {
-      if (!Array.isArray(value[fieldNav[wholenavIndex]].source)) {
-        return value[fieldNav[wholenavIndex]].source[that].map(item => {
-          return {
-            name: item.type,
-            value: Number(item[type])
-          }
-        })
-      } else {
-        return []
-      }
-    },
-    // 订单来源/会员身份标题
-    filterOrderMemberTitle() {
-      let title = ['营收金额(元)', '订单数(单)']
-      if (
-        title.find(item => item === this.wholeNav[this.wholenavIndex].title)
-      ) {
-        if (this.wholeNav[this.wholenavIndex].title === title[0]) {
-          return '总营收'
-        } else {
-          return '订单数'
-        }
-      }
-    },
     // 整体看板数据处理
     wholenavFilter() {
       let titles = [
@@ -404,7 +316,6 @@ export default {
       this.wholeNav.forEach((item, index) => {
         let dataInfo = data[titles[index]][field[index]]
         this.$set(item, 'num', dataInfo)
-        // item.num = dataInfo
         item.unit = data[titles[index]].unit
       })
     },
@@ -420,7 +331,6 @@ export default {
     refresh() {
       return this.dataService.getDataProfile(this.chartTodayShop)
     },
-    change() {},
     wholenavFun(index, item) {
       this.wholenavIndex = index
       if (index > 1) {
