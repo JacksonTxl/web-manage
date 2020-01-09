@@ -14,14 +14,17 @@
       <div :class="bToolbar('right')">
         <slot name="toolbar-right"></slot>
         <a-radio-group
-          :value="dataBtnFocusState"
+          :value="$searchQuery.data_type"
           @change="handleSizeChange($event, 'date')"
         >
-          <a-radio-button value="week" @click="onClickGetWeek">
+          <a-radio-button value="day">
+            日
+          </a-radio-button>
+          <a-radio-button value="week">
             周
           </a-radio-button>
-          <a-radio-button value="day" @click="onClickGetCurrent">
-            日
+          <a-radio-button value="month">
+            月
           </a-radio-button>
         </a-radio-group>
         <a-radio-group
@@ -38,12 +41,18 @@
       </div>
     </div>
     <div :class="bSchedule('content')">
-      <div :class="bContent('time-collection')"></div>
+      <div
+        :class="bContent('time-collection')"
+        v-if="$searchQuery.data_type !== 'month'"
+      ></div>
 
-      <ul :class="bContent('day-group')" v-if="weeks.length === 1">
+      <ul
+        :class="bContent('day-group')"
+        v-if="$searchQuery.data_type === 'day'"
+      >
         <li
           class="day"
-          :class="item | currentDay"
+          :class="currentDay(item)"
           v-for="(item, index) in weeks"
           :key="item.week"
         >
@@ -87,7 +96,10 @@
         </li>
       </ul>
 
-      <ul :class="bContent('day-group')" v-else>
+      <ul
+        :class="bContent('day-group')"
+        v-else-if="$searchQuery.data_type === 'week'"
+      >
         <li
           class="day"
           :class="[currentDay(item), index === 6 ? 'last' : '']"
@@ -141,6 +153,9 @@
           ></schedule-card>
         </li>
       </ul>
+      <ul v-else-if="$searchQuery.data_type === 'month'">
+        <li>这是月</li>
+      </ul>
     </div>
   </div>
 </template>
@@ -165,7 +180,6 @@ export default {
       start: moment().format('YYYY-MM-DD'),
       currentWeek: '',
       weeks: [],
-      dataBtnFocusState: 'week',
       pageBtnFocusState: 'calendar'
     }
   },
@@ -241,7 +255,14 @@ export default {
   methods: {
     handleSizeChange(evt, type) {
       if (type === 'date') {
-        this.dataBtnFocusState = evt.target.value
+        if (evt.target.value === 'day') {
+          this.onClickGetCurrent()
+        } else if (evt.target.value === 'month') {
+          this.onClickGetMonth()
+        } else {
+          this.onClickGetWeek()
+        }
+        this.$searchQuery.data_type = evt.target.value
       } else {
         this.pageBtnFocusState = evt.target.value
       }
@@ -286,12 +307,34 @@ export default {
       this.$emit('detail', info)
     },
     onClickGetCurrent() {
+      this.weeks = []
+      this.weeks.push({ week: 0, date: this.$searchQuery.start_date })
+      this.$searchQuery.data_type = 'day'
       let current = moment().format('YYYY-MM-DD')
       this.getWeeks()
       this.$router.push({
         query: {
           start_date: current,
-          end_date: current
+          end_date: current,
+          data_type: 'day'
+        }
+      })
+    },
+    onClickGetMonth() {
+      const startDate = moment()
+        .startOf('month')
+        .format('YYYY-MM-DD')
+      const endDate = moment()
+        .endOf('month')
+        .format('YYYY-MM-DD')
+      console.log(startDate, 'startDate')
+      console.log(endDate, 'endDate')
+      this.getWeeks()
+      this.$router.push({
+        query: {
+          start_date: startDate,
+          end_date: endDate,
+          data_type: 'month'
         }
       })
     },
@@ -316,7 +359,9 @@ export default {
     },
 
     onClickGetWeek() {
-      this.$router.push({ query: { ...this.currentWeek } })
+      this.$router.push({
+        query: { ...this.currentWeek, data_type: 'week' }
+      })
       this.getWeeks('week')
     },
     onChangeGetDate(date) {
