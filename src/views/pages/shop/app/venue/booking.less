@@ -1,6 +1,6 @@
 .page-shop-app-venue-booking {
   .mg-b(-24px);
-  .left {
+  &__left {
     margin-right: 508px;
     height: calc(100vh - 146px);
   }
@@ -132,11 +132,13 @@
   }
 }
 
-.theme-club .page-shop-app-venue-booking {
-  .left {
-    height: calc(100vh - 146px - 22px);
-  }
-  .right {
-    height: calc(100vh - 122px - 22px);
+.theme-club {
+  .page-shop-app-venue-booking {
+    &__left {
+      height: calc(100vh - 146px - 22px);
+    }
+    .right {
+      height: calc(100vh - 122px - 22px);
+    }
   }
 }

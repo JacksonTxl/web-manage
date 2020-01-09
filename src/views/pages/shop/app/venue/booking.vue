@@ -73,7 +73,7 @@
         </div>
       </div>
     </div>
-    <div :class="left()" id="booking-left">
+    <div :class="b('left')" id="booking-left">
       <a-radio-group
         :value="query.venues_id"
         id="booking-left-venue"
@@ -154,7 +154,6 @@ export default {
     b: 'page-shop-app-venue-booking',
     calendar: 'calendar',
     list: 'list',
-    left: 'left',
     right: 'right'
   },
   serviceInject() {
