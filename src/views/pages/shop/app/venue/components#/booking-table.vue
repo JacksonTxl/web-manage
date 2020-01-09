@@ -24,7 +24,8 @@
         >
           <template v-for="(i, inx) in item.site_data">
             <div
-              :key="item.site_id + '-' + reserve_day + '-' + inx"
+              :key="ikey(item, inx)"
+              :data-key="ikey(item, inx)"
               v-if="i.status === 2"
               :class="[
                 content('row'),
@@ -36,14 +37,16 @@
               ¥{{ i.price }}
             </div>
             <div
-              :key="item.site_id + '-' + reserve_day + '-' + inx"
+              :key="ikey(item, inx)"
+              :data-key="ikey(item, inx)"
               v-if="i.status === 3"
               :class="[content('row'), content('row-reserved')]"
             >
               {{ i.member_name }}
             </div>
             <div
-              :key="item.site_id + '-' + reserve_day + '-' + inx"
+              :key="ikey(item, inx)"
+              :data-key="ikey(item, inx)"
               v-if="i.status === 1"
               :class="[content('row'), content('row-unreserve')]"
             >
@@ -80,9 +83,18 @@ export default {
       type: Array,
       default: () => []
     },
-    reserve_day: {
-      type: String,
-      default: () => ''
+    query: {
+      type: Object,
+      default: () => {
+        return {
+          reserve_day: ''
+        }
+      }
+    }
+  },
+  computed: {
+    reserve_day() {
+      return this.query.reserve_day
     }
   },
   data() {
@@ -96,6 +108,9 @@ export default {
     window.addEventListener('resize', this.calcLeftHeight, false)
   },
   methods: {
+    ikey(item, inx) {
+      return item.site_id + '-' + this.reserve_day + '-' + inx
+    },
     calcLeftHeight() {
       const left = document.getElementById('booking-left')
       const leftVenue = document.getElementById('booking-left-venue')
