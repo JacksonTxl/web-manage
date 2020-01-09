@@ -60,7 +60,6 @@
 import { cloneDeep } from 'lodash-es'
 import { SmallCourseScheduleService } from '@/views/pages/shop/product/course/schedule/small-course/service#/schedule.service'
 import { SmallCourseScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/small-course/service#/reserve.service'
-import { RemedialCourseService } from './remedial-course.service'
 import { SmallCourseScheduleCommonService } from '@/views/pages/shop/product/course/schedule/small-course/service#/common.service'
 import { ruleOptions } from './remedial-course.config'
 export default {
@@ -69,7 +68,6 @@ export default {
     return {
       smallCourseScheduleService: SmallCourseScheduleService,
       reserveService: ReserveService,
-      remedialCourseService: RemedialCourseService,
       smallCourseScheduleCommonService: SmallCourseScheduleCommonService
     }
   },
@@ -106,17 +104,14 @@ export default {
   },
   computed: {
     scopeApplication() {
-      let scopeName = ''
-      this.info.scope_application.forEach((item, index) => {
-        scopeName += item += ' '
-      })
-      return scopeName
+      return this.info.scope_application.join(' ')
     }
   },
   created() {
     this.smallCourseScheduleCommonService
       .getCourseList({
-        schedule_status: 1
+        schedule_status: 1,
+        is_release: 1
       })
       .subscribe()
   },
