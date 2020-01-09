@@ -40,7 +40,7 @@
     <div :class="bSchedule('content')">
       <div :class="bContent('time-collection')"></div>
 
-      <ul :class="bContent('day-group')" v-if="weeks.length === 1">
+      <!-- <ul :class="bContent('day-group')" v-if="weeks.length === 1">
         <li
           class="day"
           :class="item | currentDay"
@@ -140,7 +140,9 @@
             :start="start"
           ></schedule-card>
         </li>
-      </ul>
+      </ul> -->
+      <!-- 月度组件 -->
+      <month-board date="2019-12-02" />
     </div>
   </div>
 </template>
@@ -150,6 +152,7 @@ import DateComponent from './date#/date-component'
 import AddButton from './date#/add-button'
 import ScheduleUnit from './date#/schedule-unit'
 import ScheduleCard from './date#/schedule-card'
+import MonthBoard from './date#/month-board'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 
@@ -199,6 +202,7 @@ export default {
     isDay() {
       const start = this.$searchQuery.start_date
       const end = this.$searchQuery.end_date
+      console.log(start, end, 'dfasdf')
       return start === end
     },
     currentTime() {
@@ -215,6 +219,7 @@ export default {
   },
   watch: {
     $route(newValue, oldValue) {
+      // this.isDay = this.$searchQuery.start_date === this.$searchQuery.end_date
       this.getWeeks()
     }
   },
@@ -305,6 +310,7 @@ export default {
             top: this.heightToTop(document.querySelector('#timer-9')) - 232
           })
         })
+        this.dataBtnFocusState = 'day'
         return
       }
       if (val === 'week') {
@@ -312,6 +318,7 @@ export default {
         for (let i = 1; i < 8; i++) {
           this.weeks.push({ week: i, date: this.start })
         }
+        this.dataBtnFocusState = 'week'
       }
     },
 
@@ -350,9 +357,10 @@ export default {
   },
   components: {
     DateComponent,
-    AddButton,
-    ScheduleUnit,
-    ScheduleCard
+    // AddButton,
+    // ScheduleUnit,
+    // ScheduleCard,
+    MonthBoard
   }
 }
 </script>
