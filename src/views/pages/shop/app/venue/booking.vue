@@ -127,7 +127,7 @@
             :data="bookingList"
             :siteX="siteX"
             :siteY="siteY"
-            :reserve_day="query.reserve_day"
+            :query="query"
             :selectedData="selectedList"
             @change="getSelectedList"
             @nextPage="onNextPage"
