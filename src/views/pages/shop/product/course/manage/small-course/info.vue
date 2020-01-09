@@ -13,7 +13,7 @@
       </st-t3>
       <st-btn-actions :options="btnOptions"></st-btn-actions>
     </div>
-    <div class="mg-b24 header">
+    <div :class="b('header')">
       <div :class="b('left')" class="mg-r24">
         <div :class="b('tip')">
           <div class="item">

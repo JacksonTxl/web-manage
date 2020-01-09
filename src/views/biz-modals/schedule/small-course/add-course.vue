@@ -131,24 +131,16 @@ export default {
       this.startTime = moment(
         `${this.courseStartDate} ${valus.format('HH:mm')}`
       )
-      const endTime = this.form.getFieldValue('end_time')
-      if (endTime) {
-        this.form.validate(['end_time'])
-      }
     },
     changeEndTime(valus) {
       this.endTime = moment(`${this.courseStartDate} ${valus.format('HH:mm')}`)
-      const startTime = this.form.getFieldValue('start_time')
-      if (startTime) {
-        this.form.validate(['start_time'])
-      }
     },
     onChangeCourse(value) {
       this.smallCourseScheduleCommonService.getBindCoachList(value).subscribe()
       this.courseSmallCourseOptions.forEach((item, index) => {
         if (item.course_id === value) {
           this.smallCourseInfo = item
-          console.log(item)
+          console.log(this.smallCourseInfo)
         }
       })
     },

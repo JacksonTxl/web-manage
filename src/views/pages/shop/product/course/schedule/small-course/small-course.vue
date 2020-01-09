@@ -16,10 +16,7 @@
           @click="onClickScheduleInBatch"
           v-if="auth.add"
         >
-          排课
-        </st-button>
-        <st-button @click="onClickScheduleInBatch" v-if="auth.eidt">
-          批量修改
+          批量编辑
         </st-button>
       </div>
     </calendar>

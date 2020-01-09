@@ -20,14 +20,22 @@
     width: 100%;
     height: 100%;
   }
-  &__delete {
+  &__delete-btn {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     right: 24px;
+  }
+  &__delete {
     cursor: pointer;
     font-size: 14px;
     color: #ff5e41;
+    &:hover {
+      color: #ed4e31;
+    }
+  }
+  &__disabled-delete {
+    color: #9bacb9;
   }
   &__select__date {
     padding: 16px 0;
