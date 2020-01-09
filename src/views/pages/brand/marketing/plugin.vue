@@ -103,7 +103,7 @@
             :key="index"
             @click="goLink(item.link)"
           >
-            <img :src="item.thumb | imgFilter({ w: 280 })" />
+            <img :src="item.thumb | imgFilter({ w: 208, h: 117 })" />
             <p>{{ item.title }}</p>
           </li>
         </ul>
