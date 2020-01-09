@@ -1,7 +1,7 @@
 <template>
   <st-modal title="编辑课程" v-model="show" width="520px">
     <st-form :form="form" labelWidth="72px" labelAuto>
-      <st-form-item label="排课名称" class="mg-t12">
+      <st-form-item label="排课名称">
         <a-input
           placeholder="请输入"
           v-decorator="decorators.current_course_name"
