@@ -533,7 +533,17 @@ export default {
       defaultValue: [moment().format('HH:mm'), moment('11:59', 'HH:mm')],
       isShowEditTable: -1,
       prizeRate: [],
-      prizeNum: []
+      prizeNum: [],
+      // 奖品顺序
+      prizeSort: [
+        0,
+        1,
+        [0, 1, 2, -1, 0, 1, 2, -1],
+        [0, -1, 1, -1, 2, -1, 3, -1],
+        [0, -1, 1, -1, 2, 3, 4, -1],
+        [0, 1, 2, -1, 3, 4, 5, -1],
+        [0, 1, 2, 3, 4, 5, 6, -1]
+      ]
     }
   },
   bem: {
@@ -585,16 +595,7 @@ export default {
       if (this.prizeList.length <= 2) {
         return this.prizeList
       }
-      const orderArr = [
-        0,
-        1,
-        [0, 1, 2, -1, 0, 1, 2, -1],
-        [0, -1, 1, -1, 2, -1, 3, -1],
-        [0, -1, 1, -1, 2, 3, 4, -1],
-        [0, 1, 2, -1, 3, 4, 5, -1],
-        [0, 1, 2, 3, 4, 5, 6, -1]
-      ]
-      return orderArr[this.prizeList.length - 1].map((item, index) => {
+      return this.prizeSort[this.prizeList.length - 1].map((item, index) => {
         if (item > -1) {
           return this.prizeList[item]
         } else {
@@ -696,6 +697,7 @@ export default {
           })
           return
         }
+        value.prize_sort = this.prizeSort[this.prizeList.length - 1]
         if (this.$searchQuery.activity_id) {
           value.activity_id = this.$searchQuery.activity_id
           this.addService.edit(value).subscribe(res => {
