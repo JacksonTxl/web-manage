@@ -64,3 +64,55 @@ export const columns = () => {
     }
   ]
 }
+export const ruleOptions = (vm: any) => {
+  return {
+    start_time: {
+      rules: [
+        {
+          validator: (field: any, value: any, values: any) => {
+            if (!value) {
+              return '请选择开始售卖时间'
+            }
+            if (
+              value.valueOf() <
+              vm
+                .moment(
+                  vm
+                    .moment()
+                    .format()
+                    .replace(/\d{2}:\d{2}:\d{2}/, '00:00:00')
+                )
+                .valueOf()
+            ) {
+              return '支持售卖时间已过，请重新设置'
+            }
+          }
+        }
+      ]
+    },
+    end_time: {
+      rules: [
+        {
+          validator: (field: any, value: any, values: any) => {
+            if (!value) {
+              return '请选择结束售卖时间'
+            }
+            if (
+              value.valueOf() <
+              vm
+                .moment(
+                  vm
+                    .moment()
+                    .format()
+                    .replace(/\d{2}:\d{2}:\d{2}/, '23:59:59')
+                )
+                .valueOf()
+            ) {
+              return '支持售卖时间已过，请重新设置'
+            }
+          }
+        }
+      ]
+    }
+  }
+}

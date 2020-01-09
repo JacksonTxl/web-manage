@@ -1,7 +1,7 @@
 <template>
   <section class="pd-24">
     <st-panel>
-      <a-row :gutter="24">
+      <a-row :gutter="24" v-if="info.refund.list.length === 0">
         <a-col :span="9">
           <st-info>
             <st-info-item label="退款ID">{{ info.order_id }}</st-info-item>
@@ -32,10 +32,18 @@
           </st-info>
         </a-col>
       </a-row>
+      <st-table
+        v-else
+        :dataSource="info.refund.list"
+        :columns="columns"
+        :page="false"
+        rowKey="id"
+      ></st-table>
     </st-panel>
   </section>
 </template>
 <script>
+import { refundColumns } from './commodity-info.config'
 import { RefundInfoService } from './refund-info.service'
 export default {
   name: 'PageShopFinanceOrderInfoRefundInfo',
@@ -46,11 +54,17 @@ export default {
   },
   rxState() {
     return {
-      info: this.refundInfoService.info$
+      info: this.refundInfoService.info$,
+      loading: this.refundInfoService.loading$
     }
   },
   data() {
-    return {}
+    return {
+      columns: refundColumns
+    }
+  },
+  mounted() {
+    console.log(this.loading)
   },
   methods: {}
 }

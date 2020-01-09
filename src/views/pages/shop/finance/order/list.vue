@@ -33,11 +33,9 @@
         :columns="columns"
         :page="page"
         @change="onTableChange"
-        :dataSource="templist"
-        @expand="onExpand"
+        :dataSource="list"
         rowKey="id"
         :loading="loading.getList"
-        isExpand
       >
         <template slot="order_status" slot-scope="text">
           {{ text | enumFilter('finance.order_status') }}
@@ -47,41 +45,54 @@
         </template>
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
+            <!--  -->
             <a
-              v-if="record.auth['brand_shop:order:order|pay']"
               @click="onGathering(record)"
+              v-if="record.auth['brand_shop:order:order|pay']"
             >
               收款
             </a>
             <a
-              v-if="record.auth['brand_shop:order:order|cancel']"
               @click="onCancel(record)"
+              v-if="record.auth['brand_shop:order:order|cancel']"
             >
               取消
             </a>
             <a
-              v-if="record.auth['brand_shop:order:order|get']"
               @click="onOrderInfo(record)"
+              v-if="record.auth['brand_shop:order:order|get']"
             >
               详情
             </a>
             <a
-              v-if="record.auth['brand_shop:order:order|refund']"
               @click="onRefund(record)"
+              v-if="record.auth['brand_shop:order:order|refund']"
             >
               退款
             </a>
             <a
-              v-if="record.auth['brand_shop:order:order|split']"
               @click="onSplit(record)"
+              v-if="record.auth['brand_shop:order:order|split']"
             >
               业绩拆分
             </a>
             <a
-              v-if="record.auth['shop:order:order|print']"
               @click="printOrder(record.id)"
+              v-if="
+                record.auth['shop:order:order|print'] &&
+                  record.product_type !== 13
+              "
             >
               打印小票
+            </a>
+            <a
+              @click="onChildredRefund(record)"
+              v-if="
+                record.is_children &&
+                  record.auth['brand_shop:order:order|children_refund']
+              "
+            >
+              退款
             </a>
           </st-table-actions>
         </div>
@@ -127,23 +138,12 @@ export default {
     }
   },
   computed: {
-    columns,
-    indexDataSource() {
-      let mapDataSource = {}
-      this.list.forEach(item => {
-        mapDataSource[item.id] = item
-      })
-      return mapDataSource
-    }
+    columns
   },
   mounted() {
     this.setSearchData()
-    this.templist = this.dataSource()
   },
   watch: {
-    list() {
-      this.templist = this.dataSource()
-    },
     $searchQuery() {
       this.setSearchData()
     }
@@ -156,22 +156,24 @@ export default {
       type: -1,
       start_date: null,
       end_date: null,
-      date: [],
-      templist: cloneDeep(this.list)
+      date: []
     }
   },
   methods: {
-    dataSource() {
-      const list = cloneDeep(this.list)
-      return list.map(item => {
-        item.children = item.children.length > 0 ? [item.children[0]] : []
-        return item
-      })
-    },
-    onExpand(expanded, record) {
-      this.templist.map((item, index) => {
-        if (record.id === item.id) {
-          this.$set(this.templist, index, this.indexDataSource[record.id])
+    // 子订单退款
+    onChildredRefund(record) {
+      const props = {
+        id: record.id,
+        isParent: false,
+        product_type: record.product_type
+      }
+      this.$modalRouter.push({
+        name: 'shop-finance-refund',
+        props,
+        on: {
+          success: result => {
+            this.$router.reload()
+          }
         }
       })
     },
@@ -214,19 +216,6 @@ export default {
         on: {
           success: () => {
             this.onSearch()
-            // this.$modalRouter.push({
-            //   name: 'sold-deal-gathering-tip',
-            //   props: {
-            //     order_id: record.id,
-            //     type: this.productType(record.product_type),
-            //     message: '收款成功'
-            //   },
-            //   on: {
-            //     success: () => {
-            //       console.log('success')
-            //     }
-            //   }
-            // })
           }
         }
       })
@@ -263,16 +252,16 @@ export default {
     },
     // 退款
     onRefund(record) {
-      const props = { id: record.id }
-      if (record.product_type === this.ORDER_PRODUCT_TYPE.EARNEST) {
-        props.goodsInvalid = true
+      const props = {
+        id: record.id,
+        isParent: true,
+        product_type: record.product_type
       }
       this.$modalRouter.push({
         name: 'shop-finance-refund',
         props,
         on: {
           success: result => {
-            console.log('退款成功!')
             this.$router.reload()
           }
         }
@@ -287,7 +276,6 @@ export default {
         },
         on: {
           success: result => {
-            console.log('业绩拆分成功!')
             this.$router.reload()
           }
         }
@@ -302,7 +290,7 @@ export default {
     },
     productType(type) {
       let name = ''
-      // 1-会员卡 2-私教课 3-团体课 4-课程包 5-储值卡 6-小班课 7-手续费 8-定金 9-押金 10-储物柜
+      // 1-会员卡 2-私教课 3-团体课 4-课程包 5-储值卡 6-小班课 7-手续费 8-定金 9-押金 10-储物柜 12-云店 13-场地预约
       switch (type) {
         case 1:
           name = 'member'
@@ -334,6 +322,11 @@ export default {
         case 10:
           name = 'cabinet_order'
           break
+        case 12:
+          name = 'cloud_store'
+          break
+        case 13:
+          name = 'venues'
       }
       return name
     }

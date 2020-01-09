@@ -1,0 +1,133 @@
+.page-shop-app-venue-booking {
+  .mg-b(-24px);
+  &__left {
+    margin-right: 508px;
+    height: calc(100vh - 146px);
+  }
+  .right {
+    position: relative;
+    width: 532px;
+    height: calc(100vh - 122px);
+    float: right;
+    border-left: 1px solid #e6e9ef;
+    padding: 24px 24px 64px;
+    margin-top: -24px;
+    margin-right: -24px;
+    &__table {
+      margin-top: 22px;
+      height: 194px;
+      overflow: hidden;
+    }
+    &__sum {
+      text-align: right;
+      margin-top: 20px;
+      height: 21px;
+    }
+    &__top {
+      height: 100%;
+      overflow: auto;
+      margin-right: -24px;
+      padding-right: 24px;
+    }
+    &__footer {
+      position: absolute;
+      width: 531px;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      background-color: #f7f9fc;
+      .price {
+        .fz(12px);
+        font-weight: 400;
+        .c(@text-light);
+        > span:nth-of-type(2) {
+          margin-right: 8px;
+          .fz(20px);
+          .c(@error-color);
+        }
+      }
+      .ant-btn-primary {
+        margin-left: 16px;
+      }
+    }
+  }
+  .calendar {
+    position: relative;
+    margin-left: -24px;
+    padding: 0 14px;
+    box-shadow: 0 8px 6px -6px #e9eaea;
+    &__wrapper {
+      position: relative;
+      padding: 16px 62px;
+    }
+    &__date {
+      text-align: center;
+      font-size: 14px;
+      line-height: 22px;
+      cursor: pointer;
+      &.act {
+        font-weight: bolder;
+        color: #3f66f6;
+      }
+    }
+    &__icon {
+      height: 30px;
+      width: 30px;
+      line-height: 26px;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 10px;
+      border: 1px solid #cdd4df;
+    }
+  }
+  .list {
+    margin-left: -24px;
+    padding-left: 24px;
+    background: rgba(247, 249, 252, 1);
+    padding-top: 20px;
+    overflow: hidden;
+  }
+  .swiper-button-prev,
+  .swiper-button-next {
+    background-image: none;
+    outline: unset;
+    text-align: center;
+    padding-top: 7px;
+  }
+  // switch按钮样式覆盖
+  .ant-radio-group {
+    .ant-radio-button-wrapper {
+      color: #3e4d5c;
+      margin-right: 12px;
+      margin-bottom: 12px;
+      border-radius: 4px;
+      border: 1px solid #cdd4df;
+      &:focus-within {
+        outline: none;
+      }
+      // &:hover {
+      //   background: #3f66f6;
+      //   color: #fff;
+      // }
+    }
+    .ant-radio-button-wrapper:not(:first-child)::before {
+      display: none;
+    }
+    .ant-radio-button-wrapper-checked {
+      background: #3f66f6;
+      color: #fff;
+      font-weight: 400;
+      border-color: #3f66f6;
+      box-shadow: none;
+      &:focus-within {
+        outline: none;
+      }
+    }
+  }
+  .st-no-data {
+    .mg-t(0);
+  }
+}

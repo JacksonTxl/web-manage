@@ -1,5 +1,9 @@
 export enum ENTRY {
-  GATE = 3
+  GATE = 3,
+  /**
+   * 场地预约
+   */
+  VENUES = 4
 }
 export enum PEOPLE_TYPE {
   ONLY = 3

@@ -348,63 +348,59 @@ export default {
       this.getPrice()
     },
     onCreateOrder() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          this.reletService
-            .setTransactionOrder(
-              {
-                id: this.id,
-                start_time: this.info.start_time,
-                end_time: moment(values.end_time).format('YYYY-MM-DD HH:mm'),
-                contract_number: values.contract_number,
-                advance_id: this.selectAdvance === -1 ? '' : this.selectAdvance,
-                reduce_amount: this.reduceAmount || 0,
-                description: this.description,
-                order_amount: this.currentPrice,
-                lease_days: values.lease_num,
-                sale_id: values.saleName,
-                member_id: this.info.member_id
-              },
-              this.id
-            )
-            .subscribe(result => {
-              this.$emit('success', {
-                type: 'create',
-                order_id: result.info.order_id
-              })
-              this.show = false
+      this.form.validate().then(values => {
+        this.reletService
+          .setTransactionOrder(
+            {
+              id: this.id,
+              start_time: this.info.start_time,
+              end_time: moment(values.end_time).format('YYYY-MM-DD HH:mm'),
+              contract_number: values.contract_number,
+              advance_id: this.selectAdvance === -1 ? '' : this.selectAdvance,
+              reduce_amount: this.reduceAmount || 0,
+              description: this.description,
+              order_amount: this.currentPrice,
+              lease_days: values.lease_num,
+              sale_id: values.saleName,
+              member_id: this.info.member_id
+            },
+            this.id
+          )
+          .subscribe(result => {
+            this.$emit('success', {
+              type: 'create',
+              order_id: result.info.order_id
             })
-        }
+            this.show = false
+          })
       })
     },
     onPay() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          this.reletService
-            .setTransactionPay(
-              {
-                id: this.id,
-                start_time: this.info.start_time,
-                end_time: moment(values.end_time).format('YYYY-MM-DD HH:mm'),
-                contract_number: values.contract_number,
-                advance_id: this.selectAdvance === -1 ? '' : this.selectAdvance,
-                reduce_amount: this.reduceAmount || 0,
-                description: this.description,
-                order_amount: this.currentPrice,
-                lease_days: values.lease_num,
-                sale_id: values.saleName,
-                member_id: this.info.member_id
-              },
-              this.id
-            )
-            .subscribe(result => {
-              this.$emit('success', {
-                type: 'createPay',
-                order_id: result.info.order_id
-              })
-              this.show = false
+      this.form.validate().then(values => {
+        this.reletService
+          .setTransactionPay(
+            {
+              id: this.id,
+              start_time: this.info.start_time,
+              end_time: moment(values.end_time).format('YYYY-MM-DD HH:mm'),
+              contract_number: values.contract_number,
+              advance_id: this.selectAdvance === -1 ? '' : this.selectAdvance,
+              reduce_amount: this.reduceAmount || 0,
+              description: this.description,
+              order_amount: this.currentPrice,
+              lease_days: values.lease_num,
+              sale_id: values.saleName,
+              member_id: this.info.member_id
+            },
+            this.id
+          )
+          .subscribe(result => {
+            this.$emit('success', {
+              type: 'createPay',
+              order_id: result.info.order_id
             })
-        }
+            this.show = false
+          })
       })
     }
   }

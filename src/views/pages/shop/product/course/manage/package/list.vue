@@ -27,13 +27,11 @@
         >
           <a-select-option :value="-1">全部分类</a-select-option>
           <a-select-option
-            v-for="(item, index) in Object.entries(
-              package_course.package_type.value
-            )"
+            v-for="(item, index) in package_types"
             :key="index"
-            :value="+item[0]"
+            :value="+item.value"
           >
-            {{ item[1] }}
+            {{ item.label }}
           </a-select-option>
         </a-select>
         <a-select
@@ -44,13 +42,11 @@
         >
           <a-select-option :value="-1">全部状态</a-select-option>
           <a-select-option
-            v-for="(item, index) in Object.entries(
-              package_course.shelf_status.value
-            )"
+            v-for="(item, index) in shelf_status"
             :key="index"
-            :value="+item[0]"
+            :value="+item.value"
           >
-            {{ item[1] }}
+            {{ item.label }}
           </a-select-option>
         </a-select>
       </div>
@@ -155,10 +151,7 @@
               <a-date-picker
                 style="width: 100%;"
                 :disabledDate="disabledStartDate"
-                v-decorator="[
-                  'start_time',
-                  { rules: [{ validator: start_time_validator }] }
-                ]"
+                v-decorator="decorators.start_time"
                 format="YYYY-MM-DD"
                 placeholder="开始时间"
                 :showToday="false"
@@ -170,10 +163,7 @@
             <a-form-item class="page-a-form">
               <a-date-picker
                 :disabledDate="disabledEndDate"
-                v-decorator="[
-                  'end_time',
-                  { rules: [{ validator: end_time_validator }] }
-                ]"
+                v-decorator="decorators.end_time"
                 format="YYYY-MM-DD"
                 placeholder="结束时间"
                 :showToday="false"
@@ -218,6 +208,7 @@ import { UserService } from '@/services/user.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
 import { MessageService } from '@/services/message.service'
+import { ruleOptions } from './list.config'
 
 export default {
   name: 'ShopPackageList',
@@ -234,7 +225,10 @@ export default {
       list: this.listService.list$,
       page: this.listService.page$,
       loading: this.listService.loading$,
-      package_course: this.userService.packageCourseEnums$,
+      package_types: this.userService.getOptions$(
+        'package_course.package_type'
+      ),
+      shelf_status: this.userService.getOptions$('package_course.shelf_status'),
       auth: this.listService.auth$
     }
   },
@@ -242,7 +236,11 @@ export default {
     listClass: 'page-shop-package-list'
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators(ruleOptions)
     return {
+      form,
+      decorators,
       offsaleIsShow: false,
       deleteIsShow: false,
       onsaleIsShow: false,
@@ -250,7 +248,6 @@ export default {
       packageName: '',
       start_time: null,
       end_time: null,
-      form: this.$form.createForm(this),
       endOpen: false,
       type: ['', 'unlimit', 'range', 'fix']
     }
@@ -259,46 +256,6 @@ export default {
     columns
   },
   methods: {
-    // start_time validatorFn
-    start_time_validator(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请选择开始售卖时间')
-      } else if (
-        value.valueOf() <
-        moment(
-          moment()
-            .format()
-            .replace(/\d{2}:\d{2}:\d{2}/, '00:00:00')
-        ).valueOf()
-      ) {
-        // eslint-disable-next-line
-        callback('支持售卖时间已过，请重新设置')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    // end_time validatorFn
-    end_time_validator(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请选择结束售卖时间')
-      } else if (
-        value.valueOf() <
-        moment(
-          moment()
-            .format()
-            .replace(/\d{2}:\d{2}:\d{2}/, '23:59:59')
-        ).valueOf()
-      ) {
-        // eslint-disable-next-line
-        callback('支持售卖时间已过，请重新设置')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
     // 售卖时间-start
     start_time_change(data) {
       this.start_time = cloneDeep(data)
@@ -428,30 +385,25 @@ export default {
       }
     },
     onOnsale() {
-      this.form
-        .validateFields(['start_time', 'end_time'])
-        .then(res => {
-          this.listService
-            .onsalePackage({
-              id: this.packageId,
-              start_time: `${res.start_time.format('YYYY-MM-DD')} 00:00:00`,
-              end_time: `${res.end_time.format('YYYY-MM-DD')} 23:59:59`
+      this.form.validate(['start_time', 'end_time']).then(res => {
+        this.listService
+          .onsalePackage({
+            id: this.packageId,
+            start_time: `${res.start_time.format('YYYY-MM-DD')} 00:00:00`,
+            end_time: `${res.end_time.format('YYYY-MM-DD')} 23:59:59`
+          })
+          .subscribe(res => {
+            this.onsaleIsShow = false
+            this.packageId = ''
+            this.packageName = ''
+            this.messageService.success({
+              content: '上架成功'
             })
-            .subscribe(res => {
-              this.onsaleIsShow = false
-              this.packageId = ''
-              this.packageName = ''
-              this.messageService.success({
-                content: '上架成功'
-              })
-              this.$router.push({
-                query: { ...this.$searchQuery, page: 1 }
-              })
+            this.$router.push({
+              query: { ...this.$searchQuery, page: 1 }
             })
-        })
-        .catch(error => {
-          console.log(error)
-        })
+          })
+      })
     },
     offsalePackage(id, name) {
       this.offsaleIsShow = true
