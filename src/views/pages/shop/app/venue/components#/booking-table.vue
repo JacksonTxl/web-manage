@@ -22,34 +22,18 @@
           v-for="(item, index) in data"
           :key="index"
         >
-          <template v-for="(i, inx) in item.site_data">
+          <div v-for="(i, inx) in item.site_data" :key="ikey(item, inx)">
             <div
-              :key="inx"
-              v-if="i.status === 2"
+              :key="ikey(item, inx)"
               :class="[
                 content('row'),
-                content('row-action'),
+                rowClass(i),
                 { act: selectedId.includes(item.site_id + '-' + inx) }
               ]"
               @click="selectHandler(i, inx, item)"
-            >
-              ¥{{ i.price }}
-            </div>
-            <div
-              :key="inx"
-              v-if="i.status === 3"
-              :class="[content('row'), content('row-reserved')]"
-            >
-              {{ i.member_name }}
-            </div>
-            <div
-              :key="inx"
-              v-if="i.status === 1"
-              :class="[content('row'), content('row-unreserve')]"
-            >
-              不可约
-            </div>
-          </template>
+              v-html="titleFilter(i)"
+            ></div>
+          </div>
         </div>
         <st-no-data v-if="!data.length"></st-no-data>
       </div>
@@ -79,6 +63,19 @@ export default {
     siteY: {
       type: Array,
       default: () => []
+    },
+    query: {
+      type: Object,
+      default: () => {
+        return {
+          reserve_day: ''
+        }
+      }
+    }
+  },
+  computed: {
+    reserve_day() {
+      return this.query.reserve_day
     }
   },
   data() {
@@ -92,6 +89,19 @@ export default {
     window.addEventListener('resize', this.calcLeftHeight, false)
   },
   methods: {
+    titleFilter(i) {
+      if (i.status === 1) return '不可约'
+      if (i.status === 2) return '&yen;' + i.price
+      if (i.status === 3) return i.member_name
+    },
+    rowClass(i) {
+      if (i.status === 1) return this.content('row-unreserve')
+      if (i.status === 2) return this.content('row-action')
+      if (i.status === 3) return this.content('row-reserved')
+    },
+    ikey(item, inx) {
+      return item.site_id + '-' + this.reserve_day + '-' + inx
+    },
     calcLeftHeight() {
       const left = document.getElementById('booking-left')
       const leftVenue = document.getElementById('booking-left-venue')
@@ -127,6 +137,7 @@ export default {
       top.scrollLeft = 0
     },
     selectHandler(time, number, site) {
+      if (time.status !== 2) return
       let index = -1
       time.site_name = site.site_name
       time.id = site.site_id + '-' + number

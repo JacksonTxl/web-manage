@@ -127,6 +127,7 @@
             :data="bookingList"
             :siteX="siteX"
             :siteY="siteY"
+            :query="query"
             :selectedData="selectedList"
             @change="getSelectedList"
             @nextPage="onNextPage"
