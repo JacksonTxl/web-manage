@@ -582,16 +582,17 @@ export default {
       return this.$searchQuery.activity_id && this.$searchQuery.status === 1
     },
     prizeListFilters(value) {
-      if (this.prizeList.length <= 2 || this.prizeList.length === 7) {
+      if (this.prizeList.length <= 2) {
         return this.prizeList
       }
       const orderArr = [
         0,
         1,
-        [0, 1, 2, -1, 0, 1, 2],
-        [0, -1, 1, -1, 2, -1, 3],
-        [0, -1, 1, -1, 2, 3, 4],
-        [0, 1, 2, -1, 3, 4, 5]
+        [0, 1, 2, -1, 0, 1, 2, -1],
+        [0, -1, 1, -1, 2, -1, 3, -1],
+        [0, -1, 1, -1, 2, 3, 4, -1],
+        [0, 1, 2, -1, 3, 4, 5, -1],
+        [0, 1, 2, 3, 4, 5, 6, -1]
       ]
       return orderArr[this.prizeList.length - 1].map((item, index) => {
         if (item > -1) {

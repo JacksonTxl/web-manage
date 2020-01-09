@@ -46,17 +46,17 @@
               {{ record.shop_list[0] }}
             </span>
             <!-- 改为弹框start -->
-            <!-- <a
+            <a
               v-else
               v-modal-link="{
-                name: 'card-shop-member-shop-table',
+                name: 'brand-marketing-coupon-table',
                 props: { id: record.id, type: 'Sale', title: '可用门店' }
               }"
             >
-              可用门店
-            </a> -->
+              共{{ record.shop_num }}家门店
+            </a>
             <!-- 改为弹框end -->
-            <a-popover placement="right" v-else>
+            <!-- <a-popover placement="right" v-else>
               <template slot="content">
                 <p
                   v-for="(item, index) in record.shop_list"
@@ -70,7 +70,7 @@
                 <span>可用门店</span>
               </template>
               <a>可用门店</a>
-            </a-popover>
+            </a-popover> -->
           </template>
           <template slot="valid_days" slot-scope="text">
             <span>领券当天开始 {{ text }} 天内有效</span>
@@ -120,8 +120,7 @@ import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
 import { TYPE } from '@/constants/marketing/plugin'
 import useShare from '@/hooks/marketing/share.hook'
-import CardShopMemberShopTable from '@/views/biz-modals/card/shop-member/shop-table'
-
+import BrandMarketingCouponTable from '@/views/biz-modals/brand/marketing/coupon-table'
 export default {
   name: 'PageBrandMarketingPluginCouponList',
   mixins: [tableMixin],
@@ -129,7 +128,7 @@ export default {
     basic: 'page-brand-plugin-coupon'
   },
   modals: {
-    CardShopMemberShopTable
+    BrandMarketingCouponTable
   },
   serviceInject() {
     return {

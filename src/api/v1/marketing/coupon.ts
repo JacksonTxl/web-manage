@@ -5,7 +5,10 @@ export interface CouponListParams {
   coupon_name: number
   specs_id: number
 }
-
+export interface ListPageInput {
+  current_page: number
+  size: number
+}
 export class CouponApi extends Api {
   /**
    * 优惠券列表
@@ -134,5 +137,13 @@ export class CouponApi extends Api {
    */
   getQrcode() {
     return this.http.get(`/v1/plugin/coupon/qrcode`)
+  }
+  /**
+   *  优惠券可用门店列表
+   */
+  getPluginCouponShop(query: ListPageInput, id: string) {
+    return this.http.get(`/v1/plugin/coupon/shop/${id}`, {
+      query
+    })
   }
 }
