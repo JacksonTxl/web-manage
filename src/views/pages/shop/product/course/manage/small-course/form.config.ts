@@ -26,6 +26,13 @@ export const ruleOptions = (vm: any) => {
         {
           required: true,
           message: '请选择时间'
+        },
+        {
+          validator: (field: any, value: any, values: any) => {
+            if (values.date[1] - values.date[0] > 15552000000) {
+              return '开始时间与结束时间间隔不能超过6个月'
+            }
+          }
         }
       ]
     },
