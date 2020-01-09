@@ -543,6 +543,8 @@ export default {
       if (this.info.receiver.leader) {
         receiver.leader = this.params.receiver.leader.value ? 1 : 0
       }
+      console.log(111)
+      console.log(this.params.receiver)
       const para = Object.assign({}, this.params, {
         id: this.info.id,
         custom_phone:
