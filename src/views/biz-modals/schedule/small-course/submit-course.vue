@@ -86,7 +86,7 @@ export default {
     if (this.cycle_type === 1) {
       console.log(this.scheduleList)
       this.scheduleList.forEach((item, index) => {
-        this.totalCourseNum += item.length
+        this.totalCourseNum += item
       })
     } else {
       this.totalCourseNum = this.scheduleList.length

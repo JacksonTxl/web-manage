@@ -110,7 +110,7 @@
               <span class="schedule__tips-time">{{ tipsText[i] }}</span>
               共
               <span class="schedule__tips-num" v-if="tipsCourseNum[i]">
-                {{ tipsCourseNum[i].length }}
+                {{ tipsCourseNum[i] }}
               </span>
               节
             </div>
@@ -390,6 +390,7 @@ export default {
         this.filterDateList(this.scheduleList)
       } else if (!list.length && this.cycle_type === 1) {
         console.log('周期无数据')
+        this.select_cycle_type = 1
         this.initScheduleDate()
       } else if (this.cycle_type === 2) {
         console.log('自主')
@@ -453,14 +454,14 @@ export default {
     },
     getScheduleTips(index, text, courseNum) {
       this.tipsText[index] = text
-      this.tipsCourseNum[index] = courseNum.split(',')
-      this.tipsCourseNum[index].pop()
+      this.tipsCourseNum[index] = courseNum
+      console.log(this.tipsCourseNum[index])
     },
     filterDateList(dateList) {
       let list = []
       dateList.forEach((item, dateIndex) => {
-        let listItemCard = {} //批次的大的集合对象
-        let courseNum = ''
+        let listItemCard = {}
+        let courseNum = 0
         let text = ''
         item.course_time.forEach((item, index) => {
           if (item.week || item.week == 0) {
@@ -476,7 +477,7 @@ export default {
                 item.conflictList = []
               }
               text += item.start_time + ','
-              courseNum += item.schedule_ids + ','
+              courseNum += item.schedule_ids.split(',').length
             })
             this.getScheduleTips(dateIndex, text, courseNum)
             listItemCard[item.week] = item.list
