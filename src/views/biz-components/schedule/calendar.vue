@@ -159,7 +159,6 @@
         :courses="cardList"
         @onClickAddBtn="addTeamCourse"
         @onClickCourse="onClickCourse"
-        @onComplete="getMonthDayList"
       />
     </div>
   </div>
@@ -386,17 +385,13 @@ export default {
       } while (ele !== root)
       return height
     },
-    getMonthDayList(e) {
-      // console.log('获取月度天数列表', e)
-      const startDate = e.shift().fullDate
-      const endDate = e.pop().fullDate
-      console.log(startDate, endDate)
-    },
     addTeamCourse(e) {
       console.log('点击新增团体课按钮', e)
+      this.$emit('add', moment(e.fullDate))
     },
     onClickCourse(e) {
       console.log('点击某个课程', e)
+      this.$emit('detail', e)
     }
   },
   created() {

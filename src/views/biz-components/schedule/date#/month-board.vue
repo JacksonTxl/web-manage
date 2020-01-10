@@ -119,14 +119,6 @@ export default {
     addBtnContent: 'add-btn-content'
   },
   props: {
-    // date: {
-    //   type: String,
-    //   default: () => {
-    //     return moment()
-    //       .format('YYYY-MM-DD')
-    //       .toString()
-    //   }
-    // }，
     courses: {
       type: Array,
       default: () => {
@@ -157,41 +149,9 @@ export default {
     this.init()
   },
   methods: {
-    // getMonthFristDay() {
-    //   const startDate = this.$searchQuery.start_date
-    //     ? moment(this.$searchQuery.start_date)
-    //     : moment()
-    //   let firstDay = ''
-    //   // 判断当前日期的天是否大于15，如果是则取下一个月，如果不是则取当前月
-    //   console.log(startDate)
-    //   if (startDate.date() > 15) {
-    //     firstDay = moment()
-    //       .month(startDate.month() + 1)
-    //       .format('YYYY-MM-DD')
-    //   } else {
-    //     firstDay = moment().format('YYYY-MM-DD')
-    //   }
-    //   return firstDay
-    // },
     init() {
-      // this.date = this.getMonthFristDay()
       this.date = this.$searchQuery.start_date
-      console.log(this.date)
       this.dayList = this.getCurrentMonthDayList()
-      this.$emit(
-        'onComplete',
-        this.dayList.map(item => {
-          return {
-            date: item.date,
-            fullDate: item.fullDate,
-            courses: item.courses.map(item => {
-              return {
-                id: Math.floor(Math.random() * 100)
-              }
-            })
-          }
-        })
-      )
     },
     getCurrentMonthDayList() {
       // 当前日期的月份
@@ -223,9 +183,6 @@ export default {
       if (nextMonthFirstDay !== -1 && dates.length - nextMonthFirstDay > 6) {
         dates = dates.slice(0, dates.length - 7)
       }
-      // console.log(lastDay)
-      console.log(dates)
-      // console.log(dates[firstDay].format('YYYY-MM-DD'))
       return dates.map(item => {
         return {
           date: item.date(),
@@ -233,30 +190,26 @@ export default {
           current: item.format('YYYY-MM-DD') === moment().format('YYYY-MM-DD'),
           isThisMonth: item.month() === nowMonth,
           addBtnShow: false,
+          popoverShow: false,
           courses: []
         }
       })
     },
-    onMouseMove(day) {
-      // console.log('hover', day)
-      if (day.courses.length !== 0) return
+    onMouseMove(day, er) {
+      if (day.courses.length !== 0) {
+        return
+      }
       this.dayList.forEach(item => {
         item.addBtnShow = item.fullDate === day.fullDate ? true : false
       })
     },
     onMouseLeave(day) {
-      // console.log('leave')
       day.addBtnShow = false
     },
     onClickAddBtn(e) {
       this.$emit('onClickAddBtn', {
         date: e.date,
-        fullDate: e.fullDate,
-        courses: e.courses.map(item => {
-          return {
-            id: Math.floor(Math.random() * 100)
-          }
-        })
+        fullDate: e.fullDate
       })
     },
     onClickCourse(e) {
