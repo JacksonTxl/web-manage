@@ -9,68 +9,95 @@
         {{ week }}
       </li>
     </ul>
-    <ul :class="bContent()">
+    <ul
+      :class="[
+        boardContent(),
+        { [boardContent('table', { small: true })]: dayList.length < 42 }
+      ]"
+    >
       <li
         v-for="(day, key) in dayList"
         :key="key"
         :class="[
-          bContent('day-item'),
-          { [bContent('day-item', { current: true })]: day.current },
-          { [bContent('day-item', { gray: true })]: !day.isThisMonth }
+          boardContent('day-item'),
+          { [boardContent('day-item', { current: true })]: day.current },
+          { [boardContent('day-item', { gray: true })]: !day.isThisMonth }
         ]"
       >
         <div
-          :class="bContent('item-content')"
+          :class="boardContent('item-content')"
           @mouseover="onMouseMove(day)"
           @mouseleave="onMouseLeave(day)"
         >
           <a-popover
             placement="right"
             v-if="!day.addBtnShow"
-            :class="bContent('hover-content')"
+            :class="boardContent('hover-content')"
           >
-            <span slot="content">
-              <st-button type="default" plain @click="onClickAddBtn(day)">
-                <st-icon type="add"></st-icon>
+            <!-- popover content -->
+            <span slot="content" :class="popoverBox()">
+              <st-button
+                :class="popoverBox('hover-add-btn')"
+                type="default"
+                plain
+                @click="onClickAddBtn(day)"
+              >
+                <st-icon type="add" size="12px" color="#3E4D5C"></st-icon>
                 新增排期
               </st-button>
-              <div :class="hoverItem()">
-                <div :class="hoverItem('item')">游泳课程</div>
+              <div :class="popoverBox('course-list')">
+                <div
+                  :class="popoverBox('list-item')"
+                  v-for="course in day.courses"
+                  :key="course.id"
+                  @click="onClickCourse(course)"
+                >
+                  <div :class="popoverBox('item-point')"></div>
+                  <div :class="popoverBox('item-text')">
+                    {{ course.course_name }}
+                  </div>
+                </div>
               </div>
             </span>
+            <!-- popover element -->
             <div
-              :class="bContent('popover')"
+              :class="dayContent()"
               @mouseover="onMouseMove(day)"
               @mouseleave="onMouseLeave(day)"
             >
-              <div :class="bContent('popover')">
+              <div :class="dayContent('popover')">
                 <div class="font-number">{{ day.date }}</div>
                 <div
-                  v-for="(course, key) in day.courses"
+                  v-for="(course, key) in day.courses.slice(0, 2)"
                   :key="key"
-                  :class="bContent('course-item')"
+                  :class="dayContent('course-item')"
                 >
-                  <div :class="bContent('point')"></div>
-                  {{ course.course_name }}
+                  <div :class="dayContent('point')"></div>
+                  <div :class="dayContent('course-name')">
+                    {{ course.course_name }}
+                  </div>
                 </div>
-                <div v-if="day.courses.length > 2">
+                <div
+                  :class="dayContent('bottom-text')"
+                  v-if="day.courses.length > 2"
+                >
                   还有{{ day.courses.length - 2 }}节课程
                 </div>
               </div>
             </div>
           </a-popover>
           <div
-            :class="bContent('add-content')"
+            :class="addBtnContent()"
             @mouseover="onMouseMove(day)"
             @mouseleave="onMouseLeave(day)"
             @click="onClickAddBtn(day)"
             v-if="!day.courses.length && day.addBtnShow"
           >
-            <div :class="bContent('add-btn')">
-              <div class="icon mg-b8">
+            <div :class="addBtnContent('add-btn')">
+              <div class="mg-b8" :class="addBtnContent('icon')">
                 <st-icon type="add"></st-icon>
               </div>
-              新增团体课
+              <div :class="addBtnContent('text')">新增团体课</div>
             </div>
           </div>
         </div>
@@ -86,18 +113,12 @@ export default {
   bem: {
     basic: 'months-group-board',
     bHeader: 'board-header',
-    bContent: 'board-content',
-    hoverItem: 'hover-content'
+    boardContent: 'board-content',
+    dayContent: 'day-content',
+    popoverBox: 'popover-box',
+    addBtnContent: 'add-btn-content'
   },
   props: {
-    // date: {
-    //   type: String,
-    //   default: () => {
-    //     return moment()
-    //       .format('YYYY-MM-DD')
-    //       .toString()
-    //   }
-    // }，
     courses: {
       type: Array,
       default: () => {
@@ -129,32 +150,38 @@ export default {
   },
   methods: {
     init() {
-      this.date = this.$searchQuery.start_date || moment().format('YYYY-MM-DD')
-      console.log(this.date)
+      this.date = this.$searchQuery.start_date
       this.dayList = this.getCurrentMonthDayList()
-      this.$emit(
-        'onComplete',
-        this.dayList.map(item => {
-          return {
-            date: item.date,
-            fullDate: item.fullDate,
-            courses: item.courses.map(item => {
-              return {
-                id: Math.floor(Math.random() * 100)
-              }
-            })
-          }
-        })
-      )
     },
     getCurrentMonthDayList() {
       // 当前日期的月份
       const nowMonth = moment(this.date).month()
-      const dates = []
+      let dates = []
       for (let i = 0; i < 42; i++) {
         const startDate = moment(this.date).date(1)
         startDate.startOf('week')
         dates[i] = startDate.weekday(i - 1)
+      }
+      // 判断当前是否含有上个月7天的数据，如果有则删除
+      const startOfMonth = moment(this.date)
+        .startOf('month')
+        .format('YYYY-MM-DD')
+      const firstDay = dates.findIndex(item => {
+        return item.format('YYYY-MM-DD') === startOfMonth
+      })
+      if (firstDay > 6) {
+        dates = dates.slice(7, dates.length)
+      }
+      // 判断是否包含下个月7天的数据，如果有则删除
+      const startOfNextMonth = moment(this.date)
+        .month(moment(this.date).month() + 1)
+        .startOf('month')
+        .format('YYYY-MM-DD')
+      const nextMonthFirstDay = dates.findIndex(item => {
+        return item.format('YYYY-MM-DD') === startOfNextMonth
+      })
+      if (nextMonthFirstDay !== -1 && dates.length - nextMonthFirstDay > 6) {
+        dates = dates.slice(0, dates.length - 7)
       }
       return dates.map(item => {
         return {
@@ -163,30 +190,31 @@ export default {
           current: item.format('YYYY-MM-DD') === moment().format('YYYY-MM-DD'),
           isThisMonth: item.month() === nowMonth,
           addBtnShow: false,
+          popoverShow: false,
           courses: []
         }
       })
     },
-    onMouseMove(day) {
-      // console.log('hover', day)
-      if (day.courses.length !== 0) return
+    onMouseMove(day, er) {
+      if (day.courses.length !== 0) {
+        return
+      }
       this.dayList.forEach(item => {
         item.addBtnShow = item.fullDate === day.fullDate ? true : false
       })
     },
     onMouseLeave(day) {
-      // console.log('leave')
       day.addBtnShow = false
     },
     onClickAddBtn(e) {
       this.$emit('onClickAddBtn', {
         date: e.date,
-        fullDate: e.fullDate,
-        courses: e.courses.map(item => {
-          return {
-            id: Math.floor(Math.random() * 100)
-          }
-        })
+        fullDate: e.fullDate
+      })
+    },
+    onClickCourse(e) {
+      this.$emit('onClickCourse', {
+        ...e
       })
     },
     getCoursesList() {

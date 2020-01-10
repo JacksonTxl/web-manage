@@ -8,6 +8,7 @@
       fixed
       :cardList="cardList"
       :startDate="startDate"
+      ref="calendar"
     >
       <div slot="toolbar-left">
         <st-button
@@ -192,6 +193,14 @@ export default {
     // 刷新页面
     onScheduleChange() {
       this.$router.push({ query: this.$searchQuery })
+    }
+  },
+  watch: {
+    $route(newValue, oldValue) {
+      this.service.scheduleService.getList(this.$searchQuery)
+      this.$refs.calendar.getWeeks(
+        this.$searchQuery.data_type === 'week' ? 'week' : ''
+      )
     }
   }
 }
