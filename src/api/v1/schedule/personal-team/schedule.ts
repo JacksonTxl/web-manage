@@ -101,7 +101,7 @@ export class PersonalTeamScheduleScheduleApi extends Api {
    * 新建团课
    */
   addSmallDetail(params: AddSourseInput) {
-    return this.http.post(`/v1/schedule/personal_team/shop/templatee`, {
+    return this.http.post(`/v1/schedule/personal_team/shop/template`, {
       params
     })
   }
@@ -112,6 +112,20 @@ export class PersonalTeamScheduleScheduleApi extends Api {
     return this.http.put(`/v1/schedule/personal_team/shop/template/${id}`, {
       params
     })
+  }
+  /**
+   * 团课批量排期验证
+   */
+  validSmallBatch(params: { course_schedule: AddSourseQuery }) {
+    return this.http.post('/v1/schedule/personal_team/shop/batch/valid', {
+      params
+    })
+  }
+  /**
+   * 团课批量排期确定
+   */
+  smallBatch(params: { course_schedule: AddSourseQuery }) {
+    return this.http.post('/v1/schedule/personal_team/shop/batch', { params })
   }
 }
 /**

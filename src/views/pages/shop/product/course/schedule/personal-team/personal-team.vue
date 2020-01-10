@@ -34,13 +34,19 @@ import SchedulePersonalTeamAdd from '@/views/biz-modals/schedule/personal-team/a
 import SchedulePersonalTeamCopy from '@/views/biz-modals/schedule/personal-team/copy'
 import SchedulePersonalTeamReserveInfo from '@/views/biz-modals/schedule/personal-team/reserve-info'
 import { PersonalTeamService } from './personal-team.service'
+import ScheduleBatchCourseManage from '@/views/biz-modals/schedule/batch/course-manage'
+import ScheduleBatchAddEditCourse from '@/views/biz-modals/schedule/batch/add-edit-course'
+import ScheduleBatchCourseRankPreview from '@/views/biz-modals/schedule/batch/course-rank-preview'
 export default {
   name: 'TeamSchedule',
   modals: {
     SchedulePersonalTeamAddInBatch,
     SchedulePersonalTeamAdd,
     SchedulePersonalTeamCopy,
-    SchedulePersonalTeamReserveInfo
+    SchedulePersonalTeamReserveInfo,
+    ScheduleBatchCourseManage,
+    ScheduleBatchAddEditCourse,
+    ScheduleBatchCourseRankPreview
   },
   serviceInject() {
     return {
@@ -107,8 +113,11 @@ export default {
       //   }
       // })
       this.personalTeamSchduleService.getSmallTemplate().subscribe(res => {
-        console.log(res)
         // 打开课表管理
+        if (!this.smallTemplateList.length) {
+          this.addOrEditCourse()
+          return
+        }
         this.$modalRouter.push({
           name: 'schedule-batch-course-manage',
           props: {
@@ -144,14 +153,18 @@ export default {
         on: {
           success: res => {
             console.log(res, '新建成功')
-            // this.$modalRouter.push({
-            //   name: 'schedule-batch-course-rank-preview',
-            //   on: {
-            //     success: res => {
-            //       console.log('新增课表')
-            //     }
-            //   }
-            // })
+            this.$modalRouter.push({
+              name: 'schedule-batch-course-rank-preview',
+              props: {
+                dataTable: res.info,
+                type: 'small'
+              },
+              on: {
+                success: res => {
+                  console.log('新增课表')
+                }
+              }
+            })
           }
         }
       })

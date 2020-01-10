@@ -90,7 +90,9 @@
                           v-for="course in courseOptions"
                           :key="course.id"
                         >
-                          {{ course.course_name }}
+                          {{
+                            type === 'team' ? course.course_name : course.name
+                          }}
                         </a-select-option>
                       </a-select>
                     </td>
@@ -112,7 +114,7 @@
                           v-for="coach in coachOptions"
                           :key="coach.id"
                         >
-                          {{ coach.staff_name }}
+                          {{ type === 'team' ? coach.course_name : coach.name }}
                         </a-select-option>
                       </a-select>
                     </td>
@@ -166,6 +168,7 @@
 <script>
 import { AddEditCourseService } from './add-edit-course.service'
 import { TeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/team/service#/common.service'
+import { PersonalTeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/common.service'
 import { UserService } from '@/services/user.service'
 import { ruleOptions } from './add-edit-course.config'
 export default {
@@ -173,17 +176,21 @@ export default {
     return {
       addEditCourseService: AddEditCourseService,
       teamScheduleCommonService: TeamScheduleCommonService,
+      personalTeamScheduleCommonService: PersonalTeamScheduleCommonService,
       userService: UserService
     }
   },
   rxState() {
     const tss = this.teamScheduleCommonService
+    const sms = this.personalTeamScheduleCommonService
     return {
       loading: this.addEditCourseService.loading$,
       weekDay: this.userService.getOptions$('shop.week_day'),
       coachOptionTeam: tss.coachOptions$,
       courseOptionTeam: tss.courseOptions$,
-      courtOptionTeam: tss.courtOptions$
+      courtOptionTeam: tss.courtOptions$,
+      courseOptionSmall: sms.courseOptions$,
+      coachOptionSmall: sms.coachOptions$
     }
   },
   filters: {
@@ -220,7 +227,8 @@ export default {
   },
   created() {
     if (this.id) {
-      this.addEditCourseService.getTeamInfo(this.id).subscribe(res => {
+      let functionName = this.type === 'team' ? 'getTeamInfo' : 'getSmallInfo'
+      this.addEditCourseService[functionName](this.id).subscribe(res => {
         this.form.setFieldsValue({
           templateName: res.info.template_name,
           maxNumber: res.info.max_number
@@ -244,6 +252,10 @@ export default {
     if (this.type === 'team') {
       this.coachOptions = this.coachOptionTeam // 教练
       this.courseOptions = this.courseOptionTeam // 课程
+      this.courtOptions = this.courtOptionTeam // 场地
+    } else {
+      this.coachOptions = this.coachOptionSmall // 教练
+      this.courseOptions = this.courseOptionSmall // 课程
       this.courtOptions = this.courtOptionTeam // 场地
     }
     console.log(this.type)
@@ -274,7 +286,7 @@ export default {
             course_id: item.course_id,
             start_time: moment(item.start_time).format('HH:mm'),
             coach_id: item.coach_id,
-            court_id: item.court_id[0],
+            court_id: item.court_id[0] || 0,
             court_site_id: item.court_id[1] || 0,
             people_number: item.people_number,
             course_fee: item.course_fee
@@ -289,16 +301,20 @@ export default {
         }
         if (this.id) {
           // 有id为编辑
-          this.addEditCourseService
-            .editTeamDetail(this.id, params)
-            .subscribe(res => {
+          let editName =
+            this.type === 'team' ? 'editTeamDetail' : 'editSmallDetail'
+          this.addEditCourseService[editName](this.id, params).subscribe(
+            res => {
               this.$emit('success', res)
               this.show = false
               console.log(res)
-            })
+            }
+          )
         } else {
           // 没id为添加
-          this.addEditCourseService.addTeamDetail(params).subscribe(res => {
+          let addName =
+            this.type === 'team' ? 'addTeamDetail' : 'addSmallDetail'
+          this.addEditCourseService[addName](params).subscribe(res => {
             this.$emit('success', res)
             this.show = false
             console.log(res)

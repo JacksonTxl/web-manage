@@ -212,10 +212,12 @@ export default {
           court_site_id: item.court_site_id.data,
           limit_num: item.limit_num.data,
           course_fee: item.course_fee.data,
-          start_time: '2019-10-11 21:05'
+          start_time: item.start_time.data
         }
       })
-      this.courseRankPreviewService.validTeamBatch(params).subscribe(res => {
+      let functiomName =
+        this.type === 'team' ? 'validTeamBatch' : 'validSmallBatch'
+      this.courseRankPreviewService[functiomName](params).subscribe(res => {
         if (res.is_commit) {
           this.teamBatch(params)
         } else {
@@ -236,7 +238,8 @@ export default {
     },
     // 确定排期
     teamBatch(data) {
-      this.courseRankPreviewService.teamBatch(data).subscribe(res => {
+      let functiomName = this.type === 'team' ? 'teamBatch' : 'smallBatch'
+      this.courseRankPreviewService[functiomName](data).subscribe(res => {
         this.$emit('success', res)
         this.show = false
       })
