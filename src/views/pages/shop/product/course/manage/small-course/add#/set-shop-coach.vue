@@ -26,7 +26,7 @@
               :key="item.id"
               :value="item.id"
             >
-              {{ item.nickname }}
+              {{ item.staff_name }}
             </a-select-option>
           </a-select>
         </st-form-item>
