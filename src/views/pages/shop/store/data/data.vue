@@ -159,9 +159,6 @@
                     <shop-store-data-revenue-ring
                       :data="storeCategoryRank.category_list"
                       :total="Number(storeCategoryRank.total_revenue)"
-                      :padding="[60, '50%', 38, 0]"
-                      name="总营收"
-                      height="280"
                       style="width: 100%;"
                       v-if="storeCategoryRank.category_list.length"
                     ></shop-store-data-revenue-ring>
@@ -181,7 +178,7 @@
             @onChange="userAnalysisTimesFn"
           >
             <template v-slot:user>
-              <buy-number :flag="true" :data="storeMemberAnalysis"></buy-number>
+              <buy-number :data="storeMemberAnalysis"></buy-number>
             </template>
             <template v-slot:marketing>
               <buy-number
@@ -196,9 +193,7 @@
   </div>
 </template>
 <script>
-// 饼图
 import pieImg from '@/assets/img/shop/dashboard/pie.png'
-// 折线
 import inoutNumImg from '@/assets/img/shop/dashboard/inoutNum.png'
 import moment from 'moment'
 import ShopStoreDataLine from '@/views/biz-components/stat/shop-store-data-line'
@@ -214,7 +209,8 @@ import {
   headerInfo,
   wholeNav,
   headerTitleItem,
-  fieldNav
+  fieldNav,
+  fieldInfo
 } from './data.config.ts'
 export default {
   serviceInject() {
@@ -246,6 +242,7 @@ export default {
       wholeNav,
       headerTitleItem,
       fieldNav,
+      fieldInfo,
       tabsObjData: {
         choose_type: 1,
         date_type: 1,
@@ -291,32 +288,21 @@ export default {
     },
     // 整体看板订单/会员折线图
     filterLine(data, type) {
-      let fieldInfo = ['amount', 'count', 'count', 'price']
-      if (data[this.fieldNav[this.wholenavIndex]].trend.length) {
-        return data[this.fieldNav[this.wholenavIndex]].trend.map(item => {
-          return {
-            date: item.date,
-            amount: Number(item[fieldInfo[this.wholenavIndex]])
-          }
-        })
-      } else {
-        return []
-      }
+      if (!data[this.fieldNav[this.wholenavIndex]].trend.length) return []
+      return data[this.fieldNav[this.wholenavIndex]].trend.map(item => {
+        return {
+          date: item.date,
+          amount: Number(item[this.fieldInfo[this.wholenavIndex]])
+        }
+      })
     },
     // 整体看板数据处理
     wholenavFilter() {
-      let titles = [
-        'revenue_amount',
-        'order_count',
-        'transaction_member',
-        'customer_price'
-      ]
-      let field = ['amount', 'count', 'count', 'price']
       let data = this.storeBoard
       this.wholeNav.forEach((item, index) => {
-        let dataInfo = data[titles[index]][field[index]]
+        let dataInfo = data[this.fieldNav[index]][this.fieldInfo[index]]
         this.$set(item, 'num', dataInfo)
-        item.unit = data[titles[index]].unit
+        item.unit = data[this.fieldNav[index]].unit
       })
     },
     onChangeTabs(query) {

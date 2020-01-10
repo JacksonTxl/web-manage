@@ -24,11 +24,11 @@ export default {
     },
     height: {
       type: [Number, String],
-      default: 198
+      default: 280
     },
     name: {
       type: String,
-      default: ''
+      default: '总营收'
     },
     tooltipId: {
       type: String,
@@ -40,7 +40,7 @@ export default {
     },
     padding: {
       type: Array,
-      default: () => [50, 80, 30, 'auto']
+      default: () => [60, '50%', 38, 0]
     },
     colors: {
       type: Array,
