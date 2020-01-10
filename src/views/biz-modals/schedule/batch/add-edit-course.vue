@@ -4,6 +4,7 @@
     @ok="save"
     okText="确定"
     v-model="show"
+    :loading="id ? loading.editTeamDetail : loading.addTeamDetail"
     width="1082px"
     :class="basic()"
   >
@@ -63,13 +64,6 @@
                     </st-button>
                   </td>
                 </tr>
-                <!-- course_id: '',
-        coach_id: '',
-        court_id: [],
-        people_number: '',
-        course_fee: '',
-        week_day: '',
-        start_time: '' -->
                 <template v-for="(item, index) in scheduleInfo">
                   <tr :key="index">
                     <td>
@@ -221,15 +215,6 @@ export default {
       courseOptions: [],
       courtOptions: [],
       scheduleInfo: [],
-      courseList: [
-        {
-          time: '2019-11-11 09:00:00',
-          name: '周一课表',
-          type: '类型一',
-          num: '20',
-          person: '王新元'
-        }
-      ],
       show: false
     }
   },
@@ -261,13 +246,11 @@ export default {
       this.courseOptions = this.courseOptionTeam // 课程
       this.courtOptions = this.courtOptionTeam // 场地
     }
-    console.log(this.weekDay)
     console.log(this.type)
   },
   methods: {
     // 添加课表
     addCourse() {
-      // this.$emit('add')
       this.scheduleInfo.push({
         course_id: null,
         coach_id: null,
@@ -278,19 +261,50 @@ export default {
         start_time: null
       })
     },
+    // 排课安排删除
     delRow(index) {
-      this.sites.splice(index, 1)
+      this.scheduleInfo.splice(index, 1)
     },
+    // 数据提交
     save(e) {
-      console.log(moment(this.scheduleInfo[0].start_time).format('HH:mm'))
-      console.log(this.scheduleInfo[0].start_time)
       this.form.validate().then(values => {
-        console.log(values)
-        console.log(moment(values.dateTime[0]).format('YYYY-MM-DD HH:mm'))
-        console.log(moment(values.dateTime[1]).format('YYYY-MM-DD HH:mm'))
+        let scheduleInfos = this.scheduleInfo.map(item => {
+          return {
+            week_day: item.week_day,
+            course_id: item.course_id,
+            start_time: moment(item.start_time).format('HH:mm'),
+            coach_id: item.coach_id,
+            court_id: item.court_id[0],
+            court_site_id: item.court_id[1] || 0,
+            people_number: item.people_number,
+            course_fee: item.course_fee
+          }
+        })
+        let params = {
+          template_name: values.templateName,
+          max_number: values.maxNumber,
+          start_time: moment(values.dateTime[0]).format('YYYY-MM-DD HH:mm'),
+          end_time: moment(values.dateTime[1]).format('YYYY-MM-DD HH:mm'),
+          schedule_info: scheduleInfos
+        }
+        if (this.id) {
+          // 有id为编辑
+          this.addEditCourseService
+            .editTeamDetail(this.id, params)
+            .subscribe(res => {
+              this.$emit('success', res)
+              this.show = false
+              console.log(res)
+            })
+        } else {
+          // 没id为添加
+          this.addEditCourseService.addTeamDetail(params).subscribe(res => {
+            this.$emit('success', res)
+            this.show = false
+            console.log(res)
+          })
+        }
       })
-      // this.show = false
-      // this.$emit('success', true)
     }
   }
 }

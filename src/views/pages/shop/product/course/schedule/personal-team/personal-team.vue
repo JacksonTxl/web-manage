@@ -43,14 +43,15 @@ export default {
   },
   serviceInject() {
     return {
-      PersonalTeamSchduleService: PersonalTeamScheduleScheduleService,
+      personalTeamSchduleService: PersonalTeamScheduleScheduleService,
       service: PersonalTeamService
     }
   },
   rxState() {
     return {
       auth: this.service.auth$,
-      cardList: this.PersonalTeamSchduleService.courseList$
+      cardList: this.personalTeamSchduleService.courseList$,
+      smallTemplateList: this.personalTeamSchduleService.smallTemplateList$
     }
   },
   components: {
@@ -96,11 +97,60 @@ export default {
     },
     // 批量排期
     onClickScheduleInBatch() {
+      // this.$modalRouter.push({
+      //   name: 'schedule-personal-team-add-in-batch',
+      //   on: {
+      //     ok: res => {
+      //       this.onScheduleChange()
+      //     }
+      //   }
+      // })
+      this.personalTeamSchduleService.getSmallTemplate().subscribe(res => {
+        console.log(res)
+        // 打开课表管理
+        this.$modalRouter.push({
+          name: 'schedule-batch-course-manage',
+          props: {
+            teamTemplateList: this.smallTemplateList
+          },
+          on: {
+            // 确定时开始删除数据
+            save: res => {
+              this.personalTeamSchduleService
+                .delSmallTemplate({ id: JSON.stringify(res) })
+                .subscribe()
+            },
+            // 添加课表打开新增课表弹窗
+            add: () => {
+              this.addOrEditCourse()
+            },
+            // 编辑课表打开编辑课表弹窗
+            edit: res => {
+              this.addOrEditCourse(res)
+            }
+          }
+        })
+      })
+    },
+    // 添加和编辑团课
+    addOrEditCourse(id = undefined) {
       this.$modalRouter.push({
-        name: 'schedule-personal-team-add-in-batch',
+        name: 'schedule-batch-add-edit-course',
+        props: {
+          id,
+          type: 'small'
+        },
         on: {
-          ok: res => {
-            this.onScheduleChange()
+          success: res => {
+            console.log(res, '新建成功')
+            // this.$modalRouter.push({
+            //   name: 'schedule-batch-course-rank-preview',
+            //   on: {
+            //     success: res => {
+            //       console.log('新增课表')
+            //     }
+            //   }
+            // })
           }
         }
       })

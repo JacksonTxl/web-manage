@@ -33,7 +33,7 @@ import { TeamScheduleScheduleService } from '@/views/pages/shop/product/course/s
 import ScheduleTeamAddCourseBatch from '@/views/biz-modals/schedule/team/add-course-batch'
 import ScheduleBatchCourseManage from '@/views/biz-modals/schedule/batch/course-manage'
 import ScheduleBatchAddEditCourse from '@/views/biz-modals/schedule/batch/add-edit-course'
-import ScheduleTeamCourseRankPreview from '@/views/biz-modals/schedule/team/course-rank-preview'
+import ScheduleBatchCourseRankPreview from '@/views/biz-modals/schedule/batch/course-rank-preview'
 import ScheduleTeamAddCourse from '@/views/biz-modals/schedule/team/add-course'
 import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
 import ScheduleTeamReserveInfo from '@/views/biz-modals/schedule/team/reserve-info'
@@ -47,7 +47,7 @@ export default {
     ScheduleTeamReserveInfo,
     ScheduleBatchCourseManage,
     ScheduleBatchAddEditCourse,
-    ScheduleTeamCourseRankPreview
+    ScheduleBatchCourseRankPreview
   },
   serviceInject() {
     return {
@@ -128,7 +128,9 @@ export default {
           on: {
             // 确定时开始删除数据
             save: res => {
-              this.teamSchduleService.delTeamTemplate({ id: res }).subscribe()
+              this.teamSchduleService
+                .delTeamTemplate({ id: JSON.stringify(res) })
+                .subscribe()
             },
             // 添加课表打开新增课表弹窗
             add: () => {
@@ -141,14 +143,6 @@ export default {
           }
         })
       })
-      // this.$modalRouter.push({
-      //   name: 'schedule-team-course-rank-preview',
-      //   on: {
-      //     success: res => {
-      //       console.log('新增课表')
-      //     }
-      //   }
-      // })
     },
     // 添加和编辑团课
     addOrEditCourse(id = undefined) {
@@ -160,7 +154,19 @@ export default {
         },
         on: {
           success: res => {
-            console.log('新增课表')
+            console.log(res, '新建成功')
+            this.$modalRouter.push({
+              name: 'schedule-batch-course-rank-preview',
+              props: {
+                dataTable: res.info,
+                type: 'small'
+              },
+              on: {
+                success: res => {
+                  console.log('新增课表')
+                }
+              }
+            })
           }
         }
       })

@@ -1,9 +1,9 @@
 export const columns = (vm: any) => [
   {
     title: '星期',
-    dataIndex: 'week',
+    dataIndex: 'week_day',
     width: 80,
-    scopedSlots: { customRender: 'week' }
+    scopedSlots: { customRender: 'week_day' }
   },
   {
     title: '课程',
