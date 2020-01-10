@@ -85,6 +85,12 @@
           变更入场时段
         </st-button>
       </div>
+      <st-total
+        :indexs="totalColumns"
+        :dataSource="total"
+        hasTitle
+        class="mg-b16"
+      ></st-total>
       <div>
         <st-table
           :page="page"
@@ -104,13 +110,17 @@
           @change="onTableChange"
           :columns="columns"
           :dataSource="list"
-          :scroll="{ x: 1800 }"
+          :scroll="{ x: 3000 }"
         >
           <template slot="card_name" slot-scope="text">
             <st-overflow-text :value="text" maxWidth="180px"></st-overflow-text>
           </template>
           <template slot="remain_amount" slot-scope="text, record">
             {{ text }}{{ record.unit | enumFilter('sold_common.unit') }}
+          </template>
+          <template slot="is_refund" slot-scope="text, record">
+            {{ text
+            }}{{ record.is_refund | enumFilter('finance.sub_order_status') }}
           </template>
           <template slot="init_amount" slot-scope="text, record">
             {{ text }}{{ record.unit | enumFilter('sold_common.unit') }}
@@ -215,7 +225,7 @@ import moment from 'moment'
 import { cloneDeep, filter } from 'lodash-es'
 import { MemberService } from './member.service'
 import tableMixin from '@/mixins/table.mixin'
-import { columns } from './member.config'
+import { columns, totalColumns } from './member.config'
 import SoldCardArea from '@/views/biz-modals/sold/card/area'
 import SoldCardBatchArea from '@/views/biz-modals/sold/card/batch-area'
 import SoldCardBatchEnterTime from '@/views/biz-modals/sold/card/batch-enter-time'
@@ -256,6 +266,7 @@ export default {
       cardTypes: this.memberService.cardTypes$,
       cardStatus: this.memberService.cardStatus$,
       isOpens: this.memberService.isOpens$,
+      total: this.memberService.total$,
       auth: this.memberService.auth$
     }
   },
@@ -271,6 +282,7 @@ export default {
   },
   computed: {
     columns,
+    totalColumns,
     // 列表选择的卡是否一致
     isUnifyCard() {
       return (
