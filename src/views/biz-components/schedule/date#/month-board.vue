@@ -72,7 +72,13 @@
                   :key="key"
                   :class="dayContent('course-item')"
                 >
-                  <div :class="dayContent('point')"></div>
+                  <div
+                    :class="
+                      course.schedule_status > 2
+                        ? dayContent('point--active')
+                        : dayContent('point')
+                    "
+                  ></div>
                   <div :class="dayContent('course-name')">
                     {{ course.course_name }}
                   </div>
