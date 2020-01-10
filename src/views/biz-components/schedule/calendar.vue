@@ -158,6 +158,7 @@
         v-if="$searchQuery.data_type === 'month'"
         :courses="cardList"
         @onClickAddBtn="addTeamCourse"
+        @onClickCourse="onClickCourse"
         @onComplete="getMonthDayList"
       />
     </div>
@@ -393,6 +394,9 @@ export default {
     },
     addTeamCourse(e) {
       console.log('点击新增团体课按钮', e)
+    },
+    onClickCourse(e) {
+      console.log('点击某个课程', e)
     }
   },
   created() {

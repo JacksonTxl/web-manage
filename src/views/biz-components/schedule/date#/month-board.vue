@@ -9,68 +9,90 @@
         {{ week }}
       </li>
     </ul>
-    <ul :class="bContent()">
+    <ul :class="boardContent()">
       <li
         v-for="(day, key) in dayList"
         :key="key"
         :class="[
-          bContent('day-item'),
-          { [bContent('day-item', { current: true })]: day.current },
-          { [bContent('day-item', { gray: true })]: !day.isThisMonth }
+          boardContent('day-item'),
+          { [boardContent('day-item', { current: true })]: day.current },
+          { [boardContent('day-item', { gray: true })]: !day.isThisMonth }
         ]"
       >
         <div
-          :class="bContent('item-content')"
+          :class="boardContent('item-content')"
           @mouseover="onMouseMove(day)"
           @mouseleave="onMouseLeave(day)"
         >
           <a-popover
             placement="right"
             v-if="!day.addBtnShow"
-            :class="bContent('hover-content')"
+            :class="boardContent('hover-content')"
           >
-            <span slot="content">
-              <st-button type="default" plain @click="onClickAddBtn(day)">
-                <st-icon type="add"></st-icon>
+            <!-- popover content -->
+            <span slot="content" :class="popoverBox()">
+              <st-button
+                :class="popoverBox('hover-add-btn')"
+                type="default"
+                plain
+                @click="onClickAddBtn(day)"
+              >
+                <st-icon type="add" size="12px" color="#3E4D5C"></st-icon>
                 新增排期
               </st-button>
-              <div :class="hoverItem()">
-                <div :class="hoverItem('item')">游泳课程</div>
+              <div :class="popoverBox('course-list')">
+                <div
+                  :class="popoverBox('list-item')"
+                  v-for="course in day.courses"
+                  :key="course.id"
+                  @click="onClickCourse(course)"
+                >
+                  <div :class="popoverBox('item-point')"></div>
+                  <div :class="popoverBox('item-text')">
+                    {{ course.course_name }}
+                  </div>
+                </div>
               </div>
             </span>
+            <!-- popover element -->
             <div
-              :class="bContent('popover')"
+              :class="dayContent()"
               @mouseover="onMouseMove(day)"
               @mouseleave="onMouseLeave(day)"
             >
-              <div :class="bContent('popover')">
+              <div :class="dayContent('popover')">
                 <div class="font-number">{{ day.date }}</div>
                 <div
-                  v-for="(course, key) in day.courses"
+                  v-for="(course, key) in day.courses.slice(0, 2)"
                   :key="key"
-                  :class="bContent('course-item')"
+                  :class="dayContent('course-item')"
                 >
-                  <div :class="bContent('point')"></div>
-                  {{ course.course_name }}
+                  <div :class="dayContent('point')"></div>
+                  <div :class="dayContent('course-name')">
+                    {{ course.course_name }}
+                  </div>
                 </div>
-                <div v-if="day.courses.length > 2">
+                <div
+                  :class="dayContent('bottom-text')"
+                  v-if="day.courses.length > 2"
+                >
                   还有{{ day.courses.length - 2 }}节课程
                 </div>
               </div>
             </div>
           </a-popover>
           <div
-            :class="bContent('add-content')"
+            :class="addBtnContent()"
             @mouseover="onMouseMove(day)"
             @mouseleave="onMouseLeave(day)"
             @click="onClickAddBtn(day)"
             v-if="!day.courses.length && day.addBtnShow"
           >
-            <div :class="bContent('add-btn')">
-              <div class="icon mg-b8">
+            <div :class="addBtnContent('add-btn')">
+              <div class="mg-b8" :class="addBtnContent('icon')">
                 <st-icon type="add"></st-icon>
               </div>
-              新增团体课
+              <div :class="addBtnContent('text')">新增团体课</div>
             </div>
           </div>
         </div>
@@ -86,8 +108,10 @@ export default {
   bem: {
     basic: 'months-group-board',
     bHeader: 'board-header',
-    bContent: 'board-content',
-    hoverItem: 'hover-content'
+    boardContent: 'board-content',
+    dayContent: 'day-content',
+    popoverBox: 'popover-box',
+    addBtnContent: 'add-btn-content'
   },
   props: {
     // date: {
@@ -187,6 +211,11 @@ export default {
             id: Math.floor(Math.random() * 100)
           }
         })
+      })
+    },
+    onClickCourse(e) {
+      this.$emit('onClickCourse', {
+        ...e
       })
     },
     getCoursesList() {
