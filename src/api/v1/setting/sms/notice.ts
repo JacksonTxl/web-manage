@@ -2,16 +2,16 @@ import { Api } from '@/api/api'
 
 export class NoticeApi extends Api {
   // 通知模版列表
-  getNoticeList() {
-    return this.http.get('/v1/setting/sms/notice')
+  getNoticeList(type: string, query?: NoticeQuery) {
+    return this.http.get(`/v1/setting/${type}/notice`, { query })
   }
   // 获取角色列表
   getRoleList() {
     return this.http.get(`/v1/common/role/roles`)
   }
   // 通知模版编辑
-  putNotice(params: PutNoticeParams) {
-    return this.http.put(`/v1/setting/sms/notice/${params.id}`, {
+  putNotice(type: string, params: PutNoticeParams) {
+    return this.http.put(`/v1/setting/${type}/notice/${params.id}`, {
       params
     })
   }
@@ -29,4 +29,8 @@ export interface PutNoticeParams {
   course_limit: number
   receiver_limit: number
   receivers: string
+}
+
+export interface NoticeQuery {
+  notify_type?: number
 }

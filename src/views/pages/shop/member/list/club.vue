@@ -425,10 +425,8 @@ export default {
     },
     // 查询
     onSearchNative() {
-      console.log(this.$searchQuery.follow_min)
-      console.log(this.$searchQuery.follow_max)
       if (this.$searchQuery.follow_min > this.$searchQuery.follow_max) {
-        this.messageService.warning({
+        this.messageService.warn({
           content: '最小跟进次数要小于最大跟进次数'
         })
         return

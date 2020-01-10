@@ -11,11 +11,11 @@
         <st-form-item label="学历">
           <a-select placeholder="请选择" v-decorator="decorators.education">
             <a-select-option
-              v-for="(item, key) in enums.education.value"
-              :value="+key"
-              :key="key"
+              v-for="(item, index) in educations"
+              :value="+item.value"
+              :key="index"
             >
-              {{ item }}
+              {{ item.label }}
             </a-select-option>
           </a-select>
         </st-form-item>
@@ -25,11 +25,11 @@
         <st-form-item label="婚姻状况">
           <a-select placeholder="请选择" v-decorator="decorators.marry_status">
             <a-select-option
-              v-for="(item, key) in enums.marry_status.value"
-              :value="+key"
-              :key="key"
+              v-for="(item, index) in marry_status"
+              :value="+item.value"
+              :key="index"
             >
-              {{ item }}
+              {{ item.label }}
             </a-select-option>
           </a-select>
         </st-form-item>
@@ -59,11 +59,11 @@
             v-decorator="decorators.children_status"
           >
             <a-select-option
-              v-for="(item, key) in enums.children_status.value"
-              :value="+key"
-              :key="key"
+              v-for="(item, index) in children_status"
+              :value="+item.value"
+              :key="index"
             >
-              {{ item }}
+              {{ item.label }}
             </a-select-option>
           </a-select>
         </st-form-item>
@@ -120,6 +120,7 @@ import { MessageService } from '@/services/message.service'
 import { get } from 'lodash-es'
 import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from '../staff-form.config.ts'
+import { UserService } from '@/services/user.service'
 export default {
   name: 'EditDetailedInfo',
   serviceInject() {
@@ -127,13 +128,18 @@ export default {
       pattern: PatternService,
       region: RegionService,
       service: EditService,
-      message: MessageService
+      message: MessageService,
+      userService: UserService
+    }
+  },
+  rxState() {
+    return {
+      children_status: this.userService.getOptions$('staff.children_status'),
+      marry_status: this.userService.getOptions$('staff.marry_status'),
+      educations: this.userService.getOptions$('staff.education')
     }
   },
   props: {
-    enums: {
-      type: Object
-    },
     isPrivateCoach: {
       type: Boolean,
       default: false
@@ -181,29 +187,24 @@ export default {
     },
     goNext(e) {
       e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values)
-          this.submit(values, 1)
-        }
+      this.form.validate().then(values => {
+        this.submit(values, 1)
       })
     },
     save(e) {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          let obj = this.filterProvinces(values.provinces)
-          let newData = Object.assign(values, obj)
-          newData.birthday &&
-            (newData.birthday = newData.birthday.format('YYYY-MM-DD'))
-          newData.graduation_time &&
-            (newData.graduation_time = newData.graduation_time.format(
-              'YYYY-MM-DD'
-            ))
-          delete newData.provinces
-          this.$emit('detailInfoSave', {
-            data: newData
-          })
-        }
+      this.form.validate().then(values => {
+        let obj = this.filterProvinces(values.provinces)
+        let newData = Object.assign(values, obj)
+        newData.birthday &&
+          (newData.birthday = newData.birthday.format('YYYY-MM-DD'))
+        newData.graduation_time &&
+          (newData.graduation_time = newData.graduation_time.format(
+            'YYYY-MM-DD'
+          ))
+        delete newData.provinces
+        this.$emit('detailInfoSave', {
+          data: newData
+        })
       })
     },
     submit(data, saveOrgoNext) {
@@ -228,5 +229,3 @@ export default {
   }
 }
 </script>
-
-<style></style>

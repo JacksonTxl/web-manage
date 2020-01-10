@@ -510,81 +510,77 @@ export default {
       })
     },
     onCreateOrder() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          let reduce_amount = this.reduceAmount ? +this.reduceAmount : undefined
-          this.renewalMemberService
-            .renewal(
-              {
-                contract_number: values.contractNumber,
-                rule_id: this.selectSpecs,
-                valid_start_time: moment(values.startTime).format(
-                  'YYYY-MM-DD HH:mm'
-                ),
-                gift_amount: +this.giftAmount,
-                user_coupon_id:
-                  this.selectCoupon === -1 ? undefined : +this.selectCoupon,
-                advance_id:
-                  this.selectAdvance === -1 ? undefined : this.selectAdvance,
-                reduce_price: reduce_amount,
-                description: this.description,
-                staff_sale_id: +values.saleName,
-                contract_type: this.info.contract_type,
-                discounts_price: +this.info.specs.filter(
-                  i => i.id === this.selectSpecs
-                )[0].price
-              },
-              this.id
-            )
-            .subscribe(res => {
-              this.show = false
-              this.$emit('success', {
-                type: 'create',
-                orderId: res.info.order_id,
-                soldId: res.info.sold_id,
-                isFamilyCard: this.isFamilyCard
-              })
+      this.form.validate().then(values => {
+        let reduce_amount = this.reduceAmount ? +this.reduceAmount : undefined
+        this.renewalMemberService
+          .renewal(
+            {
+              contract_number: values.contractNumber,
+              rule_id: this.selectSpecs,
+              valid_start_time: moment(values.startTime).format(
+                'YYYY-MM-DD HH:mm'
+              ),
+              gift_amount: +this.giftAmount,
+              user_coupon_id:
+                this.selectCoupon === -1 ? undefined : +this.selectCoupon,
+              advance_id:
+                this.selectAdvance === -1 ? undefined : this.selectAdvance,
+              reduce_price: reduce_amount,
+              description: this.description,
+              staff_sale_id: +values.saleName,
+              contract_type: this.info.contract_type,
+              discounts_price: +this.info.specs.filter(
+                i => i.id === this.selectSpecs
+              )[0].price
+            },
+            this.id
+          )
+          .subscribe(res => {
+            this.show = false
+            this.$emit('success', {
+              type: 'create',
+              orderId: res.info.order_id,
+              soldId: res.info.sold_id,
+              isFamilyCard: this.isFamilyCard
             })
-        }
+          })
       })
     },
     onPay() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          let reduce_amount = this.reduceAmount ? +this.reduceAmount : undefined
-          this.renewalMemberService
-            .renewalPay(
-              {
-                contract_number: values.contractNumber,
-                rule_id: this.selectSpecs,
-                valid_start_time: moment(values.startTime).format(
-                  'YYYY-MM-DD HH:mm'
-                ),
-                gift_amount: +this.giftAmount,
-                user_coupon_id:
-                  this.selectCoupon === -1 ? undefined : +this.selectCoupon,
-                advance_id:
-                  this.selectAdvance === -1 ? undefined : this.selectAdvance,
-                reduce_price: reduce_amount,
-                description: this.description,
-                staff_sale_id: +values.saleName,
-                contract_type: this.info.contract_type,
-                discounts_price: +this.info.specs.filter(
-                  i => i.id === this.selectSpecs
-                )[0].price
-              },
-              this.id
-            )
-            .subscribe(res => {
-              this.show = false
-              this.$emit('success', {
-                type: 'createPay',
-                orderId: res.info.order_id,
-                soldId: res.info.sold_id,
-                isFamilyCard: this.isFamilyCard
-              })
+      this.form.validate().then(values => {
+        let reduce_amount = this.reduceAmount ? +this.reduceAmount : undefined
+        this.renewalMemberService
+          .renewalPay(
+            {
+              contract_number: values.contractNumber,
+              rule_id: this.selectSpecs,
+              valid_start_time: moment(values.startTime).format(
+                'YYYY-MM-DD HH:mm'
+              ),
+              gift_amount: +this.giftAmount,
+              user_coupon_id:
+                this.selectCoupon === -1 ? undefined : +this.selectCoupon,
+              advance_id:
+                this.selectAdvance === -1 ? undefined : this.selectAdvance,
+              reduce_price: reduce_amount,
+              description: this.description,
+              staff_sale_id: +values.saleName,
+              contract_type: this.info.contract_type,
+              discounts_price: +this.info.specs.filter(
+                i => i.id === this.selectSpecs
+              )[0].price
+            },
+            this.id
+          )
+          .subscribe(res => {
+            this.show = false
+            this.$emit('success', {
+              type: 'createPay',
+              orderId: res.info.order_id,
+              soldId: res.info.sold_id,
+              isFamilyCard: this.isFamilyCard
             })
-        }
+          })
       })
     }
   }

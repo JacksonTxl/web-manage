@@ -1,16 +1,30 @@
 .modal-common-notify-info {
-  .bg(#ef2);
+  .st-modal__body {
+    padding: 32px;
+    min-height: 384px;
+  }
+  img {
+    max-width: 100%;
+  }
   &__title {
     .fz(20px);
   }
+  &__item {
+    display: flex;
+    align-items: center;
+  }
   &__item-img {
     display: inline-block;
-    .s(24px, 24px);
-    border-radius: 24px;
+    .s(20px, 20px);
+    border-radius: 100%;
+    border: 1px solid @bg-gray;
     img {
       .s(100%, 100%);
-      border-radius: 100%;
+      display: block;
     }
+  }
+  &__content {
+    .mg-t(48px);
   }
   &__item-type {
     .c(#3e4d5c);

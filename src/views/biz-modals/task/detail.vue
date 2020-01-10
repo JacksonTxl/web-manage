@@ -15,7 +15,12 @@
       :page="page"
       :simplePage="true"
       :class="list.length > 0 ? 'st-scroll-data' : ''"
-    />
+    >
+      <span slot="customTitle">
+        {{ task_type === 6 ? '场馆' : '合同编号' }}
+      </span>
+      <span slot="customName">{{ task_type === 6 ? '场地' : '会员名称' }}</span>
+    </st-table>
   </st-modal>
 </template>
 <script>
@@ -40,6 +45,9 @@ export default {
   },
   props: {
     task_id: {
+      type: [String, Number]
+    },
+    task_type: {
       type: [String, Number]
     },
     popup_type: {

@@ -1,24 +1,38 @@
 <template>
-  <div :class="bComponent()">
-    <div :class="bComponent('title')">{{ info.title }}</div>
-    <div :class="bComponent('content')">
-      <div :class="bComponent('text')">{{ info.notify_time.name }}</div>
-      <div :class="bComponent('text')">{{ info.notify_type.name }}</div>
-      <div :class="bComponent('text')" style="padding-left:0">
-        <st-switch @change="save" v-model="params.notify_mode.sms"></st-switch>
-      </div>
-      <div
-        :class="bComponent('text')"
-        style="padding-left:0"
-        v-if="info.notify_type.value === 1"
-      >
+  <div :class="tpl()">
+    <div :class="tpl('title')">{{ info.title }}</div>
+    <div :class="tpl('content')">
+      <div :class="tpl('text')">{{ info.notify_time.name }}</div>
+      <div :class="tpl('text')">{{ info.notify_type.name }}</div>
+      <div :class="tpl('text')" style="padding-left:0">
         <st-switch
+          @change="save"
+          v-if="auth.sms"
+          v-model="params.notify_mode.sms"
+        ></st-switch>
+      </div>
+      <div :class="tpl('text')" style="padding-left:0">
+        <st-switch
+          v-if="info.notify_type.value === typeMap['app'] && auth.app"
+          @change="save"
+          v-model="params.notify_mode.app"
+        ></st-switch>
+        <st-switch
+          v-if="
+            info.notify_type.value === typeMap['mini_programs'] &&
+              params.notify_mode.mini_programs > -1 &&
+              auth.mina
+          "
           @change="save"
           v-model="params.notify_mode.mini_programs"
         ></st-switch>
         <span
           class="color-primary mg-l12 cursor-pointer"
-          v-show="params.notify_mode.mini_programs"
+          v-show="
+            info.notify_type.value === typeMap['mini_programs'] &&
+              params.notify_mode.mini_programs &&
+              params.notify_mode.mini_programs > -1
+          "
           type="primary"
           v-modal-link="{
             name: 'brand-setting-sms-notice',
@@ -29,13 +43,15 @@
         >
           预览
         </span>
-      </div>
-      <div
-        :class="bComponent('text')"
-        style="padding-left:0"
-        v-if="info.notify_type.value === 2"
-      >
-        <st-switch @change="save" v-model="params.notify_mode.app"></st-switch>
+        <span
+          class="color-text-light"
+          v-if="
+            info.notify_type.value === typeMap['mini_programs'] &&
+              params.notify_mode.mini_programs < 0
+          "
+        >
+          暂不支持
+        </span>
       </div>
       <div
         v-show="
@@ -45,19 +61,23 @@
         "
       >
         <div class="shadow"></div>
-        <div :class="bComponent('column')" v-show="!isShowEdit">
-          <div class="width75" :class="bComponent('text')" v-if="info.preview">
+        <div :class="tpl('column')" v-show="!isShowEdit">
+          <div class="width75" :class="tpl('text')" v-if="info.preview">
             <span class="color-title mg-r8">预览内容:</span>
-            <span :class="bComponent('text-right')">{{ info.preview }}</span>
+            <span :class="tpl('text-right')">{{ info.preview }}</span>
           </div>
-          <div :class="bComponent('text')" style="padding-left:0">
-            <span class="color-primary cursor-pointer" @click="showEdit">
+          <div :class="tpl('text')" style="padding-left:0">
+            <span
+              class="color-primary cursor-pointer"
+              @click="showEdit"
+              v-if="auth.edit"
+            >
               编辑
             </span>
           </div>
           <div
             class="width75"
-            :class="bComponent('text')"
+            :class="tpl('text')"
             v-if="info.receiver_description"
           >
             <span class="color-title">接收人员:</span>
@@ -65,7 +85,7 @@
           </div>
           <div
             class="width75"
-            :class="bComponent('text')"
+            :class="tpl('text')"
             v-if="info.course_type_description"
           >
             <span class="color-title">课程类型:</span>
@@ -73,28 +93,28 @@
           </div>
           <div
             class="width75"
-            :class="bComponent('text')"
+            :class="tpl('text')"
             v-if="info.order_type_description"
           >
             <span class="color-title">订单类型:</span>
             <span class="mg-l8">{{ info.order_type_description }}</span>
           </div>
         </div>
-        <div :class="bComponent('column')" v-show="isShowEdit">
-          <div class="width75" :class="bComponent('text')">
+        <div :class="tpl('column')" v-show="isShowEdit">
+          <div class="width75" :class="tpl('text')">
             <div class="mg-b16" v-if="info.preview">
               <span class="mg-r8 color-title">发送内容</span>
-              <span :class="bComponent('text-right')">
+              <span :class="tpl('text-right')">
                 <a-input
                   v-if="info.notify_type.value === 1"
-                  :class="bComponent('column-input')"
+                  :class="tpl('column-input')"
                   v-model="params.msg_preffix"
                   placeholder="请输入"
                 ></a-input>
                 <span>{{ info.content }}</span>
                 <a-input
                   v-if="info.notify_type.value === 1"
-                  :class="bComponent('column-input')"
+                  :class="tpl('column-input')"
                   v-model="params.msg_suffix"
                   placeholder="请输入"
                 ></a-input>
@@ -102,7 +122,7 @@
             </div>
             <div class="mg-b16" v-if="info.preview">
               <span class="mg-r8 color-title">预览内容</span>
-              <span :class="bComponent('text-right')">{{ info.preview }}</span>
+              <span :class="tpl('text-right')">{{ info.preview }}</span>
             </div>
             <div class="mg-b16" v-if="Object.keys(info.course_type).length > 0">
               <span class="color-title">课程类型</span>
@@ -120,12 +140,6 @@
                   {{ params.course_type.personal_course.name }}
                 </st-checkbox>
               </span>
-            </div>
-            <div class="mg-b16">
-              <span class="color-title">消息类型</span>
-            </div>
-            <div class="mg-b16">
-              <span class="color-title">入场方式</span>
             </div>
             <div class="mg-b16" v-if="Object.keys(info.receiver).length > 0">
               <span class="color-title">接收人员</span>
@@ -155,16 +169,12 @@
                   {{ params.receiver.custom.name }}
                 </st-checkbox>
               </span>
-              <span v-show="isShowPhone">
-                <slot name="custom" :params="params">
-                  <a-input
-                    style="width:44%"
-                    v-show="isShowPhone"
-                    v-model="params.custom_phone"
-                    placeholder="请输入手机号码，多个用逗号分隔"
-                  />
-                </slot>
-              </span>
+              <a-input
+                style="width:44%"
+                v-show="isShowPhone"
+                v-model="params.custom_phone"
+                placeholder="请输入手机号码，多个用逗号分隔"
+              />
             </div>
 
             <div class="mg-b16" v-if="Object.keys(info.order_type).length > 0">
@@ -276,7 +286,7 @@
               </span>
             </div>
           </div>
-          <div :class="bComponent('text')" style="padding-left:0">
+          <div :class="tpl('text')" style="padding-left:0">
             <span class="btn color-primary mg-r12" @click="cancel">取消</span>
             <span class="btn color-primary" @click="save">保存</span>
           </div>
@@ -289,26 +299,21 @@
 <script>
 import { UserService } from '@/services/user.service'
 import BrandSettingSmsNotice from '@/views/biz-modals/brand/setting/sms/notice'
-import { NoticeService } from '../notice.service'
-const componentName = 'notice-item'
+const componentName = 'components-notice-tpl-item'
 export default {
   name: 'NoticeItem',
   bem: {
-    bComponent: componentName
+    tpl: componentName
   },
   serviceInject() {
     return {
-      userService: UserService,
-      noticeService: NoticeService
+      userService: UserService
     }
   },
   rxState() {
-    const user = this.userService
-    const { consumeType$, entranceType$ } = this.noticeService
     return {
-      settingEnums: user.settingEnums$,
-      consumeType$,
-      entranceType$
+      notifyRule: this.userService.getOptions$('setting.notify_rule'),
+      notifyHour: this.userService.getOptions$('setting.notify_time_hour')
     }
   },
   modals: {
@@ -321,6 +326,10 @@ export default {
       isShowEdit: 0,
       isShowPhone: false, // 默认不展示输入手机号
       rule: {},
+      typeMap: {
+        mini_programs: 1,
+        app: 2
+      },
       params: {
         id: '',
         msg_suffix: '',
@@ -386,30 +395,17 @@ export default {
     info: {
       type: Object,
       default: () => {}
-    }
-  },
-  computed: {
-    consumeTypeString() {
-      return this.consumeType$.map(item => item.label)
     },
-    entranceTypeString() {
-      return this.entranceType$.map(item => item.label)
-    },
-    notifyRule() {
-      let list = []
-      if (!this.settingEnums.notify_rule) return list
-      Object.entries(this.settingEnums.notify_rule.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
-    },
-    notifyHour() {
-      let list = []
-      if (!this.settingEnums.notify_time_hour) return list
-      Object.entries(this.settingEnums.notify_time_hour.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return list
+    auth: {
+      type: Object,
+      default: () => {
+        return {
+          sms: true,
+          app: true,
+          mina: true,
+          edit: true
+        }
+      }
     }
   },
   created() {
@@ -426,10 +422,7 @@ export default {
     this.params.notify_number = this.info.notify_number
     this.params.msg_preffix = this.info.msg_preffix
     this.params.msg_suffix = this.info.msg_suffix
-    this.params.custom_phone = this.info.custom_phone
-    if (this.info.notify_sub_type.value !== 24) {
-      this.params.custom_phone = this.info.custom_phone.join(' ')
-    }
+    this.params.custom_phone = this.info.custom_phone.join(' ')
     this.params.notify_mode = {
       sms: this.info.notify_mode.sms && this.info.notify_mode.sms.value,
       app: this.info.notify_mode.app && this.info.notify_mode.app.value,
@@ -449,6 +442,38 @@ export default {
       let course_type = {}
       let order_type = {}
       let receiver = {}
+      if (this.info.course_type.team_course) {
+        course_type.team_course = 0
+      }
+      if (this.info.course_type.personal_course) {
+        course_type.personal_course = 0
+      }
+
+      if (this.info.order_type.advance) {
+        order_type.advance = 0
+      }
+      if (this.info.order_type.deposit) {
+        order_type.deposit = 0
+      }
+      if (this.info.order_type.product) {
+        order_type.product = 0
+      }
+      if (this.info.order_type.poundage) {
+        order_type.poundage = 0
+      }
+
+      if (this.info.receiver.coach) {
+        receiver.coach = 0
+      }
+      if (this.info.receiver.member) {
+        receiver.member = 0
+      }
+      if (this.info.receiver.custom) {
+        receiver.custom = 0
+      }
+      if (this.info.receiver.seller) {
+        receiver.seller = 0
+      }
       if (this.info.course_type.team_course) {
         course_type.team_course = this.params.course_type.team_course.value
           ? 1
@@ -485,19 +510,12 @@ export default {
       if (this.info.receiver.seller) {
         receiver.seller = this.params.receiver.seller.value ? 1 : 0
       }
-      let custom_phone = []
-      if (Array.isArray(this.params.custom_phone)) {
-        custom_phone = this.params.custom_phone
-      } else {
-        custom_phone =
-          this.params.custom_phone.length > 0
-            ? this.params.custom_phone.split(',')
-            : []
-      }
-
       const para = Object.assign({}, this.params, {
         id: this.info.id,
-        custom_phone,
+        custom_phone:
+          this.params.custom_phone.length > 0
+            ? this.params.custom_phone.split(',')
+            : [],
         order_type,
         receiver,
         course_type

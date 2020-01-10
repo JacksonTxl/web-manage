@@ -1,0 +1,218 @@
+.shop-sold-transaction-cloud {
+  .st-mina-panel__content {
+    padding: 0;
+  }
+  .st-mina-panel__actions {
+    background: #f7f9fc;
+    padding: 0;
+  }
+  &__list {
+    width: calc(100% - 532px);
+    border-right: 1px solid @divider;
+    float: left;
+    height: 960px;
+  }
+  &__head {
+    padding: 18px 24px;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+  &__title {
+    line-height: 32px;
+    .c(@title);
+    font-weight: bold;
+    .fz(16px);
+    margin: 0;
+  }
+  &__table {
+    margin-top: 22px;
+    .ant-input-number {
+      width: 64px;
+    }
+  }
+  &__buycar {
+    width: 532px;
+    float: left;
+    height: 960px;
+    padding: 22px 24px 56px 24px;
+    .title {
+      .c(@title);
+      font-weight: bold;
+      .fz(16px);
+      margin: 0;
+    }
+    .st-textarea {
+      height: 148px;
+    }
+    .divider-line {
+      height: 1px;
+      background: @divider;
+    }
+  }
+  &__padding {
+    .ant-form-item-control-wrapper {
+      padding-left: 0;
+    }
+  }
+  &__footer {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    &-page {
+      padding: 16px;
+      width: calc(100% - 532px);
+      .mg-t8 {
+        margin-top: 0px !important;
+        float: right;
+      }
+    }
+    &-action {
+      display: flex;
+      width: 533px;
+      border-left: 1px solid @divider;
+      justify-content: space-between;
+      padding: 16px;
+      .price {
+        .fz(12px);
+        .c(@text-light);
+        span {
+          vertical-align: baseline;
+        }
+        .money {
+          .fz(20px);
+          .c(@error-color);
+        }
+      }
+    }
+  }
+  &__product {
+    overflow: hidden;
+    height: 828px;
+    padding: 0 16px;
+    overflow-y: scroll;
+    &-img {
+      width: 194px;
+      height: 172px;
+      display: block;
+    }
+    li {
+      float: left;
+      border: 1px solid @divider;
+      width: 196px;
+      height: 270px;
+      margin: 0 6px 16px;
+      position: relative;
+      .product-mask {
+        width: 194px;
+        height: 172px;
+        position: absolute;
+        top: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        cursor: pointer;
+        img {
+          display: block;
+          margin: 54px auto 0;
+        }
+        p {
+          color: #fff;
+          margin-top: 5px;
+          text-align: center;
+        }
+      }
+      &:hover {
+        .product-mask {
+          display: block;
+        }
+      }
+    }
+    &-name {
+      padding: 12px 12px 8px;
+      height: 64px;
+      span {
+        line-height: 22px;
+        .c(@title);
+        font-size: 14px;
+        .tov-l(2);
+      }
+    }
+    &-price {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 12px;
+      span {
+        vertical-align: bottom;
+        &:first-child {
+          .fz(18px);
+          .c(@error-color);
+          height: 28px;
+          max-width: 100px;
+          .tov-e();
+        }
+        &:last-child {
+          .fz(12px);
+          .c(@text-light);
+          margin-top: 6px;
+        }
+      }
+    }
+  }
+  &__add-member {
+    cursor: pointer;
+    .c(@primary-color);
+  }
+  &__discounts {
+    &-total {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      span {
+        .c(@success-color);
+      }
+    }
+    &-promotion {
+      align-items: center;
+      display: inline-block;
+      span {
+        display: inline;
+        .c(@link-color);
+      }
+      .c(@link-color);
+    }
+  }
+  &__dropdown {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    border: none;
+    .ant-menu {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      border: none;
+      border-radius: 4px;
+      span {
+        .c(@text-color);
+      }
+    }
+  }
+  &__discounts-promotion {
+    cursor: pointer;
+  }
+  &__discounts {
+    .ant-form-item-control-wrapper {
+      overflow: inherit;
+    }
+  }
+  &--disabled {
+    cursor: not-allowed;
+  }
+  &__all-price {
+    color: #3e4d5c;
+    font-size: 14px;
+    text-align: right;
+  }
+}
+@media screen and (min-width: 1440px) {
+  .shop-sold-transaction-cloud__product li {
+    margin: 0 12px 16px;
+  }
+}

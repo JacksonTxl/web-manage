@@ -66,7 +66,11 @@
         ></st-checkbox>
         未归还的临时储物柜，不允许离场
       </st-form-item>
-      <st-form-item label="约课入场限制" required>
+      <st-form-item
+        label="约课入场限制"
+        required
+        v-if="type !== ENTRY.VENUES && type !== ENTRY.GATE"
+      >
         约课用户在课程开始前
         <st-input-number
           :min="0"
@@ -77,7 +81,25 @@
         ></st-input-number>
         分钟可入场
       </st-form-item>
-      <st-form-item label="入场签课" v-if="type !== ENTRY.GATE">
+      <st-form-item
+        label="场地预约限制"
+        required
+        v-if="type === ENTRY.VENUES || type === ENTRY.GATE"
+      >
+        预约用户在预约开始前
+        <st-input-number
+          :min="0"
+          :max="180"
+          v-decorator="decorators.course_time"
+          :disabled="!isEdit"
+          style="width:50px;"
+        ></st-input-number>
+        分钟可入场
+      </st-form-item>
+      <st-form-item
+        label="入场签课"
+        v-if="type !== ENTRY.GATE && type !== ENTRY.VENUES"
+      >
         <st-checkbox
           v-decorator="decorators.checkin"
           :disabled="!isEdit"

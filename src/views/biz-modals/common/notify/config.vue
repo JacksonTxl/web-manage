@@ -1,7 +1,7 @@
 <template>
   <st-modal
     title="通知设置"
-    :class="b()"
+    :wrapClassName="b()"
     v-model="show"
     width="370px"
     :footer="null"

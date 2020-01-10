@@ -96,10 +96,7 @@
           <a-input placeholder="请输入邮箱" v-decorator="decorators.mail" />
         </st-form-item>
         <st-form-item label="证件">
-          <a-input
-            placeholder="请输入身份证号码"
-            v-decorator="decorators.id_number"
-          >
+          <a-input placeholder="请输入" v-decorator="decorators.id_number">
             <a-select
               slot="addonBefore"
               style="width: 100px;"
@@ -107,11 +104,11 @@
               v-model="id_type"
             >
               <a-select-option
-                v-for="(item, key) in enums.id_type.value"
-                :key="key"
-                :value="+key"
+                v-for="(item, index) in id_types"
+                :key="index"
+                :value="+item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
           </a-input>
@@ -137,11 +134,11 @@
             @change="getIsCoach"
           >
             <a-checkbox
-              v-for="(item, key) in enums.identity.value"
-              :key="key"
-              :value="+key"
+              v-for="(item, index) in identitys"
+              :key="index"
+              :value="+item.value"
             >
-              {{ item }}
+              {{ item.label }}
             </a-checkbox>
           </a-checkbox-group>
         </st-form-item>
@@ -157,8 +154,8 @@
         </st-form-item>
         <st-form-item label="工作性质">
           <a-select placeholder="请选择" v-decorator="decorators.nature_work">
-            <template v-for="(item, key) in enums.nature_work.value">
-              <a-select-option :key="key" :value="+key">
+            <template v-for="(item, index) in nature_works">
+              <a-select-option :key="index" :value="+item.value">
                 {{ item }}
               </a-select-option>
             </template>
@@ -242,20 +239,14 @@
           <a-input
             placeholder="6-15个字符，区分大小写"
             type="password"
-            v-decorator="[
-              'password',
-              { rules: [{ validator: validatorPassword }] }
-            ]"
+            v-decorator="decorators.password"
           ></a-input>
         </st-form-item>
         <st-form-item required label="确认密码" v-if="isChoosePermission">
           <a-input
             placeholder="请再次填写密码"
             type="password"
-            v-decorator="[
-              'repeat_password',
-              { rules: [{ validator: validatorRePassword }] }
-            ]"
+            v-decorator="decorators.repeat_password"
           ></a-input>
         </st-form-item>
       </a-col>
@@ -298,7 +289,10 @@ export default {
   },
   rxState() {
     return {
-      shop: this.userService.shop$
+      shop: this.userService.shop$,
+      id_types: this.userService.getOptions$('staff.id_type'),
+      nature_works: this.userService.getOptions$('staff.nature_work'),
+      identitys: this.userService.getOptions$('staff.identity')
     }
   },
   components: {
@@ -308,9 +302,6 @@ export default {
     FaceUpload
   },
   props: {
-    enums: {
-      type: Object
-    },
     roleList: {
       type: Array
     },
@@ -341,7 +332,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.shop)
     this.form.setFieldsValue({
       shop_id: this.shop.id
     })
@@ -358,35 +348,7 @@ export default {
     onChangeGetFace(imageFiles) {
       this.faceList = cloneDeep(imageFiles)
     },
-    validatorPassword(rule, value, callback) {
-      if (value === undefined || value === '') {
-        // eslint-disable-next-line
-        callback('请输入登录密码')
-      } else if (value.length < 6 || value.length > 15) {
-        // eslint-disable-next-line
-        callback('请输入正确格式登录密码')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    validatorRePassword(rule, value, callback) {
-      const password = this.form.getFieldValue('password')
-      if (value === undefined || value === '') {
-        // eslint-disable-next-line
-        callback('请输入登录密码')
-      } else if (value.length < 6 || value.length > 15) {
-        // eslint-disable-next-line
-        callback('请输入正确格式登录密码')
-      } else if (password !== value) {
-        // eslint-disable-next-line
-        callback('两次密码输入不一致')
-      } else {
-        callback()
-      }
-    },
     getIsCoach(data) {
-      console.log('watch new', data)
       this.isShowLevel = data.includes(4)
 
       if (!this.isShowLevel) {
@@ -411,27 +373,21 @@ export default {
     // 继续填写跳转到编辑
     goNext(e) {
       e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values)
-          this.submit(values, 1)
-        }
+      this.form.validate().then(values => {
+        this.submit(values, 1)
       })
     },
     /**
      * saveOrgoNext 0 保存 1 跳转到编辑
      */
     submit(data) {
-      // this.isChoosePermission ? (data.is_permission = 1) : (data.is_permission = 0)
       data.is_permission = +this.isChoosePermission
       data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
       data.image_avatar = this.fileList[0] || {}
       data.image_face = this.faceList[0] || {}
       data.country_code_id = this.country_code_id
       data.id_type = this.id_type
-      console.log('submit', data)
       this.addService.addStaff(data).subscribe(res => {
-        console.log('addStaff', res)
         this.$router.push({
           name: 'shop-staff-edit',
           query: {

@@ -15,10 +15,12 @@ export const enum TMPL_TYPES {
   CUSTOM = 2,
   PERSONAL = 1
 }
+
 export const enum NOTIFY_TYPES {
   MEMBER = 1,
   SHOP = 2
 }
+
 export const enum NOTIFY_MEMBER_SUB_TYPE {
   //会员通知：预约成功
   RESERVE_SUCCESS = 1,
@@ -59,6 +61,7 @@ export const enum NOTIFY_MEMBER_SUB_TYPE {
   //会员通知：场地预约到期通知
   VENUES_RESERVE_DEADLINE = 22
 }
+
 export const enum NOTIFY_SHOP_SUB_TYPE {
   //门店通知：预约成功
   RESERVE_SUCCESS = 1,
