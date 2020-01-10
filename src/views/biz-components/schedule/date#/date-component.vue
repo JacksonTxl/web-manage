@@ -30,9 +30,9 @@ export default {
   },
   created() {
     let weekOfday = moment(this.start).format('E')
-    if (this.$searchQuery.data_type === 'day') {
+    if (this.$searchQuery.time_unit === 3) {
       this.startTime = moment(this.start).format('YYYY-MM-DD')
-    } else if (this.$searchQuery.data_type === 'month') {
+    } else if (this.$searchQuery.time_unit === 4) {
       this.startTime = this.$searchQuery.start_date
       console.log(this.startTime, '这是最初的')
     } else {
@@ -45,7 +45,7 @@ export default {
     start(n, o) {
       let weekOfday = moment(n).format('E')
       this.startTime =
-        this.$searchQuery.data_type !== 'week'
+        this.$searchQuery.time_unit !== 2
           ? moment(this.start).format('YYYY-MM-DD')
           : moment(this.start)
               .subtract(weekOfday - 1, 'days')
@@ -68,9 +68,9 @@ export default {
       return this.$searchQuery.start_date
     },
     endTime() {
-      if (this.$searchQuery.data_type === 'day') {
+      if (this.$searchQuery.time_unit === 3) {
         return moment(this.startTime).format('YYYY-MM-DD')
-      } else if (this.$searchQuery.data_type === 'month') {
+      } else if (this.$searchQuery.time_unit === 4) {
         return moment(this.startTime)
           .endOf('month')
           .add(1, 'days')
@@ -105,11 +105,11 @@ export default {
       //       .subtract(7, 'days')
       //       .format('YYYY-MM-DD')
 
-      if (this.$searchQuery.data_type === 'day') {
+      if (this.$searchQuery.time_unit === 3) {
         this.startTime = moment(this.$searchQuery.start_date)
           .subtract(1, 'days')
           .format('YYYY-MM-DD')
-      } else if (this.$searchQuery.data_type === 'month') {
+      } else if (this.$searchQuery.time_unit === 4) {
         this.startTime = moment(this.startTime)
           .subtract(1, 'months')
           .format('YYYY-MM-DD')
@@ -121,7 +121,7 @@ export default {
       this.$emit('pre', {
         start_date: this.startTime,
         end_date: this.endTime,
-        data_type: this.$searchQuery.data_type
+        time_unit: this.$searchQuery.time_unit
       })
     },
     onClickNext() {
@@ -132,11 +132,11 @@ export default {
       //   : moment(this.startTime)
       //       .add(7, 'days')
       //       .format('YYYY-MM-DD')
-      if (this.$searchQuery.data_type === 'day') {
+      if (this.$searchQuery.time_unit === 3) {
         this.startTime = moment(this.$searchQuery.start_date)
           .add(1, 'days')
           .format('YYYY-MM-DD')
-      } else if (this.$searchQuery.data_type === 'month') {
+      } else if (this.$searchQuery.time_unit === 4) {
         this.startTime = moment(this.startTime)
           .add(1, 'months')
           .format('YYYY-MM-DD')
@@ -148,7 +148,7 @@ export default {
       this.$emit('next', {
         start_date: this.startTime,
         end_date: this.endTime,
-        data_type: this.$searchQuery.data_type
+        time_unit: this.$searchQuery.time_unit
       })
     },
     onClickToday() {
@@ -159,9 +159,9 @@ export default {
       //       .subtract(weekOfday - 1, 'days')
       //       .format('YYYY-MM-DD') // 周一日期
 
-      if (this.$searchQuery.data_type === 'day') {
+      if (this.$searchQuery.time_unit === 3) {
         this.startTime = moment().format('YYYY-MM-DD')
-      } else if (this.$searchQuery.data_type === 'month') {
+      } else if (this.$searchQuery.time_unit === 4) {
         this.startTime = moment()
           .startOf('month')
           .format('YYYY-MM-DD')
@@ -173,7 +173,7 @@ export default {
       this.$emit('today', {
         start_date: this.startTime,
         end_date: this.endTime,
-        data_type: this.$searchQuery.data_type
+        time_unit: this.$searchQuery.time_unit
       })
     },
     getMatrix(n) {

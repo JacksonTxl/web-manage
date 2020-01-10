@@ -120,7 +120,7 @@ export default {
     $route(newValue, oldValue) {
       this.service.scheduleService.getList(this.$searchQuery)
       this.$refs.calendar.getWeeks(
-        this.$searchQuery.data_type === 'week' ? 'week' : ''
+        this.$searchQuery.time_unit === 2 ? 'week' : ''
       )
     }
   }

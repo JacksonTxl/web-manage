@@ -131,6 +131,7 @@ export default {
       this.init()
     },
     courses() {
+      console.log('进来watch了')
       this.getCoursesList()
     }
   },
@@ -147,6 +148,7 @@ export default {
   },
   created() {
     this.init()
+    this.getCoursesList()
   },
   methods: {
     init() {
