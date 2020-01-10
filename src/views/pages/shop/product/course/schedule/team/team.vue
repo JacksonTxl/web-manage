@@ -32,6 +32,7 @@ import { TeamScheduleScheduleService } from '@/views/pages/shop/product/course/s
 import ScheduleTeamAddCourseBatch from '@/views/biz-modals/schedule/team/add-course-batch'
 import ScheduleTeamCourseManage from '@/views/biz-modals/schedule/team/course-manage'
 import ScheduleTeamAddEditCourse from '@/views/biz-modals/schedule/team/add-edit-course'
+import ScheduleTeamCourseRankPreview from '@/views/biz-modals/schedule/team/course-rank-preview'
 import ScheduleTeamAddCourse from '@/views/biz-modals/schedule/team/add-course'
 import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
 import ScheduleTeamReserveInfo from '@/views/biz-modals/schedule/team/reserve-info'
@@ -44,7 +45,8 @@ export default {
     ScheduleTeamCopySchedule,
     ScheduleTeamReserveInfo,
     ScheduleTeamCourseManage,
-    ScheduleTeamAddEditCourse
+    ScheduleTeamAddEditCourse,
+    ScheduleTeamCourseRankPreview
   },
   serviceInject() {
     return {
@@ -124,8 +126,16 @@ export default {
       //     }
       //   }
       // })
+      // this.$modalRouter.push({
+      //   name: 'schedule-team-add-edit-course',
+      //   on: {
+      //     success: res => {
+      //       console.log('新增课表')
+      //     }
+      //   }
+      // })
       this.$modalRouter.push({
-        name: 'schedule-team-add-edit-course',
+        name: 'schedule-team-course-rank-preview',
         on: {
           success: res => {
             console.log('新增课表')
