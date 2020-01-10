@@ -500,6 +500,7 @@ export default {
     addGoodNew(values) {
       let data = {}
       let product_sku = []
+      let spec_name_arr = []
       this.tableData.forEach((item, index) => {
         let skuItem = {}
         skuItem.market_price = item.market_price
@@ -526,6 +527,9 @@ export default {
         }
         product_sku.push(skuItem)
       })
+      this.skuList.forEach(item => {
+        spec_name_arr.push(item.spec_name)
+      })
       data = {
         product_images: this.imgList, // 商品图片
         product_intro: this.content, // 商品介绍
@@ -540,7 +544,8 @@ export default {
         sale_type:
           values.sale_type.length === this.saleType.length
             ? -1
-            : values.sale_type[0] // 售卖方式
+            : values.sale_type[0], // 售卖方式
+        spec_name_arr
       }
       this.addService.addGoods(data).subscribe(res => {
         this.$router.push({

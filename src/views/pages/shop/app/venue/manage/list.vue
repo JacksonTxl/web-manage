@@ -18,7 +18,7 @@
           @click="addAll"
           :disabled="!selectedRowKeys.length"
         >
-          批量新增特殊设置
+          批量高级设置
         </st-button>
       </a-col>
       <a-col :span="12" class="ta-r">

@@ -219,8 +219,7 @@ export default {
               class: ['st-table'],
               props,
               on: {
-                change: this.onChange,
-                ...this.$listeners
+                change: this.onChange
               },
               scopedSlots: this.$scopedSlots,
               slot: this.$slots
@@ -234,8 +233,7 @@ export default {
             class: ['st-table'],
             props,
             on: {
-              change: this.onChange,
-              ...this.$listeners
+              change: this.onChange
             },
             scopedSlots: this.$scopedSlots,
             slot: this.$slots
