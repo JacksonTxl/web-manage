@@ -14,16 +14,16 @@
       <div :class="bToolbar('right')">
         <slot name="toolbar-right"></slot>
         <a-radio-group
-          :value="$searchQuery.data_type"
+          :value="$searchQuery.time_unit"
           @change="handleSizeChange($event, 'date')"
         >
-          <a-radio-button value="day">
+          <a-radio-button :value="3">
             日
           </a-radio-button>
-          <a-radio-button value="week">
+          <a-radio-button :value="2">
             周
           </a-radio-button>
-          <a-radio-button value="month">
+          <a-radio-button :value="4">
             月
           </a-radio-button>
         </a-radio-group>
@@ -43,13 +43,10 @@
     <div :class="bSchedule('content')">
       <div
         :class="bContent('time-collection')"
-        v-if="$searchQuery.data_type !== 'month'"
+        v-if="$searchQuery.time_unit !== 4"
       ></div>
 
-      <ul
-        :class="bContent('day-group')"
-        v-if="$searchQuery.data_type === 'day'"
-      >
+      <ul :class="bContent('day-group')" v-if="$searchQuery.time_unit === 3">
         <li
           class="day"
           :class="currentDay(item)"
@@ -98,7 +95,7 @@
 
       <ul
         :class="bContent('day-group')"
-        v-else-if="$searchQuery.data_type === 'week'"
+        v-else-if="$searchQuery.time_unit === 2"
       >
         <li
           class="day"
@@ -155,7 +152,7 @@
       </ul>
       <!-- 月度组件 -->
       <month-board
-        v-if="$searchQuery.data_type === 'month'"
+        v-if="$searchQuery.time_unit === 4"
         :courses="cardList"
         @onClickAddBtn="addTeamCourse"
         @onClickCourse="onClickCourse"
@@ -262,14 +259,14 @@ export default {
   methods: {
     handleSizeChange(evt, type) {
       if (type === 'date') {
-        if (evt.target.value === 'day') {
+        if (evt.target.value === 3) {
           this.onClickGetCurrent()
-        } else if (evt.target.value === 'month') {
+        } else if (evt.target.value === 4) {
           this.onClickGetMonth()
         } else {
           this.onClickGetWeek()
         }
-        this.$searchQuery.data_type = evt.target.value
+        this.$searchQuery.time_unit = evt.target.value
       } else {
         this.pageBtnFocusState = evt.target.value
       }
@@ -316,14 +313,14 @@ export default {
     onClickGetCurrent() {
       this.weeks = []
       this.weeks.push({ week: 0, date: this.$searchQuery.start_date })
-      this.$searchQuery.data_type = 'day'
+      this.$searchQuery.time_unit = 3
       let current = moment().format('YYYY-MM-DD')
       this.getWeeks()
       this.$router.push({
         query: {
           start_date: current,
           end_date: current,
-          data_type: 'day'
+          time_unit: 3
         }
       })
     },
@@ -341,7 +338,7 @@ export default {
         query: {
           start_date: startDate,
           end_date: endDate,
-          data_type: 'month'
+          time_unit: 4
         }
       })
     },
@@ -368,7 +365,7 @@ export default {
     },
     onClickGetWeek() {
       this.$router.push({
-        query: { ...this.currentWeek, data_type: 'week' }
+        query: { ...this.currentWeek, time_unit: 2 }
       })
       this.getWeeks('week')
     },
