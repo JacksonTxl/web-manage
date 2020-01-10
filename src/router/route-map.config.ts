@@ -615,7 +615,17 @@ export const routeMapConfig = {
       sell_status: { type: Number, default: -1 }
     }
   },
-  'shop-reception-entrance'(routeConfig: RouteConfig) {
+  'shop-reception-entrance-entrance'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '入场管理'
+    routeConfig.meta.parentRouteName = 'shop-reception-index'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      entry_type: { type: Number, default: -1 },
+      keyword: { type: String, default: '' }
+    }
+  },
+  'shop-reception-entrance-log'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '入场管理'
     routeConfig.meta.parentRouteName = 'shop-reception-index'
     routeConfig.queryOptions = {
