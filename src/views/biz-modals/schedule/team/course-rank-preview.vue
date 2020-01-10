@@ -9,7 +9,8 @@
     <div :class="basic()">
       <div :class="basic('title')">
         <p :class="basic('title--show')">
-          总排课数：节&nbsp;&nbsp;&nbsp;冲突节数：
+          <span class="mg-r16">总排课数：节&nbsp;&nbsp;&nbsp;</span>
+          冲突节数：
           <span :class="basic('title--high')">节</span>
         </p>
         <a-radio-group :value="courseType" @change="handleSizeChange">
@@ -121,6 +122,9 @@
             </a>
           </template>
         </st-table>
+      </div>
+      <div :class="basic('prompt')">
+        注：标红部分即为课程冲突信息
       </div>
     </div>
   </st-modal>
