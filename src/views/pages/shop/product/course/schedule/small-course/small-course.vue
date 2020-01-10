@@ -14,7 +14,7 @@
           type="primary"
           class="mg-r12"
           @click="onClickScheduleInBatch"
-          v-if="auth.add"
+          v-if="auth.eidt"
         >
           批量编辑
         </st-button>
@@ -59,12 +59,12 @@ export default {
     }
   },
   methods: {
-    onMouseLeave() {
-      console.log('onMouseLeave')
-    },
     // 添加课程排期
     onAddSchedule(date) {
       console.log(date)
+      if (!this.auth.add) {
+        return
+      }
       this.$modalRouter.push({
         name: 'schedule-small-course-add-course',
         props: { time: date },
@@ -79,7 +79,6 @@ export default {
     // 查看详情
     onDetail(info) {
       console.log(info)
-      console.log()
       if (!this.auth.getInfo) {
         return
       }

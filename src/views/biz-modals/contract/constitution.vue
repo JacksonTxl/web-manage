@@ -5,7 +5,7 @@
     width="60%"
     v-model="show"
     @ok="onSubmit"
-    :title="`${product_type}合同章程设置`"
+    :title="`${type}设置`"
   >
     <a-textarea
       :class="bModal('textarea')"
@@ -25,6 +25,10 @@ export default {
   props: {
     id: {
       type: Number,
+      required: true
+    },
+    type: {
+      type: String,
       required: true
     },
     lawContent: {
@@ -55,20 +59,10 @@ export default {
   },
   created() {
     this.content = this.lawContent
-    console.log(this.productType)
   },
   computed: {
     contentLength() {
       return this.content.length
-    },
-    product_type() {
-      let title
-      this.productType.forEach((item, index) => {
-        if (item.value === this.id) {
-          title = item.label
-        }
-      })
-      return title
     }
   },
   methods: {

@@ -315,6 +315,16 @@ export default {
         'YYYY-MM-DD'
       )
     },
+    initScheduleCourse() {
+      this.customizeScheduleList = []
+      this.pickerList = []
+      this.scheduleList = [
+        {
+          course_time: []
+        }
+      ]
+      this.filterDateList(this.scheduleList)
+    },
     onChangeCourse(value) {
       this.getCourseInfo(value)
     },
@@ -332,14 +342,6 @@ export default {
       const end_date = this.end_date
       this.smallPickerList = [moment(start_date), moment(end_date)]
       this.courseId = value
-      this.customizeScheduleList = []
-      this.pickerList = []
-      this.scheduleList = [
-        {
-          course_time: []
-        }
-      ]
-      this.filterDateList(this.scheduleList)
       const params = {}
       params.course_id = this.courseId
       this.getScheduleInBatch(params)
@@ -361,28 +363,42 @@ export default {
       this.smallCourseScheduleService.getScheduleInBatch(params).subscribe(
         res => {
           console.log(res)
-          if (changeTyps && this.cycle_type === 1) {
-            this.initScheduleDate()
-            this.customizeScheduleList = []
-          }
           this.disabledAddCourseBtn = false
           this.disabledCustomBtn = false
           this.initScheduleList(res.list, res.cycle_type, changeTyps)
         },
         err => {
-          this.select_cycle_type = 2
-          this.$warning({
-            title: '提示',
-            okText: '我知道了',
-            content: `已有排课信息，无法切换为周期排课，若需切换，请先删除排课信息`,
-            onOk: () => {}
-          })
+          console.log(err.response.code)
+          if (err.response.code === 54640) {
+            this.select_cycle_type = 2
+            this.$warning({
+              title: '提示',
+              okText: '我知道了',
+              content: `已有排课信息，无法切换为周期排课，若需切换，请先删除排课信息`,
+              onOk: () => {}
+            })
+          }
         }
       )
     },
     initScheduleList(list, type, changeTyps) {
-      this.select_cycle_type = type
-      changeTyps ? (this.cycle_type = changeTyps) : (this.cycle_type = type)
+      if (type) {
+        this.cycle_type = type
+        this.select_cycle_type = type
+      }
+      if (changeTyps) {
+        this.cycle_type = changeTyps
+        this.select_cycle_type = changeTyps
+      }
+      if (!type && !changeTyps) {
+        this.cycle_type = 1
+        this.select_cycle_type = 1
+      }
+      if (!list.length && type === 0) {
+        console.log('无数据无类型')
+        this.initScheduleDate()
+        return
+      }
       if (list.length && this.cycle_type === 1) {
         console.log('周期有数据')
         this.scheduleList = list
@@ -390,18 +406,12 @@ export default {
         this.filterDateList(this.scheduleList)
       } else if (!list.length && this.cycle_type === 1) {
         console.log('周期无数据')
-        this.select_cycle_type = 1
         this.initScheduleDate()
-      } else if (this.cycle_type === 2) {
-        console.log('自主')
-        this.select_cycle_type = 2
+        this.initScheduleCourse()
+      } else if (this.cycle_type === 2 && list.length) {
+        console.log('自主有数据')
+        this.initScheduleCourse()
         this.customizeScheduleList = list
-        console.log(this.customizeScheduleList)
-      } else if (!list.length && this.cycle_type === 0) {
-        console.log('无数据无类型')
-        this.select_cycle_type = 1
-        this.cycle_type = 1
-        this.initScheduleDate()
       }
     },
     onChangeRangePicker(date, dateString, PickerIndex) {

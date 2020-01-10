@@ -1,10 +1,9 @@
 import { Injectable } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state'
-import { tap, pluck } from 'rxjs/operators'
+import { tap } from 'rxjs/operators'
 import {
   SmallCourseScheduleReserveApi,
-  AddReserveInput,
-  CheckInput
+  AddReserveInput
 } from '@/api/v1/schedule/small-course/reserve'
 import { AuthService } from '@/services/auth.service'
 import { MessageService } from '@/services/message.service'
@@ -83,10 +82,10 @@ export class SmallCourseScheduleReserveService {
     return this.reserveApi.getInfo(id).pipe(
       tap(res => {
         console.log(res)
-        res = this.authService.filter(res, 'info.reserve')
+        res = this.authService.filter(res, 'list')
         res = this.authService.filter(res, 'auth')
-        this.reserveInfo$.commit(() => res.info)
         this.infoAuth$.commit(() => res.auth)
+        this.reserveInfo$.commit(() => res.info)
         this.reserveList$.commit(() => res.list)
       })
     )

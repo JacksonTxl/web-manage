@@ -165,6 +165,7 @@
                 name: 'contract-constitution',
                 props: {
                   id: info.id,
+                  type: info.template_title,
                   lawContent
                 },
                 on: {
@@ -224,9 +225,6 @@ export default {
       message: MessageService
     }
   },
-  created() {
-    console.log(this.info)
-  },
   rxState() {
     /**
      * @type {EditService}
@@ -239,6 +237,9 @@ export default {
       codeDemo: edit.codeDemo$,
       loading: edit.loading$
     }
+  },
+  created() {
+    console.log(this.info)
   },
   methods: {
     onCodeDone() {

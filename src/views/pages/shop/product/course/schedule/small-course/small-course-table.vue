@@ -9,7 +9,7 @@
           type="primary"
           class="mg-r12"
           @click="onClickScheduleInBatch"
-          v-if="auth.add"
+          v-if="auth.eidt"
         >
           批量编辑
         </st-button>
@@ -166,6 +166,9 @@ export default {
     },
     // 添加小班课排期
     onAddSchedule(date) {
+      if (!this.auth.add) {
+        return
+      }
       this.$modalRouter.push({
         name: 'schedule-small-course-add-course',
         props: { time: moment(date) },

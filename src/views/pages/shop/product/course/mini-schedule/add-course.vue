@@ -62,7 +62,7 @@
           </st-form-item>
         </st-form>
       </div>
-      <div class="footer">
+      <div :class="b('footer')">
         <div :class="b('save-schedule-btn')">
           <st-button @click="hide">
             取消
@@ -73,7 +73,13 @@
         </div>
       </div>
     </template>
-    <st-button block type="dashed" icon="add" :disabled="DisabledAddCourseBtn">
+    <st-button
+      :class="b('add-btn')"
+      block
+      type="dashed"
+      icon="add"
+      :disabled="DisabledAddCourseBtn"
+    >
       添加课程
     </st-button>
   </a-popover>
