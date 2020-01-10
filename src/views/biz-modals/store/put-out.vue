@@ -5,29 +5,27 @@
     v-model="show"
     :loading="loading.stockOutbound"
   >
-    <st-container>
-      <st-table
-        :columns="columns"
-        :dataSource="skuList"
-        rowKey="sku_id"
-        :page="false"
-      >
-        <template slot="stock_amount" slot-scope="customRender, record">
-          <st-input-number
-            v-model="record.stock_amount"
-            :float="true"
-            style="width:110px;"
-          ></st-input-number>
-        </template>
-        <template slot="remark" slot-scope="customRender, record">
-          <a-input
-            v-model="record.remark"
-            :float="true"
-            style="width:110px;"
-          ></a-input>
-        </template>
-      </st-table>
-    </st-container>
+    <st-table
+      :columns="columns"
+      :dataSource="skuList"
+      rowKey="sku_id"
+      :page="false"
+    >
+      <template slot="stock_amount" slot-scope="customRender, record">
+        <st-input-number
+          v-model="record.stock_amount"
+          :float="true"
+          style="width:110px;"
+        ></st-input-number>
+      </template>
+      <template slot="remark" slot-scope="customRender, record">
+        <a-input
+          v-model="record.remark"
+          :float="true"
+          style="width:110px;"
+        ></a-input>
+      </template>
+    </st-table>
   </st-modal>
 </template>
 <script>
