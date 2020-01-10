@@ -209,15 +209,6 @@
           />
         </span>
       </div>
-      <div slot="member_name" slot-scope="text, record">
-        {{ record.member_name }}
-        <st-icon
-          v-if="record.is_minors"
-          type="user-type"
-          class="mg-l4"
-          :color="record.sex.id === SEX.GIRL ? '#FF5E41' : '#3F66F6'"
-        />
-      </div>
       <span slot="customSaleTitle">
         跟进销售客保天数
         <st-help-tooltip id="TSCRM001" />
@@ -237,6 +228,12 @@
         <span v-else>
           <st-overflow-text :value="text" maxWidth="100px"></st-overflow-text>
         </span>
+        <st-icon
+          v-if="record.is_minors"
+          type="user-type"
+          class="mg-l4"
+          :color="record.sex.id === SEX.GIRL ? '#FF5E41' : '#3F66F6'"
+        />
       </div>
       <div slot="salesman_protect_day" slot-scope="text, record">
         <span class="mg-r4">{{ record.salesman_protect_day }}</span>
