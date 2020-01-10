@@ -52,36 +52,30 @@
             >
               收款
             </a>
-            <!--  -->
             <a
               @click="onCancel(record)"
               v-if="record.auth['brand_shop:order:order|cancel']"
             >
               取消
             </a>
-            <!--   -->
             <a
               @click="onOrderInfo(record)"
               v-if="record.auth['brand_shop:order:order|get']"
             >
               详情
             </a>
-
-            <!--  -->
             <a
               @click="onRefund(record)"
               v-if="record.auth['brand_shop:order:order|refund']"
             >
               退款
             </a>
-            <!--  -->
             <a
               @click="onSplit(record)"
               v-if="record.auth['brand_shop:order:order|split']"
             >
               业绩拆分
             </a>
-            <!--  -->
             <a
               @click="printOrder(record.id)"
               v-if="
@@ -91,7 +85,6 @@
             >
               打印小票
             </a>
-            <!--   -->
             <a
               @click="onChildredRefund(record)"
               v-if="
@@ -147,15 +140,14 @@ export default {
   computed: {
     columns
   },
+  mounted() {
+    this.setSearchData()
+  },
   watch: {
     $searchQuery() {
       this.setSearchData()
     }
   },
-  mounted() {
-    this.setSearchData()
-  },
-
   data() {
     return {
       ORDER_PRODUCT_TYPE,

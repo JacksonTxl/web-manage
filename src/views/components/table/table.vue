@@ -177,7 +177,7 @@ export default {
       pagination: this.tablePagination,
       locale: this.locale,
       dataSource: this.tableDataSource,
-      scroll: this.dataSource.length >= 1 ? this.scroll : {},
+      scroll: this.tableDataSource.length >= 1 ? this.scroll : {},
       rowClassName: this.rowClassName,
       childrenColumnName: '$_children',
       indentSize: 16,

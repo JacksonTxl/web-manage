@@ -85,7 +85,8 @@ export const routeMapConfig = {
     routeConfig.queryOptions = {
       course_id: { type: Number, default: -1 },
       court_id: { type: Number, default: -1 },
-      coach_id: { type: Number, default: -1 }
+      coach_id: { type: Number, default: -1 },
+      data_type: { type: String, default: 'week' }
     }
   },
   'shop-product-course-schedule-team-team-table'(routeConfig: RouteConfig) {
@@ -103,7 +104,8 @@ export const routeMapConfig = {
   'shop-product-course-schedule-personal-personal'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教1v1预约'
     routeConfig.queryOptions = {
-      coach_id: { type: Number, default: -1 }
+      coach_id: { type: Number, default: -1 },
+      data_type: { type: String, default: 'week' }
     }
   },
   'shop-product-course-schedule-personal-personal-reserve-table'(
@@ -426,7 +428,7 @@ export const routeMapConfig = {
       start_date: { type: String, default: '' },
       end_date: { type: String, default: '' },
       page: { type: Number, default: 1 },
-      size: { type: Number, default: 20 }
+      size: { type: Number, default: 10 }
     }
   },
   'shop-finance-order-info-collection-details'(routeConfig: RouteConfig) {
@@ -951,6 +953,10 @@ export const routeMapConfig = {
   },
   'shop-app-venue-manage-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '场地管理'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
   },
   'shop-app-venue-manage-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新建场馆'
@@ -1117,7 +1123,8 @@ export const routeMapConfig = {
   ) {
     routeConfig.meta.title = '私教小团课排期'
     routeConfig.queryOptions = {
-      coach_id: { type: Number, default: -1 }
+      coach_id: { type: Number, default: -1 },
+      data_type: { type: String, default: 'week' }
     }
   },
   'shop-product-course-manage-team-list'(routeConfig: RouteConfig) {

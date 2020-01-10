@@ -39,7 +39,7 @@
         <div class="shadow"></div>
         <div :class="bComponent('column')" v-show="!isShowEdit">
           <div class="width75" :class="bComponent('text')" v-if="info.preview">
-            <span class="color-title mg-r8">预览内容:</span>
+            <span class="color-title mg-r24">预览内容:</span>
             <span :class="bComponent('text-right')">{{ info.preview }}</span>
           </div>
           <div :class="bComponent('text')" style="padding-left:0">
@@ -52,16 +52,16 @@
             :class="bComponent('text')"
             v-if="info.course_type_description"
           >
-            <span class="color-title">课程类型:</span>
-            <span class="mg-l8">{{ info.course_type_description }}</span>
+            <span class="color-title mg-r24">课程类型:</span>
+            <span>{{ info.course_type_description }}</span>
           </div>
           <div
             class="width75"
             :class="bComponent('text')"
             v-if="info.order_type_description"
           >
-            <span class="color-title">订单类型:</span>
-            <span class="mg-l8">{{ info.order_type_description }}</span>
+            <span class="color-title mg-r24">订单类型:</span>
+            <span>{{ info.order_type_description }}</span>
           </div>
         </div>
 
@@ -70,14 +70,16 @@
             <!-- 发送内容 start -->
             <template v-if="info.preview">
               <div class="mg-b16">
-                <span class="mg-r8 color-title">发送内容</span>
+                <span class="color-title mg-r24">发送内容</span>
                 <span :class="bComponent('text-right')">
                   <a-input
                     :class="bComponent('column-input')"
                     v-model="params.msg_preffix"
                     placeholder="请输入"
                   ></a-input>
-                  <span>{{ info.content }}</span>
+                  <span>
+                    {{ info.content }}
+                  </span>
                   <a-input
                     :class="bComponent('column-input')"
                     v-model="params.msg_suffix"
@@ -86,7 +88,7 @@
                 </span>
               </div>
               <div class="mg-b16">
-                <span class="mg-r8 color-title">预览内容</span>
+                <span class="color-title mg-r24">预览内容</span>
                 <span :class="bComponent('text-right')">
                   {{ info.preview }}
                 </span>
@@ -95,7 +97,7 @@
             <!-- 发送内容 end -->
 
             <slot name="notify-time" :params="params">
-              <span class="color-title mg-r8">发送规则</span>
+              <span class="color-title mg-r24">发送规则</span>
               <span>
                 {{ info.notify_time.name }}
               </span>

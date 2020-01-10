@@ -32,7 +32,7 @@ export class NotifyApi extends Api {
     return this.http.get(`/v1/notice/pc/unread`)
   }
   setRead() {
-    return this.http.put(`/v1/notice/announcement/read`)
+    return this.http.put(`/v1/announcement/read`)
   }
 }
 export interface GetNoticeListQuery {

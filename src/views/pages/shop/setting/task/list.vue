@@ -15,6 +15,9 @@
       :dataSource="list"
       rowKey="id"
     >
+      <template slot="task_type" slot-scope="text">
+        {{ text.name }}
+      </template>
       <!-- 任务状态 -->
       <template slot="task_status" slot-scope="text, record">
         <st-text
@@ -30,19 +33,19 @@
       </template>
       <!-- 总数 -->
       <template slot="total_num" slot-scope="text, record">
-        <a @click="onClickModal(record.id, 'total')">
+        <a @click="onClickModal(record, 'total')">
           {{ text }}
         </a>
       </template>
       <!-- 成功数 -->
       <template slot="success_num" slot-scope="text, record">
-        <a @click="onClickModal(record.id, 'success')">
+        <a @click="onClickModal(record, 'success')">
           {{ text }}
         </a>
       </template>
       <!-- 失败数 -->
       <template slot="fail_num" slot-scope="text, record">
-        <a @click="onClickModal(record.id, 'fail')">
+        <a @click="onClickModal(record, 'fail')">
           {{ text }}
         </a>
       </template>
@@ -102,11 +105,12 @@ export default {
     refresh() {
       return this.listService.getList(this.$searchQuery)
     },
-    onClickModal(id, type) {
+    onClickModal(record, type) {
       this.$modalRouter.push({
         name: 'task-detail',
         props: {
-          task_id: id,
+          task_id: record.id,
+          task_type: record.task_type.id,
           popup_type: type
         },
         on: {}

@@ -52,7 +52,11 @@ export const refundColumns = [
     dataIndex: 'pay_channel'
   },
   {
+    title: '退款原因',
+    dataIndex: 'refund_reason'
+  },
+  {
     title: '备注',
-    dataIndex: 'remarks'
+    dataIndex: 'description'
   }
 ]

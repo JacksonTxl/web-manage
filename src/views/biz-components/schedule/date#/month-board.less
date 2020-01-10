@@ -1,0 +1,110 @@
+.months-group-board {
+  width: 100%;
+  // margin-left: -74px;
+  .board-header {
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto;
+    grid-template-rows: 60px;
+    &__header-item {
+      font-size: 12px;
+      text-align: center;
+      line-height: 60px;
+    }
+  }
+  .board-content {
+    width: 100%;
+    display: grid;
+    // grid-template-columns: auto auto auto auto auto auto auto;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 122px 122px 122px 122px 122px 122px;
+    border-right: 1px solid rgba(205, 212, 223, 1);
+    border-bottom: 1px solid rgba(205, 212, 223, 1);
+    position: relative;
+    &__day-item {
+      border: 1px solid rgba(205, 212, 223, 1);
+      border-right: none;
+      border-bottom: none;
+      position: relative;
+      &--current {
+        color: blue;
+      }
+      &--gray {
+        color: #9bacb9;
+      }
+    }
+    &__item {
+      width: 100%;
+      height: 100%;
+    }
+    &__popover {
+      width: 100%;
+      height: 100%;
+      &:hover {
+        background-color: #f7f9fc;
+      }
+      .font-number {
+        font-size: 18px;
+      }
+    }
+    &__course-item {
+      display: flex;
+      align-items: center;
+    }
+    &__point {
+      width: 6px;
+      height: 6px;
+      border-radius: 6px;
+      background-color: #dddddd;
+      margin-right: 8px;
+    }
+    &__item-content {
+      width: 100%;
+      height: 100%;
+      box-sizing: content-box;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    &__hover-content {
+      width: calc(100% - 16px);
+      height: calc(100% - 16px);
+      box-sizing: content-box;
+      padding: 8px;
+    }
+    &__add-content {
+      width: 100%;
+      height: 100%;
+      box-sizing: content-box;
+    }
+    &__add-btn {
+      display: flex;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background: rgba(247, 249, 252, 1);
+      border-radius: 4px;
+      width: calc(100% - 2px);
+      height: calc(100% - 2px);
+      box-sizing: content-box;
+      border: 1px dashed rgba(136, 154, 181, 1);
+      .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        width: 24px;
+        height: 24px;
+        background: rgba(205, 212, 223, 1);
+        border-radius: 100%;
+      }
+      .text {
+        font-size: 14px;
+        font-weight: 400;
+        color: rgba(62, 77, 92, 1);
+        line-height: 22px;
+      }
+    }
+  }
+}

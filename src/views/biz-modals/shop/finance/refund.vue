@@ -49,14 +49,17 @@
         </a-col>
         <a-col :span="13" class="mg-b36">
           <st-info>
-            <st-info-item label="购买" v-if="info.order_type !== 6">
+            <st-info-item
+              label="购买"
+              v-if="info.order_type !== 6 || info.is_sub === 1"
+            >
               {{ info.product_name }}
             </st-info-item>
             <st-info-item
-              class="mg-b0 white-nowrap"
               label="购买"
-              v-if="info.order_type === 6"
+              v-if="info.order_type === 6 && !info.is_sub"
             >
+              <!-- TODO:雄伟给返回 -->
               <st-overflow-text
                 title="购买"
                 max-width="180px"
@@ -64,9 +67,11 @@
                   info.product_list &&
                     info.product_list.map(
                       item =>
-                        `${item.product_name}${item.rule_name ? '规格：' : ''}${
-                          item.rule_name
-                        }*${item.product_count} 金额：&yen;${item.price}`
+                        `${item.product_name}&nbsp;${
+                          item.rule_name ? '规格：' : ''
+                        }${item.rule_name}*${item.product_count} 金额：&yen;${
+                          item.price
+                        }`
                     )
                 "
               ></st-overflow-text>

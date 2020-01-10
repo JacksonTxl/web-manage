@@ -142,22 +142,11 @@ export default {
           type: 'venues'
         },
         on: {
-          success: this.payCallBack
+          success: res => {
+            this.getList()
+          }
         }
       })
-    },
-    payCallBack(orderId, callBackType) {
-      switch (callBackType) {
-        case 'cancel':
-          this.onSearch()
-          break
-        case 'pay':
-          this.createdGatheringTip({
-            message: '收款成功',
-            order_id: orderId
-          })
-          break
-      }
     },
     cancelBooking(id, isSub) {
       let params = {}

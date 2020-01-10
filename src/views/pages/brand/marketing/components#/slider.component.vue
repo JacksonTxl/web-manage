@@ -138,12 +138,12 @@ export default {
       item.activity_id = [item.activity_type, item.activity_id]
       const tree = new Tree(actList)
       if (index !== 0 && !tree.findNodeById(item.activity_id[1])) {
-        // const node = tree.findNodeById(item.activity_type) || {}
-        const node = actList.filter(act => act === item.activity_type) || {}
+        const node =
+          actList.filter(act => act.id === item.activity_type)[0] || {}
         let tmpArrChild = {
           activity_name: item.activity_name,
           activity_type: item.activity_type,
-          id: item.activity_id,
+          id: item.activity_id[1],
           isover: true
         }
         let tmpProduct = {
@@ -157,13 +157,13 @@ export default {
         }
       }
     })
-    this.list = list
     actList.forEach(item => {
       if (!item.children.length) {
         item.disabled = true
       }
     })
-    this.actList = actList
+    this.actList = cloneDeep(actList)
+    this.list = cloneDeep(list)
     console.log(actList, '这是actList')
   },
   watch: {
@@ -213,8 +213,8 @@ export default {
       this.addItem.activity_type = selected.activity_type
       this.addItem.activity_name = selected.activity_name
       if (item.activity_type === 5) {
-        item.product_type = selected.product_type || -1
-        item.product_template_id = selected.product_template_id || -1
+        this.addItem.product_type = selected.product_type || -1
+        this.addItem.product_template_id = selected.product_template_id || -1
       }
     }
   }

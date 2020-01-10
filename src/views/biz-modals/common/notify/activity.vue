@@ -1,5 +1,5 @@
 <template>
-  <st-modal :wrapClassName="b()" v-model="show" width="728px" :footer="null">
+  <st-modal :wrapClassName="b()" v-model="show" width="640px" :footer="null">
     <div :class="b('arrow-left')" @click="onClickLeft">
       <st-icon type="arrow-left" class="arrow-left-out" />
     </div>
@@ -68,6 +68,9 @@ export default {
     onClickRight() {
       this.$refs.swiper.swiper.slideNext()
     }
+  },
+  created() {
+    this.$emit('success')
   }
 }
 </script>

@@ -31,6 +31,7 @@
 <script>
 import { columns } from './put-in.config.ts'
 import { PutInService } from './put-in.service.ts'
+import { cloneDeep } from 'lodash-es'
 export default {
   serviceInject() {
     return {
@@ -45,23 +46,26 @@ export default {
   data() {
     return {
       show: false,
-      columns
+      columns,
+      skuList: []
     }
   },
   props: {
-    skuList: {
+    list: {
       type: Array,
       default: () => {
         return []
       }
     }
   },
+  mounted() {
+    this.skuList = cloneDeep(this.list)
+  },
   methods: {
     onSubmit() {
       this.putInService
         .stockWarehouse({ stock: this.skuList })
         .subscribe(res => {
-          console.log('1111111111====')
           this.$emit('success')
           this.show = false
         })
