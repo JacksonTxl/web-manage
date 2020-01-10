@@ -485,15 +485,15 @@ export default {
               if (!item.conflict) {
                 item.conflict = 0
                 item.conflictList = []
+                text += item.start_time + ','
+                courseNum += item.schedule_ids.split(',').length
               }
-              text += item.start_time + ','
-              courseNum += item.schedule_ids.split(',').length
             })
-            this.getScheduleTips(dateIndex, text, courseNum)
             listItemCard[item.week] = item.list
             listItemCard[item.week][0].show = false
           }
         })
+        this.getScheduleTips(dateIndex, text, courseNum)
         for (let i = 0; i <= 6; i++) {
           if (!listItemCard[i]) {
             listItemCard[i] = []
