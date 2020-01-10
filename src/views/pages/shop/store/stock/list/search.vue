@@ -18,7 +18,7 @@
       >
         批量入库
       </st-button>
-      <st-button type="primary" @click="moreOut()">
+      <st-button type="primary" @click="moreOut()" v-if="auth.retrieval">
         批量出库
       </st-button>
     </div>
@@ -39,7 +39,7 @@
         <span v-if="record.sku_name">（{{ record.sku_name }}）</span>
       </template>
       <template slot="action" slot-scope="text, record">
-        <st-table-actions sytle="width: 120px">
+        <st-table-actions>
           <a
             v-if="record.auth['shop:cloud_store:stock|warehousing']"
             @click="moreIn(record)"
@@ -69,6 +69,7 @@ import StorePutIn from '@/views/biz-modals/store/put-in'
 import StorePutOut from '@/views/biz-modals/store/put-out'
 import tableMixin from '@/mixins/table.mixin'
 import { SearchService } from './search.service'
+import { find } from 'lodash-es'
 export default {
   bem: {
     search: 'page-shop-store-stock-list-search'
@@ -103,7 +104,9 @@ export default {
         list = [record]
       } else {
         this.selectedRowKeys.forEach(id => {
-          let item = this.tableData.filter(stock => stock.sku_id === id)[0]
+          let item = find(this.tableData, stock => {
+            return stock.sku_id === id
+          })
           list.push(item)
         })
       }
@@ -112,7 +115,7 @@ export default {
       })
       this.$modalRouter.push({
         name: 'store-put-in',
-        props: { skuList: list },
+        props: { list: list },
         on: {
           success: () => {
             this.selectedRowKeys = []
@@ -136,7 +139,7 @@ export default {
       })
       this.$modalRouter.push({
         name: 'store-put-out',
-        props: { skuList: list },
+        props: { list: list },
         on: {
           success: () => {
             this.selectedRowKeys = []

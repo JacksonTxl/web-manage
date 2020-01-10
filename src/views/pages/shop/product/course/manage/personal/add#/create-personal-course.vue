@@ -118,14 +118,14 @@ export default {
   },
   data() {
     return {
-      form: this.$form.createForm(this),
+      form: this.$stForm.create(),
       fileList: []
     }
   },
   methods: {
     save(e) {
       e.preventDefault()
-      this.form.validateFields().then(() => {
+      this.form.validate().then(() => {
         const data = this.form.getFieldsValue()
         this.addService.addCourse(data).subscribe(res => {
           this.messageService.success({

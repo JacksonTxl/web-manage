@@ -170,19 +170,14 @@ export default {
     },
     goNext(e) {
       e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values)
-          this.submit(this.form.getFieldsValue(), 1)
-        }
+      this.form.validate().then(values => {
+        this.submit(this.form.getFieldsValue(), 1)
       })
     },
     save(e) {
       e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          this.submit(values, 0)
-        }
+      this.form.validate().then(values => {
+        this.submit(values, 0)
       })
     },
     submit(data, saveOrgoNext) {
@@ -202,18 +197,12 @@ export default {
     },
     // 添加证书
     onAddProfess() {
-      let value = this.form.getFieldValue('certification_name')
-      let that = this
-      if (value) {
-        // input框里有值才添加
-        this.form.validateFields(['certification_name'], {}, (error, value) => {
-          if (!error) {
-            let arr = [...this.coachInfoData.certification_name]
-            arr.push(value.certification_name)
-            this.coachInfoData.certification_name = [...new Set(arr)]
-          }
-        })
-      }
+      // input框里有值才添加
+      this.form.validate(['certification_name']).then(values => {
+        let arr = [...this.coachInfoData.certification_name]
+        arr.push(value.certification_name)
+        this.coachInfoData.certification_name = [...new Set(arr)]
+      })
     },
     // 移除证书
     onProfessRule(index) {

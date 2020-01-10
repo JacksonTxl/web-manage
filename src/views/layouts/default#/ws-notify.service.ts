@@ -1,3 +1,4 @@
+import { notification } from 'ant-design-vue'
 import { TokenService } from '../../../services/token.service'
 import { UserService } from '@/services/user.service'
 import { AppConfig } from '@/constants/config'
@@ -17,6 +18,7 @@ export class WsNotifyService {
   private count = 0
   private errCount = 0
   private timer = 0
+  private key = 0
   private timerSetTimeout = 0
   private heartBeat = {
     msg_id: uuidV1(),
@@ -76,7 +78,7 @@ export class WsNotifyService {
     )
   }
   setRead() {
-    this.api.setRead()
+    return this.api.setRead()
   }
   init() {
     return anyAll(this.getActivityList(), this.getSystemList())
@@ -85,6 +87,107 @@ export class WsNotifyService {
     this.getWebsocketInstance({ token: this.token, appId: 10000 })
     this.message()
     this.setHeartBeat()
+  }
+  private getMaMessage(msg: any, maxLength: number) {
+    const args = msg.payload.args
+    const content = msg.payload.content
+    const config = {
+      title: msg.payload.title,
+      content: (h: any) => {
+        return msg.payload.msg_sub_type !== 8
+          ? h('div', { attrs: { class: 'st-ws-notice-description' } }, [
+              h(
+                'div',
+                {
+                  attrs: { class: 'st-ws-notice-description__content' }
+                },
+                content
+              )
+            ])
+          : h('div', { attrs: { class: 'st-ws-notice-description' } }, [
+              h(
+                'div',
+                {
+                  attrs: { class: 'st-ws-notice-description__content' }
+                },
+                `成功进入(${args.area_name})`
+              ),
+              h(
+                'div',
+                {
+                  attrs: { class: 'st-ws-notice-description__cunsume  mg-t8' }
+                },
+                [
+                  h('div', { attrs: { class: 'label' } }, '消费方式: '),
+                  h('div', { attrs: { class: 'value' } }, args.proof_name)
+                ]
+              ),
+              h(
+                'div',
+                { attrs: { class: 'st-ws-notice-description__detail mg-t8' } },
+                [
+                  h(
+                    'div',
+                    {
+                      attrs: { class: 'st-ws-notice-description__member mg-r8' }
+                    },
+                    [
+                      h('div', { attrs: { class: 'label' } }, '跟进会籍: '),
+                      h('div', { attrs: { class: 'value' } }, args.seller_name)
+                    ]
+                  ),
+                  h(
+                    'div',
+                    {
+                      attrs: { class: 'st-ws-notice-description__coach' }
+                    },
+                    [
+                      h('div', { attrs: { class: 'label' } }, '跟进教练: '),
+                      h('div', { attrs: { class: 'value' } }, args.coach_name)
+                    ]
+                  )
+                ]
+              )
+            ])
+      },
+      icon: (h: any) => {
+        return msg.payload.msg_sub_type !== 8
+          ? h('st-icon', {
+              attrs: {
+                type: 'success',
+                width: '22',
+                color: '#52C41A',
+                height: '100%'
+              }
+            })
+          : h('img', {
+              attrs: {
+                src: args.image_url,
+                width: '96',
+                height: '100%'
+              }
+            })
+      },
+      duration: 5,
+      onClose: () => {
+        const oldMessage = this.messageArr.shift()
+        this.notificationService.close(oldMessage.key)
+      },
+      key: uuidV1()
+    }
+    if (this.messageArr.length >= maxLength) {
+      const oldMessage = this.messageArr.shift()
+      this.notificationService.close(oldMessage.key)
+      msg.payload.msg_sub_type === 8
+        ? this.notificationService.open(config)
+        : this.notificationService.openNormal(config)
+      this.messageArr.push(config)
+    } else {
+      msg.payload.msg_sub_type === 8
+        ? this.notificationService.open(config)
+        : this.notificationService.openNormal(config)
+      this.messageArr.push(config)
+    }
   }
   message() {
     this.ws.subscribe(
@@ -96,46 +199,23 @@ export class WsNotifyService {
           return
         }
         const maxLength = 3
-        console.log(msg)
         if (msg.msg_type === 1) {
           this.notReadNum$.commit(() => msg.payload.not_read_num)
         } else if (msg.msg_type === 3) {
           this.notReadNum$.commit(() => msg.payload.total)
           return
         }
-
-        const config = {
-          title: msg.payload.title,
-          content: msg.payload.content,
-          icon: this.user$.value.avatar,
-          duration: 5,
-          onClose: () => {
-            console.log('onCLose')
-            this.notificationService.open(
-              this.messageArr[this.messageArr.length - 1]
-            )
-            this.messageArr.shift()
-          }
-        }
-        if (this.messageArr.length >= maxLength) {
-          this.messageArr.shift()
-          this.messageArr.push(config)
-        } else {
-          this.notificationService.open(config)
-          this.messageArr.push(config)
-        }
+        this.getMaMessage(msg, maxLength)
       },
       (err: any) => {
         this.reconnection(err)
       },
       () => {
-        console.log('comdsadasdsa')
         clearInterval(this.timer)
       }
     )
   }
   reconnection(err: any) {
-    console.log('ERR', err)
     clearTimeout(this.timerSetTimeout)
     this.errCount++
     let rangeTime = 5000

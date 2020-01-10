@@ -117,7 +117,7 @@ export default {
   },
   data() {
     return {
-      form: this.$form.createForm(this),
+      form: this.$stForm.create(),
       priceGradient: [],
       singleReserve: 0,
       singlePrice: ''
@@ -160,7 +160,7 @@ export default {
     save(e) {
       e.preventDefault()
       const data = this.getData()
-      this.form.validateFields().then(() => {
+      this.form.validate().then(() => {
         if (!this.inputCheck()) {
           return
         }

@@ -39,7 +39,6 @@ export class ListService implements Controller {
   getList(params: OrderParams) {
     return this.orderApi.getOrderList(params).pipe(
       tap((result: any) => {
-        result = this.authService.filter(result)
         this.list$.commit(() => result.list)
         this.page$.commit(() => result.page)
       })

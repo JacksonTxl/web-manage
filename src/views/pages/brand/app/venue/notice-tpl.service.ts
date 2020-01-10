@@ -18,13 +18,15 @@ export class NoticeTplService {
   })
   constructor(private NoticeApi: NoticeApi, private authService: AuthService) {}
   getNoticeList(query: NoticeQuery) {
-    return this.NoticeApi.getNoticeList(query).pipe(
+    return this.NoticeApi.getNoticeList('venues', query).pipe(
       tap((res: any) => {
         this.list$.commit(() => res.list)
       })
     )
   }
   putNotice(params: PutNoticeParams) {
-    return this.NoticeApi.putNotice(params).pipe(tap((res: any) => {}))
+    return this.NoticeApi.putNotice('venues', params).pipe(
+      tap((res: any) => {})
+    )
   }
 }

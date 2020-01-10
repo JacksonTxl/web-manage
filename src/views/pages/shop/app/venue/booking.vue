@@ -1,6 +1,6 @@
 <template>
   <div :class="b()">
-    <div :class="b('right')">
+    <div :class="right()">
       <div :class="right('top')">
         <st-t2>代预约</st-t2>
         <st-table
@@ -88,45 +88,51 @@
         </a-radio-button>
       </a-radio-group>
       <div :class="calendar()" id="booking-left-calendar">
-        <swiper :options="sliderOptions">
-          <swiper-slide v-for="(item, index) in calendarData" :key="index">
-            <div
-              :class="[calendar('date'), { act: pickedIndex === index }]"
-              @click="pickDate(item, index)"
-            >
-              <div :class="calendar('week')">{{ item.week }}</div>
-              <div :class="calendar('day')">{{ item.day }}</div>
+        <div :class="calendar('wrapper')">
+          <swiper :options="sliderOptions">
+            <swiper-slide v-for="(item, index) in calendarData" :key="index">
+              <div
+                :class="[calendar('date'), { act: pickedIndex === index }]"
+                @click="pickDate(item, index)"
+              >
+                <div :class="calendar('week')">{{ item.week }}</div>
+                <div :class="calendar('day')">{{ item.day }}</div>
+              </div>
+            </swiper-slide>
+          </swiper>
+          <div
+            class="swiper-button-prev swiper-booking-button-prev"
+            slot="button-prev"
+          >
+            <div :class="calendar('icon')">
+              <st-icon type="arrow-left" class="arrow-left" />
             </div>
-          </swiper-slide>
-        </swiper>
-        <div
-          class="swiper-button-prev swiper-booking-button-prev"
-          slot="button-prev"
-        >
-          <div :class="calendar('icon')">
-            <st-icon type="arrow-left" class="arrow-left" />
           </div>
-        </div>
 
-        <div
-          class="swiper-button-next swiper-booking-button-next"
-          slot="button-next"
-        >
-          <div :class="calendar('icon')">
-            <st-icon type="arrow-right" class="arrow-right" />
+          <div
+            class="swiper-button-next swiper-booking-button-next"
+            slot="button-next"
+          >
+            <div :class="calendar('icon')">
+              <st-icon type="arrow-right" class="arrow-right" />
+            </div>
           </div>
         </div>
       </div>
 
       <div :class="list()">
-        <booking-table
-          ref="bookingTable"
-          :data="bookingList"
-          :siteX="siteX"
-          :siteY="siteY"
-          :selectedData="selectedList"
-          @change="getSelectedList"
-        ></booking-table>
+        <a-spin :class="list('loading')" :spinning="loading.getBookingList">
+          <booking-table
+            ref="bookingTable"
+            :data="bookingList"
+            :siteX="siteX"
+            :siteY="siteY"
+            :query="query"
+            :selectedData="selectedList"
+            @change="getSelectedList"
+            @nextPage="onNextPage"
+          ></booking-table>
+        </a-spin>
       </div>
     </div>
   </div>
@@ -141,24 +147,27 @@ import memberSearch from '@/views/biz-components/member-search/member-search'
 import { ruleOptions, columns } from './booking.config'
 import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
 import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
+import { PatternService } from '@/services/pattern.service'
 export default {
   name: 'PageShopAppVenueBooking',
   bem: {
     b: 'page-shop-app-venue-booking',
-    calendar: 'page-shop-app-venue-booking__calendar',
-    list: 'page-shop-app-venue-booking__list',
-    right: 'page-shop-app-venue-booking__right'
+    calendar: 'calendar',
+    list: 'list',
+    right: 'right'
   },
   serviceInject() {
     return {
-      bookingService: BookingService
+      bookingService: BookingService,
+      pattern: PatternService
     }
   },
   rxState() {
     return {
       venueList: this.bookingService.venueList$,
       loading: this.bookingService.loading$,
-      auth: this.bookingService.auth$
+      auth: this.bookingService.auth$,
+      hasNext: this.bookingService.hasNext$
     }
   },
   modals: {
@@ -197,7 +206,7 @@ export default {
       query: {
         venues_id: '',
         page: 1,
-        size: 100,
+        size: 10,
         reserve_day: ''
       },
       pickedIndex: 0,
@@ -206,7 +215,7 @@ export default {
       siteY: []
     }
   },
-  created() {
+  mounted() {
     this.calendarData = Array(28)
       .fill()
       .map((item, index) => {
@@ -231,6 +240,15 @@ export default {
     }
   },
   methods: {
+    onNextPage() {
+      if (!this.hasNext) return
+      this.query.page++
+      this.bookingService.getBookingList(this.query).subscribe(res => {
+        this.bookingList = this.bookingList.concat(res.list)
+        this.siteX = this.siteX.concat(res.site_x)
+        this.siteY = res.site_y
+      })
+    },
     resetPage() {
       this.form.resetFields()
       this.reduce_price = ''
@@ -387,11 +405,17 @@ export default {
       this.calendarData.forEach(item => (item.ispick = false))
       this.pickedIndex = index
       this.query.reserve_day = dateObj.date
+      this.resetPagination()
       this.getList()
     },
     selectHandler(e) {
       this.query.venues_id = e.target.value
+      this.resetPagination()
       this.getList()
+    },
+    resetPagination() {
+      this.query.page = 1
+      this.$refs.bookingTable.resetScroll()
     },
     getList() {
       this.bookingService.getBookingList(this.query).subscribe(res => {

@@ -91,7 +91,7 @@
                     placeholder="上传图片"
                   >
                     <template v-slot:description>
-                      <p>建议尺寸为750像素*750像素</p>
+                      <p>建议尺寸为750px*750px</p>
                     </template>
                   </st-image-upload>
                   <div :class="basic('img--tip')">可上传5张商品图片</div>
@@ -163,11 +163,7 @@
                 <span>添加规格项（{{ skuList.length }}/3）</span>
               </st-button>
               <div
-                :class="
-                  index === skuList.length - 1
-                    ? `${basic('sku--item')} ${basic('sku--last')}`
-                    : basic('sku--item')
-                "
+                :class="skuItem()"
                 v-for="(item, index) in skuList"
                 :key="index"
               >
@@ -184,16 +180,16 @@
                     style="width: 220px"
                   ></a-input>
                   <span
-                    :class="basic('sku--item-del')"
+                    :class="skuItem('del')"
                     @click="delSku(index)"
                     v-if="!isEditMode"
                   >
                     <st-icon
                       type="delete"
-                      :class="basic('sku--item-icon')"
+                      :class="skuItem('icon')"
                       color="#3F66F6"
                     ></st-icon>
-                    <span :class="basic('sku--item-text')">
+                    <span :class="skuItem('text')">
                       删除
                     </span>
                   </span>
@@ -216,7 +212,7 @@
                     />
                   </span>
                   <a
-                    :class="basic('sku--item-add')"
+                    :class="skuItem('add')"
                     @click="addSkuItem(index)"
                     v-if="item.spec_item_name.length <= 10"
                   >
@@ -343,7 +339,8 @@ import { UserService } from '@/services/user.service'
 import { cloneDeep } from 'lodash-es'
 export default {
   bem: {
-    basic: 'shop-store-add'
+    basic: 'shop-store-add',
+    skuItem: 'sku-item'
   },
   serviceInject() {
     return {
@@ -503,6 +500,7 @@ export default {
     addGoodNew(values) {
       let data = {}
       let product_sku = []
+      let spec_name_arr = []
       this.tableData.forEach((item, index) => {
         let skuItem = {}
         skuItem.market_price = item.market_price
@@ -529,6 +527,9 @@ export default {
         }
         product_sku.push(skuItem)
       })
+      this.skuList.forEach(item => {
+        spec_name_arr.push(item.spec_name)
+      })
       data = {
         product_images: this.imgList, // 商品图片
         product_intro: this.content, // 商品介绍
@@ -543,7 +544,8 @@ export default {
         sale_type:
           values.sale_type.length === this.saleType.length
             ? -1
-            : values.sale_type[0] // 售卖方式
+            : values.sale_type[0], // 售卖方式
+        spec_name_arr
       }
       this.addService.addGoods(data).subscribe(res => {
         this.$router.push({
