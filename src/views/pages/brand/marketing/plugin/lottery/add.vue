@@ -697,7 +697,9 @@ export default {
           })
           return
         }
-        value.prize_sort = this.prizeSort[this.prizeList.length - 1]
+        value.activity_rule.prize_sort = this.prizeSort[
+          this.prizeList.length - 1
+        ]
         if (this.$searchQuery.activity_id) {
           value.activity_id = this.$searchQuery.activity_id
           this.addService.edit(value).subscribe(res => {
