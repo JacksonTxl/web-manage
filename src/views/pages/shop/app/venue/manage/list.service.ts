@@ -40,7 +40,7 @@ export class ListService {
     return this.venueApi.switchSite(params)
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    let { id } = to.query as any
+    let { id } = to.meta.query
     return this.getList({ venues_id: id, ...to.meta.query })
   }
 }

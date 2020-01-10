@@ -953,6 +953,7 @@ export const routeMapConfig = {
     routeConfig.meta.title = '场地管理'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
+      venues_id: { type: Number },
       size: { type: Number, default: 20 }
     }
   },

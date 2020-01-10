@@ -61,6 +61,7 @@
           >
             编辑
           </a>
+          <!-- TODO: -->
           <a
             href="javascript:;"
             v-if="record.auth['shop:product:venues_site|del']"
@@ -76,6 +77,7 @@
             @click="onSwitch(record)"
             v-if="record.auth['shop:product:venues_site|switch']"
           >
+            // TODO:
             {{ record.site_status === SITE_STATUS.OFF ? '启用' : '停用' }}
           </a>
           <a
@@ -191,12 +193,14 @@ export default {
       const venues_id = this.venuesId
       const data = {
         site_status:
+          // TODO: 改成0，1
           site.site_status === SITE_STATUS.ON
             ? SITE_STATUS.OFF
             : SITE_STATUS.ON,
         site_id: site.id
       }
       this.listService.switchSite(data).subscribe(() => {
+        // TODO: 调用次数太多
         this.listService.getList({ venues_id }).subscribe()
       })
     },

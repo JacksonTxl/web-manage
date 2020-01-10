@@ -236,6 +236,7 @@ export default {
   },
   watch: {
     reduce_price(val) {
+      // TODO:
       this.calcPrice()
     }
   },
@@ -243,6 +244,7 @@ export default {
     onNextPage() {
       if (!this.hasNext) return
       this.query.page++
+      // TODO:
       this.bookingService.getBookingList(this.query).subscribe(res => {
         this.bookingList = this.bookingList.concat(res.list)
         this.siteX = this.siteX.concat(res.site_x)

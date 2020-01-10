@@ -37,6 +37,7 @@
                 {{ item.time_limit }}
               </td>
               <td>
+                // TODO:
                 <span v-if="item.cyclic_type === 1">每天</span>
                 <span v-if="item.cyclic_type === 2">
                   {{ item.week_day | cycleFilter }}
@@ -59,6 +60,7 @@
                     编辑
                   </a>
                   <a-divider type="vertical"></a-divider>
+                  // TODO:
                   <a href="javascript:;" v-if="auth.del">
                     <st-popconfirm
                       :title="'一旦删除则无法恢复，确认删除？'"
@@ -86,6 +88,7 @@
 <script>
 import { SettingService } from './setting.service'
 import { MessageService } from '@/services/message.service'
+// TODO:
 const weekMap = {
   1: '周一',
   2: '周二',
@@ -98,6 +101,7 @@ const weekMap = {
 export default {
   serviceInject() {
     return {
+      // TODO:
       Service: SettingService,
       messageService: MessageService
     }
@@ -142,6 +146,7 @@ export default {
         settings_id: item.settings_id
       }
       this.Service.deleteSetting(data).subscribe(() => {
+        // TODO:
         this.Service.getList({ site_id: this.siteId }).subscribe()
       })
     },
@@ -169,6 +174,7 @@ export default {
       })
     },
     save(e) {
+      // TODO:
       let self = this
       let verify = true
       e.preventDefault()

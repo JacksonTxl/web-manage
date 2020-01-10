@@ -187,6 +187,7 @@ export default {
         })
       })
     },
+    // TODO:
     onCLickAddVenue() {
       this.$router.push({
         name: 'shop-app-venue-manage-add',
