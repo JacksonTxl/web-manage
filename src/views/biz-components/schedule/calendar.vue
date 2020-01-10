@@ -387,7 +387,7 @@ export default {
       return height
     },
     getMonthDayList(e) {
-      console.log('获取月度天数列表', e)
+      // console.log('获取月度天数列表', e)
       const startDate = e.shift().fullDate
       const endDate = e.pop().fullDate
       console.log(startDate, endDate)

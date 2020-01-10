@@ -9,7 +9,12 @@
         {{ week }}
       </li>
     </ul>
-    <ul :class="boardContent()">
+    <ul
+      :class="[
+        boardContent(),
+        { [boardContent('table', { small: true })]: dayList.length < 42 }
+      ]"
+    >
       <li
         v-for="(day, key) in dayList"
         :key="key"
@@ -152,8 +157,25 @@ export default {
     this.init()
   },
   methods: {
+    // getMonthFristDay() {
+    //   const startDate = this.$searchQuery.start_date
+    //     ? moment(this.$searchQuery.start_date)
+    //     : moment()
+    //   let firstDay = ''
+    //   // 判断当前日期的天是否大于15，如果是则取下一个月，如果不是则取当前月
+    //   console.log(startDate)
+    //   if (startDate.date() > 15) {
+    //     firstDay = moment()
+    //       .month(startDate.month() + 1)
+    //       .format('YYYY-MM-DD')
+    //   } else {
+    //     firstDay = moment().format('YYYY-MM-DD')
+    //   }
+    //   return firstDay
+    // },
     init() {
-      this.date = this.$searchQuery.start_date || moment().format('YYYY-MM-DD')
+      // this.date = this.getMonthFristDay()
+      this.date = this.$searchQuery.start_date
       console.log(this.date)
       this.dayList = this.getCurrentMonthDayList()
       this.$emit(
@@ -174,12 +196,36 @@ export default {
     getCurrentMonthDayList() {
       // 当前日期的月份
       const nowMonth = moment(this.date).month()
-      const dates = []
+      let dates = []
       for (let i = 0; i < 42; i++) {
         const startDate = moment(this.date).date(1)
         startDate.startOf('week')
         dates[i] = startDate.weekday(i - 1)
       }
+      // 判断当前是否含有上个月7天的数据，如果有则删除
+      const startOfMonth = moment(this.date)
+        .startOf('month')
+        .format('YYYY-MM-DD')
+      const firstDay = dates.findIndex(item => {
+        return item.format('YYYY-MM-DD') === startOfMonth
+      })
+      if (firstDay > 6) {
+        dates = dates.slice(7, dates.length)
+      }
+      // 判断是否包含下个月7天的数据，如果有则删除
+      const startOfNextMonth = moment(this.date)
+        .month(moment(this.date).month() + 1)
+        .startOf('month')
+        .format('YYYY-MM-DD')
+      const nextMonthFirstDay = dates.findIndex(item => {
+        return item.format('YYYY-MM-DD') === startOfNextMonth
+      })
+      if (nextMonthFirstDay !== -1 && dates.length - nextMonthFirstDay > 6) {
+        dates = dates.slice(0, dates.length - 7)
+      }
+      // console.log(lastDay)
+      console.log(dates)
+      // console.log(dates[firstDay].format('YYYY-MM-DD'))
       return dates.map(item => {
         return {
           date: item.date(),
