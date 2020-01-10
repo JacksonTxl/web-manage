@@ -14,7 +14,12 @@
     >
       <div :class="b('info-content')">
         <st-t3 :class="b('title')">{{ info.title }}</st-t3>
-        <div :class="b('content')" class="mg-t16" v-html="info.content"></div>
+        <div
+          :class="b('content')"
+          v-scrollBar="{ stopPropagation: true }"
+          class="mg-t16"
+          v-html="info.content"
+        ></div>
         <div :class="b('button-wapper')">
           <st-button type="primary" class="mg-t8" @click="onOk">
             我知道了
@@ -33,7 +38,7 @@ export default {
   },
   data() {
     return {
-      show: true
+      show: false
     }
   },
   props: {
