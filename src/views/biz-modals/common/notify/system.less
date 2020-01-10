@@ -1,15 +1,25 @@
 .modal-notice-system {
+  .modal-notice-system {
+    z-index: 2;
+  }
   &__info-header {
-    height: 120px;
+    height: 100%;
     img {
       .s(100%, 100%);
     }
   }
+  img {
+    max-width: 100%;
+  }
   .st-modal__body {
     .pd(0);
   }
+  &__content {
+    height: 110px;
+    position: relative;
+  }
   &__info-content {
-    .pd(24px);
+    .pd(144px 24px 24px 24px);
   }
   &__button-wapper {
     text-align: center;

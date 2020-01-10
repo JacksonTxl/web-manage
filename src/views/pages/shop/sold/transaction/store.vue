@@ -8,7 +8,7 @@
         <div :class="basic('footer-action')">
           <div class="price">
             <span>共{{ buyCar.length }}件商品 合计：</span>
-            <span>￥{{ currentPrice }}</span>
+            <span class="money">￥{{ currentPrice }}</span>
           </div>
           <div class="button">
             <st-button @click="onCreateOrder" :loading="loading.createOrder">
@@ -16,6 +16,7 @@
             </st-button>
             <st-button
               type="primary"
+              class="mg-l16"
               @click="onPayOrder(null)"
               :loading="loading.createOrderPay"
             >
@@ -37,17 +38,13 @@
         </div>
         <ul :class="basic('product')" v-if="storeProductList.length">
           <li v-for="(item, index) in storeProductList" :key="index">
-            <img class="goods-img" :src="item.img" alt="" />
-            <div class="good-name">
+            <img :class="basic('product-img')" :src="item.img" alt="" />
+            <div :class="basic('product-name')">
               <span>{{ item.product_name }}</span>
             </div>
-            <div class="good-price">
+            <div :class="basic('product-price')">
               <span>
-                ￥{{
-                  item.min_price === item.max_price
-                    ? item.min_price
-                    : `${item.min_price}-${item.max_price}`
-                }}
+                {{ item.price }}
               </span>
               <span>库存:{{ item.count }}件</span>
             </div>
@@ -127,7 +124,7 @@
                 >
                   <div>
                     暂无此会员，
-                    <span :class="basic('add-vpi')" @click="addMember">
+                    <span :class="basic('add-member')" @click="addMember">
                       添加新会员？
                     </span>
                   </div>
@@ -308,6 +305,7 @@ export default {
     onSku(record) {
       this.listService.getGoodsDetail(record).subscribe(res => {
         if (res.all_spec) {
+          // 多规格添加至购物车
           this.$modalRouter.push({
             name: 'store-choose-sku',
             props: {
@@ -316,11 +314,11 @@ export default {
             on: {
               success: result => {
                 let state = this.buyCarJudge(result.sku_id, result.stock_amount)
-                if (state === 1) {
+                if (state === 'error') {
                   return
                 }
                 result.product_id = record
-                if (state !== 2) {
+                if (!state) {
                   this.buyCar.push(result)
                 }
                 this.onMemberChange(0)
@@ -328,14 +326,15 @@ export default {
             }
           })
         } else {
+          // 单规格添加至购物车
           let state = this.buyCarJudge(
             res.product_sku[0].sku_id,
             res.product_sku[0].stock_amount
           )
-          if (state === 1) {
+          if (state === 'error') {
             return
           }
-          if (state !== 2) {
+          if (!state) {
             this.buyCar.push({
               sku_id: res.product_sku[0].sku_id,
               product_id: record,
@@ -350,26 +349,27 @@ export default {
         }
       })
     },
+    // 购物车添加商品库存验证
     buyCarJudge(id, number) {
       if (!number) {
         this.messageService.warn({ content: '商品库存不足' })
-        return 1
+        return 'error'
       }
       for (let i = 0; i < this.buyCar.length; i++) {
         let val = this.buyCar[i]
         if (val.sku_id === id) {
           if (val.nums >= number) {
             this.messageService.warn({ content: '商品库存不足' })
-            return 1
+            return 'error'
           } else {
             val.nums = val.nums + 1
-            return 2
+            return 'noAdd'
           }
         }
       }
       if (this.buyCar.length >= 20) {
         this.messageService.warn({ content: '购物车已满' })
-        return 1
+        return 'error'
       }
     },
     // 删除购物车商品
@@ -392,7 +392,7 @@ export default {
             order_amount: this.currentPrice,
             sku_info: this.buyCar
           }
-          if (type === 1) {
+          if (type === 'order') {
             this.listService.createOrder(params).subscribe(result => {
               resolve(result.info.order_id.order_id)
             })
@@ -406,7 +406,7 @@ export default {
     },
     // 创建订单
     async onCreateOrder() {
-      let orderId = await this.createOrderNum(1)
+      let orderId = await this.createOrderNum('order')
       this.payCallBack(
         {
           type: 'create',
@@ -418,7 +418,7 @@ export default {
     // 立即支付
     async onPayOrder(orderId) {
       if (!orderId) {
-        orderId = await this.createOrderNum(2)
+        orderId = await this.createOrderNum('orderPay')
       }
       this.$modalRouter.push({
         name: 'sold-deal-gathering',
@@ -562,6 +562,7 @@ export default {
       this.getPrice(data)
       this.getUseCouponList(data)
     },
+    // 分页切换
     onChange(pagination) {
       this.$searchQuery.current_page = pagination.current
       this.$searchQuery.size = pagination.pageSize

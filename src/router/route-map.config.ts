@@ -426,7 +426,7 @@ export const routeMapConfig = {
       start_date: { type: String, default: '' },
       end_date: { type: String, default: '' },
       page: { type: Number, default: 1 },
-      size: { type: Number, default: 20 }
+      size: { type: Number, default: 10 }
     }
   },
   'shop-finance-order-info-collection-details'(routeConfig: RouteConfig) {
@@ -951,6 +951,10 @@ export const routeMapConfig = {
   },
   'shop-app-venue-manage-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '场地管理'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
   },
   'shop-app-venue-manage-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新建场馆'

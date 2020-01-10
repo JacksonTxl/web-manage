@@ -92,7 +92,7 @@
                 class="page-content-card-input"
               >
                 <a-select-option
-                  v-for="(item, index) in harfEnums"
+                  v-for="(item, index) in pertimeEnums[perTime]"
                   :key="index"
                   :value="item.value"
                 >
@@ -108,7 +108,7 @@
                 class="page-content-card-input"
               >
                 <a-select-option
-                  v-for="(item, index) in harfEnums"
+                  v-for="(item, index) in pertimeEnums[perTime]"
                   :key="index"
                   :value="item.value"
                 >
@@ -171,6 +171,7 @@ import { AddService } from './add.service'
 import { ruleOptions } from './add.config'
 import { MessageService } from '@/services/message.service'
 import { CAN_RESERVE } from '@/constants/venue'
+import { ManageService } from '../manage.service'
 export default {
   name: 'AddRole',
   bem: {
@@ -179,18 +180,21 @@ export default {
   serviceInject() {
     return {
       addService: AddService,
-      messageService: MessageService
+      messageService: MessageService,
+      manageService: ManageService
     }
   },
   rxState() {
     return {
       sites: this.addService.sites$,
       harfEnums: this.addService.harfEnums$,
+      oneEnums: this.addService.oneEnums$,
       timeEnums: this.addService.timeEnums$,
       cyclicEnums: this.addService.cyclicEnums$,
       priorityEnums: this.addService.priorityEnums$,
       weeks: this.addService.weeks$,
-      reserveEnums: this.addService.reserveEnums$
+      reserveEnums: this.addService.reserveEnums$,
+      perTime: this.manageService.perTime$
     }
   },
   data() {
@@ -204,7 +208,11 @@ export default {
       end_time: null,
       endOpen: false,
       cyclicType: 1,
-      canReserve: true
+      canReserve: true,
+      pertimeEnums: {
+        1: this.harfEnums,
+        2: this.oneEnums
+      }
     }
   },
   methods: {
@@ -219,18 +227,16 @@ export default {
     },
     onClickSubmit(e) {
       e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          const data = {
-            venues_id: this.$searchQuery.venues_id,
-            site_ids: this.sites.map(item => item.id),
-            ...values
-          }
-          this.addService.add(data).subscribe(() => {
-            this.messageService.success({ content: '添加成功' })
-            this.$router.push({ name: 'shop-app-venue-manage' })
-          })
+      this.form.validate().then(values => {
+        const data = {
+          venues_id: this.$searchQuery.venues_id,
+          site_ids: this.sites.map(item => item.id),
+          ...values
         }
+        this.addService.add(data).subscribe(() => {
+          this.messageService.success({ content: '添加成功' })
+          this.$router.push({ name: 'shop-app-venue-manage' })
+        })
       })
     },
     disabledStartDate(startValue) {

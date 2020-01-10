@@ -185,10 +185,10 @@
     <main class="layout-default-body">
       <article class="layout-default-body__content">
         <router-view></router-view>
+        <div class="layout-default-body__footer">
+          <copyright></copyright>
+        </div>
       </article>
-      <div class="layout-default-footer">
-        <copyright></copyright>
-      </div>
     </main>
     <switch-shop v-model="isShowSwitchShop"></switch-shop>
     <st-udesk-btn v-show="isShowUdeskBtn" />
@@ -290,7 +290,12 @@ export default {
         if (this.activityList$.length > 0) {
           this.$modalRouter.push({
             name: 'common-notify-activity',
-            props: { list: this.activityList$ }
+            props: { list: this.activityList$ },
+            on: {
+              success: res => {
+                this.wsNotifyService.setRead().subscribe()
+              }
+            }
           })
         }
         return
@@ -306,7 +311,12 @@ export default {
         if (this.activityList$.length > 0) {
           this.$modalRouter.push({
             name: 'common-notify-activity',
-            props: { list: this.activityList$ }
+            props: { list: this.activityList$ },
+            on: {
+              success: res => {
+                this.wsNotifyService.setRead().subscribe()
+              }
+            }
           })
         }
         return

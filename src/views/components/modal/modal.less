@@ -25,20 +25,20 @@
   &__close {
     .pos-a;
     .s(20px, 20px);
-    right: 8px;
-    top: 8px;
-    .bg(#f2f4f8);
-    .fz(10px);
+    right: 20px;
+    top: 20px;
+    .z(10);
+    .fz(12px);
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s;
     border-radius: 2px;
-    .c(lighten(#3e4d5c, 20));
+    .c(@text-color-secondary);
     .cur-p;
     &:hover {
-      .bg(#e3e9f2);
-      .c(#3e4d5c);
+      .bg(#f2f4f8);
+      transition: background 0.5s;
     }
   }
   &__body {

@@ -18,7 +18,7 @@
           @click="addAll"
           :disabled="!selectedRowKeys.length"
         >
-          批量新增特殊设置
+          批量高级设置
         </st-button>
       </a-col>
       <a-col :span="12" class="ta-r">
@@ -44,7 +44,14 @@
       rowKey="id"
     >
       <template slot="site_status" slot-scope="text">
-        {{ text | enumFilter('venues_reserve.venues_site_status') }}
+        <st-text
+          :status="{
+            success: text === 1,
+            error: text === 2
+          }"
+        >
+          {{ text | enumFilter('venues_reserve.venues_site_status') }}
+        </st-text>
       </template>
       <div slot="action" slot-scope="text, record">
         <st-table-actions>

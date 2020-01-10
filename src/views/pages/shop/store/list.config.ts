@@ -29,12 +29,14 @@ export const columns = (vm: any) => {
       title: '单价(元)',
       dataIndex: 'selling_price',
       align: 'right',
+      width: 140,
       scopedSlots: { customRender: 'selling_price' }
     },
     {
       title: '库存',
       dataIndex: 'stock_amount',
-      align: 'right',
+      align: 'center',
+      width: 140,
       scopedSlots: { customRender: 'stock_amount' }
     },
     {

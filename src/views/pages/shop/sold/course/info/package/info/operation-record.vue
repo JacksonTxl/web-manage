@@ -13,37 +13,25 @@
       rowKey="id"
     >
       <template slot="operate_object" slot-scope="text, record">
-        <span v-if="text.length === 0">{{ record.object }}</span>
-        <div v-else>
-          <a-popover title="操作对象">
-            <template slot="content">
-              <pre>{{ record.object }}</pre>
-            </template>
-            <a class="pop-object__text">{{ text }}</a>
-          </a-popover>
-        </div>
+        <st-overflow-text
+          title="操作对象"
+          :value="record.operate_object"
+          maxWidth="100px"
+        ></st-overflow-text>
       </template>
       <template slot="before_operate" slot-scope="text, record">
-        <span v-if="text.length === 0">{{ record.before }}</span>
-        <div v-else>
-          <a-popover title="操作前">
-            <template slot="content">
-              <pre>{{ record.before }}</pre>
-            </template>
-            <a class="pop__text">{{ text }}</a>
-          </a-popover>
-        </div>
+        <st-overflow-text
+          title="操作前"
+          :value="record.before_operate"
+          maxWidth="100px"
+        ></st-overflow-text>
       </template>
       <template slot="after_operate" slot-scope="text, record">
-        <span v-if="text.length === 0">{{ record.after }}</span>
-        <div v-else>
-          <a-popover title="操作后">
-            <template slot="content">
-              <pre>{{ record.after }}</pre>
-            </template>
-            <a class="pop__text">{{ text }}</a>
-          </a-popover>
-        </div>
+        <st-overflow-text
+          title="操作后"
+          :value="record.after_operate"
+          maxWidth="100px"
+        ></st-overflow-text>
       </template>
     </st-table>
   </section>
