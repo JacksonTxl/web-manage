@@ -280,9 +280,6 @@ export default {
     addScheduleFlag() {
       return this.end_date !== this.picker_end_date
     }
-    // disabledChangeScheduleType() {
-    //   return this.cycle_type === 2 && this.customizeScheduleList.length > 0
-    // }
   },
   created() {
     this.filterDateList(this.scheduleList)
@@ -317,7 +314,6 @@ export default {
     },
     initScheduleCourse() {
       this.customizeScheduleList = []
-      this.pickerList = []
       this.scheduleList = [
         {
           course_time: []
@@ -362,13 +358,11 @@ export default {
     getScheduleInBatch(params, changeTyps) {
       this.smallCourseScheduleService.getScheduleInBatch(params).subscribe(
         res => {
-          console.log(res)
           this.disabledAddCourseBtn = false
           this.disabledCustomBtn = false
           this.initScheduleList(res.list, res.cycle_type, changeTyps)
         },
         err => {
-          console.log(err.response.code)
           if (err.response.code === 54640) {
             this.select_cycle_type = 2
             this.$warning({
@@ -397,6 +391,7 @@ export default {
       if (!list.length && type === 0) {
         console.log('无数据无类型')
         this.initScheduleDate()
+        this.initScheduleCourse()
         return
       }
       if (list.length && this.cycle_type === 1) {
