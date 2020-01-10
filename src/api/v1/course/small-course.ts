@@ -29,7 +29,7 @@ export class CourseGroupApi extends Api {
     return this.http.get('/v1/setting/course/scope')
   }
   getCourseStaffList(params: any) {
-    return this.http.get('/v1/staff/shop', { params })
+    return this.http.get('/v1/course/small/shop/staff', { params })
   }
   /*
    * 删除小班课
