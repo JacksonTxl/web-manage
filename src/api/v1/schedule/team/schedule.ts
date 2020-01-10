@@ -75,6 +75,24 @@ export class TeamScheduleScheduleApi extends Api {
   del(id: string) {
     return this.http.put(`/v1/schedule/team/shop/schedule/${id}`)
   }
+  /**
+   * 获取团课周课表管理列表
+   */
+  getTeamTemplate() {
+    return this.http.get('/v1/schedule/team/shop/template')
+  }
+  /**
+   * 团课周课表管理列表删除
+   */
+  delTeamTemplate(query: any) {
+    return this.http.delete('/v1/schedule/team/shop/template', { query })
+  }
+  /**
+   * 团课编辑获取详情
+   */
+  getTeamInfo(id: number) {
+    return this.http.get(`/v1/schedule/team/shop/template/${id}`)
+  }
 }
 /**
  * 获取团体课排期列表

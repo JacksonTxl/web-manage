@@ -13,6 +13,7 @@
         <st-button
           type="primary"
           class="mg-r12"
+          :loading="loading.getTeamTemplate"
           @click="onClickScheduleInBatch"
           v-if="auth.addBatch"
         >
@@ -30,8 +31,8 @@
 import Calendar from '@/views/biz-components/schedule/calendar'
 import { TeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/team/service#/schedule.service'
 import ScheduleTeamAddCourseBatch from '@/views/biz-modals/schedule/team/add-course-batch'
-import ScheduleTeamCourseManage from '@/views/biz-modals/schedule/team/course-manage'
-import ScheduleTeamAddEditCourse from '@/views/biz-modals/schedule/team/add-edit-course'
+import ScheduleBatchCourseManage from '@/views/biz-modals/schedule/batch/course-manage'
+import ScheduleBatchAddEditCourse from '@/views/biz-modals/schedule/batch/add-edit-course'
 import ScheduleTeamCourseRankPreview from '@/views/biz-modals/schedule/team/course-rank-preview'
 import ScheduleTeamAddCourse from '@/views/biz-modals/schedule/team/add-course'
 import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
@@ -44,8 +45,8 @@ export default {
     ScheduleTeamAddCourse,
     ScheduleTeamCopySchedule,
     ScheduleTeamReserveInfo,
-    ScheduleTeamCourseManage,
-    ScheduleTeamAddEditCourse,
+    ScheduleBatchCourseManage,
+    ScheduleBatchAddEditCourse,
     ScheduleTeamCourseRankPreview
   },
   serviceInject() {
@@ -57,7 +58,9 @@ export default {
   rxState() {
     return {
       auth: this.service.auth$,
-      cardList: this.teamSchduleService.scheduleTeamCourseList$
+      loading: this.teamSchduleService.loading$,
+      cardList: this.teamSchduleService.scheduleTeamCourseList$,
+      teamTemplateList: this.teamSchduleService.teamTemplateList$
     }
   },
   components: {
@@ -104,8 +107,9 @@ export default {
         }
       })
     },
-    // 批量排期
+    // 批量排期(打开课程管理或者新增课程)
     onClickScheduleInBatch() {
+      this.getTeamTemplate
       // this.$modalRouter.push({
       //   name: 'schedule-team-add-course-batch',
       //   on: {
@@ -114,28 +118,46 @@ export default {
       //     }
       //   }
       // })
-      // 打开课表管理
+      this.teamSchduleService.getTeamTemplate().subscribe(res => {
+        // 打开课表管理
+        this.$modalRouter.push({
+          name: 'schedule-batch-course-manage',
+          props: {
+            teamTemplateList: this.teamTemplateList
+          },
+          on: {
+            // 确定时开始删除数据
+            save: res => {
+              this.teamSchduleService.delTeamTemplate({ id: res }).subscribe()
+            },
+            // 添加课表打开新增课表弹窗
+            add: () => {
+              this.addOrEditCourse()
+            },
+            // 编辑课表打开编辑课表弹窗
+            edit: res => {
+              this.addOrEditCourse(res)
+            }
+          }
+        })
+      })
       // this.$modalRouter.push({
-      //   name: 'schedule-team-course-manage',
-      //   on: {
-      //     success: res => {
-      //       console.log('弹窗确定')
-      //     },
-      //     add: res => {
-      //       console.log('添加课表')
-      //     }
-      //   }
-      // })
-      // this.$modalRouter.push({
-      //   name: 'schedule-team-add-edit-course',
+      //   name: 'schedule-team-course-rank-preview',
       //   on: {
       //     success: res => {
       //       console.log('新增课表')
       //     }
       //   }
       // })
+    },
+    // 添加和编辑团课
+    addOrEditCourse(id = undefined) {
       this.$modalRouter.push({
-        name: 'schedule-team-course-rank-preview',
+        name: 'schedule-batch-add-edit-course',
+        props: {
+          id,
+          type: 'team'
+        },
         on: {
           success: res => {
             console.log('新增课表')
