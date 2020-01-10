@@ -27,4 +27,14 @@ export class CourseRankPreviewService {
   teamBatch(params: AddSourseQuery) {
     return this.teamApi.teamBatch({ course_schedule: params })
   }
+  @Effect()
+  validSmallBatch(params: AddSourseQuery) {
+    return this.smallApi.validSmallBatch({ course_schedule: params })
+  }
+  /**
+   * 排课
+   */
+  smallBatch(params: AddSourseQuery) {
+    return this.smallApi.smallBatch({ course_schedule: params })
+  }
 }

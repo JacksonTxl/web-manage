@@ -35,20 +35,20 @@ export class AddEditCourseService {
     return this.teamApi.editTeamDetail(id, params)
   }
   /**
-   * 获取团课排期信息
+   * 获取私教小团课排期信息
    */
   getSmallInfo(id: number) {
     return this.smallApi.getSmallInfo(id)
   }
   /**
-   * 新建团课
+   * 新建私教小团课
    */
   @Effect()
   addSmallDetail(params: AddSourseInput) {
     return this.smallApi.addSmallDetail(params)
   }
   /**
-   * 编辑团课
+   * 编辑私教小团课
    */
   @Effect()
   editSmallDetail(id: number, params: AddSourseInput) {

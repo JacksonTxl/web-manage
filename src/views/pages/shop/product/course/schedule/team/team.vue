@@ -121,6 +121,10 @@ export default {
       // })
       this.teamSchduleService.getTeamTemplate().subscribe(res => {
         // 打开课表管理
+        if (!this.teamTemplateList.length) {
+          this.addOrEditCourse()
+          return
+        }
         this.$modalRouter.push({
           name: 'schedule-batch-course-manage',
           props: {
@@ -160,7 +164,7 @@ export default {
               name: 'schedule-batch-course-rank-preview',
               props: {
                 dataTable: res.info,
-                type: 'small'
+                type: 'team'
               },
               on: {
                 success: res => {
