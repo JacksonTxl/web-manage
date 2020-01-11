@@ -1,19 +1,14 @@
 <template>
-  <st-modal title="旷课情况" :footer="null" v-model="show">
+  <st-modal title="旷课情况" :footer="null" v-model="show" :class="b()">
     <div :class="b('left')">
       <div :class="b('item')" class="bg-gray">
         旷课课程
       </div>
-      <div
-        :class="b('bitem')"
-        type="2"
-        v-for="(item, index) in list"
-        :key="index"
-      >
+      <div type="2" v-for="(item, index) in list" :key="index">
         <div :class="b('title')">
           {{ item.class_info.course_name }}
         </div>
-        <div>
+        <div :class="b('wrap')">
           <span :class="b('label')">时间：</span>
           <span :class="b('value')" class="mg-r16">
             {{ item.class_info.time }}
@@ -29,16 +24,11 @@
       <div :class="b('item')" class="bg-gray">
         补课信息
       </div>
-      <div
-        :class="b('bitem')"
-        type="2"
-        v-for="(item, index) in list"
-        :key="index"
-      >
+      <div type="2" v-for="(item, index) in list" :key="index">
         <div :class="b('title')">
-          {{ item.make_up_info.course_name }}
+          {{ item.make_up_info && item.make_up_info.course_name }}
         </div>
-        <div>
+        <div v-if="item.make_up_info" :class="b('wrap')">
           <span :class="b('label')">时间：</span>
           <span :class="b('value')" class="mg-r16">
             {{ item.make_up_info.time }}
@@ -99,7 +89,7 @@ export default {
         })
     }
   },
-  mounted() {
+  created() {
     this.getCourseGroupClassUserInfo()
   }
 }
