@@ -122,7 +122,7 @@ export default {
       return `消课价值(${this.$c('small_course')})`
     },
     showTable() {
-      return this.$route.path.includes('stat/course/')
+      return this.$route.path.includes('stat/course/summary')
     },
     exportParams() {
       const type = 'shop/team/course'
