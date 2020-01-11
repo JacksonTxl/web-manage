@@ -118,9 +118,8 @@
           <template slot="remain_amount" slot-scope="text, record">
             {{ text }}{{ record.unit | enumFilter('sold_common.unit') }}
           </template>
-          <template slot="is_refund" slot-scope="text, record">
-            {{ text
-            }}{{ record.is_refund | enumFilter('finance.sub_order_status') }}
+          <template slot="is_refund" slot-scope="text">
+            {{ text }}
           </template>
           <template slot="init_amount" slot-scope="text, record">
             {{ text }}{{ record.unit | enumFilter('sold_common.unit') }}

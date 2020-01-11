@@ -42,6 +42,12 @@
           延长有效期
         </st-button>
       </div>
+      <st-total
+        :indexs="totalColumns"
+        :dataSource="total"
+        hasTitle
+        class="mg-b16"
+      ></st-total>
       <div>
         <st-table
           :page="page"
@@ -58,7 +64,7 @@
             })
           }"
           rowKey="id"
-          :scroll="{ x: 1800 }"
+          :scroll="{ x: 3000 }"
           :columns="columns"
           @change="onTableChange"
           :dataSource="list"
@@ -158,7 +164,7 @@ import moment from 'moment'
 import { cloneDeep, filter } from 'lodash-es'
 import { PersonalService } from './personal.service'
 import tableMixin from '@/mixins/table.mixin'
-import { columns } from './personal.config'
+import { columns, totalColumns } from './personal.config'
 import SoldCourseCoach from '@/views/biz-modals/sold/course/coach'
 import SoldCourseFreeze from '@/views/biz-modals/sold/course/freeze'
 import SoldCourseRefund from '@/views/biz-modals/sold/course/refund'
@@ -198,7 +204,8 @@ export default {
       list: this.personalService.list$,
       page: this.personalService.page$,
       courseStatus: this.personalService.courseStatus$,
-      auth: this.personalService.auth$
+      auth: this.personalService.auth$,
+      total: this.personalService.total$
     }
   },
   data() {
@@ -213,7 +220,8 @@ export default {
   },
 
   computed: {
-    columns
+    columns,
+    totalColumns
   },
   mounted() {
     this.setSearchData()

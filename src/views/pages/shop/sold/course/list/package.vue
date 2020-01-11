@@ -60,6 +60,12 @@
           </st-help-tooltip>
         </template>
       </div>
+      <st-total
+        :indexs="totalColumns"
+        :dataSource="total"
+        hasTitle
+        class="mg-b16"
+      ></st-total>
       <div>
         <st-table
           :page="page"
@@ -77,7 +83,7 @@
             })
           }"
           @change="onTableChange"
-          :scroll="{ x: 1800 }"
+          :scroll="{ x: 3500 }"
           :columns="columns"
           :dataSource="list"
         >
@@ -157,7 +163,7 @@ import moment from 'moment'
 import { cloneDeep, filter } from 'lodash-es'
 import { PackageService } from './package.service'
 import tableMixin from '@/mixins/table.mixin'
-import { columns } from './package.config'
+import { columns, totalColumns } from './package.config'
 import SoldCourseFreeze from '@/views/biz-modals/sold/course/freeze'
 import SoldCourseRefund from '@/views/biz-modals/sold/course/refund'
 import SoldCourseSurplus from '@/views/biz-modals/sold/course/surplus'
@@ -190,7 +196,8 @@ export default {
       page: this.packageService.page$,
       courseStatus: this.packageService.courseStatus$,
       packageTypes: this.packageService.packageTypes$,
-      auth: this.packageService.auth$
+      auth: this.packageService.auth$,
+      total: this.packageService.total$
     }
   },
   data() {
@@ -208,7 +215,8 @@ export default {
     this.setSearchData()
   },
   computed: {
-    columns
+    columns,
+    totalColumns
   },
   methods: {
     disabledSelect(record) {

@@ -34,6 +34,54 @@ export const columns = (vm: any) => [
     scopedSlots: { customRender: 'member_name' }
   },
   {
+    title: '性别',
+    dataIndex: 'sex'
+  },
+  {
+    title: '实收单价（元）',
+    dataIndex: 'unit_price'
+  },
+  {
+    title: '剩余摊销金额（元）',
+    dataIndex: 'amortization_amount'
+  },
+  {
+    title: '合同类型',
+    dataIndex: 'transfer_type'
+  },
+  {
+    title: '合同原价',
+    dataIndex: 'total_price'
+  },
+  {
+    title: '实收金额（元）',
+    dataIndex: 'pay_price'
+  },
+  {
+    title: '优惠金额（元）',
+    dataIndex: 'discount_price'
+  },
+  {
+    title: '减免金额（元）',
+    dataIndex: 'reduce_price'
+  },
+  {
+    title: '是否退款（元）',
+    dataIndex: 'is_refund'
+  },
+  {
+    title: '退款金额（元）',
+    dataIndex: 'refund_price'
+  },
+  {
+    title: '约课次数',
+    dataIndex: 'reserve_times'
+  },
+  {
+    title: '爽约次数',
+    dataIndex: 'cancel_times'
+  },
+  {
     title: '手机号',
     dataIndex: 'mobile',
     scopedSlots: { customRender: 'mobile' }
@@ -69,5 +117,43 @@ export const columns = (vm: any) => [
     fixed: 'right',
     width: 170,
     scopedSlots: { customRender: 'action' }
+  }
+]
+export const totalColumns = () => [
+  {
+    title: '剩余课时（节）',
+    dataIndex: 'remain_course_num'
+  },
+  {
+    title: '购买课时（节）',
+    dataIndex: 'init_course_num'
+  },
+  {
+    title: '剩余摊销金额（元）',
+    dataIndex: 'amortization_amount'
+  },
+  {
+    title: '实收总金额（元）',
+    dataIndex: 'pay_price'
+  },
+  {
+    title: '优惠总金额（元）',
+    dataIndex: 'discount_price'
+  },
+  {
+    title: '减免总金额（元）',
+    dataIndex: 'reduce_price'
+  },
+  {
+    title: '退款总金额（元）',
+    dataIndex: 'refund_price'
+  },
+  {
+    title: '约课总次数',
+    dataIndex: 'reserve_times'
+  },
+  {
+    title: '爽约总次数',
+    dataIndex: 'cancel_times'
   }
 ]
