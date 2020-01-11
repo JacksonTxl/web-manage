@@ -9,7 +9,13 @@
     </div>
     <a-row>
       <a-col :span="8">
-        <st-button type="primary" class="mg-b16" icon="add" @click="goAddGroup">
+        <st-button
+          type="primary"
+          class="mg-b16"
+          icon="add"
+          v-if="auth.add"
+          @click="goAddGroup"
+        >
           新增小班课
         </st-button>
       </a-col>
@@ -136,7 +142,8 @@ export default {
       list: this.listService.list$,
       page: this.listService.page$,
       loading: this.listService.loading$,
-      status: this.listService.status$
+      status: this.listService.status$,
+      auth: this.listService.auth$
     }
   },
   bem: {
