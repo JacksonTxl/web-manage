@@ -238,9 +238,6 @@ export default {
       loading: edit.loading$
     }
   },
-  created() {
-    console.log(this.info)
-  },
   methods: {
     onCodeDone() {
       this.editService.getCodeInfo().subscribe()

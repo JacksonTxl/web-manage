@@ -89,7 +89,7 @@ export default {
     }
   },
   created() {
-    this.curStatus = this.curStatus - 0
+    this.curStatus = this.$route.query.status - 0
   },
   computed: {
     isShowNoData() {

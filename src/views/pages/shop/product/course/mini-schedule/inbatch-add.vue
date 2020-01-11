@@ -166,7 +166,11 @@
                   </p>
                   <p class="course__scene mg-l16">
                     场地：
-                    <span>{{ item.court_name }}</span>
+                    <span>
+                      {{
+                        dealCourtSiteName(item.court_name, item.court_site_name)
+                      }}
+                    </span>
                   </p>
                 </div>
               </div>
@@ -344,7 +348,6 @@ export default {
       this.smallCourseScheduleCommonService.getBindCoachList(value).subscribe()
     },
     onChangeScheduleType(value) {
-      console.log('更改类型值' + value)
       if (!this.courseId) {
         this.select_cycle_type = value
         return
@@ -410,10 +413,8 @@ export default {
       }
     },
     onChangeRangePicker(date, dateString, PickerIndex) {
-      console.log(this.pickerList)
       let pickerFlag = false
       this.pickerList.forEach((item, index) => {
-        console.log(item)
         if (PickerIndex === index) {
           return
         } else {
@@ -421,7 +422,6 @@ export default {
             (date[0] >= item[0] && date[0] <= item[1]) ||
             (date[1] >= item[0] && date[1] <= item[1])
           ) {
-            console.log('时间有交叉')
             this.msg.error({ content: '排课周期时间不能有交叉重叠！' })
             pickerFlag = true
             return false
@@ -449,7 +449,6 @@ export default {
           this.pickerList.splice(PickerIndex, 1, date)
         }
       }
-      console.log(this.pickerList)
     },
     disabledEndDate(current) {
       return (
@@ -467,24 +466,24 @@ export default {
         let listItemCard = {}
         let courseNum = 0
         let text = ''
-        item.course_time.forEach((item, index) => {
-          if (item.week || item.week == 0) {
-            if (item.week == 0) {
+        item.course_time.forEach((weekItem, index) => {
+          if (weekItem.week || weekItem.week == 0) {
+            if (weekItem.week == 0) {
               text += this.weekList[this.weekList.length - 1].date
             } else {
-              text += this.weekList[item.week - 1].date
+              text += this.weekList[weekItem.week - 1].date
             }
-            item.list.forEach((item, index) => {
-              item.show = false
-              if (!item.conflict) {
-                item.conflict = 0
-                item.conflictList = []
-                text += item.start_time + ','
-                courseNum += item.schedule_ids.split(',').length
+            weekItem.list.forEach((courseItem, index) => {
+              courseItem.show = false
+              if (!courseItem.conflict) {
+                courseItem.conflict = 0
+                courseItem.conflictList = []
+                text += courseItem.start_time + ','
+                courseNum += courseItem.schedule_ids.split(',').length
               }
             })
-            listItemCard[item.week] = item.list
-            listItemCard[item.week][0].show = false
+            listItemCard[weekItem.week] = weekItem.list
+            listItemCard[weekItem.week][0].show = false
           }
         })
         this.getScheduleTips(dateIndex, text, courseNum)
@@ -498,9 +497,10 @@ export default {
         }
         list.push(listItemCard)
       })
-      console.log(list)
-      console.log(dateList)
       this.filterDate = list
+    },
+    dealCourtSiteName(courtName, CourtSiteName) {
+      return CourtSiteName ? courtName + ' / ' + CourtSiteName : courtName
     },
     // 增加课程
     createCourseWeek(courseItem, cycleIndex) {
@@ -514,38 +514,29 @@ export default {
     pushCourseInfo(cycleIndex, conflict, info, list) {
       console.log('增加周期性课程排期')
       console.log(info)
-      let courseItem = info
+      let courseItem = cloneDeep(info)
       courseItem.court_site_id = info.court_site_id || 0
       courseItem.conflict = conflict
       courseItem.conflictList = list
       if (!this.scheduleList[cycleIndex].course_time.length) {
-        console.log('批次没有数据')
         this.createCourseWeek(courseItem, cycleIndex)
         return
       }
       let findWeekFlag = false
       this.scheduleList[cycleIndex].course_time.forEach((item, index) => {
         if (item.week == courseItem.week) {
-          console.log('匹配对应的周几')
           findWeekFlag = true
-          if (item.list.length >= 100) {
-            this.msg.error({ content: '单日排课不得超过100节！' })
-            return
-          }
           item.list.push(courseItem)
           this.filterDateList(this.scheduleList)
         }
       })
       if (!findWeekFlag) {
-        console.log('无对应周几，添加一个周几列')
         this.createCourseWeek(courseItem, cycleIndex)
-        console.log(this.scheduleList)
       }
     },
     pushCustomCourseInfo(info) {
       const courseInfo = cloneDeep(info)
       this.customizeScheduleList.push(courseInfo)
-      console.log(this.customizeScheduleList)
     },
     // 编辑课程
     onEditCourseSchedule(item, cycleIndex, positionIndex) {
@@ -599,7 +590,6 @@ export default {
       let params = {}
       params = item
       params.del_type = DELETE_TYPE.SINGLE
-      console.log(params)
       this.smallCourseScheduleService.cancelCycle(params).subscribe(res => {
         this.scheduleList[cycleIndex].course_time.forEach((dayItems, index) => {
           if (dayItems.week == item.week) {
@@ -616,7 +606,6 @@ export default {
     // 删除周期单个批次内容
     onDeleteCourseScheduleCycle(dateList, cycleIndex) {
       let params = {}
-      console.log(this.pickerList)
       const cycleDate = this.pickerList[cycleIndex]
       params.cycle_start_date = moment(cycleDate[0]).format('YYYY-MM-DD')
       params.cycle_end_date = moment(cycleDate[1]).format('YYYY-MM-DD')
@@ -673,8 +662,6 @@ export default {
     },
     // 自主约课单个删除
     onDeleteCustomSchedule(item, index) {
-      console.log(item)
-      console.log('自主删除单个' + item.id)
       this.smallCourseScheduleService.cancelCustom(item.id).subscribe(res => {
         this.customizeScheduleList.splice(index, 1)
       })
@@ -702,7 +689,6 @@ export default {
           onCancel: () => {},
           onOk: () => {
             if (this.cycle_type === 1) {
-              console.log('删除周期所有')
               let params = {}
               params.course_id = this.smallCourseInfo.course_id
               params.del_type = DELETE_TYPE.ALL_CYCLE
@@ -719,8 +705,6 @@ export default {
               this.customizeScheduleList.forEach((item, index) => {
                 params.schedule_ids.push(item.id)
               })
-              console.log(params)
-              console.log('自主删除所有')
               this.smallCourseScheduleService
                 .cancelCustomAll(params)
                 .subscribe(res => {
@@ -742,20 +726,16 @@ export default {
     },
     // 新增周期排课
     addScheduleWeek() {
-      console.log(this.picker_end_date)
-      console.log(this.end_date)
       this.pickerList.push([
         moment(this.picker_end_date).add(1, 'days'),
         moment(this.end_date)
       ])
       this.picker_end_date = this.end_date
-      console.log(this.pickerList)
       let item = {}
       item.course_time = []
       this.scheduleList.push(item)
       this.filterDateList(this.scheduleList)
     },
-    // 保存发布
     onClickSaveSchedule() {
       if (
         (this.cycle_type === 1 &&

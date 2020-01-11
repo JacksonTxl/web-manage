@@ -1,19 +1,17 @@
 <template>
   <st-modal title="旷课情况" :footer="null" v-model="show">
-    <div :class="b('left')">
-      <div :class="b('item')" class="bg-gray">
-        旷课课程
-      </div>
-      <div
-        :class="b('bitem')"
-        type="2"
-        v-for="(item, index) in list"
-        :key="index"
-      >
-        <div :class="b('title')">
-          {{ item.class_info.course_name }}
+    <div :class="b()">
+      <div :class="b('left')">
+        <div :class="b('item')" class="bg-gray">
+          旷课课程
         </div>
-        <div>
+        <div
+          type="2"
+          v-for="(item, index) in list"
+          :key="index"
+          :class="b('wrap')"
+        >
+          <div :class="b('title')">{{ item.class_info.course_name }}</div>
           <span :class="b('label')">时间：</span>
           <span :class="b('value')" class="mg-r16">
             {{ item.class_info.time }}
@@ -24,35 +22,35 @@
           </span>
         </div>
       </div>
-    </div>
-    <div :class="b('right')">
-      <div :class="b('item')" class="bg-gray">
-        补课信息
-      </div>
-      <div
-        :class="b('bitem')"
-        type="2"
-        v-for="(item, index) in list"
-        :key="index"
-      >
-        <div :class="b('title')">
-          {{ item.make_up_info.course_name }}
+      <div :class="b('right')">
+        <div :class="b('item')" class="bg-gray">
+          补课信息
         </div>
-        <div>
-          <span :class="b('label')">时间：</span>
-          <span :class="b('value')" class="mg-r16">
-            {{ item.make_up_info.time }}
-          </span>
-          <span :class="b('label')">教练：</span>
-          <span :class="b('value')">
-            {{ item.make_up_info.coach_name }}
-          </span>
-          <span :class="b('label')">状态：</span>
-          <span :class="b('value')">
-            {{
-              item.make_up_info.sign_status | enumFilter('reserve.is_checkin')
-            }}
-          </span>
+        <div
+          type="2"
+          v-for="(item, index) in list"
+          :key="index"
+          :class="b('wrap')"
+        >
+          <div :class="b('title')">
+            {{ item.make_up_info && item.make_up_info.course_name }}
+          </div>
+          <div v-if="item.make_up_info" :class="b('wrap')">
+            <span :class="b('label')">时间：</span>
+            <span :class="b('value')" class="mg-r16">
+              {{ item.make_up_info.time }}
+            </span>
+            <span :class="b('label')">教练：</span>
+            <span :class="b('value')">
+              {{ item.make_up_info.coach_name }}
+            </span>
+            <span :class="b('label')">状态：</span>
+            <span :class="b('value')">
+              {{
+                item.make_up_info.sign_status | enumFilter('reserve.is_checkin')
+              }}
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -99,7 +97,7 @@ export default {
         })
     }
   },
-  mounted() {
+  created() {
     this.getCourseGroupClassUserInfo()
   }
 }

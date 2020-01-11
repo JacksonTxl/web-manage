@@ -11,17 +11,17 @@
         <st-table
           :pagination="false"
           :columns="columns"
-          :scroll="{ x: 680 }"
+          :scroll="{ x: 680, y: 380 }"
           :dataSource="cardItem.conflictList"
-          rowKey="index"
+          rowKey="id"
         ></st-table>
       </template>
       <div :class="[bS('wrapper'), bS('wrapper-conflict')]">
         <div class="eidt-current-course-btns">
-          <a href="javascript:;" @click="onEdit">
+          <a @click="onEdit">
             <st-icon type="edit" class="edit-course-btn"></st-icon>
           </a>
-          <a href="javascript:;" @click="onDelete">
+          <a @click="onDelete">
             <st-icon type="delete" class="delete-course-btn"></st-icon>
           </a>
         </div>
@@ -38,16 +38,20 @@
         </p>
         <p class="course__scene">
           场地：
-          <span>{{ cardItem.court_name }}</span>
+          <span>
+            {{
+              dealCourtSiteName(cardItem.court_name, cardItem.court_site_name)
+            }}
+          </span>
         </p>
       </div>
     </a-popover>
     <div :class="bS('wrapper')" v-else>
       <div class="eidt-current-course-btns">
-        <a href="javascript:;" @click="onEdit">
+        <a @click="onEdit">
           <st-icon type="edit" class="edit-course-btn"></st-icon>
         </a>
-        <a href="javascript:;" @click="onDelete">
+        <a @click="onDelete">
           <st-icon type="delete" class="delete-course-btn"></st-icon>
         </a>
       </div>
@@ -64,7 +68,9 @@
       </p>
       <p class="course__scene">
         场地：
-        <span>{{ cardItem.court_name }}</span>
+        <span>
+          {{ dealCourtSiteName(cardItem.court_name, cardItem.court_site_name) }}
+        </span>
       </p>
     </div>
   </div>
@@ -107,6 +113,9 @@ export default {
     },
     onDelete() {
       this.$emit('onDeleteCourse')
+    },
+    dealCourtSiteName(courtName, CourtSiteName) {
+      return CourtSiteName ? courtName + ' / ' + CourtSiteName : courtName
     }
   }
 }

@@ -3,12 +3,7 @@
     <div :class="b('item')" class="bg-gray">
       请假课程
     </div>
-    <div
-      :class="b('bitem')"
-      type="2"
-      v-for="(item, index) in list"
-      :key="index"
-    >
+    <div :class="b('wrap')" type="2" v-for="(item, index) in list" :key="index">
       <div :class="b('title')">
         {{ item.class_info.course_name }}
       </div>
@@ -60,9 +55,7 @@ export default {
       return this.groupUserClassSignService
         .getCourseGroupClassUserInfo(para)
         .subscribe(res => {
-          this.list = res.list.filter(item => {
-            return item.class_type === 1
-          })
+          this.list = res.list
         })
     }
   },

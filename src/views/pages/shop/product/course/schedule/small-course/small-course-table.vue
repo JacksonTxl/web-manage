@@ -64,7 +64,9 @@
           </a-col>
           <a-col :lg="12" class="content">
             <div class="course-info">
-              <div class="course-name">{{ info.course_name }}</div>
+              <div class="course-name">
+                {{ info.course_name }}.{{ info.current_course_name }}
+              </div>
               <div class="address">
                 <div class="mg-r24">
                   <span class="label">场地：</span>
