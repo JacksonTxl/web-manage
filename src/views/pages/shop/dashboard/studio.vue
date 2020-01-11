@@ -18,7 +18,7 @@
             </span>
           </a-col>
           <a-col :lg="5">
-            营收额(元)
+            净营收/营收额(元)
             <span :class="[bCount('topIcon'), 'money']">
               <img :src="topIconMoney" />
             </span>
