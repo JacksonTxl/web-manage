@@ -254,7 +254,7 @@ export default {
     },
     onCLickSmallCheckinAmount() {
       this.$modalRouter.push({
-        name: 'shop-stat-Small-consume',
+        name: 'shop-stat-small-consume',
         props: {
           type: 'total'
         }
