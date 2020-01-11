@@ -99,7 +99,10 @@
           >
             去退款
           </a>
-          <a v-if="record.auth['shop:product:small_class_course|del']">
+          <a
+            v-if="record.auth['shop:product:small_class_course|del']"
+            class="delete"
+          >
             <st-popconfirm
               :title="
                 '一旦删除则无法恢复，确认删除' + record.course_name + '？'
