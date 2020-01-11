@@ -860,11 +860,11 @@ export const routeMapConfig = {
   },
   'brand-setting-general-course-personal'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教设置'
-    routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|tab'
+    routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|get'
   },
   'brand-setting-general-course-team'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '团课设置'
-    routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|tab'
+    routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|get'
   },
   'brand-setting-general-course-small-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '{{$c("small_course")}}设置'
