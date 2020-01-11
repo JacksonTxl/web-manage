@@ -44,6 +44,22 @@
             {{ record.name }}
           </st-text>
         </template>
+        <template slot="member_name" slot-scope="text, record">
+          <template v-if="record.is_minors">
+            {{ record.member_name }}(未成年)
+          </template>
+          <template v-else>
+            {{ record.member_name }}
+          </template>
+        </template>
+        <template slot="member_mobile" slot-scope="text, record">
+          <template v-if="record.is_minors">
+            {{ record.parent_mobile }}({{ record.parent_user_role }})
+          </template>
+          <template v-else>
+            {{ record.member_mobile }}
+          </template>
+        </template>
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
             <a
