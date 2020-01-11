@@ -4,8 +4,9 @@
       请假课程
     </div>
     <div
-      :class="b('bitem')"
+      :class="b('item')"
       type="2"
+      style="background:#fff"
       v-for="(item, index) in list"
       :key="index"
     >
@@ -60,9 +61,7 @@ export default {
       return this.groupUserClassSignService
         .getCourseGroupClassUserInfo(para)
         .subscribe(res => {
-          this.list = res.list.filter(item => {
-            return item.class_type === 1
-          })
+          this.list = res.list
         })
     }
   },

@@ -61,7 +61,7 @@
       <st-hr></st-hr>
       <st-t4>签到时间</st-t4>
       <div class="st-des">
-        开课后{{
+        开课{{
           reserveInfo.sign_time | enumFilter('small_course.sign_time')
         }}允许签到
       </div>
