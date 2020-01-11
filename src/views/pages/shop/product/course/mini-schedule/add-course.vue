@@ -7,7 +7,9 @@
     title="添加课程"
   >
     <template :class="b('wrapper')" slot="content">
-      <span :class="b('head-close')" @click="hide">X</span>
+      <span :class="b('head-close')" @click="hide">
+        <st-icon type="modal-close" :class="b('modal-close-btn')"></st-icon>
+      </span>
       <div class="add-course-conent">
         <st-form labelWidth="68px" :form="form">
           <st-form-item label="排课名称" class="mg-t12">
