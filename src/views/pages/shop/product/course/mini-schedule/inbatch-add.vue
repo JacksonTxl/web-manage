@@ -475,13 +475,11 @@ export default {
             }
             weekItem.list.forEach((courseItem, index) => {
               courseItem.show = false
-              if (!item.conflict) {
+              if (!courseItem.conflict) {
                 courseItem.conflict = 0
                 courseItem.conflictList = []
                 text += courseItem.start_time + ','
                 courseNum += courseItem.schedule_ids.split(',').length
-                console.log(courseItem.schedule_ids)
-                console.log(courseItem.schedule_ids.split(',').length)
               }
             })
             listItemCard[weekItem.week] = weekItem.list

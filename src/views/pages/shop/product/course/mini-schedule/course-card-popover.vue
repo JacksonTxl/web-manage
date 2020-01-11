@@ -13,7 +13,7 @@
           :columns="columns"
           :scroll="{ x: 680, y: 380 }"
           :dataSource="cardItem.conflictList"
-          rowKey="index"
+          rowKey="id"
         ></st-table>
       </template>
       <div :class="[bS('wrapper'), bS('wrapper-conflict')]">
