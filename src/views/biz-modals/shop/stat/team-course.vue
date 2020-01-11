@@ -123,7 +123,7 @@ export default {
   computed: {
     columns,
     showTable() {
-      return this.$router.path.includes('stat/course/summary')
+      return this.$route.path.includes('stat/course/summary')
     },
     totalQuery() {
       let query = cloneDeep(this.$searchQuery)

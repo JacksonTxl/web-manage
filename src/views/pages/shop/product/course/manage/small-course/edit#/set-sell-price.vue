@@ -111,12 +111,11 @@
 import { EditService } from '../edit.service'
 import { MessageService } from '@/services/message.service'
 import { UserService } from '@/services/user.service'
-import { remove } from 'lodash-es'
+import { cloneDeep } from 'lodash-es'
 import { ruleOptions } from '../form.config'
 import { GradientService } from '@/views/fragments/course/personal#/gradient.service'
 import { PatternService } from '@/services/pattern.service'
 import { CLASS_STATUS } from '@/constants/course/small-course'
-
 export default {
   name: 'SetSellPrice',
   serviceInject() {
@@ -185,8 +184,10 @@ export default {
   },
   mounted() {
     const curTime = moment()
+    let start = cloneDeep(curTime)
+    let end = cloneDeep(curTime)
     this.form.setFieldsValue({
-      apply_date: [curTime.add('30', 'minutes'), curTime]
+      apply_date: [start.add('30', 'minutes'), end.add('31', 'minutes')]
     })
     this.setFieldsValue()
   },
@@ -199,11 +200,16 @@ export default {
         transfer_num: info.transfer_num,
         sell_type: info.sell_type,
         transfer_type: info.transfer_type,
-        apply_date: info.apply_begin_time
-          ? [moment(info.apply_begin_time), moment(info.apply_end_time)]
-          : [],
         sales_price: info.sales_price
       })
+      if (info.apply_begin_time) {
+        this.form.setFieldsValue({
+          apply_date: [
+            moment(info.apply_begin_time),
+            moment(info.apply_end_time)
+          ]
+        })
+      }
       this.isShowTransfer = info.is_allow_transfer
     },
     save(para) {

@@ -110,6 +110,7 @@ import { remove } from 'lodash-es'
 import { ruleOptions } from '../form.config'
 import { GradientService } from '@/views/fragments/course/personal#/gradient.service'
 import { PatternService } from '@/services/pattern.service'
+import { cloneDeep } from 'lodash-es'
 
 export default {
   name: 'SetSellPrice',
@@ -165,8 +166,10 @@ export default {
   created() {},
   mounted() {
     const curTime = moment()
+    let start = cloneDeep(curTime)
+    let end = cloneDeep(curTime)
     this.form.setFieldsValue({
-      apply_date: [curTime.add('30', 'minutes'), curTime]
+      apply_date: [start.add('30', 'minutes'), end.add('31', 'minutes')]
     })
     this.$nextTick(() => {
       this.form.setFieldsValue({

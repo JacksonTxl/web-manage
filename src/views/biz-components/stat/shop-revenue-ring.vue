@@ -83,6 +83,24 @@ export default {
             `<span class="g2-legend-text">${name}&nbsp;<span id='legend-{index}'></span></span>` +
             `</li>`
           )
+        },
+        onHover: ev => {
+          // 总计为 0 是执行hover
+          // if (this.total === 0) return
+          const $s = this.$el.querySelector.bind(this.$el)
+          const name = ev.item.value
+          const row = this.dv.findRow({ name })
+          const shapes = ev.shapes
+          const geom = ev.geom
+          const legend = ev.currentTarget
+          // 选中对应单元
+          this.sum !== 0 && geom.setShapesActived(shapes)
+          legend.addEventListener('mouseleave', () => {
+            $s('.guide-value').textContent = this.sum
+            $s('.guide-name').textContent = this.name
+          })
+          $s('.guide-value').textContent = row.value
+          $s('.guide-name').textContent = row.name
         }
       })
       this.chart.guide().html({
