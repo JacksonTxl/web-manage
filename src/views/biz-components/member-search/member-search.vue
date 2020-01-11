@@ -292,9 +292,10 @@ export default {
     },
     onSelectMember(val) {
       this.selectInfo = this.memberList$.filter(item => item.id === val)[0]
+      this.$emit('change', val)
     },
     onChangeMember(val) {
-      this.$emit('change', val)
+      // this.$emit('change', val)
     },
     onChangeModel(val) {
       this.personModel = val
