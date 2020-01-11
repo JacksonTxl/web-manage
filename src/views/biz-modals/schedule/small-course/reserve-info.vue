@@ -269,8 +269,10 @@
               </div>
               <div
                 v-if="
-                  reserveInfo.small_course_type === 2 &&
-                    item.reserve_status === 6
+                  (reserveInfo.small_course_type === 2 &&
+                    item.reserve_status === 6) ||
+                    (reserveInfo.small_course_type === 1 &&
+                      item.reserve_status === 6)
                 "
               >
                 <a
@@ -363,14 +365,12 @@ export default {
       memberId: '',
       consumeType: '',
       consumeId: '',
-      consumeTypeId: '',
       showConsumeType: '',
       showMemberName: '',
       dataSource: [],
       keyword: '',
       show: false,
       info: {},
-      isAdd: true,
       checked: false
     }
   },

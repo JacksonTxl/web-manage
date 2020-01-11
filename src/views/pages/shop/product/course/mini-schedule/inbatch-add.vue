@@ -460,7 +460,6 @@ export default {
     getScheduleTips(index, text, courseNum) {
       this.tipsText[index] = text
       this.tipsCourseNum[index] = courseNum
-      console.log(this.tipsCourseNum[index])
     },
     filterDateList(dateList) {
       let list = []

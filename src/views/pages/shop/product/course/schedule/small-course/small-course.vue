@@ -61,7 +61,6 @@ export default {
   methods: {
     // 添加课程排期
     onAddSchedule(date) {
-      console.log(date)
       if (!this.auth.add) {
         return
       }
@@ -70,7 +69,6 @@ export default {
         props: { time: date },
         on: {
           ok: res => {
-            console.log('ok')
             this.onScheduleChange()
           }
         }
@@ -78,7 +76,6 @@ export default {
     },
     // 查看详情
     onDetail(info) {
-      console.log(info)
       if (!this.auth.getInfo) {
         return
       }
