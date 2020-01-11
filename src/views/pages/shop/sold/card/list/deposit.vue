@@ -41,7 +41,7 @@
           :loading="loading.getList"
           :columns="columns"
           :dataSource="list"
-          :scroll="{ x: 1800 }"
+          :scroll="{ x: 3000 }"
         >
           <template slot="is_valid" slot-scope="text">
             <st-text
