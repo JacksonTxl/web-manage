@@ -65,7 +65,7 @@
           <a-col :lg="12" class="content">
             <div class="course-info">
               <div class="course-name">
-                {{ info.course_name }}.{{ info.current_course_name }}
+                {{ dealCourtName(info.course_name, info.current_course_name) }}
               </div>
               <div class="address">
                 <div class="mg-r24">
@@ -142,6 +142,11 @@ export default {
     date
   },
   methods: {
+    dealCourtName(courseName, currentCourseName) {
+      return currentCourseName
+        ? courseName + '.' + currentCourseName
+        : courseName
+    },
     handleSizeChange(evt, type) {
       this.pageBtnFocusState = evt.target.value
     },

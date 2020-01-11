@@ -11,7 +11,12 @@
       <a-col :lg="16">
         <st-info>
           <st-info-item :label="$c('small_course')">
-            {{ reserveInfo.course_name }}.{{ reserveInfo.current_course_name }}
+            {{
+              dealCourtName(
+                reserveInfo.course_name,
+                reserveInfo.current_course_name
+              )
+            }}
           </st-info-item>
         </st-info>
       </a-col>
@@ -393,6 +398,11 @@ export default {
     this.getReserveInfo()
   },
   methods: {
+    dealCourtName(courseName, currentCourseName) {
+      return currentCourseName
+        ? courseName + '.' + currentCourseName
+        : courseName
+    },
     keywordFilter(str) {
       if (!this.keyword) return str
       str = str.replace(

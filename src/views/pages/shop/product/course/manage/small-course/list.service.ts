@@ -14,6 +14,9 @@ export class ListService implements Controller {
   status$ = this.userService.getOptions$('small_course.class_status', {
     addAll: true
   })
+  auth$ = this.authService.authMap$({
+    add: 'shop:product:small_class_course|add'
+  })
   constructor(
     private courseGroupApi: CourseGroupApi,
     private authService: AuthService,
