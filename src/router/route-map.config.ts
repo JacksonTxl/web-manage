@@ -538,15 +538,15 @@ export const routeMapConfig = {
   },
   'brand-setting-app-course-category'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '课程类型'
-    routeConfig.meta.auth = 'brand_shop:course:course_type|list'
+    routeConfig.meta.auth = 'brand:course:course_type|tab'
   },
   'brand-setting-app-course-training-aim'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '训练目的'
-    routeConfig.meta.auth = 'brand_shop:course:training_aim|list'
+    routeConfig.meta.auth = 'brand:course:training_aim|tab'
   },
   'brand-setting-app-course-small-course-range'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '{{$c("small_course")}}适用范围'
-    routeConfig.meta.auth = 'brand_shop:course:course_scope|list'
+    routeConfig.meta.auth = 'brand:course:course_scope_setting|tab'
   },
   'brand-setting-app-staff-skillful'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '擅长项目'
@@ -868,7 +868,7 @@ export const routeMapConfig = {
   },
   'brand-setting-general-course-small-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '{{$c("small_course")}}设置'
-    routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|tab'
+    routeConfig.meta.auth = 'brand:setting:small_course_reserve_setting|tab'
   },
   'brand-setting-general-pay-type'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '支付方式'
