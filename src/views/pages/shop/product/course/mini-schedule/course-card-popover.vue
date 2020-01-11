@@ -18,10 +18,10 @@
       </template>
       <div :class="[bS('wrapper'), bS('wrapper-conflict')]">
         <div class="eidt-current-course-btns">
-          <a href="javascript:;" @click="onEdit">
+          <a @click="onEdit">
             <st-icon type="edit" class="edit-course-btn"></st-icon>
           </a>
-          <a href="javascript:;" @click="onDelete">
+          <a @click="onDelete">
             <st-icon type="delete" class="delete-course-btn"></st-icon>
           </a>
         </div>
@@ -48,10 +48,10 @@
     </a-popover>
     <div :class="bS('wrapper')" v-else>
       <div class="eidt-current-course-btns">
-        <a href="javascript:;" @click="onEdit">
+        <a @click="onEdit">
           <st-icon type="edit" class="edit-course-btn"></st-icon>
         </a>
-        <a href="javascript:;" @click="onDelete">
+        <a @click="onDelete">
           <st-icon type="delete" class="delete-course-btn"></st-icon>
         </a>
       </div>
