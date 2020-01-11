@@ -123,6 +123,13 @@ export default {
       }
     }
   },
+  created() {
+    this.smallCourseScheduleCommonService
+      .getCourseList({
+        schedule_status: 1
+      })
+      .subscribe()
+  },
   methods: {
     changeStartDays(valus) {
       this.courseStartDate = valus.format('YYYY-MM-DD')
