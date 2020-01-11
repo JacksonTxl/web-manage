@@ -466,24 +466,26 @@ export default {
         let listItemCard = {}
         let courseNum = 0
         let text = ''
-        item.course_time.forEach((item, index) => {
-          if (item.week || item.week == 0) {
-            if (item.week == 0) {
+        item.course_time.forEach((weekItem, index) => {
+          if (weekItem.week || weekItem.week == 0) {
+            if (weekItem.week == 0) {
               text += this.weekList[this.weekList.length - 1].date
             } else {
-              text += this.weekList[item.week - 1].date
+              text += this.weekList[weekItem.week - 1].date
             }
-            item.list.forEach((item, index) => {
-              item.show = false
+            weekItem.list.forEach((courseItem, index) => {
+              courseItem.show = false
               if (!item.conflict) {
-                item.conflict = 0
-                item.conflictList = []
-                text += item.start_time + ','
-                courseNum += item.schedule_ids.split(',').length
+                courseItem.conflict = 0
+                courseItem.conflictList = []
+                text += courseItem.start_time + ','
+                courseNum += courseItem.schedule_ids.split(',').length
+                console.log(courseItem.schedule_ids)
+                console.log(courseItem.schedule_ids.split(',').length)
               }
             })
-            listItemCard[item.week] = item.list
-            listItemCard[item.week][0].show = false
+            listItemCard[weekItem.week] = weekItem.list
+            listItemCard[weekItem.week][0].show = false
           }
         })
         this.getScheduleTips(dateIndex, text, courseNum)
@@ -514,7 +516,7 @@ export default {
     pushCourseInfo(cycleIndex, conflict, info, list) {
       console.log('增加周期性课程排期')
       console.log(info)
-      let courseItem = info
+      let courseItem = cloneDeep(info)
       courseItem.court_site_id = info.court_site_id || 0
       courseItem.conflict = conflict
       courseItem.conflictList = list
@@ -526,10 +528,6 @@ export default {
       this.scheduleList[cycleIndex].course_time.forEach((item, index) => {
         if (item.week == courseItem.week) {
           findWeekFlag = true
-          if (item.list.length >= 100) {
-            this.msg.error({ content: '单日排课不得超过100节！' })
-            return
-          }
           item.list.push(courseItem)
           this.filterDateList(this.scheduleList)
         }
