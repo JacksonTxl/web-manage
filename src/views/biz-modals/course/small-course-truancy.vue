@@ -4,27 +4,33 @@
       <div :class="b('item')" class="bg-gray">
         旷课课程
       </div>
-      <div type="2" v-for="(item, index) in list" :key="index">
-        <div :class="b('title')">
-          {{ item.class_info.course_name }}
-        </div>
-        <div :class="b('wrap')">
-          <span :class="b('label')">时间：</span>
-          <span :class="b('value')" class="mg-r16">
-            {{ item.class_info.time }}
-          </span>
-          <span :class="b('label')">教练：</span>
-          <span :class="b('value')">
-            {{ item.class_info.coach_name }}
-          </span>
-        </div>
+      <div
+        type="2"
+        v-for="(item, index) in list"
+        :key="index"
+        :class="b('wrap')"
+      >
+        <div :class="b('title')">{{ item.class_info.course_name }}23</div>
+        <span :class="b('label')">时间：</span>
+        <span :class="b('value')" class="mg-r16">
+          {{ item.class_info.time }}
+        </span>
+        <span :class="b('label')">教练：</span>
+        <span :class="b('value')">
+          {{ item.class_info.coach_name }}
+        </span>
       </div>
     </div>
     <div :class="b('right')">
       <div :class="b('item')" class="bg-gray">
         补课信息
       </div>
-      <div type="2" v-for="(item, index) in list" :key="index">
+      <div
+        type="2"
+        v-for="(item, index) in list"
+        :key="index"
+        :class="b('wrap')"
+      >
         <div :class="b('title')">
           {{ item.make_up_info && item.make_up_info.course_name }}
         </div>

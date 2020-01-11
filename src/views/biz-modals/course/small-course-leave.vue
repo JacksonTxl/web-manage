@@ -5,7 +5,7 @@
         请假课程
       </div>
       <div
-        :class="b('bitem')"
+        :class="b('wrap')"
         type="2"
         v-for="(item, index) in list"
         :key="index"
@@ -30,7 +30,7 @@
         补课信息
       </div>
       <div
-        :class="b('bitem')"
+        :class="b('wrap')"
         type="2"
         v-for="(item, index) in list"
         :key="index"

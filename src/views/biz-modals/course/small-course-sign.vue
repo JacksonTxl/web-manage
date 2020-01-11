@@ -3,13 +3,7 @@
     <div :class="b('item')" class="bg-gray">
       请假课程
     </div>
-    <div
-      :class="b('item')"
-      type="2"
-      style="background:#fff"
-      v-for="(item, index) in list"
-      :key="index"
-    >
+    <div :class="b('wrap')" type="2" v-for="(item, index) in list" :key="index">
       <div :class="b('title')">
         {{ item.class_info.course_name }}
       </div>
