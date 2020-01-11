@@ -166,7 +166,11 @@
                   </p>
                   <p class="course__scene mg-l16">
                     场地：
-                    <span>{{ item.court_name }}</span>
+                    <span>
+                      {{
+                        dealCourtSiteName(item.court_name, item.court_site_name)
+                      }}
+                    </span>
                   </p>
                 </div>
               </div>
@@ -494,6 +498,9 @@ export default {
         list.push(listItemCard)
       })
       this.filterDate = list
+    },
+    dealCourtSiteName(courtName, CourtSiteName) {
+      return CourtSiteName ? courtName + ' / ' + CourtSiteName : courtName
     },
     // 增加课程
     createCourseWeek(courseItem, cycleIndex) {
