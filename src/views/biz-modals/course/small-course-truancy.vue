@@ -10,7 +10,7 @@
         :key="index"
         :class="b('wrap')"
       >
-        <div :class="b('title')">{{ item.class_info.course_name }}23</div>
+        <div :class="b('title')">{{ item.class_info.course_name }}</div>
         <span :class="b('label')">时间：</span>
         <span :class="b('value')" class="mg-r16">
           {{ item.class_info.time }}
