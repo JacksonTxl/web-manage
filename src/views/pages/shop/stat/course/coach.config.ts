@@ -76,11 +76,6 @@ export const columns = (vm: any) => {
       align: 'right'
     },
     {
-      title: `上课${vm.$c('coach')}数（${vm.$c('coach')}）`,
-      dataIndex: 'small_coach_num',
-      align: 'right'
-    },
-    {
       title: `预约人数（${vm.$c('small_course')}）`,
       dataIndex: 'small_reserved_num',
       align: 'right'

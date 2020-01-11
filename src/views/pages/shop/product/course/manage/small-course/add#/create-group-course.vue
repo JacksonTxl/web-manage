@@ -21,7 +21,6 @@
           <a-select
             @change="onCourseTypeChange"
             mode="multiple"
-            :maxTagCount="3"
             v-decorator="decorators.scope_application"
             placeholder="请选择适用范围"
           >

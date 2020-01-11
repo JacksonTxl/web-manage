@@ -126,7 +126,7 @@ export default {
       return `上课节数(${this.$c('small_course')})`
     },
     showTable() {
-      return this.$router.path.includes('stat/course/summary')
+      return this.$route.path.includes('stat/course/summary')
     },
     totalQuery() {
       let query = cloneDeep(this.$searchQuery)

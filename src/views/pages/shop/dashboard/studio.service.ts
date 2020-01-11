@@ -54,7 +54,7 @@ export class StudioService implements Controller {
           { name: '私教课', value: data.summary.personal_course_amount },
           { name: '团体课', value: data.summary.team_course_amount },
           { name: '课程包', value: data.summary.package_course_amount },
-          { name: small_course, value: data.summary.package_course_amount },
+          { name: small_course, value: data.summary.small_course_amount },
           { name: '云店', value: data.summary.shop_amount },
           { name: '其他', value: data.summary.other_amount }
         ])

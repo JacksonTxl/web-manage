@@ -18,6 +18,13 @@ export const ruleOptions = (vm: any) => {
         {
           required: true,
           message: '请选择范围'
+        },
+        {
+          validator: (field: any, value: any, values: any) => {
+            if (value.length > 3) {
+              return '最多只能选择3个适用范围'
+            }
+          }
         }
       ]
     },

@@ -232,7 +232,7 @@
           v-if="record.is_minors"
           type="user-type"
           class="mg-l4"
-          :color="record.sex.id === SEX.GIRL ? '#FF5E41' : '#3F66F6'"
+          :color="record.sex === SEX.GIRL ? '#FF5E41' : '#3F66F6'"
         />
       </div>
       <div slot="salesman_protect_day" slot-scope="text, record">

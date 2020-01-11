@@ -63,7 +63,7 @@
           </tr>
         </thead>
         <tbody v-if="!loading.add">
-          <tr v-if="reserveInfo.small_course_type === 2">
+          <tr v-if="reserveInfo.small_course_type === COURSE_TYPE.AUTO_COURSE">
             <td class="st-form-table__add">
               <a-select
                 slot="member"
@@ -144,8 +144,8 @@
             <td>
               <div
                 v-if="
-                  reserveInfo.small_course_type === 1 &&
-                    item.reserve_status === 1
+                  reserveInfo.small_course_type === COURSE_TYPE.FIXED_COURSE &&
+                    item.reserve_status === RESERVE_TYPE.UN_CHECK
                 "
               >
                 <a
@@ -168,8 +168,8 @@
               </div>
               <div
                 v-if="
-                  reserveInfo.small_course_type === 2 &&
-                    item.reserve_status === 1
+                  reserveInfo.small_course_type === COURSE_TYPE.AUTO_COURSE &&
+                    item.reserve_status === RESERVE_TYPE.UN_CHECK
                 "
               >
                 <a
@@ -192,20 +192,22 @@
               </div>
               <div
                 v-if="
-                  (reserveInfo.small_course_type === 1 &&
-                    item.reserve_status === 2) ||
-                    (reserveInfo.small_course_type === 2 &&
-                      item.reserve_status === 2)
+                  (reserveInfo.small_course_type === COURSE_TYPE.FIXED_COURSE &&
+                    item.reserve_status === RESERVE_TYPE.CHECKED) ||
+                    (reserveInfo.small_course_type ===
+                      COURSE_TYPE.AUTO_COURSE &&
+                      item.reserve_status === RESERVE_TYPE.CHECKED)
                 "
               >
                 --
               </div>
               <div
                 v-if="
-                  (reserveInfo.small_course_type === 1 &&
-                    item.reserve_status === 3) ||
-                    (reserveInfo.small_course_type === 2 &&
-                      item.reserve_status === 3)
+                  (reserveInfo.small_course_type === COURSE_TYPE.FIXED_COURSE &&
+                    item.reserve_status === RESERVE_TYPE.TRUANCK) ||
+                    (reserveInfo.small_course_type ===
+                      COURSE_TYPE.AUTO_COURSE &&
+                      item.reserve_status === RESERVE_TYPE.TRUANCK)
                 "
               >
                 <a
@@ -232,8 +234,8 @@
               </div>
               <div
                 v-if="
-                  reserveInfo.small_course_type === 1 &&
-                    item.reserve_status === 4
+                  reserveInfo.small_course_type === COURSE_TYPE.FIXED_COURSE &&
+                    item.reserve_status === RESERVE_TYPE.LAEVE_REMEDIAL
                 "
               >
                 <a
@@ -249,8 +251,8 @@
               </div>
               <div
                 v-if="
-                  reserveInfo.small_course_type === 1 &&
-                    item.reserve_status === 5 &&
+                  reserveInfo.small_course_type === COURSE_TYPE.FIXED_COURSE &&
+                    item.reserve_status === RESERVE_TYPE.LAEVE_UNREMEDIAL &&
                     item.auth[
                       'shop:reserve:small_class_course_reserve|supplement'
                     ]
@@ -269,8 +271,11 @@
               </div>
               <div
                 v-if="
-                  reserveInfo.small_course_type === 2 &&
-                    item.reserve_status === 6
+                  (reserveInfo.small_course_type === COURSE_TYPE.FIXED_COURSE &&
+                    item.reserve_status === RESERVE_TYPE.TRUANCK_REMEDIAL) ||
+                    (reserveInfo.small_course_type ===
+                      COURSE_TYPE.FIXED_COURSE &&
+                      item.reserve_status === RESERVE_TYPE.TRUANCK_REMEDIAL)
                 "
               >
                 <a
@@ -326,6 +331,7 @@ import ScheduleSmallCourseReservedCourse from '@/views/biz-modals/schedule/small
 import ScheduleSmallCourseRemedialCourse from '@/views/biz-modals/schedule/small-course/remedial-course'
 import ScheduleSmallCourseRemedialInfo from '@/views/biz-modals/schedule/small-course/remedial-info'
 import { RemedialCourseInfoService } from './remedial-info.service'
+import { COURSE_TYPE, RESERVE_TYPE } from '@/constants/course/small-course'
 import { columns } from './reserve-info.config'
 export default {
   name: 'ReserveInfo',
@@ -360,17 +366,17 @@ export default {
   },
   data() {
     return {
+      COURSE_TYPE,
+      RESERVE_TYPE,
       memberId: '',
       consumeType: '',
       consumeId: '',
-      consumeTypeId: '',
       showConsumeType: '',
       showMemberName: '',
       dataSource: [],
       keyword: '',
       show: false,
       info: {},
-      isAdd: true,
       checked: false
     }
   },
