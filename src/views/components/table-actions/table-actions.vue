@@ -45,7 +45,8 @@ export default {
       {
         props: {
           overlayClassName: 'st-table-actions__popover',
-          placement: 'bottomRight'
+          placement: 'bottomRight',
+          visible: true
         },
         scopedSlots: {
           content: props => innerActions
