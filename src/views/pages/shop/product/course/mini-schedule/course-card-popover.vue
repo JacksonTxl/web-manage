@@ -11,7 +11,7 @@
         <st-table
           :pagination="false"
           :columns="columns"
-          :scroll="{ x: 680 }"
+          :scroll="{ x: 680, y: 500 }"
           :dataSource="cardItem.conflictList"
           rowKey="index"
         ></st-table>
