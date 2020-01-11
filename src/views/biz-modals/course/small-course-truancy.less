@@ -1,5 +1,9 @@
 .modal-course-group-class {
   width: 100%;
+  display: flex;
+  .ant-spin-container {
+    display: flex;
+  }
   &__left {
     display: inline-block;
     width: 50%;
@@ -18,6 +22,9 @@
   &__wrap {
     height: 54px;
     padding: 12px;
+    &:nth-child(odd) {
+      background: rgba(245, 246, 248, 1);
+    }
   }
   &__title {
     color: #252a2e;
