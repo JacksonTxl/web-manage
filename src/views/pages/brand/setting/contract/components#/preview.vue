@@ -56,25 +56,25 @@
           <a-col :span="8" v-if="info.is_parent_name">
             <div class="info-item">
               <label class="info-label">家长姓名：</label>
-              <span class="info-text">{{ info.parent_name }}</span>
+              <span class="info-text">papa</span>
             </div>
           </a-col>
           <a-col :span="8" v-if="info.is_parent_mobile">
             <div class="info-item">
               <label class="info-label">家长联系方式：</label>
-              <span class="info-text">{{ info.parent_mobile }}</span>
+              <span class="info-text">13900000000</span>
             </div>
           </a-col>
           <a-col :span="8" v-if="info.is_parent_rule">
             <div class="info-item">
               <label class="info-label">家长身份：</label>
-              <span class="info-text">{{ info.parent_rule }}</span>
+              <span class="info-text">爸爸</span>
             </div>
           </a-col>
           <a-col :span="12" v-if="info.is_parent_id_card">
             <div class="info-item">
               <label class="info-label">家长身份证号：</label>
-              <span class="info-text">{{ info.parent_id_card }}</span>
+              <span class="info-text">31010319900101000</span>
             </div>
           </a-col>
           <a-col :span="12" v-if="info.is_member_address">
@@ -279,18 +279,6 @@ export default {
       CONTRACT_TYPE,
       today: moment()
     }
-  },
-  created() {
-    // mock 数据  页面的数据为什么是前端写死的!!!
-    console.log(this.info)
-    // this.info.is_parent_name = 1
-    // this.info.is_parent_mobile = 1
-    // this.info.is_parent_id_card = 1
-    // this.info.is_parent_rule = 1
-    this.info.parent_name = 'panda'
-    this.info.parent_mobile = 15711099936
-    this.info.parent_id_card = 31231231231321312
-    this.info.parent_rule = '爸爸'
   },
   computed: {
     showAllTh() {
