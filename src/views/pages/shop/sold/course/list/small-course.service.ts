@@ -15,9 +15,12 @@ export class SmallCourseService implements Controller {
     batch_extension: 'shop:sold:sold_personal_course|batch_extension',
     batch_gift_number: 'shop:sold:sold_personal_course|batch_gift_number'
   })
-  courseStatus$ = this.userService.getOptions$('sold_common.course_status', {
-    addAll: true
-  })
+  courseStatus$ = this.userService.getOptions$(
+    'sold_common.small_course_status',
+    {
+      addAll: true
+    }
+  )
   constructor(
     private smallCourseApi: SmallCourseApi,
     private authService: AuthService,

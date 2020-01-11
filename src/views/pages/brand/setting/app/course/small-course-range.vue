@@ -40,7 +40,7 @@
           <td>
             <st-table-actions>
               <a
-                v-if="item.auth['brand_shop:course:course_scope|edit']"
+                v-if="item.auth['brand:course:course_scope|edit']"
                 v-modal-link="{
                   name: 'course-range-edit',
                   props: { info: item },
@@ -50,7 +50,7 @@
                 编辑
               </a>
               <st-popconfirm
-                v-if="item.auth['brand_shop:course:course_scope|del']"
+                v-if="item.auth['brand:course:course_scope|del']"
                 :title="
                   `删除后不可进行恢复，${
                     item.used_number ? '已标记的课程将删除此训练目的，' : ''

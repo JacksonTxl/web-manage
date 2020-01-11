@@ -123,7 +123,10 @@ export default {
       VISIT_STATUS,
       COURSE_STATUS,
       RESERVE_TYPE,
-      date: []
+      date: [
+        moment(this.$searchQuery.start_time),
+        moment(this.$searchQuery.end_time)
+      ]
     }
   },
   computed: {
