@@ -16,6 +16,15 @@
             <st-info-item label="系统版本">
               {{ data.mina_info.version }}
             </st-info-item>
+            <st-info-item label="小程序页面路径">
+              <a
+                v-modal-link="{
+                  name: 'brand-setting-mina-path'
+                }"
+              >
+                点击查看
+              </a>
+            </st-info-item>
           </st-info>
         </a-col>
         <a-col :lg="8">
@@ -98,6 +107,7 @@ import user from '@/assets/img/brand/setting/mina/icon_user.png'
 import flow from '@/assets/img/brand/setting/mina/icon_flow.png'
 import { IndexService } from '../index.service'
 import BrandSettingMinaMch from '@/views/biz-modals/brand/setting/mina/mch'
+import BrandSettingMinaPath from '@/views/biz-modals/brand/setting/mina/path'
 import { MessageService } from '@/services/message.service'
 export default {
   bem: {
@@ -107,7 +117,8 @@ export default {
     data: Object
   },
   modals: {
-    BrandSettingMinaMch
+    BrandSettingMinaMch,
+    BrandSettingMinaPath
   },
   serviceInject() {
     return {
