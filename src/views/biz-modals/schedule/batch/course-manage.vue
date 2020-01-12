@@ -1,6 +1,6 @@
 <template>
   <st-modal
-    title="团课周课表管理"
+    :title="`${type === 'small' ? '私教小' : ''}团课周课表管理`"
     @ok="save"
     okText="确定"
     v-model="show"

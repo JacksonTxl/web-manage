@@ -13,6 +13,7 @@
         <st-button
           type="primary"
           class="mg-r12"
+          :loading="loading.getSmallTemplate"
           @click="onClickScheduleInBatch"
           v-if="auth.addBatch"
         >
@@ -58,7 +59,8 @@ export default {
     return {
       auth: this.service.auth$,
       cardList: this.personalTeamSchduleService.courseList$,
-      smallTemplateList: this.personalTeamSchduleService.smallTemplateList$
+      smallTemplateList: this.personalTeamSchduleService.smallTemplateList$,
+      loading: this.personalTeamSchduleService.loading$
     }
   },
   components: {
@@ -121,7 +123,8 @@ export default {
         this.$modalRouter.push({
           name: 'schedule-batch-course-manage',
           props: {
-            teamTemplateList: this.smallTemplateList
+            teamTemplateList: this.smallTemplateList,
+            type: 'small'
           },
           on: {
             // 确定时开始删除数据

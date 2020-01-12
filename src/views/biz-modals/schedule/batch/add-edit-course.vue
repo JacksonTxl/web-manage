@@ -1,11 +1,23 @@
 <template>
   <st-modal
-    :title="id ? '编辑团课周课表' : '新增团课周课表'"
+    :title="
+      id
+        ? `编辑${type === 'small' ? '私教小' : ''}团课周课表`
+        : `新增${type === 'small' ? '私教小' : ''}团课周课表`
+    "
     @ok="save"
     okText="确定"
     v-model="show"
-    :loading="id ? loading.editTeamDetail : loading.addTeamDetail"
-    width="1082px"
+    :loading="
+      id
+        ? type === 'team'
+          ? loading.editTeamDetail
+          : loading.editSmallDetail
+        : type === 'team'
+        ? loading.addTeamDetail
+        : loading.addSmallDetail
+    "
+    width="1150px"
     :class="basic()"
   >
     <div :class="basic('form')">
@@ -36,7 +48,12 @@
             <span slot="addonAfter">节</span>
           </st-input-number>
         </st-form-item>
-        <st-form-item label="最多上课安排" required>
+        <st-form-item
+          label="最多上课安排"
+          :help="tableTips"
+          :validateStatus="tableErr ? 'error' : ''"
+          required
+        >
           <div :class="basic('border-box')">
             <st-form-table hoverable :isEmpty="false">
               <thead>
@@ -45,7 +62,7 @@
                   <th>课程</th>
                   <th>开始时间</th>
                   <th>上课{{ $c('coach') }}</th>
-                  <th>场地</th>
+                  <th v-if="type === 'team'">场地</th>
                   <th>人数</th>
                   <th>预约价格</th>
                   <th style="width:60px">操作</th>
@@ -69,8 +86,9 @@
                     <td>
                       <a-select
                         placeholder="请选择星期"
-                        style="width: 85px"
+                        style="width: 86px"
                         v-model="item.week_day"
+                        @change="verifyData"
                       >
                         <a-select-option
                           v-for="week in weekDay"
@@ -83,8 +101,9 @@
                     <td>
                       <a-select
                         placeholder="请选择课程"
-                        style="width: 85px"
+                        style="width: 112px"
                         v-model="item.course_id"
+                        @change="verifyData"
                       >
                         <a-select-option
                           v-for="course in courseOptions"
@@ -98,29 +117,31 @@
                     </td>
                     <td>
                       <a-time-picker
-                        style="width: 120px"
-                        placeholder="请选择时间"
+                        style="width: 108px"
+                        placeholder="选择时间"
                         format="HH:mm"
                         v-model="item.start_time"
+                        @change="verifyData"
                       />
                     </td>
                     <td>
                       <a-select
                         :placeholder="`请选择上课${$c('coach')}`"
-                        style="width: 85px"
+                        style="width: 112px"
                         v-model="item.coach_id"
+                        @change="verifyData"
                       >
                         <a-select-option
                           v-for="coach in coachOptions"
                           :key="coach.id"
                         >
-                          {{ type === 'team' ? coach.course_name : coach.name }}
+                          {{ type === 'team' ? coach.staff_name : coach.name }}
                         </a-select-option>
                       </a-select>
                     </td>
-                    <td>
+                    <td v-if="type === 'team'">
                       <a-cascader
-                        style="width: 85px"
+                        style="width: 112px"
                         placeholder="请选择场地"
                         v-model="item.court_id"
                         :options="courtOptions"
@@ -135,6 +156,7 @@
                       <st-input-number
                         style="width: 90px"
                         v-model="item.people_number"
+                        @input="verifyData"
                       >
                         <span slot="addonAfter">人</span>
                       </st-input-number>
@@ -144,6 +166,7 @@
                         :float="true"
                         style="width: 110px"
                         v-model="item.course_fee"
+                        @input="verifyData"
                       >
                         <span slot="addonAfter">元/节</span>
                       </st-input-number>
@@ -222,13 +245,18 @@ export default {
       courseOptions: [],
       courtOptions: [],
       scheduleInfo: [],
-      show: false
+      show: false,
+      tableTips: '', // 表单中表格提交错误提示语
+      tableErr: false // 表格是否有错
     }
   },
   created() {
+    // 弹窗开启有id为编辑
     if (this.id) {
+      // type:team为团课获取团课列表，small为私教小团课获取私教小团课列表
       let functionName = this.type === 'team' ? 'getTeamInfo' : 'getSmallInfo'
       this.addEditCourseService[functionName](this.id).subscribe(res => {
+        // 显示数据回显
         this.form.setFieldsValue({
           templateName: res.info.template_name,
           maxNumber: res.info.max_number
@@ -246,9 +274,9 @@ export default {
               : undefined
           }
         })
-        console.log(res)
       })
     }
+    // 获取团课和私教小团课的课程和教练的选择项
     if (this.type === 'team') {
       this.coachOptions = this.coachOptionTeam // 教练
       this.courseOptions = this.courseOptionTeam // 课程
@@ -256,13 +284,13 @@ export default {
     } else {
       this.coachOptions = this.coachOptionSmall // 教练
       this.courseOptions = this.courseOptionSmall // 课程
-      this.courtOptions = this.courtOptionTeam // 场地
     }
-    console.log(this.type)
   },
   methods: {
     // 添加课表
     addCourse() {
+      this.tableTips = ''
+      this.tableErr = false
       this.scheduleInfo.push({
         course_id: null,
         coach_id: null,
@@ -276,10 +304,17 @@ export default {
     // 排课安排删除
     delRow(index) {
       this.scheduleInfo.splice(index, 1)
+      this.tableTips = ''
+      this.tableErr = false
     },
     // 数据提交
     save(e) {
+      let isOk = this.verifyData()
       this.form.validate().then(values => {
+        // 对提交上课安排数据处理
+        if (isOk) {
+          return
+        }
         let scheduleInfos = this.scheduleInfo.map(item => {
           return {
             week_day: item.week_day,
@@ -292,6 +327,7 @@ export default {
             course_fee: item.course_fee
           }
         })
+        // 最终提交数据
         let params = {
           template_name: values.templateName,
           max_number: values.maxNumber,
@@ -300,27 +336,51 @@ export default {
           schedule_info: scheduleInfos
         }
         if (this.id) {
-          // 有id为编辑
+          // 有id为编辑（team为调取团课编辑接口，small为调取私教小团课编辑接口）
           let editName =
             this.type === 'team' ? 'editTeamDetail' : 'editSmallDetail'
           this.addEditCourseService[editName](this.id, params).subscribe(
             res => {
               this.$emit('success', res)
               this.show = false
-              console.log(res)
             }
           )
         } else {
-          // 没id为添加
+          // 没id为添加（team为调取团课添加接口，small为调取私教小团课添加接口）
           let addName =
             this.type === 'team' ? 'addTeamDetail' : 'addSmallDetail'
           this.addEditCourseService[addName](params).subscribe(res => {
             this.$emit('success', res)
             this.show = false
-            console.log(res)
           })
         }
       })
+    },
+    // 表格提交数据校验
+    verifyData() {
+      if (!this.scheduleInfo.length) {
+        this.tableTips = '请添加上课安排'
+        this.tableErr = true
+        return true
+      }
+      for (let i = 0; i < this.scheduleInfo.length; i++) {
+        let item = this.scheduleInfo[i]
+        if (
+          !item.week_day ||
+          !item.course_id ||
+          !item.start_time ||
+          !item.coach_id ||
+          !item.people_number ||
+          !item.course_fee
+        ) {
+          this.tableTips = '请正确填写表格数据'
+          this.tableErr = true
+          return true
+        }
+      }
+      this.tableTips = ''
+      this.tableErr = false
+      return false
     }
   }
 }

@@ -1,11 +1,28 @@
 <template>
   <st-modal
-    title="团课批量排期预览"
-    @ok="save"
-    okText="确定"
+    :title="`${type === 'small' ? '私教小' : ''}团课批量排期预览`"
     v-model="show"
     width="1060px"
   >
+    <template slot="footer">
+      <a-tooltip placement="topRight">
+        <template slot="title">
+          <span>关闭后课程排期不再保留</span>
+        </template>
+        <st-button @click="show = false">
+          关闭
+        </st-button>
+      </a-tooltip>
+      <st-button
+        type="primary"
+        @click="save"
+        :loading="
+          type === 'team' ? loading.validTeamBatch : loading.validSmallBatch
+        "
+      >
+        确认
+      </st-button>
+    </template>
     <div :class="basic()">
       <div :class="basic('title')">
         <p :class="basic('title--show')">
@@ -38,16 +55,18 @@
               {{ weekDays[customRender.data] }}
             </div>
           </template>
-          <template slot="course_id" slot-scope="customRender, record">
+          <template slot="course_id" slot-scope="customRender, record, index">
             <!-- 选择课程 -->
             <a-select
               v-if="record.isEdit"
               placeholder="请选择课程"
-              :value="record.course_id.data"
+              v-model="record.course_id_label"
               style="width: 100px"
+              labelInValue
+              @change="e => handleChange(e, index, 'course_id')"
             >
               <a-select-option v-for="course in courseOptions" :key="course.id">
-                {{ course.course_name }}
+                {{ type === 'team' ? course.course_name : course.name }}
               </a-select-option>
             </a-select>
             <div :class="customRender.valid ? 'color_red' : ''" v-else>
@@ -55,7 +74,7 @@
             </div>
           </template>
           <!-- 选择时间 -->
-          <template slot="start_time" slot-scope="customRender, record">
+          <template slot="start_time" slot-scope="customRender, record, index">
             <a-date-picker
               v-if="record.isEdit"
               :showTime="{ format: 'HH:mm' }"
@@ -63,21 +82,24 @@
               placeholder="请选择时间"
               style="width: 156px"
               :value="customRender.data | formatDate"
+              @change="e => handleChangeTime(e, index, 'start_time')"
             />
             <div :class="customRender.valid ? 'color_red' : ''" v-else>
               {{ customRender.data }}
             </div>
           </template>
           <!-- 选择教练 -->
-          <template slot="coach_id" slot-scope="customRender, record">
+          <template slot="coach_id" slot-scope="customRender, record, index">
             <a-select
               v-if="record.isEdit"
               :placeholder="`请选择${$c('coach')}`"
-              :value="record.coach_id.data"
+              v-model="record.coach_id_label"
+              labelInValue
+              @change="e => handleChange(e, index, 'coach_id')"
               style="width: 100px"
             >
               <a-select-option v-for="coach in coachOptions" :key="coach.id">
-                {{ coach.staff_name }}
+                {{ type === 'team' ? coach.staff_name : coach.name }}
               </a-select-option>
             </a-select>
             <div :class="customRender.valid ? 'color_red' : ''" v-else>
@@ -85,12 +107,18 @@
             </div>
           </template>
           <!-- 选择场地 -->
-          <template slot="court_id" slot-scope="customRender, record">
+          <template
+            slot="court_id"
+            v-if="type === 'team'"
+            slot-scope="customRender, record"
+          >
             <a-cascader
               v-if="record.isEdit"
               placeholder="请选择场地"
-              :value="[customRender.data, record.court_site_id.data]"
+              v-model="record.site_id"
               :options="courtOptions"
+              labelInValue
+              @change="e => handleChanges(e, record.key, 'court_site_id')"
               :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
             />
             <div
@@ -112,6 +140,7 @@
               v-if="record.isEdit"
               v-model="customRender.data"
               style="width:100px"
+              @change="customRender.valid === 0"
             ></st-input-number>
             <div :class="customRender.valid ? 'color_red' : ''" v-else>
               {{ customRender.data }}
@@ -123,6 +152,7 @@
               v-model="customRender.data"
               :float="true"
               style="width:100px"
+              @change="customRender.valid === 0"
             ></st-input-number>
             <div :class="customRender.valid ? 'color_red' : ''" v-else>
               {{ customRender.data }}
@@ -147,22 +177,29 @@
 <script>
 import { CourseRankPreviewService } from './course-rank-preview.service'
 import { UserService } from '@/services/user.service'
-import { TeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/team/service#/common.service'
 import { columns } from './course-rank-preview.config'
+import { TeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/team/service#/common.service'
+import { PersonalTeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/common.service'
+import { cloneDeep } from 'lodash-es'
 export default {
   serviceInject() {
     return {
       courseRankPreviewService: CourseRankPreviewService,
       teamScheduleCommonService: TeamScheduleCommonService,
+      personalTeamScheduleCommonService: PersonalTeamScheduleCommonService,
       userService: UserService
     }
   },
   rxState() {
     const tss = this.teamScheduleCommonService
+    const sms = this.personalTeamScheduleCommonService
     return {
-      coachOptions: tss.coachOptions$,
-      courseOptions: tss.courseOptions$,
-      courtOptions: tss.courtOptions$,
+      loading: this.courseRankPreviewService.loading$,
+      coachOptionTeam: tss.coachOptions$,
+      courseOptionTeam: tss.courseOptions$,
+      courtOptionTeam: tss.courtOptions$,
+      courseOptionSmall: sms.courseOptions$,
+      coachOptionSmall: sms.coachOptions$,
       weekDay: this.userService.enums$
     }
   },
@@ -193,13 +230,28 @@ export default {
       show: false,
       amountValid: 0,
       courseSchedule: [],
-      weekDays: {}
+      weekDays: {},
+      coachOptions: [],
+      courseOptions: [],
+      courtOptions: [],
+      courseScheduleOld: []
     }
   },
   methods: {
     // 课程标签切换触发
     handleSizeChange(e) {
       this.courseType = e.target.value
+      if (e.target.value === 'part') {
+        this.courseSchedule = this.courseScheduleOld.filter(item => {
+          if (item.is_valid) {
+            return {
+              ...item
+            }
+          }
+        })
+      } else {
+        this.courseSchedule = cloneDeep(this.courseScheduleOld)
+      }
     },
     // 确定排期，开始验证
     save() {
@@ -208,8 +260,8 @@ export default {
         return {
           course_id: item.course_id.data,
           coach_id: item.coach_id.data,
-          court_id: item.court_id.data,
-          court_site_id: item.court_site_id.data,
+          court_id: item.site_id[0] || 0,
+          court_site_id: item.site_id[1] || 0,
           limit_num: item.limit_num.data,
           course_fee: item.course_fee.data,
           start_time: item.start_time.data
@@ -231,8 +283,7 @@ export default {
             }
           })
           res.course_schedule = data
-          this.dataTable = res
-          this.processing()
+          this.processing(res)
         }
       })
     },
@@ -251,23 +302,59 @@ export default {
     onEditCourse(data, index) {
       this.courseSchedule[index].isEdit = !data
     },
+    // 处理选择教练与课程
+    handleChange(e, index, type) {
+      this.courseSchedule[index][type].name = e.label.replace(/[\r\n]/g, '')
+      this.courseSchedule[index][type].data = e.key
+      this.courseSchedule[index][type].valid = 0
+    },
+    handleChanges(e, key) {
+      console.log(e, key)
+    },
+    handleChangeTime(e, i, type) {
+      let d = moment(e).format('d') == 0 ? 7 : moment(e).format('d')
+      this.courseSchedule[i].week_day.data = d
+      this.courseSchedule[i].week_day.valid = 0
+      this.courseSchedule[i][type].data = moment(e).format('YYYY-MM-DD HH:mm')
+      this.courseSchedule[i][type].valid = 0
+    },
     // 显示数据处理
-    processing() {
-      this.amountValid = this.dataTable.amount_valid
-      this.courseSchedule = this.dataTable.course_schedule.map(
-        (item, index) => {
-          return {
-            id: index,
-            isEdit: false,
-            ...item
+    processing(data) {
+      this.amountValid = data.amount_valid
+      this.courseSchedule = data.course_schedule.map((item, index) => {
+        return {
+          id: index,
+          isEdit: false,
+          ...item,
+          site_id: [item.court_id.data, item.court_site_id.data],
+          course_id_label: {
+            key: item.course_id.data,
+            label: item.course_id.name
+          },
+          coach_id_label: {
+            key: item.coach_id.data,
+            label: item.coach_id.name
           }
         }
-      )
+      })
+      this.courseScheduleOld = cloneDeep(this.courseSchedule)
     }
   },
   created() {
+    // 获取团课和私教小团课的课程和教练的选择项
+    if (this.type === 'team') {
+      this.coachOptions = this.coachOptionTeam // 教练
+      this.courseOptions = this.courseOptionTeam // 课程
+      this.courtOptions = this.courtOptionTeam // 场地
+    } else {
+      this.coachOptions = this.coachOptionSmall // 教练
+      this.courseOptions = this.courseOptionSmall // 课程
+    }
+    if (this.type === 'small') {
+      this.columns.splice(4, 1)
+    }
     this.weekDays = this.weekDay.shop.week_day.value
-    this.processing()
+    this.processing(this.dataTable)
   },
   computed: {
     columns

@@ -110,7 +110,6 @@ export default {
     },
     // 批量排期(打开课程管理或者新增课程)
     onClickScheduleInBatch() {
-      this.getTeamTemplate
       // this.$modalRouter.push({
       //   name: 'schedule-team-add-course-batch',
       //   on: {
@@ -128,7 +127,8 @@ export default {
         this.$modalRouter.push({
           name: 'schedule-batch-course-manage',
           props: {
-            teamTemplateList: this.teamTemplateList
+            teamTemplateList: this.teamTemplateList,
+            type: 'team'
           },
           on: {
             // 确定时开始删除数据

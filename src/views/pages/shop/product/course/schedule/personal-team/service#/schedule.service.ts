@@ -16,6 +16,7 @@ export class PersonalTeamScheduleScheduleService {
   courseList$ = new State([])
   scheduleTable$ = new State({})
   smallTemplateList$ = new State([])
+  loading$ = new State({})
   auth$ = this.authService.authMap$({
     add: 'shop:schedule:personal_team_course_schedule|add',
     addBatch: 'shop:schedule:personal_team_course_schedule|batch_add',
