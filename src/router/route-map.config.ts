@@ -426,7 +426,7 @@ export const routeMapConfig = {
       start_date: { type: String, default: '' },
       end_date: { type: String, default: '' },
       page: { type: Number, default: 1 },
-      size: { type: Number, default: 20 }
+      size: { type: Number, default: 10 }
     }
   },
   'shop-finance-order-info-collection-details'(routeConfig: RouteConfig) {
