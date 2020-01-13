@@ -308,7 +308,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.auth)
+    console.log(this.$searchQuery)
   },
   methods: {
     getShopName(shop) {

@@ -39,7 +39,7 @@
           class="mg-r8"
           v-export-excel="{
             type: 'sold/card/member',
-            query: { conditions: $searchQuery }
+            query: { conditions: conditions }
           }"
         >
           全部导出
@@ -279,6 +279,13 @@ export default {
     }
   },
   computed: {
+    conditions() {
+      let conditions = {
+        ...this.$searchQuery,
+        is_valid: this.$searchQuery.card_status
+      }
+      return conditions
+    },
     columns,
     // 列表选择的卡是否一致
     isUnifyCard() {
@@ -303,12 +310,14 @@ export default {
   },
   mounted() {
     this.setSearchData()
-    console.log(this.auth)
   },
   watch: {
     query(newVal) {
       this.setSearchData()
     }
+  },
+  updated() {
+    console.log(this.conditions)
   },
   methods: {
     disabledSelect(record) {

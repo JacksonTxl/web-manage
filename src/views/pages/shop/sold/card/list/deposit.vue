@@ -23,7 +23,7 @@
         <st-button
           v-if="auth.export"
           type="primary"
-          class="mg-r8"
+          class="mg-r8 mg-b16"
           v-export-excel="{
             type: 'sold/card/deposit',
             query: { conditions: $searchQuery }
