@@ -100,7 +100,7 @@ export class PersonalTeamScheduleScheduleApi extends Api {
   /**
    * 新建团课
    */
-  addSmallDetail(params: AddSourseInput) {
+  addSmallDetail(params: AddCourseInput) {
     return this.http.post(`/v1/schedule/personal_team/shop/template`, {
       params
     })
@@ -108,7 +108,7 @@ export class PersonalTeamScheduleScheduleApi extends Api {
   /**
    * 编辑团课
    */
-  editSmallDetail(id: number, params: AddSourseInput) {
+  editSmallDetail(id: number, params: AddCourseInput) {
     return this.http.put(`/v1/schedule/personal_team/shop/template/${id}`, {
       params
     })
@@ -116,7 +116,7 @@ export class PersonalTeamScheduleScheduleApi extends Api {
   /**
    * 团课批量排期验证
    */
-  validSmallBatch(params: { course_schedule: AddSourseQuery }) {
+  validSmallBatch(params: { course_schedule: AddCourseQuery }) {
     return this.http.post('/v1/schedule/personal_team/shop/batch/valid', {
       params
     })
@@ -124,7 +124,7 @@ export class PersonalTeamScheduleScheduleApi extends Api {
   /**
    * 团课批量排期确定
    */
-  smallBatch(params: { course_schedule: AddSourseQuery }) {
+  smallBatch(params: { course_schedule: AddCourseQuery }) {
     return this.http.post('/v1/schedule/personal_team/shop/batch', { params })
   }
 }
@@ -205,7 +205,7 @@ export interface CopyScheduleInput {
 /**
  * 上课课表安排数据
  */
-export interface AddSourseQuery {
+export interface AddCourseQuery {
   week_day?: number // 星期
   limit_num?: number // 人数
   people_number?: number // 人数
@@ -219,10 +219,10 @@ export interface AddSourseQuery {
 /**
  * 新增和编辑课表request数据
  */
-export interface AddSourseInput {
+export interface AddCourseInput {
   template_name: string
   max_number: number
   start_time: string
   end_time: string
-  schedule_info: AddSourseQuery
+  schedule_info: AddCourseQuery
 }

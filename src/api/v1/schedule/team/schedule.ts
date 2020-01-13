@@ -96,25 +96,25 @@ export class TeamScheduleScheduleApi extends Api {
   /**
    * 新建团课
    */
-  addTeamDetail(params: AddSourseInput) {
+  addTeamDetail(params: AddCourseInput) {
     return this.http.post(`/v1/schedule/team/shop/template`, { params })
   }
   /**
    * 编辑团课
    */
-  editTeamDetail(id: number, params: AddSourseInput) {
+  editTeamDetail(id: number, params: AddCourseInput) {
     return this.http.put(`/v1/schedule/team/shop/template/${id}`, { params })
   }
   /**
    * 团课批量排期验证
    */
-  validTeamBatch(params: { course_schedule: AddSourseQuery }) {
+  validTeamBatch(params: { course_schedule: AddCourseQuery }) {
     return this.http.post('/v1/schedule/team/shop/batch/valid', { params })
   }
   /**
    * 团课批量排期确定
    */
-  teamBatch(params: { course_schedule: AddSourseQuery }) {
+  teamBatch(params: { course_schedule: AddCourseQuery }) {
     return this.http.post('/v1/schedule/team/shop/batch', { params })
   }
 }
@@ -183,7 +183,7 @@ export interface CopyScheduleInput {
 /**
  * 上课课表安排数据
  */
-export interface AddSourseQuery {
+export interface AddCourseQuery {
   week_day?: number // 星期
   limit_num?: number // 人数
   people_number?: number // 人数
@@ -197,10 +197,10 @@ export interface AddSourseQuery {
 /**
  * 新增和编辑课表request数据
  */
-export interface AddSourseInput {
+export interface AddCourseInput {
   template_name: string
   max_number: number
   start_time: string
   end_time: string
-  schedule_info: AddSourseQuery
+  schedule_info: AddCourseQuery
 }
