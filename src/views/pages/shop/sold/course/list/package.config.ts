@@ -18,16 +18,7 @@ export const columns = () => [
     dataIndex: 'package_type',
     scopedSlots: { customRender: 'package_type' }
   },
-  {
-    title: '购买总课时',
-    dataIndex: 'buy_course_num',
-    scopedSlots: { customRender: 'buy_course_num' }
-  },
-  {
-    title: '剩余总课时',
-    dataIndex: 'remain_course_num',
-    scopedSlots: { customRender: 'remain_course_num' }
-  },
+
   {
     title: '姓名',
     dataIndex: 'member_name',
@@ -44,20 +35,14 @@ export const columns = () => [
     scopedSlots: { customRender: 'sex' }
   },
   {
-    title: '购买团课课时（节）',
-    dataIndex: 'team_course_init'
+    title: '购买总课时/团课课时/私教课时',
+    dataIndex: 'buy_course_num',
+    scopedSlots: { customRender: 'buy_course_num' }
   },
   {
-    title: '购买私教课时（节）',
-    dataIndex: 'personal_course_init'
-  },
-  {
-    title: '剩余团课课时（节）',
-    dataIndex: 'team_course_remain'
-  },
-  {
-    title: '剩余私教课时（节）',
-    dataIndex: 'personal_course_remain'
+    title: '剩余总课时/团课课时/私教课时',
+    dataIndex: 'remain_course_num',
+    scopedSlots: { customRender: 'remain_course_num' }
   },
   {
     title: '剩余摊销金额（元）',
