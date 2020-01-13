@@ -35,7 +35,7 @@
               {{ info.product_name }}
             </st-info-item>
             <st-info-item label="购买会员">
-              {{ info.member_name }} {{ info.member_mobile }}
+              {{ info.member_name }}
             </st-info-item>
             <template v-if="info.is_minors === PERSON_TYPE.CHILD">
               <st-info-item label="家长手机号">

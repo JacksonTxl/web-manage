@@ -14,11 +14,13 @@
 <script>
 import { ListService } from '../../pages/shop/product/course/manage/personal/list.service'
 import SetPrice from '@/views/fragments/course/set-price'
+import { MessageService } from '@/services/message.service'
 export default {
   name: 'PriceSettingShopUpdate',
   serviceInject() {
     return {
-      listService: ListService
+      listService: ListService,
+      messageService: MessageService
     }
   },
   rxState() {
@@ -43,6 +45,24 @@ export default {
   },
   methods: {
     onOk() {
+      let validFlag = false
+      this.priceGradient.forEach(gradient => {
+        if (gradient.prices.length <= 0) {
+          validFlag = true
+          return
+        }
+        const arr = gradient.prices.filter(
+          item => !item.transfer_num || !item.min_sale || !item.sell_price
+        )
+        if (arr.length > 0) {
+          validFlag = true
+          return
+        }
+      })
+      if (validFlag) {
+        this.messageService.warn({ content: '请输入正确的售卖定价信息' })
+        return
+      }
       this.listService
         .settingCoursePrice({
           id: this.id,
