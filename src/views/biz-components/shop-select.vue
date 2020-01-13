@@ -1,8 +1,7 @@
 <template>
   <a-select
     :mode="mode"
-    allowClear
-    :placeholder="placeholder || '请选择全部门店'"
+    :placeholder="placeholder || '请选择门店'"
     :value="cValue"
     :style="{ width }"
     :defaultValue="defaultValue"
