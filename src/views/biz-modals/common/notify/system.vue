@@ -3,7 +3,7 @@
     :wrapClassName="b()"
     v-model="show"
     @ok="onOk"
-    @close="onClose"
+    @cancel="onCancel"
     width="640px"
     :footer="null"
   >
@@ -62,7 +62,7 @@ export default {
     onOk() {
       this.setRead()
     },
-    onClose() {
+    onCancel() {
       this.setRead()
     }
   }
