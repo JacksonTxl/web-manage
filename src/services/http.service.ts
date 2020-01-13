@@ -35,6 +35,12 @@ interface RequestOptions {
    * 忽略一些不需要提示错误信息的code
    */
   ignoreCodes?: any[]
+
+  /**
+   * @name yapi 项目id
+   * https://doc.styd.cn/project/33/setting
+   */
+  yapi?: number
 }
 
 @Injectable()
@@ -131,7 +137,12 @@ export class HttpService {
     return delete$
   }
   private makeRequestUrl(url: string, options: RequestOptions = {}) {
-    let requestUrl = this.appConfig.API_BASE + url
+    let requestUrl
+    if (options.yapi && this.appConfig.IS_DEV) {
+      requestUrl = `/mock/${options.yapi}` + url
+    } else {
+      requestUrl = this.appConfig.API_BASE + url
+    }
     const { query } = options
     if (query && Object.keys(query)) {
       requestUrl = requestUrl + '?' + qs.stringify(query)

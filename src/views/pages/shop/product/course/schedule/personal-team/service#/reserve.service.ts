@@ -14,6 +14,7 @@ export class PersonalTeamScheduleReserveService {
   reserveInfo$ = new State({})
   reserveList$ = new State([])
   infoAuth$ = new State({})
+  state$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap$({
     add: 'shop:reserve:personal_team_course_reserve|add',
@@ -60,6 +61,12 @@ export class PersonalTeamScheduleReserveService {
   getInfo(id: string) {
     return this.reserveApi.getInfo(id).pipe(
       tap(res => {
+        this.state$.commit((state: any) => {
+          res = this.authService.filter(res, 'info.reserve')
+          res = this.authService.filter(res, 'auth')
+          state.reserveInfo = res.info
+          state.infoAuth = res.auth
+        })
         res = this.authService.filter(res, 'info.reserve')
         res = this.authService.filter(res, 'auth')
         this.reserveInfo$.commit(() => res.info)

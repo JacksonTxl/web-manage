@@ -2,6 +2,13 @@
   .modal-notice-system {
     z-index: 2;
   }
+  .st-modal__close {
+    .c(#fff);
+    background: rgba(0, 0, 0, 0.2);
+    &:hover {
+      background: rgba(0, 0, 0, 0.4);
+    }
+  }
   &__info-header {
     height: 100%;
     img {
@@ -10,6 +17,7 @@
   }
   img {
     max-width: 100%;
+    height: auto !important;
   }
   .st-modal__body {
     .pd(0);

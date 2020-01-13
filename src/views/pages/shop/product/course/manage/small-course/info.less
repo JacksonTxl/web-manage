@@ -1,0 +1,49 @@
+.page-group-course-info {
+  &__tip {
+    width: 100%;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    .item {
+      width: 50%;
+      .label {
+        width: 80px;
+        .c(rgba(0, 0, 0, 0.85));
+        .mg-r(8px);
+      }
+      .value {
+        .c(rgba(0, 0, 0, 0.65));
+        .mg-t(16px);
+      }
+    }
+  }
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 24px;
+    margin-bottom: 24px;
+    background: #fff;
+  }
+  &__title {
+    display: block;
+  }
+  &__title-action {
+    padding: 24px 16px 24px 24px;
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e6e9ef;
+  }
+
+  &__left {
+    width: 66%;
+  }
+  &__right {
+    flex: none;
+    img {
+      .s(268px, 150px);
+    }
+  }
+}

@@ -98,6 +98,22 @@
               {{ text | enumFilter('sold_common.course_status') }}
             </st-text>
           </template>
+          <template slot="member_name" slot-scope="text, record">
+            <template v-if="record.is_minors">
+              {{ record.member_name }}(未成年)
+            </template>
+            <template v-else>
+              {{ record.member_name }}
+            </template>
+          </template>
+          <template slot="mobile" slot-scope="text, record">
+            <template v-if="record.is_minors">
+              {{ record.parent_mobile }}({{ record.parent_user_role }})
+            </template>
+            <template v-else>
+              {{ record.mobile }}
+            </template>
+          </template>
           <template slot="buy_course_num" slot-scope="text, record">
             {{ text }}/{{ record.team_course_init }}/{{
               record.personal_course_init

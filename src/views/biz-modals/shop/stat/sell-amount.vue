@@ -59,6 +59,9 @@
       <span slot="sale_price" slot-scope="text">
         {{ text }}
       </span>
+      <span slot="product_name" slot-scope="text">
+        <st-overflow-text :value="text" maxWidth="120px"></st-overflow-text>
+      </span>
       <span slot="saleTitle">
         业绩金额
         <st-help-tooltip id="TSSR007" />

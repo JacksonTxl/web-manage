@@ -228,6 +228,12 @@
         <span v-else>
           <st-overflow-text :value="text" maxWidth="100px"></st-overflow-text>
         </span>
+        <st-icon
+          v-if="record.is_minors"
+          type="user-type"
+          class="mg-l4"
+          :color="record.sex === SEX.GIRL ? '#FF5E41' : '#3F66F6'"
+        />
       </div>
       <div slot="salesman_protect_day" slot-scope="text, record">
         <span class="mg-r4">{{ record.salesman_protect_day }}</span>
@@ -342,6 +348,12 @@
           >
             解除微信绑定
           </a>
+          <a
+            v-if="record.auth['shop:member:member|change_type']"
+            @click="onChangeUserType(record)"
+          >
+            变更用户类型
+          </a>
         </st-table-actions>
       </div>
     </st-table>
@@ -358,9 +370,11 @@ import ShopAddLable from '@/views/biz-modals/shop/add-lable'
 import ShopBindingEntityCard from '@/views/biz-modals/shop/binding-entity-card'
 import ShopDistributionCoach from '@/views/biz-modals/shop/distribution-coach'
 import ShopDistributionSale from '@/views/biz-modals/shop/distribution-sale'
+import ShopChangeUserType from '@/views/biz-modals/shop/change-user-type'
 import ShopFrozen from '@/views/biz-modals/shop/frozen'
 import ShopMissingCard from '@/views/biz-modals/shop/missing-card'
 import { MessageService } from '@/services/message.service'
+import { SEX } from '@/constants/member/info'
 
 export default {
   name: 'ShopMemberListClub',
@@ -371,7 +385,8 @@ export default {
     ShopDistributionCoach,
     ShopDistributionSale,
     ShopFrozen,
-    ShopMissingCard
+    ShopMissingCard,
+    ShopChangeUserType
   },
   serviceInject() {
     return {
@@ -403,7 +418,8 @@ export default {
       consumption: [],
       selectDataList: [],
       selectedRowKeys: [],
-      selectedRows: []
+      selectedRows: [],
+      SEX
     }
   },
   computed: {
@@ -497,6 +513,19 @@ export default {
           })
         },
         onCancel() {}
+      })
+    },
+    onChangeUserType(record) {
+      this.$modalRouter.push({
+        name: 'shop-change-user-type',
+        props: {
+          info: record
+        },
+        on: {
+          success: () => {
+            this.refeshPage()
+          }
+        }
       })
     },
     edit(record) {

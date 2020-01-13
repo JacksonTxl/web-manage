@@ -90,7 +90,6 @@ const useCardActions = () => {
                   type: 'member'
                 }
                 let payOrderRes = await this.createdOrderPay(props)
-                console.log(res)
                 this.payCallBack(
                   res.orderId,
                   'member',

@@ -4,7 +4,9 @@
       <div :class="info()">
         <img :src="productData.product_images[0].image_url" alt="" />
         <div :class="info('content')">
-          <span :class="info('price')">￥{{ productInfo.unit_price }}</span>
+          <span :class="info('price')" class="font-number">
+            &yen;{{ productInfo.unit_price }}
+          </span>
           <span :class="info('amount')">
             库存{{ productInfo.stock_amount }}件
           </span>
