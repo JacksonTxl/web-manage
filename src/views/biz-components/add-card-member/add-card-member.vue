@@ -48,12 +48,14 @@
                   >
                     <span
                       v-html="
-                        `${item.member_name} ${item.mobile}`.replace(
+                        `${selectItemLabel(item)}`.replace(
                           new RegExp(memberSearchText, 'g'),
                           `\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`
                         )
                       "
-                    ></span>
+                    >
+                      {{ selectItemLabel(item) }}
+                    </span>
                   </li>
                   <li
                     :class="[b('search-text'), b('search-tip')]"
@@ -90,6 +92,9 @@
           <td>
             <template v-if="item.isEdit">
               <a-input placeholder="输入手机号" v-model="item.mobile"></a-input>
+            </template>
+            <template v-else-if="item.is_minors">
+              {{ item.parent_mobile }}({{ item.parent_user_role }})
             </template>
             <template v-else>
               {{ item.mobile }}
@@ -176,6 +181,14 @@ export default {
     })
   },
   methods: {
+    selectItemLabel(item) {
+      if (item.is_minors === 1) {
+        return `${item.member_name}(未成年) ${item.parent_mobile}(${
+          item.parent_user_role
+        })`
+      }
+      return `${item.member_name} ${item.mobile}`
+    },
     onConfirmItem(data, index) {
       if (!data.name) {
         this.messageService.error({
@@ -253,7 +266,11 @@ export default {
       this.list.splice(insertIndex, 0, {
         id: data.id,
         name: data.member_name,
-        mobile: data.mobile
+        mobile: data.mobile,
+        is_minors: data.is_minors,
+        parent_mobile: data.parent_mobile,
+        parent_name: data.parent_name,
+        parent_user_role: data.parent_user_role
       })
       this.visible = false
       this.resetSearchCondition()

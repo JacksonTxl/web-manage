@@ -1,8 +1,9 @@
 import { Injectable, ServiceRoute, Controller } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
+import { tap } from 'rxjs/operators'
 import { MemberApi, UpdateMemberEdit } from '@/api/v1/member'
 import { forkJoin } from 'rxjs'
+import { UserService } from '@/services/user.service'
 
 @Injectable()
 export class EditService implements Controller {
@@ -11,7 +12,12 @@ export class EditService implements Controller {
   countryInfo$ = new State({})
   nations$ = new State([])
   countryList$ = new State([])
-  constructor(protected memberApi: MemberApi) {}
+  minorsType$ = this.userService.getOptions$('small_course.minors_type')
+  parentType$ = this.userService.getOptions$('small_course.parent_type')
+  constructor(
+    protected memberApi: MemberApi,
+    private userService: UserService
+  ) {}
   getMemberEdit(id: number) {
     return this.memberApi.getMemberEdit(id).pipe(
       tap(res => {
@@ -26,6 +32,9 @@ export class EditService implements Controller {
         this.countryInfo$.commit(() => res.country_info)
       })
     )
+  }
+  getParentInfoByPhone(params: any) {
+    return this.memberApi.getParentInfoByPhone(params)
   }
   getCountryCodes() {
     return this.memberApi.getCountryCodes().pipe(

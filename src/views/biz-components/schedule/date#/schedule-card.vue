@@ -20,7 +20,9 @@
             <st-icon type="timer"></st-icon>
             {{ item.start_time }}-{{ item.end_time }}
           </span>
-          <st-t3 class="course__name">{{ item.course_name }}</st-t3>
+          <st-t3 class="course__name">
+            {{ dealCourtName(item.course_name, item.current_course_name) }}
+          </st-t3>
           <p class="course__coach">{{ $c('coach') }}：{{ item.coach_name }}</p>
         </div>
 
@@ -30,7 +32,9 @@
               <st-icon type="timer"></st-icon>
               {{ item.start_time }}-{{ item.end_time }}
             </div>
-            <st-t3 class="mg-b8 course__name">{{ item.course_name }}</st-t3>
+            <st-t3 class="mg-b8 course__name">
+              {{ dealCourtName(item.course_name, item.current_course_name) }}
+            </st-t3>
             <p class="mg-b8 course__item">
               <span class="label">{{ $c('coach') }}：</span>
               <span class="value">{{ item.coach_name }}</span>
@@ -96,6 +100,11 @@ export default {
     }
   },
   methods: {
+    dealCourtName(courseName, currentCourseName) {
+      return currentCourseName
+        ? courseName + '.' + currentCourseName
+        : courseName
+    },
     mbarClass(item) {
       const date = moment(`${item.start_date} ${item.start_time}`)
       const current = moment()

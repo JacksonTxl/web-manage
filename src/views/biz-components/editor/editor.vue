@@ -110,6 +110,7 @@ export default {
       )
       .then(() => {
         const ctx = this
+        window.tinyMCE.remove()
         window.tinyMCE.init({
           selector: '.' + this.editorId,
           language: 'zh_CN',
@@ -129,7 +130,6 @@ export default {
           // 图片上传
           images_upload_handler: function(blobInfo, success, failure) {
             let formData = new FormData()
-            console.log(blobInfo.filename())
             formData.append('img', blobInfo.blob())
             ctx.$modalRouter.push({
               name: 'face-recognition'
@@ -141,13 +141,6 @@ export default {
               ctx.$emit('input', currentContent)
               ctx.$emit('change', currentContent)
             })
-            // editorEvents.forEach(key => {
-            //   if (ctx.$listeners[key]) {
-            //     editor.on(key, e => {
-            //       ctx.$emit(key, e, editor)
-            //     })
-            //   }
-            // })
           },
           init_instance_callback(editor) {
             const editorToolbarEl = document.querySelector('.tox-toolbar')

@@ -20,7 +20,8 @@
                 name: 'coach-select',
                 props: {
                   selected,
-                  shopIds
+                  shopIds,
+                  type
                 },
                 on: {
                   change: onSelectComplete
@@ -65,6 +66,10 @@ export default {
       default() {
         return []
       }
+    },
+    type: {
+      type: String,
+      default: ''
     }
   },
   modals: {

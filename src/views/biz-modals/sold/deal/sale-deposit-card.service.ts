@@ -16,12 +16,10 @@ export class SaleDepositCardService {
   priceInfo$ = new State('0')
   loading$ = new State({})
   info$ = new State({})
-  memberList$ = new State([])
   saleList$ = new State({})
   couponList$ = new State({})
   constructor(
     private contractApi: ContractApi,
-    private memberApi: ShopPersonalCourseApi,
     private transactionApi: TransactionApi
   ) {
     this.priceAction$ = new Action(data$ => {
@@ -50,23 +48,12 @@ export class SaleDepositCardService {
       })
     )
   }
-  @Effect()
-  getMember(member: string, type: number) {
-    return this.transactionApi.getMemberList(member, type).pipe(
-      tap((res: any) => {
-        this.memberList$.commit(() => res.list)
-      })
-    )
-  }
   getCouponList(params: MemberCouponParams) {
     return this.transactionApi.getTransactionCouponList(params, 'deposit').pipe(
       tap((res: any) => {
         this.couponList$.commit(() => res.list)
       })
     )
-  }
-  resetMember() {
-    this.memberList$.commit(() => [])
   }
   @Effect()
   getCodeNumber(type: string) {

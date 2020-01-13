@@ -3,24 +3,30 @@
     <st-form :form="form" @submit="save" class="page-add-container">
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <!-- <st-form-item label="门店">
-            <a-input :disabled="true" v-decorator="rules.md"/>
-          </st-form-item> -->
           <st-form-item label="姓名" required>
             <a-input
               placeholder="支持中英文,不超过15个字"
               v-decorator="rules.member_name"
-            />
-          </st-form-item>
-          <st-form-item label="手机号" required>
-            <a-input v-decorator="rules.mobile" placeholder="请输入手机号">
+            >
               <a-select
-                slot="addonBefore"
-                style="width:76px"
-                v-model="country_prefix"
-                v-if="countryList"
-                placeholder="请选择"
+                @change="minorsChange"
+                v-decorator="rules.is_minors"
+                slot="addonAfter"
+                style="min-width: 60px"
               >
+                <a-select-option
+                  v-for="(item, index) in minorsType"
+                  :value="item.value"
+                  :key="index"
+                >
+                  {{ item.label }}
+                </a-select-option>
+              </a-select>
+            </a-input>
+          </st-form-item>
+          <st-form-item label="手机号" required v-show="!isShowParent">
+            <a-input-group compact>
+              <a-select style="width:30%" v-model="country_prefix">
                 <a-select-option
                   :value="code.code_id"
                   v-for="code in countryList.code_list"
@@ -29,13 +35,74 @@
                   +{{ code.phone_code }}
                 </a-select-option>
               </a-select>
-              <!-- <a-input
-                :class="edit('phone-input')"
+              <a-input
+                style="width:70%"
                 placeholder="请输入手机号"
                 v-decorator="rules.mobile"
-              /> -->
+              />
+            </a-input-group>
+          </st-form-item>
+          <st-form-item label="家长手机号" v-show="isShowParent" required>
+            <a-input-group compact>
+              <a-select style="width:30%" v-decorator="rules.country_prefix">
+                <a-select-option
+                  :value="code.code_id"
+                  v-for="code in countryList.code_list"
+                  :key="code.code_id"
+                >
+                  +{{ code.phone_code }}
+                </a-select-option>
+              </a-select>
+              <a-input
+                style="width:70%"
+                placeholder="请输入手机号"
+                @change="getParentInfo"
+                v-decorator="rules.parent_mobile"
+              />
+            </a-input-group>
+          </st-form-item>
+          <st-form-item label="家长姓名" v-show="isShowParent" required>
+            <a-input
+              placeholder="支持中英文,不超过15个字"
+              v-decorator="rules.parent_username"
+            >
+              <a-select
+                v-decorator="rules.parent_user_role"
+                slot="addonAfter"
+                style="min-width: 60px"
+              >
+                <a-select-option
+                  v-for="(item, index) in parentType"
+                  :value="item.value"
+                  :key="index"
+                >
+                  {{ item.label }}
+                </a-select-option>
+              </a-select>
             </a-input>
           </st-form-item>
+        </a-col>
+        <a-col :lg="10" :xs="22" :offset="1">
+          <st-form-item label="用户人脸">
+            <face-upload
+              width="264px"
+              height="264px"
+              :list="faceList"
+              placeholder="会员人脸信息"
+              v-decorator="rules.faceInfo"
+            ></face-upload>
+          </st-form-item>
+        </a-col>
+      </a-row>
+
+      <a-row :gutter="8">
+        <a-col :offset="1" :lg="22">
+          <st-hr></st-hr>
+        </a-col>
+      </a-row>
+
+      <a-row :gutter="8">
+        <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="来源类别">
             <a-select
               placeholder="请选择来源类别"
@@ -77,28 +144,6 @@
               </template>
             </a-select>
           </st-form-item>
-        </a-col>
-        <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="用户人脸">
-            <face-upload
-              width="264px"
-              height="264px"
-              :list="faceList"
-              placeholder="会员人脸信息"
-              v-decorator="rules.faceInfo"
-            ></face-upload>
-          </st-form-item>
-        </a-col>
-      </a-row>
-
-      <a-row :gutter="8">
-        <a-col :offset="1" :lg="22">
-          <st-hr></st-hr>
-        </a-col>
-      </a-row>
-
-      <a-row :gutter="8">
-        <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="性别">
             <a-radio-group v-decorator="rules.sex">
               <a-radio
@@ -322,7 +367,9 @@ export default {
       sexs: this.userService.getOptions$('staff.sex'),
       countryInfo: this.editService.countryInfo$,
       nations: this.editService.nations$,
-      countryList: this.editService.countryList$
+      countryList: this.editService.countryList$,
+      minorsType: this.editService.minorsType$,
+      parentType: this.editService.parentType$
     }
   },
   filters: {
@@ -334,6 +381,7 @@ export default {
     return {
       form: this.$form.createForm(this),
       dateinit: '',
+      isShowParent: false,
       rules: {
         md: ['md'],
         member_name: [
@@ -399,16 +447,86 @@ export default {
           }
         ],
         cascader: ['cascader'],
-        living_address: ['living_address']
+        living_address: ['living_address'],
+        is_minors: [
+          'is_minors',
+          {
+            rules: [
+              {
+                required: true
+              }
+            ],
+            initialValue: 0
+          }
+        ],
+        parent_username: [
+          'parent_username',
+          {
+            rules: [
+              {
+                required: true,
+                message: '用户名支持1-15位中英文数字',
+                pattern: this.pattern.CN_EN_NUM_SPACE('1-15')
+              }
+            ]
+          }
+        ],
+        parent_mobile: [
+          'parent_mobile',
+          {
+            rules: [
+              {
+                required: true,
+                message: '请输入手机号',
+                pattern: this.pattern.MOBILE
+              }
+            ]
+          }
+        ],
+        parent_user_role: ['parent_user_role', { initialValue: 1 }]
       },
       options: [],
       fieldNames: { label: 'name', value: 'id', children: 'children' },
       faceList: [],
       country_prefix: 37,
-      source_category: -1
+      source_category: -1,
+      isEditParent: false
     }
   },
   methods: {
+    minorsChange(val) {
+      this.isShowParent = val
+      if (!val) {
+        this.form.setFieldsValue({
+          mobile: ''
+        })
+      }
+    },
+    getParentInfo(e) {
+      setTimeout(() => {
+        this.form.validateFields(['parent_mobile']).then(values => {
+          this.getParentInfoByPhone(values.parent_mobile)
+        })
+      })
+    },
+    getParentInfoByPhone(phone) {
+      let query = {
+        mobile: phone
+      }
+      return this.editService.getParentInfoByPhone(query).subscribe(res => {
+        if (res.exists) {
+          this.isEditParent = true
+          this.form.setFieldsValue({
+            parent_username: res.info.member_name
+          })
+        } else {
+          this.isEditParent = false
+          this.form.setFieldsValue({
+            parent_username: ''
+          })
+        }
+      })
+    },
     height_validator(rule, value, callback) {
       if (value && (+value < 20 || +value > 250)) {
         // eslint-disable-next-line
@@ -460,7 +578,6 @@ export default {
           // 人脸信息
           values.image_face = this.faceList[0] || {}
           // 手机前缀
-          values.country_prefix = this.country_prefix
           values.height = values.height || undefined
           values.weight = values.weight || undefined
           values.album_id = this.info.album_id // 这个给后端快捷找到相册使用，前端不需要处理使用
@@ -488,6 +605,8 @@ export default {
       }
     },
     setEditInfo(obj) {
+      this.isShowParent = !!obj.is_minors
+      console.log(!!obj.is_minors)
       const cascader = []
       if (obj.province_id) {
         cascader.push(obj.province_id)
@@ -522,9 +641,12 @@ export default {
         wechat: obj.wechat,
         cascader: cascader.length > 0 ? cascader : undefined,
         country_prefix: +obj.country_prefix || undefined,
-        living_address: obj.living_address
+        living_address: obj.living_address,
+        is_minors: obj.is_minors,
+        parent_username: obj.parent_info.username,
+        parent_mobile: obj.parent_info.mobile,
+        parent_user_role: obj.parent_user_role
       })
-      this.country_prefix = +obj.country_prefix || undefined
       this.id = obj.id
       if (obj.image_face && obj.image_face.image_id) {
         this.faceList = [obj.image_face]

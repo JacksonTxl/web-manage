@@ -32,5 +32,9 @@ export enum CONTRACT_TYPE {
   /**
    * 定金合同
    */
-  MONEY = 6
+  MONEY = 6,
+  /**
+   * 小班课合同
+   */
+  SMALL_COURSE = 7
 }

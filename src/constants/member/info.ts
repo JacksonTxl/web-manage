@@ -8,3 +8,7 @@ export const enum FOLLOW_STATUS {
   AUTO_UNBIND_COACH = 7,
   NORMAL = 8
 }
+export const enum SEX {
+  BOY = 2,
+  GIRL = 1
+}

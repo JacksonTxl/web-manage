@@ -33,7 +33,9 @@
               {{ info.shop_name }}
             </st-info-item>
             <st-info-item label="用户">
-              {{ info.member_name }}&nbsp;{{ info.member_mobile }}
+              {{ info.member_name }}&nbsp;{{
+                info.is_minors ? '' : info.member_mobile
+              }}
             </st-info-item>
             <st-info-item
               class="mg-b0 white-nowrap"

@@ -33,8 +33,17 @@
             <st-info-item label="会员姓名">
               {{ depositTransferInfo.member_name }}
             </st-info-item>
-
-            <st-info-item label="手机号">
+            <template
+              v-if="depositTransferInfo.is_minors === PERSON_TYPE.CHILD"
+            >
+              <st-info-item label="家长手机号">
+                {{ depositTransferInfo.parent_mobile }}
+              </st-info-item>
+              <st-info-item label="家长姓名">
+                {{ depositTransferInfo.parent_name }}
+              </st-info-item>
+            </template>
+            <st-info-item label="手机号" v-else>
               {{ depositTransferInfo.mobile }}
             </st-info-item>
             <st-info-item label="订单号">
@@ -94,7 +103,15 @@
               {{ memberTransferInfo.member_name }}
             </st-info-item>
 
-            <st-info-item label="手机号">
+            <template v-if="memberTransferInfo.is_minors === PERSON_TYPE.CHILD">
+              <st-info-item label="家长手机号">
+                {{ memberTransferInfo.parent_mobile }}
+              </st-info-item>
+              <st-info-item label="家长姓名">
+                {{ memberTransferInfo.parent_name }}
+              </st-info-item>
+            </template>
+            <st-info-item label="手机号" v-else>
               {{ memberTransferInfo.mobile }}
             </st-info-item>
             <st-info-item label="订单号">
@@ -128,79 +145,12 @@
       <st-hr class="mg-0" />
       <st-form :form="form" labelWidth="88px" enctype="multipart/form-data">
         <div :class="transfer('transfer')">
-          <st-form-item
-            v-if="searchMemberIsShow"
-            label="转让会员"
-            required
+          <member-search
+            :saleRangeType="2"
             labelGutter="12px"
-          >
-            <a-select
-              showSearch
-              allowClear
-              placeholder="输入手机号或会员名搜索"
-              :defaultActiveFirstOption="false"
-              :showArrow="false"
-              :filterOption="false"
-              v-decorator="decorators.memberId"
-              @search="onMemberSearch"
-              @select="selectMember"
-              notFoundContent="无搜索结果"
-            >
-              <a-select-option
-                v-for="(item, index) in memberList"
-                :value="item.id"
-                :key="index"
-              >
-                <span
-                  v-html="
-                    `${item.member_name} ${item.mobile}`.replace(
-                      new RegExp(memberSearchText, 'g'),
-                      `\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`
-                    )
-                  "
-                >
-                  {{ item.member_name }} {{ item.mobile }}
-                </span>
-              </a-select-option>
-            </a-select>
-            <p
-              v-if="
-                !isSelectMember &&
-                  !memberList.length &&
-                  memberSearchText !== '' &&
-                  +saleRange.type === 1
-              "
-              class="add-text"
-            >
-              查无此会员，
-              <span @click="onAddMember">添加新会员？</span>
-            </p>
-          </st-form-item>
-          <st-form-item
-            v-if="!searchMemberIsShow"
-            label="会员姓名"
-            required
-            labelGutter="12px"
-          >
-            <a-input
-              v-decorator="decorators.memberName"
-              placeholder="请输入会员姓名"
-            ></a-input>
-          </st-form-item>
-          <st-form-item
-            v-if="!searchMemberIsShow"
-            label="手机号"
-            required
-            labelGutter="12px"
-          >
-            <a-input
-              v-decorator="decorators.memberMobile"
-              placeholder="请输入手机号"
-            ></a-input>
-            <p class="add-text">
-              <span @click="onCancelMember">取消添加</span>
-            </p>
-          </st-form-item>
+            :form="form"
+            type="transfer"
+          ></member-search>
           <st-form-item
             v-if="isMember"
             class="mg-b0"
@@ -329,10 +279,14 @@ import { cloneDeep } from 'lodash-es'
 import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from './transfer.config'
 import autoContractBtn from '@/views/biz-components/contract/auto-contract-btn.vue'
+import MemberSearch from '@/views/biz-components/member-search/member-search'
+import { PERSON_TYPE } from '@/constants/course/small-course'
+import moment from 'moment'
 export default {
   name: 'ModalSoldCardTransfer',
   components: {
-    autoContractBtn
+    autoContractBtn,
+    MemberSearch
   },
   bem: {
     transfer: 'modal-sold-card-transfer'
@@ -342,7 +296,6 @@ export default {
   },
   serviceInject() {
     return {
-      userService: UserService,
       transferService: TransferService,
       pattern: PatternService
     }
@@ -350,7 +303,6 @@ export default {
   rxState() {
     return {
       loading: this.transferService.loading$,
-      memberList: this.transferService.memberList$,
       depositTransferInfo: this.transferService.depositTransferInfo$,
       memberTransferInfo: this.transferService.memberTransferInfo$,
       timeScope: this.transferService.timeScope$,
@@ -358,6 +310,7 @@ export default {
     }
   },
   computed: {
+    moment,
     member_id() {
       return this.memberTransferInfo.member_id
     },
@@ -388,12 +341,10 @@ export default {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
+      PERSON_TYPE,
       form,
       decorators,
       show: false,
-      // 搜索会员
-      memberSearchText: '',
-      searchMemberIsShow: true,
       // 转让信息
       transferData: {
         member_id: null,
@@ -404,12 +355,15 @@ export default {
         handling_fee: null,
         frozen_pay_type: null
       },
-      endTime: moment(),
-      isSelectMember: false
+      endTime: moment()
     }
   },
   created() {
-    this.transferService.getTransferInfo(this.id, this.type).subscribe()
+    this.transferService.getTransferInfo(this.id, this.type).subscribe(res => {
+      if (this.isMember) {
+        this.endTime = moment(this.memberTransferInfo.end_time)
+      }
+    })
   },
   methods: {
     onSubmit() {
@@ -427,14 +381,24 @@ export default {
           .editCardTransfer(
             {
               start_time,
-              transferee_member_id: +values.memberId,
-              member_name: values.memberName,
-              mobile: values.memberMobile,
+              transferee_member_id: +values.member_id,
+              member_name: values.member_name,
+              mobile: values.mobile ? values.mobile.phone : undefined,
+              country_prefix: values.mobile ? values.mobile.code_id : undefined,
               remain_price: +values.remainPrice,
               contract_number: values.contractNumber,
               pay_channel: +values.payType,
               contract_type: +sold_type,
-              handling_fee_reduce: values.handling_fee_reduce
+              handling_fee_reduce: values.handling_fee_reduce,
+              is_minors: values.is_minors,
+              parent_name: values.parent_name,
+              parent_mobile: values.parent_mobile
+                ? values.parent_mobile.phone
+                : undefined,
+              parent_country_prefix: values.parent_mobile
+                ? values.parent_mobile.code_id
+                : undefined,
+              parent_user_role: values.parent_user_role
             },
             this.id,
             this.type
@@ -444,41 +408,6 @@ export default {
             this.show = false
           })
       })
-    },
-    // 切换添加会员
-    onAddMember() {
-      this.searchMemberIsShow = false
-      this.form.resetFields(['memberId', 'memberName', 'memberMobile'])
-    },
-    onCancelMember() {
-      this.searchMemberIsShow = true
-      this.form.resetFields(['memberId', 'memberName', 'memberMobile'])
-    },
-    // 搜索会员
-    onMemberSearch(data) {
-      this.memberSearchText = data
-      this.isSelectMember = false
-      if (data === '') {
-        this.transferService.memberList$.commit(() => [])
-        this.form.resetFields(['memberId'])
-      } else {
-        this.transferService
-          .getMember({
-            member: data,
-            escape_member_id: +this.member_id
-          })
-          .subscribe(res => {
-            if (!res.list.length) {
-              this.form.resetFields(['memberId'])
-            }
-          })
-      }
-    },
-    // 选中会员的事件
-    selectMember(event) {
-      if (event) {
-        this.isSelectMember = true
-      }
     },
     // time
     disabledStartDate(startValue) {

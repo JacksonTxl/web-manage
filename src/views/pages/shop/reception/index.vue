@@ -82,13 +82,13 @@
             <a-select-option v-for="item in memberList" :key="item.id">
               <span
                 v-html="
-                  `${item.member_name} ${item.mobile}`.replace(
+                  `${selectItemLabel(item)}`.replace(
                     new RegExp(lastMemberSearchText, 'g'),
                     `\<span class='global-highlight-color'\>${lastMemberSearchText}\<\/span\>`
                   )
                 "
               >
-                {{ item.member_name }} {{ item.mobile }}
+                {{ selectItemLabel(item) }}
               </span>
             </a-select-option>
             <a-select-option
@@ -131,8 +131,16 @@
           <div :class="reception('personal-info')">
             <div>
               <st-info>
-                <st-info-item label="名称">{{ memberName }}</st-info-item>
-                <st-info-item label="手机号">{{ memberMobile }}</st-info-item>
+                <st-info-item label="姓名">{{ memberName }}</st-info-item>
+                <st-info-item label="手机号" v-if="!isMinors">
+                  {{ memberMobile }}
+                </st-info-item>
+                <st-info-item label="家长手机号" v-if="isMinors">
+                  {{ parentMobile }}
+                </st-info-item>
+                <st-info-item label="家长姓名" v-if="isMinors">
+                  {{ parentName }}
+                </st-info-item>
                 <st-info-item label="实体卡号">
                   {{ memberPhysicalCard }}
                 </st-info-item>
@@ -575,6 +583,7 @@ import FaceUpload from '@/views/biz-components/face-upload/face-upload'
 import { summaryList, shortcutList } from './index.config'
 import { RECEPTION } from '@/constants/reception/reception'
 import FrontAddReserve from '@/views/biz-modals/front/add-reserve'
+import { enumFilter } from '../../../../filters/other.filters'
 
 export default {
   name: 'PageShopReception',
@@ -604,7 +613,8 @@ export default {
       page: this.indexService.page$,
       workNoteList: this.indexService.workNoteList$,
       workNoteDoneList: this.indexService.workNoteDoneList$,
-      loading: this.indexService.loading$
+      loading: this.indexService.loading$,
+      parent_types: this.indexService.parent_types$
     }
   },
   components: {
@@ -678,6 +688,19 @@ export default {
     memberMobile() {
       return this.isSelectMember ? this.selectMemberInfo.mobile : '无'
     },
+    isMinors() {
+      return this.isSelectMember && this.selectMemberInfo.is_minors === 1
+    },
+    parentMobile() {
+      return this.isMinors ? this.selectMemberInfo.parent_mobile : '无'
+    },
+    parentName() {
+      return this.isMinors
+        ? `${this.selectMemberInfo.parent_name}(${this.filterParentUserRole({
+            parent_user_role: this.selectMemberInfo.parent_user_role
+          })})`
+        : '无'
+    },
     // 会员实体卡号
     memberPhysicalCard() {
       return this.isSelectMember ? this.selectMemberInfo.physical_card : '无'
@@ -710,6 +733,18 @@ export default {
     this.init()
   },
   methods: {
+    selectItemLabel(item) {
+      if (item.is_minors === 1) {
+        return `${item.member_name}(未成年) ${
+          item.parent_mobile
+        }(${this.filterParentUserRole(item)})`
+      }
+      return `${item.member_name} ${item.mobile}`
+    },
+    filterParentUserRole(item) {
+      return this.parent_types.filter(i => i.value === item.parent_user_role)[0]
+        .label
+    },
     photoChange(list) {
       this.indexService
         .editFace(this.memberId, {
