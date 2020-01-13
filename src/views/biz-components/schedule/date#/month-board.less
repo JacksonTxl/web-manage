@@ -68,12 +68,10 @@
         background-color: @normal-color;
         margin-right: 8px;
       }
-      &__point--active {
-        width: 6px;
-        height: 6px;
-        border-radius: 6px;
-        background-color: @primary-color;
-        margin-right: 8px;
+      &__point {
+        &--active {
+          background-color: @primary-color;
+        }
       }
       &__bottom-text {
         color: @text-color-secondary;
@@ -171,6 +169,9 @@
     border-radius: 6px;
     background-color: @normal-color;
     margin-right: 8px;
+    &--active {
+      background-color: @primary-color;
+    }
   }
   &__item-text {
     flex: 0 0 120px;
