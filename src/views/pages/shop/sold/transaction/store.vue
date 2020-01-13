@@ -8,7 +8,7 @@
         <div :class="basic('footer-action')">
           <div class="price">
             <span>共{{ buyCar.length }}件商品 合计：</span>
-            <span class="money">￥{{ currentPrice }}</span>
+            <span class="money font-number">&yen; {{ currentPrice }}</span>
           </div>
           <div class="button">
             <st-button @click="onCreateOrder" :loading="loading.createOrder">
@@ -38,12 +38,17 @@
         </div>
         <ul :class="basic('product')" v-if="storeProductList.length">
           <li v-for="(item, index) in storeProductList" :key="index">
-            <img :class="basic('product-img')" :src="item.img" alt="" />
+            <img
+              :class="basic('product-img')"
+              :src="item.img"
+              @error="productImg(index)"
+              alt=""
+            />
             <div :class="basic('product-name')">
               <span>{{ item.product_name }}</span>
             </div>
             <div :class="basic('product-price')">
-              <span>
+              <span class="font-number">
                 {{ item.price }}
               </span>
               <span>库存:{{ item.count }}件</span>
@@ -99,8 +104,12 @@
                   </st-table-actions>
                 </template>
               </st-table>
-              <div :class="basic('all-price')" v-if="buyCar.length">
-                总额：￥{{ actualAmount }}
+              <div
+                :class="basic('all-price')"
+                class="font-number"
+                v-if="buyCar.length"
+              >
+                总额：&yen; {{ actualAmount }}
               </div>
             </st-form-item>
             <st-form-item :class="basic('padding')">
@@ -236,6 +245,7 @@ import { ListService } from './list.service'
 import { PatternService } from '@/services/pattern.service'
 import { PRODUCT_TYPE } from '@/constants/sold/transaction'
 import { MessageService } from '@/services/message.service'
+import defaultImg from '@/assets/img/placeholder_good.png'
 export default {
   name: 'shopSoldTransactionCloud',
   mixins: [tableMixin],
@@ -280,7 +290,8 @@ export default {
       selectCoupon: '', // 优惠券选择的信息
       reducePrice: null,
       description: '',
-      buyCar: []
+      buyCar: [],
+      productUrl: ''
     }
   },
   watch: {
@@ -297,6 +308,9 @@ export default {
     this.listService.getSaleList().subscribe()
   },
   methods: {
+    productImg(index) {
+      this.storeProductList[index].img = defaultImg
+    },
     // 获取商品列表
     getList() {
       this.listService.getStoreProductList(this.$searchQuery).subscribe()
@@ -394,14 +408,29 @@ export default {
           }
           if (type === 'order') {
             this.listService.createOrder(params).subscribe(result => {
+              this.clearData()
               resolve(result.info.order_id.order_id)
             })
           } else {
             this.listService.createOrderPay(params).subscribe(result => {
+              this.clearData()
               resolve(result.info.order_id.order_id)
             })
           }
         })
+      })
+    },
+    clearData() {
+      this.buyCar = []
+      this.selectCoupon = ''
+      this.reducePrice = ''
+      this.description = ''
+      this.listService.couponList$.commit(() => [])
+      this.listService.currentPrice$.commit(() => 0)
+      this.couponText = '未选择优惠券'
+      this.form.setFieldsValue({
+        memberId: '',
+        saleName: ''
       })
     },
     // 创建订单
