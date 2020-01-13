@@ -21,7 +21,7 @@
           v-decorator="decorators.amount"
         >
           <span slot="addonAfter">
-            {{ type | enumFilter('sold_common.unit') }}
+            {{ unit | enumFilter('sold_common.unit') }}
           </span>
         </st-input-number>
       </st-form-item>
@@ -88,6 +88,10 @@ export default {
     type: {
       type: [String, Number],
       required: true
+    },
+    unit: {
+      type: Number,
+      default: 1
     },
     searchQuery: Object
   },
