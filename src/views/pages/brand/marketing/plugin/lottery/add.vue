@@ -29,7 +29,7 @@
             <div
               class="img-wrap"
               :class="'run-item-' + index"
-              v-for="(item, index) in prizeList"
+              v-for="(item, index) in prizeListFilters"
               :key="index"
             >
               <img class="img" :src="item.prize.image_url" alt="奖品图片" />
@@ -533,7 +533,17 @@ export default {
       defaultValue: [moment().format('HH:mm'), moment('11:59', 'HH:mm')],
       isShowEditTable: -1,
       prizeRate: [],
-      prizeNum: []
+      prizeNum: [],
+      // 奖品顺序
+      prizeSort: [
+        0,
+        1,
+        [0, 1, 2, -1, 0, 1, 2, -1],
+        [0, -1, 1, -1, 2, -1, 3, -1],
+        [0, -1, 1, -1, 2, 3, 4, -1],
+        [0, 1, 2, -1, 3, 4, 5, -1],
+        [0, 1, 2, 3, 4, 5, 6, -1]
+      ]
     }
   },
   bem: {
@@ -580,6 +590,26 @@ export default {
   computed: {
     deleteBtnStatus() {
       return this.$searchQuery.activity_id && this.$searchQuery.status === 1
+    },
+    prizeListFilters(value) {
+      if (this.prizeList.length <= 2) {
+        return this.prizeList
+      }
+      return this.prizeSort[this.prizeList.length - 1].map((item, index) => {
+        if (item > -1) {
+          return this.prizeList[item]
+        } else {
+          return {
+            prize: {
+              image_url:
+                this.notPrizeImgType === this.NOT_PRIZE_IMG_TYPE.CUSTOM
+                  ? this.notPrize.prize.image_url
+                  : this.lucky[0].image_url
+            },
+            prize_name: this.notPrize.prize_name
+          }
+        }
+      })
     }
   },
   methods: {
@@ -624,7 +654,9 @@ export default {
             'activity_base.activity_sub_name',
             'activity_rule.join_crowd_all',
             'activity_rule.draw_condition',
-            'activity_rule.draw_times_type'
+            'activity_rule.draw_times_type',
+            'activity_rule.per_times',
+            'activity_rule.total_times'
           ])
           .then(() => {
             this.currentIndex = para
@@ -665,6 +697,9 @@ export default {
           })
           return
         }
+        value.activity_rule.prize_sort = this.prizeSort[
+          this.prizeList.length - 1
+        ]
         if (this.$searchQuery.activity_id) {
           value.activity_id = this.$searchQuery.activity_id
           this.addService.edit(value).subscribe(res => {

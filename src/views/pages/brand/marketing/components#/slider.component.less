@@ -1,5 +1,9 @@
 .brand-marketing-activity {
   .activity-slider-component {
+    &__draggable-wrap {
+      display: flex;
+      flex-wrap: wrap;
+    }
     @h: 137px;
     .ant-col-4 {
       .pd-tb(6px);
@@ -25,6 +29,9 @@
         .activity-slider-component__del {
           display: block;
         }
+        .tooltip-draggable {
+          display: block;
+        }
       }
       > img {
         .h(@h);
@@ -34,13 +41,12 @@
       .st-form-item {
         // .mg-tb(12px);
         // .pd-r(16px);
-        border: 1px solid #e6e9ef;
-        padding-top: 12px;
-        padding-bottom: 12px;
-        padding-right: 16px;
+        // padding-top: 12px;
+        // padding-bottom: 12px;
+        // padding-right: 16px;
         border-top-width: 0;
         margin: 0;
-        height: 58px;
+        height: 32px;
       }
       .ant-upload {
         border-bottom-left-radius: 0;
@@ -76,6 +82,10 @@
       .cur-p;
       z-index: 1;
     }
+    .tooltip-draggable {
+      display: none;
+      margin-left: 2px;
+    }
     &__del-icon {
       font-size: 16px !important;
     }
@@ -83,17 +93,30 @@
       // .mg-tb(12px);
       .ta-l();
       .lh(22px);
+      padding: 5px 0 4px 0;
       span {
         .c(rgba(155, 172, 185, 1));
         .fz(12px);
       }
-      border: 1px solid #e6e9ef;
-      padding: 17px 16px;
       border-top-width: 0;
     }
 
     .st-image-upload {
       .w(100%);
+    }
+    &__default-box {
+      border: 1px solid #e6e9ef;
+      padding: 12px 2px 12px 6px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      margin-left: 0 !important;
+    }
+    &__uploadtip-input {
+      border: 1px solid #e6e9ef;
+      padding: 12px 24px 12px 6px;
+      display: flex;
+      align-items: center;
     }
   }
 }

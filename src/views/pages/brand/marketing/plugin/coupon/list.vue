@@ -45,7 +45,18 @@
             >
               {{ record.shop_list[0] }}
             </span>
-            <a-popover placement="right" v-else>
+            <!-- 改为弹框start -->
+            <a
+              v-else
+              v-modal-link="{
+                name: 'brand-marketing-coupon-table',
+                props: { id: record.id, type: 'Sale', title: '可用门店' }
+              }"
+            >
+              共{{ record.shop_num }}家门店
+            </a>
+            <!-- 改为弹框end -->
+            <!-- <a-popover placement="right" v-else>
               <template slot="content">
                 <p
                   v-for="(item, index) in record.shop_list"
@@ -58,9 +69,8 @@
               <template slot="title">
                 <span>可用门店</span>
               </template>
-              <!-- <a>{{text}}</a> -->
               <a>可用门店</a>
-            </a-popover>
+            </a-popover> -->
           </template>
           <template slot="valid_days" slot-scope="text">
             <span>领券当天开始 {{ text }} 天内有效</span>
@@ -110,12 +120,15 @@ import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
 import { TYPE } from '@/constants/marketing/plugin'
 import useShare from '@/hooks/marketing/share.hook'
-
+import BrandMarketingCouponTable from '@/views/biz-modals/brand/marketing/coupon-table'
 export default {
   name: 'PageBrandMarketingPluginCouponList',
   mixins: [tableMixin],
   bem: {
     basic: 'page-brand-plugin-coupon'
+  },
+  modals: {
+    BrandMarketingCouponTable
   },
   serviceInject() {
     return {

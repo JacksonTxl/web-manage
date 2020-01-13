@@ -4,6 +4,7 @@
       <div :class="basic('effect')">
         <st-t2>
           营销效果
+          <st-help-tooltip id="MDYXCJ001" />
         </st-t2>
         <section>
           <ul v-if="num">
