@@ -19,7 +19,10 @@
           >
             <coach-component v-if="coachLoaded"></coach-component>
           </row-container-component>
-          <row-container-component title="推荐课程">
+          <row-container-component
+            className="row-container-component-course"
+            title="推荐课程"
+          >
             <course-component v-if="courseLoaded"></course-component>
           </row-container-component>
         </st-tab-pane>
