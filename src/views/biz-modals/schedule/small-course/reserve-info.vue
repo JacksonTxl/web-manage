@@ -81,7 +81,7 @@
                 @search="onSearch"
                 @change="onChange"
                 v-model="showMemberName"
-                :notFoundContent="null"
+                notFoundContent="无搜索结果"
               >
                 <a-select-option
                   v-for="member in memberOptions"
@@ -400,7 +400,6 @@ export default {
     },
     keywordFilter(item) {
       let str
-      if (!this.keyword) return str
       if (item.is_minors === 1) {
         str = `${item.member_name}(未成年) ${item.parent_mobile}(${
           item.parent_user_role
