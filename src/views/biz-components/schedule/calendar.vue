@@ -14,17 +14,14 @@
       <div :class="bToolbar('right')">
         <slot name="toolbar-right"></slot>
         <a-radio-group
-          :value="$searchQuery.time_unit"
+          :value="dataBtnFocusState"
           @change="handleSizeChange($event, 'date')"
         >
-          <a-radio-button :value="TIME_UNIT.TIME_DAY">
-            日
-          </a-radio-button>
-          <a-radio-button :value="TIME_UNIT.TIME_WEEK">
+          <a-radio-button value="week" @click="onClickGetWeek">
             周
           </a-radio-button>
-          <a-radio-button :value="TIME_UNIT.TIME_MONTH">
-            月
+          <a-radio-button value="day" @click="onClickGetCurrent">
+            日
           </a-radio-button>
         </a-radio-group>
         <a-radio-group
@@ -41,15 +38,9 @@
       </div>
     </div>
     <div :class="bSchedule('content')">
-      <div
-        :class="bContent('time-collection')"
-        v-if="$searchQuery.time_unit !== TIME_UNIT.TIME_MONTH"
-      ></div>
+      <div :class="bContent('time-collection')"></div>
 
-      <ul
-        :class="bContent('day-group')"
-        v-if="$searchQuery.time_unit === TIME_UNIT.TIME_DAY"
-      >
+      <ul :class="bContent('day-group')" v-if="weeks.length === 1">
         <li
           class="day"
           :class="currentDay(item)"
@@ -96,10 +87,7 @@
         </li>
       </ul>
 
-      <ul
-        :class="bContent('day-group')"
-        v-else-if="$searchQuery.time_unit === TIME_UNIT.TIME_WEEK"
-      >
+      <ul :class="bContent('day-group')" v-else>
         <li
           class="day"
           :class="[currentDay(item), index === 6 ? 'last' : '']"
@@ -153,14 +141,6 @@
           ></schedule-card>
         </li>
       </ul>
-      <!-- 月度组件 -->
-      <month-board
-        v-if="$searchQuery.time_unit === TIME_UNIT.TIME_MONTH"
-        :courses="cardList"
-        :addTitle="addTitle"
-        @onClickAddBtn="addTeamCourse"
-        @onClickCourse="onClickCourse"
-      />
     </div>
   </div>
 </template>
@@ -170,10 +150,8 @@ import DateComponent from './date#/date-component'
 import AddButton from './date#/add-button'
 import ScheduleUnit from './date#/schedule-unit'
 import ScheduleCard from './date#/schedule-card'
-import MonthBoard from './date#/month-board'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
-import { TIME_UNIT } from '@/constants/course/team'
 
 export default {
   name: 'ScheduleCalendar',
@@ -187,8 +165,8 @@ export default {
       start: moment().format('YYYY-MM-DD'),
       currentWeek: '',
       weeks: [],
-      pageBtnFocusState: 'calendar',
-      TIME_UNIT
+      dataBtnFocusState: 'week',
+      pageBtnFocusState: 'calendar'
     }
   },
   props: {
@@ -237,7 +215,6 @@ export default {
   },
   watch: {
     $route(newValue, oldValue) {
-      // this.isDay = this.$searchQuery.start_date === this.$searchQuery.end_date
       this.getWeeks()
     }
   },
@@ -264,14 +241,7 @@ export default {
   methods: {
     handleSizeChange(evt, type) {
       if (type === 'date') {
-        if (evt.target.value === this.TIME_UNIT.TIME_DAY) {
-          this.onClickGetCurrent()
-        } else if (evt.target.value === this.TIME_UNIT.TIME_MONTH) {
-          this.onClickGetMonth()
-        } else {
-          this.onClickGetWeek()
-        }
-        this.$searchQuery.time_unit = evt.target.value
+        this.dataBtnFocusState = evt.target.value
       } else {
         this.pageBtnFocusState = evt.target.value
       }
@@ -316,34 +286,12 @@ export default {
       this.$emit('detail', info)
     },
     onClickGetCurrent() {
-      this.weeks = []
-      this.weeks.push({ week: 0, date: this.$searchQuery.start_date })
-      this.$searchQuery.time_unit = this.TIME_UNIT.TIME_DAY
       let current = moment().format('YYYY-MM-DD')
       this.getWeeks()
       this.$router.push({
         query: {
           start_date: current,
-          end_date: current,
-          time_unit: this.TIME_UNIT.TIME_DAY
-        }
-      })
-    },
-    onClickGetMonth() {
-      const startDate = moment()
-        .startOf('month')
-        .format('YYYY-MM-DD')
-      const endDate = moment()
-        .endOf('month')
-        .format('YYYY-MM-DD')
-      console.log(startDate, 'startDate')
-      console.log(endDate, 'endDate')
-      this.getWeeks()
-      this.$router.push({
-        query: {
-          start_date: startDate,
-          end_date: endDate,
-          time_unit: this.TIME_UNIT.TIME_MONTH
+          end_date: current
         }
       })
     },
@@ -357,7 +305,6 @@ export default {
             top: this.heightToTop(document.querySelector('#timer-9')) - 232
           })
         })
-        this.dataBtnFocusState = 'day'
         return
       }
       if (val === 'week') {
@@ -365,13 +312,11 @@ export default {
         for (let i = 1; i < 8; i++) {
           this.weeks.push({ week: i, date: this.start })
         }
-        this.dataBtnFocusState = 'week'
       }
     },
+
     onClickGetWeek() {
-      this.$router.push({
-        query: { ...this.currentWeek, time_unit: this.TIME_UNIT.TIME_WEEK }
-      })
+      this.$router.push({ query: { ...this.currentWeek } })
       this.getWeeks('week')
     },
     onChangeGetDate(date) {
@@ -386,14 +331,6 @@ export default {
         ele = ele.offsetParent
       } while (ele !== root)
       return height
-    },
-    addTeamCourse(e) {
-      console.log('点击新增团体课按钮', e)
-      this.$emit('add', moment(e.fullDate))
-    },
-    onClickCourse(e) {
-      console.log('点击某个课程', e)
-      this.$emit('detail', e)
     }
   },
   created() {
@@ -415,8 +352,7 @@ export default {
     DateComponent,
     AddButton,
     ScheduleUnit,
-    ScheduleCard,
-    MonthBoard
+    ScheduleCard
   }
 }
 </script>

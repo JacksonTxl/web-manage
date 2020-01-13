@@ -281,6 +281,7 @@ import { ruleOptions } from './transfer.config'
 import autoContractBtn from '@/views/biz-components/contract/auto-contract-btn.vue'
 import MemberSearch from '@/views/biz-components/member-search/member-search'
 import { PERSON_TYPE } from '@/constants/course/small-course'
+import moment from 'moment'
 export default {
   name: 'ModalSoldCardTransfer',
   components: {
@@ -309,6 +310,7 @@ export default {
     }
   },
   computed: {
+    moment,
     member_id() {
       return this.memberTransferInfo.member_id
     },
@@ -357,7 +359,11 @@ export default {
     }
   },
   created() {
-    this.transferService.getTransferInfo(this.id, this.type).subscribe()
+    this.transferService.getTransferInfo(this.id, this.type).subscribe(res => {
+      if (this.isMember) {
+        this.endTime = moment(this.memberTransferInfo.end_time)
+      }
+    })
   },
   methods: {
     onSubmit() {
@@ -417,11 +423,7 @@ export default {
       )
     },
     onStartTimeChange(data) {
-      if (this.timeScope) {
-        this.endTime = cloneDeep(moment(data.valueOf() + this.timeScope))
-      } else {
-        this.endTime = cloneDeep(moment(data.valueOf()))
-      }
+      this.endTime = cloneDeep(moment(data.valueOf() + this.timeScope))
     },
     onCodeNumber() {
       let sold_type = this.isDeposit

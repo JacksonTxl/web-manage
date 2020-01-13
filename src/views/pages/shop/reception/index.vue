@@ -692,7 +692,7 @@ export default {
       return this.isSelectMember && this.selectMemberInfo.is_minors === 1
     },
     parentMobile() {
-      return this.isMinors ? this.selectMemberInfo.parent_name : '无'
+      return this.isMinors ? this.selectMemberInfo.parent_mobile : '无'
     },
     parentName() {
       return this.isMinors
