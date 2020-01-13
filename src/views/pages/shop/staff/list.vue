@@ -11,6 +11,17 @@
         >
           添加员工
         </st-button>
+        <st-button
+          v-if="auth.export"
+          type="primary"
+          class="mg-r8"
+          v-export-excel="{
+            type: 'staff',
+            query: { condtion: $searchQuery }
+          }"
+        >
+          全部导出
+        </st-button>
         <!-- NOTE: 导入 -->
         <!-- <st-button v-if="auth.import" class="mg-r8" @click="onExportStaff">导入员工</st-button> -->
         <st-button
@@ -296,6 +307,9 @@ export default {
     workStatusList() {
       return [{ value: '-1', label: '全部员工状态' }, ...this.workStatusList$]
     }
+  },
+  mounted() {
+    console.log(this.auth)
   },
   methods: {
     getShopName(shop) {

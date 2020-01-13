@@ -29,7 +29,17 @@
     <div :class="basic('content')">
       <div :class="basic('content-batch')" class="mg-b16">
         <!-- NOTE: 导出 -->
-        <!-- <st-button v-if="auth.export" type="primary">批量导出</st-button> -->
+        <st-button
+          v-if="auth.export"
+          type="primary"
+          class="mg-r8"
+          v-export-excel="{
+            type: 'sold/course/package',
+            query: { conditions: $searchQuery }
+          }"
+        >
+          全部导出
+        </st-button>
         <template
           v-if="selectedRowKeys.length >= 1 && diffSelectedRows.length === 0"
         >

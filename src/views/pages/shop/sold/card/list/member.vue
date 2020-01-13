@@ -33,8 +33,17 @@
     </st-search-panel>
     <div :class="basic('content')">
       <div :class="basic('content-batch')" class="mg-b16">
-        <!-- NOTE: 导出 -->
-        <!-- <st-button type="primary" class="mg-r8" v-if="auth.export">批量导出</st-button> -->
+        <st-button
+          v-if="auth.export"
+          type="primary"
+          class="mg-r8"
+          v-export-excel="{
+            type: 'sold/card/member',
+            query: { conditions: $searchQuery }
+          }"
+        >
+          全部导出
+        </st-button>
         <template
           v-if="selectedRowKeys.length >= 1 && diffSelectedRows.length === 0"
         >
@@ -83,15 +92,6 @@
           @click="onEnterTime"
         >
           变更入场时段
-        </st-button>
-        <st-button
-          v-if="auth.export"
-          type="primary"
-          class="mg-r8"
-          :disabled="selectedRowKeys.length < 1"
-          @click="onExport"
-        >
-          全部导出
         </st-button>
       </div>
       <div>
@@ -522,19 +522,6 @@ export default {
     onClear() {
       this.selectedRowKeys = []
       this.selectedRows = []
-    },
-    // 导出数据
-    onExport() {
-      console.log(this.selectedRowKeys)
-      console.log(cloneDeep(this.$searchQuery))
-      this.$modalRouter.push({
-        name: 'sold-card-batch-export',
-        on: {
-          success: () => {
-            this.successTip()
-          }
-        }
-      })
     }
   }
 }
