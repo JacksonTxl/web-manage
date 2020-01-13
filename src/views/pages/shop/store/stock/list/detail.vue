@@ -80,7 +80,9 @@ export default {
       loading: this.detailService.loading$,
       page: this.detailService.page$,
       productList: this.detailService.productList$,
-      stockFlow: this.userService.getOptions$('cloud_store.stock_flow')
+      stockFlow: this.userService.getOptions$('cloud_store.stock_flow', {
+        addAll: '全部类型'
+      })
     }
   },
   mixins: [tableMixin],
