@@ -120,7 +120,7 @@
               v-model="record.site_id"
               :options="courtOptions"
               labelInValue
-              @change="e => handleChanges(e, index, record)"
+              @change="e => courtChange(e, index, record)"
               :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
             />
             <div
@@ -313,17 +313,34 @@ export default {
     onEditCourse(data, index) {
       this.courseSchedule[index].isEdit = !data
     },
-    // 处理选择教练与课程
+    // 改变选择教练与课程后的数据
     handleChange(e, index, type, item) {
       this.courseSchedule[index][type].name = e.label.replace(/[\r\n]/g, '')
       this.courseSchedule[index][type].data = e.key
       this.changeRed(index, item)
     },
-    // 处理场地的
-    handleChanges(e, i, item) {
+    // 改变场地数据
+    courtChange(e, i, item) {
+      const id = e[0]
+      const childrenId = e[1]
+      this.courtOptions.forEach(item => {
+        if (item.id === id) {
+          this.courseSchedule[i].court_id.name = item.name
+          this.courseSchedule[i].court_site_id.data = 0
+          this.courseSchedule[i].court_site_id.name = ''
+          if (item.children && item.children.length && childrenId) {
+            item.children.forEach(ele => {
+              if (ele.id === childrenId) {
+                this.courseSchedule[i].court_site_id.data = ele.id
+                this.courseSchedule[i].court_site_id.name = ele.name
+              }
+            })
+          }
+        }
+      })
       this.changeRed(i, item)
     },
-    // 处理时间的
+    // 改变时间数据
     handleChangeTime(e, i, type, item) {
       let d = moment(e).format('d') == 0 ? 7 : moment(e).format('d')
       this.courseSchedule[i].week_day.data = d

@@ -144,7 +144,7 @@ export default {
             edit: res => {
               setTimeout(() => {
                 this.addOrEditCourse(res)
-              })
+              }, 500)
             }
           }
         })
@@ -173,7 +173,7 @@ export default {
                   }
                 }
               })
-            })
+            }, 500)
           }
         }
       })
