@@ -204,16 +204,16 @@ export default {
     }
   },
   rxState() {
-    const tss = this.teamScheduleCommonService
-    const sms = this.personalTeamScheduleCommonService
+    const teamService = this.teamScheduleCommonService
+    const personalService = this.personalTeamScheduleCommonService
     return {
       loading: this.addEditCourseService.loading$,
       weekDay: this.userService.getOptions$('shop.week_day'),
-      coachOptionTeam: tss.coachOptions$,
-      courseOptionTeam: tss.courseOptions$,
-      courtOptionTeam: tss.courtOptions$,
-      courseOptionSmall: sms.courseOptions$,
-      coachOptionSmall: sms.coachOptions$
+      coachOptionTeam: teamService.coachOptions$,
+      courseOptionTeam: teamService.courseOptions$,
+      courtOptionTeam: teamService.courtOptions$,
+      courseOptionSmall: personalService.courseOptions$,
+      coachOptionSmall: personalService.coachOptions$
     }
   },
   filters: {

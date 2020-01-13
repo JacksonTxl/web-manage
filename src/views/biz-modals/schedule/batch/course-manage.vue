@@ -39,6 +39,7 @@
                   <a class="mg-r16" @click="editRow(item.id)">
                     编辑
                   </a>
+                  <!-- 仅删除本地数据 -->
                   <a @click="delRow(item.id, index)">
                     删除
                   </a>

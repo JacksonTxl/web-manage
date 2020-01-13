@@ -275,9 +275,9 @@ export default {
           start_time: item.start_time.data
         }
       })
-      let functiomName =
+      let functionName =
         this.type === 'team' ? 'validTeamBatch' : 'validSmallBatch'
-      this.courseRankPreviewService[functiomName](params).subscribe(res => {
+      this.courseRankPreviewService[functionName](params).subscribe(res => {
         if (res.is_commit) {
           this.teamBatch(params)
         } else {
@@ -298,8 +298,8 @@ export default {
     },
     // 确定排期
     teamBatch(data) {
-      let functiomName = this.type === 'team' ? 'teamBatch' : 'smallBatch'
-      this.courseRankPreviewService[functiomName](data).subscribe(res => {
+      let functionName = this.type === 'team' ? 'teamBatch' : 'smallBatch'
+      this.courseRankPreviewService[functionName](data).subscribe(res => {
         this.$emit('success', res)
         this.messageService.warn({ content: '排课成功' })
         this.show = false
