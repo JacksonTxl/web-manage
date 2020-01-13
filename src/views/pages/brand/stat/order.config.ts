@@ -57,6 +57,16 @@ export const columns = (vm: any) => [
     dataIndex: 'package_course_num'
   },
   {
+    title: `${vm.$c('small_course')}客单价(元)`,
+    align: 'right',
+    dataIndex: 'small_course_avg'
+  },
+  {
+    title: `${vm.$c('small_course')}成单数`,
+    align: 'right',
+    dataIndex: 'small_course_num'
+  },
+  {
     title: '云店订单客单价(元)',
     align: 'right',
     dataIndex: 'shop_avg'

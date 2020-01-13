@@ -143,7 +143,8 @@ export const routeMapConfig = {
     routeConfig.meta.title = '售课管理'
     routeConfig.meta.tabs = [
       'shop-sold-course-list-personal',
-      'shop-sold-course-list-package'
+      'shop-sold-course-list-package',
+      'shop-sold-course-list-small-course'
     ]
   },
   'shop-sold-card-list-member'(routeConfig: RouteConfig) {
@@ -204,6 +205,45 @@ export const routeMapConfig = {
       package_type: { type: Number, default: -1 },
       start_time: { type: String, default: '' },
       end_time: { type: String, default: '' },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-sold-course-list-small-course'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '{{$c("small_course")}}'
+    routeConfig.meta.auth = 'shop:product:small_class_course|list'
+    routeConfig.queryOptions = {
+      search: { type: String, default: '' },
+      course_status: { type: Number, default: -1 },
+      start_time: { type: String, default: '' },
+      end_time: { type: String, default: '' },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-sold-course-info-small-course-info'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '{{$c("small_course")}}详情'
+    routeConfig.meta.tabs = [
+      'shop-sold-course-info-small-course-info-operation-record',
+      'shop-sold-course-info-small-course-info-usage-log'
+    ]
+  },
+  'shop-sold-course-info-small-course-info-usage-log'(
+    routeConfig: RouteConfig
+  ) {
+    routeConfig.meta.title = '使用记录'
+    routeConfig.meta.parentRouteName = 'shop-sold-course-info-small-course-info'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-sold-course-info-small-course-info-operation-record'(
+    routeConfig: RouteConfig
+  ) {
+    routeConfig.meta.title = '操作日志'
+    routeConfig.meta.parentRouteName = 'shop-sold-course-info-small-course-info'
+    routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
@@ -353,7 +393,8 @@ export const routeMapConfig = {
       'shop-sold-transaction-personal',
       'shop-sold-transaction-package',
       'shop-sold-transaction-lease',
-      'shop-sold-transaction-store'
+      'shop-sold-transaction-store',
+      'shop-sold-transaction-small-course'
     ]
   },
   'shop-sold-transaction-member'(routeConfig: RouteConfig) {
@@ -409,6 +450,16 @@ export const routeMapConfig = {
   'shop-sold-transaction-lease'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '租赁柜'
     routeConfig.meta.auth = 'shop:sold:transaction|cabinet_list'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      product_name: { type: String, default: '' },
+      product_type: { type: Number, default: 6 }
+    }
+  },
+  'shop-sold-transaction-small-course'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '小班课'
+    // routeConfig.meta.auth = 'shop:sold:transaction|cabinet_list'
     routeConfig.queryOptions = {
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -476,7 +527,8 @@ export const routeMapConfig = {
     routeConfig.meta.auth = 'brand:course:course_setting|tab'
     routeConfig.meta.tabs = [
       'brand-setting-app-course-category',
-      'brand-setting-app-course-training-aim'
+      'brand-setting-app-course-training-aim',
+      'brand-setting-app-course-small-course-range'
     ]
   },
   'brand-setting-app-staff'(routeConfig: RouteConfig) {
@@ -486,11 +538,15 @@ export const routeMapConfig = {
   },
   'brand-setting-app-course-category'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '课程类型'
-    routeConfig.meta.auth = 'brand_shop:course:course_type|list'
+    routeConfig.meta.auth = 'brand:course:course_type|tab'
   },
   'brand-setting-app-course-training-aim'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '训练目的'
-    routeConfig.meta.auth = 'brand_shop:course:training_aim|list'
+    routeConfig.meta.auth = 'brand:course:training_aim|tab'
+  },
+  'brand-setting-app-course-small-course-range'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '{{$c("small_course")}}适用范围'
+    routeConfig.meta.auth = 'brand:course:course_scope_setting|tab'
   },
   'brand-setting-app-staff-skillful'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '擅长项目'
@@ -798,16 +854,21 @@ export const routeMapConfig = {
     routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|tab'
     routeConfig.meta.tabs = [
       'brand-setting-general-course-personal',
-      'brand-setting-general-course-team'
+      'brand-setting-general-course-team',
+      'brand-setting-general-course-small-course'
     ]
   },
   'brand-setting-general-course-personal'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教设置'
-    routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|tab'
+    routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|get'
   },
   'brand-setting-general-course-team'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '团课设置'
-    routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|tab'
+    routeConfig.meta.auth = 'brand:setting:course_price_reserve_setting|get'
+  },
+  'brand-setting-general-course-small-course'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '{{$c("small_course")}}设置'
+    routeConfig.meta.auth = 'brand:setting:small_course_reserve_setting|tab'
   },
   'brand-setting-general-pay-type'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '支付方式'
@@ -1087,7 +1148,8 @@ export const routeMapConfig = {
     routeConfig.meta.tabs = [
       'shop-product-course-schedule-team',
       'shop-product-course-schedule-personal',
-      'shop-product-course-schedule-personal-team'
+      'shop-product-course-schedule-personal-team',
+      'shop-product-course-schedule-small-course'
     ]
   },
   'shop-product-course-schedule-team'(routeConfig: RouteConfig) {
@@ -1123,6 +1185,71 @@ export const routeMapConfig = {
     routeConfig.queryOptions = {
       coach_id: { type: Number, default: -1 }
     }
+  },
+  'shop-product-course-schedule-small-course'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '{{$c("small_course")}}'
+    routeConfig.meta.auth = 'shop:schedule:small_class_course_schedule|list'
+  },
+  'shop-product-course-schedule-small-course-table'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '{{$c("small_course")}}'
+  },
+  'shop-product-course-schedule-small-course-small-course'(
+    routeConfig: RouteConfig
+  ) {
+    routeConfig.meta.title = '{{$c("small_course")}}'
+    routeConfig.queryOptions = {
+      coach_id: { type: Number, default: -1 },
+      course_id: { type: Number, default: -1 }
+    }
+  },
+  'shop-product-course-schedule-small-course-small-course-table'(
+    routeConfig: RouteConfig
+  ) {
+    routeConfig.meta.title = '{{$c("small_course")}}'
+    routeConfig.queryOptions = {
+      coach_id: { type: Number, default: -1 },
+      course_id: { type: Number, default: -1 }
+    }
+  },
+  'shop-product-course-mini-schedule-inbatch-add'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '{{$c("small_course")}}排期'
+    routeConfig.meta.parentRouteName =
+      'shop-product-course-schedule-small-course'
+  },
+  'shop-product-course-mini-schedule-inbatch-info'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '{{$c("small_course")}}排期'
+    routeConfig.meta.parentRouteName =
+      'shop-product-course-schedule-small-course'
+  },
+  'shop-product-course-manage-small-course-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '{{$c("small_course")}}'
+    routeConfig.meta.auth = 'shop:product:small_class_course|list'
+    routeConfig.queryOptions = {
+      class_status: { type: Number, default: -1 },
+      course_name: { type: String, default: '' },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-product-course-manage-small-course-add'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '添加{{$c("small_course")}}'
+    routeConfig.meta.auth = 'shop:product:small_class_course|add'
+  },
+  'shop-product-course-manage-small-course-edit'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '编辑{{$c("small_course")}}'
+    routeConfig.meta.auth = 'shop:product:small_class_course|edit'
+  },
+  'shop-product-course-manage-small-course-info-basic'(
+    routeConfig: RouteConfig
+  ) {
+    routeConfig.meta.title = '{{$c("small_course")}}详情'
+    routeConfig.meta.auth = 'shop:product:small_class_course|get'
+  },
+  'shop-product-course-manage-small-course-info-class'(
+    routeConfig: RouteConfig
+  ) {
+    routeConfig.meta.title = '{{$c("small_course")}}详情'
+    routeConfig.meta.auth = 'shop:product:small_class_course|get'
   },
   'shop-product-course-manage-team-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '团体课'

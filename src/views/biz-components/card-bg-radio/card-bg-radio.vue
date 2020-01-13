@@ -69,6 +69,9 @@ export default {
       ),
       familyCardBgList: this.userService.getOptions$(
         'member_card.family_card_bg_list'
+      ),
+      smallCourseCardBgList: this.userService.getOptions$(
+        'small_course.small_bg_list'
       )
     }
   },
@@ -95,6 +98,8 @@ export default {
       cropperModal: {},
       card_bg_list: this.isFamilyCard
         ? this.familyCardBgList
+        : this.isSmallCourse
+        ? this.smallCourseCardBgList
         : this.memberCardBgList,
       // 备份
       list: [],
@@ -151,6 +156,10 @@ export default {
       }
     },
     isFamilyCard: {
+      type: Boolean,
+      default: false
+    },
+    isSmallCourse: {
       type: Boolean,
       default: false
     }
