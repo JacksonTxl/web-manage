@@ -107,7 +107,7 @@
     <!-- 固定约课有的表单 -->
     <a-row :gutter="8" v-show="isShowLimitContent">
       <a-col :lg="11" :xs="22">
-        <st-form-item required>
+        <st-form-item required type="text">
           <template slot="label">
             请假限制
             <st-help-tooltip id="TSXBK002" />
@@ -161,7 +161,7 @@
     <!-- 自主约课有的表单内容 -->
     <a-row :gutter="8" v-show="!isShowLimitContent">
       <a-col :lg="11" :xs="22">
-        <st-form-item label="约课规则" required>
+        <st-form-item label="约课规则" required type="text">
           每周最大约课节数
           <st-input-number
             style="width:100px"
@@ -177,7 +177,7 @@
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="22" :xs="22">
-        <st-form-item label="背景图" required>
+        <st-form-item label="背景图" required type="text">
           <card-bg-radio isSmallCourse v-model="bg_image" />
         </st-form-item>
       </a-col>

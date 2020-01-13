@@ -114,7 +114,7 @@ export const ruleOptions = (vm: any) => {
       ]
     },
     is_allow_transfer: {
-      initialValue: 1
+      initialValue: 0
     },
     transfer_num: {},
     transfer_type: {

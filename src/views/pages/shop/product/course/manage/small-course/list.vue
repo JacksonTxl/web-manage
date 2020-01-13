@@ -105,19 +105,14 @@
           >
             去退款
           </a>
-          <a
+
+          <st-popconfirm
             v-if="record.auth['shop:product:small_class_course|del']"
-            class="delete"
+            :title="'一旦删除则无法恢复，确认删除' + record.course_name + '？'"
+            @confirm="onDelGroup(record)"
           >
-            <st-popconfirm
-              :title="
-                '一旦删除则无法恢复，确认删除' + record.course_name + '？'
-              "
-              @confirm="onDelGroup(record)"
-            >
-              删除
-            </st-popconfirm>
-          </a>
+            <a>删除</a>
+          </st-popconfirm>
         </st-table-actions>
       </template>
     </st-table>
