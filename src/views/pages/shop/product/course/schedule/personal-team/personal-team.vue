@@ -38,6 +38,7 @@ import { PersonalTeamService } from './personal-team.service'
 import ScheduleBatchCourseManage from '@/views/biz-modals/schedule/batch/course-manage'
 import ScheduleBatchAddEditCourse from '@/views/biz-modals/schedule/batch/add-edit-course'
 import ScheduleBatchCourseRankPreview from '@/views/biz-modals/schedule/batch/course-rank-preview'
+import { TIME_UNIT } from '@/constants/course/team'
 export default {
   name: 'TeamSchedule',
   modals: {
@@ -67,7 +68,7 @@ export default {
     Calendar
   },
   data() {
-    return {}
+    return { TIME_UNIT }
   },
   computed: {
     startDate() {
@@ -204,7 +205,7 @@ export default {
     $route(newValue, oldValue) {
       this.service.scheduleService.getList(this.$searchQuery)
       this.$refs.calendar.getWeeks(
-        this.$searchQuery.time_unit === 2 ? 'week' : ''
+        this.$searchQuery.time_unit === this.TIME_UNIT.TIME_WEEK ? 'week' : ''
       )
     }
   }

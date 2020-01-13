@@ -39,6 +39,7 @@ import ScheduleTeamAddCourse from '@/views/biz-modals/schedule/team/add-course'
 import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
 import ScheduleTeamReserveInfo from '@/views/biz-modals/schedule/team/reserve-info'
 import { TeamService } from './team.service'
+import { TIME_UNIT } from '@/constants/course/team'
 export default {
   name: 'TeamSchedule',
   modals: {
@@ -68,7 +69,7 @@ export default {
     Calendar
   },
   data() {
-    return {}
+    return { TIME_UNIT }
   },
   computed: {
     startDate() {
@@ -208,7 +209,7 @@ export default {
     $route(newValue, oldValue) {
       this.service.scheduleService.getList(this.$searchQuery)
       this.$refs.calendar.getWeeks(
-        this.$searchQuery.time_unit === 2 ? 'week' : ''
+        this.$searchQuery.time_unit === this.TIME_UNIT.TIME_WEEK ? 'week' : ''
       )
     }
   }
