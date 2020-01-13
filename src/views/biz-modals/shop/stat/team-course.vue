@@ -57,10 +57,7 @@
       <st-button
         type="primary"
         v-if="auth$.export"
-        v-export-excel="{
-          type: 'shop/team/course',
-          query: query
-        }"
+        v-export-excel="exportParams"
       >
         全部导出
       </st-button>
@@ -122,7 +119,13 @@ export default {
   computed: {
     columns,
     showTable() {
-      return this.$searchQuery.showTable || 'all'
+      return this.$route.path.includes('shop/course/summary') ? 'all' : 'coach'
+    },
+    exportParams() {
+      const type = 'shop/team/course'
+      return this.type === 'total'
+        ? { type: `${type}/total`, query: this.totalQuery }
+        : { type, query: this.query }
     },
     totalQuery() {
       let query = cloneDeep(this.$searchQuery)

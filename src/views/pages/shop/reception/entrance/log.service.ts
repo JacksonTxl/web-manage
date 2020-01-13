@@ -9,7 +9,7 @@ export class LogService implements Controller {
   loading$ = new State({})
   list$ = new State([])
   page$ = new State({})
-  entryTypeList$ = this.userService.getOptions$('front.visit_type', {
+  entryTypeList$ = this.userService.getOptions$('front.entry_stat_type', {
     addAll: true
   })
 

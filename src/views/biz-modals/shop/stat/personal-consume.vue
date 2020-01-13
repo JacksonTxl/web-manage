@@ -130,7 +130,7 @@ export default {
   computed: {
     columns,
     showTable() {
-      return this.$searchQuery.showTable || 'all'
+      return this.$route.path.includes('shop/course/summary') ? 'all' : 'coach'
     },
     exportParams() {
       const type = 'shop/personal/course/checkin'

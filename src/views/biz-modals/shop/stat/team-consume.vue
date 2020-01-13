@@ -119,10 +119,10 @@ export default {
   computed: {
     columns,
     showTable() {
-      return this.$searchQuery.showTable || 'all'
+      return this.$route.path.includes('shop/course/summary') ? 'all' : 'coach'
     },
     exportParams() {
-      const type = 'shop/team/course'
+      const type = 'shop/team/course/checkin'
       return this.type === 'total'
         ? { type: `${type}/total`, query: this.totalQuery }
         : { type, query: this.query }
