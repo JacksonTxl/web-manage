@@ -615,9 +615,17 @@ export const routeMapConfig = {
       sell_status: { type: Number, default: -1 }
     }
   },
-  'shop-reception-entrance-entrance'(routeConfig: RouteConfig) {
+  'shop-reception-entrance'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '入场管理'
     routeConfig.meta.parentRouteName = 'shop-reception-index'
+    routeConfig.meta.tabs = [
+      'shop-reception-entrance-entrance',
+      'shop-reception-entrance-log'
+    ]
+  },
+  'shop-reception-entrance-entrance'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '入场管理'
+    routeConfig.meta.parentRouteName = 'shop-reception-entrance'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -626,8 +634,8 @@ export const routeMapConfig = {
     }
   },
   'shop-reception-entrance-log'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '入场管理'
-    routeConfig.meta.parentRouteName = 'shop-reception-index'
+    routeConfig.meta.title = '入场管理明细'
+    routeConfig.meta.parentRouteName = 'shop-reception-entrance'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
