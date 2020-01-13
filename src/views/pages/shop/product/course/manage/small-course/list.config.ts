@@ -8,11 +8,13 @@ export const columns = (vm: any) => {
     },
     {
       title: '类型',
+      width: 100,
       dataIndex: 'small_course_type',
       scopedSlots: { customRender: 'small_course_type' }
     },
     {
       title: '排课情况',
+      width: 120,
       scopedSlots: { customRender: 'course_arrangement' }
     },
     {
@@ -21,6 +23,7 @@ export const columns = (vm: any) => {
     },
     {
       title: '开班时间',
+      width: 150,
       dataIndex: 'course_time'
     },
     {
@@ -30,10 +33,12 @@ export const columns = (vm: any) => {
     },
     {
       title: '报名人数',
+      width: 100,
       dataIndex: 'apply_num'
     },
     {
       // title: '成班条件',
+      width: 120,
       slots: { title: 'class_conditions' },
       dataIndex: 'class_conditions'
     },
