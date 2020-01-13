@@ -1,5 +1,5 @@
 <template>
-  <st-modal title="签到课程" :footer="null" v-model="show">
+  <st-modal title="签到课程" :footer="null" v-model="show" width="640px">
     <div :class="b('item')" class="bg-gray">
       请假课程
     </div>
