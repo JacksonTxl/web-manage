@@ -1,5 +1,5 @@
 <template>
-  <st-modal title="补课" v-model="show" width="484px">
+  <st-modal title="补课" v-model="show" width="540px">
     <st-form :form="form" labelWidth="70px" labelAuto>
       <st-form-item label="会员名" required>
         <span>{{ info.member_name }}</span>

@@ -1,5 +1,13 @@
 <template>
-  <st-modal title="新增课程排期" v-model="show" width="520px">
+  <st-modal
+    v-model="show"
+    width="520px"
+    wrapClassName="modal-shop-small-course-add-course"
+  >
+    <template slot="title" class="add-small-schedule-tips">
+      新增课程排期
+      <span>（周期排课方式的课程，新增排课会转变为自定义排课!)</span>
+    </template>
     <st-form :form="form" labelWidth="72px" labelAuto>
       <st-form-item :label="$c('small_course')" required>
         <a-select
