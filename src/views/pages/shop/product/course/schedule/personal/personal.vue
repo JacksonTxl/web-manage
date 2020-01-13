@@ -8,7 +8,6 @@
       :cardList="cardList"
       :startDate="startDate"
       fixed
-      ref="calendar"
     >
       <div slot="toolbar-left">
         <st-button
@@ -32,7 +31,6 @@ import SchedulePersonalAddReserve from '@/views/biz-modals/schedule/personal/add
 import SchedulePersonalReserveInfo from '@/views/biz-modals/schedule/personal/reserve-info'
 import { cloneDeep } from 'lodash-es'
 import { PersonalService } from './personal.service'
-import { TIME_UNIT } from '@/constants/course/team'
 export default {
   name: 'TeamSchedule',
   serviceInject() {
@@ -62,11 +60,6 @@ export default {
       const start = this.$searchQuery.start_date
       const end = this.$searchQuery.end_date
       return start === end
-    }
-  },
-  data() {
-    return {
-      TIME_UNIT
     }
   },
   methods: {
@@ -120,14 +113,6 @@ export default {
     // 刷新页面
     onScheduleChange() {
       this.$router.push({ query: this.$searchQuery })
-    }
-  },
-  watch: {
-    $route(newValue, oldValue) {
-      this.personalScheduleReserveService.getList(this.$searchQuery)
-      this.$refs.calendar.getWeeks(
-        this.$searchQuery.time_unit === this.TIME_UNIT.TIME_WEEK ? 'week' : ''
-      )
     }
   }
 }
