@@ -23,7 +23,6 @@ export const columns = (vm: any) => {
     },
     {
       title: '开班时间',
-      width: 150,
       dataIndex: 'course_time'
     },
     {
