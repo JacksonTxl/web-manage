@@ -16,7 +16,6 @@ import { MessageService } from '@/services/message.service'
 export class TeamScheduleScheduleService {
   scheduleTeamCourseList$ = new State([])
   scheduleTable$ = new State([])
-  teamTemplateList$ = new State([])
   refresh$ = new State(0)
   loading$ = new State({})
   constructor(
@@ -135,22 +134,5 @@ export class TeamScheduleScheduleService {
         this.msg.success({ content: '取消成功' })
       })
     )
-  }
-  /**
-   * 获取团课周课表管理列表
-   */
-  @Effect()
-  getTeamTemplate() {
-    return this.scheduleApi.getTeamTemplate().pipe(
-      tap(res => {
-        this.teamTemplateList$.commit(() => res.list)
-      })
-    )
-  }
-  /**
-   * 删除团课
-   */
-  delTeamTemplate(params: any) {
-    return this.scheduleApi.delTeamTemplate(params)
   }
 }

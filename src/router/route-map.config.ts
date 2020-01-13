@@ -85,8 +85,7 @@ export const routeMapConfig = {
     routeConfig.queryOptions = {
       course_id: { type: Number, default: -1 },
       court_id: { type: Number, default: -1 },
-      coach_id: { type: Number, default: -1 },
-      time_unit: { type: Number, default: 2 }
+      coach_id: { type: Number, default: -1 }
     }
   },
   'shop-product-course-schedule-team-team-table'(routeConfig: RouteConfig) {
@@ -104,8 +103,7 @@ export const routeMapConfig = {
   'shop-product-course-schedule-personal-personal'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教1v1预约'
     routeConfig.queryOptions = {
-      coach_id: { type: Number, default: -1 },
-      time_unit: { type: Number, default: 2 }
+      coach_id: { type: Number, default: -1 }
     }
   },
   'shop-product-course-schedule-personal-personal-reserve-table'(
@@ -1185,8 +1183,7 @@ export const routeMapConfig = {
   ) {
     routeConfig.meta.title = '私教小团课排期'
     routeConfig.queryOptions = {
-      coach_id: { type: Number, default: -1 },
-      time_unit: { type: Number, default: 2 }
+      coach_id: { type: Number, default: -1 }
     }
   },
   'shop-product-course-schedule-small-course'(routeConfig: RouteConfig) {
