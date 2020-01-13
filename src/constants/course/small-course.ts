@@ -31,3 +31,6 @@ export enum IS_SIGN_ENTRANCE {
   YES = '必须有',
   NO = '可以没有'
 }
+export enum SCHEDULE_CODE {
+  ERR = 54640
+}

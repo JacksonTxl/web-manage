@@ -11,8 +11,10 @@
       <div :class="bComponent('text')" style="padding-left:0">
         <st-switch
           @change="save"
+          v-if="params.notify_mode.mini_programs"
           v-model="params.notify_mode.mini_programs"
         ></st-switch>
+        <span :class="bComponent('button-disabled')" v-else>--</span>
         <span
           class="color-primary mg-l12 cursor-pointer"
           v-show="params.notify_mode.mini_programs"

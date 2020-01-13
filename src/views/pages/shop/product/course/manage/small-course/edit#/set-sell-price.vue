@@ -12,7 +12,7 @@
             v-decorator="decorators.course_name"
           />
         </st-form-item>
-        <st-form-item label="转让设置">
+        <st-form-item label="转让设置" type="text">
           <st-checkbox
             style="display:inline"
             @change="transferChange"
@@ -44,7 +44,7 @@
             </a-select>
           </st-input-number>
         </st-form-item>
-        <st-form-item label="售卖方式">
+        <st-form-item label="售卖方式" type="text">
           <a-checkbox-group
             v-decorator="decorators.sell_type"
             :disabled="isDisabled"
