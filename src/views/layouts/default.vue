@@ -327,15 +327,15 @@ export default {
         on: {
           // 模态窗动画400ms
           success: res => {
+            this.systemListLength++
             setTimeout(() => {
-              this.systemListLength++
               this.wsNotifyService.setRead().subscribe()
               this.onSuccess()
             }, 400)
           },
           cancel: res => {
+            this.systemListLength++
             setTimeout(() => {
-              this.systemListLength++
               this.onSuccess()
             }, 400)
           }
