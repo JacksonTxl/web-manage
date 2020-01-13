@@ -9,7 +9,10 @@
       />
     </portal>
     <div :class="log('search')" class="mg-b16">
-      <st-recent-radio-group @change="onChangeDate"></st-recent-radio-group>
+      <st-recent-radio-group
+        :days="days"
+        @change="onChangeDate"
+      ></st-recent-radio-group>
       <div>
         <a-select
           style="width: 160px"
@@ -41,6 +44,11 @@ export default {
   bem: {
     log: 'page-shop-reception-entrance'
   },
+  data() {
+    return {
+      days: [1, 7, 15]
+    }
+  },
   serviceInject() {
     return {
       service: LogService
@@ -54,8 +62,11 @@ export default {
     columns
   },
   methods: {
-    onChangeDate(val) {
-      console.log('dsafas')
+    onChangeDate(event) {
+      this.$searchQuery.days = event.recently_day || undefined
+      this.$searchQuery.start_time = event.start_date || undefined
+      this.$searchQuery.end_time = event.end_date || undefined
+      this.onSearch()
     }
   }
 }
