@@ -1,0 +1,96 @@
+.page-shop-app-venue-booking-table {
+  .top {
+    white-space: nowrap;
+    overflow: hidden;
+    margin-left: 44px;
+    height: 21px;
+    &__item {
+      display: inline-block;
+      width: 110px;
+      text-align: center;
+      font-weight: bolder;
+      line-height: 20px;
+      font-size: 12px;
+    }
+  }
+  .left {
+    float: left;
+    width: 44px;
+    height: 400px;
+    overflow: hidden;
+    &__item {
+      position: relative;
+      margin-bottom: 20px;
+      font-size: 12px;
+      line-height: 20px;
+      color: #9bacb9;
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        width: 5px;
+        height: 1px;
+        background-color: rgba(0, 0, 0, 0.05);
+        right: 0;
+        top: 9px;
+      }
+    }
+  }
+  .content {
+    position: relative;
+    margin-top: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-right: 0;
+    margin-left: 44px;
+    &.no-border {
+      border-color: transparent;
+    }
+    &__scroll {
+      display: flex;
+      position: relative;
+    }
+    &__column {
+      width: 110px;
+      flex: none;
+      .content__row:last-child {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      }
+      .content__row:first-child {
+        border-top: none;
+      }
+    }
+    &__row {
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+      border-right: 1px solid rgba(0, 0, 0, 0.05);
+      .tov-e();
+      padding: 0 20px;
+      &-action {
+        cursor: pointer;
+        transition: color 0.3s, background-color 0.3s, border-right-color 0.3s,
+          border-bottom-color 0.3s, border 0.3s;
+        &.act {
+          color: #fff;
+          background-color: #3f66f6;
+          border-right-color: #3f66f6;
+          border-bottom-color: #3f66f6;
+        }
+      }
+      &-reserved {
+        background-color: #ffa100;
+        color: #fff;
+      }
+      &-unreserve {
+        background-color: #fafafa;
+        color: #9bacb9;
+        border-top-color: transparent;
+      }
+    }
+    .st-no-data {
+      margin: 50px auto;
+      color: #9bacb9;
+    }
+  }
+}

@@ -25,8 +25,12 @@
           <div :class="h5('header-title')">此处显示门店名称</div>
           <div :class="h5('header-subtitle')">此处显示门店地址</div>
         </div>
-        <div :class="h5('action')">
-          <div v-for="(li, index) in actionInfo" class="action-li" :key="index">
+        <div :class="[h5('action'), checkedClass]">
+          <div
+            v-for="(li, index) in checkedInfo"
+            class="action-li"
+            :key="index"
+          >
             <img :src="li.image_url | imgFilter({ w: 56, h: 56 })" />
             <p>{{ li.title }}</p>
           </div>
@@ -178,6 +182,7 @@ export default {
   rxState() {
     return {
       actionInfo: this.h5WrapperService.actionInfo$,
+      checkedInfo: this.h5WrapperService.checkedInfo$,
       coachInfo: this.h5WrapperService.coachInfo$,
       coach: this.h5WrapperService.coach$,
       courseInfo: this.h5WrapperService.courseInfo$,
@@ -185,6 +190,14 @@ export default {
       sliderInfo: this.h5WrapperService.sliderInfo$,
       eventInfo: this.h5WrapperService.eventInfo$,
       brand: this.userService.brand$
+    }
+  },
+  watch: {
+    checkedInfo: {
+      deep: true,
+      handler(newVal) {
+        this.checkedClass = `h5-component__action--${newVal.length}`
+      }
     }
   },
   props: {
@@ -226,7 +239,8 @@ export default {
       coachOption: {
         spaceBetween: 6,
         slidesPerView: 2.4
-      }
+      },
+      checkedClass: 'checked'
     }
   },
   created() {

@@ -109,6 +109,10 @@
               :key="index"
             >
               {{ item.title }}
+              <st-help-tooltip
+                v-if="thsMember.length === index"
+                id="TBPCT001"
+              />
             </div>
           </div>
         </div>

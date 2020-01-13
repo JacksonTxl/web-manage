@@ -1,13 +1,13 @@
 export const columns = () => {
   return [
     {
-      title: '合同编号',
       dataIndex: 'contract_number',
+      slots: { title: 'customTitle' },
       width: '278px'
     },
     {
-      title: '会员姓名',
-      dataIndex: 'member_name'
+      dataIndex: 'member_name',
+      slots: { title: 'customName' }
     },
     {
       title: '类型',

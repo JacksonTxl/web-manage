@@ -102,23 +102,19 @@
   </div>
 </template>
 <script>
-import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
 import { TeamService } from './team.service'
 import BrandSettingTeamReserve from '@/views/biz-modals/brand/setting/team/reserve'
 export default {
   serviceInject() {
     return {
-      userService: UserService,
       teamService: TeamService
     }
   },
   rxState() {
-    const user = this.userService
     const teamService = this.teamService
     return {
       loading: teamService.loading$,
-      settingEnums: user.settingEnums$,
       resData: teamService.resData$,
       auth: teamService.auth$
     }

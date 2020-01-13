@@ -16,13 +16,6 @@ export class TrackGuard implements RouteGuard {
       this.importService.loadJs(
         'https://hm.baidu.com/hm.js?11c0b426fbd4b0e05de4ee2084df1835'
       )
-    } else {
-      /**
-       * 个人测试
-       */
-      this.importService.loadJs(
-        'https://hm.baidu.com/hm.js?9259620caae443c3d2bc583b235e192b'
-      )
     }
   }
 }

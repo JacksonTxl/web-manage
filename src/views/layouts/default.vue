@@ -185,10 +185,10 @@
     <main class="layout-default-body">
       <article class="layout-default-body__content">
         <router-view></router-view>
+        <div class="layout-default-body__footer">
+          <copyright></copyright>
+        </div>
       </article>
-      <div class="layout-default-footer">
-        <copyright></copyright>
-      </div>
     </main>
     <switch-shop v-model="isShowSwitchShop"></switch-shop>
     <st-udesk-btn v-show="isShowUdeskBtn" />

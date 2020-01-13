@@ -14,16 +14,13 @@ pipeline {
       }
     }
      stage('Build') {
-      when {
-        expression { BRANCH_NAME ==~ /(feat|fix|dev|test|hotfix|master).*/}
-      }
       steps {
         sh 'make build'
       }
     }
     stage('to=dev') {
       when {
-        expression { BRANCH_NAME ==~ /(feat|fix|dev|test|hotfix).*/}
+        expression { BRANCH_NAME ==~ /(feat|fix|test|release).*/}
       }
       steps {
         sh 'make rsync to=saas-dev'
@@ -35,7 +32,7 @@ pipeline {
     }
     stage('to=test') {
       when {
-        expression { BRANCH_NAME ==~ /(feat|fix|dev|test|hotfix).*/}
+        expression { BRANCH_NAME ==~ /(feat|fix|test|release).*/}
       }
       steps {
         sh 'make rsync to=saas-test'
@@ -47,7 +44,7 @@ pipeline {
     }
     stage('to=pre') {
       when {
-        expression { BRANCH_NAME ==~ /(master).*/}
+        expression { BRANCH_NAME ==~ /(master|hotfix|release).*/}
       }
       steps {
         sh 'make rsync to=saas-pre'

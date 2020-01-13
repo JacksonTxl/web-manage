@@ -1,0 +1,80 @@
+.shop-store-data-revenue-ring {
+  .g2-legend-list {
+    width: 165px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .g2-legend {
+    overflow: inherit !important;
+    left: 60% !important;
+    top: 0px !important;
+  }
+
+  .g2-legend-list-item {
+    margin-right: 0 !important;
+    margin-bottom: 8px !important;
+    display: flex !important;
+    align-items: center;
+  }
+
+  .g2-legend-marker {
+    margin-right: 8px !important;
+  }
+
+  .g2-legend-text {
+    display: inline-block;
+    width: 64px;
+    .c(@text-color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .guide {
+    text-align: center;
+    width: 200px;
+  }
+
+  .guide-title {
+    color: @heading-color;
+    margin-bottom: 8px;
+  }
+
+  .guide-value {
+    .font-number;
+    font-size: 28px;
+    line-height: 36px;
+  }
+
+  .guide-unit {
+    font-size: 14px;
+    line-height: 20px;
+    margin-left: 4px;
+  }
+
+  .guide-name {
+    font-size: 14px;
+    line-height: 22px;
+    color: @text-color-secondary;
+  }
+
+  .g2-legend-list-item {
+    margin-right: 0 !important;
+    margin-bottom: 16px !important;
+
+    &[data-value='empty'] {
+      display: none !important;
+    }
+  }
+
+  .tooltip-item-empty {
+    display: none !important;
+  }
+
+  .legend-percent {
+    color: @heading-color;
+  }
+}

@@ -37,11 +37,11 @@
               @change="onChangCategory"
             >
               <a-select-option
-                v-for="(item, index) in memberEnums.source_category.value"
+                v-for="(item, index) in source_categorys"
                 :key="index"
-                :value="+index"
+                :value="+item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
           </st-form-item>
@@ -52,21 +52,21 @@
             >
               <template v-if="source_category === 1">
                 <a-select-option
-                  v-for="(item, index) in memberEnums.online.value"
+                  v-for="(item, index) in onlines"
                   :key="index"
-                  :value="+index"
-                  :disabled="+index | isOnlineDisabled"
+                  :value="+item.value"
+                  :disabled="+item.value | isOnlineDisabled"
                 >
-                  {{ item }}
+                  {{ item.label }}
                 </a-select-option>
               </template>
               <template v-if="source_category === 2">
                 <a-select-option
-                  v-for="(item, index) in memberEnums.offline.value"
+                  v-for="(item, index) in offlines"
                   :key="index"
-                  :value="+index"
+                  :value="+item.value"
                 >
-                  {{ item }}
+                  {{ item.label }}
                 </a-select-option>
               </template>
             </a-select>
@@ -95,11 +95,11 @@
           <st-form-item label="性别">
             <a-radio-group v-decorator="rules.sex">
               <a-radio
-                v-for="(item, index) in staffEnums.sex.value"
+                v-for="(item, index) in sexs"
                 :key="index"
-                :value="+index"
+                :value="+item.value"
               >
-                {{ item }}
+                {{ item.label }}
                 <st-icon
                   type="female"
                   v-if="index == 1"
@@ -144,11 +144,11 @@
               v-decorator="rules.education_level"
             >
               <a-select-option
-                v-for="(item, index) in staffEnums.education.value"
+                v-for="(item, index) in educations"
                 :key="index"
-                :value="+index"
+                :value="+item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
           </st-form-item>
@@ -168,11 +168,11 @@
               @change="chooseType"
             >
               <a-select-option
-                v-for="(item, index) in staffEnums.id_type.value"
+                v-for="(item, index) in id_types"
                 :key="index"
-                :value="+index"
+                :value="+item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
           </st-form-item>
@@ -218,22 +218,22 @@
           <st-form-item label="婚姻状况">
             <a-select placeholder="请选择" v-decorator="rules.married_type">
               <a-select-option
-                v-for="(item, index) in staffEnums.marry_status.value"
+                v-for="(item, index) in marry_status"
                 :key="index"
-                :value="+index"
+                :value="+item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
           </st-form-item>
           <st-form-item label="子女状态">
             <a-select placeholder="请选择" v-decorator="rules.has_children">
               <a-select-option
-                v-for="(item, index) in staffEnums.children_status.value"
+                v-for="(item, index) in children_status"
                 :key="index"
-                :value="+index"
+                :value="+item.value"
               >
-                {{ item }}
+                {{ item.label }}
               </a-select-option>
             </a-select>
           </st-form-item>
@@ -294,8 +294,14 @@ export default {
   },
   rxState() {
     return {
-      staffEnums: this.userService.staffEnums$,
-      memberEnums: this.userService.memberEnums$,
+      children_status: this.userService.getOptions$('staff.children_status'),
+      marry_status: this.userService.getOptions$('staff.marry_status'),
+      id_types: this.userService.getOptions$('staff.id_type'),
+      educations: this.userService.getOptions$('staff.education'),
+      sexs: this.userService.getOptions$('staff.sex'),
+      source_categorys: this.userService.getOptions$('member.source_category'),
+      onlines: this.userService.getOptions$('member.online'),
+      offlines: this.userService.getOptions$('member.offline'),
       countryInfo: this.addService.countryInfo$,
       nations: this.addService.nations$,
       countryList: this.addService.countryList$

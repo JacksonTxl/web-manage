@@ -654,13 +654,13 @@ export default {
             ? this.fileList[0] || this.prize[0]
             : this.lucky[0]
         if (this.timesType === 1 && !value.activity_rule.per_times) {
-          this.messageService.warning({
+          this.messageService.warn({
             content: '请填写抽奖次数'
           })
           return
         }
         if (this.timesType === 2 && !value.activity_rule.total_times) {
-          this.messageService.warning({
+          this.messageService.warn({
             content: '请填写抽奖次数'
           })
           return

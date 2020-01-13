@@ -15,9 +15,6 @@ interface MessageOptions {
 }
 
 export class MessageService {
-  warning(config: MessageOptions) {
-    message.warning(config.content, config.duration)
-  }
   success(config: MessageOptions) {
     message.success(config.content, config.duration)
   }

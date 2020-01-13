@@ -96,7 +96,6 @@ import { AddService } from '../add.service'
 import { MessageService } from '@/services/message.service'
 import StSelectCourseCategory from '@/views/fragments/course/select-course-category'
 import StSelectTrainingAim from '@/views/fragments/course/select-training-aim'
-import { UserService } from '@/services/user.service'
 import { RuleConfig } from '@/constants/course/rule'
 
 export default {
@@ -105,15 +104,12 @@ export default {
     return {
       addService: AddService,
       messageService: MessageService,
-      userService: UserService,
       ruleConfig: RuleConfig
     }
   },
   rxState() {
-    const user = this.userService
     return {
-      loading: this.addService.loading$,
-      personalCourseEnums: user.personalCourseEnums$
+      loading: this.addService.loading$
     }
   },
   components: {
@@ -122,14 +118,14 @@ export default {
   },
   data() {
     return {
-      form: this.$form.createForm(this),
+      form: this.$stForm.create(),
       fileList: []
     }
   },
   methods: {
     save(e) {
       e.preventDefault()
-      this.form.validateFields().then(() => {
+      this.form.validate().then(() => {
         const data = this.form.getFieldsValue()
         this.addService.addCourse(data).subscribe(res => {
           this.messageService.success({

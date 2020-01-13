@@ -160,22 +160,20 @@ export default {
         .format('YYYY-MM-DD HH:mm')
     },
     onSubmit() {
-      this.form.validate((error, values) => {
-        if (!error) {
-          let data = values.end_time || values.start_time
-          this.setTimeService
-            .setTime(
-              {
-                time: data.format('YYYY-MM-DD HH:mm'),
-                description: this.description
-              },
-              this.id
-            )
-            .subscribe(res => {
-              this.show = false
-              this.$emit('success')
-            })
-        }
+      this.form.validate().then(values => {
+        let data = values.end_time || values.start_time
+        this.setTimeService
+          .setTime(
+            {
+              time: data.format('YYYY-MM-DD HH:mm'),
+              description: this.description
+            },
+            this.id
+          )
+          .subscribe(res => {
+            this.show = false
+            this.$emit('success')
+          })
       })
     }
   },
