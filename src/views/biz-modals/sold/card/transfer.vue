@@ -423,7 +423,11 @@ export default {
       )
     },
     onStartTimeChange(data) {
-      this.endTime = cloneDeep(moment(data.valueOf() + this.timeScope))
+      if (this.timeScope) {
+        this.endTime = cloneDeep(moment(data.valueOf() + this.timeScope))
+      } else {
+        this.endTime = cloneDeep(moment(data.valueOf()))
+      }
     },
     onCodeNumber() {
       let sold_type = this.isDeposit

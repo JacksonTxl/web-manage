@@ -505,6 +505,7 @@ export default {
         props: {
           ids: this.selectedRowKeys,
           type: this.selectedRows[0].card_type,
+          unit: this.selectedRows[0].unit,
           searchQuery: cloneDeep(this.$searchQuery)
         },
         on: {
