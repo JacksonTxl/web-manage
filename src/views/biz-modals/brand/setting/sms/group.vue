@@ -75,7 +75,7 @@
           v-decorator="decorators.send_time"
         ></a-date-picker>
       </st-form-item>
-      <st-form-item labelWidth="70px" label="编辑短信">
+      <st-form-item labelWidth="70px" label="编辑短信" class="mg-b0">
         <a-radio-group
           v-decorator="decorators.tmpl_type"
           @change="getCurTemType"
