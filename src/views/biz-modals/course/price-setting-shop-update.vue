@@ -43,7 +43,6 @@ export default {
   },
   methods: {
     onOk() {
-      console.log(this.priceGradient)
       this.listService
         .settingCoursePrice({
           id: this.id,

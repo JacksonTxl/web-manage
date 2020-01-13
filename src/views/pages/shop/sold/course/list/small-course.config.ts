@@ -14,11 +14,13 @@ export const columns = (vm: any) => [
   },
   {
     title: '姓名',
-    dataIndex: 'member_name'
+    dataIndex: 'member_name',
+    scopedSlots: { customRender: 'member_name' }
   },
   {
     title: '手机号',
-    dataIndex: 'mobile'
+    dataIndex: 'mobile',
+    scopedSlots: { customRender: 'mobile' }
   },
   {
     title: '状态',
